@@ -49,10 +49,9 @@ export function pageApiMock() {
     );
   });
 
-  this.api.onPost(API.GET_PAGE_RENDER).reply(config => {
-    const request: {id: number} = JSON.parse(config.data);
-
-    const html = this.db.getPageRender(request.id);
+  this.api.onGet(API.GET_PAGE_RENDER).reply(config => {
+    const id = config.params.searchText;
+    const html = this.db.getPageRender(id);
 
     return promiseResolve(
       config,

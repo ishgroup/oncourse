@@ -1,10 +1,10 @@
-import {History} from "../model";
+import {Version} from "../model";
 import {PublishApi} from "../http/PublishApi";
 
 class PublishService {
     readonly publishApi = new PublishApi();
 
-    public getVersions(): Promise<History> {
+    public getVersions(): Promise<Version[]> {
         return this.publishApi.getVersions();
     }
 

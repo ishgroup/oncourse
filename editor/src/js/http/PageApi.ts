@@ -26,7 +26,7 @@ export class PageApi {
   }
 
   getPageRender(request): Promise<any> {
-    return this.http.POST(API.GET_PAGE_RENDER, request);
+    return this.http.GET(API.GET_PAGE_RENDER, {params: {searchText: request.id}});
   }
 
 }

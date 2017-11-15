@@ -1,0 +1,921 @@
+swagger: '2.0'
+info:
+  title: Editor Api
+  description: Editor App Api
+  version: 1.0.0
+schemes:
+  - https
+produces:
+  - application/json
+paths:
+  /getUser:
+    post:
+      operationId: getUser
+      summary: Get user by email and password
+      description: >-
+        Get user by email and password (Login)
+      tags:
+        - Authorization
+      consumes:
+        - application/json
+      parameters:
+        - name: loginRequest
+          in: body
+          description: Params for request user authorization
+          required: true
+          schema:
+            $ref: '#/definitions/api.LoginRequest'
+      responses:
+        '200':
+          description: User
+          schema:
+            $ref: '#/definitions/User'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+  /logout:
+    post:
+      operationId: logout
+      summary: >-
+        Unauthorize user from CMS
+      description: >-
+        Unauthorize user from CMS
+      tags:
+        - Authorization
+      consumes:
+        - application/json
+
+      responses:
+        '200':
+          description: >-
+            Success logout witn null response
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+  /getMenuItems:
+    get:
+      operationId: getMenuItems
+      summary: Get menu items
+      description: Get menu items
+      tags:
+        - Menu
+      responses:
+        '200':
+          description: Menu reposonse object
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/MenuItem'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+  /saveMenuItems:
+    post:
+      operationId: saveMenuItems
+      summary: Save menu items
+      description: >-
+        Save menu items
+      tags:
+        - Menu
+      consumes:
+        - application/json
+      parameters:
+        - name: Menu[]
+          in: body
+          description: Menu items
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/MenuItem'
+      responses:
+        '200':
+          description: Menu items
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/MenuItem'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+  /getPages:
+    get:
+      operationId: getPages
+      summary: Get pages
+      description: Get pages
+      tags:
+        - Pages
+      responses:
+        '200':
+          description: response with array of pages
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Page'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+  '/getPageByUrl/{pageUrl}':
+    get:
+      summary: Get page by provided page url
+      operationId: getPageByUrl
+      description: Get page object by provided page url
+      tags:
+        - Pages
+      parameters:
+        - name: pageUrl
+          in: path
+          description: Page url
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Page for provided url
+          schema:
+            $ref: '#/definitions/Page'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+  '/getPageRender/{pageId}':
+    get:
+      summary: Get page rendered html by provided page id
+      operationId: getPageRender
+      description: Get page rendered html by provided page id
+      tags:
+        - Pages
+      parameters:
+        - name: pageId
+          in: path
+          description: Page id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: generated page html
+          schema:
+            type: object
+            properties:
+              html:
+                type: string
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+  /savePage:
+    post:
+      summary: Save page parameters
+      operationId: savePage
+      description: Save page parameters
+      tags:
+        - Pages
+      consumes:
+        - application/json
+      parameters:
+        - name: pageParams
+          in: body
+          description: page with new params
+          required: true
+          schema:
+            $ref: '#/definitions/Page'
+      responses:
+        '200':
+          description: Page object with updated params
+          schema:
+            $ref: '#/definitions/Page'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+  /addPage:
+    post:
+      summary: Add new page
+      operationId: addPage
+      description: Add new page
+      tags:
+        - Pages
+      consumes:
+        - application/json
+      responses:
+        '200':
+          description: new page with unique id and url
+          schema:
+            $ref: '#/definitions/common.CommonError'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+  /deletePage:
+    post:
+      summary: Remove page by provided Id
+      operationId: deletePage
+      description: Remove page
+      tags:
+        - Pages
+      consumes:
+        - application/json
+      responses:
+        '200':
+          description: Page successfully deleted
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+  /getBlocks:
+    get:
+      summary: Get array of blocks
+      operationId: getBlocks
+      description: Get array of blocks
+      tags:
+        - Blocks
+      responses:
+        '200':
+          description: response with array of blocks
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Block'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+  /saveBlock:
+    post:
+      summary: >-
+        block with updated params
+      operationId: saveBlock
+      description: Save block params
+      tags:
+        - Blocks
+      consumes:
+        - application/json
+      parameters:
+        - name: SaveBlockRequest
+          in: body
+          description: Block with new params
+          required: true
+          schema:
+            $ref: '#/definitions/Block'
+      responses:
+        '200':
+          description: Block object with updated params
+          schema:
+            $ref: '#/definitions/Block'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+  /addBlock:
+    post:
+      summary: Add new block
+      operationId: addBlock
+      description: Add new block
+      tags:
+        - Blocks
+      consumes:
+        - application/json
+      responses:
+        '200':
+          description: new block with unique id
+          schema:
+            $ref: '#/definitions/Block'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+  /deleteBlock:
+    post:
+      summary: Remove block by provided Id
+      operationId: deleteBlock
+      description: Remove block
+      tags:
+        - Blocks
+      consumes:
+        - application/json
+      responses:
+        '200':
+          description: Block successfully deleted
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+  /getThemes:
+    get:
+      summary: Get array of themes
+      operationId: getThemes
+      description: Get array of themes
+      tags:
+        - Themes
+      responses:
+        '200':
+          description: response with array of themes
+          schema:
+            $ref: '#/definitions/Theme'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+  /getLayouts:
+    get:
+      summary: Get array of layouts
+      operationId: getLayouts
+      description: Get array of layouts
+      tags:
+        - Themes
+      responses:
+        '200':
+          description: response with array of layouts
+          schema:
+            $ref: '#/definitions/Theme'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+  /saveTheme:
+    post:
+      summary: >-
+        Theme with updated params
+      operationId: saveTheme
+      description: Save theme params
+      tags:
+        - Themes
+      consumes:
+        - application/json
+      parameters:
+        - name: SaveThemeRequest
+          in: body
+          description: Theme with new params
+          required: true
+          schema:
+            $ref: '#/definitions/Theme'
+      responses:
+        '200':
+          description: Theme object with updated params
+          schema:
+            $ref: '#/definitions/Theme'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+  /addTheme:
+    post:
+      summary: Add new theme
+      operationId: addTheme
+      description: Add new theme
+      tags:
+        - Themes
+      consumes:
+        - application/json
+      responses:
+        '200':
+          description: new theme with unique id
+          schema:
+            $ref: '#/definitions/Theme'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+  /deleteTheme:
+    post:
+      summary: Remove theme by provided Id
+      operationId: deleteTheme
+      description: Remove theme
+      tags:
+        - Themes
+      consumes:
+        - application/json
+      responses:
+        '200':
+          description: Theme successfully deleted
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+  /getVersions:
+    get:
+      summary: Get array of published versions
+      operationId: getVersions
+      description: Get array of published versions
+      tags:
+        - History
+      responses:
+        '200':
+          description: response with array of published versions
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Version'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+  /setVersion:
+    post:
+      summary: >-
+        Set current published version by provided version Id
+      operationId: setVersion
+      description: Change current published version
+      tags:
+        - History
+      consumes:
+        - application/json
+      parameters:
+        - name: SetVersionRequest
+          in: body
+          description: Version id
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: number
+      responses:
+        '200':
+          description: Version changed successfully
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+  /publish:
+    post:
+      summary: >-
+        Publish current draft version
+      operationId: publish
+      description: Publish current draft changes to live site
+      tags:
+        - History
+      consumes:
+        - application/json
+      responses:
+        '200':
+          description: Draft changes has been published
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+  /getCheckoutSettings:
+    get:
+      operationId: getCheckoutSettings
+      summary: Get checkout settings
+      description: Get checkout settings
+      tags:
+        - Settings
+      responses:
+        '200':
+          description: response with checkout settings object
+          schema:
+            $ref: '#/definitions/settings.CheckoutSettings'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+  /setCheckoutSettings:
+    post:
+      summary: >-
+        Save checkout settings
+      operationId: setCheckoutSettings
+      description: Save checkout settings
+      tags:
+        - Settings
+      consumes:
+        - application/json
+      parameters:
+        - name: SaveCheckoutSettingsRequest
+          in: body
+          description: Checkout settings object
+          required: true
+          schema:
+            $ref: '#/definitions/settings.CheckoutSettings'
+      responses:
+        '200':
+          description: Updated checkout settings object
+          schema:
+            $ref: '#/definitions/settings.CheckoutSettings'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+  /getSkillsOnCourseSettings:
+    get:
+      operationId: getSkillsOnCourseSettings
+      summary: Get SkillsOnCourse settings
+      description: Get SkillsOnCourse settings
+      tags:
+        - Settings
+      responses:
+        '200':
+          description: response with SkillsOnCourse settings object
+          schema:
+            $ref: '#/definitions/settings.SkillsOnCourseSettings'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+  /setSkillsOnCourseSettings:
+    post:
+      summary: >-
+        Save SkillsOnCourse settings
+      operationId: setSkillsOnCourseSettings
+      description: Save SkillsOnCourse settings
+      tags:
+        - Settings
+      consumes:
+        - application/json
+      parameters:
+        - name: SkillsOnCourseSettingsRequest
+          in: body
+          description: SkillsOnCourse settings object
+          required: true
+          schema:
+            $ref: '#/definitions/settings.SkillsOnCourseSettings'
+      responses:
+        '200':
+          description: Updated SkillsOnCourse settings object
+          schema:
+            $ref: '#/definitions/settings.SkillsOnCourseSettings'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+  /getRedirectSettings:
+    get:
+      operationId: getRedirectSettings
+      summary: Get redirect settings
+      description: Get redirect settings
+      tags:
+        - Settings
+      responses:
+        '200':
+          description: response with redirect settings object
+          schema:
+            $ref: '#/definitions/settings.RedirectSettings'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+  /setRedirectSettings:
+    post:
+      summary: >-
+        Save redirect settings
+      operationId: setRedirectSettings
+      description: Save redirect settings
+      tags:
+        - Settings
+      consumes:
+        - application/json
+      parameters:
+        - name: RedirectSettingsRequest
+          in: body
+          description: redirect settings object
+          required: true
+          schema:
+            $ref: '#/definitions/settings.RedirectSettings'
+      responses:
+        '200':
+          description: Updated redirect settings object
+          schema:
+            $ref: '#/definitions/settings.RedirectSettings'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+  /getWebsiteSettings:
+    get:
+      operationId: getWebsiteSettings
+      summary: Get Website settings
+      description: Get Website settings
+      tags:
+        - Settings
+      responses:
+        '200':
+          description: response with Website settings object
+          schema:
+            $ref: '#/definitions/settings.WebsiteSettings'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+  /setWebsiteSettings:
+    post:
+      summary: >-
+        Save website settings
+      operationId: setWebsiteSettings
+      description: Save website settings
+      tags:
+        - Settings
+      consumes:
+        - application/json
+      parameters:
+        - name: WebsiteSettingsRequest
+          in: body
+          description: website settings object
+          required: true
+          schema:
+            $ref: '#/definitions/settings.WebsiteSettings'
+      responses:
+        '200':
+          description: Updated website settings object
+          schema:
+            $ref: '#/definitions/settings.WebsiteSettings'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+parameters:
+  XOrigin:
+    name: X-Origin
+    in: header
+    description: |
+      College URL which we sends with every request,
+      since we have common endpoint for all colledges.
+      Example: intranet.ish.com.au
+    required: true
+    type: string
+  Session:
+    name: X-Session-Token
+    in: header
+    description: User's session Id
+    required: true
+    type: string
+definitions:
+  common.Item:
+    type: object
+    properties:
+      key:
+        type: string
+        description: Key which will be send back
+      value:
+        type: object
+        description: Value which user will see
+  api.LoginRequest:
+    type: object
+    properties:
+      email:
+        type: string
+        description: user email
+      password:
+        type: string
+        description: User password
+  PageUrl:
+    type: object
+    properties:
+      link:
+        type: string
+        description: unique link
+      isBase:
+        type: boolean
+        description: has url base
+      isDefault:
+        type: boolean
+        description: has url default
+  Block:
+    type: object
+    properties:
+      id:
+        type: number
+        description: unique id of block
+      title:
+        type: string
+        description: Title/Name of block
+      html:
+        type: string
+        description: Html source of block
+  Version:
+    type: object
+    properties:
+      id:
+        type: number
+        description: unique id of version
+      published:
+        type: boolean
+        description: has version published
+      author:
+        type: string
+        description: First and last name of the user who published version
+      changes:
+        type: number
+        description: count of changes from previous version
+      date:
+        type: string
+        description: date when version was published
+  Layout:
+    type: object
+    properties:
+      id:
+        type: number
+        description: unique id of the layout
+      layoutKey:
+        type: string
+        description: key/name of the layout
+  Page:
+    type: object
+    properties:
+      id:
+        type: number
+        description: unique id of the page
+      title:
+        type: string
+        description: title of the page
+      themeId:
+        type: number
+        description: theme Id for the page
+      html:
+        type: string
+        description: Html source of the page
+      visible:
+        type: boolean
+        description: Has page visible
+      urls:
+        type: array
+        items:
+          $ref: '#/definitions/PageUrl'
+  BlockItem:
+    type: object
+    properties:
+      id:
+        type: number
+        description: unique id of the Block
+      position:
+        type: number
+        description: order position of the block
+  ThemeSchema:
+    type: object
+    properties:
+      top:
+        type: array
+        items:
+          $ref: '#/definitions/BlockItem'
+      middle1:
+        type: array
+        items:
+          $ref: '#/definitions/BlockItem'
+      middle2:
+        type: array
+        items:
+          $ref: '#/definitions/BlockItem'
+      middle3:
+        type: array
+        items:
+          $ref: '#/definitions/BlockItem'
+      footer:
+        type: array
+        items:
+          $ref: '#/definitions/BlockItem'
+  Theme:
+    type: object
+    properties:
+      id:
+        type: number
+        description: Unique identifier of theme
+      title:
+        type: string
+        description: title of theme
+      layoutId:
+        type: number
+        description: Unique identifier of for theme
+      schema:
+        $ref: '#/definitions/ThemeSchema'
+  MenuItem:
+    type: object
+    properties:
+      id:
+        type: number
+        description: Unique identifier of menu item
+      title:
+        type: string
+        description: title of menu item
+      url:
+        type: string
+        description: url for menu link
+      expanded:
+        type: boolean
+      errors:
+        type: object
+        properties:
+          title:
+            type: boolean
+          url:
+            type: boolean
+      schema:
+        $ref: '#/definitions/ThemeSchema'
+  User:
+    type: object
+    properties:
+      id:
+        type: number
+        description: Unique identifier of the user
+      firstName:
+        type: string
+        description: First name of the user
+      lastName:
+        description: Last name of the user
+        type: string
+  common.CommonError:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+  common.ValidationError:
+    type: object
+    required:
+      - formErrors
+      - fieldsErrors
+    properties:
+      formErrors:
+        type: array
+        items:
+          type: string
+        description: Global error
+      fieldsErrors:
+        type: array
+        items:
+          title: common.FieldError
+          type: object
+          required:
+            - name
+            - error
+          properties:
+            name:
+              type: string
+              description: Name of fiels with error
+            error:
+              type: string
+              description: 'Errors for particular field, or empty array'
+        description: 'Array of fields errors, or empty array'
+  settings.RedirectItem:
+    type: object
+    properties:
+      from:
+        type: string
+        description: Redirect from url
+      to:
+        type: string
+        description: Redirect to url
+  settings.RedirectSettings:
+    type: object
+    properties:
+      rules:
+        type: array
+        items:
+          $ref: '#/definitions/settings.RedirectItem'
+  settings.SkillsOnCourseSettings:
+    type: object
+    properties:
+      hideStudentDetails:
+        type: boolean
+      enableOutcomeMarking:
+        type: boolean
+      tutorFeedbackEmail:
+        type: string
+  settings.ClassCondition:
+    type: string
+    enum:
+      - afterClassStarts
+      - beforeClassStarts
+      - afterClassEnds
+      - beforeClassEnds
+  settings.ClassEnrolmentCondition:
+    type: string
+    enum:
+      - afterClassStarts
+      - beforeClassStarts
+      - beforeClassEnds
+  settings.ClassAge:
+    type: object
+    properties:
+      hideClassDays:
+        type: number
+      hideClassCondition:
+        $ref: '#/definitions/settings.ClassCondition'
+      stopWebEnrolmentDays:
+        type: number
+      stopWebEnrolmentCondition:
+        $ref: '#/definitions/settings.ClassEnrolmentCondition'
+  settings.WebsiteSettings:
+    type: object
+    properties:
+      enableSocialMedia:
+        type: boolean
+      addThisId:
+        type: string
+      enableForCourse:
+        type: boolean
+      enableForWebpage:
+        type: boolean
+      classAge:
+        $ref: '#/definitions/settings.ClassAge'
+  settings.CheckoutSettings:
+    type: object
+    properties:
+      successUrl:
+        type: string
+      refundPolicy:
+        type: string
