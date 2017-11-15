@@ -2,6 +2,12 @@ package ish.oncourse.solr.functions.course
 
 import ish.oncourse.model.Session
 import ish.oncourse.solr.model.SSession
+import org.apache.commons.lang3.text.WordUtils
+
+import java.time.DayOfWeek
+import java.time.Instant
+import java.time.ZoneId
+import java.time.ZonedDateTime
 
 /**
  * User: akoiro
@@ -9,21 +15,38 @@ import ish.oncourse.solr.model.SSession
  */
 class SessionFunctions {
 
-    private static final int SATURDAY_INDEX = 6
     private static final int MORNING_TIME = 6
     private static final int EVENING_TIME = 17
 
+    static ZonedDateTime convertToDateTime(Date date, String timeZone) {
+        Instant instant = date.toInstant()
+        ZonedDateTime dtSydney = ZonedDateTime.ofInstant(instant, ZoneId.of('Australia/Sydney'))
+        return timeZone == null ? dtSydney : dtSydney.withZoneSameInstant(ZoneId.of(timeZone))
+    }
+
 
     static String getDayName(Session session) {
-        session.startDate.format("EEEE")
+        WordUtils.capitalizeFully(convertToDateTime(session.startDate, session.timeZone).getDayOfWeek().name())
     }
 
     static String getDayType(Session session) {
-        session.startDate.format("u").toInteger() < SATURDAY_INDEX ? "weekday" : "weekend"
+        switch (convertToDateTime(session.startDate, session.timeZone).getDayOfWeek()) {
+            case DayOfWeek.MONDAY:
+            case DayOfWeek.TUESDAY:
+            case DayOfWeek.WEDNESDAY:
+            case DayOfWeek.THURSDAY:
+            case DayOfWeek.FRIDAY:
+                return "weekday"
+            case DayOfWeek.SATURDAY:
+            case DayOfWeek.SUNDAY:
+                return "weekend"
+            default:
+                throw new IllegalAccessException()
+        }
     }
 
     static String getDayTime(Session session) {
-        int time = session.startDate.format("H").toInteger()
+        int time = convertToDateTime(session.startDate, session.timeZone).hour
         return time > MORNING_TIME && time < EVENING_TIME ? "daytime" : "evening"
     }
 
