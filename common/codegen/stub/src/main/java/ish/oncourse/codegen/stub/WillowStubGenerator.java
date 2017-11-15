@@ -19,7 +19,7 @@ import java.io.File;
 public class WillowStubGenerator extends DefaultCodegen implements CodegenConfig {
 
     public static void main(String[] args) {
-        new Launcher(new WillowStubGenerator()).run();
+        new Launcher(new WillowStubGenerator()).run(args[0]);
     }
 
 

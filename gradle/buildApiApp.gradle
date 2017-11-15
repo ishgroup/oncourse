@@ -1,9 +1,14 @@
 apply plugin: 'application'
 
+configurations {
+    swagger
+}
+
 dependencies {
     testCompile 'org.apache.commons:commons-dbcp2:2.1.1'
     testCompile 'org.apache.commons:commons-pool2:2.4.2'
     testCompile project(':common:test-functions')
+    swagger project(':common:codegen:jaxrs')
 }
 
 targetCompatibility = '1.8'
@@ -45,4 +50,12 @@ publishing {
             }
         }
     }
+}
+
+
+
+task (swagger, dependsOn: 'classes', type: JavaExec) {
+    main = 'ish.oncourse.codegen.cxf.WillowJaxRsGenerator'
+    classpath = configurations.swagger
+    args  = [ servicesPackage, modelPackage, project.projectDir, "${project.projectDir}/src/main/resources/$swaggerName" ]
 }

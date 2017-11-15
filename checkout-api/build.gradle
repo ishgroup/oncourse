@@ -1,7 +1,16 @@
+ext {
+    servicesPackage = 'ish.oncourse.willow.service'
+    modelPackage = 'ish.oncourse.willow.model'
+    swaggerName = 'checkout.yaml'
+}
+
 apply from: "$rootDir/gradle/bootique.gradle"
 apply from: "$rootDir/gradle/buildApiApp.gradle"
 
 mainClassName = 'ish.oncourse.willow.WillowApp'
+
+
+
 
 dependencies {
     compile project(':common:common-api')

@@ -23,8 +23,8 @@ public final class Launcher {
         this.codegenConfig = codegenConfig;
     }
 
-    public List<File> run() {
-        Swagger swagger = new SwaggerParser().read("swagger.yaml");
+    public List<File> run(String swaggerPath) {
+        Swagger swagger = new SwaggerParser().read(swaggerPath);
 
         ClientOptInput clientOptInput = new ClientOptInput();
         clientOptInput.setConfig(codegenConfig);

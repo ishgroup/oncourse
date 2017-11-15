@@ -1,3 +1,11 @@
+
+ext {
+    servicesPackage = 'ish.oncourse.willow.editor.service'
+    modelPackage = 'ish.oncourse.willow.editor.model'
+    swaggerName = 'editor.yaml'
+}
+
+
 apply from: "$rootDir/gradle/bootique.gradle"
 apply from: "$rootDir/gradle/buildApiApp.gradle"
 

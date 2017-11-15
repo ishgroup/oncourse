@@ -23,48 +23,48 @@ import static ish.oncourse.codegen.common.PackageUtils.getClassName;
 import static ish.oncourse.codegen.common.PackageUtils.getPackage;
 
 /**
- * Generates interfaces and models for Willow-Api project.
+ * Generates interfaces and models for Willow-Api projects.
  *
  * @author Ibragimov Ruslan
  * @since 0.1
  */
-public class WillowJaxRsGenerator extends AbstractJavaJAXRSServerCodegen {
+public class  WillowJaxRsGenerator extends AbstractJavaJAXRSServerCodegen {
     private static final Logger LOGGER = LoggerFactory.getLogger(WillowJaxRsGenerator.class);
+
 
     public WillowJaxRsGenerator() {
         super();
-
         supportsInheritance = true;
-
-        apiPackage = "ish.oncourse.willow.service";
-        modelPackage = "ish.oncourse.willow.model";
-
         sourceFolder = "src/main/groovy";
         implFolder = "src/main/groovy";
         testFolder = "src/test/groovy";
-        outputFolder = "../../../checkout-api";
 
         apiTemplateFiles.put("apiServiceImpl.mustache", ".groovy");
         apiTestTemplateFiles.clear();
         apiTestTemplateFiles.put("api_test.mustache", ".groovy");
-
         modelDocTemplateFiles.remove("model_doc.mustache");
         apiDocTemplateFiles.remove("api_doc.mustache");
-
+        
         typeMapping.put("date", "LocalDateTime");
-
         importMapping.put("LocalDate", "java.time.LocalDateTime");
         importMapping.put("LocalDateTime", "java.time.LocalDateTime");
         typeMapping.put("DateTime", "LocalDateTime");
         typeMapping.put("number", "Double");
-
         embeddedTemplateDir = templateDir = "willow-jaxrs";
     }
 
     public static void main(String[] args) {
-        new Launcher(new WillowJaxRsGenerator()).run();
+        for (String s : args) {
+            System.out.println(s);
+        }
+        
+        WillowJaxRsGenerator generator = new WillowJaxRsGenerator();
+        generator.apiPackage = args[0];
+        generator.modelPackage = args[1];
+        generator.outputFolder = args[2];
+        new Launcher(generator).run(args[3]);
     }
-
+    
     @Override
     public void processOpts() {
         super.processOpts();
