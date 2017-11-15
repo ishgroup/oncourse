@@ -43,7 +43,9 @@ class TemplateResourceFactory implements ResourceFactory {
     private ICayenneService cayenneService
     private RequestService requestService
     private SecurityManager securityManager
-
+    
+    private Closure<WebTemplate> getTemplate = { String name, WebSiteLayout layout -> WebTemplateFunctions.getTemplateByName(name, layout) }
+    
     private Map<String, String> defaultTemplatesMap
 
     TemplateResourceFactory(ICayenneService cayenneService, RequestService requestService, SecurityManager securityManager) {
@@ -131,12 +133,12 @@ class TemplateResourceFactory implements ResourceFactory {
         List<WebTemplateResource> templates = []
 
         for (String templateFileName : defaultTemplatesMap.values()) {
-            templates.add(new WebTemplateResource(templateFileName, layout, cayenneService, securityManager, defaultTemplatesMap))
+            templates.add(new WebTemplateResource(templateFileName, layout, cayenneService, securityManager, defaultTemplatesMap, getTemplate))
         }
 
         WebTemplateFunctions.getTemplatesForLayout(layout)
                 .findAll {!defaultTemplatesMap.containsKey(it.name)}
-                .each { templates << new WebTemplateResource(it.name, layout, cayenneService, securityManager, defaultTemplatesMap) }
+                .each { templates << new WebTemplateResource(it.name, layout, cayenneService, securityManager, defaultTemplatesMap, getTemplate) }
 
         return templates
     }
@@ -172,7 +174,7 @@ class TemplateResourceFactory implements ResourceFactory {
             templateName = name
         }
 
-        return new WebTemplateResource(templateName, layout, cayenneService, securityManager,defaultTemplatesMap)
+        return new WebTemplateResource(templateName, layout, cayenneService, securityManager,defaultTemplatesMap, getTemplate)
     }
 
     private class LayoutDirectoryResource extends DirectoryResource {
@@ -196,7 +198,7 @@ class TemplateResourceFactory implements ResourceFactory {
 
             context.commitChanges()
 
-            return new WebTemplateResource(template.name, localLayout, cayenneService, securityManager, defaultTemplatesMap)
+            return new WebTemplateResource(template.name, localLayout, cayenneService, securityManager, defaultTemplatesMap, getTemplate)
         }
 
         @Override

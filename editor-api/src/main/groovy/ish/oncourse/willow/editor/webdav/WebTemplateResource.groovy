@@ -42,16 +42,13 @@ class WebTemplateResource extends AbstractResource implements CopyableResource, 
 
     WebTemplateResource(String templateName, WebSiteLayout layout,
                                ICayenneService cayenneService,
-                               SecurityManager securityManager, Map<String, String> defaultTemplatesMap) {
+                               SecurityManager securityManager, Map<String, String> defaultTemplatesMap, Closure<WebTemplate> getTemplate) {
         super(securityManager)
-
         this.cayenneService = cayenneService
-
         this.templateName = templateName
         this.layout = layout
         this.defaultTemplatesMap = defaultTemplatesMap
-
-        this.webTemplate = WebTemplateFunctions.getTemplateByName(getName(), layout)
+        this.webTemplate =  getTemplate.call(getName(), layout)
     }
 
     @Override
