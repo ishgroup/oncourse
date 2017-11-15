@@ -40,10 +40,6 @@ public class WillowClientGenerator extends AbstractTypeScriptClientCodegen imple
 
     public WillowClientGenerator() {
         super();
-
-        // working dir: /common/codegen/typescript
-        outputFolder = "../../../checkout";
-
         modelTemplateFiles.put("model.mustache", ".ts");
         apiTemplateFiles.put("api.mustache", ".ts");
 
@@ -59,7 +55,12 @@ public class WillowClientGenerator extends AbstractTypeScriptClientCodegen imple
     }
 
     public static void main(String[] args) {
-        new Launcher(new WillowClientGenerator()).run();
+        System.out.println(args[0]);
+        System.out.println(args[1]);
+
+        WillowClientGenerator generator = new WillowClientGenerator();
+        generator.outputFolder = args[0];
+        new Launcher(generator).run(args[1]);
     }
 
     /**
