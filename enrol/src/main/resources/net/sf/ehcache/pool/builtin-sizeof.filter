@@ -8,3 +8,4 @@
 
 org.apache.cayenne.PersistentObject.objectContext
 org.apache.cayenne.CayenneDataObject.values
+java.util.concurrent.ConcurrentHashMap
