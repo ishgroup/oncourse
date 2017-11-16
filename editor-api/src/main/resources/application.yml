@@ -24,3 +24,5 @@ cayenne:
   datasource: willow
   configs:
     - cayenne-oncourse.xml
+cxf:
+  welcomeText: 'Editor REST API'  

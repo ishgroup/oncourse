@@ -15,11 +15,13 @@ import ish.oncourse.willow.editor.services.access.AuthenticationStatus
 
 import javax.servlet.ServletException
 
+import static ish.oncourse.willow.editor.EditorApiModule.INJECTOR_PROPERTY
+
 class Configurator extends DefaultMiltonConfigurator {
     
     @Override
     HttpManager configure(Config config) throws ServletException {
-        Injector injector = config.servletContext.getAttribute('injector') as Injector
+        Injector injector = config.servletContext.getAttribute(INJECTOR_PROPERTY) as Injector
         AuthenticationService authenticationService = injector.getInstance(AuthenticationService)
         ICayenneService cayenneService =  injector.getInstance(ICayenneService)
         RequestService requestService =  injector.getInstance(RequestService)

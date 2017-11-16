@@ -22,10 +22,12 @@ import javax.servlet.FilterConfig
 import javax.servlet.ServletException
 
 class EditorApiModule extends ConfigModule {
+    
+    private static final String ROOT_URL_PATTERN = '/*'
     private static final String WEBDAV_URL_PATTERN = '/webdav/*'
     private static final String MILTON_CONFIGURATOR_PARAM = 'milton.configurator'
     private static final String MILTON_CONFIGURATOR_CLASS = 'ish.oncourse.willow.editor.webdav.Configurator'
-
+    public static final String INJECTOR_PROPERTY = 'injector'
 
     private static final TypeLiteral<MappedServlet<ISHHealthCheckServlet>> ISH_HEALTH_CHECK_SERVLET =
             new TypeLiteral<MappedServlet<ISHHealthCheckServlet>>() {
@@ -66,16 +68,16 @@ class EditorApiModule extends ConfigModule {
         return new MappedFilter<MiltonFilter>(new MiltonFilter() {
             @Override 
             void init(FilterConfig config) throws ServletException {
-                config.servletContext.setAttribute('injector', injector)
+                config.servletContext.setAttribute(INJECTOR_PROPERTY, injector)
                 super.init(config)
             }
-        }, Collections.singleton(WEBDAV_URL_PATTERN), 'MiltonFilter', [(MILTON_CONFIGURATOR_PARAM) : MILTON_CONFIGURATOR_CLASS], 0)
+        }, Collections.singleton(WEBDAV_URL_PATTERN), MiltonFilter.simpleName, [(MILTON_CONFIGURATOR_PARAM) : MILTON_CONFIGURATOR_CLASS], 0)
     }
     
     @Singleton
     @Provides
     MappedFilter<RequestFilter> createRequestFilter() {
          new MappedFilter<RequestFilter>(new RequestFilter(),
-                Collections.singleton("/*"), 'RequestFilter', 0)
+                Collections.singleton(ROOT_URL_PATTERN), RequestFilter.simpleName, 0)
     }
 }
