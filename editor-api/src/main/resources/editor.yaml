@@ -15,7 +15,7 @@ paths:
       description: >-
         Get user by email and password (Login)
       tags:
-        - Authorization
+        - Auth
       consumes:
         - application/json
       parameters:
@@ -42,7 +42,7 @@ paths:
       description: >-
         Unauthorize user from CMS
       tags:
-        - Authorization
+        - Auth
       consumes:
         - application/json
 
@@ -83,7 +83,7 @@ paths:
       consumes:
         - application/json
       parameters:
-        - name: Menu[]
+        - name: Menu
           in: body
           description: Menu items
           required: true
@@ -120,7 +120,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  '/getPageByUrl/{pageUrl}':
+  '/getPageByUrl':
     get:
       summary: Get page by provided page url
       operationId: getPageByUrl
@@ -129,7 +129,7 @@ paths:
         - Page
       parameters:
         - name: pageUrl
-          in: path
+          in: query
           description: Page url
           required: true
           type: string
@@ -154,15 +154,12 @@ paths:
           in: path
           description: Page id
           required: true
-          type: string
+          type: number
       responses:
         '200':
           description: generated page html
           schema:
-            type: object
-            properties:
-              html:
-                type: string
+            $ref: '#/definitions/api.PageRenderResponse'
         default:
           description: Unexpected error
           schema:
@@ -219,6 +216,13 @@ paths:
         - Page
       consumes:
         - application/json
+      parameters:
+        - name: id
+          in: body
+          description: identificator of page which will be deleted
+          required: true
+          schema:
+            type: number
       responses:
         '200':
           description: Page successfully deleted
@@ -297,6 +301,13 @@ paths:
         - Block
       consumes:
         - application/json
+      parameters:
+        - name: id
+          in: body
+          description: identificator of block which will be deleted
+          required: true
+          schema:
+            type: number
       responses:
         '200':
           description: Block successfully deleted
@@ -315,7 +326,9 @@ paths:
         '200':
           description: response with array of themes
           schema:
-            $ref: '#/definitions/Theme'
+            type: array
+            items:
+              $ref: '#/definitions/Theme'
         default:
           description: Unexpected error
           schema:
@@ -331,7 +344,9 @@ paths:
         '200':
           description: response with array of layouts
           schema:
-            $ref: '#/definitions/Theme'
+            type: array
+            items:
+              $ref: '#/definitions/Theme'
         default:
           description: Unexpected error
           schema:
@@ -389,6 +404,13 @@ paths:
         - Theme
       consumes:
         - application/json
+      parameters:
+        - name: id
+          in: body
+          description: identificator of theme which will be deleted
+          required: true
+          schema:
+            type: number
       responses:
         '200':
           description: Theme successfully deleted
@@ -430,10 +452,7 @@ paths:
           description: Version id
           required: true
           schema:
-            type: object
-            properties:
-              id:
-                type: number
+            $ref: '#/definitions/api.SetVersionRequest'
       responses:
         '200':
           description: Version changed successfully
@@ -652,6 +671,16 @@ definitions:
       value:
         type: object
         description: Value which user will see
+  api.PageRenderResponse:
+    type: object
+    properties:
+      html:
+        type: string
+  api.SetVersionRequest:
+    type: object
+    properties:
+      id:
+        type: number
   api.LoginRequest:
     type: object
     properties:
@@ -804,9 +833,6 @@ definitions:
   User:
     type: object
     properties:
-      id:
-        type: number
-        description: Unique identifier of the user
       firstName:
         type: string
         description: First name of the user
