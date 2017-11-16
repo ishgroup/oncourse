@@ -7,6 +7,7 @@ import ish.oncourse.model.WebNode
 import ish.oncourse.model.WebNodeType
 import ish.oncourse.model.WebSite
 import ish.oncourse.model.WebSiteVersion
+import ish.oncourse.model.WebUrlAlias
 import ish.oncourse.services.textile.ConvertCoreTextile
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.Expression
@@ -71,11 +72,26 @@ class WebNodeFunctions {
         return newPageNode
     }
 
-    static synchronized Integer getNextNodeNumber(Request request, ObjectContext context) {
+    static Integer getNextNodeNumber(Request request, ObjectContext context) {
         Integer number = ObjectSelect.columnQuery(WebNode, WebNode.NODE_NUMBER.max())
                 .where(WebNode.WEB_SITE_VERSION.eq(WebSiteVersionFunctions.getCurrentVersion(request, context)))
                 .selectFirst(context)
         return number ? ++number : 1
+    }
+    
+    static WebNode getNodeByPath(String pageUrl, Request request,  ObjectContext context) {
+        ObjectSelect select = ObjectSelect.query(WebNode) & WebNode.WEB_URL_ALIASES.dot(WebUrlAlias.URL_PATH).eq(pageUrl) & siteQualifier(request, context)
+        select = addPrefetches(select)
+        select.selectFirst(context)
+    }
+    
+    static ObjectSelect<WebNode> addPrefetches(ObjectSelect<WebNode> select) {
+        select.prefetch(WebNode.WEB_NODE_TYPE.disjoint())
+                .prefetch(WebNode.WEB_NODE_TYPE.dot(WebNodeType.WEB_SITE_LAYOUT).disjoint())
+                .prefetch(WebNode.WEB_CONTENT_VISIBILITY.disjoint())
+                .prefetch(WebNode.WEB_CONTENT_VISIBILITY.dot(WebContentVisibility.WEB_CONTENT).disjoint())
+                .prefetch(WebNode.WEB_URL_ALIASES.disjoint())
+        
     }
     
     private static Expression siteQualifier(Request request, ObjectContext context) {
