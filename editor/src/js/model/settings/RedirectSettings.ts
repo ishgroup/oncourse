@@ -1,8 +1,6 @@
-export class RedirectItem {
-  from?: string;
-  to?: string;
-}
+import {RedirectItem} from "./../settings/RedirectItem";
 
 export class RedirectSettings {
-  rules: RedirectItem[];
+  rules?: RedirectItem[];
 }
+

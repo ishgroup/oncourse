@@ -1,9 +1,21 @@
 import {ThemeSchema} from "./ThemeSchema";
 
 export class Theme {
-  id: number;
-  title: string;
-  layoutId: number;
-  schema: ThemeSchema;
+
+  /**
+   * Unique identifier of theme
+   */
+  id?: number;
+
+  /**
+   * title of theme
+   */
+  title?: string;
+
+  /**
+   * Unique identifier of for theme
+   */
+  layoutId?: number;
+  schema?: ThemeSchema;
 }
 

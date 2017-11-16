@@ -1,19 +1,19 @@
-import {DefaultHttpService} from "../common/services/HttpService";
-import {API} from "../constants/Config";
-import {Version} from "../model";
+import {HttpService} from "../common/services/HttpService";
+import {Version} from "../model/Version";
+import {SetVersionRequest} from "../model/api/SetVersionRequest";
+import {CommonError} from "../model/common/CommonError";
 
 export class PublishApi {
-  private http = new DefaultHttpService();
+  constructor(private http: HttpService) {
+  }
 
   getVersions(): Promise<Version[]> {
-    return this.http.GET(API.GET_VERSIONS);
+    return this.http.GET(`/getVersions`);
   }
-
-  setVersion(id): Promise<any> {
-      return this.http.POST(API.SET_VERSION, {id});
-  }
-
   publish(): Promise<any> {
-      return this.http.POST(API.PUBLISH, null);
+    return this.http.POST(`/publish`);
+  }
+  setVersion(setVersionRequest: SetVersionRequest): Promise<any> {
+    return this.http.POST(`/setVersion`, setVersionRequest);
   }
 }

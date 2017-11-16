@@ -1,23 +1,21 @@
-import {DefaultHttpService} from "../common/services/HttpService";
-import {API} from "../constants/Config";
-import {Block} from "../model";
+import {HttpService} from "../common/services/HttpService";
+import {Block} from "../model/Block";
+import {CommonError} from "../model/common/CommonError";
 
 export class BlockApi {
-  private http = new DefaultHttpService();
-
-  getBlocks(): Promise<any> {
-    return this.http.GET(API.GET_BLOCKS);
-  }
-
-  saveBlock(payload): Promise<any> {
-    return this.http.POST(API.SAVE_BLOCK, payload);
+  constructor(private http: HttpService) {
   }
 
   addBlock(): Promise<Block> {
-    return this.http.POST(API.ADD_BLOCK);
+    return this.http.POST(`/addBlock`);
   }
-
-  deleteBlock(id): Promise<any> {
-    return this.http.POST(API.DELETE_BLOCK, id);
+  deleteBlock(id: number): Promise<any> {
+    return this.http.POST(`/deleteBlock`, id);
+  }
+  getBlocks(): Promise<Block[]> {
+    return this.http.GET(`/getBlocks`);
+  }
+  saveBlock(saveBlockRequest: Block): Promise<Block> {
+    return this.http.POST(`/saveBlock`, saveBlockRequest);
   }
 }

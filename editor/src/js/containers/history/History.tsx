@@ -4,7 +4,7 @@ import {Table, Button} from 'reactstrap';
 import classnames from "classnames";
 import TimeAgo from 'react-timeago';
 import {getHistory, publish, setVersion} from "./actions";
-import {Version} from "../../model/History";
+import {Version} from "../../model";
 import {showModal} from "../../common/containers/modal/actions";
 
 interface Props {

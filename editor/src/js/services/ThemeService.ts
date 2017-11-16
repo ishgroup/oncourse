@@ -1,9 +1,10 @@
 import {ThemeApi} from "../http/ThemeApi";
 import {Theme, Layout} from "../model";
 import {State} from "../reducers/state";
+import {DefaultHttpService} from "../common/services/HttpService";
 
 class ThemeService {
-  readonly themeApi = new ThemeApi();
+  readonly themeApi = new ThemeApi(new DefaultHttpService());
 
   public getThemes(): Promise<Theme[]> {
     return this.themeApi.getThemes();
@@ -13,7 +14,7 @@ class ThemeService {
     return this.themeApi.getLayouts();
   }
 
-  public saveTheme(props, state: State): Promise<Theme[]> {
+  public saveTheme(props, state: State): Promise<Theme> {
     return this.themeApi.saveTheme(this.buildSaveThemeRequest(props, state));
   }
 
@@ -21,7 +22,7 @@ class ThemeService {
     return this.themeApi.addTheme();
   }
 
-  public deleteTheme(id): Promise<Theme[]> {
+  public deleteTheme(id): Promise<any> {
     return this.themeApi.deleteTheme(id);
   }
 

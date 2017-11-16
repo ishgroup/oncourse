@@ -1,5 +1,19 @@
-export class Url {
-  link: string;
-  isBase: boolean;
-  isDefault: boolean;
+
+export class PageUrl {
+
+  /**
+   * unique link
+   */
+  link?: string;
+
+  /**
+   * has url base
+   */
+  isBase?: boolean;
+
+  /**
+   * has url default
+   */
+  isDefault?: boolean;
 }
+

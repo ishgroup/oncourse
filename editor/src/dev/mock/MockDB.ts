@@ -5,6 +5,8 @@ import {
   Page, Block, MenuItem, Theme, User, Version, CheckoutSettings, WebsiteSettings, RedirectSettings,
   SkillsOnCourseSettings, ThemeSchema, Layout,
 } from "../../js/model";
+import {ClassCondition} from "../../js/model/settings/ClassCondition";
+import {ClassEnrolmentCondition} from "../../js/model/settings/ClassEnrolmentCondition";
 
 export const CreateMockDB = (): MockDB => {
   const result: MockDB = new MockDB();
@@ -298,35 +300,35 @@ export class MockDB {
         published: true,
         author: faker.name.findName(),
         changes: 27,
-        date: new Date('10/08/2017'),
+        date: new Date('10/08/2017').toISOString(),
       },
       {
         id: 3,
         published: true,
         author: faker.name.findName(),
         changes: 30,
-        date: new Date('05/05/2017'),
+        date: new Date('05/05/2017').toISOString(),
       },
       {
         id: 4,
         published: true,
         author: faker.name.findName(),
         changes: 43,
-        date: new Date('03/03/2017'),
+        date: new Date('03/03/2017').toISOString(),
       },
       {
         id: 5,
         published: true,
         author: faker.name.findName(),
         changes: 80,
-        date: new Date('12/12/2016'),
+        date: new Date('12/12/2016').toISOString(),
       },
       {
         id: 6,
         published: true,
         author: faker.name.findName(),
         changes: 88,
-        date: new Date('08/09/2016'),
+        date: new Date('08/09/2016').toISOString(),
       },
     ];
   }
@@ -349,9 +351,9 @@ export class MockDB {
         enableForWebpage: false,
         classAge: {
           hideClassDays: 0,
-          hideClassCondition: 2,
+          hideClassCondition: ClassCondition[1],
           stopWebEnrolmentDays: 0,
-          stopWebEnrolmentCondition: 1,
+          stopWebEnrolmentCondition: ClassEnrolmentCondition[1],
         },
       },
       redirect: {

@@ -1,11 +1,31 @@
-import {Url} from "./PageUrl";
+import {PageUrl} from "./PageUrl";
 
 export class Page {
-  id: number;
-  title: string;
-  themeId: number;
-  html: string;
-  urls: Url[];
-  visible: boolean;
+
+  /**
+   * unique id of the page
+   */
+  id?: number;
+
+  /**
+   * title of the page
+   */
+  title?: string;
+
+  /**
+   * theme Id for the page
+   */
+  themeId?: number;
+
+  /**
+   * Html source of the page
+   */
+  html?: string;
+
+  /**
+   * Has page visible
+   */
+  visible?: boolean;
+  urls?: PageUrl[];
 }
 

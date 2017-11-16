@@ -1,33 +1,28 @@
-import {DefaultHttpService} from "../common/services/HttpService";
-import {API} from "../constants/Config";
-import {Page, SavePageRequest} from "../model";
+import {HttpService} from "../common/services/HttpService";
+import {Page} from "../model/Page";
+import {PageRenderResponse} from "../model/api/PageRenderResponse";
+import {CommonError} from "../model/common/CommonError";
 
 export class PageApi {
-  private http = new DefaultHttpService();
+  constructor(private http: HttpService) {
+  }
 
+  addPage(): Promise<CommonError> {
+    return this.http.POST(`/addPage`);
+  }
+  deletePage(id: number): Promise<any> {
+    return this.http.POST(`/deletePage`, id);
+  }
+  getPageByUrl(pageUrl: string): Promise<Page> {
+    return this.http.GET(`/getPageByUrl`, { params: { pageUrl }});
+  }
+  getPageRender(pageId: number): Promise<PageRenderResponse> {
+    return this.http.GET(`/getPageRender/${pageId}`);
+  }
   getPages(): Promise<Page[]> {
-    return this.http.GET(API.GET_PAGES);
+    return this.http.GET(`/getPages`);
   }
-
-  getPageByUrl(url): Promise<Page> {
-    return this.http.GET(API.GET_PAGE_BY_URL, {params: {url: url}});
+  savePage(pageParams: Page): Promise<Page> {
+    return this.http.POST(`/savePage`, pageParams);
   }
-
-  savePage(payload: SavePageRequest): Promise<any> {
-    return this.http.POST(API.SAVE_PAGE, payload);
-
-  }
-
-  addPage(): Promise<any> {
-    return this.http.POST(API.ADD_PAGE);
-  }
-
-  deletePage(id): Promise<any> {
-    return this.http.POST(API.DELETE_PAGE, id);
-  }
-
-  getPageRender(request): Promise<any> {
-    return this.http.GET(`${API.GET_PAGE_RENDER}/${request.id}`);
-  }
-
 }

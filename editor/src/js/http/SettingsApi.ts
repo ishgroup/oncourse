@@ -1,39 +1,36 @@
-import {DefaultHttpService} from "../common/services/HttpService";
-import {API} from "../constants/Config";
+import {HttpService} from "../common/services/HttpService";
+import {CommonError} from "../model/common/CommonError";
+import {CheckoutSettings} from "../model/settings/CheckoutSettings";
+import {RedirectSettings} from "../model/settings/RedirectSettings";
+import {SkillsOnCourseSettings} from "../model/settings/SkillsOnCourseSettings";
+import {WebsiteSettings} from "../model/settings/WebsiteSettings";
 
 export class SettingsApi {
-  private http = new DefaultHttpService();
-
-  getCheckoutSettings(): Promise<any> {
-    return this.http.GET(API.GET_CHECKOUT_SETTINGS);
+  constructor(private http: HttpService) {
   }
 
-  setCheckoutSettings(payload): Promise<any> {
-    return this.http.POST(API.SET_CHECKOUT_SETTINGS, payload);
+  getCheckoutSettings(): Promise<CheckoutSettings> {
+    return this.http.GET(`/getCheckoutSettings`);
   }
-
-  getSkillsOnCourseSettings(): Promise<any> {
-    return this.http.GET(API.GET_SKILLS_ON_COURSE_SETTINGS);
+  getRedirectSettings(): Promise<RedirectSettings> {
+    return this.http.GET(`/getRedirectSettings`);
   }
-
-  setSkillsOnCourseSettings(payload): Promise<any> {
-    return this.http.POST(API.SET_SKILLS_ON_COURSE_SETTINGS, payload);
+  getSkillsOnCourseSettings(): Promise<SkillsOnCourseSettings> {
+    return this.http.GET(`/getSkillsOnCourseSettings`);
   }
-
-  getRedirectSettings(): Promise<any> {
-    return this.http.GET(API.GET_REDIRECT_SETTINGS);
+  getWebsiteSettings(): Promise<WebsiteSettings> {
+    return this.http.GET(`/getWebsiteSettings`);
   }
-
-  setRedirectSettings(payload): Promise<any> {
-    return this.http.POST(API.SET_REDIRECT_SETTINGS, payload);
+  setCheckoutSettings(saveCheckoutSettingsRequest: CheckoutSettings): Promise<CheckoutSettings> {
+    return this.http.POST(`/setCheckoutSettings`, saveCheckoutSettingsRequest);
   }
-
-  getWebsiteSettings(): Promise<any> {
-    return this.http.GET(API.GET_WEBSITE_SETTINGS);
+  setRedirectSettings(redirectSettingsRequest: RedirectSettings): Promise<RedirectSettings> {
+    return this.http.POST(`/setRedirectSettings`, redirectSettingsRequest);
   }
-
-  setWebsiteSettings(payload): Promise<any> {
-    return this.http.POST(API.SET_WEBSITE_SETTINGS, payload);
+  setSkillsOnCourseSettings(skillsOnCourseSettingsRequest: SkillsOnCourseSettings): Promise<SkillsOnCourseSettings> {
+    return this.http.POST(`/setSkillsOnCourseSettings`, skillsOnCourseSettingsRequest);
   }
-
+  setWebsiteSettings(websiteSettingsRequest: WebsiteSettings): Promise<WebsiteSettings> {
+    return this.http.POST(`/setWebsiteSettings`, websiteSettingsRequest);
+  }
 }

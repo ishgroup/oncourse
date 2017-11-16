@@ -1,8 +1,9 @@
 import {Version} from "../model";
 import {PublishApi} from "../http/PublishApi";
+import {DefaultHttpService} from "../common/services/HttpService";
 
 class PublishService {
-    readonly publishApi = new PublishApi();
+    readonly publishApi = new PublishApi(new DefaultHttpService());
 
     public getVersions(): Promise<Version[]> {
         return this.publishApi.getVersions();

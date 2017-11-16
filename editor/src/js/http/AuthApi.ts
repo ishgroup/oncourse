@@ -1,15 +1,16 @@
-import {DefaultHttpService, HttpService} from "../common/services/HttpService";
-import {API} from "../constants/Config";
-import {LoginRequest, User} from "../model";
+import {HttpService} from "../common/services/HttpService";
+import {User} from "../model/User";
+import {LoginRequest} from "../model/api/LoginRequest";
+import {CommonError} from "../model/common/CommonError";
 
 export class AuthApi {
-  private http = new DefaultHttpService();
-
-  submitUser(values: LoginRequest): Promise<User> {
-    return this.http.POST(API.LOGIN, values);
+  constructor(private http: HttpService) {
   }
 
+  getUser(loginRequest: LoginRequest): Promise<User> {
+    return this.http.POST(`/getUser`, loginRequest);
+  }
   logout(): Promise<any> {
-    return this.http.POST(API.LOGOUT);
+    return this.http.POST(`/logout`);
   }
 }

@@ -3,9 +3,10 @@ import {CheckoutSettings} from "../model/settings/CheckoutSettings";
 import {SkillsOnCourseSettings} from "../model/settings/SkillsOnCourseSettings";
 import {RedirectSettings} from "../model/settings/RedirectSettings";
 import {WebsiteSettings} from "../model/settings/WebsiteSettings";
+import {DefaultHttpService} from "../common/services/HttpService";
 
 class SettingsService {
-  readonly settingsApi = new SettingsApi();
+  readonly settingsApi = new SettingsApi(new DefaultHttpService());
 
   public getCheckoutSettings(): Promise<CheckoutSettings> {
     return this.settingsApi.getCheckoutSettings();

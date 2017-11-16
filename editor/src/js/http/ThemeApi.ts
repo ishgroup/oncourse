@@ -1,27 +1,24 @@
-import {DefaultHttpService} from "../common/services/HttpService";
-import {API} from "../constants/Config";
-import {Layout, Theme} from "../model";
+import {HttpService} from "../common/services/HttpService";
+import {Theme} from "../model/Theme";
+import {CommonError} from "../model/common/CommonError";
 
 export class ThemeApi {
-  private http = new DefaultHttpService();
-
-  getThemes(): Promise<Theme[]> {
-    return this.http.GET(API.GET_THEMES);
-  }
-
-  saveTheme(payload): Promise<any> {
-    return this.http.POST(API.SAVE_THEME, payload);
+  constructor(private http: HttpService) {
   }
 
   addTheme(): Promise<Theme> {
-    return this.http.POST(API.ADD_THEME);
+    return this.http.POST(`/addTheme`);
   }
-
-  deleteTheme(id): Promise<any> {
-    return this.http.POST(API.DELETE_THEME, id);
+  deleteTheme(id: number): Promise<any> {
+    return this.http.POST(`/deleteTheme`, id);
   }
-
-  getLayouts(): Promise<Layout[]> {
-    return this.http.GET(API.GET_LAYOUTS);
+  getLayouts(): Promise<Theme[]> {
+    return this.http.GET(`/getLayouts`);
+  }
+  getThemes(): Promise<Theme[]> {
+    return this.http.GET(`/getThemes`);
+  }
+  saveTheme(saveThemeRequest: Theme): Promise<Theme> {
+    return this.http.POST(`/saveTheme`, saveThemeRequest);
   }
 }

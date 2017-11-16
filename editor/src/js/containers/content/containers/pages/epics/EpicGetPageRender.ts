@@ -8,7 +8,7 @@ import PageService from "../../../../../services/PageService";
 
 const request: EpicUtils.Request<any, any> = {
   type: GET_PAGE_RENDER_REQUEST,
-  getData: (payload, state) => PageService.getPageRender(payload),
+  getData: (payload, state) => PageService.getPageRender(payload.id),
   processData: (html: any, state: any, payload) => {
 
     return [

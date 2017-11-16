@@ -20,8 +20,7 @@ export {ThemeSchema} from "./ThemeSchema";
 export {Layout} from "./Layout";
 
 // History
-export {History} from "./History";
-export {Version} from "./History";
+export {Version} from "./Version";
 
 // Settings
 export {SkillsOnCourseSettings} from "./settings/SkillsOnCourseSettings";
@@ -31,4 +30,3 @@ export {WebsiteSettings} from "./settings/WebsiteSettings";
 
 // Api
 export {LoginRequest} from "./api/LoginRequest";
-export {SavePageRequest} from "./api/SavePageRequest";

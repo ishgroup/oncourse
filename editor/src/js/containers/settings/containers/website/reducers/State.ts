@@ -1,4 +1,4 @@
-import {ClassAge} from "../../../../../model/ClassAge";
+import {ClassAge} from "../../../../../model/settings/ClassAge";
 
 export class WebsiteSettingsState {
   enableSocialMedia: boolean;

@@ -1,15 +1,16 @@
 import {BlockApi} from "../http/BlockApi";
 import {Block} from "../model";
 import {State} from "../reducers/state";
+import {DefaultHttpService} from "../common/services/HttpService";
 
 class BlockService {
-  readonly blockApi = new BlockApi();
+  readonly blockApi = new BlockApi(new DefaultHttpService());
 
   public getBlocks(): Promise<Block[]> {
     return this.blockApi.getBlocks();
   }
 
-  public saveBlock(props, state: State): Promise<Block[]> {
+  public saveBlock(props, state: State): Promise<Block> {
     return this.blockApi.saveBlock(this.buildSaveBlockRequest(props, state));
   }
 
