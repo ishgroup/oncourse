@@ -15,6 +15,7 @@ import {htmlProps2CourseClass} from "../../web/services/CourseClassService";
 import {CourseClass} from "../../model";
 import {ClassesListSchema} from "../../NormalizeSchema";
 import {normalize} from "normalizr";
+import {ConfigConstants} from "../../config/ConfigConstants";
 
 
 export class Bootstrap {
@@ -54,6 +55,8 @@ export class Bootstrap {
       );
     } catch (e) {
       Logger.log(new LogMessage(Level.ERROR, `Component with cid:${marker.id} cannot be instantiated.`, [e]));
+      Logger.log(new LogMessage(Level.INFO, `State`, [this.store.getState()]))
+      Logger.log(new LogMessage(Level.INFO, `App version`, [ConfigConstants.APP_VERSION]))
     }
   }
 
