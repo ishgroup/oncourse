@@ -10,6 +10,7 @@ import io.bootique.jetty.MappedServlet
 import io.milton.servlet.MiltonFilter
 import ish.oncourse.api.cayenne.CayenneService
 import ish.oncourse.api.cayenne.WillowApiCayenneModule
+import ish.oncourse.api.cxf.CXFModule
 import ish.oncourse.cayenne.cache.JCacheModule
 import ish.oncourse.configuration.ISHHealthCheckServlet
 import ish.oncourse.services.persistence.ICayenneService
@@ -17,6 +18,7 @@ import ish.oncourse.util.log.LogAppInfo
 import ish.oncourse.willow.editor.services.RequestFilter
 import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.services.access.AuthenticationService
+import org.apache.cxf.jaxrs.validation.JAXRSBeanValidationFeature
 
 import javax.servlet.FilterConfig
 import javax.servlet.ServletException
@@ -48,6 +50,8 @@ class EditorApiModule extends ConfigModule {
                 .addMappedFilter(REQUEST_FILTER)
                 .addMappedServlet(ISH_HEALTH_CHECK_SERVLET)
                 .addMappedFilter(MILTON_FILTER)
+
+        CXFModule.contributeResources(binder).addBinding().to(JAXRSBeanValidationFeature)
         
         binder.bind(RequestService)
         binder.bind(ICayenneService).to(CayenneService)
