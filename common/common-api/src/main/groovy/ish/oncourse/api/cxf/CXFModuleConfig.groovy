@@ -1,4 +1,4 @@
-package ish.oncourse.cxf
+package ish.oncourse.api.cxf
 
 import io.bootique.annotation.BQConfig
 import io.bootique.annotation.BQConfigProperty

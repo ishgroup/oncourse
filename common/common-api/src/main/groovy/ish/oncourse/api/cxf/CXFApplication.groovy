@@ -1,4 +1,4 @@
-package ish.oncourse.cxf
+package ish.oncourse.api.cxf
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider

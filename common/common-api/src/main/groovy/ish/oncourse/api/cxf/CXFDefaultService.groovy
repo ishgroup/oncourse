@@ -1,4 +1,4 @@
-package ish.oncourse.cxf
+package ish.oncourse.api.cxf
 
 import com.google.inject.Inject
 

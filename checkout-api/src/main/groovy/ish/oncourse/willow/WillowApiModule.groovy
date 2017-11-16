@@ -10,7 +10,7 @@ import ish.oncourse.api.cayenne.CayenneService
 import ish.oncourse.api.cayenne.WillowApiCayenneModule
 import ish.oncourse.cayenne.cache.JCacheModule
 import ish.oncourse.configuration.ISHHealthCheckServlet
-import ish.oncourse.cxf.CXFModule
+import ish.oncourse.api.cxf.CXFModule
 import ish.oncourse.util.log.LogAppInfo
 import ish.oncourse.willow.checkout.CheckoutApiImpl
 import ish.oncourse.willow.checkout.corporatepass.CorporatePassApiImpl

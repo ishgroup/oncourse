@@ -1,9 +1,7 @@
-package ish.oncourse.cxf
+package ish.oncourse.api.cxf
 
 import com.google.inject.Module
 import io.bootique.BQModuleProvider
-
-import java.lang.reflect.Type
 
 /**
  * Created by akoira on 2/5/17.
