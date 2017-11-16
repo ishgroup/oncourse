@@ -5,7 +5,6 @@ import org.apache.cayenne.ResultIterator
 import org.apache.cayenne.query.ObjectSelect
 
 import static ish.oncourse.model.auto._CourseClass.TUTOR_ROLES
-import static ish.oncourse.model.auto._Room.COURSE_CLASSES
 import static ish.oncourse.model.auto._Session.COURSE_CLASS
 import static ish.oncourse.model.auto._Site.ROOMS
 import static java.lang.Boolean.TRUE
@@ -25,9 +24,6 @@ class CourseClassFunctions {
         query(Contact).where(Contact.TUTOR.dot(TUTOR_ROLES).dot(TutorRole.COURSE_CLASS).eq(courseClass))
     }
 
-    static final ObjectSelect<Site> courseClassSitesQuery(CourseClass courseClass) {
-        query(Site).where(Site.IS_WEB_VISIBLE.eq(TRUE)).and(ROOMS.dot(COURSE_CLASSES).eq(courseClass))
-    }
 
     static final ObjectSelect<Site> sessionSitesQuery(CourseClass courseClass) {
         query(Site).where(Site.IS_WEB_VISIBLE.eq(TRUE)).and(ROOMS.dot(Room.SESSIONS).dot(COURSE_CLASS).eq(courseClass))
@@ -42,9 +38,9 @@ class CourseClassFunctions {
         return contactsQuery(courseClass).iterator(courseClass.objectContext)
     }
 
-    public static final Closure<ResultIterator<Site>> CourseClassSites = { CourseClass courseClass ->
-        courseClassSitesQuery(courseClass).iterator(courseClass.objectContext)
-
+    public static final Closure<Iterable<Site>> CourseClassSites = { CourseClass courseClass ->
+        Site site = courseClass.room?.site
+        return site ? Collections.singleton(site) : Collections.emptyIterator()
     }
 
     public static final Closure<ResultIterator<Site>> SessionSites = { CourseClass courseClass ->

@@ -17,6 +17,6 @@ class CourseClassContext {
     Date current = new Date()
     Closure<ResultIterator<Session>> sessions = Sessions
     Closure<ResultIterator<Contact>> contacts = Contacts
-    Closure<ResultIterator<Site>> courseClassSites = CourseClassSites
+    Closure<Iterable<Site>> courseClassSites = CourseClassSites
     Closure<ResultIterator<Site>> sessionSites = SessionSites
 }

@@ -35,7 +35,8 @@ class GetSCourseClass {
 
         scc.sessions = toSSessions(context.courseClass, this.context.sessions)
         scc.contacts = toSContacts(context.courseClass, this.context.contacts)
-        scc.sites = toSSites(context.courseClass, this.context.courseClassSites)
+
+        scc.sites.addAll(toSSites(context.courseClass, this.context.courseClassSites))
         scc.sites.addAll(toSSites(context.courseClass, this.context.sessionSites))
         scc.sites = scc.sites.unique()
         return scc
@@ -86,12 +87,13 @@ class GetSCourseClass {
         }
     }
 
-    static List<SSite> toSSites(CourseClass courseClass, Closure<ResultIterator<Site>> getSites) {
-        ResultIterator<Site> sites = getSites.call(courseClass)
+    static List<SSite> toSSites(CourseClass courseClass, Closure<Iterable<Site>> getSites) {
+        Iterable<Site> sites = getSites.call(courseClass)
         try {
             return Observable.fromIterable(sites).map({ s -> SiteFunctions.getSSite(s) }).toList().blockingGet().unique()
         } finally {
-            sites.close()
+            if (sites instanceof ResultIterator<Site>)
+                sites.close()
         }
     }
 
