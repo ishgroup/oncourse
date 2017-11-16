@@ -9,7 +9,7 @@ ext {
 apply from: "$rootDir/gradle/bootique.gradle"
 apply from: "$rootDir/gradle/buildApiApp.gradle"
 
-mainClassName = 'ish.oncourse.willow.cms.EditorApp'
+mainClassName = 'ish.oncourse.willow.editor.EditorApp'
 
 configurations {
     closureCompiler
