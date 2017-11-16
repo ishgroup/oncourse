@@ -3,11 +3,7 @@ package ish.oncourse.solr.functions.course
 import ish.oncourse.model.Session
 import org.junit.Test
 
-import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.ZoneId
-
+import static ish.oncourse.solr.functions.course.DateFunctions.toDate
 import static ish.oncourse.solr.functions.course.SessionFunctions.*
 import static org.junit.Assert.assertEquals
 import static org.mockito.Mockito.mock
@@ -18,23 +14,6 @@ import static org.mockito.Mockito.when
  * Date: 24/10/17
  */
 class SessionFunctionsTest {
-
-
-    private static Date toDate(LocalDate localDate, ZoneId zoneId = ZoneId.systemDefault()) {
-        return Date.from(localDate.atStartOfDay(zoneId).toInstant())
-    }
-
-    private static Date toDate(LocalDateTime localDate, ZoneId zoneId = ZoneId.systemDefault()) {
-        return Date.from(localDate.atZone(zoneId).toInstant())
-    }
-
-    /**
-     * format "2010-10-01 18:00:00"
-     */
-    private static Date toDate(String mysqlDate) {
-        return new SimpleDateFormat('yyyy-MM-dd HH:mm:ss').parse(mysqlDate)
-    }
-
 
     @Test
     void test_getDayTime_Zone() {

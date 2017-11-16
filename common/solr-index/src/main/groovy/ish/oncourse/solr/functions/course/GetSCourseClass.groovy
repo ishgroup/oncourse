@@ -12,6 +12,8 @@ import ish.oncourse.solr.model.SSite
 import org.apache.cayenne.ResultIterator
 import org.apache.commons.lang3.time.DateUtils
 
+import static ish.oncourse.solr.functions.course.DateFunctions.toTimeZone
+
 /**
  * User: akoiro
  * Date: 3/10/17
@@ -46,7 +48,7 @@ class GetSCourseClass {
             case ClassType.withOutSessions:
                 return DateUtils.addYears(context.current, 100)
             case ClassType.regular:
-                return context.courseClass.startDate
+                return toTimeZone(context.courseClass.startDate, context.courseClass.timeZone)
             default:
                 throw new IllegalArgumentException("Unsupported type:  $type ")
         }
@@ -59,7 +61,7 @@ class GetSCourseClass {
             case ClassType.withOutSessions:
                 return DateUtils.addYears(context.current, 100)
             case ClassType.regular:
-                return context.courseClass.endDate
+                return toTimeZone(context.courseClass.endDate, context.courseClass.timeZone)
             default:
                 throw new IllegalArgumentException("Unsupported type:  $type ")
         }
