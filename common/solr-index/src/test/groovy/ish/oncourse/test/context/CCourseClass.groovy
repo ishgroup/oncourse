@@ -1,70 +1,62 @@
-package ish.oncourse.entityBuilder
+package ish.oncourse.test.context
 
 import ish.oncourse.model.Course
 import ish.oncourse.model.CourseClass
-import ish.oncourse.model.Room
-import ish.oncourse.model.Site
 import org.apache.cayenne.ObjectContext
 
 /**
  * Created by alex on 11/15/17.
  */
-class CourseClassBuilder {
+class CCourseClass {
     private CourseClass courseClass
     private ObjectContext objectContext
 
-    private CourseClassBuilder(ObjectContext context){
+    private CCourseClass(ObjectContext context){
         objectContext = context
     }
 
-    CourseClassBuilder course(Course course){
+    CCourseClass course(Course course){
         courseClass.course = objectContext.localObject(course)
         this
     }
 
-    CourseClassBuilder isDistantLearningCourse(boolean isDistantLearning){
+    CCourseClass isDistantLearningCourse(boolean isDistantLearning){
         courseClass.isDistantLearningCourse = isDistantLearning
         this
     }
 
-    CourseClassBuilder isWebVisible(boolean isVisible){
+    CCourseClass isWebVisible(boolean isVisible){
         courseClass.isWebVisible = isVisible
         this
     }
 
-    CourseClassBuilder cancelled(boolean isCancelled){
+    CCourseClass cancelled(boolean isCancelled){
         courseClass.cancelled = isCancelled
         this
     }
 
-    CourseClassBuilder startDate(Date startDate){
+    CCourseClass endDate(Date endDate){
+        courseClass.endDate = endDate
+        this
+    }
+
+    CCourseClass startDate(Date startDate){
         courseClass.startDate = startDate
         this
     }
 
-    CourseClassBuilder room(Room room){
-        courseClass.room = room
-        this
-    }
-
-    CourseClassBuilder newDefaultRoom(){
-        Site site = SiteBuilder.instance(objectContext, courseClass.college).build()
-        courseClass.room = RoomBuilder.instance(objectContext, site).build()
-        this
-    }
-
-    CourseClass build(){
+    CCourseClass build(){
         objectContext.commitChanges()
-        courseClass
+        this
     }
 
-    static CourseClassBuilder instance(ObjectContext context, String code, Course course){
-        CourseClassBuilder builder = new CourseClassBuilder(context)
+    static CCourseClass instance(ObjectContext context, String code, Course course){
+        CCourseClass builder = new CCourseClass(context)
         builder.createDefaultClass(code, course)
         builder
     }
 
-    private CourseClassBuilder createDefaultClass(String code, Course course){
+    private CCourseClass createDefaultClass(String code, Course course){
         courseClass = objectContext.newObject(CourseClass)
         courseClass.college = objectContext.localObject(course.college)
         courseClass.course = objectContext.localObject(course)
@@ -76,5 +68,9 @@ class CourseClassBuilder {
         courseClass.maximumPlaces = 100
         courseClass.startDate = new Date()
         this
+    }
+
+    CourseClass get() {
+        courseClass
     }
 }

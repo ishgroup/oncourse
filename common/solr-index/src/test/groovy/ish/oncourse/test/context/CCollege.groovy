@@ -1,6 +1,5 @@
-package ish.oncourse.solr.model
+package ish.oncourse.test.context
 
-import ish.common.types.CourseEnrolmentType
 import ish.oncourse.model.*
 import org.apache.cayenne.ObjectContext
 
@@ -8,12 +7,12 @@ import org.apache.cayenne.ObjectContext
  * User: akoiro
  * Date: 10/11/17
  */
-class CollegeContext {
+class CCollege {
     ObjectContext objectContext
     College college
 
     Map<String, Tag> tags = new HashMap<>()
-    Map<String, Course> courses = new HashMap<>()
+    Map<String, CCourse> cCourses = new HashMap<>()
 
 
     Tag tag(String name, boolean webVisible = true) {
@@ -39,23 +38,19 @@ class CollegeContext {
         }
     }
 
-    Course course(String name) {
-        course(name, name.toUpperCase())
+    CCourse cCourse(String name){
+        cCourse(name, name.toUpperCase())
     }
 
-    Course course(String name, String code) {
-        Course course = objectContext.newObject(Course)
-        course.college = objectContext.localObject(college)
-        course.name = name
-        course.code = code
-        course.enrolmentType = CourseEnrolmentType.OPEN_FOR_ENROLMENT
-        courses.put(course.code, course)
+    CCourse cCourse(String name, String code) {
+        CCourse cCourse = CCourse.instance(objectContext, college, name, code)
+        cCourses.put(cCourse.get().code, cCourse)
         objectContext.commitChanges()
-        course
+        cCourse
     }
 
     void tagCourse(String courseCode, String tagName) {
-        tagCourse(courses[courseCode], tags[tagName])
+        tagCourse(cCourses[courseCode].get(), tags[tagName])
     }
 
     void tagCourse(Course course, Tag tag) {
@@ -71,4 +66,7 @@ class CollegeContext {
         objectContext.commitChanges()
     }
 
+    College get(){
+        college
+    }
 }

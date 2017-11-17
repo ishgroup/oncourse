@@ -1,6 +1,7 @@
 package ish.oncourse.solr.model
 
 import ish.oncourse.model.College
+import ish.oncourse.test.context.CCollege
 import org.apache.cayenne.ObjectContext
 
 /**
@@ -10,16 +11,16 @@ import org.apache.cayenne.ObjectContext
 class DataContext {
     ObjectContext objectContext
 
-    Map<String, CollegeContext> colleges = new HashMap<>()
+    Map<String, CCollege> colleges = new HashMap<>()
 
-    CollegeContext college(String name, String timeZone) {
+    CCollege college(String name, String timeZone) {
         objectContext.newObject(College).with {
             it.name = name
             it.timeZone = timeZone
             it.firstRemoteAuthentication = new Date()
             it.requiresAvetmiss = true
 
-            CollegeContext collegeContext = new CollegeContext()
+            CCollege collegeContext = new CCollege()
             collegeContext.objectContext = objectContext
             collegeContext.college = it
             colleges.put(name, collegeContext)

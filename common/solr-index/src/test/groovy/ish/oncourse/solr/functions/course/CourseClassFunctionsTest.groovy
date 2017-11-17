@@ -2,9 +2,10 @@ package ish.oncourse.solr.functions.course
 
 import ish.oncourse.entityBuilder.*
 import ish.oncourse.model.*
-import ish.oncourse.solr.model.CollegeContext
 import ish.oncourse.solr.model.DataContext
 import ish.oncourse.test.TestContext
+import ish.oncourse.test.context.CCollege
+import ish.oncourse.test.context.CCourse
 import org.apache.cayenne.ObjectContext
 import org.junit.After
 import org.junit.Assert
@@ -21,7 +22,7 @@ class CourseClassFunctionsTest {
     private ObjectContext objectContext
 
     private College college
-    private Course course
+    private CCourse course
 
     @Before
     void before() {
@@ -31,20 +32,20 @@ class CourseClassFunctionsTest {
 
         objectContext = createRuntime().newContext()
         DataContext dataContext = new DataContext(objectContext: objectContext)
-        CollegeContext collegeContext = dataContext.college("College-Australia/Sydney", "Australia/Sydney")
+        CCollege collegeContext = dataContext.college("College-Australia/Sydney", "Australia/Sydney")
         college = collegeContext.college
-        course = collegeContext.course("course")
+        course = collegeContext.cCourse("course")
     }
 
     @Test
     void testSessionsQuery(){
-        CourseClass targetClass = CourseClassBuilder.instance(objectContext, "targetClass", course).build()
+        CourseClass targetClass = course.cCourseClass("targetClass").get()
         SessionBuilder.instance(objectContext, targetClass).startDate(new Date().plus(1)).build()
         SessionBuilder.instance(objectContext, targetClass).startDate(new Date()).build()
         SessionBuilder.instance(objectContext, targetClass).startDate(new Date().minus(1)).build()
         SessionBuilder.instance(objectContext, targetClass).startDate(new Date()).build()
 
-        CourseClass otherClass = CourseClassBuilder.instance(objectContext, "otherClass", course).build()
+        CourseClass otherClass = course.cCourseClass("otherClass").get()
         SessionBuilder.instance(objectContext, otherClass).startDate(new Date()).build()
         SessionBuilder.instance(objectContext, otherClass).startDate(new Date().plus(1)).build()
 
@@ -59,7 +60,7 @@ class CourseClassFunctionsTest {
 
     @Test
     void testSessionSitesQuery(){
-        CourseClass targetClass = CourseClassBuilder.instance(objectContext, "targetClass", course).build()
+        CourseClass targetClass = course.cCourseClass("targetClass").get()
 
         Site expectedSite = SiteBuilder.instance(objectContext, college).isWebVisible(true).build()
         SessionBuilder.instance(objectContext,targetClass).newDefaultRoomWithSite(expectedSite).build()
@@ -67,7 +68,7 @@ class CourseClassFunctionsTest {
         Site invisibleSite = SiteBuilder.instance(objectContext, college).isWebVisible(false).build()
         SessionBuilder.instance(objectContext,targetClass).newDefaultRoomWithSite(invisibleSite).build()
 
-        CourseClass otherClass = CourseClassBuilder.instance(objectContext, "otherClass", course).build()
+        CourseClass otherClass = course.cCourseClass("otherClass").get()
         Site otherClassSite = SiteBuilder.instance(objectContext, college).isWebVisible(true).build()
         SessionBuilder.instance(objectContext,otherClass).newDefaultRoomWithSite(otherClassSite).build()
 
@@ -85,12 +86,12 @@ class CourseClassFunctionsTest {
 
     @Test
     void testContactsQuery(){
-        CourseClass targetClass = CourseClassBuilder.instance(objectContext, "targetClass", course).build()
+        CourseClass targetClass = course.cCourseClass("targetClass").get()
         Contact expectedContact = ContactBuilder.instance(objectContext, college, "expected contact").build()
         TutorRoleBuilder.instance(objectContext, expectedContact, targetClass).build()
 
-        CourseClass otherClass = CourseClassBuilder.instance(objectContext, "otherClass", course).build()
-        Contact otherClassContact = ContactBuilder.instance(objectContext, college, "tutor of other class").build()
+        CourseClass otherClass = course.cCourseClass("otherClass").get()
+        Contact otherClassContact = ContactBuilder.instance(objectContext, college, "otherClass tutor").build()
         TutorRoleBuilder.instance(objectContext, otherClassContact, otherClass).build()
 
         Contact simpleContact = ContactBuilder.instance(objectContext, college, "simple contact").build()

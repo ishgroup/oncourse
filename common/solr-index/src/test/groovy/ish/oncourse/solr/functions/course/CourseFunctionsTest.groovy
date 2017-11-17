@@ -1,12 +1,11 @@
 package ish.oncourse.solr.functions.course
 
-import ish.oncourse.entityBuilder.CourseClassBuilder
-import ish.oncourse.model.Course
 import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Tag
-import ish.oncourse.solr.model.CollegeContext
 import ish.oncourse.solr.model.DataContext
 import ish.oncourse.test.TestContext
+import ish.oncourse.test.context.CCollege
+import ish.oncourse.test.context.CCourse
 import org.apache.cayenne.ObjectContext
 import org.junit.After
 import org.junit.Assert
@@ -24,7 +23,7 @@ class CourseFunctionsTest {
     private TestContext testContext
     private ObjectContext objectContext
 
-    private CollegeContext collegeContext
+    private CCollege collegeContext
 
     @Before
     void before() {
@@ -38,37 +37,35 @@ class CourseFunctionsTest {
 
     @Test
     void testCourseClassQuery(){
-        Course targetCourse = collegeContext.course("Target course")
-        Course otherCourse = collegeContext.course("Other course")
+        CCourse targetCourse = collegeContext.cCourse("Target course")
+        CCourse otherCourse = collegeContext.cCourse("Other course")
 
-        CourseClass expected1 = CourseClassBuilder.instance(objectContext, "expected1", targetCourse)
-                .startDate(new Date().plus(1))
-                .build()
-        CourseClass expected2 = CourseClassBuilder.instance(objectContext, "expected2", targetCourse)
-                .startDate(new Date().plus(1))
-                .build()
-        CourseClass expected3Distant = CourseClassBuilder.instance(objectContext, "expected3Distant", targetCourse)
+        CourseClass expected1 = targetCourse.cCourseClass("expected1")
+                .endDate(new Date().plus(1))
+                .build().get()
+        CourseClass expected2 = targetCourse.cCourseClass("expected2")
+                .endDate(new Date().plus(1))
+                .build().get()
+        CourseClass expected3Distant = targetCourse.cCourseClass("expected3Distant")
                 .isDistantLearningCourse(true)
-                .build()
-        CourseClass invisible = CourseClassBuilder.instance(objectContext, "invisible", targetCourse)
-                .startDate(new Date().plus(1))
-                .isWebVisible(false)
-                .build()
-        CourseClass cancelled = CourseClassBuilder.instance(objectContext, "cancelled", targetCourse)
-                .startDate(new Date().plus(1))
-                .cancelled(true)
-                .build()
-        CourseClass notFuture = CourseClassBuilder.instance(objectContext, "cancelled", targetCourse)
-                .startDate(new Date())
-                .build()
-        CourseClass otherCourse1 = CourseClassBuilder.instance(objectContext, "otherCourse1", otherCourse)
-                .startDate(new Date().plus(1))
-                .build()
-        CourseClass otherCourse2 = CourseClassBuilder.instance(objectContext, "otherCourse1", otherCourse)
+                .build().get()
+        CourseClass invisible = targetCourse.cCourseClass("invisible")
+                .endDate(new Date().plus(1)).isWebVisible(false)
+                .build().get()
+        CourseClass cancelled = targetCourse.cCourseClass("cancelled")
+                .endDate(new Date().plus(1)).cancelled(true)
+                .build().get()
+        CourseClass notFuture = targetCourse.cCourseClass("notFuture")
+                .endDate(new Date())
+                .build().get()
+        CourseClass otherCourse1 = otherCourse.cCourseClass("otherCourse1")
+                .endDate(new Date().plus(1))
+                .build().get()
+        CourseClass otherCourse2 = otherCourse.cCourseClass("otherCourse2")
                 .isDistantLearningCourse(true)
-                .build()
+                .build().get()
 
-        CourseContext courseContext = new CourseContext(course : targetCourse, context : objectContext)
+        CourseContext courseContext = new CourseContext(course : targetCourse.get(), context : objectContext)
         List<CourseClass> actualClasses = CourseFunctions.courseClassQuery(courseContext).select(objectContext)
         Assert.assertEquals(3, actualClasses.size())
         assertNotNull(actualClasses.find {cc -> (cc.code == expected1.code) })
@@ -94,16 +91,16 @@ class CourseFunctionsTest {
         collegeContext.addTag("Tag1", "Tag11", "Tag12")
         collegeContext.addTag("Tag2", "Tag21")
 
-        collegeContext.course("Other course")
+        collegeContext.cCourse("Other course")
         collegeContext.tagCourse("OTHER COURSE", "Tag2")
         collegeContext.tagCourse("OTHER COURSE", "Tag21")
 
-        Course targetCourse = collegeContext.course("Target course")
+        CCourse targetCourse = collegeContext.cCourse("Target course")
         collegeContext.tagCourse("TARGET COURSE", "Tag1")
         collegeContext.tagCourse("TARGET COURSE", "Tag11")
         collegeContext.tagCourse("TARGET COURSE", "Tag22")
 
-        List<Tag> actualCourseTags = CourseFunctions.tagsQuery(targetCourse).select(objectContext)
+        List<Tag> actualCourseTags = CourseFunctions.tagsQuery(targetCourse.get()).select(objectContext)
         assertNotNull(actualCourseTags.find {tag -> tag.name == "Tag1"})
         assertNotNull("tag is related to target course and must be selected regardless of it's visibility", actualCourseTags.find {tag -> tag.name == "Tag11"})
         assertNotNull("tag is related to target course and must be selected regardless of it's parent", actualCourseTags.find {tag -> tag.name == "Tag22"})

@@ -1,12 +1,11 @@
 package ish.oncourse.solr.functions.tag
 
 import ish.oncourse.model.Tag
-import ish.oncourse.solr.model.CollegeContext
+import ish.oncourse.test.context.CCollege
 import ish.oncourse.solr.model.DataContext
 import ish.oncourse.test.TestContext
 import org.apache.cayenne.configuration.server.ServerRuntime
 import org.junit.After
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
@@ -35,7 +34,7 @@ class TagsQueryTest {
 
     @Test
     void test() {
-        CollegeContext collegeContext = dataContext.college("College-Australia/Sydney", "Australia/Sydney")
+        CCollege collegeContext = dataContext.college("College-Australia/Sydney", "Australia/Sydney")
 
         collegeContext.tag("Tag1")
         collegeContext.tag("Tag12")
@@ -43,7 +42,7 @@ class TagsQueryTest {
         collegeContext.tag("Tag2")
 
         collegeContext.addTag("Tag1", "Tag11Invisible", "Tag12")
-        collegeContext.course("Course1")
+        collegeContext.cCourse("Course1")
         collegeContext.tagCourse("COURSE1", "Tag2")
         collegeContext.tagCourse("COURSE1", "Tag11Invisible")
         collegeContext.tagCourse("COURSE1", "Tag12")
