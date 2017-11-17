@@ -17,6 +17,7 @@ function inputComponent(props: any) {
     label,
     rows,
     classes,
+    placeholder,
   } = props;
   const isShowError = showError({...props, meta: props.meta || {}});
 
@@ -33,7 +34,7 @@ function inputComponent(props: any) {
         'has-error': isShowError,
       })}>
         <textarea {...input}
-                  placeholder={label}
+                  placeholder={placeholder || label}
                   className={classnames(classes, 'input-fixed', {'t-error': isShowError})}
                   rows={rows}
         />
