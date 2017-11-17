@@ -662,15 +662,6 @@ parameters:
     required: true
     type: string
 definitions:
-  common.Item:
-    type: object
-    properties:
-      key:
-        type: string
-        description: Key which will be send back
-      value:
-        type: object
-        description: Value which user will see
   api.PageRenderResponse:
     type: object
     properties:
