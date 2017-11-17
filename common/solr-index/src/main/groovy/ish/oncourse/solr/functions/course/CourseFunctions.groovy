@@ -11,10 +11,6 @@ import static org.apache.cayenne.query.ObjectSelect.query
 
 class CourseFunctions {
 
-    public static final Closure<ResultIterator<Course>> Courses = { ObjectContext context ->
-        query(Course).iterator(context)
-    }
-
     static final ObjectSelect<CourseClass> courseClassQuery(CourseContext context) {
         query(CourseClass).where(COURSE.eq(context.course))
                 .and(IS_WEB_VISIBLE.eq(true))
@@ -23,17 +19,25 @@ class CourseFunctions {
         ).orderBy(START_DATE.asc())
     }
 
-    public static final Closure<ResultIterator<CourseClass>> CourseClasses = { CourseContext context ->
-        courseClassQuery(context).iterator(context.context)
-    }
-
-    static final ObjectSelect<Tag> courseTagsQuery(Course course){
+    static final ObjectSelect<Tag> tagsQuery(Course course){
         query(Tag).where(Tag.TAGGABLE_TAGS.dot(TaggableTag.TAGGABLE).dot(Taggable.ENTITY_IDENTIFIER).eq("Course"))
                 .and(Tag.TAGGABLE_TAGS.dot(TaggableTag.TAGGABLE).dot(Taggable.ENTITY_WILLOW_ID).eq(course.id))
     }
 
+
+
+    public static final Closure<ResultIterator<Course>> Courses = { ObjectContext context ->
+        query(Course).iterator(context)
+    }
+
+
+    public static final Closure<ResultIterator<CourseClass>> CourseClasses = { CourseContext context ->
+        courseClassQuery(context).iterator(context.context)
+    }
+
+
     public static final Closure<ResultIterator<Tag>> Tags = { Course course ->
-        courseTagsQuery(course).iterator(course.objectContext)
+        tagsQuery(course).iterator(course.objectContext)
     }
 
     public static final Closure<SCourse> BuildSCourse = { Course course ->

@@ -103,7 +103,7 @@ class CourseFunctionsTest {
         collegeContext.tagCourse("TARGET COURSE", "Tag11")
         collegeContext.tagCourse("TARGET COURSE", "Tag22")
 
-        List<Tag> actualCourseTags = CourseFunctions.courseTagsQuery(targetCourse).select(objectContext)
+        List<Tag> actualCourseTags = CourseFunctions.tagsQuery(targetCourse).select(objectContext)
         assertNotNull(actualCourseTags.find {tag -> tag.name == "Tag1"})
         assertNotNull("tag is related to target course and must be selected regardless of it's visibility", actualCourseTags.find {tag -> tag.name == "Tag11"})
         assertNotNull("tag is related to target course and must be selected regardless of it's parent", actualCourseTags.find {tag -> tag.name == "Tag22"})
