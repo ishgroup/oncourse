@@ -174,7 +174,7 @@ export class Website extends React.Component<Props, any> {
 
 const mapStateToProps = (state: State) => ({
   website: state.settings.websiteSettings,
-  fetching: state.settings.websiteSettings.fetching,
+  fetching: state.fetching,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {

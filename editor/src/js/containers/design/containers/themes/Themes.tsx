@@ -48,7 +48,7 @@ export class Themes extends React.Component<Props, any> {
 const mapStateToProps = (state: State) => ({
   themes: state.theme.items,
   blocks: state.block.items,
-  fetching: state.theme.fetching,
+  fetching: state.fetching,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {

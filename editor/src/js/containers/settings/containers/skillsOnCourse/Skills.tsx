@@ -93,7 +93,7 @@ export class Skills extends React.Component<Props, any> {
 
 const mapStateToProps = (state: State) => ({
   skillsOnCourse: state.settings.skillsOnCourseSettings,
-  fetching: state.settings.skillsOnCourseSettings.fetching,
+  fetching: state.fetching,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {

@@ -41,7 +41,7 @@ export class Blocks extends React.Component<Props, any> {
 
 const mapStateToProps = (state: State) => ({
   blocks: state.block.items,
-  fetching: state.block.fetching,
+  fetching: state.fetching,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {

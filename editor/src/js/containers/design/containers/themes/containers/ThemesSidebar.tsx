@@ -6,6 +6,7 @@ import {Theme, Layout} from "../../../../../model";
 import {ThemeSettings} from "../components/ThemeSettings";
 import {addTheme, deleteTheme, saveTheme} from "../actions";
 import {SidebarList} from "../../../../../components/Sidebar/SidebarList";
+import {State} from "../../../../../reducers/state";
 import {showModal} from "../../../../../common/containers/modal/actions";
 
 interface Props {
@@ -65,10 +66,10 @@ class ThemesSidebar extends React.Component<Props, any> {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: State) => ({
   themes: state.theme.items,
   layouts: state.theme.layouts,
-  fetching: state.theme.fetching,
+  fetching: state.fetching,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {

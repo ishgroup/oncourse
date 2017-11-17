@@ -181,7 +181,7 @@ export class Menus extends React.Component<Props, any> {
 
 const mapStateToProps = (state: State) => ({
   menu: state.menu,
-  fetching: state.menu.fetching,
+  fetching: state.fetching,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {

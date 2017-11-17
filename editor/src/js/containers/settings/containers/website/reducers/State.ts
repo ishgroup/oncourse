@@ -6,5 +6,4 @@ export class WebsiteSettingsState {
   enableForCourse: boolean;
   enableForWebpage: boolean;
   classAge: ClassAge;
-  fetching: boolean = false;
 }

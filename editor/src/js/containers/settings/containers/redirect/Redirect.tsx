@@ -134,7 +134,7 @@ export class Redirect extends React.PureComponent<Props, any> {
 
 const mapStateToProps = (state: State) => ({
   redirect: state.settings.redirectSettings,
-  fetching: state.settings.redirectSettings.fetching,
+  fetching: state.fetching,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {

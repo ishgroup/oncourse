@@ -89,7 +89,7 @@ export class Checkout extends React.Component<Props, any> {
 
 const mapStateToProps = (state: State) => ({
   checkout: state.settings.checkoutSettings,
-  fetching: state.settings.checkoutSettings.fetching,
+  fetching: state.fetching,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {

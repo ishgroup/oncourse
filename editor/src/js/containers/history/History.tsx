@@ -5,6 +5,7 @@ import classnames from "classnames";
 import TimeAgo from 'react-timeago';
 import {getHistory, publish, setVersion} from "./actions";
 import {Version} from "../../model";
+import {State} from "../../reducers/state";
 import {showModal} from "../../common/containers/modal/actions";
 
 interface Props {
@@ -86,9 +87,9 @@ class History extends React.Component<Props, any> {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: State) => ({
   versions: state.history.versions,
-  fetching: state.history.fetching,
+  fetching: state.fetching,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {

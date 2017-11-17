@@ -7,5 +7,4 @@ export class PageState extends Page {
 export class PagesState {
   items: PageState[] = [];
   editMode: boolean = true;
-  fetching: boolean = false;
 }

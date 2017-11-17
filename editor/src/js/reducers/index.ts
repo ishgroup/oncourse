@@ -15,7 +15,7 @@ import {websiteSettingsReducer} from "../containers/settings/containers/website/
 import {redirectSettingsReducer} from "../containers/settings/containers/redirect/reducers";
 import {skillsOnCourseReducer} from "../containers/settings/containers/skillsOnCourse/reducers";
 
-import {configReducer} from "../common/reducers";
+import {configReducer, fetchReducer} from "../common/reducers";
 
 export const combinedReducers = combineReducers({
   notifications,
@@ -34,4 +34,5 @@ export const combinedReducers = combineReducers({
     skillsOnCourseSettings: skillsOnCourseReducer,
   }),
   form: reduxFormReducer,
+  fetching: fetchReducer,
 });

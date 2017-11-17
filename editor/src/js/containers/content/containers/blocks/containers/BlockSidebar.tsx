@@ -2,6 +2,7 @@ import React from 'react';
 import {connect, Dispatch} from "react-redux";
 import classnames from "classnames";
 import {Block} from "../../../../../model";
+import {State} from "../../../../../reducers/state";
 import {BlockSettings} from "../components/BlockSettings";
 import {URL} from "../../../../../routes";
 import {addBlock, deleteBlock, saveBlock} from "../actions";
@@ -63,9 +64,9 @@ export class BlockSidebar extends React.Component<Props, any> {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: State) => ({
   blocks: state.block.items,
-  fetching: state.block.fetching,
+  fetching: state.fetching,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {

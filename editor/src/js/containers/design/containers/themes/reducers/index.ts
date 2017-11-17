@@ -1,44 +1,23 @@
 import {IAction} from "../../../../../actions/IshAction";
 import {ThemesState} from "./State";
 import {
-  ADD_THEME_FULFILLED,
-  ADD_THEME_REQUEST,
-  DELETE_THEME_FULFILLED, DELETE_THEME_REQUEST, GET_LAYOUTS_FULFILLED, GET_LAYOUTS_REQUEST,
-  GET_THEMES_FULFILLED, GET_THEMES_REQUEST, SAVE_THEME_FULFILLED, SAVE_THEME_REQUEST, UPDATE_THEME_STATE,
+  ADD_THEME_FULFILLED, DELETE_THEME_FULFILLED, GET_LAYOUTS_FULFILLED,
+  GET_THEMES_FULFILLED, SAVE_THEME_FULFILLED, UPDATE_THEME_STATE,
 } from "../actions";
-import {UNHANDLED_ERROR} from "../../../../../common/actions";
 
 export const themesReducer = (state: ThemesState = new ThemesState(), action: IAction<any>): ThemesState => {
   switch (action.type) {
-
-    case GET_THEMES_REQUEST:
-    case SAVE_THEME_REQUEST:
-    case ADD_THEME_REQUEST:
-    case DELETE_THEME_REQUEST:
-    case GET_LAYOUTS_REQUEST:
-      return {
-        ...state,
-        fetching: true,
-      };
-
-    case UNHANDLED_ERROR:
-      return {
-        ...state,
-        fetching: false,
-      };
 
     case GET_THEMES_FULFILLED:
       return {
         ...state,
         items: action.payload,
-        fetching: false,
       };
 
     case GET_LAYOUTS_FULFILLED:
       return {
         ...state,
         layouts: action.payload,
-        fetching: false,
       };
 
     case SAVE_THEME_FULFILLED: {
@@ -47,7 +26,6 @@ export const themesReducer = (state: ThemesState = new ThemesState(), action: IA
       const ns = {
         ...state,
         items: state.items.map(item => item.id === id ? {...item, ...props} : item),
-        fetching: false,
       };
 
       if (!state.items.find(theme => theme.id === id)) {
@@ -62,7 +40,6 @@ export const themesReducer = (state: ThemesState = new ThemesState(), action: IA
 
       return {
         ...state,
-        fetching: false,
         items: state.items.concat(theme),
       };
     }
@@ -88,7 +65,6 @@ export const themesReducer = (state: ThemesState = new ThemesState(), action: IA
       return {
         ...state,
         items: newThemes,
-        fetching: false,
       };
     }
 

@@ -76,7 +76,7 @@ export class PagesSidebar extends React.Component<Props, any> {
 const mapStateToProps = (state: State) => ({
   pages: state.page.items,
   themes: state.theme.items,
-  fetching: state.page.fetching,
+  fetching: state.fetching,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {

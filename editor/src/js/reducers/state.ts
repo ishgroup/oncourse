@@ -28,5 +28,6 @@ export interface State {
   history: HistoryState;
   settings: SettingsState;
   modal: any;
+  fetching: boolean;
 }
 

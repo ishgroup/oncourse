@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import {clearRenderHtml, getPages, savePage, toggleEditMode} from "./actions";
 import {Page as PageModel} from "../../../../model";
 import {Page} from "./components/Page";
+import {State} from "../../../../reducers/state";
 import {getThemes} from "../../../design/containers/themes/actions/index";
 
 interface Props {
@@ -51,9 +52,9 @@ export class Pages extends React.Component<Props, any> {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: State) => ({
   pages: state.page.items,
-  fetching: state.page.fetching,
+  fetching: state.fetching,
   editMode: state.page.editMode,
 });
 
