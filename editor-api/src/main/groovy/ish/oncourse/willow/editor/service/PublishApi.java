@@ -1,7 +1,7 @@
 package ish.oncourse.willow.editor.service;
 
-import ish.oncourse.willow.editor.model.SetVersionRequest;
 import ish.oncourse.willow.editor.model.Version;
+import ish.oncourse.willow.editor.model.api.SetVersionRequest;
 import ish.oncourse.willow.editor.model.common.CommonError;
 
 import java.io.InputStream;
@@ -18,18 +18,21 @@ public interface PublishApi  {
     @GET
     @Path("/getVersions")
     @Produces({ "application/json" })
+    @AuthFilter
     List<Version> getVersions();
 
     @POST
     @Path("/publish")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
+    @AuthFilter
     void publish();
 
     @POST
     @Path("/setVersion")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
+    @AuthFilter
     void setVersion(SetVersionRequest setVersionRequest);
 }
 

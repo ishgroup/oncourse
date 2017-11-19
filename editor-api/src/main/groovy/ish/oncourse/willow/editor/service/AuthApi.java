@@ -13,7 +13,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.MediaType;
 
 @Path("/")
-public interface AuthorizationApi  {
+public interface AuthApi  {
 
     @POST
     @Path("/getUser")
@@ -25,6 +25,7 @@ public interface AuthorizationApi  {
     @Path("/logout")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
+    @AuthFilter
     void logout();
 }
 

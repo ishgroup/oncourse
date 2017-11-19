@@ -1,47 +1,55 @@
-package ish.oncourse.willow.editor.service.impl
+package ish.oncourse.willow.editor.service.impl;
+
+import ish.oncourse.willow.editor.service.*;
+import ish.oncourse.willow.editor.model.Page;
+import ish.oncourse.willow.editor.model.api.PageRenderResponse;
+import ish.oncourse.willow.editor.model.common.CommonError;
 
 import groovy.transform.CompileStatic
-import ish.oncourse.willow.editor.service.*
-import ish.oncourse.willow.editor.model.Model200
-import ish.oncourse.willow.editor.model.Page
-import ish.oncourse.willow.editor.model.common.CommonError
+
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.List;
+import java.util.Map;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Response;
 
 @CompileStatic
-class PageApiServiceImpl implements PageApi {
-    CommonError addPage() {
+public class PageApiServiceImpl implements PageApi {
+    public CommonError addPage() {
         // TODO: Implement...
         
-        return null
+        return null;
     }
     
-    void deletePage() {
+    public void deletePage(Double id) {
         // TODO: Implement...
         
         
     }
     
-    Page getPageByUrl(String pageUrl) {
+    public Page getPageByUrl(String pageUrl) {
         // TODO: Implement...
         
-        return null
+        return null;
     }
     
-    Model200 getPageRender(String pageId) {
+    public PageRenderResponse getPageRender(Double pageId) {
         // TODO: Implement...
         
-        return null
+        return null;
     }
     
-    List<Page> getPages() {
+    public List<Page> getPages() {
         // TODO: Implement...
         
-        return null
+        return null;
     }
     
-    Page savePage(Page pageParams) {
+    public Page savePage(Page pageParams) {
         // TODO: Implement...
         
-        return null
+        return null;
     }
     
 }

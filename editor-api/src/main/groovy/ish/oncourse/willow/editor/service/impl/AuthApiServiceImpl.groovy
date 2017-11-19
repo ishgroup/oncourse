@@ -1,22 +1,23 @@
 package ish.oncourse.willow.editor.service.impl
 
 import com.google.inject.Inject
+import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.willow.editor.service.*;
+import ish.oncourse.willow.editor.model.User;
+import ish.oncourse.willow.editor.model.api.LoginRequest;
+import ish.oncourse.willow.editor.model.common.CommonError;
+
 import groovy.transform.CompileStatic
-import ish.oncourse.services.persistence.ICayenneService
-import ish.oncourse.willow.editor.model.common.CommonError
-import ish.oncourse.willow.editor.service.*
-import ish.oncourse.willow.editor.model.User
-import ish.oncourse.willow.editor.model.api.LoginRequest
 import ish.oncourse.willow.editor.services.access.AuthenticationService
 import ish.oncourse.willow.editor.services.access.AuthenticationStatus
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
-import javax.ws.rs.ClientErrorException
+import javax.ws.rs.*
 import javax.ws.rs.core.Response
 
 @CompileStatic
-class AuthorizationApiServiceImpl implements AuthorizationApi {
+class AuthApiServiceImpl implements AuthApi {
     
     private static final Logger logger = LogManager.logger
 

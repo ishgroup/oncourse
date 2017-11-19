@@ -15,10 +15,10 @@ import ish.oncourse.cayenne.cache.JCacheModule
 import ish.oncourse.configuration.ISHHealthCheckServlet
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.util.log.LogAppInfo
-import ish.oncourse.willow.editor.service.AuthorizationApi
-import ish.oncourse.willow.editor.service.impl.AuthorizationApiServiceImpl
+import ish.oncourse.willow.editor.service.impl.AuthApiServiceImpl
 import ish.oncourse.willow.editor.services.RequestFilter
 import ish.oncourse.willow.editor.services.RequestService
+import ish.oncourse.willow.editor.services.access.AuthenticationFilter
 import ish.oncourse.willow.editor.services.access.AuthenticationService
 import org.apache.cxf.jaxrs.validation.JAXRSBeanValidationFeature
 
@@ -53,8 +53,9 @@ class EditorApiModule extends ConfigModule {
                 .addMappedServlet(ISH_HEALTH_CHECK_SERVLET)
                 .addMappedFilter(MILTON_FILTER)
 
-        CXFModule.contributeResources(binder).addBinding().to(JAXRSBeanValidationFeature)         
-        CXFModule.contributeResources(binder).addBinding().to(AuthorizationApiServiceImpl)
+        CXFModule.contributeResources(binder).addBinding().to(JAXRSBeanValidationFeature)
+        CXFModule.contributeResources(binder).addBinding().to(AuthenticationFilter)
+        CXFModule.contributeResources(binder).addBinding().to(AuthApiServiceImpl)
 
         binder.bind(RequestService)
         binder.bind(ICayenneService).to(CayenneService)

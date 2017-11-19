@@ -3,26 +3,8 @@ package ish.oncourse.willow.editor.model;
 
 public class User  {
   
-    private Double id = null;
     private String firstName = null;
     private String lastName = null;
-
-    /**
-     * Unique identifier of the user
-     * @return id
-     */
-    public Double getId() {
-        return id;
-    }
-
-    public void setId(Double id) {
-       this.id = id;
-    }
-
-    public User id(Double id) {
-      this.id = id;
-      return this;
-    }
 
     /**
      * First name of the user
@@ -64,7 +46,6 @@ public class User  {
       StringBuilder sb = new StringBuilder();
       sb.append("class User {\n");
       
-      sb.append("    id: ").append(toIndentedString(id)).append("\n");
       sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");
       sb.append("    lastName: ").append(toIndentedString(lastName)).append("\n");
       sb.append("}");

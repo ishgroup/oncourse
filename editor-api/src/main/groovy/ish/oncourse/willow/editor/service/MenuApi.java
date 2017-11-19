@@ -18,12 +18,14 @@ public interface MenuApi  {
     @GET
     @Path("/getMenuItems")
     @Produces({ "application/json" })
+    @AuthFilter
     List<MenuItem> getMenuItems();
 
     @POST
     @Path("/saveMenuItems")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
+    @AuthFilter
     List<MenuItem> saveMenuItems(List<MenuItem> menu);
 }
 

@@ -20,45 +20,53 @@ public interface SettingsApi  {
     @GET
     @Path("/getCheckoutSettings")
     @Produces({ "application/json" })
+    @AuthFilter
     CheckoutSettings getCheckoutSettings();
 
     @GET
     @Path("/getRedirectSettings")
     @Produces({ "application/json" })
+    @AuthFilter
     RedirectSettings getRedirectSettings();
 
     @GET
     @Path("/getSkillsOnCourseSettings")
     @Produces({ "application/json" })
+    @AuthFilter
     SkillsOnCourseSettings getSkillsOnCourseSettings();
 
     @GET
     @Path("/getWebsiteSettings")
     @Produces({ "application/json" })
+    @AuthFilter
     WebsiteSettings getWebsiteSettings();
 
     @POST
     @Path("/setCheckoutSettings")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
+    @AuthFilter
     CheckoutSettings setCheckoutSettings(CheckoutSettings saveCheckoutSettingsRequest);
 
     @POST
     @Path("/setRedirectSettings")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
+    @AuthFilter
     RedirectSettings setRedirectSettings(RedirectSettings redirectSettingsRequest);
 
     @POST
     @Path("/setSkillsOnCourseSettings")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
+    @AuthFilter
     SkillsOnCourseSettings setSkillsOnCourseSettings(SkillsOnCourseSettings skillsOnCourseSettingsRequest);
 
     @POST
     @Path("/setWebsiteSettings")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
+    @AuthFilter
     WebsiteSettings setWebsiteSettings(WebsiteSettings websiteSettingsRequest);
 }
 

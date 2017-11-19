@@ -1,25 +1,33 @@
 package ish.oncourse.willow.editor.service.impl
 
-import groovy.transform.CompileStatic
-import ish.oncourse.willow.editor.service.*
-import ish.oncourse.willow.editor.model.SetVersionRequest
-import ish.oncourse.willow.editor.model.Version
+import groovy.transform.CompileStatic;
+import ish.oncourse.willow.editor.service.*;
+import ish.oncourse.willow.editor.model.Version;
+import ish.oncourse.willow.editor.model.api.SetVersionRequest;
+import ish.oncourse.willow.editor.model.common.CommonError;
+
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.List;
+import java.util.Map;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Response;
 
 @CompileStatic
-class PublishApiServiceImpl implements PublishApi {
-    List<Version> getVersions() {
+public class PublishApiServiceImpl implements PublishApi {
+    public List<Version> getVersions() {
         // TODO: Implement...
         
-        return null
+        return null;
     }
     
-    void publish() {
+    public void publish() {
         // TODO: Implement...
         
         
     }
     
-    void setVersion(SetVersionRequest setVersionRequest) {
+    public void setVersion(SetVersionRequest setVersionRequest) {
         // TODO: Implement...
         
         

@@ -18,28 +18,33 @@ public interface ThemeApi  {
     @Path("/addTheme")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
+    @AuthFilter
     Theme addTheme();
 
     @POST
     @Path("/deleteTheme")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
-    void deleteTheme();
+    @AuthFilter
+    void deleteTheme(Double id);
 
     @GET
     @Path("/getLayouts")
     @Produces({ "application/json" })
-    Theme getLayouts();
+    @AuthFilter
+    List<Theme> getLayouts();
 
     @GET
     @Path("/getThemes")
     @Produces({ "application/json" })
-    Theme getThemes();
+    @AuthFilter
+    List<Theme> getThemes();
 
     @POST
     @Path("/saveTheme")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
+    @AuthFilter
     Theme saveTheme(Theme saveThemeRequest);
 }
 

@@ -1,7 +1,7 @@
 package ish.oncourse.willow.editor.service;
 
-import ish.oncourse.willow.editor.model.Model200;
 import ish.oncourse.willow.editor.model.Page;
+import ish.oncourse.willow.editor.model.api.PageRenderResponse;
 import ish.oncourse.willow.editor.model.common.CommonError;
 
 import java.io.InputStream;
@@ -19,33 +19,39 @@ public interface PageApi  {
     @Path("/addPage")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
+    @AuthFilter
     CommonError addPage();
 
     @POST
     @Path("/deletePage")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
-    void deletePage();
+    @AuthFilter
+    void deletePage(Double id);
 
     @GET
-    @Path("/getPageByUrl/{pageUrl}")
+    @Path("/getPageByUrl")
     @Produces({ "application/json" })
-    Page getPageByUrl(@PathParam("pageUrl") String pageUrl);
+    @AuthFilter
+    Page getPageByUrl(@QueryParam("pageUrl")String pageUrl);
 
     @GET
     @Path("/getPageRender/{pageId}")
     @Produces({ "application/json" })
-    Model200 getPageRender(@PathParam("pageId") String pageId);
+    @AuthFilter
+    PageRenderResponse getPageRender(@PathParam("pageId") Double pageId);
 
     @GET
     @Path("/getPages")
     @Produces({ "application/json" })
+    @AuthFilter
     List<Page> getPages();
 
     @POST
     @Path("/savePage")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
+    @AuthFilter
     Page savePage(Page pageParams);
 }
 

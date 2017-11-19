@@ -18,23 +18,27 @@ public interface BlockApi  {
     @Path("/addBlock")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
+    @AuthFilter
     Block addBlock();
 
     @POST
     @Path("/deleteBlock")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
-    void deleteBlock();
+    @AuthFilter
+    void deleteBlock(Double id);
 
     @GET
     @Path("/getBlocks")
     @Produces({ "application/json" })
+    @AuthFilter
     List<Block> getBlocks();
 
     @POST
     @Path("/saveBlock")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
+    @AuthFilter
     Block saveBlock(Block saveBlockRequest);
 }
 

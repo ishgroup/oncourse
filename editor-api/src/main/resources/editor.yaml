@@ -12,8 +12,7 @@ paths:
     post:
       operationId: getUser
       summary: Get user by email and password
-      description: >-
-        Get user by email and password (Login)
+      description: Get user by email and password (Login)
       tags:
         - Auth
       consumes:
@@ -36,11 +35,11 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /logout:
     post:
+      x-filter:  
+      - AuthFilter
       operationId: logout
-      summary: >-
-        Unauthorize user from CMS
-      description: >-
-        Unauthorize user from CMS
+      summary: Unauthorize user from CMS
+      description: Unauthorize user from CMS
       tags:
         - Auth
       consumes:
@@ -48,14 +47,15 @@ paths:
 
       responses:
         '200':
-          description: >-
-            Success logout witn null response
+          description: Success logout witn null response
         default:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
   /getMenuItems:
     get:
+      x-filter:  
+      - AuthFilter
       operationId: getMenuItems
       summary: Get menu items
       description: Get menu items
@@ -74,10 +74,11 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /saveMenuItems:
     post:
+      x-filter:  
+      - AuthFilter
       operationId: saveMenuItems
       summary: Save menu items
-      description: >-
-        Save menu items
+      description: Save menu items
       tags:
         - Menu
       consumes:
@@ -104,6 +105,8 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /getPages:
     get:
+      x-filter:  
+      - AuthFilter
       operationId: getPages
       summary: Get pages
       description: Get pages
@@ -120,8 +123,10 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  '/getPageByUrl':
+  /getPageByUrl:
     get:
+      x-filter:  
+      - AuthFilter
       summary: Get page by provided page url
       operationId: getPageByUrl
       description: Get page object by provided page url
@@ -142,8 +147,10 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  '/getPageRender/{pageId}':
+  /getPageRender/{pageId}:
     get:
+      x-filter:  
+      - AuthFilter
       summary: Get page rendered html by provided page id
       operationId: getPageRender
       description: Get page rendered html by provided page id
@@ -166,6 +173,8 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /savePage:
     post:
+      x-filter:  
+      - AuthFilter
       summary: Save page parameters
       operationId: savePage
       description: Save page parameters
@@ -191,6 +200,8 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /addPage:
     post:
+      x-filter:  
+      - AuthFilter
       summary: Add new page
       operationId: addPage
       description: Add new page
@@ -209,6 +220,8 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /deletePage:
     post:
+      x-filter:  
+      - AuthFilter
       summary: Remove page by provided Id
       operationId: deletePage
       description: Remove page
@@ -232,6 +245,8 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /getBlocks:
     get:
+      x-filter:  
+      - AuthFilter
       summary: Get array of blocks
       operationId: getBlocks
       description: Get array of blocks
@@ -250,8 +265,9 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /saveBlock:
     post:
-      summary: >-
-        block with updated params
+      x-filter:  
+      - AuthFilter
+      summary: block with updated params
       operationId: saveBlock
       description: Save block params
       tags:
@@ -276,6 +292,8 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /addBlock:
     post:
+      x-filter:  
+      - AuthFilter
       summary: Add new block
       operationId: addBlock
       description: Add new block
@@ -294,6 +312,8 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /deleteBlock:
     post:
+      x-filter:  
+      - AuthFilter
       summary: Remove block by provided Id
       operationId: deleteBlock
       description: Remove block
@@ -317,6 +337,8 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /getThemes:
     get:
+      x-filter:  
+      - AuthFilter
       summary: Get array of themes
       operationId: getThemes
       description: Get array of themes
@@ -335,6 +357,8 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /getLayouts:
     get:
+      x-filter:  
+      - AuthFilter
       summary: Get array of layouts
       operationId: getLayouts
       description: Get array of layouts
@@ -353,8 +377,9 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /saveTheme:
     post:
-      summary: >-
-        Theme with updated params
+      x-filter:  
+      - AuthFilter
+      summary: Theme with updated params
       operationId: saveTheme
       description: Save theme params
       tags:
@@ -379,6 +404,8 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /addTheme:
     post:
+      x-filter:  
+      - AuthFilter
       summary: Add new theme
       operationId: addTheme
       description: Add new theme
@@ -397,6 +424,8 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /deleteTheme:
     post:
+      x-filter:  
+      - AuthFilter
       summary: Remove theme by provided Id
       operationId: deleteTheme
       description: Remove theme
@@ -420,6 +449,8 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /getVersions:
     get:
+      x-filter:  
+      - AuthFilter
       summary: Get array of published versions
       operationId: getVersions
       description: Get array of published versions
@@ -438,8 +469,9 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /setVersion:
     post:
-      summary: >-
-        Set current published version by provided version Id
+      x-filter:  
+      - AuthFilter
+      summary: Set current published version by provided version Id
       operationId: setVersion
       description: Change current published version
       tags:
@@ -462,8 +494,9 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /publish:
     post:
-      summary: >-
-        Publish current draft version
+      x-filter:  
+      - AuthFilter
+      summary: Publish current draft version
       operationId: publish
       description: Publish current draft changes to live site
       tags:
@@ -479,6 +512,8 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /getCheckoutSettings:
     get:
+      x-filter:  
+      - AuthFilter
       operationId: getCheckoutSettings
       summary: Get checkout settings
       description: Get checkout settings
@@ -495,8 +530,9 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /setCheckoutSettings:
     post:
-      summary: >-
-        Save checkout settings
+      x-filter:  
+      - AuthFilter
+      summary: Save checkout settings
       operationId: setCheckoutSettings
       description: Save checkout settings
       tags:
@@ -521,6 +557,8 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /getSkillsOnCourseSettings:
     get:
+      x-filter:  
+      - AuthFilter
       operationId: getSkillsOnCourseSettings
       summary: Get SkillsOnCourse settings
       description: Get SkillsOnCourse settings
@@ -537,8 +575,9 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /setSkillsOnCourseSettings:
     post:
-      summary: >-
-        Save SkillsOnCourse settings
+      x-filter:  
+      - AuthFilter
+      summary: Save SkillsOnCourse settings
       operationId: setSkillsOnCourseSettings
       description: Save SkillsOnCourse settings
       tags:
@@ -563,6 +602,8 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /getRedirectSettings:
     get:
+      x-filter:  
+      - AuthFilter
       operationId: getRedirectSettings
       summary: Get redirect settings
       description: Get redirect settings
@@ -579,8 +620,9 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /setRedirectSettings:
     post:
-      summary: >-
-        Save redirect settings
+      x-filter:  
+      - AuthFilter
+      summary: Save redirect settings
       operationId: setRedirectSettings
       description: Save redirect settings
       tags:
@@ -605,6 +647,8 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /getWebsiteSettings:
     get:
+      x-filter:  
+      - AuthFilter
       operationId: getWebsiteSettings
       summary: Get Website settings
       description: Get Website settings
@@ -621,8 +665,9 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /setWebsiteSettings:
     post:
-      summary: >-
-        Save website settings
+      x-filter:  
+      - AuthFilter
+      summary: Save website settings
       operationId: setWebsiteSettings
       description: Save website settings
       tags:

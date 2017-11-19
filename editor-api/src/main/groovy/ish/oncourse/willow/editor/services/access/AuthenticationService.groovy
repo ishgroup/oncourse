@@ -26,6 +26,8 @@ class AuthenticationService {
     private RequestService requestService
     
     private static final String SESSION_ID = 'SESSIONID'
+    
+    private static final long MAX_AGE = 14400
 
     @Inject
     AuthenticationService(ICayenneService cayenneService, RequestService requestService) {
@@ -52,13 +54,19 @@ class AuthenticationService {
             default: throw new IllegalArgumentException("Unsupported user type:  $ssoClass, persistent object: $user")    
         }
         
-        requestService.request.cookies = [new Cookie(SESSION_ID, "${ssoClass.simpleName}-${user.objectId.properties['id']}")] as Cookie[]
+        
+        requestService.response.addSetCookie(SESSION_ID, 
+                "${ssoClass.simpleName}-${user.objectId.idSnapshot['id']}",
+                requestService.request.serverName, 
+                requestService.request.contextPath,
+                MAX_AGE, 'Session identifier', false, false, 0)
+        
         return AuthenticationResult.valueOf(SUCCESS, firstName, lastName)
     }
 
     AuthenticationResult authenticate(String userName, String password) {
         if (StringUtils.trimToNull(userName) == null || StringUtils.trimToNull(password) == null) {
-            return INVALID_CREDENTIALS
+            return AuthenticationResult.valueOf(INVALID_CREDENTIALS)
         }
         // try authenticate by email using SystemUser table
         AuthenticationResult response = authenticateByEmail(userName, password)
@@ -87,7 +95,7 @@ class AuthenticationService {
         }
 
         if (users.size() > 1) {
-            return MORE_THAN_ONE_USER
+            return AuthenticationResult.valueOf(MORE_THAN_ONE_USER)
         }
 
         WillowUser user = users[0]
@@ -190,8 +198,11 @@ class AuthenticationService {
     }
 
     void logout() {
-        requestService.request.cookies = [] as Cookie[]
-    }
+        requestService.response.addSetCookie(SESSION_ID,
+                null,
+                requestService.request.serverName,
+                requestService.request.contextPath,
+                0, null, false, false, 0)    }
 
 
     String getUserEmail() {
@@ -204,6 +215,18 @@ class AuthenticationService {
         private AuthenticationStatus status
         private String firstName
         private String lastName
+
+        void setStatus(AuthenticationStatus status) {
+            this.status = status
+        }
+
+        void setFirstName(String firstName) {
+            this.firstName = firstName
+        }
+
+        void setLastName(String lastName) {
+            this.lastName = lastName
+        }
 
         AuthenticationStatus getStatus() {
             return status
