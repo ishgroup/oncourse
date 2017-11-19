@@ -31,7 +31,7 @@ class AuthApiServiceImpl implements AuthApi {
     }
     
     User getUser(LoginRequest loginRequest) { 
-        AuthenticationService.AuthenticationResult result =  authenticationService.authenticate(loginRequest.email, loginRequest.password)
+        AuthenticationService.AuthenticationResult result =  authenticationService.authenticate(loginRequest.email, loginRequest.password, true)
         switch (result.status) {
             case AuthenticationStatus.SUCCESS:
                 return new User().firstName(result.firstName).lastName(result.lastName)

@@ -10,6 +10,8 @@ class InitZKRootNode {
 
     public static final String WILLOW_NODE = '/willow'
     public static final String SESSIONS_NODE = '/willow/sessions'
+    public static final String EDITOR_SESSIONS_NODE = '/willow/editorSessions'
+
     private String zkHostPort
 
     private Logger logger = LogManager.logger
@@ -31,6 +33,10 @@ class InitZKRootNode {
 
         if (keeper.exists(SESSIONS_NODE, false) == null) {
             keeper.create(SESSIONS_NODE, new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT)
+        }
+
+        if (keeper.exists(EDITOR_SESSIONS_NODE, false) == null) {
+            keeper.create(EDITOR_SESSIONS_NODE, new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT)
         }
         keeper.close()
     }

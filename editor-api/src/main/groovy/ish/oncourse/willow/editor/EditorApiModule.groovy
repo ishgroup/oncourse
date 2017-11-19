@@ -20,6 +20,7 @@ import ish.oncourse.willow.editor.services.RequestFilter
 import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.services.access.AuthenticationFilter
 import ish.oncourse.willow.editor.services.access.AuthenticationService
+import ish.oncourse.willow.editor.services.access.ZKSessionManager
 import org.apache.cxf.jaxrs.validation.JAXRSBeanValidationFeature
 
 import javax.servlet.FilterConfig
@@ -56,8 +57,9 @@ class EditorApiModule extends ConfigModule {
         CXFModule.contributeResources(binder).addBinding().to(JAXRSBeanValidationFeature)
         CXFModule.contributeResources(binder).addBinding().to(AuthenticationFilter)
         CXFModule.contributeResources(binder).addBinding().to(AuthApiServiceImpl)
-
+        
         binder.bind(RequestService)
+        binder.bind(ZKSessionManager)
         binder.bind(ICayenneService).to(CayenneService)
         binder.bind(AuthenticationService)
     }

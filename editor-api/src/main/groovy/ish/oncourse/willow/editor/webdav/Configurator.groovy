@@ -48,7 +48,7 @@ class Configurator extends DefaultMiltonConfigurator {
 
         @Override
         Object authenticate(String user, String password) {
-            return AuthenticationStatus.SUCCESS == authenticationService.authenticate(user, password).status ? user : null
+            return AuthenticationStatus.SUCCESS == authenticationService.authenticate(user, password, false).status ? user : null
         }
 
         @Override
