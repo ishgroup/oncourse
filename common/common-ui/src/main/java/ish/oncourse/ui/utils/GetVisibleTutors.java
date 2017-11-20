@@ -4,8 +4,9 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Tutor;
 import ish.oncourse.model.TutorRole;
+import ish.oncourse.model.Session;
+import ish.oncourse.model.SessionTutor;
 import ish.oncourse.services.tutor.ITutorService;
-import ish.oncourse.services.tutor.TutorService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 public class GetVisibleTutors {
 
     private CourseClass courseClass;
+    private Session session;
 
     private ITutorService tutorService;
 
@@ -22,8 +24,13 @@ public class GetVisibleTutors {
 
 
     public GetVisibleTutors get() {
+        List<Long> sessionTutorsIds = new ArrayList<>();
+        for (SessionTutor sessionTutor : session.getSessionTutors()){
+            sessionTutorsIds.add(sessionTutor.getTutor().getId());
+        }
+
         for (TutorRole role : courseClass.getTutorRoles()) {
-            if (role.getInPublicity() && tutorService.isActiveTutor(role.getTutor())) {
+            if (role.getInPublicity() && tutorService.isActiveTutor(role.getTutor()) && sessionTutorsIds.contains(role.getTutor().getId())) {
                 tutorRoles.add(role);
                 tutors.add(role.getTutor());
                 tutorNames.add(getTutorName(role.getTutor()));
@@ -53,9 +60,10 @@ public class GetVisibleTutors {
         }
     }
 
-    public static GetVisibleTutors valueOf(CourseClass courseClass, ITutorService tutorService) {
+    public static GetVisibleTutors valueOf(CourseClass courseClass, Session session, ITutorService tutorService) {
         GetVisibleTutors result = new GetVisibleTutors();
         result.courseClass = courseClass;
+        result.session = session;
         result.tutorService = tutorService;
         return result;
     }

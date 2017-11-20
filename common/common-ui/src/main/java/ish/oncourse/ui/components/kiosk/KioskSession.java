@@ -14,7 +14,6 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.Date;
 
-import static ish.oncourse.util.FormatUtils.getTimeFormat;
 import static java.lang.String.format;
 
 public class KioskSession {
@@ -83,7 +82,7 @@ public class KioskSession {
 
         location = session.getRoom().getName();
 
-        GetVisibleTutors getVisibleTutors = GetVisibleTutors.valueOf(courseClass, tutorService).get();
+        GetVisibleTutors getVisibleTutors = GetVisibleTutors.valueOf(courseClass, session, tutorService).get();
         author = StringUtils.join(getVisibleTutors.tutorNames(), ", ");
     }
 }
