@@ -17,10 +17,6 @@ class PageApiTest {
         
     }
 
-    @Override
-    protected String getDataSetResource() {
-        return null
-    }
 /**
      * Add new page
      * Add new page
