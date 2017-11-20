@@ -1,9 +1,11 @@
 package ish.oncourse.willow.editor.service.impl
 
 import com.google.inject.Inject
+import ish.oncourse.model.RegionKey
 import ish.oncourse.model.WebNode
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.willow.editor.model.PageUrl
+import ish.oncourse.willow.editor.rest.WebNodeToPage
 import ish.oncourse.willow.editor.service.*
 import ish.oncourse.willow.editor.model.Page
 import ish.oncourse.willow.editor.model.api.PageRenderResponse
@@ -30,11 +32,7 @@ class PageApiServiceImpl implements PageApi {
         WebNode node = WebNodeFunctions.createNewNode(requestService.request, cayenneService.newContext())
         context.commitChanges()
 
-        new Page().with {page ->
-            page.id = node.id.doubleValue()
-            page.title = node.name
-            page
-        }
+        return WebNodeToPage.valueOf(node).page
     }
     
     void deletePage(Double id) {
