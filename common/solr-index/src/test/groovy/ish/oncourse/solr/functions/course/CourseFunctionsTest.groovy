@@ -42,30 +42,30 @@ class CourseFunctionsTest {
 
         CourseClass expected1 = targetCourse.cCourseClass("expected1")
                 .endDate(new Date().plus(1))
-                .build().get()
+                .build().courseClass
         CourseClass expected2 = targetCourse.cCourseClass("expected2")
                 .endDate(new Date().plus(1))
-                .build().get()
+                .build().courseClass
         CourseClass expected3Distant = targetCourse.cCourseClass("expected3Distant")
                 .isDistantLearningCourse(true)
-                .build().get()
+                .build().courseClass
         CourseClass invisible = targetCourse.cCourseClass("invisible")
                 .endDate(new Date().plus(1)).isWebVisible(false)
-                .build().get()
+                .build().courseClass
         CourseClass cancelled = targetCourse.cCourseClass("cancelled")
                 .endDate(new Date().plus(1)).cancelled(true)
-                .build().get()
+                .build().courseClass
         CourseClass notFuture = targetCourse.cCourseClass("notFuture")
                 .endDate(new Date())
-                .build().get()
+                .build().courseClass
         CourseClass otherCourse1 = otherCourse.cCourseClass("otherCourse1")
                 .endDate(new Date().plus(1))
-                .build().get()
+                .build().courseClass
         CourseClass otherCourse2 = otherCourse.cCourseClass("otherCourse2")
                 .isDistantLearningCourse(true)
-                .build().get()
+                .build().courseClass
 
-        CourseContext courseContext = new CourseContext(course : targetCourse.get(), context : objectContext)
+        CourseContext courseContext = new CourseContext(course : targetCourse.course, context : objectContext)
         List<CourseClass> actualClasses = CourseFunctions.courseClassQuery(courseContext).select(objectContext)
         Assert.assertEquals(3, actualClasses.size())
         assertNotNull(actualClasses.find {cc -> (cc.code == expected1.code) })
@@ -100,7 +100,7 @@ class CourseFunctionsTest {
         collegeContext.tagCourse("TARGET COURSE", "Tag11")
         collegeContext.tagCourse("TARGET COURSE", "Tag22")
 
-        List<Tag> actualCourseTags = CourseFunctions.tagsQuery(targetCourse.get()).select(objectContext)
+        List<Tag> actualCourseTags = CourseFunctions.tagsQuery(targetCourse.course).select(objectContext)
         assertNotNull(actualCourseTags.find {tag -> tag.name == "Tag1"})
         assertNotNull("tag is related to target course and must be selected regardless of it's visibility", actualCourseTags.find {tag -> tag.name == "Tag11"})
         assertNotNull("tag is related to target course and must be selected regardless of it's parent", actualCourseTags.find {tag -> tag.name == "Tag22"})

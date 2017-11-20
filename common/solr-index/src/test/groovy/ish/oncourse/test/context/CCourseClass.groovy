@@ -8,12 +8,10 @@ import org.apache.cayenne.ObjectContext
  * Created by alex on 11/15/17.
  */
 class CCourseClass {
-    private CourseClass courseClass
+    CourseClass courseClass
     private ObjectContext objectContext
 
-    private CCourseClass(ObjectContext context){
-        objectContext = context
-    }
+    private CCourseClass(){}
 
     CCourseClass course(Course course){
         courseClass.course = objectContext.localObject(course)
@@ -51,26 +49,19 @@ class CCourseClass {
     }
 
     static CCourseClass instance(ObjectContext context, String code, Course course){
-        CCourseClass builder = new CCourseClass(context)
-        builder.createDefaultClass(code, course)
+        CCourseClass builder = new CCourseClass()
+
+        builder.objectContext = context
+        builder.courseClass = builder.objectContext.newObject(CourseClass)
+        builder.courseClass.college = builder.objectContext.localObject(course.college)
+        builder.courseClass.course = builder.objectContext.localObject(course)
+        builder.courseClass.code = code
+        builder.courseClass.isWebVisible = true
+        builder.courseClass.cancelled = false
+        builder.courseClass.isDistantLearningCourse = false
+        builder.courseClass.isActive = true
+        builder.courseClass.maximumPlaces = 100
+        builder.courseClass.startDate = new Date()
         builder
-    }
-
-    private CCourseClass createDefaultClass(String code, Course course){
-        courseClass = objectContext.newObject(CourseClass)
-        courseClass.college = objectContext.localObject(course.college)
-        courseClass.course = objectContext.localObject(course)
-        courseClass.code = code
-        courseClass.isWebVisible = true
-        courseClass.cancelled = false
-        courseClass.isDistantLearningCourse = false
-        courseClass.isActive = true
-        courseClass.maximumPlaces = 100
-        courseClass.startDate = new Date()
-        this
-    }
-
-    CourseClass get() {
-        courseClass
     }
 }

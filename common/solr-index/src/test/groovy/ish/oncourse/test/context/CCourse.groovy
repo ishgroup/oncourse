@@ -10,36 +10,28 @@ import org.apache.cayenne.ObjectContext
  */
 class CCourse {
     private ObjectContext objectContext
-    private Course course
+    Course course
 
     Map<String, CCourseClass> cClasses = new HashMap<>()
 
-    private CCourse (ObjectContext context){
-        objectContext = context
-    }
+    private CCourse (){}
 
     CCourseClass cCourseClass (String code){
         CCourseClass cClass = CCourseClass.instance(objectContext, code, course)
-        cClasses.put(cClass.get().code, cClass)
+        cClasses.put(cClass.courseClass.code, cClass)
         objectContext.commitChanges()
         cClass
     }
 
     static CCourse instance(ObjectContext context, College college, String name, String code) {
-        CCourse cCourse = new CCourse(context)
-        cCourse.createDefaultCourse(college, name, code)
-    }
+        CCourse cCourse = new CCourse()
 
-    private CCourse createDefaultCourse(College college, String name, String code){
-        course = objectContext.newObject(Course)
-        course.college = objectContext.localObject(college)
-        course.name = name
-        course.code = code
-        course.enrolmentType = CourseEnrolmentType.OPEN_FOR_ENROLMENT
-        this
-    }
-
-    Course get(){
-        course
+        cCourse.objectContext = context
+        cCourse.course = cCourse.objectContext.newObject(Course)
+        cCourse.course.college = cCourse.objectContext.localObject(college)
+        cCourse.course.name = name
+        cCourse.course.code = code
+        cCourse.course.enrolmentType = CourseEnrolmentType.OPEN_FOR_ENROLMENT
+        cCourse
     }
 }
