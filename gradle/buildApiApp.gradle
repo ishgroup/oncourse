@@ -54,7 +54,7 @@ publishing {
 
 
 
-task (swagger, dependsOn: 'classes', type: JavaExec) {
+task (swagger, type: JavaExec) {
     main = 'ish.oncourse.codegen.cxf.WillowJaxRsGenerator'
     classpath = configurations.swagger
     args  = [ servicesPackage, modelPackage, project.projectDir, "${project.projectDir}/src/main/resources/$swaggerName" ]
