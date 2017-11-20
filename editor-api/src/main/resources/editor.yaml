@@ -213,7 +213,7 @@ paths:
         '200':
           description: new page with unique id and url
           schema:
-            $ref: '#/definitions/common.CommonError'
+            $ref: '#/definitions/Page'
         default:
           description: Unexpected error
           schema:
