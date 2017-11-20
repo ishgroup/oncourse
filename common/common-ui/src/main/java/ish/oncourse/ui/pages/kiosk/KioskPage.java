@@ -50,11 +50,9 @@ public class KioskPage {
 
         Date start = Calendar.getInstance(timeZone).getTime();
         Date end = DateUtils.truncate(DateUtils.addDays(start, 1), Calendar.DAY_OF_MONTH);
-        Expression courseClassExpression = Session.COURSE_CLASS.dot(CourseClass.IS_ACTIVE).eq(Boolean.TRUE)
-                .andExp(Session.COURSE_CLASS.dot(CourseClass.CANCELLED).eq(Boolean.FALSE))
+        Expression courseClassExpression = Session.COURSE_CLASS.dot(CourseClass.CANCELLED).eq(Boolean.FALSE)
                 .andExp(Session.END_DATE.gte(start))
                 .andExp(Session.END_DATE.lt(end));
-
 
         if (room != null) {
             sessions = ObjectSelect.query(Session.class).where(ROOM.eq(room))
