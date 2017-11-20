@@ -15,6 +15,7 @@ import org.apache.cayenne.PersistentObject
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 import org.apache.commons.lang.StringUtils
+import org.eclipse.jetty.server.Request
 
 import javax.servlet.http.Cookie
 import static ish.oncourse.willow.editor.services.access.AuthenticationStatus.*
@@ -190,27 +191,25 @@ class AuthenticationService {
     }
     
     WillowUser getWillowUser(boolean isPersist = true) {
-        Cookie sessionCookie = requestService.request.cookies.find {it.name == SESSION_ID}
+        SessionCookie sessionCookie = SessionCookie.valueOf(requestService.request)
         
-        if (sessionCookie
-                && sessionCookie.value
-                && sessionCookie.value.split('-')[0] == WillowUser.simpleName 
-                && (!isPersist ||  sessionManager.sessionExist(sessionCookie.value.replace('&', '/')))) {
-            SelectById.query(WillowUser, sessionCookie.value.split('-')[1]).selectOne(cayenneService.newContext())
+        if (sessionCookie.exist
+                && sessionCookie.userType == WillowUser.simpleName 
+                && (!isPersist || sessionManager.sessionExist(sessionCookie.sessionNode))) {
+            SelectById.query(WillowUser, sessionCookie.userId).selectOne(cayenneService.newContext())
         } else {
             return null
         }
     }
 
     SystemUser getSystemUser(boolean isPersist = true) {
-        Cookie sessionCookie = requestService.request.cookies.find {it.name == SESSION_ID}
+        SessionCookie sessionCookie = SessionCookie.valueOf(requestService.request)
 
-        if (sessionCookie 
-                && sessionCookie.value
-                && sessionCookie.value.split('-')[0] == SystemUser.simpleName
-                && (!isPersist || sessionManager.sessionExist(sessionCookie.value.replace('&', '/')))) {
+        if (sessionCookie.exist 
+                && sessionCookie.userType == SystemUser.simpleName
+                && (!isPersist || sessionManager.sessionExist(sessionCookie.sessionNode))) {
             ObjectContext context = cayenneService.newContext()
-            SystemUser user = SelectById.query(SystemUser, sessionCookie.value.split('-')[1])
+            SystemUser user = SelectById.query(SystemUser, sessionCookie.userId)
                     .selectOne(context)
             if (user && user.college == WebSiteFunctions.getCurrentCollege(requestService.request, context)) {
                 return user
@@ -221,13 +220,71 @@ class AuthenticationService {
             return null
         }
     }
-
+    
     void logout() {
         requestService.response.addSetCookie(SESSION_ID,
                 null,
                 requestService.request.serverName,
                 requestService.request.contextPath,
                 0, null, false, false, 0)  
+    }
+
+    static class SessionCookie {
+        
+        private String userType
+        private Long userId
+        private String sessionNode
+        private boolean exist = true
+
+        private SessionCookie(){}
+
+        static SessionCookie valueOf(Request request) {
+            SessionCookie sessionCookie = new SessionCookie()
+            
+            Cookie cookie = request.cookies.find { it.name == SESSION_ID }
+            if (cookie && cookie.value && StringUtils.trimToNull(cookie.value)) {
+                String value = cookie.value
+                sessionCookie.sessionNode = value.replace('&', '/')
+                sessionCookie.userId = Long.valueOf(value.split('&')[0].split('-')[1])
+                sessionCookie.userType = value.split('&')[0].split('-')[0]
+            } else {
+                sessionCookie.exist = false
+            }
+            return sessionCookie
+        }
+
+        
+        String getUserType() {
+            return userType
+        }
+
+        void setUserType(String useType) {
+            this.userType = useType
+        }
+
+        Long getUserId() {
+            return userId
+        }
+
+        void setUserId(Long useId) {
+            this.userId = useId
+        }
+
+        String getSessionNode() {
+            return sessionNode
+        }
+
+        void setSessionNode(String sessionNode) {
+            this.sessionNode = sessionNode
+        }
+
+        boolean getExist() {
+            return exist
+        }
+
+        void setExist(boolean exist) {
+            this.exist = exist
+        }
     }
     
     static class AuthenticationResult {

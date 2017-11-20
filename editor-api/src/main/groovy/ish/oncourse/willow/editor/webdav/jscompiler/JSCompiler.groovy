@@ -163,7 +163,9 @@ class JSCompiler implements ICompiler {
     static JSCompiler valueOf(String sRoot, String defaultJSPath, WebSite webSite) {
         JSCompiler javaScriptCompiler = new JSCompiler()
         javaScriptCompiler.sRoot = sRoot
-        javaScriptCompiler.defaultJSPath = new File(defaultJSPath)
+        if (defaultJSPath) {
+            javaScriptCompiler.defaultJSPath = new File(defaultJSPath)
+        }
         javaScriptCompiler.siteKey = webSite.siteKey
         javaScriptCompiler.init()
         return javaScriptCompiler

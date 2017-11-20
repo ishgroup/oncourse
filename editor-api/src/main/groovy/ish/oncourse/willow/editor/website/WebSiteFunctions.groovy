@@ -16,7 +16,7 @@ class WebSiteFunctions {
         College currentCollege = (College) request.getAttribute(CURRENT_COLLEGE)
         
         if (currentCollege) {
-            return currentCollege
+            return context.localObject(currentCollege)
         }
         
         College college = getCurrentWebSite(request, context).college
@@ -27,7 +27,7 @@ class WebSiteFunctions {
     static WebSite getCurrentWebSite(Request request, ObjectContext context) {
         WebSite currentWebSite = (WebSite) request.getAttribute(CURRENT_WEB_SITE)
         if (currentWebSite) {
-            return currentWebSite
+            return context.localObject(currentWebSite)
         }
 
         WebSite site = new GetWebSite(request.serverName, context).get()
