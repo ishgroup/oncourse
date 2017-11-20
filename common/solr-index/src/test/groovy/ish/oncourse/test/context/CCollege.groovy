@@ -44,13 +44,13 @@ class CCollege {
 
     CCourse cCourse(String name, String code) {
         CCourse cCourse = CCourse.instance(objectContext, college, name, code)
-        cCourses.put(cCourse.get().code, cCourse)
+        cCourses.put(cCourse.course.code, cCourse)
         objectContext.commitChanges()
         cCourse
     }
 
     void tagCourse(String courseCode, String tagName) {
-        tagCourse(cCourses[courseCode].get(), tags[tagName])
+        tagCourse(cCourses[courseCode].course, tags[tagName])
     }
 
     void tagCourse(Course course, Tag tag) {
@@ -64,9 +64,5 @@ class CCollege {
         taggableTag.taggable = taggable
         taggableTag.tag = objectContext.localObject(tag)
         objectContext.commitChanges()
-    }
-
-    College get(){
-        college
     }
 }
