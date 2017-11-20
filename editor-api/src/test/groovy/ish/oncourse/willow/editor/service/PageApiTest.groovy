@@ -2,32 +2,30 @@ package ish.oncourse.willow.editor.service
 
 import ish.oncourse.willow.editor.model.Page
 import ish.oncourse.willow.editor.service.impl.PageApiServiceImpl
+import org.junit.Assert
 import org.junit.Test
 import org.junit.Before
 
 /**
  * API tests for PageApi
  */ 
-class PageApiTest {
+class PageApiTest extends AbstractEditorTest{
 
     private PageApi api
     
     @Before
     void setup() {
-        
+        super.setup()
+        api = new PageApiServiceImpl(cayenneService, requestService)
     }
-
-/**
-     * Add new page
+    
+    /**
      * Add new page
      */
     @Test
     void addPageTest() {
-	//CommonError response = api.addPage()
-        //assertNotNull(response)
-        // TODO: test validations
-        
-        
+        Page page = api.addPage()
+        Assert.assertNotNull(page)
     }
     
     /**

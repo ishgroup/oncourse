@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <College id="1" name="Mammoth college" webServicesSecurityCode="345ttn44$%9" communication_key="111111111111" communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
+    <WebSite id="1" collegeId="1" name="Mammoth web site" siteKey="mammoth" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+</dataset>
