@@ -8,14 +8,13 @@ import org.junit.Before
 /**
  * API tests for PageApi
  */ 
-class PageApiTest extends AbstractEditorTest{
+class PageApiTest {
 
     private PageApi api
     
     @Before
     void setup() {
-        super.setup()
-        api = new PageApiServiceImpl(cayenneService, requestService)
+        
     }
 
     @Override
