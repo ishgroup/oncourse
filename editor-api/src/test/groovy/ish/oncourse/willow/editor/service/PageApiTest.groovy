@@ -1,37 +1,35 @@
-package ish.oncourse.willow.editor.service;
+package ish.oncourse.willow.editor.service
 
-import ish.oncourse.willow.editor.model.Model200;
-import ish.oncourse.willow.editor.model.Page;
-import ish.oncourse.willow.editor.model.common.CommonError;
-import org.junit.Test;
-import org.junit.Before;
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import ish.oncourse.willow.editor.model.Page
+import ish.oncourse.willow.editor.service.impl.PageApiServiceImpl
+import org.junit.Test
+import org.junit.Before
 
 /**
  * API tests for PageApi
- */
-public class PageApiTest {
+ */ 
+class PageApiTest extends AbstractEditorTest{
 
-    private PageApi api;
+    private PageApi api
     
     @Before
-    public void setup() {
+    void setup() {
+        super.setup()
+        api = new PageApiServiceImpl(cayenneService, requestService)
     }
 
-    
-    /**
+    @Override
+    protected String getDataSetResource() {
+        return null
+    }
+/**
      * Add new page
      * Add new page
      */
     @Test
-    public void addPageTest() {
-	//CommonError response = api.addPage();
-        //assertNotNull(response);
+    void addPageTest() {
+	//CommonError response = api.addPage()
+        //assertNotNull(response)
         // TODO: test validations
         
         
@@ -42,8 +40,8 @@ public class PageApiTest {
      * Remove page
      */
     @Test
-    public void deletePageTest() {
-	//api.deletePage();
+    void deletePageTest() {
+	//api.deletePage()
         
         // TODO: test validations
         
@@ -55,13 +53,11 @@ public class PageApiTest {
      * Get page object by provided page url
      */
     @Test
-    public void getPageByUrlTest() {
-        String pageUrl = null;
-	//Page response = api.getPageByUrl(pageUrl);
-        //assertNotNull(response);
+    void getPageByUrlTest() {
+        String pageUrl = null
+	//Page response = api.getPageByUrl(pageUrl)
+        //assertNotNull(response)
         // TODO: test validations
-        
-        
     }
     
     /**
@@ -69,10 +65,10 @@ public class PageApiTest {
      * Get page rendered html by provided page id
      */
     @Test
-    public void getPageRenderTest() {
-        String pageId = null;
-	//Model200 response = api.getPageRender(pageId);
-        //assertNotNull(response);
+    void getPageRenderTest() {
+        String pageId = null
+	//Model200 response = api.getPageRender(pageId)
+        //assertNotNull(response)
         // TODO: test validations
         
         
@@ -83,9 +79,9 @@ public class PageApiTest {
      * Get pages
      */
     @Test
-    public void getPagesTest() {
-	//List<Page> response = api.getPages();
-        //assertNotNull(response);
+    void getPagesTest() {
+	//List<Page> response = api.getPages()
+        //assertNotNull(response)
         // TODO: test validations
         
         
@@ -96,10 +92,10 @@ public class PageApiTest {
      * Save page parameters
      */
     @Test
-    public void savePageTest() {
-        Page pageParams = null;
-	//Page response = api.savePage(pageParams);
-        //assertNotNull(response);
+    void savePageTest() {
+        Page pageParams = null
+	//Page response = api.savePage(pageParams)
+        //assertNotNull(response)
         // TODO: test validations
         
         

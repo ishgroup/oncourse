@@ -19,7 +19,9 @@ import org.apache.cayenne.query.SQLTemplate
 import org.eclipse.jetty.server.Request
 
 class WebNodeFunctions {
-
+    private static final String SAMPLE_WEB_CONTENT = 'Sample content'
+    private static final String NEW_PAGE_WEB_NODE_NAME = 'New Page'
+    
     static WebNode getNodeForName(String nodeName, Request request, ObjectContext context) {
         return ((ObjectSelect.query(WebNode)
                 .localCache(WebNode.simpleName) & siteQualifier(request, context)) 
@@ -46,8 +48,15 @@ class WebNodeFunctions {
                 .cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
                 .selectFirst(context)
     }
+
+    static WebNode createNewNode(Request request, ObjectContext ctx) {
+        WebSiteVersion webSiteVersion = WebSiteVersionFunctions.getCurrentVersion(request, ctx)
+        WebNodeType webNodeType = WebNodeTypeFunctions.getDefaultWebNodeType(webSiteVersion)
+        Integer nextNodeNumber = getNextNodeNumber(request, ctx)
+        return createNewNodeBy(webSiteVersion, webNodeType, "$NEW_PAGE_WEB_NODE_NAME  ($nextNodeNumber)" , SAMPLE_WEB_CONTENT, nextNodeNumber)
+    }
     
-    static synchronized WebNode createNewNodeBy(WebSiteVersion webSiteVersion,
+    static WebNode createNewNodeBy(WebSiteVersion webSiteVersion,
                                    WebNodeType webNodeType,
                                    String nodeName,
                                    String content,
