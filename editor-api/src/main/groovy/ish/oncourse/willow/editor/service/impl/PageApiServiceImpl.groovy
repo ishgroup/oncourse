@@ -27,9 +27,8 @@ class PageApiServiceImpl implements PageApi {
     Page addPage() {
         WebNode node = WebNodeFunctions.createNewNode(requestService.request, cayenneService.newContext())
         new Page().with {page ->
-            page.id = node.id
+            page.id = node.id.doubleValue()
             page.title = node.name
-
             page
         }
     }
@@ -56,7 +55,7 @@ class PageApiServiceImpl implements PageApi {
 
         nodes.collect {node ->
             new Page().with {page ->
-                page.id = node.id
+                page.id = node.id.doubleValue()
                 page.title = node.name
                 page.visible = node.published
                 page.urls = node.webUrlAliases.collect {urlAlias ->
