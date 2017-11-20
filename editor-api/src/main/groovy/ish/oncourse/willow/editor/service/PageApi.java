@@ -20,7 +20,7 @@ public interface PageApi  {
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @AuthFilter
-    CommonError addPage();
+    Page addPage();
 
     @POST
     @Path("/deletePage")
