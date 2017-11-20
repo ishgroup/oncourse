@@ -1,14 +1,15 @@
 package ish.oncourse.solr.functions.course
 
-import ish.oncourse.entityBuilder.*
 import ish.oncourse.model.*
 import ish.oncourse.solr.model.DataContext
 import ish.oncourse.test.TestContext
 import ish.oncourse.test.context.CCollege
+import ish.oncourse.test.context.CContact
 import ish.oncourse.test.context.CCourse
 import ish.oncourse.test.context.CRoom
 import ish.oncourse.test.context.CSession
 import ish.oncourse.test.context.CSite
+import ish.oncourse.test.context.CTutorRole
 import org.apache.cayenne.ObjectContext
 import org.junit.After
 import org.junit.Assert
@@ -90,14 +91,14 @@ class CourseClassFunctionsTest {
     @Test
     void testContactsQuery(){
         CourseClass targetClass = course.cCourseClass("targetClass").courseClass
-        Contact expectedContact = ContactBuilder.instance(objectContext, college, "expected contact").build()
-        TutorRoleBuilder.instance(objectContext, expectedContact, targetClass).build()
+        Contact expectedContact = CContact.instance(objectContext, college, "expected contact").build().contact
+        CTutorRole.instance(objectContext, expectedContact, targetClass).build()
 
         CourseClass otherClass = course.cCourseClass("otherClass").courseClass
-        Contact otherClassContact = ContactBuilder.instance(objectContext, college, "otherClass tutor").build()
-        TutorRoleBuilder.instance(objectContext, otherClassContact, otherClass).build()
+        Contact otherClassContact = CContact.instance(objectContext, college, "otherClass tutor").build().contact
+        CTutorRole.instance(objectContext, otherClassContact, otherClass).build()
 
-        Contact simpleContact = ContactBuilder.instance(objectContext, college, "simple contact").build()
+        Contact simpleContact = CContact.instance(objectContext, college, "simple contact").build().contact
 
         List<Contact> actualContacts = CourseClassFunctions.contactsQuery(targetClass).select(objectContext)
         Assert.assertEquals(1, actualContacts.size())
