@@ -11,6 +11,7 @@ import ish.oncourse.willow.editor.model.api.PageRenderResponse
 import groovy.transform.CompileStatic
 import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.website.WebNodeFunctions
+import org.apache.cayenne.ObjectContext
 
 @CompileStatic
 class PageApiServiceImpl implements PageApi {
@@ -25,7 +26,10 @@ class PageApiServiceImpl implements PageApi {
     }
 
     Page addPage() {
+        ObjectContext context = cayenneService.newContext()
         WebNode node = WebNodeFunctions.createNewNode(requestService.request, cayenneService.newContext())
+        context.commitChanges()
+
         new Page().with {page ->
             page.id = node.id.doubleValue()
             page.title = node.name
@@ -40,8 +44,8 @@ class PageApiServiceImpl implements PageApi {
     }
     
     Page getPageByUrl(String pageUrl) {
-        // TODO: Implement...
-        
+        WebNode node = WebNodeFunctions.getNodeByPath(pageUrl, requestService.request, cayenneService.newContext())
+
         return null
     }
     
