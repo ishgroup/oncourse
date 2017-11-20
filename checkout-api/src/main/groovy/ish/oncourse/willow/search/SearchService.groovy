@@ -1,6 +1,7 @@
 package ish.oncourse.willow.search
 
 import com.google.inject.Inject
+import ish.oncourse.configuration.Configuration
 import ish.oncourse.willow.model.common.Item
 import ish.oncourse.willow.model.field.Suburb
 import org.apache.solr.client.solrj.SolrClient
@@ -26,7 +27,7 @@ class SearchService {
 
     @Inject
     SearchService() {
-        String zkHost = System.getProperty(ZK_HOST.systemProperty)
+        String zkHost = Configuration.getValue(ZK_HOST)
 
         if (zkHost == null) {
             throw new IllegalStateException('Zookeeper host property undefined')

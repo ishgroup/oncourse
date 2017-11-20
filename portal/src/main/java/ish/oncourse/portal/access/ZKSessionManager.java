@@ -3,6 +3,7 @@
  */
 package ish.oncourse.portal.access;
 
+import ish.oncourse.configuration.Configuration;
 import ish.oncourse.configuration.InitZKRootNode;
 import ish.util.SecurityUtil;
 import org.apache.commons.lang3.SerializationUtils;
@@ -51,7 +52,7 @@ public class ZKSessionManager implements  ISessionManager {
     }
     
     private ZooKeeper createZk(){
-        String zkHost = System.getProperty(ZK_HOST.getSystemProperty());
+        String zkHost = Configuration.getValue(ZK_HOST);
 
         if (zkHost == null) {
             throw new IllegalStateException("Zookeeper host property undefined");

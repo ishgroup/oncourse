@@ -9,6 +9,7 @@ import io.milton.http.exceptions.BadRequestException
 import io.milton.http.exceptions.ConflictException
 import io.milton.http.exceptions.NotAuthorizedException
 import io.milton.resource.Resource
+import ish.oncourse.configuration.Configuration
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.services.access.AuthenticationService
@@ -37,7 +38,7 @@ class RootResourceFactory implements ResourceFactory {
         this.cayenneService = cayenneService
         this.requestService = requestService
         
-        this.sRoot = S_ROOT.value
+        this.sRoot = Configuration.getValue(S_ROOT)
                 
         this.blockResourceFactory = new BlockResourceFactory(cayenneService, requestService, securityManager)
         this.pageResourceFactory = new PageResourceFactory(cayenneService, requestService, securityManager)

@@ -3,6 +3,7 @@
  */
 package ish.oncourse.portal.services.application;
 
+import ish.oncourse.configuration.Configuration;
 import ish.oncourse.services.search.SearchService;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.impl.CloudSolrClient;
@@ -18,7 +19,7 @@ public class PortalSearchService extends SearchService {
         }
         if (solrClient == null) {
             try {
-                String solrURL = System.getProperty(ZK_HOST.getSystemProperty());
+                String solrURL = Configuration.getValue(ZK_HOST);
                 if (solrURL == null) {
                     throw new IllegalStateException("Undefined property: " + ZK_HOST.getSystemProperty());
                 }

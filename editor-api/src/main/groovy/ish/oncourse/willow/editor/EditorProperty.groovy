@@ -7,9 +7,21 @@ enum EditorProperty implements IProperty {
     DEPLOY_SCRIPT_PATH('editor_deploy', 'editor.script.deploy'),
     S_ROOT('editor_files', 's.root')
 
+
+    private String key
+    private String systemProperty
+
     private EditorProperty(String key, String systemProperty) {
         this.key = key
         this.systemProperty = systemProperty
     }
+    
+    String getKey() {
+        key
+    }
 
+    String getSystemProperty() {
+        systemProperty
+    }
+    
 }

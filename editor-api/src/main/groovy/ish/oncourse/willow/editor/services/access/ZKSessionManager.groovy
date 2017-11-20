@@ -1,6 +1,7 @@
 package ish.oncourse.willow.editor.services.access
 
 import com.google.inject.Inject
+import ish.oncourse.configuration.Configuration
 import ish.oncourse.configuration.InitZKRootNode
 import org.apache.commons.lang3.SerializationUtils
 import org.apache.logging.log4j.LogManager
@@ -29,7 +30,7 @@ class ZKSessionManager {
     
     @Inject
     ZKSessionManager() {
-        zkHost= System.getProperty(ZK_HOST.systemProperty)
+        zkHost= Configuration.getValue(ZK_HOST)
         if (!zkHost) {
             throw new IllegalStateException('Zookeeper host property undefined')
         }

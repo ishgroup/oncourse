@@ -10,40 +10,52 @@ class Configuration {
     static final String BD_URL = 'jdbc:mysql://%s:%s/%s?autoReconnect=true&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf8&useSSL=false'
     
     static configure(IProperty... extendedProps = null) {
+        
         String userDir = System.getProperties().get(USER_DIR) as String
         File propFile = new File("$userDir/$CONFIG_FILE_NAME")
         if (propFile.exists()) {
-            Properties prop = new Properties()
-            prop.load(new FileInputStream(propFile))
+            Properties props = new Properties()
+            props.load(new FileInputStream(propFile))
             
-            if (!LOGS_PATH.init(prop)) {
+            if (!init(props, LOGS_PATH)) {
                 System.setProperty(LOGS_PATH.systemProperty, "${userDir}/logs/")
             }
-            PORT.init(prop)
-            HOST.init(prop)
-            PATH.init(prop)
-            System.setProperty(JDBC_URL_PROPERTY, String.format(BD_URL, prop.get(DB_HOST.key), prop.get(DB_PORT.key), prop.get(DB_NAME.key)))
-            DB_PASS.init(prop)
-            DB_USER.init(prop)
-            SMTP.init(prop)
+            init(props, PORT)
+            init(props, HOST)
+            init(props, PATH)
+            System.setProperty(JDBC_URL_PROPERTY, String.format(BD_URL, props.get(DB_HOST.key), props.get(DB_PORT.key), props.get(DB_NAME.key)))
+            init(props, DB_PASS)
+            init(props, DB_USER)
+            init(props, SMTP)
 
-            if (ZK_HOST.init(prop)) {
-                String zkHostPort = prop.get(ZK_HOST.key) as String
+            if (init(props, ZK_HOST)) {
+                String zkHostPort = props.get(ZK_HOST.key) as String
                 InitZKRootNode.valueOf(zkHostPort).init()
             }
             if (extendedProps) {
-                extendedProps.each { it.init(prop) }
+                extendedProps.each { init(props, it) }
             }
         } else {
             throw new IllegalArgumentException("application.properties file not found")
         }
     }
 
+    static boolean init(Properties props, IProperty prop) {
+        if (props.get(prop.key)) {
+            System.setProperty(prop.systemProperty, props.get(prop.key) as String)
+            return true
+        }
+        return false
+    }
+    
+    static String getValue(IProperty prop) {
+        System.getProperty(prop.systemProperty)
+    }
+    
     /**
      * properties which supported into 'application.properties' files
      */
     static enum AppProperty implements IProperty {
-        
         PORT('port', 'bq.jetty.connector.port'),
         HOST('host', 'bq.jetty.connector.host'),
         DB_HOST('db_host', null),
@@ -55,11 +67,21 @@ class Configuration {
         ZK_HOST('zk_host', 'zk.host.property'),
         LOGS_PATH('logs_path', 'logs.path'),
         SMTP('smtp', 'mail.smtp.host')
+
+        private String key
+        private String systemProperty
         
         private AppProperty(String key, String systemProperty) {
             this.key = key
             this.systemProperty = systemProperty
         }
-        
+
+        String getKey() {
+            key
+        }
+
+        String getSystemProperty() {
+            systemProperty
+        }
     }
 }

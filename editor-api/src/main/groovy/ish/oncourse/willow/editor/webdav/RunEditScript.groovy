@@ -1,5 +1,6 @@
 package ish.oncourse.willow.editor.webdav
 
+import ish.oncourse.configuration.Configuration
 import ish.oncourse.willow.editor.services.access.AuthenticationService
 import org.apache.commons.lang3.StringUtils
 import org.apache.logging.log4j.LogManager
@@ -21,7 +22,7 @@ class RunEditScript {
     private ExecutorService executorService
 
     void run() {
-        String scriptPath = EDIT_SCRIPT_PATH.value
+        String scriptPath = Configuration.getValue(EDIT_SCRIPT_PATH)
 
         if (StringUtils.trimToNull(scriptPath) == null) {
             logger.error('Edit file script is not defined! Resources haven\'t been updated!')

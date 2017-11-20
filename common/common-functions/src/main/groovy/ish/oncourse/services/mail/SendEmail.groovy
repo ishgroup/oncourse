@@ -1,5 +1,6 @@
 package ish.oncourse.services.mail
 
+import ish.oncourse.configuration.Configuration
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
@@ -53,11 +54,10 @@ class SendEmail {
     }
 
     private Session getSession() {
-        Properties props = System.properties
-        if (!props.containsKey(SMTP.systemProperty)) {
+        if (!Configuration.getValue(SMTP)) {
             logger.error('SMTP host is not defined!')
         }
-        return Session.getDefaultInstance(props, null)
+        return Session.getDefaultInstance(System.properties, null)
     }
 
     private boolean doSend(Message message) {

@@ -1,5 +1,6 @@
 package ish.oncourse.services.mail;
 
+import ish.oncourse.configuration.Configuration;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 import org.apache.commons.validator.EmailValidator;
@@ -45,11 +46,11 @@ public class MailService implements IMailService {
 			logger.error("Bad recipient address");
 			return false;
 		}
-		Properties props = System.getProperties();
-		if (!props.containsKey(SMTP.getSystemProperty())) {
+		
+		if (Configuration.getValue(SMTP) == null) {
 			logger.error("SMPT host is not defined!");
 		}
-		Session session = Session.getDefaultInstance(props, null);
+		Session session = Session.getDefaultInstance(System.getProperties(), null);
 		// -- Create a new message --
 		Message msg = new MimeMessage(session);
 
