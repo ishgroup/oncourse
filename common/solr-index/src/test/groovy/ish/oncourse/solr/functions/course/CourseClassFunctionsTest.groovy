@@ -6,6 +6,9 @@ import ish.oncourse.solr.model.DataContext
 import ish.oncourse.test.TestContext
 import ish.oncourse.test.context.CCollege
 import ish.oncourse.test.context.CCourse
+import ish.oncourse.test.context.CRoom
+import ish.oncourse.test.context.CSession
+import ish.oncourse.test.context.CSite
 import org.apache.cayenne.ObjectContext
 import org.junit.After
 import org.junit.Assert
@@ -40,14 +43,14 @@ class CourseClassFunctionsTest {
     @Test
     void testSessionsQuery(){
         CourseClass targetClass = course.cCourseClass("targetClass").courseClass
-        SessionBuilder.instance(objectContext, targetClass).startDate(new Date().plus(1)).build()
-        SessionBuilder.instance(objectContext, targetClass).startDate(new Date()).build()
-        SessionBuilder.instance(objectContext, targetClass).startDate(new Date().minus(1)).build()
-        SessionBuilder.instance(objectContext, targetClass).startDate(new Date()).build()
+        CSession.instance(objectContext, targetClass).startDate(new Date().plus(1)).build()
+        CSession.instance(objectContext, targetClass).startDate(new Date()).build()
+        CSession.instance(objectContext, targetClass).startDate(new Date().minus(1)).build()
+        CSession.instance(objectContext, targetClass).startDate(new Date()).build()
 
         CourseClass otherClass = course.cCourseClass("otherClass").courseClass
-        SessionBuilder.instance(objectContext, otherClass).startDate(new Date()).build()
-        SessionBuilder.instance(objectContext, otherClass).startDate(new Date().plus(1)).build()
+        CSession.instance(objectContext, otherClass).startDate(new Date()).build()
+        CSession.instance(objectContext, otherClass).startDate(new Date().plus(1)).build()
 
         List<Session> actualSessions = CourseClassFunctions.sessionsQuery(targetClass).select(objectContext)
         Assert.assertEquals(4, actualSessions.size())
@@ -62,18 +65,18 @@ class CourseClassFunctionsTest {
     void testSessionSitesQuery(){
         CourseClass targetClass = course.cCourseClass("targetClass").courseClass
 
-        Site expectedSite = SiteBuilder.instance(objectContext, college).isWebVisible(true).build()
-        SessionBuilder.instance(objectContext,targetClass).newDefaultRoomWithSite(expectedSite).build()
+        Site expectedSite = CSite.instance(objectContext, college).isWebVisible(true).build().site
+        CSession.instance(objectContext,targetClass).cRoom(expectedSite).build()
 
-        Site invisibleSite = SiteBuilder.instance(objectContext, college).isWebVisible(false).build()
-        SessionBuilder.instance(objectContext,targetClass).newDefaultRoomWithSite(invisibleSite).build()
+        Site invisibleSite = CSite.instance(objectContext, college).isWebVisible(false).build().site
+        CSession.instance(objectContext,targetClass).cRoom(invisibleSite).build()
 
         CourseClass otherClass = course.cCourseClass("otherClass").courseClass
-        Site otherClassSite = SiteBuilder.instance(objectContext, college).isWebVisible(true).build()
-        SessionBuilder.instance(objectContext,otherClass).newDefaultRoomWithSite(otherClassSite).build()
+        Site otherClassSite = CSite.instance(objectContext, college).isWebVisible(true).build().site
+        CSession.instance(objectContext,otherClass).cRoom(otherClassSite).build()
 
-        Site mainSite = SiteBuilder.instance(objectContext, college).isWebVisible(true).build()
-        targetClass.room = RoomBuilder.instance(objectContext, mainSite).build()
+        Site mainSite = CSite.instance(objectContext, college).isWebVisible(true).build().site
+        targetClass.room = CRoom.instance(objectContext, mainSite).build().room
 
 
         List<Site> actualSites = CourseClassFunctions.sessionSitesQuery(targetClass).select(objectContext)

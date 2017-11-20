@@ -20,7 +20,7 @@ class CPostcodeDb {
         CPostcodeDb cPostcodeDb = new CPostcodeDb()
         cPostcodeDb.objectContext = context
 
-        cPostcodeDb.postcodeDb = cPostcodeDb.objectContext.newObject(PostcodeDb.class)
+        cPostcodeDb.postcodeDb = cPostcodeDb.objectContext.newObject(PostcodeDb)
         cPostcodeDb.postcodeDb.postcode = postcode
         cPostcodeDb.postcodeDb.suburb = 'some suburb'
         cPostcodeDb.postcodeDb.state = faker.address().stateAbbr()
