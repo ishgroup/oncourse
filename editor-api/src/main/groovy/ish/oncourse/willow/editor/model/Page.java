@@ -9,7 +9,7 @@ public class Page  {
     private Double id = null;
     private String title = null;
     private Double themeId = null;
-    private String html = null;
+    private String content = null;
     private Boolean visible = null;
     private List<PageUrl> urls = new ArrayList<PageUrl>();
 
@@ -66,18 +66,18 @@ public class Page  {
 
     /**
      * Html source of the page
-     * @return html
+     * @return content
      */
-    public String getHtml() {
-        return html;
+    public String getContent() {
+        return content;
     }
 
-    public void setHtml(String html) {
-       this.html = html;
+    public void setContent(String content) {
+       this.content = content;
     }
 
-    public Page html(String html) {
-      this.html = html;
+    public Page content(String content) {
+      this.content = content;
       return this;
     }
 
@@ -129,7 +129,7 @@ public class Page  {
       sb.append("    id: ").append(toIndentedString(id)).append("\n");
       sb.append("    title: ").append(toIndentedString(title)).append("\n");
       sb.append("    themeId: ").append(toIndentedString(themeId)).append("\n");
-      sb.append("    html: ").append(toIndentedString(html)).append("\n");
+      sb.append("    content: ").append(toIndentedString(content)).append("\n");
       sb.append("    visible: ").append(toIndentedString(visible)).append("\n");
       sb.append("    urls: ").append(toIndentedString(urls)).append("\n");
       sb.append("}");

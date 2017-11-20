@@ -7,7 +7,7 @@ export class PageApi {
   constructor(private http: HttpService) {
   }
 
-  addPage(): Promise<CommonError> {
+  addPage(): Promise<Page> {
     return this.http.POST(`/addPage`);
   }
   deletePage(id: number): Promise<any> {

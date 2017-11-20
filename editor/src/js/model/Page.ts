@@ -20,7 +20,7 @@ export class Page {
   /**
    * Html source of the page
    */
-  html?: string;
+  content?: string;
 
   /**
    * Has page visible

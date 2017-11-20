@@ -789,7 +789,7 @@ definitions:
       themeId:
         type: number
         description: theme Id for the page
-      html:
+      content:
         type: string
         description: Html source of the page
       visible:
