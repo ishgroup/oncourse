@@ -34,6 +34,12 @@ class PageService {
     return link && !pages.find(page => page.urls.find(i => i.link === link));
   }
 
+  public generateBasetUrl(page) {
+    return {
+      link: `/page/${page.id}`,
+    };
+  }
+
   public buildSavePageRequest(props, state: State): Page {
     const page = state.page.items.find(p => p.id === props.id);
     const request: Page = new Page();
@@ -42,7 +48,7 @@ class PageService {
     request.id = newPage.id;
     request.title = newPage.title;
     request.themeId = newPage.themeId;
-    request.html = newPage.html;
+    request.content = newPage.content;
     request.urls = newPage.urls;
     request.visible = newPage.visible;
 

@@ -10,6 +10,7 @@ import {SidebarList} from "../../../../../components/Sidebar/SidebarList";
 import {showModal} from "../../../../../common/containers/modal/actions";
 import {State} from "../../../../../reducers/state";
 import {notificationParams} from "../../../../../common/utils/NotificationSettings";
+import PageService from "../../../../../services/PageService";
 
 interface Props {
   pages: Page[];
@@ -39,6 +40,11 @@ export class PagesSidebar extends React.Component<Props, any> {
     onAddPage();
   }
 
+  getDefaultLink(items, page) {
+    const defaultUrl = items.find(item => item.isDefault);
+    return defaultUrl ? defaultUrl.link : PageService.generateBasetUrl(page).link;
+  }
+
   render() {
     const {pages, match, onEditSettings, onDeletePage, showModal, fetching, showError, themes} = this.props;
     const activePage = match.params.id && pages.find(page => page.id == match.params.id);
@@ -50,7 +56,7 @@ export class PagesSidebar extends React.Component<Props, any> {
             items={pages}
             category="pages"
             subTitleKey="urls"
-            subTitleFilter={(items => items.find(item => item.isDefault).link)}
+            subTitleFilter={(items, page) => this.getDefaultLink(items, page)}
             onBack={() => this.goBack()}
             onAdd={() => this.onAddPage()}
           />

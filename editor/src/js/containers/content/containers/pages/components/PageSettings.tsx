@@ -124,6 +124,7 @@ export class PageSettings extends React.PureComponent<Props, any> {
   render () {
     const {page, themes} = this.props;
     const {title, visible, themeId, urls, newLink} = this.state;
+    const defaultPageUrl = PageService.generateBasetUrl(page);
 
     return (
       <div>
@@ -155,14 +156,25 @@ export class PageSettings extends React.PureComponent<Props, any> {
               <Label htmlFor="pageUrl">Page Links (URLs)</Label>
 
               <div className="links">
+
+                <div className="links__item">
+                  <div
+                    onClick={() => urls.find(url => url.isDefault) && this.onSetDefaultUrl(defaultPageUrl)}
+                    className={classnames("links__title links__title--base", {
+                      "links__title--default": !urls.find(url => url.isDefault),
+                    })}
+                    title={defaultPageUrl.link}
+                  >
+                    {defaultPageUrl.link}
+                  </div>
+                </div>
+
+
                 {urls.map((url, index) => (
                   <div className="links__item" key={index}>
                     <div
                       onClick={() => !url.isDefault && this.onSetDefaultUrl(url)}
-                      className={classnames("links__title", {
-                        "links__title--default": url.isDefault,
-                        "links__title--base": url.isBase,
-                      })}
+                      className={classnames("links__title", {"links__title--default": url.isDefault})}
                       title={url.link}
                     >
                       {url.link}

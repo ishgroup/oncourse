@@ -68,17 +68,11 @@ export class MockDB {
         themeId: 2,
         urls: [
           {
-            link: '/page/1/',
-            isBase: true,
-            isDefault: true,
-          },
-          {
             link: '/page1/',
-            isBase: false,
             isDefault: false,
           },
         ],
-        html: "<div>\n  <h1>Page Html 1</h1>\n  <p>Page text 1</p>\n</div>",
+        content: "<div>\n  <h1>Page Html 1</h1>\n  <p>Page text 1</p>\n</div>",
       },
       {
         id: 2,
@@ -87,22 +81,15 @@ export class MockDB {
         themeId: 2,
         urls: [
           {
-            link: '/page/2/',
-            isBase: true,
-            isDefault: true,
-          },
-          {
             link: '/page2/',
-            isBase: false,
             isDefault: false,
           },
           {
             link: '/mypage2/',
-            isBase: false,
             isDefault: false,
           },
         ],
-        html: "<div>\n  <h2>Page Html 2</h2>\n  <p>\n    <small>Page text 2</small>\n  </p>\n  <p>\n    Lorem ipsum dolor sit amet, consectetur adipisicing elit. \n    Accusantium adipisci autem commodi culpa cupiditate distinctio dolore doloremque \n    eius eveniet exercitationem facere facilis fuga fugit illo illum iste magnam \n    maxime minima nam nemo numquam officia provident quas quidem reprehenderit \n    repudiandae rerum sed totam ullam unde, velit vero vitae voluptate? Error, \n    soluta.\n  </p>\n</div>\n",
+        content: "<div>\n  <h2>Page Html 2</h2>\n  <p>\n    <small>Page text 2</small>\n  </p>\n  <p>\n    Lorem ipsum dolor sit amet, consectetur adipisicing elit. \n    Accusantium adipisci autem commodi culpa cupiditate distinctio dolore doloremque \n    eius eveniet exercitationem facere facilis fuga fugit illo illum iste magnam \n    maxime minima nam nemo numquam officia provident quas quidem reprehenderit \n    repudiandae rerum sed totam ullam unde, velit vero vitae voluptate? Error, \n    soluta.\n  </p>\n</div>\n",
       },
       {
         id: 3,
@@ -111,22 +98,15 @@ export class MockDB {
         themeId: 2,
         urls: [
           {
-            link: '/page/3/',
-            isBase: true,
-            isDefault: true,
-          },
-          {
             link: '/page3/',
-            isBase: false,
             isDefault: false,
           },
           {
             link: '/mypage3/',
-            isBase: false,
             isDefault: false,
           },
         ],
-        html: "<div>\n  <h4>Page Html 3</h4>\n  <p>Page text 3</p>\n  <p>Other Page text 3</p>\n  <p>\n    Lorem ipsum dolor sit amet, consectetur adipisicing elit. \n  Beatae distinctio doloremque illum iure neque nisi perspiciatis quas quasi \n  repudiandae sed?\n  </p>\n</div>\n",
+        content: "<div>\n  <h4>Page Html 3</h4>\n  <p>Page text 3</p>\n  <p>Other Page text 3</p>\n  <p>\n    Lorem ipsum dolor sit amet, consectetur adipisicing elit. \n  Beatae distinctio doloremque illum iure neque nisi perspiciatis quas quasi \n  repudiandae sed?\n  </p>\n</div>\n",
       },
     ];
   }
@@ -477,13 +457,7 @@ export class MockDB {
     const newId = Math.max(...this.pages.map(page => page.id)) + 1;
     page.title = `New Page ${isFinite(newId) ? newId : 1}`;
     page.id = isFinite(newId) ? newId : 1;
-    page.urls = [
-      {
-        link: `/page/${newId}`,
-        isDefault: true,
-        isBase: true,
-      },
-    ];
+    page.urls = [];
 
     this.pages.push(page);
     return page;
@@ -516,7 +490,7 @@ export class MockDB {
   }
 
   getPageRender(id) {
-    return this.pages.find(page => page.id === id).html;
+    return this.pages.find(page => page.id === id).content;
   }
 
   addContact(contact) {

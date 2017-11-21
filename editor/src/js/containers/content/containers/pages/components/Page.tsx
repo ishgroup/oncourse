@@ -7,7 +7,7 @@ import {getHistoryInstance} from "../../../../../history";
 
 interface PageProps {
   page: PageState;
-  onSave: (pageId, html) => void;
+  onSave: (pageId, content) => void;
   openPage: (url) => void;
   toggleEditMode: (flag: boolean) => any;
   clearRenderHtml?: (pageId: number) => void;
@@ -21,8 +21,8 @@ export class Page extends React.PureComponent<PageProps, any> {
     super(props);
     this.state = {
       editMode: false,
-      html: '',
-      draftHtml: '',
+      content: '',
+      draftContent: '',
     };
   }
 
@@ -33,8 +33,8 @@ export class Page extends React.PureComponent<PageProps, any> {
     toggleEditMode(false);
     this.setState({
       editMode: false,
-      html: page.html,
-      draftHtml: page.html,
+      content: page.content,
+      draftContent: page.content,
     });
 
     if (pageNode) {
@@ -53,8 +53,8 @@ export class Page extends React.PureComponent<PageProps, any> {
 
       this.setState({
         editMode: true,
-        html: props.page.html,
-        draftHtml: props.page.html,
+        content: props.page.content,
+        draftContent: props.page.content,
       });
     }
 
@@ -87,15 +87,15 @@ export class Page extends React.PureComponent<PageProps, any> {
     const {page, toggleEditMode} = this.props;
     this.setState({
       editMode: true,
-      html: page.html,
-      draftHtml: page.html,
+      content: page.content,
+      draftContent: page.content,
     });
     toggleEditMode(true);
     getHistoryInstance().push(`/pages/${page.id}`);
   }
 
   onChangeArea(val) {
-    this.setState({draftHtml: val});
+    this.setState({draftContent: val});
   }
 
   onSave() {
@@ -103,7 +103,7 @@ export class Page extends React.PureComponent<PageProps, any> {
 
     toggleEditMode(false);
     this.setState({editMode: false});
-    onSave(page.id, this.state.draftHtml);
+    onSave(page.id, this.state.draftContent);
   }
 
   onCancel() {
@@ -111,7 +111,7 @@ export class Page extends React.PureComponent<PageProps, any> {
 
     this.setState({
       editMode: false,
-      draftHtml: page.html,
+      draftContent: page.content,
     });
     toggleEditMode(false);
   }
@@ -123,7 +123,7 @@ export class Page extends React.PureComponent<PageProps, any> {
         <div>
           <FormGroup>
             <Editor
-              value={this.state.draftHtml}
+              value={this.state.draftContent}
               onChange={val => this.onChangeArea(val)}
             />
           </FormGroup>
