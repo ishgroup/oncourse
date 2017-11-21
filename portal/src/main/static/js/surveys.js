@@ -44,10 +44,28 @@ Survey.prototype = {
         });
     },
 
+    initNetPromoterScoreRate: function (rateHtml, score, readOnly) {
+        var self = this;
+        rateHtml.raty({
+            half: false,
+            size: 24,
+            starOff: '/portal/img/star-off-big.png',
+            starOn: '/portal/img/star-on-big.png',
+            hints: ['not likely', '', '', '', '', '', '', '', '', 'very likely'],
+            readOnly: readOnly,
+            number: 10,
+            score: score,
+            click: function () {
+                self.refreshAverageRating();
+            }
+        });
+    },
+
     initializeSurveys: function () {
         this.loadSurvey();
         var self = this;
 
+        this.initNetPromoterScoreRate($j("div[data='" + self.id + "'].class-reviews").find("span.netPromoterScore-rate"), this.survey.netPromoterScore, this.survey.readOnly);
         this.initRate($j("div[data='" + self.id + "'].class-reviews").find("span.venue-rate"), this.survey.venueScore, this.survey.readOnly);
         this.initRate($j("div[data='" + self.id + "'].class-reviews").find("span.tutor-rate"), this.survey.tutorScore, this.survey.readOnly);
         this.initRate($j("div[data='" + self.id + "'].class-reviews").find("span.course-rate"), this.survey.courseScore, this.survey.readOnly);
@@ -91,10 +109,22 @@ Survey.prototype = {
            ($j("div[data='" + self.id + "'].class-reviews").find("span.venue-rate").raty("score") +
             $j("div[data='" + self.id + "'].class-reviews").find("span.tutor-rate").raty("score") +
             $j("div[data='" + self.id + "'].class-reviews").find("span.course-rate").raty("score")) / 3));
+
+        var score = $j("div[data='" + self.id + "'].class-reviews").find("span.netPromoterScore-rate").find('input[name=score]').val();
+        var placeholderMessage = 'Enter comments...';
+        if (score >= 1 && score <= 6) {
+            placeholderMessage = 'Please tell us how we could have improved your experience.';
+        } else {
+            if (score >= 7 && score <= 10) {
+                placeholderMessage = 'What did you most enjoy about your experience.';
+            }
+        }
+        $j("div[data='" + self.id + "'].class-reviews").find("textarea.survey-comment").attr('placeholder', placeholderMessage);
     },
 
     fillSurvey: function () {
         var self = this;
+        $j("div[data='" + self.id + "'].class-reviews").find("span.netPromoterScore-rate").raty("score", this.survey.netPromoterScore);
         $j("div[data='" + self.id + "'].class-reviews").find("span.venue-rate").raty("score", this.survey.venueScore);
         $j("div[data='" + self.id + "'].class-reviews").find("span.tutor-rate").raty("score", this.survey.tutorScore);
         $j("div[data='" + self.id + "'].class-reviews").find("span.course-rate").raty("score", this.survey.courseScore);
@@ -108,6 +138,7 @@ Survey.prototype = {
         var actionLink = "/portal/class.classdetailsnew.surveys:saveSurvey/" + self.id;
         var data = {
 
+            "netPromoterScore": $j("div[data='" + self.id + "'].class-reviews").find("span.netPromoterScore-rate").find('input[name=score]').val(),
             "comment": $j("div[data='" + self.id + "'].class-reviews").find("textarea.survey-comment").val(),
             "courseScore": $j("div[data='" + self.id + "'].class-reviews").find("span.course-rate").find('input[name=score]').val(),
             "tutorScore": $j("div[data='" + self.id + "'].class-reviews").find("span.tutor-rate").find('input[name=score]').val(),

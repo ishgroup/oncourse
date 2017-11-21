@@ -83,8 +83,10 @@ public class Surveys {
         value = StringUtils.trimToEmpty(request.getParameter(Survey.COMMENT_PROPERTY));
         survey.setComment(value);
 
-        value = StringUtils.trimToEmpty(request.getParameter(Survey.PUBLIC_COMMENT_PROPERTY));
-        survey.setPublicComment(Boolean.valueOf(value));
+        value = StringUtils.trimToEmpty(request.getParameter(Survey.NET_PROMOTER_SCORE_PROPERTY));
+        if (StringUtils.isNumeric(value)) {
+            survey.setNetPromoterScore(Integer.valueOf(value));
+        }
 
         survey.getObjectContext().commitChanges();
     }

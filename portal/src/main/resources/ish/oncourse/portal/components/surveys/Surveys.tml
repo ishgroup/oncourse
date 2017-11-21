@@ -1,6 +1,12 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
     <div id="class-reviews" class="class-reviews" data="${courseClass.id}">
         <span class="arrow-top"></span>
+        <ul class="promoter-score-details">
+            <li>
+                <label>How likely are you to recommend us to a friend?</label>
+                <span class="rate rate-inline netPromoterScore-rate"/>
+            </li>
+        </ul>
         <ul class="rating-class-details">
             <li>
                 <label>Venue</label>
