@@ -2,6 +2,7 @@ package ish.oncourse.willow.editor.service
 
 import ish.oncourse.willow.editor.model.Page
 import ish.oncourse.willow.editor.service.impl.PageApiServiceImpl
+import ish.oncourse.willow.editor.website.WebNodeFunctions
 import org.junit.Assert
 import org.junit.Test
 import org.junit.Before
@@ -26,6 +27,12 @@ class PageApiTest extends AbstractEditorTest{
     void addPageTest() {
         Page page = api.addPage()
         Assert.assertNotNull(page)
+        Assert.assertNotNull(page.title)
+        Assert.assertNotNull(page.themeId)
+        Assert.assertNotNull(page.id)
+        Assert.assertEquals(page.content, 'Sample content')
+        Assert.assertEquals(page.urls, [])
+        Assert.assertEquals(page.visible, false)
     }
     
     /**

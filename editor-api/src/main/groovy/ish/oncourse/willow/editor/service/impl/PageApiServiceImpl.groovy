@@ -27,7 +27,7 @@ class PageApiServiceImpl implements PageApi {
 
     Page addPage() {
         ObjectContext context = cayenneService.newContext()
-        WebNode node = WebNodeFunctions.createNewNode(requestService.request, cayenneService.newContext())
+        WebNode node = WebNodeFunctions.createNewNode(requestService.request, context)
         context.commitChanges()
 
         return WebNodeToPage.valueOf(node).page
