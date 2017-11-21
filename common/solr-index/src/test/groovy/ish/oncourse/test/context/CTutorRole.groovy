@@ -48,6 +48,7 @@ class CTutorRole {
         role.college = tutor.college
         role.courseClass = courseClass
         role.inPublicity = true
+        objectContext.commitChanges()
         this
     }
 }

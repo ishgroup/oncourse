@@ -2,6 +2,7 @@ package ish.oncourse.test.context
 
 import ish.oncourse.model.Course
 import ish.oncourse.model.CourseClass
+import ish.oncourse.model.Tutor
 import org.apache.cayenne.ObjectContext
 
 /**
@@ -46,6 +47,10 @@ class CCourseClass {
     CCourseClass build(){
         objectContext.commitChanges()
         this
+    }
+
+    CCourseClass tutor(Tutor tutor){
+        courseClass.tuto
     }
 
     static CCourseClass instance(ObjectContext context, String code, Course course){

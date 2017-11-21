@@ -1,5 +1,6 @@
 package ish.oncourse.test.context
 
+import ish.oncourse.model.College
 import ish.oncourse.model.Contact
 import ish.oncourse.model.Tutor
 import org.apache.cayenne.ObjectContext
@@ -18,14 +19,25 @@ class CTutor {
         this
     }
 
+    static CTutor instance(ObjectContext context, College college, String contactUniqueCode){
+        Contact contact = CContact.instance(context, college, contactUniqueCode).contact
+        CTutor builder = new CTutor()
+        builder.createTutor(context, contact)
+    }
+
     static CTutor instance(ObjectContext context, Contact contact){
         CTutor builder = new CTutor()
-        builder.objectContext = context
+        builder.createTutor(context, contact)
+    }
 
-        builder.tutor = builder.objectContext.newObject(Tutor)
-        builder.tutor.contact = contact
-        builder.tutor.college = contact.college
+    private CTutor createTutor(ObjectContext context, Contact contact){
 
-        builder
+        objectContext = context
+
+        tutor = objectContext.newObject(Tutor)
+        tutor.contact = contact
+        tutor.college = contact.college
+        objectContext.commitChanges()
+        this
     }
 }
