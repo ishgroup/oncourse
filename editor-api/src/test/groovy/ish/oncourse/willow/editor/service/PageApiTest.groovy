@@ -29,7 +29,7 @@ class PageApiTest extends AbstractEditorTest{
         Assert.assertNotNull(page)
         Assert.assertNotNull(page.title)
         Assert.assertNotNull(page.themeId)
-        Assert.assertNotNull(page.id)
+        Assert.assertEquals(page.id, 2,0)
         Assert.assertEquals(page.content, 'Sample content')
         Assert.assertEquals(page.urls, [])
         Assert.assertEquals(page.visible, false)
@@ -54,7 +54,17 @@ class PageApiTest extends AbstractEditorTest{
      */
     @Test
     void getPageByUrlTest() {
-        String pageUrl = null
+        Page newPage = api.addPage()
+        String number = newPage.number.longValue().toString()
+        String pageUrl = "/page/${number}"
+
+        Assert.assertEquals(pageUrl, "/page/2")
+
+        Page page = api.getPageByUrl(pageUrl)
+
+        Assert.assertNotNull(page)
+        Assert.assertEquals(page.id, 2,0)
+
 	//Page response = api.getPageByUrl(pageUrl)
         //assertNotNull(response)
         // TODO: test validations

@@ -16,9 +16,12 @@ import org.apache.cayenne.query.EJBQLQuery
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.QueryCacheStrategy
 import org.apache.cayenne.query.SQLTemplate
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 import org.eclipse.jetty.server.Request
 
 class WebNodeFunctions {
+    private static Logger logger = LogManager.logger
     private static final String SAMPLE_WEB_CONTENT = 'Sample content'
     private static final String NEW_PAGE_WEB_NODE_NAME = 'New Page'
     
@@ -87,22 +90,36 @@ class WebNodeFunctions {
                 .selectFirst(context)
         return number ? ++number : 1
     }
-    
+
     static WebNode getNodeByPath(String pageUrl, Request request,  ObjectContext context) {
         ObjectSelect select = ObjectSelect.query(WebNode) & WebNode.WEB_URL_ALIASES.dot(WebUrlAlias.URL_PATH).eq(pageUrl) & siteQualifier(request, context)
         select = addPrefetches(select)
-        select.selectFirst(context)
+        WebNode node = select.selectFirst(context)
+
+        return node?: getNodeByTechnicalPath(pageUrl, request, context)
     }
-    
+
+    private static WebNode getNodeByTechnicalPath(String path, Request request, ObjectContext context) {
+        String number = path.replaceFirst("/page/", "")
+
+        try {
+            Integer intNumber = Integer.valueOf(number)
+            ObjectSelect select = ObjectSelect.query(WebNode).where(WebNode.NODE_NUMBER.eq(intNumber)) & siteQualifier(request, context)
+            select = addPrefetches(select)
+            return select.selectFirst(context)
+        } catch(NumberFormatException e) {
+
+        }
+    }
+
     static ObjectSelect<WebNode> addPrefetches(ObjectSelect<WebNode> select) {
         select.prefetch(WebNode.WEB_NODE_TYPE.disjoint())
                 .prefetch(WebNode.WEB_NODE_TYPE.dot(WebNodeType.WEB_SITE_LAYOUT).disjoint())
                 .prefetch(WebNode.WEB_CONTENT_VISIBILITY.disjoint())
                 .prefetch(WebNode.WEB_CONTENT_VISIBILITY.dot(WebContentVisibility.WEB_CONTENT).disjoint())
                 .prefetch(WebNode.WEB_URL_ALIASES.disjoint())
-        
+
     }
-    
     private static Expression siteQualifier(Request request, ObjectContext context) {
         WebSite site = WebSiteFunctions.getCurrentWebSite(request, context)
         return (site == null) ? WebNode.WEB_SITE_VERSION.dot(WebSiteVersion.WEB_SITE).dot(WebSite.COLLEGE).eq(WebSiteFunctions.getCurrentCollege(request, context)):
