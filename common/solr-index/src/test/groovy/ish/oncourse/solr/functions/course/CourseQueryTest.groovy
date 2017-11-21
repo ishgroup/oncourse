@@ -69,18 +69,18 @@ class CourseQueryTest {
     void testBySessionRoom(){
         CCourse expectedCourse = collegeContext.cCourse("expectedCourse")
         CRoom targetRoom = CRoom.instance(objectContext, college)
-        CSession.instance(objectContext, expectedCourse.cCourseClass("expectedClass1").courseClass).session.room = targetRoom.room
-        CSession.instance(objectContext, expectedCourse.cCourseClass("expectedClass1").courseClass).session.room = targetRoom.room
+        CSession.instance(objectContext, expectedCourse.cCourseClass("expectedClass1").courseClass).room(targetRoom.room)
+        CSession.instance(objectContext, expectedCourse.cClasses.get("expectedClass1").courseClass).room(targetRoom.room)
 
         CCourse otherCourse = collegeContext.cCourse("expectedCourse")
         CRoom otherRoom = CRoom.instance(objectContext, college)
-        CSession.instance(objectContext, otherCourse.cCourseClass("otherClass1").courseClass).session.room = otherRoom.room
+        CSession.instance(objectContext, otherCourse.cCourseClass("otherClass1").courseClass).room(otherRoom.room)
 
         CCourse courseWithoutSession = collegeContext.cCourse("courseWithoutSession")
 
         CRoom mainRoom = CRoom.instance(objectContext, college)
         CCourse courseWithMainRoom = collegeContext.cCourse("courseWithMainRoom")
-        courseWithMainRoom.cCourseClass("classWithMainRoom1").courseClass.room = mainRoom.room
+        courseWithMainRoom.cCourseClass("classWithMainRoom1").room(mainRoom.room)
         objectContext.commitChanges()
 
         List<Course> actualCourses = CourseQuery.bySessionRoom(targetRoom.room).select(objectContext)
@@ -89,8 +89,72 @@ class CourseQueryTest {
         assertNull(actualCourses.find {c -> c.id == otherCourse.course.id})
         assertNull(actualCourses.find {c -> c.id == courseWithoutSession.course.id})
         assertNull(actualCourses.find {c -> c.id == courseWithMainRoom.course.id})
+    }
 
+    @Test
+    void testByCourseClassRoom(){
+        CCourse expectedCourse = collegeContext.cCourse("expectedCourse")
+        CRoom targetRoom = CRoom.instance(objectContext, college)
+        expectedCourse.cCourseClass("expectedClass1").room(targetRoom.room)
 
+        CCourse otherCourse = collegeContext.cCourse("otherCourse")
+        CRoom otherRoom = CRoom.instance(objectContext, college)
+        otherCourse.cCourseClass("otherClass1").room(otherRoom.room)
+
+        CCourse sessionCourse = collegeContext.cCourse("sessionCourse")
+        CSession.instance(objectContext, sessionCourse.cCourseClass("expectedClass1").courseClass).room(targetRoom.room)
+
+        CCourse courseWithoutSession = collegeContext.cCourse("courseWithoutSession")
+        objectContext.commitChanges()
+
+        List<Course> actualCourses = CourseQuery.byCourseClassRoom(targetRoom.room).select(objectContext)
+        Assert.assertEquals(1, actualCourses.size())
+        assertNotNull(actualCourses.find {c -> c.id == expectedCourse.course.id})
+        assertNull(actualCourses.find {c -> c.id == otherCourse.course.id})
+        assertNull(actualCourses.find {c -> c.id == sessionCourse.course.id})
+        assertNull(actualCourses.find {c -> c.id == courseWithoutSession.course.id})
+    }
+
+    @Test
+    void testBySessionRoomSite(){
+        CCourse expectedCourse = collegeContext.cCourse("expectedCourse")
+        CSite targetSite = CSite.instance(objectContext, college)
+        CSession.instance(objectContext, expectedCourse.cCourseClass("expectedClass1").courseClass).cRoom(targetSite.site)
+
+        CCourse otherCourse = collegeContext.cCourse("otherCourse")
+        CSite otherSite = CSite.instance(objectContext, college)
+        CSession.instance(objectContext, otherCourse.cCourseClass("otherClass1").courseClass).cRoom(otherSite.site)
+
+        CCourse courseWithMainRoomSite = collegeContext.cCourse("courseWithMainRoomSite")
+        courseWithMainRoomSite.cCourseClass("classWithMainRoomSite1").cRoom(targetSite.site)
+        objectContext.commitChanges()
+
+        List<Course> actualCourses = CourseQuery.bySessionRoomSite(targetSite.site).select(objectContext)
+        Assert.assertEquals(1, actualCourses.size())
+        assertNotNull(actualCourses.find {c -> c.id == expectedCourse.course.id})
+        assertNull(actualCourses.find {c -> c.id == courseWithMainRoomSite.course.id})
+        assertNull(actualCourses.find {c -> c.id == otherCourse.course.id})
+    }
+
+    @Test
+    void testByCourseClassRoomSite(){
+        CCourse expectedCourse = collegeContext.cCourse("expectedCourse")
+        CSite targetSite = CSite.instance(objectContext, college)
+        expectedCourse.cCourseClass("expectedClass1").cRoom(targetSite.site)
+
+        CCourse otherCourse = collegeContext.cCourse("otherCourse")
+        CSite otherSite = CSite.instance(objectContext, college)
+        otherCourse.cCourseClass("otherClass1").cRoom(otherSite.site)
+
+        CCourse sessionCourse = collegeContext.cCourse("sessionCourse")
+        CSession.instance(objectContext, sessionCourse.cCourseClass("expectedClass1").courseClass).cRoom(targetSite.site)
+        objectContext.commitChanges()
+
+        List<Course> actualCourses = CourseQuery.byCourseClassRoomSite(targetSite.site).select(objectContext)
+        Assert.assertEquals(1, actualCourses.size())
+        assertNotNull(actualCourses.find {c -> c.id == expectedCourse.course.id})
+        assertNull(actualCourses.find {c -> c.id == otherCourse.course.id})
+        assertNull(actualCourses.find {c -> c.id == sessionCourse.course.id})
     }
 
     @After

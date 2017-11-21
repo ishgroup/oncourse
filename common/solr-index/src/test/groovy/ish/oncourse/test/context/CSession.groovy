@@ -1,6 +1,7 @@
 package ish.oncourse.test.context
 
 import ish.oncourse.model.CourseClass
+import ish.oncourse.model.Room
 import ish.oncourse.model.Session
 import ish.oncourse.model.Site
 import org.apache.cayenne.ObjectContext
@@ -29,6 +30,11 @@ class CSession {
         CRoom cRoom = CRoom.instance(objectContext, session.college)
         session.room = cRoom.room
         cRoom
+    }
+
+    CSession room(Room room){
+        session.room = room
+        this
     }
 
     CSession build(){

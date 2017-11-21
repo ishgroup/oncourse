@@ -2,7 +2,8 @@ package ish.oncourse.test.context
 
 import ish.oncourse.model.Course
 import ish.oncourse.model.CourseClass
-import ish.oncourse.model.Tutor
+import ish.oncourse.model.Room
+import ish.oncourse.model.Site
 import org.apache.cayenne.ObjectContext
 
 /**
@@ -16,6 +17,23 @@ class CCourseClass {
 
     CCourseClass course(Course course){
         courseClass.course = objectContext.localObject(course)
+        this
+    }
+
+    CRoom cRoom(Site site){
+        CRoom cRoom = CRoom.instance(objectContext, site)
+        courseClass.room = cRoom.room
+        cRoom
+    }
+
+    CRoom cRoom(){
+        CRoom cRoom = CRoom.instance(objectContext, courseClass.college)
+        courseClass.room = cRoom.room
+        cRoom
+    }
+
+    CCourseClass room(Room room){
+        courseClass.room = room
         this
     }
 
@@ -47,10 +65,6 @@ class CCourseClass {
     CCourseClass build(){
         objectContext.commitChanges()
         this
-    }
-
-    CCourseClass tutor(Tutor tutor){
-        courseClass.tuto
     }
 
     static CCourseClass instance(ObjectContext context, String code, Course course){

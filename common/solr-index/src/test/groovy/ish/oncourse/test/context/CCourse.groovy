@@ -3,7 +3,6 @@ package ish.oncourse.test.context
 import ish.common.types.CourseEnrolmentType
 import ish.oncourse.model.College
 import ish.oncourse.model.Course
-import ish.oncourse.model.Tutor
 import org.apache.cayenne.ObjectContext
 
 /**
