@@ -25,6 +25,12 @@ class CSession {
         cRoom
     }
 
+    CRoom cRoom(){
+        CRoom cRoom = CRoom.instance(objectContext, session.college)
+        session.room = cRoom.room
+        cRoom
+    }
+
     CSession build(){
         objectContext.commitChanges()
         this

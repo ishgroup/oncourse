@@ -4,10 +4,7 @@ import ish.oncourse.model.College
 import ish.oncourse.model.Course
 import ish.oncourse.solr.model.DataContext
 import ish.oncourse.test.TestContext
-import ish.oncourse.test.context.CCollege
-import ish.oncourse.test.context.CCourse
-import ish.oncourse.test.context.CTutor
-import ish.oncourse.test.context.CTutorRole
+import ish.oncourse.test.context.*
 import org.apache.cayenne.ObjectContext
 import org.junit.After
 import org.junit.Assert
@@ -15,6 +12,7 @@ import org.junit.Before
 import org.junit.Test
 
 import static ish.oncourse.test.functions.Functions.createRuntime
+import static org.junit.Assert.*
 
 /**
  * Created by alex on 11/21/17.
@@ -56,15 +54,43 @@ class CourseQueryTest {
 
         actualCourses = CourseQuery.byTutor(tutor1.tutor).select(objectContext)
         Assert.assertEquals(2, actualCourses.size())
-        Assert.assertNotNull(actualCourses.find {c -> c.id == expectedCourse1.course.id})
-        Assert.assertNotNull(actualCourses.find {c -> c.id == expectedCourse2.course.id})
-        Assert.assertNull(actualCourses.find {c -> c.id == otherCourse.course.id})
+        assertNotNull(actualCourses.find {c -> c.id == expectedCourse1.course.id})
+        assertNotNull(actualCourses.find {c -> c.id == expectedCourse2.course.id})
+        assertNull(actualCourses.find {c -> c.id == otherCourse.course.id})
 
         actualCourses = CourseQuery.byTutor(tutor2.tutor).select(objectContext)
         Assert.assertEquals(2, actualCourses.size())
-        Assert.assertNull(actualCourses.find {c -> c.id == expectedCourse1.course.id})
-        Assert.assertNotNull(actualCourses.find {c -> c.id == expectedCourse2.course.id})
-        Assert.assertNotNull(actualCourses.find {c -> c.id == otherCourse.course.id})
+        assertNull(actualCourses.find {c -> c.id == expectedCourse1.course.id})
+        assertNotNull(actualCourses.find {c -> c.id == expectedCourse2.course.id})
+        assertNotNull(actualCourses.find {c -> c.id == otherCourse.course.id})
+    }
+
+    @Test
+    void testBySessionRoom(){
+        CCourse expectedCourse = collegeContext.cCourse("expectedCourse")
+        CRoom targetRoom = CRoom.instance(objectContext, college)
+        CSession.instance(objectContext, expectedCourse.cCourseClass("expectedClass1").courseClass).session.room = targetRoom.room
+        CSession.instance(objectContext, expectedCourse.cCourseClass("expectedClass1").courseClass).session.room = targetRoom.room
+
+        CCourse otherCourse = collegeContext.cCourse("expectedCourse")
+        CRoom otherRoom = CRoom.instance(objectContext, college)
+        CSession.instance(objectContext, otherCourse.cCourseClass("otherClass1").courseClass).session.room = otherRoom.room
+
+        CCourse courseWithoutSession = collegeContext.cCourse("courseWithoutSession")
+
+        CRoom mainRoom = CRoom.instance(objectContext, college)
+        CCourse courseWithMainRoom = collegeContext.cCourse("courseWithMainRoom")
+        courseWithMainRoom.cCourseClass("classWithMainRoom1").courseClass.room = mainRoom.room
+        objectContext.commitChanges()
+
+        List<Course> actualCourses = CourseQuery.bySessionRoom(targetRoom.room).select(objectContext)
+        Assert.assertEquals(1, actualCourses.size())
+        assertNotNull(actualCourses.find {c -> c.id == expectedCourse.course.id})
+        assertNull(actualCourses.find {c -> c.id == otherCourse.course.id})
+        assertNull(actualCourses.find {c -> c.id == courseWithoutSession.course.id})
+        assertNull(actualCourses.find {c -> c.id == courseWithMainRoom.course.id})
+
+
     }
 
     @After

@@ -1,5 +1,6 @@
 package ish.oncourse.test.context
 
+import ish.oncourse.model.College
 import ish.oncourse.model.Room
 import ish.oncourse.model.Site
 import org.apache.cayenne.ObjectContext
@@ -51,11 +52,24 @@ class CRoom {
     static CRoom instance(ObjectContext context, Site site){
         CRoom builder = new CRoom()
         builder.objectContext = context
-
-        builder.room = builder.objectContext.newObject(Room)
-        builder.room.site = builder.objectContext.localObject(site)
-        builder.room.college = site.college
+        builder.createRoom(site)
 
         builder
+    }
+
+    static CRoom instance(ObjectContext context, College college){
+        CRoom builder = new CRoom()
+        CSite cSite = CSite.instance(context, college)
+        builder.objectContext = context
+        builder.createRoom(cSite.site)
+
+        builder
+    }
+
+    private CRoom createRoom(Site site){
+        room = objectContext.newObject(Room)
+        room.site = objectContext.localObject(site)
+        room.college = site.college
+        objectContext.commitChanges()
     }
 }

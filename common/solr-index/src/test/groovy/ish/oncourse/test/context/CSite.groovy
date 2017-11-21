@@ -60,6 +60,7 @@ class CSite {
         builder.site = builder.objectContext.newObject(Site)
         builder.site.college = college
         builder.site.isVirtual = false
+        builder.objectContext.commitChanges()
 
         builder
     }
