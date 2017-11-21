@@ -4,7 +4,6 @@ package ish.oncourse.willow.editor.model;
 public class PageUrl  {
   
     private String link = null;
-    private Boolean isBase = null;
     private Boolean isDefault = null;
 
     /**
@@ -21,23 +20,6 @@ public class PageUrl  {
 
     public PageUrl link(String link) {
       this.link = link;
-      return this;
-    }
-
-    /**
-     * has url base
-     * @return isBase
-     */
-    public Boolean getIsBase() {
-        return isBase;
-    }
-
-    public void setIsBase(Boolean isBase) {
-       this.isBase = isBase;
-    }
-
-    public PageUrl isBase(Boolean isBase) {
-      this.isBase = isBase;
       return this;
     }
 
@@ -65,7 +47,6 @@ public class PageUrl  {
       sb.append("class PageUrl {\n");
       
       sb.append("    link: ").append(toIndentedString(link)).append("\n");
-      sb.append("    isBase: ").append(toIndentedString(isBase)).append("\n");
       sb.append("    isDefault: ").append(toIndentedString(isDefault)).append("\n");
       sb.append("}");
       return sb.toString();

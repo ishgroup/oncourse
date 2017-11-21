@@ -7,6 +7,7 @@ import java.util.List;
 public class Page  {
   
     private Double id = null;
+    private Double number = null;
     private String title = null;
     private Double themeId = null;
     private String content = null;
@@ -27,6 +28,23 @@ public class Page  {
 
     public Page id(Double id) {
       this.id = id;
+      return this;
+    }
+
+    /**
+     * page number
+     * @return number
+     */
+    public Double getNumber() {
+        return number;
+    }
+
+    public void setNumber(Double number) {
+       this.number = number;
+    }
+
+    public Page number(Double number) {
+      this.number = number;
       return this;
     }
 
@@ -127,6 +145,7 @@ public class Page  {
       sb.append("class Page {\n");
       
       sb.append("    id: ").append(toIndentedString(id)).append("\n");
+      sb.append("    number: ").append(toIndentedString(number)).append("\n");
       sb.append("    title: ").append(toIndentedString(title)).append("\n");
       sb.append("    themeId: ").append(toIndentedString(themeId)).append("\n");
       sb.append("    content: ").append(toIndentedString(content)).append("\n");

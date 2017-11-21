@@ -732,9 +732,6 @@ definitions:
       link:
         type: string
         description: unique link
-      isBase:
-        type: boolean
-        description: has url base
       isDefault:
         type: boolean
         description: has url default
@@ -783,6 +780,9 @@ definitions:
       id:
         type: number
         description: unique id of the page
+      number:
+        type: number
+        description: page number
       title:
         type: string
         description: title of the page

@@ -20,6 +20,7 @@ class WebNodeToPage {
         return new Page().with {page ->
             page.id = webNode.id.doubleValue()
             page.title = webNode.name
+            page.number = webNode.nodeNumber.doubleValue()
             page.themeId = webNode.webNodeType.id.doubleValue()
             page.content = webNode.webContentVisibility?.find {it.regionKey == RegionKey.content}?.webContent?.contentTextile
             page.visible = webNode.published

@@ -6,6 +6,11 @@ export class Page {
    * unique id of the page
    */
   id?: number;
+  
+  /**
+   * page number
+   */
+  number?: number;
 
   /**
    * title of the page

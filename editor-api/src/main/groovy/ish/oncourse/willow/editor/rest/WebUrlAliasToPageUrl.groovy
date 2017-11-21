@@ -1,6 +1,5 @@
 package ish.oncourse.willow.editor.rest
 
-import ish.oncourse.model.WebNode
 import ish.oncourse.model.WebUrlAlias
 import ish.oncourse.willow.editor.model.PageUrl
 

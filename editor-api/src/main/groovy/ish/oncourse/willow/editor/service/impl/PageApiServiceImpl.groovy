@@ -1,10 +1,8 @@
 package ish.oncourse.willow.editor.service.impl
 
 import com.google.inject.Inject
-import ish.oncourse.model.RegionKey
 import ish.oncourse.model.WebNode
 import ish.oncourse.services.persistence.ICayenneService
-import ish.oncourse.willow.editor.model.PageUrl
 import ish.oncourse.willow.editor.rest.WebNodeToPage
 import ish.oncourse.willow.editor.service.*
 import ish.oncourse.willow.editor.model.Page
@@ -53,23 +51,8 @@ class PageApiServiceImpl implements PageApi {
     }
     
     List<Page> getPages() {
-        List<WebNode> nodes = WebNodeFunctions.getNodes(requestService.request, cayenneService.newContext())
-
-        nodes.collect {node ->
-            new Page().with {page ->
-                page.id = node.id.doubleValue()
-                page.title = node.name
-                page.visible = node.published
-                page.urls = node.webUrlAliases.collect {urlAlias ->
-                        new PageUrl().with {url ->
-                            url.link = urlAlias.urlPath
-                            url.isBase = urlAlias.default
-                            url.isDefault = urlAlias.default
-                            url
-                        }}
-                page
-            }
-        }
+        return WebNodeFunctions.getNodes(requestService.request, cayenneService.newContext())
+                .collect { node -> WebNodeToPage.valueOf(node).page }
     }
     
     Page savePage(Page pageParams) {
