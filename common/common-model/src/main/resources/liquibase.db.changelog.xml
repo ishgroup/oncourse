@@ -4599,38 +4599,4 @@
 		</sql>
 	</changeSet>
 
-	<changeSet id="314" author="anarut" runOnChange="false" runAlways="false" context="production">
-		<preConditions onFail="MARK_RAN">
-			<not>
-				<tableExists tableName="SurveyType"/>
-			</not>
-		</preConditions>
-		<sql>
-			CREATE TABLE SurveyType (
-			id BIGINT NOT NULL AUTO_INCREMENT,
-			angelId BIGINT NOT NULL,
-			collegeId BIGINT NOT NULL,
-			created DATETIME NOT NULL,
-			modified DATETIME NOT NULL,
-			deliverySchedule INTEGER NOT NULL,
-			name VARCHAR(200) NOT NULL,
-			instruction MEDIUMTEXT NOT NULL,
-			source INTEGER NOT NULL,
-			PRIMARY KEY (id),
-			CONSTRAINT fk_SurveyType_College FOREIGN KEY (collegeId) REFERENCES College(id),
-			CONSTRAINT surveyType_angelId_college_unique UNIQUE (collegeId, angelId));
-		</sql>
-	</changeSet>
-	<changeSet id="315" author="anarut" runOnChange="false" runAlways="false" context="production">
-		<preConditions>
-			<not>
-				<columnExists tableName="Survey" columnName="surveyTypeId"/>
-			</not>
-		</preConditions>
-		<sql>
-			ALTER TABLE Survey ADD COLUMN surveyTypeId BIGINT NULL,
-			ADD CONSTRAINT fk_Survey_SurveyType FOREIGN KEY (surveyTypeId) REFERENCES SurveyType (id);
-		</sql>
-	</changeSet>
-
 </databaseChangeLog>
