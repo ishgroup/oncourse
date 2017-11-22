@@ -58,16 +58,16 @@ class BlockResourceFactory implements ResourceFactory {
                         }
 
                         return createNewBlock(newName, content)
-                    },
+                    } as Closure<Resource>,
                     { String childName ->
                         return getBlockByName(childName)
-                    },
+                    } as Closure<Resource>,
                     {
                         return listBlocks() as ArrayList
-                    },
+                    } as Closure<ArrayList<Resource>>,
                     {  Request request, Request.Method method, Auth auth  ->
                         return method in TopLevelDir.blocks.allowedMethods
-                    }) 
+                    } as Closure<Boolean>) 
             
         } else if (path.length == 1) {
             String name = path.name

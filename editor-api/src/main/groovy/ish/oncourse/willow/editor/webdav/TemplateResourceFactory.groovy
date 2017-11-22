@@ -76,20 +76,20 @@ class TemplateResourceFactory implements ResourceFactory {
             return new DirectoryResource(TEMPLATE_DIR_NAME, securityManager,
                 { String newName, InputStream inputStream, Long length, String contentType ->
                     return null
-                }, 
+                } as Closure<Resource>, 
                 { String childName ->
                     return getLayoutResourceByName(childName)
-                }, 
+                } as Closure<Resource>, 
                 {
                     return listLayouts() as ArrayList
-                }, 
+                } as Closure<ArrayList<Resource>>, 
                 { Request request, Request.Method method, Auth auth ->
                     return  method in TopLevelDir.templates.allowedMethods
-                }, 
+                } as Closure<Boolean>, 
                 { String newName ->
                     WebSiteLayout layout = createLayout(newName)
                     return new LayoutDirectoryResource(layout.layoutKey, layout, securityManager, cayenneService, this)
-                })
+                } as Closure<CollectionResource>)
             
         } else if (path.length == 1) {
             String name = path.name
@@ -184,20 +184,20 @@ class TemplateResourceFactory implements ResourceFactory {
                         context.commitChanges()
         
                         return new WebTemplateResource(template.name, localLayout, cayenneService, securityManager, defaultTemplatesMap, getTemplate)
-                    }, 
+                    } as Closure<Resource>, 
                     { String childName ->
                         return factory.getTemplateResourceByName(childName, layout)
-                    },
+                    } as Closure<Resource>,
                     {
                         return factory.listTemplates(layout) as ArrayList
-                    },
+                    } as Closure<ArrayList<Resource>>,
                     { Request request, Request.Method method, Auth auth ->
                         if (layout.layoutKey == WebNodeType.DEFAULT_LAYOUT_KEY) {
                             return method in AccessRights.DIR_READ_ONLY_AND_ADD_CHILD
                         } else {
                             return true
                         }
-                    })
+                    } as Closure<Boolean>)
             this.layout = layout
         }
         

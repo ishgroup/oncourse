@@ -58,18 +58,18 @@ class PageResourceFactory implements ResourceFactory {
                         }
         
                         return createNewPage(newName, content)
-                    },  
+                    } as Closure<Resource>,  
                     { 
                         String childName -> 
                             return getWebNodeResource(childName) 
-                    }, 
+                    } as Closure<Resource>, 
                     {
                         return listPages() as ArrayList 
-                    }, 
+                    } as Closure<ArrayList<Resource>>, 
                     {
                         Request request, Request.Method method, Auth auth  -> 
                             return ArrayUtils.contains(TopLevelDir.pages.allowedMethods, method) 
-                    })
+                    } as Closure<Boolean>)
             
         } else if (path.length == 1) {
             String name = path.name
