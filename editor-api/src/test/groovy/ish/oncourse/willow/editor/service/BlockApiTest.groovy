@@ -1,7 +1,9 @@
 package ish.oncourse.willow.editor.service;
 
 import ish.oncourse.willow.editor.model.Block;
-import ish.oncourse.willow.editor.model.common.CommonError;
+import ish.oncourse.willow.editor.model.common.CommonError
+import ish.oncourse.willow.editor.service.impl.BlockApiServiceImpl
+import org.junit.Assert
 import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;
@@ -14,12 +16,14 @@ import java.util.Map;
 /**
  * API tests for BlockApi
  */
-public class BlockApiTest {
+class BlockApiTest extends AbstractEditorTest{
 
     private BlockApi api;
     
     @Before
-    public void setup() {
+    void setup() {
+        super.setup()
+        api = new BlockApiServiceImpl(cayenneService, requestService)
     }
 
     
@@ -28,12 +32,13 @@ public class BlockApiTest {
      * Add new block
      */
     @Test
-    public void addBlockTest() {
-	//Block response = api.addBlock();
-        //assertNotNull(response);
-        // TODO: test validations
-        
-        
+    void addBlockTest() {
+        Block block = api.addBlock()
+
+        Assert.assertNotNull(block)
+        Assert.assertNotNull(block.title)
+        Assert.assertEquals(block.html, 'Sample content')
+        Assert.assertEquals(block.id, 2,0)
     }
     
     /**
@@ -41,7 +46,7 @@ public class BlockApiTest {
      * Remove block
      */
     @Test
-    public void deleteBlockTest() {
+    void deleteBlockTest() {
 	//api.deleteBlock();
         
         // TODO: test validations
@@ -54,12 +59,16 @@ public class BlockApiTest {
      * Get array of blocks
      */
     @Test
-    public void getBlocksTest() {
-	//List<Block> response = api.getBlocks();
-        //assertNotNull(response);
-        // TODO: test validations
-        
-        
+    void getBlocksTest() {
+        Block newBlock = api.addBlock()
+	    List blocks = api.getBlocks()
+
+        Assert.assertNotNull(newBlock)
+        Assert.assertNotNull(blocks)
+
+        Assert.assertEquals(blocks[0].id, newBlock.id, 0)
+        Assert.assertEquals(blocks[0].title, newBlock.title)
+        Assert.assertEquals(blocks[0].html, newBlock.html)
     }
     
     /**
@@ -67,7 +76,7 @@ public class BlockApiTest {
      * Save block params
      */
     @Test
-    public void saveBlockTest() {
+    void saveBlockTest() {
         Block saveBlockRequest = null;
 	//Block response = api.saveBlock(saveBlockRequest);
         //assertNotNull(response);
