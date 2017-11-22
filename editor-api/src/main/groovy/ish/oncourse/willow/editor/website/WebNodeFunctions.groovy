@@ -1,6 +1,5 @@
 package ish.oncourse.willow.editor.website
 
-import io.milton.http.exceptions.BadRequestException
 import ish.oncourse.model.RegionKey
 import ish.oncourse.model.WebContent
 import ish.oncourse.model.WebContentVisibility
@@ -106,16 +105,11 @@ class WebNodeFunctions {
 
         if (!match) {return null}
 
-        try {
-            String number = path.replaceFirst("/page/", "")
-            Integer intNumber = Integer.valueOf(number)
-            ObjectSelect select = ObjectSelect.query(WebNode).where(WebNode.NODE_NUMBER.eq(intNumber)) & siteQualifier(request, context)
-            select = addPrefetches(select)
-            return select.selectFirst(context)
-        } catch(NumberFormatException e) {
-            logger.error("Error finding page", path, e)
-            return null
-        }
+        String number = path.replaceFirst("/page/", "")
+        Integer intNumber = Integer.valueOf(number)
+        ObjectSelect select = ObjectSelect.query(WebNode).where(WebNode.NODE_NUMBER.eq(intNumber)) & siteQualifier(request, context)
+        select = addPrefetches(select)
+        return select.selectFirst(context)
     }
 
     static ObjectSelect<WebNode> addPrefetches(ObjectSelect<WebNode> select) {

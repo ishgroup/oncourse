@@ -7,6 +7,8 @@ import org.junit.Assert
 import org.junit.Test
 import org.junit.Before
 
+import javax.ws.rs.ClientErrorException
+
 /**
  * API tests for PageApi
  */ 
@@ -53,7 +55,7 @@ class PageApiTest extends AbstractEditorTest{
      * Get page object by provided page url
      */
     @Test
-    void getPageByUrlTest() {
+    void getPageByTechnicalUrlTest() {
         Page newPage = api.addPage()
         String number = newPage.number.longValue().toString()
         String pageUrl = "/page/${number}"
@@ -61,15 +63,28 @@ class PageApiTest extends AbstractEditorTest{
         Assert.assertEquals(pageUrl, "/page/2")
 
         Page page = api.getPageByUrl(pageUrl)
-
         Assert.assertNotNull(page)
         Assert.assertEquals(page.id, 2,0)
-
-	//Page response = api.getPageByUrl(pageUrl)
-        //assertNotNull(response)
-        // TODO: test validations
     }
-    
+
+    /**
+     * Get page by provided page url
+     * Get page object by provided page url
+     */
+    @Test
+    void getNotExistingPageByTechnicalUrlTest() {
+        String pageUrl = "/page/123"
+
+        try {
+            Page page = api.getPageByUrl(pageUrl)
+            Assert.assertNotNull(page)
+            Assert.assertEquals(page.id, 2,0)
+        } catch (e) {
+            Boolean isClientError = e instanceof ClientErrorException
+            Assert.assertEquals(isClientError, true)
+        }
+    }
+
     /**
      * Get page rendered html by provided page id
      * Get page rendered html by provided page id

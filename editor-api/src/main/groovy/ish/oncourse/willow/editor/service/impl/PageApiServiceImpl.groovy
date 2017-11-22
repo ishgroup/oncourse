@@ -3,6 +3,7 @@ package ish.oncourse.willow.editor.service.impl
 import com.google.inject.Inject
 import ish.oncourse.model.WebNode
 import ish.oncourse.services.persistence.ICayenneService
+import ish.oncourse.willow.editor.model.common.CommonError
 import ish.oncourse.willow.editor.rest.WebNodeToPage
 import ish.oncourse.willow.editor.service.*
 import ish.oncourse.willow.editor.model.Page
@@ -12,9 +13,16 @@ import groovy.transform.CompileStatic
 import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.website.WebNodeFunctions
 import org.apache.cayenne.ObjectContext
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
+
+import javax.ws.rs.ClientErrorException
+import javax.ws.rs.core.Response
 
 @CompileStatic
 class PageApiServiceImpl implements PageApi {
+
+    private static Logger logger = LogManager.logger
 
     private ICayenneService cayenneService
     private RequestService requestService
@@ -41,7 +49,14 @@ class PageApiServiceImpl implements PageApi {
     
     Page getPageByUrl(String pageUrl) {
         WebNode node = WebNodeFunctions.getNodeByPath(pageUrl, requestService.request, cayenneService.newContext())
-        return WebNodeToPage.valueOf(node).page
+
+        if (node) {
+            return WebNodeToPage.valueOf(node).page
+        }
+
+        String message = "There are no pages for provided url. Url: $pageUrl"
+        logger.error(message)
+        throw new ClientErrorException(Response.status(400).entity(new CommonError(message: message)).build())
     }
     
     PageRenderResponse getPageRender(Double pageId) {
