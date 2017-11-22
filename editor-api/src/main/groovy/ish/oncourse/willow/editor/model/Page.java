@@ -6,30 +6,12 @@ import java.util.List;
 
 public class Page  {
   
-    private Double id = null;
     private Double number = null;
     private String title = null;
     private Double themeId = null;
     private String content = null;
     private Boolean visible = null;
     private List<PageUrl> urls = new ArrayList<PageUrl>();
-
-    /**
-     * unique id of the page
-     * @return id
-     */
-    public Double getId() {
-        return id;
-    }
-
-    public void setId(Double id) {
-       this.id = id;
-    }
-
-    public Page id(Double id) {
-      this.id = id;
-      return this;
-    }
 
     /**
      * page number
@@ -144,7 +126,6 @@ public class Page  {
       StringBuilder sb = new StringBuilder();
       sb.append("class Page {\n");
       
-      sb.append("    id: ").append(toIndentedString(id)).append("\n");
       sb.append("    number: ").append(toIndentedString(number)).append("\n");
       sb.append("    title: ").append(toIndentedString(title)).append("\n");
       sb.append("    themeId: ").append(toIndentedString(themeId)).append("\n");

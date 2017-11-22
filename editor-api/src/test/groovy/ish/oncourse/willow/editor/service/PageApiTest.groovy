@@ -33,14 +33,13 @@ class PageApiTest extends AbstractEditorTest{
         Assert.assertNotNull(page)
         Assert.assertNotNull(page.title)
         Assert.assertNotNull(page.themeId)
-        Assert.assertEquals(page.id, 2,0)
         Assert.assertEquals(page.content, 'Sample content')
         Assert.assertEquals(page.urls, [])
         Assert.assertEquals(page.visible, false)
     }
     
     /**
-     * Remove page by provided Id
+     * Remove page by provided Number
      * Remove page
      */
     @Test
@@ -49,9 +48,10 @@ class PageApiTest extends AbstractEditorTest{
         Assert.assertNotNull(newPage)
 
         api.deletePage(newPage.number)
+        Integer intNumber = newPage.number.toInteger()
 
-        WebNode node = SelectById.query(WebNode, newPage.id).select(cayenneService.newContext())
-        Assert.assertEquals(node.id, null)
+        WebNode node = WebNodeFunctions.getNodeForNumber(intNumber, requestService.request, cayenneService.newContext())
+        Assert.assertEquals(node, null)
     }
     
     /**
@@ -68,7 +68,7 @@ class PageApiTest extends AbstractEditorTest{
 
         Page page = api.getPageByUrl(pageUrl)
         Assert.assertNotNull(page)
-        Assert.assertEquals(page.id, 2,0)
+        Assert.assertEquals(page.number, 2,0)
     }
 
     /**
@@ -82,7 +82,7 @@ class PageApiTest extends AbstractEditorTest{
         try {
             Page page = api.getPageByUrl(pageUrl)
             Assert.assertNotNull(page)
-            Assert.assertEquals(page.id, 2,0)
+            Assert.assertEquals(page.number, 2,0)
         } catch (e) {
             Boolean isClientError = e instanceof ClientErrorException
             Assert.assertEquals(isClientError, true)

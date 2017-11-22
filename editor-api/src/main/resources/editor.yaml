@@ -222,17 +222,17 @@ paths:
     post:
       x-filter:  
       - AuthFilter
-      summary: Remove page by provided Id
+      summary: Remove page by provided number
       operationId: deletePage
-      description: Remove page
+      description: Remove page by number
       tags:
         - Page
       consumes:
         - application/json
       parameters:
-        - name: id
+        - name: number
           in: body
-          description: identificator of page which will be deleted
+          description: number of page which will be deleted
           required: true
           schema:
             type: number
@@ -777,9 +777,6 @@ definitions:
   Page:
     type: object
     properties:
-      id:
-        type: number
-        description: unique id of the page
       number:
         type: number
         description: page number

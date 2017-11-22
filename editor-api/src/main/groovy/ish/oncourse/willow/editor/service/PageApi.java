@@ -27,7 +27,7 @@ public interface PageApi  {
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @AuthFilter
-    void deletePage(Double id);
+    void deletePage(Double number);
 
     @GET
     @Path("/getPageByUrl")

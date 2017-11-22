@@ -18,7 +18,6 @@ class WebNodeToPage {
 
     Page getPage() {
         return new Page().with {page ->
-            page.id = webNode.id.doubleValue()
             page.title = webNode.name
             page.number = webNode.nodeNumber.doubleValue()
             page.themeId = webNode.webNodeType.id.doubleValue()
