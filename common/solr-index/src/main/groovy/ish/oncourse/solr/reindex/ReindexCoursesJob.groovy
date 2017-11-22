@@ -1,5 +1,6 @@
 package ish.oncourse.solr.reindex
 
+import io.reactivex.disposables.Disposable
 import ish.oncourse.scheduler.ScheduleConfig
 import ish.oncourse.scheduler.job.IJob
 import ish.oncourse.solr.functions.course.SCourseFunctions
@@ -12,6 +13,7 @@ class ReindexCoursesJob implements IJob {
     private ObjectContext objectContext
     private SolrClient solrClient
     private ScheduleConfig config = new ScheduleConfig(0, 1, TimeUnit.HOURS)
+    private Disposable disposable
 
     ReindexCoursesJob(ObjectContext objectContext, SolrClient solrClient) {
         this.objectContext = objectContext
@@ -23,9 +25,13 @@ class ReindexCoursesJob implements IJob {
         return config
     }
 
+    boolean isActive() {
+        return disposable.isDisposed()
+    }
+
     @Override
     void run() {
-        SCourseFunctions.SCourses(objectContext).subscribe({
+        disposable = SCourseFunctions.SCourses(objectContext).subscribe({
             solrClient.addBean(it)
         })
         solrClient.commit()
