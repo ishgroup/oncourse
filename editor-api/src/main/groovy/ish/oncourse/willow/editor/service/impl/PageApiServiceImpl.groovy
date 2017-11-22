@@ -17,6 +17,7 @@ import org.apache.cayenne.ObjectContext
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+import javax.naming.Context
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
 
@@ -47,20 +48,14 @@ class PageApiServiceImpl implements PageApi {
         Integer intNumber = number.toInteger()
         WebNode node = WebNodeFunctions.getNodeForNumber(intNumber, requestService.request, cayenneService.newContext())
 
-        if (node != null) {
-
-            for (WebContentVisibility v : node.getWebContentVisibility()) {
-                ctx.deleteObjects(ctx.localObject(v.getWebContent()))
-            }
+        if (!node) {
+            node.webContentVisibility.each { ctx.deleteObjects(ctx.localObject(it.webContent)) }
             WebNode localNode = ctx.localObject(node)
             ctx.deleteObjects(localNode)
             ctx.commitChanges()
 
         } else {
-
-            String message = "There is no page to remove for provided number. Number: $intNumber"
-            logger.error(message)
-            throw new ClientErrorException(Response.status(400).entity(new CommonError(message: message)).build())
+            throw createClientException("There is no page to remove for provided number. Number: $intNumber")
         }
     }
     
@@ -69,11 +64,9 @@ class PageApiServiceImpl implements PageApi {
 
         if (node) {
             return WebNodeToPage.valueOf(node).page
+        } else {
+            throw createClientException("There are no pages for provided url. Url: $pageUrl")
         }
-
-        String message = "There are no pages for provided url. Url: $pageUrl"
-        logger.error(message)
-        throw new ClientErrorException(Response.status(400).entity(new CommonError(message: message)).build())
     }
     
     PageRenderResponse getPageRender(Double pageId) {
@@ -87,9 +80,16 @@ class PageApiServiceImpl implements PageApi {
     }
     
     Page savePage(Page pageParams) {
-        // TODO: Implement...
-        
-        return null
+        ObjectContext context = cayenneService.newContext()
+        WebNode node = WebNodeFunctions.getNodeForNumber(pageParams.number.intValue(), requestService.request, context)
+        if (!node) {
+            throw createClientException("There are no pages for pageParams: $pageParams, server name: $requestService.request.serverName")
+        }
+    }
+    
+    private ClientErrorException createClientException(String message) {
+        logger.error(message)
+         new ClientErrorException(Response.status(400).entity(new CommonError(message: message)).build())
     }
     
 }
