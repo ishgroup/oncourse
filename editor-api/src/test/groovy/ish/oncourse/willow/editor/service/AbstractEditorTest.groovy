@@ -33,15 +33,22 @@ abstract class AbstractEditorTest {
     
     @Before
     void setup() throws Exception {
-        testContext = new TestContext().shouldCreateTables(true).open()
+        testContext = new TestContext().shouldCreateTables(false).open()
         new LoadDataSet().dataSetFile(dataSetResource).replacements(['[null]':null]).load(testContext.DS)
         cayenneRuntime = new ServerRuntime('cayenne-oncourse.xml', new WillowApiCayenneModule())
         cayenneService = new CayenneService(cayenneRuntime)
 
-        Request request = new Request(null, null)
-        request.metaClass.getServerName = { "${webSiteKey}.oncourse.cc" }
+        Request request = mockRequest()
         requestService = [getRequest: request, getResponse: null] as RequestService
         CreateDefaultWebSiteStructure.valueOf(webSiteKey, cayenneService.newContext()).create()
+    }
+    
+    private Request mockRequest() {
+        new Request(null, null) {
+            String getServerName() {
+                return "${webSiteKey}.oncourse.cc"
+            }
+        }
     }
 
     @After
