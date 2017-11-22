@@ -45,6 +45,7 @@ class CourseQuery {
     }
 
     static final ObjectSelect<Course> byTaggable(List<Taggable> taggables){
-        query(Course).where(ExpressionFactory.inDbExp(Course.ID_PK_COLUMN, taggables.ENTITY_WILLOW_ID_PROPERTY))
+        List<Long> ids = taggables.collect {t -> t.entityWillowId}
+        query(Course).where(ExpressionFactory.inDbExp(Course.ID_PK_COLUMN, ids))
     }
 }

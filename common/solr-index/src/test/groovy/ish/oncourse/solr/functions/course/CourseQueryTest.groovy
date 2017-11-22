@@ -2,6 +2,8 @@ package ish.oncourse.solr.functions.course
 
 import ish.oncourse.model.College
 import ish.oncourse.model.Course
+import ish.oncourse.model.Tag
+import ish.oncourse.model.Taggable
 import ish.oncourse.solr.model.DataContext
 import ish.oncourse.test.TestContext
 import ish.oncourse.test.context.*
@@ -155,6 +157,48 @@ class CourseQueryTest {
         assertNotNull(actualCourses.find {c -> c.id == expectedCourse.course.id})
         assertNull(actualCourses.find {c -> c.id == otherCourse.course.id})
         assertNull(actualCourses.find {c -> c.id == sessionCourse.course.id})
+    }
+
+    @Test
+    void testCourseTaggableByTag(){
+        Tag targetTag = collegeContext.tag("targetTag")
+        CCourse expectedCourse1 = collegeContext.cCourse("expectedCourse1")
+        CCourse expectedCourse2 = collegeContext.cCourse("expectedCourse2")
+        collegeContext.tagCourse(expectedCourse1.course, targetTag)
+        collegeContext.tagCourse(expectedCourse2.course, targetTag)
+
+        Tag otherTag = collegeContext.tag("otherTag")
+        CCourse otherCourse1 = collegeContext.cCourse("otherCourse1")
+        collegeContext.tagCourse(expectedCourse1.course, otherTag)
+        collegeContext.tagCourse(otherCourse1.course, otherTag)
+
+        List<Taggable> actualTaggables = CourseQuery.courseTaggablebyTag(targetTag).select(objectContext)
+        assertEquals(2, actualTaggables.size())
+        assertNotNull(actualTaggables.find {t -> t.entityWillowId == expectedCourse1.course.id})
+        assertNotNull(actualTaggables.find {t -> t.entityWillowId == expectedCourse2.course.id})
+        assertNull(actualTaggables.find {t -> t.entityWillowId == otherCourse1.course.id})
+    }
+
+    @Test
+    void testByTaggable(){
+        Tag targetTag = collegeContext.tag("targetTag")
+        CCourse expectedCourse1 = collegeContext.cCourse("expectedCourse1")
+        CCourse expectedCourse2 = collegeContext.cCourse("expectedCourse2")
+        collegeContext.tagCourse(expectedCourse1.course, targetTag)
+        collegeContext.tagCourse(expectedCourse2.course, targetTag)
+
+        Tag otherTag = collegeContext.tag("otherTag")
+        CCourse otherCourse1 = collegeContext.cCourse("otherCourse1")
+        collegeContext.tagCourse(expectedCourse1.course, otherTag)
+        collegeContext.tagCourse(otherCourse1.course, otherTag)
+
+        List<Taggable> targetTaggables = CourseQuery.courseTaggablebyTag(targetTag).select(objectContext)
+
+        List<Course> actualCourses = CourseQuery.byTaggable(targetTaggables).select(objectContext)
+        assertEquals(2, actualCourses.size())
+        assertNotNull(actualCourses.find {c -> c.id == expectedCourse1.course.id})
+        assertNotNull(actualCourses.find {c -> c.id == expectedCourse2.course.id})
+        assertNull(actualCourses.find {c -> c.id == otherCourse1.course.id})
     }
 
     @After
