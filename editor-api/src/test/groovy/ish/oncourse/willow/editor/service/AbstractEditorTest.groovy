@@ -33,7 +33,7 @@ abstract class AbstractEditorTest {
     
     @Before
     void setup() throws Exception {
-        testContext = new TestContext().shouldCreateTables(false).open()
+        testContext = new TestContext().shouldCreateTables(true).open()
         new LoadDataSet().dataSetFile(dataSetResource).replacements(['[null]':null]).load(testContext.DS)
         cayenneRuntime = new ServerRuntime('cayenne-oncourse.xml', new WillowApiCayenneModule())
         cayenneService = new CayenneService(cayenneRuntime)
