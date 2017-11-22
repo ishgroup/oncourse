@@ -41,7 +41,6 @@ class PageApiServiceImpl implements PageApi {
     
     Page getPageByUrl(String pageUrl) {
         WebNode node = WebNodeFunctions.getNodeByPath(pageUrl, requestService.request, cayenneService.newContext())
-
         return WebNodeToPage.valueOf(node).page
     }
     
