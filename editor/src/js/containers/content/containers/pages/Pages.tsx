@@ -64,7 +64,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
       dispatch(getPages());
       dispatch(getThemes());
     },
-    onEditHtml: (id, html) => dispatch(savePage(id, {html}, true)),
+    onEditHtml: (id, content) => dispatch(savePage(id, {content}, true)),
     toggleEditMode: flag => dispatch(toggleEditMode(flag)),
     clearRenderHtml: pageId => dispatch(clearRenderHtml(pageId)),
   };
