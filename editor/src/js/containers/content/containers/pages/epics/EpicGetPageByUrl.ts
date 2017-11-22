@@ -11,8 +11,8 @@ const request: EpicUtils.Request<any, any> = {
   getData: (payload, state) => PageService.getPageByUrl(payload),
   processData: (page: Page, state: any) => {
 
-    if (page && page.id) {
-      getHistoryInstance().push(`/pages/${page.id}`);
+    if (page && page.number) {
+      getHistoryInstance().push(`/pages/${page.number}`);
     }
 
     return [

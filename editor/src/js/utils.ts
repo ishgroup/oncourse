@@ -26,10 +26,10 @@ export const loadCmsCss = path => {
 };
 
 export class DOM {
-  static findPage(id) {
+  static findPage(number) {
     const pageNode = document.querySelector('.cms-edit-area');
 
-    if (pageNode && pageNode.getAttribute('data-page') == id) {
+    if (pageNode && pageNode.getAttribute('data-page') == number) {
       return pageNode;
     }
 

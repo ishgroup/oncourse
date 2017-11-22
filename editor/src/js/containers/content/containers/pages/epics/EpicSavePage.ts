@@ -15,7 +15,7 @@ const request: EpicUtils.Request<any, any> = {
   getData: (payload, state) => PageService.savePage(payload, state),
   processData: (page: Page, state: any, payload) => {
 
-    getHistoryInstance().push(`${URL.PAGES}/${page.id}`);
+    getHistoryInstance().push(`${URL.PAGES}/${page.number}`);
 
     const result = [];
     result.push(success(notificationParams));
@@ -28,7 +28,7 @@ const request: EpicUtils.Request<any, any> = {
 
     // get rendered html if raw html has been changed
     if (payload.updateRender) {
-      result.push(getPageRender(page.id));
+      result.push(getPageRender(page.number));
     }
 
     return result;

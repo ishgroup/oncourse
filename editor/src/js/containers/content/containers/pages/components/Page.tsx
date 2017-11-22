@@ -7,10 +7,10 @@ import {getHistoryInstance} from "../../../../../history";
 
 interface PageProps {
   page: PageState;
-  onSave: (pageId, content) => void;
+  onSave: (pageNumber, content) => void;
   openPage: (url) => void;
   toggleEditMode: (flag: boolean) => any;
-  clearRenderHtml?: (pageId: number) => void;
+  clearRenderHtml?: (pageNumber: number) => void;
   editMode?: any;
 }
 
@@ -28,7 +28,7 @@ export class Page extends React.PureComponent<PageProps, any> {
 
   componentDidMount() {
     const {page, openPage, toggleEditMode} = this.props;
-    const pageNode = DOM.findPage(page.id);
+    const pageNode = DOM.findPage(page.number);
 
     toggleEditMode(false);
     this.setState({
@@ -48,7 +48,7 @@ export class Page extends React.PureComponent<PageProps, any> {
   componentWillReceiveProps(props) {
     const {clearRenderHtml, page, toggleEditMode, editMode} = this.props;
 
-    if (props.page.id !== this.props.page.id) {
+    if (props.page.number !== this.props.page.number) {
       toggleEditMode(true);
 
       this.setState({
@@ -66,19 +66,19 @@ export class Page extends React.PureComponent<PageProps, any> {
 
     if (props.page.renderHtml && props.page.renderHtml !== this.props.page.renderHtml) {
       this.replacePageHtml(props.page.renderHtml);
-      clearRenderHtml(page.id);
+      clearRenderHtml(page.number);
     }
   }
 
   componentWillUnmount() {
     const {page} = this.props;
-    const pageNode = DOM.findPage(page.id);
+    const pageNode = DOM.findPage(page.number);
     pageNode && pageNode.removeEventListener('click', this.onClickArea.bind(this));
   }
 
   replacePageHtml(html) {
     const {page} = this.props;
-    const pageNode = DOM.findPage(page.id);
+    const pageNode = DOM.findPage(page.number);
     if (!pageNode) return;
     pageNode.innerHTML = html;
   }
@@ -91,7 +91,7 @@ export class Page extends React.PureComponent<PageProps, any> {
       draftContent: page.content,
     });
     toggleEditMode(true);
-    getHistoryInstance().push(`/pages/${page.id}`);
+    getHistoryInstance().push(`/pages/${page.number}`);
   }
 
   onChangeArea(val) {
@@ -103,7 +103,7 @@ export class Page extends React.PureComponent<PageProps, any> {
 
     toggleEditMode(false);
     this.setState({editMode: false});
-    onSave(page.id, this.state.draftContent);
+    onSave(page.number, this.state.draftContent);
   }
 
   onCancel() {

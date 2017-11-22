@@ -8,7 +8,7 @@ export function pageApiMock() {
   ));
 
   this.api.onGet(API.GET_PAGE_BY_URL).reply(config => {
-    const url = config.params.url;
+    const url = config.params.pageUrl;
     const page = this.db.getPageByUrl(url);
 
     return promiseResolve(
@@ -41,7 +41,7 @@ export function pageApiMock() {
 
 
   this.api.onPost(API.DELETE_PAGE).reply(config => {
-    this.db.deletePageById(JSON.parse(config.data));
+    this.db.deletePageByNumber(JSON.parse(config.data));
 
     return promiseResolve(
       config,
@@ -51,8 +51,8 @@ export function pageApiMock() {
 
   // this.api.onGet(/getPageRender\/\d+/).reply(config => {
   this.api.onGet(new RegExp(`${API.GET_PAGE_RENDER.replace('/','')}/\\d+`)).reply(config => {
-    const id = Number(config.url.split('/')[1]);
-    const html = this.db.getPageRender(id);
+    const pageNumber = Number(config.url.split('/')[1]);
+    const html = this.db.getPageRender(pageNumber);
     return promiseResolve(
       config,
       html,

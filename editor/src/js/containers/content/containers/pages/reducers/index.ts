@@ -16,15 +16,15 @@ export const pageReducer = (state: PagesState = new PagesState(), action: IActio
       };
 
     case SAVE_PAGE_FULFILLED: {
-      const {id, ...props} = action.payload;
+      const {number, ...props} = action.payload;
 
       const ns = {
         ...state,
-        items: state.items.map(page => page.id === id ? {...page, ...props} : page),
+        items: state.items.map(page => page.number === number ? {...page, ...props} : page),
       };
 
-      if (!state.items.find(page => page.id === id)) {
-        ns.items.push({id, ...props});
+      if (!state.items.find(page => page.number === number)) {
+        ns.items.push({number, ...props});
       }
 
       return ns;
@@ -40,8 +40,8 @@ export const pageReducer = (state: PagesState = new PagesState(), action: IActio
     }
 
     case DELETE_PAGE_FULFILLED: {
-      const id = action.payload;
-      const index = state.items.findIndex(page => page.id === id);
+      const pageNumber = action.payload;
+      const index = state.items.findIndex(page => page.number === pageNumber);
       const newPages = state.items;
 
       if (index !== -1) {
@@ -55,20 +55,20 @@ export const pageReducer = (state: PagesState = new PagesState(), action: IActio
     }
 
     case GET_PAGE_RENDER_FULFILLED: {
-      const {html, id} = action.payload;
+      const {html, pageNumber} = action.payload;
 
       return {
         ...state,
-        items: state.items.map(item => item.id === id ? {...item, renderHtml: html} : item),
+        items: state.items.map(item => item.number === pageNumber ? {...item, renderHtml: html} : item),
       };
     }
 
     case CLEAR_RENDER_HTML: {
-      const id = action.payload;
+      const pageNumber = action.payload;
 
       return {
         ...state,
-        items: state.items.map(item => item.id === id ? {...item, renderHtml: ''} : item),
+        items: state.items.map(item => item.number === pageNumber ? {...item, renderHtml: ''} : item),
       };
     }
 

@@ -25,18 +25,18 @@ export const getPages = () => ({
   type: GET_PAGES_REQUEST,
 });
 
-export const savePage = (id, props, updateRender: boolean = false) => ({
+export const savePage = (pageNumber, props, updateRender: boolean = false) => ({
   type: SAVE_PAGE_REQUEST,
-  payload: {id, ...props, updateRender},
+  payload: {number: pageNumber, ...props, updateRender},
 });
 
 export const addPage = () => ({
   type: ADD_PAGE_REQUEST,
 });
 
-export const deletePage = id => ({
+export const deletePage = pageNumber => ({
   type: DELETE_PAGE_REQUEST,
-  payload: id,
+  payload: pageNumber,
 });
 
 export const getPageByUrl = url => ({
@@ -49,12 +49,12 @@ export const toggleEditMode = flag => ({
   payload: flag,
 });
 
-export const getPageRender = id => ({
+export const getPageRender = pageNumber => ({
   type: GET_PAGE_RENDER_REQUEST,
-  payload: {id},
+  payload: {pageNumber},
 });
 
-export const clearRenderHtml = id => ({
+export const clearRenderHtml = pageNumber => ({
   type: CLEAR_RENDER_HTML,
-  payload: id,
+  payload: pageNumber,
 });

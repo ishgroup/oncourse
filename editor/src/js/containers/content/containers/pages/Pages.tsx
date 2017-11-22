@@ -31,7 +31,7 @@ export class Pages extends React.Component<Props, any> {
 
   render() {
     const {match, pages, onEditHtml, toggleEditMode, clearRenderHtml, editMode, fetching} = this.props;
-    const activePage = match.params.id && pages.find(page => page.id == match.params.id);
+    const activePage = match.params.number && pages.find(page => page.number == match.params.number);
 
     return (
       <div>

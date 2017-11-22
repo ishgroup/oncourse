@@ -62,7 +62,7 @@ export class MockDB {
   mockPages() {
     return [
       {
-        id: 1,
+        number: 1,
         title: 'Page - 1',
         visible: true,
         themeId: 2,
@@ -75,7 +75,7 @@ export class MockDB {
         content: "<div>\n  <h1>Page Html 1</h1>\n  <p>Page text 1</p>\n</div>",
       },
       {
-        id: 2,
+        number: 2,
         title: 'Page - 2',
         visible: true,
         themeId: 2,
@@ -92,7 +92,7 @@ export class MockDB {
         content: "<div>\n  <h2>Page Html 2</h2>\n  <p>\n    <small>Page text 2</small>\n  </p>\n  <p>\n    Lorem ipsum dolor sit amet, consectetur adipisicing elit. \n    Accusantium adipisci autem commodi culpa cupiditate distinctio dolore doloremque \n    eius eveniet exercitationem facere facilis fuga fugit illo illum iste magnam \n    maxime minima nam nemo numquam officia provident quas quidem reprehenderit \n    repudiandae rerum sed totam ullam unde, velit vero vitae voluptate? Error, \n    soluta.\n  </p>\n</div>\n",
       },
       {
-        id: 3,
+        number: 3,
         title: 'Page - 3',
         visible: false,
         themeId: 2,
@@ -360,8 +360,8 @@ export class MockDB {
     });
   }
 
-  deletePageById(id: number) {
-    const index = this.pages.findIndex(item => item.id === id);
+  deletePageByNumber(pageNumber: number) {
+    const index = this.pages.findIndex(item => item.number === pageNumber);
     this.pages = update(this.pages, {
       $splice: [
         [index, 1],
@@ -425,7 +425,7 @@ export class MockDB {
   }
 
   editPage(page: Page) {
-    this.pages = this.pages.map(item => item.id === page.id ? {...item, ...page} : item);
+    this.pages = this.pages.map(item => item.number === page.number ? {...item, ...page} : item);
   }
 
   addTheme(theme: Theme) {
@@ -454,9 +454,9 @@ export class MockDB {
 
   createNewPage() {
     const page = new Page();
-    const newId = Math.max(...this.pages.map(page => page.id)) + 1;
-    page.title = `New Page ${isFinite(newId) ? newId : 1}`;
-    page.id = isFinite(newId) ? newId : 1;
+    const newNumber = Math.max(...this.pages.map(page => page.number)) + 1;
+    page.title = `New Page ${isFinite(newNumber) ? page : 1}`;
+    page.number = isFinite(newNumber) ? newNumber : 1;
     page.urls = [];
 
     this.pages.push(page);
@@ -489,8 +489,8 @@ export class MockDB {
     return theme;
   }
 
-  getPageRender(id) {
-    return this.pages.find(page => page.id === id).content;
+  getPageRender(pageNumber) {
+    return this.pages.find(page => page.number === pageNumber).content;
   }
 
   addContact(contact) {
