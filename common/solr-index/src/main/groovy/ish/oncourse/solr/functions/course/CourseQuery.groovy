@@ -31,15 +31,15 @@ class CourseQuery {
         query(Course).where(Course.COURSE_CLASSES.dot(CourseClass.ROOM).eq(room))
     }
 
-    static final ObjectSelect<Course> bySessionRoomSite(Site site) {
+    static final ObjectSelect<Course> bySessionSite(Site site) {
         query(Course).where(Course.COURSE_CLASSES.dot(CourseClass.SESSIONS).dot(Session.ROOM).dot(Room.SITE).eq(site))
     }
 
-    static final ObjectSelect<Course> byCourseClassRoomSite(Site site) {
+    static final ObjectSelect<Course> byCourseClassSite(Site site) {
         query(Course).where(Course.COURSE_CLASSES.dot(CourseClass.ROOM).dot(Room.SITE).eq(site))
     }
 
-    static final ObjectSelect<Taggable> courseTaggablebyTag(Tag tag) {
+    static final ObjectSelect<Taggable> courseTaggableByTag(Tag tag) {
         query(Taggable).where(Taggable.ENTITY_IDENTIFIER.eq("Course"))
                 .and(Taggable.TAGGABLE_TAGS.dot(TaggableTag.TAG).eq(tag))
     }

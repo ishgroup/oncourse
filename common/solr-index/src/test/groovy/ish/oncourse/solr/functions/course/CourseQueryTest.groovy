@@ -131,7 +131,7 @@ class CourseQueryTest {
         courseWithMainRoomSite.cCourseClass("classWithMainRoomSite1").cRoom(targetSite.site)
         objectContext.commitChanges()
 
-        List<Course> actualCourses = CourseQuery.bySessionRoomSite(targetSite.site).select(objectContext)
+        List<Course> actualCourses = CourseQuery.bySessionSite(targetSite.site).select(objectContext)
         Assert.assertEquals(1, actualCourses.size())
         assertNotNull(actualCourses.find {c -> c.id == expectedCourse.course.id})
         assertNull(actualCourses.find {c -> c.id == courseWithMainRoomSite.course.id})
@@ -152,7 +152,7 @@ class CourseQueryTest {
         CSession.instance(objectContext, sessionCourse.cCourseClass("expectedClass1").courseClass).cRoom(targetSite.site)
         objectContext.commitChanges()
 
-        List<Course> actualCourses = CourseQuery.byCourseClassRoomSite(targetSite.site).select(objectContext)
+        List<Course> actualCourses = CourseQuery.byCourseClassSite(targetSite.site).select(objectContext)
         Assert.assertEquals(1, actualCourses.size())
         assertNotNull(actualCourses.find {c -> c.id == expectedCourse.course.id})
         assertNull(actualCourses.find {c -> c.id == otherCourse.course.id})
@@ -172,7 +172,7 @@ class CourseQueryTest {
         collegeContext.tagCourse(expectedCourse1.course, otherTag)
         collegeContext.tagCourse(otherCourse1.course, otherTag)
 
-        List<Taggable> actualTaggables = CourseQuery.courseTaggablebyTag(targetTag).select(objectContext)
+        List<Taggable> actualTaggables = CourseQuery.courseTaggableByTag(targetTag).select(objectContext)
         assertEquals(2, actualTaggables.size())
         assertNotNull(actualTaggables.find {t -> t.entityWillowId == expectedCourse1.course.id})
         assertNotNull(actualTaggables.find {t -> t.entityWillowId == expectedCourse2.course.id})
@@ -192,7 +192,7 @@ class CourseQueryTest {
         collegeContext.tagCourse(expectedCourse1.course, otherTag)
         collegeContext.tagCourse(otherCourse1.course, otherTag)
 
-        List<Taggable> targetTaggables = CourseQuery.courseTaggablebyTag(targetTag).select(objectContext)
+        List<Taggable> targetTaggables = CourseQuery.courseTaggableByTag(targetTag).select(objectContext)
 
         List<Course> actualCourses = CourseQuery.byTaggable(targetTaggables).select(objectContext)
         assertEquals(2, actualCourses.size())
