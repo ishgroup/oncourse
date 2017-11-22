@@ -16,6 +16,7 @@ import ish.oncourse.model.WebSiteVersion
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.services.textile.ConvertCoreTextile
 import ish.oncourse.willow.editor.services.RequestService
+import ish.oncourse.willow.editor.website.WebContentFunctions
 import ish.oncourse.willow.editor.website.WebNodeFunctions
 import ish.oncourse.willow.editor.website.WebSiteVersionFunctions
 import org.apache.cayenne.ObjectContext
@@ -42,41 +43,34 @@ class PageResourceFactory implements ResourceFactory {
         Path path = Path.path(url)
 
         if (path.root) {
-            return new DirectoryResource(TopLevelDir.pages.name(), securityManager) {
-                @Override
-                Resource child(String childName) throws NotAuthorizedException, BadRequestException {
-                    return getWebNodeResource(childName)
-                }
-
-                @Override
-                List<? extends Resource> getChildren() throws NotAuthorizedException, BadRequestException {
-                    return listPages()
-                }
-
-                @Override
-                Resource createNew(String newName, InputStream inputStream, Long length, String contentType)
-                        throws IOException, ConflictException, NotAuthorizedException, BadRequestException {
-
-                    StringWriter writer = new StringWriter()
-                    IOUtils.copy(inputStream, writer, Charset.defaultCharset())
-
-                    String content = writer.toString()
-
-                    // check if there is an existing page with similar name
-                    WebNode page = WebNodeFunctions.getNodeForName(newName, requestService.request, cayenneService.newContext())
-
-                    if (page) {
-                        return changePage(page, newName, content)
-                    }
-
-                    return createNewPage(newName, content)
-                }
-
-                @Override
-                boolean authorise(Request request, Request.Method method, Auth auth) {
-                    return super.authorise(request,method,auth) && ArrayUtils.contains(TopLevelDir.pages.allowedMethods, method)
-                }
-            }
+            return new DirectoryResource(TopLevelDir.pages.name(), securityManager, 
+                    { String newName, InputStream inputStream, Long length, String contentType ->
+                        StringWriter writer = new StringWriter()
+                        IOUtils.copy(inputStream, writer, Charset.defaultCharset())
+        
+                        String content = writer.toString()
+        
+                        // check if there is an existing page with similar name
+                        WebNode page = WebNodeFunctions.getNodeForName(newName, requestService.request, cayenneService.newContext())
+        
+                        if (page) {
+                            return changePage(page, newName, content)
+                        }
+        
+                        return createNewPage(newName, content)
+                    },  
+                    { 
+                        String childName -> 
+                            return getWebNodeResource(childName) 
+                    }, 
+                    {
+                        return listPages() as ArrayList 
+                    }, 
+                    {
+                        Request request, Request.Method method, Auth auth  -> 
+                            return ArrayUtils.contains(TopLevelDir.pages.allowedMethods, method) 
+                    })
+            
         } else if (path.length == 1) {
             String name = path.name
             return getWebNodeResource(name)

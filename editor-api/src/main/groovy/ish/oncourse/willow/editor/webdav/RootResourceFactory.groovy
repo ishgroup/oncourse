@@ -1,5 +1,6 @@
 package ish.oncourse.willow.editor.webdav
 
+import groovy.transform.CompileStatic
 import io.milton.common.Path
 import io.milton.http.Auth
 import io.milton.http.Request
@@ -17,7 +18,9 @@ import org.apache.commons.lang3.ArrayUtils
 
 import static ish.oncourse.willow.editor.EditorProperty.S_ROOT
 import static ish.oncourse.willow.editor.webdav.TopLevelDir.*
+import static java.lang.Enum.valueOf
 
+@CompileStatic
 class RootResourceFactory implements ResourceFactory {
 
     public static final String WEBDAV_PATH_PREFIX = '/editor/webdav'
@@ -57,14 +60,11 @@ class RootResourceFactory implements ResourceFactory {
             final Path path = rawPath.stripFirst.stripFirst
 
             if (path.root) {
-                return new DirectoryResource('webdav', securityManager) {
-                    @Override
-                    Resource createNew(String newName, InputStream inputStream, Long length, String contentType) throws IOException, ConflictException, NotAuthorizedException, BadRequestException {
-                        return null
-                    }
-
-                    @Override
-                    Resource child(String childName) throws NotAuthorizedException, BadRequestException {
+                Closure<Resource> createNew = { 
+                    String newName, InputStream inputStream, Long length, String contentType -> 
+                        return null 
+                }
+                Closure<Resource> child = { String childName ->
                         switch (childName)
                         {
                             case RedirectsResource.FILE_NAME:
@@ -73,24 +73,22 @@ class RootResourceFactory implements ResourceFactory {
                                 return getDirectoryByName(valueOf(childName), host, path.stripFirst.toPath())
                         }
                     }
-
-                    @Override
-                    List<? extends Resource> getChildren() throws NotAuthorizedException, BadRequestException {
-                        List<Resource> resources = new ArrayList<>()
-
+                Closure<ArrayList<? extends Resource>> getChildren = {
+                    ArrayList<Resource> resources = new ArrayList<>()
+    
                         for (TopLevelDir dir : values()) {
                             resources.add(getDirectoryByName(dir, host, path.stripFirst.toPath()))
                         }
-
+    
                         resources.add(new RedirectsResource(securityManager, cayenneService, requestService))
                         return resources
                     }
-
-                    @Override
-                    boolean authorise(Request request, Request.Method method, Auth auth) {
-                        return super.authorise(request,method,auth) && ArrayUtils.contains(AccessRights.DIR_READ_ONLY, method)
+                
+                Closure<Boolean> authorise = { Request request, Request.Method method, Auth auth ->
+                        return ArrayUtils.contains(AccessRights.DIR_READ_ONLY, method)
                     }
-                }
+                
+                return new DirectoryResource('webdav', securityManager, createNew, child, getChildren, authorise) 
             }
             if (has(path.first))
             {

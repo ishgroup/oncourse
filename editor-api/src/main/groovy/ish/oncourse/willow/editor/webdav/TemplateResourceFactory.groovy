@@ -73,35 +73,24 @@ class TemplateResourceFactory implements ResourceFactory {
         Path path = Path.path(url)
 
         if (path.root) {
-            return new DirectoryResource(TEMPLATE_DIR_NAME, securityManager) {
-                @Override
-                Resource child(String childName) throws NotAuthorizedException, BadRequestException {
-                    return getLayoutResourceByName(childName)
-                }
-
-                @Override
-                List<? extends Resource> getChildren() throws NotAuthorizedException, BadRequestException {
-                    return listLayouts()
-                }
-
-                @Override
-                Resource createNew(String newName, InputStream inputStream, Long length, String contentType)
-                        throws IOException, ConflictException, NotAuthorizedException, BadRequestException {
+            return new DirectoryResource(TEMPLATE_DIR_NAME, securityManager,
+                { String newName, InputStream inputStream, Long length, String contentType ->
                     return null
-                }
-
-                @Override
-                CollectionResource createCollection(String newName) throws NotAuthorizedException, ConflictException, BadRequestException {
+                }, 
+                { String childName ->
+                    return getLayoutResourceByName(childName)
+                }, 
+                {
+                    return listLayouts() as ArrayList
+                }, 
+                { Request request, Request.Method method, Auth auth ->
+                    return  method in TopLevelDir.templates.allowedMethods
+                }, 
+                { String newName ->
                     WebSiteLayout layout = createLayout(newName)
-
-                    return new LayoutDirectoryResource(layout.layoutKey, layout, securityManager)
-                }
-
-                @Override
-                boolean authorise(Request request, Request.Method method, Auth auth) {
-                    return super.authorise(request,method,auth) && ArrayUtils.contains(TopLevelDir.templates.allowedMethods, method)
-                }
-            }
+                    return new LayoutDirectoryResource(layout.layoutKey, layout, securityManager, cayenneService, this)
+                })
+            
         } else if (path.length == 1) {
             String name = path.name
 
@@ -123,7 +112,7 @@ class TemplateResourceFactory implements ResourceFactory {
 
         List<DirectoryResource> directoryResources = []
         for (WebSiteLayout layout : layouts) {
-            directoryResources.add(new LayoutDirectoryResource(layout.layoutKey, layout, securityManager))
+            directoryResources.add(new LayoutDirectoryResource(layout.layoutKey, layout, securityManager, cayenneService, this))
         }
 
         return directoryResources
@@ -145,7 +134,7 @@ class TemplateResourceFactory implements ResourceFactory {
 
     private DirectoryResource getLayoutResourceByName(String name) {
         WebSiteLayout layout = getLayoutByName(name)
-        return layout != null ? new LayoutDirectoryResource(layout.layoutKey, layout, securityManager) : null
+        return layout != null ? new LayoutDirectoryResource(layout.layoutKey, layout, securityManager, cayenneService, this) : null
     }
 
     private WebSiteLayout getLayoutByName(String name) {
@@ -181,36 +170,37 @@ class TemplateResourceFactory implements ResourceFactory {
 
         private WebSiteLayout layout
 
-        LayoutDirectoryResource(String name, WebSiteLayout layout, SecurityManager securityManager) {
-            super(name, securityManager)
+        LayoutDirectoryResource(String name, WebSiteLayout layout, SecurityManager securityManager, ICayenneService cayenneService, TemplateResourceFactory factory) {
+            super(name, securityManager, 
+                    { String newName, InputStream inputStream, Long length, String contentType ->
+                        ObjectContext context = cayenneService.newContext()
+                        WebSiteLayout localLayout = context.localObject(layout)
+        
+                        StringWriter writer = new StringWriter()
+                        IOUtils.copy(inputStream, writer, Charset.defaultCharset())
+        
+                        WebTemplate template = WebTemplateFunctions.createWebTemplate(newName, writer.toString(), localLayout)
+        
+                        context.commitChanges()
+        
+                        return new WebTemplateResource(template.name, localLayout, cayenneService, securityManager, defaultTemplatesMap, getTemplate)
+                    }, 
+                    { String childName ->
+                        return factory.getTemplateResourceByName(childName, layout)
+                    },
+                    {
+                        return factory.listTemplates(layout) as ArrayList
+                    },
+                    { Request request, Request.Method method, Auth auth ->
+                        if (layout.layoutKey == WebNodeType.DEFAULT_LAYOUT_KEY) {
+                            return method in AccessRights.DIR_READ_ONLY_AND_ADD_CHILD
+                        } else {
+                            return true
+                        }
+                    })
             this.layout = layout
         }
-
-        @Override
-        Resource createNew(String newName, InputStream inputStream, Long length, String contentType) throws IOException, ConflictException, NotAuthorizedException, BadRequestException {
-            ObjectContext context = cayenneService.newContext()
-            WebSiteLayout localLayout = context.localObject(layout)
-
-            StringWriter writer = new StringWriter()
-            IOUtils.copy(inputStream, writer, Charset.defaultCharset())
-
-            WebTemplate template = WebTemplateFunctions.createWebTemplate(newName, writer.toString(), localLayout)
-
-            context.commitChanges()
-
-            return new WebTemplateResource(template.name, localLayout, cayenneService, securityManager, defaultTemplatesMap, getTemplate)
-        }
-
-        @Override
-        Resource child(String childName) throws NotAuthorizedException, BadRequestException {
-            return getTemplateResourceByName(childName, layout)
-        }
-
-        @Override
-        List<? extends Resource> getChildren() throws NotAuthorizedException, BadRequestException {
-            return listTemplates(layout)
-        }
-
+        
         @Override
         void moveTo(CollectionResource rDest, String name) throws ConflictException, NotAuthorizedException, BadRequestException {
             ObjectContext context = cayenneService.newContext()
@@ -225,15 +215,6 @@ class TemplateResourceFactory implements ResourceFactory {
             WebSiteLayout layoutToChange = context.localObject(layout)
             context.deleteObjects(layoutToChange)
             context.commitChanges()
-        }
-
-        @Override
-        boolean authorise(Request request, Request.Method method, Auth auth) {
-            if (layout.layoutKey == WebNodeType.DEFAULT_LAYOUT_KEY) {
-                return super.authorise(request,method,auth) && method in AccessRights.DIR_READ_ONLY_AND_ADD_CHILD
-            } else {
-                return super.authorise(request,method,auth)
-            }
         }
     }
 }

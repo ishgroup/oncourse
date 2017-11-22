@@ -19,8 +19,11 @@ import ish.oncourse.willow.editor.website.WebContentFunctions
 import ish.oncourse.willow.editor.website.WebSiteVersionFunctions
 import org.apache.cayenne.ObjectContext
 import org.apache.commons.io.IOUtils
+import org.apache.commons.lang3.ArrayUtils
 
 import java.nio.charset.Charset
+
+import static java.lang.Enum.valueOf
 
 class BlockResourceFactory implements ResourceFactory {
     
@@ -40,41 +43,32 @@ class BlockResourceFactory implements ResourceFactory {
         Path path = Path.path(url)
 
         if (path.root) {
-            return new DirectoryResource(TopLevelDir.blocks.name(), securityManager) {
-                @Override
-                Resource child(String childName) throws NotAuthorizedException, BadRequestException {
-                    return getBlockByName(childName)
-                }
+            return new DirectoryResource(TopLevelDir.blocks.name(), securityManager,
+                    { String newName, InputStream inputStream, Long length, String contentType ->
+                        StringWriter writer = new StringWriter()
+                        IOUtils.copy(inputStream, writer, Charset.defaultCharset())
 
-                @Override
-                List<? extends Resource> getChildren() throws NotAuthorizedException, BadRequestException {
-                    return listBlocks()
-                }
+                        String content = writer.toString()
 
-                @Override
-                Resource createNew(String newName, InputStream inputStream, Long length, String contentType)
-                        throws IOException, ConflictException, NotAuthorizedException, BadRequestException {
+                        // check if there is an existing block with similar name
+                        WebContent block = WebContentFunctions.getWebContent(requestService.request, cayenneService.newContext(), WebContent.NAME, newName)
 
-                    StringWriter writer = new StringWriter()
-                    IOUtils.copy(inputStream, writer, Charset.defaultCharset())
+                        if (block) {
+                            return changeBlock(block, newName, content)
+                        }
 
-                    String content = writer.toString()
-
-                    // check if there is an existing block with similar name
-                    WebContent block = WebContentFunctions.getWebContent(requestService.request, cayenneService.newContext(), WebContent.NAME, newName)
-
-                    if (block) {
-                        return changeBlock(block, newName, content)
-                    }
-
-                    return createNewBlock(newName, content)
-                }
-
-                @Override
-                boolean authorise(Request request, Request.Method method, Auth auth) {
-                    return super.authorise(request,method,auth) && method in TopLevelDir.blocks.allowedMethods
-                }
-            }
+                        return createNewBlock(newName, content)
+                    },
+                    { String childName ->
+                        return getBlockByName(childName)
+                    },
+                    {
+                        return listBlocks() as ArrayList
+                    },
+                    {  Request request, Request.Method method, Auth auth  ->
+                        return method in TopLevelDir.blocks.allowedMethods
+                    }) 
+            
         } else if (path.length == 1) {
             String name = path.name
             return getBlockByName(name)
