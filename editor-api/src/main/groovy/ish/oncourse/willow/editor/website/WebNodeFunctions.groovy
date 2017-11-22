@@ -107,7 +107,11 @@ class WebNodeFunctions {
 
         String number = path.replaceFirst("/page/", "")
         Integer intNumber = Integer.valueOf(number)
-        ObjectSelect select = ObjectSelect.query(WebNode).where(WebNode.NODE_NUMBER.eq(intNumber)) & siteQualifier(request, context)
+        return getNodeForNumber(intNumber, request, context)
+    }
+
+    static WebNode getNodeForNumber(Integer nodeNumber, Request request, ObjectContext context) {
+        ObjectSelect select = ObjectSelect.query(WebNode).where(WebNode.NODE_NUMBER.eq(nodeNumber)) & siteQualifier(request, context)
         select = addPrefetches(select)
         return select.selectFirst(context)
     }

@@ -1,8 +1,10 @@
 package ish.oncourse.willow.editor.service
 
+import ish.oncourse.model.WebNode
 import ish.oncourse.willow.editor.model.Page
 import ish.oncourse.willow.editor.service.impl.PageApiServiceImpl
 import ish.oncourse.willow.editor.website.WebNodeFunctions
+import org.apache.cayenne.query.SelectById
 import org.junit.Assert
 import org.junit.Test
 import org.junit.Before
@@ -43,11 +45,13 @@ class PageApiTest extends AbstractEditorTest{
      */
     @Test
     void deletePageTest() {
-	//api.deletePage()
-        
-        // TODO: test validations
-        
-        
+        Page newPage = api.addPage()
+        Assert.assertNotNull(newPage)
+
+        api.deletePage(newPage.number)
+
+        WebNode node = SelectById.query(WebNode, newPage.id).select(cayenneService.newContext())
+        Assert.assertEquals(node.id, null)
     }
     
     /**

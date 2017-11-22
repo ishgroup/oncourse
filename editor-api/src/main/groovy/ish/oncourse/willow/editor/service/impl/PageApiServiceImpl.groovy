@@ -1,6 +1,7 @@
 package ish.oncourse.willow.editor.service.impl
 
 import com.google.inject.Inject
+import ish.oncourse.model.WebContentVisibility
 import ish.oncourse.model.WebNode
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.willow.editor.model.common.CommonError
@@ -41,10 +42,26 @@ class PageApiServiceImpl implements PageApi {
         return WebNodeToPage.valueOf(node).page
     }
     
-    void deletePage(Double id) {
-        // TODO: Implement...
-        
-        
+    void deletePage(Double number) {
+        ObjectContext ctx = cayenneService.newContext()
+        Integer intNumber = number.toInteger()
+        WebNode node = WebNodeFunctions.getNodeForNumber(intNumber, requestService.request, cayenneService.newContext())
+
+        if (node != null) {
+
+            for (WebContentVisibility v : node.getWebContentVisibility()) {
+                ctx.deleteObjects(ctx.localObject(v.getWebContent()))
+            }
+            WebNode localNode = ctx.localObject(node)
+            ctx.deleteObjects(localNode)
+            ctx.commitChanges()
+
+        } else {
+
+            String message = "There is no page to remove for provided number. Number: $intNumber"
+            logger.error(message)
+            throw new ClientErrorException(Response.status(400).entity(new CommonError(message: message)).build())
+        }
     }
     
     Page getPageByUrl(String pageUrl) {
