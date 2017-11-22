@@ -1,6 +1,7 @@
 jetty:
   context: /a
   connector:
+    type: willow
     port: 10080
     host: 127.0.0.1
 jdbc:
