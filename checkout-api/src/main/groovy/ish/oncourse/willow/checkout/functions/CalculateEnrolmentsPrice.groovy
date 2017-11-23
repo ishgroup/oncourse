@@ -10,7 +10,7 @@ import ish.oncourse.model.CorporatePass
 import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Discount
 import ish.oncourse.model.DiscountCourseClass
-import ish.oncourse.model.GetDiscountForEnrolment
+import ish.oncourse.services.discount.GetDiscountForEnrolment
 import ish.oncourse.model.Tax
 import ish.oncourse.services.discount.WebDiscountUtils
 import ish.oncourse.willow.model.checkout.CheckoutModel

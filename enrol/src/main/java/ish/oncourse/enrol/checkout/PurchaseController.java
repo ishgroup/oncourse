@@ -21,6 +21,7 @@ import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.*;
 import ish.oncourse.services.application.IApplicationService;
 import ish.oncourse.services.datalayer.IDataLayerFactory;
+import ish.oncourse.services.discount.GetDiscountForEnrolment;
 import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.paymentexpress.INewPaymentGatewayServiceBuilder;

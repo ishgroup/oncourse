@@ -1,10 +1,11 @@
 /*
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
  */
-package ish.oncourse.model;
+package ish.oncourse.services.discount;
 
 import ish.common.types.EnrolmentStatus;
 import ish.math.Money;
+import ish.oncourse.model.*;
 import ish.oncourse.utils.MembershipDiscountHelper;
 import ish.util.DiscountUtils;
 import org.apache.cayenne.exp.Expression;
