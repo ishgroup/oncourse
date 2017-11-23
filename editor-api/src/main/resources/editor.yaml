@@ -322,12 +322,12 @@ paths:
       consumes:
         - application/json
       parameters:
-        - name: id
+        - name: name
           in: body
           description: identificator of block which will be deleted
           required: true
           schema:
-            type: number
+            type: string
       responses:
         '200':
           description: Block successfully deleted
@@ -738,13 +738,10 @@ definitions:
   Block:
     type: object
     properties:
-      id:
-        type: number
-        description: unique id of block
       title:
         type: string
         description: Title/Name of block
-      html:
+      content:
         type: string
         description: Html source of block
   Version:

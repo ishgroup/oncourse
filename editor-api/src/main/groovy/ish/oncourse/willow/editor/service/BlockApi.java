@@ -26,7 +26,7 @@ public interface BlockApi  {
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @AuthFilter
-    void deleteBlock(Double id);
+    void deleteBlock(String name);
 
     @GET
     @Path("/getBlocks")
