@@ -20,4 +20,6 @@ dependencies {
     compile group: 'org.apache.solr', name: 'solr-solrj', version: solrVersion
     compile 'commons-httpclient:commons-httpclient:3.1'
     compile 'net.java.dev.textile-j:textile-j:2.2.864'
+
+    testCompile project(path: ':common:common-test', configuration: 'testFixtures')
 }

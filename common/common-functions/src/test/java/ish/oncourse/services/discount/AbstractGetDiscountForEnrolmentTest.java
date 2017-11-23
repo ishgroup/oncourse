@@ -1,7 +1,11 @@
-package ish.oncourse.model;
+package ish.oncourse.services.discount;
 
 import ish.common.types.DiscountType;
 import ish.math.Money;
+import ish.oncourse.model.CorporatePass;
+import ish.oncourse.model.CorporatePassDiscount;
+import ish.oncourse.model.Discount;
+import ish.oncourse.model.DiscountCourseClass;
 import ish.oncourse.test.ContextUtils;
 import org.apache.cayenne.ObjectContext;
 import org.junit.BeforeClass;
@@ -11,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Contains fields and tests common for {@link ish.oncourse.model.GetDiscountForEnrolment}
+ * Contains fields and tests common for {@link ish.oncourse.services.discount.GetDiscountForEnrolment}
  * @author ksenia
  *
  */
