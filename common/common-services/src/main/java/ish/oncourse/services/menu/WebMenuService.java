@@ -73,11 +73,12 @@ public class WebMenuService extends BaseService<WebMenu> implements IWebMenuServ
 	 */
 	public List<WebMenu> getNavigableChildrenBy(WebMenu parent) {
 		List<WebMenu> childrent = getChildrenBy(parent);
-		return WebMenu.WEB_NODE.dot(WebNode.PUBLISHED).eq(true)
-				.orExp(
-						WebMenu.WEB_NODE.isNull()
-								.andExp(WebMenu.URL.isNotNull()))
-				.filterObjects(childrent);
+		
+		Expression filter =  webSiteVersionService.isEditor() ? WebMenu.WEB_NODE.isNotNull() 
+				: WebMenu.WEB_NODE.dot(WebNode.PUBLISHED).eq(true);
+		
+		return filter.orExp(WebMenu.WEB_NODE.isNull().andExp(WebMenu.URL.isNotNull()))
+						.filterObjects(childrent);
 	}
 
 	@Override

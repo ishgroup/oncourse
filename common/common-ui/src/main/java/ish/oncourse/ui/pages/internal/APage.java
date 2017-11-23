@@ -5,6 +5,7 @@ import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebNodeType;
 import ish.oncourse.services.html.IFacebookMetaProvider;
 import ish.oncourse.services.node.IWebNodeService;
+import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.util.URLUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -41,7 +42,10 @@ public abstract class APage extends ISHCommon {
 
     @Inject
     private IWebNodeService webNodeService;
-
+    
+    @Inject
+    private IWebSiteVersionService webSiteVersionService;
+    
     @Inject
     private IFacebookMetaProvider facebookMetaProvider;
 
@@ -50,7 +54,7 @@ public abstract class APage extends ISHCommon {
     @SetupRender
     public boolean beforeRender() throws IOException {
         node = webNodeService.getCurrentNode();
-        if (node == null || !node.isPublished()) {
+        if (node == null || (!webSiteVersionService.isEditor() && !node.isPublished())) {
             logger.warn("CurrentNode {} is {} in {}/{}",
                     node == null ? "undefined" : webNodeService.getPath(node),
                     node == null ? "null" : "unpublished",

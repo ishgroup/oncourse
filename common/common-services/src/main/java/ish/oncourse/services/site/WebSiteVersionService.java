@@ -44,8 +44,9 @@ public class WebSiteVersionService extends AbstractWebSiteVersionService {
 	public void removeOldWebSiteVersions(WebSite webSite) {
 		throw new UnsupportedOperationException("WebSiteVersions can only be deleted from CMS.");
 	}
-	
-	private boolean isEditor() {
+
+	@Override
+	public boolean isEditor() {
 		return cookiesService.getCookieValue(EDITOR_PREFIX) != null;
 	}
 

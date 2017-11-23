@@ -17,6 +17,9 @@ public interface IWebSiteVersionService {
 
 	@RequestCached
 	String getCacheKey();
+	
+	@RequestCached
+	boolean isEditor();
 
 	/**
 	 * Create a copy of the staged web site version, sets deployedOn field to current time
