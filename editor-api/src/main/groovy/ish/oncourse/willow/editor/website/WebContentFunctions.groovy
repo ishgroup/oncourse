@@ -32,6 +32,17 @@ class WebContentFunctions {
         return createNewWebContentBy(webSiteVersion, "$NEW_WEB_CONTENT_NAME  ($nextWebContentNumber)", SAMPLE_WEB_CONTENT)
     }
 
+    private static getNewBlockName(Request request, ObjectContext ctx) {
+        WebContent lastNode = (((ObjectSelect.query(WebContent)
+                .cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
+                .cacheGroup(WebContent.simpleName)
+                & WebContent.WEB_SITE_VERSION.eq(WebSiteVersionFunctions.getCurrentVersion(request, ctx)))
+                & WebContent.NAME.like('New block (%)'))
+                & blockQualifier)
+                .orderBy(WebContent.NAME.desc())
+                .selectFirst()
+    }
+
     static WebContent createNewWebContentBy(WebSiteVersion webSiteVersion, String nodeName, String content) {
         ObjectContext ctx = webSiteVersion.objectContext
         WebContent newWebContent = ctx.newObject(WebContent)
