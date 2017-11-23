@@ -2,6 +2,8 @@ package ish.oncourse.willow.editor.service.impl
 
 import ish.oncourse.model.WebContent
 import ish.oncourse.services.persistence.ICayenneService
+import ish.oncourse.willow.editor.rest.WebContentToBlock
+import ish.oncourse.willow.editor.rest.WebNodeToPage
 import ish.oncourse.willow.editor.service.*
 import ish.oncourse.willow.editor.model.Block
 import ish.oncourse.willow.editor.model.common.CommonError
@@ -10,9 +12,16 @@ import groovy.transform.CompileStatic
 import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.website.WebContentFunctions
 import org.apache.cayenne.ObjectContext
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
+
+import javax.ws.rs.ClientErrorException
+import javax.ws.rs.core.Response
 
 @CompileStatic
 class BlockApiServiceImpl implements BlockApi {
+
+    private static Logger logger = LogManager.logger
 
     private ICayenneService cayenneService
     private RequestService requestService
@@ -24,36 +33,30 @@ class BlockApiServiceImpl implements BlockApi {
 
     Block addBlock() {
         ObjectContext context = cayenneService.newContext()
-        WebContent content = WebContentFunctions.createNewWebContent(requestService.request, context)
+        WebContent webContent = WebContentFunctions.createNewWebContent(requestService.request, context)
         context.commitChanges()
 
-        return new Block().with {block ->
-            block.id = content.id.doubleValue()
-            block.title = content.name
-            block.html = content.contentTextile
-            block
-        }
+        return WebContentToBlock.valueOf(webContent).block
     }
-    
+
     void deleteBlock(Double id) {
         // TODO: Implement...
     }
     
     List<Block> getBlocks() {
-        List<WebContent> blocks = WebContentFunctions.getBlocks(requestService.request, cayenneService.newContext())
-
-        return blocks.collect { node -> new Block().with { block ->
-            block.id = node.id.doubleValue()
-            block.title = node.name
-            block.html = node.contentTextile
-            block
-        }}
+        WebContentFunctions.getWebContents(requestService.request, cayenneService.newContext())
+                .collect { node -> WebContentToBlock.valueOf(node).block }
     }
     
     Block saveBlock(Block saveBlockRequest) {
         // TODO: Implement...
         
         return null
+    }
+
+    private ClientErrorException createClientException(String message) {
+        logger.error(message)
+        new ClientErrorException(Response.status(400).entity(new CommonError(message: message)).build())
     }
     
 }

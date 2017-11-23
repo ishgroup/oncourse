@@ -52,7 +52,7 @@ class WebContentFunctions {
         return query.selectOne(context)
     }
 
-    static List<WebContent> getBlocks(Request request, ObjectContext context) {
+    static List<WebContent> getWebContents(Request request, ObjectContext context) {
         return (ObjectSelect.query(WebContent)
                 .localCache(WebContent.simpleName) 
                 & WebContent.WEB_SITE_VERSION.eq(WebSiteVersionFunctions.getCurrentVersion(request, context)) 
