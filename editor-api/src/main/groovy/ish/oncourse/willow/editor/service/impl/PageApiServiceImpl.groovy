@@ -1,10 +1,17 @@
 package ish.oncourse.willow.editor.service.impl
 
 import com.google.inject.Inject
+import ish.oncourse.model.RegionKey
+import ish.oncourse.model.WebContent
 import ish.oncourse.model.WebContentVisibility
 import ish.oncourse.model.WebNode
+import ish.oncourse.model.WebNodeType
+import ish.oncourse.model.WebUrlAlias
 import ish.oncourse.services.persistence.ICayenneService
+import ish.oncourse.services.textile.ConvertCoreTextile
+import ish.oncourse.willow.editor.model.PageUrl
 import ish.oncourse.willow.editor.model.common.CommonError
+import ish.oncourse.willow.editor.rest.UpdatePage
 import ish.oncourse.willow.editor.rest.WebNodeToPage
 import ish.oncourse.willow.editor.service.*
 import ish.oncourse.willow.editor.model.Page
@@ -14,6 +21,8 @@ import groovy.transform.CompileStatic
 import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.website.WebNodeFunctions
 import org.apache.cayenne.ObjectContext
+import org.apache.cayenne.query.ObjectSelect
+import org.apache.cayenne.query.SelectById
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
@@ -81,14 +90,15 @@ class PageApiServiceImpl implements PageApi {
     
     Page savePage(Page pageParams) {
         ObjectContext context = cayenneService.newContext()
-        WebNode node = WebNodeFunctions.getNodeForNumber(pageParams.number.intValue(), requestService.request, context)
-        if (!node) {
-            throw createClientException("There are no pages for pageParams: $pageParams, server name: $requestService.request.serverName")
+        UpdatePage updater = UpdatePage.valueOf(pageParams, context, requestService.request).updatePage()
+        if (updater.error) {
+            throw createClientException(updater.error)
         }
+        return pageParams
     }
     
     private ClientErrorException createClientException(String message) {
-        logger.error(message)
+        logger.error("$message, server name: $requestService.request.serverName")
          new ClientErrorException(Response.status(400).entity(new CommonError(message: message)).build())
     }
     
