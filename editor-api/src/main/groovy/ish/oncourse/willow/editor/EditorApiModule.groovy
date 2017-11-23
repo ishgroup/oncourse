@@ -16,6 +16,7 @@ import ish.oncourse.configuration.ISHHealthCheckServlet
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.util.log.LogAppInfo
 import ish.oncourse.willow.editor.service.impl.AuthApiServiceImpl
+import ish.oncourse.willow.editor.service.impl.PageApiServiceImpl
 import ish.oncourse.willow.editor.services.RequestFilter
 import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.services.access.AuthenticationFilter
@@ -57,6 +58,7 @@ class EditorApiModule extends ConfigModule {
         CXFModule.contributeResources(binder).addBinding().to(JAXRSBeanValidationFeature)
         CXFModule.contributeResources(binder).addBinding().to(AuthenticationFilter)
         CXFModule.contributeResources(binder).addBinding().to(AuthApiServiceImpl)
+        CXFModule.contributeResources(binder).addBinding().to(PageApiServiceImpl)
         
         binder.bind(RequestService)
         binder.bind(ZKSessionManager)

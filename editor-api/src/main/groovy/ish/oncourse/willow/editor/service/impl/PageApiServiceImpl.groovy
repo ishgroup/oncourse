@@ -79,8 +79,12 @@ class PageApiServiceImpl implements PageApi {
     }
     
     PageRenderResponse getPageRender(Double pageNumber) {
-        
-        return null
+        WebNode node = WebNodeFunctions.getNodeForNumber(pageNumber.toInteger(), requestService.request, cayenneService.newContext())
+        if (node) {
+            return  new PageRenderResponse(html: node.webContentVisibility.find {it.regionKey == RegionKey.content}?.webContent?.content)
+        } else {
+            throw createClientException("There are no pages for provided number: ${pageNumber.toInteger()}")
+        }
     }
     
     List<Page> getPages() {
