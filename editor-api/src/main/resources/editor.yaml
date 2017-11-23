@@ -147,7 +147,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /getPageRender/{pageId}:
+  /getPageRender/{pageNumber}:
     get:
       x-filter:  
       - AuthFilter
@@ -157,9 +157,9 @@ paths:
       tags:
         - Page
       parameters:
-        - name: pageId
+        - name: pageNumber
           in: path
-          description: Page id
+          description: Page number
           required: true
           type: number
       responses:

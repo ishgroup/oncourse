@@ -78,7 +78,7 @@ class PageApiServiceImpl implements PageApi {
         }
     }
     
-    PageRenderResponse getPageRender(Double pageId) {
+    PageRenderResponse getPageRender(Double pageNumber) {
         
         return null
     }

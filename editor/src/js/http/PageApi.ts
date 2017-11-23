@@ -16,8 +16,8 @@ export class PageApi {
   getPageByUrl(pageUrl: string): Promise<Page> {
     return this.http.GET(`/getPageByUrl`, { params: { pageUrl }});
   }
-  getPageRender(pageId: number): Promise<PageRenderResponse> {
-    return this.http.GET(`/getPageRender/${pageId}`);
+  getPageRender(pageNumber: number): Promise<PageRenderResponse> {
+    return this.http.GET(`/getPageRender/${pageNumber}`);
   }
   getPages(): Promise<Page[]> {
     return this.http.GET(`/getPages`);

@@ -36,10 +36,10 @@ public interface PageApi  {
     Page getPageByUrl(@QueryParam("pageUrl")String pageUrl);
 
     @GET
-    @Path("/getPageRender/{pageId}")
+    @Path("/getPageRender/{pageNumber}")
     @Produces({ "application/json" })
     @AuthFilter
-    PageRenderResponse getPageRender(@PathParam("pageId") Double pageId);
+    PageRenderResponse getPageRender(@PathParam("pageNumber") Double pageNumber);
 
     @GET
     @Path("/getPages")
