@@ -35,7 +35,6 @@ class BlockApiServiceImpl implements BlockApi {
         ObjectContext context = cayenneService.newContext()
         WebContent webContent = WebContentFunctions.createNewWebContent(requestService.request, context)
         context.commitChanges()
-
         return WebContentToBlock.valueOf(webContent).block
     }
 

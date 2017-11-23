@@ -11,7 +11,7 @@ import org.apache.cayenne.query.QueryCacheStrategy
 import org.eclipse.jetty.server.Request
 
 class WebContentFunctions {
-    private static final String NEW_WEB_CONTENT_NAME = 'New block'
+    private static final String BLOCK_NAME_PATTERN = 'New block (%)'
     private static final String SAMPLE_WEB_CONTENT = 'Sample content'
 
     static WebContent getBlockByName(Request request, ObjectContext context ,String webContentName) {
@@ -27,30 +27,22 @@ class WebContentFunctions {
 
     static WebContent createNewWebContent(Request request, ObjectContext ctx) {
         WebSiteVersion webSiteVersion = WebSiteVersionFunctions.getCurrentVersion(request, ctx)
-        Integer nextWebContentNumber = 2
-        // TODO: get content number
-        return createNewWebContentBy(webSiteVersion, "$NEW_WEB_CONTENT_NAME  ($nextWebContentNumber)", SAMPLE_WEB_CONTENT)
-    }
-
-    private static getNewBlockName(Request request, ObjectContext ctx) {
-        WebContent lastNode = (((ObjectSelect.query(WebContent)
-                .cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
-                .cacheGroup(WebContent.simpleName)
-                & WebContent.WEB_SITE_VERSION.eq(WebSiteVersionFunctions.getCurrentVersion(request, ctx)))
-                & WebContent.NAME.like('New block (%)'))
-                & blockQualifier)
-                .orderBy(WebContent.NAME.desc())
-                .selectFirst()
-    }
-
-    static WebContent createNewWebContentBy(WebSiteVersion webSiteVersion, String nodeName, String content) {
-        ObjectContext ctx = webSiteVersion.objectContext
         WebContent newWebContent = ctx.newObject(WebContent)
-
-        newWebContent.name = nodeName
-        newWebContent.contentTextile = content
+        newWebContent.name = getNewBlockName(webSiteVersion, ctx)
         newWebContent.webSiteVersion = webSiteVersion
         return newWebContent
+    }
+
+    private static getNewBlockName(WebSiteVersion version, ObjectContext ctx) {
+        Integer nextNumber = 1
+        List<String> namesList  = ((ObjectSelect.columnQuery(WebContent, WebContent.NAME)
+                .where(WebContent.NAME.like(BLOCK_NAME_PATTERN)) & blockQualifier) & WebContent.WEB_SITE_VERSION.eq(version)).select(ctx)
+        if (!namesList.empty) {
+            String regex = /New block \(\d+\)/
+            Integer integer = namesList.findAll { it ==~ regex }.collect { it.find(/\d+/).toInteger() }.max()
+            nextNumber = integer ? ++integer: 1
+        }
+        BLOCK_NAME_PATTERN.replace('%', nextNumber.toString())
     }
 
     static <T> WebContent getWebContent(Request request, ObjectContext context, Property<T> property, T value) {
