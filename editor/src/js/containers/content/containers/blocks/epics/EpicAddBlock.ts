@@ -13,9 +13,9 @@ import {URL} from "../../../../../routes";
 const request: EpicUtils.Request<any, any> = {
   type: ADD_BLOCK_REQUEST,
   getData: (props, state) => BlockService.addBlock(),
-  processData: (block: Block, state: any) => {
+  processData: (block: Block, state: any, payload) => {
 
-    getHistoryInstance().push(`${URL.BLOCKS}/${block.id}`);
+    getHistoryInstance().push(`${URL.BLOCKS}/${state.block.items.length + 1}`);
 
     return [
       success({...notificationParams, title: 'New Block added'}),

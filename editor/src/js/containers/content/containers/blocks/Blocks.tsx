@@ -2,12 +2,12 @@ import React from 'react';
 import {connect, Dispatch} from "react-redux";
 import classnames from "classnames";
 import {getBlocks, saveBlock} from "./actions";
-import {Block as BlockModel} from "../../../../model";
 import {Block} from "./components/Block";
 import {State} from "../../../../reducers/state";
+import {BlockState} from "./reducers/State";
 
 interface Props {
-  blocks: BlockModel[];
+  blocks: BlockState[];
   onInit: () => any;
   match?: any;
   fetching: boolean;
@@ -47,7 +47,7 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
     onInit: () => dispatch(getBlocks()),
-    onEditHtml: (id, html) => dispatch(saveBlock(id, {html})),
+    onEditHtml: (id, content) => dispatch(saveBlock(id, {content})),
   };
 };
 

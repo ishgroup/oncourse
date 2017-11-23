@@ -30,16 +30,28 @@ export class MockAdapter {
 export const promiseResolve = (config, data = {}) => {
   console.log('%c ----------------', 'color: black');
   console.log(`%c Api request to: /${config.url}`, 'color: #bada55');
-  console.log(`%c request params:`, 'color: #bada55'); console.log(config.data && [JSON.parse(config.data)]);
+  console.log(`%c request params:`, 'color: #bada55'); console.log(config.data && [parseJson(config.data)]);
   console.log(`%c response params:`, 'color: #bada55'); console.log([data]);
   console.log('%c ----------------', 'color: black');
 
 
   return [200, data];
-}
+};
 
 export const promiseReject = (config, data = {}) => {
   console.log(`%c Api request to: /${config.url}`, 'color: red');
   console.log(`%c request params: ${config.data}`, 'color: red');
   return [400, data];
-}
+};
+
+const parseJson = data => {
+  let json;
+
+  try {
+    json = JSON.parse(data);
+  } catch (e) {
+    json = data;
+  }
+
+  return json;
+};

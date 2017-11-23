@@ -1,10 +1,10 @@
 import React from 'react';
 import {Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText} from 'reactstrap';
-import {Block} from "../../../../../model";
 import {IconBack} from "../../../../../common/components/IconBack";
+import {BlockState} from "../reducers/State";
 
 interface Props {
-  block: Block;
+  block: BlockState;
   onBack: () => void;
   onEdit?: (settings) => void;
   onDelete?: (id) => void;
@@ -51,7 +51,7 @@ export class BlockSettings extends React.Component<Props, any> {
 
     showModal({
       text: `You are want to delete block '${block.title}'. Are you sure?`,
-      onConfirm: () => onDelete(block.id),
+      onConfirm: () => onDelete(block.title),
     });
   }
 

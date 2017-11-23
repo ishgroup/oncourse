@@ -20,6 +20,13 @@ export const CreateMockDB = (): MockDB => {
   return result;
 };
 
+interface Settings {
+  skillsOnCourse: SkillsOnCourseSettings;
+  checkout: CheckoutSettings;
+  website: WebsiteSettings;
+  redirect: RedirectSettings;
+}
+
 export class MockDB {
 
   users: User[];
@@ -29,12 +36,7 @@ export class MockDB {
   themes: Theme[];
   layouts: Layout[];
   versions: Version[];
-  settings: {
-    skillsOnCourse: SkillsOnCourseSettings;
-    checkout: CheckoutSettings;
-    website: WebsiteSettings;
-    redirect: RedirectSettings;
-  };
+  settings: Settings;
 
   constructor() {
     this.init();
@@ -51,15 +53,14 @@ export class MockDB {
     this.settings = this.mockSettings();
   }
 
-  mockUser() {
+  mockUser(): User {
     return {
-      id: 1,
       firstName: "John",
       lastName: "Doe",
     };
   }
 
-  mockPages() {
+  mockPages(): Page[] {
     return [
       {
         number: 1,
@@ -111,42 +112,35 @@ export class MockDB {
     ];
   }
 
-  mockBlocks() {
+  mockBlocks(): Block[] {
     return [
       {
-        id: 1,
         title: 'Header',
-        html: "<div>\n  <h1>Header Title</h1>\n</div>",
+        content: "<div>\n  <h1>Header Title</h1>\n</div>",
       },
       {
-        id: 2,
         title: 'Footer',
-        html: "<div>\n  <footer>Lorem ipsum dolor sit amet.</footer>\n</div>",
+        content: "<div>\n  <footer>Lorem ipsum dolor sit amet.</footer>\n</div>",
       },
       {
-        id: 3,
         title: 'Content1',
-        html: "<div>\n<ul>\n  <li>Lorem ipsum dolor sit amet.</li>\n  <li>Lorem ipsum.</li>\n  <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit!</li>\n</ul>\n</div>",
+        content: "<div>\n<ul>\n  <li>Lorem ipsum dolor sit amet.</li>\n  <li>Lorem ipsum.</li>\n  <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit!</li>\n</ul>\n</div>",
       },
       {
-        id: 4,
         title: 'Content2',
-        html: "<div>\n<ul>\n  <li>Lorem ipsum dolor sit amet.</li>\n  <li>Lorem ipsum.</li>\n  <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit!</li>\n</ul>\n</div>",
+        content: "<div>\n<ul>\n  <li>Lorem ipsum dolor sit amet.</li>\n  <li>Lorem ipsum.</li>\n  <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit!</li>\n</ul>\n</div>",
       },
       {
-        id: 5,
         title: 'Content3',
-        html: "<div>\n<ul>\n  <li>Lorem ipsum dolor sit amet.</li>\n  <li>Lorem ipsum.</li></ul>\n</div>",
+        content: "<div>\n<ul>\n  <li>Lorem ipsum dolor sit amet.</li>\n  <li>Lorem ipsum.</li></ul>\n</div>",
       },
       {
-        id: 6,
         title: 'Content4',
-        html: "<div>\n<ul>\n  <li>Lorem ipsum dolor sit amet.</li>\n  <li>Lorem ipsum.</li>\n</ul>\n</div>",
+        content: "<div>\n<ul>\n  <li>Lorem ipsum dolor sit amet.</li>\n  <li>Lorem ipsum.</li>\n</ul>\n</div>",
       },
       {
-        id: 7,
         title: 'Content5',
-        html: "<div>\n<ul>\n  <li>Lorem ipsum dolor sit amet.</li>\n  <li>Lorem ipsum.</li>\n</ul>\n</div>",
+        content: "<div>\n<ul>\n  <li>Lorem ipsum dolor sit amet.</li>\n  <li>Lorem ipsum.</li>\n</ul>\n</div>",
       },
     ];
   }
@@ -204,7 +198,7 @@ export class MockDB {
     ];
   }
 
-  mockThemes() {
+  mockThemes(): Theme[] {
     return [
       {
         id: 1,
@@ -249,7 +243,7 @@ export class MockDB {
     ];
   }
 
-  mockLayouts() {
+  mockLayouts(): Layout[] {
     return [
       {
         id: 1,
@@ -266,7 +260,7 @@ export class MockDB {
     ];
   }
 
-  mockVersions() {
+  mockVersions(): Version[] {
     return [
       {
         id: 1,
@@ -313,7 +307,7 @@ export class MockDB {
     ];
   }
 
-  mockSettings() {
+  mockSettings(): Settings {
     return {
       skillsOnCourse: {
         hideStudentDetails: false,
@@ -369,14 +363,14 @@ export class MockDB {
     });
   }
 
-  deleteBlockById(id: number) {
-    // const index = this.blocks.findIndex(item => item.id === id);
+  deleteBlockByTitle(name: string) {
+    // const index = this.blocks.findIndex(item => item.title === name);
     // this.blocks = update(this.blocks, {
     //   $splice: [
     //     [index, 1],
     //   ],
     // });
-    //
+
     // this.themes.forEach(theme => this.deleteBlockFromTheme(theme.id, id));
   }
 
@@ -389,7 +383,7 @@ export class MockDB {
   }
 
   editBlock(block: Block) {
-    this.blocks = this.blocks.map(item => item.id === block.id ? {...item, ...block} : item);
+    this.blocks = this.blocks.map(item => item.title === block.title ? {...item, ...block} : item);
   }
 
   deleteBlockFromTheme(themeId, blockId) {
@@ -448,11 +442,11 @@ export class MockDB {
     this.settings[category] = settings;
   }
 
-  getPageByUrl(url) {
+  getPageByUrl(url): Page {
     return this.pages.find(page => !!page.urls.find(l => l.link === url));
   }
 
-  createNewPage() {
+  createNewPage(): Page {
     const page = new Page();
     const newNumber = Math.max(...this.pages.map(page => page.number)) + 1;
     page.title = `New Page ${isFinite(newNumber) ? page : 1}`;
@@ -463,17 +457,16 @@ export class MockDB {
     return page;
   }
 
-  createNewBlock() {
+  createNewBlock(): Block {
     const block = new Block();
-    const newId = Math.max(...this.blocks.map(block => block.id)) + 1;
-    block.title = `New Block ${isFinite(newId) ? newId : 1}`;
-    block.id = isFinite(newId) ? newId : 1;
+    const newId = Math.floor(Math.random() * 1000) + 1;
+    block.title = `New Block ${newId}`;
 
     this.blocks.push(block);
     return block;
   }
 
-  createNewTheme() {
+  createNewTheme(): Theme {
     const theme = new Theme();
     const newId = Math.max(...this.themes.map(theme => theme.id)) + 1;
     theme.title = `New Theme ${isFinite(newId) ? newId : 1}`;

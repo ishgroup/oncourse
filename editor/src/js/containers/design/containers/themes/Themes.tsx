@@ -3,15 +3,16 @@ import {Container, Row, Col} from 'reactstrap';
 import {connect, Dispatch} from "react-redux";
 import classnames from "classnames";
 import {getLayouts, getThemes, saveTheme, updateThemeState} from "./actions";
-import {Theme as ThemeModel, Block} from "../../../../model";
+import {Theme as ThemeModel} from "../../../../model";
 import Theme from "./components/Theme";
 import {State} from "../../../../reducers/state";
 import {getBlocks} from "../../../content/containers/blocks/actions";
+import {BlockState} from "../../../content/containers/blocks/reducers/State";
 
 interface Props {
   themes: ThemeModel[];
   fetching: boolean;
-  blocks: Block[];
+  blocks: BlockState[];
   onInit: () => any;
   match?: any;
   onUpdateLayout: (themeId, blockId, items) => any;

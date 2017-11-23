@@ -1,16 +1,16 @@
 import React from 'react';
 import {connect, Dispatch} from "react-redux";
 import classnames from "classnames";
-import {Block} from "../../../../../model";
 import {State} from "../../../../../reducers/state";
 import {BlockSettings} from "../components/BlockSettings";
 import {URL} from "../../../../../routes";
 import {addBlock, deleteBlock, saveBlock} from "../actions";
 import {SidebarList} from "../../../../../components/Sidebar/SidebarList";
 import {showModal} from "../../../../../common/containers/modal/actions";
+import {BlockState} from "../reducers/State";
 
 interface Props {
-  blocks: Block[];
+  blocks: BlockState[];
   match: any;
   onEditSettings: (blockId, settings) => any;
   onAddBlock: () => any;
@@ -72,7 +72,7 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
     onEditSettings: (blockId, settings) => dispatch(saveBlock(blockId, settings)),
-    onDeleteBlock: id => dispatch(deleteBlock(id)),
+    onDeleteBlock: title => dispatch(deleteBlock(title)),
     showModal: props => dispatch(showModal(props)),
     onAddBlock: () => dispatch(addBlock()),
   };

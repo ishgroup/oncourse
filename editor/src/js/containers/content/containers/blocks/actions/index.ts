@@ -21,9 +21,9 @@ export const saveBlock = (id, props) => ({
   payload: {id, ...props},
 });
 
-export const deleteBlock = id => ({
+export const deleteBlock = title => ({
   type: DELETE_BLOCK_REQUEST,
-  payload: id,
+  payload: title,
 });
 
 export const addBlock = () => ({

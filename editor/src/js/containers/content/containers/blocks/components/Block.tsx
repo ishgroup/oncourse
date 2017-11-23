@@ -1,11 +1,11 @@
 import React from 'react';
 import {Container, Row, Col, Button, FormGroup} from 'reactstrap';
 import classnames from 'classnames';
-import {Block as BlockModel} from "../../../../../model";
 import {Editor} from "../../../../../common/components/Editor";
+import {BlockState} from "../reducers/State";
 
 interface Props {
-  block: BlockModel;
+  block: BlockState;
   onSave: (blockId, html) => void;
 }
 
@@ -15,27 +15,27 @@ export class Block extends React.Component<Props, any> {
     super(props);
     this.state = {
       editMode: false,
-      html: '',
-      draftHtml: '',
+      content: '',
+      draftContent: '',
     };
   }
 
   onClickArea(e) {
     this.setState({
       editMode: true,
-      html: e.currentTarget.querySelector('.editor-area').innerHTML,
-      draftHtml: e.currentTarget.querySelector('.editor-area').innerHTML,
+      content: e.currentTarget.querySelector('.editor-area').innerHTML,
+      draftContent: e.currentTarget.querySelector('.editor-area').innerHTML,
     });
   }
 
   onChangeArea(val) {
-    this.setState({draftHtml: val});
+    this.setState({draftContent: val});
   }
 
   onSave() {
     const {onSave, block} = this.props;
     this.setState({editMode: false});
-    onSave(block.id, this.state.draftHtml);
+    onSave(block.id, this.state.draftContent);
   }
 
   onCancel() {
@@ -43,7 +43,7 @@ export class Block extends React.Component<Props, any> {
 
     this.setState({
       editMode: false,
-      draftHtml: block.html,
+      draftContent: block.content,
     });
   }
 
@@ -56,7 +56,7 @@ export class Block extends React.Component<Props, any> {
           <div>
             <FormGroup>
               <Editor
-                value={this.state.draftHtml}
+                value={this.state.draftContent}
                 onChange={val => this.onChangeArea(val)}
               />
             </FormGroup>
@@ -72,8 +72,8 @@ export class Block extends React.Component<Props, any> {
         <div onClick={e => this.onClickArea(e)}>
           {!this.state.editMode &&
             <div
-              className={classnames("editor-area", {'editor-area--empty': !block.html})}
-              dangerouslySetInnerHTML={{__html: block.html}}
+              className={classnames("editor-area", {'editor-area--empty': !block.content})}
+              dangerouslySetInnerHTML={{__html: block.content}}
             />
           }
         </div>

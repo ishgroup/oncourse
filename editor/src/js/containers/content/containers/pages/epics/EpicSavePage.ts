@@ -7,15 +7,11 @@ import {getPageRender, SAVE_PAGE_FULFILLED, SAVE_PAGE_REQUEST} from "../actions"
 import {Page} from "../../../../../model";
 import PageService from "../../../../../services/PageService";
 import {notificationParams} from "../../../../../common/utils/NotificationSettings";
-import {getHistoryInstance} from "../../../../../history";
-import {URL} from "../../../../../routes";
 
 const request: EpicUtils.Request<any, any> = {
   type: SAVE_PAGE_REQUEST,
   getData: (payload, state) => PageService.savePage(payload, state),
   processData: (page: Page, state: any, payload) => {
-
-    getHistoryInstance().push(`${URL.PAGES}/${page.number}`);
 
     const result = [];
     result.push(success(notificationParams));

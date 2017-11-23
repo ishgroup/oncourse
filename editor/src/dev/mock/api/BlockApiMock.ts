@@ -15,15 +15,7 @@ export function blockApiMock(mock) {
       return promiseReject(config, {message: 'Title can not be blank'});
     }
 
-    if (!request.id) {
-
-      request.id = faker.random.number();
-      this.db.addBlock(request);
-
-    } else {
-      this.db.editBlock(request);
-    }
-
+    this.db.editBlock(request);
 
     return promiseResolve(
       config,
@@ -40,8 +32,7 @@ export function blockApiMock(mock) {
 
 
   this.api.onPost(API.DELETE_BLOCK).reply(config => {
-
-    this.db.deleteBlockById(JSON.parse(config.data));
+    this.db.deleteBlockByTitle(config.data);
 
     return promiseResolve(
       config,
