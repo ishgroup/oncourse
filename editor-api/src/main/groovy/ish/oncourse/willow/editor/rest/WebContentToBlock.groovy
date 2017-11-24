@@ -17,10 +17,9 @@ class WebContentToBlock {
     }
 
     Block getBlock() {
-        return new Block().with {block ->
-            block.id = webContent.id.doubleValue()
+        return new Block().with { block ->
             block.title = webContent.name
-            block.html = webContent.contentTextile
+            block.content = webContent.contentTextile
             block
         }
     }

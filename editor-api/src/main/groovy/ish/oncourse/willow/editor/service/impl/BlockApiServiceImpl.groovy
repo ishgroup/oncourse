@@ -38,8 +38,9 @@ class BlockApiServiceImpl implements BlockApi {
         return WebContentToBlock.valueOf(webContent).block
     }
 
-    void deleteBlock(Double id) {
-        // TODO: Implement...
+    @Override
+    void deleteBlock(String name) {
+
     }
     
     List<Block> getBlocks() {
