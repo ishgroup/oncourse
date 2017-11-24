@@ -1,5 +1,7 @@
 package ish.oncourse.solr
 
+import com.carrotsearch.randomizedtesting.annotations.ThreadLeakScope
+import io.reactivex.schedulers.Schedulers
 import ish.oncourse.solr.model.SCourse
 import ish.oncourse.solr.reindex.ReindexCoursesJob
 import ish.oncourse.test.TestContext
@@ -9,30 +11,31 @@ import org.apache.solr.client.solrj.SolrClient
 import org.apache.solr.client.solrj.SolrQuery
 import org.apache.solr.client.solrj.SolrServerException
 import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer
-import org.junit.BeforeClass
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
 
 /**
  * Created by alex on 11/22/17.
  */
+@ThreadLeakScope(ThreadLeakScope.Scope.NONE)
 class ReindexCourseTest extends SolrTestCaseJ4{
     private TestContext testContext
     private ObjectContext objectContext
     private static InitSolr initSolr
 
-    @BeforeClass
-    static void beforeClass() throws Exception {
+    @Before
+    void before() throws Exception {
         initSolr = InitSolr.coursesCore()
         initSolr.init()
+
+        testContext = new TestContext()
+        testContext.open()
+        objectContext = testContext.getRuntime().newContext()
     }
 
     @Test
     void testReindexCourse() throws IOException, SolrServerException {
-        testContext = new TestContext()
-        testContext.open()
-
-       objectContext = testContext.getRuntime().newContext()
-
         SolrClient solrClient = new EmbeddedSolrServer(h.getCore())
 
 
@@ -52,7 +55,11 @@ class ReindexCourseTest extends SolrTestCaseJ4{
 
         SCourse actual = solrClient.query("courses", new SolrQuery("Cou*")).getBeans(SCourse.class).get(0)
         assertEquals(expected, actual)
+    }
 
+    @After
+    void after(){
+        Schedulers.shutdown()
         testContext.close()
     }
 }
