@@ -94,7 +94,7 @@ class PageApiServiceImpl implements PageApi {
     
     Page savePage(Page pageParams) {
         ObjectContext context = cayenneService.newContext()
-        UpdatePage updater = UpdatePage.valueOf(pageParams, context, requestService.request).updatePage()
+        UpdatePage updater = UpdatePage.valueOf(pageParams, context, requestService.request).update()
         if (updater.error) {
             context.rollbackChanges()
             throw createClientException(updater.error)

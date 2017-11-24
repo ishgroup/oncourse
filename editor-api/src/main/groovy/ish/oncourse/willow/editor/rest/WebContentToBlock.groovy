@@ -1,6 +1,5 @@
 package ish.oncourse.willow.editor.rest
 
-import ish.oncourse.model.RegionKey
 import ish.oncourse.model.WebContent
 import ish.oncourse.willow.editor.model.Block
 
@@ -18,6 +17,7 @@ class WebContentToBlock {
 
     Block getBlock() {
         return new Block().with { block ->
+            block.id = webContent.id.doubleValue()
             block.title = webContent.name
             block.content = webContent.contentTextile
             block

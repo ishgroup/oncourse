@@ -2,8 +2,9 @@ package ish.oncourse.willow.editor.service.impl
 
 import ish.oncourse.model.WebContent
 import ish.oncourse.services.persistence.ICayenneService
+import ish.oncourse.willow.editor.rest.UpdateBlock
+import ish.oncourse.willow.editor.rest.UpdatePage
 import ish.oncourse.willow.editor.rest.WebContentToBlock
-import ish.oncourse.willow.editor.rest.WebNodeToPage
 import ish.oncourse.willow.editor.service.*
 import ish.oncourse.willow.editor.model.Block
 import ish.oncourse.willow.editor.model.common.CommonError
@@ -61,9 +62,13 @@ class BlockApiServiceImpl implements BlockApi {
     }
     
     Block saveBlock(Block saveBlockRequest) {
-        // TODO: Implement...
-        
-        return null
+        ObjectContext context = cayenneService.newContext()
+        UpdateBlock updater = UpdateBlock.valueOf(saveBlockRequest, context, requestService.request).update()
+        if (updater.error) {
+            context.rollbackChanges()
+            throw createClientException(updater.error)
+        }
+        return saveBlockRequest
     }
 
     private ClientErrorException createClientException(String message) {

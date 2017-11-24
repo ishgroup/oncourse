@@ -16,6 +16,7 @@ import ish.oncourse.configuration.ISHHealthCheckServlet
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.util.log.LogAppInfo
 import ish.oncourse.willow.editor.service.impl.AuthApiServiceImpl
+import ish.oncourse.willow.editor.service.impl.BlockApiServiceImpl
 import ish.oncourse.willow.editor.service.impl.PageApiServiceImpl
 import ish.oncourse.willow.editor.services.RequestFilter
 import ish.oncourse.willow.editor.services.RequestService
@@ -59,7 +60,8 @@ class EditorApiModule extends ConfigModule {
         CXFModule.contributeResources(binder).addBinding().to(AuthenticationFilter)
         CXFModule.contributeResources(binder).addBinding().to(AuthApiServiceImpl)
         CXFModule.contributeResources(binder).addBinding().to(PageApiServiceImpl)
-        
+        CXFModule.contributeResources(binder).addBinding().to(BlockApiServiceImpl)
+
         binder.bind(RequestService)
         binder.bind(ZKSessionManager)
         binder.bind(ICayenneService).to(CayenneService)

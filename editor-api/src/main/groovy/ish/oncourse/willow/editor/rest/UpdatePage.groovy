@@ -6,6 +6,7 @@ import ish.oncourse.model.WebNode
 import ish.oncourse.model.WebNodeType
 import ish.oncourse.model.WebUrlAlias
 import ish.oncourse.services.textile.ConvertCoreTextile
+import ish.oncourse.willow.editor.model.Block
 import ish.oncourse.willow.editor.model.Page
 import ish.oncourse.willow.editor.model.PageUrl
 import ish.oncourse.willow.editor.website.WebNodeFunctions
@@ -13,59 +14,45 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
 import org.eclipse.jetty.server.Request
 
-class UpdatePage {
+class UpdatePage extends AbstractUpdate<Page> {
 
-    private Page pageToSave
-    private ObjectContext context
-    private Request request
-    
-    private String error = null
-    
-    String getError() {
-        return error
-    }
-    
     private UpdatePage() {}
 
     static UpdatePage valueOf(Page pageToSave, ObjectContext context, Request request) {
-        UpdatePage updatePage = new UpdatePage()
-        updatePage.pageToSave = pageToSave
-        updatePage.context = context
-        updatePage.request = request
-        return updatePage
+        UpdatePage updater = new UpdatePage()
+        updater.init(pageToSave, context, request)
+        return updater
     }
 
 
-    UpdatePage updatePage() {
-
-        WebNode node = WebNodeFunctions.getNodeForNumber(pageToSave.number.intValue(), request, context)
+    UpdatePage update() {
+        WebNode node = WebNodeFunctions.getNodeForNumber(resourceToSave.number.intValue(), request, context)
         if (!node) {
-            error = "There are no pages for pageParams: $pageToSave"
-            return
+            error = "There are no pages for pageParams: $resourceToSave"
+            return this
         }
-        WebNodeType theme = SelectById.query(WebNodeType, pageToSave.themeId.longValue()).selectFirst(context)
+        WebNodeType theme = SelectById.query(WebNodeType, resourceToSave.themeId.longValue()).selectFirst(context)
         if (!theme) {
-            error = "There are no page theme for pageParams: $pageToSave"
-            return
+            error = "There are no page theme for pageParams: $resourceToSave"
+            return this
         }
         WebContent defaultBlock = node.webContentVisibility?.find { it.regionKey == RegionKey.content }?.webContent
         if (!theme) {
-            error = "There are no default Web Content for pageParams: $pageToSave"
-            return
+            error = "There are no default Web Content for pageParams: $resourceToSave"
+            return this
         }
 
-        node.name = pageToSave.title
+        node.name = resourceToSave.title
         node.webNodeType = theme
-        defaultBlock.contentTextile = pageToSave.content
-        defaultBlock.content = ConvertCoreTextile.valueOf(pageToSave.content).convert()
-        node.published = pageToSave.visible
+        defaultBlock.contentTextile = resourceToSave.content
+        defaultBlock.content = ConvertCoreTextile.valueOf(resourceToSave.content).convert()
+        node.published = resourceToSave.visible
         updateAliases(node)
-        
         return this
     }
     
     private void updateAliases(WebNode node) {
-        Map<String, PageUrl> providedUrlsMap = pageToSave.urls.collectEntries { [(it.link): it] }
+        Map<String, PageUrl> providedUrlsMap = resourceToSave.urls.collectEntries { [(it.link): it] }
 
         new ArrayList<WebUrlAlias>(node.webUrlAliases).each { alias ->
             PageUrl pageUrl = providedUrlsMap.remove(alias.urlPath)
