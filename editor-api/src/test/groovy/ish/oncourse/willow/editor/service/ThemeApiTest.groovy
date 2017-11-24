@@ -1,7 +1,9 @@
 package ish.oncourse.willow.editor.service;
 
 import ish.oncourse.willow.editor.model.Theme;
-import ish.oncourse.willow.editor.model.common.CommonError;
+import ish.oncourse.willow.editor.model.common.CommonError
+import ish.oncourse.willow.editor.service.impl.ThemeApiServiceImpl;
+import org.junit.Assert
 import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;
@@ -14,12 +16,14 @@ import java.util.Map;
 /**
  * API tests for ThemeApi
  */
-public class ThemeApiTest {
+class ThemeApiTest  extends AbstractEditorTest {
 
     private ThemeApi api;
-    
+
     @Before
-    public void setup() {
+    void setup() {
+        super.setup()
+        api = new ThemeApiServiceImpl(cayenneService, requestService)
     }
 
     
@@ -28,10 +32,9 @@ public class ThemeApiTest {
      * Add new theme
      */
     @Test
-    public void addThemeTest() {
-	//Theme response = api.addTheme();
-        //assertNotNull(response);
-        // TODO: test validations
+    void addThemeTest() {
+        Theme theme = api.addTheme();
+        Assert.assertNotNull(theme)
         
         
     }
@@ -41,7 +44,7 @@ public class ThemeApiTest {
      * Remove theme
      */
     @Test
-    public void deleteThemeTest() {
+    void deleteThemeTest() {
 	//api.deleteTheme();
         
         // TODO: test validations
@@ -54,7 +57,7 @@ public class ThemeApiTest {
      * Get array of layouts
      */
     @Test
-    public void getLayoutsTest() {
+    void getLayoutsTest() {
 	//Theme response = api.getLayouts();
         //assertNotNull(response);
         // TODO: test validations
@@ -67,10 +70,10 @@ public class ThemeApiTest {
      * Get array of themes
      */
     @Test
-    public void getThemesTest() {
-	//Theme response = api.getThemes();
-        //assertNotNull(response);
-        // TODO: test validations
+    void getThemesTest() {
+        Theme theme = api.addTheme()
+        List<Theme> themes = api.getThemes()
+        themes
         
         
     }
@@ -80,7 +83,7 @@ public class ThemeApiTest {
      * Save theme params
      */
     @Test
-    public void saveThemeTest() {
+    void saveThemeTest() {
         Theme saveThemeRequest = null;
 	//Theme response = api.saveTheme(saveThemeRequest);
         //assertNotNull(response);
