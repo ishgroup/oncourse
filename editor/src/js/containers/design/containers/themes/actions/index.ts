@@ -16,7 +16,7 @@ export const ADD_THEME_FULFILLED = FULFILLED(ADD_THEME_REQUEST);
 export const DELETE_THEME_REQUEST = _toRequestType("themes/delete/theme");
 export const DELETE_THEME_FULFILLED = FULFILLED(DELETE_THEME_REQUEST);
 
-export const UPDATE_THEME_STATE = _toRequestType("themes/update/theme/state");
+export const UPDATE_THEME_STATE = "themes/update/theme/state";
 
 
 export const getThemes = () => ({
