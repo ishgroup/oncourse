@@ -115,30 +115,37 @@ export class MockDB {
   mockBlocks(): Block[] {
     return [
       {
+        id: 1,
         title: 'Header',
         content: "<div>\n  <h1>Header Title</h1>\n</div>",
       },
       {
+        id: 2,
         title: 'Footer',
         content: "<div>\n  <footer>Lorem ipsum dolor sit amet.</footer>\n</div>",
       },
       {
+        id: 3,
         title: 'Content1',
         content: "<div>\n<ul>\n  <li>Lorem ipsum dolor sit amet.</li>\n  <li>Lorem ipsum.</li>\n  <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit!</li>\n</ul>\n</div>",
       },
       {
+        id: 4,
         title: 'Content2',
         content: "<div>\n<ul>\n  <li>Lorem ipsum dolor sit amet.</li>\n  <li>Lorem ipsum.</li>\n  <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit!</li>\n</ul>\n</div>",
       },
       {
+        id: 5,
         title: 'Content3',
         content: "<div>\n<ul>\n  <li>Lorem ipsum dolor sit amet.</li>\n  <li>Lorem ipsum.</li></ul>\n</div>",
       },
       {
+        id: 6,
         title: 'Content4',
         content: "<div>\n<ul>\n  <li>Lorem ipsum dolor sit amet.</li>\n  <li>Lorem ipsum.</li>\n</ul>\n</div>",
       },
       {
+        id: 7,
         title: 'Content5',
         content: "<div>\n<ul>\n  <li>Lorem ipsum dolor sit amet.</li>\n  <li>Lorem ipsum.</li>\n</ul>\n</div>",
       },
@@ -374,16 +381,8 @@ export class MockDB {
     // this.themes.forEach(theme => this.deleteBlockFromTheme(theme.id, id));
   }
 
-  addBlock(block: Block) {
-    this.blocks = update(this.blocks, {
-      $push: [
-        block,
-      ],
-    });
-  }
-
   editBlock(block: Block) {
-    this.blocks = this.blocks.map(item => item.title === block.title ? {...item, ...block} : item);
+    this.blocks = this.blocks.map(item => item.id === block.id ? {...item, ...block} : item);
   }
 
   deleteBlockFromTheme(themeId, blockId) {
@@ -457,10 +456,11 @@ export class MockDB {
     return page;
   }
 
-  createNewBlock(): Block {
+  createNewBlock() {
     const block = new Block();
-    const newId = Math.floor(Math.random() * 1000) + 1;
-    block.title = `New Block ${newId}`;
+    const newId = Math.max(...this.blocks.map(block => block.id)) + 1;
+    block.title = `New Block ${isFinite(newId) ? newId : 1}`;
+    block.id = isFinite(newId) ? newId : 1;
 
     this.blocks.push(block);
     return block;

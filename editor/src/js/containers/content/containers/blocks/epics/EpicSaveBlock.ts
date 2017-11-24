@@ -16,7 +16,7 @@ const request: EpicUtils.Request<any, any> = {
     return [
       success(notificationParams),
       {
-        payload: {...block, id: payload.id},
+        payload: block,
         type: SAVE_BLOCK_FULFILLED,
       },
     ];

@@ -12,7 +12,7 @@ export const blockReducer = (state: BlocksState = new BlocksState(), action: IAc
     case GET_BLOCKS_FULFILLED:
       return {
         ...state,
-        items: action.payload.map((item, i) => ({...item, id: i + 1})),
+        items: action.payload,
       };
 
     case SAVE_BLOCK_FULFILLED: {
@@ -31,7 +31,7 @@ export const blockReducer = (state: BlocksState = new BlocksState(), action: IAc
 
       return {
         ...state,
-        items: state.items.concat({...block, id: state.items.length + 1}),
+        items: state.items.concat(block),
       };
     }
 
@@ -41,7 +41,7 @@ export const blockReducer = (state: BlocksState = new BlocksState(), action: IAc
 
       return {
         ...state,
-        items: newBlocks.map((item, i) => ({...item, id: i + 1})),
+        items: newBlocks,
       };
     }
 

@@ -14,7 +14,7 @@ export function blockApiMock(mock) {
       return promiseReject(config, {message: 'Title can not be blank'});
     }
 
-    if (this.db.blocks.find(block => block.title === request.title)) {
+    if (this.db.blocks.filter(block => block.id !== request.id).find(block => block.title === request.title)) {
       return promiseReject(config, {message: 'Block title already used'});
     }
 

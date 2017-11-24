@@ -15,7 +15,7 @@ const request: EpicUtils.Request<any, any> = {
   getData: (props, state) => BlockService.addBlock(),
   processData: (block: Block, state: any, payload) => {
 
-    getHistoryInstance().push(`${URL.BLOCKS}/${state.block.items.length + 1}`);
+    getHistoryInstance().push(`${URL.BLOCKS}/${block.id}`);
 
     return [
       success({...notificationParams, title: 'New Block added'}),

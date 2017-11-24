@@ -29,6 +29,7 @@ class BlockService {
 
     request.content = newBlock.content;
     request.title = newBlock.title;
+    request.id = newBlock.id;
 
     return request;
   }
