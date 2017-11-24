@@ -32,7 +32,7 @@ class CourseQueryTest {
         testContext = new TestContext()
         testContext.open()
 
-        objectContext = createRuntime().newContext()
+        objectContext = testContext.getRuntime().newContext()
         DataContext dataContext = new DataContext(objectContext: objectContext)
         collegeContext = dataContext.college("College-Australia/Sydney", "Australia/Sydney")
         college = collegeContext.college

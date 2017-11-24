@@ -23,7 +23,7 @@ class PostcodeDbQueryTest {
 
         testContext = new TestContext()
         testContext.open()
-        context = createRuntime().newContext()
+        context = testContext.getRuntime().newContext()
     }
 
     @Test

@@ -18,7 +18,6 @@ import static org.junit.Assert.*
  */
 class TagsQueryTest {
     private TestContext testContext
-    private ServerRuntime serverRuntime
 
     private DataContext dataContext
 
@@ -28,8 +27,7 @@ class TagsQueryTest {
 
         testContext = new TestContext()
         testContext.open()
-        serverRuntime = createRuntime()
-        dataContext = new DataContext(objectContext: serverRuntime.newContext())
+        dataContext = new DataContext(objectContext: testContext.getRuntime().newContext())
     }
 
     @Test
@@ -47,7 +45,7 @@ class TagsQueryTest {
         collegeContext.tagCourse("COURSE1", "Tag11Invisible")
         collegeContext.tagCourse("COURSE1", "Tag12")
 
-        List<Tag> actualTags = Functions.TagsQuery.select(serverRuntime.newContext())
+        List<Tag> actualTags = Functions.TagsQuery.select(testContext.getRuntime().newContext())
 
         assertEquals(2, actualTags.size())
         assertNotNull(actualTags.find {tag -> (tag.name == "Tag2") })
@@ -61,5 +59,4 @@ class TagsQueryTest {
     void after() {
         testContext.close()
     }
-
 }
