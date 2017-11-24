@@ -6,7 +6,7 @@ import "rxjs";
 import {commonErrorToValidationError, toValidationError} from "../common/utils/ErrorUtils";
 import {AxiosResponse} from "axios";
 import {IAction} from "../actions/IshAction";
-import {UNHANDLED_ERROR} from "../common/actions";
+import {SERVER_ERROR} from "../common/actions";
 
 
 export interface Request<V, S> {
@@ -32,7 +32,7 @@ export const ProcessError = (data: AxiosResponse): { type: string, payload?: any
   console.log(data);
   return [
     {
-      type: UNHANDLED_ERROR,
+      type: SERVER_ERROR,
     },
     error({
       // uid: 'once-please', // you can specify your own uid if required
@@ -40,7 +40,7 @@ export const ProcessError = (data: AxiosResponse): { type: string, payload?: any
       message: (data.data && data.data.message) || 'Something went wrong',
       position: 'tr',
       autoDismiss: 3,
-    })
+    }),
   ];
   // return [{type: 'SHOW_MESSAGES', payload: toValidationError(data)}];
 };

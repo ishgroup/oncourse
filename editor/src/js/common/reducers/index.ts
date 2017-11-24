@@ -29,9 +29,7 @@ export const fetchReducer = (state: boolean = false, action): boolean => {
       return true;
 
     case /_FULFILLED$/.test(action.type):
-      return false;
-
-    case /_ERROR$/.test(action.type):
+    case /_REJECTED$/.test(action.type):
       return false;
 
     default:

@@ -1,4 +1,3 @@
-import faker from "faker";
 import {promiseReject, promiseResolve} from "../MockAdapter";
 import {API} from "../../../js/constants/Config";
 
@@ -13,6 +12,10 @@ export function blockApiMock(mock) {
 
     if (!request.title) {
       return promiseReject(config, {message: 'Title can not be blank'});
+    }
+
+    if (this.db.blocks.find(block => block.title === request.title)) {
+      return promiseReject(config, {message: 'Block title already used'});
     }
 
     this.db.editBlock(request);
