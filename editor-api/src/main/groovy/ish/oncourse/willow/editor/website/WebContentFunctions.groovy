@@ -12,10 +12,8 @@ import org.eclipse.jetty.server.Request
 
 class WebContentFunctions {
     private static final String BLOCK_NAME_PATTERN = 'New block (%)'
-    private static final String SAMPLE_WEB_CONTENT = 'Sample content'
 
     static WebContent getBlockByName(Request request, ObjectContext context ,String webContentName) {
-        
         return (((ObjectSelect.query(WebContent)
                 .cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
                 .cacheGroup(WebContent.simpleName)
@@ -62,6 +60,14 @@ class WebContentFunctions {
                 & blockQualifier)
                 .orderBy(WebContent.MODIFIED.desc())
                 .select(context)
+    }
+    
+    static boolean isBlockAssigned(WebContent block) {
+        if (!block.webContentVisibilities.empty
+            && block.webContentVisibilities.find { it.webNodeType }) {
+            return true
+        }
+        return false
     }
 
 

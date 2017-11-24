@@ -96,6 +96,7 @@ class PageApiServiceImpl implements PageApi {
         ObjectContext context = cayenneService.newContext()
         UpdatePage updater = UpdatePage.valueOf(pageParams, context, requestService.request).updatePage()
         if (updater.error) {
+            context.rollbackChanges()
             throw createClientException(updater.error)
         }
         return pageParams
@@ -103,7 +104,7 @@ class PageApiServiceImpl implements PageApi {
     
     private ClientErrorException createClientException(String message) {
         logger.error("$message, server name: $requestService.request.serverName")
-         new ClientErrorException(Response.status(400).entity(new CommonError(message: message)).build())
+        new ClientErrorException(Response.status(400).entity(new CommonError(message: message)).build())
     }
     
 }

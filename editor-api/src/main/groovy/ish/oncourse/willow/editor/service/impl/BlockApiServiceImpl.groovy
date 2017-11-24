@@ -40,7 +40,19 @@ class BlockApiServiceImpl implements BlockApi {
 
     @Override
     void deleteBlock(String name) {
-
+        ObjectContext context = cayenneService.newContext()
+        WebContent block = WebContentFunctions.getBlockByName(requestService.request, context, name)
+        
+        if (block) {
+            if (!WebContentFunctions.isBlockAssigned(block)) {
+                context.deleteObject(block)
+                context.commitChanges()
+            } else {
+                throw createClientException("The block (name: $name) could not be removed")
+            }
+        } else {
+            throw createClientException("There are no block for provided name: $name")
+        }
     }
     
     List<Block> getBlocks() {
@@ -55,7 +67,7 @@ class BlockApiServiceImpl implements BlockApi {
     }
 
     private ClientErrorException createClientException(String message) {
-        logger.error(message)
+        logger.error("$message, server name: $requestService.request.serverName")
         new ClientErrorException(Response.status(400).entity(new CommonError(message: message)).build())
     }
     
