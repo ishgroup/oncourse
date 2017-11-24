@@ -25,9 +25,7 @@ const input = props => {
 const validate = values => {
   const errors = {}
   if (!values.email) {
-    errors['email'] = 'Email field is required';
-  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-    errors['email'] = 'Invalid email address';
+    errors['email'] = 'Login field is required';
   }
 
   if (!values.password) {
@@ -50,7 +48,7 @@ class LoginForm extends React.Component<any, any> {
             id="loginEmail"
             name="email"
             type="text"
-            placeholder="Email"
+            placeholder="Login"
             component={input}
           />
         </FormGroup>
