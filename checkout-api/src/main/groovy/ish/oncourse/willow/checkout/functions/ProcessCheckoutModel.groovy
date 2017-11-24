@@ -41,8 +41,6 @@ class ProcessCheckoutModel {
     private Money payNowAmount = Money.ZERO
     private Money totalDiscount = Money.ZERO
 
-    private int enrolmentsCount = 0
-
     private Map<Contact, List<CourseClass>> enrolmentsToProceed  = [:]
     private List<Product> products = []
 
@@ -82,7 +80,7 @@ class ProcessCheckoutModel {
                 model.error = corporatePassValidate.error
                 return this
             }
-            CalculateEnrolmentsPrice enrolmentsPrice = new CalculateEnrolmentsPrice(context, college, totalAmount, enrolmentsCount, model, enrolmentsToProceed, checkoutModelRequest.promotionIds, corporatePass, taxOverridden).calculate()
+            CalculateEnrolmentsPrice enrolmentsPrice = new CalculateEnrolmentsPrice(context, college, totalAmount, model, enrolmentsToProceed, checkoutModelRequest.promotionIds, corporatePass, taxOverridden).calculate()
             totalDiscount =  totalDiscount.add(enrolmentsPrice.totalDiscount)
             model.amount = new Amount().with { a ->
                 a.total = totalAmount.doubleValue()
@@ -91,7 +89,7 @@ class ProcessCheckoutModel {
                 a
             }
         } else {
-            CalculateEnrolmentsPrice enrolmentsPrice = new CalculateEnrolmentsPrice(context, college, totalAmount, enrolmentsCount, model, enrolmentsToProceed, checkoutModelRequest.promotionIds, null, taxOverridden).calculate()
+            CalculateEnrolmentsPrice enrolmentsPrice = new CalculateEnrolmentsPrice(context, college, totalAmount, model, enrolmentsToProceed, checkoutModelRequest.promotionIds, null, taxOverridden).calculate()
             totalDiscount = totalDiscount.add(enrolmentsPrice.totalDiscount)
             
             ProcessRedeemedVouchers redeemedVouchers = new ProcessRedeemedVouchers(context, college, checkoutModelRequest, payNowAmount.add(enrolmentsPrice.totalPayNow), enrolmentsPrice.enrolmentNodes).process()
@@ -202,7 +200,6 @@ class ProcessCheckoutModel {
                     model.validationErrors.fieldsErrors << fieldError
                 }
                 
-                enrolmentsCount++
                 e.price = processClass.enrolment.price
                 totalAmount = totalAmount.add(e.price.fee != null ? e.price.fee .toMoney() : e.price.feeOverriden.toMoney())
                 List<CourseClass> classes = enrolmentsToProceed.get(contact)

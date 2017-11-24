@@ -12,12 +12,7 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class GetDiscountForEnrolment {
 
@@ -34,7 +29,7 @@ public class GetDiscountForEnrolment {
 	private List<DiscountCourseClass> classDiscounts;
 	private List<Discount> addedPromos;
 	private CorporatePass corporatePass;
-	private int enabledEnrolmentsCount;
+	Map<Contact, List<CourseClass>> enrolmentsToProceed;
 	private Money totalInvoicesAmount;
 	private Student currentStudent;
 	private CourseClass currentCourseClass;
@@ -47,21 +42,32 @@ public class GetDiscountForEnrolment {
 
 	private GetDiscountForEnrolment() {}
 	
-	public static GetDiscountForEnrolment valueOf(List<DiscountCourseClass> classDiscounts, List<Discount> addedPromos, CorporatePass corporatePass, int enabledEnrolmentsCount, Money totalInvoicesAmount, Enrolment currentEnrolment, BigDecimal taxRateOverridden) {
-		return valueOf(classDiscounts, addedPromos, corporatePass,enabledEnrolmentsCount,totalInvoicesAmount, currentEnrolment.getStudent(), currentEnrolment.getCourseClass(),  taxRateOverridden);
+	public static GetDiscountForEnrolment valueOf(List<DiscountCourseClass> classDiscounts, List<Discount> addedPromos, CorporatePass corporatePass, List<Enrolment> enabledEnrolments, Money totalInvoicesAmount, Enrolment currentEnrolment, BigDecimal taxRateOverridden) {
+		Map<Contact, List<CourseClass>> enrolmentsToProceed = new HashMap<>();
+		for (Enrolment enrolment : enabledEnrolments) {
+			Contact contact = enrolment.getStudent().getContact();
+			List<CourseClass> classes = enrolmentsToProceed.get(contact);
+			if (classes == null) {
+				classes = new ArrayList<>();
+				enrolmentsToProceed.put(contact, classes);
+			}
+			classes.add(enrolment.getCourseClass());
+		}
+		
+		return valueOf(classDiscounts, addedPromos, corporatePass, enrolmentsToProceed, totalInvoicesAmount, currentEnrolment.getStudent(), currentEnrolment.getCourseClass(), taxRateOverridden);
 	}
 
-	public static GetDiscountForEnrolment valueOf(List<DiscountCourseClass> classDiscounts, List<Discount> addedPromos, CorporatePass corporatePass, int enabledEnrolmentsCount, Money totalInvoicesAmount, Student currentStudent, CourseClass currentCourseClass,  BigDecimal taxRateOverridden) {
+	public static GetDiscountForEnrolment valueOf(List<DiscountCourseClass> classDiscounts, List<Discount> addedPromos, CorporatePass corporatePass, Map<Contact, List<CourseClass>> enrolmentsToProceed, Money totalInvoicesAmount, Student currentStudent, CourseClass currentCourseClass, BigDecimal taxRateOverridden) {
 
 		GetDiscountForEnrolment get = new GetDiscountForEnrolment();
-		get.setClassDiscounts(classDiscounts);
-		get.setAddedPromos(addedPromos);
-		get.setCorporatePass(corporatePass);
-		get.setEnabledEnrolmentsCount(enabledEnrolmentsCount);
-		get.setTotalInvoicesAmount(totalInvoicesAmount);
-		get.setCurrentStudent(currentStudent);
-		get.setCurrentCourseClass(currentCourseClass);
-		get.setTaxRateOverridden(taxRateOverridden);
+		get.classDiscounts = classDiscounts;
+		get.addedPromos = addedPromos;
+		get.corporatePass = corporatePass;
+		get.enrolmentsToProceed = enrolmentsToProceed;
+		get.totalInvoicesAmount = totalInvoicesAmount;
+		get.currentStudent = currentStudent;
+		get.currentCourseClass = currentCourseClass;
+		get.taxRateOverridden = taxRateOverridden;
 		return get;
 	}
 
@@ -191,47 +197,31 @@ public class GetDiscountForEnrolment {
 		}
 		
 		boolean minAmountCondition = totalInvoicesAmount.compareTo(discount.getMinValue()) >= 0;
-		boolean minEnrolmentsCondition = enabledEnrolmentsCount >= discount.getMinEnrolments();
+		boolean minEnrolmentsCondition = satisfiesMinEnrolmentCount(discount);
 		
 		return minAmountCondition && minEnrolmentsCondition;
 	}
 
-	public void setCorporatePass(CorporatePass corporatePass) {
-		this.corporatePass = corporatePass;
-	}
 
-	public void setClassDiscounts(List<DiscountCourseClass> classDiscounts) {
-		this.classDiscounts = classDiscounts;
-	}
+	private boolean satisfiesMinEnrolmentCount(Discount discount) {
+		int enrolmentsCount = 0;
+		
+		for (Map.Entry<Contact, List<CourseClass>> entry : enrolmentsToProceed.entrySet()) {
+			for (CourseClass courseClass : entry.getValue()) {
+				if (courseClass.getDiscountCourseClassBy(discount) != null) {
+					enrolmentsCount++;
+				}
+			}
+		}
 
-	public void setCurrentStudent(Student currentStudent) {
-		this.currentStudent = currentStudent;
-	}
-
-	public void setCurrentCourseClass(CourseClass currentCourseClass) {
-		this.currentCourseClass = currentCourseClass;
+		return enrolmentsCount >= discount.getMinEnrolments();
 	}
 	
-	public void setTotalInvoicesAmount(Money totalInvoicesAmount) {
-		this.totalInvoicesAmount = totalInvoicesAmount;
-	}
-
-	public void setEnabledEnrolmentsCount(int enabledEnrolmentsCount) {
-		this.enabledEnrolmentsCount = enabledEnrolmentsCount;
-	}
-
-	public void setAddedPromos(List<Discount> addedPromos) {
-		this.addedPromos = addedPromos;
-	}
-
 	public List<DiscountCourseClass> getApplicableDiscounts() {
 		return applicableDiscounts;
 	}
 
 	public DiscountCourseClass getChosenDiscount() {
 		return chosenDiscount;
-	}
-	public void setTaxRateOverridden(BigDecimal taxRate) {
-		this.taxRateOverridden = taxRate;
 	}
 }

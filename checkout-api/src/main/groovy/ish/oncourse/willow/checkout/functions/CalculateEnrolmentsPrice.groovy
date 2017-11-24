@@ -26,8 +26,7 @@ class CalculateEnrolmentsPrice {
 
     ObjectContext context
     College college
-    Money total 
-    int enrolmentsCount
+    Money total
     CheckoutModel model
     Map<Contact, List<CourseClass>> enrolmentsToProceed
     CorporatePass corporatePass
@@ -40,11 +39,10 @@ class CalculateEnrolmentsPrice {
 
     private Tax taxOverridden
     
-    CalculateEnrolmentsPrice(ObjectContext context, College college, Money total, int enrolmentsCount, CheckoutModel model, Map<Contact, List<CourseClass>> enrolmentsToProceed, List<String> promotionIds, CorporatePass corporatePass, Tax taxOverridden) {
+    CalculateEnrolmentsPrice(ObjectContext context, College college, Money total, CheckoutModel model, Map<Contact, List<CourseClass>> enrolmentsToProceed, List<String> promotionIds, CorporatePass corporatePass, Tax taxOverridden) {
         this.context = context
         this.college = college
         this.total = total
-        this.enrolmentsCount = enrolmentsCount
         this.model = model
         this.enrolmentsToProceed = enrolmentsToProceed
         this.corporatePass = corporatePass
@@ -130,7 +128,7 @@ class CalculateEnrolmentsPrice {
                 select(context)
 
 
-        GetDiscountForEnrolment discounts = GetDiscountForEnrolment.valueOf(classDiscounts, promotions, corporatePass, enrolmentsCount, total, contact.student,  courseClass, taxOverridden?.rate?:courseClass.taxRate).get()
+        GetDiscountForEnrolment discounts = GetDiscountForEnrolment.valueOf(classDiscounts, promotions, corporatePass, enrolmentsToProceed, total, contact.student,  courseClass, taxOverridden?.rate?:courseClass.taxRate).get()
         DiscountCourseClass chosenDiscount = discounts.chosenDiscount
 
         if (chosenDiscount != null) {

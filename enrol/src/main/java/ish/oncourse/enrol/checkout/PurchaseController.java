@@ -624,7 +624,6 @@ public class PurchaseController {
 
 		unlinkPreviouslyAddedDiscounts();
 		Money totalAmount = getTotalPurchasesAmount();
-		int totalCount = model.getAllEnabledEnrolments().size();
 		
 		//find and apply the best discount combination for each enrolment
 		for (Enrolment enrolment : model.getAllEnabledEnrolments()) {
@@ -644,7 +643,7 @@ public class PurchaseController {
 			
 			BigDecimal taxRate = getOverridenTaxRate() != null ? getOverridenTaxRate()  : enrolment.getCourseClass().getTaxRate();
 
-			GetDiscountForEnrolment discounts = GetDiscountForEnrolment.valueOf(classDiscounts, model.getDiscounts(), model.getCorporatePass(), totalCount, totalAmount, enrolment, taxRate).get();
+			GetDiscountForEnrolment discounts = GetDiscountForEnrolment.valueOf(classDiscounts, model.getDiscounts(), model.getCorporatePass(), model.getAllEnabledEnrolments(), totalAmount, enrolment, taxRate).get();
 			DiscountCourseClass chosenDiscount = discounts.getChosenDiscount();
 
 			if (chosenDiscount != null) {

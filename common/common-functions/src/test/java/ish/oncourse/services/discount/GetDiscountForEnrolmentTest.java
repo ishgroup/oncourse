@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Test for {@link ish.oncourse.model.GetDiscountForEnrolment}.
+ * Test for {@link ish.oncourse.services.discount.GetDiscountForEnrolment}.
  * 
  * @author ksenia
  * 
@@ -75,8 +75,10 @@ public class GetDiscountForEnrolmentTest extends AbstractGetDiscountForEnrolment
 	private static StudentConcession studentConcessionExpired;
 
 	private static CourseClass courseClass;
+	private static CourseClass courseClass2;
 	
 	private static Enrolment enrolment;
+	private static Enrolment enrolment2;
 	
 	/**
 	 * Initializes instance variables.
@@ -164,11 +166,17 @@ public class GetDiscountForEnrolmentTest extends AbstractGetDiscountForEnrolment
 		courseClass.setFeeExGst(AbstractGetDiscountForEnrolmentTest.FEE_EX_GST);
 		courseClass.setFeeGst(AbstractGetDiscountForEnrolmentTest.FEE_GST);
 
+		courseClass2 = context.newObject(CourseClass.class);
+		courseClass2.setFeeExGst(AbstractGetDiscountForEnrolmentTest.FEE_EX_GST);
+		courseClass2.setFeeGst(AbstractGetDiscountForEnrolmentTest.FEE_GST);
+		
 		enrolment = context.newObject(Enrolment.class);
 		enrolment.setCourseClass(courseClass);
 		enrolment.setStudent(student);
-		
-		
+
+		enrolment2 = context.newObject(Enrolment.class);
+		enrolment2.setCourseClass(courseClass);
+		enrolment2.setStudent(student);
 		
 	}
 
@@ -356,7 +364,7 @@ public class GetDiscountForEnrolmentTest extends AbstractGetDiscountForEnrolment
 	public void getApplicableByPolicySmokeTest() {
 		List<DiscountCourseClass> applicableByPolicy = GetDiscountForEnrolment.valueOf(Arrays.asList(discount.getDiscountCourseClasses().get(0),
 				AbstractGetDiscountForEnrolmentTest.combDiscountWithAmount, AbstractGetDiscountForEnrolmentTest.singleDiscountWithRate, AbstractGetDiscountForEnrolmentTest.combDiscountWithRateMax, AbstractGetDiscountForEnrolmentTest.singleDiscountWithRateMin,
-				AbstractGetDiscountForEnrolmentTest.hiddenDiscountWithAmount, AbstractGetDiscountForEnrolmentTest.nonAvailableDiscountWithAmount), AbstractGetDiscountForEnrolmentTest.promotions, null, 1, Money.ONE, enrolment, null).get().getApplicableDiscounts();
+				AbstractGetDiscountForEnrolmentTest.hiddenDiscountWithAmount, AbstractGetDiscountForEnrolmentTest.nonAvailableDiscountWithAmount), AbstractGetDiscountForEnrolmentTest.promotions, null, Collections.singletonList(enrolment), Money.ONE, enrolment, null).get().getApplicableDiscounts();
 
 		assertFalse(applicableByPolicy.isEmpty());
 		assertEquals(5, applicableByPolicy.size());
@@ -372,31 +380,31 @@ public class GetDiscountForEnrolmentTest extends AbstractGetDiscountForEnrolment
 	
 	@Test
 	public void minValueConditionTest() {
-		List<DiscountCourseClass> applicableByPolicy  =  GetDiscountForEnrolment.valueOf(Arrays.asList(AbstractGetDiscountForEnrolmentTest.singleDiscountWithRate, AbstractGetDiscountForEnrolmentTest.minValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.minCountAndValueConditionDiscount), AbstractGetDiscountForEnrolmentTest.promotions, null, 1, Money.ONE, enrolment, null).get().getApplicableDiscounts();
+		List<DiscountCourseClass> applicableByPolicy  =  GetDiscountForEnrolment.valueOf(Arrays.asList(AbstractGetDiscountForEnrolmentTest.singleDiscountWithRate, AbstractGetDiscountForEnrolmentTest.minValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.minCountAndValueConditionDiscount), AbstractGetDiscountForEnrolmentTest.promotions, null, Collections.singletonList(enrolment), Money.ONE, enrolment, null).get().getApplicableDiscounts();
 		assertEquals(1, applicableByPolicy.size());
 		Assert.assertEquals(AbstractGetDiscountForEnrolmentTest.singleDiscountWithRate, applicableByPolicy.get(0));
 		
 		//add some other purchases and try again 
-		applicableByPolicy  =  GetDiscountForEnrolment.valueOf(Arrays.asList(AbstractGetDiscountForEnrolmentTest.singleDiscountWithRate, AbstractGetDiscountForEnrolmentTest.minValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.minCountAndValueConditionDiscount), AbstractGetDiscountForEnrolmentTest.promotions, null, 1, new Money("200"), enrolment, null).get().getApplicableDiscounts();
+		applicableByPolicy  =  GetDiscountForEnrolment.valueOf(Arrays.asList(AbstractGetDiscountForEnrolmentTest.singleDiscountWithRate, AbstractGetDiscountForEnrolmentTest.minValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.minCountAndValueConditionDiscount), AbstractGetDiscountForEnrolmentTest.promotions, null, Collections.singletonList(enrolment), new Money("200"), enrolment, null).get().getApplicableDiscounts();
 
 		assertEquals(2, applicableByPolicy.size());
 		assertTrue(applicableByPolicy.contains(AbstractGetDiscountForEnrolmentTest.singleDiscountWithRate));
 		assertTrue(applicableByPolicy.contains(AbstractGetDiscountForEnrolmentTest.minValueConditionDiscount));
 
-		DiscountCourseClass chosenDiscount  =  GetDiscountForEnrolment.valueOf(Arrays.asList(AbstractGetDiscountForEnrolmentTest.singleDiscountWithRate, AbstractGetDiscountForEnrolmentTest.minValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.minCountAndValueConditionDiscount), AbstractGetDiscountForEnrolmentTest.promotions, null, 1, new Money("200"), enrolment, null).get().getChosenDiscount();
+		DiscountCourseClass chosenDiscount  =  GetDiscountForEnrolment.valueOf(Arrays.asList(AbstractGetDiscountForEnrolmentTest.singleDiscountWithRate, AbstractGetDiscountForEnrolmentTest.minValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.minCountAndValueConditionDiscount), AbstractGetDiscountForEnrolmentTest.promotions, null, Collections.singletonList(enrolment), new Money("200"), enrolment, null).get().getChosenDiscount();
 
 		assertNotNull(chosenDiscount);
 		Assert.assertEquals(AbstractGetDiscountForEnrolmentTest.minValueConditionDiscount, chosenDiscount);
 
 		//add one more purchases and try again 
-		applicableByPolicy  =  GetDiscountForEnrolment.valueOf(Arrays.asList(AbstractGetDiscountForEnrolmentTest.singleDiscountWithRate, AbstractGetDiscountForEnrolmentTest.minValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.minCountAndValueConditionDiscount), AbstractGetDiscountForEnrolmentTest.promotions, null, 2, new Money("200"), enrolment, null).get().getApplicableDiscounts();
+		applicableByPolicy  =  GetDiscountForEnrolment.valueOf(Arrays.asList(AbstractGetDiscountForEnrolmentTest.singleDiscountWithRate, AbstractGetDiscountForEnrolmentTest.minValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.minCountAndValueConditionDiscount), AbstractGetDiscountForEnrolmentTest.promotions, null, Arrays.asList(enrolment, enrolment2), new Money("200"), enrolment, null).get().getApplicableDiscounts();
 		assertEquals(3, applicableByPolicy.size());
 
 		assertTrue(applicableByPolicy.contains(AbstractGetDiscountForEnrolmentTest.singleDiscountWithRate));
 		assertTrue(applicableByPolicy.contains(AbstractGetDiscountForEnrolmentTest.minValueConditionDiscount));
 		assertTrue(applicableByPolicy.contains(AbstractGetDiscountForEnrolmentTest.minCountAndValueConditionDiscount));
 
-		chosenDiscount  =  GetDiscountForEnrolment.valueOf(Arrays.asList(AbstractGetDiscountForEnrolmentTest.singleDiscountWithRate, AbstractGetDiscountForEnrolmentTest.minValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.minCountAndValueConditionDiscount), AbstractGetDiscountForEnrolmentTest.promotions, null, 2, new Money("200"), enrolment, null).get().getChosenDiscount();
+		chosenDiscount  =  GetDiscountForEnrolment.valueOf(Arrays.asList(AbstractGetDiscountForEnrolmentTest.singleDiscountWithRate, AbstractGetDiscountForEnrolmentTest.minValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.minCountAndValueConditionDiscount), AbstractGetDiscountForEnrolmentTest.promotions, null, Arrays.asList(enrolment, enrolment2), new Money("200"), enrolment, null).get().getChosenDiscount();
 		assertNotNull(chosenDiscount);
 		Assert.assertEquals(AbstractGetDiscountForEnrolmentTest.minCountAndValueConditionDiscount, chosenDiscount);
 	}
@@ -408,7 +416,7 @@ public class GetDiscountForEnrolmentTest extends AbstractGetDiscountForEnrolment
 	@Test
 	public void filterDiscountsSmokeTest() {
 		DiscountCourseClass filteredDiscount  =  GetDiscountForEnrolment.valueOf(Arrays.asList(discount.getDiscountCourseClasses().get(0),
-				AbstractGetDiscountForEnrolmentTest.combDiscountWithAmount, AbstractGetDiscountForEnrolmentTest.singleDiscountWithRate, AbstractGetDiscountForEnrolmentTest.combDiscountWithRateMax, AbstractGetDiscountForEnrolmentTest.singleDiscountWithRateMin), AbstractGetDiscountForEnrolmentTest.promotions, null, 1, Money.ONE, enrolment, null).get().getChosenDiscount();
+				AbstractGetDiscountForEnrolmentTest.combDiscountWithAmount, AbstractGetDiscountForEnrolmentTest.singleDiscountWithRate, AbstractGetDiscountForEnrolmentTest.combDiscountWithRateMax, AbstractGetDiscountForEnrolmentTest.singleDiscountWithRateMin), AbstractGetDiscountForEnrolmentTest.promotions, null, Collections.singletonList(enrolment), Money.ONE, enrolment, null).get().getChosenDiscount();
 		assertNotNull(filteredDiscount);
 		assertEquals(discount.getDiscountCourseClasses().get(0), filteredDiscount);
 	}
@@ -416,14 +424,14 @@ public class GetDiscountForEnrolmentTest extends AbstractGetDiscountForEnrolment
 
 	@Test
 	public void testNonAvailableDiscounts() {
-		DiscountCourseClass filteredDiscount = GetDiscountForEnrolment.valueOf(Arrays.asList(AbstractGetDiscountForEnrolmentTest.nonAvailableDiscountWithAmount), AbstractGetDiscountForEnrolmentTest.promotions, null, 1, Money.ONE, enrolment, null).get().getChosenDiscount();
+		DiscountCourseClass filteredDiscount = GetDiscountForEnrolment.valueOf(Arrays.asList(AbstractGetDiscountForEnrolmentTest.nonAvailableDiscountWithAmount), AbstractGetDiscountForEnrolmentTest.promotions, null, Collections.singletonList(enrolment), Money.ONE, enrolment, null).get().getChosenDiscount();
 		assertNull(filteredDiscount);
 	}
 
 	@Test
 	public void negativeDiscountsTest() {
 		//check that all negative discounts available by policy
-		List<DiscountCourseClass> applicableByPolicy  =  GetDiscountForEnrolment.valueOf(Arrays.asList(AbstractGetDiscountForEnrolmentTest.negativePercentDiscount, AbstractGetDiscountForEnrolmentTest.negativeFeeOverrideDiscount, AbstractGetDiscountForEnrolmentTest.negativeDollarDiscount), AbstractGetDiscountForEnrolmentTest.promotions, null, 1, Money.ONE, enrolment, null).get().getApplicableDiscounts();
+		List<DiscountCourseClass> applicableByPolicy  =  GetDiscountForEnrolment.valueOf(Arrays.asList(AbstractGetDiscountForEnrolmentTest.negativePercentDiscount, AbstractGetDiscountForEnrolmentTest.negativeFeeOverrideDiscount, AbstractGetDiscountForEnrolmentTest.negativeDollarDiscount), AbstractGetDiscountForEnrolmentTest.promotions, null, Collections.singletonList(enrolment), Money.ONE, enrolment, null).get().getApplicableDiscounts();
 		assertEquals(3, applicableByPolicy.size());
 		assertTrue(applicableByPolicy.contains(AbstractGetDiscountForEnrolmentTest.negativePercentDiscount));
 		assertTrue(applicableByPolicy.contains(AbstractGetDiscountForEnrolmentTest.negativeFeeOverrideDiscount));
@@ -431,17 +439,17 @@ public class GetDiscountForEnrolmentTest extends AbstractGetDiscountForEnrolment
 
 		//check that any negative always beats a normal discounts.
 		//if multiple negative discounts allowed to apply then the higher (as an absolute value) applies.
-		DiscountCourseClass chosenDiscount  =  GetDiscountForEnrolment.valueOf(Arrays.asList(AbstractGetDiscountForEnrolmentTest.singleDiscountWithRate, AbstractGetDiscountForEnrolmentTest.minValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.minCountAndValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.negativeDollarDiscount), AbstractGetDiscountForEnrolmentTest.promotions, null, 1, new Money("200"), enrolment, null).get().getChosenDiscount();
+		DiscountCourseClass chosenDiscount  =  GetDiscountForEnrolment.valueOf(Arrays.asList(AbstractGetDiscountForEnrolmentTest.singleDiscountWithRate, AbstractGetDiscountForEnrolmentTest.minValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.minCountAndValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.negativeDollarDiscount), AbstractGetDiscountForEnrolmentTest.promotions, null, Collections.singletonList(enrolment), new Money("200"), enrolment, null).get().getChosenDiscount();
 
 		assertNotNull(chosenDiscount);
 		Assert.assertEquals(chosenDiscount, AbstractGetDiscountForEnrolmentTest.negativeDollarDiscount);
 
-		chosenDiscount  =  GetDiscountForEnrolment.valueOf(Arrays.asList(AbstractGetDiscountForEnrolmentTest.singleDiscountWithRate, AbstractGetDiscountForEnrolmentTest.minValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.minCountAndValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.negativeDollarDiscount, AbstractGetDiscountForEnrolmentTest.negativePercentDiscount), AbstractGetDiscountForEnrolmentTest.promotions, null, 1, new Money("200"), enrolment, null).get().getChosenDiscount();
+		chosenDiscount  =  GetDiscountForEnrolment.valueOf(Arrays.asList(AbstractGetDiscountForEnrolmentTest.singleDiscountWithRate, AbstractGetDiscountForEnrolmentTest.minValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.minCountAndValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.negativeDollarDiscount, AbstractGetDiscountForEnrolmentTest.negativePercentDiscount), AbstractGetDiscountForEnrolmentTest.promotions, null, Collections.singletonList(enrolment), new Money("200"), enrolment, null).get().getChosenDiscount();
 
 		assertNotNull(chosenDiscount);
 		Assert.assertEquals(chosenDiscount, AbstractGetDiscountForEnrolmentTest.negativePercentDiscount);
 
-		chosenDiscount  =  GetDiscountForEnrolment.valueOf(Arrays.asList(AbstractGetDiscountForEnrolmentTest.singleDiscountWithRate, AbstractGetDiscountForEnrolmentTest.minValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.minCountAndValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.negativeDollarDiscount, AbstractGetDiscountForEnrolmentTest.negativePercentDiscount, AbstractGetDiscountForEnrolmentTest.negativeFeeOverrideDiscount), AbstractGetDiscountForEnrolmentTest.promotions, null, 1, new Money("200"), enrolment, null).get().getChosenDiscount();
+		chosenDiscount  =  GetDiscountForEnrolment.valueOf(Arrays.asList(AbstractGetDiscountForEnrolmentTest.singleDiscountWithRate, AbstractGetDiscountForEnrolmentTest.minValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.minCountAndValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.negativeDollarDiscount, AbstractGetDiscountForEnrolmentTest.negativePercentDiscount, AbstractGetDiscountForEnrolmentTest.negativeFeeOverrideDiscount), AbstractGetDiscountForEnrolmentTest.promotions, null, Collections.singletonList(enrolment), new Money("200"), enrolment, null).get().getChosenDiscount();
 
 		assertNotNull(chosenDiscount);
 		Assert.assertEquals(chosenDiscount, AbstractGetDiscountForEnrolmentTest.negativeFeeOverrideDiscount);
@@ -450,39 +458,39 @@ public class GetDiscountForEnrolmentTest extends AbstractGetDiscountForEnrolment
 	@Test
 	public void discountByCorporatePassTest() {
 		//Check that discounts linked to any Corporate Pass is not allowed until corresponded Corporate Pass not entered
-		List<DiscountCourseClass> applicableByPolicy  =  GetDiscountForEnrolment.valueOf(Arrays.asList(AbstractGetDiscountForEnrolmentTest.discountByCorporatePass), Collections.EMPTY_LIST, null, 1, Money.ONE, enrolment, null).get().getApplicableDiscounts();
+		List<DiscountCourseClass> applicableByPolicy  =  GetDiscountForEnrolment.valueOf(Arrays.asList(AbstractGetDiscountForEnrolmentTest.discountByCorporatePass), Collections.EMPTY_LIST, null, Collections.singletonList(enrolment), Money.ONE, enrolment, null).get().getApplicableDiscounts();
 		assertTrue(applicableByPolicy.isEmpty());
 		
 		CorporatePass someOtherPass = context.newObject(CorporatePass.class);
 
-		applicableByPolicy  =  GetDiscountForEnrolment.valueOf(Arrays.asList(AbstractGetDiscountForEnrolmentTest.discountByCorporatePass), Collections.EMPTY_LIST, someOtherPass, 1, Money.ONE, enrolment, null).get().getApplicableDiscounts();
+		applicableByPolicy  =  GetDiscountForEnrolment.valueOf(Arrays.asList(AbstractGetDiscountForEnrolmentTest.discountByCorporatePass), Collections.EMPTY_LIST, someOtherPass, Collections.singletonList(enrolment), Money.ONE, enrolment, null).get().getApplicableDiscounts();
 		assertTrue(applicableByPolicy.isEmpty());
 
-		applicableByPolicy  =  GetDiscountForEnrolment.valueOf(Arrays.asList(AbstractGetDiscountForEnrolmentTest.discountByCorporatePass), Collections.EMPTY_LIST, AbstractGetDiscountForEnrolmentTest.corporatePass, 1, Money.ONE, enrolment, null).get().getApplicableDiscounts();
+		applicableByPolicy  =  GetDiscountForEnrolment.valueOf(Arrays.asList(AbstractGetDiscountForEnrolmentTest.discountByCorporatePass), Collections.EMPTY_LIST, AbstractGetDiscountForEnrolmentTest.corporatePass, Collections.singletonList(enrolment), Money.ONE, enrolment, null).get().getApplicableDiscounts();
 		assertFalse(applicableByPolicy.isEmpty());
 		assertEquals(1, applicableByPolicy.size());
 		Assert.assertEquals(AbstractGetDiscountForEnrolmentTest.discountByCorporatePass, applicableByPolicy.get(0));
 		
 		//check that discount which allowed by Corporate Pass is not conflicted with other discounts which has other conditions 
-		applicableByPolicy  =  GetDiscountForEnrolment.valueOf(Arrays.asList(AbstractGetDiscountForEnrolmentTest.singleDiscountWithRate, AbstractGetDiscountForEnrolmentTest.minValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.minCountAndValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.discountByCorporatePass), Collections.EMPTY_LIST, null, 1, Money.ONE, enrolment, null).get().getApplicableDiscounts();
+		applicableByPolicy  =  GetDiscountForEnrolment.valueOf(Arrays.asList(AbstractGetDiscountForEnrolmentTest.singleDiscountWithRate, AbstractGetDiscountForEnrolmentTest.minValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.minCountAndValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.discountByCorporatePass), Collections.EMPTY_LIST, null, Collections.singletonList(enrolment), Money.ONE, enrolment, null).get().getApplicableDiscounts();
 		assertFalse(applicableByPolicy.isEmpty());
 		assertEquals(1, applicableByPolicy.size());
 		Assert.assertEquals(AbstractGetDiscountForEnrolmentTest.singleDiscountWithRate, applicableByPolicy.get(0));
 
-		applicableByPolicy  =  GetDiscountForEnrolment.valueOf(Arrays.asList(AbstractGetDiscountForEnrolmentTest.singleDiscountWithRate, AbstractGetDiscountForEnrolmentTest.minValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.minCountAndValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.discountByCorporatePass), Collections.EMPTY_LIST, null, 1, new Money("200"), enrolment, null).get().getApplicableDiscounts();
+		applicableByPolicy  =  GetDiscountForEnrolment.valueOf(Arrays.asList(AbstractGetDiscountForEnrolmentTest.singleDiscountWithRate, AbstractGetDiscountForEnrolmentTest.minValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.minCountAndValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.discountByCorporatePass), Collections.EMPTY_LIST, null, Collections.singletonList(enrolment), new Money("200"), enrolment, null).get().getApplicableDiscounts();
 		assertFalse(applicableByPolicy.isEmpty());
 		assertEquals(2, applicableByPolicy.size());
 		assertTrue(applicableByPolicy.contains(AbstractGetDiscountForEnrolmentTest.minValueConditionDiscount));
 		assertTrue(applicableByPolicy.contains(AbstractGetDiscountForEnrolmentTest.singleDiscountWithRate));
 
-		applicableByPolicy  =  GetDiscountForEnrolment.valueOf(Arrays.asList(AbstractGetDiscountForEnrolmentTest.singleDiscountWithRate, AbstractGetDiscountForEnrolmentTest.minValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.minCountAndValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.discountByCorporatePass), Collections.EMPTY_LIST, null, 2, new Money("200"), enrolment, null).get().getApplicableDiscounts();
+		applicableByPolicy  =  GetDiscountForEnrolment.valueOf(Arrays.asList(AbstractGetDiscountForEnrolmentTest.singleDiscountWithRate, AbstractGetDiscountForEnrolmentTest.minValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.minCountAndValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.discountByCorporatePass), Collections.EMPTY_LIST, null, Arrays.asList(enrolment, enrolment2), new Money("200"), enrolment, null).get().getApplicableDiscounts();
 		assertFalse(applicableByPolicy.isEmpty());
 		assertEquals(3, applicableByPolicy.size());
 		assertTrue(applicableByPolicy.contains(AbstractGetDiscountForEnrolmentTest.minValueConditionDiscount));
 		assertTrue(applicableByPolicy.contains(AbstractGetDiscountForEnrolmentTest.singleDiscountWithRate));
 		assertTrue(applicableByPolicy.contains(AbstractGetDiscountForEnrolmentTest.minCountAndValueConditionDiscount));
 
-		applicableByPolicy  =  GetDiscountForEnrolment.valueOf(Arrays.asList(AbstractGetDiscountForEnrolmentTest.singleDiscountWithRate, AbstractGetDiscountForEnrolmentTest.minValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.minCountAndValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.discountByCorporatePass), Collections.EMPTY_LIST, AbstractGetDiscountForEnrolmentTest.corporatePass, 2, new Money("200"), enrolment, null).get().getApplicableDiscounts();
+		applicableByPolicy  =  GetDiscountForEnrolment.valueOf(Arrays.asList(AbstractGetDiscountForEnrolmentTest.singleDiscountWithRate, AbstractGetDiscountForEnrolmentTest.minValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.minCountAndValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.discountByCorporatePass), Collections.EMPTY_LIST, AbstractGetDiscountForEnrolmentTest.corporatePass, Arrays.asList(enrolment, enrolment2), new Money("200"), enrolment, null).get().getApplicableDiscounts();
 		assertFalse(applicableByPolicy.isEmpty());
 		assertEquals(4, applicableByPolicy.size());
 		assertTrue(applicableByPolicy.contains(AbstractGetDiscountForEnrolmentTest.minValueConditionDiscount));
@@ -490,7 +498,7 @@ public class GetDiscountForEnrolmentTest extends AbstractGetDiscountForEnrolment
 		assertTrue(applicableByPolicy.contains(AbstractGetDiscountForEnrolmentTest.minCountAndValueConditionDiscount));
 		assertTrue(applicableByPolicy.contains(AbstractGetDiscountForEnrolmentTest.discountByCorporatePass));
 
-		DiscountCourseClass chosenDiscount  =  GetDiscountForEnrolment.valueOf(Arrays.asList(AbstractGetDiscountForEnrolmentTest.singleDiscountWithRate, AbstractGetDiscountForEnrolmentTest.minValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.minCountAndValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.discountByCorporatePass), Collections.EMPTY_LIST, AbstractGetDiscountForEnrolmentTest.corporatePass, 2, new Money("200"), enrolment, null).get().getChosenDiscount();
+		DiscountCourseClass chosenDiscount  =  GetDiscountForEnrolment.valueOf(Arrays.asList(AbstractGetDiscountForEnrolmentTest.singleDiscountWithRate, AbstractGetDiscountForEnrolmentTest.minValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.minCountAndValueConditionDiscount, AbstractGetDiscountForEnrolmentTest.discountByCorporatePass), Collections.EMPTY_LIST, AbstractGetDiscountForEnrolmentTest.corporatePass, Arrays.asList(enrolment, enrolment2), new Money("200"), enrolment, null).get().getChosenDiscount();
 		assertNotNull(chosenDiscount);
 		Assert.assertEquals(AbstractGetDiscountForEnrolmentTest.discountByCorporatePass, chosenDiscount);
 		
