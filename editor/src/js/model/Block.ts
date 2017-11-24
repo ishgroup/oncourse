@@ -1,5 +1,6 @@
 
 export class Block {
+  id?: number;
 
   /**
    * Title/Name of block

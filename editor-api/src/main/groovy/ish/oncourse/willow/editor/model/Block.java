@@ -3,8 +3,26 @@ package ish.oncourse.willow.editor.model;
 
 public class Block  {
   
+    private Double id = null;
     private String title = null;
     private String content = null;
+
+    /**
+     * Get id
+     * @return id
+     */
+    public Double getId() {
+        return id;
+    }
+
+    public void setId(Double id) {
+       this.id = id;
+    }
+
+    public Block id(Double id) {
+      this.id = id;
+      return this;
+    }
 
     /**
      * Title/Name of block
@@ -46,6 +64,7 @@ public class Block  {
       StringBuilder sb = new StringBuilder();
       sb.append("class Block {\n");
       
+      sb.append("    id: ").append(toIndentedString(id)).append("\n");
       sb.append("    title: ").append(toIndentedString(title)).append("\n");
       sb.append("    content: ").append(toIndentedString(content)).append("\n");
       sb.append("}");

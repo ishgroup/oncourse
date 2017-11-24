@@ -738,6 +738,8 @@ definitions:
   Block:
     type: object
     properties:
+      id:
+        type: number
       title:
         type: string
         description: Title/Name of block
