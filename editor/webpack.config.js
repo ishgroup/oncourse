@@ -23,6 +23,10 @@ module.exports = function (options = {}) {
 };
 
 const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
+  const appEntry = NODE_ENV === 'mock'
+    ? path.resolve(__dirname, 'src', 'dev', 'app.tsx')
+    : path.resolve(__dirname, 'src', 'js', 'app.tsx');
+
   return {
     entry: {
       editor: [
@@ -31,7 +35,7 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
         'redux',
         'react-redux',
         'rxjs',
-        path.resolve(__dirname, 'src', 'js', 'app.tsx')
+        appEntry
       ]
     },
     output: {

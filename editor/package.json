@@ -10,6 +10,8 @@
     "build:prod:watch": "webpack --watch --progress -p --env.NODE_ENV production",
     "build:dev": "npm run clean && webpack --progress",
     "build:dev:watch": "webpack --debug --watch --env.SOURCE_MAP eval-source-map",
+    "build:mock": "npm run clean && webpack --progress --env.NODE_ENV mock",
+    "build:mock:watch": "webpack --debug --watch --env.SOURCE_MAP eval-source-map --env.NODE_ENV mock",
     "test": "jest --ci  --testResultsProcessor=jest-junit",
     "start": "webpack-dev-server --history-api-fallback=true --progress --open --config webpack.dev.config.js --env.entry=./src/js/app.tsx --content-base ./src/dev",
     "start:mock": "webpack-dev-server --history-api-fallback=true --progress --open --config webpack.dev.config.js --env.entry=./src/dev/app.tsx --content-base ./src/dev"

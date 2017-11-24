@@ -2,7 +2,6 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import {Provider} from "react-redux";
 import {MemoryRouter as Router} from 'react-router-dom';
-import {MockAdapter} from "../dev/mock/MockAdapter";
 
 import {CreateStore, RestoreState} from "./CreateStore";
 import {configLoader} from "./configLoader";
@@ -13,10 +12,9 @@ import {DefaultConfig} from "./constants/Config";
 
 import "../scss/cms.scss";
 
-export const initApp = () => {
-  const store = CreateStore();
+const store = CreateStore();
 
-  new MockAdapter();
+export const initApp = () => {
 
   /**
    *  Load CMS config
@@ -40,7 +38,7 @@ export const initApp = () => {
       </Provider>,
       document.getElementById(DefaultConfig.CONTAINER_ID),
     );
-  }
-}
+  };
+};
 
 initApp();

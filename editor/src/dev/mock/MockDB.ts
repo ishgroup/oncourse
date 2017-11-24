@@ -448,7 +448,7 @@ export class MockDB {
   createNewPage(): Page {
     const page = new Page();
     const newNumber = Math.max(...this.pages.map(page => page.number)) + 1;
-    page.title = `New Page ${isFinite(newNumber) ? page : 1}`;
+    page.title = `New Page ${isFinite(newNumber) ? newNumber : 1}`;
     page.number = isFinite(newNumber) ? newNumber : 1;
     page.urls = [];
 
