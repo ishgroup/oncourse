@@ -2,6 +2,7 @@ package ish.oncourse.solr.functions.course
 
 import io.reactivex.Flowable
 import io.reactivex.Observable
+import io.reactivex.Scheduler
 import io.reactivex.schedulers.Schedulers
 import ish.oncourse.model.Course
 import ish.oncourse.model.CourseClass
@@ -18,11 +19,11 @@ import static ish.oncourse.solr.functions.course.CourseFunctions.Courses
  */
 class SCourseFunctions {
 
-    public static final Closure<Observable<SCourse>> SCourses = {
-        ObjectContext context, Date current = new Date() ->
-            Flowable.fromIterable(Courses(context))
+    static final Observable<SCourse> SCourses(ObjectContext context, Date current = new Date(),
+                                                     Scheduler scheduler = Schedulers.io()) {
+            return Flowable.fromIterable(Courses(context))
                     .parallel()
-                    .runOn(Schedulers.io())
+                    .runOn(scheduler)
                     .map({ Course c -> GetSCourse.call(new CourseContext(course: c, context: c.objectContext, current: current)) })
                     .sequential().toObservable()
     }
