@@ -131,7 +131,7 @@ export const mockAmount = (): Amount => {
 };
 
 export const mockEnumField = (name: string, key: string, enumType: string, items: Item[]): Field => {
-  const r: Field = mockField(name, key, DataType.ENUM, false, items[0]);
+  const r: Field = mockField(name, key, DataType.ENUM, false);
   r.enumType = enumType;
   r.enumItems = items;
   return r;

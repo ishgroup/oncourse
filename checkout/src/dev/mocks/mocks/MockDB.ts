@@ -88,7 +88,7 @@ export class MockDB {
     ],                              WaitingCoursesListSchema);
 
     this.fields = [
-      mockField("Street", "street", DataType.STRING, false, 'Kirova'),
+      mockField("Street", "street", DataType.STRING, true, 'Kirova'),
       mockField("Passport number", "customField.contact.passportNumber", DataType.STRING, true),
       mockField("Other info", "customField.contact.information", DataType.LONG_STRING, true),
       mockField("Suburb", "suburb", DataType.SUBURB, true),

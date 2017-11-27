@@ -184,7 +184,8 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
       dispatch(toggleRedeemVoucher(redeemVoucher, enabled));
     },
     onChangeEnrolmentFields: (form, type) => {
-      dispatch(updateEnrolmentFields(form, type));
+      // added min delay until redux-form will changed
+      setTimeout(() => dispatch(updateEnrolmentFields(form, type)), 30);
     },
   };
 };

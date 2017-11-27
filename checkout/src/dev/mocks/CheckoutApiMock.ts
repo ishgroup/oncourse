@@ -92,18 +92,10 @@ export class CheckoutApiMock extends CheckoutApi {
   getCheckoutModel(request: CheckoutModelRequest): Promise<CheckoutModel> {
     const result: CheckoutModel = new CheckoutModel();
 
-    const keys1 = ["street", "postcode"];
-    const fields1 = keys1.map(key => this.config.db.getFieldByKey(key));
-
-    const keys2 = ["customField.contact.passportType", "citizenship"];
+    const keys2 = ["street", "citizenship"];
     const fields2 = keys2.map(key => this.config.db.getFieldByKey(key));
 
     const mockHeadings = () => ([
-      {
-        fields: fields1,
-        name: 'heading 1',
-        description: 'description 1',
-      },
       {
         fields: fields2,
         name: 'heading 2',
