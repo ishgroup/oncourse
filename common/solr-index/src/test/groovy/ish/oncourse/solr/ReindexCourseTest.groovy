@@ -2,9 +2,12 @@ package ish.oncourse.solr
 
 import com.carrotsearch.randomizedtesting.annotations.ThreadLeakScope
 import io.reactivex.schedulers.Schedulers
+import ish.oncourse.solr.model.DataContext
 import ish.oncourse.solr.model.SCourse
 import ish.oncourse.solr.reindex.ReindexCoursesJob
 import ish.oncourse.test.TestContext
+import ish.oncourse.test.context.CCollege
+import ish.oncourse.test.context.CCourse
 import org.apache.cayenne.ObjectContext
 import org.apache.solr.SolrTestCaseJ4
 import org.apache.solr.client.solrj.SolrClient
@@ -22,7 +25,8 @@ import org.junit.Test
 class ReindexCourseTest extends SolrTestCaseJ4{
     private TestContext testContext
     private ObjectContext objectContext
-    private static InitSolr initSolr
+    private InitSolr initSolr
+    private CCollege cCollege
 
     @Before
     void before() throws Exception {
@@ -32,29 +36,36 @@ class ReindexCourseTest extends SolrTestCaseJ4{
         testContext = new TestContext()
         testContext.open()
         objectContext = testContext.getRuntime().newContext()
+        DataContext dataContext = new DataContext(objectContext: objectContext)
+        cCollege = dataContext.college("College-Australia/Sydney", "Australia/Sydney")
     }
 
     @Test
     void testReindexCourse() throws IOException, SolrServerException {
         SolrClient solrClient = new EmbeddedSolrServer(h.getCore())
 
+        CCourse course1 = cCollege.cCourse("course1")
+        course1.detail("course1 Details").build()
+        CCourse course2 = cCollege.cCourse("course2")
+        course2.detail("course2 Details").build()
 
-        SCourse expected = new SCourse()
-        expected.setId(Long.valueOf(1).toString())
-        expected.setCollegeId(1)
-        expected.setName("Course1")
-        expected.setDetail("Course1 Details")
-        expected.setCode("COURSE1")
-        expected.setStartDate(new Date())
-
-        solrClient.addBean(expected)
-        solrClient.commit()
+        SCourse expectedSCourse = new SCourse()
+        expectedSCourse.setId(course1.course.id.toString())
+        expectedSCourse.setCollegeId(course1.course.college.id)
+        expectedSCourse.setName(course1.course.name)
+        expectedSCourse.setDetail(course1.course.detail)
+        expectedSCourse.setCode(course1.course.code)
 
         ReindexCoursesJob job = new ReindexCoursesJob(objectContext, solrClient)
         job.run()
-
-        SCourse actual = solrClient.query("courses", new SolrQuery("Cou*")).getBeans(SCourse.class).get(0)
-        assertEquals(expected, actual)
+        Thread.sleep(1000)
+        List<SCourse> actualSClasses = solrClient.query("courses", new SolrQuery("course*")).getBeans(SCourse.class)
+        assertEquals(2, actualSClasses.size())
+        assertNotNull(actualSClasses.find {c -> c.id == expectedSCourse.id})
+        assertNotNull(actualSClasses.find {c -> c.collegeId == expectedSCourse.collegeId})
+        assertNotNull(actualSClasses.find {c -> c.name == expectedSCourse.name})
+        assertNotNull(actualSClasses.find {c -> c.detail == expectedSCourse.detail})
+        assertNotNull(actualSClasses.find {c -> c.code == expectedSCourse.code})
     }
 
     @After

@@ -34,4 +34,14 @@ class CCourse {
         cCourse.course.enrolmentType = CourseEnrolmentType.OPEN_FOR_ENROLMENT
         cCourse
     }
+
+    CCourse detail(String detail) {
+        course.setDetail(detail)
+        this
+    }
+
+    CCourse build() {
+        objectContext.commitChanges()
+        this
+    }
 }
