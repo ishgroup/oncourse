@@ -24,7 +24,7 @@ class WebNodeTypeFunctions {
     static List<WebNodeType> getWebNodeTypes(Request request, ObjectContext context) {
         WebSiteVersion webSiteVersion = WebSiteVersionFunctions.getCurrentVersion(request, context)
 
-        WebNodeType webNodeTypes =  ObjectSelect.query(WebNodeType).where(WebNodeType.WEB_SITE_VERSION.eq(webSiteVersion)).
+        List<WebNodeType> webNodeTypes =  ObjectSelect.query(WebNodeType).where(WebNodeType.WEB_SITE_VERSION.eq(webSiteVersion)).
                 cacheGroup(WebNodeType.simpleName).
                 cacheStrategy(QueryCacheStrategy.LOCAL_CACHE).
                 select(webSiteVersion.objectContext)

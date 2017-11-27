@@ -18,7 +18,7 @@ class WebNodeTypeToTheme {
     Theme getTheme() {
         return new Theme().with { theme ->
             theme.title = webNodeType.name
-            theme.id = webNodeType.id
+            theme.id = webNodeType.id.doubleValue()
 //            theme.layoutId = webNodeType.webSiteLayout
             theme
         }
