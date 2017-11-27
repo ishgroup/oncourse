@@ -44,7 +44,10 @@ class EnrolmentFields extends React.Component<any, any> {
     return (
       <div className="course-fields col-sm-24">
         {headings && selected &&
-        <form onSubmit={handleSubmit} onBlur={() => onUpdate(form)}>
+        <form
+          onSubmit={handleSubmit}
+          onChange={() => onUpdate(form)}
+        >
           {this.getFormErrors()}
           {headingsComp}
         </form>
