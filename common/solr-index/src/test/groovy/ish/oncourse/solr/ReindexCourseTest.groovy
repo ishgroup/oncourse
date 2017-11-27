@@ -58,7 +58,10 @@ class ReindexCourseTest extends SolrTestCaseJ4{
 
         ReindexCoursesJob job = new ReindexCoursesJob(objectContext, solrClient)
         job.run()
-        Thread.sleep(1000)
+        while (job.isActive()){
+            Thread.sleep(100)
+        }
+
         List<SCourse> actualSClasses = solrClient.query("courses", new SolrQuery("course*")).getBeans(SCourse.class)
         assertEquals(2, actualSClasses.size())
         assertNotNull(actualSClasses.find {c -> c.id == expectedSCourse.id})
@@ -66,6 +69,8 @@ class ReindexCourseTest extends SolrTestCaseJ4{
         assertNotNull(actualSClasses.find {c -> c.name == expectedSCourse.name})
         assertNotNull(actualSClasses.find {c -> c.detail == expectedSCourse.detail})
         assertNotNull(actualSClasses.find {c -> c.code == expectedSCourse.code})
+
+        solrClient.close()
     }
 
     @After

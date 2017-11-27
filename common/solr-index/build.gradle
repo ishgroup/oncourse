@@ -22,9 +22,6 @@ dependencies {
     testCompile("org.apache.solr:solr-test-framework:${solrVersion}") {
         exclude group: 'org.apache.hadoop'
     }
-    testCompile("org.apache.solr:solr-dataimporthandler:${solrVersion}") {
-        exclude group: 'org.apache.hadoop'
-    }
 }
 
 targetCompatibility = '1.8'

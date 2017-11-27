@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger
 import org.apache.solr.client.solrj.SolrClient
 
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicBoolean
 
 class ReindexCoursesJob implements IJob {
     private static Logger logger = LogManager.logger
@@ -22,6 +23,7 @@ class ReindexCoursesJob implements IJob {
     private Disposable disposable
     private Scheduler scheduler
     private Date date
+    private AtomicBoolean isActive = new AtomicBoolean(false)
 
     ReindexCoursesJob(ObjectContext objectContext, SolrClient solrClient, Date date = new Date(), Scheduler scheduler = Schedulers.io()) {
         this.objectContext = objectContext
@@ -36,15 +38,18 @@ class ReindexCoursesJob implements IJob {
     }
 
     boolean isActive() {
-        return disposable.isDisposed()
+        return isActive.get()
     }
 
     @Override
     void run() {
+        isActive.set(true)
         disposable = SCourseFunctions.SCourses(objectContext, date, scheduler).subscribe(
                 { solrClient.addBean(it) },
                 { e -> logger.error(e.getLocalizedMessage(), e) },
-                { solrClient.commit() })
-
+                {
+                    solrClient.commit()
+                    isActive.set(false)
+                })
     }
 }
