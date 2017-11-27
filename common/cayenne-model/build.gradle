@@ -11,6 +11,10 @@ dependencies {
         //we should exclude cayenne-server from waCommon because the cayenne-server is not compatable to willow code.
         exclude group: 'org.apache.cayenne', module: 'cayenne-server'
     }
+    compile ('commons-validator:commons-validator:1.5.0'){
+        //the lib (version 2.1) conflicts with commons-collections (ver 3.2.1) from org.apache.cayenne group dependences
+        exclude group:'commons-collections', module: 'commons-collections'
+    }
 
     compile "org.codehaus.groovy:groovy-all:$groovyVersion"
 

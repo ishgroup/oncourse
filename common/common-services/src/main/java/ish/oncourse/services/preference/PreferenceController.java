@@ -53,31 +53,8 @@ public class PreferenceController extends CommonPreferenceController {
 		if (isUserPref) {
 			throw new IllegalArgumentException("Cannot fetch a user preference in willow.");
 		}
-
-		Preference pref = new GetPreference(webSiteService.getCurrentCollege(), key, cayenneService.sharedContext()).getPreference();
-
-		ObjectContext context;
-		College college = null;
-
-		if (webSiteService.getCurrentCollege() != null) {
-			context = cayenneService.newContext();
-
-			college = webSiteService.getCurrentCollege();
-			college = context.localObject(college);
-		} else {
-			context = cayenneService.newNonReplicatingContext();
-		}
-
-		if (pref == null) {
-			pref = context.newObject(Preference.class);
-			pref.setName(key);
-		} else {
-			pref = context.localObject(pref);
-		}
-
-		pref.setCollege(college);
-		pref.setValueString(StringUtils.trim(value));
-
+		ObjectContext context = cayenneService.sharedContext();
+		new GetPreference(webSiteService.getCurrentCollege(), key, context).setValue(value);
 		logger.debug("committing changes to prefs: {}", context.uncommittedObjects());
 
 		context.commitChanges();

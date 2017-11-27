@@ -17,7 +17,11 @@ import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.util.log.LogAppInfo
 import ish.oncourse.willow.editor.service.impl.AuthApiServiceImpl
 import ish.oncourse.willow.editor.service.impl.BlockApiServiceImpl
+import ish.oncourse.willow.editor.service.impl.MenuApiServiceImpl
 import ish.oncourse.willow.editor.service.impl.PageApiServiceImpl
+import ish.oncourse.willow.editor.service.impl.PublishApiServiceImpl
+import ish.oncourse.willow.editor.service.impl.SettingsApiServiceImpl
+import ish.oncourse.willow.editor.service.impl.ThemeApiServiceImpl
 import ish.oncourse.willow.editor.services.RequestFilter
 import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.services.access.AuthenticationFilter
@@ -61,6 +65,10 @@ class EditorApiModule extends ConfigModule {
         CXFModule.contributeResources(binder).addBinding().to(AuthApiServiceImpl)
         CXFModule.contributeResources(binder).addBinding().to(PageApiServiceImpl)
         CXFModule.contributeResources(binder).addBinding().to(BlockApiServiceImpl)
+        CXFModule.contributeResources(binder).addBinding().to(ThemeApiServiceImpl)
+        CXFModule.contributeResources(binder).addBinding().to(SettingsApiServiceImpl)
+        CXFModule.contributeResources(binder).addBinding().to(PublishApiServiceImpl)
+        CXFModule.contributeResources(binder).addBinding().to(MenuApiServiceImpl)
 
         binder.bind(RequestService)
         binder.bind(ZKSessionManager)

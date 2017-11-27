@@ -6,6 +6,7 @@ import ish.oncourse.model.WebSite
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.query.ObjectSelect
+import org.apache.commons.lang3.StringUtils
 
 
 class GetPreference {
@@ -48,5 +49,22 @@ class GetPreference {
             Integer.parseInt(valueString)
         }
         return 0
+    }
+    
+    void setValue(String value) {
+
+        Preference pref = getPreference()
+        college = objectContext.localObject(college)
+        if (pref == null) {
+            pref = objectContext.newObject(Preference)
+            pref.setName(key)
+        } 
+        
+        pref.college = college
+        if (webSite) {
+            pref.webSite = objectContext.localObject(webSite)
+        }
+        
+        pref.valueString = StringUtils.trim(value)
     }
 }

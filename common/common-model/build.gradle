@@ -5,10 +5,7 @@ dependencies {
 	compile 'net.sf.ehcache:ehcache:2.10.0'
 	compile 'concurrent:concurrent:1.3.4'
 	compile 'org.apache.tapestry:tapestry-ioc:5.2.6'
-    compile ('commons-validator:commons-validator:1.5.0'){
-        //the lib (version 2.1) conflicts with commons-collections (ver 3.2.1) from org.apache.cayenne group dependences
-        exclude group:'commons-collections', module: 'commons-collections'
-    }
+    
 	compile 'oro:oro:2.0.8'
 	compile 'org.liquibase:liquibase-core:2.0.1'
 	/**
