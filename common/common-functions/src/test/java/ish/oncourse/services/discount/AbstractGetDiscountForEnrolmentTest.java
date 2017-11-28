@@ -12,6 +12,7 @@ import org.junit.BeforeClass;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -76,15 +77,9 @@ public abstract class AbstractGetDiscountForEnrolmentTest {
 	public static DiscountCourseClass discountByCorporatePass;
 	
 	public static List<Discount> promotions;
-
-	/**
-	 * Initializes discounts entities.
-	 */
-	@BeforeClass
-	public static void init() throws Exception {
-		ContextUtils.setupDataSources();
-		ObjectContext context = ContextUtils.createObjectContext();
-
+	
+	public static void initDiscounts(ObjectContext context) {
+		
 		Discount discount = context.newObject(Discount.class);
 		discount.setDiscountAmount(new Money(BigDecimal.TEN));
 		discount.setDiscountType(DiscountType.DOLLAR);

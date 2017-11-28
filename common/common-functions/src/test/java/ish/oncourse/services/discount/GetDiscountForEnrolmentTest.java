@@ -105,6 +105,26 @@ public class GetDiscountForEnrolmentTest extends AbstractGetDiscountForEnrolment
 		discount.setDiscountType(DiscountType.PERCENT);
 		DiscountCourseClass classDiscount = context.newObject(DiscountCourseClass.class);
 		classDiscount.setDiscount(discount);
+
+		initDiscounts(context);
+		
+		List<DiscountCourseClass> discountCourseClassList = Arrays.asList(combDiscountWithAmount,
+				singleDiscountWithRate,
+				combDiscountWithRateMax,
+				singleDiscountWithRateMin,
+				hiddenDiscountWithAmount,
+				nonAvailableDiscountWithAmount,
+				minValueConditionDiscount,
+				minCountAndValueConditionDiscount,
+				negativeDollarDiscount,
+				negativePercentDiscount,
+				negativeFeeOverrideDiscount);
+		
+		
+		for (DiscountCourseClass dcc : discountCourseClassList) {
+			courseClass.addToDiscountCourseClasses(dcc);
+		}
+		
 	}
 
 	/**
