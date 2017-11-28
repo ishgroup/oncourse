@@ -237,6 +237,10 @@ public class WillowClientGenerator extends AbstractTypeScriptClientCodegen imple
                 // Overwrite imports in model
                 final ArrayList<CustomImport> customImports = new ArrayList<>();
                 for (String modelImport : model.imports) {
+                    if (modelImport.split(".").length == 0 && model.name.equals(modelImport)) {
+                        //skip import for self type
+                        continue;
+                    }
                     customImports.add(new CustomImport(
                             getClassName(modelImport),
                             importPathPrefix + normalizePackage(modelImport, "/"))
