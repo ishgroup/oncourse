@@ -34,11 +34,10 @@ class BlockApiTest extends AbstractEditorTest{
     @Test
     void addBlockTest() {
         Block block = api.addBlock()
-
-        Assert.assertNotNull(block)
-        Assert.assertNotNull(block.title)
-        Assert.assertEquals(block.html, 'Sample content')
-        Assert.assertEquals(block.id, 2,0)
+        assertNotNull(block)
+        assertNotNull(block.title)
+        assertNotNull('New Block (2)')
+        assertNull(block.content)
     }
     
     /**
@@ -63,12 +62,12 @@ class BlockApiTest extends AbstractEditorTest{
         Block newBlock = api.addBlock()
 	    List blocks = api.getBlocks()
 
-        Assert.assertNotNull(newBlock)
-        Assert.assertNotNull(blocks)
+        assertNotNull(newBlock)
+        assertNotNull(blocks)
 
-        Assert.assertEquals(blocks[0].id, newBlock.id, 0)
-        Assert.assertEquals(blocks[0].title, newBlock.title)
-        Assert.assertEquals(blocks[0].html, newBlock.html)
+        assertEquals(blocks[0].id, newBlock.id, 0)
+        assertEquals(blocks[0].title, newBlock.title)
+        assertEquals(blocks[0].content, newBlock.content)
     }
     
     /**

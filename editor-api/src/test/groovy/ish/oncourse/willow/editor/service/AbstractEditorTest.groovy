@@ -94,7 +94,7 @@ abstract class AbstractEditorTest {
             node.setPublished(true)
 
             WebContent webContent = context.newObject(WebContent)
-            webContent.name = 'block'
+            webContent.name = 'New block (1)'
             webContent.webSiteVersion = stagedVersion
             webContent.content = 'Content'
             webContent.contentTextile = 'Content'

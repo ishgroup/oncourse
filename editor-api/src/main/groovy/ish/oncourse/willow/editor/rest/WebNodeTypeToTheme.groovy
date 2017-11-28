@@ -25,7 +25,7 @@ class WebNodeTypeToTheme {
         return new Theme().with { theme ->
             theme.title = webNodeType.name
             theme.id = webNodeType.id.doubleValue()
-            theme.layoutId = webNodeType.webSiteLayout.id
+            theme.layoutId = webNodeType.webSiteLayout.id.doubleValue()
             theme.schema = new ThemeSchema().with { schema ->
                 schema.top = getBlocksBy(header)
                 schema.left = getBlocksBy(left)

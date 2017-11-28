@@ -1,5 +1,6 @@
 package ish.oncourse.willow.editor.website
 
+import groovy.transform.CompileStatic
 import ish.oncourse.model.WebContent
 import ish.oncourse.model.WebNodeType
 import org.apache.cayenne.ObjectContext
@@ -8,7 +9,7 @@ import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.exp.Property
 import org.apache.cayenne.query.ObjectSelect
 
-
+//@CompileStatic
 class ResourceNameUtil {
     
     static <T extends PersistentObject> String getAvailableName(Name name, ObjectContext ctx, Expression... qualifiers) {
@@ -20,7 +21,10 @@ class ResourceNameUtil {
         
         if (!namesList.empty) {
             String regex = /${name.defaultName} \(\d+\)/
-            Integer integer = namesList.findAll { it ==~ regex }.collect { it.find(/\d+/).toInteger() }.max()
+            Integer integer = namesList.findAll { it ==~ regex }
+                    .collect { it.find(/\d+/).toInteger() }
+                    .max() as Integer
+            
             nextNumber = integer ? ++integer: 1
         }
         return likeName.replace('%', nextNumber.toString())
