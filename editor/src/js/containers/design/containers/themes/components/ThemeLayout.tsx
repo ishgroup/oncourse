@@ -37,27 +37,27 @@ export class ThemeLayout extends React.Component<Props, any> {
           <Col md="4">
             <Source
               placeholder="Left"
-              id="middle1"
+              id="left"
               onUpdate={onUpdate}
-              list={getThemeBlocks('middle1')}
+              list={getThemeBlocks('left')}
             />
           </Col>
 
           <Col md="4">
             <Source
               placeholder="Middle"
-              id="middle2"
+              id="centre"
               onUpdate={onUpdate}
-              list={getThemeBlocks('middle2')}
+              list={getThemeBlocks('centre')}
             />
           </Col>
 
           <Col md="4">
             <Source
               placeholder="Right"
-              id="middle3"
+              id="right"
               onUpdate={onUpdate}
-              list={getThemeBlocks('middle3')}
+              list={getThemeBlocks('right')}
             />
           </Col>
         </Row>

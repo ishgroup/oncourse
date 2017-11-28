@@ -216,9 +216,9 @@ export class MockDB {
             id: 1,
             position: 1,
           }],
-          middle1: [],
-          middle2: [],
-          middle3: [],
+          left: [],
+          centre: [],
+          right: [],
           footer: [{
             id: 2,
             position: 2,
@@ -231,8 +231,8 @@ export class MockDB {
         layoutId: 3,
         schema: {
           top: [],
-          middle1: [],
-          middle2: [{
+          left: [],
+          centre: [{
             id: 3,
             position: 1,
           },
@@ -240,7 +240,7 @@ export class MockDB {
             id: 4,
             position: 1,
           }],
-          middle3: [],
+          right: [],
           footer: [{
             id: 5,
             position: 2,
@@ -474,9 +474,9 @@ export class MockDB {
     theme.schema = new ThemeSchema();
     theme.schema.top = [];
     theme.schema.footer = [];
-    theme.schema.middle1 = [];
-    theme.schema.middle2 = [];
-    theme.schema.middle3 = [];
+    theme.schema.left = [];
+    theme.schema.centre = [];
+    theme.schema.right = [];
 
     this.themes.push(theme);
     return theme;
