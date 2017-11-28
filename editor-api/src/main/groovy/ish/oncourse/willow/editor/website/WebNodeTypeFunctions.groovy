@@ -6,6 +6,7 @@ import ish.oncourse.model.WebSiteVersion
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.QueryCacheStrategy
+import org.apache.cayenne.query.SortOrder
 import org.eclipse.jetty.server.Request
 
 class WebNodeTypeFunctions {
@@ -24,25 +25,31 @@ class WebNodeTypeFunctions {
     static List<WebNodeType> getWebNodeTypes(Request request, ObjectContext context) {
         WebSiteVersion webSiteVersion = WebSiteVersionFunctions.getCurrentVersion(request, context)
 
-        List<WebNodeType> webNodeTypes =  ObjectSelect.query(WebNodeType).where(WebNodeType.WEB_SITE_VERSION.eq(webSiteVersion)).
+        List<WebNodeType> webNodeTypes =  ObjectSelect.query(WebNodeType)
+                .where(WebNodeType.WEB_SITE_VERSION.eq(webSiteVersion)).
+                orderBy(WebNodeType.MODIFIED.desc()).
                 cacheGroup(WebNodeType.simpleName).
                 cacheStrategy(QueryCacheStrategy.LOCAL_CACHE).
                 select(webSiteVersion.objectContext)
-
         return webNodeTypes
     }
 
     static WebNodeType createNewWebNodeType(Request request, ObjectContext ctx) {
         WebSiteVersion webSiteVersion = WebSiteVersionFunctions.getCurrentVersion(request, ctx)
         WebNodeType newWebNodeType = ctx.newObject(WebNodeType)
-        newWebNodeType.name = 'todo: get new'
         newWebNodeType.webSiteVersion = webSiteVersion
-
-        // TODO: get/create correct website layout
-        newWebNodeType.webSiteLayout = new WebSiteLayout()
-        newWebNodeType.webSiteLayout.layoutKey = 'default'
+        newWebNodeType.name = ResourceNameUtil.getAvailableName(ResourceNameUtil.Name.THEME_NAME, ctx, WebNodeType.WEB_SITE_VERSION.eq(webSiteVersion))
+        newWebNodeType.webSiteLayout = getDefaultLayout(webSiteVersion, ctx)
         newWebNodeType.webSiteLayout.webSiteVersion = webSiteVersion
-
         return newWebNodeType
+    }
+
+    private static WebSiteLayout getDefaultLayout(WebSiteVersion webSiteVersion, ObjectContext ctx) {
+        return (ObjectSelect.query(WebSiteLayout)
+                .where(WebSiteLayout.WEB_SITE_VERSION.eq(webSiteVersion)) 
+                & WebSiteLayout.LAYOUT_KEY.eq(WebNodeType.DEFAULT_LAYOUT_KEY)).
+                cacheGroup(WebNodeType.simpleName).
+                cacheStrategy(QueryCacheStrategy.LOCAL_CACHE).
+                selectOne(ctx)
     }
 }

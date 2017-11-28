@@ -11,8 +11,9 @@ import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.QueryCacheStrategy
 import org.eclipse.jetty.server.Request
 
+import static ish.oncourse.willow.editor.website.ResourceNameUtil.Name.BLOCK_NAME
+
 class WebContentFunctions {
-    private static final String BLOCK_NAME_PATTERN = 'New block (%)'
 
     static WebContent getBlockById(Request request, ObjectContext context, Long id) {
         return getBlockBy(ExpressionFactory.matchDbExp(WebContent.ID_PK_COLUMN, id), request, context)
@@ -25,7 +26,7 @@ class WebContentFunctions {
     static WebContent createNewWebContent(Request request, ObjectContext ctx) {
         WebSiteVersion webSiteVersion = WebSiteVersionFunctions.getCurrentVersion(request, ctx)
         WebContent newWebContent = ctx.newObject(WebContent)
-        newWebContent.name = getNewBlockName(webSiteVersion, ctx)
+        newWebContent.name = ResourceNameUtil.getAvailableName(BLOCK_NAME, ctx, blockQualifier, getVersionQualifier(webSiteVersion))
         newWebContent.webSiteVersion = webSiteVersion
         return newWebContent
     }
@@ -55,21 +56,6 @@ class WebContentFunctions {
             return true
         }
         return false
-    }
-
-    private static getNewBlockName(WebSiteVersion version, ObjectContext ctx) {
-        Integer nextNumber = 1
-        List<String> namesList  = ((ObjectSelect.columnQuery(WebContent, WebContent.NAME)
-                .where(WebContent.NAME.like(BLOCK_NAME_PATTERN))
-                & blockQualifier)
-                & getVersionQualifier(version))
-                .select(ctx)
-        if (!namesList.empty) {
-            String regex = /New block \(\d+\)/
-            Integer integer = namesList.findAll { it ==~ regex }.collect { it.find(/\d+/).toInteger() }.max()
-            nextNumber = integer ? ++integer: 1
-        }
-        BLOCK_NAME_PATTERN.replace('%', nextNumber.toString())
     }
 
     private static WebContent getBlockBy(Expression selectQualifier, Request request, ObjectContext context) {
