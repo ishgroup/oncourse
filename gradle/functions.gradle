@@ -19,7 +19,8 @@ ext {
         test.systemProperty('oncourse.jdbc.url', "${uri}/${dbName}?autoReconnect=true" +
                 "&zeroDateTimeBehavior=convertToNull" +
                 "&useUnicode=true" +
-                "&characterEncoding=utf8")
+                "&characterEncoding=utf8" +
+                "&useBatchMultiSend=false")
         test.systemProperty('oncourse.jdbc.user', dbUser)
         test.systemProperty('oncourse.jdbc.password', dbPassword)
         test.systemProperty('shouldCreateTables', shouldCreateTables)

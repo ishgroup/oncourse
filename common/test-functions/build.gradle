@@ -16,6 +16,7 @@ dependencies {
     compile group: 'org.apache.commons', name: 'commons-dbcp2', version: '2.1.1'
     compile group: 'com.github.javafaker', name: 'javafaker', version: '0.13'
     compile group: 'org.dbunit', name: 'dbunit', version : '2.5.3'
+    compile group: 'com.carrotsearch.randomizedtesting', name: 'randomizedtesting-runner', version: '2.5.3'
 }
 
 targetCompatibility = '1.8'

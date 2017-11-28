@@ -35,7 +35,7 @@ class ReindexCourseTest extends SolrTestCaseJ4{
 
         testContext = new TestContext()
         testContext.open()
-        objectContext = testContext.getRuntime().newContext()
+        objectContext = testContext.getServerRuntime().newContext()
         DataContext dataContext = new DataContext(objectContext: objectContext)
         cCollege = dataContext.college("College-Australia/Sydney", "Australia/Sydney")
     }

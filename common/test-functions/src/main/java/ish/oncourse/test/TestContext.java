@@ -9,8 +9,6 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.SQLException;
-
 /**
  * User: akoiro
  * Date: 30/10/17
@@ -20,12 +18,11 @@ public class TestContext {
 
 	public static final String SHOULD_CREATE_TABLES = "shouldCreateTables";
 
-
 	private boolean shouldCreateTables = false;
 	private boolean shouldCleanTables = true;
 	private BasicDataSource dataSource;
 	private MariaDB mariaDB;
-    private ServerRuntime runtime;
+	private ServerRuntime serverRuntime;
 
 	public TestContext shouldCreateTables(boolean value) {
 		this.shouldCreateTables = value;
@@ -43,19 +40,30 @@ public class TestContext {
 		return this;
 	}
 
+	public TestContext serverRuntime(ServerRuntime serverRuntime) {
+		this.serverRuntime = serverRuntime;
+		return this;
+	}
+
 	public TestContext open() {
+		initParams();
+
+
 		if (mariaDB == null) {
 			mariaDB = MariaDB.valueOf();
 		}
-		initParams();
 
 		dataSource = Functions.createDS(mariaDB);
 		Functions.bindDS(dataSource);
+
+		if (serverRuntime == null)
+			serverRuntime = Functions.createRuntime();
+
+
 		if (shouldCreateTables) {
 			Functions.createIfNotExistsDB(mariaDB);
 			Functions.cleanDB(mariaDB, true);
-            runtime = Functions.createRuntime();
-			new CreateTables(runtime).create();
+			new CreateTables(serverRuntime).create();
 		} else {
 			if (shouldCleanTables)
 				Functions.cleanDB(mariaDB, false);
@@ -87,20 +95,25 @@ public class TestContext {
 
 	public void close() {
 		try {
-			dataSource.close();
-			Functions.unbindDS();
-			if (runtime != null)
-			    runtime.shutdown();
-		} catch (SQLException e) {
+			this.serverRuntime.shutdown();
+		} catch (Exception e) {
 			logger.error(e);
 		}
+
+		try {
+			dataSource.close();
+		} catch (Exception e) {
+			logger.error(e);
+		}
+
+		try {
+			Functions.unbindDS();
+		} catch (Exception e) {
+			logger.error(e);
+		}
+ }
+
+	public ServerRuntime getServerRuntime() {
+		return serverRuntime;
 	}
-
-    public ServerRuntime getRuntime() {
-	    if (runtime == null){
-	        runtime = Functions.createRuntime();
-        }
-
-        return runtime;
-    }
 }

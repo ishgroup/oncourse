@@ -17,7 +17,6 @@ import ish.oncourse.services.payment.*;
 import ish.oncourse.services.paymentexpress.INewPaymentGatewayServiceBuilder;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.LoadDataSet;
-import ish.oncourse.test.MariaDB;
 import ish.oncourse.test.TestContext;
 import ish.oncourse.webservices.ServicesApp;
 import ish.oncourse.webservices.ServicesModule;
@@ -26,6 +25,8 @@ import ish.oncourse.webservices.util.*;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.cayenne.query.ObjectSelect;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.dom.Document;
 import org.apache.tapestry5.dom.Element;
 import org.apache.tapestry5.dom.Node;
@@ -42,7 +43,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Function;
 
@@ -59,6 +60,8 @@ import static org.mockito.Mockito.when;
  * Date: 26/8/17
  */
 public class TestEnv<T extends TransportConfig> {
+	private static Logger logger = LogManager.getLogger();
+
 	//input
 	private Function<TestEnv<T>, T> transportConfigProvider;
 	private String dataSetFile;
@@ -78,7 +81,7 @@ public class TestEnv<T extends TransportConfig> {
 	private org.apache.tapestry5.ioc.Messages messages;
 	private ICayenneService cayenneService;
 
-	private Executor executor = Executors.newSingleThreadExecutor();
+	private ExecutorService executor = Executors.newSingleThreadExecutor();
 
 	public TestEnv(Function<TestEnv<T>, T> transportConfigProvider,
 				   String dataSetFile,
@@ -89,20 +92,31 @@ public class TestEnv<T extends TransportConfig> {
 	}
 
 	public void start() {
-		init();
+		try {
+			init();
 
-		loadDataSet.load(getDataSource());
+			loadDataSet.load(getDataSource());
 
-		startRealServer();
+			startRealServer();
 
-		startTapestry();
+			startTapestry();
 
-		transportConfig = transportConfigProvider.apply(this);
-		supportedVersion = transportConfig.getReplicationVersion();
+			transportConfig = transportConfigProvider.apply(this);
+			supportedVersion = transportConfig.getReplicationVersion();
+		} catch (Exception e) {
+			logger.error(e);
+			throw e;
+		}
 	}
 
 	private void startRealServer() {
-		executor.execute(() -> runtime.run());
+		executor.execute(() -> {
+			try {
+				server.start();
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		});
 		while (!server.isStarted()) {
 			try {
 				Thread.sleep(1000);
@@ -121,14 +135,11 @@ public class TestEnv<T extends TransportConfig> {
 
 	private void init() {
 
-		MariaDB mariaDB = MariaDB.valueOf();
-
-		System.setProperty(Configuration.JDBC_URL_PROPERTY, mariaDB.getUrl());
-		System.setProperty(Configuration.AppProperty.DB_USER.getSystemProperty(), mariaDB.getUser());
-		System.setProperty(Configuration.AppProperty.DB_PASS.getSystemProperty(), mariaDB.getPassword());
-
-
 		testContext = new TestContext().open();
+
+		System.setProperty(Configuration.JDBC_URL_PROPERTY, testContext.getMariaDB().getUrl());
+		System.setProperty(Configuration.AppProperty.DB_USER.getSystemProperty(), testContext.getMariaDB().getUser());
+		System.setProperty(Configuration.AppProperty.DB_PASS.getSystemProperty(), testContext.getMariaDB().getPassword());
 
 		System.setProperty(USI_TEST_MODE, Boolean.TRUE.toString());
 
@@ -140,9 +151,28 @@ public class TestEnv<T extends TransportConfig> {
 	}
 
 	public void shutdown() {
-		runtime.shutdown();
-		pageTester.shutdown();
-		testContext.close();
+		try {
+			runtime.shutdown();
+		} catch (Exception e) {
+			logger.error(e);
+		}
+		try {
+			pageTester.shutdown();
+		} catch (Exception e) {
+			logger.error(e);
+		}
+
+		try {
+			testContext.close();
+		} catch (Exception e) {
+			logger.error(e);
+		}
+
+		try {
+			executor.shutdown();
+		} catch (Exception e) {
+			logger.error(e);
+		}
 	}
 
 	public URI getURI() {
