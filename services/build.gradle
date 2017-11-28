@@ -26,6 +26,7 @@ task generateSources(type: Copy) {
 
 
 test {
+    forkEvery = 1 //run every test in separate jvm
     initTestDBConfig(project, test)
 }
 

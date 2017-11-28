@@ -1,20 +1,18 @@
 package ish.oncourse.webservices.soap.v14;
 
-import com.carrotsearch.randomizedtesting.RandomizedRunner;
 import ish.common.types.*;
 import ish.oncourse.webservices.util.*;
 import ish.oncourse.webservices.v14.stubs.replication.VoucherStub;
 import org.apache.cayenne.ObjectContext;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import java.math.BigDecimal;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
-@RunWith(RandomizedRunner.class)
+//@RunWith(RandomizedRunner.class)
 public class QEMoneyVoucherRedeemWithMoneyPaymentKeepInvoiceGUITest extends QEMoneyVoucherRedeemWithMoneyPaymentTest {
 	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QEMoneyVoucherRedeemWithMoneyPaymentReverseInvoiceDataSet.xml";
 
