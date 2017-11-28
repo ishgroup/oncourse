@@ -17,6 +17,7 @@ export class MenuItem {
    */
   url?: string;
   expanded?: boolean;
+  children?: MenuItem[];
   errors?: Errors;
 }
 

@@ -811,15 +811,15 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/BlockItem'
-      middle1:
+      left:
         type: array
         items:
           $ref: '#/definitions/BlockItem'
-      middle2:
+      centre:
         type: array
         items:
           $ref: '#/definitions/BlockItem'
-      middle3:
+      right:
         type: array
         items:
           $ref: '#/definitions/BlockItem'
@@ -855,6 +855,10 @@ definitions:
         description: url for menu link
       expanded:
         type: boolean
+      children:
+        type: array
+        items:
+          $ref: '#/definitions/MenuItem'
       errors:
         type: object
         properties:

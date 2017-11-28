@@ -1,6 +1,9 @@
 package ish.oncourse.willow.editor.model;
 
+import ish.oncourse.willow.editor.model.MenuItem;
 import ish.oncourse.willow.editor.model.menuitem.Errors;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MenuItem  {
   
@@ -8,6 +11,7 @@ public class MenuItem  {
     private String title = null;
     private String url = null;
     private Boolean expanded = null;
+    private List<MenuItem> children = new ArrayList<MenuItem>();
     private Errors errors = null;
 
     /**
@@ -79,6 +83,28 @@ public class MenuItem  {
     }
 
     /**
+     * Get children
+     * @return children
+     */
+    public List<MenuItem> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<MenuItem> children) {
+       this.children = children;
+    }
+
+    public MenuItem children(List<MenuItem> children) {
+      this.children = children;
+      return this;
+    }
+
+    public MenuItem addChildrenItem(MenuItem childrenItem) {
+      this.children.add(childrenItem);
+      return this;
+    }
+
+    /**
      * Get errors
      * @return errors
      */
@@ -105,6 +131,7 @@ public class MenuItem  {
       sb.append("    title: ").append(toIndentedString(title)).append("\n");
       sb.append("    url: ").append(toIndentedString(url)).append("\n");
       sb.append("    expanded: ").append(toIndentedString(expanded)).append("\n");
+      sb.append("    children: ").append(toIndentedString(children)).append("\n");
       sb.append("    errors: ").append(toIndentedString(errors)).append("\n");
       sb.append("}");
       return sb.toString();

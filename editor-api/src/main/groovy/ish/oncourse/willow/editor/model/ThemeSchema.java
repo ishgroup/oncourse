@@ -7,9 +7,9 @@ import java.util.List;
 public class ThemeSchema  {
   
     private List<BlockItem> top = new ArrayList<BlockItem>();
-    private List<BlockItem> middle1 = new ArrayList<BlockItem>();
-    private List<BlockItem> middle2 = new ArrayList<BlockItem>();
-    private List<BlockItem> middle3 = new ArrayList<BlockItem>();
+    private List<BlockItem> left = new ArrayList<BlockItem>();
+    private List<BlockItem> centre = new ArrayList<BlockItem>();
+    private List<BlockItem> right = new ArrayList<BlockItem>();
     private List<BlockItem> footer = new ArrayList<BlockItem>();
 
     /**
@@ -35,68 +35,68 @@ public class ThemeSchema  {
     }
 
     /**
-     * Get middle1
-     * @return middle1
+     * Get left
+     * @return left
      */
-    public List<BlockItem> getMiddle1() {
-        return middle1;
+    public List<BlockItem> getLeft() {
+        return left;
     }
 
-    public void setMiddle1(List<BlockItem> middle1) {
-       this.middle1 = middle1;
+    public void setLeft(List<BlockItem> left) {
+       this.left = left;
     }
 
-    public ThemeSchema middle1(List<BlockItem> middle1) {
-      this.middle1 = middle1;
+    public ThemeSchema left(List<BlockItem> left) {
+      this.left = left;
       return this;
     }
 
-    public ThemeSchema addMiddle1Item(BlockItem middle1Item) {
-      this.middle1.add(middle1Item);
+    public ThemeSchema addLeftItem(BlockItem leftItem) {
+      this.left.add(leftItem);
       return this;
     }
 
     /**
-     * Get middle2
-     * @return middle2
+     * Get centre
+     * @return centre
      */
-    public List<BlockItem> getMiddle2() {
-        return middle2;
+    public List<BlockItem> getCentre() {
+        return centre;
     }
 
-    public void setMiddle2(List<BlockItem> middle2) {
-       this.middle2 = middle2;
+    public void setCentre(List<BlockItem> centre) {
+       this.centre = centre;
     }
 
-    public ThemeSchema middle2(List<BlockItem> middle2) {
-      this.middle2 = middle2;
+    public ThemeSchema centre(List<BlockItem> centre) {
+      this.centre = centre;
       return this;
     }
 
-    public ThemeSchema addMiddle2Item(BlockItem middle2Item) {
-      this.middle2.add(middle2Item);
+    public ThemeSchema addCentreItem(BlockItem centreItem) {
+      this.centre.add(centreItem);
       return this;
     }
 
     /**
-     * Get middle3
-     * @return middle3
+     * Get right
+     * @return right
      */
-    public List<BlockItem> getMiddle3() {
-        return middle3;
+    public List<BlockItem> getRight() {
+        return right;
     }
 
-    public void setMiddle3(List<BlockItem> middle3) {
-       this.middle3 = middle3;
+    public void setRight(List<BlockItem> right) {
+       this.right = right;
     }
 
-    public ThemeSchema middle3(List<BlockItem> middle3) {
-      this.middle3 = middle3;
+    public ThemeSchema right(List<BlockItem> right) {
+      this.right = right;
       return this;
     }
 
-    public ThemeSchema addMiddle3Item(BlockItem middle3Item) {
-      this.middle3.add(middle3Item);
+    public ThemeSchema addRightItem(BlockItem rightItem) {
+      this.right.add(rightItem);
       return this;
     }
 
@@ -129,9 +129,9 @@ public class ThemeSchema  {
       sb.append("class ThemeSchema {\n");
       
       sb.append("    top: ").append(toIndentedString(top)).append("\n");
-      sb.append("    middle1: ").append(toIndentedString(middle1)).append("\n");
-      sb.append("    middle2: ").append(toIndentedString(middle2)).append("\n");
-      sb.append("    middle3: ").append(toIndentedString(middle3)).append("\n");
+      sb.append("    left: ").append(toIndentedString(left)).append("\n");
+      sb.append("    centre: ").append(toIndentedString(centre)).append("\n");
+      sb.append("    right: ").append(toIndentedString(right)).append("\n");
       sb.append("    footer: ").append(toIndentedString(footer)).append("\n");
       sb.append("}");
       return sb.toString();
