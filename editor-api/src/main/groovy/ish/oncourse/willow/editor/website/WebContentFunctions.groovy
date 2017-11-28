@@ -1,5 +1,6 @@
 package ish.oncourse.willow.editor.website
 
+import ish.oncourse.model.RegionKey
 import ish.oncourse.model.WebContent
 import ish.oncourse.model.WebContentVisibility
 import ish.oncourse.model.WebSiteVersion
@@ -28,6 +29,11 @@ class WebContentFunctions {
         WebContent newWebContent = ctx.newObject(WebContent)
         newWebContent.name = ResourceNameUtil.getAvailableName(BLOCK_NAME, ctx, blockQualifier, getVersionQualifier(webSiteVersion))
         newWebContent.webSiteVersion = webSiteVersion
+
+        WebContentVisibility visibility = ctx.newObject(WebContentVisibility)
+        visibility.regionKey = RegionKey.unassigned
+        visibility.webContent = newWebContent
+        
         return newWebContent
     }
 

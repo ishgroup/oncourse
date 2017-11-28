@@ -2,6 +2,9 @@ package ish.oncourse.willow.editor.service
 
 import ish.oncourse.api.cayenne.CayenneService
 import ish.oncourse.api.cayenne.WillowApiCayenneModule
+import ish.oncourse.model.RegionKey
+import ish.oncourse.model.WebContent
+import ish.oncourse.model.WebContentVisibility
 import ish.oncourse.model.WebMenu
 import ish.oncourse.model.WebNode
 import ish.oncourse.model.WebNodeType
@@ -89,6 +92,19 @@ abstract class AbstractEditorTest {
 
             WebNode node = WebNodeFunctions.createNewNodeBy(stagedVersion, page, DEFAULT_HOME_PAGE_NAME, DEFAULT_HOME_PAGE_NAME, 1)
             node.setPublished(true)
+
+            WebContent webContent = context.newObject(WebContent)
+            webContent.name = 'block'
+            webContent.webSiteVersion = stagedVersion
+            webContent.content = 'Content'
+            webContent.contentTextile = 'Content'
+
+
+            WebContentVisibility webContentVisibility = context.newObject(WebContentVisibility)
+            webContentVisibility.webNodeType = page
+            webContentVisibility.webContent = webContent
+            webContentVisibility.regionKey = RegionKey.footer
+            webContentVisibility.weight = 1
 
             WebMenu menu = context.newObject(WebMenu)
             menu.setName('Home')

@@ -45,51 +45,7 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 	@Override
 	public SortedSet<WebContent> getBlocksForRegionKey(WebNodeType webNodeType,
 			RegionKey regionKey) {
-		assert webNodeType != null;
-
-		if (webNodeType.getObjectId().isTemporary() && !RegionKey.unassigned.equals(regionKey)) {
-			throw new IllegalArgumentException("Illegal params for WebContentService#getBlocksForRegionKey() call");
-		}
-
-		ObjectSelect<WebContent> query = ObjectSelect.query(WebContent.class)
-			.and(WebContent.WEB_SITE_VERSION.eq(webSiteVersionService.getCurrentVersion()))
-				.and(ExpressionFactory.matchExp(WebContent.WEB_CONTENT_VISIBILITIES.getName() + "+."
-						+ WebContentVisibility.WEB_NODE.getName(), null));
-
-
-		List<WebContentVisibility> webContentVisibilities = webNodeType
-				.getWebContentVisibilities();
-
-		List<Long> nodeIds = new ArrayList<>(webContentVisibilities.size());
-		List<Long> visibilityIds = new ArrayList<>(
-				webContentVisibilities.size());
-
-		for (WebContentVisibility webContentVisibility : webContentVisibilities) {
-			visibilityIds.add(webContentVisibility.getId());
-			nodeIds.add(webContentVisibility.getWebContent().getId());
-		}
-
-		Expression regionKeyQualifier;
-		if (regionKey != null && regionKey != RegionKey.unassigned) {
-			regionKeyQualifier = ExpressionFactory.inDbExp(
-					WebContent.WEB_CONTENT_VISIBILITIES.getName() + "+."
-							+ WebContentVisibility.ID_PK_COLUMN, visibilityIds)
-					.andExp(ExpressionFactory
-							.matchExp(WebContent.WEB_CONTENT_VISIBILITIES.getName()
-											+ "+." + WebContentVisibility.REGION_KEY.getName(),
-									regionKey));
-		} else {
-			regionKeyQualifier = ExpressionFactory.notInDbExp(
-					WebContent.ID_PK_COLUMN, nodeIds)
-					.orExp(ExpressionFactory
-							.matchDbExp(WebContent.WEB_CONTENT_VISIBILITIES.getName()
-									+ "+." + WebContentVisibility.ID_PK_COLUMN, null));
-		}
-
-		query = query.and(regionKeyQualifier);
-		TreeSet<WebContent> treeSet = new TreeSet<>(new WebContentComparator(webNodeType));
-		treeSet.addAll(query.select(webNodeType.getObjectContext()));
-		return treeSet;
+		return BlocksForRegionKey.valueOf(webNodeType, regionKey, webSiteVersionService.getCurrentVersion()).get();
 	}
 
 	@Override
