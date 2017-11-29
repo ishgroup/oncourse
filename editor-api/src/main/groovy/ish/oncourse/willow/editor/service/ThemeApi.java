@@ -26,7 +26,7 @@ public interface ThemeApi  {
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @AuthFilter
-    void deleteTheme(Double id);
+    void deleteTheme(String themeName);
 
     @GET
     @Path("/getLayouts")

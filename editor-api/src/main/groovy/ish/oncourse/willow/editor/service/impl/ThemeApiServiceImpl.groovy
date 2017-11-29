@@ -38,8 +38,7 @@ class ThemeApiServiceImpl implements ThemeApi {
         return WebNodeTypeToTheme.valueOf(webNodeType).theme
     }
     
-    void deleteTheme(Double id) {
-        // TODO: Implement...
+    void deleteTheme(String themeName) {
         
         
     }

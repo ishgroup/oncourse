@@ -434,12 +434,12 @@ paths:
       consumes:
         - application/json
       parameters:
-        - name: id
+        - name: themeName
           in: body
           description: identificator of theme which will be deleted
           required: true
           schema:
-            type: number
+            type: string
       responses:
         '200':
           description: Theme successfully deleted

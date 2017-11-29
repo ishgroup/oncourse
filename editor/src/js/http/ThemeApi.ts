@@ -9,8 +9,8 @@ export class ThemeApi {
   addTheme(): Promise<Theme> {
     return this.http.POST(`/addTheme`);
   }
-  deleteTheme(id: number): Promise<any> {
-    return this.http.POST(`/deleteTheme`, id);
+  deleteTheme(themeName: string): Promise<any> {
+    return this.http.POST(`/deleteTheme`, themeName);
   }
   getLayouts(): Promise<Theme[]> {
     return this.http.GET(`/getLayouts`);

@@ -52,11 +52,17 @@ class UpdateTheme extends AbstractUpdate<Theme> {
             return this
         }
         //we need the code to set trimmed name to for the page
-        nodeType.name = StringUtils.trimToEmpty(resourceToSave.title)
-        if (nodeType.name.length() < 3) {
+        resourceToSave.title = StringUtils.trimToEmpty(resourceToSave.title)
+        if (resourceToSave.title.length() < 3) {
             error = "There should be at least 3 characters in theme name"
             return this
         }
+        if (nodeType.defaultPageTheme && nodeType.name != resourceToSave.title) {
+            error = "The default theme name can't be changed"
+            return this
+        }
+        
+        
         WebNodeType duplicate = WebNodeTypeFunctions.getWebNodeTypeByName(nodeType.name, request, context)
         if (duplicate  && duplicate.objectId != nodeType.objectId) {
             error = "Theme name must be unique"
