@@ -5,7 +5,7 @@
 /**
  * CONTEXT for willow-api requests
  */
-export const CONTEXT: string = "/a/";
+export const CONTEXT: string = "/editor/";
 
 /**
  * 'X-Origin' header for all willow-api requests, this header contains original college site host name
