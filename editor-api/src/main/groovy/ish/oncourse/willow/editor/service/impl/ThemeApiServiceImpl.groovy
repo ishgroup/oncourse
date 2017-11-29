@@ -39,8 +39,21 @@ class ThemeApiServiceImpl implements ThemeApi {
     }
     
     void deleteTheme(String themeName) {
-        
-        
+        ObjectContext context = cayenneService.newContext()
+        WebNodeType theme = WebNodeTypeFunctions.getWebNodeTypeByName(themeName, requestService.request, context)
+        if (!theme) {
+            throw createClientException("There is no theme for name: $themeName")
+        }
+        if (theme.defaultPageTheme) {
+            throw createClientException("The default theme can't be deleted")
+        }
+        if (theme.themeUsedInPages) {
+            throw createClientException("The theme is used for pages")
+        }
+
+        context.deleteObject(theme.webContentVisibilities)
+        context.deleteObject(theme)
+        context.commitChanges()
     }
     
     List<Theme> getLayouts() {
