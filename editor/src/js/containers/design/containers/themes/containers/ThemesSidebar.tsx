@@ -14,7 +14,7 @@ interface Props {
   layouts: Layout[];
   match: any;
   onEditSettings: (themeId, settings) => any;
-  onDeleteTheme: (id) => any;
+  onDeleteTheme: (title) => any;
   onAddTheme: () => any;
   history: any;
   fetching: boolean;
@@ -57,7 +57,7 @@ class ThemesSidebar extends React.Component<Props, any> {
           layouts={layouts}
           onBack={() => this.resetActiveTheme()}
           onEdit={prop => onEditSettings(activeTheme, prop)}
-          onDelete={id => onDeleteTheme(id)}
+          onDelete={title => onDeleteTheme(title)}
           showModal={showModal}
         />
         }
@@ -75,7 +75,7 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
     onEditSettings: (theme, settings) => dispatch(saveTheme(theme.id, {...theme, ...settings})),
-    onDeleteTheme: id => dispatch(deleteTheme(id)),
+    onDeleteTheme: title => dispatch(deleteTheme(title)),
     onAddTheme: () => dispatch(addTheme()),
     showModal: props => dispatch(showModal(props)),
   };

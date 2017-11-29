@@ -39,7 +39,7 @@ export function themeApiMock() {
 
   this.api.onPost(API.DELETE_THEME).reply(config => {
 
-    this.db.deleteThemeById(JSON.parse(config.data));
+    this.db.deleteThemeByTitle(config.data);
 
     return promiseResolve(
       config,

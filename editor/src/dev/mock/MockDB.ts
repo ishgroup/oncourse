@@ -352,8 +352,8 @@ export class MockDB {
     };
   }
 
-  deleteThemeById(id: number) {
-    const index = this.themes.findIndex(item => item.id === id);
+  deleteThemeByTitle(title: string) {
+    const index = this.themes.findIndex(item => item.title === title);
     this.themes = update(this.themes, {
       $splice: [
         [index, 1],

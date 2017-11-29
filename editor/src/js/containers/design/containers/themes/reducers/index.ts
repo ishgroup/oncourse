@@ -54,8 +54,8 @@ export const themesReducer = (state: ThemesState = new ThemesState(), action: IA
     }
 
     case DELETE_THEME_FULFILLED: {
-      const id = action.payload;
-      const index = state.items.findIndex(item => item.id === id);
+      const title = action.payload;
+      const index = state.items.findIndex(item => item.title === title);
       const newThemes = state.items;
 
       if (index !== -1) {

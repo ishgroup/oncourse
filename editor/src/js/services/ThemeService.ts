@@ -22,8 +22,8 @@ class ThemeService {
     return this.themeApi.addTheme();
   }
 
-  public deleteTheme(id): Promise<any> {
-    return this.themeApi.deleteTheme(id);
+  public deleteTheme(title: string): Promise<any> {
+    return this.themeApi.deleteTheme(title);
   }
 
   public buildSaveThemeRequest(props, state: State) {

@@ -8,7 +8,7 @@ interface Props {
   layouts: Layout[];
   onBack: () => void;
   onEdit?: (settings) => void;
-  onDelete?: (id) => void;
+  onDelete?: (title) => void;
   showModal?: (props) => void;
 }
 
@@ -54,7 +54,7 @@ export class ThemeSettings extends React.Component<Props, any> {
 
     showModal({
       text: `You are want to delete theme '${theme.title}'. Are you sure?`,
-      onConfirm: () => onDelete(theme.id),
+      onConfirm: () => onDelete(theme.title),
     });
   }
 
