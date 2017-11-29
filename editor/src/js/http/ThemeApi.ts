@@ -1,4 +1,5 @@
 import {HttpService} from "../common/services/HttpService";
+import {Layout} from "../model/Layout";
 import {Theme} from "../model/Theme";
 import {CommonError} from "../model/common/CommonError";
 
@@ -12,7 +13,7 @@ export class ThemeApi {
   deleteTheme(themeName: string): Promise<any> {
     return this.http.POST(`/deleteTheme`, themeName);
   }
-  getLayouts(): Promise<Theme[]> {
+  getLayouts(): Promise<Layout[]> {
     return this.http.GET(`/getLayouts`);
   }
   getThemes(): Promise<Theme[]> {

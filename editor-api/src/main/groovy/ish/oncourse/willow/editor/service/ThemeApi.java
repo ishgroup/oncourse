@@ -1,5 +1,6 @@
 package ish.oncourse.willow.editor.service;
 
+import ish.oncourse.willow.editor.model.Layout;
 import ish.oncourse.willow.editor.model.Theme;
 import ish.oncourse.willow.editor.model.common.CommonError;
 
@@ -32,7 +33,7 @@ public interface ThemeApi  {
     @Path("/getLayouts")
     @Produces({ "application/json" })
     @AuthFilter
-    List<Theme> getLayouts();
+    List<Layout> getLayouts();
 
     @GET
     @Path("/getThemes")

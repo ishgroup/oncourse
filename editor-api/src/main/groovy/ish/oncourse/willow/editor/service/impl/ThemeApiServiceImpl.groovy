@@ -2,7 +2,7 @@ package ish.oncourse.willow.editor.service.impl
 
 import ish.oncourse.model.WebNodeType
 import ish.oncourse.services.persistence.ICayenneService
-import ish.oncourse.willow.editor.rest.UpdateBlock
+import ish.oncourse.willow.editor.model.Layout
 import ish.oncourse.willow.editor.rest.UpdateTheme
 import ish.oncourse.willow.editor.rest.WebNodeTypeToTheme
 import ish.oncourse.willow.editor.service.*
@@ -12,6 +12,7 @@ import ish.oncourse.willow.editor.model.common.CommonError
 import groovy.transform.CompileStatic
 import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.website.WebNodeTypeFunctions
+import ish.oncourse.willow.editor.website.WebSiteLayoutFunctions
 import org.apache.cayenne.ObjectContext
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -56,15 +57,19 @@ class ThemeApiServiceImpl implements ThemeApi {
         context.commitChanges()
     }
     
-    List<Theme> getLayouts() {
-        // TODO: Implement...
-        
-        return null
+    List<Layout> getLayouts() {
+        WebSiteLayoutFunctions.getLayouts(requestService.request, cayenneService.newContext())
+                .collect { webLayout -> new  Layout().with { layout ->
+                    layout.id = webLayout.id.doubleValue()
+                    layout.layoutKey = webLayout.layoutKey
+                    layout
+            }
+        }
     }
     
     List<Theme> getThemes() {
-//        WebNodeTypeFunctions.getWebNodeTypes(requestService.request, cayenneService.newContext())
-//                .collect { node -> WebNodeTypeToTheme.valueOf(node).theme }
+        WebNodeTypeFunctions.getWebNodeTypes(requestService.request, cayenneService.newContext())
+                .collect { theme -> WebNodeTypeToTheme.valueOf(theme).theme }
     }
     
     Theme saveTheme(Theme saveThemeRequest)  {

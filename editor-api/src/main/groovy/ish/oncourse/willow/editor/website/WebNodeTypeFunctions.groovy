@@ -43,4 +43,13 @@ class WebNodeTypeFunctions {
         return newWebNodeType
     }
 
+    static List<WebNodeType> getWebNodeTypes(Request request, ObjectContext ctx) {
+        WebSiteVersion version = WebSiteVersionFunctions.getCurrentVersion(request, ctx)
+        return ObjectSelect.query(WebNodeType)
+                .where(WebNodeType.WEB_SITE_VERSION.eq(version))
+                .cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
+                .cacheGroup(WebNodeType.simpleName)
+                .orderBy(WebNodeType.MODIFIED.desc())
+                .select(ctx)
+    }
 }

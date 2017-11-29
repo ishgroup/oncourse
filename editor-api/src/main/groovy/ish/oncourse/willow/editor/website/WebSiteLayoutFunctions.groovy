@@ -13,12 +13,7 @@ import org.eclipse.jetty.server.Request
 class WebSiteLayoutFunctions {
     
     static WebSiteLayout getDefaultLayout(WebSiteVersion version, ObjectContext ctx) {
-        return (ObjectSelect.query(WebSiteLayout)
-                .where(WebSiteLayout.WEB_SITE_VERSION.eq(version))
-                & WebSiteLayout.LAYOUT_KEY.eq(WebNodeType.DEFAULT_LAYOUT_KEY)).
-                cacheGroup(WebNodeType.simpleName).
-                cacheStrategy(QueryCacheStrategy.LOCAL_CACHE).
-                selectOne(ctx)
+        return getLayout(WebSiteLayout.LAYOUT_KEY.eq(WebNodeType.DEFAULT_LAYOUT_KEY), version, ctx)
     }
 
     static WebSiteLayout getLayoutById(Long id, Request request, ObjectContext ctx) {
@@ -26,6 +21,16 @@ class WebSiteLayoutFunctions {
         return getLayout(ExpressionFactory.matchDbExp(WebSiteLayout.ID_PK_COLUMN, id), version, ctx)
     }
 
+    static List<WebSiteLayout> getLayouts(Request request, ObjectContext ctx) {
+
+        return ObjectSelect.query(WebSiteLayout).
+                where(WebSiteLayout.WEB_SITE_VERSION.eq(WebSiteVersionFunctions.getCurrentVersion(request, ctx))).
+                cacheGroup(WebSiteLayout.simpleName).
+                cacheStrategy(QueryCacheStrategy.LOCAL_CACHE).
+                select(ctx)
+    }
+
+    
     private static WebSiteLayout getLayout(Expression selectQualifier, WebSiteVersion webSiteVersion, ObjectContext ctx) {
         return (ObjectSelect.query(WebSiteLayout)
                 .where(selectQualifier)

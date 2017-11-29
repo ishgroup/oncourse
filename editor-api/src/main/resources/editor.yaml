@@ -370,7 +370,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/Theme'
+              $ref: '#/definitions/Layout'
         default:
           description: Unexpected error
           schema:
