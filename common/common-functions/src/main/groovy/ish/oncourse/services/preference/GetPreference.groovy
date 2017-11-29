@@ -39,19 +39,41 @@ class GetPreference {
         
         return ObjectSelect.query(Preference)
                 .where(exception)
-                .localCache(Preference.class.getSimpleName())
+                .localCache(Preference.simpleName)
                 .selectOne(objectContext)
     }
 
-    Integer getInteger() {
+    Integer getIntegerValue() {
         String valueString = value
         if (getPreference()) {
             Integer.parseInt(valueString)
         }
         return 0
     }
+    void setIntegerValue(Integer integer) {
+        setValue(String.valueOf(integer))
+    }
+    
+    Boolean getBooleanValue() {
+        return Boolean.parseBoolean(getValue())
+    }
+    
+    void setBooleanValue(Boolean value) {
+        setValue(Boolean.toString(value))
+    }
+
+    String getStringValue() {
+        return StringUtils.trimToNull(getValue())
+    }
+    
+    void setStringValue(String value) {
+        setValue(value)
+    }
     
     void setValue(String value) {
+        if (!StringUtils.trimToNull(value)) {
+            return
+        }
 
         Preference pref = getPreference()
         college = objectContext.localObject(college)
