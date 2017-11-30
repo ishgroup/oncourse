@@ -133,7 +133,7 @@ class CreateCorpPassModel {
     }
     
     private void  adjustDueDate() {
-        Integer defaultTerms = new GetPreference(college, CommonPreferenceController.ACCOUNT_INVOICE_TERMS, context).integer
+        Integer defaultTerms = new GetPreference(college, CommonPreferenceController.ACCOUNT_INVOICE_TERMS, context).integerValue
         Integer contactTerms = pass.contact.invoiceTerms
         Date dueDate = GetInvoiceDueDate.valueOf(defaultTerms, contactTerms).get()
         mainInvoice.dateDue = dueDate
