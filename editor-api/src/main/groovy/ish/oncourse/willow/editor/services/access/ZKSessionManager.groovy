@@ -34,6 +34,7 @@ class ZKSessionManager {
         if (!zkHost) {
             throw new IllegalStateException('Zookeeper host property undefined')
         }
+        zooKeeper = createZk()
     }
 
     void persistSession(String userId,  String sessionId) {
@@ -56,9 +57,7 @@ class ZKSessionManager {
 
     private ZooKeeper getZk() throws InterruptedException {
         if (dead) {
-            if (zooKeeper) {
-                zooKeeper.close()
-            }
+            zooKeeper.close()
             zooKeeper = createZk()
             dead = false
         }
