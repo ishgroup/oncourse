@@ -185,6 +185,7 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
     },
     onChangeEnrolmentFields: (form, type) => {
       // added min delay until redux-form will changed
+      // TODO: figure out correct way to dispatch redux-dorm change action before form-blur
       setTimeout(() => dispatch(updateEnrolmentFields(form, type)), 30);
     },
   };
