@@ -55,7 +55,7 @@ export function pageApiMock() {
     const html = this.db.getPageRender(pageNumber);
     return promiseResolve(
       config,
-      html,
+      {html},
     );
   });
 }
