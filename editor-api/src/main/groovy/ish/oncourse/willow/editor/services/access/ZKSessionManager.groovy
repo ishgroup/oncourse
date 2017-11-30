@@ -55,7 +55,7 @@ class ZKSessionManager {
     }
 
     private ZooKeeper getZk() throws InterruptedException {
-        if (dead) {
+        if (dead || !zooKeeper) {
             zooKeeper.close()
             zooKeeper = createZk()
             dead = false
