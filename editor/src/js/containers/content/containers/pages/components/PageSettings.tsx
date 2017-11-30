@@ -107,7 +107,6 @@ export class PageSettings extends React.PureComponent<Props, any> {
     const newUrl = {
       link: newLink,
       isDefault: false,
-      isBase: false,
     };
 
     const urls = this.state.urls.concat(newUrl);
@@ -180,10 +179,10 @@ export class PageSettings extends React.PureComponent<Props, any> {
                       {url.link}
                     </div>
 
-                    {!url.isBase && !url.isDefault &&
+                    {!url.isDefault &&
                       <span
                         className="links__remove icon-close"
-                        onClick={() => !url.isDefault && !url.isBase && this.onDeleteUrl(url)}
+                        onClick={() => !url.isDefault && this.onDeleteUrl(url)}
                       />
                     }
                   </div>
