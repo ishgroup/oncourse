@@ -44,7 +44,7 @@ export class Page extends React.PureComponent<PageProps, any> {
 
     const defaultUrl = page.urls.find(url => url.isDefault);
 
-    if (defaultUrl) {
+    if (defaultUrl && document.location.pathname !== defaultUrl.link) {
       openPage(defaultUrl.link);
     }
   }
