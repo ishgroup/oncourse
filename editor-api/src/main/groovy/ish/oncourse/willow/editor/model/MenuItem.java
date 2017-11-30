@@ -10,7 +10,6 @@ public class MenuItem  {
     private Double id = null;
     private String title = null;
     private String url = null;
-    private Boolean expanded = null;
     private List<MenuItem> children = new ArrayList<MenuItem>();
     private Errors errors = null;
 
@@ -66,23 +65,6 @@ public class MenuItem  {
     }
 
     /**
-     * Get expanded
-     * @return expanded
-     */
-    public Boolean getExpanded() {
-        return expanded;
-    }
-
-    public void setExpanded(Boolean expanded) {
-       this.expanded = expanded;
-    }
-
-    public MenuItem expanded(Boolean expanded) {
-      this.expanded = expanded;
-      return this;
-    }
-
-    /**
      * Get children
      * @return children
      */
@@ -130,7 +112,6 @@ public class MenuItem  {
       sb.append("    id: ").append(toIndentedString(id)).append("\n");
       sb.append("    title: ").append(toIndentedString(title)).append("\n");
       sb.append("    url: ").append(toIndentedString(url)).append("\n");
-      sb.append("    expanded: ").append(toIndentedString(expanded)).append("\n");
       sb.append("    children: ").append(toIndentedString(children)).append("\n");
       sb.append("    errors: ").append(toIndentedString(errors)).append("\n");
       sb.append("}");

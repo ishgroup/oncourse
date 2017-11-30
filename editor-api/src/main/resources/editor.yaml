@@ -853,8 +853,6 @@ definitions:
       url:
         type: string
         description: url for menu link
-      expanded:
-        type: boolean
       children:
         type: array
         items:
