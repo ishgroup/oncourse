@@ -27,7 +27,10 @@ export const loadCmsCss = path => {
 
 export class DOM {
   static findPage(title) {
-    const pageNode = document.querySelector(`#content > .block-${title}`);
+    // The same rule with backend behavior
+    const domTitle = title.replace(/ /g,'');
+
+    const pageNode = document.querySelector(`#content > .block-${domTitle}`);
 
     if (pageNode) {
       return pageNode;
