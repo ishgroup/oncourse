@@ -49,7 +49,8 @@ export class Sidebar extends React.Component<Props, any> {
   }
 
   onClickHistory() {
-    getHistoryInstance().push('/history');
+    return false;
+    // getHistoryInstance().push('/history');
   }
 
   onClickLogout(e) {
