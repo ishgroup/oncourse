@@ -13,7 +13,7 @@ import org.apache.commons.lang3.StringUtils
 class ProcessCustomFieldType {
 
     private static final String OTHER_CHOICE = '*'
-
+    private static final String SPLITTER = ';'
 
     private String fieldKey
     private ObjectContext objectContext
@@ -41,7 +41,7 @@ class ProcessCustomFieldType {
         String defaultValue = StringUtils.trimToNull(type.getDefaultValue())
 
         if (defaultValue) {
-            String[] choices = defaultValue.split(";")
+            String[] choices = defaultValue.split(SPLITTER)*.trim()
             if (choices.length > 1) {
                 if (choices.contains(OTHER_CHOICE)) {
                     dataType = DataType.CHOICE
