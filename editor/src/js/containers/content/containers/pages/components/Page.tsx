@@ -80,11 +80,11 @@ export class Page extends React.PureComponent<PageProps, any> {
     pageNode && pageNode.removeEventListener('click', this.onClickArea.bind(this));
   }
 
-  getPageDefaultUrl = () => {
+  getPageDefaultUrl = (): string => {
     const {page} = this.props;
     const defaultPageUrl = page.urls.find(url => url.isDefault);
 
-    return defaultPageUrl ? defaultPageUrl.link : PageService.generateBasetUrl(page);
+    return defaultPageUrl ? defaultPageUrl.link : PageService.generateBasetUrl(page).link;
   }
 
   replacePageHtml(html) {
