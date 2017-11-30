@@ -42,7 +42,11 @@ export class Page extends React.PureComponent<PageProps, any> {
       return;
     }
 
-    // openPage(page.url);
+    const defaultUrl = page.urls.find(url => url.isDefault);
+
+    if (defaultUrl) {
+      openPage(defaultUrl.link);
+    }
   }
 
   componentWillReceiveProps(props) {

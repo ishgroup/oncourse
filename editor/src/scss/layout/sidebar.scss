@@ -62,6 +62,11 @@
     }
   }
   
+  &__list {
+    overflow-y: auto;
+    height: calc(100vh - 250px);
+  }
+  
   &__footer {
     position: absolute;
     font-size: 12px;

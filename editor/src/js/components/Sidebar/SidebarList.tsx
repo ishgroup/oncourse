@@ -69,29 +69,36 @@ export class SidebarList extends React.Component<Props, any> {
           </li>
         }
 
-        {items && items
-          .filter(item => item.title.toLocaleLowerCase().indexOf(this.state.filter.toLocaleLowerCase()) !== -1)
-          .map(item => (
-            <li key={item[idKey]}>
-              <NavLink
-                exact={false}
-                to={`/${category}/${item[idKey]}`}
-                activeClassName="active"
-              >
-                {this.state.filter &&
+        {items &&
+        <li>
+          <ul className="sidebar__list">
+          {items
+            .filter(item => item.title.toLocaleLowerCase().indexOf(this.state.filter.toLocaleLowerCase()) !== -1)
+            .map(item => (
+              <li key={item[idKey]}>
+                <NavLink
+                  exact={false}
+                  to={`/${category}/${item[idKey]}`}
+                  activeClassName="active"
+                >
+                  {this.state.filter &&
                   <span dangerouslySetInnerHTML={{__html: item.title.replace(reg, str => (`<mark>${str}</mark>`))}}/>
-                }
+                  }
 
-                {!this.state.filter &&
+                  {!this.state.filter &&
                   <span>{item.title}</span>
-                }
+                  }
 
-                {item[subTitleKey] &&
+                  {item[subTitleKey] &&
                   <small>{subTitleFilter ? subTitleFilter(item[subTitleKey], item) : item[subTitleKey]}</small>
-                }
-              </NavLink>
-            </li>
-          ))}
+                  }
+                </NavLink>
+
+              </li>
+            ))}
+          </ul>
+        </li>
+        }
 
       </ul>
     );
