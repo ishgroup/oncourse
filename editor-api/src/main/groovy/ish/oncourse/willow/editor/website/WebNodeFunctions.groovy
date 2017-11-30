@@ -24,6 +24,7 @@ class WebNodeFunctions {
     private static Logger logger = LogManager.logger
     private static final String SAMPLE_WEB_CONTENT = 'Sample content'
     private static final String NEW_PAGE_WEB_NODE_NAME = 'New Page'
+    public static final String PAGE_PATH_TEMPLATE = "/page/"
     
     static WebNode getNodeForName(String nodeName, Request request, ObjectContext context) {
         return ((ObjectSelect.query(WebNode)
