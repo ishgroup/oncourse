@@ -29,7 +29,7 @@ export class Page extends React.PureComponent<PageProps, any> {
 
   componentDidMount() {
     const {page, openPage, toggleEditMode} = this.props;
-    const pageNode = DOM.findPage(page.number);
+    const pageNode = DOM.findPage(page.title);
 
     toggleEditMode(false);
     this.setState({
@@ -77,7 +77,7 @@ export class Page extends React.PureComponent<PageProps, any> {
 
   componentWillUnmount() {
     const {page} = this.props;
-    const pageNode = DOM.findPage(page.number);
+    const pageNode = DOM.findPage(page.title);
     pageNode && pageNode.removeEventListener('click', this.onClickArea.bind(this));
   }
 
@@ -90,7 +90,7 @@ export class Page extends React.PureComponent<PageProps, any> {
 
   replacePageHtml(html) {
     const {page} = this.props;
-    const pageNode = DOM.findPage(page.number);
+    const pageNode = DOM.findPage(page.title);
     if (!pageNode) return;
     pageNode.innerHTML = html;
   }

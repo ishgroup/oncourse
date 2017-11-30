@@ -64,7 +64,7 @@ export class MockDB {
     return [
       {
         number: 1,
-        title: 'Page - 1',
+        title: 'page1',
         visible: true,
         themeId: 2,
         urls: [

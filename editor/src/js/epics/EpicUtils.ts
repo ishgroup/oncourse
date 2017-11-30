@@ -36,7 +36,7 @@ export const ProcessError = (data: AxiosResponse): { type: string, payload?: any
     },
     error({
       // uid: 'once-please', // you can specify your own uid if required
-      title: 'Failed',
+      title: 'Request Failed',
       message: (data.data && data.data.message) || 'Something went wrong',
       position: 'tr',
       autoDismiss: 3,
