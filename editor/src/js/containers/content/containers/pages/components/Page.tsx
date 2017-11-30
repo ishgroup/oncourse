@@ -4,6 +4,7 @@ import {PageState} from "../reducers/State";
 import {Editor} from "../../../../../common/components/Editor";
 import {DOM} from "../../../../../utils";
 import {getHistoryInstance} from "../../../../../history";
+import PageService from "../../../../../services/PageService";
 
 interface PageProps {
   page: PageState;
@@ -42,10 +43,9 @@ export class Page extends React.PureComponent<PageProps, any> {
       return;
     }
 
-    const defaultUrl = page.urls.find(url => url.isDefault);
-
-    if (defaultUrl && document.location.pathname !== defaultUrl.link) {
-      openPage(defaultUrl.link);
+    const pageUrl = this.getPageDefaultUrl();
+    if (pageUrl !== document.location.pathname) {
+      openPage(pageUrl);
     }
   }
 
@@ -78,6 +78,13 @@ export class Page extends React.PureComponent<PageProps, any> {
     const {page} = this.props;
     const pageNode = DOM.findPage(page.number);
     pageNode && pageNode.removeEventListener('click', this.onClickArea.bind(this));
+  }
+
+  getPageDefaultUrl = () => {
+    const {page} = this.props;
+    const defaultPageUrl = page.urls.find(url => url.isDefault);
+
+    return defaultPageUrl ? defaultPageUrl.link : PageService.generateBasetUrl(page);
   }
 
   replacePageHtml(html) {
