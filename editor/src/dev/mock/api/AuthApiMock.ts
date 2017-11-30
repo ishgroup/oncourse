@@ -12,9 +12,7 @@ export function authApiMock(mock) {
       });
     }
 
-    return promiseResolve(config, {
-      user: this.db.users[0],
-    });
+    return promiseResolve(config, this.db.users[0]);
   });
 
   this.api.onPost(API.LOGOUT).reply(config => promiseResolve(config));

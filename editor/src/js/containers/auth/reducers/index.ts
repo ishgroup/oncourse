@@ -10,7 +10,10 @@ export const authReducer = (state: AuthState = new AuthState(), action: IAction<
         ...state,
         token: '1111-2222-3333',
         isAuthenticated: true,
-        user: action.payload.user,
+        user: {
+          firstName: action.payload.firstName,
+          lastName: action.payload.lastName,
+        },
       };
 
     case LOG_OUT_FULFILLED:
