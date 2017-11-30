@@ -244,7 +244,7 @@ class AuthenticationService {
             Cookie cookie = request.cookies.find { it.name == SESSION_ID }
             if (cookie && cookie.value && StringUtils.trimToNull(cookie.value)) {
                 String value = cookie.value
-                sessionCookie.sessionNode = value.replace('&', '/')
+                sessionCookie.sessionNode = "/${value.replace('&', '/')}"
                 sessionCookie.userId = Long.valueOf(value.split('&')[0].split('-')[1])
                 sessionCookie.userType = value.split('&')[0].split('-')[0]
             } else {
