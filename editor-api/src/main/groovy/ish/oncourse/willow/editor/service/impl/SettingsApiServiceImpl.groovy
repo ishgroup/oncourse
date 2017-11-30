@@ -1,5 +1,6 @@
 package ish.oncourse.willow.editor.service.impl
 
+import com.google.inject.Inject
 import ish.oncourse.model.College
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.services.preference.GetEnrolSuccessUrl
@@ -39,6 +40,7 @@ class SettingsApiServiceImpl implements SettingsApi {
     private ICayenneService cayenneService
     private RequestService requestService
 
+    @Inject
     SettingsApiServiceImpl(ICayenneService cayenneService, RequestService requestService) {
         this.cayenneService = cayenneService
         this.requestService = requestService

@@ -1,5 +1,6 @@
 package ish.oncourse.willow.editor.service.impl
 
+import com.google.inject.Inject
 import ish.oncourse.model.WebContent
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.willow.editor.rest.UpdateBlock
@@ -27,6 +28,7 @@ class BlockApiServiceImpl implements BlockApi {
     private ICayenneService cayenneService
     private RequestService requestService
 
+    @Inject
     BlockApiServiceImpl(ICayenneService cayenneService, RequestService requestService) {
         this.cayenneService = cayenneService
         this.requestService = requestService

@@ -1,5 +1,6 @@
 package ish.oncourse.willow.editor.service.impl
 
+import com.google.inject.Inject
 import ish.oncourse.model.WebNodeType
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.willow.editor.model.Layout
@@ -27,6 +28,7 @@ class ThemeApiServiceImpl implements ThemeApi {
     private ICayenneService cayenneService
     private RequestService requestService
 
+    @Inject
     ThemeApiServiceImpl(ICayenneService cayenneService, RequestService requestService) {
         this.cayenneService = cayenneService
         this.requestService = requestService
