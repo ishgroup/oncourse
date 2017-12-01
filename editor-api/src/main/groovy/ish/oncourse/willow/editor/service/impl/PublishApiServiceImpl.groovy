@@ -48,7 +48,7 @@ class PublishApiServiceImpl implements PublishApi {
         WebSiteVersion draftVersion = WebSiteVersionFunctions.getCurrentVersion(request, cayenneService.newContext())
         
         WebSitePublisher.valueOf(draftVersion,
-                authenticationService.systemUser,
+                authenticationService.getSystemUser(),
                 authenticationService.userEmail,
                 cayenneService.newContext()).publish()
 
