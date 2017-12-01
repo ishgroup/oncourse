@@ -18,19 +18,20 @@ public class CheckClassAge {
     private CourseClass courseClass;
 
     public boolean check() {
+        Date startOfDay = TimestampUtilities.normalisedDate(new Date());
         switch (classAge.getType()) {
             case afterClassStarts:
                 return courseClass.getStartDate() == null || DateUtils.addDays(courseClass.getStartDate(), classAge.getDays())
-                        .after(TimestampUtilities.normalisedDate(new Date()));
+                        .after(startOfDay);
             case beforeClassStarts:
                 return courseClass.getStartDate() == null || DateUtils.addDays(courseClass.getStartDate(), -classAge.getDays())
-                        .after(TimestampUtilities.normalisedDate(new Date()));
+                        .after(startOfDay);
             case afterClassEnds:
                 return courseClass.getEndDate() == null || DateUtils.addDays(courseClass.getEndDate(), classAge.getDays())
-                        .after(TimestampUtilities.normalisedDate(new Date()));
+                        .after(startOfDay);
             case beforeClassEnds:
                 return courseClass.getEndDate() == null || DateUtils.addDays(courseClass.getEndDate(), -classAge.getDays())
-                        .after(TimestampUtilities.normalisedDate(new Date()));
+                        .after(startOfDay);
             default:
                 throw new IllegalArgumentException();
         }

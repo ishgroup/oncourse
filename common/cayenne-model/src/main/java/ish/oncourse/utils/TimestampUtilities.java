@@ -6,6 +6,8 @@
 //
 package ish.oncourse.utils;
 
+import org.apache.commons.lang3.time.DateUtils;
+
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -73,7 +75,7 @@ public class TimestampUtilities {
 	 * @return the timestamp at midnight in the default timezone
 	 */
 	public static Date normalisedDate(Date timestamp) {
-		return normalisedDate(timestamp, TimeZone.getDefault());
+		return DateUtils.truncate(timestamp, Calendar.DAY_OF_MONTH);
 	}
 
 	/**
@@ -84,16 +86,9 @@ public class TimestampUtilities {
 	 * @return a timestamp at midnight in the given timezone
 	 */
 	public static Date normalisedDate(Date timestamp, TimeZone zone) {
-
 		Calendar result = Calendar.getInstance(tz(zone));
 		result.setTimeInMillis(timestamp.getTime());
-		int year = result.get(Calendar.YEAR);
-		int month = result.get(Calendar.MONTH);
-		int date = result.get(Calendar.DATE);
-		result.clear();
-		result.set(year, month, date);
-
-		return new Date(result.getTimeInMillis());
+		return DateUtils.truncate(result, Calendar.DAY_OF_MONTH).getTime();
 	}
 
 	private static TimeZone tz(TimeZone zone) {
