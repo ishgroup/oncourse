@@ -16,6 +16,11 @@ class UpdateMenu extends AbstractUpdate<List<MenuItem>> {
     List<String> getErrors() {
         return errors
     }
+
+    void setErrors(List<String> errors) {
+        this.errors = errors
+    }
+    
     private List<String> errors
     
     private UpdateMenu() {}
