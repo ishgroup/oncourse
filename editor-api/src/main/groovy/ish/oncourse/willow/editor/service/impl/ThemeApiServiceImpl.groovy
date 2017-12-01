@@ -81,6 +81,7 @@ class ThemeApiServiceImpl implements ThemeApi {
             context.rollbackChanges()
             throw createClientException(updater.error)
         }
+        context.commitChanges()
         return saveThemeRequest
     }
 

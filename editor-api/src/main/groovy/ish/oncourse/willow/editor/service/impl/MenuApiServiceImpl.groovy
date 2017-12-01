@@ -1,17 +1,19 @@
 package ish.oncourse.willow.editor.service.impl
 
 import com.google.inject.Inject
-import ish.oncourse.model.WebMenu
 import ish.oncourse.services.persistence.ICayenneService
+import ish.oncourse.willow.editor.rest.UpdateMenu
 import ish.oncourse.willow.editor.rest.WebMenuToMenuItem
 import ish.oncourse.willow.editor.service.*
 import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.website.WebMenuFunctions
+import org.apache.cayenne.ObjectContext
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import ish.oncourse.willow.editor.model.MenuItem
 
 import groovy.transform.CompileStatic
+import org.eclipse.jetty.server.Request
 
 @CompileStatic
 class MenuApiServiceImpl implements MenuApi {
@@ -32,11 +34,17 @@ class MenuApiServiceImpl implements MenuApi {
                 .collect { menu -> WebMenuToMenuItem.valueOf(menu).menuItem }
     }
     
-    List<MenuItem> saveMenuItems(List<MenuItem> menu) {
-        // TODO: Implement...
-        
-        return null
+    List<MenuItem> saveMenuItems(List<MenuItem> menus) {
+        ObjectContext context = cayenneService.newContext()
+        Request request = requestService.request
+        UpdateMenu updater = UpdateMenu.valueOf(menus, context, request).update()
+        if (updater.errors.empty) {
+            context.rollbackChanges()
+            String message = updater.errors.join('\n')
+            logger.error("$message, server name: $request.serverName")
+        }
+        context.commitChanges()
+        return menus
     }
-    
 }
 

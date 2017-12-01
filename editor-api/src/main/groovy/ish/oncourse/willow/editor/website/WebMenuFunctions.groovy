@@ -25,7 +25,7 @@ class WebMenuFunctions {
         }
     }
     
-    private static WebMenu getRootMenu(Request request, ObjectContext context) {
+    static WebMenu getRootMenu(Request request, ObjectContext context) {
         return ((ObjectSelect.query(WebMenu.class) 
                 & siteQualifier(request, context)) 
                 & WebMenu.PARENT_WEB_MENU.isNull())

@@ -70,6 +70,7 @@ class BlockApiServiceImpl implements BlockApi {
             context.rollbackChanges()
             throw createClientException(updater.error)
         }
+        context.commitChanges()
         return saveBlockRequest
     }
 

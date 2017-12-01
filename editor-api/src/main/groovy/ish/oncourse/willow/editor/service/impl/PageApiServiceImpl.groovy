@@ -99,6 +99,7 @@ class PageApiServiceImpl implements PageApi {
             context.rollbackChanges()
             throw createClientException(updater.error)
         }
+        context.commitChanges()
         return pageParams
     }
     
