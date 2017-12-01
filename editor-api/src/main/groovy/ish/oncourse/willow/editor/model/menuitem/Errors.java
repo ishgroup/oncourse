@@ -3,22 +3,22 @@ package ish.oncourse.willow.editor.model.menuitem;
 
 public class Errors  {
   
-    private Boolean title = null;
+    private String title = null;
     private Boolean url = null;
 
     /**
      * Get title
      * @return title
      */
-    public Boolean getTitle() {
+    public String getTitle() {
         return title;
     }
 
-    public void setTitle(Boolean title) {
+    public void setTitle(String title) {
        this.title = title;
     }
 
-    public Errors title(Boolean title) {
+    public Errors title(String title) {
       this.title = title;
       return this;
     }

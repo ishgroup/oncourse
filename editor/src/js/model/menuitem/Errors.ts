@@ -1,6 +1,6 @@
 
 export class Errors {
-  title?: boolean;
+  title?: string;
   url?: boolean;
 }
 

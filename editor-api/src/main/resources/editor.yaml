@@ -861,7 +861,7 @@ definitions:
         type: object
         properties:
           title:
-            type: boolean
+            type: string
           url:
             type: boolean
   User:
