@@ -18,7 +18,7 @@ import java.util.Map;
  */
 class BlockApiTest extends AbstractEditorTest{
 
-    private BlockApi api;
+    private BlockApi api
     
     @Before
     void setup() {
@@ -59,15 +59,12 @@ class BlockApiTest extends AbstractEditorTest{
      */
     @Test
     void getBlocksTest() {
-        Block newBlock = api.addBlock()
-	    List blocks = api.getBlocks()
-
-        assertNotNull(newBlock)
-        assertNotNull(blocks)
-
-        assertEquals(blocks[0].id, newBlock.id, 0)
-        assertEquals(blocks[0].title, newBlock.title)
-        assertEquals(blocks[0].content, newBlock.content)
+        List<Block> blocks = api.getBlocks()
+        assertEquals(1, blocks.size())
+        assertNotNull(blocks[0])
+        assertEquals('New block (1)', blocks[0].title)
+        assertEquals('Content', blocks[0].content)
+        assertEquals(2d, blocks[0].id, 0)
     }
     
     /**

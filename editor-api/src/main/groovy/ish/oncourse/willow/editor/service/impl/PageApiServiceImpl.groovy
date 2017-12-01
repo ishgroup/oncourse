@@ -57,7 +57,7 @@ class PageApiServiceImpl implements PageApi {
         Integer intNumber = number.toInteger()
         WebNode node = WebNodeFunctions.getNodeForNumber(intNumber, requestService.request, cayenneService.newContext())
 
-        if (!node) {
+        if (node) {
             node.webContentVisibility.each { ctx.deleteObjects(ctx.localObject(it.webContent)) }
             WebNode localNode = ctx.localObject(node)
             ctx.deleteObjects(localNode)
