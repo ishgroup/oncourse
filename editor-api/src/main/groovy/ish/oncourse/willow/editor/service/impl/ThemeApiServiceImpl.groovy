@@ -54,7 +54,7 @@ class ThemeApiServiceImpl implements ThemeApi {
             throw createClientException("The theme is used for pages")
         }
 
-        context.deleteObject(theme.webContentVisibilities)
+        context.deleteObjects(theme.webContentVisibilities)
         context.deleteObject(theme)
         context.commitChanges()
     }
