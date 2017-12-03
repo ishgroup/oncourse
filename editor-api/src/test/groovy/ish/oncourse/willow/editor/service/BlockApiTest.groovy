@@ -64,7 +64,6 @@ class BlockApiTest extends AbstractEditorTest{
         assertNotNull(blocks[0])
         assertEquals('New block (1)', blocks[0].title)
         assertEquals('Content', blocks[0].content)
-        assertEquals(1d, blocks[0].id, 0)
     }
     
     /**
