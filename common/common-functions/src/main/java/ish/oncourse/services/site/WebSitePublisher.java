@@ -22,6 +22,7 @@ public class WebSitePublisher {
     private String userEmail;
     private WebSiteVersion draftVersion;
     private WebSiteVersion publishedVersion;
+    private String scriptPath;
 
     private Map<WebNodeType, WebNodeType> webNodeTypeMap = new HashMap<>();
     private Map<WebNode, WebNode> webNodeMap = new HashMap<>();
@@ -191,7 +192,10 @@ public class WebSitePublisher {
      * 		/var/onCourse/scripts/deploySite.sh -s {siteVersion.getId()} -c {site.getSiteKey()}
      */
     private void executeDeployScript(WebSiteVersion siteVersion) {
-        String scriptPath = ContextUtil.getCmsDeployScriptPath();
+        
+        if (scriptPath == null) {
+            scriptPath = ContextUtil.getCmsDeployScriptPath();
+        }
 
         if (StringUtils.trimToNull(scriptPath) == null) {
             logger.error("Deploy site script is not defined! Resources have not been deployed!");
@@ -220,6 +224,14 @@ public class WebSitePublisher {
         }
     }
 
+
+    public static WebSitePublisher valueOf(String scriptPath, WebSiteVersion webSiteVersion, SystemUser systemUser, String userEmail, ObjectContext objectContext)
+    {
+        WebSitePublisher publisher = valueOf(webSiteVersion, systemUser, userEmail, objectContext);
+        publisher.scriptPath = scriptPath;
+        return publisher;
+    }
+    
     public static WebSitePublisher valueOf(WebSiteVersion webSiteVersion, SystemUser systemUser, String userEmail, ObjectContext objectContext)
     {
         WebSitePublisher publisher = new WebSitePublisher();

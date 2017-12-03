@@ -1,12 +1,14 @@
 package ish.oncourse.willow.editor.service.impl
 
 import com.google.inject.Inject
+import ish.oncourse.configuration.Configuration
 import ish.oncourse.model.WebSite
 import ish.oncourse.model.WebSiteVersion
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.services.site.GetDeployedVersion
 import ish.oncourse.services.site.WebSitePublisher
 import ish.oncourse.services.site.WebSiteVersionsDelete
+import ish.oncourse.willow.editor.EditorProperty
 import ish.oncourse.willow.editor.service.*
 import ish.oncourse.willow.editor.model.Version
 import ish.oncourse.willow.editor.model.api.SetVersionRequest
@@ -47,7 +49,7 @@ class PublishApiServiceImpl implements PublishApi {
         Request request = requestService.request
         WebSiteVersion draftVersion = WebSiteVersionFunctions.getCurrentVersion(request, cayenneService.newContext())
         
-        WebSitePublisher.valueOf(draftVersion,
+        WebSitePublisher.valueOf(Configuration.getValue(EditorProperty.DEPLOY_SCRIPT_PATH), draftVersion,
                 authenticationService.getSystemUser(),
                 authenticationService.userEmail,
                 cayenneService.newContext()).publish()
@@ -57,7 +59,7 @@ class PublishApiServiceImpl implements PublishApi {
 
         WebSite webSite = WebSiteFunctions.getCurrentWebSite(request, cayenneService.newContext())
         WebSiteVersionsDelete.valueOf(webSite, draftVersion,
-                GetDeployedVersion.valueOf(cayenneService.sharedContext(), webSite, false).get(),
+                GetDeployedVersion.valueOf(cayenneService.newContext(), webSite, false).get(),
                 cayenneService.newContext()).delete()
     }
     
