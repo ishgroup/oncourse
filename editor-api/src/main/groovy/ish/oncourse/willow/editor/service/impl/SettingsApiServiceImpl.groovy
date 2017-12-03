@@ -129,12 +129,12 @@ class SettingsApiServiceImpl implements SettingsApi {
                 age.hideClassDays = new GetPreference(college, HIDE_CLASS_ON_WEB_AGE, context).integerValue.doubleValue()
                 
                 String classCondition = new GetPreference(college, HIDE_CLASS_ON_WEB_AGE_TYPE, context).stringValue
-                age.hideClassCondition = classCondition? ClassCondition.valueOf(classCondition) : ClassCondition.BEFORECLASSENDS
+                age.hideClassCondition = classCondition? ClassCondition.fromValue(classCondition) : ClassCondition.BEFORECLASSENDS
                 
                 age.stopWebEnrolmentDays = new GetPreference(college, STOP_WEB_ENROLMENTS_AGE, context).integerValue.doubleValue()
                 
                 String enrolmentCondition = new GetPreference(college, STOP_WEB_ENROLMENTS_AGE_TYPE, context).stringValue
-                age.stopWebEnrolmentCondition = enrolmentCondition? ClassEnrolmentCondition.valueOf(classCondition) : ClassEnrolmentCondition.BEFORECLASSENDS
+                age.stopWebEnrolmentCondition = enrolmentCondition? ClassEnrolmentCondition.fromValue(classCondition) : ClassEnrolmentCondition.BEFORECLASSENDS
                 age
             }
             settings
