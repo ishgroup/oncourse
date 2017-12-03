@@ -61,6 +61,7 @@ class UpdateMenu extends AbstractUpdate<List<MenuItem>> {
             
             if (errors.empty) {
                 menu = context.newObject(WebMenu)
+                menu.name = menuItem.title
                 menu.parentWebMenu = root
                 menu.webSiteVersion = root.webSiteVersion
                 menu.weight = i
