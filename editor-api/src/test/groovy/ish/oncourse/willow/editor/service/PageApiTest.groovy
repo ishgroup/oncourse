@@ -47,7 +47,7 @@ class PageApiTest extends AbstractEditorTest{
         Page newPage = api.addPage()
         Assert.assertNotNull(newPage)
 
-        api.deletePage(newPage.number.toString())
+        api.deletePage(newPage.number.toInteger().toString())
         Integer intNumber = newPage.number.toInteger()
 
         WebNode node = WebNodeFunctions.getNodeForNumber(intNumber, requestService.request, cayenneService.newContext())
