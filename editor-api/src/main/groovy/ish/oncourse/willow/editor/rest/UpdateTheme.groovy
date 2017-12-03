@@ -115,6 +115,7 @@ class UpdateTheme extends AbstractUpdate<Theme> {
         
         WebContentVisibility visibility = context.newObject(WebContentVisibility)
         visibility.webContent = block
+        visibility.regionKey = region
         visibility.webNodeType = nodeType
         visibility.weight = position
         
