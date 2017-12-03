@@ -51,7 +51,9 @@ class GetPreference {
         return 0
     }
     void setIntegerValue(Integer integer) {
-        setValue(String.valueOf(integer))
+        if (value != null) {
+            setValue(String.valueOf(integer))
+        }
     }
     
     Boolean getBooleanValue() {
@@ -59,7 +61,9 @@ class GetPreference {
     }
     
     void setBooleanValue(Boolean value) {
-        setValue(Boolean.toString(value))
+        if (value != null) {
+            setValue(Boolean.toString(value))
+        }
     }
 
     String getStringValue() {
