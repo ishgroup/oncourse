@@ -38,7 +38,7 @@ class MenuApiServiceImpl implements MenuApi {
         ObjectContext context = cayenneService.newContext()
         Request request = requestService.request
         UpdateMenu updater = UpdateMenu.valueOf(menus, context, request).update()
-        if (updater.errors.empty) {
+        if (!updater.errors.empty) {
             context.rollbackChanges()
             String message = updater.errors.join('\n')
             logger.error("$message, server name: $request.serverName")
