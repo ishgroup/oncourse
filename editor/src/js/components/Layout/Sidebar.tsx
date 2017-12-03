@@ -124,9 +124,9 @@ export class Sidebar extends React.Component<Props, any> {
                   <Button size="sm" color="primary" onClick={() => this.onClickPublish()}>Publish</Button>
                 </Col>
                 <Col md="6">
-                  <Button color="link" onClick={() => this.onClickHistory()}>
-                    25 Edits
-                 </Button>
+                  {/*<Button color="link" onClick={() => this.onClickHistory()}>*/}
+                    {/*25 Edits*/}
+                 {/*</Button>*/}
                 </Col>
               </Row>
 
