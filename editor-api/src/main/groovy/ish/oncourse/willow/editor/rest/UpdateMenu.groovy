@@ -4,6 +4,7 @@ import ish.oncourse.model.WebMenu
 import ish.oncourse.model.WebNode
 import ish.oncourse.utils.ResourceNameValidator
 import ish.oncourse.willow.editor.model.MenuItem
+import ish.oncourse.willow.editor.model.menuitem.Errors
 import ish.oncourse.willow.editor.website.WebMenuFunctions
 import ish.oncourse.willow.editor.website.WebNodeFunctions
 import org.apache.cayenne.ObjectContext
@@ -72,7 +73,10 @@ class UpdateMenu extends AbstractUpdate<List<MenuItem>> {
                 } else {
                     menu.url = menuItem.url
                 }
-                menuItem.errors.title = menu.warning
+                String warning = StringUtils.trimToNull(menu.warning)
+                if (warning) {
+                    menuItem.errors = new Errors(title: warning)
+                }
             }
 
             updateMenus(menuItem.children, menu)
