@@ -22,11 +22,11 @@ public interface BlockApi  {
     Block addBlock();
 
     @POST
-    @Path("/deleteBlock")
+    @Path("/deleteBlock/{name}")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @AuthFilter
-    void deleteBlock(String name);
+    void deleteBlock(@PathParam("name") String name);
 
     @GET
     @Path("/getBlocks")

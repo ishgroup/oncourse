@@ -16,6 +16,7 @@ export class MenuItem {
    * url for menu link
    */
   url?: string;
+  expanded?: boolean;
   children?: MenuItem[];
   errors?: Errors;
 }

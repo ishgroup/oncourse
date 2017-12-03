@@ -11,7 +11,7 @@ export class ThemeApi {
     return this.http.POST(`/addTheme`);
   }
   deleteTheme(themeName: string): Promise<any> {
-    return this.http.POST(`/deleteTheme`, themeName);
+    return this.http.POST(`/deleteTheme/${themeName}`);
   }
   getLayouts(): Promise<Layout[]> {
     return this.http.GET(`/getLayouts`);

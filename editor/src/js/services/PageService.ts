@@ -23,7 +23,7 @@ class PageService {
   }
 
   public deletePage(id: number): Promise<any> {
-    return this.pageApi.deletePage(id);
+    return this.pageApi.deletePage(id.toString());
   }
 
   public getPageRender(id: number): Promise<any> {

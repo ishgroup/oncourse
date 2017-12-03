@@ -52,7 +52,7 @@ class PageApiServiceImpl implements PageApi {
         return WebNodeToPage.valueOf(node).page
     }
     
-    void deletePage(Double number) {
+    void deletePage(String number) {
         ObjectContext ctx = cayenneService.newContext()
         Integer intNumber = number.toInteger()
         WebNode node = WebNodeFunctions.getNodeForNumber(intNumber, requestService.request, cayenneService.newContext())

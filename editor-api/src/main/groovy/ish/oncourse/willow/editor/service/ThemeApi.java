@@ -23,11 +23,11 @@ public interface ThemeApi  {
     Theme addTheme();
 
     @POST
-    @Path("/deleteTheme")
+    @Path("/deleteTheme/{themeName}")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @AuthFilter
-    void deleteTheme(String themeName);
+    void deleteTheme(@PathParam("themeName") String themeName);
 
     @GET
     @Path("/getLayouts")

@@ -218,7 +218,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /deletePage:
+  /deletePage/{number}:
     post:
       x-filter:  
       - AuthFilter
@@ -231,11 +231,11 @@ paths:
         - application/json
       parameters:
         - name: number
-          in: body
+          in: path
           description: number of page which will be deleted
           required: true
           schema:
-            type: number
+            type: string
       responses:
         '200':
           description: Page successfully deleted
@@ -310,7 +310,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /deleteBlock:
+  /deleteBlock/{name}:
     post:
       x-filter:  
       - AuthFilter
@@ -323,7 +323,7 @@ paths:
         - application/json
       parameters:
         - name: name
-          in: body
+          in: path
           description: identificator of block which will be deleted
           required: true
           schema:
@@ -422,7 +422,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /deleteTheme:
+  /deleteTheme/{themeName}:
     post:
       x-filter:  
       - AuthFilter
@@ -435,7 +435,7 @@ paths:
         - application/json
       parameters:
         - name: themeName
-          in: body
+          in: path
           description: identificator of theme which will be deleted
           required: true
           schema:
