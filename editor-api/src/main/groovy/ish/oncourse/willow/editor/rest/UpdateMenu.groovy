@@ -37,9 +37,16 @@ class UpdateMenu extends AbstractUpdate<List<MenuItem>> {
     @Override
     UpdateMenu update() {
         WebMenu root = WebMenuFunctions.getRootMenu(request, context)
-        context.deleteObjects(root.childrenMenus)
+        List<WebMenu> toDelete = new ArrayList<>(root.childrenMenus) 
+        toDelete.each { deleteMenu(it) }
         updateMenus(resourceToSave, root)
         return this
+    }
+    
+    void deleteMenu(WebMenu menu) {
+        List<WebMenu> toDelete = new ArrayList<>(menu.childrenMenus)
+        toDelete.each { deleteMenu(it) }
+        context.deleteObject(menu)
     }
 
     void updateMenus(List<MenuItem> menusToSave, WebMenu root) {
