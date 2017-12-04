@@ -13,8 +13,6 @@ import org.apache.tapestry5.ioc.Messages
 import org.junit.Before
 import org.junit.Test
 
-import java.time.LocalDate
-
 import static junit.framework.TestCase.*
 import static org.mockito.Matchers.anyString
 import static org.mockito.Mockito.mock
@@ -40,7 +38,9 @@ class NewPaymentProcessorTest extends ServiceTest {
         messages = mock(Messages.class)
         when(messages.get(anyString())).thenReturn("Any string")
 
-        Integer year =  LocalDate.now().year
+        Calendar calendar =  Calendar.getInstance()
+        calendar.time = new Date()
+        Integer year = calendar.get(Calendar.YEAR)
         nextYear = String.valueOf(++year)
     }
 
