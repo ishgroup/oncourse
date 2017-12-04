@@ -5,6 +5,7 @@ import ish.common.types.PaymentStatus
 import ish.oncourse.model.PaymentIn
 import ish.oncourse.services.PaymentServiceTestModule
 import ish.oncourse.services.paymentexpress.INewPaymentGatewayServiceBuilder
+import ish.oncourse.services.paymentexpress.TestPaymentGatewayService
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.test.DataSetInitializer
 import ish.oncourse.test.ServiceTest
@@ -13,6 +14,7 @@ import org.apache.tapestry5.ioc.Messages
 import org.junit.Before
 import org.junit.Test
 
+import static ish.oncourse.services.paymentexpress.TestPaymentGatewayService.MASTERCARD
 import static junit.framework.TestCase.*
 import static org.mockito.Matchers.anyString
 import static org.mockito.Mockito.mock
@@ -128,7 +130,7 @@ class NewPaymentProcessorTest extends ServiceTest {
 
         controller = getPaymentController('sessionId')
 
-        PaymentRequest request = new PaymentRequest(name: 'JOHN JOHN', number: '5105105105105100', cvv: '321', month: '11', year: nextYear)
+        PaymentRequest request = new PaymentRequest(name: 'JOHN JOHN', number: MASTERCARD.number, cvv: MASTERCARD.cvv, month: MASTERCARD.expiry.split('/')[0], year:  MASTERCARD.expiry.split('/')[1])
         PaymentResponse response = new PaymentResponse()
         controller.processPayment(request, response)
         testPaymentFields(controller.model.paymentIn, request)
@@ -149,7 +151,7 @@ class NewPaymentProcessorTest extends ServiceTest {
 
         controller = getPaymentController('sessionId')
         assertEquals(GetPaymentState.PaymentState.FILL_CC_DETAILS, controller.state)
-        request = new PaymentRequest(name: 'JOHN MASTER', number: '5105105105105100', cvv: '321', month: '11', year: nextYear)
+        request = new PaymentRequest(name: MASTERCARD.name, number: MASTERCARD.number, cvv: MASTERCARD.cvv, month: MASTERCARD.expiry.split('/')[0], year:  MASTERCARD.expiry.split('/')[1])
         response = new PaymentResponse()
         controller.processPayment(request, response)
         assertEquals(GetPaymentState.PaymentState.SUCCESS, response.status)
