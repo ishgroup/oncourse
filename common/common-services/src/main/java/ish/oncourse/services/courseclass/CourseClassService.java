@@ -6,7 +6,9 @@ import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.course.GetCurrentClasses;
 import ish.oncourse.services.course.GetEnrollableClasses;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.preference.GetPreference;
 import ish.oncourse.services.preference.PreferenceController;
+import ish.oncourse.services.preference.Preferences;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.utils.DateUtils;
 import org.apache.cayenne.Cayenne;
@@ -368,11 +370,15 @@ public class CourseClassService implements ICourseClassService {
 	}
 
     public List<CourseClass> getEnrollableClasses(Course course) {
-        return new GetEnrollableClasses(course).get();
+        String age = new GetPreference(course.getCollege(), Preferences.HIDE_CLASS_ON_WEB_AGE, course.getObjectContext()).getValue();
+        String type = new GetPreference(course.getCollege(), Preferences.HIDE_CLASS_ON_WEB_AGE_TYPE, course.getObjectContext()).getValue();
+        return GetEnrollableClasses.valueOf(course, age, type).get();
     }
 
     public List<CourseClass> getCurrentClasses(Course course) {
-        return new GetCurrentClasses(course).get();
+        String age = new GetPreference(course.getCollege(), Preferences.STOP_WEB_ENROLMENTS_AGE, course.getObjectContext()).getValue();
+        String type = new GetPreference(course.getCollege(), Preferences.STOP_WEB_ENROLMENTS_AGE_TYPE, course.getObjectContext()).getValue();
+        return GetCurrentClasses.valueOf(course, age, type).get();
     }
 
     public List<CourseClass> getFullClasses(Course course) {

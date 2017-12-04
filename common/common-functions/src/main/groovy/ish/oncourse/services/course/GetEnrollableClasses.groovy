@@ -2,26 +2,25 @@ package ish.oncourse.services.course
 
 import ish.oncourse.model.Course
 import ish.oncourse.model.CourseClass
-import ish.oncourse.services.courseclass.CheckClassAge
-import ish.oncourse.services.courseclass.ClassAge
-import ish.oncourse.services.preference.GetPreference
-import ish.oncourse.services.preference.Preferences
 
 class GetEnrollableClasses {
 
     private Course course
+    private String age
+    private String ageType
 
-    GetEnrollableClasses(Course course) {
-        this.course = course
+    private GetEnrollableClasses() {}
+
+    static GetEnrollableClasses valueOf(Course course, String age, String ageType) {
+        GetEnrollableClasses getter = new GetEnrollableClasses()
+        getter.course = course
+        getter.age = age
+        getter.ageType = ageType
+        return getter
     }
     
     List<CourseClass> get() {
-        String age = new GetPreference(course.college, Preferences.HIDE_CLASS_ON_WEB_AGE, course.college.objectContext).value
-        String type = new GetPreference(course.college, Preferences.HIDE_CLASS_ON_WEB_AGE_TYPE, course.college.objectContext).value
-
-        CheckClassAge classAge = new CheckClassAge().classAge(ClassAge.valueOf(age, type))
-
-        List<CourseClass> currentClasses = course.courseClasses.findAll { it.isWebVisible && !it.cancelled && classAge.courseClass(it).check() }
+        List<CourseClass> currentClasses = GetCurrentClasses.valueOf(course, age, ageType).get()
         currentClasses.findAll { it.hasAvailableEnrolmentPlaces }
     }
 }
