@@ -42,6 +42,7 @@ import ish.oncourse.willow.checkout.functions.GetProduct
 import ish.oncourse.willow.checkout.persistent.CreateApplication
 import ish.oncourse.willow.checkout.persistent.CreateArticle
 import ish.oncourse.willow.checkout.persistent.CreateEnrolment
+import ish.oncourse.willow.checkout.persistent.CreateInvoice
 import ish.oncourse.willow.checkout.persistent.CreateMembership
 import ish.oncourse.willow.checkout.persistent.CreateVoucher
 import ish.oncourse.willow.checkout.persistent.CreateWaitingList
@@ -263,27 +264,8 @@ class CreatePaymentModel {
     }
 
     private Invoice createInvoice() {
-        Invoice invoice = context.newObject(Invoice)
-        // fill the invoice with default values
-        invoice.invoiceDate = DateUtils.setHours(new Date(), 12)
-        invoice.amountOwing = Money.ZERO
-        invoice.dateDue = new Date()
-        invoice.source = PaymentSource.SOURCE_WEB
-        invoice.college = college
-        invoice.contact = payer
-        invoice.webSite = webSite
-        invoice.sessionId = paymentRequest.sessionId
-        invoice.confirmationStatus = ConfirmationStatus.DO_NOT_SEND
-
-
-
-        PaymentInLine paymentInLine = context.newObject(PaymentInLine)
-        paymentInLine.invoice = invoice
-        paymentInLine.paymentIn = getPayment()
-        paymentInLine.amount = Money.ZERO
-        paymentInLine.college = college
-        
-        invoice
+        new CreateInvoice(context, college, webSite, payer)
+                .forPaymentModel(getPayment(), paymentRequest.sessionId)
     }
 
     private void  adjustDueDate() {

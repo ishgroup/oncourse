@@ -21,6 +21,7 @@ import ish.oncourse.willow.checkout.functions.GetContact
 import ish.oncourse.willow.checkout.persistent.CreateApplication
 import ish.oncourse.willow.checkout.persistent.CreateArticle
 import ish.oncourse.willow.checkout.persistent.CreateEnrolment
+import ish.oncourse.willow.checkout.persistent.CreateInvoice
 import ish.oncourse.willow.checkout.persistent.CreateMembership
 import ish.oncourse.willow.checkout.persistent.CreateVoucher
 import ish.oncourse.willow.checkout.persistent.CreateWaitingList
@@ -117,19 +118,8 @@ class CreateCorpPassModel {
 
 
     private Invoice createInvoice() {
-        Invoice invoice = context.newObject(Invoice)
-        // fill the invoice with default values
-        invoice.invoiceDate = DateUtils.setHours(new Date(), 12)
-        invoice.amountOwing = Money.ZERO
-        invoice.dateDue = new Date()
-        invoice.source = PaymentSource.SOURCE_WEB
-        invoice.college = college
-        invoice.contact = pass.contact
-        invoice.customerReference = reference
-        invoice.corporatePassUsed = pass
-        invoice.webSite = webSite
-        invoice.confirmationStatus = ConfirmationStatus.NOT_SENT
-        invoice
+        new CreateInvoice(context, college, webSite, pass.contact)
+                .forCorpPassModel(pass, reference)
     }
     
     private void  adjustDueDate() {
