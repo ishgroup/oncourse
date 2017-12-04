@@ -13,6 +13,8 @@ import org.apache.tapestry5.ioc.Messages
 import org.junit.Before
 import org.junit.Test
 
+import java.time.LocalDate
+
 import static junit.framework.TestCase.*
 import static org.mockito.Matchers.anyString
 import static org.mockito.Mockito.mock
@@ -26,10 +28,11 @@ class NewPaymentProcessorTest extends ServiceTest {
 
     ICayenneService cayenneService
     Messages messages
+    String nextYear
 
 
     @Before
-    public void before() {
+    void before() {
         initTest("ish.oncourse.services.payment", "service", PaymentServiceTestModule)
 
         DataSetInitializer.initDataSets("ish/oncourse/services/payment/NewPaymentProcessorTestDataSet.xml")
@@ -37,11 +40,13 @@ class NewPaymentProcessorTest extends ServiceTest {
         messages = mock(Messages.class)
         when(messages.get(anyString())).thenReturn("Any string")
 
+        Integer year =  LocalDate.now().year
+        nextYear = String.valueOf(++year)
     }
 
 
     @Test
-    def void testUnknownResult() {
+    void testUnknownResult() {
         NewPaymentProcessController controller = getPaymentController('sessionId')
         assertNotNull(controller.model.paymentIn)
         assertEquals(GetPaymentState.PaymentState.READY_TO_PROCESS, controller.state)
@@ -51,7 +56,7 @@ class NewPaymentProcessorTest extends ServiceTest {
         assertNotNull(controller.model.paymentIn)
         assertEquals(GetPaymentState.PaymentState.FILL_CC_DETAILS, controller.state)
 
-        PaymentRequest request = new PaymentRequest(name: 'DPS unknown result', number: '5105105105105100', cvv: '321', month: '11', year: '2017')
+        PaymentRequest request = new PaymentRequest(name: 'DPS unknown result', number: '5105105105105100', cvv: '321', month: '11', year: nextYear)
         PaymentResponse response = new PaymentResponse()
         controller.processPayment(request, response)
 
@@ -68,11 +73,11 @@ class NewPaymentProcessorTest extends ServiceTest {
     }
 
     @Test
-    def void testInvalidAction() {
+    void testInvalidAction() {
         NewPaymentProcessController controller = getPaymentController('sessionId1')
         assertNotNull(controller.model.paymentIn)
         assertEquals(GetPaymentState.PaymentState.DPS_PROCESSING, controller.state)
-        PaymentRequest request = new PaymentRequest(name: 'JOHN', number: '5105105105105100', cvv: '321', month: '11', year: '2017')
+        PaymentRequest request = new PaymentRequest(name: 'JOHN', number: '5105105105105100', cvv: '321', month: '11', year: nextYear)
         PaymentResponse response = new PaymentResponse()
 
         controller.processPayment(request, response)
@@ -90,7 +95,7 @@ class NewPaymentProcessorTest extends ServiceTest {
 
 
     @Test
-    def void testInvalidCC() {
+    void testInvalidCC() {
         NewPaymentProcessController controller = getPaymentController('sessionId')
         assertNotNull(controller.model.paymentIn)
         assertEquals(GetPaymentState.PaymentState.READY_TO_PROCESS, controller.state)
@@ -102,7 +107,7 @@ class NewPaymentProcessorTest extends ServiceTest {
         assertEquals(PaymentStatus.CARD_DETAILS_REQUIRED, controller.model.paymentIn.status)
         assertTrue(controller.model.paymentIn.paymentTransactions.empty)
 
-        PaymentRequest request = new PaymentRequest(name: '', number: '5105105105105100', cvv: '321', month: '11', year: '2017')
+        PaymentRequest request = new PaymentRequest(name: '', number: '5105105105105100', cvv: '321', month: '11', year: nextYear)
         PaymentResponse response = new PaymentResponse()
 
         controller.processPayment(request, response)
@@ -115,7 +120,7 @@ class NewPaymentProcessorTest extends ServiceTest {
     }
 
     @Test
-    def void testRetry() {
+    void testRetry() {
         NewPaymentProcessController controller = getPaymentController('sessionId')
         assertNotNull(controller.model.paymentIn)
         assertEquals(GetPaymentState.PaymentState.READY_TO_PROCESS, controller.state)
@@ -123,7 +128,7 @@ class NewPaymentProcessorTest extends ServiceTest {
 
         controller = getPaymentController('sessionId')
 
-        PaymentRequest request = new PaymentRequest(name: 'JOHN JOHN', number: '5105105105105100', cvv: '321', month: '11', year: '2017')
+        PaymentRequest request = new PaymentRequest(name: 'JOHN JOHN', number: '5105105105105100', cvv: '321', month: '11', year: nextYear)
         PaymentResponse response = new PaymentResponse()
         controller.processPayment(request, response)
         testPaymentFields(controller.model.paymentIn, request)
@@ -144,7 +149,7 @@ class NewPaymentProcessorTest extends ServiceTest {
 
         controller = getPaymentController('sessionId')
         assertEquals(GetPaymentState.PaymentState.FILL_CC_DETAILS, controller.state)
-        request = new PaymentRequest(name: 'JOHN MASTER', number: '5105105105105100', cvv: '321', month: '11', year: '2027')
+        request = new PaymentRequest(name: 'JOHN MASTER', number: '5105105105105100', cvv: '321', month: '11', year: nextYear)
         response = new PaymentResponse()
         controller.processPayment(request, response)
         assertEquals(GetPaymentState.PaymentState.SUCCESS, response.status)
@@ -163,7 +168,7 @@ class NewPaymentProcessorTest extends ServiceTest {
 
 
     @Test
-    def void testAbandon() {
+    void testAbandon() {
         NewPaymentProcessController controller = getPaymentController('sessionId')
         assertNotNull(controller.model.paymentIn)
         assertEquals(GetPaymentState.PaymentState.READY_TO_PROCESS, controller.state)
@@ -171,7 +176,7 @@ class NewPaymentProcessorTest extends ServiceTest {
 
         controller = getPaymentController('sessionId')
 
-        PaymentRequest request = new PaymentRequest(name: 'JOHN JOHN', number: '5105105105105100', cvv: '321', month: '11', year: '2017')
+        PaymentRequest request = new PaymentRequest(name: 'JOHN JOHN', number: '5105105105105100', cvv: '321', month: '11', year: nextYear)
         PaymentResponse response = new PaymentResponse()
         controller.processPayment(request, response)
         testPaymentFields(controller.model.paymentIn, request)
@@ -201,7 +206,7 @@ class NewPaymentProcessorTest extends ServiceTest {
 
 
     @Test
-    def void testCancel() {
+    void testCancel() {
         NewPaymentProcessController controller = getPaymentController('sessionId')
         assertNotNull(controller.model.paymentIn)
         assertEquals(GetPaymentState.PaymentState.READY_TO_PROCESS, controller.state)
@@ -222,7 +227,7 @@ class NewPaymentProcessorTest extends ServiceTest {
 
     }
 
-    private testPaymentFields(PaymentIn paymentIn,  PaymentRequest request) {
+    private static testPaymentFields(PaymentIn paymentIn, PaymentRequest request) {
         assertEquals(paymentIn.creditCardName, request.name)
         assertEquals(paymentIn.creditCardCVV, 'XXX')
         assertEquals(paymentIn.creditCardExpiry, "$request.month/$request.year")
