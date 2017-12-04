@@ -16,6 +16,8 @@
     <Course id="4" collegeId="1" code="4" detail="Course4" name="Course4" enrolmentType="1"/>
     <Course id="5" collegeId="1" code="5" detail="Course5" name="Course5" enrolmentType="1"/>
 
+    <Course id="6" collegeId="1" code="6" detail="Course6" name="Course6" enrolmentType="1"/>
+
     <Room id="1" collegeId="1"/>
     <Room id="2" collegeId="1"/>
     <Room id="3" collegeId="1"/>
@@ -36,6 +38,13 @@
                  startDate="2012-01-03 00:00:00" endDate="2102-01-03 00:00:00" isCancelled="0" isDistantLearningCourse="0"/>
     <CourseClass isActive="1" id="6" code="5-2" collegeId="1" countOfSessions="6" courseId="5" deliveryMode="1" detail="Test Course Class 6-1" feeExGst="20.00" feeGst="1.25" roomId="6" maximumPlaces="3"
                  startDate="2012-01-04 00:00:00" endDate="2103-01-04 00:00:00" isCancelled="1" isDistantLearningCourse="0"/>
+
+    <CourseClass isActive="1" id="7" code="6-1" collegeId="1" countOfSessions="4" courseId="6" deliveryMode="1" detail="Test Course Class 4-1" feeExGst="20.00" feeGst="1.25" roomId="4" maximumPlaces="3"
+                 startDate="2012-01-02 00:00:00" endDate="2017-12-01 00:00:00"  isCancelled="0" isDistantLearningCourse="0" isWebVisible="1"/>
+    <CourseClass isActive="1" id="8" code="6-2" collegeId="1" countOfSessions="5" courseId="6" deliveryMode="1" detail="Test Course Class 5-1" feeExGst="20.00" feeGst="1.25" roomId="5" maximumPlaces="3"
+                 startDate="2012-01-03 00:00:00" endDate="2017-12-02 00:00:00" isCancelled="0" isDistantLearningCourse="0" isWebVisible="1"/>
+    <CourseClass isActive="1" id="9" code="6-3" collegeId="1" countOfSessions="6" courseId="6" deliveryMode="1" detail="Test Course Class 6-1" feeExGst="20.00" feeGst="1.25" roomId="6" maximumPlaces="3"
+                 startDate="2012-01-04 00:00:00" endDate="2017-12-03 00:00:00" isCancelled="0" isDistantLearningCourse="0" isWebVisible="1"/>
 
 
     <Tutor id="1" angelId="1" collegeId="1" created="2010-02-03 09:18:09" finishDate="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" resume="Test resume" startDate="2010-02-03 09:18:09" />
