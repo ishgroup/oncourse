@@ -13,6 +13,9 @@ public class ResourceNameValidator {
             '/',
             '\\',
             '%',
+            '?',
+            '#',
+            '&'
     };
 
     public String validate(String name) {
