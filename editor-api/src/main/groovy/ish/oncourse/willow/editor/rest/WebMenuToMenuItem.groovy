@@ -2,6 +2,7 @@ package ish.oncourse.willow.editor.rest
 
 import ish.oncourse.model.WebMenu
 import ish.oncourse.willow.editor.model.MenuItem
+import ish.oncourse.willow.editor.model.menuitem.Errors
 import ish.oncourse.willow.editor.website.WebMenuFunctions
 import org.apache.commons.lang3.StringUtils
 
@@ -28,7 +29,7 @@ class WebMenuToMenuItem {
             menu.url = WebMenuFunctions.getUrlPath(webMenu)
             String error = StringUtils.trimToNull(webMenu.warning)
             if (error) {
-                menu.errors.title = webMenu.warning
+                menu.errors = new Errors(title: error)
             }
             webMenu.childrenMenus.sort { m -> m.weight }.each { m -> menu.children << translate(m) }
             menu
