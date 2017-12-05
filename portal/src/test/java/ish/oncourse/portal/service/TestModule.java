@@ -62,11 +62,6 @@ public class TestModule {
 	}
 
 
-	@Contribute(ICayenneService.class)
-	public static void setupCayenneService(MappedConfiguration<Class, Object> configuration, IWebSiteService webSiteService, CacheManager cacheManager) {
-		configuration.add(ICayenneService.class, new CayenneService(webSiteService, cacheManager));
-	}
-
 	public IWebSiteService decorateWebSiteService(final IWebSiteService delegate) {
 		WebSite webSite = mock(WebSite.class);
 

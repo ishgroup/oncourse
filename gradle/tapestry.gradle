@@ -1,0 +1,20 @@
+ext {
+    tapestryVersion = '5.4.3'
+}
+
+dependencies {
+    /**
+     * tapestry dependencies
+     */
+    compile "org.apache.tapestry:tapestry-core:$tapestryVersion"
+    compile "org.apache.tapestry:plastic:$tapestryVersion"
+    compile "org.apache.tapestry:tapestry5-annotations:$tapestryVersion"
+    compile "org.apache.tapestry:tapestry-ioc:$tapestryVersion"
+    compile "org.apache.tapestry:tapestry-json:$tapestryVersion"
+    compile "org.apache.tapestry:tapestry-spring:$tapestryVersion"
+    compile "org.apache.tapestry:tapestry-upload:$tapestryVersion"
+
+    testCompile ("org.apache.tapestry:tapestry-test:$tapestryVersion") {
+        exclude group: 'org.seleniumhq.selenium.server', module: 'selenium-server'
+    }
+}

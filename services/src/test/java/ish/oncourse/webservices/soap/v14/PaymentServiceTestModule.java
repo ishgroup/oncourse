@@ -1,6 +1,6 @@
 package ish.oncourse.webservices.soap.v14;
 
-import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.BinderFunctions;
 import ish.oncourse.services.alias.IWebUrlAliasService;
 import ish.oncourse.services.alias.WebUrlAliasService;
 import ish.oncourse.services.binary.BinaryDataService;
@@ -25,8 +25,6 @@ import ish.oncourse.services.format.FormatService;
 import ish.oncourse.services.format.IFormatService;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.html.JerichoPlainTextExtractor;
-import ish.oncourse.services.jndi.ILookupService;
-import ish.oncourse.services.jndi.LookupService;
 import ish.oncourse.services.location.IPostCodeDbService;
 import ish.oncourse.services.location.PostCodeDbService;
 import ish.oncourse.services.menu.IWebMenuService;
@@ -40,7 +38,6 @@ import ish.oncourse.services.node.WebNodeTypeService;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.payment.PaymentService;
 import ish.oncourse.services.paymentexpress.*;
-import ish.oncourse.services.persistence.CayenneService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
@@ -79,14 +76,13 @@ import ish.oncourse.webservices.replication.services.PaymentServiceImpl;
 import ish.oncourse.webservices.replication.services.TransactionGroupProcessorImpl;
 import ish.oncourse.webservices.replication.updaters.IWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.WillowUpdaterImpl;
-import net.sf.ehcache.CacheManager;
 import org.apache.tapestry5.ioc.ScopeConstants;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.ServiceBuilder;
 import org.apache.tapestry5.ioc.ServiceResources;
-import org.apache.tapestry5.ioc.annotations.EagerLoad;
 import org.apache.tapestry5.ioc.annotations.Scope;
-import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
+
+import javax.cache.CacheManager;
 
 /**
  * Own services module real-services setup.
@@ -129,7 +125,6 @@ public class PaymentServiceTestModule {
 		binder.bind(IWebUrlAliasService.class, WebUrlAliasService.class);
 		binder.bind(IWebNodeTypeService.class, WebNodeTypeService.class);
 		binder.bind(IDiscountService.class, DiscountService.class);
-		binder.bind(ILookupService.class, LookupService.class);
 		binder.bind(IPaymentService.class, PaymentService.class);
         binder.bind(IMessagePersonService.class, MessagePersonService.class);
         binder.bind(IPlainTextExtractor.class, JerichoPlainTextExtractor.class);
@@ -157,16 +152,10 @@ public class PaymentServiceTestModule {
 		}).scope(ScopeConstants.PERTHREAD);
 		binder.bind(InternalPaymentService.class, PaymentServiceImpl.class);
 		binder.bind(INewPaymentGatewayServiceBuilder.class, NewPaymentGatewayServiceBuilder.class);
-		binder.bind(CacheManager.class, new ServiceModule.CacheManagerBuilder()).eagerLoad();
+		binder.bind(CacheManager.class, new BinderFunctions.CacheManagerBuilder()).eagerLoad();
 	}
 	
-	@EagerLoad
-	public static ICayenneService buildCayenneService(RegistryShutdownHub hub, IWebSiteService webSiteService, CacheManager cacheManager) {
-		CayenneService cayenneService = new CayenneService(webSiteService, cacheManager);
-		hub.addRegistryShutdownListener(cayenneService);
-		return cayenneService;
-	}
-	
+
 	@Scope("perthread")
 	public static IPaymentGatewayService buildPaymentGatewayService(IPaymentGatewayServiceBuilder builder) {
 		return builder.buildService();

@@ -15,6 +15,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.spy;
@@ -78,6 +79,11 @@ public class ConcessionValidatorTest {
 	private Messages createMessages() {
 		return new Messages() {
 			@Override
+			public Set<String> getKeys() {
+				return null;
+			}
+
+			@Override
 			public boolean contains(String key) {
 				return false;
 			}
@@ -101,6 +107,21 @@ public class ConcessionValidatorTest {
 
 	private Request createRequest(final String concessionNumber, final String expiresOn, final String concessionAgree) {
 		return new Request() {
+			@Override
+			public List<String> getAttributeNames() {
+				return null;
+			}
+
+			@Override
+			public String getRemoteHost() {
+				return null;
+			}
+
+			@Override
+			public boolean isSessionInvalidated() {
+				return false;
+			}
+
 			@Override
 			public Session getSession(boolean create) {
 				return null;

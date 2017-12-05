@@ -9,7 +9,6 @@ import ish.oncourse.enrol.services.payment.IPurchaseControllerBuilder;
 import ish.oncourse.enrol.services.payment.PurchaseControllerBuilder;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.enrol.services.student.StudentService;
-import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.DisableJavaScriptStack;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.cache.IRequestCacheService;
@@ -24,7 +23,6 @@ import ish.oncourse.services.site.WebSiteVersionService;
 import ish.oncourse.services.visitor.ParsedContentVisitor;
 import ish.oncourse.ui.services.UIModule;
 import ish.oncourse.ui.services.locale.PerSiteVariantThreadLocale;
-import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.internal.InternalConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.MethodAdviceReceiver;
@@ -46,7 +44,7 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
  * The module that is automatically included as part of the Tapestry IoC
  * registry.
  */
-@SubModule({ModelModule.class, ServiceModule.class, UIModule.class})
+@ImportModule({ ServiceModule.class, UIModule.class})
 public class AppModule {
 
 	public static void bind(ServiceBinder binder) {
@@ -56,13 +54,6 @@ public class AppModule {
 		binder.bind(IPurchaseControllerBuilder.class, PurchaseControllerBuilder.class);
 		binder.bind(IWebSiteVersionService.class, WebSiteVersionService.class);
 		binder.bind(IRequestCacheService.class, RequestCacheService.class);
-	}
-
-	@EagerLoad
-	public static IJMXInitService buildJMXInitService(ApplicationGlobals applicationGlobals, RegistryShutdownHub hub) {
-		JMXInitService jmxService = new JMXInitService(applicationGlobals, "enrol", "ish.oncourse:type=EnrolApplicationData");
-		hub.addRegistryShutdownListener(jmxService);
-		return jmxService;
 	}
 
 	public static void contributeApplicationDefaults(MappedConfiguration<String, String> configuration) {

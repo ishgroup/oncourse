@@ -1,6 +1,7 @@
 package ish.oncourse.enrol.components.checkout.payment;
 
 import ish.math.Money;
+import ish.oncourse.enrol.IPaymentControlDelegate;
 import ish.oncourse.enrol.checkout.payment.PaymentEditorDelegate;
 import ish.oncourse.enrol.checkout.payment.PaymentEditorParser;
 import ish.oncourse.util.FormatUtils;

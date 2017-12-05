@@ -10,7 +10,6 @@ import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.enrol.services.student.StudentService;
 import ish.oncourse.model.College;
 import ish.oncourse.model.WebSite;
-import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.cache.IRequestCacheService;
 import ish.oncourse.services.cache.RequestCacheService;
@@ -27,6 +26,7 @@ import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
+import org.apache.tapestry5.ioc.annotations.ImportModule;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.annotations.SubModule;
@@ -41,7 +41,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@SubModule({ ModelModule.class, ServiceModule.class,  UIModule.class })
+@ImportModule({ ServiceModule.class,  UIModule.class })
 public class EnrolTestModule {
 	
 	public static void bind(ServiceBinder binder) {

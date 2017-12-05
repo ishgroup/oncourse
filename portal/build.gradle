@@ -2,6 +2,8 @@ apply plugin: 'com.eriwen.gradle.js'
 apply plugin: 'com.github.robfletcher.compass'
 
 apply from: "$rootDir/gradle/buildTapestryApp.gradle"
+apply from: "$rootDir/gradle/cxf-spring.gradle"
+
 ext {
     staticSrcPath = "src/main/static"
     staticBuildPath = "${buildDir}/resource-assemble/static"
@@ -15,8 +17,9 @@ dependencies {
     compile 'com.fasterxml.jackson.core:jackson-databind:2.7.5'
     compile (project(':common:common-textile')) {
         exclude group: 'axis', module: 'axis-wsdl4j'
-        exclude group: 'org.apache.tapestry'
     }
+
+    compile (project(':common:tapestry-classes'))
     // The odd next line is to work around gradle pulling in the wrong configuration
     // http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency
     testCompile(project(path: ':common:common-test', configuration: 'testFixtures')) {

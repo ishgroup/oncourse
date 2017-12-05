@@ -1,7 +1,7 @@
 /*
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
  */
-package ish.oncourse.portal
+package ish.oncourse.website
 
 import com.google.inject.Injector
 import io.bootique.jdbc.DataSourceFactory
@@ -9,54 +9,49 @@ import io.bootique.tapestry.di.InjectorModuleDef
 import ish.oncourse.tapestry.WillowModuleDef
 import ish.oncourse.util.log.LogAppInfo
 import org.apache.cayenne.configuration.server.ServerRuntime
-import org.apache.tapestry5.internal.spring.SpringModuleDef
+import org.apache.tapestry5.TapestryFilter
 import org.apache.tapestry5.ioc.def.ModuleDef
-import org.apache.tapestry5.spring.TapestrySpringFilter
 
 import javax.servlet.*
 
 import static org.apache.tapestry5.SymbolConstants.PRODUCTION_MODE
 import static org.apache.tapestry5.internal.InternalConstants.TAPESTRY_APP_PACKAGE_PARAM
-import static org.springframework.web.context.ContextLoader.CONFIG_LOCATION_PARAM
 
 /**
  * User: akoiro
  * Date: 26/8/17
  */
-class PortalTapestryFilter implements Filter {
+class WebTapestryFilter implements Filter {
 
-    public static final String SERVICES_APP_PACKAGE = "ish.oncourse.portal"
+    public static final String SERVICES_APP_PACKAGE = "ish.oncourse.website"
 
     private Injector injector
 
-    PortalTapestryFilter(Injector injector) {
+    WebTapestryFilter(Injector injector) {
         this.injector = injector
     }
 
-    private TapestrySpringFilter filter = new TapestrySpringFilter() {
+    private TapestryFilter filter = new TapestryFilter() {
         @Override
         protected ModuleDef[] provideExtraModuleDefs(ServletContext context) {
             return [
-                    new SpringModuleDef(context),
                     new InjectorModuleDef(injector),
                     new WillowModuleDef(injector.getInstance(DataSourceFactory).forName(LogAppInfo.DATA_SOURSE_NAME),
                             injector.getInstance(ServerRuntime)
                     )
             ]
         }
-    }
+    };
 
     @Override
     void init(FilterConfig filterConfig) throws ServletException {
         filterConfig.getServletContext().setInitParameter(TAPESTRY_APP_PACKAGE_PARAM, SERVICES_APP_PACKAGE)
-        filterConfig.getServletContext().setInitParameter(CONFIG_LOCATION_PARAM, "classpath:application-context.xml")
         filterConfig.getServletContext().setInitParameter(PRODUCTION_MODE, Boolean.FALSE.toString())
         filter.init(filterConfig)
     }
 
     @Override
     void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        servletRequest.getServletContext().getContextPath()
         filter.doFilter(servletRequest, servletResponse, filterChain)
     }
 
@@ -65,6 +60,4 @@ class PortalTapestryFilter implements Filter {
     void destroy() {
         filter.destroy()
     }
-
-
 }

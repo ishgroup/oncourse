@@ -1,10 +1,8 @@
 package ish.oncourse.webservices.soap;
 
 import ish.oncourse.model.College;
-import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.filestorage.IFileStorageAssetService;
-import ish.oncourse.services.paymentexpress.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.WebSiteServiceOverride;
@@ -23,11 +21,10 @@ import ish.oncourse.webservices.soap.v6.ReferencePortType;
 import ish.oncourse.webservices.soap.v6.ReferencePortTypeImpl;
 import ish.oncourse.webservices.usi.USIVerificationService;
 import org.apache.tapestry5.ioc.*;
+import org.apache.tapestry5.ioc.annotations.ImportModule;
 import org.apache.tapestry5.ioc.annotations.Local;
-import org.apache.tapestry5.ioc.annotations.Scope;
-import org.apache.tapestry5.ioc.annotations.SubModule;
 
-@SubModule({ ModelModule.class, ServiceModule.class })
+@ImportModule({ServiceModule.class})
 public class ReplicationTestModule {
 
 	public static void bind(ServiceBinder binder) {

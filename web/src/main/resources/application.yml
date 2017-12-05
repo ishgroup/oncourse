@@ -1,0 +1,28 @@
+jetty:
+  context: /
+  connector:
+    port: 8404
+    host: 127.0.0.1
+  idleThreadTimeout: 300000
+  staticResourceBase: classpath:static
+jdbc:
+  willow:
+    url: jdbc:mariadb://localhost:3306/w2test_college?autoReconnect=true&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: user
+    password: password
+    driverClassName: org.mariadb.jdbc.Driver
+    testWhileIdle: true
+    validationQuery: SELECT 1
+    validationInterval: 30000
+    timeBetweenEvictionRunsMillis: 3000
+    maxActive: 100
+    maxIdle: 5
+    minIdle: 2
+    removeAbandonedTimeout: 300
+    removeAbandoned: true
+    logAbandoned: true
+    jmxEnabled: true
+cayenne:
+  datasource: willow
+  configs:
+    - cayenne-oncourse.xml

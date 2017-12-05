@@ -11,6 +11,3 @@ dependencies {
     compile group: 'org.codehaus.groovy', name: 'groovy-all', version: groovyVersion
     compile group: 'org.apache.zookeeper', name: 'zookeeper', version: '3.4.10'
 }
-
-targetCompatibility = '1.8'
-sourceCompatibility = '1.8'

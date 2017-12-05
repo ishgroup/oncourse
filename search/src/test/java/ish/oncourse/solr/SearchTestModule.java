@@ -1,6 +1,6 @@
 package ish.oncourse.solr;
 
-import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.BinderFunctions;
 import ish.oncourse.services.alias.IWebUrlAliasService;
 import ish.oncourse.services.alias.WebUrlAliasService;
 import ish.oncourse.services.binary.BinaryDataService;
@@ -21,8 +21,6 @@ import ish.oncourse.services.format.FormatService;
 import ish.oncourse.services.format.IFormatService;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.html.JerichoPlainTextExtractor;
-import ish.oncourse.services.jndi.ILookupService;
-import ish.oncourse.services.jndi.LookupService;
 import ish.oncourse.services.location.IPostCodeDbService;
 import ish.oncourse.services.location.PostCodeDbService;
 import ish.oncourse.services.menu.IWebMenuService;
@@ -63,8 +61,9 @@ import ish.oncourse.util.ComponentPageResponseRenderer;
 import ish.oncourse.util.IComponentPageResponseRenderer;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.PageRenderer;
-import net.sf.ehcache.CacheManager;
 import org.apache.tapestry5.ioc.ServiceBinder;
+
+import javax.cache.CacheManager;
 
 public class SearchTestModule {
 	public static void bind(ServiceBinder binder) {
@@ -102,7 +101,6 @@ public class SearchTestModule {
 		binder.bind(IWebUrlAliasService.class, WebUrlAliasService.class);
 		binder.bind(IWebNodeTypeService.class, WebNodeTypeService.class);
 		binder.bind(IDiscountService.class, DiscountService.class);
-		binder.bind(ILookupService.class, LookupService.class);
 		binder.bind(IPaymentService.class, PaymentService.class);
 		binder.bind(IMessagePersonService.class, MessagePersonService.class);
 		binder.bind(IPlainTextExtractor.class, JerichoPlainTextExtractor.class);
@@ -113,7 +111,7 @@ public class SearchTestModule {
 		binder.bind(IModuleService.class, ModuleService.class).withId("ModuleService");
 		binder.bind(IQualificationService.class, QualificationService.class).withId("QualificationService");
 		binder.bind(ITrainingPackageService.class, TrainingPackageService.class).withId("TrainingPackageService");
-		binder.bind(CacheManager.class, new ServiceModule.CacheManagerBuilder()).eagerLoad();
-		binder.bind(ICayenneService.class, new ServiceModule.CayenneServiceBuilder()).eagerLoad();
+		binder.bind(CacheManager.class, new BinderFunctions.CacheManagerBuilder()).eagerLoad();
+		binder.bind(ICayenneService.class, new BinderFunctions.CayenneServiceBuilder()).eagerLoad();
 	}
 }

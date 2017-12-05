@@ -3,25 +3,23 @@
  */
 package ish.oncourse.portal.pages.certificate;
 
-import ish.oncourse.components.ISHCommon;
 import ish.oncourse.portal.certificate.Model;
 import ish.oncourse.portal.certificate.ModelBuilder;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
+import ish.oncourse.util.tapestry.TapestryFormatUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.PageRenderLinkSource;
-import org.apache.tapestry5.services.Request;
+
+import java.util.Date;
 
 /**
  * User: akoiro
  * Date: 8/08/2016
  */
-public class Statement extends ISHCommon {
-
-	@Inject
-	private Request request;
+public class Statement {
 
 	@Inject
 	private PreferenceControllerFactory preferenceControllerFactory;
@@ -39,6 +37,9 @@ public class Statement extends ISHCommon {
 	private Model.Module module;
 
 	private ModelBuilder builder;
+
+	@Property
+	private TapestryFormatUtils formatUtils = new TapestryFormatUtils();
 
 
 	public Object onActivate() {
@@ -69,4 +70,9 @@ public class Statement extends ISHCommon {
 				throw new IllegalArgumentException();
 		}
 	}
+
+	public String formatDate(Date date, String pattern) {
+		return formatUtils.formatDate(date, pattern);
+	}
+
 }

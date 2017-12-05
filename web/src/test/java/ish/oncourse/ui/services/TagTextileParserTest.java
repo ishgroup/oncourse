@@ -4,7 +4,6 @@
 package ish.oncourse.ui.services;
 
 import ish.oncourse.model.WebSite;
-import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.DisableJavaScriptStack;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.cache.IRequestCacheService;
@@ -125,7 +124,7 @@ public class TagTextileParserTest extends ServiceTest {
 
 	}
 	
-	@SubModule({ ModelModule.class, ServiceModule.class, UIModule.class})
+	@ImportModule({UIModule.class})
 	public static class TextileModule {
 
 		public RequestFilter buildLogFilterOverride(org.slf4j.Logger log, RequestGlobals requestGlobals) {
@@ -150,13 +149,6 @@ public class TagTextileParserTest extends ServiceTest {
 			configuration.add(ICacheMetaProvider.class, cacheMetaProvider);
 		}
 
-
-		@EagerLoad
-		public static IJMXInitService buildJMXInitService(ApplicationGlobals applicationGlobals, RegistryShutdownHub hub) {
-			JMXInitService jmxService = new JMXInitService(applicationGlobals,"website","ish.oncourse:type=WebSiteApplicationData");
-			hub.addRegistryShutdownListener(jmxService);
-			return jmxService;
-		}
 
 		public static void contributeApplicationDefaults(
 			MappedConfiguration<String, String> configuration) {

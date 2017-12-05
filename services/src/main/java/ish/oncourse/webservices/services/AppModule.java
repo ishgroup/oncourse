@@ -6,6 +6,7 @@ package ish.oncourse.webservices.services;
 
 import com.google.inject.Injector;
 import io.bootique.jdbc.DataSourceFactory;
+import ish.oncourse.services.BinderFunctions;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.alias.IWebUrlAliasService;
 import ish.oncourse.services.alias.WebUrlAliasService;
@@ -37,8 +38,6 @@ import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.format.FormatService;
 import ish.oncourse.services.format.IFormatService;
 import ish.oncourse.services.jmx.IJMXInitService;
-import ish.oncourse.services.jndi.ILookupService;
-import ish.oncourse.services.jndi.LookupService;
 import ish.oncourse.services.location.IPostCodeDbService;
 import ish.oncourse.services.location.PostCodeDbService;
 import ish.oncourse.services.mail.IMailService;
@@ -190,7 +189,6 @@ public class AppModule {
 		binder.bind(IWebNodeTypeService.class, WebNodeTypeService.class);
 		binder.bind(IWebTemplateService.class, WebTemplateService.class);
 		binder.bind(IDiscountService.class, DiscountService.class);
-		binder.bind(ILookupService.class, LookupService.class);
 		binder.bind(IPaymentService.class, PaymentService.class);
 		binder.bind(IMessagePersonService.class, MessagePersonService.class);
 		binder.bind(IEnrolmentService.class, EnrolmentServiceImpl.class);
@@ -234,16 +232,16 @@ public class AppModule {
 		binder.bind(USIService.class, new USIServiceBuilder()).eagerLoad();
 		binder.bind(IUSIVerificationService.class, USIVerificationService.class);
 
-		binder.bind(ICayenneService.class, new CayenneServiceBuilder()).eagerLoad();
-		binder.bind(IJMXInitService.class, new JMXInitServiceBuilder()).eagerLoad();
+		binder.bind(ICayenneService.class, new BinderFunctions.CayenneServiceBuilder()).eagerLoad();
+		binder.bind(IJMXInitService.class, new BinderFunctions.JMXInitServiceBuilder("services")).eagerLoad();
 		binder.bind(RequestExceptionHandler.class, ServiceRequestExceptionHandler.class).withId(ServiceRequestExceptionHandler.class.getSimpleName());
 
 
 		binder.bind(IPaymentGatewayServiceBuilder.class, PaymentGatewayServiceBuilder.class);
-		binder.bind(IPaymentGatewayService.class, new ServiceModule.PaymentGatewayServiceBuilder()).scope(PERTHREAD);
+		binder.bind(IPaymentGatewayService.class, new BinderFunctions.PaymentGatewayServiceBuilder()).scope(PERTHREAD);
 
 		binder.bind(INewPaymentGatewayServiceBuilder.class, NewPaymentGatewayServiceBuilder.class);
-		binder.bind(INewPaymentGatewayService.class, new ServiceModule.PaymentGatewayBuilder()).scope(PERTHREAD);
+		binder.bind(INewPaymentGatewayService.class, new BinderFunctions.PaymentGatewayBuilder()).scope(PERTHREAD);
 	}
 
 
@@ -299,35 +297,6 @@ public class AppModule {
 		configuration.add(SymbolConstants.SUPPORTED_LOCALES, "en");
 	}
 
-
-	public static class CayenneServiceBuilder implements ServiceBuilder<ICayenneService> {
-		@Override
-		public ICayenneService buildService(ServiceResources resources) {
-			RegistryShutdownHub hub = resources.getService(RegistryShutdownHub.class);
-			IWebSiteService webSiteService = resources.getService(IWebSiteService.class);
-			Injector injector = resources.getService(Injector.class);
-
-			CayenneService cayenneService = new CayenneService(injector.getInstance(ServerRuntime.class),
-					webSiteService);
-			hub.addRegistryShutdownListener(cayenneService);
-			return cayenneService;
-		}
-	}
-
-
-	public static class JMXInitServiceBuilder implements ServiceBuilder<IJMXInitService> {
-		@Override
-		public IJMXInitService buildService(ServiceResources resources) {
-			ApplicationGlobals applicationGlobals = resources.getService(ApplicationGlobals.class);
-			DataSourceFactory dataSourceFactory = resources.getService(Injector.class).getInstance(DataSourceFactory.class);
-			DataSource dataSource = dataSourceFactory.forName(ServicesModule.DATA_SOURCE_NAME);
-			RegistryShutdownHub hub = resources.getService(RegistryShutdownHub.class);
-
-			JMXInitService jmxService = new JMXInitService(applicationGlobals, dataSource);
-			hub.addRegistryShutdownListener(jmxService);
-			return jmxService;
-		}
-	}
 
 
 }

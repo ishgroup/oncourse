@@ -6,7 +6,7 @@ dependencies {
 	compile project(':common:common-services')
 	compile project(':common:common-model')
 	compile project(':common:common-ui')
-	compile 'org.apache.tapestry:tapestry-upload:5.2.6'
+	compile "org.apache.tapestry:tapestry-upload:$tapestryVersion"
 
 	// The odd next line is to work around gradle pulling in the wrong configuration
 	// http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency

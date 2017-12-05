@@ -9,16 +9,16 @@
 
         maxBytesLocalHeap=40M - it allows to keep in ehcache ~ 1 million cayenne objects
 -->
-<ehcache
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
-        updateCheck="false" name="web" maxBytesLocalHeap="40M">
-    <defaultCache timeToLiveSeconds="600"/>
-    <cache name="CourseClass" timeToLiveSeconds="120"/>
-    
-    <cache name="templateResources" eternal="true" />
-    <cache name="templates" eternal="true" />
-    <cache name="componentAssemblers" eternal="true" />
-    <cache name="pages" eternal="true" />
+<ehcache:config xmlns:ehcache="http://www.ehcache.org/v3" >
 
-</ehcache>
+    <ehcache:cache alias="CourseClass">
+            <ehcache:key-type copier="org.ehcache.impl.copy.SerializingCopier">java.lang.String</ehcache:key-type>
+            <ehcache:value-type copier="org.ehcache.impl.copy.SerializingCopier">java.util.List</ehcache:value-type>
+
+            <ehcache:expiry>
+                <ehcache:tti unit="minutes">2</ehcache:tti>
+            </ehcache:expiry>
+            <ehcache:heap unit="entries">1000000</ehcache:heap>
+    </ehcache:cache>
+
+</ehcache:config>

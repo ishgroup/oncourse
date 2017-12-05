@@ -1,0 +1,25 @@
+apply plugin: 'java'
+
+ext {
+    springVersion = '3.0.5.RELEASE'
+    cxfVersion = '2.6.16'
+}
+
+dependencies {
+/**
+ * cxf dependencies
+ */
+    compile("org.apache.cxf:cxf-bundle:$cxfVersion") {
+        exclude group: 'org.apache.geronimo.specs', module: 'geronimo-servlet_2.5_spec'
+        exclude group: 'org.apache.geronimo.specs', module: 'geronimo-servlet_3.0_spec'
+        exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
+    }
+
+/**
+ * spring dependencies
+ */
+    compile "org.springframework:spring-core:$springVersion"
+    compile "org.springframework:spring-beans:$springVersion"
+    compile "org.springframework:spring-context:$springVersion"
+    compile "org.springframework:spring-web:$springVersion"
+}

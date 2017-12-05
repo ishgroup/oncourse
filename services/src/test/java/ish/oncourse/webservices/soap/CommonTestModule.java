@@ -3,7 +3,7 @@
  */
 package ish.oncourse.webservices.soap;
 
-import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.BinderFunctions;
 import ish.oncourse.services.alias.IWebUrlAliasService;
 import ish.oncourse.services.alias.WebUrlAliasService;
 import ish.oncourse.services.binary.BinaryDataService;
@@ -28,8 +28,6 @@ import ish.oncourse.services.format.FormatService;
 import ish.oncourse.services.format.IFormatService;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.html.JerichoPlainTextExtractor;
-import ish.oncourse.services.jndi.ILookupService;
-import ish.oncourse.services.jndi.LookupService;
 import ish.oncourse.services.location.IPostCodeDbService;
 import ish.oncourse.services.location.PostCodeDbService;
 import ish.oncourse.services.menu.IWebMenuService;
@@ -81,7 +79,6 @@ import ish.oncourse.webservices.replication.services.PaymentServiceImpl;
 import ish.oncourse.webservices.replication.services.TransactionGroupProcessorImpl;
 import ish.oncourse.webservices.replication.updaters.IWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.WillowUpdaterImpl;
-import net.sf.ehcache.CacheManager;
 import org.apache.tapestry5.ioc.ScopeConstants;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.ServiceBuilder;
@@ -127,7 +124,6 @@ public class CommonTestModule {
 		binder.bind(IWebUrlAliasService.class, WebUrlAliasService.class);
 		binder.bind(IWebNodeTypeService.class, WebNodeTypeService.class);
 		binder.bind(IDiscountService.class, DiscountService.class);
-		binder.bind(ILookupService.class, LookupService.class);
 		binder.bind(IPaymentService.class, PaymentService.class);
 		binder.bind(IMessagePersonService.class, MessagePersonService.class);
 		binder.bind(IPlainTextExtractor.class, JerichoPlainTextExtractor.class);
@@ -155,8 +151,8 @@ public class CommonTestModule {
 		}).scope(ScopeConstants.PERTHREAD);
 		binder.bind(InternalPaymentService.class, PaymentServiceImpl.class);
 		binder.bind(INewPaymentGatewayServiceBuilder.class, NewPaymentGatewayServiceBuilder.class);
-		binder.bind(CacheManager.class, new ServiceModule.CacheManagerBuilder()).eagerLoad();
-		binder.bind(ICayenneService.class, new ServiceModule.CayenneServiceBuilder()).eagerLoad();
-		binder.bind(INewPaymentGatewayService.class, new ServiceModule.PaymentGatewayBuilder());
+		binder.bind(javax.cache.CacheManager.class, new BinderFunctions.CacheManagerBuilder()).eagerLoad();
+		binder.bind(ICayenneService.class, new BinderFunctions.CayenneServiceBuilder()).eagerLoad();
+		binder.bind(INewPaymentGatewayService.class, new BinderFunctions.PaymentGatewayBuilder());
 	}
 }

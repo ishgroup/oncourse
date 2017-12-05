@@ -11,7 +11,7 @@
         <Root level="warn">
             <AppenderRef ref="STDOUT"/>
         </Root>
-        <Logger name="org.apache.cayenne.log" level="info">
+        <Logger name="org.apache.cayenne.log" level="error">
             <AppenderRef ref="STDOUT"/>
         </Logger>
     </Loggers>

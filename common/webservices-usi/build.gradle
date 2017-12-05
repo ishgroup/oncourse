@@ -1,3 +1,5 @@
+apply from: "$rootDir/gradle/cxf-spring.gradle"
+
 dependencies {
     compile (project(':common:common-services')) {
         exclude group: 'axis'
@@ -6,13 +8,6 @@ dependencies {
         exclude group: 'org.apache.cayenne', module: 'cayenne-server'
     }
 
-    compile 'org.apache.cxf:cxf-rt-frontend-jaxws:2.6.16'
-    compile 'org.apache.cxf:cxf-rt-ws-addr:2.6.16'
-    compile 'org.apache.cxf:cxf-rt-ws-policy:2.6.16'
-    compile 'org.apache.cxf:cxf-rt-ws-security:2.6.16'
-    compile 'org.apache.cxf:cxf-rt-ws-mex:2.6.16'
-    compile 'org.apache.cxf:cxf-rt-transports-http-jetty:2.6.16'
-    
     compile 'org.springframework:spring-beans:3.0.5.RELEASE'
     compile 'org.bouncycastle:bcprov-jdk15:1.45'
 
@@ -32,9 +27,9 @@ configurations {
 }
 
 dependencies{
-    ws "org.apache.cxf:cxf-tools:2.6.16",
-            "org.apache.cxf:cxf-tools-wsdlto-databinding-jaxb:2.6.16",
-            "org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:2.6.16",
+    ws "org.apache.cxf:cxf-tools:${cxfVersion}",
+            "org.apache.cxf:cxf-tools-wsdlto-databinding-jaxb:${cxfVersion}",
+            "org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:${cxfVersion}",
             "org.jvnet.jaxb2_commons:jaxb2-basics:0.6.5"
     "log4j:log4j:1.2.17"
 }
