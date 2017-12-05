@@ -21,9 +21,11 @@ public class LogFilter implements RequestFilter {
 
 		try {
 
-			StringBuffer url = requestGlobals.getHTTPServletRequest()
-					.getRequestURL();
-			log.info(String.format("Request started: %s", url));
+			if (requestGlobals.getHTTPServletRequest() != null)  {
+				StringBuffer url = requestGlobals.getHTTPServletRequest()
+						.getRequestURL();
+				log.info(String.format("Request started: %s", url));
+			}
 
 			return handler.service(request, response);
 		} finally {

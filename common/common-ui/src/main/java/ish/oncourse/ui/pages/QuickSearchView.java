@@ -1,6 +1,6 @@
 package ish.oncourse.ui.pages;
 
-import ish.oncourse.components.ISHCommon;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.PostcodeDb;
 import ish.oncourse.model.Tag;
@@ -11,7 +11,6 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.GetAutoCompleteState;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchException;
-import ish.oncourse.services.search.Suburb;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import org.apache.commons.lang.StringUtils;
@@ -22,7 +21,6 @@ import org.apache.solr.common.SolrDocumentList;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,9 +38,6 @@ public class QuickSearchView extends ISHCommon {
 	private static final Logger logger = LogManager.getLogger();
 	
 	private static final String SOLR_DOCUMENT_ID_FIELD = "id";
-
-	@Inject
-	private Request request;
 
 	@Inject
 	private ISearchService searchService;

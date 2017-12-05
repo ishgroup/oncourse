@@ -1,6 +1,6 @@
 package ish.oncourse.ui.pages;
 
-import ish.oncourse.components.ISHCommon;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.*;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.course.ICourseService;
@@ -25,7 +25,6 @@ import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Response;
 
 import java.util.ArrayList;
@@ -45,10 +44,6 @@ import java.util.Map;
  */
 
 public class Courses extends ISHCommon {
-
-	@Inject
-	@Property
-	private Request request;
 
 	@Inject
 	private Response response;

@@ -1,6 +1,6 @@
 package ish.oncourse.ui.pages.internal;
 
-import ish.oncourse.components.ISHCommon;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Session;
 import ish.oncourse.services.courseclass.ICourseClassService;
@@ -10,7 +10,6 @@ import org.apache.tapestry5.annotations.Meta;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -23,9 +22,6 @@ public class TimelineData extends ISHCommon {
 
 	@Inject
 	private ICourseClassService courseClassService;
-
-	@Inject
-	private Request request;
 
 	private List<CourseClass> courseClasses;
 	@Property

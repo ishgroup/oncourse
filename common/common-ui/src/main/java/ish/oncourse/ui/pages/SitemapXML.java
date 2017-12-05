@@ -1,6 +1,6 @@
 package ish.oncourse.ui.pages;
 
-import ish.oncourse.components.ISHCommon;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.*;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.node.IWebNodeService;
@@ -13,7 +13,6 @@ import org.apache.tapestry5.annotations.Meta;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -24,9 +23,6 @@ import java.util.List;
 public class SitemapXML extends ISHCommon {
 
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-
-	@Inject
-	private Request request;
 
 	@Inject
 	private ICourseService courseService;

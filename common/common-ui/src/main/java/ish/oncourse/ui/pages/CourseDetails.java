@@ -1,6 +1,6 @@
 package ish.oncourse.ui.pages;
 
-import ish.oncourse.components.ISHCommon;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.Course;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.courseclass.ICourseClassService;
@@ -14,7 +14,6 @@ import ish.oncourse.ui.utils.CourseItemModel;
 import ish.oncourse.util.HTMLUtils;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 
 public class CourseDetails extends ISHCommon {
 	@Inject
@@ -28,9 +27,6 @@ public class CourseDetails extends ISHCommon {
 
 	@Inject
 	private ITagService tagService;
-
-	@Inject
-	private Request request;
 
 	@Inject
 	private IFacebookMetaProvider facebookMetaProvider;

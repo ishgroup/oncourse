@@ -1,13 +1,12 @@
 package ish.oncourse.ui.pages;
 
-import ish.oncourse.components.ISHCommon;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.services.cookies.CookiesService;
 import ish.oncourse.services.cookies.ICookiesService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.util.TextStreamResponse;
 
 public class TimezoneHolder extends ISHCommon {
@@ -16,9 +15,6 @@ public class TimezoneHolder extends ISHCommon {
 	private static final String JSON_RESPONSE_TYPE = "text/json";
 	private static final String OFFSET_PARAMETER = "offset";
 	private static final Logger logger = LogManager.getLogger();
-	
-	@Inject
-	private Request request;
 	
 	@Inject
 	private ICookiesService cookiesService;

@@ -1,12 +1,10 @@
 package ish.oncourse.ui.pages.prerender;
 
 import ish.math.Money;
-import ish.oncourse.components.ISHCommon;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.CourseClass;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
-import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 
 public class CourseClassItemContainer extends ISHCommon {
 	
@@ -31,9 +29,6 @@ public class CourseClassItemContainer extends ISHCommon {
 
 	@Property
 	private Money feeOverride;
-
-	@Inject
-	private Request request;
 
 	@SetupRender
 	public void beforeRender() {

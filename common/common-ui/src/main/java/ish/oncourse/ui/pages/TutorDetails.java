@@ -1,7 +1,7 @@
 package ish.oncourse.ui.pages;
 
 import ish.common.types.AttachmentInfoVisibility;
-import ish.oncourse.components.ISHCommon;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.Document;
 import ish.oncourse.model.Tutor;
 import ish.oncourse.model.TutorRole;
@@ -14,7 +14,6 @@ import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 
 import java.util.List;
 
@@ -29,10 +28,6 @@ public class TutorDetails extends ISHCommon {
 	@Inject
 	private ITextileConverter textileConverter;
 	
-	@Property
-	@Inject
-	private Request request;
-
 	@Property
 	private Tutor tutor;
 

@@ -1,13 +1,12 @@
 package ish.oncourse.ui.pages;
 
-import ish.oncourse.components.ISHCommon;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.Discount;
 import ish.oncourse.services.discount.IDiscountService;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 
 import java.net.MalformedURLException;
 import java.util.List;
@@ -24,9 +23,6 @@ public class AddDiscount extends ISHCommon {
 	 */
 	@Inject
 	private IDiscountService discountService;
-
-	@Inject
-	private Request request;
 
 	/**
 	 * The input value by which the promotion to add is been searched.

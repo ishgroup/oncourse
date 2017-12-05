@@ -1,6 +1,6 @@
 package ish.oncourse.ui.pages;
 
-import ish.oncourse.components.ISHCommon;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.services.environment.IEnvironmentService;
 import ish.oncourse.services.site.IWebSiteService;
 import org.apache.commons.lang.StringUtils;

@@ -2,7 +2,7 @@ package ish.oncourse.ui.pages;
 
 import ish.common.types.CourseEnrolmentType;
 import ish.math.Money;
-import ish.oncourse.components.ISHCommon;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.Application;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
@@ -17,9 +17,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -31,9 +29,6 @@ public class CourseClassDetails extends ISHCommon {
 
 	@Inject
 	private IFacebookMetaProvider facebookMetaProvider;
-
-	@Inject
-	private Request request;
 
 	@Inject
 	private IApplicationService applicationService;

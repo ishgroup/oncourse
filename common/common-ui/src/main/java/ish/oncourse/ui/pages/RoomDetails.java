@@ -1,6 +1,6 @@
 package ish.oncourse.ui.pages;
 
-import ish.oncourse.components.ISHCommon;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.Room;
 import ish.oncourse.model.Site;
 import ish.oncourse.services.textile.ITextileConverter;
@@ -11,15 +11,11 @@ import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 
 public class RoomDetails extends ISHCommon {
 
     @Inject
     private ITextileConverter textileConverter;
-
-    @Inject
-	private Request request;
 
 	@Property
 	private Room room;
