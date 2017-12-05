@@ -1,4 +1,5 @@
 apply plugin: 'war'
+apply from: "$rootDir/gradle/tapestry.gradle"
 
 sourceSets.main.java.srcDirs = []
 sourceSets.main.groovy.srcDir 'src/main/java'
@@ -28,7 +29,6 @@ dependencies {
 	compile 'org.apache.cxf:cxf-rt-transports-http:2.6.6'
 	compile 'xalan:xalan:2.7.1'
 	compile 'wsdl4j:wsdl4j:1.6.2'
-	compile 'org.apache.tapestry:tapestry-upload:5.2.6'
 	compile "org.codehaus.groovy:groovy-all:$groovyVersion"
 
 	compile 'org.reflections:reflections:0.9.11'

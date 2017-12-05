@@ -1,6 +1,7 @@
 package ish.oncourse.services;
 
 import org.apache.tapestry5.Asset;
+import org.apache.tapestry5.services.javascript.JavaScriptAggregationStrategy;
 import org.apache.tapestry5.services.javascript.JavaScriptStack;
 import org.apache.tapestry5.services.javascript.StylesheetLink;
 
@@ -8,6 +9,17 @@ import java.util.Collections;
 import java.util.List;
 
 public class DisableJavaScriptStack implements JavaScriptStack {
+
+	@Override
+	public List<String> getModules() {
+		return Collections.emptyList();
+	}
+
+	@Override
+	public JavaScriptAggregationStrategy getJavaScriptAggregationStrategy() {
+		return JavaScriptAggregationStrategy.DO_NOTHING;
+	}
+
 	@Override
 	public List<String> getStacks() {
 		return Collections.EMPTY_LIST;

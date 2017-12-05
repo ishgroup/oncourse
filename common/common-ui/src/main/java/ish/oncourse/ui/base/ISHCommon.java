@@ -1,4 +1,4 @@
-package ish.oncourse.components;
+package ish.oncourse.ui.base;
 
 import ish.math.Money;
 import ish.oncourse.model.Document;
@@ -10,10 +10,6 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
-import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -28,7 +24,7 @@ import java.util.List;
 public abstract class ISHCommon {
     @Inject
     @Property
-    private Request request;
+    protected Request request;
 
 
     @Inject

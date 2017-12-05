@@ -8,8 +8,12 @@ package ish.oncourse.model;
 import ish.oncourse.test.ContextUtils;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.validation.ValidationException;
-import org.joda.time.DateTime;
 import org.junit.*;
+
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Date;
 
 import static org.junit.Assert.*;
 
@@ -53,8 +57,8 @@ public class SessionTest {
     public void testGetDurationMinutesPositive() {
         System.out.println("getDurationMinutes");
         Session instance = new Session();
-        instance.setStartDate(new DateTime(2010, 1, 1, 12, 0, 0, 0).toDate());
-        instance.setEndDate(new DateTime(2010, 1, 1, 13, 0, 0, 0).toDate());
+        instance.setStartDate(dateFrom(LocalDateTime.of(2010, 1, 1, 12, 0, 0, 0)));
+        instance.setEndDate(dateFrom(LocalDateTime.of(2010, 1, 1, 13, 0, 0, 0)));
         Long expResult = 60L;
         Long result = instance.getDurationMinutes();
         assertEquals(expResult, result);
@@ -67,8 +71,8 @@ public class SessionTest {
     public void testGetDurationMinutesNegative() {
         System.out.println("getDurationMinutes");
         Session instance = new Session();
-        instance.setStartDate(new DateTime(2010, 1, 1, 13, 0, 0, 0).toDate());
-        instance.setEndDate(new DateTime(2010, 1, 1, 12, 0, 0, 0).toDate());
+        instance.setStartDate(dateFrom(LocalDateTime.of(2010, 1, 1, 13, 0, 0, 0)));
+        instance.setEndDate(dateFrom(LocalDateTime.of(2010, 1, 1, 12, 0, 0, 0)));
         Long expResult = -60L;
         Long result = instance.getDurationMinutes();
         assertEquals(expResult, result);
@@ -88,4 +92,9 @@ public class SessionTest {
         assertTrue("commit should be in failure status", invalid);
 
     }
+
+    private static Date dateFrom(LocalDateTime localDateTime) {
+        return Date.from(ZonedDateTime.of(localDateTime, ZoneId.systemDefault()).toInstant());
+    }
+
 }

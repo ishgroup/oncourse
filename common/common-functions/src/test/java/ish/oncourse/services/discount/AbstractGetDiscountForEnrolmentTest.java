@@ -6,8 +6,10 @@ import ish.oncourse.model.CorporatePass;
 import ish.oncourse.model.CorporatePassDiscount;
 import ish.oncourse.model.Discount;
 import ish.oncourse.model.DiscountCourseClass;
-import ish.oncourse.test.ContextUtils;
+import ish.oncourse.test.TestContext;
+import ish.oncourse.test.functions.Functions;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.configuration.CayenneRuntime;
 import org.junit.BeforeClass;
 
 import java.math.BigDecimal;
@@ -56,7 +58,7 @@ public abstract class AbstractGetDiscountForEnrolmentTest {
 	 * Not combinable discount for $60 amount which has minEnrolment = 2 and minValue = $200
 	 */
 	public static DiscountCourseClass minCountAndValueConditionDiscount;
-	
+
 	/**
 	 * Discount for  -$20 amount (surcharge)
 	 */
@@ -75,7 +77,7 @@ public abstract class AbstractGetDiscountForEnrolmentTest {
 	public static CorporatePass corporatePass;
 	public static CorporatePassDiscount corporatePassDiscount;
 	public static DiscountCourseClass discountByCorporatePass;
-	
+
 	public static List<Discount> promotions;
 	
 	public static void initDiscounts(ObjectContext context) {
@@ -130,7 +132,7 @@ public abstract class AbstractGetDiscountForEnrolmentTest {
 		singleDiscountWithRateMin = context.newObject(DiscountCourseClass.class);
 		singleDiscountWithRateMin.setDiscount(discount);
 		discount.addToDiscountCourseClasses(singleDiscountWithRateMin);
-		
+
 		discount = new Discount();
 		discount.setDiscountAmount(new Money(BigDecimal.TEN));
 		discount.setDiscountType(DiscountType.DOLLAR);
@@ -228,12 +230,12 @@ public abstract class AbstractGetDiscountForEnrolmentTest {
 		discount.addToDiscountCourseClasses(discountByCorporatePass);
 
 		corporatePass = context.newObject(CorporatePass.class);
-		
+
 		corporatePassDiscount = context.newObject(CorporatePassDiscount.class);
 
 		discount.addToCorporatePassDiscounts(corporatePassDiscount);
 		corporatePass.addToCorporatePassDiscounts(corporatePassDiscount);
-		
+
 		promotions = new ArrayList<>();
 		promotions.add(combDiscountWithAmount.getDiscount());
 		promotions.add(singleDiscountWithRateMin.getDiscount());

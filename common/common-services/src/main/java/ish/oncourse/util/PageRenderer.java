@@ -8,6 +8,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.RequestGlobals;
 import org.apache.tapestry5.services.Response;
+import org.apache.tapestry5.services.pageload.ComponentResourceSelector;
 
 import java.util.Locale;
 import java.util.Map;
@@ -34,7 +35,7 @@ public class PageRenderer implements IPageRenderer {
 		GetStrResponseWrapper wrapper = new GetStrResponseWrapper(response);
 
 		requestGlobals.storeRequestResponse(request, wrapper);
-		Page page = pageLoader.loadPage(pageName, Locale.getDefault());
+		Page page = pageLoader.loadPage(pageName, new ComponentResourceSelector(Locale.getDefault()));
 
 		try {
 			pageResponseRenderer.renderPageResponse(page);

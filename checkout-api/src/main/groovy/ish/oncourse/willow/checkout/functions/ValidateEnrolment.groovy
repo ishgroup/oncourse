@@ -11,8 +11,8 @@ import ish.oncourse.willow.model.checkout.Enrolment
 import ish.oncourse.model.CourseClass
 import org.apache.cayenne.ObjectContext
 import org.apache.commons.lang3.StringUtils
-import org.joda.time.DateTime
-import org.joda.time.Years
+
+import java.time.temporal.ChronoUnit
 
 @CompileStatic
 class ValidateEnrolment extends Validate<Enrolment>{
@@ -72,10 +72,9 @@ class ValidateEnrolment extends Validate<Enrolment>{
 
             String value = new GetPreference(college, Preferences.ENROLMENT_MIN_AGE, context).value
             Integer globalMinEnrolmentAge = value != null && StringUtils.isNumeric(value) ? Integer.valueOf(value) : 0
-            
-            Integer age = Years.yearsBetween(new DateTime(dateOfBirth.getTime()),
-                    new DateTime(new Date().getTime())).getYears()
-            
+
+            Integer age = ChronoUnit.YEARS.between(dateOfBirth.toInstant(), new Date().toInstant()).toInteger()
+
             if (minEnrolmentAge != null || maxEnrolmentAge != null) {
                 if ((minEnrolmentAge != null && age < minEnrolmentAge)) {
                     errors << "The minimum age for this class is $minEnrolmentAge. $student.contact.fullName is too young to enrol.".toString()

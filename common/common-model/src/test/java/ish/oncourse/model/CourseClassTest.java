@@ -10,12 +10,14 @@ import ish.math.Money;
 import ish.oncourse.test.ContextUtils;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang.StringUtils;
-import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -24,7 +26,7 @@ import static org.junit.Assert.*;
 
 /**
  * Test for {@link CourseClass} methods.
- * 
+ *
  * @author marek
  */
 public class CourseClassTest {
@@ -41,17 +43,17 @@ public class CourseClassTest {
 	 * The courseClass which will contain reference to 1 invalid discount.
 	 */
 	private CourseClass secondClass;
-	
+
 	/**
 	 * The courseClass which will contain reference to 1 discount.
 	 */
 	private CourseClass thirdClass;
-	
+
 	/**
 	 * The courseClass which will contain reference to 1 disabled discount.
 	 */
 	private CourseClass fourthClass;
-	
+
 	/**
 	 * The discount for {@link #secondClass} with expired date.
 	 */
@@ -60,7 +62,7 @@ public class CourseClassTest {
 	 * The discount for {@link #firstClass} with code.
 	 */
 	private Discount currentPromotion;
-	
+
 	/**
 	 * The discount for {@link #firstClass} with the reference to
 	 * {@link ConcessionType}.
@@ -80,20 +82,20 @@ public class CourseClassTest {
 	 * The discount for {@link #firstClass} with code = "".
 	 */
 	private Discount concessionEmptyCode;
-	
+
 	private Discount disabledDiscount;
-	
+
 	/**
 	 * Initializes entities, commit needed changes.
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@Before
 	public void setUpClass() throws Exception {
 		Calendar date = Calendar.getInstance();
-		
+
 		ContextUtils.setupDataSources();
-		
+
 		context = ContextUtils.createObjectContext();
 
 		College college = context.newObject(College.class);
@@ -120,7 +122,7 @@ public class CourseClassTest {
 		currentPromotion.setIsAvailableOnWeb(true);
 		currentPromotion.setMinEnrolments(1);
 		currentPromotion.setMinValue(Money.ZERO);
-		
+
 		// two days ago
 		date.add(Calendar.DATE, -2);
 		currentPromotion.setValidFrom(date.getTime());
@@ -145,7 +147,7 @@ public class CourseClassTest {
 		ConcessionType ct = context.newObject(ConcessionType.class);
 		ct.setName("name");
 		ct.setIsEnabled(true);
-		ct.setCollege(college);		
+		ct.setCollege(college);
 		DiscountConcessionType dct = context.newObject(DiscountConcessionType.class);
 		dct.setCollege(college);
 		dct.setConcessionType(ct);
@@ -185,12 +187,12 @@ public class CourseClassTest {
 		secondClass.setIsActive(true);
 		secondClass.setCancelled(false);
 		secondClass.setIsDistantLearningCourse(false);
-		
+
 		pastSecondClassDiscount = context.newObject(Discount.class);
 		pastSecondClassDiscount.setCollege(college);
 		pastSecondClassDiscount.setMinEnrolments(1);
 		pastSecondClassDiscount.setMinValue(Money.ZERO);
-		
+
 		// almost one month ago
 		date.add(Calendar.MONTH, -2);
 		pastSecondClassDiscount.setValidTo(date.getTime());
@@ -200,8 +202,8 @@ public class CourseClassTest {
 		dcc.setDiscount(pastSecondClassDiscount);
 		dcc.setCourseClass(secondClass);
 		dcc.setCollege(college);
-		
-		
+
+
 		thirdClass = context.newObject(CourseClass.class);
 		thirdClass.setCourse(course);
 		thirdClass.setCollege(college);
@@ -209,7 +211,7 @@ public class CourseClassTest {
 		thirdClass.setCancelled(false);
 		thirdClass.setMaximumPlaces(3);
 		thirdClass.setIsDistantLearningCourse(false);
-		
+
 		concessionEmptyCode = context.newObject(Discount.class);
 		concessionEmptyCode.setCollege(college);
 		concessionEmptyCode.setCode(StringUtils.EMPTY);
@@ -225,12 +227,12 @@ public class CourseClassTest {
 		dctype.setCollege(college);
 		dctype.setConcessionType(ctype);
 		dctype.setDiscount(concessionEmptyCode);
-		
+
 		dcc = context.newObject(DiscountCourseClass.class);
 		dcc.setDiscount(concessionEmptyCode);
 		dcc.setCourseClass(thirdClass);
 		dcc.setCollege(college);
-		
+
 		fourthClass = context.newObject(CourseClass.class);
 		fourthClass.setCourse(course);
 		fourthClass.setCollege(college);
@@ -238,7 +240,7 @@ public class CourseClassTest {
 		fourthClass.setCancelled(false);
 		fourthClass.setMaximumPlaces(3);
 		fourthClass.setIsDistantLearningCourse(false);
-		
+
 		disabledDiscount = context.newObject(Discount.class);
 		disabledDiscount.setCollege(college);
 		disabledDiscount.setCode(StringUtils.EMPTY);
@@ -246,23 +248,23 @@ public class CourseClassTest {
 		disabledDiscount.setIsAvailableOnWeb(false);
 		disabledDiscount.setMinEnrolments(1);
 		disabledDiscount.setMinValue(Money.ZERO);
-		
+
 		ConcessionType cctype = context.newObject(ConcessionType.class);
 		cctype.setName("name");
 		cctype.setIsEnabled(false);
 		cctype.setCollege(college);
-		
+
 		DiscountConcessionType dcctype = context.newObject(DiscountConcessionType.class);
 		dcctype.setCollege(college);
 		dcctype.setConcessionType(cctype);
 		dcctype.setDiscount(disabledDiscount);
-		
+
 		dcc = context.newObject(DiscountCourseClass.class);
 		dcc.setDiscount(disabledDiscount);
 		dcc.setCourseClass(fourthClass);
 		dcc.setCollege(college);
 		context.commitChanges();
-		
+
 	}
 
 	@After
@@ -275,7 +277,7 @@ public class CourseClassTest {
 	@Test
 	public void testGetIsoStartDate() {
 		CourseClass instance = new CourseClass();
-		instance.setStartDate(new DateTime(2010, 1, 27, 19, 26, 10, 10).toDate());
+		instance.setStartDate(dateFrom(LocalDateTime.of(2010, 1, 27, 19, 26, 10, 10)));
 		instance.setMaximumPlaces(3);
 		String expResult = "20100127";
 		String result = instance.getIsoStartDate();
@@ -288,7 +290,7 @@ public class CourseClassTest {
 	@Test
 	public void testGetIsoEndDate() {
 		CourseClass instance = new CourseClass();
-		instance.setEndDate(new DateTime(2010, 1, 30, 19, 26, 10, 10).toDate());
+		instance.setEndDate(dateFrom(LocalDateTime.of(2010, 1, 30, 19, 26, 10, 10)));
 		instance.setMaximumPlaces(3);
 		String expResult = "20100130";
 		String result = instance.getIsoEndDate();
@@ -325,12 +327,12 @@ public class CourseClassTest {
 
 		List<Discount> secondClassDiscounts = secondClass.getConcessionDiscounts();
 		assertTrue(secondClassDiscounts.isEmpty());
-		
+
 		List<Discount> thirdClassDiscounts = thirdClass.getConcessionDiscounts();
 		assertFalse(thirdClassDiscounts.isEmpty());
 		assertEquals(1, thirdClassDiscounts.size());
 		assertTrue(thirdClassDiscounts.contains(concessionEmptyCode));
-		
+
 		List<Discount> fourthClassDiscounts = fourthClass.getConcessionDiscounts();
 		assertTrue("Fourth class should contains only 1 disabled discount", fourthClassDiscounts.isEmpty());
 	}
@@ -391,11 +393,11 @@ public class CourseClassTest {
 		firstClass.setFeeGst(new Money("10"));
 		assertEquals(new Money("100"), firstClass.getFeeExGst());
 		assertEquals(new Money("10"), firstClass.getFeeGst());
-		assertEquals(new Money("110"), firstClass.getFeeIncGst( null));
+		assertEquals(new Money("110"), firstClass.getFeeIncGst(null));
 		// 20% discount
 		currentConcession.setDiscountRate(new BigDecimal("0.2"));
 
-		
+
 		assertEquals(new Money("20"), firstClass.getDiscountAmountExTax(currentConcession, null));
 		assertEquals(new Money("22"), firstClass.getDiscountAmountIncTax(firstClass.getDiscountCourseClassBy(currentConcession), null));
 		Money discountedFee = firstClass.getDiscountedFee(currentConcession, null);
@@ -414,11 +416,11 @@ public class CourseClassTest {
 		firstClass.setFeeExGst(new Money("100"));
 		firstClass.setFeeGst(new Money("10"));
 		currentPromotion.setDiscountAmount(new Money("20"));
-		
+
 		BigDecimal taxRate = new BigDecimal("0.15");
 
 		assertEquals(new Money("20"), firstClass.getDiscountAmountExTax(currentPromotion, taxRate));
-		
+
 		assertEquals(new Money("23"), firstClass.getDiscountAmountIncTax(firstClass.getDiscountCourseClassBy(currentPromotion), taxRate));
 		Money discountedFee = firstClass.getDiscountedFee(currentPromotion, taxRate);
 		assertEquals(new Money("80"), discountedFee);
@@ -436,7 +438,7 @@ public class CourseClassTest {
 		firstClass.setFeeGst(new Money("10"));
 
 		BigDecimal taxRate = new BigDecimal("0.15");
-		
+
 		currentConcession.setDiscountRate(new BigDecimal("0.2"));
 
 		assertEquals(new Money("20"), firstClass.getDiscountAmountExTax(currentConcession, taxRate));
@@ -450,5 +452,9 @@ public class CourseClassTest {
 
 		assertEquals(new Money("92"), firstClass.getDiscountedFeeIncTax(firstClass.getDiscountCourseClassBy(currentConcession), taxRate));
 
+	}
+
+	private static Date dateFrom(LocalDateTime localDateTime) {
+		return Date.from(ZonedDateTime.of(localDateTime, ZoneId.systemDefault()).toInstant());
 	}
 }

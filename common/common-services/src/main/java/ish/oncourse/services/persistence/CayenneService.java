@@ -4,7 +4,6 @@ import ish.math.MoneyType;
 import ish.oncourse.listeners.IshVersionListener;
 import ish.oncourse.services.lifecycle.*;
 import ish.oncourse.services.site.IWebSiteService;
-import net.sf.ehcache.CacheManager;
 import org.apache.cayenne.DataChannel;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataNode;
@@ -49,13 +48,6 @@ public class CayenneService implements ICayenneService, RegistryShutdownListener
 		logger.info("CayenneService starting SUCCESS.");
 	}
 
-
-	public CayenneService(IWebSiteService webSiteService, CacheManager cacheManager) {
-		this(ServerRuntime.builder()
-						.addConfig("cayenne-oncourse.xml")
-						.addModule(new ISHModule(cacheManager)).build(),
-				webSiteService);
-	}
 
 	/**
 	 * @see ICayenneService#newContext()

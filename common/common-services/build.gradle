@@ -1,33 +1,17 @@
-configurations { providedCompile }
+apply from: "$rootDir/gradle/functions.gradle"
+apply from: "$rootDir/gradle/tapestry.gradle"
 
-sourceSets.main.java.srcDirs = []
-sourceSets.main.groovy.srcDir 'src/main/java'
-
-sourceSets.test.java.srcDirs = []
-sourceSets.test.groovy.srcDir 'src/test/java'
-
-//groovy compile should read source files in UTF-8
-//because some tests (ish.oncourse.services.textile.TextileUtilTest.test_unicodeQuotesEncoding)
-//use UTF-8 chars
-compileGroovy.options.encoding = 'UTF-8'
-compileTestGroovy.options.encoding = 'UTF-8'
+apply plugin: 'groovy'
+apply plugin: 'java'
 
 dependencies {
 	compile project(':common:common-model')
 
-	//web and cms application use java 7, and cannot use solr 6+
-	compile (project(':common:common-functions')) {
-		exclude group: 'org.apache.solr'
-	}
-	compile group: 'org.apache.solr', name: 'solr-solrj', version: '5.5.4'
+	compile (project(':common:common-functions'))
 
 	compile 'commons-collections:commons-collections:3.2.1'
 	compile 'commons-logging:commons-logging:1.1.1'
-	compile 'commons-lang:commons-lang:2.6'
-	compile 'velocity:velocity:1.3.1'
-	compile 'org.apache.tapestry:tapestry-core:5.2.6'
-	compile 'org.apache.tapestry:tapestry5-annotations:5.2.6'
-	compile 'joda-time:joda-time:1.6.2'
+
 	compile 'net.htmlparser.jericho:jericho-html:3.2'
 
     //the jackson verson does not have problem with initializing in hot deployed wars
@@ -43,7 +27,3 @@ dependencies {
 
 	testCompile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: mariadbVersion
 }
-
-sourceSets.main.compileClasspath += configurations.providedCompile
-sourceSets.test.compileClasspath += configurations.providedCompile
-sourceSets.test.runtimeClasspath += configurations.providedCompile

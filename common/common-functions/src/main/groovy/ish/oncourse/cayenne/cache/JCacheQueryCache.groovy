@@ -13,13 +13,20 @@ import java.util.concurrent.ConcurrentHashMap
 
 class JCacheQueryCache implements QueryCache {
 
-    @Inject
-    protected CacheManager cacheManager
-    
-    @Inject
-    protected JCacheConfigurationFactory configurationFactory
+
+    protected final CacheManager cacheManager
+
+    protected final JCacheConfigurationFactory configurationFactory
+
+    private final JCacheDefaultConfigurationFactory.GetOrCreateCache getOrCreateCache
 
     private Set<String> seenCacheNames = Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>())
+
+    JCacheQueryCache(@Inject CacheManager cacheManager, @Inject JCacheConfigurationFactory configurationFactory) {
+        this.cacheManager = cacheManager
+        this.configurationFactory = configurationFactory
+        getOrCreateCache = new JCacheDefaultConfigurationFactory.GetOrCreateCache(this.cacheManager)
+    }
 
     @Override
     List get(QueryMetadata metadata) {
@@ -35,11 +42,11 @@ class JCacheQueryCache implements QueryCache {
         Cache<String, List> cache = createIfAbsent(metadata)
 
         List<?> result = cache.get(key)
-        return result?: (List)cache.invoke(key, new JCacheEntryLoader(factory))
+        return result ?: (List) cache.invoke(key, new JCacheEntryLoader(factory))
     }
 
     @Override
-     void put(QueryMetadata metadata, List results) {
+    void put(QueryMetadata metadata, List results) {
         String key = Objects.requireNonNull(metadata.getCacheKey())
         Cache<String, List> cache = createIfAbsent(metadata)
 
@@ -47,7 +54,7 @@ class JCacheQueryCache implements QueryCache {
     }
 
     @Override
-     void remove(String key) {
+    void remove(String key) {
         if (key != null) {
             for (String cache : cacheManager.cacheNames) {
                 getCache(cache).remove(key)
@@ -56,7 +63,7 @@ class JCacheQueryCache implements QueryCache {
     }
 
     @Override
-     void removeGroup(String groupKey) {
+    void removeGroup(String groupKey) {
         Cache<String, List> cache = getCache(groupKey)
         if (cache != null) {
             cache.clear()
@@ -69,7 +76,7 @@ class JCacheQueryCache implements QueryCache {
     }
 
     @Override
-     void clear() {
+    void clear() {
         for (String name : seenCacheNames) {
             getCache(name).clear()
         }
@@ -77,7 +84,7 @@ class JCacheQueryCache implements QueryCache {
 
     @Override
     @Deprecated
-     int size() {
+    int size() {
         return -1
     }
 
@@ -117,18 +124,11 @@ class JCacheQueryCache implements QueryCache {
     }
 
     protected String cacheName(QueryMetadata metadata) {
-
-        String[] cacheGroup = metadata.cacheGroups
-        if (cacheGroup && cacheGroup[0]) {
-            return cacheGroup[0]
-        }
-
-        // no explicit cache group
-        return JCacheConstants.DEFAULT_CACHE_NAME
+        return metadata.cacheGroup ? metadata.cacheGroup : JCacheConstants.DEFAULT_CACHE_NAME
     }
 
     @BeforeScopeEnd
-     void shutdown() {
+    void shutdown() {
         cacheManager.close()
     }
 }

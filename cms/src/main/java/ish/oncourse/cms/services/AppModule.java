@@ -6,7 +6,6 @@ import ish.oncourse.cms.services.access.PageAccessDispatcher;
 import ish.oncourse.cms.services.site.CMSWebSiteVersionService;
 import ish.oncourse.linktransform.PageLinkTransformer;
 import ish.oncourse.model.WebSiteLayout;
-import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.cache.IRequestCacheService;
 import ish.oncourse.services.cache.RequestCacheService;
@@ -43,7 +42,7 @@ import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
  * The module that is automatically included as part of the Tapestry IoC
  * registry.
  */
-@SubModule({ ModelModule.class, ServiceModule.class, UIModule.class })
+@ImportModule({ ServiceModule.class, UIModule.class })
 		
 public class AppModule {
 
@@ -74,13 +73,6 @@ public class AppModule {
         configuration.add(MetaDataConstants.SECURE_PAGE, "true");
 	}
 	
-	@EagerLoad
-	public static IJMXInitService buildJMXInitService(ApplicationGlobals applicationGlobals, RegistryShutdownHub hub) {
-		JMXInitService jmxService = new JMXInitService(applicationGlobals,"cms","ish.oncourse:type=CmsApplicationData");
-		hub.addRegistryShutdownListener(jmxService);
-		return jmxService;
-	}
-
 	/**
 	 * Contribute access control checker.
 	 */

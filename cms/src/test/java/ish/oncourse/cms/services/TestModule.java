@@ -2,11 +2,9 @@ package ish.oncourse.cms.services;
 
 import ish.oncourse.cms.services.access.IAuthenticationService;
 import ish.oncourse.model.*;
-import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.access.AuthenticationStatus;
 import ish.oncourse.services.environment.IEnvironmentService;
-import ish.oncourse.services.jndi.ILookupService;
 import ish.oncourse.services.menu.IWebMenuService;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.node.IWebNodeTypeService;
@@ -21,8 +19,8 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
+import org.apache.tapestry5.ioc.annotations.ImportModule;
 import org.apache.tapestry5.ioc.annotations.Local;
-import org.apache.tapestry5.ioc.annotations.SubModule;
 import org.apache.tapestry5.services.*;
 import org.mockito.Matchers;
 
@@ -34,7 +32,7 @@ import java.util.Date;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
-@SubModule({ ModelModule.class, ServiceModule.class, UIModule.class })
+@ImportModule({ ServiceModule.class, UIModule.class })
 public class TestModule {
 
 
@@ -48,16 +46,6 @@ public class TestModule {
 
     public void contributeRequestHandler(OrderedConfiguration<RequestFilter> configuration, @Local RequestFilter logFilter) {
         configuration.override("LogFilter", logFilter);
-    }
-
-    public ILookupService buildLookupServiceOverride() {
-        ILookupService mockService = mock(ILookupService.class);
-        return mockService;
-    }
-
-    public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration,
-                                          @Local ILookupService lookupServiceOverride) {
-        configuration.add(ILookupService.class, lookupServiceOverride);
     }
 
     public IPropertyService buildPropertyServiceOverride() {

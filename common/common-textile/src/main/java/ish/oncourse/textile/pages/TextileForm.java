@@ -35,7 +35,7 @@ public class TextileForm {
 	private static final String EMAIL_DELIMITER = ",";
 
 	@Property
-	private static final String EMAIL_FIELD_NAME = "ish.formEmailTo";
+	private final String EMAIL_FIELD_NAME = "ish.formEmailTo";
 
 	@Inject
 	private Request request;

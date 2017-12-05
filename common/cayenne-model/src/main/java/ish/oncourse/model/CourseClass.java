@@ -11,11 +11,12 @@ import ish.util.DiscountUtils;
 import org.apache.cayenne.DataRow;
 import org.apache.cayenne.query.*;
 import org.apache.commons.lang.StringUtils;
-import org.joda.time.DateTime;
-import org.joda.time.format.ISODateTimeFormat;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class CourseClass extends _CourseClass implements Queueable, CourseClassInterface {
@@ -151,13 +152,11 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 	}
 
 	public String getIsoStartDate() {
-		DateTime dt = new DateTime(getStartDate());
-		return dt.toString(ISODateTimeFormat.basicDate());
+		return LocalDateTime.from(getStartDate().toInstant()).format(DateTimeFormatter.ISO_INSTANT);
 	}
 
 	public String getIsoEndDate() {
-		DateTime dt = new DateTime(getEndDate());
-		return dt.toString(ISODateTimeFormat.basicDate());
+		return LocalDateTime.from(getEndDate().toInstant()).format( DateTimeFormatter.ISO_INSTANT);
 	}
 
 	public boolean hasFeeIncTax(BigDecimal overriddenTaxRate) {

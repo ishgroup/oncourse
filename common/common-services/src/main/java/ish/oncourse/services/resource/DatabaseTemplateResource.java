@@ -72,4 +72,9 @@ public class DatabaseTemplateResource implements org.apache.tapestry5.ioc.Resour
 	public String getPath() {
 		return null;
 	}
+
+	@Override
+	public boolean isVirtual() {
+		return false;
+	}
 }

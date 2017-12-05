@@ -9,7 +9,7 @@ import ish.oncourse.admin.services.ntis.NTISUpdaterImpl;
 import ish.oncourse.admin.services.ntis.OrganisationServiceBuilder;
 import ish.oncourse.admin.services.ntis.TrainingComponentServiceBuilder;
 import ish.oncourse.admin.services.storage.S3ServiceBuilder;
-import ish.oncourse.model.services.ModelModule;
+import ish.oncourse.services.BinderFunctions;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.cache.IRequestCacheService;
 import ish.oncourse.services.cache.RequestCacheService;
@@ -23,8 +23,8 @@ import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.EagerLoad;
+import org.apache.tapestry5.ioc.annotations.ImportModule;
 import org.apache.tapestry5.ioc.annotations.Local;
-import org.apache.tapestry5.ioc.annotations.SubModule;
 import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
 import org.apache.tapestry5.services.ApplicationGlobals;
 
@@ -33,7 +33,7 @@ import org.apache.tapestry5.services.ApplicationGlobals;
  * Willow Admin application service module.
  * 
  */
-@SubModule({ ModelModule.class, ServiceModule.class })
+@ImportModule({ServiceModule.class })
 public class AppModule {
 
 	public static void bind(ServiceBinder binder) {
@@ -45,14 +45,10 @@ public class AppModule {
 		binder.bind(IWebSiteVersionService.class, WebSiteVersionServiceOverride.class).withId("WebSiteVersionServiceAdmin");
 		binder.bind(IS3Service.class, new S3ServiceBuilder()).withId("s3ServiceAdmin");
 		binder.bind(IRequestCacheService.class, RequestCacheService.class);
+
+		binder.bind(IJMXInitService.class, new  BinderFunctions.JMXInitServiceBuilder("admin"));
 	}
 	
-	@EagerLoad
-	public static IJMXInitService buildJMXInitService(ApplicationGlobals applicationGlobals, RegistryShutdownHub hub) {
-		JMXInitService jmxService = new JMXInitService(applicationGlobals,"admin","ish.oncourse:type=AdminApplicationData");
-		hub.addRegistryShutdownListener(jmxService);
-		return jmxService;
-	}
 
 	public static void contributeApplicationDefaults(
 			MappedConfiguration<String, String> configuration) {

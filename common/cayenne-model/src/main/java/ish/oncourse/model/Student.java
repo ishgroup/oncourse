@@ -6,9 +6,6 @@ import ish.oncourse.model.auto._Student;
 import ish.oncourse.utils.QueueableObjectUtils;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.joda.time.Period;
-import org.joda.time.PeriodType;
-
 import java.util.Calendar;
 import java.util.List;
 
@@ -37,21 +34,6 @@ public class Student extends _Student implements Queueable {
 		setLabourForceType(labourForceStatus.getDatabaseValue());
 	}
 
-	/**
-	 * @return the number of years since the contact's birth date.
-	 */
-	public Integer getYearsOfAge() {
-
-		Integer age = null;
-
-		if ((getContact() == null) || (getContact().getDateOfBirth() == null)) {
-			Period interval = new Period(getContact().getDateOfBirth().getTime(),
-					System.currentTimeMillis(), PeriodType.years());
-			age = interval.getYears();
-		}
-
-		return age;
-	}
 
 	public WaitingList getActiveWaitingListForCourse(Course course) {
 

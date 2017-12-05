@@ -3,9 +3,8 @@ package ish.oncourse.model;
 import ish.oncourse.cayenne.SessionInterface;
 import ish.oncourse.model.auto._Session;
 import ish.oncourse.utils.QueueableObjectUtils;
-import org.joda.time.Period;
-import org.joda.time.PeriodType;
 
+import java.time.Duration;
 import java.util.Date;
 
 public class Session extends _Session implements Queueable, SessionInterface {
@@ -22,8 +21,9 @@ public class Session extends _Session implements Queueable, SessionInterface {
 	public Long getDurationMinutes() {
 		Long minutes = null;
 		if ((getStartDate() != null) && (getEndDate() != null)) {
-			Period duration = new Period(getStartDate().getTime(), getEndDate().getTime(), PeriodType.minutes());
-			minutes = (long) duration.getMinutes();
+
+			Duration duration = Duration.between(getStartDate().toInstant(),getEndDate().toInstant());
+			minutes = duration.toMinutes();
 		}
 		return minutes;
 	}

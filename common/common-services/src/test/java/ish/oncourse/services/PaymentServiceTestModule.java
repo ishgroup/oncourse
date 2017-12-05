@@ -20,8 +20,6 @@ import ish.oncourse.services.format.FormatService;
 import ish.oncourse.services.format.IFormatService;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.html.JerichoPlainTextExtractor;
-import ish.oncourse.services.jndi.ILookupService;
-import ish.oncourse.services.jndi.LookupService;
 import ish.oncourse.services.location.IPostCodeDbService;
 import ish.oncourse.services.location.PostCodeDbService;
 import ish.oncourse.services.menu.IWebMenuService;
@@ -35,8 +33,6 @@ import ish.oncourse.services.node.WebNodeTypeService;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.payment.PaymentService;
 import ish.oncourse.services.paymentexpress.*;
-import ish.oncourse.services.persistence.CayenneService;
-import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
 import ish.oncourse.services.property.IPropertyService;
@@ -64,11 +60,12 @@ import ish.oncourse.util.ComponentPageResponseRenderer;
 import ish.oncourse.util.IComponentPageResponseRenderer;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.PageRenderer;
-import net.sf.ehcache.CacheManager;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.EagerLoad;
 import org.apache.tapestry5.ioc.annotations.Scope;
 import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
+
+import javax.cache.CacheManager;
 
 public class PaymentServiceTestModule {
 	
@@ -107,7 +104,6 @@ public class PaymentServiceTestModule {
 		binder.bind(IWebUrlAliasService.class, WebUrlAliasService.class);
 		binder.bind(IWebNodeTypeService.class, WebNodeTypeService.class);
 		binder.bind(IDiscountService.class, DiscountService.class);
-		binder.bind(ILookupService.class, LookupService.class);
 		binder.bind(IPaymentService.class, PaymentService.class);
         binder.bind(IMessagePersonService.class, MessagePersonService.class);
         binder.bind(IPlainTextExtractor.class, JerichoPlainTextExtractor.class);
@@ -122,14 +118,7 @@ public class PaymentServiceTestModule {
 		
 		binder.bind(IPaymentGatewayServiceBuilder.class, PaymentGatewayServiceBuilder.class);
 		binder.bind(INewPaymentGatewayServiceBuilder.class, NewPaymentGatewayServiceBuilder.class);
-		binder.bind(CacheManager.class, new ServiceModule.CacheManagerBuilder()).eagerLoad();
-	}
-	
-	@EagerLoad
-	public static ICayenneService buildCayenneService(RegistryShutdownHub hub, IWebSiteService webSiteService, CacheManager cacheManager) {
-		CayenneService cayenneService = new CayenneService(webSiteService, cacheManager);
-		hub.addRegistryShutdownListener(cayenneService);
-		return cayenneService;
+		binder.bind(CacheManager.class, new BinderFunctions.CacheManagerBuilder()).eagerLoad();
 	}
 	
 	@Scope("perthread")

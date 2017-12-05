@@ -25,7 +25,6 @@ import ish.oncourse.services.system.CollegeService;
 import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherService;
-import net.sf.ehcache.CacheManager;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
@@ -35,9 +34,6 @@ import java.util.TimeZone;
 public class CmsTestModule {
 
 	public static void bind(ServiceBinder binder) {
-
-		binder.bind(CacheManager.class, new ServiceModule.CacheManagerBuilder()).eagerLoad();
-		binder.bind(ICayenneService.class, new ServiceModule.CayenneServiceBuilder()).eagerLoad();
 
 		binder.bind(PreferenceController.class);
 

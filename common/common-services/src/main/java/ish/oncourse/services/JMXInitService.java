@@ -1,10 +1,11 @@
 /*
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
  */
-package ish.oncourse.services.jmx;
+package ish.oncourse.services;
 
 import ish.oncourse.mbean.ApplicationData;
 import ish.oncourse.mbean.MBeanRegisterUtil;
+import ish.oncourse.services.jmx.IJMXInitService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.services.ApplicationGlobals;
@@ -23,11 +24,11 @@ public class JMXInitService implements IJMXInitService, Runnable {
 	private ObjectName applicationDataInstance;
 
 	public JMXInitService(ApplicationGlobals applicationGlobals,
-						  DataSource dataSource, String name) {
+						  DataSource dataSource) {
 		logger.info("JMX service init started.");
 		ObjectName newApplicationDataInstance = null;
 		try {
-			newApplicationDataInstance = new ObjectName("ish.oncourse:type=" + name + "ApplicationData");
+			newApplicationDataInstance = new ObjectName("ish.oncourse:type=PortalApplicationData");
 		} catch (MalformedObjectNameException | NullPointerException e) {
 			logger.error(e.getMessage(), e);
 		}
@@ -37,7 +38,7 @@ public class JMXInitService implements IJMXInitService, Runnable {
 				unregisterObjectName(newApplicationDataInstance);
 			}
 		}
-		MBeanRegisterUtil.registerMbeanService(new ApplicationData(name, applicationGlobals, dataSource), applicationDataInstance);
+		MBeanRegisterUtil.registerMbeanService(new ApplicationData("portal", applicationGlobals, dataSource), applicationDataInstance);
 		logger.info("JMX service init finished.");
 	}
 

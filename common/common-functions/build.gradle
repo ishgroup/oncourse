@@ -1,5 +1,3 @@
-configurations { providedCompile }
-
 sourceSets.main.java.srcDirs = []
 sourceSets.main.groovy.srcDir 'src/main/java'
 
@@ -15,11 +13,12 @@ compileTestGroovy.options.encoding = 'UTF-8'
 dependencies {
     compile project(':common:cayenne-model')
     compile group: 'javax.cache', name: 'cache-api', version: '1.0.0'
+    compile group: 'org.ehcache', name: 'ehcache', version:  ehcacheVersion
     compile group: 'javax.servlet', name: 'servlet-api', version: '3.0'
     compile group: 'axis', name : 'axis', version: '1.4'
     compile group: 'org.apache.solr', name: 'solr-solrj', version: solrVersion
     compile 'commons-httpclient:commons-httpclient:3.1'
     compile 'net.java.dev.textile-j:textile-j:2.2.864'
 
-    testCompile project(path: ':common:common-test', configuration: 'testFixtures')
+    testCompile project(':common:test-functions')
 }

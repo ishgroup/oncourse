@@ -6,12 +6,10 @@ import ish.oncourse.services.application.ApplicationServiceImpl;
 import ish.oncourse.services.application.IApplicationService;
 import ish.oncourse.services.binary.BinaryDataService;
 import ish.oncourse.services.binary.IBinaryDataService;
-import org.apache.tapestry5.internal.pageload.WebCacheService;
 import ish.oncourse.services.contact.ContactServiceImpl;
 import ish.oncourse.services.contact.IContactService;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.content.WebContentService;
-import ish.oncourse.services.content.cache.ContentEHCacheService;
 import ish.oncourse.services.content.cache.IContentCacheService;
 import ish.oncourse.services.content.cache.IContentKeyFactory;
 import ish.oncourse.services.content.cache.WillowContentKeyFactory;
@@ -37,8 +35,6 @@ import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.format.FormatService;
 import ish.oncourse.services.format.IFormatService;
 import ish.oncourse.services.html.*;
-import ish.oncourse.services.jndi.ILookupService;
-import ish.oncourse.services.jndi.LookupService;
 import ish.oncourse.services.location.IPostCodeDbService;
 import ish.oncourse.services.location.PostCodeDbService;
 import ish.oncourse.services.mail.IMailService;
@@ -54,9 +50,7 @@ import ish.oncourse.services.node.WebNodeTypeService;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.payment.PaymentService;
 import ish.oncourse.services.paymentexpress.*;
-import ish.oncourse.services.persistence.CayenneService;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.persistence.UnregisterMBeans;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
 import ish.oncourse.services.property.IPropertyService;
@@ -94,19 +88,17 @@ import ish.oncourse.services.visitor.ParsedContentVisitor;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherService;
 import ish.oncourse.util.*;
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.management.ManagementService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.SymbolConstants;
-import org.apache.tapestry5.ioc.*;
-import org.apache.tapestry5.ioc.annotations.EagerLoad;
+import org.apache.tapestry5.ioc.Configuration;
+import org.apache.tapestry5.ioc.MappedConfiguration;
+import org.apache.tapestry5.ioc.ScopeConstants;
+import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Local;
-import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
 import org.apache.tapestry5.services.LibraryMapping;
 
-import javax.management.MBeanServer;
-import java.lang.management.ManagementFactory;
+import javax.cache.CacheManager;
 
 import static org.apache.commons.lang3.StringUtils.trimToNull;
 
@@ -175,7 +167,6 @@ public class ServiceModule {
 		binder.bind(IWebNodeTypeService.class, WebNodeTypeService.class);
 		binder.bind(IWebTemplateService.class, WebTemplateService.class);
 		binder.bind(IDiscountService.class, DiscountService.class);
-		binder.bind(ILookupService.class, LookupService.class);
 		binder.bind(IPaymentService.class, PaymentService.class);
 		binder.bind(IMessagePersonService.class, MessagePersonService.class);
 		binder.bind(IEnrolmentService.class, EnrolmentServiceImpl.class);
@@ -204,20 +195,16 @@ public class ServiceModule {
 
 		binder.bind(IApplicationService.class, ApplicationServiceImpl.class);
 
-		binder.bind(IContentCacheService.class, ContentEHCacheService.class);
+		binder.bind(IContentCacheService.class, new BinderFunctions.ContentCacheServiceBuilder());
 		binder.bind(IContentKeyFactory.class, WillowContentKeyFactory.class).scope(ScopeConstants.PERTHREAD);
-		binder.bind(CacheManager.class, new CacheManagerBuilder()).eagerLoad();
-		binder.bind(WebCacheService.class, WebCacheService.class);
+		binder.bind(CacheManager.class, new BinderFunctions.CacheManagerBuilder()).eagerLoad();
 
 		binder.bind(IPaymentGatewayServiceBuilder.class, ish.oncourse.services.paymentexpress.PaymentGatewayServiceBuilder.class);
-		binder.bind(IPaymentGatewayService.class, new PaymentGatewayServiceBuilder()).scope("perthread");
+		binder.bind(IPaymentGatewayService.class, new BinderFunctions.PaymentGatewayServiceBuilder()).scope("perthread");
 		binder.bind(INewPaymentGatewayServiceBuilder.class, NewPaymentGatewayServiceBuilder.class);
-		binder.bind(INewPaymentGatewayService.class, new PaymentGatewayBuilder()).scope("perthread");
-	}
+		binder.bind(INewPaymentGatewayService.class, new BinderFunctions.PaymentGatewayBuilder()).scope("perthread");
 
-	@EagerLoad
-	public static ICayenneService buildCayenneService(RegistryShutdownHub hub, IWebSiteService webSiteService, CacheManager cacheManager) {
-		return new CayenneServiceBuilder().build(hub, webSiteService, cacheManager);
+		binder.bind(ICayenneService.class, new BinderFunctions.CayenneServiceBuilder()).eagerLoad();
 	}
 
 	public void contributeApplicationDefaults(MappedConfiguration<String, String> configuration, @Local IEnvironmentService environmentService) {
@@ -250,65 +237,5 @@ public class ServiceModule {
 
 	public void contributeComponentClassResolver(Configuration<LibraryMapping> configuration) {
 		configuration.add(new LibraryMapping("ish", "ish.oncourse"));
-	}
-
-
-	public static class CacheManagerBuilder implements ServiceBuilder<CacheManager> {
-		public CacheManager buildService() {
-			CacheManager cacheManager = CacheManager.create(ServiceModule.class.getClassLoader().getResource("ehcache.xml"));
-
-			Integer cacheCapacity = ContextUtil.getCacheCapacity();
-
-			if (cacheCapacity != null) {
-				cacheManager.getConfiguration().getDefaultCacheConfiguration().setMaxEntriesLocalHeap(cacheCapacity);
-			}
-			try {
-				MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
-				UnregisterMBeans.valueOf(cacheManager, mBeanServer).unregister();
-				ManagementService.registerMBeans(cacheManager, mBeanServer, true, true, true, true);
-			} catch (Exception e) {
-				logger.error("Cannot register MBeans for  cacheManager \"{}\".", cacheManager.getName(), e);
-			}
-			return cacheManager;
-		}
-
-		@Override
-		public CacheManager buildService(ServiceResources resources) {
-			return buildService();
-		}
-	}
-
-	public static class CayenneServiceBuilder implements ServiceBuilder<ICayenneService> {
-		public ICayenneService build(RegistryShutdownHub hub, IWebSiteService webSiteService, CacheManager cacheManager) {
-			CayenneService cayenneService = new CayenneService(webSiteService, cacheManager);
-			hub.addRegistryShutdownListener(cayenneService);
-			return cayenneService;
-		}
-
-		@Override
-		public ICayenneService buildService(ServiceResources resources) {
-			RegistryShutdownHub hub = resources.getService(RegistryShutdownHub.class);
-			IWebSiteService webSiteService = resources.getService(IWebSiteService.class);
-			CacheManager cacheManager = resources.getService(CacheManager.class);
-			return build(hub, webSiteService, cacheManager);
-		}
-	}
-
-
-	public static class PaymentGatewayServiceBuilder implements ServiceBuilder<IPaymentGatewayService> {
-		@Override
-		public IPaymentGatewayService buildService(ServiceResources resources) {
-			IPaymentGatewayServiceBuilder builder = resources.getService(IPaymentGatewayServiceBuilder.class);
-			return builder.buildService();
-		}
-	}
-
-
-	public static class PaymentGatewayBuilder implements ServiceBuilder<INewPaymentGatewayService> {
-		@Override
-		public INewPaymentGatewayService buildService(ServiceResources resources) {
-			INewPaymentGatewayServiceBuilder builder = resources.getService(INewPaymentGatewayServiceBuilder.class);
-			return builder.buildService();
-		}
 	}
 }

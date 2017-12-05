@@ -1,9 +1,7 @@
 package ish.oncourse.services.reference;
 
 import org.apache.cayenne.Persistent;
-import org.apache.tapestry5.ioc.annotations.Inject;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.SortedSet;
@@ -50,7 +48,7 @@ public abstract class ReferenceService {
 
 		}
 
-		return (versions.size() > 0) ? versions.last() : 0;
+		return (versions.size() > 0) ? versions.last() : 0L;
 	}
 	
 	/**

@@ -5,7 +5,7 @@ import ish.common.types.EnrolmentStatus;
 import ish.math.Money;
 import ish.oncourse.model.*;
 import ish.oncourse.model.auto._Discount;
-import ish.oncourse.test.ContextUtils;
+import ish.oncourse.test.TestContext;
 import org.apache.cayenne.ObjectContext;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -89,9 +89,8 @@ public class GetDiscountForEnrolmentTest extends AbstractGetDiscountForEnrolment
 	public static void initPolicy() throws Exception {
 		testDate = new GregorianCalendar();
 
-		ContextUtils.setupDataSources();
-
-		context = ContextUtils.createObjectContext();
+		TestContext testContext = new TestContext();
+		testContext.open();
 
 		// prepare and commit data that should be stored(to prevent using of
 		// temp records as query parameters)

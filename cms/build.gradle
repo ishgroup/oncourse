@@ -4,35 +4,22 @@ configurations {
     closureCompiler
 }
 dependencies {
-    providedCompile 'javax.servlet:servlet-api:3.0'
 
     compile (project(':common:common-ui'))
 
+    compile 'javax.servlet:servlet-api:3.0'
     compile 'org.apache.commons:commons-compress:1.9'
 	compile 'commons-logging:commons-logging:1.1.1'
-	compile 'org.apache.tapestry:tapestry-core:5.2.6'
-	compile 'org.apache.tapestry:tapestry-json:5.2.6'
-	compile 'org.apache.tapestry:tapestry-upload:5.2.6'
     compile 'io.milton:milton-api:2.6.0.1'
     compile 'io.milton:milton-server-ce:2.6.0.1'
     compile 'org.reflections:reflections:0.9.11'
 
     compile 'com.google.javascript:closure-compiler:v20170218'
-    closureCompiler 'com.google.javascript:closure-compiler:v20170218'
-
-    testCompile 'org.apache.tapestry:tapestry-test:5.2.6'
 
 	// The odd next line is to work around gradle pulling in the wrong configuration
 	// http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency
 	testCompile project(path: ':common:common-test', configuration: 'testFixtures')
 }
-
-//we need the lines to be sure that org.apache.tapestry:tapestry-test will be added after
-// com.google.javascript:closure-compiler. org.apache.tapestry:tapestry-test contains
-// the old version of com.google.common.collect.ImmutableSet which is not computable with our tests
-sourceSets.test.runtimeClasspath = configurations.closureCompiler + sourceSets.test.runtimeClasspath
-sourceSets.test.compileClasspath = configurations.closureCompiler + sourceSets.test.compileClasspath
-
 
 war {
 	archiveName = 'cms.war'
