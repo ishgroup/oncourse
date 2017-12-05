@@ -1,6 +1,6 @@
 package ish.oncourse.ui.components;
 
-import ish.oncourse.components.ISHCommon;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.Product;
 import ish.oncourse.ui.utils.CourseItemModel;
 import org.apache.tapestry5.annotations.Parameter;

@@ -1,6 +1,6 @@
 package ish.oncourse.ui.components;
 
-import ish.oncourse.components.ISHCommon;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Discount;
 import ish.oncourse.services.discount.IDiscountService;
@@ -9,7 +9,6 @@ import ish.oncourse.services.site.IWebSiteService;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 
 import java.util.List;
 
@@ -21,9 +20,6 @@ import java.util.List;
  * 
  */
 public class PromoCodesView extends ISHCommon {
-
-	@Inject
-	private Request request;
 
 	/**
 	 * The service to manipulate with discounts.

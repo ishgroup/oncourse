@@ -1,6 +1,6 @@
 package ish.oncourse.ui.components;
 
-import ish.oncourse.components.ISHCommon;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.ui.components.internal.DataLayer;
 import org.apache.commons.lang.StringUtils;

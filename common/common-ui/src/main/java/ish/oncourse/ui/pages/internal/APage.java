@@ -1,6 +1,6 @@
 package ish.oncourse.ui.pages.internal;
 
-import ish.oncourse.components.ISHCommon;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebNodeType;
 import ish.oncourse.services.html.IFacebookMetaProvider;
@@ -33,9 +33,6 @@ public abstract class APage extends ISHCommon {
 
 
     private WebNode node;
-
-    @Inject
-    private Request request;
 
     @Inject
     private RequestGlobals requestGlobals;

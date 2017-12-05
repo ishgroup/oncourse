@@ -1,7 +1,7 @@
 package ish.oncourse.ui.components;
 
 import ish.math.Money;
-import ish.oncourse.components.ISHCommon;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.*;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.CheckClassAge;
@@ -24,7 +24,6 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 
 import java.text.Format;
 import java.util.*;
@@ -110,9 +109,6 @@ public class CourseClassItem extends ISHCommon {
 
 	@Property
 	private List<TutorRole> visibleTutorRoles;
-	
-	@Inject
-	private Request request;
 	
 	private List<Session> timelineableSessions;
 

@@ -1,6 +1,6 @@
 package ish.oncourse.ui.components;
 
-import ish.oncourse.components.ISHCommon;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.Session;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.textile.ITextileConverter;

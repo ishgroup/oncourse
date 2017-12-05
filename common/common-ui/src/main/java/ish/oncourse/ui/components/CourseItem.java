@@ -2,7 +2,7 @@ package ish.oncourse.ui.components;
 
 import ish.common.types.CourseEnrolmentType;
 import ish.math.Money;
-import ish.oncourse.components.ISHCommon;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.*;
 import ish.oncourse.services.application.IApplicationService;
 import ish.oncourse.services.contact.IContactService;
@@ -26,7 +26,6 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 
 import java.util.Stack;
 import java.util.regex.Matcher;
@@ -70,10 +69,6 @@ public class CourseItem extends ISHCommon {
 	@Inject
 	private ICourseService courseService;
 	
-	@Inject
-	private Request request;
-
-
     @Property
     @Parameter(required = true)
     private CourseItemModel courseItemModel;

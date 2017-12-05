@@ -1,6 +1,6 @@
 package ish.oncourse.ui.components.internal;
 
-import ish.oncourse.components.ISHCommon;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.WebContentVisibility;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.services.preference.PreferenceController;

@@ -1,6 +1,6 @@
 package ish.oncourse.ui.components;
 
-import ish.oncourse.components.ISHCommon;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.services.format.FormatName;
 import ish.oncourse.services.format.IFormatService;
 import ish.oncourse.services.site.IWebSiteService;

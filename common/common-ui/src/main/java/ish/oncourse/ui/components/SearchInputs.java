@@ -1,6 +1,6 @@
 package ish.oncourse.ui.components;
 
-import ish.oncourse.components.ISHCommon;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.SearchParam;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.tag.ITagService;
@@ -30,10 +30,6 @@ public class SearchInputs extends ISHCommon {
 	private static final String SEARCH_TAG_NAMES_SEPARATOR = ";";
 	@Inject
 	private ITagService tagService;
-
-	@Inject
-	@Property
-	private Request request;
 
 	@Property
 	private String advKeyword;

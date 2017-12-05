@@ -3,13 +3,11 @@
  */
 package ish.oncourse.ui.components;
 
-import ish.oncourse.components.ISHCommon;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.CourseClass;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.SetupRender;
-import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -19,10 +17,6 @@ public class CourseClassMetaInfo extends ISHCommon {
 
 	@Parameter
 	private String format;
-
-	@Inject
-	private Request request;
-
 
 	private CourseClass courseClass;
 

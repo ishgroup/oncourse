@@ -1,6 +1,6 @@
 package ish.oncourse.ui.components;
 
-import ish.oncourse.components.ISHCommon;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.services.courseclass.CheckClassAge;
 import ish.oncourse.services.preference.PreferenceController;
@@ -9,7 +9,6 @@ import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 
 import java.text.DecimalFormat;
 import java.text.Format;
@@ -18,9 +17,6 @@ public class CourseClassPlacesAvailable extends ISHCommon {
 
 	@Inject
 	private PreferenceController preferenceController;
-
-	@Inject
-	private Request request;
 
 	private CourseContext context;
 	

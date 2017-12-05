@@ -1,6 +1,6 @@
 package ish.oncourse.ui.components;
 
-import ish.oncourse.components.ISHCommon;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Product;
 import ish.oncourse.services.cookies.ICookiesService;
@@ -16,7 +16,6 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 
 import java.text.Format;
 import java.util.Collections;
@@ -61,9 +60,6 @@ public class ShortList extends ISHCommon {
 	
 	@Property
 	private Product product;
-
-	@Inject
-	private Request request;
 
 	@Inject
 	private Messages messages;

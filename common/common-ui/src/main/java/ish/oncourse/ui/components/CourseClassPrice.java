@@ -1,16 +1,12 @@
 package ish.oncourse.ui.components;
 
 import ish.math.Money;
-import ish.oncourse.components.ISHCommon;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Discount;
 import ish.oncourse.model.DiscountCourseClass;
-import ish.oncourse.services.discount.DiscountItem;
-import ish.oncourse.services.discount.WebDiscountUtils;
-import ish.oncourse.services.discount.IDiscountService;
+import ish.oncourse.services.discount.*;
 import ish.oncourse.services.preference.PreferenceController;
-import ish.oncourse.services.discount.GetAppliedDiscounts;
-import ish.oncourse.services.discount.GetPossibleDiscounts;
 import ish.oncourse.ui.utils.CourseContext;
 import ish.oncourse.util.FormatUtils;
 import ish.util.DiscountUtils;
@@ -18,7 +14,6 @@ import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 
 import java.math.BigDecimal;
 import java.text.Format;
@@ -66,9 +61,6 @@ public class CourseClassPrice extends ISHCommon {
 	@Parameter
 	private Money feeOverride;
 
-	@Inject
-	private Request request;
-	
 	private void fillAppliedDiscounts() {
 		CourseContext context = (CourseContext) request.getAttribute(CourseItem.COURSE_CONTEXT);
 		List<Discount> promotions = context == null ? discountService.getPromotions() : context.getDiscounts();

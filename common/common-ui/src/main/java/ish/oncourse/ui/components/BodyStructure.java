@@ -1,6 +1,6 @@
 package ish.oncourse.ui.components;
 
-import ish.oncourse.components.ISHCommon;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.College;
 import ish.oncourse.model.WebMenu;
 import ish.oncourse.model.WebNodeType;

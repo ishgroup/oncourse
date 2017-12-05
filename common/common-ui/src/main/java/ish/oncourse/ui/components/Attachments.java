@@ -1,13 +1,12 @@
 package ish.oncourse.ui.components;
 
-import ish.oncourse.components.ISHCommon;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.Document;
 import ish.oncourse.services.binary.IBinaryDataService;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,9 +43,6 @@ public class Attachments extends ISHCommon {
 
     @Property
     private Document attachment;
-
-    @Inject
-    private Request request;
 
     @SetupRender
     boolean beforeRender() {

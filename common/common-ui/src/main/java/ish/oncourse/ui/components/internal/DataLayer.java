@@ -1,6 +1,6 @@
 package ish.oncourse.ui.components.internal;
 
-import ish.oncourse.components.ISHCommon;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Product;
 import ish.oncourse.services.cookies.ICookiesService;
@@ -14,7 +14,6 @@ import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -28,9 +27,6 @@ import static ish.oncourse.services.datalayer.DataLayerFactory.Cart;
  * for Google TagManager functionality
  */
 public class DataLayer extends ISHCommon {
-
-	@Inject
-	private Request request;
 
 	@Inject
 	private ICookiesService cookiesService;

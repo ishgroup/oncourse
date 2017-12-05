@@ -1,6 +1,6 @@
 package ish.oncourse.ui.components.internal;
 
-import ish.oncourse.components.ISHCommon;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebNodeType;
 import ish.oncourse.services.html.ICacheMetaProvider;
@@ -27,9 +27,6 @@ public abstract class APageStructure extends ISHCommon {
 
     @Inject
     private IWebNodeTypeService webNodeTypeService;
-
-    @Inject
-    private Request request;
 
     @Inject
     private ComponentResources resources;

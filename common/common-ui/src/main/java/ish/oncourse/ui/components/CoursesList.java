@@ -1,6 +1,6 @@
 package ish.oncourse.ui.components;
 
-import ish.oncourse.components.ISHCommon;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.Course;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.courseclass.ICourseClassService;
@@ -9,7 +9,6 @@ import ish.oncourse.ui.utils.CourseItemModel;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 
 import java.util.Collections;
 import java.util.List;
@@ -21,10 +20,6 @@ public class CoursesList extends ISHCommon {
 
 	@Inject
 	private ICourseClassService courseClassService;
-
-	@Inject
-	@Property
-	private Request request;
 
 	@Parameter
 	private Integer coursesCount;

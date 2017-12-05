@@ -1,22 +1,17 @@
 package ish.oncourse.ui.components;
 
-import ish.oncourse.components.ISHCommon;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.Site;
 import ish.oncourse.ui.utils.JSONFormat;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
-import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class GoogleDirections extends ISHCommon {
-	@Inject
-	private Request request;
-
 	@Parameter
 	private List<Site> sites;
 

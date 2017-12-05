@@ -1,21 +1,17 @@
 package ish.oncourse.ui.components;
 
-import ish.oncourse.components.ISHCommon;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.Tag;
 import ish.oncourse.selectutils.ListSelectModel;
 import ish.oncourse.selectutils.ListValueEncoder;
 import ish.oncourse.services.tag.ITagService;
-import ish.oncourse.util.URLUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
-import org.apache.tapestry5.services.Request;
 
-import java.net.URL;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -35,9 +31,6 @@ public class CourseSearchForm extends ISHCommon {
 
 	@Inject
 	private PropertyAccess access;
-
-	@Inject
-	private Request request;
 
 	@Property
 	private String s;
@@ -83,20 +76,20 @@ public class CourseSearchForm extends ISHCommon {
 		this.tagEnc = new ListValueEncoder<>(subjectTagChildTags, "id", access);
 	}
 
-	URL onActionFromSearch() {
-		try {
-			String urlPath = String.format(URL_PATH_SEARCH_PATTERN,
-                    (s == null ? StringUtils.EMPTY : s),
-                    (subject == null ? StringUtils.EMPTY : subject.getDefaultPath()),
-                    (searchNear == null ? StringUtils.EMPTY : searchNear),
-                    (searchPrice == null ? StringUtils.EMPTY : searchPrice),
-                    (time == null ? StringUtils.EMPTY : time),
-                    (day == null ? StringUtils.EMPTY : day)
-            );
-			return URLUtils.buildURL(request, urlPath, false);
-		} catch (Exception e) {
-			logger.error(e);
-			throw new RuntimeException(e);
-		}
-	}
+//	URL onActionFromSearch() {
+//		try {
+//			String urlPath = String.format(URL_PATH_SEARCH_PATTERN,
+//                    (s == null ? StringUtils.EMPTY : s),
+//                    (subject == null ? StringUtils.EMPTY : subject.getDefaultPath()),
+//                    (searchNear == null ? StringUtils.EMPTY : searchNear),
+//                    (searchPrice == null ? StringUtils.EMPTY : searchPrice),
+//                    (time == null ? StringUtils.EMPTY : time),
+//                    (day == null ? StringUtils.EMPTY : day)
+//            );
+//			return URLUtils.buildURL(request, urlPath, false);
+//		} catch (Exception e) {
+//			logger.error(e);
+//			throw new RuntimeException(e);
+//		}
+//	}
 }

@@ -1,18 +1,13 @@
 package ish.oncourse.ui.pages.internal;
 
-import ish.oncourse.components.ISHCommon;
+import ish.oncourse.ui.base.ISHCommon;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
-import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 
 import java.util.List;
 
 public class SuburbAutocomplete extends ISHCommon {
 
-	@Inject 
-	private Request request;
-	
 	private List<String> strings;
 	
 	@Property
