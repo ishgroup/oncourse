@@ -30,7 +30,7 @@ export class DOM {
     // The same rule with backend behavior
     const domTitle = title.replace(/ /g,'');
 
-    const pageNode = document.querySelector(`#content > .block-${domTitle}`);
+    const pageNode = document.getElementById('content').getElementsByClassName(`block-${domTitle}`)[0];
 
     if (pageNode) {
       return pageNode;
