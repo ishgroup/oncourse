@@ -7,7 +7,6 @@ import ish.oncourse.services.cache.IRequestCacheService;
 import ish.oncourse.services.cache.RequestCacheService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.environment.IEnvironmentService;
-import ish.oncourse.services.jndi.ILookupService;
 import ish.oncourse.services.menu.IWebMenuService;
 import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -59,16 +58,6 @@ public class TestModule {
 	public void contributeRequestHandler(OrderedConfiguration<RequestFilter> configuration,
 			@Local RequestFilter logFilter) {
 		configuration.override("LogFilter", logFilter);
-	}
-
-	public ILookupService buildLookupServiceOverride() {
-		ILookupService mockService = mock(ILookupService.class);
-		return mockService;
-	}
-
-	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration,
-			@Local ILookupService lookupServiceOverride) {
-		configuration.add(ILookupService.class, lookupServiceOverride);
 	}
 
 	public IPropertyService buildPropertyServiceOverride() {

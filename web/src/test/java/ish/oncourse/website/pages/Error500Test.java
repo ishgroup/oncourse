@@ -1,7 +1,6 @@
 package ish.oncourse.website.pages;
 
 import ish.oncourse.services.environment.IEnvironmentService;
-import ish.oncourse.services.jndi.ILookupService;
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.Property;
 import ish.oncourse.services.site.IWebSiteVersionService;
@@ -54,16 +53,6 @@ public class Error500Test extends ServiceTest {
 
 		public void contributeRequestHandler(OrderedConfiguration<RequestFilter> configuration, @Local RequestFilter logFilter) {
 			configuration.override("LogFilter", logFilter);
-		}
-
-		public ILookupService buildLookupServiceOverride() {
-			ILookupService mockService = mock(ILookupService.class);
-			return mockService;
-		}
-
-		public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration,
-				@Local ILookupService lookupServiceOverride) {
-			configuration.add(ILookupService.class, lookupServiceOverride);
 		}
 
 		public IPropertyService buildPropertyServiceOverride() {

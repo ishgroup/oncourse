@@ -1,29 +1,27 @@
-apply plugin: 'war'
+apply plugin: 'java'
 
-dependencies {
-    providedCompile 'javax.servlet:servlet-api:3.0'
+apply from: "$rootDir/gradle/functions.gradle"
+apply from: "$rootDir/gradle/buildTapestryApp.gradle"
 
-	compile (project(':common:common-ui'))
-
-	compile 'commons-logging:commons-logging:1.1.1'
-	compile 'org.apache.tapestry:tapestry-upload:5.2.6'
-	compile 'commons-httpclient:commons-httpclient:3.1'
-
-	// The odd next line is to work around gradle pulling in the wrong configuration
-	// http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency
-	testCompile project(path: ':common:common-test', configuration: 'testFixtures')	
+configurations {
+	all*.exclude group: 'org.apache.tapestry', module: 'tapestry-spring'
 }
 
-war {
-	archiveName = 'web.war'
-	manifest {
-		from sharedManifest
-	}
 
-	from 'build/resource-assemble'
-	from 'build/resource'
-	from ('src/main/static') {
-		exclude 'js'
-		exclude 'src'
+dependencies {
+	compile (project(':common:common-ui'))
+	// The odd next line is to work around gradle pulling in the wrong configuration
+	// http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency
+	testCompile project(path: ':common:common-test', configuration: 'testFixtures')
+}
+
+
+jar {
+	from "${buildDir}/resource-assemble"
+	from "${buildDir}/resource"
+	from ('src/main') {
+		include 'static/**/*'
+		exclude 'static/js'
+		exclude 'static/src'
 	}
 }

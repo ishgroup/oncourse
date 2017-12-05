@@ -1,11 +1,13 @@
 buildscript {
 	ext {
 		cayenneVersion = '4.0.B1'
+		ehcacheVersion = '3.4.0'
 		log4j2Version = '2.8.2'
         waCommonWebservicesClientVersion = '9.5.2'
 		solrVersion = '6.6.2'
 		groovyVersion = '2.4.12'
 		mariadbVersion = '2.2.0'
+		tapestryVersion = '5.4.3'
 	}
 
 	repositories {
@@ -68,8 +70,8 @@ allprojects {
 	// get the version from the command line properties
 	version = project.hasProperty('releaseVersion') ? project.releaseVersion : "SNAPSHOT"
 
-	sourceCompatibility = 1.7
-	targetCompatibility = 1.7
+	sourceCompatibility = 1.8
+	targetCompatibility = 1.8
 
 	configurations {
 		deployerJars {
@@ -144,8 +146,7 @@ allprojects {
 
 	test {
 		systemProperties 'java.awt.headless': 'true'
-		maxHeapSize = '1024m'
-		jvmArgs "-XX:MaxPermSize=256m"
+		maxHeapSize = '2048m'
 		ignoreFailures = true
 
 		jacoco {
