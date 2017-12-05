@@ -63,7 +63,7 @@ class UpdateTheme extends AbstractUpdate<Theme> {
         }
         
         
-        WebNodeType duplicate = WebNodeTypeFunctions.getWebNodeTypeByName(nodeType.name, request, context)
+        WebNodeType duplicate = WebNodeTypeFunctions.getWebNodeTypeByName(resourceToSave.title, request, context)
         if (duplicate  && duplicate.objectId != nodeType.objectId) {
             error = "Theme name must be unique"
             return this
