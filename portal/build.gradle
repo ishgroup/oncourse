@@ -1,13 +1,6 @@
-apply plugin: 'com.eriwen.gradle.js'
-apply plugin: 'com.github.robfletcher.compass'
-
 apply from: "$rootDir/gradle/buildTapestryApp.gradle"
 apply from: "$rootDir/gradle/cxf-spring.gradle"
-
-ext {
-    staticSrcPath = "src/main/static"
-    staticBuildPath = "${buildDir}/resource-assemble/static"
-}
+apply from: "$rootDir/gradle/build-static.gradle"
 
 mainClassName = 'ish.oncourse.portal.PortalApp'
 
@@ -24,16 +17,5 @@ dependencies {
     // http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency
     testCompile(project(path: ':common:common-test', configuration: 'testFixtures')) {
         exclude group: 'org.apache.tapestry'
-    }
-}
-
-apply from: "build-static.gradle"
-
-jar {
-    from "${buildDir}/resource-assemble"
-    from ('src/main') {
-        include 'static/**/*'
-        exclude 'static/js'
-        exclude 'static/src'
     }
 }

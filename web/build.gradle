@@ -1,7 +1,9 @@
-apply plugin: 'java'
-
 apply from: "$rootDir/gradle/functions.gradle"
 apply from: "$rootDir/gradle/buildTapestryApp.gradle"
+apply from: "$rootDir/gradle/build-static.gradle"
+
+
+mainClassName = 'ish.oncourse.web.WebApp'
 
 configurations {
 	all*.exclude group: 'org.apache.tapestry', module: 'tapestry-spring'
@@ -10,18 +12,7 @@ configurations {
 
 dependencies {
 	compile (project(':common:common-ui'))
-	// The odd next line is to work around gradle pulling in the wrong configuration
-	// http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency
 	testCompile project(path: ':common:common-test', configuration: 'testFixtures')
 }
 
 
-jar {
-	from "${buildDir}/resource-assemble"
-	from "${buildDir}/resource"
-	from ('src/main') {
-		include 'static/**/*'
-		exclude 'static/js'
-		exclude 'static/src'
-	}
-}

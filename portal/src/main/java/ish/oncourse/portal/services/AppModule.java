@@ -5,39 +5,13 @@ import ish.oncourse.portal.access.*;
 import ish.oncourse.portal.access.validate.AccessLinksValidatorFactory;
 import ish.oncourse.portal.services.application.IPortalApplicationService;
 import ish.oncourse.portal.services.application.PortalApplicationServiceImpl;
-import ish.oncourse.portal.services.application.PortalSearchService;
 import ish.oncourse.portal.services.discussion.DiscussionServiceImpl;
 import ish.oncourse.portal.services.discussion.IDiscussionService;
 import ish.oncourse.portal.services.pageload.PortalPageRenderer;
-import ish.oncourse.portal.services.pageload.PortalPageResponseRenderer;
 import ish.oncourse.portal.services.site.PortalSiteService;
 import ish.oncourse.services.BinderFunctions;
 import ish.oncourse.services.DisableJavaScriptStack;
-import ish.oncourse.services.cookies.CookiesImplOverride;
-import ish.oncourse.services.cookies.CookiesService;
-import ish.oncourse.services.cookies.ICookiesOverride;
-import ish.oncourse.services.cookies.ICookiesService;
-import ish.oncourse.services.encrypt.EncryptionService;
-import ish.oncourse.services.environment.EnvironmentService;
-import ish.oncourse.services.environment.IEnvironmentService;
-import ish.oncourse.services.html.IPlainTextExtractor;
-import ish.oncourse.services.html.JerichoPlainTextExtractor;
-import ish.oncourse.services.jndi.ILookupService;
-import ish.oncourse.services.jndi.LookupService;
-import ish.oncourse.services.mail.IMailService;
-import ish.oncourse.services.mail.MailService;
-import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.preference.PreferenceController;
-import ish.oncourse.services.preference.PreferenceControllerFactory;
-import ish.oncourse.services.property.IPropertyService;
-import ish.oncourse.services.property.PropertyService;
-import ish.oncourse.services.s3.IS3Service;
-import ish.oncourse.services.s3.S3Service;
-import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchService;
-import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.services.textile.ITextileConverter;
-import ish.oncourse.services.textile.TextileConverter;
 import ish.oncourse.services.usi.IUSIVerificationService;
 import ish.oncourse.textile.services.TextileModule;
 import ish.oncourse.util.ComponentPageResponseRenderer;
@@ -62,7 +36,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.EMPTY;
-import static org.apache.tapestry5.ioc.ScopeConstants.PERTHREAD;
 
 @ImportModule({TextileModule.class})
 public class AppModule {

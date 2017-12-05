@@ -1,3 +1,11 @@
+apply plugin: 'com.eriwen.gradle.js'
+apply plugin: 'com.github.robfletcher.compass'
+
+ext {
+    staticSrcPath = "src/main/static"
+    staticBuildPath = "${buildDir}/resource-assemble/static"
+}
+
 
 javascript.source {
     production {
@@ -77,3 +85,12 @@ processResources.inputs.files combineSvg
 clean.dependsOn cleanMinifyJs
 clean.dependsOn cleanCompassCompile
 clean.dependsOn cleanCombineSvg
+
+jar {
+    from "${buildDir}/resource-assemble"
+    from ('src/main') {
+        include 'static/**/*'
+        exclude 'static/js'
+        exclude 'static/src'
+    }
+}

@@ -1,4 +1,4 @@
-def projectsWithStaticResources = ['admin', 'enrol', 'web', 'cms']
+def projectsWithStaticResources = ['admin', 'enrol', 'cms']
 
 allprojects.findAll { it.name in projectsWithStaticResources }.each { p ->
     configure(p) {
