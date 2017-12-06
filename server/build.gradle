@@ -225,7 +225,6 @@ test {
 
 	switch (dbTests) {
 		case "derby-test":
-			systemProperty 'testDatabaseUri', testDatabaseUriDerby
 			exclude '**/db/Mysql*.class'
 			exclude '**/db/Mssql*.class'
 			break
