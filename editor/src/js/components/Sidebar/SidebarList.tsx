@@ -39,7 +39,7 @@ export class SidebarList extends React.Component<Props, any> {
 
   render() {
     const {items, category, subTitleKey, subTitleFilter, onAdd, idKey = 'id'} = this.props;
-    const reg = new RegExp(this.state.filter, 'gi');
+    const reg = new RegExp(this.state.filter.replace('(','\\(').replace(')','\\)'), 'gi');
 
     return (
       <ul>
