@@ -3,7 +3,7 @@ apply from: "$rootDir/gradle/buildTapestryApp.gradle"
 apply from: "$rootDir/gradle/build-static.gradle"
 
 
-mainClassName = 'ish.oncourse.web.WebApp'
+mainClassName = 'ish.oncourse.website.WebApp'
 
 configurations {
 	all*.exclude group: 'org.apache.tapestry', module: 'tapestry-spring'
