@@ -18,6 +18,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @deprecated a bootique application uses ISHHealthCheckServlet for these goals
+ */
+@Deprecated
 public class ISHHealthCheck {
 
     private static final Logger logger = LogManager.getLogger();
