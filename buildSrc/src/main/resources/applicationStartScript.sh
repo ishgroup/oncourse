@@ -68,7 +68,7 @@ start() {
 
     # FreeBSD has a daemon starting binary which creates the pidfile for us
     if [ -x "/usr/sbin/daemon" ] ; then
-        /usr/sbin/daemon -rP \$PID_FILE -f \$CMD
+        /usr/sbin/daemon -rP \$PID_FILE -t ${applicationName} -f \$CMD
     else
         nohup \$CMD > ${applicationName}.out 2>&1 &
         echo \$! > "\$PID_FILE"
