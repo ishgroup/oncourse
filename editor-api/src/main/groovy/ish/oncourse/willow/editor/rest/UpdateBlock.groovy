@@ -2,8 +2,8 @@ package ish.oncourse.willow.editor.rest
 
 import ish.oncourse.model.WebContent
 import ish.oncourse.services.textile.ConvertCoreTextile
-import ish.oncourse.utils.ResourceNameValidator
 import ish.oncourse.willow.editor.model.Block
+import ish.oncourse.willow.editor.website.ResourceNameUtil
 import ish.oncourse.willow.editor.website.WebContentFunctions
 import org.apache.cayenne.ObjectContext
 import org.apache.commons.lang3.StringUtils
@@ -28,7 +28,7 @@ class UpdateBlock extends AbstractUpdate<Block> {
         }
 
         resourceToSave.title = StringUtils.trimToEmpty(resourceToSave.title)
-        error = new ResourceNameValidator().validate(resourceToSave.title)
+        error = ResourceNameUtil.nameValidator.validate(resourceToSave.title)
         if (error) {
             return this
         }

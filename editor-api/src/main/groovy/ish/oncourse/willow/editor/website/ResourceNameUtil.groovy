@@ -3,6 +3,7 @@ package ish.oncourse.willow.editor.website
 import groovy.transform.CompileStatic
 import ish.oncourse.model.WebContent
 import ish.oncourse.model.WebNodeType
+import ish.oncourse.utils.ResourceNameValidator
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.PersistentObject
 import org.apache.cayenne.exp.Expression
@@ -57,5 +58,9 @@ class ResourceNameUtil {
         String getDefaultName() {
             return defaultName
         }
+    }
+    
+    static ResourceNameValidator getNameValidator() {
+        new ResourceNameValidator().excludeChars([/$/, /#/, /&/, /?/] as char[])
     }
 }

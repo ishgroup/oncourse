@@ -7,6 +7,7 @@ import ish.oncourse.model.WebNodeType
 import ish.oncourse.model.WebSiteLayout
 import ish.oncourse.willow.editor.model.BlockItem
 import ish.oncourse.willow.editor.model.Theme
+import ish.oncourse.willow.editor.website.ResourceNameUtil
 import ish.oncourse.willow.editor.website.WebContentFunctions
 import ish.oncourse.willow.editor.website.WebNodeTypeFunctions
 import ish.oncourse.willow.editor.website.WebSiteLayoutFunctions
@@ -53,15 +54,14 @@ class UpdateTheme extends AbstractUpdate<Theme> {
         }
         //we need the code to set trimmed name to for the page
         resourceToSave.title = StringUtils.trimToEmpty(resourceToSave.title)
-        if (resourceToSave.title.length() < 3) {
-            error = "There should be at least 3 characters in theme name"
+        error = ResourceNameUtil.nameValidator.validate(resourceToSave.title)
+        if (error) {
             return this
         }
         if (nodeType.defaultPageTheme && nodeType.name != resourceToSave.title) {
             error = "The default theme name can't be changed"
             return this
         }
-        
         
         WebNodeType duplicate = WebNodeTypeFunctions.getWebNodeTypeByName(resourceToSave.title, request, context)
         if (duplicate  && duplicate.objectId != nodeType.objectId) {
