@@ -1,18 +1,16 @@
 package ish.oncourse.ui.components.kiosk;
 
-import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Session;
+import ish.oncourse.model.Site;
 import ish.oncourse.services.tutor.ITutorService;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.ui.utils.GetVisibleTutors;
-import ish.oncourse.util.FormatUtils;
-import org.apache.commons.lang3.StringUtils;
+import ish.oncourse.util.tapestry.TapestryFormatUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
-
-import java.util.Date;
 
 import static java.lang.String.format;
 
@@ -20,6 +18,9 @@ public class KioskSession {
 
     @Inject
     private ITutorService tutorService;
+
+    @Property
+    private TapestryFormatUtils formatUtils = new TapestryFormatUtils();
 
     @Parameter
     @Property
@@ -29,61 +30,36 @@ public class KioskSession {
     private CourseClass courseClass;
 
     @Property
-    private Course course;
-
-    @Property
     private String name;
 
     @Property
     private String code;
 
     @Property
-    private String author;
+    private Site site;
 
     @Property
-    private String time;
+    private String firstTutorName;
 
     @Property
-    private String location;
+    private String isoSessionStartTime;
 
     @Property
-    private Date start;
-
-    @Property
-    private Date end;
-
-    @Property
-    private Date currentDate;
-
-    @Property
-    private String commencedClass;
-
+    private String ISO8601 = "yyyy-MM-dd'T'HH:mm:ssZZ";
 
     @SetupRender
     public void setupRender() {
         courseClass = session.getCourseClass();
-        course = courseClass.getCourse();
 
         name = courseClass.getCourse().getName();
         code = courseClass.getUniqueIdentifier();
 
-        currentDate = new Date();
-        start = session.getStartDate();
-        end = session.getEndDate();
-
-
-        time = FormatUtils.getSessionTimeAsString(session);
-
-        commencedClass = StringUtils.EMPTY;
-        if (start.before(currentDate)) {
-            time = format("commenced %s", time);
-            commencedClass = "course-commenced";
-        }
-
-        location = session.getRoom().getName();
-
         GetVisibleTutors getVisibleTutors = GetVisibleTutors.valueOf(courseClass, session, tutorService).get();
-        author = StringUtils.join(getVisibleTutors.tutorNames(), ", ");
+        if (!getVisibleTutors.getTutors().isEmpty()) {
+            firstTutorName = GetVisibleTutors.getTutorName(getVisibleTutors.getTutors().get(0));
+        }
+        site = session.getRoom().getSite();
+        isoSessionStartTime = formatUtils.formatDate(session.getStartDatetime(), ISO8601);
     }
 }
 
