@@ -150,10 +150,10 @@ class SettingsApiServiceImpl implements SettingsApi {
         new GetPreference(college, ENABLE_SOCIAL_MEDIA_LINKS_COURSE, context).booleanValue = settings.enableForCourse
         new GetPreference(college, ENABLE_SOCIAL_MEDIA_LINKS_WEB_PAGE, context).booleanValue = settings.enableForWebpage
         new GetPreference(college, ADDTHIS_PROFILE_ID, context).stringValue = settings.addThisId
-        new GetPreference(college, HIDE_CLASS_ON_WEB_AGE, context).integerValue = settings.classAge.hideClassDays.toInteger()
-        new GetPreference(college, HIDE_CLASS_ON_WEB_AGE_TYPE, context).stringValue = settings.classAge.hideClassCondition.toString()
-        new GetPreference(college, STOP_WEB_ENROLMENTS_AGE, context).integerValue = settings.classAge.stopWebEnrolmentDays.toInteger()
-        new GetPreference(college, STOP_WEB_ENROLMENTS_AGE_TYPE, context).stringValue = settings.classAge.stopWebEnrolmentCondition.toString()
+        new GetPreference(college, HIDE_CLASS_ON_WEB_AGE, context).integerValue = settings.classAge.hideClassDays?.toInteger()
+        new GetPreference(college, HIDE_CLASS_ON_WEB_AGE_TYPE, context).stringValue = settings.classAge.hideClassCondition?.toString()
+        new GetPreference(college, STOP_WEB_ENROLMENTS_AGE, context).integerValue = settings.classAge.stopWebEnrolmentDays?.toInteger()
+        new GetPreference(college, STOP_WEB_ENROLMENTS_AGE_TYPE, context).stringValue = settings.classAge.stopWebEnrolmentCondition?.toString()
         
         context.commitChanges()
         return settings
