@@ -1,7 +1,7 @@
 jetty:
   context: /
   connector:
-    port: 8404
+    port: 8305
     host: 127.0.0.1
   idleThreadTimeout: 300000
   staticResourceBase: classpath:static
