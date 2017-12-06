@@ -93,8 +93,6 @@ public enum PageIdentifier
 	
 	CoursesSitesMap("/coursessitesmap", "ui/CoursesSitesMap"),
 
-	ISHHealthCheck("/ishhealthcheck", "ish/ISHHealthCheck"),
-
 	PageNotFound("/pagenotfound", "ui/PageNotFound"),
 
 	SiteNotFound("/sitenotfound", "ui/SiteNotFound"),

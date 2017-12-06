@@ -5,6 +5,7 @@
 
 package ish.oncourse.linktransform;
 
+import ish.oncourse.configuration.ISHHealthCheckServlet;
 import ish.oncourse.linktransform.functions.GetCourseByPath;
 import ish.oncourse.linktransform.functions.GetCourseClassByPath;
 import ish.oncourse.model.*;
@@ -35,6 +36,7 @@ import org.apache.tapestry5.services.RequestGlobals;
 import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 
 import static org.apache.commons.lang3.StringUtils.isNumeric;
 
@@ -47,29 +49,30 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	private static final String KEY_PARAMETER = "key";
 
 
-    public static final String REQUEST_ATTR_redirectTo = "redirectTo";
+	public static final String REQUEST_ATTR_redirectTo = "redirectTo";
 
 
-    private static final String TUTOR_ATTRIBUTE = "tutor";
+	private static final String TUTOR_ATTRIBUTE = "tutor";
 	private static final String DIGIT_PATTERN = "\\d+";
 	private static final String CMS_PATH = "/cms";
 	private static final String COURSES_PATH = "/courses";
 	private static final String LEFT_SLASH_CHARACTER = "/";
 
-    private static final String[] COOKIE_KEYS = {CourseClass.SHORTLIST_COOKIE_KEY, Product.SHORTLIST_COOKIE_KEY, Product.SHORTLIST_COOKIE_KEY};
-	
+	private static final String[] COOKIE_KEYS = {CourseClass.SHORTLIST_COOKIE_KEY, Product.SHORTLIST_COOKIE_KEY, Product.SHORTLIST_COOKIE_KEY};
+
 	/**
 	 * Logger.
 	 */
 	private static final Logger logger = LogManager.getLogger();
-	
-	
+
+
 	/**
 	 * Special reserved path for system pages, we do not treat them as webnode nor can have the webnode page with such path.
 	 */
-	public static String[] IMMUTABLE_PATHS = new String[] { "/assets", "/login", "/editpage", "/newpage", "/menubuilder", "/pageoptions",
+	public static String[] IMMUTABLE_PATHS = new String[]{"/assets", "/login", "/editpage", "/newpage", "/menubuilder", "/pageoptions",
 			"/ma.", "/site", "/sitesettings", "/pagetypes", "/menus", "/pages", "/blocks", "/blockedit", "/site.blocks.",
-			"/site.pagetypes.", "ish/internal/autocomplete.sub", "/pt.sort", "ui/textileform.send", "/ui/timezoneholder.", "/webdav", "/test", "/api"};
+			"/site.pagetypes.", "ish/internal/autocomplete.sub", "/pt.sort", "ui/textileform.send", "/ui/timezoneholder.", "/webdav", "/test", "/api"
+	};
 
 	/**
 	 * Path of the removing from cookies request
@@ -109,7 +112,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 
 	@Inject
 	ICourseService courseService;
-	
+
 	@Inject
 	IVoucherService voucherService;
 
@@ -128,15 +131,18 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	@Inject
 	private ITutorService tutorService;
 
-    @Inject
-    private IWebUrlAliasService webUrlAliasService;
+	@Inject
+	private IWebUrlAliasService webUrlAliasService;
 
 	public PageRenderRequestParameters decodePageRenderRequest(Request request) {
 
-        final String path = request.getPath().toLowerCase();
+		final String path = request.getPath().toLowerCase();
+
+		if (path.startsWith(ISHHealthCheckServlet.ISH_HEALTH_CHECK_PATTERN.toLowerCase())) return null;
+
 
 		String studentUniqCode = request.getParameter(Contact.STUDENT_PROPERTY);
-		
+
 		if (StringUtils.trimToNull(studentUniqCode) != null) {
 			request.setAttribute(Contact.STUDENT_PROPERTY, studentUniqCode);
 			cookiesService.writeCookieValue(Contact.STUDENT_PROPERTY, studentUniqCode, STUDENT_EXPIRE_TIME);
@@ -147,153 +153,152 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			request.setAttribute(Contact.STUDENT_PROPERTY, studentUniqCode);
 		}
 
-        logger.info("Rewrite InBound: path is: {}", path);
+		logger.info("Rewrite InBound: path is: {}", path);
 
 		PageIdentifier pageIdentifier = PageIdentifier.getPageIdentifierByPath(path);
 
-        /**
-         * ISHHealthCheck can be used without college keyCode.
-         */
-		if (webSiteService.getCurrentWebSite() == null && pageIdentifier != PageIdentifier.ISHHealthCheck) {
+		/**
+		 * ISHHealthCheck can be used without college keyCode.
+		 */
+		if (webSiteService.getCurrentWebSite() == null) {
 			requestGlobals.getResponse().setStatus(HttpServletResponse.SC_NOT_FOUND);
 			return new PageRenderRequestParameters(PageIdentifier.SiteNotFound.getPageName(), new EmptyEventContext(), false);
 		}
 
-        /**
-         * ISHHealthCheck can be used without college keyCode.
-         */
-        if (pageIdentifier != PageIdentifier.ISHHealthCheck && needRedirect(request)) {
-            return new PageRenderRequestParameters("ui/internal/redirect301", new EmptyEventContext(), false);
-        }
+		/**
+		 * ISHHealthCheck can be used without college keyCode.
+		 */
+		if (needRedirect(request)) {
+			return new PageRenderRequestParameters("ui/internal/redirect301", new EmptyEventContext(), false);
+		}
 
 		switch (pageIdentifier) {
-		case Home:
-			request.setAttribute(IWebNodeService.PAGE_PATH_PARAMETER, LEFT_SLASH_CHARACTER);
-			if (webNodeService.getCurrentNode() == null) {
-				pageIdentifier = PageIdentifier.PageNotFound;
-			}
-			break;
-		case Products:
-			break;
-		case Courses:
-			final boolean isCMSCoursesSearch = requestGlobals.getHTTPServletRequest().getRequestURI().toLowerCase()
-					.startsWith(CMS_PATH + COURSES_PATH);
-			
-			String tagsPath = requestGlobals.getHTTPServletRequest().getRequestURI().toLowerCase()
-					.replaceFirst(isCMSCoursesSearch ? CMS_PATH + COURSES_PATH : COURSES_PATH, StringUtils.EMPTY);
-			
-			logger.debug("tagsPath: {}", tagsPath);
-			
-			if (!tagsPath.startsWith(CMS_PATH)) {
-				if (tagsPath.startsWith(LEFT_SLASH_CHARACTER)) {
-					tagsPath = tagsPath.replaceFirst(LEFT_SLASH_CHARACTER, StringUtils.EMPTY);
-				}
-				if (!tagsPath.equals(StringUtils.EMPTY)) {
-					Tag tag = tagService.getTagByFullPath(tagsPath);
-
-					if (tag == null) {
-						pageIdentifier = PageIdentifier.PageNotFound;
-						break;
-					}
-					request.setAttribute(ATTR_coursesTag, tag);
-				}
-			}
-			break;
-		case Product:
-			Product product = null;
-			String productSKU = path.substring(path.lastIndexOf(LEFT_SLASH_CHARACTER) + 1);
-			if (productSKU != null) {
-				product = voucherService.getProductBySKU(productSKU);
-			}
-			if (product != null) {
-				request.setAttribute(Product.class.getSimpleName(), product);
-			} else {
-				pageIdentifier = PageIdentifier.PageNotFound;
-			}
-			break;
-		case Course:
-			Course course = GetCourseByPath
-					.valueOf(cayenneService.sharedContext(), webSiteService.getCurrentWebSite(), path)
-					.get();
-			if (course != null) {
-				request.setAttribute(Course.class.getSimpleName(), course);
-			} else {
-				pageIdentifier = PageIdentifier.PageNotFound;
-			}
-			break;
-		case CourseClass:
-			CourseClass courseClass = GetCourseClassByPath
-					.valueOf(cayenneService.sharedContext(), webSiteService.getCurrentWebSite(), path)
-					.get();
-			if (courseClass != null) {
-				request.setAttribute(CourseClass.class.getSimpleName(), courseClass);
-			} else {
-				pageIdentifier = PageIdentifier.PageNotFound;
-			}
-			break;
-		case Page:
-			String nodeNumber = path.substring(path.lastIndexOf(LEFT_SLASH_CHARACTER) + 1);
-			WebNode webNode = null;
-			if (isNumeric(nodeNumber)) {
-				request.setAttribute(IWebNodeService.NODE_NUMBER_PARAMETER, nodeNumber);
-				webNode = webNodeService.getCurrentNode();
-			}
-			if (webNode == null) {
-				request.setAttribute(IWebNodeService.PAGE_PATH_PARAMETER, path);
-				webNode = webNodeService.getNodeForNodePath(path);
-			}
-			if (webNode == null) {
-				pageIdentifier = PageIdentifier.PageNotFound;
-			}
-			break;
-		case Sites:
-			break;
-		case Site:
-		case KioskSite:
-			Site site = new GetSiteByAngelId().path(path).sitesService(sitesService).get();
-			if (site != null) {
-				request.setAttribute(Site.class.getSimpleName(), site);
-			} else {
-				return new PageRenderRequestParameters(PageIdentifier.PageNotFound.getPageName(), new EmptyEventContext(), false);
-			}
-			break;
-		case Room:
-		case KioskRoom:
-			Room room = null;
-			String roomId = path.substring(path.lastIndexOf(LEFT_SLASH_CHARACTER) + 1);
-			if (isNumeric(roomId)) {
-				room = roomService.getRoom(Room.ANGEL_ID_PROPERTY, Long.valueOf(roomId));
-			}
-			if (room != null) {
-				request.setAttribute(Room.class.getSimpleName(), room);
-				request.setAttribute(Site.class.getSimpleName(), room.getSite());
-			} else {
-				pageIdentifier = PageIdentifier.PageNotFound;
-			}
-			break;
-		case Tutor:
-			String tutorId = path.substring(path.lastIndexOf(LEFT_SLASH_CHARACTER) + 1);
-			if (tutorId != null && tutorId.length() > 0 && tutorId.matches("\\d+")) {
-				Tutor tutor = tutorService.findByAngelId(Long.valueOf(tutorId));
-				if (tutor == null || !tutorService.isActiveTutor(tutor))
-				{
+			case Home:
+				request.setAttribute(IWebNodeService.PAGE_PATH_PARAMETER, LEFT_SLASH_CHARACTER);
+				if (webNodeService.getCurrentNode() == null) {
 					pageIdentifier = PageIdentifier.PageNotFound;
 				}
-				request.setAttribute(TUTOR_ATTRIBUTE, tutor);
-			} else {
-				pageIdentifier = PageIdentifier.PageNotFound;
-			}
-			break;
-		case Sitemap:
-		case Robots:	
-		case AdvancedKeyword:
-		case AdvancedSuburbs:
-		case Shortlist:
-		case AddDiscount:
-		case Promotions:
-		case Timeline:
-		case CoursesSitesMap:
-			break;
+				break;
+			case Products:
+				break;
+			case Courses:
+				final boolean isCMSCoursesSearch = requestGlobals.getHTTPServletRequest().getRequestURI().toLowerCase()
+						.startsWith(CMS_PATH + COURSES_PATH);
+
+				String tagsPath = requestGlobals.getHTTPServletRequest().getRequestURI().toLowerCase()
+						.replaceFirst(isCMSCoursesSearch ? CMS_PATH + COURSES_PATH : COURSES_PATH, StringUtils.EMPTY);
+
+				logger.debug("tagsPath: {}", tagsPath);
+
+				if (!tagsPath.startsWith(CMS_PATH)) {
+					if (tagsPath.startsWith(LEFT_SLASH_CHARACTER)) {
+						tagsPath = tagsPath.replaceFirst(LEFT_SLASH_CHARACTER, StringUtils.EMPTY);
+					}
+					if (!tagsPath.equals(StringUtils.EMPTY)) {
+						Tag tag = tagService.getTagByFullPath(tagsPath);
+
+						if (tag == null) {
+							pageIdentifier = PageIdentifier.PageNotFound;
+							break;
+						}
+						request.setAttribute(ATTR_coursesTag, tag);
+					}
+				}
+				break;
+			case Product:
+				Product product = null;
+				String productSKU = path.substring(path.lastIndexOf(LEFT_SLASH_CHARACTER) + 1);
+				if (productSKU != null) {
+					product = voucherService.getProductBySKU(productSKU);
+				}
+				if (product != null) {
+					request.setAttribute(Product.class.getSimpleName(), product);
+				} else {
+					pageIdentifier = PageIdentifier.PageNotFound;
+				}
+				break;
+			case Course:
+				Course course = GetCourseByPath
+						.valueOf(cayenneService.sharedContext(), webSiteService.getCurrentWebSite(), path)
+						.get();
+				if (course != null) {
+					request.setAttribute(Course.class.getSimpleName(), course);
+				} else {
+					pageIdentifier = PageIdentifier.PageNotFound;
+				}
+				break;
+			case CourseClass:
+				CourseClass courseClass = GetCourseClassByPath
+						.valueOf(cayenneService.sharedContext(), webSiteService.getCurrentWebSite(), path)
+						.get();
+				if (courseClass != null) {
+					request.setAttribute(CourseClass.class.getSimpleName(), courseClass);
+				} else {
+					pageIdentifier = PageIdentifier.PageNotFound;
+				}
+				break;
+			case Page:
+				String nodeNumber = path.substring(path.lastIndexOf(LEFT_SLASH_CHARACTER) + 1);
+				WebNode webNode = null;
+				if (isNumeric(nodeNumber)) {
+					request.setAttribute(IWebNodeService.NODE_NUMBER_PARAMETER, nodeNumber);
+					webNode = webNodeService.getCurrentNode();
+				}
+				if (webNode == null) {
+					request.setAttribute(IWebNodeService.PAGE_PATH_PARAMETER, path);
+					webNode = webNodeService.getNodeForNodePath(path);
+				}
+				if (webNode == null) {
+					pageIdentifier = PageIdentifier.PageNotFound;
+				}
+				break;
+			case Sites:
+				break;
+			case Site:
+			case KioskSite:
+				Site site = new GetSiteByAngelId().path(path).sitesService(sitesService).get();
+				if (site != null) {
+					request.setAttribute(Site.class.getSimpleName(), site);
+				} else {
+					return new PageRenderRequestParameters(PageIdentifier.PageNotFound.getPageName(), new EmptyEventContext(), false);
+				}
+				break;
+			case Room:
+			case KioskRoom:
+				Room room = null;
+				String roomId = path.substring(path.lastIndexOf(LEFT_SLASH_CHARACTER) + 1);
+				if (isNumeric(roomId)) {
+					room = roomService.getRoom(Room.ANGEL_ID_PROPERTY, Long.valueOf(roomId));
+				}
+				if (room != null) {
+					request.setAttribute(Room.class.getSimpleName(), room);
+					request.setAttribute(Site.class.getSimpleName(), room.getSite());
+				} else {
+					pageIdentifier = PageIdentifier.PageNotFound;
+				}
+				break;
+			case Tutor:
+				String tutorId = path.substring(path.lastIndexOf(LEFT_SLASH_CHARACTER) + 1);
+				if (tutorId != null && tutorId.length() > 0 && tutorId.matches("\\d+")) {
+					Tutor tutor = tutorService.findByAngelId(Long.valueOf(tutorId));
+					if (tutor == null || !tutorService.isActiveTutor(tutor)) {
+						pageIdentifier = PageIdentifier.PageNotFound;
+					}
+					request.setAttribute(TUTOR_ATTRIBUTE, tutor);
+				} else {
+					pageIdentifier = PageIdentifier.PageNotFound;
+				}
+				break;
+			case Sitemap:
+			case Robots:
+			case AdvancedKeyword:
+			case AdvancedSuburbs:
+			case Shortlist:
+			case AddDiscount:
+			case Promotions:
+			case Timeline:
+			case CoursesSitesMap:
+				break;
 		}
 
 		if (pageIdentifier != PageIdentifier.PageNotFound) {
@@ -334,12 +339,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			return new PageRenderRequestParameters(PageIdentifier.Page.getPageName(), new EmptyEventContext(), false);
 		}
 
-
-		for (String p : IMMUTABLE_PATHS) {
-			if (path.startsWith(p)) {
-				return null;
-			}
-		}
+		if (Arrays.stream(IMMUTABLE_PATHS).anyMatch(path::startsWith)) return null;
 
 		if (requestGlobals.getHTTPServletRequest() != null
 				&& requestGlobals.getHTTPServletRequest().getContextPath().equalsIgnoreCase(CMS_PATH)) {
@@ -355,20 +355,20 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 		return new PageRenderRequestParameters(PageIdentifier.PageNotFound.getPageName(), new EmptyEventContext(), false);
 	}
 
-    private boolean needRedirect(Request request) {
-	    String path = requestGlobals.getHTTPServletRequest().getServletPath();
-	    String query = requestGlobals.getHTTPServletRequest().getQueryString();
-	    path += query != null ? "?" + query : StringUtils.EMPTY;
+	private boolean needRedirect(Request request) {
+		String path = requestGlobals.getHTTPServletRequest().getServletPath();
+		String query = requestGlobals.getHTTPServletRequest().getQueryString();
+		path += query != null ? "?" + query : StringUtils.EMPTY;
 
-	    WebUrlAlias redirect = webUrlAliasService.getAliasByPath(URLPath.valueOf(path).getEncodedPath());
-	    if (redirect != null && redirect.getRedirectTo() != null) {
-		    request.setAttribute(REQUEST_ATTR_redirectTo, redirect.getRedirectTo());
-		    return true;
-	    }
-	    return false;
-    }
+		WebUrlAlias redirect = webUrlAliasService.getAliasByPath(URLPath.valueOf(path).getEncodedPath());
+		if (redirect != null && redirect.getRedirectTo() != null) {
+			request.setAttribute(REQUEST_ATTR_redirectTo, redirect.getRedirectTo());
+			return true;
+		}
+		return false;
+	}
 
-    public Link transformPageRenderLink(Link defaultLink, PageRenderRequestParameters parameters) {
+	public Link transformPageRenderLink(Link defaultLink, PageRenderRequestParameters parameters) {
 		logger.info("Rewrite OutBound: path is: {}", defaultLink.getBasePath());
 
 		return defaultLink;

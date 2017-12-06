@@ -162,8 +162,6 @@ public class PageIdentifierTest {
 
 		urls.put(CoursesSitesMap, forExectMattcher("/coursessitesmap",true));
 
-		urls.put(ISHHealthCheck, forExectMattcher("/ishhealthcheck",true));
-
 		urls.put(SiteNotFound, forExectMattcher("/sitenotfound",true));
 
 		urls.put(PageNotFound, forExectMattcher("/pagenotfound",false));
