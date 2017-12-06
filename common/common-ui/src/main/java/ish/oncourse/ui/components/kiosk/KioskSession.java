@@ -4,15 +4,12 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Session;
 import ish.oncourse.model.Site;
 import ish.oncourse.services.tutor.ITutorService;
-import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.ui.utils.GetVisibleTutors;
 import ish.oncourse.util.tapestry.TapestryFormatUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
-
-import static java.lang.String.format;
 
 public class KioskSession {
 
@@ -62,5 +59,3 @@ public class KioskSession {
         isoSessionStartTime = formatUtils.formatDate(session.getStartDatetime(), ISO8601);
     }
 }
-
-
