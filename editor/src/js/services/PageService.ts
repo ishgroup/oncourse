@@ -2,6 +2,9 @@ import {PageApi} from "../http/PageApi";
 import {Page} from "../model";
 import {State} from "../reducers/state";
 import {DefaultHttpService} from "../common/services/HttpService";
+import axios from "axios";
+import {PageRenderResponse} from "../model/api/PageRenderResponse";
+
 
 class PageService {
   readonly pageApi = new PageApi(new DefaultHttpService());
@@ -27,7 +30,16 @@ class PageService {
   }
 
   public getPageRender(id: number): Promise<any> {
-    return this.pageApi.getPageRender(id);
+    const instance = axios.create();
+    return instance.get(`/page/${id}`).then(
+      payload => {
+        let template = document.createElement('div');
+        template.innerHTML = payload.data;
+        let content = template.querySelector("div[class^='block-']").innerHTML;
+        return {html: content} as PageRenderResponse
+      },
+      payload => Promise.reject(payload.response),
+    ) as Promise<any>;
   }
 
   public isValidPageUrl(link, pages) {
