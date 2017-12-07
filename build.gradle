@@ -5,6 +5,7 @@ buildscript {
 		cayenneVersion = '4.0.B2'
 		jettyVersion = '9.4.6.v20170531'
 		mariadbVersion = '2.2.0'
+		derbyVersion = '10.14.1.0'
 	}
 	
 	repositories {
