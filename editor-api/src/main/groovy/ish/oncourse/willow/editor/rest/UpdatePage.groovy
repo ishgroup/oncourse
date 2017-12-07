@@ -69,7 +69,7 @@ class UpdatePage extends AbstractUpdate<Page> {
         providedUrlsMap.values().each { pageUrl ->
             WebUrlAlias alias = context.newObject(WebUrlAlias)
             alias.webSiteVersion = node.webSiteVersion
-            alias.urlPath = pageUrl
+            alias.urlPath = pageUrl.link
             //both sides relationship set required to prevent#14485 persist issue.
             node.addToWebUrlAliases(alias)
             alias.webNode = node
