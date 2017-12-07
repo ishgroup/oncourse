@@ -1,7 +1,5 @@
 apply from: "$rootDir/gradle/functions.gradle"
 apply from: "$rootDir/gradle/buildTapestryApp.gradle"
-apply from: "$rootDir/gradle/build-static.gradle"
-
 
 mainClassName = 'ish.oncourse.website.WebApp'
 
