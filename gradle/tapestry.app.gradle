@@ -5,11 +5,7 @@ apply plugin: 'java'
 apply plugin: 'application'
 
 apply from: "$rootDir/gradle/bootique.gradle"
-
-ext {
-    springVersion = '3.0.5.RELEASE'
-    jettyVersion = '9.3.6.v20151106'
-}
+apply from: "$rootDir/gradle/jetty.gradle"
 
 targetCompatibility = '1.8'
 sourceCompatibility = '1.8'

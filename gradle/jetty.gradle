@@ -1,0 +1,9 @@
+ext {
+    jettyVersion = '9.4.8.v20171121'
+}
+
+dependencies {
+    compile group: 'org.eclipse.jetty', name: 'jetty-server', version: jettyVersion
+    compile group: 'org.eclipse.jetty', name: 'jetty-servlet', version: jettyVersion
+}
+

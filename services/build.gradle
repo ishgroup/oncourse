@@ -1,5 +1,5 @@
 apply from: "$rootDir/gradle/functions.gradle"
-apply from: "$rootDir/gradle/buildTapestryApp.gradle"
+apply from: "$rootDir/gradle/tapestry.app.gradle"
 apply from: "$rootDir/gradle/cxf-spring.gradle"
 
 sourceSets {

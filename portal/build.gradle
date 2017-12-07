@@ -1,4 +1,4 @@
-apply from: "$rootDir/gradle/buildTapestryApp.gradle"
+apply from: "$rootDir/gradle/tapestry.app.gradle"
 apply from: "$rootDir/gradle/cxf-spring.gradle"
 apply from: "$rootDir/gradle/build-static.gradle"
 
