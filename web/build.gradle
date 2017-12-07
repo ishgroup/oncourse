@@ -12,7 +12,9 @@ configurations {
 
 dependencies {
 	compile (project(':common:common-ui'))
-	compile group: 'org.eclipse.jetty', name: 'jetty-server', version: '9.4.8.v20171121' 
+	compile group: 'org.eclipse.jetty', name: 'jetty-server', version: '9.4.8.v20171121'
+	compile group: 'org.eclipse.jetty', name: 'jetty-servlet', version: '9.4.8.v20171121'
+	compile group: 'org.eclipse.jetty', name: 'jetty-servlets', version: '9.4.8.v20171121'
 	testCompile project(path: ':common:common-test', configuration: 'testFixtures')
 }
 
