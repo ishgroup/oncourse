@@ -15,6 +15,8 @@ class JCacheQueryCache implements QueryCache {
 
 
     protected final CacheManager cacheManager
+    
+    private ICacheEnabledService enabledService
 
     protected final JCacheConfigurationFactory configurationFactory
 
@@ -22,9 +24,10 @@ class JCacheQueryCache implements QueryCache {
 
     private Set<String> seenCacheNames = Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>())
 
-    JCacheQueryCache(@Inject CacheManager cacheManager, @Inject JCacheConfigurationFactory configurationFactory) {
+    JCacheQueryCache(@Inject CacheManager cacheManager, @Inject JCacheConfigurationFactory configurationFactory, @Inject ICacheEnabledService enabledService) {
         this.cacheManager = cacheManager
         this.configurationFactory = configurationFactory
+        this.enabledService = enabledService
         getOrCreateCache = new JCacheDefaultConfigurationFactory.GetOrCreateCache(this.cacheManager)
     }
 
@@ -42,7 +45,7 @@ class JCacheQueryCache implements QueryCache {
         Cache<String, List> cache = createIfAbsent(metadata)
 
         List<?> result = cache.get(key)
-        return result ?: (List) cache.invoke(key, new JCacheEntryLoader(factory))
+        return result && enabledService.cacheEnabled ? result : (List) cache.invoke(key, new JCacheEntryLoader(factory, enabledService.cacheEnabled))
     }
 
     @Override

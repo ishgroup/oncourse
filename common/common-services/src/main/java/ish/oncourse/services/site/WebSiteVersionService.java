@@ -3,6 +3,7 @@
  */
 package ish.oncourse.services.site;
 
+import ish.oncourse.cayenne.cache.ICacheEnabledService;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.model.WebSiteVersion;
 import ish.oncourse.services.cookies.ICookiesService;
@@ -16,11 +17,12 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 public class WebSiteVersionService extends AbstractWebSiteVersionService {
     @Inject
     private IWebSiteService webSiteService;
-    
-	@Inject
-	private ICookiesService cookiesService;
 	
-	private static final String EDITOR_PREFIX = "editor";
+	@Inject
+	private ICacheEnabledService enabledService;
+	
+	public static final String EDITOR_PREFIX = "editor";
+	
 	private static final String WEB_PREFIX = "web";
 
 
@@ -47,7 +49,7 @@ public class WebSiteVersionService extends AbstractWebSiteVersionService {
 
 	@Override
 	public boolean isEditor() {
-		return cookiesService.getCookieValue(EDITOR_PREFIX) != null;
+		return !enabledService.isCacheEnabled();
 	}
 
 	@Override

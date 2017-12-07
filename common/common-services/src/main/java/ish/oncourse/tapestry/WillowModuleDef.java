@@ -1,5 +1,6 @@
 package ish.oncourse.tapestry;
 
+import ish.oncourse.cayenne.cache.ICacheEnabledService;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,10 +20,12 @@ public class WillowModuleDef implements ModuleDef {
 
 	private DataSourceServiceDef dataSourceServiceDef;
 	private ServerRuntimeServiceDef serverRuntimeServiceDef;
+	private CacheEnabledServiceDef cacheEnabledServiceDef;
 
-	public WillowModuleDef(DataSource dataSource, ServerRuntime serverRuntime) {
+	public WillowModuleDef(DataSource dataSource, ServerRuntime serverRuntime, ICacheEnabledService enabledService) {
 		this.dataSourceServiceDef = new DataSourceServiceDef(dataSource);
 		this.serverRuntimeServiceDef = new ServerRuntimeServiceDef(serverRuntime);
+		this.cacheEnabledServiceDef = new CacheEnabledServiceDef(enabledService);
 	}
 
 	@Override
@@ -30,6 +33,8 @@ public class WillowModuleDef implements ModuleDef {
 		LinkedHashSet<String> r = new LinkedHashSet<>();
 		r.add(DataSourceServiceDef.ID);
 		r.add(ServerRuntimeServiceDef.ID);
+		r.add(CacheEnabledServiceDef.ID);
+
 		return r;
 	}
 
@@ -40,6 +45,8 @@ public class WillowModuleDef implements ModuleDef {
 				return this.dataSourceServiceDef;
 			case ServerRuntimeServiceDef.ID:
 				return this.serverRuntimeServiceDef;
+			case CacheEnabledServiceDef.ID:
+				return this.cacheEnabledServiceDef;
 			default:
 				throw new IllegalArgumentException(serviceId);
 		}

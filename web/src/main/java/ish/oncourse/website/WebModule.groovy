@@ -15,6 +15,8 @@ import ish.oncourse.cayenne.cache.JCacheModule
 import ish.oncourse.configuration.ISHHealthCheckServlet
 import ish.oncourse.services.persistence.ISHObjectContextFactory
 import ish.oncourse.util.log.LogAppInfo
+import ish.oncourse.website.services.CacheEnabledService
+import ish.oncourse.cayenne.cache.ICacheEnabledService
 import org.apache.cayenne.configuration.Constants
 import org.apache.cayenne.configuration.ObjectContextFactory
 
@@ -33,6 +35,10 @@ class WebModule extends ConfigModule {
     private static final TypeLiteral<MappedFilter<WebTapestryFilter>> TAPESTRY_FILTER =
             new TypeLiteral<MappedFilter<WebTapestryFilter>>() {
             }
+    
+    private static final TypeLiteral<MappedFilter<RequestFilter>> REQUEST_FILTER =
+            new TypeLiteral<MappedFilter<RequestFilter>>() {
+            }
 
 
     @Singleton
@@ -43,8 +49,26 @@ class WebModule extends ConfigModule {
         WebTapestryFilter filter = new WebTapestryFilter(injector)
         return new MappedFilter<>(filter,
                 Collections.singleton(URL_PATTERN),
-                TAPESTRY_APP_NAME, 0
+                TAPESTRY_APP_NAME, 1
         )
+    }
+
+    @Singleton
+    @Provides
+    MappedFilter<RequestFilter> createRequestFilter(ICacheEnabledService service) {
+        new MappedFilter<RequestFilter>(new RequestFilter(service),
+                Collections.singleton(URL_PATTERN), RequestFilter.simpleName, 0)
+    }
+
+    @Provides
+    ICacheEnabledService createCacheEnabledModule() {
+        new CacheEnabledService()
+    }
+    
+    @Singleton
+    @Provides
+    CacheEnabledModule createCacheEnabledModule(ICacheEnabledService service) {
+        new CacheEnabledModule(service)
     }
 
     @Override
@@ -52,7 +76,9 @@ class WebModule extends ConfigModule {
         CayenneModule.extend(binder)
                 .addModule(new WebCayenneModule())
                 .addModule(new JCacheModule())
+                .addModule(CacheEnabledModule)
         JettyModule.extend(binder)
+                .addMappedFilter(REQUEST_FILTER)
                 .addMappedFilter(TAPESTRY_FILTER)
                 .addMappedServlet(new MappedServlet<>(new ISHHealthCheckServlet(), ISHHealthCheckServlet.urlPatterns, ISHHealthCheckServlet.SERVLET_NAME))
                 .addStaticServlet("resources", URL_PATTERN)
@@ -65,6 +91,20 @@ class WebModule extends ConfigModule {
         void configure(org.apache.cayenne.di.Binder binder) {
             binder.bindMap(Object.class, Constants.PROPERTIES_MAP).put(Constants.CI_PROPERTY, "true")
             binder.bind(ObjectContextFactory.class).toInstance(new ISHObjectContextFactory(false))
+        }
+    }
+
+    static class CacheEnabledModule  implements org.apache.cayenne.di.Module {
+        
+        private ICacheEnabledService service
+        
+        CacheEnabledModule(ICacheEnabledService service) {
+            this.service = service
+        }
+        
+        @Override
+        void configure(org.apache.cayenne.di.Binder binder) {
+            binder.bind(ICacheEnabledService).toInstance(service)
         }
     }
 

@@ -10,14 +10,16 @@ import javax.cache.processor.MutableEntry
 class JCacheEntryLoader implements EntryProcessor<String, List, List> {
 
     private QueryCacheEntryFactory entryFactory
+    private boolean cachingEnabled
 
-    JCacheEntryLoader(QueryCacheEntryFactory entryFactory) {
+    JCacheEntryLoader(QueryCacheEntryFactory entryFactory, boolean cachingEnabled) {
         this.entryFactory = entryFactory
+        this.cachingEnabled = cachingEnabled
     }
     
     @Override
     List process(MutableEntry<String, List> entry, Object... arguments) throws EntryProcessorException {
-        if (!entry.exists()) {
+        if (!cachingEnabled || !entry.exists()) {
             List result = (List)entryFactory.createObject()
             if (result == null) {
                 throw new CayenneRuntimeException("Null object created: " + entry.getKey())

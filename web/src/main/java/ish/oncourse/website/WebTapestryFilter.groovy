@@ -6,6 +6,7 @@ package ish.oncourse.website
 import com.google.inject.Injector
 import io.bootique.jdbc.DataSourceFactory
 import io.bootique.tapestry.di.InjectorModuleDef
+import ish.oncourse.cayenne.cache.ICacheEnabledService
 import ish.oncourse.tapestry.WillowModuleDef
 import ish.oncourse.util.log.LogAppInfo
 import org.apache.cayenne.configuration.server.ServerRuntime
@@ -37,11 +38,11 @@ class WebTapestryFilter implements Filter {
             return [
                     new InjectorModuleDef(injector),
                     new WillowModuleDef(injector.getInstance(DataSourceFactory).forName(LogAppInfo.DATA_SOURSE_NAME),
-                            injector.getInstance(ServerRuntime)
+                            injector.getInstance(ServerRuntime), injector.getInstance(ICacheEnabledService)
                     )
             ]
         }
-    };
+    }
 
     @Override
     void init(FilterConfig filterConfig) throws ServletException {
