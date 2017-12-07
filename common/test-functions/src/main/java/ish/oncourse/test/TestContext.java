@@ -59,13 +59,17 @@ public class TestContext {
 		if (shouldCreateTables) {
 			Functions.createIfNotExistsDB(mariaDB);
 			Functions.cleanDB(mariaDB, true);
-			if (serverRuntime == null)
-				serverRuntime = Functions.createRuntime();
-			new CreateTables(serverRuntime).create();
 		} else {
 			if (shouldCleanTables)
 				Functions.cleanDB(mariaDB, false);
 		}
+
+		if (serverRuntime == null)
+			serverRuntime = Functions.createRuntime();
+
+		if (shouldCreateTables)
+			new CreateTables(serverRuntime).create();
+
 		return this;
 	}
 
@@ -110,7 +114,7 @@ public class TestContext {
 		} catch (Exception e) {
 			logger.error(e);
 		}
- }
+	}
 
 	public ServerRuntime getServerRuntime() {
 		return serverRuntime;

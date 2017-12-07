@@ -1,6 +1,8 @@
 package ish.oncourse.webservices.soap;
 
+import io.bootique.jdbc.DataSourceFactory;
 import ish.oncourse.model.College;
+import ish.oncourse.services.BinderFunctions;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -8,7 +10,10 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.WebSiteServiceOverride;
 import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.services.usi.IUSIVerificationService;
+import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
+import ish.oncourse.webservices.ServicesModule;
+import ish.oncourse.webservices.function.TestEnv;
 import ish.oncourse.webservices.reference.services.ReferenceStubBuilder;
 import ish.oncourse.webservices.replication.builders.ITransactionStubBuilder;
 import ish.oncourse.webservices.replication.builders.IWillowStubBuilder;
@@ -20,15 +25,24 @@ import ish.oncourse.webservices.replication.updaters.WillowUpdaterImpl;
 import ish.oncourse.webservices.soap.v6.ReferencePortType;
 import ish.oncourse.webservices.soap.v6.ReferencePortTypeImpl;
 import ish.oncourse.webservices.usi.USIVerificationService;
+import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.tapestry5.ioc.*;
 import org.apache.tapestry5.ioc.annotations.ImportModule;
 import org.apache.tapestry5.ioc.annotations.Local;
 
-@ImportModule({ServiceModule.class})
+import javax.sql.DataSource;
+
 public class ReplicationTestModule {
 
 	public static void bind(ServiceBinder binder) {
 
+		binder.bind(ServerRuntime.class, resources -> ServiceTest.serverRuntime.get());
+
+		binder.bind(DataSource.class, resources -> ServiceTest.dataSource.get());
+
+
+		BinderFunctions.bindEntityServices(binder);
+		BinderFunctions.bindEnvServices(binder, "services", true);
 		binder.bind(ReferenceStubBuilder.class);
 		binder.bind(IWillowStubBuilder.class, WillowStubBuilderImpl.class);
 		binder.bind(IWillowUpdater.class, WillowUpdaterImpl.class);
@@ -36,34 +50,23 @@ public class ReplicationTestModule {
 		binder.bind(ITransactionStubBuilder.class, TransactionStubBuilderImpl.class);
 		binder.bind(IReplicationService.class, ReplicationServiceImpl.class);
 
-		binder.bind(ITransactionGroupProcessor.class, new ServiceBuilder<ITransactionGroupProcessor>() {
-			@Override
-			public ITransactionGroupProcessor buildService(ServiceResources res) {
-				return new TransactionGroupProcessorImpl(res.getService(ICayenneService.class), res.getService("WebSiteServiceOverride",
-						IWebSiteService.class), res.getService(IWillowUpdater.class), res.getService(IFileStorageAssetService.class));
-			}
-		}).scope(ScopeConstants.PERTHREAD);
+		binder.bind(ITransactionGroupProcessor.class, res -> new TransactionGroupProcessorImpl(res.getService(ICayenneService.class), res.getService("WebSiteServiceOverride",
+				IWebSiteService.class), res.getService(IWillowUpdater.class), res.getService(IFileStorageAssetService.class))).scope(ScopeConstants.PERTHREAD);
 
 		binder.bind(ReferencePortType.class, ReferencePortTypeImpl.class);
 		binder.bind(InternalPaymentService.class, PaymentServiceImpl.class);
 
-		binder.bind(IWebSiteService.class, new ServiceBuilder<IWebSiteService>() {
+		binder.bind(IWebSiteService.class, res -> {
+			WebSiteServiceOverride service = new WebSiteServiceOverride() {
+				@Override
+				public College getCurrentCollege() {
+					ICollegeService collegeService = res.getService(ICollegeService.class);
+					return collegeService.findBySecurityCode("345ttn44$%9");
+				}
 
-			@Override
-			public IWebSiteService buildService(final ServiceResources res) {
-				WebSiteServiceOverride service = new WebSiteServiceOverride() {
+			};
 
-					@Override
-					public College getCurrentCollege() {
-						ICollegeService collegeService = res.getService(ICollegeService.class);
-						return collegeService.findBySecurityCode("345ttn44$%9");
-					}
-
-				};
-
-				return service;
-			}
-
+			return service;
 		}).withId("WebSiteServiceOverride");
 
 		binder.bind(IUSIVerificationService.class, USIVerificationService.class);
