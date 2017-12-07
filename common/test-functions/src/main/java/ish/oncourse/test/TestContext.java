@@ -56,13 +56,11 @@ public class TestContext {
 		dataSource = Functions.createDS(mariaDB);
 		Functions.bindDS(dataSource);
 
-		if (serverRuntime == null)
-			serverRuntime = Functions.createRuntime();
-
-
 		if (shouldCreateTables) {
 			Functions.createIfNotExistsDB(mariaDB);
 			Functions.cleanDB(mariaDB, true);
+			if (serverRuntime == null)
+				serverRuntime = Functions.createRuntime();
 			new CreateTables(serverRuntime).create();
 		} else {
 			if (shouldCleanTables)
@@ -95,7 +93,8 @@ public class TestContext {
 
 	public void close() {
 		try {
-			this.serverRuntime.shutdown();
+			if (serverRuntime != null)
+				this.serverRuntime.shutdown();
 		} catch (Exception e) {
 			logger.error(e);
 		}

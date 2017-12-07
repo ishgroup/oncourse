@@ -3,9 +3,6 @@
  */
 package ish.oncourse.webservices.function;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.Module;
 import io.bootique.BQRuntime;
 import io.bootique.jdbc.DataSourceFactory;
 import ish.common.types.CreditCardType;
@@ -414,15 +411,12 @@ public class TestEnv<T extends TransportConfig> {
 
 	public static class TapestryTestModule {
 		public static void bind(ServiceBinder binder) {
-			binder.bind(Injector.class, resources -> Guice.createInjector((Module) binder1 -> {
-				binder1.bind(ServerRuntime.class).toInstance(
-						ServerRuntime.builder()
-								.dataSource(dataSourceFactory.get().forName(ServicesModule.DATA_SOURCE_NAME))
-								.addConfig("cayenne-oncourse.xml")
-								.addModule(new ServicesModule.ServicesCayenneModule()).build()
-				);
-				binder1.bind(DataSourceFactory.class).toInstance(dataSourceFactory.get());
-			}));
+			binder.bind(ServerRuntime.class, resources -> ServerRuntime.builder()
+					.dataSource(dataSourceFactory.get().forName(ServicesModule.DATA_SOURCE_NAME))
+					.addConfig("cayenne-oncourse.xml")
+					.addModule(new ServicesModule.ServicesCayenneModule()).build());
+
+			binder.bind(DataSource.class, resources -> dataSourceFactory.get().forName(ServicesModule.DATA_SOURCE_NAME));
 		}
 	}
 }
