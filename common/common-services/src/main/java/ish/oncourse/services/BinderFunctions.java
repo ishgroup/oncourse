@@ -185,11 +185,13 @@ public class BinderFunctions {
 		}
 	}
 
-	public static void bindTapestryServices(ServiceBinder binder, Class<? extends ICacheMetaProvider> cacheMetaProviderClass) {
+	public static void bindTapestryServices(ServiceBinder binder,
+											Class<? extends ICacheMetaProvider> cacheMetaProviderClass,
+											Class<? extends  IPageRenderer> pageRendererClass) {
 		binder.bind(ICookiesService.class, CookiesService.class);
 		binder.bind(ICookiesOverride.class, CookiesImplOverride.class);
 		binder.bind(IFormatService.class, FormatService.class);
-		binder.bind(IPageRenderer.class, PageRenderer.class);
+		binder.bind(IPageRenderer.class, pageRendererClass);
 		binder.bind(IPropertyService.class, PropertyService.class);
 		binder.bind(IResourceService.class, ResourceService.class);
 		binder.bind(ITextileConverter.class, TextileConverter.class);

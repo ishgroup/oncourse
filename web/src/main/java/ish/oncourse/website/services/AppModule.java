@@ -18,6 +18,7 @@ import ish.oncourse.services.site.WebSiteService;
 import ish.oncourse.services.visitor.ParsedContentVisitor;
 import ish.oncourse.ui.services.UIModule;
 import ish.oncourse.ui.services.locale.PerSiteVariantThreadLocale;
+import ish.oncourse.util.PageRenderer;
 import ish.oncourse.website.services.html.CacheMetaProvider;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.internal.InternalConstants;
@@ -48,7 +49,7 @@ public class AppModule {
 		BinderFunctions.bindWebSiteServices(binder, WebSiteService.class);
 		BinderFunctions.bindPaymentGatewayServices(binder);
 		BinderFunctions.bindEnvServices(binder, "portal", false);
-		BinderFunctions.bindTapestryServices(binder, CacheMetaProvider.class);
+		BinderFunctions.bindTapestryServices(binder, CacheMetaProvider.class, PageRenderer.class);
 	}
 
 	public static void contributeApplicationDefaults(

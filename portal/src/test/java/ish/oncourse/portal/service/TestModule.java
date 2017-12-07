@@ -19,6 +19,8 @@ import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
+import org.apache.tapestry5.ioc.ServiceBuilder;
+import org.apache.tapestry5.ioc.ServiceResources;
 import org.apache.tapestry5.ioc.annotations.Contribute;
 import org.apache.tapestry5.ioc.annotations.ImportModule;
 import org.apache.tapestry5.ioc.annotations.Local;
@@ -35,14 +37,11 @@ import static org.mockito.Mockito.when;
 public class TestModule {
 
 	public static void bind(ServiceBinder binder) {
-		binder.bind(Injector.class, resources ->
-				Guice.createInjector((Module) binder1 ->
-						binder1.bind(ServerRuntime.class)
-								.toInstance(ServerRuntime.builder()
-										.dataSource(getDataSource())
-										.addConfig("cayenne-oncourse.xml")
-										.addModule(new PortalModule.PortalCayenneModule())
-										.build())));
+		binder.bind(ServerRuntime.class, resources -> ServerRuntime.builder()
+				.dataSource(getDataSource())
+				.addConfig("cayenne-oncourse.xml")
+				.addModule(new PortalModule.PortalCayenneModule())
+				.build());
 	}
 
 	public RequestFilter buildLogFilterOverride(org.slf4j.Logger log, RequestGlobals requestGlobals) {

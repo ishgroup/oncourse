@@ -11,6 +11,10 @@ import ish.oncourse.portal.services.pageload.PortalPageRenderer;
 import ish.oncourse.portal.services.site.PortalSiteService;
 import ish.oncourse.services.BinderFunctions;
 import ish.oncourse.services.DisableJavaScriptStack;
+import ish.oncourse.services.cookies.CookiesService;
+import ish.oncourse.services.cookies.ICookiesOverride;
+import ish.oncourse.services.cookies.ICookiesService;
+import ish.oncourse.services.html.NoCacheMetaProvider;
 import ish.oncourse.services.search.SearchService;
 import ish.oncourse.services.usi.IUSIVerificationService;
 import ish.oncourse.textile.services.TextileModule;
@@ -50,17 +54,14 @@ public class AppModule {
 		BinderFunctions.bindWebSiteServices(binder, PortalSiteService.class);
 		BinderFunctions.bindPaymentGatewayServices(binder);
 		BinderFunctions.bindEnvServices(binder, "portal", false);
+		BinderFunctions.bindTapestryServices(binder, NoCacheMetaProvider.class, PortalPageRenderer.class);
 		ish.oncourse.webservices.usi.tapestry.BinderFunctions.bindUSIServices(binder);
-
-
-		binder.bind(IComponentPageResponseRenderer.class, ComponentPageResponseRenderer.class);
 
 		binder.bind(ISessionManager.class, ZKSessionManager.class).scope(ScopeConstants.DEFAULT);
 		binder.bind(IAuthenticationService.class, AuthenticationService.class);
 		binder.bind(IDiscussionService.class, DiscussionServiceImpl.class);
 		binder.bind(AccessController.class).withId("AccessController");
 
-		binder.bind(IPageRenderer.class, PortalPageRenderer.class);
 		binder.bind(IPortalService.class, PortalService.class).scope(ScopeConstants.PERTHREAD);
 		binder.bind(IPortalApplicationService.class, PortalApplicationServiceImpl.class);
 
