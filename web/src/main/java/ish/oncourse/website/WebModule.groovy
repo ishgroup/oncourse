@@ -11,14 +11,21 @@ import io.bootique.jdbc.DataSourceFactory
 import io.bootique.jetty.JettyModule
 import io.bootique.jetty.MappedFilter
 import io.bootique.jetty.MappedServlet
+import io.bootique.tapestry.di.InjectorModuleDef
+import ish.oncourse.cayenne.cache.ICacheEnabledService
 import ish.oncourse.cayenne.cache.JCacheModule
 import ish.oncourse.configuration.ISHHealthCheckServlet
 import ish.oncourse.services.persistence.ISHObjectContextFactory
+import ish.oncourse.tapestry.WillowModuleDef
+import ish.oncourse.tapestry.WillowTapestryFilter
+import ish.oncourse.tapestry.WillowTapestryFilterBuilder
 import ish.oncourse.util.log.LogAppInfo
 import ish.oncourse.website.services.CacheEnabledService
-import ish.oncourse.cayenne.cache.ICacheEnabledService
 import org.apache.cayenne.configuration.Constants
 import org.apache.cayenne.configuration.ObjectContextFactory
+import org.apache.cayenne.configuration.server.ServerRuntime
+
+import javax.servlet.Filter
 
 /**
  * User: akoiro
@@ -32,10 +39,10 @@ class WebModule extends ConfigModule {
 
     public static final String DATA_SOURCE_NAME = LogAppInfo.DATA_SOURSE_NAME;
 
-    private static final TypeLiteral<MappedFilter<WebTapestryFilter>> TAPESTRY_FILTER =
-            new TypeLiteral<MappedFilter<WebTapestryFilter>>() {
+    private static final TypeLiteral<MappedFilter<WillowTapestryFilter>> TAPESTRY_FILTER =
+            new TypeLiteral<MappedFilter<WillowTapestryFilter>>() {
             }
-    
+
     private static final TypeLiteral<MappedFilter<RequestFilter>> REQUEST_FILTER =
             new TypeLiteral<MappedFilter<RequestFilter>>() {
             }
@@ -43,10 +50,13 @@ class WebModule extends ConfigModule {
 
     @Singleton
     @Provides
-    MappedFilter<WebTapestryFilter> createTapestryFilter(Injector injector) {
-        LogAppInfo info = new LogAppInfo(injector.getInstance(DataSourceFactory.class).forName(DATA_SOURCE_NAME))
-        info.log()
-        WebTapestryFilter filter = new WebTapestryFilter(injector)
+    MappedFilter<WillowTapestryFilter> createTapestryFilter(Injector injector) {
+        new LogAppInfo(injector.getInstance(DataSourceFactory.class).forName(DATA_SOURCE_NAME)).log()
+        Filter filter = new WillowTapestryFilterBuilder()
+                .moduleDef(new InjectorModuleDef(injector))
+                .moduleDef(new WillowModuleDef(injector.getInstance(DataSourceFactory).forName(LogAppInfo.DATA_SOURSE_NAME),
+                injector.getInstance(ServerRuntime), injector.getInstance(ICacheEnabledService)))
+                .appPackage("ish.oncourse.website").build()
         return new MappedFilter<>(filter,
                 Collections.singleton(URL_PATTERN),
                 TAPESTRY_APP_NAME, 1
@@ -64,7 +74,7 @@ class WebModule extends ConfigModule {
     ICacheEnabledService createCacheEnabledModule() {
         new CacheEnabledService()
     }
-    
+
     @Singleton
     @Provides
     CacheEnabledModule createCacheEnabledModule(ICacheEnabledService service) {
@@ -94,14 +104,14 @@ class WebModule extends ConfigModule {
         }
     }
 
-    static class CacheEnabledModule  implements org.apache.cayenne.di.Module {
-        
+    static class CacheEnabledModule implements org.apache.cayenne.di.Module {
+
         private ICacheEnabledService service
-        
+
         CacheEnabledModule(ICacheEnabledService service) {
             this.service = service
         }
-        
+
         @Override
         void configure(org.apache.cayenne.di.Binder binder) {
             binder.bind(ICacheEnabledService).toInstance(service)
