@@ -36,6 +36,8 @@ import static org.springframework.web.context.ContextLoader.CONFIG_LOCATION_PARA
  * Date: 23/8/17
  */
 public class ServicesModule extends ConfigModule {
+	public static final String APP_PACKAGE = "ish.oncourse.webservices";
+
 	private static final String URL_PATTERN = "/*";
 
 	public static final String DATA_SOURCE_NAME = "willow";
@@ -65,7 +67,7 @@ public class ServicesModule extends ConfigModule {
 				.moduleDef(new InjectorModuleDef(injector))
 				.moduleDef(new WillowModuleDef(injector.getInstance(DataSourceFactory.class).forName(LogAppInfo.DATA_SOURSE_NAME),
 						injector.getInstance(ServerRuntime.class)))
-				.appPackage("ish.oncourse.webservices")
+				.appPackage(APP_PACKAGE)
 				.initParam(CONFIG_LOCATION_PARAM, "classpath:application-context.xml")
 				.build();
 		return new MappedFilter<>(filter, Collections.singleton(URL_PATTERN), TAPESTRY_APP_NAME, 0);

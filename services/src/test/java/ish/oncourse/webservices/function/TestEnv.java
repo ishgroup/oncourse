@@ -44,7 +44,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Function;
 
-import static ish.oncourse.webservices.ServicesTapestryFilter.SERVICES_APP_PACKAGE;
 import static ish.oncourse.webservices.soap.TestConstants.*;
 import static ish.oncourse.webservices.usi.TestUSIServiceEndpoint.USI_TEST_MODE;
 import static org.junit.Assert.*;
@@ -124,7 +123,7 @@ public class TestEnv<T extends TransportConfig> {
 	}
 
 	private void startTapestry() {
-		pageTester = new PageTester(SERVICES_APP_PACKAGE, "app", PageTester.DEFAULT_CONTEXT_PATH, TapestryTestModule.class);
+		pageTester = new PageTester(ServicesModule.APP_PACKAGE, "app", PageTester.DEFAULT_CONTEXT_PATH, TapestryTestModule.class);
 		cayenneService = pageTester.getService(ICayenneService.class);
 		messages = mock(Messages.class);
 		when(messages.get(anyString())).thenReturn("Any string");
