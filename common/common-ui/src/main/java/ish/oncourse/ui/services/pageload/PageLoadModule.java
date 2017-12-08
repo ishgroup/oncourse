@@ -32,7 +32,7 @@ public class PageLoadModule {
 	}
 
 
-	@Decorate
+	@Decorate(serviceInterface = PageLoader.class)
 	public PageLoader decoratePageLoader(ComponentClassResolver componentClassResolver, OperationTracker tracker,
 										 PersistentFieldManager persistentFieldManager, PerthreadManager perThreadManager,
 										 MetaDataLocator metaDataLocator, PageLoader pageLoader, PageLoadService pageLoadService) {
