@@ -17,6 +17,7 @@ configurations {
 
 dependencies {
     compile project(':common:common-api')
+    compile project(':common:common-templates')
     
     //webdav servlet 
     compile 'io.milton:milton-api:2.6.0.1'
