@@ -3,12 +3,14 @@ package ish.oncourse.webservices.soap;
 import ish.oncourse.model.College;
 import ish.oncourse.services.BinderFunctions;
 import ish.oncourse.services.filestorage.IFileStorageAssetService;
+import ish.oncourse.services.html.NoCacheMetaProvider;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.WebSiteServiceOverride;
 import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.services.usi.IUSIVerificationService;
 import ish.oncourse.test.ServiceTest;
+import ish.oncourse.util.PageRenderer;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.reference.services.ReferenceStubBuilder;
 import ish.oncourse.webservices.replication.builders.ITransactionStubBuilder;
@@ -41,6 +43,7 @@ public class ReplicationTestModule {
 		BinderFunctions.bindEntityServices(binder);
 		BinderFunctions.bindEnvServices(binder, "services", true);
 		BinderFunctions.bindPaymentGatewayServices(binder);
+		BinderFunctions.bindTapestryServices(binder, NoCacheMetaProvider.class, PageRenderer.class);
 
 		binder.bind(ReferenceStubBuilder.class);
 		binder.bind(IWillowStubBuilder.class, WillowStubBuilderImpl.class);

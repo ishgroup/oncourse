@@ -1,10 +1,9 @@
 package ish.oncourse.test.functions
 
-import ish.math.MoneyType
+import ish.oncourse.cayenne.WillowCayenneModuleBuilder
 import ish.oncourse.test.MariaDB
 import ish.oncourse.test.TestInitialContextFactory
 import ish.oncourse.util.ContextUtil
-import org.apache.cayenne.access.DataNode
 import org.apache.cayenne.configuration.server.ServerRuntime
 import org.apache.commons.dbcp2.BasicDataSource
 import org.apache.logging.log4j.LogManager
@@ -25,11 +24,7 @@ class Functions {
     private static final Logger logger = LogManager.getLogger()
 
     static ServerRuntime createRuntime(String cayenneXml = "cayenne-oncourse.xml") {
-        ServerRuntime cayenneRuntime = new ServerRuntime(cayenneXml)
-
-        for (DataNode dataNode : cayenneRuntime.getDataDomain().getDataNodes()) {
-            dataNode.getAdapter().getExtendedTypes().registerType(new MoneyType())
-        }
+        ServerRuntime cayenneRuntime = new ServerRuntime(cayenneXml, new WillowCayenneModuleBuilder().build())
         return cayenneRuntime
     }
 
