@@ -12,16 +12,14 @@ import io.bootique.jetty.JettyModule
 import io.bootique.jetty.MappedFilter
 import io.bootique.jetty.MappedServlet
 import io.bootique.tapestry.di.InjectorModuleDef
+import ish.oncourse.cayenne.WillowCayenneModuleBuilder
 import ish.oncourse.cayenne.cache.ICacheEnabledService
 import ish.oncourse.cayenne.cache.JCacheModule
 import ish.oncourse.configuration.ISHHealthCheckServlet
-import ish.oncourse.services.persistence.ISHObjectContextFactory
 import ish.oncourse.tapestry.WillowModuleDef
 import ish.oncourse.tapestry.WillowTapestryFilter
 import ish.oncourse.tapestry.WillowTapestryFilterBuilder
 import ish.oncourse.util.log.LogAppInfo
-import org.apache.cayenne.configuration.Constants
-import org.apache.cayenne.configuration.ObjectContextFactory
 import org.apache.cayenne.configuration.server.ServerRuntime
 import org.apache.tapestry5.internal.spring.SpringModuleDef
 
@@ -70,7 +68,7 @@ class PortalModule extends ConfigModule {
     @Override
     void configure(Binder binder) {
         CayenneModule.extend(binder)
-                .addModule(new PortalCayenneModule())
+                .addModule(new WillowCayenneModuleBuilder().build())
                 .addModule(new JCacheModule())
         JettyModule.extend(binder)
                 .addMappedFilter(TAPESTRY_FILTER)
@@ -78,15 +76,4 @@ class PortalModule extends ConfigModule {
                 .addStaticServlet("resources", URL_PATTERN)
 
     }
-
-
-    static class PortalCayenneModule implements org.apache.cayenne.di.Module {
-        @Override
-        void configure(org.apache.cayenne.di.Binder binder) {
-            binder.bindMap(Object.class, Constants.PROPERTIES_MAP).put(Constants.CI_PROPERTY, "true")
-            binder.bind(ObjectContextFactory.class).toInstance(new ISHObjectContextFactory(false))
-        }
-    }
-
-
 }

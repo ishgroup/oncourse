@@ -7,10 +7,10 @@ import io.bootique.jdbc.DataSourceFactory
 import io.bootique.jetty.JettyModule
 import io.bootique.jetty.MappedServlet
 import ish.oncourse.api.cayenne.CayenneService
-import ish.oncourse.api.cayenne.WillowApiCayenneModule
+import ish.oncourse.api.cxf.CXFModule
+import ish.oncourse.cayenne.WillowCayenneModuleBuilder
 import ish.oncourse.cayenne.cache.JCacheModule
 import ish.oncourse.configuration.ISHHealthCheckServlet
-import ish.oncourse.api.cxf.CXFModule
 import ish.oncourse.util.log.LogAppInfo
 import ish.oncourse.willow.checkout.CheckoutApiImpl
 import ish.oncourse.willow.checkout.corporatepass.CorporatePassApiImpl
@@ -29,7 +29,7 @@ class WillowApiModule extends ConfigModule {
             }
     
     void configure(Binder binder) {
-        CayenneModule.extend(binder).addModule(WillowApiCayenneModule)
+        CayenneModule.extend(binder).addModule(new WillowCayenneModuleBuilder().build())
         CayenneModule.extend(binder).addModule(JCacheModule)
         JettyModule.extend(binder).addMappedServlet(ISH_HEALTH_CHECK_SERVLET)
         CXFModule.contributeResources(binder).addBinding().to(JAXRSBeanValidationFeature)

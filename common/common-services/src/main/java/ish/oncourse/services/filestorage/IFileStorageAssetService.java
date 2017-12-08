@@ -4,8 +4,8 @@ import ish.oncourse.model.DocumentVersion;
 
 @Deprecated
 public interface IFileStorageAssetService {
-    public void put(byte[] data, DocumentVersion documentVersion);
-    public byte[] get(DocumentVersion documentVersion);
-    public void delete(DocumentVersion documentVersion);
-    public boolean contains(DocumentVersion documentVersion);
+    void put(byte[] data, DocumentVersion documentVersion);
+    byte[] get(DocumentVersion documentVersion);
+    void delete(DocumentVersion documentVersion);
+    boolean contains(DocumentVersion documentVersion);
 }

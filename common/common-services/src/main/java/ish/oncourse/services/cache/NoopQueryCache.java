@@ -1,6 +1,5 @@
 package ish.oncourse.services.cache;
 
-import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.cache.QueryCache;
 import org.apache.cayenne.cache.QueryCacheEntryFactory;
 import org.apache.cayenne.query.QueryMetadata;
@@ -21,21 +20,7 @@ public class NoopQueryCache implements QueryCache {
 
 	@Override
 	public List get(QueryMetadata metadata, QueryCacheEntryFactory factory) {
-		Object newObject = factory.createObject();
-
-        if (!(newObject instanceof List)) {
-            if (newObject == null) {
-                throw new CayenneRuntimeException("Null on cache rebuilding: "
-                        + metadata.getCacheKey());
-            }
-            else {
-                throw new CayenneRuntimeException(
-                        "Invalid query result, expected List, got "
-                                + newObject.getClass().getName());
-            }
-        }
-        
-        return (List) newObject;
+		return factory.createObject();
 	}
 
 	@Override

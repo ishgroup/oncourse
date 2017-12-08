@@ -11,16 +11,13 @@ import io.bootique.jetty.JettyModule;
 import io.bootique.jetty.MappedFilter;
 import io.bootique.jetty.MappedServlet;
 import io.bootique.tapestry.di.InjectorModuleDef;
+import ish.oncourse.cayenne.WillowCayenneModuleBuilder;
 import ish.oncourse.configuration.ISHHealthCheckServlet;
 import ish.oncourse.services.cache.NoopQueryCache;
-import ish.oncourse.services.persistence.ISHObjectContextFactory;
 import ish.oncourse.tapestry.WillowModuleDef;
 import ish.oncourse.tapestry.WillowTapestryFilter;
 import ish.oncourse.tapestry.WillowTapestryFilterBuilder;
 import ish.oncourse.util.log.LogAppInfo;
-import org.apache.cayenne.cache.QueryCache;
-import org.apache.cayenne.configuration.Constants;
-import org.apache.cayenne.configuration.ObjectContextFactory;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.cxf.transport.servlet.CXFServlet;
 import org.apache.tapestry5.internal.spring.SpringModuleDef;
@@ -85,24 +82,11 @@ public class ServicesModule extends ConfigModule {
 
 	@Override
 	public void configure(Binder binder) {
-		CayenneModule.extend(binder).addModule(new ServicesCayenneModule());
+		CayenneModule.extend(binder).addModule(new WillowCayenneModuleBuilder().queryCache(new NoopQueryCache()).build());
 		JettyModule.extend(binder)
 				.addMappedFilter(TAPESTRY_FILTER)
 				.addMappedServlet(CXF_SERVLET)
 				.addMappedServlet(new MappedServlet<>(new ISHHealthCheckServlet(), ISHHealthCheckServlet.urlPatterns, ISHHealthCheckServlet.SERVLET_NAME));
 
 	}
-
-
-	public static class ServicesCayenneModule implements org.apache.cayenne.di.Module {
-		@Override
-		public void configure(org.apache.cayenne.di.Binder binder) {
-			binder.bindMap(Object.class, Constants.PROPERTIES_MAP).put(Constants.CI_PROPERTY, "true");
-			binder.bind(ObjectContextFactory.class).toInstance(new ISHObjectContextFactory(false));
-			binder.bind(QueryCache.class).toInstance(new NoopQueryCache());
-			binder.bind(org.apache.cayenne.di.Key.get(QueryCache.class, ISHObjectContextFactory.QUERY_CACHE_INJECTION_KEY)).toInstance(new NoopQueryCache());
-		}
-	}
-
-
 }

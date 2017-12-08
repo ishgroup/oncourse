@@ -63,10 +63,4 @@ public class PageLoadModule {
 										  @Local PageSource pageSource) {
 		configuration.add(PageSource.class, pageSource);
 	}
-
-//	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local PageLoader override) {
-//		configuration.add(PageLoader.class, override);
-//	}
-
-
 }

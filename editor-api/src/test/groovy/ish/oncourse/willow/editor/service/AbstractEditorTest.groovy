@@ -1,17 +1,7 @@
 package ish.oncourse.willow.editor.service
 
 import ish.oncourse.api.cayenne.CayenneService
-import ish.oncourse.api.cayenne.WillowApiCayenneModule
-import ish.oncourse.model.RegionKey
-import ish.oncourse.model.WebContent
-import ish.oncourse.model.WebContentVisibility
-import ish.oncourse.model.WebMenu
-import ish.oncourse.model.WebNode
-import ish.oncourse.model.WebNodeType
-import ish.oncourse.model.WebSite
-import ish.oncourse.model.WebSiteLayout
-import ish.oncourse.model.WebSiteVersion
-import ish.oncourse.model.WebUrlAlias
+import ish.oncourse.model.*
 import ish.oncourse.test.LoadDataSet
 import ish.oncourse.test.TestContext
 import ish.oncourse.willow.editor.services.RequestService
@@ -21,9 +11,7 @@ import org.apache.cayenne.configuration.server.ServerRuntime
 import org.apache.cayenne.query.ObjectSelect
 import org.eclipse.jetty.server.Request
 import org.junit.After
-import org.junit.AfterClass
 import org.junit.Before
-import org.junit.BeforeClass
 
 abstract class AbstractEditorTest {
 
@@ -38,7 +26,7 @@ abstract class AbstractEditorTest {
     void setup() throws Exception {
         testContext = new TestContext().shouldCreateTables(false).open()
         new LoadDataSet().dataSetFile(dataSetResource).replacements(['[null]':null]).load(testContext.DS)
-        cayenneRuntime = new ServerRuntime('cayenne-oncourse.xml', new WillowApiCayenneModule())
+        cayenneRuntime = new ServerRuntime('cayenne-oncourse.xml', new ish.oncourse.cayenne.WillowCayenneModuleBuilder())
         cayenneService = new CayenneService(cayenneRuntime)
 
         Request request = mockRequest()

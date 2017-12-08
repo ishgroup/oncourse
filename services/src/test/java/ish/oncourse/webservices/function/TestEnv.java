@@ -7,9 +7,11 @@ import io.bootique.BQRuntime;
 import io.bootique.jdbc.DataSourceFactory;
 import ish.common.types.CreditCardType;
 import ish.common.types.PaymentStatus;
+import ish.oncourse.cayenne.WillowCayenneModuleBuilder;
 import ish.oncourse.configuration.Configuration;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.QueuedRecord;
+import ish.oncourse.services.cache.NoopQueryCache;
 import ish.oncourse.services.payment.*;
 import ish.oncourse.services.paymentexpress.INewPaymentGatewayServiceBuilder;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -413,7 +415,7 @@ public class TestEnv<T extends TransportConfig> {
 			binder.bind(ServerRuntime.class, resources -> ServerRuntime.builder()
 					.dataSource(dataSourceFactory.get().forName(ServicesModule.DATA_SOURCE_NAME))
 					.addConfig("cayenne-oncourse.xml")
-					.addModule(new ServicesModule.ServicesCayenneModule()).build());
+					.addModule(new WillowCayenneModuleBuilder().queryCache(new NoopQueryCache()).build()).build());
 
 			binder.bind(DataSource.class, resources -> dataSourceFactory.get().forName(ServicesModule.DATA_SOURCE_NAME));
 		}

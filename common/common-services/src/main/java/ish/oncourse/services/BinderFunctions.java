@@ -36,6 +36,8 @@ import ish.oncourse.services.enrol.EnrolmentServiceImpl;
 import ish.oncourse.services.enrol.IEnrolmentService;
 import ish.oncourse.services.environment.EnvironmentService;
 import ish.oncourse.services.environment.IEnvironmentService;
+import ish.oncourse.services.filestorage.FileStorageAssetService;
+import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.format.FormatService;
 import ish.oncourse.services.format.IFormatService;
 import ish.oncourse.services.html.*;
@@ -53,6 +55,8 @@ import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.node.WebNodeService;
 import ish.oncourse.services.node.WebNodeTypeService;
+import ish.oncourse.services.payment.IPaymentService;
+import ish.oncourse.services.payment.PaymentService;
 import ish.oncourse.services.paymentexpress.*;
 import ish.oncourse.services.persistence.CayenneService;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -92,7 +96,6 @@ import ish.oncourse.services.voucher.VoucherService;
 import ish.oncourse.util.ComponentPageResponseRenderer;
 import ish.oncourse.util.IComponentPageResponseRenderer;
 import ish.oncourse.util.IPageRenderer;
-import ish.oncourse.util.PageRenderer;
 import org.apache.cayenne.configuration.CayenneRuntime;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.tapestry5.ioc.ScopeConstants;
@@ -147,6 +150,7 @@ public class BinderFunctions {
 		binder.bind(IVoucherService.class, VoucherService.class);
 		binder.bind(IApplicationService.class, ApplicationServiceImpl.class);
 		binder.bind(IMessagePersonService.class, MessagePersonService.class);
+		binder.bind(IPaymentService.class, PaymentService.class);
 	}
 
 	public static void bindWebSiteServices(ServiceBinder binder, Class<? extends IWebSiteService> webSiteServiceClass) {
@@ -172,6 +176,7 @@ public class BinderFunctions {
 
 		binder.bind(IMailService.class, MailService.class);
 
+		binder.bind(IFileStorageAssetService.class, FileStorageAssetService.class);
 		binder.bind(IS3Service.class, S3Service.class).scope(PERTHREAD);
 
 		binder.bind(IJMXInitService.class, new JMXInitServiceBuilder(appName));

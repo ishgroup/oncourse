@@ -1,7 +1,7 @@
 package ish.oncourse.willow.service
 
 import ish.oncourse.api.cayenne.CayenneService
-import ish.oncourse.api.cayenne.WillowApiCayenneModule
+import ish.oncourse.cayenne.WillowCayenneModuleBuilder
 import ish.oncourse.test.TestContext
 import org.apache.cayenne.configuration.server.ServerRuntime
 import org.junit.After
@@ -16,7 +16,7 @@ abstract class NoDbApiTest {
     @Before
     void setup() throws Exception {
         testContext = new TestContext().shouldCreateTables(false).open()
-        cayenneRuntime = new ServerRuntime("cayenne-oncourse.xml", new WillowApiCayenneModule())
+        cayenneRuntime = new ServerRuntime("cayenne-oncourse.xml", new WillowCayenneModuleBuilder().build())
         cayenneService = new CayenneService(cayenneRuntime)
     }
 

@@ -1,6 +1,7 @@
 package ish.oncourse.services.persistence;
 
 import ish.math.MoneyType;
+import ish.oncourse.cayenne.WillowDataContextFactory;
 import ish.oncourse.listeners.IshVersionListener;
 import ish.oncourse.services.lifecycle.*;
 import ish.oncourse.services.site.IWebSiteService;
@@ -69,7 +70,7 @@ public class CayenneService implements ICayenneService, RegistryShutdownListener
 		if (dc instanceof ISHObjectContext) {
 			((ISHObjectContext) dc).setRecordQueueingEnabled(false);
 		} else {
-			throw new IllegalStateException(ISHObjectContextFactory.class.getName() + " not installed as DataContext factory");
+			throw new IllegalStateException(WillowDataContextFactory.class.getName() + " not installed as DataContext factory");
 		}
 		return dc;
 	}

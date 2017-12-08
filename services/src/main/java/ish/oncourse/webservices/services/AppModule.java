@@ -4,10 +4,7 @@
  */
 package ish.oncourse.webservices.services;
 
-import com.google.inject.Injector;
-import io.bootique.jdbc.DataSourceFactory;
 import ish.oncourse.services.BinderFunctions;
-import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.alias.IWebUrlAliasService;
 import ish.oncourse.services.alias.WebUrlAliasService;
 import ish.oncourse.services.application.ApplicationServiceImpl;
@@ -52,8 +49,6 @@ import ish.oncourse.services.node.WebNodeService;
 import ish.oncourse.services.node.WebNodeTypeService;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.payment.PaymentService;
-import ish.oncourse.services.paymentexpress.*;
-import ish.oncourse.services.persistence.CayenneService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
@@ -94,7 +89,6 @@ import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherService;
 import ish.oncourse.util.*;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
-import ish.oncourse.webservices.ServicesModule;
 import ish.oncourse.webservices.jobs.PaymentInExpireJob;
 import ish.oncourse.webservices.jobs.SMSJob;
 import ish.oncourse.webservices.jobs.UpdateAmountOwingJob;
@@ -111,21 +105,19 @@ import ish.oncourse.webservices.usi.USIVerificationService;
 import ish.oncourse.webservices.usi.crypto.CryptoKeys;
 import ish.oncourse.webservices.usi.tapestry.CryptoKeysBuilder;
 import ish.oncourse.webservices.usi.tapestry.USIServiceBuilder;
-import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.SymbolConstants;
-import org.apache.tapestry5.ioc.*;
+import org.apache.tapestry5.ioc.Configuration;
+import org.apache.tapestry5.ioc.IOCSymbols;
+import org.apache.tapestry5.ioc.MappedConfiguration;
+import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Contribute;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.services.ApplicationDefaults;
-import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
 import org.apache.tapestry5.ioc.services.SymbolProvider;
-import org.apache.tapestry5.services.ApplicationGlobals;
 import org.apache.tapestry5.services.LibraryMapping;
 import org.apache.tapestry5.services.RequestExceptionHandler;
-
-import javax.sql.DataSource;
 
 import static ish.oncourse.services.ServiceModule.APP_TEST_MODE;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
@@ -236,12 +228,7 @@ public class AppModule {
 		binder.bind(IJMXInitService.class, new BinderFunctions.JMXInitServiceBuilder("services")).eagerLoad();
 		binder.bind(RequestExceptionHandler.class, ServiceRequestExceptionHandler.class).withId(ServiceRequestExceptionHandler.class.getSimpleName());
 
-
-		binder.bind(IPaymentGatewayServiceBuilder.class, PaymentGatewayServiceBuilder.class);
-		binder.bind(IPaymentGatewayService.class, new BinderFunctions.PaymentGatewayServiceBuilder()).scope(PERTHREAD);
-
-		binder.bind(INewPaymentGatewayServiceBuilder.class, NewPaymentGatewayServiceBuilder.class);
-		binder.bind(INewPaymentGatewayService.class, new BinderFunctions.PaymentGatewayBuilder()).scope(PERTHREAD);
+		BinderFunctions.bindPaymentGatewayServices(binder);
 	}
 
 
