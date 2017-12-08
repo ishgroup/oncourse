@@ -11,7 +11,6 @@ import io.bootique.jetty.JettyModule;
 import io.bootique.jetty.MappedFilter;
 import io.bootique.jetty.MappedServlet;
 import io.bootique.tapestry.di.InjectorModuleDef;
-import ish.oncourse.cayenne.cache.ICacheEnabledService;
 import ish.oncourse.configuration.ISHHealthCheckServlet;
 import ish.oncourse.services.cache.NoopQueryCache;
 import ish.oncourse.services.persistence.ISHObjectContextFactory;
@@ -26,7 +25,6 @@ import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.cxf.transport.servlet.CXFServlet;
 import org.apache.tapestry5.internal.spring.SpringModuleDef;
 
-import javax.servlet.Filter;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -66,7 +64,7 @@ public class ServicesModule extends ConfigModule {
 				.moduleDefClass(SpringModuleDef.class)
 				.moduleDef(new InjectorModuleDef(injector))
 				.moduleDef(new WillowModuleDef(injector.getInstance(DataSourceFactory.class).forName(LogAppInfo.DATA_SOURSE_NAME),
-						injector.getInstance(ServerRuntime.class), injector.getInstance(ICacheEnabledService.class)))
+						injector.getInstance(ServerRuntime.class)))
 				.appPackage("ish.oncourse.webservices")
 				.initParam(CONFIG_LOCATION_PARAM, "classpath:application-context.xml")
 				.build();
