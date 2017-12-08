@@ -6,6 +6,7 @@ package ish.oncourse.webservices;
 import com.google.inject.Injector;
 import io.bootique.jdbc.DataSourceFactory;
 import io.bootique.tapestry.di.InjectorModuleDef;
+import ish.oncourse.cayenne.cache.ICacheEnabledService;
 import ish.oncourse.tapestry.WillowModuleDef;
 import ish.oncourse.util.log.LogAppInfo;
 import org.apache.cayenne.configuration.server.ServerRuntime;
@@ -14,7 +15,6 @@ import org.apache.tapestry5.ioc.def.ModuleDef;
 import org.apache.tapestry5.spring.TapestrySpringFilter;
 
 import javax.servlet.*;
-import javax.sql.DataSource;
 import java.io.IOException;
 
 import static org.apache.tapestry5.SymbolConstants.PRODUCTION_MODE;
@@ -42,7 +42,7 @@ public class ServicesTapestryFilter implements Filter {
 					new SpringModuleDef(context),
 					new InjectorModuleDef(injector),
 					new WillowModuleDef(injector.getInstance(DataSourceFactory.class).forName(LogAppInfo.DATA_SOURSE_NAME),
-							injector.getInstance(ServerRuntime.class))
+							injector.getInstance(ServerRuntime.class), injector.getInstance(ICacheEnabledService.class))
 			};
 		}
 	};
