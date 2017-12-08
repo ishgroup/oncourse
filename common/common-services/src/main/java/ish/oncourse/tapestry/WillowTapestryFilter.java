@@ -8,6 +8,8 @@ import org.apache.tapestry5.ioc.def.ModuleDef;
 
 import javax.servlet.*;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import static org.apache.tapestry5.SymbolConstants.PRODUCTION_MODE;
@@ -20,11 +22,23 @@ public class WillowTapestryFilter implements Filter {
 	private TapestryFilter tapestryFilter;
 	private Map<String, String> parameters;
 
-	WillowTapestryFilter(final ModuleDef[] moduleDefs, Map<String, String> parameters) {
+	WillowTapestryFilter(final List<ModuleDef> moduleDefs,
+						 final List<Class<? extends ModuleDef>> moduleDefClasses,
+						 Map<String, String> parameters) {
 		this.tapestryFilter = new TapestryFilter() {
 			@Override
 			protected ModuleDef[] provideExtraModuleDefs(ServletContext context) {
-				return moduleDefs;
+
+				List<ModuleDef> result = new ArrayList<>();
+				moduleDefClasses.forEach((Class<? extends ModuleDef> c) -> {
+					try {
+						result.add(c.getConstructor(ServletContext.class).newInstance(context));
+					} catch (Exception e) {
+						throw new IllegalArgumentException(e);
+					}
+				});
+				result.addAll(moduleDefs);
+				return result.toArray(new ModuleDef[]{});
 			}
 		};
 		this.parameters = parameters;

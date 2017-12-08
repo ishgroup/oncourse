@@ -11,12 +11,24 @@ import io.bootique.jdbc.DataSourceFactory
 import io.bootique.jetty.JettyModule
 import io.bootique.jetty.MappedFilter
 import io.bootique.jetty.MappedServlet
+import io.bootique.tapestry.di.InjectorModuleDef
+import ish.oncourse.cayenne.cache.ICacheEnabledService
 import ish.oncourse.cayenne.cache.JCacheModule
 import ish.oncourse.configuration.ISHHealthCheckServlet
 import ish.oncourse.services.persistence.ISHObjectContextFactory
+import ish.oncourse.tapestry.WillowModuleDef
+import ish.oncourse.tapestry.WillowTapestryFilter
+import ish.oncourse.tapestry.WillowTapestryFilterBuilder
 import ish.oncourse.util.log.LogAppInfo
 import org.apache.cayenne.configuration.Constants
 import org.apache.cayenne.configuration.ObjectContextFactory
+import org.apache.cayenne.configuration.server.ServerRuntime
+import org.apache.tapestry5.internal.spring.SpringModuleDef
+
+import javax.servlet.Filter
+
+import static ish.oncourse.util.log.LogAppInfo.DATA_SOURSE_NAME
+import static org.springframework.web.context.ContextLoader.CONFIG_LOCATION_PARAM
 
 /**
  * User: akoiro
@@ -28,19 +40,27 @@ class PortalModule extends ConfigModule {
 
     private static final String TAPESTRY_APP_NAME = "app"
 
-    public static final String DATA_SOURCE_NAME = LogAppInfo.DATA_SOURSE_NAME;
+    public static final String DATA_SOURCE_NAME = DATA_SOURSE_NAME;
 
-    private static final TypeLiteral<MappedFilter<PortalTapestryFilter>> TAPESTRY_FILTER =
-            new TypeLiteral<MappedFilter<PortalTapestryFilter>>() {
+    private static final TypeLiteral<MappedFilter<WillowTapestryFilter>> TAPESTRY_FILTER =
+            new TypeLiteral<MappedFilter<WillowTapestryFilter>>() {
             }
 
 
     @Singleton
     @Provides
-    MappedFilter<PortalTapestryFilter> createTapestryFilter(Injector injector) {
+    MappedFilter<WillowTapestryFilter> createTapestryFilter(Injector injector) {
         LogAppInfo info = new LogAppInfo(injector.getInstance(DataSourceFactory.class).forName(DATA_SOURCE_NAME))
         info.log()
-        PortalTapestryFilter filter = new PortalTapestryFilter(injector)
+
+        Filter filter = new WillowTapestryFilterBuilder()
+                .moduleDefClass(SpringModuleDef.class)
+                .moduleDef(new InjectorModuleDef(injector))
+                .moduleDef(new WillowModuleDef(injector.getInstance(DataSourceFactory).forName(DATA_SOURSE_NAME),
+                injector.getInstance(ServerRuntime), injector.getInstance(ICacheEnabledService)))
+                .appPackage("ish.oncourse.portal")
+                .initParam(CONFIG_LOCATION_PARAM, "classpath:application-context.xml")
+                .build()
         return new MappedFilter<>(filter,
                 Collections.singleton(URL_PATTERN),
                 TAPESTRY_APP_NAME, 0

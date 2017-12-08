@@ -3,14 +3,13 @@
  */
 package ish.oncourse.tapestry;
 
-import org.apache.tapestry5.TapestryFilter;
 import org.apache.tapestry5.ioc.def.ModuleDef;
 
-import javax.servlet.*;
-import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import static org.apache.tapestry5.SymbolConstants.PRODUCTION_MODE;
 import static org.apache.tapestry5.internal.InternalConstants.TAPESTRY_APP_PACKAGE_PARAM;
 
 /**
@@ -19,15 +18,21 @@ import static org.apache.tapestry5.internal.InternalConstants.TAPESTRY_APP_PACKA
  */
 public class WillowTapestryFilterBuilder {
 
-	private final List<ModuleDef> modulueDefs = new ArrayList<>();
+	private final List<ModuleDef> moduleDefs = new ArrayList<>();
+	private final List<Class<? extends ModuleDef>> moduleDefClasses = new ArrayList<>();
 
 	private final Map<String, String> parameters = new HashMap<>();
 
 	public WillowTapestryFilterBuilder() {
 	}
 
+	public WillowTapestryFilterBuilder moduleDefClass(Class<? extends ModuleDef> mdClass) {
+		moduleDefClasses.add(mdClass);
+		return this;
+	}
+
 	public WillowTapestryFilterBuilder moduleDef(ModuleDef moduleDef) {
-		modulueDefs.add(moduleDef);
+		moduleDefs.add(moduleDef);
 		return this;
 	}
 
@@ -42,6 +47,6 @@ public class WillowTapestryFilterBuilder {
 	}
 
 	public WillowTapestryFilter build() {
-		return new WillowTapestryFilter(modulueDefs.toArray(new ModuleDef[]{}), parameters);
+		return new WillowTapestryFilter(moduleDefs, moduleDefClasses, parameters);
 	}
 }
