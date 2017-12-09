@@ -23,3 +23,9 @@ dependencies {
 
 	testCompile project(':common:test-functions')
 }
+
+test {
+    forkEvery = 1 //run every test in separate jvm
+    initTestDBConfig(project, test)
+}
+
