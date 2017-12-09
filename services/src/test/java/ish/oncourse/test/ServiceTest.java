@@ -1,6 +1,6 @@
 package ish.oncourse.test;
 
-import ish.oncourse.webservices.soap.ReplicationTestModule;
+import ish.oncourse.services.cache.NoopQueryCache;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.tapestry5.ioc.AnnotationProvider;
@@ -17,7 +17,7 @@ public class ServiceTest {
 	protected TestContext testContext;
 
 	public void initTest(String appPackage, String appName, Class<?>... moduleClasses) {
-		testContext = new TestContext().open();
+		testContext = new TestContext().queryCache(new NoopQueryCache()).open();
 		dataSource.set(testContext.getDS());
 		serverRuntime.set(testContext.getServerRuntime());
 		tester = new PageTester(appPackage, appName, "src/main/webapp", moduleClasses);
