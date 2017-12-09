@@ -1,6 +1,6 @@
 package ish.oncourse.model;
 
-import ish.oncourse.test.ContextUtils;
+import ish.oncourse.test.TestContext;
 import org.apache.cayenne.ObjectContext;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -18,6 +18,8 @@ public class TagTest {
 
 	public static final String ROOT_TAG_NAME = "Root & root";
 
+	private static final TestContext testContext = new TestContext();
+
 	/**
 	 * Data context for persistent objects.
 	 */
@@ -29,17 +31,16 @@ public class TagTest {
 
 	/**
 	 * Initializes entities, commit needed changes.
-	 * 
+	 * <p>
 	 * Creates the tag with path /{@value #ROOT_TAG_NAME}/{@value #FIRST_TAG_NAME}/{@value #SECOND_TAG_NAME}/{@value #TEST_TAG_NAME}.
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@BeforeClass
 	public static void setUp() throws Exception {
-		
-		ContextUtils.setupDataSources();
+		testContext.open();
+		context = testContext.getServerRuntime().newContext();
 
-		context = ContextUtils.createObjectContext();
 
 		College college = context.newObject(College.class);
 		college.setName("name");
@@ -72,7 +73,7 @@ public class TagTest {
 
 	/**
 	 * Test for the {@link Tag#getDefaultPath()} method.
-	 * 
+	 * <p>
 	 * Emulates the situation when tag has the path /{@value #ROOT_TAG_NAME}/
 	 * {@value #FIRST_TAG_NAME}/{@value #SECOND_TAG_NAME}/
 	 * {@value #TEST_TAG_NAME} which when encoded should be transformed into
@@ -80,7 +81,7 @@ public class TagTest {
 	 */
 	@Test
 	public void getDefaultPathTest() {
-		String[] namesInPath = { ROOT_TAG_NAME, FIRST_TAG_NAME, SECOND_TAG_NAME, TEST_TAG_NAME };
+		String[] namesInPath = {ROOT_TAG_NAME, FIRST_TAG_NAME, SECOND_TAG_NAME, TEST_TAG_NAME};
 		Tag testing = testTag;
 		for (int i = namesInPath.length - 1; i >= 0; i--) {
 			assertEquals(namesInPath[i], testing.getName());
@@ -88,9 +89,10 @@ public class TagTest {
 		}
 		assertEquals(ENCODED_PATH_FOR_TEST_TAG, testTag.getDefaultPath());
 	}
+
 	/**
-	 * Test for the  {@link Tag#getLink(String)} and {@link Tag#getLink()}. Emulates the situation when parameter for the first method(the entity name) is "Course". 
-	 * So, both methods should return /courses{@value #ENCODED_PATH_FOR_TEST_TAG} 
+	 * Test for the  {@link Tag#getLink(String)} and {@link Tag#getLink()}. Emulates the situation when parameter for the first method(the entity name) is "Course".
+	 * So, both methods should return /courses{@value #ENCODED_PATH_FOR_TEST_TAG}
 	 */
 	@Test
 	public void getLinkTest() {

@@ -15,7 +15,7 @@ import org.apache.commons.lang.StringUtils;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -151,12 +151,20 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 		return TimeZone.getTimeZone(getTimeZone());
 	}
 
+	/**
+	 * @deprecated looks like we don't use this method anymore
+	 */
+	@Deprecated
 	public String getIsoStartDate() {
-		return LocalDateTime.from(getStartDate().toInstant()).format(DateTimeFormatter.ISO_INSTANT);
+		return LocalDateTime.ofInstant(getStartDate().toInstant(), ZoneId.of(getTimeZone())).format(DateTimeFormatter.BASIC_ISO_DATE);
 	}
 
+	/**
+	 * @deprecated looks like we don't use this method anymore
+	 */
+	@Deprecated
 	public String getIsoEndDate() {
-		return LocalDateTime.from(getEndDate().toInstant()).format( DateTimeFormatter.ISO_INSTANT);
+		return LocalDateTime.ofInstant(getEndDate().toInstant(), ZoneId.of(getTimeZone())).format(DateTimeFormatter.BASIC_ISO_DATE);
 	}
 
 	public boolean hasFeeIncTax(BigDecimal overriddenTaxRate) {

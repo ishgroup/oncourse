@@ -5,7 +5,7 @@
 
 package ish.oncourse.model;
 
-import ish.oncourse.test.ContextUtils;
+import ish.oncourse.test.TestContext;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.validation.ValidationException;
 import org.junit.*;
@@ -21,80 +21,84 @@ import static org.junit.Assert.*;
  * @author marek
  */
 public class SessionTest {
+	private TestContext testContext = new TestContext();
 
-    /**
-     * Entity to test.
-     */
-    private Session session;
 
-    private ObjectContext context;
+	/**
+	 * Entity to test.
+	 */
+	private Session session;
 
-    public SessionTest() {
-    }
+	private ObjectContext context;
 
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-    }
+	public SessionTest() {
+	}
 
-    @AfterClass
-    public static void tearDownClass() throws Exception {
-    }
+	@BeforeClass
+	public static void setUpClass() throws Exception {
+	}
 
-    @Before
-    public void setUp() throws Exception {
-        ContextUtils.setupDataSources();
-        context = ContextUtils.createObjectContext();
-    }
+	@AfterClass
+	public static void tearDownClass() throws Exception {
+	}
 
-    @After
-    public void tearDown() {
-    }
+	@Before
+	public void setUp() throws Exception {
+		testContext.open();
+		context = testContext.getServerRuntime().newContext();
 
-    /**
-     * Test of getDurationMinutes method, of class Session.
-     */
-    @Test
-    public void testGetDurationMinutesPositive() {
-        System.out.println("getDurationMinutes");
-        Session instance = new Session();
-        instance.setStartDate(dateFrom(LocalDateTime.of(2010, 1, 1, 12, 0, 0, 0)));
-        instance.setEndDate(dateFrom(LocalDateTime.of(2010, 1, 1, 13, 0, 0, 0)));
-        Long expResult = 60L;
-        Long result = instance.getDurationMinutes();
-        assertEquals(expResult, result);
-    }
+	}
 
-    /**
-     * Test of getDurationMinutes method, of class Session.
-     */
-    @Test
-    public void testGetDurationMinutesNegative() {
-        System.out.println("getDurationMinutes");
-        Session instance = new Session();
-        instance.setStartDate(dateFrom(LocalDateTime.of(2010, 1, 1, 13, 0, 0, 0)));
-        instance.setEndDate(dateFrom(LocalDateTime.of(2010, 1, 1, 12, 0, 0, 0)));
-        Long expResult = -60L;
-        Long result = instance.getDurationMinutes();
-        assertEquals(expResult, result);
-    }
+	@After
+	public void tearDown() {
+		testContext.close();
+	}
 
-    @Test
-    public void testRequiredCollegeId() throws Exception {
-        session = context.newObject(Session.class);
-        assertNull("College status should be null before test", session.getCollege());
+	/**
+	 * Test of getDurationMinutes method, of class Session.
+	 */
+	@Test
+	public void testGetDurationMinutesPositive() {
+		System.out.println("getDurationMinutes");
+		Session instance = new Session();
+		instance.setStartDate(dateFrom(LocalDateTime.of(2010, 1, 1, 12, 0, 0, 0)));
+		instance.setEndDate(dateFrom(LocalDateTime.of(2010, 1, 1, 13, 0, 0, 0)));
+		Long expResult = 60L;
+		Long result = instance.getDurationMinutes();
+		assertEquals(expResult, result);
+	}
 
-        boolean invalid = false;
-        try {
-            context.commitChanges();
-        } catch (ValidationException ve) {
-            invalid = true;
-        }
-        assertTrue("commit should be in failure status", invalid);
+	/**
+	 * Test of getDurationMinutes method, of class Session.
+	 */
+	@Test
+	public void testGetDurationMinutesNegative() {
+		System.out.println("getDurationMinutes");
+		Session instance = new Session();
+		instance.setStartDate(dateFrom(LocalDateTime.of(2010, 1, 1, 13, 0, 0, 0)));
+		instance.setEndDate(dateFrom(LocalDateTime.of(2010, 1, 1, 12, 0, 0, 0)));
+		Long expResult = -60L;
+		Long result = instance.getDurationMinutes();
+		assertEquals(expResult, result);
+	}
 
-    }
+	@Test
+	public void testRequiredCollegeId() throws Exception {
+		session = context.newObject(Session.class);
+		assertNull("College status should be null before test", session.getCollege());
 
-    private static Date dateFrom(LocalDateTime localDateTime) {
-        return Date.from(ZonedDateTime.of(localDateTime, ZoneId.systemDefault()).toInstant());
-    }
+		boolean invalid = false;
+		try {
+			context.commitChanges();
+		} catch (ValidationException ve) {
+			invalid = true;
+		}
+		assertTrue("commit should be in failure status", invalid);
+
+	}
+
+	private static Date dateFrom(LocalDateTime localDateTime) {
+		return Date.from(ZonedDateTime.of(localDateTime, ZoneId.systemDefault()).toInstant());
+	}
 
 }

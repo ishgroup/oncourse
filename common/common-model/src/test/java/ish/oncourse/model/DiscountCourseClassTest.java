@@ -2,7 +2,7 @@ package ish.oncourse.model;
 
 import ish.common.types.CourseEnrolmentType;
 import ish.math.Money;
-import ish.oncourse.test.ContextUtils;
+import ish.oncourse.test.TestContext;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.validation.ValidationException;
 import org.junit.Before;
@@ -26,10 +26,11 @@ public class DiscountCourseClassTest {
     private CourseClass courseClass;
     private Course course;
 
+    private TestContext testContext = new TestContext();
     @Before
     public void setup() throws Exception {
-        ContextUtils.setupDataSources();
-        context = ContextUtils.createObjectContext();
+        testContext.open();
+        context = testContext.getServerRuntime().newContext();
 
         /**
          * Instance of any College entity.

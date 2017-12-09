@@ -17,7 +17,6 @@ import java.math.BigDecimal;
 import java.util.*;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 /**
  * Test for {@link ish.oncourse.services.discount.GetDiscountForEnrolment}.
@@ -91,6 +90,7 @@ public class GetDiscountForEnrolmentTest extends AbstractGetDiscountForEnrolment
 
 		TestContext testContext = new TestContext();
 		testContext.open();
+		context = testContext.getServerRuntime().newContext();
 
 		// prepare and commit data that should be stored(to prevent using of
 		// temp records as query parameters)

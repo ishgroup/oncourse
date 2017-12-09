@@ -1,7 +1,7 @@
 package ish.oncourse.model;
 
 
-import ish.oncourse.test.ContextUtils;
+import ish.oncourse.test.TestContext;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.validation.ValidationException;
 import org.junit.Before;
@@ -11,32 +11,33 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class NotificationTemplateTest {
+	private TestContext testContext = new TestContext();
 
-    /**
-     * Entity to test.
-     */
-    private NotificationTemplate notificationTemplate;
+	/**
+	 * Entity to test.
+	 */
+	private NotificationTemplate notificationTemplate;
 
-    private ObjectContext context;
+	private ObjectContext context;
 
-    @Before
-    public void setup() throws Exception {
-        ContextUtils.setupDataSources();
-        context = ContextUtils.createObjectContext();
-    }
+	@Before
+	public void setup() throws Exception {
+		testContext.open();
+		context = testContext.getServerRuntime().newContext();
+	}
 
-    @Test
-    public void testRequiredCollegeId() throws Exception {
-        notificationTemplate = context.newObject(NotificationTemplate.class);
-        assertNull("College status should be null before test", notificationTemplate.getCollege());
+	@Test
+	public void testRequiredCollegeId() throws Exception {
+		notificationTemplate = context.newObject(NotificationTemplate.class);
+		assertNull("College status should be null before test", notificationTemplate.getCollege());
 
-        boolean invalid = false;
-        try {
-            context.commitChanges();
-        } catch (ValidationException ve) {
-            invalid = true;
-        }
-        assertTrue("commit should be in failure status", invalid);
-    }
+		boolean invalid = false;
+		try {
+			context.commitChanges();
+		} catch (ValidationException ve) {
+			invalid = true;
+		}
+		assertTrue("commit should be in failure status", invalid);
+	}
 
 }

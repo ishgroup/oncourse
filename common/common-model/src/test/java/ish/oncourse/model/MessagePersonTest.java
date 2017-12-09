@@ -1,7 +1,7 @@
 package ish.oncourse.model;
 
 import ish.common.types.MessageStatus;
-import ish.oncourse.test.ContextUtils;
+import ish.oncourse.test.TestContext;
 import org.apache.cayenne.ObjectContext;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,14 +9,16 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class MessagePersonTest {
+	private TestContext testContext = new TestContext();
+
 	private ObjectContext context;
-	
+
 	@Before
 	public void setup() throws Exception {
-		ContextUtils.setupDataSources();
-		context = ContextUtils.createObjectContext();
+		testContext.open();
+		context = testContext.getServerRuntime().newContext();
 	}
-	
+
 	@Test
 	public void testNullStatusChange() throws Exception {
 		MessagePerson messagePerson = context.newObject(MessagePerson.class);
@@ -30,7 +32,7 @@ public class MessagePersonTest {
 			assertTrue(String.format("MessagePerson should be able to set the %s status after null status", status), status.equals(messagePerson.getStatus()));
 		}
 	}
-	
+
 	private void testNullSet(MessageStatus testedStatus, String firstMessage, String secondMessage, String thirdMessage) {
 		MessagePerson messagePerson = context.newObject(MessagePerson.class);
 		messagePerson.setStatus(testedStatus);
@@ -42,11 +44,11 @@ public class MessagePersonTest {
 		}
 		assertNotNull(thirdMessage, messagePerson.getStatus());
 	}
-	
+
 	@Test
 	public void testQUEUED_StatusChange() throws Exception {
-		testNullSet(MessageStatus.QUEUED, "MessagePerson status should be queued before test", "MessagePerson status should be queued for this test", 
-			"MessagePerson should not be able to set null status after queued");
+		testNullSet(MessageStatus.QUEUED, "MessagePerson status should be queued before test", "MessagePerson status should be queued for this test",
+				"MessagePerson should not be able to set null status after queued");
 		for (MessageStatus status : MessageStatus.values()) {
 			MessagePerson messagePerson = context.newObject(MessagePerson.class);
 			messagePerson.setStatus(MessageStatus.QUEUED);
@@ -55,7 +57,7 @@ public class MessagePersonTest {
 			assertTrue(String.format("MessagePerson should be able to set the %s status after queued status", status), status.equals(messagePerson.getStatus()));
 		}
 	}
-	
+
 	private void testTheSameStatusLoop(MessageStatus testedStatus, String firstMessage, String secondMessage, String thirdMessage) {
 		for (MessageStatus status : MessageStatus.values()) {
 			MessagePerson messagePerson = context.newObject(MessagePerson.class);
@@ -74,18 +76,18 @@ public class MessagePersonTest {
 			}
 		}
 	}
-	
+
 	@Test
 	public void testSENT__FAILED_StatusChange() throws Exception {
 		//sent part
-		testNullSet(MessageStatus.SENT, "MessagePerson status should be sent before test", "MessagePerson status should be sent for this test", 
-			"MessagePerson should not be able to set null status after sent");
-		testTheSameStatusLoop(MessageStatus.SENT, "MessagePerson status should be sent before test", 
-			"MessagePerson should be able to set the %s status after sent status", "MessagePerson status should be sent for this test");
+		testNullSet(MessageStatus.SENT, "MessagePerson status should be sent before test", "MessagePerson status should be sent for this test",
+				"MessagePerson should not be able to set null status after sent");
+		testTheSameStatusLoop(MessageStatus.SENT, "MessagePerson status should be sent before test",
+				"MessagePerson should be able to set the %s status after sent status", "MessagePerson status should be sent for this test");
 		//failed part
-		testNullSet(MessageStatus.FAILED, "MessagePerson status should be failed before test", "MessagePerson status should be failed for this test", 
-			"MessagePerson should not be able to set null status after failed");
-		testTheSameStatusLoop(MessageStatus.FAILED, "MessagePerson status should be failed before test", 
-			"MessagePerson should be able to set the %s status after failed status", "MessagePerson status should be failed for this test");
+		testNullSet(MessageStatus.FAILED, "MessagePerson status should be failed before test", "MessagePerson status should be failed for this test",
+				"MessagePerson should not be able to set null status after failed");
+		testTheSameStatusLoop(MessageStatus.FAILED, "MessagePerson status should be failed before test",
+				"MessagePerson should be able to set the %s status after failed status", "MessagePerson status should be failed for this test");
 	}
 }

@@ -1,6 +1,6 @@
 package ish.oncourse.model;
 
-import ish.oncourse.test.ContextUtils;
+import ish.oncourse.test.TestContext;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.validation.ValidationException;
 import org.junit.Before;
@@ -17,13 +17,16 @@ public class ConcessionTypeTest {
      */
     private ConcessionType concessionType;
 
+    private TestContext testContext = new TestContext();
     private ObjectContext context;
+    private  College college;
 
     @Before
     public void setup() throws Exception {
-        ContextUtils.setupDataSources();
-        context = ContextUtils.createObjectContext();
+        testContext.open();
+        context = testContext.getServerRuntime().newContext();
     }
+
 
     @Test
     public void testRequiredCollegeId() throws Exception {

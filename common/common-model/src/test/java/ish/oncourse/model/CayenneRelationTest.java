@@ -4,7 +4,7 @@
 package ish.oncourse.model;
 
 import ish.common.types.CourseEnrolmentType;
-import ish.oncourse.test.ContextUtils;
+import ish.oncourse.test.TestContext;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SelectById;
@@ -33,13 +33,14 @@ import static org.junit.Assert.assertEquals;
  * Date: 15/06/2016
  */
 public class CayenneRelationTest {
+	private TestContext testContext = new TestContext();
 	private ObjectContext context;
 	private  College college;
 
 	@Before
 	public void setup() throws Exception {
-		ContextUtils.setupDataSources();
-		context = ContextUtils.createObjectContext();
+		testContext.open();
+		context = testContext.getServerRuntime().newContext();
 		college = createCollege();
 
 	}

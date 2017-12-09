@@ -7,7 +7,7 @@ package ish.oncourse.model;
 
 import ish.common.types.CourseEnrolmentType;
 import ish.math.Money;
-import ish.oncourse.test.ContextUtils;
+import ish.oncourse.test.TestContext;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang.StringUtils;
 import org.junit.After;
@@ -23,6 +23,8 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Test for {@link CourseClass} methods.
@@ -30,6 +32,7 @@ import static org.junit.Assert.*;
  * @author marek
  */
 public class CourseClassTest {
+	private TestContext testContext = new TestContext();
 
 	/**
 	 * Data context for persistent objects.
@@ -92,12 +95,10 @@ public class CourseClassTest {
 	 */
 	@Before
 	public void setUpClass() throws Exception {
+		testContext.open();
+		context = testContext.getServerRuntime().newContext();
+
 		Calendar date = Calendar.getInstance();
-
-		ContextUtils.setupDataSources();
-
-		context = ContextUtils.createObjectContext();
-
 		College college = context.newObject(College.class);
 		college.setName("name");
 		college.setTimeZone("Australia/Sydney");
@@ -276,12 +277,16 @@ public class CourseClassTest {
 	 */
 	@Test
 	public void testGetIsoStartDate() {
-		CourseClass instance = new CourseClass();
-		instance.setStartDate(dateFrom(LocalDateTime.of(2010, 1, 27, 19, 26, 10, 10)));
-		instance.setMaximumPlaces(3);
-		String expResult = "20100127";
+		CourseClass instance = mock(CourseClass.class);
+		when(instance.getTimeZone()).thenReturn("Australia/Sydney");
+		when(instance.getStartDate()).thenReturn(dateFrom(LocalDateTime.of(2010, 1, 30,
+				19, 26, 10, 10)));
+		when(instance.getMaximumPlaces()).thenReturn(3);
+		when(instance.getIsoStartDate()).thenCallRealMethod();
+		String expResult = "20100130";
 		String result = instance.getIsoStartDate();
 		assertEquals(expResult, result);
+
 	}
 
 	/**
@@ -289,9 +294,12 @@ public class CourseClassTest {
 	 */
 	@Test
 	public void testGetIsoEndDate() {
-		CourseClass instance = new CourseClass();
-		instance.setEndDate(dateFrom(LocalDateTime.of(2010, 1, 30, 19, 26, 10, 10)));
-		instance.setMaximumPlaces(3);
+		CourseClass instance = mock(CourseClass.class);
+		when(instance.getTimeZone()).thenReturn("Australia/Sydney");
+		when(instance.getEndDate()).thenReturn(dateFrom(LocalDateTime.of(2010, 1, 30,
+				19, 26, 10, 10)));
+		when(instance.getMaximumPlaces()).thenReturn(3);
+		when(instance.getIsoEndDate()).thenCallRealMethod();
 		String expResult = "20100130";
 		String result = instance.getIsoEndDate();
 		assertEquals(expResult, result);
