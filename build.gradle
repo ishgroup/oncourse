@@ -4,7 +4,7 @@ buildscript {
 		ehcacheVersion = '3.4.0'
 		log4j2Version = '2.8.2'
         waCommonWebservicesClientVersion = '9.5.2'
-		solrVersion = '6.6.2'
+		solrVersion = '7.1.0'
 		groovyVersion = '2.4.12'
 		mariadbVersion = '2.2.0'
 		tapestryVersion = '5.4.3'

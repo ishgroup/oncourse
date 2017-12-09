@@ -29,7 +29,7 @@ public class SearchServiceTest {
 
 	//@Test
 	public void testCloudSolrClient() throws IOException, SolrServerException {
-		CloudSolrClient cloudSolrClient = new CloudSolrClient("127.0.0.1:2181,127.0.0.1:2182");
+		CloudSolrClient cloudSolrClient = new CloudSolrClient.Builder().withZkHost("127.0.0.1:2181,127.0.0.1:2182").build();
 		cloudSolrClient.connect();
 		QueryResponse response = cloudSolrClient.query(SearchService.SolrCore.courses.name(), new SolrQuery("*:*"));
 		System.out.println(response);
