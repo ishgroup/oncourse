@@ -8,6 +8,7 @@ import ish.math.Money;
 import ish.oncourse.model.*;
 import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.test.LoadDataSet;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.util.payment.PaymentInAbandon;
 import ish.oncourse.util.payment.PaymentInModel;
@@ -20,15 +21,9 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
-import org.dbunit.database.DatabaseConnection;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.sql.DataSource;
-import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
 
@@ -40,13 +35,7 @@ private ICayenneService cayenneService;
 	@Before
 	public void setup() throws Exception {
 		initTest("ish.oncourse.services", "service", ServiceTestModule.class);
-		InputStream st = PaymentInAbandonUtilTest.class.getClassLoader().getResourceAsStream("ish/oncourse/util/paymentInAbandonUtilDataSet.xml");
-
-		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-		DataSource dataSource = getDataSource("jdbc/oncourse");
-		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(dataSource.getConnection(), null), dataSet);
-		
-		this.cayenneService = getService(ICayenneService.class);
+		new LoadDataSet().dataSetFile("ish/oncourse/util/paymentInAbandonUtilDataSet.xml").load(testContext.getDS());
 	}
 
 	@Test

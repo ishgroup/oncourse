@@ -8,6 +8,7 @@ import ish.oncourse.services.paymentexpress.INewPaymentGatewayServiceBuilder;
 import ish.oncourse.services.paymentexpress.NewDisabledPaymentGatewayService;
 import ish.oncourse.services.paymentexpress.NewPaymentExpressGatewayService;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.test.LoadDataSet;
 import ish.oncourse.test.ServiceTest;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -15,17 +16,10 @@ import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.internal.test.TestableRequest;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Session;
-import org.dbunit.database.DatabaseConfig;
-import org.dbunit.database.DatabaseConnection;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.dbunit.operation.DatabaseOperation;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.sql.DataSource;
-import java.io.InputStream;
 import java.util.List;
 
 import static ish.oncourse.util.payment.PaymentProcessController.PaymentProcessState.FILL_PAYMENT_DETAILS;
@@ -40,12 +34,7 @@ public class PaymentProcessControllerBuilderTest extends ServiceTest {
 	@Before
     public void setup() throws Exception {
         initTest("ish.oncourse.webservices.services", "services", PaymentServiceTestModule.class);
-        InputStream st = PaymentProcessControllerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/util/payment/PaymentProcessControllerTest.xml");
-        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-        DataSource onDataSource = getDataSource("jdbc/oncourse");
-        DatabaseConnection dbConnection = new DatabaseConnection(onDataSource.getConnection(), null);
-        dbConnection.getConfig().setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, false);
-        DatabaseOperation.CLEAN_INSERT.execute(dbConnection, dataSet);
+		new LoadDataSet().dataSetFile("ish/oncourse/util/payment/PaymentProcessControllerTest.xml").load(testContext.getDS());
         cayenneService = getService(ICayenneService.class);
         paymentService = getService(IPaymentService.class);
         paymentGatewayServiceBuilder = getService(INewPaymentGatewayServiceBuilder.class);

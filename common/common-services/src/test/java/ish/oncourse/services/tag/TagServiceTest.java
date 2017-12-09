@@ -16,7 +16,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import javax.sql.DataSource;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Date;
@@ -52,8 +51,6 @@ private static final Logger logger = LogManager.getLogger();
     @Before
     public void setup() throws Exception {
         initTest("ish.oncourse.services", "service", ServiceTestModule.class);
-        DataSource dataSource = getDataSource("jdbc/oncourse");
-
         this.cayenneService = getService(ICayenneService.class);
         ObjectContext context = this.cayenneService.newNonReplicatingContext();
 		college = context.newObject(College.class);

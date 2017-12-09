@@ -7,6 +7,7 @@ import ish.common.types.PaymentType;
 import ish.math.Money;
 import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.test.LoadDataSet;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.util.payment.*;
 import org.apache.cayenne.Cayenne;
@@ -14,14 +15,9 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.EJBQLQuery;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.sql.DataSource;
-import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Calendar;
@@ -38,18 +34,10 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 	public void setup() throws Exception {
 		initTest("ish.oncourse.services", "service", ServiceTestModule.class);
 
-		InputStream st = PaymentInSuccessFailAbandonTest.class.getClassLoader().getResourceAsStream(
-				"ish/oncourse/services/lifecycle/referenceDataSet.xml");
+		new LoadDataSet().dataSetFile("ish/oncourse/services/lifecycle/referenceDataSet.xml").load(testContext.getDS());
 
-		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-		DataSource refDataSource = getDataSource("jdbc/oncourse");
-		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(refDataSource.getConnection(), null), dataSet);
+		new LoadDataSet().dataSetFile("ish/oncourse/model/paymentDataSet.xml").load(testContext.getDS());
 
-		st = PaymentInSuccessFailAbandonTest.class.getClassLoader().getResourceAsStream("ish/oncourse/model/paymentDataSet.xml");
-		dataSet = new FlatXmlDataSetBuilder().build(st);
-		DataSource onDataSource = getDataSource("jdbc/oncourse");
-		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(onDataSource.getConnection(), null), dataSet);
-		
 		this.cayenneService = getService(ICayenneService.class);
 	}
 	
@@ -64,7 +52,7 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 		paymentIn.getObjectContext().commitChanges();
 		
 		//check replication queue, 
-		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
+		DatabaseConnection dbUnitConnection = new DatabaseConnection(testContext.getDS().getConnection(), null);
 		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord","select transactionId from QueuedRecord where entityIdentifier='Invoice' and entityWillowId=2000");
 		BigInteger transactionId = (BigInteger) actualData.getValue(0, "transactionId");
 		assertNotNull("Transaction id not null", transactionId);
@@ -183,7 +171,7 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 		assertEquals("Check invoice1 saved.", false, invoice1.getObjectId().isTemporary());
 
 		//check replication queue
-		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
+		DatabaseConnection dbUnitConnection = new DatabaseConnection(testContext.getDS().getConnection(), null);
 		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord", "select * from QueuedRecord where entityIdentifier='PaymentIn'");
 		assertEquals("zero PaymentIn in the queue.", 0, actualData.getRowCount());
 		actualData = dbUnitConnection.createQueryTable("QueuedRecord", "select * from QueuedRecord where entityIdentifier='PaymentInLine'");
@@ -211,7 +199,7 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 
 		context.commitChanges();
 		
-		dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
+		dbUnitConnection = new DatabaseConnection(testContext.getDS().getConnection(), null);
 		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='Invoice' and entityWillowId=%s", invoice1.getId()));
 		assertEquals("1 Invoice in the queue.", 1, actualData.getRowCount());
 		
@@ -244,7 +232,7 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 		paymentIn.getObjectContext().commitChanges();
 		
 		//check replication queue
-		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
+		DatabaseConnection dbUnitConnection = new DatabaseConnection(testContext.getDS().getConnection(), null);
 		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord", "select * from QueuedRecord where entityIdentifier='Invoice' and entityWillowId=2000");
 		BigInteger transactionId = (BigInteger) actualData.getValue(0, "transactionId");
 		assertNotNull("Transaction id not null", transactionId);
@@ -290,7 +278,7 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 		assertEquals("Zero amount.", 0, reversePayment.getAmount().intValue());
 		
 		//check replication queue
-		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
+		DatabaseConnection dbUnitConnection = new DatabaseConnection(testContext.getDS().getConnection(), null);
 		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord", "select * from QueuedRecord where entityIdentifier='Invoice' and entityWillowId=2000");
 		BigInteger transactionId = (BigInteger) actualData.getValue(0, "transactionId");
 		assertNotNull("Transaction id not null", transactionId);
@@ -370,7 +358,7 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 		paymentIn.getObjectContext().commitChanges();
 		
 		//check replication queue
-		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
+		DatabaseConnection dbUnitConnection = new DatabaseConnection(testContext.getDS().getConnection(), null);
 		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord","select * from QueuedRecord where entityIdentifier='Invoice' and entityWillowId=2000");
 		BigInteger transactionId = (BigInteger) actualData.getValue(0, "transactionId");
 		assertNotNull("Transaction id not null", transactionId);

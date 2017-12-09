@@ -4,19 +4,13 @@
 package ish.oncourse.services.courseclass;
 
 import ish.oncourse.model.Course;
-
 import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.course.ICourseService;
+import ish.oncourse.test.LoadDataSet;
 import ish.oncourse.test.ServiceTest;
-import org.dbunit.database.DatabaseConnection;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.sql.DataSource;
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,13 +22,7 @@ public class LoadByIdsTest extends ServiceTest {
 	@Before
 	public void setup() throws Exception {
 		initTest("ish.oncourse.services", "service", ServiceTestModule.class);
-
-		InputStream st = CourseClassServiceTest.class.getClassLoader().getResourceAsStream("ish/oncourse/services/classes/oncourseDataSet.xml");
-		FlatXmlDataSetBuilder builder =  new FlatXmlDataSetBuilder();
-		builder.setColumnSensing(true);
-		FlatXmlDataSet dataSet = builder.build(st);
-		DataSource onDataSource = getDataSource("jdbc/oncourse");
-		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(onDataSource.getConnection(), null), dataSet);
+		new LoadDataSet().dataSetFile("ish/oncourse/services/classes/oncourseDataSet.xml").load(testContext.getDS());
 	}
 	
 	

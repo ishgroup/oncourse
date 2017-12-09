@@ -3,19 +3,14 @@ package ish.oncourse.services.lifecycle;
 import ish.oncourse.model.*;
 import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.test.LoadDataSet;
 import ish.oncourse.test.ServiceTest;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
-
-import javax.sql.DataSource;
-import java.io.InputStream;
 
 import static org.junit.Assert.assertTrue;
 
@@ -24,13 +19,7 @@ public class QueueableLifecycleRelationTest extends ServiceTest {
 	@Before
 	public void setup() throws Exception {
 		initTest("ish.oncourse.services", "service", ServiceTestModule.class);
-
-		InputStream st = QueueableLifecycleListenerTest.class.getClassLoader().getResourceAsStream(
-				"ish/oncourse/services/lifecycle/relationDataSet.xml");
-
-		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-		DataSource refDataSource = getDataSource("jdbc/oncourse");
-		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(refDataSource.getConnection(), null), dataSet);
+		new LoadDataSet().dataSetFile("ish/oncourse/services/lifecycle/relationDataSet.xml").load(testContext.getDS());
 	}
 
 	@Test
@@ -59,7 +48,7 @@ public class QueueableLifecycleRelationTest extends ServiceTest {
 
 		ctx.commitChanges();
 
-		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
+		DatabaseConnection dbUnitConnection = new DatabaseConnection(testContext.getDS().getConnection(), null);
 		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord"));
 
 		assertTrue(actualData.getRowCount() > 0);

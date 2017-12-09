@@ -5,16 +5,11 @@ import ish.oncourse.model.Tag;
 import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.tag.ITagService;
+import ish.oncourse.test.LoadDataSet;
 import ish.oncourse.test.ServiceTest;
-import org.dbunit.database.DatabaseConnection;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.sql.DataSource;
-import java.io.InputStream;
 import java.util.List;
 
 import static org.apache.cayenne.query.SelectById.query;
@@ -29,15 +24,8 @@ public class CourseServiceTest extends ServiceTest {
 	@Before
 	public void setup() throws Exception {
 		initTest("ish.oncourse.services", "service", ServiceTestModule.class);
-		InputStream st = CourseServiceTest.class.getClassLoader().getResourceAsStream(
-			"ish/oncourse/services/classes/oncourseDataSet.xml");
-
-		FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
-		builder.setColumnSensing(true);
-		FlatXmlDataSet dataSet = builder.build(st);
-
-		DataSource refDataSource = getDataSource("jdbc/oncourse");
-		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(refDataSource.getConnection(), null), dataSet);
+		new LoadDataSet().dataSetFile("ish/oncourse/services/classes/oncourseDataSet.xml")
+				.load(testContext.getDS());
 
 		this.tagService = getService(ITagService.class);
 		this.cayenneService = getService(ICayenneService.class);

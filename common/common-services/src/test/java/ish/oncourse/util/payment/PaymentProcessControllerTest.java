@@ -10,19 +10,13 @@ import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.paymentexpress.INewPaymentGatewayService;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.test.LoadDataSet;
 import ish.oncourse.test.ServiceTest;
 import org.apache.tapestry5.services.Session;
-import org.dbunit.database.DatabaseConfig;
-import org.dbunit.database.DatabaseConnection;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.dbunit.operation.DatabaseOperation;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.sql.DataSource;
-import java.io.InputStream;
 import java.util.Calendar;
 
 import static ish.oncourse.util.payment.PaymentProcessController.PaymentAction.*;
@@ -49,15 +43,8 @@ public class PaymentProcessControllerTest extends ServiceTest {
     @Before
     public void setup() throws Exception {
         initTest("ish.oncourse.webservices.services", "services", ServiceTestModule.class);
+		new LoadDataSet().dataSetFile("ish/oncourse/util/payment/PaymentProcessControllerTest.xml").load(testContext.getDS());
 
-        InputStream st = PaymentProcessControllerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/util/payment/PaymentProcessControllerTest.xml");
-        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-
-        DataSource onDataSource = getDataSource("jdbc/oncourse");
-        DatabaseConnection dbConnection = new DatabaseConnection(onDataSource.getConnection(), null);
-        dbConnection.getConfig().setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, false);
-
-        DatabaseOperation.CLEAN_INSERT.execute(dbConnection, dataSet);
         cayenneService = getService(ICayenneService.class);
         paymentGatewayService = getService(INewPaymentGatewayService.class);
         paymentService = getService(IPaymentService.class);

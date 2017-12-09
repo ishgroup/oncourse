@@ -6,16 +6,10 @@ import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.test.LoadDataSet;
 import ish.oncourse.test.ServiceTest;
-import org.dbunit.database.DatabaseConnection;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
-
-import javax.sql.DataSource;
-import java.io.InputStream;
 
 import static org.junit.Assert.*;
 
@@ -33,13 +27,8 @@ public class LinkTransformerFunctionsTest extends ServiceTest {
     public void setup() throws Exception {
         initTest("ish.oncourse.services", "service", ServiceTestModule.class);
 
-        InputStream st = LinkTransformerFunctionsTest.class.getClassLoader().getResourceAsStream(
-                "ish/oncourse/linktransform/PageLinkTransformerFunctionsTest.xml");
-
-        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().setColumnSensing(true).build(st);
-        DataSource refDataSource = getDataSource("jdbc/oncourse");
-        DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(refDataSource.getConnection(), null), dataSet);
-
+        new LoadDataSet().dataSetFile("ish/oncourse/linktransform/PageLinkTransformerFunctionsTest.xml")
+                .load(testContext.getDS());
         cayenneService = getService(ICayenneService.class);
         webSiteService = getService(IWebSiteService.class);
         courseClassService = getService(ICourseClassService.class);

@@ -3,18 +3,12 @@ package ish.oncourse.model;
 import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.test.LoadDataSet;
 import ish.oncourse.test.ServiceTest;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.SelectById;
-import org.dbunit.database.DatabaseConnection;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
-
-import javax.sql.DataSource;
-import java.io.InputStream;
 
 import static org.junit.Assert.*;
 
@@ -26,18 +20,11 @@ public class WebNodeURLAliasLinkTest extends ServiceTest {
 	public void setup() throws Exception {
 		initTest("ish.oncourse.services", "service", ServiceTestModule.class);
 
-		InputStream st = PaymentInSuccessFailAbandonTest.class.getClassLoader().getResourceAsStream(
-				"ish/oncourse/services/lifecycle/referenceDataSet.xml");
+		new LoadDataSet().dataSetFile("ish/oncourse/services/lifecycle/referenceDataSet.xml")
+				.load(testContext.getDS());
 
-		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-		DataSource refDataSource = getDataSource("jdbc/oncourse");
-		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(refDataSource.getConnection(), null), dataSet);
-
-		st = PaymentInSuccessFailAbandonTest.class.getClassLoader().getResourceAsStream("ish/oncourse/model/paymentDataSet.xml");
-		dataSet = new FlatXmlDataSetBuilder().build(st);
-		DataSource onDataSource = getDataSource("jdbc/oncourse");
-		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(onDataSource.getConnection(), null), dataSet);
-		
+		new LoadDataSet().dataSetFile("ish/oncourse/model/paymentDataSet.xml")
+				.load(testContext.getDS());
 		this.cayenneService = getService(ICayenneService.class);
         this.webNodeService = getService(IWebNodeService.class);
 	}

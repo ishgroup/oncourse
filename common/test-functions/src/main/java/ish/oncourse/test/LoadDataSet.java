@@ -15,6 +15,7 @@ import org.dbunit.operation.DatabaseOperation;
 import javax.sql.DataSource;
 import java.io.InputStream;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -23,7 +24,7 @@ import java.util.Map;
  */
 public class LoadDataSet {
 	private String dataSetFile;
-	private Map<Object, Object> replacements = Collections.emptyMap();
+	private Map<Object, Object> replacements = new HashMap<>();
 	private boolean clean = true;
 
 	private ReplacementDataSet dataSet;
@@ -33,8 +34,15 @@ public class LoadDataSet {
 		return this;
 	}
 
-	public LoadDataSet replacements(Map<Object, Object> replacements) {
+	public LoadDataSet addReplacement(Object key, Object value) {
 		this.replacements = replacements == null ? Collections.emptyMap() : replacements;
+		return this;
+	}
+
+	public LoadDataSet replacements(Map<Object, Object> replacements) {
+		if (replacements != null) {
+			this.replacements.putAll(replacements);
+		}
 		return this;
 	}
 
@@ -49,6 +57,7 @@ public class LoadDataSet {
 			this.dataSet = initDataSet(st);
 			DatabaseConnection dbConnection = new DatabaseConnection(dataSource.getConnection());
 			dbConnection.getConfig().setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, false);
+			dbConnection.getConfig().setProperty(DatabaseConfig.FEATURE_ALLOW_EMPTY_FIELDS, true);
 			dbConnection.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new MySqlDataTypeFactory());
 			if (clean)
 				DatabaseOperation.CLEAN_INSERT.execute(dbConnection, dataSet);

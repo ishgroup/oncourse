@@ -5,17 +5,11 @@ import ish.oncourse.services.courseclass.ClassAge;
 import ish.oncourse.services.courseclass.ClassAgeType;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.test.LoadDataSet;
 import ish.oncourse.test.ServiceTest;
-import org.dbunit.database.DatabaseConnection;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.dbunit.operation.DatabaseOperation;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import javax.sql.DataSource;
-import java.io.InputStream;
 
 import static ish.oncourse.services.preference.PreferenceController.FieldDescriptor.*;
 import static ish.oncourse.services.preference.Preferences.ConfigProperty.allowCreateContact;
@@ -59,14 +53,10 @@ public class PreferenceControllerTest extends ServiceTest {
 	@Before
 	public void setup() throws Exception {
 		initTest("ish.oncourse.services", "", ServiceTestModule.class);
-		
-		InputStream st = PreferenceControllerTest.class.getClassLoader().getResourceAsStream(
-				"ish/oncourse/services/preference/preferenceDataSet.xml");
 
-		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-		DataSource dataSource = getDataSource("jdbc/oncourse");
-		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(dataSource.getConnection(), null), dataSet);
-		
+		new LoadDataSet().dataSetFile("ish/oncourse/services/preference/preferenceDataSet.xml")
+				.load(testContext.getDS());
+
 		ICayenneService cayenneService = getService(ICayenneService.class);
 		IWebSiteService webSiteService = getService(IWebSiteService.class);
 		

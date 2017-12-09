@@ -10,6 +10,7 @@ import ish.math.Money;
 import ish.oncourse.model.*;
 import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.test.LoadDataSet;
 import ish.oncourse.test.ServiceTest;
 import ish.util.DiscountUtils;
 import org.apache.cayenne.Cayenne;
@@ -18,16 +19,9 @@ import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.lang.time.DateUtils;
-import org.dbunit.database.DatabaseConnection;
-import org.dbunit.dataset.ReplacementDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.sql.DataSource;
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -39,41 +33,35 @@ import static org.junit.Assert.*;
  */
 public class VoucherRedemptionHelperTest extends ServiceTest {
 
-    private ObjectContext context;
+	private ObjectContext context;
 
 	@Before
 	public void setup() throws Exception {
 
-        initTest("ish.oncourse.services", "service", ServiceTestModule.class);
-
-        InputStream st = VoucherServiceTest.class.getClassLoader().getResourceAsStream("ish/oncourse/services/voucher/voucherRedemptionHelperTest.xml");
-
-        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-        DataSource dataSource = getDataSource("jdbc/oncourse");
-        ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet);
-        Date start1 = DateUtils.addDays(new Date(), -4);
-        Date start2 = DateUtils.addDays(new Date(), -2);
-        Date start3 = DateUtils.addDays(new Date(), 2);
-        Date start4 = DateUtils.addDays(new Date(), 4);
-        rDataSet.addReplacementObject("[start_date1]", start1);
-        rDataSet.addReplacementObject("[start_date2]", start2);
-        rDataSet.addReplacementObject("[start_date3]", start3);
-        rDataSet.addReplacementObject("[start_date4]", start4);
-        rDataSet.addReplacementObject("[end_date1]", DateUtils.addHours(start1, 2));
-        rDataSet.addReplacementObject("[end_date2]", DateUtils.addHours(start2, 2));
-        rDataSet.addReplacementObject("[end_date3]", DateUtils.addHours(start3, 2));
-        rDataSet.addReplacementObject("[end_date4]", DateUtils.addHours(start4, 2));
-        rDataSet.addReplacementObject("[null]", null);
-
-        DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(dataSource.getConnection(), null), rDataSet);
-        context = getService(ICayenneService.class).newContext();
+		initTest("ish.oncourse.services", "service", ServiceTestModule.class);
+		Date start1 = DateUtils.addDays(new Date(), -4);
+		Date start2 = DateUtils.addDays(new Date(), -2);
+		Date start3 = DateUtils.addDays(new Date(), 2);
+		Date start4 = DateUtils.addDays(new Date(), 4);
+		new LoadDataSet().dataSetFile("ish/oncourse/services/voucher/voucherRedemptionHelperTest.xml")
+				.addReplacement("[start_date1]", start1)
+				.addReplacement("[start_date2]", start2)
+				.addReplacement("[start_date3]", start3)
+				.addReplacement("[start_date4]", start4)
+				.addReplacement("[end_date1]", DateUtils.addHours(start1, 2))
+				.addReplacement("[end_date2]", DateUtils.addHours(start2, 2))
+				.addReplacement("[end_date3]", DateUtils.addHours(start3, 2))
+				.addReplacement("[end_date4]", DateUtils.addHours(start4, 2))
+				.addReplacement("[null]", null)
+				.load(testContext.getDS());
+		context = getService(ICayenneService.class).newContext();
 	}
 
 	@Test
 	public void testEmptyService() {
-        College college = Cayenne.objectForPK(context, College.class, 1);
+		College college = Cayenne.objectForPK(context, College.class, 1);
 
-		VoucherRedemptionHelper service = new VoucherRedemptionHelper(getContext(),college);
+		VoucherRedemptionHelper service = new VoucherRedemptionHelper(getContext(), college);
 		service.processAgainstInvoices();
 
 		assertTrue(service.getPayments().isEmpty());
@@ -84,7 +72,7 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 		ObjectContext context = getContext();
 
 
-        College college = Cayenne.objectForPK(context, College.class, 1);
+		College college = Cayenne.objectForPK(context, College.class, 1);
 
 		CourseClass cc = Cayenne.objectForPK(context, CourseClass.class, 1);
 
@@ -120,15 +108,15 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 		CourseClass cc = Cayenne.objectForPK(context, CourseClass.class, 1);
 
 		InvoiceLine il = Cayenne.objectForPK(context, InvoiceLine.class, 2);
-		
+
 
 		DiscountUtils.applyDiscounts(discountCourseClass, il, cc.getTaxRate(), Money.ZERO);
 
 		Voucher courseVoucher = Cayenne.objectForPK(context, Voucher.class, 1);
 
-        College college = Cayenne.objectForPK(context, College.class, 1);
+		College college = Cayenne.objectForPK(context, College.class, 1);
 
-        VoucherRedemptionHelper service = new VoucherRedemptionHelper(context, college);
+		VoucherRedemptionHelper service = new VoucherRedemptionHelper(context, college);
 
 		service.setInvoice(il.getInvoice());
 		service.addVoucher(courseVoucher, courseVoucher.getValueRemaining());
@@ -157,9 +145,9 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 
 		Voucher moneyVoucher = Cayenne.objectForPK(context, Voucher.class, 2);
 
-        College college = Cayenne.objectForPK(context, College.class, 1);
+		College college = Cayenne.objectForPK(context, College.class, 1);
 
-        VoucherRedemptionHelper service = new VoucherRedemptionHelper(context,college);
+		VoucherRedemptionHelper service = new VoucherRedemptionHelper(context, college);
 
 		service.setInvoice(il.getInvoice());
 		service.addVoucher(moneyVoucher, moneyVoucher.getValueRemaining());
@@ -187,9 +175,9 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 		Voucher voucher1 = Cayenne.objectForPK(context, Voucher.class, 2);
 		Voucher voucher2 = Cayenne.objectForPK(context, Voucher.class, 4);
 
-        College college = Cayenne.objectForPK(context, College.class, 1);
+		College college = Cayenne.objectForPK(context, College.class, 1);
 
-        VoucherRedemptionHelper service = new VoucherRedemptionHelper(context, college);
+		VoucherRedemptionHelper service = new VoucherRedemptionHelper(context, college);
 
 		service.setInvoice(invoice);
 		service.addVoucher(voucher1, voucher1.getValueRemaining());
@@ -223,52 +211,52 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 		assertEquals(Money.ZERO, voucher1.getRedemptionValue());
 	}
 
-    @Test
-    public void testTryApplyMoneyVouchersForVoucher() {
-        ObjectContext context = getContext();
+	@Test
+	public void testTryApplyMoneyVouchersForVoucher() {
+		ObjectContext context = getContext();
 
-        Invoice invoice = Cayenne.objectForPK(context, Invoice.class, 1);
+		Invoice invoice = Cayenne.objectForPK(context, Invoice.class, 1);
 
-        Voucher voucher1 = Cayenne.objectForPK(context, Voucher.class, 2);
-        Voucher voucher2 = Cayenne.objectForPK(context, Voucher.class, 4);
+		Voucher voucher1 = Cayenne.objectForPK(context, Voucher.class, 2);
+		Voucher voucher2 = Cayenne.objectForPK(context, Voucher.class, 4);
 
-        College college = Cayenne.objectForPK(context, College.class, 1);
+		College college = Cayenne.objectForPK(context, College.class, 1);
 
-        VoucherRedemptionHelper service = new VoucherRedemptionHelper(context, college);
+		VoucherRedemptionHelper service = new VoucherRedemptionHelper(context, college);
 
-        service.setInvoice(invoice);
-        service.addVoucher(voucher1, voucher1.getValueRemaining());
-        service.addVoucher(voucher2, voucher2.getValueRemaining());
-        service.addInvoiceLines(invoice.getInvoiceLines());
+		service.setInvoice(invoice);
+		service.addVoucher(voucher1, voucher1.getValueRemaining());
+		service.addVoucher(voucher2, voucher2.getValueRemaining());
+		service.addInvoiceLines(invoice.getInvoiceLines());
 
-        service.processAgainstInvoices();
+		service.processAgainstInvoices();
 
-        assertFalse(service.getPayments().isEmpty());
-        assertEquals(1, service.getPayments().size());
+		assertFalse(service.getPayments().isEmpty());
+		assertEquals(1, service.getPayments().size());
 
-        Money paymentsSum = Money.ZERO;
-        for (PaymentIn p : service.getPayments().values()) {
-            paymentsSum = paymentsSum.add(p.getAmount());
+		Money paymentsSum = Money.ZERO;
+		for (PaymentIn p : service.getPayments().values()) {
+			paymentsSum = paymentsSum.add(p.getAmount());
 
-            assertEquals(PaymentType.VOUCHER, p.getType());
-        }
+			assertEquals(PaymentType.VOUCHER, p.getType());
+		}
 
-        assertEquals(new Money("110.0"), paymentsSum);
+		assertEquals(new Money("110.0"), paymentsSum);
 
-        context.commitChanges();
+		context.commitChanges();
 
-        voucher1.setPersistenceState(PersistenceState.HOLLOW);
-        voucher2.setPersistenceState(PersistenceState.HOLLOW);
+		voucher1.setPersistenceState(PersistenceState.HOLLOW);
+		voucher2.setPersistenceState(PersistenceState.HOLLOW);
 
-        assertEquals(ProductStatus.ACTIVE, voucher2.getStatus());
-        assertEquals(ProductStatus.REDEEMED, voucher1.getStatus());
+		assertEquals(ProductStatus.ACTIVE, voucher2.getStatus());
+		assertEquals(ProductStatus.REDEEMED, voucher1.getStatus());
 
-        assertEquals(new Money("200.00"), voucher2.getValueRemaining());
+		assertEquals(new Money("200.00"), voucher2.getValueRemaining());
 
-        assertEquals(Money.ZERO, voucher1.getRedemptionValue());
-    }
+		assertEquals(Money.ZERO, voucher1.getRedemptionValue());
+	}
 
-//	@Test
+	//	@Test
 	public void testApplyMultipleVouchersToSingleInvoiceLine() {
 		ObjectContext context = getContext();
 
@@ -281,9 +269,9 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 		Voucher voucher2 = Cayenne.objectForPK(context, Voucher.class, 5);
 		Voucher voucher3 = Cayenne.objectForPK(context, Voucher.class, 6);
 
-        College college = Cayenne.objectForPK(context, College.class, 1);
+		College college = Cayenne.objectForPK(context, College.class, 1);
 
-        VoucherRedemptionHelper service = new VoucherRedemptionHelper(context, college);
+		VoucherRedemptionHelper service = new VoucherRedemptionHelper(context, college);
 
 		service.setInvoice(il1.getInvoice());
 		service.addVoucher(voucher1, voucher1.getValueRemaining());
@@ -330,9 +318,9 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 		Voucher voucher1 = Cayenne.objectForPK(context, Voucher.class, 1);
 		Voucher voucher2 = Cayenne.objectForPK(context, Voucher.class, 3);
 
-        College college = Cayenne.objectForPK(context, College.class, 1);
+		College college = Cayenne.objectForPK(context, College.class, 1);
 
-        VoucherRedemptionHelper service = new VoucherRedemptionHelper(context, college);
+		VoucherRedemptionHelper service = new VoucherRedemptionHelper(context, college);
 
 		service.setInvoice(il1.getInvoice());
 		service.addVoucher(voucher1, voucher1.getValueRemaining());
@@ -345,8 +333,8 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 		assertEquals(1, service.getPayments().size());
 
 		PaymentIn payment = service.getPayments().get(voucher1);
-        if (payment == null)
-            payment = service.getPayments().get(voucher2);
+		if (payment == null)
+			payment = service.getPayments().get(voucher2);
 
 		assertEquals(cc.getFeeIncGst(null).multiply(2.0), payment.getAmount());
 		assertEquals(PaymentType.VOUCHER, payment.getType());
@@ -365,9 +353,9 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 
 		Voucher voucher = Cayenne.objectForPK(context, Voucher.class, 7);
 
-        College college = Cayenne.objectForPK(context, College.class, 1);
+		College college = Cayenne.objectForPK(context, College.class, 1);
 
-        VoucherRedemptionHelper service = new VoucherRedemptionHelper(context, college);
+		VoucherRedemptionHelper service = new VoucherRedemptionHelper(context, college);
 
 		service.setInvoice(il1.getInvoice());
 		service.addVoucher(voucher, voucher.getValueRemaining());
@@ -399,9 +387,9 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 		Voucher voucher2 = Cayenne.objectForPK(context, Voucher.class, 5);
 		Voucher voucher3 = Cayenne.objectForPK(context, Voucher.class, 6);
 
-        College college = Cayenne.objectForPK(context, College.class, 1);
+		College college = Cayenne.objectForPK(context, College.class, 1);
 
-        VoucherRedemptionHelper service = new VoucherRedemptionHelper(context, college);
+		VoucherRedemptionHelper service = new VoucherRedemptionHelper(context, college);
 
 		service.setInvoice(il1.getInvoice());
 		service.addVoucher(voucher1, voucher1.getValueRemaining());
@@ -447,9 +435,9 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 		Voucher voucher2 = Cayenne.objectForPK(context, Voucher.class, 5);
 		Voucher voucher3 = Cayenne.objectForPK(context, Voucher.class, 6);
 
-        College college = Cayenne.objectForPK(context, College.class, 1);
+		College college = Cayenne.objectForPK(context, College.class, 1);
 
-        VoucherRedemptionHelper service = new VoucherRedemptionHelper(context, college);
+		VoucherRedemptionHelper service = new VoucherRedemptionHelper(context, college);
 
 		service.setInvoice(il1.getInvoice());
 		service.addVoucher(voucher1, voucher1.getValueRemaining());
@@ -501,9 +489,9 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 		Voucher voucher1 = Cayenne.objectForPK(context, Voucher.class, 2);
 		Voucher voucher2 = Cayenne.objectForPK(context, Voucher.class, 4);
 
-        College college = Cayenne.objectForPK(context, College.class, 1);
+		College college = Cayenne.objectForPK(context, College.class, 1);
 
-        VoucherRedemptionHelper service = new VoucherRedemptionHelper(context, college);
+		VoucherRedemptionHelper service = new VoucherRedemptionHelper(context, college);
 
 		service.setInvoice(invoice);
 		service.addVoucher(voucher1, voucher1.getValueRemaining());
@@ -548,9 +536,9 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 		Voucher voucher1 = Cayenne.objectForPK(context, Voucher.class, 1);
 		Voucher voucher2 = Cayenne.objectForPK(context, Voucher.class, 3);
 
-        College college = Cayenne.objectForPK(context, College.class, 1);
+		College college = Cayenne.objectForPK(context, College.class, 1);
 
-        VoucherRedemptionHelper service = new VoucherRedemptionHelper(context, college);
+		VoucherRedemptionHelper service = new VoucherRedemptionHelper(context, college);
 
 		service.setInvoice(invoice);
 		service.addVoucher(voucher1, voucher1.getValueRemaining());
@@ -581,9 +569,9 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 		Voucher voucher2 = Cayenne.objectForPK(context, Voucher.class, 5);
 		Voucher voucher3 = Cayenne.objectForPK(context, Voucher.class, 6);
 
-        College college = Cayenne.objectForPK(context, College.class, 1);
+		College college = Cayenne.objectForPK(context, College.class, 1);
 
-        VoucherRedemptionHelper service = new VoucherRedemptionHelper(context, college);
+		VoucherRedemptionHelper service = new VoucherRedemptionHelper(context, college);
 
 		service.setInvoice(invoice);
 		service.addVoucher(voucher1, voucher1.getValueRemaining());
@@ -621,7 +609,7 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 	public void testAllKindsOfRedemption() {
 		ObjectContext context = getContext();
 
-        Cayenne.objectForPK(context, CourseClass.class, 1);
+		Cayenne.objectForPK(context, CourseClass.class, 1);
 
 		InvoiceLine il1 = Cayenne.objectForPK(context, InvoiceLine.class, 10);
 		InvoiceLine il2 = Cayenne.objectForPK(context, InvoiceLine.class, 11);
@@ -635,9 +623,9 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 		Voucher voucher4 = Cayenne.objectForPK(context, Voucher.class, 5);
 		Voucher voucher5 = Cayenne.objectForPK(context, Voucher.class, 6);
 
-        College college = Cayenne.objectForPK(context, College.class, 1);
+		College college = Cayenne.objectForPK(context, College.class, 1);
 
-        VoucherRedemptionHelper service = new VoucherRedemptionHelper(context, college);
+		VoucherRedemptionHelper service = new VoucherRedemptionHelper(context, college);
 
 		service.setInvoice(il1.getInvoice());
 		service.addVoucher(voucher1, voucher1.getValueRemaining());
@@ -728,9 +716,9 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 
 		Voucher voucher = Cayenne.objectForPK(context, Voucher.class, 4);
 
-        College college = Cayenne.objectForPK(context, College.class, 1);
+		College college = Cayenne.objectForPK(context, College.class, 1);
 
-        VoucherRedemptionHelper service = new VoucherRedemptionHelper(context, college);
+		VoucherRedemptionHelper service = new VoucherRedemptionHelper(context, college);
 
 		service.setInvoice(il1.getInvoice());
 		service.addVoucher(voucher, new Money("150.0"));
@@ -763,7 +751,7 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 		assertEquals(ProductStatus.ACTIVE, voucher.getStatus());
 	}
 
-    public ObjectContext getContext() {
-        return context;
-    }
+	public ObjectContext getContext() {
+		return context;
+	}
 }

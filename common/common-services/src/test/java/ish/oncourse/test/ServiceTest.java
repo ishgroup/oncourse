@@ -5,9 +5,12 @@ import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.tapestry5.ioc.AnnotationProvider;
 import org.apache.tapestry5.test.PageTester;
+import org.dbunit.DatabaseUnitException;
+import org.dbunit.database.DatabaseConnection;
 import org.junit.After;
 
 import javax.sql.DataSource;
+import java.sql.SQLException;
 
 public class ServiceTest {
 	public static ThreadLocal<DataSource> dataSource = new ThreadLocal<>();
@@ -28,8 +31,12 @@ public class ServiceTest {
 		this.initTest(appPackage, appName, null, moduleClasses);
 	}
 
-	public BasicDataSource getDataSource(String jndiName) {
+	public BasicDataSource getDataSource() {
 		return testContext.getDS();
+	}
+
+	public DatabaseConnection getDatabaseConnection() throws SQLException, DatabaseUnitException {
+		return new DatabaseConnection(testContext.getDS().getConnection(), null);
 	}
 
 
