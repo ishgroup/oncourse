@@ -7,12 +7,12 @@ package ish.oncourse.services.binary;
 import ish.common.types.AttachmentInfoVisibility;
 import ish.common.types.AttachmentSpecialType;
 import ish.oncourse.model.*;
-import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.tag.TagService;
-import ish.oncourse.test.DataSetInitializer;
+import ish.oncourse.test.LoadDataSet;
 import ish.oncourse.test.ServiceTest;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
@@ -45,9 +45,9 @@ public class BinaryDataServiceTest extends ServiceTest {
 
 	@Before
 	public void setup() throws Exception {
-		initTest("ish.oncourse.services", "service", ServiceModule.class);
+		initTest("ish.oncourse.services", "service", ServiceTestModule.class);
 
-		DataSetInitializer.initDataSets("ish/oncourse/services/binary/BinaryDataServiceTest.xml");
+		new LoadDataSet().dataSetFile("ish/oncourse/services/binary/BinaryDataServiceTest.xml").load(testContext.getDS());
 		request = getService(TestableRequest.class);
 		cayenneService = getService(ICayenneService.class);
 		binaryDataService = getService(IBinaryDataService.class);

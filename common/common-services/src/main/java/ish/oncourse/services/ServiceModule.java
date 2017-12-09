@@ -104,7 +104,9 @@ import static org.apache.commons.lang3.StringUtils.trimToNull;
 
 /**
  * A Tapestry IoC module definition for all common services.
+ * @deprecated use @{@link BinderFunctions}
  */
+@Deprecated
 public class ServiceModule {
 
 	public static final String APP_TEST_MODE = "application.test";

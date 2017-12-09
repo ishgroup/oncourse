@@ -21,9 +21,5 @@ dependencies {
 	//we use DefaultArtifactVersion class from the package to compare angel versions.
 	compile 'org.apache.maven:maven-artifact:3.0.4'
 
-	// The odd next line is to work around gradle pulling in the wrong configuration
-	// http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency
-	testCompile project(path: ':common:common-test', configuration: 'testFixtures')
-
-	testCompile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: mariadbVersion
+	testCompile project(':common:test-functions')
 }

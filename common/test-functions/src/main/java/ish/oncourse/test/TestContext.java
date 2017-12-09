@@ -4,6 +4,8 @@
 package ish.oncourse.test;
 
 import ish.oncourse.test.functions.Functions;
+import ish.oncourse.test.functions.ServerRuntimeBuilder;
+import org.apache.cayenne.cache.QueryCache;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.logging.log4j.LogManager;
@@ -23,6 +25,12 @@ public class TestContext {
 	private BasicDataSource dataSource;
 	private MariaDB mariaDB;
 	private ServerRuntime serverRuntime;
+	private QueryCache queryCache;
+
+	public TestContext queryCache(QueryCache queryCache) {
+		this.queryCache = queryCache;
+		return this;
+	}
 
 	public TestContext shouldCreateTables(boolean value) {
 		this.shouldCreateTables = value;
@@ -65,7 +73,7 @@ public class TestContext {
 		}
 
 		if (serverRuntime == null)
-			serverRuntime = Functions.createRuntime();
+			serverRuntime = new ServerRuntimeBuilder().queryCache(queryCache).build();
 
 		if (shouldCreateTables)
 			new CreateTables(serverRuntime).create();

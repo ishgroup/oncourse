@@ -1,11 +1,9 @@
 package ish.oncourse.services.persistence;
 
+import ish.oncourse.cayenne.cache.JCacheQueryCache;
 import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.cache.NoopQueryCache;
-import ish.oncourse.test.InitialContextFactoryMock;
 import ish.oncourse.test.ServiceTest;
-import ish.oncourse.util.ContextUtil;
-import org.apache.cayenne.cache.EhCacheQueryCache;
 import org.apache.cayenne.cache.NestedQueryCache;
 import org.junit.Test;
 
@@ -16,24 +14,19 @@ import static org.mockito.Mockito.*;
 public class ISHObjectContextTest extends ServiceTest {
 	
 	@Test
-	public void testEhCacheQueryCache() throws Exception {
-		InitialContextFactoryMock.bind(ContextUtil.CACHE_ENABLED_PROPERTY_KEY, Boolean.TRUE);
-		InitialContextFactoryMock.bind(ContextUtil.QUERY_CACHE_ENABLED_PROPERTY_KEY, Boolean.TRUE);
+	public void testJCacheQueryCache() throws Exception {
 
 		initTest("ish.oncourse.services", "", ServiceTestModule.class);
 		ICayenneService cayenneService = getService(ICayenneService.class);
 		ISHObjectContext context = (ISHObjectContext) cayenneService.newContext();
 		assertNotNull("Context should be created.", context);
-		assertEquals("If we use EhCacheQueryCache for entities we also should use it for the queries", EhCacheQueryCache.class,
+		assertEquals("If we use JCacheQueryCache for entities we also should use it for the queries", JCacheQueryCache.class,
 				((NestedQueryCache)context.getQueryCache()).getDelegate().getClass());
 	}
 
 	@Test
 	public void testNoopQueryCache() throws Exception {
-		InitialContextFactoryMock.bind(ContextUtil.CACHE_ENABLED_PROPERTY_KEY, Boolean.FALSE);
-		InitialContextFactoryMock.bind(ContextUtil.QUERY_CACHE_ENABLED_PROPERTY_KEY, Boolean.FALSE);
-
-		initTest("ish.oncourse.services", "", ServiceTestModule.class);
+		initTest("ish.oncourse.services", "", new NoopQueryCache(), ServiceTestModule.class);
 		ICayenneService cayenneService = getService(ICayenneService.class);
 		ISHObjectContext context = (ISHObjectContext) cayenneService.newContext();
 		assertNotNull("Context should be created.", context);
@@ -43,8 +36,6 @@ public class ISHObjectContextTest extends ServiceTest {
 
 	@Test(expected = RuntimeException.class)
 	public void testDefaultCommitAttempts() throws Exception {
-		InitialContextFactoryMock.bind(ContextUtil.CACHE_ENABLED_PROPERTY_KEY, Boolean.FALSE);
-		InitialContextFactoryMock.bind(ContextUtil.QUERY_CACHE_ENABLED_PROPERTY_KEY, Boolean.FALSE);
 
 		initTest("ish.oncourse.services", "", ServiceTestModule.class);
 		ICayenneService cayenneService = getService(ICayenneService.class);

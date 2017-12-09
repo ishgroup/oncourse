@@ -3,7 +3,7 @@ package ish.oncourse.services.tag;
 import ish.common.types.CourseEnrolmentType;
 import ish.common.types.NodeSpecialType;
 import ish.oncourse.model.*;
-import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.test.ServiceTest;
@@ -51,7 +51,7 @@ private static final Logger logger = LogManager.getLogger();
 
     @Before
     public void setup() throws Exception {
-        initTest("ish.oncourse.services", "service", ServiceModule.class);
+        initTest("ish.oncourse.services", "service", ServiceTestModule.class);
         DataSource dataSource = getDataSource("jdbc/oncourse");
 
         this.cayenneService = getService(ICayenneService.class);

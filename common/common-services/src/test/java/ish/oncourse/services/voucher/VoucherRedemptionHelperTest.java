@@ -8,7 +8,7 @@ import ish.common.types.PaymentType;
 import ish.common.types.ProductStatus;
 import ish.math.Money;
 import ish.oncourse.model.*;
-import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import ish.util.DiscountUtils;
@@ -44,7 +44,7 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 	@Before
 	public void setup() throws Exception {
 
-        initTest("ish.oncourse.services", "service", ServiceModule.class);
+        initTest("ish.oncourse.services", "service", ServiceTestModule.class);
 
         InputStream st = VoucherServiceTest.class.getClassLoader().getResourceAsStream("ish/oncourse/services/voucher/voucherRedemptionHelperTest.xml");
 

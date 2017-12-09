@@ -2,8 +2,7 @@ package ish.oncourse.linktransform.functions;
 
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.PaymentInSuccessFailAbandonTest;
-import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
@@ -32,7 +31,7 @@ public class LinkTransformerFunctionsTest extends ServiceTest {
 
     @Before
     public void setup() throws Exception {
-        initTest("ish.oncourse.services", "service", ServiceModule.class);
+        initTest("ish.oncourse.services", "service", ServiceTestModule.class);
 
         InputStream st = LinkTransformerFunctionsTest.class.getClassLoader().getResourceAsStream(
                 "ish/oncourse/linktransform/PageLinkTransformerFunctionsTest.xml");

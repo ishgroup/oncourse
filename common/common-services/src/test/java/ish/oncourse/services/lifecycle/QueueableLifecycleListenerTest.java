@@ -4,7 +4,7 @@ import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.math.Money;
 import ish.oncourse.model.*;
-import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import org.apache.cayenne.Cayenne;
@@ -30,7 +30,7 @@ public class QueueableLifecycleListenerTest extends ServiceTest {
 
 	@Before
 	public void setup() throws Exception {
-		initTest("ish.oncourse.services", "service", ServiceModule.class);
+		initTest("ish.oncourse.services", "service", ServiceTestModule.class);
 
 		InputStream st = QueueableLifecycleListenerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/services/lifecycle/queuDataSet.xml");
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);

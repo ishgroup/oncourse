@@ -5,9 +5,7 @@ import ish.oncourse.services.courseclass.ClassAge;
 import ish.oncourse.services.courseclass.ClassAgeType;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.test.InitialContextFactoryMock;
 import ish.oncourse.test.ServiceTest;
-import ish.oncourse.util.ContextUtil;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
@@ -19,9 +17,9 @@ import org.junit.Test;
 import javax.sql.DataSource;
 import java.io.InputStream;
 
+import static ish.oncourse.services.preference.PreferenceController.FieldDescriptor.*;
 import static ish.oncourse.services.preference.Preferences.ConfigProperty.allowCreateContact;
 import static ish.oncourse.services.preference.Preferences.ContactFieldSet.*;
-import static ish.oncourse.services.preference.PreferenceController.FieldDescriptor.*;
 import static org.junit.Assert.*;
 
 public class PreferenceControllerTest extends ServiceTest {
@@ -60,9 +58,6 @@ public class PreferenceControllerTest extends ServiceTest {
 	
 	@Before
 	public void setup() throws Exception {
-		InitialContextFactoryMock.bind(ContextUtil.CACHE_ENABLED_PROPERTY_KEY, Boolean.FALSE);
-		InitialContextFactoryMock.bind(ContextUtil.QUERY_CACHE_ENABLED_PROPERTY_KEY, Boolean.FALSE);
-
 		initTest("ish.oncourse.services", "", ServiceTestModule.class);
 		
 		InputStream st = PreferenceControllerTest.class.getClassLoader().getResourceAsStream(

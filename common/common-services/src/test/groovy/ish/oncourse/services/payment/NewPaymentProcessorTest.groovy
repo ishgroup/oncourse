@@ -5,9 +5,7 @@ import ish.common.types.PaymentStatus
 import ish.oncourse.model.PaymentIn
 import ish.oncourse.services.PaymentServiceTestModule
 import ish.oncourse.services.paymentexpress.INewPaymentGatewayServiceBuilder
-import ish.oncourse.services.paymentexpress.TestPaymentGatewayService
 import ish.oncourse.services.persistence.ICayenneService
-import ish.oncourse.test.DataSetInitializer
 import ish.oncourse.test.ServiceTest
 import org.apache.tapestry5.internal.test.TestableRequest
 import org.apache.tapestry5.ioc.Messages

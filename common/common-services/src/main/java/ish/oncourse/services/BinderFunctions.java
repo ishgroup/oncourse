@@ -3,8 +3,6 @@
  */
 package ish.oncourse.services;
 
-import ish.oncourse.services.alias.IWebUrlAliasService;
-import ish.oncourse.services.alias.WebUrlAliasService;
 import ish.oncourse.services.application.ApplicationServiceImpl;
 import ish.oncourse.services.application.IApplicationService;
 import ish.oncourse.services.binary.BinaryDataService;
@@ -13,8 +11,6 @@ import ish.oncourse.services.cache.IRequestCacheService;
 import ish.oncourse.services.cache.RequestCacheService;
 import ish.oncourse.services.contact.ContactServiceImpl;
 import ish.oncourse.services.contact.IContactService;
-import ish.oncourse.services.content.IWebContentService;
-import ish.oncourse.services.content.WebContentService;
 import ish.oncourse.services.content.cache.ContentCacheService;
 import ish.oncourse.services.content.cache.IContentCacheService;
 import ish.oncourse.services.content.cache.IContentKeyFactory;
@@ -47,14 +43,8 @@ import ish.oncourse.services.location.IPostCodeDbService;
 import ish.oncourse.services.location.PostCodeDbService;
 import ish.oncourse.services.mail.IMailService;
 import ish.oncourse.services.mail.MailService;
-import ish.oncourse.services.menu.IWebMenuService;
-import ish.oncourse.services.menu.WebMenuService;
 import ish.oncourse.services.message.IMessagePersonService;
 import ish.oncourse.services.message.MessagePersonService;
-import ish.oncourse.services.node.IWebNodeService;
-import ish.oncourse.services.node.IWebNodeTypeService;
-import ish.oncourse.services.node.WebNodeService;
-import ish.oncourse.services.node.WebNodeTypeService;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.payment.PaymentService;
 import ish.oncourse.services.paymentexpress.*;
@@ -74,8 +64,6 @@ import ish.oncourse.services.s3.S3Service;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchService;
 import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.services.site.IWebSiteVersionService;
-import ish.oncourse.services.site.WebSiteVersionService;
 import ish.oncourse.services.sites.ISitesService;
 import ish.oncourse.services.sites.SitesService;
 import ish.oncourse.services.sms.DefaultSMSService;
@@ -156,13 +144,7 @@ public class BinderFunctions {
 	}
 
 	public static void bindWebSiteServices(ServiceBinder binder, Class<? extends IWebSiteService> webSiteServiceClass) {
-		binder.bind(IWebSiteService.class, webSiteServiceClass);
-		binder.bind(IWebSiteVersionService.class, WebSiteVersionService.class);
-		binder.bind(IWebContentService.class, WebContentService.class);
-		binder.bind(IWebNodeService.class, WebNodeService.class);
-		binder.bind(IWebNodeTypeService.class, WebNodeTypeService.class);
-		binder.bind(IWebUrlAliasService.class, WebUrlAliasService.class);
-		binder.bind(IWebMenuService.class, WebMenuService.class);
+		new BindWebSiteServices().binder(binder).webSiteService(webSiteServiceClass).bind();
 	}
 
 	public static void bindEnvServices(ServiceBinder binder, String appName, boolean testMode) {

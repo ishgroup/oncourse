@@ -3,7 +3,7 @@ package ish.oncourse.linktransform.functions;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.WebSite;
-import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.test.ServiceTest;
@@ -35,7 +35,7 @@ public class WebAvailabilityRulesTest extends ServiceTest {
 
     @Before
     public void prepare() throws Exception {
-        initTest("ish.oncourse.services", "service", ServiceModule.class);
+        initTest("ish.oncourse.services", "service", ServiceTestModule.class);
 
         InputStream st = RootTagAvailabilityTest.class.getClassLoader().getResourceAsStream(
                 "ish/oncourse/linktransform/WebAvailabilityRulesTest.xml");

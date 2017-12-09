@@ -1,18 +1,17 @@
 package ish.oncourse.cayenne;
 
 import ish.oncourse.model.Country;
-import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.test.InitialContextFactoryMock;
 import ish.oncourse.test.ServiceTest;
-import ish.oncourse.util.ContextUtil;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.QueryCacheStrategy;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 public class TestCayenneCache extends ServiceTest {
 
@@ -21,7 +20,7 @@ public class TestCayenneCache extends ServiceTest {
 
     @Before
     public void setup() throws Exception {
-        initTest("ish.oncourse.services", "service", ServiceModule.class);
+        initTest("ish.oncourse.services", "service", ServiceTestModule.class);
 
         cayenneService = getService(ICayenneService.class);
     }

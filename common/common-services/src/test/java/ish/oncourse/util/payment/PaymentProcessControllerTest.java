@@ -9,7 +9,6 @@ import ish.oncourse.model.Invoice;
 import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.paymentexpress.INewPaymentGatewayService;
-import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import org.apache.tapestry5.services.Session;
@@ -60,7 +59,7 @@ public class PaymentProcessControllerTest extends ServiceTest {
 
         DatabaseOperation.CLEAN_INSERT.execute(dbConnection, dataSet);
         cayenneService = getService(ICayenneService.class);
-        paymentGatewayService = getService("NewPaymentGatewayService", INewPaymentGatewayService.class);
+        paymentGatewayService = getService(INewPaymentGatewayService.class);
         paymentService = getService(IPaymentService.class);
 
     }

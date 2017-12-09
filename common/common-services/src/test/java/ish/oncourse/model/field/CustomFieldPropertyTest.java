@@ -7,7 +7,7 @@ import ish.oncourse.cayenne.FieldInterface;
 import ish.oncourse.common.field.PropertyGetSet;
 import ish.oncourse.common.field.PropertyGetSetFactory;
 import ish.oncourse.model.Contact;
-import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import org.apache.cayenne.ObjectContext;
@@ -31,7 +31,7 @@ public class CustomFieldPropertyTest extends ServiceTest {
 
 	@Before
 	public void setup() throws Exception {
-		initTest("ish.oncourse.services", "service", ServiceModule.class);
+		initTest("ish.oncourse.services", "service", ServiceTestModule.class);
 
 		InputStream st = CustomFieldPropertyTest.class.getClassLoader().getResourceAsStream("ish/oncourse/model/field/customFieldPropertyDataSet.xml");
 		FlatXmlDataSetBuilder builder =  new FlatXmlDataSetBuilder();

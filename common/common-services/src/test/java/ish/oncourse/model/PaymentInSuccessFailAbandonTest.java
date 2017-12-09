@@ -5,7 +5,7 @@ import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
 import ish.math.Money;
-import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.util.payment.*;
@@ -29,7 +29,6 @@ import java.util.Collection;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 	
@@ -37,7 +36,7 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 	
 	@Before
 	public void setup() throws Exception {
-		initTest("ish.oncourse.services", "service", ServiceModule.class);
+		initTest("ish.oncourse.services", "service", ServiceTestModule.class);
 
 		InputStream st = PaymentInSuccessFailAbandonTest.class.getClassLoader().getResourceAsStream(
 				"ish/oncourse/services/lifecycle/referenceDataSet.xml");

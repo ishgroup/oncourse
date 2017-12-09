@@ -1,9 +1,9 @@
 package ish.oncourse.test.functions
 
-import ish.oncourse.cayenne.WillowCayenneModuleBuilder
 import ish.oncourse.test.MariaDB
 import ish.oncourse.test.TestInitialContextFactory
 import ish.oncourse.util.ContextUtil
+import org.apache.cayenne.cache.QueryCache
 import org.apache.cayenne.configuration.server.ServerRuntime
 import org.apache.commons.dbcp2.BasicDataSource
 import org.apache.logging.log4j.LogManager
@@ -23,9 +23,8 @@ import static ish.oncourse.test.TestInitialContextFactory.close
 class Functions {
     private static final Logger logger = LogManager.getLogger()
 
-    static ServerRuntime createRuntime(String cayenneXml = "cayenne-oncourse.xml") {
-        ServerRuntime cayenneRuntime = new ServerRuntime(cayenneXml, new WillowCayenneModuleBuilder().build())
-        return cayenneRuntime
+    static ServerRuntime createRuntime(String cayenneXml = "cayenne-oncourse.xml", QueryCache queryCache = null) {
+        return new ServerRuntimeBuilder().cayenneXml(cayenneXml).queryCache(queryCache).build()
     }
 
     static void bindDS(DataSource dataSource) {

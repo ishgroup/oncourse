@@ -1,6 +1,6 @@
 package ish.oncourse.services.encrypt;
 
-import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.test.ServiceTest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,7 +15,7 @@ public class EncryptionServiceTest extends ServiceTest {
 	
 	@Before
     public void setup() throws Exception {
-		initTest("ish.oncourse.services", "service", ServiceModule.class);
+		initTest("ish.oncourse.services", "service", ServiceTestModule.class);
 		service = new EncryptionService();
 	}
 	

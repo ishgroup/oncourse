@@ -1,8 +1,7 @@
 package ish.oncourse.linktransform.functions;
 
 import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.PaymentInSuccessFailAbandonTest;
-import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
@@ -17,7 +16,6 @@ import org.junit.Test;
 import javax.sql.DataSource;
 import java.io.InputStream;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 /**
@@ -30,7 +28,7 @@ public class RootTagAvailabilityTest extends ServiceTest {
 
     @Before
     public void setup() throws Exception {
-        initTest("ish.oncourse.services", "service", ServiceModule.class);
+        initTest("ish.oncourse.services", "service", ServiceTestModule.class);
 
         InputStream st = RootTagAvailabilityTest.class.getClassLoader().getResourceAsStream(
                 "ish/oncourse/linktransform/RootTagAvailabilityTest.xml");

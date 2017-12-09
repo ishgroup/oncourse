@@ -1,6 +1,6 @@
 package ish.oncourse.model;
 
-import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import org.apache.cayenne.CayenneRuntimeException;
@@ -10,7 +10,9 @@ import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import javax.sql.DataSource;
 import java.io.InputStream;
@@ -29,7 +31,7 @@ public class CustomFieldTest extends ServiceTest{
 
     @Before
     public void setup() throws Exception {
-        initTest("ish.oncourse.services", "service", ServiceModule.class);
+        initTest("ish.oncourse.services", "service", ServiceTestModule.class);
 
         InputStream st = CustomFieldTest.class.getClassLoader().getResourceAsStream(
                 "ish/oncourse/model/customFieldDataSet.xml");

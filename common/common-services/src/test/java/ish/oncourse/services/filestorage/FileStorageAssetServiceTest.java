@@ -4,10 +4,9 @@ import ish.common.types.AttachmentInfoVisibility;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Document;
 import ish.oncourse.model.DocumentVersion;
-import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.test.DataSetInitializer;
-import ish.oncourse.test.InitialContextFactoryMock;
+import ish.oncourse.test.LoadDataSet;
 import ish.oncourse.test.ServiceTest;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
@@ -18,8 +17,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import java.io.File;
 import java.io.InputStream;
@@ -34,9 +31,9 @@ public class FileStorageAssetServiceTest extends ServiceTest {
 
     @Before
     public void setup() throws Exception {
-        initTest("ish.oncourse.services", "service", ServiceModule.class);
+        initTest("ish.oncourse.services", "service", ServiceTestModule.class);
 
-        DataSetInitializer.initDataSets("ish/oncourse/services/filestorage/dataSet.xml");
+        new LoadDataSet().dataSetFile("ish/oncourse/services/filestorage/dataSet.xml").load(testContext.getDS());
         cayenneService = getService(ICayenneService.class);
         initFileStorageAssetService();
     }
@@ -47,11 +44,6 @@ public class FileStorageAssetServiceTest extends ServiceTest {
         if (!result) {
             throw new IllegalArgumentException();
         }
-        Context context = new InitialContext();
-        InitialContextFactoryMock.bind("java:comp/env",context);
-        context.bind(FileStorageService.ENV_NAME_fileStorageRoot, rootDir.getAbsolutePath());
-        context.bind(FileStorageReplicationService.ENV_NAME_syncScript, rootDir.getAbsolutePath());
-
         fileStorageAssetService = new FileStorageAssetService();
     }
 

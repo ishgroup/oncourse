@@ -2,7 +2,7 @@ package ish.oncourse.model;
 
 import ish.common.types.*;
 import ish.math.Money;
-import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.util.payment.*;
@@ -29,7 +29,7 @@ public class PaymentInTest extends ServiceTest{
 
 	@Before
 	public void setup() throws Exception {
-		initTest("ish.oncourse.services", "service", ServiceModule.class);
+		initTest("ish.oncourse.services", "service", ServiceTestModule.class);
 		this.cayenneService = getService(ICayenneService.class);
 
 		this.context = cayenneService.newContext();

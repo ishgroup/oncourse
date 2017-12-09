@@ -5,7 +5,7 @@ package ish.oncourse.services.site;
 
 
 import ish.oncourse.model.*;
-import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.lifecycle.QueueableLifecycleListenerTest;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
@@ -33,7 +33,7 @@ public class WebSiteVersionDeleteTest extends ServiceTest {
 	
 	@Before
 	public void setup() throws Exception {
-		initTest("ish.oncourse.services", "service", ServiceModule.class);
+		initTest("ish.oncourse.services", "service", ServiceTestModule.class);
 
 		InputStream st = QueueableLifecycleListenerTest.class.getClassLoader().getResourceAsStream(
 				"ish/oncourse/services/site/webSiteVersionDeleteTestDataSet.xml");
