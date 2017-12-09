@@ -2,6 +2,7 @@ package ish.oncourse.services;
 
 import ish.oncourse.cayenne.cache.ICacheEnabledService;
 import ish.oncourse.model.College;
+import ish.oncourse.model.WebSite;
 import ish.oncourse.services.html.NoCacheMetaProvider;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.WebSiteServiceOverride;
@@ -34,6 +35,11 @@ public class ServiceTestModule {
 			public College getCurrentCollege() {
 				ICollegeService collegeService = res.getService(ICollegeService.class);
 				return collegeService.findBySecurityCode("345ttn44$%9");
+			}
+
+			@Override
+			public WebSite getCurrentWebSite() {
+				return getCurrentCollege().getWebSites().get(0);
 			}
 		}).bind();
 
