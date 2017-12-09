@@ -1,3 +1,5 @@
+apply from: "$rootDir/gradle/functions.gradle"
+
 dependencies {
 	compile project(':common:cayenne-model')
 
@@ -12,8 +14,6 @@ dependencies {
 	compile 'javax.mail:mail:1.4.7'
 	compile 'javax.activation:activation:1.1.1'
 
-    // The odd next line is to work around gradle pulling in the wrong configuration
-	// http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency
 	testCompile project(':common:test-functions')
 }
 
