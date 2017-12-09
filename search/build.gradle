@@ -5,6 +5,7 @@ configurations {
 }
 
 dependencies {
+    testCompile project(':common:test-functions')
     testCompile project(':common:common-services')
     testCompile project(':common:solr-index')
 

@@ -59,6 +59,7 @@ dependencies {
     testCompile 'wsdl4j:wsdl4j:1.6.3'
     testCompile 'org.jodd:jodd-http:3.9.1'
     testCompile 'org.apache.derby:derby:10.13.1.1'
+    testCompile project(':common:test-functions')
 
     tapestryTest("org.apache.tapestry:tapestry-test:$tapestryVersion")
 }

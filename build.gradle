@@ -108,7 +108,6 @@ allprojects {
 		compile "org.apache.logging.log4j:log4j-jul:$log4j2Version"
 
 		testCompile 'org.mockito:mockito-all:1.10.19'
-		testCompile 'org.dbunit:dbunit:2.4.8'
 		testCompile 'junit:junit:4.12'
 
         deployerJars 'org.apache.maven.wagon:wagon-http:2.12'
