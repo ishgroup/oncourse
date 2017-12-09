@@ -1,10 +1,9 @@
 package ish.oncourse.webservices.jobs;
 
 import ish.oncourse.model.Instruction;
-import ish.oncourse.services.ServiceModule;
-
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
+import ish.oncourse.webservices.soap.ReplicationTestModule;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.dbunit.database.DatabaseConnection;
@@ -18,7 +17,7 @@ import javax.sql.DataSource;
 import java.io.InputStream;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /*
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
@@ -29,7 +28,7 @@ public class UpdateAmountOwingJobTest extends ServiceTest {
 
     @Before
     public void setup() throws Exception {
-        initTest("ish.oncourse.services", "service", ServiceModule.class);
+        initTest("ish.oncourse.services", "service", ReplicationTestModule.class);
 
         InputStream st = PaymentInExpireJobTest.class.getClassLoader().getResourceAsStream(
                 "ish/oncourse/webservices/jobs/UpdateAmountOwingJobTest.xml");

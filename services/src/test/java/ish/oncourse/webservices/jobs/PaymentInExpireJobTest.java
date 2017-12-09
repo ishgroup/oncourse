@@ -5,7 +5,6 @@ import ish.common.types.PaymentStatus;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentTransaction;
-import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.paymentexpress.PaymentInSupport;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -14,6 +13,7 @@ import ish.oncourse.test.ServiceTest;
 import ish.oncourse.util.payment.PaymentInFail;
 import ish.oncourse.util.payment.PaymentInModel;
 import ish.oncourse.util.payment.PaymentInModelFromPaymentInBuilder;
+import ish.oncourse.webservices.soap.ReplicationTestModule;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
@@ -44,7 +44,7 @@ public class PaymentInExpireJobTest extends ServiceTest {
 
 	@Before
 	public void setup() throws Exception {
-		initTest("ish.oncourse.services", "service", ServiceModule.class);
+		initTest("ish.oncourse.services", "service", ReplicationTestModule.class);
 
 		InputStream st = PaymentInExpireJobTest.class.getClassLoader().getResourceAsStream(
 				"ish/oncourse/webservices/jobs/paymentInExpireDataSet.xml");

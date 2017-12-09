@@ -3,12 +3,12 @@ package ish.oncourse.webservices.jobs;
 import ish.common.types.MessageStatus;
 import ish.oncourse.model.MessagePerson;
 import ish.oncourse.model.Pair;
-import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.message.IMessagePersonService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
 import ish.oncourse.services.sms.ISMSService;
 import ish.oncourse.test.ServiceTest;
+import ish.oncourse.webservices.soap.ReplicationTestModule;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.dbunit.database.DatabaseConnection;
@@ -37,7 +37,7 @@ public class SMSJobTest extends ServiceTest {
 
 	@Before
 	public void setup() throws Exception {
-		initTest("ish.oncourse.webservices.services", "", ServiceModule.class);
+		initTest("ish.oncourse.webservices.services", "", ReplicationTestModule.class);
 
 		messagePersonService = getService(IMessagePersonService.class);
 		prefFactory = getService(PreferenceControllerFactory.class);
