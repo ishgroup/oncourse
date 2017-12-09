@@ -2,7 +2,7 @@ package ish.oncourse.util.payment;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.Preference;
-import ish.oncourse.services.PaymentServiceTestModule;
+import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.paymentexpress.INewPaymentGatewayServiceBuilder;
 import ish.oncourse.services.paymentexpress.NewDisabledPaymentGatewayService;
@@ -33,7 +33,7 @@ public class PaymentProcessControllerBuilderTest extends ServiceTest {
     
 	@Before
     public void setup() throws Exception {
-        initTest("ish.oncourse.webservices.services", "services", PaymentServiceTestModule.class);
+        initTest("ish.oncourse.webservices.services", "services", ServiceTestModule.class);
 		new LoadDataSet().dataSetFile("ish/oncourse/util/payment/PaymentProcessControllerTest.xml").load(testContext.getDS());
         cayenneService = getService(ICayenneService.class);
         paymentService = getService(IPaymentService.class);

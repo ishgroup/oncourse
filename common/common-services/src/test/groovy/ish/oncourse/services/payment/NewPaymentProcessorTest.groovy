@@ -3,9 +3,10 @@ package ish.oncourse.services.payment
 import ish.common.types.CreditCardType
 import ish.common.types.PaymentStatus
 import ish.oncourse.model.PaymentIn
-import ish.oncourse.services.PaymentServiceTestModule
+import ish.oncourse.services.ServiceTestModule
 import ish.oncourse.services.paymentexpress.INewPaymentGatewayServiceBuilder
 import ish.oncourse.services.persistence.ICayenneService
+import ish.oncourse.test.LoadDataSet
 import ish.oncourse.test.ServiceTest
 import org.apache.tapestry5.internal.test.TestableRequest
 import org.apache.tapestry5.ioc.Messages
@@ -31,9 +32,11 @@ class NewPaymentProcessorTest extends ServiceTest {
 
     @Before
     void before() {
-        initTest("ish.oncourse.services.payment", "service", PaymentServiceTestModule)
+        initTest("ish.oncourse.services.payment", "service", ServiceTestModule)
 
-        DataSetInitializer.initDataSets("ish/oncourse/services/payment/NewPaymentProcessorTestDataSet.xml")
+        new LoadDataSet().dataSetFile("ish/oncourse/services/payment/NewPaymentProcessorTestDataSet.xml")
+                .load(getDataSource())
+
         cayenneService = getService(ICayenneService)
         messages = mock(Messages.class)
         when(messages.get(anyString())).thenReturn("Any string")
