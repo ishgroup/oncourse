@@ -1,3 +1,5 @@
+apply from: "$rootDir/gradle/functions.gradle"
+
 sourceSets.main.java.srcDirs = []
 sourceSets.main.groovy.srcDir 'src/main/java'
 
@@ -21,4 +23,9 @@ dependencies {
     compile 'net.java.dev.textile-j:textile-j:2.2.864'
 
     testCompile project(':common:test-functions')
+}
+
+test {
+    forkEvery = 1 //run every test in separate jvm
+    initTestDBConfig(project, test)
 }
