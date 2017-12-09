@@ -10,6 +10,7 @@ import io.bootique.jetty.MappedServlet
 import io.milton.servlet.MiltonFilter
 import ish.oncourse.api.cayenne.CayenneService
 import ish.oncourse.api.cxf.CXFModule
+import ish.oncourse.cayenne.WillowCayenneModuleBuilder
 import ish.oncourse.cayenne.cache.JCacheModule
 import ish.oncourse.configuration.ISHHealthCheckServlet
 import ish.oncourse.services.persistence.ICayenneService
@@ -46,7 +47,7 @@ class EditorApiModule extends ConfigModule {
 
 
     void configure(Binder binder) {
-        CayenneModule.extend(binder).addModule(WillowApiCayenneModule)
+        CayenneModule.extend(binder).addModule(new WillowCayenneModuleBuilder().build())
         CayenneModule.extend(binder).addModule(JCacheModule)
         JettyModule.extend(binder)
                 .addMappedFilter(REQUEST_FILTER)
