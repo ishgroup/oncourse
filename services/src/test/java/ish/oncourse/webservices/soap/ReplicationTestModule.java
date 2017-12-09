@@ -44,6 +44,7 @@ public class ReplicationTestModule {
 		BinderFunctions.bindEnvServices(binder, "services", true);
 		BinderFunctions.bindPaymentGatewayServices(binder);
 		BinderFunctions.bindTapestryServices(binder, NoCacheMetaProvider.class, PageRenderer.class);
+		BinderFunctions.bindReferenceServices(binder);
 
 		binder.bind(ReferenceStubBuilder.class);
 		binder.bind(IWillowStubBuilder.class, WillowStubBuilderImpl.class);
