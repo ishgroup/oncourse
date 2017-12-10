@@ -17,14 +17,11 @@ import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.internal.event.InvalidationEventHubImpl;
 import org.apache.tapestry5.internal.parser.ComponentTemplate;
 import org.apache.tapestry5.internal.services.ComponentTemplateSource;
-import org.apache.tapestry5.internal.services.ReloadHelper;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.ioc.annotations.PostInjection;
 import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.apache.tapestry5.model.ComponentModel;
 import org.apache.tapestry5.services.InvalidationEventHub;
 import org.apache.tapestry5.services.UpdateListener;
-import org.apache.tapestry5.services.UpdateListenerHub;
 import org.apache.tapestry5.services.pageload.ComponentResourceSelector;
 
 public final class ComponentTemplateSourceImpl extends InvalidationEventHubImpl implements ComponentTemplateSource,
@@ -37,21 +34,10 @@ public final class ComponentTemplateSourceImpl extends InvalidationEventHubImpl 
 		super(productionMode);
 		this.pageLoadService = pageLoadService;
 	}
-
-	@PostInjection
-	public void registerAsUpdateListener(UpdateListenerHub hub) {
-		hub.addUpdateListener(this);
-	}
-
-	@PostInjection
-	public void setupReload(ReloadHelper helper) {
-		helper.addReloadCallback(this::invalidate);
-	}
-
+	
 	public ComponentTemplate getTemplate(ComponentModel componentModel, ComponentResourceSelector selector) {
 		return pageLoadService.getTemplate(componentModel, selector);
 	}
-
 
 	public void checkForUpdates() {
 		if (this.pageLoadService.containsChanges()) {

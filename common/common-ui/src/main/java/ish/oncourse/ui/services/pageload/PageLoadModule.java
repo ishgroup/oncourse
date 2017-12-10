@@ -19,6 +19,7 @@ import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.apache.tapestry5.ioc.services.PerthreadManager;
 import org.apache.tapestry5.services.ComponentClassResolver;
 import org.apache.tapestry5.services.MetaDataLocator;
+import org.apache.tapestry5.services.UpdateListenerHub;
 
 /**
  * User: akoiro
@@ -50,8 +51,10 @@ public class PageLoadModule {
 	}
 
 	public ComponentTemplateSource buildComponentTemplateSourceOverride(@Inject @Symbol(SymbolConstants.PRODUCTION_MODE)
-																				boolean productionMode, @Inject PageLoadService webCacheService) {
-		return new ComponentTemplateSourceImpl(productionMode, webCacheService);
+																				boolean productionMode, @Inject PageLoadService webCacheService, UpdateListenerHub hub) {
+		ComponentTemplateSourceImpl templateSource =  new ComponentTemplateSourceImpl(productionMode, webCacheService);
+		hub.addUpdateListener(templateSource);
+		return templateSource;
 	}
 
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration,

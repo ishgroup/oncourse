@@ -156,8 +156,27 @@ public class PageLoadService {
 
 	private void cleanTemplatesCache() {
 		String cacheKey = webSiteVersionService.getCacheKey();
-		Cache cache = cacheManager.getCache(cacheKey);
-		cache.clear();
+		Cache<MultiKey, Resource> cache1 = cacheManager.getCache(String.format("%s_%s",
+				TEMPLATE_RESOURCES_CACHE_KEY, webSiteVersionService.getCacheKey()), MultiKey.class, Resource.class);
+		if (cache1 != null) {
+			cache1.clear();
+		}
+
+		Cache<MultiKey, ComponentTemplate> cache2 = cacheManager.getCache(String.format("%s_%s",
+				TEMPLATES_CACHE_KEY, webSiteVersionService.getCacheKey()), MultiKey.class, ComponentTemplate.class);
+		if (cache2 != null) {
+			cache2.clear();
+		}
+		Cache<MultiKey, ComponentAssembler> cache3 = cacheManager.getCache(String.format("%s_%s",
+				COMPONENT_ASSEMBLERS_CACHE_KEY, webSiteVersionService.getCacheKey()), MultiKey.class, ComponentAssembler.class);
+		if (cache3 != null) {
+			cache3.clear();
+		}
+		Cache<MultiKey, Page> cache4 = cacheManager.getCache(String.format("%s_%s", PAGES_CACHE_KEY, webSiteVersionService.getCacheKey()), MultiKey.class, Page.class);
+		if (cache4 != null) {
+			cache4.clear();
+		}
+		
 	}
 
 	private static final ComponentTemplate missingTemplate = new ComponentTemplate() {
