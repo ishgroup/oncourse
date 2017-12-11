@@ -1192,8 +1192,7 @@ public abstract class CommonPreferenceController {
 	public String getAvetmissPostcode() {
 		String result = getValue(AVETMISS_POSTCODE, false);
 		if (result == null) {
-			setAvetmissPostcode("");
-			return getAvetmissPostcode();
+			return StringUtils.EMPTY;
 		}
 		return result;
 	}
