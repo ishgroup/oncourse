@@ -1,6 +1,7 @@
 package ish.oncourse.willow.editor.service
 
 import ish.oncourse.api.cayenne.CayenneService
+import ish.oncourse.cayenne.WillowCayenneModuleBuilder
 import ish.oncourse.model.*
 import ish.oncourse.test.LoadDataSet
 import ish.oncourse.test.TestContext
@@ -26,7 +27,7 @@ abstract class AbstractEditorTest {
     void setup() throws Exception {
         testContext = new TestContext().shouldCreateTables(false).open()
         new LoadDataSet().dataSetFile(dataSetResource).replacements(['[null]':null]).load(testContext.DS)
-        cayenneRuntime = new ServerRuntime('cayenne-oncourse.xml', new ish.oncourse.cayenne.WillowCayenneModuleBuilder())
+        cayenneRuntime = new ServerRuntime('cayenne-oncourse.xml', new WillowCayenneModuleBuilder().build())
         cayenneService = new CayenneService(cayenneRuntime)
 
         Request request = mockRequest()
