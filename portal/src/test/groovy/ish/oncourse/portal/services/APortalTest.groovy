@@ -3,17 +3,11 @@ package ish.oncourse.portal.services
 import ish.oncourse.portal.service.TestModule
 import ish.oncourse.services.paymentexpress.INewPaymentGatewayService
 import ish.oncourse.services.persistence.ICayenneService
+import ish.oncourse.test.LoadDataSet
 import ish.oncourse.test.ServiceTest
 import ish.oncourse.webservices.usi.TestUSIServiceEndpoint
 import org.apache.cayenne.ObjectContext
-import org.dbunit.database.DatabaseConnection
-import org.dbunit.dataset.IDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import org.dbunit.operation.DatabaseOperation
 import org.junit.Before
-
-import javax.sql.DataSource
 
 /**
  * User: akoiro
@@ -26,7 +20,7 @@ abstract class APortalTest extends ServiceTest {
     def ObjectContext objectContext
 
     protected String getDataSetName() {
-        return this.getClass().getSimpleName() + ".xml";
+        return this.getClass().getName().replace('.', '/') + ".xml"
     }
 
     @Before
@@ -35,15 +29,10 @@ abstract class APortalTest extends ServiceTest {
 
         initTest("ish.oncourse.portal", "portal", "src/main/resources/desktop/ish/oncourse/portal/pages", TestModule.class);
 
-        InputStream st = this.getClass().getResourceAsStream(getDataSetName());
-        FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
-        builder.setColumnSensing(true);
-        FlatXmlDataSet fileDataSet = builder.build(st);
 
-        IDataSet dataSet = adjustDataSet(fileDataSet);
-
-        DataSource onDataSource = getDataSource("jdbc/oncourse");
-        DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(onDataSource.getConnection(), null), dataSet);
+        new LoadDataSet().dataSetFile(getDataSetName())
+                .replacements(replacements())
+                .load(getDataSource("jdbc/oncourse"))
 
         cayenneService = getService(ICayenneService)
         portalService = getService(IPortalService)
@@ -52,7 +41,7 @@ abstract class APortalTest extends ServiceTest {
 
     }
 
-    protected IDataSet adjustDataSet(IDataSet dataSet) {
-        return dataSet;
+    protected Map<String, Object> replacements() {
+        return Collections.emptyMap()
     }
 }

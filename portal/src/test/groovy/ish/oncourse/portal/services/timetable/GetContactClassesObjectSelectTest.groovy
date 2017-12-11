@@ -5,17 +5,16 @@ import ish.oncourse.model.Contact
 import ish.oncourse.model.CourseClass
 import ish.oncourse.portal.services.APortalTest
 import ish.oncourse.utils.DateUtils
-import org.dbunit.dataset.IDataSet
-import org.dbunit.dataset.ReplacementDataSet
 import org.junit.Test
+
 import static org.apache.cayenne.query.SelectById.query
 import static org.junit.Assert.assertEquals
 
 class GetContactClassesObjectSelectTest extends  APortalTest {
 
 	@Override
-	protected IDataSet adjustDataSet(IDataSet dataSet) {
-		ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
+	protected Map<String, Object> replacements() {
+		Map<String, Object> replacements = new HashMap<>()
 		use(TimeCategory) {
 			def startOfCurrentMomth = DateUtils.startOfMonth(new Date())
 			def plu1days = startOfCurrentMomth + 1.day
@@ -23,13 +22,13 @@ class GetContactClassesObjectSelectTest extends  APortalTest {
 			def minus1day = startOfCurrentMomth - 1.day
 			def minus1Month = startOfCurrentMomth - 1.month
 
-			rDataSet.addReplacementObject("[plus1days]", plu1days)
-			rDataSet.addReplacementObject("[plus1Month]", plu1Month)
-			rDataSet.addReplacementObject("[minus1day]", minus1day)
-			rDataSet.addReplacementObject("[minus1Month]", minus1Month)
+			replacements.put("[plus1days]", plu1days)
+			replacements.put("[plus1Month]", plu1Month)
+			replacements.put("[minus1day]", minus1day)
+			replacements.put("[minus1Month]", minus1Month)
 		}
 
-		return rDataSet
+		return replacements
 	}
 
 	@Test

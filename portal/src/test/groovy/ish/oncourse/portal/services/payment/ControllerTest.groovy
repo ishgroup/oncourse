@@ -7,9 +7,6 @@ import ish.oncourse.model.Invoice
 import ish.oncourse.model.PaymentIn
 import ish.oncourse.portal.services.APortalTest
 import ish.oncourse.services.paymentexpress.NewPaymentExpressGatewayService
-import ish.oncourse.services.paymentexpress.PaymentExpressGatewayService
-import org.dbunit.dataset.IDataSet
-import org.dbunit.dataset.ReplacementDataSet
 import org.junit.Test
 
 import static org.apache.cayenne.query.SelectById.query
@@ -31,19 +28,19 @@ class ControllerTest extends APortalTest {
     }
 
     @Override
-    protected IDataSet adjustDataSet(IDataSet dataSet) {
-        ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
+    protected Map<String, Object> replacements() {
+        Map<String, Object> replacements = new HashMap<>()
         use(TimeCategory.class) {
             tomorrow = 1.day.from.now
             fiveDaysLater = 5.days.from.now
-            rDataSet.addReplacementObject("[tomorrow]", tomorrow)
-            rDataSet.addReplacementObject("[fiveDaysLater]", fiveDaysLater)
+            replacements.put("[tomorrow]", tomorrow)
+            replacements.put("[fiveDaysLater]", fiveDaysLater)
         }
-        return super.adjustDataSet(rDataSet)
+        return replacements
     }
 
     @Test
-    public void test() {
+    void test() {
         Contact contact = query(Contact, 1L).selectOne(objectContext)
         Invoice invoice = query(Invoice, 1L).selectOne(objectContext)
 

@@ -12,20 +12,15 @@ import ish.oncourse.portal.service.TestModule;
 import ish.oncourse.portal.services.MailingListHelper;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.tag.ITagService;
+import ish.oncourse.test.LoadDataSet;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.usi.TestUSIServiceEndpoint;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SelectById;
-import org.dbunit.database.DatabaseConnection;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.sql.DataSource;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -45,13 +40,7 @@ public class MailingListTest extends ServiceTest {
 		System.setProperty(TestUSIServiceEndpoint.USI_TEST_MODE, "true");
 
 		initTest("ish.oncourse.portal", "portal", "src/main/resources/desktop/ish/oncourse/portal/pages", TestModule.class);
-		InputStream st = MailingListTest.class.getClassLoader().getResourceAsStream("ish/oncourse/portal/pages/mailingListTestDataSet.xml");
-		FlatXmlDataSetBuilder builder =  new FlatXmlDataSetBuilder();
-		builder.setColumnSensing(true);
-		FlatXmlDataSet dataSet = builder.build(st);
-
-		DataSource onDataSource = getDataSource("jdbc/oncourse");
-		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(onDataSource.getConnection(), null), dataSet);
+		new LoadDataSet().dataSetFile("ish/oncourse/portal/pages/mailingListTestDataSet.xml").load(getDataSource("jdbc/oncourse"));
 
 		ICayenneService cayenneService = getService(ICayenneService.class);
 		context = cayenneService.sharedContext();
