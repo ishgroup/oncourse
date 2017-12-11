@@ -14,7 +14,6 @@ import org.dbunit.operation.DatabaseOperation;
 
 import javax.sql.DataSource;
 import java.io.InputStream;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,7 +34,7 @@ public class LoadDataSet {
 	}
 
 	public LoadDataSet addReplacement(Object key, Object value) {
-		this.replacements = replacements == null ? Collections.emptyMap() : replacements;
+		this.replacements.put(key, value);
 		return this;
 	}
 
