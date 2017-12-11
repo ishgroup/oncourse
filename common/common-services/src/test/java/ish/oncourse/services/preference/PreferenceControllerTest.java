@@ -1,6 +1,7 @@
 package ish.oncourse.services.preference;
 
 import ish.oncourse.services.ServiceTestModule;
+import ish.oncourse.services.cache.NoopQueryCache;
 import ish.oncourse.services.courseclass.ClassAge;
 import ish.oncourse.services.courseclass.ClassAgeType;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -52,7 +53,7 @@ public class PreferenceControllerTest extends ServiceTest {
 	
 	@Before
 	public void setup() throws Exception {
-		initTest("ish.oncourse.services", "", ServiceTestModule.class);
+		initTest("ish.oncourse.services", "", new NoopQueryCache(), ServiceTestModule.class);
 
 		new LoadDataSet().dataSetFile("ish/oncourse/services/preference/preferenceDataSet.xml")
 				.load(testContext.getDS());
