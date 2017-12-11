@@ -35,8 +35,6 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /logout:
     post:
-      x-filter:  
-      - AuthFilter
       operationId: logout
       summary: Unauthorize user from CMS
       description: Unauthorize user from CMS

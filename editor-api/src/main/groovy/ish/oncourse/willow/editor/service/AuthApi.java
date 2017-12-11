@@ -25,7 +25,6 @@ public interface AuthApi  {
     @Path("/logout")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
-    @AuthFilter
     void logout();
 }
 
