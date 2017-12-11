@@ -139,7 +139,7 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
         // OPTIONAL: defaults to excluding nothing
         // can be a string, a RegExp, or an array of strings and RegExps
         // if a file matches both include and exclude, exclude takes precedence
-        exclude: [/\.js$/, /\.map$/, /\.css$/],
+        exclude: [/\.js$/, /\.css$/],
 
         // OPTIONAL: see https://github.com/thejoshwolfe/yazl#addfilerealpath-metadatapath-options
         fileOptions: {
