@@ -14,5 +14,8 @@
         <Logger name="ish.oncourse" level="debug">
             <AppenderRef ref="STDOUT"/>
         </Logger>
+        <Logger name="org.apache.cayenne.log" level="info">
+            <AppenderRef ref="STDOUT"/>
+        </Logger>
     </Loggers>
 </Configuration>

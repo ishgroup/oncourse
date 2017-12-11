@@ -4,6 +4,7 @@ import ish.common.types.CreditCardType
 import ish.common.types.PaymentStatus
 import ish.oncourse.model.PaymentIn
 import ish.oncourse.services.ServiceTestModule
+import ish.oncourse.services.cache.NoopQueryCache
 import ish.oncourse.services.paymentexpress.INewPaymentGatewayServiceBuilder
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.test.LoadDataSet
@@ -32,7 +33,7 @@ class NewPaymentProcessorTest extends ServiceTest {
 
     @Before
     void before() {
-        initTest("ish.oncourse.services.payment", "service", ServiceTestModule)
+        initTest("ish.oncourse.services.payment", "service", new NoopQueryCache(), ServiceTestModule)
 
         new LoadDataSet().dataSetFile("ish/oncourse/services/payment/NewPaymentProcessorTestDataSet.xml")
                 .load(getDataSource())
@@ -178,7 +179,6 @@ class NewPaymentProcessorTest extends ServiceTest {
         controller.proceedToDetails()
 
         controller = getPaymentController('sessionId')
-
         PaymentRequest request = new PaymentRequest(name: 'JOHN JOHN', number: '5105105105105100', cvv: '321', month: '11', year: nextYear)
         PaymentResponse response = new PaymentResponse()
         controller.processPayment(request, response)

@@ -4,6 +4,7 @@ import ish.common.types.PaymentStatus
 import ish.common.types.ProductStatus
 import ish.oncourse.model.PaymentIn
 import ish.oncourse.model.PaymentTransaction
+import ish.oncourse.services.ServiceTestModule
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.test.LoadDataSet
 import ish.oncourse.test.ServiceTest

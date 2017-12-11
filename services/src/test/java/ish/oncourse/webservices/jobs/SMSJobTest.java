@@ -7,20 +7,16 @@ import ish.oncourse.services.message.IMessagePersonService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
 import ish.oncourse.services.sms.ISMSService;
+import ish.oncourse.test.LoadDataSet;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.soap.ReplicationTestModule;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.sql.DataSource;
-import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -39,15 +35,11 @@ public class SMSJobTest extends ServiceTest {
 	public void setup() throws Exception {
 		initTest("ish.oncourse.webservices.services", "", ReplicationTestModule.class);
 
+		new LoadDataSet().dataSetFile("ish/oncourse/webservices/jobs/smsDataSet.xml")
+				.load(testContext.getDS());
 		messagePersonService = getService(IMessagePersonService.class);
 		prefFactory = getService(PreferenceControllerFactory.class);
 		cayenneService = getService(ICayenneService.class);
-
-		InputStream st = SMSJobTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/jobs/smsDataSet.xml");
-
-		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-		DataSource refDataSource = getDataSource("jdbc/oncourse");
-		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(refDataSource.getConnection(), null), dataSet);
 	}
 
 	@Test

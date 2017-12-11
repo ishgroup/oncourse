@@ -14,10 +14,10 @@
 	<Invoice type = "1" id="1" source="W" amountOwing="0" contactId="1"
 			 collegeId="1" dateDue="2010-02-03 09:18:09" description="invoice for testing"
 			 invoiceDate="2010-02-03 09:18:09" invoiceNumber="1321" totalExGst="200.00"
-			 totalGst="20.00" created="2000-00-00 00:18:09" modified="2000-00-00 00:00:09" confirmationStatus="1" webSiteId="1"/>
+			 totalGst="20.00" created="2000-01-01 00:18:09" modified="2000-01-01 00:00:09" confirmationStatus="1" webSiteId="1"/>
 	<InvoiceLine id="1" collegeId="1" invoiceId="1" quantity="1.0" discountEachExTax="0.00"
 				 priceEachExTax="100.00" taxEach="10.00"
-				 created="2000-00-00 00:00:09" modified="2000-00-00 00:00:09" title="Test Invoice Line"/>
+				 created="2000-01-01 00:00:09" modified="2000-01-01 00:00:09" title="Test Invoice Line"/>
 	
 	<LicenseFee id="1" college_Id="1" key_code="hosting" fee="200" free_transactions="0" plan_name="standart" webSiteId="1"/>
 	<LicenseFee id="2" college_Id="1" key_code="ecommerce" fee="0.02" free_transactions="0" webSiteId="1"/>

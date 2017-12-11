@@ -7,6 +7,7 @@ import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentOut;
 import ish.oncourse.model.Session;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.test.LoadDataSet;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.util.payment.PaymentInAbandon;
 import ish.oncourse.util.payment.PaymentInModel;
@@ -20,14 +21,9 @@ import org.apache.cayenne.PersistenceState;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.dbunit.database.DatabaseConnection;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.sql.DataSource;
-import java.io.InputStream;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.Statement;
@@ -43,21 +39,14 @@ public class PaymentPortTypeTest extends ServiceTest {
 	private Date dueDate;
 	private Date today;
 
-	private DataSource onDataSource;
-
 	private ICayenneService cayenneService;
 
 	@Before
 	public void setup() throws Exception {
 		initTest("ish.oncourse.webservices.services", StringUtils.EMPTY, ReplicationTestModule.class);
-
+		new LoadDataSet().dataSetFile("ish/oncourse/webservices/soap/v6/paymentDataSet.xml")
+				.load(testContext.getDS());
 		cayenneService = getService(ICayenneService.class);
-
-		InputStream st = ReplicationPortTypeTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v6/paymentDataSet.xml");
-		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-		onDataSource = getDataSource("jdbc/oncourse");
-		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(onDataSource.getConnection(), null), dataSet);
-
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DAY_OF_MONTH, 3);
 		this.dueDate = cal.getTime();
@@ -323,7 +312,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 		assertNotNull("Check enrolment presents in response.", respEnrolmentStub);
 		assertEquals("Check enrolment status. Expecting SUCESS.", EnrolmentStatus.SUCCESS.name(), respEnrolmentStub.getStatus());
 		// now update the data via JDBC to emulate another instance data change
-		Connection connection = onDataSource.getConnection();
+		Connection connection = testContext.getDS().getConnection();
 		Statement statement = connection.createStatement();
 		statement.execute("Update PaymentIn set status=3 where sessionId='AAVV#$%%%#$3333'");
 		statement.execute("Update Enrolment set status=3 where id=2000");

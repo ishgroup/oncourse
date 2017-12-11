@@ -2,19 +2,14 @@ package ish.oncourse.webservices.jobs;
 
 import ish.oncourse.model.Instruction;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.test.LoadDataSet;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.soap.ReplicationTestModule;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
-import org.dbunit.database.DatabaseConnection;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.sql.DataSource;
-import java.io.InputStream;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -30,12 +25,8 @@ public class UpdateAmountOwingJobTest extends ServiceTest {
     public void setup() throws Exception {
         initTest("ish.oncourse.services", "service", ReplicationTestModule.class);
 
-        InputStream st = PaymentInExpireJobTest.class.getClassLoader().getResourceAsStream(
-                "ish/oncourse/webservices/jobs/UpdateAmountOwingJobTest.xml");
-
-        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-        DataSource refDataSource = testContext.getDS();
-        DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(refDataSource.getConnection(), null), dataSet);
+        new LoadDataSet().dataSetFile("ish/oncourse/webservices/jobs/UpdateAmountOwingJobTest.xml")
+                .load(testContext.getDS());
 
         this.cayenneService = getService(ICayenneService.class);
         this.job = new UpdateAmountOwingJob(cayenneService);

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
 
-    <College id="1" name="Sydney Community College"  webServicesSecurityCode="345ttne4$%9" communication_key="7059522699886202880"
+    <College id="1" name="Sydney Community College"  webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880"
              communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"
              paymentGatewayAccount = "ishGroup_Dev" paymentGatewayPass="test1234"/>
 
