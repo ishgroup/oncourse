@@ -5,6 +5,7 @@
                 <a href="/class/${code}">${name}</a>
             </h3>
             <div class="class-time" data-time="${isoSessionStartTime}"></div>
+            <span style="display: none" class="current-time"><t:output format="literal:YYYY-MM-d HH:mm:ss" value="currentDate"/></span>
             <div class="class-subtitle">
                 <t:if test="site">
                     in <span class='site'>${site.name}</span>
