@@ -36,6 +36,7 @@ private ICayenneService cayenneService;
 	public void setup() throws Exception {
 		initTest("ish.oncourse.services", "service", ServiceTestModule.class);
 		new LoadDataSet().dataSetFile("ish/oncourse/util/paymentInAbandonUtilDataSet.xml").load(testContext.getDS());
+		cayenneService = getService(ICayenneService.class);
 	}
 
 	@Test
