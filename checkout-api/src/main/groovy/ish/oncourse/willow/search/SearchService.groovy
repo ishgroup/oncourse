@@ -7,14 +7,12 @@ import ish.oncourse.willow.model.field.Suburb
 import org.apache.solr.client.solrj.SolrClient
 import org.apache.solr.client.solrj.SolrQuery
 import org.apache.solr.client.solrj.impl.CloudSolrClient
-
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 import javax.ws.rs.InternalServerErrorException
 
 import static ish.oncourse.configuration.Configuration.AppProperty.ZK_HOST
-
 
 class SearchService {
 
@@ -32,7 +30,7 @@ class SearchService {
         if (zkHost == null) {
             throw new IllegalStateException('Zookeeper host property undefined')
         }
-        client = new CloudSolrClient(zkHost)
+        client = new CloudSolrClient.Builder().withZkHost(zkHost).build()
     }
 
 
