@@ -1,11 +1,9 @@
-// included for develop mode
-@import 'dev';
-
-// typography
-@import 'typography/fonts';
+  // typography
+  @import 'typography/fonts';
 
 // include all styles in .cms scope
 .cms-scope {
+
   // vendors
   @import 'vendors/bootstrap';
   @import 'vendors/normilize';
