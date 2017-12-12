@@ -16,7 +16,7 @@ public interface IWebSiteVersionService {
 	WebSiteVersion getCurrentVersion();
 
 	@RequestCached
-	String getCacheKey();
+	String getApplicationKey();
 	
 	@RequestCached
 	boolean isEditor();

@@ -6,7 +6,6 @@ package ish.oncourse.services.site;
 import ish.oncourse.cayenne.cache.ICacheEnabledService;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.model.WebSiteVersion;
-import ish.oncourse.services.cookies.ICookiesService;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
@@ -53,7 +52,7 @@ public class WebSiteVersionService extends AbstractWebSiteVersionService {
 	}
 
 	@Override
-	public String getCacheKey() {
+	public String getApplicationKey() {
 		WebSite webSite = webSiteService.getCurrentWebSite();
 		if (webSite != null) {
 			String prefix = isEditor() ? EDITOR_PREFIX : WEB_PREFIX;

@@ -36,11 +36,6 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 public class PageLoadService {
-	public static final String TEMPLATE_RESOURCES_CACHE_KEY = "templateResources";
-	public static final String TEMPLATES_CACHE_KEY = "templates";
-	public static final String COMPONENT_ASSEMBLERS_CACHE_KEY = "componentAssemblers";
-	public static final String PAGES_CACHE_KEY = "pages";
-
 	private static final Logger logger = LogManager.getLogger();
 
 	private final PageLoader pageLoader;
@@ -84,12 +79,12 @@ public class PageLoadService {
 
 
 	private Resource getResource(MultiKey key, ComponentModel componentModel, ComponentResourceSelector selector) {
-		return getCachedValue(TEMPLATE_RESOURCES_CACHE_KEY, key, Resource.class,
+		return getCachedValue(CacheKey.resources, key, Resource.class,
 				() -> getSiteTemplateResource.get(componentModel, selector));
 	}
 
 	private ComponentTemplate getTemplate(MultiKey key, Resource resource) {
-		return getCachedValue(TEMPLATES_CACHE_KEY, key,
+		return getCachedValue(CacheKey.templates, key,
 				ComponentTemplate.class,
 				() -> parse(resource));
 	}
@@ -108,15 +103,14 @@ public class PageLoadService {
 
 	public ComponentAssembler getAssembler(String className, ComponentResourceSelector selector, Supplier<ComponentAssembler> delegate) {
 		MultiKey key = getTemplateKey.get(className, selector);
-		return getCachedValue(COMPONENT_ASSEMBLERS_CACHE_KEY, key,
+		return getCachedValue(CacheKey.assemblers, key,
 				ComponentAssembler.class, delegate);
 	}
 
 
-	private <V> V getCachedValue(String cacheGroup, MultiKey key, Class<V> valueClass, Supplier<V> get) {
+	private <V> V getCachedValue(CacheKey cacheKey, MultiKey key, Class<V> valueClass, Supplier<V> get) {
 		try {
-			Cache<MultiKey, V> cache = getOrCreateCache.getOrCreate(String.format("%s_%s",
-					cacheGroup, webSiteVersionService.getCacheKey()), MultiKey.class, valueClass);
+			Cache<MultiKey, V> cache = getOrCreateCache.getOrCreate(cacheKey.getCacheName(webSiteVersionService.getApplicationKey()), MultiKey.class, valueClass);
 			V v = cache.get(key);
 			if (v == null) {
 				v = get.get();
@@ -124,7 +118,7 @@ public class PageLoadService {
 			}
 			return v;
 		} catch (Exception e) {
-			logger.error("Exception appeared during reading cached value. cacheGroup {}, key: {}", cacheGroup, key);
+			logger.error("Exception appeared during reading cached value. cacheGroup {}, key: {}", cacheKey.name(), key);
 			logger.catching(e);
 			return get.get();
 		}
@@ -133,7 +127,7 @@ public class PageLoadService {
 	public Page getPage(String canonicalPageName) {
 		ComponentResourceSelector selector = selectorAnalyzer.buildSelectorForRequest();
 		MultiKey key = getTemplateKey.get(canonicalPageName, selector);
-		return getCachedValue(PAGES_CACHE_KEY, key,
+		return getCachedValue(CacheKey.pages, key,
 				Page.class,
 				() -> pageLoader.loadPage(canonicalPageName, selector));
 	}
@@ -150,33 +144,18 @@ public class PageLoadService {
 	}
 
 	public void clean() {
-		cleanTemplatesCache();
+		cleanAllCaches();
 		templateChangeTracker.resetTimestamp();
 	}
 
-	private void cleanTemplatesCache() {
-		String cacheKey = webSiteVersionService.getCacheKey();
-		Cache<MultiKey, Resource> cache1 = cacheManager.getCache(String.format("%s_%s",
-				TEMPLATE_RESOURCES_CACHE_KEY, webSiteVersionService.getCacheKey()), MultiKey.class, Resource.class);
-		if (cache1 != null) {
-			cache1.clear();
+	private void cleanAllCaches() {
+		String cacheKey = webSiteVersionService.getApplicationKey();
+		for (CacheKey key : CacheKey.values()) {
+			Cache<MultiKey, Resource> cache = cacheManager.getCache(key.getCacheName(cacheKey), MultiKey.class, Resource.class);
+			if (cache != null) {
+				cache.clear();
+			}
 		}
-
-		Cache<MultiKey, ComponentTemplate> cache2 = cacheManager.getCache(String.format("%s_%s",
-				TEMPLATES_CACHE_KEY, webSiteVersionService.getCacheKey()), MultiKey.class, ComponentTemplate.class);
-		if (cache2 != null) {
-			cache2.clear();
-		}
-		Cache<MultiKey, ComponentAssembler> cache3 = cacheManager.getCache(String.format("%s_%s",
-				COMPONENT_ASSEMBLERS_CACHE_KEY, webSiteVersionService.getCacheKey()), MultiKey.class, ComponentAssembler.class);
-		if (cache3 != null) {
-			cache3.clear();
-		}
-		Cache<MultiKey, Page> cache4 = cacheManager.getCache(String.format("%s_%s", PAGES_CACHE_KEY, webSiteVersionService.getCacheKey()), MultiKey.class, Page.class);
-		if (cache4 != null) {
-			cache4.clear();
-		}
-		
 	}
 
 	private static final ComponentTemplate missingTemplate = new ComponentTemplate() {
@@ -210,5 +189,16 @@ public class PageLoadService {
 			return false;
 		}
 	};
+
+	enum CacheKey {
+		resources,
+		templates,
+		assemblers,
+		pages;
+
+		public String getCacheName(String applicationKey) {
+			return String.format("%s_%s", this.name(), applicationKey);
+		}
+	}
 
 }

@@ -5,9 +5,11 @@ import groovy.transform.CompileStatic
 import javax.cache.Cache
 import javax.cache.CacheManager
 import javax.cache.configuration.Configuration
+import javax.cache.configuration.Factory
 import javax.cache.configuration.MutableConfiguration
 import javax.cache.expiry.CreatedExpiryPolicy
 import javax.cache.expiry.Duration
+import javax.cache.expiry.ExpiryPolicy
 import java.util.concurrent.atomic.AtomicBoolean
 
 class JCacheDefaultConfigurationFactory implements JCacheConfigurationFactory {
@@ -19,11 +21,12 @@ class JCacheDefaultConfigurationFactory implements JCacheConfigurationFactory {
     }
 
 
-    static <K, V> Configuration<K, V> createDefaultConfig(Class<K> keyType, Class<V> valueType) {
+    static <K, V> Configuration<K, V> createDefaultConfig(Class<K> keyType, Class<V> valueType,
+                                                          Factory<ExpiryPolicy> factory = CreatedExpiryPolicy.factoryOf(Duration.TEN_MINUTES)) {
         return new MutableConfiguration<K, V>()
                 .setTypes(keyType, valueType)
                 .setStoreByValue(false)
-                .setExpiryPolicyFactory(CreatedExpiryPolicy.factoryOf(Duration.TEN_MINUTES))
+                .setExpiryPolicyFactory(factory)
                 .setManagementEnabled(true)
                 .setStatisticsEnabled(true)
     }

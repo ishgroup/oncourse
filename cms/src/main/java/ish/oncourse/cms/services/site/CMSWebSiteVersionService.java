@@ -4,26 +4,14 @@
 package ish.oncourse.cms.services.site;
 
 import ish.oncourse.cms.services.access.IAuthenticationService;
-import ish.oncourse.model.*;
+import ish.oncourse.model.WebSite;
+import ish.oncourse.model.WebSiteVersion;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.*;
-import ish.oncourse.util.ContextUtil;
-import org.apache.cayenne.Cayenne;
-import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.ObjectSelect;
-import org.apache.cayenne.query.QueryCacheStrategy;
-import org.apache.cayenne.query.SelectQuery;
-import org.apache.cayenne.query.SortOrder;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 /**
  * CMS implementation of {@link IWebSiteVersionService}.
@@ -93,7 +81,7 @@ public class CMSWebSiteVersionService extends AbstractWebSiteVersionService {
 	}
 
 	@Override
-	public String getCacheKey() {
+	public String getApplicationKey() {
 		return null;
 	}
 }
