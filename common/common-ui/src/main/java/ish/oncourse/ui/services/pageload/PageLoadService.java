@@ -151,7 +151,7 @@ public class PageLoadService {
 	private void cleanAllCaches() {
 		String cacheKey = webSiteVersionService.getApplicationKey();
 		for (CacheKey key : CacheKey.values()) {
-			Cache<MultiKey, Resource> cache = cacheManager.getCache(key.getCacheName(cacheKey), MultiKey.class, Resource.class);
+			Cache cache = cacheManager.getCache(key.getCacheName(cacheKey));
 			if (cache != null) {
 				cache.clear();
 			}
