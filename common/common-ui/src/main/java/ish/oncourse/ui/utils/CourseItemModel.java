@@ -41,12 +41,11 @@ public class CourseItemModel {
         courseItemModel.relatedProducts = courseService.getRelatedProductsFor(course);
         courseItemModel.relatedCourses = courseService.getRelatedCoursesFor(course);
 
+        courseItemModel.enrollableClasses.addAll(courseClassService.getEnrollableClasses(course));
         if (searchParams == null) {
-            courseItemModel.enrollableClasses.addAll(courseClassService.getEnrollableClasses(course));
-            courseItemModel.availableClasses.addAll( courseItemModel.enrollableClasses);
+            courseItemModel.availableClasses.addAll(courseClassService.getCurrentClasses(course));
             courseItemModel.fullClasses.addAll(courseClassService.getFullClasses(course));
         } else {
-            courseItemModel.enrollableClasses.addAll(courseClassService.getEnrollableClasses(course));
             List<CourseClass> currentClasses = courseClassService.getCurrentClasses(course);
                 for (CourseClass courseClass : currentClasses) {
                     if (courseClassService.isFullClass(courseClass)) {

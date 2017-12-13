@@ -370,14 +370,14 @@ public class CourseClassService implements ICourseClassService {
 	}
 
     public List<CourseClass> getEnrollableClasses(Course course) {
-        String age = new GetPreference(course.getCollege(), Preferences.HIDE_CLASS_ON_WEB_AGE, course.getObjectContext()).getValue();
-        String type = new GetPreference(course.getCollege(), Preferences.HIDE_CLASS_ON_WEB_AGE_TYPE, course.getObjectContext()).getValue();
+        String age = new GetPreference(course.getCollege(), Preferences.STOP_WEB_ENROLMENTS_AGE, course.getObjectContext()).getValue();
+        String type = new GetPreference(course.getCollege(), Preferences.STOP_WEB_ENROLMENTS_AGE_TYPE, course.getObjectContext()).getValue();
         return GetEnrollableClasses.valueOf(course, age, type).get();
     }
 
     public List<CourseClass> getCurrentClasses(Course course) {
-        String age = new GetPreference(course.getCollege(), Preferences.STOP_WEB_ENROLMENTS_AGE, course.getObjectContext()).getValue();
-        String type = new GetPreference(course.getCollege(), Preferences.STOP_WEB_ENROLMENTS_AGE_TYPE, course.getObjectContext()).getValue();
+        String age = new GetPreference(course.getCollege(), Preferences.HIDE_CLASS_ON_WEB_AGE, course.getObjectContext()).getValue();
+        String type = new GetPreference(course.getCollege(), Preferences.HIDE_CLASS_ON_WEB_AGE_TYPE, course.getObjectContext()).getValue();
         return GetCurrentClasses.valueOf(course, age, type).get();
     }
 
