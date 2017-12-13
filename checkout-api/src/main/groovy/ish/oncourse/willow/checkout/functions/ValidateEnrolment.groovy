@@ -76,7 +76,7 @@ class ValidateEnrolment extends Validate<Enrolment>{
             Integer globalMinEnrolmentAge = value != null && StringUtils.isNumeric(value) ? Integer.valueOf(value) : 0
 
             Integer age = ChronoUnit.YEARS.between(ZonedDateTime.ofInstant(dateOfBirth.toInstant(), ZoneId.systemDefault()),
-                    ZonedDateTime.ofInstant(dateOfBirth.toInstant(), ZoneId.systemDefault())).toInteger()
+                    ZonedDateTime.ofInstant(new Date().toInstant(), ZoneId.systemDefault())).toInteger()
 
             if (minEnrolmentAge != null || maxEnrolmentAge != null) {
                 if ((minEnrolmentAge != null && age < minEnrolmentAge)) {
