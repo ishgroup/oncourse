@@ -2,16 +2,18 @@ package ish.oncourse.willow.checkout.functions
 
 import groovy.transform.CompileStatic
 import ish.oncourse.model.College
+import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Student
 import ish.oncourse.services.courseclass.CheckClassAge
 import ish.oncourse.services.courseclass.ClassAge
 import ish.oncourse.services.preference.GetPreference
 import ish.oncourse.services.preference.Preferences
 import ish.oncourse.willow.model.checkout.Enrolment
-import ish.oncourse.model.CourseClass
 import org.apache.cayenne.ObjectContext
 import org.apache.commons.lang3.StringUtils
 
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 
 @CompileStatic
@@ -73,7 +75,8 @@ class ValidateEnrolment extends Validate<Enrolment>{
             String value = new GetPreference(college, Preferences.ENROLMENT_MIN_AGE, context).value
             Integer globalMinEnrolmentAge = value != null && StringUtils.isNumeric(value) ? Integer.valueOf(value) : 0
 
-            Integer age = ChronoUnit.YEARS.between(dateOfBirth.toInstant(), new Date().toInstant()).toInteger()
+            Integer age = ChronoUnit.YEARS.between(ZonedDateTime.ofInstant(dateOfBirth.toInstant(), ZoneId.systemDefault()),
+                    ZonedDateTime.ofInstant(dateOfBirth.toInstant(), ZoneId.systemDefault())).toInteger()
 
             if (minEnrolmentAge != null || maxEnrolmentAge != null) {
                 if ((minEnrolmentAge != null && age < minEnrolmentAge)) {
