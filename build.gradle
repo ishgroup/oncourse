@@ -125,6 +125,8 @@ allprojects {
 	}
 
 	test {
+		forkEvery = 1 //run every test in separate jvm
+		
 		systemProperties 'java.awt.headless': 'true',
 		    'java.locale.providers': 'COMPAT,SPI'
 		maxHeapSize = '1024m'
