@@ -39,13 +39,15 @@ class TemplateResourceFactory implements ResourceFactory {
 
     private static final String TEMPLATE_DIR_NAME = 'templates'
     private static final String DEFAULT_TEMPLATES_PACKAGE = 'ish.oncourse.ui'
+    private static final String SYSTEM_TEMP_DIR = '_system'
     
     private ICayenneService cayenneService
     private RequestService requestService
     private SecurityManager securityManager
     
     private Closure<WebTemplate> getTemplate = { String name, WebSiteLayout layout -> WebTemplateFunctions.getTemplateByName(name, layout) }
-    
+    private static Closure<WebTemplate> getNull = { String name, WebSiteLayout layout -> null }
+
     private Map<String, String> defaultTemplatesMap
 
     TemplateResourceFactory(ICayenneService cayenneService, RequestService requestService, SecurityManager securityManager) {
@@ -99,7 +101,12 @@ class TemplateResourceFactory implements ResourceFactory {
             String layoutKey = path.first
             String templateName = path.stripFirst.name
 
-            return getTemplateResourceByName(templateName, getLayoutByName(layoutKey))
+            if (SYSTEM_TEMP_DIR == layoutKey) {
+                return new WebTemplateResource(defaultTemplatesMap[templateName], null, cayenneService, securityManager, defaultTemplatesMap, getNull)
+            } else {
+                return getTemplateResourceByName(templateName, getLayoutByName(layoutKey))
+            }
+
         }
     }
 
@@ -114,25 +121,22 @@ class TemplateResourceFactory implements ResourceFactory {
         for (WebSiteLayout layout : layouts) {
             directoryResources.add(new LayoutDirectoryResource(layout.layoutKey, layout, securityManager, cayenneService, this))
         }
-
+        directoryResources.add(new SystemDirectoryResource(securityManager, defaultTemplatesMap, cayenneService))
         return directoryResources
     }
 
     private List<WebTemplateResource> listTemplates(WebSiteLayout layout) {
         List<WebTemplateResource> templates = []
-
-        for (String templateFileName : defaultTemplatesMap.values()) {
-            templates.add(new WebTemplateResource(templateFileName, layout, cayenneService, securityManager, defaultTemplatesMap, getTemplate))
-        }
-
         WebTemplateFunctions.getTemplatesForLayout(layout)
-                .findAll {!defaultTemplatesMap.containsKey(it.name)}
                 .each { templates << new WebTemplateResource(it.name, layout, cayenneService, securityManager, defaultTemplatesMap, getTemplate) }
 
         return templates
     }
 
     private DirectoryResource getLayoutResourceByName(String name) {
+        if (SYSTEM_TEMP_DIR == name) {
+            return new SystemDirectoryResource(securityManager, defaultTemplatesMap, cayenneService)
+        }
         WebSiteLayout layout = getLayoutByName(name)
         return layout != null ? new LayoutDirectoryResource(layout.layoutKey, layout, securityManager, cayenneService, this) : null
     }
@@ -157,13 +161,24 @@ class TemplateResourceFactory implements ResourceFactory {
     }
 
     private WebTemplateResource getTemplateResourceByName(String name, WebSiteLayout layout) {
-        String templateName = defaultTemplatesMap[name]
+        return new WebTemplateResource(name, layout, cayenneService, securityManager,defaultTemplatesMap, getTemplate)
+    }
 
-        if (templateName == null) {
-            templateName = name
+    private class SystemDirectoryResource extends DirectoryResource {
+        SystemDirectoryResource(SecurityManager securityManager, Map<String, String> systemTemplatesMap, ICayenneService cayenneService) {
+            super(SYSTEM_TEMP_DIR, 
+                    securityManager,
+                    null,
+                    { String childName ->  
+                    } as Closure<Resource>,
+                    {  
+                        return systemTemplatesMap.values().collect { new WebTemplateResource(it, null, cayenneService, securityManager, systemTemplatesMap, getNull) }
+                    } as Closure<ArrayList<Resource>>,
+                    { Request request, Request.Method method, Auth auth ->
+                        return method in AccessRights.DIR_READ_ONLY
+                    } as Closure<Boolean>
+            )
         }
-
-        return new WebTemplateResource(templateName, layout, cayenneService, securityManager,defaultTemplatesMap, getTemplate)
     }
 
     private class LayoutDirectoryResource extends DirectoryResource {
