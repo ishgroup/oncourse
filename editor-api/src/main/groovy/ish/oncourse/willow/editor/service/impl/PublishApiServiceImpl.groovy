@@ -2,8 +2,10 @@ package ish.oncourse.willow.editor.service.impl
 
 import com.google.inject.Inject
 import ish.oncourse.configuration.Configuration
+import ish.oncourse.model.SystemUser
 import ish.oncourse.model.WebSite
 import ish.oncourse.model.WebSiteVersion
+import ish.oncourse.model.WillowUser
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.services.site.GetDeployedVersion
 import ish.oncourse.services.site.WebSitePublisher
@@ -48,19 +50,27 @@ class PublishApiServiceImpl implements PublishApi {
     void publish() {
         Request request = requestService.request
         WebSiteVersion draftVersion = WebSiteVersionFunctions.getCurrentVersion(request, cayenneService.newContext())
-        
+        SystemUser user = authenticationService.getSystemUser()
+        WillowUser willowUser = authenticationService.getWillowUser()
+
+        logger.warn("Start to publish: ${request.serverName}, draft version id: ${draftVersion.id}," +
+                " started by: ${user? user.firstName + ' ' + user.surname : willowUser.firstName + ' ' + willowUser.lastName }")
+
+        Long time = System.currentTimeMillis()
         WebSitePublisher.valueOf(Configuration.getValue(EditorProperty.DEPLOY_SCRIPT_PATH), draftVersion,
-                authenticationService.getSystemUser(),
+                user,
                 authenticationService.userEmail,
                 cayenneService.newContext()).publish()
 
         //refresh draft version after publishing
         draftVersion = WebSiteVersionFunctions.getCurrentVersion(request, cayenneService.newContext())
-
         WebSite webSite = WebSiteFunctions.getCurrentWebSite(request, cayenneService.newContext())
-        WebSiteVersionsDelete.valueOf(webSite, draftVersion,
-                GetDeployedVersion.valueOf(cayenneService.newContext(), webSite, false).get(),
+        WebSiteVersion newVersion = GetDeployedVersion.valueOf(cayenneService.newContext(), webSite, false).get()
+        WebSiteVersionsDelete.valueOf(webSite, draftVersion, newVersion,
                 cayenneService.newContext()).delete()
+        
+        logger.warn("Site publishing finished successfully:${request.serverName} from draft version id: ${draftVersion.id}," +
+                " new version id:${newVersion.id}, took: ${ System.currentTimeMillis() - time} milliseconds")
     }
     
     List<Version> getVersions() {
