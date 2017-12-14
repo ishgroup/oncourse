@@ -59,5 +59,8 @@ public class ServiceTest {
 		if (tester != null && tester.getRegistry() != null) {
 			tester.getRegistry().shutdown();
 		}
+		if (testContext != null) {
+			testContext.close();
+		}
 	}
 }
