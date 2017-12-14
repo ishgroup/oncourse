@@ -6,12 +6,16 @@ import ish.oncourse.model.WebNode
 import ish.oncourse.model.WebNodeType
 import ish.oncourse.model.WebUrlAlias
 import ish.oncourse.services.textile.ConvertCoreTextile
+import ish.oncourse.utils.ResourceNameValidator
 import ish.oncourse.willow.editor.model.Block
 import ish.oncourse.willow.editor.model.Page
 import ish.oncourse.willow.editor.model.PageUrl
+import ish.oncourse.willow.editor.website.ResourceNameUtil
+import ish.oncourse.willow.editor.website.WebContentFunctions
 import ish.oncourse.willow.editor.website.WebNodeFunctions
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
+import org.apache.commons.lang3.StringUtils
 import org.eclipse.jetty.server.Request
 
 class UpdatePage extends AbstractUpdate<Page> {
@@ -41,7 +45,19 @@ class UpdatePage extends AbstractUpdate<Page> {
             error = "There are no default Web Content for pageParams: $resourceToSave"
             return this
         }
-
+        
+        resourceToSave.title = StringUtils.trimToEmpty(resourceToSave.title)
+        error = new ResourceNameValidator().validate(resourceToSave.title)
+        if (error) {
+            return this
+        }
+        
+        WebNode duplicate = WebNodeFunctions.getNodeForName(resourceToSave.title, request, context)
+        if (duplicate && duplicate.objectId != node.objectId){
+            error = "Page name must be unique, page name: $resourceToSave.title"
+            return this
+        }
+        
         node.name = resourceToSave.title
         node.webNodeType = theme
         defaultBlock.contentTextile = resourceToSave.content
