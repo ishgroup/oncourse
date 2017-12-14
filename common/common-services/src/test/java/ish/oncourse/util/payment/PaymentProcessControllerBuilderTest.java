@@ -3,9 +3,9 @@ package ish.oncourse.util.payment;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Preference;
 import ish.oncourse.services.ServiceTestModule;
+import ish.oncourse.services.cache.NoopQueryCache;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.paymentexpress.INewPaymentGatewayServiceBuilder;
-import ish.oncourse.services.paymentexpress.NewDisabledPaymentGatewayService;
 import ish.oncourse.services.paymentexpress.NewPaymentExpressGatewayService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.LoadDataSet;
@@ -20,8 +20,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.List;
-
 import static ish.oncourse.util.payment.PaymentProcessController.PaymentProcessState.FILL_PAYMENT_DETAILS;
 import static org.junit.Assert.*;
 
@@ -33,7 +31,7 @@ public class PaymentProcessControllerBuilderTest extends ServiceTest {
     
 	@Before
     public void setup() throws Exception {
-        initTest("ish.oncourse.webservices.services", "services", ServiceTestModule.class);
+        initTest("ish.oncourse.webservices.services", "services", new NoopQueryCache(), ServiceTestModule.class);
 		new LoadDataSet().dataSetFile("ish/oncourse/util/payment/PaymentProcessControllerTest.xml").load(testContext.getDS());
         cayenneService = getService(ICayenneService.class);
         paymentService = getService(IPaymentService.class);
@@ -55,7 +53,7 @@ public class PaymentProcessControllerBuilderTest extends ServiceTest {
 		//test valid sessionid without valid session
 		try {
 			paymentInModel = PaymentInModelFromSessionIdBuilder.valueOf(sessionId, cayenneService.newContext()).build().getModel();
-            PaymentProcessController paymentProcessController = builder.build(paymentInModel);
+            builder.build(paymentInModel);
 			assertFalse("Builder should throw an exception for cases when session is null", true);
 		} catch (Throwable t) {
 			assertTrue("Builder should throw an Illegal argument exception for cases when session is null", 
@@ -68,9 +66,7 @@ public class PaymentProcessControllerBuilderTest extends ServiceTest {
 
 		PaymentProcessController[] paymentProcessControllers = new PaymentProcessController[1];
 		builder = new PaymentProcessControllerBuilder(new MockParallelExecutor(paymentProcessControllers[0]), paymentGatewayServiceBuilder, cayenneService, paymentService, session);
-		assertNotNull("Correctly inited builder should receive not null PaymentGatewayService", builder.receivePaymentGatewayService());
-		assertTrue("PaymentGatewayType may be only disabled before builder.build(sessionId) call",
-				builder.receivePaymentGatewayService() instanceof NewDisabledPaymentGatewayService);
+		assertNotNull("Correctly initiated builder should receive not null PaymentGatewayService", builder.receivePaymentGatewayService());
 		paymentInModel = PaymentInModelFromSessionIdBuilder.valueOf(sessionId, cayenneService.newContext()).build().getModel();
         paymentProcessControllers[0] = builder.build(paymentInModel);
 		PaymentProcessController paymentProcessController = paymentProcessControllers[0];
@@ -87,20 +83,17 @@ public class PaymentProcessControllerBuilderTest extends ServiceTest {
         session.setAttribute(College.REQUESTING_COLLEGE_ATTRIBUTE, null);
         //test incorrect preference emulation
         builder = new PaymentProcessControllerBuilder(new MockParallelExecutor(), paymentGatewayServiceBuilder, cayenneService, paymentService, session);
-		assertNotNull("Correctly inited builder should receive not null PaymentGatewayService", builder.receivePaymentGatewayService());
-		assertTrue("PaymentGatewayType may be only disabled before builder.build(sessionId) call", 
-				builder.receivePaymentGatewayService() instanceof NewDisabledPaymentGatewayService);
+		assertNotNull("Correctly initiated builder should receive not null PaymentGatewayService", builder.receivePaymentGatewayService());
 		ObjectContext content = cayenneService.newNonReplicatingContext();
-		@SuppressWarnings("unchecked")
-		List<Preference> preferences = content.performQuery(new SelectQuery(Preference.class, ExpressionFactory.matchDbExp(Preference.ID_PK_COLUMN, 1l)));
-		assertNotNull("Preference should not be empty", preferences);
-		assertEquals("Preferense should be unique ", 1, preferences.size());
-		preferences.get(0).setValueString(null/*"DISABLED"*/);
+
+		Preference preference =  SelectQuery.query(Preference.class, ExpressionFactory.matchDbExp(Preference.ID_PK_COLUMN, 1L)).selectOne(content);
+		assertNotNull("Preference should not null", preference);
+		content.deleteObjects(preference);
 		content.commitChanges();
 		paymentInModel = PaymentInModelFromSessionIdBuilder.valueOf(sessionId, cayenneService.newContext()).build().getModel();
 
 		try {
-			paymentProcessController = builder.build(paymentInModel);
+			builder.build(paymentInModel);
 			assertFalse("illegal state exception should throws when college have not preference allow to use payment express", true);
 		} catch (Throwable t) {
 			assertTrue("Builder should throw an Illegal state exception for cases when college have not preference allow to use payment express", 
