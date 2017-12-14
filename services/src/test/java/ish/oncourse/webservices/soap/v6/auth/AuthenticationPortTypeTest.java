@@ -5,7 +5,7 @@ import ish.oncourse.model.KeyStatus;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.WebSiteServiceOverride;
 import ish.oncourse.services.system.ICollegeService;
-import ish.oncourse.test.ServiceTest;
+import ish.oncourse.test.tapestry.ServiceTest;
 import ish.oncourse.webservices.replication.services.IReplicationService;
 import ish.oncourse.webservices.soap.ReplicationTestModule;
 import ish.oncourse.webservices.soap.v14.AuthFailure;
@@ -87,7 +87,7 @@ public class AuthenticationPortTypeTest extends ServiceTest {
 		InputStream st = getClass().getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v6/auth/authDataSet.xml");
 
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null), dataSet);
+		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(getDataSource().getConnection(), null), dataSet);
 
 		ReplicationPortType port = getAuthenticationPort();
 
@@ -107,7 +107,7 @@ public class AuthenticationPortTypeTest extends ServiceTest {
 		InputStream st = getClass().getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v6/auth/authDataSet.xml");
 
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null), dataSet);
+		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(getDataSource().getConnection(), null), dataSet);
 
 		ReplicationPortType port = getAuthenticationPort();
 
@@ -133,7 +133,7 @@ public class AuthenticationPortTypeTest extends ServiceTest {
 		InputStream st = getClass().getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v6/auth/authDataSet.xml");
 
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
+		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource().getConnection(), null);
 		DatabaseOperation.CLEAN_INSERT.execute(dbUnitConnection, dataSet);
 
 		ReplicationPortType port = getAuthenticationPort();
@@ -171,7 +171,7 @@ public class AuthenticationPortTypeTest extends ServiceTest {
 		InputStream st = getClass().getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v6/auth/authDataSet.xml");
 
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
+		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource().getConnection(), null);
 		DatabaseOperation.CLEAN_INSERT.execute(dbUnitConnection, dataSet);
 
 		ReplicationPortType port = getAuthenticationPort();
@@ -191,7 +191,7 @@ public class AuthenticationPortTypeTest extends ServiceTest {
 		InputStream st = getClass().getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v6/auth/authDataSet.xml");
 
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
+		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource().getConnection(), null);
 		DatabaseOperation.CLEAN_INSERT.execute(dbUnitConnection, dataSet);
 
 		ReplicationPortType port = getAuthenticationPort();

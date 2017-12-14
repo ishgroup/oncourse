@@ -7,7 +7,7 @@ import ish.oncourse.model.College;
 import ish.oncourse.model.Queueable;
 import ish.oncourse.model.Tax;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.test.ServiceTest;
+import ish.oncourse.test.tapestry.ServiceTest;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.replication.v16.updaters.TaxUpdater;
 import ish.oncourse.webservices.soap.ReplicationTestModule;
@@ -20,9 +20,7 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.util.Date;
 
-
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class TaxUpdaterTest extends ServiceTest {
 

@@ -15,6 +15,7 @@ import ish.oncourse.services.node.WebNodeService;
 import ish.oncourse.services.node.WebNodeTypeService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
+import ish.oncourse.services.site.WebSiteService;
 import ish.oncourse.services.site.WebSiteVersionService;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.ServiceBuilder;
@@ -24,15 +25,10 @@ import org.apache.tapestry5.ioc.ServiceBuilder;
  * Date: 9/12/17
  */
 public class BindWebSiteServices {
-	private ServiceBinder binder;
-	private Class<? extends IWebSiteService> webSiteServiceClass;
+	private Class<? extends IWebSiteService> webSiteServiceClass = WebSiteService.class;
 	private IWebSiteService webSiteService;
 	private ServiceBuilder<IWebSiteService> webSiteServiceBuilder;
 
-	public BindWebSiteServices binder(ServiceBinder binder) {
-		this.binder = binder;
-		return this;
-	}
 
 	public BindWebSiteServices webSiteService(Class<? extends IWebSiteService> webSiteServiceClass) {
 		this.webSiteServiceClass = webSiteServiceClass;
@@ -50,7 +46,7 @@ public class BindWebSiteServices {
 	}
 
 
-	public void bind() {
+	public void bind(ServiceBinder binder) {
 		if (webSiteServiceClass != null) {
 			binder.bind(IWebSiteService.class, webSiteServiceClass);
 		} else if (this.webSiteService != null) {

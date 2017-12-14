@@ -3,7 +3,7 @@ package ish.oncourse.services.persistence;
 import ish.oncourse.cayenne.cache.JCacheQueryCache;
 import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.cache.NoopQueryCache;
-import ish.oncourse.test.ServiceTest;
+import ish.oncourse.test.tapestry.ServiceTest;
 import org.apache.cayenne.cache.NestedQueryCache;
 import org.junit.Test;
 

@@ -46,9 +46,7 @@ public class WillowTapestryFilter implements Filter {
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		if ( parameters.get(PRODUCTION_MODE) == null) {
-			filterConfig.getServletContext().setInitParameter(PRODUCTION_MODE, Boolean.TRUE.toString());
-		}
+		filterConfig.getServletContext().setInitParameter(PRODUCTION_MODE, Boolean.FALSE.toString());
 		parameters.keySet().forEach((key) -> filterConfig.getServletContext().setInitParameter(key, parameters.get(key)));
 		tapestryFilter.init(filterConfig);
 	}

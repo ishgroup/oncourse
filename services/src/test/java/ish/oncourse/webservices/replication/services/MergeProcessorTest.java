@@ -7,14 +7,13 @@ import ish.common.types.ContactDuplicateStatus;
 import ish.common.types.UsiStatus;
 import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.test.ServiceTest;
-import ish.oncourse.webservices.*;
+import ish.oncourse.test.tapestry.ServiceTest;
+import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.replication.builders.WillowStubBuilderTest;
 import ish.oncourse.webservices.soap.ReplicationTestModule;
 import ish.oncourse.webservices.util.GenericReplicatedRecord;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
 import ish.oncourse.webservices.util.PortHelper;
-import ish.oncourse.webservices.v16.stubs.replication.ContactDuplicateStub;
 import ish.oncourse.webservices.v16.stubs.replication.*;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
@@ -32,8 +31,7 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
-
-import static ish.oncourse.webservices.util.SupportedVersions.*;
+import static ish.oncourse.webservices.util.SupportedVersions.V16;
 import static ish.oncourse.webservices.v16.stubs.replication.Status.SUCCESS;
 import static org.junit.Assert.*;
 
@@ -51,7 +49,7 @@ public class MergeProcessorTest extends ServiceTest {
 		InputStream st = WillowStubBuilderTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/replication/services/MergeProcessorTestDataSet.xml");
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 
-		DataSource onDataSource = getDataSource("jdbc/oncourse");
+		DataSource onDataSource = getDataSource();
 		DatabaseConnection dbConnection = new DatabaseConnection(onDataSource.getConnection(), null);
 		dbConnection.getConfig().setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, false);
 

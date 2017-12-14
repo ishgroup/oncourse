@@ -2,7 +2,7 @@ package ish.oncourse.webservices.replication.services;
 
 import ish.oncourse.model.College;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.test.ServiceTest;
+import ish.oncourse.test.tapestry.ServiceTest;
 import ish.oncourse.webservices.soap.ReplicationPortTypeTest;
 import ish.oncourse.webservices.soap.ReplicationTestModule;
 import org.apache.cayenne.ObjectContext;
@@ -29,7 +29,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		InputStream st = ReplicationPortTypeTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v6/paymentDataSet.xml");
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 
-		DataSource onDataSource = getDataSource("jdbc/oncourse");
+		DataSource onDataSource = getDataSource();
 
 		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(onDataSource.getConnection(), null), dataSet);
 		service = getService(ICayenneService.class);

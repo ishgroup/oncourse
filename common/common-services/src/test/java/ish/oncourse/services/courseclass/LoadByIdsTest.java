@@ -7,7 +7,7 @@ import ish.oncourse.model.Course;
 import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.test.LoadDataSet;
-import ish.oncourse.test.ServiceTest;
+import ish.oncourse.test.tapestry.ServiceTest;
 import org.junit.Before;
 import org.junit.Test;
 

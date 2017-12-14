@@ -7,6 +7,7 @@ import ish.common.types.CreditCardType
 import ish.math.Money
 import ish.oncourse.model.College
 import ish.oncourse.model.PaymentIn
+import ish.oncourse.test.tapestry.ServiceTest
 import ish.oncourse.util.payment.PaymentInModel
 import org.junit.Before
 import org.junit.Test
@@ -20,7 +21,7 @@ import static ish.oncourse.services.paymentexpress.IPaymentGatewayService.SUCCES
 import static org.mockito.Matchers.any
 import static org.mockito.Mockito.*
 
-class NewPaymentExpressGatewayServiceTest {
+class NewPaymentExpressGatewayServiceTest extends ServiceTest {
 	
 	def PaymentIn paymentIn
 	def PaymentInModel model

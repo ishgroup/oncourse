@@ -1,5 +1,9 @@
+<html>
+<body>
 <div xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-	<div id="tag-tree">
-		<t:outputRaw value="tagsTextile"/>
-	</div>
+    <div id="tag-tree">
+        <t:outputRaw value="tagsTextile"/>
+    </div>
 </div>
+</body>
+</html>

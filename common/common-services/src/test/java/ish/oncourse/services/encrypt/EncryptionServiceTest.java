@@ -1,7 +1,7 @@
 package ish.oncourse.services.encrypt;
 
 import ish.oncourse.services.ServiceTestModule;
-import ish.oncourse.test.ServiceTest;
+import ish.oncourse.test.tapestry.ServiceTest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Before;

@@ -7,7 +7,7 @@ import ish.oncourse.model.College;
 import ish.oncourse.model.MembershipProduct;
 import ish.oncourse.model.Queueable;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.test.ServiceTest;
+import ish.oncourse.test.tapestry.ServiceTest;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.replication.updaters.UpdaterException;
 import ish.oncourse.webservices.replication.v14.updaters.AbstractProductUpdater;

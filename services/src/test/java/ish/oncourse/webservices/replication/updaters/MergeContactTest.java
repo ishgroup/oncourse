@@ -3,7 +3,7 @@ package ish.oncourse.webservices.replication.updaters;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Student;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.test.ServiceTest;
+import ish.oncourse.test.tapestry.ServiceTest;
 import ish.oncourse.webservices.replication.builders.WillowStubBuilderTest;
 import ish.oncourse.webservices.soap.ReplicationTestModule;
 import org.apache.cayenne.ObjectContext;
@@ -34,7 +34,7 @@ public class MergeContactTest extends ServiceTest {
         InputStream st = WillowStubBuilderTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/replication/v6/updaters/MergeContactTest.xml");
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 
-        DataSource onDataSource = getDataSource("jdbc/oncourse");
+        DataSource onDataSource = getDataSource();
         DatabaseConnection dbConnection = new DatabaseConnection(onDataSource.getConnection(), null);
         dbConnection.getConfig().setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, false);
 

@@ -4,7 +4,7 @@ import ish.common.types.*;
 import ish.math.Money;
 import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.test.ServiceTest;
+import ish.oncourse.test.tapestry.ServiceTest;
 import ish.oncourse.util.payment.*;
 import org.apache.cayenne.ObjectContext;
 import org.junit.Before;

@@ -7,24 +7,14 @@ import ish.oncourse.services.application.ApplicationServiceImpl;
 import ish.oncourse.services.application.IApplicationService;
 import ish.oncourse.services.binary.BinaryDataService;
 import ish.oncourse.services.binary.IBinaryDataService;
-import ish.oncourse.services.cache.IRequestCacheService;
-import ish.oncourse.services.cache.RequestCacheService;
 import ish.oncourse.services.contact.ContactServiceImpl;
 import ish.oncourse.services.contact.IContactService;
 import ish.oncourse.services.content.cache.ContentCacheService;
 import ish.oncourse.services.content.cache.IContentCacheService;
-import ish.oncourse.services.content.cache.IContentKeyFactory;
-import ish.oncourse.services.content.cache.WillowContentKeyFactory;
-import ish.oncourse.services.cookies.CookiesImplOverride;
-import ish.oncourse.services.cookies.CookiesService;
-import ish.oncourse.services.cookies.ICookiesOverride;
-import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.course.CourseService;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.courseclass.CourseClassService;
 import ish.oncourse.services.courseclass.ICourseClassService;
-import ish.oncourse.services.datalayer.DataLayerFactory;
-import ish.oncourse.services.datalayer.IDataLayerFactory;
 import ish.oncourse.services.discount.DiscountService;
 import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.encrypt.EncryptionService;
@@ -34,9 +24,7 @@ import ish.oncourse.services.environment.EnvironmentService;
 import ish.oncourse.services.environment.IEnvironmentService;
 import ish.oncourse.services.filestorage.FileStorageAssetService;
 import ish.oncourse.services.filestorage.IFileStorageAssetService;
-import ish.oncourse.services.format.FormatService;
-import ish.oncourse.services.format.IFormatService;
-import ish.oncourse.services.html.*;
+import ish.oncourse.services.html.ICacheMetaProvider;
 import ish.oncourse.services.jmx.IJMXInitService;
 import ish.oncourse.services.jmx.JMXInitService;
 import ish.oncourse.services.location.IPostCodeDbService;
@@ -52,11 +40,7 @@ import ish.oncourse.services.persistence.CayenneService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
-import ish.oncourse.services.property.IPropertyService;
-import ish.oncourse.services.property.PropertyService;
 import ish.oncourse.services.reference.*;
-import ish.oncourse.services.resource.IResourceService;
-import ish.oncourse.services.resource.ResourceService;
 import ish.oncourse.services.room.IRoomService;
 import ish.oncourse.services.room.RoomService;
 import ish.oncourse.services.s3.IS3Service;
@@ -73,20 +57,13 @@ import ish.oncourse.services.system.CollegeService;
 import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.tag.TagService;
-import ish.oncourse.services.textile.ITextileConverter;
-import ish.oncourse.services.textile.TextileConverter;
 import ish.oncourse.services.tutor.ITutorService;
 import ish.oncourse.services.tutor.TutorService;
-import ish.oncourse.services.visitor.IParsedContentVisitor;
-import ish.oncourse.services.visitor.ParsedContentVisitor;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherService;
-import ish.oncourse.util.ComponentPageResponseRenderer;
-import ish.oncourse.util.IComponentPageResponseRenderer;
 import ish.oncourse.util.IPageRenderer;
 import org.apache.cayenne.configuration.CayenneRuntime;
 import org.apache.cayenne.configuration.server.ServerRuntime;
-import org.apache.tapestry5.ioc.ScopeConstants;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.ServiceBuilder;
 import org.apache.tapestry5.ioc.ServiceResources;
@@ -144,7 +121,7 @@ public class BinderFunctions {
 	}
 
 	public static void bindWebSiteServices(ServiceBinder binder, Class<? extends IWebSiteService> webSiteServiceClass) {
-		new BindWebSiteServices().binder(binder).webSiteService(webSiteServiceClass).bind();
+		new BindWebSiteServices().webSiteService(webSiteServiceClass).bind(binder);
 	}
 
 	public static void bindEnvServices(ServiceBinder binder, String appName, boolean testMode) {
@@ -177,22 +154,11 @@ public class BinderFunctions {
 	public static void bindTapestryServices(ServiceBinder binder,
 											Class<? extends ICacheMetaProvider> cacheMetaProviderClass,
 											Class<? extends  IPageRenderer> pageRendererClass) {
-		binder.bind(ICookiesService.class, CookiesService.class);
-		binder.bind(ICookiesOverride.class, CookiesImplOverride.class);
-		binder.bind(IFormatService.class, FormatService.class);
-		binder.bind(IPageRenderer.class, pageRendererClass);
-		binder.bind(IPropertyService.class, PropertyService.class);
-		binder.bind(IResourceService.class, ResourceService.class);
-		binder.bind(ITextileConverter.class, TextileConverter.class);
-		binder.bind(IParsedContentVisitor.class, ParsedContentVisitor.class);
-		binder.bind(IPlainTextExtractor.class, JerichoPlainTextExtractor.class);
-		binder.bind(IDataLayerFactory.class, DataLayerFactory.class).scope(ScopeConstants.PERTHREAD);
-		binder.bind(IFacebookMetaProvider.class, FacebookMetaProvider.class);
-		binder.bind(IContentCacheService.class, new BinderFunctions.ContentCacheServiceBuilder());
-		binder.bind(IContentKeyFactory.class, WillowContentKeyFactory.class).scope(ScopeConstants.PERTHREAD);
-		binder.bind(IRequestCacheService.class, RequestCacheService.class);
-		binder.bind(ICacheMetaProvider.class, cacheMetaProviderClass).eagerLoad();
-		binder.bind(IComponentPageResponseRenderer.class, ComponentPageResponseRenderer.class);
+
+		new BindTapestryServices()
+				.cacheMetaProviderClass(cacheMetaProviderClass)
+				.pageRendererClass(pageRendererClass)
+				.bind(binder);
 	}
 
 

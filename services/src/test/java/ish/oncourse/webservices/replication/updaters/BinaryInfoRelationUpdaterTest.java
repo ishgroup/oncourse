@@ -2,7 +2,7 @@ package ish.oncourse.webservices.replication.updaters;
 
 import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.test.ServiceTest;
+import ish.oncourse.test.tapestry.ServiceTest;
 import ish.oncourse.webservices.soap.ReplicationTestModule;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import org.apache.cayenne.ObjectContext;
@@ -20,7 +20,8 @@ import org.junit.Test;
 import javax.sql.DataSource;
 import java.io.InputStream;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 	private static Logger logger = LogManager.getLogger();
@@ -31,7 +32,7 @@ public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 		InputStream st = BinaryInfoRelationUpdaterTest.class.getClassLoader().getResourceAsStream(
 			"ish/oncourse/webservices/replication/builders/oncourseDataSet.xml");
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-		DataSource onDataSource = getDataSource("jdbc/oncourse");
+		DataSource onDataSource = getDataSource();
 		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(onDataSource.getConnection(), null), dataSet);
 	}
 

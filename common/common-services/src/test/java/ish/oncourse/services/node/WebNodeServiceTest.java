@@ -8,7 +8,7 @@ import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.test.LoadDataSet;
-import ish.oncourse.test.ServiceTest;
+import ish.oncourse.test.tapestry.ServiceTest;
 import org.apache.cayenne.ObjectContext;
 import org.junit.Before;
 import org.junit.Test;

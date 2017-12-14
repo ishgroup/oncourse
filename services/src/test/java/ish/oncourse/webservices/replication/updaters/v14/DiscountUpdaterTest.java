@@ -5,7 +5,7 @@ import ish.oncourse.model.College;
 import ish.oncourse.model.Discount;
 import ish.oncourse.model.Queueable;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.test.ServiceTest;
+import ish.oncourse.test.tapestry.ServiceTest;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.replication.v14.updaters.DiscountUpdater;
 import ish.oncourse.webservices.soap.ReplicationTestModule;
@@ -34,7 +34,7 @@ public class DiscountUpdaterTest extends ServiceTest {
         initTest("ish.oncourse.webservices.services", "", ReplicationTestModule.class);
         InputStream st = DiscountUpdaterTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/replication/v6/updaters/oncourseDataSet.xml");
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-        DataSource onDataSource = getDataSource("jdbc/oncourse");
+        DataSource onDataSource = getDataSource();
         DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(onDataSource.getConnection(), null), dataSet);
     }
 

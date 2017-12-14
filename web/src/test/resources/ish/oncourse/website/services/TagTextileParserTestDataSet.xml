@@ -10,9 +10,9 @@
 
 	<Tag id="1" parentId="[null]" collegeId="1" angelId="200" isWebVisible="1" nodeType="1" weighting="1" created="2011-09-12 00:38:54.0" modified="2011-09-12 00:38:55.0" name="Subjects" isTagGroup="1" specialType="1"/>
 	
-	<Tag id="2" parentId="1" collegeId="1" angelId="206" isWebVisible="1" nodeType="1" weighting="1" created="2011-09-12 00:38:55.0" modified="2011-09-12 00:17:20.0" isTagGroupe="0" name="Art"/>
-	<Tag id="3" parentId="1" collegeId="1" angelId="204" isWebVisible="1" nodeType="1" weighting="2" created="2011-09-12 00:38:55.0" modified="2011-09-12 00:17:20.0" isTagGroupe="0" name="It"/>
-	<Tag id="4" parentId="1" collegeId="1" angelId="205" isWebVisible="1" nodeType="1" weighting="3" created="2011-09-12 00:38:55.0" modified="2011-09-12 00:17:20.0" isTagGroupe="0" name="Photos"/>
+	<Tag id="2" parentId="1" collegeId="1" angelId="206" isWebVisible="1" nodeType="1" weighting="1" created="2011-09-12 00:38:55.0" modified="2011-09-12 00:17:20.0" isTagGroup="0" name="Art"/>
+	<Tag id="3" parentId="1" collegeId="1" angelId="204" isWebVisible="1" nodeType="1" weighting="2" created="2011-09-12 00:38:55.0" modified="2011-09-12 00:17:20.0" isTagGroup="0" name="It"/>
+	<Tag id="4" parentId="1" collegeId="1" angelId="205" isWebVisible="1" nodeType="1" weighting="3" created="2011-09-12 00:38:55.0" modified="2011-09-12 00:17:20.0" isTagGroup="0" name="Photos"/>
 
 	<TagGroupRequirement id="1" tagId="1" collegeId="1" angelId="200" allowsMultipleTags="1" isRequired="0" created="2011-09-12 00:38:55.0" modified="2011-09-12 00:17:14.0" entityIdentifier="Course"/>
 

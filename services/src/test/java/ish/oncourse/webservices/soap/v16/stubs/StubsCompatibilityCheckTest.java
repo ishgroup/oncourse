@@ -1,6 +1,6 @@
 package ish.oncourse.webservices.soap.v16.stubs;
 
-import ish.oncourse.test.ServiceTest;
+import ish.oncourse.test.tapestry.ServiceTest;
 import ish.oncourse.webservices.util.*;
 import ish.oncourse.webservices.v16.stubs.replication.*;
 import org.apache.commons.beanutils.PropertyUtils;

@@ -11,7 +11,7 @@ import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.paymentexpress.INewPaymentGatewayService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.LoadDataSet;
-import ish.oncourse.test.ServiceTest;
+import ish.oncourse.test.tapestry.ServiceTest;
 import org.apache.tapestry5.services.Session;
 import org.junit.Assert;
 import org.junit.Before;

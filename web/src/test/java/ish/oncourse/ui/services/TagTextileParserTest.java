@@ -5,12 +5,9 @@ package ish.oncourse.ui.services;
 
 import ish.oncourse.model.WebSite;
 import ish.oncourse.services.DisableJavaScriptStack;
-import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.cache.IRequestCacheService;
 import ish.oncourse.services.cache.RequestCacheService;
 import ish.oncourse.services.html.ICacheMetaProvider;
-import ish.oncourse.services.jmx.IJMXInitService;
-import ish.oncourse.services.jmx.JMXInitService;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -20,7 +17,8 @@ import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.site.WebSiteService;
 import ish.oncourse.services.site.WebSiteVersionService;
 import ish.oncourse.services.visitor.ParsedContentVisitor;
-import ish.oncourse.test.ServiceTest;
+import ish.oncourse.test.LoadDataSet;
+import ish.oncourse.test.tapestry.ServiceTest;
 import ish.oncourse.ui.services.locale.PerSiteVariantThreadLocale;
 import ish.oncourse.website.services.html.CacheMetaProvider;
 import org.apache.cayenne.query.ObjectSelect;
@@ -33,22 +31,14 @@ import org.apache.tapestry5.ioc.MethodAdviceReceiver;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.*;
-import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
 import org.apache.tapestry5.ioc.services.ThreadLocale;
 import org.apache.tapestry5.services.*;
 import org.apache.tapestry5.services.javascript.JavaScriptStack;
 import org.apache.tapestry5.services.javascript.JavaScriptStackSource;
-import org.dbunit.database.DatabaseConnection;
-import org.dbunit.dataset.ReplacementDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.sql.DataSource;
 import java.io.IOException;
-import java.io.InputStream;
 
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.testng.Assert.assertEquals;
@@ -100,16 +90,9 @@ public class TagTextileParserTest extends ServiceTest {
 			"\t</div>";
 	
 	@Before
-	public void setup() throws Exception {
-
-		initTest("ish.oncourse.ui", "", "/",  TextileModule.class);
-		InputStream st = TagTextileParserTest.class.getClassLoader().getResourceAsStream("ish/oncourse/website/services/TagTextileParserTestDataSet.xml");
-		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-		DataSource refDataSource = getDataSource("jdbc/oncourse");
-		ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet);
-		rDataSet.addReplacementObject("[null]", null);
-
-		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(refDataSource.getConnection(), null), rDataSet);
+	public void setup() {
+		initTest("ish.oncourse.ui", "App",  ish.oncourse.ui.services.TestModule.class);
+		new LoadDataSet().dataSetFile("ish/oncourse/website/services/TagTextileParserTestDataSet.xml").addReplacement("[null]", null).load(getDataSource());
 	}
 	
 	@Test

@@ -8,7 +8,7 @@ import ish.oncourse.services.cache.NoopQueryCache
 import ish.oncourse.services.paymentexpress.INewPaymentGatewayServiceBuilder
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.test.LoadDataSet
-import ish.oncourse.test.ServiceTest
+import ish.oncourse.test.tapestry.ServiceTest
 import org.apache.tapestry5.internal.test.TestableRequest
 import org.apache.tapestry5.ioc.Messages
 import org.junit.Before
@@ -19,7 +19,6 @@ import static junit.framework.TestCase.*
 import static org.mockito.Matchers.anyString
 import static org.mockito.Mockito.mock
 import static org.mockito.Mockito.when
-
 
 /**
  * Created by Artem on 27/12/2016.

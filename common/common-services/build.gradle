@@ -21,7 +21,7 @@ dependencies {
 	//we use DefaultArtifactVersion class from the package to compare angel versions.
 	compile 'org.apache.maven:maven-artifact:3.0.4'
 
-	testCompile project(':common:test-functions')
+	testCompile project(':common:test-tapestry')
 }
 
 test {

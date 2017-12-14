@@ -4,7 +4,7 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.test.ServiceTest;
+import ish.oncourse.test.tapestry.ServiceTest;
 import ish.oncourse.webservices.replication.services.IReplicationService;
 import ish.oncourse.webservices.replication.services.ReplicationUtils;
 import ish.oncourse.webservices.util.*;
@@ -36,7 +36,7 @@ public class ReplicationPortTypeTest extends ServiceTest {
 		InputStream st = ReplicationPortTypeTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v6/replicationDataSet.xml");
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 
-		DataSource onDataSource = getDataSource("jdbc/oncourse");
+		DataSource onDataSource = getDataSource();
 
 		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(onDataSource.getConnection(), null), dataSet);
 	}
@@ -98,7 +98,7 @@ public class ReplicationPortTypeTest extends ServiceTest {
 
 		service.sendResults(result);
 
-		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
+		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource().getConnection(), null);
 		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord",
 				String.format("select * from QueuedRecord where entityWillowId = 1 or entityWillowId = 1482"));
 
@@ -131,7 +131,7 @@ public class ReplicationPortTypeTest extends ServiceTest {
 	
 	@Test
 	public void testV14SendRecordsFailToDelete() throws Exception {
-		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);		
+		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource().getConnection(), null);
 		IReplicationService service = getService(IReplicationService.class);
 		ITable actualData = dbUnitConnection.createQueryTable("Contact", "select * from Contact where id=1");
 		assertEquals("Initially have one contact with id.", 1, actualData.getRowCount());
@@ -170,7 +170,7 @@ public class ReplicationPortTypeTest extends ServiceTest {
 
 		IReplicationService service = getService(IReplicationService.class);
 		
-		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
+		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource().getConnection(), null);
 		
 		ITable actualData = dbUnitConnection.createQueryTable("Contact", "select * from Contact where id=1658");
 		assertEquals("Initially have one contact with id.", 1, actualData.getRowCount());

@@ -8,7 +8,7 @@ import ish.oncourse.model.PaymentOut;
 import ish.oncourse.model.Session;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.LoadDataSet;
-import ish.oncourse.test.ServiceTest;
+import ish.oncourse.test.tapestry.ServiceTest;
 import ish.oncourse.util.payment.PaymentInAbandon;
 import ish.oncourse.util.payment.PaymentInModel;
 import ish.oncourse.util.payment.PaymentInModelFromPaymentInBuilder;
@@ -439,7 +439,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 	
 	@Test
 	public void testAbandonPayment() throws Exception {
-		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
+		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource().getConnection(), null);
 		ICayenneService cayenneService = getService(ICayenneService.class);
 		ObjectContext context = cayenneService.newContext();
 

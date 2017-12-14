@@ -6,7 +6,7 @@ import ish.oncourse.model.*;
 import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.test.ServiceTest;
+import ish.oncourse.test.tapestry.ServiceTest;
 import org.apache.cayenne.ObjectContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

@@ -9,7 +9,7 @@ import ish.oncourse.model.*;
 import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.LoadDataSet;
-import ish.oncourse.test.ServiceTest;
+import ish.oncourse.test.tapestry.ServiceTest;
 import ish.oncourse.util.payment.PaymentInAbandon;
 import ish.oncourse.util.payment.PaymentInModel;
 import ish.oncourse.util.payment.PaymentInModelFromPaymentInBuilder;

@@ -1,0 +1,6 @@
+apply from: "$rootDir/gradle/tapestry.gradle"
+
+dependencies {
+	compile project(':common:common-services')
+	compile project(':common:test-functions')
+}

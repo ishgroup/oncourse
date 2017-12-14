@@ -10,7 +10,7 @@ configurations {
 
 dependencies {
 	compile (project(':common:common-ui'))
-	testCompile project(path: ':common:common-test', configuration: 'testFixtures')
+	testCompile project(':common:test-tapestry')
 }
 
 

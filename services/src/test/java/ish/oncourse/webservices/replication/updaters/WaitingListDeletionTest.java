@@ -4,7 +4,7 @@ import ish.oncourse.model.Taggable;
 import ish.oncourse.model.TaggableTag;
 import ish.oncourse.model.WaitingList;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.test.ServiceTest;
+import ish.oncourse.test.tapestry.ServiceTest;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.replication.builders.WillowStubBuilderTest;
 import ish.oncourse.webservices.soap.ReplicationTestModule;
@@ -23,7 +23,6 @@ import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.sql.DataSource;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.List;

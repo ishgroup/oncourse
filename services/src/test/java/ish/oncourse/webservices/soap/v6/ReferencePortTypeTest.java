@@ -1,6 +1,6 @@
 package ish.oncourse.webservices.soap.v6;
 
-import ish.oncourse.test.ServiceTest;
+import ish.oncourse.test.tapestry.ServiceTest;
 import ish.oncourse.webservices.soap.ReplicationTestModule;
 import ish.oncourse.webservices.util.GenericReferenceResult;
 import org.dbunit.database.DatabaseConnection;
@@ -28,7 +28,7 @@ public class ReferencePortTypeTest extends ServiceTest {
 		InputStream st = ReferencePortTypeTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v6/auth/authDataSet.xml");
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 
-		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null), dataSet);
+		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(getDataSource().getConnection(), null), dataSet);
 	}
 
 	@Test

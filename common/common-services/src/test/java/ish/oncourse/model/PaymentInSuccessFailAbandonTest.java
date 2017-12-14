@@ -8,7 +8,7 @@ import ish.math.Money;
 import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.LoadDataSet;
-import ish.oncourse.test.ServiceTest;
+import ish.oncourse.test.tapestry.ServiceTest;
 import ish.oncourse.util.payment.*;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;

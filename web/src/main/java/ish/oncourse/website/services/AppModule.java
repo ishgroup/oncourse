@@ -48,14 +48,13 @@ public class AppModule {
 		BinderFunctions.bindEntityServices(binder);
 		BinderFunctions.bindWebSiteServices(binder, WebSiteService.class);
 		BinderFunctions.bindPaymentGatewayServices(binder);
-		BinderFunctions.bindEnvServices(binder, "portal", false);
+		BinderFunctions.bindEnvServices(binder, "web", false);
 		BinderFunctions.bindTapestryServices(binder, CacheMetaProvider.class, PageRenderer.class);
 	}
 
 	public static void contributeApplicationDefaults(
 			MappedConfiguration<String, String> configuration) {
 		configuration.add(SymbolConstants.HMAC_PASSPHRASE, HMAC_PASSPHRASE);
-		configuration.add(SymbolConstants.PRODUCTION_MODE, "false");
 		configuration.add(SymbolConstants.COMPACT_JSON, "false");
 		configuration.add(SymbolConstants.COMPRESS_WHITESPACE, "false");
 		configuration.add(SearchService.ALIAS_SUFFIX_PROPERTY, EMPTY);

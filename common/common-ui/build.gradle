@@ -6,5 +6,5 @@ dependencies {
 	compile project(':common:common-textile')
 	compile project(':common:tapestry-classes')
 
-	testCompile project(':common:test-functions')
+	testCompile project(':common:test-tapestry')
 }

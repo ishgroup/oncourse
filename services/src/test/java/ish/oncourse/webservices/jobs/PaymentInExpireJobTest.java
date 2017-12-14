@@ -10,7 +10,7 @@ import ish.oncourse.services.paymentexpress.PaymentInSupport;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
 import ish.oncourse.test.LoadDataSet;
-import ish.oncourse.test.ServiceTest;
+import ish.oncourse.test.tapestry.ServiceTest;
 import ish.oncourse.util.payment.PaymentInFail;
 import ish.oncourse.util.payment.PaymentInModel;
 import ish.oncourse.util.payment.PaymentInModelFromPaymentInBuilder;
@@ -76,7 +76,7 @@ public class PaymentInExpireJobTest extends ServiceTest {
 		// simulate EXPIRE_INTERVAL wait by directly updating enrolments with sql statement
 		Connection connection = null;
 		try {
-			connection = getDataSource("jdbc/oncourse").getConnection();
+			connection = getDataSource().getConnection();
 			PreparedStatement prepStat = connection.prepareStatement(String.format("update PaymentIn set modified=? where id=%s", newCopy.getId()));
 			prepStat.setDate(1, new java.sql.Date(cal.getTime().getTime()));
 			int affected = prepStat.executeUpdate();
@@ -116,7 +116,7 @@ public class PaymentInExpireJobTest extends ServiceTest {
 		Enrolment enrolment2 = Cayenne.objectForPK(objectContext, Enrolment.class, 2001);
 		assertEquals("Enrolment2 has failed.", EnrolmentStatus.FAILED, enrolment2.getStatus());
 
-		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
+		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource().getConnection(), null);
 		
 		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord",
 				String.format("select transactionId from QueuedRecord where entityIdentifier='Invoice' and entityWillowId=2000"));
@@ -186,7 +186,7 @@ public class PaymentInExpireJobTest extends ServiceTest {
 		assertEquals("Enrolment2 has failed.", EnrolmentStatus.FAILED, enrolment2.getStatus());
 
 		// check the queue
-		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
+		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource().getConnection(), null);
 		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord",
 				String.format("select transactionId from QueuedRecord where entityIdentifier='Invoice' and entityWillowId=2000"));
 		assertEquals("1 Invoice in the queue.", 1, actualData.getRowCount());
@@ -219,7 +219,7 @@ public class PaymentInExpireJobTest extends ServiceTest {
 		// simulate EXPIRE_INTERVAL wait by directly updating enrolments with sql statement
 		Connection connection = null;
 		try {
-			connection = getDataSource("jdbc/oncourse").getConnection();
+			connection = getDataSource().getConnection();
 			PreparedStatement prepStat = connection.prepareStatement("update PaymentIn set modified=?");
 			prepStat.setDate(1, new java.sql.Date(cal.getTime().getTime()));
 			int affected = prepStat.executeUpdate();
@@ -253,7 +253,7 @@ public class PaymentInExpireJobTest extends ServiceTest {
 		job.execute();
 		job.execute();
 		
-		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
+		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource().getConnection(), null);
 		ITable actualData = dbUnitConnection.createQueryTable("PaymentIn",
 				String.format("select * from PaymentIn"));
 		
@@ -330,7 +330,7 @@ public class PaymentInExpireJobTest extends ServiceTest {
 		
 		Connection connection = null;
 		try {
-			connection = getDataSource("jdbc/oncourse").getConnection();
+			connection = getDataSource().getConnection();
 
 			PreparedStatement prepStat = connection.prepareStatement("update PaymentIn set modified=?");
 			prepStat.setDate(1, new java.sql.Date(cal.getTime().getTime()));
@@ -395,7 +395,7 @@ public class PaymentInExpireJobTest extends ServiceTest {
 		// simulate EXPIRE_INTERVAL wait by directly updating enrolments with sql statement
 		Connection connection = null;
 		try {
-			connection = getDataSource("jdbc/oncourse").getConnection();
+			connection = getDataSource().getConnection();
 			PreparedStatement prepStat = connection.prepareStatement(String.format("update PaymentIn set modified=? where id=%s", 20000));
 			prepStat.setDate(1, new java.sql.Date(cal.getTime().getTime()));
 			int affected = prepStat.executeUpdate();

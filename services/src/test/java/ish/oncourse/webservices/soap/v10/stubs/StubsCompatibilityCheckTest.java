@@ -1,15 +1,7 @@
 package ish.oncourse.webservices.soap.v10.stubs;
 
-import ish.oncourse.test.ServiceTest;
-import ish.oncourse.webservices.util.GenericDeletedStub;
-import ish.oncourse.webservices.util.GenericInstructionStub;
-import ish.oncourse.webservices.util.GenericParameterEntry;
-import ish.oncourse.webservices.util.GenericParametersMap;
-import ish.oncourse.webservices.util.GenericReplicatedRecord;
-import ish.oncourse.webservices.util.GenericReplicationRecords;
-import ish.oncourse.webservices.util.GenericReplicationResult;
-import ish.oncourse.webservices.util.GenericReplicationStub;
-import ish.oncourse.webservices.util.GenericTransactionGroup;
+import ish.oncourse.test.tapestry.ServiceTest;
+import ish.oncourse.webservices.util.*;
 import ish.oncourse.webservices.v10.stubs.replication.*;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
@@ -25,16 +17,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Stub compatibility check for v10 stubs.

@@ -7,7 +7,7 @@ import ish.oncourse.services.courseclass.ClassAgeType;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.test.LoadDataSet;
-import ish.oncourse.test.ServiceTest;
+import ish.oncourse.test.tapestry.ServiceTest;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

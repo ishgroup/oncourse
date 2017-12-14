@@ -16,7 +16,7 @@ configurations {
 
 
 dependencies {
-    testCompile project(':common:test-functions')
+    testCompile project(':common:test-tapestry')
 }
 
 task generateSources(type: Copy) {

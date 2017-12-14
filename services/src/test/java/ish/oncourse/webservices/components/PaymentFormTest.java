@@ -1,12 +1,10 @@
 package ish.oncourse.webservices.components;
 
 import ish.oncourse.services.ServiceModule;
-import ish.oncourse.test.ServiceTest;
+import ish.oncourse.test.tapestry.ServiceTest;
 import ish.oncourse.webservices.services.AppModule;
 import org.apache.tapestry5.dom.Document;
 import org.apache.tapestry5.dom.Element;
-
-
 import org.apache.tapestry5.test.PageTester;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
@@ -42,7 +40,7 @@ public class PaymentFormTest extends ServiceTest{
                 "ish/oncourse/webservices/components/paymentFormDataSet.xml");
 
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-        DataSource refDataSource = getDataSource("jdbc/oncourse");
+        DataSource refDataSource = getDataSource();
         DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(refDataSource.getConnection(), null), dataSet);
     }
 

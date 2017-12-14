@@ -1,5 +1,6 @@
-package ish.oncourse.test;
+package ish.oncourse.test.tapestry;
 
+import ish.oncourse.test.TestContext;
 import org.apache.cayenne.cache.QueryCache;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.commons.dbcp2.BasicDataSource;

@@ -22,7 +22,6 @@ import ish.oncourse.tapestry.WillowTapestryFilterBuilder
 import ish.oncourse.util.log.LogAppInfo
 import ish.oncourse.website.services.CacheEnabledService
 import org.apache.cayenne.configuration.server.ServerRuntime
-import org.apache.tapestry5.SymbolConstants
 
 import javax.servlet.Filter
 
@@ -51,7 +50,7 @@ class WebModule extends ConfigModule {
     @Provides
     MappedFilter<WillowTapestryFilter> createTapestryFilter(Injector injector) {
         new LogAppInfo(injector.getInstance(DataSourceFactory.class).forName(DATA_SOURCE_NAME)).log()
-        Filter filter = new WillowTapestryFilterBuilder().initParam(SymbolConstants.PRODUCTION_MODE, "false")
+        Filter filter = new WillowTapestryFilterBuilder()
                 .moduleDef(new InjectorModuleDef(injector))
                 .moduleDef(new WillowModuleDef(injector.getInstance(DataSourceFactory).forName(LogAppInfo.DATA_SOURSE_NAME),
                 injector.getInstance(ServerRuntime), injector.getInstance(ICacheEnabledService)))
