@@ -8,7 +8,7 @@
       <div class="class-time" data-time="${isoSessionStartTime}"></div>
       <div class="class-subtitle">
         <t:if test="site">
-          in <span class='site'>${site.name}</span>
+          in <span class='site'>${location}</span>
         </t:if>
         <t:if test="firstTutorName">
           with <span class='tutor'>${firstTutorName}</span>
