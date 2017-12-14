@@ -114,7 +114,12 @@ public class MariaDbAdapter implements DbAdapter {
 
 	@Override
 	public String createFkConstraint(DbRelationship rel) {
-		return delegate.createFkConstraint(rel);
+		/*liquibase.db.changelog.xml:changeSet:278*/
+		if (rel.getSourceEntityName().equals("WebMenu") && rel.getTargetEntityName().equals("WebMenu")) {
+			return String.format("%s ON DELETE CASCADE", delegate.createFkConstraint(rel));
+		} else {
+			return delegate.createFkConstraint(rel);
+		}
 	}
 
 	@Override
@@ -185,8 +190,9 @@ public class MariaDbAdapter implements DbAdapter {
 
 	/**
 	 * Filter not used constraints here
+	 *
 	 * @param tableName table
-	 * @param columns source DbAttribute collection
+	 * @param columns   source DbAttribute collection
 	 * @return filtered DbAttribute collection
 	 */
 	private Collection<DbAttribute> filterConstraintColumns(String tableName, Collection<DbAttribute> columns) {
