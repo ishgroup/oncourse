@@ -30,8 +30,8 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class PaymentInAbandonUtilTest extends ServiceTest {
-private ICayenneService cayenneService;
-	
+	private ICayenneService cayenneService;
+
 	@Before
 	public void setup() throws Exception {
 		initTest("ish.oncourse.services", "service", ServiceTestModule.class);
@@ -49,13 +49,13 @@ private ICayenneService cayenneService;
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		Invoice invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 100", new Money("100.00"),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 100", new Money("100.00"), invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 2 records", 2, invoice.getInvoiceLines().size());
 
 		//load courseclass for enrolment
 
 		CourseClass courseClass = (CourseClass) context.performQuery(
-				SelectQuery.query(CourseClass.class,ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, 1L))).get(0);
+				SelectQuery.query(CourseClass.class, ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, 1L))).get(0);
 		assertNotNull("Course class should be loaded", courseClass);
 
 		for (InvoiceLine invoiceLine : invoice.getInvoiceLines()) {
@@ -71,7 +71,7 @@ private ICayenneService cayenneService;
 				assertEquals("This student should have id=4", 4L, enrolment.getStudent().getId().longValue());
 			} else if (invoiceLine.getId() == 21L) {
 				Student student3 = (Student) context.performQuery(
-						SelectQuery.query(Student.class,ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, 3L))).get(0);
+						SelectQuery.query(Student.class, ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, 3L))).get(0);
 				assertNotNull("Student with id 3 should be loaded", student3);
 				enrolment.setStudent(student3);
 			}
@@ -94,9 +94,7 @@ private ICayenneService cayenneService;
 		abandonPayment(paymentIn);
 		//re-load data
 
-		// this logic unreliably assumes that db generated PK equal to 1 for new payment
-		// probably this should be replaced with something more certain
-		PaymentIn reversePaymentIn = Cayenne.objectForPK(context, PaymentIn.class, 1);
+		PaymentIn reversePaymentIn = getReversePaymentInBy(paymentIn, invoice);
 		assertNotNull("Reverse payment should exist for this abandon", reversePaymentIn);
 		Invoice reverseInvoice = null;
 		for (PaymentInLine line : reversePaymentIn.getPaymentInLines()) {
@@ -139,16 +137,16 @@ private ICayenneService cayenneService;
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		Invoice invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"), invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		InvoiceLine invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
-		
+
 		//link enrollment to the invoice line
 		//load courseclass for enrolment
 
 		CourseClass courseClass = (CourseClass) context.performQuery(
-				SelectQuery.query(CourseClass.class,ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, 1L))).get(0);
+				SelectQuery.query(CourseClass.class, ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, 1L))).get(0);
 		//prepare and add the enrollment to the invoiceLine
 		Enrolment enrolment = context.newObject(Enrolment.class);
 		enrolment.setCollege(paymentIn.getCollege());
@@ -158,7 +156,7 @@ private ICayenneService cayenneService;
 		enrolment.setStudent(paymentIn.getContact().getStudent());
 		enrolment.setReasonForStudy(1);
 		invoiceLine.setEnrolment(enrolment);
-		
+
 		context.commitChanges();
 		//re-load data
 		paymentIn = Cayenne.objectForPK(context, PaymentIn.class, 200);
@@ -167,7 +165,7 @@ private ICayenneService cayenneService;
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"), invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -179,9 +177,7 @@ private ICayenneService cayenneService;
 		abandonPayment(paymentIn);
 		//re-load data
 
-		// this logic unreliably assumes that db generated PK equal to 1 for new payment
-		// probably this should be replaced with something more certain
-		PaymentIn reversePaymentIn = Cayenne.objectForPK(context, PaymentIn.class, 1);
+		PaymentIn reversePaymentIn = getReversePaymentInBy(paymentIn, invoice);
 		assertNotNull("Reverse payment should exist for this abandon", reversePaymentIn);
 		Invoice reverseInvoice = null;
 		for (PaymentInLine line : reversePaymentIn.getPaymentInLines()) {
@@ -202,7 +198,7 @@ private ICayenneService cayenneService;
 	}
 
 	private void abandonPayment(PaymentIn paymentIn) {
-		abandonPayment(paymentIn,  keepInvoice(paymentIn));
+		abandonPayment(paymentIn, keepInvoice(paymentIn));
 	}
 
 	private void abandonPayment(PaymentIn paymentIn, boolean keepInvoice) {
@@ -222,16 +218,16 @@ private ICayenneService cayenneService;
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		Invoice invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"), invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		InvoiceLine invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
-		
+
 		//link enrollment to the invoice line
 		//load courseclass for enrolment
 
 		CourseClass courseClass = (CourseClass) context.performQuery(
-				SelectQuery.query(CourseClass.class,ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, 1L))).get(0);
+				SelectQuery.query(CourseClass.class, ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, 1L))).get(0);
 		//prepare and add the enrollment to the invoiceLine
 		Enrolment enrolment = context.newObject(Enrolment.class);
 		enrolment.setCollege(paymentIn.getCollege());
@@ -241,7 +237,7 @@ private ICayenneService cayenneService;
 		enrolment.setStudent(paymentIn.getContact().getStudent());
 		enrolment.setReasonForStudy(1);
 		invoiceLine.setEnrolment(enrolment);
-		
+
 		context.commitChanges();
 		//re-load data
 		paymentIn = Cayenne.objectForPK(context, PaymentIn.class, 200);
@@ -250,7 +246,7 @@ private ICayenneService cayenneService;
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"), invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -266,8 +262,8 @@ private ICayenneService cayenneService;
 		assertNull("Payments list should be empty", Cayenne.objectForPK(context, PaymentIn.class, 1));
 		assertEquals("Payment should be failed", PaymentStatus.FAILED, paymentIn.getStatus());
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing after abandon should be equal to original invoice amount", invoiceLine.getFinalPriceToPayIncTax(), 
-			invoice.getAmountOwing());
+		assertEquals("Amount owing after abandon should be equal to original invoice amount", invoiceLine.getFinalPriceToPayIncTax(),
+				invoice.getAmountOwing());
 		assertEquals("Enrollment status after abandon should be failed", EnrolmentStatus.SUCCESS, enrolment.getStatus());
 	}
 
@@ -281,16 +277,16 @@ private ICayenneService cayenneService;
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		Invoice invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"), invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		InvoiceLine invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
-		
+
 		//link enrollment to the invoice line
 		//load courseclass for enrolment
 
 		CourseClass courseClass = (CourseClass) context.performQuery(
-				SelectQuery.query(CourseClass.class,ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, 1L))).get(0);
+				SelectQuery.query(CourseClass.class, ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, 1L))).get(0);
 		//prepare and add the enrollment to the invoiceLine
 		Enrolment enrolment = context.newObject(Enrolment.class);
 		enrolment.setCollege(paymentIn.getCollege());
@@ -300,7 +296,7 @@ private ICayenneService cayenneService;
 		enrolment.setStudent(paymentIn.getContact().getStudent());
 		enrolment.setReasonForStudy(1);
 		invoiceLine.setEnrolment(enrolment);
-		
+
 		context.commitChanges();
 		//re-load data
 		paymentIn = Cayenne.objectForPK(context, PaymentIn.class, 200);
@@ -309,7 +305,7 @@ private ICayenneService cayenneService;
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"), invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -321,7 +317,7 @@ private ICayenneService cayenneService;
 		//re-load data
 
 		assertNull("Payments list should be empty", Cayenne.objectForPK(context, PaymentIn.class, 1));
-		
+
 		assertEquals("Payment should be failed", PaymentStatus.FAILED, paymentIn.getStatus());
 		invoice.updateAmountOwing();
 		assertEquals("Amount owing after abandon should be original", new Money("120.00"), invoice.getAmountOwing());
@@ -338,11 +334,11 @@ private ICayenneService cayenneService;
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		Invoice invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"), invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		InvoiceLine invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
-		
+
 		//link enrollment to the invoice line
 		//load courseclass for enrolment
 		CourseClass courseClass = Cayenne.objectForPK(context, CourseClass.class, 1);
@@ -356,7 +352,7 @@ private ICayenneService cayenneService;
 		enrolment.setStudent(paymentIn.getContact().getStudent());
 		enrolment.setReasonForStudy(1);
 		invoiceLine.setEnrolment(enrolment);
-		
+
 		context.commitChanges();
 		//re-load data
 		paymentIn = Cayenne.objectForPK(context, PaymentIn.class, 200);
@@ -365,7 +361,7 @@ private ICayenneService cayenneService;
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"), invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -394,26 +390,23 @@ private ICayenneService cayenneService;
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		Invoice invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"), invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		InvoiceLine invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
-		
+
 		invoice.updateAmountOwing();
 		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"), invoice.getAmountOwing());
 		Enrolment enrolment = invoiceLine.getEnrolment();
 		assertNull("No enrollment should be linked to invoice line", enrolment);
-		
+
 		context.commitChanges();
-		
+
 		//emulate run abandon by user
 		abandonPayment(paymentIn);
 		//re-load data
 
-		// this logic unreliably assumes that db generated PK equal to 1 for new payment
-		// probably this should be replaced with something more certain
-		PaymentIn reversePaymentIn = Cayenne.objectForPK(context, PaymentIn.class, 1);
-
+		PaymentIn reversePaymentIn = getReversePaymentInBy(paymentIn, invoice);
 		assertNotNull("Reverse payment should exist for this abandon", reversePaymentIn);
 		Invoice reverseInvoice = null;
 		for (PaymentInLine line : reversePaymentIn.getPaymentInLines()) {
@@ -442,18 +435,18 @@ private ICayenneService cayenneService;
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		Invoice invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"), invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		InvoiceLine invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
-		
+
 		invoice.updateAmountOwing();
 		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"), invoice.getAmountOwing());
 		Enrolment enrolment = invoiceLine.getEnrolment();
 		assertNull("No enrollment should be linked to invoice line", enrolment);
-		
+
 		context.commitChanges();
-		
+
 		//emulate run abandon by expire job
 		abandonPayment(paymentIn, true);
 		//re-load data
@@ -476,12 +469,12 @@ private ICayenneService cayenneService;
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		Invoice invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"), invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		InvoiceLine invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
 		Enrolment enrolment;
-		
+
 		//link voucher for invoiceline
 		Voucher voucher = Cayenne.objectForPK(context, Voucher.class, 2);
 		assertNotNull("Voucher for test should not be empty", voucher);
@@ -489,7 +482,7 @@ private ICayenneService cayenneService;
 		//unlink the enrollment
 		invoiceLine.setEnrolment(null);
 		context.commitChanges();
-		
+
 		//re-load data
 		paymentIn = Cayenne.objectForPK(context, PaymentIn.class, 200);
 		assertNotNull("Payment for test should not be empty", paymentIn);
@@ -497,7 +490,7 @@ private ICayenneService cayenneService;
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"), invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -507,15 +500,15 @@ private ICayenneService cayenneService;
 		voucher = (Voucher) invoiceLine.getProductItems().get(0);
 		assertNotNull("Voucher should be linked with this invoiceLine", voucher);
 		assertEquals("Voucher status should be new", ProductStatus.NEW, voucher.getStatus());
-		
+
 		//emulate run abandon by user
 		abandonPayment(paymentIn);
 		//re-load data
 
-		// this logic unreliably assumes that db generated PK equal to 1 for new payment
-		// probably this should be replaced with something more certain
-		PaymentIn reversePaymentIn = Cayenne.objectForPK(context, PaymentIn.class, 1);
+
+		PaymentIn reversePaymentIn = getReversePaymentInBy(paymentIn, invoice);
 		assertNotNull("Reverse payment should exist for this abandon", reversePaymentIn);
+
 		Invoice reverseInvoice = null;
 		for (PaymentInLine line : reversePaymentIn.getPaymentInLines()) {
 			if (line.getInvoice() != invoice) {
@@ -534,6 +527,16 @@ private ICayenneService cayenneService;
 		//assertEquals("Voucher status after abandon should be failed", ProductStatus.CANCELLED, voucher.getStatus());
 	}
 
+	private PaymentIn getReversePaymentInBy(PaymentIn paymentIn, Invoice invoice) {
+		invoice.getObjectContext().invalidateObjects(invoice);
+		assertEquals("Direct invoice should have two paymentInLine: one to direct payment, " +
+				"another one to reverse payment", 2, invoice.getPaymentInLines().size());
+		return invoice.getPaymentInLines()
+				.stream().map(PaymentInLine::getPaymentIn)
+				.filter(p -> !p.getId().equals(paymentIn.getId()))
+				.findFirst().orElse(null);
+	}
+
 	private boolean keepInvoice(PaymentIn paymentIn) {
 		return PaymentInUtil.hasSuccessEnrolments(paymentIn) || PaymentInUtil.hasSuccessProductItems(paymentIn);
 	}
@@ -548,12 +551,12 @@ private ICayenneService cayenneService;
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		Invoice invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"), invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		InvoiceLine invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
 		Enrolment enrolment;
-		
+
 		//link voucher for invoiceline
 		Voucher voucher = Cayenne.objectForPK(context, Voucher.class, 2);
 		assertNotNull("Voucher for test should not be empty", voucher);
@@ -561,7 +564,7 @@ private ICayenneService cayenneService;
 		//unlink the enrollment
 		invoiceLine.setEnrolment(null);
 		context.commitChanges();
-		
+
 		//re-load data
 		paymentIn = Cayenne.objectForPK(context, PaymentIn.class, 200);
 		assertNotNull("Payment for test should not be empty", paymentIn);
@@ -569,7 +572,7 @@ private ICayenneService cayenneService;
 		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
 		invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"),invoice.getAmountOwing());
+		assertEquals("Amount owing for invoice should be 120$", new Money("120.00"), invoice.getAmountOwing());
 		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
 		invoiceLine = invoice.getInvoiceLines().get(0);
 		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
@@ -579,7 +582,7 @@ private ICayenneService cayenneService;
 		voucher = (Voucher) invoiceLine.getProductItems().get(0);
 		assertNotNull("Voucher should be linked with this invoiceLine", voucher);
 		assertEquals("Voucher status should be new", ProductStatus.NEW, voucher.getStatus());
-		
+
 		//emulate run abandon by expire job
 		abandonPayment(paymentIn, true);
 		//re-load data
@@ -589,8 +592,8 @@ private ICayenneService cayenneService;
 		assertNull("Payments list should be empty", Cayenne.objectForPK(context, PaymentIn.class, 1));
 		assertEquals("Payment should be failed", PaymentStatus.FAILED, paymentIn.getStatus());
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing after abandon should be the equal to original invoice owing", invoiceLine.getFinalPriceToPayIncTax(), 
-			invoice.getAmountOwing());
+		assertEquals("Amount owing after abandon should be the equal to original invoice owing", invoiceLine.getFinalPriceToPayIncTax(),
+				invoice.getAmountOwing());
 		//assertEquals("Voucher status after abandon should be failed", ProductStatus.CANCELLED, voucher.getStatus());
 	}
 
