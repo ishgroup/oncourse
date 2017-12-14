@@ -166,7 +166,7 @@ class TemplateResourceFactory implements ResourceFactory {
 
     private class SystemDirectoryResource extends DirectoryResource {
         SystemDirectoryResource(SecurityManager securityManager, Map<String, String> systemTemplatesMap, ICayenneService cayenneService) {
-            super(SYSTEM_TEMP_DIR, 
+            super(TemplateResourceFactory.SYSTEM_TEMP_DIR, 
                     securityManager,
                     null,
                     { String childName ->  
