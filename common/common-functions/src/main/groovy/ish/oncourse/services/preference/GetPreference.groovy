@@ -46,7 +46,7 @@ class GetPreference {
     Integer getIntegerValue() {
         String valueString = value
         if (getPreference()) {
-            Integer.parseInt(valueString)
+            return Integer.parseInt(valueString)
         }
         return 0
     }
