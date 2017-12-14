@@ -2,11 +2,8 @@ package ish.oncourse.util.payment;
 
 import ish.oncourse.model.College;
 import ish.oncourse.services.payment.IPaymentService;
-import ish.oncourse.services.paymentexpress.DisabledPaymentGatewayService;
 import ish.oncourse.services.paymentexpress.INewPaymentGatewayService;
 import ish.oncourse.services.paymentexpress.INewPaymentGatewayServiceBuilder;
-import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
-import ish.oncourse.services.paymentexpress.IPaymentGatewayServiceBuilder;
 import ish.oncourse.services.paymentexpress.NewDisabledPaymentGatewayService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.util.payment.PaymentProcessController.PaymentAction;

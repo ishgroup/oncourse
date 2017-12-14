@@ -6,7 +6,8 @@ import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.services.preference.PreferenceController
 import org.apache.tapestry5.ioc.annotations.Inject
 
-import static ish.oncourse.model.PaymentGatewayType.*
+import static ish.oncourse.model.PaymentGatewayType.PAYMENT_EXPRESS
+import static ish.oncourse.model.PaymentGatewayType.TEST
 
 @CompileStatic
 class NewPaymentGatewayServiceBuilder implements INewPaymentGatewayServiceBuilder {
@@ -42,7 +43,7 @@ class NewPaymentGatewayServiceBuilder implements INewPaymentGatewayServiceBuilde
 			case TEST:
 				return new NewTestPaymentGatewayService(cayenneService.newNonReplicatingContext())
 			default:
-				return new NewDisabledPaymentGatewayService();
+				return new NewDisabledPaymentGatewayService()
 		}
 	}
 }

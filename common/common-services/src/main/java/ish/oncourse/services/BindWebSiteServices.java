@@ -47,12 +47,12 @@ public class BindWebSiteServices {
 
 
 	public void bind(ServiceBinder binder) {
-		if (webSiteServiceClass != null) {
-			binder.bind(IWebSiteService.class, webSiteServiceClass);
+		if (this.webSiteServiceBuilder != null) {
+			binder.bind(IWebSiteService.class, this.webSiteServiceBuilder);
 		} else if (this.webSiteService != null) {
 			binder.bind(IWebSiteService.class, resources -> webSiteService);
-		} else if (this.webSiteServiceBuilder != null) {
-			binder.bind(IWebSiteService.class, this.webSiteServiceBuilder);
+		} else {
+			binder.bind(IWebSiteService.class, webSiteServiceClass);
 		}
 		binder.bind(IWebSiteVersionService.class, WebSiteVersionService.class);
 		binder.bind(IWebContentService.class, WebContentService.class);
