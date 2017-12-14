@@ -45,7 +45,7 @@ class GetPreference {
 
     Integer getIntegerValue() {
         String valueString = value
-        if (getPreference()) {
+        if (valueString) {
             return Integer.parseInt(valueString)
         }
         return 0
@@ -75,10 +75,6 @@ class GetPreference {
     }
     
     void setValue(String value) {
-        if (!StringUtils.trimToNull(value)) {
-            return
-        }
-
         Preference pref = getPreference()
         college = objectContext.localObject(college)
         if (pref == null) {
@@ -91,6 +87,6 @@ class GetPreference {
             pref.webSite = objectContext.localObject(webSite)
         }
         
-        pref.valueString = StringUtils.trim(value)
+        pref.valueString = StringUtils.trimToNull(value)
     }
 }
