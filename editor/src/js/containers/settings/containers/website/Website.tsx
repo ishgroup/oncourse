@@ -75,7 +75,7 @@ export class Website extends React.Component<Props, any> {
         <Form>
           <FormGroup>
             <Checkbox
-              label="Hide student contact details from tutor."
+              label="Enable social media links."
               name="enableSocialMedia"
               checked={enableSocialMedia}
               onChange={e => {this.onChange(e, 'enableSocialMedia');}}

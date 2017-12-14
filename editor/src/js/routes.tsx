@@ -123,7 +123,7 @@ export const routes: Route[] = [
 
   // Settings
   {
-    title: 'SkillsOnCourse',
+    title: 'skillsOnCourse',
     path: URL.SETTINGS_SKILLS,
     url: URL.SETTINGS_SKILLS,
     parent: URL.SETTINGS,
