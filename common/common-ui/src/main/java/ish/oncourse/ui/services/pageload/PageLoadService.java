@@ -151,14 +151,11 @@ public class PageLoadService {
 	private void cleanAllCaches() {
 		String cacheKey = webSiteVersionService.getApplicationKey();
 		for (CacheKey key : CacheKey.values()) {
-			Cache cache = cacheManager.getCache(key.getCacheName(cacheKey));
-			if (cache != null) {
-				cache.clear();
-			}
+			cacheManager.destroyCache(key.getCacheName(cacheKey));
 		}
 	}
 
-	private static final ComponentTemplate missingTemplate = new ComponentTemplate() {
+	static final ComponentTemplate missingTemplate = new ComponentTemplate() {
 
 		public Map<String, Location> getComponentIds() {
 			return Collections.emptyMap();
