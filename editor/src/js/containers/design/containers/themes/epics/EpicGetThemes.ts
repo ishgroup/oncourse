@@ -12,7 +12,7 @@ const request: EpicUtils.Request<any, any> = {
     return [
       {
         type: GET_THEMES_FULFILLED,
-        payload: themes,
+        payload: themes.sort((t1, t2) => t1.title.localeCompare(t2.title)),
       },
     ];
   },
