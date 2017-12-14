@@ -3,19 +3,16 @@ package ish.oncourse.services.courseclass;
 import ish.common.types.EnrolmentStatus;
 import ish.oncourse.model.*;
 import ish.oncourse.services.cookies.ICookiesService;
-import ish.oncourse.services.course.GetCurrentClasses;
 import ish.oncourse.services.course.GetEnrollableClasses;
+import ish.oncourse.services.course.GetWebVisibleClasses;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.preference.GetPreference;
 import ish.oncourse.services.preference.PreferenceController;
-import ish.oncourse.services.preference.Preferences;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.utils.DateUtils;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
@@ -370,15 +367,11 @@ public class CourseClassService implements ICourseClassService {
 	}
 
     public List<CourseClass> getEnrollableClasses(Course course) {
-        String age = new GetPreference(course.getCollege(), Preferences.STOP_WEB_ENROLMENTS_AGE, course.getObjectContext()).getValue();
-        String type = new GetPreference(course.getCollege(), Preferences.STOP_WEB_ENROLMENTS_AGE_TYPE, course.getObjectContext()).getValue();
-        return GetEnrollableClasses.valueOf(course, age, type).get();
+        return GetEnrollableClasses.valueOf(course).get();
     }
 
     public List<CourseClass> getCurrentClasses(Course course) {
-        String age = new GetPreference(course.getCollege(), Preferences.HIDE_CLASS_ON_WEB_AGE, course.getObjectContext()).getValue();
-        String type = new GetPreference(course.getCollege(), Preferences.HIDE_CLASS_ON_WEB_AGE_TYPE, course.getObjectContext()).getValue();
-        return GetCurrentClasses.valueOf(course, age, type).get();
+        return GetWebVisibleClasses.valueOf(course).get();
     }
 
     public List<CourseClass> getFullClasses(Course course) {

@@ -8,11 +8,9 @@ import ish.oncourse.model.Application
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
 import ish.oncourse.services.application.FindOfferedApplication
-import ish.oncourse.services.course.GetCurrentClasses
+import ish.oncourse.services.course.GetEnrollableClasses
 import ish.oncourse.services.courseclass.CheckClassAge
-import ish.oncourse.services.preference.GetPreference
 import ish.oncourse.services.preference.IsPaymentGatewayEnabled
-import ish.oncourse.services.preference.Preferences
 import ish.oncourse.willow.checkout.functions.BuildClassPrice
 import ish.oncourse.willow.checkout.functions.GetCourse
 import ish.oncourse.willow.model.web.*
@@ -136,15 +134,13 @@ class CourseClassesApiServiceImpl implements CourseClassesApi {
         College college = collegeService.college
         ObjectContext context = cayenneService.newContext()
         List<Course> result = []
-        String age = new GetPreference(college, Preferences.STOP_WEB_ENROLMENTS_AGE, college.getObjectContext()).value
-        String type = new GetPreference(college, Preferences.STOP_WEB_ENROLMENTS_AGE_TYPE, college.getObjectContext()).value
         coursesParams.coursesIds.each { id ->
             ish.oncourse.model.Course course = new GetCourse(context, college, id).get()
             result << new Course().with {
                 it.id = course.id.toString()
                 it.code = course.code
                 it.name = course.name
-                List<ish.oncourse.model.CourseClass> classes = GetCurrentClasses.valueOf(course, age, type).get()
+                List<ish.oncourse.model.CourseClass> classes = GetEnrollableClasses.valueOf(course).get()
                 it.hasCurrentClasses = !classes.empty
                 it.hasMoreAvailablePlaces = classes.find { it.hasAvailableEnrolmentPlaces } != null
                 it
