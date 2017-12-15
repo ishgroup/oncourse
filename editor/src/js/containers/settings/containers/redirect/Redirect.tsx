@@ -28,6 +28,12 @@ export class Redirect extends React.PureComponent<Props, any> {
     this.props.onInit();
   }
 
+  componentWillReceiveProps(props: Props) {
+    if (this.props.fetching && !props.fetching) {
+      this.setState({rules: props.redirect.rules});
+    }
+  }
+
   onChange(e, index, key) {
     this.setState(update(this.state, {
       rules: {[index]: {
