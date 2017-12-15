@@ -9,7 +9,7 @@
     height: 200px;
     border: 1px solid $gray;
     background: transparent;
-    overflow: auto;
+    overflow-y: auto;
     position: relative;
     transition: all .3s;
   
