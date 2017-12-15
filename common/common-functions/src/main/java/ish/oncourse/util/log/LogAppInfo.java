@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.sql.DataSource;
+import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
@@ -29,6 +30,7 @@ public class LogAppInfo {
 	public void log() {
 		logDataSource();
 		logVersion();
+		logDefaultCharset();
 	}
 	
 	private void logDataSource() {
@@ -42,6 +44,10 @@ public class LogAppInfo {
 
 	private void logVersion() {
 		LOGGER.info(String.format("Application Version: %s", ApplicationUtils.getAppVersion()));
+	}
+
+	private void logDefaultCharset() {
+		LOGGER.info(String.format("Default Charset: %s", Charset.defaultCharset().name()));
 	}
 
 
