@@ -12,9 +12,13 @@ export const redirectSettingsReducer = (state: RedirectSettingsState = new Redir
       return {
         ...state,
         ...action.payload,
+        refreshRules: true,
       };
 
     default:
-      return state;
+      return {
+        ...state,
+        refreshRules: false,
+      };
   }
 };
