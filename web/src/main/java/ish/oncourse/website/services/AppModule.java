@@ -11,16 +11,13 @@ import ish.oncourse.services.DisableJavaScriptStack;
 import ish.oncourse.services.cache.IRequestCacheService;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.node.IWebNodeTypeService;
-import ish.oncourse.services.search.SearchService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.site.WebSiteService;
-import ish.oncourse.services.visitor.ParsedContentVisitor;
 import ish.oncourse.ui.services.UIModule;
 import ish.oncourse.ui.services.locale.PerSiteVariantThreadLocale;
 import ish.oncourse.util.PageRenderer;
 import ish.oncourse.website.services.html.CacheMetaProvider;
-import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.internal.InternalConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.MethodAdviceReceiver;
@@ -31,8 +28,6 @@ import org.apache.tapestry5.ioc.services.ThreadLocale;
 import org.apache.tapestry5.services.javascript.JavaScriptStack;
 import org.apache.tapestry5.services.javascript.JavaScriptStackSource;
 import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
-
-import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 /**
  * The module that is automatically included as part of the Tapestry IoC
@@ -54,11 +49,7 @@ public class AppModule {
 
 	public static void contributeApplicationDefaults(
 			MappedConfiguration<String, String> configuration) {
-		configuration.add(SymbolConstants.HMAC_PASSPHRASE, HMAC_PASSPHRASE);
-		configuration.add(SymbolConstants.COMPACT_JSON, "false");
-		configuration.add(SymbolConstants.COMPRESS_WHITESPACE, "false");
-		configuration.add(SearchService.ALIAS_SUFFIX_PROPERTY, EMPTY);
-		configuration.add(ParsedContentVisitor.WEB_CONTENT_CACHE, "false");
+		BinderFunctions.tapestryConfiguration(configuration, HMAC_PASSPHRASE);
 	}
 
 	@Contribute(PageRenderLinkTransformer.class)

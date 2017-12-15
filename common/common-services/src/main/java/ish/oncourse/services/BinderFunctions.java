@@ -59,11 +59,14 @@ import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.tag.TagService;
 import ish.oncourse.services.tutor.ITutorService;
 import ish.oncourse.services.tutor.TutorService;
+import ish.oncourse.services.visitor.ParsedContentVisitor;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherService;
 import ish.oncourse.util.IPageRenderer;
 import org.apache.cayenne.configuration.CayenneRuntime;
 import org.apache.cayenne.configuration.server.ServerRuntime;
+import org.apache.tapestry5.SymbolConstants;
+import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.ServiceBuilder;
 import org.apache.tapestry5.ioc.ServiceResources;
@@ -73,6 +76,7 @@ import org.apache.tapestry5.services.ApplicationGlobals;
 import javax.cache.CacheManager;
 import javax.sql.DataSource;
 
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.tapestry5.ioc.ScopeConstants.PERTHREAD;
 
 /**
@@ -151,6 +155,24 @@ public class BinderFunctions {
 		}
 	}
 
+	public static void tapestryConfiguration(MappedConfiguration<String, String> configuration, String hmacPassphrase) {
+		// ensure Tapestry does not advertise itself on our pages...
+		configuration.add(SymbolConstants.OMIT_GENERATOR_META, "true");
+
+		// this is overridden in other palces anyways, as we are using locale
+		// variant for site template customization
+		//configuration.add(SymbolConstants.SUPPORTED_LOCALES, "en");
+
+		configuration.add(SymbolConstants.HMAC_PASSPHRASE, hmacPassphrase);
+
+		configuration.add(SymbolConstants.COMPACT_JSON, "false");
+		configuration.add(SymbolConstants.COMPRESS_WHITESPACE, "false");
+		configuration.add(SearchService.ALIAS_SUFFIX_PROPERTY, EMPTY);
+		configuration.add(ParsedContentVisitor.WEB_CONTENT_CACHE, "false");
+	}
+
+
+
 	public static void bindTapestryServices(ServiceBinder binder,
 											Class<? extends ICacheMetaProvider> cacheMetaProviderClass,
 											Class<? extends  IPageRenderer> pageRendererClass) {
@@ -223,5 +245,6 @@ public class BinderFunctions {
 			return builder.buildService();
 		}
 	}
+
 
 }

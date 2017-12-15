@@ -1,4 +1,4 @@
-apply from: "$rootDir/gradle/tapestry.gradle"
+apply from: "$rootDir/gradle/functions.gradle"
 
 dependencies {
 	compile project(':common:common-templates')
@@ -7,4 +7,9 @@ dependencies {
 	compile project(':common:tapestry-classes')
 
 	testCompile project(':common:test-tapestry')
+}
+
+test {
+	forkEvery = 1 //run every test in separate jvm
+	initTestDBConfig(project, test)
 }

@@ -18,8 +18,6 @@ import org.apache.tapestry5.ioc.services.Coercion;
 import org.apache.tapestry5.ioc.services.CoercionTuple;
 import org.apache.tapestry5.services.*;
 
-import java.io.IOException;
-
 /**
  * A Tapestry IoC module definition of the common components library.
  */
@@ -61,15 +59,11 @@ public class UIModule {
 	 */
 	public void contributeComponentEventResultProcessor(MappedConfiguration<Class, ComponentEventResultProcessor> configuration,
 														final Response response) {
-		configuration.add(HttpStatusCode.class, new
-				ComponentEventResultProcessor<HttpStatusCode>() {
-					public void processResultValue(HttpStatusCode value) throws
-							IOException {
-						if (!value.getLocation().isEmpty())
-							response.setHeader("Location", value.getLocation());
-						response.sendError(value.getStatusCode(), StringUtils.EMPTY);
-					}
-				});
+		configuration.add(HttpStatusCode.class, (ComponentEventResultProcessor<HttpStatusCode>) value -> {
+			if (!value.getLocation().isEmpty())
+				response.setHeader("Location", value.getLocation());
+			response.sendError(value.getStatusCode(), StringUtils.EMPTY);
+		});
 	}
 
 	public void contributeComponentClassResolver(Configuration<LibraryMapping> configuration) {
