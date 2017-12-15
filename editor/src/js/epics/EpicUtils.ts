@@ -7,6 +7,7 @@ import {commonErrorToValidationError, toValidationError} from "../common/utils/E
 import {AxiosResponse} from "axios";
 import {IAction} from "../actions/IshAction";
 import {SERVER_ERROR} from "../common/actions";
+import {LOG_OUT_REQUEST} from "../containers/auth/actions/index";
 
 
 export interface Request<V, S> {
@@ -30,6 +31,10 @@ export const showCommonError = (error: any): { type: string, payload: any } => {
 
 export const ProcessError = (data: AxiosResponse): { type: string, payload?: any }[] => {
   console.log(data);
+  
+  if (data.status && 401 === data.status) {
+    return [{type: LOG_OUT_REQUEST}]
+  }
   return [
     {
       type: SERVER_ERROR,

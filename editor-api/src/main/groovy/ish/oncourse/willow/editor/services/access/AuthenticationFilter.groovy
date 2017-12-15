@@ -27,7 +27,7 @@ class AuthenticationFilter implements ContainerRequestFilter {
     void filter(ContainerRequestContext requestContext) throws IOException {
         if (!service.getSystemUser(true) && !service.getWillowUser(true)) {
             logger.error("Login required, request metadata: $requestContext")
-            throw new ClientErrorException(Response.status(Response.Status.UNAUTHORIZED).entity(new CommonError(message: 'Login required')).build())
+            throw new ClientErrorException(Response.Status.UNAUTHORIZED)
         }
     }
 }
