@@ -70,7 +70,7 @@ public class EnrolmentValidator {
 					.andExp(ExpressionFactory.matchExp(Enrolment.COURSE_CLASS_PROPERTY + "." + CourseClass.COURSE_PROPERTY, enrolment.getCourseClass().getCourse()))
 					.andExp(ExpressionFactory.matchExp(Enrolment.STUDENT_PROPERTY, enrolment.getStudent()));
 			
-			List<Enrolment> enrolments = getPurchaseController().getCayenneService().sharedContext().performQuery(new SelectQuery(Enrolment.class, inTransactionEnrolments));
+			List<Enrolment> enrolments = getPurchaseController().getCayenneService().newContext().performQuery(new SelectQuery(Enrolment.class, inTransactionEnrolments));
 			
 			if (!enrolments.isEmpty()) {
 				publishError(applicationAlreadyInTransaction, showErrors, purchaseController.getClassName(enrolment.getCourseClass()));

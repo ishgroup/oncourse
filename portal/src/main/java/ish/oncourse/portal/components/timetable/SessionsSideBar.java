@@ -13,7 +13,6 @@ import ish.oncourse.portal.services.attendance.SessionUtils;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.utils.DateUtils;
 import org.apache.cayenne.query.ObjectSelect;
-
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -24,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 
 public class SessionsSideBar {
 
@@ -91,7 +89,7 @@ public class SessionsSideBar {
 			monthDaySessions = SessionUtils.groupByMonthDay(query
 					.orderBy(Session.START_DATE.asc())
 					.prefetch(Session.COURSE_CLASS.disjoint())
-					.select(cayenneService.sharedContext()));
+					.select(cayenneService.newContext()));
 		} else {
 			monthDaySessions = SessionUtils.groupByMonthDay(portalService.getContactSessionsFrom(fromDate, contact));
 		}

@@ -75,7 +75,7 @@ public class Applications {
 		if(!request.isXHR()) {
 			return null;
 		}
-		Application application = ObjectSelect.query(Application.class).and(ExpressionFactory.matchDbExp(Application.ID_PK_COLUMN, id)).selectOne(cayenneService.sharedContext());
+		Application application = ObjectSelect.query(Application.class).and(ExpressionFactory.matchDbExp(Application.ID_PK_COLUMN, id)).selectOne(cayenneService.newContext());
 
 		JSONObject data = new JSONObject();
 		if (ApplicationStatus.OFFERED.equals(application.getStatus())) {

@@ -1,21 +1,11 @@
 package ish.oncourse.willow.editor.website
 
-import ish.oncourse.model.RegionKey
-import ish.oncourse.model.WebContent
-import ish.oncourse.model.WebContentVisibility
-import ish.oncourse.model.WebNode
-import ish.oncourse.model.WebNodeType
-import ish.oncourse.model.WebSite
-import ish.oncourse.model.WebSiteVersion
-import ish.oncourse.model.WebUrlAlias
+import ish.oncourse.model.*
 import ish.oncourse.services.textile.ConvertCoreTextile
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.Expression
-import org.apache.cayenne.exp.ExpressionFactory
-import org.apache.cayenne.query.EJBQLQuery
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.QueryCacheStrategy
-import org.apache.cayenne.query.SQLTemplate
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.eclipse.jetty.server.Request
@@ -49,7 +39,7 @@ class WebNodeFunctions {
                 .where(WebNodeType.WEB_SITE_VERSION.eq(WebSiteVersionFunctions.getCurrentVersion(request, context))) 
                 & WebNodeType.NAME.eq(WebNodeType.PAGE))
                 .cacheGroup(WebNodeType.simpleName)
-                .cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
+                .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
                 .selectFirst(context)
     }
 

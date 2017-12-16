@@ -92,7 +92,7 @@ public class VoucherServiceTest extends ServiceTest {
 		assertEquals("Voucher product name should be 'my test membership product part 2'", "my test membership product part 2", 
 			voucher.getProduct().getName());
 		assertEquals("Voucher product price should be 11$", new Money("11.00"), voucher.getProduct().getPriceExTax());
-		Contact contact = SelectById.query(Contact.class,1L).selectOne(cayenneService.sharedContext());
+		Contact contact = SelectById.query(Contact.class,1L).selectOne(cayenneService.newContext());
 		assertNotNull("Contact with id=1 should exist", contact);
 		//now link this Voucher with this contact
 		voucher.setContact(contact);
@@ -110,7 +110,7 @@ public class VoucherServiceTest extends ServiceTest {
 		IWebSiteService webSiteService = new WebSiteService(request, cayenneService);
 		when(request.getServerName()).thenReturn("scc.oncourse.cc");
 
-		VoucherProduct product = SelectById.query(VoucherProduct.class, 1).selectOne(cayenneService.sharedContext());
+		VoucherProduct product = SelectById.query(VoucherProduct.class, 1).selectOne(cayenneService.newContext());
 		VoucherService service = new VoucherService(webSiteService, cayenneService);
 		Voucher voucher = service.createVoucher(product);
 		assertNull("Willow voucher always can be redeemed by anyone", voucher.getContact());

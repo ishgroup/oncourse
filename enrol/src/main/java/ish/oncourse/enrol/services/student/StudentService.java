@@ -43,7 +43,7 @@ public class StudentService implements IStudentService {
 				.andExp(ExpressionFactory.matchExp(Contact.IS_COMPANY_PROPERTY, isCompany));
 		SelectQuery query = new SelectQuery(Contact.class, qualifier);
 		@SuppressWarnings("unchecked")
-		List<Contact> results = cayenneService.sharedContext().performQuery(query);
+		List<Contact> results = cayenneService.newContext().performQuery(query);
 		if (results.size() > 1) {
 			logger.error("Duplicate student contact exists for {} {} ( {} ) with id {} used for this query.", firstName, lastName, email, results.get(0).getId());
 		}
@@ -87,7 +87,7 @@ public class StudentService implements IStudentService {
 			return Collections.emptyList();
 		}
 		SelectQuery q = new SelectQuery(Contact.class, ExpressionFactory.inDbExp(Contact.ID_PK_COLUMN, ids));
-		return cayenneService.sharedContext().performQuery(q);
+		return cayenneService.newContext().performQuery(q);
 	}
 
 	/**

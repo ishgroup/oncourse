@@ -100,7 +100,7 @@ public class CourseServiceTest extends ServiceTest {
 
 	@Test
 	public void test_getRelatedCoursesFor() {
-		Course course = query(Course.class, 1L).selectOne(cayenneService.sharedContext());
+		Course course = query(Course.class, 1L).selectOne(cayenneService.newContext());
 		List<Course> courses = service.getRelatedCoursesFor(course);
 		assertEquals(4, courses.size());
 	}

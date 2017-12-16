@@ -4,13 +4,8 @@
 package ish.oncourse.portal.components.courseclass.outcome;
 
 
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.CourseModule;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Module;
-import ish.oncourse.model.Outcome;
+import ish.oncourse.model.*;
 import ish.oncourse.portal.services.IPortalService;
-import ish.oncourse.portal.services.attendance.OutcomeUtils;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
@@ -28,7 +23,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static ish.common.types.EnrolmentStatus.*;
+import static ish.common.types.EnrolmentStatus.IN_TRANSACTION;
+import static ish.common.types.EnrolmentStatus.SUCCESS;
 import static ish.common.types.OutcomeStatus.*;
 import static ish.oncourse.portal.components.courseclass.outcome.OutcomeItem.*;
 
@@ -65,13 +61,13 @@ public class Outcomes {
 
 	@OnEvent(value = "getEnrolmentOutcomes")
 	public Block getEnrolmentOutcomes(Long enrolmentId) throws IOException {
-		enrolment = SelectById.query(Enrolment.class, enrolmentId).selectOne(cayenneService.sharedContext());
+		enrolment = SelectById.query(Enrolment.class, enrolmentId).selectOne(cayenneService.newContext());
 		return enrolmentOutcomes;
 	}
 
 	@OnEvent(value = "getModuleOutcomes")
 	public Block getModuleOutcomes(Long moduleId) throws IOException {
-		module = SelectById.query(Module.class, moduleId).selectOne(cayenneService.sharedContext());
+		module = SelectById.query(Module.class, moduleId).selectOne(cayenneService.newContext());
 		return moduleOutcomes;
 	}
 

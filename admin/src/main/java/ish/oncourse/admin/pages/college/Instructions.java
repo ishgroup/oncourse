@@ -49,7 +49,7 @@ public class Instructions {
 
 	@SetupRender
 	void setupRender() {
-		Map<String, ObjEntity> entities = cayenneService.sharedContext()
+		Map<String, ObjEntity> entities = cayenneService.newContext()
 				.getEntityResolver().getDataMap("oncourse")
 				.getObjEntityMap();
 
@@ -63,7 +63,7 @@ public class Instructions {
 
 		this.entitySelectModel = new StringSelectModel(entitiesArray);
 
-		ObjectContext context = cayenneService.sharedContext();
+		ObjectContext context = cayenneService.newContext();
 		College college = context.localObject(this.college);
 		if (college != null) {
 			lastInstructions = ObjectSelect.query(Instruction.class).

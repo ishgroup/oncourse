@@ -5,6 +5,7 @@ import ish.oncourse.model.*;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.course.GetEnrollableClasses;
 import ish.oncourse.services.course.GetWebVisibleClasses;
+import ish.oncourse.services.courseclass.functions.ApplyCourseClassCacheSettings;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
@@ -13,10 +14,7 @@ import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.Ordering;
-import org.apache.cayenne.query.QueryCacheStrategy;
-import org.apache.cayenne.query.SelectQuery;
-import org.apache.cayenne.query.SortOrder;
+import org.apache.cayenne.query.*;
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -27,18 +25,18 @@ import java.util.*;
 
 public class CourseClassService implements ICourseClassService {
 
-    private static final Logger logger = LogManager.getLogger();
+	private static final Logger logger = LogManager.getLogger();
 
-    private final ICayenneService cayenneService;
+	private final ICayenneService cayenneService;
 
-    private final IWebSiteService webSiteService;
+	private final IWebSiteService webSiteService;
 
 	private final ICookiesService cookiesService;
 
-    @Inject
-    private PreferenceController preferenceController;
+	@Inject
+	private PreferenceController preferenceController;
 
-    @Inject
+	@Inject
 	public CourseClassService(ICayenneService cayenneService, IWebSiteService webSiteService, ICookiesService cookiesService) {
 		this.cayenneService = cayenneService;
 		this.webSiteService = webSiteService;
@@ -46,311 +44,306 @@ public class CourseClassService implements ICourseClassService {
 	}
 
 	public CourseClass getCourseClassByFullCode(String code) {
-        String[] parts = code.split("-");
-        // courseClass code has format "course.code-courseClass.code"
-        if (parts.length < 2) {
-            return null;
-        }
-        String courseCode = parts[0];
-        String courseClassCode = parts[1];
-        SelectQuery query = new SelectQuery(CourseClass.class, getSiteQualifier().andExp(
-                getSearchStringPropertyQualifier(CourseClass.COURSE_PROPERTY + "." + Course.CODE_PROPERTY, courseCode)).andExp(
-                getSearchStringPropertyQualifier(CourseClass.CODE_PROPERTY, courseClassCode)));
+		String[] parts = code.split("-");
+		// courseClass code has format "course.code-courseClass.code"
+		if (parts.length < 2) {
+			return null;
+		}
+		String courseCode = parts[0];
+		String courseClassCode = parts[1];
+		SelectQuery query = new SelectQuery(CourseClass.class, getSiteQualifier().andExp(
+				getSearchStringPropertyQualifier(CourseClass.COURSE_PROPERTY + "." + Course.CODE_PROPERTY, courseCode)).andExp(
+				getSearchStringPropertyQualifier(CourseClass.CODE_PROPERTY, courseClassCode)));
 
-        appyCourseClassCacheSettings(query);
+		appyCourseClassCacheSettings(query);
 
-        List<CourseClass> result = cayenneService.sharedContext().performQuery(query);
-        return !result.isEmpty() ? result.get(0) : null;
-    }
-
-    /**
-     * @return
-     */
-    private Expression getSiteQualifier() {
-            return ExpressionFactory.matchExp(Course.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()).andExp(
-                    ExpressionFactory.matchExp(CourseClass.IS_ACTIVE_PROPERTY, true));
-    }
-
-    public Expression getSearchStringPropertyQualifier(String searchProperty, Object value) {
-        return ExpressionFactory.likeIgnoreCaseExp(searchProperty, value);
-    }
-
-	public List<CourseClass> loadByIds(Object... ids) {
-		return loadByIds(cayenneService.sharedContext(), ids);
+		List<CourseClass> result = cayenneService.newContext().performQuery(query);
+		return !result.isEmpty() ? result.get(0) : null;
 	}
 
-	public List<CourseClass> loadByIds(ObjectContext objectContext,Object... ids) {
+	/**
+	 * @return
+	 */
+	private Expression getSiteQualifier() {
+		return ExpressionFactory.matchExp(Course.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()).andExp(
+				ExpressionFactory.matchExp(CourseClass.IS_ACTIVE_PROPERTY, true));
+	}
 
-        if (ids.length == 0) {
-            return Collections.emptyList();
-        }
+	public Expression getSearchStringPropertyQualifier(String searchProperty, Object value) {
+		return ExpressionFactory.likeIgnoreCaseExp(searchProperty, value);
+	}
 
-        List<Object> params = Arrays.asList(ids);
+	public List<CourseClass> loadByIds(Object... ids) {
+		return loadByIds(cayenneService.newContext(), ids);
+	}
 
-        SelectQuery q = new SelectQuery(CourseClass.class, ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN, params));
+	public List<CourseClass> loadByIds(ObjectContext objectContext, Object... ids) {
 
-        appyCourseClassCacheSettings(q);
+		if (ids.length == 0) {
+			return Collections.emptyList();
+		}
 
-        return objectContext.performQuery(q);
-    }
+		List<Object> params = Arrays.asList(ids);
 
-    public List<CourseClass> loadByIds(List<Long> ids) {
-        if ((ids == null) || (ids.isEmpty())) {
-            return Collections.emptyList();
-        }
-        SelectQuery q = new SelectQuery(CourseClass.class, ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN, ids).andExp(
-                getSiteQualifier()));
+		SelectQuery q = new SelectQuery(CourseClass.class, ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN, params));
 
-        appyCourseClassCacheSettings(q);
-        return cayenneService.sharedContext().performQuery(q);
-    }
+		appyCourseClassCacheSettings(q);
 
-    /*
-      * (non-Javadoc)
-      *
-      * @see
-      * ish.oncourse.services.courseclass.ICourseClassService#loadByAngelId(java
-      * .lang.Long)
-      */
-    @Override
-    public CourseClass loadByAngelId(Long angelId) {
+		return objectContext.performQuery(q);
+	}
 
-        SelectQuery q = new SelectQuery(CourseClass.class);
-        q.andQualifier(ExpressionFactory.matchExp(CourseClass.ANGEL_ID_PROPERTY, angelId));
-        q.andQualifier(ExpressionFactory.matchExp(CourseClass.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()));
+	public List<CourseClass> loadByIds(List<Long> ids) {
+		if ((ids == null) || (ids.isEmpty())) {
+			return Collections.emptyList();
+		}
 
-        appyCourseClassCacheSettings(q);
-        return (CourseClass) Cayenne.objectForQuery(cayenneService.sharedContext(), q);
-    }
+		ObjectSelect<CourseClass> objectSelect = ObjectSelect.query(CourseClass.class, ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN, ids))
+				.and(getSiteQualifier());
 
-    /**
-     * @see ICourseClassService#getContactSessionsForMonth(Contact, Date)
-     */
-    @Override
-    public List<Session> getContactSessionsForMonth(Contact contact, Date month) {
+		return ApplyCourseClassCacheSettings.valueOf(objectSelect).apply().select(cayenneService.newContext());
+	}
 
-        /*
-           * get session for timetable for month
-           * for timetable we should only show FUTURE sessions from ACTIVE classes
-           */
-        Calendar nextMonth = Calendar.getInstance();
-        nextMonth.setTime(month);
-        nextMonth.add(Calendar.MONTH, 1);
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see
+	 * ish.oncourse.services.courseclass.ICourseClassService#loadByAngelId(java
+	 * .lang.Long)
+	 */
+	@Override
+	public CourseClass loadByAngelId(Long angelId) {
 
-        // get only session for current month
-        Expression intervalExpr = ExpressionFactory.betweenExp(Session.START_DATE_PROPERTY, month, nextMonth.getTime());
+		SelectQuery q = new SelectQuery(CourseClass.class);
+		q.andQualifier(ExpressionFactory.matchExp(CourseClass.ANGEL_ID_PROPERTY, angelId));
+		q.andQualifier(ExpressionFactory.matchExp(CourseClass.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()));
 
-        return getContactSessionsWithAddingExpression(contact, intervalExpr, null);
-    }
+		appyCourseClassCacheSettings(q);
+		return (CourseClass) Cayenne.objectForQuery(cayenneService.newContext(), q);
+	}
 
-    /**
-     * @see ICourseClassService#getContactSessions(Contact)
-     */
-    @Override
-    public List<Session> getContactSessions(Contact contact) {
-        return getContactSessionsWithAddingExpression(contact, null, null);
-    }
+	/**
+	 * @see ICourseClassService#getContactSessionsForMonth(Contact, Date)
+	 */
+	@Override
+	public List<Session> getContactSessionsForMonth(Contact contact, Date month) {
+
+		/*
+		 * get session for timetable for month
+		 * for timetable we should only show FUTURE sessions from ACTIVE classes
+		 */
+		Calendar nextMonth = Calendar.getInstance();
+		nextMonth.setTime(month);
+		nextMonth.add(Calendar.MONTH, 1);
+
+		// get only session for current month
+		Expression intervalExpr = ExpressionFactory.betweenExp(Session.START_DATE_PROPERTY, month, nextMonth.getTime());
+
+		return getContactSessionsWithAddingExpression(contact, intervalExpr, null);
+	}
+
+	/**
+	 * @see ICourseClassService#getContactSessions(Contact)
+	 */
+	@Override
+	public List<Session> getContactSessions(Contact contact) {
+		return getContactSessionsWithAddingExpression(contact, null, null);
+	}
 
 	@Override
 	public List<Session> getContactSessions(Contact contact, Date month) {
 		return getContactSessionsWithAddingExpression(contact, null, month);
 	}
-	
-    private List<Session> getContactSessionsWithAddingExpression(Contact contact, Expression addingExpresion, Date month) {
 
-        /*
-           * get session for timetable
-           * for timetable we should only show future sessions from active classes
-           */
-        List<Session> sessions = new ArrayList<>(30);
+	private List<Session> getContactSessionsWithAddingExpression(Contact contact, Expression addingExpresion, Date month) {
 
-        if (contact.getStudent() == null && contact.getTutor() == null) {
-            logger.warn("Contact with ID: {} is neither Student nor Tutor.", contact.getId());
-            return Collections.emptyList();
-        }
+		/*
+		 * get session for timetable
+		 * for timetable we should only show future sessions from active classes
+		 */
+		List<Session> sessions = new ArrayList<>(30);
+
+		if (contact.getStudent() == null && contact.getTutor() == null) {
+			logger.warn("Contact with ID: {} is neither Student nor Tutor.", contact.getId());
+			return Collections.emptyList();
+		}
 
 		Expression startingExp;
-		
-        // expression: get only future session
+
+		// expression: get only future session
 		if (month != null) {
-			startingExp = ExpressionFactory.betweenExp(Session.START_DATE_PROPERTY, DateUtils.startOfMonth(month),  DateUtils.endOfMonth(month));
+			startingExp = ExpressionFactory.betweenExp(Session.START_DATE_PROPERTY, DateUtils.startOfMonth(month), DateUtils.endOfMonth(month));
 		} else {
 			startingExp = ExpressionFactory.greaterOrEqualExp(Session.START_DATE_PROPERTY, new Date());
-        }
+		}
 
-        // expression: get only sessions from ACTIVE classes (not canceled)
-        Expression activeClassesExp = ExpressionFactory.noMatchExp(Session.COURSE_CLASS_PROPERTY + "." + CourseClass.CANCELLED_PROPERTY, Boolean.TRUE);
+		// expression: get only sessions from ACTIVE classes (not canceled)
+		Expression activeClassesExp = ExpressionFactory.noMatchExp(Session.COURSE_CLASS_PROPERTY + "." + CourseClass.CANCELLED_PROPERTY, Boolean.TRUE);
 
-        if (contact.getTutor() != null) {
-            Tutor tutor = contact.getTutor();
-            Expression expr = ExpressionFactory.matchExp(Session.SESSION_TUTORS_PROPERTY + "." + SessionTutor.TUTOR_PROPERTY, tutor);
-            if (addingExpresion != null) {
-                expr = addingExpresion.andExp(expr);
-            }
-            SelectQuery q = new SelectQuery(Session.class, expr.andExp(startingExp).andExp(activeClassesExp));
-            q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
-            q.setCacheGroups(Session.class.getSimpleName());
+		if (contact.getTutor() != null) {
+			Tutor tutor = contact.getTutor();
+			Expression expr = ExpressionFactory.matchExp(Session.SESSION_TUTORS_PROPERTY + "." + SessionTutor.TUTOR_PROPERTY, tutor);
+			if (addingExpresion != null) {
+				expr = addingExpresion.andExp(expr);
+			}
+			SelectQuery q = new SelectQuery(Session.class, expr.andExp(startingExp).andExp(activeClassesExp));
+			q.setCacheStrategy(QueryCacheStrategy.SHARED_CACHE);
+			q.setCacheGroup(Session.class.getSimpleName());
 
-            sessions.addAll(cayenneService.sharedContext().performQuery(q));
-        }
+			sessions.addAll(cayenneService.newContext().performQuery(q));
+		}
 
-        if (contact.getStudent() != null) {
-            Student student = contact.getStudent();
-            Expression expr = ExpressionFactory.matchExp(Session.COURSE_CLASS_PROPERTY + "." + CourseClass.ENROLMENTS_PROPERTY + "."
-                    + Enrolment.STATUS_PROPERTY, EnrolmentStatus.SUCCESS);
-            expr = expr.andExp(ExpressionFactory.matchExp(Session.COURSE_CLASS_PROPERTY + "." + CourseClass.ENROLMENTS_PROPERTY + "."
-                    + Enrolment.STUDENT_PROPERTY, student));
+		if (contact.getStudent() != null) {
+			Student student = contact.getStudent();
+			Expression expr = ExpressionFactory.matchExp(Session.COURSE_CLASS_PROPERTY + "." + CourseClass.ENROLMENTS_PROPERTY + "."
+					+ Enrolment.STATUS_PROPERTY, EnrolmentStatus.SUCCESS);
+			expr = expr.andExp(ExpressionFactory.matchExp(Session.COURSE_CLASS_PROPERTY + "." + CourseClass.ENROLMENTS_PROPERTY + "."
+					+ Enrolment.STUDENT_PROPERTY, student));
 
-            if (addingExpresion != null) {
-                expr = addingExpresion.andExp(expr);
-            }
-            SelectQuery q = new SelectQuery(Session.class, expr.andExp(startingExp).andExp(activeClassesExp));
-            q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
-            q.setCacheGroups(Session.class.getSimpleName());
+			if (addingExpresion != null) {
+				expr = addingExpresion.andExp(expr);
+			}
+			SelectQuery q = new SelectQuery(Session.class, expr.andExp(startingExp).andExp(activeClassesExp));
+			q.setCacheStrategy(QueryCacheStrategy.SHARED_CACHE);
+			q.setCacheGroup(Session.class.getSimpleName());
 
-            sessions.addAll(cayenneService.sharedContext().performQuery(q));
-        }
-
-
-        new Ordering(Session.START_DATE_PROPERTY, SortOrder.ASCENDING).orderList(sessions);
-
-        return sessions;
-    }
+			sessions.addAll(cayenneService.newContext().performQuery(q));
+		}
 
 
-    public List<CourseClass> getContactCourseClasses(Contact contact, CourseClassFilter filter) {
+		new Ordering(Session.START_DATE_PROPERTY, SortOrder.ASCENDING).orderList(sessions);
 
-        /*
-           * get classes for classes item
-           * for classes item we should show ALL ACTIVE classes  (not canceled)
-           */
-        if (contact.getStudent() == null && contact.getTutor() == null) {
-            logger.warn("Contact with ID: {} is neither Student nor Tutor.", contact.getId());
-            return Collections.emptyList();
-        }
-
-        List<CourseClass> courses = new ArrayList<>();
-        Ordering ordering = getOrderingBy(filter);
-        if (contact.getTutor() != null) {
-            courses.addAll(getCourseClassesBy(contact,filter,true));
-        }
-
-        if (contact.getStudent() != null) {
-            List<CourseClass> sClasses = getCourseClassesBy(contact, filter, false);
-            courses = ListUtils.sum(courses, sClasses);
-
-        }
-        ordering.orderList(courses);
-
-        return courses;
-    }
-
-    Ordering getOrderingBy(CourseClassFilter filter) {
-        switch (filter) {
-        	case UNCONFIRMED:
-            case CURRENT:
-                return new Ordering(CourseClass.START_DATE_PROPERTY, SortOrder.ASCENDING);
-            case PAST:
-            case ALL:
-                return new Ordering(CourseClass.START_DATE_PROPERTY, SortOrder.DESCENDING);
-            default:
-                throw new IllegalArgumentException();
-        }
-    }
-
-    private  List<CourseClass> getCourseClassesBy(Contact contact, CourseClassFilter filter, boolean forTutor)
-    {
-        Expression expr = getExpressionBy(contact, filter, forTutor);
-        SelectQuery q = new SelectQuery(CourseClass.class, expr);
-        appyCourseClassCacheSettings(q);
-
-        return cayenneService.sharedContext().performQuery(q);
-    }
-
-    private Expression getExpressionBy(Contact contact, CourseClassFilter filter, boolean forTutor) {
-        Expression expr;
-        if (forTutor)
-        {
-            expr = ExpressionFactory.matchExp(CourseClass.TUTOR_ROLES_PROPERTY + "." + TutorRole.TUTOR_PROPERTY, contact.getTutor());
-        }
-        else
-        {
-            expr = ExpressionFactory.matchExp(CourseClass.ENROLMENTS_PROPERTY + "." + Enrolment.STUDENT_PROPERTY, contact.getStudent());
-            //for student only where enrolment has status SUCCESS.
-            expr = expr.andExp(ExpressionFactory.matchExp(CourseClass.ENROLMENTS_PROPERTY + "." + Enrolment.STATUS_PROPERTY, EnrolmentStatus.SUCCESS));
-        }
-        Expression activeClassesExp = ExpressionFactory.noMatchExp(CourseClass.CANCELLED_PROPERTY, Boolean.TRUE);
-        expr = expr.andExp(activeClassesExp);
-
-        Date today = new Date(System.currentTimeMillis());
-
-        switch (filter) {
-        	case UNCONFIRMED:
-        		return expr.andExp(ExpressionFactory.greaterOrEqualExp(CourseClass.END_DATE_PROPERTY, today).orExp(ExpressionFactory.matchExp(CourseClass.IS_DISTANT_LEARNING_COURSE_PROPERTY, true)))
-        				.andExp(ExpressionFactory.matchExp(CourseClass.TUTOR_ROLES_PROPERTY + "." + TutorRole.IS_CONFIRMED_PROPERTY, false));
-            case CURRENT:
-            	if (forTutor) {
-            		return expr.andExp(ExpressionFactory.greaterOrEqualExp(CourseClass.END_DATE_PROPERTY, today))
-                		.andExp(ExpressionFactory.matchExp(CourseClass.TUTOR_ROLES_PROPERTY + "." + TutorRole.IS_CONFIRMED_PROPERTY, true));
-                } else {
-                	return expr.andExp(ExpressionFactory.greaterOrEqualExp(CourseClass.END_DATE_PROPERTY, today));
-                }
-            case PAST:
-                return expr.andExp(ExpressionFactory.lessExp(CourseClass.END_DATE_PROPERTY, today));
-            case ALL:
-                return expr;
-            default:
-                throw new IllegalArgumentException();
-        }
-    }
-
-    @Override
-    public Attendance loadAttendanceById(Object id) {
-
-        SelectQuery q = new SelectQuery(Attendance.class);
-        q.andQualifier(ExpressionFactory.matchExp(Attendance.ANGEL_ID_PROPERTY, id));
-        q.andQualifier(ExpressionFactory.matchExp(CourseClass.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()));
-
-        return (Attendance) Cayenne.objectForQuery(cayenneService.sharedContext(), q);
-    }
-
-    /**
-     * Add necessary prefetches and assign cache group for course query;
-     *
-     * @param q course query
-     * @deprecated Should be replaced with ObjectSelect @see {@link ish.oncourse.services.courseclass.functions.ApplyCourseClassCacheSettings}
-     */
-    public static void appyCourseClassCacheSettings(SelectQuery q) {
-
-        q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
-        q.setCacheGroups(CourseClass.class.getSimpleName());
-
-        q.addPrefetch(CourseClass.ROOM.getName());
-        q.addPrefetch(CourseClass.SESSIONS.getName());
-        q.addPrefetch(CourseClass.TUTOR_ROLES.getName());
-        q.addPrefetch(CourseClass.DISCOUNT_COURSE_CLASSES.getName());
-        q.addPrefetch(CourseClass.DISCUSSIONS.getName());
-    }
+		return sessions;
+	}
 
 
-    @Override
-    public List<CourseClass> getContactCourseClasses(Contact contact) {
-        return getContactCourseClasses(contact, CourseClassFilter.ALL);
-    }
+	public List<CourseClass> getContactCourseClasses(Contact contact, CourseClassFilter filter) {
+
+		/*
+		 * get classes for classes item
+		 * for classes item we should show ALL ACTIVE classes  (not canceled)
+		 */
+		if (contact.getStudent() == null && contact.getTutor() == null) {
+			logger.warn("Contact with ID: {} is neither Student nor Tutor.", contact.getId());
+			return Collections.emptyList();
+		}
+
+		List<CourseClass> courses = new ArrayList<>();
+		Ordering ordering = getOrderingBy(filter);
+		if (contact.getTutor() != null) {
+			courses.addAll(getCourseClassesBy(contact, filter, true));
+		}
+
+		if (contact.getStudent() != null) {
+			List<CourseClass> sClasses = getCourseClassesBy(contact, filter, false);
+			courses = ListUtils.sum(courses, sClasses);
+
+		}
+		ordering.orderList(courses);
+
+		return courses;
+	}
+
+	Ordering getOrderingBy(CourseClassFilter filter) {
+		switch (filter) {
+			case UNCONFIRMED:
+			case CURRENT:
+				return new Ordering(CourseClass.START_DATE_PROPERTY, SortOrder.ASCENDING);
+			case PAST:
+			case ALL:
+				return new Ordering(CourseClass.START_DATE_PROPERTY, SortOrder.DESCENDING);
+			default:
+				throw new IllegalArgumentException();
+		}
+	}
+
+	private List<CourseClass> getCourseClassesBy(Contact contact, CourseClassFilter filter, boolean forTutor) {
+		Expression expr = getExpressionBy(contact, filter, forTutor);
+		SelectQuery q = new SelectQuery(CourseClass.class, expr);
+		appyCourseClassCacheSettings(q);
+
+		return cayenneService.newContext().performQuery(q);
+	}
+
+	private Expression getExpressionBy(Contact contact, CourseClassFilter filter, boolean forTutor) {
+		Expression expr;
+		if (forTutor) {
+			expr = ExpressionFactory.matchExp(CourseClass.TUTOR_ROLES_PROPERTY + "." + TutorRole.TUTOR_PROPERTY, contact.getTutor());
+		} else {
+			expr = ExpressionFactory.matchExp(CourseClass.ENROLMENTS_PROPERTY + "." + Enrolment.STUDENT_PROPERTY, contact.getStudent());
+			//for student only where enrolment has status SUCCESS.
+			expr = expr.andExp(ExpressionFactory.matchExp(CourseClass.ENROLMENTS_PROPERTY + "." + Enrolment.STATUS_PROPERTY, EnrolmentStatus.SUCCESS));
+		}
+		Expression activeClassesExp = ExpressionFactory.noMatchExp(CourseClass.CANCELLED_PROPERTY, Boolean.TRUE);
+		expr = expr.andExp(activeClassesExp);
+
+		Date today = new Date(System.currentTimeMillis());
+
+		switch (filter) {
+			case UNCONFIRMED:
+				return expr.andExp(ExpressionFactory.greaterOrEqualExp(CourseClass.END_DATE_PROPERTY, today).orExp(ExpressionFactory.matchExp(CourseClass.IS_DISTANT_LEARNING_COURSE_PROPERTY, true)))
+						.andExp(ExpressionFactory.matchExp(CourseClass.TUTOR_ROLES_PROPERTY + "." + TutorRole.IS_CONFIRMED_PROPERTY, false));
+			case CURRENT:
+				if (forTutor) {
+					return expr.andExp(ExpressionFactory.greaterOrEqualExp(CourseClass.END_DATE_PROPERTY, today))
+							.andExp(ExpressionFactory.matchExp(CourseClass.TUTOR_ROLES_PROPERTY + "." + TutorRole.IS_CONFIRMED_PROPERTY, true));
+				} else {
+					return expr.andExp(ExpressionFactory.greaterOrEqualExp(CourseClass.END_DATE_PROPERTY, today));
+				}
+			case PAST:
+				return expr.andExp(ExpressionFactory.lessExp(CourseClass.END_DATE_PROPERTY, today));
+			case ALL:
+				return expr;
+			default:
+				throw new IllegalArgumentException();
+		}
+	}
+
+	@Override
+	public Attendance loadAttendanceById(Object id) {
+
+		SelectQuery q = new SelectQuery(Attendance.class);
+		q.andQualifier(ExpressionFactory.matchExp(Attendance.ANGEL_ID_PROPERTY, id));
+		q.andQualifier(ExpressionFactory.matchExp(CourseClass.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()));
+
+		return (Attendance) Cayenne.objectForQuery(cayenneService.newContext(), q);
+	}
+
+	/**
+	 * Add necessary prefetches and assign cache group for course query;
+	 *
+	 * @param q course query
+	 * @deprecated Should be replaced with ObjectSelect @see {@link ish.oncourse.services.courseclass.functions.ApplyCourseClassCacheSettings}
+	 */
+	public static void appyCourseClassCacheSettings(SelectQuery q) {
+
+		q.setCacheStrategy(QueryCacheStrategy.SHARED_CACHE);
+		q.setCacheGroup(CourseClass.class.getSimpleName());
+
+		q.addPrefetch(CourseClass.ROOM.getName());
+		q.addPrefetch(CourseClass.SESSIONS.getName());
+		q.addPrefetch(CourseClass.TUTOR_ROLES.getName());
+		q.addPrefetch(CourseClass.DISCOUNT_COURSE_CLASSES.getName());
+		q.addPrefetch(CourseClass.DISCUSSIONS.getName());
+	}
 
 
-	public List<Survey> getSurveysFor(Tutor tutor)
-	{
-		Expression expr = ExpressionFactory.matchExp(StringUtils.join(new String[]{Survey.ENROLMENT_PROPERTY, Enrolment.COURSE_CLASS_PROPERTY, CourseClass.TUTOR_ROLES_PROPERTY, TutorRole.TUTOR_PROPERTY}, "."),tutor);
+	@Override
+	public List<CourseClass> getContactCourseClasses(Contact contact) {
+		return getContactCourseClasses(contact, CourseClassFilter.ALL);
+	}
+
+
+	public List<Survey> getSurveysFor(Tutor tutor) {
+		Expression expr = ExpressionFactory.matchExp(StringUtils.join(new String[]{Survey.ENROLMENT_PROPERTY, Enrolment.COURSE_CLASS_PROPERTY, CourseClass.TUTOR_ROLES_PROPERTY, TutorRole.TUTOR_PROPERTY}, "."), tutor);
 		SelectQuery q = new SelectQuery(Survey.class, expr);
-		return cayenneService.sharedContext().performQuery(q);
+		return cayenneService.newContext().performQuery(q);
 	}
 
 	public List<Survey> getSurveysFor(CourseClass courseClass) {
 		Expression surveyExp = ExpressionFactory.matchExp(Survey.ENROLMENT_PROPERTY + "." + Enrolment.COURSE_CLASS_PROPERTY, courseClass);
 		SelectQuery query = new SelectQuery(Survey.class, surveyExp);
 
-		return cayenneService.sharedContext().performQuery(query);
+		return cayenneService.newContext().performQuery(query);
 	}
 
 	@Override
@@ -366,27 +359,27 @@ public class CourseClassService implements ICourseClassService {
 		return timezone;
 	}
 
-    public List<CourseClass> getEnrollableClasses(Course course) {
-        return GetEnrollableClasses.valueOf(course).get();
-    }
+	public List<CourseClass> getEnrollableClasses(Course course) {
+		return GetEnrollableClasses.valueOf(course).get();
+	}
 
-    public List<CourseClass> getCurrentClasses(Course course) {
-        return GetWebVisibleClasses.valueOf(course).get();
-    }
+	public List<CourseClass> getCurrentClasses(Course course) {
+		return GetWebVisibleClasses.valueOf(course).get();
+	}
 
-    public List<CourseClass> getFullClasses(Course course) {
-        List<CourseClass> currentClasses = getCurrentClasses(course);
-        List<CourseClass> list = new ArrayList<>();
-        for (CourseClass courseClass : currentClasses) {
-            if (isFullClass(courseClass)) {
-                list.add(courseClass);
-            }
-        }
+	public List<CourseClass> getFullClasses(Course course) {
+		List<CourseClass> currentClasses = getCurrentClasses(course);
+		List<CourseClass> list = new ArrayList<>();
+		for (CourseClass courseClass : currentClasses) {
+			if (isFullClass(courseClass)) {
+				list.add(courseClass);
+			}
+		}
 
-        return list;
-    }
+		return list;
+	}
 
 	public boolean isFullClass(CourseClass courseClass) {
-        return !courseClass.isHasAvailableEnrolmentPlaces();
-    }
+		return !courseClass.isHasAvailableEnrolmentPlaces();
+	}
 }

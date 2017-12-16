@@ -4,7 +4,6 @@
 package ish.oncourse.portal.components.timetable;
 
 import ish.oncourse.model.CourseClass;
-
 import ish.oncourse.model.Student;
 import ish.oncourse.model.Tutor;
 import ish.oncourse.portal.services.timetable.GetContactClassesObjectSelect;
@@ -48,7 +47,7 @@ public class YourClasses {
 			return;
 		}
 		
-		classes = new GetContactClassesObjectSelect(month, student, tutor).get().select(cayenneService.sharedContext());
+		classes = new GetContactClassesObjectSelect(month, student, tutor).get().select(cayenneService.newContext());
 	}
 	
 	public boolean isFuture() {

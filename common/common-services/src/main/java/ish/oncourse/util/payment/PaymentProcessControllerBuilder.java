@@ -48,10 +48,6 @@ public class PaymentProcessControllerBuilder {
 		return controller;
 	}
 	
-	public static boolean isNeedResetOldSessionController(PaymentProcessController paymentProcessController, String sessionId) {
-		return paymentProcessController != null && isControllerOldAndExpired(paymentProcessController, sessionId);
-	}
-	
 	static boolean isControllerOldAndExpired(PaymentProcessController paymentProcessController, String sessionId) {
     	return sessionId != null && paymentProcessController.isExpired() && paymentProcessController.getPaymentIn() != null 
     		&& !sessionId.equals(paymentProcessController.getPaymentIn().getSessionId());

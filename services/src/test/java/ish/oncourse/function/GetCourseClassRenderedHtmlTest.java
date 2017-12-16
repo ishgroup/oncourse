@@ -82,7 +82,7 @@ public class GetCourseClassRenderedHtmlTest {
 	public void testPageLoad() {
 //		CourseClass courseClass = ObjectSelect.query(CourseClass.class)
 //				.where(ExpressionFactory.matchDbExp(College.ID_PK_COLUMN, 5137172))
-//				.selectOne(cayenneService.sharedContext());
+//				.selectOne(cayenneService.newContext());
 //
 //		CourseContext courseContext = CourseContext.valueOf(discountService.getPromotions(), new CheckClassAge().classAge(preferenceController.getHideClassOnWebsiteAge()));
 //

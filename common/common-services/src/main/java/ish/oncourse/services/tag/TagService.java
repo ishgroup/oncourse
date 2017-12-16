@@ -190,11 +190,11 @@ public class TagService extends BaseService<Tag> implements ITagService {
 		// MAILING_LISTS(3, "Mailing lists") - see NodeSpecialType
 		Tag parent = ObjectSelect.query(Tag.class).where(Tag.COLLEGE.eq(getWebSiteService().getCurrentCollege()))
 				.and(Tag.SPECIAL_TYPE.eq(NodeSpecialType.MAILING_LISTS))
-				.and(Tag.PARENT.isNull()).selectFirst(getCayenneService().sharedContext());
+				.and(Tag.PARENT.isNull()).selectFirst(getCayenneService().newContext());
 
 		if (parent != null) {
 			return ObjectSelect.query(Tag.class).where(getSiteQualifier())
-					.and(Tag.PARENT.eq(parent)).select(getCayenneService().sharedContext());
+					.and(Tag.PARENT.eq(parent)).select(getCayenneService().newContext());
 		}
 		return tags;
 	}
@@ -209,7 +209,7 @@ public class TagService extends BaseService<Tag> implements ITagService {
 				.and(Taggable.ENTITY_WILLOW_ID.eq(contact.getId()))
 				.and(Taggable.COLLEGE.eq(currentCollege))
 				.prefetch(Taggable.TAGGABLE_TAGS.disjoint())
-				.select(getCayenneService().sharedContext());
+				.select(getCayenneService().newContext());
 
 
 		Set<Tag> allMailingLists = new HashSet<>(getMailingLists());

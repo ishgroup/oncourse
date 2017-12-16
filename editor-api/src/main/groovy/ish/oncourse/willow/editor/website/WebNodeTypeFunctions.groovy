@@ -29,7 +29,7 @@ class WebNodeTypeFunctions {
         return (ObjectSelect.query(WebNodeType).where(selectQualifier)
                 &  WebNodeType.WEB_SITE_VERSION.eq(webSiteVersion)).
                 cacheGroup(WebNodeType.simpleName).
-                cacheStrategy(QueryCacheStrategy.LOCAL_CACHE).
+                cacheStrategy(QueryCacheStrategy.SHARED_CACHE).
                 selectOne(context)
     }
     
@@ -47,7 +47,7 @@ class WebNodeTypeFunctions {
         WebSiteVersion version = WebSiteVersionFunctions.getCurrentVersion(request, ctx)
         return ObjectSelect.query(WebNodeType)
                 .where(WebNodeType.WEB_SITE_VERSION.eq(version))
-                .cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
+                .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
                 .cacheGroup(WebNodeType.simpleName)
                 .orderBy(WebNodeType.MODIFIED.desc())
                 .select(ctx)

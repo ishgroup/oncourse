@@ -31,7 +31,7 @@ public class CourseClassServiceTest extends ServiceTest {
     {
         ICayenneService cayenneService = getService(ICayenneService.class);
         ICourseClassService service = getService(ICourseClassService.class);
-        ObjectContext objectContext = cayenneService.sharedContext();
+        ObjectContext objectContext = cayenneService.newContext();
 
         //tutor test
         Contact contact = Cayenne.objectForPK(objectContext, Contact.class, 1);
@@ -70,7 +70,7 @@ public class CourseClassServiceTest extends ServiceTest {
     {
         ICayenneService cayenneService = getService(ICayenneService.class);
         ICourseClassService service = getService(ICourseClassService.class);
-        ObjectContext objectContext = cayenneService.sharedContext();
+        ObjectContext objectContext = cayenneService.newContext();
 
         Contact contact = Cayenne.objectForPK(objectContext, Contact.class, 2);
 
@@ -101,7 +101,7 @@ public class CourseClassServiceTest extends ServiceTest {
 	public void testGetSurveysForTutor()
 	{
 		ICayenneService cayenneService = getService(ICayenneService.class);
-		ObjectContext objectContext = cayenneService.sharedContext();
+		ObjectContext objectContext = cayenneService.newContext();
 
 		CourseClass courseClass = Cayenne.objectForPK(objectContext, CourseClass.class, 1);
 		ICourseClassService service = getService(ICourseClassService.class);
@@ -113,7 +113,7 @@ public class CourseClassServiceTest extends ServiceTest {
 	public void testGetSurveysForClass()
 	{
 		ICayenneService cayenneService = getService(ICayenneService.class);
-		ObjectContext objectContext = cayenneService.sharedContext();
+		ObjectContext objectContext = cayenneService.newContext();
 
 		Contact tutor = Cayenne.objectForPK(objectContext, Contact.class, 1);
 		ICourseClassService service = getService(ICourseClassService.class);

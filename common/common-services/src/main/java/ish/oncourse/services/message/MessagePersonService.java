@@ -25,7 +25,7 @@ public class MessagePersonService implements IMessagePersonService {
 		q.addPrefetch(MessagePerson.MESSAGE_PROPERTY);
 		q.addPrefetch(MessagePerson.CONTACT_PROPERTY);
 		q.setFetchLimit(limit);
-		return cayenneService.sharedContext().performQuery(q);
+		return cayenneService.newContext().performQuery(q);
 	}
 
 	private Expression dequeueingQualifier() {

@@ -33,8 +33,8 @@ public class WebSiteServiceOverride implements IWebSiteService {
 
 	@Override
 	public List<WebSite> getSiteTemplates() {
-		return ObjectSelect.query(WebSite.class).where(WebSite.SITE_KEY.like("template-%")).cacheStrategy(QueryCacheStrategy.LOCAL_CACHE,
-				WebSite.class.getSimpleName()).orderBy(WebSite.SITE_KEY.asc()).select(cayenneService.sharedContext());
+		return ObjectSelect.query(WebSite.class).where(WebSite.SITE_KEY.like("template-%")).cacheStrategy(QueryCacheStrategy.SHARED_CACHE,
+				WebSite.class.getSimpleName()).orderBy(WebSite.SITE_KEY.asc()).select(cayenneService.newContext());
 
 	}
 }

@@ -19,7 +19,7 @@ public class GetRedirects {
 
     public List<WebUrlAlias> get() {
         return ObjectSelect.query(WebUrlAlias.class)
-                .cacheStrategy(useCache ? QueryCacheStrategy.LOCAL_CACHE : QueryCacheStrategy.LOCAL_CACHE_REFRESH, WebUrlAlias.class.getSimpleName())
+                .cacheStrategy(useCache ? QueryCacheStrategy.SHARED_CACHE : QueryCacheStrategy.SHARED_CACHE_REFRESH, WebUrlAlias.class.getSimpleName())
                 .and(WebUrlAlias.WEB_SITE_VERSION.eq(webSiteVersion))
                 .and(WebUrlAlias.REDIRECT_TO.isNotNull())
                 .orderBy(WebUrlAlias.MODIFIED.desc()).select(objectContext);

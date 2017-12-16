@@ -7,10 +7,8 @@ import ish.oncourse.services.BaseService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
-import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.*;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -37,7 +35,7 @@ public class WebUrlAliasService extends BaseService<WebUrlAlias> implements
 				.and(WebUrlAlias.URL_PATH.eq(path))
 				.localCache(WebUrlAlias.class.getSimpleName());
 
-		List<WebUrlAlias> aliases = query.select(cayenneService.sharedContext());
+		List<WebUrlAlias> aliases = query.select(cayenneService.newContext());
 		int size = aliases.size();
 		logger.debug("Found {} aliases for query: {}", size, query);
 
@@ -57,6 +55,6 @@ public class WebUrlAliasService extends BaseService<WebUrlAlias> implements
 
     @Override
     public List<WebUrlAlias> getRedirects() {
-		return  GetRedirects.valueOf(webSiteVersionService.getCurrentVersion(), cayenneService.sharedContext(), true).get();
+		return  GetRedirects.valueOf(webSiteVersionService.getCurrentVersion(), cayenneService.newContext(), true).get();
     }
 }

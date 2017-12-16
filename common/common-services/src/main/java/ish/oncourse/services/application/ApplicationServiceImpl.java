@@ -3,19 +3,11 @@
  */
 package ish.oncourse.services.application;
 
-import ish.common.types.ApplicationStatus;
 import ish.oncourse.model.Application;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.Student;
 import ish.oncourse.services.persistence.ICayenneService;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.Ordering;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.ioc.annotations.Inject;
-
-import java.util.Date;
-import java.util.List;
 
 public class ApplicationServiceImpl implements IApplicationService {
 
@@ -29,7 +21,7 @@ public class ApplicationServiceImpl implements IApplicationService {
 	 */
 	@Override
 	public Application findOfferedApplicationBy(Course course, Student student) {
-		return new FindOfferedApplication(course, student,cayenneService.sharedContext()).get();
+		return new FindOfferedApplication(course, student,cayenneService.newContext()).get();
 	}
 	
 	/**
@@ -39,7 +31,7 @@ public class ApplicationServiceImpl implements IApplicationService {
 	 */
 	@Override
 	public Application findNewApplicationBy(Course course, Student student) {
-		return  new FindNewApplication(course, student,cayenneService.sharedContext()).get();
+		return  new FindNewApplication(course, student,cayenneService.newContext()).get();
 	}
 
 }

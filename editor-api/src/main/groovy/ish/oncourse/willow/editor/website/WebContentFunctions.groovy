@@ -39,7 +39,7 @@ class WebContentFunctions {
 
     static <T> WebContent getWebContent(Request request, ObjectContext context, Property<T> property, T value) {
         ObjectSelect<WebContent> query = ObjectSelect.query(WebContent).
-                cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebContent.simpleName) & getVersionQualifier(request, context)
+                cacheStrategy(QueryCacheStrategy.SHARED_CACHE, WebContent.simpleName) & getVersionQualifier(request, context)
         
         if (property) {
             query = query & property.eq(value)
@@ -66,7 +66,7 @@ class WebContentFunctions {
 
     private static WebContent getBlockBy(Expression selectQualifier, Request request, ObjectContext context) {
         return (((ObjectSelect.query(WebContent)
-                .cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
+                .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
                 .cacheGroup(WebContent.simpleName)
                 & getVersionQualifier(request, context))
                 & selectQualifier)

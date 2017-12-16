@@ -219,7 +219,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 				break;
 			case Course:
 				Course course = GetCourseByPath
-						.valueOf(cayenneService.sharedContext(), webSiteService.getCurrentWebSite(), path)
+						.valueOf(cayenneService.newContext(), webSiteService.getCurrentWebSite(), path)
 						.get();
 				if (course != null) {
 					request.setAttribute(Course.class.getSimpleName(), course);
@@ -229,7 +229,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 				break;
 			case CourseClass:
 				CourseClass courseClass = GetCourseClassByPath
-						.valueOf(cayenneService.sharedContext(), webSiteService.getCurrentWebSite(), path)
+						.valueOf(cayenneService.newContext(), webSiteService.getCurrentWebSite(), path)
 						.get();
 				if (courseClass != null) {
 					request.setAttribute(CourseClass.class.getSimpleName(), courseClass);

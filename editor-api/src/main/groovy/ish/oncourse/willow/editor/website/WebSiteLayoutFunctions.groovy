@@ -26,7 +26,7 @@ class WebSiteLayoutFunctions {
         return ObjectSelect.query(WebSiteLayout).
                 where(WebSiteLayout.WEB_SITE_VERSION.eq(WebSiteVersionFunctions.getCurrentVersion(request, ctx))).
                 cacheGroup(WebSiteLayout.simpleName).
-                cacheStrategy(QueryCacheStrategy.LOCAL_CACHE).
+                cacheStrategy(QueryCacheStrategy.SHARED_CACHE).
                 select(ctx)
     }
 
@@ -36,7 +36,7 @@ class WebSiteLayoutFunctions {
                 .where(selectQualifier)
                 & WebSiteLayout.WEB_SITE_VERSION.eq(webSiteVersion)).
                 cacheGroup(WebNodeType.simpleName).
-                cacheStrategy(QueryCacheStrategy.LOCAL_CACHE).
+                cacheStrategy(QueryCacheStrategy.SHARED_CACHE).
                 selectOne(ctx)
     }
 }

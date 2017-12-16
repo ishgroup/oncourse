@@ -1,7 +1,6 @@
 package ish.oncourse.services.textile.validator;
 
 import ish.oncourse.model.Site;
-import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.textile.TextileType;
 import ish.oncourse.services.textile.TextileUtil;
@@ -39,7 +38,7 @@ public class LocationTextileValidator extends AbstractTextileValidator {
         }
 
         if (siteId != null) {
-            ObjectContext objectContext = cayenneService.sharedContext();
+            ObjectContext objectContext = cayenneService.newContext();
             Site site = ObjectSelect.query(Site.class).and(ExpressionFactory.inDbExp(Site.ID_PK_COLUMN, Long.valueOf(siteId))).selectFirst(objectContext);
             if (site == null) {
                 errors.addFailure(String.format("tag '%s' - cannot find Site with id: %s", tag, siteId), ValidationFailureType.CONTENT_NOT_FOUND);

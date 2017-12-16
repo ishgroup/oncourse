@@ -20,7 +20,6 @@ import org.apache.tapestry5.services.Request;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
-import java.util.List;
 
 public class Login {
 
@@ -168,7 +167,7 @@ public class Login {
 	}
 
 	private Contact getContactByUniqEmail(String email) {
-		List<Contact> contacts = ObjectSelect.query(Contact.class).where(Contact.EMAIL_ADDRESS.eq(email)).select(cayenneService.sharedContext());
+		List<Contact> contacts = ObjectSelect.query(Contact.class).where(Contact.EMAIL_ADDRESS.eq(email)).select(cayenneService.newContext());
 		if (contacts.size() == 1) {
 			Contact contact = contacts.get(0);
 			return contact.getPassword() == null ? contact : null;

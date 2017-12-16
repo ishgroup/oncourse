@@ -1,7 +1,6 @@
 package ish.oncourse.ui.components;
 
 import ish.math.Money;
-import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.*;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.CheckClassAge;
@@ -9,6 +8,7 @@ import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.services.tutor.ITutorService;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.ui.utils.CourseContext;
 import ish.oncourse.util.CustomizedDateFormat;
 import ish.oncourse.util.FormatUtils;
@@ -160,7 +160,7 @@ public class CourseClassItem extends ISHCommon {
 				.and(TutorRole.TUTOR.dot(Tutor.FINISH_DATE).isNull().orExp(TutorRole.TUTOR.dot(Tutor.FINISH_DATE).gt(new Date())))
 				.prefetch(TutorRole.TUTOR.joint())
 				.prefetch(TutorRole.TUTOR.dot(Tutor.CONTACT).joint())
-				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
+				.cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
 				.cacheGroup(TutorRole.class.getSimpleName()).select(courseClass.getObjectContext());
 	}
 

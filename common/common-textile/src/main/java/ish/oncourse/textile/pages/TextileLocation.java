@@ -5,7 +5,6 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.search.Count;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchParamsParser;
-import ish.oncourse.services.search.SearchParamsParser.ParametersProvider;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.TextileUtil;
@@ -16,16 +15,15 @@ import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
-import org.apache.tapestry5.services.Session;
 
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /*
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
@@ -103,7 +101,7 @@ public class TextileLocation {
                 counter = count.getCounter();
             }
         } else if (siteId != null) {
-            ObjectContext objectContext = cayenneService.sharedContext();
+            ObjectContext objectContext = cayenneService.newContext();
             Site site = ObjectSelect.query(Site.class).and(ExpressionFactory.inDbExp(Site.ID_PK_COLUMN, Long.valueOf(siteId))).selectFirst(objectContext);
             display = site.getName();
             path = "site=" + siteId;

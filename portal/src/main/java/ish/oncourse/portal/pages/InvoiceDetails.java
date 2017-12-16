@@ -72,7 +72,7 @@ public class InvoiceDetails {
                                 .where(InvoiceDueDate.INVOICE.eq(this.invoice))
                                 .orderBy(InvoiceDueDate.DUE_DATE.asc())
 								.cacheStrategy(SHARED_CACHE, InvoiceDueDate.class.getSimpleName())
-								.select(cayenneService.sharedContext());
+								.select(cayenneService.newContext());
                 return null;
             } else {
                 return indexPage;

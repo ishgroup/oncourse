@@ -219,7 +219,7 @@ public class TestModule {
 //		ObjectContext mockContext = mock(ObjectContext.class);
 //
 //		when(mockContext.performQuery(any(SelectQuery.class))).thenReturn(Collections.EMPTY_LIST);
-//		when(mock.sharedContext()).thenReturn(mockContext);
+//		when(mock.newContext()).thenReturn(mockContext);
 //		return mock;
 //	}
 //

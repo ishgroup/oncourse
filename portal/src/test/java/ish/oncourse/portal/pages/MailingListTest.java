@@ -43,7 +43,7 @@ public class MailingListTest extends ServiceTest {
 		new LoadDataSet().dataSetFile("ish/oncourse/portal/pages/mailingListTestDataSet.xml").load(getDataSource("jdbc/oncourse"));
 
 		ICayenneService cayenneService = getService(ICayenneService.class);
-		context = cayenneService.sharedContext();
+		context = cayenneService.newContext();
 		currentUser = SelectById.query(Contact.class, 1l).selectOne(context);
 		college = SelectById.query(College.class, 1l).selectOne(context);
 		tags = new HashSet<>(ObjectSelect.query(Tag.class).where(Tag.NAME.eq("Name1")).select(context));

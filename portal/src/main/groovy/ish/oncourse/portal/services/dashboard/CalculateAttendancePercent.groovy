@@ -10,9 +10,6 @@ import org.apache.cayenne.query.ObjectSelect
 import javax.cache.Cache
 import javax.cache.CacheManager
 
-import static org.apache.cayenne.query.QueryCacheStrategy.LOCAL_CACHE
-import static org.apache.cayenne.query.QueryCacheStrategy.SHARED_CACHE
-
 @CompileStatic
 class CalculateAttendancePercent {
 

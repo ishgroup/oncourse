@@ -52,6 +52,6 @@ public class Resource {
 				ExpressionFactory.matchExp(Document.FILE_UUID_PROPERTY, uuid).andExp(
 				ExpressionFactory.matchExp(Document.COLLEGE_PROPERTY, webSiteService.getCurrentCollege())));
 		
-		return (Document) Cayenne.objectForQuery(cayenneService.sharedContext(), query);
+		return (Document) Cayenne.objectForQuery(cayenneService.newContext(), query);
 	}
 }

@@ -102,7 +102,7 @@ public class RestAPIFilter implements Filter {
 
     private void publish(HttpServletResponse response, HttpSession httpSession) throws IOException {
         WebSite webSite = webSiteService.getCurrentWebSite();
-        WebSiteVersion webSiteVersion = GetDeployedVersion.valueOf(cayenneService.sharedContext(), webSite, false).get();
+        WebSiteVersion webSiteVersion = GetDeployedVersion.valueOf(cayenneService.newContext(), webSite, false).get();
 
         if (System.currentTimeMillis() - webSiteVersion.getDeployedOn().getTime() > PUBLISH_INTERVAL) {
             Future future = publish();

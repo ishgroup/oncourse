@@ -43,7 +43,7 @@ public class TutorService extends BaseService<Tutor> implements ITutorService {
 
 	public Date getLatestModifiedDate() {
 		return (Date) getCayenneService()
-				.sharedContext()
+				.newContext()
 				.performQuery(
 						new EJBQLQuery("select max(t.modified) from Tutor t where "
 								+ getSiteQualifier().toEJBQL("t"))).get(0);
@@ -63,7 +63,7 @@ public class TutorService extends BaseService<Tutor> implements ITutorService {
 	public Tutor findByAngelId(Long angelId) {
 		return ObjectSelect.query(Tutor.class)
 				.and(Tutor.ANGEL_ID.eq(angelId))
-				.and(getSiteQualifier()).selectOne(getCayenneService().sharedContext());
+				.and(getSiteQualifier()).selectOne(getCayenneService().newContext());
 	}
 
     public boolean isActiveTutor(Tutor tutor)

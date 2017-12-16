@@ -3,7 +3,6 @@ package ish.oncourse.cms.pages;
 import ish.oncourse.model.WebMenu;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebSite;
-import ish.oncourse.services.menu.GetMenuChildren;
 import ish.oncourse.services.menu.IWebMenuService;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -71,7 +70,7 @@ public class MA {
 			return new TextStreamResponse("text/json", obj.toString());
 		}
 
-		ObjectContext ctx = cayenneService.sharedContext();
+		ObjectContext ctx = cayenneService.newContext();
 		WebSite webSite = ctx.localObject(webSiteService.getCurrentWebSite());
 		WebMenu menu = webMenuService.createMenu(webSite);
 		ctx.commitChanges();
@@ -186,7 +185,7 @@ public class MA {
 
 		String id = request.getParameter(MENU_ELEMENT_ID_PARAMETER);
 
-		ObjectContext ctx = cayenneService.sharedContext();
+		ObjectContext ctx = cayenneService.newContext();
 
 		WebMenu menu = webMenuService.findById(Long.parseLong(id));
 		if (menu != null) {
@@ -228,7 +227,7 @@ public class MA {
 
 		int weight = Integer.parseInt(request.getParameter("w"));
 
-		ObjectContext ctx = cayenneService.sharedContext();
+		ObjectContext ctx = cayenneService.newContext();
 
 		WebMenu item = ctx.localObject(webMenuService.findById(Long.parseLong(id)));
 		WebMenu pItem = ctx.localObject(pid.equals("null") ? webMenuService.getRootMenu()

@@ -1,6 +1,5 @@
 package ish.oncourse.ui.components.internal;
 
-import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Product;
 import ish.oncourse.services.cookies.ICookiesService;
@@ -9,6 +8,7 @@ import ish.oncourse.services.datalayer.DataLayerFactory;
 import ish.oncourse.services.datalayer.IDataLayerFactory;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.voucher.IVoucherService;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.ui.utils.JSONFormat;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -67,7 +67,7 @@ public class DataLayer extends ISHCommon {
     private Cart cart;
 
     @SetupRender
-	void beforeRender() {
+	void setupRender() {
 
 		moneyFormat = NumberFormat.getInstance();
 		moneyFormat.setMinimumIntegerDigits(1);

@@ -75,7 +75,7 @@ public class GetEntityAvailabilityByTag {
                         .andExp(Tag.TAGGABLE_TAGS.dot(TaggableTag.TAGGABLE).dot(Taggable.ENTITY_WILLOW_ID).eq(entity.getId())));
 
         ObjectSelect query = ObjectSelect.query(Tag.class).and(qualifier);
-        query.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, entity.getClass().getSimpleName());
+        query.cacheStrategy(QueryCacheStrategy.SHARED_CACHE, entity.getClass().getSimpleName());
 
         return context.performQuery(query);
     }

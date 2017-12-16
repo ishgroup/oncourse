@@ -7,7 +7,7 @@ import ish.oncourse.model.Room;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 
-import static org.apache.cayenne.query.QueryCacheStrategy.LOCAL_CACHE;
+import static org.apache.cayenne.query.QueryCacheStrategy.SHARED_CACHE;
 
 /**
  * Created by pavel on 3/27/17.
@@ -38,7 +38,7 @@ public class GetCourseByCode {
                 .prefetch(Course.COURSE_CLASSES.dot(CourseClass.SESSIONS).joint())
                 .prefetch(Course.COURSE_CLASSES.dot(CourseClass.ROOM).joint())
                 .prefetch(Course.COURSE_CLASSES.dot(CourseClass.ROOM).dot(Room.SITE).joint())
-                .cacheStrategy(LOCAL_CACHE)
+                .cacheStrategy(SHARED_CACHE)
                 .cacheGroup(Course.class.getSimpleName())
                 .selectOne(context);
     }

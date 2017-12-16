@@ -12,7 +12,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.SortedSet;
 
 public class WebContentService extends BaseService<WebContent> implements IWebContentService {
 
@@ -27,13 +30,13 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 	@Override
 	public WebContent getWebContent(String searchProperty, Object value) {
 		ObjectSelect<WebContent> query = ObjectSelect.query(WebContent.class).
-				cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebContent.class.getSimpleName()).
+				cacheStrategy(QueryCacheStrategy.SHARED_CACHE, WebContent.class.getSimpleName()).
 				and(WebContent.WEB_SITE_VERSION.eq(webSiteVersionService.getCurrentVersion()));
 		if (searchProperty != null) {
 			query.and(ExpressionFactory.matchExp(
 					searchProperty, value));
 		}
-		return query.selectOne(cayenneService.sharedContext());
+		return query.selectOne(cayenneService.newContext());
 	}
 
 	/**
@@ -55,7 +58,7 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 				.and(WebContent.WEB_SITE_VERSION.eq(webSiteVersionService.getCurrentVersion()))
 				.and(getBlockQualifier())
 				.orderBy(WebContent.MODIFIED.desc())
-				.select(cayenneService.sharedContext());
+				.select(cayenneService.newContext());
 	}
 	
 	@Override
@@ -127,12 +130,12 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 	@Override
 	public WebContent getBlockByName(String webContentName) {
 		return ObjectSelect.query(WebContent.class)
-				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
+				.cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
 				.cacheGroup(WebContent.class.getSimpleName())
 				.and(WebContent.WEB_SITE_VERSION.eq(webSiteVersionService.getCurrentVersion()))
 				.and(WebContent.NAME.eq(webContentName))
 				.and(getBlockQualifier())
-				.selectOne(cayenneService.sharedContext());
+				.selectOne(cayenneService.newContext());
 	}
 
 	private Expression getBlockQualifier() {
@@ -149,13 +152,13 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 		return ObjectSelect.query(WebNode.class)
 				.and(WebNode.WEB_SITE_VERSION.eq(webSiteVersionService.getCurrentVersion()))
 				.and(WebNode.NAME.eq(webNodeName))
-				.selectOne(cayenneService.sharedContext());
+				.selectOne(cayenneService.newContext());
 	}
 
 	@Override
 	public WebNodeType getWebNodeTypeByName(String webNodeTypeName) {
 		return ObjectSelect.query(WebNodeType.class)
 				.and(WebNodeType.WEB_SITE_VERSION.eq(webSiteVersionService.getCurrentVersion()))
-				.and(WebNodeType.NAME.eq(webNodeTypeName)).selectOne(cayenneService.sharedContext());
+				.and(WebNodeType.NAME.eq(webNodeTypeName)).selectOne(cayenneService.newContext());
 	}
 }

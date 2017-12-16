@@ -27,7 +27,7 @@ class ModelBuilderTest {
 
         ICayenneService service = mock(ICayenneService)
         when(service.newContext()).thenReturn(context)
-        when(service.sharedContext()).thenReturn(context)
+        when(service.newContext()).thenReturn(context)
 
         PreferenceController preferenceController = mock(PreferenceController)
         PreferenceControllerFactory factory = mock(PreferenceControllerFactory)

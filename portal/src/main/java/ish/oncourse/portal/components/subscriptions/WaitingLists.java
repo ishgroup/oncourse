@@ -31,7 +31,7 @@ public class WaitingLists {
 
     @SetupRender
     void setupRender() {
-        ObjectContext objectContext = cayenneService.sharedContext();
+        ObjectContext objectContext = cayenneService.newContext();
         Contact contact = portalService.getContact();
         if (contact != null && contact.getStudent() != null)
         {

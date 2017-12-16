@@ -195,7 +195,7 @@ public class TestModule {
     public ICayenneService buildCayenneServiceOverride() {
         ICayenneService mock = mock(ICayenneService.class);
         ObjectContext mockContext = mock(ObjectContext.class);
-        when(mock.sharedContext()).thenReturn(mockContext);
+        when(mock.newContext()).thenReturn(mockContext);
         when(mockContext.performQuery(Matchers.any(SelectQuery.class))).thenReturn(Collections.EMPTY_LIST);
         return mock;
     }

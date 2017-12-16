@@ -1,6 +1,5 @@
 package ish.oncourse.ui.pages;
 
-import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.PostcodeDb;
 import ish.oncourse.model.Tag;
@@ -13,6 +12,7 @@ import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchException;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
+import ish.oncourse.ui.base.ISHCommon;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -96,7 +96,7 @@ public class QuickSearchView extends ISHCommon {
 				String stateQualifier = null;
 				WebSite webSite = webSiteService.getCurrentWebSite();
 				if (webSite != null) {
-					stateQualifier = new GetAutoCompleteState(webSite.getCollege(), cayenneService.sharedContext(), webSite).get();
+					stateQualifier = new GetAutoCompleteState(webSite.getCollege(), cayenneService.newContext(), webSite).get();
 				}
 				SolrDocumentList suggestions = searchService.autoSuggest(searchString, stateQualifier);
 				setupLists(stateQualifier, suggestions);

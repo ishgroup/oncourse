@@ -45,8 +45,8 @@ public class CollegeService implements ICollegeService {
 	public College findById(Long collegeId) {
 		Expression expr = ExpressionFactory.matchDbExp(College.ID_PK_COLUMN, collegeId);
 		SelectQuery q = new SelectQuery(College.class, expr);
-		q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
-		return (College) Cayenne.objectForQuery(cayenneService.sharedContext(), q);
+		q.setCacheStrategy(QueryCacheStrategy.SHARED_CACHE);
+		return (College) Cayenne.objectForQuery(cayenneService.newContext(), q);
 	}
 
 	/**
@@ -56,7 +56,7 @@ public class CollegeService implements ICollegeService {
 	public College findBySiteKey(String siteKey) {
 		SelectQuery query = new SelectQuery(WebSite.class, ExpressionFactory.matchExp(WebSite.SITE_KEY_PROPERTY,
 				siteKey));
-		WebSite site = (WebSite) Cayenne.objectForQuery(cayenneService.sharedContext(), query);
+		WebSite site = (WebSite) Cayenne.objectForQuery(cayenneService.newContext(), query);
 		return (site != null) ? site.getCollege() : null;
 	}
 
@@ -68,7 +68,7 @@ public class CollegeService implements ICollegeService {
 
 		College college;
 		try {
-			ObjectContext objectContext = cayenneService.sharedContext();
+			ObjectContext objectContext = cayenneService.newContext();
 			college = ObjectSelect.query(College.class).where(College.WEB_SERVICES_SECURITY_CODE.eq(securityCode)).selectOne(objectContext);
 			if (college == null) {
 				logger.debug("No College found for security code: {}", securityCode);
@@ -87,7 +87,7 @@ public class CollegeService implements ICollegeService {
 	 */
 	@Override
 	public College findBySecurityCodeLastChars(String securityCodeEnding) {
-		ObjectContext objectContext = cayenneService.sharedContext();
+		ObjectContext objectContext = cayenneService.newContext();
 		return ObjectSelect.query(College.class).where(College.WEB_SERVICES_SECURITY_CODE.like("%" + securityCodeEnding)).selectOne(objectContext);
 	}
 

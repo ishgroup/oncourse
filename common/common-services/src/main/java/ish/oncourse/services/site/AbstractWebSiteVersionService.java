@@ -6,9 +6,6 @@ package ish.oncourse.services.site;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.model.WebSiteVersion;
 import ish.oncourse.services.persistence.ICayenneService;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.ObjectSelect;
-import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 public abstract class AbstractWebSiteVersionService implements IWebSiteVersionService {
@@ -17,7 +14,7 @@ public abstract class AbstractWebSiteVersionService implements IWebSiteVersionSe
     private ICayenneService cayenneService;
 
 	public WebSiteVersion getDeployedVersion(WebSite webSite) {
-        return GetDeployedVersion.valueOf(cayenneService.sharedContext(), webSite, true).get();
+        return GetDeployedVersion.valueOf(cayenneService.newContext(), webSite, true).get();
 	}
 
     public boolean isEditor() {

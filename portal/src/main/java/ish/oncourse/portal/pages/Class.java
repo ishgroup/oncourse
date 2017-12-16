@@ -11,7 +11,7 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
-import static ish.oncourse.portal.services.dashboard.ClassTab.*;
+import static ish.oncourse.portal.services.dashboard.ClassTab.DETAILS;
 
 public class Class {
 
@@ -93,7 +93,7 @@ public class Class {
     }
 
 	public boolean hasResults() {
-		CourseClass courseClass = cayenneService.sharedContext().localObject(this.courseClass);
+		CourseClass courseClass = cayenneService.newContext().localObject(this.courseClass);
 		return portalService.hasResult(courseClass);
 	}
 

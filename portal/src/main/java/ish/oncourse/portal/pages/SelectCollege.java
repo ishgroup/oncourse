@@ -101,7 +101,7 @@ public class SelectCollege {
 	@OnEvent(component = "collegeForm", value = "success")
 	Object submitted() {
 		collegeForm.clearErrors();
-		Contact c = Cayenne.objectForPK(cayenneService.sharedContext(), Contact.class, selectedUser);
+		Contact c = Cayenne.objectForPK(cayenneService.newContext(), Contact.class, selectedUser);
 
 		if (collegesWithDuplicates.contains(String.valueOf(c.getCollege().getId()))) {
 			collegeForm
@@ -120,7 +120,7 @@ public class SelectCollege {
 	}
 
 	public String getCollegeName() {
-		Contact c = Cayenne.objectForPK(cayenneService.sharedContext(), Contact.class, user);
+		Contact c = Cayenne.objectForPK(cayenneService.newContext(), Contact.class, user);
 		return c.getCollege().getName();
 	}
 

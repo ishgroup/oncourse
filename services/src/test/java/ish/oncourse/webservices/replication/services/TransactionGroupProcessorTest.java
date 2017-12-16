@@ -139,8 +139,8 @@ public class TransactionGroupProcessorTest extends ServiceTest {
 				willowId = record.getStub().getWillowId();
 				assertNotNull("Willow id for AttachmentInfo", willowId);
 			}
-			DocumentVersion documentVersion = Cayenne.objectForPK(cayenneService.sharedContext(), DocumentVersion.class, 1L);
-			BinaryInfo binaryInfo = Cayenne.objectForPK(cayenneService.sharedContext(), BinaryInfo.class, 1L);
+			DocumentVersion documentVersion = Cayenne.objectForPK(cayenneService.newContext(), DocumentVersion.class, 1L);
+			BinaryInfo binaryInfo = Cayenne.objectForPK(cayenneService.newContext(), BinaryInfo.class, 1L);
 
 			assertNotNull("BinaryInfo form db", binaryInfo);
 			assertNotNull(documentVersion);

@@ -24,7 +24,7 @@ public abstract class AbstractAllStubBuildersTest extends ServiceTest {
 	protected <E extends Queueable, S extends GenericReplicationStub> S testStubBuilder(Class<E> entityClass,
 																						AbstractWillowStubBuilder<E, S> stubBuilder, Long entityId, String... excludeProperty) {
 		ICayenneService cayenneService = getService(ICayenneService.class);
-		E entity = Cayenne.objectForPK(cayenneService.sharedContext(), entityClass, entityId);
+		E entity = Cayenne.objectForPK(cayenneService.newContext(), entityClass, entityId);
 		StubBuilderTestHelper<E, S> stubBuilderTestHelper = new StubBuilderTestHelper<>(entity, excludeProperty);
 		return stubBuilderTestHelper.assertStubBuilder(stubBuilder);
 	}

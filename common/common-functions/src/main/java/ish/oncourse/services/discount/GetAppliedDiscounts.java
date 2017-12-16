@@ -45,7 +45,7 @@ public class GetAppliedDiscounts {
 										.andExp(DiscountCourseClass.DISCOUNT.in(promotions)))
 				).
 				prefetch(DiscountCourseClass.DISCOUNT.joint()).
-				cacheStrategy(QueryCacheStrategy.LOCAL_CACHE).
+				cacheStrategy(QueryCacheStrategy.SHARED_CACHE).
 				cacheGroup(DiscountCourseClass.class.getSimpleName()).
 				select(courseClass.getObjectContext());
 		

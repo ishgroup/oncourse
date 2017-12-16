@@ -35,7 +35,7 @@ public class ISHClusteredSessionImpl extends SessionImpl {
 	public Object getAttribute(String name) {
 		Object result = super.getAttribute(name);
 
-		RestoreCayenneDataObject rcdo = RestoreCayenneDataObject.valueOf(result, cayenneService.sharedContext());
+		RestoreCayenneDataObject rcdo = RestoreCayenneDataObject.valueOf(result, cayenneService.newContext());
 		if (rcdo.needToBeRestored()) {
 			rcdo.restore();
 			result = rcdo.getResult();
@@ -69,7 +69,7 @@ public class ISHClusteredSessionImpl extends SessionImpl {
 
 			if (attributeValue == null) continue;
 
-			RestoreCayenneDataObject rcdo = RestoreCayenneDataObject.valueOf(attributeValue, cayenneService.sharedContext());
+			RestoreCayenneDataObject rcdo = RestoreCayenneDataObject.valueOf(attributeValue, cayenneService.newContext());
 			if (rcdo.needToBeRestored()) {
 				rcdo.restore();
 				attributeValue = rcdo.getResult();

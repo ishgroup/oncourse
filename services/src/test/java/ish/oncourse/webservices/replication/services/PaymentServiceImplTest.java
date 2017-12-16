@@ -36,7 +36,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 
 		List<College> colleges = ObjectSelect.query(College.class)
 				.where(ExpressionFactory.matchDbExp(College.ID_PK_COLUMN, 1l))
-				.select(service.sharedContext());
+				.select(service.newContext());
 
 		college = colleges.isEmpty() ? null : colleges.get(0);
 	}

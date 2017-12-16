@@ -25,15 +25,15 @@ public class PostCodeDbService implements IPostCodeDbService {
 		if (StringUtils.trimToNull(state) != null) {
 			objectSelect = objectSelect.and(PostcodeDb.STATE.eq(state));
 		}
-		return objectSelect.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
+		return objectSelect.cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
 				.cacheGroup(PostcodeDb.class.getSimpleName())
-				.select(cayenneService.sharedContext());
+				.select(cayenneService.newContext());
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<PostcodeDb> getAllPostcodes() {
 		final SelectQuery query = new SelectQuery(PostcodeDb.class);
-		query.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
+		query.setCacheStrategy(QueryCacheStrategy.SHARED_CACHE);
 		query.setCacheGroup(PostcodeDb.class.getSimpleName());
 		query.andQualifier(ExpressionFactory.noMatchExp(PostcodeDb.SUBURB_PROPERTY, StringUtils.EMPTY));
 		//query.setFetchLimit(20);

@@ -20,6 +20,7 @@ import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.util.TextStreamResponse;
 
 import java.util.List;
+
 import static ish.oncourse.services.search.SuburbsAutocomplete.REQUEST_PARAM_term;
 
 public class AutoComplete {
@@ -41,7 +42,7 @@ public class AutoComplete {
 		String stateQualifier = null;
 		WebSite webSite = webSiteService.getCurrentWebSite();
 		if (webSite != null) {
-			stateQualifier = new GetAutoCompleteState(webSite.getCollege(), cayenneService.sharedContext(), webSite).get();
+			stateQualifier = new GetAutoCompleteState(webSite.getCollege(), cayenneService.newContext(), webSite).get();
 		}
         return SuburbsAutocomplete.valueOf(request, searchService, stateQualifier).getResult();
     }
@@ -51,9 +52,9 @@ public class AutoComplete {
 		final JSONArray array = new JSONArray();
 
 		if (term != null) {
-			ObjectContext context = cayenneService.sharedContext();
+			ObjectContext context = cayenneService.newContext();
 			List<Country> countries = ObjectSelect.query(Country.class).
-            cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebContent.class.getSimpleName()).
+            cacheStrategy(QueryCacheStrategy.SHARED_CACHE, WebContent.class.getSimpleName()).
             where(Country.NAME.likeIgnoreCase("%"+term+"%")).
 					select(context);
 					

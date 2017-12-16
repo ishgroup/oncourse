@@ -35,7 +35,7 @@ public class RootTagAvailabilityTest extends ServiceTest {
     @Test
     public void testAvailability() throws Exception {
         CourseClass courseClass = GetCourseClassByPath
-                .valueOf(cayenneService.sharedContext(), webSiteService.getCurrentWebSite(), "/class/DJPLF-1")
+                .valueOf(cayenneService.newContext(), webSiteService.getCurrentWebSite(), "/class/DJPLF-1")
                 .get();
         assertNotNull(courseClass);
     }

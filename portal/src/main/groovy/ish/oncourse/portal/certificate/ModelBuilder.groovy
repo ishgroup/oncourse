@@ -36,7 +36,7 @@ class ModelBuilder {
 
         Certificate certificate = ObjectSelect.query(Certificate.class)
                 .where(Certificate.UNIQUE_CODE.eq(code).andExp(Certificate.ISSUED.isNotNull()))
-                .selectFirst(cayenneService.sharedContext())
+                .selectFirst(cayenneService.newContext())
 
         if (certificate == null) {
             return Result.certificateNotFound

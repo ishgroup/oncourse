@@ -47,7 +47,7 @@ public class College extends _College {
 	 */
 	public List<Site> getWebVisibleSites() {
 		return ObjectSelect.query(Site.class).
-				cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, Site.class.getSimpleName()).
+				cacheStrategy(QueryCacheStrategy.SHARED_CACHE, Site.class.getSimpleName()).
 				where(Site.COLLEGE.eq(this)).
 				and(Site.IS_WEB_VISIBLE.isTrue()).
 				orderBy(Site.NAME.asc()).

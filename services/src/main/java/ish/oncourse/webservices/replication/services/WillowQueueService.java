@@ -52,7 +52,7 @@ public class WillowQueueService implements IWillowQueueService {
 				.orderBy(new Ordering("db:" + QueuedRecord.ID_PK_COLUMN, SortOrder.ASCENDING))
 				.pageSize(numberOfTransactions)
 				.offset(fromTransaction)
-				.select(cayenneService.sharedContext());
+				.select(cayenneService.newContext());
 
 		List<QueuedTransaction> result = new ArrayList<>(numberOfTransactions);
 

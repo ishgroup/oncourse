@@ -1,6 +1,9 @@
 package ish.oncourse.services.preference;
 
-import ish.oncourse.model.*;
+import ish.oncourse.model.Contact;
+import ish.oncourse.model.Country;
+import ish.oncourse.model.PaymentGatewayType;
+import ish.oncourse.model.Student;
 import ish.oncourse.services.courseclass.ClassAge;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
@@ -44,7 +47,7 @@ public class PreferenceController extends CommonPreferenceController {
 		if (isUserPref) {
 			throw new IllegalArgumentException("Cannot fetch a user preference in willow.");
 		}
-		return new GetPreference(webSiteService.getCurrentCollege(), key, cayenneService.sharedContext()).getValue();
+		return new GetPreference(webSiteService.getCurrentCollege(), key, cayenneService.newContext()).getValue();
 	}
 
 	@Override
@@ -53,7 +56,7 @@ public class PreferenceController extends CommonPreferenceController {
 		if (isUserPref) {
 			throw new IllegalArgumentException("Cannot fetch a user preference in willow.");
 		}
-		ObjectContext context = cayenneService.sharedContext();
+		ObjectContext context = cayenneService.newContext();
 		new GetPreference(webSiteService.getCurrentCollege(), key, context).setValue(value);
 		logger.debug("committing changes to prefs: {}", context.uncommittedObjects());
 
@@ -204,7 +207,7 @@ public class PreferenceController extends CommonPreferenceController {
 	}
 
 	public boolean isPaymentGatewayEnabled() {
-		return new IsPaymentGatewayEnabled(webSiteService.getCurrentCollege(), cayenneService.sharedContext()).get();
+		return new IsPaymentGatewayEnabled(webSiteService.getCurrentCollege(), cayenneService.newContext()).get();
 	}
 
 	public Integer getEnrolmentMinAge() {
@@ -244,7 +247,7 @@ public class PreferenceController extends CommonPreferenceController {
 	}
 
 	public boolean isCorporatePassPaymentEnabled() {
-		return new IsCorporatePassEnabled(webSiteService.getCurrentCollege(), cayenneService.sharedContext()).get();
+		return new IsCorporatePassEnabled(webSiteService.getCurrentCollege(), cayenneService.newContext()).get();
 	}
 
 	public boolean isCreditCardPaymentEnabled() {
@@ -266,7 +269,7 @@ public class PreferenceController extends CommonPreferenceController {
 
     public Integer getContactAgeWhenNeedParent()
     {
-    	return new GetContactAgeWhenNeedParent(webSiteService.getCurrentCollege(), cayenneService.sharedContext()).get();
+    	return new GetContactAgeWhenNeedParent(webSiteService.getCurrentCollege(), cayenneService.newContext()).get();
     }
 
     public void setContactAgeWhenNeedParent(Integer value)
@@ -276,7 +279,7 @@ public class PreferenceController extends CommonPreferenceController {
 
     public boolean isCollectParentDetails()
     {
-        return new IsCollectParentDetails(webSiteService.getCurrentCollege(), cayenneService.sharedContext()).get();
+        return new IsCollectParentDetails(webSiteService.getCurrentCollege(), cayenneService.newContext()).get();
     }
 
     public void setCollectParentDetails(boolean value)

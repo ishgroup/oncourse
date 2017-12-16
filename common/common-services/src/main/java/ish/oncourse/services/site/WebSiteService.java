@@ -7,7 +7,6 @@ import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -56,7 +55,7 @@ public class WebSiteService implements IWebSiteService {
     }
 
     WebHostName getCurrentDomain() {
-        return new GetDomain(request.getServerName(), cayenneService.sharedContext()).get();
+        return new GetDomain(request.getServerName(), cayenneService.newContext()).get();
     }
 
     public WebSite getCurrentWebSite() {
@@ -65,7 +64,7 @@ public class WebSiteService implements IWebSiteService {
             return currentWebSite;
         }
         
-        WebSite site = new GetWebSite(request.getServerName(), cayenneService.sharedContext()).get();
+        WebSite site = new GetWebSite(request.getServerName(), cayenneService.newContext()).get();
         request.setAttribute(CURRENT_WEB_SITE, site);
         return site;
     }
@@ -79,9 +78,9 @@ public class WebSiteService implements IWebSiteService {
         College college = null;
         SelectQuery query = new SelectQuery(College.class, ExpressionFactory.matchDbExp(College.ID_PK_COLUMN, site
                 .getCollege().getId()));
-        query.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
+        query.setCacheStrategy(QueryCacheStrategy.SHARED_CACHE);
 
-        college = (College) Cayenne.objectForQuery(cayenneService.sharedContext(), query);
+        college = (College) Cayenne.objectForQuery(cayenneService.newContext(), query);
         request.setAttribute(CURRENT_COLLEGE, college);
         return college;
     }

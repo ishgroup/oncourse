@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Session;
+
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -53,7 +54,7 @@ public class AuthenticationService implements IAuthenticationService {
 		return ObjectSelect.query(Contact.class).where(Contact.EMAIL_ADDRESS.eq(email))
 				.and(Contact.PASSWORD.eq(password))
 				.and(Contact.GIVEN_NAME.eq(firstName))
-				.and(Contact.FAMILY_NAME.eq(lastName)).select(cayenneService.sharedContext());
+				.and(Contact.FAMILY_NAME.eq(lastName)).select(cayenneService.newContext());
 	}
 
 	@Override
@@ -70,7 +71,7 @@ public class AuthenticationService implements IAuthenticationService {
 				.orderBy(SupportPassword.CREATED_ON.desc()).selectFirst(context);
 
 		if (supportPassword != null) {
-			Contact contact = cayenneService.sharedContext().localObject(supportPassword.getContact());
+			Contact contact = cayenneService.newContext().localObject(supportPassword.getContact());
 			String contactId = contact.getId().toString();
 			cookieService.writeCookieValue(SESSION_TOKEN, String.format(TOKEN_PATTERN, contactId, sessionManager.createContactSession(contactId)) , SESSION_ID_MAX_AGE);
 			return true;
@@ -92,7 +93,7 @@ public class AuthenticationService implements IAuthenticationService {
 		return ObjectSelect.query(Contact.class).where(Contact.EMAIL_ADDRESS.eq(email))
 				.and(Contact.PASSWORD.eq(password))
 				.and(Contact.IS_COMPANY.eq(Boolean.TRUE))
-				.and(Contact.FAMILY_NAME.eq(companyName)).select(cayenneService.sharedContext());
+				.and(Contact.FAMILY_NAME.eq(companyName)).select(cayenneService.newContext());
 	}
 
 	/**
@@ -109,7 +110,7 @@ public class AuthenticationService implements IAuthenticationService {
 
 		return ObjectSelect.query(Contact.class).where(Contact.EMAIL_ADDRESS.eq(email))
 				.and(Contact.GIVEN_NAME.eq(firstName))
-				.and(Contact.FAMILY_NAME.eq(lastName)).select(cayenneService.sharedContext());
+				.and(Contact.FAMILY_NAME.eq(lastName)).select(cayenneService.newContext());
 	}
 
 	@Override
@@ -122,7 +123,7 @@ public class AuthenticationService implements IAuthenticationService {
 
 		return ObjectSelect.query(Contact.class).where(Contact.EMAIL_ADDRESS.eq(email))
 				.and(Contact.IS_COMPANY.eq(Boolean.TRUE))
-				.and(Contact.FAMILY_NAME.eq(companyName)).select(cayenneService.sharedContext());
+				.and(Contact.FAMILY_NAME.eq(companyName)).select(cayenneService.newContext());
 	}
 
 	/**
@@ -131,7 +132,7 @@ public class AuthenticationService implements IAuthenticationService {
 	@Override
 	public Contact findByPasswordRecoveryKey(String recoveryKey) {
 		return ObjectSelect.query(Contact.class).where(Contact.PASSWORD_RECOVERY_KEY.eq(recoveryKey))
-				.and(Contact.PASSWORD_RECOVER_EXPIRE.gte(new Date())).selectFirst(cayenneService.sharedContext());
+				.and(Contact.PASSWORD_RECOVER_EXPIRE.gte(new Date())).selectFirst(cayenneService.newContext());
 	}
 
 	/**
@@ -161,7 +162,7 @@ public class AuthenticationService implements IAuthenticationService {
 
 
 		if (sessionManager.validSession(nodePath[0], nodePath[1])) {
-			return SelectById.query(Contact.class,  Long.valueOf(nodePath[0])).selectOne(cayenneService.sharedContext());
+			return SelectById.query(Contact.class,  Long.valueOf(nodePath[0])).selectOne(cayenneService.newContext());
 		} else {
 			return null;
 		}
@@ -186,7 +187,7 @@ public class AuthenticationService implements IAuthenticationService {
 		if (childId == null) {
 			return authenticatedContact;
 		} else {
-			return SelectById.query(Contact.class, childId).selectOne(cayenneService.sharedContext());
+			return SelectById.query(Contact.class, childId).selectOne(cayenneService.newContext());
 		}
 		
 	}

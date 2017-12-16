@@ -55,8 +55,8 @@ public class BaseService<T extends Persistent> implements IBaseService<T> {
 
 	public T refresh(Long willowId) {
 		return 	ObjectSelect.query(getEntityClass(), ExpressionFactory.matchDbExp(IBaseService.ID_PK_COLUMN, willowId))
-				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE_REFRESH, getEntityClass().getSimpleName())
-				.selectOne(getCayenneService().sharedContext());
+				.cacheStrategy(QueryCacheStrategy.SHARED_CACHE_REFRESH, getEntityClass().getSimpleName())
+				.selectOne(getCayenneService().newContext());
 	}
 
 	@Override
@@ -68,8 +68,8 @@ public class BaseService<T extends Persistent> implements IBaseService<T> {
 				return ObjectSelect.query(getEntityClass()).
 						where(ExpressionFactory.matchDbExp(IBaseService.ID_PK_COLUMN, willowId)).
 						cacheGroup(getEntityClass().getSimpleName()).
-						cacheStrategy(QueryCacheStrategy.LOCAL_CACHE).
-						selectOne(getCayenneService().sharedContext());
+						cacheStrategy(QueryCacheStrategy.SHARED_CACHE).
+						selectOne(getCayenneService().newContext());
 
 			} catch (Exception e) {
 				logger.error("Query resulted in Exception thrown. willowId: {}", willowId, e);
@@ -86,8 +86,8 @@ public class BaseService<T extends Persistent> implements IBaseService<T> {
 
 		List<T> results = ObjectSelect.query(getEntityClass(), qualifier).
 				cacheGroup(getEntityClass().getSimpleName()).
-				cacheStrategy(QueryCacheStrategy.LOCAL_CACHE).
-				select(getCayenneService().sharedContext());
+				cacheStrategy(QueryCacheStrategy.SHARED_CACHE).
+				select(getCayenneService().newContext());
 
 		if (results.isEmpty()) {
 			if (logger.isInfoEnabled()) {

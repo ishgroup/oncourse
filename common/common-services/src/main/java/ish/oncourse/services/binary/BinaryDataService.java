@@ -23,7 +23,7 @@ import org.apache.tapestry5.services.ApplicationStateManager;
 import java.util.List;
 import java.util.Random;
 
-import static org.apache.cayenne.query.QueryCacheStrategy.LOCAL_CACHE;
+import static org.apache.cayenne.query.QueryCacheStrategy.SHARED_CACHE;
 
 public class BinaryDataService implements IBinaryDataService {
 
@@ -66,10 +66,10 @@ public class BinaryDataService implements IBinaryDataService {
 	}
 
 	private Document getRandomBinaryInfo(final Expression qualifier) {
-		ObjectContext sharedContext = cayenneService.sharedContext();
+		ObjectContext sharedContext = cayenneService.newContext();
 
 		List<Document> binaries = ObjectSelect.query(Document.class, qualifier)
-				.cacheStrategy(LOCAL_CACHE, Document.class.getSimpleName())
+				.cacheStrategy(SHARED_CACHE, Document.class.getSimpleName())
 				.select(sharedContext);
 
 		if (binaries.size() > 0) {
@@ -83,7 +83,7 @@ public class BinaryDataService implements IBinaryDataService {
 	@Override
 	public List<Document> getAttachedFiles(Long entityIdNum, String entityIdentifier, boolean hidePrivateAttachments) {
 		return new GetDocuments(entityIdentifier, entityIdNum, webSiteService.getCurrentCollege(),
-				hidePrivateAttachments, isStudentLoggedIn(), cayenneService.sharedContext()).get();
+				hidePrivateAttachments, isStudentLoggedIn(), cayenneService.newContext()).get();
 	}
 
 	private boolean isStudentLoggedIn() {
@@ -92,7 +92,7 @@ public class BinaryDataService implements IBinaryDataService {
 
 	@Override
 	public Document getProfilePicture(Contact contact) {
-		ObjectContext sharedContext = cayenneService.sharedContext();
+		ObjectContext sharedContext = cayenneService.newContext();
 
 		SelectQuery profilePictureRelationsQuery = new SelectQuery(BinaryInfoRelation.class, ExpressionFactory.matchExp(BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, contact.getId())
 				.andExp(ExpressionFactory.matchExp(BinaryInfoRelation.ENTITY_IDENTIFIER_PROPERTY, contact.getObjectId().getEntityName()))
@@ -137,19 +137,19 @@ public class BinaryDataService implements IBinaryDataService {
 		};
 
 		GetDocuments getDocuments = new GetDocuments(entity.getObjectId().getEntityName(),
-				entity.getId(), webSiteService.getCurrentCollege(), true, isStudentLoggedIn(), cayenneService.sharedContext());
+				entity.getId(), webSiteService.getCurrentCollege(), true, isStudentLoggedIn(), cayenneService.newContext());
 		return new GetDocumentByTag(getTag, getDocuments).get();
 	}
 
 	public <E extends Queueable> List<Document> getAttachments(E entity) {
 		GetDocuments getDocuments = new GetDocuments(entity.getObjectId().getEntityName(),
-				entity.getId(), webSiteService.getCurrentCollege(), true, isStudentLoggedIn(), cayenneService.sharedContext());
+				entity.getId(), webSiteService.getCurrentCollege(), true, isStudentLoggedIn(), cayenneService.newContext());
 		return getDocuments.get();
 	}
 
 	public <E extends Queueable> List<Document> getImages(E entity) {
 		GetDocuments getDocuments = new GetDocuments(entity.getObjectId().getEntityName(),
-				entity.getId(), webSiteService.getCurrentCollege(), true, isStudentLoggedIn(), cayenneService.sharedContext());
+				entity.getId(), webSiteService.getCurrentCollege(), true, isStudentLoggedIn(), cayenneService.newContext());
 		return new GetImages(getDocuments).get();
 	}
 }

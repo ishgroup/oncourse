@@ -3,11 +3,7 @@
  */
 package ish.oncourse.services.discount;
 
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Discount;
-import ish.oncourse.model.DiscountConcessionType;
-import ish.oncourse.model.DiscountCourseClass;
-import ish.oncourse.model.DiscountMembership;
+import ish.oncourse.model.*;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.QueryCacheStrategy;
 
@@ -36,7 +32,7 @@ public class GetPossibleDiscounts {
 								orExp(DiscountCourseClass.DISCOUNT.dot(Discount.DISCOUNT_CONCESSION_TYPES).outer().dot(DiscountConcessionType.CONCESSION_TYPE).isNotNull())
 				).
 				prefetch(DiscountCourseClass.DISCOUNT.joint()).
-				cacheStrategy(QueryCacheStrategy.LOCAL_CACHE).
+				cacheStrategy(QueryCacheStrategy.SHARED_CACHE).
 				cacheGroup(DiscountCourseClass.class.getSimpleName()).
 				select(courseClass.getObjectContext());
 		

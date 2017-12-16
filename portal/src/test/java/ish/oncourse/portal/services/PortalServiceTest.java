@@ -89,7 +89,7 @@ public class PortalServiceTest extends ServiceTest {
         ICayenneService cayenneService = getService(ICayenneService.class);
         IPortalService service = getService(IPortalService.class);
         IAuthenticationService authenticationService = getService(IAuthenticationService.class);
-        ObjectContext objectContext = cayenneService.sharedContext();
+        ObjectContext objectContext = cayenneService.newContext();
 
         //tutor test
         Contact contact = Cayenne.objectForPK(objectContext, Contact.class, 1);
@@ -202,7 +202,7 @@ public class PortalServiceTest extends ServiceTest {
 		ICayenneService cayenneService = getService(ICayenneService.class);
 		IPortalService service = getService(IPortalService.class);
 		IAuthenticationService authenticationService = getService(IAuthenticationService.class);
-		ObjectContext objectContext = cayenneService.sharedContext();
+		ObjectContext objectContext = cayenneService.newContext();
 
 		Document tutorResource = Cayenne.objectForPK(objectContext, Document.class, 4);
 
@@ -220,7 +220,7 @@ public class PortalServiceTest extends ServiceTest {
 		ICayenneService cayenneService = getService(ICayenneService.class);
 		IPortalService service = getService(IPortalService.class);
 		IAuthenticationService authenticationService = getService(IAuthenticationService.class);
-		ObjectContext objectContext = cayenneService.sharedContext();
+		ObjectContext objectContext = cayenneService.newContext();
 
 		Document privateResource = Cayenne.objectForPK(objectContext, Document.class, 1);
 		CourseClass courseClass = Cayenne.objectForPK(objectContext, CourseClass.class, 1);
@@ -239,7 +239,7 @@ public class PortalServiceTest extends ServiceTest {
 		ICayenneService cayenneService = getService(ICayenneService.class);
 		IPortalService service = getService(IPortalService.class);
 		IAuthenticationService authenticationService = getService(IAuthenticationService.class);
-		ObjectContext objectContext = cayenneService.sharedContext();
+		ObjectContext objectContext = cayenneService.newContext();
 
 		Document privateResource = Cayenne.objectForPK(objectContext, Document.class, 1);
 		CourseClass courseClass = Cayenne.objectForPK(objectContext, CourseClass.class, 1);
@@ -263,7 +263,7 @@ public class PortalServiceTest extends ServiceTest {
         ICayenneService cayenneService = getService(ICayenneService.class);
         IPortalService service = getService(IPortalService.class);
         IAuthenticationService authenticationService = getService(IAuthenticationService.class);
-        ObjectContext objectContext = cayenneService.sharedContext();
+        ObjectContext objectContext = cayenneService.newContext();
 
         Contact contact = Cayenne.objectForPK(objectContext, Contact.class, 3);
         authenticationService.storeCurrentUser(contact);
@@ -276,7 +276,7 @@ public class PortalServiceTest extends ServiceTest {
 		ICayenneService cayenneService = getService(ICayenneService.class);
 		IPortalService service = getService(IPortalService.class);
 		IAuthenticationService authenticationService = getService(IAuthenticationService.class);
-		ObjectContext objectContext = cayenneService.sharedContext();
+		ObjectContext objectContext = cayenneService.newContext();
 
 		Contact contact = Cayenne.objectForPK(objectContext, Contact.class, 5);
 		authenticationService.storeCurrentUser(contact);

@@ -69,7 +69,7 @@ public class DiscountService implements IDiscountService {
 				.andExp(Discount.getCurrentDateFilter())
 				.andExp(getAvailableOnWebFilter()));
 
-		return cayenneService.sharedContext().performQuery(q);
+		return cayenneService.newContext().performQuery(q);
 	}
 
 	/**
@@ -86,10 +86,10 @@ public class DiscountService implements IDiscountService {
 		Expression qualifier = ExpressionFactory.matchExp(Discount.CODE_PROPERTY, code).andExp(
 				Discount.getCurrentDateFilter()).andExp(getCurrentCollegeFilter()).andExp(getAvailableOnWebFilter());
 		SelectQuery query = new SelectQuery(Discount.class, qualifier);
-		query.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
-		query.setCacheGroups(Discount.class.getSimpleName());
+		query.setCacheStrategy(QueryCacheStrategy.SHARED_CACHE);
+		query.setCacheGroup(Discount.class.getSimpleName());
 		@SuppressWarnings("unchecked")
-		List<Discount> result = cayenneService.sharedContext().performQuery(query);
+		List<Discount> result = cayenneService.newContext().performQuery(query);
 		return result.isEmpty() ? null : result.get(0);
 	}
 

@@ -7,11 +7,11 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.textile.ITextileConverter;
-import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.*;
+import org.apache.cayenne.query.EJBQLQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -57,14 +57,14 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 		ObjectSelect<WebNode> q = ObjectSelect.query(WebNode.class)
 				.and(ExpressionFactory.matchDbExp(WebNode.ID_PK_COLUMN, willowId));
 		applyCommons(q);
-		return q.selectFirst(cayenneService.sharedContext());
+		return q.selectFirst(cayenneService.newContext());
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<WebNode> getNodes() {
 		ObjectSelect<WebNode> q = ObjectSelect.query(WebNode.class);
 		applyCommons(q);
-		return q.select(cayenneService.sharedContext());
+		return q.select(cayenneService.newContext());
 	}
 
 	public WebNode getHomePage() {
@@ -74,14 +74,14 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 	public WebNode getNodeForNodeNumber(Integer nodeNumber) {
 		ObjectSelect<WebNode> q = ObjectSelect.query(WebNode.class).and(WebNode.NODE_NUMBER.eq(nodeNumber));
 		applyCommons(q);
-		return q.selectFirst(cayenneService.sharedContext());
+		return q.selectFirst(cayenneService.newContext());
 	}
 
 	public WebNode getNodeForNodePath(String nodePath) {
 		ObjectSelect<WebNode> q = ObjectSelect.query(WebNode.class)
 				.and(WebNode.WEB_URL_ALIASES.dot(WebUrlAlias.URL_PATH).eq(nodePath));
 		applyCommons(q);
-		return q.selectFirst(cayenneService.sharedContext());
+		return q.selectFirst(cayenneService.newContext());
 	}
 
 	public WebNode getCurrentNode() {
@@ -114,7 +114,7 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 
 	public WebNode getRandomNode() {
 
-		ObjectContext sharedContext = cayenneService.sharedContext();
+		ObjectContext sharedContext = cayenneService.newContext();
 		Expression qualifier = siteQualifier();
 		EJBQLQuery q = new EJBQLQuery("select count(i) from WebNode i where " + qualifier.toEJBQL("i"));
 		Long count = (Long) sharedContext.performQuery(q).get(0);
@@ -134,7 +134,7 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 	}
 
 	public Date getLatestModifiedDate() {
-		return (Date) cayenneService.sharedContext()
+		return (Date) cayenneService.newContext()
 				.performQuery(new EJBQLQuery("select max(wn.modified) from WebNode wn where " + siteQualifier().toEJBQL("wn"))).get(0);
 	}
 
@@ -142,7 +142,7 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 		Expression siteExpr = ExpressionFactory.matchExp(WebNode.WEB_SITE_VERSION.getName(),
 				webSiteVersionService.getCurrentVersion());
 
-		Integer number = (Integer) cayenneService.sharedContext()
+		Integer number = (Integer) cayenneService.newContext()
 				.performQuery(new EJBQLQuery("select max(wn.nodeNumber) from WebNode wn where " + siteExpr.toEJBQL("wn"))).get(0);
         if (number == null)
             number = 0;
@@ -235,7 +235,7 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 		    return null;
 	    }
 
-	    ObjectContext context = cayenneService.sharedContext();
+	    ObjectContext context = cayenneService.newContext();
 	    return ObjectSelect.query(WebUrlAlias.class)
 				.localCache(WebUrlAlias.class.getSimpleName())
 			    .and(WebUrlAlias.WEB_NODE.eq(webNode))
@@ -249,6 +249,6 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 				.localCache(WebNode.class.getSimpleName())
 				.and(siteQualifier())
 				.and(WebNode.NAME.eq(nodeName))
-				.selectOne(cayenneService.sharedContext());
+				.selectOne(cayenneService.newContext());
 	}
 }

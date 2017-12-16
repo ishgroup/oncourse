@@ -19,7 +19,7 @@ public class GetMenuChildren {
     public List<WebMenu> get() {
         List<WebMenu> result = new ArrayList<>();
         result.addAll(ObjectSelect.query(WebMenu.class).
-                cacheStrategy(useCache ? QueryCacheStrategy.LOCAL_CACHE : QueryCacheStrategy.LOCAL_CACHE_REFRESH, WebMenu.class.getSimpleName())
+                cacheStrategy(useCache ? QueryCacheStrategy.SHARED_CACHE : QueryCacheStrategy.SHARED_CACHE_REFRESH, WebMenu.class.getSimpleName())
                 .and(WebMenu.PARENT_WEB_MENU.eq(parentMenu))
                 .prefetch(WebMenu.PARENT_WEB_MENU.disjoint())
                 .prefetch(WebMenu.WEB_NODE.disjoint())

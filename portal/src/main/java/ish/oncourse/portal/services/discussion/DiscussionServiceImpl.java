@@ -19,6 +19,6 @@ public class DiscussionServiceImpl implements IDiscussionService {
 		expr = expr.andExp(ExpressionFactory.matchExp(DiscussionCommentContact.IS_NEW_PROPERTY, true));
 		SelectQuery q = new SelectQuery(DiscussionCommentContact.class, expr);
 		q.setFetchingDataRows(true);
-		return cayenneService.sharedContext().performQuery(q).size();
+		return cayenneService.newContext().performQuery(q).size();
 	}
 }

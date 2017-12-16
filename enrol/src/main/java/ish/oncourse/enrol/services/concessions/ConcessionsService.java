@@ -27,7 +27,7 @@ public class ConcessionsService implements IConcessionsService {
 		Expression qualifier = ExpressionFactory.matchExp(ConcessionType.COLLEGE_PROPERTY, currentCollege)
 				.andExp(ExpressionFactory.matchExp(ConcessionType.IS_ENABLED_PROPERTY, true))
 				.andExp(ExpressionFactory.matchExp(ConcessionType.IS_CONCESSION_PROPERTY, true));
-		ObjectContext sharedContext = cayenneService.sharedContext();
+		ObjectContext sharedContext = cayenneService.newContext();
 		return ((Long) sharedContext.performQuery(
 				new EJBQLQuery("select count(ct) from ConcessionType ct where " + qualifier.toEJBQL("ct"))).get(0)) > 0;
 	}

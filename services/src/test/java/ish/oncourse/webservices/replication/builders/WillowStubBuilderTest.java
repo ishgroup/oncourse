@@ -43,7 +43,7 @@ public class WillowStubBuilderTest extends ServiceTest {
 		
 		ICayenneService cayenneService = getService(ICayenneService.class);
 		
-		QueuedRecord record = Cayenne.objectForPK(cayenneService.sharedContext(), QueuedRecord.class, 1l);
+		QueuedRecord record = Cayenne.objectForPK(cayenneService.newContext(), QueuedRecord.class, 1l);
 		
 		IWillowStubBuilder builder = getService(IWillowStubBuilder.class);
 		

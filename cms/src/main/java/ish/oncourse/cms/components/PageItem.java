@@ -6,7 +6,6 @@ import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.visitor.LastEditedVisitor;
 import ish.oncourse.util.HTMLUtils;
-import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.StreamResponse;
@@ -102,7 +101,7 @@ public class PageItem {
         value = request.getParameter(WebNode.ID_PK_COLUMN);
         if (StringUtils.isNumeric(value)) {
             long id = Long.valueOf(value);
-            ObjectContext ctx = cayenneService.sharedContext();
+            ObjectContext ctx = cayenneService.newContext();
             WebNode node = webNodeService.refresh(id);
             if (node != null) {
                 node.setPublished(published);

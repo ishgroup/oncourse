@@ -53,7 +53,7 @@ public class ClassResults {
     @SetupRender
     boolean setupRender() {
 
-		CourseClass courseClass = cayenneService.sharedContext().localObject(this.courseClass);
+		CourseClass courseClass = cayenneService.newContext().localObject(this.courseClass);
 
 		Student student = portalService.getContact().getStudent();
 		Expression exp = ExpressionFactory.matchExp(Enrolment.STUDENT_PROPERTY, student);

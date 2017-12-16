@@ -70,7 +70,7 @@ public class ReplicationStatus {
 	 * @return
 	 */
 	public String getNumberOfRecordsInQueue() {
-		ObjectContext context = cayenneService.sharedContext();
+		ObjectContext context = cayenneService.newContext();
 		
 		College college = context.localObject(currentCollege);
 		if (college != null) {
@@ -88,7 +88,7 @@ public class ReplicationStatus {
 	}
 	
 	private QueuedRecord getOldestQueuedItem() {
-		ObjectContext context = cayenneService.sharedContext();
+		ObjectContext context = cayenneService.newContext();
 		
 		College college = context.localObject(currentCollege);
 		if (college != null) {
@@ -103,7 +103,7 @@ public class ReplicationStatus {
 	}
 	
 	private QueuedRecord getLastQueuedItem() {
-		ObjectContext context = cayenneService.sharedContext();
+		ObjectContext context = cayenneService.newContext();
 		
 		College college = context.localObject(currentCollege);
 		if (college != null) {

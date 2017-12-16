@@ -20,7 +20,10 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.StreamResponse;
-import org.apache.tapestry5.annotations.*;
+import org.apache.tapestry5.annotations.OnEvent;
+import org.apache.tapestry5.annotations.Parameter;
+import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.util.TextStreamResponse;
@@ -93,7 +96,7 @@ public class ClassDetailsNew {
 
 	@OnEvent(value = "getAttendences")
 	public StreamResponse getAttendences(Long sessionId) throws IOException {
-		Session session = Cayenne.objectForPK(cayenneService.sharedContext(), Session.class, sessionId);
+		Session session = Cayenne.objectForPK(cayenneService.newContext(), Session.class, sessionId);
 
 		List<ish.oncourse.portal.services.attendance.Attendance> list =
 				AttendanceTransportUtils.toContainerAttendanceList(session.getAttendances());

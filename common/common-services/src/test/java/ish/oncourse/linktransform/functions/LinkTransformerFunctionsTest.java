@@ -42,25 +42,25 @@ public class LinkTransformerFunctionsTest extends ServiceTest {
     @Test
     public void testCourseClassAccessebilityByRootTag() throws Exception {
         CourseClass courseClass = GetCourseClassByPath
-                .valueOf(cayenneService.sharedContext(), webSiteService.getCurrentWebSite(), "/class/DJPLFTagged-1")
+                .valueOf(cayenneService.newContext(), webSiteService.getCurrentWebSite(), "/class/DJPLFTagged-1")
                 .get();
 
         assertNotNull(courseClass);
         assertTrue(courseClass.getIsWebVisible());
 
         courseClass = GetCourseClassByPath
-                .valueOf(cayenneService.sharedContext(), webSiteService.getCurrentWebSite(), "/class/DJPLFUntagged-1")
+                .valueOf(cayenneService.newContext(), webSiteService.getCurrentWebSite(), "/class/DJPLFUntagged-1")
                 .get();
         assertNotNull(courseClass);
         assertTrue(courseClass.getIsWebVisible());
 
         courseClass = GetCourseClassByPath
-                .valueOf(cayenneService.sharedContext(), webSiteService.getCurrentWebSite(), "/class/DJPLFTaggedInvisible-1")
+                .valueOf(cayenneService.newContext(), webSiteService.getCurrentWebSite(), "/class/DJPLFTaggedInvisible-1")
                 .get();
         assertNotNull(courseClass);
 
         courseClass = GetCourseClassByPath
-                .valueOf(cayenneService.sharedContext(), webSiteService.getCurrentWebSite(), "/class/DJPLFUntaggedInvisible-1")
+                .valueOf(cayenneService.newContext(), webSiteService.getCurrentWebSite(), "/class/DJPLFUntaggedInvisible-1")
                 .get();
         assertNotNull(courseClass);
     }
@@ -73,24 +73,24 @@ public class LinkTransformerFunctionsTest extends ServiceTest {
     @Test
     public void testCourseAccessebilityByRootTag() throws Exception {
         Course course = GetCourseByPath
-                .valueOf(cayenneService.sharedContext(), webSiteService.getCurrentWebSite(), "/course/DJPLFTagged")
+                .valueOf(cayenneService.newContext(), webSiteService.getCurrentWebSite(), "/course/DJPLFTagged")
                 .get();
         assertNotNull(course);
         assertTrue(course.getIsWebVisible());
 
         course = GetCourseByPath
-                .valueOf(cayenneService.sharedContext(), webSiteService.getCurrentWebSite(), "/course/DJPLFUntagged")
+                .valueOf(cayenneService.newContext(), webSiteService.getCurrentWebSite(), "/course/DJPLFUntagged")
                 .get();
         assertNotNull(course);
         assertTrue(course.getIsWebVisible());
 
         course = GetCourseByPath
-                .valueOf(cayenneService.sharedContext(), webSiteService.getCurrentWebSite(), "/course/DJPLFTaggedInvisible")
+                .valueOf(cayenneService.newContext(), webSiteService.getCurrentWebSite(), "/course/DJPLFTaggedInvisible")
                 .get();
         assertNull(course);
 
         course = GetCourseByPath
-                .valueOf(cayenneService.sharedContext(), webSiteService.getCurrentWebSite(), "/course/DJPLFUntaggedInvisible")
+                .valueOf(cayenneService.newContext(), webSiteService.getCurrentWebSite(), "/course/DJPLFUntaggedInvisible")
                 .get();
         assertNull(course);
     }

@@ -1,12 +1,10 @@
 package ish.oncourse.services.resource;
 
-import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebSiteLayout;
 import ish.oncourse.model.WebTemplate;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import org.apache.cayenne.query.ObjectSelect;
-import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -30,7 +28,7 @@ public class ResourceService implements IResourceService {
 		WebTemplate template = ObjectSelect.query(WebTemplate.class)
 				.localCache(WebTemplate.class.getSimpleName())
 				.and(WebTemplate.LAYOUT.eq(layout))
-				.and(WebTemplate.NAME.eq(fileName)).selectOne(cayenneService.sharedContext());
+				.and(WebTemplate.NAME.eq(fileName)).selectOne(cayenneService.newContext());
 		return template != null ? new DatabaseTemplateResource(template) : null;
 	}
 

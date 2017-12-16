@@ -11,19 +11,12 @@ import ish.oncourse.services.site.IWebSiteVersionService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.ObjectSelect;
-import org.apache.cayenne.query.PrefetchTreeNode;
 import org.apache.cayenne.query.QueryCacheStrategy;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-
-import static org.apache.cayenne.query.QueryCacheStrategy.LOCAL_CACHE;
 
 public class WebMenuService extends BaseService<WebMenu> implements IWebMenuService {
 
@@ -60,11 +53,11 @@ public class WebMenuService extends BaseService<WebMenu> implements IWebMenuServ
 
 	private void refreshMenus() {
 		ObjectSelect.query(WebMenu.class)
-				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE_REFRESH, WebMenu.class.getSimpleName());
+				.cacheStrategy(QueryCacheStrategy.SHARED_CACHE_REFRESH, WebMenu.class.getSimpleName());
 	}
 
 	public List<WebMenu> getChildrenBy(WebMenu parent) {
-		return GetMenuChildren.valueOf(parent, cayenneService.sharedContext(), true).get();
+		return GetMenuChildren.valueOf(parent, cayenneService.newContext(), true).get();
 	}
 
 
@@ -83,7 +76,7 @@ public class WebMenuService extends BaseService<WebMenu> implements IWebMenuServ
 
 	@Override
 	public WebMenu getMenuByNameAndParentMenu(String name, WebMenu parentMenu) {
-		ObjectContext ctx = cayenneService.sharedContext();
+		ObjectContext ctx = cayenneService.newContext();
 
 		return ObjectSelect.query(WebMenu.class).and(WebMenu.NAME.eq(name))
 				.and(WebMenu.WEB_SITE_VERSION.eq(webSiteVersionService.getCurrentVersion()))
@@ -96,7 +89,7 @@ public class WebMenuService extends BaseService<WebMenu> implements IWebMenuServ
 				.and(siteQualifier())
 				.and(WebMenu.PARENT_WEB_MENU.isNull())
 				.localCache(WebMenu.class.getSimpleName())
-				.selectOne(cayenneService.sharedContext());
+				.selectOne(cayenneService.newContext());
 	}
 
 

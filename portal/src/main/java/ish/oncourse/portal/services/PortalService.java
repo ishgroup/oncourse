@@ -7,17 +7,13 @@ import ish.common.types.PaymentStatus;
 import ish.math.Money;
 import ish.oncourse.model.*;
 import ish.oncourse.portal.access.IAuthenticationService;
-import ish.oncourse.portal.services.attendance.AttendanceUtils;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.CourseClassFilter;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
-import ish.oncourse.services.reference.ICountryService;
-import ish.oncourse.services.reference.ILanguageService;
 import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.services.usi.IUSIVerificationService;
 import ish.oncourse.util.FormatUtils;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.CayenneDataObject;
@@ -31,11 +27,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONArray;
 import org.apache.tapestry5.json.JSONObject;
-import org.apache.tapestry5.services.ApplicationStateManager;
 import org.apache.tapestry5.services.Request;
 
 import javax.cache.Cache;
@@ -226,7 +220,7 @@ public class PortalService implements IPortalService {
     public boolean isApproved(CourseClass courseClass) {
 
         List<TutorRole> tutorRoles = ObjectSelect.query(TutorRole.class).where(TutorRole.TUTOR.eq(getContact().getTutor()))
-                .and(TutorRole.COURSE_CLASS.eq(courseClass)).select(cayenneService.sharedContext());
+                .and(TutorRole.COURSE_CLASS.eq(courseClass)).select(cayenneService.newContext());
 
         for (TutorRole t : tutorRoles) {
             if (!t.getIsConfirmed()) {
@@ -261,7 +255,7 @@ public class PortalService implements IPortalService {
 					cacheStrategy(QueryCacheStrategy.SHARED_CACHE).
 					cacheGroup(CourseClass.class.getSimpleName()).
                     prefetch(CourseClass.SESSIONS.disjoint()).
-                    select(cayenneService.sharedContext());
+                    select(cayenneService.newContext());
 
             switch (filter) {
                 case CURRENT:
@@ -285,7 +279,7 @@ public class PortalService implements IPortalService {
 					cacheStrategy(QueryCacheStrategy.SHARED_CACHE).
 					cacheGroup(CourseClass.class.getSimpleName()).
                     prefetch(CourseClass.SESSIONS.disjoint()).
-                    select(cayenneService.sharedContext());
+                    select(cayenneService.newContext());
 
             switch (filter) {
                 case UNCONFIRMED:
@@ -352,7 +346,7 @@ public class PortalService implements IPortalService {
             if (IsCurrentTutorClass.valueOf(courseClass, date).is()) {
                 TutorRole tutorRole = ObjectSelect.query(TutorRole.class).where(TutorRole.TUTOR.eq(contact.getTutor()))
                         .and(TutorRole.COURSE_CLASS.eq(courseClass))
-                        .and(TutorRole.IS_CONFIRMED.isFalse()).selectFirst(cayenneService.sharedContext());
+                        .and(TutorRole.IS_CONFIRMED.isFalse()).selectFirst(cayenneService.newContext());
 
                 if (tutorRole != null) {
                     unconfirmed.add(courseClass);
@@ -418,7 +412,7 @@ public class PortalService implements IPortalService {
     }
 
     public CourseClass getCourseClassBy(long id) {
-        ObjectContext context = cayenneService.sharedContext();
+        ObjectContext context = cayenneService.newContext();
         List<CourseClass> result = new ArrayList<>();
         if (getContact().getTutor() != null) {
             Expression expression = getTutorClassesExpression();
@@ -441,7 +435,7 @@ public class PortalService implements IPortalService {
     }
 
     public Invoice getInvoiceBy(long id) {
-        ObjectContext context = cayenneService.sharedContext();
+        ObjectContext context = cayenneService.newContext();
         Expression expression = ExpressionFactory.matchExp(Invoice.CONTACT_PROPERTY, getContact());
         expression = expression.andExp(ExpressionFactory.matchDbExp(Invoice.ID_PK_COLUMN, id));
         SelectQuery q = new SelectQuery(Invoice.class, expression);
@@ -451,7 +445,7 @@ public class PortalService implements IPortalService {
 
 
     public PaymentIn getPaymentInBy(long id) {
-        ObjectContext context = cayenneService.sharedContext();
+        ObjectContext context = cayenneService.newContext();
         Expression expression = ExpressionFactory.matchExp(PaymentIn.CONTACT_PROPERTY, getContact());
         expression = expression.andExp(ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, id));
         SelectQuery q = new SelectQuery(PaymentIn.class, expression);
@@ -460,7 +454,7 @@ public class PortalService implements IPortalService {
     }
 
     public Tag getMailingList(long id) {
-        ObjectContext context = cayenneService.sharedContext();
+        ObjectContext context = cayenneService.newContext();
 
         Expression expression = ExpressionFactory.matchExp(Taggable.COLLEGE_PROPERTY, getContact().getCollege());
         expression = expression.andExp(ExpressionFactory.matchExp(Tag.TAGGABLE_TAGS_PROPERTY + "." +
@@ -483,7 +477,7 @@ public class PortalService implements IPortalService {
     public List<Document> getTutorCommonResources() {
 
         if (authenticationService.isTutor()) {
-            ObjectContext sharedContext = cayenneService.sharedContext();
+            ObjectContext sharedContext = cayenneService.newContext();
 
             return ObjectSelect.query(Document.class).where(Document.WEB_VISIBILITY.eq(AttachmentInfoVisibility.TUTORS))
                     .and(Document.IS_REMOVED.isFalse())
@@ -498,7 +492,7 @@ public class PortalService implements IPortalService {
     @Override
     public List<Document> getStudentAndTutorCommonResources() {
         if (getContact().getTutor() != null || getContact().getStudent() != null) {
-            ObjectContext sharedContext = cayenneService.sharedContext();
+            ObjectContext sharedContext = cayenneService.newContext();
 
             return ObjectSelect.query(Document.class).where(Document.WEB_VISIBILITY.eq(AttachmentInfoVisibility.STUDENTS))
                     .and(Document.IS_REMOVED.isFalse())
@@ -512,7 +506,7 @@ public class PortalService implements IPortalService {
     public List<Enrolment> getEnrolments() {
         Student student = getContact().getStudent();
         if (student != null) {
-            ObjectContext sharedContext = cayenneService.sharedContext();
+            ObjectContext sharedContext = cayenneService.newContext();
             Expression exp = ExpressionFactory.matchExp(Enrolment.STUDENT_PROPERTY, student);
             exp = exp.andExp(ExpressionFactory.matchExp(Enrolment.STATUS_PROPERTY, EnrolmentStatus.SUCCESS));
             SelectQuery query = new SelectQuery(Enrolment.class, exp);
@@ -527,7 +521,7 @@ public class PortalService implements IPortalService {
     public List<Document> getResourcesBy(CourseClass courseClass) {
 
         Contact contact = getContact();
-        ObjectContext sharedContext = cayenneService.sharedContext();
+        ObjectContext sharedContext = cayenneService.newContext();
         contact = sharedContext.localObject(contact);
 
         if (contact.getTutor() != null) {
@@ -546,7 +540,7 @@ public class PortalService implements IPortalService {
     }
 
     private List<Document> getAttachedFilesForStudent(Student student, CourseClass courseClass) {
-        ObjectContext sharedContext = cayenneService.sharedContext();
+        ObjectContext sharedContext = cayenneService.newContext();
 
         Enrolment enrolment = ObjectSelect.query(Enrolment.class).where(Enrolment.STUDENT.eq(student)).and(Enrolment.COURSE_CLASS.eq(courseClass)).and(Enrolment.STATUS.eq(EnrolmentStatus.SUCCESS)).selectFirst(sharedContext);
         // only students with active enrolments can view class attachments
@@ -569,7 +563,7 @@ public class PortalService implements IPortalService {
     }
 
     private List<Document> getAttachedFilesForTutor(CourseClass courseClass) {
-        ObjectContext sharedContext = cayenneService.sharedContext();
+        ObjectContext sharedContext = cayenneService.newContext();
 
         return ObjectSelect.query(Document.class).where(Document.WEB_VISIBILITY.in(AttachmentInfoVisibility.TUTORS, AttachmentInfoVisibility.STUDENTS))
                 .and(Document.IS_REMOVED.isFalse())
@@ -609,7 +603,7 @@ public class PortalService implements IPortalService {
         Expression expression = getOutcomeExpression();
         expression = expression.andExp(ExpressionFactory.greaterOrEqualExp(Outcome.MODIFIED_PROPERTY, getLastLoginTime()));
 
-        ObjectContext sharedContext = cayenneService.sharedContext();
+        ObjectContext sharedContext = cayenneService.newContext();
         return sharedContext.performQuery(new SelectQuery(Outcome.class, expression)).size();
     }
 
@@ -625,7 +619,7 @@ public class PortalService implements IPortalService {
         Expression expression = getOutcomeExpression();
         expression = expression.andExp(ExpressionFactory.matchExp(Outcome.ENROLMENT_PROPERTY + "." + Enrolment.COURSE_CLASS_PROPERTY, courseClass));
 
-        ObjectContext sharedContext = cayenneService.sharedContext();
+        ObjectContext sharedContext = cayenneService.newContext();
         SelectQuery selectQuery = new SelectQuery(Outcome.class, expression);
         selectQuery.addOrdering(Outcome.MODIFIED_PROPERTY, SortOrder.DESCENDING);
         return sharedContext.performQuery(selectQuery);
@@ -701,7 +695,7 @@ public class PortalService implements IPortalService {
 
         Contact contact = getContact();
 
-        ObjectContext sharedContext = cayenneService.sharedContext();
+        ObjectContext sharedContext = cayenneService.newContext();
 
         return ObjectSelect.query(PaymentIn.class).where(PaymentIn.STATUS.eq(PaymentStatus.SUCCESS))
                 .and(PaymentIn.AMOUNT.ne(Money.ZERO))
@@ -713,7 +707,7 @@ public class PortalService implements IPortalService {
 
         Contact contact = getContact();
 
-        ObjectContext sharedContext = cayenneService.sharedContext();
+        ObjectContext sharedContext = cayenneService.newContext();
 
         return ObjectSelect.query(PaymentOut.class).where(PaymentOut.STATUS.eq(PaymentStatus.SUCCESS))
                 .and(PaymentOut.TOTAL_AMOUNT.ne(Money.ZERO))
@@ -724,7 +718,7 @@ public class PortalService implements IPortalService {
         Contact contact = getContact();
         Date lastLoginTime = getLastLoginTime();
 
-        ObjectContext sharedContext = cayenneService.sharedContext();
+        ObjectContext sharedContext = cayenneService.newContext();
 
         return ObjectSelect.query(PaymentIn.class).where(PaymentIn.CONTACT.eq(contact)
                 .andExp(PaymentIn.AMOUNT.gt(Money.ZERO))
@@ -735,7 +729,7 @@ public class PortalService implements IPortalService {
         Contact contact = getContact();
         Date lastLoginTime = getLastLoginTime();
 
-        ObjectContext sharedContext = cayenneService.sharedContext();
+        ObjectContext sharedContext = cayenneService.newContext();
 
         return ObjectSelect.query(Invoice.class).where(Invoice.CONTACT.eq(contact))
                 .and(Invoice.MODIFIED.gte(lastLoginTime)).select(sharedContext).size();
@@ -745,7 +739,7 @@ public class PortalService implements IPortalService {
         Contact contact = getContact();
         Date lastLoginTime = getLastLoginTime();
 
-        ObjectContext sharedContext = cayenneService.sharedContext();
+        ObjectContext sharedContext = cayenneService.newContext();
 
         return ObjectSelect.query(Enrolment.class).where(Enrolment.STUDENT.eq(contact.getStudent()))
                 .and(Enrolment.MODIFIED.gte(lastLoginTime)).select(sharedContext).size();
@@ -769,7 +763,7 @@ public class PortalService implements IPortalService {
 
     public List<Contact> getChildContacts() {
         ArrayList<Contact> result = new ArrayList<>();
-        ObjectContext context = cayenneService.sharedContext();
+        ObjectContext context = cayenneService.newContext();
         Contact parent = Cayenne.objectForPK(context, Contact.class, getAuthenticatedUser().getId());
         List<ContactRelation> contactRelations = parent.getToContacts();
         contactRelations = RELATION_TYPE.dot(DELEGATED_ACCESS_TO_CONTACT).eq(true).filterObjects(contactRelations);
@@ -932,7 +926,7 @@ public class PortalService implements IPortalService {
 
         return query.orderBy(Session.START_DATE.asc())
                 .prefetch(Session.COURSE_CLASS.disjoint())
-                .select(cayenneService.sharedContext());
+                .select(cayenneService.newContext());
     }
 
 

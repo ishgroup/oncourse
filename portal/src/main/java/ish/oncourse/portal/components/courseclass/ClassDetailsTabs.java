@@ -43,7 +43,7 @@ public class ClassDetailsTabs {
 	}
 
 	public boolean hasResults(){
-		CourseClass courseClass = cayenneService.sharedContext().localObject(this.courseClass);
+		CourseClass courseClass = cayenneService.newContext().localObject(this.courseClass);
 		return portalService.hasResult(courseClass);
 	}
 
