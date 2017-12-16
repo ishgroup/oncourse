@@ -218,7 +218,7 @@ public class TagService extends BaseService<Tag> implements ITagService {
 		for (final Taggable t : taggableList) {
 			for (final TaggableTag tg : t.getTaggableTags()) {
 				Tag tag = tg.getTag();
-				if (allMailingLists.contains(tag)) {
+				if (allMailingLists.stream().anyMatch(m -> m.getId().equals(tag.getId()))) {
 					if(!tags.contains(tag)) {
 						tags.add(tag);
 					} else {
