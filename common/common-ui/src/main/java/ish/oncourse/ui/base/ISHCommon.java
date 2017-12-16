@@ -37,7 +37,7 @@ public abstract class ISHCommon {
     private String ISO8601 = "yyyy-MM-dd'T'HH:mm:ssZZ";
 
     @Property
-    private Document attachment;
+    private Document entityAttachment;
 
     @Property
     private TapestryFormatUtils formatUtils = new TapestryFormatUtils();
@@ -58,15 +58,15 @@ public abstract class ISHCommon {
         return tagService.hasTag(entity, tagPath);
     }
 
-    public <E extends Queueable> List<Document> getAttachments(E entity) {
+    public <E extends Queueable> List<Document> getEntityAttachments(E entity) {
         return binaryDataService.getAttachments(entity);
     }
 
-    public <E extends Queueable> Document getAttachmentByTag(E entity, final String tagPath) {
+    public <E extends Queueable> Document getEntityAttachmentByTag(E entity, final String tagPath) {
         return binaryDataService.getAttachmentByTag(entity, tagPath);
     }
 
-    public <E extends Queueable> List<Document>  getImages(E entity) {
+    public <E extends Queueable> List<Document> getEntityImages(E entity) {
         return binaryDataService.getImages(entity);
     }
 }
