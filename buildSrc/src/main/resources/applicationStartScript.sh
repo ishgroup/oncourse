@@ -63,6 +63,7 @@ start() {
         \$DEFAULT_JVM_OPTS \\
         \$JAVA_OPTS \\
         \$${optsEnvironmentVar} \\
+        -Dfile.encoding=UTF-8 \\
         -classpath \$CLASSPATH \\
         ${mainClassName}"
 
