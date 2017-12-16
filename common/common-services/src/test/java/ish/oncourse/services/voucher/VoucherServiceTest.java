@@ -95,12 +95,12 @@ public class VoucherServiceTest extends ServiceTest {
 		Contact contact = SelectById.query(Contact.class,1L).selectOne(cayenneService.newContext());
 		assertNotNull("Contact with id=1 should exist", contact);
 		//now link this Voucher with this contact
-		voucher.setContact(contact);
+		voucher.setContact(voucher.getObjectContext().localObject(contact));
 		voucher.getObjectContext().commitChanges();
 		voucher = service.getVoucherByCode("qwerty_2");
 		assertNotNull("Voucher product we found should be limited to a student", voucher.getContact());
-		assertEquals("Contact 1 should be linked with voucher", contact, voucher.getContact());
-		assertEquals("Contact 1 should be linked with voucher", contact.getProducts().get(0), voucher);
+		assertEquals("Contact 1 should be linked with voucher", contact.getId(), voucher.getContact().getId());
+		assertEquals("Contact 1 should be linked with voucher", contact.getProducts().get(0).getId(), voucher.getId());
 		assertEquals("This voucher should be only 1 for this contact", 1, contact.getProducts().size());
 	}
 
