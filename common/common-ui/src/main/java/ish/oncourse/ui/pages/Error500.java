@@ -1,9 +1,10 @@
 package ish.oncourse.ui.pages;
 
-import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.services.environment.IEnvironmentService;
 import ish.oncourse.services.site.IWebSiteService;
-import org.apache.commons.lang.StringUtils;
+import ish.oncourse.ui.base.ISHCommon;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.annotations.Property;
@@ -14,6 +15,7 @@ import org.apache.tapestry5.services.Response;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Error500 extends ISHCommon implements ExceptionReporter {
 
@@ -55,13 +57,18 @@ public class Error500 extends ISHCommon implements ExceptionReporter {
 	}
 
 	public ArrayList<String> getStackTraces() {
-		StackTraceElement[] st = exception.getStackTrace();
 		ArrayList<String> stackTraceElementMessage = new ArrayList<>();
 
-		for (StackTraceElement ste : st) {
-			stackTraceElementMessage.add(ste.toString());
+		List<Throwable> throwables = ExceptionUtils.getThrowableList(exception);
+		for (Throwable throwable : throwables) {
+			stackTraceElementMessage.add("------------------------------------");
+			stackTraceElementMessage.add(throwable.getClass().getName());
+			stackTraceElementMessage.add(throwable.getLocalizedMessage());
+			StackTraceElement[] st = throwable.getStackTrace();
+			for (StackTraceElement ste : st) {
+				stackTraceElementMessage.add(ste.toString());
+			}
 		}
-
 		return stackTraceElementMessage;
 	}
 	
