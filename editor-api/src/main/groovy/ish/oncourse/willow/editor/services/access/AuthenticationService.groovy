@@ -14,10 +14,16 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.PersistentObject
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
+import org.apache.commons.codec.binary.Base64
 import org.apache.commons.lang.StringUtils
+import org.apache.commons.lang3.exception.ExceptionUtils
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 import org.eclipse.jetty.server.Request
 
 import javax.servlet.http.Cookie
+import javax.servlet.http.HttpServletResponse
+
 import static ish.oncourse.willow.editor.services.access.AuthenticationStatus.*
 
 @Singleton
@@ -30,7 +36,7 @@ class AuthenticationService {
     private static final String SESSION_ID = 'ESESSIONID'
     
     private static final long MAX_AGE = 14400
-
+    private static final Logger logger = LogManager.logger
 
     @Inject
     AuthenticationService(ICayenneService cayenneService, RequestService requestService, ZKSessionManager sessionManager) {
@@ -40,7 +46,7 @@ class AuthenticationService {
     }
     
     private AuthenticationResult succedAuthentication(Class userType, PersistentObject user, boolean persist) {
-        AuthenticationResult result = fillUserName(userType, user)
+        AuthenticationResult result = fillUser(userType, user)
         String userId = "${userType.simpleName}-${user.objectId.idSnapshot['id']}"
         String sessionId = SecurityUtil.generateRandomPassword(20)
         
@@ -57,14 +63,14 @@ class AuthenticationService {
         return result
     }
     
-    private AuthenticationResult fillUserName(Class userType, PersistentObject user) {
+    private AuthenticationResult fillUser(Class userType, PersistentObject user) {
         switch (userType) {
             case WillowUser:
                 WillowUser willowUser = (user as WillowUser)
-                return AuthenticationResult.valueOf(null, willowUser.firstName,  willowUser.lastName)
+                return AuthenticationResult.valueOf(null, willowUser.firstName,  willowUser.lastName, null, willowUser)
             case SystemUser:
                 SystemUser systemUser =  (user as SystemUser)
-                return AuthenticationResult.valueOf(null, systemUser.firstName,  systemUser.surname)
+                return AuthenticationResult.valueOf(null, systemUser.firstName,  systemUser.surname, systemUser, null)
             default: 
                 throw new IllegalArgumentException("Unsupported user type:  $userType, persistent object: $user")
         }
@@ -198,7 +204,7 @@ class AuthenticationService {
                 && (!isPersist || sessionManager.sessionExist(sessionCookie.sessionNode))) {
             SelectById.query(WillowUser, sessionCookie.userId).selectOne(cayenneService.newContext())
         } else {
-            return null
+            return checkBasicAuth().willowUser
         }
     }
 
@@ -217,7 +223,7 @@ class AuthenticationService {
                 return null
             }
         } else {
-            return null
+            return checkBasicAuth().systemUser
         }
     }
     
@@ -227,6 +233,30 @@ class AuthenticationService {
                 requestService.request.serverName,
                 requestService.request.contextPath,
                 0, null, false, false, 0)  
+    }
+    
+    private AuthenticationResult checkBasicAuth() {
+        String authHeader = requestService.request.getHeader('Authorization')
+        if (org.apache.commons.lang3.StringUtils.trimToNull(authHeader)) {
+            StringTokenizer st = new StringTokenizer(authHeader)
+            if (st.hasMoreTokens()) {
+                String basic = st.nextToken()
+                if (basic.equalsIgnoreCase('Basic')) {
+                    try {
+                        String credentials = new String(Base64.decodeBase64(st.nextToken()), 'UTF-8')
+                        int p = credentials.indexOf(':')
+                        if (p != -1) {
+                            String _username = credentials.substring(0, p).trim()
+                            String _password = credentials.substring(p + 1).trim()
+                            return authenticate(_username, _password, false)
+                        }
+                    } catch (UnsupportedEncodingException e) {
+                        logger.catching(e)
+                    }
+                }
+            }
+        }
+        return AuthenticationResult.valueOf(INVALID_CREDENTIALS)
     }
 
     static class SessionCookie {
@@ -291,6 +321,24 @@ class AuthenticationService {
         private AuthenticationStatus status
         private String firstName
         private String lastName
+        private SystemUser systemUser
+        private WillowUser willowUser
+
+        SystemUser getSystemUser() {
+            return systemUser
+        }
+
+        void setSystemUser(SystemUser systemUser) {
+            this.systemUser = systemUser
+        }
+
+        WillowUser getWillowUser() {
+            return willowUser
+        }
+
+        void setWillowUser(WillowUser willowUser) {
+            this.willowUser = willowUser
+        }
 
         void setStatus(AuthenticationStatus status) {
             this.status = status
@@ -316,7 +364,7 @@ class AuthenticationService {
             return lastName
         }
 
-        static AuthenticationResult valueOf(AuthenticationStatus status, String firstName = null, String lastName = null) {
+        static AuthenticationResult valueOf(AuthenticationStatus status, String firstName = null, String lastName = null, SystemUser systemUser = null, WillowUser willowUser = null) {
             AuthenticationResult result = new AuthenticationResult()
             result.status = status
             result.firstName = firstName

@@ -7,6 +7,10 @@ schemes:
   - https
 produces:
   - application/json
+securityDefinitions:
+  basicAuth:
+    type: basic
+    description: HTTP Basic Authentication. Works over `HTTP` and `HTTPS`
 paths:
   /getUser:
     post:
@@ -449,9 +453,9 @@ paths:
     get:
       x-filter:  
       - AuthFilter
-      summary: Get array of published versions
+      summary: Get array of published versions. Not supported yet
       operationId: getVersions
-      description: Get array of published versions
+      description: Get array of published versions. Not supported yet
       tags:
         - Publish
       responses:
@@ -469,9 +473,9 @@ paths:
     post:
       x-filter:  
       - AuthFilter
-      summary: Set current published version by provided version Id
+      summary: Set current published version by provided version Id. Not supported yet
       operationId: setVersion
-      description: Change current published version
+      description: Change current published version. Not supported yet
       tags:
         - Publish
       consumes:
@@ -494,9 +498,9 @@ paths:
     post:
       x-filter:  
       - AuthFilter
-      summary: Publish current draft version
+      summary: Publish current draft version. Support basic Authentication
       operationId: publish
-      description: Publish current draft changes to live site
+      description: Publish current draft changes to live site. Support basic Authentication
       tags:
         - Publish
       consumes:
