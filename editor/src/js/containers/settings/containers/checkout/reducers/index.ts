@@ -12,9 +12,13 @@ export const checkoutSettingsReducer = (state: CheckoutSettingsState = new Check
       return {
         ...state,
         ...action.payload,
+        refreshSettings: true,
       };
 
     default:
-      return state;
+      return {
+        ...state,
+        refreshSettings: false,
+      };
   }
 };

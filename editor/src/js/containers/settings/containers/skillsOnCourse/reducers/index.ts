@@ -12,10 +12,14 @@ export const skillsOnCourseReducer = (state: SkillsOnCourseState = new SkillsOnC
       return {
         ...state,
         ...action.payload,
+        refreshSettings: true,
       };
 
 
     default:
-      return state;
+      return {
+        ...state,
+        refreshSettings: false,
+      };
   }
 };

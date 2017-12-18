@@ -28,6 +28,15 @@ export class Checkout extends React.Component<Props, any> {
     this.props.onInit();
   }
 
+  componentWillReceiveProps(props: Props) {
+    if (props.checkout.refreshSettings) {
+      this.setState({
+        successUrl: props.checkout.successUrl,
+        refundPolicy: props.checkout.refundPolicy,
+      });
+    }
+  }
+
   onChange(event, key) {
     const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
     this.setState({

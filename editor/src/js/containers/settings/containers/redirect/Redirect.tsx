@@ -29,7 +29,7 @@ export class Redirect extends React.PureComponent<Props, any> {
   }
 
   componentWillReceiveProps(props: Props) {
-    if (props.redirect.refreshRules) {
+    if (props.redirect.refreshSettings) {
       this.setState({rules: props.redirect.rules});
     }
   }

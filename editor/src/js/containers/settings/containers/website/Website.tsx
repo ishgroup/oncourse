@@ -42,6 +42,25 @@ export class Website extends React.Component<Props, any> {
     this.props.onInit();
   }
 
+  componentWillReceiveProps(props: Props) {
+    if (props.website.refreshSettings) {
+      const website = props.website;
+
+      this.setState({
+        enableSocialMedia: website.enableSocialMedia,
+        addThisId: website.addThisId,
+        enableForCourse: website.enableForCourse,
+        enableForWebpage: website.enableForWebpage,
+        classAge: {
+          hideClassDays: website.classAge && website.classAge.hideClassDays,
+          hideClassCondition: website.classAge && website.classAge.hideClassCondition,
+          stopWebEnrolmentDays: website.classAge && website.classAge.stopWebEnrolmentDays,
+          stopWebEnrolmentCondition: website.classAge && website.classAge.stopWebEnrolmentCondition,
+        },
+      });
+    }
+  }
+
   onChange(value, key, sub?) {
 
     if (sub) {

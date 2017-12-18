@@ -323,7 +323,7 @@ export class MockDB {
       website: {
         enableSocialMedia: false,
         addThisId: '',
-        enableForCourse: false,
+        enableForCourse: true,
         enableForWebpage: false,
         classAge: {
           hideClassDays: 0,

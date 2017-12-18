@@ -30,6 +30,16 @@ export class Skills extends React.Component<Props, any> {
     this.props.onInit();
   }
 
+  componentWillReceiveProps(props: Props) {
+    if (props.skillsOnCourse.refreshSettings) {
+      this.setState({
+        hideStudentDetails: props.skillsOnCourse.hideStudentDetails,
+        enableOutcomeMarking: props.skillsOnCourse.enableOutcomeMarking,
+        tutorFeedbackEmail: props.skillsOnCourse.tutorFeedbackEmail,
+      });
+    }
+  }
+
   onChange(event, key) {
     const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
     this.setState({

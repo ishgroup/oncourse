@@ -12,9 +12,13 @@ export const websiteSettingsReducer = (state: WebsiteSettingsState = new Website
       return {
         ...state,
         ...action.payload,
+        refreshSettings: true,
       };
 
     default:
-      return state;
+      return {
+        ...state,
+        refreshSettings: false,
+      };
   }
 };

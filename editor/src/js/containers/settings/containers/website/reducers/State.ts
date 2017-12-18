@@ -6,4 +6,5 @@ export class WebsiteSettingsState {
   enableForCourse: boolean;
   enableForWebpage: boolean;
   classAge: ClassAge;
+  refreshSettings?: boolean = false;
 }
