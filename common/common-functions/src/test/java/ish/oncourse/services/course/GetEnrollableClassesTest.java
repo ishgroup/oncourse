@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static org.apache.commons.lang.time.DateUtils.addDays;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -69,19 +70,14 @@ public class GetEnrollableClassesTest {
 		Course course = mock(Course.class);
 
 		List<CourseClass> courseClasses = new ArrayList<>();
+		Date currentDate = new Date();
 
-		courseClasses.add(createMockCourseClass(createDateWithOffset(0, 0, -3),
-				createDateWithOffset(0, 0, -2)));
-		courseClasses.add(createMockCourseClass(createDateWithOffset(0, 0, -2),
-				createDateWithOffset(0, 0, -1)));
-		courseClasses.add(createMockCourseClass(createDateWithOffset(0, 0, -1),
-				createDateWithOffset(0, 0, 0)));
-		courseClasses.add(createMockCourseClass(createDateWithOffset(0, 0, 0),
-				createDateWithOffset(0, 0, 1)));
-		courseClasses.add(createMockCourseClass(createDateWithOffset(0, 0, 1),
-				createDateWithOffset(0, 0, 2)));
-		courseClasses.add(createMockCourseClass(createDateWithOffset(0, 0, 2),
-				createDateWithOffset(0, 0, 3)));
+		courseClasses.add(createMockCourseClass(addDays(currentDate, -3), addDays(currentDate, -2)));
+		courseClasses.add(createMockCourseClass(addDays(currentDate, -2), addDays(currentDate, -1)));
+		courseClasses.add(createMockCourseClass(addDays(currentDate, -1), currentDate));
+		courseClasses.add(createMockCourseClass(currentDate, addDays(currentDate, 1)));
+		courseClasses.add(createMockCourseClass(addDays(currentDate, 1), addDays(currentDate, 2)));
+		courseClasses.add(createMockCourseClass(addDays(currentDate, 2), addDays(currentDate, 3)));
 
 		when(course.getCourseClasses()).thenReturn(courseClasses);
 
