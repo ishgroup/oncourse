@@ -8,6 +8,7 @@ import {ClassCondition} from "../../../../model/settings/ClassCondition";
 import {ClassEnrolmentCondition} from "../../../../model/settings/ClassEnrolmentCondition";
 import {State} from "../../../../reducers/state";
 import {WebsiteSettingsState} from "./reducers/State";
+import {toPositive} from "../../../../common/utils/NumberUtils";
 
 interface Props {
   onInit: () => any;
@@ -41,8 +42,7 @@ export class Website extends React.Component<Props, any> {
     this.props.onInit();
   }
 
-  onChange(event, key, sub?) {
-    const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
+  onChange(value, key, sub?) {
 
     if (sub) {
       this.setState({
@@ -78,7 +78,7 @@ export class Website extends React.Component<Props, any> {
               label="Enable social media links."
               name="enableSocialMedia"
               checked={enableSocialMedia}
-              onChange={e => {this.onChange(e, 'enableSocialMedia');}}
+              onChange={e => {this.onChange(e.target.checked, 'enableSocialMedia');}}
             />
           </FormGroup>
 
@@ -91,7 +91,7 @@ export class Website extends React.Component<Props, any> {
                   name="addThisId"
                   id="addThisId"
                   value={addThisId}
-                  onChange={e => this.onChange(e, 'addThisId')}
+                  onChange={e => this.onChange(e.target.value, 'addThisId')}
                 />
                 <FormText><a target="_blank" href="http://www.addthis.com/">Click here</a> to to create one.</FormText>
               </Col>
@@ -104,7 +104,7 @@ export class Website extends React.Component<Props, any> {
               label="Course"
               name="enableForCourse"
               checked={enableForCourse}
-              onChange={e => {this.onChange(e, 'enableForCourse');}}
+              onChange={e => {this.onChange(e.target.checked, 'enableForCourse');}}
             />
           </FormGroup>
 
@@ -113,7 +113,7 @@ export class Website extends React.Component<Props, any> {
               label="Web page"
               name="enableForWebpage"
               checked={enableForWebpage}
-              onChange={e => {this.onChange(e, 'enableForWebpage');}}
+              onChange={e => {this.onChange(e.target.checked, 'enableForWebpage');}}
             />
           </FormGroup>
 
@@ -125,13 +125,14 @@ export class Website extends React.Component<Props, any> {
                 name="hideClassDays"
                 className="xs"
                 value={classAge.hideClassDays}
-                onChange={e => {this.onChange(e, 'hideClassDays', 'classAge');}}
+                onChange={e => {this.onChange(e.target.value, 'hideClassDays', 'classAge');}}
+                onBlur={e => {this.onChange(toPositive(e.target.value), 'hideClassDays', 'classAge');}}
               />
               <Label>days</Label>
               <Input
                 type="select"
                 name="hideClassCondition"
-                onChange={e => {this.onChange(e, 'hideClassCondition', 'classAge');}}
+                onChange={e => {this.onChange(e.target.value, 'hideClassCondition', 'classAge');}}
               >
                 <option value={ClassCondition.afterClassStarts}>after class starts</option>
                 <option value={ClassCondition.beforeClassStarts}>before class starts</option>
@@ -149,13 +150,14 @@ export class Website extends React.Component<Props, any> {
                 name="stopWebEnrolmentDays"
                 className="xs"
                 value={classAge.stopWebEnrolmentDays}
-                onChange={e => {this.onChange(e, 'stopWebEnrolmentDays', 'classAge');}}
+                onChange={e => {this.onChange(e.target.value, 'stopWebEnrolmentDays', 'classAge');}}
+                onBlur={e => {this.onChange(toPositive(e.target.value), 'stopWebEnrolmentDays', 'classAge');}}
               />
               <Label>days</Label>
                 <Input
                   type="select"
                   name="stopWebEnrolmentCondition"
-                  onChange={e => {this.onChange(e, 'stopWebEnrolmentCondition', 'classAge');}}
+                  onChange={e => {this.onChange(e.target.value, 'stopWebEnrolmentCondition', 'classAge');}}
                 >
                 <option value={ClassEnrolmentCondition.afterClassStarts}>after class starts</option>
                 <option value={ClassEnrolmentCondition.beforeClassStarts}>before class starts</option>
