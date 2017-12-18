@@ -147,7 +147,7 @@ export class Menus extends React.Component<Props, any> {
     const {menu, onChangeTree, fetching} = this.props;
 
     return (
-      <div style={{height: '700px'}} className={classnames("rst", {fetching})}>
+      <div>
         <Button
           size="md"
           color="primary"
@@ -156,24 +156,28 @@ export class Menus extends React.Component<Props, any> {
           <span className="icon icon-add_circle"/>
           Add new item
         </Button>
-        <SortableTree
-          treeData={menu.items}
-          rowHeight={52}
-          onChange={treeData => onChangeTree(treeData)}
-          generateNodeProps={({node, path}) => ({
-            title: this.getTitleField(node, path),
-            subtitle: this.getSubTitleField(node, path),
-            buttons: this.getButtons(node, path),
-          })}
-        />
-
-        <Button
-          size="md"
-          color="primary"
-          onClick={() => this.save()}
+        <div
+          style={{height: `${menu.items.length ? menu.items.length * 52 : 52}px`, maxHeight: '500px'}}
+          className={classnames("rst", {fetching})}
         >
-          Save
-        </Button>
+          <SortableTree
+            treeData={menu.items}
+            rowHeight={52}
+            onChange={treeData => onChangeTree(treeData)}
+            generateNodeProps={({node, path}) => ({
+              title: this.getTitleField(node, path),
+              subtitle: this.getSubTitleField(node, path),
+              buttons: this.getButtons(node, path),
+            })}
+          />
+        </div>
+          <Button
+            size="md"
+            color="primary"
+            onClick={() => this.save()}
+          >
+            Save
+          </Button>
       </div>
     );
   }
