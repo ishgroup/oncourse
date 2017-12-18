@@ -3,11 +3,7 @@
  */
 package ish.oncourse.portal.services;
 
-import ish.oncourse.model.College;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.Tag;
-import ish.oncourse.model.Taggable;
-import ish.oncourse.model.TaggableTag;
+import ish.oncourse.model.*;
 import ish.oncourse.services.tag.ITagService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
@@ -16,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class MailingListHelper {
 
@@ -26,9 +23,10 @@ public class MailingListHelper {
 	private ITagService tagService;
 	private Set<Tag> currentSubscription;
 
-	private MailingListHelper() {}
-	
-	public static MailingListHelper valueOf(ITagService tagService, List<Long> selectedSubscriptions, Set<Tag> currentSubscription,  ObjectContext objectContext, Contact currentUser, College currentCollege) {
+	private MailingListHelper() {
+	}
+
+	public static MailingListHelper valueOf(ITagService tagService, List<Long> selectedSubscriptions, Set<Tag> currentSubscription, ObjectContext objectContext, Contact currentUser, College currentCollege) {
 		MailingListHelper helper = new MailingListHelper();
 		helper.selectedSubscriptions = selectedSubscriptions;
 		helper.objectContext = objectContext;
@@ -40,12 +38,12 @@ public class MailingListHelper {
 	}
 
 	public void saveSubscriptions() {
-		
+
 		for (Long id : selectedSubscriptions) {
 			List<Tag> tagList = tagService.loadByIds(id);
 			if (!tagList.isEmpty()) {
 				Tag tag = tagList.get(0);
-				if (!currentSubscription.contains(tag)) {
+				if (currentSubscription.stream().noneMatch((s) -> s.getId().equals(tag.getId()))) {
 					Tag local = objectContext.localObject(tag);
 					Taggable taggable = objectContext.newObject(Taggable.class);
 					taggable.setCollege(local.getCollege());
@@ -61,14 +59,16 @@ public class MailingListHelper {
 					taggableTag.setCollege(local.getCollege());
 					taggable.addToTaggableTags(taggableTag);
 				} else {
-					currentSubscription.remove(tag);
+					currentSubscription.removeAll(
+							currentSubscription.stream().filter((s) -> s.getId().equals(tag.getId())).collect(Collectors.toSet())
+					);
 				}
 			}
 		}
 
 		if (!currentSubscription.isEmpty()) {
 			for (Tag tag : new ArrayList<>(currentSubscription)) {
-				List<Taggable> taggableList  = ObjectSelect.query(Taggable.class).where(Taggable.ENTITY_IDENTIFIER.eq(Contact.class.getSimpleName()))
+				List<Taggable> taggableList = ObjectSelect.query(Taggable.class).where(Taggable.ENTITY_IDENTIFIER.eq(Contact.class.getSimpleName()))
 						.and(Taggable.ENTITY_WILLOW_ID.eq(currentUser.getId()))
 						.and(Taggable.COLLEGE.eq(currentCollege))
 						.and(Taggable.TAGGABLE_TAGS.dot(TaggableTag.TAG).eq(tag)).select(objectContext);
@@ -82,5 +82,5 @@ public class MailingListHelper {
 			}
 		}
 	}
-	
+
 }
