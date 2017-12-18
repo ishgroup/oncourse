@@ -6,13 +6,13 @@
     <Appenders>
         <RollingFile name="FILE" fileName="${sys:logs.path}/${name}.log"
                      filePattern="${sys:logs.path}/${name}.log.%i">
-            <!--<JsonLayout compact="true" eventEol="true"/>-->
+            <JsonLayout compact="true" eventEol="true"/>
             <SizeBasedTriggeringPolicy size="10M"/>
             <DefaultRolloverStrategy/>
         </RollingFile>
         <RollingFile name="FILE_ERROR" fileName="${sys:logs.path}/${name}-error.log"
                      filePattern="${sys:logs.path}/${name}-error.log.%i">
-            <!--<JsonLayout compact="true" eventEol="true"/>-->
+            <JsonLayout compact="true" eventEol="true"/>
             <SizeBasedTriggeringPolicy size="10M"/>
             <DefaultRolloverStrategy/>
         </RollingFile>
