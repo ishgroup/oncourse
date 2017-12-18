@@ -12,6 +12,8 @@ import static org.junit.Assert.assertEquals;
 public class TagTest {
 	public static final String TEST_TAG_NAME = "test\\tag";
 
+	public static final String THIRD_TAG_NAME = "web visible tag";
+
 	public static final String SECOND_TAG_NAME = "second/tag";
 
 	public static final String FIRST_TAG_NAME = "first tag with +";
@@ -41,7 +43,6 @@ public class TagTest {
 		testContext.open();
 		context = testContext.getServerRuntime().newContext();
 
-
 		College college = context.newObject(College.class);
 		college.setName("name");
 		college.setTimeZone("Australia/Sydney");
@@ -67,8 +68,13 @@ public class TagTest {
 		testTag.setName(TEST_TAG_NAME);
 		testTag.setParent(secondTag);
 
-		context.commitChanges();
+		Tag thirdTag = context.newObject(Tag.class);
+		thirdTag.setCollege(college);
+		thirdTag.setName(THIRD_TAG_NAME);
+		thirdTag.setIsWebVisible(true);
+		thirdTag.setParent(testTag);
 
+		context.commitChanges();
 	}
 
 	/**
@@ -99,5 +105,10 @@ public class TagTest {
 		String entityType = Course.class.getSimpleName();
 		assertEquals("/courses" + ENCODED_PATH_FOR_TEST_TAG, testTag.getLink(entityType));
 		assertEquals("/courses" + ENCODED_PATH_FOR_TEST_TAG, testTag.getLink());
+	}
+
+	@Test
+	public void getWebVisibleTagTest() {
+		assertEquals(1, testTag.getWebVisibleTags().size());
 	}
 }
