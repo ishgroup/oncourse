@@ -10,8 +10,6 @@ import org.apache.cayenne.query.QueryCacheStrategy;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class Tag extends _Tag implements Queueable {
@@ -26,27 +24,24 @@ public class Tag extends _Tag implements Queueable {
 	@SuppressWarnings("unchecked")
 	public List<Tag> getWebVisibleTags() {
 		List<Tag> visibleTags;
-		
+
 		if (getObjectId().isTemporary()) {
-			visibleTags = ExpressionFactory.matchExp(IS_WEB_VISIBLE_PROPERTY, true).filterObjects(getTags());
-		}
-		else {
-			visibleTags = ObjectSelect.query(Tag.class).
+			visibleTags = new ArrayList<>(ExpressionFactory.matchExp(IS_WEB_VISIBLE_PROPERTY, true).filterObjects(getTags()));
+		} else {
+			visibleTags = new ArrayList<>(ObjectSelect.query(Tag.class).
 					where(Tag.PARENT.eq(this)).
 					and(Tag.IS_WEB_VISIBLE.isTrue()).
 					cacheStrategy(QueryCacheStrategy.SHARED_CACHE).
 					cacheGroup(Tag.class.getSimpleName()).
-					select(getObjectContext());
+					select(getObjectContext()));
 		}
 
-		Collections.sort(visibleTags, new Comparator<Tag>() {
-			public int compare(Tag tag1, Tag tag2) {
-				int result = tag1.getWeighting() - tag2.getWeighting();
-				if (result != 0) {
-					return result;
-				}
-				return tag1.getName().compareToIgnoreCase(tag2.getName());
+		visibleTags.sort((tag1, tag2) -> {
+			int result = tag1.getWeighting() - tag2.getWeighting();
+			if (result != 0) {
+				return result;
 			}
+			return tag1.getName().compareToIgnoreCase(tag2.getName());
 		});
 
 		return visibleTags;
@@ -73,9 +68,9 @@ public class Tag extends _Tag implements Queueable {
 			// TODO add the calculation of plural entity name for all the
 			// taggable entities
 			switch (type) {
-			case Course:
-				entityType = "courses";
-				break;
+				case Course:
+					entityType = "courses";
+					break;
 			}
 		}
 		if (entityType == null) {
@@ -118,8 +113,8 @@ public class Tag extends _Tag implements Queueable {
 
 	/**
 	 * @return the ancestor tag that has no grandparent, that is the level 2 tag
-	 *         for this tag. As an example, /subjects/sport/swimming would
-	 *         return sport
+	 * for this tag. As an example, /subjects/sport/swimming would
+	 * return sport
 	 */
 	public Tag getLevel2Ancestor() {
 		Tag aTag = this;
