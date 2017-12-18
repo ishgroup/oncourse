@@ -3,7 +3,6 @@
  */
 package ish.oncourse.portal.pages;
 
-import edu.emory.mathcs.backport.java.util.Arrays;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Tag;
@@ -21,10 +20,7 @@ import org.apache.cayenne.query.SelectById;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
@@ -44,8 +40,8 @@ public class MailingListTest extends ServiceTest {
 
 		ICayenneService cayenneService = getService(ICayenneService.class);
 		context = cayenneService.newContext();
-		currentUser = SelectById.query(Contact.class, 1l).selectOne(context);
-		college = SelectById.query(College.class, 1l).selectOne(context);
+		currentUser = SelectById.query(Contact.class, 1L).selectOne(context);
+		college = SelectById.query(College.class, 1L).selectOne(context);
 		tags = new HashSet<>(ObjectSelect.query(Tag.class).where(Tag.NAME.eq("Name1")).select(context));
 	}
 
@@ -54,7 +50,7 @@ public class MailingListTest extends ServiceTest {
 	@Test
 	public void testJustPressSave() {
 	
-		MailingListHelper.valueOf(getService(ITagService.class), Arrays.asList(new Long[] {2L}), tags, context, currentUser, college).saveSubscriptions();
+		MailingListHelper.valueOf(getService(ITagService.class), Collections.singletonList(2L), tags, context, currentUser, college).saveSubscriptions();
 
 		context.commitChanges();
 
@@ -63,8 +59,8 @@ public class MailingListTest extends ServiceTest {
 		assertEquals(2, tagRelations.size());
 		
 		for (TaggableTag tagRelation : tagRelations) {
-			assertEquals(2l, tagRelation.getTag().getId().longValue());
-			assertEquals(1l, tagRelation.getTaggable().getEntityWillowId().longValue());
+			assertEquals(2L, tagRelation.getTag().getId().longValue());
+			assertEquals(1L, tagRelation.getTaggable().getEntityWillowId().longValue());
 			assertEquals("Contact", tagRelation.getTaggable().getEntityIdentifier());
 		}
 	}
@@ -72,7 +68,7 @@ public class MailingListTest extends ServiceTest {
 
 	@Test
 	public void testUnsubscribe() {
-		MailingListHelper.valueOf(getService(ITagService.class), new ArrayList<Long>(), tags, context, currentUser, college).saveSubscriptions();
+		MailingListHelper.valueOf(getService(ITagService.class), new ArrayList<>(), tags, context, currentUser, college).saveSubscriptions();
 
 		context.commitChanges();
 
@@ -84,7 +80,11 @@ public class MailingListTest extends ServiceTest {
 
 	@Test
 	public void testSelectAll() {
-		MailingListHelper.valueOf(getService(ITagService.class),  Arrays.asList(new Long[] {2L, 3L}), tags, context, currentUser, college).saveSubscriptions();
+		List<Long> selected  = new ArrayList<>();
+		selected.add(2L);
+		selected.add(3L);
+
+		MailingListHelper.valueOf(getService(ITagService.class), selected, tags, context, currentUser, college).saveSubscriptions();
 
 		context.commitChanges();
 

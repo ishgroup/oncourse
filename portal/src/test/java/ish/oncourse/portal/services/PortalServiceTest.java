@@ -212,7 +212,7 @@ public class PortalServiceTest extends ServiceTest {
 		List<Document> tutorResources = service.getTutorCommonResources();
 		
 		assertEquals(1, tutorResources.size());
-		assertEquals(tutorResource, tutorResources.get(0));
+		assertEquals(tutorResource.getId(), tutorResources.get(0).getId());
 	}
 	
 	@Test
