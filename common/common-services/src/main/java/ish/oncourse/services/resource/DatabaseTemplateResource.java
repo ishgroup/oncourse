@@ -4,6 +4,7 @@
 package ish.oncourse.services.resource;
 
 import ish.oncourse.model.WebTemplate;
+import org.apache.commons.io.input.BOMInputStream;
 import org.apache.tapestry5.ioc.Resource;
 
 import java.io.ByteArrayInputStream;
@@ -17,7 +18,6 @@ import java.util.Locale;
  * url, file, path etc. getters don't make sense and will return null if called.
  */
 public class DatabaseTemplateResource implements org.apache.tapestry5.ioc.Resource {
-
 	private WebTemplate template;
 
 	public DatabaseTemplateResource(WebTemplate template) {
@@ -35,7 +35,7 @@ public class DatabaseTemplateResource implements org.apache.tapestry5.ioc.Resour
 
 	@Override
 	public InputStream openStream() throws IOException {
-		return new ByteArrayInputStream(template.getContent().getBytes());
+		return new BOMInputStream(new ByteArrayInputStream(template.getContent().getBytes()), false);
 	}
 
 	@Override
