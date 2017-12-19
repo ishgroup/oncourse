@@ -52,6 +52,7 @@ export class Cms extends React.Component<Props, any> {
   componentWillReceiveProps(props) {
     if (this.props.auth.isAuthenticated === false && props.auth.isAuthenticated === true) {
       getHistoryInstance().push(URL.SITE);
+      this.props.getPageByUrl(document.location.pathname);
     }
   }
 
