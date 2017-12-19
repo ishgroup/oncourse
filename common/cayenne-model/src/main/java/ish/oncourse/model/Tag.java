@@ -10,6 +10,7 @@ import org.apache.cayenne.query.QueryCacheStrategy;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class Tag extends _Tag implements Queueable {
@@ -31,17 +32,20 @@ public class Tag extends _Tag implements Queueable {
 			visibleTags = new ArrayList<>(ObjectSelect.query(Tag.class).
 					where(Tag.PARENT.eq(this)).
 					and(Tag.IS_WEB_VISIBLE.isTrue()).
-					cacheStrategy(QueryCacheStrategy.SHARED_CACHE).
+					cacheStrategy(QueryCacheStrategy.LOCAL_CACHE).
 					cacheGroup(Tag.class.getSimpleName()).
 					select(getObjectContext()));
 		}
 
-		visibleTags.sort((tag1, tag2) -> {
-			int result = tag1.getWeighting() - tag2.getWeighting();
-			if (result != 0) {
-				return result;
+		visibleTags.sort(new Comparator<Tag>() {
+			@Override
+			public int compare(Tag tag1, Tag tag2) {
+				int result = tag1.getWeighting() - tag2.getWeighting();
+				if (result != 0) {
+					return result;
+				}
+				return tag1.getName().compareToIgnoreCase(tag2.getName());
 			}
-			return tag1.getName().compareToIgnoreCase(tag2.getName());
 		});
 
 		return visibleTags;
