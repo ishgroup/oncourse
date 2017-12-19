@@ -95,7 +95,7 @@ public class BaseService<T extends Persistent> implements IBaseService<T> {
 			}
 		}
 
-		return results;
+		return new ArrayList<>(results);
 
 		} catch (Exception e) {
 			logger.error("Query resulted in Exception thrown. Query: {}", qualifier, e);

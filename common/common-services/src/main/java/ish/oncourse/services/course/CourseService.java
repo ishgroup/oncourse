@@ -93,7 +93,7 @@ public class CourseService implements ICourseService {
 		q.setCacheStrategy(SHARED_CACHE);
 		q.setCacheGroup(Course.class.getSimpleName());
 
-		List<Course> result = cayenneService.newContext().performQuery(q);
+		List<Course> result = new ArrayList<>(cayenneService.newContext().performQuery(q));
 
 		if (sort == null) {
 			//if nothing specified use default

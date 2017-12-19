@@ -100,7 +100,7 @@ public class CourseClassService implements ICourseClassService {
 		ObjectSelect<CourseClass> objectSelect = ObjectSelect.query(CourseClass.class, ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN, ids))
 				.and(getSiteQualifier());
 
-		return ApplyCourseClassCacheSettings.valueOf(objectSelect).apply().select(cayenneService.newContext());
+		return new ArrayList<>(ApplyCourseClassCacheSettings.valueOf(objectSelect).apply().select(cayenneService.newContext()));
 	}
 
 	/*

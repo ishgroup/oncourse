@@ -287,7 +287,7 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 				.prefetch(Session.ROOM.dot(Room.SITE).joint())
 				.cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
 				.cacheGroup(Session.class.getSimpleName());
-		return select.select(getObjectContext());
+		return new ArrayList<>(select.select(getObjectContext()));
 	}
 
 	public boolean isHasRoom() {

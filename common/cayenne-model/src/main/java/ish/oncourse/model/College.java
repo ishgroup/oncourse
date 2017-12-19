@@ -46,11 +46,11 @@ public class College extends _College {
 	 * @return list of sites
 	 */
 	public List<Site> getWebVisibleSites() {
-		return ObjectSelect.query(Site.class).
+		return new ArrayList<>(ObjectSelect.query(Site.class).
 				cacheStrategy(QueryCacheStrategy.SHARED_CACHE, Site.class.getSimpleName()).
 				where(Site.COLLEGE.eq(this)).
 				and(Site.IS_WEB_VISIBLE.isTrue()).
 				orderBy(Site.NAME.asc()).
-				select(getObjectContext());
+				select(getObjectContext()));
 	}
 }
