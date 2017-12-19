@@ -32,9 +32,9 @@ public class GetTemplateKey {
 	public MultiKey get(String name, ComponentResourceSelector selector) {
 		CustomTemplateDefinition ctd = getTemplateDefinition.get(name);
 		if (ctd != null && name.endsWith(ctd.getTemplateClassName()))
-			return new MultiKey(name, ctd.getTemplateFileName(), selector.locale, request.getServerName(), webNodeService.getLayout());
+			return new MultiKey(name, ctd.getTemplateFileName(), selector.locale, request.getServerName(), webNodeService.getLayout().getId());
 		else
-			return new MultiKey(name, selector.locale, request.getServerName(), webNodeService.getLayout());
+			return new MultiKey(name, selector.locale, request.getServerName(), webNodeService.getLayout().getId());
 	}
 
 	public static MultiKey multiKey(String name, String templateFileName, Locale locale, String serverName, WebSiteLayout layout) {
