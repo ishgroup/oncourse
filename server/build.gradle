@@ -285,7 +285,7 @@ appBundler {
 }
 
 task installer_osx(dependsOn: [prepareKeychains, codeSign], type: au.com.ish.DmgTask) {
-    outputs.upToDateWhen { false }
+    outputs.upToDateWhen { false } //disables 'UP_TO_DATE' check. This is need to run task always
 	description "Create the OSX application executable and installer (which is just a dmg file)."
 }
 
