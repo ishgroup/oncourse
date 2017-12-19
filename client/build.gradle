@@ -82,6 +82,7 @@ appBundler {
 }
 
 task installer_osx(dependsOn: [prepareKeychains, codeSign], type: au.com.ish.DmgTask) {
+    outputs.upToDateWhen { false }
     description "Create the OSX application executable and installer (which is just a dmg file)."
 }
 
