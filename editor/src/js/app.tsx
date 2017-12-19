@@ -1,3 +1,7 @@
+if (!global['_babelPolyfill']) {
+  require("babel-polyfill");
+}
+
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import {Provider} from "react-redux";
@@ -9,7 +13,6 @@ import Cms from "./containers/Cms";
 import {createRootComponent, loadCmsCss} from "./utils";
 
 import {DefaultConfig} from "./constants/Config";
-
 import "../scss/cms.scss";
 
 const store = CreateStore();
