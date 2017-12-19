@@ -94,6 +94,25 @@ export class Menus extends React.Component<Props, any> {
     );
   }
 
+  getMenuItemsCount() {
+    const {menu} = this.props;
+    let count = 0;
+
+    const getCount = items => {
+      const expandedItems = items.filter(item => item.expanded);
+      count += items.length;
+
+      expandedItems.forEach(item => {
+        if (item.children && item.children.length) {
+          getCount(item.children);
+        }
+      });
+    };
+
+    getCount(menu.items);
+    return count;
+  }
+
   getTitleField = (node, path) => {
     return (
       <div className={classnames("rst__field", {invalid: node.errors && node.errors.title})}>
@@ -157,7 +176,11 @@ export class Menus extends React.Component<Props, any> {
           Add new item
         </Button>
         <div
-          style={{height: `${menu.items.length ? menu.items.length * 52 : 52}px`, maxHeight: '500px'}}
+          style={{
+            height: `${menu.items.length ? this.getMenuItemsCount() * 52 : 52}px`,
+            maxHeight: '500px',
+            minHeight: '200px',
+          }}
           className={classnames("rst", {fetching})}
         >
           <SortableTree
