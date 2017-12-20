@@ -10,8 +10,6 @@ import org.apache.tapestry5.internal.util.MultiKey;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.pageload.ComponentResourceSelector;
 
-import java.util.Locale;
-
 /**
  * User: akoiro
  * Date: 22/11/17
@@ -31,19 +29,10 @@ public class GetTemplateKey {
 
 	public MultiKey get(String name, ComponentResourceSelector selector) {
 		CustomTemplateDefinition ctd = getTemplateDefinition.get(name);
+		WebSiteLayout webSiteLayout = webNodeService.getLayout();
 		if (ctd != null && name.endsWith(ctd.getTemplateClassName()))
-			return new MultiKey(name, ctd.getTemplateFileName(), selector.locale, request.getServerName(), webNodeService.getLayout().getId());
+			return new MultiKey(name, ctd.getTemplateFileName(), selector.locale, request.getServerName(), webSiteLayout != null ? webSiteLayout.getId(): null);
 		else
-			return new MultiKey(name, selector.locale, request.getServerName(), webNodeService.getLayout().getId());
+			return new MultiKey(name, selector.locale, request.getServerName(), webSiteLayout != null ? webSiteLayout.getId(): null);
 	}
-
-	public static MultiKey multiKey(String name, String templateFileName, Locale locale, String serverName, WebSiteLayout layout) {
-		return new MultiKey(name, templateFileName, locale, serverName, layout);
-	}
-
-	public static MultiKey multiKey(String name, Locale locale, String serverName, WebSiteLayout layout) {
-		return new MultiKey(name, locale, serverName, layout);
-	}
-
-
 }

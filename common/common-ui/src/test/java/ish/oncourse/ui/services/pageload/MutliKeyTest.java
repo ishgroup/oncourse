@@ -16,7 +16,6 @@ import javax.cache.Caching;
 import java.util.Locale;
 
 import static ish.oncourse.ui.services.pageload.PageLoadService.CacheKey.templates;
-import static ish.oncourse.ui.services.pageload.template.GetTemplateKey.multiKey;
 
 /**
  * User: akoiro
@@ -33,8 +32,8 @@ public class MutliKeyTest {
 		String serverName = "serverName1";
 		WebSiteLayout webSiteLayout = new WebSiteLayout();
 
-		MultiKey setMultiKey = multiKey(name, locale, serverName, webSiteLayout);
-		MultiKey getMultiKey = multiKey(name, locale, serverName, webSiteLayout);
+		MultiKey setMultiKey = new MultiKey(name, locale, serverName, webSiteLayout);
+		MultiKey getMultiKey = new MultiKey(name, locale, serverName, webSiteLayout);
 
 		Assert.assertEquals(setMultiKey, getMultiKey);
 		Assert.assertEquals(setMultiKey.hashCode(), getMultiKey.hashCode());
