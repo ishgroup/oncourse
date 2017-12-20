@@ -67,20 +67,21 @@ class FieldFactory extends React.Component<any, any> {
         return LanguageField(props);
 
       case DataType.CHOICE:
+
         return <Form.Field
           {...props}
           component={SelectField}
-          loadOptions={() => Promise.resolve(field.enumItems)}
+          loadOptions={() => Promise.resolve(withOptionOther(field.enumItems))}
           newOptionEnable={true}
           searchable={true}
           showOnFocus={true}
           placeholder="Please Select..."
-        />
+        />;
 
       default:
         return null;
     }
-  }
+  };
 
   render() {
     return (
@@ -147,12 +148,19 @@ const LanguageField = (props): any => {
   />;
 };
 
+const withOptionOther = items => {
+  return items.concat({
+    key: null,
+    value: 'Other',
+  })
+};
+
 const withDefaultItem = items => {
   const defaultEnumItem = {
     key: -1,
     value: 'Please select...',
   };
   return [defaultEnumItem].concat(items);
-}
+};
 
 export default FieldFactory;

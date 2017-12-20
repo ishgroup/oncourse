@@ -356,6 +356,7 @@ export class BuildCheckoutModelRequest {
     result.redeemedVoucherIds = state.checkout.redeemVouchers.filter(v => v.enabled).map(v => v.id);
     result.contactNodes = BuildContactNodes.fromState(state.checkout.summary);
     result.corporatePassId = (state.checkout.payment.corporatePass && state.checkout.payment.corporatePass.id) || null;
+
     return result;
   }
 }
