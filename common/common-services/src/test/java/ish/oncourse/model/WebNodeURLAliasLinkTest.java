@@ -1,6 +1,7 @@
 package ish.oncourse.model;
 
 import ish.oncourse.services.ServiceTestModule;
+import ish.oncourse.services.cache.NoopQueryCache;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.LoadDataSet;
@@ -18,7 +19,7 @@ public class WebNodeURLAliasLinkTest extends ServiceTest {
 	
 	@Before
 	public void setup() throws Exception {
-		initTest("ish.oncourse.services", "service", ServiceTestModule.class);
+		initTest("ish.oncourse.services", "service", new NoopQueryCache(), ServiceTestModule.class);
 
 		new LoadDataSet().dataSetFile("ish/oncourse/services/lifecycle/referenceDataSet.xml")
 				.load(testContext.getDS());

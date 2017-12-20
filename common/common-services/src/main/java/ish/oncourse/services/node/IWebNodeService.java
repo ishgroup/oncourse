@@ -1,10 +1,6 @@
 package ish.oncourse.services.node;
 
-import ish.oncourse.model.WebNode;
-import ish.oncourse.model.WebNodeType;
-import ish.oncourse.model.WebSiteLayout;
-import ish.oncourse.model.WebSiteVersion;
-import ish.oncourse.model.WebUrlAlias;
+import ish.oncourse.model.*;
 import ish.oncourse.services.IBaseService;
 import ish.oncourse.services.cache.RequestCached;
 
@@ -98,7 +94,7 @@ public interface IWebNodeService extends IBaseService<WebNode> {
     /**
      * Returns default alias for the webNode
      */
-    public WebUrlAlias getDefaultWebURLAlias(WebNode webNode);
+    WebUrlAlias getDefaultWebURLAlias(WebNode webNode);
 
     /**
      * Build url path for the webNode.
