@@ -227,11 +227,6 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
     }
 
     public WebUrlAlias getDefaultWebURLAlias(WebNode webNode) {
-	    List<WebUrlAlias> result = WebUrlAlias.DEFAULT.eq(true).filterObjects(webNode.getWebUrlAliases());
-	    if (!result.isEmpty()) {
-		    return result.get(0);
-	    }
-
 	    if (webNode.getObjectId().isTemporary()) {
 		    return null;
 	    }

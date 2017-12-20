@@ -1,11 +1,12 @@
 package ish.oncourse.ui.components;
 
-import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Discount;
 import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.ui.base.ISHCommon;
+import org.apache.tapestry5.annotations.Cached;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -62,6 +63,7 @@ public class PromoCodesView extends ISHCommon {
 	}
 
 
+	@Cached
     public boolean isPaymentGatewayEnabled() {
         return preferenceController.isPaymentGatewayEnabled();
     }
