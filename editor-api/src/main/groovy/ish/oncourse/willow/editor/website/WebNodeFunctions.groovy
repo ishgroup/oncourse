@@ -18,7 +18,7 @@ class WebNodeFunctions {
     
     static WebNode getNodeForName(String nodeName, Request request, ObjectContext context) {
         return ((ObjectSelect.query(WebNode)
-                .localCache(WebNode.simpleName) & siteQualifier(request, context)) 
+                .cacheStrategy(QueryCacheStrategy.SHARED_CACHE, WebNode.simpleName) & siteQualifier(request, context))
                 & WebNode.NAME.eq(nodeName))
                 .selectOne(context)
     }

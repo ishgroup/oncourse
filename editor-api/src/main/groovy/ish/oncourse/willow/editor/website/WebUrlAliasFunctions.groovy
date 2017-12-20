@@ -7,6 +7,7 @@ import ish.oncourse.services.alias.GetRedirects
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.query.ObjectSelect
+import org.apache.cayenne.query.QueryCacheStrategy
 import org.eclipse.jetty.server.Request
 
 class WebUrlAliasFunctions {
@@ -19,7 +20,7 @@ class WebUrlAliasFunctions {
         return ((ObjectSelect.query(WebUrlAlias.class) 
                 & siteQualifier(request, context)) 
                 & WebUrlAlias.URL_PATH.eq(path))
-                .localCache(WebUrlAlias.simpleName)
+                .cacheStrategy(QueryCacheStrategy.SHARED_CACHE, WebUrlAlias.simpleName)
                 .selectFirst(context)
         
     }

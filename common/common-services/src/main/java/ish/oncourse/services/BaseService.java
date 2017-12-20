@@ -67,13 +67,11 @@ public class BaseService<T extends Persistent> implements IBaseService<T> {
 			try {
 				return ObjectSelect.query(getEntityClass()).
 						where(ExpressionFactory.matchDbExp(IBaseService.ID_PK_COLUMN, willowId)).
-						cacheGroup(getEntityClass().getSimpleName()).
-						cacheStrategy(QueryCacheStrategy.SHARED_CACHE).
+						cacheStrategy(QueryCacheStrategy.SHARED_CACHE, getEntityClass().getSimpleName()).
 						selectOne(getCayenneService().newContext());
 
 			} catch (Exception e) {
 				logger.error("Query resulted in Exception thrown. willowId: {}", willowId, e);
-				//TODO: Should the exception be rethrown to indicate error condition to the client code?
 			}
 		}
 		return null;
@@ -81,22 +79,10 @@ public class BaseService<T extends Persistent> implements IBaseService<T> {
 
 	@Override
 	public List<T> findByQualifier(Expression qualifier) {
-
 		try {
-
-		List<T> results = ObjectSelect.query(getEntityClass(), qualifier).
-				cacheGroup(getEntityClass().getSimpleName()).
-				cacheStrategy(QueryCacheStrategy.SHARED_CACHE).
-				select(getCayenneService().newContext());
-
-		if (results.isEmpty()) {
-			if (logger.isInfoEnabled()) {
-				logger.info("Query returned no results: {}", qualifier);
-			}
-		}
-
-		return new ArrayList<>(results);
-
+			return new ArrayList<>(ObjectSelect.query(getEntityClass(), qualifier).
+					cacheStrategy(QueryCacheStrategy.SHARED_CACHE, getEntityClass().getSimpleName()).
+					select(getCayenneService().newContext()));
 		} catch (Exception e) {
 			logger.error("Query resulted in Exception thrown. Query: {}", qualifier, e);
 			//TODO: Should the exception be rethrown to indicate error condition to the client code?

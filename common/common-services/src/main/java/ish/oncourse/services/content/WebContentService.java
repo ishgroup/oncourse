@@ -54,7 +54,7 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 	@Override
 	public List<WebContent> getBlocks() {
 		return ObjectSelect.query(WebContent.class)
-				.localCache(WebContent.class.getSimpleName())
+				.cacheStrategy(QueryCacheStrategy.SHARED_CACHE, WebContent.class.getSimpleName())
 				.and(WebContent.WEB_SITE_VERSION.eq(webSiteVersionService.getCurrentVersion()))
 				.and(getBlockQualifier())
 				.orderBy(WebContent.MODIFIED.desc())

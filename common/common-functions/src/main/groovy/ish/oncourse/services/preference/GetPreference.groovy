@@ -6,6 +6,7 @@ import ish.oncourse.model.WebSite
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.query.ObjectSelect
+import org.apache.cayenne.query.QueryCacheStrategy
 import org.apache.commons.lang3.StringUtils
 
 
@@ -39,7 +40,7 @@ class GetPreference {
         
         return ObjectSelect.query(Preference)
                 .where(exception)
-                .localCache(Preference.simpleName)
+                .cacheStrategy(QueryCacheStrategy.SHARED_CACHE, Preference.simpleName)
                 .selectOne(objectContext)
     }
 

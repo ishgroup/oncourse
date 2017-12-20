@@ -9,6 +9,7 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.query.ObjectSelect;
+import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -33,7 +34,7 @@ public class WebUrlAliasService extends BaseService<WebUrlAlias> implements
 		ObjectSelect<WebUrlAlias> query = ObjectSelect.query(WebUrlAlias.class)
 				.and(siteQualifier())
 				.and(WebUrlAlias.URL_PATH.eq(path))
-				.localCache(WebUrlAlias.class.getSimpleName());
+				.cacheStrategy(QueryCacheStrategy.SHARED_CACHE, WebUrlAlias.class.getSimpleName());
 
 		List<WebUrlAlias> aliases = query.select(cayenneService.newContext());
 		int size = aliases.size();

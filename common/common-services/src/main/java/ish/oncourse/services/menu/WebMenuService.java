@@ -88,7 +88,7 @@ public class WebMenuService extends BaseService<WebMenu> implements IWebMenuServ
 		return ObjectSelect.query(WebMenu.class)
 				.and(siteQualifier())
 				.and(WebMenu.PARENT_WEB_MENU.isNull())
-				.localCache(WebMenu.class.getSimpleName())
+				.cacheStrategy(QueryCacheStrategy.SHARED_CACHE, WebMenu.class.getSimpleName())
 				.selectOne(cayenneService.newContext());
 	}
 

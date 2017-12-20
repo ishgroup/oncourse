@@ -7,6 +7,7 @@ import ish.oncourse.cayenne.cache.ICacheEnabledService;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.model.WebSiteVersion;
 import org.apache.cayenne.query.ObjectSelect;
+import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 /**
@@ -62,8 +63,8 @@ public class WebSiteVersionService extends AbstractWebSiteVersionService {
 	}
 
 	private WebSiteVersion getDraftVersion(WebSite webSite) {
-		return ObjectSelect.query(WebSiteVersion.class).
-				localCache(WebSiteVersion.class.getSimpleName()).
+		return ObjectSelect.query(WebSiteVersion.class)
+				.cacheStrategy(QueryCacheStrategy.SHARED_CACHE, WebSiteVersion.class.getSimpleName()).
 				where(WebSiteVersion.WEB_SITE.eq(webSite)).
 				and(WebSiteVersion.DEPLOYED_ON.isNull()).
 				selectOne(webSite.getObjectContext());

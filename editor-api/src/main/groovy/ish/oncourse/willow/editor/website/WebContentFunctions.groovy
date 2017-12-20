@@ -49,7 +49,7 @@ class WebContentFunctions {
 
     static List<WebContent> getBlocks(Request request, ObjectContext context) {
         return (ObjectSelect.query(WebContent)
-                .localCache(WebContent.simpleName) 
+                .cacheStrategy(QueryCacheStrategy.SHARED_CACHE, WebContent.simpleName)
                 & getVersionQualifier(request, context)
                 & blockQualifier)
                 .orderBy(WebContent.MODIFIED.desc())

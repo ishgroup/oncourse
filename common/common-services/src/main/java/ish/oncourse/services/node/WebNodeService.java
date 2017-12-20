@@ -12,6 +12,7 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.EJBQLQuery;
 import org.apache.cayenne.query.ObjectSelect;
+import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -194,7 +195,7 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 		query.prefetch(WebNode.WEB_CONTENT_VISIBILITY.disjoint());
 		query.prefetch(WebNode.WEB_CONTENT_VISIBILITY.dot(WebContentVisibility.WEB_CONTENT).disjoint());
 		query.prefetch(WebNode.WEB_URL_ALIASES.disjoint());
-		query.localCache(WebNode.class.getSimpleName());
+		query.cacheStrategy(QueryCacheStrategy.SHARED_CACHE, WebNode.class.getSimpleName());
 	}
 
 	@Override
@@ -237,7 +238,7 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 
 	    ObjectContext context = cayenneService.newContext();
 	    return ObjectSelect.query(WebUrlAlias.class)
-				.localCache(WebUrlAlias.class.getSimpleName())
+				.cacheStrategy(QueryCacheStrategy.SHARED_CACHE, WebUrlAlias.class.getSimpleName())
 			    .and(WebUrlAlias.WEB_NODE.eq(webNode))
 			    .and(WebUrlAlias.DEFAULT.eq(true))
 			    .selectOne(context);
@@ -246,7 +247,7 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 	@Override
 	public WebNode getNodeForName(String nodeName) {
 		return ObjectSelect.query(WebNode.class)
-				.localCache(WebNode.class.getSimpleName())
+				.cacheStrategy(QueryCacheStrategy.SHARED_CACHE, WebNode.class.getSimpleName())
 				.and(siteQualifier())
 				.and(WebNode.NAME.eq(nodeName))
 				.selectOne(cayenneService.newContext());
