@@ -3,6 +3,7 @@ import AmountComp from "../../../components/AmountComp";
 import {FormDecorator} from "redux-form";
 import {Promotion, RedeemVoucher, Amount} from "../../../../model";
 import {Tabs} from "../reducers/State";
+import {scrollToTop} from "../../../../common/utils/DomUtils";
 
 export interface Props {
   paymentForm: FormDecorator<FormData, any, any>;
@@ -17,6 +18,10 @@ export interface Props {
 }
 
 export class PaymentComp extends React.Component<Props, any> {
+  componentDidMount() {
+    scrollToTop();
+  }
+
   render() {
     const {amount,onAddCode, paymentForm, promotions, onUpdatePayNow, onToggleVoucher, redeemVouchers, currentTab} = this.props;
     return (

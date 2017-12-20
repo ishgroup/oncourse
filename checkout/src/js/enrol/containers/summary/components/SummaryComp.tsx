@@ -6,6 +6,7 @@ import ContactComp, {Props as ContactProps} from "./ContactComp";
 import {Amount, RedeemVoucher, Promotion, PurchaseItem} from "../../../../model";
 import {StudentMembership} from "../../../../model/checkout/StudentMembership";
 import {Concession} from "../../../../model/checkout/concession/Concession";
+import {scrollToTop} from "../../../../common/utils/DomUtils";
 
 export interface Props {
   hasSelected: boolean;
@@ -42,6 +43,8 @@ export class SummaryComp extends React.Component<Props, any> {
   }
 
   componentDidMount() {
+    scrollToTop();
+    
     if (this.props.onInit) {
       this.props.onInit();
     }

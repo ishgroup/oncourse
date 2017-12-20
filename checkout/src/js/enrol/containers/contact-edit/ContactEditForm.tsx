@@ -13,6 +13,7 @@ import {getConcessionTypes} from "../concession/actions/Actions";
 import {validate as concessionFormValidate} from "../concession/Concession";
 import ConcessionForm from "../concession/components/ConcessionForm";
 import {toFormKey} from "../../../components/form/FieldFactory";
+import {scrollToTop} from "../../../common/utils/DomUtils";
 
 export const NAME = "ContactEditForm";
 
@@ -23,6 +24,7 @@ class ContactEditForm extends React.Component<Props, any> {
 
   componentDidMount() {
     this.props.onInit();
+    scrollToTop();
   }
 
   render() {

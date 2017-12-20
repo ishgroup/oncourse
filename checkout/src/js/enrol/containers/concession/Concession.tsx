@@ -8,6 +8,7 @@ import {reduxForm, FormErrors} from "redux-form";
 import {changePhase, showFormValidation, showSyncErrors} from "../../actions/Actions";
 import {getConcessionTypes} from "./actions/Actions";
 import CheckoutService from "../../services/CheckoutService";
+import {scrollToTop} from "../../../common/utils/DomUtils";
 
 export interface Props {
   contact: Contact;
@@ -30,6 +31,7 @@ class Concession extends React.Component<any, any> {
 
   componentDidMount() {
     this.props.onInit();
+    scrollToTop();
   }
 
   onTypeChange = () => {

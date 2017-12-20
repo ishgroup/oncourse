@@ -1,12 +1,17 @@
 import * as React from "react";
 import {Field} from "redux-form";
 import {TextField} from "../../../../components/form/TextField";
+import {scrollToTop} from "../../../../common/utils/DomUtils";
 
 export interface Props {
   header?: string;
 }
 
 export class ContactAdd extends React.Component<Props, any> {
+  componentDidMount() {
+    scrollToTop();
+  }
+
   render() {
     const {header = "Please enter the details of a person enrolling, applying or making a purchase."} = this.props;
     return (
