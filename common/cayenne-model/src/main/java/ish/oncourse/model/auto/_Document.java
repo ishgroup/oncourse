@@ -3,7 +3,6 @@ package ish.oncourse.model.auto;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.exp.Property;
 
 import ish.common.types.AttachmentInfoVisibility;
@@ -17,7 +16,7 @@ import ish.oncourse.model.DocumentVersion;
  * since it may be overwritten next time code is regenerated.
  * If you need to make any customizations, please use subclass.
  */
-public abstract class _Document extends CayenneDataObject {
+public abstract class _Document extends WillowCayenneObject {
 
     private static final long serialVersionUID = 1L; 
 

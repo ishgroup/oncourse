@@ -2,7 +2,6 @@ package ish.oncourse.model.auto;
 
 import java.util.Date;
 
-import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.exp.Property;
 
 import ish.common.types.ContactDuplicateStatus;
@@ -16,7 +15,7 @@ import ish.oncourse.model.SystemUser;
  * since it may be overwritten next time code is regenerated.
  * If you need to make any customizations, please use subclass.
  */
-public abstract class _ContactDuplicate extends CayenneDataObject {
+public abstract class _ContactDuplicate extends WillowCayenneObject {
 
     private static final long serialVersionUID = 1L; 
 

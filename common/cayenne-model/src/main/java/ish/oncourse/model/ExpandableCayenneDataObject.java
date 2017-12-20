@@ -4,13 +4,13 @@
 package ish.oncourse.model;
 
 import ish.oncourse.cayenne.IExpandable;
-import org.apache.cayenne.CayenneDataObject;
+import ish.oncourse.model.auto.WillowCayenneObject;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 
 import java.util.List;
 
-public abstract class ExpandableCayenneDataObject extends CayenneDataObject implements IExpandable {
+public abstract class ExpandableCayenneDataObject extends WillowCayenneObject implements IExpandable {
 
     public abstract College getCollege();
     

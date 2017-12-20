@@ -1,6 +1,5 @@
 package ish.oncourse.model.auto;
 
-import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.exp.Property;
 
 import ish.oncourse.model.Contact;
@@ -12,7 +11,7 @@ import ish.oncourse.model.DiscussionComment;
  * since it may be overwritten next time code is regenerated.
  * If you need to make any customizations, please use subclass.
  */
-public abstract class _DiscussionCommentContact extends CayenneDataObject {
+public abstract class _DiscussionCommentContact extends WillowCayenneObject {
 
     private static final long serialVersionUID = 1L; 
 

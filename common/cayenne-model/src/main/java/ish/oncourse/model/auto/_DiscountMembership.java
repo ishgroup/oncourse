@@ -3,7 +3,6 @@ package ish.oncourse.model.auto;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.exp.Property;
 
 import ish.oncourse.model.College;
@@ -17,7 +16,7 @@ import ish.oncourse.model.MembershipProduct;
  * since it may be overwritten next time code is regenerated.
  * If you need to make any customizations, please use subclass.
  */
-public abstract class _DiscountMembership extends CayenneDataObject {
+public abstract class _DiscountMembership extends WillowCayenneObject {
 
     private static final long serialVersionUID = 1L; 
 

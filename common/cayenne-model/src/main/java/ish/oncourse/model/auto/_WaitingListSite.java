@@ -1,6 +1,5 @@
 package ish.oncourse.model.auto;
 
-import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.exp.Property;
 
 import ish.oncourse.model.College;
@@ -13,7 +12,7 @@ import ish.oncourse.model.WaitingList;
  * since it may be overwritten next time code is regenerated.
  * If you need to make any customizations, please use subclass.
  */
-public abstract class _WaitingListSite extends CayenneDataObject {
+public abstract class _WaitingListSite extends WillowCayenneObject {
 
     private static final long serialVersionUID = 1L; 
 

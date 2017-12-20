@@ -1,6 +1,5 @@
 package ish.oncourse.model.auto;
 
-import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.exp.Property;
 
 import ish.oncourse.model.Instruction;
@@ -11,7 +10,7 @@ import ish.oncourse.model.Instruction;
  * since it may be overwritten next time code is regenerated.
  * If you need to make any customizations, please use subclass.
  */
-public abstract class _InstructionParameter extends CayenneDataObject {
+public abstract class _InstructionParameter extends WillowCayenneObject {
 
     private static final long serialVersionUID = 1L; 
 

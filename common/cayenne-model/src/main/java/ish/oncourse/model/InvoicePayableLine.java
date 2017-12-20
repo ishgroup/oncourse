@@ -9,7 +9,7 @@ import ish.common.payable.IInvoiceLineInterface;
 import ish.common.payable.InvoicePayableLineWrapper;
 import ish.common.payable.TaxInterface;
 import ish.math.Money;
-import org.apache.cayenne.CayenneDataObject;
+import ish.oncourse.model.auto.WillowCayenneObject;
 
 import java.math.BigDecimal;
 
@@ -18,7 +18,7 @@ import java.math.BigDecimal;
  * 
  * @author ksenia
  */
-public class InvoicePayableLine extends CayenneDataObject implements IInvoiceLineInterface {
+public class InvoicePayableLine extends WillowCayenneObject implements IInvoiceLineInterface {
 	private static final long serialVersionUID = 7857794479347463855L;
 	private InvoicePayableLineWrapper waPayableLine;
 
