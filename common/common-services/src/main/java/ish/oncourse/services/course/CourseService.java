@@ -2,6 +2,7 @@ package ish.oncourse.services.course;
 
 import ish.common.types.EntityRelationType;
 import ish.oncourse.model.*;
+import ish.oncourse.model.auto._CourseProductRelation;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.courseclass.LoadByIds;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -10,11 +11,13 @@ import ish.oncourse.services.search.SearchParams;
 import ish.oncourse.services.search.SearchResult;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
-import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.*;
+import org.apache.cayenne.query.ObjectSelect;
+import org.apache.cayenne.query.Ordering;
+import org.apache.cayenne.query.QueryCacheStrategy;
+import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,6 +26,7 @@ import org.apache.solr.common.SolrDocumentList;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static ish.oncourse.model.auto._Course.*;
 import static ish.oncourse.model.auto._CourseCourseRelation.FROM_COURSE;
@@ -34,7 +38,7 @@ import static org.apache.cayenne.query.QueryCacheStrategy.LOCAL_CACHE;
 
 public class CourseService implements ICourseService {
 
-    private static final Logger logger = LogManager.getLogger();
+	private static final Logger logger = LogManager.getLogger();
 
 	@Inject
 	private ICayenneService cayenneService;
@@ -56,8 +60,8 @@ public class CourseService implements ICourseService {
 	 */
 	public List<Course> getCourses(Integer startDefault, Integer rowsDefault) {
 
-		SelectQuery q = new SelectQuery(Course.class);
-		q.andQualifier(getSiteQualifier());
+		ObjectSelect<Course> q = ObjectSelect.query(Course.class)
+				.where(getSiteQualifier());
 
 		if (startDefault == null) {
 			startDefault = START_DEFAULT;
@@ -67,11 +71,9 @@ public class CourseService implements ICourseService {
 			rowsDefault = ROWS_DEFAULT;
 		}
 
-		q.setFetchOffset(startDefault);
-		q.setFetchLimit(rowsDefault);
-
-		applyCourseCacheSettings(q);
-		return cayenneService.sharedContext().performQuery(q);
+		q.offset(startDefault);
+		q.limit(rowsDefault);
+		return applyCourseCacheSettings(q).select(cayenneService.sharedContext());
 	}
 
 	@Override
@@ -79,7 +81,7 @@ public class CourseService implements ICourseService {
 
 		SearchParams searchParams = new SearchParams();
 		searchParams.setSubject(tag);
-		SearchResult searchResult = searchService.searchCourses(searchParams,0, limit);
+		SearchResult searchResult = searchService.searchCourses(searchParams, 0, limit);
 		SolrDocumentList documents = searchResult.getQueryResponse().getResults();
 
 		List<Long> list = new LinkedList<>();
@@ -87,30 +89,29 @@ public class CourseService implements ICourseService {
 			list.add(Long.valueOf(document.get(CourseClass.ID_PK_COLUMN).toString()));
 		}
 
-		Expression expr = ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN,list).andExp(getSiteQualifier());
+		Expression expr = ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN, list).andExp(getSiteQualifier());
 
-		SelectQuery q = new SelectQuery(Course.class, expr);
-		q.setCacheStrategy(LOCAL_CACHE);
-		q.setCacheGroup(Course.class.getSimpleName());
+		ObjectSelect<Course> q = ObjectSelect.query(Course.class)
+				.where(expr).cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, Course.class.getSimpleName());
 
-		List<Course> result = new ArrayList<>(cayenneService.sharedContext().performQuery(q));
+		List<Course> result = new ArrayList<>(q.select(cayenneService.sharedContext()));
 
 		if (sort == null) {
 			//if nothing specified use default
 			sort = Sort.alphabetical;
 		}
 		switch (sort) {
-		case availability:
-			sortByAvailability(isAscending, result);
-			break;
-		case date:
-			sortByStartDate(isAscending, result);
-			break;
-		case alphabetical:
-			Ordering ordering = new Ordering(Course.NAME_PROPERTY, isAscending ? SortOrder.ASCENDING
-					: SortOrder.DESCENDING);
-			ordering.orderList(result);
-			break;
+			case availability:
+				sortByAvailability(isAscending, result);
+				break;
+			case date:
+				sortByStartDate(isAscending, result);
+				break;
+			case alphabetical:
+				Ordering ordering = new Ordering(Course.NAME_PROPERTY, isAscending ? SortOrder.ASCENDING
+						: SortOrder.DESCENDING);
+				ordering.orderList(result);
+				break;
 		}
 		if (limit != null && result.size() > limit) {
 			return result.subList(0, limit);
@@ -125,8 +126,8 @@ public class CourseService implements ICourseService {
 		if (rootTag == null) {
 			return true;
 		}
-		
-		for (Tag tag :  tagService.getTagsForEntity(Course.class.getSimpleName(), course.getId())) {
+
+		for (Tag tag : tagService.getTagsForEntity(Course.class.getSimpleName(), course.getId())) {
 			if (rootTag.getId().equals(tag.getId()) || rootTag.isParentOf(tag)) {
 				return true;
 			}
@@ -134,16 +135,10 @@ public class CourseService implements ICourseService {
 		return false;
 	}
 
-	/**
-	 * @return
-	 */
 	private Expression getSiteQualifier() {
 		return Course.COLLEGE.eq(webSiteService.getCurrentCollege()).andExp(getAvailabilityQualifier());
 	}
 
-	/**
-	 * @return
-	 */
 	private Expression getAvailabilityQualifier() {
 		return IS_WEB_VISIBLE.eq(true);
 	}
@@ -163,12 +158,7 @@ public class CourseService implements ICourseService {
 				qualifier = qualifier.andExp(ExpressionFactory.matchExp(searchProperty, value));
 			}
 		}
-
-		SelectQuery q = new SelectQuery(Course.class, qualifier);
-
-		applyCourseCacheSettings(q);
-
-		return (Course) Cayenne.objectForQuery(cayenneService.sharedContext(), q);
+		return applyCourseCacheSettings(ObjectSelect.query(Course.class, qualifier)).selectFirst(cayenneService.sharedContext());
 	}
 
 	public Course getCourseByCode(String code) {
@@ -185,7 +175,7 @@ public class CourseService implements ICourseService {
 				.cacheGroup(Course.class.getSimpleName())
 				.selectOne(cayenneService.sharedContext());
 	}
-	
+
 	public Expression getSearchStringPropertyQualifier(String searchProperty, Object value) {
 		return ExpressionFactory.likeIgnoreCaseExp(searchProperty, value);
 	}
@@ -199,23 +189,15 @@ public class CourseService implements ICourseService {
 		}
 
 		ObjectContext sharedContext = cayenneService.sharedContext();
-		EJBQLQuery q = new EJBQLQuery("select count(i) from Course i where " + qualifier.toEJBQL("i"));
-		Long count = (Long) sharedContext.performQuery(q).get(0);
+
+		Long count = ObjectSelect.query(Course.class).count().where(qualifier).cacheStrategy(QueryCacheStrategy.SHARED_CACHE, Course.class.getSimpleName()).selectOne(sharedContext);
 
 		Course randomResult = null;
 		int attempt = 0;
 
 		while (randomResult == null && attempt++ < 5) {
 			int random = new Random().nextInt(count.intValue());
-
-			SelectQuery query = new SelectQuery(Course.class, qualifier);
-
-			query.setFetchOffset(random);
-			query.setFetchLimit(1);
-
-			applyCourseCacheSettings(query);
-
-			randomResult = (Course) Cayenne.objectForQuery(sharedContext, query);
+			randomResult = applyCourseCacheSettings(ObjectSelect.query(Course.class).where(qualifier).offset(random).limit(1)).selectFirst(sharedContext);
 		}
 		return randomResult;
 	}
@@ -226,33 +208,29 @@ public class CourseService implements ICourseService {
 	}
 
 	public Integer getCoursesCount() {
-		return ((Number) cayenneService.sharedContext()
-				.performQuery(new EJBQLQuery("select count(c) from Course c where " + getSiteQualifier().toEJBQL("c")))
-				.get(0)).intValue();
+		return ObjectSelect.query(Course.class).count()
+				.where(getSiteQualifier())
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, Course.class.getSimpleName())
+				.selectOne(cayenneService.sharedContext()).intValue();
 	}
 
 	public Date getLatestModifiedDate() {
-		return (Date) cayenneService
-				.sharedContext()
-				.performQuery(
-						new EJBQLQuery("select max(c.modified) from Course c where " + getSiteQualifier().toEJBQL("c")))
-				.get(0);
+		return ObjectSelect.query(Course.class).max(Course.MODIFIED)
+				.where(getSiteQualifier())
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, Course.class.getSimpleName())
+				.selectOne(cayenneService.sharedContext());
 	}
 
-    public List<Product> getRelatedProductsFor(Course course) {
-        ObjectContext context = cayenneService.sharedContext();
-        SelectQuery query = new SelectQuery(CourseProductRelation.class,
-                ExpressionFactory.matchExp(CourseProductRelation.COURSE_PROPERTY, course)
-                        .andExp(ExpressionFactory.matchExp(CourseProductRelation.PRODUCT_PROPERTY + "." + Product.IS_WEB_VISIBLE_PROPERTY, TRUE)));
-		query.setCacheStrategy(LOCAL_CACHE);
-		query.setCacheGroup(CourseProductRelation.class.getSimpleName());
-        List<CourseProductRelation> relations = context.performQuery(query);
-        ArrayList<Product> result = new ArrayList<>();
-        for (CourseProductRelation relation : relations) {
-            result.add(relation.getProduct());
-        }
-        return result;
-    }
+	public List<Product> getRelatedProductsFor(Course course) {
+		ObjectContext context = cayenneService.sharedContext();
+
+		return ObjectSelect.query(CourseProductRelation.class)
+				.where(CourseProductRelation.COURSE.eq(course))
+				.and(CourseProductRelation.PRODUCT.dot(Product.IS_WEB_VISIBLE).eq(TRUE))
+				.cacheStrategy(LOCAL_CACHE, CourseProductRelation.class.getSimpleName()).select(context)
+				.stream()
+				.map(_CourseProductRelation::getProduct).collect(Collectors.toList());
+	}
 
 	public List<Course> getRelatedCoursesFor(Course course) {
 		ObjectContext context = cayenneService.sharedContext();
@@ -322,21 +300,15 @@ public class CourseService implements ICourseService {
 		});
 	}
 
-	/**
-	 * Add necessary prefetches and assign cache group for course query;
-	 * 
-     * @param q course query
-	 */
-	private static void applyCourseCacheSettings(SelectQuery q) {
-		q.setCacheStrategy(LOCAL_CACHE);
-		q.setCacheGroup(Course.class.getSimpleName());
-		q.addPrefetch(Course.COURSE_CLASSES_PROPERTY);
-		q.addPrefetch(Course.COURSE_CLASSES_PROPERTY + "." + CourseClass.ROOM_PROPERTY);
-		q.addPrefetch(Course.COURSE_CLASSES_PROPERTY + "." + CourseClass.SESSIONS_PROPERTY);
-		q.addPrefetch(Course.COURSE_CLASSES_PROPERTY + "." + CourseClass.TUTOR_ROLES_PROPERTY);
-		q.addPrefetch(Course.COURSE_CLASSES_PROPERTY + "." + CourseClass.DISCOUNT_COURSE_CLASSES_PROPERTY);
-		//q.addPrefetch(Course.QUALIFICATION_PROPERTY);
-		//q.addPrefetch(Course.COURSE_MODULES_PROPERTY);
-		//q.addPrefetch(Course.COURSE_MODULES_PROPERTY + "." + CourseModule.MODULE_PROPERTY);
+	private static ObjectSelect<Course> applyCourseCacheSettings(ObjectSelect<Course> q) {
+		return q.cacheStrategy(LOCAL_CACHE, Course.class.getSimpleName())
+				.prefetch(Course.COURSE_CLASSES.joint())
+				.prefetch(Course.COURSE_CLASSES.dot(CourseClass.ROOM).joint())
+				.prefetch(Course.COURSE_CLASSES.dot(CourseClass.SESSIONS).joint())
+				.prefetch(Course.COURSE_CLASSES.dot(CourseClass.TUTOR_ROLES).joint())
+				.prefetch(Course.COURSE_CLASSES.dot(CourseClass.TUTOR_ROLES).dot(TutorRole.TUTOR).joint())
+				.prefetch(Course.COURSE_CLASSES.dot(CourseClass.TUTOR_ROLES).dot(TutorRole.TUTOR).dot(Tutor.CONTACT).joint())
+				.prefetch(Course.COURSE_CLASSES.dot(CourseClass.DISCOUNT_COURSE_CLASSES).joint());
 	}
+
 }

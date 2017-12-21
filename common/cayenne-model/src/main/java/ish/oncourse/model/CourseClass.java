@@ -8,8 +8,10 @@ import ish.oncourse.utils.QueueableObjectUtils;
 import ish.oncourse.utils.SessionUtils;
 import ish.oncourse.utils.TimestampUtilities;
 import ish.util.DiscountUtils;
-import org.apache.cayenne.DataRow;
-import org.apache.cayenne.query.*;
+import org.apache.cayenne.query.ObjectSelect;
+import org.apache.cayenne.query.Ordering;
+import org.apache.cayenne.query.QueryCacheStrategy;
+import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;
@@ -20,7 +22,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class CourseClass extends _CourseClass implements Queueable, CourseClassInterface {
-	
+
 	private static final long serialVersionUID = 3351739058505297154L;
 
 	/**
@@ -43,7 +45,7 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 
 	/**
 	 * @return total number of minutes from all sessions that have start and end
-	 *         dates defined.
+	 * dates defined.
 	 */
 	public Integer getTotalDurationMinutes() {
 		int sum = 0;
@@ -55,7 +57,7 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 
 	/**
 	 * @return total number of hours from all sessions that have start and end
-	 *         dates defined.
+	 * dates defined.
 	 */
 	public BigDecimal getTotalDurationHours() {
 		BigDecimal result = BigDecimal.ZERO;
@@ -70,7 +72,7 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 
 	/**
 	 * @return true if there are any sessions that have different start times or
-	 *         end times
+	 * end times
 	 */
 	public boolean isSessionsHaveDifferentTimes() {
 		return !SessionUtils.isSameTime(getSessions());
@@ -109,19 +111,20 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 
 	/**
 	 * Calculates the count of current valid enrolments of this class.
-	 * 
+	 *
 	 * @return count of enrolments.
 	 */
 	public int validEnrolmentsCount() {
-		SQLTemplate template = new SQLTemplate(
-				String.format("Select count(*) as COUNT from Enrolment where courseClassId=%d and status in (%d, %d)", getId(), EnrolmentStatus.SUCCESS.getDatabaseValue(),  EnrolmentStatus.IN_TRANSACTION.getDatabaseValue()), true);		
-		return ((Number) ((DataRow) getObjectContext().performQuery(template).get(0)).get("COUNT")).intValue();
+		return ObjectSelect.query(Enrolment.class).count().and(Enrolment.COURSE_CLASS.eq(this)).and(Enrolment.STATUS.in(EnrolmentStatus.SUCCESS, EnrolmentStatus.IN_TRANSACTION))
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, Enrolment.class.getSimpleName())
+				.selectOne(objectContext).intValue();
+
 	}
 
 	/**
 	 * Gets all the "valid" enrolments of this class {@see
 	 * EnrolmentStatus#VALID_ENROLMENTS}.
-	 * 
+	 *
 	 * @return list of valid enrolments.
 	 */
 	public List<Enrolment> getValidEnrolments() {
@@ -130,7 +133,7 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 				and(Enrolment.STATUS.in(Enrolment.VALID_ENROLMENTS)).
 				select(getObjectContext());
 	}
-	
+
 	public String getUniqueIdentifier() {
 		return getCourse().getCode() + "-" + getCode();
 	}
@@ -195,7 +198,7 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 
 	/**
 	 * @return an array of all the days of the week on which sessions occur for
-	 *         this class
+	 * this class
 	 */
 	public Set<String> getDaysOfWeek() {
 		if (daysOfWeek == null) {
@@ -250,23 +253,23 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 		return latest;
 	}
 
-    /**
-     * Returns true if the course class does not have sessions or if 6:00 < start time < 17:00
-     */
-    public boolean isDaytime() {
-        Integer earliest = getEarliestSessionStartHour();
-        return earliest == null || earliest < EVENING_START && earliest > MORNING_START;
-    }
+	/**
+	 * Returns true if the course class does not have sessions or if 6:00 < start time < 17:00
+	 */
+	public boolean isDaytime() {
+		Integer earliest = getEarliestSessionStartHour();
+		return earliest == null || earliest < EVENING_START && earliest > MORNING_START;
+	}
 
-    /**
-     * Returns true if the course class does not have sessions or if 17:00 < start time < 6:00
-     */
-    public boolean isEvening() {
-        Integer latest = getEarliestSessionStartHour();
-        return latest == null || !(latest < EVENING_START && latest > MORNING_START);
-    }
+	/**
+	 * Returns true if the course class does not have sessions or if 17:00 < start time < 6:00
+	 */
+	public boolean isEvening() {
+		Integer latest = getEarliestSessionStartHour();
+		return latest == null || !(latest < EVENING_START && latest > MORNING_START);
+	}
 
-    /**
+	/**
 	 * @return all sessions that satisfy hasStartAndEndTimestamps
 	 */
 	@SuppressWarnings("unchecked")
@@ -277,7 +280,7 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 			return getPersistentTimelineableSessions();
 		}
 	}
-	
+
 	public List<Session> getPersistentTimelineableSessions() {
 		ObjectSelect select = ObjectSelect.query(Session.class)
 				.where(Session.COURSE_CLASS.eq(this))
@@ -311,7 +314,7 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 	/**
 	 * DiscountCourseClasses with the valid date ranges that are bound to this courseClass
 	 * via {@link #getDiscountCourseClasses()} relationship.
-	 * 
+	 *
 	 * @return the discounts for this class
 	 */
 	@SuppressWarnings("unchecked")
@@ -326,7 +329,7 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 	/**
 	 * All discounts bound to the given courseClass that require concessions
 	 * instead of discount codes.
-	 * 
+	 *
 	 * @return
 	 */
 	public List<Discount> getConcessionDiscounts() {
@@ -347,7 +350,7 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 	/**
 	 * The value of discount without tax if the discount is applied to
 	 * the courseClass price.
-	 * 
+	 *
 	 * @param discount
 	 * @return
 	 */
@@ -355,14 +358,14 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 		if (discount == null) {
 			return Money.ZERO;
 		} else {
-			return DiscountUtils.discountValue(getDiscountCourseClassBy(discount), getFeeExGst(), overriddenTaxRate != null ? overriddenTaxRate : getTaxRate());		
+			return DiscountUtils.discountValue(getDiscountCourseClassBy(discount), getFeeExGst(), overriddenTaxRate != null ? overriddenTaxRate : getTaxRate());
 		}
 	}
 
 	/**
 	 * The value of discount with tax if the discount is applied to
 	 * the courseClass price.
-	 * 
+	 *
 	 * @param discountCourseClass
 	 * @return
 	 */
@@ -373,7 +376,7 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 	/**
 	 * The value of discounted tax if the discount is applied to the
 	 * courseClass price.
-	 * 
+	 *
 	 * @param discount
 	 * @return
 	 */
@@ -384,7 +387,7 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 	/**
 	 * The value of discounted fee with tax if the selectedDiscounts are applied
 	 * to the courseClass price.
-	 * 
+	 *
 	 * @param discountCourseClass
 	 * @return
 	 */
@@ -392,14 +395,14 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 		if (discountCourseClass == null) {
 			return getFeeIncGst(overriddenTaxRate);
 		} else {
-			return DiscountUtils.getDiscountedFee(discountCourseClass, getFeeExGst(),overriddenTaxRate != null ? overriddenTaxRate : getTaxRate());	
+			return DiscountUtils.getDiscountedFee(discountCourseClass, getFeeExGst(), overriddenTaxRate != null ? overriddenTaxRate : getTaxRate());
 		}
 	}
 
 	/**
 	 * The value of discounted fee without tax if the discount is
 	 * applied to the courseClass price.
-	 * 
+	 *
 	 * @param discount
 	 * @return
 	 */
@@ -415,9 +418,10 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 		}
 		return null;
 	}
+
 	/**
 	 * The tax rate for the class: tax/fee.
-	 * 
+	 *
 	 * @return
 	 */
 	public BigDecimal getTaxRate() {
@@ -429,7 +433,7 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see ish.oncourse.model.auto._CourseClass#getFeeExGst()
 	 */
 	@Override
@@ -443,7 +447,7 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see ish.oncourse.model.auto._CourseClass#getFeeGst()
 	 */
 	@Override
