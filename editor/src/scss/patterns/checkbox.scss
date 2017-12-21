@@ -11,6 +11,7 @@ $md-checkmark-color: $white;
 .md-checkbox {
   position: relative;
   margin: $md-checkbox-margin;
+  line-height: 14px;
   
   label {
     cursor: pointer;

@@ -11,7 +11,7 @@
     background: transparent;
     overflow-y: auto;
     overflow-x: hidden;
-    position: relative;
+    position: static;
     transition: all .3s;
   
     &:after {

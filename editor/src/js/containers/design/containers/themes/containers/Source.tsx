@@ -64,18 +64,20 @@ class Source extends Component<any, any> {
     const isActive = canDrop && isOver;
 
     return connectDropTarget(
-      <div className={classnames("theme__source", className, {active: isActive})} data-placeholder={placeholder}>
-        {cards.map((card, i) => (
-          card &&
-            <Card
-              key={card.id}
-              index={i}
-              listId={this.props.id}
-              card={card}
-              removeCard={this.removeCard.bind(this)}
-              moveCard={this.moveCard.bind(this)}/>
-          ),
-        )}
+      <div className="pos-r">
+        <div className={classnames("theme__source", className, {active: isActive})} data-placeholder={placeholder}>
+          {cards.map((card, i) => (
+              card &&
+              <Card
+                key={card.id}
+                index={i}
+                listId={this.props.id}
+                card={card}
+                removeCard={this.removeCard.bind(this)}
+                moveCard={this.moveCard.bind(this)}/>
+            ),
+          )}
+        </div>
       </div>,
     );
   }
