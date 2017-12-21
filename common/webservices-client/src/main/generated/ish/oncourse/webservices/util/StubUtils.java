@@ -34,6 +34,11 @@ public class StubUtils {
 				((ish.oncourse.webservices.v16.stubs.replication.InstructionStub) instructionStub)
 						.setParameters((ish.oncourse.webservices.v16.stubs.replication.ParametersMap) parametersMap);
 				break;
+				
+			case V17:
+				((ish.oncourse.webservices.v17.stubs.replication.InstructionStub) instructionStub)
+						.setParameters((ish.oncourse.webservices.v17.stubs.replication.ParametersMap) parametersMap);
+				break;
 
 			default:
 				throw new IllegalArgumentException("This stub version is not supported.");
@@ -65,6 +70,10 @@ public class StubUtils {
 				return ish.oncourse.webservices.v16.stubs.replication.Status.SUCCESS.equals(
 						((ish.oncourse.webservices.v16.stubs.replication.ReplicatedRecord) record).getStatus());
 
+			case V17:
+				return ish.oncourse.webservices.v17.stubs.replication.Status.SUCCESS.equals(
+						((ish.oncourse.webservices.v17.stubs.replication.ReplicatedRecord) record).getStatus());
+
 			default:
 				throw new IllegalArgumentException("This stub version is not supported");
 		}
@@ -95,6 +104,10 @@ public class StubUtils {
 				return ish.oncourse.webservices.v16.stubs.replication.Status.FAILED.equals(
 						((ish.oncourse.webservices.v16.stubs.replication.ReplicatedRecord) record).getStatus());
 
+			case V17:
+				return ish.oncourse.webservices.v17.stubs.replication.Status.FAILED.equals(
+						((ish.oncourse.webservices.v17.stubs.replication.ReplicatedRecord) record).getStatus());
+				
 			default:
 				throw new IllegalArgumentException("This stub version is not supported");
 		}
@@ -129,7 +142,12 @@ public class StubUtils {
 				((ish.oncourse.webservices.v16.stubs.replication.ReplicatedRecord) record).setStatus(
 						ish.oncourse.webservices.v16.stubs.replication.Status.SUCCESS);
 				break;
-
+				
+			case V17:
+				((ish.oncourse.webservices.v17.stubs.replication.ReplicatedRecord) record).setStatus(
+						ish.oncourse.webservices.v17.stubs.replication.Status.SUCCESS);
+				break;
+				
 			default:
 				throw new IllegalArgumentException("This stub version is not supported");
 		}
@@ -164,7 +182,12 @@ public class StubUtils {
 				((ish.oncourse.webservices.v16.stubs.replication.ReplicatedRecord) record).setStatus(
 						ish.oncourse.webservices.v16.stubs.replication.Status.FAILED);
 				break;
-
+				
+			case V17:
+				((ish.oncourse.webservices.v17.stubs.replication.ReplicatedRecord) record).setStatus(
+						ish.oncourse.webservices.v17.stubs.replication.Status.FAILED);
+				break;
+				
 			default:
 				throw new IllegalArgumentException("This stub version is not supported");
 		}

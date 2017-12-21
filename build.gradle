@@ -41,7 +41,8 @@ ext {
 						   13, // introduced in onCourse 9.0
 						   14,  // introduced in onCourse 9.
 						   15, 	// introduced in onCourse sprint14 
-						   16 	// introduced in onCourse 9.4
+						   16, 	// introduced in onCourse 9.4
+						   17 	// introduced in onCourse 9.5
 	]
     referenceVersions = [	5,  // introduced in onCourse 7.4
                             6   // introduced in onCourse 8.2
