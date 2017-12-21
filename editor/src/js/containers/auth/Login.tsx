@@ -3,6 +3,7 @@ import {connect, Dispatch} from "react-redux";
 import {withRouter} from 'react-router-dom';
 
 import {Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText} from 'reactstrap';
+import classnames from "classnames";
 import {submitLoginForm} from "./actions";
 import {DefaultConfig} from "../../constants/Config";
 import {CookieService} from "../../services/CookieService";
@@ -11,6 +12,7 @@ import LoginForm from "./components/LoginForm";
 interface Props {
   onSubmit: (form) => void;
   history?: any;
+  fetching: boolean;
 }
 
 export class Login extends React.Component<Props, any> {
@@ -19,13 +21,15 @@ export class Login extends React.Component<Props, any> {
   }
 
   render() {
-    const {onSubmit} = this.props;
+    const {onSubmit, fetching} = this.props;
 
     return (
       <Container>
         <Row>
           <Col md="4" className="mx-auto">
-            <LoginForm onSubmit={onSubmit}/>
+            <div className={classnames("login-wrapper", {fetching})}>
+              <LoginForm onSubmit={onSubmit}/>
+            </div>
           </Col>
         </Row>
       </Container>
@@ -33,7 +37,9 @@ export class Login extends React.Component<Props, any> {
   }
 }
 
-const mapStateToProps = state => ({ });
+const mapStateToProps = state => ({
+  fetching: state.fetching,
+});
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
