@@ -96,7 +96,7 @@ public class QuickSearchView extends ISHCommon {
 				String stateQualifier = null;
 				WebSite webSite = webSiteService.getCurrentWebSite();
 				if (webSite != null) {
-					stateQualifier = new GetAutoCompleteState(webSite.getCollege(), cayenneService.newContext(), webSite).get();
+					stateQualifier = new GetAutoCompleteState(webSite.getCollege(), cayenneService.sharedContext(), webSite).get();
 				}
 				SolrDocumentList suggestions = searchService.autoSuggest(searchString, stateQualifier);
 				setupLists(stateQualifier, suggestions);
