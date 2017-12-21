@@ -1,16 +1,14 @@
 import {AuthState} from "./State";
 import {IAction} from "../../../actions/IshAction";
-import {SUBMIT_LOGIN_FORM_FULFILLED, SUBMIT_LOGIN_FORM_REQUEST, LOG_OUT_FULFILLED} from "../actions";
+import {SUBMIT_LOGIN_FORM_FULFILLED, LOG_OUT_FULFILLED} from "../actions";
 import {User} from "../../../model";
-import {DefaultConfig} from "../../../constants/Config";
-import {CookieService} from "../../../services/CookieService";
 
 export const authReducer = (state: AuthState = new AuthState(), action: IAction<any>): AuthState => {
   switch (action.type) {
     case SUBMIT_LOGIN_FORM_FULFILLED:
       return {
         ...state,
-        token: '1111-2222-3333',
+        token: '',
         isAuthenticated: true,
         user: {
           firstName: action.payload.firstName,
@@ -19,8 +17,6 @@ export const authReducer = (state: AuthState = new AuthState(), action: IAction<
       };
 
     case LOG_OUT_FULFILLED:
-      CookieService.delete(DefaultConfig.COOKIE_NAME);
-
       return {
         ...state,
         token: null,

@@ -29,6 +29,10 @@ export class CookieService {
 
   static delete(name: string) {
     document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
+
+    // const domain = location.hostname;
+    // document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:01 GMT; domain=${domain}`;
+    // document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT; domain=.${domain}`;
   }
 
   private static getCookieObject(cookie: string) {

@@ -16,6 +16,7 @@ const request: EpicUtils.Request<any, any> = {
 
     // remove CMS Cookie and unmount CMS app
     ReactDOM.unmountComponentAtNode(document.getElementById(DefaultConfig.CONTAINER_ID));
+    CookieService.delete(DefaultConfig.COOKIE_NAME);
 
     return [
       {
