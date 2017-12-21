@@ -7,6 +7,7 @@ import ish.oncourse.services.courseclass.CheckClassAge;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.services.tutor.GetVisibleTutorRoles;
 import ish.oncourse.services.tutor.ITutorService;
 import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.ui.utils.CourseContext;
@@ -15,8 +16,6 @@ import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.utils.SessionUtils;
 import ish.oncourse.utils.TimestampUtilities;
-import org.apache.cayenne.query.ObjectSelect;
-import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.tapestry5.annotations.Parameter;
@@ -29,14 +28,15 @@ import java.text.Format;
 import java.util.*;
 
 import static ish.oncourse.utils.SessionUtils.StartEndTime;
+
 public class CourseClassItem extends ISHCommon {
 
-    private static final String VALUE_yes = "yes";
-    private static final String VALUE_no = "no";
+	private static final String VALUE_yes = "yes";
+	private static final String VALUE_no = "no";
 
 	private static final String CLASS_NAME_classCommenced = "classCommenced";
 
-    @Inject
+	@Inject
 	private Messages messages;
 
 	@Inject
@@ -51,8 +51,8 @@ public class CourseClassItem extends ISHCommon {
 	@Inject
 	private ICourseClassService courseClassService;
 
-    @Inject
-    private ITutorService tutorService;
+	@Inject
+	private ITutorService tutorService;
 
 	@Parameter
 	@Property
@@ -109,7 +109,7 @@ public class CourseClassItem extends ISHCommon {
 
 	@Property
 	private List<TutorRole> visibleTutorRoles;
-	
+
 	private List<Session> timelineableSessions;
 
 	private CourseContext context;
@@ -117,10 +117,10 @@ public class CourseClassItem extends ISHCommon {
 	@SetupRender
 	public void beforeRender() {
 
-        TimeZone timeZone = courseClassService.getClientTimeZone(courseClass);
+		TimeZone timeZone = courseClassService.getClientTimeZone(courseClass);
 		context = (CourseContext) request.getAttribute(CourseItem.COURSE_CONTEXT);
 
-		endDateFormat =  FormatUtils.getDateFormat(FormatUtils.dateFormatString, timeZone);
+		endDateFormat = FormatUtils.getDateFormat(FormatUtils.dateFormatString, timeZone);
 		startDateFormat = needFormatWithoutYear() ? FormatUtils.getDateFormat(FormatUtils.DATE_FORMAT_EEE_dd_MMM, timeZone) :
 				FormatUtils.getDateFormat(FormatUtils.dateFormatString, timeZone);
 
@@ -154,14 +154,7 @@ public class CourseClassItem extends ISHCommon {
 	}
 
 	private void initVisibleTutorRoles() {
-		visibleTutorRoles = ObjectSelect.query(TutorRole.class)
-				.where(TutorRole.COURSE_CLASS.eq(courseClass))
-				.and(TutorRole.IN_PUBLICITY.isTrue())
-				.and(TutorRole.TUTOR.dot(Tutor.FINISH_DATE).isNull().orExp(TutorRole.TUTOR.dot(Tutor.FINISH_DATE).gt(new Date())))
-				.prefetch(TutorRole.TUTOR.joint())
-				.prefetch(TutorRole.TUTOR.dot(Tutor.CONTACT).joint())
-				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, TutorRole.class.getSimpleName())
-				.select(courseClass.getObjectContext());
+		visibleTutorRoles = new GetVisibleTutorRoles().courseClass(courseClass).get(courseClass.getObjectContext());
 	}
 
 	public boolean isHasTutorRoles() {
@@ -204,7 +197,7 @@ public class CourseClassItem extends ISHCommon {
 				&& !"online".equals(courseClass.getRoom().getSite().getName());
 	}
 
-	public List<Session> getSortedTimelineableSessions() {		
+	public List<Session> getSortedTimelineableSessions() {
 		Collections.sort(timelineableSessions, new Comparator<Session>() {
 			public int compare(Session o1, Session o2) {
 				int siteNameComparison = o1.getStartDate().compareTo(o2.getStartDate());
@@ -223,7 +216,7 @@ public class CourseClassItem extends ISHCommon {
 		int numberOfSession = courseClass.getSessions().size();
 		int numberOfDay = sessionDays.size();
 		String key = isHasSessionsInTheSameDay() ?
-			(numberOfDay > 1) ? "%s days, %s hours total" : "%s day, %s hours total" :
+				(numberOfDay > 1) ? "%s days, %s hours total" : "%s day, %s hours total" :
 				(numberOfSession > 1) ? "%s sessions, %s hours total" : "%s session, %s hours total";
 		return String.format(key, isHasSessionsInTheSameDay() ? numberOfDay : numberOfSession,
 				FormatUtils.hoursFormat.format(courseClass.getTotalDurationHours().doubleValue()));
@@ -236,7 +229,7 @@ public class CourseClassItem extends ISHCommon {
 
 	public String getMaximumDaysToComplete() {
 		return (courseClass.getIsDistantLearningCourse() && courseClass.getMaximumDays() != null ?
-			String.format("%.0f maximum days to complete", courseClass.getMaximumDays().doubleValue()) : StringUtils.EMPTY);
+				String.format("%.0f maximum days to complete", courseClass.getMaximumDays().doubleValue()) : StringUtils.EMPTY);
 	}
 
 	public String getCssTableClass() {
@@ -328,35 +321,32 @@ public class CourseClassItem extends ISHCommon {
 		return courseClass.isEvening() ? VALUE_yes : VALUE_no;
 	}
 
-    /**
-     * The method returns true only if start date and end date for the courseClass more than 1 day.
-     */
-    public boolean isShowDateEnd()
-    {
-        Date endDate = courseClass.getEndDate();
-        List<Session> sessions = courseClass.getSessions();
+	/**
+	 * The method returns true only if start date and end date for the courseClass more than 1 day.
+	 */
+	public boolean isShowDateEnd() {
+		Date endDate = courseClass.getEndDate();
+		List<Session> sessions = courseClass.getSessions();
 
-        if (endDate == null || sessions.isEmpty())
-            return false;
+		if (endDate == null || sessions.isEmpty())
+			return false;
 
-        for (Session session : sessions) {
-            if (!DateUtils.isSameDay(endDate, session.getStartDate()))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
+		for (Session session : sessions) {
+			if (!DateUtils.isSameDay(endDate, session.getStartDate())) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	/**
 	 * The method returns value "classCommenced" for tag's attribute "class" if courseClass.firstSession start date is null
 	 * or less the today
 	 */
-	public String getClassCommenced()
-	{
+	public String getClassCommenced() {
 		Session session = courseClass.getFirstSession();
-		Date date = session != null ? session.getStartDate():null;
-		return date == null || date.compareTo(new Date()) < 0 ? CLASS_NAME_classCommenced: StringUtils.EMPTY;
+		Date date = session != null ? session.getStartDate() : null;
+		return date == null || date.compareTo(new Date()) < 0 ? CLASS_NAME_classCommenced : StringUtils.EMPTY;
 	}
 
 	public Format getDateFormat() {
