@@ -22,7 +22,8 @@ class GetWebSite {
         if (currentDomain == null) {
             ObjectSelect.query(WebSite.class)
                     .where(WebSite.SITE_KEY.eq(new GetSiteKey(serverName).get()))
-                    .cacheStrategy(QueryCacheStrategy.SHARED_CACHE, WebSite.class.toString())
+                    .prefetch(WebSite.COLLEGE.joint())
+                    .cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebSite.class.toString())
                     .selectFirst(context)
         } else {
             currentDomain.webSite

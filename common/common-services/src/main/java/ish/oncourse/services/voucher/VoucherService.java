@@ -48,8 +48,8 @@ public class VoucherService implements IVoucherService {
                 .params("collegeId", webSiteService.getCurrentCollege().getId())
                 .params("isOnSale", true)
                 .params("isWebVisible", true)
-                .cacheStrategy(QueryCacheStrategy.SHARED_CACHE, Product.class.getSimpleName())
-                .selectOne(cayenneService.newContext()).values().iterator().next()).intValue();
+                .cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, Product.class.getSimpleName())
+                .selectOne(cayenneService.sharedContext()).values().iterator().next()).intValue();
     }
 
     @Override
@@ -59,8 +59,8 @@ public class VoucherService implements IVoucherService {
                 COLLEGE.eq(college)
                         .andExp(getAvailableProductsQualifier())
                         .andExp(Product.SKU.eq(sku)))
-                .cacheStrategy(QueryCacheStrategy.SHARED_CACHE, Product.class.getSimpleName())
-                .selectFirst(cayenneService.newContext());
+                .cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, Product.class.getSimpleName())
+                .selectFirst(cayenneService.sharedContext());
 
     }
 
@@ -77,9 +77,9 @@ public class VoucherService implements IVoucherService {
             query.offset(startDefault);
             query.limit(rowsDefault);
         }
-        query.cacheStrategy(QueryCacheStrategy.SHARED_CACHE, Product.class.getSimpleName());
+        query.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, Product.class.getSimpleName());
         query.orderBy(Product.TYPE.desc(), Product.NAME.asc(), Product.PRICE_EX_TAX.desc());
-        return query.select(cayenneService.newContext());
+        return query.select(cayenneService.sharedContext());
     }
 
     @Override
@@ -91,8 +91,8 @@ public class VoucherService implements IVoucherService {
                         .andExp(Voucher.CODE.eq(code))
                         .andExp(Voucher.STATUS.eq(ProductStatus.ACTIVE))
                         .andExp(EXPIRY_DATE.gt(new Date()).orExp(EXPIRY_DATE.isNull())))
-                .cacheStrategy(QueryCacheStrategy.SHARED_CACHE, Product.class.getSimpleName())
-                .selectFirst(cayenneService.newContext());
+                .cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, Product.class.getSimpleName())
+                .selectFirst(cayenneService.sharedContext());
     }
 
     public Voucher createVoucher(VoucherProduct voucherProduct) {
@@ -117,7 +117,7 @@ public class VoucherService implements IVoucherService {
             return Collections.emptyList();
         }
         SelectQuery q = new SelectQuery(Product.class, ExpressionFactory.inDbExp(Product.ID_PK_COLUMN, ids));
-        return cayenneService.newContext().performQuery(q);
+        return cayenneService.sharedContext().performQuery(q);
     }
 
     @Override
@@ -125,7 +125,7 @@ public class VoucherService implements IVoucherService {
         if (ids.length == 0) {
             return Collections.emptyList();
         }
-        return ObjectSelect.query(Product.class, ExpressionFactory.inDbExp(VoucherProduct.ID_PK_COLUMN, ids)).select(cayenneService.newContext());
+        return ObjectSelect.query(Product.class, ExpressionFactory.inDbExp(VoucherProduct.ID_PK_COLUMN, ids)).select(cayenneService.sharedContext());
     }
 
     @Override
@@ -133,7 +133,7 @@ public class VoucherService implements IVoucherService {
         if (ids == null || ids.isEmpty()) {
             return Collections.emptyList();
         }
-        return ObjectSelect.query(ProductItem.class, ExpressionFactory.inDbExp(Voucher.ID_PK_COLUMN, ids)).select(cayenneService.newContext());
+        return ObjectSelect.query(ProductItem.class, ExpressionFactory.inDbExp(Voucher.ID_PK_COLUMN, ids)).select(cayenneService.sharedContext());
     }
 
     @Override

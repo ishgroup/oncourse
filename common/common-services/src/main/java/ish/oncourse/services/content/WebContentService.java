@@ -30,13 +30,13 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 	@Override
 	public WebContent getWebContent(String searchProperty, Object value) {
 		ObjectSelect<WebContent> query = ObjectSelect.query(WebContent.class).
-				cacheStrategy(QueryCacheStrategy.SHARED_CACHE, WebContent.class.getSimpleName()).
+				cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebContent.class.getSimpleName()).
 				and(WebContent.WEB_SITE_VERSION.eq(webSiteVersionService.getCurrentVersion()));
 		if (searchProperty != null) {
 			query.and(ExpressionFactory.matchExp(
 					searchProperty, value));
 		}
-		return query.selectOne(cayenneService.newContext());
+		return query.selectOne(cayenneService.sharedContext());
 	}
 
 	/**
@@ -54,11 +54,11 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 	@Override
 	public List<WebContent> getBlocks() {
 		return ObjectSelect.query(WebContent.class)
-				.cacheStrategy(QueryCacheStrategy.SHARED_CACHE, WebContent.class.getSimpleName())
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebContent.class.getSimpleName())
 				.and(WebContent.WEB_SITE_VERSION.eq(webSiteVersionService.getCurrentVersion()))
 				.and(getBlockQualifier())
 				.orderBy(WebContent.MODIFIED.desc())
-				.select(cayenneService.newContext());
+				.select(cayenneService.sharedContext());
 	}
 	
 	@Override
@@ -130,12 +130,12 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 	@Override
 	public WebContent getBlockByName(String webContentName) {
 		return ObjectSelect.query(WebContent.class)
-				.cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
 				.cacheGroup(WebContent.class.getSimpleName())
 				.and(WebContent.WEB_SITE_VERSION.eq(webSiteVersionService.getCurrentVersion()))
 				.and(WebContent.NAME.eq(webContentName))
 				.and(getBlockQualifier())
-				.selectOne(cayenneService.newContext());
+				.selectOne(cayenneService.sharedContext());
 	}
 
 	private Expression getBlockQualifier() {
@@ -152,13 +152,13 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 		return ObjectSelect.query(WebNode.class)
 				.and(WebNode.WEB_SITE_VERSION.eq(webSiteVersionService.getCurrentVersion()))
 				.and(WebNode.NAME.eq(webNodeName))
-				.selectOne(cayenneService.newContext());
+				.selectOne(cayenneService.sharedContext());
 	}
 
 	@Override
 	public WebNodeType getWebNodeTypeByName(String webNodeTypeName) {
 		return ObjectSelect.query(WebNodeType.class)
 				.and(WebNodeType.WEB_SITE_VERSION.eq(webSiteVersionService.getCurrentVersion()))
-				.and(WebNodeType.NAME.eq(webNodeTypeName)).selectOne(cayenneService.newContext());
+				.and(WebNodeType.NAME.eq(webNodeTypeName)).selectOne(cayenneService.sharedContext());
 	}
 }

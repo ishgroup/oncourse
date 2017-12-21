@@ -51,7 +51,7 @@ public class GetDocuments implements IGet<List<Document>> {
 				.and(BINARY_INFO_RELATIONS.dot(ENTITY_WILLOW_ID).eq(entityId))
 				.and(BINARY_INFO_RELATIONS.dot(SPECIAL_TYPE).isNull())
 				.and(new GetCollegeExpression(college, hidePrivate, isStudentLoggedIn).get())
-				.cacheStrategy(QueryCacheStrategy.SHARED_CACHE, Document.class.getSimpleName())
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, Document.class.getSimpleName())
 				.select(objectContext);
 	}
 }

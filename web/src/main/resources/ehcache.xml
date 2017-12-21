@@ -10,15 +10,4 @@
         maxBytesLocalHeap=40M - it allows to keep in ehcache ~ 1 million cayenne objects
 -->
 <ehcache:config xmlns:ehcache="http://www.ehcache.org/v3" >
-
-    <ehcache:cache alias="CourseClass">
-            <ehcache:key-type copier="org.ehcache.impl.copy.SerializingCopier">java.lang.String</ehcache:key-type>
-            <ehcache:value-type copier="org.ehcache.impl.copy.SerializingCopier">java.util.List</ehcache:value-type>
-
-            <ehcache:expiry>
-                <ehcache:tti unit="minutes">2</ehcache:tti>
-            </ehcache:expiry>
-            <ehcache:heap unit="entries">1000000</ehcache:heap>
-    </ehcache:cache>
-
 </ehcache:config>

@@ -19,6 +19,6 @@ public class EnrolmentServiceImpl implements IEnrolmentService {
 		q.andQualifier(ExpressionFactory.matchDbExp(Enrolment.ID_PK_COLUMN, id));
 		q.addPrefetch(Enrolment.COURSE_CLASS_PROPERTY);
 
-		return (Enrolment) Cayenne.objectForQuery(cayenneService.newContext(), q);
+		return (Enrolment) Cayenne.objectForQuery(cayenneService.sharedContext(), q);
 	}
 }

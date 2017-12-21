@@ -32,7 +32,7 @@ public class GetPossibleDiscounts {
 								orExp(DiscountCourseClass.DISCOUNT.dot(Discount.DISCOUNT_CONCESSION_TYPES).outer().dot(DiscountConcessionType.CONCESSION_TYPE).isNotNull())
 				).
 				prefetch(DiscountCourseClass.DISCOUNT.joint()).
-				cacheStrategy(QueryCacheStrategy.SHARED_CACHE).
+				cacheStrategy(QueryCacheStrategy.LOCAL_CACHE).
 				cacheGroup(DiscountCourseClass.class.getSimpleName()).
 				select(courseClass.getObjectContext());
 		

@@ -26,7 +26,7 @@ class PaymentControllerBuilder {
     }
 
     NewPaymentProcessController build() {
-        ExtendedModel model = new ExtendedModelBuilder(sessionId: sessionId, context: cayenneService.newContext()).build()
+        ExtendedModel model = new ExtendedModelBuilder(sessionId: sessionId, context: cayenneService.sharedContext()).build()
         request.setAttribute(REQUESTING_COLLEGE_ATTRIBUTE, model.paymentIn?.college?.id)
         GetPaymentState.PaymentState state = new GetPaymentState(model: model, cayenneService: cayenneService).state
         NewPaymentProcessController controller = new NewPaymentProcessController(

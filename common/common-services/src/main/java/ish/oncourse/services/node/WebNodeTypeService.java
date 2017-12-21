@@ -44,14 +44,14 @@ public class WebNodeTypeService extends BaseService<WebNodeType> implements
 
         WebSiteVersion version = webSiteVersionService.getCurrentVersion();
 
-        ObjectContext context = getCayenneService().newContext();
+        ObjectContext context = getCayenneService().sharedContext();
 
         Expression expression = ExpressionFactory.matchExp(
                 WebNodeType.WEB_SITE_VERSION_PROPERTY, context.localObject(version)
         );
 
         SelectQuery selectQuery = new SelectQuery(WebNodeType.class, expression);
-        selectQuery.setCacheStrategy(QueryCacheStrategy.SHARED_CACHE);
+        selectQuery.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
         selectQuery.setCacheGroup(WebNodeType.class.getSimpleName());
         selectQuery.addOrdering(WebNodeType.MODIFIED_PROPERTY, SortOrder.DESCENDING);
 

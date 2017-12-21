@@ -47,7 +47,7 @@ public class PreferenceController extends CommonPreferenceController {
 		if (isUserPref) {
 			throw new IllegalArgumentException("Cannot fetch a user preference in willow.");
 		}
-		return new GetPreference(webSiteService.getCurrentCollege(), key, cayenneService.newContext()).getValue();
+		return new GetPreference(webSiteService.getCurrentCollege(), key, cayenneService.sharedContext()).getValue();
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class PreferenceController extends CommonPreferenceController {
 		if (isUserPref) {
 			throw new IllegalArgumentException("Cannot fetch a user preference in willow.");
 		}
-		ObjectContext context = cayenneService.newContext();
+		ObjectContext context = cayenneService.sharedContext();
 		new GetPreference(webSiteService.getCurrentCollege(), key, context).setValue(value);
 		logger.debug("committing changes to prefs: {}", context.uncommittedObjects());
 
@@ -207,7 +207,7 @@ public class PreferenceController extends CommonPreferenceController {
 	}
 
 	public boolean isPaymentGatewayEnabled() {
-		return new IsPaymentGatewayEnabled(webSiteService.getCurrentCollege(), cayenneService.newContext()).get();
+		return new IsPaymentGatewayEnabled(webSiteService.getCurrentCollege(), cayenneService.sharedContext()).get();
 	}
 
 	public Integer getEnrolmentMinAge() {
@@ -247,7 +247,7 @@ public class PreferenceController extends CommonPreferenceController {
 	}
 
 	public boolean isCorporatePassPaymentEnabled() {
-		return new IsCorporatePassEnabled(webSiteService.getCurrentCollege(), cayenneService.newContext()).get();
+		return new IsCorporatePassEnabled(webSiteService.getCurrentCollege(), cayenneService.sharedContext()).get();
 	}
 
 	public boolean isCreditCardPaymentEnabled() {
@@ -269,7 +269,7 @@ public class PreferenceController extends CommonPreferenceController {
 
     public Integer getContactAgeWhenNeedParent()
     {
-    	return new GetContactAgeWhenNeedParent(webSiteService.getCurrentCollege(), cayenneService.newContext()).get();
+    	return new GetContactAgeWhenNeedParent(webSiteService.getCurrentCollege(), cayenneService.sharedContext()).get();
     }
 
     public void setContactAgeWhenNeedParent(Integer value)
@@ -279,7 +279,7 @@ public class PreferenceController extends CommonPreferenceController {
 
     public boolean isCollectParentDetails()
     {
-        return new IsCollectParentDetails(webSiteService.getCurrentCollege(), cayenneService.newContext()).get();
+        return new IsCollectParentDetails(webSiteService.getCurrentCollege(), cayenneService.sharedContext()).get();
     }
 
     public void setCollectParentDetails(boolean value)

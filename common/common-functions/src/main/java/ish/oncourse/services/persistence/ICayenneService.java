@@ -22,4 +22,6 @@ public interface ICayenneService {
 
 
 	ObjectContext newContext(DataChannel parentChannel);
+
+	ObjectContext sharedContext();
 }

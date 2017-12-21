@@ -57,7 +57,7 @@ public class CourseClassService implements ICourseClassService {
 
 		appyCourseClassCacheSettings(query);
 
-		List<CourseClass> result = cayenneService.newContext().performQuery(query);
+		List<CourseClass> result = cayenneService.sharedContext().performQuery(query);
 		return !result.isEmpty() ? result.get(0) : null;
 	}
 
@@ -74,7 +74,7 @@ public class CourseClassService implements ICourseClassService {
 	}
 
 	public List<CourseClass> loadByIds(Object... ids) {
-		return loadByIds(cayenneService.newContext(), ids);
+		return loadByIds(cayenneService.sharedContext(), ids);
 	}
 
 	public List<CourseClass> loadByIds(ObjectContext objectContext, Object... ids) {
@@ -100,7 +100,7 @@ public class CourseClassService implements ICourseClassService {
 		ObjectSelect<CourseClass> objectSelect = ObjectSelect.query(CourseClass.class, ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN, ids))
 				.and(getSiteQualifier());
 
-		return new ArrayList<>(ApplyCourseClassCacheSettings.valueOf(objectSelect).apply().select(cayenneService.newContext()));
+		return new ArrayList<>(ApplyCourseClassCacheSettings.valueOf(objectSelect).apply().select(cayenneService.sharedContext()));
 	}
 
 	/*
@@ -118,7 +118,7 @@ public class CourseClassService implements ICourseClassService {
 		q.andQualifier(ExpressionFactory.matchExp(CourseClass.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()));
 
 		appyCourseClassCacheSettings(q);
-		return (CourseClass) Cayenne.objectForQuery(cayenneService.newContext(), q);
+		return (CourseClass) Cayenne.objectForQuery(cayenneService.sharedContext(), q);
 	}
 
 	/**
@@ -186,10 +186,10 @@ public class CourseClassService implements ICourseClassService {
 				expr = addingExpresion.andExp(expr);
 			}
 			SelectQuery q = new SelectQuery(Session.class, expr.andExp(startingExp).andExp(activeClassesExp));
-			q.setCacheStrategy(QueryCacheStrategy.SHARED_CACHE);
+			q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
 			q.setCacheGroup(Session.class.getSimpleName());
 
-			sessions.addAll(cayenneService.newContext().performQuery(q));
+			sessions.addAll(cayenneService.sharedContext().performQuery(q));
 		}
 
 		if (contact.getStudent() != null) {
@@ -203,10 +203,10 @@ public class CourseClassService implements ICourseClassService {
 				expr = addingExpresion.andExp(expr);
 			}
 			SelectQuery q = new SelectQuery(Session.class, expr.andExp(startingExp).andExp(activeClassesExp));
-			q.setCacheStrategy(QueryCacheStrategy.SHARED_CACHE);
+			q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
 			q.setCacheGroup(Session.class.getSimpleName());
 
-			sessions.addAll(cayenneService.newContext().performQuery(q));
+			sessions.addAll(cayenneService.sharedContext().performQuery(q));
 		}
 
 
@@ -261,7 +261,7 @@ public class CourseClassService implements ICourseClassService {
 		SelectQuery q = new SelectQuery(CourseClass.class, expr);
 		appyCourseClassCacheSettings(q);
 
-		return cayenneService.newContext().performQuery(q);
+		return cayenneService.sharedContext().performQuery(q);
 	}
 
 	private Expression getExpressionBy(Contact contact, CourseClassFilter filter, boolean forTutor) {
@@ -305,7 +305,7 @@ public class CourseClassService implements ICourseClassService {
 		q.andQualifier(ExpressionFactory.matchExp(Attendance.ANGEL_ID_PROPERTY, id));
 		q.andQualifier(ExpressionFactory.matchExp(CourseClass.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()));
 
-		return (Attendance) Cayenne.objectForQuery(cayenneService.newContext(), q);
+		return (Attendance) Cayenne.objectForQuery(cayenneService.sharedContext(), q);
 	}
 
 	/**
@@ -316,7 +316,7 @@ public class CourseClassService implements ICourseClassService {
 	 */
 	public static void appyCourseClassCacheSettings(SelectQuery q) {
 
-		q.setCacheStrategy(QueryCacheStrategy.SHARED_CACHE);
+		q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
 		q.setCacheGroup(CourseClass.class.getSimpleName());
 
 		q.addPrefetch(CourseClass.ROOM.getName());
@@ -336,14 +336,14 @@ public class CourseClassService implements ICourseClassService {
 	public List<Survey> getSurveysFor(Tutor tutor) {
 		Expression expr = ExpressionFactory.matchExp(StringUtils.join(new String[]{Survey.ENROLMENT_PROPERTY, Enrolment.COURSE_CLASS_PROPERTY, CourseClass.TUTOR_ROLES_PROPERTY, TutorRole.TUTOR_PROPERTY}, "."), tutor);
 		SelectQuery q = new SelectQuery(Survey.class, expr);
-		return cayenneService.newContext().performQuery(q);
+		return cayenneService.sharedContext().performQuery(q);
 	}
 
 	public List<Survey> getSurveysFor(CourseClass courseClass) {
 		Expression surveyExp = ExpressionFactory.matchExp(Survey.ENROLMENT_PROPERTY + "." + Enrolment.COURSE_CLASS_PROPERTY, courseClass);
 		SelectQuery query = new SelectQuery(Survey.class, surveyExp);
 
-		return cayenneService.newContext().performQuery(query);
+		return cayenneService.sharedContext().performQuery(query);
 	}
 
 	@Override

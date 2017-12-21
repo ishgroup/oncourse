@@ -190,11 +190,11 @@ public class TagService extends BaseService<Tag> implements ITagService {
 		// MAILING_LISTS(3, "Mailing lists") - see NodeSpecialType
 		Tag parent = ObjectSelect.query(Tag.class).where(Tag.COLLEGE.eq(getWebSiteService().getCurrentCollege()))
 				.and(Tag.SPECIAL_TYPE.eq(NodeSpecialType.MAILING_LISTS))
-				.and(Tag.PARENT.isNull()).selectFirst(getCayenneService().newContext());
+				.and(Tag.PARENT.isNull()).selectFirst(getCayenneService().sharedContext());
 
 		if (parent != null) {
 			return ObjectSelect.query(Tag.class).where(getSiteQualifier())
-					.and(Tag.PARENT.eq(parent)).select(getCayenneService().newContext());
+					.and(Tag.PARENT.eq(parent)).select(getCayenneService().sharedContext());
 		}
 		return tags;
 	}
@@ -209,7 +209,7 @@ public class TagService extends BaseService<Tag> implements ITagService {
 				.and(Taggable.ENTITY_WILLOW_ID.eq(contact.getId()))
 				.and(Taggable.COLLEGE.eq(currentCollege))
 				.prefetch(Taggable.TAGGABLE_TAGS.disjoint())
-				.select(getCayenneService().newContext());
+				.select(getCayenneService().sharedContext());
 
 
 		Set<Tag> allMailingLists = new HashSet<>(getMailingLists());
@@ -234,7 +234,7 @@ public class TagService extends BaseService<Tag> implements ITagService {
 	public void subscribeContactToMailingList(Contact contact, Tag mailingList) {
 		if (isContactSubscribedToMailingList(contact, mailingList))
 			return;
-		ObjectContext context = getCayenneService().newContext();
+		ObjectContext context = getCayenneService().sharedContext();
 		
 		Date date = new Date();
 		
@@ -259,7 +259,7 @@ public class TagService extends BaseService<Tag> implements ITagService {
 	}
 	
 	public void unsubscribeContactFromMailingList(Contact contact, Tag mailingList) {
-		ObjectContext context = getCayenneService().newContext();
+		ObjectContext context = getCayenneService().sharedContext();
 
 		TaggablesSupporter supporter = new TaggablesSupporter(context);
 		List<Taggable> taggables = supporter.load(contact, mailingList);
@@ -268,7 +268,7 @@ public class TagService extends BaseService<Tag> implements ITagService {
 
 	@Override
 	public boolean isContactSubscribedToMailingList(Contact contact, Tag mailingList) {
-		ObjectContext context = getCayenneService().newContext();
+		ObjectContext context = getCayenneService().sharedContext();
 		TaggablesSupporter supporter = new TaggablesSupporter(context);
 		List<Taggable> taggables = supporter.load(contact, mailingList);
 		return taggables.size() > 0;

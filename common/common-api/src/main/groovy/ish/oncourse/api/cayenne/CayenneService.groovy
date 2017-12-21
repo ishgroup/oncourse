@@ -36,4 +36,9 @@ class CayenneService implements ICayenneService {
     ISHObjectContext newContext(DataChannel parentChannel) {
         throw new UnsupportedOperationException()
     }
+
+    @Override
+    ISHObjectContext sharedContext() {
+        throw new UnsupportedOperationException()
+    }
 }

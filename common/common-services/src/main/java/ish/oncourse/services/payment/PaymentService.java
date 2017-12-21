@@ -23,7 +23,7 @@ public class PaymentService implements IPaymentService {
 	public PaymentIn paymentInByWillowId(Long willowId) {
 		return ObjectSelect.query(PaymentIn.class)
 				.where(ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, willowId)
-						.andExp(PaymentIn.COLLEGE.eq(webSiteService.getCurrentCollege()))).selectOne(cayenneService.newContext());
+						.andExp(PaymentIn.COLLEGE.eq(webSiteService.getCurrentCollege()))).selectOne(cayenneService.sharedContext());
 	}
 
 	/**
@@ -33,7 +33,7 @@ public class PaymentService implements IPaymentService {
 	public PaymentIn paymentInByAngelId(Long angelId) {
 		return ObjectSelect.query(PaymentIn.class)
 				.where(PaymentIn.ANGEL_ID.eq(angelId).andExp(PaymentIn.COLLEGE.eq(webSiteService.getCurrentCollege())))
-				.selectOne(cayenneService.newContext());
+				.selectOne(cayenneService.sharedContext());
 	}
 
 	/**
@@ -43,7 +43,7 @@ public class PaymentService implements IPaymentService {
 	public PaymentOut paymentOutByAngelId(Long angelId) {
 		return ObjectSelect.query(PaymentOut.class)
 				.where(PaymentIn.ANGEL_ID.eq(angelId).andExp(PaymentOut.COLLEGE.eq(webSiteService.getCurrentCollege())))
-				.selectOne(cayenneService.newContext());
+				.selectOne(cayenneService.sharedContext());
 	}
 
 	/**
@@ -56,7 +56,7 @@ public class PaymentService implements IPaymentService {
 				.where(PaymentIn.SESSION_ID.eq(sessionId).andExp(PaymentOut.COLLEGE.eq(webSiteService.getCurrentCollege())))
 				.prefetch(PaymentIn.PAYMENT_IN_LINES.joint())
 				.prefetch(PaymentIn.PAYMENT_TRANSACTIONS.joint())
-				.select(cayenneService.newContext());
+				.select(cayenneService.sharedContext());
 	}
 
 	/**

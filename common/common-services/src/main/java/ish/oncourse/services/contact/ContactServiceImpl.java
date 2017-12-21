@@ -18,6 +18,6 @@ public class ContactServiceImpl implements IContactService {
 		SelectQuery q = new SelectQuery(Contact.class);
 		q.andQualifier(ExpressionFactory.matchExp(Contact.UNIQUE_CODE_PROPERTY, uniqueCode));
 
-		return (Contact) Cayenne.objectForQuery(cayenneService.newContext(), q);
+		return (Contact) Cayenne.objectForQuery(cayenneService.sharedContext(), q);
 	}
 }

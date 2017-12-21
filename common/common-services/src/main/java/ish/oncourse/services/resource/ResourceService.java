@@ -27,9 +27,9 @@ public class ResourceService implements IResourceService {
 	@Override
 	public org.apache.tapestry5.ioc.Resource getDbTemplateResource(WebSiteLayout layout, String fileName) {
 		WebTemplate template = ObjectSelect.query(WebTemplate.class)
-				.cacheStrategy(QueryCacheStrategy.SHARED_CACHE, WebTemplate.class.getSimpleName())
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebTemplate.class.getSimpleName())
 				.and(WebTemplate.LAYOUT.eq(layout))
-				.and(WebTemplate.NAME.eq(fileName)).selectOne(cayenneService.newContext());
+				.and(WebTemplate.NAME.eq(fileName)).selectOne(cayenneService.sharedContext());
 		return template != null ? new DatabaseTemplateResource(template) : null;
 	}
 

@@ -58,14 +58,14 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 		ObjectSelect<WebNode> q = ObjectSelect.query(WebNode.class)
 				.and(ExpressionFactory.matchDbExp(WebNode.ID_PK_COLUMN, willowId));
 		applyCommons(q);
-		return q.selectFirst(cayenneService.newContext());
+		return q.selectFirst(cayenneService.sharedContext());
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<WebNode> getNodes() {
 		ObjectSelect<WebNode> q = ObjectSelect.query(WebNode.class);
 		applyCommons(q);
-		return q.select(cayenneService.newContext());
+		return q.select(cayenneService.sharedContext());
 	}
 
 	public WebNode getHomePage() {
@@ -75,14 +75,14 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 	public WebNode getNodeForNodeNumber(Integer nodeNumber) {
 		ObjectSelect<WebNode> q = ObjectSelect.query(WebNode.class).and(WebNode.NODE_NUMBER.eq(nodeNumber));
 		applyCommons(q);
-		return q.selectFirst(cayenneService.newContext());
+		return q.selectFirst(cayenneService.sharedContext());
 	}
 
 	public WebNode getNodeForNodePath(String nodePath) {
 		ObjectSelect<WebNode> q = ObjectSelect.query(WebNode.class)
 				.and(WebNode.WEB_URL_ALIASES.dot(WebUrlAlias.URL_PATH).eq(nodePath));
 		applyCommons(q);
-		return q.selectFirst(cayenneService.newContext());
+		return q.selectFirst(cayenneService.sharedContext());
 	}
 
 	public WebNode getCurrentNode() {
@@ -115,7 +115,7 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 
 	public WebNode getRandomNode() {
 
-		ObjectContext sharedContext = cayenneService.newContext();
+		ObjectContext sharedContext = cayenneService.sharedContext();
 		Expression qualifier = siteQualifier();
 		EJBQLQuery q = new EJBQLQuery("select count(i) from WebNode i where " + qualifier.toEJBQL("i"));
 		Long count = (Long) sharedContext.performQuery(q).get(0);
@@ -135,7 +135,7 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 	}
 
 	public Date getLatestModifiedDate() {
-		return (Date) cayenneService.newContext()
+		return (Date) cayenneService.sharedContext()
 				.performQuery(new EJBQLQuery("select max(wn.modified) from WebNode wn where " + siteQualifier().toEJBQL("wn"))).get(0);
 	}
 
@@ -143,7 +143,7 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 		Expression siteExpr = ExpressionFactory.matchExp(WebNode.WEB_SITE_VERSION.getName(),
 				webSiteVersionService.getCurrentVersion());
 
-		Integer number = (Integer) cayenneService.newContext()
+		Integer number = (Integer) cayenneService.sharedContext()
 				.performQuery(new EJBQLQuery("select max(wn.nodeNumber) from WebNode wn where " + siteExpr.toEJBQL("wn"))).get(0);
         if (number == null)
             number = 0;
@@ -152,7 +152,7 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 
 	@Override
 	public synchronized WebNode createNewNode() {
-		ObjectContext ctx = cayenneService.newContext();
+		ObjectContext ctx = cayenneService.sharedContext();
 
 		WebSiteVersion webSiteVersion = ctx.localObject(webSiteVersionService.getCurrentVersion());
 		WebNodeType webNodeType = ctx.localObject(webNodeTypeService.getDefaultWebNodeType());
@@ -195,7 +195,7 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 		query.prefetch(WebNode.WEB_CONTENT_VISIBILITY.disjoint());
 		query.prefetch(WebNode.WEB_CONTENT_VISIBILITY.dot(WebContentVisibility.WEB_CONTENT).disjoint());
 		query.prefetch(WebNode.WEB_URL_ALIASES.disjoint());
-		query.cacheStrategy(QueryCacheStrategy.SHARED_CACHE, WebNode.class.getSimpleName());
+		query.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebNode.class.getSimpleName());
 	}
 
 	@Override
@@ -231,9 +231,9 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 		    return null;
 	    }
 
-	    ObjectContext context = cayenneService.newContext();
+	    ObjectContext context = cayenneService.sharedContext();
 	    return ObjectSelect.query(WebUrlAlias.class)
-				.cacheStrategy(QueryCacheStrategy.SHARED_CACHE, WebUrlAlias.class.getSimpleName())
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebUrlAlias.class.getSimpleName())
 			    .and(WebUrlAlias.WEB_NODE.eq(webNode))
 			    .and(WebUrlAlias.DEFAULT.eq(true))
 			    .selectOne(context);
@@ -242,9 +242,9 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 	@Override
 	public WebNode getNodeForName(String nodeName) {
 		return ObjectSelect.query(WebNode.class)
-				.cacheStrategy(QueryCacheStrategy.SHARED_CACHE, WebNode.class.getSimpleName())
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebNode.class.getSimpleName())
 				.and(siteQualifier())
 				.and(WebNode.NAME.eq(nodeName))
-				.selectOne(cayenneService.newContext());
+				.selectOne(cayenneService.sharedContext());
 	}
 }

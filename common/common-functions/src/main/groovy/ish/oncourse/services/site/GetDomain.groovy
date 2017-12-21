@@ -27,7 +27,7 @@ class GetDomain {
             return null
         } else {
             collegeDomain = (ObjectSelect.query(WebHostName.class) & WebHostName.NAME.eq(serverName))
-                    .cacheStrategy(QueryCacheStrategy.SHARED_CACHE, WebHostName.class.getSimpleName())
+                    .cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebHostName.class.getSimpleName())
                     .selectFirst(context)
         }
 

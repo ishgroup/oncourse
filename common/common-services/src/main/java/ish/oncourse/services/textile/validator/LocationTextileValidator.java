@@ -38,7 +38,7 @@ public class LocationTextileValidator extends AbstractTextileValidator {
         }
 
         if (siteId != null) {
-            ObjectContext objectContext = cayenneService.newContext();
+            ObjectContext objectContext = cayenneService.sharedContext();
             Site site = ObjectSelect.query(Site.class).and(ExpressionFactory.inDbExp(Site.ID_PK_COLUMN, Long.valueOf(siteId))).selectFirst(objectContext);
             if (site == null) {
                 errors.addFailure(String.format("tag '%s' - cannot find Site with id: %s", tag, siteId), ValidationFailureType.CONTENT_NOT_FOUND);

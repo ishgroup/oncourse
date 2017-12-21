@@ -32,7 +32,7 @@ public class EHCacheTest extends ServiceTest {
 
     @Test
     public void test() {
-        ObjectSelect.query(WebSite.class).cacheStrategy(QueryCacheStrategy.SHARED_CACHE, WebSite.class.getSimpleName())
+        ObjectSelect.query(WebSite.class).cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebSite.class.getSimpleName())
                 .select(cayenneService.newContext());
     }
 }

@@ -207,7 +207,7 @@ public class CourseClassUtils {
 
 			if (searchParams.getTutorId() != null) {
 				Tutor tutor = ObjectSelect.query(Tutor.class)
-						.cacheStrategy(QueryCacheStrategy.SHARED_CACHE, Tutor.class.getSimpleName())
+						.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, Tutor.class.getSimpleName())
 						.and(Tutor.TUTOR_ROLES.dot(TutorRole.COURSE_CLASS).eq(courseClass))
 						.and(Tutor.ANGEL_ID.eq(searchParams.getTutorId()))
 						.selectFirst(courseClass.getObjectContext());

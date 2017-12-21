@@ -64,7 +64,7 @@ public class WebSiteVersionService extends AbstractWebSiteVersionService {
 
 	private WebSiteVersion getDraftVersion(WebSite webSite) {
 		return ObjectSelect.query(WebSiteVersion.class)
-				.cacheStrategy(QueryCacheStrategy.SHARED_CACHE, WebSiteVersion.class.getSimpleName()).
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebSiteVersion.class.getSimpleName()).
 				where(WebSiteVersion.WEB_SITE.eq(webSite)).
 				and(WebSiteVersion.DEPLOYED_ON.isNull()).
 				selectOne(webSite.getObjectContext());

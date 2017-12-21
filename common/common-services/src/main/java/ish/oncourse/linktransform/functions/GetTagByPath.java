@@ -110,7 +110,7 @@ public class GetTagByPath {
 
         try {
         List<Tag> results = ObjectSelect.query(Tag.class, qualifier).
-                cacheStrategy(QueryCacheStrategy.SHARED_CACHE, Tag.class.getSimpleName()).
+                cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, Tag.class.getSimpleName()).
                 select(context);
 
             if (results == null) {

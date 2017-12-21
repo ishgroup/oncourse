@@ -40,7 +40,7 @@ class GetPreference {
         
         return ObjectSelect.query(Preference)
                 .where(exception)
-                .cacheStrategy(QueryCacheStrategy.SHARED_CACHE, Preference.simpleName)
+                .cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, Preference.simpleName)
                 .selectOne(objectContext)
     }
 

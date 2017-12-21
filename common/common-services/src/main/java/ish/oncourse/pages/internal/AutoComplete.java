@@ -42,7 +42,7 @@ public class AutoComplete {
 		String stateQualifier = null;
 		WebSite webSite = webSiteService.getCurrentWebSite();
 		if (webSite != null) {
-			stateQualifier = new GetAutoCompleteState(webSite.getCollege(), cayenneService.newContext(), webSite).get();
+			stateQualifier = new GetAutoCompleteState(webSite.getCollege(), cayenneService.sharedContext(), webSite).get();
 		}
         return SuburbsAutocomplete.valueOf(request, searchService, stateQualifier).getResult();
     }
@@ -52,9 +52,9 @@ public class AutoComplete {
 		final JSONArray array = new JSONArray();
 
 		if (term != null) {
-			ObjectContext context = cayenneService.newContext();
+			ObjectContext context = cayenneService.sharedContext();
 			List<Country> countries = ObjectSelect.query(Country.class).
-            cacheStrategy(QueryCacheStrategy.SHARED_CACHE, WebContent.class.getSimpleName()).
+            cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebContent.class.getSimpleName()).
             where(Country.NAME.likeIgnoreCase("%"+term+"%")).
 					select(context);
 					

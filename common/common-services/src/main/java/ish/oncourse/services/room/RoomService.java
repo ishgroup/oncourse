@@ -23,13 +23,13 @@ public class RoomService implements IRoomService {
 	@SuppressWarnings("unchecked")
 	public Room getRoom(String searchProperty, Object value) {
 		SelectQuery q = new SelectQuery(Room.class);
-		q.setCacheStrategy(QueryCacheStrategy.SHARED_CACHE);
+		q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
 		q.setCacheGroup(Room.class.getSimpleName());
 		q.andQualifier(getSiteQualifier());
 		if (searchProperty != null) {
 			q.andQualifier(ExpressionFactory.matchExp(searchProperty, value));
 		}
-		List<Room> result = cayenneService.newContext().performQuery(q);
+		List<Room> result = cayenneService.sharedContext().performQuery(q);
 		return !result.isEmpty() ? result.get(0) : null;
 	}
 

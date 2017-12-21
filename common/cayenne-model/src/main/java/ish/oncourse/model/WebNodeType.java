@@ -33,7 +33,7 @@ public class WebNodeType extends _WebNodeType {
 	public static WebNodeType forName(ObjectContext ctx, String name) {
 		return ObjectSelect.query(WebNodeType.class).
 				where(WebNodeType.NAME.eq(name)).
-				cacheStrategy(QueryCacheStrategy.SHARED_CACHE).
+				cacheStrategy(QueryCacheStrategy.LOCAL_CACHE).
 				cacheGroup(WebNodeType.class.getSimpleName()).
 				selectFirst(ctx);
 	}
@@ -41,7 +41,7 @@ public class WebNodeType extends _WebNodeType {
 	@SuppressWarnings("unchecked")
 	public List<WebContent> getContentForRegionKey(String regionKey) {
 		return ObjectSelect.query(WebContent.class)
-				.cacheStrategy(QueryCacheStrategy.SHARED_CACHE, WebContent.class.getSimpleName())
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebContent.class.getSimpleName())
 				.and(WebContent.WEB_CONTENT_VISIBILITIES.dot(WebContentVisibility.WEB_NODE_TYPE).eq(this))
 				.and(WebContent.WEB_CONTENT_VISIBILITIES.dot(WebContentVisibility.REGION_KEY).eq(RegionKey.valueOf(regionKey.toLowerCase())))
 				.orderBy(WebContent.WEB_CONTENT_VISIBILITIES.dot(WebContentVisibility.WEIGHT).asc()).select(getObjectContext());

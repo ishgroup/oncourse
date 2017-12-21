@@ -160,7 +160,7 @@ public class CourseClassItem extends ISHCommon {
 				.and(TutorRole.TUTOR.dot(Tutor.FINISH_DATE).isNull().orExp(TutorRole.TUTOR.dot(Tutor.FINISH_DATE).gt(new Date())))
 				.prefetch(TutorRole.TUTOR.joint())
 				.prefetch(TutorRole.TUTOR.dot(Tutor.CONTACT).joint())
-				.cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
 				.cacheGroup(TutorRole.class.getSimpleName()).select(courseClass.getObjectContext());
 	}
 

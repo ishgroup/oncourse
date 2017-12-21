@@ -14,7 +14,7 @@ public abstract class AbstractWebSiteVersionService implements IWebSiteVersionSe
     private ICayenneService cayenneService;
 
 	public WebSiteVersion getDeployedVersion(WebSite webSite) {
-        return GetDeployedVersion.valueOf(cayenneService.newContext(), webSite, true).get();
+        return GetDeployedVersion.valueOf(cayenneService.sharedContext(), webSite, true).get();
 	}
 
     public boolean isEditor() {

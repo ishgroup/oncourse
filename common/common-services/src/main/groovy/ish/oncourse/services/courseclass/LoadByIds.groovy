@@ -8,7 +8,7 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.ObjectSelect
 
-import static org.apache.cayenne.query.QueryCacheStrategy.SHARED_CACHE
+import static org.apache.cayenne.query.QueryCacheStrategy.LOCAL_CACHE
 
 class LoadByIds {
     static List<Course> load(List<String> stringIds, ObjectContext context, College college) {
@@ -27,7 +27,7 @@ class LoadByIds {
                 .prefetch(Course.COURSE_CLASSES.dot(CourseClass.SESSIONS).joint())
                 .prefetch(Course.COURSE_CLASSES.dot(CourseClass.ROOM).joint())
                 .prefetch(Course.COURSE_CLASSES.dot(CourseClass.ROOM).dot(Room.SITE).joint())
-                .cacheStrategy(SHARED_CACHE, Course.class.getSimpleName())
+                .cacheStrategy(LOCAL_CACHE, Course.class.getSimpleName())
                 .select(context)
 
         return courseList.sort { longIds.indexOf(it.id) }

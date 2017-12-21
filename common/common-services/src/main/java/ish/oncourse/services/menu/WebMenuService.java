@@ -53,11 +53,11 @@ public class WebMenuService extends BaseService<WebMenu> implements IWebMenuServ
 
 	private void refreshMenus() {
 		ObjectSelect.query(WebMenu.class)
-				.cacheStrategy(QueryCacheStrategy.SHARED_CACHE_REFRESH, WebMenu.class.getSimpleName());
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE_REFRESH, WebMenu.class.getSimpleName());
 	}
 
 	public List<WebMenu> getChildrenBy(WebMenu parent) {
-		return GetMenuChildren.valueOf(parent, cayenneService.newContext(), true).get();
+		return GetMenuChildren.valueOf(parent, cayenneService.sharedContext(), true).get();
 	}
 
 
@@ -76,7 +76,7 @@ public class WebMenuService extends BaseService<WebMenu> implements IWebMenuServ
 
 	@Override
 	public WebMenu getMenuByNameAndParentMenu(String name, WebMenu parentMenu) {
-		ObjectContext ctx = cayenneService.newContext();
+		ObjectContext ctx = cayenneService.sharedContext();
 
 		return ObjectSelect.query(WebMenu.class).and(WebMenu.NAME.eq(name))
 				.and(WebMenu.WEB_SITE_VERSION.eq(webSiteVersionService.getCurrentVersion()))
@@ -88,8 +88,8 @@ public class WebMenuService extends BaseService<WebMenu> implements IWebMenuServ
 		return ObjectSelect.query(WebMenu.class)
 				.and(siteQualifier())
 				.and(WebMenu.PARENT_WEB_MENU.isNull())
-				.cacheStrategy(QueryCacheStrategy.SHARED_CACHE, WebMenu.class.getSimpleName())
-				.selectOne(cayenneService.newContext());
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebMenu.class.getSimpleName())
+				.selectOne(cayenneService.sharedContext());
 	}
 
 

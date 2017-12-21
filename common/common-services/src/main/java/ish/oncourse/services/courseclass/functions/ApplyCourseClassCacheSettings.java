@@ -20,7 +20,7 @@ public class ApplyCourseClassCacheSettings {
     }
 
     public ObjectSelect<CourseClass> apply() {
-        objectSelect.cacheStrategy(QueryCacheStrategy.SHARED_CACHE, CourseClass.class.getSimpleName());
+        objectSelect.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, CourseClass.class.getSimpleName());
         objectSelect.prefetch(CourseClass.ROOM.joint());
         objectSelect.prefetch(CourseClass.SESSIONS.joint());
         objectSelect.prefetch(CourseClass.TUTOR_ROLES.joint());

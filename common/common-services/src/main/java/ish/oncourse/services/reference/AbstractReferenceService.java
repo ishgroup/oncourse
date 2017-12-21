@@ -50,7 +50,7 @@ public abstract class AbstractReferenceService<T extends Persistent> extends Bas
 			query.setQualifier(getQueryQualifier(ishVersion));
 
 			try {
-				records = (List<T>) getCayenneService().newContext().performQuery(query);
+				records = (List<T>) getCayenneService().sharedContext().performQuery(query);
 			} catch (Exception e) {
 				logger.error("Query resulted in Exception thrown", e);
 			}
@@ -80,7 +80,7 @@ public abstract class AbstractReferenceService<T extends Persistent> extends Bas
 		query.setFetchingDataRows(true);
 
 		@SuppressWarnings("unchecked")
-		List<Map> results = getCayenneService().newContext().performQuery(query);
+		List<Map> results = getCayenneService().sharedContext().performQuery(query);
 
 		if (!results.isEmpty()) {
 			try {
@@ -105,7 +105,7 @@ public abstract class AbstractReferenceService<T extends Persistent> extends Bas
 		query.setFetchingDataRows(true);
 
 		@SuppressWarnings({ "unchecked", "rawtypes" })
-		List<Map> results = getCayenneService().newContext().performQuery(query);
+		List<Map> results = getCayenneService().sharedContext().performQuery(query);
 		long number = 0;
 
 		if (!results.isEmpty()) {

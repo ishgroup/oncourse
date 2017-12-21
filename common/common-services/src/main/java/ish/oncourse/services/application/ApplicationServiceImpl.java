@@ -21,7 +21,7 @@ public class ApplicationServiceImpl implements IApplicationService {
 	 */
 	@Override
 	public Application findOfferedApplicationBy(Course course, Student student) {
-		return new FindOfferedApplication(course, student,cayenneService.newContext()).get();
+		return new FindOfferedApplication(course, student,cayenneService.sharedContext()).get();
 	}
 	
 	/**
@@ -31,7 +31,7 @@ public class ApplicationServiceImpl implements IApplicationService {
 	 */
 	@Override
 	public Application findNewApplicationBy(Course course, Student student) {
-		return  new FindNewApplication(course, student,cayenneService.newContext()).get();
+		return  new FindNewApplication(course, student,cayenneService.sharedContext()).get();
 	}
 
 }

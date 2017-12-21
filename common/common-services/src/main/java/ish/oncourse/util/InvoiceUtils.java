@@ -21,11 +21,11 @@ public class InvoiceUtils {
     public static Money amountOwingForPayer(Contact contact) {
         Expression exp = ExpressionFactory.matchExp(Invoice.CONTACT_PROPERTY, contact);
         /**
-         * we use query with Strategy.SHARED_CACHE_REFRESH to be sure that
+         * we use query with Strategy.LOCAL_CACHE_REFRESH to be sure that
          * these invoices will be loaded from database and amountOwing will have actual value.
          */
         SelectQuery q = new SelectQuery(Invoice.class, exp);
-        q.setCacheStrategy(QueryCacheStrategy.SHARED_CACHE_REFRESH);
+        q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE_REFRESH);
         List<Invoice> invoices = contact.getObjectContext().performQuery(q);
         Money result = Money.ZERO;
         for (Invoice invoice : invoices) {
@@ -41,11 +41,11 @@ public class InvoiceUtils {
         Expression exp = ExpressionFactory.matchExp(Invoice.CONTACT_PROPERTY, contact);
         ExpressionFactory.greaterExp(Invoice.AMOUNT_OWING_PROPERTY, Money.ZERO);
         /**
-         * we use query with Strategy.SHARED_CACHE_REFRESH to be sure that
+         * we use query with Strategy.LOCAL_CACHE_REFRESH to be sure that
          * these invoices will be loaded from database and amountOwing will have actual value.
          */
         SelectQuery q = new SelectQuery(Invoice.class, exp);
-        q.setCacheStrategy(QueryCacheStrategy.SHARED_CACHE_REFRESH);
+        q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE_REFRESH);
         return contact.getObjectContext().performQuery(q);
     }
 

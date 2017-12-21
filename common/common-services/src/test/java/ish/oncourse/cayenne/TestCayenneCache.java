@@ -29,13 +29,13 @@ public class TestCayenneCache extends ServiceTest {
     public void testLocalCache() throws InterruptedException {
         ObjectContext sharedContext = cayenneService.newContext();
 
-        Country country = get(sharedContext, QueryCacheStrategy.SHARED_CACHE);
+        Country country = get(sharedContext, QueryCacheStrategy.LOCAL_CACHE);
         assertNull(country);
         createNewObject();
 
         //default ehcache.timeToLiveSeconds is 1 sec
         Thread.sleep(1000L);
-        country = get(sharedContext, QueryCacheStrategy.SHARED_CACHE);
+        country = get(sharedContext, QueryCacheStrategy.LOCAL_CACHE);
          assertNotNull(country);
 
     }
@@ -45,13 +45,13 @@ public class TestCayenneCache extends ServiceTest {
     public void testSharedCache() throws InterruptedException {
         ObjectContext sharedContext = cayenneService.newContext();
 
-        Country country = get(sharedContext, QueryCacheStrategy.SHARED_CACHE);
+        Country country = get(sharedContext, QueryCacheStrategy.LOCAL_CACHE);
         assertNull(country);
         createNewObject();
 
         //default ehcache.timeToLiveSeconds is 1 sec
         Thread.sleep(1000L);
-        country = get(sharedContext, QueryCacheStrategy.SHARED_CACHE);
+        country = get(sharedContext, QueryCacheStrategy.LOCAL_CACHE);
         assertNotNull(country);
 
     }

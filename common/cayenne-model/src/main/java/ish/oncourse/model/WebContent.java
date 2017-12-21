@@ -64,7 +64,7 @@ public class WebContent extends _WebContent implements Comparable<WebContent> {
 		List<WebContentVisibility> list = ObjectSelect.query(WebContentVisibility.class).
 				where(WebContentVisibility.WEB_CONTENT.eq(this)).
 				and(WebContentVisibility.WEB_NODE_TYPE.eq(webNodeType)).
-				cacheStrategy(QueryCacheStrategy.SHARED_CACHE).
+				cacheStrategy(QueryCacheStrategy.LOCAL_CACHE).
 				cacheGroup(WebContentVisibility.class.getSimpleName()).
 				select(getObjectContext());
 
@@ -84,7 +84,7 @@ public class WebContent extends _WebContent implements Comparable<WebContent> {
 		List<WebContentVisibility> list = ObjectSelect.query(WebContentVisibility.class).
 				where(WebContentVisibility.WEB_CONTENT.eq(this)).
 				and(WebContentVisibility.WEB_NODE.eq(webNode)).
-				cacheStrategy(QueryCacheStrategy.SHARED_CACHE).
+				cacheStrategy(QueryCacheStrategy.LOCAL_CACHE).
 				cacheGroup(WebContentVisibility.class.getSimpleName()).
 				select(getObjectContext());
 

@@ -32,8 +32,8 @@ public class Tag extends _Tag implements Queueable {
 			visibleTags = new ArrayList<>(ObjectSelect.query(Tag.class).
 					where(Tag.PARENT.eq(this)).
 					and(Tag.IS_WEB_VISIBLE.isTrue()).
-					cacheStrategy(QueryCacheStrategy.SHARED_CACHE).
-					cacheGroup(Tag.class.getSimpleName()).
+					prefetch(Tag.PARENT.joint()).
+					cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, Tag.class.getSimpleName()).
 					select(getObjectContext()));
 		}
 

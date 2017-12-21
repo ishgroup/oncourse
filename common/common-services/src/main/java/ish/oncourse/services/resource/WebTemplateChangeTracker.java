@@ -50,11 +50,11 @@ public class WebTemplateChangeTracker {
 		}
 		WebSiteVersion webSiteVersion = webSiteVersionService.getCurrentVersion();
 		return (ObjectSelect.query(WebTemplate.class)
-				.cacheStrategy(QueryCacheStrategy.SHARED_CACHE, WebTemplate.class.getSimpleName())
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebTemplate.class.getSimpleName())
 				.and(WebTemplate.LAYOUT.dot(WebSiteLayout.WEB_SITE_VERSION).eq(webSiteVersion))
 				.and(WebTemplate.MODIFIED.gt(getTimestamp(applicationKey)))
 				.limit(1)
-				.selectFirst(cayenneService.newContext()) != null);
+				.selectFirst(cayenneService.sharedContext()) != null);
 	}
 
 }

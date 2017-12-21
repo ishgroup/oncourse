@@ -27,9 +27,9 @@ public class SitesService implements ISitesService {
 		if (searchProperty != null) {
 			q.andQualifier(ExpressionFactory.matchExp(searchProperty, value));
 		}
-		q.setCacheStrategy(QueryCacheStrategy.SHARED_CACHE);
+		q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
 		q.setCacheGroup(Site.class.getSimpleName());
-		List<Site> result = cayenneService.newContext().performQuery(q);
+		List<Site> result = cayenneService.sharedContext().performQuery(q);
 		return !result.isEmpty() ? result.get(0) : null;
 	}
 
@@ -49,7 +49,7 @@ public class SitesService implements ISitesService {
 
 	public Date getLatestModifiedDate() {
 		return (Date) cayenneService
-				.newContext()
+				.sharedContext()
 				.performQuery(
 						new EJBQLQuery("select max(s.modified) from Site s where "
 								+ getSiteQualifier().andExp(getAvailabilityQualifier()).toEJBQL("s"))).get(0);
@@ -59,9 +59,9 @@ public class SitesService implements ISitesService {
 	@Override
 	public List<Site> loadByIds(List<Long> ids) {
 		SelectQuery q = new SelectQuery(Site.class, ExpressionFactory.inDbExp(Site.ID_PK_COLUMN, ids));
-		q.setCacheStrategy(QueryCacheStrategy.SHARED_CACHE);
+		q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
 		q.setCacheGroup(Site.class.getSimpleName());
 		q.andQualifier(getSiteQualifier().andExp(getAvailabilityQualifier()));
-		return cayenneService.newContext().performQuery(q);
+		return cayenneService.sharedContext().performQuery(q);
 	}
 }

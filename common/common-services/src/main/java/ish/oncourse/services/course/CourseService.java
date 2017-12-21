@@ -30,7 +30,7 @@ import static ish.oncourse.model.auto._CourseCourseRelation.TO_COURSE;
 import static ish.oncourse.model.auto._EntityRelation.FROM_ENTITY_IDENTIFIER;
 import static ish.oncourse.model.auto._EntityRelation.TO_ENTITY_IDENTIFIER;
 import static java.lang.Boolean.TRUE;
-import static org.apache.cayenne.query.QueryCacheStrategy.SHARED_CACHE;
+import static org.apache.cayenne.query.QueryCacheStrategy.LOCAL_CACHE;
 
 public class CourseService implements ICourseService {
 
@@ -71,7 +71,7 @@ public class CourseService implements ICourseService {
 		q.setFetchLimit(rowsDefault);
 
 		applyCourseCacheSettings(q);
-		return cayenneService.newContext().performQuery(q);
+		return cayenneService.sharedContext().performQuery(q);
 	}
 
 	@Override
@@ -90,10 +90,10 @@ public class CourseService implements ICourseService {
 		Expression expr = ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN,list).andExp(getSiteQualifier());
 
 		SelectQuery q = new SelectQuery(Course.class, expr);
-		q.setCacheStrategy(SHARED_CACHE);
+		q.setCacheStrategy(LOCAL_CACHE);
 		q.setCacheGroup(Course.class.getSimpleName());
 
-		List<Course> result = new ArrayList<>(cayenneService.newContext().performQuery(q));
+		List<Course> result = new ArrayList<>(cayenneService.sharedContext().performQuery(q));
 
 		if (sort == null) {
 			//if nothing specified use default
@@ -149,7 +149,7 @@ public class CourseService implements ICourseService {
 	}
 
 	public List<Course> loadByIds(List<String> ids) {
-		return LoadByIds.load(ids, cayenneService.newContext(), webSiteService.getCurrentCollege());
+		return LoadByIds.load(ids, cayenneService.sharedContext(), webSiteService.getCurrentCollege());
 	}
 
 	public Course getCourse(String searchProperty, Object value) {
@@ -168,7 +168,7 @@ public class CourseService implements ICourseService {
 
 		applyCourseCacheSettings(q);
 
-		return (Course) Cayenne.objectForQuery(cayenneService.newContext(), q);
+		return (Course) Cayenne.objectForQuery(cayenneService.sharedContext(), q);
 	}
 
 	public Course getCourseByCode(String code) {
@@ -181,9 +181,9 @@ public class CourseService implements ICourseService {
 				.prefetch(Course.COURSE_CLASSES.dot(CourseClass.SESSIONS).joint())
 				.prefetch(Course.COURSE_CLASSES.dot(CourseClass.ROOM).joint())
 				.prefetch(Course.COURSE_CLASSES.dot(CourseClass.ROOM).dot(Room.SITE).joint())
-				.cacheStrategy(SHARED_CACHE)
+				.cacheStrategy(LOCAL_CACHE)
 				.cacheGroup(Course.class.getSimpleName())
-				.selectOne(cayenneService.newContext());
+				.selectOne(cayenneService.sharedContext());
 	}
 	
 	public Expression getSearchStringPropertyQualifier(String searchProperty, Object value) {
@@ -198,7 +198,7 @@ public class CourseService implements ICourseService {
 			qualifier = qualifier.andExp(getTaggedWithQualifier(taggedWith));
 		}
 
-		ObjectContext sharedContext = cayenneService.newContext();
+		ObjectContext sharedContext = cayenneService.sharedContext();
 		EJBQLQuery q = new EJBQLQuery("select count(i) from Course i where " + qualifier.toEJBQL("i"));
 		Long count = (Long) sharedContext.performQuery(q).get(0);
 
@@ -226,25 +226,25 @@ public class CourseService implements ICourseService {
 	}
 
 	public Integer getCoursesCount() {
-		return ((Number) cayenneService.newContext()
+		return ((Number) cayenneService.sharedContext()
 				.performQuery(new EJBQLQuery("select count(c) from Course c where " + getSiteQualifier().toEJBQL("c")))
 				.get(0)).intValue();
 	}
 
 	public Date getLatestModifiedDate() {
 		return (Date) cayenneService
-				.newContext()
+				.sharedContext()
 				.performQuery(
 						new EJBQLQuery("select max(c.modified) from Course c where " + getSiteQualifier().toEJBQL("c")))
 				.get(0);
 	}
 
     public List<Product> getRelatedProductsFor(Course course) {
-        ObjectContext context = cayenneService.newContext();
+        ObjectContext context = cayenneService.sharedContext();
         SelectQuery query = new SelectQuery(CourseProductRelation.class,
                 ExpressionFactory.matchExp(CourseProductRelation.COURSE_PROPERTY, course)
                         .andExp(ExpressionFactory.matchExp(CourseProductRelation.PRODUCT_PROPERTY + "." + Product.IS_WEB_VISIBLE_PROPERTY, TRUE)));
-		query.setCacheStrategy(SHARED_CACHE);
+		query.setCacheStrategy(LOCAL_CACHE);
 		query.setCacheGroup(CourseProductRelation.class.getSimpleName());
         List<CourseProductRelation> relations = context.performQuery(query);
         ArrayList<Product> result = new ArrayList<>();
@@ -255,7 +255,7 @@ public class CourseService implements ICourseService {
     }
 
 	public List<Course> getRelatedCoursesFor(Course course) {
-		ObjectContext context = cayenneService.newContext();
+		ObjectContext context = cayenneService.sharedContext();
 		List<Course> courses = ObjectSelect.query(Course.class).where(
 				TO_COURSES.outer().dot(FROM_COURSE).eq(course)
 						.andExp(TO_COURSES.outer().dot(FROM_ENTITY_IDENTIFIER).eq(EntityRelationType.COURSE))
@@ -264,7 +264,7 @@ public class CourseService implements ICourseService {
 						.andExp(FROM_COURSES.outer().dot(FROM_ENTITY_IDENTIFIER).eq(EntityRelationType.COURSE))
 						.andExp(FROM_COURSES.outer().dot(TO_ENTITY_IDENTIFIER).eq(EntityRelationType.COURSE)))
 				.and(IS_WEB_VISIBLE.eq(TRUE))
-				.cacheStrategy(SHARED_CACHE, CourseCourseRelation.class.getSimpleName())
+				.cacheStrategy(LOCAL_CACHE, CourseCourseRelation.class.getSimpleName())
 				.orderBy(Course.NAME.asc())
 				.select(context);
 		return courses;
@@ -328,7 +328,7 @@ public class CourseService implements ICourseService {
      * @param q course query
 	 */
 	private static void applyCourseCacheSettings(SelectQuery q) {
-		q.setCacheStrategy(SHARED_CACHE);
+		q.setCacheStrategy(LOCAL_CACHE);
 		q.setCacheGroup(Course.class.getSimpleName());
 		q.addPrefetch(Course.COURSE_CLASSES_PROPERTY);
 		q.addPrefetch(Course.COURSE_CLASSES_PROPERTY + "." + CourseClass.ROOM_PROPERTY);

@@ -285,7 +285,7 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 				.and(Session.END_DATE.isNotNull())
 				.prefetch(Session.ROOM.joint())
 				.prefetch(Session.ROOM.dot(Room.SITE).joint())
-				.cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
 				.cacheGroup(Session.class.getSimpleName());
 		return new ArrayList<>(select.select(getObjectContext()));
 	}

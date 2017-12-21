@@ -55,8 +55,8 @@ public class BaseService<T extends Persistent> implements IBaseService<T> {
 
 	public T refresh(Long willowId) {
 		return 	ObjectSelect.query(getEntityClass(), ExpressionFactory.matchDbExp(IBaseService.ID_PK_COLUMN, willowId))
-				.cacheStrategy(QueryCacheStrategy.SHARED_CACHE_REFRESH, getEntityClass().getSimpleName())
-				.selectOne(getCayenneService().newContext());
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE_REFRESH, getEntityClass().getSimpleName())
+				.selectOne(getCayenneService().sharedContext());
 	}
 
 	@Override
@@ -67,8 +67,8 @@ public class BaseService<T extends Persistent> implements IBaseService<T> {
 			try {
 				return ObjectSelect.query(getEntityClass()).
 						where(ExpressionFactory.matchDbExp(IBaseService.ID_PK_COLUMN, willowId)).
-						cacheStrategy(QueryCacheStrategy.SHARED_CACHE, getEntityClass().getSimpleName()).
-						selectOne(getCayenneService().newContext());
+						cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, getEntityClass().getSimpleName()).
+						selectOne(getCayenneService().sharedContext());
 
 			} catch (Exception e) {
 				logger.error("Query resulted in Exception thrown. willowId: {}", willowId, e);
@@ -81,8 +81,8 @@ public class BaseService<T extends Persistent> implements IBaseService<T> {
 	public List<T> findByQualifier(Expression qualifier) {
 		try {
 			return new ArrayList<>(ObjectSelect.query(getEntityClass(), qualifier).
-					cacheStrategy(QueryCacheStrategy.SHARED_CACHE, getEntityClass().getSimpleName()).
-					select(getCayenneService().newContext()));
+					cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, getEntityClass().getSimpleName()).
+					select(getCayenneService().sharedContext()));
 		} catch (Exception e) {
 			logger.error("Query resulted in Exception thrown. Query: {}", qualifier, e);
 			//TODO: Should the exception be rethrown to indicate error condition to the client code?

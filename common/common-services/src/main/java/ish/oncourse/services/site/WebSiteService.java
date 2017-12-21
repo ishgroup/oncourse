@@ -5,8 +5,6 @@ import ish.oncourse.model.WebHostName;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.persistence.ICayenneService;
-import org.apache.cayenne.query.QueryCacheStrategy;
-import org.apache.cayenne.query.SelectById;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
@@ -53,7 +51,7 @@ public class WebSiteService implements IWebSiteService {
 	}
 
 	WebHostName getCurrentDomain() {
-		return new GetDomain(request.getServerName(), cayenneService.newContext()).get();
+		return new GetDomain(request.getServerName(), cayenneService.sharedContext()).get();
 	}
 
 	public WebSite getCurrentWebSite() {
@@ -62,7 +60,7 @@ public class WebSiteService implements IWebSiteService {
 			return currentWebSite;
 		}
 
-		WebSite site = new GetWebSite(request.getServerName(), cayenneService.newContext()).get();
+		WebSite site = new GetWebSite(request.getServerName(), cayenneService.sharedContext()).get();
 		request.setAttribute(CURRENT_WEB_SITE, site);
 		return site;
 	}
@@ -73,11 +71,9 @@ public class WebSiteService implements IWebSiteService {
 			return currentCollege;
 		}
 		WebSite site = getCurrentWebSite();
-		College college = SelectById.query(College.class, site.getCollege().getId())
-				.cacheStrategy(QueryCacheStrategy.SHARED_CACHE, College.class.getSimpleName())
-				.selectOne(cayenneService.newContext());
-		request.setAttribute(CURRENT_COLLEGE, college);
-		return college;
+		currentCollege = site.getCollege();
+		request.setAttribute(CURRENT_COLLEGE, currentCollege);
+		return currentCollege;
 	}
 
 	public TimeZone getTimezone() {
