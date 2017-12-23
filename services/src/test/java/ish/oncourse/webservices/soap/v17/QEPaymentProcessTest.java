@@ -132,7 +132,7 @@ public abstract class QEPaymentProcessTest extends RealWSTransportTest {
 	}
 
 	protected GenericParameterEntry createEntry(String name, String value) {
-		GenericParameterEntry entry = PortHelper.createParameterEntry(SupportedVersions.v17);
+		GenericParameterEntry entry = PortHelper.createParameterEntry(SupportedVersions.V17);
 
 		entry.setName(name);
 		entry.setValue(value);
