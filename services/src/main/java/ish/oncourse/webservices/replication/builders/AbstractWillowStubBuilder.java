@@ -80,6 +80,7 @@ public abstract class AbstractWillowStubBuilder<T extends Queueable, V extends G
 				return CustomField.class.getSimpleName();
 			case V15:
 			case V16:
+			case V17:
 			default:
 				return ContactCustomField.class.getSimpleName();
 		}

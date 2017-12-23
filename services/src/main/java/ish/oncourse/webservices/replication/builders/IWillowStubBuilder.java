@@ -9,7 +9,7 @@ public interface IWillowStubBuilder {
 	/**
 	 * Converts record from the replication queue to correspondent soap stub.
 	 * 
-	 * @param queuedRecord record from the queue.
+	 * @param entity record from the queue.
 	 * @return soap stub
 	 */
 	GenericReplicationStub convert(final QueuedRecord entity, final SupportedVersions version);
