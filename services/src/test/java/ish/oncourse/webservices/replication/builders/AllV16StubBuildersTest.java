@@ -4,8 +4,8 @@
 package ish.oncourse.webservices.replication.builders;
 
 import ish.oncourse.model.*;
-import ish.oncourse.webservices.replication.v15.builders.*;
-import ish.oncourse.webservices.v15.stubs.replication.ContactStub;
+import ish.oncourse.webservices.replication.v16.builders.*;
+import ish.oncourse.webservices.v16.stubs.replication.ContactStub;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Test;
 
