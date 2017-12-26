@@ -48,7 +48,7 @@ class LoginForm extends React.Component<any, any> {
             id="loginEmail"
             name="email"
             type="text"
-            placeholder="Login"
+            placeholder="Email"
             component={input}
           />
         </FormGroup>
