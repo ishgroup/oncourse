@@ -15,9 +15,10 @@ import java.util.*;
 /**
  * Service class which processes vouchers and invoice lines added to it against each other and creates appropriate payments of voucher type for them if
  * applicable.
- *
+ * @deprecated Use VoucherRedemptionHelper.groovy instead.
  * @author dzmitry
  */
+@Deprecated
 public class VoucherRedemptionHelper {
 
     private static final Expression COURSE_VOUCHER_QUALIFIER = Voucher.PRODUCT.dot(VoucherProduct.MAX_COURSES_REDEMPTION).isNotNull();
