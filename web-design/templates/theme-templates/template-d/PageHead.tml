@@ -22,8 +22,8 @@
 	<meta content="${metaDescription}" property="og:description"/>
 	<meta content="${metaDescription}" property="twitter:description"/>
 
-	<meta property="og:image" content="https://${request.serverName}/s/img/logos/logo.png" />
-	<meta name="twitter:image" content="https://${request.serverName}/s/img/logos/logo.png" />
+	<meta property="og:image" content="https://${request.serverName}/s/img/logos/social-logo.png" />
+	<meta name="twitter:image" content="https://${request.serverName}/s/img/logos/social-logo.png" />
 
 	<meta name="robots" content="NOODP,NOYDIR" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -33,10 +33,12 @@
 
 	<link rel="shortcut icon" type="image/ico" href="/s/img/favicon.ico" />
 
-  	<span t:type="ui/title" pageName="pageName" webNode="webNode"/>
+  <span t:type="ui/title" pageName="pageName" webNode="webNode"/>
 
 	<meta name="author" content="" />
+	<!--[if lt IE 9]><script src="/s/js/oncourse/vendor/html5shiv-printshiv.min.js"></script><![endif]-->
 	<link href="/s/stylesheets/css/site.css?v=${ciVersion}" media="screen, print" rel="stylesheet" />
+
 	<script type="text/javascript" src="/s/js/all.js?v=${ciVersion}"></script>
 
 </t:container>

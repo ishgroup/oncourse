@@ -1,11 +1,11 @@
 <html t:type="ui/internal/pagestructure"
-	  canonicalLinkPath="${canonicalLinkPath}"
-	  canonicalRelativeLinkPath="${canonicalRelativeLinkPath}"
-	  metaDescription="${metaDescription}"
-    title="${courseClass.uniqueIdentifier} | ${courseClass.course.name}"
-	  bodyId="literal:DetailsPage"
-    bodyClass="literal:internal-page class-details"
-    xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+		canonicalLinkPath="${canonicalLinkPath}"
+		canonicalRelativeLinkPath="${canonicalRelativeLinkPath}"
+		metaDescription="${metaDescription}"
+		title="${courseClass.uniqueIdentifier} | ${courseClass.course.name}"
+		bodyId="literal:DetailsPage"
+		bodyClass="literal:internal-page class-details"
+		xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
 	<div t:type="ui/confirmorderdialog"/>
 	<div itemtype="http://schema.org/Course" itemscope="itemscope" class="clearfix courseItem">

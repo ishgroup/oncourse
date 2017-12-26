@@ -1,7 +1,9 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<hgroup class="header-hgroup">
 		<h2 class="site-logo" id="siteLogo">
-			<a href="${homeLink}">${collegeName}</a>
+			<a href="${homeLink}">
+				${collegeName}
+			</a>
 		</h2>
 		<h1 class="site-title" id="siteTitle">
 			<a href="${homeLink}">${collegeName}</a>

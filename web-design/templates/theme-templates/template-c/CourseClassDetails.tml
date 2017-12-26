@@ -8,14 +8,14 @@
     xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
 	<div t:type="ui/confirmorderdialog"/>
-	<div itemtype="http://schema.org/Course" itemscope="itemscope" class="clearfix courseItem">
+	<div itemref="schema-organization" itemtype="http://schema.org/Course" itemscope="itemscope" class="clearfix courseItem">
 		<div class="class-details-title">
+			<h1 class="summary page-title">${courseClass.course.name}</h1>
+
 			<div class="print-page" onclick="window.print();">
 				Print this page
 				<input type="button" value="Print" />
 			</div>
-			<h1 itemprop="name" class="summary page-title">${courseClass.course.name}</h1>
-			<meta itemprop="provider" content="https://${request.serverName}" />
 		</div>
 
 		<!-- <div class="addthis-wrapper">
