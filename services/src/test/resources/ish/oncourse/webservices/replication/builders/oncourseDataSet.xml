@@ -537,7 +537,7 @@
     	idKey="123" redeemedCoursesCount="1" redemptionValue="1.0" source="W" status="1" contactId="1" redeemedInvoiceLineId="1"/-->
 
     <Survey id="1" angelId="1" collegeId="3" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
-            comment="comment" courseScore="1" enrolmentId="1" tutorScore="2" venueScore="3" publicComment="1"/>
+            comment="comment" courseScore="1" enrolmentId="1" tutorScore="2" venueScore="3" publicComment="1" testimonial="testimonial"/>
 
     <EntityRelation
             id="1" angelId="1" collegeId="3" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
