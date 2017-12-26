@@ -3,56 +3,57 @@ package ish.common.types
 import ish.common.util.DisplayableExtendedEnumeration
 import ish.oncourse.API
 /**
- * Each Field Configuration Scheme contains three FieldConfigurations, one for each type
- *
+ * Type of Field Configuration is condition under which it will be used.
  */
 @API
-public enum FieldConfigurationType implements DisplayableExtendedEnumeration<Integer> {
+enum FieldConfigurationType implements DisplayableExtendedEnumeration<Integer> {
 	
 	/**
 	 * Database value: 1
-	 * Apply ENROLMENT Field Configuration on enrol process
+	 * Field Configuration will be used during web enrol process
 	 */
 	@API
 	ENROLMENT(1, "Enrolment"),
 
 	/**
 	 * Database value: 2
-	 * Apply APPLICATION Field Configuration on application creation 
+	 * Field Configuration will be used during web application process
 	 */
 	@API
 	APPLICATION(2, "Application"),
 
 	/**
 	 * Database value: 3
-	 * Apply WAITING_LIST Field Configuration on Waiting List creation 
+	 * Field Configuration will be used when joining waiting lists on web
 	 */
 	@API
-	WAITING_LIST(3, "Waiting List")
+	WAITING_LIST(3, "Waiting List"),
 
 	/**
-	 * @see ish.common.util.DisplayableExtendedEnumeration#getDatabaseValue()
+	 * Database value: 4
+	 * Field Configuration will be used for surveys
 	 */
-
-
-	private String displayName;
-	private int value;
+	@API
+	SURVEY(4, "Survey")
+	
+	private String displayName
+	private int value
 
 	private FieldConfigurationType(int value, String displayName) {
-		this.value = value;
-		this.displayName = displayName;
+		this.value = value
+		this.displayName = displayName
 	}
 	
 	@Override
-	public Integer getDatabaseValue() {
-		return this.value;
+	Integer getDatabaseValue() {
+		return this.value
 	}
 
 	/**
 	 * @see ish.common.util.DisplayableExtendedEnumeration#getDisplayName()
 	 */
 	@Override
-	public String getDisplayName() {
-		return this.displayName;
+	String getDisplayName() {
+		return this.displayName
 	}
 }
