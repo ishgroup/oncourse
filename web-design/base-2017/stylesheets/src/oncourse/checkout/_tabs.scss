@@ -120,7 +120,7 @@
     }
 
     .payer-selection {
-      position: absolute;
+      position: $checkoutPayerPosition;
       top: $checkoutPayerPositionTop;
       right: $checkoutPayerPositionRight;
       z-index: $checkoutPayerZIndex;
@@ -310,31 +310,33 @@
 }
 
 .header-content {
-  color: #333;
-  font-size: 23px;
-  border-radius: 0 5px 0px 0px;
-  position: relative;
-  margin-bottom: 25px;
+  color: $checkoutPaymentHeaderContentColor;
+  font-size: $checkoutPaymentHeaderContentFontSize;
+  border-radius: $checkoutPaymentHeaderContentBorderRadius;
+  position: $checkoutPaymentHeaderContentPosition;
+  margin-bottom: $checkoutPaymentHeaderContentMarginBottom;
   .header {
-    padding: 10px 0 0 11px;
-    background: url($imagePath + "Padlock.png") 7px 5px no-repeat;
+    padding: $checkoutPaymentHeaderPadding;
+    background: $checkoutPaymentHeaderBackground;
     h1 {
-      text-transform: none;
-      font-size: 23px;
-      margin-bottom: 0;
-      color: #333;
-      line-height: 26px;
-      padding-left: 45px;
-      font-weight: normal;
+      text-transform: $checkoutPaymentHeaderTitleTextTransform;
+      font-size: $checkoutPaymentHeaderTitleFontSize;
+      margin-bottom: $checkoutPaymentHeaderTitleMarginBottom;
+      color: $checkoutPaymentHeaderTitleColor;
+      line-height: $checkoutPaymentHeaderTitleLineHeight;
+      padding-left: $checkoutPaymentHeaderTitlePaddingLeft;
+      font-weight: $checkoutPaymentHeaderTitleFontWeight;
+      display: $checkoutPaymentHeaderTitleDisplay;
     }
     span {
-      color: #666;
-      font-size: 14px;
-      line-height: 18px;
-      padding-left: 45px;
-      display: inline-block;
-      vertical-align: top;
-      position: relative;
+      color: $checkoutPaymentHeaderSubTitleColor;
+      font-size: $checkoutPaymentHeaderSubTitleFontSize;
+      font-weight: $checkoutPaymentHeaderSubTitleFontWeight;
+      line-height: $checkoutPaymentHeaderSubTitleLineHeight;
+      padding-left: $checkoutPaymentHeaderSubTitlePaddingLeft;
+      display: $checkoutPaymentHeaderSubTitleDisplay;
+      vertical-align: $checkoutPaymentHeaderSubTitleVerticalAlign;
+      position: $checkoutPaymentHeaderSubTitlePosition;
     }
   }
 }

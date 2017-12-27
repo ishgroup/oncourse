@@ -463,10 +463,38 @@ $checkoutPageTabBorder: 1px solid silver !default;
 $checkoutPageTabBorderRadius: 8px !default;
 $checkoutPageTabBackground: #fcfcfc !default;
 
+$checkoutPaymentHeaderContentColor: #333 !default;
+$checkoutPaymentHeaderContentFontSize: 23px !default;
+$checkoutPaymentHeaderContentBorderRadius: 0 5px 0px 0px !default;
+$checkoutPaymentHeaderContentPosition: relative !default;
+$checkoutPaymentHeaderContentMarginBottom: 25px !default;
+
+$checkoutPaymentHeaderPadding: 10px 0 0 11px !default;
+$checkoutPaymentHeaderBackground: url($imagePath + "Padlock.png") 7px 5px no-repeat !default;
+
+$checkoutPaymentHeaderTitleTextTransform: none !default;
+$checkoutPaymentHeaderTitleFontSize: 23px !default;
+$checkoutPaymentHeaderTitleMarginBottom: 0 !default;
+$checkoutPaymentHeaderTitleColor: #333 !default;
+$checkoutPaymentHeaderTitleLineHeight: 26px !default;
+$checkoutPaymentHeaderTitlePaddingLeft: 45px !default;
+$checkoutPaymentHeaderTitleFontWeight: normal !default;
+$checkoutPaymentHeaderTitleDisplay: block !default;
+
+$checkoutPaymentHeaderSubTitleColor: #666 !default;
+$checkoutPaymentHeaderSubTitleFontSize: 14px !default;
+$checkoutPaymentHeaderSubTitleFontWeight: normal !default;
+$checkoutPaymentHeaderSubTitleLineHeight: 18px !default;
+$checkoutPaymentHeaderSubTitlePaddingLeft: 45px !default;
+$checkoutPaymentHeaderSubTitleDisplay: inline-block !default;
+$checkoutPaymentHeaderSubTitleVerticalAlign: top !default;
+$checkoutPaymentHeaderSubTitlePosition: relative !default;
+
 //
 // Payer selection
 //
 
+$checkoutPayerPosition: absolute !default;
 $checkoutPayerPositionTop: 70px !default;
 $checkoutPayerPositionRight: 0px !default;
 $checkoutPayerZIndex: 2 !default;

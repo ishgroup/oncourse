@@ -11,545 +11,569 @@
 // Following all the styles handles checkout progress steps
 //
 
-#content {
-  #checkout {
-    font-size: $checkoutFontSize;
-    margin: $checkoutMargin;
+@if $useDefaultEnrolStyles == true {
+  #content {
+    #checkout {
+      font-size: $checkoutFontSize;
+      margin: $checkoutMargin;
 
-    // Progress step list
-    .progress-steps ul {
-      list-style: none;
-      margin-left: 0;
-      li {
-        width: 31.33%;
-        margin: 0 2% 0 0;
-        display: inline-block;
-        padding-right: 15px;
-        background: url("/s/img/progress-arrow-default.png") center right no-repeat;
-        &:hover {
-          background: url("/s/img/progress-arrow-hover.png") center right no-repeat;
-          a {
-            background: #d5d5d5;
-          }
-        }
-        &.disable {
-          background: url("/s/img/progress-arrow-disable.png") center right no-repeat;
-          a {
-            cursor: default;
-            color: #6B6B6B;
-            background: #F3F3F3;
-          }
-        }
-        &.active {
-          background: url("/s/img/progress-arrow-active.png") center right no-repeat;
-          a {
-            cursor: default;
-            background: #666666;
-            color: #fff;
-          }
-        }
-
-        &:last-child {
-          margin: 0;
-          padding: 0
-        }
-        &.last {
-          background: none;
+      // Progress step list
+      .progress-steps ul {
+        list-style: none;
+        margin-left: 0;
+        li {
+          width: 31.33%;
+          margin: 0 2% 0 0;
+          display: inline-block;
+          padding-right: 15px;
+          background: url("/s/img/progress-arrow-default.png") center right no-repeat;
           &:hover {
+            background: url("/s/img/progress-arrow-hover.png") center right no-repeat;
+            a {
+              background: #d5d5d5;
+            }
+          }
+          &.disable {
+            background: url("/s/img/progress-arrow-disable.png") center right no-repeat;
+            a {
+              cursor: default;
+              color: #6B6B6B;
+              background: #F3F3F3;
+            }
+          }
+          &.active {
+            background: url("/s/img/progress-arrow-active.png") center right no-repeat;
+            a {
+              cursor: default;
+              background: #666666;
+              color: #fff;
+            }
+          }
+
+          &:last-child {
+            margin: 0;
+            padding: 0
+          }
+          &.last {
             background: none;
+            &:hover {
+              background: none;
+            }
           }
-        }
-        a {
-          display: block;
-          padding: 4px 0px 5px 10px;
-          color: #6B6B6B;
-          text-decoration: none;
-          background: #e7e7e7;
-          text-transform: uppercase;
-          font-weight: bold;
-          font-size: 7px;
-          @include responsive($media-small) {
-            font-size: 12px;
-          }
-          &:hover {
+          a {
+            display: block;
+            padding: 4px 0px 5px 10px;
+            color: #6B6B6B;
             text-decoration: none;
+            background: #e7e7e7;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 7px;
+            @include responsive($media-small) {
+              font-size: 12px;
+            }
+            &:hover {
+              text-decoration: none;
+            }
           }
         }
       }
-    }
-    #addCode {
-      background: $checkoutAddCodeBackground;
-      color: $checkoutAddCodeTextColor;
-      border: $checkoutAddCodeBorder;
-      @include border-radius($checkoutAddCode);
+      #addCode {
+        background: $checkoutAddCodeBackground;
+        color: $checkoutAddCodeTextColor;
+        border: $checkoutAddCodeBorder;
+        @include border-radius($checkoutAddCode);
+      }
     }
   }
-}
 
-span#addstudent {
-  margin: 0;
-}
+  span#addstudent {
+    margin: 0;
+  }
 
-.unticked {
-  color: #aaa;
-}
+  .unticked {
+    color: #aaa;
+  }
 
-.membership, .card {
-  color: #aaa;
-  font-size: 11px;
-}
+  .membership, .card {
+    color: #aaa;
+    font-size: 11px;
+  }
 
-#checkout {
-  #tabable-container {
-    margin: 0 0 18px 0;
-    padding: 0;
-    border: 1px solid silver;
-    @include border-radius(8px);
-    background: #fcfcfc;
-    &::after {
-      display: block;
-      visibility: hidden;
-      clear: both;
-      content: "";
-    }
-    ul.nav {
-      margin-right: -1px;
-      position: relative;
-      margin: 0;
-      float: left;
-      list-style: none;
-      width: 100% !important;
+  #checkout {
+    #tabable-container {
+      margin: 0 0 18px 0;
+      padding: 0;
+      border: 1px solid silver;
+      @include border-radius(8px);
       background: #fcfcfc;
-      border-top-left-radius: 9px;
-      border-top: 1px solid transparent;
-      border-top-right-radius: 9px;
-      border-bottom: 1px solid #ddd;
-      @include responsive($media-small) {
-        width: 19.8% !important;
-        border-top-right-radius: 0px;
-        border-bottom: 0;
+      &::after {
+        display: block;
+        visibility: hidden;
+        clear: both;
+        content: "";
       }
-      li {
-        margin: 0;
-        width: 50%;
-        display: inline-block;
-        @include responsive($media-small) {
-          width: 100%;
-          display: block;
-        }
-        &.first {
-          &.active a {
-            border-top-color: #ddd !important;
-            border-top-left-radius: 6px;
-            border-top-right-radius: 6px;
-            @include responsive($media-small) {
-              border-top-color: transparent !important;
-              border-top-left-radius: 6px;
-              border-top-right-radius: 0px;
-            }
-          }
-          a:hover {
-            border-top-left-radius: 6px;
-          }
-        }
-        a {
-          padding: 8px 12px;
-          line-height: 20px;
-          margin-right: 0px !important;
-          margin-bottom: -1px;
-          display: block;
-          border: 1px solid transparent;
-          color: #555;
-          text-decoration: none;
-          @include responsive($media-small) {
-            margin-bottom: 0px;
-            margin-right: -1px !important;
-          }
-          &:hover {
-            background: #eee;
-            border-color: #EEE #DDD #DDD #DDD !important;
-            color: #333;
-            border-top-right-radius: 6px;
-            border-top-left-radius: 6px;
-            @include responsive($media-small) {
-              border-top-right-radius: 0px;
-              border-top-left-radius: 0px;
-              border-color: #EEE #DDD #EEE #EEE !important;
-            }
-          }
-        }
-        &.active a {
-          background: #fff;
-          border-color: #DDD #DDD #FFF #DDD !important;
-          font-weight: bold;
-          color: #555;
-          border-top-left-radius: 6px;
-          border-top-right-radius: 6px;
-          @include responsive($media-small) {
-            border-color: #DDD transparent #DDD transparent !important;
-            border-top-left-radius: 0px;
-            border-top-right-radius: 0px;
-          }
-        }
-      }
-    }
-    .tab-content {
-      width: 100% !important;
-      float: left;
-      border-left: 1px solid #ddd;
-      background: #fff;
-      @include border-right-radius(9px);
-      padding: 0 10px;
-      @include responsive($media-small) {
-        width: 80% !important;
-        padding: 0
-      }
-      .enrolmentsSelected fieldset {
+      ul.nav {
+        margin-right: -1px;
         position: relative;
-      }
-      .form-details {
-        .form-group {
-          .select-payer {
-            float: right;
-            width: 80%;
-            .radio-list {
-              >span {
-                display: block;
+        margin: 0;
+        float: left;
+        list-style: none;
+        width: 100% !important;
+        background: #fcfcfc;
+        border-top-left-radius: 9px;
+        border-top: 1px solid transparent;
+        border-top-right-radius: 9px;
+        border-bottom: 1px solid #ddd;
+        @include responsive($media-small) {
+          width: 19.8% !important;
+          border-top-right-radius: 0px;
+          border-bottom: 0;
+        }
+        li {
+          margin: 0;
+          width: 50%;
+          display: inline-block;
+          @include responsive($media-small) {
+            width: 100%;
+            display: block;
+          }
+          &.first {
+            &.active a {
+              border-top-color: #ddd !important;
+              border-top-left-radius: 6px;
+              border-top-right-radius: 6px;
+              @include responsive($media-small) {
+                border-top-color: transparent !important;
+                border-top-left-radius: 6px;
+                border-top-right-radius: 0px;
+              }
+            }
+            a:hover {
+              border-top-left-radius: 6px;
+            }
+          }
+          a {
+            padding: 8px 12px;
+            line-height: 20px;
+            margin-right: 0px !important;
+            margin-bottom: -1px;
+            display: block;
+            border: 1px solid transparent;
+            color: #555;
+            text-decoration: none;
+            @include responsive($media-small) {
+              margin-bottom: 0px;
+              margin-right: -1px !important;
+            }
+            &:hover {
+              background: #eee;
+              border-color: #EEE #DDD #DDD #DDD !important;
+              color: #333;
+              border-top-right-radius: 6px;
+              border-top-left-radius: 6px;
+              @include responsive($media-small) {
+                border-top-right-radius: 0px;
+                border-top-left-radius: 0px;
+                border-color: #EEE #DDD #EEE #EEE !important;
               }
             }
           }
-          .input-select-small {
-            .form-group {
-              width: 55px;
-              display: inline-block;
-              .Select {
-                width: 55px;
-              }
+          &.active a {
+            background: #fff;
+            border-color: #DDD #DDD #FFF #DDD !important;
+            font-weight: bold;
+            color: #555;
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
+            @include responsive($media-small) {
+              border-color: #DDD transparent #DDD transparent !important;
+              border-top-left-radius: 0px;
+              border-top-right-radius: 0px;
             }
           }
         }
-        p, .form-group {
-          margin-bottom: 18px;
+      }
+      .tab-content {
+        width: 100% !important;
+        float: left;
+        border-left: 1px solid #ddd;
+        background: #fff;
+        @include border-right-radius(9px);
+        padding: 0 10px;
+        @include responsive($media-small) {
+          width: 80% !important;
+          padding: 0
+        }
+        .enrolmentsSelected fieldset {
+          position: relative;
+        }
+        .form-details {
           .form-group {
-            margin-bottom: 0;
-          }
-          label {
-            font-weight: bold !important;
-            text-align: left;
-            padding-left: 0px !important;
-            padding-right: 0;
-            margin-bottom: 3px !important;
-            width: 100% !important;
-            max-width: 100% !important;
-            @include responsive($media-small) {
-              font-weight: normal !important;
-              padding-left: 20px !important;
-              width: 20% !important;
-              max-width: 140px !important;
-              margin-bottom: 0px !important;
-            }
-            > small {
-              color: #999;
-              font-size: 9px;
-              display: block;
-              line-height: 9px;
-            }
-            &.radio-btn {
-              width: auto !important;
-              float: none;
-              margin-left: 0px;
-              max-width: none !important;
-              display: block !important;
-              margin-bottom: 5px !important;
-              &.text-right {
-                text-align: right;
-                padding: 0;
+            .select-payer {
+              float: right;
+              width: 80%;
+              .radio-list {
+                >span {
+                  display: block;
+                }
               }
-              input[type=radio] {
-                float: left;
-                margin-left: 0px !important;
-                margin-right: 5px !important;
-                @include responsive($media-small) {
-                  margin-left: -20px !important;
-                  margin-right: 0px !important;
+            }
+            .input-select-small {
+              .form-group {
+                width: 55px;
+                display: inline-block;
+                .Select {
+                  width: 55px;
                 }
               }
             }
           }
-          > span {
-            width: 100%;
-            @include responsive($media-small) {
-              width: 70%;
+          p, .form-group {
+            margin-bottom: 18px;
+            .form-group {
+              margin-bottom: 0;
             }
-            &.select-payer {
-              label.radio-btn {
-                text-align: left !important;
+            label {
+              font-weight: bold !important;
+              text-align: left;
+              padding-left: 0px !important;
+              padding-right: 0;
+              margin-bottom: 3px !important;
+              width: 100% !important;
+              max-width: 100% !important;
+              @include responsive($media-small) {
+                font-weight: normal !important;
+                padding-left: 20px !important;
+                width: 20% !important;
+                max-width: 140px !important;
+                margin-bottom: 0px !important;
+              }
+              > small {
+                color: #999;
+                font-size: 9px;
+                display: block;
+                line-height: 9px;
+              }
+              &.radio-btn {
+                width: auto !important;
+                float: none;
+                margin-left: 0px;
+                max-width: none !important;
+                display: block !important;
+                margin-bottom: 5px !important;
+                &.text-right {
+                  text-align: right;
+                  padding: 0;
+                }
+                input[type=radio] {
+                  float: left;
+                  margin-left: 0px !important;
+                  margin-right: 5px !important;
+                  @include responsive($media-small) {
+                    margin-left: -20px !important;
+                    margin-right: 0px !important;
+                  }
+                }
               }
             }
-            #cvvLink {
-              margin-left: 11px !important;
+            > span {
+              width: 100%;
               @include responsive($media-small) {
-                margin-left: 55px !important;
+                width: 70%;
+              }
+              &.select-payer {
+                label.radio-btn {
+                  text-align: left !important;
+                }
+              }
+              #cvvLink {
+                margin-left: 11px !important;
+                @include responsive($media-small) {
+                  margin-left: 55px !important;
+                }
+              }
+            }
+          }
+          select {
+            width: 188px;
+            &[id*="expiryMonth"], &[id*="expiryYear"] {
+              width: 55px;
+            }
+          }
+        }
+
+        .payer-selection {
+          position: absolute;
+          top: 60px;
+          right: -4px;
+          @include responsive($media-small) {
+            top: 50px;
+            right: 20px;
+          }
+          > a.button {
+            float: none;
+            text-decoration: none;
+          }
+          ul {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 1000;
+            display: none;
+            float: left;
+            min-width: 160px;
+            padding: 5px 0;
+            margin: 2px 0 0;
+            list-style: none;
+            background-color: #FFF;
+            border: 1px solid #CCC;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            @include border-radius(6px);
+            -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            -webkit-background-clip: padding-box;
+            -moz-background-clip: padding;
+            background-clip: padding-box;
+            top: 25px;
+            left: 12px;
+            &::before {
+              position: absolute;
+              top: -7px;
+              left: 9px;
+              display: inline-block;
+              border-right: 7px solid transparent;
+              border-bottom: 7px solid #CCC;
+              border-left: 7px solid transparent;
+              border-bottom-color: rgba(0, 0, 0, 0.2);
+              content: '';
+            }
+            &::after {
+              position: absolute;
+              top: -6px;
+              left: 10px;
+              display: inline-block;
+              border-right: 6px solid transparent;
+              border-bottom: 6px solid #FFF;
+              border-left: 6px solid transparent;
+              content: '';
+            }
+            li {
+              line-height: 20px;
+              > a {
+                display: block;
+                padding: 3px 20px;
+                clear: both;
+                font-weight: normal;
+                line-height: 20px;
+                color: #333;
+                white-space: nowrap;
+                text-decoration: none;
+                &:hover {
+                  color: #FFF;
+                  text-decoration: none;
+                  background-color: #0081C2;
+                  background-image: -moz-linear-gradient(top, #08C, #0077B3);
+                  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#08C), to(#0077B3));
+                  background-image: -webkit-linear-gradient(top, #08C, #0077B3);
+                  background-image: -o-linear-gradient(top, #08C, #0077B3);
+                  background-image: linear-gradient(to bottom, #08C, #0077B3);
+                  background-repeat: repeat-x;
+                  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0077b3', GradientType=0);
+                }
               }
             }
           }
         }
-        select {
-          width: 188px;
-          &[id*="expiryMonth"], &[id*="expiryYear"] {
-            width: 55px;
+        .single-tab {
+          display: none;
+          .info-content {
+            padding: 0 10px;
           }
+        }
+        #paypal {
+          min-height: 150px;
+        }
+        #corporate-pass {
+          margin-top: 10px;
+          label.corporatePass-label {
+            max-width: 100%;
+            width: 100%;
+            text-align: left;
+            margin-bottom: 3px;
+            @include responsive($media-small) {
+              max-width: 180px;
+              width: 26%;
+              text-align: right;
+              margin-bottom: 0px;
+            }
+          }
+          > fieldset {
+            border: 0;
+            padding-right: 0;
+          }
+        }
+        .single-tab.active {
+          display: block;
         }
       }
-
-      .payer-selection {
-        position: absolute;
-        top: 60px;
-        right: -4px;
-        @include responsive($media-small) {
-          top: 50px;
-          right: 20px;
+      .vcc-card-image {
+        vertical-align: top !important;
+        margin-left: 5px;
+        margin-bottom: 2px;
+      }
+      #cardtotalstring {
+        margin-top: -7px;
+        vertical-align: middle;
+        img {
+          vertical-align: middle;
         }
-        > a.button {
-          float: none;
+      }
+    }
+
+    div.amount-container {
+      border: 1px solid #D6D6D6;
+      @include border-radius(7px);
+      padding: 15px 10px;
+      background: #F7F7F7;
+      margin-bottom: 20px;
+      .amount-content {
+        width: 253px;
+        float: right;
+        label {
+          font-weight: normal;
+          width: 145px;
+          text-align: right;
+          margin-right: 10px;
+          padding-right: 0px;
+        }
+        a {
           text-decoration: none;
         }
-        ul {
-          position: absolute;
-          top: 100%;
-          left: 0;
-          z-index: 1000;
-          display: none;
-          float: left;
-          min-width: 160px;
-          padding: 5px 0;
-          margin: 2px 0 0;
-          list-style: none;
-          background-color: #FFF;
-          border: 1px solid #CCC;
-          border: 1px solid rgba(0, 0, 0, 0.2);
-          @include border-radius(6px);
-          -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-          -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-          box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-          -webkit-background-clip: padding-box;
-          -moz-background-clip: padding;
-          background-clip: padding-box;
-          top: 25px;
-          left: 12px;
-          &::before {
-            position: absolute;
-            top: -7px;
-            left: 9px;
-            display: inline-block;
-            border-right: 7px solid transparent;
-            border-bottom: 7px solid #CCC;
-            border-left: 7px solid transparent;
-            border-bottom-color: rgba(0, 0, 0, 0.2);
-            content: '';
+        p {
+          margin: 0 0 5px 0;
+        }
+        span {
+          display: inline-block;
+          width: 65px;
+          text-align: right;
+          float: right;
+          line-height: 21px;
+          margin-right: 32px;
+          &#creditAccessLink {
+            color: #125687;
+            cursor: pointer;
           }
-          &::after {
-            position: absolute;
-            top: -6px;
-            left: 10px;
-            display: inline-block;
-            border-right: 6px solid transparent;
-            border-bottom: 6px solid #FFF;
-            border-left: 6px solid transparent;
-            content: '';
-          }
-          li {
-            line-height: 20px;
-            > a {
-              display: block;
-              padding: 3px 20px;
-              clear: both;
-              font-weight: normal;
-              line-height: 20px;
-              color: #333;
-              white-space: nowrap;
-              text-decoration: none;
-              &:hover {
-                color: #FFF;
-                text-decoration: none;
-                background-color: #0081C2;
-                background-image: -moz-linear-gradient(top, #08C, #0077B3);
-                background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#08C), to(#0077B3));
-                background-image: -webkit-linear-gradient(top, #08C, #0077B3);
-                background-image: -o-linear-gradient(top, #08C, #0077B3);
-                background-image: linear-gradient(to bottom, #08C, #0077B3);
-                background-repeat: repeat-x;
-                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0077b3', GradientType=0);
-              }
-            }
+          &#removeOwingLink {
+            width: auto;
+            margin: 0 0 0 5px;
+            color: #125687;
           }
         }
-      }
-      .single-tab {
-        display: none;
-        .info-content {
-          padding: 0 10px;
+        .clearboth {
+          clear: both;
         }
-      }
-      #paypal {
-        min-height: 150px;
-      }
-      #corporate-pass {
-        margin-top: 10px;
-        label.corporatePass-label {
-          max-width: 100%;
-          width: 100%;
-          text-align: left;
-          margin-bottom: 3px;
-          @include responsive($media-small) {
-            max-width: 180px;
-            width: 26%;
-            text-align: right;
-            margin-bottom: 0px;
-          }
-        }
-        > fieldset {
-          border: 0;
-          padding-right: 0;
-        }
-      }
-      .single-tab.active {
-        display: block;
-      }
-    }
-    .vcc-card-image {
-      vertical-align: top !important;
-      margin-left: 5px;
-      margin-bottom: 2px;
-    }
-    #cardtotalstring {
-      margin-top: -7px;
-      vertical-align: middle;
-      img {
-        vertical-align: middle;
-      }
-    }
-  }
-
-  div.amount-container {
-    border: 1px solid #D6D6D6;
-    @include border-radius(7px);
-    padding: 15px 10px;
-    background: #F7F7F7;
-    margin-bottom: 20px;
-    .amount-content {
-      width: 253px;
-      float: right;
-      label {
-        font-weight: normal;
-        width: 145px;
-        text-align: right;
-        margin-right: 10px;
-        padding-right: 0px;
-      }
-      a {
-        text-decoration: none;
-      }
-      p {
-        margin: 0 0 5px 0;
-      }
-      span {
-        display: inline-block;
-        width: 65px;
-        text-align: right;
-        float: right;
-        line-height: 21px;
-        margin-right: 32px;
-        &#creditAccessLink {
-          color: #125687;
-          cursor: pointer;
-        }
-        &#removeOwingLink {
-          width: auto;
-          margin: 0 0 0 5px;
-          color: #125687;
-        }
-      }
-      .clearboth {
-        clear: both;
-      }
-      .total-amount {
-        font-weight: bold;
-        label {
+        .total-amount {
           font-weight: bold;
+          label {
+            font-weight: bold;
+          }
+        }
+        input {
+          display: inline-block;
+          width: 65px;
+          text-align: right;
+          margin-right: 32px;
+          font: inherit;
+          background-color: #FAFAFA;
+          border: 1px solid #DDD;
+        }
+
+        #vouchers {
+          white-space: nowrap;
+          input[type="checkbox"] {
+            margin-top: 2px;
+            width: initial;
+            margin-right: initial;
+          }
+          p label {
+            display: inline-block;
+            text-overflow: ellipsis;
+            overflow: hidden;
+          }
         }
       }
-      input {
-        display: inline-block;
-        width: 65px;
-        text-align: right;
-        margin-right: 32px;
-        font: inherit;
+      div.code-info {
+        float: left;
+        width: 100% !important;
+        margin: 0 0 20px 0;
+        @include responsive($media-small) {
+          width: 270px !important;
+        }
+        p {
+          margin-bottom: 0px;
+          clear: both;
+          font-size: 11px;
+        }
+      }
+      input.code_input {
+        padding: 3px;
         background-color: #FAFAFA;
         border: 1px solid #DDD;
-      }
-
-      #vouchers {
-        white-space: nowrap;
-        input[type="checkbox"] {
-          margin-top: 2px;
-          width: initial;
-          margin-right: initial;
-        }
-        p label {
-          display: inline-block;
-          text-overflow: ellipsis;
-          overflow: hidden;
-        }
-      }
-    }
-    div.code-info {
-      float: left;
-      width: 100% !important;
-      margin: 0 0 20px 0;
-      @include responsive($media-small) {
-        width: 270px !important;
-      }
-      p {
-        margin-bottom: 0px;
-        clear: both;
+        width: 120px;
         font-size: 11px;
+        float: left;
+      }
+      #access-password-popup {
+        display: none;
+        z-index: 999;
+        position: absolute;
+        top: 5px;
+        list-style: none;
+        width: 200px;
+        margin: 0;
+        background-color: white;
+        border: 1px solid #CCC;
+        @include border-radius(6px);
+        -webkit-box-shadow: rgba(0, 0, 0, 0.19922) 0px 5px 10px;
+        box-shadow: rgba(0, 0, 0, 0.19922) 0px 5px 10px;
+        -webkit-background-clip: padding-box;
+        background-clip: padding-box;
+        padding: 15px 10px 15px 10px;
+      }
+      .action-link {
+        cursor: pointer;
+        color: #85A918;
+        margin-left: 20px;
+      }
+      .btn-primary, [id*=paymentSubmit] {
+        color: white;
+        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+        text-shadow: none;
+        background-color: $primaryColor;
+        background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#08C), to(#04C));
+        background-image: -webkit-linear-gradient(top, #08C, #04C);
+        background-image: -o-linear-gradient(top, #08C, #04C);
+        background-image: linear-gradient(to bottom, #08C, #04C);
+        background-image: -moz-linear-gradient(top, #08C, #04C);
+        background-repeat: repeat-x;
+        display: inline-block;
+        padding: 3px 10px;
+        margin-bottom: 5px;
+        @include border-radius(0px);
+        text-decoration: none;
+        border-width: 0px;
+        border-color: #04C #04C #002A80;
+        border-style: solid;
+        cursor: pointer;
+        font-size: 100%;
       }
     }
-    input.code_input {
-      padding: 3px;
-      background-color: #FAFAFA;
-      border: 1px solid #DDD;
-      width: 120px;
-      font-size: 11px;
-      float: left;
-    }
-    #access-password-popup {
-      display: none;
-      z-index: 999;
-      position: absolute;
-      top: 5px;
-      list-style: none;
-      width: 200px;
-      margin: 0;
-      background-color: white;
-      border: 1px solid #CCC;
-      @include border-radius(6px);
-      -webkit-box-shadow: rgba(0, 0, 0, 0.19922) 0px 5px 10px;
-      box-shadow: rgba(0, 0, 0, 0.19922) 0px 5px 10px;
-      -webkit-background-clip: padding-box;
-      background-clip: padding-box;
-      padding: 15px 10px 15px 10px;
-    }
-    .action-link {
-      cursor: pointer;
-      color: #85A918;
-      margin-left: 20px;
-    }
-    .btn-primary, [id*=paymentSubmit] {
+
+    > form > div > [id*=paymentSubmit] {
       color: white;
       text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-      text-shadow: none;
       background-color: $primaryColor;
       background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#08C), to(#04C));
       background-image: -webkit-linear-gradient(top, #08C, #04C);
@@ -559,7 +583,7 @@ span#addstudent {
       background-repeat: repeat-x;
       display: inline-block;
       padding: 3px 10px;
-      margin-bottom: 5px;
+      margin-bottom: 0;
       @include border-radius(0px);
       text-decoration: none;
       border-width: 0px;
@@ -567,615 +591,581 @@ span#addstudent {
       border-style: solid;
       cursor: pointer;
       font-size: 100%;
+      text-shadow: none;
+      line-height: 24px;
     }
   }
-
-  > form > div > [id*=paymentSubmit] {
-    color: white;
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-    background-color: $primaryColor;
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#08C), to(#04C));
-    background-image: -webkit-linear-gradient(top, #08C, #04C);
-    background-image: -o-linear-gradient(top, #08C, #04C);
-    background-image: linear-gradient(to bottom, #08C, #04C);
-    background-image: -moz-linear-gradient(top, #08C, #04C);
-    background-repeat: repeat-x;
-    display: inline-block;
-    padding: 3px 10px;
-    margin-bottom: 0;
-    @include border-radius(0px);
-    text-decoration: none;
-    border-width: 0px;
-    border-color: #04C #04C #002A80;
-    border-style: solid;
-    cursor: pointer;
-    font-size: 100%;
-    text-shadow: none;
-    line-height: 24px;
-  }
-}
-form {
-  div.form-controls {
-    width: 100%;
-    padding: 0;
-    margin: 0 auto 12px;
-    text-align: center;
-    @include responsive($media-small) {
-      width: auto;
-      margin: 12px 0 12px 180px;
-      padding: 0 20px;
-      text-align: left;
-    }
-  }
-}
-
-#cvvLink {
-  margin-left: 11px !important;
-  @include responsive($media-small) {
-    margin-left: 55px !important;
-  }
-}
-
-@-moz-document url-prefix() {
-  .payer-selection {
-    top: 65px;
-  }
-}
-
-div.clearboth {
-  clear: both;
-}
-
-[id*=discountedPrice] {
-  cursor: help;
-}
-
-#checkout form, form#waitingListForm, form#mailingListForm {
-  label {
-    display: block !important;
-    text-align: left !important;
-    max-width: 100% !important;
-    width: 100% !important;
-    padding-right: 0px !important;
-    vertical-align: middle;
-    font-weight: bold;
-    line-height: 16px;
-    margin-bottom: 3px;
-    @include responsive($media-small) {
-      display: inline-block !important;
-      text-align: right !important;
-      max-width: 180px !important;
-      width: 26% !important;
-      padding-right: 20px !important;
-      margin-bottom: 0px;
-    }
-  }
-}
-#checkout, #waitingListForm, #mailingListForm {
-  label {
-    display: inline-block;
-    text-align: right;
-    max-width: 180px;
-    width: 26%;
-    padding-right: 20px;
-    vertical-align: middle;
-    font-weight: bold;
-    line-height: 16px;
-  }
-  .conditions label {
-    display: block;
-    width: auto;
-    max-width: 100%;
-    text-align: left;
-    margin-left: 26%;
-    padding-left: 20px;
-    font-weight: normal;
-  }
-  fieldset {
-    >p {
-      >span {
-        width: 100%;
-        @include responsive($media-small) {
-          width: 70%;
-        }
-      }
-    }
-  }
-  span {
-    display: inline-block;
-    vertical-align: top;
-    position: relative;
-    &.validate-text {
-      position: absolute;
-      z-index: 1;
-      font-size: 11px;
-      margin-left: 20px;
-      max-width: 220px;
-      left: 120px;
-      margin-left: 20px;
-      top: 0;
-      .reason {
-        position: relative;
-        display: block;
-        padding: 3px;
-        background-color: #FEF0F0;
-        border: 1px solid #FCC5C5;
-        font-weight: bold;
-      }
-      .reason-pointer {
-        display: block;
-        height: 15px;
-        left: -12px;
-        position: absolute;
-        top: 2px;
-        width: 12px;
-        background-image: url(/s/img/message-pointers.gif);
-        background-position: right top;
-        background-repeat: no-repeat;
-      }
-      .hint {
-        background-color: #FDF6D6;
-        border: 1px solid #F9E99C;
-        font-weight: bold;
-        position: relative;
-        display: block;
-        padding: 3px;
-      }
-      .hint-pointer {
-        display: block;
-        height: 15px;
-        left: -12px;
-        position: absolute;
-        top: 2px;
-        width: 12px;
-        background-image: url(/s/img/message-pointers.gif);
-        background-position: -13px top;
-        background-repeat: no-repeat;
-      }
-      .hidden-text {
-        display: none;
-      }
-    }
-  }
-  input {
-    border: 1px solid #ddd;
-    font-size: 11px;
-    &[type="text"], &[type="password"] {
-      padding: 3px;
-      background-color: whiteSmoke;
-      width: 100% !important;
-      @include responsive($media-small) {
-        width: 120px !important;
-      }
-    }
-    &[type="checkbox"], &[type="radio"] {
-      margin-top: 2px;
-    }
-    &:hover {
-      border-color: #aaaaaa;
-    }
-    &:focus {
-      outline: none;
-      border-color: #000;
-    }
-    &.t-error {
-      font-style: normal;
-      background-color: #FEF0F0;
-    }
-  }
-  textarea {
-    padding: 3px;
-    background-color: whiteSmoke;
-    border: 1px solid #ddd;
-    font-size: 11px;
-    height: 150px;
-    width: 100% !important;
-    @include responsive($media-small) {
-      width: 44% !important;
-    }
-  }
-  img.t-error-icon {
-    display: none;
-    vertical-align: text-top;
-    position: relative;
-    top: -10px;
-    left: -14px;
-  }
-  .enrolmentsSelected {
-    .form-controls {
-      margin-bottom: 10px;
-      margin-left: 260px;
-    }
-    fieldset {
-      margin: 0;
+  form {
+    div.form-controls {
+      width: 100%;
       padding: 0;
-      border: 0;
-    }
-  }
-  .header-content {
-    color: #333;
-    font-size: 23px;
-    border-radius: 0 5px 0px 0px;
-    position: relative;
-    margin-bottom: 25px;
-    .header {
-      padding: 10px 0 0 11px;
-      background: url("/s/img/Padlock.png") 7px 5px no-repeat;
-      h1 {
-        text-transform: none;
-        font-size: 23px;
-        margin-bottom: 0;
-        color: #333;
-        line-height: 26px;
-        padding-left: 45px;
-      }
-      span {
-        color: #666;
-        font-size: 14px;
-        line-height: 18px;
-        padding-left: 45px;
+      margin: 0 auto 12px;
+      text-align: center;
+      @include responsive($media-small) {
+        width: auto;
+        margin: 12px 0 12px 180px;
+        padding: 0 20px;
+        text-align: left;
       }
     }
   }
-  #addCorporatePass {
-    margin-top: 0;
-    display: inline-block;
-    float: none;
-    margin-bottom: 0;
-    font-size: 11px;
-    line-height: 17px;
-    color: #333;
-    text-align: center;
-    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
-    vertical-align: middle;
-    cursor: pointer;
-  }
-  .small-textbox {
-    width: 80px;
-    padding: 4px 3px;
-  }
-  [id*=creditCardCVV] {
-    width: 80px;
-  }
+
   #cvvLink {
-    margin: 5px 0 0 50px;
-  }
-  th {
-    text-align: left;
-    border: 0 !important;
-    font-weight: normal !important;
-  }
-  tbody td {
-    border: none;
-    vertical-align: middle;
-    &#total {
-      width: 124px;
-    }
-  }
-  .button {
-    float: left;
-    margin: 0px !important;
-    margin-bottom: 10px !important;
-    border: 1px solid #D1D1D1;
-    padding: 3px 10px;
-    color: black;
-    cursor: pointer;
-    background: #EEE url("/s/img/blank.png") repeat-x;
-    background: -moz-linear-gradient(top, white 0%, #EEE 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, #EEE));
-    background: -webkit-linear-gradient(top, white 0%, #EEE 100%);
-    background: -o-linear-gradient(top, white 0%, #EEE 100%);
-    background: -ms-linear-gradient(top, white 0%, #EEE 100%);
-    background: linear-gradient(top, white 0%, #EEE 100%);
-    @include border-radius(3px);
+    margin-left: 11px !important;
     @include responsive($media-small) {
-      margin: 0 0 0 10px !important;
+      margin-left: 55px !important;
     }
   }
-  #addContact {
-    background: transparent url(/s/img/add.png) no-repeat scroll 3px 50%;
-    margin: 0;
-    padding: 5px 0 5px 24px;
-    cursor: pointer;
+
+  @-moz-document url-prefix() {
+    .payer-selection {
+      top: 65px;
+    }
   }
-  div.concessionEditor {
-    width: 100%;
-    font-weight: bold;
-    .cancelConcession, .deleteConcession, .saveConcession {
-      cursor: pointer;
+
+  div.clearboth {
+    clear: both;
+  }
+
+  [id*=discountedPrice] {
+    cursor: help;
+  }
+
+  #checkout form, form#waitingListForm, form#mailingListForm {
+    label {
+      display: block !important;
+      text-align: left !important;
+      max-width: 100% !important;
+      width: 100% !important;
+      padding-right: 0px !important;
+      vertical-align: middle;
+      font-weight: bold;
+      line-height: 16px;
+      margin-bottom: 3px;
+      @include responsive($media-small) {
+        display: inline-block !important;
+        text-align: right !important;
+        max-width: 180px !important;
+        width: 26% !important;
+        padding-right: 20px !important;
+        margin-bottom: 0px;
+      }
+    }
+  }
+  #checkout, #waitingListForm, #mailingListForm {
+    label {
+      display: inline-block;
+      text-align: right;
+      max-width: 180px;
+      width: 26%;
+      padding-right: 20px;
+      vertical-align: middle;
+      font-weight: bold;
+      line-height: 16px;
     }
     .conditions label {
-      padding-left: 0;
-      margin: 30px 0 0 0;
+      display: block;
+      width: auto;
+      max-width: 100%;
+      text-align: left;
+      margin-left: 26%;
+      padding-left: 20px;
+      font-weight: normal;
     }
-  }
-  .applicationOnly {
-    color: #ff0000;
-  }
-}
-
-#MailingListEntry {
-  #mailingListForm {
-    div > div {
-      label {
-        width: 100% !important;
-        max-width: none !important;
-        text-align: left !important;
-      }
-    }
-  }
-}
-
-.content {
-  .payments {
-    tr {
-      div.drop-down {
-        float: left;
-      }
-      td .student-info .left i {
-        font-size: 12px;
-        margin-left: 10px;
-      }
-      > span {
-        cursor: pointer;
-        color: white;
-        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-        background-color: #006DCC;
-        background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#08C), to(#04C));
-        background-image: -webkit-linear-gradient(top, #08C, #04C);
-        background-image: -o-linear-gradient(top, #08C, #04C);
-        background-image: linear-gradient(to bottom, #08C, #04C);
-        background-image: -moz-linear-gradient(top, #08C, #04C);
-        background-repeat: repeat-x;
-        border-color: #04C #04C #002A80;
-        display: inline-block;
-        padding: 2px 10px;
-        margin-bottom: 0;
-        margin-left: 5px;
-        line-height: 20px;
-        @include border-radius(3px);
-        font-size: 12px;
-        text-decoration: none;
-        border-width: 1px;
-        border-color: #04C #04C #002A80;
-        border-style: solid;
-        b.caret {
-          margin-top: 8px;
-          border-top-color: white;
-          border-bottom-color: white;
-          display: inline-block;
-          width: 0;
-          height: 0;
-          vertical-align: top;
-          border-top: 4px solid white;
-          border-right: 4px solid transparent;
-          border-left: 4px solid transparent;
-          content: "";
+    fieldset {
+      >p {
+        >span {
+          width: 100%;
+          @include responsive($media-small) {
+            width: 70%;
+          }
         }
-        .drop-down-content {
-          z-index: 999;
+      }
+    }
+    span {
+      display: inline-block;
+      vertical-align: top;
+      position: relative;
+      &.validate-text {
+        position: absolute;
+        z-index: 1;
+        font-size: 11px;
+        margin-left: 20px;
+        max-width: 220px;
+        left: 120px;
+        margin-left: 20px;
+        top: 0;
+        .reason {
+          position: relative;
+          display: block;
+          padding: 3px;
+          background-color: #FEF0F0;
+          border: 1px solid #FCC5C5;
+          font-weight: bold;
+        }
+        .reason-pointer {
+          display: block;
+          height: 15px;
+          left: -12px;
           position: absolute;
-          top: 5px;
-          list-style: none;
-          width: 255px;
-          margin: 0;
+          top: 2px;
+          width: 12px;
+          background-image: url(/s/img/message-pointers.gif);
+          background-position: right top;
+          background-repeat: no-repeat;
+        }
+        .hint {
+          background-color: #FDF6D6;
+          border: 1px solid #F9E99C;
+          font-weight: bold;
+          position: relative;
+          display: block;
+          padding: 3px;
+        }
+        .hint-pointer {
+          display: block;
+          height: 15px;
+          left: -12px;
+          position: absolute;
+          top: 2px;
+          width: 12px;
+          background-image: url(/s/img/message-pointers.gif);
+          background-position: -13px top;
+          background-repeat: no-repeat;
+        }
+        .hidden-text {
           display: none;
-          background-color: white;
-          border: 1px solid #CCC;
-          @include border-radius(6px);
-          -webkit-box-shadow: rgba(0, 0, 0, 0.19922) 0px 5px 10px;
-          box-shadow: rgba(0, 0, 0, 0.19922) 0px 5px 10px;
-          -webkit-background-clip: padding-box;
-          background-clip: padding-box;
-          padding: 5px 0;
-          display: none;
-          li {
-            font-size: 12px;
-            div.payer {
-              text-decoration: none;
-              color: white;
-              background: black;
-              cursor: default;
-              padding: 5px;
-            }
-            a {
-              display: block;
-              padding: 5px;
-              text-decoration: none;
-              color: #333;
-            }
-            &:hover {
-              background-color: #006DCC;
-              background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#08C), to(#04C));
-              background-image: -webkit-linear-gradient(top, #08C, #04C);
-              background-image: -o-linear-gradient(top, #08C, #04C);
-              background-image: linear-gradient(to bottom, #08C, #04C);
-              background-image: -moz-linear-gradient(top, #08C, #04C);
-              background-repeat: repeat-x;
-              border-color: #04C #04C #002A80;
-              div {
-                &.contact, &.payer {
-                  color: #fff;
-                }
-              }
-            }
-            div.contact {
-              font-size: 12px;
-              color: #333;
-              cursor: pointer;
-              padding: 5px;
-            }
-          }
-          &.visible {
-            display: block;
-          }
-          &::before {
-            position: absolute;
-            top: -7px;
-            left: 9px;
-            display: inline-block;
-            border-right: 7px solid transparent;
-            border-bottom: 7px solid #CCC;
-            border-left: 7px solid transparent;
-            border-bottom-color: rgba(0, 0, 0, 0.2);
-            content: '';
-          }
-          &::after {
-            position: absolute;
-            top: -6px;
-            left: 10px;
-            display: inline-block;
-            border-right: 6px solid transparent;
-            border-bottom: 6px solid white;
-            border-left: 6px solid transparent;
-            content: '';
-          }
         }
       }
-      .validation {
-        color: #B94A48;
-        background-color: #F2DEDE;
-        border: 1px solid #EED3D7;
-        @include border-radius(4px);
-        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-        padding: 8px 35px 8px 14px;
-        margin: 0 10px 25px 10px;
-      }
-      .student-info {
-        font-weight: bold;
-        padding-bottom: 5px;
-        position: relative;
-        .student-email {
-          color: $checkoutStudentEmailColor;
-          font-size: $checkoutStudentEmailFontSize;
-          font-weight: $checkoutStudentEmailFontWeight;
-          left: $checkoutStudentEmailPositionLeft;
-          text-transform: $checkoutStudentEmailTextTransform;
-          top: $checkoutStudentEmailPositionTop;
-          margin: $checkoutStudentEmailMarginRight;
-        }
-        .student-affilation {
-          color: #888888;
-          font-weight: normal;
-          strong {
-            margin-right: 6px;
-          }
-        }
-      }
-    }
-    label {
-      margin-bottom: 0;
     }
     input {
-      &[id*=creditCardName], &[id*=creditCardNumber] {
-        width: 180px;
+      border: 1px solid #ddd;
+      font-size: 11px;
+      &[type="text"], &[type="password"] {
+        padding: 3px;
+        background-color: whiteSmoke;
+        width: 100% !important;
+        @include responsive($media-small) {
+          width: 120px !important;
+        }
+      }
+      &[type="checkbox"], &[type="radio"] {
+        margin-top: 2px;
+      }
+      &:hover {
+        border-color: #aaaaaa;
+      }
+      &:focus {
+        outline: none;
+        border-color: #000;
+      }
+      &.t-error {
+        font-style: normal;
+        background-color: #FEF0F0;
       }
     }
-    fieldset .radio-list {
-      margin-left: 0;
-      padding-left: 0;
-      top: auto;
-    }
     textarea {
-      min-width: 120px;
-      width: 120px;
-      min-height: 78px;
-      height: 78px;
+      padding: 3px;
+      background-color: whiteSmoke;
+      border: 1px solid #ddd;
+      font-size: 11px;
+      height: 150px;
+      width: 100% !important;
+      @include responsive($media-small) {
+        width: 44% !important;
+      }
+    }
+    img.t-error-icon {
+      display: none;
+      vertical-align: text-top;
+      position: relative;
+      top: -10px;
+      left: -14px;
+    }
+    .enrolmentsSelected {
+      .form-controls {
+        margin-bottom: 10px;
+        margin-left: 260px;
+      }
+      fieldset {
+        margin: 0;
+        padding: 0;
+        border: 0;
+      }
+    }
+    .header-content {
+      color: #333;
+      font-size: 23px;
+      border-radius: 0 5px 0px 0px;
+      position: relative;
+      margin-bottom: 25px;
+      .header {
+        padding: 10px 0 0 11px;
+        background: url("/s/img/Padlock.png") 7px 5px no-repeat;
+        h1 {
+          text-transform: none;
+          font-size: 23px;
+          margin-bottom: 0;
+          color: #333;
+          line-height: 26px;
+          padding-left: 45px;
+        }
+        span {
+          color: #666;
+          font-size: 14px;
+          line-height: 18px;
+          padding-left: 45px;
+        }
+      }
+    }
+    #addCorporatePass {
+      margin-top: 0;
+      display: inline-block;
+      float: none;
+      margin-bottom: 0;
+      font-size: 11px;
+      line-height: 17px;
+      color: #333;
+      text-align: center;
+      text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+      vertical-align: middle;
+      cursor: pointer;
+    }
+    .small-textbox {
+      width: 80px;
+      padding: 4px 3px;
+    }
+    [id*=creditCardCVV] {
+      width: 80px;
+    }
+    #cvvLink {
+      margin: 5px 0 0 50px;
+    }
+    th {
+      text-align: left;
+      border: 0 !important;
+      font-weight: normal !important;
+    }
+    tbody td {
+      border: none;
+      vertical-align: middle;
+      &#total {
+        width: 124px;
+      }
+    }
+    .button {
+      float: left;
+      margin: 0px !important;
+      margin-bottom: 10px !important;
+      border: 1px solid #D1D1D1;
+      padding: 3px 10px;
+      color: black;
+      cursor: pointer;
+      background: #EEE url("/s/img/blank.png") repeat-x;
+      background: -moz-linear-gradient(top, white 0%, #EEE 100%);
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, #EEE));
+      background: -webkit-linear-gradient(top, white 0%, #EEE 100%);
+      background: -o-linear-gradient(top, white 0%, #EEE 100%);
+      background: -ms-linear-gradient(top, white 0%, #EEE 100%);
+      background: linear-gradient(top, white 0%, #EEE 100%);
+      @include border-radius(3px);
+      @include responsive($media-small) {
+        margin: 0 0 0 10px !important;
+      }
+    }
+    #addContact {
+      background: transparent url(/s/img/add.png) no-repeat scroll 3px 50%;
+      margin: 0;
+      padding: 5px 0 5px 24px;
+      cursor: pointer;
+    }
+    div.concessionEditor {
+      width: 100%;
+      font-weight: bold;
+      .cancelConcession, .deleteConcession, .saveConcession {
+        cursor: pointer;
+      }
+      .conditions label {
+        padding-left: 0;
+        margin: 30px 0 0 0;
+      }
+    }
+    .applicationOnly {
+      color: #ff0000;
     }
   }
-  fieldset.opt-in .fieldset-intro {
-    margin-left: 0;
-    max-width: none;
-    width: 100%;
+
+  #MailingListEntry {
+    #mailingListForm {
+      div > div {
+        label {
+          width: 100% !important;
+          max-width: none !important;
+          text-align: left !important;
+        }
+      }
+    }
   }
-  .display-none {
+
+  .content {
+    .payments {
+      tr {
+        div.drop-down {
+          float: left;
+        }
+        td .student-info .left i {
+          font-size: 12px;
+          margin-left: 10px;
+        }
+        > span {
+          cursor: pointer;
+          color: white;
+          text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+          background-color: #006DCC;
+          background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#08C), to(#04C));
+          background-image: -webkit-linear-gradient(top, #08C, #04C);
+          background-image: -o-linear-gradient(top, #08C, #04C);
+          background-image: linear-gradient(to bottom, #08C, #04C);
+          background-image: -moz-linear-gradient(top, #08C, #04C);
+          background-repeat: repeat-x;
+          border-color: #04C #04C #002A80;
+          display: inline-block;
+          padding: 2px 10px;
+          margin-bottom: 0;
+          margin-left: 5px;
+          line-height: 20px;
+          @include border-radius(3px);
+          font-size: 12px;
+          text-decoration: none;
+          border-width: 1px;
+          border-color: #04C #04C #002A80;
+          border-style: solid;
+          b.caret {
+            margin-top: 8px;
+            border-top-color: white;
+            border-bottom-color: white;
+            display: inline-block;
+            width: 0;
+            height: 0;
+            vertical-align: top;
+            border-top: 4px solid white;
+            border-right: 4px solid transparent;
+            border-left: 4px solid transparent;
+            content: "";
+          }
+          .drop-down-content {
+            z-index: 999;
+            position: absolute;
+            top: 5px;
+            list-style: none;
+            width: 255px;
+            margin: 0;
+            display: none;
+            background-color: white;
+            border: 1px solid #CCC;
+            @include border-radius(6px);
+            -webkit-box-shadow: rgba(0, 0, 0, 0.19922) 0px 5px 10px;
+            box-shadow: rgba(0, 0, 0, 0.19922) 0px 5px 10px;
+            -webkit-background-clip: padding-box;
+            background-clip: padding-box;
+            padding: 5px 0;
+            display: none;
+            li {
+              font-size: 12px;
+              div.payer {
+                text-decoration: none;
+                color: white;
+                background: black;
+                cursor: default;
+                padding: 5px;
+              }
+              a {
+                display: block;
+                padding: 5px;
+                text-decoration: none;
+                color: #333;
+              }
+              &:hover {
+                background-color: #006DCC;
+                background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#08C), to(#04C));
+                background-image: -webkit-linear-gradient(top, #08C, #04C);
+                background-image: -o-linear-gradient(top, #08C, #04C);
+                background-image: linear-gradient(to bottom, #08C, #04C);
+                background-image: -moz-linear-gradient(top, #08C, #04C);
+                background-repeat: repeat-x;
+                border-color: #04C #04C #002A80;
+                div {
+                  &.contact, &.payer {
+                    color: #fff;
+                  }
+                }
+              }
+              div.contact {
+                font-size: 12px;
+                color: #333;
+                cursor: pointer;
+                padding: 5px;
+              }
+            }
+            &.visible {
+              display: block;
+            }
+            &::before {
+              position: absolute;
+              top: -7px;
+              left: 9px;
+              display: inline-block;
+              border-right: 7px solid transparent;
+              border-bottom: 7px solid #CCC;
+              border-left: 7px solid transparent;
+              border-bottom-color: rgba(0, 0, 0, 0.2);
+              content: '';
+            }
+            &::after {
+              position: absolute;
+              top: -6px;
+              left: 10px;
+              display: inline-block;
+              border-right: 6px solid transparent;
+              border-bottom: 6px solid white;
+              border-left: 6px solid transparent;
+              content: '';
+            }
+          }
+        }
+        .validation {
+          color: #B94A48;
+          background-color: #F2DEDE;
+          border: 1px solid #EED3D7;
+          @include border-radius(4px);
+          text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+          padding: 8px 35px 8px 14px;
+          margin: 0 10px 25px 10px;
+        }
+        .student-info {
+          font-weight: bold;
+          padding-bottom: 5px;
+          position: relative;
+          .student-email {
+            color: $checkoutStudentEmailColor;
+            font-size: $checkoutStudentEmailFontSize;
+            font-weight: $checkoutStudentEmailFontWeight;
+            left: $checkoutStudentEmailPositionLeft;
+            text-transform: $checkoutStudentEmailTextTransform;
+            top: $checkoutStudentEmailPositionTop;
+            margin: $checkoutStudentEmailMarginRight;
+          }
+          .student-affilation {
+            color: #888888;
+            font-weight: normal;
+            strong {
+              margin-right: 6px;
+            }
+          }
+        }
+      }
+      label {
+        margin-bottom: 0;
+      }
+      input {
+        &[id*=creditCardName], &[id*=creditCardNumber] {
+          width: 180px;
+        }
+      }
+      fieldset .radio-list {
+        margin-left: 0;
+        padding-left: 0;
+        top: auto;
+      }
+      textarea {
+        min-width: 120px;
+        width: 120px;
+        min-height: 78px;
+        height: 78px;
+      }
+    }
+    fieldset.opt-in .fieldset-intro {
+      margin-left: 0;
+      max-width: none;
+      width: 100%;
+    }
+    .display-none {
+      display: none;
+    }
+  }
+
+  #EnrolmentEntry {
+    .content table {
+      td {
+        padding: 4px 21px 4px 8px;
+      }
+      .student-name td {
+        padding-top: 20px;
+      }
+    }
+    tbody#totals td {
+      padding-top: 10px;
+    }
+  }
+
+  tbody.checkoutList {
+    border-bottom: 1px solid #D6D6D6;
+    > tr.enrolmentItem > td {
+      &.enrolmentInfo {
+        width: 500px;
+        border-width: 0 0 0 1px !important;
+      }
+      &.alignright {
+        border-width: 0 1px 0 0 !important;
+      }
+    }
+  }
+
+  //EnrolmentItem component*/
+
+  tr.enrolmentItem {
+    label {
+      display: block !important;
+      width: auto !important;
+      max-width: 100% !important;
+      text-align: left !important;
+    }
+    > td > em > span {
+      &.ended, &.started {
+        vertical-align: baseline !important;
+      }
+    }
+  }
+
+  //css from bootstrap lib**/
+
+  .typeahead {
+    margin-top: 2px;
+    @include border-radius(4px);
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
     display: none;
-  }
-}
-
-#EnrolmentEntry {
-  .content table {
-    td {
-      padding: 4px 21px 4px 8px;
-    }
-    .student-name td {
-      padding-top: 20px;
-    }
-  }
-  tbody#totals td {
-    padding-top: 10px;
-  }
-}
-
-tbody.checkoutList {
-  border-bottom: 1px solid #D6D6D6;
-  > tr.enrolmentItem > td {
-    &.enrolmentInfo {
-      width: 500px;
-      border-width: 0 0 0 1px !important;
-    }
-    &.alignright {
-      border-width: 0 1px 0 0 !important;
-    }
-  }
-}
-
-//EnrolmentItem component*/
-
-tr.enrolmentItem {
-  label {
-    display: block !important;
-    width: auto !important;
-    max-width: 100% !important;
-    text-align: left !important;
-  }
-  > td > em > span {
-    &.ended, &.started {
-      vertical-align: baseline !important;
-    }
-  }
-}
-
-//css from bootstrap lib**/
-
-.typeahead {
-  margin-top: 2px;
-  @include border-radius(4px);
-}
-
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 1000;
-  display: none;
-  float: left;
-  min-width: 160px;
-  padding: 5px 0;
-  margin: 2px 0 0;
-  list-style: none;
-  background-color: white;
-  border: 1px solid #CCC;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  @include border-radius(6px);
-  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-  -webkit-background-clip: padding-box;
-  -moz-background-clip: padding;
-  background-clip: padding-box;
-  .active > a {
-    color: #333;
-    text-decoration: none;
-    background-color: #0081C2;
-    background-image: -moz-linear-gradient(top, #08C, #0077B3);
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#08C), to(#0077B3));
-    background-image: -webkit-linear-gradient(top, #08C, #0077B3);
-    background-image: -o-linear-gradient(top, #08C, #0077B3);
-    background-image: linear-gradient(to bottom, #08C, #0077B3);
-    background-repeat: repeat-x;
-    outline: 0;
-    &:hover {
+    float: left;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    list-style: none;
+    background-color: white;
+    border: 1px solid #CCC;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    @include border-radius(6px);
+    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding;
+    background-clip: padding-box;
+    .active > a {
       color: #333;
       text-decoration: none;
       background-color: #0081C2;
@@ -1186,386 +1176,398 @@ tr.enrolmentItem {
       background-image: linear-gradient(to bottom, #08C, #0077B3);
       background-repeat: repeat-x;
       outline: 0;
+      &:hover {
+        color: #333;
+        text-decoration: none;
+        background-color: #0081C2;
+        background-image: -moz-linear-gradient(top, #08C, #0077B3);
+        background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#08C), to(#0077B3));
+        background-image: -webkit-linear-gradient(top, #08C, #0077B3);
+        background-image: -o-linear-gradient(top, #08C, #0077B3);
+        background-image: linear-gradient(to bottom, #08C, #0077B3);
+        background-repeat: repeat-x;
+        outline: 0;
+      }
+    }
+    li > a {
+      display: block;
+      padding: 3px 20px;
+      clear: both;
+      font-weight: normal;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
     }
   }
-  li > a {
-    display: block;
-    padding: 3px 20px;
-    clear: both;
-    font-weight: normal;
-    line-height: 20px;
-    color: #333;
-    white-space: nowrap;
-  }
-}
 
-.student {
-  color: #345;
-  font-size: 18px;
-  padding: 0;
-  width: 100%;
-  border: none;
-  span {
-    color: #AAA;
-    font-size: 13px;
-    vertical-align: middle !important;
-  }
-}
-
-.disabled {
-  color: #888;
-}
-
-div {
-  &.conditions-text {
-    display: inline;
-  }
-  &.t-error {
-    color: red;
-  }
-}
-
-a.cancel {
-  padding-right: 20px;
-}
-
-#expiryMonth, #expiryYear {
-  width: 70px;
-}
-
-.conditions {
-  position: relative;
-  top: -20px;
-  left: 26%;
-  padding-left: 20px;
-  width: 60%;
-}
-
-.membership, .concession {
-  color: #aaa;
-  font-size: 11px;
-}
-
-.discountAddedMessage {
-  color: #0066AA;
-  font-weight: bold;
-  font-size: medium;
-}
-
-body .ui-tooltip {
-  border-width: 1px;
-  padding: 5px;
-  font-size: 11px;
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-box-shadow: 0 0 0 #aaa;
-  box-shadow: 0 0 0 #aaa;
-}
-
-//css for productItem price input**/
-
-input.priceValue {
-  text-align: right;
-}
-
-#checkout {
-  tbody td.priceValue {
-    vertical-align: bottom;
-    padding-bottom: 8px;
-  }
-}
-
-#waitingListBlock .validation {
-  color: #B94A48;
-  background-color: #F2DEDE;
-  border: 1px solid #EED3D7;
-  @include border-radius(4px);
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-  padding: 8px 35px 8px 14px;
-  margin: 0 10px 25px 10px;
-}
-
-// Payment page */
-
-.payments {
-  border: none;
-  width: 100%;
-  margin-bottom: 20px;
-  br {
-    display: none
-  }
-  .left {
-    float: left
-  }
-
-  .right {
-    float: right
-  }
-  th {
-    text-align: left;
-    border: 0 !important;
-    font-weight: normal !important
-  }
-  >thead>tr:first-child>th {
-    color: #334455;
+  .student {
+    color: #345;
     font-size: 18px;
     padding: 0;
     width: 100%;
     border: none;
-    border-bottom: 3px solid #CCCCCC;
     span {
-      color: #AAAAAA;
+      color: #AAA;
       font-size: 13px;
-      vertical-align: middle
+      vertical-align: middle !important;
     }
   }
-  tbody {
-    .student-name td {
-      border-top: 1px solid #ccc;
-    }
-    td {
-      border: none;
-      border-bottom: 1px solid #D6D6D6;
-      em {
-        color: #888888;
-        font-size: 11px;
-        font-style: normal;
-        margin-left: 25px
-      }
-      &.alignright {
-        text-align: right;
-        width: 90px;
-        padding: 4px 43px 4px 8px;
 
-        span {
-          &.fullPrice, &.totalPrice {
-            float: right;
-            width: 62px;
-            margin-right: 65px;
-          }
-          &.fullPrice {
-            width: auto;
-            margin-right: 0;
-            float: none;
-          }
-          + span {
-            color: #921;
-            margin-left: 5px;
-            width: 55px;
-            float: right;
-          }
-          &.collapse {
-            display: none;
-          }
-        }
-        .fee-disabled {
-          text-decoration: line-through !important;
-          color: gray !important
-        }
-      }
-
-    }
-    &#totals tr {
-      background: #F7F7F7;
-      border-top: 2px solid #D6D6D6;
-      &.separator {
-        height: 20px;
-        background: #fff;
-      }
-    }
-    &.totals td {
-      border-top: 1px solid #D6D6D6;
-      font-weight: bold
-    }
-    form label {
-      display: block !important;
-      width: auto !important;
-      max-width: 100% !important;
-      text-align: left !important
-    }
+  .disabled {
+    color: #888;
   }
+
   div {
-    margin-bottom: 0
-  }
-  .collapse {
-    display: none
-  }
-  .add-concession {
-    cursor: pointer;
-    background: transparent url(/s/img/add.png) no-repeat scroll 3px 50%;
-    padding: 5px 0 5px 24px
-  }
-  .concessionEditor {
-    width: 100%;
-    font-weight: bold;
-    th {
-      font-size: 13px
+    &.conditions-text {
+      display: inline;
+    }
+    &.t-error {
+      color: red;
     }
   }
-  input.concession-button {
-    float: left;
-    margin-left: 30%;
-    border: 1px solid #d1d1d1;
-    padding: 3px 10px;
-    color: #000;
-    cursor: pointer;
-    background: #eee url("/s/img/blank.png") repeat-x;
-    background: -moz-linear-gradient(top, #fff 0%, #eee 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fff), color-stop(100%, #eee));
-    background: -webkit-linear-gradient(top, #fff 0%, #eee 100%);
-    background: -o-linear-gradient(top, #fff 0%, #eee 100%);
-    background: -ms-linear-gradient(top, #fff 0%, #eee 100%);
-    background: linear-gradient(top, #ffffff 0%, #eeeeee 100%);
-    @include border-radius(3px);
-    &:active {
-      background: #fff url("/s/img/blank.png") repeat-x;
-      background: -moz-linear-gradient(top, #eee 0%, #fff 100%);
-      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #eee), color-stop(100%, #fff));
-      background: -webkit-linear-gradient(top, #eee 0%, #fff 100%);
-      background: -o-linear-gradient(top, #eee 0%, #fff 100%);
-      background: -ms-linear-gradient(top, #eee 0%, #fff 100%);
-      background: linear-gradient(top, #eeeeee 0%, #ffffff 100%)
-    }
-    &:hover {
-      border-color: #aaaaaa
-    }
+
+  a.cancel {
+    padding-right: 20px;
   }
-  .cancelConcessionAdd {
-    margin-left: 26%;
+
+  #expiryMonth, #expiryYear {
+    width: 70px;
+  }
+
+  .conditions {
+    position: relative;
+    top: -20px;
+    left: 26%;
     padding-left: 20px;
-    top: 4px;
-    position: relative
+    width: 60%;
   }
-  .message {
-    color: #3A87AD;
-    background-color: #D9EDF7;
-    border: 1px solid #BCE8F1;
-    text-shadow: 0 1px 0 rgba(255,255,255,0.5);
-    @include border-radius(4px);
-    padding: 8px 14px 8px 14px;
-    margin: 0 10px 25px 10px
+
+  .membership, .concession {
+    color: #aaa;
+    font-size: 11px;
   }
-  .validation {
+
+  .discountAddedMessage {
+    color: #0066AA;
+    font-weight: bold;
+    font-size: medium;
+  }
+
+  body .ui-tooltip {
+    border-width: 1px;
+    padding: 5px;
+    font-size: 11px;
+    font-family: Arial, Helvetica, sans-serif;
+    -webkit-box-shadow: 0 0 0 #aaa;
+    box-shadow: 0 0 0 #aaa;
+  }
+
+  //css for productItem price input**/
+
+  input.priceValue {
+    text-align: right;
+  }
+
+  #checkout {
+    tbody td.priceValue {
+      vertical-align: bottom;
+      padding-bottom: 8px;
+    }
+  }
+
+  #waitingListBlock .validation {
     color: #B94A48;
     background-color: #F2DEDE;
     border: 1px solid #EED3D7;
-    text-shadow: 0 1px 0 rgba(255,255,255,0.5);
     @include border-radius(4px);
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    padding: 8px 35px 8px 14px;
+    margin: 0 10px 25px 10px;
+  }
+
+  // Payment page */
+
+  .payments {
+    border: none;
+    width: 100%;
+    margin-bottom: 20px;
+    br {
+      display: none
+    }
+    .left {
+      float: left
+    }
+
+    .right {
+      float: right
+    }
+    th {
+      text-align: left;
+      border: 0 !important;
+      font-weight: normal !important
+    }
+    >thead>tr:first-child>th {
+      color: #334455;
+      font-size: 18px;
+      padding: 0;
+      width: 100%;
+      border: none;
+      border-bottom: 3px solid #CCCCCC;
+      span {
+        color: #AAAAAA;
+        font-size: 13px;
+        vertical-align: middle
+      }
+    }
+    tbody {
+      .student-name td {
+        border-top: 1px solid #ccc;
+      }
+      td {
+        border: none;
+        border-bottom: 1px solid #D6D6D6;
+        em {
+          color: #888888;
+          font-size: 11px;
+          font-style: normal;
+          margin-left: 25px
+        }
+        &.alignright {
+          text-align: right;
+          width: 90px;
+          padding: 4px 43px 4px 8px;
+
+          span {
+            &.fullPrice, &.totalPrice {
+              float: right;
+              width: 62px;
+              margin-right: 65px;
+            }
+            &.fullPrice {
+              width: auto;
+              margin-right: 0;
+              float: none;
+            }
+            + span {
+              color: #921;
+              margin-left: 5px;
+              width: 55px;
+              float: right;
+            }
+            &.collapse {
+              display: none;
+            }
+          }
+          .fee-disabled {
+            text-decoration: line-through !important;
+            color: gray !important
+          }
+        }
+
+      }
+      &#totals tr {
+        background: #F7F7F7;
+        border-top: 2px solid #D6D6D6;
+        &.separator {
+          height: 20px;
+          background: #fff;
+        }
+      }
+      &.totals td {
+        border-top: 1px solid #D6D6D6;
+        font-weight: bold
+      }
+      form label {
+        display: block !important;
+        width: auto !important;
+        max-width: 100% !important;
+        text-align: left !important
+      }
+    }
+    div {
+      margin-bottom: 0
+    }
+    .collapse {
+      display: none
+    }
+    .add-concession {
+      cursor: pointer;
+      background: transparent url(/s/img/add.png) no-repeat scroll 3px 50%;
+      padding: 5px 0 5px 24px
+    }
+    .concessionEditor {
+      width: 100%;
+      font-weight: bold;
+      th {
+        font-size: 13px
+      }
+    }
+    input.concession-button {
+      float: left;
+      margin-left: 30%;
+      border: 1px solid #d1d1d1;
+      padding: 3px 10px;
+      color: #000;
+      cursor: pointer;
+      background: #eee url("/s/img/blank.png") repeat-x;
+      background: -moz-linear-gradient(top, #fff 0%, #eee 100%);
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fff), color-stop(100%, #eee));
+      background: -webkit-linear-gradient(top, #fff 0%, #eee 100%);
+      background: -o-linear-gradient(top, #fff 0%, #eee 100%);
+      background: -ms-linear-gradient(top, #fff 0%, #eee 100%);
+      background: linear-gradient(top, #ffffff 0%, #eeeeee 100%);
+      @include border-radius(3px);
+      &:active {
+        background: #fff url("/s/img/blank.png") repeat-x;
+        background: -moz-linear-gradient(top, #eee 0%, #fff 100%);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #eee), color-stop(100%, #fff));
+        background: -webkit-linear-gradient(top, #eee 0%, #fff 100%);
+        background: -o-linear-gradient(top, #eee 0%, #fff 100%);
+        background: -ms-linear-gradient(top, #eee 0%, #fff 100%);
+        background: linear-gradient(top, #eeeeee 0%, #ffffff 100%)
+      }
+      &:hover {
+        border-color: #aaaaaa
+      }
+    }
+    .cancelConcessionAdd {
+      margin-left: 26%;
+      padding-left: 20px;
+      top: 4px;
+      position: relative
+    }
+    .message {
+      color: #3A87AD;
+      background-color: #D9EDF7;
+      border: 1px solid #BCE8F1;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+      @include border-radius(4px);
+      padding: 8px 14px 8px 14px;
+      margin: 0 10px 25px 10px
+    }
+    .validation {
+      color: #B94A48;
+      background-color: #F2DEDE;
+      border: 1px solid #EED3D7;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+      @include border-radius(4px);
+      padding: 8px 35px 8px 14px;
+      margin: 0 10px 25px 10px
+    }
+  }
+
+  span {
+    &#addstudent, &#questionnaire {
+      background: transparent url(/s/img/add.png) no-repeat scroll 3px 50%;
+      margin: 0 0 0 8px;
+      padding: 5px 0 5px 24px;
+    }
+    &.ended {
+      vertical-align: baseline
+    }
+  }
+
+  #addstudent-block.collapse {
+    display: none;
+  }
+
+  #paymentform {
+    .conditions {
+      position: relative;
+      top: -21px !important;
+      left: 60px !important;
+      padding-left: 20px;
+      width: 60%;
+      @include responsive($media-small) {
+        top: -20px !important;
+        left: 26% !important;
+      }
+    }
+    >div label {
+      display: inline-block;
+      text-align: right;
+      max-width: 180px;
+      width: 26%;
+      padding-right: 20px;
+      vertical-align: middle;
+      font-weight: bold
+    }
+  }
+
+  .info-bar {
+    color: #3A87AD;
+    background-color: #D9EDF7;
+    padding: 8px 14px 8px 14px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    border: 1px solid #BCE8F1;
+    @include border-radius(4px);
+    margin: 0 10px 25px 10px;
+  }
+
+
+  #checkout label.corporatePass-label {
+    float: none;
+  }
+
+  .error-msg {
+    color: #B94A48;
+    background-color: #F2DEDE;
+    border: 1px solid #EED3D7;
+    @include border-radius(4px);
+    text-shadow: 0 1px 0 rgba(255,255,255,0.5);
     padding: 8px 35px 8px 14px;
     margin: 0 10px 25px 10px
   }
-}
 
-span {
-  &#addstudent, &#questionnaire {
-    background: transparent url(/s/img/add.png) no-repeat scroll 3px 50%;
-    margin: 0 0 0 8px;
-    padding: 5px 0 5px 24px;
-  }
-  &.ended {
-    vertical-align: baseline
-  }
-}
-
-#addstudent-block.collapse {
-  display: none;
-}
-
-#paymentform {
-  .conditions {
-    position: relative;
-    top: -21px !important;
-    left: 60px !important;
-    padding-left: 20px;
-    width: 60%;
-    @include responsive($media-small) {
-      top: -20px !important;
-      left: 26% !important;
+  #addContactForm, [id*="addContactForm"], #contactEditorForm, #mc_embed_signup {
+    label {
+      padding-bottom: 5px;
+      display: inline-block;
     }
-  }
-  >div label {
-    display: inline-block;
-    text-align: right;
-    max-width: 180px;
-    width: 26%;
-    padding-right: 20px;
-    vertical-align: middle;
-    font-weight: bold
-  }
-}
-
-.info-bar {
-  color: #3A87AD;
-  background-color: #D9EDF7;
-  padding: 8px 14px 8px 14px;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-  border: 1px solid #BCE8F1;
-  @include border-radius(4px);
-  margin: 0 10px 25px 10px;
-}
-
-
-#checkout label.corporatePass-label {
-  float: none;
-}
-
-.error-msg {
-  color: #B94A48;
-  background-color: #F2DEDE;
-  border: 1px solid #EED3D7;
-  @include border-radius(4px);
-  text-shadow: 0 1px 0 rgba(255,255,255,0.5);
-  padding: 8px 35px 8px 14px;
-  margin: 0 10px 25px 10px
-}
-
-#addContactForm, [id*="addContactForm"], #contactEditorForm, #mc_embed_signup {
-  label {
-    padding-bottom: 5px;
-    display: inline-block;
-  }
-  h2 {
-    margin-bottom: 10px;
-  }
-  ul {
-    margin: 0 10px 0 4px;
-    li {
-      list-style: none;
-      margin: 0;
+    h2 {
       margin-bottom: 10px;
-      input[type="checkbox"] {
-        margin-right: 12px;
+    }
+    ul {
+      margin: 0 10px 0 4px;
+      li {
+        list-style: none;
+        margin: 0;
+        margin-bottom: 10px;
+        input[type="checkbox"] {
+          margin-right: 12px;
+        }
       }
     }
-  }
-  fieldset {
-    padding-top: 30px;
-  }
-  input[type="text"], textarea {
-    padding: 0 7px;
-    width: 100%;
-    background: $white;
-    border: 1px #D5D5D5 solid;
-    height: 28px;
-    line-height: 20px;
-  }
-  .form-controls {
-    input[type="submit"] {
-      background: $primaryColor;
-      color: $white;
-      border: none;
-      border-radius: 0;
-      height: 32px;
-      padding: 7px 20px 6px 20px;
-      text-align: center;
-      font-size: 14px;
+    fieldset {
+      padding-top: 30px;
     }
-    a.cancel {
-      background: $secondaryColor;
-      color: $white;
-      border: none;
-      border-radius: 0;
-      padding: 5px 15px;
-      display: inline-block;
+    input[type="text"], textarea {
+      padding: 0 7px;
+      width: 100%;
+      background: $white;
+      border: 1px #D5D5D5 solid;
+      height: 28px;
+      line-height: 20px;
+    }
+    .form-controls {
+      input[type="submit"] {
+        background: $primaryColor;
+        color: $white;
+        border: none;
+        border-radius: 0;
+        height: 32px;
+        padding: 7px 20px 6px 20px;
+        text-align: center;
+        font-size: 14px;
+      }
+      a.cancel {
+        background: $secondaryColor;
+        color: $white;
+        border: none;
+        border-radius: 0;
+        padding: 5px 15px;
+        display: inline-block;
+      }
     }
   }
 }

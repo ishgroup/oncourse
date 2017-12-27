@@ -314,7 +314,10 @@ CoursesFilter.prototype = {
   },
 
   removeTag: function (tag) {
-    var index = this.request.tags.indexOf(unescape(decodeURIComponent(tag)));
+    var tagText = unescape(decodeURIComponent(tag));
+    tagText = tagText.replace('&', '%26');
+
+    var index = this.request.tags.indexOf(tagText);
 
     if (index > -1) {
       this.request.tags.splice(index, 1);
@@ -395,6 +398,8 @@ CoursesFilter.prototype = {
   addTagCondition: function(control) {
     var self = this;
     var tag = decodeURIComponent($j(control).data('path'));
+    tag = tag.replace('&', '%26');
+
     if (this.request.browseTag) {
       if (this.isParentTag(this.request.browseTag, tag)) {
         this.getControlBy(filterItem(this.request.browseTag)).prop('checked', false);
@@ -477,45 +482,45 @@ CoursesFilter.prototype = {
   $(document).ready(function () {
 
     $('.side-box').each(function(key, box) {
-        $(box).find('.locations-list>ul').each(function(lKey, list) {
-            var _list_title = $(list).find('>li>span').text();
-            var _list_class = $(list).attr('class') + (lKey+1);
-            var _list_template = '<input id="'+ _list_class +'" type="radio" name="tabs"><label for="'+ _list_class +'">'+ _list_title +'</label>';
+      $(box).find('.locations-list>ul').each(function(lKey, list) {
+        var _list_title = $(list).find('>li>span').text();
+        var _list_class = $(list).attr('class') + (lKey+1);
+        var _list_template = '<input id="'+ _list_class +'" type="radio" name="tabs"><label for="'+ _list_class +'">'+ _list_title +'</label>';
 
-            $(list).find('>li>span').remove();
-            $(list).attr({ id: _list_class + '_tags', 'data-tabid': _list_class });
-            $(_list_template).insertBefore($(list));
-        });
+        $(list).find('>li>span').remove();
+        $(list).attr({ id: _list_class + '_tags', 'data-tabid': _list_class });
+        $(_list_template).insertBefore($(list));
+      });
     });
 
     $('.tags-list .filter-option.site-option').each(function(key, value) {
-        var _label = $(value).find('label.filter-option-label');
-        var _for = _label.attr('for'), _path = _label.data('path');
+      var _label = $(value).find('label.filter-option-label');
+      var _for = _label.attr('for'), _path = _label.data('path');
 
-        var _input_checkbox = '<input type="checkbox" data-counter="0" data-path="'+ _path +'" class="filter-option-control" name="'+ _for +'" id="'+ _for +'">';
-        var _option_counter = '<span class="filter-option-counter">(0)</span>';
+      var _input_checkbox = '<input type="checkbox" data-counter="0" data-path="'+ _path +'" class="filter-option-control" name="'+ _for +'" id="'+ _for +'">';
+      var _option_counter = '<span class="filter-option-counter">(0)</span>';
 
-        $(value).prepend(_input_checkbox);
-        $(value).append(_option_counter);
+      $(value).prepend(_input_checkbox);
+      $(value).append(_option_counter);
 
-        if(_path !== '') {
-            $.ajax({
-                type: "GET",
-                url: '/courses?site=' + _path,
-                async: false,
-                cache: false,
-                success: function (data) {
-                    if($(data).find('div.courseItem') !== undefined) {
-                        var _total_option_counter = $(data).find('div.courseItem').length;
-                        $(value).find('.filter-option-counter').text(_total_option_counter);
-                        $(value).find('.filter-option-control').attr('data-counter', _total_option_counter);
-                    }
-                },
-                error: function (data) {
-                    //console.log(data);
-                }
-            });
-        }
+      if(_path !== '') {
+        $.ajax({
+          type: "GET",
+          url: '/courses?site=' + _path,
+          async: false,
+          cache: false,
+          success: function (data) {
+            if($(data).find('div.courseItem') !== undefined) {
+              var _total_option_counter = $(data).find('div.courseItem').length;
+              $(value).find('.filter-option-counter').text(_total_option_counter);
+              $(value).find('.filter-option-control').attr('data-counter', _total_option_counter);
+            }
+          },
+          error: function (data) {
+            //console.log(data);
+          }
+        });
+      }
     });
 
     var coursesFilter = new CoursesFilter();
