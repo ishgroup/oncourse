@@ -52,8 +52,8 @@
 	<WebContentVisibility id="3" WebNodeTypeId="1" WebContentId="3" weight="0" regionKey="footer"/>
 	<WebContentVisibility id="4" WebNodeTypeId="2" WebContentId="3" weight="0" regionKey="header"/>
 
-	<WebUrlAlias id="1" webNodeId="2" created="2015-11-20 19:23:57" modified="2015-11-20 19:23:57" urlPath="/about-us" isDefault="1" webSiteVersionId="1"/>
-	<WebUrlAlias id="2" created="2015-11-20 19:23:57" modified="2015-11-20 19:23:57" urlPath="/some-path" isDefault="0" redirectTo="/about-us" webSiteVersionId="1"/>
+	<WebURLAlias id="1" webNodeId="2" created="2015-11-20 19:23:57" modified="2015-11-20 19:23:57" urlPath="/about-us" isDefault="1" webSiteVersionId="1"/>
+	<WebURLAlias id="2" created="2015-11-20 19:23:57" modified="2015-11-20 19:23:57" urlPath="/some-path" isDefault="0" redirectTo="/about-us" webSiteVersionId="1"/>
 
 	<WebSiteVersion id="2" webSiteId="1" deployedOn="2010-02-03 09:18:09"/>
 
