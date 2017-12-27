@@ -1,4 +1,4 @@
-<ul xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+<ul xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" class="list-horizontal" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
 	<t:loop source="children" value="currentMenu">
 		<t:delegate to="menuItem" />
 	</t:loop>
