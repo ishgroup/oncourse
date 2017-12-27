@@ -1,5 +1,7 @@
 dependencies {
-	compile "ish.oncourse.willow:waCommon:$waCommonWebservicesClientVersion"
+	compile("ish.oncourse.willow:waCommon:$waCommonWebservicesClientVersion") {
+		exclude group: 'org.apache.logging.log4j'
+	}
 
 	compile 'javax.jmdns:jmdns:3.4.1'
 

@@ -80,9 +80,6 @@ dependencies {
 
 	compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: mariadbVersion
 	compile 'com.microsoft.sqlserver:mssql-jdbc:6.2.1.jre8'
-	
-	//log4j2 to slf4j1.7 bridge
-	compile "org.apache.logging.log4j:log4j-slf4j-impl:$log4j2Version"
 
 	compile 'commons-lang:commons-lang:2.6' // this exists only to support some old reports. To be removed when all reports upgraded.
 	compile ('net.sf.jasperreports:jasperreports:6.1.1') {

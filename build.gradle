@@ -69,8 +69,9 @@ allprojects {
 		compile "org.apache.logging.log4j:log4j-api:$log4j2Version"
 		compile "org.apache.logging.log4j:log4j-core:$log4j2Version"
 		compile "org.apache.logging.log4j:log4j-1.2-api:$log4j2Version"
-		//log4j2 to commons-logging bridge
+		compile "org.apache.logging.log4j:log4j-slf4j-impl:$log4j2Version"
 		compile "org.apache.logging.log4j:log4j-jcl:$log4j2Version"
+		
         compile 'com.google.code.findbugs:jsr305:3.0.2'
 
 		// The following is needed until we upgrade waCommon which is forcing Cayenne back to 4.0M3.2
