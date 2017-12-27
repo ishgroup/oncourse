@@ -94,19 +94,12 @@
 
         <listener event="newSearcher" class="solr.QuerySenderListener">
             <arr name="queries">
+
             </arr>
         </listener>
 
         <listener event="firstSearcher" class="solr.QuerySenderListener">
             <arr name="queries">
-                <lst>
-                    <str name="q">solr rocks</str>
-                    <str name="start">0</str>
-                    <str name="rows">10</str>
-                </lst>
-                <lst>
-                    <str name="q">static firstSearcher warming query from solrconfig.xml</str>
-                </lst>
             </arr>
         </listener>
 
