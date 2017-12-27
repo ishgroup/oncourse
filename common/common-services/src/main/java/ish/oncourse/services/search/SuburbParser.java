@@ -1,5 +1,6 @@
 package ish.oncourse.services.search;
 
+import ish.oncourse.solr.query.Suburb;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;

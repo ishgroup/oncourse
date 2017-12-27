@@ -7,7 +7,9 @@ apply plugin: 'java'
 dependencies {
 	compile project(':common:common-model')
 
-	compile (project(':common:common-functions'))
+	compile project(':common:common-functions')
+
+	compile project(':common:solr-index')
 
 	compile 'commons-collections:commons-collections:3.2.1'
 	compile 'commons-logging:commons-logging:1.1.1'

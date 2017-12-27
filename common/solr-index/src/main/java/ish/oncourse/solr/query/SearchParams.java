@@ -1,4 +1,4 @@
-package ish.oncourse.services.search;
+package ish.oncourse.solr.query;
 
 import ish.oncourse.model.Tag;
 import org.apache.commons.beanutils.BeanUtils;
@@ -36,7 +36,7 @@ public class SearchParams {
         return clientTimezone;
     }
 
-    void setClientTimezone(TimeZone clientTimezone) {
+    public void setClientTimezone(TimeZone clientTimezone) {
         this.clientTimezone = clientTimezone;
     }
 

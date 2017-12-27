@@ -1,9 +1,13 @@
 package ish.oncourse.ui.components;
 
 import ish.oncourse.model.Tag;
-import ish.oncourse.services.search.*;
+import ish.oncourse.services.search.ISearchService;
+import ish.oncourse.services.search.SearchParamsParser;
+import ish.oncourse.services.search.SearchResult;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
+import ish.oncourse.solr.query.SearchParams;
+import ish.oncourse.solr.query.Suburb;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.solr.client.solrj.response.QueryResponse;

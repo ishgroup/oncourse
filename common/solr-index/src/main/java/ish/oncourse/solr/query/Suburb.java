@@ -1,9 +1,14 @@
-package ish.oncourse.services.search;
+package ish.oncourse.solr.query;
 
 import org.apache.solr.common.SolrDocument;
 
 public class Suburb {
-    private String identifier;
+	/**
+	 * Default value which should be used if no distance specified.
+	 */
+	public static final double DEFAULT_DISTANCE = 100.0;
+
+	private String identifier;
 
     private String path;
 
@@ -99,7 +104,7 @@ public class Suburb {
         result.latitude = latitude;
         result.longitude = longitude;
 
-        result.distance = distance != null ? distance : SearchService.DEFAULT_DISTANCE;
+        result.distance = distance != null ? distance : DEFAULT_DISTANCE;
         return result;
     }
 
@@ -109,7 +114,7 @@ public class Suburb {
         result.identifier = path.replaceAll("[^A-Za-z0-9]", "_");
         result.suburb = suburb;
         result.postcode = postcode;
-        result.distance = distance != null ? distance : SearchService.DEFAULT_DISTANCE;
+        result.distance = distance != null ? distance : DEFAULT_DISTANCE;
         return result;
     }
 

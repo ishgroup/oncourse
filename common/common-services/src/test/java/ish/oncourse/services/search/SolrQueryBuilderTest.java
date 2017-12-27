@@ -1,6 +1,10 @@
 package ish.oncourse.services.search;
 
 import ish.oncourse.model.Tag;
+import ish.oncourse.solr.query.DayOption;
+import ish.oncourse.solr.query.SearchParams;
+import ish.oncourse.solr.query.SolrQueryBuilder;
+import ish.oncourse.solr.query.Suburb;
 import ish.oncourse.util.FormatUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrQuery;

@@ -1,10 +1,10 @@
 package ish.oncourse.ui.components;
 
-import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.Course;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.courseclass.ICourseClassService;
-import ish.oncourse.services.search.SearchParams;
+import ish.oncourse.solr.query.SearchParams;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.ui.utils.CourseItemModel;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;

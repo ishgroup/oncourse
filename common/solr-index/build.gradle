@@ -9,6 +9,7 @@ compileTestGroovy.options.encoding = 'UTF-8'
 
 dependencies {
     compile project(':common:cayenne-model')
+    compile project(':common:common-functions')
     compile project(':common:job-scheduler')
     compile group: 'org.codehaus.groovy', name: 'groovy-all', version: groovyVersion
     compile group: 'org.apache.solr', name: 'solr-solrj', version: solrVersion

@@ -2,6 +2,8 @@ package ish.oncourse.solr;
 
 import org.apache.solr.SolrTestCaseJ4;
 
+import java.io.File;
+
 public class InitSolr {
     private String url = "http://localhost:8081/search-internal";
     private String config;
@@ -35,9 +37,11 @@ public class InitSolr {
     }
 
     public static InitSolr coursesCore() {
+        File solr = new File(InitSolr.class.getClassLoader().getResource("solr").getFile());
+
         return InitSolr.valueOf("conf/solrconfig.xml",
                 "conf/schema.xml",
-                "src/main/resources/solr",
+                solr.getAbsolutePath(),
                 "courses");
     }
 

@@ -1,7 +1,11 @@
 package ish.oncourse.solr;
 
 import com.google.gson.Gson;
-import ish.oncourse.services.search.*;
+import ish.oncourse.services.search.Count;
+import ish.oncourse.services.search.LocationFacetQueryBuilder;
+import ish.oncourse.solr.query.SearchParams;
+import ish.oncourse.solr.query.SolrQueryBuilder;
+import ish.oncourse.solr.query.Suburb;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.request.LocalSolrQueryRequest;
 import org.junit.Test;

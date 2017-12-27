@@ -1,4 +1,4 @@
-package ish.oncourse.services.search;
+package ish.oncourse.solr.query;
 
 import ish.oncourse.model.Tag;
 import ish.oncourse.util.FormatUtils;
@@ -46,10 +46,10 @@ public class SolrQueryBuilder {
 
 
     static final String FILTER_TEMPLATE_collegeId = "+collegeId:%s +doctype:course end:[NOW TO *]";
-    static final String FILTER_TEMPLATE_s = "(detail:(%s)^1 || tutor:(%s)^5 || course_code:(%s)^30 || name:(%s)^20)";
-    static final String EXTENED_FILTER_TEMPLATE_s = "%s || (%s)^100";
-    static final String FILTER_TEMPLATE_price = "price:[* TO %s]";
-    static final String FILTER_TEMPLATE_when = "when:%s";
+    public static final String FILTER_TEMPLATE_s = "(detail:(%s)^1 || tutor:(%s)^5 || course_code:(%s)^30 || name:(%s)^20)";
+    public static final String EXTENED_FILTER_TEMPLATE_s = "%s || (%s)^100";
+    public static final String FILTER_TEMPLATE_price = "price:[* TO %s]";
+    public static final String FILTER_TEMPLATE_when = "when:%s";
     static final String FILTER_TEMPLATE_tagId = "tagId:%d";
     static final String FILTER_TEMPLATE_siteId = "siteId:%d";
     static final String FILTER_TEMPLATE_tutorId = "tutorId:%d";
@@ -202,7 +202,7 @@ public class SolrQueryBuilder {
         filters.add(FILTER_TEMPLATE_ALL);
     }
 
-    void appendFilterStartBetween(List<String> filters) {
+    public void appendFilterStartBetween(List<String> filters) {
         if (params.getAfter() != null || params.getBefore() != null) {
             filters.add(String.format(FILTER_TEMPLATE_between,
                     params.getAfter() != null ? FormatUtils.convertDateToISO8601(params.getAfter()) : "*",
@@ -210,7 +210,7 @@ public class SolrQueryBuilder {
         }
     }
 
-    void appendFilterS(List<String> filters) {
+    public void appendFilterS(List<String> filters) {
         if (params.getS() != null) {
             String value = replaceSOLRSyntaxisCharacters(params.getS());
 
@@ -224,24 +224,24 @@ public class SolrQueryBuilder {
         }
     }
 
-    void appendFilterPrice(List<String> filters) {
+    public void appendFilterPrice(List<String> filters) {
         if (params.getPrice() != null) {
             Double price = params.getPrice();
             filters.add(String.format(FILTER_TEMPLATE_price, price));
         }
     }
 
-    void appendFilterDay(List<String> filters) {
+    public void appendFilterDay(List<String> filters) {
         if (params.getDay() != null) {
             appendFilterWhen(filters, params.getDay().getFullName());
         }
     }
 
-    void appendFilterTime(List<String> filters) {
+    public void appendFilterTime(List<String> filters) {
         appendFilterWhen(filters, params.getTime());
     }
 
-    void appendFilterTag(SolrQuery query) {
+    public void appendFilterTag(SolrQuery query) {
         for (List<Tag> tagGroup : tagGroups.getTagGroups()) {
             query.addFilterQuery(getQueryByTagGroup(tagGroup));
         }

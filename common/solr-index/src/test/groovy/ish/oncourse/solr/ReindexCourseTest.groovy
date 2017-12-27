@@ -4,6 +4,7 @@ import com.carrotsearch.randomizedtesting.annotations.ThreadLeakScope
 import io.reactivex.schedulers.Schedulers
 import ish.oncourse.solr.model.DataContext
 import ish.oncourse.solr.model.SCourse
+import ish.oncourse.solr.query.SolrQueryBuilder
 import ish.oncourse.solr.reindex.ReindexCoursesJob
 import ish.oncourse.test.TestContext
 import ish.oncourse.test.context.CCollege
@@ -22,7 +23,7 @@ import org.junit.Test
  * Created by alex on 11/22/17.
  */
 @ThreadLeakScope(ThreadLeakScope.Scope.NONE)
-class ReindexCourseTest extends SolrTestCaseJ4{
+class ReindexCourseTest extends SolrTestCaseJ4 {
     private TestContext testContext
     private ObjectContext objectContext
     private InitSolr initSolr
@@ -58,23 +59,27 @@ class ReindexCourseTest extends SolrTestCaseJ4{
 
         ReindexCoursesJob job = new ReindexCoursesJob(objectContext, solrClient)
         job.run()
-        while (job.isActive()){
+        while (job.isActive()) {
             Thread.sleep(100)
         }
 
-        List<SCourse> actualSClasses = solrClient.query("courses", new SolrQuery("course*")).getBeans(SCourse.class)
+        List<SCourse> actualSClasses = solrClient.query("courses",
+                new SolrQuery()
+                        .setRequestHandler(SolrQueryBuilder.QUERY_TYPE)
+                        .setParam(SolrQueryBuilder.PARAMETER_fl, "*"))
+                .getBeans(SCourse.class)
         assertEquals(2, actualSClasses.size())
-        assertNotNull(actualSClasses.find {c -> c.id == expectedSCourse.id})
-        assertNotNull(actualSClasses.find {c -> c.collegeId == expectedSCourse.collegeId})
-        assertNotNull(actualSClasses.find {c -> c.name == expectedSCourse.name})
-        assertNotNull(actualSClasses.find {c -> c.detail == expectedSCourse.detail})
-        assertNotNull(actualSClasses.find {c -> c.code == expectedSCourse.code})
+        assertNotNull(actualSClasses.find { c -> c.id == expectedSCourse.id })
+        assertNotNull(actualSClasses.find { c -> c.collegeId == expectedSCourse.collegeId })
+        assertNotNull(actualSClasses.find { c -> c.name == expectedSCourse.name })
+        assertNotNull(actualSClasses.find { c -> c.detail == expectedSCourse.detail })
+        assertNotNull(actualSClasses.find { c -> c.code == expectedSCourse.code })
 
         solrClient.close()
     }
 
     @After
-    void after(){
+    void after() {
         Schedulers.shutdown()
         testContext.close()
     }

@@ -1,4 +1,4 @@
-package ish.oncourse.services.search;
+package ish.oncourse.solr.query;
 
 import ish.oncourse.model.Tag;
 

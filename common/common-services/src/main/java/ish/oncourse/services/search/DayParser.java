@@ -1,5 +1,6 @@
 package ish.oncourse.services.search;
 
+import ish.oncourse.solr.query.DayOption;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

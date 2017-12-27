@@ -12,8 +12,8 @@ import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.util.TextStreamResponse;
 
-import static ish.oncourse.services.search.SolrQueryBuilder.FIELD_postcode;
-import static ish.oncourse.services.search.SolrQueryBuilder.FIELD_suburb;
+import static ish.oncourse.solr.query.SolrQueryBuilder.FIELD_postcode;
+import static ish.oncourse.solr.query.SolrQueryBuilder.FIELD_suburb;
 
 public class SuburbsAutocomplete {
 

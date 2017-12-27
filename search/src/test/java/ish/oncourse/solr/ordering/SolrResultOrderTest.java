@@ -1,9 +1,9 @@
 package ish.oncourse.solr.ordering;
 
-import ish.oncourse.services.search.SearchParams;
-import ish.oncourse.services.search.SolrQueryBuilder;
 import ish.oncourse.solr.InitSolr;
 import ish.oncourse.solr.model.SCourse;
+import ish.oncourse.solr.query.SearchParams;
+import ish.oncourse.solr.query.SolrQueryBuilder;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.solr.SolrTestCaseJ4;
 import org.apache.solr.client.solrj.SolrClient;

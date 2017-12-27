@@ -6,7 +6,7 @@ import ish.oncourse.model.Product;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.search.CourseClassUtils;
-import ish.oncourse.services.search.SearchParams;
+import ish.oncourse.solr.query.SearchParams;
 
 import java.util.ArrayList;
 import java.util.List;

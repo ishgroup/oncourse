@@ -5,6 +5,10 @@ import ish.oncourse.model.Tag;
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
+import ish.oncourse.solr.query.SearchParams;
+import ish.oncourse.solr.query.SolrQueryBuilder;
+import ish.oncourse.solr.query.Suburb;
+import ish.oncourse.solr.query.TagGroups;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -38,10 +42,6 @@ public class SearchService implements ISearchService {
 	 */
 	public static final double MAX_DISTANCE = 19900.0;
 
-	/**
-	 * Default value which should be used if no distance specified.
-	 */
-	public static final double DEFAULT_DISTANCE = 100.0;
 
 	/**
 	 * The radius required for correct calculation of boost function for the cases when we want direct suburb matches filtering.
@@ -147,7 +147,7 @@ public class SearchService implements ISearchService {
 			HashMap<Long, Long> result = new HashMap<>();
 
 			for (Tag tag : tags) {
-				TagGroups tagGroups = TagGroups.valueOf(params, tag);
+				TagGroups tagGroups = ish.oncourse.solr.query.TagGroups.valueOf(params, tag);
 				SolrQuery q = applyCourseRootTag(SolrQueryBuilder.valueOf(params, tagGroups, collegeId).build());
 				q.setFacet(true);
 				String query = SolrQueryBuilder.getTagQuery(tag);

@@ -1,6 +1,9 @@
 package ish.oncourse.services.search;
 
 import ish.oncourse.model.*;
+import ish.oncourse.solr.query.DayOption;
+import ish.oncourse.solr.query.SearchParams;
+import ish.oncourse.solr.query.Suburb;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.commons.lang.StringUtils;

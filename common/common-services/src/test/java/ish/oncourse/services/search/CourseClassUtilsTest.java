@@ -3,6 +3,7 @@ package ish.oncourse.services.search;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.solr.query.SearchParams;
 import ish.oncourse.test.LoadDataSet;
 import ish.oncourse.test.tapestry.ServiceTest;
 import org.apache.cayenne.Cayenne;

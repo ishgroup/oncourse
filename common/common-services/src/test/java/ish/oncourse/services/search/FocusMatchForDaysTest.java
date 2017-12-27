@@ -1,5 +1,6 @@
 package ish.oncourse.services.search;
 
+import ish.oncourse.solr.query.DayOption;
 import ish.oncourse.utils.TimestampUtilities;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Test;

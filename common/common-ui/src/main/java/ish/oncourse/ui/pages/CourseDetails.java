@@ -1,15 +1,15 @@
 package ish.oncourse.ui.pages;
 
-import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.Course;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.html.IFacebookMetaProvider;
 import ish.oncourse.services.search.ISearchService;
-import ish.oncourse.services.search.SearchParams;
 import ish.oncourse.services.search.SearchParamsParser;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
+import ish.oncourse.solr.query.SearchParams;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.ui.utils.CourseItemModel;
 import ish.oncourse.util.HTMLUtils;
 import org.apache.tapestry5.annotations.Property;

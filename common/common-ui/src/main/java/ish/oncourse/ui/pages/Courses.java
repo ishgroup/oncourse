@@ -1,6 +1,5 @@
 package ish.oncourse.ui.pages;
 
-import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.*;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.course.ICourseService;
@@ -10,6 +9,8 @@ import ish.oncourse.services.search.*;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.solr.query.SearchParams;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.util.HTMLUtils;
 import ish.oncourse.util.ValidationErrors;
 import org.apache.commons.lang.StringUtils;

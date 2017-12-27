@@ -5,8 +5,8 @@ package ish.oncourse.solr;
 
 import com.google.gson.Gson;
 import ish.oncourse.model.*;
-import ish.oncourse.services.search.SearchParams;
-import ish.oncourse.services.search.SolrQueryBuilder;
+import ish.oncourse.solr.query.SearchParams;
+import ish.oncourse.solr.query.SolrQueryBuilder;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.request.LocalSolrQueryRequest;
 import org.junit.Test;

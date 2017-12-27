@@ -4,6 +4,8 @@ import ish.oncourse.linktransform.PageLinkTransformer;
 import ish.oncourse.model.SearchParam;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.tag.ITagService;
+import ish.oncourse.solr.query.SearchParams;
+import ish.oncourse.solr.query.Suburb;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

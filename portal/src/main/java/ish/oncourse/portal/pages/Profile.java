@@ -8,8 +8,6 @@ import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SuburbsAutocomplete;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.solr.common.SolrDocument;
-import org.apache.solr.common.SolrDocumentList;
 import org.apache.tapestry5.EventConstants;
 import org.apache.tapestry5.PersistenceConstants;
 import org.apache.tapestry5.StreamResponse;
@@ -19,15 +17,10 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.json.JSONArray;
-import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.Request;
-import org.apache.tapestry5.util.TextStreamResponse;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static ish.oncourse.services.search.SolrQueryBuilder.FIELD_postcode;
-import static ish.oncourse.services.search.SolrQueryBuilder.FIELD_suburb;
 
 /**
  * User: artem
