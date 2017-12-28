@@ -9,9 +9,6 @@ import ish.oncourse.solr.query.SolrQueryBuilder
 import ish.oncourse.solr.reindex.ReindexCoursesJob
 import ish.oncourse.test.TestContext
 import ish.oncourse.test.context.CCollege
-import ish.oncourse.test.context.CCourse
-import ish.oncourse.test.context.CCourseClass
-import ish.oncourse.test.context.CRoom
 import org.apache.cayenne.ObjectContext
 import org.apache.solr.SolrTestCaseJ4
 import org.apache.solr.client.solrj.SolrClient
@@ -47,36 +44,19 @@ class SolrCourseClassQueryWithoutSessionTest extends SolrTestCaseJ4{
     @Test
     void testGetCourseClassesWithoutSessions() throws IOException, SolrServerException {
         SolrClient solrClient = new EmbeddedSolrServer(h.getCore())
+        Date now = new Date()
         
-        CCourse course1 = cCollege.cCourse("course1").detail("course1 Details").build()
-        CCourse course2 = cCollege.cCourse("course2").detail("course2 Details").build()
-        CCourse course3 = cCollege.cCourse("course3").detail("course3 Details").build()
-        CCourse course4 = cCollege.cCourse("course4").detail("course4 Details").build()
-        CCourse course5 = cCollege.cCourse("course5").detail("course5 Details").build()
-        CCourse course6 = cCollege.cCourse("course6").detail("course6 Details").build()
-        CCourse course7 = cCollege.cCourse("course7").detail("course7 Details").build()
-        CCourse course8 = cCollege.cCourse("course8").detail("course8 Details").build()
-        CCourse course9 = cCollege.cCourse("course9").detail("course9 Details").build()
+        cCollege.cCourse("course1").withClass("past", now - 11).build()
+        cCollege.cCourse("course2").withClass("pastStartsFirst", now - 12).build()
+        cCollege.cCourse("course3").withClass("pastEndsLast", now - 10).build()
         
-        CCourseClass.instance(objectContext, "past", 
-                course1.course).startDate(new Date() - 20).endDate(new Date() - 10).build()
-        CCourseClass.instance(objectContext, "pastStartsFirst", 
-                course2.course).startDate(new Date() - 30).endDate(new Date() - 15).build()
-        CCourseClass.instance(objectContext, "pastEndsLast", 
-                course3.course).startDate(new Date() - 20).endDate(new Date() - 5).build()
-        CCourseClass.instance(objectContext, "current", 
-                course4.course).startDate(new Date() - 10).endDate(new Date() + 1).build()
-        CCourseClass.instance(objectContext, "curStartsFirst", 
-                course5.course).startDate(new Date() - 15).endDate(new Date() + 5).build()
-        CCourseClass.instance(objectContext, "currentEndsLast", 
-                course6.course).startDate(new Date() - 5).endDate(new Date() + 15).build()
-        CCourseClass.instance(objectContext, "futureClass", 
-                course7.course).startDate(new Date() + 10).endDate(new Date() + 20).build()
-        CCourseClass.instance(objectContext, "futStartsFirst", 
-                course8.course).startDate(new Date() + 5).endDate(new Date() + 15).build()
-        CCourseClass.instance(objectContext, "futureEndsLast", 
-                course9.course).startDate(new Date() + 15).endDate(new Date() + 25).build()
-
+        cCollege.cCourse("course4").withClass("current", now - 5).build()
+        cCollege.cCourse("course5").withClass("curStartsFirst", now - 6).build()
+        cCollege.cCourse("course6").withClass("currentEndsLast", now - 4).build()
+        
+        cCollege.cCourse("course7").withClass("future", now + 5).build()
+        cCollege.cCourse("course8").withClass("futureStartsFirst", now + 4).build()
+        cCollege.cCourse("course9").withClass("futureEndsLast", now + 6).build()
         
         
         ReindexCoursesJob job = new ReindexCoursesJob(objectContext, solrClient)

@@ -72,6 +72,11 @@ class CCourseClass {
         this
     }
 
+    CCourseClass withSession(Date date) {
+        CSession.instance(objectContext, courseClass).date(date)
+        this
+    }
+
     static CCourseClass instance(ObjectContext context, String code, Course course){
         CCourseClass builder = new CCourseClass()
 

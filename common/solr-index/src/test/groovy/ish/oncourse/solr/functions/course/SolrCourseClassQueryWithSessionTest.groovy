@@ -9,10 +9,6 @@ import ish.oncourse.solr.query.SolrQueryBuilder
 import ish.oncourse.solr.reindex.ReindexCoursesJob
 import ish.oncourse.test.TestContext
 import ish.oncourse.test.context.CCollege
-import ish.oncourse.test.context.CCourse
-import ish.oncourse.test.context.CCourseClass
-import ish.oncourse.test.context.CRoom
-import ish.oncourse.test.context.CSession
 import org.apache.cayenne.ObjectContext
 import org.apache.solr.SolrTestCaseJ4
 import org.apache.solr.client.solrj.SolrClient
@@ -48,53 +44,29 @@ class SolrCourseClassQueryWithSessionTest extends SolrTestCaseJ4{
     @Test
     void testGetCourseClassesWithSessions() throws IOException, SolrServerException {
         SolrClient solrClient = new EmbeddedSolrServer(h.getCore())
+        Date now = new Date()
 
-        CCourse course1 = cCollege.cCourse("course1").detail("course1 Details").build()
-        CCourse course2 = cCollege.cCourse("course2").detail("course2 Details").build()
-        CCourse course3 = cCollege.cCourse("course3").detail("course3 Details").build()
-        CCourse course4 = cCollege.cCourse("course4").detail("course4 Details").build()
-        CCourse course5 = cCollege.cCourse("course5").detail("course5 Details").build()
-        CCourse course6 = cCollege.cCourse("course6").detail("course6 Details").build()
-        CCourse course7 = cCollege.cCourse("course7").detail("course7 Details").build()
-        CCourse course8 = cCollege.cCourse("course8").detail("course8 Details").build()
-        CCourse course9 = cCollege.cCourse("course9").detail("course9 Details").build()
+        cCollege.cCourse("course1").cCourseClass("past")
+                .withSession(now - 5).withSession(now - 4).build()
+        cCollege.cCourse("course2").cCourseClass("pastStartsFirst")
+                .withSession(now - 6).withSession(now - 4).build()
+        cCollege.cCourse("course3").cCourseClass("pastEndsLast")
+                .withSession(now - 5).withSession(now - 3).build()
         
-        CCourseClass past = CCourseClass.instance(objectContext, "past", course1.course).build()
-        CSession.instance(objectContext, past.courseClass).startDate(new Date() - 20).endDate(new Date() - 19).build()
-        CSession.instance(objectContext, past.courseClass).startDate(new Date() - 10).endDate(new Date() - 9).build()
-
-        CCourseClass pastStartsFirst = CCourseClass.instance(objectContext, "pastStartsFirst", course2.course).build()
-        CSession.instance(objectContext, pastStartsFirst.courseClass).startDate(new Date() - 30).endDate(new Date() - 29).build()
-        CSession.instance(objectContext, pastStartsFirst.courseClass).startDate(new Date() - 10).endDate(new Date() - 9).build()
-
-        CCourseClass pastEndsLast = CCourseClass.instance(objectContext, "pastEndsLast", course3.course).build()
-        CSession.instance(objectContext, pastEndsLast.courseClass).startDate(new Date() - 20).endDate(new Date() - 19).build()
-        CSession.instance(objectContext, pastEndsLast.courseClass).startDate(new Date() - 5).endDate(new Date() - 4).build()
-
-        CCourseClass current = CCourseClass.instance(objectContext, "current", course4.course).build()
-        CSession.instance(objectContext, current.courseClass).startDate(new Date() - 10).endDate(new Date() - 9).build()
-        CSession.instance(objectContext, current.courseClass).startDate(new Date() + 10).endDate(new Date() + 11).build()
-
-        CCourseClass currentStartsFirst = CCourseClass.instance(objectContext, "currentStartsFirst", course5.course).build()
-        CSession.instance(objectContext, currentStartsFirst.courseClass).startDate(new Date() - 15).endDate(new Date() - 14).build()
-        CSession.instance(objectContext, currentStartsFirst.courseClass).startDate(new Date() + 10).endDate(new Date() + 11).build()
-
-        CCourseClass currentEndsLast = CCourseClass.instance(objectContext, "currentEndsLast", course6.course).build()
-        CSession.instance(objectContext, currentEndsLast.courseClass).startDate(new Date() - 10).endDate(new Date() - 9).build()
-        CSession.instance(objectContext, currentEndsLast.courseClass).startDate(new Date() + 15).endDate(new Date() + 16).build()
-
-        CCourseClass future = CCourseClass.instance(objectContext, "future", course7.course).build()
-        CSession.instance(objectContext, future.courseClass).startDate(new Date() + 10).endDate(new Date() + 11).build()
-        CSession.instance(objectContext, future.courseClass).startDate(new Date() + 20).endDate(new Date() + 21).build()
-
-        CCourseClass futureStartsFirst = CCourseClass.instance(objectContext, "futureStartsFirst", course8.course).build()
-        CSession.instance(objectContext, futureStartsFirst.courseClass).startDate(new Date() + 5).endDate(new Date() + 6).build()
-        CSession.instance(objectContext, futureStartsFirst.courseClass).startDate(new Date() + 20).endDate(new Date() + 21).build()
-
-        CCourseClass futureEndsLast = CCourseClass.instance(objectContext, "futureEndsLast", course9.course).build()
-        CSession.instance(objectContext, futureEndsLast.courseClass).startDate(new Date() + 10).endDate(new Date() + 11).build()
-        CSession.instance(objectContext, futureEndsLast.courseClass).startDate(new Date() + 30).endDate(new Date() + 31).build()
+        cCollege.cCourse("course4").cCourseClass("current")
+                .withSession(now - 1).withSession(now + 1).build()
+        cCollege.cCourse("course5").cCourseClass("currentStartsFirst")
+                .withSession(now - 2).withSession(now + 1).build()
+        cCollege.cCourse("course6").cCourseClass("currentEndsLast")
+                .withSession(now - 1).withSession(now + 2).build()
         
+        cCollege.cCourse("course7").cCourseClass("future")
+                .withSession(now + 5).withSession(now + 6).build()
+        cCollege.cCourse("course8").cCourseClass("futureStartsFirst")
+                .withSession(now + 4).withSession(now + 6).build()
+        cCollege.cCourse("course9").cCourseClass("futureEndsLast")
+                .withSession(now + 5).withSession(now + 7).build()
+                
 
         ReindexCoursesJob job = new ReindexCoursesJob(objectContext, solrClient)
         job.run()

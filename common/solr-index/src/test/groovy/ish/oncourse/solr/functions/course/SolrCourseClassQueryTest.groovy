@@ -9,8 +9,6 @@ import ish.oncourse.solr.query.SolrQueryBuilder
 import ish.oncourse.solr.reindex.ReindexCoursesJob
 import ish.oncourse.test.TestContext
 import ish.oncourse.test.context.CCollege
-import ish.oncourse.test.context.CCourse
-import ish.oncourse.test.context.CCourseClass
 import org.apache.cayenne.ObjectContext
 import org.apache.solr.SolrTestCaseJ4
 import org.apache.solr.client.solrj.SolrClient
@@ -47,17 +45,11 @@ class SolrCourseClassQueryTest  extends SolrTestCaseJ4{
     void testGetCourseClassesWithoutSessions() throws IOException, SolrServerException {
         SolrClient solrClient = new EmbeddedSolrServer(h.getCore())
 
-        CCourse course1 = cCollege.cCourse("course1").detail("course1 Details").build()
-        CCourse course2 = cCollege.cCourse("course2").detail("course2 Details").build()
-        CCourse course3 = cCollege.cCourse("course3").detail("course3 Details").build()
-        CCourse course4 = cCollege.cCourse("course4").detail("course4 Details").build()
-        CCourse course5 = cCollege.cCourse("course5").detail("course5 Details").build()
-
-        CCourseClass.instance(objectContext, "cancelled", course1.course).cancelled(true).build()
-        CCourseClass.instance(objectContext, "distantLearning", course2.course).isDistantLearningCourse(true).build()
-        CCourseClass.instance(objectContext, "inactive", course3.course).active(false).build()
-        CCourseClass.instance(objectContext, "enrolDisabled", course4.course).active(false).isWebVisible(false).build()
-        CCourseClass.instance(objectContext, "webInvisible", course5.course).isWebVisible(false).build()
+        cCollege.cCourse("course1").withCancelledClass("cancelled").build()
+        cCollege.cCourse("course2").withDistantClass("distantLearning").build()
+        cCollege.cCourse("course3").withInactiveClass("inactive").build()
+        cCollege.cCourse("course4").withEnrolDisabledClass("enrolDisabled").build()
+        cCollege.cCourse("course5").withWebInvisibleClass("webInvisible").build()
         
         ReindexCoursesJob job = new ReindexCoursesJob(objectContext, solrClient)
         job.run()

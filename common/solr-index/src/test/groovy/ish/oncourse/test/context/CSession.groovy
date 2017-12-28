@@ -14,6 +14,21 @@ class CSession {
     Session session
 
     private CSession(){}
+    
+    /**
+     * session's start date - 'date'
+     * session's end date - 'date' + 1 hour
+     */
+    CSession date(Date date) {
+        startDate(date)
+
+        Calendar cal = Calendar.getInstance()
+        cal.setTime(date)
+        cal.add(Calendar.HOUR_OF_DAY, 1)
+
+        endDate(cal.getTime())
+        this
+    }
 
     CSession startDate(Date date){
         session.startDate = date
