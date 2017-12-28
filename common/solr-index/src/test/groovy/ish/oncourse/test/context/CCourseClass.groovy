@@ -52,6 +52,11 @@ class CCourseClass {
         this
     }
 
+    CCourseClass active(boolean isActive){
+        courseClass.isActive = isActive
+        this
+    }
+
     CCourseClass endDate(Date endDate){
         courseClass.endDate = endDate
         this
@@ -81,6 +86,7 @@ class CCourseClass {
         builder.courseClass.isActive = true
         builder.courseClass.maximumPlaces = 100
         builder.courseClass.startDate = new Date()
+        builder.cRoom()
         builder
     }
 }

@@ -20,6 +20,7 @@ public class InitSolr {
         System.setProperty("solr.slave.enable", "false");
         System.setProperty("solr.poll", "1");
         System.setProperty("solr.allow.unsafe.resourceloading", "true");
+        System.setProperty("solr.allowed.securerandom", "NativePRNG");
         SolrTestCaseJ4.initCore(config, schema, solrHome, core);
     }
 
@@ -46,16 +47,20 @@ public class InitSolr {
     }
 
     public static InitSolr suburbsCore() {
+        File solr = new File(InitSolr.class.getClassLoader().getResource("solr").getFile());
+        
         return InitSolr.valueOf("conf/solrconfig.xml",
                 "conf/schema.xml",
-                "src/main/resources/solr",
+                solr.getAbsolutePath(),
                 "suburbs");
     }
 
     public static InitSolr tagsCore() {
+        File solr = new File(InitSolr.class.getClassLoader().getResource("solr").getFile());
+        
         return InitSolr.valueOf("conf/solrconfig.xml",
                 "conf/schema.xml",
-                "src/main/resources/solr",
+                solr.getAbsolutePath(),
                 "tags");
     }
 }

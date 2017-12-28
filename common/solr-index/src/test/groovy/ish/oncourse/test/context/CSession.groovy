@@ -20,6 +20,11 @@ class CSession {
         this
     }
 
+    CSession endDate(Date date){
+        session.endDate = date
+        this
+    }
+
     CRoom cRoom(Site site){
         CRoom cRoom = CRoom.instance(objectContext, site)
         session.room = cRoom.room
