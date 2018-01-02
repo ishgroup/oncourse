@@ -15,7 +15,7 @@ import org.junit.Test;
 public class CoursesTest extends ServiceTest {
 	@Before
 	public void before() {
-		initTest("ish.oncourse.ui", "common-ui", TestModule.class);
+		initTest("ish.oncourse.ui", "app", TestModule.class);
 	}
 
 	@Test
