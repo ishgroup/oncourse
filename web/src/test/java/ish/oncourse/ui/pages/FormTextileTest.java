@@ -1,5 +1,9 @@
 package ish.oncourse.ui.pages;
 
+import ish.oncourse.test.TestContext;
+import ish.oncourse.test.context.CCollege;
+import ish.oncourse.test.context.CWebSite;
+import ish.oncourse.test.context.DataContext;
 import ish.oncourse.ui.services.TestModule;
 import org.apache.tapestry5.dom.Document;
 import org.apache.tapestry5.dom.Element;
@@ -9,13 +13,24 @@ import org.junit.Test;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static ish.oncourse.test.tapestry.TestModule.dataSource;
+import static ish.oncourse.test.tapestry.TestModule.serverRuntime;
 import static org.junit.Assert.assertTrue;
 
 public class FormTextileTest {
 
 	@Test
 	public void testPageLoaded() throws Exception {
-		PageTester tester = new PageTester("ish.oncourse.ui", "", "src/main/webapp", TestModule.class);
+
+		TestContext context = new TestContext().open();
+		dataSource.set(context.getDS());
+		serverRuntime.set(context.getServerRuntime());
+
+		CCollege college = new DataContext().withObjectContext(context.getServerRuntime().newContext()).newCollege();
+		CWebSite webSite = college.newWebSite();
+
+
+		PageTester tester = new PageTester("ish.oncourse.ui", "", "/", TestModule.class);
 		Document doc = tester.renderPage("FormTextilePage");
 		Element el = doc.getElementById("textile");
 
