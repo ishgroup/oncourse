@@ -103,7 +103,7 @@ public class TagTextileParserTest extends ServiceTest {
 		request.setAttribute(WebSiteService.CURRENT_WEB_SITE, site);
 		Document doc = getPageTester().renderPage("TagsTextile");
 
-		assertEquals(tags, doc.getElementById("tag-tree").toString());
+		assertEquals(tags.replaceAll("\\s+",""), doc.getElementById("tag-tree").toString().replaceAll("\\s+",""));
 
 	}
 	
