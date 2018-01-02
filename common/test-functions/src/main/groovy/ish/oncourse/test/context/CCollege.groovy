@@ -1,5 +1,6 @@
 package ish.oncourse.test.context
 
+import com.github.javafaker.Faker
 import ish.oncourse.model.*
 import org.apache.cayenne.ObjectContext
 
@@ -10,10 +11,12 @@ import org.apache.cayenne.ObjectContext
 class CCollege {
     ObjectContext objectContext
     College college
+    Faker faker = new Faker()
 
     Map<String, Tag> tags = new HashMap<>()
     Map<String, CCourse> cCourses = new HashMap<>()
 
+    List<CWebSite> webSites = new LinkedList<>()
 
     Tag tag(String name, boolean webVisible = true) {
         Tag tag = objectContext.newObject(Tag)
@@ -64,5 +67,17 @@ class CCollege {
         taggableTag.taggable = taggable
         taggableTag.tag = objectContext.localObject(tag)
         objectContext.commitChanges()
+    }
+
+
+    CWebSite newWebSite() {
+        WebSite webSite = objectContext.newObject(WebSite)
+        webSite.college = this.college
+        webSite.name = faker.company().name()
+        webSite.siteKey = webSite.name.substring(0, 3).toLowerCase()
+        webSite.created = new Date()
+        webSite.modified = new Date()
+        objectContext.commitChanges()
+        return new CWebSite(webSite: webSite)
     }
 }

@@ -9,7 +9,7 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.WebSiteServiceOverride;
 import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.services.usi.IUSIVerificationService;
-import ish.oncourse.test.tapestry.ServiceTest;
+import ish.oncourse.test.tapestry.TestModule;
 import ish.oncourse.util.PageRenderer;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.reference.services.ReferenceStubBuilder;
@@ -35,9 +35,9 @@ public class ReplicationTestModule {
 
 	public static void bind(ServiceBinder binder) {
 
-		binder.bind(ServerRuntime.class, resources -> ServiceTest.serverRuntime.get());
+		binder.bind(ServerRuntime.class, resources -> TestModule.serverRuntime.get());
 
-		binder.bind(DataSource.class, resources -> ServiceTest.dataSource.get());
+		binder.bind(DataSource.class, resources -> TestModule.dataSource.get());
 
 
 		BinderFunctions.bindEntityServices(binder);

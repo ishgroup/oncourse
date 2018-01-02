@@ -4,7 +4,6 @@ import ish.oncourse.model.College
 import ish.oncourse.model.Course
 import ish.oncourse.model.Tag
 import ish.oncourse.model.Taggable
-import ish.oncourse.solr.model.DataContext
 import ish.oncourse.test.TestContext
 import ish.oncourse.test.context.*
 import org.apache.cayenne.ObjectContext
@@ -13,7 +12,6 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
-import static ish.oncourse.test.functions.Functions.createRuntime
 import static org.junit.Assert.*
 
 /**
@@ -32,9 +30,9 @@ class CourseQueryTest {
         testContext = new TestContext()
         testContext.open()
 
-        objectContext = testContext.getRuntime().newContext()
+        objectContext = testContext.serverRuntime().newContext()
         DataContext dataContext = new DataContext(objectContext: objectContext)
-        collegeContext = dataContext.college("College-Australia/Sydney", "Australia/Sydney")
+        collegeContext = dataContext.newCollege()
         college = collegeContext.college
     }
 

@@ -1,15 +1,13 @@
 package ish.oncourse.solr.functions.tag
 
 import ish.oncourse.model.Tag
-import ish.oncourse.test.context.CCollege
-import ish.oncourse.solr.model.DataContext
 import ish.oncourse.test.TestContext
-import org.apache.cayenne.configuration.server.ServerRuntime
+import ish.oncourse.test.context.CCollege
+import ish.oncourse.test.context.DataContext
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
-import static ish.oncourse.test.functions.Functions.createRuntime
 import static org.junit.Assert.*
 
 /**
@@ -27,12 +25,12 @@ class TagsQueryTest {
 
         testContext = new TestContext()
         testContext.open()
-        dataContext = new DataContext(objectContext: testContext.getRuntime().newContext())
+        dataContext = new DataContext(objectContext: testContext.serverRuntime.newContext())
     }
 
     @Test
     void test() {
-        CCollege collegeContext = dataContext.college("College-Australia/Sydney", "Australia/Sydney")
+        CCollege collegeContext = dataContext.newCollege()
 
         collegeContext.tag("Tag1")
         collegeContext.tag("Tag12")

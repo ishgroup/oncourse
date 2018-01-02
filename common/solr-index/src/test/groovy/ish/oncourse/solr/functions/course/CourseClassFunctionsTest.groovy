@@ -1,22 +1,13 @@
 package ish.oncourse.solr.functions.course
 
 import ish.oncourse.model.*
-import ish.oncourse.solr.model.DataContext
 import ish.oncourse.test.TestContext
-import ish.oncourse.test.context.CCollege
-import ish.oncourse.test.context.CContact
-import ish.oncourse.test.context.CCourse
-import ish.oncourse.test.context.CRoom
-import ish.oncourse.test.context.CSession
-import ish.oncourse.test.context.CSite
-import ish.oncourse.test.context.CTutorRole
+import ish.oncourse.test.context.*
 import org.apache.cayenne.ObjectContext
 import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-
-import static ish.oncourse.test.functions.Functions.createRuntime
 
 /**
  * Created by alex on 11/14/17.
@@ -34,9 +25,9 @@ class CourseClassFunctionsTest {
         testContext = new TestContext()
         testContext.open()
 
-        objectContext = testContext.getRuntime().newContext()
+        objectContext = testContext.serverRuntime.newContext()
         DataContext dataContext = new DataContext(objectContext: objectContext)
-        CCollege collegeContext = dataContext.college("College-Australia/Sydney", "Australia/Sydney")
+        CCollege collegeContext = dataContext.newCollege()
         college = collegeContext.college
         course = collegeContext.cCourse("course")
     }

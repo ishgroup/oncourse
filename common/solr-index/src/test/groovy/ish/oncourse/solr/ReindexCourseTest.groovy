@@ -2,13 +2,13 @@ package ish.oncourse.solr
 
 import com.carrotsearch.randomizedtesting.annotations.ThreadLeakScope
 import io.reactivex.schedulers.Schedulers
-import ish.oncourse.solr.model.DataContext
 import ish.oncourse.solr.model.SCourse
 import ish.oncourse.solr.query.SolrQueryBuilder
 import ish.oncourse.solr.reindex.ReindexCoursesJob
 import ish.oncourse.test.TestContext
 import ish.oncourse.test.context.CCollege
 import ish.oncourse.test.context.CCourse
+import ish.oncourse.test.context.DataContext
 import org.apache.cayenne.ObjectContext
 import org.apache.solr.SolrTestCaseJ4
 import org.apache.solr.client.solrj.SolrClient
@@ -38,7 +38,7 @@ class ReindexCourseTest extends SolrTestCaseJ4 {
         testContext.open()
         objectContext = testContext.getServerRuntime().newContext()
         DataContext dataContext = new DataContext(objectContext: objectContext)
-        cCollege = dataContext.college("College-Australia/Sydney", "Australia/Sydney")
+        cCollege = dataContext.newCollege("College-Australia/Sydney", "Australia/Sydney")
     }
 
     @Test

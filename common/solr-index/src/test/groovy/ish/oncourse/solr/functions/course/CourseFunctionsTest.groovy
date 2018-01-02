@@ -2,17 +2,16 @@ package ish.oncourse.solr.functions.course
 
 import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Tag
-import ish.oncourse.solr.model.DataContext
 import ish.oncourse.test.TestContext
 import ish.oncourse.test.context.CCollege
 import ish.oncourse.test.context.CCourse
+import ish.oncourse.test.context.DataContext
 import org.apache.cayenne.ObjectContext
 import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
-import static ish.oncourse.test.functions.Functions.createRuntime
 import static org.junit.Assert.assertNotNull
 import static org.junit.Assert.assertNull
 
@@ -28,11 +27,11 @@ class CourseFunctionsTest {
     @Before
     void before() {
 
-        testContext = new TestContext()
+        testContext = new TestContext().open()
         testContext.open()
-        objectContext = testContext.getRuntime().newContext()
+        objectContext = testContext.serverRuntime.newContext()
         DataContext dataContext = new DataContext(objectContext: objectContext)
-        collegeContext = dataContext.college("College-Australia/Sydney", "Australia/Sydney")
+        collegeContext = dataContext.newCollege()
     }
 
     @Test
