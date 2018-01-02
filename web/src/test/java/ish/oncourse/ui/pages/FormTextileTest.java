@@ -8,6 +8,8 @@ import ish.oncourse.ui.services.TestModule;
 import org.apache.tapestry5.dom.Document;
 import org.apache.tapestry5.dom.Element;
 import org.apache.tapestry5.test.PageTester;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.regex.Matcher;
@@ -19,18 +21,29 @@ import static org.junit.Assert.assertTrue;
 
 public class FormTextileTest {
 
-	@Test
-	public void testPageLoaded() throws Exception {
+	private TestContext context;
+	private PageTester tester;
 
-		TestContext context = new TestContext().open();
+	@Before
+	public void before() {
+		this.context = new TestContext().open();
 		dataSource.set(context.getDS());
 		serverRuntime.set(context.getServerRuntime());
 
 		CCollege college = new DataContext().withObjectContext(context.getServerRuntime().newContext()).newCollege();
 		CWebSite webSite = college.newWebSite();
+		this.tester = new PageTester("ish.oncourse.ui", "", "/", TestModule.class);
+	}
+
+	@After
+	public void after() {
+		this.tester.shutdown();
+		this.context.close();
+	}
 
 
-		PageTester tester = new PageTester("ish.oncourse.ui", "", "/", TestModule.class);
+	@Test
+	public void testPageLoaded() throws Exception {
 		Document doc = tester.renderPage("FormTextilePage");
 		Element el = doc.getElementById("textile");
 
@@ -38,13 +51,10 @@ public class FormTextileTest {
 		
 		assertTrue(responseResult.contains(FormTextilePage.FORM_NAME));
 		assertTrue(responseResult.contains(FormTextilePage.FIELD_LABEL));
-		
-		tester.shutdown();
 	}
 	
 	@Test
 	public void testPageLoadedForJrda() throws Exception {
-		PageTester tester = new PageTester("ish.oncourse.ui", "", "src/main/webapp", TestModule.class);
 		Document doc = tester.renderPage("FormTextilePage");
 		Element el = doc.getElementById("textileForJrda");
 
@@ -94,13 +104,10 @@ public class FormTextileTest {
 		assertTrue(cutResult.contains("Enquiry"));
 		assertTrue(cutResult.contains("rows=\"5\""));
 		assertTrue(cutResult.contains("class=\"formField \""));
-		
-		tester.shutdown();
 	}
 	
 	@Test
 	public void testPageLoadedForScc() throws Exception {
-		PageTester tester = new PageTester("ish.oncourse.ui", "", "src/main/webapp", TestModule.class);
 		Document doc = tester.renderPage("FormTextilePage");
 		
 		Element el = doc.getElementById("textileForScc");
@@ -194,13 +201,10 @@ public class FormTextileTest {
 		assertTrue(responseResult.contains("b. Second Outcome"));
 		assertTrue(responseResult.contains("c. Third Outcome"));
 		assertTrue(responseResult.contains("d. Fourth Outcome"));
-				
-		tester.shutdown();
 	}
 	
 	@Test
 	public void testPageLoadedForTextilePageDjwarehouse() throws Exception {
-		PageTester tester = new PageTester("ish.oncourse.ui", "", "src/main/webapp", TestModule.class);
 		Document doc = tester.renderPage("FormTextilePage");
 		
 		Element el = doc.getElementById("textileForDjwarehouse");
@@ -287,7 +291,6 @@ public class FormTextileTest {
 	// test for two form on one page
 	@Test
 	public void testPageWithTwoFormLoaded() throws Exception {
-		PageTester tester = new PageTester("ish.oncourse.ui", "", "src/main/webapp", TestModule.class);
 		Document doc = tester.renderPage("FormTextilePageWithTwoForms");
 		
 		Element el = doc.getElementById("textile");
