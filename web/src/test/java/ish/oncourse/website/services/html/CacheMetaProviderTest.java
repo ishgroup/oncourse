@@ -6,7 +6,10 @@ import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.html.ICacheMetaProvider;
 import ish.oncourse.test.LoadDataSet;
 import ish.oncourse.test.tapestry.ServiceTest;
+import ish.oncourse.test.tapestry.TestModule;
 import ish.oncourse.website.services.AppModule;
+import org.apache.cayenne.configuration.server.ServerRuntime;
+import org.apache.tapestry5.ioc.ServiceBinder;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,7 +23,7 @@ public class CacheMetaProviderTest extends ServiceTest {
 	@Before
 	public void setup() throws Exception {
 
-		initTest("ish.oncourse.website", "app", AppModule.class);
+		initTest("ish.oncourse.website", "app", Module.class, AppModule.class);
 		new LoadDataSet().dataSetFile("ish/oncourse/website/services/html/CacheMetaProviderTest.xml").load(getDataSource());
 		cacheMetaProvider = getService(ICacheMetaProvider.class);
 		cookiesService = getService(ICookiesService.class);
@@ -47,6 +50,13 @@ public class CacheMetaProviderTest extends ServiceTest {
 		value = cacheMetaProvider.getMetaContent();
 		assertEquals("public", value);
 
+	}
+
+
+	public static class Module {
+		public static void bind(ServiceBinder binder) {
+			binder.bind(ServerRuntime.class, resources -> TestModule.serverRuntime.get());
+		}
 	}
 
 
