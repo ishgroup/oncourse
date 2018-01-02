@@ -36,31 +36,31 @@ class CourseFunctionsTest {
 
     @Test
     void testCourseClassQuery(){
-        CCourse targetCourse = collegeContext.cCourse("Target course")
-        CCourse otherCourse = collegeContext.cCourse("Other course")
+        CCourse targetCourse = collegeContext.newCourse("Target course")
+        CCourse otherCourse = collegeContext.newCourse("Other course")
 
-        CourseClass expected1 = targetCourse.cCourseClass("expected1")
+        CourseClass expected1 = targetCourse.newCourseClass("expected1")
                 .endDate(new Date().plus(1))
                 .build().courseClass
-        CourseClass expected2 = targetCourse.cCourseClass("expected2")
+        CourseClass expected2 = targetCourse.newCourseClass("expected2")
                 .endDate(new Date().plus(1))
                 .build().courseClass
-        CourseClass expected3Distant = targetCourse.cCourseClass("expected3Distant")
+        CourseClass expected3Distant = targetCourse.newCourseClass("expected3Distant")
                 .isDistantLearningCourse(true)
                 .build().courseClass
-        CourseClass invisible = targetCourse.cCourseClass("invisible")
+        CourseClass invisible = targetCourse.newCourseClass("invisible")
                 .endDate(new Date().plus(1)).isWebVisible(false)
                 .build().courseClass
-        CourseClass cancelled = targetCourse.cCourseClass("cancelled")
+        CourseClass cancelled = targetCourse.newCourseClass("cancelled")
                 .endDate(new Date().plus(1)).cancelled(true)
                 .build().courseClass
-        CourseClass notFuture = targetCourse.cCourseClass("notFuture")
+        CourseClass notFuture = targetCourse.newCourseClass("notFuture")
                 .endDate(new Date())
                 .build().courseClass
-        CourseClass otherCourse1 = otherCourse.cCourseClass("otherCourse1")
+        CourseClass otherCourse1 = otherCourse.newCourseClass("otherCourse1")
                 .endDate(new Date().plus(1))
                 .build().courseClass
-        CourseClass otherCourse2 = otherCourse.cCourseClass("otherCourse2")
+        CourseClass otherCourse2 = otherCourse.newCourseClass("otherCourse2")
                 .isDistantLearningCourse(true)
                 .build().courseClass
 
@@ -90,11 +90,11 @@ class CourseFunctionsTest {
         collegeContext.addTag("Tag1", "Tag11", "Tag12")
         collegeContext.addTag("Tag2", "Tag21")
 
-        collegeContext.cCourse("Other course")
+        collegeContext.newCourse("Other course")
         collegeContext.tagCourse("OTHER COURSE", "Tag2")
         collegeContext.tagCourse("OTHER COURSE", "Tag21")
 
-        CCourse targetCourse = collegeContext.cCourse("Target course")
+        CCourse targetCourse = collegeContext.newCourse("Target course")
         collegeContext.tagCourse("TARGET COURSE", "Tag1")
         collegeContext.tagCourse("TARGET COURSE", "Tag11")
         collegeContext.tagCourse("TARGET COURSE", "Tag22")

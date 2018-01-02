@@ -41,11 +41,11 @@ class CCollege {
         }
     }
 
-    CCourse cCourse(String name){
-        cCourse(name, name.toUpperCase())
+    CCourse newCourse(String name){
+        newCourse(name, name.toUpperCase())
     }
 
-    CCourse cCourse(String name, String code) {
+    CCourse newCourse(String name, String code) {
         CCourse cCourse = CCourse.instance(objectContext, college, name, code)
         cCourses.put(cCourse.course.code, cCourse)
         objectContext.commitChanges()
@@ -79,5 +79,9 @@ class CCollege {
         webSite.modified = new Date()
         objectContext.commitChanges()
         return new CWebSite(webSite: webSite)
+    }
+
+    CSite newSite() {
+        return CSite.instance(objectContext, this.college)
     }
 }

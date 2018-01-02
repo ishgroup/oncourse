@@ -40,13 +40,13 @@ class CSession {
         this
     }
 
-    CRoom cRoom(Site site){
+    CRoom newRoom(Site site){
         CRoom cRoom = CRoom.instance(objectContext, site)
         session.room = cRoom.room
         cRoom
     }
 
-    CRoom cRoom(){
+    CRoom newRoom(){
         CRoom cRoom = CRoom.instance(objectContext, session.college)
         session.room = cRoom.room
         cRoom

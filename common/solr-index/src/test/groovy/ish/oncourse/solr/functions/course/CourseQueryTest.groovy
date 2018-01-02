@@ -40,17 +40,17 @@ class CourseQueryTest {
     void testByTutor(){
         CTutor tutor1 = CTutor.instance(objectContext, college, "targetTutor")
         CTutor tutor2 = CTutor.instance(objectContext, college, "otherTutor")
-        CCourse expectedCourse1 = collegeContext.cCourse("expectedCourse1")
-        CCourse expectedCourse2 = collegeContext.cCourse("expectedCourse2")
-        CCourse otherCourse = collegeContext.cCourse("otherCourse")
+        CCourse expectedCourse1 = collegeContext.newCourse("expectedCourse1")
+        CCourse expectedCourse2 = collegeContext.newCourse("expectedCourse2")
+        CCourse otherCourse = collegeContext.newCourse("otherCourse")
         List<Course> actualCourses
 
-        CTutorRole.instance(objectContext, tutor1.tutor, expectedCourse1.cCourseClass("expectedClass11").courseClass)
-        CTutorRole.instance(objectContext, tutor1.tutor, expectedCourse1.cCourseClass("expectedClass12").courseClass)
-        CTutorRole.instance(objectContext, tutor1.tutor, expectedCourse2.cCourseClass("expectedClass21").courseClass)
+        CTutorRole.instance(objectContext, tutor1.tutor, expectedCourse1.newCourseClass("expectedClass11").courseClass)
+        CTutorRole.instance(objectContext, tutor1.tutor, expectedCourse1.newCourseClass("expectedClass12").courseClass)
+        CTutorRole.instance(objectContext, tutor1.tutor, expectedCourse2.newCourseClass("expectedClass21").courseClass)
 
         CTutorRole.instance(objectContext, tutor2.tutor, expectedCourse2.cClasses.get("expectedClass21").courseClass)
-        CTutorRole.instance(objectContext, tutor2.tutor, otherCourse.cCourseClass("otherClass").courseClass)
+        CTutorRole.instance(objectContext, tutor2.tutor, otherCourse.newCourseClass("otherClass").courseClass)
 
         actualCourses = CourseQuery.byTutor(tutor1.tutor).select(objectContext)
         Assert.assertEquals(2, actualCourses.size())
@@ -67,20 +67,20 @@ class CourseQueryTest {
 
     @Test
     void testBySessionRoom(){
-        CCourse expectedCourse = collegeContext.cCourse("expectedCourse")
+        CCourse expectedCourse = collegeContext.newCourse("expectedCourse")
         CRoom targetRoom = CRoom.instance(objectContext, college)
-        CSession.instance(objectContext, expectedCourse.cCourseClass("expectedClass1").courseClass).room(targetRoom.room)
+        CSession.instance(objectContext, expectedCourse.newCourseClass("expectedClass1").courseClass).room(targetRoom.room)
         CSession.instance(objectContext, expectedCourse.cClasses.get("expectedClass1").courseClass).room(targetRoom.room)
 
-        CCourse otherCourse = collegeContext.cCourse("expectedCourse")
+        CCourse otherCourse = collegeContext.newCourse("expectedCourse")
         CRoom otherRoom = CRoom.instance(objectContext, college)
-        CSession.instance(objectContext, otherCourse.cCourseClass("otherClass1").courseClass).room(otherRoom.room)
+        CSession.instance(objectContext, otherCourse.newCourseClass("otherClass1").courseClass).room(otherRoom.room)
 
-        CCourse courseWithoutSession = collegeContext.cCourse("courseWithoutSession")
+        CCourse courseWithoutSession = collegeContext.newCourse("courseWithoutSession")
 
         CRoom mainRoom = CRoom.instance(objectContext, college)
-        CCourse courseWithMainRoom = collegeContext.cCourse("courseWithMainRoom")
-        courseWithMainRoom.cCourseClass("classWithMainRoom1").room(mainRoom.room)
+        CCourse courseWithMainRoom = collegeContext.newCourse("courseWithMainRoom")
+        courseWithMainRoom.newCourseClass("classWithMainRoom1").room(mainRoom.room)
         objectContext.commitChanges()
 
         List<Course> actualCourses = CourseQuery.bySessionRoom(targetRoom.room).select(objectContext)
@@ -93,18 +93,18 @@ class CourseQueryTest {
 
     @Test
     void testByCourseClassRoom(){
-        CCourse expectedCourse = collegeContext.cCourse("expectedCourse")
+        CCourse expectedCourse = collegeContext.newCourse("expectedCourse")
         CRoom targetRoom = CRoom.instance(objectContext, college)
-        expectedCourse.cCourseClass("expectedClass1").room(targetRoom.room)
+        expectedCourse.newCourseClass("expectedClass1").room(targetRoom.room)
 
-        CCourse otherCourse = collegeContext.cCourse("otherCourse")
+        CCourse otherCourse = collegeContext.newCourse("otherCourse")
         CRoom otherRoom = CRoom.instance(objectContext, college)
-        otherCourse.cCourseClass("otherClass1").room(otherRoom.room)
+        otherCourse.newCourseClass("otherClass1").room(otherRoom.room)
 
-        CCourse sessionCourse = collegeContext.cCourse("sessionCourse")
-        CSession.instance(objectContext, sessionCourse.cCourseClass("expectedClass1").courseClass).room(targetRoom.room)
+        CCourse sessionCourse = collegeContext.newCourse("sessionCourse")
+        CSession.instance(objectContext, sessionCourse.newCourseClass("expectedClass1").courseClass).room(targetRoom.room)
 
-        CCourse courseWithoutSession = collegeContext.cCourse("courseWithoutSession")
+        CCourse courseWithoutSession = collegeContext.newCourse("courseWithoutSession")
         objectContext.commitChanges()
 
         List<Course> actualCourses = CourseQuery.byCourseClassRoom(targetRoom.room).select(objectContext)
@@ -117,16 +117,16 @@ class CourseQueryTest {
 
     @Test
     void testBySessionRoomSite(){
-        CCourse expectedCourse = collegeContext.cCourse("expectedCourse")
+        CCourse expectedCourse = collegeContext.newCourse("expectedCourse")
         CSite targetSite = CSite.instance(objectContext, college)
-        CSession.instance(objectContext, expectedCourse.cCourseClass("expectedClass1").courseClass).cRoom(targetSite.site)
+        CSession.instance(objectContext, expectedCourse.newCourseClass("expectedClass1").courseClass).newRoom(targetSite.site)
 
-        CCourse otherCourse = collegeContext.cCourse("otherCourse")
+        CCourse otherCourse = collegeContext.newCourse("otherCourse")
         CSite otherSite = CSite.instance(objectContext, college)
-        CSession.instance(objectContext, otherCourse.cCourseClass("otherClass1").courseClass).cRoom(otherSite.site)
+        CSession.instance(objectContext, otherCourse.newCourseClass("otherClass1").courseClass).newRoom(otherSite.site)
 
-        CCourse courseWithMainRoomSite = collegeContext.cCourse("courseWithMainRoomSite")
-        courseWithMainRoomSite.cCourseClass("classWithMainRoomSite1").cRoom(targetSite.site)
+        CCourse courseWithMainRoomSite = collegeContext.newCourse("courseWithMainRoomSite")
+        courseWithMainRoomSite.newCourseClass("classWithMainRoomSite1").cRoom(targetSite.site)
         objectContext.commitChanges()
 
         List<Course> actualCourses = CourseQuery.bySessionSite(targetSite.site).select(objectContext)
@@ -138,16 +138,16 @@ class CourseQueryTest {
 
     @Test
     void testByCourseClassRoomSite(){
-        CCourse expectedCourse = collegeContext.cCourse("expectedCourse")
+        CCourse expectedCourse = collegeContext.newCourse("expectedCourse")
         CSite targetSite = CSite.instance(objectContext, college)
-        expectedCourse.cCourseClass("expectedClass1").cRoom(targetSite.site)
+        expectedCourse.newCourseClass("expectedClass1").cRoom(targetSite.site)
 
-        CCourse otherCourse = collegeContext.cCourse("otherCourse")
+        CCourse otherCourse = collegeContext.newCourse("otherCourse")
         CSite otherSite = CSite.instance(objectContext, college)
-        otherCourse.cCourseClass("otherClass1").cRoom(otherSite.site)
+        otherCourse.newCourseClass("otherClass1").cRoom(otherSite.site)
 
-        CCourse sessionCourse = collegeContext.cCourse("sessionCourse")
-        CSession.instance(objectContext, sessionCourse.cCourseClass("expectedClass1").courseClass).cRoom(targetSite.site)
+        CCourse sessionCourse = collegeContext.newCourse("sessionCourse")
+        CSession.instance(objectContext, sessionCourse.newCourseClass("expectedClass1").courseClass).newRoom(targetSite.site)
         objectContext.commitChanges()
 
         List<Course> actualCourses = CourseQuery.byCourseClassSite(targetSite.site).select(objectContext)
@@ -160,13 +160,13 @@ class CourseQueryTest {
     @Test
     void testCourseTaggableByTag(){
         Tag targetTag = collegeContext.tag("targetTag")
-        CCourse expectedCourse1 = collegeContext.cCourse("expectedCourse1")
-        CCourse expectedCourse2 = collegeContext.cCourse("expectedCourse2")
+        CCourse expectedCourse1 = collegeContext.newCourse("expectedCourse1")
+        CCourse expectedCourse2 = collegeContext.newCourse("expectedCourse2")
         collegeContext.tagCourse(expectedCourse1.course, targetTag)
         collegeContext.tagCourse(expectedCourse2.course, targetTag)
 
         Tag otherTag = collegeContext.tag("otherTag")
-        CCourse otherCourse1 = collegeContext.cCourse("otherCourse1")
+        CCourse otherCourse1 = collegeContext.newCourse("otherCourse1")
         collegeContext.tagCourse(expectedCourse1.course, otherTag)
         collegeContext.tagCourse(otherCourse1.course, otherTag)
 
@@ -180,13 +180,13 @@ class CourseQueryTest {
     @Test
     void testByTaggable(){
         Tag targetTag = collegeContext.tag("targetTag")
-        CCourse expectedCourse1 = collegeContext.cCourse("expectedCourse1")
-        CCourse expectedCourse2 = collegeContext.cCourse("expectedCourse2")
+        CCourse expectedCourse1 = collegeContext.newCourse("expectedCourse1")
+        CCourse expectedCourse2 = collegeContext.newCourse("expectedCourse2")
         collegeContext.tagCourse(expectedCourse1.course, targetTag)
         collegeContext.tagCourse(expectedCourse2.course, targetTag)
 
         Tag otherTag = collegeContext.tag("otherTag")
-        CCourse otherCourse1 = collegeContext.cCourse("otherCourse1")
+        CCourse otherCourse1 = collegeContext.newCourse("otherCourse1")
         collegeContext.tagCourse(expectedCourse1.course, otherTag)
         collegeContext.tagCourse(otherCourse1.course, otherTag)
 

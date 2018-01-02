@@ -12,14 +12,18 @@ class CCourse {
     private ObjectContext objectContext
     Course course
 
-    Map<String, CCourseClass> cClasses = new HashMap<>()
+    List<CCourseClass> classes = new LinkedList<>()
 
-    private CCourse (){}
+    private CCourse() {}
 
-    CCourseClass cCourseClass (String code){
+    CCourseClass newCourseClass(String code) {
         CCourseClass cClass = CCourseClass.instance(objectContext, code, course)
-        cClasses.put(cClass.courseClass.code, cClass)
+        classes.add(cClass)
         cClass
+    }
+
+    CCourseClass getCourseClassBy(String code) {
+        return classes.stream().filter({ (it.courseClass.code == code) }).findFirst().get()
     }
 
     static CCourse instance(ObjectContext context, College college, String name, String code) {
@@ -46,43 +50,43 @@ class CCourse {
         withClass(code, classStartDate, classStartDate + durationDays)
         this
     }
-    
+
     CCourse withClass(String code, Date startDate, Date endDate) {
         CCourseClass cClass = CCourseClass.instance(objectContext, code, course).startDate(startDate).endDate(endDate)
-        cClasses.put(cClass.courseClass.code, cClass)
+        classes.add(cClass)
         this
     }
 
     CCourse withCancelledClass(String code) {
         CCourseClass cClass = CCourseClass.instance(objectContext, code, course).cancelled(true)
-        cClasses.put(cClass.courseClass.code, cClass)
+        classes.add(cClass)
         this
     }
 
     CCourse withDistantClass(String code) {
         CCourseClass cClass = CCourseClass.instance(objectContext, code, course).isDistantLearningCourse(true)
-        cClasses.put(cClass.courseClass.code, cClass)
+        classes.add(cClass)
         this
     }
 
     CCourse withInactiveClass(String code) {
         CCourseClass cClass = CCourseClass.instance(objectContext, code, course).active(false)
-        cClasses.put(cClass.courseClass.code, cClass)
+        classes.add(cClass)
         this
     }
 
     CCourse withEnrolDisabledClass(String code) {
         CCourseClass cClass = CCourseClass.instance(objectContext, code, course).active(false).isWebVisible(false)
-        cClasses.put(cClass.courseClass.code, cClass)
+        classes.add(cClass)
         this
     }
 
     CCourse withWebInvisibleClass(String code) {
         CCourseClass cClass = CCourseClass.instance(objectContext, code, course).isWebVisible(false)
-        cClasses.put(cClass.courseClass.code, cClass)
+        classes.add(cClass)
         this
     }
-    
+
     CCourse detail(String detail) {
         course.setDetail(detail)
         this

@@ -13,6 +13,8 @@ class CCourseClass {
     CourseClass courseClass
     private ObjectContext objectContext
 
+    List<CSession> sessions = new LinkedList<>()
+
     private CCourseClass(){}
 
     CCourseClass course(Course course){
@@ -73,7 +75,8 @@ class CCourseClass {
     }
 
     CCourseClass withSession(Date date) {
-        CSession.instance(objectContext, courseClass).date(date)
+        CSession session = CSession.instance(objectContext, courseClass).date(date)
+        sessions.add(session)
         this
     }
 

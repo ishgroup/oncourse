@@ -29,18 +29,18 @@ class CourseClassFunctionsTest {
         DataContext dataContext = new DataContext(objectContext: objectContext)
         CCollege collegeContext = dataContext.newCollege()
         college = collegeContext.college
-        course = collegeContext.cCourse("course")
+        course = collegeContext.newCourse("course")
     }
 
     @Test
     void testSessionsQuery(){
-        CourseClass targetClass = course.cCourseClass("targetClass").courseClass
+        CourseClass targetClass = course.newCourseClass("targetClass").courseClass
         CSession.instance(objectContext, targetClass).startDate(new Date().plus(1)).build()
         CSession.instance(objectContext, targetClass).startDate(new Date()).build()
         CSession.instance(objectContext, targetClass).startDate(new Date().minus(1)).build()
         CSession.instance(objectContext, targetClass).startDate(new Date()).build()
 
-        CourseClass otherClass = course.cCourseClass("otherClass").courseClass
+        CourseClass otherClass = course.newCourseClass("otherClass").courseClass
         CSession.instance(objectContext, otherClass).startDate(new Date()).build()
         CSession.instance(objectContext, otherClass).startDate(new Date().plus(1)).build()
 
@@ -55,17 +55,17 @@ class CourseClassFunctionsTest {
 
     @Test
     void testSessionSitesQuery(){
-        CourseClass targetClass = course.cCourseClass("targetClass").courseClass
+        CourseClass targetClass = course.newCourseClass("targetClass").courseClass
 
         Site expectedSite = CSite.instance(objectContext, college).isWebVisible(true).build().site
-        CSession.instance(objectContext,targetClass).cRoom(expectedSite).build()
+        CSession.instance(objectContext,targetClass).newRoom(expectedSite).build()
 
         Site invisibleSite = CSite.instance(objectContext, college).isWebVisible(false).build().site
-        CSession.instance(objectContext,targetClass).cRoom(invisibleSite).build()
+        CSession.instance(objectContext,targetClass).newRoom(invisibleSite).build()
 
-        CourseClass otherClass = course.cCourseClass("otherClass").courseClass
+        CourseClass otherClass = course.newCourseClass("otherClass").courseClass
         Site otherClassSite = CSite.instance(objectContext, college).isWebVisible(true).build().site
-        CSession.instance(objectContext,otherClass).cRoom(otherClassSite).build()
+        CSession.instance(objectContext,otherClass).newRoom(otherClassSite).build()
 
         Site mainSite = CSite.instance(objectContext, college).isWebVisible(true).build().site
         targetClass.room = CRoom.instance(objectContext, mainSite).build().room
@@ -81,11 +81,11 @@ class CourseClassFunctionsTest {
 
     @Test
     void testContactsQuery(){
-        CourseClass targetClass = course.cCourseClass("targetClass").courseClass
+        CourseClass targetClass = course.newCourseClass("targetClass").courseClass
         Contact expectedContact = CContact.instance(objectContext, college, "expected contact").build().contact
         CTutorRole.instance(objectContext, expectedContact, targetClass).build()
 
-        CourseClass otherClass = course.cCourseClass("otherClass").courseClass
+        CourseClass otherClass = course.newCourseClass("otherClass").courseClass
         Contact otherClassContact = CContact.instance(objectContext, college, "otherClass tutor").build().contact
         CTutorRole.instance(objectContext, otherClassContact, otherClass).build()
 

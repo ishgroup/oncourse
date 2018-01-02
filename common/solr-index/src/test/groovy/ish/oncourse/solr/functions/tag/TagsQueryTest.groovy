@@ -38,7 +38,7 @@ class TagsQueryTest {
         collegeContext.tag("Tag2")
 
         collegeContext.addTag("Tag1", "Tag11Invisible", "Tag12")
-        collegeContext.cCourse("Course1")
+        collegeContext.newCourse("Course1")
         collegeContext.tagCourse("COURSE1", "Tag2")
         collegeContext.tagCourse("COURSE1", "Tag11Invisible")
         collegeContext.tagCourse("COURSE1", "Tag12")

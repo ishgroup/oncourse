@@ -45,11 +45,11 @@ class SolrCourseClassQueryTest  extends SolrTestCaseJ4{
     void testGetCourseClassesWithoutSessions() throws IOException, SolrServerException {
         SolrClient solrClient = new EmbeddedSolrServer(h.getCore())
 
-        cCollege.cCourse("course1").withCancelledClass("cancelled").build()
-        cCollege.cCourse("course2").withDistantClass("distantLearning").build()
-        cCollege.cCourse("course3").withInactiveClass("inactive").build()
-        cCollege.cCourse("course4").withEnrolDisabledClass("enrolDisabled").build()
-        cCollege.cCourse("course5").withWebInvisibleClass("webInvisible").build()
+        cCollege.newCourse("course1").withCancelledClass("cancelled").build()
+        cCollege.newCourse("course2").withDistantClass("distantLearning").build()
+        cCollege.newCourse("course3").withInactiveClass("inactive").build()
+        cCollege.newCourse("course4").withEnrolDisabledClass("enrolDisabled").build()
+        cCollege.newCourse("course5").withWebInvisibleClass("webInvisible").build()
         
         ReindexCoursesJob job = new ReindexCoursesJob(objectContext, solrClient)
         job.run()

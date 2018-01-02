@@ -46,17 +46,17 @@ class SolrCourseClassQueryWithoutSessionTest extends SolrTestCaseJ4{
         SolrClient solrClient = new EmbeddedSolrServer(h.getCore())
         Date now = new Date()
         
-        cCollege.cCourse("course1").withClass("past", now - 11).build()
-        cCollege.cCourse("course2").withClass("pastStartsFirst", now - 12).build()
-        cCollege.cCourse("course3").withClass("pastEndsLast", now - 10).build()
+        cCollege.newCourse("course1").withClass("past", now - 11).build()
+        cCollege.newCourse("course2").withClass("pastStartsFirst", now - 12).build()
+        cCollege.newCourse("course3").withClass("pastEndsLast", now - 10).build()
         
-        cCollege.cCourse("course4").withClass("current", now - 5).build()
-        cCollege.cCourse("course5").withClass("curStartsFirst", now - 6).build()
-        cCollege.cCourse("course6").withClass("currentEndsLast", now - 4).build()
+        cCollege.newCourse("course4").withClass("current", now - 5).build()
+        cCollege.newCourse("course5").withClass("curStartsFirst", now - 6).build()
+        cCollege.newCourse("course6").withClass("currentEndsLast", now - 4).build()
         
-        cCollege.cCourse("course7").withClass("future", now + 5).build()
-        cCollege.cCourse("course8").withClass("futureStartsFirst", now + 4).build()
-        cCollege.cCourse("course9").withClass("futureEndsLast", now + 6).build()
+        cCollege.newCourse("course7").withClass("future", now + 5).build()
+        cCollege.newCourse("course8").withClass("futureStartsFirst", now + 4).build()
+        cCollege.newCourse("course9").withClass("futureEndsLast", now + 6).build()
         
         
         ReindexCoursesJob job = new ReindexCoursesJob(objectContext, solrClient)

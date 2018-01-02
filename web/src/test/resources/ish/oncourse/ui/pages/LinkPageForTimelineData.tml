@@ -1,4 +1,6 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+<html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+<body>
 	<t:remove>strange context path "foo", but it comes by default from tapestry</t:remove>
-	<a id="link" href="/foo/internal/TimelineData?ids=${courseClassId}"/>
-</t:container>
+	<a id="link" href="/internal/TimelineData?ids=${courseClassId}"/>
+</body>
+</html>

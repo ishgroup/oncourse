@@ -45,9 +45,9 @@ class ReindexCourseTest extends SolrTestCaseJ4 {
     void testReindexCourse() throws IOException, SolrServerException {
         SolrClient solrClient = new EmbeddedSolrServer(h.getCore())
 
-        CCourse course1 = cCollege.cCourse("course1")
+        CCourse course1 = cCollege.newCourse("course1")
         course1.detail("course1 Details").build()
-        CCourse course2 = cCollege.cCourse("course2")
+        CCourse course2 = cCollege.newCourse("course2")
         course2.detail("course2 Details").build()
 
         SCourse expectedSCourse = new SCourse()
