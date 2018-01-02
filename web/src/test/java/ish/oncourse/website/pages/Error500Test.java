@@ -5,10 +5,13 @@ import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.Property;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.test.tapestry.ServiceTest;
+import ish.oncourse.test.tapestry.TestModule;
+import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.tapestry5.dom.Document;
 import org.apache.tapestry5.dom.Element;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
+import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.services.*;
 import org.apache.tapestry5.test.PageTester;
@@ -42,6 +45,10 @@ public class Error500Test extends ServiceTest {
 	}
 
 	public static class Error500Module {
+
+		public static void bind(ServiceBinder binder) {
+			binder.bind(ServerRuntime.class, resources -> TestModule.serverRuntime.get());
+		}
 
 		public RequestFilter buildLogFilterOverride(org.slf4j.Logger log, RequestGlobals requestGlobals) {
 			return new RequestFilter() {
