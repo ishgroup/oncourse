@@ -369,6 +369,8 @@ class AuthenticationService {
             result.status = status
             result.firstName = firstName
             result.lastName = lastName
+            result.systemUser = systemUser
+            result.willowUser = willowUser
             result
         }
     }
