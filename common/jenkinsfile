@@ -1,0 +1,38 @@
+#!groovy​
+
+pipeline {
+    agent { 
+        label 'freebsd'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh "./gradlew :common:test"
+            }
+        }
+    }
+
+    post { 
+        failure { 
+            mail(
+                from: "development@ish.com.au", 
+                to: "development@ish.com.au", 
+                subject: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                body: """<p>FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+                <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
+            )
+        }
+    }
+
+    options {
+        buildDiscarder(logRotator(numToKeepStr:'10'))
+        timeout(time: 10, unit: 'MINUTES')
+    }
+}
