@@ -1,0 +1,7 @@
+test {
+	dependsOn getTasksByName('test', true) - getTasksByName('test', false)
+}
+
+clean {
+	dependsOn getTasksByName('clean', true) - getTasksByName('clean', false)
+}
