@@ -103,7 +103,7 @@ export class EnrolButton extends React.Component<Props, State> {
     return (
       <div className="classAction">
         {reverseElements ? elements.reverse() : elements}
-        {this.state.showedPopup &&
+        {this.state.showedPopup && course &&
         <ConfirmOrderDialog
           id={id}
           name={course.name}
