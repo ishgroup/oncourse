@@ -1,1 +1,0 @@
-var file = 'site3.js';

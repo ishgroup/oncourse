@@ -1,1 +1,0 @@
-var file = 'sub/extra1.js';

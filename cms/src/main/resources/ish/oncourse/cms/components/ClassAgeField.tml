@@ -1,9 +1,0 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
-             lang="en">
-
-    <h5 class="cms-block-sub-title">${label}</h5>
-    <t:textfield class="cms-age" t:id="cmsAgeField" value="days" t:validate="required,maxlength=2,regexp=^[0-9]+$" /> days
-    <t:select class="cms-agetype" t:id="cmsAgeTypeSelect" value="type" model="types" blankOption="NEVER"/>
-
-</t:container>

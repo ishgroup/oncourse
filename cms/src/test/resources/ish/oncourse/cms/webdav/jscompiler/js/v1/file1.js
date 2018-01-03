@@ -1,1 +1,0 @@
-var file = 'v1/file1.js';
