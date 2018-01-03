@@ -1,3 +1,9 @@
+apply from: "$rootDir/gradle/functions.gradle"
+
+apply plugin: 'groovy'
+apply plugin: 'java'
+
+
 sourceSets.main.java.srcDirs = []
 sourceSets.main.groovy.srcDir 'src/main/java'
 
@@ -6,6 +12,7 @@ sourceSets.test.groovy.srcDir 'src/test/java'
 
 compileGroovy.options.encoding = 'UTF-8'
 compileTestGroovy.options.encoding = 'UTF-8'
+
 
 dependencies {
     compile project(':common:cayenne-model')
@@ -25,5 +32,7 @@ dependencies {
     }
 }
 
-targetCompatibility = '1.8'
-sourceCompatibility = '1.8'
+test {
+    forkEvery = 1 //run every test in separate jvm
+    initTestDBConfig(project, test)
+}
