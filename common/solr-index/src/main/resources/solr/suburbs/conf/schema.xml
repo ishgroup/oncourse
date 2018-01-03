@@ -82,7 +82,5 @@
 	</fields>
 
 	<uniqueKey>id</uniqueKey>
-	<defaultSearchField>suburb</defaultSearchField>
-	<solrQueryParser defaultOperator="OR" />
 
 </schema>

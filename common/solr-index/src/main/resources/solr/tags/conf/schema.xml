@@ -83,7 +83,5 @@
 	</fields>
 
 	<uniqueKey>id</uniqueKey>
-	<defaultSearchField>name</defaultSearchField>
-	<solrQueryParser defaultOperator="OR" />
 
 </schema>
