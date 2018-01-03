@@ -40,6 +40,18 @@ class CCourse {
     }
 
     /**
+     * creates CourseClass with Start date = Current date/time + daysFromNow
+     * and CourseClass End Date = 10 days after Start date
+     * @param code
+     * @param daysFromNow
+     * @return
+     */
+    CCourse withClass(String code, int daysFromNow = 0) {
+
+        withClass(code, new Date() + daysFromNow, 10)
+    }
+
+    /**
      * class duration between start and end is 10 days for default    
      */
     CCourse withClass(String code, Date classStartDate) {

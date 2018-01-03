@@ -79,6 +79,16 @@ class CCourseClass {
         sessions.add(session)
         this
     }
+    
+    /**
+     * creates Session with Start date = Current date/time + daysFromNow
+     * @param daysFromNow
+     * @return
+     */
+    CCourseClass withSession(int daysFromNow) {
+        CSession.instance(objectContext, courseClass).date(new Date() + daysFromNow)
+        this
+    }
 
     static CCourseClass instance(ObjectContext context, String code, Course course){
         CCourseClass builder = new CCourseClass()
