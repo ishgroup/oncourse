@@ -6,15 +6,9 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
+        stage('All tests') {
             steps {
-                checkout scm
-            }
-        }
-
-        stage('Build') {
-            steps {
-                sh "./gradlew :common:test"
+                sh "./gradlew :common:test -P willowTest_uri=jdbc:mariadb://db.office:3307 -P willowTest_dbName=willow_test_common -P shouldCreateTables=true"
             }
         }
     }
