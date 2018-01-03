@@ -3,6 +3,7 @@ package ish.oncourse.solr
 import com.carrotsearch.randomizedtesting.annotations.ThreadLeakScope
 import io.reactivex.schedulers.Schedulers
 import ish.oncourse.solr.model.SCourse
+import ish.oncourse.solr.query.SearchParams
 import ish.oncourse.solr.query.SolrQueryBuilder
 import ish.oncourse.solr.reindex.ReindexCoursesJob
 import ish.oncourse.test.TestContext
@@ -45,10 +46,8 @@ class ReindexCourseTest extends SolrTestCaseJ4 {
     void testReindexCourse() throws IOException, SolrServerException {
         SolrClient solrClient = new EmbeddedSolrServer(h.getCore())
 
-        CCourse course1 = cCollege.newCourse("course1")
-        course1.detail("course1 Details").build()
-        CCourse course2 = cCollege.newCourse("course2")
-        course2.detail("course2 Details").build()
+        CCourse course1 = cCollege.newCourse("course1").build()
+        CCourse course2 = cCollege.newCourse("course2").build()
 
         SCourse expectedSCourse = new SCourse()
         expectedSCourse.setId(course1.course.id.toString())
@@ -64,16 +63,11 @@ class ReindexCourseTest extends SolrTestCaseJ4 {
         }
 
         List<SCourse> actualSClasses = solrClient.query("courses",
-                new SolrQuery()
-                        .setRequestHandler(SolrQueryBuilder.QUERY_TYPE)
-                        .setParam(SolrQueryBuilder.PARAMETER_fl, "*"))
+                SolrQueryBuilder.valueOf(new SearchParams(s: "course"), cCollege.college.id.toString(), 0, 10).build())
                 .getBeans(SCourse.class)
         assertEquals(2, actualSClasses.size())
         assertNotNull(actualSClasses.find { c -> c.id == expectedSCourse.id })
-        assertNotNull(actualSClasses.find { c -> c.collegeId == expectedSCourse.collegeId })
         assertNotNull(actualSClasses.find { c -> c.name == expectedSCourse.name })
-        assertNotNull(actualSClasses.find { c -> c.detail == expectedSCourse.detail })
-        assertNotNull(actualSClasses.find { c -> c.code == expectedSCourse.code })
 
         solrClient.close()
     }

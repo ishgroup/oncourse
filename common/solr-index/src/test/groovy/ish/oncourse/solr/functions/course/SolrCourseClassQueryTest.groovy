@@ -4,6 +4,7 @@ import com.carrotsearch.randomizedtesting.annotations.ThreadLeakScope
 import io.reactivex.schedulers.Schedulers
 import ish.oncourse.solr.InitSolr
 import ish.oncourse.solr.model.SCourse
+import ish.oncourse.solr.query.SearchParams
 import ish.oncourse.solr.query.SolrQueryBuilder
 import ish.oncourse.solr.reindex.ReindexCoursesJob
 import ish.oncourse.test.TestContext
@@ -12,7 +13,6 @@ import ish.oncourse.test.context.DataContext
 import org.apache.cayenne.ObjectContext
 import org.apache.solr.SolrTestCaseJ4
 import org.apache.solr.client.solrj.SolrClient
-import org.apache.solr.client.solrj.SolrQuery
 import org.apache.solr.client.solrj.SolrServerException
 import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer
 import org.junit.After
@@ -58,9 +58,7 @@ class SolrCourseClassQueryTest  extends SolrTestCaseJ4{
         }
 
         List<SCourse> actualSClasses = solrClient.query("courses",
-                new SolrQuery()
-                        .setRequestHandler(SolrQueryBuilder.QUERY_TYPE)
-                        .setParam(SolrQueryBuilder.PARAMETER_fl, "*"))
+                SolrQueryBuilder.valueOf(new SearchParams(s: "course", debugQuery: true), cCollege.college.id.toString(), 0, 10).build())
                 .getBeans(SCourse.class)
         assertEquals(5, actualSClasses.size())
 
