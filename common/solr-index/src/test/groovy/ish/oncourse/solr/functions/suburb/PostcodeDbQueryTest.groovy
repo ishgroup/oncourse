@@ -9,8 +9,6 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
-import static ish.oncourse.test.functions.Functions.createRuntime
-
 /**
  * Created by alex on 11/13/17.
  */
@@ -23,7 +21,7 @@ class PostcodeDbQueryTest {
 
         testContext = new TestContext()
         testContext.open()
-        context = testContext.getRuntime().newContext()
+        context = testContext.serverRuntime.newContext()
     }
 
     @Test

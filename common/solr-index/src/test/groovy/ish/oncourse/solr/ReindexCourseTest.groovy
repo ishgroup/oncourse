@@ -1,6 +1,5 @@
 package ish.oncourse.solr
 
-import com.carrotsearch.randomizedtesting.annotations.ThreadLeakScope
 import io.reactivex.schedulers.Schedulers
 import ish.oncourse.solr.model.SCourse
 import ish.oncourse.solr.query.SearchParams
@@ -11,9 +10,7 @@ import ish.oncourse.test.context.CCollege
 import ish.oncourse.test.context.CCourse
 import ish.oncourse.test.context.DataContext
 import org.apache.cayenne.ObjectContext
-import org.apache.solr.SolrTestCaseJ4
 import org.apache.solr.client.solrj.SolrClient
-import org.apache.solr.client.solrj.SolrQuery
 import org.apache.solr.client.solrj.SolrServerException
 import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer
 import org.junit.After
@@ -23,8 +20,7 @@ import org.junit.Test
 /**
  * Created by alex on 11/22/17.
  */
-@ThreadLeakScope(ThreadLeakScope.Scope.NONE)
-class ReindexCourseTest extends SolrTestCaseJ4 {
+class ReindexCourseTest extends ASolrTest {
     private TestContext testContext
     private ObjectContext objectContext
     private InitSolr initSolr

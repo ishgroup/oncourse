@@ -20,7 +20,7 @@ public class InitSolr {
         System.setProperty("solr.slave.enable", "false");
         System.setProperty("solr.poll", "1");
         System.setProperty("solr.allow.unsafe.resourceloading", "true");
-        System.setProperty("solr.allowed.securerandom", "NativePRNG");
+        System.setProperty("test.solr.allowed.securerandom", "NativePRNG");
         SolrTestCaseJ4.initCore(config, schema, solrHome, core);
     }
 
