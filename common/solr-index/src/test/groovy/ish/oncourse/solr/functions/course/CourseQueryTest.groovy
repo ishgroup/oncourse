@@ -30,7 +30,7 @@ class CourseQueryTest {
         testContext = new TestContext()
         testContext.open()
 
-        objectContext = testContext.serverRuntime().newContext()
+        objectContext = testContext.serverRuntime.newContext()
         DataContext dataContext = new DataContext(objectContext: objectContext)
         collegeContext = dataContext.newCollege()
         college = collegeContext.college
@@ -49,7 +49,7 @@ class CourseQueryTest {
         CTutorRole.instance(objectContext, tutor1.tutor, expectedCourse1.newCourseClass("expectedClass12").courseClass)
         CTutorRole.instance(objectContext, tutor1.tutor, expectedCourse2.newCourseClass("expectedClass21").courseClass)
 
-        CTutorRole.instance(objectContext, tutor2.tutor, expectedCourse2.cClasses.get("expectedClass21").courseClass)
+        CTutorRole.instance(objectContext, tutor2.tutor, expectedCourse2.newCourseClass("expectedClass21").courseClass)
         CTutorRole.instance(objectContext, tutor2.tutor, otherCourse.newCourseClass("otherClass").courseClass)
 
         actualCourses = CourseQuery.byTutor(tutor1.tutor).select(objectContext)
@@ -70,7 +70,7 @@ class CourseQueryTest {
         CCourse expectedCourse = collegeContext.newCourse("expectedCourse")
         CRoom targetRoom = CRoom.instance(objectContext, college)
         CSession.instance(objectContext, expectedCourse.newCourseClass("expectedClass1").courseClass).room(targetRoom.room)
-        CSession.instance(objectContext, expectedCourse.cClasses.get("expectedClass1").courseClass).room(targetRoom.room)
+        CSession.instance(objectContext, expectedCourse.newCourseClass("expectedClass1").courseClass).room(targetRoom.room)
 
         CCourse otherCourse = collegeContext.newCourse("expectedCourse")
         CRoom otherRoom = CRoom.instance(objectContext, college)
