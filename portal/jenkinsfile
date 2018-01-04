@@ -10,25 +10,13 @@ pipeline {
     }
 
     stages {
-        stage('Build API docs') {
+        stage('Build') {
             steps {
-                sh "./gradlew apidocs:docbookHtml"
+                sh "./gradlew portal:build -Dbuild_number=${env.BUILD_NUMBER} -Doncourse.jdbc.url=jdbc:mariadb://db.office:3307/portal_${env.BUILD_NUMBER}"
             }
         }
 
-        stage('Build release notes') {
-            steps {
-                sh "./gradlew release-notes:docbookHtml"
-            }
-        }
-
-        stage('Build manual') {
-            steps {
-                sh "./gradlew manual:docbook"
-            }
-        }
-
-        stage('Deploy release') {
+        stage('Create release') {
             when {
                 expression { params.version != '' }
             }
@@ -36,7 +24,7 @@ pipeline {
                 script {
                     currentBuild.displayName = "Release ${params.version}"
                 }
-
+                sh "./gradlew portal:publishExecutablesPublicationToExecutablesRepository -PreleaseVersion=${params.version}"
             }
         }
     }
@@ -66,7 +54,7 @@ pipeline {
 
     options {
         disableConcurrentBuilds()
-        buildDiscarder(logRotator(numToKeepStr:'10'))
+        buildDiscarder(logRotator(numToKeepStr:'30'))
         timeout(time: 60, unit: 'MINUTES')
     }
 }
