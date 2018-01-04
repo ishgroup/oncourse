@@ -106,8 +106,10 @@ class Functions {
             s.executeUpdate()
             c.commit()
         } finally {
-            s.close()
-            c.close()
+            if (s)
+                s.close()
+            if (c)
+                c.close()
         }
     }
 
