@@ -77,7 +77,7 @@ export class HTMLMarkers {
    * Renders checkout button.
    *
    * Corresponding React Component: {@link EnrolButton}
-   * Example Usage: <div data-cid="enrol-button"  data-prop-id="${id}"></div>
+   * Example Usage: <div data-cid="enrol-button"  data-prop-id="${id}" id="oncourse-checkout"></div>
    * Tapestry template to use: CourseClassItem.tml
    */
   static ENROL_BUTTON: HTMLMarker = {
@@ -92,7 +92,8 @@ export class HTMLMarkers {
    * Renders join button.
    *
    * Corresponding React Component: {@link JoinButton}
-   * Example Usage: <div data-cid="join-button"  data-prop-id="${id}"></div>
+   * Example Usage: <div data-cid="join-button"  data-prop-id="${id}"> {tapestry content*} </div>
+   * Tapestry content will be wrapped by react into <a> tag
    * Tapestry template to use: CourseItem.tml
    */
   static JOIN_BUTTON: HTMLMarker = {
