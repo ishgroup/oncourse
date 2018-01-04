@@ -5,7 +5,7 @@ ext {
     swaggerName = 'editor.yaml'
 }
 
-
+apply from: "$rootDir/gradle/functions.gradle"
 apply from: "$rootDir/gradle/bootique.gradle"
 apply from: "$rootDir/gradle/buildApiApp.gradle"
 
@@ -29,4 +29,9 @@ dependencies {
     //js compiler
     compile 'com.google.javascript:closure-compiler:v20170218'
     closureCompiler 'com.google.javascript:closure-compiler:v20170218'
+}
+
+test {
+    forkEvery = 1 //run every test in separate jvm
+    initTestDBConfig(project, test)
 }
