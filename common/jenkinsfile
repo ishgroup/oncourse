@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('All tests') {
             steps {
-                sh "./gradlew :common:test -P willowTest_uri=jdbc:mariadb://db.office:3307 -P willowTest_dbName=willow_test_common -P shouldCreateTables=true"
+                sh "./gradlew :common:test -PwillowTest_uri=jdbc:mariadb://db.office:3307 -PwillowTest_dbName=common_${env.BUILD_NUMBER} -PshouldCreateTables=true"
             }
         }
     }
