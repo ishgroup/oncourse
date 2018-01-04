@@ -1,15 +1,10 @@
 package ish.oncourse.willow.editor.service.impl
 
 import com.google.inject.Inject
+import ish.oncourse.linktransform.PageIdentifier
 import ish.oncourse.model.RegionKey
-import ish.oncourse.model.WebContent
-import ish.oncourse.model.WebContentVisibility
 import ish.oncourse.model.WebNode
-import ish.oncourse.model.WebNodeType
-import ish.oncourse.model.WebUrlAlias
 import ish.oncourse.services.persistence.ICayenneService
-import ish.oncourse.services.textile.ConvertCoreTextile
-import ish.oncourse.willow.editor.model.PageUrl
 import ish.oncourse.willow.editor.model.common.CommonError
 import ish.oncourse.willow.editor.rest.UpdatePage
 import ish.oncourse.willow.editor.rest.WebNodeToPage
@@ -21,14 +16,14 @@ import groovy.transform.CompileStatic
 import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.website.WebNodeFunctions
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.query.ObjectSelect
-import org.apache.cayenne.query.SelectById
+import org.apache.commons.lang3.StringUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
-import javax.naming.Context
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
+
+import static ish.oncourse.linktransform.PageIdentifier.*
 
 @CompileStatic
 class PageApiServiceImpl implements PageApi {
@@ -69,11 +64,22 @@ class PageApiServiceImpl implements PageApi {
     }
     
     Page getPageByUrl(String pageUrl) {
+        if (!StringUtils.trimToNull(pageUrl)) {
+            throw createClientException("Page url required." )
+        }
+        
         WebNode node = WebNodeFunctions.getNodeByPath(pageUrl, requestService.request, cayenneService.newContext())
-
         if (node) {
             return WebNodeToPage.valueOf(node).page
         } else {
+            String lowerCaseUrl = pageUrl.toLowerCase()
+            PageIdentifier identifier = getPageIdentifierByPath(lowerCaseUrl)
+            // Return reserved page indicator if URL matches PageNotFound or any other reserved page. 
+            // Throw client exception if URL matches Page or Home pattern - this URLs should has corresponded WebNodes in DB (see first condition)
+            // Throw client exception if URL doesn't match of any reserved page.
+            if (PageNotFound.getMatcher().matches(lowerCaseUrl) || !(identifier in [PageNotFound, Home, Page])) {
+                return new Page().reservedURL(true)
+            }
             throw createClientException("There are no pages for provided url. Url: $pageUrl")
         }
     }

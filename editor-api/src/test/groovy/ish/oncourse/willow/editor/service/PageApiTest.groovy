@@ -4,12 +4,12 @@ import ish.oncourse.model.WebNode
 import ish.oncourse.willow.editor.model.Page
 import ish.oncourse.willow.editor.service.impl.PageApiServiceImpl
 import ish.oncourse.willow.editor.website.WebNodeFunctions
-import org.apache.cayenne.query.SelectById
-import org.junit.Assert
 import org.junit.Test
 import org.junit.Before
 
 import javax.ws.rs.ClientErrorException
+
+import static org.junit.Assert.*
 
 /**
  * API tests for PageApi
@@ -30,12 +30,12 @@ class PageApiTest extends AbstractEditorTest{
     @Test
     void addPageTest() {
         Page page = api.addPage()
-        Assert.assertNotNull(page)
-        Assert.assertNotNull(page.title)
-        Assert.assertNotNull(page.themeId)
-        Assert.assertEquals(page.content, 'Sample content')
-        Assert.assertEquals(page.urls, [])
-        Assert.assertEquals(page.visible, false)
+        assertNotNull(page)
+        assertNotNull(page.title)
+        assertNotNull(page.themeId)
+        assertEquals(page.content, 'Sample content')
+        assertEquals(page.urls, [])
+        assertEquals(page.visible, false)
     }
     
     /**
@@ -45,13 +45,13 @@ class PageApiTest extends AbstractEditorTest{
     @Test
     void deletePageTest() {
         Page newPage = api.addPage()
-        Assert.assertNotNull(newPage)
+        assertNotNull(newPage)
 
         api.deletePage(newPage.number.toInteger().toString())
         Integer intNumber = newPage.number.toInteger()
 
         WebNode node = WebNodeFunctions.getNodeForNumber(intNumber, requestService.request, cayenneService.newContext())
-        Assert.assertEquals(node, null)
+        assertEquals(node, null)
     }
     
     /**
@@ -64,11 +64,11 @@ class PageApiTest extends AbstractEditorTest{
         String number = newPage.number.longValue().toString()
         String pageUrl = "/page/${number}"
 
-        Assert.assertEquals(pageUrl, "/page/2")
+        assertEquals(pageUrl, "/page/2")
 
         Page page = api.getPageByUrl(pageUrl)
-        Assert.assertNotNull(page)
-        Assert.assertEquals(page.number, 2,0)
+        assertNotNull(page)
+        assertEquals(page.number, 2,0)
     }
 
     /**
@@ -81,11 +81,11 @@ class PageApiTest extends AbstractEditorTest{
 
         try {
             Page page = api.getPageByUrl(pageUrl)
-            Assert.assertNotNull(page)
-            Assert.assertEquals(page.number, 2,0)
+            assertNotNull(page)
+            assertEquals(page.number, 2,0)
         } catch (e) {
             Boolean isClientError = e instanceof ClientErrorException
-            Assert.assertEquals(isClientError, true)
+            assertEquals(isClientError, true)
         }
     }
 
@@ -94,13 +94,25 @@ class PageApiTest extends AbstractEditorTest{
      * Get page rendered html by provided page id
      */
     @Test
-    void getPageRenderTest() {
-        String pageId = null
-	//Model200 response = api.getPageRender(pageId)
-        //assertNotNull(response)
-        // TODO: test validations
+    void getPageByUrl() {
+        assertTrue(api.getPageByUrl('/course/123').reservedURL)
         
+        try {
+            assertTrue(api.getPageByUrl('/course/').reservedURL)
+            assertTrue('Client Exception should be thrown',false)
+        } catch (ClientErrorException ignored) {}
         
+        try {
+            assertTrue(api.getPageByUrl('/any').reservedURL)
+            assertTrue('Client Exception should be thrown',false)
+        } catch (ClientErrorException ignored) {}
+
+        assertTrue(api.getPageByUrl('/pagenotfound').reservedURL)
+        assertTrue(api.getPageByUrl('/PageNotFound').reservedURL)
+        assertTrue(api.getPageByUrl('/courses/').reservedURL)
+        assertTrue(api.getPageByUrl('/courses').reservedURL)
+        assertFalse(api.getPageByUrl('/page/1').reservedURL)
+        assertFalse(api.getPageByUrl('/').reservedURL)
     }
     
     /**

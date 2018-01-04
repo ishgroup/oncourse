@@ -174,7 +174,7 @@ public enum PageIdentifier
 		return PageNotFound;
 	}
 
-	private interface  Matcher
+	public interface  Matcher
 	{
 		public boolean matches(String value);
 
