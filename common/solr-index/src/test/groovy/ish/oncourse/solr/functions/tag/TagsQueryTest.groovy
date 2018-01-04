@@ -43,7 +43,7 @@ class TagsQueryTest {
         collegeContext.tagCourse("COURSE1", "Tag11Invisible")
         collegeContext.tagCourse("COURSE1", "Tag12")
 
-        List<Tag> actualTags = Functions.TagsQuery.select(testContext.getRuntime().newContext())
+        List<Tag> actualTags = Functions.TagsQuery.select(testContext.serverRuntime.newContext())
 
         assertEquals(2, actualTags.size())
         assertNotNull(actualTags.find {tag -> (tag.name == "Tag2") })
