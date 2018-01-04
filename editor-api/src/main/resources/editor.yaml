@@ -793,6 +793,9 @@ definitions:
       visible:
         type: boolean
         description: Has page visible
+      reservedURL:
+        type: boolean
+        description: Indicates that page is system, content is not editable
       urls:
         type: array
         items:

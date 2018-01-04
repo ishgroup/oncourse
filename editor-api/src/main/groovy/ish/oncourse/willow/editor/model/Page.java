@@ -11,6 +11,7 @@ public class Page  {
     private Double themeId = null;
     private String content = null;
     private Boolean visible = null;
+    private Boolean reservedURL = null;
     private List<PageUrl> urls = new ArrayList<PageUrl>();
 
     /**
@@ -99,6 +100,23 @@ public class Page  {
     }
 
     /**
+     * Indicates that page is system, content is not editable
+     * @return reservedURL
+     */
+    public Boolean getReservedURL() {
+        return reservedURL;
+    }
+
+    public void setReservedURL(Boolean reservedURL) {
+       this.reservedURL = reservedURL;
+    }
+
+    public Page reservedURL(Boolean reservedURL) {
+      this.reservedURL = reservedURL;
+      return this;
+    }
+
+    /**
      * Get urls
      * @return urls
      */
@@ -131,6 +149,7 @@ public class Page  {
       sb.append("    themeId: ").append(toIndentedString(themeId)).append("\n");
       sb.append("    content: ").append(toIndentedString(content)).append("\n");
       sb.append("    visible: ").append(toIndentedString(visible)).append("\n");
+      sb.append("    reservedURL: ").append(toIndentedString(reservedURL)).append("\n");
       sb.append("    urls: ").append(toIndentedString(urls)).append("\n");
       sb.append("}");
       return sb.toString();

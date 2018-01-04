@@ -26,6 +26,11 @@ export class Page {
    * Has page visible
    */
   visible?: boolean;
+
+  /**
+   * Indicates that page is system, content is not editable
+   */
+  reservedURL?: boolean;
   urls?: PageUrl[];
 }
 
