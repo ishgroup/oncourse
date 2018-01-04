@@ -100,7 +100,7 @@ class Functions {
         Connection c = null
         PreparedStatement s = null
         try {
-            String url = mariaDB.url.replaceAll(mariaDB.dbName, "test")
+            String url = mariaDB.url.replaceAll(mariaDB.dbName, "")
             c = DriverManager.getConnection(url, mariaDB.user, mariaDB.password)
             s = c.prepareStatement(sql)
             s.executeUpdate()
