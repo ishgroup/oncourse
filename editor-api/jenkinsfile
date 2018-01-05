@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('All tests') {
             steps {
-                sh "./gradlew :editor-api:test -PwillowTest_uri=jdbc:mariadb://db.office:3307 -PwillowTest_dbName=editor-api -PshouldCreateTables=true"
+                sh "./gradlew :editor-api:test -PwillowTest_uri=jdbc:mariadb://db.office:3307 -PwillowTest_dbName=editor_api -PshouldCreateTables=true"
             }
         }
     }
