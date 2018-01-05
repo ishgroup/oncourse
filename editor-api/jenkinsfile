@@ -1,0 +1,41 @@
+#!groovy​
+
+pipeline {
+    agent { 
+        label 'freebsd'
+    }
+
+    stages {
+        stage('All tests') {
+            steps {
+                sh "./gradlew :editor-api:test -PwillowTest_uri=jdbc:mariadb://db.office:3307 -PwillowTest_dbName=common -PshouldCreateTables=true"
+            }
+        }
+    }
+
+    post { 
+        failure { 
+            mail(
+                to: "development@ish.com.au", 
+                subject: "${currentBuild.result}: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
+                body: "Check console output at ${env.BUILD_URL}",
+            )
+        }
+        unstable { 
+            mail(
+                to: "development@ish.com.au", 
+                subject: "${currentBuild.result}: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
+                body: "Check console output at ${env.BUILD_URL}",
+            )
+        }
+        always {
+            junit 'common/**/build/test-results/test/*.xml'
+        }
+    }
+
+    options {
+        disableConcurrentBuilds()
+        buildDiscarder(logRotator(numToKeepStr:'10'))
+        timeout(time: 60, unit: 'MINUTES')
+    }
+}
