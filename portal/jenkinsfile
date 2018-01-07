@@ -48,9 +48,6 @@ pipeline {
         success {
             archiveArtifacts artifacts: 'portal/build/distributions/*.zip'
         }
-        always {
-            junit 'portal/build/test-results/**/*.xml'
-        }
     }
 
     options {
