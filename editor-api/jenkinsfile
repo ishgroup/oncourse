@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh "./gradlew editor-api:build -Dbuild_number=${env.BUILD_NUMBER} -Doncourse.jdbc.url=jdbc:mariadb://db.office:3307/editor_api -PshouldCreateTables=true"
+                sh "./gradlew editor-api:build -Dbuild_number=${env.BUILD_NUMBER} -DwillowTest_dbName=jdbc:mariadb://db.office:3307/editor_api -PshouldCreateTables=true"
                 junit 'editor-api/build/test-results/**/*.xml'
             }
         }
