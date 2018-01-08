@@ -7,12 +7,7 @@ import ish.oncourse.api.cayenne.CayenneService
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
 import ish.oncourse.model.WebSite
-import ish.oncourse.willow.checkout.functions.GetContact
-import ish.oncourse.willow.checkout.functions.ProcessCheckoutModel
-import ish.oncourse.willow.checkout.functions.ProcessClasses
-import ish.oncourse.willow.checkout.functions.ProcessProducts
-import ish.oncourse.willow.checkout.functions.ProcessWaitingLists
-import ish.oncourse.willow.checkout.functions.ValidatePaymentRequest
+import ish.oncourse.willow.checkout.functions.*
 import ish.oncourse.willow.checkout.payment.CreatePaymentModel
 import ish.oncourse.willow.checkout.payment.GetPaymentStatus
 import ish.oncourse.willow.checkout.payment.ProcessPaymentModel
@@ -31,7 +26,6 @@ import org.slf4j.LoggerFactory
 
 import javax.ws.rs.BadRequestException
 import javax.ws.rs.core.Response
-
 
 @CompileStatic
 class CheckoutApiImpl implements CheckoutApi {
@@ -67,8 +61,8 @@ class CheckoutApiImpl implements CheckoutApi {
         if (contactNodeRequest.classIds.empty 
                 && contactNodeRequest.productIds.empty
                 && contactNodeRequest.waitingCourseIds.empty) {
-            logger.error('There are not selected items for purchase')
-            throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'there are not selected items for purchase')).build())
+            logger.error('There are no selected items for purchase')
+            throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'There are no selected items for purchase')).build())
         }
         
         ObjectContext context = cayenneService.newContext()
