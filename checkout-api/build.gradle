@@ -16,3 +16,7 @@ mainClassName = 'ish.oncourse.willow.WillowApp'
 dependencies {
     compile project(':common:common-api')
 }
+test {
+    forkEvery = 1 //run every test in separate jvm
+    initTestDBConfig(project, test)
+}
