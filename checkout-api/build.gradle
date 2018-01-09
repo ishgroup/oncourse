@@ -4,6 +4,7 @@ ext {
     swaggerName = 'checkout.yaml'
 }
 
+apply from: "$rootDir/gradle/functions.gradle"
 apply from: "$rootDir/gradle/bootique.gradle"
 apply from: "$rootDir/gradle/buildApiApp.gradle"
 
