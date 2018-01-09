@@ -1,5 +1,6 @@
 import React from "react";
 import {Field} from "redux-form";
+import valid from 'card-validator';
 import SelectField from "../../../../components/form-new/SelectField";
 import {TextField} from "../../../../components/form/TextField";
 import {Amount, Contact} from "../../../../model";
@@ -32,6 +33,15 @@ class CreditCardComp extends React.Component<Props, any> {
 
   constructor(props) {
     super(props);
+  }
+
+  getCardNumberMask(val) {
+    const number = val.replace(/_/g, '');
+    const card = valid.number(number).card;
+
+    return card && card.type === 'american-express'
+    ? [/\d/, /\d/, /\d/, /\d/, " ", /\d/, /\d/, /\d/, /\d/, " ", /\d/, /\d/, /\d/, /\d/, " ", /\d/, /\d/, /\d/]
+    : [/\d/, /\d/, /\d/, /\d/, " ", /\d/, /\d/, /\d/, /\d/, " ", /\d/, /\d/, /\d/, /\d/, " ", /\d/, /\d/, /\d/, /\d/]
   }
 
   render() {
@@ -86,7 +96,7 @@ class CreditCardComp extends React.Component<Props, any> {
                   label="Number"
                   type="text"
                   required={true}
-                  mask={[/\d/, /\d/, /\d/, /\d/, " ", /\d/, /\d/, /\d/, /\d/, " ", /\d/, /\d/, /\d/, /\d/, " ", /\d/, /\d/, /\d/, /\d/]}
+                  mask={(val) => this.getCardNumberMask(val)}
                 />
 
                 <Field
