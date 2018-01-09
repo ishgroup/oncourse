@@ -40,7 +40,7 @@ class SolrCourseClassQueryWithSessionTest extends ASolrTest{
     }
 
     @Test
-    void testGetCourseClassesWithSessions() throws IOException, SolrServerException {
+    void testSortClassesWithSessionsAndDistantLearning() throws IOException, SolrServerException {
         SolrClient solrClient = new EmbeddedSolrServer(h.getCore())
 
         cCollege.newCourse("course1").newCourseClass("past")
@@ -63,6 +63,8 @@ class SolrCourseClassQueryWithSessionTest extends ASolrTest{
                 .withSession(4).withSession(6).build()
         cCollege.newCourse("course9").newCourseClass("futureEndsLast")
                 .withSession(5).withSession(7).build()
+
+        cCollege.newCourse("course10").newCourseClass("distantLearning").isDistantLearningCourse(true).build()
                 
 
         ReindexCoursesJob job = new ReindexCoursesJob(objectContext, solrClient)
@@ -74,16 +76,19 @@ class SolrCourseClassQueryWithSessionTest extends ASolrTest{
         List<SCourse> actualSClasses = solrClient.query("courses",
                 SolrQueryBuilder.valueOf(new SearchParams(s: "course*"), cCollege.college.id.toString(), null, null).build())
                 .getBeans(SCourse.class)
-        assertEquals(9, actualSClasses.size())
+        assertEquals(10, actualSClasses.size())
 
         List<SCourse> currentClasses = actualSClasses.subList(0, 3)
-        List<SCourse> futureClasses = actualSClasses.subList(3, 6)
-        List<SCourse> pastClasses = actualSClasses.subList(6, 9)
+        List<SCourse> futureClasses = actualSClasses.subList(4, 7)
+        List<SCourse> pastClasses = actualSClasses.subList(7, 10)
         
         //first group of courses will be with current classes. First one will be the class, which starts first. 
         assertEquals("course5", currentClasses.first().name)
         assertNotNull(currentClasses.find {c -> c.name == "course4" })
         assertNotNull(currentClasses.find {c -> c.name == "course6" })
+
+        //distant learning classes are going between current and future classes
+        assertEquals("course10", actualSClasses.get(3).name)
         
         //second group of courses will be with future classes. First one will be the class, which starts first. 
         assertEquals("course8", futureClasses.first().name)
