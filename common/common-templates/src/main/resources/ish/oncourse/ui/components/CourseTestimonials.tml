@@ -1,0 +1,12 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+    <div class="courseTestimonials">
+        <t:if test="hasItems">
+            <span>Course testimonials:</span>
+            <ul>
+                <t:loop source="surveys" value="survey">
+                    <li>${survey.testimonial}<br/>Score: ${survey.netPromoterScore}</li>
+                </t:loop>
+            </ul>
+        </t:if>
+    </div>
+</t:container>
