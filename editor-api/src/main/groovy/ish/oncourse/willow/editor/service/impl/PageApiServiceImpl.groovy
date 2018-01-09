@@ -77,7 +77,7 @@ class PageApiServiceImpl implements PageApi {
             // Return reserved page indicator if URL matches PageNotFound or any other reserved page. 
             // Throw client exception if URL matches Page or Home pattern - this URLs should has corresponded WebNodes in DB (see first condition)
             // Throw client exception if URL doesn't match of any reserved page.
-            if (PageNotFound.getMatcher().matches(lowerCaseUrl) || !(identifier in [PageNotFound, Home, Page])) {
+            if (PageNotFound.getMatcher().matches(lowerCaseUrl) || !(identifier in [PageNotFound, Home, PageIdentifier.Page])) {
                 return new Page().reservedURL(true)
             }
             throw createClientException("There are no pages for provided url. Url: $pageUrl")
