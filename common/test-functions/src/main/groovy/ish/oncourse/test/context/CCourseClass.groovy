@@ -13,7 +13,7 @@ class CCourseClass {
     CourseClass courseClass
     private ObjectContext objectContext
 
-    List<CSession> sessions = new LinkedList<>()
+    List<CSession> sessions = new ArrayList<>()
 
     private CCourseClass(){}
 
@@ -77,6 +77,7 @@ class CCourseClass {
     CCourseClass withSession(Date date) {
         CSession session = CSession.instance(objectContext, courseClass).date(date)
         sessions.add(session)
+        setClassStartEndDates()
         this
     }
     
@@ -86,7 +87,15 @@ class CCourseClass {
      * @return
      */
     CCourseClass withSession(int daysFromNow) {
-        CSession.instance(objectContext, courseClass).date(new Date() + daysFromNow)
+        sessions.add(CSession.instance(objectContext, courseClass).date(new Date() + daysFromNow))
+        setClassStartEndDates()
+        this
+    }
+
+
+    private CCourseClass setClassStartEndDates() {
+        courseClass.startDate = sessions.sort {it.session.startDate}.first().session.startDate
+        courseClass.endDate = sessions.sort {it.session.startDate}.last().session.startDate
         this
     }
 

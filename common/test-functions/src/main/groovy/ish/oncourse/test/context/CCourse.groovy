@@ -36,6 +36,7 @@ class CCourse {
         cCourse.course.code = code
         cCourse.course.detail = name + " details"
         cCourse.course.enrolmentType = CourseEnrolmentType.OPEN_FOR_ENROLMENT
+        cCourse.course.isWebVisible = true
         cCourse
     }
 
