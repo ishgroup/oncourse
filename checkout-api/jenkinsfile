@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh "./gradlew checkout-api:build -Dbuild_number=${env.BUILD_NUMBER} -Doncourse.jdbc.url=jdbc:mariadb://db.office:3307/checkout_api -PshouldCreateTables=true"
+                sh "./gradlew checkout-api:build -Dbuild_number=${env.BUILD_NUMBER} -PwillowTest_uri=jdbc:mariadb://db.office:3307 -PwillowTest_dbName=checkout_api -PshouldCreateTables=true"
                 junit 'checkout-api/build/test-results/**/*.xml'
             }
         }
