@@ -10,8 +10,7 @@ export class InProgress extends React.Component<any, any> {
         <h3>Please Wait!</h3>
         <p>Your transaction is being processed. This will take a few seconds.</p>
         <p><strong>Do not close this window.</strong></p>
-        <p>This page will update automatically, or <a href="#/enrol/payment">click here</a> to check the payment status
-          now.</p>
+        <p>This page will update automatically</p>
       </div>
     );
   }
