@@ -1,0 +1,58 @@
+#!groovy​
+
+pipeline {
+    agent { 
+        label 'freebsd'
+    }
+
+    parameters {
+        string(defaultValue: '', description: 'Release version. Leave blank to not release.', name: 'version')
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                sh "./gradlew checkout:build -Dbuild_number=${env.BUILD_NUMBER}"
+                junit 'checkout/build/test-results/**/*.xml'
+            }
+        }
+
+        stage('Create release') {
+            when {
+                expression { params.version != '' }
+            }
+            steps {
+                script {
+                    currentBuild.displayName = "Release ${params.version}"
+                }
+                sh "./gradlew checkout:publishExecutablesPublicationToExecutablesRepository -PreleaseVersion=${params.version}"
+            }
+        }
+    }
+
+    post {
+        failure {
+            mail(
+                to: "development@ish.com.au",
+                subject: "${currentBuild.result}: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
+                body: "Check console output at ${env.BUILD_URL}",
+            )
+        }
+        unstable {
+            mail(
+                to: "development@ish.com.au",
+                subject: "${currentBuild.result}: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
+                body: "Check console output at ${env.BUILD_URL}",
+            )
+        }
+        success {
+            archiveArtifacts artifacts: 'checkout/build/distributions/*.zip'
+        }
+    }
+
+    options {
+        disableConcurrentBuilds()
+        buildDiscarder(logRotator(numToKeepStr:'30'))
+        timeout(time: 60, unit: 'MINUTES')
+    }
+}

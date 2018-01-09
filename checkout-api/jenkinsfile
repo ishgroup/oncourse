@@ -1,0 +1,58 @@
+#!groovy​
+
+pipeline {
+    agent { 
+        label 'freebsd'
+    }
+
+    parameters {
+        string(defaultValue: '', description: 'Release version. Leave blank to not release.', name: 'version')
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                sh "./gradlew checkout-api:build -Dbuild_number=${env.BUILD_NUMBER} -Doncourse.jdbc.url=jdbc:mariadb://db.office:3307/checkout_api -PshouldCreateTables=true"
+                junit 'checkout-api/build/test-results/**/*.xml'
+            }
+        }
+
+        stage('Create release') {
+            when {
+                expression { params.version != '' }
+            }
+            steps {
+                script {
+                    currentBuild.displayName = "Release ${params.version}"
+                }
+                sh "./gradlew checkout-api:publishExecutablesPublicationToExecutablesRepository -PreleaseVersion=${params.version}"
+            }
+        }
+    }
+
+    post {
+        failure {
+            mail(
+                to: "development@ish.com.au",
+                subject: "${currentBuild.result}: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
+                body: "Check console output at ${env.BUILD_URL}",
+            )
+        }
+        unstable {
+            mail(
+                to: "development@ish.com.au",
+                subject: "${currentBuild.result}: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
+                body: "Check console output at ${env.BUILD_URL}",
+            )
+        }
+        success {
+            archiveArtifacts artifacts: 'checkout-api/build/distributions/*.zip'
+        }
+    }
+
+    options {
+        disableConcurrentBuilds()
+        buildDiscarder(logRotator(numToKeepStr:'30'))
+        timeout(time: 60, unit: 'MINUTES')
+    }
+}
