@@ -72,10 +72,29 @@ class SolrCourseClassQueryWithSessionTest extends ASolrTest{
         }
 
         List<SCourse> actualSClasses = solrClient.query("courses",
-                SolrQueryBuilder.valueOf(new SearchParams(s: "course"), cCollege.college.id.toString(), 0, 10).build())
+                SolrQueryBuilder.valueOf(new SearchParams(s: "course*"), cCollege.college.id.toString(), null, null).build())
                 .getBeans(SCourse.class)
         assertEquals(9, actualSClasses.size())
 
+        List<SCourse> currentClasses = actualSClasses.subList(0, 3)
+        List<SCourse> futureClasses = actualSClasses.subList(3, 6)
+        List<SCourse> pastClasses = actualSClasses.subList(6, 9)
+        
+        //first group of courses will be with current classes. First one will be the class, which starts first. 
+        assertEquals("course5", currentClasses.first().name)
+        assertNotNull(currentClasses.find {c -> c.name == "course4" })
+        assertNotNull(currentClasses.find {c -> c.name == "course6" })
+        
+        //second group of courses will be with future classes. First one will be the class, which starts first. 
+        assertEquals("course8", futureClasses.first().name)
+        assertNotNull(futureClasses.find {c -> c.name == "course7" })
+        assertNotNull(futureClasses.find {c -> c.name == "course9" })
+
+        //last group of courses will be with past classes. sort order isn't set for past classes.
+        assertNotNull(pastClasses.find {c -> c.name == "course1" })
+        assertNotNull(pastClasses.find {c -> c.name == "course2" })
+        assertNotNull(pastClasses.find {c -> c.name == "course3" })
+        
         solrClient.close()
     }
 
