@@ -1,6 +1,0 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-	<t:loop source="contacts" value="contact" index="index">
-        <span t:type="checkout/contactitem" contact="contact" index="index"
-              purchaseController="purchaseController" blockToRefresh="blockToRefresh"/>
-	</t:loop>
-</t:container>

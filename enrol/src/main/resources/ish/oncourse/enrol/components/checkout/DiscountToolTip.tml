@@ -1,7 +1,0 @@
-<t:container
-        xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-    <div id="discountToolTip_${toolTipId}" style="display: none">
-        Best discount applied:
-          <div class="discount">${discount.name}</div>
-    </div>
-</t:container>

@@ -1,6 +1,0 @@
-<t:container
-        xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-    <t:loop source="names" value="name">
-        <div class="${className}">${name}</div>
-    </t:loop>
-</t:container>
