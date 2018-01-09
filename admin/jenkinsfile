@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh "./gradlew admin:build -Dbuild_number=${env.BUILD_NUMBER} -Doncourse.jdbc.url=jdbc:mariadb://db.office:3307/admin -PshouldCreateTables=true"
+                sh "./gradlew admin:build -Dbuild_number=${env.BUILD_NUMBER}"
                 junit 'admin/build/test-results/**/*.xml'
             }
         }
