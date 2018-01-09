@@ -39,17 +39,11 @@ class CCourse {
         cCourse.course.isWebVisible = true
         cCourse
     }
-
-    /**
-     * creates CourseClass with Start date = Current date/time + daysFromNow
-     * and CourseClass End Date = 10 days after Start date
-     * @param code
-     * @param daysFromNow
-     * @return
-     */
-    CCourse withClass(String code, int daysFromNow = 0) {
-
-        withClass(code, new Date() + daysFromNow, 10)
+    
+    CCourse withClass(String code) {
+        CCourseClass cClass = CCourseClass.instance(objectContext, code, course)
+        classes.add(cClass)
+        this
     }
 
     /**
@@ -102,6 +96,11 @@ class CCourse {
 
     CCourse detail(String detail) {
         course.setDetail(detail)
+        this
+    }
+
+    CCourse isWebVisible(boolean isVisible){
+        course.isWebVisible = isVisible
         this
     }
 

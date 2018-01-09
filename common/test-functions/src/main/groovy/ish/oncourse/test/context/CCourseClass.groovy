@@ -112,7 +112,6 @@ class CCourseClass {
         builder.courseClass.isDistantLearningCourse = false
         builder.courseClass.isActive = true
         builder.courseClass.maximumPlaces = 100
-        builder.courseClass.startDate = new Date()
         builder.cRoom()
         builder
     }
