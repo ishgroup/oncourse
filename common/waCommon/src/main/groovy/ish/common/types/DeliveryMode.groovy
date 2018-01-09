@@ -8,7 +8,7 @@ import ish.common.util.DisplayableExtendedEnumeration;
 import ish.oncourse.API;
 
 /**
- * A set of values for AVETMISS reporting from the version 7 standard.
+ * A set of values for AVETMISS reporting from the standard.
  * Consult the AVETMISS documentation for more detail about these options.
  * 
  * Delivery mode can be set for the whole class, or individually per Outcome
@@ -31,7 +31,7 @@ public enum DeliveryMode implements DisplayableExtendedEnumeration<Integer> {
 	 * Classroom-based
 	 */
 	@API
-	CLASSROOM(1, "Classroom (10)", 10),
+	CLASSROOM(1, "Classroom", 10),
 
 	/**
      * Database value: 2
@@ -39,7 +39,7 @@ public enum DeliveryMode implements DisplayableExtendedEnumeration<Integer> {
 	 * Electronic-based
 	 */
 	@API
-	ONLINE(2, "Online (20)", 20),
+	ONLINE(2, "Online", 20),
 
 	/**
      * Database value: 3
@@ -47,7 +47,7 @@ public enum DeliveryMode implements DisplayableExtendedEnumeration<Integer> {
 	 * Employment-based
 	 */
 	@API
-	WORKPLACE(3, "Workplace (30)", 30),
+	WORKPLACE(3, "Workplace", 30),
 
 	/**
      * Database value: 4
@@ -55,7 +55,7 @@ public enum DeliveryMode implements DisplayableExtendedEnumeration<Integer> {
 	 * Other delivery
 	 */
 	@API
-	OTHER(4, "Other delivery (40)", 40),
+	OTHER(4, "Other delivery", 40),
 
 	/**
      * Database value: 9
@@ -63,7 +63,7 @@ public enum DeliveryMode implements DisplayableExtendedEnumeration<Integer> {
 	 * Not applicable - recognition of prior learning/credit transfer
 	 */
 	@API
-	NA(9, "Not applicable - recognition of prior learning/credit transfer (90)", 90),
+	NA(9, "Not applicable - recognition of prior learning/credit transfer", 90),
 
 	/**
      * Database value: 11
@@ -135,7 +135,7 @@ public enum DeliveryMode implements DisplayableExtendedEnumeration<Integer> {
 	 * Classroom-based
 	 */
 	@API
-	CLASSROOM_AND_ONLINE(20, "Classroom and online (10)", 10),
+	CLASSROOM_AND_ONLINE(20, "Classroom and online", 10),
 
 	/**
 	 * Database value: 21
@@ -143,7 +143,7 @@ public enum DeliveryMode implements DisplayableExtendedEnumeration<Integer> {
 	 * Classroom-based
 	 */
 	@API
-	CLASSROOM_AND_WORKSPACE(21, "Classroom and workplace (30)", 30),
+	CLASSROOM_AND_WORKSPACE(21, "Classroom and workplace", 30),
 
 	/**
 	 * Database value: 22
@@ -151,7 +151,7 @@ public enum DeliveryMode implements DisplayableExtendedEnumeration<Integer> {
 	 * Classroom-based
 	 */
 	@API
-	ONLINE_AND_WORKSPACE(22, "Online and workplace (30)", 30),
+	ONLINE_AND_WORKSPACE(22, "Online and workplace", 30),
 
 	/**
 	 * Database value: 23
@@ -159,7 +159,7 @@ public enum DeliveryMode implements DisplayableExtendedEnumeration<Integer> {
 	 * Classroom-based
 	 */
 	@API
-	CLASSROOM_ONLINE_AND_WORKSPACE(23, "Classroom, online & workplace (30)", 30);
+	CLASSROOM_ONLINE_AND_WORKSPACE(23, "Classroom, online & workplace", 30);
 
 	private String displayName;
 	private int value;
