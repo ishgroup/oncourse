@@ -14,7 +14,6 @@ pipeline {
         stage('Build') {
             steps {
                 sh "./gradlew checkout:build -Dbuild_number=${env.BUILD_NUMBER}"
-                junit 'checkout/build/test-results/**/*.xml'
             }
         }
 

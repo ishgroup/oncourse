@@ -14,7 +14,6 @@ pipeline {
         stage('Build') {
             steps {
                 sh "./gradlew editor:build -Dbuild_number=${env.BUILD_NUMBER}"
-                junit 'editor/build/test-results/**/*.xml'
             }
         }
 
