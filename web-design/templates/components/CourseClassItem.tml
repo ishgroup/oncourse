@@ -18,7 +18,7 @@
                 <meta itemprop="description" content="${courseClass.course.name}" />
                 </p:else>
             </t:if>
-            <meta itemprop="url" content="https://${request.serverName}/course/${courseClass.course.code}" />
+            <meta itemprop="url" content="https://${request.serverName}/class/${courseClass.uniqueIdentifier}" />
             <meta itemprop="eventStatus" content="available" />
             <meta content="https://${request.serverName}/s/img/blank.png" itemprop="image" />
 
