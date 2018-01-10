@@ -1,8 +1,9 @@
 #!groovy​
 
 pipeline {
-    agent { 
-        label 'freebsd'
+    agent {
+        //should use 'mac os' agent because 'com.moowork.node' doesn't support freebsd
+        label 'mac1'
     }
 
     parameters {
