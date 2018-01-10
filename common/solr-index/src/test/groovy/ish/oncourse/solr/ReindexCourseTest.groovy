@@ -59,7 +59,7 @@ class ReindexCourseTest extends ASolrTest {
         }
 
         List<SCourse> actualSClasses = solrClient.query("courses",
-                SolrQueryBuilder.valueOf(new SearchParams(s: "course"), cCollege.college.id.toString(), 0, 10).build())
+                SolrQueryBuilder.valueOf(new SearchParams(s: "course"), cCollege.college.id.toString(), null, null).build())
                 .getBeans(SCourse.class)
         assertEquals(2, actualSClasses.size())
         assertNotNull(actualSClasses.find { c -> c.id == expectedSCourse.id })

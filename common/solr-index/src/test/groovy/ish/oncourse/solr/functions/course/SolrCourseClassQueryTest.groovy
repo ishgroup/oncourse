@@ -48,6 +48,7 @@ class SolrCourseClassQueryTest extends ASolrTest {
         cCollege.newCourse("course3").withInactiveClass("inactive").build()
         cCollege.newCourse("course4").withEnrolDisabledClass("enrolDisabled").build()
         cCollege.newCourse("course5").withWebInvisibleClass("webInvisible").build()
+        cCollege.newCourse("course6").isWebVisible(false).withClass("courseWebInvisible").build()
         
         ReindexCoursesJob job = new ReindexCoursesJob(objectContext, solrClient)
         job.run()
@@ -56,9 +57,9 @@ class SolrCourseClassQueryTest extends ASolrTest {
         }
 
         List<SCourse> actualSClasses = solrClient.query("courses",
-                SolrQueryBuilder.valueOf(new SearchParams(s: "course", debugQuery: true), cCollege.college.id.toString(), 0, 10).build())
+                SolrQueryBuilder.valueOf(new SearchParams(s: "course"), cCollege.college.id.toString(), null, null).build())
                 .getBeans(SCourse.class)
-        assertEquals(5, actualSClasses.size())
+        assertEquals(6, actualSClasses.size())
 
         solrClient.close()
     }
