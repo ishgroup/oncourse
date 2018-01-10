@@ -18,8 +18,8 @@ Survey.prototype = {
         $j("div[data='" + self.id + "'].class-reviews").parent().find(".rating").raty({
             half: false,
             size: 24,
-            starOff: '/portal/img/star-off.png',
-            starOn: '/portal/img/star-on.png',
+            starOff: '/portal/img/svg_icons/star-off.svg',
+            starOn: '/portal/img/svg_icons/star-on.svg',
             hints: ['', '', '', '', ''],
             readOnly: true,
             score: score,
@@ -32,8 +32,8 @@ Survey.prototype = {
         rateHtml.raty({
             half: false,
             size: 24,
-            starOff: '/portal/img/star-off-big.png',
-            starOn: '/portal/img/star-on-big.png',
+            starOff: '/portal/img/svg_icons/star-off-big.svg',
+            starOn: '/portal/img/svg_icons/star-on-big.svg',
             hints: ['', '', '', '', ''],
             width: 90,
             readOnly: readOnly,
@@ -49,8 +49,8 @@ Survey.prototype = {
         rateHtml.raty({
             half: false,
             size: 24,
-            starOff: '/portal/img/star-off-big.png',
-            starOn: '/portal/img/star-on-big.png',
+            starOff: '/portal/img/svg_icons/star-off-big.svg',
+            starOn: '/portal/img/svg_icons/star-on-big.svg',
             hints: ['not likely', '', '', '', '', '', '', '', '', 'very likely'],
             readOnly: readOnly,
             number: 10,
