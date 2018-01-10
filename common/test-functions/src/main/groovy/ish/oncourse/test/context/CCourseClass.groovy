@@ -1,5 +1,6 @@
 package ish.oncourse.test.context
 
+import ish.math.Money
 import ish.oncourse.model.Course
 import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Room
@@ -74,7 +75,7 @@ class CCourseClass {
         this
     }
 
-    CCourseClass withSession(Date date) {
+    CCourseClass withSession(Date date = new Date()) {
         CSession session = CSession.instance(objectContext, courseClass).date(date)
         sessions.add(session)
         setClassStartEndDates()
@@ -114,5 +115,16 @@ class CCourseClass {
         builder.courseClass.maximumPlaces = 100
         builder.cRoom()
         builder
+    }
+
+    CCourseClass feeExTax(int feeExTax) {
+        courseClass.feeExGst = new Money(feeExTax)
+        this
+    }
+
+    CCourseClass feeTax(int feeTaxPercent) {
+        if (feeTaxPercent >= 0 && courseClass.feeExGst.isGreaterThan(Money.ZERO))
+        courseClass.feeGst = courseClass.feeExGst * (courseClass.feeExGst + (feeTaxPercent / 100L)).doubleValue()
+        this
     }
 }

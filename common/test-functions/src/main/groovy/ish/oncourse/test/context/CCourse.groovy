@@ -22,6 +22,36 @@ class CCourse {
         cClass
     }
 
+    CCourseClass newCourseClassWithSessions(String code, Date... sessionStartDates) {
+        CCourseClass cClass = CCourseClass.instance(objectContext, code, course)
+        for (Date date : sessionStartDates) {
+            cClass.withSession(date)
+        }
+        classes.add(cClass)
+        cClass
+    }
+
+    CCourseClass newCourseClassWithSessions(String code, Integer... sessionStartDatesFromNow) {
+        CCourseClass cClass = CCourseClass.instance(objectContext, code, course)
+        sessionStartDatesFromNow.each {day -> cClass.withSession(new Date() + day)}
+        classes.add(cClass)
+        cClass
+    }
+
+    /**
+     * Creates class with 2 sessions, started now and in the next day
+     * @param code
+     * @return
+     */
+    CCourseClass newCourseClassWithSessions(String code) {
+        CCourseClass cClass = CCourseClass.instance(objectContext, code, course)
+        cClass.withSession(new Date())
+        cClass.withSession(new Date() + 1)
+        
+        classes.add(cClass)
+        cClass
+    }
+
     CCourseClass getCourseClassBy(String code) {
         return classes.stream().filter({ (it.courseClass.code == code) }).findFirst().get()
     }
