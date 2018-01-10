@@ -46,7 +46,7 @@ pipeline {
             )
         }
         success {
-            archiveArtifacts artifacts: 'editor/build/distributions/*.zip'
+            archiveArtifacts artifacts: 'editor/build/distribution/*.zip'
         }
     }
 
