@@ -178,7 +178,7 @@ export class Menus extends React.Component<Props, any> {
         <div
           style={{
             height: `${menu.items.length ? this.getMenuItemsCount() * 52 : 52}px`,
-            maxHeight: '500px',
+            maxHeight: '80vh',
             minHeight: '200px',
           }}
           className={classnames("rst", {fetching})}
