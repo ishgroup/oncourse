@@ -1,5 +1,12 @@
 .rules {
-  .btn {
-    margin-left: 20px;
+  max-height: 80vh;
+  overflow-y: auto;
+  margin: 10px 0;
+
+  .rule {
+    .btn {
+      margin-left: 20px;
+    }
   }
+
 }

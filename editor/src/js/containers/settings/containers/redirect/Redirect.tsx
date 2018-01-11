@@ -95,40 +95,42 @@ export class Redirect extends React.PureComponent<Props, any> {
           </Button>
         </FormGroup>
 
-        {rules && rules.map((rule, index) =>
-          <FormGroup key={index}>
-            <div className="form-inline rules">
+        <div className="rules">
+          {rules && rules.map((rule, index) =>
+            <FormGroup key={index}>
+              <div className="form-inline rule">
 
-              <Label>From</Label>
-              <Input
-                className={classnames({invalid: rule.submitted && rule.to && !rule.from})}
-                type="text"
-                name={`from-${index}`}
-                id={`from-${index}`}
-                value={rule.from}
-                onChange={e => this.onChange(e, index, 'from')}
-              />
-              <Label>To</Label>
-              <Input
-                className={classnames({invalid: rule.submitted && !rule.to && rule.from})}
-                type="text"
-                name={`to-${index}`}
-                id={`to-${index}`}
-                value={rule.to}
-                onChange={e => this.onChange(e, index, 'to')}
-              />
+                <Label>From</Label>
+                <Input
+                  className={classnames({invalid: rule.submitted && rule.to && !rule.from})}
+                  type="text"
+                  name={`from-${index}`}
+                  id={`from-${index}`}
+                  value={rule.from}
+                  onChange={e => this.onChange(e, index, 'from')}
+                />
+                <Label>To</Label>
+                <Input
+                  className={classnames({invalid: rule.submitted && !rule.to && rule.from})}
+                  type="text"
+                  name={`to-${index}`}
+                  id={`to-${index}`}
+                  value={rule.to}
+                  onChange={e => this.onChange(e, index, 'to')}
+                />
 
-              <Button
-                color="danger"
-                className="outline"
-                onClick={() => this.onRemove(index)}
-              >
-                <span className="icon icon-delete"/>
-                Remove
-              </Button>
-            </div>
-          </FormGroup>,
-        )}
+                <Button
+                  color="danger"
+                  className="outline"
+                  onClick={() => this.onRemove(index)}
+                >
+                  <span className="icon icon-delete"/>
+                  Remove
+                </Button>
+              </div>
+            </FormGroup>,
+          )}
+        </div>
 
         <Button onClick={() => this.onSave()} color="primary">
           Save
