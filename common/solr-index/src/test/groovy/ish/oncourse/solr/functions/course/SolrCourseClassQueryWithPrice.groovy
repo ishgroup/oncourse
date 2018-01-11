@@ -64,8 +64,28 @@ class SolrCourseClassQueryWithPrice  extends ASolrTest{
         assertNotNull(actualSCourses.find {c -> c.name == "course3" })
         assertNull(actualSCourses.find {c -> c.name == "course4" })
         assertNotNull(actualSCourses.find {c -> c.name == "course5" })
-        
 
+
+        //change some prices and reindex again to check correct reindexing
+        cCollege.cCourses.get("COURSE2").classes.first.feeExTax(130).build()
+        cCollege.cCourses.get("COURSE4").classes.first.feeExTax(70).build()
+        
+        job = new ReindexCoursesJob(objectContext, solrClient)
+        job.run()
+        while (job.isActive()){
+            Thread.sleep(100)
+        }
+
+        actualSCourses = solrClient.query("courses",
+                SolrQueryBuilder.valueOf(new SearchParams(s: "course*", price: 100), cCollege.college.id.toString(), null, null).build())
+                .getBeans(SCourse.class)
+        assertEquals(4, actualSCourses.size())
+
+        assertNotNull(actualSCourses.find {c -> c.name == "course1" })
+        assertNull(actualSCourses.find {c -> c.name == "course2" })
+        assertNotNull(actualSCourses.find {c -> c.name == "course3" })
+        assertNotNull(actualSCourses.find {c -> c.name == "course4" })
+        assertNotNull(actualSCourses.find {c -> c.name == "course5" })
     }
 
     @After

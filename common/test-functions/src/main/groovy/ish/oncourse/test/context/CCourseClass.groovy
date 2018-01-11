@@ -124,7 +124,7 @@ class CCourseClass {
 
     CCourseClass feeTax(int feeTaxPercent) {
         if (feeTaxPercent >= 0 && courseClass.feeExGst.isGreaterThan(Money.ZERO))
-        courseClass.feeGst = courseClass.feeExGst * (courseClass.feeExGst + (feeTaxPercent / 100L)).doubleValue()
+        courseClass.feeGst = courseClass.feeExGst * (feeTaxPercent / 100L)
         this
     }
 }
