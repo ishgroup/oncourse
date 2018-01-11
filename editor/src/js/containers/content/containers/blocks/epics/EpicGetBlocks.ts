@@ -12,7 +12,7 @@ const request: EpicUtils.Request<any, any> = {
     return [
       {
         type: GET_BLOCKS_FULFILLED,
-        payload: blocks.sort((b1, b2) => b1.title.localeCompare(b2.title)),
+        payload: blocks.sort((b1, b2) => b1.title ? b1.title.localeCompare(b2.title) : 1),
       },
     ];
   },

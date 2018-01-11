@@ -73,7 +73,7 @@ export class SidebarList extends React.Component<Props, any> {
         <li>
           <ul className="sidebar__list">
           {items
-            .filter(item => item.title.toLocaleLowerCase().indexOf(this.state.filter.toLocaleLowerCase()) !== -1)
+            .filter(item => item.title && item.title.toLocaleLowerCase().indexOf(this.state.filter.toLocaleLowerCase()) !== -1)
             .map(item => (
               <li key={item[idKey]}>
                 <NavLink
