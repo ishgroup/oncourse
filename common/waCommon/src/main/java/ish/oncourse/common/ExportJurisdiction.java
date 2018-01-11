@@ -15,7 +15,7 @@ public enum ExportJurisdiction implements DisplayableExtendedEnumeration<Integer
 	PLAIN(1, "NCVER (Standard AVETMISS)"),
 	@Deprecated
 	NSW(2, "NSW Department of Education"),
-	OLIV(3, "Oliv (Community Colleges)"),
+	OLIV(3, "CSO (Community Colleges)"),
 	SMART(4, "STSOnline (NSW)"),
 	QLD(5, "DETConnect (Queensland)"),
 	SA(6, "STELA (South Australia)"),
