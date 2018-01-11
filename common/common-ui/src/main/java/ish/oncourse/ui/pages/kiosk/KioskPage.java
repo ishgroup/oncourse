@@ -5,6 +5,8 @@ import ish.oncourse.model.Room;
 import ish.oncourse.model.Session;
 import ish.oncourse.model.Site;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.util.ValidationErrors;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang3.time.DateUtils;
@@ -25,6 +27,9 @@ public class KioskPage {
     @Inject
     @Property
     private Request request;
+
+    @Inject
+    private ITextileConverter textileConverter;
 
     @Inject
     private ICayenneService cayenneService;
@@ -63,5 +68,9 @@ public class KioskPage {
                     .and(courseClassExpression)
                     .orderBy(Session.START_DATE.asc()).limit(20).select(cayenneService.sharedContext());
         }
+    }
+
+    public String getSpecialInstructions() {
+         return textileConverter.convertCustomTextile(site.getSpecialInstructions(), new ValidationErrors());
     }
 }
