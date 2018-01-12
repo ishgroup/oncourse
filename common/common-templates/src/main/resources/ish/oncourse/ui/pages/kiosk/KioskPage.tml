@@ -5,8 +5,7 @@
   <meta content="no-cache" http-equiv="Cache-control"/>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <meta content="onCourse" name="generator"/>
-  <meta name="robots" content="noindex" />
+  <meta content="onCourse r1951" name="generator"/>
   <title>Timetable</title>
 
   <link rel="stylesheet" type="text/css" media="screen, print" href="/s/kiosk/css/kiosk.css"/>
@@ -17,46 +16,46 @@
 </head>
 <body t:type="any" class="kiosk">
 
-  <div class="timetable-wrapper">
-    <header id="header">
-      <div class="container">
-        <div class="header-logo">
-          <a class="logo" href="/">
-            <img src="/s/kiosk/img/logo.png" />
-          </a>
-        </div>
-        <div class="header-title">
-          <h3 class="site-name">${site.name}</h3>
-        </div>
+<div class="timetable-wrapper">
+  <header id="header">
+    <div class="container">
+      <div class="header-logo">
+        <a class="logo" href="/">
+          <img src="/s/kiosk/img/logo.png" />
+        </a>
       </div>
-    </header>
-
-    <section class="container">
-      <div class="courses-today clearfix">
-        <t:if test="sessions.empty">
-          <div class="container text-center">There are no more classes scheduled today.</div>
-          <p:else>
-            <t:loop source="sessions" value="session">
-              <t:ui.kiosk.kiosksession session="session"/>
-            </t:loop>
-          </p:else>
-        </t:if>
+      <div class="header-title">
+        <h3 class="site-name">${site.name}</h3>
       </div>
-    </section>
+    </div>
+  </header>
 
-    <footer>
-      <div class="container">
-        <div class="footer-logo">
-          <a target="_blank" href="https://www.ish.com.au/oncourse" class="popup">
-            <img src="/s/images/logo-ish.png" width="102" height="9" alt="powered by ish onCourse" />
-          </a>
-        </div>
+  <section class="container">
+    <div class="courses-today clearfix">
+      <t:if test="sessions.empty">
+        <div class="container text-center">There are no more classes scheduled today.</div>
+        <p:else>
+          <t:loop source="sessions" value="session">
+            <t:ui.kiosk.kiosksession session="session"/>
+          </t:loop>
+        </p:else>
+      </t:if>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-logo">
+        <a target="_blank" href="http://www.ish.com.au/oncourse" class="popup">
+          <img src="/s/images/logo-ish.png" width="102" height="9" alt="powered by ish onCourse" />
+        </a>
       </div>
-    </footer>
-  </div>
+    </div>
+  </footer>
+</div>
 
-  <script type="text/javascript">
+<script type="text/javascript">
     setTimeout(function(){window.location.reload();}, 900000);
-  </script>
+</script>
 </body>
 </html>
