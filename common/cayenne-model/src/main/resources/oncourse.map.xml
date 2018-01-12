@@ -769,9 +769,7 @@
 		<db-attribute name="numberOfAttempts" type="INTEGER" length="10"/>
 		<db-attribute name="response" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="status" type="INTEGER" length="10"/>
-		<db-attribute name="studentId" type="BIGINT" length="19"/>
 		<db-attribute name="timeOfDelivery" type="TIMESTAMP"/>
-		<db-attribute name="tutorId" type="BIGINT" length="19"/>
 		<db-attribute name="type" type="INTEGER" length="10"/>
 	</db-entity>
 	<db-entity name="MessageTemplate">

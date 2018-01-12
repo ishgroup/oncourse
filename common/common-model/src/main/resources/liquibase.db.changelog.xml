@@ -4599,4 +4599,18 @@
 		</sql>
 	</changeSet>
 
+	<changeSet id="314" author="pnikanovich" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<and>
+				<columnExists tableName="MessagePerson" columnName="studentId"/>
+				<columnExists tableName="MessagePerson" columnName="tutorId"/>
+			</and>
+		</preConditions>
+		<sql>
+			ALTER TABLE MessagePerson
+			DROP COLUMN studentId,
+			DROP COLUMN tutorId;
+		</sql>
+	</changeSet>
+
 </databaseChangeLog>
