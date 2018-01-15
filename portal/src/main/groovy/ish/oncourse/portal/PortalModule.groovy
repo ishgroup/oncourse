@@ -70,10 +70,36 @@ class PortalModule extends ConfigModule {
         CayenneModule.extend(binder)
                 .addModule(new WillowCayenneModuleBuilder().build())
                 .addModule(new JCacheModule())
+                .addModule(CacheEnabledModule)
         JettyModule.extend(binder)
                 .addMappedFilter(TAPESTRY_FILTER)
                 .addMappedServlet(new MappedServlet<>(new ISHHealthCheckServlet(), ISHHealthCheckServlet.urlPatterns, ISHHealthCheckServlet.SERVLET_NAME))
                 .addStaticServlet("resources", URL_PATTERN)
 
+    }
+
+    @Provides
+    ICacheEnabledService createCacheEnabledModule() {
+        new JCacheModule.DefaultCacheEnabledService()
+    }
+    
+    @Singleton
+    @Provides
+    CacheEnabledModule createCacheEnabledModule(ICacheEnabledService service) {
+        new CacheEnabledModule(service)
+    }
+
+    static class CacheEnabledModule implements org.apache.cayenne.di.Module {
+        
+        private ICacheEnabledService service
+        
+        CacheEnabledModule(ICacheEnabledService service) {
+            this.service = service
+        }
+
+        @Override
+        void configure(org.apache.cayenne.di.Binder binder) {
+            binder.bind(ICacheEnabledService).toInstance(service)
+        }
     }
 }
