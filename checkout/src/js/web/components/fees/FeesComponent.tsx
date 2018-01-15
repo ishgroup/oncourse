@@ -19,7 +19,7 @@ export class FeesComponent extends React.Component<Props, any> {
     } else {
       return (
         <div className="price">
-          {fee ? this.fee() : <abbr title="To Be Advised">TBA</abbr>}
+          {(fee || fee === 0) ? this.fee() : <abbr title="To Be Advised">TBA</abbr>}
         </div>
       );
     }
