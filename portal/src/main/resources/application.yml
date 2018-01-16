@@ -1,6 +1,7 @@
 jetty:
   context: /portal
   connector:
+    type: portal
     port: 8304
     host: 127.0.0.1
   idleThreadTimeout: 300000
