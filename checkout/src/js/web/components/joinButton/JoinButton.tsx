@@ -54,14 +54,14 @@ export class JoinButton extends React.Component<Props, State> {
   render() {
     const {course, isAdded} = this.props;
 
-    return (
-      <a
-        href="#"
-        className="actionLink"
-        onClick={e => this.onAdd(e)}
-        dangerouslySetInnerHTML={{__html: this.props.children}}
-      />
-    );
+    const content = course && <a
+      href="#"
+      className="actionLink"
+      onClick={e => this.onAdd(e)}
+      dangerouslySetInnerHTML={{__html: this.props.children}}
+    />
+
+    return content || <span />
   }
 }
 
