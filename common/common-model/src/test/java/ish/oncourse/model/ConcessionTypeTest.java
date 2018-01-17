@@ -3,6 +3,7 @@ package ish.oncourse.model;
 import ish.oncourse.test.TestContext;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.validation.ValidationException;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,7 +20,6 @@ public class ConcessionTypeTest {
 
     private TestContext testContext = new TestContext();
     private ObjectContext context;
-    private  College college;
 
     @Before
     public void setup() throws Exception {
@@ -44,5 +44,10 @@ public class ConcessionTypeTest {
             invalid = true;
         }
         assertTrue("commit should be in failure status", invalid);
+    }
+    
+    @After
+    public void tearDown(){
+        testContext.close();
     }
 }
