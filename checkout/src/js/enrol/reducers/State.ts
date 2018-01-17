@@ -19,6 +19,7 @@ export interface CheckoutState {
   contactAddProcess: any;
   preferences: Preferences;
   fetching?: boolean;
+  isCartModified: boolean;
 }
 
 export interface PayerState {

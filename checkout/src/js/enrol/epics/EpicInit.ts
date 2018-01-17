@@ -87,7 +87,7 @@ export const EpicInit: Epic<any, IshState> = (action$: ActionsObservable<any>, s
 
     if (state.checkout.summary.result.length) {
       return result.concat([
-        Actions.changePhase(state.checkout.page),
+        Actions.changePhase(state.checkout.isCartModified ? Phase.Summary : state.checkout.page),
         getAllContactNodesFromBackend(),
       ]);
     }

@@ -5,6 +5,8 @@ import * as Actions from "../actions/Actions";
 import * as ContactEditActions from "../containers/contact-edit/actions/Actions";
 import * as ContactAddActions from "../containers/contact-add/actions/Actions";
 
+import {Actions as WebActions} from "../../web/actions/Actions";
+
 import {ValidationError, ContactFields, Amount, RedeemVoucher} from "../../model";
 import {Reducer as SummaryReducer} from "../containers/summary/reducers/Reducer";
 import {Reducer as PaymentReducer} from "../containers/payment/reducers/Reducer";
@@ -15,6 +17,29 @@ import {normalize} from "normalizr";
 import {FULFILLED} from "../../common/actions/ActionUtils";
 import {CHANGE_TAB} from "../containers/payment/actions/Actions";
 import {CHANGE_CHILD_PARENT_FULFILLED} from "../containers/summary/actions/Actions";
+
+
+// Checking if cart has been modified. 
+const IsCartModified = (state: boolean = false, action: IAction<boolean>): boolean => {
+  switch (action.type) {
+
+    case FULFILLED(WebActions.ADD_CLASS_TO_CART):
+    case FULFILLED(WebActions.ADD_PRODUCT_TO_CART):
+    case FULFILLED(WebActions.ADD_PROMOTION_TO_CART):
+    case FULFILLED(WebActions.ADD_WAITING_COURSE_TO_CART):
+    case FULFILLED(WebActions.REMOVE_CLASS_FROM_CART):
+    case FULFILLED(WebActions.REMOVE_PRODUCT_FROM_CART):
+    case FULFILLED(WebActions.REMOVE_PROMOTION_FROM_CART):
+    case FULFILLED(WebActions.REMOVE_WAITING_COURSE_FROM_CART):
+      return true;
+
+    case Actions.CHANGE_PHASE:
+      return false;
+
+    default:
+      return state;
+  }
+}
 
 const PageReducer = (state: Phase = Phase.Summary, action: IAction<Phase>): Phase => {
   switch (action.type) {
@@ -256,4 +281,5 @@ export const Reducer = combineReducers<CheckoutState>({
   concession: ConcessionReducer,
   redeemVouchers: RedeemVouchersReducer,
   contactAddProcess: ContactAddProcess,
+  isCartModified: IsCartModified,
 });
