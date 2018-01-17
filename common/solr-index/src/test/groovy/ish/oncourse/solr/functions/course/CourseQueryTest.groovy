@@ -126,7 +126,7 @@ class CourseQueryTest {
         CSession.instance(objectContext, otherCourse.newCourseClass("otherClass1").courseClass).newRoom(otherSite.site)
 
         CCourse courseWithMainRoomSite = collegeContext.newCourse("courseWithMainRoomSite")
-        courseWithMainRoomSite.newCourseClass("classWithMainRoomSite1").cRoom(targetSite.site)
+        courseWithMainRoomSite.newCourseClass("classWithMainRoomSite1").newRoom(targetSite.site)
         objectContext.commitChanges()
 
         List<Course> actualCourses = CourseQuery.bySessionSite(targetSite.site).select(objectContext)
@@ -140,11 +140,11 @@ class CourseQueryTest {
     void testByCourseClassRoomSite(){
         CCourse expectedCourse = collegeContext.newCourse("expectedCourse")
         CSite targetSite = CSite.instance(objectContext, college)
-        expectedCourse.newCourseClass("expectedClass1").cRoom(targetSite.site)
+        expectedCourse.newCourseClass("expectedClass1").newRoom(targetSite.site)
 
         CCourse otherCourse = collegeContext.newCourse("otherCourse")
         CSite otherSite = CSite.instance(objectContext, college)
-        otherCourse.newCourseClass("otherClass1").cRoom(otherSite.site)
+        otherCourse.newCourseClass("otherClass1").newRoom(otherSite.site)
 
         CCourse sessionCourse = collegeContext.newCourse("sessionCourse")
         CSession.instance(objectContext, sessionCourse.newCourseClass("expectedClass1").courseClass).newRoom(targetSite.site)

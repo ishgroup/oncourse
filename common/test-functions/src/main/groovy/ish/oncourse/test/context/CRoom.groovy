@@ -49,6 +49,12 @@ class CRoom {
         this
     }
 
+    CRoom location(BigDecimal longitude, BigDecimal latitude){
+        room.site.longitude = longitude
+        room.site.latitude = latitude
+        this
+    }
+
     static CRoom instance(ObjectContext context, Site site){
         CRoom builder = new CRoom()
         builder.objectContext = context

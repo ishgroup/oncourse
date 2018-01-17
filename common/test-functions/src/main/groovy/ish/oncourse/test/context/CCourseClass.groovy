@@ -23,13 +23,13 @@ class CCourseClass {
         this
     }
 
-    CRoom cRoom(Site site){
+    CRoom newRoom(Site site){
         CRoom cRoom = CRoom.instance(objectContext, site)
         courseClass.room = cRoom.room
         cRoom
     }
 
-    CRoom cRoom(){
+    CRoom newRoom(){
         CRoom cRoom = CRoom.instance(objectContext, courseClass.college)
         courseClass.room = cRoom.room
         cRoom
@@ -75,10 +75,25 @@ class CCourseClass {
         this
     }
 
+    /**
+     * creates Session with Room and real (not virtual) Site with defined location (longitude and latitude)
+     * @param date
+     * @param longitude
+     * @param latitude
+     * @return
+     */
+    CCourseClass withSessionWithSiteLocation(Date date = new Date(), BigDecimal longitude, BigDecimal latitude) {
+        CSession session = CSession.instance(objectContext, courseClass).date(date)
+        session.newRoomWithSiteLocation(longitude, latitude)
+        sessions.add(session)
+        setClassStartEndDatesAndRoom()
+        this
+    }
+
     CCourseClass withSession(Date date = new Date()) {
         CSession session = CSession.instance(objectContext, courseClass).date(date)
         sessions.add(session)
-        setClassStartEndDates()
+        setClassStartEndDatesAndRoom()
         this
     }
     
@@ -88,8 +103,19 @@ class CCourseClass {
      * @return
      */
     CCourseClass withSession(int daysFromNow) {
-        sessions.add(CSession.instance(objectContext, courseClass).date(new Date() + daysFromNow))
-        setClassStartEndDates()
+        withSession(new Date() + daysFromNow)
+    }
+
+
+    private CCourseClass setClassStartEndDatesAndRoom() {
+        sessions.sort {it.session.startDate}
+        courseClass.startDate = sessions.first().session.startDate
+        courseClass.endDate = sessions.last().session.endDate
+
+        CSession cSession = sessions.find {it.session.room != null}
+        if (cSession)
+            courseClass.room = sessions.first().session.room
+        
         this
     }
 
@@ -113,7 +139,7 @@ class CCourseClass {
         builder.courseClass.isDistantLearningCourse = false
         builder.courseClass.isActive = true
         builder.courseClass.maximumPlaces = 100
-        builder.cRoom()
+        builder.newRoom()
         builder
     }
 

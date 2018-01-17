@@ -88,6 +88,21 @@ class CCourse {
         this
     }
 
+    CCourse withClassWithSiteLocation(String code, BigDecimal longitude, BigDecimal latitude) {
+        CCourseClass cClass = CCourseClass.instance(objectContext, code, course).withSessionWithSiteLocation(longitude, latitude)
+        
+        classes.add(cClass)
+        this
+    }
+
+
+    CCourse withSelfPacedClass(String code) {
+        CCourseClass cClass = CCourseClass.instance(objectContext, code, course).isDistantLearningCourse(true)
+
+        classes.add(cClass)
+        this
+    }
+
     CCourse withClass(String code, Date startDate, Date endDate) {
         CCourseClass cClass = CCourseClass.instance(objectContext, code, course).startDate(startDate).endDate(endDate)
         classes.add(cClass)

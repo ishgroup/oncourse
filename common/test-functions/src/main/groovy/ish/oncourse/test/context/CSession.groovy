@@ -52,6 +52,13 @@ class CSession {
         cRoom
     }
 
+    CRoom newRoomWithSiteLocation(BigDecimal longitude, BigDecimal latitude) {
+        CRoom cRoom = CRoom.instance(objectContext, session.college)
+        cRoom.location(longitude, latitude)
+        session.room = cRoom.room
+        cRoom
+    }
+
     CSession room(Room room){
         session.room = room
         this
