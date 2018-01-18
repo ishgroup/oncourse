@@ -1,6 +1,5 @@
 package ish.oncourse.util;
 
-import ish.math.Country;
 import ish.math.Money;
 import ish.oncourse.model.Session;
 import org.apache.commons.lang3.StringUtils;
@@ -50,9 +49,9 @@ public class FormatUtils {
 
     public static final String TIME_ZONE_UTC = "UTC";
 
-    private static NumberFormat feeFormatWithCents;
+    private static Format feeFormatWithCents;
 
-    private static NumberFormat feeFormatWithoutCents;
+    private static Format feeFormatWithoutCents;
 
     /**
      * the format is used to parse string value which an user puts in date field.
@@ -126,24 +125,22 @@ public class FormatUtils {
 		return dateFormat;
 	}
 
-    public static NumberFormat getFeeFormatWithCents() {
+    public static Format getFeeFormatWithCents() {
         if (feeFormatWithCents == null) {
-            feeFormatWithCents = NumberFormat.getCurrencyInstance(Country.AUSTRALIA.locale());
-            feeFormatWithCents.setMinimumFractionDigits(2);
+            feeFormatWithCents = MoneyFormat.getInstance(2);
         }
         return feeFormatWithCents;
     }
 
-    public static NumberFormat getFeeFormatWithoutCents() {
+    public static Format getFeeFormatWithoutCents() {
         if (feeFormatWithoutCents == null) {
-            feeFormatWithoutCents = NumberFormat.getCurrencyInstance(Country.AUSTRALIA.locale());
-            ((NumberFormat) feeFormatWithoutCents).setMinimumFractionDigits(0);
+            feeFormatWithoutCents = MoneyFormat.getInstance(0);
         }
         return feeFormatWithoutCents;
     }
 
     public static Format chooseMoneyFormat(Money amount) {
-        NumberFormat format;
+        Format format;
         if (amount.getCents() > 0) {
             format = getFeeFormatWithCents();
         } else {
