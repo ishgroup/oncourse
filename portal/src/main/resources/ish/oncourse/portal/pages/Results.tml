@@ -4,7 +4,7 @@
         <div class="page-header clearfix">
             <h1><a href="#">Results</a></h1>
         </div>
-        <ul class="list-unstyled result-content">
+        <ul class="list-unstyled">
             <t:loop source="courseClasses" value="courseClass">
 				<t:if test="hasResult()">
 					<li>

@@ -11,8 +11,10 @@ var $j = jQuery.noConflict();
     }
 
 Survey.prototype = {
+
     survey: 0,
     id:0,
+
     initAverageRating: function (score) {
         var self = this;
         $j("div[data='" + self.id + "'].class-reviews").parent().find(".rating").raty({
@@ -38,8 +40,17 @@ Survey.prototype = {
             width: 90,
             readOnly: readOnly,
             score: score,
-            click: function () {
-                self.refreshAverageRating();
+            click: function (scoreVal, evt) {
+                var venueScore = $j("div[data='" + self.id + "'].class-reviews").find("span.venue-rate").raty("score");
+                var tutorScore = $j("div[data='" + self.id + "'].class-reviews").find("span.tutor-rate").raty("score");
+                var courseScore = $j("div[data='" + self.id + "'].class-reviews").find("span.course-rate").raty("score");
+
+                var evtClasses = evt.target.parentElement.className;
+                var averageRate = Math.floor(
+                    (evtClasses.endsWith('venue-rate') ? scoreVal + tutorScore + courseScore :
+                        evtClasses.endsWith('tutor-rate') ? venueScore + scoreVal + courseScore :
+                            venueScore + tutorScore + scoreVal) / 3);
+                self.initAverageRating(averageRate);
             }
         });
     },
@@ -55,8 +66,8 @@ Survey.prototype = {
             readOnly: readOnly,
             number: 10,
             score: score,
-            click: function () {
-                self.refreshAverageRating();
+            click: function (scoreVal, evt) {
+                self.refreshNetPromoterScore(scoreVal);
             }
         });
     },
@@ -93,13 +104,14 @@ Survey.prototype = {
                 }
             });
         }
+        this.refreshNetPromoterScore(this.survey.netPromoterScore)
     },
     //slide survey form
     slideSurveys: function () {
         var self = this;
         $j("div[data='" + self.id + "'].class-reviews").slideToggle("fast", function () {
-            self.loadSurvey();
-            self.fillSurvey();
+            // self.loadSurvey();
+            // self.fillSurvey();
         });
     },
 
@@ -109,9 +121,12 @@ Survey.prototype = {
            ($j("div[data='" + self.id + "'].class-reviews").find("span.venue-rate").raty("score") +
             $j("div[data='" + self.id + "'].class-reviews").find("span.tutor-rate").raty("score") +
             $j("div[data='" + self.id + "'].class-reviews").find("span.course-rate").raty("score")) / 3));
+    },
 
-        var score = $j("div[data='" + self.id + "'].class-reviews").find("span.netPromoterScore-rate").find('input[name=score]').val();
-        var placeholderMessage = 'Enter comments...';
+    refreshNetPromoterScore: function(score) {
+      var self = this;
+        //var score = $j("div[data='" + self.id + "'].class-reviews").find("span.netPromoterScore-rate").raty('score');
+        var placeholderMessage = '';
         if (score >= 1 && score <= 6) {
             placeholderMessage = 'Please tell us how we could have improved your experience.';
         } else {

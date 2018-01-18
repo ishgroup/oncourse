@@ -22,7 +22,7 @@
             </li>
         </ul>
         <t:if test="!isTutor">
-            <textarea rows="5" class="form-control survey-comment" placeholder="Enter comments..."/>
+            <textarea rows="5" class="form-control survey-comment"/>
 
             <div class="alert alert-info">
                 Your comment and name (${portalService.contact.givenName}<t:if test="${portalService.contact.suburb}"> from ${portalService.contact.suburb}</t:if>) may be used for quality improvement or marketing.

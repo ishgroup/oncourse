@@ -9,7 +9,7 @@
 		</div>
 
 		<t:if test="showSurveys()">
-			<h4>Class rating
+			<h4>Feedback
             <span class="rating rate-inline rate-class">
                 <input type="hidden" name="score"/>
             </span>
