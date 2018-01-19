@@ -38,13 +38,13 @@
 	
 			<ul class="process-list">
 				<t:loop source="invoices" value="invoice">
-					<li><span>${invoiceDescription}</span> ${message:currency}
+					<li><span>${invoiceDescription}</span>
 						<t:output value="invoice.totalGst" format="moneyFormat"/>
 					</li>
 				</t:loop>
 			</ul>
 			<div class="process-total">
-				<span>${message:totalOfPayment}</span>${message:currency}
+				<span>${message:totalOfPayment}</span>
 				<t:output value="totalIncGst" format="moneyFormat"/>
 			</div>
 	
