@@ -31,8 +31,8 @@ public class GetTemplateKey {
 		CustomTemplateDefinition ctd = getTemplateDefinition.get(name);
 		WebSiteLayout webSiteLayout = webNodeService.getLayout();
 		if (ctd != null && name.endsWith(ctd.getTemplateClassName()))
-			return new MultiKey(name, ctd.getTemplateFileName(), selector.locale, request.getServerName(), webSiteLayout != null ? webSiteLayout.getId(): null);
+			return new MultiKey(name, ctd.getTemplateFileName(), selector.locale, selector.getAxis(CustomTemplateDefinition.class), request.getServerName(), webSiteLayout != null ? webSiteLayout.getId(): null);
 		else
-			return new MultiKey(name, selector.locale, request.getServerName(), webSiteLayout != null ? webSiteLayout.getId(): null);
+			return new MultiKey(name, selector.locale, selector.getAxis(CustomTemplateDefinition.class), request.getServerName(), webSiteLayout != null ? webSiteLayout.getId(): null);
 	}
 }
