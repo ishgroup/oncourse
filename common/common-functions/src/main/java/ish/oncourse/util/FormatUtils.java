@@ -140,13 +140,7 @@ public class FormatUtils {
     }
 
     public static Format chooseMoneyFormat(Money amount) {
-        Format format;
-        if (amount.getCents() > 0) {
-            format = getFeeFormatWithCents();
-        } else {
-            format = getFeeFormatWithoutCents();
-        }
-        return format;
+        return amount.getCents() == 0 ? getFeeFormatWithoutCents() : getFeeFormatWithCents();
     }
 
     public static String convertDateToISO8601(Date date) {
