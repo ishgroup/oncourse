@@ -8,6 +8,7 @@ import ish.oncourse.model.PaymentIn;
 import ish.oncourse.services.payment.*;
 import ish.oncourse.services.paymentexpress.INewPaymentGatewayServiceBuilder;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.util.FormatUtils;
 import ish.oncourse.webservices.components.PaymentResult;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
@@ -31,7 +32,6 @@ import static ish.oncourse.webservices.pages.Payment.GetPaymentProperty.valueFor
 @Import(library = {"js/jquery.min.js", "js/jquery.inputmask.bundle.min.js", "js/payment.js"}, stylesheet = "css/screen.css")
 public class Payment {
 	private static final Logger logger = LogManager.getLogger();
-	private static final String PAYMENT_AMOUNT_FORMAT = "###,##0.00";
 	private static final int EXPIRE_YEAR_INTERVAL = 15;
 
 
@@ -100,7 +100,7 @@ public class Payment {
 	}
 
 	private void initProperties() {
-		this.moneyFormat = new DecimalFormat(PAYMENT_AMOUNT_FORMAT);
+		this.moneyFormat = FormatUtils.getFeeFormatWithCents();
 		this.totalIncGst =  valueForMoney(paymentProcessController.getState(), paymentProcessController.getModel()).get();
 		this.payer = valueForContact(paymentProcessController.getState(), paymentProcessController.getModel()).get();
 		this.invoices = paymentProcessController.getModel().getInvoices();
