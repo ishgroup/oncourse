@@ -11,5 +11,7 @@ import org.apache.solr.SolrTestCaseJ4
 abstract class ASolrTest extends SolrTestCaseJ4 {
     static {
         System.setProperty("test.solr.allowed.securerandom", "NativePRNG")
+        System.setProperty("tests.timezone", "Australia/Sydney")
+        System.setProperty("tests.locale", "en-AU")
     }
 }
