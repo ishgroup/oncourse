@@ -87,6 +87,10 @@ class Functions {
             }
         }
     }
+    
+    static void dropDB(MariaDB mariaDB){
+        executeStatement(mariaDB, String.format("DROP SCHEMA IF EXISTS %s", mariaDB.dbName))
+    }
 
     static void changePassword(MariaDB mariaDB, String newPassword) {
         executeStatement(mariaDB,  "ALTER USER 'root'@'localhost' IDENTIFIED BY '${newPassword}'")

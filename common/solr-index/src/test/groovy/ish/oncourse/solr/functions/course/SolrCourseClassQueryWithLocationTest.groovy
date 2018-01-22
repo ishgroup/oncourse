@@ -90,6 +90,9 @@ class SolrCourseClassQueryWithLocationTest extends ASolrTest{
     @After
     void after(){
         Schedulers.shutdown()
-        testContext.close()
+
+        // Can't drop DB cause 2 mariaDB threads is still working.
+        // TODO: define mariaDB daemon threads and shut them down
+        testContext.close(false)
     }
 }

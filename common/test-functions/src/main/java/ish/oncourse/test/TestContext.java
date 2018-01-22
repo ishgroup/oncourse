@@ -123,6 +123,12 @@ public class TestContext {
 			logger.error(e);
 		}
 	}
+	
+	public void close(boolean shouldDropDB){
+        if (shouldDropDB)
+            Functions.dropDB(mariaDB);
+        close();
+    }
 
 	public ServerRuntime getServerRuntime() {
 		return serverRuntime;
