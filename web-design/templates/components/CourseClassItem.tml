@@ -162,15 +162,7 @@
             <div class="col-xs-24 col-sm-5 col-md-7">
                 <div class="reactjs-component"
                      data-cid="enrol-button"
-                     data-prop-id="${courseClass.id}"
-                     data-prop-name="${courseClass.course.name}"
-                     data-prop-is-canceled="${courseClass.cancelled}"
-                     data-prop-is-finished="${finishedClass}"
-                     data-prop-has-available-enrolment-places="${hasAvailableEnrolmentPlaces}"
-                     data-prop-payment-gateway-enabled="${paymentGatewayEnabled}"
-                     data-prop-allow-by-application="${allowByAplication}"
-                     data-prop-free-places="${courseClass.availableEnrolmentPlaces}"
-                     data-prop-unique-identifier="${courseClass.uniqueIdentifier}"></div>
+                     data-prop-id="${courseClass.id}"></div>
             </div>
 
             <t:if test="courseClass.detail">
