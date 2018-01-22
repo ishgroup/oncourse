@@ -36,8 +36,14 @@ public class PageRenderer implements IPageRenderer {
 		GetStrResponseWrapper wrapper = new GetStrResponseWrapper(response);
 
 		requestGlobals.storeRequestResponse(request, wrapper);
+
+		ComponentResourceSelector selector = new ComponentResourceSelector(Locale.getDefault());
+		CustomTemplateDefinition ctd = (CustomTemplateDefinition) request.getAttribute(TextileUtil.CUSTOM_TEMPLATE_DEFINITION);
+		if (ctd != null) {
+			selector.withAxis(CustomTemplateDefinition.class, ctd);
+		}
 		
-		Page page = pageLoader.loadPage(pageName, new ComponentResourceSelector(Locale.getDefault()).withAxis(CustomTemplateDefinition.class, (CustomTemplateDefinition) request.getAttribute(TextileUtil.CUSTOM_TEMPLATE_DEFINITION)));
+		Page page = pageLoader.loadPage(pageName, selector);
 
 		try {
 			pageResponseRenderer.renderPageResponse(page);
