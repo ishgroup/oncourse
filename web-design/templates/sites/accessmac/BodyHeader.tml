@@ -1,0 +1,10 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<a href="${homeLink}" class="brand">${collegeName}</a>
+	<div id="tagline">Achieve Through <br/> Macquarie University</div>
+	<aside class="pull-right" id="headerToolbar">
+		<t:if t:test="paymentGatewayEnabled">
+			<span t:type="ui/ShortList" />
+		</t:if>
+		<!-- <span t:type="ui/PromoCodesView" /> -->
+	</aside>
+</t:container>

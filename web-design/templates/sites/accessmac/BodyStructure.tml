@@ -1,0 +1,65 @@
+<section class="site-wrapper" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<section class="site-container" id="container">
+		<header class="site-header" id="header" itemscope="itemscope" itemtype="http://schema.org/WPHeader">
+			<section class="header-container">
+				<section class="clearfix top-bar">
+					<div class="navbar navbar-fixed-top">
+						<div class="navbar-inner">
+							<div class="header-holder">
+								<div class="container">
+									<div class="nav-toggler">
+										<span class="glyph icon-menu"></span>
+										<span>Menu</span>
+									</div>
+									<div t:type="ui/bodyheader"></div>
+									<div class="cart-toggler">
+										<span class="glyph icon-menu"></span>
+										<span>Cart</span>
+									</div>
+								</div>
+							</div>
+							<!-- <div t:type="ui/globalnavi" /> -->
+							<div class="nav-holder">
+								<div class="container">
+									<span t:type="ui/CourseSearchForm" />
+									<nav class="nav" id="nav">
+										<div t:type="ui/menu" rootMenu="rootMenu" />
+									</nav>
+									<a href="https://skillsoncourse.com.au/login" target="_blank" class="login"><i class="fa fa-lock"></i> Login</a>
+								</div>
+							</div>
+						</div>
+
+						<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:header" />
+					</div>
+				</section>
+			</section>
+		</header>
+		<div class="internal-banner-holder">
+			<div class="container" id="container">
+				<section class="clearfix content-container" id="contentContainer">
+					<aside class="sidebar-left" id="sidebarLeft">
+						<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:left" />
+					</aside>
+					<article class="content" id="content">
+						<t:body />
+						<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:content" />
+					</article>
+					<aside class="sidebar-right" id="sidebarRight" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
+						<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:right" />
+					</aside>
+				</section>
+			</div>
+		</div>
+		<footer class="footer" id="footer" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
+			<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:footer" />
+			<div t:type="ui/bodyfooter" />
+		</footer>
+	</section>
+	<div id="overlay" style="display: none; height: 500px" />
+	<div id="timeline-wrap" style="visibility: hidden;">
+		<div id="timeline" />
+	</div>
+
+	<div data-cid="modal" class="reactjs-component"></div>
+</section>

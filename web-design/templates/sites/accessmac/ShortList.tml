@@ -1,0 +1,7 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+  <div class="short-list-info">
+    <span class="sl-info-title">Items Selected</span>
+    <div class="reactjs-component" data-cid="cart" style="display:inline-block"></div>
+    <i class="fa fa-shopping-cart"></i>
+  </div>
+</t:container>

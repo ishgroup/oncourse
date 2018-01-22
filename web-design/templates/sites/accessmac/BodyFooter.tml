@@ -1,0 +1,16 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<div class="copy-info">
+		<div class="container" itemscope="itemscope" itemtype="http://schema.org/Organization" itemprop="provider">
+		<p class="pull-left"><a href="/privacy" title="Privacy Policy">Privacy Policy</a> | <a href="/refund" title="Refund Policy" >Refund Policy</a> | <a href="/terms" title="Terms &amp; Conditions">Terms &amp; Conditions</a> | <a href="/contact" title="Contact us">Contact us</a> | ABN 59 003 849 198 | © <span itemprop="name">Access Macquarie Limited</span>
+			</p>
+			<p class="pull-right">
+				<a href="/" class="popup">
+					<img src="/s/images/footer-logo.png" width="293" height="44" alt="Macquarie University"/>
+				</a><br />
+				<!-- <a href="http://www.ish.com.au/oncourse" class="popup">
+					<img src="/s/img/poweredby.png" width="102" height="9" alt="Macquarie University"/>
+				</a> -->
+			</p>
+		</div>
+	</div>
+</t:container>
