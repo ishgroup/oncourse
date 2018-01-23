@@ -1591,8 +1591,8 @@
                     <xs:extension base="tns:replicationStub">
                         <xs:sequence>
                             <xs:element name="name" type="xs:string"/>
-                            <xs:element name="type" type="xs:long"/>
-                            <xs:element name="deliverySchedule" type="xs:long"/>
+                            <xs:element name="type" type="xs:int"/>
+                            <xs:element name="deliverySchedule" type="xs:int"/>
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>

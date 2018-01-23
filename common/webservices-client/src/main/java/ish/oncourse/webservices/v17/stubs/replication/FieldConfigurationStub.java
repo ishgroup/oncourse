@@ -20,8 +20,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *     &lt;extension base="{http://repl.v17.soap.webservices.oncourse.ish/}replicationStub">
  *       &lt;sequence>
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="type" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="deliverySchedule" type="{http://www.w3.org/2001/XMLSchema}long"/>
+ *         &lt;element name="type" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="deliverySchedule" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -43,13 +43,13 @@ public class FieldConfigurationStub
     @XmlElement(required = true)
     protected String name;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
-    @XmlSchemaType(name = "long")
-    protected Long type;
+    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlSchemaType(name = "int")
+    protected Integer type;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
-    @XmlSchemaType(name = "long")
-    protected Long deliverySchedule;
+    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlSchemaType(name = "int")
+    protected Integer deliverySchedule;
 
     /**
      * Gets the value of the name property.
@@ -83,7 +83,7 @@ public class FieldConfigurationStub
      *     {@link String }
      *     
      */
-    public Long getType() {
+    public Integer getType() {
         return type;
     }
 
@@ -95,7 +95,7 @@ public class FieldConfigurationStub
      *     {@link String }
      *     
      */
-    public void setType(Long value) {
+    public void setType(Integer value) {
         this.type = value;
     }
 
@@ -107,7 +107,7 @@ public class FieldConfigurationStub
      *     {@link String }
      *     
      */
-    public Long getDeliverySchedule() {
+    public Integer getDeliverySchedule() {
         return deliverySchedule;
     }
 
@@ -119,7 +119,7 @@ public class FieldConfigurationStub
      *     {@link String }
      *     
      */
-    public void setDeliverySchedule(Long value) {
+    public void setDeliverySchedule(Integer value) {
         this.deliverySchedule = value;
     }
 
