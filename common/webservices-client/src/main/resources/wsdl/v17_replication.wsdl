@@ -92,6 +92,7 @@
             <xs:element name="assessmentClassModule" type="tns:assessmentClassModuleStub"/>
             <xs:element name="field" type="tns:fieldStub"/>
             <xs:element name="fieldConfiguration" type="tns:fieldConfigurationStub"/>
+            <xs:element name="fieldConfigurationLink" type="tns:fieldConfigurationLinkStub"/>
             <xs:element name="fieldConfigurationScheme" type="tns:fieldConfigurationSchemeStub"/>
             <xs:element name="fieldHeading" type="tns:fieldHeadingStub"/>
             <xs:element name="tax" type="tns:taxStub"/>
@@ -1590,6 +1591,19 @@
                     <xs:extension base="tns:replicationStub">
                         <xs:sequence>
                             <xs:element name="name" type="xs:string"/>
+                            <xs:element name="type" type="xs:long"/>
+                            <xs:element name="deliverySchedule" type="xs:long"/>
+                        </xs:sequence>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+
+            <xs:complexType name="fieldConfigurationLinkStub">
+                <xs:complexContent>
+                    <xs:extension base="tns:replicationStub">
+                        <xs:sequence>
+                            <xs:element name="schemeId" type="xs:long"/>
+                            <xs:element name="configurationId" type="xs:long"/>
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
@@ -1600,16 +1614,13 @@
                     <xs:extension base="tns:replicationStub">
                         <xs:sequence>
                             <xs:element name="name" type="xs:string"/>
-                            <xs:element name="applicationFieldConfigurationId" type="xs:long"/>
-                            <xs:element name="enrolFieldConfigurationId" type="xs:long"/>
-                            <xs:element name="waitingListFieldConfigurationId" type="xs:long"/>
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
             </xs:complexType>
 
             <xs:complexType name="fieldHeadingStub">
-                <xs:complexContent>
+                <xs:complexContent> 
                     <xs:extension base="tns:replicationStub">
                         <xs:sequence>
                             <xs:element name="description" type="xs:string"/>

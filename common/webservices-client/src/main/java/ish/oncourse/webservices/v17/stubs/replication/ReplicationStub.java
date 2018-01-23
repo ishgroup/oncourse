@@ -104,6 +104,7 @@ import ish.oncourse.webservices.util.GenericReplicationStub;
     AssessmentClassModuleStub.class,
     SurveyStub.class,
     CourseClassPaymentPlanLineStub.class,
+    FieldConfigurationLinkStub.class,
     StudentStub.class,
     SessionStub.class,
     CertificateStub.class,
