@@ -44,6 +44,11 @@ class CRoom {
         this
     }
 
+    CRoom timeZone(String timeZone){
+        room.site.timeZone = timeZone
+        this
+    }
+
     CRoom build(){
         objectContext.commitChanges()
         this

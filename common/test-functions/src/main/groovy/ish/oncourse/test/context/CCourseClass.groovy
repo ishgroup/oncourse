@@ -96,6 +96,13 @@ class CCourseClass {
         setClassStartEndDatesAndRoom()
         this
     }
+
+    CCourseClass withTimeZonedSession(Date date = new Date(), String timezone) {
+        CSession session = CSession.instance(objectContext, courseClass).date(date).withRoomWithTimeZonedSite(timezone)
+        sessions.add(session)
+        setClassStartEndDatesAndRoom()
+        this
+    }
     
     /**
      * creates Session with Start date = Current date/time + daysFromNow

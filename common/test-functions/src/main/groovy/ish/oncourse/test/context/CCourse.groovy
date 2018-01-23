@@ -52,6 +52,35 @@ class CCourse {
         cClass
     }
 
+    /**
+     * Creates class with 2 sessions, started now and in the next day
+     * both sessions have 'String timezone' timezone
+     * @param code
+     * @return
+     */
+    CCourseClass newCourseClassWithTimezonedSessions(String code, String timezone = "Australia/Sydney") {
+        CCourseClass cClass = CCourseClass.instance(objectContext, code, course)
+        cClass.withTimeZonedSession(new Date(), timezone)
+        cClass.withTimeZonedSession(new Date() + 1, timezone)
+
+        classes.add(cClass)
+        cClass
+    }
+
+    /**
+     * Creates class with 2 sessions, started now and in the next day
+     * both sessions have 'String timezone' timezone
+     * @param code
+     * @return
+     */
+    CCourseClass newCourseClassWithTimezonedSessions(String code, String timezone = "Australia/Sydney", Date... sessionStartDates) {
+        CCourseClass cClass = CCourseClass.instance(objectContext, code, course)
+        sessionStartDates.each {s -> cClass.withTimeZonedSession(s, timezone)}
+
+        classes.add(cClass)
+        cClass
+    }
+
     CCourseClass getCourseClassBy(String code) {
         return classes.stream().filter({ (it.courseClass.code == code) }).findFirst().get()
     }

@@ -45,6 +45,11 @@ class CCollege {
         newCourse(name, name.toUpperCase())
     }
 
+    CCollege timeZone(String timeZone){
+        college.timeZone = timeZone
+        this
+    }
+
     CCourse newCourse(String name, String code) {
         CCourse cCourse = CCourse.instance(objectContext, college, name, code)
         cCourses.put(cCourse.course.code, cCourse)

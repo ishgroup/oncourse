@@ -78,4 +78,9 @@ class CSession {
         builder.session.college = courseClass.college
         builder
     }
+
+    CSession withRoomWithTimeZonedSite(String timezone) {
+        session.room = CRoom.instance(objectContext, session.college).timeZone(timezone).room
+        this
+    }
 }
