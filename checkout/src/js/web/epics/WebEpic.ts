@@ -56,11 +56,12 @@ function createCoursesEpic() {
     .mergeMap(actions => {
       const ids: string[] = actions.map(action => action.payload);
       return Observable
-        .fromPromise(courseClassesApi.getCourseClasses({
+        .defer(() => courseClassesApi.getCourseClasses({
           courseClassesIds: uniq(ids),
           contact: createContactParams(store.getState()),
           promotions: createPromotionParams(store.getState()),
         }))
+        .retry(2) // Retry to times if request has been rejected
         .map(payload => normalize(payload, ClassesListSchema))
         .map(mapPayload(Actions.REQUEST_COURSE_CLASS))
         .catch(mapError(Actions.REQUEST_COURSE_CLASS));
@@ -75,9 +76,10 @@ function createWaitingCoursesEpic() {
     .mergeMap(actions => {
       const ids: string[] = actions.map(action => action.payload);
       return Observable
-        .fromPromise(courseClassesApi.getCourses({
+        .defer(() => courseClassesApi.getCourses({
           coursesIds: uniq(ids),
         }))
+        .retry(2) // Retry to times if request has been rejected
         .map(payload => normalize(payload, WaitingCoursesListSchema))
         .map(mapPayload(Actions.REQUEST_WAITING_COURSE))
         .catch(mapError(Actions.REQUEST_WAITING_COURSE));
@@ -174,7 +176,7 @@ function createAddClassToCartEpic() {
     .ofType(Actions.ADD_CLASS_TO_CART)
     .map(action => ({
       type: FULFILLED(Actions.ADD_CLASS_TO_CART),
-      payload: normalize(store.getState().courses.entities[action.payload.id], ClassesSchema),
+      payload: normalize(store.getState().courses.entities[action.payload.id] || {}, ClassesSchema),
     }));
 }
 
