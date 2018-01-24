@@ -14,7 +14,7 @@
 						</div>
 						<!-- <h1 class="site-title" id="siteTitle">
 							<a href="${homeLink}">
-								<img src="/s/img/logos/logo.png" alt="site-logo" class="normal_logo" />
+								<img src="/s/img/logos/logo.png" alt="" class="normal_logo" />
 								${collegeName}
 							</a>
 						</h1>-->

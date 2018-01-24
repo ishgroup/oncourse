@@ -1,65 +1,65 @@
 <html t:type="ui/internal/pagestructure"
-	  canonicalLinkPath="${canonicalLinkPath}"
-	  canonicalRelativeLinkPath="${canonicalRelativeLinkPath}"
-	  metaDescription="${metaDescription}"
+    canonicalLinkPath="${canonicalLinkPath}"
+    canonicalRelativeLinkPath="${canonicalRelativeLinkPath}"
+    metaDescription="${metaDescription}"
     title="${courseClass.uniqueIdentifier} | ${courseClass.course.name}"
-	  bodyId="literal:DetailsPage"
+    bodyId="literal:DetailsPage"
     bodyClass="literal:internal-page class-details"
     xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
-	<div t:type="ui/confirmorderdialog"/>
-	<div itemref="schema-organization" itemtype="http://schema.org/Course" itemscope="itemscope" class="clearfix courseItem">
-		<div class="class-details-title">
-			<h1 class="summary page-title">${courseClass.course.name}</h1>
+  <div t:type="ui/confirmorderdialog"/>
+  <div itemtype="http://schema.org/Course" itemscope="itemscope" class="clearfix courseItem">
+    <div class="class-details-title">
+      <div class="print-page" onclick="window.print();">
+        Print this page
+        <input type="button" value="Print" />
+      </div>
+      <h1 itemprop="name" class="summary page-title">${courseClass.course.name}</h1>
+      <meta itemprop="provider" content="https://${request.serverName}" />
+    </div>
 
-			<div class="print-page" onclick="window.print();">
-				Print this page
-				<input type="button" value="Print" />
-			</div>
-		</div>
+    <!-- <div class="addthis-wrapper">
+      <div class="addthis">
+        <span>Share on</span>
+        <div class="addthis_toolbox addthis_default_style ">
+          <a class="addthis_button_email"></a>
+          <a class="addthis_button_preferred_1"></a>
+          <a class="addthis_button_preferred_2"></a>
+          <a class="addthis_button_preferred_3"></a>
+          <a class="addthis_button_compact"></a>
+        </div>
+        <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-57e9e20c1694abd2" type="text/javascript"></script>
+      </div>
+    </div> -->
+    <div class="clearboth"></div>
 
-		<!-- <div class="addthis-wrapper">
-			<div class="addthis">
-				<span>Share on</span>
-				<div class="addthis_toolbox addthis_default_style ">
-					<a class="addthis_button_email"></a>
-					<a class="addthis_button_preferred_1"></a>
-					<a class="addthis_button_preferred_2"></a>
-					<a class="addthis_button_preferred_3"></a>
-					<a class="addthis_button_compact"></a>
-				</div>
-				<script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-57e9e20c1694abd2" type="text/javascript"></script>
-			</div>
-		</div> -->
-		<div class="clearboth"></div>
+    <div itemprop="description" id="course-description" class="courseDescription expandable">
+      <t:outputraw value="${courseDetail}"></t:outputraw>
+    </div>
 
-		<div itemprop="description" id="course-description" class="courseDescription expandable">
-			<t:outputraw value="${courseDetail}"></t:outputraw>
-		</div>
+    <div class="clearfix classes">
+      <span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="true" isList="false" allowByAplication="allowByAplication" feeOverride="feeOverride"></span>
+    </div>
 
-		<div class="clearfix classes">
-			<span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="true" isList="false" allowByAplication="allowByAplication" feeOverride="feeOverride"></span>
-		</div>
+    <hr />
+    <t:if t:test="${courseClass.hasRoom}">
+      <div class="courseClassLocationFinder">
+        <span t:type="ui/SiteDetailsComponent" room="courseClass.room" collapseLocationMap="true"></span>
+      </div>
+    </t:if>
 
-		<hr />
-		<t:if t:test="${courseClass.hasRoom}">
-			<div class="courseClassLocationFinder">
-				<span t:type="ui/SiteDetailsComponent" room="courseClass.room" collapseLocationMap="true"></span>
-			</div>
-		</t:if>
+    <t:if t:test="${showInlineTimetable}">
+      <div class="blockdetail">
+        <t:if t:test="courseClass.hasAnyTimelineableSessions">
+        <h2>Sessions</h2>
+        <span t:type="ui/TimetableEvents" displayedObjects="sortedTimelineableSessions"
+        cssTableClass="cssTableClass"
+        cssEvenRowClass="cssEvenRowClass" cssOddRowClass="cssOddRowClass"/>
+        </t:if>
+      </div>
+    </t:if>
 
-		<t:if t:test="${showInlineTimetable}">
-			<div class="blockdetail">
-				<t:if t:test="courseClass.hasAnyTimelineableSessions">
-				<h2>Sessions</h2>
-				<span t:type="ui/TimetableEvents" displayedObjects="sortedTimelineableSessions"
-				cssTableClass="cssTableClass"
-				cssEvenRowClass="cssEvenRowClass" cssOddRowClass="cssOddRowClass"/>
-				</t:if>
-			</div>
-		</t:if>
-
-		<span t:type="ui/Attachments" entityIdentifier="literal:CourseClass" entityIdNum="${courseClass.id}"/>
-	</div>
+    <span t:type="ui/Attachments" entityIdentifier="literal:CourseClass" entityIdNum="${courseClass.id}"/>
+  </div>
 
 </html>

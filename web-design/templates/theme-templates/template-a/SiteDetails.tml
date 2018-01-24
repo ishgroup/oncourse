@@ -3,6 +3,10 @@
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
   <t:if test="site">
+    <div class="class-details-title">
+      <h1 itemprop="name" class="summary page-title">${site.name}</h1>
+    </div>
+
     <span t:type="ui/SiteDetailsComponent" site="site" collapseLocationMap="false" />
     <span t:type="ui/Attachments" entityIdentifier="literal:Site" entityIdNum="site.id" />
   </t:if>

@@ -1,4 +1,5 @@
-<html t:type="ui/internal/pagestructure" bodyId="literal:SiteList" bodyClass="literal:internal-page" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+<html t:type="ui/internal/pagestructure" bodyId="literal:SiteList" bodyClass="literal:internal-page"
+  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
   <div class="class-details-title">
     <h1 class="summary page-title">Sites</h1>
   </div>

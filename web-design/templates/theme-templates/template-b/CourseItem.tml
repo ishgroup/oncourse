@@ -2,10 +2,11 @@
   <div class="clearfix courseItem${tagClasses}" itemscope="itemscope" itemtype="http://schema.org/Product">
     <t:if t:test="isList" negate="true">
       <t:if t:test="addThisEnabled">
-        <div class="addthis">
-          <span t:type="ui/socialmedia" addThisProfileId="addThisProfileId"/>
+        <div class="clearfix">
+          <div class="addthis">
+            <span t:type="ui/socialmedia" addThisProfileId="addThisProfileId"/>
+          </div>
         </div>
-        <div class="clearfix"></div>
       </t:if>
       <h1 itemprop="name" class="summary page-title">
         <t:if t:test="courseItemModel.nrt">
@@ -34,6 +35,14 @@
         <strong class="more">[<a href="/course/${courseItemModel.course.code}">More</a>]</strong>
       </div>
     </p:else>
+    </t:if>
+
+    <t:if t:test="isList" negate="true">
+      <div class="courseDescription">
+        <span itemprop="description">
+          <t:outputraw value="${courseDetail}" />
+        </span>
+      </div>
     </t:if>
 
     <div class="clearfix"></div>
@@ -67,23 +76,15 @@
       </div>
     </t:if>
     <t:if t:test="courseItemModel.course.allowWaitingList">
-      <p class="waiting-list-title" id="wl${courseItemModel.course.id}">
-        <a class="actionLink" href="/enrol/waitinglistform/${courseItemModel.course.id}">
-          <t:if t:test="courseItemModel.enrollableClasses.empty" negate="true">
-            <t:if t:test="hasMoreAvailablePlaces"> If there isn't a class to suit you, please <p:else> Classes are full. Please </p:else>
-            </t:if>
-            <p:else> This course has no current classes. Please </p:else>
+      <p class="waiting-list-title" data-cid="join-button" data-prop-id="${courseItemModel.course.id}">
+        <t:if t:test="courseItemModel.enrollableClasses.empty" negate="true">
+          <t:if t:test="hasMoreAvailablePlaces"> If there isn't a class to suit you, please
+            <p:else> Classes are full. Please </p:else>
           </t:if>
-          <button class="join-btn" type="button">Join</button> the waiting list. </a>
+          <p:else> This course has no current classes. Please </p:else>
+        </t:if>
+        <button class="join-btn" type="button">Join</button> the waiting list.
       </p>
-      <div class="clearfix"></div>
-    </t:if>
-    <t:if t:test="isList" negate="true">
-      <div class="courseDescription">
-        <span itemprop="description">
-          <t:outputraw value="${courseDetail}" />
-        </span>
-      </div>
       <div class="clearfix"></div>
     </t:if>
     <t:if t:test="courseItemModel.haveRelatedCourses">

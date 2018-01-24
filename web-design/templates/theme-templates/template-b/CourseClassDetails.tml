@@ -33,12 +33,12 @@
     </div> -->
     <div class="clearboth"></div>
 
-    <div class="clearfix classes">
-      <span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="true" isList="false" allowByAplication="allowByAplication" feeOverride="feeOverride"></span>
-    </div>
-
     <div itemprop="description" id="course-description" class="courseDescription expandable">
       <t:outputraw value="${courseDetail}"></t:outputraw>
+    </div>
+
+    <div class="clearfix classes">
+      <span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="true" isList="false" allowByAplication="allowByAplication" feeOverride="feeOverride"></span>
     </div>
 
     <hr />

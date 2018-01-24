@@ -8,10 +8,10 @@
 					<input t:type="TextField" clientId="adv_keyword" t:value="advKeyword" default="keyword" name="s" />
 				</div>
 				<div id="adv_search_tag">
-					<t:loop source="tagGroups" value="tagGroup">
-						<label for="tagGroup">In ${tagGroup}</label>
-						<t:select id="tagGroup" name="subject" model="tagGroupModel" blankLabel="all" value="selectedTagValue" />
-					</t:loop>
+          <t:loop source="tagGroups" value="tagGroup">
+            <label for="tagGroup">In ${tagGroup}</label>
+            <t:select id="tagGroup" name="subject" model="tagGroupModel" blankLabel="all" value="selectedTagValue" />
+          </t:loop>
 				</div>
 				<div id="adv_search_location">
 					<label title="Enter a suburb or postcode near where you'd like to do the course" for="suburb-autocomplete">Closest to</label>

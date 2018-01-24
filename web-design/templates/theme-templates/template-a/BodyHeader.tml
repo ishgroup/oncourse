@@ -34,11 +34,11 @@
 				<t:if t:test="paymentGatewayEnabled">
 					<span t:type="ui/ShortList" />
 				</t:if>
-				<span t:type="ui/PromoCodesView" />
 				<a href="#" class="header-search-toggle pull-right">
 					<i class="sicon search-icon"></i>
 				</a>
 				<span t:type="ui/CourseSearchForm" />
+				<span t:type="ui/PromoCodesView" />
 			</aside>
 		</div>
 	</section>

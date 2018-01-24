@@ -4,8 +4,11 @@
       <t:if t:test="browseTagPath">
         <t:loop source="browseTagPath" value="tag" index="tagIndex">
           <div class="tag-crumb-title search-value no-highlight" itemprop="itemListElement" itemscope="itemscope" itemtype="http://schema.org/ListItem">
-            <t:if t:test="showTagRaquo"><a href="${tag.link}" itemprop="item"><span itemprop="name">${tag.name}</span></a>
-              <p:else><span itemprop="item"><span itemprop="name">${tag.name}</span></span></p:else>
+            <t:if t:test="showTagRaquo">
+              <a href="${tag.link}" itemprop="item"><span itemprop="name">${tag.name}</span></a>
+              <p:else>
+                <span itemprop="item"><span itemprop="name">${tag.name}</span></span>
+              </p:else>
             </t:if>
           </div>
           <t:if t:test="showTagRaquo">
