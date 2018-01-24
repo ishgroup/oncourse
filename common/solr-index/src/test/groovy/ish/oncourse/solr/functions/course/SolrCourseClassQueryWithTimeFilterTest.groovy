@@ -25,7 +25,7 @@ import org.junit.Test
  * from 6 to 17 is daytime. All other hours is evening time
  * For example: to set Australia/Perth 8AM to a session, we need to set '10AM'(Sydney time) and 'Australia/Perth' timezone to a session. And we will get 8AM Perth
  */
-class SolrCourseClassQueryWithDayTime extends ASolrTest {
+class SolrCourseClassQueryWithTimeFilterTest extends ASolrTest {
     private static String TIMEZONE_SYDNEY = "Australia/Sydney" // +10 UTC - default timezone for all solr tests
     private static String TIMEZONE_PERTH = "Australia/Perth" // +8 UTC
     private TestContext testContext
@@ -46,7 +46,7 @@ class SolrCourseClassQueryWithDayTime extends ASolrTest {
     }
 
     @Test
-    void testSortCoursesWithDayTime() {
+    void testSortCoursesWithTimeFilter() {
         SolrClient solrClient = new EmbeddedSolrServer(h.getCore())
 
         //from 6 to 17 is daytime. All other hours is evening time

@@ -20,7 +20,7 @@ import org.junit.Test
 /**
  * Created by alex on 1/9/18.
  */
-class SolrCourseClassQueryWithPriceTest extends ASolrTest{
+class SolrCourseClassQueryWithPriceFilterTest extends ASolrTest{
     private TestContext testContext
     private ObjectContext objectContext
     private InitSolr initSolr
@@ -39,7 +39,7 @@ class SolrCourseClassQueryWithPriceTest extends ASolrTest{
     }
     
     @Test
-    void testSortCoursesWithPrice(){
+    void testSortCoursesWithPriceFilter(){
         SolrClient solrClient = new EmbeddedSolrServer(h.getCore())
 
         cCollege.newCourse("course1").newCourseClassWithSessions("cheapest").feeExTax(50).build()

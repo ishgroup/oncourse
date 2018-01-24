@@ -21,7 +21,7 @@ import org.junit.Test
 /**
  * Created by alex on 1/11/18.
  */
-class SolrCourseClassQueryWithLocationTest extends ASolrTest{
+class SolrCourseClassQueryWithLocationFilterTest extends ASolrTest{
     private TestContext testContext
     private ObjectContext objectContext
     private InitSolr initSolr
@@ -40,7 +40,7 @@ class SolrCourseClassQueryWithLocationTest extends ASolrTest{
     }
 
     @Test
-    void testSortCoursesWithLocation(){
+    void testSortCoursesWithLocationFilter(){
         SolrClient solrClient = new EmbeddedSolrServer(h.getCore())
 
         cCollege.newCourse("course1").withClassWithSiteLocation("course1",15,15).build()

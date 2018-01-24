@@ -21,7 +21,7 @@ import org.junit.Test
 /**
  * Created by alex on 1/17/18.
  */
-class SolrCourseClassQueryWithWeekTime extends ASolrTest {
+class SolrCourseClassQueryWithDayFilterTest extends ASolrTest {
     private TestContext testContext
     private ObjectContext objectContext
     private InitSolr initSolr
@@ -40,7 +40,7 @@ class SolrCourseClassQueryWithWeekTime extends ASolrTest {
     }
 
     @Test
-    void testSortCoursesWithWeekTime() {
+    void testSortCoursesWithDayFilter() {
         SolrClient solrClient = new EmbeddedSolrServer(h.getCore())
         
         Date mon = createDate(Calendar.MONDAY)
