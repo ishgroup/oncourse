@@ -89,7 +89,7 @@ export class EnrolButton extends React.Component<Props, State> {
     }
 
     const elements = [
-      isPaymentGatewayEnabled && <button key="enrol_button" className={classnames('enrolAction', {
+      <button key="enrol_button" className={classnames('enrolAction', {
         'enrol-added-class': isAdded,
         disabled: !isActive,
       })} title={text} onClick={isActive ? this.add : null}>
