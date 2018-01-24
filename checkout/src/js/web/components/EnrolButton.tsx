@@ -82,10 +82,14 @@ export class EnrolButton extends React.Component<Props, State> {
       } else {
         text = 'Enrol Now';
       }
-    } else if (!hasAvailablePlaces) {
+    } else if (hasAvailablePlaces === false) {
       text = 'Class Full';
     } else {
       text = 'Finished';
+    }
+
+    if (typeof isCancelled === 'undefined' && typeof isActive === 'undefined') {
+      text = 'Enrol Now'
     }
 
     const elements = [
