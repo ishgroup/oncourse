@@ -69,6 +69,7 @@ export class EnrolButton extends React.Component<Props, State> {
     const isActive = !isFinished && !isCancelled && hasAvailablePlaces && isPaymentGatewayEnabled;
     const showedPlaces = hasAvailablePlaces;
     const reverseElements = isFinished;
+    const fetching = typeof isCancelled === 'undefined' && typeof isActive === 'undefined';
 
     let text = '';
 
@@ -88,16 +89,13 @@ export class EnrolButton extends React.Component<Props, State> {
       text = 'Finished';
     }
 
-    if (typeof isCancelled === 'undefined' && typeof isActive === 'undefined') {
-      text = 'Enrol Now'
-    }
-
     const elements = [
       <button key="enrol_button" className={classnames('enrolAction', {
         'enrol-added-class': isAdded,
         disabled: !isActive,
+        fetching: fetching,
       })} title={text} onClick={isActive ? this.add : null}>
-        {text}
+        {fetching ? "Enrol Now" : text}
       </button>,
       showedPlaces && <div key="free_places" className="classStatus">
         {this.availablePlacesText(availableEnrolmentPlaces)}
