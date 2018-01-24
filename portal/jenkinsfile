@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh "./gradlew portal:build -Dbuild_number=${env.BUILD_NUMBER}"
+                sh "./gradlew portal:build -Dbuild_number=${env.BUILD_NUMBER} -PreleaseVersion=${params.version}"
                 junit 'portal/build/test-results/**/*.xml'
             }
         }

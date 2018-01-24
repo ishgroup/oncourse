@@ -7,13 +7,13 @@ pipeline {
     }
 
     parameters {
-        string(defaultValue: '', description: 'Release version. Leave blank to not release.', name: 'version')
+        string(defaultValue: 'SNAPSHOT', description: 'Release version. Leave blank to not release.', name: 'version')
     }
 
     stages {
         stage('Build') {
             steps {
-                sh "./gradlew checkout:build -Dbuild_number=${env.BUILD_NUMBER}"
+                sh "./gradlew checkout:build -Dbuild_number=${env.BUILD_NUMBER}  -PreleaseVersion=${params.version}"
             }
         }
 

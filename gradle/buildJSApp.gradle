@@ -8,7 +8,7 @@ node {
 
 task webpack(type: NodeTask, dependsOn: 'yarn_install') {
     script = file('node_modules/.bin/webpack')
-    args = ['--progress', '-p', '--env.NODE_ENV', 'production', '--env.BUILD_NUMBER', System.getProperty('build_number') ?: 'local']
+    args = ['--progress', '-p', '--env.NODE_ENV', 'production', '--env.BUILD_NUMBER', version ?: 'SNAPSHOT']
 }
 
 task jest(type: NodeTask, dependsOn: 'yarn_install') {
