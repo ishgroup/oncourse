@@ -55,7 +55,7 @@ class SolrCourseClassQueryWithSessionTest extends ASolrTest{
         cCollege.newCourse("course8").newCourseClassWithSessions("futureStartsFirst", 4, 6).build()
         cCollege.newCourse("course9").newCourseClassWithSessions("futureEndsLast", 5, 7).build()
 
-        cCollege.newCourse("course10").newCourseClass("distantLearning").isDistantLearningCourse(true).build()
+        cCollege.newCourse("course10").withSelfPacedClass("distantLearning").build()
                 
 
         ReindexCoursesJob job = new ReindexCoursesJob(objectContext, solrClient)
