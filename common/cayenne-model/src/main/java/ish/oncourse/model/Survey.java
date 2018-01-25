@@ -21,6 +21,6 @@ public class Survey extends _Survey implements Queueable {
         setTutorScore(0);
         setVenueScore(0);
         setNetPromoterScore(0);
-	    setPublicComment(true);
+	    setPublicComment(false);
 	}
 }
