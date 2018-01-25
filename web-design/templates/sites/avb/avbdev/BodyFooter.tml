@@ -1,0 +1,22 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<div class="footer-container">
+
+		<div class="partner-logos">
+			<img border="0" alt="" src="/s/img/partner_logo/logo1.gif"/>
+			<img border="0" alt="" src="/s/img/partner_logo/logo2.gif"/>
+			<img border="0" alt="" src="/s/img/partner_logo/logo3.gif"/>
+			<img border="0" alt="" src="/s/img/partner_logo/logo4.gif"/>
+			<img border="0" alt="" src="/s/img/partner_logo/logo5.gif"/>
+		</div>
+
+		<p class="footer-info">Copyright © 2007-${year} ${collegeName} and
+			<a href="http://www.ish.com.au/copyright.html" title="ish copyright notice" class="popup">ish</a>, all rights reserved.
+		</p>
+
+		<p class="footer-logo">
+			<a href="http://www.ish.com.au/oncourse" class="popup">
+			<img src="/s/img/poweredby.png" width="102" height="9" alt="powered by ish onCourse"/>
+			</a>
+		</p>
+	</div>
+</t:container>

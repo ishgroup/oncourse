@@ -1,0 +1,73 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+
+	<t:if test="overridden">
+		<t:output value="feeOverride" format="feeFormat"/>
+		<t:delegate to="block:tax"/>
+		<p:else>
+			<t:if test="hasFee">
+				<t:if test="hasDiscountValue">
+					<span class="fee-disabled">
+						<t:output value="fee" format="feeFormat" />
+					</span>
+					<span class="fee-discounted">
+						<acronym title="${appliedDiscountsTitle}">
+							<span itemprop="price" content="${formatMoney(discountedFee, '0.00')}">
+								<t:output value="discountedFee" format="feeFormat" />
+							</span>
+						</acronym>
+						<span itemprop="priceCurrency" content="AUD" />
+						<span itemprop="url" content="https://${request.serverName}/course/${courseClass.course.code}" />
+						<span itemprop="category" content="primary" />
+						<span itemprop="availability" content="InStock" />
+						<t:if test="courseClass.startDate">
+							<span content="${formatDate(courseClass.startDate,'yyyy-MM-dd')}" itemprop="availabilityStarts" />
+							<p:else>
+								<span content="${formatDate(currentDate,'yyyy-MM-dd')}" itemprop="availabilityStarts" />
+							</p:else>
+						</t:if>
+						<span itemprop="inventoryLevel" class="hide">Limited</span>
+					</span>
+					<p:else>
+						<span itemprop="price" content="${formatMoney(fee, '0.00')}">${formatMoney(fee,'$#,###,###,##0.##')}</span>
+						<span itemprop="priceCurrency" content="AUD" />
+						<span itemprop="url" content="https://${request.serverName}/course/${courseClass.course.code}" />
+						<span itemprop="category" content="primary" />
+						<span itemprop="availability" content="InStock" />
+						<t:if test="courseClass.startDate">
+							<span content="${formatDate(courseClass.startDate,'yyyy-MM-dd')}" itemprop="availabilityStarts" />
+							<p:else>
+								<span content="${formatDate(currentDate,'yyyy-MM-dd')}" itemprop="availabilityStarts" />
+							</p:else>
+						</t:if>
+						<span itemprop="inventoryLevel" class="hide">Limited</span>
+					</p:else>
+				</t:if>
+
+				<t:delegate to="block:tax"/>
+
+				<t:if t:test="paymentGatewayEnabled">
+					<t:loop source="discountItems" value="discountItem">
+						<span class="discount-price">/</span>
+						<acronym class="discount-price" title="${discountItem.title}">
+							<t:output value="discountItem.feeIncTax" format="discountItem.feeFormat" />
+						</acronym>
+					</t:loop>
+				</t:if>
+
+				<p:else>
+					<acronym title="To Be Advised">TBA</acronym>
+				</p:else>
+
+			</t:if>
+		</p:else>
+	</t:if>
+
+	<t:block t:id="tax">
+		<t:if test="showTax">
+			<span class="gst">
+				<t:if test="taxExempt" negate="true"> inc </t:if><acronym title="Goods and Services Tax">GST</acronym><t:if test="taxExempt"> free</t:if>
+			</span>
+		</t:if>
+	</t:block>
+
+</t:container>
