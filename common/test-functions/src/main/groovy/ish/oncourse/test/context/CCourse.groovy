@@ -3,6 +3,7 @@ package ish.oncourse.test.context
 import ish.common.types.CourseEnrolmentType
 import ish.oncourse.model.College
 import ish.oncourse.model.Course
+import ish.oncourse.model.Site
 import org.apache.cayenne.ObjectContext
 
 /**
@@ -34,6 +35,13 @@ class CCourse {
     CCourseClass newCourseClassWithSessions(String code, Integer... sessionStartDatesFromNow) {
         CCourseClass cClass = CCourseClass.instance(objectContext, code, course)
         sessionStartDatesFromNow.each {day -> cClass.withSession(new Date() + day)}
+        classes.add(cClass)
+        cClass
+    }
+
+    CCourseClass newCourseClassWithSessionsAndSite(String code, Site site, Integer... sessionStartDatesFromNow) {
+        CCourseClass cClass = CCourseClass.instance(objectContext, code, course)
+        sessionStartDatesFromNow.each {day -> cClass.withSessionAndSite(new Date() + day, site)}
         classes.add(cClass)
         cClass
     }
@@ -127,7 +135,14 @@ class CCourse {
 
     CCourse withSelfPacedClass(String code) {
         CCourseClass cClass = CCourseClass.instance(objectContext, code, course).isDistantLearningCourse(true)
+        cClass.courseClass.isVirtualSiteUsed()
+        classes.add(cClass)
+        this
+    }
 
+    CCourse withSelfPacedClassWithSite(String code, Site site) {
+        CCourseClass cClass = CCourseClass.instance(objectContext, code, course).isDistantLearningCourse(true).withRoom(site)
+        cClass.courseClass.isVirtualSiteUsed()
         classes.add(cClass)
         this
     }

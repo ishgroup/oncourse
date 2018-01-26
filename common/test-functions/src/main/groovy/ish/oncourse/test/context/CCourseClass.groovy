@@ -29,6 +29,12 @@ class CCourseClass {
         cRoom
     }
 
+    CCourseClass withRoom(Site site){
+        CRoom cRoom = CRoom.instance(objectContext, site)
+        courseClass.room = cRoom.room
+        this
+    }
+
     CRoom newRoom(){
         CRoom cRoom = CRoom.instance(objectContext, courseClass.college)
         courseClass.room = cRoom.room
@@ -42,6 +48,7 @@ class CCourseClass {
 
     CCourseClass isDistantLearningCourse(boolean isDistantLearning){
         courseClass.isDistantLearningCourse = isDistantLearning
+        courseClass.room.site.isVirtual = isDistantLearning
         this
     }
 
@@ -111,6 +118,15 @@ class CCourseClass {
      */
     CCourseClass withSession(int daysFromNow) {
         withSession(new Date() + daysFromNow)
+    }
+    
+    CCourseClass withSessionAndSite(Date date, Site site) {
+        CSession session = CSession.instance(objectContext, courseClass).date(date)
+        session.newRoom(site)
+        
+        sessions.add(session)
+        setClassStartEndDatesAndRoom()
+        this
     }
 
 
