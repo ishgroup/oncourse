@@ -129,6 +129,15 @@ class CCourseClass {
         this
     }
 
+    CCourseClass withSessionAndSite(int daysFromNow, Site site) {
+        CSession session = CSession.instance(objectContext, courseClass).date(new Date() + daysFromNow)
+        session.newRoom(site)
+
+        sessions.add(session)
+        setClassStartEndDatesAndRoom()
+        this
+    }
+
 
     private CCourseClass setClassStartEndDatesAndRoom() {
         sessions.sort {it.session.startDate}
