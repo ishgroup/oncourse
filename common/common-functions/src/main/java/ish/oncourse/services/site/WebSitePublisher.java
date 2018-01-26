@@ -12,6 +12,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.*;
+import java.util.concurrent.Executors;
 
 public class WebSitePublisher {
 
@@ -192,7 +193,7 @@ public class WebSitePublisher {
      * 		/var/onCourse/scripts/deploySite.sh -s {siteVersion.getId()} -c {site.getSiteKey()}
      */
     private void executeDeployScript(WebSiteVersion siteVersion) {
-        
+
         if (scriptPath == null) {
             scriptPath = ContextUtil.getCmsDeployScriptPath();
         }
@@ -214,14 +215,8 @@ public class WebSitePublisher {
             scriptCommand.add("-e");
             scriptCommand.add(userEmail);
         }
-
-        ProcessBuilder processBuilder = new ProcessBuilder(scriptCommand);
-
-        try {
-            processBuilder.start();
-        } catch (Exception e) {
-            logger.error("Error executing script '{}'", scriptPath, e);
-        }
+        
+        new ScriptExecutor(scriptCommand).execute();
     }
 
 
