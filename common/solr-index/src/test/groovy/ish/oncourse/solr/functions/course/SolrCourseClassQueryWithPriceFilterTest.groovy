@@ -42,11 +42,27 @@ class SolrCourseClassQueryWithPriceFilterTest extends ASolrTest{
     void testSortCoursesWithPriceFilter(){
         SolrClient solrClient = new EmbeddedSolrServer(h.getCore())
 
-        cCollege.newCourse("course1").newCourseClassWithSessions("cheapest").feeExTax(50).build()
-        cCollege.newCourse("course2").newCourseClassWithSessions("90 dollars").feeExTax(99).build()
-        cCollege.newCourse("course3").newCourseClassWithSessions("105 dollars").feeExTax(80).feeTax(40).build()
-        cCollege.newCourse("course4").newCourseClassWithSessions("110 dollars").feeExTax(110).build()
-        cCollege.newCourse("course5").newCourseClassWithSessions("withoutPrice").build()
+        cCollege.newCourse("course1").newCourseClassWithSessions("cheapestPast", -5, -4).feeExTax(50).build()
+        cCollege.newCourse("course2").newCourseClassWithSessions("cheapestCurrent", -1, 1).feeExTax(50).build()
+        cCollege.newCourse("course3").newCourseClassWithSessions("cheapestFuture", 5, 6).feeExTax(50).build()
+        
+        cCollege.newCourse("course4").newCourseClassWithSessions("99 dollars past", -5, -4).feeExTax(99).build()
+        cCollege.newCourse("course5").newCourseClassWithSessions("99 dollars current", -1, 1).feeExTax(99).build()
+        cCollege.newCourse("course6").newCourseClassWithSessions("99 dollars future", 5, 6).feeExTax(99).build()
+        
+        cCollege.newCourse("course7").newCourseClassWithSessions("80 with tax past", -5, -4).feeExTax(80).feeTax(40).build()
+        cCollege.newCourse("course8").newCourseClassWithSessions("80 with tax current", -1, 1).feeExTax(80).feeTax(40).build()
+        cCollege.newCourse("course9").newCourseClassWithSessions("80 with tax future", 5, 6).feeExTax(80).feeTax(40).build()
+        
+        cCollege.newCourse("course10").newCourseClassWithSessions("110 dollars past", -5, -4).feeExTax(110).build()
+        cCollege.newCourse("course11").newCourseClassWithSessions("110 dollars current", -1, 1).feeExTax(110).build()
+        cCollege.newCourse("course12").newCourseClassWithSessions("110 dollars future", 5, 6).feeExTax(110).build()
+        
+        cCollege.newCourse("course13").newCourseClassWithSessions("withoutPrice past", -5, -4).build()
+        cCollege.newCourse("course14").newCourseClassWithSessions("withoutPrice current", -1, 1).build()
+        cCollege.newCourse("course15").newCourseClassWithSessions("withoutPrice future", 5, 6).build()
+
+        cCollege.newCourse("course16").newSelfPacedClass("99 dollars selfpaced").feeExTax(99).build()
 
         ReindexCoursesJob job = new ReindexCoursesJob(objectContext, solrClient)
         job.run()
@@ -57,35 +73,17 @@ class SolrCourseClassQueryWithPriceFilterTest extends ASolrTest{
         List<SCourse> actualSCourses = solrClient.query("courses",
                 SolrQueryBuilder.valueOf(new SearchParams(s: "course*", price: 100), cCollege.college.id.toString(), null, null).build())
                 .getBeans(SCourse.class)
-        assertEquals(4, actualSCourses.size())
-
-        assertNotNull(actualSCourses.find {c -> c.name == "course1" })
-        assertNotNull(actualSCourses.find {c -> c.name == "course2" })
-        assertNotNull(actualSCourses.find {c -> c.name == "course3" })
-        assertNull(actualSCourses.find {c -> c.name == "course4" })
-        assertNotNull(actualSCourses.find {c -> c.name == "course5" })
-
-
-        //change some prices and reindex again to check correct reindexing
-        cCollege.cCourses.get("COURSE2").classes.first.feeExTax(130).build()
-        cCollege.cCourses.get("COURSE4").classes.first.feeExTax(70).build()
-        
-        job = new ReindexCoursesJob(objectContext, solrClient)
-        job.run()
-        while (job.isActive()){
-            Thread.sleep(100)
-        }
-
-        actualSCourses = solrClient.query("courses",
-                SolrQueryBuilder.valueOf(new SearchParams(s: "course*", price: 100), cCollege.college.id.toString(), null, null).build())
-                .getBeans(SCourse.class)
-        assertEquals(4, actualSCourses.size())
-
-        assertNotNull(actualSCourses.find {c -> c.name == "course1" })
-        assertNull(actualSCourses.find {c -> c.name == "course2" })
-        assertNotNull(actualSCourses.find {c -> c.name == "course3" })
-        assertNotNull(actualSCourses.find {c -> c.name == "course4" })
-        assertNotNull(actualSCourses.find {c -> c.name == "course5" })
+        //sort order is: current first, than selfpaced, than future. No past classes. price order isn't in use
+        assertEquals(9, actualSCourses.size())
+        assertTrue(actualSCourses.subList(0, 4).name.contains("course2"))
+        assertTrue(actualSCourses.subList(0, 4).name.contains("course5"))
+        assertTrue(actualSCourses.subList(0, 4).name.contains("course8"))
+        assertTrue(actualSCourses.subList(0, 4).name.contains("course14"))
+        assertTrue(actualSCourses.get(4).name == "course16")
+        assertTrue(actualSCourses.subList(5, 9).name.contains("course3"))
+        assertTrue(actualSCourses.subList(5, 9).name.contains("course6"))
+        assertTrue(actualSCourses.subList(5, 9).name.contains("course9"))
+        assertTrue(actualSCourses.subList(5, 9).name.contains("course15"))
     }
 
     @After
