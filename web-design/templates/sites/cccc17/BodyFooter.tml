@@ -1,0 +1,21 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<section class="info-links">
+		<div class="container">
+			<div class="footer-container" itemscope="itemscope" itemtype="http://schema.org/Organization" itemprop="provider">
+				<ul class="footer-info">
+					<li>© ${year} <span itemprop="name">${collegeName}</span></li>
+					<li>RTO 90304</li>
+					<li><a href="https://smartandskilled.nsw.gov.au/">Smart and Skilled</a></li>
+					<li><a href="https://cccc-ish-oncourse.s3.amazonaws.com/edc50902-af0e-463f-8b35-2e412c0381fb" target="_blank" >Terms &amp; Conditions </a></li>
+					<li><a href="http://www.headjam.com.au/" target="_blank">Site designed by Headjam</a></li>
+				</ul>
+
+				<p class="footer-logo">
+					<a href="http://www.ish.com.au/oncourse" class="popup">
+						<img src="/s/img/icons/poweredby.png" width="102" height="9" alt="powered by ish onCourse"/>
+					</a>
+				</p>
+			</div>
+		</div>
+	</section>
+</t:container>
