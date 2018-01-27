@@ -5,6 +5,7 @@ import ish.oncourse.model.Course
 import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Room
 import ish.oncourse.model.Site
+import ish.oncourse.model.Tutor
 import org.apache.cayenne.ObjectContext
 
 /**
@@ -132,6 +133,15 @@ class CCourseClass {
     CCourseClass withSessionAndSite(int daysFromNow, Site site) {
         CSession session = CSession.instance(objectContext, courseClass).date(new Date() + daysFromNow)
         session.newRoom(site)
+
+        sessions.add(session)
+        setClassStartEndDatesAndRoom()
+        this
+    }
+
+    CCourseClass withSessionAndTutor(int daysFromNow, Tutor tutor) {
+        CSession session = CSession.instance(objectContext, courseClass).date(new Date() + daysFromNow)
+        CTutorRole.instance(objectContext, tutor, courseClass)
 
         sessions.add(session)
         setClassStartEndDatesAndRoom()

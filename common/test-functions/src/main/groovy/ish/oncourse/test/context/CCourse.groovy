@@ -3,7 +3,9 @@ package ish.oncourse.test.context
 import ish.common.types.CourseEnrolmentType
 import ish.oncourse.model.College
 import ish.oncourse.model.Course
+import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Site
+import ish.oncourse.model.Tutor
 import org.apache.cayenne.ObjectContext
 
 /**
@@ -19,6 +21,15 @@ class CCourse {
 
     CCourseClass newCourseClass(String code) {
         CCourseClass cClass = CCourseClass.instance(objectContext, code, course)
+        classes.add(cClass)
+        cClass
+    }
+
+    CCourseClass newCourseClassWithSessionsAndTutor(String code, Tutor tutor, Integer... sessionStartDatesFromNow) {
+        CCourseClass cClass = CCourseClass.instance(objectContext, code, course)
+        CTutorRole.instance(objectContext, tutor, cClass.courseClass)
+        sessionStartDatesFromNow.each {s -> cClass.withSession(s)}
+        
         classes.add(cClass)
         cClass
     }
@@ -56,6 +67,13 @@ class CCourse {
         cClass.withSession(new Date())
         cClass.withSession(new Date() + 1)
         
+        classes.add(cClass)
+        cClass
+    }
+
+    CCourseClass newSelfPacedClass(String code) {
+        CCourseClass cClass = CCourseClass.instance(objectContext, code, course).isDistantLearningCourse(true)
+
         classes.add(cClass)
         cClass
     }
@@ -135,15 +153,21 @@ class CCourse {
 
     CCourse withSelfPacedClass(String code) {
         CCourseClass cClass = CCourseClass.instance(objectContext, code, course).isDistantLearningCourse(true)
-        cClass.courseClass.isVirtualSiteUsed()
+
         classes.add(cClass)
         this
     }
 
     CCourse withSelfPacedClassWithSite(String code, Site site) {
         CCourseClass cClass = CCourseClass.instance(objectContext, code, course).isDistantLearningCourse(true).withRoom(site)
-        cClass.courseClass.isVirtualSiteUsed()
+
         classes.add(cClass)
+        this
+    }
+
+    CCourse withSelfPacedClassAndTutor(String code, Tutor tutor) {
+        CourseClass clazz = newSelfPacedClass(code).courseClass
+        CTutorRole.instance(objectContext, tutor, clazz)
         this
     }
 
