@@ -143,9 +143,9 @@ class CCourse {
         this
     }
 
-    CCourse withClassWithSiteLocation(String code, BigDecimal longitude, BigDecimal latitude) {
-        CCourseClass cClass = CCourseClass.instance(objectContext, code, course).withSessionWithSiteLocation(longitude, latitude)
-        
+    CCourse withClassWithSiteLocation(String code, BigDecimal longitude, BigDecimal latitude, Integer... sessionStartDatesFromNow) {
+        CCourseClass cClass = CCourseClass.instance(objectContext, code, course)
+        sessionStartDatesFromNow.each {s -> cClass.withSessionWithSiteLocation(new Date() + s, longitude, latitude)}
         classes.add(cClass)
         this
     }
