@@ -1,0 +1,6 @@
+<html t:type="ui/internal/pagestructure" title="${productDetailsTitle}" bodyId="literal:DetailsPage" bodyClass="literal:page-course-detail" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+  <t:if t:test="product">
+    <span t:type="ui/productitem" product="product" isList="false"></span>
+    <p:else>The requested product is not found.</p:else>
+  </t:if>
+</html>

@@ -1,0 +1,73 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+
+<div class="footer-main container container--lrg u-clearfix">
+  <div class="footer-section footer-section-a u-clearfix">
+    <div class="footer-logo site-logo">
+      <span class="logo">The University of Sydney</span>
+    </div>
+    <div class="footer-desc">
+      <h3>Centre for<br/> Continuing Education</h3>
+      <p>Meeting the needs of the Sydney community since 1886.</p>
+    </div>
+  </div>
+  <div class="footer-section footer-section-b u-clearfix">
+    <div class="column sitemap">
+      <h4>Quick Links</h4>
+      <ul class="sitemap-links">
+        <li><a href="/courses">Short Courses</a></li>
+        <li><a href="/employers">Customised Training</a></li>
+        <li><a href="/related-articles">Related Articles</a></li>
+        <li><a href="/contact">Contact Us</a></li>
+      </ul>
+    </div>
+    <div class="column company-details">
+      <h4>Phone</h4>
+      <p>(02) 8627 6700</p>
+      <h4>ABN</h4>
+      <p>15 211 513 464</p>
+      <h4>CRICOS Number</h4>
+      <p>00026A</p>
+    </div>
+    <div class="column company-details company-location">
+      <div class="location-details">
+        <h4>Our Location</h4>
+        <div>
+          <p><strong>The University of Sydney</strong>
+            160 Missenden Road<br/>
+            Newtown NSW 2042<br/>
+            Australia</p>
+        </div>
+      </div>
+      <div class="social-media">
+        <h4>Connect On</h4>
+        <ul>
+          <li><a class="social-facebook" target="_blank" href="https://www.facebook.com/ccesydney">Facebook</a></li>
+          <li><a class="social-twitter" target="_blank" href="https://twitter.com/ccesydney">Twitter</a></li>
+          <li><a class="social-google" target="_blank" href="https://plus.google.com/117569777441369286786">Google Plus</a></li>
+          <li><a class="social-linkedin" target="_blank" href="https://www.linkedin.com/company/ccesydney">LinkedIn</a></li>
+          <li><a class="social-youtube" target="_blank" href="https://www.youtube.com/channel/UC78kDdbOqqMtwLOVwsvfwuA">YouTube</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="legal-bar">
+  <div class="container container--lrg u-clearfix" itemscope="itemscope" itemtype="http://schema.org/Organization" itemprop="provider">
+    <p class="copyright">© 1984 - ${year} <span itemprop="name">The University of Sydney.</span> </p>
+    <ul class="legal-links">
+      <li><a href="/legal#TermsofUse">Terms.</a></li>
+      <li><a href="/legal#Disclaimer">Disclaimer.</a></li>
+      <li><a href="/legal#PrivacyPolicy">Privacy.</a></li>
+    </ul>
+    <ul class="legal-logos">
+      <li><a class="logo-ish" target="_blank" href="http://www.ish.com.au/">ish</a></li>
+      <li><a class="logo-redback" target="_blank" href="http://www.rb.com.au">Redback Solutions - Website Design Newcastle &amp; Sydney</a></li>
+      <li>
+        <script type="text/javascript">(function () { var c = document.createElement('link'); c.type = 'text/css'; c.rel = 'stylesheet'; c.href = '//images.dmca.com/badges/dmca.css'; var h = document.getElementsByTagName("head")[0]; h.appendChild(c); })();</script><div id="DMCA-badge"><div class="dm-1 dm-1-b" style="left: 0px; border-color: rgb(230, 70, 38); background-color: rgb(255, 255, 255);"><a href="http://www.dmca.com/" title="DMCA" style="color: rgb(230, 70, 38);">DMCA</a></div><div class="dm-2 dm-2-b" style="border-color: rgb(230, 70, 38); background-color: rgb(219, 59, 27);"><a href="http://www.dmca.com/Protection/Status.aspx" title="DMCA">PROTECTED</a></div></div>
+        <!--<script type="text/javascript">(function () { var c = document.createElement('link'); c.type = 'text/css'; c.rel = 'stylesheet'; c.href = 'https://images.dmca.com/badges/dmca.css?ID=8f9e14f0-5837-4c9a-83c2-f181f2fe7ee6'; var h = document.getElementsByTagName("head")[0]; h.appendChild(c); })();</script><div id="DMCA-badge"><div class="dm-1 dm-1-b" style="left: 0px; border-color: rgb(7, 54, 95); background-color: rgb(158, 185, 209);"><a href="http://www.dmca.com/" title="DMCA" style="color: rgb(7, 54, 95);">DMCA</a></div><div class="dm-2 dm-2-b" style="border-color: rgb(7, 54, 95); background-color: rgb(52, 101, 146);"><a href="http://www.dmca.com/Protection/Status.aspx?ID=8f9e14f0-5837-4c9a-83c2-f181f2fe7ee6" title="DMCA">PROTECTED</a></div></div>-->
+      </li>
+    </ul>
+  </div>
+</div>
+
+</t:container>

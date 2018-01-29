@@ -1,0 +1,25 @@
+<html t:type="ui/internal/pagestructure"
+    canonicalLinkPath="${canonicalLinkPath}"
+    canonicalRelativeLinkPath="${canonicalRelativeLinkPath}"
+    metaDescription="${metaDescription}"
+    title="${courseDetailsTitle}"
+    bodyId="literal:DetailsPage"
+    bodyClass="literal:page-course-detail page-default"
+    xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+  <t:if t:test="course">
+    <h1 itemprop="name" class="course-title summary page-title">${courseItemModel.course.name}</h1>
+
+    <div class="course-features-container">
+      <a class="btn-course-times" href="#courseClasses">View Course Times</a>
+    </div><!-- //course-features -->
+
+    <span t:type="ui/courseitem" course="course" linkToLocationsMap="true" isList="false" courseItemModel="courseItemModel"></span>
+
+    <script type="text/javascript">
+      _kmq.push(['record', 'Viewed Potential Purchase', {'Product ID':'${courseItemModel.course.code}', 'Product Name':'${courseItemModel.course.name}'}]);
+    </script>
+
+    <p:else>The requested course is not found.</p:else>
+  </t:if>
+  <span t:type="ui/Attachments" entityIdentifier="literal:Course" entityIdNum="${course.id}"/>
+</html>

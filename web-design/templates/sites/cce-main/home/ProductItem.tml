@@ -1,0 +1,93 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+  <div itemtype="http://schema.org/Product" itemscope="itemscope" class="vevent course-item courseItem producItem">
+    <t:if t:test="isList"  >
+      <t:delegate to="block:list"/>
+    </t:if>
+    <t:unless test="isList" >
+      <t:delegate to="block:nonlist"/>
+    </t:unless>
+  </div>
+
+  <t:block t:id="list">
+    <div class="course-summary">
+      <h2 class="course-summary-title" itemprop="name">
+        <meta content="https://${request.serverName}/product/${product.sku}" itemprop="url" />
+        <a href="/product/${product.sku}" class="url">${product.name}</a>
+      </h2>
+
+      <div class="course-short-description description courseShortDescription">
+        <span itemprop="description">
+          <t:outputraw value="${detailText}" />
+        </span>
+        <a class="course-read-more" href="/product/${product.sku}">[More]</a>
+      </div>
+    </div>
+    <t:delegate to="block:main"/>
+  </t:block>
+
+  <t:block t:id="nonlist">
+    <h1 itemprop="name" class="course-title summary page-title">${product.name}</h1>
+    <div class="clearfix"></div>
+    <div class="course-description copy">
+      <span itemprop="description">
+        <t:outputraw value="${detailText}" />
+      </span>
+    </div>
+    <t:delegate to="block:main"/>
+
+  </t:block>
+
+  <t:block t:id="main">
+    <div itemtype="http://schema.org/EducationEvent" itemscope="itemscope" class="clearfix class-item product-item classItem vevent" data-classid="${product.id}">
+      <div class="row">
+        <div itemprop="name" class="col-xs-24 summary">${product.name}</div>
+        <div class="col-xs-24">
+          <div class="class-block-container">
+            <div class="class-block clearfix">
+              <div class="col-xs-24 col-lg-17 class-info product-info">
+                <div class="class-date product-price">
+                  <t:if t:test="voucherProductWithoutPrice">
+                    <div>Price: This voucher has no specified price</div>
+                  </t:if>
+                  <t:unless test="voucherProductWithoutPrice" >
+                    Price: <t:output value="price" format="moneyFormat(price)" />
+                      <t:if test="hasTax()">
+                        <span class="gst">
+                           inc <acronym title="Goods and Services Tax">GST</acronym>
+                        </span>
+                      </t:if>
+                  </t:unless>
+                </div>
+
+                <t:if t:test="courseVoucherProduct">
+                   <strong>Valid for ${courseVoucherDescription}</strong>
+                  <ul class="products-class-listing">
+                    <t:loop source="redemptionCourses" value="course">
+                      <li>${course.name}</li>
+                    </t:loop>
+                  </ul>
+                </t:if>
+                <t:unless test="courseVoucherProduct" >
+                  <t:if t:test="voucherProductWithValue">
+                    <strong>Value:</strong> <t:output value="value" format="moneyFormat(value)" />
+                  </t:if>
+                </t:unless>
+              </div>
+
+              <div class="col-xs-24 col-lg-7 class-action">
+                <div class="reactjs-component"
+                  data-cid="buy-button"
+                  data-prop-can-buy="${canBuy()}"
+                  data-prop-payment-gateway-enabled="${paymentGatewayEnabled}"
+                  data-prop-id="${product.id}"
+                  data-prop-name="${product.name}"
+                  data-prop-unique-identifier="${product.sku}"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </t:block>
+
+</t:container>

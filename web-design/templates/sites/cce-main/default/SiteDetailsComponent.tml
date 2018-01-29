@@ -1,0 +1,51 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+<div class="location-description copy">
+  <h1 itemprop="name" class="summary location-main-title">${site.name}</h1>
+
+  <div class="locationInfo" itemscope="itemscope" itemtype="http://schema.org/Place">
+    <h2 class="location-title">Location</h2>
+    <div itemprop="name">${site.name}</div>
+    <t:if t:test="hasAddress">
+      <div class="hide-me site-postal-address" itemprop="address" itemscope="itemscope" itemtype="http://schema.org/PostalAddress">
+        <div class="street-address" itemprop="streetAddress">${site.street}</div>
+        <span class="locality" itemprop="addressLocality">${site.suburb} </span>
+        <span class="addressRegion" itemprop="addressRegion">${site.state}</span>
+        <t:if t:test="hasPostCode">
+          <span class="postal-code" itemprop="postalCode">${site.postcode}</span>
+        </t:if>
+        <meta itemprop="telephone" content="(02) 8627 6700"/>
+      </div>
+      <p></p>
+    </t:if>
+    <span t:type="ui/Attachments" entityIdentifier="literal:Site" entityIdNum="site.id"/>
+    <div class="location-directions">
+      <t:if t:test="site.hasCoordinates">
+        <span t:type="ui/GoogleDirections" sites="mapSites" showDirections="true" collapseLocationMap="collapseLocationMap" showLocationMap="true" />
+        <span itemprop="geo" itemscope="itemscope" itemtype="http://schema.org/GeoCoordinates">
+          <meta itemprop="latitude" content="${site.latitude}" />
+          <meta itemprop="longitude" content="${site.longitude}" />
+        </span>
+        <div class="location-directions-map" id="gmapCanvas"></div>
+      </t:if>
+    </div>
+    <t:if t:test="hasDrivingDirections">
+      <h2>Site Directions</h2>
+      <p>
+        <t:outputRaw value="drivingDirections" />
+      </p>
+    </t:if>
+    <t:if t:test="hasPublicTransportDirections">
+      <h2>Public Transport</h2>
+      <p>
+        <t:outputRaw value="publicTransportDirections" />
+      </p>
+    </t:if>
+    <t:if t:test="hasSpecialInstructions">
+      <h2>Other Information</h2>
+      <p>
+        <t:outputRaw value="specialInstructions" />
+      </p>
+    </t:if>
+  </div>
+</div>
+</t:container>

@@ -1,0 +1,188 @@
+<div class="site-wrapper" id="top" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+  <header class="site-header" role="banner" id="header" itemscope="itemscope" itemtype="http://schema.org/WPHeader">
+    <div t:type="ui/bodyheader" />
+
+    <div class="close-help-btn">HIDE</div>
+    <a class="menu-trigger menu-trigger-open menu-trigger-bp-sml" href="#">
+      <span class="menu-trigger-icon"></span>
+      Menu
+    </a>
+
+    <div class="site-info-bar-container" data-set="infobar">
+      <div class="site-info-bar u-clearfix">
+        <div class="info-contact">
+          <strong class="contact-phone">(02) 8627 6700</strong>
+          <span class="contact-hours">9am - 5pm Mon - Fri</span>
+          <a rel="nofollow" href="https://skillsoncourse.com.au/portal/login" target="_blank" class="contact-login actionLink">Account Login</a>
+        </div>
+        <ul class="info-links">
+          <li class="info-link info-link--account">
+            <a rel="nofollow" href="https://skillsoncourse.com.au/portal/login" target="_blank" class="actionLink">Account Login</a>
+          </li>
+          <li class="info-link info-link--discount">
+            <a rel="nofollow" href="/addDiscount" target="_blank" class="nyromodalreload actionLink">Enter a Discount Code</a>
+          </li>
+        </ul>
+        <ul class="social-media social-media--header">
+          <li><a class="social-facebook" target="_blank" href="https://www.facebook.com/ccesydney">Facebook</a></li>
+          <li><a class="social-twitter" target="_blank" href="https://twitter.com/ccesydney">Twitter</a></li>
+          <li><a class="social-google" target="_blank" href="https://plus.google.com/117569777441369286786">Google Plus</a></li>
+          <li><a class="social-linkedin" target="_blank" href="https://www.linkedin.com/company/ccesydney">LinkedIn</a></li>
+          <li><a class="social-youtube" target="_blank" href="https://www.youtube.com/channel/UC78kDdbOqqMtwLOVwsvfwuA">YouTube</a></li>
+        </ul>
+      </div>
+    </div>
+  </header><!-- //site-header -->
+  <section class="feature-banner container container--lrg u-clearfix">
+    <div class="feature-slider">
+      <ul class="slides">
+        <li>
+          <div class="feature-slide-img">
+            <span data-picture="" data-alt="Courses in Sydney">
+              <span data-src="/s/images/banners/home/banner-21-sml.jpg"></span>
+              <span data-src="/s/images/banners/home/banner-21-med.jpg" data-media="(min-width: 768px)"></span>
+              <span data-src="/s/images/banners/home/banner-21-lrg.jpg" data-media="(min-width: 1024px)"></span>
+              <span data-src="/s/images/banners/home/banner-21-wide.jpg" data-media="(min-width: 1200px)"></span>
+              <!--[if (lt IE 9) & (!IEMobile)]>
+                      <span data-src="/s/images/banners/home/banner-01-lrg.jpg"></span>
+                  <![endif]-->
+              <!-- Fallback content for non-JS browsers. -->
+              <noscript>
+                <img alt="Centre for Continuing Education" src="/s/images/banners/home/banner-21-sml.jpg" />
+              </noscript>
+            </span>
+          </div>
+        </li>
+      </ul>
+      <h1 class="feature-banner-title">Centre for <br/>Continuing Education</h1>
+    </div> <!-- //feature-slider -->
+    <div class="info-bar-bp-sml" data-set="infobar"> <!-- appendAround(); --></div>
+    <div class="feature-links">
+      <h3 class="feature-links-title"><strong>Short courses.</strong> Open to the public.</h3>
+      <ul class="feature-links-list">
+        <!-- Append dash dash alt for class with <br /> -->
+        <li class="feature-link"><a class="u-clearfix" href="/courses/project-management"><span class="feature-link-title">Project Management</span> <img alt="Project Management" class="feature-link-image" src="/s/images/feature-links/feature-link-project-management.jpg" /></a></li>
+        <li class="feature-link"><a class="u-clearfix" href="/courses/business-management"><span class="feature-link-title">Business &amp; Management</span> <img alt="Business &amp; Management Courses" class="feature-link-image" src="/s/images/feature-links/feature-link-business-management.jpg" /></a></li>
+        <li class="feature-link"><a class="u-clearfix" href="/courses/education/hsc"><span class="feature-link-title">HSC Preparation</span> <img alt="HSC Preparation Courses" class="feature-link-image" src="/s/images/feature-links/feature-link-hsc-preparation.jpg" /></a></li>
+        <li class="feature-link"><a class="u-clearfix" href="/courses/marketing"><span class="feature-link-title">Marketing</span> <img alt="Marketing Courses" class="feature-link-image" src="/s/images/feature-links/feature-link-marketing.jpg" /></a></li>
+        <li class="feature-link"><a class="u-clearfix" href="/courses/language-culture"><span class="feature-link-title">Language &amp; Culture</span> <img alt="Language &amp; Culture Courses" class="feature-link-image" src="/s/images/feature-links/feature-link-language-&amp;-culture.jpg" /></a></li>
+        <li class="feature-link"><a class="u-clearfix" href="/courses/information-technology"><span class="feature-link-title">Information Technology</span> <img alt="Information technology Courses" class="feature-link-image" src="/s/images/feature-links/feature-link-information-technology.jpg" /></a></li>
+        <li class="feature-link"><a class="u-clearfix" href="/employers"><span class="feature-link-title">Corporate Training</span> <img alt="Corporate Training Information" class="feature-link-image" src="/s/images/feature-links/feature-link-corporate-training.jpg" /></a></li>
+      </ul>
+    </div> <!-- //feature-links -->
+  </section> <!-- //feature-banner -->
+  <div class="container">
+    <section class="callout-wrapper">
+      <h2 class="callout">
+        <span class="callout-tagline">Learn the smart way.</span>
+        <span class="callout-desc">Short courses, open to the public.</span>
+      </h2>
+    </section> <!-- //callout -->
+    <div id="courses" class="course-filter">
+      <div class="filter-search u-clearfix">
+        <div class="filter-search-box u-clearfix simple-search">
+          <span class="filter-search-title">Search</span>
+          <form action="/courses" class="filter-search-form" method="get" id="filter-search" name="search">
+            <input type="text" id="search-field" class="filter-search-field site-search-field" name="s" size="15" autocomplete="off" placeholder="Enter Keyword" />
+            <button type="submit" id="search-button" class="filter-search-button site-search-button">Search</button></form>
+          <button class="filter-search-link js-filter-btn js-advanced-search" data-button="filter-by-advanced-search">Advanced Search</button>
+        </div>
+        <div class="filter-by-buttons">
+          <span class="filter-search-title">Filter <strong>Courses</strong> By</span>
+          <ul class="u-clearfix">
+            <li><a class="filter-by-btn filter-by-new js-filter-btn" data-button="filter-by-new" href="#">New Courses</a></li>
+            <li><a class="filter-by-btn filter-by-popular js-filter-btn" data-button="filter-by-popular" href="#">Popular Courses</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="filter-courses filter-accordion">
+        <a class="filter-view-all" href="/courses">View All Courses</a>
+        <div class="filter-block-advanced-search filter-pane filter-block filter-block-group js-advanced-search-group" data-button="filter-by-advanced-search"><div class="filter-courses-title filter-courses-title-hidden"><h2>Advanced Search</h2><a class="filter-back-btn" href="#">Back</a></div><div class="filter-pane-content js-advanced-search-panel u-clearfix"><span t:type="ui/SearchInputs" searchTagNames="literal:Subjects"/></div></div>
+        <div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:content" />
+      </div>
+    </div><!-- //course-filter -->
+
+    <!-- section removed here -->
+
+    <section class="intro intro--two-col">
+      <h2 class="intro-callout callout">
+        <span class="callout-tagline">What we do.</span>
+        <span class="callout-desc">A little about us.</span>
+      </h2>
+      <div class="u-clearfix">
+        <div class="col-1-2">
+        <p>Choose from hundreds of short courses in Sydney at the Centre for Continuing Education, all open to the general public. Our training courses have been meeting the learning and education needs of the Sydney community since 1886 and are backed by the expertise of the University of Sydney and carefully selected educators who are industry experts in their field. Being a student with us means you'll develop skills and knowledge in your chosen area of professional, personal or academic interest.</p>
+        </div>
+        <div class="col-1-2"><p>Our training courses are continually updated to ensure they remain current, relevant and a consistently high quality. With short courses that cover a diverse range of interests and designed for all stages of life, you can learn new skills, gain new insights or discover your untapped creativity - hundreds of short courses in Sydney make it all possible at the University of Sydney's Centre for Continuing Education.</p></div>
+      </div>
+    </section>
+    <section class="logos">
+      <h2 class="callout">
+        <span class="callout-tagline">Just a few of our clients.</span>
+      <span class="callout-desc">Trusted education provider.</span>
+      </h2>
+      <div class="logo-list">
+        <ul class="u-clearfix">
+          <li>
+            <span data-picture="" data-alt="BBC Worldwide Australia">
+              <span data-src="/s/images/logos/logo-bbc-sml.png"></span>
+              <span data-src="/s/images/logos/logo-bbc.png" data-media="(min-width: 1024px)"></span>
+              <!-- Fallback content for non-JS browsers. -->
+              <noscript>
+                <img alt="BBC Worldwide Australia" src="/s/images/logos/logo-bbc-sml.png" />
+              </noscript>
+            </span>
+          </li>
+          <li>
+            <span data-picture="" data-alt="TAFE NSW">
+              <span data-src="/s/images/logos/logo-tafe-sml.png"></span>
+              <span data-src="/s/images/logos/logo-tafe.png" data-media="(min-width: 1024px)"></span>
+              <!-- Fallback content for non-JS browsers. -->
+              <noscript>
+                <img alt="tafe" src="/s/images/logos/logo-tafe-sml.png" />
+              </noscript>
+            </span>
+          </li>
+          <li>
+            <span data-picture="" data-alt="Australian Broadcasting Corporation">
+              <span data-src="/s/images/logos/logo-abc-sml.png"></span>
+              <span data-src="/s/images/logos/logo-abc.png" data-media="(min-width: 1024px)"></span>
+              <!-- Fallback content for non-JS browsers. -->
+              <noscript>
+                <img alt="Australian Broadcasting Corporation" src="/s/images/logos/logo-abc-sml.png" />
+              </noscript>
+            </span>
+          </li>
+          <li>
+            <span data-picture="" data-alt="NRMA">
+              <span data-src="/s/images/logos/logo-nrma-sml.png"></span>
+              <span data-src="/s/images/logos/logo-nrma.png" data-media="(min-width: 1024px)"></span>
+              <!-- Fallback content for non-JS browsers. -->
+              <noscript>
+                <img alt="NRMA" src="/s/images/logos/logo-nrma-sml.png" />
+              </noscript>
+            </span>
+          </li>
+          <li>
+            <span data-picture="" data-alt="Westpac">
+              <span data-src="/s/images/logos/logo-westpac-sml.png"></span>
+              <span data-src="/s/images/logos/logo-westpac.png" data-media="(min-width: 1024px)"></span>
+              <!-- Fallback content for non-JS browsers. -->
+              <noscript>
+                <img alt="Westpac" src="/s/images/logos/logo-westpac-sml.png" />
+              </noscript>
+            </span>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </div><!-- //container -->
+  <footer class="site-footer" id="footer" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
+    <div t:type="ui/bodyfooter" />
+    <div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:footer" />
+  </footer><!-- //site-footer -->
+
+  <div id="overlay" style="display: none; height: 500px" />
+
+  <div data-cid="modal" class="reactjs-component"></div>
+</div><!-- //site-wrapper -->

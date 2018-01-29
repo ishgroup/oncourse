@@ -1,0 +1,94 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+  <div class="clearfix course-item courseItem${tagClasses}" itemscope="itemscope" itemtype="http://schema.org/Product">
+    <t:if t:test="isList" negate="true">
+      <t:if t:test="addThisEnabled">
+        <div class="clearfix">
+          <div class="addthis">
+            <span t:type="ui/socialmedia" addThisProfileId="addThisProfileId"/>
+          </div>
+        </div>
+      </t:if>
+      <div class="course-description copy">
+        <t:if t:test="courseItemModel.nrt">
+          <img class="logo-nrt-details" alt="NRT" src="/s/images/logo-nrt.png"/>
+        </t:if>
+        <span itemprop="description">
+          <t:outputraw value="${courseDetail}" />
+        </span>
+      </div>
+      <t:if t:test="${courseItemModel.showModules}">
+        <div t:type="ui/CourseModules" modules="courseItemModel.course.modules" qualification="courseItemModel.course.qualification" course="courseItemModel.course"></div>
+      </t:if>
+    <p:else>
+      <div class="course-summary">
+        <t:if t:test="courseItemModel.nrt">
+          <img class="logo-nrt" alt="NRT" src="/s/images/logo-nrt.png"/>
+        </t:if>
+        <h2 itemprop="name" class="course-summary-title">
+          <meta content="https://${request.serverName}/course/${courseItemModel.course.code}" itemprop="url" />
+          <a href="/course/${courseItemModel.course.code}" class="url">${courseItemModel.course.name}</a>
+        </h2>
+        <div class="course-short-description courseShortDescription">
+          <span itemprop="description">
+            <t:outputraw value="${courseDetail}"/>
+          </span>
+          <a class="course-read-more" href="/course/${courseItemModel.course.code}">[More]</a>
+        </div>
+        <t:if t:test="${courseItemModel.showModules}">
+          <div t:type="ui/CourseModules" modules="courseItemModel.course.modules" qualification="courseItemModel.course.qualification" course="courseItemModel.course"></div>
+        </t:if>
+      </div>
+      <a class="link-back-top" href="#top">Back to Top</a>
+    </p:else>
+    </t:if>
+    <div class="course-classes" id="courseClasses">
+      <a name="classes" />
+      <t:loop source="courseItemModel.availableClasses" value="courseClass">
+        <span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="linkToLocationsMap" isList="isList" allowByAplication="allowByAplication" feeOverride="feeOverride"/>
+      </t:loop>
+      <t:if test="courseItemModel.otherClasses.empty" negate="true">
+        <p class="other-classes-control clearfix">
+          <a href="javascript:return false;" >Show other classes</a>
+        </p>
+        <div class="other-classes" style="display:none;">
+          <t:loop source="courseItemModel.otherClasses" value="courseClass">
+            <span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="linkToLocationsMap" isList="isList" allowByAplication="allowByAplication" feeOverride="feeOverride"/>
+          </t:loop>
+        </div>
+      </t:if>
+      <t:if test="courseItemModel.fullClasses.empty" negate="true">
+        <!--<a class="show-full-classes full-classes-control"  >Show Full Classes</a>
+        <div class="full-classes" style="display:none;">-->
+        <div class="full-classes">
+          <t:loop source="courseItemModel.fullClasses" value="courseClass">
+            <span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="linkToLocationsMap" isList="isList" allowByAplication="allowByAplication" feeOverride="feeOverride"/>
+          </t:loop>
+        </div>
+      </t:if>
+      <t:if t:test="courseItemModel.course.allowWaitingList">
+        <p class="link-waiting-list" data-cid="join-button" data-prop-id="${courseItemModel.course.id}">
+          <t:if t:test="courseItemModel.enrollableClasses.empty" negate="true">
+            <t:if t:test="hasMoreAvailablePlaces"> If there isn't a class to suit you, please <p:else> Classes are full. Please </p:else>
+            </t:if>
+            <p:else> There are no current classes. Please </p:else>
+          </t:if>
+          <strong>join</strong> the waiting list.
+        </p>
+      </t:if>
+    </div>
+    <t:if t:test="courseItemModel.haveRelatedCourses">
+      <t:if t:test="isList" negate="true">
+        <div class="course-related course-related--detail">
+          <h2 class="course-related-title"><strong>Related content.</strong> Further your learning.</h2>
+          <div t:type="ui/CourseRelations" course="courseItemModel.course"></div>
+        </div>
+      <p:else>
+        <div class="course-related course-related--list">
+          <h2 class="course-list-related-title">Related Content</h2>
+          <div t:type="ui/CourseRelations" course="courseItemModel.course"></div>
+        </div>
+      </p:else>
+      </t:if>
+    </t:if>
+  </div>
+</t:container>

@@ -1,0 +1,74 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+  <script type="text/javascript">
+    var ciVersion = '${ciVersion}';
+  </script>
+
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <t:any element="meta" name="generator" content="prop:metaGeneratorContent" />
+
+  <t:if test="canonicalLinkPath">
+    <link rel="canonical" href="${canonicalLinkPath}" />
+    <link rel="alternate" href="${canonicalLinkPath}" hreflang="en-au" />
+    <meta property="og:url" content="${canonicalLinkPath}" />
+    <p:else>
+      <link rel="canonical" href="https://cce.sydney.edu.au/" />
+    </p:else>
+  </t:if>
+
+  <t:if test="canonicalRelativeLinkPath">
+    <link rel="canonical" href="${canonicalRelativeLinkPath}" />
+  </t:if>
+
+  <meta property="og:type" content="website"/>
+
+  <meta content="${metaDescription}" name="description" />
+  <meta content="${metaDescription}" property="og:description"/>
+  <meta content="${metaDescription}" property="twitter:description"/>
+
+  <meta property="og:image" content="https://${request.serverName}/s/img/logos/logo.png" />
+  <meta name="twitter:image" content="https://${request.serverName}/s/img/logos/logo.png" />
+
+  <meta name="robots" content="noodp,noydir,none" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <div t:type="ui/courseClassMetaInfo"/>
+
+  <span t:type="ui/title" pageName="pageName" webNode="webNode" />
+
+  <meta name="author" content="" />
+  <script type="text/javascript" src="/s/js/vendor/mq.genie.js"></script>
+  <link href="/s/stylesheets/css/site.css?v=${ciVersion}" media="screen, print" rel="stylesheet" />
+  <script type="text/javascript" src="/s/js/all.js?v=${ciVersion}"></script>
+
+  <link href="/s/images/favicon.ico" rel="icon" type="image/vnd.microsoft.icon" />
+  <link href="/s/images/favicon.ico" rel="shortcut icon" type="images/x-icon" />
+  <link rel="apple-touch-icon-precomposed" href="/s/images/apple-touch-icon-precomposed.png" />
+
+  <!-- google fonts -->
+  <link href='//fonts.googleapis.com/css?family=Lato:300,400,700,900,400italic,700italic' rel='stylesheet' type='text/css' />
+
+  <link href="https://plus.google.com/117569777441369286786" rel="publisher" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@ccesydney" />
+  <meta name="twitter:creator" content="@ccesydney" />
+  <meta name="twitter:image" content="https://cce.sydney.edu.au/s/images/custom/open-graph/default.png" />
+  <meta property="og:site_name" content="Centre for Continuing Education" />
+  <meta property="og:url" content="https://cce.sydney.edu.au/" />
+  <meta property="og:image" content="https://cce.sydney.edu.au/s/images/custom/open-graph/default.png" />
+  <meta property="fb:admins" content="670287452" />
+
+  <script type="text/javascript">var _kmq = _kmq || [];
+    var _kmk = _kmk || 'dc6b0c4725b886e25db8a362b0e28332370739a7';
+    function _kms(u) {
+      setTimeout(function() {
+        var d = document, f = d.getElementsByTagName('script')[0],
+        s = d.createElement('script');
+        s.type = 'text/javascript'; s.async = true; s.src = u;
+        f.parentNode.insertBefore(s, f);
+      }, 1);
+    }
+    _kms('//i.kissmetrics.com/i.js');
+    _kms('//scripts.kissmetrics.com/' + _kmk + '.2.js');
+  </script>
+</t:container>

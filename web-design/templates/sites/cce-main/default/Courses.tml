@@ -1,0 +1,50 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+  <t:if test="XHR">
+    <t:if test="DebugRequest">
+      <t:outputraw value="${debugInfo}"/>
+    </t:if>
+    <h1>Courses</h1>
+    <span t:type="ui/CoursesList" courses="courses" coursesCount="coursesCount" loadedCoursesIds="previouslyLoadedCourseIds" itemIndex="itemIndex" sitesParameter="sitesParameter" searchParams="searchParams"/>
+    <p:else>
+      <html t:type="ui/internal/pagestructure" bodyId="literal:ListPage"
+            bodyClass="literal:page-course-list page-default"
+            canonicalLinkPath="${canonicalLinkPath}"
+            canonicalRelativeLinkPath="${canonicalRelativeLinkPath}">
+
+        <t:if t:test="hasInvalidSearchTerms">
+          <span t:type="ui/SearchTermsClarification" paramsInError="paramsInError"></span>
+          <p:else>
+            <div class="course-description copy">
+              <span t:type="ui/SearchCriteria" hasMapItemList="hasMapItemList"></span>
+              <t:if test="browseTag">
+                <t:if test="browseTag.hasDetails">
+                  <t:outputraw value="${browseTagDetail}" />
+                </t:if>
+              </t:if>
+              <t:if t:test="hasAnyItems" negate="true">
+                <p>Sorry. We couldn't locate any courses matching your criteria.</p>
+                <ul>
+                  <li><strong>Try a similar search</strong> - Try using synonyms or more general keywords.</li>
+                  <li><strong>Check for typos</strong> - Make sure the words you entered are spelled correctly.</li>
+                  <li><strong>Browse by subject</strong> - Use our navigation to browse by subject area.</li>
+                </ul>
+                <p:else> </p:else>
+              </t:if>
+            </div>
+
+            <t:if t:test="isException">
+              <h2 class="course-tagline"><strong>Ooops.</strong> Something went wrong.</h2>
+              <p>Because of an error in the search engine, all courses are being displayed. Our technical team is working to resolve this problem now.</p>
+            </t:if>
+            <t:if test="DebugRequest">
+              <t:outputraw value="${debugInfo}"/>
+            </t:if>
+            <t:if t:test="hasAnyItems" negate="false">
+              <span t:type="ui/CoursesList" courses="courses" loadedCoursesIds="previouslyLoadedCourseIds" coursesCount="coursesCount" itemIndex="itemIndex" sitesParameter="sitesParameter" searchParams="searchParams"/>
+            </t:if>
+          </p:else>
+        </t:if>
+      </html>
+    </p:else>
+  </t:if>
+</t:container>

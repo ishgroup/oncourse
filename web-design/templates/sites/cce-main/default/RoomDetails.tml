@@ -1,0 +1,18 @@
+<html t:type="ui/internal/pagestructure" title="${room.name} at ${room.site.name}" bodyId="literal:DetailsPage"
+    bodyClass="literal:page-location" canonicalLinkPath="https://cce.sydney.edu.au/site/${room.site.angelId}"
+    xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+  <t:if test="room">
+    <div class="location-description copy">
+      <h1 itemprop="name" class="summary page-title roomname">${room.name} at ${room.site.name}</h1>
+
+      <t:if test="directions">
+        <h2>Room Directions</h2>
+        <p>
+          <t:outputRaw value="directions" />
+        </p>
+      </t:if>
+      <span t:type="ui/Attachments" entityIdentifiers="identifiers" entityIdNums="ids"/>
+      <span t:type="ui/SiteDetailsComponent" room="room" collapseLocationMap="false"/>
+    </div>
+  </t:if>
+</html>

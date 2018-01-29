@@ -1,0 +1,195 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+  <t:if test="allowByAplication" negate="true">
+    <span class="hide" itemprop="offers" itemscope="itemscope" itemtype="http://schema.org/Offer">
+      <div class="price">
+        <span t:type="ui/CourseClassPrice" courseClass="courseClass" feeOverride="feeOverride"/>
+      </div>
+    </span>
+  </t:if>
+  <div itemtype="http://schema.org/EducationEvent" itemscope="itemscope" class="clearfix class-item classItem ${classCommenced}" data-classid="${courseClass.id}" data-sku="${courseClass.uniqueIdentifier}">
+    <div class="row">
+      <!--hcalendar implementation-->
+      <div itemprop="name" class="col-xs-24 summary">${courseClass.course.name}</div>
+      <t:if test="courseClass.course.detail">
+        <div itemprop="description" class="hide">
+          <t:textOutput value="${formatUtils.truncate(courseClass.course.detail, 200)}" />...
+        </div>
+        <p:else>
+        <meta itemprop="description" content="${courseClass.course.name}" />
+        </p:else>
+      </t:if>
+      <meta itemprop="url" content="https://${request.serverName}/class/${courseClass.uniqueIdentifier}" />
+      <meta itemprop="eventStatus" content="available" />
+      <meta content="https://${request.serverName}/s/img/blank.png" itemprop="image" />
+
+      <div class="col-xs-24">
+        <div class="class-block-container">
+          <div class="class-block u-clearfix">
+            <div class="col-xs-24 col-lg-17 class-info">
+              <div class="col-xs-24 class-info-primary class-info-section">
+                <div class="row">
+                  <t:if t:test="courseClass.firstSession">
+                    <div class="col-xs-24 class-date">
+                      <a timezone="10" rel="session" href="https://${request.serverName}/Timeline/sessions?ids=${courseClass.id}" class="timeline session-date">
+                        <span itemprop="startDate" class="dtstart hide" content="${formatDate(firstSessionStartDate,'yyyy-MM-dd')}">
+                          ${formatDate(firstSessionStartDate,'yyyy-MM-dd')}
+                        </span>
+
+                        <span class="dtstart">
+                          <t:output format="dateFormat" value="firstSessionStartDate"/>
+                        </span>
+                        <t:if t:test="showDateEnd"> -
+                          <meta itemprop="duration" content="${formatUtils.duration(firstSessionStartDate, courseClass.endDate)}" />
+                          <span itemprop="endDate" class="dtend hide" content="${formatDate(courseClass.endDate,'yyyy-MM-dd')}">
+                            ${formatDate(courseClass.endDate,'yyyy-MM-dd')}
+                          </span>
+
+                          <span class="dtend">
+                            <t:output format="dateFormat" value="courseClass.endDate"/>
+                          </span>
+                          <p:else>
+                            <meta itemprop="duration" content="${formatUtils.duration(firstSessionStartDate, firstSessionEndDate)}" />
+                            <span itemprop="endDate" class="dtend hide" content="${formatDate(firstSessionEndDate,'yyyy-MM-dd')}">
+                              ${formatDate(firstSessionEndDate,'yyyy-MM-dd')}
+                            </span>
+                          </p:else>
+                        </t:if>
+                      </a>
+                    </div>
+                    <div class="col-xs-24 class-sessions">
+                      <a timezone="10" href="https://${request.serverName}/Timeline/sessions?ids=${courseClass.id}" class="timeline session-item" rel="session">${classSessions}</a>
+                    </div>
+                    <div class="col-xs-24 class-time">
+                      <a timezone="10" href="https://${request.serverName}/Timeline/sessions?ids=${courseClass.id}" class="timeline session-time" rel="session">
+                        <span class="dtstart" title="">
+                          <t:output format="timeFormat" value="firstSessionStartDate"/>
+                        </span> -
+                        <span class="dtend" title="">
+                          <t:output format="timeFormatWithTimeZone" value="firstSessionEndDate"/>
+                        </span>
+                        <t:if t:test="hasManySessions"> (1st session)</t:if>
+                      </a>
+                    </div>
+                    <p:else>
+                      <t:if t:test="selfPacedClass">
+                        <div class="col-xs-24 class-date">Self paced</div>
+                        <div class="col-xs-24 class-sessions">${expectedHours} | ${maximumDaysToComplete}</div>
+
+                        <span itemprop="startDate" class="dtstart hide" content="${formatDate(currentDate,'yyyy-MM-dd')}">
+                          ${formatDate(currentDate,'yyyy-MM-dd')}
+                        </span>
+
+                        <span itemprop="endDate" class="dtend hide" content="${formatDate(currentDate,'yyyy-MM-dd')}">
+                          ${formatDate(currentDate,'yyyy-MM-dd')}
+                        </span>
+
+                        <p:else>
+                          <div class="col-xs-24">
+                            <b>no session</b>
+                          </div>
+
+                          <span itemprop="startDate" class="dtstart hide" content="${formatDate(currentDate,'yyyy-MM-dd')}">
+                            ${formatDate(currentDate,'yyyy-MM-dd')}
+                          </span>
+
+                          <span itemprop="endDate" class="dtend hide" content="${formatDate(currentDate,'yyyy-MM-dd')}">
+                            ${formatDate(currentDate,'yyyy-MM-dd')}
+                          </span>
+                        </p:else>
+                      </t:if>
+                    </p:else>
+                  </t:if>
+                </div>
+              </div>
+              <div class="col-xs-24 class-info-secondary u-clearfix">
+                <div class="row">
+                  <div class="col-xs-24 col-sm-16 class-details">
+                    <t:if test="hasLinkToLocation">
+                      <div class="class-site location">
+                        <t:if test="courseClass.hasRoom">
+                          <span t:type="ui/roomLocation" room="courseClass.room" withRoomName="false" disabledLink="notExistsOnMap" isList="isList"/>
+                          <p:else>
+                            <span itemprop="location" itemscope="itemscope" itemtype="http://schema.org/Place">
+                              <span content="University of Sydney (Venue TBA)" itemprop="name">
+                                University of Sydney (Venue TBA)
+                              </span>
+                              <span itemtype="http://schema.org/PostalAddress" itemscope="itemscope" itemprop="address">
+                                <meta content="University of Sydney (Venue TBA)" itemprop="streetAddress" />
+                              </span>
+                            </span>
+                          </p:else>
+                        </t:if>
+                      </div>
+                    </t:if>
+
+                    <t:if t:test="courseClass.room">
+                      <span itemprop="location" itemscope="itemscope" itemtype="http://schema.org/Place">
+                        <meta itemprop="name" content="${courseClass.room.site.name}" />
+                        <span itemprop="address" itemscope="itemscope" itemtype="http://schema.org/PostalAddress">
+                          <meta itemprop="streetAddress" content="${courseClass.room.site.street}"/>
+                          <meta itemprop="addressLocality" content="${courseClass.room.site.suburb}"/>
+                          <meta itemprop="addressRegion" content="${courseClass.room.site.state}"/>
+                          <meta itemprop="postalCode" content="${courseClass.room.site.postcode}"/>
+                        </span>
+                      </span>
+                    </t:if>
+
+                    <t:if test="hasTutorRoles">
+                    <ul class="class-tutors">
+                      <t:loop source="visibleTutorRoles" value="tutorRole" index="index">
+                        <li>
+                          <span itemprop="performer" itemscope="itemscope" itemtype="http://schema.org/Person">
+                            <meta content="https://${request.serverName}/tutor/${tutorRole.tutor.angelId}" itemprop="mainEntityOfPage" />
+                            <a href="/tutor/${tutorRole.tutor.angelId}" title="View tutor profile">
+                              <span itemprop="name">${tutorRole.tutor.contact.givenName} ${tutorRole.tutor.contact.familyName}</span>
+                            </a>
+                          </span>
+                        </li>
+                      </t:loop>
+                    </ul>
+                    </t:if>
+                  </div>
+                  <!--<t:if test="allowByAplication" negate="true">-->
+                      <span itemprop="offers" itemscope="itemscope" itemtype="http://schema.org/Offer">
+                        <div class="col-xs-24 col-sm-8 class-price-container">
+                          <div data-cid="fees" data-prop-id="${courseClass.id}"></div>
+                        </div>
+                      </span>
+                  <!--</t:if>-->
+                </div>
+              </div>
+              <div class="cart-alert-box">
+                <h2>Course added to cart.</h2>
+                <a href="/checkout" class="btn-checkout">Proceed to Checkout</a>
+                <a href="#" class="btn-close-box">Close this message</a>
+              </div>
+            </div> <!-- //class-info -->
+            <div class="col-xs-24 col-lg-7 class-action">
+              <div class="reactjs-component"
+                  data-cid="enrol-button"
+                  data-prop-id="${courseClass.id}"></div>
+            </div> <!-- //class-action -->
+          </div>
+        </div>
+      </div>
+
+      <t:if test="courseClass.detail">
+        <div class="col-xs-24">
+          <div class="class-note classDescription class-note-important">
+            <span itemprop="description">
+              <t:outputraw value="courseClassDetail"/>
+            </span>
+          </div>
+        </div>
+      </t:if>
+
+      <t:if test="${courseClass.cancelled}" negate="true">
+        <t:if test="courseClass.hasAnyTimelineableSessions">
+          <div class="sessions_for_class hidden classSessions" id="sessions_for_class_${courseClass.id}">
+            <span t:type="ui/TimetableEvents" displayedObjects="sortedTimelineableSessions" headerLabels="timetableLabels" cssTableClass="cssTableClass" cssEvenRowClass="cssEvenRowClass" cssOddRowClass="cssOddRowClass"/>
+          </div>
+        </t:if>
+      </t:if>
+    </div>
+  </div><!-- //class-item -->
+</t:container>

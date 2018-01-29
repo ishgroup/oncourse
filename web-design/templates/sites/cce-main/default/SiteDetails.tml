@@ -1,0 +1,6 @@
+<html t:type="ui/internal/pagestructure" title="${site.name} Directions" bodyId="literal:DetailPage"
+      bodyClass="literal:page-location page-default"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+
+    <span t:type="ui/SiteDetailsComponent" site="site" collapseLocationMap="false"></span>
+</html>

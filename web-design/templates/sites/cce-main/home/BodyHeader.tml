@@ -1,0 +1,36 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+  <div class="site-mast">
+    <div class="element-overlay"></div>
+    <div class="header-logo site-logo">
+      <div class="element-overlay"></div>
+      <a class="logo" href="/">The University of Sydney</a>
+    </div>
+    <a class="menu-trigger menu-trigger-open menu-trigger-bp-med" href="#">
+      <span class="menu-trigger-icon"></span>
+      Menu
+    </a>
+    <div class="site-search">
+      <div class="advanced-search-button search-trigger-wrapper">
+        <div class="show-advanced-search search-trigger">
+          <div class="search-icon">Search</div>
+        </div>
+      </div>
+      <span t:type="ui/SearchInputs" searchTagNames="literal:Subjects"/>
+    </div>
+    <t:if t:test="paymentGatewayEnabled">
+      <div class="course-cart-wrapper">
+        <span t:type="ui/ShortList" />
+      </div>
+    </t:if>
+    <div class="site-menu-overlay">
+      <a class="menu-trigger menu-trigger-close" href="#">
+        <span class="menu-trigger-icon"></span>
+        Menu
+      </a>
+      <nav class="site-menu" role="navigation">
+        <div t:type="ui/menu"/>
+      </nav>
+    </div>
+
+  </div>
+</t:container>

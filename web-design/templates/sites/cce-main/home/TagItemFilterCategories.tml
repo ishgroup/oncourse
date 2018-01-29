@@ -1,0 +1,9 @@
+<li class="filter-pane ${tagItemClass}" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<a class="filter-top-category" href="${tagLink}" title="${tag.name} Courses"><span>${tag.name}</span></a>
+	<t:if test="showDetails">
+		<div class="taggroup_detail courses-list-detail"> ${tag.detail} </div>
+	</t:if>
+	<ul class="filter-pane-content courses-list-sub-level">
+		<t:body />
+	</ul>
+</li>

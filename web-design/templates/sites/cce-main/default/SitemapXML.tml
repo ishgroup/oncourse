@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+  <url>
+    <loc>https://${hostName}/</loc>
+    <lastmod>
+      <t:output value="siteModificationDate" format="dateFormat" />
+    </lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <t:loop source="courses" value="course">
+    <url>
+      <loc>https://${hostName}/course/${course.code}</loc>
+      <lastmod>
+        <t:output value="course.modified" format="dateFormat" />
+      </lastmod>
+      <changefreq>daily</changefreq>
+      <priority>0.8</priority>
+    </url>
+  </t:loop>
+  <t:loop source="sites" value="site">
+    <url>
+      <loc>https://${hostName}/site/${site.angelId}</loc>
+      <lastmod>
+        <t:output value="site.modified" format="dateFormat" />
+      </lastmod>
+      <changefreq>daily</changefreq>
+      <priority>0.4</priority>
+    </url>
+  </t:loop>
+  <t:loop source="tutors" value="tutor">
+    <t:if test="isActiveTutor()">
+      <url>
+        <loc>https://${hostName}/tutor/${tutor.angelId}</loc>
+        <lastmod>
+          <t:output value="tutor.modified" format="dateFormat" />
+        </lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.4</priority>
+      </url>
+    </t:if>
+  </t:loop>
+</urlset>

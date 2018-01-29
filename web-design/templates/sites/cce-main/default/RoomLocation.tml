@@ -1,0 +1,19 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+  <t:if test="room.site.isWebVisible">
+    <t:unless test="disabledLink">
+      <t:if test="redirect">
+        <a href="${mapLink}" content="${mapLink}">
+          <span t:type="ui/RoomLocationText" room="room" withRoomName="withRoomName" withSiteAddress="withSiteAddress" />
+        </a>
+        <p:else>
+          <a href="/site/${room.site.angelId}" content="https://${request.serverName}/site/${room.site.angelId}">
+            <span t:type="ui/RoomLocationText" room="room" withRoomName="withRoomName" withSiteAddress="withSiteAddress" />
+          </a>
+        </p:else>
+      </t:if>
+      <p:else>
+        <span t:type="ui/RoomLocationText" room="room" withRoomName="withRoomName" withSiteAddress="withSiteAddress" />
+      </p:else>
+    </t:unless>
+  </t:if>
+</t:container>

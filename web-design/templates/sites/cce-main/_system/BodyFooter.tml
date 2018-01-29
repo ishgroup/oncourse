@@ -1,0 +1,13 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<div class="footer-container">
+		<p class="footer-info">Copyright © 2007-${year} ${collegeName} and
+			<a href="http://www.ish.com.au/copyright.html" title="ish copyright notice" class="popup">ish</a>, all rights reserved.
+		</p>
+
+		<p class="footer-logo">
+			<a href="http://www.ish.com.au/oncourse" class="popup">
+			<img src="/s/img/poweredby.png" width="102" height="9" alt="powered by ish onCourse"/>
+			</a>
+		</p>
+	</div>
+</t:container>

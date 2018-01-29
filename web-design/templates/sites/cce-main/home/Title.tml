@@ -1,0 +1,71 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "WebSite",
+      "name": "${college.name}",
+      "alternateName": "${college.name}",
+      "url": "https://${request.serverName}/",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://${request.serverName}/courses?s={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+  </script>
+
+  <t:remove>Title for cms pages</t:remove>
+  <t:if test="webNode">
+    <t:if test="${webNode.name.equals('Home')}">
+      <title>Centre for Continuing Education</title>
+      <meta name="description" content="" />
+      <meta property="og:title" content="Centre for Continuing Education" />
+      <meta property="twitter:title" content="Centre for Continuing Education"/>
+      <p:else>
+        <title>${webNode.name}</title>
+        <meta property="og:title" content="${webNode.name}" />
+        <meta property="twitter:title" content="${webNode.name}"/>
+      </p:else>
+    </t:if>
+  </t:if>
+  <meta property="og:site_name" content="CCE University of Sydney" />
+  <meta name="twitter:site" content="CCE University of Sydney" />
+  <t:unless test="webNode">
+    <t:delegate to="block:pageName"/>
+  </t:unless>
+
+  <t:block t:id="pageName">
+    <t:remove>Title for pages where pageName is defined in correspondent tapestry template (like /course, /class, /site, /room)</t:remove>
+    <t:if test="pageName">
+      <t:remove>Title for pages with browser tag (like /courses/tag1)</t:remove>
+      <t:if test="tag">
+        <title>${tag.name}</title>
+        <meta name="description" content="" />
+        <meta property="og:title" content="${tag.name}" />
+        <meta property="twitter:title" content="${tag.name}" />
+      </t:if>
+      <t:unless test="tag">
+        <title>${pageName}</title>
+        <meta name="description" content="" />
+        <meta property="og:title" content="${pageName}" />
+        <meta property="twitter:title" content="${pageName}" />
+      </t:unless>
+    </t:if>
+    <t:remove>Title for pages where pageName is not defined in tapestry template</t:remove>
+    <t:unless test="pageName">
+      <t:if test="tag">
+        <title>${tag.name}</title>
+        <meta name="description" content="" />
+        <meta property="og:title" content="${tag.name}" />
+        <meta property="twitter:title" content="${tag.name}" />
+      </t:if>
+      <t:unless test="tag">
+        <title>Centre for Continuing Education</title>
+        <meta name="description" content="" />
+        <meta property="og:title" content="Centre for Continuing Education" />
+        <meta property="twitter:title" content="Centre for Continuing Education" />
+      </t:unless>
+    </t:unless>
+  </t:block>
+</t:container>

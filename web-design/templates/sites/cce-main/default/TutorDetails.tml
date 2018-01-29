@@ -1,0 +1,46 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+  <t:if test="request.XHR">
+    <html t:type="ui/dialogstructure" title="${tutorDetailsTitle}" bodyId="literal:DetailsPage" bodyClass="literal:internal-page page-tutor" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+      <t:delegate to="block:tutorDetailsBlock"/>
+    </html>
+  </t:if>
+  <t:if test="request.XHR" negate="true">
+    <html t:type="ui/internal/pagestructure" title="${tutorDetailsTitle}" bodyId="literal:DetailsPage" bodyClass="literal:page-tutor">
+      <div itemscope="itemscope" itemtype="http://schema.org/Person">
+        <h1 itemprop="name">${tutorDetailsTitle}</h1>
+        <meta itemprop="jobTitle" content="Instructor" />
+        <t:delegate to="block:tutorDetailsBlock"/>
+      </div>
+    </html>
+  </t:if>
+
+  <t:block t:id="tutorDetailsBlock">
+    <t:if t:test="${tutorFound}">
+      <div class="tutor-description copy">
+        <t:if t:test="${profilePicture}">
+          <div class="tutor-picture">
+            <img class="profilePicture" src="${profilePictureUrl}" alt="${tutorDetailsTitle}"/>
+          </div>
+        </t:if>
+        <t:if t:test="${hasResume}">
+          <h2 class="tutor-title">Resume</h2>
+          <div class="tutor-resume"><t:outputraw value="resume"/></div>
+        </t:if>
+      </div>
+      <t:if t:test="${hasRoles}">
+        <div class="tutor-class-block">
+          <h2 class="tutor-class-title"><strong>${tutorDetailsTitle}.</strong> Class List.</h2>
+          <ul class="tutor-classes">
+            <t:loop t:source="currentVisibleTutorRoles" t:value="role">
+            <li class="tutor-class-item">
+              ${role.courseClass.uniqueIdentifier} <a href="/course/${role.courseClass.course.code}">${role.courseClass.course.name}</a>
+            </li>
+            </t:loop>
+          </ul>
+        </div>
+      </t:if>
+      <span t:type="ui/Attachments" entityIdentifier="literal:Contact" entityIdNum="${tutor.contact.id}"/>
+    </t:if>
+  </t:block>
+
+</t:container>
