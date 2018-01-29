@@ -57,16 +57,17 @@ class SolrCourseClassQueryWithTutorFilterTest extends ASolrTest {
 
         cCollege.newCourse("course5").newCourseClassWithSessionsAndTutor("currentTargetSite", targetTutor, -1, 1).build()
         cCollege.newCourse("course6").newCourseClassWithSessionsAndTutor("currentOtherTutor", otherTutor, -1, 1).build()
-        cCollege.newCourse("course7").newCourseClass("pastBothTutorsTargetFirst").withSessionAndTutor(-1, targetTutor).withSessionAndTutor(1, otherTutor).build()
-        cCollege.newCourse("course8").newCourseClass("pastBothTutorsOtherFirst").withSessionAndTutor(-1, otherTutor).withSessionAndTutor(1, targetTutor).build()
+        cCollege.newCourse("course7").newCourseClass("currentBothTutorsTargetFirst").withSessionAndTutor(-1, targetTutor).withSessionAndTutor(1, otherTutor).build()
+        cCollege.newCourse("course8").newCourseClass("currentBothTutorsOtherFirst").withSessionAndTutor(-1, otherTutor).withSessionAndTutor(1, targetTutor).build()
 
         cCollege.newCourse("course9").newCourseClassWithSessionsAndTutor("futureTargetSite", targetTutor, 5, 6).build()
         cCollege.newCourse("course10").newCourseClassWithSessionsAndTutor("futureOtherTutor", otherTutor, 5, 6).build()
-        cCollege.newCourse("course11").newCourseClass("pastBothTutorsTargetFirst").withSessionAndTutor(5, targetTutor).withSessionAndTutor(6, otherTutor).build()
-        cCollege.newCourse("course12").newCourseClass("pastBothTutorsOtherFirst").withSessionAndTutor(5, otherTutor).withSessionAndTutor(6, targetTutor).build()
+        cCollege.newCourse("course11").newCourseClass("futureBothTutorsTargetFirst").withSessionAndTutor(5, targetTutor).withSessionAndTutor(6, otherTutor).build()
+        cCollege.newCourse("course12").newCourseClass("futureBothTutorsOtherFirst").withSessionAndTutor(5, otherTutor).withSessionAndTutor(6, targetTutor).build()
 
         cCollege.newCourse("course13").withSelfPacedClassAndTutor("withTargetTutor", targetTutor).build()
-        cCollege.newCourse("course14").withSelfPacedClass("withoutTutor").build()
+        cCollege.newCourse("course14").withSelfPacedClassAndTutor("withBothTutors", targetTutor, otherTutor).build()
+        cCollege.newCourse("course15").withSelfPacedClass("withoutTutor").build()
 
         ReindexCoursesJob job = new ReindexCoursesJob(objectContext, solrClient)
         job.run()
@@ -77,25 +78,27 @@ class SolrCourseClassQueryWithTutorFilterTest extends ASolrTest {
         actualSCourses = solrClient.query("courses",
                 SolrQueryBuilder.valueOf(new SearchParams(s: "course*", tutorId: targetTutor.contact.id), collegeId, null, null).build())
                 .getBeans(SCourse.class)
-        assertEquals(7, actualSCourses.size())
+        assertEquals(8, actualSCourses.size())
         assertTrue(actualSCourses.first().name == "course5")
         assertTrue(actualSCourses.get(1).name == "course13")
         assertTrue(actualSCourses.get(2).name == "course9")
         assertTrue(actualSCourses.subList(3, 5).name.contains("course7"))
         assertTrue(actualSCourses.subList(3, 5).name.contains("course8"))
-        assertTrue(actualSCourses.subList(5, 7).name.contains("course11"))
-        assertTrue(actualSCourses.subList(5, 7).name.contains("course12"))
+        assertTrue(actualSCourses.get(5).name == "course14")
+        assertTrue(actualSCourses.subList(6, 8).name.contains("course11"))
+        assertTrue(actualSCourses.subList(6, 8).name.contains("course12"))
 
         actualSCourses = solrClient.query("courses",
                 SolrQueryBuilder.valueOf(new SearchParams(s: "course*", tutorId: otherTutor.id), collegeId, null, null).build())
                 .getBeans(SCourse.class)
-        assertEquals(6, actualSCourses.size())
+        assertEquals(7, actualSCourses.size())
         assertTrue(actualSCourses.first().name == "course6")
         assertTrue(actualSCourses.get(1).name == "course10")
         assertTrue(actualSCourses.subList(2, 4).name.contains("course7"))
         assertTrue(actualSCourses.subList(2, 4).name.contains("course8"))
-        assertTrue(actualSCourses.subList(4, 6).name.contains("course11"))
-        assertTrue(actualSCourses.subList(4, 6).name.contains("course12"))
+        assertTrue(actualSCourses.get(4).name == "course14")
+        assertTrue(actualSCourses.subList(5, 7).name.contains("course11"))
+        assertTrue(actualSCourses.subList(5, 7).name.contains("course12"))
     }
 
     @After

@@ -165,9 +165,9 @@ class CCourse {
         this
     }
 
-    CCourse withSelfPacedClassAndTutor(String code, Tutor tutor) {
+    CCourse withSelfPacedClassAndTutor(String code, Tutor... tutors) {
         CourseClass clazz = newSelfPacedClass(code).courseClass
-        CTutorRole.instance(objectContext, tutor, clazz)
+        tutors.each {t -> CTutorRole.instance(objectContext, t, clazz)}
         this
     }
 
