@@ -69,4 +69,15 @@ public abstract class ISHCommon {
     public <E extends Queueable> List<Document> getEntityImages(E entity) {
         return binaryDataService.getImages(entity);
     }
+
+    /**
+     * Support for old web templates. Templates should be adjusted, this field should be removed in next releases.
+     * @param entity
+     * @param <E>
+     * @return
+     */
+    @Deprecated
+    public <E extends Queueable> List<Document> getAttachments(E entity) {
+        return getEntityAttachments(entity);
+    }
 }
