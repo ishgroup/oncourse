@@ -71,7 +71,7 @@ public abstract class ISHCommon {
     }
 
     /**
-     * Support for old web templates. Templates should be adjusted, this field should be removed in next releases.
+     * Support for old web application. Templates that use getAttachments(E entity) should use getEntityAttachments(E entity)
      * @param entity
      * @param <E>
      * @return
