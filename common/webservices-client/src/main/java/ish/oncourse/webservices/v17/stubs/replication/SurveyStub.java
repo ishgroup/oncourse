@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="tutorScore" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="venueScore" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="enrolmentId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="publicComment" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+ *         &lt;element name="visibility" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="testimonial" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="netPromoterScore" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *       &lt;/sequence>
@@ -42,7 +42,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "tutorScore",
     "venueScore",
     "enrolmentId",
-    "publicComment",
+    "visibility",
     "testimonial",
     "netPromoterScore"
 })
@@ -69,9 +69,9 @@ public class SurveyStub
     @XmlSchemaType(name = "long")
     protected Long enrolmentId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
-    @XmlSchemaType(name = "boolean")
-    protected Boolean publicComment;
+    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlSchemaType(name = "int")
+    protected Integer visibility;
     @XmlElement(required = true)
     protected String testimonial;
     @XmlElement(required = true, type = String.class)
@@ -200,27 +200,27 @@ public class SurveyStub
     }
 
     /**
-     * Gets the value of the publicComment property.
+     * Gets the value of the visibility property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public Boolean isPublicComment() {
-        return publicComment;
+    public Integer getVisibility() {
+        return visibility;
     }
 
     /**
-     * Sets the value of the publicComment property.
+     * Sets the value of the visibility property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setPublicComment(Boolean value) {
-        this.publicComment = value;
+    public void setVisibility(Integer value) {
+        this.visibility = value;
     }
 
     /**

@@ -830,7 +830,7 @@
                             <xs:element name="tutorScore" type="xs:int" />
                             <xs:element name="venueScore" type="xs:int" />
                             <xs:element name="enrolmentId" type="xs:long" />
-                            <xs:element name="publicComment" type="xs:boolean"/>
+                            <xs:element name="visibility" type="xs:int"/>
                             <xs:element name="testimonial" type="xs:string"/>
                             <xs:element name="netPromoterScore" type="xs:int"/>
                         </xs:sequence>
