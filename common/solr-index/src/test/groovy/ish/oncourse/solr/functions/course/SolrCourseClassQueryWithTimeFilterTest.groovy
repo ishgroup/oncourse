@@ -50,18 +50,18 @@ class SolrCourseClassQueryWithTimeFilterTest extends ASolrTest {
         SolrClient solrClient = new EmbeddedSolrServer(h.getCore())
 
         //from 6 to 17 is daytime. All other hours is evening time
-        Date morning = createDate(7)
-        Date evening = createDate(18)
-        
-        cCollege.newCourse("course1").newCourseClassWithTimezonedSessions("morningCurrentTimezone", TIMEZONE_SYDNEY, morning).build()
-        cCollege.newCourse("course4").newCourseClassWithTimezonedSessions("morningDifferentTimezone",TIMEZONE_PERTH, evening).build() //date is 'evening', but will become daytime, cause 6pm will convert to 4pm UTC+8
+        cCollege.newCourse("course1").newCourseClassWithTimezonedSessions("morningCurrentTimezone", TIMEZONE_SYDNEY, createDate(7, 10)).build()
+        cCollege.newCourse("course2").newCourseClassWithTimezonedSessions("morningDifferentTimezone",TIMEZONE_PERTH, createDate(18, 10)).build() //date is 'evening', but will become daytime, cause 6pm will convert to 4pm UTC+8
 
-        cCollege.newCourse("course2").newCourseClassWithTimezonedSessions("eveningCurrentTimezone",TIMEZONE_SYDNEY, evening).build()
-        cCollege.newCourse("course3").newCourseClassWithTimezonedSessions("eveningDifferentTimezone",TIMEZONE_PERTH, morning).build() //date is 'morning', but will become evening, cause 7am will convert to 5am UTC+8
+        cCollege.newCourse("course3").newCourseClassWithTimezonedSessions("eveningCurrentTimezone",TIMEZONE_SYDNEY, createDate(18, 1)).build()
+        cCollege.newCourse("course4").newCourseClassWithTimezonedSessions("eveningDifferentTimezone",TIMEZONE_PERTH, createDate(7, 1)).build() //date is 'morning', but will become evening, cause 7am will convert to 5am UTC+8
         
+        cCollege.newCourse("course5").newCourseClassWithSessions("bothTimesPast", createDate(7, -5), createDate(18, -4)).build()
+        cCollege.newCourse("course6").newCourseClassWithSessions("bothTimesCurrent", createDate(7, -1), createDate(18, 1)).build()
+        cCollege.newCourse("course7").newCourseClassWithSessions("bothTimesfuture", createDate(7, 5), createDate(18, 6)).build()
         
-        cCollege.timeZone(TIMEZONE_SYDNEY).newCourse("course5").withSelfPacedClass("selfpacedCurrentTimezone").build()
-        cCollege.timeZone(TIMEZONE_PERTH).newCourse("course6").withSelfPacedClass("selfpacedDifferentTimezone").build()
+        cCollege.timeZone(TIMEZONE_SYDNEY).newCourse("course8").withSelfPacedClass("selfpacedCurrentTimezone").build()
+        cCollege.timeZone(TIMEZONE_PERTH).newCourse("course9").withSelfPacedClass("selfpacedDifferentTimezone").build()
 
         ReindexCoursesJob job = new ReindexCoursesJob(objectContext, solrClient)
         job.run()
@@ -72,23 +72,27 @@ class SolrCourseClassQueryWithTimeFilterTest extends ASolrTest {
         List<SCourse> actualSCourses = solrClient.query("courses",
                 SolrQueryBuilder.valueOf(new SearchParams(s: "course*", time: "daytime"), cCollege.college.id.toString(), null, null).build())
                 .getBeans(SCourse.class)
-        assertEquals(2, actualSCourses.size())
-        assertNotNull(actualSCourses.find {c -> c.name == "course1" })
-        assertNotNull(actualSCourses.find {c -> c.name == "course4" })
+        assertEquals(4, actualSCourses.size())
+        assertTrue(actualSCourses.first().name == "course1")
+        assertTrue(actualSCourses.get(1).name == "course2")
+        assertTrue(actualSCourses.get(2).name == "course6")
+        assertTrue(actualSCourses.last().name == "course7")
         
         actualSCourses = solrClient.query("courses",
                 SolrQueryBuilder.valueOf(new SearchParams(s: "course*", time: "evening"), cCollege.college.id.toString(), null, null).build())
                 .getBeans(SCourse.class)
-        assertEquals(2, actualSCourses.size())
-        assertNotNull(actualSCourses.find {c -> c.name == "course2" })
-        assertNotNull(actualSCourses.find {c -> c.name == "course3" })
+        assertEquals(4, actualSCourses.size())
+        assertTrue(actualSCourses.first().name == "course4")
+        assertTrue(actualSCourses.get(1).name == "course3")
+        assertTrue(actualSCourses.get(2).name == "course6")
+        assertTrue(actualSCourses.last().name == "course7")
     }
     
-    private static Date createDate(int hoursOfDay){
+    private static Date createDate(int hoursOfDay, int daysfromNow){
         Calendar date = Calendar.getInstance()
         date.set(Calendar.HOUR_OF_DAY,hoursOfDay)
         date.set(Calendar.MINUTE,01)
-        date.add(Calendar.DAY_OF_MONTH, 1)
+        date.add(Calendar.DAY_OF_MONTH, daysfromNow)
         date.time
     }
 
