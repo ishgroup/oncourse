@@ -40,7 +40,7 @@ public class PageRenderer implements IPageRenderer {
 		ComponentResourceSelector selector = new ComponentResourceSelector(Locale.getDefault());
 		CustomTemplateDefinition ctd = (CustomTemplateDefinition) request.getAttribute(TextileUtil.CUSTOM_TEMPLATE_DEFINITION);
 		if (ctd != null) {
-			selector.withAxis(CustomTemplateDefinition.class, ctd);
+			selector = selector.withAxis(CustomTemplateDefinition.class, ctd);
 		}
 		
 		Page page = pageLoader.loadPage(pageName, selector);
