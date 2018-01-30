@@ -22,7 +22,7 @@ class SearchService {
     
     final static  Logger logger = LoggerFactory.getLogger(SearchService.class)
 
-    SolrClient client
+    CloudSolrClient client
 
     @Inject
     SearchService() {
