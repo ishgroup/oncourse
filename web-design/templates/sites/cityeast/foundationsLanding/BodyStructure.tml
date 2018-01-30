@@ -1,0 +1,148 @@
+<section class="site-wrapper" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+  <section class="site-container">
+    <header class="masthead" id="header" itemscope="itemscope" itemtype="http://schema.org/WPHeader">
+      <div t:type="ui/bodyheader" />
+    </header><!-- //masthead -->
+
+    <div class="page-content">
+      <div class="container" id="container">
+        <nav class="nav-primary u-clearfix">
+          <a class="nav-menu-trigger js-menu-trigger">
+            <span class="menu-trigger-icon"></span>
+            <span class="menu-trigger-text">Menu</span>
+          </a>
+
+          <div class="main-menu-container main-menu-bp-sml" data-set="js-main-menu">
+            <ul class="main-menu js-main-menu">
+              <li><a href="/english-work-foundations">Home</a></li>
+              <li><a href="/foundations-partners">Partners</a></li>
+              <li><a href="/foundations-support-services">Support Services</a></li>
+              <li><a href="/foundations-locations">Location</a></li>
+              <li><a href="/foundations-faqs">FAQs</a></li>
+              <li><a href="foundations-contact">Contact Us</a></li>
+            </ul>
+          </div>
+
+          <ul class="contact-details">
+            <li class="contact-item contact-phone"><a href="tel:9387 7400">9387 7400</a></li>
+            <li class="contact-item"><a href="mailto:info@cityeastcc.com.au">info@cityeastcc.com.au</a></li>
+            <li class="contact-item"><a class="ico-facebook" href="https://www.facebook.com/pages/AMEP-SEE-City-East-Community-College/1442512529356595?fref=ts" target="_blank"><span class="u-visually-hidden">Follow us on Facebook</span></a></li>
+          </ul><!-- //contact-details -->
+
+          <div class="main-menu-bp-lrg" data-set="js-main-menu">
+            <!-- menu inserted appendAround(); -->
+          </div>
+        </nav><!-- nav-primary -->
+
+        <div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:header" />
+
+        <ul class="cards u-clearfix">
+          <li class="card-item-wrapper">
+            <a class="card-item u-clearfix card-item--work" href="/foundations-work">
+              <div class="card-img" style="background-image: url('/s/img/foundations/card-work.jpg');">
+                <span class="card-title">Work Skills</span>
+              </div>
+              <div class="card-desc">
+                Get the training you need today to undertake further study or to find the perfect job.
+              </div>
+            </a>
+          </li>
+          <li class="card-item-wrapper">
+            <a class="card-item u-clearfix card-item--english" href="/foundations-general-english">
+              <div class="card-img" style="background-image: url('/s/img/foundations/card-english.jpg');">
+                <span class="card-title">General English</span>
+              </div>
+              <div class="card-desc">
+                Build your reading, writing, listening and speaking skills with these short engaging and effective courses.
+              </div>
+            </a>
+          </li>
+          <li class="card-item-wrapper">
+            <a class="card-item u-clearfix card-item--amep" href="/foundations-business">
+              <div class="card-img" style="background-image: url('/s/img/foundations/card-amep.jpg');">
+                <span class="card-title">Business &amp; Computing</span>
+              </div>
+              <div class="card-desc">
+                Develop technical skills and business knowledge to boost your career options to the next level.
+              </div>
+            </a>
+          </li>
+          <li class="card-item-wrapper">
+            <a class="card-item u-clearfix card-item--study" href="/foundations-study">
+              <div class="card-img" style="background-image: url('/s/img/foundations/card-study.jpg');">
+                <span class="card-title">Mentor Program</span>
+              </div>
+              <div class="card-desc">
+                We understand how difficult it can be for new migrants to find satisfying jobs in their profession. Benefit from the advice and support or a professional person to guide your career.
+              </div>
+            </a>
+          </li>
+        </ul><!-- //cards -->
+
+        <section class="content-block">
+          <div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:content" />
+        </section><!-- //content-block -->
+      </div>
+    </div><!-- page-content -->
+
+    <section class="course-index">
+      <div class="container">
+        <h3 class="index-title">Course Index</h3>
+        <ul class="course-list u-clearfix">
+          <li class="course-category course-category--amep col-1-4">
+            <h5 class="course-category-title">Courses</h5>
+            <ul>
+              <li><a href="/foundations-amep">Morning Classes</a></li>
+              <li><a href="/foundations-amep">Evening Classes</a></li>
+              <li><a href="/foundations-amep">English Skills for Work</a></li>
+              <li><a href="/foundations-amep">English Skills for Study</a></li>
+              <li><a href="/foundations-amep">Employment pathway courses: Office skills</a></li>
+              <li><a href="/foundations-amep">Bilingual Mandarin Class at Green Square</a></li>
+              <li><a href="/foundations-amep">Maroubra / Green Square Classes</a></li>
+              <li><a href="/foundations-amep">Distance Learning</a></li>
+              <li><a href="/foundations-amep">Home Tuto</a></li>
+            </ul>
+          </li>
+          <li class="course-category course-category--work col-1-4">
+            <h5 class="course-category-title">Work Courses</h5>
+            <ul>
+              <li><a href="/foundations-work">Employment pathway courses Office Skills</a></li>
+              <li><a href="/foundations-work">Linked in Workshop for Skilled Migrants</a></li>
+              <li><a href="/foundations-work">Skills for Education and Employment (SEE)</a></li>
+              <li><a href="/foundations-work">Computer Skills</a></li>
+              <li><a href="/foundations-work">English Skills for Work</a></li>
+            </ul>
+          </li>
+          <li class="course-category course-category--study col-1-4">
+            <h5 class="course-category-title">Study Courses</h5>
+            <ul>
+              <li><a href="/foundations-study">English Skills for Study</a></li>
+              <li><a href="/foundations-study">IELTS Preparation</a></li>
+              <li><a href="/foundations-study">Writing Skills</a></li>
+            </ul>
+          </li>
+          <li class="course-category course-category--english col-1-4">
+            <h5 class="course-category-title">General English Courses</h5>
+            <ul>
+              <li><a href="/foundations-general-english">Saturday Classes</a></li>
+              <li><a href="/foundations-general-english">Evening program</a></li>
+              <li><a href="/foundations-general-english">English Conversation and Pronunciation</a></li>
+              <li><a href="/foundations-general-english">Advanced English</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </section><!-- //course-index -->
+    <footer class="site-footer" id="footer" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
+      <div class="container u-clearfix">
+        <small class="site-copyright">&#169; City East Community College</small>
+        <ul class="ft-contact">
+          <li>Ph 9387 7400</li>
+          <li>E <a href="mailto:info@cityeastcc.com.au">info@cityeastcc.com.au</a></li>
+        </ul>
+      </div>
+    </footer>
+  </section>
+
+  <div data-cid="modal" class="reactjs-component"></div>
+</section>

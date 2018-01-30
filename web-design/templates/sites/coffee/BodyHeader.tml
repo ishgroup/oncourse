@@ -1,0 +1,22 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<aside class="header-toolbar" id="headerToolbar">
+		<span t:type="ui/PromoCodesView" />
+		<t:if t:test="paymentGatewayEnabled">
+			<span t:type="ui/ShortList" />
+		</t:if>
+		<a class="nav-toggle js-nav-toggle pull-right" href="#">
+			<div class="">
+				<span class="toggle-title pull-right">
+					<i class="sicon toggle-icon"></i>Menu
+				</span>
+			</div>
+		</a>
+		<div class="contact">
+			<div id="google_translate_element"></div>
+		</div>
+		<a href="#" class="header-search-toggle pull-right">
+			<i class="sicon search-icon"></i>
+		</a>
+		<span t:type="ui/CourseSearchForm" />
+	</aside>
+</t:container>

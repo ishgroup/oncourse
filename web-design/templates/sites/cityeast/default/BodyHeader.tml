@@ -1,0 +1,24 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<a href="${homeLink}" class="brand">${collegeName}</a>
+	<aside class="pull-right" id="headerToolbar">
+    <div class="header-contact">
+      <div class="show-on-desktop">
+        <span t:type="ui/PromoCodesView" />
+        <!--<t:if t:test="paymentGatewayEnabled">-->
+        <span t:type="ui/ShortList" />
+        <!--</t:if>-->
+      </div>
+
+      <ul class="social-links">
+        <li class="facebook"><a href="https://www.facebook.com/cityeastcc">Facebook</a></li>
+      </ul>
+      <p class="contact-info">call now  <strong>9387 7400</strong></p>
+    </div>
+		<span t:type="ui/CourseSearchForm" />
+		
+	</aside>
+  <script>
+    var options={ "publisher": "a772990e-a76a-4752-b756-b66e87c1a3e9", "position": "left", "ad": { "visible": false, "openDelay": 5, "closeDelay": 0}, "chicklets": { "items": ["facebook", "twitter", "linkedin", "email", "sharethis"]}};
+    var st_hover_widget = new sharethis.widgets.hoverbuttons(options);
+  </script>
+</t:container>

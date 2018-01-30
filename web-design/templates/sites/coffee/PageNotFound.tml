@@ -1,0 +1,4 @@
+<html t:type="ui/internal/pagestructure" bodyId="literal:PageNotFound" bodyClass="literal:internal-page"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<p>Please click <a href="/"><b>HERE</b></a> to see <b>OUR COURSES</b>.</p>
+</html>

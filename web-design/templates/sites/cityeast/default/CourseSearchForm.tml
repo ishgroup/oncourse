@@ -1,0 +1,16 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<div class="noprint search-box" id="search_box">
+		<form action="/courses" method="get" id="search" name="search" class="navbar-search pull-right">
+			<i class="icon-find"></i>
+			<label for="s" class="hide">Search:</label>
+			<input type="text" id="s" class="quicksearch" name="s" size="15" autocomplete="off" placeholder="Find a course" />
+			<a class="show-advanced-search">
+				<span>Options <span class="caret"></span></span>
+			</a>
+		</form>
+		<span t:type="ui/SearchInputs" />
+		<div class="quicksearch-wrap-container">
+			<div class="quicksearch-wrap" />
+		</div>
+	</div>
+</t:container>

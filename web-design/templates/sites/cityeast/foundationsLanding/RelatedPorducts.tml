@@ -1,0 +1,9 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+    <div class="relatedCourses">
+        <ul>
+            <t:loop source="products" value="product">
+                <li><a href="/product/${product.sku}" rel="nofollow" target="_blank">${product.name}</a></li>
+            </t:loop>
+        </ul>
+    </div>
+</t:container>
