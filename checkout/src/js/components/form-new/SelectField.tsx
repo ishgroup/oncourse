@@ -38,7 +38,10 @@ class SelectField extends React.Component<any, any> {
 
   private loadOptions = (input: string): Promise<any> => {
     const {loadOptions} = this.props;
-    if (loadOptions) {
+    const props: any = this.toProps();
+    const showValuesOnInit: boolean = !props.searchable || props.showOnFocus;
+
+    if (loadOptions && showValuesOnInit) {
       return loadOptions(input).then((data: Item[]) => {
         return {options: data.map(item => (item))};
       });
