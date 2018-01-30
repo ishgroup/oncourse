@@ -18,7 +18,8 @@ class SearchService {
 
     private static final String SOLR_SYNTAX_CHARACTERS_STRING = '[\\!\\^\\(\\)\\{\\}\\[\\]\\:\"\\?\\+\\~\\*\\|\\&\\;\\\\]'
 
-
+    private static final int ZK_TIMEOUT = 1000
+    
     final static  Logger logger = LoggerFactory.getLogger(SearchService.class)
 
     SolrClient client
@@ -31,6 +32,9 @@ class SearchService {
             throw new IllegalStateException('Zookeeper host property undefined')
         }
         client = new CloudSolrClient.Builder().withZkHost(zkHost).build()
+        
+        client.setZkClientTimeout(ZK_TIMEOUT)
+        client.setZkConnectTimeout(ZK_TIMEOUT)
     }
 
 
