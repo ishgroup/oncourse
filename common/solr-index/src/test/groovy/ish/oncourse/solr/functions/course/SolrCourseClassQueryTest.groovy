@@ -59,8 +59,8 @@ class SolrCourseClassQueryTest extends ASolrTest {
         List<SCourse> actualSClasses = solrClient.query("courses",
                 SolrQueryBuilder.valueOf(new SearchParams(s: "course"), cCollege.college.id.toString(), null, null).build())
                 .getBeans(SCourse.class)
-        assertEquals(6, actualSClasses.size())
-
+        assertEquals(5, actualSClasses.size())
+        assertNull(actualSClasses.find {sCourse -> sCourse.name == "course6"})
         solrClient.close()
     }
 

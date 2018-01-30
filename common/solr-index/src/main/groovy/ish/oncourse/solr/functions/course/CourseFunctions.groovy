@@ -27,7 +27,7 @@ class CourseFunctions {
 
 
     public static final Closure<ResultIterator<Course>> Courses = { ObjectContext context ->
-        query(Course).iterator(context)
+        query(Course).where(Course.IS_WEB_VISIBLE.isTrue()).iterator(context)
     }
 
 
