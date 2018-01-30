@@ -1,5 +1,6 @@
 import * as React from "react";
 import classnames from "classnames";
+import debounce from "debounce-promise";
 
 import Select from "react-select";
 import "react-select/dist/react-select.css";
@@ -35,16 +36,27 @@ interface Props {
 
 class SelectField extends React.Component<any, any> {
 
-  private loadOptions = (input: string, showValuesOnInit: boolean): Promise<any> => {
+  private loadOptions = (input: string): Promise<any> => {
     const {loadOptions} = this.props;
-    if (loadOptions && (input.length > 0 || showValuesOnInit)) {
+    if (loadOptions) {
       return loadOptions(input).then((data: Item[]) => {
         return {options: data.map(item => (item))};
       });
     } else {
       return Promise.resolve([]);
     }
-  }
+  };
+
+  private loadOptionsDebounce = debounce((input: string): Promise<any> => {
+    const {loadOptions} = this.props;
+    if (loadOptions) {
+      return loadOptions(input).then((data: Item[]) => {
+        return {options: data.map(item => (item))};
+      });
+    } else {
+      return Promise.resolve([]);
+    }
+  }, 400);
 
   private onChange = res => {
     const input: WrappedFieldInputProps = inputFrom(this.props);
@@ -52,7 +64,7 @@ class SelectField extends React.Component<any, any> {
     const props: Props = this.toProps();
     props.onBlurSelect && props.onBlurSelect(props.input.name);
     input.onChange(this.props.returnType === 'object' ? res : res.value);
-  }
+  };
 
   private onBlur = e => {
     const val = e.target.value;
@@ -62,7 +74,7 @@ class SelectField extends React.Component<any, any> {
     if (val && props.newOptionEnable) {
       this.onChange({key: val, value: val});
     }
-  }
+  };
 
   toProps = (): Props => {
     const input: WrappedFieldInputProps = inputFrom(this.props);
@@ -80,7 +92,7 @@ class SelectField extends React.Component<any, any> {
       newOptionEnable: this.props.newOptionEnable || false,
       onBlurSelect: this.props.onBlurSelect ? this.props.onBlurSelect : undefined,
     };
-  }
+  };
 
   render() {
     const props: any = this.toProps();
@@ -112,7 +124,7 @@ class SelectField extends React.Component<any, any> {
             searchable={props.searchable}
             clearable={false}
             value={this.props.returnType === 'object' ? props.input.value : props.input.value && props.input}
-            loadOptions={input => this.loadOptions(input, showValuesOnInit)}
+            loadOptions={input => input.length > 0 && !showValuesOnInit ? this.loadOptionsDebounce(input) : this.loadOptions(input)}
             options={this.props.options}
             onBlur={this.onBlur}
             onChange={this.onChange}
