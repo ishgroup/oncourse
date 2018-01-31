@@ -13,6 +13,8 @@
     <WebSite id="1" collegeId="1" name="Sydney Community College" siteKey="mammoth" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
 
     <Preference id="1" collegeId="1" name="payment.gateway.type" value_string="PAYMENT_EXPRESS" />
+    <Preference id="2" collegeId="1" name="enrolment.creditCard..payment.enabled" value_string="true" />
+
 
     <Student id="1002" collegeId="1" angelId="1002"
              created="2011-09-12 00:51:00.0" modified="2011-09-12 00:51:00.0"
