@@ -43,6 +43,7 @@ class SolrCourseClassQueryWithDayFilterTest extends ASolrTest {
     void testSortCoursesWithDayFilter() {
         SolrClient solrClient = new EmbeddedSolrServer(h.getCore())
         
+        String collegeId = cCollege.college.id
         Date mon = createDate(Calendar.MONDAY)
         Date tue = createDate(Calendar.TUESDAY)
         Date wed = createDate(Calendar.WEDNESDAY)
@@ -54,11 +55,16 @@ class SolrCourseClassQueryWithDayFilterTest extends ASolrTest {
         cCollege.newCourse("course1").newCourseClassWithSessions("workdayClass", mon, tue, wed, thu, fri).build()
         cCollege.newCourse("course2").newCourseClassWithSessions("weekendClass", sat, sun).build()
         cCollege.newCourse("course3").newCourseClassWithSessions("wholeWeekClass", mon, tue, wed, thu, fri, sat, sun).build()
-        cCollege.newCourse("course4").newCourseClassWithSessions("saturday", sat).build()
+        cCollege.newCourse("course4").newCourseClassWithSessions("saturdayClass", sat).build()
         cCollege.newCourse("course5").newCourseClassWithSessions("mondayClass", mon).build()
         
         cCollege.newCourse("course6").newCourseClassWithTimezonedSessions("fridayDifferentTimeZoneClass", "Australia/Perth", sat).build() //saturday 1am after timeZone recalculate will be friday 11pm
         cCollege.newCourse("course7").newCourseClassWithTimezonedSessions("sundayDifferentTimeZoneClass", "Australia/Perth", mon).build() //monday 1am after timeZone recalculate it will be sunday 11pm
+
+        cCollege.newCourse("course8").newCourseClassWithSessions("pastTuesdayClass", createDate(Calendar.TUESDAY, -14), createDate(Calendar.TUESDAY, -7)).build()
+        cCollege.newCourse("course9").newCourseClassWithSessions("currentTuesdayClass", createDate(Calendar.TUESDAY, -7), createDate(Calendar.TUESDAY, 7)).build()
+        cCollege.newCourse("course10").newCourseClassWithSessions("futureTuesdayClass", createDate(Calendar.TUESDAY, 7), createDate(Calendar.TUESDAY, 14)).build()
+        cCollege.newCourse("course11").newCourseClassWithSessions("currentNotOnlyTuesdayClass", createDate(Calendar.TUESDAY, -7), createDate(Calendar.TUESDAY, 7), thu).build()
 
         ReindexCoursesJob job = new ReindexCoursesJob(objectContext, solrClient)
         job.run()
@@ -67,46 +73,56 @@ class SolrCourseClassQueryWithDayFilterTest extends ASolrTest {
         }
 
         List<SCourse> actualSCourses = solrClient.query("courses",
-                SolrQueryBuilder.valueOf(new SearchParams(s: "course*", day: DayOption.weekend), cCollege.college.id.toString(), null, null).build())
+                SolrQueryBuilder.valueOf(new SearchParams(s: "course*", day: DayOption.weekend), collegeId, null, null).build())
                 .getBeans(SCourse.class)
         assertEquals(4, actualSCourses.size())
-        assertNotNull(actualSCourses.find {c -> c.name == "course2" })
-        assertNotNull(actualSCourses.find {c -> c.name == "course3" })
-        assertNotNull(actualSCourses.find {c -> c.name == "course4" })
-        assertNotNull(actualSCourses.find {c -> c.name == "course7" })
+        assertTrue(actualSCourses.first().name == "course2")
+        assertTrue(actualSCourses.get(1).name == "course7")
+        assertTrue(actualSCourses.get(2).name == "course4")
+        assertTrue(actualSCourses.last().name == "course3")
 
         actualSCourses = solrClient.query("courses",
-                SolrQueryBuilder.valueOf(new SearchParams(s: "course*", day: DayOption.weekday), cCollege.college.id.toString(), null, null).build())
+                SolrQueryBuilder.valueOf(new SearchParams(s: "course*", day: DayOption.weekday), collegeId, null, null).build())
                 .getBeans(SCourse.class)
-        assertEquals(4, actualSCourses.size())
-        assertNotNull(actualSCourses.find {c -> c.name == "course1" })
-        assertNotNull(actualSCourses.find {c -> c.name == "course3" })
-        assertNotNull(actualSCourses.find {c -> c.name == "course5" })
-        assertNotNull(actualSCourses.find {c -> c.name == "course6" })
+        assertEquals(7, actualSCourses.size())
+        assertTrue(actualSCourses.first().name == "course1")
+        assertTrue(actualSCourses.get(1).name == "course11")
+        assertTrue(actualSCourses.get(2).name == "course3")
+        assertTrue(actualSCourses.get(3).name == "course9")
+        assertTrue(actualSCourses.get(4).name == "course5")
+        assertTrue(actualSCourses.get(5).name == "course10")
+        assertTrue(actualSCourses.last().name == "course6")
 
         actualSCourses = solrClient.query("courses",
-                SolrQueryBuilder.valueOf(new SearchParams(s: "course*", day: DayOption.sat), cCollege.college.id.toString(), null, null).build())
-                .getBeans(SCourse.class)
-        assertEquals(3, actualSCourses.size())
-        assertNotNull(actualSCourses.find {c -> c.name == "course2" })
-        assertNotNull(actualSCourses.find {c -> c.name == "course3" })
-        assertNotNull(actualSCourses.find {c -> c.name == "course4" })
-        assertNull(actualSCourses.find {c -> c.name == "course6" })
-
-        actualSCourses = solrClient.query("courses",
-                SolrQueryBuilder.valueOf(new SearchParams(s: "course*", day: DayOption.mon), cCollege.college.id.toString(), null, null).build())
+                SolrQueryBuilder.valueOf(new SearchParams(s: "course*", day: DayOption.sat), collegeId, null, null).build())
                 .getBeans(SCourse.class)
         assertEquals(3, actualSCourses.size())
-        assertNotNull(actualSCourses.find {c -> c.name == "course1" })
-        assertNotNull(actualSCourses.find {c -> c.name == "course3" })
-        assertNotNull(actualSCourses.find {c -> c.name == "course5" })
-        assertNull(actualSCourses.find {c -> c.name == "course7" })
-        
+        assertTrue(actualSCourses.first().name == "course4")
+        assertTrue(actualSCourses.get(1).name == "course2")
+        assertTrue(actualSCourses.last().name == "course3")
+
+        actualSCourses = solrClient.query("courses",
+                SolrQueryBuilder.valueOf(new SearchParams(s: "course*", day: DayOption.mon), collegeId, null, null).build())
+                .getBeans(SCourse.class)
+        assertEquals(3, actualSCourses.size())
+        assertTrue(actualSCourses.first().name == "course5")
+        assertTrue(actualSCourses.get(1).name == "course1")
+        assertTrue(actualSCourses.last().name == "course3")
+
+        actualSCourses = solrClient.query("courses",
+                SolrQueryBuilder.valueOf(new SearchParams(s: "course*", day: DayOption.tues), collegeId, null, null).build())
+                .getBeans(SCourse.class)
+        assertEquals(5, actualSCourses.size())
+        assertTrue(actualSCourses.first().name == "course9")
+        assertTrue(actualSCourses.get(1).name == "course10")
+        assertTrue(actualSCourses.get(2).name == "course11")
+        assertTrue(actualSCourses.get(3).name == "course1")
+        assertTrue(actualSCourses.last().name == "course3")
     }
 
-    private static Date createDate(int dayOfWeek){
+    private static Date createDate(int dayOfWeek, int daysFromNow = 7){
         Calendar date = Calendar.getInstance()
-        date.add(Calendar.DAY_OF_MONTH, 7)
+        date.add(Calendar.DAY_OF_MONTH, daysFromNow)
         date.set(Calendar.DAY_OF_WEEK, dayOfWeek)
         date.set(Calendar.HOUR_OF_DAY, 1)
         date.time
