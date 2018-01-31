@@ -1,0 +1,13 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<!-- <hgroup class="header-hgroup"> -->
+		<!-- <h2 class="site-logo" id="siteLogo"> -->
+			<a class="site-logo" id="siteLogo" href="/">${collegeName}</a>
+		<!-- </h2> -->
+		<h1 class="site-title" id="siteTitle">
+			<a href="${homeLink}">${collegeName}</a>
+		</h1>
+		<nav class="nav-global">
+			<div t:type="ui/globalnavi" />
+		</nav>
+	<!-- </hgroup> -->
+</t:container>

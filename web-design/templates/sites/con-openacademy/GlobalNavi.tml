@@ -1,0 +1,13 @@
+<!--
+	Template: GlobalNavi.tml
+	Purpose: Site specific header content. Used in BodyHeader.tml.
+-->
+
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<!-- use the "active" class to define the currently active item (highlighted text and nav indicator) -->
+	<ul id="nav-global">
+		<li class="active"><a href="http://sydney.edu.au/music" target="_blank">Sydney Conservatorium of Music</a></li>
+		<li><a href="http://sydney.edu.au/music" target="_blank">Sydney Conservatorium of Music</a></li>
+		<li><a href="http://www.dec.nsw.gov.au" target="_blank">Dept of Education and Communities</a></li>
+	</ul>
+</t:container>

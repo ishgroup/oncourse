@@ -1,0 +1,48 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<div class="clearfix footer-container" itemscope="itemscope" itemtype="http://schema.org/Organization" itemprop="provider">
+		<nav class="footer-nav">
+			<ul>
+				<li><a href="/page/22" title="Forms">forms</a></li>
+				<li><a href="https://www.skillsoncourse.com.au/" title="Login">login</a></li>
+				<li><a href="/page/8" title="Terms and Conditions">terms &amp; conditions</a></li>
+				<li><a href="/page/4" title="Praesent dapibus, neque id cursus faucibus">contact</a></li>
+			</ul>
+		</nav>
+
+		<p class="footer-copyright"> © 2016 The University of Sydney.<br />
+		ABN 15 211 513 464   CRICOS Number 00026A  Phone +61 2 9351 2222<br />
+		Authorised by Dean, <span itemprop="name">Sydney Conservatorium of Music</span>.</p>
+
+		<!-- <div class="footer-info">
+		<div>?? 2002-${year} The University of Sydney. Last Updated 13 July 2011 </div>
+		<div><strong>ABN</strong> 15 211 513 464 <strong>CRICOS Number</strong> 00026A <strong>Phone</strong> +61 2 9351 2222</div>
+		<div><strong>Authorised by</strong> Dean, Sydney Conservatorium of Music.</div>
+			<ul id="footer_links">
+				<li><a href="http://www.usyd.edu.au/contact.shtml">Contact the University</a></li>
+				<li><a href="http://www.sydney.edu.au/disclaimer.shtml">Disclaimer</a></li>
+				<li><a href="http://www.sydney.edu.au/privacy.shtml">Privacy</a></li>
+				<li><a href="http://www.usyd.edu.au/accessibility.shtml">Accessiblity</a></li>
+			</ul>
+		</div>
+
+		<div class="footer-logo">
+			<div id="sitemap">
+				<h4>Sitemap</h4>
+				<ul>
+					<li><a href="http://sydney.edu.au/music/FS/index.shtml">Future Students</a></li>
+					<li><a href="http://sydney.edu.au/music/CS/courseinfo/index.shtml">Current Students</a></li>
+					<li><a href="http://sydney.edu.au/music/international/index.shtml">International</a></li>
+					<li><a href="http://www.usyd.edu.au/news/music/783.html">What's On</a></li>
+					<li><a href="http://sydney.edu.au/music/openacademy/">Open Academy</a></li>
+					<li><a href="http://sydney.edu.au/music/alumni/index.shtml">Alumni</a></li>
+					<li><a href="http://sydney.edu.au/music/news_events/">News &amp; Video</a></li>
+					<li><a href="http://www.usyd.edu.au/news/music/783.html?eventcategoryid=102">Conferences</a></li>
+				</ul>
+			</div>
+			<a href="http://www.ish.com.au/oncourse" class="popup">
+			<img src="/s/img/poweredby.png" width="102" height="9" alt="powered by ish onCourse"/>
+			</a>
+		</div> -->
+	</div>
+
+</t:container>

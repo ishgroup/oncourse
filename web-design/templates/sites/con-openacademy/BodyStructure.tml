@@ -1,0 +1,48 @@
+<section class="site-wrapper" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<div class="stripe-extra-large"></div>
+	<section class="site-container" id="container">
+		<header class="site-header" id="header" itemscope="itemscope" itemtype="http://schema.org/WPHeader">
+			<div t:type="ui/bodyheader" />
+			<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:header" />
+		</header>
+		<nav class="site-nav" id="nav">
+			<div class="responsive nav-toggler">
+				<span class="glyph icon-menu-macquarie"></span>
+				<span>Menu</span>
+			</div>
+			<div t:type="ui/menu" rootMenu="rootMenu" />
+		</nav>
+		<aside class="header-toolbar site-nav-aside" id="headerToolbar">
+			<!-- <t:if t:test="paymentGatewayEnabled"> -->
+			<div class="courses-cart">
+				<span t:type="ui/ShortList" />
+			</div>
+			<!-- </t:if> -->
+			<span t:type="ui/CourseSearchForm" />
+			<!-- <span t:type="ui/PromoCodesView" /> -->
+		</aside>
+		<div class="clearer"><!-- v --></div>
+		<section class="content-container" id="contentContainer">
+			<aside class="sidebar-left" id="sidebarLeft">
+				<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:left" />
+			</aside>
+			<article class="content" id="content">
+				<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:content" />
+				<t:body />
+			</article>
+			<aside class="sidebar-right" id="sidebarRight" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
+				<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:right" />
+			</aside>
+		</section>
+		<footer class="site-footer" id="footer" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
+			<div t:type="ui/bodyfooter" />
+			<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:footer" />
+		</footer>
+	</section>
+	<div id="overlay" style="display: none; height: 500px" />
+	<div id="timeline-wrap" style="visibility: hidden;">
+		<div id="timeline" />
+	</div>
+
+	<div data-cid="modal" class="reactjs-component"></div>
+</section>
