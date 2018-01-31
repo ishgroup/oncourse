@@ -13,6 +13,7 @@ export class PreferenceApiMock extends PreferenceApi {
   getPreferences(): Promise<Preferences> {
     return this.config.createResponse({
       corporatePassEnabled: true,
+      creditCardEnabled: true,
       successLink: '/courses',
       refundPolicyUrl: '/courses',
     });

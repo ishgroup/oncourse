@@ -7,6 +7,11 @@ export class Preferences {
   corporatePassEnabled?: boolean;
 
   /**
+   * is credit card enabled preference
+   */
+  creditCardEnabled?: boolean;
+
+  /**
    * After payment successful redirect user to URL
    */
   successLink?: string;
@@ -26,4 +31,3 @@ export class Preferences {
    */
   googleTagmanagerAccount?: string;
 }
-

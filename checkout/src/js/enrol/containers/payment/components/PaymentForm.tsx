@@ -40,6 +40,7 @@ interface Props extends FormProps<DataShape, any, any> {
   onChangeTab?: (tab) => void;
   onUnmountPassComponent?: () => void;
   corporatePassAvailable?: boolean;
+  creditCardAvailable?: boolean;
   conditions?: {
     refundPolicyUrl?: string,
     featureEnrolmentDisclosure?: string,
@@ -49,6 +50,17 @@ interface Props extends FormProps<DataShape, any, any> {
 export const NAME = "PaymentForm";
 
 class PaymentForm extends React.Component<Props, any> {
+
+  componentDidMount() {
+    const {onChangeTab} = this.props;
+    const validCurrentTab = this.getValidTab();
+    onChangeTab(validCurrentTab);
+  }
+
+  getValidTab = () => {
+    const {currentTab, creditCardAvailable} = this.props;
+    return currentTab === Tabs.creditCard && creditCardAvailable ? Tabs.creditCard : Tabs.corporatePass;
+  }
 
   paymentTabOnClick = e => {
     e.preventDefault();
@@ -65,7 +77,7 @@ class PaymentForm extends React.Component<Props, any> {
     const {
       handleSubmit, contacts, amount, invalid, pristine, submitting, onSubmitPass, corporatePass, corporatePassError,
       onSetPayer, payerId, onAddPayer, onAddCompany, voucherPayerEnabled, currentTab, corporatePassAvailable, fetching,
-      onUnmountPassComponent, conditions,
+      onUnmountPassComponent, conditions, creditCardAvailable,
     } = this.props;
 
     const disabled = (pristine || submitting);
@@ -79,30 +91,31 @@ class PaymentForm extends React.Component<Props, any> {
               paymentTabOnClick={this.paymentTabOnClick}
               currentTab={currentTab}
               corporatePassAvailable={corporatePassAvailable}
+              creditCardAvailable={creditCardAvailable}
             />
 
             <div className="tab-content">
 
-              {currentTab === Tabs.creditCard &&
-              <CreditCardComp
-                amount={amount}
-                contacts={contacts}
-                payerId={payerId}
-                onSetPayer={onSetPayer}
-                onAddPayer={onAddPayer}
-                onAddCompany={onAddCompany}
-                voucherPayerEnabled={voucherPayerEnabled}
-              />
+              {currentTab === Tabs.creditCard && creditCardAvailable &&
+                <CreditCardComp
+                  amount={amount}
+                  contacts={contacts}
+                  payerId={payerId}
+                  onSetPayer={onSetPayer}
+                  onAddPayer={onAddPayer}
+                  onAddCompany={onAddCompany}
+                  voucherPayerEnabled={voucherPayerEnabled}
+                />
               }
 
-              {currentTab === Tabs.corporatePass &&
-              <CorporatePassComp
-                onSubmitPass={onSubmitPass}
-                corporatePass={corporatePass}
-                onUnmount={onUnmountPassComponent}
-                corporatePassError={corporatePassError}
-                fetching={fetching}
-              />
+              {currentTab === Tabs.corporatePass && corporatePassAvailable &&
+                <CorporatePassComp
+                  onSubmitPass={onSubmitPass}
+                  corporatePass={corporatePass}
+                  onUnmount={onUnmountPassComponent}
+                  corporatePassError={corporatePassError}
+                  fetching={fetching}
+                />
               }
 
             </div>
@@ -128,17 +141,20 @@ class PaymentForm extends React.Component<Props, any> {
 }
 
 const PaymentFormNav = props => {
-  const {paymentTabOnClick, currentTab, corporatePassAvailable} = props;
+  const {paymentTabOnClick, currentTab, corporatePassAvailable, creditCardAvailable} = props;
 
   return (
     <ul className="nav">
-      <li className={classnames("first", {active: currentTab === Tabs.creditCard})}>
-        <a href={`#${Tabs.creditCard}`} onClick={paymentTabOnClick.bind(this)}>Credit card</a>
-      </li>
+      {creditCardAvailable &&
+        <li className={classnames("first", {active: currentTab === Tabs.creditCard})}>
+          <a href={`#${Tabs.creditCard}`} onClick={paymentTabOnClick.bind(this)}>Credit card</a>
+        </li>
+      }
+
       {corporatePassAvailable &&
-      <li className={classnames({active: currentTab === Tabs.corporatePass})}>
-        <a href={`#${Tabs.corporatePass}`} onClick={paymentTabOnClick.bind(this)}>CorporatePass</a>
-      </li>
+        <li className={classnames({active: currentTab === Tabs.corporatePass})}>
+          <a href={`#${Tabs.corporatePass}`} onClick={paymentTabOnClick.bind(this)}>CorporatePass</a>
+        </li>
       }
     </ul>
   );
@@ -237,6 +253,7 @@ const mapStateToProps = (state: IshState) => {
     currentTab: state.checkout.payment.currentTab,
     fetching: state.checkout.payment.fetching,
     corporatePassAvailable: state.checkout.payment.corporateTabAvailable,
+    creditCardAvailable: state.preferences.hasOwnProperty('creditCardEnabled') ? state.preferences.creditCardEnabled : true,
     conditions: {
       refundPolicyUrl: state.config.termsAndConditions,
       featureEnrolmentDisclosure: state.config.featureEnrolmentDisclosure,
