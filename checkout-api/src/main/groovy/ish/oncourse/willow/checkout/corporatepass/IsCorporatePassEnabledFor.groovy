@@ -63,6 +63,7 @@ class IsCorporatePassEnabledFor {
                     .where(CorporatePass.VALID_PRODUCTS.outer().dot(Product.SKU).isNull())
                     .and(CorporatePass.VALID_CLASSES.outer().dot(CourseClass.CODE).isNull()))
                     .and(CorporatePass.EXPIRY_DATE.gt(new Date()).orExp(CorporatePass.EXPIRY_DATE.isNull()))
+                    .and(CorporatePass.COLLEGE.eq(college))
                     .select(context)
 
             if (!allProductsClassesPass.empty) {
@@ -86,14 +87,18 @@ class IsCorporatePassEnabledFor {
     
     private List<CorporatePass> getPassesFor(Property property, List qualifier) {
         return ObjectSelect.query(CorporatePass)
-                .where(property.in(qualifier)).and(CorporatePass.EXPIRY_DATE.gt(new Date()).orExp(CorporatePass.EXPIRY_DATE.isNull()))
+                .where(property.in(qualifier))
+                .and(CorporatePass.EXPIRY_DATE.gt(new Date()).orExp(CorporatePass.EXPIRY_DATE.isNull()))
+                .and(CorporatePass.COLLEGE.eq(college))
                 .prefetch(property.joint())
                 .select(context)
     }
 
     private boolean hasUnlimitedPassesFor(Property property) {
         return !ObjectSelect.query(CorporatePass)
-                .where(property.isNull()).and(CorporatePass.EXPIRY_DATE.gt(new Date()).orExp(CorporatePass.EXPIRY_DATE.isNull()))
+                .where(property.isNull())
+                .and(CorporatePass.EXPIRY_DATE.gt(new Date()).orExp(CorporatePass.EXPIRY_DATE.isNull()))
+                .and(CorporatePass.COLLEGE.eq(college))
                 .select(context).empty
     }
     
