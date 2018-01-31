@@ -768,6 +768,9 @@ definitions:
       corporatePassEnabled:
         type: boolean
         description: is corporate pass enabled preference
+      creditCardEnabled:
+        type: boolean
+        description: is credit card enabled preference
       successLink:
         type: string
         description: After payment successful redirect user to URL
