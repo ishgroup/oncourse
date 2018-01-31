@@ -10,6 +10,9 @@ import ish.oncourse.model.Course
 import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Product
 import ish.oncourse.model.Tax
+import ish.oncourse.services.preference.IsCreditCardPaymentEnabled
+import ish.oncourse.services.preference.IsPaymentGatewayEnabled
+import ish.oncourse.willow.checkout.corporatepass.IsCorporatePassEnabledFor
 import ish.oncourse.willow.checkout.corporatepass.ValidateCorporatePass
 import ish.oncourse.willow.functions.field.GetWaitingListFields
 import ish.oncourse.willow.functions.field.ValidateCustomFields
@@ -113,8 +116,14 @@ class ProcessCheckoutModel {
                 a.voucherPayments = redeemedVouchers.voucherPayments
                 a
             }
+
+            boolean paymentMethodsEnabled = new IsCorporatePassEnabledFor(context, college, checkoutModelRequest).get() && new IsPaymentGatewayEnabled(college, context).get()
+            if (payNowAmount.isGreaterThan(Money.ZERO) && !paymentMethodsEnabled) {
+                model.error  = new CommonError(message: 'No payment method is enabled for this college.')
+            }
+            
         }
-        
+
         this
     }
     

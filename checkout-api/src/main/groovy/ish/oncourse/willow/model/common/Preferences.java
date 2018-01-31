@@ -4,6 +4,7 @@ package ish.oncourse.willow.model.common;
 public class Preferences  {
   
     private Boolean corporatePassEnabled = null;
+    private Boolean creditCardEnabled = null;
     private String successLink = null;
     private String refundPolicyUrl = null;
     private String featureEnrolmentDisclosure = null;
@@ -23,6 +24,23 @@ public class Preferences  {
 
     public Preferences corporatePassEnabled(Boolean corporatePassEnabled) {
       this.corporatePassEnabled = corporatePassEnabled;
+      return this;
+    }
+
+    /**
+     * is credit card enabled preference
+     * @return creditCardEnabled
+     */
+    public Boolean getCreditCardEnabled() {
+        return creditCardEnabled;
+    }
+
+    public void setCreditCardEnabled(Boolean creditCardEnabled) {
+       this.creditCardEnabled = creditCardEnabled;
+    }
+
+    public Preferences creditCardEnabled(Boolean creditCardEnabled) {
+      this.creditCardEnabled = creditCardEnabled;
       return this;
     }
 
@@ -101,6 +119,7 @@ public class Preferences  {
       sb.append("class Preferences {\n");
       
       sb.append("    corporatePassEnabled: ").append(toIndentedString(corporatePassEnabled)).append("\n");
+      sb.append("    creditCardEnabled: ").append(toIndentedString(creditCardEnabled)).append("\n");
       sb.append("    successLink: ").append(toIndentedString(successLink)).append("\n");
       sb.append("    refundPolicyUrl: ").append(toIndentedString(refundPolicyUrl)).append("\n");
       sb.append("    featureEnrolmentDisclosure: ").append(toIndentedString(featureEnrolmentDisclosure)).append("\n");

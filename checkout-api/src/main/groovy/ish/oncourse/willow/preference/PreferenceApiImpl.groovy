@@ -7,6 +7,7 @@ import ish.oncourse.services.preference.GetEnrolSuccessUrl
 import ish.oncourse.services.preference.GetFeatureEnrolmentDisclosure
 import ish.oncourse.services.preference.GetRefundPolicyUrl
 import ish.oncourse.services.preference.IsCorporatePassEnabled
+import ish.oncourse.services.preference.IsCreditCardPaymentEnabled
 import ish.oncourse.willow.model.common.Preferences
 import ish.oncourse.willow.service.PreferenceApi
 import ish.oncourse.willow.service.impl.CollegeService
@@ -33,6 +34,7 @@ class PreferenceApiImpl implements PreferenceApi {
         ObjectContext context = cayenneService.newContext()
         College college = collegeService.college
         preferences.corporatePassEnabled = new IsCorporatePassEnabled(college, context).get()
+        preferences.creditCardEnabled = new IsCreditCardPaymentEnabled(college, context).get()
         preferences.successLink = new GetEnrolSuccessUrl(college, context).get()
         preferences.refundPolicyUrl = new GetRefundPolicyUrl(college, context).get()
         preferences.featureEnrolmentDisclosure = new GetFeatureEnrolmentDisclosure(college, context).get()
