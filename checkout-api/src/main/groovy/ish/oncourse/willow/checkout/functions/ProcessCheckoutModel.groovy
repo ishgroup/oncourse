@@ -117,7 +117,7 @@ class ProcessCheckoutModel {
                 a
             }
 
-            boolean paymentMethodsEnabled = new IsCorporatePassEnabledFor(context, college, checkoutModelRequest).get() && new IsPaymentGatewayEnabled(college, context).get()
+            boolean paymentMethodsEnabled = new IsCorporatePassEnabledFor(context, college, checkoutModelRequest).get() || new IsPaymentGatewayEnabled(college, context).get()
             if (payNowAmount.isGreaterThan(Money.ZERO) && !paymentMethodsEnabled) {
                 model.error  = new CommonError(message: 'No payment method is enabled for this college.')
             }
