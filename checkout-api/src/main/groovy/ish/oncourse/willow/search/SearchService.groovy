@@ -4,9 +4,9 @@ import com.google.inject.Inject
 import ish.oncourse.configuration.Configuration
 import ish.oncourse.willow.model.common.Item
 import ish.oncourse.willow.model.field.Suburb
-import org.apache.solr.client.solrj.SolrClient
 import org.apache.solr.client.solrj.SolrQuery
 import org.apache.solr.client.solrj.impl.CloudSolrClient
+import org.apache.solr.client.solrj.response.QueryResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -22,32 +22,35 @@ class SearchService {
     
     final static  Logger logger = LoggerFactory.getLogger(SearchService.class)
 
-    CloudSolrClient client
+    private String zkHost
 
     @Inject
     SearchService() {
-        String zkHost = Configuration.getValue(ZK_HOST)
-
+        zkHost = Configuration.getValue(ZK_HOST)
         if (zkHost == null) {
             throw new IllegalStateException('Zookeeper host property undefined')
         }
-        client = new CloudSolrClient.Builder().withZkHost(zkHost).build()
-        
-        client.setZkClientTimeout(ZK_TIMEOUT)
-        client.setZkConnectTimeout(ZK_TIMEOUT)
     }
 
 
     private List<Item> searchSuburbs(String qualifier, String value) {
+        CloudSolrClient client
         try {
-
             value = normalizeString(value)
             List<Item> result = []
 
             SolrQuery q = new SolrQuery()
             q.query = "doctype:suburb AND $qualifier:$value*"
-
-            client.query('suburbs', q).results.each { doc ->
+            
+            long time = System.currentTimeMillis()
+            client = new CloudSolrClient.Builder().withZkHost(zkHost).build()
+            client.setZkClientTimeout(ZK_TIMEOUT)
+            client.setZkConnectTimeout(ZK_TIMEOUT)
+            
+            QueryResponse response = client.query('suburbs', q)
+            logger.warn("Query finished. Time: '{}' ms", (System.currentTimeMillis() - time))
+            
+            response.results.each { doc ->
                 result << new Item().with { i ->
                     String postcode = doc.getFieldValue('postcode') as String
                     String state = doc.getFieldValue('state') as String
@@ -63,6 +66,10 @@ class SearchService {
         } catch (Exception e) {
             logger.error("Failed to search suburbs.", e)
             throw new InternalServerErrorException(e)
+        } finally {
+            if (client) {
+                client.close()
+            }
         }
     }
     
