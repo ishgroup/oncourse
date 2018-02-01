@@ -1,5 +1,6 @@
 package ish.oncourse.services.search;
 
+import ish.oncourse.configuration.Configuration;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.property.IPropertyService;
@@ -25,6 +26,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static ish.oncourse.configuration.Configuration.AppProperty.ZK_HOST;
 
 public class SearchService implements ISearchService {
 	static final String TERMS_SEPARATOR_STRING = " || ";
@@ -59,6 +62,8 @@ public class SearchService implements ISearchService {
 	private ITagService tagService;
 
 	private String aliasSuffix;
+	
+	private String zkHost = Configuration.getValue(ZK_HOST);
 
 
 	public SearchService(@Inject IWebSiteService webSiteService,
@@ -71,15 +76,9 @@ public class SearchService implements ISearchService {
 		this.aliasSuffix = aliasSuffix;
 	}
 
-	protected Map<SolrCore, SolrClient> solrClients = new HashMap<>();
 
-	protected SolrClient getSolrClient(SolrCore core) {
-		SolrClient solrClient = solrClients.get(core);
-		if (solrClient == null) {
-			solrClient = BuildSolrClient.instance().build();
-			solrClients.put(core, solrClient);
-		}
-		return solrClient;
+	protected SolrClient getSolrClient() {
+		return BuildSolrClient.instance(zkHost).build();
 	}
 
 	/**
@@ -94,7 +93,7 @@ public class SearchService implements ISearchService {
 		Exception exception = null;
 		while (count < 3) {
 			try {
-				return getSolrClient(core).query(core.name() + (StringUtils.trimToNull(aliasSuffix) != null ? "-" + aliasSuffix : StringUtils.EMPTY), q);
+				return getSolrClient().query(core.name() + (StringUtils.trimToNull(aliasSuffix) != null ? "-" + aliasSuffix : StringUtils.EMPTY), q);
 			} catch (Exception e) {
 				exception = e;
 				count++;
