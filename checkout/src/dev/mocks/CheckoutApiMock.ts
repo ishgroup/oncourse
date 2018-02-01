@@ -128,11 +128,11 @@ export class CheckoutApiMock extends CheckoutApi {
         return CreatePromiseReject(model);
       });
     }
-    return CreatePromiseReject({});
-    // const result: PaymentResponse = new PaymentResponse();
-    // result.sessionId = paymentRequest.sessionId;
-    // result.status = this.paymentStatusValue();
-    // return this.config.createResponse(result);
+
+    const result: PaymentResponse = new PaymentResponse();
+    result.sessionId = paymentRequest.sessionId;
+    result.status = this.paymentStatusValue();
+    return this.config.createResponse(result);
   }
 
   getPaymentStatus(sessionId: string): Promise<PaymentResponse> {
