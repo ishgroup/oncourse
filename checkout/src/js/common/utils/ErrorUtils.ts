@@ -1,6 +1,6 @@
 import {isNil} from "lodash";
 import {isUndefined} from "util";
-import {CommonError, ValidationError} from "../../model";
+import {CommonError, ValidationError, CheckoutModel} from "../../model";
 import {AxiosResponse} from "axios";
 
 export const isValidationError = (error: any): boolean => {
@@ -15,6 +15,10 @@ export const isCommonError = (error: any): boolean => {
 export const isPlainTextError = (error: any): boolean => {
   return typeof error === "string";
 };
+
+export const isCheckoutModelError = (error: any): boolean => {
+  return error instanceof CheckoutModel;
+}
 
 export const commonErrorToValidationError = (error: CommonError):ValidationError => {
   const messages: ValidationError = new ValidationError();
@@ -37,6 +41,8 @@ export const toValidationError = (response: AxiosResponse) => {
     messages.formErrors.push(response.data.message);
   } else if (isPlainTextError(response.data)) {
     messages.formErrors.push(response.data);
+  } else if (isCheckoutModelError(response.data)) {
+    messages.formErrors.push(response.data.error && response.data.error.message);
   } else {
     messages.formErrors.push("Unexpected error.");
   }
