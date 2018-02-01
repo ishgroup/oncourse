@@ -35,7 +35,7 @@ class CorporatePassApiImpl implements CorporatePassApi {
     @Override
     CorporatePass getCorporatePass(GetCorporatePassRequest request) {
         if (!corporatePassEnabled) {
-            logger.error("Attempt to use corporate pass, college id: ${collegeService.college.id}")
+            logger.info("Attempt to use corporate pass, college id: ${collegeService.college.id}")
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'CorporatePass payment method is not enabled for this college.')).build())
         }
 

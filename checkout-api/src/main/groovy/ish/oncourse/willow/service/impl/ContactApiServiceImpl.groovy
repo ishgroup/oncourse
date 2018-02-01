@@ -70,7 +70,7 @@ class ContactApiServiceImpl implements ContactApi{
 
         if (createRelation.error) {
             context.rollbackChanges()
-            logger.error("Can not create parent children relation, college id: ${college.id}, request: ${request}")
+            logger.info("Can not create parent children relation, college id: ${college.id}, request: ${request}")
             throw new BadRequestException(Response.status(400).entity(createRelation.error).build())
         } else {
             context.commitChanges()
@@ -84,7 +84,7 @@ class ContactApiServiceImpl implements ContactApi{
         ChangeParent changeParent = new ChangeParent(college, context, request).perform()
         if (changeParent.error) {
             context.rollbackChanges()
-            logger.error("Can not change parent, college id: ${college.id}, request: ${request}")
+            logger.info("Can not change parent, college id: ${college.id}, request: ${request}")
             throw new BadRequestException(Response.status(400).entity(changeParent.error).build())
         } else {
             context.commitChanges()
@@ -104,11 +104,11 @@ class ContactApiServiceImpl implements ContactApi{
             if (contactFieldsRequest.classIds.empty 
                     && contactFieldsRequest.productIds.empty 
                     && contactFieldsRequest.waitingCourseIds.empty) {
-                logger.error("classesIds required, request param: $contactFieldsRequest")
+                logger.info("classesIds required, request param: $contactFieldsRequest")
                 throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'classesIds required')).build())
             }
             if (!contactFieldsRequest.fieldSet) {
-                logger.error("fieldSet required, request param: $contactFieldsRequest")
+                logger.info("fieldSet required, request param: $contactFieldsRequest")
                 throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'fieldSet required')).build())
             }
             new GetContactFields(contact, contactFieldsRequest.classIds, contactFieldsRequest.waitingCourseIds, contactFieldsRequest.productIds, contactFieldsRequest.mandatoryOnly).contactFields
@@ -138,7 +138,7 @@ class ContactApiServiceImpl implements ContactApi{
             context.commitChanges()
             return response
         } else {
-            logger.warn(" Vaidation error: $submit.errors")
+            logger.info(" Vaidation error: $submit.errors")
             throw new BadRequestException(Response.status(400).entity(submit.errors).build())
         }
     }
@@ -158,7 +158,7 @@ class ContactApiServiceImpl implements ContactApi{
                     uniqueIdentifier: studentUniqueIdentifier,
                     company: contact.isCompany)
         } else {
-            logger.error("There is no contact with uuid: ${studentUniqueIdentifier}")
+            logger.info("There is no contact with uuid: ${studentUniqueIdentifier}")
             throw new IllegalArgumentException("There is no contact with uuid: ${studentUniqueIdentifier}")
         }
 

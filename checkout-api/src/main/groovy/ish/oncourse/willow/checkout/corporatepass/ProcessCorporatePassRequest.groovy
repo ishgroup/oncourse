@@ -37,7 +37,7 @@ class ProcessCorporatePassRequest {
     ProcessCorporatePassRequest process() {
 
         if (!new IsCorporatePassEnabled(college, context).get()) {
-            logger.error("Attempt to use corporate pass, college id: ${college.id}")
+            logger.info("Attempt to use corporate pass, college id: ${college.id}")
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'CorporatePass payment method is not enabled for this college.')).build())
         }
         

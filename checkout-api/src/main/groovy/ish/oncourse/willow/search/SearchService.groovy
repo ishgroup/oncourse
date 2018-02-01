@@ -48,7 +48,7 @@ class SearchService {
             client.setZkConnectTimeout(ZK_TIMEOUT)
             
             QueryResponse response = client.query('suburbs', q)
-            logger.warn("Query finished. Time: '{}' ms", (System.currentTimeMillis() - time))
+            logger.info("Query finished. Time: '{}' ms", (System.currentTimeMillis() - time))
             
             response.results.each { doc ->
                 result << new Item().with { i ->

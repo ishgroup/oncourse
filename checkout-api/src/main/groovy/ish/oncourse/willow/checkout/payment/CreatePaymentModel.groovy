@@ -229,7 +229,7 @@ class CreatePaymentModel {
         
         if (extraAmount.isGreaterThan(Money.ZERO)) {
             context.rollbackChanges()
-            logger.error("Payment amount is wrong, Extra amount supplied, offered amount: $offeredAmount, checkout model: $checkoutModel, paymen request: $paymentRequest")
+            logger.info("Payment amount is wrong, Extra amount supplied, offered amount: $offeredAmount, checkout model: $checkoutModel, paymen request: $paymentRequest")
             throw new IllegalStateException('Payment amount is wrong, Extra amount supplied')
         }
     }
