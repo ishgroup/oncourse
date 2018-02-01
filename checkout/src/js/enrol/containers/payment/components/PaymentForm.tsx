@@ -227,7 +227,7 @@ const Form = reduxForm({
       dispatch(submitPaymentCreditCard(data));
     }
 
-    if (props.currentTab === Tabs.corporatePass && props.corporatePassAvailable) {
+    if (props.currentTab === Tabs.corporatePass && props.corporatePassAvailable && Number(props.amount.payNow) !== 0) {
       dispatch(updatePaymentStatus({status: PaymentStatus.IN_PROGRESS}));
       dispatch(submitPaymentCorporatePass(data));
     }
