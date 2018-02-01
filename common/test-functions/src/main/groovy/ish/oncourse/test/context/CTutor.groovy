@@ -40,4 +40,9 @@ class CTutor {
         objectContext.commitChanges()
         this
     }
+
+    CTutor angelId(long angelId) {
+        tutor.angelId = angelId
+        this
+    }
 }

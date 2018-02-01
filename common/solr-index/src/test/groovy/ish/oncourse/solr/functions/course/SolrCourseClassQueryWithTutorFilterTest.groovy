@@ -47,8 +47,8 @@ class SolrCourseClassQueryWithTutorFilterTest extends ASolrTest {
         String collegeId = cCollege.college.id.toString()
         List<SCourse> actualSCourses
         
-        Tutor targetTutor = CTutor.instance(objectContext, cCollege.college, "targetTutor").build().tutor
-        Tutor otherTutor = CTutor.instance(objectContext, cCollege.college, "otherTutor").build().tutor
+        Tutor targetTutor = CTutor.instance(objectContext, cCollege.college, "targetTutor").angelId(1000L).build().tutor
+        Tutor otherTutor = CTutor.instance(objectContext, cCollege.college, "otherTutor").angelId(1001L).build().tutor
 
         cCollege.newCourse("course1").newCourseClassWithSessionsAndTutor("pastTargetTutor", targetTutor, -5, -4).build()
         cCollege.newCourse("course2").newCourseClassWithSessionsAndTutor("pastOtherTutor", otherTutor, -5, -4).build()
@@ -76,7 +76,12 @@ class SolrCourseClassQueryWithTutorFilterTest extends ASolrTest {
         }
 
         actualSCourses = solrClient.query("courses",
-                SolrQueryBuilder.valueOf(new SearchParams(s: "course*", tutorId: targetTutor.contact.id), collegeId, null, null).build())
+                SolrQueryBuilder.valueOf(new SearchParams(s: "course*", tutorId: targetTutor.id), collegeId, null, null).build())
+                .getBeans(SCourse.class)
+        assertTrue(actualSCourses.empty)
+
+        actualSCourses = solrClient.query("courses",
+                SolrQueryBuilder.valueOf(new SearchParams(s: "course*", tutorId: targetTutor.angelId), collegeId, null, null).build())
                 .getBeans(SCourse.class)
         assertEquals(8, actualSCourses.size())
         assertTrue(actualSCourses.first().name == "course5")
@@ -89,7 +94,7 @@ class SolrCourseClassQueryWithTutorFilterTest extends ASolrTest {
         assertTrue(actualSCourses.subList(6, 8).name.contains("course12"))
 
         actualSCourses = solrClient.query("courses",
-                SolrQueryBuilder.valueOf(new SearchParams(s: "course*", tutorId: otherTutor.id), collegeId, null, null).build())
+                SolrQueryBuilder.valueOf(new SearchParams(s: "course*", tutorId: otherTutor.angelId), collegeId, null, null).build())
                 .getBeans(SCourse.class)
         assertEquals(7, actualSCourses.size())
         assertTrue(actualSCourses.first().name == "course6")
