@@ -16,9 +16,6 @@ const request: EpicUtils.Request<CheckoutModel, IshState> = {
   processData: (value: CheckoutModel, state: IshState) => {
     return ProcessCheckoutModel.process(value);
   },
-  processError: (value: CheckoutModel) => {
-    return [EpicUtils.showCommonError(value.error)];
-  }
 };
 
 export const EpicProceedToPayment: Epic<any, any> = EpicUtils.Create(request);
