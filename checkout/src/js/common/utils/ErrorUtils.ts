@@ -16,8 +16,8 @@ export const isPlainTextError = (error: any): boolean => {
   return typeof error === "string";
 };
 
-export const isCheckoutModelError = (error: any): boolean => {
-  return error instanceof CheckoutModel;
+export const isModelError = (model: any): boolean => {
+  return model && model.error && model.error.message;
 }
 
 export const commonErrorToValidationError = (error: CommonError):ValidationError => {
@@ -41,7 +41,7 @@ export const toValidationError = (response: AxiosResponse) => {
     messages.formErrors.push(response.data.message);
   } else if (isPlainTextError(response.data)) {
     messages.formErrors.push(response.data);
-  } else if (isCheckoutModelError(response.data)) {
+  } else if (isModelError(response.data)) {
     messages.formErrors.push(response.data.error && response.data.error.message);
   } else {
     messages.formErrors.push("Unexpected error.");
