@@ -1,0 +1,17 @@
+<html t:type="ui/internal/pagestructure" title="${room.name} | ${room.site.name}" bodyId="literal:DetailPage"
+      bodyClass="literal:internal-page"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+    <t:if test="room">
+        <div class="class-details-title">
+            <h1 itemprop="name" class="summary page-title roomname">${room.name}</h1>
+        </div>
+        <t:if test="directions">
+            <h4 class="room_directions">Room Directions</h4>
+            <p>
+                <t:outputRaw value="directions" />
+            </p>
+        </t:if>
+        <span t:type="ui/Attachments" entityIdentifiers="identifiers" entityIdNums="ids"/>
+        <span t:type="ui/SiteDetailsComponent" room="room" collapseLocationMap="false" />
+    </t:if>
+</html>
