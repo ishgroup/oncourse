@@ -1,5 +1,6 @@
 import * as React from "react";
 import {forEach, isNil} from "lodash";
+import * as localforage from "localforage";
 import {findDOMNode, render} from "react-dom";
 import {Provider} from "react-redux";
 import {Store} from "redux";
@@ -55,8 +56,12 @@ export class Bootstrap {
       );
     } catch (e) {
       Logger.log(new LogMessage(Level.ERROR, `Component with cid:${marker.id} cannot be instantiated.`, [e]));
-      Logger.log(new LogMessage(Level.INFO, `State`, [this.store.getState()]))
-      Logger.log(new LogMessage(Level.INFO, `App version`, [ConfigConstants.APP_VERSION]))
+      Logger.log(new LogMessage(Level.INFO, `State`, [this.store.getState()]));
+      Logger.log(new LogMessage(Level.INFO, `App version`, [ConfigConstants.APP_VERSION]));
+
+      localforage.clear().then(() => {
+        Logger.log(new LogMessage(Level.INFO, `Local storage cleared`));
+      });
     }
   }
 
