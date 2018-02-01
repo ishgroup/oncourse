@@ -101,6 +101,7 @@ export class MockControl extends React.Component<Props, any> {
         {this.renderProperty("checkoutApi.makePayment.result.success")}
         {this.renderProperty("checkoutApi.makePayment.result.inProgress")}
         {this.renderProperty("checkoutApi.makePayment.result.undefined")}
+        {this.renderProperty("checkoutApi.makePayment.result.unhandled")}
         <button className="btn" onClick={() => this.loadCourseClasses(0)}>Load Classes 1</button>
         <button className="btn" onClick={() => this.addCourseClass(0)}>Add Classes 1</button>
         <br/>

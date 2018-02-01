@@ -128,11 +128,11 @@ export class CheckoutApiMock extends CheckoutApi {
         return CreatePromiseReject(model);
       });
     }
-
-    const result: PaymentResponse = new PaymentResponse();
-    result.sessionId = paymentRequest.sessionId;
-    result.status = this.paymentStatusValue();
-    return this.config.createResponse(result);
+    return CreatePromiseReject({});
+    // const result: PaymentResponse = new PaymentResponse();
+    // result.sessionId = paymentRequest.sessionId;
+    // result.status = this.paymentStatusValue();
+    // return this.config.createResponse(result);
   }
 
   getPaymentStatus(sessionId: string): Promise<PaymentResponse> {
@@ -152,6 +152,8 @@ export class CheckoutApiMock extends CheckoutApi {
       return PaymentStatus.FAILED;
     } else if (this.config.props.checkoutApi.makePayment.result.undefined) {
       return PaymentStatus.UNDEFINED;
+    } else if (this.config.props.checkoutApi.makePayment.result.unhandled) {
+      return undefined;
     } else {
       return PaymentStatus.IN_PROGRESS;
     }

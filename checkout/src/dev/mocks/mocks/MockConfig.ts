@@ -36,6 +36,7 @@ export interface Props {
         inProgress: boolean,
         failed: boolean,
         undefined: boolean,
+        unhandled: boolean,
       },
     },
   };
@@ -61,6 +62,7 @@ export class MockConfig {
           success: true,
           undefined: false,
           inProgress: false,
+          unhandled: false,
         },
       },
     },
