@@ -223,15 +223,12 @@ const Form = reduxForm({
       data.creditCardCvv = data.creditCardCvv.replace(/\_/g, "");
     }
 
-    if (props.currentTab === Tabs.creditCard || Number(props.amount.payNow) === 0) {
-      dispatch(submitPaymentCreditCard(data));
-    }
-
-    if (props.currentTab === Tabs.corporatePass && props.corporatePassAvailable && Number(props.amount.payNow) !== 0) {
+    if (props.currentTab === Tabs.corporatePass && props.corporatePass.id) {
       dispatch(updatePaymentStatus({status: PaymentStatus.IN_PROGRESS}));
       dispatch(submitPaymentCorporatePass(data));
+    } else {
+      dispatch(submitPaymentCreditCard(data));
     }
-
   },
   onSubmitFail: (errors, dispatch, submitError, props) => {
     if (errors && !submitError) {

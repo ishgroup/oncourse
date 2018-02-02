@@ -180,10 +180,6 @@ export class CheckoutService {
     this.corporatePassApi.getCorporatePass(BuildGetCorporatePassRequest.fromState(state, code))
   )
 
-  public checkIfCorporatePassAvailable = (state: IshState): Promise<any> => (
-    this.corporatePassApi.isCorporatePassEnabledFor(BuildCheckoutModelRequest.fromState(state))
-  )
-
   public processPaymentResponse = (response: PaymentResponse, actions: any[] = []): IAction<any>[] | Observable<any> => {
     switch (response.status) {
       case PaymentStatus.IN_PROGRESS:
