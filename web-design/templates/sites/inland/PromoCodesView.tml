@@ -1,0 +1,24 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<t:if t:test="paymentGatewayEnabled">
+		<div id="discounts_box" class="discount-block box">
+			<h3 class="title-block">
+				<span>My Discounts</span>
+			</h3>
+
+			<t:if t:test="promotions.empty" negate="true">
+				<ul class="menu">
+					<t:loop source="promotions" value="promotion">
+						<li class="onshortlist-x">
+							<a class="cutitem" id="${promotion.id}" href="/removeFromCookies?key=promotions&amp;removeItemId=${promotion.id}">
+								<span class="hide" title="Remove item">X</span>
+							</a>
+							<a class="viewitem" title="${promotion.code}" href="#" disabled="true">${promotion.name}</a>
+						</li>
+					</t:loop>
+				</ul>
+			</t:if>
+			<a class="nyromodalreload actionLink" target="_blank" href="/addDiscount">Add a discount code</a>
+			<a class="actionLink login-link" target="_blank" href="https://skillsoncourse.com.au/login">My Account</a>
+		</div>
+	</t:if>
+</t:container>
