@@ -40,7 +40,7 @@ class ValidateCreditCardForm {
             }
             
             if (!CreditCardValidator.validCCExpiry(paymentRequest.expiryMonth, paymentRequest.expiryYear)) {
-                validationError.fieldsErrors << new FieldError(name: 'expiryYear', error: 'APlease verify your credit card\'s expiry month and year.')
+                validationError.fieldsErrors << new FieldError(name: 'expiryYear', error: 'Please verify your credit card\'s expiry month and year.')
             }
             
             PaymentIn paymentIn = ObjectSelect.query(PaymentIn).where(PaymentIn.SESSION_ID.eq(paymentRequest.sessionId)).selectFirst(context)

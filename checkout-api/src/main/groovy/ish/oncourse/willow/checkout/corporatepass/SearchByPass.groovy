@@ -38,7 +38,7 @@ class SearchByPass {
 
         if (!code) {
             validationError.formErrors << 'CorporatePass must be supplied.'
-            validationError.fieldsErrors << new FieldError(name: 'code', error: 'CorporatePass must be supplied.')
+            return this
         }
         
         pass = ((ObjectSelect.query(CorporatePass).
@@ -62,7 +62,6 @@ class SearchByPass {
             }
         } else {
             validationError.formErrors << validatePass.error.message
-            validationError.fieldsErrors << new FieldError(name: 'code', error: validatePass.error.message)
         }
         
         return this
