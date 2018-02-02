@@ -252,7 +252,7 @@ const mapStateToProps = (state: IshState) => {
     corporatePassError: corporatePassError && corporatePassError.error,
     currentTab: state.checkout.payment.currentTab,
     fetching: state.checkout.payment.fetching,
-    corporatePassAvailable: state.checkout.payment.corporateTabAvailable,
+    corporatePassAvailable: state.preferences.hasOwnProperty('corporatePassEnabled') ? state.preferences.corporatePassEnabled : true,
     creditCardAvailable: state.preferences.hasOwnProperty('creditCardEnabled') ? state.preferences.creditCardEnabled : true,
     conditions: {
       refundPolicyUrl: state.config.termsAndConditions,
