@@ -136,13 +136,13 @@ export const routes: Route[] = [
     parent: URL.SETTINGS,
     main: props => <Website {...props}/>,
   },
-  {
-    title: 'Checkout',
-    path: URL.SETTINGS_CHECKOUT,
-    url: URL.SETTINGS_CHECKOUT,
-    parent: URL.SETTINGS,
-    main: props => <Checkout {...props}/>,
-  },
+  // {
+  //   title: 'Checkout',
+  //   path: URL.SETTINGS_CHECKOUT,
+  //   url: URL.SETTINGS_CHECKOUT,
+  //   parent: URL.SETTINGS,
+  //   main: props => <Checkout {...props}/>,
+  // },
   {
     title: 'Redirect',
     path: URL.SETTINGS_REDIRECT,
