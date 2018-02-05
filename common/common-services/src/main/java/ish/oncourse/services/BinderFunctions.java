@@ -48,6 +48,7 @@ import ish.oncourse.services.s3.S3Service;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchService;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.sites.ISitesService;
 import ish.oncourse.services.sites.SitesService;
 import ish.oncourse.services.sms.DefaultSMSService;
@@ -127,6 +128,11 @@ public class BinderFunctions {
 	public static void bindWebSiteServices(ServiceBinder binder, Class<? extends IWebSiteService> webSiteServiceClass) {
 		new BindWebSiteServices().webSiteService(webSiteServiceClass).bind(binder);
 	}
+
+	public static void bindWebSiteServices(ServiceBinder binder, Class<? extends IWebSiteService> webSiteServiceClass, Class<? extends IWebSiteVersionService> webSiteVersionServiceClass) {
+		new BindWebSiteServices().webSiteService(webSiteServiceClass).webSiteVersionService(webSiteVersionServiceClass).bind(binder);
+	}
+
 
 	public static void bindEnvServices(ServiceBinder binder, String appName, boolean testMode) {
 		binder.bind(ICayenneService.class, new CayenneServiceBuilder()).eagerLoad();

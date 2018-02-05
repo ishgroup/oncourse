@@ -26,6 +26,8 @@ import org.apache.tapestry5.ioc.ServiceBuilder;
  */
 public class BindWebSiteServices {
 	private Class<? extends IWebSiteService> webSiteServiceClass = WebSiteService.class;
+	private Class<? extends IWebSiteVersionService> webSiteVersionServiceClass = WebSiteVersionService.class;
+
 	private IWebSiteService webSiteService;
 	private ServiceBuilder<IWebSiteService> webSiteServiceBuilder;
 
@@ -34,6 +36,12 @@ public class BindWebSiteServices {
 		this.webSiteServiceClass = webSiteServiceClass;
 		return this;
 	}
+
+	public BindWebSiteServices webSiteVersionService(Class<? extends IWebSiteVersionService> aClass) {
+		this.webSiteVersionServiceClass = aClass;
+		return this;
+	}
+
 
 	public BindWebSiteServices webSiteService(IWebSiteService webSiteService) {
 		this.webSiteService = webSiteService;
@@ -54,7 +62,7 @@ public class BindWebSiteServices {
 		} else {
 			binder.bind(IWebSiteService.class, webSiteServiceClass);
 		}
-		binder.bind(IWebSiteVersionService.class, WebSiteVersionService.class);
+		binder.bind(IWebSiteVersionService.class, webSiteVersionServiceClass);
 		binder.bind(IWebContentService.class, WebContentService.class);
 		binder.bind(IWebNodeService.class, WebNodeService.class);
 		binder.bind(IWebNodeTypeService.class, WebNodeTypeService.class);
