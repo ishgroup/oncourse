@@ -135,10 +135,10 @@ public class BinderFunctions {
 
 
 	public static void bindEnvServices(ServiceBinder binder, String appName, boolean testMode) {
-		bindEnvServices(binder, appName, testMode, S3Service.class);
+		bindEnvServices(binder, appName, testMode, resources -> new S3Service(resources.getService(PreferenceController.class)));
 	}
 
-	public static void bindEnvServices(ServiceBinder binder, String appName, boolean testMode, Class<? extends IS3Service> s3ServiceClass) {
+	public static void bindEnvServices(ServiceBinder binder, String appName, boolean testMode, ServiceBuilder<IS3Service> s3ServiceBuilder) {
 		binder.bind(ICayenneService.class, new CayenneServiceBuilder()).eagerLoad();
 		binder.bind(CacheManager.class, new BinderFunctions.CacheManagerBuilder());
 
@@ -152,7 +152,7 @@ public class BinderFunctions {
 		binder.bind(IMailService.class, MailService.class);
 
 		binder.bind(IFileStorageAssetService.class, FileStorageAssetService.class);
-		binder.bind(IS3Service.class, s3ServiceClass).scope(PERTHREAD);
+		binder.bind(IS3Service.class, s3ServiceBuilder).scope(PERTHREAD);
 
 		binder.bind(IJMXInitService.class, new JMXInitServiceBuilder(appName));
 
