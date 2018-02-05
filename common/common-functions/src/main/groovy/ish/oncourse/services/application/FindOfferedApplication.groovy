@@ -6,6 +6,7 @@ import ish.oncourse.model.Course
 import ish.oncourse.model.Student
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
+import org.apache.cayenne.query.QueryCacheStrategy
 
 import static ish.common.types.CourseEnrolmentType.ENROLMENT_BY_APPLICATION
 
@@ -15,6 +16,10 @@ class FindOfferedApplication extends FindApplication {
         super(course, student, context)
     }
 
+    FindOfferedApplication(Course course, Student student, ObjectContext context, QueryCacheStrategy cacheStrategy) {
+        super(course, student, context, cacheStrategy)
+    }
+    
     @Override
     Application get() {
         return get(ApplicationStatus.OFFERED)

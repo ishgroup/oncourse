@@ -31,7 +31,7 @@ class PreferenceApiImpl implements PreferenceApi {
     @Override
     Preferences getPreferences() {
         Preferences preferences = new Preferences()
-        ObjectContext context = cayenneService.newContext()
+        ObjectContext context = cayenneService.sharedContext()
         College college = collegeService.college
         preferences.corporatePassEnabled = new IsCorporatePassEnabled(college, context).get()
         preferences.creditCardEnabled = new IsCreditCardPaymentEnabled(college, context).get()

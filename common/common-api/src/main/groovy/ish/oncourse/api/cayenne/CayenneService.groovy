@@ -11,7 +11,8 @@ import org.apache.cayenne.configuration.server.ServerRuntime
 @Singleton
 class CayenneService implements ICayenneService {
 
-    ServerRuntime runtime
+    private ServerRuntime runtime
+    private ISHObjectContext sharedContext
     
     @Inject
     CayenneService(ServerRuntime runtime) {
@@ -19,6 +20,7 @@ class CayenneService implements ICayenneService {
         this.runtime = runtime
         this.runtime.dataDomain.addFilter(listener)
         this.runtime.channel.entityResolver.callbackRegistry.addDefaultListener(listener)
+        this.sharedContext = newContext()
     }
 
     ISHObjectContext newContext() {
@@ -39,6 +41,6 @@ class CayenneService implements ICayenneService {
 
     @Override
     ISHObjectContext sharedContext() {
-        throw new UnsupportedOperationException()
+        sharedContext
     }
 }

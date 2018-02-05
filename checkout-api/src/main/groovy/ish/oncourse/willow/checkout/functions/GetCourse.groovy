@@ -8,6 +8,7 @@ import ish.oncourse.willow.model.common.CommonError
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.ObjectSelect
+import org.apache.cayenne.query.QueryCacheStrategy
 import org.apache.commons.lang3.StringUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -28,7 +29,11 @@ class GetCourse extends Get<Course>{
             logger.error("course Id required")
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'course id required')).build())
         }
-        Course course = (ObjectSelect.query(Course).where(ExpressionFactory.matchDbExp(Course.ID_PK_COLUMN, id)) & Course.COLLEGE.eq(college)).selectOne(context)
+        Course course = (ObjectSelect.query(Course)
+                .where(ExpressionFactory.matchDbExp(Course.ID_PK_COLUMN, id)) & Course.COLLEGE.eq(college))
+                .cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
+                .cacheGroup(Course.class.simpleName)
+                .selectOne(context)
         if (!course) {
             logger.error("Course is not exist, id:$id collegeId: $college.id")
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'Course is not exist')).build())
