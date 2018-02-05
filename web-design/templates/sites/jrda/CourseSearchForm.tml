@@ -1,0 +1,27 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+  <div class="noprint search-box" id="search_box">
+    <h3 class="search-box-title">
+      <span>Search</span>
+    </h3>
+    <form action="/courses" method="get" id="search" name="search">
+      <label for="s" class="hide">Search:</label>
+      <input type="text" id="s" class="quicksearch" name="s" size="15" autocomplete="off" placeholder="Search" />
+      <button type="submit" id="find" class="find btn">
+        <i class="sicon search-icon"></i>Search
+      </button>
+      <div class="advanced-search-button more-options">
+        <a class="show-advanced-search">
+          <span>More options</span>
+        </a>
+      </div>
+    </form>
+    <!-- searchTagNames="literal:Subjects" by default even if no property specified,
+    if we need to add more then one element we need to separate then using ';' character without extra spaces
+    for example searchTagNames="literal:Subjects;some_group_tag_1;some_group_tag_1"
+    please note that group elements available only for tag group with valid names -->
+    <span t:type="ui/SearchInputs" searchTagNames="literal:Subjects"/>
+    <div class="quicksearch-wrap-container">
+      <div class="quicksearch-wrap" />
+    </div>
+  </div>
+</t:container>

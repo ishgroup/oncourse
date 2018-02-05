@@ -1,0 +1,33 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+  <section class="top-bar">
+    <div class="container">
+      <aside class="header-toolbar" id="headerToolbar">
+        <span t:type="ui/PromoCodesView" />
+        <t:if t:test="paymentGatewayEnabled">
+          <span t:type="ui/ShortList" />
+        </t:if>
+        <a class="nav-toggle js-nav-toggle pull-right" href="#">
+          <div class="">
+            <span class="toggle-title pull-right">
+              <i class="sicon toggle-icon"></i>Menu
+            </span>
+          </div>
+        </a>
+        <a href="#" class="header-search-toggle pull-right">
+          <i class="sicon search-icon"></i>
+        </a>
+        <span t:type="ui/CourseSearchForm" />
+      </aside>
+    </div>
+  </section>
+  <hgroup class="container header-hgroup">
+    <h2 class="site-logo" id="siteLogo">
+      <a href="${homeLink}">
+        <img src="/s/img/logos/logo.png" alt="${collegeName}" class="normal_logo" />
+      </a>
+    </h2>
+    <h1 class="site-title" id="siteTitle">
+      <a href="${homeLink}">${collegeName}</a>
+    </h1>
+  </hgroup>
+</t:container>

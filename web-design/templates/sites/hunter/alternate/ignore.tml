@@ -1,0 +1,32 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<t:any element="meta" name="generator" content="prop:metaGeneratorContent" />
+
+	<t:if test="canonicalLinkPath">
+    	<link rel="canonical" href="${canonicalLinkPath}"></link>
+	</t:if>
+
+	<t:if test="metaDescription">
+		<meta content="${metaDescription}" name="description"/>
+	</t:if>
+
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="shortcut icon" type="image/ico" href="/s/img/favicontest.ico" />
+	<t:if test="tag">
+		<title>${tag.name} - ${title}</title>
+		<p:else>
+			<title>${title}</title>
+		</p:else>
+	</t:if>
+	<meta name="author" content="" />
+
+		
+	<!--[if lt IE 9]><script src="/s/js/html5.js"></script><![endif]-->
+	<link href="/s/stylesheets/css/site.css" media="screen, print" rel="stylesheet" />
+	<script type="text/javascript" src="/s/js/all.js"></script>
+	<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
+	<span t:type="ui/googleAnalytics"/>
+
+	<span t:type="ui/googletagmanager" eventName="${eventName}"/>
+</t:container>

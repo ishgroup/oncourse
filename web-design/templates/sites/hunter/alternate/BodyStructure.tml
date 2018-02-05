@@ -1,0 +1,58 @@
+<section class="site-container" id="container" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+  <section class="site-wrapper">
+    <header class="site-header group" id="header" itemscope="itemscope" itemtype="http://schema.org/WPHeader">
+      <div t:type="ui/bodyheader" />
+
+      <!-- BEGIN site-mast -->
+      <div class="site-mast">
+        <div class="container container--std">
+          <ul class="mast-links list--horizontal">
+            <li class="link"><a class="nyromodalreload" href="/addDiscount">Enter Discount Code</a></li>
+            <li class="link last"><a href="https://skillsoncourse.com.au/login" target="_blank">Account Login</a></li>
+          </ul>
+          <ul class="mast-links mast-links--nav list--horizontal">
+            <li class="link link--alt"><a href="/">Home</a></li>
+            <li class="link link--alt last--alt"><a href="/about">About Us</a></li>
+          </ul>
+          <a class="logo--wea" href="/">WEA Hunter - Quality Learning</a>
+          <a class="nav-toggle js-nav-toggle u-pull-right" href="#">
+            <i class="nav-toggle__icon u-pull-left"></i>
+            <span class="nav-toggle__title u-pull-left">Menu</span>
+          </a>
+          <div t:type="ui/globalnavi" />
+
+          <nav id="nav" class="site-nav">
+            <div t:type="ui/menu" rootMenu="rootMenu" />
+          </nav>
+
+          <a class="logo-registered-charity" href="http://www.acnc.gov.au/ACNC/FindCharity/QuickSearch/ACNC/OnlineProcessors/Online_register/Search_the_Register.aspx" target="_blank"><img alt="Registered Charity" src="/s/stylesheets/img/logo-registered-charity.png" /></a>
+        </div>
+      </div>
+      <!-- END site-mast -->
+
+    </header><!-- //site-header -->
+
+    <section class="banner container container--lrg container--collapse">
+      <div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:header" />
+    </section>
+
+    <div class="page-main container container--std content content--collapse" id="content">
+
+      <div class="row group">
+        <div class="content--sml column">
+          <div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:left" />
+        </div>
+        <div class="content--lrg  column">
+          <t:body />
+        </div>
+      </div><!-- //row -->
+
+      <div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:content" />
+
+    </div><!-- //page-main -->
+
+  </section>
+  <div t:type="ui/bodyfooter" />
+
+  <div data-cid="modal" class="reactjs-component"></div>
+</section>
