@@ -407,6 +407,8 @@ const getItemsFromCart = cart => {
 };
 
 const getCoursePrice = price => {
+  if (!price) return 0;
+
   const fullPrice = price.feeOverriden ? Number(price.feeOverriden).toFixed(2) : Number(price.fee).toFixed(2);
   const discountedPrice = price.appliedDiscount ? Number(price.appliedDiscount.discountedFee).toFixed(2) : null;
 
