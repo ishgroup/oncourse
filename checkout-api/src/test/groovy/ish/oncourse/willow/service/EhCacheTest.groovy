@@ -5,6 +5,7 @@ import ish.oncourse.cayenne.cache.JCacheQueryCache
 import ish.oncourse.test.TestInitialContextFactory
 import org.apache.cayenne.cache.QueryCache
 import org.apache.cayenne.configuration.server.ServerRuntime
+import org.ehcache.jsr107.Eh107CacheManager
 import org.junit.After
 import org.junit.Test
 
@@ -26,7 +27,7 @@ class EhCacheTest {
         QueryCache  cache = cayenneRuntime.injector.getInstance(QueryCache)
         assertTrue(cache instanceof JCacheQueryCache)
         CacheManager cacheManager = ((JCacheQueryCache)cache).cacheManager
-        assertEquals(cacheManager.configurationMerger.xmlConfiguration.cacheConfigurations.size(), 4)
+        assertEquals(cacheManager.configurationMerger.xmlConfiguration.cacheConfigurations.size(), 0)
     }
 
     @After
