@@ -176,7 +176,7 @@ function createAddClassToCartEpic() {
     .ofType(Actions.ADD_CLASS_TO_CART)
     .map(action => ({
       type: FULFILLED(Actions.ADD_CLASS_TO_CART),
-      payload: normalize(store.getState().courses.entities[action.payload.id] || action.payload, ClassesSchema),
+      payload: normalize(store.getState().courses.entities[action.payload.id] || {}, ClassesSchema),
     }));
 }
 

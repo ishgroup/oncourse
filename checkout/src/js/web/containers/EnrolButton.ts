@@ -12,21 +12,11 @@ const isAdded = (items: CourseClassCartState, id: string): boolean => {
   return !isNil(item);
 };
 
-const predefinedCourseClassProps = {
-  hasAvailablePlaces: true,
-  isPaymentGatewayEnabled: true,
-  code: '',
-  name: '',
-  course: {},
-  price: {},
-  room: {},
-}
-
 const mapStateToProps = (state: IshState, props) => {
   const courseClass: CourseClass = CourseClassService.htmlProps2CourseClass(props);
   return {
     id: courseClass.id,
-    courseClass: state.courses.entities[courseClass.id] || {id: courseClass.id, ...predefinedCourseClassProps},
+    courseClass: state.courses.entities[courseClass.id] || {},
     isAdded: isAdded(state.cart.courses, props.id),
     checkoutPath: state.config.checkoutPath,
   };
