@@ -45,7 +45,6 @@ class ReindexCoursesJob implements IJob {
     @Override
     void run() {
         isActive.set(true)
-        println "JOB STARTED!!!"
         disposable = SCourseFunctions.SCourses(objectContext, date, scheduler).subscribe(
                 { solrClient.addBean(it) },
                 { e -> logger.error(e.getLocalizedMessage(), e) },
