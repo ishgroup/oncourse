@@ -17,7 +17,9 @@ const predefinedCourseClassProps = {
   isPaymentGatewayEnabled: true,
   code: '',
   name: '',
+  course: {},
   price: {},
+  room: {},
 }
 
 const mapStateToProps = (state: IshState, props) => {
