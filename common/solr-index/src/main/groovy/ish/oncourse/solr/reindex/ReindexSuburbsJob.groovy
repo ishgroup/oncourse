@@ -12,7 +12,7 @@ import static ish.oncourse.solr.functions.suburb.Functions.getSolrSuburbs
 class ReindexSuburbsJob implements IJob {
     private ObjectContext objectContext
     private SolrClient solrClient
-    private ScheduleConfig config = new ScheduleConfig(0, 1, TimeUnit.DAYS)
+    private ScheduleConfig config = new ScheduleConfig(0, 15, TimeUnit.MINUTES)
 
     ReindexSuburbsJob(ObjectContext objectContext, SolrClient solrClient) {
         this.objectContext = objectContext

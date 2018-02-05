@@ -7,6 +7,7 @@ import ish.oncourse.scheduler.ScheduleConfig
 import ish.oncourse.scheduler.job.IJob
 import ish.oncourse.solr.functions.course.SCourseFunctions
 import org.apache.cayenne.ObjectContext
+import org.apache.cayenne.di.Inject
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.apache.solr.client.solrj.SolrClient
@@ -19,7 +20,7 @@ class ReindexCoursesJob implements IJob {
 
     private ObjectContext objectContext
     private SolrClient solrClient
-    private ScheduleConfig config = new ScheduleConfig(0, 1, TimeUnit.HOURS)
+    private ScheduleConfig config = new ScheduleConfig(0, 15, TimeUnit.MINUTES)
     private Disposable disposable
     private Scheduler scheduler
     private Date date
@@ -44,6 +45,7 @@ class ReindexCoursesJob implements IJob {
     @Override
     void run() {
         isActive.set(true)
+        println "JOB STARTED!!!"
         disposable = SCourseFunctions.SCourses(objectContext, date, scheduler).subscribe(
                 { solrClient.addBean(it) },
                 { e -> logger.error(e.getLocalizedMessage(), e) },

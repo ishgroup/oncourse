@@ -13,7 +13,7 @@ class ReindexTagsJob implements IJob {
 
     private ObjectContext objectContext
     private SolrClient solrClient
-    private ScheduleConfig config = new ScheduleConfig(0, 1, TimeUnit.DAYS)
+    private ScheduleConfig config = new ScheduleConfig(0, 15, TimeUnit.MINUTES)
 
     ReindexTagsJob(ObjectContext objectContext, SolrClient solrClient) {
         this.objectContext = objectContext
