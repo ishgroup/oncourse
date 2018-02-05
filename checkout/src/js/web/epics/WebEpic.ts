@@ -1,6 +1,7 @@
 import {combineEpics} from "redux-observable";
 import {Observable} from "rxjs";
 import {Store} from "redux";
+import {chunk} from "lodash";
 import {FULFILLED} from "../../common/actions/ActionUtils";
 import {Actions} from "../actions/Actions";
 import * as ContactAddActions from "../../enrol/containers/contact-add/actions/Actions";
@@ -54,17 +55,21 @@ function createCoursesEpic() {
     .bufferTime(100) // batch actions
     .filter(actions => actions.length)
     .mergeMap(actions => {
-      const ids: string[] = actions.map(action => action.payload);
-      return Observable
-        .defer(() => courseClassesApi.getCourseClasses({
-          courseClassesIds: uniq(ids),
-          contact: createContactParams(store.getState()),
-          promotions: createPromotionParams(store.getState()),
-        }))
-        .retry(2) // Retry to times if request has been rejected
-        .map(payload => normalize(payload, ClassesListSchema))
-        .map(mapPayload(Actions.REQUEST_COURSE_CLASS))
-        .catch(mapError(Actions.REQUEST_COURSE_CLASS));
+      const ids: string[] = uniq(actions.map(action => action.payload));
+      const chunkIds = chunk(ids, 10);
+
+      return Observable.from(chunkIds).mergeMap(groupedIds =>
+        Observable
+          .defer(() => courseClassesApi.getCourseClasses({
+            courseClassesIds: groupedIds,
+            contact: createContactParams(store.getState()),
+            promotions: createPromotionParams(store.getState()),
+          }))
+          .retry(2) // Retry to times if request has been rejected
+          .map(payload => normalize(payload, ClassesListSchema))
+          .map(mapPayload(Actions.REQUEST_COURSE_CLASS))
+          .catch(mapError(Actions.REQUEST_COURSE_CLASS)),
+      );
     });
 }
 

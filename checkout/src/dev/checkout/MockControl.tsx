@@ -23,7 +23,20 @@ export class MockControl extends React.Component<Props, any> {
     localforage.clear();
   }
 
-  private loadCourseClasses = (i) => {
+  private loadBatchCourseClasses = (numbers: number[]) => {
+    numbers.forEach(i =>
+      this.props.config.store.dispatch({
+        type: Actions.REQUEST_COURSE_CLASS,
+        payload: this.props.config.db.classes.result[i],
+      }),
+    );
+    this.props.config.store.dispatch({
+      type: Actions.REQUEST_COURSE_CLASS,
+      payload: this.props.config.db.classes.result[0],
+    });
+  }
+
+  private loadCourseClasses = i => {
     this.props.config.store.dispatch({
       type: Actions.REQUEST_COURSE_CLASS,
       payload: [this.props.config.db.classes.result[i]],
@@ -70,8 +83,8 @@ export class MockControl extends React.Component<Props, any> {
       type: Actions.ADD_PRODUCT_TO_CART,
       payload: {id: this.props.config.db.products.result[0]},
       meta: {
-        analytics: GABuilder.addProductToCart('Voucher', this.props.config.db.products.entities.products[this.props.config.db.products.result[0]])
-      }
+        analytics: GABuilder.addProductToCart('Voucher', this.props.config.db.products.entities.products[this.props.config.db.products.result[0]]),
+      },
     });
   }
 
@@ -116,7 +129,8 @@ export class MockControl extends React.Component<Props, any> {
         <button className="btn" onClick={this.loadVoucher}>Load Voucher</button>
         <button className="btn" onClick={this.addVoucher}>Add Voucher</button>
         <br/>
-
+        <button className="btn" onClick={() => this.loadBatchCourseClasses([0,1,2,3])}>Load Batch Classes</button>
+        <br/>
         <button className="btn" onClick={this.resetLocalForage}>Reset LocalForage</button>
       </fieldset>
       <fieldset>
