@@ -4,6 +4,7 @@
 package ish.oncourse.webservices;
 
 import com.google.inject.*;
+import com.google.inject.multibindings.Multibinder;
 import io.bootique.ConfigModule;
 import io.bootique.cayenne.CayenneModule;
 import io.bootique.jdbc.DataSourceFactory;
@@ -12,20 +13,30 @@ import io.bootique.jetty.MappedFilter;
 import io.bootique.jetty.MappedServlet;
 import io.bootique.tapestry.di.InjectorModuleDef;
 import ish.oncourse.cayenne.WillowCayenneModuleBuilder;
+import ish.oncourse.configuration.Configuration;
 import ish.oncourse.configuration.ISHHealthCheckServlet;
+import ish.oncourse.scheduler.ScheduledService;
+import ish.oncourse.scheduler.zookeeper.ZookeeperExecutor;
 import ish.oncourse.services.cache.NoopQueryCache;
+import ish.oncourse.services.search.BuildSolrClient;
+import ish.oncourse.solr.reindex.ReindexCoursesJob;
+import ish.oncourse.solr.reindex.ReindexSuburbsJob;
+import ish.oncourse.solr.reindex.ReindexTagsJob;
 import ish.oncourse.tapestry.WillowModuleDef;
 import ish.oncourse.tapestry.WillowTapestryFilter;
 import ish.oncourse.tapestry.WillowTapestryFilterBuilder;
 import ish.oncourse.util.log.LogAppInfo;
+import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.cxf.transport.servlet.CXFServlet;
+import org.apache.solr.client.solrj.SolrClient;
 import org.apache.tapestry5.internal.spring.SpringModuleDef;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import static ish.oncourse.configuration.Configuration.AppProperty.ZK_HOST;
 import static org.springframework.web.context.ContextLoader.CONFIG_LOCATION_PARAM;
 
 /**
@@ -87,6 +98,19 @@ public class ServicesModule extends ConfigModule {
 				.addMappedFilter(TAPESTRY_FILTER)
 				.addMappedServlet(CXF_SERVLET)
 				.addMappedServlet(new MappedServlet<>(new ISHHealthCheckServlet(), ISHHealthCheckServlet.urlPatterns, ISHHealthCheckServlet.SERVLET_NAME));
-
+        Multibinder.newSetBinder(binder, Key.get(ScheduledService.class)).addBinding().to(ScheduledService.class).asEagerSingleton();
 	}
+	
+    @Provides
+    public ScheduledService createScheduledService(ServerRuntime runtime) {
+        ObjectContext context = runtime.newContext();
+        SolrClient solrClient = BuildSolrClient.instance().build();
+
+        ReindexCoursesJob coursesJob = new ReindexCoursesJob(context, solrClient);
+        ReindexSuburbsJob suburbsJob = new ReindexSuburbsJob(context, solrClient);
+        ReindexTagsJob tagsJob = new ReindexTagsJob(context, solrClient);
+        ZookeeperExecutor executor = ZookeeperExecutor.valueOf(Configuration.getValue(ZK_HOST), "/willow/solr");
+
+        return ScheduledService.valueOf(executor, coursesJob, suburbsJob, tagsJob).start();
+    }
 }
