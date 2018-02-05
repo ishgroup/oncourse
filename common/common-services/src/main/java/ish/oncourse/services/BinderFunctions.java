@@ -135,6 +135,10 @@ public class BinderFunctions {
 
 
 	public static void bindEnvServices(ServiceBinder binder, String appName, boolean testMode) {
+		bindEnvServices(binder, appName, testMode, S3Service.class);
+	}
+
+	public static void bindEnvServices(ServiceBinder binder, String appName, boolean testMode, Class<? extends IS3Service> s3ServiceClass) {
 		binder.bind(ICayenneService.class, new CayenneServiceBuilder()).eagerLoad();
 		binder.bind(CacheManager.class, new BinderFunctions.CacheManagerBuilder());
 
@@ -148,7 +152,7 @@ public class BinderFunctions {
 		binder.bind(IMailService.class, MailService.class);
 
 		binder.bind(IFileStorageAssetService.class, FileStorageAssetService.class);
-		binder.bind(IS3Service.class, S3Service.class).scope(PERTHREAD);
+		binder.bind(IS3Service.class, s3ServiceClass).scope(PERTHREAD);
 
 		binder.bind(IJMXInitService.class, new JMXInitServiceBuilder(appName));
 
@@ -160,6 +164,7 @@ public class BinderFunctions {
 			binder.bind(ISMSService.class, DefaultSMSService.class);
 		}
 	}
+
 
 	public static void tapestryConfiguration(MappedConfiguration<String, String> configuration, String hmacPassphrase) {
 		// ensure Tapestry does not advertise itself on our pages...
