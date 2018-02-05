@@ -56,7 +56,7 @@ function createCoursesEpic() {
     .filter(actions => actions.length)
     .mergeMap(actions => {
       const ids: string[] = uniq(actions.map(action => action.payload));
-      const chunkIds = chunk(ids, 10);
+      const chunkIds = chunk(ids, 25);
 
       return Observable.from(chunkIds).mergeMap(groupedIds =>
         Observable
