@@ -13,7 +13,7 @@ ext {
      *}*/
 
     initTestDBConfig = { Project project, Test test ->
-        String uri = project.hasProperty("willowTest_uri") ? project.property("willowTest_uri") : "jdbc:mariadb://db.office:3307"
+        String uri = project.hasProperty("willowTest_uri") ? project.property("willowTest_uri") : "jdbc:mariadb://db-test.office:3307"
         String dbName = project.hasProperty("willowTest_dbName") ? project.property("willowTest_dbName") : "willowTest_${project.name}".replaceAll('-','_')
         String dbUser = project.hasProperty("willowTest_user") ? project.property("willowTest_user") : null
         String dbPassword = project.hasProperty("willowTest_pass") ? project.property("willowTest_pass") : null
