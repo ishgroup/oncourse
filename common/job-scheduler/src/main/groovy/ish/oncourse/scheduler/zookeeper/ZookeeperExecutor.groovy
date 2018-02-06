@@ -1,6 +1,7 @@
 package ish.oncourse.scheduler.zookeeper
 
 import ish.oncourse.scheduler.IExecutor
+import ish.oncourse.scheduler.job.IJob
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.apache.zookeeper.*
@@ -13,11 +14,17 @@ class ZookeeperExecutor implements IExecutor {
     private static final Logger logger = LogManager.getLogger()
 
     private String nodePath
+    private IJob job
     private ZooKeeper zooKeeper
     private byte[] bytes = new byte[0]
     private List<ACL> acls = [new ACL(ZooDefs.Perms.ALL, ZooDefs.Ids.ANYONE_ID_UNSAFE)]
 
     private AtomicBoolean locked = new AtomicBoolean(false)
+
+    @Override
+    IJob job() {
+        return job
+    }
 
     @Override
     void execute(Closure execute) {
@@ -56,13 +63,13 @@ class ZookeeperExecutor implements IExecutor {
         }
     }
 
-    static ZookeeperExecutor valueOf(String connection, String nodePath, int sessionTimeout = 2000) {
+    static ZookeeperExecutor valueOf(IJob job, String connection, String nodePath, int sessionTimeout = 2000) {
         ZookeeperExecutor lock = new ZookeeperExecutor()
+        lock.job = job
         lock.zooKeeper = new ZooKeeper(connection, sessionTimeout, { WatchedEvent event ->
             logger.debug(event)
         })
         lock.nodePath = nodePath
         return lock
     }
-
 }

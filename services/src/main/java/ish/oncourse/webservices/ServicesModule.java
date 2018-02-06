@@ -46,6 +46,8 @@ import static org.springframework.web.context.ContextLoader.CONFIG_LOCATION_PARA
 public class ServicesModule extends ConfigModule {
 	public static final String APP_PACKAGE = "ish.oncourse.webservices";
 
+    public static final String REINDEEX_PATH = "/willow/solr/";
+
 	private static final String URL_PATTERN = "/*";
 
 	public static final String DATA_SOURCE_NAME = "willow";
@@ -105,12 +107,11 @@ public class ServicesModule extends ConfigModule {
     public ScheduledService createScheduledService(ServerRuntime runtime) {
         ObjectContext context = runtime.newContext();
         SolrClient solrClient = BuildSolrClient.instance().build();
+        
+        ZookeeperExecutor courseReindexExecutor = ZookeeperExecutor.valueOf(new ReindexCoursesJob(context, solrClient), Configuration.getValue(ZK_HOST), REINDEEX_PATH + "course");
+        ZookeeperExecutor tagReindexExecutor = ZookeeperExecutor.valueOf(new ReindexTagsJob(context, solrClient), Configuration.getValue(ZK_HOST), REINDEEX_PATH + "tag");
+        ZookeeperExecutor suburbReindexExecutor = ZookeeperExecutor.valueOf(new ReindexSuburbsJob(context, solrClient), Configuration.getValue(ZK_HOST), REINDEEX_PATH + "suburb");
 
-        ReindexCoursesJob coursesJob = new ReindexCoursesJob(context, solrClient);
-        ReindexSuburbsJob suburbsJob = new ReindexSuburbsJob(context, solrClient);
-        ReindexTagsJob tagsJob = new ReindexTagsJob(context, solrClient);
-        ZookeeperExecutor executor = ZookeeperExecutor.valueOf(Configuration.getValue(ZK_HOST), "/willow/solr");
-
-        return ScheduledService.valueOf(executor, coursesJob, suburbsJob, tagsJob).start();
+        return ScheduledService.valueOf(courseReindexExecutor, tagReindexExecutor, suburbReindexExecutor).start();
     }
 }

@@ -18,9 +18,7 @@ class ScheduledService {
 
     private ScheduledExecutorService service
 
-    private IExecutor executor
-
-    private List<IJob> jobs = new LinkedList<>()
+    private IExecutor[] executors
 
     private List<ScheduledFuture> futures = new LinkedList<>()
 
@@ -31,20 +29,19 @@ class ScheduledService {
     List<ScheduledFuture> getFutures() { futures }
 
     ScheduledService start() {
-        this.executor.execute({
-            service = Executors.newScheduledThreadPool(3)
-            jobs.each {
-                futures.add(service.scheduleAtFixedRate(it, it.config.initialDelay, it.config.period, it.config.timeUnit))
+        service = Executors.newScheduledThreadPool(executors.size())
+        executors.each {
+            IExecutor e -> e.execute {
+            futures.add(service.scheduleAtFixedRate(e.job(), e.job().config.initialDelay, e.job().config.period, e.job().config.timeUnit)) 
             }
-
-        })
+        }
         return this
     }
 
     void close() {
         try {
             service.addShutdownHook {
-                this.executor.release()
+                executors.each {IExecutor e -> e.release()}
             }
             service.shutdown()
         } catch (e) {
@@ -53,10 +50,9 @@ class ScheduledService {
     }
 
 
-    static ScheduledService valueOf(IExecutor lockExecutor, IJob... jobs) {
+    static ScheduledService valueOf(IExecutor... lockExecutors) {
         ScheduledService result = new ScheduledService()
-        result.executor = lockExecutor
-        result.jobs.addAll(jobs)
+        result.executors = lockExecutors
         return result
     }
 }
