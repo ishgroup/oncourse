@@ -80,7 +80,7 @@ const VoucherDetails = (props): any => {
     <div>
       {voucher.isEditablePrice ?
         <div>
-          This voucher have no specified price.
+          Please change the suggested voucher price to the amount of your choice.
           <dt className="label">Please enter the amount:</dt>
         </div>
         : (<div>
