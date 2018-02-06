@@ -61,6 +61,8 @@ const EnrolmentFieldsForm = reduxForm({
   validate: (data, props: any) => {
     const errors = {};
 
+    if (!props.selected) return errors;
+
     if (props.headings && props.headings.length) {
       props.headings.map(headings =>
         headings.fields.map(field =>
