@@ -33,7 +33,7 @@ class ContactFunctionsTest {
         use(ContactFunctions) {
             SContact sContact = contact.getSContact()
             assertEquals(contact.id, sContact.id)
-            assertEquals(contact.tutor.id, sContact.tutorId)
+            assertEquals(contact.tutor.angelId, sContact.tutorId)
         }
 
     }
@@ -71,7 +71,7 @@ class ContactFunctionsTest {
 
     static Contact contact() {
         Tutor tutor = Mockito.mock(Tutor)
-        when(tutor.id).thenReturn(numberFaker.numberBetween(2001l, 3000l))
+        when(tutor.angelId).thenReturn(numberFaker.numberBetween(2001l, 3000l))
 
         Contact contact = Mockito.mock(Contact)
         when(contact.id).thenReturn(numberFaker.numberBetween(1000l, 2000l))

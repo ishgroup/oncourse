@@ -14,6 +14,7 @@ class ReindexSolrJobTest {
 
     @Test
     void test() {
+        AtomicInteger count = new AtomicInteger(0)
         IExecutor executor = new IExecutor() {
             @Override
             void execute(Closure execute) {
@@ -23,22 +24,28 @@ class ReindexSolrJobTest {
             @Override
             void release() {
             }
+
+            @Override
+            IJob job() {
+                
+                return new IJob() {
+                    @Override
+                    ScheduleConfig getConfig() {
+                        return new ScheduleConfig(0, 1, TimeUnit.SECONDS)
+                    }
+
+                    @Override
+                    void run() {
+                        count.incrementAndGet()
+                        println "ReindexSolrJobTest:${new Date()}"
+                    }
+                }
+            }
         }
 
 
-        AtomicInteger count = new AtomicInteger(0)
-        ScheduledService.valueOf(executor, new IJob() {
-            @Override
-            ScheduleConfig getConfig() {
-                return new ScheduleConfig(0, 1, TimeUnit.SECONDS)
-            }
-
-            @Override
-            void run() {
-                count.incrementAndGet()
-                println "ReindexSolrJobTest:${new Date()}"
-            }
-        }).start()
+        
+        ScheduledService.valueOf(executor).start()
 
 
         while (count.get() < 5) {
