@@ -1,21 +1,25 @@
 package ish.oncourse.willow.editor.webdav
 
-import com.google.inject.Inject
 import io.milton.common.ContentTypeUtils
 import io.milton.http.Auth
 import io.milton.http.Range
 import io.milton.http.exceptions.BadRequestException
+import io.milton.http.exceptions.ConflictException
 import io.milton.http.exceptions.NotAuthorizedException
 import io.milton.http.exceptions.NotFoundException
 import io.milton.resource.GetableResource
 import io.milton.resource.PropFindableResource
+import io.milton.resource.ReplaceableResource
 import ish.oncourse.model.WebUrlAlias
 import ish.oncourse.services.persistence.ICayenneService
+import ish.oncourse.willow.editor.model.settings.RedirectItem
+import ish.oncourse.willow.editor.model.settings.RedirectSettings
+import ish.oncourse.willow.editor.rest.UpdateRedirects
 import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.website.WebUrlAliasFunctions
-import org.eclipse.jetty.server.Request
+import org.apache.cayenne.ObjectContext
 
-class RedirectsResource extends AbstractResource implements GetableResource,PropFindableResource {
+class RedirectsResource extends AbstractResource implements GetableResource,PropFindableResource, ReplaceableResource {
 
     public static final String FILE_NAME = 'redirects.txt'
 
@@ -74,6 +78,36 @@ class RedirectsResource extends AbstractResource implements GetableResource,Prop
     @Override
     Date getCreateDate() {
         return new Date()
+    }
+
+    @Override
+    void replaceContent(InputStream inputStream, Long length) throws BadRequestException, ConflictException, NotAuthorizedException {
+        ObjectContext context = cayenneService.newContext()
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))
+        RedirectSettings settings = new RedirectSettings()
+        
+        String line
+        while((line = br.readLine()) != null) {
+            line = line.trim()
+            if (line.length() > 0) {
+                String[] pathes = line.trim().split(/\s+/)
+                if (pathes.size() != 2) {
+                    throw new BadRequestException("Wrong redirect line: $line. Please provide /from /to URLs splited by space or tab")
+                }
+                settings.rules << new RedirectItem().from(pathes[0]).to(pathes[1])
+            }
+        }
+
+        UpdateRedirects updater = UpdateRedirects.valueOf(settings, context, requestService.request).update()
+        
+        if (updater.errors.empty) {
+            context.commitChanges()
+        } else {
+            context.rollbackChanges()
+            throw new BadRequestException(updater.errors.join('\n'))
+        }
+        
     }
 }
 
