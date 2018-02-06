@@ -4,7 +4,9 @@ import io.bootique.Bootique
 import io.bootique.cayenne.CayenneModuleProvider
 import io.bootique.jdbc.JdbcModuleProvider
 import io.bootique.jetty.JettyModuleProvider
+
 import ish.oncourse.configuration.Configuration
+import static ish.oncourse.ui.services.WebProperty.*
 
 /**
  * User: akoiro
@@ -13,7 +15,7 @@ import ish.oncourse.configuration.Configuration
 class WebApp {
     static void main(String[] args) {
         System.setProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager")
-        Configuration.configure()
+        Configuration.configure(CHECKOUT_VERSION, EDITOR_VERSION)
         Bootique bootique = init(args)
         bootique.exec()
     }

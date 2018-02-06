@@ -2,6 +2,8 @@
 
 	<script type="text/javascript">
         var ciVersion = '${ciVersion}';
+		var editorVersion = '${editorVersion}';
+		var checkoutVersion = '${checkoutVersion}';
 	</script>
 
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
