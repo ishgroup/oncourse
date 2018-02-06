@@ -1,0 +1,54 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+  <t:if test="request.XHR">
+    <html t:type="ui/dialogstructure" title="${tutorDetailsTitle}" bodyId="literal:DetailsPage"
+        bodyClass="literal:internal-page tutor-details"
+        xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+      <t:delegate to="block:tutorDetailsBlock"/>
+    </html>
+  </t:if>
+  <t:if test="request.XHR" negate="true">
+    <html t:type="ui/internal/pagestructure" title="${tutorDetailsTitle}" bodyId="literal:DetailsPage"
+          bodyClass="literal:internal-page tutor-details">
+      <div id="popup-content" itemscope="itemscope" itemtype="http://schema.org/Person">
+        <h2 itemprop="name">${tutorDetailsTitle}</h2>
+        <meta itemprop="jobTitle" content="Instructor" />
+        <t:delegate to="block:tutorDetailsBlock"/>
+      </div>
+    </html>
+  </t:if>
+
+  <t:block t:id="tutorDetailsBlock">
+    <div class="tutors_details">
+      <t:if t:test="${tutorFound}">
+
+        <div class="tutor_info" itemprop="description">
+          <t:if t:test="${profilePicture}">
+            <div class="tutor_pic">
+              <img class="profilePicture" src="${profilePictureUrl}" alt="${tutorDetailsTitle}" />
+            </div>
+          </t:if>
+          <t:if t:test="${hasResume}">
+            <h4>Resume</h4>
+            <div class="resume-details">
+              <p><t:outputraw value="resume"/></p>
+            </div>
+          </t:if>
+        </div>
+        <t:if t:test="${hasRoles}">
+          <div class="tutors_classes">
+            <h4>Classes</h4>
+            <t:loop t:source="currentVisibleTutorRoles" t:value="role">
+            <span>
+              <a href="/class/${role.courseClass.uniqueIdentifier}">${role.courseClass.course.name}</a>
+            </span>
+            </t:loop>
+          </div>
+        </t:if>
+
+        <span t:type="ui/Attachments" entityIdentifier="literal:Contact" entityIdNum="${tutor.contact.id}"/>
+
+      </t:if>
+    </div>
+  </t:block>
+
+</t:container>

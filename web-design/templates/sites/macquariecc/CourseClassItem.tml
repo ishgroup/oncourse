@@ -1,0 +1,216 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+  <t:if test="allowByAplication" negate="true">
+    <span class="hide" itemprop="offers" itemscope="itemscope" itemtype="http://schema.org/Offer">
+      <div class="price">
+        <span t:type="ui/CourseClassPrice" courseClass="courseClass" feeOverride="feeOverride"/>
+      </div>
+    </span>
+  </t:if>
+  <div itemtype="http://schema.org/EducationEvent" itemscope="itemscope" class="clearfix classItem ${classCommenced}" data-classid="${courseClass.id}" data-sku="${courseClass.uniqueIdentifier}">
+    <!--hcalendar implementation-->
+    <div itemprop="name" class="summary">${courseClass.course.name}</div>
+    <t:if test="courseClass.course.detail">
+      <div itemprop="description" class="hide">
+        <t:textOutput value="${formatUtils.truncate(courseClass.course.detail, 200)}" />...
+      </div>
+      <p:else>
+        <meta itemprop="description" content="${courseClass.course.name}" />
+      </p:else>
+    </t:if>
+    <meta itemprop="url" content="https://${request.serverName}/class/${courseClass.uniqueIdentifier}" />
+    <meta itemprop="eventStatus" content="available" />
+    <meta content="https://${request.serverName}/s/img/blank.png" itemprop="image" />
+
+    <div class="class-item-info">
+      <div class="class-item-info-l">
+        <t:if t:test="courseClass.firstSession">
+          <div class="date">
+            <div class="date-left">
+              <a timezone="10" rel="session" href="https://${request.serverName}/Timeline/sessions?ids=${courseClass.id}" class="timeline date-time session-date">
+                <span itemprop="startDate" class="dtstart hide" content="${formatDate(firstSessionStartDate,'yyyy-MM-dd')}">
+                  ${formatDate(firstSessionStartDate,'yyyy-MM-dd')}
+                </span>
+                <abbr class="dtstart">
+                  <t:output format="startDateFormat" value="firstSessionStartDate"/>
+                </abbr>
+
+                <t:if t:test="showDateEnd"> -
+                  <meta itemprop="duration" content="${formatUtils.duration(firstSessionStartDate, courseClass.endDate)}" />
+                  <span itemprop="endDate" class="dtend hide" content="${formatDate(courseClass.endDate,'yyyy-MM-dd')}">
+                    ${formatDate(courseClass.endDate,'yyyy-MM-dd')}
+                  </span>
+                  <abbr class="dtend">
+                    <t:output format="endDateFormat" value="courseClass.endDate"/>
+                  </abbr>
+                  <p:else>
+                    <meta itemprop="duration" content="${formatUtils.duration(firstSessionStartDate, firstSessionEndDate)}" />
+                    <span itemprop="endDate" class="dtend hide" content="${formatDate(firstSessionEndDate,'yyyy-MM-dd')}">
+                      ${formatDate(firstSessionEndDate,'yyyy-MM-dd')}
+                    </span>
+                  </p:else>
+                </t:if>
+              </a>
+              <br/>
+              <a timezone="10" href="https://${request.serverName}/Timeline/sessions?ids=${courseClass.id}" itemprop="duration" class="timeline session-item" rel="session">${classSessions}</a>
+            </div>
+            <div class="date-right">
+              <a timezone="10" href="https://${request.serverName}/Timeline/sessions?ids=${courseClass.id}" class="timeline date-time session-time" rel="session">
+                <i class="aicon time-white-icon"></i>
+                <abbr itemprop="startDate" class="dtstart">
+                  <t:output format="timeFormat" value="firstSessionStartDate"/>
+                </abbr> -
+                <abbr itemprop="endDate" class="dtend">
+                  <t:output format="timeFormatWithTimeZone" value="firstSessionEndDate"/>
+                </abbr>
+                <t:if t:test="hasManySessions"> <!-- (first session) --></t:if>
+              </a>
+            </div>
+          </div>
+
+          <p:else>
+            <t:if t:test="selfPacedClass">
+              <div class="date">Self paced<br/>${expectedHours}<br/>${maximumDaysToComplete}</div>
+
+              <span itemprop="startDate" class="dtstart hide" content="${formatDate(currentDate,'yyyy-MM-dd')}">
+                ${formatDate(currentDate,'yyyy-MM-dd')}
+              </span>
+
+              <span itemprop="endDate" class="dtend hide" content="${formatDate(currentDate,'yyyy-MM-dd')}">
+                ${formatDate(currentDate,'yyyy-MM-dd')}
+              </span>
+
+              <p:else>
+                <b>no session</b>
+
+                <span itemprop="startDate" class="dtstart hide" content="${formatDate(currentDate,'yyyy-MM-dd')}">
+                  ${formatDate(currentDate,'yyyy-MM-dd')}
+                </span>
+
+                <span itemprop="endDate" class="dtend hide" content="${formatDate(currentDate,'yyyy-MM-dd')}">
+                  ${formatDate(currentDate,'yyyy-MM-dd')}
+                </span>
+              </p:else>
+            </t:if>
+          </p:else>
+        </t:if>
+      </div>
+      <div class="class-item-info-r">
+        <div class="location-price">
+          <t:if test="hasLinkToLocation">
+            <div itemprop="location" class="location">
+              <t:if test="courseClass.hasRoom">
+                <span t:type="ui/roomLocation" room="courseClass.room" withRoomName="false" disabledLink="notExistsOnMap" isList="isList"/>
+                <p:else>
+                  <span itemprop="location" itemscope="itemscope" itemtype="http://schema.org/Place">
+                    <span content="Venue TBA" itemprop="name">
+                      Venue TBA
+                    </span>
+                    <span itemtype="http://schema.org/PostalAddress" itemscope="itemscope" itemprop="address">
+                      <meta content="Venue TBA" itemprop="streetAddress" />
+                    </span>
+                  </span>
+                </p:else>
+              </t:if>
+            </div>
+          </t:if>
+
+          <t:if t:test="courseClass.room">
+            <span itemprop="location" itemscope="itemscope" itemtype="http://schema.org/Place">
+              <meta itemprop="name" content="${courseClass.room.site.name}" />
+              <span itemprop="address" itemscope="itemscope" itemtype="http://schema.org/PostalAddress">
+                <meta itemprop="streetAddress" content="${courseClass.room.site.street}"/>
+                <meta itemprop="addressLocality" content="${courseClass.room.site.suburb}"/>
+                <meta itemprop="addressRegion" content="${courseClass.room.site.state}"/>
+                <meta itemprop="postalCode" content="${courseClass.room.site.postcode}"/>
+              </span>
+            </span>
+          </t:if>
+
+          <t:if test="allowByAplication" negate="true">
+            <div class="price">
+              <div data-cid="fees" data-prop-id="${courseClass.id}"></div>
+            </div>
+          </t:if>
+        </div>
+        <t:if test="hasTutorRoles">
+          <div class="tutor-role">
+            <div class="tutor">
+              <t:loop source="visibleTutorRoles" value="tutorRole" index="index">
+                <span itemprop="performer" itemscope="itemscope" itemtype="http://schema.org/Person">
+                  <meta content="https://${request.serverName}/tutor/${tutorRole.tutor.angelId}" itemprop="mainEntityOfPage" />
+                  <a class="nyromodal" href="/tutor/${tutorRole.tutor.angelId}" title="View tutor profile">
+                    <span itemprop="name">${tutorRole.tutor.fullName}</span>
+                  </a>
+                </span>
+                <t:if test="lastIndex" negate="true">
+                  ,
+                </t:if>
+              </t:loop>
+            </div>
+          </div>
+        </t:if>
+      </div>
+    </div>
+    <div class="price-action">
+      <t:if test="allowByAplication" negate="true">
+        <div class="price">
+          <div data-cid="fees" data-prop-id="${courseClass.id}"></div>
+        </div>
+      </t:if>
+      <div class="reactjs-component"
+          data-cid="enrol-button"
+          data-prop-id="${courseClass.id}"></div>
+    </div>
+
+    <t:if test="courseClass.detail">
+      <div class="classDescription class-note-important">
+        <span itemprop="description">
+          <t:outputraw value="courseClassDetail"/>
+        </span>
+      </div>
+    </t:if>
+
+    <div class="bubbleInfo">
+      <div class="tooltip_popup enrol_tooltip">
+        <div class="arrow">
+          <span/>
+        </div>
+        <div class="bubble_top bubble_content">
+          <span class="timing-display">
+            <t:loop source="weekdays" value="day" index="dayIndex">
+              <span class="timing-week${dayKind} timing-${day} ${dayClass} timing-${hasTiming}">${dayShortName}</span>
+            </t:loop>
+          </span>
+          <span class="timing-display">
+            <span class="timing-daytime match-10 timing-daytime-${dayTimeClass}">
+              <img src="/s/img/blank.png" alt="${dayTimeClass}" />
+            </span>
+            <span class="timing-evening match-10 timing-evening-${eveningClass}">
+              <img src="/s/img/blank.png" alt="${eveningClass}" />
+            </span>
+          </span>
+        </div>
+        <div class="bubble_middle bubble_content">
+          <div class="class-link">
+            <a href="https://${request.serverName}/class/${courseClass.course.code}-${courseClass.code}" itemprop="url">
+              View this class...
+            </a>
+          </div>
+          <div class="course-link">
+            <a href="https://${request.serverName}/course/${courseClass.course.code}">
+              More about <em>${courseClass.course.name}</em>...
+            </a>
+          </div>
+        </div>
+        <div class="bubble_bottom"/>
+      </div>
+      <t:if test="${courseClass.cancelled}" negate="true">
+        <t:if test="courseClass.hasAnyTimelineableSessions">
+          <div class="sessions_for_class hidden classSessions" id="sessions_for_class_${courseClass.id}">
+            <span t:type="ui/TimetableEvents" displayedObjects="sortedTimelineableSessions" cssTableClass="cssTableClass" cssEvenRowClass="cssEvenRowClass" cssOddRowClass="cssOddRowClass"/>
+          </div>
+        </t:if>
+      </t:if>
+    </div>
+  </div>
+</t:container>

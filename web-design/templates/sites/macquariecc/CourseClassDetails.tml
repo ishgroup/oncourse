@@ -1,0 +1,59 @@
+<html t:type="ui/internal/pagestructure"
+    canonicalLinkPath="${canonicalLinkPath}"
+    canonicalRelativeLinkPath="${canonicalRelativeLinkPath}"
+    metaDescription="${metaDescription}"
+    title="${courseClass.uniqueIdentifier} | ${courseClass.course.name}"
+    bodyId="literal:DetailsPage"
+    bodyClass="literal:internal-page class-details"
+    xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+
+  <div itemtype="http://schema.org/Course" itemscope="itemscope" class="clearfix courseItem">
+    <div class="course-item-image">
+      <t:loop source="getAttachments(courseClass.course)" value="attachment">
+        <t:if test="hasTag(attachment, 'image/hero')">
+          <div t:type="ui/image" name="attachment.name" class="course-img" width="200" height="200" alt="${courseClass.course.name}"></div>
+        </t:if>
+      </t:loop>
+    </div>
+
+    <div class="class-details-title">
+      <div class="print-page" onclick="window.print();">
+        Print this page
+        <input type="button" value="Print" />
+      </div>
+      <h1 itemprop="name">${courseClass.course.name}</h1>
+      <meta itemprop="provider" content="https://${request.serverName}" />
+    </div>
+
+    <div t:type="ui/confirmorderdialog"/>
+
+    <div class="clearfix classes">
+      <span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="true" isList="false" allowByAplication="allowByAplication" feeOverride="feeOverride"></span>
+    </div>
+
+    <div itemprop="description" id="course-description" class="courseDescription expandable">
+      <t:outputraw value="${courseDetail}"></t:outputraw>
+    </div>
+
+    <hr />
+    <t:if t:test="${courseClass.hasRoom}">
+      <div class="courseClassLocationFinder">
+        <span t:type="ui/SiteDetailsComponent" room="courseClass.room" collapseLocationMap="true"></span>
+      </div>
+    </t:if>
+
+    <t:if t:test="${showInlineTimetable}">
+      <div class="blockdetail">
+        <t:if t:test="courseClass.hasAnyTimelineableSessions">
+        <h2>Sessions</h2>
+        <span t:type="ui/TimetableEvents" displayedObjects="sortedTimelineableSessions"
+        cssTableClass="cssTableClass"
+        cssEvenRowClass="cssEvenRowClass" cssOddRowClass="cssOddRowClass"/>
+        </t:if>
+      </div>
+    </t:if>
+
+    <span t:type="ui/Attachments" entityIdentifier="literal:CourseClass" entityIdNum="${courseClass.id}"/>
+  </div>
+
+</html>

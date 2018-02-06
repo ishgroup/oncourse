@@ -1,0 +1,30 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+  <section class="info-links">
+    <div class="container">
+      <div class="footer-container" itemscope="itemscope" itemtype="http://schema.org/Organization" itemprop="provider">
+        <ul class="footer-info">
+          <li>© Copyright ${year} <span itemprop="name">${collegeName}</span></li>
+          <li>
+            <ul>
+              <li>Tel: <a href="tel:1300845888"><strong>1300 845 888</strong></a></li>
+              <li>Email: <a href="mailto:info@macquarie.nsw.edu.au"><strong>info@macquarie.nsw.edu.au</strong></a></li>
+            </ul>
+          </li>
+        </ul>
+
+        <div class="footer-logo">
+          <ul>
+            <li style="display:inline-block; margin-right:30px; vertical-align:top;"><img src="/s/img/nrt.png" alt="nrt" width="47" height="47" /><br />RTO No. 90033</li>
+            <li style="display:inline-block; margin-right:30px; vertical-align:top;"><img src="/s/img/logos/cca-logo.png" alt="cca" width="156" /></li>
+            <li style="display:inline-block; vertical-align:top;"><img src="/s/img/logos/acnc-logo.png" alt="acnc" width="67" /></li>
+          </ul>
+          <div style="text-align: center;">
+            <a href="http://www.ish.com.au/oncourse" class="popup">
+              <img src="/s/img/icons/poweredby.png" width="102" height="9" alt="powered by ish onCourse"/>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</t:container>

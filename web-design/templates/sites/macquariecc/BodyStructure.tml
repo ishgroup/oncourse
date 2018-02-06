@@ -1,0 +1,104 @@
+<section class="site-wrapper" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+  <section class="site-container" id="container">
+    <header class="site-header" id="header" itemscope="itemscope" itemtype="http://schema.org/WPHeader">
+      <section class="header-container">
+        <section class="top-bar">
+          <div class="container">
+            <div class="contact-info">
+              <div class="contact">
+                <span class="phone">
+                  <i class="aicon phone-gray-icon"></i>  <span>1300 845 888</span>
+                </span>
+              </div>
+              <div class="email-block">
+                <a class="email" href="mailto:info@macquarie.nsw.edu.au">
+                  <i class="aicon mail-gray-icon"></i>  info@macquarie.nsw.edu.au
+                </a>
+              </div>
+            </div>
+
+            <div class="social-links pull-right">
+              <div class="login-link">
+                <a href="https://www.skillsoncourse.com.au/portal/login">Login</a>
+              </div>
+              <ul>
+                <li>
+                  <a href="https://www.facebook.com/MCCMacquarieCommunityCollege"><i class="aicon facebook-gray-icon"></i></a>
+                </li>
+                <li>
+                  <a href="https://twitter.com/#!/MCCMacquarie"><i class="aicon twitter-gray-icon"></i></a>
+                </li>
+                <li>
+                  <a href="https://www.instagram.com/macquariecommunitycollege/"><i class="aicon instagram-gray-icon"></i></a>
+                </li>
+                <li>
+                  <a href=""><i class="aicon youtube-gray-icon"></i></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+        <div class="top-logo-block">
+          <div class="container">
+            <hgroup class="header-hgroup pull-left">
+              <h2 class="site-logo" id="siteLogo">
+                <a href="/">
+                  <img src="/s/img/logos/logo.png" alt="site-logo" class="normal_logo" />
+                </a>
+              </h2>
+              <a class="nav-toggle js-nav-toggle pull-right" href="#">
+                <div class="">
+                  <span class="toggle-title pull-right">
+                    <!-- <i class="sicon toggle-icon"></i> -->
+                  </span>
+                </div>
+                More
+              </a>
+            </hgroup>
+            <div class="top-nav-right">
+              <div t:type="ui/bodyheader" />
+              <div class="navbar">
+                <nav class="site-nav" id="nav">
+                  <div t:type="ui/menu"/>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div t:type="ui/globalnavi" />
+      </section>
+      <div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:header" />
+    </header>
+    <div class="content-images">
+      <div class="course-details-image"></div>
+      <div class="details-title">
+        <div class="container">
+          <h1></h1>
+          <img src="/s/img/icons/nrt_logo-white.png" width="60" height="49" alt="nrt" class="nrt-logo" />
+        </div>
+      </div>
+    </div>
+    <section class="container content-container" id="contentContainer">
+      <aside class="sidebar-left" id="sidebarLeft">
+        <div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:left" />
+      </aside>
+      <article class="content" id="content">
+        <div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:content" />
+        <t:body />
+      </article>
+      <aside class="sidebar-right" id="sidebarRight" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
+        <div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:right" />
+      </aside>
+    </section>
+    <footer class="site-footer" id="footer" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
+      <div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:footer" />
+      <div t:type="ui/bodyfooter" />
+    </footer>
+  </section>
+  <div id="overlay" style="display: none; height: 500px" />
+  <div id="timeline-wrap" style="visibility: hidden;">
+    <div id="timeline" />
+  </div>
+
+  <div data-cid="modal" class="reactjs-component"></div>
+</section>
