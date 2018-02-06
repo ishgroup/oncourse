@@ -4,8 +4,9 @@ apply from: "$rootDir/gradle/tapestry.gradle"
 sourceSets.main.java.srcDirs = []
 sourceSets.main.groovy.srcDir 'src/main/java'
 
-sourceSets.test.java.srcDirs = []
-sourceSets.test.groovy.srcDir 'src/test/java'
+configurations {
+	all*.exclude group: 'org.apache.tapestry', module: 'tapestry-spring'
+}
 
 dependencies {
 	providedCompile 'javax.servlet:servlet-api:3.0'

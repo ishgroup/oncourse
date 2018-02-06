@@ -9,46 +9,44 @@ import ish.oncourse.admin.services.ntis.NTISUpdaterImpl;
 import ish.oncourse.admin.services.ntis.OrganisationServiceBuilder;
 import ish.oncourse.admin.services.ntis.TrainingComponentServiceBuilder;
 import ish.oncourse.admin.services.storage.S3ServiceBuilder;
+import ish.oncourse.cayenne.WillowCayenneModuleBuilder;
 import ish.oncourse.services.BinderFunctions;
-import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.cache.IRequestCacheService;
 import ish.oncourse.services.cache.RequestCacheService;
-import ish.oncourse.services.jmx.IJMXInitService;
-import ish.oncourse.services.jmx.JMXInitService;
-import ish.oncourse.services.s3.IS3Service;
-import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.services.site.IWebSiteVersionService;
+import ish.oncourse.services.threading.ThreadSource;
+import ish.oncourse.services.threading.ThreadSourceImpl;
+import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.tapestry5.MetaDataConstants;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
-import org.apache.tapestry5.ioc.annotations.EagerLoad;
-import org.apache.tapestry5.ioc.annotations.ImportModule;
-import org.apache.tapestry5.ioc.annotations.Local;
-import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
-import org.apache.tapestry5.services.ApplicationGlobals;
 
 
 /**
  * Willow Admin application service module.
  * 
  */
-@ImportModule({ServiceModule.class })
+
 public class AppModule {
 
 	public static void bind(ServiceBinder binder) {
+		BinderFunctions.bindReferenceServices(binder);
+		BinderFunctions.bindEntityServices(binder);
+		BinderFunctions.bindWebSiteServices(binder, WebSiteServiceOverride.class, WebSiteVersionServiceOverride.class);
+		BinderFunctions.bindPaymentGatewayServices(binder);
+		binder.bind(ServerRuntime.class, resources -> ServerRuntime.builder()
+				.addConfig("cayenne-oncourse.xml")
+				.addModule(new WillowCayenneModuleBuilder().build())
+				.build()).eagerLoad();
+		BinderFunctions.bindEnvServices(binder, "admin", false, new S3ServiceBuilder());
+
 		binder.bind(IBillingDataService.class, BillingDataServiceImpl.class);
 		binder.bind(ITrainingComponentService.class, new TrainingComponentServiceBuilder());
 		binder.bind(IOrganisationService.class, new OrganisationServiceBuilder());
 		binder.bind(INTISUpdater.class, NTISUpdaterImpl.class);
-		binder.bind(IWebSiteService.class, WebSiteServiceOverride.class).withId("WebSiteServiceAdmin");
-		binder.bind(IWebSiteVersionService.class, WebSiteVersionServiceOverride.class).withId("WebSiteVersionServiceAdmin");
-		binder.bind(IS3Service.class, new S3ServiceBuilder()).withId("s3ServiceAdmin");
 		binder.bind(IRequestCacheService.class, RequestCacheService.class);
-
-		binder.bind(IJMXInitService.class, new  BinderFunctions.JMXInitServiceBuilder("admin"));
+		binder.bind(ThreadSource.class, ThreadSourceImpl.class);
 	}
-	
 
 	public static void contributeApplicationDefaults(
 			MappedConfiguration<String, String> configuration) {
@@ -58,18 +56,5 @@ public class AppModule {
 
 	public void contributeMetaDataLocator(MappedConfiguration<String, String> configuration) {
 		configuration.add(MetaDataConstants.SECURE_PAGE, "false");
-	}
-
-	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local IWebSiteService webSiteService) {
-		configuration.add(IWebSiteService.class, webSiteService);
-	}
-
-    public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local IWebSiteVersionService webSiteVersionService) {
-        configuration.add(IWebSiteVersionService.class, webSiteVersionService);
-    }
-
-
-    public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local IS3Service s3Service) {
-		configuration.add(IS3Service.class, s3Service);
 	}
 }
