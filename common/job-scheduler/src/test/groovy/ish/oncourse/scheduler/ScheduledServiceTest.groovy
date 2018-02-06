@@ -25,6 +25,7 @@ class ScheduledServiceTest {
         when(job.config).thenReturn(config)
 
         IExecutor executor = mock(IExecutor)
+        when(executor.job()).thenReturn(job)
 
         doAnswer(new Answer() {
             @Override
@@ -34,7 +35,7 @@ class ScheduledServiceTest {
         }).when(executor).execute(any(Closure))
 
 
-        ScheduledService service = ScheduledService.valueOf(executor, job)
+        ScheduledService service = ScheduledService.valueOf(executor)
         service.start()
 
         while (service.futures.size() < 1) {

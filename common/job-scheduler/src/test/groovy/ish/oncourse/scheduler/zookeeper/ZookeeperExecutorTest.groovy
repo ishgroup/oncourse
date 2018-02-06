@@ -1,5 +1,7 @@
 package ish.oncourse.scheduler.zookeeper
 
+import ish.oncourse.scheduler.ScheduleConfig
+import ish.oncourse.scheduler.job.IJob
 import org.apache.zookeeper.server.ServerCnxnFactory
 import org.apache.zookeeper.server.ZooKeeperServer
 import org.junit.After
@@ -23,8 +25,21 @@ class ZookeeperExecutorTest {
 
     @Test
     void test() {
-        ZookeeperExecutor executor1 = ZookeeperExecutor.valueOf("127.0.0.1:$zooKeeperPort", "/ish")
-        ZookeeperExecutor executor2 = ZookeeperExecutor.valueOf("127.0.0.1:$zooKeeperPort", "/ish")
+        IJob testJob = new IJob() {
+            @Override
+            ScheduleConfig getConfig() {
+                return null
+            }
+
+            @Override
+            void run() {
+                while (true){
+                    
+                }
+            }
+        }
+        ZookeeperExecutor executor1 = ZookeeperExecutor.valueOf(testJob, "127.0.0.1:$zooKeeperPort", "/ish")
+        ZookeeperExecutor executor2 = ZookeeperExecutor.valueOf(testJob, "127.0.0.1:$zooKeeperPort", "/ish")
 
         executor1.execute({
             Assert.assertTrue(true)
