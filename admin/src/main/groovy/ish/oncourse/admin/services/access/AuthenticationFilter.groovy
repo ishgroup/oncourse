@@ -31,7 +31,9 @@ class AuthenticationFilter implements Filter {
         AuthenticationResult result = CheckBasicAuth.valueOf(authService, (HttpServletRequest) request).check()
         switch (result.status) {
             case AuthenticationStatus.SUCCESS:
-                chain.doFilter(request, response)
+                if (authService.authorise((request as HttpServletRequest).getRequestURI())) {
+                    chain.doFilter(request, response)
+                }
                 break
             case AuthenticationStatus.INVALID_CREDENTIALS:
             case AuthenticationStatus.MORE_THAN_ONE_USER:
