@@ -1,5 +1,5 @@
 {
-  "name": "cms-react",
+  "name": "editor",
   "version": "0.0.1",
   "description": "cms pure java script application",
   "main": "webpack.config.js",

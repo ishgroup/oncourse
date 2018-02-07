@@ -154,8 +154,10 @@ export const routes: Route[] = [
   // History
   {
     title: 'History',
+    root: true,
     path: '/history',
     url: URL.HISTORY,
+    icon: 'icon-low_priority',
     main: props => <History {...props}/>,
   },
 
