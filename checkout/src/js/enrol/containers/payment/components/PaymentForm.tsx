@@ -223,7 +223,7 @@ const Form = reduxForm({
       data.creditCardCvv = data.creditCardCvv.replace(/\_/g, "");
     }
 
-    if (props.currentTab === Tabs.corporatePass && props.corporatePass.id) {
+    if (props.currentTab === Tabs.corporatePass) {
       dispatch(updatePaymentStatus({status: PaymentStatus.IN_PROGRESS}));
       dispatch(submitPaymentCorporatePass(data));
     } else {
