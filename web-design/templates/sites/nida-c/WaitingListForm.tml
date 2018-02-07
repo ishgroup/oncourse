@@ -1,0 +1,137 @@
+<html t:type="ui/internal/pagestructure" bodyId="literal:EnrolmentEntry"
+    bodyClass="literal:internal-page"
+    xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+    xmlns:p="tapestry:parameter">
+
+<div id="waitingListBlock">
+  <t:if test="request.getParameter('feedback')">
+    <h1>Expression of Interest</h1>
+    <p:else>
+      <h1>Waiting list</h1>
+    </p:else>
+  </t:if>
+  <t:delegate to="block:editor"/>
+</div>
+
+<t:block t:id="editor">
+  <t:delegate to="block:errors"/>
+  <t:if test="controller">
+    <t:remove>
+      parameter secure=true is used to be sure that the form action action will be secure.
+      parameter clientValidation=NONE is used to exclude injection tapestry java script handling for this form
+    </t:remove>
+    <t:form t:id="waitingListForm" clientValidation="literal:NONE" secure="true">
+      <t:if test="controller.addContact">
+        <t:delegate to="block:addContact"/>
+        <t:delegate to="block:editDescription"/>
+        <t:delegate to="block:notes"/>
+        <t:delegate to="block:control"/>
+      </t:if>
+      <t:if test="controller.editContact">
+        <t:delegate to="block:editContact"/>
+        <t:delegate to="block:editDescription"/>
+        <t:delegate to="block:notes"/>
+        <t:delegate to="block:control"/>
+      </t:if>
+    </t:form>
+    <t:if test="controller.finished">
+      <t:delegate to="block:result"/>
+    </t:if>
+  </t:if>
+</t:block>
+
+<t:block t:id="control">
+  <div class="form-controls">
+    <t:submit t:id="addWaitingList" value="Add to waiting list" class="btn btn-primary"/>
+  </div>
+</t:block>
+
+<t:block t:id="notes">
+  <p class="note">
+    <strong class="alert">Note</strong>: ${message:message-noteSameEmail}
+  </p>
+</t:block>
+
+<t:block t:id="errors">
+  <t:if test="unknownCourse">
+    Sorry, the course is not defined.
+  </t:if>
+  <t:if test="expired">
+    <div class="error">
+      <p>${message:message-sessionExpired}</p>
+      <script type="text/javascript">
+        setTimeout("window.location.href='${coursesLink}'", 10000);
+      </script>
+    </div>
+  </t:if>
+  <t:if test="controller">
+    <span t:type="checkout/errors" validationResult="validationResult"/>
+  </t:if>
+</t:block>
+
+<t:block t:id="addContact">
+  <t:if test="request.getParameter('feedback')">
+    <p>Thanks for you interest in this course. We're always looking to improve our offerings. Please take a moment to provide some feedback on [insert courses name here]</p>
+    <p:else>
+      <p>To join the waiting list for ${controller.course.name}, please complete the following form:</p>
+    </p:else>
+  </t:if>
+  <fieldset>
+    <span t:type="checkout/contact/addcontactfieldset" delegate="controller" validateHandler="validateHandler"/>
+  </fieldset>
+</t:block>
+
+<t:block t:id="editContact">
+  <p>Thank you ${controller.contact.fullName} for your request. Please fill additional information about you:</p>
+  <fieldset>
+    <span t:type="checkout/contact/contacteditorfieldset" delegate="controller" validateHandler="validateHandler"/>
+  </fieldset>
+</t:block>
+
+<t:block t:id="editDescription">
+  <fieldset>
+    <p>
+      <label for="detail">
+        Comments
+      </label>
+      <t:textarea t:id="detail" t:value="controller.waitingList.detail" cols="30" rows="4" />
+    </p>
+    <t:if test="request.getParameter('feedback')" negate="true">
+      <p>
+        <label for="potentialStudents">Number of students (including you)<em title="${message:message-required}">*</em></label>
+        <span class="${validateHandler.validateClass('potentialStudents')}">
+          <t:textfield t:id="potentialStudents" t:value="controller.waitingList.potentialStudents" class="input-fixed ${validateHandler.errorClass('potentialStudents')}"/>
+          <span t:type="ui/HintComponent" validationMessage="${validateHandler.error('potentialStudents')}"/>
+        </span>
+      </p>
+    </t:if>
+  </fieldset>
+</t:block>
+
+<t:block t:id="result">
+  <div class="message">
+    <p class="feedback">
+      Thank you for your request.
+      <br/>
+      The student <b>${controller.contact.fullName}</b> (<b>${controller.waitingList.potentialStudents}</b> potential places)
+      <br/>
+      was successfully added to waiting list for course <b>${controller.course.name}</b>.
+    </p>
+  </div>
+  <script type="text/javascript">
+    setTimeout("window.location.href='${coursesLink}'", 10000);
+  </script>
+</t:block>
+
+<link rel="stylesheet" type="text/css" href="${request.contextPath}/css/enrol.css"/>
+<script type="text/javascript" src="${request.contextPath}/js/enrol-min.js"></script>
+<script type="text/javascript">
+  jQuery(document).ready(function() {
+    if (request.getParameter("feedback") != null){
+      if (request.getParameter("feedback") == "true") {
+        jQuery("#addWaitingList").val("Submit");
+      }
+    }
+  });
+</script>
+</html>

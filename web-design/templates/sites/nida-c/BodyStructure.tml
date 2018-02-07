@@ -1,0 +1,101 @@
+<section class="site-wrapper" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+  <section class="site-container" id="container">
+    <div class="site-holder">
+      <div class="navbar navbar-fixed-top" id="header" itemscope="itemscope" itemtype="http://schema.org/WPHeader">
+        <div class="navbar-inner">
+          <div class="header-holder">
+            <div class="container">
+              <div class="nav-toggler">
+                <span class="fa fa-bars"></span>
+                <span class="nav-menu-lbl">Menu</span>
+              </div>
+              <div t:type="ui/bodyheader"></div>
+              <div class="cart-toggler">
+                <span class="fa fa-shopping-cart icon-menu"></span>
+                <span>Cart</span>
+              </div>
+            </div>
+          </div>
+          <!-- <div t:type="ui/globalnavi" /> -->
+          <div class="nav-holder">
+            <div class="container">
+              <nav class="nav" id="nav">
+                <div t:type="ui/menu" rootMenu="rootMenu" />
+              </nav>
+              <span class="search-toggle"><i class="fa fa-search"></i></span>
+              <div class="filters-dropdown"><!-- here will be filters drop down --></div>
+              <span t:type="ui/CourseSearchForm" />
+            </div>
+          </div>
+        </div>
+        <div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:header" />
+      </div>
+      <div class="container" id="container">
+        <section class="content-container" id="contentContainer">
+          <aside class="sidebar-left" id="sidebarLeft">
+            <div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:left" />
+          </aside>
+          <article class="content" id="content">
+            <div class="row">
+              <t:body />
+              <div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:content" />
+            </div>
+          </article>
+          <aside class="sidebar-right" id="sidebarRight" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
+            <div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:right" />
+          </aside>
+        </section>
+      </div>
+
+      <div class="ft-social-big">
+        <div class="container">
+          <h2>Connect with us</h2>
+          <div class="row">
+            <div class="ft-subscribe-form col-md-6 col-xs1-12">
+              <h3>Subscribe to NIDA</h3>
+              <form accept-charset="UTF-8" name="IBNSubscribe" action="https://campaigns.mail2app.lynch2.com/CSB/Public/Form.aspx" method="POST" >
+                <input type="hidden" name="fid" value="1208580" />
+                <fieldset>
+                  <!-- <p class="form-cont-row">
+                    <label for="0FullNameinput">Full Name</label>
+                    <input class="formField" id="0FullNameinput" name="0_Full Name_input" type="text" placeholder="Full Name" />
+                  </p> -->
+                  <p class="form-cont-row">
+                    <label for="1Emailaddressinput">Email address</label>
+                    <input type="text" name="email__sValue" value="" id="1Emailaddressinput" placeholder="Email address" />
+                  </p>
+                </fieldset>
+                <input type="submit" class="form-submit-button" value="Subscribe" />
+              </form>
+            </div>
+            <div class="ft-social-links col-md-5 col-md-offset-1 col-xs1-12">
+              <h3>Follow NIDA</h3>
+              <ul>
+                <li><a href="https://www.facebook.com/NIDACommunity" class="fb" target="_blank"><span></span>Facebook</a></li>
+                <li><a href="https://twitter.com/NIDACommunity" class="tw" target="_blank"><span></span>Twitter</a></li>
+                <li><a href="http://instagram.com/nidacommunity" class="ins" target="_blank"><span></span>Instagram</a></li>
+              </ul>
+              <ul>
+                <li><a href="https://www.linkedin.com/company/nida" class="in" target="_blank"><span></span>Linkedin</a></li>
+                <li><a href="https://www.youtube.com/user/NIDACommunity" class="you" target="_blank"><span></span>Youtube</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <footer class="footer" id="footer" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
+      <div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:footer" />
+      <div t:type="ui/bodyfooter" />
+    </footer>
+  </section>
+
+  <div id="overlay" style="display: none; height: 500px" />
+  <div id="timeline-wrap" style="visibility: hidden;">
+    <div id="timeline" />
+  </div>
+
+  <div data-cid="modal" class="reactjs-component"></div>
+</section>

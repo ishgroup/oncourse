@@ -1,0 +1,13 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+  <a href="${homeLink}" class="brand">${collegeName}
+    <img src="/s/images/nida-corporate-logo.png" alt="NIDA Corporate" />
+    <img src="/s/images/logo-nida-print.png" class="print" alt="NIDA Corporate" />
+  </a>
+  <aside class="pull-right" id="headerToolbar">
+    <t:if t:test="paymentGatewayEnabled">
+      <span t:type="ui/ShortList" />
+    </t:if>
+    <!-- <span t:type="ui/PromoCodesView" /> -->
+  </aside>
+  <p class="additional-nav">Visit: <a href="https://www.nida.edu.au/">NIDA</a> | <a href="https://www.open.nida.edu.au/">Open</a></p>
+</t:container>

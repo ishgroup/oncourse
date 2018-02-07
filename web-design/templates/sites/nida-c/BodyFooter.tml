@@ -1,0 +1,20 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+  <section class="copy-info">
+    <div class="container">
+      <div class="footer-container" itemscope="itemscope" itemtype="http://schema.org/Organization" itemprop="provider">
+        <div class="row">
+          <div class="ft-cp-bock-to-top col-md-3 col-xs-12">
+            <p class="copy">© <span itemprop="name">NIDA</span> 2017</p>
+          </div>
+
+          <div class="col-md-9 col-xs-12 copy-row">
+            <p class="copy">abn: 99 000 257741</p>
+            <p class="additional-nav">
+              Visit: <a href="https://www.nida.edu.au/">NIDA</a> | <a href="https://www.open.nida.edu.au/">Open</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</t:container>

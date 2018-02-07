@@ -1,0 +1,123 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+  <t:delegate to="currentBlock"/>
+  <t:block t:id="filteredCourses">
+    <span id="courses-list">
+      <t:if t:test="hasInvalidSearchTerms">
+        <span t:type="ui/SearchTermsClarification" paramsInError="paramsInError"></span>
+        <p:else>
+          <span t:type="ui/CoursesFilter"/>
+          <!-- <span t:type="ui/SearchCriteria" hasMapItemList="hasMapItemList"></span> -->
+          <div id="sitesMap">
+            <span t:type="ui/GoogleMapSites" sites="mapSites" focuses="focusesForMapSites" collapsed="true" showLocationMap="false"></span>
+          </div>
+
+          <t:if test="browseTag">
+            <t:if test="browseTag.hasDetails">
+              <t:outputraw value="${browseTagDetail}"/>
+            </t:if>
+          </t:if>
+          <t:if t:test="isException">
+            <h2>Because of an error in the search engine, all courses are being displayed. Our technical team is working to resolve this problem now.</h2>
+          </t:if>
+          <t:if t:test="hasAnyItems" negate="true">
+            <h1>No results</h1>
+            <p></p>
+            <p>We’re sorry, we couldn’t find anything matching your search filters or search term. Please try again.</p>
+
+            <h2>Improve your search results</h2>
+            <p>
+              <ul>
+                <li>Try removing one or more search filters on the right.</li>
+                <li>Try again. Refresh your search in a few minutes. Sometimes the search tool doesn’t load properly. We are currently working on this issue. </li>
+                <li>Try more general keywords.</li>
+                <li>Try different keywords.</li>
+                <li>Check for typos and spelling errors.</li>
+              </ul>
+            </p>
+            <p>We’re always programming new courses, so check in often. </p>
+
+            <h2>Let us help you find what you’re looking for</h2>
+            <p>Send us a request and tell us what you’re looking for.</p>
+            <p><a href="http://www.open.nida.edu.au/course-request-form" class="gift-btn">Send course request<i class="fa fa-angle-right"></i></a></p>
+            <p><strong>Or call us 9am–5pm, Monday to Friday on 1300 450 417.</strong></p>
+
+            <h2>Try one of our most popular courses instead</h2>
+            <table style="width:100%">
+              <tr>
+                <th><strong>Adults</strong></th>
+                <th><strong>Young People</strong></th>
+                <th><strong>Children</strong></th>
+              </tr>
+              <tr>
+                <td>
+                  <ul>
+                    <li><a href="https://www.open.nida.edu.au/course/OANA"><u>NIDA Acting Techniques</u></a></li><li><a href="https://www.open.nida.edu.au/course/OAAE"><u>Acting Essentials</u></a></li>
+                    <li><a href="https://www.open.nida.edu.au/course/OASAT"><u>Screen Acting Techniques</u></a></li>
+                    <li><a href="https://www.open.nida.edu.au/course/OAAIN"><u>Acting: An Introduction</u></a></li>
+                    <li><a href="https://www.open.nida.edu.au/course/OASAE"><u>Screen Acting Essentials</u></a></li>
+                    <li><a href="https://www.open.nida.edu.au/course/OATPE"><u>TV Presenting Essentials</u></a></li>
+                    <li><a href="https://www.open.nida.edu.au/course/OSSAAU"><u>Screen Actors Studio - Audition</u></a></li>
+                    <li><a href=" https://www.open.nida.edu.au/course/OSAAU"><u>Actors Studio - Audition</u></a></li>
+                  </ul>
+                </td>
+                <td>
+                  <strong>Term classes</strong>
+                  <ul>
+                    <li><a href="https://www.open.nida.edu.au/course/OTD78"><u>Drama for Grades 7-8, (NIDA Kensington only)</u></a></li>
+                    <li><a href="https://www.open.nida.edu.au/course/OTD910"><u>Drama for Grades 9-10, (NIDA Kensington only)</u></a></li>
+                    <li><a href="https://www.open.nida.edu.au/course/OTA1112"><u>Acting for Grades 11-12 (NIDA Kensington only)</u></a></li>
+                  </ul>
+                  <strong>Holiday classes</strong>
+                  <ul>
+                    <li><a href="https://www.open.nida.edu.au/course/OHDS12"><u>Drama School, Grades 7-10 (NIDA Kensington only)</u></a></li>
+                    <li><a href="https://www.open.nida.edu.au/course/OHNDS12"><u>NIDA Drama School, Grades 7-10</u></a></li>
+                    <li><a href="https://www.open.nida.edu.au/course/OHAB15"><u>Acting Boot Camp, Grades 11-12</u></a></li>
+                  </ul>
+                </td>
+                <td>
+                  <strong>Term classes</strong>
+                  <ul>
+                    <li><a href="https://www.open.nida.edu.au/course/OHDS8"><u>Drama for Kindergarten, (NIDA Kensington only)</u></a></li>
+                    <li><a href="https://www.open.nida.edu.au/course/OHDS1"><u>Drama for Grades 1-2, (NIDA Kensington only)</u></a></li>
+                    <li><a href="https://www.open.nida.edu.au/course/OTD34"><u>Drama for Grades 3-4, (NIDA Kensington only)</u></a></li>
+                    <li><a href="https://www.open.nida.edu.au/course/OTD56"><u>Drama for Grades 5-6, (NIDA Kensington only)</u></a></li>
+                  </ul>
+                  <strong>Holiday classes</strong>
+                  <ul>
+                    <li><a href="https://www.open.nida.edu.au/course/OHDS8"><u>Drama School, Grades 3-6 (NIDA Kensington only)</u></a></li>
+                    <li><a href="https://www.open.nida.edu.au/course/OHNDS8"><u>NIDA Drama School, Grades 3-6</u></a></li>
+                    <li><a href="https://www.open.nida.edu.au/course/OHDS1"><u>Drama School, Grades 1-2 (NIDA Kensington only)</u></a></li>
+                  </ul>
+                </td>
+              </tr>
+            </table>
+
+            <p:else>
+              <t:delegate to="block:moreCourses"/>
+            </p:else>
+          </t:if>
+        </p:else>
+      </t:if>
+    </span>
+  </t:block>
+
+  <t:block t:id="moreCourses">
+    <t:if test="DebugRequest">
+      <t:outputraw value="${debugInfo}"/>
+    </t:if>
+  <span t:type="ui/CoursesList" courses="courses" coursesCount="coursesCount"
+            loadedCoursesIds="previouslyLoadedCourseIds"
+            itemIndex="itemIndex" sitesParameter="sitesParameter" searchParams="searchParams"/>
+  </t:block>
+
+  <t:block t:id="htmlCourses">
+    <html t:type="ui/internal/pagestructure" bodyId="literal:ListPage"
+          bodyClass="literal:internal-page"
+          canonicalLinkPath="${canonicalLinkPath}"
+          canonicalRelativeLinkPath="${canonicalRelativeLinkPath}"
+          metaDescription="${metaDescription}">
+      <t:delegate to="block:filteredCourses"/>
+    </html>
+  </t:block>
+
+</t:container>
