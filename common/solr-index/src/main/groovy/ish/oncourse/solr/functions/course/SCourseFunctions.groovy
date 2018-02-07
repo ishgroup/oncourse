@@ -37,7 +37,9 @@ class SCourseFunctions {
                 .lastElement()
                 .defaultIfEmpty(result)
                 .blockingGet()
-
+        
+        context.tags(context.course).each {t -> result.tagId.add(t.id)}
+        
         if (result.classStart.isEmpty()) result.classStart.add(DateUtils.addYears(context.current, 100))
         if (result.classEnd.isEmpty()) result.classEnd.add(DateUtils.addYears(context.current, 100))
         result.startDate = result.classStart.sort({ d1, d2 -> (d1 <=> d2) }).first()
