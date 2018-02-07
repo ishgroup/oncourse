@@ -25,6 +25,8 @@ export const UPDATE_ITEM: string = "checkout/summary/update/item";
 export const CHANGE_CHILD_PARENT_REQUEST: string = _toRequestType("checkout/summary/change/parent");
 export const CHANGE_CHILD_PARENT_FULFILLED: string = FULFILLED(CHANGE_CHILD_PARENT_REQUEST);
 
+export const REMOVE_ITEM_FROM_SUMMARY: string = "checkout/remove/summary/item";
+
 export const addContactToSummary = (contact: Contact): IAction<Contact> => {
   return {
     type: ADD_CONTACT_TO_SUMMARY,
@@ -98,6 +100,14 @@ export const updateEnrolmentFields = (form, type) => {
   return {
     type: UPDATE_ENROLMENT_FIELDS,
     payload: {form, type},
+  };
+};
+
+export const removeItemFromSummary = (type, id) => {
+
+  return {
+    type: REMOVE_ITEM_FROM_SUMMARY,
+    payload: {type, id},
   };
 };
 

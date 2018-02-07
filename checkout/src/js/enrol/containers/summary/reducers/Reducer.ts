@@ -5,7 +5,7 @@ import * as L from "lodash";
 import {IAction} from "../../../../actions/IshAction";
 import {FULFILLED} from "../../../../common/actions/ActionUtils";
 
-export const Reducer = (state: State = ContactNodeToState([]), action: IAction<State>): State => {
+export const Reducer = (state: State = ContactNodeToState([]), action: IAction<any>): State => {
   const ns: State = L.cloneDeep(state);
 
   switch (action.type) {
@@ -47,6 +47,16 @@ export const Reducer = (state: State = ContactNodeToState([]), action: IAction<S
         ...state,
         fetching: true,
       };
+
+    case SummaryActions.REMOVE_ITEM_FROM_SUMMARY:
+      const {type, id} = action.payload;
+      if (!type && !id) return state;
+
+      state.result.forEach(cid => {
+        ns.entities[type] && delete ns.entities[type][`${cid}-${id}`];
+      });
+
+      return ns;
 
     case FULFILLED(SummaryActions.SELECT_ITEM_REQUEST):
     case SHOW_MESSAGES:

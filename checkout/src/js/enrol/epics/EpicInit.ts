@@ -17,7 +17,7 @@ import {AxiosResponse} from "axios";
 import {resetPaymentState} from "../containers/payment/actions/Actions";
 import {IshState} from "../../services/IshState";
 import {openEditContact} from "../containers/contact-edit/actions/Actions";
-import {getAllContactNodesFromBackend, getContactNodeFromBackend} from "../containers/summary/actions/Actions";
+import {getAllContactNodesFromBackend, getContactNodeFromBackend, removeItemFromSummary} from "../containers/summary/actions/Actions";
 
 const updateContactNodes = contacts => {
   const result = [];
@@ -52,6 +52,19 @@ const setPayerFromCart = (state: IshState): Observable<any> => {
       return ProcessError(data);
     });
 };
+
+const getItemType = actionType => {
+  switch (actionType) {
+    case WebActions.REMOVE_CLASS_FROM_CART:
+      return 'enrolments';
+
+    case WebActions.REMOVE_WAITING_COURSE_FROM_CART:
+      return 'waitingLists';
+
+    default:
+      return null;
+  }
+}
 
 
 /**
@@ -89,6 +102,7 @@ export const EpicInit: Epic<any, IshState> = (action$: ActionsObservable<any>, s
       return result.concat([
         Actions.changePhase(state.checkout.isCartModified ? Phase.Summary : state.checkout.page),
         getAllContactNodesFromBackend(),
+        removeItemFromSummary(getItemType(action.type), action.payload && action.payload.id),
       ]);
     }
 
