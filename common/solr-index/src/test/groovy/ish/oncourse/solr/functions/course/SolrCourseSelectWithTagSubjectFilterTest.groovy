@@ -93,7 +93,6 @@ class SolrCourseSelectWithTagSubjectFilterTest extends ASolrTest{
         assertNotNull(actualSCourses.find {it.name == "course1"})
         assertNotNull(actualSCourses.find {it.name == "course3"})
         assertNotNull(actualSCourses.find {it.name == "course7"})
-        actualSCourses.each { println it.name + " : " + it.score}
 
         actualSCourses = solrClient.query("courses",
                 SolrQueryBuilder.valueOf(new SearchParams(s: "course*", subject: tag21), cCollege.college.id.toString(), null, null).build())
@@ -101,16 +100,12 @@ class SolrCourseSelectWithTagSubjectFilterTest extends ASolrTest{
         assertEquals(2, actualSCourses.size())
         assertNotNull(actualSCourses.find {it.name == "course5"})
         assertNotNull(actualSCourses.find {it.name == "course8"})
-        println actualSCourses.size()
-        actualSCourses.each { println it.name + " : " + it.score}
 
         actualSCourses = solrClient.query("courses",
                 SolrQueryBuilder.valueOf(new SearchParams(s: "course*", tags: Arrays.asList(tag1, tag2)), cCollege.college.id.toString(), null, null).build())
                 .getBeans(SCourse.class)
         assertEquals(1, actualSCourses.size())
         assertNotNull(actualSCourses.find {it.name == "course7"})
-        println actualSCourses.size()
-        actualSCourses.each { println it.name + " : " + it.score}
     }
     
     @After
