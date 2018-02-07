@@ -355,7 +355,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	}
 
 	private boolean needRedirect(Request request) {
-		String path = requestGlobals.getHTTPServletRequest().getServletPath();
+		String path = requestGlobals.getHTTPServletRequest().getPathInfo();
 		String query = requestGlobals.getHTTPServletRequest().getQueryString();
 		path += query != null ? "?" + query : StringUtils.EMPTY;
 
