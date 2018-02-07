@@ -9,10 +9,10 @@ import javax.servlet.http.HttpServletRequest
 
 class CheckBasicAuth {
 
-    static final String HTTP_HEADER_AUTH = 'Authorization'
-    static final String AUTH_TYPE_BASIC = 'Basic'
-
     private static final Logger logger = LogManager.logger
+
+    private static final String HEADER_Authorization = 'Authorization'
+    private static final String TOKEN_Basic = 'Basic'
 
     private IAuthenticationService service
     private HttpServletRequest request
@@ -25,12 +25,12 @@ class CheckBasicAuth {
     }
 
     AuthenticationResult check() {
-        String authHeader = request.getHeader(HTTP_HEADER_AUTH)
-        if (StringUtils.trimToNull(authHeader)) {
+        String authHeader = StringUtils.trimToNull(request.getHeader(HEADER_Authorization))
+        if (authHeader) {
             StringTokenizer st = new StringTokenizer(authHeader)
             if (st.hasMoreTokens()) {
                 String basic = st.nextToken()
-                if (basic.equalsIgnoreCase(AUTH_TYPE_BASIC)) {
+                if (basic.equalsIgnoreCase(TOKEN_Basic)) {
                     try {
                         String credentials = new String(Base64.decodeBase64(st.nextToken()), 'UTF-8')
                         int p = credentials.indexOf(':')
@@ -42,9 +42,12 @@ class CheckBasicAuth {
                     } catch (UnsupportedEncodingException e) {
                         logger.catching(e)
                     }
+                    return AuthenticationResult.valueOf(AuthenticationStatus.INVALID_CREDENTIALS)
                 }
             }
+        } else {
+            return AuthenticationResult.valueOf(AuthenticationStatus.UNAUTHORIZED)
         }
-        return AuthenticationResult.valueOf(AuthenticationStatus.INVALID_CREDENTIALS)
+
     }
 }

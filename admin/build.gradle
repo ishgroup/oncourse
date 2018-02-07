@@ -1,8 +1,6 @@
 apply from: "$rootDir/gradle/tapestry.app.gradle"
 
 
-mainClassName = 'ish.oncourse.admin.AdminApp'
-
 configurations {
 	all*.exclude group: 'org.apache.tapestry', module: 'tapestry-spring'
 }
@@ -40,3 +38,6 @@ dependencies {
 
 	testCompile project(':common:test-functions')
 }
+
+
+mainClassName = 'ish.oncourse.admin.AdminApp'
