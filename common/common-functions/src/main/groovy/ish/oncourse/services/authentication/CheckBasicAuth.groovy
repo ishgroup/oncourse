@@ -19,7 +19,7 @@ class CheckBasicAuth {
         return checker
     }
 
-    AuthenticationStatus check() {
+    AuthenticationResult check() {
         if (StringUtils.trimToNull(authHeader)) {
             StringTokenizer st = new StringTokenizer(authHeader)
             if (st.hasMoreTokens()) {
@@ -39,6 +39,6 @@ class CheckBasicAuth {
                 }
             }
         }
-        return AuthenticationStatus.INVALID_CREDENTIALS
+        return AuthenticationResult.valueOf(AuthenticationStatus.INVALID_CREDENTIALS)
     }
 }

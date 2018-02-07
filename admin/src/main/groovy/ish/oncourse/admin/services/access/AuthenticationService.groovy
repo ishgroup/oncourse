@@ -17,7 +17,7 @@ class AuthenticationService implements IAuthenticationService {
 
     @Inject
     AuthenticationService(RequestService requestService) {
-        requestService = requestService
+        this.requestService = requestService
     }
 
     AuthenticationResult authenticate(String userName, String password, boolean persist) {
@@ -29,6 +29,6 @@ class AuthenticationService implements IAuthenticationService {
     }
 
     boolean getUser() {
-        return AuthenticationStatus.SUCCESS == CheckBasicAuth.valueOf(this, requestService.request.getHeader('Authorization')).check()
+        return AuthenticationStatus.SUCCESS == CheckBasicAuth.valueOf(this, requestService.request.getHeader('Authorization')).check().status
     }
 }
