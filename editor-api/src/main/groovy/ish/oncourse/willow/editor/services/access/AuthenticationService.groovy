@@ -206,7 +206,7 @@ class AuthenticationService implements IAuthenticationService {
                 && (!isPersist || sessionManager.sessionExist(sessionCookie.sessionNode))) {
             SelectById.query(WillowUser, sessionCookie.userId).selectOne(cayenneService.newContext())
         } else {
-            CheckBasicAuth.valueOf(this, requestService.request.getHeader('Authorization')).check()
+            CheckBasicAuth.valueOf(this, requestService.request).check()
             return willowUser
         }
     }
@@ -226,7 +226,7 @@ class AuthenticationService implements IAuthenticationService {
                 return null
             }
         } else {
-            CheckBasicAuth.valueOf(this, requestService.request.getHeader('Authorization')).check()
+            CheckBasicAuth.valueOf(this, requestService.request).check()
             return systemUser
         }
     }

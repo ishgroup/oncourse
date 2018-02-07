@@ -29,6 +29,6 @@ class AuthenticationService implements IAuthenticationService {
     }
 
     boolean getUser() {
-        return AuthenticationStatus.SUCCESS == CheckBasicAuth.valueOf(this, requestService.request.getHeader('Authorization')).check().status
+        return AuthenticationStatus.SUCCESS == CheckBasicAuth.valueOf(this, requestService.request).check().status
     }
 }
