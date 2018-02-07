@@ -1,15 +1,15 @@
-apply plugin: 'war'
-apply from: "$rootDir/gradle/tapestry.gradle"
+apply from: "$rootDir/gradle/tapestry.app.gradle"
+apply from: "$rootDir/gradle/cxf-spring.gradle"
+//apply from: "$rootDir/gradle/build-static.gradle"
 
-sourceSets.main.java.srcDirs = []
-sourceSets.main.groovy.srcDir 'src/main/java'
+mainClassName = 'ish.oncourse.admin.AdminApp'
 
 configurations {
 	all*.exclude group: 'org.apache.tapestry', module: 'tapestry-spring'
 }
 
 dependencies {
-	providedCompile 'javax.servlet:servlet-api:3.0'
+//	providedCompile 'javax.servlet:servlet-api:3.0'
 
 	compile project(':common:common-model')
 	compile (project(':common:common-services'))  {
@@ -21,11 +21,13 @@ dependencies {
 		exclude group: 'org.springframework'
 		exclude group: 'ish.oncourse.willow'
 	}
+	compile(project(':common:common-api'))
+	compile project(':common:common-templates')
 
-	compile ('org.apache.cxf:cxf-rt-frontend-jaxws:2.6.6') {
-		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-servlet_3.0_spec'
-		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
-	}
+//	compile ('org.apache.cxf:cxf-rt-frontend-jaxws:2.6.6') {
+//		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-servlet_3.0_spec'
+//		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
+//	}
 	compile 'org.apache.cxf:cxf-rt-ws-security:2.6.6'
 	compile 'org.apache.cxf:cxf-rt-transports-http:2.6.6'
 	compile 'xalan:xalan:2.7.1'
@@ -35,24 +37,10 @@ dependencies {
 	compile 'org.reflections:reflections:0.9.11'
 	compile 'commons-dbcp:commons-dbcp:1.4'
 	compile 'commons-pool:commons-pool:1.5.6'
-	
+
 	// The odd next line is to work around gradle pulling in the wrong configuration
 	// http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency
 	testCompile project(path: ':common:common-test', configuration: 'testFixtures')
 
 	testCompile project(':common:test-functions')
-}
-
-archivesBaseName = "willowAdmin"
-
-war {
-	archiveName = 'willowAdmin.war'
-	manifest {
-		from sharedManifest
-	}
-	from 'build/resource-assemble'
-	from ('src/main/static') {
-		exclude 'js'
-		exclude 'src'
-	}
 }

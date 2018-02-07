@@ -34,10 +34,10 @@ public class AppModule {
 		BinderFunctions.bindEntityServices(binder);
 		BinderFunctions.bindWebSiteServices(binder, WebSiteServiceOverride.class, WebSiteVersionServiceOverride.class);
 		BinderFunctions.bindPaymentGatewayServices(binder);
-		binder.bind(ServerRuntime.class, resources -> ServerRuntime.builder()
-				.addConfig("cayenne-oncourse.xml")
-				.addModule(new WillowCayenneModuleBuilder().build())
-				.build()).eagerLoad();
+//		binder.bind(ServerRuntime.class, resources -> ServerRuntime.builder()
+//				.addConfig("cayenne-oncourse.xml")
+//				.addModule(new WillowCayenneModuleBuilder().build())
+//				.build()).eagerLoad();
 		BinderFunctions.bindEnvServices(binder, "admin", false, new S3ServiceBuilder());
 
 		binder.bind(IBillingDataService.class, BillingDataServiceImpl.class);

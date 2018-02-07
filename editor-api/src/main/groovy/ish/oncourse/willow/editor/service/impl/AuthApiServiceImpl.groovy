@@ -1,6 +1,8 @@
 package ish.oncourse.willow.editor.service.impl
 
 import com.google.inject.Inject
+import ish.oncourse.services.authentication.AuthenticationResult
+import ish.oncourse.services.authentication.AuthenticationStatus
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.willow.editor.service.*;
 import ish.oncourse.willow.editor.model.User;
@@ -9,7 +11,6 @@ import ish.oncourse.willow.editor.model.common.CommonError;
 
 import groovy.transform.CompileStatic
 import ish.oncourse.willow.editor.services.access.AuthenticationService
-import ish.oncourse.willow.editor.services.access.AuthenticationStatus
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
@@ -31,7 +32,7 @@ class AuthApiServiceImpl implements AuthApi {
     }
     
     User getUser(LoginRequest loginRequest) { 
-        AuthenticationService.AuthenticationResult result =  authenticationService.authenticate(loginRequest.email, loginRequest.password, true)
+        AuthenticationResult result =  authenticationService.authenticate(loginRequest.email, loginRequest.password, true)
         switch (result.status) {
             case AuthenticationStatus.SUCCESS:
                 return new User().firstName(result.firstName).lastName(result.lastName)

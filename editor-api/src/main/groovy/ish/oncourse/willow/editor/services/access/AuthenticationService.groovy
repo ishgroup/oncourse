@@ -5,6 +5,9 @@ import com.google.inject.Singleton
 import ish.oncourse.model.College
 import ish.oncourse.model.SystemUser
 import ish.oncourse.model.WillowUser
+import ish.oncourse.services.authentication.AuthenticationResult
+import ish.oncourse.services.authentication.CheckBasicAuth
+import ish.oncourse.services.authentication.IAuthenticationService
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.website.WebSiteFunctions
@@ -14,24 +17,24 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.PersistentObject
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
-import org.apache.commons.codec.binary.Base64
 import org.apache.commons.lang.StringUtils
-import org.apache.commons.lang3.exception.ExceptionUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.eclipse.jetty.server.Request
 
 import javax.servlet.http.Cookie
-import javax.servlet.http.HttpServletResponse
 
-import static ish.oncourse.willow.editor.services.access.AuthenticationStatus.*
+import static ish.oncourse.services.authentication.AuthenticationStatus.*
 
 @Singleton
-class AuthenticationService {
+class AuthenticationService implements IAuthenticationService {
 
     private ICayenneService cayenneService
     private RequestService requestService
     private ZKSessionManager sessionManager
+
+    private SystemUser systemUser = null
+    private WillowUser willowUser = null
     
     private static final String SESSION_ID = 'ESESSIONID'
     
@@ -66,11 +69,11 @@ class AuthenticationService {
     private AuthenticationResult fillUser(Class userType, PersistentObject user) {
         switch (userType) {
             case WillowUser:
-                WillowUser willowUser = (user as WillowUser)
-                return AuthenticationResult.valueOf(null, willowUser.firstName,  willowUser.lastName, null, willowUser)
+                willowUser = (user as WillowUser)
+                return AuthenticationResult.valueOf(null, willowUser.firstName,  willowUser.lastName)
             case SystemUser:
-                SystemUser systemUser =  (user as SystemUser)
-                return AuthenticationResult.valueOf(null, systemUser.firstName,  systemUser.surname, systemUser, null)
+                systemUser =  (user as SystemUser)
+                return AuthenticationResult.valueOf(null, systemUser.firstName,  systemUser.surname)
             default: 
                 throw new IllegalArgumentException("Unsupported user type:  $userType, persistent object: $user")
         }
@@ -93,7 +96,6 @@ class AuthenticationService {
         if (NO_MATCHING_USER == response.status) {
             response = authenticateSuperUser(userName, password, persist)
         }
-
         return response
     }
 
@@ -204,7 +206,8 @@ class AuthenticationService {
                 && (!isPersist || sessionManager.sessionExist(sessionCookie.sessionNode))) {
             SelectById.query(WillowUser, sessionCookie.userId).selectOne(cayenneService.newContext())
         } else {
-            return checkBasicAuth().willowUser
+            CheckBasicAuth.valueOf(this, requestService.request.getHeader('Authorization')).check()
+            return willowUser
         }
     }
 
@@ -223,7 +226,8 @@ class AuthenticationService {
                 return null
             }
         } else {
-            return checkBasicAuth().systemUser
+            CheckBasicAuth.valueOf(this, requestService.request.getHeader('Authorization')).check()
+            return systemUser
         }
     }
     
@@ -233,30 +237,6 @@ class AuthenticationService {
                 requestService.request.serverName,
                 requestService.request.contextPath,
                 0, null, false, false, 0)  
-    }
-    
-    private AuthenticationResult checkBasicAuth() {
-        String authHeader = requestService.request.getHeader('Authorization')
-        if (org.apache.commons.lang3.StringUtils.trimToNull(authHeader)) {
-            StringTokenizer st = new StringTokenizer(authHeader)
-            if (st.hasMoreTokens()) {
-                String basic = st.nextToken()
-                if (basic.equalsIgnoreCase('Basic')) {
-                    try {
-                        String credentials = new String(Base64.decodeBase64(st.nextToken()), 'UTF-8')
-                        int p = credentials.indexOf(':')
-                        if (p != -1) {
-                            String _username = credentials.substring(0, p).trim()
-                            String _password = credentials.substring(p + 1).trim()
-                            return authenticate(_username, _password, false)
-                        }
-                    } catch (UnsupportedEncodingException e) {
-                        logger.catching(e)
-                    }
-                }
-            }
-        }
-        return AuthenticationResult.valueOf(INVALID_CREDENTIALS)
     }
 
     static class SessionCookie {
@@ -314,64 +294,6 @@ class AuthenticationService {
 
         void setExist(boolean exist) {
             this.exist = exist
-        }
-    }
-    
-    static class AuthenticationResult {
-        private AuthenticationStatus status
-        private String firstName
-        private String lastName
-        private SystemUser systemUser
-        private WillowUser willowUser
-
-        SystemUser getSystemUser() {
-            return systemUser
-        }
-
-        void setSystemUser(SystemUser systemUser) {
-            this.systemUser = systemUser
-        }
-
-        WillowUser getWillowUser() {
-            return willowUser
-        }
-
-        void setWillowUser(WillowUser willowUser) {
-            this.willowUser = willowUser
-        }
-
-        void setStatus(AuthenticationStatus status) {
-            this.status = status
-        }
-
-        void setFirstName(String firstName) {
-            this.firstName = firstName
-        }
-
-        void setLastName(String lastName) {
-            this.lastName = lastName
-        }
-
-        AuthenticationStatus getStatus() {
-            return status
-        }
-
-        String getFirstName() {
-            return firstName
-        }
-
-        String getLastName() {
-            return lastName
-        }
-
-        static AuthenticationResult valueOf(AuthenticationStatus status, String firstName = null, String lastName = null, SystemUser systemUser = null, WillowUser willowUser = null) {
-            AuthenticationResult result = new AuthenticationResult()
-            result.status = status
-            result.firstName = firstName
-            result.lastName = lastName
-            result.systemUser = systemUser
-            result.willowUser = willowUser
-            result
         }
     }
 }

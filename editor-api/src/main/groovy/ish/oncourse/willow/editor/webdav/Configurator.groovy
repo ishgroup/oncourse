@@ -8,10 +8,10 @@ import io.milton.http.http11.auth.DigestResponse
 import io.milton.resource.Resource
 import io.milton.servlet.Config
 import io.milton.servlet.DefaultMiltonConfigurator
+import ish.oncourse.services.authentication.AuthenticationStatus
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.services.access.AuthenticationService
-import ish.oncourse.willow.editor.services.access.AuthenticationStatus
 
 import javax.servlet.ServletException
 
