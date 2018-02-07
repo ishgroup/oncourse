@@ -6,7 +6,6 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.ObjectSelect
-import org.apache.cayenne.query.QueryCacheStrategy
 import org.eclipse.jetty.server.Request
 
 class WebNodeTypeFunctions {
@@ -28,8 +27,6 @@ class WebNodeTypeFunctions {
     static WebNodeType getWebNodeType(Expression selectQualifier, WebSiteVersion webSiteVersion, ObjectContext context) {
         return (ObjectSelect.query(WebNodeType).where(selectQualifier)
                 &  WebNodeType.WEB_SITE_VERSION.eq(webSiteVersion)).
-                cacheGroup(WebNodeType.simpleName).
-                cacheStrategy(QueryCacheStrategy.SHARED_CACHE).
                 selectOne(context)
     }
     
@@ -47,8 +44,6 @@ class WebNodeTypeFunctions {
         WebSiteVersion version = WebSiteVersionFunctions.getCurrentVersion(request, ctx)
         return ObjectSelect.query(WebNodeType)
                 .where(WebNodeType.WEB_SITE_VERSION.eq(version))
-                .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
-                .cacheGroup(WebNodeType.simpleName)
                 .orderBy(WebNodeType.MODIFIED.desc())
                 .select(ctx)
     }

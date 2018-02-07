@@ -6,7 +6,6 @@ import ish.oncourse.model.WebSiteVersion
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.query.ObjectSelect
-import org.apache.cayenne.query.QueryCacheStrategy
 import org.eclipse.jetty.server.Request
 
 import static ish.oncourse.willow.editor.website.WebNodeFunctions.PAGE_PATH_TEMPLATE
@@ -30,7 +29,6 @@ class WebMenuFunctions {
         return ((ObjectSelect.query(WebMenu.class) 
                 & siteQualifier(request, context)) 
                 & WebMenu.PARENT_WEB_MENU.isNull())
-                .cacheStrategy(QueryCacheStrategy.SHARED_CACHE, WebMenu.class.getSimpleName())
                 .selectOne(context)
     }
 

@@ -5,7 +5,6 @@ import ish.oncourse.services.textile.ConvertCoreTextile
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.query.ObjectSelect
-import org.apache.cayenne.query.QueryCacheStrategy
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.eclipse.jetty.server.Request
@@ -18,7 +17,7 @@ class WebNodeFunctions {
     
     static WebNode getNodeForName(String nodeName, Request request, ObjectContext context) {
         return ((ObjectSelect.query(WebNode)
-                .cacheStrategy(QueryCacheStrategy.SHARED_CACHE, WebNode.simpleName) & siteQualifier(request, context))
+                & siteQualifier(request, context))
                 & WebNode.NAME.eq(nodeName))
                 .selectOne(context)
     }
@@ -30,7 +29,6 @@ class WebNodeFunctions {
         .prefetch(WebNode.WEB_CONTENT_VISIBILITY.disjoint())
         .prefetch(WebNode.WEB_CONTENT_VISIBILITY.dot(WebContentVisibility.WEB_CONTENT).disjoint())
         .prefetch(WebNode.WEB_URL_ALIASES.disjoint())
-        .localCache(WebNode.simpleName)
         .select(context)
     }
 
@@ -38,8 +36,6 @@ class WebNodeFunctions {
         return (ObjectSelect.query(WebNodeType)
                 .where(WebNodeType.WEB_SITE_VERSION.eq(WebSiteVersionFunctions.getCurrentVersion(request, context))) 
                 & WebNodeType.NAME.eq(WebNodeType.PAGE))
-                .cacheGroup(WebNodeType.simpleName)
-                .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
                 .selectFirst(context)
     }
 

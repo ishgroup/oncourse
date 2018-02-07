@@ -20,7 +20,6 @@ class WebUrlAliasFunctions {
         return ((ObjectSelect.query(WebUrlAlias.class) 
                 & siteQualifier(request, context)) 
                 & WebUrlAlias.URL_PATH.eq(path))
-                .cacheStrategy(QueryCacheStrategy.SHARED_CACHE, WebUrlAlias.simpleName)
                 .selectFirst(context)
         
     }

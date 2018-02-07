@@ -4,7 +4,6 @@ import ish.oncourse.model.WebSite
 import ish.oncourse.model.WebSiteVersion
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
-import org.apache.cayenne.query.QueryCacheStrategy
 import org.eclipse.jetty.server.Request
 
 class WebSiteVersionFunctions {
@@ -12,8 +11,7 @@ class WebSiteVersionFunctions {
     static WebSiteVersion getCurrentVersion(Request request, ObjectContext context) {
         WebSite webSite = WebSiteFunctions.getCurrentWebSite(request, context)
         (ObjectSelect.query(WebSiteVersion)
-                .cacheStrategy(QueryCacheStrategy.SHARED_CACHE, WebSiteVersion.simpleName).
-                where(WebSiteVersion.WEB_SITE.eq(webSite)) & WebSiteVersion.DEPLOYED_ON.isNull()).
+                .where(WebSiteVersion.WEB_SITE.eq(webSite)) & WebSiteVersion.DEPLOYED_ON.isNull()).
                 selectOne(context)
     }
 }

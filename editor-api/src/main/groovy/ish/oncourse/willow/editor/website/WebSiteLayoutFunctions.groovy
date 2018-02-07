@@ -7,7 +7,6 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.ObjectSelect
-import org.apache.cayenne.query.QueryCacheStrategy
 import org.eclipse.jetty.server.Request
 
 class WebSiteLayoutFunctions {
@@ -25,8 +24,6 @@ class WebSiteLayoutFunctions {
 
         return ObjectSelect.query(WebSiteLayout).
                 where(WebSiteLayout.WEB_SITE_VERSION.eq(WebSiteVersionFunctions.getCurrentVersion(request, ctx))).
-                cacheGroup(WebSiteLayout.simpleName).
-                cacheStrategy(QueryCacheStrategy.SHARED_CACHE).
                 select(ctx)
     }
 
@@ -35,8 +32,6 @@ class WebSiteLayoutFunctions {
         return (ObjectSelect.query(WebSiteLayout)
                 .where(selectQualifier)
                 & WebSiteLayout.WEB_SITE_VERSION.eq(webSiteVersion)).
-                cacheGroup(WebNodeType.simpleName).
-                cacheStrategy(QueryCacheStrategy.SHARED_CACHE).
                 selectOne(ctx)
     }
 }

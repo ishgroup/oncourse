@@ -9,7 +9,6 @@ import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.exp.Property
 import org.apache.cayenne.query.ObjectSelect
-import org.apache.cayenne.query.QueryCacheStrategy
 import org.eclipse.jetty.server.Request
 
 import static ish.oncourse.willow.editor.website.ResourceNameUtil.Name.BLOCK_NAME
@@ -38,8 +37,7 @@ class WebContentFunctions {
     }
 
     static <T> WebContent getWebContent(Request request, ObjectContext context, Property<T> property, T value) {
-        ObjectSelect<WebContent> query = ObjectSelect.query(WebContent).
-                cacheStrategy(QueryCacheStrategy.SHARED_CACHE, WebContent.simpleName) & getVersionQualifier(request, context)
+        ObjectSelect<WebContent> query = ObjectSelect.query(WebContent) & getVersionQualifier(request, context)
         
         if (property) {
             query = query & property.eq(value)
@@ -49,7 +47,6 @@ class WebContentFunctions {
 
     static List<WebContent> getBlocks(Request request, ObjectContext context) {
         return (ObjectSelect.query(WebContent)
-                .cacheStrategy(QueryCacheStrategy.SHARED_CACHE, WebContent.simpleName)
                 & getVersionQualifier(request, context)
                 & blockQualifier)
                 .orderBy(WebContent.MODIFIED.desc())
@@ -66,8 +63,6 @@ class WebContentFunctions {
 
     private static WebContent getBlockBy(Expression selectQualifier, Request request, ObjectContext context) {
         return (((ObjectSelect.query(WebContent)
-                .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
-                .cacheGroup(WebContent.simpleName)
                 & getVersionQualifier(request, context))
                 & selectQualifier)
                 & blockQualifier)
