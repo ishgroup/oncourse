@@ -1,6 +1,5 @@
 apply from: "$rootDir/gradle/tapestry.app.gradle"
-apply from: "$rootDir/gradle/cxf-spring.gradle"
-//apply from: "$rootDir/gradle/build-static.gradle"
+
 
 mainClassName = 'ish.oncourse.admin.AdminApp'
 
@@ -9,8 +8,6 @@ configurations {
 }
 
 dependencies {
-//	providedCompile 'javax.servlet:servlet-api:3.0'
-
 	compile project(':common:common-model')
 	compile (project(':common:common-services'))  {
 		exclude group: 'axis', module: 'axis'
@@ -21,13 +18,12 @@ dependencies {
 		exclude group: 'org.springframework'
 		exclude group: 'ish.oncourse.willow'
 	}
-	compile(project(':common:common-api'))
-	compile project(':common:common-templates')
 
-//	compile ('org.apache.cxf:cxf-rt-frontend-jaxws:2.6.6') {
-//		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-servlet_3.0_spec'
-//		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
-//	}
+	compile ('org.apache.cxf:cxf-rt-frontend-jaxws:2.6.6') {
+		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-servlet_3.0_spec'
+		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
+	}
+
 	compile 'org.apache.cxf:cxf-rt-ws-security:2.6.6'
 	compile 'org.apache.cxf:cxf-rt-transports-http:2.6.6'
 	compile 'xalan:xalan:2.7.1'
