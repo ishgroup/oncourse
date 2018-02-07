@@ -16,6 +16,8 @@ class AuthenticationFilter implements Filter {
     private static final Logger logger = LogManager.logger
     private AuthenticationService authService
 
+    static final String CONTEXT_PATH = "contextPath"
+
     @Inject
     AuthenticationFilter(AuthenticationService authenticationService) {
         this.authService = authenticationService
@@ -31,7 +33,7 @@ class AuthenticationFilter implements Filter {
         AuthenticationResult result = CheckBasicAuth.valueOf(authService, (HttpServletRequest) request).check()
         switch (result.status) {
             case AuthenticationStatus.SUCCESS:
-                if (authService.authorise(result.firstName, (request as HttpServletRequest).getRequestURI())) {
+                if (authService.authorise(result.firstName, (request as HttpServletRequest).getContextPath(), (request as HttpServletRequest).getRequestURI())) {
                     chain.doFilter(request, response)
                 } else {
                     ((HttpServletResponse)response).sendError(HttpStatus.SC_METHOD_NOT_ALLOWED, "Not allowed")

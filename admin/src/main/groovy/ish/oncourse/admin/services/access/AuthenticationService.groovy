@@ -3,35 +3,36 @@ package ish.oncourse.admin.services.access
 import ish.oncourse.services.authentication.AuthenticationResult
 import ish.oncourse.services.authentication.AuthenticationStatus
 import ish.oncourse.services.authentication.IAuthenticationService
+import ish.oncourse.configuration.Configuration
+import static ish.oncourse.configuration.Configuration.USER_DIR
+import static ish.oncourse.configuration.Configuration.CONFIG_FILE_NAME
 
 class AuthenticationService implements IAuthenticationService {
 
-    static final String PROP_FILE_NAME = 'application.properties'
-    static final String USER_DIR_PROP = 'user.dir'
-    static final String ALLOWED_USERS_ROLES_PROP = 'users'
+    static final String USERS = 'users'
+    static final String ROOT_ROLE = 'root'
+    static final String DELETE_PATH = '/college/web.deletesite/'
 
-    private Map<String, String> rolesForUsers = new HashMap<>()
-    private Map<String, String> passwordsForUsers = new HashMap<>()
+    private Map<String, String> roles = new HashMap<>()
+    private Map<String, String> passwords = new HashMap<>()
 
     AuthenticationService() {
-        String propertyFilePath = "${System.getProperty(USER_DIR_PROP)}/${PROP_FILE_NAME}"
+        String propertyPath = "${System.getProperty(USER_DIR)}/${CONFIG_FILE_NAME}"
 
-        Properties props = new Properties()
-        props.load(new FileInputStream(propertyFilePath))
-        String propertyLine = props.getProperty(ALLOWED_USERS_ROLES_PROP)
+        String propertyLine = Configuration.loadPropertyFile(propertyPath).getProperty(USERS)
         propertyLine.split(",").each { userCredentials ->
             String[] creds = userCredentials.split(":")
-            rolesForUsers.put(creds[0], creds[2])
-            passwordsForUsers.put(creds[0], creds[1])
+            roles.put(creds[0], creds[2])
+            passwords.put(creds[0], creds[1])
         }
     }
 
     AuthenticationResult authenticate(String userName, String password, boolean persist) {
         AuthenticationStatus status = AuthenticationStatus.UNAUTHORIZED
 
-        String availablePassword = passwordsForUsers.get(userName)
+        String availablePassword = passwords.get(userName)
         if (availablePassword) {
-            if (availablePassword == password) {
+            if (availablePassword.equals(password)) {
                 status = AuthenticationStatus.SUCCESS
             } else {
                 status = AuthenticationStatus.INVALID_CREDENTIALS
@@ -42,9 +43,9 @@ class AuthenticationService implements IAuthenticationService {
         AuthenticationResult.valueOf(status, userName, password)
     }
 
-    boolean authorise(String userName, String pathResource) {
-        if (pathResource.startsWith('/willowAdmin/college/web.deletesite/')) {
-            if ('root' == rolesForUsers.get(userName)) {
+    boolean authorise(String userName, String contextPath, String path) {
+        if (path.startsWith("${contextPath}${DELETE_PATH}")) {
+            if (ROOT_ROLE.equals(roles.get(userName))) {
                 return true
             } else {
                 return false

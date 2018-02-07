@@ -12,11 +12,8 @@ class Configuration {
     static configure(IProperty... extendedProps = null) {
         
         String userDir = System.getProperties().get(USER_DIR) as String
-        File propFile = new File("$userDir/$CONFIG_FILE_NAME")
-        if (propFile.exists()) {
-            Properties props = new Properties()
-            props.load(new FileInputStream(propFile))
-            
+        Properties props = loadPropertyFile("$userDir/$CONFIG_FILE_NAME")
+        if (props) {
             if (!init(props, LOGS_PATH)) {
                 System.setProperty(LOGS_PATH.systemProperty, "${userDir}/logs/")
             }
@@ -35,10 +32,26 @@ class Configuration {
             if (extendedProps) {
                 extendedProps.each { init(props, it) }
             }
-        } else {
-            throw new IllegalArgumentException("application.properties file not found")
         }
     }
+
+    static Properties loadPropertyFile(String path) {
+        Properties props
+        FileInputStream stream
+        try {
+            stream = new FileInputStream(path)
+            props = new Properties()
+            props.load(stream)
+        } catch (Exception ex) {
+            throw new IllegalArgumentException("Exception during reading application.properties file", ex)
+        } finally {
+            try {
+                stream.close()
+            } catch (IOException ex) {}
+        }
+        props
+    }
+
 
     static boolean init(Properties props, IProperty prop) {
         if (props.get(prop.key)) {
