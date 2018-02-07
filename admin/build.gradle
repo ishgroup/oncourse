@@ -1,5 +1,5 @@
 apply from: "$rootDir/gradle/tapestry.app.gradle"
-
+apply from: "$rootDir/gradle/build-static.gradle"
 
 configurations {
 	all*.exclude group: 'org.apache.tapestry', module: 'tapestry-spring'
