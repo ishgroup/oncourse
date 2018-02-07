@@ -42,7 +42,14 @@ class AuthenticationService implements IAuthenticationService {
         AuthenticationResult.valueOf(status, userName, password)
     }
 
-    boolean authorise(String pathResource) {
+    boolean authorise(String userName, String pathResource) {
+        if (pathResource.startsWith('/willowAdmin/college/web.deletesite/')) {
+            if ('root' == rolesForUsers.get(userName)) {
+                return true
+            } else {
+                return false
+            }
+        }
         return true
     }
 

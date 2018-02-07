@@ -31,8 +31,10 @@ class AuthenticationFilter implements Filter {
         AuthenticationResult result = CheckBasicAuth.valueOf(authService, (HttpServletRequest) request).check()
         switch (result.status) {
             case AuthenticationStatus.SUCCESS:
-                if (authService.authorise((request as HttpServletRequest).getRequestURI())) {
+                if (authService.authorise(result.firstName, (request as HttpServletRequest).getRequestURI())) {
                     chain.doFilter(request, response)
+                } else {
+                    ((HttpServletResponse)response).sendError(HttpStatus.SC_METHOD_NOT_ALLOWED, "Not allowed")
                 }
                 break
             case AuthenticationStatus.INVALID_CREDENTIALS:
