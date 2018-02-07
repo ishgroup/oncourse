@@ -20,7 +20,7 @@ import org.junit.Test
 /**
  * Created by alex on 1/24/18.
  */
-class SolrCourseClassQueryWithBeforeAfterFilterTest extends ASolrTest {
+class SolrCourseQueryWithBeforeAfterFilterTest extends ASolrTest {
     private TestContext testContext
     private ObjectContext objectContext
     private InitSolr initSolr

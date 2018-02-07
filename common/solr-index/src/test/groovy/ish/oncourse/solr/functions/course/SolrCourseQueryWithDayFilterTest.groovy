@@ -21,7 +21,7 @@ import org.junit.Test
 /**
  * Created by alex on 1/17/18.
  */
-class SolrCourseClassQueryWithDayFilterTest extends ASolrTest {
+class SolrCourseQueryWithDayFilterTest extends ASolrTest {
     private TestContext testContext
     private ObjectContext objectContext
     private InitSolr initSolr

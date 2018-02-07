@@ -21,7 +21,7 @@ import org.junit.Test
 /**
  * Created by alex on 1/11/18.
  */
-class SolrCourseClassQueryWithLocationFilterTest extends ASolrTest{
+class SolrCourseQueryWithLocationFilterTest extends ASolrTest{
     private TestContext testContext
     private ObjectContext objectContext
     private InitSolr initSolr

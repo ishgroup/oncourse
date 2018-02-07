@@ -1,7 +1,8 @@
-package ish.oncourse.solr.functions.course
+package ish.oncourse.solr.update
 
 import ish.oncourse.model.College
 import ish.oncourse.model.Course
+import ish.oncourse.model.Room
 import ish.oncourse.model.Tag
 import ish.oncourse.model.Taggable
 import ish.oncourse.test.TestContext
@@ -52,13 +53,13 @@ class CourseQueryTest {
         CTutorRole.instance(objectContext, tutor2.tutor, expectedCourse2.newCourseClass("expectedClass21").courseClass)
         CTutorRole.instance(objectContext, tutor2.tutor, otherCourse.newCourseClass("otherClass").courseClass)
 
-        actualCourses = CourseQuery.byTutor(tutor1.tutor).select(objectContext)
+        actualCourses = ish.oncourse.solr.functions.course.CourseQuery.byTutor(tutor1.tutor).select(objectContext)
         Assert.assertEquals(2, actualCourses.size())
         assertNotNull(actualCourses.find {c -> c.id == expectedCourse1.course.id})
         assertNotNull(actualCourses.find {c -> c.id == expectedCourse2.course.id})
         assertNull(actualCourses.find {c -> c.id == otherCourse.course.id})
 
-        actualCourses = CourseQuery.byTutor(tutor2.tutor).select(objectContext)
+        actualCourses = ish.oncourse.solr.functions.course.CourseQuery.byTutor(tutor2.tutor).select(objectContext)
         Assert.assertEquals(2, actualCourses.size())
         assertNull(actualCourses.find {c -> c.id == expectedCourse1.course.id})
         assertNotNull(actualCourses.find {c -> c.id == expectedCourse2.course.id})
@@ -83,7 +84,7 @@ class CourseQueryTest {
         courseWithMainRoom.newCourseClass("classWithMainRoom1").room(mainRoom.room)
         objectContext.commitChanges()
 
-        List<Course> actualCourses = CourseQuery.bySessionRoom(targetRoom.room).select(objectContext)
+        List<Course> actualCourses = ish.oncourse.solr.functions.course.CourseQuery.bySessionRoom(targetRoom.room).select(objectContext)
         Assert.assertEquals(1, actualCourses.size())
         assertNotNull(actualCourses.find {c -> c.id == expectedCourse.course.id})
         assertNull(actualCourses.find {c -> c.id == otherCourse.course.id})
@@ -92,27 +93,21 @@ class CourseQueryTest {
     }
 
     @Test
-    void testByCourseClassRoom(){
-        CCourse expectedCourse = collegeContext.newCourse("expectedCourse")
-        CRoom targetRoom = CRoom.instance(objectContext, college)
-        expectedCourse.newCourseClass("expectedClass1").room(targetRoom.room)
+    void testByRoom(){
+        Room targetRoom = CRoom.instance(objectContext, college).build().room
+        Room otherRoom = CRoom.instance(objectContext, college).build().room
+        
+        CCourse roomCourse = collegeContext.newCourse("roomCourse").withClassWithRoom("roomCourse", targetRoom).build()
+        CCourse otherCourse = collegeContext.newCourse("otherCourse").withClassWithRoom("otherCourse", otherRoom).build()
+        CCourse sessionCourse = collegeContext.newCourse("sessionCourse").withClassWithSessionsAndRoom("sessionClass", targetRoom).build
+        CCourse withoutRoom = collegeContext.newCourse("withoutRoom").build()
 
-        CCourse otherCourse = collegeContext.newCourse("otherCourse")
-        CRoom otherRoom = CRoom.instance(objectContext, college)
-        otherCourse.newCourseClass("otherClass1").room(otherRoom.room)
-
-        CCourse sessionCourse = collegeContext.newCourse("sessionCourse")
-        CSession.instance(objectContext, sessionCourse.newCourseClass("expectedClass1").courseClass).room(targetRoom.room)
-
-        CCourse courseWithoutSession = collegeContext.newCourse("courseWithoutSession")
-        objectContext.commitChanges()
-
-        List<Course> actualCourses = CourseQuery.byCourseClassRoom(targetRoom.room).select(objectContext)
-        Assert.assertEquals(1, actualCourses.size())
-        assertNotNull(actualCourses.find {c -> c.id == expectedCourse.course.id})
+        List<Course> actualCourses = ish.oncourse.solr.functions.course.CourseQuery.byRoom(targetRoom).select(objectContext)
+        Assert.assertEquals(2, actualCourses.size())
+        assertNotNull(actualCourses.find {c -> c.id == roomCourse.course.id})
         assertNull(actualCourses.find {c -> c.id == otherCourse.course.id})
-        assertNull(actualCourses.find {c -> c.id == sessionCourse.course.id})
-        assertNull(actualCourses.find {c -> c.id == courseWithoutSession.course.id})
+        assertNotNull(actualCourses.find {c -> c.id == sessionCourse.course.id})
+        assertNull(actualCourses.find {c -> c.id == withoutRoom.course.id})
     }
 
     @Test
@@ -129,7 +124,7 @@ class CourseQueryTest {
         courseWithMainRoomSite.newCourseClass("classWithMainRoomSite1").newRoom(targetSite.site)
         objectContext.commitChanges()
 
-        List<Course> actualCourses = CourseQuery.bySessionSite(targetSite.site).select(objectContext)
+        List<Course> actualCourses = ish.oncourse.solr.functions.course.CourseQuery.bySessionSite(targetSite.site).select(objectContext)
         Assert.assertEquals(1, actualCourses.size())
         assertNotNull(actualCourses.find {c -> c.id == expectedCourse.course.id})
         assertNull(actualCourses.find {c -> c.id == courseWithMainRoomSite.course.id})
@@ -150,7 +145,7 @@ class CourseQueryTest {
         CSession.instance(objectContext, sessionCourse.newCourseClass("expectedClass1").courseClass).newRoom(targetSite.site)
         objectContext.commitChanges()
 
-        List<Course> actualCourses = CourseQuery.byCourseClassSite(targetSite.site).select(objectContext)
+        List<Course> actualCourses = ish.oncourse.solr.functions.course.CourseQuery.byCourseClassSite(targetSite.site).select(objectContext)
         Assert.assertEquals(1, actualCourses.size())
         assertNotNull(actualCourses.find {c -> c.id == expectedCourse.course.id})
         assertNull(actualCourses.find {c -> c.id == otherCourse.course.id})
@@ -170,7 +165,7 @@ class CourseQueryTest {
         collegeContext.tagCourse(expectedCourse1.course, otherTag)
         collegeContext.tagCourse(otherCourse1.course, otherTag)
 
-        List<Taggable> actualTaggables = CourseQuery.courseTaggableByTag(targetTag).select(objectContext)
+        List<Taggable> actualTaggables = ish.oncourse.solr.functions.course.CourseQuery.courseTaggableByTag(targetTag).select(objectContext)
         assertEquals(2, actualTaggables.size())
         assertNotNull(actualTaggables.find {t -> t.entityWillowId == expectedCourse1.course.id})
         assertNotNull(actualTaggables.find {t -> t.entityWillowId == expectedCourse2.course.id})
@@ -190,9 +185,9 @@ class CourseQueryTest {
         collegeContext.tagCourse(expectedCourse1.course, otherTag)
         collegeContext.tagCourse(otherCourse1.course, otherTag)
 
-        List<Taggable> targetTaggables = CourseQuery.courseTaggableByTag(targetTag).select(objectContext)
+        List<Taggable> targetTaggables = ish.oncourse.solr.functions.course.CourseQuery.courseTaggableByTag(targetTag).select(objectContext)
 
-        List<Course> actualCourses = CourseQuery.byTaggable(targetTaggables).select(objectContext)
+        List<Course> actualCourses = ish.oncourse.solr.functions.course.CourseQuery.byTaggable(targetTaggables).select(objectContext)
         assertEquals(2, actualCourses.size())
         assertNotNull(actualCourses.find {c -> c.id == expectedCourse1.course.id})
         assertNotNull(actualCourses.find {c -> c.id == expectedCourse2.course.id})

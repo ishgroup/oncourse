@@ -22,7 +22,7 @@ import org.junit.Test
 /**
  * Created by alex on 1/26/18.
  */
-class SolrCourseClassQueryWithTutorFilterTest extends ASolrTest {
+class SolrCourseQueryWithTutorFilterTest extends ASolrTest {
     private TestContext testContext
     private ObjectContext objectContext
     private InitSolr initSolr

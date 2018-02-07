@@ -24,7 +24,7 @@ import org.junit.Test
 /**
  * Created by alex on 2/7/18.
  */
-class SolrCourseSelectWithTagSubjectFilterTest extends ASolrTest{
+class SolrCourseQueryWithTagSubjectFilterTest extends ASolrTest{
     private TestContext testContext
     private ObjectContext objectContext
     private InitSolr initSolr
