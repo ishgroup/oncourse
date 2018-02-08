@@ -51,9 +51,9 @@ class History extends React.Component<Props, any> {
         <Table className="table table--row-center">
           <thead>
             <tr>
+              <th>#</th>
               <th>Published</th>
               <th>By</th>
-              <th>Changes</th>
               <th/>
             </tr>
           </thead>
@@ -62,6 +62,7 @@ class History extends React.Component<Props, any> {
           {versions &&
             versions.map(version => (
               <tr key={version.id}>
+                <td>{version.id}</td>
                 <td>
                   {!version.published && 'Draft'}
                   {version.published && version.date && <TimeAgo date={version.date}/>}
