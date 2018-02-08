@@ -69,5 +69,5 @@ class SCourse {
     List<String> suburb = []
 
     @Field('tagId')
-    Long[] tagId = []
+    List<Long> tagId = []
 }

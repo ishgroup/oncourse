@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataConfig>
+
+    <dataSource name="onCourseDS" driver="com.mysql.jdbc.Driver"
+                url="${oncourse.jdbc.url}"
+                user="${oncourse.jdbc.user}" password="${oncourse.jdbc.password}"/>
+
+	<document>
+		<entity name="course" dataSource="onCourseDS" query="
+		/** We should remeber that for correct working of CONVERT_TZ function
+		* we need execute 'mysql_tzinfo_to_sql /usr/share/zoneinfo/ | mysql -u root mysql' before**/
+		select distinct c.id, 'course' as type, c.name, c.detail, c.code, c.collegeId,(
+		select IFNULL(DATE_FORMAT(
+		/* select min calculated value because course may contain both self paced and regular classes*/
+			min(
+			IFNULL(
+			/* check that both class startdate and session startdate is not NULL to avoid cases when partially replicated data may affect on index */
+			IF(cc.startDate is not NULL and s.startDate is not NULL, cc.startDate, NULL),
+			/*if course class is self paced we use tomorrow as start date, if the course class is regular we use today + 100 years as startDate*/
+			IF(cc.isDistantLearningCourse=1, DATE_ADD(CURDATE(), INTERVAL 1 DAY), DATE_ADD(CURDATE(), INTERVAL 100 YEAR))
+			)),'%Y-%m-%dT%TZ'),
+			/* if no calculated value passed this mean that course have no not canceled and web visible classes so use today + 100 years as startDate*/
+			DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL 100 YEAR),'%Y-%m-%dT%TZ'))
+			/* format the date using DATE_FORMAT to match 1995-12-31T23:59:59Z format as this required for SOLR DateField*/
+			from CourseClass cc
+			/*we should use for index only session when endDate >= NOW*/
+			left join Session s on s.courseClassId=cc.id and s.endDate &gt;= NOW()
+			left join Room ro on cc.roomId=ro.id
+			left join Site si on ro.siteId=si.id
+			left join College co on cc.collegeId=co.id
+			/*we may index only not canceled and web visible classes*/
+			where cc.courseId=c.id and cc.isWebVisible=1 and cc.isCancelled=0
+			and cc.maximumPlaces &gt; (select count(e.id) from Enrolment e where e.courseClassId=cc.id and e.status in (0,2,3))
+		) as startDate
+		from Course c where c.isWebVisible=1"
+		deltaImportQuery="
+		select distinct c.id, 'course' as type, c.name, c.detail, c.code, c.collegeId,(
+		select IFNULL(DATE_FORMAT(
+			min(
+			IFNULL(IF(cc.startDate is not NULL and s.startDate is not NULL, cc.startDate, NULL),
+			IF(cc.isDistantLearningCourse=1, DATE_ADD(CURDATE(), INTERVAL 1 DAY), DATE_ADD(CURDATE(), INTERVAL 100 YEAR))
+			)),'%Y-%m-%dT%TZ'),
+			DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL 100 YEAR),'%Y-%m-%dT%TZ'))
+			from CourseClass cc
+			left join Session s on s.courseClassId=cc.id and s.endDate &gt;= NOW()
+			left join Room ro on cc.roomId=ro.id
+			left join Site si on ro.siteId=si.id
+			left join College co on cc.collegeId=co.id
+			where cc.courseId=c.id and cc.isWebVisible=1 and cc.isCancelled=0
+			and cc.maximumPlaces &gt; (select count(e.id) from Enrolment e where e.courseClassId=cc.id and e.status in (0,2,3))
+		) as startDate
+		from Course c where c.id='${dataimporter.delta.id}'"
+		deltaQuery="
+		select distinct c.id
+		from Course c
+		where c.isWebVisible=1 and c.modified &gt;='${dataimporter.last_index_time}'"
+		pk="id" transformer="HTMLStripTransformer">
+
+			<field name="id" column="id" />
+			<field name="doctype" column="type" />
+			<field name="name" column="name" />
+			<field name="detail" column="detail" stripHTML="true" />
+			<field name="course_code" column="code" />
+			<field name="collegeId" column="collegeId" />
+			<field name="startDate" column="startDate" />
+
+			<entity name="courseClass" pk="id" dataSource="onCourseDS"  transformer="TemplateTransformer"
+				query="select distinct cc.id as id, cc.feeExGst as pr, cc.code as code, 
+				IFNULL(
+				    IFNULL(
+				        CONVERT_TZ(cc.endDate,'Australia/Sydney',cc.timeZone),
+				        IFNULL(
+				            CONVERT_TZ(cc.endDate,'Australia/Sydney',se.timeZone),
+				            IFNULL(
+				                CONVERT_TZ(cc.endDate,'Australia/Sydney', si.timeZone),
+				                CONVERT_TZ(cc.endDate,'Australia/Sydney', co.timeZone)
+				            )
+				        )
+				    ),
+				    DATE_ADD(CURDATE(), INTERVAL 100 YEAR)
+				) as end,
+				IFNULL(
+				    IFNULL(
+				        CONVERT_TZ(cc.startDate,'Australia/Sydney',cc.timeZone),
+				        IFNULL(
+				            CONVERT_TZ(cc.startDate,'Australia/Sydney',se.timeZone),
+				            IFNULL(
+				                CONVERT_TZ(cc.startDate,'Australia/Sydney', si.timeZone),
+				                CONVERT_TZ(cc.startDate,'Australia/Sydney', co.timeZone)
+				            )
+				        )
+				    ),
+				    DATE_ADD(CURDATE(), INTERVAL 1 DAY)
+				) as start
+				from CourseClass cc
+				left join Session se on se.courseClassId=cc.id
+				left join Room ro on cc.roomId=ro.id
+				left join Site si on ro.siteId=si.id
+				left join College co on cc.collegeId=co.id
+				where cc.isWebVisible=1 and cc.courseid='${course.id}' and cc.isCancelled=0
+				and ((cc.endDate &gt; CURDATE() and cc.isDistantLearningCourse=0) or cc.isDistantLearningCourse=1)"
+				deltaImportQuery="select distinct cc.id as id, cc.feeExGst as pr, cc.code as code,
+				IFNULL(
+				    IFNULL(
+				        CONVERT_TZ(cc.endDate,'Australia/Sydney',cc.timeZone),
+				        IFNULL(
+				            CONVERT_TZ(cc.endDate,'Australia/Sydney',se.timeZone),
+				            IFNULL(
+				                CONVERT_TZ(cc.endDate,'Australia/Sydney', si.timeZone),
+				                CONVERT_TZ(cc.endDate,'Australia/Sydney', co.timeZone)
+				            )
+				        )
+				    ),
+				    DATE_ADD(CURDATE(), INTERVAL 100 YEAR)
+				) as end,
+				IFNULL(
+				    IFNULL(
+				        CONVERT_TZ(cc.startDate,'Australia/Sydney',cc.timeZone),
+				        IFNULL(
+				            CONVERT_TZ(cc.startDate,'Australia/Sydney',se.timeZone),
+				            IFNULL(
+				                CONVERT_TZ(cc.startDate,'Australia/Sydney', si.timeZone),
+				                CONVERT_TZ(cc.startDate,'Australia/Sydney', co.timeZone)
+				            )
+				        )
+				    ),
+				    DATE_ADD(CURDATE(), INTERVAL 1 DAY)
+				) as start
+				from CourseClass cc
+				    left join Session se on se.courseClassId=cc.id
+				    left join Room ro on cc.roomId=ro.id
+				    left join Site si on ro.siteId=si.id
+				    left join College co on cc.collegeId=co.id
+				where cc.id='${dataimporter.delta.id}'"
+				deltaQuery="select id from CourseClass where isWebVisible=1 and modified &gt;='${dataimporter.last_index_time}'"
+				parentDeltaQuery="select courseId as id from CourseClass where id='${courseClass.id}'"
+				deletedPkQuery="select id from CourseClass where endDate &lt; NOW() and endDate &gt;= '${dataimporter.last_index_time}'" processor="SqlEntityProcessor">
+				<field name="id" column="id" />
+				<field name="price" column="pr" />
+				<field name="class_code" column="code" template="${course.code}\-${courseClass.code}"/>
+				<field name="end" column="end"/>
+                <field name="class_start" column="start"/>
+
+                <entity name="contact" dataSource="onCourseDS" pk="id"
+					transformer="RegexTransformer"
+					query="select ct.id as id, t.angelId as tutorId, ct.givenName as gvName, ct.familyName as fmName from Contact ct
+                	    inner join Tutor t on ct.tutorId = t.id
+           				inner join TutorRole tr on t.id = tr.tutorId
+           				where tr.courseClassId='${courseClass.id}'"
+					deltaImportQuery="select ct.id as id,t.angelId as tutorId, ct.givenName as gvName, ct.familyName as fmName from
+					    Contact ct where ct.id='${dataimporter.delta.id}'"
+					deltaQuery="select ct.id from Contact ct where ct.modified &gt; '${dataimporter.last_index_time}'" 
+					parentDeltaQuery="select cc.id from Contact ct 
+						inner join Tutor t on ct.tutorId = t.id
+    	       			inner join TutorRole tr on t.id = tr.tutorId
+    	       			inner join CourseClass cc on tr.courseClassId = cc.id
+        	   			where ct.id='${contact.id}'" processor="SqlEntityProcessor">
+					<field name="id" column="id" />
+					<field name="tutorId" column="tutorId"/>
+					<field name="gvName" column="gvName"/>
+					<field name="fmName" column="fmName"/>
+					<field name="tutor" column="TUTOR" regex="^(.*)$" replaceWith="$1 ${contact.fmName}" sourceColName="gvName" /> 
+				</entity>
+
+                <!--if course class isDistantLearningCourse we should mark it as (Monday Tuesday Wednesday Thursday Friday Saturday Sunday, weekend weekday, daytime evening)-->
+				<entity name="course_session" dataSource="onCourseDS" pk="id" transformer="TemplateTransformer"
+					query="select distinct s.id,
+                        IF (cc.isDistantLearningCourse = 0,
+                            lower(
+                                dayname(
+                                    IFNULL(
+                                        IFNULL(
+                                            CONVERT_TZ(s.startDate,'Australia/Sydney',s.timeZone),
+                                            IFNULL(
+                                                CONVERT_TZ(s.startDate,'Australia/Sydney',si.timeZone),
+                                                IFNULL(
+                                                    CONVERT_TZ(s.startDate,'Australia/Sydney', cc.timeZone),
+                                                    CONVERT_TZ(s.startDate,'Australia/Sydney', co.timeZone)
+                                                )
+                                            )
+                                        ),
+                                        s.startDate
+                                    )
+                                )
+                            ),
+                            'Monday Tuesday Wednesday Thursday Friday Saturday Sunday'
+                        ) as dayName,
+                        IF (cc.isDistantLearningCourse = 0,
+                            IF(
+                                DAYOFWEEK(
+                                    IFNULL(
+                                        IFNULL(
+                                            CONVERT_TZ(s.startDate,'Australia/Sydney',s.timeZone),
+                                            IFNULL(
+                                                CONVERT_TZ(s.startDate,'Australia/Sydney',si.timeZone),
+                                                IFNULL(
+                                                    CONVERT_TZ(s.startDate,'Australia/Sydney', cc.timeZone),
+                                                    CONVERT_TZ(s.startDate,'Australia/Sydney', co.timeZone)
+                                                )
+                                            )
+                                        ),
+                                        s.startDate
+                                    )
+                                ) in (1,7),
+                                'weekend',
+                                'weekday'
+                            ),
+                            'weekend weekday'
+                        ) as dayType,
+                        IF (cc.isDistantLearningCourse = 0,
+                            IF(
+                                HOUR(
+                                    IFNULL(
+                                        IFNULL(
+                                            CONVERT_TZ(s.startDate,'Australia/Sydney',s.timeZone),
+                                            IFNULL(
+                                                CONVERT_TZ(s.startDate,'Australia/Sydney',si.timeZone),
+                                                IFNULL(
+                                                    CONVERT_TZ(s.startDate,'Australia/Sydney', cc.timeZone),
+                                                    CONVERT_TZ(s.startDate,'Australia/Sydney', co.timeZone)
+                                                )
+                                            )
+                                        ),
+                                        s.startDate
+                                    )
+                                ) &gt; 6
+                                and
+                                HOUR(
+                                    IFNULL(
+                                        IFNULL(
+                                            CONVERT_TZ(s.startDate,'Australia/Sydney',s.timeZone),
+                                            IFNULL(
+                                                CONVERT_TZ(s.startDate,'Australia/Sydney',si.timeZone),
+                                                IFNULL(
+                                                    CONVERT_TZ(s.startDate,'Australia/Sydney', cc.timeZone),
+                                                    CONVERT_TZ(s.startDate,'Australia/Sydney', co.timeZone)
+                                                )
+                                            )
+                                        ),
+                                        s.startDate
+                                    )
+                                ) &lt; 17,
+                                'daytime',
+                                'evening'
+                            ),
+                            'daytime evening'
+                        ) as time
+					    from Session s
+					        inner join CourseClass cc on s.courseClassId=cc.id
+					        left join Room ro on cc.roomId=ro.id
+					        left join Site si on ro.siteId=si.id
+					        left join College co on cc.collegeId=co.id
+					    where cc.id='${courseClass.id}'"
+                	deltaImportQuery="select distinct s.id,
+                        IF (cc.isDistantLearningCourse = 0,
+                            lower(
+                                dayname(
+                                    IFNULL(
+                                        IFNULL(
+                                            CONVERT_TZ(s.startDate,'Australia/Sydney',s.timeZone),
+                                            IFNULL(
+                                                CONVERT_TZ(s.startDate,'Australia/Sydney',si.timeZone),
+                                                IFNULL(
+                                                    CONVERT_TZ(s.startDate,'Australia/Sydney', cc.timeZone),
+                                                    CONVERT_TZ(s.startDate,'Australia/Sydney', co.timeZone)
+                                                )
+                                            )
+                                        ),
+                                        s.startDate
+                                    )
+                                )
+                            ),
+                            'Monday Tuesday Wednesday Thursday Friday Saturday Sunday',
+                        ) as dayName,
+                        IF (cc.isDistantLearningCourse = 0,
+                            IF(
+                                DAYOFWEEK(
+                                    IFNULL(
+                                        IFNULL(
+                                            CONVERT_TZ(s.startDate,'Australia/Sydney',s.timeZone),
+                                            IFNULL(
+                                                CONVERT_TZ(s.startDate,'Australia/Sydney',si.timeZone),
+                                                IFNULL(
+                                                    CONVERT_TZ(s.startDate,'Australia/Sydney', cc.timeZone),
+                                                    CONVERT_TZ(s.startDate,'Australia/Sydney', co.timeZone)
+                                                )
+                                            )
+                                        ),
+                                        s.startDate
+                                    )
+                                ) in (1,7),
+                                'weekend',
+                                'weekday'
+                            ),
+                            'weekend weekday'
+                        ) as dayType,
+                        IF (cc.isDistantLearningCourse = 0,
+                            IF(
+                                HOUR(
+                                    IFNULL(
+                                        IFNULL(
+                                            CONVERT_TZ(s.startDate,'Australia/Sydney',s.timeZone),
+                                            IFNULL(
+                                                CONVERT_TZ(s.startDate,'Australia/Sydney',si.timeZone),
+                                                IFNULL(
+                                                    CONVERT_TZ(s.startDate,'Australia/Sydney', cc.timeZone),
+                                                    CONVERT_TZ(s.startDate,'Australia/Sydney', co.timeZone)
+                                                )
+                                            )
+                                        ),
+                                        s.startDate
+                                    )
+                                ) &gt; 6
+                                and
+                                HOUR(
+                                    IFNULL(
+                                        IFNULL(
+                                            CONVERT_TZ(s.startDate,'Australia/Sydney',s.timeZone),
+                                            IFNULL(
+                                                CONVERT_TZ(s.startDate,'Australia/Sydney',si.timeZone),
+                                                IFNULL(
+                                                    CONVERT_TZ(s.startDate,'Australia/Sydney', cc.timeZone),
+                                                    CONVERT_TZ(s.startDate,'Australia/Sydney', co.timeZone)
+                                                )
+                                            )
+                                        ),
+                                        s.startDate
+                                    )
+                                ) &lt; 17,
+                                'daytime',
+                                'evening'
+                            ),
+                            'daytime evening'
+                        ) as time
+					    from Session s
+					        inner join CourseClass cc on s.courseClassId=cc.id
+					        left join Room ro on cc.roomId=ro.id
+					        left join Site si on ro.siteId=si.id
+					        left join College co on cc.collegeId=co.id
+					    where s.id='${dataimporter.delta.id}'"
+					deltaQuery="select distinct id as id from Session where modified &gt; '${dataimporter.last_index_time}'"
+					parentDeltaQuery="select distinct cc.id as id from Session s inner join CourseClass cc on s.courseClassId = cc.id where s.id='${course_session.id}'">
+					<field name="id" column="id"/>
+					<field name="dayName" column="dayName" />
+					<field name="dayType" column="dayType" />
+					<field name="time" column="time" />
+					<field name="when" column="when" template="${course_session.dayName} ${course_session.dayType} ${course_session.time}"/>
+				</entity>
+				
+				<entity name="site" dataSource="onCourseDS" pk="id"
+					query="select distinct s.id as id, s.id as siteId, s.suburb as sb, s.postcode as pc, lower(CONCAT(s.suburb, ' ', s.postcode)) as subpost, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc from Site s
+            	        inner join Room r on r.siteId=s.id
+                	    inner join CourseClass cc on cc.roomId=r.id
+                    	where s.isWebVisible=1 and cc.id='${courseClass.id}'
+            		  union
+            			select distinct s.id as id, s.id as siteId, s.suburb as sb, s.postcode as pc, lower(CONCAT(s.suburb, ' ', s.postcode)) as subpost, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc from Site s
+		            	inner join Room r on r.siteId=s.id
+			            inner join Session ss on ss.roomId=r.id
+			            inner join CourseClass cc on cc.id=ss.courseClassId
+			            where s.isWebVisible=1 and cc.id='${courseClass.id}'"
+					deltaImportQuery="select s.id as id, s.id as siteId, s.suburb as sb, s.postcode as pc, lower(CONCAT(s.suburb, ' ', s.postcode)) as subpost, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc from Site s
+					    where s.id='${dataimporter.delta.id}'"
+					deltaQuery="select id from Site where isWebVisible=1 and modified &gt; '${dataimporter.last_index_time}'" 
+					parentDeltaQuery="select cc.id from Site s 
+						inner join Room r on r.siteId=s.id 
+						inner join CourseClass cc on cc.roomId=r.id 
+						where s.id='${site.id}' 
+					  union 
+					  	select cc.id from Site s 
+					  	inner join Room r on r.siteId=s.id 
+				  	inner join Session ss on ss.roomId=r.id
+				  	inner join CourseClass cc on cc.id=ss.courseClassId
+				  	where s.id='${site.id}'" processor="SqlEntityProcessor">
+				  	
+					<field name="id" column="id"/>
+					<field mame="siteId" column="siteId"/>
+					<field name="course_loc" column="loc" />
+					<field name="course_postcode" column="pc" />
+					<field name="course_suburb" column="sb" />
+				</entity>
+			</entity>
+
+            <!-- we don't need to check modification date for TagTaggable because the entity is not edited separately from Tag and Taggable -->
+			<entity name="coursetag" dataSource="onCourseDS" pk="id"
+				query="select distinct t.id as id, t.id as tagId from Tag t
+				    inner join TaggableTag tgt on tgt.tagId=t.id
+				    inner join Taggable tg on tgt.taggableId = tg.id
+				    where t.isWebVisible=1 and tg.entityIdentifier = 'Course' and tg.entityWillowId = '${course.id}'"
+				deltaImportQuery="select distinct t.id as id, t.id as tagId from Tag t where t.id='${dataimporter.delta.id}'"
+				deltaQuery="select distinct t.id as id from Tag t
+				    inner join TaggableTag tgt on tgt.tagId=t.id
+				    inner join Taggable tg on tgt.taggableId = tg.id
+				    where t.isWebVisible=1 and tg.entityIdentifier = 'Course' and
+				        (t.modified &gt; '${dataimporter.last_index_time}' or tg.modified &gt; '${dataimporter.last_index_time}')"
+				parentDeltaQuery="select distinct tg.entityWillowId as id from Tag t inner join TaggableTag tgt on tgt.tagId=t.id inner join Taggable tg on tgt.taggableId = tg.id where t.id=${coursetag.id}" processor="SqlEntityProcessor">
+				<field name="id" column="id"/>
+				<field name="tagId" column="tagId"/>
+			</entity>
+		</entity>
+	</document>
+</dataConfig>
