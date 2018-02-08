@@ -2,6 +2,7 @@ package ish.oncourse.services.persistence;
 
 import org.apache.cayenne.DataChannel;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.tx.TransactionalOperation;
 
 /**
  * A service wrapper around Cayenne stack returning appropriately scoped
@@ -24,4 +25,6 @@ public interface ICayenneService {
 	ObjectContext newContext(DataChannel parentChannel);
 
 	ObjectContext sharedContext();
+
+	void performTransaction(TransactionalOperation op);
 }
