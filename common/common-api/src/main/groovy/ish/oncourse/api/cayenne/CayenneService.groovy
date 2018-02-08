@@ -7,6 +7,7 @@ import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.services.persistence.ISHObjectContext
 import org.apache.cayenne.DataChannel
 import org.apache.cayenne.configuration.server.ServerRuntime
+import org.apache.cayenne.tx.TransactionalOperation
 
 @Singleton
 class CayenneService implements ICayenneService {
@@ -42,5 +43,9 @@ class CayenneService implements ICayenneService {
     @Override
     ISHObjectContext sharedContext() {
         sharedContext
+    }
+    
+    void performTransaction(TransactionalOperation op) {
+        runtime.performInTransaction(op)
     }
 }

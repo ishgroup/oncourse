@@ -14,7 +14,8 @@ import java.util.List;
 class DeleteVersion {
 	private ObjectContext context;
 	private WebSiteVersion version;
-
+	private Boolean liveBlankVersion = false;
+	
 	private void sleep() {
 		try {
 			Thread.sleep(1L);
@@ -32,8 +33,11 @@ class DeleteVersion {
 
 		deleteVersionRelatedObjects();
 
-		context.invalidateObjects(version);
-		context.deleteObjects(version);
+		if (!liveBlankVersion) {
+			context.invalidateObjects(version);
+			context.deleteObjects(version);
+		}
+		
 		context.commitChanges();
 	}
 
@@ -88,13 +92,16 @@ class DeleteVersion {
 	public static DeleteVersion valueOf(WebSiteVersion version) {
 		return valueOf(version, version.getObjectContext());
 	}
-
-
+	
 	public static DeleteVersion valueOf(WebSiteVersion version, ObjectContext context) {
+		return valueOf(version, context, false);
+	}
+
+	public static DeleteVersion valueOf(WebSiteVersion version, ObjectContext context, Boolean liveBlankVersion) {
 		DeleteVersion deleteVersion = new DeleteVersion();
 		deleteVersion.version = version;
 		deleteVersion.context = context;
+		deleteVersion.liveBlankVersion = liveBlankVersion;
 		return deleteVersion;
 	}
-
 }

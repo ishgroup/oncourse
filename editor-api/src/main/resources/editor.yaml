@@ -764,6 +764,7 @@ definitions:
         type: number
         description: count of changes from previous version
       date:
+        format: date
         type: string
         description: date when version was published
   Layout:

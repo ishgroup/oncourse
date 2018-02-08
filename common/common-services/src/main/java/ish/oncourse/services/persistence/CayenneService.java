@@ -10,6 +10,7 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataNode;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.cayenne.lifecycle.changeset.ChangeSetFilter;
+import org.apache.cayenne.tx.TransactionalOperation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.services.RegistryShutdownListener;
@@ -80,6 +81,11 @@ public class CayenneService implements ICayenneService, RegistryShutdownListener
 	 */
 	public ObjectContext sharedContext() {
 		return sharedContext;
+	}
+
+	@Override
+	public void performTransaction(TransactionalOperation op) {
+		throw new UnsupportedOperationException();
 	}
 
 

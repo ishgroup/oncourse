@@ -1,5 +1,12 @@
 package ish.oncourse.willow.editor.model;
 
+import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import ish.oncourse.util.FormatUtils;
 
 public class Version  {
   
@@ -7,7 +14,10 @@ public class Version  {
     private Boolean published = null;
     private String author = null;
     private Double changes = null;
-    private String date = null;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = FormatUtils.DATE_FORMAT_ISO8601)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    private LocalDateTime date = null;
 
     /**
      * unique id of version
@@ -81,15 +91,15 @@ public class Version  {
      * date when version was published
      * @return date
      */
-    public String getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(LocalDateTime date) {
        this.date = date;
     }
 
-    public Version date(String date) {
+    public Version date(LocalDateTime date) {
       this.date = date;
       return this;
     }

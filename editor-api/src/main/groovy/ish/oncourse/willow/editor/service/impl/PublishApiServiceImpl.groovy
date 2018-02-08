@@ -9,8 +9,10 @@ import ish.oncourse.model.WillowUser
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.services.site.GetDeployedVersion
 import ish.oncourse.services.site.WebSitePublisher
+import ish.oncourse.services.site.WebSiteVersionRevert
 import ish.oncourse.services.site.WebSiteVersionsDelete
 import ish.oncourse.willow.editor.EditorProperty
+import ish.oncourse.willow.editor.rest.WebVersionToVersion
 import ish.oncourse.willow.editor.service.*
 import ish.oncourse.willow.editor.model.Version
 import ish.oncourse.willow.editor.model.api.SetVersionRequest
@@ -20,6 +22,10 @@ import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.services.access.AuthenticationService
 import ish.oncourse.willow.editor.website.WebSiteFunctions
 import ish.oncourse.willow.editor.website.WebSiteVersionFunctions
+import org.apache.cayenne.ObjectContext
+import org.apache.cayenne.tx.Transaction
+import org.apache.cayenne.tx.TransactionFactory
+import org.apache.cayenne.tx.TransactionalOperation
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.eclipse.jetty.server.Request
@@ -74,12 +80,29 @@ class PublishApiServiceImpl implements PublishApi {
     }
     
     List<Version> getVersions() {
-        throw new ServerErrorException(Response.Status.NOT_IMPLEMENTED)
+        Request request = requestService.request
+        return WebSiteVersionFunctions.getSiteVersions(request, cayenneService.newContext())
+                .collect { webVersion -> 
+                    WebVersionToVersion.valueOf(webVersion).version
+                }
     }
     
     void setVersion(SetVersionRequest setVersionRequest) {
-        throw new NotAllowedException('publish')
+        Request request = requestService.request
+        ObjectContext context = cayenneService.newContext()
+
+        WebSiteVersion draftVersion = WebSiteVersionFunctions.getCurrentVersion(request, context)
+        WebSiteVersion sourceVersion = WebSiteVersionFunctions.getVersionById(setVersionRequest.id.longValue(), request, context)
+
+        try {
+            cayenneService.performTransaction {
+                WebSiteVersionRevert.valueOf(draftVersion, sourceVersion, context).revert()
+            }
+        } catch (Exception e) {
+            logger.error(e)
+            context.rollbackChanges()
+            throw new InternalServerErrorException()
+        }
     }
-    
 }
 

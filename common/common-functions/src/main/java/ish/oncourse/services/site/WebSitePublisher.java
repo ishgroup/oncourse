@@ -14,176 +14,27 @@ import org.apache.logging.log4j.Logger;
 import java.util.*;
 import java.util.concurrent.Executors;
 
-public class WebSitePublisher {
+public class WebSitePublisher extends WebSiteVersionCopy {
 
     private static final Logger logger = LogManager.getLogger();
 
-    private ObjectContext context;
     private SystemUser systemUser;
     private String userEmail;
-    private WebSiteVersion draftVersion;
-    private WebSiteVersion publishedVersion;
     private String scriptPath;
 
-    private Map<WebNodeType, WebNodeType> webNodeTypeMap = new HashMap<>();
-    private Map<WebNode, WebNode> webNodeMap = new HashMap<>();
-    private Map<WebMenu, WebMenu> webMenuMap = new HashMap<>();
-	private Map<WebSiteLayout, WebSiteLayout> layoutMap = new HashMap<>();
-
     //create new published version as copy of draftVersion
-    public void publish()
-    {
-        copyLayouts();
-
-        copyWebNodeTypes();
-
-        copyWebNodes();
-
-        copyWebUrlAliases();
-
-        copyWebContents();
-
-        copyWebMenus();
-
+    public void publish() {
+        copyContent();
         context.commitChanges();
-
-        executeDeployScript(publishedVersion);
+        executeDeployScript(toVersion);
     }
-
-    private void updateParentMenus() {
-        // ... then once we duplicated all the menus we can set up child-parent relations between them
-        for (WebMenu menu : webMenuMap.keySet()) {
-            WebMenu newMenu = webMenuMap.get(menu);
-
-            newMenu.setParentWebMenu(webMenuMap.get(menu.getParentWebMenu()));
-        }
-    }
-
-    private void copyWebMenus() {
-        // first duplicate all the existing WebMenu records...
-        for (WebMenu menu : draftVersion.getMenus()) {
-
-            WebMenu newMenu = context.newObject(WebMenu.class);
-
-            newMenu.setCreated(menu.getCreated());
-            newMenu.setModified(menu.getModified());
-            newMenu.setName(menu.getName());
-            newMenu.setUrl(menu.getUrl());
-            newMenu.setWebNode(webNodeMap.get(menu.getWebNode()));
-            newMenu.setWebSiteVersion(publishedVersion);
-            newMenu.setWeight(menu.getWeight());
-
-            webMenuMap.put(menu, newMenu);
-        }
-
-        updateParentMenus();
-    }
-
-    private void copyWebContents() {
-        for (WebContent content : draftVersion.getContents()) {
-            WebContent newContent = context.newObject(WebContent.class);
-
-            newContent.setCreated(content.getCreated());
-            newContent.setModified(content.getModified());
-            newContent.setName(content.getName());
-            newContent.setContent(content.getContent());
-            newContent.setContentTextile(content.getContentTextile());
-            newContent.setWebSiteVersion(publishedVersion);
-
-            copyWebContentVisibilities(content, newContent);
-        }
-    }
-
-    private void copyWebContentVisibilities(WebContent oldContent, WebContent newContent) {
-        for (WebContentVisibility visibility : oldContent.getWebContentVisibilities()) {
-            WebContentVisibility newVisibility = context.newObject(WebContentVisibility.class);
-
-            newVisibility.setRegionKey(visibility.getRegionKey());
-            newVisibility.setWeight(visibility.getWeight());
-            newVisibility.setWebContent(newContent);
-            newVisibility.setWebNode(webNodeMap.get(visibility.getWebNode()));
-            newVisibility.setWebNodeType(webNodeTypeMap.get(visibility.getWebNodeType()));
-        }
-    }
-
-    private void copyWebUrlAliases() {
-        for (WebUrlAlias webUrlAlias : draftVersion.getWebURLAliases()) {
-            WebUrlAlias newWebUrlAlias = context.newObject(WebUrlAlias.class);
-
-            newWebUrlAlias.setCreated(webUrlAlias.getCreated());
-            newWebUrlAlias.setModified(webUrlAlias.getModified());
-            newWebUrlAlias.setUrlPath(webUrlAlias.getUrlPath());
-            newWebUrlAlias.setDefault(webUrlAlias.isDefault());
-            newWebUrlAlias.setWebNode(webNodeMap.get(webUrlAlias.getWebNode()));
-            newWebUrlAlias.setWebSiteVersion(publishedVersion);
-            newWebUrlAlias.setRedirectTo(webUrlAlias.getRedirectTo());
-        }
-    }
-
-    private void copyWebNodes() {
-        for (WebNode node : draftVersion.getWebNodes()) {
-            WebNode newNode = context.newObject(WebNode.class);
-
-            newNode.setCreated(node.getCreated());
-            newNode.setModified(node.getModified());
-            newNode.setName(node.getName());
-            newNode.setNodeNumber(node.getNodeNumber());
-            newNode.setPublished(node.isPublished());
-            newNode.setWebNodeType(webNodeTypeMap.get(node.getWebNodeType()));
-            newNode.setWebSiteVersion(publishedVersion);
-
-            webNodeMap.put(node, newNode);
-        }
-    }
-
-    private void copyWebNodeTypes() {
-        for (WebNodeType webNodeType : draftVersion.getWebNodeTypes()) {
-            WebNodeType newWebNodeType = context.newObject(WebNodeType.class);
-
-            newWebNodeType.setCreated(webNodeType.getCreated());
-            newWebNodeType.setModified(webNodeType.getModified());
-            newWebNodeType.setWebSiteLayout(layoutMap.get(webNodeType.getWebSiteLayout()));
-            newWebNodeType.setName(webNodeType.getName());
-            newWebNodeType.setWebSiteVersion(publishedVersion);
-
-            webNodeTypeMap.put(webNodeType, newWebNodeType);
-        }
-    }
-
-    private void copyLayouts() {
-        for (WebSiteLayout oldLayout : draftVersion.getLayouts()) {
-
-            WebSiteLayout newLayout = context.newObject(WebSiteLayout.class);
-
-            newLayout.setLayoutKey(oldLayout.getLayoutKey());
-            newLayout.setWebSiteVersion(publishedVersion);
-
-            copyTemplates(oldLayout, newLayout);
-			
-			layoutMap.put(oldLayout, newLayout);
-        }
-    }
-
-    private void copyTemplates(WebSiteLayout oldLayout, WebSiteLayout newLayout) {
-        for (WebTemplate template : oldLayout.getTemplates()) {
-            WebTemplate newTemplate = context.newObject(WebTemplate.class);
-
-            newTemplate.setLayout(newLayout);
-            newTemplate.setName(template.getName());
-            newTemplate.setContent(template.getContent());
-
-            // need to change modified date of every template to make
-            // tapestry rendering logic to reload them
-            template.setModified(new Date());
-        }
-    }
-
+    
     private void initPublishedVersion() {
-        publishedVersion = context.newObject(WebSiteVersion.class);
-        publishedVersion.setWebSite(draftVersion.getWebSite());
-        publishedVersion.setDeployedOn(new Date());
+        toVersion = context.newObject(WebSiteVersion.class);
+        toVersion.setWebSite(fromVersion.getWebSite());
+        toVersion.setDeployedOn(new Date());
         if (systemUser != null) {
-            publishedVersion.setDeployedBy(context.localObject(systemUser));
+            toVersion.setDeployedBy(context.localObject(systemUser));
         }
     }
 
@@ -231,7 +82,7 @@ public class WebSitePublisher {
     {
         WebSitePublisher publisher = new WebSitePublisher();
         publisher.context = objectContext;
-        publisher.draftVersion = objectContext.localObject(webSiteVersion);
+        publisher.fromVersion = objectContext.localObject(webSiteVersion);
         if (systemUser != null) {
             publisher.systemUser = objectContext.localObject(systemUser);
         }
@@ -244,7 +95,7 @@ public class WebSitePublisher {
     {
         WebSitePublisher publisher = new WebSitePublisher();
         publisher.context = objectContext;
-        publisher.draftVersion = objectContext.localObject(webSiteVersion);
+        publisher.fromVersion = objectContext.localObject(webSiteVersion);
         publisher.initPublishedVersion();
         return publisher;
     }
@@ -253,8 +104,8 @@ public class WebSitePublisher {
     {
         WebSitePublisher publisher = new WebSitePublisher();
         publisher.context = objectContext;
-        publisher.draftVersion = objectContext.localObject(webSiteVersion);
-        publisher.publishedVersion = objectContext.localObject(publishedVersion);
+        publisher.fromVersion = objectContext.localObject(webSiteVersion);
+        publisher.toVersion = objectContext.localObject(publishedVersion);
         return publisher;
     }
 
