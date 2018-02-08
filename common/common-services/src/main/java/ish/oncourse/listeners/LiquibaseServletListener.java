@@ -4,7 +4,6 @@ import liquibase.Liquibase;
 import liquibase.database.Database;
 import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
-import liquibase.logging.LogFactory;
 import liquibase.resource.ClassLoaderResourceAccessor;
 import liquibase.resource.CompositeResourceAccessor;
 import liquibase.resource.FileSystemResourceAccessor;
@@ -19,44 +18,34 @@ import java.sql.Connection;
 
 public class LiquibaseServletListener implements ServletContextListener {
 
-	private static final Logger logger = LogManager.getLogger();
-	private final static String CHANGELOG = "liquibase.db.changelog.xml";
-	private final static String CONTEXT = "production";
+    private static final Logger logger = LogManager.getLogger();
+    private final static String CHANGELOG = "liquibase.db.changelog.xml";
+    private final static String CONTEXT = "production";
 
-	private DataSource dataSource;
+    private DataSource dataSource;
 
-	public LiquibaseServletListener(DataSource dataSource) {
-		this.dataSource = dataSource;
-	}
+    public LiquibaseServletListener(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
-	public void contextInitialized(ServletContextEvent servletContextEvent) {
-		try {
-			Connection connection = null;
-			try {
-				Thread currentThread = Thread.currentThread();
-				ClassLoader contextClassLoader = currentThread.getContextClassLoader();
-				ResourceAccessor threadClFO = new ClassLoaderResourceAccessor(contextClassLoader);
+    public void contextInitialized(ServletContextEvent servletContextEvent) {
+        try (Connection connection = dataSource.getConnection()) {
+            Thread currentThread = Thread.currentThread();
+            ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+            ResourceAccessor threadClFO = new ClassLoaderResourceAccessor(contextClassLoader);
 
-				ResourceAccessor clFO = new ClassLoaderResourceAccessor();
-				ResourceAccessor fsFO = new FileSystemResourceAccessor();
+            ResourceAccessor clFO = new ClassLoaderResourceAccessor();
+            ResourceAccessor fsFO = new FileSystemResourceAccessor();
 
-				connection = dataSource.getConnection();
+            Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
+            Liquibase liquibase = new Liquibase(CHANGELOG, new CompositeResourceAccessor(clFO, fsFO, threadClFO), database);
 
-				Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
-				Liquibase liquibase = new Liquibase(CHANGELOG, new CompositeResourceAccessor(clFO, fsFO, threadClFO), database);
+            liquibase.update(CONTEXT);
+        } catch (Exception ex) {
+            logger.error("Liquibase update failed with error.", ex);
+        }
+    }
 
-				liquibase.update(CONTEXT);
-			} finally {
-				if (connection != null) {
-					connection.close();
-				}
-			}
-		} catch (Exception e) {
-			logger.error("Liquibase update failed with error.", e);
-			throw new RuntimeException(e);
-		}
-	}
-
-	public void contextDestroyed(ServletContextEvent arg0) {
-	}
+    public void contextDestroyed(ServletContextEvent arg0) {
+    }
 }
