@@ -14,9 +14,7 @@ import ish.oncourse.admin.services.access.AuthenticationService
 import ish.oncourse.cayenne.WillowCayenneModuleBuilder
 import ish.oncourse.cayenne.cache.JCacheModule
 import ish.oncourse.configuration.ISHHealthCheckServlet
-import ish.oncourse.listeners.LiquibaseParamBuilder
-import ish.oncourse.listeners.LiquibaseParams
-import ish.oncourse.listeners.TheLiquibaseServletListener
+import ish.oncourse.listeners.LiquibaseServletListener
 import ish.oncourse.tapestry.WillowModuleDef
 import ish.oncourse.tapestry.WillowTapestryFilter
 import ish.oncourse.tapestry.WillowTapestryFilterBuilder
@@ -31,7 +29,7 @@ class AdminModule extends ConfigModule {
 
     private static final String TAPESTRY_APP_NAME = "app"
 
-    public static final String DATA_SOURCE_NAME = LogAppInfo.DATA_SOURSE_NAME;
+    public static final String DATA_SOURCE_NAME = LogAppInfo.DATA_SOURSE_NAME
 
     private static final TypeLiteral<MappedFilter<WillowTapestryFilter>> TAPESTRY_FILTER =
             new TypeLiteral<MappedFilter<WillowTapestryFilter>>() {
@@ -67,12 +65,8 @@ class AdminModule extends ConfigModule {
 
     @Singleton
     @Provides
-    LiquibaseParams createLiquibaseParams(Injector injector) {
-        new LiquibaseParamBuilder()
-                .setFailOnError(true)
-                .addDataSource(injector.getInstance(DataSourceFactory).forName(LogAppInfo.DATA_SOURSE_NAME))
-                .addChangeLogFile("liquibase.db.changelog.xml")
-                .addContexts("production").build()
+    LiquibaseServletListener createLiquibaseParams(Injector injector) {
+        new LiquibaseServletListener(injector.getInstance(DataSourceFactory).forName(LogAppInfo.DATA_SOURSE_NAME))
     }
 
     @Override
@@ -85,6 +79,6 @@ class AdminModule extends ConfigModule {
                 .addMappedFilter(TAPESTRY_FILTER)
                 .addMappedServlet(new MappedServlet<>(new ISHHealthCheckServlet(), ISHHealthCheckServlet.urlPatterns, ISHHealthCheckServlet.SERVLET_NAME))
                 .addStaticServlet("resources", URL_PATTERN)
-                .addListener(new TheLiquibaseServletListener())
+                .addListener(LiquibaseServletListener.class)
     }
 }
