@@ -11,7 +11,6 @@ import ish.oncourse.solr.query.SolrQueryBuilder
 import ish.oncourse.solr.reindex.ReindexCoursesJob
 import ish.oncourse.test.TestContext
 import ish.oncourse.test.context.CCollege
-import ish.oncourse.test.context.CCourse
 import ish.oncourse.test.context.DataContext
 import org.apache.cayenne.ObjectContext
 import org.apache.solr.client.solrj.SolrClient
@@ -65,7 +64,6 @@ class SolrCourseQueryWithTagSubjectFilterTest extends ASolrTest{
         Course course6 = cCollege.newCourse("course6").course
         Course course7 = cCollege.newCourse("course7").course
         Course course8 = cCollege.newCourse("course8").course
-        Course course9 = cCollege.newCourse("course9").course
         
         cCollege.tagCourse(course1, tag1)
         cCollege.tagCourse(course2, tag11)
