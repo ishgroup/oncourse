@@ -68,7 +68,6 @@ class History extends React.Component<Props, any> {
                   {version.published && version.date && <TimeAgo date={version.date}/>}
                 </td>
                 <td>{version.author}</td>
-                <td>{version.changes}</td>
                 <td>
                   {!version.published &&
                     <Button color="primary" onClick={() => this.onPublish()}>Publish</Button>
