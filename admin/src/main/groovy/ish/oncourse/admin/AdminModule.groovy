@@ -65,8 +65,8 @@ class AdminModule extends ConfigModule {
 
     @Singleton
     @Provides
-    LiquibaseServletListener createLiquibaseParams(Injector injector) {
-        new LiquibaseServletListener(injector.getInstance(DataSourceFactory).forName(LogAppInfo.DATA_SOURSE_NAME))
+    LiquibaseServletListener createLiquibaseListener(DataSourceFactory factory) {
+        new LiquibaseServletListener(factory.forName(LogAppInfo.DATA_SOURSE_NAME))
     }
 
     @Override
