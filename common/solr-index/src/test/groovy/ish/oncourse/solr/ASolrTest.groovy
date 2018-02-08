@@ -1,7 +1,14 @@
 package ish.oncourse.solr
 
 import com.carrotsearch.randomizedtesting.annotations.ThreadLeakScope
+import io.reactivex.schedulers.Schedulers
+import ish.oncourse.test.TestContext
+import ish.oncourse.test.context.CCollege
+import ish.oncourse.test.context.DataContext
+import org.apache.cayenne.ObjectContext
 import org.apache.solr.SolrTestCaseJ4
+import org.junit.After
+import org.junit.Before
 
 /**
  * User: akoiro
@@ -13,5 +20,31 @@ abstract class ASolrTest extends SolrTestCaseJ4 {
         System.setProperty("test.solr.allowed.securerandom", "NativePRNG")
         System.setProperty("tests.timezone", "Australia/Sydney")
         System.setProperty("tests.locale", "en-AU")
+    }
+
+    TestContext testContext
+    ObjectContext objectContext
+    InitSolr initSolr
+    CCollege cCollege
+
+    @Before
+    void before() throws Exception {
+        initSolr = InitSolr.coursesCore()
+        initSolr.init()
+
+        testContext = new TestContext()
+        testContext.open()
+        objectContext = testContext.getServerRuntime().newContext()
+        DataContext dataContext = new DataContext(objectContext: objectContext)
+        cCollege = dataContext.newCollege()
+    }
+
+    @After
+    void after() {
+        Schedulers.shutdown()
+
+        // Can't drop DB cause 2 mariaDB threads is still working.
+        // TODO: define mariaDB daemon threads and shut them down (OD-11304)
+        testContext.close(false)
     }
 }

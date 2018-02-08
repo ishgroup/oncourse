@@ -1,45 +1,24 @@
 package ish.oncourse.solr.functions.course
 
-import io.reactivex.schedulers.Schedulers
+import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Tutor
+import ish.oncourse.model.TutorRole
 import ish.oncourse.solr.ASolrTest
-import ish.oncourse.solr.InitSolr
 import ish.oncourse.solr.model.SCourse
 import ish.oncourse.solr.query.SearchParams
 import ish.oncourse.solr.query.SolrQueryBuilder
 import ish.oncourse.solr.reindex.ReindexCoursesJob
-import ish.oncourse.test.TestContext
-import ish.oncourse.test.context.CCollege
 import ish.oncourse.test.context.CTutor
-import ish.oncourse.test.context.DataContext
-import org.apache.cayenne.ObjectContext
+import org.apache.cayenne.query.ObjectSelect
 import org.apache.solr.client.solrj.SolrClient
 import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer
-import org.junit.After
-import org.junit.Before
 import org.junit.Test
 
 /**
  * Created by alex on 1/26/18.
  */
 class SolrCourseQueryWithTutorFilterTest extends ASolrTest {
-    private TestContext testContext
-    private ObjectContext objectContext
-    private InitSolr initSolr
-    private CCollege cCollege
-
-    @Before
-    void before() throws Exception {
-        initSolr = InitSolr.coursesCore()
-        initSolr.init()
-
-        testContext = new TestContext()
-        testContext.open()
-        objectContext = testContext.getServerRuntime().newContext()
-        DataContext dataContext = new DataContext(objectContext: objectContext)
-        cCollege = dataContext.newCollege()
-    }
-
+    
     @Test
     void testSortCoursesWithBeforeAfterFilter() {
         SolrClient solrClient = new EmbeddedSolrServer(h.getCore())
@@ -104,14 +83,30 @@ class SolrCourseQueryWithTutorFilterTest extends ASolrTest {
         assertTrue(actualSCourses.get(4).name == "course14")
         assertTrue(actualSCourses.subList(5, 7).name.contains("course11"))
         assertTrue(actualSCourses.subList(5, 7).name.contains("course12"))
-    }
+        
+        
+        //remove tutorRoles of targetTutor and check correct courses reindex (there'll be no classes with targetTutor)
+        objectContext.deleteObjects(targetTutor.tutorRoles)
+        objectContext.commitChanges()
+        List<CourseClass> classes = ObjectSelect.query(CourseClass).where(CourseClass.TUTOR_ROLES.dot(TutorRole.TUTOR).eq(targetTutor)).select(objectContext)
+        assertTrue(classes.isEmpty())
 
-    @After
-    void after() {
-        Schedulers.shutdown()
+        //before reindex job courses are still in index, but there haven't been courseClasses with targetTutor 
+        actualSCourses = solrClient.query("courses",
+                SolrQueryBuilder.valueOf(new SearchParams(s: "course*", tutorId: targetTutor.angelId), collegeId, null, null).build())
+                .getBeans(SCourse.class)
+        assertEquals(8, actualSCourses.size())
 
-        // Can't drop DB cause 2 mariaDB threads is still working.
-        // TODO: define mariaDB daemon threads and shut them down
-        testContext.close(false)
+        job = new ReindexCoursesJob(objectContext, solrClient)
+        job.run()
+        while (job.isActive()) {
+            Thread.sleep(100)
+        }
+
+        //after reindex
+        actualSCourses = solrClient.query("courses",
+                SolrQueryBuilder.valueOf(new SearchParams(s: "course*", tutorId: targetTutor.angelId), collegeId, null, null).build())
+                .getBeans(SCourse.class)
+        assertTrue(actualSCourses.empty)
     }
 }
