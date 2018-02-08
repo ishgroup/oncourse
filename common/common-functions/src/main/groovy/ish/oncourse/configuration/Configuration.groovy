@@ -12,7 +12,7 @@ class Configuration {
     static configure(IProperty... extendedProps = null) {
         
         String userDir = System.getProperties().get(USER_DIR) as String
-        Properties props = loadPropertyFile("$userDir/$CONFIG_FILE_NAME")
+        Properties props = loadProperties()
         if (props) {
             if (!init(props, LOGS_PATH)) {
                 System.setProperty(LOGS_PATH.systemProperty, "${userDir}/logs/")
@@ -35,11 +35,13 @@ class Configuration {
         }
     }
 
-    static Properties loadPropertyFile(String path) {
+    static Properties loadProperties() {
+        String userDir = System.getProperties().get(USER_DIR) as String
+
         Properties props
         FileInputStream stream
         try {
-            stream = new FileInputStream(path)
+            stream = new FileInputStream("$userDir/$CONFIG_FILE_NAME")
             props = new Properties()
             props.load(stream)
         } catch (Exception ex) {

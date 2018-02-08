@@ -14,6 +14,9 @@ import ish.oncourse.admin.services.access.AuthenticationService
 import ish.oncourse.cayenne.WillowCayenneModuleBuilder
 import ish.oncourse.cayenne.cache.JCacheModule
 import ish.oncourse.configuration.ISHHealthCheckServlet
+import ish.oncourse.listeners.LiquibaseParamBuilder
+import ish.oncourse.listeners.LiquibaseParams
+import ish.oncourse.listeners.TheLiquibaseServletListener
 import ish.oncourse.tapestry.WillowModuleDef
 import ish.oncourse.tapestry.WillowTapestryFilter
 import ish.oncourse.tapestry.WillowTapestryFilterBuilder
@@ -58,10 +61,19 @@ class AdminModule extends ConfigModule {
 
     @Singleton
     @Provides
-    MappedFilter<AuthenticationFilter> createTapestryFilter(AuthenticationService authenticationService) {
+    MappedFilter<AuthenticationFilter> createAuthenticationFilter(AuthenticationService authenticationService) {
         new MappedFilter<AuthenticationFilter>(new AuthenticationFilter(authenticationService), Collections.singleton(URL_PATTERN), 0)
     }
 
+    @Singleton
+    @Provides
+    LiquibaseParams createLiquibaseParams(Injector injector) {
+        new LiquibaseParamBuilder()
+                .setFailOnError(true)
+                .addDataSource(injector.getInstance(DataSourceFactory).forName(LogAppInfo.DATA_SOURSE_NAME))
+                .addChangeLogFile("liquibase.db.changelog.xml")
+                .addContexts("production").build()
+    }
 
     @Override
     void configure(Binder binder) {
@@ -73,5 +85,6 @@ class AdminModule extends ConfigModule {
                 .addMappedFilter(TAPESTRY_FILTER)
                 .addMappedServlet(new MappedServlet<>(new ISHHealthCheckServlet(), ISHHealthCheckServlet.urlPatterns, ISHHealthCheckServlet.SERVLET_NAME))
                 .addStaticServlet("resources", URL_PATTERN)
+                .addListener(new TheLiquibaseServletListener())
     }
 }

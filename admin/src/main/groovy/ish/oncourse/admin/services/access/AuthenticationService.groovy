@@ -4,8 +4,6 @@ import ish.oncourse.services.authentication.AuthenticationResult
 import ish.oncourse.services.authentication.AuthenticationStatus
 import ish.oncourse.services.authentication.IAuthenticationService
 import ish.oncourse.configuration.Configuration
-import static ish.oncourse.configuration.Configuration.USER_DIR
-import static ish.oncourse.configuration.Configuration.CONFIG_FILE_NAME
 
 class AuthenticationService implements IAuthenticationService {
 
@@ -17,9 +15,8 @@ class AuthenticationService implements IAuthenticationService {
     private Map<String, String> passwords = new HashMap<>()
 
     AuthenticationService() {
-        String propertyPath = "${System.getProperty(USER_DIR)}/${CONFIG_FILE_NAME}"
 
-        String propertyLine = Configuration.loadPropertyFile(propertyPath).getProperty(USERS)
+        String propertyLine = Configuration.loadProperties().getProperty(USERS)
         propertyLine.split(",").each { userCredentials ->
             String[] creds = userCredentials.split(":")
             roles.put(creds[0], creds[2])

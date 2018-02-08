@@ -15,7 +15,6 @@ import ish.oncourse.services.cache.IRequestCacheService;
 import ish.oncourse.services.cache.RequestCacheService;
 import ish.oncourse.services.threading.ThreadSource;
 import ish.oncourse.services.threading.ThreadSourceImpl;
-import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.tapestry5.MetaDataConstants;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
@@ -34,10 +33,6 @@ public class AppModule {
 		BinderFunctions.bindEntityServices(binder);
 		BinderFunctions.bindWebSiteServices(binder, WebSiteServiceOverride.class, WebSiteVersionServiceOverride.class);
 		BinderFunctions.bindPaymentGatewayServices(binder);
-//		binder.bind(ServerRuntime.class, resources -> ServerRuntime.builder()
-//				.addConfig("cayenne-oncourse.xml")
-//				.addModule(new WillowCayenneModuleBuilder().build())
-//				.build()).eagerLoad();
 		BinderFunctions.bindEnvServices(binder, "admin", false, new S3ServiceBuilder());
 
 		binder.bind(IBillingDataService.class, BillingDataServiceImpl.class);

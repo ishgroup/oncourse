@@ -10,21 +10,27 @@ import liquibase.resource.CompositeResourceAccessor;
 import liquibase.resource.FileSystemResourceAccessor;
 import liquibase.resource.ResourceAccessor;
 import liquibase.util.NetUtil;
-import liquibase.util.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.inject.Inject;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.sql.DataSource;
 import java.sql.Connection;
-import java.util.Enumeration;
+import java.util.Map;
 
 public class TheLiquibaseServletListener implements ServletContextListener {
 
 	private static final Logger logger = LogManager.getLogger();
+
+	@Inject
+	private LiquibaseParams params;
+
+	public TheLiquibaseServletListener() {
+	}
 
 	@Override
 	public void contextDestroyed(ServletContextEvent arg0) {
@@ -48,112 +54,100 @@ public class TheLiquibaseServletListener implements ServletContextListener {
 			return;
 		}
 
-		String machineIncludes = servletContextEvent.getServletContext().getInitParameter("liquibase.host.includes");
-		String machineExcludes = servletContextEvent.getServletContext().getInitParameter("liquibase.host.excludes");
-		String failOnError = servletContextEvent.getServletContext().getInitParameter("liquibase.onerror.fail");
-
-		boolean shouldRun = false;
-		if (machineIncludes == null && machineExcludes == null) {
-			shouldRun = true;
-		} else if (machineIncludes != null) {
-			for (String machine : machineIncludes.split(",")) {
-				machine = machine.trim();
-				if (hostName.equalsIgnoreCase(machine)) {
-					shouldRun = true;
-				}
-			}
-		} else if (machineExcludes != null) {
-			shouldRun = true;
-			for (String machine : machineExcludes.split(",")) {
-				machine = machine.trim();
-				if (hostName.equalsIgnoreCase(machine)) {
-					shouldRun = false;
-				}
-			}
-		}
-
-		if (!shouldRun) {
+		if (!isShouldRun(hostName)) {
 			servletContextEvent.getServletContext().log(
 					"LiquibaseServletListener did not run due to liquibase.host.includes and/or liquibase.host.excludes");
 			return;
 		}
 
-		String dataSourcesParam = servletContextEvent.getServletContext().getInitParameter("liquibase.datasource");
-		String changeLogFilesParam = servletContextEvent.getServletContext().getInitParameter("liquibase.changelog");
-		String contexts = servletContextEvent.getServletContext().getInitParameter("liquibase.contexts");
-		String defaultSchema = StringUtils.trimToNull(servletContextEvent.getServletContext().getInitParameter("liquibase.schema.default"));
+		validateSrcDest(params);
 
-		if (changeLogFilesParam == null) {
-			String errorMessage = "Cannot run Liquibase, liquibase.changelog is not set";
+		for (int i = 0; i < params.getChangeLogFilesParam().size(); i++) {
+			update(params.getDataSources().get(i), params.getChangeLogFilesParam().get(i),params.getDefaultSchema(), params.getLiquibaseParameters(), params.getContexts());
+		}
+	}
+
+	private void validateSrcDest(LiquibaseParams params) throws RuntimeException {
+
+		String errorMessage = null;
+
+		if (params.getChangeLogFilesParam() == null) {
+			errorMessage = "Cannot run Liquibase, changelogs is not set";
+		}
+		if (params.getDataSources() == null) {
+			errorMessage = "Cannot run Liquibase, data sources is not set";
+		}
+
+		if (params.getChangeLogFilesParam().size() != params.getDataSources().size()) {
+			errorMessage = "The number of data sources, should be equal to the number of changeLogFiles";
+		}
+
+		if (errorMessage != null) {
 			logger.error(errorMessage);
 			throw new RuntimeException(errorMessage);
 		}
-		if (dataSourcesParam == null) {
-			String errorMessage = "Cannot run Liquibase, liquibase.datasource is not set";
-			logger.error(errorMessage);
-			throw new RuntimeException(errorMessage);
+	}
+
+	private boolean isShouldRun(String hostName){
+		boolean shouldRun = false;
+		if (params.getMachineIncludes().isEmpty() && params.getMachineExcludes().isEmpty()) {
+			shouldRun = true;
+		} else if (!params.getMachineIncludes().isEmpty()) {
+			for(String machine : params.getMachineIncludes()) {
+				if (hostName.equalsIgnoreCase(machine.trim())) {
+					shouldRun = true;
+				}
+			}
+		} else if (!params.getMachineExcludes().isEmpty()) {
+			shouldRun = true;
+			for (String machine : params.getMachineExcludes()) {
+				if (hostName.equalsIgnoreCase(machine.trim())) {
+					shouldRun = false;
+				}
+			}
 		}
+		return shouldRun;
+	}
 
-		String[] changeLogFiles = changeLogFilesParam.split(",");
-		String[] dataSources = dataSourcesParam.split(",");
+	private void update(DataSource dataSource, String changeLog, String defaultSchema, Map<String, String> lqParams, String contexts) {
+		try {
 
-		if (changeLogFiles.length != dataSources.length) {
-			String errorMessage = "The number of datasources, should be equal to the number of changeLogFiles";
-			logger.error(errorMessage);
-			throw new RuntimeException(errorMessage);
-		}
-
-		for (int i = 0; i < changeLogFiles.length; i++) {
-			String dataSourceName = dataSources[i];
-			String changeLogFile = changeLogFiles[i];
+			Context ic = null;
+			Connection connection = null;
 
 			try {
+				ic = new InitialContext();
 
-				Context ic = null;
-				Connection connection = null;
+				connection = dataSource.getConnection();
 
-				try {
-					ic = new InitialContext();
-					DataSource dataSource = (DataSource) ic.lookup(dataSourceName);
+				Thread currentThread = Thread.currentThread();
+				ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+				ResourceAccessor threadClFO = new ClassLoaderResourceAccessor(contextClassLoader);
 
-					connection = dataSource.getConnection();
+				ResourceAccessor clFO = new ClassLoaderResourceAccessor();
+				ResourceAccessor fsFO = new FileSystemResourceAccessor();
 
-					Thread currentThread = Thread.currentThread();
-					ClassLoader contextClassLoader = currentThread.getContextClassLoader();
-					ResourceAccessor threadClFO = new ClassLoaderResourceAccessor(contextClassLoader);
+				Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
+				database.setDefaultSchemaName(defaultSchema);
+				Liquibase liquibase = new Liquibase(changeLog, new CompositeResourceAccessor(clFO, fsFO, threadClFO), database);
 
-					ResourceAccessor clFO = new ClassLoaderResourceAccessor();
-					ResourceAccessor fsFO = new FileSystemResourceAccessor();
+				lqParams.forEach((key, val) -> liquibase.setChangeLogParameter(key, val));
 
-					Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
-					database.setDefaultSchemaName(defaultSchema);
-					Liquibase liquibase = new Liquibase(changeLogFile, new CompositeResourceAccessor(clFO, fsFO, threadClFO), database);
+				liquibase.update(contexts);
 
-					Enumeration<String> initParameters = servletContextEvent.getServletContext().getInitParameterNames();
-					while (initParameters.hasMoreElements()) {
-						String name = initParameters.nextElement().trim();
-						if (name.startsWith("liquibase.parameter.")) {
-							liquibase.setChangeLogParameter(name.substring("liquibase.parameter".length()), servletContextEvent
-									.getServletContext().getInitParameter(name));
-						}
-					}
-
-					liquibase.update(contexts);
-
-				} finally {
-					if (ic != null) {
-						ic.close();
-					}
-					if (connection != null) {
-						connection.close();
-					}
+			} finally {
+				if (ic != null) {
+					ic.close();
 				}
-
-			} catch (Exception e) {
-				logger.error("Liquibase update failed with error.", e);
-				if (!"false".equals(failOnError)) {
-					throw new RuntimeException(e);
+				if (connection != null) {
+					connection.close();
 				}
+			}
+
+		} catch (Exception e) {
+			logger.error("Liquibase update failed with error.", e);
+			if (params.getFailOnError()) {
+				throw new RuntimeException(e);
 			}
 		}
 	}
