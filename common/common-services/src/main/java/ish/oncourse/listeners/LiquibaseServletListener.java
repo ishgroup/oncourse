@@ -43,6 +43,7 @@ public class LiquibaseServletListener implements ServletContextListener {
             liquibase.update(CONTEXT);
         } catch (Exception ex) {
             logger.error("Liquibase update failed with error.", ex);
+            throw new RuntimeException(ex);
         }
     }
 
