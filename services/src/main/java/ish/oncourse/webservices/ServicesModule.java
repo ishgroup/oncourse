@@ -4,7 +4,6 @@
 package ish.oncourse.webservices;
 
 import com.google.inject.*;
-import com.google.inject.multibindings.Multibinder;
 import io.bootique.ConfigModule;
 import io.bootique.cayenne.CayenneModule;
 import io.bootique.jdbc.DataSourceFactory;
@@ -100,7 +99,8 @@ public class ServicesModule extends ConfigModule {
 				.addMappedFilter(TAPESTRY_FILTER)
 				.addMappedServlet(CXF_SERVLET)
 				.addMappedServlet(new MappedServlet<>(new ISHHealthCheckServlet(), ISHHealthCheckServlet.urlPatterns, ISHHealthCheckServlet.SERVLET_NAME));
-        Multibinder.newSetBinder(binder, Key.get(ScheduledService.class)).addBinding().to(ScheduledService.class).asEagerSingleton();
+
+		//Multibinder.newSetBinder(binder, Key.get(ScheduledService.class)).addBinding().to(ScheduledService.class).asEagerSingleton();
 	}
 	
     @Provides
