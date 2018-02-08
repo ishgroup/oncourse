@@ -1,0 +1,8 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<t:if test="classStartDateTime">
+		<meta content="${classStartDateTime}" name="startDate"/>
+	</t:if>
+	<t:if test="classEndDateTime">
+		<meta content="${classEndDateTime}" name="endDate"/>
+	</t:if>
+</t:container>
