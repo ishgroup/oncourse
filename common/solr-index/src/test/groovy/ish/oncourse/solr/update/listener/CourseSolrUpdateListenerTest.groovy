@@ -1,12 +1,10 @@
 package ish.oncourse.solr.update.listener
 
-import ish.oncourse.model.Course
 import ish.oncourse.test.TestContext
 import ish.oncourse.test.context.CCollege
 import ish.oncourse.test.context.CCourse
 import ish.oncourse.test.context.DataContext
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.map.LifecycleEvent
 import org.apache.cayenne.reflect.LifecycleCallbackRegistry
 import org.junit.After
 import org.junit.Assert
@@ -37,10 +35,8 @@ class CourseSolrUpdateListenerTest {
         Closure countCl = {
             count++
         }
-        Object listener = new CourseSolrUpdateListener(closure: countCl)
         
-        registry.addListener(LifecycleEvent.POST_PERSIST, Course.class, listener, "onCourseChange")
-        registry.addListener(LifecycleEvent.POST_UPDATE, Course.class, listener, "onCourseChange")
+        registry.addListener(new CourseSolrUpdateListener(closure: countCl))
         
         Assert.assertEquals(0, count)
         
