@@ -6,7 +6,7 @@ import "rxjs";
 
 import * as Actions from "../actions/Actions";
 import {Actions as WebActions} from "../../web/actions/Actions";
-import {ValidationError, Contact, ContactId} from "../../model";
+import {ValidationError, Contact, ContactId, PaymentStatus} from "../../model";
 import {ShoppingCardIsEmpty} from "../containers/checkout/Errors";
 import {Phase} from "../reducers/State";
 import CheckoutService from "../services/CheckoutService";
@@ -14,7 +14,7 @@ import {submitAddContact, Values} from "../containers/contact-add/actions/Action
 import {IAction} from "../../actions/IshAction";
 import {ProcessError} from "./EpicUtils";
 import {AxiosResponse} from "axios";
-import {resetPaymentState} from "../containers/payment/actions/Actions";
+import {getPaymentStatus, resetPaymentState} from "../containers/payment/actions/Actions";
 import {IshState} from "../../services/IshState";
 import {openEditContact} from "../containers/contact-edit/actions/Actions";
 import {getAllContactNodesFromBackend, getContactNodeFromBackend, removeItemFromSummary} from "../containers/summary/actions/Actions";
@@ -84,20 +84,21 @@ export const EpicInit: Epic<any, IshState> = (action$: ActionsObservable<any>, s
     result.push(Actions.updateContactAddProcess({}, null, null, null));
 
     if (!L.isNil(state.checkout.payment.value)) {
-      if (CheckoutService.isFinalStatus(state.checkout.payment.value)) {
+      const payment = state.checkout.payment.value;
+
+      if (CheckoutService.isFinalStatus(payment)) {
         result.push(Actions.changePhase(Phase.Init));
         result.push(resetPaymentState());
         result.push(Actions.sendInitRequest());
         return result;
-      } else {
-        return result.concat(CheckoutService.processPaymentResponse(state.checkout.payment.value));
+      } else if (state.checkout.phase === Phase.Result) {
+        return result.concat(payment.status === PaymentStatus.IN_PROGRESS ? getPaymentStatus() : CheckoutService.processPaymentResponse(payment));
       }
     }
 
     if (CheckoutService.cartIsEmpty(state.cart)) {
       return result.concat(showCartIsEmptyMessage());
     }
-
     if (state.checkout.summary.result.length) {
       return result.concat([
         Actions.changePhase(state.checkout.isCartModified ? Phase.Summary : state.checkout.page),
