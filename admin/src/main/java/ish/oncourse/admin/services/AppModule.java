@@ -28,6 +28,8 @@ import org.apache.tapestry5.ioc.ServiceBinder;
 
 public class AppModule {
 
+	private static final String HMAC_PASSPHRASE = "807A760F20C70F8C9E0ACD8D955EA05399E501E5";
+
 	public static void bind(ServiceBinder binder) {
 		BinderFunctions.bindReferenceServices(binder);
 		BinderFunctions.bindEntityServices(binder);
@@ -47,6 +49,7 @@ public class AppModule {
 			MappedConfiguration<String, String> configuration) {
 		configuration.add(SymbolConstants.PRODUCTION_MODE, "false");
 		configuration.add(SymbolConstants.SECURE_ENABLED, "false");
+		configuration.add(SymbolConstants.HMAC_PASSPHRASE, HMAC_PASSPHRASE);
 	}
 
 	public void contributeMetaDataLocator(MappedConfiguration<String, String> configuration) {
