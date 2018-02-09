@@ -1,7 +1,7 @@
 {
-  "name": "ish",
+  "name": "checkout",
   "version": "0.0.1",
-  "description": "ish project",
+  "description": "Checkout application",
   "main": "webpack.config.js",
   "scripts": {
     "dependencies:update": "npm prune && npm install",
