@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="warn" monitorInterval="30">
-<Properties>
-    <Property name="name">admin</Property>
-</Properties>
-<Appenders>
-    <RollingFile name="FILE" fileName="${sys:logs.path}/${name}.log"
-                 filePattern="${sys:logs.path}/${name}.log.%i">
-        <JsonLayout compact="true" eventEol="true"/>
-        <SizeBasedTriggeringPolicy size="10M"/>
-        <DefaultRolloverStrategy/>
-    </RollingFile>
-    <RollingFile name="FILE_ERROR" fileName="${sys:logs.path}/${name}-error.log"
-                 filePattern="${sys:logs.path}/${name}-error.log.%i">
-        <JsonLayout compact="true" eventEol="true"/>
-        <SizeBasedTriggeringPolicy size="10M"/>
-        <DefaultRolloverStrategy/>
-    </RollingFile>
-</Appenders>
-<Loggers>
-    <Root level="warn">
-        <AppenderRef ref="FILE_ERROR" level="error"/>
-        <AppenderRef ref="FILE" level="warn"/>
-    </Root>
-    <Logger name="ish.oncourse.util.log.LogAppInfo" level="info">
-        <AppenderRef ref="FILE"/>
-    </Logger>
-    <Logger name="io.bootique.jetty.server.ServerLifecycleLogger" level="info">
-        <AppenderRef ref="FILE"/>
-    </Logger>
-</Loggers>
+    <Properties>
+        <Property name="name">willow_admin</Property>
+    </Properties>
+    <Appenders>
+        <RollingFile name="FILE" fileName="${sys:logs.path}/${name}.log"
+                     filePattern="${sys:logs.path}/${name}.log.%i">
+            <JsonLayout compact="true" eventEol="true"/>
+            <SizeBasedTriggeringPolicy size="10M"/>
+            <DefaultRolloverStrategy/>
+        </RollingFile>
+        <RollingFile name="FILE_ERROR" fileName="${sys:logs.path}/${name}-error.log"
+                     filePattern="${sys:logs.path}/${name}-error.log.%i">
+            <JsonLayout compact="true" eventEol="true"/>
+            <SizeBasedTriggeringPolicy size="10M"/>
+            <DefaultRolloverStrategy/>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Root level="warn">
+            <AppenderRef ref="FILE_ERROR" level="error"/>
+            <AppenderRef ref="FILE" level="warn"/>
+        </Root>
+        <Logger name="ish.oncourse.util.log.LogAppInfo" level="info">
+            <AppenderRef ref="FILE"/>
+        </Logger>
+        <Logger name="io.bootique.jetty.server.ServerLifecycleLogger" level="info">
+            <AppenderRef ref="FILE"/>
+        </Logger>
+    </Loggers>
 </Configuration>
