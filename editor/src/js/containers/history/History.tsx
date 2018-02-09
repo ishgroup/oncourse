@@ -46,7 +46,7 @@ class History extends React.Component<Props, any> {
     const {versions, fetching} = this.props;
 
     return (
-      <div className={classnames({fetching})}>
+      <div className={classnames('overflow-content', {fetching})}>
 
         <Table className="table table--row-center">
           <thead>

@@ -4,5 +4,5 @@ export const notificationParams = {
   title: 'Save success',
   message: null,
   position: 'tr',
-  autoDismiss: 2,
+  autoDismiss: 3,
 };

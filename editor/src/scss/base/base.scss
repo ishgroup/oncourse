@@ -46,3 +46,8 @@ mark {
 .pos-r {
   position: relative;
 }
+
+.overflow-content {
+  max-height: 95vh;
+  overflow-y: auto;
+}
