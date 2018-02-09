@@ -27,6 +27,12 @@ compileGroovy {
 
 processResources.doLast {
     file("${buildDir}/resources/VERSION").text = version ?: "SNAPSHOT"
+    javaexec {
+        classpath = configurations.swagger
+        main = 'io.swagger.codegen.SwaggerCodegen'
+        args  = [ 'generate', '-i', "${project.projectDir}/src/main/resources/$swaggerName", '-l', 'html', '-o', "${buildDir}/doc"]
+    }
+    
 }
 
 // the following block isn't working for me when placed in the top level build.gradle

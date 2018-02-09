@@ -1,5 +1,6 @@
 dependencies {
     compile("io.swagger:swagger-codegen:2.2.2")
+    compile("io.swagger:swagger-codegen-cli:2.2.2")
 }
 
 /**
