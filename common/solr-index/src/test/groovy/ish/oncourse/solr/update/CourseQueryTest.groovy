@@ -93,24 +93,6 @@ class CourseQueryTest {
     }
 
     @Test
-    void testByRoom(){
-        Room targetRoom = CRoom.instance(objectContext, college).build().room
-        Room otherRoom = CRoom.instance(objectContext, college).build().room
-        
-        CCourse roomCourse = collegeContext.newCourse("roomCourse").withClassWithRoom("roomCourse", targetRoom).build()
-        CCourse otherCourse = collegeContext.newCourse("otherCourse").withClassWithRoom("otherCourse", otherRoom).build()
-        CCourse sessionCourse = collegeContext.newCourse("sessionCourse").withClassWithSessionsAndRoom("sessionClass", targetRoom).build
-        CCourse withoutRoom = collegeContext.newCourse("withoutRoom").build()
-
-        List<Course> actualCourses = ish.oncourse.solr.functions.course.CourseQuery.byRoom(targetRoom).select(objectContext)
-        Assert.assertEquals(2, actualCourses.size())
-        assertNotNull(actualCourses.find {c -> c.id == roomCourse.course.id})
-        assertNull(actualCourses.find {c -> c.id == otherCourse.course.id})
-        assertNotNull(actualCourses.find {c -> c.id == sessionCourse.course.id})
-        assertNull(actualCourses.find {c -> c.id == withoutRoom.course.id})
-    }
-
-    @Test
     void testBySessionRoomSite(){
         CCourse expectedCourse = collegeContext.newCourse("expectedCourse")
         CSite targetSite = CSite.instance(objectContext, college)
