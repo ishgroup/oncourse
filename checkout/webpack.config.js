@@ -26,6 +26,7 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
   return {
     entry: {
       dynamic: [
+        'babel-polyfill',
         'react',
         'redux',
         'react-redux',
