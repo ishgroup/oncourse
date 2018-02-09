@@ -1,3 +1,7 @@
+if (!global['_babelPolyfill']) {
+  require("babel-polyfill");
+}
+
 import {CreateStore, RestoreState} from "./CreateStore";
 import {Bootstrap} from "./common/utils/Bootstrap";
 import {PublicApi} from "./external/PublicApi";
