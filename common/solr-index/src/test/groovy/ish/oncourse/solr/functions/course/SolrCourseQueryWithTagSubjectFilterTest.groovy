@@ -23,10 +23,10 @@ class SolrCourseQueryWithTagSubjectFilterTest extends ASolrTest{
         List<SCourse> actualSCourses
 
         Tag tag1 = cCollege.tag("Tag1")
-        Tag tag11 = cCollege.tag("Tag11", false, false)
-        Tag tag12 = cCollege.tag("Tag12", false)
+        Tag tag11 = cCollege.tag("Tag11", false)
+        Tag tag12 = cCollege.tag("Tag12")
         Tag tag2 = cCollege.tag("Tag2")
-        Tag tag21 = cCollege.tag("Tag21", false)
+        Tag tag21 = cCollege.tag("Tag21")
         Tag tag3 = cCollege.tag("Tag3")
 
         cCollege.addTag(tag1, tag11, tag12)

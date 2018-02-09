@@ -18,11 +18,11 @@ class CCollege {
 
     List<CWebSite> webSites = new LinkedList<>()
 
-    Tag tag(String name, boolean isTagGroup = true, boolean webVisible = true) {
+    Tag tag(String name, boolean webVisible = true) {
         Tag tag = objectContext.newObject(Tag)
         tag.name = name
         tag.isWebVisible = webVisible
-        tag.isTagGroup = isTagGroup
+        tag.isTagGroup = false
         tag.college = objectContext.localObject(college)
         objectContext.commitChanges()
         tags.put(tag.name, tag)
@@ -36,6 +36,7 @@ class CCollege {
     }
 
     void addTag(Tag parent, Tag... child) {
+        parent.isTagGroup = true
         child.each {
             it.parent = parent
             objectContext.commitChanges()
