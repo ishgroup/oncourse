@@ -26,7 +26,7 @@ class InitZKRootNode {
     } 
 
     void init() {
-        ZooKeeper keeper = new ZooKeeper(zkHostPort, 20000, {e -> logger.warn(e)})
+        ZooKeeper keeper = new ZooKeeper(zkHostPort, 20000, {e -> logger.info(e)})
         if (keeper.exists(WILLOW_NODE, false) == null) {
             keeper.create(WILLOW_NODE, new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT)
         }
