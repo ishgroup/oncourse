@@ -11,7 +11,7 @@ const request: EpicUtils.Request<any, any> = {
   getData: (payload, state) => PublishService.setVersion(payload),
   processData: (response: any, state: any, payload) => {
     return [
-      success({...notificationParams, title: `Draft successfully returned to version #${payload}`}),
+      success({...notificationParams,title: `Draft reverted to version #${payload}`}),
       {
         type: SET_VERSION_FULFILLED,
         payload: response,
