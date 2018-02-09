@@ -1,0 +1,25 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+  <aside class="header-toolbar" id="headerToolbar">
+    <span t:type="ui/PromoCodesView" />
+    <t:if t:test="paymentGatewayEnabled">
+      <span t:type="ui/ShortList" />
+    </t:if>
+    <div class="contact">
+      <span class="phone">
+        <a class="phone-number" href="tel:1800 065 800">
+          <i class="sicon phone-icon"></i>1800 065 800
+        </a>
+      </span>
+    </div>
+    <!-- <a class="nav-toggle js-nav-toggle pull-right" href="#">
+      <div class="">
+
+      </div>
+    </a> -->
+    <a class="nav-toggle js-nav-toggle pull-right" href="#">
+      <span class="nav-toggle-icon"></span>
+      <span class="nav-title">Menu</span>
+    </a>
+
+  </aside>
+</t:container>

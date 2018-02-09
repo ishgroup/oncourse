@@ -1,0 +1,21 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+  <section class="info-links">
+    <div class="container">
+      <div class="footer-container" itemscope="itemscope" itemtype="http://schema.org/Organization" itemprop="provider">
+        <ul class="footer-info">
+          <li><a href="/terms-conditions">Terms &amp; Conditions</a></li>
+          <li><a href="http://qms.com.au/certification/">Certification Services</a></li>
+        </ul>
+
+        <p class="footer-logo">
+          <a href="http://www.ish.com.au/oncourse" class="popup">
+            <img src="/s/img/icons/poweredby.png" width="102" height="9" alt="powered by ish onCourse"/>
+          </a>
+        </p>
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-58783c8b67070099"></script>
+
+      </div>
+    </div>
+  </section>
+</t:container>
