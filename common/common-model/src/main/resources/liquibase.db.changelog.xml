@@ -4612,5 +4612,57 @@
 			DROP COLUMN tutorId;
 		</sql>
 	</changeSet>
-
+	
+	<changeSet id="315" author="anarut" context="production" runOnChange="false" runAlways="false">
+		<preConditions>
+			<not>
+				<tableExists tableName="FieldConfigurationLink"/>
+			</not>
+		</preConditions>
+		<sql>
+			CREATE TABLE FieldConfigurationLink (
+			id BIGINT NOT NULL AUTO_INCREMENT,
+			angelId BIGINT,
+			collegeId BIGINT NOT NULL,
+			created DATETIME NOT NULL,
+			modified DATETIME NOT NULL,
+			schemeId BIGINT NOT NULL,
+			configurationId BIGINT NOT NULL,
+			PRIMARY KEY (id),
+			CONSTRAINT fieldConfigurationLink_angelId_college_unique UNIQUE (collegeId, angelId),
+			CONSTRAINT fieldConfigurationLink_college_scheme_configuration_unique UNIQUE (collegeId, schemeId, configurationId),
+			CONSTRAINT fk_FieldConfigurationLink_College FOREIGN KEY (collegeId) REFERENCES College(id),
+			CONSTRAINT fk_FieldConfigurationScheme FOREIGN KEY (schemeId) REFERENCES FieldConfigurationScheme(id),
+			CONSTRAINT fk_FieldConfiguration FOREIGN KEY (configurationId) REFERENCES FieldConfiguration(id));
+		</sql>
+	</changeSet>
+	<changeSet id="316" author="anarut" context="production" runOnChange="false" runAlways="false">
+		<sql>
+			ALTER TABLE FieldConfigurationScheme MODIFY COLUMN applicationFieldConfigurationId BIGINT;
+			ALTER TABLE FieldConfigurationScheme MODIFY COLUMN enrolFieldConfigurationId BIGINT;
+			ALTER TABLE FieldConfigurationScheme MODIFY COLUMN waitingListFieldConfigurationId BIGINT;
+		</sql>
+	</changeSet>
+	<changeSet id="316" author="anarut" context="production" runOnChange="false" runAlways="false">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="FieldConfiguration" columnName="type"/>
+			</not>
+		</preConditions>
+		<sql>
+			ALTER TABLE FieldConfiguration ADD COLUMN type SMALLINT NULL;
+			UPDATE FieldConfiguration SET type = 1;
+			ALTER TABLE FieldConfiguration MODIFY COLUMN type SMALLINT NOT NULL;
+		</sql>
+	</changeSet>
+	<changeSet id="317" author="anarut" context="production" runOnChange="false" runAlways="false">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="FieldConfiguration" columnName="deliverySchedule"/>
+			</not>
+		</preConditions>
+		<sql>
+			ALTER TABLE FieldConfiguration ADD COLUMN deliverySchedule SMALLINT NULL;
+		</sql>
+	</changeSet>
 </databaseChangeLog>

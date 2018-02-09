@@ -90,7 +90,11 @@ private Map<String, IWillowStubBuilder> builderMap;
 		builderMap.put(getEntityName(BinaryInfoRelation.class), new BinaryInfoRelationStubBuilder());
 		builderMap.put(getEntityName(Field.class), new FieldStubBuilder());
 		builderMap.put(getEntityName(FieldHeading.class), new FieldHeadingStubBuilder());
-		builderMap.put(getEntityName(FieldConfiguration.class), new FieldConfigurationStubBuilder());
+		builderMap.put(getEntityName(ApplicationFieldConfiguration.class), new FieldConfigurationStubBuilder());
+		builderMap.put(getEntityName(EnrolmentFieldConfiguration.class), new FieldConfigurationStubBuilder());
+		builderMap.put(getEntityName(WaitingListFieldConfiguration.class), new FieldConfigurationStubBuilder());
+		builderMap.put(getEntityName(SurveyFieldConfiguration.class), new FieldConfigurationStubBuilder());
+		builderMap.put(getEntityName(FieldConfigurationLink.class), new FieldConfigurationLinkStubBuilder());
 		builderMap.put(getEntityName(FieldConfigurationScheme.class), new FieldConfigurationSchemeStubBuilder());
 		builderMap.put(getEntityName(AssessmentClassModule.class), new AssessmentClassModuleStubBuilder());
 	}

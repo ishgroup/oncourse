@@ -35,6 +35,9 @@ public abstract class AbstractWillowStubBuilder<T extends Queueable, V extends G
 			} else if (entity instanceof ContactCustomField){
 				String customFieldIdentifier = getCustomFieldIdentifier(version);
 				soapStub.setEntityIdentifier(customFieldIdentifier);
+			} else if (entity instanceof EnrolmentCustomField) {
+				String customFieldIdentifier = getFieldConfigurationIdentifier(version);
+				soapStub.setEntityIdentifier(customFieldIdentifier);
 			} else {
 				soapStub.setEntityIdentifier(queuedRecord.getEntityIdentifier());
 			}
@@ -83,6 +86,18 @@ public abstract class AbstractWillowStubBuilder<T extends Queueable, V extends G
 			case V17:
 			default:
 				return ContactCustomField.class.getSimpleName();
+		}
+	}
+
+	private String getFieldConfigurationIdentifier(SupportedVersions version) {
+		switch (version) {
+			case V14:
+			case V15:
+			case V16:
+				return FieldConfiguration.class.getSimpleName();
+			case V17:
+			default:
+				return EnrolmentFieldConfiguration.class.getSimpleName();
 		}
 	}
 }

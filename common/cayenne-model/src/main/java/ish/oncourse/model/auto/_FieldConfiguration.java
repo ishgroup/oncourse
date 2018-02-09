@@ -7,6 +7,7 @@ import org.apache.cayenne.exp.Property;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.Field;
+import ish.oncourse.model.FieldConfigurationLink;
 import ish.oncourse.model.FieldConfigurationScheme;
 import ish.oncourse.model.FieldHeading;
 
@@ -22,11 +23,13 @@ public abstract class _FieldConfiguration extends WillowCayenneObject {
 
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String CREATED_PROPERTY = "created";
+    public static final String INT_TYPE_PROPERTY = "intType";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String NAME_PROPERTY = "name";
     public static final String APPLICATION_FIELD_CONFIGURATION_SCHEMES_PROPERTY = "applicationFieldConfigurationSchemes";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String ENROL_FIELD_CONFIGURATION_SCHEMES_PROPERTY = "enrolFieldConfigurationSchemes";
+    public static final String FIELD_CONFIGURATION_LINKS_PROPERTY = "fieldConfigurationLinks";
     public static final String FIELD_HEADINGS_PROPERTY = "fieldHeadings";
     public static final String FIELDS_PROPERTY = "fields";
     public static final String WAITING_LIST_FIELD_CONFIGURATION_SCHEMES_PROPERTY = "waitingListFieldConfigurationSchemes";
@@ -35,11 +38,13 @@ public abstract class _FieldConfiguration extends WillowCayenneObject {
 
     public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
     public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Integer> INT_TYPE = Property.create("intType", Integer.class);
     public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
     public static final Property<String> NAME = Property.create("name", String.class);
     public static final Property<List<FieldConfigurationScheme>> APPLICATION_FIELD_CONFIGURATION_SCHEMES = Property.create("applicationFieldConfigurationSchemes", List.class);
     public static final Property<College> COLLEGE = Property.create("college", College.class);
     public static final Property<List<FieldConfigurationScheme>> ENROL_FIELD_CONFIGURATION_SCHEMES = Property.create("enrolFieldConfigurationSchemes", List.class);
+    public static final Property<List<FieldConfigurationLink>> FIELD_CONFIGURATION_LINKS = Property.create("fieldConfigurationLinks", List.class);
     public static final Property<List<FieldHeading>> FIELD_HEADINGS = Property.create("fieldHeadings", List.class);
     public static final Property<List<Field>> FIELDS = Property.create("fields", List.class);
     public static final Property<List<FieldConfigurationScheme>> WAITING_LIST_FIELD_CONFIGURATION_SCHEMES = Property.create("waitingListFieldConfigurationSchemes", List.class);
@@ -56,6 +61,13 @@ public abstract class _FieldConfiguration extends WillowCayenneObject {
     }
     public Date getCreated() {
         return (Date)readProperty("created");
+    }
+
+    public void setIntType(Integer intType) {
+        writeProperty("intType", intType);
+    }
+    public Integer getIntType() {
+        return (Integer)readProperty("intType");
     }
 
     public void setModified(Date modified) {
@@ -102,6 +114,18 @@ public abstract class _FieldConfiguration extends WillowCayenneObject {
     @SuppressWarnings("unchecked")
     public List<FieldConfigurationScheme> getEnrolFieldConfigurationSchemes() {
         return (List<FieldConfigurationScheme>)readProperty("enrolFieldConfigurationSchemes");
+    }
+
+
+    public void addToFieldConfigurationLinks(FieldConfigurationLink obj) {
+        addToManyTarget("fieldConfigurationLinks", obj, true);
+    }
+    public void removeFromFieldConfigurationLinks(FieldConfigurationLink obj) {
+        removeToManyTarget("fieldConfigurationLinks", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<FieldConfigurationLink> getFieldConfigurationLinks() {
+        return (List<FieldConfigurationLink>)readProperty("fieldConfigurationLinks");
     }
 
 

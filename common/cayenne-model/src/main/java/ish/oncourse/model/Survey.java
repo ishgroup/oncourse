@@ -1,5 +1,6 @@
 package ish.oncourse.model;
 
+import ish.common.types.SurveyVisibility;
 import ish.oncourse.model.auto._Survey;
 import ish.oncourse.utils.QueueableObjectUtils;
 
@@ -21,6 +22,6 @@ public class Survey extends _Survey implements Queueable {
         setTutorScore(0);
         setVenueScore(0);
         setNetPromoterScore(0);
-	    setPublicComment(false);
+	    setVisibility(SurveyVisibility.REVIEW);
 	}
 }

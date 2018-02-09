@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.apache.cayenne.exp.Property;
 
+import ish.common.types.SurveyVisibility;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Enrolment;
 
@@ -23,10 +24,10 @@ public abstract class _Survey extends WillowCayenneObject {
     public static final String CREATED_PROPERTY = "created";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String NET_PROMOTER_SCORE_PROPERTY = "netPromoterScore";
-    public static final String PUBLIC_COMMENT_PROPERTY = "publicComment";
     public static final String TESTIMONIAL_PROPERTY = "testimonial";
     public static final String TUTOR_SCORE_PROPERTY = "tutorScore";
     public static final String VENUE_SCORE_PROPERTY = "venueScore";
+    public static final String VISIBILITY_PROPERTY = "visibility";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String ENROLMENT_PROPERTY = "enrolment";
 
@@ -38,10 +39,10 @@ public abstract class _Survey extends WillowCayenneObject {
     public static final Property<Date> CREATED = Property.create("created", Date.class);
     public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
     public static final Property<Integer> NET_PROMOTER_SCORE = Property.create("netPromoterScore", Integer.class);
-    public static final Property<Boolean> PUBLIC_COMMENT = Property.create("publicComment", Boolean.class);
     public static final Property<String> TESTIMONIAL = Property.create("testimonial", String.class);
     public static final Property<Integer> TUTOR_SCORE = Property.create("tutorScore", Integer.class);
     public static final Property<Integer> VENUE_SCORE = Property.create("venueScore", Integer.class);
+    public static final Property<SurveyVisibility> VISIBILITY = Property.create("visibility", SurveyVisibility.class);
     public static final Property<College> COLLEGE = Property.create("college", College.class);
     public static final Property<Enrolment> ENROLMENT = Property.create("enrolment", Enrolment.class);
 
@@ -87,13 +88,6 @@ public abstract class _Survey extends WillowCayenneObject {
         return (Integer)readProperty("netPromoterScore");
     }
 
-    public void setPublicComment(Boolean publicComment) {
-        writeProperty("publicComment", publicComment);
-    }
-    public Boolean getPublicComment() {
-        return (Boolean)readProperty("publicComment");
-    }
-
     public void setTestimonial(String testimonial) {
         writeProperty("testimonial", testimonial);
     }
@@ -113,6 +107,13 @@ public abstract class _Survey extends WillowCayenneObject {
     }
     public Integer getVenueScore() {
         return (Integer)readProperty("venueScore");
+    }
+
+    public void setVisibility(SurveyVisibility visibility) {
+        writeProperty("visibility", visibility);
+    }
+    public SurveyVisibility getVisibility() {
+        return (SurveyVisibility)readProperty("visibility");
     }
 
     public void setCollege(College college) {

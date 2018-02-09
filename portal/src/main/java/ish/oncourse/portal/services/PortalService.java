@@ -863,7 +863,7 @@ public class PortalService implements IPortalService {
         result.put(Survey.TUTOR_SCORE_PROPERTY, survey.getTutorScore());
         result.put(Survey.VENUE_SCORE_PROPERTY, survey.getVenueScore());
         result.put(Survey.COMMENT_PROPERTY, survey.getComment());
-        result.put(Survey.PUBLIC_COMMENT_PROPERTY, survey.getPublicComment());
+        result.put(Survey.VISIBILITY_PROPERTY, survey.getVisibility().getDatabaseValue());
         result.put(Survey.NET_PROMOTER_SCORE_PROPERTY, survey.getNetPromoterScore());
         return result;
     }

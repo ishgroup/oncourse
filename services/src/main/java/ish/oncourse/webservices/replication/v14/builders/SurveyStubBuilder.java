@@ -1,5 +1,6 @@
 package ish.oncourse.webservices.replication.v14.builders;
 
+import ish.common.types.SurveyVisibility;
 import ish.oncourse.model.Survey;
 import ish.oncourse.webservices.replication.builders.AbstractWillowStubBuilder;
 import ish.oncourse.webservices.v14.stubs.replication.SurveyStub;
@@ -15,9 +16,7 @@ public class SurveyStubBuilder extends AbstractWillowStubBuilder<Survey, SurveyS
         surveyStub.setTutorScore(entity.getTutorScore());
         surveyStub.setVenueScore(entity.getVenueScore());
         surveyStub.setEnrolmentId(entity.getEnrolment().getId());
-		if (entity.getPublicComment() != null) {
-			surveyStub.setPublicComment(entity.getPublicComment());
-		}
+        surveyStub.setPublicComment(SurveyVisibility.TESTIMONIAL.equals(entity.getVisibility()));
         return surveyStub;
     }
 }
