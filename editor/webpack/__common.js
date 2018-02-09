@@ -29,10 +29,10 @@ const _common = (dirname, options) => {
     },
     resolve: {
       modules: [
+        path.resolve(dirname, 'node_modules'),
         path.resolve(dirname, 'src/js'),
         path.resolve(dirname, 'src/dev'),
         path.resolve(dirname, 'src/scss'),
-        path.resolve(dirname, 'node_modules')
       ],
       extensions: [".ts", ".tsx", ".js", ".css"]
     },
