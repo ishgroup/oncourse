@@ -1,0 +1,14 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+  <section class="info-links">
+    <div class="container">
+      <div class="footer-container" itemscope="itemscope" itemtype="http://schema.org/Organization" itemprop="provider">
+        <p class="footer-support">
+          Proudly supported by <span itemprop="name">canterbury-hurlstone park rsl club</span>
+        </p>
+        <p class="footer-copyright">
+          © Camperdown Tennis Pty Ltd 2017. ABN 81 411 431 907. A wholly owned subsidiary of Canterbury-Hurlstone Park RSL Club.
+        </p>
+      </div>
+    </div>
+  </section>
+</t:container>

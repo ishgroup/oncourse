@@ -1,0 +1,59 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "WebSite",
+      "name": "Camperdown Tennis",
+      "alternateName": "Camperdown Tennis",
+      "url": "https://${request.serverName}/",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://${request.serverName}/courses?s={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+  </script>
+
+  <t:remove>Title for cms pages</t:remove>
+  <t:if test="webNode">
+    <title>${webNode.name} Camperdown Tennis</title>
+    <meta property="og:title" content="${webNode.name} Camperdown Tennis" />
+    <meta property="twitter:title" content="${webNode.name} Camperdown Tennis"/>
+  </t:if>
+  <meta property="og:site_name" content="Camperdown Tennis" />
+  <meta name="twitter:site" content="Camperdown Tennis" />
+  <t:unless test="webNode">
+    <t:delegate to="block:pageName"/>
+  </t:unless>
+
+  <t:block t:id="pageName">
+    <t:remove>Title for pages where pageName is defined in correspondent tapestry template (like /course, /class, /site, /room)</t:remove>
+    <t:if test="pageName">
+      <t:remove>Title for pages with browser tag (like /courses/tag1)</t:remove>
+      <t:if test="tag">
+        <title>${tag.name} - ${pageName} Camperdown Tennis</title>
+        <meta property="og:title" content="${tag.name} - ${pageName} Camperdown Tennis" />
+        <meta property="twitter:title" content="${tag.name} - ${pageName} Camperdown Tennis"/>
+      </t:if>
+      <t:unless test="tag">
+        <title>${pageName} Camperdown Tennis</title>
+        <meta property="og:title" content="${pageName} Camperdown Tennis" />
+        <meta property="twitter:title" content="${pageName} Camperdown Tennis"/>
+      </t:unless>
+    </t:if>
+    <t:remove>Title for pages where pageName is not defined in tapestry template</t:remove>
+    <t:unless test="pageName">
+      <t:if test="tag">
+        <title>${tag.name} - Camperdown Tennis</title>
+        <meta property="og:title" content="${tag.name} - Camperdown Tennis" />
+        <meta property="twitter:title" content="${tag.name} - Camperdown Tennis"/>
+      </t:if>
+      <t:unless test="tag">
+        <title>Camperdown Tennis</title>
+        <meta property="og:title" content="Camperdown Tennis" />
+        <meta property="twitter:title" content="Camperdown Tennis"/>
+      </t:unless>
+    </t:unless>
+  </t:block>
+</t:container>
