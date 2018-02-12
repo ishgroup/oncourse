@@ -30,9 +30,12 @@ processResources.doLast {
     javaexec {
         classpath = configurations.swagger
         main = 'io.swagger.codegen.SwaggerCodegen'
-        args  = [ 'generate', '-i', "${project.projectDir}/src/main/resources/$swaggerName", '-l', 'html', '-o', "${buildDir}/doc"]
+        args  = [ 'generate', 
+                  '-i', "${project.projectDir}/src/main/resources/$swaggerName",
+                  '-l', 'html',
+                  '-t', "${rootDir}/common/codegen/common/src/main/resources/htmlDocs",
+                  '-o', "${buildDir}/doc"]
     }
-    
 }
 
 // the following block isn't working for me when placed in the top level build.gradle
