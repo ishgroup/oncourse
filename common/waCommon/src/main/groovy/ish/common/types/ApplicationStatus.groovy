@@ -1,10 +1,10 @@
 /*
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
  */
-package ish.common.types;
+package ish.common.types
 
-import ish.common.util.DisplayableExtendedEnumeration;
-import ish.oncourse.API;
+import ish.common.util.DisplayableExtendedEnumeration
+import ish.oncourse.API
 
 /**
  * A basic workflow for applications. Each application moves through the statuses, resulting in
@@ -14,7 +14,7 @@ import ish.oncourse.API;
  * 
  */
 @API
-public enum ApplicationStatus implements DisplayableExtendedEnumeration<Integer> {
+enum ApplicationStatus implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
 	 * Database value: 0
@@ -25,7 +25,7 @@ public enum ApplicationStatus implements DisplayableExtendedEnumeration<Integer>
 	NEW(0, "New"),
 
 	/**
-	 * Database value: 2
+	 * Database value: 1
 	 *
 	 * College reviewed NEW student application and allowed an enrolment to class.
 	 */
@@ -63,29 +63,29 @@ public enum ApplicationStatus implements DisplayableExtendedEnumeration<Integer>
 	 * assessed, but a judgement to offer or reject has not yet been made.
 	 */
 	@API
-	IN_PROGRESS(5, "In progress");
+	IN_PROGRESS(5, "In progress")
 	
 
-	private String displayName;
-	private int value;
+	private String displayName
+	private int value
 
 	private ApplicationStatus(int value, String displayName) {
-		this.value = value;
-		this.displayName = displayName;
+		this.value = value
+		this.displayName = displayName
 	}
 	
 	@Override
-	public Integer getDatabaseValue() {
-		return this.value;
+	Integer getDatabaseValue() {
+		return this.value
 	}
 
 	@Override
-	public String getDisplayName() {
-		return this.displayName;
+	String getDisplayName() {
+		return this.displayName
 	}
 
 	@Override
-	public String toString() {
-		return getDisplayName();
+	String toString() {
+		return getDisplayName()
 	}
 }
