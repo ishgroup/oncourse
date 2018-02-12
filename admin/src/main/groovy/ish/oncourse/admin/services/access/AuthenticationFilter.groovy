@@ -33,7 +33,7 @@ class AuthenticationFilter implements Filter {
         String context = (request as HttpServletRequest).getContextPath()
         String uri = (request as HttpServletRequest).getRequestURI()
 
-        if (!"${context}/ISHHealthCheck" == uri) {
+        if (!("${context}/ISHHealthCheck" == uri)) {
             AuthenticationResult result = CheckBasicAuth.valueOf(authService, (HttpServletRequest) request).check()
             switch (result.status) {
                 case AuthenticationStatus.SUCCESS:
