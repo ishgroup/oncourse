@@ -234,10 +234,13 @@ public class StubBuilderTestHelper<E extends Queueable, S extends GenericReplica
 				return ((Assessment) entity).getActive();
 			}
 
-		}
+		} else if (entity instanceof Survey) {
+            if (propertyName.equals("publicComment")) {
+                return SurveyVisibility.TESTIMONIAL.equals(((Survey) entity).getVisibility());
+            }
+        }
 
-
-			if (propertyName.equals("willowId")) {
+        if (propertyName.equals("willowId")) {
             return entity.getId();
         }
 
