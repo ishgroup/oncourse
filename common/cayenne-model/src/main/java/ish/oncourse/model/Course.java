@@ -12,7 +12,6 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
-@CommitLog
 public class Course extends _Course implements Queueable {
 	
 	private static final long serialVersionUID = 254942637990278217L;

@@ -18,7 +18,7 @@ dependencies {
     compile project(':common:cayenne-model')
     compile project(':common:common-functions')
     compile project(':common:job-scheduler')
-    compile group: 'org.apache.cayenne', name: 'cayenne-commitlog', version: '4.0.B3'
+    compile group: 'org.apache.cayenne', name: 'cayenne-commitlog', version: cayenneVersion
     compile group: 'org.codehaus.groovy', name: 'groovy-all', version: groovyVersion
     compile group: 'org.apache.solr', name: 'solr-solrj', version: solrVersion
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.2'
