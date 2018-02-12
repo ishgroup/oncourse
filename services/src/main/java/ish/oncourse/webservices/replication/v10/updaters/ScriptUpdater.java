@@ -19,7 +19,6 @@ public class ScriptUpdater extends AbstractWillowUpdater<ScriptStub, Script> {
 		entity.setName(stub.getName());
 		entity.setEnabled(stub.isEnabled());
 		entity.setEntityClass(stub.getEntityClass());
-		entity.setResult(stub.getResult());
 		entity.setSchedule(stub.getSchedule());
 		entity.setScript(stub.getScript());
 
