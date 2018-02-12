@@ -9,7 +9,6 @@ import ish.oncourse.admin.services.ntis.NTISUpdaterImpl;
 import ish.oncourse.admin.services.ntis.OrganisationServiceBuilder;
 import ish.oncourse.admin.services.ntis.TrainingComponentServiceBuilder;
 import ish.oncourse.admin.services.storage.S3ServiceBuilder;
-import ish.oncourse.cayenne.WillowCayenneModuleBuilder;
 import ish.oncourse.services.BinderFunctions;
 import ish.oncourse.services.cache.IRequestCacheService;
 import ish.oncourse.services.cache.RequestCacheService;
@@ -17,6 +16,7 @@ import ish.oncourse.services.threading.ThreadSource;
 import ish.oncourse.services.threading.ThreadSourceImpl;
 import org.apache.tapestry5.MetaDataConstants;
 import org.apache.tapestry5.SymbolConstants;
+import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 
@@ -29,6 +29,7 @@ import org.apache.tapestry5.ioc.ServiceBinder;
 public class AppModule {
 
 	private static final String HMAC_PASSPHRASE = "807A760F20C70F8C9E0ACD8D955EA05399E501E5";
+	private static final String HEALTHCHECK = "/*/ISHHealthCheck";
 
 	public static void bind(ServiceBinder binder) {
 		BinderFunctions.bindReferenceServices(binder);
@@ -54,5 +55,10 @@ public class AppModule {
 
 	public void contributeMetaDataLocator(MappedConfiguration<String, String> configuration) {
 		configuration.add(MetaDataConstants.SECURE_PAGE, "false");
+	}
+
+	public static void contributeIgnoredPathsFilter(Configuration<String> configuration)
+	{
+		configuration.add(HEALTHCHECK);
 	}
 }

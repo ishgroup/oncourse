@@ -30,24 +30,33 @@ class AuthenticationFilter implements Filter {
 
     @Override
     void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        AuthenticationResult result = CheckBasicAuth.valueOf(authService, (HttpServletRequest) request).check()
-        switch (result.status) {
-            case AuthenticationStatus.SUCCESS:
-                if (authService.authorise(result.firstName, (request as HttpServletRequest).getContextPath(), (request as HttpServletRequest).getRequestURI())) {
-                    chain.doFilter(request, response)
-                } else {
-                    ((HttpServletResponse)response).sendError(HttpStatus.SC_METHOD_NOT_ALLOWED, "Not allowed")
-                }
-                break
-            case AuthenticationStatus.INVALID_CREDENTIALS:
-            case AuthenticationStatus.MORE_THAN_ONE_USER:
-            case AuthenticationStatus.NO_MATCHING_USER:
-                ((HttpServletResponse) response).setStatus(HttpStatus.SC_UNAUTHORIZED)
-                break
-            case AuthenticationStatus.UNAUTHORIZED:
-                ((HttpServletResponse)response).setHeader("WWW-Authenticate", "Basic realm=ISH")
-                ((HttpServletResponse)response).sendError(HttpStatus.SC_UNAUTHORIZED, "Unauthorized")
-                break
+        String context = (request as HttpServletRequest).getContextPath()
+        String uri = (request as HttpServletRequest).getRequestURI()
+
+        if (!"${context}/ISHHealthCheck" == uri) {
+            AuthenticationResult result = CheckBasicAuth.valueOf(authService, (HttpServletRequest) request).check()
+            switch (result.status) {
+                case AuthenticationStatus.SUCCESS:
+                    if (authService.authorise(result.firstName, context, uri)) {
+                        chain.doFilter(request, response)
+                    } else {
+                        ((HttpServletResponse) response).sendError(HttpStatus.SC_METHOD_NOT_ALLOWED, "Not allowed")
+                    }
+                    break
+                case AuthenticationStatus.INVALID_CREDENTIALS:
+                case AuthenticationStatus.MORE_THAN_ONE_USER:
+                case AuthenticationStatus.NO_MATCHING_USER:
+                    ((HttpServletResponse) response).setStatus(HttpStatus.SC_UNAUTHORIZED)
+                    break
+                case AuthenticationStatus.UNAUTHORIZED:
+                    ((HttpServletResponse) response).setHeader("WWW-Authenticate", "Basic realm=ISH")
+                    ((HttpServletResponse) response).sendError(HttpStatus.SC_UNAUTHORIZED, "Unauthorized")
+                    break
+                default :
+                    ((HttpServletResponse) response).sendError(HttpStatus.SC_UNAUTHORIZED, "Unauthorized")
+            }
+        } else {
+            chain.doFilter(request, response)
         }
     }
 
