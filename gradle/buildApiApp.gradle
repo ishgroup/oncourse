@@ -27,15 +27,6 @@ compileGroovy {
 
 processResources.doLast {
     file("${buildDir}/resources/VERSION").text = version ?: "SNAPSHOT"
-    javaexec {
-        classpath = configurations.swagger
-        main = 'io.swagger.codegen.SwaggerCodegen'
-        args  = [ 'generate', 
-                  '-i', "${project.projectDir}/src/main/resources/$swaggerName",
-                  '-l', 'html',
-                  '-t', "${rootDir}/common/codegen/common/src/main/resources/htmlDocs",
-                  '-o', "${buildDir}/doc"]
-    }
 }
 
 // the following block isn't working for me when placed in the top level build.gradle
@@ -61,7 +52,7 @@ publishing {
         }
         
         releases(MavenPublication) {
-            artifact("${buildDir}/doc/index.html") {
+            artifact("${buildDir}/doc/") {
                 classifier "documentation"
                 extension "html"
             }
@@ -73,4 +64,14 @@ task (swagger, type: JavaExec) {
     main = 'ish.oncourse.codegen.cxf.WillowJaxRsGenerator'
     classpath = configurations.swagger
     args  = [ servicesPackage, modelPackage, project.projectDir, "${project.projectDir}/src/main/resources/$swaggerName" ]
+}
+
+task (buildDoc, type: JavaExec) {
+    classpath = configurations.swagger
+    main = 'io.swagger.codegen.SwaggerCodegen'
+    args  = [ 'generate',
+              '-i', "${project.projectDir}/src/main/resources/$swaggerName",
+              '-l', 'html',
+              '-t', "${rootDir}/common/codegen/common/src/main/resources/htmlDocs",
+              '-o', "${buildDir}/doc"]
 }

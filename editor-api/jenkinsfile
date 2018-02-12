@@ -16,6 +16,12 @@ pipeline {
                 junit 'editor-api/build/test-results/**/*.xml'
             }
         }
+        
+        stage('Docs') {
+            steps {
+                sh "./gradlew editor-api:buildDoc"
+            }
+        }
 
         stage('Create release') {
             when {
@@ -26,6 +32,7 @@ pipeline {
                     currentBuild.displayName = "Release ${params.version}"
                 }
                 sh "./gradlew editor-api:publishExecutablesPublicationToExecutablesRepository -PreleaseVersion=${params.version}"
+                sh "./gradlew editor-api:publishReleasesPublicationToReleasesRepository -PreleaseVersion=${params.version}"
             }
         }
     }
