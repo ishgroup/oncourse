@@ -3,6 +3,7 @@ package ish.oncourse.model;
 import ish.oncourse.model.auto._Course;
 import ish.oncourse.utils.QueueableObjectUtils;
 import org.apache.cayenne.PersistenceState;
+import org.apache.cayenne.commitlog.CommitLog;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.logging.log4j.LogManager;
@@ -11,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
+@CommitLog
 public class Course extends _Course implements Queueable {
 	
 	private static final long serialVersionUID = 254942637990278217L;
