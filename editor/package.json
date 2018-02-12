@@ -51,11 +51,13 @@
     "webpack-dev-server": "2.9.3"
   },
   "dependencies": {
+    "awesome-typescript-loader": "^3.4.1",
     "axios": "0.17.0",
     "axios-mock-adapter": "1.9.0",
     "babel-polyfill": "6.26.0",
     "bootstrap": "4.0.0-beta.2",
     "classnames": "2.2.5",
+    "core-js": "^2.5.3",
     "file-loader": "1.1.5",
     "history": "4.7.2",
     "localforage": "1.5.2",

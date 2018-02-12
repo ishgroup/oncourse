@@ -29,5 +29,8 @@
     "out",
     "node_modules",
     "build/resources"
-  ]
+  ],
+  "awesomeTypescriptLoaderOptions": {
+    "useCache": true
+  }
 }

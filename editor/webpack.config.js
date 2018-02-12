@@ -54,7 +54,7 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
       rules: [
         {
           test: /\.tsx?$/,
-          loader: 'ts-loader',
+          loader: 'awesome-typescript-loader',
           exclude: /node_modules/,
         }
       ]
