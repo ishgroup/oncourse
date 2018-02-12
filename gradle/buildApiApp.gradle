@@ -59,10 +59,15 @@ publishing {
                 extension "zip"
             }
         }
+        
+        releases(MavenPublication) {
+            artifact("${buildDir}/doc/index.html") {
+                classifier "documentation"
+                extension "html"
+            }
+        }
     }
 }
-
-
 
 task (swagger, type: JavaExec) {
     main = 'ish.oncourse.codegen.cxf.WillowJaxRsGenerator'
