@@ -235,10 +235,25 @@ public class StubBuilderTestHelper<E extends Queueable, S extends GenericReplica
 			}
 
 		} else if (entity instanceof Survey) {
-            if (propertyName.equals("publicComment")) {
-                return SurveyVisibility.TESTIMONIAL.equals(((Survey) entity).getVisibility());
+            switch (propertyName) {
+                case "publicComment":
+                    return SurveyVisibility.TESTIMONIAL.equals(((Survey) entity).getVisibility());
+                case "visibility":
+                    return ((Survey) entity).getVisibility().getDatabaseValue();
+            }
+        } else if (entity instanceof FieldConfiguration) {
+            switch (propertyName) {
+                case "type":
+                    return ((FieldConfiguration) entity).getType().getDatabaseValue();
+                case "deliverySchedule":
+                    if (entity instanceof SurveyFieldConfiguration) {
+                        return ((SurveyFieldConfiguration) entity).getDeliverySchedule().getDatabaseValue(); 
+                    } else {
+                        return null;
+                    }
             }
         }
+        
 
         if (propertyName.equals("willowId")) {
             return entity.getId();
@@ -377,8 +392,6 @@ public class StubBuilderTestHelper<E extends Queueable, S extends GenericReplica
         else if (expectedClass == InvoiceType.class && actualClass == Integer.class)
             return ((InvoiceType) expectedValue).getDatabaseValue();
         return expectedValue;
-
-
     }
 
 }

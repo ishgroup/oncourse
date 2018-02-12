@@ -1949,6 +1949,7 @@
 		<qualifier><![CDATA[entityName = "Enrolment"]]></qualifier>
 	</obj-entity>
 	<obj-entity name="EnrolmentFieldConfiguration" superEntityName="FieldConfiguration" className="ish.oncourse.model.EnrolmentFieldConfiguration">
+		<qualifier><![CDATA[intType = 1]]></qualifier>
 	</obj-entity>
 	<obj-entity name="EntityRelation" className="ish.oncourse.model.EntityRelation" dbEntityName="EntityRelation" superClassName="WillowCayenneObject">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>

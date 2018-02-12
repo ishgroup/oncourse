@@ -32,7 +32,7 @@
            resume_textile="This is mister Putin resume." startDate="2011-09-12 01:02:00.0"
            finishDate="2011-09-12 01:02:00.0"/>
 
-	<FieldConfiguration id="1" angelId="1" collegeId="3" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Name1" type="1" deliverySchedule="1"/>
+	<FieldConfiguration id="1" angelId="1" collegeId="3" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Name1" type="4" deliverySchedule="1"/>
 
 	<FieldConfigurationScheme id="1" angelId="1" collegeId="3" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Name" applicationFieldConfigurationId="1" enrolFieldConfigurationId="1" waitingListFieldConfigurationId="1"/>
 
