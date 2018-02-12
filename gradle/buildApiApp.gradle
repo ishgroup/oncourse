@@ -52,7 +52,7 @@ publishing {
         }
         
         releases(MavenPublication) {
-            artifact("${buildDir}/doc/") {
+            artifact("${buildDir}/doc/index.html") {
                 classifier "documentation"
                 extension "html"
             }
