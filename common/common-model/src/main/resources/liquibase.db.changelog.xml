@@ -4643,7 +4643,7 @@
 			ALTER TABLE FieldConfigurationScheme MODIFY COLUMN waitingListFieldConfigurationId BIGINT;
 		</sql>
 	</changeSet>
-	<changeSet id="316" author="anarut" context="production" runOnChange="false" runAlways="false">
+	<changeSet id="317" author="anarut" context="production" runOnChange="false" runAlways="false">
 		<preConditions onFail="MARK_RAN">
 			<not>
 				<columnExists tableName="FieldConfiguration" columnName="type"/>
@@ -4655,7 +4655,7 @@
 			ALTER TABLE FieldConfiguration MODIFY COLUMN type SMALLINT NOT NULL;
 		</sql>
 	</changeSet>
-	<changeSet id="317" author="anarut" context="production" runOnChange="false" runAlways="false">
+	<changeSet id="318" author="anarut" context="production" runOnChange="false" runAlways="false">
 		<preConditions onFail="MARK_RAN">
 			<not>
 				<columnExists tableName="FieldConfiguration" columnName="deliverySchedule"/>
