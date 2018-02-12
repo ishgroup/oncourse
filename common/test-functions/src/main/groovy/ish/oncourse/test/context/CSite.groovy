@@ -70,7 +70,6 @@ class CSite {
         builder.site.college = college
         builder.site.isVirtual = false
         builder.site.isWebVisible = true
-        builder.objectContext.commitChanges()
 
         builder
     }

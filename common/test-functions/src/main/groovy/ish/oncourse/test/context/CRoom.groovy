@@ -81,6 +81,7 @@ class CRoom {
         room = objectContext.newObject(Room)
         room.site = objectContext.localObject(site)
         room.college = site.college
-        objectContext.commitChanges()
+        
+        this
     }
 }
