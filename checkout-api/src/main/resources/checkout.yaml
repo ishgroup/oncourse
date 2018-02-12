@@ -1225,7 +1225,6 @@ definitions:
     requred:
     - contactId
     - fields
-    - concession
     properties:
       contactId:
         type: string
@@ -1235,9 +1234,6 @@ definitions:
         items:
           $ref: '#/definitions/field.Field'
         description: Array of fields
-      concession:
-        $ref: '#/definitions/checkout.concession.Concession'
-        description: Contact's concession
   field.FieldHeading:
     type: object
     requred:

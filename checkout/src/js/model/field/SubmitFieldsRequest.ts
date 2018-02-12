@@ -1,4 +1,3 @@
-import {Concession} from "./../checkout/concession/Concession";
 import {Field} from "./../field/Field";
 
 export class SubmitFieldsRequest {
@@ -12,10 +11,5 @@ export class SubmitFieldsRequest {
    * Array of fields
    */
   fields?: Field[];
-
-  /**
-   * Contact's concession
-   */
-  concession?: Concession;
 }
 

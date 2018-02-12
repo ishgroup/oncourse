@@ -9,9 +9,6 @@ import {ContactEdit} from "./components/ContactEdit";
 import CheckoutService from "../../services/CheckoutService";
 import {changePhase, showFormValidation, showSyncErrors} from "../../actions/Actions";
 import {submitEditContact} from "./actions/Actions";
-import {getConcessionTypes} from "../concession/actions/Actions";
-import {validate as concessionFormValidate} from "../concession/Concession";
-import ConcessionForm from "../concession/components/ConcessionForm";
 import {toFormKey} from "../../../components/form/FieldFactory";
 import {scrollToTop} from "../../../common/utils/DomUtils";
 
@@ -23,7 +20,6 @@ class ContactEditForm extends React.Component<Props, any> {
   }
 
   componentDidMount() {
-    this.props.onInit();
     scrollToTop();
   }
 
@@ -43,15 +39,6 @@ class ContactEditForm extends React.Component<Props, any> {
             fields={fields}
             onChangeSuburb={item => onChangeSuburb(form, item)}
           />
-
-          {concessionTypes &&
-          <fieldset>
-            <ConcessionForm
-              concessionTypes={concessionTypes}
-              onTypeChange={() => console.log('todo: partial reset')}
-            />
-          </fieldset>
-          }
 
           <div className="form-controls flex">
             <span>
@@ -96,7 +83,6 @@ const Form = reduxForm({
   form: NAME,
   validate: (data, props: Props) => {
     const errors = {};
-    const concessionErrors = concessionFormValidate(data, props);
     props.fields.headings.map(headings =>
       headings.fields.map(field =>
         (field.mandatory && (field.dataType !== "BOOLEAN" || field.key === "isMale") && !data[toFormKey(field.key)])
@@ -105,7 +91,7 @@ const Form = reduxForm({
       ),
     );
 
-    return {...errors, ...concessionErrors};
+    return errors;
   },
   onSubmitSuccess: (result, dispatch, props: any) => {
     dispatch(submitEditContact({...props.contact, parentRequired: result.parentRequired}));
@@ -162,9 +148,6 @@ const mapDispatchToProps = dispatch => {
   return {
     onSubmit: (data, dispatch, props): any => {
       return CheckoutService.submitContactDetails(data, props.fields);
-    },
-    onInit: () => {
-      dispatch(getConcessionTypes());
     },
     onCancel: page => {
       dispatch(changePhase(page));

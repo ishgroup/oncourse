@@ -299,15 +299,6 @@ export class BuildSubmitFieldsRequest {
       }
     });
 
-    if (values.concessionType && values.concessionType.key !== "-1") {
-      result.concession = {
-        concessionTypeId: values.concessionType.key,
-        contactId: fields.contactId,
-        expiryDate: values.expiryDate || null,
-        number: values.number || null,
-      };
-    }
-
     return result;
   }
 }

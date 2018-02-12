@@ -31,3 +31,4 @@ export class Preferences {
    */
   googleTagmanagerAccount?: string;
 }
+
