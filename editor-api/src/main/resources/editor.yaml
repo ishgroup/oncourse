@@ -732,9 +732,11 @@ definitions:
       email:
         type: string
         description: user email
+        example: john.smith@gamil.com
       password:
         type: string
         description: User password
+        example: password
   PageUrl:
     type: object
     properties:
@@ -885,9 +887,11 @@ definitions:
       firstName:
         type: string
         description: First name of the user
+        example: John
       lastName:
         description: Last name of the user
         type: string
+        example: Smith
   common.CommonError:
     type: object
     properties:
