@@ -1,0 +1,64 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+             xmlns:p="tapestry:parameter">
+
+    <t:delegate to="currentBlock"/>
+
+    <t:block t:id="filteredCourses">
+        <span id="courses-list">
+            <t:if t:test="hasInvalidSearchTerms">
+                <span t:type="ui/SearchTermsClarification" paramsInError="paramsInError"></span>
+                <p:else>
+                    <span t:type="ui/SearchCriteria" hasMapItemList="hasMapItemList"></span>
+
+                    <div id="sitesMap">
+                                <span t:type="ui/GoogleMapSites" sites="mapSites" focuses="focusesForMapSites"
+                                      collapsed="true" showLocationMap="false"></span>
+                    </div>
+
+                    <t:if test="browseTag">
+                        <t:if test="browseTag.hasDetails">
+                            <div class="browse-tag-detail tag-image">
+                                <t:outputraw value="${browseTagDetail}"/>
+                            </div>
+                            <div class="browse-tag-detail tag-details">
+                                <t:outputraw value="${browseTagDetail}"/>
+                            </div>
+                        </t:if>
+                    </t:if>
+
+                    <t:if t:test="isException">
+                        <h2>Because of an error in the search engine, all courses are
+                            being displayed. Our technical team is working to resolve this
+                            problem now.</h2>
+                    </t:if>
+                    <t:if test="DebugRequest">
+                        <t:outputraw value="${debugInfo}"/>
+                    </t:if>
+                    <t:if t:test="hasAnyItems" negate="true">
+                        <h2>No results</h2>
+                        <p:else>
+                            <t:delegate to="block:moreCourses"/>
+                        </p:else>
+                    </t:if>
+                </p:else>
+            </t:if>
+        </span>
+    </t:block>
+
+    <t:block t:id="moreCourses">
+		<span t:type="ui/CoursesList" courses="courses" coursesCount="coursesCount"
+              loadedCoursesIds="previouslyLoadedCourseIds"
+              itemIndex="itemIndex" sitesParameter="sitesParameter" searchParams="searchParams" debugInfoMap="debugInfoMap"/>
+    </t:block>
+
+    <t:block t:id="htmlCourses">
+        <html t:type="ui/internal/pagestructure" bodyId="literal:ListPage"
+              bodyClass="literal:internal-page"
+              canonicalLinkPath="${canonicalLinkPath}"
+              canonicalRelativeLinkPath="${canonicalRelativeLinkPath}"
+              metaDescription="${metaDescription}">
+        <t:delegate to="block:filteredCourses"/>
+        </html>
+    </t:block>
+
+</t:container>

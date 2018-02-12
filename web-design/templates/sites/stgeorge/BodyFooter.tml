@@ -1,0 +1,25 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+  <section class="info-links">
+    <div class="container">
+      <div class="footer-container" itemscope="itemscope" itemtype="http://schema.org/Organization" itemprop="provider">
+        <div class="footer-copyright">
+          <p><span itemprop="name">${collegeName}</span> Incorporated</p>
+          <p>© ${year} SGSCC</p>
+        </div>
+        <div class="right-block">
+          <ul class="footer-info">
+            <li class="line"><a href="/privacy-policy">Privacy Policy</a></li>
+            <li class="line"><a href="/terms-conditions">Terms &amp; Conditions</a></li>
+            <!--<li><a href="http://www.digitalgarden.com.au/">Web Design Sydney</a></li>-->
+          </ul>
+
+          <p class="footer-logo">
+            <a href="http://www.ish.com.au/oncourse" class="popup">
+            <img src="/s/img/icons/poweredby.png" width="102" height="9" alt="powered by ish onCourse"/>
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</t:container>

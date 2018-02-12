@@ -1,0 +1,33 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+  <div class="footer-container footer-text" itemscope="itemscope" itemtype="http://schema.org/Organization" itemprop="provider">
+    <div class="clearfix">
+      <div class="footer-info">
+        <div class="copyrights">
+          © ${year} <span itemprop="name">${collegeName}</span>
+        </div>
+        <ul class="social-links">
+          <li><a href="https://www.facebook.com/Sydney.Community.College/"><i class="sicon icon-facebook"></i></a></li>
+          <li><a href="https://twitter.com/SydneyCollege"><i class="sicon icon-twitter"></i></a></li>
+        </ul>
+      </div>
+
+      <div class="right-block">
+        <ul class="block-links">
+          <li><a href="/privacy">Privacy Policy</a></li>
+          <li><a href="/terms">Terms &amp; Conditions</a></li>
+        </ul>
+        <div class="footer-logo">
+          <a href="http://www.ish.com.au/oncourse" class="popup" target="_blank" title="ish Oncourse">
+            <img src="/s/img/poweredby.png" width="102" height="9" alt="powered by ish onCourse"/>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-logo">
+      <a href="http://www.ish.com.au/oncourse" class="popup" target="_blank" title="ish Oncourse">
+        <img src="/s/img/poweredby.png" width="102" height="9" alt="powered by ish onCourse"/>
+      </a>
+    </div>
+  </div>
+</t:container>

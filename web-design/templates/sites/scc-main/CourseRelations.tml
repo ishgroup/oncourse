@@ -1,0 +1,17 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+  <div class="clearfix relatedCourses">
+    <h3 class="course-sub-title">Related courses</h3>
+    <ul class="clearfix">
+      <t:loop source="courseRelations" value="relatedCourse">
+        <li class="clearfix">
+          <div t:type="ui/image" name="${relatedCourse.code}_thumbnail" class="course-img" width="275" height="183"></div>
+          <div class="related-course-details">
+            <h2 itemprop="name">
+              <a href="/course/${relatedCourse.code}" rel="nofollow" target="_blank">${relatedCourse.name}</a>
+            </h2>
+          </div>
+        </li>
+      </t:loop>
+    </ul>
+  </div>
+</t:container>

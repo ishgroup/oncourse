@@ -1,0 +1,59 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+  <hgroup class="container header-hgroup">
+    <aside class="pull-left">
+      <h2 class="site-logo" id="siteLogo">
+        <a href="${homeLink}">
+          <img src="/s/img/logos/logo.png" alt="${collegeName}" class="normal_logo" />
+        </a>
+      </h2>
+      <h1 class="site-title" id="siteTitle">
+        <a href="${homeLink}">${collegeName}</a>
+      </h1>
+    </aside>
+    <aside class="pull-right">
+      <ul class="header-top-links">
+        <li>
+          <a href="/about">About</a>
+        </li>
+        <li>
+          <a href="https://skillsoncourse.com.au/portal/login">Login</a>
+        </li>
+        <li>
+          <a href="/contact">Contact</a>
+        </li>
+      </ul>
+      <div class="top-cart">
+        <aside class="header-toolbar" id="headerToolbar">
+          <t:if t:test="paymentGatewayEnabled">
+            <span t:type="ui/ShortList" />
+          </t:if>
+        </aside>
+      </div>
+      <a class="nav-toggle js-nav-toggle pull-right" href="#">
+        <div class="">
+          <span class="toggle-title pull-right">
+            <!-- <i class="sicon toggle-icon"></i>Menu-->
+          </span>
+        </div>
+      </a>
+    </aside>
+  </hgroup>
+  <div class="clearfix"></div>
+  <section class="container content find-course-form">
+    <div class="header-course-form clearfix">
+      <aside class="header-toolbar" id="headerToolbar">
+        <span t:type="ui/CourseSearchForm" />
+      </aside>
+    </div>
+  </section>
+  <!-- <section class="top-bar">
+    <div class="container">
+      <aside class="header-toolbar" id="headerToolbar">
+        <a href="#" class="header-search-toggle pull-right">
+          <i class="sicon search-icon"></i>
+        </a>
+        <span t:type="ui/PromoCodesView" />
+      </aside>
+    </div>
+  </section>-->
+</t:container>
