@@ -27,7 +27,6 @@ public abstract class _Script extends WillowCayenneObject {
     public static final String ENTITY_EVENT_TYPE_PROPERTY = "entityEventType";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String NAME_PROPERTY = "name";
-    public static final String RESULT_PROPERTY = "result";
     public static final String SCHEDULE_PROPERTY = "schedule";
     public static final String SCRIPT_PROPERTY = "script";
     public static final String SYSTEM_EVENT_TYPE_PROPERTY = "systemEventType";
@@ -44,7 +43,6 @@ public abstract class _Script extends WillowCayenneObject {
     public static final Property<EntityEvent> ENTITY_EVENT_TYPE = Property.create("entityEventType", EntityEvent.class);
     public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
     public static final Property<String> NAME = Property.create("name", String.class);
-    public static final Property<String> RESULT = Property.create("result", String.class);
     public static final Property<String> SCHEDULE = Property.create("schedule", String.class);
     public static final Property<String> SCRIPT = Property.create("script", String.class);
     public static final Property<SystemEventType> SYSTEM_EVENT_TYPE = Property.create("systemEventType", SystemEventType.class);
@@ -105,13 +103,6 @@ public abstract class _Script extends WillowCayenneObject {
     }
     public String getName() {
         return (String)readProperty("name");
-    }
-
-    public void setResult(String result) {
-        writeProperty("result", result);
-    }
-    public String getResult() {
-        return (String)readProperty("result");
     }
 
     public void setSchedule(String schedule) {

@@ -1059,7 +1059,6 @@
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="128"/>
-		<db-attribute name="result" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="schedule" type="VARCHAR" length="512"/>
 		<db-attribute name="script" type="LONGVARCHAR" isMandatory="true" length="16777215"/>
 		<db-attribute name="systemEventType" type="INTEGER"/>
@@ -2362,7 +2361,6 @@
 		<obj-attribute name="entityEventType" type="ish.common.types.EntityEvent" db-attribute-path="entityEventType"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
-		<obj-attribute name="result" type="java.lang.String" db-attribute-path="result"/>
 		<obj-attribute name="schedule" type="java.lang.String" db-attribute-path="schedule"/>
 		<obj-attribute name="script" type="java.lang.String" db-attribute-path="script"/>
 		<obj-attribute name="systemEventType" type="ish.common.types.SystemEventType" db-attribute-path="systemEventType"/>
