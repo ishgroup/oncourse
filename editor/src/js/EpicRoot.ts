@@ -5,7 +5,6 @@ import {EpicPages} from "./containers/content/containers/pages/epics";
 import {EpicBlocks} from "./containers/content/containers/blocks/epics";
 import {EpicThemes} from "./containers/design/containers/themes/epics";
 import {EpicHistory} from "./containers/history/epics";
-import {EpicCheckoutSettings} from "./containers/settings/containers/checkout/epics";
 import {EpicSkillsOnCourseSettings} from "./containers/settings/containers/skillsOnCourse/epics";
 import {EpicRedirectSettings} from "./containers/settings/containers/redirect/epics";
 import {EpicWebsiteSettings} from "./containers/settings/containers/website/epics";
@@ -17,7 +16,6 @@ export const EpicRoot = combineEpics(
   EpicBlocks,
   EpicThemes,
   EpicHistory,
-  EpicCheckoutSettings,
   EpicSkillsOnCourseSettings,
   EpicRedirectSettings,
   EpicWebsiteSettings,

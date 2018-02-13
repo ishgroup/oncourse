@@ -1,7 +1,6 @@
 package ish.oncourse.willow.editor.service;
 
 import ish.oncourse.willow.editor.model.common.CommonError;
-import ish.oncourse.willow.editor.model.settings.CheckoutSettings;
 import ish.oncourse.willow.editor.model.settings.RedirectSettings;
 import ish.oncourse.willow.editor.model.settings.SkillsOnCourseSettings;
 import ish.oncourse.willow.editor.model.settings.WebsiteSettings;
@@ -16,12 +15,6 @@ import javax.ws.rs.core.MediaType;
 
 @Path("/")
 public interface SettingsApi  {
-
-    @GET
-    @Path("/getCheckoutSettings")
-    @Produces({ "application/json" })
-    @AuthFilter
-    CheckoutSettings getCheckoutSettings();
 
     @GET
     @Path("/getRedirectSettings")
@@ -40,13 +33,6 @@ public interface SettingsApi  {
     @Produces({ "application/json" })
     @AuthFilter
     WebsiteSettings getWebsiteSettings();
-
-    @POST
-    @Path("/setCheckoutSettings")
-    @Consumes({ "application/json" })
-    @Produces({ "application/json" })
-    @AuthFilter
-    CheckoutSettings setCheckoutSettings(CheckoutSettings saveCheckoutSettingsRequest);
 
     @POST
     @Path("/setRedirectSettings")

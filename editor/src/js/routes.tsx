@@ -15,7 +15,6 @@ import Login from "./containers/auth/Login";
 import History from './containers/history/History';
 
 import Skills from './containers/settings/containers/skillsOnCourse/Skills';
-import Checkout from './containers/settings/containers/checkout/Checkout';
 import Redirect from './containers/settings/containers/redirect/Redirect';
 import Website from './containers/settings/containers/website/Website';
 
@@ -29,7 +28,6 @@ export const URL = {
   THEMES: '/themes',
   SETTINGS: '/settings',
   SETTINGS_SKILLS: '/settings/skills',
-  SETTINGS_CHECKOUT: '/settings/checkout',
   SETTINGS_WEBSITE: '/settings/website',
   SETTINGS_REDIRECT: '/settings/redirect',
   HISTORY: '/history',
@@ -136,13 +134,6 @@ export const routes: Route[] = [
     parent: URL.SETTINGS,
     main: props => <Website {...props}/>,
   },
-  // {
-  //   title: 'Checkout',
-  //   path: URL.SETTINGS_CHECKOUT,
-  //   url: URL.SETTINGS_CHECKOUT,
-  //   parent: URL.SETTINGS,
-  //   main: props => <Checkout {...props}/>,
-  // },
   {
     title: 'Redirect',
     path: URL.SETTINGS_REDIRECT,

@@ -24,7 +24,6 @@ export {Version} from "./Version";
 
 // Settings
 export {SkillsOnCourseSettings} from "./settings/SkillsOnCourseSettings";
-export {CheckoutSettings} from "./settings/CheckoutSettings";
 export {RedirectSettings} from "./settings/RedirectSettings";
 export {WebsiteSettings} from "./settings/WebsiteSettings";
 

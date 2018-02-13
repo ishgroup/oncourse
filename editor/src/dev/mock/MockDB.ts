@@ -2,7 +2,7 @@ import localForage from "localforage";
 import update from 'react-addons-update';
 import faker from 'faker';
 import {
-  Page, Block, MenuItem, Theme, User, Version, CheckoutSettings, WebsiteSettings, RedirectSettings,
+  Page, Block, MenuItem, Theme, User, Version, WebsiteSettings, RedirectSettings,
   SkillsOnCourseSettings, ThemeSchema, Layout,
 } from "../../js/model";
 import {ClassCondition} from "../../js/model/settings/ClassCondition";
@@ -22,7 +22,6 @@ export const CreateMockDB = (): MockDB => {
 
 interface Settings {
   skillsOnCourse: SkillsOnCourseSettings;
-  checkout: CheckoutSettings;
   website: WebsiteSettings;
   redirect: RedirectSettings;
 }
@@ -315,10 +314,6 @@ export class MockDB {
         hideStudentDetails: false,
         enableOutcomeMarking: true,
         tutorFeedbackEmail: '',
-      },
-      checkout: {
-        successUrl: '',
-        refundPolicy: '',
       },
       website: {
         enableSocialMedia: false,

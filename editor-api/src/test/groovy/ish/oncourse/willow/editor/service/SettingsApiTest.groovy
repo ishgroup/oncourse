@@ -1,7 +1,6 @@
 package ish.oncourse.willow.editor.service;
 
 import ish.oncourse.willow.editor.model.common.CommonError;
-import ish.oncourse.willow.editor.model.settings.CheckoutSettings;
 import ish.oncourse.willow.editor.model.settings.RedirectSettings;
 import ish.oncourse.willow.editor.model.settings.SkillsOnCourseSettings;
 import ish.oncourse.willow.editor.model.settings.WebsiteSettings;
@@ -72,20 +71,6 @@ public class SettingsApiTest {
     @Test
     public void getWebsiteSettingsTest() {
 	//WebsiteSettings response = api.getWebsiteSettings();
-        //assertNotNull(response);
-        // TODO: test validations
-        
-        
-    }
-    
-    /**
-     * Save checkout settings
-     * Save checkout settings
-     */
-    @Test
-    public void setCheckoutSettingsTest() {
-        CheckoutSettings saveCheckoutSettingsRequest = null;
-	//CheckoutSettings response = api.setCheckoutSettings(saveCheckoutSettingsRequest);
         //assertNotNull(response);
         // TODO: test validations
         

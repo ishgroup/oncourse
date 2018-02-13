@@ -13,7 +13,6 @@ import ish.oncourse.willow.editor.model.settings.ClassEnrolmentCondition
 import ish.oncourse.willow.editor.model.settings.RedirectItem
 import ish.oncourse.willow.editor.rest.UpdateRedirects
 import ish.oncourse.willow.editor.service.*
-import ish.oncourse.willow.editor.model.settings.CheckoutSettings
 import ish.oncourse.willow.editor.model.settings.RedirectSettings
 import ish.oncourse.willow.editor.model.settings.SkillsOnCourseSettings
 import ish.oncourse.willow.editor.model.settings.WebsiteSettings
@@ -46,25 +45,6 @@ class SettingsApiServiceImpl implements SettingsApi {
         this.requestService = requestService
     }
     
-    CheckoutSettings getCheckoutSettings() {
-        ObjectContext context = cayenneService.newContext()
-        College college = WebSiteFunctions.getCurrentCollege(requestService.request, context)
-        
-        return new CheckoutSettings().with { settings ->
-            settings.refundPolicy = new GetRefundPolicyUrl(college, context).get()
-            settings.successUrl =  new GetEnrolSuccessUrl(college, context).get()
-            settings
-        }
-    }
-
-    CheckoutSettings setCheckoutSettings(CheckoutSettings saveCheckoutSettingsRequest) {
-        ObjectContext context = cayenneService.newContext()
-        College college = WebSiteFunctions.getCurrentCollege(requestService.request, context)
-        new GetRefundPolicyUrl(college, context).setValue(saveCheckoutSettingsRequest.refundPolicy)
-        new GetEnrolSuccessUrl(college, context).setValue(saveCheckoutSettingsRequest.successUrl)
-        context.commitChanges()
-        return saveCheckoutSettingsRequest
-    }
     
     
     RedirectSettings getRedirectSettings() {

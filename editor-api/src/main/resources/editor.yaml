@@ -509,53 +509,6 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
-  /getCheckoutSettings:
-    get:
-      x-filter:  
-      - AuthFilter
-      operationId: getCheckoutSettings
-      summary: Get checkout settings
-      description: Get checkout settings
-      tags:
-        - Settings
-      responses:
-        '200':
-          description: response with checkout settings object
-          schema:
-            $ref: '#/definitions/settings.CheckoutSettings'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/common.CommonError'
-
-  /setCheckoutSettings:
-    post:
-      x-filter:  
-      - AuthFilter
-      summary: Save checkout settings
-      operationId: setCheckoutSettings
-      description: Save checkout settings
-      tags:
-        - Settings
-      consumes:
-        - application/json
-      parameters:
-        - name: SaveCheckoutSettingsRequest
-          in: body
-          description: Checkout settings object
-          required: true
-          schema:
-            $ref: '#/definitions/settings.CheckoutSettings'
-      responses:
-        '200':
-          description: Updated checkout settings object
-          schema:
-            $ref: '#/definitions/settings.CheckoutSettings'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/common.CommonError'
-
   /getSkillsOnCourseSettings:
     get:
       x-filter:  
@@ -1010,12 +963,3 @@ definitions:
         type: boolean
       classAge:
         $ref: '#/definitions/settings.ClassAge'
-  settings.CheckoutSettings:
-    type: object
-    properties:
-      successUrl:
-        type: string
-        format: uri
-      refundPolicy:
-        type: string
-        format: uri
