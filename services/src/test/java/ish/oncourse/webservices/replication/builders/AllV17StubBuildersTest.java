@@ -15,6 +15,7 @@ import java.util.Date;
 import static junit.framework.Assert.assertEquals;
 
 public class AllV17StubBuildersTest extends AbstractAllStubBuildersTest {
+    
     @Test
     public void testArticleProductStubBuilder() {
         this.testStubBuilder(ArticleProduct.class, new ArticleProductStubBuilder(), 2l, "incomeAccountId", "taxAmount", "taxId", "weight");
@@ -264,7 +265,7 @@ public class AllV17StubBuildersTest extends AbstractAllStubBuildersTest {
 
     @Test
     public void testScriptStubBuilder() {
-        this.testStubBuilder(Script.class, new ScriptStubBuilder(), "result");
+        this.testStubBuilder(Script.class, new ScriptStubBuilder());
     }
 
     @Test
