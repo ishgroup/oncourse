@@ -1,0 +1,6 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+  <div class="footer-container" itemscope="itemscope" itemtype="http://schema.org/Organization" itemprop="provider">
+    <span itemprop="name" class="hide">${collegeName}</span>
+    <a href="http://www.tas.gov.au"><img src="/s/img/footer-logo.png" align="right" /></a>
+  </div>
+</t:container>

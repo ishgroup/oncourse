@@ -1,0 +1,18 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+  <hgroup class="header-hgroup">
+    <h2 class="site-logo" id="siteLogo">
+      <a href="http://www.tas.gov.au">${collegeName}</a>
+    </h2>
+    <img src="/s/img/logo_print_page.png" class="print_logo" alt="${collegeName}" />
+    <h1 class="site-title" id="siteTitle">
+      <a href="${homeLink}">${collegeName}</a>
+    </h1>
+  </hgroup>
+  <aside class="header-toolbar" id="headerToolbar">
+    <span t:type="ui/CourseSearchForm" />
+    <t:if t:test="paymentGatewayEnabled">
+      <span t:type="ui/ShortList" />
+    </t:if>
+    <span t:type="ui/PromoCodesView" />
+  </aside>
+</t:container>
