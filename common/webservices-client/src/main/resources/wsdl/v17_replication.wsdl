@@ -1417,6 +1417,7 @@
                             <xs:element name="entityClass" type="xs:string"/>
                             <xs:element name="entityEventType" type="xs:int"/>
                             <xs:element name="name" type="xs:string"/>
+                            <xs:element name="result" type="xs:string"/>
                             <xs:element name="script" type="xs:string"/>
                             <xs:element name="triggerType" type="xs:int"/>
                             <xs:element name="description" type="xs:string"/>
