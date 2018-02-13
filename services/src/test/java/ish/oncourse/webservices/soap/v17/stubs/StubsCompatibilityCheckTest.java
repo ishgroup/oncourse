@@ -714,6 +714,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		List<ReplicationStubFieldParameter> fieldConfigurationLinkParameters = fillDefaultReplicationStubFields();
 		fieldConfigurationLinkParameters.add(new ReplicationStubFieldParameter("schemeId", Long.class));
 		fieldConfigurationLinkParameters.add(new ReplicationStubFieldParameter("configurationId", Long.class));
+        fieldConfigurationLinkParameters.add(new ReplicationStubFieldParameter("configurationType", Integer.class));
 		stubsPropertyMap.put(getStubName(FieldConfigurationLinkStub.class), fieldConfigurationLinkParameters);
 
 		List<ReplicationStubFieldParameter> fieldConfigurationSchemeParameters = fillDefaultReplicationStubFields();
