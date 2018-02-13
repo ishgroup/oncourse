@@ -600,7 +600,6 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		scriptParameters.add(new ReplicationStubFieldParameter("entityClass", String.class));
 		scriptParameters.add(new ReplicationStubFieldParameter("entityEventType", Integer.class));
 		scriptParameters.add(new ReplicationStubFieldParameter("name", String.class));
-		scriptParameters.add(new ReplicationStubFieldParameter("result", String.class));
 		scriptParameters.add(new ReplicationStubFieldParameter("script", String.class));
 		scriptParameters.add(new ReplicationStubFieldParameter("triggerType", Integer.class));
 		scriptParameters.add(new ReplicationStubFieldParameter("description", String.class));
