@@ -264,7 +264,7 @@ public class AllV15StubBuildersTest extends AbstractAllStubBuildersTest {
 
 	@Test
 	public void testScriptStubBuilder() {
-		this.testStubBuilder(Script.class, new ScriptStubBuilder());
+		this.testStubBuilder(Script.class, new ScriptStubBuilder(), "result");
 	}
 
 	@Test
