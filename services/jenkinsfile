@@ -12,8 +12,8 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh "./gradlew -x test services:build -Dbuild_number=${env.BUILD_NUMBER} -PreleaseVersion=${params.version}"
-                //junit 'services/build/test-results/**/*.xml'
+                sh "./gradlew services:build -Dbuild_number=${env.BUILD_NUMBER} -PreleaseVersion=${params.version}"
+                junit 'services/build/test-results/**/*.xml'
             }
         }
 
