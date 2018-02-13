@@ -26,14 +26,6 @@
 
 	<bean id="collegeRequestInterceptor" class="ish.oncourse.webservices.soap.interceptors.TestCollegeRequestInterceptor" />
 
-	<bean id="v10_replicationPortType" class="ish.oncourse.webservices.soap.v10.TestReplicationPortTypeImpl" />
-
-	<bean id="v10_paymentPortType" class="ish.oncourse.webservices.soap.v10.TestPaymentPortTypeImpl" />
-
-	<bean id="v14_replicationPortType" class="ish.oncourse.webservices.soap.v14.TestReplicationPortTypeImpl" />
-
-	<bean id="v14_paymentPortType" class="ish.oncourse.webservices.soap.v14.TestPaymentPortTypeImpl" />
-
 	<bean id="v15_replicationPortType" class="ish.oncourse.webservices.soap.v15.TestReplicationPortTypeImpl" />
 
 	<bean id="v15_paymentPortType" class="ish.oncourse.webservices.soap.v15.TestPaymentPortTypeImpl" />
@@ -66,39 +58,6 @@
             <ref bean="collegeRequestInterceptor" />
         </jaxws:inInterceptors>
     </jaxws:endpoint>
-	
-
-	<jaxws:endpoint id="v10_replication" implementor="#v10_replicationPortType"
-					address="/v10/replication">
-		<jaxws:inInterceptors>
-			<ref bean="communicationKeyInterceptor" />
-			<ref bean="collegeRequestInterceptor" />
-		</jaxws:inInterceptors>
-	</jaxws:endpoint>
-
-	<jaxws:endpoint id="v10_payment" implementor="#v10_paymentPortType"
-					address="/v10/payment">
-		<jaxws:inInterceptors>
-			<ref bean="securityCodeInterceptor" />
-			<ref bean="collegeRequestInterceptor" />
-		</jaxws:inInterceptors>
-	</jaxws:endpoint>
-
-	<jaxws:endpoint id="v14_replication" implementor="#v14_replicationPortType"
-					address="/v14/replication">
-		<jaxws:inInterceptors>
-			<ref bean="communicationKeyInterceptor" />
-			<ref bean="collegeRequestInterceptor" />
-		</jaxws:inInterceptors>
-	</jaxws:endpoint>
-
-	<jaxws:endpoint id="v14_payment" implementor="#v14_paymentPortType"
-					address="/v14/payment">
-		<jaxws:inInterceptors>
-			<ref bean="securityCodeInterceptor" />
-			<ref bean="collegeRequestInterceptor" />
-		</jaxws:inInterceptors>
-	</jaxws:endpoint>
 
 	<jaxws:endpoint id="replication" implementor="#v15_replicationPortType"
 					address="/v15/replication">
