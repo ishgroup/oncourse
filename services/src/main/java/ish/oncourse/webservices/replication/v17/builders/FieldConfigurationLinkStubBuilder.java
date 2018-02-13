@@ -13,6 +13,7 @@ public class FieldConfigurationLinkStubBuilder extends AbstractWillowStubBuilder
         stub.setModified(entity.getModified());
         stub.setSchemeId(entity.getFieldConfigurationScheme().getId());
         stub.setConfigurationId(entity.getFieldConfiguration().getId());
+        stub.setConfigurationType(entity.getFieldConfiguration().getType().getDatabaseValue());
         return stub;
     }
 }
