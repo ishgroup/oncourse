@@ -24,8 +24,8 @@ class WebNodeTypeToTheme {
     Theme getTheme() {
         return new Theme().with { theme ->
             theme.title = webNodeType.name
-            theme.id = webNodeType.id.doubleValue()
-            theme.layoutId = webNodeType.webSiteLayout.id.doubleValue()
+            theme.id = webNodeType.id.intValue()
+            theme.layoutId = webNodeType.webSiteLayout.id.intValue()
             theme.schema = new ThemeSchema().with { schema ->
                 schema.top = getBlocksBy(header)
                 schema.left = getBlocksBy(left)
@@ -42,8 +42,8 @@ class WebNodeTypeToTheme {
         return BlocksForRegionKey.valueOf(webNodeType, regionKey, webNodeType.webSiteVersion).get()
                 .collect { block -> 
                             new BlockItem().with { item ->
-                                item.id = block.id.doubleValue()
-                                item.position = block.getWebContentVisibility(webNodeType).weight.doubleValue()
+                                item.id = block.id.intValue()
+                                item.position = block.getWebContentVisibility(webNodeType).weight
                                 item
                             }
                 }

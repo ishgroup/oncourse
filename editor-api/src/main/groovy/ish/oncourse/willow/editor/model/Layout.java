@@ -3,28 +3,28 @@ package ish.oncourse.willow.editor.model;
 
 public class Layout  {
   
-    private Double id = null;
+    private Integer id = null;
     private String layoutKey = null;
 
     /**
      * unique id of the layout
      * @return id
      */
-    public Double getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Double id) {
+    public void setId(Integer id) {
        this.id = id;
     }
 
-    public Layout id(Double id) {
+    public Layout id(Integer id) {
       this.id = id;
       return this;
     }
 
     /**
-     * key/name of the layout
+     * Unique name of the layout
      * @return layoutKey
      */
     public String getLayoutKey() {

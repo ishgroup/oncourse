@@ -4,24 +4,24 @@ import ish.oncourse.willow.editor.model.ThemeSchema;
 
 public class Theme  {
   
-    private Double id = null;
+    private Integer id = null;
     private String title = null;
-    private Double layoutId = null;
+    private Integer layoutId = null;
     private ThemeSchema schema = null;
 
     /**
      * Unique identifier of theme
      * @return id
      */
-    public Double getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Double id) {
+    public void setId(Integer id) {
        this.id = id;
     }
 
-    public Theme id(Double id) {
+    public Theme id(Integer id) {
       this.id = id;
       return this;
     }
@@ -44,18 +44,18 @@ public class Theme  {
     }
 
     /**
-     * Unique identifier of for theme
+     * Layout id which is used for this theme
      * @return layoutId
      */
-    public Double getLayoutId() {
+    public Integer getLayoutId() {
         return layoutId;
     }
 
-    public void setLayoutId(Double layoutId) {
+    public void setLayoutId(Integer layoutId) {
        this.layoutId = layoutId;
     }
 
-    public Theme layoutId(Double layoutId) {
+    public Theme layoutId(Integer layoutId) {
       this.layoutId = layoutId;
       return this;
     }

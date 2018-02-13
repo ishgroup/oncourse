@@ -19,7 +19,7 @@ class WebVersionToVersion {
 
     Version getVersion() {
         new Version().with { version ->
-            version.id = webSiteVersion.id.doubleValue()
+            version.id = webSiteVersion.id.intValue()
             version.published = webSiteVersion.deployedOn != null
             version.author = webSiteVersion.deployedBy ?  "$webSiteVersion.deployedBy.firstName $webSiteVersion.deployedBy.surname" : null
             version.date = webSiteVersion.deployedOn?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDateTime()

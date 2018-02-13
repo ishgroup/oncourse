@@ -24,7 +24,7 @@ class WebMenuToMenuItem {
     
     private MenuItem translate(WebMenu webMenu) {
         return new MenuItem().with { menu ->
-            menu.id = webMenu.id.doubleValue()
+            menu.id = webMenu.id.intValue()
             menu.title = webMenu.name
             menu.url = WebMenuFunctions.getUrlPath(webMenu)
             String error = StringUtils.trimToNull(webMenu.warning)

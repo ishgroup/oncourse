@@ -62,7 +62,7 @@ class ThemeApiServiceImpl implements ThemeApi {
     List<Layout> getLayouts() {
         WebSiteLayoutFunctions.getLayouts(requestService.request, cayenneService.newContext())
                 .collect { webLayout -> new  Layout().with { layout ->
-                    layout.id = webLayout.id.doubleValue()
+                    layout.id = webLayout.id.intValue()
                     layout.layoutKey = webLayout.layoutKey
                     layout
             }

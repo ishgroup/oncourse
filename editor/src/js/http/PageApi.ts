@@ -1,6 +1,5 @@
 import {HttpService} from "../common/services/HttpService";
 import {Page} from "../model/Page";
-import {PageRenderResponse} from "../model/api/PageRenderResponse";
 import {CommonError} from "../model/common/CommonError";
 
 export class PageApi {
@@ -10,14 +9,11 @@ export class PageApi {
   addPage(): Promise<Page> {
     return this.http.POST(`/addPage`);
   }
-  deletePage(number: string): Promise<any> {
-    return this.http.POST(`/deletePage/${number}`);
+  deletePage(pageNumber: string): Promise<any> {
+    return this.http.POST(`/deletePage/${pageNumber}`);
   }
   getPageByUrl(pageUrl: string): Promise<Page> {
     return this.http.GET(`/getPageByUrl`, { params: { pageUrl }});
-  }
-  getPageRender(pageNumber: number): Promise<PageRenderResponse> {
-    return this.http.GET(`/getPageRender/${pageNumber}`);
   }
   getPages(): Promise<Page[]> {
     return this.http.GET(`/getPages`);

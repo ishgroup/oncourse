@@ -3,22 +3,22 @@ package ish.oncourse.willow.editor.model;
 
 public class BlockItem  {
   
-    private Double id = null;
-    private Double position = null;
+    private Integer id = null;
+    private Integer position = null;
 
     /**
      * unique id of the Block
      * @return id
      */
-    public Double getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Double id) {
+    public void setId(Integer id) {
        this.id = id;
     }
 
-    public BlockItem id(Double id) {
+    public BlockItem id(Integer id) {
       this.id = id;
       return this;
     }
@@ -27,15 +27,15 @@ public class BlockItem  {
      * order position of the block
      * @return position
      */
-    public Double getPosition() {
+    public Integer getPosition() {
         return position;
     }
 
-    public void setPosition(Double position) {
+    public void setPosition(Integer position) {
        this.position = position;
     }
 
-    public BlockItem position(Double position) {
+    public BlockItem position(Integer position) {
       this.position = position;
       return this;
     }

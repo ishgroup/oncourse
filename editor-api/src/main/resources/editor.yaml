@@ -161,30 +161,6 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /getPageRender/{pageNumber}:
-    get:
-      x-filter:  
-      - AuthFilter
-      summary: Get page rendered html by provided page id
-      operationId: getPageRender
-      description: Get page rendered html by provided page id
-      tags:
-        - Page
-      parameters:
-        - name: pageNumber
-          in: path
-          description: Page number
-          required: true
-          type: integer
-      responses:
-        '200':
-          description: generated page html
-          schema:
-            $ref: '#/definitions/api.PageRenderResponse'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/common.CommonError'
   /savePage:
     post:
       x-filter:  
@@ -740,17 +716,6 @@ parameters:
 
 
 definitions:
-
-  api.PageRenderResponse:
-    type: object
-    properties:
-      html:
-        type: string
-  api.SetVersionRequest:
-    type: object
-    properties:
-      id:
-        type: integer
 
   api.LoginRequest:
     type: object

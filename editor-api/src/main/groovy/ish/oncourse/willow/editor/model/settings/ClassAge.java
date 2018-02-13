@@ -5,24 +5,24 @@ import ish.oncourse.willow.editor.model.settings.ClassEnrolmentCondition;
 
 public class ClassAge  {
   
-    private Double hideClassDays = null;
+    private Integer hideClassDays = null;
     private ClassCondition hideClassCondition = null;
-    private Double stopWebEnrolmentDays = null;
+    private Integer stopWebEnrolmentDays = null;
     private ClassEnrolmentCondition stopWebEnrolmentCondition = null;
 
     /**
      * Get hideClassDays
      * @return hideClassDays
      */
-    public Double getHideClassDays() {
+    public Integer getHideClassDays() {
         return hideClassDays;
     }
 
-    public void setHideClassDays(Double hideClassDays) {
+    public void setHideClassDays(Integer hideClassDays) {
        this.hideClassDays = hideClassDays;
     }
 
-    public ClassAge hideClassDays(Double hideClassDays) {
+    public ClassAge hideClassDays(Integer hideClassDays) {
       this.hideClassDays = hideClassDays;
       return this;
     }
@@ -48,15 +48,15 @@ public class ClassAge  {
      * Get stopWebEnrolmentDays
      * @return stopWebEnrolmentDays
      */
-    public Double getStopWebEnrolmentDays() {
+    public Integer getStopWebEnrolmentDays() {
         return stopWebEnrolmentDays;
     }
 
-    public void setStopWebEnrolmentDays(Double stopWebEnrolmentDays) {
+    public void setStopWebEnrolmentDays(Integer stopWebEnrolmentDays) {
        this.stopWebEnrolmentDays = stopWebEnrolmentDays;
     }
 
-    public ClassAge stopWebEnrolmentDays(Double stopWebEnrolmentDays) {
+    public ClassAge stopWebEnrolmentDays(Integer stopWebEnrolmentDays) {
       this.stopWebEnrolmentDays = stopWebEnrolmentDays;
       return this;
     }

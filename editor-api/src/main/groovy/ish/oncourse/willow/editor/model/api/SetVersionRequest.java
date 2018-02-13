@@ -3,21 +3,21 @@ package ish.oncourse.willow.editor.model.api;
 
 public class SetVersionRequest  {
   
-    private Double id = null;
+    private Integer id = null;
 
     /**
      * Get id
      * @return id
      */
-    public Double getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Double id) {
+    public void setId(Integer id) {
        this.id = id;
     }
 
-    public SetVersionRequest id(Double id) {
+    public SetVersionRequest id(Integer id) {
       this.id = id;
       return this;
     }

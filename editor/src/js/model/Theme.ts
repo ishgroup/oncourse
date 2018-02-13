@@ -13,7 +13,7 @@ export class Theme {
   title?: string;
 
   /**
-   * Unique identifier of for theme
+   * Layout id which is used for this theme
    */
   layoutId?: number;
   schema?: ThemeSchema;

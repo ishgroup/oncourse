@@ -7,7 +7,7 @@ export class Layout {
   id?: number;
 
   /**
-   * key/name of the layout
+   * Unique name of the layout
    */
   layoutKey?: string;
 }

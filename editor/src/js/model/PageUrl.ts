@@ -7,7 +7,7 @@ export class PageUrl {
   link?: string;
 
   /**
-   * has url default
+   * this is the default URL for the page. Setting this unsets all other pageUrl defaults
    */
   isDefault?: boolean;
 }

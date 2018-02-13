@@ -1,7 +1,6 @@
 package ish.oncourse.willow.editor.service;
 
 import ish.oncourse.willow.editor.model.Page;
-import ish.oncourse.willow.editor.model.api.PageRenderResponse;
 import ish.oncourse.willow.editor.model.common.CommonError;
 
 import java.io.InputStream;
@@ -23,23 +22,17 @@ public interface PageApi  {
     Page addPage();
 
     @POST
-    @Path("/deletePage/{number}")
+    @Path("/deletePage/{pageNumber}")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @AuthFilter
-    void deletePage(@PathParam("number") String number);
+    void deletePage(@PathParam("pageNumber") String pageNumber);
 
     @GET
     @Path("/getPageByUrl")
     @Produces({ "application/json" })
     @AuthFilter
     Page getPageByUrl(@QueryParam("pageUrl")String pageUrl);
-
-    @GET
-    @Path("/getPageRender/{pageNumber}")
-    @Produces({ "application/json" })
-    @AuthFilter
-    PageRenderResponse getPageRender(@PathParam("pageNumber") Double pageNumber);
 
     @GET
     @Path("/getPages")

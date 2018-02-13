@@ -6,9 +6,9 @@ import java.util.List;
 
 public class Page  {
   
-    private Double number = null;
+    private Integer number = null;
     private String title = null;
-    private Double themeId = null;
+    private Integer themeId = null;
     private String content = null;
     private Boolean visible = null;
     private Boolean reservedURL = null;
@@ -18,15 +18,15 @@ public class Page  {
      * page number
      * @return number
      */
-    public Double getNumber() {
+    public Integer getNumber() {
         return number;
     }
 
-    public void setNumber(Double number) {
+    public void setNumber(Integer number) {
        this.number = number;
     }
 
-    public Page number(Double number) {
+    public Page number(Integer number) {
       this.number = number;
       return this;
     }
@@ -49,24 +49,24 @@ public class Page  {
     }
 
     /**
-     * theme Id for the page
+     * theme id used for the page
      * @return themeId
      */
-    public Double getThemeId() {
+    public Integer getThemeId() {
         return themeId;
     }
 
-    public void setThemeId(Double themeId) {
+    public void setThemeId(Integer themeId) {
        this.themeId = themeId;
     }
 
-    public Page themeId(Double themeId) {
+    public Page themeId(Integer themeId) {
       this.themeId = themeId;
       return this;
     }
 
     /**
-     * Html source of the page
+     * Rich text content
      * @return content
      */
     public String getContent() {
@@ -83,7 +83,7 @@ public class Page  {
     }
 
     /**
-     * Has page visible
+     * Is the page visible
      * @return visible
      */
     public Boolean getVisible() {
@@ -100,7 +100,7 @@ public class Page  {
     }
 
     /**
-     * Indicates that page is system, content is not editable
+     * Indicates that page is a special system page and content is not editable
      * @return reservedURL
      */
     public Boolean getReservedURL() {

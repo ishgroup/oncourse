@@ -3,12 +3,12 @@ export class Block {
   id?: number;
 
   /**
-   * Title/Name of block
+   * Unique name of block
    */
   title?: string;
 
   /**
-   * Html source of block
+   * Rich text content
    */
   content?: string;
 }

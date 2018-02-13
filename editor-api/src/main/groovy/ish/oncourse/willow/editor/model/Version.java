@@ -10,10 +10,10 @@ import ish.oncourse.util.FormatUtils;
 
 public class Version  {
   
-    private Double id = null;
+    private Integer id = null;
     private Boolean published = null;
     private String author = null;
-    private Double changes = null;
+    private Integer changes = null;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = FormatUtils.DATE_FORMAT_ISO8601)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
@@ -23,15 +23,15 @@ public class Version  {
      * unique id of version
      * @return id
      */
-    public Double getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Double id) {
+    public void setId(Integer id) {
        this.id = id;
     }
 
-    public Version id(Double id) {
+    public Version id(Integer id) {
       this.id = id;
       return this;
     }
@@ -72,17 +72,18 @@ public class Version  {
 
     /**
      * count of changes from previous version
+     * minimum: 0
      * @return changes
      */
-    public Double getChanges() {
+    public Integer getChanges() {
         return changes;
     }
 
-    public void setChanges(Double changes) {
+    public void setChanges(Integer changes) {
        this.changes = changes;
     }
 
-    public Version changes(Double changes) {
+    public Version changes(Integer changes) {
       this.changes = changes;
       return this;
     }

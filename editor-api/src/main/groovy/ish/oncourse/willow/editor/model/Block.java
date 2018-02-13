@@ -3,7 +3,7 @@ package ish.oncourse.willow.editor.model;
 
 public class Block  {
   
-    private Double id = null;
+    private Integer id = null;
     private String title = null;
     private String content = null;
 
@@ -11,21 +11,21 @@ public class Block  {
      * Get id
      * @return id
      */
-    public Double getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Double id) {
+    public void setId(Integer id) {
        this.id = id;
     }
 
-    public Block id(Double id) {
+    public Block id(Integer id) {
       this.id = id;
       return this;
     }
 
     /**
-     * Title/Name of block
+     * Unique name of block
      * @return title
      */
     public String getTitle() {
@@ -42,7 +42,7 @@ public class Block  {
     }
 
     /**
-     * Html source of block
+     * Rich text content
      * @return content
      */
     public String getContent() {

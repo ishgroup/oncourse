@@ -48,14 +48,5 @@ export function pageApiMock() {
       null,
     );
   });
-
-  // this.api.onGet(/getPageRender\/\d+/).reply(config => {
-  this.api.onGet(new RegExp(`${API.GET_PAGE_RENDER.replace('/','')}/\\d+`)).reply(config => {
-    const pageNumber = Number(config.url.split('/')[1]);
-    const html = this.db.getPageRender(pageNumber);
-    return promiseResolve(
-      config,
-      {html},
-    );
-  });
+  
 }

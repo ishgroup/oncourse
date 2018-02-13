@@ -13,22 +13,22 @@ export class Page {
   title?: string;
 
   /**
-   * theme Id for the page
+   * theme id used for the page
    */
   themeId?: number;
 
   /**
-   * Html source of the page
+   * Rich text content
    */
   content?: string;
 
   /**
-   * Has page visible
+   * Is the page visible
    */
   visible?: boolean;
 
   /**
-   * Indicates that page is system, content is not editable
+   * Indicates that page is a special system page and content is not editable
    */
   reservedURL?: boolean;
   urls?: PageUrl[];
