@@ -1,6 +1,7 @@
 package ish.oncourse.webservices.soap.v5;
 
-import ish.oncourse.webservices.soap.v10.AbstractTransportTest;
+import ish.oncourse.webservices.soap.ATransportTest;
+import ish.oncourse.webservices.soap.v15.AbstractTransportTest;
 import ish.oncourse.webservices.v5.stubs.reference.ReferenceResult;
 import ish.oncourse.webservices.v5.stubs.reference.ReferenceStub;
 import org.apache.cxf.annotations.EndpointProperty;
@@ -23,7 +24,7 @@ public class TestReferencePortTypeImpl implements ReferencePortType {
 		ReferenceResult referenceResult = new ReferenceResult();
 
 		try {
-			referenceResult.getCountryOrLanguageOrModule().addAll(AbstractTransportTest.createStubsBy(AbstractTransportTest.getReferenceStubBeanNames(), AbstractTransportTest.PACKAGE_NAME_REFERENCE_STUBS, ReferenceStub.class));
+			referenceResult.getCountryOrLanguageOrModule().addAll(ATransportTest.createStubsBy(AbstractTransportTest.getReferenceStubBeanNames(), AbstractTransportTest.PACKAGE_NAME_REFERENCE_STUBS, ReferenceStub.class));
 			return referenceResult;
 		} catch (Throwable e) {
 			throw new IllegalArgumentException(e);
