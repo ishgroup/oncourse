@@ -24,7 +24,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="entityClass" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="entityEventType" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="result" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="script" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="triggerType" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string"/>
@@ -44,7 +43,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "entityClass",
     "entityEventType",
     "name",
-    "result",
     "script",
     "triggerType",
     "description",
@@ -68,8 +66,6 @@ public class ScriptStub
     protected Integer entityEventType;
     @XmlElement(required = true)
     protected String name;
-    @XmlElement(required = true)
-    protected String result;
     @XmlElement(required = true)
     protected String script;
     @XmlElement(required = true, type = String.class)
@@ -201,30 +197,6 @@ public class ScriptStub
      */
     public void setName(String value) {
         this.name = value;
-    }
-
-    /**
-     * Gets the value of the result property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getResult() {
-        return result;
-    }
-
-    /**
-     * Sets the value of the result property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setResult(String value) {
-        this.result = value;
     }
 
     /**
