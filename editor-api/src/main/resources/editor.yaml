@@ -8,8 +8,9 @@ info:
     url: http://ish.com.au
     email: support@ish.com.au
   license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
+    name: Closed
+
+
 schemes:
   - https
 produces:
@@ -17,7 +18,9 @@ produces:
 securityDefinitions:
   basicAuth:
     type: basic
-    description: HTTP Basic Authentication. Works over `HTTP` and `HTTPS`
+    description: HTTP Basic Authentication
+
+
 paths:
   /getUser:
     post:
@@ -44,16 +47,15 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+
   /logout:
     post:
       operationId: logout
-      summary: Unauthorize user from CMS
-      description: Unauthorize user from CMS
+      summary: De-authorize user from editor
       tags:
         - Auth
       consumes:
         - application/json
-
       responses:
         '200':
           description: Success logout witn null response
@@ -61,6 +63,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+
   /getMenuItems:
     get:
       x-filter:  
@@ -81,6 +84,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+
   /saveMenuItems:
     post:
       x-filter:  
@@ -112,6 +116,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+
   /getPages:
     get:
       x-filter:  
@@ -170,7 +175,7 @@ paths:
           in: path
           description: Page number
           required: true
-          type: number
+          type: integer
       responses:
         '200':
           description: generated page html
@@ -207,6 +212,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+
   /addPage:
     post:
       x-filter:  
@@ -227,7 +233,8 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /deletePage/{number}:
+
+  /deletePage/{pageNumber}:
     post:
       x-filter:  
       - AuthFilter
@@ -239,7 +246,7 @@ paths:
       consumes:
         - application/json
       parameters:
-        - name: number
+        - name: pageNumber
           in: path
           description: number of page which will be deleted
           required: true
@@ -252,13 +259,13 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+
   /getBlocks:
     get:
       x-filter:  
       - AuthFilter
-      summary: Get array of blocks
+      summary: Get list of blocks
       operationId: getBlocks
-      description: Get array of blocks
       tags:
         - Block
       responses:
@@ -272,11 +279,12 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+
   /saveBlock:
     post:
       x-filter:  
       - AuthFilter
-      summary: block with updated params
+      summary: Update an existing block
       operationId: saveBlock
       description: Save block params
       tags:
@@ -299,6 +307,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+
   /addBlock:
     post:
       x-filter:  
@@ -319,6 +328,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+
   /deleteBlock/{name}:
     post:
       x-filter:  
@@ -333,7 +343,7 @@ paths:
       parameters:
         - name: name
           in: path
-          description: identificator of block which will be deleted
+          description: idenifier of block which will be deleted
           required: true
           schema:
             type: string
@@ -344,6 +354,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+
   /getThemes:
     get:
       x-filter:  
@@ -435,7 +446,7 @@ paths:
     post:
       x-filter:  
       - AuthFilter
-      summary: Remove theme by provided Id
+      summary: Remove theme by provided name
       operationId: deleteTheme
       description: Remove theme
       tags:
@@ -456,6 +467,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+
   /getVersions:
     get:
       x-filter:  
@@ -476,13 +488,13 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+
   /setVersion:
     post:
       x-filter:  
       - AuthFilter
       summary: Set current published version by provided version Id. Not supported yet
       operationId: setVersion
-      description: Change current published version. Not supported yet
       tags:
         - Publish
       consumes:
@@ -501,6 +513,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+
   /publish:
     post:
       x-filter:  
@@ -519,6 +532,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+
   /getCheckoutSettings:
     get:
       x-filter:  
@@ -537,6 +551,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+
   /setCheckoutSettings:
     post:
       x-filter:  
@@ -564,6 +579,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+
   /getSkillsOnCourseSettings:
     get:
       x-filter:  
@@ -582,6 +598,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+
   /setSkillsOnCourseSettings:
     post:
       x-filter:  
@@ -609,6 +626,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+
   /getRedirectSettings:
     get:
       x-filter:  
@@ -627,6 +645,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+
   /setRedirectSettings:
     post:
       x-filter:  
@@ -654,6 +673,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+
   /getWebsiteSettings:
     get:
       x-filter:  
@@ -672,6 +692,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+
   /setWebsiteSettings:
     post:
       x-filter:  
@@ -699,23 +720,27 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+
+
 parameters:
   XOrigin:
     name: X-Origin
     in: header
-    description: |
-      College URL which we sends with every request,
-      since we have common endpoint for all colledges.
-      Example: intranet.ish.com.au
+    description: Site URL which we send with every request.
+    example: acme.oncourse.cc
     required: true
     type: string
   Session:
     name: X-Session-Token
     in: header
-    description: User's session Id
+    description: User's session token
     required: true
     type: string
+
+
+
 definitions:
+
   api.PageRenderResponse:
     type: object
     properties:
@@ -725,43 +750,54 @@ definitions:
     type: object
     properties:
       id:
-        type: number
+        type: integer
+
   api.LoginRequest:
     type: object
     properties:
       email:
         type: string
+        format: email
         description: user email
-        example: john.smith@gamil.com
+        example: john.smith@gmail.com
       password:
         type: string
+        format: password
         description: User password
-        example: password
+        example: htrgjat4Gh
+
   PageUrl:
     type: object
     properties:
       link:
         type: string
         description: unique link
+        example: /contact
       isDefault:
         type: boolean
-        description: has url default
+        description: this is the default URL for the page. Setting this unsets all other pageUrl defaults
+
   Block:
     type: object
     properties:
       id:
-        type: number
+        type: integer
       title:
         type: string
-        description: Title/Name of block
+        description: Unique name of block
+        example: sidebar
       content:
         type: string
-        description: Html source of block
+        description: Rich text content
+        example: |
+          h3. Subjects
+          {tags}
+
   Version:
     type: object
     properties:
       id:
-        type: number
+        type: integer
         description: unique id of version
       published:
         type: boolean
@@ -769,56 +805,68 @@ definitions:
       author:
         type: string
         description: First and last name of the user who published version
+        example: Jane Smith
       changes:
-        type: number
+        type: integer
+        minimum: 0
         description: count of changes from previous version
+        example: 12
       date:
-        format: date
         type: string
+        format: date
         description: date when version was published
+
   Layout:
     type: object
     properties:
       id:
-        type: number
+        type: integer
         description: unique id of the layout
       layoutKey:
         type: string
-        description: key/name of the layout
+        description: Unique name of the layout
+        example: layout-B
+
   Page:
     type: object
     properties:
       number:
-        type: number
+        type: integer
         description: page number
       title:
         type: string
         description: title of the page
+        example: Contact us
       themeId:
-        type: number
-        description: theme Id for the page
+        type: integer
+        description: theme id used for the page
       content:
         type: string
-        description: Html source of the page
+        description: Rich text content
+        example: |
+          Phone us on (02) 9550 5001 to find out more.
       visible:
         type: boolean
-        description: Has page visible
+        description: Is the page visible
       reservedURL:
         type: boolean
-        description: Indicates that page is system, content is not editable
+        description: Indicates that page is a special system page and content is not editable
       urls:
         type: array
         items:
           $ref: '#/definitions/PageUrl'
+
   BlockItem:
     type: object
     properties:
       id:
-        type: number
+        type: integer
         description: unique id of the Block
       position:
-        type: number
+        type: integer
         description: order position of the block
+        example: 2
+
   ThemeSchema:
     type: object
     properties:
@@ -842,32 +890,38 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/BlockItem'
+
   Theme:
     type: object
     properties:
       id:
-        type: number
+        type: integer
         description: Unique identifier of theme
       title:
         type: string
         description: title of theme
+        example: default
       layoutId:
-        type: number
-        description: Unique identifier of for theme
+        type: integer
+        description: Layout id which is used for this theme
       schema:
         $ref: '#/definitions/ThemeSchema'
+
   MenuItem:
     type: object
     properties:
       id:
-        type: number
+        type: integer
         description: Unique identifier of menu item
       title:
         type: string
         description: title of menu item
+        example: about us
       url:
         type: string
+        format: uri
         description: url for menu link
+        example: /about
       expanded:
         type: boolean
       children:
@@ -881,6 +935,7 @@ definitions:
             type: string
           url:
             type: boolean
+
   User:
     type: object
     properties:
@@ -892,14 +947,15 @@ definitions:
         description: Last name of the user
         type: string
         example: Smith
+
   common.CommonError:
     type: object
     properties:
       code:
         type: integer
-        format: int32
       message:
         type: string
+
   common.ValidationError:
     type: object
     required:
@@ -969,11 +1025,11 @@ definitions:
     type: object
     properties:
       hideClassDays:
-        type: number
+        type: integer
       hideClassCondition:
         $ref: '#/definitions/settings.ClassCondition'
       stopWebEnrolmentDays:
-        type: number
+        type: integer
       stopWebEnrolmentCondition:
         $ref: '#/definitions/settings.ClassEnrolmentCondition'
   settings.WebsiteSettings:
@@ -994,5 +1050,7 @@ definitions:
     properties:
       successUrl:
         type: string
+        format: uri
       refundPolicy:
         type: string
+        format: uri
