@@ -21,6 +21,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *       &lt;sequence>
  *         &lt;element name="schemeId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="configurationId" type="{http://www.w3.org/2001/XMLSchema}long"/>
+ *         &lt;element name="configurationType" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -32,7 +33,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "fieldConfigurationLinkStub", propOrder = {
     "schemeId",
-    "configurationId"
+    "configurationId",
+    "configurationType"
 })
 public class FieldConfigurationLinkStub
     extends ReplicationStub
@@ -46,6 +48,10 @@ public class FieldConfigurationLinkStub
     @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "long")
     protected Long configurationId;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlSchemaType(name = "int")
+    protected Integer configurationType;
 
     /**
      * Gets the value of the schemeId property.
@@ -93,6 +99,30 @@ public class FieldConfigurationLinkStub
      */
     public void setConfigurationId(Long value) {
         this.configurationId = value;
+    }
+
+    /**
+     * Gets the value of the configurationType property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Integer getConfigurationType() {
+        return configurationType;
+    }
+
+    /**
+     * Sets the value of the configurationType property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setConfigurationType(Integer value) {
+        this.configurationType = value;
     }
 
 }

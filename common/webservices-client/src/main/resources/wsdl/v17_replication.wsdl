@@ -1603,6 +1603,7 @@
                         <xs:sequence>
                             <xs:element name="schemeId" type="xs:long"/>
                             <xs:element name="configurationId" type="xs:long"/>
+                            <xs:element name="configurationType" type="xs:int"/>
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
