@@ -25,11 +25,11 @@ public class FieldConfigurationScheme extends _FieldConfigurationScheme implemen
 	
 	@Override
 	public FieldConfiguration getEnrolFieldConfiguration() {
-		return FieldConfigurationSchemeUtil.getConfiguration(this, FieldConfigurationType.ENROLMENT, super.getApplicationFieldConfiguration());
+		return FieldConfigurationSchemeUtil.getConfiguration(this, FieldConfigurationType.ENROLMENT, super.getEnrolFieldConfiguration());
 	}
 
 	@Override
 	public FieldConfiguration getWaitingListFieldConfiguration() {
-		return FieldConfigurationSchemeUtil.getConfiguration(this, FieldConfigurationType.WAITING_LIST, super.getApplicationFieldConfiguration());
+		return FieldConfigurationSchemeUtil.getConfiguration(this, FieldConfigurationType.WAITING_LIST, super.getWaitingListFieldConfiguration());
 	}
 }
