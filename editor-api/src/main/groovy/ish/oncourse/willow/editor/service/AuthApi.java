@@ -15,11 +15,18 @@ import javax.ws.rs.core.MediaType;
 @Path("/")
 public interface AuthApi  {
 
-    @POST
+    @GET
     @Path("/getUser")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
-    User getUser(LoginRequest loginRequest);
+    @AuthFilter
+    User getUser();
+
+    @POST
+    @Path("/login")
+    @Consumes({ "application/json" })
+    @Produces({ "application/json" })
+    void login(LoginRequest loginRequest);
 
     @POST
     @Path("/logout")

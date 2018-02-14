@@ -22,11 +22,11 @@ securityDefinitions:
 
 
 paths:
-  /getUser:
+
+  /login:
     post:
-      operationId: getUser
-      summary: Get user by email and password
-      description: Get user by email and password (Login)
+      operationId: login
+      summary: Authenticate user by email and password. Put session toke to cookie on success
       tags:
         - Auth
       consumes:
@@ -38,6 +38,26 @@ paths:
           required: true
           schema:
             $ref: '#/definitions/api.LoginRequest'
+      responses:
+        '200':
+          description: Ok response
+        '406':
+          description: Login unsuccessful. Invalid login name or password.
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+
+  /getUser:
+    get:
+      x-filter:  
+        - AuthFilter
+      operationId: getUser
+      summary: Get current logged user
+      tags:
+        - Auth
+      consumes:
+        - application/json
       responses:
         '200':
           description: User
@@ -58,7 +78,7 @@ paths:
         - application/json
       responses:
         '200':
-          description: Success logout witn null response
+          description: Success logout with null response
         default:
           description: Unexpected error
           schema:
