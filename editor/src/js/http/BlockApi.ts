@@ -9,8 +9,8 @@ export class BlockApi {
   addBlock(): Promise<Block> {
     return this.http.POST(`/addBlock`);
   }
-  deleteBlock(name: string): Promise<any> {
-    return this.http.POST(`/deleteBlock/${name}`);
+  deleteBlock(id: string): Promise<any> {
+    return this.http.POST(`/deleteBlock/${id}`);
   }
   getBlocks(): Promise<Block[]> {
     return this.http.GET(`/getBlocks`);

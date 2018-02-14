@@ -325,7 +325,7 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
-  /deleteBlock/{name}:
+  /deleteBlock/{id}:
     post:
       x-filter:  
       - AuthFilter
@@ -337,7 +337,7 @@ paths:
       consumes:
         - application/json
       parameters:
-        - name: name
+        - name: id
           in: path
           description: idenifier of block which will be deleted
           required: true
@@ -720,6 +720,7 @@ definitions:
     properties:
       id:
         type: integer
+        description: Unique identifier of block
       title:
         type: string
         description: Unique name of block

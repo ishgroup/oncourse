@@ -8,7 +8,7 @@ public class Block  {
     private String content = null;
 
     /**
-     * Get id
+     * Unique identifier of block
      * @return id
      */
     public Integer getId() {

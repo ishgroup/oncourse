@@ -51,7 +51,7 @@ export class BlockSettings extends React.Component<Props, any> {
 
     showModal({
       text: `You are want to delete block '${block.title}'. Are you sure?`,
-      onConfirm: () => onDelete(block.title),
+      onConfirm: () => onDelete(block.id),
     });
   }
 

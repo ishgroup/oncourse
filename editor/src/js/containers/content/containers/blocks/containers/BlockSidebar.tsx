@@ -72,7 +72,7 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
     onEditSettings: (blockId, settings) => dispatch(saveBlock(blockId, settings)),
-    onDeleteBlock: title => dispatch(deleteBlock(title)),
+    onDeleteBlock: blockId => dispatch(deleteBlock(blockId)),
     showModal: props => dispatch(showModal(props)),
     onAddBlock: () => dispatch(addBlock()),
   };

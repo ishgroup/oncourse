@@ -1,5 +1,9 @@
 
 export class Block {
+
+  /**
+   * Unique identifier of block
+   */
   id?: number;
 
   /**

@@ -18,8 +18,8 @@ class BlockService {
     return this.blockApi.addBlock();
   }
 
-  public deleteBlock(title): Promise<Block[]> {
-    return this.blockApi.deleteBlock(title);
+  public deleteBlock(id): Promise<Block[]> {
+    return this.blockApi.deleteBlock(id);
   }
 
   public buildSaveBlockRequest(props, state: State) {
