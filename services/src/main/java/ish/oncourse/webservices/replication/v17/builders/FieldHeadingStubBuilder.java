@@ -18,6 +18,7 @@ public class FieldHeadingStubBuilder extends AbstractWillowStubBuilder<FieldHead
 		stub.setName(entity.getName());
 		stub.setDescription(entity.getDescription());
 		stub.setFieldConfigurationId(entity.getFieldConfiguration().getId());
+		stub.setConfigurationType(entity.getFieldConfiguration().getType().getDatabaseValue());
 		stub.setOrder(entity.getOrder());
 		return stub;
 	}

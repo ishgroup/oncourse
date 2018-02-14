@@ -252,8 +252,24 @@ public class StubBuilderTestHelper<E extends Queueable, S extends GenericReplica
                         return null;
                     }
             }
+        } else if (entity instanceof FieldHeading) {
+            if ("configurationType".equals(propertyName)) {
+                return ((FieldHeading) entity).getFieldConfiguration().getType().getDatabaseValue();
+            }
+        } else if (entity instanceof Field) {
+            if ("configurationType".equals(propertyName)) {
+                return ((Field) entity).getFieldConfiguration().getType().getDatabaseValue();
+            }
+        } else if (entity instanceof FieldConfigurationLink) {
+            switch (propertyName) {
+                case "schemeId":
+                    return ((FieldConfigurationLink) entity).getFieldConfigurationScheme().getId();
+                case "configurationId":
+                    return ((FieldConfigurationLink) entity).getFieldConfiguration().getId();
+                case "configurationType":
+                    return ((FieldConfigurationLink) entity).getFieldConfiguration().getType().getDatabaseValue();
+            }
         }
-        
 
         if (propertyName.equals("willowId")) {
             return entity.getId();

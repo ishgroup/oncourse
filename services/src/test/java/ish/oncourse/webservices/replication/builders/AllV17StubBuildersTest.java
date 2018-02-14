@@ -334,6 +334,11 @@ public class AllV17StubBuildersTest extends AbstractAllStubBuildersTest {
     }
 
     @Test
+    public void testFieldConfigurationLinkStubBuilder() {
+        this.testStubBuilder(FieldConfigurationLink.class, new FieldConfigurationLinkStubBuilder());
+    }
+
+    @Test
     public void testFieldConfigurationSchemeStubBuilder() {
         this.testStubBuilder(FieldConfigurationScheme.class, new FieldConfigurationSchemeStubBuilder());
     }
