@@ -10,7 +10,7 @@ import CheckoutService from "../../services/CheckoutService";
 import {changePhase, showFormValidation, showSyncErrors} from "../../actions/Actions";
 import {submitEditContact} from "./actions/Actions";
 import {toFormKey} from "../../../components/form/FieldFactory";
-import {scrollToTop} from "../../../common/utils/DomUtils";
+import {scrollToTop, scrollToValidation} from "../../../common/utils/DomUtils";
 
 export const NAME = "ContactEditForm";
 
@@ -102,7 +102,7 @@ const Form = reduxForm({
     } else {
       dispatch(showFormValidation(submitError, NAME));
     }
-    scrollToTop();
+    scrollToValidation();
   },
 })(ContactEditForm);
 
