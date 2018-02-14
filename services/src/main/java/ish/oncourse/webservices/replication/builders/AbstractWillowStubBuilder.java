@@ -22,8 +22,8 @@ public abstract class AbstractWillowStubBuilder<T extends Queueable, V extends G
 			@SuppressWarnings("unchecked")
 			T entity = (T) queuedRecord.getLinkedRecord();
 			if (entity == null) {
-				String errorMessage = "There is no record with id " + queuedRecord.getEntityWillowId() + " in table "
-						+ queuedRecord.getEntityIdentifier();
+				String errorMessage = String.format("There is no record with id %d in table %s",
+						queuedRecord.getEntityWillowId(), queuedRecord.getEntityIdentifier());
 				logger.warn(errorMessage);
 				queuedRecord.setErrorMessage(errorMessage);
 				queuedRecord.getObjectContext().commitChanges();
@@ -35,7 +35,7 @@ public abstract class AbstractWillowStubBuilder<T extends Queueable, V extends G
 			} else if (entity instanceof ContactCustomField){
 				String customFieldIdentifier = getCustomFieldIdentifier(version);
 				soapStub.setEntityIdentifier(customFieldIdentifier);
-			} else if (entity instanceof EnrolmentCustomField) {
+			} else if (entity instanceof EnrolmentFieldConfiguration) {
 				String customFieldIdentifier = getFieldConfigurationIdentifier(version);
 				soapStub.setEntityIdentifier(customFieldIdentifier);
 			} else {
