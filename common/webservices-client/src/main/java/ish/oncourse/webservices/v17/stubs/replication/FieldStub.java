@@ -20,6 +20,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *     &lt;extension base="{http://repl.v17.soap.webservices.oncourse.ish/}replicationStub">
  *       &lt;sequence>
  *         &lt;element name="fieldConfigurationId" type="{http://www.w3.org/2001/XMLSchema}long"/>
+ *         &lt;element name="configurationType" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="fieldHeadingId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
@@ -38,6 +39,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "fieldStub", propOrder = {
     "fieldConfigurationId",
+    "configurationType",
     "fieldHeadingId",
     "description",
     "name",
@@ -54,6 +56,10 @@ public class FieldStub
     @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "long")
     protected Long fieldConfigurationId;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlSchemaType(name = "int")
+    protected Integer configurationType;
     @XmlElement(required = true, type = String.class)
     @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "long")
@@ -97,6 +103,30 @@ public class FieldStub
      */
     public void setFieldConfigurationId(Long value) {
         this.fieldConfigurationId = value;
+    }
+
+    /**
+     * Gets the value of the configurationType property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Integer getConfigurationType() {
+        return configurationType;
+    }
+
+    /**
+     * Sets the value of the configurationType property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setConfigurationType(Integer value) {
+        this.configurationType = value;
     }
 
     /**

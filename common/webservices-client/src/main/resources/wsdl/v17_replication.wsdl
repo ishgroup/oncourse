@@ -1573,6 +1573,7 @@
                     <xs:extension base="tns:replicationStub">
                         <xs:sequence>
                             <xs:element name="fieldConfigurationId" type="xs:long"/>
+                            <xs:element name="configurationType" type="xs:int"/>
                             <xs:element name="fieldHeadingId" type="xs:long"/>
                             <xs:element name="description" type="xs:string"/>
                             <xs:element name="name" type="xs:string"/>
@@ -1626,6 +1627,7 @@
                             <xs:element name="description" type="xs:string"/>
                             <xs:element name="name" type="xs:string"/>
                             <xs:element name="fieldConfigurationId" type="xs:long"/>
+                            <xs:element name="configurationType" type="xs:int"/>
                             <xs:element name="order" type="xs:int"/>
                         </xs:sequence>
                     </xs:extension>

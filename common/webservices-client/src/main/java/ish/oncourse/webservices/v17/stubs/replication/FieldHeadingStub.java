@@ -22,6 +22,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="fieldConfigurationId" type="{http://www.w3.org/2001/XMLSchema}long"/>
+ *         &lt;element name="configurationType" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="order" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *       &lt;/sequence>
  *     &lt;/extension>
@@ -36,6 +37,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "description",
     "name",
     "fieldConfigurationId",
+    "configurationType",
     "order"
 })
 public class FieldHeadingStub
@@ -50,6 +52,10 @@ public class FieldHeadingStub
     @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "long")
     protected Long fieldConfigurationId;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlSchemaType(name = "int")
+    protected Integer configurationType;
     @XmlElement(required = true, type = String.class)
     @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
@@ -125,6 +131,30 @@ public class FieldHeadingStub
      */
     public void setFieldConfigurationId(Long value) {
         this.fieldConfigurationId = value;
+    }
+
+    /**
+     * Gets the value of the configurationType property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Integer getConfigurationType() {
+        return configurationType;
+    }
+
+    /**
+     * Sets the value of the configurationType property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setConfigurationType(Integer value) {
+        this.configurationType = value;
     }
 
     /**
