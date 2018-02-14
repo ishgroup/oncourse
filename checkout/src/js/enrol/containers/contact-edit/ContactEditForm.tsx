@@ -102,6 +102,7 @@ const Form = reduxForm({
     } else {
       dispatch(showFormValidation(submitError, NAME));
     }
+    scrollToTop();
   },
 })(ContactEditForm);
 
@@ -126,12 +127,7 @@ const mapStateToProps = (state: IshState) => {
   const isNewContact = !state.checkout.contacts.result.length;
   const page = state.checkout.page;
 
-  // merge initial form values with concession initial value, set first concession type as default
   const initialValues = getInitialValues(fields);
-
-  if (concessionTypes && concessionTypes.length) {
-    initialValues['concessionType'] = {key: concessionTypes[0].id, value: concessionTypes[0].value};
-  }
 
   return {
     contact,
