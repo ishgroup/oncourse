@@ -1,0 +1,69 @@
+﻿<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+  <footer class="site-footer" id="footer" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
+    <div class="container container--std" itemscope="itemscope" itemtype="http://schema.org/Organization" itemprop="provider">
+      <div class="logo-mark"></div>
+      <div class="row group">
+        <div class="column col-1-4">
+          <h4 class="footer__title">Get in touch</h4>
+        </div>
+        <div class="column col-3-4 group">
+          <div class="footer__content footer__content--left">
+            <h5>Management</h5>
+            <p>
+              Cnr of Manning &amp; Lake Streets<br/>
+              Tuncurry NSW 2428<br/>
+              Australia
+            </p>
+          </div>
+          <div class="footer__content footer__content--middle">
+            <h5>Phone</h5>
+            <p>+61 2 6554 9215</p>
+
+            <h5>Fax</h5>
+            <p>+61 2 6554 9668</p>
+
+            <h5>Email</h5>
+            <p><a href="mailto:enquiries@weacoast.edu.au">enquiries@weacoast.edu.au</a></p>
+          </div>
+
+          <div class="footer__content footer__content--right">
+            <div class="footer__quicklinks">
+              <h5>Quicklinks</h5>
+              <ul class="list--quicklinks">
+                <li><a href="/contact">Venue &amp; Maps</a></li>
+                <li><a href="/news">News Feed</a></li>
+                <li><a href="/work-with-us">Work With Us</a></li>
+                <li><a href="/room-hire">Room Hire</a></li>
+                <li><a href="/partners">WEA Partners</a></li>
+              </ul>
+            </div>
+            <div class="footer-social-media group">
+              <h5 class="footer-social-media__title u-pull-left">Get connected</h5>
+              <ul class="social-media__links list--horizontal u-pull-left">
+                <li class="social-media__link"><a href="https://www.facebook.com/weacoast" target="_blank"><img alt="Facebook" src="/s/stylesheets/img/icon-facebook.png" /></a></li>
+                <li class="social-media__link"><a href="http://www.youtube.com/user/weahuntertube" target="_blank"><img alt="YouTube" src="/s/stylesheets/img/icon-youtube.png" /></a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row group">
+        <div class="site-legal group">
+          <div class="site-legal__container column group u-pull-right">
+            <div class=" legal__content legal__content--logo">
+              <img alt="WEA Coast - Quality Learning" src="/s/stylesheets/img/logo-wea-coast-reversed.png" />
+            </div>
+
+            <div class="legal__content legal__content--small-print">
+              <p>
+                © 2014 <span itemprop="name">WEA Coast</span> <span class="divider">|</span> <a href="/disclaimer">Disclaimer</a> <span class="divider media-toggled">|</span> <a href="/privacy">Privacy Policy</a> <span class="divider">|</span> <a href="/sitemap">Site Map</a>
+              </p>
+              <p>ABN 61 062 580 634 | RTO 90020</p>
+            </div>
+          </div>
+        </div>
+      </div><!-- //row -->
+    </div>
+  </footer><!-- //site-footer -->
+</t:container>

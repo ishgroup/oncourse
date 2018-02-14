@@ -1,0 +1,9 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+  <li class="${menuItemClass}">
+    <a href="${itemHref}" itemprop="url">
+      ${menu.name}
+      <meta itemprop="name" content="${menu.name}" />
+    </a>
+    <ul><t:body /></ul>
+  </li>
+</t:container>

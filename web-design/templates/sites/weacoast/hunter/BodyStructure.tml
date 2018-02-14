@@ -1,0 +1,70 @@
+<section class="site-container" id="container" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+  <section class="site-wrapper">
+    <header class="site-header group" id="header" itemscope="itemscope" itemtype="http://schema.org/WPHeader">
+      <div t:type="ui/bodyheader" />
+
+      <!-- BEGIN site-mast -->
+      <div class="site-mast">
+        <div class="container container--std">
+          <ul class="mast-links list--horizontal">
+            <li class="link"><a class="nyromodalreload" href="/addDiscount">Enter Discount Code</a></li>
+            <li class="link last"><a href="https://skillsoncourse.com.au/login" target="_blank">Account Login</a></li>
+          </ul>
+          <a class="logo--wea" href="/">WEA Hunter - Quality Learning</a>
+          <a class="nav-toggle js-nav-toggle u-pull-right" href="#">
+            <i class="nav-toggle__icon u-pull-left"></i>
+            <span class="nav-toggle__title u-pull-left">Menu</span>
+          </a>
+          <div t:type="ui/globalnavi" />
+
+          <nav id="nav" class="site-nav">
+            <div t:type="ui/menu" rootMenu="rootMenu" />
+          </nav>
+
+          <a class="logo-registered-charity" href="http://www.acnc.gov.au/ACNC/FindCharity/QuickSearch/ACNC/OnlineProcessors/Online_register/Search_the_Register.aspx" target="_blank"><img alt="Registered Charity" src="/s/stylesheets/img/logo-registered-charity.png" /></a>
+        </div>
+      </div>
+      <!-- END site-mast -->
+
+    </header><!-- //site-header -->
+
+    <!-- BEGIN feature-slider -->
+    <section class="feature-slider banner container container--lrg container--collapse">
+
+      <ul class="banner__slides slides">
+        <li class="banner__slide" style="background: url('/s/stylesheets/img/banners/banner01.jpg') no-repeat center top;"><img alt="" src="/s/stylesheets/img/banners/banner01.jpg" /></li>
+        <li class="banner__slide" style="background: url('/s/stylesheets/img/banners/banner02.jpg') no-repeat center top;"><img alt="" src="/s/stylesheets/img/banners/banner02.jpg" /></li>
+        <li class="banner__slide" style="background: url('/s/stylesheets/img/banners/banner03.jpg') no-repeat center top;"><img alt="" src="/s/stylesheets/img/banners/banner03.jpg" /></li>
+        <li class="banner__slide" style="background: url('/s/stylesheets/img/banners/banner04.jpg') no-repeat center top;"><img alt="" src="/s/stylesheets/img/banners/banner04.jpg" /></li>
+      </ul><!-- //banner__slides -->
+
+      <div class="accordion feature-slider__accordion">
+        <ul>
+          <li class="accordion__slide accordion__slide--business">
+
+            <h3 class="accordion__toggle"><a href="/Courses/Business+and+Careers+College">Business &amp; Careers College</a></h3>
+            <p class="accordion__content">Your journey to achieving the qualifications for your future. <a href="/Courses/Business+and+Careers+College">View courses</a></p>
+          </li>
+          <li class="accordion__slide accordion__slide--lifestyle">
+            <h3 class="accordion__toggle"><a href="/Courses/Lifestyle+Courses">Lifestyle Courses</a></h3>
+            <p class="accordion__content">The widest range of courses to suit just about everyone's needs -  its your time, enjoy it!<a href="/Courses/Lifestyle+Courses">View courses</a></p>
+          </li>
+          <li class="accordion__slide accordion__slide--community">
+            <h3 class="accordion__toggle"><a href="/Courses/Community+Programs">Community Programs</a></h3>
+            <p class="accordion__content">Providing access to education and training opportunities to the people in our communities.<a href="/Courses/Community+Programs">View courses</a></p>
+          </li>
+        </ul>
+      </div> <!-- //banner-accordion -->
+
+    </section>
+    <!-- END feature-slider -->
+
+    <div class="page-main container container--std" id="content">
+      <t:body />
+    </div><!-- //page-main -->
+
+  </section>
+  <div t:type="ui/bodyfooter" />
+
+  <div data-cid="modal" class="reactjs-component"></div>
+</section>

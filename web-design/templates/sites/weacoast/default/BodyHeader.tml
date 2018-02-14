@@ -1,0 +1,34 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+    <!-- BEGIN top-bar -->
+    <div class="top-bar group">
+      <div class="container container--std group container--collapse">
+
+        <div class="header-social-media group column">
+          <span class="social-media__title u-pull-left is-hidden--sml">Connect</span>
+          <ul class="social-media__links list--horizontal u-pull-left">
+            <li class="social-media__link"><a href="https://www.facebook.com/weacoast" target="_blank"><img alt="Facebook" src="/s/stylesheets/img/icon-facebook.png" /></a></li>
+            <li class="social-media__link"><a href="http://www.youtube.com/user/weahuntertube" target="_blank"><img alt="Facebook" src="/s/stylesheets/img/icon-youtube.png" /></a></li>
+          </ul>
+        </div> <!-- //header-social-media -->
+
+        <div class="header-contact column">
+          <span class="contact--phone">02 6554 9215</span>
+        </div> <!-- //header-contact -->
+
+        <!-- BEGIN header-search -->
+        <a class="header-search-toggle u-pull-right" href="#"></a>
+        <div class="header-search u-pull-right group">
+          <span t:type="ui/CourseSearchForm" />
+        </div>
+        <!-- END header-search -->
+
+        <t:if t:test="paymentGatewayEnabled">
+          <div class="header-courses column u-pull-right">
+            <span t:type="ui/ShortList" />
+          </div><!-- //header-course -->
+        </t:if>
+
+      </div><!-- //container -->
+    </div>
+    <!-- END top-bar -->
+</t:container>
