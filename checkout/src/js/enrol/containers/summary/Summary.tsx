@@ -19,7 +19,7 @@ import {processPayment, submitPaymentForWaitingCourses} from "../payment/actions
 import {
   changePhase, addCode, getCheckoutModelFromBackend, toggleRedeemVoucher, updatePayNow, updateContactAddProcess,
 } from "../../actions/Actions";
-import {updateConcessionContact, getContactConcessions} from "../concession/actions/Actions";
+import {updateConcessionContact, getContactConcessions, getConcessionTypes} from "../concession/actions/Actions";
 import {Phase} from "../../reducers/State";
 import {SummaryService} from "./services/SummaryService";
 import CheckoutService from "../../services/CheckoutService";
@@ -113,6 +113,7 @@ export const SummaryPropsBy = (state: IshState): any => {
       hasSelected: SummaryService.hasSelected(state.checkout.summary),
       concessions: state.checkout.concession.concessions,
       memberships: state.checkout.concession.memberships,
+      concessionTypes: state.checkout.concession.types,
       needParent: !!CheckoutService.getAllSingleChildIds(state.checkout).length,
       fetching: state.checkout.summary.fetching,
       forms: state.form,
@@ -176,6 +177,7 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
     },
     onInit: () => {
       dispatch(getContactConcessions());
+      dispatch(getConcessionTypes());
     },
     onUpdatePayNow: (val, validate): void => {
       dispatch(updatePayNow(val, validate));

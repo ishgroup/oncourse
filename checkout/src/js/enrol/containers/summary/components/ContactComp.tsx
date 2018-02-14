@@ -2,6 +2,7 @@ import * as React from "react";
 
 import {
   Enrolment, Membership, Article, Voucher, Application, PurchaseItem, Concession, StudentMembership, WaitingList,
+  ConcessionType,
 } from "../../../../model";
 
 import EnrolmentComp, {Props as EnrolmentProps} from "./EnrolmentComp";
@@ -27,6 +28,7 @@ export interface Props {
   onPriceValueChange?: (productItem: PurchaseItem, val: any) => void;
   onAddConcession?: () => void;
   concessions?: Concession[];
+  concessionTypes?: ConcessionType[];
   studentMemberships?: StudentMembership[];
   onChangeParent?: (contactId) => void;
   onChangeEnrolmentFields?: (form, type) => any;
@@ -37,14 +39,20 @@ class ContactComp extends React.Component<Props, any> {
     const {
       contact, enrolments, applications, vouchers, memberships, concessions, onChangeEnrolmentFields,
       articles, onSelect, onPriceValueChange, onAddConcession, studentMemberships, onChangeParent, waitingLists,
-      onUpdateWaitingCourse,
+      onUpdateWaitingCourse, concessionTypes,
     } = this.props;
 
     return (
       <div className="row">
         <ContactInfo
           contact={contact}
-          controls={<AddConcessionLink onAddConcession={onAddConcession} contact={contact}/>}
+          controls={
+            <AddConcessionLink
+              onAddConcession={onAddConcession}
+              contact={contact}
+              concessionTypes={concessionTypes}
+            />
+          }
           concessions={concessions}
           memberships={studentMemberships}
           onChangeParent={onChangeParent}
@@ -97,8 +105,7 @@ class ContactComp extends React.Component<Props, any> {
               onChangeFields={onChangeEnrolmentFields}
             />,
           )}
-
-
+          
         </div>
       </div>
     );
@@ -106,9 +113,13 @@ class ContactComp extends React.Component<Props, any> {
 }
 
 const AddConcessionLink = props => {
+  const {onAddConcession, concessionTypes, contact} = props;
+
   return (
     <div>
-      <a className="add-concession" href="#" onClick={() => props.onAddConcession(props.contact.id)}>Add Concession</a>
+      {concessionTypes && !!concessionTypes.filter(c => c.id != -1).length &&
+        <a className="add-concession" href="#" onClick={() => onAddConcession(contact.id)}>Add Concession</a>
+      }
     </div>
   );
 };

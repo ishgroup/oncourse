@@ -30,7 +30,6 @@ class Concession extends React.Component<any, any> {
   }
 
   componentDidMount() {
-    this.props.onInit();
     scrollToTop();
   }
 
@@ -115,9 +114,6 @@ const mapDispatchToProps = dispatch => {
     },
     onCancel: phase => {
       dispatch(changePhase(phase));
-    },
-    onInit: () => {
-      dispatch(getConcessionTypes());
     },
   };
 };

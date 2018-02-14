@@ -3,7 +3,7 @@ import classnames from "classnames";
 
 import AmountComp from "../../../components/AmountComp";
 import ContactComp, {Props as ContactProps} from "./ContactComp";
-import {Amount, RedeemVoucher, Promotion, PurchaseItem} from "../../../../model";
+import {Amount, RedeemVoucher, Promotion, PurchaseItem, ConcessionType} from "../../../../model";
 import {StudentMembership} from "../../../../model/checkout/StudentMembership";
 import {Concession} from "../../../../model/checkout/concession/Concession";
 import {scrollToTop} from "../../../../common/utils/DomUtils";
@@ -27,6 +27,7 @@ export interface Props {
   onAddConcession?: () => void;
   onInit?: () => void;
   concessions?: Concession[];
+  concessionTypes?: ConcessionType[];
   memberships?: StudentMembership[];
   onUpdatePayNow?: (val, validate?: boolean) => void;
   needParent?: boolean;
@@ -52,7 +53,7 @@ export class SummaryComp extends React.Component<Props, any> {
 
   renderContact = (props: ContactProps) => {
     const {onSelect, onPriceValueChange, onAddConcession, concessions, memberships, onChangeParent,
-      onUpdateWaitingCourse, onChangeEnrolmentFields} = this.props;
+      onUpdateWaitingCourse, onChangeEnrolmentFields, concessionTypes} = this.props;
 
     return (
       <ContactComp
@@ -63,6 +64,7 @@ export class SummaryComp extends React.Component<Props, any> {
         onChangeParent={onChangeParent}
         onAddConcession={onAddConcession}
         concessions={concessions.filter(item => item.contactId === props.contact.id)}
+        concessionTypes={concessionTypes}
         studentMemberships={memberships.filter(item => item.contactId === props.contact.id)}
         onUpdateWaitingCourse={onUpdateWaitingCourse}
         onChangeEnrolmentFields={onChangeEnrolmentFields}
