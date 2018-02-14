@@ -102,7 +102,8 @@ const Form = reduxForm({
     } else {
       dispatch(showFormValidation(submitError, NAME));
     }
-    scrollToValidation();
+
+    setTimeout(() => scrollToValidation(), 50);
   },
 })(ContactEditForm);
 

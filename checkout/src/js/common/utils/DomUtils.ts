@@ -24,6 +24,8 @@ export const scrollToValidation = () => {
  * Get element offsetTop
  */
 const offset = (el: HTMLElement): {top: number} => {
+  if (!el) return {top: 0};
+
   const rect = el.getBoundingClientRect();
   const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
   return {top: rect.top + scrollTop};
