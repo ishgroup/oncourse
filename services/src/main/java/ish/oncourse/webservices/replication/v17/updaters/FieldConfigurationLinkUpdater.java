@@ -1,8 +1,8 @@
 package ish.oncourse.webservices.replication.v17.updaters;
 
-import ish.common.types.FieldConfigurationType;
-import ish.common.types.TypesUtil;
+
 import ish.oncourse.model.*;
+import ish.oncourse.utils.FieldConfigurationUtil;
 import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v17.stubs.replication.FieldConfigurationLinkStub;
@@ -15,25 +15,7 @@ public class FieldConfigurationLinkUpdater extends AbstractWillowUpdater<FieldCo
         entity.setModified(stub.getModified());
         entity.setFieldConfigurationScheme(callback.updateRelationShip(stub.getSchemeId(), FieldConfigurationScheme.class));
 
-        Class<? extends FieldConfiguration> fcClass = null;
-        
-        FieldConfigurationType type = TypesUtil.getEnumForDatabaseValue(stub.getConfigurationType(), FieldConfigurationType.class);
-        
-        switch (type) {
-            case APPLICATION:
-                fcClass = ApplicationFieldConfiguration.class;
-                break;
-            case ENROLMENT:
-                fcClass = EnrolmentFieldConfiguration.class;
-                break;
-            case WAITING_LIST:
-                fcClass = WaitingListFieldConfiguration.class;
-                break;
-            case SURVEY:
-                fcClass = SurveyFieldConfiguration.class;
-                break;
-        }
-
+        Class<? extends FieldConfiguration> fcClass = FieldConfigurationUtil.getClassByType(stub.getConfigurationType());
         entity.setFieldConfiguration(callback.updateRelationShip(stub.getConfigurationId(), fcClass));
     }
 }

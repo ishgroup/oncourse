@@ -5,6 +5,7 @@ package ish.oncourse.webservices.replication.v17.updaters;
 
 import ish.oncourse.model.FieldConfiguration;
 import ish.oncourse.model.FieldHeading;
+import ish.oncourse.utils.FieldConfigurationUtil;
 import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v17.stubs.replication.FieldHeadingStub;
@@ -16,7 +17,10 @@ public class FieldHeadingUpdater extends AbstractWillowUpdater<FieldHeadingStub,
 		entity.setModified(stub.getModified());
 		entity.setName(stub.getName());
 		entity.setDescription(stub.getDescription());
-		entity.setFieldConfiguration(callback.updateRelationShip(stub.getFieldConfigurationId(), FieldConfiguration.class));
+		
+		Class<? extends FieldConfiguration> fcClass = FieldConfigurationUtil.getClassByType(stub.getConfigurationType());
+		entity.setFieldConfiguration(callback.updateRelationShip(stub.getFieldConfigurationId(), fcClass));
+		
 		entity.setOrder(stub.getOrder());
 	}
 }
