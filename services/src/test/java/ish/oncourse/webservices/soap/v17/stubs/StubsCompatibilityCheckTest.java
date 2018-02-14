@@ -696,6 +696,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		fieldParameters.add(new ReplicationStubFieldParameter("defaultValue", String.class));
 		fieldParameters.add(new ReplicationStubFieldParameter("mandatory", Boolean.class));
 		fieldParameters.add(new ReplicationStubFieldParameter("order", Integer.class));
+		fieldParameters.add(new ReplicationStubFieldParameter("configurationType", Integer.class));
 		stubsPropertyMap.put(getStubName(FieldStub.class), fieldParameters);
 
 		List<ReplicationStubFieldParameter> fieldHeadingParameters = fillDefaultReplicationStubFields();
@@ -703,6 +704,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		fieldHeadingParameters.add(new ReplicationStubFieldParameter("name", String.class));
 		fieldHeadingParameters.add(new ReplicationStubFieldParameter("description", String.class));
 		fieldHeadingParameters.add(new ReplicationStubFieldParameter("order", Integer.class));
+		fieldHeadingParameters.add(new ReplicationStubFieldParameter("configurationType", Integer.class));
 		stubsPropertyMap.put(getStubName(FieldHeadingStub.class), fieldHeadingParameters);
 
 		List<ReplicationStubFieldParameter> fieldConfigurationParameters = fillDefaultReplicationStubFields();
