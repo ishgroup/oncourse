@@ -1,6 +1,11 @@
 apply plugin: 'java'
 apply plugin: 'application'
 
+ext {
+    swaggerResources = "${rootDir}/common/codegen/common/src/main/resources/htmlDocs"
+    docOutput = "${project.projectDir}/build/doc"
+}
+
 configurations {
     swagger
 }
@@ -52,9 +57,9 @@ publishing {
         }
         
         releases(MavenPublication) {
-            artifact("${buildDir}/doc/index.html") {
+            artifact("$docOutput/doc.zip") {
                 classifier "documentation"
-                extension "html"
+                extension "zip"
             }
         }
     }
@@ -66,12 +71,20 @@ task (swagger, type: JavaExec) {
     args  = [ servicesPackage, modelPackage, project.projectDir, "${project.projectDir}/src/main/resources/$swaggerName" ]
 }
 
-task (buildDoc, type: JavaExec) {
+task (generateDoc, type: JavaExec) {
     classpath = configurations.swagger
     main = 'io.swagger.codegen.SwaggerCodegen'
     args  = [ 'generate',
               '-i', "${project.projectDir}/src/main/resources/$swaggerName",
               '-l', 'html',
-              '-t', "${rootDir}/common/codegen/common/src/main/resources/htmlDocs",
-              '-o', "${buildDir}/doc"]
+              '-t', "$swaggerResources",
+              '-o', "${buildDir}/resources"]
+}
+
+task (buildDoc, type: Zip, dependsOn: generateDoc) {
+    from "${buildDir}/resources"
+    include "$swaggerResources/swagger.css"
+    include 'index.html'
+    archiveName 'doc.zip'
+    destinationDir file(docOutput)
 }
