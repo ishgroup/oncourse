@@ -34,15 +34,15 @@ public class PaymentInModelFromParametersMapBuilder {
     public PaymentInModelFromParametersMapBuilder build() throws Exception {
         validate();
         for (GenericParameterEntry parameter : parametersMap.getGenericEntry()) {
-            if (parameter.getName().startsWith(ReplicationUtils.getEntityName(PaymentIn.class))) {
+            if (parameter.getName().startsWith(PaymentIn.class.getSimpleName())) {
                 model.setPaymentIn(ObjectSelect.query(PaymentIn.class)
                         .where(PaymentIn.ANGEL_ID.eq(Long.valueOf(parameter.getValue()))).and(PaymentIn.COLLEGE.eq(college))
                         .selectOne(context));
-            } else if (parameter.getName().startsWith(ReplicationUtils.getEntityName(Enrolment.class))) {
+            } else if (parameter.getName().startsWith(Enrolment.class.getSimpleName())) {
                 model.getEnrolments().add(ObjectSelect.query(Enrolment.class)
                         .where(PaymentIn.ANGEL_ID.eq(Long.valueOf(parameter.getValue()))).and(PaymentIn.COLLEGE.eq(college))
                         .selectOne(context));
-            } else if (parameter.getName().startsWith(ReplicationUtils.getEntityName(Invoice.class))) {
+            } else if (parameter.getName().startsWith(Invoice.class.getSimpleName())) {
                 model.getInvoices().add(ObjectSelect.query(Invoice.class)
                         .where(Invoice.ANGEL_ID.eq(Long.valueOf(parameter.getValue()))).and(PaymentIn.COLLEGE.eq(college))
                         .selectOne(context));

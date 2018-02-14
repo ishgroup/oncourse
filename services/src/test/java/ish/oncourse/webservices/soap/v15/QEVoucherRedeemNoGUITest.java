@@ -58,7 +58,7 @@ public abstract class QEVoucherRedeemNoGUITest extends QEPaymentProcessTest {
 		paymentInStub.setEntityIdentifier(PAYMENT_IDENTIFIER);
 		stubs.add(paymentInStub);
 
-		parametersMap.getGenericEntry().add(createEntry(String.format("%s_%d", ReplicationUtils.getEntityName(PaymentIn.class),paymentInStub.getAngelId()),
+		parametersMap.getGenericEntry().add(createEntry(String.format("%s_%d", PaymentIn.class.getSimpleName(), paymentInStub.getAngelId()),
 				paymentInStub.getAngelId().toString()));
 
 		PaymentInStub paymentInStub2 = new PaymentInStub();
@@ -88,7 +88,7 @@ public abstract class QEVoucherRedeemNoGUITest extends QEPaymentProcessTest {
 		invoiceStub.setTotalGst(invoiceStub.getAmountOwing());
 		stubs.add(invoiceStub);
 
-		parametersMap.getGenericEntry().add(createEntry(String.format("%s_%d", ReplicationUtils.getEntityName(Invoice.class),invoiceStub.getAngelId()),
+		parametersMap.getGenericEntry().add(createEntry(String.format("%s_%d", Invoice.class.getSimpleName(), invoiceStub.getAngelId()),
 				invoiceStub.getAngelId().toString()));
 
 		PaymentInLineStub paymentLineStub = new PaymentInLineStub();
@@ -139,7 +139,7 @@ public abstract class QEVoucherRedeemNoGUITest extends QEPaymentProcessTest {
 		invoiceLineStub.setEnrolmentId(enrolmentStub.getAngelId());
 		stubs.add(enrolmentStub);
 
-		parametersMap.getGenericEntry().add(createEntry(String.format("%s_%d", ReplicationUtils.getEntityName(Enrolment.class),enrolmentStub.getAngelId()),
+		parametersMap.getGenericEntry().add(createEntry(String.format("%s_%d", Enrolment.class.getSimpleName(), enrolmentStub.getAngelId()),
 				enrolmentStub.getAngelId().toString()));
 	}
 

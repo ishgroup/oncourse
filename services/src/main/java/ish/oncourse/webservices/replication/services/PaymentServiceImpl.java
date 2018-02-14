@@ -277,7 +277,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
         try {
             List<Long> voucherIds = new ArrayList<>();
             for (GenericReplicationStub stub : transactionGroup.getReplicationStub()) {
-                if (ReplicationUtils.getEntityName(Voucher.class).equalsIgnoreCase(stub.getEntityIdentifier())) {
+                if (Voucher.class.getSimpleName().equalsIgnoreCase(stub.getEntityIdentifier())) {
                     voucherIds.add(stub.getWillowId());
                 }
             }

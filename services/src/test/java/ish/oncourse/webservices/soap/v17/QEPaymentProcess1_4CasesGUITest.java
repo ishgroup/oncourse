@@ -37,7 +37,7 @@ public abstract class QEPaymentProcess1_4CasesGUITest extends QEPaymentProcessTe
         paymentInStub.setConfirmationStatus(ConfirmationStatus.DO_NOT_SEND.getDatabaseValue());
 
 		parametersMap.getGenericEntry().add(createEntry(
-				String.format("%s_%d", ReplicationUtils.getEntityName(PaymentIn.class),paymentInStub.getAngelId()),
+				String.format("%s_%d", PaymentIn.class.getSimpleName(), paymentInStub.getAngelId()),
 				paymentInStub.getAngelId().toString()
 		));
 
@@ -59,7 +59,7 @@ public abstract class QEPaymentProcess1_4CasesGUITest extends QEPaymentProcessTe
 		stubs.add(invoiceStub);
 		
 		parametersMap.getGenericEntry().add(createEntry(
-				String.format("%s_%d", ReplicationUtils.getEntityName(Invoice.class), invoiceStub.getAngelId()),
+				String.format("%s_%d", Invoice.class.getSimpleName(), invoiceStub.getAngelId()),
 				invoiceStub.getAngelId().toString()
 		));
 		PaymentInLineStub paymentLineStub = new PaymentInLineStub();
@@ -144,7 +144,7 @@ public abstract class QEPaymentProcess1_4CasesGUITest extends QEPaymentProcessTe
 		stubs.add(enrolmentStub);
 
 		parametersMap.getGenericEntry().add(createEntry(
-				String.format("%s_%d", ReplicationUtils.getEntityName(Enrolment.class), enrolmentStub.getAngelId()),
+				String.format("%s_%d", Enrolment.class.getSimpleName(), enrolmentStub.getAngelId()),
 				enrolmentStub.getAngelId().toString()
 		));
 

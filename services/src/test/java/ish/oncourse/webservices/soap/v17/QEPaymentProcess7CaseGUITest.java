@@ -36,13 +36,13 @@ public abstract class QEPaymentProcess7CaseGUITest extends QEPaymentProcessTest 
         paymentInStub.setConfirmationStatus(ConfirmationStatus.DO_NOT_SEND.getDatabaseValue());
 
 		parametersMap.getGenericEntry().add(createEntry(
-				String.format("%s_%d", ReplicationUtils.getEntityName(PaymentIn.class), paymentInStub.getAngelId()),
+				String.format("%s_%d", PaymentIn.class.getSimpleName(), paymentInStub.getAngelId()),
 				paymentInStub.getAngelId().toString()
 		));
 
 		parametersMap.getGenericEntry().add(createEntry(
-				String.format("%s_%d", ReplicationUtils.getEntityName(Invoice.class), 10l),
-				String.valueOf(10l)
+				String.format("%s_%d", Invoice.class.getSimpleName(), 10L),
+				String.valueOf(10L)
 		));
 
 		stubs.add(paymentInStub);

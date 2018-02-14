@@ -21,11 +21,8 @@ import java.util.*;
 public class ReplicationUtils {
 
 	public static final int GENERIC_EXCEPTION = 1;
-
-	public static String getEntityName(Class<? extends Queueable> clazz) {
-		int index = clazz.getName().lastIndexOf(".") + 1;
-		return clazz.getName().substring(index);
-	}
+	
+	private static final String ERROR_MESSAGE = "Enrolment record with should always present.";
 
 	public static Class<? extends Queueable> getEntityClass(ObjectContext objectContext, String entityIdentifier) {
         ObjEntity entity = objectContext.getEntityResolver().getObjEntity(entityIdentifier);
@@ -171,29 +168,29 @@ public class ReplicationUtils {
 
 	public static GenericReplicatedRecord replicatedEnrolmentRecord(final List<GenericReplicatedRecord> records) {
 		for (GenericReplicatedRecord r : records) {
-			if (ReplicationUtils.getEntityName(Enrolment.class).equals(r.getStub().getEntityIdentifier())) {
+			if (Enrolment.class.getSimpleName().equals(r.getStub().getEntityIdentifier())) {
 				return r;
 			}
 		}
-		throw new RuntimeException(String.format("Enrolment record with should always present."));
+		throw new RuntimeException(ERROR_MESSAGE);
 	}
 
 	public static GenericReplicatedRecord replicatedPaymentInRecord(final List<GenericReplicatedRecord> records) {
 		for (GenericReplicatedRecord r : records) {
-			if (ReplicationUtils.getEntityName(PaymentIn.class).equals(r.getStub().getEntityIdentifier())) {
+			if (PaymentIn.class.getSimpleName().equals(r.getStub().getEntityIdentifier())) {
 				return r;
 			}
 		}
-		throw new RuntimeException(String.format("Enrolment record with should always present."));
+		throw new RuntimeException(ERROR_MESSAGE);
 	}
 
 	public static GenericReplicatedRecord replicatedPaymentOutRecord(final List<GenericReplicatedRecord> records) {
 		for (GenericReplicatedRecord r : records) {
-			if (ReplicationUtils.getEntityName(PaymentOut.class).equals(r.getStub().getEntityIdentifier())) {
+			if (PaymentOut.class.getSimpleName().equals(r.getStub().getEntityIdentifier())) {
 				return r;
 			}
 		}
-		throw new RuntimeException(String.format("Enrolment record with should always present."));
+		throw new RuntimeException(ERROR_MESSAGE);
 	}
 
 	public static GenericEnrolmentStub getEnrolmentStub(final GenericTransactionGroup group) {

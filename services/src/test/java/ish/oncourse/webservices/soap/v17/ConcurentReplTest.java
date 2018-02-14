@@ -91,7 +91,7 @@ public class ConcurentReplTest extends RealWSTransportTest {
 		paymentInStub.setConfirmationStatus(ConfirmationStatus.DO_NOT_SEND.getDatabaseValue());
 		stubs.add(paymentInStub);
 		parametersMap.getGenericEntry().add(testEnv.getTestEnv().createEntry(
-				String.format("%s_%d", ReplicationUtils.getEntityName(PaymentIn.class), paymentInStub.getAngelId()),
+				String.format("%s_%d", PaymentIn.class.getSimpleName(), paymentInStub.getAngelId()),
 				paymentInStub.getAngelId().toString()
 		));
 
@@ -109,7 +109,7 @@ public class ConcurentReplTest extends RealWSTransportTest {
 		stubs.add(enrolmentStub);
 
 		parametersMap.getGenericEntry().add(testEnv.getTestEnv().createEntry(
-				String.format("%s_%d", ReplicationUtils.getEntityName(Enrolment.class), enrolmentStub.getAngelId()),
+				String.format("%s_%d", Enrolment.class.getSimpleName(), enrolmentStub.getAngelId()),
 				enrolmentStub.getAngelId().toString()));
 
 		InvoiceStub invoiceStub = new InvoiceStub();
@@ -128,7 +128,7 @@ public class ConcurentReplTest extends RealWSTransportTest {
 		invoiceStub.setConfirmationStatus(ConfirmationStatus.DO_NOT_SEND.getDatabaseValue());
 
 		parametersMap.getGenericEntry().add(testEnv.getTestEnv().createEntry(
-				String.format("%s_%d", ReplicationUtils.getEntityName(Invoice.class), invoiceStub.getAngelId()),
+				String.format("%s_%d", Invoice.class.getSimpleName(), invoiceStub.getAngelId()),
 				invoiceStub.getAngelId().toString()
 		));
 

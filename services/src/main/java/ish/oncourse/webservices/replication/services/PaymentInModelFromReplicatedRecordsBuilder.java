@@ -28,7 +28,7 @@ public class PaymentInModelFromReplicatedRecordsBuilder {
 
 
     private <T extends Queueable> T getEntity(Class<T> entityCalss, GenericReplicatedRecord r) {
-        if (ReplicationUtils.getEntityName(entityCalss).equalsIgnoreCase(r.getStub().getEntityIdentifier())) {
+        if (entityCalss.getSimpleName().equalsIgnoreCase(r.getStub().getEntityIdentifier())) {
             T result = ObjectSelect.query(entityCalss).where(ExpressionFactory.matchDbExp("id", r.getStub().getWillowId())).selectOne(objectContext);
             if (result != null) {
                 return result;
