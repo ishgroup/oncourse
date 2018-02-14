@@ -1,10 +1,7 @@
 package ish.oncourse.webservices.replication.services;
 
 import ish.common.types.EntityMapping;
-import ish.oncourse.model.BinaryInfo;
-import ish.oncourse.model.College;
-import ish.oncourse.model.Queueable;
-import ish.oncourse.model.QueuedStatistic;
+import ish.oncourse.model.*;
 import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
@@ -308,7 +305,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
                     attachmentProcessor.deletedBinaryDataBy((BinaryInfo) objectToUpdate);
 				return null;
 			} else {
-				willowUpdater.updateEntityFromStub(currentStub, objectToUpdate, new RelationShipCallbackImpl());
+				willowUpdater.updateEntityFromStub(currentStub, objectToUpdate, createRelationShipCallback());
 				return objectToUpdate;
 			}
         }
@@ -399,7 +396,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 			College currentCollege = atomicContext.localObject(webSiteService.getCurrentCollege());
 			objectToUpdate.setCollege(currentCollege);
 			willowUpdater.setCayenneService(cayenneService);
-			willowUpdater.updateEntityFromStub(currentStub, objectToUpdate, new RelationShipCallbackImpl());
+			willowUpdater.updateEntityFromStub(currentStub, objectToUpdate, createRelationShipCallback());
 			return objectToUpdate;
 		} catch (CayenneRuntimeException e) {
 			if (e.getCause() instanceof SQLException) {
@@ -408,7 +405,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 					List<Queueable> existingObjects = objectsByAngelId(currentStub.getAngelId(), currentStub.getEntityIdentifier());
 					if (existingObjects.size() == 1) {
 						Queueable existingToUpdate = existingObjects.get(0);
-						willowUpdater.updateEntityFromStub(currentStub, existingToUpdate, new RelationShipCallbackImpl());
+						willowUpdater.updateEntityFromStub(currentStub, existingToUpdate, createRelationShipCallback());
 						return existingToUpdate;
 					}
 				}
@@ -477,8 +474,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		return null;
 	}
 
-    RelationShipCallback createRelationShipCallback()
-    {
+    RelationShipCallback createRelationShipCallback() {
         return new RelationShipCallbackImpl();
     }
 
@@ -507,7 +503,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
                 return null;
             }
 
-            String entityIdentifier = getEntityName(clazz);
+            String entityIdentifier = clazz.getSimpleName();
             List<Queueable> list = objectsByAngelId(angelId, entityIdentifier);
 
             if (!list.isEmpty()) {
@@ -527,7 +523,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		private <M extends Queueable> M uncommittedObjectByAngelId(Long angelId, Class<M> clazz) {
 
             assert angelId != null;
-			String entityName = getEntityName(clazz);
+			String entityName = getObjectEntityName(clazz);
 
 			for (Object obj : atomicContext.uncommittedObjects()) {
 				if (obj instanceof Queueable) {
@@ -541,5 +537,11 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 			String message = String.format("collegeId: %s, Uncommitted object with angelId:%s and entityName:%s wasn't found.", college.getId(), angelId, entityName);
 			throw new IllegalArgumentException(message);
 		}
+		
+	}
+	
+	//fixme: workaround for replications V14,V15,V16;
+	private static String getObjectEntityName(Class<?> clazz) {
+		return FieldConfiguration.class.equals(clazz) ? EnrolmentFieldConfiguration.class.getSimpleName() : clazz.getSimpleName();
 	}
 }

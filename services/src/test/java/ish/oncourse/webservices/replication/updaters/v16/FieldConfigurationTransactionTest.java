@@ -1,9 +1,6 @@
 package ish.oncourse.webservices.replication.updaters.v16;
 
-import ish.oncourse.model.Course;
-import ish.oncourse.model.Field;
-import ish.oncourse.model.FieldConfiguration;
-import ish.oncourse.model.FieldConfigurationScheme;
+import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.tapestry.ServiceTest;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
@@ -84,15 +81,37 @@ public class FieldConfigurationTransactionTest extends ServiceTest {
         schemeStub.setEntityIdentifier(FieldConfigurationScheme.class.getSimpleName());
 
         FieldStub fieldStub = new FieldStub();
-        fieldStub.setAngelId(1L);
+        fieldStub.setAngelId(2L);
         fieldStub.setFieldConfigurationId(1L);
+        fieldStub.setFieldHeadingId(1L);
         fieldStub.setName("Test Field");
         fieldStub.setMandatory(false);
-        fieldStub.setOrder(1);
+        fieldStub.setOrder(2);
         fieldStub.setProperty("prop");
         fieldStub.setModified(new Date());
         fieldStub.setCreated(new Date());
         fieldStub.setEntityIdentifier(Field.class.getSimpleName());
+
+        FieldStub fieldStub2 = new FieldStub();
+        fieldStub2.setAngelId(1L);
+        fieldStub2.setFieldConfigurationId(1L);
+        fieldStub2.setFieldHeadingId(null);
+        fieldStub2.setName("Test Field");
+        fieldStub2.setMandatory(false);
+        fieldStub2.setOrder(1);
+        fieldStub2.setProperty("prop");
+        fieldStub2.setModified(new Date());
+        fieldStub2.setCreated(new Date());
+        fieldStub2.setEntityIdentifier(Field.class.getSimpleName());
+
+        FieldHeadingStub fieldHeadingStub = new FieldHeadingStub();
+        fieldHeadingStub.setName("Test heading");
+        fieldHeadingStub.setAngelId(1L);
+        fieldHeadingStub.setOrder(0);
+        fieldHeadingStub.setFieldConfigurationId(1L);
+        fieldHeadingStub.setModified(new Date());
+        fieldHeadingStub.setCreated(new Date());
+        fieldHeadingStub.setEntityIdentifier(FieldHeading.class.getSimpleName());
 
         CourseStub courseStub = new CourseStub();
         courseStub.setAngelId(1L);
@@ -105,12 +124,13 @@ public class FieldConfigurationTransactionTest extends ServiceTest {
         courseStub.setEntityIdentifier(Course.class.getSimpleName());
         
         GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(V16);
+        transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(schemeStub);
         transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(courseStub);
         transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(fieldStub);
         transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(configurationStub1);
         transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(configurationStub2);
-        transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(schemeStub);
-        
+        transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(fieldHeadingStub);
+        transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(fieldStub2);
         
         List<GenericReplicatedRecord> records = transactionGroupProcessor.processGroup(transactionGroup);
         assertEquals(SUCCESS,((ReplicatedRecord)records.get(0)).getStatus());
@@ -138,6 +158,16 @@ public class FieldConfigurationTransactionTest extends ServiceTest {
                 .selectOne(context);
         assertNotNull(field);
 
+        Field field2 = ObjectSelect.query(Field.class)
+                .where(Field.ANGEL_ID.eq(2L))
+                .selectOne(context);
+        assertNotNull(field2);
+
+        FieldHeading fieldHeading = ObjectSelect.query(FieldHeading.class)
+                .where(FieldHeading.ANGEL_ID.eq(1L))
+                .selectOne(context);
+        assertNotNull(fieldHeading);
+        
         Course course = ObjectSelect.query(Course.class)
                 .where(Course.ANGEL_ID.eq(1L))
                 .selectOne(context);
