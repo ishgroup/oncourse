@@ -16,7 +16,7 @@ interface Props {
 }
 
 const firstChar = (str: string) => (
-  str.substring(0, 1)
+  str && str.substring(0, 1)
 );
 
 export class Sidebar extends React.Component<Props, any> {

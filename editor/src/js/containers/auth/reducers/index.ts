@@ -1,6 +1,6 @@
 import {AuthState} from "./State";
 import {IAction} from "../../../actions/IshAction";
-import {SUBMIT_LOGIN_FORM_FULFILLED, LOG_OUT_FULFILLED} from "../actions";
+import {SUBMIT_LOGIN_FORM_FULFILLED, LOG_OUT_FULFILLED, GET_USER_FULFILLED} from "../actions";
 import {User} from "../../../model";
 
 export const authReducer = (state: AuthState = new AuthState(), action: IAction<any>): AuthState => {
@@ -10,10 +10,6 @@ export const authReducer = (state: AuthState = new AuthState(), action: IAction<
         ...state,
         token: '',
         isAuthenticated: true,
-        user: {
-          firstName: action.payload.firstName,
-          lastName: action.payload.lastName,
-        },
       };
 
     case LOG_OUT_FULFILLED:
@@ -22,6 +18,15 @@ export const authReducer = (state: AuthState = new AuthState(), action: IAction<
         token: null,
         isAuthenticated: false,
         user: new User(),
+      };
+      
+    case GET_USER_FULFILLED:
+      return {
+        ...state,
+        user: {
+          firstName: action.payload.firstName,
+          lastName: action.payload.lastName,
+        },
       };
 
     default:
