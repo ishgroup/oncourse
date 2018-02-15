@@ -1,7 +1,6 @@
 package ish.oncourse.willow.editor.model;
 
 import ish.oncourse.willow.editor.model.MenuItem;
-import ish.oncourse.willow.editor.model.menuitem.Errors;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +10,8 @@ public class MenuItem  {
     private String title = null;
     private String url = null;
     private List<MenuItem> children = new ArrayList<MenuItem>();
-    private Errors errors = null;
+    private String error = null;
+    private String warning = null;
 
     /**
      * Unique identifier of menu item
@@ -87,19 +87,36 @@ public class MenuItem  {
     }
 
     /**
-     * Get errors
-     * @return errors
+     * Describes reason why menu item cannot be saved. Comes on 400 (Bad request) response
+     * @return error
      */
-    public Errors getErrors() {
-        return errors;
+    public String getError() {
+        return error;
     }
 
-    public void setErrors(Errors errors) {
-       this.errors = errors;
+    public void setError(String error) {
+       this.error = error;
     }
 
-    public MenuItem errors(Errors errors) {
-      this.errors = errors;
+    public MenuItem error(String error) {
+      this.error = error;
+      return this;
+    }
+
+    /**
+     * Any alerts for user. Do not affect on menus saving. Comes on 200 (Success) response
+     * @return warning
+     */
+    public String getWarning() {
+        return warning;
+    }
+
+    public void setWarning(String warning) {
+       this.warning = warning;
+    }
+
+    public MenuItem warning(String warning) {
+      this.warning = warning;
       return this;
     }
 
@@ -113,7 +130,8 @@ public class MenuItem  {
       sb.append("    title: ").append(toIndentedString(title)).append("\n");
       sb.append("    url: ").append(toIndentedString(url)).append("\n");
       sb.append("    children: ").append(toIndentedString(children)).append("\n");
-      sb.append("    errors: ").append(toIndentedString(errors)).append("\n");
+      sb.append("    error: ").append(toIndentedString(error)).append("\n");
+      sb.append("    warning: ").append(toIndentedString(warning)).append("\n");
       sb.append("}");
       return sb.toString();
     }

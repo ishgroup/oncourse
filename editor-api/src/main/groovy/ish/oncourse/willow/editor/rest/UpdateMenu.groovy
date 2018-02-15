@@ -57,9 +57,11 @@ class UpdateMenu extends AbstractUpdate<List<MenuItem>> {
             menuItem.url = StringUtils.trimToEmpty(menuItem.url)
             String error = new ResourceNameValidator().validate(menuItem.title)
             if (error) {
-                errors << "Menu name: $menuItem.title is wrong. $error".toString()
+                menuItem.error = "Menu name: $menuItem.title is wrong. $error"
+                errors << menuItem.error
             } else if (root.childrenMenus.find { child -> child.name == menuItem.title }.any()) {
-                errors << "Menu name: $menuItem.title is wrong. The name is already used.".toString()
+                menuItem.error = "Menu name: $menuItem.title is wrong. The name is already used."
+                errors << menuItem.error
             }
             
             if (!menuItem.url.startsWith('http://') && !menuItem.url.startsWith('https://') && !menuItem.url.startsWith('www.')
@@ -67,7 +69,7 @@ class UpdateMenu extends AbstractUpdate<List<MenuItem>> {
                 menuItem.url = "/$menuItem.url"
             }
             
-            if (errors.empty) {
+            if (!menuItem.error) {
                 menu = context.newObject(WebMenu)
                 menu.name = menuItem.title
                 menu.parentWebMenu = root
@@ -82,7 +84,7 @@ class UpdateMenu extends AbstractUpdate<List<MenuItem>> {
                 }
                 String warning = StringUtils.trimToNull(menu.warning)
                 if (warning) {
-                    menuItem.errors = new Errors(title: warning)
+                    menuItem.warning = warning
                 }
             }
 

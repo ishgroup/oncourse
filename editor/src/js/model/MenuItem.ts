@@ -1,4 +1,3 @@
-import {Errors} from "./menuitem/Errors";
 
 export class MenuItem {
 
@@ -17,6 +16,15 @@ export class MenuItem {
    */
   url?: string;
   children?: MenuItem[];
-  errors?: Errors;
+
+  /**
+   * Describes reason why menu item cannot be saved. Comes on 400 (Bad request) response
+   */
+  error?: string;
+
+  /**
+   * Any alerts for user. Do not affect on menus saving. Comes on 200 (Success) response
+   */
+  warning?: string;
 }
 

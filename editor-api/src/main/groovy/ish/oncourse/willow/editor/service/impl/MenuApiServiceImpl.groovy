@@ -15,6 +15,9 @@ import ish.oncourse.willow.editor.model.MenuItem
 import groovy.transform.CompileStatic
 import org.eclipse.jetty.server.Request
 
+import javax.ws.rs.ClientErrorException
+import javax.ws.rs.core.Response
+
 @CompileStatic
 class MenuApiServiceImpl implements MenuApi {
 
@@ -41,7 +44,7 @@ class MenuApiServiceImpl implements MenuApi {
         if (!updater.errors.empty) {
             context.rollbackChanges()
             String message = updater.errors.join('\n')
-            logger.error("$message, server name: $request.serverName")
+            throw new ClientErrorException(message, Response.status(Response.Status.BAD_REQUEST).entity(menus).build())
         }
         context.commitChanges()
         return menus

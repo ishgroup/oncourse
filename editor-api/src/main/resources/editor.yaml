@@ -127,7 +127,13 @@ paths:
               $ref: '#/definitions/MenuItem'
       responses:
         '200':
-          description: Menu items
+          description: Ok responce, returns array of menus. Record warnings for each menu item if exist 
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/MenuItem'
+        '400':
+          description: Bad request, returns array of menus with errors for wrong items
           schema:
             type: array
             items:
@@ -865,13 +871,14 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/MenuItem'
-      errors:
-        type: object
-        properties:
-          title:
-            type: string
-          url:
-            type: boolean
+      error:
+        type: string
+        description: Describes reason why menu item cannot be saved. Comes on 400 (Bad request) response
+        example: Menu AB is wrong. Name length cannot be less than 3 characters
+      warning:
+        type: string
+        description: Any alerts for user. Do not affect on menus saving. Comes on 200 (Success) response
+        example: Warning! ABC is referred to unpublished page and will not be shown in the main menu!
 
   User:
     type: object
