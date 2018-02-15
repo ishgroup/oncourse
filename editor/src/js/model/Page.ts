@@ -3,9 +3,14 @@ import {PageUrl} from "./PageUrl";
 export class Page {
 
   /**
-   * page number
+   * unique id of the page
    */
-  number?: number;
+  id?: number;
+
+  /**
+   * serial number of the page. Can be used to proceed to page by technical path /page/10
+   */
+  serialNumber?: number;
 
   /**
    * title of the page
@@ -26,11 +31,6 @@ export class Page {
    * Is the page visible
    */
   visible?: boolean;
-
-  /**
-   * Indicates that page is a special system page and content is not editable
-   */
-  reservedURL?: boolean;
   urls?: PageUrl[];
 }
 

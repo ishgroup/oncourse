@@ -30,7 +30,7 @@ class UpdatePage extends AbstractUpdate<Page> {
 
 
     UpdatePage update() {
-        WebNode node = WebNodeFunctions.getNodeForNumber(resourceToSave.number.intValue(), request, context)
+        WebNode node = WebNodeFunctions.getNodeForId(resourceToSave.id.longValue(), request, context)
         if (!node) {
             error = "There are no pages for pageParams: $resourceToSave"
             return this

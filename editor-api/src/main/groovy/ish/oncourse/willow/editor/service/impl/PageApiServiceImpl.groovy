@@ -21,6 +21,7 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 import javax.ws.rs.ClientErrorException
+import javax.ws.rs.ForbiddenException
 import javax.ws.rs.core.Response
 
 import static ish.oncourse.linktransform.PageIdentifier.*
@@ -47,10 +48,9 @@ class PageApiServiceImpl implements PageApi {
         return WebNodeToPage.valueOf(node).page
     }
     
-    void deletePage(String number) {
+    void deletePage(String id) {
         ObjectContext ctx = cayenneService.newContext()
-        Integer intNumber = number.toInteger()
-        WebNode node = WebNodeFunctions.getNodeForNumber(intNumber, requestService.request, cayenneService.newContext())
+        WebNode node = WebNodeFunctions.getNodeForId(id.toLong(), requestService.request, cayenneService.newContext())
 
         if (node) {
             node.webContentVisibility.each { ctx.deleteObjects(ctx.localObject(it.webContent)) }
@@ -59,7 +59,7 @@ class PageApiServiceImpl implements PageApi {
             ctx.commitChanges()
 
         } else {
-            throw createClientException("There is no page to remove for provided number. Number: $intNumber")
+            throw createClientException("There is no page to remove for provided number. id: $id")
         }
     }
     
@@ -74,11 +74,11 @@ class PageApiServiceImpl implements PageApi {
         } else {
             String lowerCaseUrl = pageUrl.toLowerCase()
             PageIdentifier identifier = getPageIdentifierByPath(lowerCaseUrl)
-            // Return reserved page indicator if URL matches PageNotFound or any other reserved page. 
+            // Throw forbidden exception  if URL matches PageNotFound or any other reserved page. 
             // Throw client exception if URL matches Page or Home pattern - this URLs should has corresponded WebNodes in DB (see first condition)
             // Throw client exception if URL doesn't match of any reserved page.
             if (PageNotFound.getMatcher().matches(lowerCaseUrl) || !(identifier in [PageNotFound, Home, PageIdentifier.Page])) {
-                return new Page().reservedURL(true)
+                throw new ForbiddenException("Attempting to get special system page.")
             }
             throw createClientException("There are no pages for provided url. Url: $pageUrl")
         }

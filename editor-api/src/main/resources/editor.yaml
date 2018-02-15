@@ -183,6 +183,8 @@ paths:
           description: Page for provided url
           schema:
             $ref: '#/definitions/Page'
+        '403': 
+          description: Attempting to get special system page.
         default:
           description: Unexpected error
           schema:
@@ -236,7 +238,7 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
-  /deletePage/{pageNumber}:
+  /deletePage/{id}:
     post:
       x-filter:  
       - AuthFilter
@@ -248,7 +250,7 @@ paths:
       consumes:
         - application/json
       parameters:
-        - name: pageNumber
+        - name: id
           in: path
           description: number of page which will be deleted
           required: true
@@ -775,9 +777,13 @@ definitions:
   Page:
     type: object
     properties:
-      number:
+      id:
         type: integer
-        description: page number
+        description: unique id of the page
+      serialNumber:
+        type: integer
+        description: serial number of the page. Can be used to proceed to page by technical path /page/10
+        example: 10
       title:
         type: string
         description: title of the page
@@ -793,9 +799,6 @@ definitions:
       visible:
         type: boolean
         description: Is the page visible
-      reservedURL:
-        type: boolean
-        description: Indicates that page is a special system page and content is not editable
       urls:
         type: array
         items:

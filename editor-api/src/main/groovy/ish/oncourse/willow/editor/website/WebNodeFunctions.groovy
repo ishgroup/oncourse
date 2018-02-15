@@ -4,6 +4,7 @@ import ish.oncourse.model.*
 import ish.oncourse.services.textile.ConvertCoreTextile
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.Expression
+import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -97,6 +98,13 @@ class WebNodeFunctions {
         return getNodeForNumber(intNumber, request, context)
     }
 
+    static WebNode getNodeForId(Long id, Request request, ObjectContext context) {
+        ObjectSelect select = ObjectSelect.query(WebNode).where(ExpressionFactory.matchDbExp(WebNode.ID_PK_COLUMN, id)) & siteQualifier(request, context)
+        select = addPrefetches(select)
+        return select.selectFirst(context)
+    }
+    
+    
     static WebNode getNodeForNumber(Integer nodeNumber, Request request, ObjectContext context) {
         ObjectSelect select = ObjectSelect.query(WebNode).where(WebNode.NODE_NUMBER.eq(nodeNumber)) & siteQualifier(request, context)
         select = addPrefetches(select)

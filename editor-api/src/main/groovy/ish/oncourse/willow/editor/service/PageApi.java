@@ -22,11 +22,11 @@ public interface PageApi  {
     Page addPage();
 
     @POST
-    @Path("/deletePage/{pageNumber}")
+    @Path("/deletePage/{id}")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @AuthFilter
-    void deletePage(@PathParam("pageNumber") String pageNumber);
+    void deletePage(@PathParam("id") String id);
 
     @GET
     @Path("/getPageByUrl")

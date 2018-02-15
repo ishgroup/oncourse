@@ -6,28 +6,45 @@ import java.util.List;
 
 public class Page  {
   
-    private Integer number = null;
+    private Integer id = null;
+    private Integer serialNumber = null;
     private String title = null;
     private Integer themeId = null;
     private String content = null;
     private Boolean visible = null;
-    private Boolean reservedURL = null;
     private List<PageUrl> urls = new ArrayList<PageUrl>();
 
     /**
-     * page number
-     * @return number
+     * unique id of the page
+     * @return id
      */
-    public Integer getNumber() {
-        return number;
+    public Integer getId() {
+        return id;
     }
 
-    public void setNumber(Integer number) {
-       this.number = number;
+    public void setId(Integer id) {
+       this.id = id;
     }
 
-    public Page number(Integer number) {
-      this.number = number;
+    public Page id(Integer id) {
+      this.id = id;
+      return this;
+    }
+
+    /**
+     * serial number of the page. Can be used to proceed to page by technical path /page/10
+     * @return serialNumber
+     */
+    public Integer getSerialNumber() {
+        return serialNumber;
+    }
+
+    public void setSerialNumber(Integer serialNumber) {
+       this.serialNumber = serialNumber;
+    }
+
+    public Page serialNumber(Integer serialNumber) {
+      this.serialNumber = serialNumber;
       return this;
     }
 
@@ -100,23 +117,6 @@ public class Page  {
     }
 
     /**
-     * Indicates that page is a special system page and content is not editable
-     * @return reservedURL
-     */
-    public Boolean getReservedURL() {
-        return reservedURL;
-    }
-
-    public void setReservedURL(Boolean reservedURL) {
-       this.reservedURL = reservedURL;
-    }
-
-    public Page reservedURL(Boolean reservedURL) {
-      this.reservedURL = reservedURL;
-      return this;
-    }
-
-    /**
      * Get urls
      * @return urls
      */
@@ -144,12 +144,12 @@ public class Page  {
       StringBuilder sb = new StringBuilder();
       sb.append("class Page {\n");
       
-      sb.append("    number: ").append(toIndentedString(number)).append("\n");
+      sb.append("    id: ").append(toIndentedString(id)).append("\n");
+      sb.append("    serialNumber: ").append(toIndentedString(serialNumber)).append("\n");
       sb.append("    title: ").append(toIndentedString(title)).append("\n");
       sb.append("    themeId: ").append(toIndentedString(themeId)).append("\n");
       sb.append("    content: ").append(toIndentedString(content)).append("\n");
       sb.append("    visible: ").append(toIndentedString(visible)).append("\n");
-      sb.append("    reservedURL: ").append(toIndentedString(reservedURL)).append("\n");
       sb.append("    urls: ").append(toIndentedString(urls)).append("\n");
       sb.append("}");
       return sb.toString();

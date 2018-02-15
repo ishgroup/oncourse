@@ -9,8 +9,8 @@ export class PageApi {
   addPage(): Promise<Page> {
     return this.http.POST(`/addPage`);
   }
-  deletePage(pageNumber: string): Promise<any> {
-    return this.http.POST(`/deletePage/${pageNumber}`);
+  deletePage(id: string): Promise<any> {
+    return this.http.POST(`/deletePage/${id}`);
   }
   getPageByUrl(pageUrl: string): Promise<Page> {
     return this.http.GET(`/getPageByUrl`, { params: { pageUrl }});
