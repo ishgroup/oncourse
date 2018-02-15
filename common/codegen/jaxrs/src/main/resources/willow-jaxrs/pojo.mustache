@@ -4,11 +4,11 @@ public class {{classname}} {{#parent}}extends {{{parent}}}{{/parent}} {
 {{>enumClass}}{{/isContainer}}{{/isEnum}}{{#items.isEnum}}{{#items}}
 
 {{^isContainer}}{{>enumClass}}{{/isContainer}}{{/items}}{{/items.isEnum}}
-{{#isDate}}
+{{#isDateTime}}
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = FormatUtils.DATE_FORMAT_ISO8601)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-{{/isDate}}
+{{/isDateTime}}
     private {{{datatypeWithEnum}}} {{name}} = {{{defaultValue}}};{{/vars}}
 
   {{#vars}}

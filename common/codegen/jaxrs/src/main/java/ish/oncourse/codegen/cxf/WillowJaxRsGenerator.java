@@ -126,7 +126,7 @@ public class  WillowJaxRsGenerator extends AbstractJavaJAXRSServerCodegen {
     public Map<String, Object> postProcessModels(Map<String, Object> objs) {
 
         for (CodegenProperty var : ((List<Map<String, CodegenModel>>) objs.get("models")).get(0).get("model").vars) {
-            if (var.isDate) {
+            if (var.isDateTime) {
                 List<Map<String, String>> imports = (List) objs.get("imports");
 
                 Map<String, String> newImportMap = new HashMap<>();

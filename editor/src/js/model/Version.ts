@@ -22,8 +22,8 @@ export class Version {
   changes?: number;
 
   /**
-   * date when version was published
+   * date and time when version was published
    */
-  date?: string;
+  datetime?: string;
 }
 

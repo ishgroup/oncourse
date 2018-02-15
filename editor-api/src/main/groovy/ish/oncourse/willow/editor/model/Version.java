@@ -17,7 +17,7 @@ public class Version  {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = FormatUtils.DATE_FORMAT_ISO8601)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-    private LocalDateTime date = null;
+    private LocalDateTime datetime = null;
 
     /**
      * unique id of version
@@ -89,19 +89,19 @@ public class Version  {
     }
 
     /**
-     * date when version was published
-     * @return date
+     * date and time when version was published
+     * @return datetime
      */
-    public LocalDateTime getDate() {
-        return date;
+    public LocalDateTime getDatetime() {
+        return datetime;
     }
 
-    public void setDate(LocalDateTime date) {
-       this.date = date;
+    public void setDatetime(LocalDateTime datetime) {
+       this.datetime = datetime;
     }
 
-    public Version date(LocalDateTime date) {
-      this.date = date;
+    public Version datetime(LocalDateTime datetime) {
+      this.datetime = datetime;
       return this;
     }
 
@@ -115,7 +115,7 @@ public class Version  {
       sb.append("    published: ").append(toIndentedString(published)).append("\n");
       sb.append("    author: ").append(toIndentedString(author)).append("\n");
       sb.append("    changes: ").append(toIndentedString(changes)).append("\n");
-      sb.append("    date: ").append(toIndentedString(date)).append("\n");
+      sb.append("    datetime: ").append(toIndentedString(datetime)).append("\n");
       sb.append("}");
       return sb.toString();
     }

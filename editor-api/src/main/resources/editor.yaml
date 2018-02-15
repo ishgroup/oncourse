@@ -758,10 +758,10 @@ definitions:
         minimum: 0
         description: count of changes from previous version
         example: 12
-      date:
+      datetime:
         type: string
-        format: date
-        description: date when version was published
+        format: date-time
+        description: date and time when version was published
 
   Layout:
     type: object
