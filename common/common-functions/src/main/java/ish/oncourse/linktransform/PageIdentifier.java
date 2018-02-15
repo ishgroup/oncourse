@@ -101,7 +101,9 @@ public enum PageIdentifier
 
 	KioskSite(new PrefixMatcher("/site/kiosk/"), "ui/kiosk/KioskPage"),
 
-	KioskRoom(new PrefixMatcher("/room/kiosk/"), "ui/kiosk/KioskPage");
+	KioskRoom(new PrefixMatcher("/room/kiosk/"), "ui/kiosk/KioskPage"),
+
+	Cvv("/ui/cvv", "ui/Cvv");
 
 	private  static final PageIdentifier[] sortedValues;
 	static

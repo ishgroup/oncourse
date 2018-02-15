@@ -14,14 +14,16 @@
 	</p>
 </div>
 
-<div class="container">
-	<p>
-		<img src="/s/img/amex-cvv.png" width="197" height="126"
-			alt="American Express CVV location" class="imgleft"/> On <strong>American
-			Express</strong> the CVV appears as a separate 4-digit code printed on the
-		front of your card.
-	</p>
-</div>
+<t:if test="isAmexEnabled">
+	<div class="container">
+		<p>
+			<img src="/s/img/amex-cvv.png" width="197" height="126"
+				alt="American Express CVV location" class="imgleft"/> On <strong>American
+				Express</strong> the CVV appears as a separate 4-digit code printed on the
+			front of your card.
+		</p>
+	</div>
+</t:if>
 
 <p>As the CVV is not embossed (like the card number), the CVV is not
 	printed on any receipts, hence it is not likely to be known by anyone

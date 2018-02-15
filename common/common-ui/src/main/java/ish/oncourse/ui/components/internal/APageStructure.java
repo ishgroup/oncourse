@@ -106,7 +106,7 @@ public abstract class APageStructure extends ISHCommon {
 
     public boolean isWrapped() {
         //value false for the parameter can be used if we want to get only content some page
-        //without headers, footers, left and right blocks. See example: PaymentEditor.tml /enrol/ui/cvv?wrap=false
+        //without headers, footers, left and right blocks. See example: PaymentEditor.tml /ui/cvv?wrap=false
         String wrap = request.getParameter("wrap");
         return wrap == null || Boolean.parseBoolean(wrap);
     }

@@ -113,7 +113,7 @@ class CreditCardComp extends React.Component<Props, any> {
                 >
                   <span className="cvv-help">
                     <img className="vcc-card-image" alt="CVV" src="/s/img/cvv-image.png"/>
-                    <a className="nyromodal" href="/enrol/ui/cvv?wrap=false" id="cvvLink">What is CVV?</a>
+                    <a className="nyromodal" href="/ui/cvv?wrap=false" id="cvvLink">What is CVV?</a>
                   </span>
 
                 </Field>

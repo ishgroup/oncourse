@@ -297,6 +297,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			case Promotions:
 			case Timeline:
 			case CoursesSitesMap:
+			case Cvv:
 				break;
 		}
 
