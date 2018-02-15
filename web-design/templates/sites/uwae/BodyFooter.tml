@@ -1,0 +1,30 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+  <div class="footer-container" itemscope="itemscope" itemtype="http://schema.org/Organization" itemprop="provider">
+    <div class="footer-info">
+      <a href="http://twitter.com/uwaextension" target="blank">
+        <img src="/s/img/social/twitter_32.png" />
+      </a>
+
+      <a href="http://www.facebook.com/uwaextension" target="blank">
+        <img src="/s/img/social/facebook_32.png" />
+      </a>
+
+      <ul class="footer-menu">
+        <li><a href="/page/5">Contact Us</a></li>
+        <li><a href="/page/61">Privacy Statement</a></li>
+        <li><a href="/page/7">Terms &amp; Conditions</a></li>
+      </ul>
+
+      <div class="dev">
+        <a class="popup" href="http://www.ish.com.au/oncourse">
+          <img alt="powered by ish onCourse" height="9" width="102" src="/s/img/poweredby.png"/>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-logo">
+      <span itemprop="name" class="hide">${collegeName}</span>
+      <a href="http://www.uwa.edu.au"><img src="/s/img/extUWA_uwaLogo_1.png" /></a>
+    </div>
+  </div>
+</t:container>

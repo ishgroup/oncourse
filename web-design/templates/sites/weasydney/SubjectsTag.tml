@@ -1,0 +1,6 @@
+<li class="${tagItemClass}" style="text-align:center;font-size:20px;" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<a href="${tagLink}" style="font-weight:bold;">${tag.name}</a>
+	<t:if test="showDetails">
+		<div class="taggroup_detail courses-list-detail"> ${tag.detail} </div>
+	</t:if>
+</li>
