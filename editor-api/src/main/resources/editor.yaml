@@ -861,8 +861,6 @@ definitions:
         format: uri
         description: url for menu link
         example: /about
-      expanded:
-        type: boolean
       children:
         type: array
         items:
