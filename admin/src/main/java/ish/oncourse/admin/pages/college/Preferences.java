@@ -35,7 +35,7 @@ public class Preferences {
 	private String newPreferenceValue;
 	
 	@Property
-	@Persist(PersistenceConstants.FLASH)
+	@Persist(PersistenceConstants.SESSION)
 	private Map<String, String> preferences;
 	
 	@Inject

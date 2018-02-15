@@ -41,7 +41,7 @@ public class Web {
 	private College college;
 	
 	@Property
-	@Persist(PersistenceConstants.FLASH)
+	@Persist(PersistenceConstants.SESSION)
 	private Map<String, WebSite> sites;
 	
 	@SuppressWarnings("all")

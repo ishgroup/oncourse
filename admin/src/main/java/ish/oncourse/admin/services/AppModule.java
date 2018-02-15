@@ -12,8 +12,12 @@ import ish.oncourse.admin.services.storage.S3ServiceBuilder;
 import ish.oncourse.services.BinderFunctions;
 import ish.oncourse.services.cache.IRequestCacheService;
 import ish.oncourse.services.cache.RequestCacheService;
+import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.services.textile.TextileConverter;
 import ish.oncourse.services.threading.ThreadSource;
 import ish.oncourse.services.threading.ThreadSourceImpl;
+import ish.oncourse.util.IPageRenderer;
+import ish.oncourse.util.PageRenderer;
 import org.apache.tapestry5.MetaDataConstants;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.Configuration;
@@ -44,6 +48,8 @@ public class AppModule {
 		binder.bind(INTISUpdater.class, NTISUpdaterImpl.class);
 		binder.bind(IRequestCacheService.class, RequestCacheService.class);
 		binder.bind(ThreadSource.class, ThreadSourceImpl.class);
+		binder.bind(ITextileConverter.class, TextileConverter.class);
+		binder.bind(IPageRenderer.class, PageRenderer.class);
 	}
 
 	public static void contributeApplicationDefaults(
