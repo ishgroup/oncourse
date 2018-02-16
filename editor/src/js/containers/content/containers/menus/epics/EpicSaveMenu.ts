@@ -22,9 +22,9 @@ const request: EpicUtils.Request<any, any> = {
   processError: data => {
     if (data.status && 400 === data.status) {
       return [
-        // {
-        //   type: SAVE_MENU_TREE_FULFILLED,
-        // },
+        {
+          type: SAVE_MENU_TREE_FULFILLED,
+        },
         EpicUtils.errorMessage(data),
       ];
     }
