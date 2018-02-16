@@ -47,10 +47,10 @@ export const promiseResolve = (config, data = {}) => {
   return [200, data];
 };
 
-export const promiseReject = (config, data = {}) => {
+export const promiseReject = (config, data = {}, status = 400) => {
   console.log(`%c Api request to: /${config.url}`, 'color: red');
   console.log(`%c request params: ${config.data}`, 'color: red');
-  return [400, data];
+  return [status, data];
 };
 
 const parseJson = data => {

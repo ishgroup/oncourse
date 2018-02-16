@@ -26,7 +26,7 @@ export class Pages extends React.Component<Props, any> {
   }
 
   openPage(url) {
-    // document.location.href = url;
+    document.location.href = url;
   }
 
   render() {

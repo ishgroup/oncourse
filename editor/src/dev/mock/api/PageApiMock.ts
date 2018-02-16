@@ -11,6 +11,10 @@ export function pageApiMock() {
     const url = config.params.pageUrl;
     const page = this.db.getPageByUrl(url);
 
+    if (url === '/courses') {
+      return promiseReject(config, {message: 'Reserved page'}, 403);
+    }
+
     return promiseResolve(
       config,
       page,

@@ -3,7 +3,6 @@ import {ActionsObservable, Epic} from "redux-observable";
 import {Observable} from 'rxjs/Rx';
 import Notifications, {success, error} from 'react-notification-system-redux';
 import "rxjs";
-import {commonErrorToValidationError, toValidationError} from "../common/utils/ErrorUtils";
 import {AxiosResponse} from "axios";
 import {IAction} from "../actions/IshAction";
 import {SERVER_ERROR} from "../common/actions";
@@ -17,37 +16,25 @@ export interface Request<V, S> {
   processError?: (data: any) => IAction<any>[] | Observable<any>;
 }
 
-
-export const showCommonError = (error: any): { type: string, payload: any } => {
-  // return error({
-  // uid: 'once-please', // you can specify your own uid if required
-  //   title: 'Save failed',
-  //   message: 'Something went wrong',
-  //   position: 'tr',
-  //   autoDismiss: 5,
-  // });
-  return {type: 'SHOW_MESSAGES', payload: commonErrorToValidationError(error)};
-};
+export const errorMessage = data => (
+  error({
+    title: 'Request Failed',
+    message: (data.data && data.data.message) || 'Something went wrong',
+    position: 'tr',
+    autoDismiss: 3,
+  })
+);
 
 export const ProcessError = (data: AxiosResponse): { type: string, payload?: any }[] => {
-  console.log(data);
-  
+
   if (data.status && 401 === data.status) {
-    return [{type: LOG_OUT_REQUEST}]
+    return [{type: LOG_OUT_REQUEST}];
   }
+
   return [
-    {
-      type: SERVER_ERROR,
-    },
-    error({
-      // uid: 'once-please', // you can specify your own uid if required
-      title: 'Request Failed',
-      message: (data.data && data.data.message) || 'Something went wrong',
-      position: 'tr',
-      autoDismiss: 3,
-    }),
+    {type: SERVER_ERROR},
+    errorMessage(data),
   ];
-  // return [{type: 'SHOW_MESSAGES', payload: toValidationError(data)}];
 };
 
 
