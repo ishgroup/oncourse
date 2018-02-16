@@ -27,9 +27,10 @@ class WebMenuToMenuItem {
             menu.id = webMenu.id.intValue()
             menu.title = webMenu.name
             menu.url = WebMenuFunctions.getUrlPath(webMenu)
-            String error = StringUtils.trimToNull(webMenu.warning)
-            if (error) {
-                menu.errors = new Errors(title: error)
+            String warning = StringUtils.trimToNull(webMenu.warning)
+            if (warning) {
+                menu.warning = warning
+                
             }
             webMenu.childrenMenus.sort { m -> m.weight }.each { m -> menu.children << translate(m) }
             menu
