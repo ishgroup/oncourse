@@ -20,6 +20,7 @@ import ish.oncourse.willow.editor.model.api.SetVersionRequest
 import groovy.transform.CompileStatic
 import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.services.access.AuthenticationService
+import ish.oncourse.willow.editor.services.access.UserService
 import ish.oncourse.willow.editor.website.WebSiteFunctions
 import ish.oncourse.willow.editor.website.WebSiteVersionFunctions
 import org.apache.cayenne.ObjectContext
@@ -44,28 +45,28 @@ class PublishApiServiceImpl implements PublishApi {
 
     private ICayenneService cayenneService
     private RequestService requestService
-    private AuthenticationService authenticationService
+    private UserService userService
 
     @Inject
-    PublishApiServiceImpl(ICayenneService cayenneService, RequestService requestService, AuthenticationService authenticationService) {
+    PublishApiServiceImpl(ICayenneService cayenneService, 
+                          RequestService requestService, 
+                          UserService userService) {
         this.cayenneService = cayenneService
         this.requestService = requestService
-        this.authenticationService = authenticationService
+        this.userService = userService
     }
 
     void publish() {
         Request request = requestService.request
         WebSiteVersion draftVersion = WebSiteVersionFunctions.getCurrentVersion(request, cayenneService.newContext())
-        SystemUser user = authenticationService.getSystemUser()
-        WillowUser willowUser = authenticationService.getWillowUser()
 
         logger.warn("Start to publish: ${request.serverName}, draft version id: ${draftVersion.id}," +
-                " started by: ${user? user.firstName + ' ' + user.surname : willowUser.firstName + ' ' + willowUser.lastName }")
+                " started by: ${userService.userFirstName}  ${userService.userLastName}")
 
         Long time = System.currentTimeMillis()
         WebSitePublisher.valueOf(Configuration.getValue(EditorProperty.DEPLOY_SCRIPT_PATH), draftVersion,
-                user,
-                authenticationService.userEmail,
+                userService.systemUser,
+                userService.userEmail,
                 cayenneService.newContext()).publish()
 
         //refresh draft version after publishing

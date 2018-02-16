@@ -13,6 +13,7 @@ import ish.oncourse.willow.editor.model.common.CommonError;
 
 import groovy.transform.CompileStatic
 import ish.oncourse.willow.editor.services.access.AuthenticationService
+import ish.oncourse.willow.editor.services.access.UserService
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
@@ -26,22 +27,20 @@ class AuthApiServiceImpl implements AuthApi {
 
     private ICayenneService cayenneService
     private AuthenticationService authenticationService
+    private UserService userService
 
     @Inject
-    AuthorizationApiServiceImpl(ICayenneService cayenneService, AuthenticationService authenticationService) {
+    AuthorizationApiServiceImpl(ICayenneService cayenneService, AuthenticationService authenticationService, UserService userService) {
         this.authenticationService = authenticationService
         this.cayenneService = cayenneService
+        this.userService = userService
     }
     
 
     @Override
     User getUser() {
-        WillowUser willowUser = authenticationService.getWillowUser()
-        SystemUser systemUser = authenticationService.getSystemUser()
-        if (willowUser) {
-            return new User().firstName(willowUser.firstName).lastName(willowUser.lastName)
-        } else if (systemUser) {
-            return new User().firstName(systemUser.firstName).lastName(systemUser.surname)
+        if (userService.userFirstName) {
+            return new User().firstName(userService.userFirstName).lastName(userService.userLastName)
         } else {
             logger.error('Unexpected error. There is no logged user.')
             throw new InternalServerErrorException('Unexpected error')
