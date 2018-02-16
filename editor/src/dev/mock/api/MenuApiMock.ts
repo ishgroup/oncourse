@@ -8,7 +8,7 @@ export function menuApiMock() {
   ));
 
   this.api.onPost(API.SAVE_MENU).reply(config => {
-    const items = JSON.parse(config.data).items;
+    const items = JSON.parse(config.data);
     this.db.saveMenu(items);
 
     return promiseResolve(

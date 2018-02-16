@@ -10,6 +10,17 @@ class MenuService {
   }
 
   public saveMenuItems(items: MenuItem[]): Promise<MenuItem[]> {
+    const prepareItem = item => {
+      delete item.expanded;
+      if (item.children) {
+        item.children.map(child => prepareItem(child));
+      } else {
+        return;
+      }
+    };
+
+    items.map(item => prepareItem(item));
+
     return this.menuApi.saveMenuItems(items);
   }
 }
