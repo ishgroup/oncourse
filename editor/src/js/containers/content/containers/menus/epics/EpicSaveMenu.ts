@@ -26,6 +26,7 @@ const request: EpicUtils.Request<any, any> = {
           type: SAVE_MENU_TREE_FULFILLED,
           payload: response.data,
         },
+        EpicUtils.errorMessage(response),
       ];
     }
 
