@@ -12,6 +12,7 @@ class MenuService {
   public saveMenuItems(items: MenuItem[]): Promise<MenuItem[]> {
     const prepareItem = item => {
       delete item.expanded;
+      delete item.error;
       if (item.children) {
         item.children.map(child => prepareItem(child));
       } else {
