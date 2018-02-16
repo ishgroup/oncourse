@@ -48,7 +48,7 @@ class PageService {
 
   public generateBasetUrl(page) {
     return {
-      link: `/page/${page.number}`,
+      link: `/page/${page.serialNumber}`,
     };
   }
 
