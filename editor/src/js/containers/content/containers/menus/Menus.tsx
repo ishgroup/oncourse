@@ -45,22 +45,6 @@ export class Menus extends React.Component<Props, any> {
     }));
   }
 
-  addNode(path) {
-    const getNodeKey = ({treeIndex}) => treeIndex;
-    const {onChangeTree, menu} = this.props;
-
-    onChangeTree(addNodeUnderParent({
-      getNodeKey,
-      treeData: menu.items,
-      parentKey: path[path.length - 1],
-      expandParent: true,
-      newNode: {
-        title: `new page`,
-        url: '/',
-      },
-    }).treeData);
-  }
-
   removeNode(node, path) {
     const getNodeKey = ({treeIndex}) => treeIndex;
     const {onChangeTree, menu, showModal} = this.props;

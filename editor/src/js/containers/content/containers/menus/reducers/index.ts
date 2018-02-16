@@ -10,7 +10,7 @@ export const menuReducer = (state: MenuState = new MenuState(), action: IAction<
     case GET_MENU_ITEMS_FULFILLED:
       return {
         ...state,
-        items: action.payload,
+        items: action.payload.map(item => ({...item, expanded: true})),
       };
 
     case CHANGE_MENU_TREE:
