@@ -3,10 +3,12 @@ apply plugin: 'application'
 
 ext {
     swaggerResources = "${rootDir}/common/codegen/common/src/main/resources/htmlDocs"
+    swaggerSchema = "${project.projectDir}/src/main/resources/${swaggerName}"
 }
 
 configurations {
     swagger
+    doc
 }
 
 dependencies {
@@ -64,20 +66,22 @@ publishing {
     }
 }
 
-task (swagger, type: JavaExec) {
+task swagger (type: JavaExec) {
+    inputs.file swaggerSchema
     main = 'ish.oncourse.codegen.cxf.WillowJaxRsGenerator'
     classpath = configurations.swagger
-    args  = [ servicesPackage, modelPackage, project.projectDir, "${project.projectDir}/src/main/resources/${swaggerName}" ]
+    args  = [ servicesPackage, modelPackage, project.projectDir, swaggerSchema ]
 }
+compileJava.dependsOn(swagger)
 
-task (docGenerate, type: JavaExec) {
+task docGenerate (type: JavaExec) {
     inputs.file "${project.projectDir}/src/main/resources/${swaggerName}"
     outputs.dir "${buildDir}/doc"
 
     classpath = configurations.swagger
     main = 'io.swagger.codegen.SwaggerCodegen'
     args  = [ 'generate',
-              '-i', inputs.files.last(),
+              '-i', swaggerSchema,
               '-l', 'dynamic-html',
               '-o', outputs.files.last()
             ]
@@ -88,7 +92,7 @@ task docCss (type: Copy, dependsOn: docGenerate) {
     into "${buildDir}/doc/docs/assets/css"
 }
 
-task (buildDoc, type: Zip, dependsOn: docCss) {
+task buildDoc (type: Zip, dependsOn: docCss) {
     from "${buildDir}/doc/docs"
     archiveName 'doc.zip'
     destinationDir file("${buildDir}/doc")
