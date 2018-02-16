@@ -65,7 +65,7 @@ class History extends React.Component<Props, any> {
                 <td>{version.id}</td>
                 <td>
                   {!version.published && 'Draft'}
-                  {version.published && version.date && <TimeAgo date={version.date}/>}
+                  {version.published && version.datetime && <TimeAgo date={version.datetime}/>}
                 </td>
                 <td>{version.author}</td>
                 <td>

@@ -16,11 +16,11 @@ export const pageReducer = (state: PagesState = new PagesState(), action: IActio
       };
 
     case SAVE_PAGE_FULFILLED: {
-      const {number, ...props} = action.payload;
+      const {serialNumber, ...props} = action.payload;
 
       const ns = {
         ...state,
-        items: state.items.map(page => page.number === number ? {...page, ...props} : page),
+        items: state.items.map(page => page.serialNumber === serialNumber ? {...page, ...props} : page),
       };
 
       // if (!state.items.find(page => page.number === number)) {
@@ -40,8 +40,8 @@ export const pageReducer = (state: PagesState = new PagesState(), action: IActio
     }
 
     case DELETE_PAGE_FULFILLED: {
-      const pageNumber = action.payload;
-      const index = state.items.findIndex(page => page.number === pageNumber);
+      const pageId = action.payload;
+      const index = state.items.findIndex(page => page.id === pageId);
       const newPages = state.items;
 
       if (index !== -1) {
@@ -55,20 +55,20 @@ export const pageReducer = (state: PagesState = new PagesState(), action: IActio
     }
 
     case GET_PAGE_RENDER_FULFILLED: {
-      const {html, pageNumber} = action.payload;
+      const {html, serialNumber} = action.payload;
 
       return {
         ...state,
-        items: state.items.map(item => item.number === pageNumber ? {...item, renderHtml: html} : item),
+        items: state.items.map(item => item.serialNumber === serialNumber ? {...item, renderHtml: html} : item),
       };
     }
 
     case CLEAR_RENDER_HTML: {
-      const pageNumber = action.payload;
+      const serialNumber = action.payload;
 
       return {
         ...state,
-        items: state.items.map(item => item.number === pageNumber ? {...item, renderHtml: ''} : item),
+        items: state.items.map(item => item.serialNumber === serialNumber ? {...item, renderHtml: ''} : item),
       };
     }
 

@@ -16,7 +16,7 @@ interface Props {
   pages: Page[];
   themes: Theme[];
   match: any;
-  onEditSettings: (pageNumber, settings) => any;
+  onEditSettings: (serialNumber, settings) => any;
   onDeletePage: (page) => any;
   onAddPage: () => any;
   showError: (title) => any;
@@ -47,14 +47,14 @@ export class PagesSidebar extends React.Component<Props, any> {
 
   render() {
     const {pages, match, onEditSettings, onDeletePage, showModal, fetching, showError, themes} = this.props;
-    const activePage = match.params.number && pages.find(page => page.number == match.params.number);
+    const activePage = match.params.serialNumber && pages.find(page => page.serialNumber == match.params.serialNumber);
 
     return (
       <div className={classnames({fetching})}>
         {!activePage &&
           <SidebarList
             items={pages}
-            idKey="number"
+            idKey="serialNumber"
             category="pages"
             subTitleKey="urls"
             subTitleFilter={(items, page) => this.getDefaultLink(items, page)}
@@ -69,8 +69,8 @@ export class PagesSidebar extends React.Component<Props, any> {
             pages={pages}
             themes={themes}
             onBack={() => this.resetActivePage()}
-            onEdit={prop => onEditSettings(activePage.number, prop)}
-            onDelete={pageNumber => onDeletePage(pageNumber)}
+            onEdit={prop => onEditSettings(activePage.serialNumber, prop)}
+            onDelete={pageId => onDeletePage(pageId)}
             showModal={showModal}
             showError={showError}
           />
@@ -88,8 +88,8 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
-    onEditSettings: (pageNumber, settings) => dispatch(savePage(pageNumber, settings)),
-    onDeletePage: pageNumber => dispatch(deletePage(pageNumber)),
+    onEditSettings: (serialNumber, settings) => dispatch(savePage(serialNumber, settings)),
+    onDeletePage: pageId => dispatch(deletePage(pageId)),
     showError: title => dispatch(error({...notificationParams, title})),
     onAddPage: () => dispatch(addPage()),
     showModal: props => dispatch(showModal(props)),

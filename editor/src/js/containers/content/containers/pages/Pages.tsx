@@ -26,12 +26,12 @@ export class Pages extends React.Component<Props, any> {
   }
 
   openPage(url) {
-    document.location.href = url;
+    // document.location.href = url;
   }
 
   render() {
     const {match, pages, onEditHtml, toggleEditMode, clearRenderHtml, editMode, fetching} = this.props;
-    const activePage = match.params.number && pages.find(page => page.number == match.params.number);
+    const activePage = match.params.serialNumber && pages.find(page => page.serialNumber == match.params.serialNumber);
 
     return (
       <div>
@@ -64,9 +64,9 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
       dispatch(getPages());
       dispatch(getThemes());
     },
-    onEditHtml: (id, content) => dispatch(savePage(id, {content}, true)),
+    onEditHtml: (serialNumber, content) => dispatch(savePage(serialNumber, {content}, true)),
     toggleEditMode: flag => dispatch(toggleEditMode(flag)),
-    clearRenderHtml: pageId => dispatch(clearRenderHtml(pageId)),
+    clearRenderHtml: serialNumber => dispatch(clearRenderHtml(serialNumber)),
   };
 };
 

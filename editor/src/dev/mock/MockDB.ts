@@ -62,7 +62,8 @@ export class MockDB {
   mockPages(): Page[] {
     return [
       {
-        number: 1,
+        id: 1,
+        serialNumber: 1,
         title: 'page1',
         visible: true,
         themeId: 2,
@@ -75,7 +76,8 @@ export class MockDB {
         content: "<div>\n  <h1>Page Html 1</h1>\n  <p>Page text 1</p>\n</div>",
       },
       {
-        number: 2,
+        id: 2,
+        serialNumber: 2,
         title: 'Page - 2',
         visible: true,
         themeId: 2,
@@ -92,7 +94,8 @@ export class MockDB {
         content: "<div>\n  <h2>Page Html 2</h2>\n  <p>\n    <small>Page text 2</small>\n  </p>\n  <p>\n    Lorem ipsum dolor sit amet, consectetur adipisicing elit. \n    Accusantium adipisci autem commodi culpa cupiditate distinctio dolore doloremque \n    eius eveniet exercitationem facere facilis fuga fugit illo illum iste magnam \n    maxime minima nam nemo numquam officia provident quas quidem reprehenderit \n    repudiandae rerum sed totam ullam unde, velit vero vitae voluptate? Error, \n    soluta.\n  </p>\n</div>\n",
       },
       {
-        number: 3,
+        id: 3,
+        serialNumber: 3,
         title: 'Page - 3',
         visible: false,
         themeId: 2,
@@ -268,42 +271,42 @@ export class MockDB {
         published: false,
         author: faker.name.findName(),
         changes: 25,
-        date: '',
+        datetime: '',
       },
       {
         id: 2,
         published: true,
         author: faker.name.findName(),
         changes: 27,
-        date: new Date('10/08/2017').toISOString(),
+        datetime: new Date('10/08/2017').toISOString(),
       },
       {
         id: 3,
         published: true,
         author: faker.name.findName(),
         changes: 30,
-        date: new Date('05/05/2017').toISOString(),
+        datetime: new Date('05/05/2017').toISOString(),
       },
       {
         id: 4,
         published: true,
         author: faker.name.findName(),
         changes: 43,
-        date: new Date('03/03/2017').toISOString(),
+        datetime: new Date('03/03/2017').toISOString(),
       },
       {
         id: 5,
         published: true,
         author: faker.name.findName(),
         changes: 80,
-        date: new Date('12/12/2016').toISOString(),
+        datetime: new Date('12/12/2016').toISOString(),
       },
       {
         id: 6,
         published: true,
         author: faker.name.findName(),
         changes: 88,
-        date: new Date('08/09/2016').toISOString(),
+        datetime: new Date('08/09/2016').toISOString(),
       },
     ];
   }
@@ -351,8 +354,8 @@ export class MockDB {
     });
   }
 
-  deletePageByNumber(pageNumber: number) {
-    const index = this.pages.findIndex(item => item.number === pageNumber);
+  deletePageById(pageId: number) {
+    const index = this.pages.findIndex(item => item.id === pageId);
     this.pages = update(this.pages, {
       $splice: [
         [index, 1],
@@ -408,7 +411,7 @@ export class MockDB {
   }
 
   editPage(page: Page) {
-    this.pages = this.pages.map(item => item.number === page.number ? {...item, ...page} : item);
+    this.pages = this.pages.map(item => item.id === page.id ? {...item, ...page} : item);
   }
 
   addTheme(theme: Theme) {
@@ -437,9 +440,9 @@ export class MockDB {
 
   createNewPage(): Page {
     const page = new Page();
-    const newNumber = Math.max(...this.pages.map(page => page.number)) + 1;
+    const newNumber = Math.max(...this.pages.map(page => page.serialNumber)) + 1;
     page.title = `New Page ${isFinite(newNumber) ? newNumber : 1}`;
-    page.number = isFinite(newNumber) ? newNumber : 1;
+    page.serialNumber = isFinite(newNumber) ? newNumber : 1;
     page.urls = [];
 
     this.pages.push(page);
@@ -470,10 +473,6 @@ export class MockDB {
 
     this.themes.push(theme);
     return theme;
-  }
-
-  getPageRender(pageNumber) {
-    return this.pages.find(page => page.number === pageNumber).content;
   }
 
   addContact(contact) {

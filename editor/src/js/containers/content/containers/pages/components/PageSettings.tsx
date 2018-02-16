@@ -32,7 +32,7 @@ export class PageSettings extends React.PureComponent<Props, any> {
   }
 
   componentWillReceiveProps(props) {
-    if (props.page.number !== this.props.page.number) {
+    if (props.page.serialNumber !== this.props.page.serialNumber) {
       this.setState({
         title: props.page.title,
         urls: props.page.urls,
@@ -89,14 +89,14 @@ export class PageSettings extends React.PureComponent<Props, any> {
 
     showModal({
       text: `You are want to delete page '${page.title}'. Are you sure?`,
-      onConfirm: () => onDelete(page.number),
+      onConfirm: () => onDelete(page.id),
     });
   }
 
   onAddNewUrl() {
     const newLink = this.formatLink(this.state.newLink);
     const {pages, page, showError} = this.props;
-    const actualPages = pages.map(p => p.number === page.number ? {...p, urls: this.state.urls} : p);
+    const actualPages = pages.map(p => p.serialNumber === page.serialNumber ? {...p, urls: this.state.urls} : p);
 
     if (!this.state.newLink) return;
     if (!PageService.isValidPageUrl(newLink, actualPages)) {

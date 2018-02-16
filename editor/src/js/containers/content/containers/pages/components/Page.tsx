@@ -8,10 +8,10 @@ import PageService from "../../../../../services/PageService";
 
 interface PageProps {
   page: PageState;
-  onSave: (pageNumber, content) => void;
+  onSave: (serialNumber, content) => void;
   openPage: (url) => void;
   toggleEditMode: (flag: boolean) => any;
-  clearRenderHtml?: (pageNumber: number) => void;
+  clearRenderHtml?: (serialNumber: number) => void;
   editMode?: any;
 }
 
@@ -53,7 +53,7 @@ export class Page extends React.PureComponent<PageProps, any> {
   componentWillReceiveProps(props) {
     const {clearRenderHtml, page, toggleEditMode, editMode} = this.props;
 
-    if (props.page.number !== this.props.page.number) {
+    if (props.page.serialNumber !== this.props.page.serialNumber) {
       toggleEditMode(true);
 
       this.setState({
@@ -71,7 +71,7 @@ export class Page extends React.PureComponent<PageProps, any> {
 
     if (props.page.renderHtml && props.page.renderHtml !== this.props.page.renderHtml) {
       this.replacePageHtml(props.page.renderHtml);
-      clearRenderHtml(page.number);
+      clearRenderHtml(page.serialNumber);
     }
   }
 
@@ -103,7 +103,7 @@ export class Page extends React.PureComponent<PageProps, any> {
       draftContent: page.content,
     });
     toggleEditMode(true);
-    getHistoryInstance().push(`/pages/${page.number}`);
+    getHistoryInstance().push(`/pages/${page.serialNumber}`);
   }
 
   onChangeArea(val) {
@@ -115,7 +115,7 @@ export class Page extends React.PureComponent<PageProps, any> {
 
     toggleEditMode(false);
     this.setState({editMode: false});
-    onSave(page.number, this.state.draftContent);
+    onSave(page.serialNumber, this.state.draftContent);
   }
 
   onCancel() {

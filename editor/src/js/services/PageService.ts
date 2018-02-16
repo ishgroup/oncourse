@@ -33,10 +33,10 @@ class PageService {
     const instance = axios.create();
     return instance.get(`/page/${id}`).then(
       payload => {
-        let template = document.createElement('div');
+        const template = document.createElement('div');
         template.innerHTML = payload.data;
-        let content = template.querySelector("div[class^='block-']").innerHTML;
-        return {html: content} as PageRenderResponse
+        const content = template.querySelector("div[class^='block-']").innerHTML;
+        return {html: content} as PageRenderResponse;
       },
       payload => Promise.reject(payload.response),
     ) as Promise<any>;
@@ -53,11 +53,11 @@ class PageService {
   }
 
   public buildSavePageRequest(props, state: State): Page {
-    const page = state.page.items.find(p => p.number === props.number);
+    const page = state.page.items.find(p => p.serialNumber === props.number);
     const request: Page = new Page();
     const newPage: Page = {...page, ...props};
 
-    request.number = newPage.number;
+    request.serialNumber = newPage.serialNumber;
     request.title = newPage.title;
     request.themeId = newPage.themeId;
     request.content = newPage.content;

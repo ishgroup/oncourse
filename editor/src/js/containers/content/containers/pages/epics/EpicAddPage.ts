@@ -15,7 +15,7 @@ const request: EpicUtils.Request<any, any> = {
   getData: (props, state) => PageService.addPage(),
   processData: (page: Page, state: any) => {
 
-    getHistoryInstance().push(`${URL.PAGES}/${page.number}`);
+    getHistoryInstance().push(`${URL.PAGES}/${page.serialNumber}`);
 
     return [
       success({...notificationParams, title: 'New page added'}),
