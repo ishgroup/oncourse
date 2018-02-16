@@ -19,18 +19,18 @@ const request: EpicUtils.Request<any, any> = {
       },
     ];
   },
-  processError: data => {
-    if (data.status && 400 === data.status) {
+  processError: response => {
+    if (response.status && 400 === response.status) {
       return [
         {
           type: SAVE_MENU_TREE_FULFILLED,
+          payload: response.data,
         },
-        EpicUtils.errorMessage(data),
       ];
     }
 
     return [
-      EpicUtils.errorMessage(data),
+      EpicUtils.errorMessage(response),
     ];
   },
 };
