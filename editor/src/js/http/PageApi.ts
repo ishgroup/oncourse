@@ -13,7 +13,7 @@ export class PageApi {
     return this.http.POST(`/deletePage/${id}`);
   }
   getPageByUrl(pageUrl: string): Promise<Page> {
-    return this.http.GET(`/getPageByUrl`, { params: { pageUrl }});
+    return this.http.GET(`/getPageByUrl`, {params: {pageUrl}});
   }
   getPages(): Promise<Page[]> {
     return this.http.GET(`/getPages`);

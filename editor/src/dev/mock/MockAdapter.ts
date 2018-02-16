@@ -23,6 +23,15 @@ export class MockAdapter {
     themeApiMock.apply(this);
     publishApiMock.apply(this);
     settingsApiMock.apply(this);
+
+    this.api.onAny().reply(config => {
+      console.warn('UNHANDLED REQUEST');
+      console.log(config);
+      return promiseReject(
+        config,
+        null,
+      );
+    });
   }
 
 }

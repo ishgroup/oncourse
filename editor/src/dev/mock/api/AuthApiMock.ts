@@ -12,6 +12,10 @@ export function authApiMock(mock) {
       });
     }
 
+    return promiseResolve(config);
+  });
+
+  this.api.onGet(API.GET_USER).reply(config => {
     return promiseResolve(config, this.db.users[0]);
   });
 

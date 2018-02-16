@@ -7,7 +7,8 @@ export const DefaultConfig = {
 export const API = {
 
   // Authorization end points
-  LOGIN: "/getUser",
+  LOGIN: "/login",
+  GET_USER: "/getUser",
   LOGOUT: "/logout",
 
   // Menu page
@@ -19,7 +20,7 @@ export const API = {
   GET_PAGE_BY_URL: "/getPageByUrl",
   SAVE_PAGE: "/savePage",
   ADD_PAGE: "/addPage",
-  DELETE_PAGE: "/deletePage",
+  DELETE_PAGE: /deletePage\/\d+/,
 
   // Blocks
   GET_BLOCKS: "/getBlocks",
