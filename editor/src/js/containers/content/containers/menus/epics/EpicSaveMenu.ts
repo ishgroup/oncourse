@@ -19,6 +19,20 @@ const request: EpicUtils.Request<any, any> = {
       },
     ];
   },
+  processError: data => {
+    if (data.status && 400 === data.status) {
+      return [
+        // {
+        //   type: SAVE_MENU_TREE_FULFILLED,
+        // },
+        EpicUtils.errorMessage(data),
+      ];
+    }
+
+    return [
+      EpicUtils.errorMessage(data),
+    ];
+  },
 };
 
 export const EpicSaveMenu: Epic<any, any> = EpicUtils.Create(request);

@@ -33,10 +33,6 @@ export class Menus extends React.Component<Props, any> {
     const getNodeKey = ({treeIndex}) => treeIndex;
     const {onChangeTree, menu} = this.props;
 
-    const key = Object.keys(props)[0];
-    node.errors = node.errors || {};
-    node.errors[key] = props[key] === '';
-
     onChangeTree(changeNodeAtPath({
       path,
       getNodeKey,
@@ -99,7 +95,7 @@ export class Menus extends React.Component<Props, any> {
 
   getTitleField = (node, path) => {
     return (
-      <div className={classnames("rst__field", {invalid: node.errors && node.errors.title})}>
+      <div className={classnames("rst__field", {invalid: node.error})}>
         <span>Title </span>
         <input
           value={node.title}
@@ -111,7 +107,7 @@ export class Menus extends React.Component<Props, any> {
 
   getSubTitleField = (node, path) => {
     return (
-      <div className={classnames("rst__field", {invalid: node.errors && node.errors.url})}>
+      <div className={classnames("rst__field", {invalid: node.error})}>
         <span>Url </span>
         <input
           value={node.url}

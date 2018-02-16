@@ -160,6 +160,7 @@ export class MockDB {
         id: 1,
         title: 'Menu - 1',
         url: '/menu1',
+        error: 'incorrect field',
         children: [
           {
             id: 4,
