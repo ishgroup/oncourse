@@ -3,7 +3,6 @@ apply plugin: 'application'
 
 ext {
     swaggerResources = "${rootDir}/common/codegen/common/src/main/resources/htmlDocs"
-    docOutput = "${project.projectDir}/build/doc"
 }
 
 configurations {
@@ -57,7 +56,7 @@ publishing {
         }
         
         releases(MavenPublication) {
-            artifact("$docOutput/doc.zip") {
+            artifact("${buildDir}/doc/doc.zip") {
                 classifier "documentation"
                 extension "zip"
             }
@@ -68,23 +67,29 @@ publishing {
 task (swagger, type: JavaExec) {
     main = 'ish.oncourse.codegen.cxf.WillowJaxRsGenerator'
     classpath = configurations.swagger
-    args  = [ servicesPackage, modelPackage, project.projectDir, "${project.projectDir}/src/main/resources/$swaggerName" ]
+    args  = [ servicesPackage, modelPackage, project.projectDir, "${project.projectDir}/src/main/resources/${swaggerName}" ]
 }
 
-task (generateDoc, type: JavaExec) {
+task (docGenerate, type: JavaExec) {
+    inputs.file "${project.projectDir}/src/main/resources/${swaggerName}"
+    outputs.dir "${buildDir}/doc"
+
     classpath = configurations.swagger
     main = 'io.swagger.codegen.SwaggerCodegen'
     args  = [ 'generate',
-              '-i', "${project.projectDir}/src/main/resources/$swaggerName",
-              '-l', 'html',
-              '-t', "$swaggerResources",
-              '-o', "${buildDir}/resources"]
+              '-i', inputs.files.last(),
+              '-l', 'dynamic-html',
+              '-o', outputs.files.last()
+            ]
 }
 
-task (buildDoc, type: Zip, dependsOn: generateDoc) {
-    from "${buildDir}/resources"
-    include "$swaggerResources/swagger.css"
-    include 'index.html'
+task docCss (type: Copy, dependsOn: docGenerate) {
+    from "${swaggerResources}"
+    into "${buildDir}/doc/docs/assets/css"
+}
+
+task (buildDoc, type: Zip, dependsOn: docCss) {
+    from "${buildDir}/doc/docs"
     archiveName 'doc.zip'
-    destinationDir file(docOutput)
+    destinationDir file("${buildDir}/doc")
 }

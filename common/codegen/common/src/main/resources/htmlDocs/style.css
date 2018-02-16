@@ -1,0 +1,267 @@
+@import url('https://fonts.googleapis.com/css?family=Merriweather:300,400,700|Port+Lligat+Slab');
+
+/* Reset - Blank canvas, go. */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-spacing: 0;
+  outline: 0;
+  font-weight: inherit;
+  font-style: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  vertical-align: baseline;
+  border-collapse: collapse;
+}
+
+strong {
+  font-weight: normal;
+}
+
+/* remember to define focus styles! */
+:focus {
+  outline: 0;
+}
+
+body {
+  color: #555;
+  background-color: #fff;
+  font-size: 16px;
+  font-family: 'Merriweather', serif;
+  line-height: 1.9em;
+  font-weight: 300;
+  padding: 0 20px;
+  border-top: 13px solid #75a994;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Port Lligat Slab', serif;
+}
+
+h1 {
+  font-size: 3em;
+  padding: 0.8em 0 0.4em;
+  color: #DB7430;
+}
+h2 {
+  font-size: 20px;
+}
+h3 {
+  font-size: 16px;
+  font-weight: bold;
+}
+hr {
+  height: 1px;
+  border: 0;
+  color: #ddd;
+  background-color: #ddd;
+  margin-bottom: 15px;
+}
+
+a {
+  color: #F69455;
+}
+
+a:hover {
+  color: #CC716C;
+}
+
+caption, th {
+  font-weight: 400;
+}
+
+blockquote:before, blockquote:after, q:before, q:after {
+  content: "";
+}
+blockquote, q {
+  quotes: "" "";
+}
+
+a {
+  text-decoration: none !important;
+  color: #8A1C16;
+  cursor: pointer;
+}
+a:hover {
+  color: #FF8A00;
+}
+
+.app-desc {
+  clear: both;
+  margin-left: 20px;
+}
+.param-name {
+  width: 100%;
+}
+.license-info {
+  margin-left: 20px;
+}
+
+.license-url {
+  margin-left: 20px;
+}
+
+.model {
+  margin: 0 0 0px 20px;
+}
+
+.method {
+  /*margin-left: 20px;*/
+}
+
+.method-notes  {
+  margin: 10px 0 20px 0;
+  font-size: 90%;
+  color: #555;
+}
+
+pre {
+  white-space: pre-wrap;        /* css-3 */
+  white-space: -moz-pre-wrap !important;   /* Mozilla, since 1999 */
+  white-space: -pre-wrap;     /* Opera 4-6 */
+  white-space: -o-pre-wrap;   /* Opera 7 */
+  word-wrap: break-word;        /* Internet Explorer 5.5+ */
+  margin-bottom: 0.6em;
+  padding: 10px;
+}
+
+.http-method {
+  text-transform: uppercase;
+}
+
+pre.get {
+  background-color: #0f6ab4;
+}
+
+pre.post {
+  background-color: #10a54a;
+}
+
+pre.put {
+  background-color: #c5862b;
+}
+
+pre.delete {
+  background-color: #a41e22;
+}
+
+.huge {
+  color: #fff;
+}
+
+pre.example {
+  background-color: #f3f3f3;
+  border: 1px solid #ddd;
+}
+
+code {
+  font-family: monospace;
+  font-weight: 400;
+  white-space: pre;
+}
+
+.nickname {
+  font-weight: bold;
+}
+
+.method-path {
+  font-size: 1.5em;
+  background-color: #0f6ab4;
+}
+
+.method-path .up {
+  margin: 10px;
+  font-size: 17px;
+}
+.up {
+  float:right;
+}
+
+.parameter {
+  width: 500px;
+}
+
+.param {
+  width: 500px;
+  padding: 10px 0 0 20px;
+  font-weight: bold;
+}
+
+.param-desc {
+  width: 700px;
+  padding: 0 0 0 20px;
+  color: #777;
+}
+
+.param-type {
+  font-style: italic;
+}
+
+.param-enum-header {
+  width: 700px;
+  padding: 0 0 0 60px;
+  color: #777;
+  font-weight: bold;
+}
+
+.param-enum {
+  width: 700px;
+  padding: 0 0 0 80px;
+  color: #777;
+  font-style: italic;
+}
+
+.field-label {
+  padding: 0;
+  margin: 0;
+  clear: both;
+}
+
+.field-items   {
+  padding: 0 0 15px 0;
+  margin-bottom: 15px;
+}
+
+.return-type {
+  clear: both;
+  padding-bottom: 10px;
+}
+
+.param-header {
+  font-weight: bold;
+}
+
+.method-tags {
+  text-align: right;
+}
+
+.method-tag {
+  background: none repeat scroll 0% 0% #24A600;
+  border-radius: 3px;
+  padding: 2px 10px;
+  margin: 2px;
+  color: #FFF;
+  display: inline-block;
+  text-decoration: none;
+}
+
+/* Version switching */
+.btn {
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 3px;
+  background-color: #EFEBD5;
+  border-color: #ccc;
+  margin: 2px;
+}
+
+.btn.active, .btn:hover {
+  background-color: white;
+}
