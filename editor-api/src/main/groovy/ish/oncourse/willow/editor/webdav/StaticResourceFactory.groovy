@@ -21,6 +21,7 @@ import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.util.StaticResourcePath
 import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.services.access.AuthenticationService
+import ish.oncourse.willow.editor.services.access.UserService
 import ish.oncourse.willow.editor.webdav.jscompiler.JSCompiler
 import ish.oncourse.willow.editor.website.WebSiteFunctions
 import org.apache.commons.httpclient.URIException
@@ -46,15 +47,15 @@ class StaticResourceFactory  implements ResourceFactory {
     private static final String JS_FILE_PATTERN = '^%s/js/(.*)\\.js$'
 
 
-    private AuthenticationService authenticationService
+    private UserService userService
     private ExecutorService executorService
 
     private FileSystemResourceFactory fsResourceFactory
     private String sRoot
 
-    StaticResourceFactory(String sRoot, AuthenticationService authenticationService,
+    StaticResourceFactory(String sRoot, UserService userService,
                                  SecurityManager securityManager, ICayenneService cayenneService, RequestService requestService) {
-        this.authenticationService = authenticationService
+        this.userService = userService
         this.cayenneService = cayenneService
         this.requestService = requestService
         this.sRoot = sRoot
@@ -97,7 +98,7 @@ class StaticResourceFactory  implements ResourceFactory {
                 runEditScript(compiler.gzResult)
             } else {
                 runEditScript(file)
-                String userEmail = authenticationService.userEmail
+                String userEmail = userService.userEmail
                 if (userEmail != null) {
                     EmailBuilder emailBuilder = GetEmailBuilder.valueOf(compiler.errorEmailTemplate,
                             userEmail,
@@ -122,7 +123,7 @@ class StaticResourceFactory  implements ResourceFactory {
     }
 
     private void runEditScript(File file) {
-        RunEditScript.valueOf(file, authenticationService, executorService).run()
+        RunEditScript.valueOf(file, userService, executorService).run()
     }
 
     private boolean isSCSSFile(File file) {

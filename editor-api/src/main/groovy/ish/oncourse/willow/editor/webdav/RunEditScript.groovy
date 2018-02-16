@@ -1,7 +1,7 @@
 package ish.oncourse.willow.editor.webdav
 
 import ish.oncourse.configuration.Configuration
-import ish.oncourse.willow.editor.services.access.AuthenticationService
+import ish.oncourse.willow.editor.services.access.UserService
 import org.apache.commons.lang3.StringUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -18,7 +18,7 @@ class RunEditScript {
     private static final int EDIT_FILE_SCRIPT_WAIT_TIMEOUT = 15
 
     private File file
-    private AuthenticationService authenticationService
+    private UserService userService
     private ExecutorService executorService
 
     void run() {
@@ -37,7 +37,7 @@ class RunEditScript {
         scriptCommand << '-p'
         scriptCommand << "\"$filePath\"".toString()
 
-        String userEmail = authenticationService.userEmail
+        String userEmail = userService.userEmail
 
         if (userEmail) {
             scriptCommand << '-e'
@@ -61,11 +61,11 @@ class RunEditScript {
     }
 
     static RunEditScript valueOf(File file,
-                                        AuthenticationService authenticationService,
+                                        UserService userService,
                                         ExecutorService executorService) {
         RunEditScript runEditScript = new RunEditScript()
         runEditScript.file = file
-        runEditScript.authenticationService = authenticationService
+        runEditScript.userService = userService
         runEditScript.executorService = executorService
         return runEditScript
     }

@@ -12,6 +12,7 @@ import ish.oncourse.services.authentication.AuthenticationStatus
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.services.access.AuthenticationService
+import ish.oncourse.willow.editor.services.access.UserService
 
 import javax.servlet.ServletException
 
@@ -23,10 +24,11 @@ class Configurator extends DefaultMiltonConfigurator {
     HttpManager configure(Config config) throws ServletException {
         Injector injector = config.servletContext.getAttribute(INJECTOR_PROPERTY) as Injector
         AuthenticationService authenticationService = injector.getInstance(AuthenticationService)
+        UserService userService = injector.getInstance(UserService)
         ICayenneService cayenneService =  injector.getInstance(ICayenneService)
         RequestService requestService =  injector.getInstance(RequestService)
 
-        builder.mainResourceFactory = new RootResourceFactory(new EditorSecurityManager(authenticationService), authenticationService, cayenneService, requestService)
+        builder.mainResourceFactory = new RootResourceFactory(new EditorSecurityManager(authenticationService), userService, cayenneService, requestService)
         builder.enableCookieAuth = false
         builder.enabledJson = false
 

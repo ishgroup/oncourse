@@ -2,6 +2,7 @@ package ish.oncourse.willow.editor.services.access
 
 import com.google.inject.Inject
 import com.google.inject.Singleton
+import groovy.transform.CompileStatic
 import ish.oncourse.model.College
 import ish.oncourse.model.SystemUser
 import ish.oncourse.model.WillowUser
@@ -27,25 +28,24 @@ import javax.servlet.http.Cookie
 import static ish.oncourse.services.authentication.AuthenticationStatus.*
 
 @Singleton
+@CompileStatic
 class AuthenticationService implements IAuthenticationService {
 
     private ICayenneService cayenneService
     private RequestService requestService
     private ZKSessionManager sessionManager
+    private UserService userService
 
-    private SystemUser systemUser = null
-    private WillowUser willowUser = null
-    
-    private static final String SESSION_ID = 'ESESSIONID'
+    public static final String SESSION_ID = 'ESESSIONID'
     
     private static final long MAX_AGE = 14400
-    private static final Logger logger = LogManager.logger
 
     @Inject
-    AuthenticationService(ICayenneService cayenneService, RequestService requestService, ZKSessionManager sessionManager) {
+    AuthenticationService(ICayenneService cayenneService, RequestService requestService, ZKSessionManager sessionManager, UserService userService) {
         this.cayenneService = cayenneService
         this.requestService = requestService
         this.sessionManager = sessionManager
+        this.userService = userService
     }
     
     private AuthenticationResult succedAuthentication(Class userType, PersistentObject user, boolean persist) {
@@ -69,10 +69,17 @@ class AuthenticationService implements IAuthenticationService {
     private AuthenticationResult fillUser(Class userType, PersistentObject user) {
         switch (userType) {
             case WillowUser:
-                willowUser = (user as WillowUser)
+                WillowUser willowUser = (user as WillowUser)
+                userService.userFirstName = willowUser.firstName
+                userService.userLastName = willowUser.lastName
+                userService.userEmail = willowUser.email
                 return AuthenticationResult.valueOf(null, willowUser.firstName,  willowUser.lastName)
             case SystemUser:
-                systemUser =  (user as SystemUser)
+                SystemUser systemUser = (user as SystemUser)
+                userService.userFirstName = systemUser.firstName
+                userService.userLastName = systemUser.surname
+                userService.userEmail = systemUser.email
+                userService.systemUser = systemUser
                 return AuthenticationResult.valueOf(null, systemUser.firstName,  systemUser.surname)
             default: 
                 throw new IllegalArgumentException("Unsupported user type:  $userType, persistent object: $user")
@@ -185,51 +192,6 @@ class AuthenticationService implements IAuthenticationService {
         return AuthenticationUtil.checkOldPassword(password, user.password)
     }
     
-    String getUserEmail() {
-        SystemUser sysUser = getSystemUser(false)
-        if (sysUser) {
-            return sysUser.email
-        } else {
-            WillowUser wilUser = getWillowUser(false)
-            if (wilUser) {
-                return wilUser.email
-            }
-            return null
-        }
-    }
-    
-    WillowUser getWillowUser(boolean isPersist = true) {
-        SessionCookie sessionCookie = SessionCookie.valueOf(requestService.request)
-        
-        if (sessionCookie.exist
-                && sessionCookie.userType == WillowUser.simpleName 
-                && (!isPersist || sessionManager.sessionExist(sessionCookie.sessionNode))) {
-            SelectById.query(WillowUser, sessionCookie.userId).selectOne(cayenneService.newContext())
-        } else {
-            CheckBasicAuth.valueOf(this, requestService.request).check()
-            return willowUser
-        }
-    }
-
-    SystemUser getSystemUser(boolean isPersist = true) {
-        SessionCookie sessionCookie = SessionCookie.valueOf(requestService.request)
-
-        if (sessionCookie.exist 
-                && sessionCookie.userType == SystemUser.simpleName
-                && (!isPersist || sessionManager.sessionExist(sessionCookie.sessionNode))) {
-            ObjectContext context = cayenneService.newContext()
-            SystemUser user = SelectById.query(SystemUser, sessionCookie.userId)
-                    .selectOne(context)
-            if (user && user.college == WebSiteFunctions.getCurrentCollege(requestService.request, context)) {
-                return user
-            } else {
-                return null
-            }
-        } else {
-            CheckBasicAuth.valueOf(this, requestService.request).check()
-            return systemUser
-        }
-    }
     
     void logout() {
         requestService.response.addSetCookie(SESSION_ID,
@@ -237,63 +199,5 @@ class AuthenticationService implements IAuthenticationService {
                 requestService.request.serverName,
                 requestService.request.contextPath,
                 0, null, false, false, 0)  
-    }
-
-    static class SessionCookie {
-        
-        private String userType
-        private Long userId
-        private String sessionNode
-        private boolean exist = true
-
-        private SessionCookie(){}
-
-        static SessionCookie valueOf(Request request) {
-            SessionCookie sessionCookie = new SessionCookie()
-            
-            Cookie cookie = request.cookies.find { it.name == SESSION_ID }
-            if (cookie && cookie.value && StringUtils.trimToNull(cookie.value)) {
-                String value = cookie.value
-                sessionCookie.sessionNode = "/${value.replace('&', '/')}"
-                sessionCookie.userId = Long.valueOf(value.split('&')[0].split('-')[1])
-                sessionCookie.userType = value.split('&')[0].split('-')[0]
-            } else {
-                sessionCookie.exist = false
-            }
-            return sessionCookie
-        }
-
-        
-        String getUserType() {
-            return userType
-        }
-
-        void setUserType(String useType) {
-            this.userType = useType
-        }
-
-        Long getUserId() {
-            return userId
-        }
-
-        void setUserId(Long useId) {
-            this.userId = useId
-        }
-
-        String getSessionNode() {
-            return sessionNode
-        }
-
-        void setSessionNode(String sessionNode) {
-            this.sessionNode = sessionNode
-        }
-
-        boolean getExist() {
-            return exist
-        }
-
-        void setExist(boolean exist) {
-            this.exist = exist
-        }
     }
 }

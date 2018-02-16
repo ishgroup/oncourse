@@ -14,6 +14,7 @@ import ish.oncourse.configuration.Configuration
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.services.access.AuthenticationService
+import ish.oncourse.willow.editor.services.access.UserService
 import org.apache.commons.lang3.ArrayUtils
 
 import static ish.oncourse.willow.editor.EditorProperty.S_ROOT
@@ -36,7 +37,7 @@ class RootResourceFactory implements ResourceFactory {
 
     private String sRoot
 
-    RootResourceFactory(SecurityManager securityManager, AuthenticationService authenticationService, ICayenneService cayenneService, RequestService requestService) {
+    RootResourceFactory(SecurityManager securityManager, UserService userService, ICayenneService cayenneService, RequestService requestService) {
         this.securityManager = securityManager
         this.cayenneService = cayenneService
         this.requestService = requestService
@@ -46,7 +47,7 @@ class RootResourceFactory implements ResourceFactory {
         this.blockResourceFactory = new BlockResourceFactory(cayenneService, requestService, securityManager)
         this.pageResourceFactory = new PageResourceFactory(cayenneService, requestService, securityManager)
         this.templateResourceFactory = new TemplateResourceFactory(cayenneService, requestService, securityManager)
-        this.staticResourceFactory = new StaticResourceFactory(sRoot, authenticationService, securityManager, cayenneService, requestService)
+        this.staticResourceFactory = new StaticResourceFactory(sRoot, userService, securityManager, cayenneService, requestService)
 
         this.templateResourceFactory.initDefaultResources()
     }

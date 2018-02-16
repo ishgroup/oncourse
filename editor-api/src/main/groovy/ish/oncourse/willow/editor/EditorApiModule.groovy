@@ -20,6 +20,7 @@ import ish.oncourse.willow.editor.services.RequestFilter
 import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.services.access.AuthenticationFilter
 import ish.oncourse.willow.editor.services.access.AuthenticationService
+import ish.oncourse.willow.editor.services.access.UserService
 import ish.oncourse.willow.editor.services.access.ZKSessionManager
 import org.apache.cxf.jaxrs.validation.JAXRSBeanValidationFeature
 
@@ -68,6 +69,7 @@ class EditorApiModule extends ConfigModule {
         binder.bind(ZKSessionManager)
         binder.bind(ICayenneService).to(CayenneService)
         binder.bind(AuthenticationService)
+        binder.bind(UserService)
     }
 
     @Singleton
