@@ -23,6 +23,15 @@
     padding-right: 5px;
   }
   
+  &__rowError {
+    position: absolute;
+    top: calc(100% + 5px);
+    font-size: 12px;
+    left: 0;
+    color: $danger-hover;
+    font-weight: normal;
+  }
+  
   &__field {
     margin-right: 20px;
     
@@ -35,7 +44,7 @@
     
     input {
       font-weight: normal;
-      font-size: 12px;
+      font-size: 11px;
       border-color: transparent;
       border-radius: 2px;
       transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s, -webkit-box-shadow ease-in-out 0.15s;
@@ -67,7 +76,7 @@
   }
   
   &__rowWrapper {
-    padding: 10px 0;
+    padding: 12px 0;
   }
   
   &__rowToolbar {

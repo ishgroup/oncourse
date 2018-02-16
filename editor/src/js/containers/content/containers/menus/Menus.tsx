@@ -101,6 +101,7 @@ export class Menus extends React.Component<Props, any> {
           value={node.title}
           onChange={event => this.changeNode({title: event.target.value}, node, path)}
         />
+        {node.error && <span className="rst__rowError">{node.error}</span>}
       </div>
     );
   }
@@ -157,7 +158,7 @@ export class Menus extends React.Component<Props, any> {
         </Button>
         <div
           style={{
-            height: `${menu.items.length ? this.getMenuItemsCount() * 52 : 52}px`,
+            height: `${menu.items.length ? this.getMenuItemsCount() * 54 : 54}px`,
             maxHeight: '80vh',
             minHeight: '200px',
           }}
@@ -165,7 +166,7 @@ export class Menus extends React.Component<Props, any> {
         >
           <SortableTree
             treeData={menu.items}
-            rowHeight={52}
+            rowHeight={54}
             onChange={treeData => onChangeTree(treeData)}
             generateNodeProps={({node, path}) => ({
               title: this.getTitleField(node, path),
