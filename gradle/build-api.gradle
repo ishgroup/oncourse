@@ -1,9 +1,22 @@
 apply plugin: 'java'
 apply plugin: 'application'
 
+buildscript {
+    repositories {
+        maven {
+            url 'https://repo.ish.com.au/content/groups/public'
+        }
+    }
+
+    dependencies {
+        classpath('io.swagger:swagger-codegen:2.3.1')
+    }
+}
+
 ext {
     swaggerResources = "${rootDir}/common/codegen/common/src/main/resources/htmlDocs"
     swaggerSchema = "${project.projectDir}/src/main/resources/${swaggerName}"
+    swaggerOutputDir = "${project.projectDir}"
 }
 
 configurations {
@@ -73,6 +86,36 @@ task swagger (type: JavaExec) {
     args  = [ servicesPackage, modelPackage, project.projectDir, swaggerSchema ]
 }
 compileJava.dependsOn(swagger)
+
+
+import io.swagger.codegen.config.CodegenConfigurator
+import io.swagger.codegen.DefaultGenerator
+
+task swagger2 {
+    inputs.file swaggerSchema
+    outputs.dir swaggerOutputDir
+    doLast {
+        def config = new CodegenConfigurator()
+        config.setInputSpec(swaggerSchema)
+        config.setOutputDir(swaggerOutputDir)
+        config.setLang('groovy')
+        config.setAdditionalProperties([
+                'invokerPackage': 'ish.oncourse.willow.editor.service',
+                'modelPackage'  : 'ish.oncourse.willow.editor.model',
+                'apiPackage'    : 'ish.oncourse.willow.editor.model.api',
+                'dateLibrary'   : 'java8',
+                'appVersion'    : project.version\
+        ])
+        // config.setImportMappings([
+        //         'Dog': 'io.swagger.petstore.client.model.Dog'
+        // ])
+        new DefaultGenerator().opts(config.toClientOptInput()).generate()
+    }
+}
+
+// clean.doFirst {
+//     delete(swaggerOutputDir)
+// }
 
 task docGenerate (type: JavaExec) {
     inputs.file "${project.projectDir}/src/main/resources/${swaggerName}"
