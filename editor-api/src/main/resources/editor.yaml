@@ -9,9 +9,9 @@ info:
     email: support@ish.com.au
   license:
     name: Closed
-  version: 1
-host: https://{siteKey}.oncourse.cc
-basePath: /editor/v1
+  version: v1
+host: {siteKey}.oncourse.cc
+basePath: /editor
 
 schemes:
   - https
@@ -40,7 +40,6 @@ paths:
 
   /user.login:
     post:
-      operationId: login
       summary: Authenticate user by email and password. Put session toke to cookie on success
       tags:
         - Auth
@@ -65,7 +64,6 @@ paths:
             
   /user.logout:
     post:
-      operationId: logout
       summary: De-authorize user from editor
       tags:
         - Auth
@@ -83,7 +81,6 @@ paths:
     get:
       x-filter:  
         - AuthFilter
-      operationId: getUser
       summary: Get current logged user
       tags:
         - Auth
@@ -103,7 +100,6 @@ paths:
     get:
       x-filter:  
       - AuthFilter
-      operationId: getMenuItems
       summary: Get menu items
       description: Get menu items
       tags:
@@ -124,7 +120,6 @@ paths:
     post:
       x-filter:  
       - AuthFilter
-      operationId: saveMenuItems
       summary: Save menu items
       description: Save menu items
       tags:
@@ -162,7 +157,6 @@ paths:
     get:
       x-filter:  
       - AuthFilter
-      operationId: getPages
       summary: Get pages
       description: Get pages
       tags:
@@ -183,7 +177,6 @@ paths:
       x-filter:  
       - AuthFilter
       summary: Get page by provided page url
-      operationId: getPageByUrl
       description: Get page object by provided page url
       tags:
         - Page
@@ -209,7 +202,6 @@ paths:
       x-filter:  
       - AuthFilter
       summary: Save page parameters
-      operationId: savePage
       description: Save page parameters
       tags:
         - Page
@@ -237,7 +229,6 @@ paths:
       x-filter:  
       - AuthFilter
       summary: Add new page
-      operationId: addPage
       description: Add new page
       tags:
         - Page
@@ -258,7 +249,6 @@ paths:
       x-filter:  
       - AuthFilter
       summary: Remove page by provided number
-      operationId: deletePage
       description: Remove page by number
       tags:
         - Page
@@ -284,7 +274,6 @@ paths:
       x-filter:  
       - AuthFilter
       summary: Get list of blocks
-      operationId: getBlocks
       tags:
         - Block
       responses:
@@ -304,7 +293,6 @@ paths:
       x-filter:  
       - AuthFilter
       summary: Update an existing block
-      operationId: saveBlock
       description: Save block params
       tags:
         - Block
@@ -332,7 +320,6 @@ paths:
       x-filter:  
       - AuthFilter
       summary: Add new block
-      operationId: addBlock
       description: Add new block
       tags:
         - Block
@@ -353,7 +340,6 @@ paths:
       x-filter:  
       - AuthFilter
       summary: Remove block by provided Id
-      operationId: deleteBlock
       description: Remove block
       tags:
         - Block
@@ -379,7 +365,6 @@ paths:
       x-filter:  
       - AuthFilter
       summary: Get array of layouts
-      operationId: getLayouts
       description: Get array of layouts
       tags:
         - Theme
@@ -400,7 +385,6 @@ paths:
       x-filter:  
       - AuthFilter
       summary: Get array of themes
-      operationId: getThemes
       description: Get array of themes
       tags:
         - Theme
@@ -421,7 +405,6 @@ paths:
       x-filter:  
       - AuthFilter
       summary: Theme with updated params
-      operationId: saveTheme
       description: Save theme params
       tags:
         - Theme
@@ -449,7 +432,6 @@ paths:
       x-filter:  
       - AuthFilter
       summary: Add new theme
-      operationId: addTheme
       description: Add new theme
       tags:
         - Theme
@@ -470,7 +452,6 @@ paths:
       x-filter:  
       - AuthFilter
       summary: Remove theme by unique identifier
-      operationId: deleteTheme
       description: Remove theme
       tags:
         - Theme
@@ -496,7 +477,6 @@ paths:
       x-filter:  
       - AuthFilter
       summary: Get array of published versions. Not supported yet
-      operationId: getVersions
       description: Get array of published versions. Not supported yet
       tags:
         - Version
@@ -517,7 +497,6 @@ paths:
       x-filter:  
       - AuthFilter
       summary: Set current published version by provided version Id. Not supported yet
-      operationId: setVersion
       tags:
         - Version
       consumes:
@@ -542,7 +521,6 @@ paths:
       x-filter:  
       - AuthFilter
       summary: Publish current draft version. Support basic Authentication
-      operationId: publish
       description: Publish current draft changes to live site. Support basic Authentication
       tags:
         - Version
@@ -560,7 +538,6 @@ paths:
     get:
       x-filter:  
       - AuthFilter
-      operationId: getSkillsOnCourseSettings
       summary: Get SkillsOnCourse settings
       description: Get SkillsOnCourse settings
       tags:
@@ -580,7 +557,6 @@ paths:
       x-filter:  
       - AuthFilter
       summary: Save SkillsOnCourse settings
-      operationId: setSkillsOnCourseSettings
       description: Save SkillsOnCourse settings
       tags:
         - Settings
@@ -607,7 +583,6 @@ paths:
     get:
       x-filter:  
       - AuthFilter
-      operationId: getWebsiteSettings
       summary: Get Website settings
       description: Get Website settings
       tags:
@@ -627,7 +602,6 @@ paths:
       x-filter:  
       - AuthFilter
       summary: Save website settings
-      operationId: setWebsiteSettings
       description: Save website settings
       tags:
         - Settings
@@ -654,7 +628,6 @@ paths:
     get:
       x-filter:  
       - AuthFilter
-      operationId: getRedirectSettings
       summary: Get redirect settings
       description: Get redirect settings
       tags:
@@ -674,7 +647,6 @@ paths:
       x-filter:  
       - AuthFilter
       summary: Save redirect settings
-      operationId: setRedirectSettings
       description: Save redirect settings
       tags:
         - Redirect

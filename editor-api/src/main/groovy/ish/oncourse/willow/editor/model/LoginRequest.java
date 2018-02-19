@@ -1,4 +1,4 @@
-package ish.oncourse.willow.editor.model.api;
+package ish.oncourse.willow.editor.model;
 
 
 public class LoginRequest  {

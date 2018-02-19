@@ -12,6 +12,7 @@ public class Page  {
     private Integer themeId = null;
     private String content = null;
     private Boolean visible = null;
+    private Boolean suppressOnSitemap = null;
     private List<PageUrl> urls = new ArrayList<PageUrl>();
 
     /**
@@ -117,6 +118,23 @@ public class Page  {
     }
 
     /**
+     * Is the page suppressed on sitemap
+     * @return suppressOnSitemap
+     */
+    public Boolean getSuppressOnSitemap() {
+        return suppressOnSitemap;
+    }
+
+    public void setSuppressOnSitemap(Boolean suppressOnSitemap) {
+       this.suppressOnSitemap = suppressOnSitemap;
+    }
+
+    public Page suppressOnSitemap(Boolean suppressOnSitemap) {
+      this.suppressOnSitemap = suppressOnSitemap;
+      return this;
+    }
+
+    /**
      * Get urls
      * @return urls
      */
@@ -150,6 +168,7 @@ public class Page  {
       sb.append("    themeId: ").append(toIndentedString(themeId)).append("\n");
       sb.append("    content: ").append(toIndentedString(content)).append("\n");
       sb.append("    visible: ").append(toIndentedString(visible)).append("\n");
+      sb.append("    suppressOnSitemap: ").append(toIndentedString(suppressOnSitemap)).append("\n");
       sb.append("    urls: ").append(toIndentedString(urls)).append("\n");
       sb.append("}");
       return sb.toString();

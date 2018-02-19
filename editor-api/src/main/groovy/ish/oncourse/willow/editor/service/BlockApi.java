@@ -15,30 +15,30 @@ import javax.ws.rs.core.MediaType;
 public interface BlockApi  {
 
     @POST
-    @Path("/addBlock")
+    @Path("/block.create")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @AuthFilter
-    Block addBlock();
+    Block blockCreatePost();
 
     @POST
-    @Path("/deleteBlock/{id}")
+    @Path("/block.delete/{id}")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @AuthFilter
-    void deleteBlock(@PathParam("id") String id);
+    void blockDeleteIdPost(@PathParam("id") String id);
 
     @GET
-    @Path("/getBlocks")
+    @Path("/block.list")
     @Produces({ "application/json" })
     @AuthFilter
-    List<Block> getBlocks();
+    List<Block> blockListGet();
 
     @POST
-    @Path("/saveBlock")
+    @Path("/block.update")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @AuthFilter
-    Block saveBlock(Block saveBlockRequest);
+    Block blockUpdatePost(Block saveBlockRequest);
 }
 

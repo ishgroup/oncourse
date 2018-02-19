@@ -16,16 +16,16 @@ import javax.ws.rs.core.MediaType;
 public interface MenuApi  {
 
     @GET
-    @Path("/getMenuItems")
+    @Path("/menu.list")
     @Produces({ "application/json" })
     @AuthFilter
-    List<MenuItem> getMenuItems();
+    List<MenuItem> menuListGet();
 
     @POST
-    @Path("/saveMenuItems")
+    @Path("/menu.update")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @AuthFilter
-    List<MenuItem> saveMenuItems(List<MenuItem> menu);
+    List<MenuItem> menuUpdatePost(List<MenuItem> menu);
 }
 

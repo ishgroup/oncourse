@@ -15,36 +15,36 @@ import javax.ws.rs.core.MediaType;
 public interface PageApi  {
 
     @POST
-    @Path("/addPage")
+    @Path("/page.create")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @AuthFilter
-    Page addPage();
+    Page pageCreatePost();
 
     @POST
-    @Path("/deletePage/{id}")
+    @Path("/page.delete/{id}")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @AuthFilter
-    void deletePage(@PathParam("id") String id);
+    void pageDeleteIdPost(@PathParam("id") String id);
 
     @GET
-    @Path("/getPageByUrl")
+    @Path("/page.get")
     @Produces({ "application/json" })
     @AuthFilter
-    Page getPageByUrl(@QueryParam("pageUrl")String pageUrl);
+    Page pageGetGet(@QueryParam("pageUrl")String pageUrl);
 
     @GET
-    @Path("/getPages")
+    @Path("/page.list")
     @Produces({ "application/json" })
     @AuthFilter
-    List<Page> getPages();
+    List<Page> pageListGet();
 
     @POST
-    @Path("/savePage")
+    @Path("/page.update")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @AuthFilter
-    Page savePage(Page pageParams);
+    Page pageUpdatePost(Page pageParams);
 }
 

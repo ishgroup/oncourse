@@ -1,7 +1,6 @@
 package ish.oncourse.willow.editor.service;
 
 import ish.oncourse.willow.editor.model.common.CommonError;
-import ish.oncourse.willow.editor.model.settings.RedirectSettings;
 import ish.oncourse.willow.editor.model.settings.SkillsOnCourseSettings;
 import ish.oncourse.willow.editor.model.settings.WebsiteSettings;
 
@@ -17,42 +16,29 @@ import javax.ws.rs.core.MediaType;
 public interface SettingsApi  {
 
     @GET
-    @Path("/getRedirectSettings")
+    @Path("/settings.skillsOnCourse.get")
     @Produces({ "application/json" })
     @AuthFilter
-    RedirectSettings getRedirectSettings();
+    SkillsOnCourseSettings settingsSkillsOnCourseGetGet();
+
+    @POST
+    @Path("/settings.skillsOnCourse.set")
+    @Consumes({ "application/json" })
+    @Produces({ "application/json" })
+    @AuthFilter
+    SkillsOnCourseSettings settingsSkillsOnCourseSetPost(SkillsOnCourseSettings skillsOnCourseSettingsRequest);
 
     @GET
-    @Path("/getSkillsOnCourseSettings")
+    @Path("/settings.website.get")
     @Produces({ "application/json" })
     @AuthFilter
-    SkillsOnCourseSettings getSkillsOnCourseSettings();
-
-    @GET
-    @Path("/getWebsiteSettings")
-    @Produces({ "application/json" })
-    @AuthFilter
-    WebsiteSettings getWebsiteSettings();
+    WebsiteSettings settingsWebsiteGetGet();
 
     @POST
-    @Path("/setRedirectSettings")
+    @Path("/settings.website.set")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @AuthFilter
-    RedirectSettings setRedirectSettings(RedirectSettings redirectSettingsRequest);
-
-    @POST
-    @Path("/setSkillsOnCourseSettings")
-    @Consumes({ "application/json" })
-    @Produces({ "application/json" })
-    @AuthFilter
-    SkillsOnCourseSettings setSkillsOnCourseSettings(SkillsOnCourseSettings skillsOnCourseSettingsRequest);
-
-    @POST
-    @Path("/setWebsiteSettings")
-    @Consumes({ "application/json" })
-    @Produces({ "application/json" })
-    @AuthFilter
-    WebsiteSettings setWebsiteSettings(WebsiteSettings websiteSettingsRequest);
+    WebsiteSettings settingsWebsiteSetPost(WebsiteSettings websiteSettingsRequest);
 }
 

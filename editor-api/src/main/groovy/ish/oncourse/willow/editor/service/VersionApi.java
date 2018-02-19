@@ -1,7 +1,6 @@
 package ish.oncourse.willow.editor.service;
 
 import ish.oncourse.willow.editor.model.Version;
-import ish.oncourse.willow.editor.model.api.SetVersionRequest;
 import ish.oncourse.willow.editor.model.common.CommonError;
 
 import java.io.InputStream;
@@ -13,26 +12,26 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.MediaType;
 
 @Path("/")
-public interface PublishApi  {
+public interface VersionApi  {
+
+    @POST
+    @Path("/version.draft.publish")
+    @Consumes({ "application/json" })
+    @Produces({ "application/json" })
+    @AuthFilter
+    void versionDraftPublishPost();
+
+    @POST
+    @Path("/version.draft.set/{id}")
+    @Consumes({ "application/json" })
+    @Produces({ "application/json" })
+    @AuthFilter
+    void versionDraftSetIdPost(@PathParam("id") String id);
 
     @GET
-    @Path("/getVersions")
+    @Path("/version.list")
     @Produces({ "application/json" })
     @AuthFilter
-    List<Version> getVersions();
-
-    @POST
-    @Path("/publish")
-    @Consumes({ "application/json" })
-    @Produces({ "application/json" })
-    @AuthFilter
-    void publish();
-
-    @POST
-    @Path("/setVersion")
-    @Consumes({ "application/json" })
-    @Produces({ "application/json" })
-    @AuthFilter
-    void setVersion(SetVersionRequest setVersionRequest);
+    List<Version> versionListGet();
 }
 

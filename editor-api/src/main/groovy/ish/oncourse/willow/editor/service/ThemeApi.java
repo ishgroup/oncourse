@@ -15,37 +15,37 @@ import javax.ws.rs.core.MediaType;
 @Path("/")
 public interface ThemeApi  {
 
-    @POST
-    @Path("/addTheme")
-    @Consumes({ "application/json" })
+    @GET
+    @Path("/layout.list")
     @Produces({ "application/json" })
     @AuthFilter
-    Theme addTheme();
+    List<Layout> layoutListGet();
 
     @POST
-    @Path("/deleteTheme/{themeName}")
+    @Path("/theme.create")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @AuthFilter
-    void deleteTheme(@PathParam("themeName") String themeName);
+    Theme themeCreatePost();
+
+    @POST
+    @Path("/theme.delete/{id}")
+    @Consumes({ "application/json" })
+    @Produces({ "application/json" })
+    @AuthFilter
+    void themeDeleteIdPost(@PathParam("id") String id);
 
     @GET
-    @Path("/getLayouts")
+    @Path("/theme.list")
     @Produces({ "application/json" })
     @AuthFilter
-    List<Layout> getLayouts();
-
-    @GET
-    @Path("/getThemes")
-    @Produces({ "application/json" })
-    @AuthFilter
-    List<Theme> getThemes();
+    List<Theme> themeListGet();
 
     @POST
-    @Path("/saveTheme")
+    @Path("/theme.update")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @AuthFilter
-    Theme saveTheme(Theme saveThemeRequest);
+    Theme themeUpdatePost(Theme saveThemeRequest);
 }
 
