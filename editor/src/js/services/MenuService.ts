@@ -13,6 +13,8 @@ class MenuService {
     const prepareItem = item => {
       delete item.expanded;
       delete item.error;
+      delete item.warning;
+
       if (item.children) {
         item.children.map(child => prepareItem(child));
       } else {
