@@ -175,7 +175,7 @@ public class PageIdentifierTest {
 		value.setInvalids("/site/kiosk", "/site/kiosk/","/site/kiosk/ ");
 		urls.put(KioskSite, value);
 
-		value =  new Urls();
+		value = new Urls();
 		value.setValids("/room/kiosk/1234",
 				"/room/kiosk/1234/",
 				"/room/kiosk/1234 ",
@@ -183,6 +183,11 @@ public class PageIdentifierTest {
 		);
 		value.setInvalids("/room/kiosk", "/room/kiosk/","/room/kiosk/ ");
 		urls.put(KioskRoom, value);
+
+		value = new Urls();
+		value.setValids("/ui/cvv");
+		value.setInvalids("/cvv", "/ui/cvv/1", "/enrol/cvv");
+		urls.put(Cvv, value);
 	}
 
 	private static Urls forExectMattcher(String prefix, boolean withInvalid)
