@@ -4,13 +4,13 @@ import com.google.inject.Inject
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.willow.editor.rest.UpdateMenu
 import ish.oncourse.willow.editor.rest.WebMenuToMenuItem
-import ish.oncourse.willow.editor.service.*
 import ish.oncourse.willow.editor.services.RequestService
+import ish.oncourse.willow.editor.v1.service.MenuApi
 import ish.oncourse.willow.editor.website.WebMenuFunctions
 import org.apache.cayenne.ObjectContext
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
-import ish.oncourse.willow.editor.model.MenuItem
+import ish.oncourse.willow.editor.v1.model.MenuItem
 
 import groovy.transform.CompileStatic
 import org.eclipse.jetty.server.Request
@@ -32,12 +32,12 @@ class MenuApiServiceImpl implements MenuApi {
         this.requestService = requestService
     }
     
-    List<MenuItem> getMenuItems() {
+    List<MenuItem> menuListGet() {
         WebMenuFunctions.getTopLelevMenus(requestService.request, cayenneService.newContext())
                 .collect { menu -> WebMenuToMenuItem.valueOf(menu).menuItem }
     }
     
-    List<MenuItem> saveMenuItems(List<MenuItem> menus) {
+    List<MenuItem> menuUpdatePost(List<MenuItem> menus) {
         ObjectContext context = cayenneService.newContext()
         Request request = requestService.request
         UpdateMenu updater = UpdateMenu.valueOf(menus, context, request).update()

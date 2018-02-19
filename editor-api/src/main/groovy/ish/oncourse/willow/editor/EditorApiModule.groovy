@@ -25,9 +25,10 @@ import ish.oncourse.willow.editor.v1.service.impl.AuthApiServiceImpl
 import ish.oncourse.willow.editor.v1.service.impl.BlockApiServiceImpl
 import ish.oncourse.willow.editor.v1.service.impl.MenuApiServiceImpl
 import ish.oncourse.willow.editor.v1.service.impl.PageApiServiceImpl
-import ish.oncourse.willow.editor.v1.service.impl.PublishApiServiceImpl
+import ish.oncourse.willow.editor.v1.service.impl.RedirectApiServiceImpl
 import ish.oncourse.willow.editor.v1.service.impl.SettingsApiServiceImpl
 import ish.oncourse.willow.editor.v1.service.impl.ThemeApiServiceImpl
+import ish.oncourse.willow.editor.v1.service.impl.VersionApiServiceImpl
 import org.apache.cxf.jaxrs.validation.JAXRSBeanValidationFeature
 
 import javax.servlet.FilterConfig
@@ -68,8 +69,9 @@ class EditorApiModule extends ConfigModule {
         CXFModule.contributeResources(binder).addBinding().to(BlockApiServiceImpl)
         CXFModule.contributeResources(binder).addBinding().to(ThemeApiServiceImpl)
         CXFModule.contributeResources(binder).addBinding().to(SettingsApiServiceImpl)
-        CXFModule.contributeResources(binder).addBinding().to(PublishApiServiceImpl)
+        CXFModule.contributeResources(binder).addBinding().to(VersionApiServiceImpl)
         CXFModule.contributeResources(binder).addBinding().to(MenuApiServiceImpl)
+        CXFModule.contributeResources(binder).addBinding().to(RedirectApiServiceImpl)
 
         binder.bind(RequestService)
         binder.bind(ZKSessionManager)

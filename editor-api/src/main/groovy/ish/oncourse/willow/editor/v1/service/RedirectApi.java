@@ -1,6 +1,6 @@
 package ish.oncourse.willow.editor.v1.service;
 
-import ish.oncourse.willow.editor.v1.model.redirect.RedirectSettings;
+import ish.oncourse.willow.editor.v1.model.redirect.Redirects;
 
 import javax.ws.rs.*;
 
@@ -13,13 +13,13 @@ public interface RedirectApi  {
     @Path("/v1/redirect.list")
     @Produces({ "application/json" })
     @AuthFilter
-    RedirectSettings redirectListGet();
+    Redirects redirectListGet();
 
     @POST
     @Path("/v1/redirect.update")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @AuthFilter
-    RedirectSettings redirectUpdatePost(RedirectSettings redirectSettingsRequest);
+    Redirects redirectUpdatePost(Redirects redirectSettingsRequest);
 }
 

@@ -1,19 +1,18 @@
 package ish.oncourse.willow.editor.v1.service.impl
 
 import com.google.inject.Inject
-import ish.oncourse.model.SystemUser
-import ish.oncourse.model.WillowUser
 import ish.oncourse.services.authentication.AuthenticationResult
 import ish.oncourse.services.authentication.AuthenticationStatus
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.willow.editor.service.*;
-import ish.oncourse.willow.editor.model.User;
-import ish.oncourse.willow.editor.model.LoginRequest;
-import ish.oncourse.willow.editor.model.common.CommonError;
+
 
 import groovy.transform.CompileStatic
 import ish.oncourse.willow.editor.services.access.AuthenticationService
 import ish.oncourse.willow.editor.services.access.UserService
+import ish.oncourse.willow.editor.v1.model.LoginRequest
+import ish.oncourse.willow.editor.v1.model.User
+import ish.oncourse.willow.editor.v1.model.common.CommonError
+import ish.oncourse.willow.editor.v1.service.AuthApi
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
@@ -38,7 +37,7 @@ class AuthApiServiceImpl implements AuthApi {
     
 
     @Override
-    User getUser() {
+    User userGetGet() {
         if (userService.userFirstName) {
             return new User().firstName(userService.userFirstName).lastName(userService.userLastName)
         } else {
@@ -48,7 +47,7 @@ class AuthApiServiceImpl implements AuthApi {
     }
 
     @Override
-    void login(LoginRequest loginRequest) {
+    void userLoginPost(LoginRequest loginRequest) {
         AuthenticationResult result =  authenticationService.authenticate(loginRequest.email, loginRequest.password, true)
         switch (result.status) {
             case AuthenticationStatus.SUCCESS:
@@ -65,7 +64,7 @@ class AuthApiServiceImpl implements AuthApi {
         }
     }
 
-    void logout() {
+    void userLogoutPost() {
         authenticationService.logout()
     }
     

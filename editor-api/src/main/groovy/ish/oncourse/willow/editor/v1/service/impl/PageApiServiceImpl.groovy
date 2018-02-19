@@ -2,18 +2,16 @@ package ish.oncourse.willow.editor.v1.service.impl
 
 import com.google.inject.Inject
 import ish.oncourse.linktransform.PageIdentifier
-import ish.oncourse.model.RegionKey
 import ish.oncourse.model.WebNode
 import ish.oncourse.services.persistence.ICayenneService
-import ish.oncourse.willow.editor.model.common.CommonError
+import ish.oncourse.willow.editor.v1.model.common.CommonError
 import ish.oncourse.willow.editor.rest.UpdatePage
 import ish.oncourse.willow.editor.rest.WebNodeToPage
-import ish.oncourse.willow.editor.service.*
-import ish.oncourse.willow.editor.model.Page
-import ish.oncourse.willow.editor.model.api.PageRenderResponse
+import ish.oncourse.willow.editor.v1.model.Page
 
 import groovy.transform.CompileStatic
 import ish.oncourse.willow.editor.services.RequestService
+import ish.oncourse.willow.editor.v1.service.PageApi
 import ish.oncourse.willow.editor.website.WebNodeFunctions
 import org.apache.cayenne.ObjectContext
 import org.apache.commons.lang3.StringUtils
@@ -40,7 +38,7 @@ class PageApiServiceImpl implements PageApi {
         this.requestService = requestService
     }
 
-    Page addPage() {
+    Page pageCreatePost() {
         ObjectContext context = cayenneService.newContext()
         WebNode node = WebNodeFunctions.createNewNode(requestService.request, context)
         context.commitChanges()
@@ -48,7 +46,7 @@ class PageApiServiceImpl implements PageApi {
         return WebNodeToPage.valueOf(node).page
     }
     
-    void deletePage(String id) {
+    void pageDeleteIdPost(String id) {
         ObjectContext ctx = cayenneService.newContext()
         WebNode node = WebNodeFunctions.getNodeForId(id.toLong(), requestService.request, cayenneService.newContext())
 
@@ -63,7 +61,7 @@ class PageApiServiceImpl implements PageApi {
         }
     }
     
-    Page getPageByUrl(String pageUrl) {
+    Page pageGetGet(String pageUrl) {
         if (!StringUtils.trimToNull(pageUrl)) {
             throw createClientException("Page url required." )
         }
@@ -84,12 +82,12 @@ class PageApiServiceImpl implements PageApi {
         }
     }
     
-    List<Page> getPages() {
+    List<Page> pageListGet() {
         return WebNodeFunctions.getNodes(requestService.request, cayenneService.newContext())
                 .collect { node -> WebNodeToPage.valueOf(node).page }
     }
     
-    Page savePage(Page pageParams) {
+    Page pageUpdatePost(Page pageParams) {
         ObjectContext context = cayenneService.newContext()
         UpdatePage updater = UpdatePage.valueOf(pageParams, context, requestService.request).update()
         if (updater.error) {
@@ -104,6 +102,5 @@ class PageApiServiceImpl implements PageApi {
         logger.error("$message, server name: $requestService.request.serverName")
         new ClientErrorException(Response.status(400).entity(new CommonError(message: message)).build())
     }
-    
 }
 

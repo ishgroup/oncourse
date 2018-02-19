@@ -635,7 +635,7 @@ paths:
         '200':
           description: response with redirect settings object
           schema:
-            $ref: '#/definitions/redirect.RedirectSettings'
+            $ref: '#/definitions/redirect.Redirects'
         default:
           description: Unexpected error
           schema:
@@ -657,12 +657,12 @@ paths:
           description: redirect settings object
           required: true
           schema:
-            $ref: '#/definitions/redirect.RedirectSettings'
+            $ref: '#/definitions/redirect.Redirects'
       responses:
         '200':
           description: Updated redirect settings object
           schema:
-            $ref: '#/definitions/redirect.RedirectSettings'
+            $ref: '#/definitions/redirect.Redirects'
         default:
           description: Unexpected error
           schema:
@@ -945,13 +945,13 @@ definitions:
         type: string
         description: Redirect to url
         
-  redirect.RedirectSettings:
+  redirect.Redirects:
     type: object
     properties:
       rules:
         type: array
         items:
-          $ref: '#/definitions/settings.RedirectItem'
+          $ref: '#/definitions/redirect.RedirectItem'
           
   settings.SkillsOnCourseSettings:
     type: object

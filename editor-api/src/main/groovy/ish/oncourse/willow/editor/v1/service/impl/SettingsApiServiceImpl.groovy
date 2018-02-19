@@ -6,21 +6,19 @@ import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.services.preference.GetEnrolSuccessUrl
 import ish.oncourse.services.preference.GetPreference
 import ish.oncourse.services.preference.GetRefundPolicyUrl
-import ish.oncourse.willow.editor.model.common.CommonError
-import ish.oncourse.willow.editor.model.settings.ClassAge
-import ish.oncourse.willow.editor.model.settings.ClassCondition
-import ish.oncourse.willow.editor.model.settings.ClassEnrolmentCondition
-import ish.oncourse.willow.editor.model.settings.RedirectItem
+import ish.oncourse.willow.editor.v1.model.common.CommonError
+import ish.oncourse.willow.editor.v1.model.settings.ClassAge
+import ish.oncourse.willow.editor.v1.model.settings.ClassCondition
+import ish.oncourse.willow.editor.v1.model.settings.ClassEnrolmentCondition
 import ish.oncourse.willow.editor.rest.UpdateRedirects
 import ish.oncourse.willow.editor.service.*
-import ish.oncourse.willow.editor.model.settings.RedirectSettings
-import ish.oncourse.willow.editor.model.settings.SkillsOnCourseSettings
-import ish.oncourse.willow.editor.model.settings.WebsiteSettings
+import ish.oncourse.willow.editor.v1.model.settings.SkillsOnCourseSettings
+import ish.oncourse.willow.editor.v1.model.settings.WebsiteSettings
 
 import groovy.transform.CompileStatic
 import ish.oncourse.willow.editor.services.RequestService
+import ish.oncourse.willow.editor.v1.service.SettingsApi
 import ish.oncourse.willow.editor.website.WebSiteFunctions
-import ish.oncourse.willow.editor.website.WebUrlAliasFunctions
 import org.apache.cayenne.ObjectContext
 import org.apache.commons.lang3.StringUtils
 import org.apache.logging.log4j.LogManager
@@ -46,32 +44,7 @@ class SettingsApiServiceImpl implements SettingsApi {
     }
     
     
-    
-    RedirectSettings getRedirectSettings() {
-        return new RedirectSettings()
-                .rules( WebUrlAliasFunctions.getRedirects(requestService.request, cayenneService.newContext())
-                    .collect { alias  -> new RedirectItem().with { redirect ->
-                                redirect.from = alias.urlPath
-                                redirect.to = alias.redirectTo
-                                redirect
-                             } 
-                    })
-    }
-
-    RedirectSettings setRedirectSettings(RedirectSettings redirectSettingsRequest) {
-        ObjectContext context = cayenneService.newContext()
-        UpdateRedirects updater = UpdateRedirects.valueOf(redirectSettingsRequest, context, requestService.request).update()
-        
-        if (updater.errors.empty) {
-            context.commitChanges()
-            return redirectSettingsRequest
-        } else {
-            context.rollbackChanges()
-            throw createClientException(updater.errors.join('\n'))
-        }
-    }
-    
-    SkillsOnCourseSettings getSkillsOnCourseSettings() {
+    SkillsOnCourseSettings settingsSkillsOnCourseGetGet() {
         ObjectContext context = cayenneService.newContext()
         College college = WebSiteFunctions.getCurrentCollege(requestService.request, context)
         return new SkillsOnCourseSettings().with { settings ->
@@ -83,7 +56,7 @@ class SettingsApiServiceImpl implements SettingsApi {
         
     }
 
-    SkillsOnCourseSettings setSkillsOnCourseSettings(SkillsOnCourseSettings skillsOnCourseSettingsRequest) {
+    SkillsOnCourseSettings settingsSkillsOnCourseSetPost(SkillsOnCourseSettings skillsOnCourseSettingsRequest) {
         ObjectContext context = cayenneService.newContext()
         College college = WebSiteFunctions.getCurrentCollege(requestService.request, context)
         
@@ -95,7 +68,7 @@ class SettingsApiServiceImpl implements SettingsApi {
         return skillsOnCourseSettingsRequest
     }
     
-    WebsiteSettings getWebsiteSettings() {
+    WebsiteSettings settingsWebsiteGetGet() {
         ObjectContext context = cayenneService.newContext()
         College college = WebSiteFunctions.getCurrentCollege(requestService.request, context)
         
@@ -122,7 +95,7 @@ class SettingsApiServiceImpl implements SettingsApi {
     }
     
     
-    WebsiteSettings setWebsiteSettings(WebsiteSettings settings) {
+    WebsiteSettings settingsWebsiteSetPost(WebsiteSettings settings) {
         ObjectContext context = cayenneService.newContext()
         College college = WebSiteFunctions.getCurrentCollege(requestService.request, context)
         

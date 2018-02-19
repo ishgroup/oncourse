@@ -1,7 +1,7 @@
 package ish.oncourse.willow.editor.rest
 
 import ish.oncourse.model.WebContent
-import ish.oncourse.willow.editor.model.Block
+import ish.oncourse.willow.editor.v1.model.Block
 
 class WebContentToBlock {
 

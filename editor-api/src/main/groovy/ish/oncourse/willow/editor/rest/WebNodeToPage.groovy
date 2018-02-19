@@ -2,7 +2,7 @@ package ish.oncourse.willow.editor.rest
 
 import ish.oncourse.model.RegionKey
 import ish.oncourse.model.WebNode
-import ish.oncourse.willow.editor.model.Page
+import ish.oncourse.willow.editor.v1.model.Page
 
 class WebNodeToPage {
     

@@ -3,15 +3,16 @@ package ish.oncourse.willow.editor.v1.service.impl
 import com.google.inject.Inject
 import ish.oncourse.model.WebNodeType
 import ish.oncourse.services.persistence.ICayenneService
-import ish.oncourse.willow.editor.model.Layout
+import ish.oncourse.willow.editor.v1.model.Layout
 import ish.oncourse.willow.editor.rest.UpdateTheme
 import ish.oncourse.willow.editor.rest.WebNodeTypeToTheme
 import ish.oncourse.willow.editor.service.*
-import ish.oncourse.willow.editor.model.Theme
-import ish.oncourse.willow.editor.model.common.CommonError
+import ish.oncourse.willow.editor.v1.model.Theme
+import ish.oncourse.willow.editor.v1.model.common.CommonError
 
 import groovy.transform.CompileStatic
 import ish.oncourse.willow.editor.services.RequestService
+import ish.oncourse.willow.editor.v1.service.ThemeApi
 import ish.oncourse.willow.editor.website.WebNodeTypeFunctions
 import ish.oncourse.willow.editor.website.WebSiteLayoutFunctions
 import org.apache.cayenne.ObjectContext
@@ -59,7 +60,7 @@ class ThemeApiServiceImpl implements ThemeApi {
         context.commitChanges()
     }
     
-    List<Layout> getLayouts() {
+    List<Layout> layoutListGet() {
         WebSiteLayoutFunctions.getLayouts(requestService.request, cayenneService.newContext())
                 .collect { webLayout -> new  Layout().with { layout ->
                     layout.id = webLayout.id.intValue()

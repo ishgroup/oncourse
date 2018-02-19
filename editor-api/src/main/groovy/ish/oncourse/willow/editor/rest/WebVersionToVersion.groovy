@@ -1,7 +1,7 @@
 package ish.oncourse.willow.editor.rest
 
 import ish.oncourse.model.WebSiteVersion
-import ish.oncourse.willow.editor.model.Version
+import ish.oncourse.willow.editor.v1.model.Version
 
 import java.time.ZoneOffset
 

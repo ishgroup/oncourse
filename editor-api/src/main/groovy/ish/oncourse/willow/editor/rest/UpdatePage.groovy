@@ -7,9 +7,9 @@ import ish.oncourse.model.WebNodeType
 import ish.oncourse.model.WebUrlAlias
 import ish.oncourse.services.textile.ConvertCoreTextile
 import ish.oncourse.utils.ResourceNameValidator
-import ish.oncourse.willow.editor.model.Block
-import ish.oncourse.willow.editor.model.Page
-import ish.oncourse.willow.editor.model.PageUrl
+import ish.oncourse.willow.editor.v1.model.Block
+import ish.oncourse.willow.editor.v1.model.Page
+import ish.oncourse.willow.editor.v1.model.PageUrl
 import ish.oncourse.willow.editor.website.ResourceNameUtil
 import ish.oncourse.willow.editor.website.WebContentFunctions
 import ish.oncourse.willow.editor.website.WebNodeFunctions

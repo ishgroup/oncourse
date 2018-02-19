@@ -1,7 +1,7 @@
 package ish.oncourse.willow.editor.rest
 
 import ish.oncourse.model.WebUrlAlias
-import ish.oncourse.willow.editor.model.PageUrl
+import ish.oncourse.willow.editor.v1.model.PageUrl
 
 class WebUrlAliasToPageUrl {
 

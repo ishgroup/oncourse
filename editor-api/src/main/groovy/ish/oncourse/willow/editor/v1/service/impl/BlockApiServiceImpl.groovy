@@ -4,14 +4,13 @@ import com.google.inject.Inject
 import ish.oncourse.model.WebContent
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.willow.editor.rest.UpdateBlock
-import ish.oncourse.willow.editor.rest.UpdatePage
 import ish.oncourse.willow.editor.rest.WebContentToBlock
-import ish.oncourse.willow.editor.service.*
-import ish.oncourse.willow.editor.model.Block
-import ish.oncourse.willow.editor.model.common.CommonError
+import ish.oncourse.willow.editor.v1.model.Block
+import ish.oncourse.willow.editor.v1.model.common.CommonError
 
 import groovy.transform.CompileStatic
 import ish.oncourse.willow.editor.services.RequestService
+import ish.oncourse.willow.editor.v1.service.BlockApi
 import ish.oncourse.willow.editor.website.WebContentFunctions
 import org.apache.cayenne.ObjectContext
 import org.apache.logging.log4j.LogManager
@@ -34,7 +33,7 @@ class BlockApiServiceImpl implements BlockApi {
         this.requestService = requestService
     }
 
-    Block addBlock() {
+    Block blockCreatePost() {
         ObjectContext context = cayenneService.newContext()
         WebContent webContent = WebContentFunctions.createNewWebContent(requestService.request, context)
         context.commitChanges()
@@ -42,7 +41,7 @@ class BlockApiServiceImpl implements BlockApi {
     }
 
     @Override
-    void deleteBlock(String id) {
+    void blockDeleteIdPost(String id) {
         ObjectContext context = cayenneService.newContext()
         WebContent block = WebContentFunctions.getBlockById(requestService.request, context, id.toLong())
         
@@ -58,12 +57,12 @@ class BlockApiServiceImpl implements BlockApi {
         }
     }
     
-    List<Block> getBlocks() {
+    List<Block> blockListGet() {
         WebContentFunctions.getBlocks(requestService.request, cayenneService.newContext())
                 .collect { node -> WebContentToBlock.valueOf(node).block }
     }
     
-    Block saveBlock(Block saveBlockRequest) {
+    Block blockUpdatePost(Block saveBlockRequest) {
         ObjectContext context = cayenneService.newContext()
         UpdateBlock updater = UpdateBlock.valueOf(saveBlockRequest, context, requestService.request).update()
         if (updater.error) {

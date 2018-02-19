@@ -1,10 +1,10 @@
 package ish.oncourse.willow.editor.v1.model.redirect;
 
-import ish.oncourse.willow.editor.v1.model.settings.RedirectItem;
+import ish.oncourse.willow.editor.v1.model.redirect.RedirectItem;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RedirectSettings  {
+public class Redirects  {
   
     private List<RedirectItem> rules = new ArrayList<RedirectItem>();
 
@@ -20,12 +20,12 @@ public class RedirectSettings  {
        this.rules = rules;
     }
 
-    public RedirectSettings rules(List<RedirectItem> rules) {
+    public Redirects rules(List<RedirectItem> rules) {
       this.rules = rules;
       return this;
     }
 
-    public RedirectSettings addRulesItem(RedirectItem rulesItem) {
+    public Redirects addRulesItem(RedirectItem rulesItem) {
       this.rules.add(rulesItem);
       return this;
     }

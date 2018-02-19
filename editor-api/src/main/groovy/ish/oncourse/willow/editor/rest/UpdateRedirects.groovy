@@ -4,15 +4,15 @@ import ish.oncourse.linktransform.URLPath
 import ish.oncourse.model.WebSiteVersion
 import ish.oncourse.model.WebUrlAlias
 import ish.oncourse.util.ISHUrlValidator
-import ish.oncourse.willow.editor.model.settings.RedirectItem
-import ish.oncourse.willow.editor.model.settings.RedirectSettings
+import ish.oncourse.willow.editor.v1.model.redirect.RedirectItem
+import ish.oncourse.willow.editor.v1.model.redirect.Redirects
 import ish.oncourse.willow.editor.website.WebSiteVersionFunctions
 import ish.oncourse.willow.editor.website.WebUrlAliasFunctions
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.ObjectId
 import org.eclipse.jetty.server.Request
 
-class UpdateRedirects extends AbstractUpdate<RedirectSettings> {
+class UpdateRedirects extends AbstractUpdate<Redirects> {
 
   
     private List<String> errors = []
@@ -25,7 +25,7 @@ class UpdateRedirects extends AbstractUpdate<RedirectSettings> {
     
     private UpdateRedirects() {}
     
-    static UpdateRedirects valueOf(RedirectSettings redirects, ObjectContext context, Request request) {
+    static UpdateRedirects valueOf(Redirects redirects, ObjectContext context, Request request) {
         UpdateRedirects updater = new UpdateRedirects()
         updater.init(redirects, context, request)
         updater.version = WebSiteVersionFunctions.getCurrentVersion(request, context)

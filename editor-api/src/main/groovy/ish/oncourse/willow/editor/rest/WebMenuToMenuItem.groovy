@@ -1,8 +1,7 @@
 package ish.oncourse.willow.editor.rest
 
 import ish.oncourse.model.WebMenu
-import ish.oncourse.willow.editor.model.MenuItem
-import ish.oncourse.willow.editor.model.menuitem.Errors
+import ish.oncourse.willow.editor.v1.model.MenuItem
 import ish.oncourse.willow.editor.website.WebMenuFunctions
 import org.apache.commons.lang3.StringUtils
 

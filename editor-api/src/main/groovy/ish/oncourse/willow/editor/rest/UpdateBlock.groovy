@@ -2,7 +2,7 @@ package ish.oncourse.willow.editor.rest
 
 import ish.oncourse.model.WebContent
 import ish.oncourse.services.textile.ConvertCoreTextile
-import ish.oncourse.willow.editor.model.Block
+import ish.oncourse.willow.editor.v1.model.Block
 import ish.oncourse.willow.editor.website.ResourceNameUtil
 import ish.oncourse.willow.editor.website.WebContentFunctions
 import org.apache.cayenne.ObjectContext

@@ -3,9 +3,9 @@ package ish.oncourse.willow.editor.rest
 import ish.oncourse.model.RegionKey
 import ish.oncourse.model.WebNodeType
 import ish.oncourse.services.content.BlocksForRegionKey
-import ish.oncourse.willow.editor.model.BlockItem
-import ish.oncourse.willow.editor.model.Theme
-import ish.oncourse.willow.editor.model.ThemeSchema
+import ish.oncourse.willow.editor.v1.model.BlockItem
+import ish.oncourse.willow.editor.v1.model.Theme
+import ish.oncourse.willow.editor.v1.model.ThemeSchema
 
 import static ish.oncourse.model.RegionKey.*
 

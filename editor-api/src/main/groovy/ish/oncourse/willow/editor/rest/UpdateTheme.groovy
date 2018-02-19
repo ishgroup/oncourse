@@ -5,8 +5,8 @@ import ish.oncourse.model.WebContent
 import ish.oncourse.model.WebContentVisibility
 import ish.oncourse.model.WebNodeType
 import ish.oncourse.model.WebSiteLayout
-import ish.oncourse.willow.editor.model.BlockItem
-import ish.oncourse.willow.editor.model.Theme
+import ish.oncourse.willow.editor.v1.model.BlockItem
+import ish.oncourse.willow.editor.v1.model.Theme
 import ish.oncourse.willow.editor.website.ResourceNameUtil
 import ish.oncourse.willow.editor.website.WebContentFunctions
 import ish.oncourse.willow.editor.website.WebNodeTypeFunctions
