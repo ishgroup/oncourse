@@ -120,4 +120,6 @@ public interface PaymentInterface extends PrintableObject, PersistentObjectI {
 	void setUndepositedFundsAccount(AccountInterface account);
 	
 	CreditCardType getCreditCardType();
+
+	String getStatusString();
 }

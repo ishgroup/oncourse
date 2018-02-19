@@ -9,6 +9,7 @@ package ish.oncourse.cayenne;
  */
 public interface PaymentInInterface extends PaymentInterface {
 
-	public ContactInterface getPayer();
+	ContactInterface getPayer();
 
+	boolean isRelatedToReverse();
 }
