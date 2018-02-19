@@ -9,7 +9,8 @@ info:
     email: support@ish.com.au
   license:
     name: Closed
-
+  version: 1
+  
 
 schemes:
   - https
@@ -21,9 +22,22 @@ securityDefinitions:
     description: HTTP Basic Authentication
 
 
+servers:
+
+- url: https://{siteKey}.oncourse.cc/editor/{basePath}/
+  description: The production API server
+  variables:
+    siteKey:
+      default: template-a
+      description: this value is assigned by the service provider
+    basePath:
+      default: v1
+      description: API version base path
+
+
 paths:
 
-  /login:
+  /user.login:
     post:
       operationId: login
       summary: Authenticate user by email and password. Put session toke to cookie on success
@@ -37,7 +51,7 @@ paths:
           description: Params for request user authorization
           required: true
           schema:
-            $ref: '#/definitions/api.LoginRequest'
+            $ref: '#/definitions/LoginRequest'
       responses:
         '200':
           description: Ok response
@@ -47,8 +61,24 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+            
+  /user.logout:
+    post:
+      operationId: logout
+      summary: De-authorize user from editor
+      tags:
+        - Auth
+      consumes:
+        - application/json
+      responses:
+        '200':
+          description: Success logout with null response
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
 
-  /getUser:
+  /user.get:
     get:
       x-filter:  
         - AuthFilter
@@ -68,23 +98,7 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
-  /logout:
-    post:
-      operationId: logout
-      summary: De-authorize user from editor
-      tags:
-        - Auth
-      consumes:
-        - application/json
-      responses:
-        '200':
-          description: Success logout with null response
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/common.CommonError'
-
-  /getMenuItems:
+  /menu.list:
     get:
       x-filter:  
       - AuthFilter
@@ -105,7 +119,7 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
-  /saveMenuItems:
+  /menu.update:
     post:
       x-filter:  
       - AuthFilter
@@ -143,7 +157,7 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
-  /getPages:
+  /page.list:
     get:
       x-filter:  
       - AuthFilter
@@ -163,7 +177,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /getPageByUrl:
+  /page.get:
     get:
       x-filter:  
       - AuthFilter
@@ -189,7 +203,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /savePage:
+  /page.update:
     post:
       x-filter:  
       - AuthFilter
@@ -217,7 +231,7 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
-  /addPage:
+  /page.create:
     post:
       x-filter:  
       - AuthFilter
@@ -238,7 +252,7 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
-  /deletePage/{id}:
+  /page.delete/{id}:
     post:
       x-filter:  
       - AuthFilter
@@ -264,7 +278,7 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
-  /getBlocks:
+  /block.list:
     get:
       x-filter:  
       - AuthFilter
@@ -284,7 +298,7 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
-  /saveBlock:
+  /block.update:
     post:
       x-filter:  
       - AuthFilter
@@ -312,7 +326,7 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
-  /addBlock:
+  /block.create:
     post:
       x-filter:  
       - AuthFilter
@@ -333,7 +347,7 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
-  /deleteBlock/{id}:
+  /block.delete/{id}:
     post:
       x-filter:  
       - AuthFilter
@@ -359,27 +373,7 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
-  /getThemes:
-    get:
-      x-filter:  
-      - AuthFilter
-      summary: Get array of themes
-      operationId: getThemes
-      description: Get array of themes
-      tags:
-        - Theme
-      responses:
-        '200':
-          description: response with array of themes
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/Theme'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/common.CommonError'
-  /getLayouts:
+  /layout.list:
     get:
       x-filter:  
       - AuthFilter
@@ -399,7 +393,29 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /saveTheme:
+            
+  /theme.list:
+    get:
+      x-filter:  
+      - AuthFilter
+      summary: Get array of themes
+      operationId: getThemes
+      description: Get array of themes
+      tags:
+        - Theme
+      responses:
+        '200':
+          description: response with array of themes
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Theme'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+            
+  /theme.update:
     post:
       x-filter:  
       - AuthFilter
@@ -426,7 +442,8 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /addTheme:
+            
+  /theme.create:
     post:
       x-filter:  
       - AuthFilter
@@ -446,11 +463,12 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /deleteTheme/{themeName}:
+            
+  /theme.delete/{id}:
     post:
       x-filter:  
       - AuthFilter
-      summary: Remove theme by provided name
+      summary: Remove theme by unique identifier
       operationId: deleteTheme
       description: Remove theme
       tags:
@@ -458,7 +476,7 @@ paths:
       consumes:
         - application/json
       parameters:
-        - name: themeName
+        - name: id
           in: path
           description: identificator of theme which will be deleted
           required: true
@@ -472,7 +490,7 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
-  /getVersions:
+  /version.list:
     get:
       x-filter:  
       - AuthFilter
@@ -480,7 +498,7 @@ paths:
       operationId: getVersions
       description: Get array of published versions. Not supported yet
       tags:
-        - Publish
+        - Version
       responses:
         '200':
           description: response with array of published versions
@@ -493,23 +511,23 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
-  /setVersion:
+  /version.draft.set/{id}:
     post:
       x-filter:  
       - AuthFilter
       summary: Set current published version by provided version Id. Not supported yet
       operationId: setVersion
       tags:
-        - Publish
+        - Version
       consumes:
         - application/json
       parameters:
-        - name: SetVersionRequest
-          in: body
-          description: Version id
+        - name: id
+          in: path
+          description: identificator of version
           required: true
           schema:
-            $ref: '#/definitions/api.SetVersionRequest'
+            type: string
       responses:
         '200':
           description: Version changed successfully
@@ -518,7 +536,7 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
-  /publish:
+  /version.draft.publish:
     post:
       x-filter:  
       - AuthFilter
@@ -526,7 +544,7 @@ paths:
       operationId: publish
       description: Publish current draft changes to live site. Support basic Authentication
       tags:
-        - Publish
+        - Version
       consumes:
         - application/json
       responses:
@@ -537,7 +555,7 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
-  /getSkillsOnCourseSettings:
+  /settings.skillsOnCourse.get:
     get:
       x-filter:  
       - AuthFilter
@@ -556,7 +574,7 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
-  /setSkillsOnCourseSettings:
+  /settings.skillsOnCourse.set:
     post:
       x-filter:  
       - AuthFilter
@@ -584,54 +602,7 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
-  /getRedirectSettings:
-    get:
-      x-filter:  
-      - AuthFilter
-      operationId: getRedirectSettings
-      summary: Get redirect settings
-      description: Get redirect settings
-      tags:
-        - Settings
-      responses:
-        '200':
-          description: response with redirect settings object
-          schema:
-            $ref: '#/definitions/settings.RedirectSettings'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/common.CommonError'
-
-  /setRedirectSettings:
-    post:
-      x-filter:  
-      - AuthFilter
-      summary: Save redirect settings
-      operationId: setRedirectSettings
-      description: Save redirect settings
-      tags:
-        - Settings
-      consumes:
-        - application/json
-      parameters:
-        - name: RedirectSettingsRequest
-          in: body
-          description: redirect settings object
-          required: true
-          schema:
-            $ref: '#/definitions/settings.RedirectSettings'
-      responses:
-        '200':
-          description: Updated redirect settings object
-          schema:
-            $ref: '#/definitions/settings.RedirectSettings'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/common.CommonError'
-
-  /getWebsiteSettings:
+  /settings.website.get:
     get:
       x-filter:  
       - AuthFilter
@@ -650,7 +621,7 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
-  /setWebsiteSettings:
+  /settings.website.set:
     post:
       x-filter:  
       - AuthFilter
@@ -678,37 +649,79 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
+  /redirect.list:
+    get:
+      x-filter:  
+      - AuthFilter
+      operationId: getRedirectSettings
+      summary: Get redirect settings
+      description: Get redirect settings
+      tags:
+        - Settings
+      responses:
+        '200':
+          description: response with redirect settings object
+          schema:
+            $ref: '#/definitions/redirect.RedirectSettings'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
 
+  /redirect.update:
+    post:
+      x-filter:  
+      - AuthFilter
+      summary: Save redirect settings
+      operationId: setRedirectSettings
+      description: Save redirect settings
+      tags:
+        - Settings
+      consumes:
+        - application/json
+      parameters:
+        - name: RedirectSettingsRequest
+          in: body
+          description: redirect settings object
+          required: true
+          schema:
+            $ref: '#/definitions/redirect.RedirectSettings'
+      responses:
+        '200':
+          description: Updated redirect settings object
+          schema:
+            $ref: '#/definitions/redirect.RedirectSettings'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+            
+            
 parameters:
-  XOrigin:
-    name: X-Origin
-    in: header
-    description: Site URL which we send with every request.
-    example: acme.oncourse.cc
-    required: true
-    type: string
-  Session:
-    name: X-Session-Token
-    in: header
-    description: User's session token
-    required: true
-    type: string
 
+  Session:
+    name: ESESSIONID
+    in: cookie
+    description: User's session token
+    required: false
+    type: string
 
 
 definitions:
 
-  api.LoginRequest:
+  LoginRequest:
     type: object
     properties:
       email:
         type: string
         format: email
+        required: true
         description: user email
         example: john.smith@gmail.com
       password:
         type: string
         format: password
+        required: true
         description: User password
         example: htrgjat4Gh
 
@@ -731,10 +744,12 @@ definitions:
         description: Unique identifier of block
       title:
         type: string
+        required: true
         description: Unique name of block
         example: sidebar
       content:
         type: string
+        required: true
         description: Rich text content
         example: |
           h3. Subjects
@@ -785,20 +800,28 @@ definitions:
         description: serial number of the page. Can be used to proceed to page by technical path /page/10
         example: 10
       title:
+        required: true
         type: string
         description: title of the page
         example: Contact us
       themeId:
+        required: true
         type: integer
         description: theme id used for the page
       content:
+        required: true
         type: string
         description: Rich text content
         example: |
           Phone us on (02) 9550 5001 to find out more.
       visible:
+        required: true
         type: boolean
         description: Is the page visible
+      suppressOnSitemap:
+        required: true
+        type: boolean
+        description: Is the page suppressed on sitemap
       urls:
         type: array
         items:
@@ -808,9 +831,11 @@ definitions:
     type: object
     properties:
       id:
+        required: true
         type: integer
         description: unique id of the Block
       position:
+        required: true
         type: integer
         description: order position of the block
         example: 2
@@ -846,13 +871,16 @@ definitions:
         type: integer
         description: Unique identifier of theme
       title:
+        required: true
         type: string
         description: title of theme
         example: default
       layoutId:
+        required: true
         type: integer
         description: Layout id which is used for this theme
       schema:
+        required: true
         $ref: '#/definitions/ThemeSchema'
 
   MenuItem:
@@ -862,10 +890,12 @@ definitions:
         type: integer
         description: Unique identifier of menu item
       title:
+        required: true
         type: string
         description: title of menu item
         example: about us
       url:
+        required: true
         type: string
         format: uri
         description: url for menu link
@@ -930,22 +960,27 @@ definitions:
               type: string
               description: 'Errors for particular field, or empty array'
         description: 'Array of fields errors, or empty array'
-  settings.RedirectItem:
+        
+  redirect.RedirectItem:
     type: object
     properties:
       from:
+        required: true
         type: string
         description: Redirect from url
       to:
+        required: true
         type: string
         description: Redirect to url
-  settings.RedirectSettings:
+        
+  redirect.RedirectSettings:
     type: object
     properties:
       rules:
         type: array
         items:
           $ref: '#/definitions/settings.RedirectItem'
+          
   settings.SkillsOnCourseSettings:
     type: object
     properties:
@@ -955,6 +990,7 @@ definitions:
         type: boolean
       tutorFeedbackEmail:
         type: string
+        
   settings.ClassCondition:
     type: string
     enum:
@@ -962,12 +998,14 @@ definitions:
       - beforeClassStarts
       - afterClassEnds
       - beforeClassEnds
+      
   settings.ClassEnrolmentCondition:
     type: string
     enum:
       - afterClassStarts
       - beforeClassStarts
       - beforeClassEnds
+      
   settings.ClassAge:
     type: object
     properties:
@@ -979,6 +1017,7 @@ definitions:
         type: integer
       stopWebEnrolmentCondition:
         $ref: '#/definitions/settings.ClassEnrolmentCondition'
+        
   settings.WebsiteSettings:
     type: object
     properties:
