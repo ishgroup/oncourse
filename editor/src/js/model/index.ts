@@ -24,8 +24,11 @@ export {Version} from "./Version";
 
 // Settings
 export {SkillsOnCourseSettings} from "./settings/SkillsOnCourseSettings";
-export {RedirectSettings} from "./settings/RedirectSettings";
 export {WebsiteSettings} from "./settings/WebsiteSettings";
 
+// Redirects
+export {RedirectSettings} from "./redirect/RedirectSettings";
+export {RedirectItem} from "./redirect/RedirectItem";
+
 // Api
-export {LoginRequest} from "./api/LoginRequest";
+export {LoginRequest} from "./LoginRequest";

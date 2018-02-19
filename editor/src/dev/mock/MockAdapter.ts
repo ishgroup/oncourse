@@ -8,7 +8,7 @@ import {menuApiMock} from "./api/MenuApiMock";
 import {pageApiMock} from "./api/PageApiMock";
 import {blockApiMock} from "./api/BlockApiMock";
 import {themeApiMock} from "./api/ThemeApiMock";
-import {publishApiMock} from "./api/PublishApiMock";
+import {versionApiMock} from "./api/versionApiMock";
 import {settingsApiMock} from "./api/SettingsApiMock";
 
 export class MockAdapter {
@@ -21,9 +21,10 @@ export class MockAdapter {
     pageApiMock.apply(this);
     blockApiMock.apply(this);
     themeApiMock.apply(this);
-    publishApiMock.apply(this);
+    versionApiMock.apply(this);
     settingsApiMock.apply(this);
 
+    // handle all remaining requests
     this.api.onAny().reply(config => {
       console.warn('UNHANDLED REQUEST');
       console.log(config);

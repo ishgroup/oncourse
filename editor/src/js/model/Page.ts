@@ -31,6 +31,11 @@ export class Page {
    * Is the page visible
    */
   visible?: boolean;
+
+  /**
+   * Is the page suppressed on sitemap
+   */
+  suppressOnSitemap?: boolean;
   urls?: PageUrl[];
 }
 

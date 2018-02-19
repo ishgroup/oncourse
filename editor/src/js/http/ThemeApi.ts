@@ -8,18 +8,18 @@ export class ThemeApi {
   }
 
   addTheme(): Promise<Theme> {
-    return this.http.POST(`/addTheme`);
+    return this.http.POST(`/theme.create`);
   }
-  deleteTheme(themeName: string): Promise<any> {
-    return this.http.POST(`/deleteTheme/${themeName}`);
+  deleteTheme(id: string): Promise<any> {
+    return this.http.POST(`/theme.delete/${id}`);
   }
   getLayouts(): Promise<Layout[]> {
-    return this.http.GET(`/getLayouts`);
+    return this.http.GET(`/layout.list`);
   }
   getThemes(): Promise<Theme[]> {
-    return this.http.GET(`/getThemes`);
+    return this.http.GET(`/theme.list`);
   }
   saveTheme(saveThemeRequest: Theme): Promise<Theme> {
-    return this.http.POST(`/saveTheme`, saveThemeRequest);
+    return this.http.POST(`/theme.update`, saveThemeRequest);
   }
 }

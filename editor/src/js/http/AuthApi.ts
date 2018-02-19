@@ -1,6 +1,6 @@
 import {HttpService} from "../common/services/HttpService";
+import {LoginRequest} from "../model/LoginRequest";
 import {User} from "../model/User";
-import {LoginRequest} from "../model/api/LoginRequest";
 import {CommonError} from "../model/common/CommonError";
 
 export class AuthApi {
@@ -8,12 +8,12 @@ export class AuthApi {
   }
 
   getUser(): Promise<User> {
-    return this.http.GET(`/getUser`);
+    return this.http.GET(`/user.get`);
   }
   login(loginRequest: LoginRequest): Promise<any> {
-    return this.http.POST(`/login`, loginRequest);
+    return this.http.POST(`/user.login`, loginRequest);
   }
   logout(): Promise<any> {
-    return this.http.POST(`/logout`);
+    return this.http.POST(`/user.logout`);
   }
 }

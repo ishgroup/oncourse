@@ -7,18 +7,18 @@ export class PageApi {
   }
 
   addPage(): Promise<Page> {
-    return this.http.POST(`/addPage`);
+    return this.http.POST(`/page.create`);
   }
   deletePage(id: string): Promise<any> {
-    return this.http.POST(`/deletePage/${id}`);
+    return this.http.POST(`/page.delete/${id}`);
   }
   getPageByUrl(pageUrl: string): Promise<Page> {
-    return this.http.GET(`/getPageByUrl`, {params: {pageUrl}});
+    return this.http.GET(`/page.get`, { params: { pageUrl }});
   }
   getPages(): Promise<Page[]> {
-    return this.http.GET(`/getPages`);
+    return this.http.GET(`/page.list`);
   }
   savePage(pageParams: Page): Promise<Page> {
-    return this.http.POST(`/savePage`, pageParams);
+    return this.http.POST(`/page.update`, pageParams);
   }
 }

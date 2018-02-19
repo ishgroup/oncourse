@@ -41,8 +41,8 @@ export const updateThemeState = (theme: Theme) => ({
   payload: theme,
 });
 
-export const deleteTheme = title => ({
+export const deleteTheme = id => ({
   type: DELETE_THEME_REQUEST,
-  payload: title,
+  payload: id,
 });
 

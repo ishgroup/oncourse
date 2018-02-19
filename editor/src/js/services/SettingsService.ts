@@ -1,7 +1,5 @@
 import {SettingsApi} from "../http/SettingsApi";
-import {SkillsOnCourseSettings} from "../model/settings/SkillsOnCourseSettings";
-import {RedirectSettings} from "../model/settings/RedirectSettings";
-import {WebsiteSettings} from "../model/settings/WebsiteSettings";
+import {RedirectSettings, SkillsOnCourseSettings, WebsiteSettings} from "../model";
 import {DefaultHttpService} from "../common/services/HttpService";
 
 class SettingsService {

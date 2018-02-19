@@ -7,46 +7,44 @@ export const DefaultConfig = {
 export const API = {
 
   // Authorization end points
-  LOGIN: "/login",
-  GET_USER: "/getUser",
-  LOGOUT: "/logout",
+  LOGIN: "/user.login",
+  GET_USER: "/user.get",
+  LOGOUT: "/user.logout",
 
   // Menu page
-  GET_MENU: "/getMenuItems",
-  SAVE_MENU: "/saveMenuItems",
+  GET_MENU: "/menu.list",
+  SAVE_MENU: "/menu.update",
 
   // Pages
-  GET_PAGES: "/getPages",
-  GET_PAGE_BY_URL: "/getPageByUrl",
-  SAVE_PAGE: "/savePage",
-  ADD_PAGE: "/addPage",
-  DELETE_PAGE: /deletePage\/\d+/,
+  GET_PAGES: "/page.list",
+  GET_PAGE_BY_URL: "/page.get",
+  SAVE_PAGE: "/page.update",
+  ADD_PAGE: "/page.create",
+  DELETE_PAGE: /page\.delete\/\d+/,
 
   // Blocks
-  GET_BLOCKS: "/getBlocks",
-  SAVE_BLOCK: "/saveBlock",
-  ADD_BLOCK: "/addBlock",
-  DELETE_BLOCK: "/deleteBlock",
+  GET_BLOCKS: "/block.list",
+  SAVE_BLOCK: "/block.update",
+  ADD_BLOCK: "/block.create",
+  DELETE_BLOCK: /block\.delete\/\d+/,
 
   // Themes
-  GET_THEMES: "/getThemes",
-  GET_LAYOUTS: "/getLayouts",
-  SAVE_THEME: "/saveTheme",
-  ADD_THEME: "/addTheme",
-  DELETE_THEME: "/deleteTheme",
+  GET_THEMES: "/theme.list",
+  GET_LAYOUTS: "/layout.list",
+  SAVE_THEME: "/theme.update",
+  ADD_THEME: "/theme.create",
+  DELETE_THEME: /theme\.delete\/\d+/,
 
   // History
-  GET_VERSIONS: "/getVersions",
-  SET_VERSION: "/setVersion",
-  PUBLISH: "/publish",
+  GET_VERSIONS: "/version.list",
+  SET_VERSION: /version\.draft\.set\/\d+/,
+  PUBLISH: "/version.draft.publish",
 
   // Settings
-  GET_CHECKOUT_SETTINGS: "/getCheckoutSettings",
-  SET_CHECKOUT_SETTINGS: "/setCheckoutSettings",
-  GET_SKILLS_ON_COURSE_SETTINGS: "/getSkillsOnCourseSettings",
-  SET_SKILLS_ON_COURSE_SETTINGS: "/setSkillsOnCourseSettings",
-  GET_REDIRECT_SETTINGS: "/getRedirectSettings",
-  SET_REDIRECT_SETTINGS: "/setRedirectSettings",
-  GET_WEBSITE_SETTINGS: "/getWebsiteSettings",
-  SET_WEBSITE_SETTINGS: "/setWebsiteSettings",
+  GET_SKILLS_ON_COURSE_SETTINGS: "/settings.skillsOnCourse.get",
+  SET_SKILLS_ON_COURSE_SETTINGS: "/settings.skillsOnCourse.set",
+  GET_REDIRECT_SETTINGS: "/redirect.list",
+  SET_REDIRECT_SETTINGS: "/redirect.update",
+  GET_WEBSITE_SETTINGS: "/settings.website.get",
+  SET_WEBSITE_SETTINGS: "/settings.website.set",
 };

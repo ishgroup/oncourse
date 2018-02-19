@@ -7,9 +7,9 @@ export class MenuApi {
   }
 
   getMenuItems(): Promise<MenuItem[]> {
-    return this.http.GET(`/getMenuItems`);
+    return this.http.GET(`/menu.list`);
   }
   saveMenuItems(menu: MenuItem[]): Promise<MenuItem[]> {
-    return this.http.POST(`/saveMenuItems`, menu);
+    return this.http.POST(`/menu.update`, menu);
   }
 }

@@ -1,4 +1,4 @@
-import {RedirectItem} from "./../settings/RedirectItem";
+import {RedirectItem} from "./RedirectItem";
 
 export class RedirectSettings {
   rules?: RedirectItem[];

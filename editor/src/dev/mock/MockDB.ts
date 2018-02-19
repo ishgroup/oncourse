@@ -345,8 +345,9 @@ export class MockDB {
     };
   }
 
-  deleteThemeByTitle(title: string) {
-    const index = this.themes.findIndex(item => item.title === title);
+  deleteThemeById(id: number) {
+    const index = this.themes.findIndex(item => item.id == id);
+
     this.themes = update(this.themes, {
       $splice: [
         [index, 1],
@@ -355,7 +356,7 @@ export class MockDB {
   }
 
   deletePageById(pageId: number) {
-    const index = this.pages.findIndex(item => item.id === pageId);
+    const index = this.pages.findIndex(item => item.id == pageId);
     this.pages = update(this.pages, {
       $splice: [
         [index, 1],
@@ -363,7 +364,7 @@ export class MockDB {
     });
   }
 
-  deleteBlockByTitle(name: string) {
+  deleteBlockById(id: string) {
     // const index = this.blocks.findIndex(item => item.title === name);
     // this.blocks = update(this.blocks, {
     //   $splice: [

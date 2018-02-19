@@ -7,15 +7,15 @@ export class BlockApi {
   }
 
   addBlock(): Promise<Block> {
-    return this.http.POST(`/addBlock`);
+    return this.http.POST(`/block.create`);
   }
   deleteBlock(id: string): Promise<any> {
-    return this.http.POST(`/deleteBlock/${id}`);
+    return this.http.POST(`/block.delete/${id}`);
   }
   getBlocks(): Promise<Block[]> {
-    return this.http.GET(`/getBlocks`);
+    return this.http.GET(`/block.list`);
   }
   saveBlock(saveBlockRequest: Block): Promise<Block> {
-    return this.http.POST(`/saveBlock`, saveBlockRequest);
+    return this.http.POST(`/block.update`, saveBlockRequest);
   }
 }

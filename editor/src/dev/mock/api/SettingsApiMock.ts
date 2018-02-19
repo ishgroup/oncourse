@@ -35,22 +35,6 @@ export function settingsApiMock() {
     );
   });
 
-  // Checkout settings
-  this.api.onGet(API.GET_CHECKOUT_SETTINGS).reply(config => promiseResolve(
-    config,
-    this.db.settings.checkout,
-  ));
-
-  this.api.onPost(API.SET_CHECKOUT_SETTINGS).reply(config => {
-    const settings = JSON.parse(config.data);
-    this.db.saveSettings(settings, 'checkout');
-
-    return promiseResolve(
-      config,
-      settings,
-    );
-  });
-
   // Redirect settings
   this.api.onGet(API.GET_REDIRECT_SETTINGS).reply(config => promiseResolve(
     config,

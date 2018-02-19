@@ -54,7 +54,7 @@ export class ThemeSettings extends React.Component<Props, any> {
 
     showModal({
       text: `You are want to delete theme '${theme.title}'. Are you sure?`,
-      onConfirm: () => onDelete(theme.title),
+      onConfirm: () => onDelete(theme.id),
     });
   }
 

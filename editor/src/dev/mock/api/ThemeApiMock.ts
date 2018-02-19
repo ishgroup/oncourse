@@ -38,9 +38,9 @@ export function themeApiMock() {
   });
 
   this.api.onPost(API.DELETE_THEME).reply(config => {
+    const id = config.url.split('/')[1];
 
-    this.db.deleteThemeByTitle(config.data);
-
+    this.db.deleteThemeById(id);
     return promiseResolve(
       config,
       null,
