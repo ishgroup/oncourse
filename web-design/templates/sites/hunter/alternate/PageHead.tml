@@ -48,6 +48,4 @@
     });
   </script>
 
-  <span t:type="ui/googleAnalytics"/>
-
 </t:container>

@@ -43,6 +43,5 @@
   <![endif]-->
   <link href="/s/stylesheets/css/site.css?v=${ciVersion}" media="screen, print" rel="stylesheet" />
   <script type="text/javascript" src="/s/js/all.js?v=${ciVersion}"></script>
-  <span t:type="ui/googleAnalytics"/>
 
 </t:container>
