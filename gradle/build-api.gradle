@@ -28,11 +28,17 @@ dependencies {
     testCompile 'org.apache.commons:commons-dbcp2:2.1.1'
     testCompile 'org.apache.commons:commons-pool2:2.4.2'
     testCompile project(':common:test-functions')
-    swagger project(':common:codegen:jaxrs')
+    // swagger project(':common:codegen:jaxrs')
 }
 
 targetCompatibility = '1.8'
 sourceCompatibility = '1.8'
+
+sourceSets {
+    swagger {
+        java.srcDir "${project.projectDir}/build/generated-sources"
+    }
+}
 
 test {
     systemProperty "oncourse.jdbc.url", System.getProperty("oncourse.jdbc.url")
@@ -85,26 +91,25 @@ task swagger (type: JavaExec) {
     classpath = configurations.swagger
     args  = [ servicesPackage, modelPackage, project.projectDir, swaggerSchema ]
 }
-compileJava.dependsOn(swagger)
-
 
 import io.swagger.codegen.config.CodegenConfigurator
 import io.swagger.codegen.DefaultGenerator
 
 task swagger2 {
     inputs.file swaggerSchema
-    outputs.dir swaggerOutputDir
+    outputs.dir "${project.projectDir}/build/generated-sources"
     doLast {
         def config = new CodegenConfigurator()
         config.setInputSpec(swaggerSchema)
-        config.setOutputDir(swaggerOutputDir)
+        config.setOutputDir("${project.projectDir}/build/generated-sources")
         config.setLang('groovy')
         config.setAdditionalProperties([
                 'invokerPackage': 'ish.oncourse.willow.editor.service',
                 'modelPackage'  : 'ish.oncourse.willow.editor.model',
                 'apiPackage'    : 'ish.oncourse.willow.editor.model.api',
+                'supportingFiles': '', // skip scripts and maven files
                 'dateLibrary'   : 'java8',
-                'appVersion'    : project.version\
+                'appVersion'    : project.version
         ])
         // config.setImportMappings([
         //         'Dog': 'io.swagger.petstore.client.model.Dog'
@@ -113,9 +118,14 @@ task swagger2 {
     }
 }
 
-// clean.doFirst {
-//     delete(swaggerOutputDir)
-// }
+compileJava {
+    dependsOn swagger2
+    source += sourceSets.swagger.java
+}
+
+clean.doFirst {
+    delete("${project.projectDir}/build/generated-sources")
+}
 
 task docGenerate (type: JavaExec) {
     inputs.file "${project.projectDir}/src/main/resources/${swaggerName}"
