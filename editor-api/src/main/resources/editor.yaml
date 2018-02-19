@@ -10,9 +10,8 @@ info:
   license:
     name: Closed
   version: v1
-host: {siteKey}.oncourse.cc
-basePath: /editor
-
+  
+  
 schemes:
   - https
 produces:
@@ -25,13 +24,13 @@ securityDefinitions:
 
 servers:
 
-- url: https://{siteKey}.oncourse.cc/editor/{basePath}/
+- url: https://{siteKey}.oncourse.cc/editor/{versionPath}/
   description: The production API server
   variables:
     siteKey:
       default: template-a
       description: this value is assigned by the service provider
-    basePath:
+    versionPath:
       default: v1
       description: API version base path
 

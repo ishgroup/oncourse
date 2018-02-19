@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.MediaType;
+import ish.oncourse.willow.editor.annotation.AuthFilter;
 
 @Path("{{^useAnnotatedBasePath}}/{{/useAnnotatedBasePath}}{{#useAnnotatedBasePath}}{{contextPath}}{{/useAnnotatedBasePath}}")
 public interface {{classname}}  {
@@ -17,7 +18,7 @@ public interface {{classname}}  {
 {{#operation}}
 
     @{{httpMethod}}
-    {{#subresourceOperation}}@Path("{{path}}"){{/subresourceOperation}}
+    {{#subresourceOperation}}@Path("/{{version}}{{path}}"){{/subresourceOperation}}
 {{#hasConsumes}}
     @Consumes({ {{#consumes}}"{{{mediaType}}}"{{#hasMore}}, {{/hasMore}}{{/consumes}} })
 {{/hasConsumes}}

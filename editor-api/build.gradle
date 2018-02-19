@@ -1,7 +1,7 @@
 
 ext {
-    servicesPackage = 'ish.oncourse.willow.editor.service'
-    modelPackage = 'ish.oncourse.willow.editor.model'
+    servicesPackage = 'ish.oncourse.willow.editor.v1.service'
+    modelPackage = 'ish.oncourse.willow.editor.v1.model'
     swaggerName = 'editor.yaml'
 }
 

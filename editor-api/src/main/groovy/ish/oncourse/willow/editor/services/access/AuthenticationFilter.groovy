@@ -9,13 +9,12 @@ import ish.oncourse.services.authentication.AuthenticationStatus
 import ish.oncourse.services.authentication.CheckBasicAuth
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.willow.editor.model.common.CommonError
-import ish.oncourse.willow.editor.service.AuthFilter
+import ish.oncourse.willow.editor.annotation.AuthFilter
 import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.website.WebSiteFunctions
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.ObjectSelect
-import org.apache.cayenne.query.SelectById
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 

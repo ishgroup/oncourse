@@ -5,7 +5,7 @@ import ish.oncourse.model.WebSite
 import ish.oncourse.model.WebSiteVersion
 import ish.oncourse.willow.editor.model.Block
 import ish.oncourse.willow.editor.model.common.CommonError
-import ish.oncourse.willow.editor.service.impl.BlockApiServiceImpl
+import ish.oncourse.willow.editor.v1.service.impl.BlockApiServiceImpl
 import ish.oncourse.willow.editor.website.WebSiteVersionFunctions
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect

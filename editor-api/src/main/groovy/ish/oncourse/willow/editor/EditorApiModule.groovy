@@ -15,13 +15,19 @@ import ish.oncourse.cayenne.cache.JCacheModule
 import ish.oncourse.configuration.ISHHealthCheckServlet
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.util.log.LogAppInfo
-import ish.oncourse.willow.editor.service.impl.*
 import ish.oncourse.willow.editor.services.RequestFilter
 import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.services.access.AuthenticationFilter
 import ish.oncourse.willow.editor.services.access.AuthenticationService
 import ish.oncourse.willow.editor.services.access.UserService
 import ish.oncourse.willow.editor.services.access.ZKSessionManager
+import ish.oncourse.willow.editor.v1.service.impl.AuthApiServiceImpl
+import ish.oncourse.willow.editor.v1.service.impl.BlockApiServiceImpl
+import ish.oncourse.willow.editor.v1.service.impl.MenuApiServiceImpl
+import ish.oncourse.willow.editor.v1.service.impl.PageApiServiceImpl
+import ish.oncourse.willow.editor.v1.service.impl.PublishApiServiceImpl
+import ish.oncourse.willow.editor.v1.service.impl.SettingsApiServiceImpl
+import ish.oncourse.willow.editor.v1.service.impl.ThemeApiServiceImpl
 import org.apache.cxf.jaxrs.validation.JAXRSBeanValidationFeature
 
 import javax.servlet.FilterConfig

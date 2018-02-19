@@ -2,7 +2,7 @@ package ish.oncourse.willow.editor.service
 
 import ish.oncourse.model.WebNode
 import ish.oncourse.willow.editor.model.Page
-import ish.oncourse.willow.editor.service.impl.PageApiServiceImpl
+import ish.oncourse.willow.editor.v1.service.impl.PageApiServiceImpl
 import ish.oncourse.willow.editor.website.WebNodeFunctions
 import org.junit.Test
 import org.junit.Before

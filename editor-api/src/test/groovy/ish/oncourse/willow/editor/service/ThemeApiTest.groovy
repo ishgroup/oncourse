@@ -1,17 +1,11 @@
 package ish.oncourse.willow.editor.service;
 
-import ish.oncourse.willow.editor.model.Theme;
-import ish.oncourse.willow.editor.model.common.CommonError
-import ish.oncourse.willow.editor.service.impl.ThemeApiServiceImpl;
+import ish.oncourse.willow.editor.model.Theme
+import ish.oncourse.willow.editor.v1.service.ThemeApi
+import ish.oncourse.willow.editor.v1.service.impl.ThemeApiServiceImpl;
 import org.junit.Assert
 import org.junit.Test;
-import org.junit.Before;
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.junit.Before
 
 /**
  * API tests for ThemeApi
