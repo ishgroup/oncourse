@@ -57,7 +57,7 @@ export class PagesSidebar extends React.Component<Props, any> {
             idKey="serialNumber"
             category="pages"
             subTitleKey="urls"
-            subTitleFilter={(items, page) => this.getDefaultLink(items, page)}
+            subTitleFilterFunc={(items, page) => this.getDefaultLink(items, page)}
             onBack={() => this.goBack()}
             onAdd={() => this.onAddPage()}
           />

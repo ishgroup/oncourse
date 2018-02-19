@@ -4,13 +4,15 @@ import {NavLink} from 'react-router-dom';
 import {Page, Block, Theme} from "../../model";
 import {IconBack} from "../../common/components/IconBack";
 
+type Item = (Page | Block | Theme);
+
 interface Props {
-  items: (Page | Block | Theme)[];
+  items: Item[];
   onBack: () => void;
   category: string;
   subTitleKey?: string;
   idKey?: string;
-  subTitleFilter?: (items, parent?) => any;
+  subTitleFilterFunc?: (items, parent?) => any;
   onAdd?: () => any;
 }
 
@@ -38,8 +40,18 @@ export class SidebarList extends React.Component<Props, any> {
   }
 
   render() {
-    const {items, category, subTitleKey, subTitleFilter, onAdd, idKey = 'id'} = this.props;
-    const reg = new RegExp(this.state.filter.replace('(','\\(').replace(')','\\)'), 'gi');
+    const {items, category, subTitleKey, subTitleFilterFunc, onAdd, idKey = 'id'} = this.props;
+    const reg = new RegExp(this.state.filter.replace('(', '\\(').replace(')', '\\)'), 'gi');
+
+    const getSubtitle = (item: Item) => (
+      subTitleFilterFunc ? subTitleFilterFunc(item[subTitleKey], item) : item[subTitleKey]
+    );
+
+    // apply filter to title and subtitle
+    const applyFilter = (item: Item): boolean => (
+      item.title && item.title.toLocaleLowerCase().indexOf(this.state.filter.toLocaleLowerCase()) !== -1 ||
+      item[subTitleKey] && getSubtitle(item).toLocaleLowerCase().indexOf(this.state.filter.toLocaleLowerCase()) !== -1
+    );
 
     return (
       <ul>
@@ -62,40 +74,55 @@ export class SidebarList extends React.Component<Props, any> {
         </li>
 
         {onAdd &&
-          <li>
-            <div className="sidebar__settings">
-              <Button onClick={onAdd} color="primary"><span className="icon icon-add_circle"/>Add new</Button>
-            </div>
-          </li>
+        <li>
+          <div className="sidebar__settings">
+            <Button onClick={onAdd} color="primary"><span className="icon icon-add_circle"/>Add new</Button>
+          </div>
+        </li>
         }
 
         {items &&
         <li>
           <ul className="sidebar__list">
-          {items
-            .filter(item => item.title && item.title.toLocaleLowerCase().indexOf(this.state.filter.toLocaleLowerCase()) !== -1)
-            .map(item => (
-              <li key={item[idKey]}>
-                <NavLink
-                  exact={false}
-                  to={`/${category}/${item[idKey]}`}
-                  activeClassName="active"
-                >
-                  {this.state.filter &&
-                  <span dangerouslySetInnerHTML={{__html: item.title.replace(reg, str => (`<mark>${str}</mark>`))}}/>
-                  }
+            {items
+              .filter(item => applyFilter(item))
+              .map(item => (
+                <li key={item[idKey]}>
+                  <NavLink
+                    exact={false}
+                    to={`/${category}/${item[idKey]}`}
+                    activeClassName="active"
+                  >
+                    {this.state.filter &&
+                    <span>
+                      <span
+                        dangerouslySetInnerHTML={{__html: item.title.replace(reg, str => (`<mark>${str}</mark>`))}
+                    }/>
 
-                  {!this.state.filter &&
-                  <span>{item.title}</span>
-                  }
+                      {item[subTitleKey] &&
+                        <small
+                          dangerouslySetInnerHTML={{
+                            __html: getSubtitle(item).replace(reg, str => (`<mark>${str}</mark>`)),
+                          }}
+                        />
+                      }
+                      </span>
+                    }
 
-                  {item[subTitleKey] &&
-                  <small>{subTitleFilter ? subTitleFilter(item[subTitleKey], item) : item[subTitleKey]}</small>
-                  }
-                </NavLink>
+                    {!this.state.filter &&
+                    <span>
+                      <span>{item.title}</span>
 
-              </li>
-            ))}
+                      {item[subTitleKey] &&
+                        <small>{getSubtitle(item)}</small>
+                      }
+                    </span>
+                    }
+
+                  </NavLink>
+
+                </li>
+              ))}
           </ul>
         </li>
         }
