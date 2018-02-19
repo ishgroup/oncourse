@@ -10,7 +10,8 @@ info:
   license:
     name: Closed
   version: 1
-  
+host: https://{siteKey}.oncourse.cc
+basePath: /editor/v1
 
 schemes:
   - https
@@ -657,7 +658,7 @@ paths:
       summary: Get redirect settings
       description: Get redirect settings
       tags:
-        - Settings
+        - Redirect
       responses:
         '200':
           description: response with redirect settings object
@@ -676,7 +677,7 @@ paths:
       operationId: setRedirectSettings
       description: Save redirect settings
       tags:
-        - Settings
+        - Redirect
       consumes:
         - application/json
       parameters:

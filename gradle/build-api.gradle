@@ -126,6 +126,7 @@ task docGenerate (type: JavaExec) {
     args  = [ 'generate',
               '-i', swaggerSchema,
               '-l', 'dynamic-html',
+              '-t', "$swaggerResources",
               '-o', outputs.files.last()
             ]
 }
