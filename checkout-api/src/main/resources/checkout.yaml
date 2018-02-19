@@ -876,12 +876,10 @@ definitions:
         description: Class start date and time in UTC time zone (+00:00),date format is ISO 8601
         type: string
         format: date
-        description: Start date of class
       end:
         description: Class start date and time in UTC time zone (+00:00),date format is ISO 8601
         type: string
         format: date
-        description: End date of class
       hasAvailablePlaces:
         type: boolean
         description: Available places
