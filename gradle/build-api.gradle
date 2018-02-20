@@ -102,13 +102,34 @@ task swagger2 {
         def config = new CodegenConfigurator()
         config.setInputSpec(swaggerSchema)
         config.setOutputDir("${project.projectDir}/build/generated-sources")
-        config.setLang('groovy')
+        config.setLang('jaxrs')
         config.setAdditionalProperties([
                 'invokerPackage': 'ish.oncourse.willow.editor.service',
                 'modelPackage'  : 'ish.oncourse.willow.editor.model',
                 'apiPackage'    : 'ish.oncourse.willow.editor.model.api',
                 'supportingFiles': '', // skip scripts and maven files
                 'dateLibrary'   : 'java8',
+                'withXml'       : true,
+                'appVersion'    : project.version
+        ])
+        // config.setImportMappings([
+        //         'Dog': 'io.swagger.petstore.client.model.Dog'
+        // ])
+        new DefaultGenerator().opts(config.toClientOptInput()).generate()
+    }
+}
+
+task swagger3 {
+    inputs.file swaggerSchema
+    outputs.dir "${project.projectDir}/build/generated-sources"
+    doLast {
+        def config = new CodegenConfigurator()
+        config.setInputSpec(swaggerSchema)
+        config.setOutputDir("${project.projectDir}/../editor/build/generated-sources")
+        config.setLang('javascript')
+        config.setAdditionalProperties([
+                'supportingFiles': '', // skip scripts and maven files
+                'withXml'       : true,
                 'appVersion'    : project.version
         ])
         // config.setImportMappings([
