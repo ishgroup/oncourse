@@ -2,9 +2,9 @@
   <div class="clearfix courseItem${tagClasses}" itemscope="itemscope" itemtype="http://schema.org/Product">
     <t:if t:test="isList" negate="true">
       <div class="course-item-image">
-        <t:loop source="getAttachments(courseItemModel.course)" value="attachment">
-          <t:if test="hasTag(attachment, 'image/hero')">
-            <div t:type="ui/image" name="attachment.name" class="course-img" width="200" height="200" alt="${courseItemModel.course.name}"></div>
+        <t:loop source="getEntityAttachments(courseItemModel.course)" value="entityAttachment">
+          <t:if test="hasTag(entityAttachment, 'image/hero')">
+            <div t:type="ui/image" name="entityAttachment.name" class="course-img" width="200" height="200" alt="${courseItemModel.course.name}"></div>
           </t:if>
         </t:loop>
       </div>
@@ -21,9 +21,9 @@
       </t:if>
       <p:else>
         <div class="course-image course-code-list-image">
-          <t:loop source="getAttachments(courseItemModel.course)" value="attachment">
-            <t:if test="hasTag(attachment, 'image/hero')">
-              <div t:type="ui/image" name="attachment.name" width="200" height="200" alt="${courseItemModel.course.name}"></div>
+          <t:loop source="getEntityAttachments(courseItemModel.course)" value="entityAttachment">
+            <t:if test="hasTag(entityAttachment, 'image/hero')">
+              <div t:type="ui/image" name="entityAttachment.name" width="200" height="200" alt="${courseItemModel.course.name}"></div>
             </t:if>
           </t:loop>
         </div>

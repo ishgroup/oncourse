@@ -9,9 +9,9 @@
 
   <div itemtype="http://schema.org/Course" itemscope="itemscope" class="clearfix courseItem">
     <div class="course-item-image">
-      <t:loop source="getAttachments(courseClass.course)" value="attachment">
-        <t:if test="hasTag(attachment, 'image/hero')">
-          <div t:type="ui/image" name="attachment.name" class="course-img" width="200" height="200" alt="${courseClass.course.name}"></div>
+      <t:loop source="getEntityAttachments(courseClass.course)" value="entityAttachment">
+        <t:if test="hasTag(entityAttachment, 'image/hero')">
+          <div t:type="ui/image" name="entityAttachment.name" class="course-img" width="200" height="200" alt="${courseClass.course.name}"></div>
         </t:if>
       </t:loop>
     </div>
