@@ -37,8 +37,9 @@ servers:
 
 paths:
 
-  /user.login:
+  /session:
     post:
+      operationId: createSession
       summary: Authenticate user by email and password. Put session toke to cookie on success
       tags:
         - Auth
@@ -61,8 +62,9 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
             
-  /user.logout:
-    post:
+  /session:
+    delete:
+      operationId: destroySession
       summary: De-authorize user from editor
       tags:
         - Auth
@@ -76,8 +78,9 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
-  /user.get:
+  /user:
     get:
+      operationId: getUser
       x-filter:  
         - AuthFilter
       summary: Get current logged user
@@ -95,8 +98,9 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
-  /menu.list:
+  /menu:
     get:
+      operationId: getMenus
       x-filter:  
       - AuthFilter
       summary: Get menu items
@@ -115,8 +119,9 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
-  /menu.update:
-    post:
+  /menu:
+    put:
+      operationId: updateMenus
       x-filter:  
       - AuthFilter
       summary: Save menu items
@@ -152,8 +157,9 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
-  /page.list:
+  /page:
     get:
+      operationId: getPages
       x-filter:  
       - AuthFilter
       summary: Get pages
@@ -171,8 +177,9 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /page.get:
+  /page?pageUrl={pageUrl}:
     get:
+      operationId: getPageByUrl
       x-filter:  
       - AuthFilter
       summary: Get page by provided page url
@@ -196,8 +203,9 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /page.update:
-    post:
+  /page:
+    put:
+      operationId: updatePage
       x-filter:  
       - AuthFilter
       summary: Save page parameters
@@ -223,8 +231,9 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
-  /page.create:
+  /page:
     post:
+      operationId: createPage
       x-filter:  
       - AuthFilter
       summary: Add new page
@@ -243,8 +252,9 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
-  /page.delete/{id}:
-    post:
+  /page/{id}:
+    delete:
+      operationId: deletePage
       x-filter:  
       - AuthFilter
       summary: Remove page by provided number
@@ -268,8 +278,9 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
-  /block.list:
+  /block:
     get:
+      operationId: getBlocks
       x-filter:  
       - AuthFilter
       summary: Get list of blocks
@@ -287,8 +298,9 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
-  /block.update:
-    post:
+  /block:
+    put:
+      operationId: updateBlock
       x-filter:  
       - AuthFilter
       summary: Update an existing block
@@ -314,8 +326,9 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
-  /block.create:
+  /block:
     post:
+      operationId: createBlock
       x-filter:  
       - AuthFilter
       summary: Add new block
@@ -334,8 +347,9 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
-  /block.delete/{id}:
-    post:
+  /block/{id}:
+    delete:
+      operationId: deleteBlock
       x-filter:  
       - AuthFilter
       summary: Remove block by provided Id
@@ -359,8 +373,9 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
-  /layout.list:
+  /layout:
     get:
+      operationId: getLayouts
       x-filter:  
       - AuthFilter
       summary: Get array of layouts
@@ -379,8 +394,9 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
             
-  /theme.list:
+  /theme:
     get:
+      operationId: getThemes
       x-filter:  
       - AuthFilter
       summary: Get array of themes
@@ -399,8 +415,9 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
             
-  /theme.update:
-    post:
+  /theme:
+    put:
+      operationId: updateTheme
       x-filter:  
       - AuthFilter
       summary: Theme with updated params
@@ -426,8 +443,9 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
             
-  /theme.create:
+  /theme:
     post:
+      operationId: createTheme
       x-filter:  
       - AuthFilter
       summary: Add new theme
@@ -446,8 +464,9 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
             
-  /theme.delete/{id}:
-    post:
+  /theme/{id}:
+    delete:
+      operationId: deleteTheme
       x-filter:  
       - AuthFilter
       summary: Remove theme by unique identifier
@@ -471,8 +490,9 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
-  /version.list:
+  /version:
     get:
+      operationId: getVersions
       x-filter:  
       - AuthFilter
       summary: Get array of published versions. Not supported yet
@@ -491,11 +511,12 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
-  /version.draft.set/{id}:
-    post:
+  /version/{id}:
+    patch:
+      operationId: updateVersion
       x-filter:  
       - AuthFilter
-      summary: Set current published version by provided version Id. Not supported yet
+      summary: Change version status
       tags:
         - Version
       consumes:
@@ -507,6 +528,15 @@ paths:
           required: true
           schema:
             type: string
+        - version: 
+          in: body
+          description: | 
+            Diff of version record. Actually process change of single attribute status.
+            Published value means  - publish current draft changes to live site.(avalible only for draft version).
+            Draft value means = revert back to certain version
+          required: true
+          schema:
+            $ref: '#/definitions/Version'
       responses:
         '200':
           description: Version changed successfully
@@ -515,26 +545,9 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
-  /version.draft.publish:
-    post:
-      x-filter:  
-      - AuthFilter
-      summary: Publish current draft version. Support basic Authentication
-      description: Publish current draft changes to live site. Support basic Authentication
-      tags:
-        - Version
-      consumes:
-        - application/json
-      responses:
-        '200':
-          description: Draft changes has been published
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/common.CommonError'
-
-  /settings.skillsOnCourse.get:
+  /settings/skillsOnCourse:
     get:
+      operationId: getSkillsOnCourseSettings
       x-filter:  
       - AuthFilter
       summary: Get SkillsOnCourse settings
@@ -551,8 +564,9 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
-  /settings.skillsOnCourse.set:
-    post:
+  /settings/skillsOnCourse:
+    put:
+      operationId: updateSkillsOnCourseSettings
       x-filter:  
       - AuthFilter
       summary: Save SkillsOnCourse settings
@@ -578,8 +592,9 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
-  /settings.website.get:
+  /settings/website:
     get:
+      operationId: getWesiteSettings
       x-filter:  
       - AuthFilter
       summary: Get Website settings
@@ -596,8 +611,9 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
-  /settings.website.set:
-    post:
+  /settings/website:
+    put:
+      operationId: updateWesiteSettings
       x-filter:  
       - AuthFilter
       summary: Save website settings
@@ -623,8 +639,9 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
 
-  /redirect.list:
+  /redirect:
     get:
+      operationId: getRedirects
       x-filter:  
       - AuthFilter
       summary: Get redirect settings
@@ -642,7 +659,8 @@ paths:
             $ref: '#/definitions/common.CommonError'
 
   /redirect.update:
-    post:
+    put:
+      operationId: updateRedirects
       x-filter:  
       - AuthFilter
       summary: Save redirect settings
@@ -726,6 +744,12 @@ definitions:
         example: |
           h3. Subjects
           {tags}
+  
+  VersionStatus:
+    type: string
+    enum:
+      - published
+      - draft
 
   Version:
     type: object
@@ -749,6 +773,9 @@ definitions:
         type: string
         format: date-time
         description: date and time when version was published
+      status:
+        description: Indicate about current state of version
+        $ref: '#/definitions/settings.VersionStatus'
 
   Layout:
     type: object
