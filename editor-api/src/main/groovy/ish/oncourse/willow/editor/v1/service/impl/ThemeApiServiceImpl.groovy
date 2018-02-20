@@ -6,7 +6,6 @@ import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.willow.editor.v1.model.Layout
 import ish.oncourse.willow.editor.rest.UpdateTheme
 import ish.oncourse.willow.editor.rest.WebNodeTypeToTheme
-import ish.oncourse.willow.editor.service.*
 import ish.oncourse.willow.editor.v1.model.Theme
 import ish.oncourse.willow.editor.v1.model.common.CommonError
 
@@ -35,14 +34,14 @@ class ThemeApiServiceImpl implements ThemeApi {
         this.requestService = requestService
     }
 
-    Theme addTheme() {
+    Theme themeCreatePost() {
         ObjectContext context = cayenneService.newContext()
         WebNodeType webNodeType = WebNodeTypeFunctions.createNewWebNodeType(requestService.request, context)
         context.commitChanges()
         return WebNodeTypeToTheme.valueOf(webNodeType).theme
     }
     
-    void deleteTheme(String themeName) {
+    void themeDeleteIdPost(String themeName) {
         ObjectContext context = cayenneService.newContext()
         WebNodeType theme = WebNodeTypeFunctions.getWebNodeTypeByName(themeName, requestService.request, context)
         if (!theme) {
@@ -70,12 +69,12 @@ class ThemeApiServiceImpl implements ThemeApi {
         }
     }
     
-    List<Theme> getThemes() {
+    List<Theme> themeListGet() {
         WebNodeTypeFunctions.getWebNodeTypes(requestService.request, cayenneService.newContext())
                 .collect { theme -> WebNodeTypeToTheme.valueOf(theme).theme }
     }
     
-    Theme saveTheme(Theme saveThemeRequest)  {
+    Theme themeUpdatePost(Theme saveThemeRequest)  {
         ObjectContext context = cayenneService.newContext()
         UpdateTheme updater = UpdateTheme.valueOf(saveThemeRequest, context, requestService.request).update()
         if (updater.error) {
