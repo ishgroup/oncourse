@@ -61,8 +61,6 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-            
-  /session:
     delete:
       operationId: destroySession
       summary: De-authorize user from editor
@@ -118,8 +116,6 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-
-  /menu:
     put:
       operationId: updateMenus
       x-filter:  
@@ -162,26 +158,6 @@ paths:
       operationId: getPages
       x-filter:  
       - AuthFilter
-      summary: Get pages
-      description: Get pages
-      tags:
-        - Page
-      responses:
-        '200':
-          description: response with array of pages
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/Page'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/common.CommonError'
-  /page?pageUrl={pageUrl}:
-    get:
-      operationId: getPageByUrl
-      x-filter:  
-      - AuthFilter
       summary: Get page by provided page url
       description: Get page object by provided page url
       tags:
@@ -189,21 +165,22 @@ paths:
       parameters:
         - name: pageUrl
           in: query
-          description: Page url
-          required: true
+          description: Optioanl page filter, return singletone array if page with provided unique url exist
+          required: false
           type: string
       responses:
         '200':
-          description: Page for provided url
+          description: response with array of pages
           schema:
-            $ref: '#/definitions/Page'
+            type: array
+            items:
+              $ref: '#/definitions/Page'
         '403': 
           description: Attempting to get special system page.
         default:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /page:
     put:
       operationId: updatePage
       x-filter:  
@@ -230,8 +207,6 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-
-  /page:
     post:
       operationId: createPage
       x-filter:  
@@ -251,8 +226,6 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-
-  /page/{id}:
     delete:
       operationId: deletePage
       x-filter:  
@@ -297,8 +270,6 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-
-  /block:
     put:
       operationId: updateBlock
       x-filter:  
@@ -325,8 +296,6 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-
-  /block:
     post:
       operationId: createBlock
       x-filter:  
@@ -346,8 +315,6 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-
-  /block/{id}:
     delete:
       operationId: deleteBlock
       x-filter:  
@@ -414,8 +381,6 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-            
-  /theme:
     put:
       operationId: updateTheme
       x-filter:  
@@ -442,8 +407,6 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-            
-  /theme:
     post:
       operationId: createTheme
       x-filter:  
@@ -463,8 +426,6 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-            
-  /theme/{id}:
     delete:
       operationId: deleteTheme
       x-filter:  
@@ -510,8 +471,6 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-
-  /version/{id}:
     patch:
       operationId: updateVersion
       x-filter:  
@@ -563,8 +522,6 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-
-  /settings/skillsOnCourse:
     put:
       operationId: updateSkillsOnCourseSettings
       x-filter:  
@@ -610,8 +567,6 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-
-  /settings/website:
     put:
       operationId: updateWesiteSettings
       x-filter:  
@@ -657,8 +612,6 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-
-  /redirect.update:
     put:
       operationId: updateRedirects
       x-filter:  
