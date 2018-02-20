@@ -12,10 +12,10 @@ import io.milton.resource.PropFindableResource
 import io.milton.resource.ReplaceableResource
 import ish.oncourse.model.WebUrlAlias
 import ish.oncourse.services.persistence.ICayenneService
-import ish.oncourse.willow.editor.model.settings.RedirectItem
-import ish.oncourse.willow.editor.model.settings.RedirectSettings
 import ish.oncourse.willow.editor.rest.UpdateRedirects
 import ish.oncourse.willow.editor.services.RequestService
+import ish.oncourse.willow.editor.v1.model.redirect.RedirectItem
+import ish.oncourse.willow.editor.v1.model.redirect.Redirects
 import ish.oncourse.willow.editor.website.WebUrlAliasFunctions
 import org.apache.cayenne.ObjectContext
 
@@ -85,7 +85,7 @@ class RedirectsResource extends AbstractResource implements GetableResource,Prop
         ObjectContext context = cayenneService.newContext()
 
         BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))
-        RedirectSettings settings = new RedirectSettings()
+        Redirects settings = new Redirects()
         
         String line
         while((line = br.readLine()) != null) {

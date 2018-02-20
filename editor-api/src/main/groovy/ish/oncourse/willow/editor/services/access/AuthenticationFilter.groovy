@@ -8,7 +8,6 @@ import ish.oncourse.services.authentication.AuthenticationResult
 import ish.oncourse.services.authentication.AuthenticationStatus
 import ish.oncourse.services.authentication.CheckBasicAuth
 import ish.oncourse.services.persistence.ICayenneService
-import ish.oncourse.willow.editor.model.common.CommonError
 import ish.oncourse.willow.editor.annotation.AuthFilter
 import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.website.WebSiteFunctions
@@ -64,9 +63,9 @@ class AuthenticationFilter implements ContainerRequestFilter {
                     break
                 case AuthenticationStatus.INVALID_CREDENTIALS:
                 case AuthenticationStatus.NO_MATCHING_USER:
-                    throw new ClientErrorException(Response.status(Response.Status.NOT_ACCEPTABLE).entity(new CommonError(message: 'Login unsuccessful. Invalid login name or password.')).build())
+                    throw new ClientErrorException('Login unsuccessful. Invalid login name or password.', Response.Status.NOT_ACCEPTABLE)
                 case AuthenticationStatus.MORE_THAN_ONE_USER:
-                    throw new ClientErrorException(Response.status(Response.Status.CONFLICT).entity(new CommonError(message: 'Login unsuccessful. There are two users with the same login details. Please contact the college for help.')).build())
+                    throw new ClientErrorException('Login unsuccessful. There are two users with the same login details. Please contact the college for help.', Response.Status.CONFLICT)
                 default:
                     String message = "Unknown authentication status: ${result.status}, login request: ${requestService.request}"
                     logger.error(message)
