@@ -17,6 +17,7 @@ ext {
     swaggerResources = "${rootDir}/common/codegen/common/src/main/resources/htmlDocs"
     swaggerSchema = "${project.projectDir}/src/main/resources/${swaggerName}"
     swaggerOutputDir = "${project.projectDir}"
+    swaggerTemplateDir = "${rootDir}/common/codegen/jaxrs/src/main/resources/willow-jaxrs"
 }
 
 configurations {
@@ -102,14 +103,15 @@ task swagger2 {
         def config = new CodegenConfigurator()
         config.setInputSpec(swaggerSchema)
         config.setOutputDir("${project.projectDir}/build/generated-sources")
-        config.setLang('jaxrs')
+        config.setLang('jaxrs-cxf')
         config.setAdditionalProperties([
-                'invokerPackage': 'ish.oncourse.willow.editor.service',
-                'modelPackage'  : 'ish.oncourse.willow.editor.model',
-                'apiPackage'    : 'ish.oncourse.willow.editor.model.api',
+                'templateDir': swaggerTemplateDir.toString(),
+                'sourceFolder': 'src/main/groovy',
+                'implFolder': 'src/main/groovy',
+                'modelPackage'  : 'ish.oncourse.willow.editor.v1.model',
+                'apiPackage'    : 'ish.oncourse.willow.editor.v1.services',
                 'supportingFiles': '', // skip scripts and maven files
                 'dateLibrary'   : 'java8',
-                'withXml'       : true,
                 'appVersion'    : project.version
         ])
         // config.setImportMappings([
