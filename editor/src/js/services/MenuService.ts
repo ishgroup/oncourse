@@ -6,7 +6,7 @@ class MenuService {
   readonly menuApi = new MenuApi(new DefaultHttpService());
 
   public getMenuItems(): Promise<MenuItem[]> {
-    return this.menuApi.getMenuItems();
+    return this.menuApi.menuListGet();
   }
 
   public saveMenuItems(items: MenuItem[]): Promise<MenuItem[]> {
@@ -24,7 +24,7 @@ class MenuService {
 
     items.map(item => prepareItem(item));
 
-    return this.menuApi.saveMenuItems(items);
+    return this.menuApi.menuUpdatePost(items);
   }
 }
 

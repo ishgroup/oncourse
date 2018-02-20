@@ -10,23 +10,23 @@ class PageService {
   readonly pageApi = new PageApi(new DefaultHttpService());
 
   public getPages(): Promise<Page[]> {
-    return this.pageApi.getPages();
+    return this.pageApi.pageListGet();
   }
 
   public getPageByUrl(url: string): Promise<Page> {
-    return this.pageApi.getPageByUrl(url);
+    return this.pageApi.pageGetGet(url);
   }
 
   public savePage(props, state: State): Promise<any> {
-    return this.pageApi.savePage(this.buildSavePageRequest(props, state));
+    return this.pageApi.pageUpdatePost(this.buildSavePageRequest(props, state));
   }
 
   public addPage(): Promise<any> {
-    return this.pageApi.addPage();
+    return this.pageApi.pageCreatePost();
   }
 
   public deletePage(id: number): Promise<any> {
-    return this.pageApi.deletePage(id.toString());
+    return this.pageApi.pageDeleteIdPost(id.toString());
   }
 
   public getPageRender(id: number): Promise<any> {

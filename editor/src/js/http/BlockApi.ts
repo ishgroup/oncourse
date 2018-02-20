@@ -6,16 +6,16 @@ export class BlockApi {
   constructor(private http: HttpService) {
   }
 
-  addBlock(): Promise<Block> {
+  blockCreatePost(): Promise<Block> {
     return this.http.POST(`/block.create`);
   }
-  deleteBlock(id: string): Promise<any> {
+  blockDeleteIdPost(id: string): Promise<any> {
     return this.http.POST(`/block.delete/${id}`);
   }
-  getBlocks(): Promise<Block[]> {
+  blockListGet(): Promise<Block[]> {
     return this.http.GET(`/block.list`);
   }
-  saveBlock(saveBlockRequest: Block): Promise<Block> {
+  blockUpdatePost(saveBlockRequest: Block): Promise<Block> {
     return this.http.POST(`/block.update`, saveBlockRequest);
   }
 }

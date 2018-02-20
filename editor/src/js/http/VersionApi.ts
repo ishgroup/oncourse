@@ -6,13 +6,13 @@ export class VersionApi {
   constructor(private http: HttpService) {
   }
 
-  getVersions(): Promise<Version[]> {
-    return this.http.GET(`/version.list`);
-  }
-  publish(): Promise<any> {
+  versionDraftPublishPost(): Promise<any> {
     return this.http.POST(`/version.draft.publish`);
   }
-  setVersion(id: string): Promise<any> {
+  versionDraftSetIdPost(id: string): Promise<any> {
     return this.http.POST(`/version.draft.set/${id}`);
+  }
+  versionListGet(): Promise<Version[]> {
+    return this.http.GET(`/version.list`);
   }
 }

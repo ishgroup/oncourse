@@ -7,19 +7,19 @@ export class ThemeApi {
   constructor(private http: HttpService) {
   }
 
-  addTheme(): Promise<Theme> {
-    return this.http.POST(`/theme.create`);
-  }
-  deleteTheme(id: string): Promise<any> {
-    return this.http.POST(`/theme.delete/${id}`);
-  }
-  getLayouts(): Promise<Layout[]> {
+  layoutListGet(): Promise<Layout[]> {
     return this.http.GET(`/layout.list`);
   }
-  getThemes(): Promise<Theme[]> {
+  themeCreatePost(): Promise<Theme> {
+    return this.http.POST(`/theme.create`);
+  }
+  themeDeleteIdPost(id: string): Promise<any> {
+    return this.http.POST(`/theme.delete/${id}`);
+  }
+  themeListGet(): Promise<Theme[]> {
     return this.http.GET(`/theme.list`);
   }
-  saveTheme(saveThemeRequest: Theme): Promise<Theme> {
+  themeUpdatePost(saveThemeRequest: Theme): Promise<Theme> {
     return this.http.POST(`/theme.update`, saveThemeRequest);
   }
 }

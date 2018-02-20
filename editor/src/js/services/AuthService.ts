@@ -6,15 +6,15 @@ class AuthService {
   readonly authApi = new AuthApi(new DefaultHttpService());
 
   public getUser(): Promise<User> {
-    return this.authApi.getUser();
+    return this.authApi.userGetGet();
   }
   
   public login(values: LoginRequest): Promise<any> {
-    return this.authApi.login(values);
+    return this.authApi.userLoginPost(values);
   }
   
   public logout(): Promise<any> {
-    return this.authApi.logout();
+    return this.authApi.userLogoutPost();
   }
 }
 

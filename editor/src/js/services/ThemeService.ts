@@ -7,23 +7,23 @@ class ThemeService {
   readonly themeApi = new ThemeApi(new DefaultHttpService());
 
   public getThemes(): Promise<Theme[]> {
-    return this.themeApi.getThemes();
+    return this.themeApi.themeListGet();
   }
 
   public getLayouts(): Promise<Layout[]> {
-    return this.themeApi.getLayouts();
+    return this.themeApi.layoutListGet();
   }
 
   public saveTheme(props, state: State): Promise<Theme> {
-    return this.themeApi.saveTheme(this.buildSaveThemeRequest(props, state));
+    return this.themeApi.themeUpdatePost(this.buildSaveThemeRequest(props, state));
   }
 
   public addTheme(): Promise<Theme> {
-    return this.themeApi.addTheme();
+    return this.themeApi.themeCreatePost();
   }
 
   public deleteTheme(title: string): Promise<any> {
-    return this.themeApi.deleteTheme(title);
+    return this.themeApi.themeDeleteIdPost(title);
   }
 
   public buildSaveThemeRequest(props, state: State) {

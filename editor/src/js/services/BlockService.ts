@@ -7,19 +7,19 @@ class BlockService {
   readonly blockApi = new BlockApi(new DefaultHttpService());
 
   public getBlocks(): Promise<Block[]> {
-    return this.blockApi.getBlocks();
+    return this.blockApi.blockListGet();
   }
 
   public saveBlock(props, state: State): Promise<Block> {
-    return this.blockApi.saveBlock(this.buildSaveBlockRequest(props, state));
+    return this.blockApi.blockUpdatePost(this.buildSaveBlockRequest(props, state));
   }
 
   public addBlock(): Promise<Block> {
-    return this.blockApi.addBlock();
+    return this.blockApi.blockCreatePost();
   }
 
   public deleteBlock(id): Promise<Block[]> {
-    return this.blockApi.deleteBlock(id);
+    return this.blockApi.blockDeleteIdPost(id);
   }
 
   public buildSaveBlockRequest(props, state: State) {

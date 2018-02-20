@@ -6,15 +6,15 @@ class PublishService {
   readonly versionApi = new VersionApi(new DefaultHttpService());
 
   public getVersions(): Promise<Version[]> {
-    return this.versionApi.getVersions();
+    return this.versionApi.versionListGet();
   }
 
   public setVersion(id): Promise<any> {
-    return this.versionApi.setVersion(id);
+    return this.versionApi.versionDraftSetIdPost(id);
   }
 
   public publish(): Promise<any> {
-    return this.versionApi.publish();
+    return this.versionApi.versionDraftPublishPost();
   }
 }
 

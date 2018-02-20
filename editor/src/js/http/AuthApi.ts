@@ -7,13 +7,13 @@ export class AuthApi {
   constructor(private http: HttpService) {
   }
 
-  getUser(): Promise<User> {
+  userGetGet(): Promise<User> {
     return this.http.GET(`/user.get`);
   }
-  login(loginRequest: LoginRequest): Promise<any> {
+  userLoginPost(loginRequest: LoginRequest): Promise<any> {
     return this.http.POST(`/user.login`, loginRequest);
   }
-  logout(): Promise<any> {
+  userLogoutPost(): Promise<any> {
     return this.http.POST(`/user.logout`);
   }
 }
