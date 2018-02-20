@@ -23,10 +23,6 @@ export const pageReducer = (state: PagesState = new PagesState(), action: IActio
         items: state.items.map(page => page.serialNumber === serialNumber ? {...page, ...props} : page),
       };
 
-      // if (!state.items.find(page => page.number === number)) {
-      //   ns.items.push({number, ...props});
-      // }
-
       return ns;
     }
 

@@ -35,10 +35,6 @@ export class ThemeSettings extends React.Component<Props, any> {
     });
   }
 
-  onBlur(key) {
-
-  }
-
   onSave() {
     const {onEdit} = this.props;
 
@@ -84,7 +80,6 @@ export class ThemeSettings extends React.Component<Props, any> {
                 placeholder="Theme title"
                 value={title}
                 onChange={e => this.onChange(e, 'title')}
-                onBlur={e => this.onBlur('title')}
               />
             </FormGroup>
 
@@ -97,7 +92,6 @@ export class ThemeSettings extends React.Component<Props, any> {
                 placeholder="Theme layout"
                 value={layoutId}
                 onChange={e => this.onChange(e, 'layoutId')}
-                onBlur={e => this.onBlur('layoutId')}
               >
                 {layouts.map(layout => (
                   <option key={layout.id} value={layout.id}>{layout.layoutKey}</option>

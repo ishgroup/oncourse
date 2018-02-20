@@ -73,6 +73,7 @@ export class MockDB {
             isDefault: false,
           },
         ],
+        suppressOnSitemap: true,
         content: "<div>\n  <h1>Page Html 1</h1>\n  <p>Page text 1</p>\n</div>",
       },
       {
@@ -91,13 +92,14 @@ export class MockDB {
             isDefault: false,
           },
         ],
+        suppressOnSitemap: true,
         content: "<div>\n  <h2>Page Html 2</h2>\n  <p>\n    <small>Page text 2</small>\n  </p>\n  <p>\n    Lorem ipsum dolor sit amet, consectetur adipisicing elit. \n    Accusantium adipisci autem commodi culpa cupiditate distinctio dolore doloremque \n    eius eveniet exercitationem facere facilis fuga fugit illo illum iste magnam \n    maxime minima nam nemo numquam officia provident quas quidem reprehenderit \n    repudiandae rerum sed totam ullam unde, velit vero vitae voluptate? Error, \n    soluta.\n  </p>\n</div>\n",
       },
       {
         id: 3,
         serialNumber: 3,
         title: 'Page - 3',
-        visible: false,
+        visible: true,
         themeId: 2,
         urls: [
           {
@@ -109,6 +111,7 @@ export class MockDB {
             isDefault: false,
           },
         ],
+        suppressOnSitemap: true,
         content: "<div>\n  <h4>Page Html 3</h4>\n  <p>Page text 3</p>\n  <p>Other Page text 3</p>\n  <p>\n    Lorem ipsum dolor sit amet, consectetur adipisicing elit. \n  Beatae distinctio doloremque illum iure neque nisi perspiciatis quas quasi \n  repudiandae sed?\n  </p>\n</div>\n",
       },
     ];

@@ -28,6 +28,7 @@ export class PageSettings extends React.PureComponent<Props, any> {
       visible: props.page.visible,
       themeId: props.page.themeId,
       newLink: '',
+      suppressOnSitemap: props.page.suppressOnSitemap,
     };
   }
 
@@ -39,6 +40,7 @@ export class PageSettings extends React.PureComponent<Props, any> {
         visible: props.page.visible,
         themeId: props.page.themeId,
         newLink: '',
+        suppressOnSitemap: props.page.suppressOnSitemap,
       });
     }
   }
@@ -57,6 +59,7 @@ export class PageSettings extends React.PureComponent<Props, any> {
       urls: this.state.urls,
       visible: this.state.visible,
       themeId: this.state.themeId,
+      suppressOnSitemap: this.state.suppressOnSitemap,
     });
   }
 
@@ -65,10 +68,6 @@ export class PageSettings extends React.PureComponent<Props, any> {
     this.setState({
       [key]: value,
     });
-  }
-
-  onBlur(key) {
-
   }
 
   onSetDefaultUrl(url) {
@@ -122,7 +121,7 @@ export class PageSettings extends React.PureComponent<Props, any> {
 
   render () {
     const {page, themes} = this.props;
-    const {title, visible, themeId, urls, newLink} = this.state;
+    const {title, visible, themeId, urls, newLink, suppressOnSitemap} = this.state;
     const defaultPageUrl = PageService.generateBasetUrl(page);
 
     return (
@@ -147,7 +146,6 @@ export class PageSettings extends React.PureComponent<Props, any> {
                 placeholder="Page title"
                 value={title}
                 onChange={e => this.onChange(e, 'title')}
-                onBlur={e => this.onBlur('title')}
               />
             </FormGroup>
 
@@ -213,7 +211,6 @@ export class PageSettings extends React.PureComponent<Props, any> {
                 placeholder="Page theme"
                 value={themeId}
                 onChange={e => this.onChange(e, 'themeId')}
-                onBlur={e => this.onBlur('themeId')}
               >
                 {themes.map(theme => (
                   <option key={theme.id} value={theme.id}>{theme.title}</option>
@@ -226,7 +223,16 @@ export class PageSettings extends React.PureComponent<Props, any> {
                 label="Visible"
                 name="visible"
                 checked={visible}
-                onChange={e => {this.onChange(e, 'visible'); this.onBlur('visible');}}
+                onChange={e => {this.onChange(e, 'visible');}}
+              />
+            </FormGroup>
+
+            <FormGroup>
+              <Checkbox
+                label="Hide from sitemap"
+                name="suppressOnSitemap"
+                checked={suppressOnSitemap}
+                onChange={e => {this.onChange(e, 'suppressOnSitemap');}}
               />
             </FormGroup>
 

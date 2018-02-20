@@ -41,10 +41,6 @@ export class BlockSettings extends React.Component<Props, any> {
     });
   }
 
-  onBlur(key) {
-
-  }
-
   onClickDelete(e) {
     e.preventDefault();
     const {onDelete, block, showModal} = this.props;
@@ -81,7 +77,6 @@ export class BlockSettings extends React.Component<Props, any> {
                 placeholder="Block title"
                 value={title}
                 onChange={e => this.onChange(e, 'title')}
-                onBlur={e => this.onBlur('title')}
               />
             </FormGroup>
 

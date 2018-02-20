@@ -53,7 +53,7 @@ class PageService {
   }
 
   public buildSavePageRequest(props, state: State): Page {
-    const page = state.page.items.find(p => p.serialNumber === props.number);
+    const page = state.page.items.find(p => p.serialNumber === props.serialNumber);
     const request: Page = new Page();
     const newPage: Page = {...page, ...props};
 
@@ -63,6 +63,7 @@ class PageService {
     request.content = newPage.content;
     request.urls = newPage.urls;
     request.visible = newPage.visible;
+    request.suppressOnSitemap = newPage.suppressOnSitemap;
 
     return request;
   }
