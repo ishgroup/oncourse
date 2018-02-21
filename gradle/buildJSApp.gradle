@@ -16,16 +16,13 @@ task jest(type: NodeTask, dependsOn: 'yarn_install') {
     args = ['--ci', '--testResultsProcessor=jest-junit']
 }
 
-
 sourceSets {
-    main.resources.srcDirs 'src/js', 'src/dev'
-    swagger.resources.srcDir 'build/generated-sources'
+    main.resources.srcDirs 'src/js', 'src/dev', 'build/generated-sources'
 }
 
 test.dependsOn(jest)
 
 build.dependsOn(webpack)
-build.dependsOn(":editor-api:swagger")
 
 publishing {
     publications {
