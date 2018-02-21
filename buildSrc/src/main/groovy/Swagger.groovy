@@ -24,10 +24,13 @@ class Swagger extends DefaultTask {
         configJava.setInputSpec(schema.path)
         configJava.setOutputDir(javaOutput.path)
         configJava.setLang('jaxrs-cxf')
+        configJava.setIgnoreFileOverride("${project.parent.projectDir}/buildSrc/src/main/resources/.swagger-codegen-ignore".toString())
         configJava.setAdditionalProperties([
                 'templateDir':  "${project.parent.projectDir}/buildSrc/src/main/resources/swaggerTemplates".toString(),
                 'sourceFolder': 'src/main/groovy',
                 'implFolder': 'src/main/groovy',
+                'testFolder': 'src/test/groovy',
+                'useBeanValidation': false,
                 'modelPackage'  : "ish.oncourse.willow.editor.v${schemaVersion}.model".toString(),
                 'apiPackage'    : "ish.oncourse.willow.editor.v${schemaVersion}.service".toString(),
                 'supportingFiles': '', // skip scripts and maven files

@@ -241,8 +241,7 @@ paths:
           in: path
           description: number of page which will be deleted
           required: true
-          schema:
-            type: string
+          type: string
       responses:
         '200':
           description: Page successfully deleted
@@ -330,8 +329,7 @@ paths:
           in: path
           description: idenifier of block which will be deleted
           required: true
-          schema:
-            type: string
+          type: string
       responses:
         '200':
           description: Block successfully deleted
@@ -441,8 +439,7 @@ paths:
           in: path
           description: identificator of theme which will be deleted
           required: true
-          schema:
-            type: string
+          type: string
       responses:
         '200':
           description: Theme successfully deleted
@@ -485,8 +482,7 @@ paths:
           in: path
           description: identificator of version
           required: true
-          schema:
-            type: string
+          type: string
         - version: 
           name: version
           in: body

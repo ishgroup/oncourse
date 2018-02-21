@@ -73,7 +73,7 @@ publishing {
 task swagger (type: Swagger) {
     schema = swaggerSchema
     schemaVersion = 1
-    javaOutput = file("${project.projectDir}/build/generated-sources")
+    javaOutput = file(project.projectDir)
     jsOutput = file("${rootDir}/editor/build/generated-sources")
 }
 
