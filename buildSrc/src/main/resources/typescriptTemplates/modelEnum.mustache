@@ -1,0 +1,16 @@
+{{#description}}
+    /**
+    * {{{description}}}
+    */
+{{/description}}
+import {createStringEnum} from "common/utils/EnumUtils";
+
+export const {{classname}} = createStringEnum([
+  {{#allowableValues}}
+  {{#enumVars}}
+  {{{value}}},
+  {{/enumVars}}
+  {{/allowableValues}}
+]);
+
+export type {{classname}} = keyof typeof {{classname}};

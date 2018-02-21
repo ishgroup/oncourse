@@ -1,0 +1,16 @@
+import {HttpService} from "../common/services/HttpService";
+{{#imports}}
+{{=[ ]=}}
+import {[import.name]} from "../model/[import.path]";
+[={{ }}=]
+{{/imports}}
+
+export class {{classname}} {
+  constructor(private http: HttpService) {
+  }
+{{#operations}}{{#operation}}
+  {{operationId}}({{#allParams}}{{paramName}}: {{dataType}}{{^-last}}, {{/-last}}{{/allParams}}): Promise<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}any{{/returnType}}> {
+    return this.http.{{httpMethod}}(`{{path}}`{{#bodyParams}}, {{paramName}}{{/bodyParams}}{{#queryParams}}, { params: { {{paramName}} }}{{/queryParams}});
+  }{{/operation}}
+  {{/operations}}
+}

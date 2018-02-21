@@ -1,0 +1,13 @@
+{{#imports}}
+{{=[ ]=}}
+import {[name]} from "./[path]";
+[={{ }}=]
+{{/imports}}
+
+{{#models}}
+  {{#model}}
+  {{#description}}
+/**
+ * {{{description}}}
+ */
+{{/description}}{{#isEnum}}{{>modelEnum}}{{/isEnum}}{{^isEnum}}{{>plain}}{{/isEnum}}{{/model}}{{/models}}
