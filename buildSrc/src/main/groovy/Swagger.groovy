@@ -29,15 +29,21 @@ class Swagger extends DefaultTask {
                 'templateDir':  "${project.parent.projectDir}/buildSrc/src/main/resources/swaggerTemplates".toString(),
                 'sourceFolder': 'src/main/groovy',
                 'implFolder': 'src/main/groovy',
-                'testFolder': 'src/test/groovy',
                 'useBeanValidation': false,
                 'modelPackage'  : "ish.oncourse.willow.editor.v${schemaVersion}.model".toString(),
                 'apiPackage'    : "ish.oncourse.willow.editor.v${schemaVersion}.service".toString(),
                 'supportingFiles': '', // skip scripts and maven files
                 'dateLibrary'   : 'java8',
-                'appVersion'    : project.version
+                'appVersion'    : project.version,
+                'apiTestTemplateFiles': ['api_test.mustache':'.groovy']
         ])
-        new DefaultGenerator().opts(configJava.toClientOptInput()).generate()
+
+        def opt = configJava.toClientOptInput()
+        opt.config.apiTestTemplateFiles.clear()
+        opt.config.apiTestTemplateFiles.put('api_test.mustache', '.groovy')
+        opt.config.testFolder =  'src/test/groovy'
+        opt.config.apiTemplateFiles.put('apiServiceImpl.mustache', '.groovy')
+        new DefaultGenerator().opts(opt).generate()
 
 
         def configJS = new CodegenConfigurator()
