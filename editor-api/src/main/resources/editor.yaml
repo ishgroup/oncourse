@@ -226,6 +226,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/CommonError'
+  /page/{id}:          
     delete:
       operationId: deletePage
       x-filter:  
@@ -314,6 +315,8 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/CommonError'
+            
+  /block/{id}:          
     delete:
       operationId: deleteBlock
       x-filter:  
@@ -424,6 +427,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/CommonError'
+  /theme/{id}:          
     delete:
       operationId: deleteTheme
       x-filter:  
@@ -468,6 +472,8 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/CommonError'
+            
+  /version/{id}:
     patch:
       operationId: updateVersion
       x-filter:  
