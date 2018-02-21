@@ -60,7 +60,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/common.CommonError'
+            $ref: '#/definitions/CommonError'
     delete:
       operationId: destroySession
       summary: De-authorize user from editor
@@ -74,7 +74,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/common.CommonError'
+            $ref: '#/definitions/CommonError'
 
   /user:
     get:
@@ -94,7 +94,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/common.CommonError'
+            $ref: '#/definitions/CommonError'
 
   /menu:
     get:
@@ -115,7 +115,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/common.CommonError'
+            $ref: '#/definitions/CommonError'
     put:
       operationId: updateMenus
       x-filter:  
@@ -151,7 +151,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/common.CommonError'
+            $ref: '#/definitions/CommonError'
 
   /page:
     get:
@@ -180,7 +180,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/common.CommonError'
+            $ref: '#/definitions/CommonError'
     put:
       operationId: updatePage
       x-filter:  
@@ -206,7 +206,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/common.CommonError'
+            $ref: '#/definitions/CommonError'
     post:
       operationId: createPage
       x-filter:  
@@ -225,7 +225,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/common.CommonError'
+            $ref: '#/definitions/CommonError'
     delete:
       operationId: deletePage
       x-filter:  
@@ -249,7 +249,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/common.CommonError'
+            $ref: '#/definitions/CommonError'
 
   /block:
     get:
@@ -269,7 +269,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/common.CommonError'
+            $ref: '#/definitions/CommonError'
     put:
       operationId: updateBlock
       x-filter:  
@@ -295,7 +295,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/common.CommonError'
+            $ref: '#/definitions/CommonError'
     post:
       operationId: createBlock
       x-filter:  
@@ -314,7 +314,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/common.CommonError'
+            $ref: '#/definitions/CommonError'
     delete:
       operationId: deleteBlock
       x-filter:  
@@ -338,7 +338,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/common.CommonError'
+            $ref: '#/definitions/CommonError'
 
   /layout:
     get:
@@ -359,7 +359,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/common.CommonError'
+            $ref: '#/definitions/CommonError'
             
   /theme:
     get:
@@ -380,7 +380,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/common.CommonError'
+            $ref: '#/definitions/CommonError'
     put:
       operationId: updateTheme
       x-filter:  
@@ -406,7 +406,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/common.CommonError'
+            $ref: '#/definitions/CommonError'
     post:
       operationId: createTheme
       x-filter:  
@@ -425,7 +425,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/common.CommonError'
+            $ref: '#/definitions/CommonError'
     delete:
       operationId: deleteTheme
       x-filter:  
@@ -449,7 +449,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/common.CommonError'
+            $ref: '#/definitions/CommonError'
 
   /version:
     get:
@@ -470,7 +470,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/common.CommonError'
+            $ref: '#/definitions/CommonError'
     patch:
       operationId: updateVersion
       x-filter:  
@@ -503,7 +503,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/common.CommonError'
+            $ref: '#/definitions/CommonError'
 
   /settings/skillsOnCourse:
     get:
@@ -518,11 +518,11 @@ paths:
         '200':
           description: response with SkillsOnCourse settings object
           schema:
-            $ref: '#/definitions/settings.SkillsOnCourseSettings'
+            $ref: '#/definitions/SkillsOnCourseSettings'
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/common.CommonError'
+            $ref: '#/definitions/CommonError'
     put:
       operationId: updateSkillsOnCourseSettings
       x-filter:  
@@ -539,16 +539,16 @@ paths:
           description: SkillsOnCourse settings object
           required: true
           schema:
-            $ref: '#/definitions/settings.SkillsOnCourseSettings'
+            $ref: '#/definitions/SkillsOnCourseSettings'
       responses:
         '200':
           description: Updated SkillsOnCourse settings object
           schema:
-            $ref: '#/definitions/settings.SkillsOnCourseSettings'
+            $ref: '#/definitions/SkillsOnCourseSettings'
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/common.CommonError'
+            $ref: '#/definitions/CommonError'
 
   /settings/website:
     get:
@@ -563,11 +563,11 @@ paths:
         '200':
           description: response with Website settings object
           schema:
-            $ref: '#/definitions/settings.WebsiteSettings'
+            $ref: '#/definitions/WebsiteSettings'
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/common.CommonError'
+            $ref: '#/definitions/CommonError'
     put:
       operationId: updateWesiteSettings
       x-filter:  
@@ -584,16 +584,16 @@ paths:
           description: website settings object
           required: true
           schema:
-            $ref: '#/definitions/settings.WebsiteSettings'
+            $ref: '#/definitions/WebsiteSettings'
       responses:
         '200':
           description: Updated website settings object
           schema:
-            $ref: '#/definitions/settings.WebsiteSettings'
+            $ref: '#/definitions/WebsiteSettings'
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/common.CommonError'
+            $ref: '#/definitions/CommonError'
 
   /redirect:
     get:
@@ -608,11 +608,11 @@ paths:
         '200':
           description: response with redirect settings object
           schema:
-            $ref: '#/definitions/redirect.Redirects'
+            $ref: '#/definitions/Redirects'
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/common.CommonError'
+            $ref: '#/definitions/CommonError'
     put:
       operationId: updateRedirects
       x-filter:  
@@ -629,16 +629,16 @@ paths:
           description: redirect settings object
           required: true
           schema:
-            $ref: '#/definitions/redirect.Redirects'
+            $ref: '#/definitions/Redirects'
       responses:
         '200':
           description: Updated redirect settings object
           schema:
-            $ref: '#/definitions/redirect.Redirects'
+            $ref: '#/definitions/Redirects'
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/common.CommonError'
+            $ref: '#/definitions/CommonError'
             
             
 parameters:
@@ -729,7 +729,7 @@ definitions:
         description: date and time when version was published
       status:
         description: Indicate about current state of version
-        $ref: '#/definitions/settings.VersionStatus'
+        $ref: '#/definitions/VersionStatus'
 
   Layout:
     type: object
@@ -900,7 +900,7 @@ definitions:
       fieldsErrors:
         type: array
         items:
-          title: common.FieldError
+          title: FieldError
           type: object
           required:
             - name
@@ -932,7 +932,7 @@ definitions:
       rules:
         type: array
         items:
-          $ref: '#/definitions/redirect.RedirectItem'
+          $ref: '#/definitions/RedirectItem'
           
   SkillsOnCourseSettings:
     type: object
@@ -965,11 +965,11 @@ definitions:
       hideClassDays:
         type: integer
       hideClassCondition:
-        $ref: '#/definitions/settings.ClassCondition'
+        $ref: '#/definitions/ClassCondition'
       stopWebEnrolmentDays:
         type: integer
       stopWebEnrolmentCondition:
-        $ref: '#/definitions/settings.ClassEnrolmentCondition'
+        $ref: '#/definitions/ClassEnrolmentCondition'
         
   WebsiteSettings:
     type: object
@@ -983,4 +983,4 @@ definitions:
       enableForWebpage:
         type: boolean
       classAge:
-        $ref: '#/definitions/settings.ClassAge'
+        $ref: '#/definitions/ClassAge'
