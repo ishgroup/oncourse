@@ -1,23 +1,8 @@
 apply plugin: 'java'
 apply plugin: 'application'
 
-buildscript {
-    repositories {
-        maven {
-            url 'https://repo.ish.com.au/content/groups/public'
-        }
-    }
-
-    dependencies {
-        classpath('io.swagger:swagger-codegen:2.3.1')
-    }
-}
-
 ext {
-    swaggerResources = "${rootDir}/common/codegen/common/src/main/resources/htmlDocs"
-    swaggerSchema = "${project.projectDir}/src/main/resources/${swaggerName}"
-    swaggerOutputDir = "${project.projectDir}"
-    swaggerTemplateDir = "${rootDir}/common/codegen/jaxrs/src/main/resources/willow-jaxrs"
+    swaggerSchema = file("${project.projectDir}/src/main/resources/${swaggerName}")
 }
 
 configurations {
@@ -29,7 +14,6 @@ dependencies {
     testCompile 'org.apache.commons:commons-dbcp2:2.1.1'
     testCompile 'org.apache.commons:commons-pool2:2.4.2'
     testCompile project(':common:test-functions')
-    // swagger project(':common:codegen:jaxrs')
 }
 
 targetCompatibility = '1.8'
@@ -86,63 +70,15 @@ publishing {
     }
 }
 
-task swagger (type: JavaExec) {
-    inputs.file swaggerSchema
-    main = 'ish.oncourse.codegen.cxf.WillowJaxRsGenerator'
-    classpath = configurations.swagger
-    args  = [ servicesPackage, modelPackage, project.projectDir, swaggerSchema ]
-}
-
-import io.swagger.codegen.config.CodegenConfigurator
-import io.swagger.codegen.DefaultGenerator
-
-task swagger2 {
-    inputs.file swaggerSchema
-    outputs.dir "${project.projectDir}/build/generated-sources"
-    doLast {
-        def config = new CodegenConfigurator()
-        config.setInputSpec(swaggerSchema)
-        config.setOutputDir("${project.projectDir}/build/generated-sources")
-        config.setLang('jaxrs-cxf')
-        config.setAdditionalProperties([
-                'templateDir': swaggerTemplateDir.toString(),
-                'sourceFolder': 'src/main/groovy',
-                'implFolder': 'src/main/groovy',
-                'modelPackage'  : 'ish.oncourse.willow.editor.v1.model',
-                'apiPackage'    : 'ish.oncourse.willow.editor.v1.services',
-                'supportingFiles': '', // skip scripts and maven files
-                'dateLibrary'   : 'java8',
-                'appVersion'    : project.version
-        ])
-        // config.setImportMappings([
-        //         'Dog': 'io.swagger.petstore.client.model.Dog'
-        // ])
-        new DefaultGenerator().opts(config.toClientOptInput()).generate()
-    }
-}
-
-task swagger3 {
-    inputs.file swaggerSchema
-    outputs.dir "${project.projectDir}/build/generated-sources"
-    doLast {
-        def config = new CodegenConfigurator()
-        config.setInputSpec(swaggerSchema)
-        config.setOutputDir("${project.projectDir}/../editor/build/generated-sources")
-        config.setLang('javascript')
-        config.setAdditionalProperties([
-                'supportingFiles': '', // skip scripts and maven files
-                'withXml'       : true,
-                'appVersion'    : project.version
-        ])
-        // config.setImportMappings([
-        //         'Dog': 'io.swagger.petstore.client.model.Dog'
-        // ])
-        new DefaultGenerator().opts(config.toClientOptInput()).generate()
-    }
+task swagger (type: Swagger) {
+    schema = swaggerSchema
+    schemaVersion = 1
+    javaOutput = file("${project.projectDir}/build/generated-sources")
+    jsOutput = file("${rootDir}/editor/build/generated-sources")
 }
 
 compileJava {
-    dependsOn swagger2
+    dependsOn swagger
     source += sourceSets.swagger.java
 }
 
@@ -150,27 +86,13 @@ clean.doFirst {
     delete("${project.projectDir}/build/generated-sources")
 }
 
-task docGenerate (type: JavaExec) {
-    inputs.file "${project.projectDir}/src/main/resources/${swaggerName}"
-    outputs.dir "${buildDir}/doc"
-
-    classpath = configurations.swagger
-    main = 'io.swagger.codegen.SwaggerCodegen'
-    args  = [ 'generate',
-              '-i', swaggerSchema,
-              '-l', 'dynamic-html',
-              '-t', "$swaggerResources",
-              '-o', outputs.files.last()
-            ]
+task generateDoc (type: SwaggerDoc) {
+    schema = swaggerSchema
+    docOutput = file("${buildDir}/doc")
 }
 
-task docCss (type: Copy, dependsOn: docGenerate) {
-    from "${swaggerResources}"
-    into "${buildDir}/doc/docs/assets/css"
-}
-
-task buildDoc (type: Zip, dependsOn: docCss) {
-    from "${buildDir}/doc/docs"
+task buildDoc (type: Zip, dependsOn: generateDoc) {
+    from generateDoc.outputs
     archiveName 'doc.zip'
     destinationDir file("${buildDir}/doc")
 }

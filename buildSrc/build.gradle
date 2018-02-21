@@ -1,0 +1,9 @@
+repositories {
+    maven {
+        url 'https://repo.ish.com.au/content/groups/public'
+    }
+}
+
+dependencies {
+    compile 'io.swagger:swagger-codegen:2.3.1'
+}

@@ -17,11 +17,15 @@ task jest(type: NodeTask, dependsOn: 'yarn_install') {
 }
 
 
-sourceSets { main { resources { srcDirs 'src/js', 'src/dev'  } } }
+sourceSets {
+    main.resources.srcDirs 'src/js', 'src/dev'
+    swagger.resources.srcDir 'build/generated-sources'
+}
 
 test.dependsOn(jest)
 
 build.dependsOn(webpack)
+build.dependsOn(":editor-api:swagger")
 
 publishing {
     publications {
@@ -33,18 +37,4 @@ publishing {
             }
         }
     }
-}
-
-configurations {
-    swagger
-}
-
-dependencies {
-    swagger project(':common:codegen:typescript')
-}
-
-task (swagger, type: JavaExec) {
-    main = 'ish.oncourse.codegen.typescript.WillowClientGenerator'
-    classpath = configurations.swagger
-    args  = [ project.projectDir, "${project.rootDir}/${project.name}-api/src/main/resources/${project.name}.yaml" ]
 }

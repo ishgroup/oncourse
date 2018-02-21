@@ -1,0 +1,51 @@
+import io.swagger.codegen.DefaultGenerator
+import io.swagger.codegen.config.CodegenConfigurator
+import org.gradle.api.DefaultTask
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.OutputDirectory
+import org.gradle.api.tasks.TaskAction
+
+class Swagger extends DefaultTask {
+    @Input
+    File schema
+
+    @Input
+    Integer schemaVersion
+
+    @OutputDirectory
+    File javaOutput
+
+    @OutputDirectory
+    File jsOutput
+
+    @TaskAction
+    void swagger() {
+        def configJava = new CodegenConfigurator()
+        configJava.setInputSpec(schema.path)
+        configJava.setOutputDir(javaOutput.path)
+        configJava.setLang('jaxrs-cxf')
+        configJava.setAdditionalProperties([
+                'templateDir':  'src/main/resources/swaggerTemplates',
+                'sourceFolder': 'src/main/groovy',
+                'implFolder': 'src/main/groovy',
+                'modelPackage'  : "ish.oncourse.willow.editor.v${schemaVersion}.model".toString(),
+                'apiPackage'    : "ish.oncourse.willow.editor.v${schemaVersion}.services".toString(),
+                'supportingFiles': '', // skip scripts and maven files
+                'dateLibrary'   : 'java8',
+                'appVersion'    : project.version
+        ])
+        new DefaultGenerator().opts(configJava.toClientOptInput()).generate()
+
+
+        def configJS = new CodegenConfigurator()
+        configJS.setInputSpec(schema.path)
+        configJS.setOutputDir(jsOutput.path)
+        configJS.setLang('typescript-fetch')
+        configJS.setAdditionalProperties([
+                'supportingFiles': '', // skip scripts and maven files
+                'withXml'       : true,
+                'appVersion'    : project.version
+        ])
+        new DefaultGenerator().opts(configJS.toClientOptInput()).generate()
+    }
+}
