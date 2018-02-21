@@ -878,7 +878,7 @@ definitions:
         type: string
         example: Smith
 
-  common.CommonError:
+  CommonError:
     type: object
     properties:
       code:
@@ -886,7 +886,7 @@ definitions:
       message:
         type: string
 
-  common.ValidationError:
+  ValidationError:
     type: object
     required:
       - formErrors
@@ -914,7 +914,7 @@ definitions:
               description: 'Errors for particular field, or empty array'
         description: 'Array of fields errors, or empty array'
         
-  redirect.RedirectItem:
+  RedirectItem:
     type: object
     properties:
       from:
@@ -926,7 +926,7 @@ definitions:
         type: string
         description: Redirect to url
         
-  redirect.Redirects:
+  Redirects:
     type: object
     properties:
       rules:
@@ -934,7 +934,7 @@ definitions:
         items:
           $ref: '#/definitions/redirect.RedirectItem'
           
-  settings.SkillsOnCourseSettings:
+  SkillsOnCourseSettings:
     type: object
     properties:
       hideStudentDetails:
@@ -944,7 +944,7 @@ definitions:
       tutorFeedbackEmail:
         type: string
         
-  settings.ClassCondition:
+  ClassCondition:
     type: string
     enum:
       - afterClassStarts
@@ -952,14 +952,14 @@ definitions:
       - afterClassEnds
       - beforeClassEnds
       
-  settings.ClassEnrolmentCondition:
+  ClassEnrolmentCondition:
     type: string
     enum:
       - afterClassStarts
       - beforeClassStarts
       - beforeClassEnds
       
-  settings.ClassAge:
+  ClassAge:
     type: object
     properties:
       hideClassDays:
@@ -971,7 +971,7 @@ definitions:
       stopWebEnrolmentCondition:
         $ref: '#/definitions/settings.ClassEnrolmentCondition'
         
-  settings.WebsiteSettings:
+  WebsiteSettings:
     type: object
     properties:
       enableSocialMedia:

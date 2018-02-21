@@ -29,7 +29,7 @@ class Swagger extends DefaultTask {
                 'sourceFolder': 'src/main/groovy',
                 'implFolder': 'src/main/groovy',
                 'modelPackage'  : "ish.oncourse.willow.editor.v${schemaVersion}.model".toString(),
-                'apiPackage'    : "ish.oncourse.willow.editor.v${schemaVersion}.services".toString(),
+                'apiPackage'    : "ish.oncourse.willow.editor.v${schemaVersion}.service".toString(),
                 'supportingFiles': '', // skip scripts and maven files
                 'dateLibrary'   : 'java8',
                 'appVersion'    : project.version
