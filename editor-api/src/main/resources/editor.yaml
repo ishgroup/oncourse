@@ -488,6 +488,7 @@ paths:
           schema:
             type: string
         - version: 
+          name: version
           in: body
           description: | 
             Diff of version record. Actually process change of single attribute status.
