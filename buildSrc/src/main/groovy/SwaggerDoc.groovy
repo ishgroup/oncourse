@@ -13,26 +13,18 @@ class SwaggerDoc extends DefaultTask {
     File docOutput
 
     @TaskAction
-    void swaggerDoc() {
+    void run() {
         def config = new CodegenConfigurator()
         config.setInputSpec(schema.path)
         config.setOutputDir(docOutput.path)
         config.setLang('dynamic-html')
         new DefaultGenerator().opts(config.toClientOptInput()).generate()
 
-//            main = 'io.swagger.codegen.SwaggerCodegen'
-//            args  = [ 'generate',
-//                      '-i', swaggerSchema,
-//                      '-l', 'dynamic-html',
-//                      '-t', "$swaggerResources",
-//                      '-o', outputs.files.last()
-//            ]
-//        }
-//
-//        task docCss (type: Copy, dependsOn: docGenerate) {
-//            from "${swaggerResources}"
-//            into "${buildDir}/doc/docs/assets/css"
-//        }
+        project.copy {
+            from "${project.parent.projectDir}/buildSrc/src/main/resources"
+            include "style.css"
+            into "${docOutput.path}/docs/assets/css"
+        }
     }
 
 }

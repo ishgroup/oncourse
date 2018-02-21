@@ -19,13 +19,13 @@ class Swagger extends DefaultTask {
     File jsOutput
 
     @TaskAction
-    void swagger() {
+    void run() {
         def configJava = new CodegenConfigurator()
         configJava.setInputSpec(schema.path)
         configJava.setOutputDir(javaOutput.path)
         configJava.setLang('jaxrs-cxf')
         configJava.setAdditionalProperties([
-                'templateDir':  'src/main/resources/swaggerTemplates',
+                'templateDir':  "${project.parent.projectDir}/buildSrc/src/main/resources/swaggerTemplates".toString(),
                 'sourceFolder': 'src/main/groovy',
                 'implFolder': 'src/main/groovy',
                 'modelPackage'  : "ish.oncourse.willow.editor.v${schemaVersion}.model".toString(),
