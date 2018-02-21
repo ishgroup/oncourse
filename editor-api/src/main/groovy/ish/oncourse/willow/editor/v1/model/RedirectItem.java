@@ -1,4 +1,4 @@
-package ish.oncourse.willow.editor.v1.model.redirect;
+package ish.oncourse.willow.editor.v1.model;
 
 
 public class RedirectItem  {

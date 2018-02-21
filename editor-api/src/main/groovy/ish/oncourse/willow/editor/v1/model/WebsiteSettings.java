@@ -1,6 +1,6 @@
-package ish.oncourse.willow.editor.v1.model.settings;
+package ish.oncourse.willow.editor.v1.model;
 
-import ish.oncourse.willow.editor.v1.model.settings.ClassAge;
+import ish.oncourse.willow.editor.v1.model.ClassAge;
 
 public class WebsiteSettings  {
   
@@ -14,7 +14,7 @@ public class WebsiteSettings  {
      * Get enableSocialMedia
      * @return enableSocialMedia
      */
-    public Boolean getEnableSocialMedia() {
+    public Boolean EnableSocialMedia() {
         return enableSocialMedia;
     }
 
@@ -48,7 +48,7 @@ public class WebsiteSettings  {
      * Get enableForCourse
      * @return enableForCourse
      */
-    public Boolean getEnableForCourse() {
+    public Boolean EnableForCourse() {
         return enableForCourse;
     }
 
@@ -65,7 +65,7 @@ public class WebsiteSettings  {
      * Get enableForWebpage
      * @return enableForWebpage
      */
-    public Boolean getEnableForWebpage() {
+    public Boolean EnableForWebpage() {
         return enableForWebpage;
     }
 

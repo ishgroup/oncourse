@@ -1,12 +1,12 @@
-package ish.oncourse.willow.editor.v1.model.redirect;
+package ish.oncourse.willow.editor.v1.model;
 
-import ish.oncourse.willow.editor.v1.model.redirect.RedirectItem;
+import ish.oncourse.willow.editor.v1.model.RedirectItem;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Redirects  {
   
-    private List<RedirectItem> rules = new ArrayList<RedirectItem>();
+    private List<RedirectItem> rules = new ArrayList<>();
 
     /**
      * Get rules
@@ -34,7 +34,7 @@ public class Redirects  {
     @Override
     public String toString() {
       StringBuilder sb = new StringBuilder();
-      sb.append("class RedirectSettings {\n");
+      sb.append("class Redirects {\n");
       
       sb.append("    rules: ").append(toIndentedString(rules)).append("\n");
       sb.append("}");

@@ -1,4 +1,4 @@
-package ish.oncourse.willow.editor.v1.model.settings;
+package ish.oncourse.willow.editor.v1.model;
 
 
 public class SkillsOnCourseSettings  {
@@ -11,7 +11,7 @@ public class SkillsOnCourseSettings  {
      * Get hideStudentDetails
      * @return hideStudentDetails
      */
-    public Boolean getHideStudentDetails() {
+    public Boolean HideStudentDetails() {
         return hideStudentDetails;
     }
 
@@ -28,7 +28,7 @@ public class SkillsOnCourseSettings  {
      * Get enableOutcomeMarking
      * @return enableOutcomeMarking
      */
-    public Boolean getEnableOutcomeMarking() {
+    public Boolean EnableOutcomeMarking() {
         return enableOutcomeMarking;
     }
 

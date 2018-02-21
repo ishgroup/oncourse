@@ -13,7 +13,7 @@ public class Page  {
     private String content = null;
     private Boolean visible = null;
     private Boolean suppressOnSitemap = null;
-    private List<PageUrl> urls = new ArrayList<PageUrl>();
+    private List<PageUrl> urls = new ArrayList<>();
 
     /**
      * unique id of the page
@@ -104,7 +104,7 @@ public class Page  {
      * Is the page visible
      * @return visible
      */
-    public Boolean getVisible() {
+    public Boolean Visible() {
         return visible;
     }
 
@@ -121,7 +121,7 @@ public class Page  {
      * Is the page suppressed on sitemap
      * @return suppressOnSitemap
      */
-    public Boolean getSuppressOnSitemap() {
+    public Boolean SuppressOnSitemap() {
         return suppressOnSitemap;
     }
 

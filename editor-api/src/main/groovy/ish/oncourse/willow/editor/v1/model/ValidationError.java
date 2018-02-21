@@ -1,13 +1,13 @@
-package ish.oncourse.willow.editor.v1.model.common;
+package ish.oncourse.willow.editor.v1.model;
 
-import ish.oncourse.willow.editor.v1.model.common.FieldError;
+import ish.oncourse.willow.editor.v1.model.FieldError;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ValidationError  {
   
-    private List<String> formErrors = new ArrayList<String>();
-    private List<FieldError> fieldsErrors = new ArrayList<FieldError>();
+    private List<String> formErrors = new ArrayList<>();
+    private List<FieldError> fieldsErrors = new ArrayList<>();
 
     /**
      * Global error

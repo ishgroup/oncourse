@@ -1,4 +1,4 @@
-package ish.oncourse.willow.editor.v1.model.common;
+package ish.oncourse.willow.editor.v1.model;
 
 
 public class CommonError  {

@@ -1,46 +1,45 @@
 package ish.oncourse.willow.editor.v1.service;
 
+import ish.oncourse.willow.editor.v1.model.CommonError;
 import ish.oncourse.willow.editor.v1.model.Page;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
+import java.util.Map;
 import javax.ws.rs.*;
-
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.MediaType;
 import ish.oncourse.willow.editor.annotation.AuthFilter;
 
 @Path("/")
 public interface PageApi  {
 
     @POST
-    @Path("/v1/page.create")
+    @Path("/v1/page")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @AuthFilter
-    Page pageCreatePost();
+    Page createPage();
 
-    @POST
-    @Path("/v1/page.delete/{id}")
+    @DELETE
+    @Path("/v1/page/{id}")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @AuthFilter
-    void pageDeleteIdPost(@PathParam("id") String id);
+    void deletePage(@PathParam("id") String id);
 
     @GET
-    @Path("/v1/page.get")
+    @Path("/v1/page")
     @Produces({ "application/json" })
     @AuthFilter
-    Page pageGetGet(@QueryParam("pageUrl")String pageUrl);
+    List<Page> getPages(@QueryParam("pageUrl")String pageUrl);
 
-    @GET
-    @Path("/v1/page.list")
-    @Produces({ "application/json" })
-    @AuthFilter
-    List<Page> pageListGet();
-
-    @POST
-    @Path("/v1/page.update")
+    @PUT
+    @Path("/v1/page")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @AuthFilter
-    Page pageUpdatePost(Page pageParams);
+    Page updatePage(Page pageParams);
 }
 

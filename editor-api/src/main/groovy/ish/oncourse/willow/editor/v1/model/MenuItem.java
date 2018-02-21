@@ -9,7 +9,7 @@ public class MenuItem  {
     private Integer id = null;
     private String title = null;
     private String url = null;
-    private List<MenuItem> children = new ArrayList<MenuItem>();
+    private List<MenuItem> children = new ArrayList<>();
     private String error = null;
     private String warning = null;
 

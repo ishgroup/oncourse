@@ -1,23 +1,25 @@
-package ish.oncourse.willow.editor.v1.model.settings;
+package ish.oncourse.willow.editor.v1.model;
 
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Gets or Sets settings.ClassEnrolmentCondition
+ * Gets or Sets ClassCondition
  */
-public enum ClassEnrolmentCondition {
+public enum ClassCondition {
   
   AFTERCLASSSTARTS("afterClassStarts"),
   
   BEFORECLASSSTARTS("beforeClassStarts"),
   
+  AFTERCLASSENDS("afterClassEnds"),
+  
   BEFORECLASSENDS("beforeClassEnds");
 
   private String value;
 
-  ClassEnrolmentCondition(String value) {
+  ClassCondition(String value) {
     this.value = value;
   }
 
@@ -28,13 +30,14 @@ public enum ClassEnrolmentCondition {
   }
 
   @JsonCreator
-  public static ClassEnrolmentCondition fromValue(String text) {
-    for (ClassEnrolmentCondition b : ClassEnrolmentCondition.values()) {
+  public static ClassCondition fromValue(String text) {
+    for (ClassCondition b : ClassCondition.values()) {
       if (String.valueOf(b.value).equals(text)) {
         return b;
       }
     }
     return null;
   }
+  
 }
 

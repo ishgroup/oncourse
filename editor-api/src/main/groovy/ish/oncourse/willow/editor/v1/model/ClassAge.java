@@ -1,7 +1,7 @@
-package ish.oncourse.willow.editor.v1.model.settings;
+package ish.oncourse.willow.editor.v1.model;
 
-import ish.oncourse.willow.editor.v1.model.settings.ClassCondition;
-import ish.oncourse.willow.editor.v1.model.settings.ClassEnrolmentCondition;
+import ish.oncourse.willow.editor.v1.model.ClassCondition;
+import ish.oncourse.willow.editor.v1.model.ClassEnrolmentCondition;
 
 public class ClassAge  {
   

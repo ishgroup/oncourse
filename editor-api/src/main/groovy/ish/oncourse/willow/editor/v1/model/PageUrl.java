@@ -27,7 +27,7 @@ public class PageUrl  {
      * this is the default URL for the page. Setting this unsets all other pageUrl defaults
      * @return isDefault
      */
-    public Boolean getIsDefault() {
+    public Boolean IsDefault() {
         return isDefault;
     }
 

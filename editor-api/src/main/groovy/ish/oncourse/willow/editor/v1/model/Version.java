@@ -1,12 +1,7 @@
 package ish.oncourse.willow.editor.v1.model;
 
-import java.time.LocalDateTime;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import ish.oncourse.util.FormatUtils;
+import ish.oncourse.willow.editor.v1.model.VersionStatus;
+import java.time.OffsetDateTime;
 
 public class Version  {
   
@@ -17,7 +12,8 @@ public class Version  {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = FormatUtils.DATE_FORMAT_ISO8601)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-    private LocalDateTime datetime = null;
+    private OffsetDateTime datetime = null;
+    private VersionStatus status = null;
 
     /**
      * unique id of version
@@ -40,7 +36,7 @@ public class Version  {
      * has version published
      * @return published
      */
-    public Boolean getPublished() {
+    public Boolean Published() {
         return published;
     }
 
@@ -92,16 +88,33 @@ public class Version  {
      * date and time when version was published
      * @return datetime
      */
-    public LocalDateTime getDatetime() {
+    public OffsetDateTime getDatetime() {
         return datetime;
     }
 
-    public void setDatetime(LocalDateTime datetime) {
+    public void setDatetime(OffsetDateTime datetime) {
        this.datetime = datetime;
     }
 
-    public Version datetime(LocalDateTime datetime) {
+    public Version datetime(OffsetDateTime datetime) {
       this.datetime = datetime;
+      return this;
+    }
+
+    /**
+     * Indicate about current state of version
+     * @return status
+     */
+    public VersionStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(VersionStatus status) {
+       this.status = status;
+    }
+
+    public Version status(VersionStatus status) {
+      this.status = status;
       return this;
     }
 
@@ -116,6 +129,7 @@ public class Version  {
       sb.append("    author: ").append(toIndentedString(author)).append("\n");
       sb.append("    changes: ").append(toIndentedString(changes)).append("\n");
       sb.append("    datetime: ").append(toIndentedString(datetime)).append("\n");
+      sb.append("    status: ").append(toIndentedString(status)).append("\n");
       sb.append("}");
       return sb.toString();
     }

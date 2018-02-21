@@ -1,40 +1,45 @@
 package ish.oncourse.willow.editor.v1.service;
 
 import ish.oncourse.willow.editor.v1.model.Block;
+import ish.oncourse.willow.editor.v1.model.CommonError;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
+import java.util.Map;
 import javax.ws.rs.*;
-
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.MediaType;
 import ish.oncourse.willow.editor.annotation.AuthFilter;
 
 @Path("/")
 public interface BlockApi  {
 
     @POST
-    @Path("/v1/block.create")
+    @Path("/v1/block")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @AuthFilter
-    Block blockCreatePost();
+    Block createBlock();
 
-    @POST
-    @Path("/v1/block.delete/{id}")
+    @DELETE
+    @Path("/v1/block/{id}")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @AuthFilter
-    void blockDeleteIdPost(@PathParam("id") String id);
+    void deleteBlock(@PathParam("id") String id);
 
     @GET
-    @Path("/v1/block.list")
+    @Path("/v1/block")
     @Produces({ "application/json" })
     @AuthFilter
-    List<Block> blockListGet();
+    List<Block> getBlocks();
 
-    @POST
-    @Path("/v1/block.update")
+    @PUT
+    @Path("/v1/block")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @AuthFilter
-    Block blockUpdatePost(Block saveBlockRequest);
+    Block updateBlock(Block saveBlockRequest);
 }
 

@@ -6,11 +6,11 @@ import java.util.List;
 
 public class ThemeSchema  {
   
-    private List<BlockItem> top = new ArrayList<BlockItem>();
-    private List<BlockItem> left = new ArrayList<BlockItem>();
-    private List<BlockItem> centre = new ArrayList<BlockItem>();
-    private List<BlockItem> right = new ArrayList<BlockItem>();
-    private List<BlockItem> footer = new ArrayList<BlockItem>();
+    private List<BlockItem> top = new ArrayList<>();
+    private List<BlockItem> left = new ArrayList<>();
+    private List<BlockItem> centre = new ArrayList<>();
+    private List<BlockItem> right = new ArrayList<>();
+    private List<BlockItem> footer = new ArrayList<>();
 
     /**
      * Get top
