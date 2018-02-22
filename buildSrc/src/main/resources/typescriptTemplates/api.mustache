@@ -16,22 +16,23 @@ export const createStringEnum = <T extends string>(o: Array<T>): {[K in T]: K} =
 
 {{#apiInfo}}
 
-    {{#apis}}
+{{#apis}}
 
-    export class {{classname}} {
-        constructor(private http: any) {
-        }
-
-        {{#operations}}
-
-            {{#operation}}
-                {{operationId}}({{#allParams}}{{paramName}}: {{dataType}}{{^-last}}, {{/-last}}{{/allParams}}): Promise<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}any{{/returnType}}> {
-                    return this.http.{{httpMethod}}(`{{path}}`{{#bodyParams}}, {{paramName}}{{/bodyParams}}{{#queryParams}}, { params: { {{paramName}} }}{{/queryParams}});
-            }{{/operation}}
-
-        {{/operations}}
+export class {{classname}} {
+    constructor(private http: any) {
     }
 
-    {{/apis}}
+    {{#operations}}
+
+    {{#operation}}
+    {{operationId}}({{#allParams}}{{paramName}}: {{dataType}}{{^-last}}, {{/-last}}{{/allParams}}): Promise<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}any{{/returnType}}> {
+        return this.http.{{httpMethod}}(`{{path}}`{{#bodyParams}}, {{paramName}}{{/bodyParams}}{{#queryParams}}, { params: { {{paramName}} }}{{/queryParams}});
+    }
+    {{/operation}}
+
+    {{/operations}}
+}
+
+{{/apis}}
 
 {{/apiInfo}}
