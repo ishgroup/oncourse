@@ -27,7 +27,7 @@ class Swagger extends DefaultTask {
         configJava.setIgnoreFileOverride("${project.parent.projectDir}/buildSrc/src/main/resources/.swagger-codegen-ignore".toString())
         configJava.setAdditionalProperties([
                 'templateDir':  "${project.parent.projectDir}/buildSrc/src/main/resources/swaggerTemplates".toString(),
-                'sourceFolder': 'src/main/groovy',
+                'sourceFolder': 'src/main/java',
                 'implFolder': 'src/main/groovy',
                 'useBeanValidation': false,
                 'modelPackage'  : "ish.oncourse.willow.editor.v${schemaVersion}.model".toString(),
@@ -39,11 +39,12 @@ class Swagger extends DefaultTask {
         ])
 
         def opt = configJava.toClientOptInput()
-        opt.config.apiTestTemplateFiles.clear()
-        opt.config.apiTestTemplateFiles.put('api_test.mustache', '.groovy')
-        opt.config.testFolder =  'src/test/groovy'
         opt.config.apiTemplateFiles.put('apiServiceImpl.mustache', '.groovy')
-        new DefaultGenerator().opts(opt).generate()
+        
+        def generator = new DefaultGenerator()
+        generator.setGeneratorPropertyDefault('apiTests', 'false')
+        generator.setGeneratorPropertyDefault('modelTests', 'false')
+        generator.opts(opt).generate()
 
 
         def configJS = new CodegenConfigurator()
