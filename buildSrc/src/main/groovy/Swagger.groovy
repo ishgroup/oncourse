@@ -51,7 +51,7 @@ class Swagger extends DefaultTask {
         def configJS = new CodegenConfigurator()
         configJS.setInputSpec(schema.path)
         configJS.setOutputDir(jsOutput.path)
-        configJS.setLang('javascript')
+        configJS.setLang('typescript-fetch')
         configJS.setAdditionalProperties([
                 'templateDir':  "${project.parent.projectDir}/buildSrc/src/main/resources/typescriptTemplates".toString(),
                 'supportingFiles': '', // skip scripts and maven files
@@ -60,16 +60,14 @@ class Swagger extends DefaultTask {
         ])
 
         def tsOpt = configJS.toClientOptInput()
-        tsOpt.config.modelTemplateFiles.put("model.mustache", ".ts")
-        tsOpt.config.apiTemplateFiles.put("api.mustache", ".ts")
 
         tsOpt.config.typeMapping.put("DateTime", "string")
         tsOpt.config.typeMapping.put("any", "any")
         tsOpt.config.typeMapping.put("Date", "string")
         tsOpt.config.typeMapping.put("date", "string")
 
-        tsOpt.config.apiPackage = "js.http"
-        tsOpt.config.modelPackage = "js.model"
+//        tsOpt.config.apiPackage = "js.http"
+//        tsOpt.config.modelPackage = "js.model"
 
         new DefaultGenerator().opts(tsOpt).generate()
     }
