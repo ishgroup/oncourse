@@ -33,13 +33,14 @@ class Swagger extends DefaultTask {
                 'modelPackage'  : "ish.oncourse.willow.editor.v${schemaVersion}.model".toString(),
                 'apiPackage'    : "ish.oncourse.willow.editor.v${schemaVersion}.service".toString(),
                 'supportingFiles': '', // skip scripts and maven files
-                'dateLibrary'   : 'java8',
                 'appVersion'    : project.version,
                 'apiTestTemplateFiles': ['api_test.mustache':'.groovy']
         ])
 
         def opt = configJava.toClientOptInput()
         opt.config.apiTemplateFiles.put('apiServiceImpl.mustache', '.groovy')
+        opt.config.importMapping.put("LocalDateTime", "java.time.LocalDateTime")
+        opt.config.typeMapping.put("DateTime", "LocalDateTime")
         
         def generator = new DefaultGenerator()
         generator.setGeneratorPropertyDefault('apiTests', 'false')
