@@ -25,7 +25,7 @@ export class {{classname}} {
     {{#operations}}
 
     {{#operation}}
-    {{operationId}}({{#allParams}}{{paramName}}: {{dataType}}{{^-last}}, {{/-last}}{{/allParams}}): Promise<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}any{{/returnType}}> {
+    {{operationId}}({{#allParams}}{{paramName}}: {{{dataType}}}{{^-last}}, {{/-last}}{{/allParams}}): Promise<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}any{{/returnType}}> {
         return this.http.{{httpMethod}}(`{{path}}`{{#bodyParams}}, {{paramName}}{{/bodyParams}}{{#queryParams}}, { params: { {{paramName}} }}{{/queryParams}});
     }
     {{/operation}}
