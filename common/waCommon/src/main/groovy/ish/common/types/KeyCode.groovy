@@ -498,7 +498,7 @@ enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Special single option.
 	 */
 	@API
-	SPECIAL_OVERRIDE_TUTOR_PAYRATE(84, "Override tutor"),
+	SPECIAL_OVERRIDE_TUTOR_PAYRATE(84, "Override tutor pay rate"),
 
 	/**
 	 * Database value: 85
@@ -639,7 +639,7 @@ enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	SUMMARY_EXTRACTS(101, "Summary extracts", ALL - VIEW),
 	
 	/**
-	 * Database value: 101
+	 * Database value: 102
 	 *
 	 * Allow to access "Audit logging"
 	 * Special single option.
@@ -678,7 +678,26 @@ enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
      * Allow to access "Student feedback"
      */
     @API
-    SURVEYS(106, "Student feedback", VIEW, CREATE + DELETE,  EDIT + PRINT)
+    SURVEYS(106, "Student feedback", VIEW, CREATE + DELETE,  EDIT + PRINT),
+
+    /**
+     * Database value: 107
+     *
+     * Allow to edit the payable time at the per tutor per session level in the class attendance tab
+     * Special single option.
+     */
+    @API
+    OVERRIDE_TUTOR_SESSION_PAYABLE_TIME(107, "Override tutor session payable time"),
+    
+    /**
+     * Database value: 108
+     *
+     * Allow to click the 'confirm now' button in the Generate tutor payroll sheet that confirms all the unconfirmed paylines
+     * Special single option.
+     */
+    @API
+    BULK_CONFIRM_TUTOR_WAGES(108, "Bulk confirm tutor wages")
+    
 
 	private int value
 	private String displayName
