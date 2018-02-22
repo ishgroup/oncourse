@@ -4,9 +4,9 @@ import com.google.inject.Inject
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.willow.editor.rest.UpdateRedirects
 import ish.oncourse.willow.editor.services.RequestService
-import ish.oncourse.willow.editor.v1.model.common.CommonError
-import ish.oncourse.willow.editor.v1.model.redirect.RedirectItem
-import ish.oncourse.willow.editor.v1.model.redirect.Redirects
+import ish.oncourse.willow.editor.v1.model.CommonError
+import ish.oncourse.willow.editor.v1.model.RedirectItem
+import ish.oncourse.willow.editor.v1.model.Redirects
 import ish.oncourse.willow.editor.v1.service.RedirectApi
 import ish.oncourse.willow.editor.website.WebUrlAliasFunctions
 import org.apache.cayenne.ObjectContext

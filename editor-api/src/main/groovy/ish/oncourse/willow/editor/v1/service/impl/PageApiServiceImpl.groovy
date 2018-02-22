@@ -4,7 +4,7 @@ import com.google.inject.Inject
 import ish.oncourse.linktransform.PageIdentifier
 import ish.oncourse.model.WebNode
 import ish.oncourse.services.persistence.ICayenneService
-import ish.oncourse.willow.editor.v1.model.common.CommonError
+import ish.oncourse.willow.editor.v1.model.CommonError
 import ish.oncourse.willow.editor.rest.UpdatePage
 import ish.oncourse.willow.editor.rest.WebNodeToPage
 import ish.oncourse.willow.editor.v1.model.Page

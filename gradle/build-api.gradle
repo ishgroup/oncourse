@@ -6,7 +6,6 @@ ext {
 }
 
 configurations {
-    swagger
     doc
 }
 
@@ -77,8 +76,9 @@ task swagger (type: Swagger) {
     jsOutput = file("${rootDir}/editor/build/generated-sources")
 }
 
-compileJava {
+compileGroovy {
     dependsOn swagger
+    groovyOptions.configurationScript = file("config.groovy")
     source += sourceSets.swagger.java
 }
 

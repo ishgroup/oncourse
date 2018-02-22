@@ -11,7 +11,7 @@ import ish.oncourse.willow.editor.services.access.AuthenticationService
 import ish.oncourse.willow.editor.services.access.UserService
 import ish.oncourse.willow.editor.v1.model.LoginRequest
 import ish.oncourse.willow.editor.v1.model.User
-import ish.oncourse.willow.editor.v1.model.common.CommonError
+import ish.oncourse.willow.editor.v1.model.CommonError
 import ish.oncourse.willow.editor.v1.service.AuthApi
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger

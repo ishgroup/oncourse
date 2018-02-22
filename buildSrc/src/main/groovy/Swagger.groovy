@@ -27,7 +27,7 @@ class Swagger extends DefaultTask {
         configJava.setIgnoreFileOverride("${project.parent.projectDir}/buildSrc/src/main/resources/.swagger-codegen-ignore".toString())
         configJava.setAdditionalProperties([
                 'templateDir':  "${project.parent.projectDir}/buildSrc/src/main/resources/swaggerTemplates".toString(),
-                'sourceFolder': 'src/main/java',
+                'sourceFolder': 'src/main/groovy',
                 'implFolder': 'src/main/groovy',
                 'useBeanValidation': false,
                 'modelPackage'  : "ish.oncourse.willow.editor.v${schemaVersion}.model".toString(),

@@ -3,17 +3,13 @@ package ish.oncourse.willow.editor.v1.service.impl
 import com.google.inject.Inject
 import ish.oncourse.model.College
 import ish.oncourse.services.persistence.ICayenneService
-import ish.oncourse.services.preference.GetEnrolSuccessUrl
 import ish.oncourse.services.preference.GetPreference
-import ish.oncourse.services.preference.GetRefundPolicyUrl
-import ish.oncourse.willow.editor.v1.model.common.CommonError
-import ish.oncourse.willow.editor.v1.model.settings.ClassAge
-import ish.oncourse.willow.editor.v1.model.settings.ClassCondition
-import ish.oncourse.willow.editor.v1.model.settings.ClassEnrolmentCondition
-import ish.oncourse.willow.editor.rest.UpdateRedirects
-import ish.oncourse.willow.editor.service.*
-import ish.oncourse.willow.editor.v1.model.settings.SkillsOnCourseSettings
-import ish.oncourse.willow.editor.v1.model.settings.WebsiteSettings
+import ish.oncourse.willow.editor.v1.model.CommonError
+import ish.oncourse.willow.editor.v1.model.ClassAge
+import ish.oncourse.willow.editor.v1.model.ClassCondition
+import ish.oncourse.willow.editor.v1.model.ClassEnrolmentCondition
+import ish.oncourse.willow.editor.v1.model.SkillsOnCourseSettings
+import ish.oncourse.willow.editor.v1.model.WebsiteSettings
 
 import groovy.transform.CompileStatic
 import ish.oncourse.willow.editor.services.RequestService

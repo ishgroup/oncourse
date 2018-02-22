@@ -4,8 +4,8 @@ import ish.oncourse.linktransform.URLPath
 import ish.oncourse.model.WebSiteVersion
 import ish.oncourse.model.WebUrlAlias
 import ish.oncourse.util.ISHUrlValidator
-import ish.oncourse.willow.editor.v1.model.redirect.RedirectItem
-import ish.oncourse.willow.editor.v1.model.redirect.Redirects
+import ish.oncourse.willow.editor.v1.model.RedirectItem
+import ish.oncourse.willow.editor.v1.model.Redirects
 import ish.oncourse.willow.editor.website.WebSiteVersionFunctions
 import ish.oncourse.willow.editor.website.WebUrlAliasFunctions
 import org.apache.cayenne.ObjectContext

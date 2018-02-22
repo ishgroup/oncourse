@@ -5,9 +5,9 @@ public class {{classname}} {{#parent}}extends {{{parent}}}{{/parent}} {
 
 {{^isContainer}}{{>enumClass}}{{/isContainer}}{{/items}}{{/items.isEnum}}
 {{#isDateTime}}
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = FormatUtils.DATE_FORMAT_ISO8601)
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @com.fasterxml.jackson.annotation.JsonFormat(shape = com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING, pattern = ish.oncourse.util.FormatUtils.DATE_FORMAT_ISO8601)
+    @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer.class)
+    @com.fasterxml.jackson.databind.annotation.JsonSerialize(using = com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer.class)
 {{/isDateTime}}
     private {{{datatypeWithEnum}}} {{name}} = {{{defaultValue}}};{{/vars}}
 

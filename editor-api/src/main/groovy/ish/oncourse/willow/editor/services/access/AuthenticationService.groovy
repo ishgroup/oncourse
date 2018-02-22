@@ -38,7 +38,7 @@ class AuthenticationService implements IAuthenticationService {
 
     public static final String SESSION_ID = 'ESESSIONID'
     
-    private static final long MAX_AGE = 14400
+    private static final int MAX_AGE = 14400
 
     @Inject
     AuthenticationService(ICayenneService cayenneService, RequestService requestService, ZKSessionManager sessionManager, UserService userService) {
@@ -56,12 +56,7 @@ class AuthenticationService implements IAuthenticationService {
         if (persist) {
             sessionManager.persistSession(userId, sessionId)
         }
-        
-        requestService.response.addSetCookie(SESSION_ID, "$userId&$sessionId",
-                requestService.request.serverName, 
-                requestService.request.contextPath,
-                MAX_AGE, 'Session identifier', false, false, 0)
-
+        setSessionToken("$userId&$sessionId".toString(), MAX_AGE)
         result.status = SUCCESS
         return result
     }
@@ -194,10 +189,19 @@ class AuthenticationService implements IAuthenticationService {
     
     
     void logout() {
-        requestService.response.addSetCookie(SESSION_ID,
-                null,
-                requestService.request.serverName,
-                requestService.request.contextPath,
-                0, null, false, false, 0)  
+        setSessionToken(null, 0) 
+    }
+    
+    private void setSessionToken(String value, int maxAge) {
+        Cookie cookie = new Cookie(SESSION_ID, value)
+        cookie.domain =  requestService.request.serverName
+        cookie.path = requestService.request.contextPath
+        cookie.maxAge = maxAge
+        cookie.comment = 'Session identifier'
+        cookie.httpOnly = false
+        cookie.secure = false
+        cookie.version = 0
+        
+        requestService.response.addCookie(cookie)
     }
 }

@@ -7,7 +7,7 @@ import ish.oncourse.willow.editor.v1.model.Layout
 import ish.oncourse.willow.editor.rest.UpdateTheme
 import ish.oncourse.willow.editor.rest.WebNodeTypeToTheme
 import ish.oncourse.willow.editor.v1.model.Theme
-import ish.oncourse.willow.editor.v1.model.common.CommonError
+import ish.oncourse.willow.editor.v1.model.CommonError
 
 import groovy.transform.CompileStatic
 import ish.oncourse.willow.editor.services.RequestService
