@@ -40,7 +40,7 @@ class SettingsApiServiceImpl implements SettingsApi {
     }
     
     
-    SkillsOnCourseSettings settingsSkillsOnCourseGetGet() {
+    SkillsOnCourseSettings getSkillsOnCourseSettings() {
         ObjectContext context = cayenneService.newContext()
         College college = WebSiteFunctions.getCurrentCollege(requestService.request, context)
         return new SkillsOnCourseSettings().with { settings ->
@@ -52,7 +52,7 @@ class SettingsApiServiceImpl implements SettingsApi {
         
     }
 
-    SkillsOnCourseSettings settingsSkillsOnCourseSetPost(SkillsOnCourseSettings skillsOnCourseSettingsRequest) {
+    SkillsOnCourseSettings updateSkillsOnCourseSettings(SkillsOnCourseSettings skillsOnCourseSettingsRequest) {
         ObjectContext context = cayenneService.newContext()
         College college = WebSiteFunctions.getCurrentCollege(requestService.request, context)
         
@@ -64,7 +64,7 @@ class SettingsApiServiceImpl implements SettingsApi {
         return skillsOnCourseSettingsRequest
     }
     
-    WebsiteSettings settingsWebsiteGetGet() {
+    WebsiteSettings getWebsiteSettings() {
         ObjectContext context = cayenneService.newContext()
         College college = WebSiteFunctions.getCurrentCollege(requestService.request, context)
         
@@ -91,7 +91,7 @@ class SettingsApiServiceImpl implements SettingsApi {
     }
     
     
-    WebsiteSettings settingsWebsiteSetPost(WebsiteSettings settings) {
+    WebsiteSettings updateWebsiteSettings(WebsiteSettings settings) {
         ObjectContext context = cayenneService.newContext()
         College college = WebSiteFunctions.getCurrentCollege(requestService.request, context)
         

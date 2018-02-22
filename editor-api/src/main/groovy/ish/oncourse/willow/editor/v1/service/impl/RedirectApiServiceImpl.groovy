@@ -29,7 +29,7 @@ class RedirectApiServiceImpl implements RedirectApi {
         this.requestService = requestService
     }
     @Override
-    Redirects redirectListGet() {
+    Redirects getRedirects() {
         return new Redirects()
                 .rules( WebUrlAliasFunctions.getRedirects(requestService.request, cayenneService.newContext())
                 .collect { alias  -> new RedirectItem().with { redirect ->
@@ -41,7 +41,7 @@ class RedirectApiServiceImpl implements RedirectApi {
     }
 
     @Override
-    Redirects redirectUpdatePost(Redirects redirectSettingsRequest) {
+    Redirects updateRedirects(Redirects redirectSettingsRequest) {
         ObjectContext context = cayenneService.newContext()
         UpdateRedirects updater = UpdateRedirects.valueOf(redirectSettingsRequest, context, requestService.request).update()
 

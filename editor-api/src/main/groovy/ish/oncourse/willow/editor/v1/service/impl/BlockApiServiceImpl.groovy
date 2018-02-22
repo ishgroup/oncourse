@@ -33,7 +33,7 @@ class BlockApiServiceImpl implements BlockApi {
         this.requestService = requestService
     }
 
-    Block blockCreatePost() {
+    Block createBlock() {
         ObjectContext context = cayenneService.newContext()
         WebContent webContent = WebContentFunctions.createNewWebContent(requestService.request, context)
         context.commitChanges()
@@ -41,7 +41,7 @@ class BlockApiServiceImpl implements BlockApi {
     }
 
     @Override
-    void blockDeleteIdPost(String id) {
+    void deleteBlock(String id) {
         ObjectContext context = cayenneService.newContext()
         WebContent block = WebContentFunctions.getBlockById(requestService.request, context, id.toLong())
         
@@ -56,13 +56,13 @@ class BlockApiServiceImpl implements BlockApi {
             throw createClientException("There are no block for provided id: $id")
         }
     }
-    
-    List<Block> blockListGet() {
+
+    List<Block> getBlocks() {
         WebContentFunctions.getBlocks(requestService.request, cayenneService.newContext())
                 .collect { node -> WebContentToBlock.valueOf(node).block }
     }
     
-    Block blockUpdatePost(Block saveBlockRequest) {
+    Block updateBlock(Block saveBlockRequest) {
         ObjectContext context = cayenneService.newContext()
         UpdateBlock updater = UpdateBlock.valueOf(saveBlockRequest, context, requestService.request).update()
         if (updater.error) {

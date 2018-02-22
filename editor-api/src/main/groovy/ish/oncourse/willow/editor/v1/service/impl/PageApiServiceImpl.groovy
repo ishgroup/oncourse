@@ -38,7 +38,7 @@ class PageApiServiceImpl implements PageApi {
         this.requestService = requestService
     }
 
-    Page pageCreatePost() {
+    Page createPage() {
         ObjectContext context = cayenneService.newContext()
         WebNode node = WebNodeFunctions.createNewNode(requestService.request, context)
         context.commitChanges()
@@ -46,7 +46,7 @@ class PageApiServiceImpl implements PageApi {
         return WebNodeToPage.valueOf(node).page
     }
     
-    void pageDeleteIdPost(String id) {
+    void deletePage(String id) {
         ObjectContext ctx = cayenneService.newContext()
         WebNode node = WebNodeFunctions.getNodeForId(id.toLong(), requestService.request, cayenneService.newContext())
 
@@ -61,14 +61,15 @@ class PageApiServiceImpl implements PageApi {
         }
     }
     
-    Page pageGetGet(String pageUrl) {
+    List<Page> getPages(String pageUrl) {
+       
         if (!StringUtils.trimToNull(pageUrl)) {
-            throw createClientException("Page url required." )
+            return getPages()
         }
         
         WebNode node = WebNodeFunctions.getNodeByPath(pageUrl, requestService.request, cayenneService.newContext())
         if (node) {
-            return WebNodeToPage.valueOf(node).page
+            return [WebNodeToPage.valueOf(node).page]
         } else {
             String lowerCaseUrl = pageUrl.toLowerCase()
             PageIdentifier identifier = getPageIdentifierByPath(lowerCaseUrl)
@@ -82,12 +83,12 @@ class PageApiServiceImpl implements PageApi {
         }
     }
     
-    List<Page> pageListGet() {
+    List<Page> getPages() {
         return WebNodeFunctions.getNodes(requestService.request, cayenneService.newContext())
                 .collect { node -> WebNodeToPage.valueOf(node).page }
     }
     
-    Page pageUpdatePost(Page pageParams) {
+    Page updatePage(Page pageParams) {
         ObjectContext context = cayenneService.newContext()
         UpdatePage updater = UpdatePage.valueOf(pageParams, context, requestService.request).update()
         if (updater.error) {

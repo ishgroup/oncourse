@@ -44,7 +44,21 @@ class VersionApiServiceImpl implements VersionApi {
         this.userService = userService
     }
 
-    void versionDraftPublishPost() {
+    List<Version> getVersions() {
+        Request request = requestService.request
+        return WebSiteVersionFunctions.getSiteVersions(request, cayenneService.newContext())
+                .collect { webVersion ->
+            WebVersionToVersion.valueOf(webVersion).version
+        }
+    }
+
+    void updateVersion(String id, Version diff) {
+        
+        
+        
+    }
+
+    private void publish() {
         Request request = requestService.request
         WebSiteVersion draftVersion = WebSiteVersionFunctions.getCurrentVersion(request, cayenneService.newContext())
 
@@ -67,16 +81,10 @@ class VersionApiServiceImpl implements VersionApi {
         logger.warn("Site publishing finished successfully:${request.serverName} from draft version id: ${draftVersion.id}," +
                 " new version id:${newVersion.id}, took: ${ System.currentTimeMillis() - time} milliseconds")
     }
-    
-    List<Version> versionListGet() {
-        Request request = requestService.request
-        return WebSiteVersionFunctions.getSiteVersions(request, cayenneService.newContext())
-                .collect { webVersion -> 
-                    WebVersionToVersion.valueOf(webVersion).version
-                }
-    }
-    
-    void versionDraftSetIdPost(String id) {
+
+
+
+    private void revert(Long id) {
         Request request = requestService.request
         ObjectContext context = cayenneService.newContext()
 

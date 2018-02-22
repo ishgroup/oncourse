@@ -37,7 +37,7 @@ class AuthApiServiceImpl implements AuthApi {
     
 
     @Override
-    User userGetGet() {
+    User getUser() {
         if (userService.userFirstName) {
             return new User().firstName(userService.userFirstName).lastName(userService.userLastName)
         } else {
@@ -47,7 +47,7 @@ class AuthApiServiceImpl implements AuthApi {
     }
 
     @Override
-    void userLoginPost(LoginRequest loginRequest) {
+    void createSession(LoginRequest loginRequest) {
         AuthenticationResult result =  authenticationService.authenticate(loginRequest.email, loginRequest.password, true)
         switch (result.status) {
             case AuthenticationStatus.SUCCESS:
@@ -64,7 +64,7 @@ class AuthApiServiceImpl implements AuthApi {
         }
     }
 
-    void userLogoutPost() {
+    void destroySession() {
         authenticationService.logout()
     }
     

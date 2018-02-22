@@ -34,18 +34,18 @@ class ThemeApiServiceImpl implements ThemeApi {
         this.requestService = requestService
     }
 
-    Theme themeCreatePost() {
+    Theme createTheme() {
         ObjectContext context = cayenneService.newContext()
         WebNodeType webNodeType = WebNodeTypeFunctions.createNewWebNodeType(requestService.request, context)
         context.commitChanges()
         return WebNodeTypeToTheme.valueOf(webNodeType).theme
     }
     
-    void themeDeleteIdPost(String themeName) {
+    void deleteTheme(String id) {
         ObjectContext context = cayenneService.newContext()
-        WebNodeType theme = WebNodeTypeFunctions.getWebNodeTypeByName(themeName, requestService.request, context)
+        WebNodeType theme = WebNodeTypeFunctions.getWebNodeTypeById(id.toLong(), requestService.request, context)
         if (!theme) {
-            throw createClientException("There is no theme for name: $themeName")
+            throw createClientException("There is no theme for id: $id")
         }
         if (theme.defaultPageTheme) {
             throw createClientException("The default theme can't be deleted")
@@ -59,7 +59,7 @@ class ThemeApiServiceImpl implements ThemeApi {
         context.commitChanges()
     }
     
-    List<Layout> layoutListGet() {
+    List<Layout> getLayouts() {
         WebSiteLayoutFunctions.getLayouts(requestService.request, cayenneService.newContext())
                 .collect { webLayout -> new  Layout().with { layout ->
                     layout.id = webLayout.id.intValue()
@@ -69,12 +69,12 @@ class ThemeApiServiceImpl implements ThemeApi {
         }
     }
     
-    List<Theme> themeListGet() {
+    List<Theme> getThemes() {
         WebNodeTypeFunctions.getWebNodeTypes(requestService.request, cayenneService.newContext())
                 .collect { theme -> WebNodeTypeToTheme.valueOf(theme).theme }
     }
     
-    Theme themeUpdatePost(Theme saveThemeRequest)  {
+    Theme updateTheme(Theme saveThemeRequest)  {
         ObjectContext context = cayenneService.newContext()
         UpdateTheme updater = UpdateTheme.valueOf(saveThemeRequest, context, requestService.request).update()
         if (updater.error) {

@@ -32,12 +32,12 @@ class MenuApiServiceImpl implements MenuApi {
         this.requestService = requestService
     }
     
-    List<MenuItem> menuListGet() {
+    List<MenuItem> getMenus() {
         WebMenuFunctions.getTopLelevMenus(requestService.request, cayenneService.newContext())
                 .collect { menu -> WebMenuToMenuItem.valueOf(menu).menuItem }
     }
     
-    List<MenuItem> menuUpdatePost(List<MenuItem> menus) {
+    List<MenuItem> updateMenus(List<MenuItem> menus) {
         ObjectContext context = cayenneService.newContext()
         Request request = requestService.request
         UpdateMenu updater = UpdateMenu.valueOf(menus, context, request).update()

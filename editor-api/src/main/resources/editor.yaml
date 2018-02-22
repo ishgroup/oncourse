@@ -554,7 +554,7 @@ paths:
 
   /settings/website:
     get:
-      operationId: getWesiteSettings
+      operationId: getWebsiteSettings
       x-filter:  
       - AuthFilter
       summary: Get Website settings
@@ -571,7 +571,7 @@ paths:
           schema:
             $ref: '#/definitions/CommonError'
     put:
-      operationId: updateWesiteSettings
+      operationId: updateWebsiteSettings
       x-filter:  
       - AuthFilter
       summary: Save website settings
