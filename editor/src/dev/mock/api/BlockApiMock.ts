@@ -2,12 +2,12 @@ import {promiseReject, promiseResolve} from "../MockAdapter";
 import {API} from "../../../js/constants/Config";
 
 export function blockApiMock(mock) {
-  this.api.onGet(API.GET_BLOCKS).reply(config => promiseResolve(
+  this.api.onGet(API.BLOCK).reply(config => promiseResolve(
     config,
     this.db.blocks,
   ));
 
-  this.api.onPost(API.SAVE_BLOCK).reply(config => {
+  this.api.onPut(API.BLOCK).reply(config => {
     const request = JSON.parse(config.data);
 
     if (!request.title) {
@@ -26,7 +26,7 @@ export function blockApiMock(mock) {
     );
   });
 
-  this.api.onPost(API.ADD_BLOCK).reply(config => {
+  this.api.onPost(API.BLOCK).reply(config => {
     return promiseResolve(
       config,
       this.db.createNewBlock(),
@@ -34,7 +34,7 @@ export function blockApiMock(mock) {
   });
 
 
-  this.api.onPost(API.DELETE_BLOCK).reply(config => {
+  this.api.onDelete(API.BLOCK_DELETE).reply(config => {
     const id = config.url.split('/')[1];
 
     this.db.deleteBlockById(id);

@@ -2,18 +2,16 @@ import {promiseReject, promiseResolve} from "../MockAdapter";
 import {API} from "../../../js/constants/Config";
 
 export function versionApiMock() {
-  this.api.onGet(API.GET_VERSIONS).reply(config => promiseResolve(
+  this.api.onGet(API.VERSION).reply(config => promiseResolve(
     config,
     this.db.versions,
   ));
 
-  this.api.onPost(API.PUBLISH).reply(config => promiseResolve(
-    config,
-    null,
-  ));
-
-  this.api.onPost(API.SET_VERSION).reply(config => promiseResolve(
-    config,
-    null,
-  ));
+  this.api.onPatch(API.VERSION_UPDATE).reply(config => {
+    console.log(config);
+    promiseResolve(
+      config,
+      null,
+    );
+  });
 }

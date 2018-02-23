@@ -4,12 +4,12 @@ import {API} from "../../../js/constants/Config";
 export function settingsApiMock() {
 
   // Skills On Course settings
-  this.api.onGet(API.GET_SKILLS_ON_COURSE_SETTINGS).reply(config => promiseResolve(
+  this.api.onGet(API.SKILLS_ON_COURSE).reply(config => promiseResolve(
     config,
     this.db.settings.skillsOnCourse,
   ));
 
-  this.api.onPost(API.SET_SKILLS_ON_COURSE_SETTINGS).reply(config => {
+  this.api.onPut(API.SKILLS_ON_COURSE).reply(config => {
     const settings = JSON.parse(config.data);
     this.db.saveSettings(settings, 'skillsOnCourse');
 
@@ -20,12 +20,12 @@ export function settingsApiMock() {
   });
 
   // Website settings
-  this.api.onGet(API.GET_WEBSITE_SETTINGS).reply(config => promiseResolve(
+  this.api.onGet(API.WEBSITE).reply(config => promiseResolve(
     config,
     this.db.settings.website,
   ));
 
-  this.api.onPost(API.SET_WEBSITE_SETTINGS).reply(config => {
+  this.api.onPut(API.WEBSITE).reply(config => {
     const settings = JSON.parse(config.data);
     this.db.saveSettings(settings, 'website');
 
@@ -36,12 +36,12 @@ export function settingsApiMock() {
   });
 
   // Redirect settings
-  this.api.onGet(API.GET_REDIRECT_SETTINGS).reply(config => promiseResolve(
+  this.api.onGet(API.REDIRECT).reply(config => promiseResolve(
     config,
     this.db.settings.redirect,
   ));
 
-  this.api.onPost(API.SET_REDIRECT_SETTINGS).reply(config => {
+  this.api.onPut(API.REDIRECT).reply(config => {
     const settings = JSON.parse(config.data);
     this.db.saveSettings(settings, 'redirect');
 

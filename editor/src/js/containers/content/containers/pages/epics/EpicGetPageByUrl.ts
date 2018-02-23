@@ -11,7 +11,9 @@ import {LOG_OUT_REQUEST} from "../../../../auth/actions/index";
 const request: EpicUtils.Request<any, any> = {
   type: GET_PAGE_BY_URL_REQUEST,
   getData: (payload, state) => PageService.getPages(payload),
-  processData: (page: Page, state: any) => {
+  processData: (response: Page[], state: any) => {
+
+    const page = response[0];
 
     if (page && page.serialNumber) {
       getHistoryInstance().push(`/pages/${page.serialNumber}`);

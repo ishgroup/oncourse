@@ -3,12 +3,12 @@ import {promiseReject, promiseResolve} from "../MockAdapter";
 import {API} from "../../../js/constants/Config";
 
 export function themeApiMock() {
-  this.api.onGet(API.GET_THEMES).reply(config => promiseResolve(
+  this.api.onGet(API.THEME).reply(config => promiseResolve(
     config,
     this.db.themes,
   ));
 
-  this.api.onPost(API.SAVE_THEME).reply(config => {
+  this.api.onPut(API.THEME).reply(config => {
     const request = JSON.parse(config.data);
 
     if (!request.title) {
@@ -30,14 +30,14 @@ export function themeApiMock() {
     );
   });
 
-  this.api.onPost(API.ADD_THEME).reply(config => {
+  this.api.onPost(API.THEME).reply(config => {
     return promiseResolve(
       config,
       this.db.createNewTheme(),
     );
   });
 
-  this.api.onPost(API.DELETE_THEME).reply(config => {
+  this.api.onDelete(API.THEME_DELETE).reply(config => {
     const id = config.url.split('/')[1];
 
     this.db.deleteThemeById(id);
@@ -47,7 +47,7 @@ export function themeApiMock() {
     );
   });
 
-  this.api.onGet(API.GET_LAYOUTS).reply(config => promiseResolve(
+  this.api.onGet(API.LAYOUT).reply(config => promiseResolve(
     config,
     this.db.layouts,
   ));
