@@ -26,6 +26,7 @@ export class Editor extends React.Component<Props, any> {
           highlightActiveLine={true}
           width="100%"
           enableBasicAutocompletion={true}
+          wrapEnabled={true}
           enableLiveAutocompletion={true}
           setOptions={{
             enableSnippets: true,
