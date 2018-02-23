@@ -265,3 +265,21 @@ code {
 .btn.active, .btn:hover {
   background-color: white;
 }
+
+.content {
+  width: 100%;
+  max-width: 1460px;
+}
+
+.content .sidebar {
+  float: left;
+  width: 21%;
+  padding: 0 10px;
+}
+
+.content .non-sidebar {
+  float: left;
+  width: 75%;
+  padding: 0 10px;
+}
+
