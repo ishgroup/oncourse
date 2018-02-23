@@ -1,6 +1,6 @@
-import {RedirectSettings} from "../../../../../model";
+import {Redirects} from "../../../../../model";
 
 export class RedirectSettingsState {
-  rules: RedirectSettings[] = [];
+  rules: Redirects[] = [];
   refreshSettings?: boolean = false;
 }

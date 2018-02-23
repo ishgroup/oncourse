@@ -1,5 +1,4 @@
-import {Theme} from "../../../../../model";
-import {Layout} from "../../../../../model/Layout";
+import {Theme, Layout} from "../../../../../model";
 
 export class ThemesState {
   items: Theme[] = [];

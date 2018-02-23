@@ -13,11 +13,12 @@ export const getHistory = () => ({
   type: GET_VERSIONS_REQUEST,
 });
 
-export const publish = () => ({
+export const publish = (id, status) => ({
   type: PUBLISH_REQUEST,
+  payload: {id, status},
 });
 
-export const setVersion = id => ({
+export const setVersion = (id, status) => ({
   type: SET_VERSION_REQUEST,
-  payload: id,
+  payload: {id, status}
 });

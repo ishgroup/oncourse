@@ -1,32 +1,26 @@
-import {PageApi} from "../http/PageApi";
+import {PageApi} from "../../../build/generated-sources";
+import axios from "axios";
 import {Page} from "../model";
 import {State} from "../reducers/state";
 import {DefaultHttpService} from "../common/services/HttpService";
-import axios from "axios";
-import {PageRenderResponse} from "../model/api/PageRenderResponse";
-
 
 class PageService {
   readonly pageApi = new PageApi(new DefaultHttpService());
 
-  public getPages(): Promise<Page[]> {
-    return this.pageApi.pageListGet();
-  }
-
-  public getPageByUrl(url: string): Promise<Page> {
-    return this.pageApi.pageGetGet(url);
+  public getPages(url?): Promise<Page[]> {
+    return this.pageApi.getPages(url ? url : null);
   }
 
   public savePage(props, state: State): Promise<any> {
-    return this.pageApi.pageUpdatePost(this.buildSavePageRequest(props, state));
+    return this.pageApi.updatePage(this.buildSavePageRequest(props, state));
   }
 
   public addPage(): Promise<any> {
-    return this.pageApi.pageCreatePost();
+    return this.pageApi.createPage();
   }
 
   public deletePage(id: number): Promise<any> {
-    return this.pageApi.pageDeleteIdPost(id.toString());
+    return this.pageApi.deletePage(id.toString());
   }
 
   public getPageRender(id: number): Promise<any> {
@@ -36,7 +30,7 @@ class PageService {
         const template = document.createElement('div');
         template.innerHTML = payload.data;
         const content = template.querySelector("div[class^='block-']").innerHTML;
-        return {html: content} as PageRenderResponse;
+        return {html: content};
       },
       payload => Promise.reject(payload.response),
     ) as Promise<any>;
@@ -54,7 +48,7 @@ class PageService {
 
   public buildSavePageRequest(props, state: State): Page {
     const page = state.page.items.find(p => p.serialNumber === props.serialNumber);
-    const request: Page = new Page();
+    const request: Page = {} as Page;
     const newPage: Page = {...page, ...props};
 
     request.serialNumber = newPage.serialNumber;

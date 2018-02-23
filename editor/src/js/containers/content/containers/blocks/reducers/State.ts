@@ -1,6 +1,6 @@
 import {Block} from "../../../../../model";
 
-export class BlockState extends Block {
+export interface BlockState extends Block {
   id: number;
 }
 

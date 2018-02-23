@@ -1,7 +1,6 @@
-import {SettingsApi} from "../http/SettingsApi";
-import {RedirectSettings, SkillsOnCourseSettings, WebsiteSettings} from "../model";
+import {SettingsApi, RedirectApi} from "../../../build/generated-sources";
+import {Redirects, SkillsOnCourseSettings, WebsiteSettings} from "../model";
 import {DefaultHttpService} from "../common/services/HttpService";
-import {RedirectApi} from "../http/RedirectApi";
 
 class SettingsService {
   readonly settingsApi = new SettingsApi(new DefaultHttpService());
@@ -9,27 +8,27 @@ class SettingsService {
 
 
   public getSkillsOnCourseSettings(): Promise<SkillsOnCourseSettings> {
-    return this.settingsApi.settingsSkillsOnCourseGetGet();
+    return this.settingsApi.getSkillsOnCourseSettings();
   }
 
   public setSkillsOnCourseSettings(settings: SkillsOnCourseSettings): Promise<SkillsOnCourseSettings> {
-    return this.settingsApi.settingsSkillsOnCourseSetPost(settings);
+    return this.settingsApi.updateSkillsOnCourseSettings(settings);
   }
 
-  public getRedirectSettings(): Promise<RedirectSettings> {
-    return this.redirectApi.redirectListGet();
+  public getRedirectSettings(): Promise<Redirects> {
+    return this.redirectApi.getRedirects();
   }
 
-  public setRedirectSettings(settings: RedirectSettings): Promise<any> {
-    return this.redirectApi.redirectUpdatePost(settings);
+  public setRedirectSettings(settings: Redirects): Promise<any> {
+    return this.redirectApi.updateRedirects(settings);
   }
 
   public getWebsiteSettings(): Promise<WebsiteSettings> {
-    return this.settingsApi.settingsWebsiteGetGet();
+    return this.settingsApi.getWebsiteSettings();
   }
 
   public setWebsiteSettings(settings: WebsiteSettings): Promise<WebsiteSettings> {
-    return this.settingsApi.settingsWebsiteSetPost(settings);
+    return this.settingsApi.updateWebsiteSettings(settings);
   }
 
 }

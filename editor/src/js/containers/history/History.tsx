@@ -4,14 +4,14 @@ import {Table, Button} from 'reactstrap';
 import classnames from "classnames";
 import TimeAgo from 'react-timeago';
 import {getHistory, publish, setVersion} from "./actions";
-import {Version} from "../../model";
+import {Version, VersionStatus} from "../../model";
 import {State} from "../../reducers/state";
 import {showModal} from "../../common/containers/modal/actions";
 
 interface Props {
   versions: Version[];
   onInit: () => any;
-  onPublish: () => any;
+  onPublish: (id) => any;
   onRevert: (id) => any;
   showModal: (props) => any;
   fetching: boolean;
@@ -27,10 +27,10 @@ class History extends React.Component<Props, any> {
     this.props.onInit();
   }
 
-  onPublish() {
+  onPublish(id) {
     this.props.showModal({
       text: 'You are about to push your changes onto the live site. Are you sure?',
-      onConfirm: () => this.props.onPublish(),
+      onConfirm: () => this.props.onPublish(id),
     });
   }
 
@@ -70,7 +70,7 @@ class History extends React.Component<Props, any> {
                 <td>{version.author}</td>
                 <td>
                   {!version.published &&
-                    <Button color="primary" onClick={() => this.onPublish()}>Publish</Button>
+                    <Button color="primary" onClick={() => this.onPublish(version.id)}>Publish</Button>
                   }
                   {version.published &&
                     <Button color="secondary" onClick={() => this.onRevert(version.id)}>Revert</Button>
@@ -95,8 +95,8 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
     onInit: () => dispatch(getHistory()),
-    onPublish: () => dispatch(publish()),
-    onRevert: id => dispatch(setVersion(id)),
+    onPublish: id => dispatch(publish(id, VersionStatus.published)),
+    onRevert: id => dispatch(setVersion(id, VersionStatus.draft)),
     showModal: props => dispatch(showModal(props)),
   };
 };

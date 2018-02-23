@@ -30,6 +30,7 @@ const _common = (dirname, options) => {
     resolve: {
       modules: [
         path.resolve(dirname, 'node_modules'),
+        path.resolve(dirname, 'build/generated-sources'),
         path.resolve(dirname, 'src/js'),
         path.resolve(dirname, 'src/dev'),
         path.resolve(dirname, 'src/scss'),
@@ -42,6 +43,7 @@ const _common = (dirname, options) => {
           test: /\.tsx?$/,
           loader: 'awesome-typescript-loader',
           include: [
+            path.resolve(dirname, 'build/generated-sources'),
             path.resolve(dirname, "src/js"),
             path.resolve(dirname, "src/dev"),
           ],

@@ -2,8 +2,7 @@ import React from 'react';
 import {Container, Row, Col, Button, FormGroup} from 'reactstrap';
 import {DragDropContext, DragSource} from 'react-dnd';
 import HTML5Backend, {NativeTypes} from 'react-dnd-html5-backend';
-import {Theme as ThemeModel} from "../../../../../model";
-import {Block} from "../../../../../model/Block";
+import {Theme as ThemeModel, Block} from "../../../../../model";
 import {ThemeLayout} from "./ThemeLayout";
 import Source from "../containers/Source";
 

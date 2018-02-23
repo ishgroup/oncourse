@@ -4,8 +4,7 @@ import {Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText} fr
 import classnames from "classnames";
 import {getWebsiteSettings, setWebsiteSettings} from "./actions";
 import {Checkbox} from "../../../../common/components/Checkbox";
-import {ClassCondition} from "../../../../model/settings/ClassCondition";
-import {ClassEnrolmentCondition} from "../../../../model/settings/ClassEnrolmentCondition";
+import {ClassCondition, ClassEnrolmentCondition} from "../../../../model";
 import {State} from "../../../../reducers/state";
 import {WebsiteSettingsState} from "./reducers/State";
 import {toPositive} from "../../../../common/utils/NumberUtils";

@@ -116,7 +116,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
     logout: () => dispatch(logout()),
     hideModal: () => dispatch(hideModal()),
-    onPublish: () => dispatch(publish()),
+    onPublish: () => dispatch(publish('', '')), // TODO:
     showModal: props => dispatch(showModal(props)),
     getPageByUrl: url => dispatch(getPageByUrl(url)),
   };

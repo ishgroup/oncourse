@@ -1,6 +1,6 @@
 import {Page} from "../../../../../model";
 
-export class PageState extends Page {
+export interface PageState extends Page {
   renderHtml?: string;
 }
 

@@ -45,6 +45,7 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
     resolve: {
       modules: [
         "node_modules",
+        path.resolve(__dirname, 'build/generated-sources'),
         path.resolve(__dirname, "src/js"),
         path.resolve(__dirname, 'src/scss'),
       ],

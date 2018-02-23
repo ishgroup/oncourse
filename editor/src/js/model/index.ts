@@ -1,34 +1,38 @@
 // Common models
-export {CommonError} from "./common/CommonError";
-export {FieldError} from "./common/FieldError";
-export {ValidationError} from "./common/ValidationError";
+export {CommonError} from "../../../build/generated-sources";
+export {FieldError} from "../../../build/generated-sources";
+export {ValidationError} from "../../../build/generated-sources";
 
-export {MenuItem} from "./MenuItem";
+export {MenuItem} from "../../../build/generated-sources";
 
 // User
-export {User} from "./User";
+export {User} from "../../../build/generated-sources";
 
 // Pages
-export {Page} from "./Page";
+export {Page} from "../../../build/generated-sources";
 
 // Blocks
-export {Block} from "./Block";
+export {Block} from "../../../build/generated-sources";
 
 // Themes
-export {Theme} from "./Theme";
-export {ThemeSchema} from "./ThemeSchema";
-export {Layout} from "./Layout";
+export {Theme} from "../../../build/generated-sources";
+export {ThemeSchema} from "../../../build/generated-sources";
+export {Layout} from "../../../build/generated-sources";
 
 // History
-export {Version} from "./Version";
+export {Version} from "../../../build/generated-sources";
+export {VersionStatus} from "../../../build/generated-sources";
 
 // Settings
-export {SkillsOnCourseSettings} from "./settings/SkillsOnCourseSettings";
-export {WebsiteSettings} from "./settings/WebsiteSettings";
+export {SkillsOnCourseSettings} from "../../../build/generated-sources";
+export {WebsiteSettings} from "../../../build/generated-sources";
 
 // Redirects
-export {RedirectSettings} from "./redirect/RedirectSettings";
-export {RedirectItem} from "./redirect/RedirectItem";
+export {Redirects} from "../../../build/generated-sources";
+export {RedirectItem} from "../../../build/generated-sources";
+export {ClassAge} from "../../../build/generated-sources";
+export {ClassCondition} from "../../../build/generated-sources";
+export {ClassEnrolmentCondition} from "../../../build/generated-sources";
 
 // Api
-export {LoginRequest} from "./LoginRequest";
+export {LoginRequest} from "../../../build/generated-sources";

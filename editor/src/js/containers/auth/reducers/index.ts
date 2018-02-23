@@ -17,7 +17,7 @@ export const authReducer = (state: AuthState = new AuthState(), action: IAction<
         ...state,
         token: null,
         isAuthenticated: false,
-        user: new User(),
+        user: {} as User,
       };
       
     case GET_USER_FULFILLED:

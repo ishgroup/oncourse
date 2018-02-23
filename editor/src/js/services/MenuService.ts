@@ -1,4 +1,4 @@
-import {MenuApi} from "../http/MenuApi";
+import {MenuApi} from "../../../build/generated-sources";
 import {MenuItem} from "../model";
 import {DefaultHttpService} from "../common/services/HttpService";
 
@@ -6,7 +6,7 @@ class MenuService {
   readonly menuApi = new MenuApi(new DefaultHttpService());
 
   public getMenuItems(): Promise<MenuItem[]> {
-    return this.menuApi.menuListGet();
+    return this.menuApi.getMenus();
   }
 
   public saveMenuItems(items: MenuItem[]): Promise<MenuItem[]> {
@@ -24,7 +24,7 @@ class MenuService {
 
     items.map(item => prepareItem(item));
 
-    return this.menuApi.menuUpdatePost(items);
+    return this.menuApi.updateMenus(items);
   }
 }
 

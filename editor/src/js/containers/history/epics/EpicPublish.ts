@@ -8,7 +8,7 @@ import {notificationParams} from "../../../common/utils/NotificationSettings";
 
 const request: EpicUtils.Request<any, any> = {
   type: PUBLISH_REQUEST,
-  getData: (payload, state) => PublishService.publish(),
+  getData: (payload, state) => PublishService.setVersion(payload.id, payload.status),
   processData: (response: any, state: any) => {
     return [
       success({...notificationParams, title: 'Publish success'}),

@@ -10,7 +10,7 @@ import {LOG_OUT_REQUEST} from "../../../../auth/actions/index";
 
 const request: EpicUtils.Request<any, any> = {
   type: GET_PAGE_BY_URL_REQUEST,
-  getData: (payload, state) => PageService.getPageByUrl(payload),
+  getData: (payload, state) => PageService.getPages(payload),
   processData: (page: Page, state: any) => {
 
     if (page && page.serialNumber) {

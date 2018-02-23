@@ -2,11 +2,9 @@ import localForage from "localforage";
 import update from 'react-addons-update';
 import faker from 'faker';
 import {
-  Page, Block, MenuItem, Theme, User, Version, WebsiteSettings, RedirectSettings,
-  SkillsOnCourseSettings, ThemeSchema, Layout,
+  Page, Block, MenuItem, Theme, User, Version, WebsiteSettings, Redirects,
+  SkillsOnCourseSettings, ThemeSchema, Layout, ClassCondition, ClassEnrolmentCondition,
 } from "../../js/model";
-import {ClassCondition} from "../../js/model/settings/ClassCondition";
-import {ClassEnrolmentCondition} from "../../js/model/settings/ClassEnrolmentCondition";
 
 export const CreateMockDB = (): MockDB => {
   const result: MockDB = new MockDB();
@@ -23,7 +21,7 @@ export const CreateMockDB = (): MockDB => {
 interface Settings {
   skillsOnCourse: SkillsOnCourseSettings;
   website: WebsiteSettings;
-  redirect: RedirectSettings;
+  redirect: Redirects;
 }
 
 export class MockDB {
@@ -443,7 +441,7 @@ export class MockDB {
   }
 
   createNewPage(): Page {
-    const page = new Page();
+    const page = {} as Page;
     const newNumber = Math.max(...this.pages.map(page => page.serialNumber)) + 1;
     page.title = `New Page ${isFinite(newNumber) ? newNumber : 1}`;
     page.serialNumber = isFinite(newNumber) ? newNumber : 1;
@@ -454,7 +452,7 @@ export class MockDB {
   }
 
   createNewBlock() {
-    const block = new Block();
+    const block = {} as Block;
     const newId = Math.max(...this.blocks.map(block => block.id)) + 1;
     block.title = `New Block ${isFinite(newId) ? newId : 1}`;
     block.id = isFinite(newId) ? newId : 1;
@@ -464,11 +462,11 @@ export class MockDB {
   }
 
   createNewTheme(): Theme {
-    const theme = new Theme();
+    const theme = {} as Theme;
     const newId = Math.max(...this.themes.map(theme => theme.id)) + 1;
     theme.title = `New Theme ${isFinite(newId) ? newId : 1}`;
     theme.id = isFinite(newId) ? newId : 1;
-    theme.schema = new ThemeSchema();
+    theme.schema = {} as ThemeSchema;
     theme.schema.top = [];
     theme.schema.footer = [];
     theme.schema.left = [];
