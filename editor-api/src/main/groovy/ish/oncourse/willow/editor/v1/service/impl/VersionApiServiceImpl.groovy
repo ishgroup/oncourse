@@ -11,11 +11,13 @@ import ish.oncourse.services.site.WebSiteVersionRevert
 import ish.oncourse.services.site.WebSiteVersionsDelete
 import ish.oncourse.willow.editor.EditorProperty
 import ish.oncourse.willow.editor.rest.WebVersionToVersion
+import ish.oncourse.willow.editor.v1.model.CommonError
 import ish.oncourse.willow.editor.v1.model.Version
 
 import groovy.transform.CompileStatic
 import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.services.access.UserService
+import ish.oncourse.willow.editor.v1.model.VersionStatus
 import ish.oncourse.willow.editor.v1.service.VersionApi
 import ish.oncourse.willow.editor.website.WebSiteFunctions
 import ish.oncourse.willow.editor.website.WebSiteVersionFunctions
@@ -24,7 +26,9 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.eclipse.jetty.server.Request
 
+import javax.ws.rs.ClientErrorException
 import javax.ws.rs.InternalServerErrorException
+import javax.ws.rs.core.Response
 
 @CompileStatic
 class VersionApiServiceImpl implements VersionApi {
@@ -53,9 +57,37 @@ class VersionApiServiceImpl implements VersionApi {
     }
 
     void updateVersion(String id, Version diff) {
+        Request request = requestService.request
+        ObjectContext context = cayenneService.newContext()
         
+        VersionStatus status = diff.status
+        if (!status) {
+            throw createClientException('Version status is required')
+        }
         
-        
+        WebSiteVersion version = WebSiteVersionFunctions.getVersionById(id.toLong(), request, context)
+        if (!version) {
+            throw createClientException("There is no version for provided id:$id")
+        }
+
+        WebSiteVersion draft = WebSiteVersionFunctions.getVersionById(id.toLong(), request, context)
+
+        switch (status) {
+            case VersionStatus.PUBLISHED:
+                if (draft.id == version.id) {
+                    publish()
+                } else {
+                    throw createClientException('You can not publish non draft version')
+                }
+                break
+            case VersionStatus.DRAFT:
+                if (draft.id == version.id) {
+                    throw createClientException("Version (id:$id) is already draft")
+                } else {
+                    revert(version.id)
+                }
+                break
+        }
     }
 
     private void publish() {
@@ -100,6 +132,11 @@ class VersionApiServiceImpl implements VersionApi {
             context.rollbackChanges()
             throw new InternalServerErrorException()
         }
+    }
+    
+    private ClientErrorException createClientException(String message) {
+        logger.error("$message, server name: $requestService.request.serverName")
+        new ClientErrorException(Response.status(400).entity(new CommonError(message: message)).build())
     }
 }
 
