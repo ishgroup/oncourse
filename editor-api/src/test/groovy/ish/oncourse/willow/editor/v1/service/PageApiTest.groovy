@@ -4,7 +4,6 @@ import groovy.transform.CompileStatic
 import ish.oncourse.model.WebNode
 import ish.oncourse.willow.editor.service.AbstractEditorTest;
 import ish.oncourse.willow.editor.v1.model.Page;
-import ish.oncourse.willow.editor.v1.model.common.CommonError
 import ish.oncourse.willow.editor.v1.service.impl.PageApiServiceImpl
 import ish.oncourse.willow.editor.website.WebNodeFunctions;
 import org.junit.Test;
@@ -40,7 +39,7 @@ public class PageApiTest extends AbstractEditorTest {
      */
     @Test
     void addPageTest() {
-        Page page = api.pageCreatePost()
+        Page page = api.createPage()
         assertNotNull(page)
         assertNotNull(page.title)
         assertNotNull(page.themeId)
@@ -55,10 +54,10 @@ public class PageApiTest extends AbstractEditorTest {
      */
     @Test
     void deletePageTest() {
-        Page newPage = api.pageCreatePost()
+        Page newPage = api.createPage()
         assertNotNull(newPage)
 
-        api.pageDeleteIdPost(newPage.id.toString())
+        api.deletePage(newPage.id.toString())
         Integer id = newPage.id
 
         WebNode node = WebNodeFunctions.getNodeForId(id.toLong(), requestService.request, cayenneService.newContext())
@@ -71,13 +70,13 @@ public class PageApiTest extends AbstractEditorTest {
      */
     @Test
     void getPageByTechnicalUrlTest() {
-        Page newPage = api.pageCreatePost()
+        Page newPage = api.createPage()
         String number = newPage.serialNumber.toString()
         String pageUrl = "/page/${number}"
 
         assertEquals(pageUrl, "/page/2")
 
-        Page page = api.pageGetGet(pageUrl)
+        Page page = api.getPages(pageUrl)[0]
         assertNotNull(page)
         assertEquals(page.serialNumber, 2)
     }
@@ -91,7 +90,7 @@ public class PageApiTest extends AbstractEditorTest {
         String pageUrl = "/page/123"
 
         try {
-            Page page = api.pageGetGet(pageUrl)
+            Page page = api.getPages(pageUrl)[0]
             assertNotNull(page)
             assertEquals(page.serialNumber, 2)
         } catch (e) {
@@ -106,30 +105,34 @@ public class PageApiTest extends AbstractEditorTest {
      */
     @Test
     void getPageByUrl() {
+        checkReservedURL('/course/')
+
         try {
-            api.pageGetGet('/course/123')
+            api.getPages('/any')
+            assertTrue('Client Exception should be thrown',false)
         } catch (ClientErrorException e) {
-            assertTrue('Client Exception should be thrown',false)
+            assertEquals(400, e.getResponse().status)
+
         }
-
-        try {
-            assertTrue(api.getPageByUrl('/course/').reservedURL)
-            assertTrue('Client Exception should be thrown',false)
-        } catch (ClientErrorException ignored) {}
-
-        try {
-            assertTrue(api.getPageByUrl('/any').reservedURL)
-            assertTrue('Client Exception should be thrown',false)
-        } catch (ClientErrorException ignored) {}
-
-        assertTrue(api.getPageByUrl('/pagenotfound').reservedURL)
-        assertTrue(api.getPageByUrl('/PageNotFound').reservedURL)
-        assertTrue(api.getPageByUrl('/courses/').reservedURL)
-        assertTrue(api.getPageByUrl('/courses').reservedURL)
-        assertFalse(api.getPageByUrl('/page/1').reservedURL)
-        assertFalse(api.getPageByUrl('/').reservedURL)
+        checkReservedURL('/course/123')
+        checkReservedURL('/course/')
+        checkReservedURL('/pagenotfound')
+        checkReservedURL('/PageNotFound')
+        checkReservedURL('/courses/')
+        checkReservedURL('/courses')
+        api.getPages('/page/1')
+        api.getPages('/')
     }
+    
+    private checkReservedURL(String path) {
+        try {
+            api.getPages(path)
+            assertTrue('Client Exception should be thrown',false)
 
+        } catch (ClientErrorException e) {
+            assertEquals(403, e.getResponse().status)
+        }
+    }
     /**
      * Get pages
      * Get pages

@@ -1,7 +1,7 @@
 package ish.oncourse.willow.editor.v1.service;
 
-import ish.oncourse.willow.editor.v1.model.common.CommonError;
-import ish.oncourse.willow.editor.v1.model.redirect.RedirectSettings;
+import ish.oncourse.willow.editor.v1.model.CommonError;
+import ish.oncourse.willow.editor.v1.model.Redirects;
 import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;
@@ -42,7 +42,7 @@ public class RedirectApiTest {
      */
     @Test
     public void redirectUpdatePostTest() {
-        RedirectSettings redirectSettingsRequest = null;
+        Redirects redirectSettingsRequest = null;
 	//RedirectSettings response = api.redirectUpdatePost(redirectSettingsRequest);
         //assertNotNull(response);
         // TODO: test validations

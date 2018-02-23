@@ -2,7 +2,6 @@ package ish.oncourse.willow.editor.v1.service;
 
 import java.util.List;
 import ish.oncourse.willow.editor.v1.model.MenuItem;
-import ish.oncourse.willow.editor.v1.model.common.CommonError;
 import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;

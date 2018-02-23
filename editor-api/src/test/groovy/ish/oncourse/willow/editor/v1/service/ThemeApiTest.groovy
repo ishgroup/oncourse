@@ -1,8 +1,11 @@
-package ish.oncourse.willow.editor.v1.service;
+package ish.oncourse.willow.editor.v1.service
 
+import ish.oncourse.willow.editor.service.AbstractEditorTest;
 import ish.oncourse.willow.editor.v1.model.Layout;
 import ish.oncourse.willow.editor.v1.model.Theme;
-import ish.oncourse.willow.editor.v1.model.common.CommonError;
+import ish.oncourse.willow.editor.v1.model.CommonError
+import ish.oncourse.willow.editor.v1.service.impl.ThemeApiServiceImpl
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;
@@ -15,80 +18,78 @@ import java.util.Map;
 /**
  * API tests for ThemeApi
  */
-public class ThemeApiTest {
+public class ThemeApiTest extends AbstractEditorTest {
 
     private ThemeApi api;
-    
+
     @Before
-    public void setup() {
+    void setup() {
+        super.setup()
+        api = new ThemeApiServiceImpl(cayenneService, requestService)
     }
 
-    
-    /**
-     * Get array of layouts
-     * Get array of layouts
-     */
-    @Test
-    public void layoutListGetTest() {
-	//List<Layout> response = api.layoutListGet();
-        //assertNotNull(response);
-        // TODO: test validations
-        
-        
-    }
-    
+
     /**
      * Add new theme
      * Add new theme
      */
     @Test
-    public void themeCreatePostTest() {
-	//Theme response = api.themeCreatePost();
-        //assertNotNull(response);
-        // TODO: test validations
-        
-        
+    void addThemeTest() {
+        Theme theme = api.createTheme()
+        assertNotNull(theme)
+
+
     }
-    
+
     /**
-     * Remove theme by unique identifier
+     * Remove theme by provided Id
      * Remove theme
      */
     @Test
-    public void themeDeleteIdPostTest() {
-        String id = null;
-	//api.themeDeleteIdPost(id);
-        
+    void deleteThemeTest() {
+        //api.deleteTheme();
+
         // TODO: test validations
-        
-        
+
+
     }
-    
+
+    /**
+     * Get array of layouts
+     * Get array of layouts
+     */
+    @Test
+    void getLayoutsTest() {
+        //Theme response = api.getLayouts();
+        //assertNotNull(response);
+        // TODO: test validations
+
+
+    }
+
     /**
      * Get array of themes
      * Get array of themes
      */
     @Test
-    public void themeListGetTest() {
-	//List<Theme> response = api.themeListGet();
-        //assertNotNull(response);
-        // TODO: test validations
-        
-        
+    void getThemesTest() {
+        Theme theme = api.createTheme()
+        List<Theme> themes = api.getThemes()
+        themes
     }
-    
+
     /**
      * Theme with updated params
      * Save theme params
      */
     @Test
-    public void themeUpdatePostTest() {
+    void saveThemeTest() {
         Theme saveThemeRequest = null;
-	//Theme response = api.themeUpdatePost(saveThemeRequest);
+        //Theme response = api.saveTheme(saveThemeRequest);
         //assertNotNull(response);
         // TODO: test validations
-        
-        
+
+
     }
     
 }

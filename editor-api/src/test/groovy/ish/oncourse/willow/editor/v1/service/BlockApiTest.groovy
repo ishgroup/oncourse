@@ -6,7 +6,7 @@ import ish.oncourse.model.WebSite
 import ish.oncourse.model.WebSiteVersion
 import ish.oncourse.willow.editor.service.AbstractEditorTest;
 import ish.oncourse.willow.editor.v1.model.Block;
-import ish.oncourse.willow.editor.v1.model.common.CommonError
+import ish.oncourse.willow.editor.v1.model.CommonError
 import ish.oncourse.willow.editor.v1.service.impl.BlockApiServiceImpl
 import ish.oncourse.willow.editor.website.WebSiteVersionFunctions
 import org.apache.cayenne.ObjectContext
@@ -44,7 +44,7 @@ public class BlockApiTest  extends AbstractEditorTest{
      */
     @Test
     void addBlockTest() {
-        Block block = api.blockCreatePost()
+        Block block = api.createBlock()
         assertNotNull(block)
         assertNotNull(block.title)
         assertNotNull('New Block (2)')
@@ -58,7 +58,7 @@ public class BlockApiTest  extends AbstractEditorTest{
     @Test
     void deleteBlockTest() {
         try {
-            api.blockDeleteIdPost('1')
+            api.deleteBlock('1')
         } catch (ClientErrorException e) {
             assertTrue(e.response.entity instanceof CommonError)
             assertEquals('The block (name: New block (1)) could not be removed', (e.response.entity as CommonError).message)
@@ -74,7 +74,7 @@ public class BlockApiTest  extends AbstractEditorTest{
         WebContent block = ObjectSelect.query(WebContent).where(WebContent.NAME.eq('New block (100)')).selectOne(cayenneService.newContext())
         assertNotNull(block)
 
-        api.blockDeleteIdPost(webContent.id.toString())
+        api.deleteBlock(webContent.id.toString())
 
         block = ObjectSelect.query(WebContent).where(WebContent.NAME.eq('New block (100)')).selectOne(cayenneService.newContext())
         assertNull(block)
@@ -87,7 +87,7 @@ public class BlockApiTest  extends AbstractEditorTest{
      */
     @Test
     void getBlocksTest() {
-        List<Block> blocks = api.blockListGet()
+        List<Block> blocks = api.getBlocks()
         assertEquals(1, blocks.size())
         assertNotNull(blocks[0])
         assertEquals('New block (1)', blocks[0].title)
@@ -102,7 +102,7 @@ public class BlockApiTest  extends AbstractEditorTest{
     void saveBlockTest() {
         WebContent block = ObjectSelect.query(WebContent).where(WebContent.NAME.eq('New block (1)')).selectOne(cayenneService.newContext())
 
-        api.blockUpdatePost(new Block().with { b ->
+        api.updateBlock(new Block().with { b ->
             b.id = block.id.intValue()
             b.title = 'changed name'
             b.content = 'changed content'
@@ -138,7 +138,7 @@ public class BlockApiTest  extends AbstractEditorTest{
             b
         }
         try {
-            api.blockUpdatePost(blockRequest)
+            api.updateBlock(blockRequest)
         } catch (ClientErrorException e) {
             assertTrue(e.response.entity instanceof CommonError)
             assertEquals("There are no block for blockParams: $blockRequest".toString(), (e.response.entity as CommonError).message)

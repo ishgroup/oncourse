@@ -1,7 +1,6 @@
-package ish.oncourse.willow.editor.v1.service;
+package ish.oncourse.willow.editor.v1.service
 
-import ish.oncourse.willow.editor.v1.model.Version;
-import ish.oncourse.willow.editor.v1.model.common.CommonError;
+import ish.oncourse.willow.editor.service.AbstractEditorTest;
 import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;
@@ -14,7 +13,7 @@ import java.util.Map;
 /**
  * API tests for VersionApi
  */
-public class VersionApiTest {
+public class VersionApiTest extends AbstractEditorTest {
 
     private VersionApi api;
     
