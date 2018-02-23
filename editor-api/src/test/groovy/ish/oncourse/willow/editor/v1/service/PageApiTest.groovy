@@ -105,7 +105,14 @@ public class PageApiTest extends AbstractEditorTest {
      */
     @Test
     void getPageByUrl() {
-        checkReservedURL('/course/')
+
+        try {
+            api.getPages('/course/')
+            assertTrue('Client Exception should be thrown',false)
+        } catch (ClientErrorException e) {
+            assertEquals(400, e.getResponse().status)
+
+        }
 
         try {
             api.getPages('/any')
@@ -115,7 +122,6 @@ public class PageApiTest extends AbstractEditorTest {
 
         }
         checkReservedURL('/course/123')
-        checkReservedURL('/course/')
         checkReservedURL('/pagenotfound')
         checkReservedURL('/PageNotFound')
         checkReservedURL('/courses/')

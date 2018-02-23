@@ -8,13 +8,15 @@ import ish.oncourse.willow.editor.service.AbstractEditorTest;
 import ish.oncourse.willow.editor.v1.model.Block;
 import ish.oncourse.willow.editor.v1.model.CommonError
 import ish.oncourse.willow.editor.v1.service.impl.BlockApiServiceImpl
+import ish.oncourse.willow.editor.website.WebContentFunctions
 import ish.oncourse.willow.editor.website.WebSiteVersionFunctions
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect;
 import org.junit.Test;
 import org.junit.Before
+import ish.oncourse.willow.editor.service.AbstractEditorTest.CreateDefaultWebSiteStructure
 
-import javax.ws.rs.ClientErrorException;
+import javax.ws.rs.ClientErrorException
 
 import static org.junit.Assert.*;
 
@@ -57,11 +59,13 @@ public class BlockApiTest  extends AbstractEditorTest{
      */
     @Test
     void deleteBlockTest() {
+        
+        WebContent blockTodelete = WebContentFunctions.getBlockByName(requestService.request, cayenneService.newContext(),'New block (1)')
         try {
-            api.deleteBlock('1')
+            api.deleteBlock(blockTodelete.id.toString())
         } catch (ClientErrorException e) {
             assertTrue(e.response.entity instanceof CommonError)
-            assertEquals('The block (name: New block (1)) could not be removed', (e.response.entity as CommonError).message)
+            assertEquals("The block (id: $blockTodelete.id) could not be removed".toString(), (e.response.entity as CommonError).message)
         }
 
         ObjectContext context = cayenneService.newContext()

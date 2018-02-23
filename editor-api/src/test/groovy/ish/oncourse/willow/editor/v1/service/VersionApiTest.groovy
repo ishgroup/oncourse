@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * API tests for VersionApi
  */
-public class VersionApiTest extends AbstractEditorTest {
+public class VersionApiTest {
 
     private VersionApi api;
     
