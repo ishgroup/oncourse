@@ -19,8 +19,10 @@ targetCompatibility = '1.8'
 sourceCompatibility = '1.8'
 
 sourceSets {
-    swagger {
-        java.srcDir "${project.projectDir}/build/generated-sources"
+    main {
+        groovy {
+            srcDirs += "${project.projectDir}/build/generated-sources"
+        }
     }
 }
 
@@ -28,10 +30,6 @@ test {
     systemProperty "oncourse.jdbc.url", System.getProperty("oncourse.jdbc.url")
     systemProperty "oncourse.jdbc.user", System.getProperty("oncourse.jdbc.user")
     systemProperty "oncourse.jdbc.password", System.getProperty("oncourse.jdbc.password")
-}
-
-compileGroovy {
-    groovyOptions.configurationScript = file("config.groovy")
 }
 
 processResources.doLast {
@@ -79,7 +77,6 @@ task swagger (type: Swagger) {
 compileGroovy {
     dependsOn swagger
     groovyOptions.configurationScript = file("config.groovy")
-    source += sourceSets.swagger.java
 }
 
 clean.doFirst {
