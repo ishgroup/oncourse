@@ -1,14 +1,14 @@
 {{>licenseInfo}}
 
 export const createStringEnum = <T extends string>(o: Array<T>): {[K in T]: K} => {
-    return o.reduce((res, key) => {
-        res[key] = key;
-        return res;
-    }, Object.create(null));
+  return o.reduce((res, key) => {
+    res[key] = key;
+    return res;
+  }, Object.create(null));
 };
 
 {{#models}}
-    {{#model}}{{#isEnum}}{{>modelEnum}}{{/isEnum}}{{^isEnum}}{{>modelGeneric}}{{/isEnum}}{{/model}}
+  {{#model}}{{#isEnum}}{{>modelEnum}}{{/isEnum}}{{^isEnum}}{{>modelGeneric}}{{/isEnum}}{{/model}}
 {{/models}}
 
 
@@ -17,18 +17,18 @@ export const createStringEnum = <T extends string>(o: Array<T>): {[K in T]: K} =
 {{#apis}}
 
 export class {{classname}} {
-    constructor(private http: any) {
-    }
+  constructor(private http: any) {
+  }
 
-    {{#operations}}
+  {{#operations}}
 
-    {{#operation}}
-    {{operationId}}({{#allParams}}{{paramName}}: {{{dataType}}}{{^-last}}, {{/-last}}{{/allParams}}): Promise<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}any{{/returnType}}> {
-        return this.http.{{httpMethod}}(`{{path}}`{{#bodyParams}}, {{paramName}}{{/bodyParams}}{{#queryParams}}, { params: { {{paramName}} }}{{/queryParams}});
-    }
-    {{/operation}}
+  {{#operation}}
+  {{operationId}}({{#allParams}}{{paramName}}: {{{dataType}}}{{^-last}}, {{/-last}}{{/allParams}}): Promise<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}any{{/returnType}}> {
+    return this.http.{{httpMethod}}(`{{path}}`{{#bodyParams}}, {{paramName}}{{/bodyParams}}{{#queryParams}}, { params: { {{paramName}} }}{{/queryParams}});
+  }
+  {{/operation}}
 
-    {{/operations}}
+  {{/operations}}
 }
 
 {{/apis}}
