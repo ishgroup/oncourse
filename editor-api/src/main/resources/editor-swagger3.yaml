@@ -1,0 +1,1049 @@
+openapi: '3.0.0'
+info:
+  title: Editor Api
+  description: An API for updating with the onCourse website
+  contact:
+    name: ish group pty ltd
+    url: http://ish.com.au
+    email: support@ish.com.au
+  license:
+    name: Closed
+  version: v1
+
+servers:
+  - url: https://{siteKey}.oncourse.cc/editor/{versionPath}/
+    description: The production API server
+    variables:
+      siteKey:
+        default: template-a
+        description: this value is assigned by the service provider
+      versionPath:
+        default: v1
+        description: API version base path
+
+
+paths:
+
+#################
+  /session:
+#################
+    post:
+      operationId: createSession
+      summary: Authenticate user by email and password. Returns a session token.
+      tags:
+        - Auth
+      requestBody:
+        description: Params for request user authorization
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Ok response
+        '406':
+          description: Login unsuccessful. Invalid login name or password.
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonError'
+
+    delete:
+      operationId: destroySession
+      summary: De-authorize user from editor
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: Success logout with null response
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonError'
+
+#################
+  /user:
+#################
+    get:
+      operationId: getUser
+      x-filter:
+        - AuthFilter
+      summary: Get current logged user
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: User
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonError'
+
+#################
+  /menu:
+#################
+    get:
+      operationId: getMenus
+      x-filter:
+      - AuthFilter
+      summary: Get menu items
+      description: Get menu items
+      tags:
+        - Menu
+      responses:
+        '200':
+          description: Menu reposonse object
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MenuItem'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonError'
+    put:
+      operationId: updateMenus
+      x-filter:
+        - AuthFilter
+      summary: Save menu items
+      tags:
+        - Menu
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/MenuItem'
+      responses:
+        '200':
+          description: Ok responce, returns array of menus. Record warnings for each menu item if exist
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MenuItem'
+        '400':
+          description: Bad request, returns array of menus with errors for wrong items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MenuItem'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonError'
+
+#################
+  /page:
+#################
+    get:
+      operationId: getPages
+      x-filter:
+      - AuthFilter
+      summary: Get page by provided page url
+      description: Get page object by provided page url
+      tags:
+        - Page
+      parameters:
+        - name: pageUrl
+          in: query
+          description: Optional page filter
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: response with array of pages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Page'
+        '403':
+          description: Attempting to get special system page.
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonError'
+    put:
+      operationId: updatePage
+      x-filter:
+      - AuthFilter
+      summary: Save page parameters
+      description: Save page parameters
+      tags:
+        - Page
+      requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page'
+      responses:
+        '200':
+          description: Page object with updated params
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonError'
+    post:
+      operationId: createPage
+      x-filter:
+      - AuthFilter
+      summary: Add new page
+      description: Add new page
+      tags:
+        - Page
+      responses:
+        '200':
+          description: new page with unique id and url
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonError'
+
+  /page/${id}:
+    delete:
+      operationId: deletePage
+      x-filter:
+        - AuthFilter
+      summary: Remove page by provided number
+      description: Remove page by number
+      tags:
+        - Page
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The id of the page to be deleted
+      responses:
+        '200':
+          description: Page successfully deleted
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonError'
+
+#################
+  /block:
+#################
+    get:
+      operationId: getBlocks
+      x-filter:
+      - AuthFilter
+      summary: Get list of blocks
+      tags:
+        - Block
+      responses:
+        '200':
+          description: response with array of blocks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Block'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonError'
+    put:
+      operationId: updateBlock
+      x-filter:
+      - AuthFilter
+      summary: Update an existing block
+      description: Save block params
+      tags:
+        - Block
+      requestBody:
+          description: Block with new params
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Block'
+      responses:
+        '200':
+          description: Block object with updated params
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Block'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonError'
+    post:
+      operationId: createBlock
+      x-filter:
+      - AuthFilter
+      summary: Add new block
+      description: Add new block
+      tags:
+        - Block
+      responses:
+        '200':
+          description: new block with unique id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Block'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonError'
+
+  /block/${id}:
+    delete:
+      operationId: deleteBlock
+      x-filter:
+      - AuthFilter
+      summary: Remove block by provided Id
+      description: Remove block
+      tags:
+        - Block
+      parameters:
+        - name: id
+          in: path
+          description: identifier of block which will be deleted
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Block successfully deleted
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonError'
+
+  /layout:
+    get:
+      operationId: getLayouts
+      x-filter:
+      - AuthFilter
+      summary: Get array of layouts
+      description: Get array of layouts
+      tags:
+        - Theme
+      responses:
+        '200':
+          description: response with array of layouts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Layout'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonError'
+
+#################
+  /theme:
+#################
+    get:
+      operationId: getThemes
+      x-filter:
+        - AuthFilter
+      summary: Get array of themes
+      description: Get array of themes
+      tags:
+        - Theme
+      responses:
+        '200':
+          description: response with array of themes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Theme'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonError'
+    put:
+      operationId: updateTheme
+      x-filter:
+        - AuthFilter
+      summary: Theme with updated params
+      description: Save theme params
+      tags:
+        - Theme
+      requestBody:
+          description: Theme with new params
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Theme'
+      responses:
+        '200':
+          description: Theme object with updated params
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Theme'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonError'
+    post:
+      operationId: createTheme
+      x-filter:
+      - AuthFilter
+      summary: Add new theme
+      description: Add new theme
+      tags:
+        - Theme
+      responses:
+        '200':
+          description: new theme with unique id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Theme'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonError'
+  /theme/${id}:
+    delete:
+      operationId: deleteTheme
+      x-filter:
+      - AuthFilter
+      summary: Remove theme by unique identifier
+      description: Remove theme
+      tags:
+        - Theme
+      parameters:
+        - name: id
+          in: path
+          description: identificator of theme which will be deleted
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Theme successfully deleted
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonError'
+
+#################
+  /version:
+#################
+    get:
+      operationId: getVersions
+      x-filter:
+      - AuthFilter
+      summary: Get array of published versions. Not supported yet
+      description: Get array of published versions. Not supported yet
+      tags:
+        - Version
+      responses:
+        '200':
+          description: response with array of published versions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Version'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonError'
+
+  /version/${id}:
+    patch:
+      operationId: updateVersion
+      x-filter:
+      - AuthFilter
+      summary: Change version status
+      tags:
+        - Version
+      parameters:
+        - name: id
+          in: path
+          description: identificator of version
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: |
+          Diff of version record. Actually process change of single attribute status.
+          Published value means  - publish current draft changes to live site.(avalible only for draft version).
+          Draft value means = revert back to certain version
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Version'
+      responses:
+        '200':
+          description: Version changed successfully
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonError'
+
+#################
+  /settings/skillsOnCourse:
+#################
+    get:
+      operationId: getSkillsOnCourseSettings
+      x-filter:
+      - AuthFilter
+      summary: Get SkillsOnCourse settings
+      description: Get SkillsOnCourse settings
+      tags:
+        - Settings
+      responses:
+        '200':
+          description: response with SkillsOnCourse settings object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SkillsOnCourseSettings'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonError'
+    put:
+      operationId: updateSkillsOnCourseSettings
+      x-filter:
+      - AuthFilter
+      summary: Save SkillsOnCourse settings
+      description: Save SkillsOnCourse settings
+      tags:
+        - Settings
+      requestBody:
+          description: SkillsOnCourse settings object
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SkillsOnCourseSettings'
+      responses:
+        '200':
+          description: Updated SkillsOnCourse settings object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SkillsOnCourseSettings'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonError'
+
+#################
+  /settings/website:
+#################
+    get:
+      operationId: getWebsiteSettings
+      x-filter:
+      - AuthFilter
+      summary: Get Website settings
+      description: Get Website settings
+      tags:
+        - Settings
+      responses:
+        '200':
+          description: response with Website settings object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebsiteSettings'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonError'
+    put:
+      operationId: updateWebsiteSettings
+      x-filter:
+      - AuthFilter
+      summary: Save website settings
+      description: Save website settings
+      tags:
+        - Settings
+      requestBody:
+          description: website settings object
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebsiteSettings'
+      responses:
+        '200':
+          description: Updated website settings object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebsiteSettings'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonError'
+
+#################
+  /redirect:
+#################
+    get:
+      operationId: getRedirects
+      x-filter:
+      - AuthFilter
+      summary: Get redirect settings
+      description: Get redirect settings
+      tags:
+        - Redirect
+      responses:
+        '200':
+          description: response with redirect settings object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Redirects'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonError'
+    put:
+      operationId: updateRedirects
+      x-filter:
+      - AuthFilter
+      summary: Save redirect settings
+      description: Save redirect settings
+      tags:
+        - Redirect
+      requestBody:
+          description: redirect settings object
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Redirects'
+      responses:
+        '200':
+          description: Updated redirect settings object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Redirects'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonError'
+
+#################
+#################
+
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic Authentication
+
+    session:
+      type: apiKey
+      in: cookie
+      name: ESESSIONID
+
+  schemas:
+
+    LoginRequest:
+      type: object
+      required:
+      - email
+      - password
+      properties:
+        email:
+          type: string
+          format: email
+          description: user email
+          example: john.smith@gmail.com
+        password:
+          type: string
+          format: password
+          description: User password
+          example: htrgjat4Gh
+
+
+    PageUrl:
+      type: object
+      properties:
+        link:
+          type: string
+          description: unique link
+          example: /contact
+        isDefault:
+          type: boolean
+          description: this is the default URL for the page. Setting this unsets this value for all other PageUrls linked to the same page
+
+    Block:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of block
+        title:
+          type: string
+          description: Unique name of block
+          example: sidebar
+        content:
+          type: string
+          description: Rich text content
+          example: |
+            h3. Subjects
+            {tags}
+
+    VersionStatus:
+      type: string
+      enum:
+        - published
+        - draft
+
+    Version:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: unique id of version
+        published:
+          type: boolean
+          description: has version published
+        author:
+          type: string
+          description: First and last name of the user who published version
+          example: Jane Smith
+        changes:
+          type: integer
+          minimum: 0
+          description: count of changes from previous version
+          example: 12
+        datetime:
+          type: string
+          format: date-time
+          description: date and time when version was published
+        status:
+          description: Indicate about current state of version
+          $ref: '#/components/schemas/VersionStatus'
+
+    Layout:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: unique id of the layout
+        layoutKey:
+          type: string
+          description: Unique name of the layout
+          example: layout-B
+
+    Page:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: unique id of the page
+        serialNumber:
+          type: integer
+          description: serial number of the page. Can be used to proceed to page by technical path /page/10
+          example: 10
+        title:
+          type: string
+          description: title of the page
+          example: Contact us
+        themeId:
+          type: integer
+          description: theme id used for the page
+        content:
+          type: string
+          description: Rich text content
+          example: |
+            Phone us on (02) 9550 5001 to find out more.
+        visible:
+          type: boolean
+          description: Is the page visible
+        suppressOnSitemap:
+          type: boolean
+          description: Is the page suppressed on sitemap
+        urls:
+          type: array
+          items:
+            $ref: '#/components/schemas/PageUrl'
+
+    BlockItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: unique id of the Block
+        position:
+          type: integer
+          description: order position of the block
+          example: 2
+
+    ThemeSchema:
+      type: object
+      properties:
+        top:
+          type: array
+          items:
+            $ref: '#/components/schemas/BlockItem'
+        left:
+          type: array
+          items:
+            $ref: '#/components/schemas/BlockItem'
+        centre:
+          type: array
+          items:
+            $ref: '#/components/schemas/BlockItem'
+        right:
+          type: array
+          items:
+            $ref: '#/components/schemas/BlockItem'
+        footer:
+          type: array
+          items:
+            $ref: '#/components/schemas/BlockItem'
+
+    Theme:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of theme
+        title:
+          type: string
+          description: title of theme
+          example: default
+        layoutId:
+          type: integer
+          description: Layout id which is used for this theme
+        schema:
+          $ref: '#/components/schemas/ThemeSchema'
+
+    MenuItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of menu item
+        title:
+          type: string
+          description: title of menu item
+          example: about us
+        url:
+          type: string
+          format: uri
+          description: url for menu link
+          example: /about
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/MenuItem'
+        error:
+          type: string
+          description: Describes reason why menu item cannot be saved. Comes on 400 (Bad request) response
+          example: Menu AB is wrong. Name length cannot be less than 3 characters
+        warning:
+          type: string
+          description: Any alerts for user. Do not affect on menus saving. Comes on 200 (Success) response
+          example: Warning! ABC is referred to unpublished page and will not be shown in the main menu!
+
+    User:
+      type: object
+      properties:
+        firstName:
+          type: string
+          description: First name of the user
+          example: John
+        lastName:
+          description: Last name of the user
+          type: string
+          example: Smith
+
+    CommonError:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+
+    ValidationError:
+      type: object
+      required:
+        - formErrors
+        - fieldsErrors
+      properties:
+        formErrors:
+          type: array
+          items:
+            type: string
+          description: Global error
+        fieldsErrors:
+          type: array
+          items:
+            title: FieldError
+            type: object
+            required:
+              - name
+              - error
+            properties:
+              name:
+                type: string
+                description: Name of fiels with error
+              error:
+                type: string
+                description: 'Errors for particular field, or empty array'
+          description: 'Array of fields errors, or empty array'
+
+    RedirectItem:
+      type: object
+      properties:
+        from:
+          type: string
+          description: Redirect from url
+        to:
+          type: string
+          description: Redirect to url
+
+    Redirects:
+      type: object
+      properties:
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/RedirectItem'
+
+    SkillsOnCourseSettings:
+      type: object
+      properties:
+        hideStudentDetails:
+          type: boolean
+        enableOutcomeMarking:
+          type: boolean
+        tutorFeedbackEmail:
+          type: string
+
+    ClassCondition:
+      type: string
+      enum:
+        - afterClassStarts
+        - beforeClassStarts
+        - afterClassEnds
+        - beforeClassEnds
+
+    ClassEnrolmentCondition:
+      type: string
+      enum:
+        - afterClassStarts
+        - beforeClassStarts
+        - beforeClassEnds
+
+    ClassAge:
+      type: object
+      properties:
+        hideClassDays:
+          type: integer
+        hideClassCondition:
+          $ref: '#/components/schemas/ClassCondition'
+        stopWebEnrolmentDays:
+          type: integer
+        stopWebEnrolmentCondition:
+          $ref: '#/components/schemas/ClassEnrolmentCondition'
+
+    WebsiteSettings:
+      type: object
+      properties:
+        enableSocialMedia:
+          type: boolean
+        addThisId:
+          type: string
+        enableForCourse:
+          type: boolean
+        enableForWebpage:
+          type: boolean
+        classAge:
+          $ref: '#/components/schemas/ClassAge'
