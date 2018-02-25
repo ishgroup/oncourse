@@ -7,6 +7,12 @@ import org.gradle.api.tasks.TaskAction
 
 class Swagger extends DefaultTask {
     @Input
+    File resourcesJava = new File("${project.parent.projectDir}/buildSrc/src/main/resources/swaggerTemplates/java")
+
+    @Input
+    File resourcesJS = new File("${project.parent.projectDir}/buildSrc/src/main/resources/swaggerTemplates/js")
+
+    @Input
     File schema
 
     @Input
@@ -26,7 +32,7 @@ class Swagger extends DefaultTask {
         configJava.setLang('jaxrs-cxf')
         configJava.setIgnoreFileOverride("${project.parent.projectDir}/buildSrc/src/main/resources/.swagger-codegen-ignore".toString())
         configJava.setAdditionalProperties([
-                'templateDir':  "${project.parent.projectDir}/buildSrc/src/main/resources/swaggerTemplates".toString(),
+                'templateDir':  resourcesJava.path,
                 'sourceFolder': 'src/main/groovy',
                 'implFolder': 'src/main/groovy',
                 'useBeanValidation': false,
@@ -53,7 +59,7 @@ class Swagger extends DefaultTask {
         configJS.setOutputDir(jsOutput.path)
         configJS.setLang('typescript-fetch')
         configJS.setAdditionalProperties([
-                'templateDir':  "${project.parent.projectDir}/buildSrc/src/main/resources/typescriptTemplates".toString(),
+                'templateDir':  resourcesJS.path,
                 'supportingFiles': '', // skip scripts and maven files
                 'withXml'       : true,
                 'appVersion'    : project.version

@@ -6,6 +6,10 @@ import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 
 class SwaggerDoc extends DefaultTask {
+
+    @Input
+    File resourcePath = new File("${project.parent.projectDir}/buildSrc/src/main/resources/swaggerTemplates/html")
+
     @Input
     File schema
 
@@ -18,11 +22,13 @@ class SwaggerDoc extends DefaultTask {
         config.setInputSpec(schema.path)
         config.setOutputDir(docOutput.path)
         config.setLang('dynamic-html')
+        config.setAdditionalProperties([
+                'templateDir':  resourcePath.path
+                ])
         new DefaultGenerator().opts(config.toClientOptInput()).generate()
 
         project.copy {
-            from "${project.parent.projectDir}/buildSrc/src/main/resources"
-            include "style.css"
+            from resourcePath.path + "/assets/css"
             into "${docOutput.path}/docs/assets/css"
         }
     }

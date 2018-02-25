@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css" media="screen">
+  <link rel="stylesheet" type="text/css" href="assets/css/bootstrap-responsive.css" media="screen">
+  <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+  <script src="assets/js/jquery-1.8.3.min.js" type="text/javascript"></script>
+  <script src="assets/js/main.js" type="text/javascript"></script>
+
+  <title>onCourse REST API documentation</title>
+</head>
+<body>
+  <div class="header">
+    <div class="top-bar">
+      <h1 id="logo"><a class="logo" href="/"><span>onCourse </span><span class="light">API Docs {{version}}</span></a></h1>
+    </div>
+  </div>
+  <div class="model-container"></div>
+  <div class="content">
+    <div class="box clearfix">
+      <div class="sidebar">
+        <div class="section-box">
+          <div class="section-header">
+            Overview
+          </div>
+          <ul>
+            <li>Getting Started</li>
+          </ul>
+        </div>
+        {{#apiInfo}}
+    		{{#apis}}
+        <div class="section-box">
+          <div class="section-header">
+            <a href="#!/{{classname}}">{{classname}}</a>
+          </div>
+          <ul>
+			      {{#operations}}
+			      {{#operation}}
+            <li><a href="#!/{{classname}}#{{nickname}}">{{nickname}}</a></li>
+            {{/operation}}
+            {{/operations}}
+          </ul>
+        </div>
+        {{/apis}}
+        {{/apiInfo}}
+      </div>
+    <div class="non-sidebar">
+      <div class="main-content">
+        <h2>Getting Started</h2>
+        <p>This ReSTful API is available to interact with onCourse from automated scripts and tools.</p>
+        <p>Where you see "siteKey.oncourse.cc" in the URL you should substitute your own staging site key or just use
+        the full hostname of your production site.</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

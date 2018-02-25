@@ -33,7 +33,7 @@ security:
   - token: []
 
 host: siteKey.oncourse.cc
-basePath: /editor/versionPath/
+basePath: /editor/v1
 
 paths:
 
