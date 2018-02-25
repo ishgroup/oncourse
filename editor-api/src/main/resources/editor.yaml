@@ -16,31 +16,35 @@ schemes:
   - https
 produces:
   - application/json
+
 securityDefinitions:
-  basicAuth:
+  loginAuth:
     type: basic
     description: HTTP Basic Authentication
 
+  token:
+    type: apiKey
+    name: ESESSIONID
+    description: User's session token
+    in: header
 
-servers:
+# Require all requests to require a token unless otherwise stated
+security:
+  - token: []
 
-- url: https://{siteKey}.oncourse.cc/editor/{versionPath}/
-  description: The production API server
-  variables:
-    siteKey:
-      default: template-a
-      description: this value is assigned by the service provider
-    versionPath:
-      default: v1
-      description: API version base path
-
+host: siteKey.oncourse.cc
+basePath: /editor/versionPath/
 
 paths:
 
+#################
   /session:
+#################
     post:
       operationId: createSession
       summary: Authenticate user by email and password. Put session toke to cookie on success
+      security:
+        - loginAuth: []
       tags:
         - Auth
       consumes:
@@ -76,10 +80,12 @@ paths:
           schema:
             $ref: '#/definitions/CommonError'
 
+#################
   /user:
+#################
     get:
       operationId: getUser
-      x-filter:  
+      x-filter:
         - AuthFilter
       summary: Get current logged user
       tags:
@@ -96,10 +102,12 @@ paths:
           schema:
             $ref: '#/definitions/CommonError'
 
+#################
   /menu:
+#################
     get:
       operationId: getMenus
-      x-filter:  
+      x-filter:
       - AuthFilter
       summary: Get menu items
       description: Get menu items
@@ -118,7 +126,7 @@ paths:
             $ref: '#/definitions/CommonError'
     put:
       operationId: updateMenus
-      x-filter:  
+      x-filter:
       - AuthFilter
       summary: Save menu items
       description: Save menu items
@@ -137,7 +145,7 @@ paths:
               $ref: '#/definitions/MenuItem'
       responses:
         '200':
-          description: Ok responce, returns array of menus. Record warnings for each menu item if exist 
+          description: Ok responce, returns array of menus. Record warnings for each menu item if exist
           schema:
             type: array
             items:
@@ -153,10 +161,12 @@ paths:
           schema:
             $ref: '#/definitions/CommonError'
 
+#################
   /page:
+#################
     get:
       operationId: getPages
-      x-filter:  
+      x-filter:
       - AuthFilter
       summary: Get page by provided page url
       description: Get page object by provided page url
@@ -175,7 +185,7 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Page'
-        '403': 
+        '403':
           description: Attempting to get special system page.
         default:
           description: Unexpected error
@@ -183,7 +193,7 @@ paths:
             $ref: '#/definitions/CommonError'
     put:
       operationId: updatePage
-      x-filter:  
+      x-filter:
       - AuthFilter
       summary: Save page parameters
       description: Save page parameters
@@ -209,7 +219,7 @@ paths:
             $ref: '#/definitions/CommonError'
     post:
       operationId: createPage
-      x-filter:  
+      x-filter:
       - AuthFilter
       summary: Add new page
       description: Add new page
@@ -229,7 +239,7 @@ paths:
   /page/${id}:
     delete:
       operationId: deletePage
-      x-filter:  
+      x-filter:
       - AuthFilter
       summary: Remove page by provided number
       description: Remove page by number
@@ -251,10 +261,12 @@ paths:
           schema:
             $ref: '#/definitions/CommonError'
 
+#################
   /block:
+#################
     get:
       operationId: getBlocks
-      x-filter:  
+      x-filter:
       - AuthFilter
       summary: Get list of blocks
       tags:
@@ -272,7 +284,7 @@ paths:
             $ref: '#/definitions/CommonError'
     put:
       operationId: updateBlock
-      x-filter:  
+      x-filter:
       - AuthFilter
       summary: Update an existing block
       description: Save block params
@@ -298,7 +310,7 @@ paths:
             $ref: '#/definitions/CommonError'
     post:
       operationId: createBlock
-      x-filter:  
+      x-filter:
       - AuthFilter
       summary: Add new block
       description: Add new block
@@ -315,11 +327,11 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/CommonError'
-            
+
   /block/${id}:
     delete:
       operationId: deleteBlock
-      x-filter:  
+      x-filter:
       - AuthFilter
       summary: Remove block by provided Id
       description: Remove block
@@ -341,10 +353,12 @@ paths:
           schema:
             $ref: '#/definitions/CommonError'
 
+#################
   /layout:
+#################
     get:
       operationId: getLayouts
-      x-filter:  
+      x-filter:
       - AuthFilter
       summary: Get array of layouts
       description: Get array of layouts
@@ -361,11 +375,13 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/CommonError'
-            
+
+#################
   /theme:
+#################
     get:
       operationId: getThemes
-      x-filter:  
+      x-filter:
       - AuthFilter
       summary: Get array of themes
       description: Get array of themes
@@ -384,7 +400,7 @@ paths:
             $ref: '#/definitions/CommonError'
     put:
       operationId: updateTheme
-      x-filter:  
+      x-filter:
       - AuthFilter
       summary: Theme with updated params
       description: Save theme params
@@ -410,7 +426,7 @@ paths:
             $ref: '#/definitions/CommonError'
     post:
       operationId: createTheme
-      x-filter:  
+      x-filter:
       - AuthFilter
       summary: Add new theme
       description: Add new theme
@@ -430,7 +446,7 @@ paths:
   /theme/${id}:
     delete:
       operationId: deleteTheme
-      x-filter:  
+      x-filter:
       - AuthFilter
       summary: Remove theme by unique identifier
       description: Remove theme
@@ -452,10 +468,12 @@ paths:
           schema:
             $ref: '#/definitions/CommonError'
 
+#################
   /version:
+#################
     get:
       operationId: getVersions
-      x-filter:  
+      x-filter:
       - AuthFilter
       summary: Get array of published versions. Not supported yet
       description: Get array of published versions. Not supported yet
@@ -472,11 +490,11 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/CommonError'
-            
+
   /version/${id}:
     patch:
       operationId: updateVersion
-      x-filter:  
+      x-filter:
       - AuthFilter
       summary: Change version status
       tags:
@@ -489,10 +507,9 @@ paths:
           description: identificator of version
           required: true
           type: string
-        - version: 
-          name: version
+        - name: version
           in: body
-          description: | 
+          description: |
             Diff of version record. Actually process change of single attribute status.
             Published value means  - publish current draft changes to live site.(avalible only for draft version).
             Draft value means = revert back to certain version
@@ -507,10 +524,12 @@ paths:
           schema:
             $ref: '#/definitions/CommonError'
 
+#################
   /settings/skillsOnCourse:
+#################
     get:
       operationId: getSkillsOnCourseSettings
-      x-filter:  
+      x-filter:
       - AuthFilter
       summary: Get SkillsOnCourse settings
       description: Get SkillsOnCourse settings
@@ -527,7 +546,7 @@ paths:
             $ref: '#/definitions/CommonError'
     put:
       operationId: updateSkillsOnCourseSettings
-      x-filter:  
+      x-filter:
       - AuthFilter
       summary: Save SkillsOnCourse settings
       description: Save SkillsOnCourse settings
@@ -552,10 +571,12 @@ paths:
           schema:
             $ref: '#/definitions/CommonError'
 
+#################
   /settings/website:
+#################
     get:
       operationId: getWebsiteSettings
-      x-filter:  
+      x-filter:
       - AuthFilter
       summary: Get Website settings
       description: Get Website settings
@@ -572,7 +593,7 @@ paths:
             $ref: '#/definitions/CommonError'
     put:
       operationId: updateWebsiteSettings
-      x-filter:  
+      x-filter:
       - AuthFilter
       summary: Save website settings
       description: Save website settings
@@ -597,10 +618,12 @@ paths:
           schema:
             $ref: '#/definitions/CommonError'
 
+#################
   /redirect:
+#################
     get:
       operationId: getRedirects
-      x-filter:  
+      x-filter:
       - AuthFilter
       summary: Get redirect settings
       description: Get redirect settings
@@ -617,7 +640,7 @@ paths:
             $ref: '#/definitions/CommonError'
     put:
       operationId: updateRedirects
-      x-filter:  
+      x-filter:
       - AuthFilter
       summary: Save redirect settings
       description: Save redirect settings
@@ -641,17 +664,9 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/CommonError'
-            
-            
-parameters:
 
-  Session:
-    name: ESESSIONID
-    in: cookie
-    description: User's session token
-    required: false
-    type: string
-
+#################
+#################
 
 definitions:
 
@@ -661,13 +676,11 @@ definitions:
       email:
         type: string
         format: email
-        required: true
         description: user email
         example: john.smith@gmail.com
       password:
         type: string
         format: password
-        required: true
         description: User password
         example: htrgjat4Gh
 
@@ -690,17 +703,15 @@ definitions:
         description: Unique identifier of block
       title:
         type: string
-        required: true
         description: Unique name of block
         example: sidebar
       content:
         type: string
-        required: true
         description: Rich text content
         example: |
           h3. Subjects
           {tags}
-  
+
   VersionStatus:
     type: string
     enum:
@@ -755,26 +766,21 @@ definitions:
         description: serial number of the page. Can be used to proceed to page by technical path /page/10
         example: 10
       title:
-        required: true
         type: string
         description: title of the page
         example: Contact us
       themeId:
-        required: true
         type: integer
         description: theme id used for the page
       content:
-        required: true
         type: string
         description: Rich text content
         example: |
           Phone us on (02) 9550 5001 to find out more.
       visible:
-        required: true
         type: boolean
         description: Is the page visible
       suppressOnSitemap:
-        required: true
         type: boolean
         description: Is the page suppressed on sitemap
       urls:
@@ -786,11 +792,9 @@ definitions:
     type: object
     properties:
       id:
-        required: true
         type: integer
         description: unique id of the Block
       position:
-        required: true
         type: integer
         description: order position of the block
         example: 2
@@ -826,16 +830,13 @@ definitions:
         type: integer
         description: Unique identifier of theme
       title:
-        required: true
         type: string
         description: title of theme
         example: default
       layoutId:
-        required: true
         type: integer
         description: Layout id which is used for this theme
       schema:
-        required: true
         $ref: '#/definitions/ThemeSchema'
 
   MenuItem:
@@ -845,12 +846,10 @@ definitions:
         type: integer
         description: Unique identifier of menu item
       title:
-        required: true
         type: string
         description: title of menu item
         example: about us
       url:
-        required: true
         type: string
         format: uri
         description: url for menu link
@@ -915,16 +914,14 @@ definitions:
               type: string
               description: 'Errors for particular field, or empty array'
         description: 'Array of fields errors, or empty array'
-        
+
   RedirectItem:
     type: object
     properties:
       from:
-        required: true
         type: string
         description: Redirect from url
       to:
-        required: true
         type: string
         description: Redirect to url
         
