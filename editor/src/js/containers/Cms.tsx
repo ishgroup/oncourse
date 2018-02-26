@@ -11,12 +11,13 @@ import {Modal} from "../common/containers/modal/Modal";
 import {getHistoryInstance, setHistoryInstance} from "../history";
 import {URL} from "../routes";
 import {logout} from "./auth/actions";
-import {publish} from "./history/actions";
+import {getHistory, publish} from "./history/actions";
 import {hideModal, showModal} from "../common/containers/modal/actions";
 import {AuthState} from "./auth/reducers/State";
 import {ModalState} from "../common/containers/modal/reducers/State";
 import {State} from "../reducers/state";
 import {getPageByUrl} from "./content/containers/pages/actions";
+import {Version, VersionStatus} from "../model";
 
 interface Props {
   auth: AuthState;
@@ -24,9 +25,11 @@ interface Props {
   modal: ModalState;
   logout: () => any;
   hideModal: () => any;
-  onPublish: () => any;
+  onPublish: (id) => any;
   showModal: () => any;
   getPageByUrl: (url) => any;
+  getHistory: () => any;
+  draftVersion: Version;
   history: any;
   pageEditMode: boolean;
 }
@@ -46,6 +49,7 @@ export class Cms extends React.Component<Props, any> {
 
     if (this.props.auth.isAuthenticated) {
       this.props.getPageByUrl(document.location.pathname);
+      this.props.getHistory();
     }
   }
 
@@ -56,8 +60,13 @@ export class Cms extends React.Component<Props, any> {
     }
   }
 
+  publish() {
+    const {onPublish, draftVersion} = this.props;
+    draftVersion && onPublish(draftVersion.id);
+  }
+
   render() {
-    const {logout, auth, notifications, modal, hideModal, onPublish, showModal, pageEditMode} = this.props;
+    const {logout, auth, notifications, modal, hideModal, showModal, pageEditMode} = this.props;
     const {isAuthenticated, user} = auth;
     const viewMode: boolean = checkViewMode(this.props.history, pageEditMode);
     const slimSidebar: boolean = checkSlimSidebar(this.props.history);
@@ -92,7 +101,7 @@ export class Cms extends React.Component<Props, any> {
                   user={user}
                   slim={slimSidebar}
                   onLogout={() => logout()}
-                  onPublish={() => onPublish()}
+                  onPublish={() => this.publish()}
                   showModal={showModal}
                 />
             }
@@ -110,15 +119,17 @@ const mapStateToProps = (state: State) => ({
   notifications: state.notifications,
   modal: state.modal,
   pageEditMode: state.page.editMode,
+  draftVersion: state.history.versions && state.history.versions.find(v => !v.published),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
     logout: () => dispatch(logout()),
     hideModal: () => dispatch(hideModal()),
-    onPublish: () => dispatch(publish('', '')), // TODO:
+    onPublish: id => dispatch(publish(id, VersionStatus.published)),
     showModal: props => dispatch(showModal(props)),
     getPageByUrl: url => dispatch(getPageByUrl(url)),
+    getHistory: () => dispatch(getHistory()),
   };
 };
 

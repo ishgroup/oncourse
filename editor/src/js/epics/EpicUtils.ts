@@ -19,7 +19,7 @@ export interface Request<V, S> {
 export const errorMessage = data => (
   error({
     title: 'Request Failed',
-    message: (data.data && data.data.message) || 'Something went wrong',
+    message: (data && data.data && data.data.message) || 'Something went wrong',
     position: 'tr',
     autoDismiss: 3,
   })
@@ -27,7 +27,7 @@ export const errorMessage = data => (
 
 export const ProcessError = (data: AxiosResponse): { type: string, payload?: any }[] => {
 
-  if (data.status && 401 === data.status) {
+  if (data && data.status && 401 === data.status) {
     return [{type: LOG_OUT_REQUEST}];
   }
 

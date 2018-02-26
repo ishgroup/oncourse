@@ -35,7 +35,7 @@ export function blockApiMock(mock) {
 
 
   this.api.onDelete(API.BLOCK_DELETE).reply(config => {
-    const id = config.url.split('/')[1];
+    const id = config.url.split('/')[2];
 
     this.db.deleteBlockById(id);
     return promiseResolve(

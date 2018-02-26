@@ -6,6 +6,7 @@ export interface HttpService {
   POST<T>(path: string, data?: any, config?: AxiosRequestConfig): Promise<T>;
   PUT<T>(path: string, data?: any, config?: AxiosRequestConfig): Promise<T>;
   DELETE<T>(path: string, config?: AxiosRequestConfig): Promise<T>;
+  PATCH<T>(path: string, data?: any, config?: AxiosRequestConfig): Promise<T>;
 }
 
 export class DefaultHttpService implements HttpService {

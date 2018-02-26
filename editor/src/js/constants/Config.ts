@@ -4,36 +4,38 @@ export const DefaultConfig = {
   CONTAINER_ID: "cms-root",
 };
 
+const v = 'v1';
+
 export const API = {
 
   // Authorization end points
-  USER: "/user",
-  SESSION: "/session",
+  USER: `/${v}/user`,
+  SESSION: `/${v}/session`,
 
   // Menu page
-  MENU: "/menu",
+  MENU: `/${v}/menu`,
 
   // Pages
-  PAGE: "/page",
-  PAGE_DELETE: /page\/\d+/,
+  PAGE: `/${v}/page`,
+  PAGE_DELETE: /v1\/page\/\d+/,
 
   // Blocks
-  BLOCK: "/block",
-  BLOCK_DELETE: /block\/\d+/,
+  BLOCK: `/${v}/block`,
+  BLOCK_DELETE: /v1\/block\/\d+/,
 
   // Themes
-  THEME: "/theme",
-  LAYOUT: "/layout",
-  THEME_DELETE: /theme\/\d+/,
+  THEME: `/${v}/theme`,
+  LAYOUT: `/${v}/layout`,
+  THEME_DELETE: /v1\/theme\/\d+/,
 
   // Versions
-  VERSION: "/version",
-  VERSION_UPDATE: /version\/\d+/,
+  VERSION: `/${v}/version`,
+  VERSION_UPDATE: /v1\/version\/\d+/,
 
   // Settings
-  SKILLS_ON_COURSE: "/settings/skillsOnCourse",
-  WEBSITE: "/settings/website",
+  SKILLS_ON_COURSE: `/${v}/settings/skillsOnCourse`,
+  WEBSITE: `/${v}/settings/website`,
 
   // Redirects
-  REDIRECT: "/redirect",
+  REDIRECT: `/${v}/redirect`,
 };
