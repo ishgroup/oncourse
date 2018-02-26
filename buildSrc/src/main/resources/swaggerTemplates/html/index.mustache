@@ -14,7 +14,7 @@
 <body>
   <div class="header">
     <div class="top-bar">
-      <h1 id="logo"><a class="logo" href="/"><span>onCourse </span><span class="light">API Docs {{version}}</span></a></h1>
+      <h1 id="logo"><a class="logo" href="/"><span>{{appName}}</span> <span class="light">{{version}}</span></a></h1>
     </div>
   </div>
   <div class="model-container"></div>
@@ -33,7 +33,7 @@
     		{{#apis}}
         <div class="section-box">
           <div class="section-header">
-            <a href="#!/{{classname}}">{{classname}}</a>
+            <a href="#!/{{classname}}">{{classVarName}}</a>
           </div>
           <ul>
 			      {{#operations}}
@@ -49,8 +49,9 @@
     <div class="non-sidebar">
       <div class="main-content">
         <h2>Getting Started</h2>
-        <p>This ReSTful API is available to interact with onCourse from automated scripts and tools.</p>
-        <p>Where you see "siteKey.oncourse.cc" in the URL you should substitute your own staging site key or just use
+        <p class="app-desc">{{{appDescription}}}</p>
+          <p>This ReSTful API is available to interact with onCourse from automated scripts and tools.</p>
+          <p>Where you see <code>{{host}}</code> in the URL you should substitute your own staging site key or just use
         the full hostname of your production site.</p>
       </div>
     </div>

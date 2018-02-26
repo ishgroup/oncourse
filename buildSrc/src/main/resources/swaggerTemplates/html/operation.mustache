@@ -1,32 +1,127 @@
 <div class="main-content">
-    <h2><a name="{{className}}"></a>{{className}}</h2>
+    <h1><a name="{{classname}}"></a>{{classVarName}}</h1>
+    <p>{{description}}</p>
+    <p>{{unescapedDescription}}</p>
     {{#operations}}
         {{#operation}}
-            <h1><a name="{{nickname}}"></a>{{nickname}}</h1>
+            <h2><a name="{{nickname}}"></a>{{nickname}}</h2>
             <p>{{description}}</p>
             {{#notes}}<p>{{notes}}</p>{{/notes}}
 
-            <button class="btn btn-success">{{httpMethod}}</button> <code>{{basePath}}{{path}}</code>
+            <div class="method">
+                <button class="btn method-{{httpMethod}}">{{httpMethod}}</button>
+                <code>{{basePath}}{{path}}</code>
+            </div>
 
-            <h3 class="response">Response</h3>
-            <div class="model" data-model="{{returnBaseType}}"><a href="">{{returnType}}</a></div>
+            {{#hasPathParams}}
+                <h3 class="field-label">Path parameters</h3>
+                <div class="field-items">
+                    {{#pathParams}}
+                        <div class="param">
+                            <span class="param-base">{{baseName}}</span> {{^required}}(optional){{/required}}{{#required}}(required){{/required}}
+                        </div>
+                        <div class="param-desc">
+                            {{description}} {{#defaultValue}}default: {{{defaultValue}}} {{/defaultValue}}{{#dataFormat}}format: {{{dataFormat}}}{{/dataFormat}}
+                        </div>
+                    {{/pathParams}}
+                </div>
+            {{/hasPathParams}}
 
-            <h3 class="param">Parameters</h3>
-            <ul>
-                {{#allParams}}
-                    <li class="parameter">
-                        {{#isFormParam}}<span class="param-in">Form: </span>{{/isFormParam}}
-                        {{#isQueryParam}}<span class="param-in">Query: </span>{{/isQueryParam}}
-                        {{#isPathParam}}<span class="param-in">Path: </span>{{/isPathParam}}
-                        {{#isHeaderParam}}<span class="param-in">Header: </span>{{/isHeaderParam}}
-                        {{#isBodyParam}}<span class="param-in">Body: </span>{{/isBodyParam}}
-                        <span class="param-name">{{baseName}}</span>
-                        <span class="param-type">{{dataType}}{{#baseType}}({{baseType}}){{/baseType}}</span>
-                        {{#optional}}<span class="param-optional-flag">(optional)</span>{{/optional}}
-                        <p class="param-description">{{description}}</p>
-                    </li>
-                {{/allParams}}
-            </ul>
+            {{#hasBodyParam}}
+                <h3>Request body</h3>
+                <div class="field-items">
+                    {{#bodyParams}}
+                        <div class="param">
+                            {{baseName}} {{#baseType}}<span class="model" data-model="{{baseType}}"><a href="#{{baseType}}">{{baseType}}</a></span>
+                            {{/baseType}} {{^required}}(optional){{/required}}{{#required}}(required){{/required}}
+                        </span>
+                        <div class="param-desc">
+                            {{description}} {{#defaultValue}}default: {{{defaultValue}}}{{/defaultValue}}
+                        </div>
+                    {{/bodyParams}}
+                </div>
+            {{/hasBodyParam}}
+
+            {{#hasHeaderParams}}
+                <h3">Request headers</h3>
+                <div class="field-items">
+                    {{#headerParam}}
+                        <div class="param">
+                            {{baseName}} {{^required}}(optional){{/required}}{{#required}}(required){{/required}}
+                        </div>
+                        <div class="param-desc">
+                            {{description}} {{#defaultValue}}default: {{{defaultValue}}} {{/defaultValue}}{{#dataFormat}}format: {{{dataFormat}}}{{/dataFormat}}
+                        </div>
+                    {{/headerParam}}
+                </div>
+            {{/hasHeaderParams}}
+
+            {{#hasQueryParams}}
+                <h3>Query parameters</h3>
+                <div class="field-items">
+                    {{#queryParams}}
+                        <div class="param">
+                            {{baseName}} {{^required}}(optional){{/required}}{{#required}}(required){{/required}}
+                        </div>
+                        <div class="param-desc">
+                            {{description}} {{#defaultValue}}default: {{{defaultValue}}} {{/defaultValue}}{{#dataFormat}}format: {{{dataFormat}}}{{/dataFormat}}
+                        </div>
+                    {{/queryParams}}
+                </div>
+            {{/hasQueryParams}}
+
+            {{#hasFormParams}}
+                <h3>Form parameters</h3>
+                <div class="field-items">
+                    {{#formParams}}
+                        <div class="param">
+                            {{baseName}} {{^required}}(optional){{/required}}{{#required}}(required){{/required}}
+                        </div>
+                        <div class="param-desc">
+                            {{description}} {{#defaultValue}}default: {{{defaultValue}}} {{/defaultValue}}{{#dataFormat}}format: {{{dataFormat}}}{{/dataFormat}}
+                        </div>
+                    {{/formParams}}
+                </div>
+            {{/hasFormParams}}
+
+            <div class="responses">
+                <h3>Responses</h3>
+                {{#responses}}
+                    <p>
+                        {{#isWildcard}}<span class="code">Other</span>{{/isWildcard}}
+                        {{^isWildcard}}<span class="code">{{code}}</span>{{/isWildcard}}
+                        <span class="message"> {{message}}</span>
+                        {{#simpleType}}<span class="dataType model" data-model="{{dataType}}"><a href="#{{dataType}}">{{dataType}}</a></span>{{/simpleType}}
+                    </p>
+                    {{#examples}}
+                        <h3 class="field-label">Example data</h3>
+                        <div class="example-data-content-type">Content-Type: {{{contentType}}}</div>
+                        <pre class="example"><code>{{example}}</code></pre>
+                    {{/examples}}
+                {{/responses}}
+            </div>
+
+
+            <div class="return">
+                <h3>Returns</h3>
+                {{#returnType}}
+                <div class="model" data-model="{{returnBaseType}}"><a href="">{{returnType}}</a></div>
+                {{/returnType}}
+                {{^returnType}}
+                    Nothing
+                {{/returnType}}
+            </div>
+
+            {{#hasExamples}}
+                <div class="examples">
+                    {{#examples}}
+                        <h3 class="example">Example data</h3>
+                        <label>Content-Type: {{{contentType}}}</label>
+                        <pre class=".pre-scrollable">{{{example}}}</pre>
+                    {{/examples}}
+                </div>
+            {{/hasExamples}}
+
         {{/operation}}
     {{/operations}}
 </div>

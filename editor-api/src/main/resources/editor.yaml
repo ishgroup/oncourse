@@ -1,14 +1,13 @@
 swagger: '2.0'
 info:
-  title: Editor Api
-  description: Public editor API
-  termsOfService: http://example.com/terms/
+  title: onCourse Editor Api
+  description: An API for interacting with the backend of the onCourse Editor/CMS
   contact:
     name: ish group pty ltd
     url: http://ish.com.au
     email: support@ish.com.au
   license:
-    name: Closed
+    name: Proprietary
   version: v1
   
   
@@ -35,6 +34,15 @@ securityDefinitions:
 host: siteKey.oncourse.cc
 basePath: /editor/v1
 
+tags:
+  - name: Auth
+    description: |
+      These methods allow you to log into the editor API, retrieve a session token and log out again. None
+      of the other methods will work without a session token passed in an HTTP header.
+  - name: Menu
+    description: |
+      Something
+
 paths:
 
 #################
@@ -42,7 +50,7 @@ paths:
 #################
     post:
       operationId: createSession
-      summary: Authenticate user by email and password. Put session toke to cookie on success
+      summary: Authenticate user by email and password.
       security:
         - loginAuth: []
       tags:
@@ -108,7 +116,7 @@ paths:
     get:
       operationId: getMenus
       x-filter:
-      - AuthFilter
+        - AuthFilter
       summary: Get menu items
       description: Get menu items
       tags:
