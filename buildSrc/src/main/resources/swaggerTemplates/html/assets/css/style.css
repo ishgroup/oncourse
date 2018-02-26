@@ -21,6 +21,10 @@ table, caption, tbody, tfoot, thead, tr, th, td {
   border-collapse: collapse;
 }
 
+*, *::after, *::before {
+    box-sizing: border-box;
+}
+
 strong {
   font-weight: normal;
 }
@@ -99,6 +103,7 @@ a:hover {
 }
 .param-name {
   width: 100%;
+  color: blue;
 }
 .license-info {
   margin-left: 20px;
@@ -165,6 +170,10 @@ code {
   font-family: monospace;
   font-weight: 400;
   white-space: pre;
+  display: block;
+  width: 100%;
+  overflow-x: scroll;
+  padding: 5px 10px;
 }
 
 .nickname {
@@ -185,34 +194,40 @@ code {
 }
 
 .parameter {
-  width: 500px;
+  margin-bottom: 15px;
 }
 
 .param {
-  width: 500px;
+  max-width: 500px;
   padding: 10px 0 0 20px;
   font-weight: bold;
 }
 
+.param + ul {
+  list-style: none;
+  margin-left: 35px;
+}
+
 .param-desc {
-  width: 700px;
+  max-width: 700px;
   padding: 0 0 0 20px;
   color: #777;
 }
 
 .param-type {
   font-style: italic;
+  color: green;
 }
 
 .param-enum-header {
-  width: 700px;
+  max-width: 700px;
   padding: 0 0 0 60px;
   color: #777;
   font-weight: bold;
 }
 
 .param-enum {
-  width: 700px;
+  max-width: 700px;
   padding: 0 0 0 80px;
   color: #777;
   font-style: italic;
@@ -251,35 +266,82 @@ code {
   display: inline-block;
   text-decoration: none;
 }
-
-/* Version switching */
-.btn {
-  border: 1px solid transparent;
-  border-radius: 4px;
-  padding: 3px;
-  background-color: #EFEBD5;
-  border-color: #ccc;
-  margin: 2px;
+button.btn {
+  margin-bottom: 15px;
 }
 
-.btn.active, .btn:hover {
-  background-color: white;
-}
-
-.content {
+.content, .header {
   width: 100%;
   max-width: 1460px;
+  margin: 0 auto;
+  position: relative;
 }
 
 .content .sidebar {
   float: left;
-  width: 21%;
-  padding: 0 10px;
+  width: 19%;
+  padding: 0 15px;
+  height: auto !important;
+  font-size: 14px;
+}
+
+.content .sidebar .section-box .section-header {
+  line-height: 1.7;
+  font-weight: normal;
+}
+.content .sidebar .section-box > ul {
+  list-style: none;
+  margin-left: 12px;
+  font-weight: lighter;
+}
+.content .sidebar .section-box > ul li {
+  margin-bottom: 6px;
+}
+.content .sidebar .section-box .section-header,
+.content .sidebar .section-box > ul li {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 100%;
+  display: block;
 }
 
 .content .non-sidebar {
   float: left;
-  width: 75%;
-  padding: 0 10px;
+  width: 81%;
+  padding: 0 15px;
+}
+.content .non-sidebar::before {
+  content: "";
+  border-left: 1px solid #DB7430;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  left: 19%;
 }
 
+.model-container .model-detail-popup {
+  z-index: 1050;
+  width: 100%;
+  max-width: 560px;
+  background-color: #ffffff;
+  border: 1px solid #999;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+  outline: none;
+  -webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding-box;
+  background-clip: padding-box;
+  padding: 10px 15px;
+}
+
+.model-container .model-detail-popup ul.parameter {
+  list-style: none;
+  margin-left: 15px;
+}
