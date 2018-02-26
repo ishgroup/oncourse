@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const CompressionPlugin = require("compression-webpack-plugin");
 
 const path = require("path");
 
@@ -107,21 +106,10 @@ const _DefinePlugin = (NODE_ENV, BUILD_NUMBER) => {
   });
 };
 
-const _CompressionPlugin = () => {
-  return new CompressionPlugin({
-    asset: "[path].gz[query]",
-    algorithm: "gzip",
-    test: /\.(js|html)$/,
-    threshold: 10240,
-    minRatio: 0.8
-  })
-};
-
 module.exports = {
   KEYS: KEYS,
   info: _info,
   common: _common,
   styleModule: _styleModule,
   DefinePlugin: _DefinePlugin,
-  CompressionPlugin: _CompressionPlugin
 };

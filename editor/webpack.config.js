@@ -112,25 +112,9 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
         new CompressionPlugin({
           asset: "[path].gz[query]",
           algorithm: "gzip",
-          test: /\.(js|html|css)$/,
-          threshold: 10240,
-          minRatio: 0.8
+          test: /\.(js|html|css|map)$/,
+          minRatio: Infinity,
         }),
-        // new TypedocWebpackPlugin({
-        //   jsx: "react",
-        //   target: "es6",
-        //   lib: [
-        //     "lib.dom.d.ts",
-        //     "lib.es5.d.ts",
-        //     "lib.es2015.d.ts",
-        //     "lib.es2016.d.ts",
-        //     "lib.es2017.d.ts"
-        //   ],
-        //   allowSyntheticDefaultImports: true,
-        //   moduleResolution: "node",
-        //   module: "es6",
-        //   out: "../docs" // relative to output
-        // }, "./src/js/"),
       new ZipPlugin({
         path: '../distribution',
         filename: 'editor.zip',
@@ -138,7 +122,7 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
         // OPTIONAL: defaults to excluding nothing
         // can be a string, a RegExp, or an array of strings and RegExps
         // if a file matches both include and exclude, exclude takes precedence
-        exclude: [/\.js$/, /\.css$/],
+        exclude: [/\.js$/, /\.css$/, /\.map$/],
 
         // OPTIONAL: see https://github.com/thejoshwolfe/yazl#addfilerealpath-metadatapath-options
         fileOptions: {

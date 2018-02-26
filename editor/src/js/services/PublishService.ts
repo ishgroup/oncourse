@@ -10,7 +10,7 @@ class PublishService {
   }
 
   public setVersion(id, status: VersionStatus): Promise<any> {
-    return this.versionApi.updateVersion(id, {status: status});
+    return this.versionApi.updateVersion(id, {status});
   }
 }
 
