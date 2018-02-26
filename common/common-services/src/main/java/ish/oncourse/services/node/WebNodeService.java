@@ -68,6 +68,13 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 		return q.select(cayenneService.sharedContext());
 	}
 
+	@Override
+	public List<WebNode> getSiteMapNodes() {
+		ObjectSelect<WebNode> q = ObjectSelect.query(WebNode.class).where(WebNode.SUPPRESS_ON_SITEMAP.isFalse());
+		applyCommons(q);
+		return q.select(cayenneService.sharedContext());
+	}
+
 	public WebNode getHomePage() {
 		return getNodeForNodePath(LEFT_SLASH_CHARACTER);
 	}

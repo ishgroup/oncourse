@@ -27,6 +27,12 @@ public interface IWebNodeService extends IBaseService<WebNode> {
 	List<WebNode> getNodes();
 
 	/**
+	 * Returns all web nodes for the current site or current college.
+	 */
+	@RequestCached
+	List<WebNode> getSiteMapNodes();
+
+	/**
 	 * Returns home page for current site.
 	 * 
 	 * @return

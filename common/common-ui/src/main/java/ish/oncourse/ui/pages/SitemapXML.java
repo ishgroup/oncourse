@@ -92,7 +92,7 @@ public class SitemapXML extends ISHCommon {
 		
 		sites = webSiteService.getCurrentCollege().getSites();
 		tutors = tutorService.getTutors();
-		pages = webNodeService.getNodes();
+		pages = webNodeService.getSiteMapNodes();
 	}
 
 	private Date setupSiteModificationDate() {
