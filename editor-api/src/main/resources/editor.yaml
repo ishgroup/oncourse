@@ -21,16 +21,16 @@ securityDefinitions:
   loginAuth:
     type: basic
     description: HTTP Basic Authentication
-
-  token:
-    type: apiKey
-    name: ESESSIONID
-    description: User's session token
-    in: header
+#
+#  token:
+#    type: apiKey
+#    name: ESESSIONID
+#    description: User's session token
+#    in: header
 
 # Require all requests to require a token unless otherwise stated
-security:
-  - token: []
+#security:
+#  - token: []
 
 host: siteKey.oncourse.cc
 basePath: /editor/v1
