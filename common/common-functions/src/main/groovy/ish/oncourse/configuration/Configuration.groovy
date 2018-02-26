@@ -38,7 +38,7 @@ class Configuration {
     static Properties loadProperties() {
         String userDir = System.getProperties().get(USER_DIR) as String
 
-        Properties props
+        Properties props = null
         FileInputStream stream
         try {
             stream = new FileInputStream("$userDir/$CONFIG_FILE_NAME")
@@ -48,8 +48,10 @@ class Configuration {
             throw new IllegalArgumentException("Exception during reading application.properties file", ex)
         } finally {
             try {
-                stream.close()
-            } catch (IOException ex) {}
+                if (stream) {
+                    stream.close()
+                }
+            } catch (IOException ignore) {}
         }
         props
     }
