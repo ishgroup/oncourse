@@ -26,6 +26,7 @@ public abstract class _WebNode extends WillowCayenneObject {
     public static final String NAME_PROPERTY = "name";
     public static final String NODE_NUMBER_PROPERTY = "nodeNumber";
     public static final String PUBLISHED_PROPERTY = "published";
+    public static final String SUPPRESS_ON_SITEMAP_PROPERTY = "suppressOnSitemap";
     public static final String WEB_CONTENT_VISIBILITY_PROPERTY = "webContentVisibility";
     public static final String WEB_MENUS_PROPERTY = "webMenus";
     public static final String WEB_NODE_TYPE_PROPERTY = "webNodeType";
@@ -39,6 +40,7 @@ public abstract class _WebNode extends WillowCayenneObject {
     public static final Property<String> NAME = Property.create("name", String.class);
     public static final Property<Integer> NODE_NUMBER = Property.create("nodeNumber", Integer.class);
     public static final Property<Boolean> PUBLISHED = Property.create("published", Boolean.class);
+    public static final Property<Boolean> SUPPRESS_ON_SITEMAP = Property.create("suppressOnSitemap", Boolean.class);
     public static final Property<List<WebContentVisibility>> WEB_CONTENT_VISIBILITY = Property.create("webContentVisibility", List.class);
     public static final Property<List<WebMenu>> WEB_MENUS = Property.create("webMenus", List.class);
     public static final Property<WebNodeType> WEB_NODE_TYPE = Property.create("webNodeType", WebNodeType.class);
@@ -78,6 +80,14 @@ public abstract class _WebNode extends WillowCayenneObject {
     }
 	public boolean isPublished() {
         Boolean value = (Boolean)readProperty("published");
+        return (value != null) ? value.booleanValue() : false;
+    }
+
+    public void setSuppressOnSitemap(boolean suppressOnSitemap) {
+        writeProperty("suppressOnSitemap", suppressOnSitemap);
+    }
+	public boolean isSuppressOnSitemap() {
+        Boolean value = (Boolean)readProperty("suppressOnSitemap");
         return (value != null) ? value.booleanValue() : false;
     }
 

@@ -52,6 +52,7 @@ class PageService {
     const newPage: Page = {...page, ...props};
 
     request.serialNumber = newPage.serialNumber;
+    request.id = newPage.id;
     request.title = newPage.title;
     request.themeId = newPage.themeId;
     request.content = newPage.content;

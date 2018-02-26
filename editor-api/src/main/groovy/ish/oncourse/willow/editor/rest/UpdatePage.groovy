@@ -58,6 +58,7 @@ class UpdatePage extends AbstractUpdate<Page> {
             return this
         }
         
+        node.suppressOnSitemap = resourceToSave.suppressOnSitemap
         node.name = resourceToSave.title
         node.webNodeType = theme
         defaultBlock.contentTextile = resourceToSave.content

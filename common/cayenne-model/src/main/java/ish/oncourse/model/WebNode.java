@@ -40,6 +40,7 @@ public class WebNode extends _WebNode {
 		setCreated(today);
 		setModified(today);
 		setPublished(false);
+		setSuppressOnSitemap(false);
 	}
 
 	@Override

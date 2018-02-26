@@ -4665,4 +4665,16 @@
 			ALTER TABLE FieldConfiguration ADD COLUMN deliverySchedule SMALLINT NULL;
 		</sql>
 	</changeSet>
+
+	<changeSet id="319" author="artyom" context="production" runOnChange="false" runAlways="false">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="WebNode" columnName="suppressOnSitemap"/>
+			</not>
+		</preConditions>
+		<sql>
+			ALTER TABLE WebNode ADD COLUMN suppressOnSitemap BIT NOT NULL DEFAULT 0;
+		</sql>
+	</changeSet>
+	
 </databaseChangeLog>

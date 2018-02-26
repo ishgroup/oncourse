@@ -1385,6 +1385,7 @@
 		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="nodeNumber" type="INTEGER" isMandatory="true" length="10"/>
+		<db-attribute name="suppressOnSitemap" type="BIT" isMandatory="true"/>
 		<db-attribute name="webNodeTypeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="webSiteVersionId" type="BIGINT" isMandatory="true"/>
 	</db-entity>
@@ -2639,6 +2640,7 @@
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="nodeNumber" type="java.lang.Integer" db-attribute-path="nodeNumber"/>
 		<obj-attribute name="published" type="boolean" db-attribute-path="isPublished"/>
+		<obj-attribute name="suppressOnSitemap" type="boolean" db-attribute-path="suppressOnSitemap"/>
 		<post-add method-name="onPostAdd"/>
 		<pre-update method-name="onPreUpdate"/>
 	</obj-entity>
