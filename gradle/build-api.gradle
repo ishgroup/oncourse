@@ -10,6 +10,11 @@ configurations {
 }
 
 dependencies {
+    //add this dependency to resolve: io.swagger.annotations.ApiModel
+    //produced by swagger codegen
+    //Need to remove this dependency as soon as we found correct way to exclude this class.
+    compile  'io.swagger:swagger-annotations:1.5.18'
+    
     testCompile 'org.apache.commons:commons-dbcp2:2.1.1'
     testCompile 'org.apache.commons:commons-pool2:2.4.2'
     testCompile project(':common:test-functions')
