@@ -94,7 +94,7 @@ export class ThemeSettings extends React.Component<Props, any> {
                 onChange={e => this.onChange(e, 'layoutId')}
               >
                 {layouts.map(layout => (
-                  <option key={layout.id} value={layout.id}>{layout.layoutKey}</option>
+                  <option key={layout.id} value={layout.id}>{layout.title}</option>
                 ))}
               </Input>
             </FormGroup>

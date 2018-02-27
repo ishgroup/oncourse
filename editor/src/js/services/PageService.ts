@@ -42,16 +42,15 @@ class PageService {
 
   public generateBasetUrl(page) {
     return {
-      link: `/page/${page.serialNumber}`,
+      link: `/page/${page.id}`,
     };
   }
 
   public buildSavePageRequest(props, state: State): Page {
-    const page = state.page.items.find(p => p.serialNumber === props.serialNumber);
+    const page = state.page.items.find(p => p.id === props.id);
     const request: Page = {} as Page;
     const newPage: Page = {...page, ...props};
 
-    request.serialNumber = newPage.serialNumber;
     request.id = newPage.id;
     request.title = newPage.title;
     request.themeId = newPage.themeId;

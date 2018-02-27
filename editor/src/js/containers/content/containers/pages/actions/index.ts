@@ -27,9 +27,9 @@ export const getPages = () => ({
   type: GET_PAGES_REQUEST,
 });
 
-export const savePage = (serialNumber, props, updateRender: boolean = false) => ({
+export const savePage = (id, props, updateRender: boolean = false) => ({
   type: SAVE_PAGE_REQUEST,
-  payload: {serialNumber, ...props, updateRender},
+  payload: {id, ...props, updateRender},
 });
 
 export const addPage = () => ({
@@ -51,14 +51,14 @@ export const toggleEditMode = flag => ({
   payload: flag,
 });
 
-export const getPageRender = serialNumber => ({
+export const getPageRender = id => ({
   type: GET_PAGE_RENDER_REQUEST,
-  payload: {serialNumber},
+  payload: {id},
 });
 
-export const clearRenderHtml = serialNumber => ({
+export const clearRenderHtml = id => ({
   type: CLEAR_RENDER_HTML,
-  payload: serialNumber,
+  payload: id,
 });
 
 export const setCurrentPage = page => ({

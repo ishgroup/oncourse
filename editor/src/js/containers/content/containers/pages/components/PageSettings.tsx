@@ -33,7 +33,7 @@ export class PageSettings extends React.PureComponent<Props, any> {
   }
 
   componentWillReceiveProps(props) {
-    if (props.page.serialNumber !== this.props.page.serialNumber) {
+    if (props.page.id !== this.props.page.id) {
       this.setState({
         title: props.page.title,
         urls: props.page.urls,
@@ -95,7 +95,7 @@ export class PageSettings extends React.PureComponent<Props, any> {
   onAddNewUrl() {
     const newLink = this.formatLink(this.state.newLink);
     const {pages, page, showError} = this.props;
-    const actualPages = pages.map(p => p.serialNumber === page.serialNumber ? {...p, urls: this.state.urls} : p);
+    const actualPages = pages.map(p => p.id === page.id ? {...p, urls: this.state.urls} : p);
 
     if (!this.state.newLink) return;
     if (!PageService.isValidPageUrl(newLink, actualPages)) {

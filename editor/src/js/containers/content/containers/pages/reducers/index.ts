@@ -16,11 +16,11 @@ export const pageReducer = (state: PagesState = new PagesState(), action: IActio
       };
 
     case SAVE_PAGE_FULFILLED: {
-      const {serialNumber, ...props} = action.payload;
+      const {id, ...props} = action.payload;
 
       const ns = {
         ...state,
-        items: state.items.map(page => page.serialNumber === serialNumber ? {...page, ...props} : page),
+        items: state.items.map(page => page.id === id ? {...page, ...props} : page),
       };
 
       return ns;
@@ -51,20 +51,20 @@ export const pageReducer = (state: PagesState = new PagesState(), action: IActio
     }
 
     case GET_PAGE_RENDER_FULFILLED: {
-      const {html, serialNumber} = action.payload;
+      const {html, id} = action.payload;
 
       return {
         ...state,
-        items: state.items.map(item => item.serialNumber === serialNumber ? {...item, renderHtml: html} : item),
+        items: state.items.map(item => item.id === id ? {...item, renderHtml: html} : item),
       };
     }
 
     case CLEAR_RENDER_HTML: {
-      const serialNumber = action.payload;
+      const id = action.payload;
 
       return {
         ...state,
-        items: state.items.map(item => item.serialNumber === serialNumber ? {...item, renderHtml: ''} : item),
+        items: state.items.map(item => item.id === id ? {...item, renderHtml: ''} : item),
       };
     }
 

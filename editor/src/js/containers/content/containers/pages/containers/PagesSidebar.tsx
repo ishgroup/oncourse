@@ -16,7 +16,7 @@ interface Props {
   pages: Page[];
   themes: Theme[];
   match: any;
-  onEditSettings: (serialNumber, settings) => any;
+  onEditSettings: (id, settings) => any;
   onDeletePage: (page) => any;
   onAddPage: () => any;
   showError: (title) => any;
@@ -47,14 +47,14 @@ export class PagesSidebar extends React.Component<Props, any> {
 
   render() {
     const {pages, match, onEditSettings, onDeletePage, showModal, fetching, showError, themes} = this.props;
-    const activePage = match.params.serialNumber && pages.find(page => page.serialNumber == match.params.serialNumber);
+    const activePage = match.params.id && pages.find(page => page.id == match.params.id);
 
     return (
       <div className={classnames({fetching})}>
         {!activePage &&
           <SidebarList
             items={pages}
-            idKey="serialNumber"
+            idKey="id"
             category="pages"
             subTitleKey="urls"
             subTitleFilterFunc={(items, page) => this.getDefaultLink(items, page)}
@@ -69,7 +69,7 @@ export class PagesSidebar extends React.Component<Props, any> {
             pages={pages}
             themes={themes}
             onBack={() => this.resetActivePage()}
-            onEdit={prop => onEditSettings(activePage.serialNumber, prop)}
+            onEdit={prop => onEditSettings(activePage.id, prop)}
             onDelete={pageId => onDeletePage(pageId)}
             showModal={showModal}
             showError={showError}
@@ -88,7 +88,7 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
-    onEditSettings: (serialNumber, settings) => dispatch(savePage(serialNumber, settings)),
+    onEditSettings: (id, settings) => dispatch(savePage(id, settings)),
     onDeletePage: pageId => dispatch(deletePage(pageId)),
     showError: title => dispatch(error({...notificationParams, title})),
     onAddPage: () => dispatch(addPage()),

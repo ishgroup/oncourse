@@ -15,8 +15,8 @@ const request: EpicUtils.Request<any, any> = {
 
     const page = response[0];
 
-    if (page && page.serialNumber) {
-      getHistoryInstance().push(`/pages/${page.serialNumber}`);
+    if (page && page.id) {
+      getHistoryInstance().push(`/pages/${page.id}`);
     }
 
     return [

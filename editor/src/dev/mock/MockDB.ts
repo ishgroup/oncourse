@@ -61,7 +61,6 @@ export class MockDB {
     return [
       {
         id: 1,
-        serialNumber: 1,
         title: 'page1',
         visible: true,
         themeId: 2,
@@ -76,7 +75,6 @@ export class MockDB {
       },
       {
         id: 2,
-        serialNumber: 2,
         title: 'Page - 2',
         visible: true,
         themeId: 2,
@@ -95,7 +93,6 @@ export class MockDB {
       },
       {
         id: 3,
-        serialNumber: 3,
         title: 'Page - 3',
         visible: true,
         themeId: 2,
@@ -252,15 +249,15 @@ export class MockDB {
     return [
       {
         id: 1,
-        layoutKey: 'Default Layout',
+        title: 'Default Layout',
       },
       {
         id: 2,
-        layoutKey: 'Custom Layout',
+        title: 'Custom Layout',
       },
       {
         id: 3,
-        layoutKey: 'Common Layout',
+        title: 'Common Layout',
       },
     ];
   }
@@ -442,9 +439,9 @@ export class MockDB {
 
   createNewPage(): Page {
     const page = {} as Page;
-    const newNumber = Math.max(...this.pages.map(page => page.serialNumber)) + 1;
+    const newNumber = Math.max(...this.pages.map(page => page.id)) + 1;
     page.title = `New Page ${isFinite(newNumber) ? newNumber : 1}`;
-    page.serialNumber = isFinite(newNumber) ? newNumber : 1;
+    page.id = isFinite(newNumber) ? newNumber : 1;
     page.urls = [];
 
     this.pages.push(page);

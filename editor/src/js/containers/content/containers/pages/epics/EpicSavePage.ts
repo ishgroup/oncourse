@@ -24,7 +24,7 @@ const request: EpicUtils.Request<any, any> = {
 
     // get rendered html if raw html has been changed
     if (payload.updateRender) {
-      result.push(getPageRender(page.serialNumber));
+      result.push(getPageRender(page.id));
     }
 
     return result;

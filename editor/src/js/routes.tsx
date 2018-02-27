@@ -95,7 +95,7 @@ export const routes: Route[] = [
   },
   {
     title: 'Pages',
-    path: '/pages/:serialNumber?',
+    path: '/pages/:id?',
     url: URL.PAGES,
     parent: URL.CONTENT,
     main: props => <Pages {...props}/>,
