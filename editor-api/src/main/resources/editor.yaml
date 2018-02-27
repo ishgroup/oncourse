@@ -41,7 +41,8 @@ tags:
       of the other methods will work without a session token passed in an HTTP header.
   - name: Menu
     description: |
-      Something
+      Menus are a navigation device for your website and can link to internal pages or out to externally hosted
+      pages. Menus are hierarchical and ordered.
 
 paths:
 
@@ -50,7 +51,7 @@ paths:
 #################
     post:
       operationId: createSession
-      summary: Authenticate user by email and password.
+      description: Authenticate user by email and password
       security:
         - loginAuth: []
       tags:
@@ -60,29 +61,30 @@ paths:
       parameters:
         - name: loginRequest
           in: body
-          description: Params for request user authorization
+          description: Parameters for request user authorization
           required: true
           schema:
             $ref: '#/definitions/LoginRequest'
       responses:
         '200':
-          description: Ok response
+          description: Login was good.
         '406':
           description: Login unsuccessful. Invalid login name or password.
         default:
           description: Unexpected error
           schema:
             $ref: '#/definitions/CommonError'
+
     delete:
       operationId: destroySession
-      summary: De-authorize user from editor
+      description: De-authorize user from editor
       tags:
         - Auth
       consumes:
         - application/json
       responses:
         '200':
-          description: Success logout with null response
+          description: Successful logout. The session token is no longer valid.
         default:
           description: Unexpected error
           schema:
@@ -95,14 +97,14 @@ paths:
       operationId: getUser
       x-filter:
         - AuthFilter
-      summary: Get current logged user
+      description: Get current logged in user
       tags:
         - Auth
       consumes:
         - application/json
       responses:
         '200':
-          description: User
+          description: Current user
           schema:
             $ref: '#/definitions/User'
         default:
@@ -117,13 +119,12 @@ paths:
       operationId: getMenus
       x-filter:
         - AuthFilter
-      summary: Get menu items
-      description: Get menu items
+      description: Get all menu items
       tags:
         - Menu
       responses:
         '200':
-          description: Menu reposonse object
+          description: A list of menu items
           schema:
             type: array
             items:
@@ -132,11 +133,11 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/CommonError'
+
     put:
       operationId: updateMenus
       x-filter:
-      - AuthFilter
-      summary: Save menu items
+        - AuthFilter
       description: Save menu items
       tags:
         - Menu
@@ -145,7 +146,7 @@ paths:
       parameters:
         - name: Menu
           in: body
-          description: Menu items
+          description: List of menu items which will replace all the menus in the site.
           required: true
           schema:
             type: array
@@ -153,13 +154,13 @@ paths:
               $ref: '#/definitions/MenuItem'
       responses:
         '200':
-          description: Ok responce, returns array of menus. Record warnings for each menu item if exist
+          description: Menus saved. Returns list of menus, some of which may have warnings.
           schema:
             type: array
             items:
               $ref: '#/definitions/MenuItem'
         '400':
-          description: Bad request, returns array of menus with errors for wrong items
+          description: Menus not saved. Returns list of menus, some of which may have errors and/or warnings.
           schema:
             type: array
             items:
@@ -175,15 +176,14 @@ paths:
     get:
       operationId: getPages
       x-filter:
-      - AuthFilter
-      summary: Get page by provided page url
+        - AuthFilter
       description: Get page object by provided page url
       tags:
         - Page
       parameters:
         - name: pageUrl
           in: query
-          description: Optioanl page filter, return singletone array if page with provided unique url exist
+          description: Optional page filter, return singletone array if page with provided unique url exist
           required: false
           type: string
       responses:
@@ -199,11 +199,11 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/CommonError'
+
     put:
       operationId: updatePage
       x-filter:
-      - AuthFilter
-      summary: Save page parameters
+        - AuthFilter
       description: Save page parameters
       tags:
         - Page
@@ -225,11 +225,11 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/CommonError'
+
     post:
       operationId: createPage
       x-filter:
-      - AuthFilter
-      summary: Add new page
+        - AuthFilter
       description: Add new page
       tags:
         - Page
@@ -244,11 +244,11 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/CommonError'
+
     delete:
       operationId: deletePage
       x-filter:
-      - AuthFilter
-      summary: Remove page by provided number
+        - AuthFilter
       description: Remove page by number
       tags:
         - Page
@@ -274,8 +274,8 @@ paths:
     get:
       operationId: getBlocks
       x-filter:
-      - AuthFilter
-      summary: Get list of blocks
+        - AuthFilter
+      description: Get list of blocks
       tags:
         - Block
       responses:
@@ -289,12 +289,12 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/CommonError'
+
     put:
       operationId: updateBlock
       x-filter:
-      - AuthFilter
-      summary: Update an existing block
-      description: Save block params
+        - AuthFilter
+      description: Update an existing block
       tags:
         - Block
       consumes:
@@ -315,11 +315,11 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/CommonError'
+
     post:
       operationId: createBlock
       x-filter:
-      - AuthFilter
-      summary: Add new block
+        - AuthFilter
       description: Add new block
       tags:
         - Block
@@ -334,11 +334,11 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/CommonError'
+
     delete:
       operationId: deleteBlock
       x-filter:
-      - AuthFilter
-      summary: Remove block by provided Id
+        - AuthFilter
       description: Remove block
       tags:
         - Block
@@ -364,8 +364,7 @@ paths:
     get:
       operationId: getLayouts
       x-filter:
-      - AuthFilter
-      summary: Get array of layouts
+        - AuthFilter
       description: Get array of layouts
       tags:
         - Theme
@@ -387,8 +386,7 @@ paths:
     get:
       operationId: getThemes
       x-filter:
-      - AuthFilter
-      summary: Get array of themes
+        - AuthFilter
       description: Get array of themes
       tags:
         - Theme
@@ -403,11 +401,11 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/CommonError'
+
     put:
       operationId: updateTheme
       x-filter:
-      - AuthFilter
-      summary: Theme with updated params
+        - AuthFilter
       description: Save theme params
       tags:
         - Theme
@@ -429,11 +427,11 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/CommonError'
+
     post:
       operationId: createTheme
       x-filter:
-      - AuthFilter
-      summary: Add new theme
+        - AuthFilter
       description: Add new theme
       tags:
         - Theme
@@ -448,11 +446,11 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/CommonError'
+
     delete:
       operationId: deleteTheme
       x-filter:
-      - AuthFilter
-      summary: Remove theme by unique identifier
+        - AuthFilter
       description: Remove theme
       tags:
         - Theme
@@ -461,7 +459,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: identificator of theme which will be deleted
+          description: id of theme which will be deleted
           required: true
           type: string
       responses:
@@ -478,14 +476,13 @@ paths:
     get:
       operationId: getVersions
       x-filter:
-      - AuthFilter
-      summary: Get array of published versions. Not supported yet
-      description: Get array of published versions. Not supported yet
+        - AuthFilter
+      description: Get list of site versions. Not supported yet.
       tags:
         - Version
       responses:
         '200':
-          description: response with array of published versions
+          description: List of versions including the current published site, current draft site and all history still kept.
           schema:
             type: array
             items:
@@ -494,11 +491,12 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/CommonError'
+
     patch:
       operationId: updateVersion
       x-filter:
-      - AuthFilter
-      summary: Change version status
+        - AuthFilter
+      description: Change version status
       tags:
         - Version
       consumes:
@@ -506,15 +504,12 @@ paths:
       parameters:
         - name: id
           in: path
-          description: identificator of version
+          description: id of version
           required: true
           type: string
         - name: version
           in: body
-          description: |
-            Diff of version record. Actually process change of single attribute status.
-            Published value means  - publish current draft changes to live site.(avalible only for draft version).
-            Draft value means = revert back to certain version
+          description: Typically only the published state is modifable for existing versions
           required: true
           schema:
             $ref: '#/definitions/Version'
@@ -532,8 +527,7 @@ paths:
     get:
       operationId: getSkillsOnCourseSettings
       x-filter:
-      - AuthFilter
-      summary: Get SkillsOnCourse settings
+        - AuthFilter
       description: Get SkillsOnCourse settings
       tags:
         - Settings
@@ -546,11 +540,11 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/CommonError'
+
     put:
       operationId: updateSkillsOnCourseSettings
       x-filter:
-      - AuthFilter
-      summary: Save SkillsOnCourse settings
+        - AuthFilter
       description: Save SkillsOnCourse settings
       tags:
         - Settings
@@ -579,8 +573,7 @@ paths:
     get:
       operationId: getWebsiteSettings
       x-filter:
-      - AuthFilter
-      summary: Get Website settings
+        - AuthFilter
       description: Get Website settings
       tags:
         - Settings
@@ -593,11 +586,11 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/CommonError'
+
     put:
       operationId: updateWebsiteSettings
       x-filter:
-      - AuthFilter
-      summary: Save website settings
+        - AuthFilter
       description: Save website settings
       tags:
         - Settings
@@ -626,26 +619,25 @@ paths:
     get:
       operationId: getRedirects
       x-filter:
-      - AuthFilter
-      summary: Get redirect settings
-      description: Get redirect settings
+        - AuthFilter
+      description: Get redirects for the whole site
       tags:
         - Redirect
       responses:
         '200':
-          description: response with redirect settings object
+          description: A list of redirects
           schema:
             $ref: '#/definitions/Redirects'
         default:
           description: Unexpected error
           schema:
             $ref: '#/definitions/CommonError'
+
     put:
       operationId: updateRedirects
       x-filter:
-      - AuthFilter
-      summary: Save redirect settings
-      description: Save redirect settings
+        - AuthFilter
+      description: Replace all the redirects for the site with a new list of redirects
       tags:
         - Redirect
       consumes:
@@ -653,13 +645,13 @@ paths:
       parameters:
         - name: RedirectSettingsRequest
           in: body
-          description: redirect settings object
+          description: A list of redirects
           required: true
           schema:
             $ref: '#/definitions/Redirects'
       responses:
         '200':
-          description: Updated redirect settings object
+          description: A list of redirects
           schema:
             $ref: '#/definitions/Redirects'
         default:
@@ -695,10 +687,11 @@ definitions:
         example: /contact
       isDefault:
         type: boolean
-        description: this is the default URL for the page. Setting this unsets all other pageUrl defaults
+        description: Is this the default URL for the page. Setting this unsets all other isDefault for the same page.
 
   Block:
     type: object
+    description: A piece of re-usable markup which might be attached to a theme or incorporated inside other rich text content.
     properties:
       id:
         type: integer
@@ -722,28 +715,32 @@ definitions:
 
   Version:
     type: object
+    description: A version of the website. One version is considered published at any time and one version is draft at any time.
     properties:
       id:
         type: integer
-        description: unique id of version
+        description: unique id of this version
       published:
         type: boolean
         description: has version published
       author:
         type: string
-        description: First and last name of the user who published version
+        readOnly: true
+        description: First and last name of the user who published this version, or null if still in draft
         example: Jane Smith
       changes:
         type: integer
+        readOnly: true
         minimum: 0
-        description: count of changes from previous version
+        description: Count of changes introduced in this version
         example: 12
       datetime:
         type: string
+        readOnly: true
         format: date-time
-        description: date and time when version was published
+        description: date and time when version was published or null if it is still in draft
       status:
-        description: Indicate about current state of version
+        description: The current published status of the version
         $ref: '#/definitions/VersionStatus'
 
   Layout:
@@ -777,8 +774,7 @@ definitions:
       content:
         type: string
         description: Rich text content
-        example: |
-          Phone us on (02) 9550 5001 to find out more.
+        example: Phone us on (02) 9550 5001 to find out more.
       visible:
         type: boolean
         description: Is the page visible
@@ -803,41 +799,48 @@ definitions:
 
   ThemeSchema:
     type: object
+    description: The arrangement of blocks within a theme
     properties:
       top:
+        description: A list of blocks at the top of the page, often used as a page header
         type: array
         items:
           $ref: '#/definitions/BlockItem'
       left:
+        description: A list of blocks at the left of the page, often used for a sidebar or navigation
         type: array
         items:
           $ref: '#/definitions/BlockItem'
       centre:
+        description: A list of blocks at the top of the page. They appear above the content.
         type: array
         items:
           $ref: '#/definitions/BlockItem'
       right:
+        description: A list of blocks at the right of the page
         type: array
         items:
           $ref: '#/definitions/BlockItem'
       footer:
+        description: A list of blocks at the footer of the page
         type: array
         items:
           $ref: '#/definitions/BlockItem'
 
   Theme:
     type: object
+    description: A theme is an organisation of blocks which is then applied to a page
     properties:
       id:
         type: integer
-        description: Unique identifier of theme
+        description: Unique identifier for this theme. This is not seen in the editor UI.
       title:
         type: string
-        description: title of theme
+        description: Title of theme displayed in the user interface
         example: default
       layoutId:
         type: integer
-        description: Layout id which is used for this theme
+        description: Layout id which this theme uses
       schema:
         $ref: '#/definitions/ThemeSchema'
 
@@ -849,12 +852,12 @@ definitions:
         description: Unique identifier of menu item
       title:
         type: string
-        description: title of menu item
+        description: Title of menu item displayed in the website
         example: about us
       url:
         type: string
         format: uri
-        description: url for menu link
+        description: URI for menu link
         example: /about
       children:
         type: array
@@ -862,15 +865,18 @@ definitions:
           $ref: '#/definitions/MenuItem'
       error:
         type: string
-        description: Describes reason why menu item cannot be saved. Comes on 400 (Bad request) response
-        example: Menu AB is wrong. Name length cannot be less than 3 characters
+        description: Describes reason why menu item cannot be saved.
+        example: Menu AB cannot be saved with name fewer than 3 characters.
       warning:
         type: string
-        description: Any alerts for user. Do not affect on menus saving. Comes on 200 (Success) response
-        example: Warning! ABC is referred to unpublished page and will not be shown in the main menu!
+        description: Alert for user. Does not prevent menu from being saved.
+        example: Warning. Menu ABC points to an unpublished page and will not be shown in the menu.
 
   User:
     type: object
+    required:
+      - firstName
+      - lastName
     properties:
       firstName:
         type: string
@@ -901,6 +907,7 @@ definitions:
           type: string
         description: Global error
       fieldsErrors:
+        description: List of field errors, which might be an empty list
         type: array
         items:
           title: FieldError
@@ -911,14 +918,15 @@ definitions:
           properties:
             name:
               type: string
-              description: Name of fiels with error
+              description: Name of field with error
             error:
               type: string
-              description: 'Errors for particular field, or empty array'
-        description: 'Array of fields errors, or empty array'
+              description: Description of the error
+
 
   RedirectItem:
     type: object
+    description: A redirect from one page or URL to another
     properties:
       from:
         type: string
@@ -931,6 +939,7 @@ definitions:
     type: object
     properties:
       rules:
+        description: A list of redirects
         type: array
         items:
           $ref: '#/definitions/RedirectItem'
@@ -939,14 +948,18 @@ definitions:
     type: object
     properties:
       hideStudentDetails:
+        description: The tutor might be able to see the email and phone details for the students
         type: boolean
       enableOutcomeMarking:
+        description: The tutor can mark outcomes for VET training
         type: boolean
       tutorFeedbackEmail:
+        description: TBA
         type: string
         
   ClassCondition:
     type: string
+    description: For the given offset, it is a certain number of days before or after the start or end of the class.
     enum:
       - afterClassStarts
       - beforeClassStarts
@@ -964,10 +977,12 @@ definitions:
     type: object
     properties:
       hideClassDays:
+        description: The number of days before a class is hidden. Depending on the hideClassCondition value this could be before or after the class starts or ends.
         type: integer
       hideClassCondition:
         $ref: '#/definitions/ClassCondition'
       stopWebEnrolmentDays:
+        description: The number of days before enrolment is prevented. Depending on the stopWebEnrolmentCondition value this could be before or after the class starts or ends.
         type: integer
       stopWebEnrolmentCondition:
         $ref: '#/definitions/ClassEnrolmentCondition'
