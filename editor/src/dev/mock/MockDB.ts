@@ -2,8 +2,8 @@ import localForage from "localforage";
 import update from 'react-addons-update';
 import faker from 'faker';
 import {
-  Page, Block, MenuItem, Theme, User, Version, WebsiteSettings, Redirects,
-  SkillsOnCourseSettings, ThemeSchema, Layout, ClassCondition, ClassEnrolmentCondition,
+  Page, Block, MenuItem, Theme, User, Version, WebsiteSettings, Redirects, VersionStatus,
+  SkillsOnCourseSettings, ThemeBlocks, Layout, ClassCondition, ClassEnrolmentCondition,
 } from "../../js/model";
 
 export const CreateMockDB = (): MockDB => {
@@ -206,7 +206,7 @@ export class MockDB {
         id: 1,
         title: 'Custom Theme',
         layoutId: 1,
-        schema: {
+        blocks: {
           top: [{
             id: 1,
             position: 1,
@@ -224,7 +224,7 @@ export class MockDB {
         id: 2,
         title: 'Default Theme',
         layoutId: 3,
-        schema: {
+        blocks: {
           top: [],
           left: [],
           centre: [{
@@ -266,45 +266,45 @@ export class MockDB {
     return [
       {
         id: 1,
-        published: false,
+        status: VersionStatus.draft,
         author: faker.name.findName(),
         changes: 25,
-        datetime: '',
+        publishedOn: '',
       },
       {
         id: 2,
-        published: true,
+        status: VersionStatus.published,
         author: faker.name.findName(),
         changes: 27,
-        datetime: new Date('10/08/2017').toISOString(),
+        publishedOn: new Date('10/08/2017').toISOString(),
       },
       {
         id: 3,
-        published: true,
+        status: VersionStatus.published,
         author: faker.name.findName(),
         changes: 30,
-        datetime: new Date('05/05/2017').toISOString(),
+        publishedOn: new Date('05/05/2017').toISOString(),
       },
       {
         id: 4,
-        published: true,
+        status: VersionStatus.published,
         author: faker.name.findName(),
         changes: 43,
-        datetime: new Date('03/03/2017').toISOString(),
+        publishedOn: new Date('03/03/2017').toISOString(),
       },
       {
         id: 5,
-        published: true,
+        status: VersionStatus.published,
         author: faker.name.findName(),
         changes: 80,
-        datetime: new Date('12/12/2016').toISOString(),
+        publishedOn: new Date('12/12/2016').toISOString(),
       },
       {
         id: 6,
-        published: true,
+        status: VersionStatus.published,
         author: faker.name.findName(),
         changes: 88,
-        datetime: new Date('08/09/2016').toISOString(),
+        publishedOn: new Date('08/09/2016').toISOString(),
       },
     ];
   }
@@ -379,10 +379,10 @@ export class MockDB {
 
   deleteBlockFromTheme(themeId, blockId) {
     const theme = this.themes.find(theme => theme.id === themeId);
-    const layoutKeys = Object.keys(theme.schema);
+    const layoutKeys = Object.keys(theme.blocks);
 
     layoutKeys.forEach(key => {
-      const blockIndex = theme.schema[key].findIndex(key => key.id === blockId);
+      const blockIndex = theme.blocks[key].findIndex(key => key.id === blockId);
       if (blockIndex !== -1) {
         deleteBlockFromPart(themeId, key, blockIndex);
       }
@@ -390,7 +390,7 @@ export class MockDB {
 
     const deleteBlockFromPart = (themeId, part, blockIndex) => {
       const newTheme = this.themes.find(theme => theme.id === themeId);
-      newTheme.schema[part] = update(theme.schema[part], {
+      newTheme.blocks[part] = update(theme.blocks[part], {
         $splice: [
           [blockIndex, 1],
         ],
@@ -463,12 +463,12 @@ export class MockDB {
     const newId = Math.max(...this.themes.map(theme => theme.id)) + 1;
     theme.title = `New Theme ${isFinite(newId) ? newId : 1}`;
     theme.id = isFinite(newId) ? newId : 1;
-    theme.schema = {} as ThemeSchema;
-    theme.schema.top = [];
-    theme.schema.footer = [];
-    theme.schema.left = [];
-    theme.schema.centre = [];
-    theme.schema.right = [];
+    theme.blocks = {} as ThemeBlocks;
+    theme.blocks.top = [];
+    theme.blocks.footer = [];
+    theme.blocks.left = [];
+    theme.blocks.centre = [];
+    theme.blocks.right = [];
 
     this.themes.push(theme);
     return theme;

@@ -8,7 +8,7 @@ import Source from "../containers/Source";
 
 const getFreeBlocks = (theme, blocks) => {
   const themeBlockIds = [];
-  [...Object.values(theme.schema)].map(a => a.map(a => themeBlockIds.push(a.id)));
+  [...Object.values(theme.blocks)].map(a => a.map(a => themeBlockIds.push(a.id)));
   return blocks.filter(block => !themeBlockIds.includes(block.id));
 };
 

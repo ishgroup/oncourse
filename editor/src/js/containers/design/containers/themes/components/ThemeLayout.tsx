@@ -15,9 +15,9 @@ export class ThemeLayout extends React.Component<Props, any> {
     const {theme, blocks, onUpdate} = this.props;
 
     const getThemeBlocks = key => {
-      if (!theme.schema) return [];
+      if (!theme.blocks) return [];
 
-      return theme.schema[key].map(({id}) => blocks.find(block => block.id === id));
+      return theme.blocks[key].map(({id}) => blocks.find(block => block.id === id));
     };
 
     return (

@@ -63,8 +63,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
       dispatch(updateThemeState(
         {
           ...theme,
-          schema: {
-            ...theme.schema,
+          blocks: {
+            ...theme.blocks,
             [blockId]: items.map((block, index) => ({id: block.id, position: index})),
           },
         },

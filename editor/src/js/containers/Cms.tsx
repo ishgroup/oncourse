@@ -119,7 +119,7 @@ const mapStateToProps = (state: State) => ({
   notifications: state.notifications,
   modal: state.modal,
   pageEditMode: state.page.editMode,
-  draftVersion: state.history.versions && state.history.versions.find(v => !v.published),
+  draftVersion: state.history.versions && state.history.versions.find(v => v.status === VersionStatus.draft),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {

@@ -64,15 +64,17 @@ class History extends React.Component<Props, any> {
               <tr key={version.id}>
                 <td>{version.id}</td>
                 <td>
-                  {!version.published && 'Draft'}
-                  {version.published && version.datetime && <TimeAgo date={version.datetime}/>}
+                  {version.status === VersionStatus.draft && 'Draft'}
+                  {version.status === VersionStatus.published && version.publishedOn &&
+                    <TimeAgo date={version.publishedOn}/>
+                  }
                 </td>
                 <td>{version.author}</td>
                 <td>
-                  {!version.published &&
+                  {version.status === VersionStatus.draft &&
                     <Button color="primary" onClick={() => this.onPublish(version.id)}>Publish</Button>
                   }
-                  {version.published &&
+                  {version.status === VersionStatus.published &&
                     <Button color="secondary" onClick={() => this.onRevert(version.id)}>Revert</Button>
                   }
                 </td>

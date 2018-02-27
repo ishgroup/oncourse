@@ -16,7 +16,7 @@ export {Block} from "../../../build/generated-sources";
 
 // Themes
 export {Theme} from "../../../build/generated-sources";
-export {ThemeSchema} from "../../../build/generated-sources";
+export {ThemeBlocks} from "../../../build/generated-sources";
 export {Layout} from "../../../build/generated-sources";
 
 // History
