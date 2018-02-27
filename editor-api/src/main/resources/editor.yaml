@@ -661,6 +661,10 @@ paths:
           description: A list of redirects
           schema:
             $ref: '#/definitions/Redirects'
+        '400':
+          description: Redirects not saved. Returns list of redirects, some of which may have errors and/or warnings.
+          schema:
+            $ref: '#/definitions/Redirects'
         default:
           description: Unexpected error
           schema:
