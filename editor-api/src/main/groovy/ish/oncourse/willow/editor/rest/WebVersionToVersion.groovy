@@ -18,13 +18,12 @@ class WebVersionToVersion {
     }
 
     Version getVersion() {
-        new Version().with { version ->
-            version.id = webSiteVersion.id.intValue()
-            version.published = webSiteVersion.deployedOn != null
-            version.author = webSiteVersion.deployedBy ?  "$webSiteVersion.deployedBy.firstName $webSiteVersion.deployedBy.surname" : null
-            version.datetime = webSiteVersion.deployedOn?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDateTime()
-            version
-        }
+        return new Version(webSiteVersion.id.intValue(), 
+                webSiteVersion.deployedOn != null,
+                (webSiteVersion.deployedBy ?  "$webSiteVersion.deployedBy.firstName $webSiteVersion.deployedBy.surname".toString() : null),
+                null,
+                webSiteVersion.deployedOn?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDateTime(),
+                null)
     }
     
 }
