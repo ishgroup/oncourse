@@ -188,7 +188,7 @@ paths:
       tags:
         - Page
       parameters:
-        - name: pageUrl
+        - name: pageLink
           in: query
           description: Optional page filter, return singletone array if page with provided unique url exist
           required: false
@@ -685,7 +685,7 @@ definitions:
         description: User password
         example: htrgjat4Gh
 
-  PageUrl:
+  PageLink:
     type: object
     properties:
       link:
@@ -767,10 +767,6 @@ definitions:
       id:
         type: integer
         description: unique id of the page
-      serialNumber:
-        type: integer
-        description: serial number of the page. Can be used to proceed to page by technical path /page/10
-        example: 10
       title:
         type: string
         description: title of the page
@@ -791,14 +787,17 @@ definitions:
       urls:
         type: array
         items:
-          $ref: '#/definitions/PageUrl'
+          $ref: '#/definitions/PageLink'
 
-  BlockItem:
+  BlockPosition:
     type: object
     properties:
       id:
         type: integer
         description: unique id of the Block
+      title:
+        type: string
+        description: Block name
       position:
         type: integer
         description: order position of the block
@@ -812,27 +811,27 @@ definitions:
         description: A list of blocks at the top of the page, often used as a page header
         type: array
         items:
-          $ref: '#/definitions/BlockItem'
+          $ref: '#/definitions/BlockPosition'
       left:
         description: A list of blocks at the left of the page, often used for a sidebar or navigation
         type: array
         items:
-          $ref: '#/definitions/BlockItem'
+          $ref: '#/definitions/BlockPosition'
       centre:
         description: A list of blocks at the top of the page. They appear above the content.
         type: array
         items:
-          $ref: '#/definitions/BlockItem'
+          $ref: '#/definitions/BlockPosition'
       right:
         description: A list of blocks at the right of the page
         type: array
         items:
-          $ref: '#/definitions/BlockItem'
+          $ref: '#/definitions/BlockPosition'
       footer:
         description: A list of blocks at the footer of the page
         type: array
         items:
-          $ref: '#/definitions/BlockItem'
+          $ref: '#/definitions/BlockPosition'
 
   Theme:
     type: object
