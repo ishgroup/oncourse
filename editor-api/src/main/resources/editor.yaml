@@ -80,7 +80,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/CommonError'
+            $ref: '#/definitions/UnexpectedError'
 
     delete:
       operationId: destroySession
@@ -95,7 +95,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/CommonError'
+            $ref: '#/definitions/UnexpectedError'
 
 #################
   /user:
@@ -117,7 +117,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/CommonError'
+            $ref: '#/definitions/UnexpectedError'
 
 #################
   /menu:
@@ -139,7 +139,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/CommonError'
+            $ref: '#/definitions/UnexpectedError'
 
     put:
       operationId: updateMenus
@@ -175,7 +175,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/CommonError'
+            $ref: '#/definitions/UnexpectedError'
 
 #################
   /page:
@@ -205,7 +205,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/CommonError'
+            $ref: '#/definitions/UnexpectedError'
 
     put:
       operationId: updatePage
@@ -231,7 +231,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/CommonError'
+            $ref: '#/definitions/UnexpectedError'
 
     post:
       operationId: createPage
@@ -250,7 +250,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/CommonError'
+            $ref: '#/definitions/UnexpectedError'
 
     delete:
       operationId: deletePage
@@ -273,7 +273,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/CommonError'
+            $ref: '#/definitions/UnexpectedError'
 
 #################
   /block:
@@ -295,7 +295,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/CommonError'
+            $ref: '#/definitions/UnexpectedError'
 
     put:
       operationId: updateBlock
@@ -321,7 +321,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/CommonError'
+            $ref: '#/definitions/UnexpectedError'
 
     post:
       operationId: createBlock
@@ -340,7 +340,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/CommonError'
+            $ref: '#/definitions/UnexpectedError'
 
     delete:
       operationId: deleteBlock
@@ -363,7 +363,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/CommonError'
+            $ref: '#/definitions/UnexpectedError'
 
 #################
   /layout:
@@ -385,7 +385,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/CommonError'
+            $ref: '#/definitions/UnexpectedError'
 
 #################
   /theme:
@@ -407,7 +407,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/CommonError'
+            $ref: '#/definitions/UnexpectedError'
 
     put:
       operationId: updateTheme
@@ -433,7 +433,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/CommonError'
+            $ref: '#/definitions/UnexpectedError'
 
     post:
       operationId: createTheme
@@ -452,7 +452,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/CommonError'
+            $ref: '#/definitions/UnexpectedError'
 
     delete:
       operationId: deleteTheme
@@ -475,7 +475,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/CommonError'
+            $ref: '#/definitions/UnexpectedError'
 
 #################
   /version:
@@ -497,7 +497,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/CommonError'
+            $ref: '#/definitions/UnexpectedError'
 
     patch:
       operationId: updateVersion
@@ -526,7 +526,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/CommonError'
+            $ref: '#/definitions/UnexpectedError'
 
 #################
   /settings/skillsOnCourse:
@@ -546,7 +546,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/CommonError'
+            $ref: '#/definitions/UnexpectedError'
 
     put:
       operationId: updateSkillsOnCourseSettings
@@ -572,7 +572,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/CommonError'
+            $ref: '#/definitions/UnexpectedError'
 
 #################
   /settings/website:
@@ -592,7 +592,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/CommonError'
+            $ref: '#/definitions/UnexpectedError'
 
     put:
       operationId: updateWebsiteSettings
@@ -618,7 +618,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/CommonError'
+            $ref: '#/definitions/UnexpectedError'
 
 #################
   /redirect:
@@ -638,7 +638,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/CommonError'
+            $ref: '#/definitions/UnexpectedError'
 
     put:
       operationId: updateRedirects
@@ -668,7 +668,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/CommonError'
+            $ref: '#/definitions/UnexpectedError'
 
 #################
 #################
@@ -894,42 +894,12 @@ definitions:
         type: string
         example: Smith
 
-  CommonError:
+  UnexpectedError:
     type: object
+    description: Describes a reason why client request can not be processed by API server.
     properties:
-      code:
-        type: integer
       message:
         type: string
-
-  ValidationError:
-    type: object
-    required:
-      - formErrors
-      - fieldsErrors
-    properties:
-      formErrors:
-        type: array
-        items:
-          type: string
-        description: Global error
-      fieldsErrors:
-        description: List of field errors, which might be an empty list
-        type: array
-        items:
-          title: FieldError
-          type: object
-          required:
-            - name
-            - error
-          properties:
-            name:
-              type: string
-              description: Name of field with error
-            error:
-              type: string
-              description: Description of the error
-
 
   RedirectItem:
     type: object
