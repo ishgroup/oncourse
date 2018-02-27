@@ -484,7 +484,7 @@ paths:
       operationId: getVersions
       x-filter:
         - AuthFilter
-      description: Get list of site versions. Not supported yet.
+      description: Get list of site versions.
       tags:
         - Version
       responses:
@@ -727,9 +727,6 @@ definitions:
       id:
         type: integer
         description: unique id of this version
-      published:
-        type: boolean
-        description: has version published
       author:
         type: string
         readOnly: true
@@ -741,7 +738,7 @@ definitions:
         minimum: 0
         description: Count of changes introduced in this version
         example: 12
-      datetime:
+      publishedOn:
         type: string
         readOnly: true
         format: date-time
@@ -803,7 +800,7 @@ definitions:
         description: order position of the block
         example: 2
 
-  ThemeSchema:
+  ThemeBlocks:
     type: object
     description: The arrangement of blocks within a theme
     properties:
@@ -847,8 +844,8 @@ definitions:
       layoutId:
         type: integer
         description: Layout id which this theme uses
-      schema:
-        $ref: '#/definitions/ThemeSchema'
+      blocks:
+        $ref: '#/definitions/ThemeBlocks'
 
   MenuItem:
     type: object
