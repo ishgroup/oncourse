@@ -17,6 +17,7 @@ function inputComponent(props: DateFieldProps) {
     required,
     label,
     type,
+    placeholder
   } = props;
   const isShowError = showError(props);
 
@@ -36,7 +37,7 @@ function inputComponent(props: DateFieldProps) {
           mask={[/\d/, /\d/, "/", /\d/, /\d/, "/", /\d/, /\d/, /\d/, /\d/]}
           {...input}
           className={classnames("input-fixed", "contact-field", {"t-error": isShowError})}
-          placeholder={label}
+          placeholder={placeholder || label}
           type={type}
         />
         <ValidateText {...props}/>

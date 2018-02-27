@@ -35,7 +35,7 @@ function inputComponent(props: any) {
         <input
           {...input}
           className={classnames('input-fixed', 'contact-field', {'t-error': isShowError})}
-          placeholder={placeholder}
+          placeholder={placeholder || label}
           type={type}
         />
         <ValidateText {...props} meta={props.meta || {}}/>
