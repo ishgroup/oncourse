@@ -8,9 +8,8 @@ export function versionApiMock() {
   ));
 
   this.api.onPatch(API.VERSION_UPDATE).reply(config => {
-    console.log(config);
-    promiseResolve(
-      config,
+    return promiseResolve(
+      '',
       null,
     );
   });
