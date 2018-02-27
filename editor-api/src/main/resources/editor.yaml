@@ -937,10 +937,13 @@ definitions:
     properties:
       from:
         type: string
-        description: Redirect from url
+        description: |
+        Redirect from path. Any relative path in format /subject/art 
       to:
         type: string
-        description: Redirect to url
+        description: |
+        Redirect destanation can be any relative path in format /subject/art 
+        or any external url link like https://github.com
         
   Redirects:
     type: object
