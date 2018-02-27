@@ -2,7 +2,7 @@ import {Epic} from "redux-observable";
 import "rxjs";
 import {success, error} from 'react-notification-system-redux';
 import * as EpicUtils from "../../../../../epics/EpicUtils";
-import {GET_PAGE_BY_URL_FULFILLED, GET_PAGE_BY_URL_REQUEST} from "../actions";
+import {GET_PAGE_BY_URL_FULFILLED, GET_PAGE_BY_URL_REQUEST, setCurrentPage} from "../actions";
 import {Page} from "../../../../../model";
 import PageService from "../../../../../services/PageService";
 import {getHistoryInstance} from "../../../../../history";
@@ -24,6 +24,7 @@ const request: EpicUtils.Request<any, any> = {
         type: GET_PAGE_BY_URL_FULFILLED,
         payload: page,
       },
+      setCurrentPage(page),
     ];
   },
   processError: data => {

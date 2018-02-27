@@ -17,20 +17,20 @@ export const API = {
 
   // Pages
   PAGE: `/${v}/page`,
-  PAGE_DELETE: /v1\/page\/\d+/,
+  PAGE_DELETE: new RegExp(`${v}/page/\\d+`),
 
   // Blocks
   BLOCK: `/${v}/block`,
-  BLOCK_DELETE: /v1\/block\/\d+/,
+  BLOCK_DELETE: new RegExp(`${v}/block/\\d+`),
 
   // Themes
   THEME: `/${v}/theme`,
   LAYOUT: `/${v}/layout`,
-  THEME_DELETE: /v1\/theme\/\d+/,
+  THEME_DELETE: new RegExp(`${v}/theme/\\d+`),
 
   // Versions
   VERSION: `/${v}/version`,
-  VERSION_UPDATE: /v1\/version\/\d+/,
+  VERSION_UPDATE: new RegExp(`${v}/version/\\d+`),
 
   // Settings
   SKILLS_ON_COURSE: `/${v}/settings/skillsOnCourse`,

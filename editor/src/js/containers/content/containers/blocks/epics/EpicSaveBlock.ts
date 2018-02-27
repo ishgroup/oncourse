@@ -4,6 +4,7 @@ import {success} from 'react-notification-system-redux';
 
 import * as EpicUtils from "../../../../../epics/EpicUtils";
 import {SAVE_BLOCK_FULFILLED, SAVE_BLOCK_REQUEST} from "../actions";
+import {getPageRender} from "../../pages/actions";
 import {Block} from "../../../../../model";
 import BlockService from "../../../../../services/BlockService";
 import {notificationParams} from "../../../../../common/utils/NotificationSettings";
@@ -13,13 +14,21 @@ const request: EpicUtils.Request<any, any> = {
   getData: (props, state) => BlockService.saveBlock(props, state),
   processData: (block: Block, state: any, payload) => {
 
-    return [
-      success(notificationParams),
-      {
-        payload: block,
-        type: SAVE_BLOCK_FULFILLED,
-      },
-    ];
+    const result = [];
+    const page = state.page.currentPage;
+
+    result.push(success(notificationParams));
+    result.push({
+      payload: block,
+      type: SAVE_BLOCK_FULFILLED,
+    });
+
+    // get rendered html if raw html has been changed
+    if (payload.updatePageRender && page) {
+      result.push(getPageRender(page && page.serialNumber));
+    }
+
+    return result;
   },
 };
 

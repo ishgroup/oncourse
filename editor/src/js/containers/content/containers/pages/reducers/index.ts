@@ -3,7 +3,7 @@ import {PagesState} from "./State";
 import {
   ADD_PAGE_FULFILLED, CLEAR_RENDER_HTML,
   DELETE_PAGE_FULFILLED, GET_PAGE_RENDER_FULFILLED,
-  GET_PAGES_FULFILLED, SAVE_PAGE_FULFILLED, TOGGLE_EDIT_MODE,
+  GET_PAGES_FULFILLED, SAVE_PAGE_FULFILLED, SET_CURRENT_PAGE, TOGGLE_EDIT_MODE,
 } from "../actions";
 
 export const pageReducer = (state: PagesState = new PagesState(), action: IAction<any>): PagesState => {
@@ -74,6 +74,15 @@ export const pageReducer = (state: PagesState = new PagesState(), action: IActio
       return {
         ...state,
         editMode: flag,
+      };
+    }
+
+    case SET_CURRENT_PAGE: {
+      const page = action.payload;
+
+      return {
+        ...state,
+        currentPage: page || state.currentPage,
       };
     }
 

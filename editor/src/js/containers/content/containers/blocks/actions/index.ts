@@ -16,9 +16,9 @@ export const getBlocks = () => ({
   type: GET_BLOCKS_REQUEST,
 });
 
-export const saveBlock = (id, props) => ({
+export const saveBlock = (id, props, updatePageRender = false) => ({
   type: SAVE_BLOCK_REQUEST,
-  payload: {id, ...props},
+  payload: {id, ...props, updatePageRender},
 });
 
 export const deleteBlock = id => ({

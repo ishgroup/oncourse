@@ -82,7 +82,7 @@ export class MockDB {
         themeId: 2,
         urls: [
           {
-            link: '/page2/',
+            link: '/page/2',
             isDefault: false,
           },
           {

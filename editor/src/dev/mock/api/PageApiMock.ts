@@ -42,7 +42,6 @@ export function pageApiMock() {
 
   this.api.onDelete(API.PAGE_DELETE).reply(config => {
 
-    console.log(config);
     const id = config.url.split('/')[2];
     this.db.deletePageById(id);
 

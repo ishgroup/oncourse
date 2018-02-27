@@ -47,7 +47,7 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
     onInit: () => dispatch(getBlocks()),
-    onEditHtml: (id, content) => dispatch(saveBlock(id, {content})),
+    onEditHtml: (id, content) => dispatch(saveBlock(id, {content}, true)),
   };
 };
 

@@ -7,4 +7,5 @@ export interface PageState extends Page {
 export class PagesState {
   items: PageState[] = [];
   editMode: boolean = true;
+  currentPage?: Page = null;
 }

@@ -1,4 +1,4 @@
-import {_toRequestType, FULFILLED} from "../../../../../common/actions/ActionUtils";
+import {_toRequestType, FULFILLED, REJECTED} from "../../../../../common/actions/ActionUtils";
 
 export const GET_PAGES_REQUEST = _toRequestType("page/get/pages");
 export const GET_PAGES_FULFILLED = FULFILLED(GET_PAGES_REQUEST);
@@ -17,9 +17,11 @@ export const GET_PAGE_BY_URL_FULFILLED = FULFILLED(GET_PAGE_BY_URL_REQUEST);
 
 export const GET_PAGE_RENDER_REQUEST = _toRequestType("page/get/page/render");
 export const GET_PAGE_RENDER_FULFILLED = FULFILLED(GET_PAGE_RENDER_REQUEST);
+export const GET_PAGE_RENDER_REJECTED = REJECTED(GET_PAGE_RENDER_REQUEST);
 
 export const TOGGLE_EDIT_MODE = "page/toggle/edit/mode";
 export const CLEAR_RENDER_HTML = "page/clear/render/html";
+export const SET_CURRENT_PAGE = "page/set/current";
 
 export const getPages = () => ({
   type: GET_PAGES_REQUEST,
@@ -57,4 +59,9 @@ export const getPageRender = serialNumber => ({
 export const clearRenderHtml = serialNumber => ({
   type: CLEAR_RENDER_HTML,
   payload: serialNumber,
+});
+
+export const setCurrentPage = page => ({
+  type: SET_CURRENT_PAGE,
+  payload: page,
 });
