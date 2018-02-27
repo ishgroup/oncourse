@@ -10,6 +10,15 @@ public class {{classname}} {{#parent}}extends {{{parent}}}{{/parent}} {
     @com.fasterxml.jackson.databind.annotation.JsonSerialize(using = com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer.class)
 {{/isDateTime}}
     private {{{datatypeWithEnum}}} {{name}} = {{{defaultValue}}};{{/vars}}
+    
+    public {{classname}}() {
+    }
+    
+    public {{classname}}({{#vars}}{{{datatypeWithEnum}}} {{name}}{{#hasMore}}, {{/hasMore}}{{/vars}}) {
+    {{#vars}}
+        this.{{name}} = {{name}};
+    {{/vars}}
+    }
 
   {{#vars}}
     /**
