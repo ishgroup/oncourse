@@ -934,12 +934,18 @@ definitions:
       from:
         type: string
         description: |
-          Redirect from path. Any relative path in format /subject/art 
+          The from address must be a valid path within the site starting with /
+        example: /subject/art
       to:
         type: string
         description: |
-          Redirect destanation can be any relative path in format /subject/art 
-          or any external url link like https://github.com
+          The to address must be a valid URL or partial URL starting with /
+        example: https://github.com
+      error:
+        type: string
+        description: Describes reason why redirect item cannot be saved.
+        example: |
+          This URL is already being redirected
         
   Redirects:
     type: object
