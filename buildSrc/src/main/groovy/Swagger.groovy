@@ -6,6 +6,10 @@ import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 
 class Swagger extends DefaultTask {
+    Swagger() {
+        group = "build"
+    }
+
     @Input
     File resourcesJava = new File("${project.parent.projectDir}/buildSrc/src/main/resources/swaggerTemplates/java")
 

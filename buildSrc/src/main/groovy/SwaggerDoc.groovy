@@ -7,6 +7,10 @@ import org.gradle.api.tasks.TaskAction
 
 class SwaggerDoc extends DefaultTask {
 
+    SwaggerDoc() {
+        group = "documentation"
+    }
+
     @Input
     File resourcePath = new File("${project.parent.projectDir}/buildSrc/src/main/resources/swaggerTemplates/html")
 

@@ -93,8 +93,13 @@ task generateDoc (type: SwaggerDoc) {
     docOutput = file("${buildDir}/doc")
 }
 
-task buildDoc (type: Zip, dependsOn: generateDoc) {
+task buildDoc (type: Zip, dependsOn: generateDoc, group: 'documentation') {
     from generateDoc.outputs
     archiveName 'doc.zip'
     destinationDir file("${buildDir}/doc")
+}
+
+task swaggerTemplates (type: SwaggerTemplates) {
+    schema = swaggerSchema
+    language = "dynamic-html"
 }
