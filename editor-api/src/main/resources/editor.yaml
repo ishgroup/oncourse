@@ -961,8 +961,9 @@ definitions:
         description: The tutor can mark outcomes for VET training
         type: boolean
       tutorFeedbackEmail:
-        description: TBA
+        description: Address to which replies from tutors will be sent.
         type: string
+        format: email
         
   ClassCondition:
     type: string
