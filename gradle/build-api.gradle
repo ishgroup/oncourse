@@ -21,7 +21,7 @@ sourceCompatibility = '1.8'
 sourceSets {
     main {
         groovy {
-            srcDirs += "${project.projectDir}/build/generated-sources"
+            srcDirs += "${project.projectDir}/build/generated-sources/src/main/groovy"
         }
     }
 }
