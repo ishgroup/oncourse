@@ -71,6 +71,10 @@ paths:
           description: Valid session token
           schema: 
             type: string 
+          headers:
+            ESESSIONID:
+              type: string
+              description: Valid session token.
         '406':
           description: Login unsuccessful. Invalid login name or password.
         default:
