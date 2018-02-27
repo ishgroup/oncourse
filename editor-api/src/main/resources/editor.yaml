@@ -51,7 +51,7 @@ paths:
 #################
     post:
       operationId: createSession
-      description: Authenticate user by email and password
+      description: Authenticate user by email and password. Put session toke to cookie on success. Returns session token.
       security:
         - loginAuth: []
       tags:
@@ -67,7 +67,10 @@ paths:
             $ref: '#/definitions/LoginRequest'
       responses:
         '200':
-          description: Login was good.
+          name: token
+          description: Valid session token
+          schema: 
+            type: string 
         '406':
           description: Login unsuccessful. Invalid login name or password.
         default:

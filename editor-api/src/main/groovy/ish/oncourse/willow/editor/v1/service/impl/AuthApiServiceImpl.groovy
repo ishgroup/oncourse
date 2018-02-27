@@ -47,11 +47,11 @@ class AuthApiServiceImpl implements AuthApi {
     }
 
     @Override
-    void createSession(LoginRequest loginRequest) {
-        AuthenticationResult result =  authenticationService.authenticate(loginRequest.email, loginRequest.password, true)
+    String  createSession(LoginRequest loginRequest) {
+        AuthenticationResult result = authenticationService.authenticate(loginRequest.email, loginRequest.password, true)
         switch (result.status) {
             case AuthenticationStatus.SUCCESS:
-                break
+                return result.sessionToken
             case AuthenticationStatus.INVALID_CREDENTIALS:
             case AuthenticationStatus.NO_MATCHING_USER:
                 throw new ClientErrorException(Response.status(Response.Status.NOT_ACCEPTABLE).entity(new CommonError(message: 'Login unsuccessful. Invalid login name or password.')).build())

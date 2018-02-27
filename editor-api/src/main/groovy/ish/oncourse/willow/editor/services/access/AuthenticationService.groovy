@@ -56,8 +56,10 @@ class AuthenticationService implements IAuthenticationService {
         if (persist) {
             sessionManager.persistSession(userId, sessionId)
         }
-        setSessionToken("$userId&$sessionId".toString(), MAX_AGE)
+        String sessionToken = "$userId&$sessionId".toString()
+        setSessionToken(sessionToken, MAX_AGE)
         result.status = SUCCESS
+        result.sessionToken = sessionToken
         return result
     }
     
