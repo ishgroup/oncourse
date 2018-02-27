@@ -49,11 +49,20 @@ class VersionApiServiceImpl implements VersionApi {
     }
 
     List<Version> getVersions() {
+        
+        ObjectContext context = cayenneService.newContext() 
         Request request = requestService.request
-        return WebSiteVersionFunctions.getSiteVersions(request, cayenneService.newContext())
+        List<Version> versions = WebSiteVersionFunctions.getSiteVersions(request, context)
                 .collect { webVersion ->
             WebVersionToVersion.valueOf(webVersion).version
         }
+
+        WebSiteVersion draftVersion = WebSiteVersionFunctions.getCurrentVersion(request, context)
+        WebSiteVersion beployedVersion = WebSiteVersionFunctions.getDeployedVersion(request, context)
+
+        versions.find { it.id  == draftVersion.id.toInteger()}.status = VersionStatus.DRAFT
+        versions.find { it.id  == beployedVersion.id.toInteger()}.status = VersionStatus.PUBLISHED
+        versions
     }
 
     void updateVersion(String id, Version diff) {
