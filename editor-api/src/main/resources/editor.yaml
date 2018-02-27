@@ -756,9 +756,9 @@ definitions:
       id:
         type: integer
         description: unique id of the layout
-      layoutKey:
+      title:
         type: string
-        description: Unique name of the layout
+        description: Layout name
         example: layout-B
 
   Page:
@@ -937,12 +937,12 @@ definitions:
       from:
         type: string
         description: |
-        Redirect from path. Any relative path in format /subject/art 
+          Redirect from path. Any relative path in format /subject/art 
       to:
         type: string
         description: |
-        Redirect destanation can be any relative path in format /subject/art 
-        or any external url link like https://github.com
+          Redirect destanation can be any relative path in format /subject/art 
+          or any external url link like https://github.com
         
   Redirects:
     type: object
