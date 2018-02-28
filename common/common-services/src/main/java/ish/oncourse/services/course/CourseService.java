@@ -73,7 +73,7 @@ public class CourseService implements ICourseService {
 
 		q.offset(startDefault);
 		q.limit(rowsDefault);
-		return applyCourseCacheSettings(q).select(cayenneService.sharedContext());
+		return q.cacheStrategy(LOCAL_CACHE, Course.class.getSimpleName()).select(cayenneService.sharedContext());
 	}
 
 	@Override

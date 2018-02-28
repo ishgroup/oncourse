@@ -3,7 +3,6 @@ package ish.oncourse.services.courseclass
 import ish.oncourse.model.College
 import ish.oncourse.model.Course
 import ish.oncourse.model.CourseClass
-import ish.oncourse.model.Room
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.ObjectSelect
@@ -22,11 +21,6 @@ class LoadByIds {
                 .where(Course.COLLEGE.eq(college))
                 .and(Course.IS_WEB_VISIBLE.isTrue())
                 .and(ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN, longIds))
-                .prefetch(Course.COURSE_CLASSES.joint())
-                .prefetch(Course.COURSE_CLASSES.dot(CourseClass.COLLEGE).joint())
-                .prefetch(Course.COURSE_CLASSES.dot(CourseClass.SESSIONS).joint())
-                .prefetch(Course.COURSE_CLASSES.dot(CourseClass.ROOM).joint())
-                .prefetch(Course.COURSE_CLASSES.dot(CourseClass.ROOM).dot(Room.SITE).joint())
                 .cacheStrategy(LOCAL_CACHE, Course.class.getSimpleName())
                 .select(context)
 
