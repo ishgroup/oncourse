@@ -46,7 +46,7 @@ export class Redirect extends React.PureComponent<Props, any> {
   onAddNew() {
     this.setState(update(this.state, {
       rules: {
-        $push: [{from: '', to: ''}],
+        $unshift: [{from: '', to: ''}],
       },
     }));
   }
