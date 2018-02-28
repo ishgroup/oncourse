@@ -11,6 +11,9 @@ form {
     &.error {
       margin-top: 5px;
       color: $danger;
+      background: none;
+      border: 0;
+      padding: 0;
     }
   }
 }
