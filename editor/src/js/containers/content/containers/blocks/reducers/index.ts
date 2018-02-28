@@ -36,8 +36,8 @@ export const blockReducer = (state: BlocksState = new BlocksState(), action: IAc
     }
 
     case DELETE_BLOCK_FULFILLED: {
-      const title = action.payload;
-      const newBlocks = state.items.filter(block => block.title !== title);
+      const id = action.payload;
+      const newBlocks = state.items.filter(block => block.id !== id);
 
       return {
         ...state,
