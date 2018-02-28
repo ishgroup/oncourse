@@ -1,8 +1,7 @@
 // Common models
-export {CommonError} from "../../../build/generated-sources";
-export {FieldError} from "../../../build/generated-sources";
-export {ValidationError} from "../../../build/generated-sources";
+export {UnexpectedError} from "../../../build/generated-sources";
 
+// Menu
 export {MenuItem} from "../../../build/generated-sources";
 
 // User
@@ -31,8 +30,7 @@ export {WebsiteSettings} from "../../../build/generated-sources";
 export {Redirects} from "../../../build/generated-sources";
 export {RedirectItem} from "../../../build/generated-sources";
 export {ClassAge} from "../../../build/generated-sources";
-export {ClassCondition} from "../../../build/generated-sources";
-export {ClassEnrolmentCondition} from "../../../build/generated-sources";
+export {Condition} from "../../../build/generated-sources";
 
 // Api
 export {LoginRequest} from "../../../build/generated-sources";

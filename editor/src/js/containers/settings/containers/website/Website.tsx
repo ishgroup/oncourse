@@ -4,7 +4,7 @@ import {Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText} fr
 import classnames from "classnames";
 import {getWebsiteSettings, setWebsiteSettings} from "./actions";
 import {Checkbox} from "../../../../common/components/Checkbox";
-import {ClassCondition, ClassEnrolmentCondition} from "../../../../model";
+import {ClassAge, Condition} from "../../../../model";
 import {State} from "../../../../reducers/state";
 import {WebsiteSettingsState} from "./reducers/State";
 import {toPositive} from "../../../../common/utils/NumberUtils";
@@ -29,10 +29,8 @@ export class Website extends React.Component<Props, any> {
       enableForCourse: website.enableForCourse,
       enableForWebpage: website.enableForWebpage,
       classAge: {
-        hideClassDays: website.classAge && website.classAge.hideClassDays,
-        hideClassCondition: website.classAge && website.classAge.hideClassCondition,
-        stopWebEnrolmentDays: website.classAge && website.classAge.stopWebEnrolmentDays,
-        stopWebEnrolmentCondition: website.classAge && website.classAge.stopWebEnrolmentCondition,
+        hideClass: (website.classAge && website.classAge.hideClass) || {},
+        stopWebEnrolment: (website.classAge && website.classAge.stopWebEnrolment) || {},
       },
     };
   }
@@ -51,21 +49,19 @@ export class Website extends React.Component<Props, any> {
         enableForCourse: website.enableForCourse,
         enableForWebpage: website.enableForWebpage,
         classAge: {
-          hideClassDays: website.classAge && website.classAge.hideClassDays,
-          hideClassCondition: website.classAge && website.classAge.hideClassCondition,
-          stopWebEnrolmentDays: website.classAge && website.classAge.stopWebEnrolmentDays,
-          stopWebEnrolmentCondition: website.classAge && website.classAge.stopWebEnrolmentCondition,
+          hideClass: website.classAge && website.classAge.hideClass || {},
+          stopWebEnrolment: website.classAge && website.classAge.stopWebEnrolment || {},
         },
       });
     }
   }
 
-  onChange(value, key, sub?) {
+  onChange(value, key, parent?) {
 
-    if (sub) {
+    if (parent) {
       this.setState({
-        [sub]: {
-          ...this.state[sub],
+        [parent]: {
+          ...this.state[parent],
           [key]: value,
         },
       });
@@ -77,6 +73,10 @@ export class Website extends React.Component<Props, any> {
       [key]: value,
     });
 
+  }
+
+  onChangeClassAge (value, key, parent) {
+    this.onChange({...this.state.classAge[parent], [key]: value}, parent, 'classAge');
   }
 
   onSave() {
@@ -140,22 +140,23 @@ export class Website extends React.Component<Props, any> {
             <div className="form-inline">
               <Input
                 type="number"
-                name="hideClassDays"
+                name="offset"
                 className="xs"
-                value={classAge.hideClassDays}
-                onChange={e => {this.onChange(e.target.value, 'hideClassDays', 'classAge');}}
-                onBlur={e => {this.onChange(toPositive(e.target.value), 'hideClassDays', 'classAge');}}
+                value={classAge.hideClass.offset}
+                onChange={e => {this.onChangeClassAge(e.target.value, 'offset', 'hideClass');}}
+                onBlur={e => {this.onChangeClassAge(toPositive(e.target.value), 'offset', 'hideClass');}}
               />
               <Label>days</Label>
               <Input
                 type="select"
                 name="hideClassCondition"
-                onChange={e => {this.onChange(e.target.value, 'hideClassCondition', 'classAge');}}
+                value={classAge.hideClass.condition}
+                onChange={e => {this.onChangeClassAge(e.target.value, 'condition', 'hideClass');}}
               >
-                <option value={ClassCondition.afterClassStarts}>after class starts</option>
-                <option value={ClassCondition.beforeClassStarts}>before class starts</option>
-                <option value={ClassCondition.afterClassEnds}>after class ends</option>
-                <option value={ClassCondition.beforeClassEnds}>before class ends</option>
+                <option value={Condition.afterClassStarts}>after class starts</option>
+                <option value={Condition.beforeClassStarts}>before class starts</option>
+                <option value={Condition.afterClassEnds}>after class ends</option>
+                <option value={Condition.beforeClassEnds}>before class ends</option>
               </Input>
             </div>
           </FormGroup>
@@ -167,19 +168,20 @@ export class Website extends React.Component<Props, any> {
                 type="number"
                 name="stopWebEnrolmentDays"
                 className="xs"
-                value={classAge.stopWebEnrolmentDays}
-                onChange={e => {this.onChange(e.target.value, 'stopWebEnrolmentDays', 'classAge');}}
-                onBlur={e => {this.onChange(toPositive(e.target.value), 'stopWebEnrolmentDays', 'classAge');}}
+                value={classAge.stopWebEnrolment.offset}
+                onChange={e => {this.onChangeClassAge(e.target.value, 'offset', 'stopWebEnrolment');}}
+                onBlur={e => {this.onChangeClassAge(toPositive(e.target.value), 'offset', 'stopWebEnrolment');}}
               />
               <Label>days</Label>
                 <Input
                   type="select"
                   name="stopWebEnrolmentCondition"
-                  onChange={e => {this.onChange(e.target.value, 'stopWebEnrolmentCondition', 'classAge');}}
+                  value={classAge.stopWebEnrolment.condition}
+                  onChange={e => {this.onChangeClassAge(e.target.value, 'condition', 'stopWebEnrolment');}}
                 >
-                <option value={ClassEnrolmentCondition.afterClassStarts}>after class starts</option>
-                <option value={ClassEnrolmentCondition.beforeClassStarts}>before class starts</option>
-                <option value={ClassCondition.beforeClassEnds}>before class ends</option>
+                <option value={Condition.afterClassStarts}>after class starts</option>
+                <option value={Condition.beforeClassStarts}>before class starts</option>
+                <option value={Condition.beforeClassEnds}>before class ends</option>
               </Input>
             </div>
           </FormGroup>
@@ -191,6 +193,7 @@ export class Website extends React.Component<Props, any> {
     );
   }
 }
+
 
 const mapStateToProps = (state: State) => ({
   website: state.settings.websiteSettings,

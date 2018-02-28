@@ -3,7 +3,7 @@ import update from 'react-addons-update';
 import faker from 'faker';
 import {
   Page, Block, MenuItem, Theme, User, Version, WebsiteSettings, Redirects, VersionStatus,
-  SkillsOnCourseSettings, ThemeBlocks, Layout, ClassCondition, ClassEnrolmentCondition,
+  SkillsOnCourseSettings, ThemeBlocks, Layout, Condition,
 } from "../../js/model";
 
 export const CreateMockDB = (): MockDB => {
@@ -322,10 +322,14 @@ export class MockDB {
         enableForCourse: true,
         enableForWebpage: false,
         classAge: {
-          hideClassDays: 0,
-          hideClassCondition: ClassCondition[1],
-          stopWebEnrolmentDays: 0,
-          stopWebEnrolmentCondition: ClassEnrolmentCondition[1],
+          hideClass: {
+            offset: 0,
+            condition: Condition.beforeClassEnds,
+          },
+          stopWebEnrolment: {
+            offset: 1,
+            condition: Condition.beforeClassStarts,
+          },
         },
       },
       redirect: {

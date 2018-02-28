@@ -7,8 +7,8 @@ import {DefaultHttpService} from "../common/services/HttpService";
 class PageService {
   readonly pageApi = new PageApi(new DefaultHttpService());
 
-  public getPages(url?): Promise<Page[]> {
-    return this.pageApi.getPages(url ? url : null);
+  public getPages(pageLink?): Promise<Page[]> {
+    return this.pageApi.getPages(pageLink ? pageLink : null);
   }
 
   public savePage(props, state: State): Promise<any> {
