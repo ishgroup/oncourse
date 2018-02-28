@@ -10,6 +10,7 @@ import ish.oncourse.willow.editor.v1.model.Page
 
 import groovy.transform.CompileStatic
 import ish.oncourse.willow.editor.services.RequestService
+import ish.oncourse.willow.editor.v1.model.UnexpectedError
 import ish.oncourse.willow.editor.v1.service.PageApi
 import ish.oncourse.willow.editor.website.WebNodeFunctions
 import org.apache.cayenne.ObjectContext
@@ -100,7 +101,7 @@ class PageApiServiceImpl implements PageApi {
     
     private ClientErrorException createClientException(String message) {
         logger.error("$message, server name: $requestService.request.serverName")
-        new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(new UnknownError(message)).build())
+        new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(new UnexpectedError(message)).build())
     }
 }
 

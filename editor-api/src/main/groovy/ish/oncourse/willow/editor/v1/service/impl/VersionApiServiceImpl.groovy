@@ -11,6 +11,7 @@ import ish.oncourse.services.site.WebSiteVersionRevert
 import ish.oncourse.services.site.WebSiteVersionsDelete
 import ish.oncourse.willow.editor.EditorProperty
 import ish.oncourse.willow.editor.rest.WebVersionToVersion
+import ish.oncourse.willow.editor.v1.model.UnexpectedError
 import ish.oncourse.willow.editor.v1.model.Version
 
 import groovy.transform.CompileStatic
@@ -144,7 +145,7 @@ class VersionApiServiceImpl implements VersionApi {
     
     private ClientErrorException createClientException(String message) {
         logger.error("$message, server name: $requestService.request.serverName")
-        new ClientErrorException(Response.status(400).entity(new UnknownError(message)).build())
+        new ClientErrorException(Response.status(400).entity(new UnexpectedError(message)).build())
     }
 }
 

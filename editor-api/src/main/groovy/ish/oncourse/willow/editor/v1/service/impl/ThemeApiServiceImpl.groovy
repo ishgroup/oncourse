@@ -10,6 +10,7 @@ import ish.oncourse.willow.editor.v1.model.Theme
 
 import groovy.transform.CompileStatic
 import ish.oncourse.willow.editor.services.RequestService
+import ish.oncourse.willow.editor.v1.model.UnexpectedError
 import ish.oncourse.willow.editor.v1.service.ThemeApi
 import ish.oncourse.willow.editor.website.WebNodeTypeFunctions
 import ish.oncourse.willow.editor.website.WebSiteLayoutFunctions
@@ -86,7 +87,7 @@ class ThemeApiServiceImpl implements ThemeApi {
 
     private ClientErrorException createClientException(String message) {
         logger.error("$message, server name: $requestService.request.serverName")
-        new ClientErrorException(Response.status(400).entity(new UnknownError(message)).build())
+        new ClientErrorException(Response.status(400).entity(new UnexpectedError(message)).build())
     }
     
 }
