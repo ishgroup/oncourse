@@ -4,6 +4,7 @@ import {connect, Dispatch} from "react-redux";
 import classnames from 'classnames';
 import {Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText} from 'reactstrap';
 import {getRedirectSettings, setRedirectSettings} from "./actions";
+import {RedirectItem} from "./components/RedirectItem";
 import {RedirectSettingsState} from "./reducers/State";
 import {State} from "../../../../reducers/state";
 
@@ -97,44 +98,13 @@ export class Redirect extends React.PureComponent<Props, any> {
 
         <div className="rules">
           {rules && rules.map((rule, index) =>
-            <FormGroup key={index}>
-              <div className="form-inline rule">
-
-                <Label>From</Label>
-                <Input
-                  className={classnames({invalid: (rule.submitted && rule.to && !rule.from) || rule.error})}
-                  type="text"
-                  name={`from-${index}`}
-                  id={`from-${index}`}
-                  value={rule.from}
-                  onChange={e => this.onChange(e, index, 'from')}
-                />
-                <Label>To</Label>
-                <Input
-                  className={classnames({invalid: (rule.submitted && !rule.to && rule.from) || rule.error})}
-                  type="text"
-                  name={`to-${index}`}
-                  id={`to-${index}`}
-                  value={rule.to}
-                  onChange={e => this.onChange(e, index, 'to')}
-                />
-
-                <Button
-                  color="danger"
-                  className="outline"
-                  onClick={() => this.onRemove(index)}
-                >
-                  <span className="icon icon-delete"/>
-                  Remove
-                </Button>
-              </div>
-
-              {rule.error &&
-                <div className="form-inline">
-                  <label className="error">{rule.error}</label>
-                </div>
-              }
-            </FormGroup>,
+            <RedirectItem
+              key={index}
+              item={rule}
+              index={index}
+              onChange={this.onChange.bind(this)}
+              onRemove={this.onRemove.bind(this)}
+            />,
           )}
         </div>
 
