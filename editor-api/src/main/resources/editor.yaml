@@ -67,7 +67,6 @@ paths:
             $ref: '#/definitions/LoginRequest'
       responses:
         '200':
-          name: token
           description: Valid session token
           schema: 
             type: string 
