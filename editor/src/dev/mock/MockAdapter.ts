@@ -8,7 +8,7 @@ import {menuApiMock} from "./api/MenuApiMock";
 import {pageApiMock} from "./api/PageApiMock";
 import {blockApiMock} from "./api/BlockApiMock";
 import {themeApiMock} from "./api/ThemeApiMock";
-import {versionApiMock} from "./api/versionApiMock";
+import {versionApiMock} from "./api/VersionApiMock";
 import {settingsApiMock} from "./api/SettingsApiMock";
 
 export class MockAdapter {
