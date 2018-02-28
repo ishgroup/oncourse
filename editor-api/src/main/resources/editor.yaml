@@ -946,7 +946,7 @@ definitions:
   ClassStateTransition:
     type: object
     properties:
-      offset:
+      offset:
         type: integer
         description: Number of days
       condition:
@@ -963,11 +963,11 @@ definitions:
     type: object
     properties:
       hideClass:
-        description: The number of days before a class is hidden. Depending on the hideClassCondition value this could be before or after the class starts or ends.
-        $ref: '#/definitions/ClassStateTransition'
-      stopWebEnrolment:
-        description: The number of days before enrolment is prevented. Depending on the stopWebEnrolmentCondition value this could be before or after the class starts or ends.
-        $ref: '#/definitions/ClassStateTransition'
+        description: The number of days before a class is hidden. Depending on the hideClassCondition value this could be before or after the class starts or ends.
+        $ref: '#/definitions/ClassStateTransition'
+      stopWebEnrolment:
+        description: The number of days before enrolment is prevented. Depending on the stopWebEnrolmentCondition value this could be before or after the class starts or ends.
+        $ref: '#/definitions/ClassStateTransition'
         
   WebsiteSettings:
     type: object
