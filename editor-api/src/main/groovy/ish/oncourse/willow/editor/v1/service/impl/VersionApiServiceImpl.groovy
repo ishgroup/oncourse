@@ -79,7 +79,7 @@ class VersionApiServiceImpl implements VersionApi {
             throw createClientException("There is no version for provided id:$id")
         }
 
-        WebSiteVersion draft = WebSiteVersionFunctions.getVersionById(id.toLong(), request, context)
+        WebSiteVersion draft = WebSiteVersionFunctions.getCurrentVersion(request, context)
 
         switch (status) {
             case VersionStatus.PUBLISHED:
