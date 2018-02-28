@@ -18,6 +18,21 @@ const request: EpicUtils.Request<any, any> = {
       },
     ];
   },
+  processError: response => {
+    if (response.status && 400 === response.status) {
+      return [
+        {
+          type: SET_REDIRECT_SETTINGS_FULFILLED,
+          payload: response.data,
+        },
+        EpicUtils.errorMessage(response),
+      ];
+    }
+
+    return [
+      EpicUtils.errorMessage(response),
+    ];
+  },
 };
 
 export const EpicSetRedirectSettings: Epic<any, any> = EpicUtils.Create(request);

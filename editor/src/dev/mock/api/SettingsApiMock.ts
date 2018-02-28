@@ -45,6 +45,16 @@ export function settingsApiMock() {
     const settings = JSON.parse(config.data);
     this.db.saveSettings(settings, 'redirect');
 
+    // if (1) { // test reject
+    //   const rules = settings.rules.map(rule => ({...rule, error: "This url already redirected"}));
+    //   settings.rules = rules;
+    //
+    //   return promiseReject(
+    //     config,
+    //     settings,
+    //   );
+    // }
+
     return promiseResolve(
       config,
       settings,

@@ -102,7 +102,7 @@ export class Redirect extends React.PureComponent<Props, any> {
 
                 <Label>From</Label>
                 <Input
-                  className={classnames({invalid: rule.submitted && rule.to && !rule.from})}
+                  className={classnames({invalid: (rule.submitted && rule.to && !rule.from) || rule.error})}
                   type="text"
                   name={`from-${index}`}
                   id={`from-${index}`}
@@ -111,7 +111,7 @@ export class Redirect extends React.PureComponent<Props, any> {
                 />
                 <Label>To</Label>
                 <Input
-                  className={classnames({invalid: rule.submitted && !rule.to && rule.from})}
+                  className={classnames({invalid: (rule.submitted && !rule.to && rule.from) || rule.error})}
                   type="text"
                   name={`to-${index}`}
                   id={`to-${index}`}
@@ -128,6 +128,12 @@ export class Redirect extends React.PureComponent<Props, any> {
                   Remove
                 </Button>
               </div>
+
+              {rule.error &&
+                <div className="form-inline">
+                  <label className="error">{rule.error}</label>
+                </div>
+              }
             </FormGroup>,
           )}
         </div>

@@ -7,6 +7,11 @@ form {
 .form-inline {
   label {
     margin: 0 8px;
+    
+    &.error {
+      margin-top: 5px;
+      color: $danger;
+    }
   }
 }
 
@@ -33,7 +38,7 @@ form {
   }
   
   &.invalid {
-    border-color: $danger;
+    border-color: $danger-hover;
   }
 }
 
