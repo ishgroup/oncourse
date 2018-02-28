@@ -10,24 +10,26 @@ import org.apache.cayenne.query.QueryCacheStrategy;
 
 import java.util.List;
 
-import static org.apache.cayenne.query.QueryCacheStrategy.SHARED_CACHE;
+import static org.apache.cayenne.query.QueryCacheStrategy.LOCAL_CACHE;
 
 public class GetSurveysByCourse {
 
     private ObjectContext context;
     private Course course;
-    private QueryCacheStrategy cacheStrategy;
-    private String cacheGroup;
+    private QueryCacheStrategy cacheStrategy = LOCAL_CACHE;
 
     private GetSurveysByCourse() {}
 
-    public static GetSurveysByCourse valueOf(ObjectContext context, Course course, QueryCacheStrategy cacheStrategy, String cacheGroup) {
+    public static GetSurveysByCourse valueOf(ObjectContext context, Course course) {
         GetSurveysByCourse getter = new GetSurveysByCourse();
         getter.context = context;
         getter.course = course;
-        getter.cacheStrategy = cacheStrategy;
-        getter.cacheGroup = cacheGroup;
         return getter;
+    }
+
+    public GetSurveysByCourse cacheStrategy(QueryCacheStrategy cacheStrategy) {
+        this.cacheStrategy = cacheStrategy;
+        return this;
     }
 
     public List<Survey> get() {
@@ -36,14 +38,8 @@ public class GetSurveysByCourse {
                         .andExp(Survey.ENROLMENT
                                 .dot(Enrolment.COURSE_CLASS)
                                 .dot(CourseClass.COURSE)
-                                .eq(course)));
-        if (cacheStrategy != null) {
-            if (cacheGroup != null) {
-                select.cacheStrategy(cacheStrategy, cacheGroup);
-            } else {
-                select.cacheStrategy(cacheStrategy);
-            }
-        }
+                                .eq(course)))
+                .cacheStrategy(cacheStrategy, Survey.class.getSimpleName());
         return select.select(context);
     }
 }
