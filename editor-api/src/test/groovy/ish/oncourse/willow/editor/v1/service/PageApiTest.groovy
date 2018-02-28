@@ -60,7 +60,7 @@ public class PageApiTest extends AbstractEditorTest {
         api.deletePage(newPage.id.toString())
         Integer id = newPage.id
 
-        WebNode node = WebNodeFunctions.getNodeForId(id.toLong(), requestService.request, cayenneService.newContext())
+        WebNode node = WebNodeFunctions.getNodeForNumber(id.intValue(), requestService.request, cayenneService.newContext())
         assertEquals(node, null)
     }
 
@@ -71,14 +71,14 @@ public class PageApiTest extends AbstractEditorTest {
     @Test
     void getPageByTechnicalUrlTest() {
         Page newPage = api.createPage()
-        String number = newPage.serialNumber.toString()
+        String number = newPage.id.toString()
         String pageUrl = "/page/${number}"
 
         assertEquals(pageUrl, "/page/2")
 
         Page page = api.getPages(pageUrl)[0]
         assertNotNull(page)
-        assertEquals(page.serialNumber, 2)
+        assertEquals(page.id, 2)
     }
 
     /**
@@ -92,7 +92,7 @@ public class PageApiTest extends AbstractEditorTest {
         try {
             Page page = api.getPages(pageUrl)[0]
             assertNotNull(page)
-            assertEquals(page.serialNumber, 2)
+            assertEquals(page.id, 2)
         } catch (e) {
             Boolean isClientError = e instanceof ClientErrorException
             assertEquals(isClientError, true)

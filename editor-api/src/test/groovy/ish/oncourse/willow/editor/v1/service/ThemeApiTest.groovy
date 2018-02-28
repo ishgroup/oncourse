@@ -3,7 +3,6 @@ package ish.oncourse.willow.editor.v1.service
 import ish.oncourse.willow.editor.service.AbstractEditorTest;
 import ish.oncourse.willow.editor.v1.model.Layout;
 import ish.oncourse.willow.editor.v1.model.Theme;
-import ish.oncourse.willow.editor.v1.model.CommonError
 import ish.oncourse.willow.editor.v1.service.impl.ThemeApiServiceImpl
 import org.junit.Assert;
 import org.junit.Test;

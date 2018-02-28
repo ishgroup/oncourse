@@ -1,6 +1,5 @@
 package ish.oncourse.willow.editor.v1.service;
 
-import ish.oncourse.willow.editor.v1.model.CommonError;
 import ish.oncourse.willow.editor.v1.model.Redirects;
 import org.junit.Test;
 import org.junit.Before;

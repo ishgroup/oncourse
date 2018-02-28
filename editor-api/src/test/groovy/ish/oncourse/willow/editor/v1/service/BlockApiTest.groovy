@@ -5,8 +5,8 @@ import ish.oncourse.model.WebContent
 import ish.oncourse.model.WebSite
 import ish.oncourse.model.WebSiteVersion
 import ish.oncourse.willow.editor.service.AbstractEditorTest;
-import ish.oncourse.willow.editor.v1.model.Block;
-import ish.oncourse.willow.editor.v1.model.CommonError
+import ish.oncourse.willow.editor.v1.model.Block
+import ish.oncourse.willow.editor.v1.model.UnexpectedError;
 import ish.oncourse.willow.editor.v1.service.impl.BlockApiServiceImpl
 import ish.oncourse.willow.editor.website.WebContentFunctions
 import ish.oncourse.willow.editor.website.WebSiteVersionFunctions
@@ -64,8 +64,8 @@ public class BlockApiTest  extends AbstractEditorTest{
         try {
             api.deleteBlock(blockTodelete.id.toString())
         } catch (ClientErrorException e) {
-            assertTrue(e.response.entity instanceof CommonError)
-            assertEquals("The block (id: $blockTodelete.id) could not be removed".toString(), (e.response.entity as CommonError).message)
+            assertTrue(e.response.entity instanceof UnexpectedError)
+            assertEquals("The block (id: $blockTodelete.id) could not be removed".toString(), (e.response.entity as UnexpectedError).message)
         }
 
         ObjectContext context = cayenneService.newContext()
@@ -144,8 +144,8 @@ public class BlockApiTest  extends AbstractEditorTest{
         try {
             api.updateBlock(blockRequest)
         } catch (ClientErrorException e) {
-            assertTrue(e.response.entity instanceof CommonError)
-            assertEquals("There are no block for blockParams: $blockRequest".toString(), (e.response.entity as CommonError).message)
+            assertTrue(e.response.entity instanceof UnexpectedError)
+            assertEquals("There are no block for blockParams: $blockRequest".toString(), (e.response.entity as UnexpectedError).message)
         }
     }
     

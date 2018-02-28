@@ -1,6 +1,5 @@
 package ish.oncourse.willow.editor.v1.service;
 
-import ish.oncourse.willow.editor.v1.model.CommonError;
 import ish.oncourse.willow.editor.v1.model.SkillsOnCourseSettings;
 import ish.oncourse.willow.editor.v1.model.WebsiteSettings;
 import org.junit.Test;
