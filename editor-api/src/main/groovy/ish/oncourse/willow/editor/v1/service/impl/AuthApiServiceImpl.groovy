@@ -10,8 +10,8 @@ import groovy.transform.CompileStatic
 import ish.oncourse.willow.editor.services.access.AuthenticationService
 import ish.oncourse.willow.editor.services.access.UserService
 import ish.oncourse.willow.editor.v1.model.LoginRequest
+import ish.oncourse.willow.editor.v1.model.UnexpectedError
 import ish.oncourse.willow.editor.v1.model.User
-import ish.oncourse.willow.editor.v1.model.CommonError
 import ish.oncourse.willow.editor.v1.service.AuthApi
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -41,8 +41,9 @@ class AuthApiServiceImpl implements AuthApi {
         if (userService.userFirstName) {
             return new User().firstName(userService.userFirstName).lastName(userService.userLastName)
         } else {
-            logger.error('Unexpected error. There is no logged user.')
-            throw new InternalServerErrorException('Unexpected error')
+            String error = 'Unexpected error. There is no logged user.'
+            logger.error(error)
+            throw new ServerErrorException(Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new UnexpectedError(error)).build())
         }
     }
 
@@ -54,13 +55,13 @@ class AuthApiServiceImpl implements AuthApi {
                 return result.sessionToken
             case AuthenticationStatus.INVALID_CREDENTIALS:
             case AuthenticationStatus.NO_MATCHING_USER:
-                throw new ClientErrorException(Response.status(Response.Status.NOT_ACCEPTABLE).entity(new CommonError(message: 'Login unsuccessful. Invalid login name or password.')).build())
+                throw new ClientErrorException('Login unsuccessful. Invalid login name or password.', Response.Status.NOT_ACCEPTABLE)
             case AuthenticationStatus.MORE_THAN_ONE_USER:
-                throw new ClientErrorException(Response.status(Response.Status.CONFLICT).entity(new CommonError(message: 'Login unsuccessful. There are two users with the same login details. Please contact the college for help.')).build())
+                throw new ClientErrorException('Login unsuccessful. There are two users with the same login details. Please contact the college for help.', Response.Status.CONFLICT)
             default:
                 String message = "Unknown authentication status: ${result.status}, login request: $loginRequest"
                 logger.error(message)
-                throw new IllegalArgumentException(message)
+                throw new ServerErrorException(Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new UnexpectedError(message)).build())
         }
     }
 

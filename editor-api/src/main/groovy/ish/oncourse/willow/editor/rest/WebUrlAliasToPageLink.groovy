@@ -1,22 +1,22 @@
 package ish.oncourse.willow.editor.rest
 
 import ish.oncourse.model.WebUrlAlias
-import ish.oncourse.willow.editor.v1.model.PageUrl
+import ish.oncourse.willow.editor.v1.model.PageLink
 
-class WebUrlAliasToPageUrl {
+class WebUrlAliasToPageLink {
 
     private WebUrlAlias webUrlAlias
     
     private WebUrlAliasToPageUrl(){}
 
-    static WebUrlAliasToPageUrl valueOf(WebUrlAlias webUrlAlias) {
-        WebUrlAliasToPageUrl serializer = new WebUrlAliasToPageUrl()
+    static WebUrlAliasToPageLink valueOf(WebUrlAlias webUrlAlias) {
+        WebUrlAliasToPageLink serializer = new WebUrlAliasToPageLink()
         serializer.webUrlAlias = webUrlAlias
         serializer
     }
     
-    PageUrl getPageUrl() {
-        return new PageUrl().with { url ->
+    PageLink getPageLink() {
+        return new PageLink().with { url ->
             url.link = webUrlAlias.urlPath
             url.isDefault = webUrlAlias.default
             url

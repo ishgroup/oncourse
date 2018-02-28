@@ -76,6 +76,8 @@ paths:
               description: Valid session token.
         '406':
           description: Login unsuccessful. Invalid login name or password.
+        '409':
+          description: There are more than one user with the same login details
         default:
           description: Unexpected error
           schema:
@@ -943,6 +945,15 @@ definitions:
         type: string
         format: email
         
+  Condition:
+    type: string
+    description: For the given offset, it is a certain number of days before or after the start or end of the class.
+    enum:
+      - afterClassStarts
+      - beforeClassStarts
+      - afterClassEnds
+      - beforeClassEnds
+        
   ClassStateTransition:
     type: object
     properties:
@@ -950,14 +961,7 @@ definitions:
         type: integer
         description: Number of days
       condition:
-        type: string
-        description: For the given offset, it is a certain number of days before or after the start or end of the class.
-        enum:
-          - afterClassStarts
-          - beforeClassStarts
-          - afterClassEnds
-          - beforeClassEnds
-      
+        $ref: '#/definitions/Condition'
       
   ClassAge:
     type: object

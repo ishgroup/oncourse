@@ -7,11 +7,8 @@ import ish.oncourse.model.WebNodeType
 import ish.oncourse.model.WebUrlAlias
 import ish.oncourse.services.textile.ConvertCoreTextile
 import ish.oncourse.utils.ResourceNameValidator
-import ish.oncourse.willow.editor.v1.model.Block
 import ish.oncourse.willow.editor.v1.model.Page
-import ish.oncourse.willow.editor.v1.model.PageUrl
-import ish.oncourse.willow.editor.website.ResourceNameUtil
-import ish.oncourse.willow.editor.website.WebContentFunctions
+import ish.oncourse.willow.editor.v1.model.PageLink
 import ish.oncourse.willow.editor.website.WebNodeFunctions
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
@@ -30,7 +27,7 @@ class UpdatePage extends AbstractUpdate<Page> {
 
 
     UpdatePage update() {
-        WebNode node = WebNodeFunctions.getNodeForId(resourceToSave.id.longValue(), request, context)
+        WebNode node = WebNodeFunctions.getNodeForNumber(resourceToSave.id, request, context)
         if (!node) {
             error = "There are no pages for pageParams: $resourceToSave"
             return this
@@ -69,10 +66,10 @@ class UpdatePage extends AbstractUpdate<Page> {
     }
     
     private void updateAliases(WebNode node) {
-        Map<String, PageUrl> providedUrlsMap = resourceToSave.urls.collectEntries { [(it.link): it] }
+        Map<String, PageLink> providedUrlsMap = resourceToSave.urls.collectEntries { [(it.link): it] }
 
         new ArrayList<WebUrlAlias>(node.webUrlAliases).each { alias ->
-            PageUrl pageUrl = providedUrlsMap.remove(alias.urlPath)
+            PageLink pageUrl = providedUrlsMap.remove(alias.urlPath)
             if (pageUrl) {
                 //update existing alias
                 alias.default = pageUrl.isDefault

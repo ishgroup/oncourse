@@ -73,20 +73,24 @@ class UpdateRedirects extends AbstractUpdate<Redirects> {
     private boolean validate(RedirectItem redirectItem) {
         ISHUrlValidator validator = new ISHUrlValidator('http', 'https')
         if (!validator.isValidOnlyPath(redirectItem.from)) {
-            errors << "Invalid redirect, from: ${redirectItem.from}, to: ${redirectItem.to}.  The from address must be a valid path within the site starting with /".toString()
+            redirectItem.error = "Invalid redirect, from: ${redirectItem.from}, to: ${redirectItem.to}.  The from address must be a valid path within the site starting with /"
+            errors << redirectItem.error
             return false
         }
         WebUrlAlias fWebUrl = WebUrlAliasFunctions.getAliasByPath(redirectItem.from, request, context)
         if (fWebUrl != null && !(fWebUrl.objectId in deletedAliasIds)) {
             if (fWebUrl.webNode) {
-                errors << "Invalid redirect, from: ${redirectItem.from}, to: ${redirectItem.to}. To create redirects to pages within this CMS, go to that page and add an additional URL in the page options.".toString()
+                redirectItem.error = "Invalid redirect, from: ${redirectItem.from}, to: ${redirectItem.to}. To create redirects to pages within this CMS, go to that page and add an additional URL in the page options."
+                errors << redirectItem.error
             } else {
-                errors << "Invalid redirect, from: ${redirectItem.from}, to: ${redirectItem.to}. This URL is already being redirected to ${fWebUrl.redirectTo}".toString()
+                redirectItem.error = "Invalid redirect, from: ${redirectItem.from}, to: ${redirectItem.to}. This URL is already being redirected to ${fWebUrl.redirectTo}"
+                errors << redirectItem.error
             }
             return false
         }
         if (!validator.isValid(redirectItem.to) && !validator.isValidOnlyPath(redirectItem.to)) {
-            errors << "Invalid redirect, from: ${redirectItem.from}, to: ${redirectItem.to}. The to address must be a valid URL or partial URL starting with /".toString()
+            redirectItem.error = "Invalid redirect, from: ${redirectItem.from}, to: ${redirectItem.to}. The to address must be a valid URL or partial URL starting with /"
+            errors << redirectItem.error
             return false
         }
         return true

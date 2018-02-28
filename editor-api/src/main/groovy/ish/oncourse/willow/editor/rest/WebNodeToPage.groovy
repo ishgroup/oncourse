@@ -18,13 +18,12 @@ class WebNodeToPage {
 
     Page getPage() {
         return new Page().with {page ->
-            page.id = webNode.id.toInteger()
+            page.id = webNode.nodeNumber
             page.title = webNode.name
-            page.serialNumber = webNode.nodeNumber
             page.themeId = webNode.webNodeType.id.intValue()
             page.content = webNode.webContentVisibility?.find {it.regionKey == RegionKey.content}?.webContent?.contentTextile
             page.visible = webNode.published
-            page.urls += webNode.webUrlAliases .collect { webUrlAlias ->  WebUrlAliasToPageUrl.valueOf(webUrlAlias).pageUrl }
+            page.urls += webNode.webUrlAliases .collect { webUrlAlias ->  WebUrlAliasToPageLink.valueOf(webUrlAlias).pageLink }
             page.suppressOnSitemap = webNode.suppressOnSitemap
             page
         }

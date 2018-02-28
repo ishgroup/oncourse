@@ -4,7 +4,6 @@ import com.google.inject.Inject
 import ish.oncourse.linktransform.PageIdentifier
 import ish.oncourse.model.WebNode
 import ish.oncourse.services.persistence.ICayenneService
-import ish.oncourse.willow.editor.v1.model.CommonError
 import ish.oncourse.willow.editor.rest.UpdatePage
 import ish.oncourse.willow.editor.rest.WebNodeToPage
 import ish.oncourse.willow.editor.v1.model.Page
@@ -46,9 +45,9 @@ class PageApiServiceImpl implements PageApi {
         return WebNodeToPage.valueOf(node).page
     }
     
-    void deletePage(String id) {
+    void deletePage(String pageNumber) {
         ObjectContext ctx = cayenneService.newContext()
-        WebNode node = WebNodeFunctions.getNodeForId(id.toLong(), requestService.request, cayenneService.newContext())
+        WebNode node = WebNodeFunctions.getNodeForNumber(pageNumber.toInteger(), requestService.request, cayenneService.newContext())
 
         if (node) {
             node.webContentVisibility.each { ctx.deleteObjects(ctx.localObject(it.webContent)) }
@@ -57,7 +56,7 @@ class PageApiServiceImpl implements PageApi {
             ctx.commitChanges()
 
         } else {
-            throw createClientException("There is no page to remove for provided number. id: $id")
+            throw createClientException("There is no page to remove for provided id: $pageNumber")
         }
     }
     
@@ -101,7 +100,7 @@ class PageApiServiceImpl implements PageApi {
     
     private ClientErrorException createClientException(String message) {
         logger.error("$message, server name: $requestService.request.serverName")
-        new ClientErrorException(Response.status(400).entity(new CommonError(message: message)).build())
+        new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(new UnknownError(message)).build())
     }
 }
 

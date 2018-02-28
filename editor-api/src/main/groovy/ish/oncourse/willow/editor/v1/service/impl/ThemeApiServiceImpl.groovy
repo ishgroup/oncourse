@@ -7,7 +7,6 @@ import ish.oncourse.willow.editor.v1.model.Layout
 import ish.oncourse.willow.editor.rest.UpdateTheme
 import ish.oncourse.willow.editor.rest.WebNodeTypeToTheme
 import ish.oncourse.willow.editor.v1.model.Theme
-import ish.oncourse.willow.editor.v1.model.CommonError
 
 import groovy.transform.CompileStatic
 import ish.oncourse.willow.editor.services.RequestService
@@ -63,7 +62,7 @@ class ThemeApiServiceImpl implements ThemeApi {
         WebSiteLayoutFunctions.getLayouts(requestService.request, cayenneService.newContext())
                 .collect { webLayout -> new  Layout().with { layout ->
                     layout.id = webLayout.id.intValue()
-                    layout.layoutKey = webLayout.layoutKey
+                    layout.title = webLayout.layoutKey
                     layout
             }
         }
@@ -87,7 +86,7 @@ class ThemeApiServiceImpl implements ThemeApi {
 
     private ClientErrorException createClientException(String message) {
         logger.error("$message, server name: $requestService.request.serverName")
-        new ClientErrorException(Response.status(400).entity(new CommonError(message: message)).build())
+        new ClientErrorException(Response.status(400).entity(new UnknownError(message)).build())
     }
     
 }

@@ -5,7 +5,7 @@ import ish.oncourse.model.WebContent
 import ish.oncourse.model.WebContentVisibility
 import ish.oncourse.model.WebNodeType
 import ish.oncourse.model.WebSiteLayout
-import ish.oncourse.willow.editor.v1.model.BlockItem
+import ish.oncourse.willow.editor.v1.model.BlockPosition
 import ish.oncourse.willow.editor.v1.model.Theme
 import ish.oncourse.willow.editor.website.ResourceNameUtil
 import ish.oncourse.willow.editor.website.WebContentFunctions
@@ -78,14 +78,14 @@ class UpdateTheme extends AbstractUpdate<Theme> {
     private String updateBlockVisibility() {
         context.deleteObjects(nodeType.webContentVisibilities)
 
-        return assignRegion(resourceToSave.schema.top, header)?:
-            assignRegion(resourceToSave.schema.left, left)?:
-            assignRegion(resourceToSave.schema.centre, content)?:
-            assignRegion(resourceToSave.schema.right, right)?:
-            assignRegion(resourceToSave.schema.footer, footer)?: null
+        return assignRegion(resourceToSave.blocks.top, header)?:
+            assignRegion(resourceToSave.blocks.left, left)?:
+            assignRegion(resourceToSave.blocks.centre, content)?:
+            assignRegion(resourceToSave.blocks.right, right)?:
+            assignRegion(resourceToSave.blocks.footer, footer)?: null
     }
     
-    private String assignRegion(List<BlockItem> blocks, RegionKey region) {
+    private String assignRegion(List<BlockPosition> blocks, RegionKey region) {
         return blocks.findResult { block ->  putBlockToPosition(block, region) }
     }
 
@@ -95,7 +95,7 @@ class UpdateTheme extends AbstractUpdate<Theme> {
      * @param region
      * @return
      */
-    private String putBlockToPosition(BlockItem item, RegionKey region) {
+    private String putBlockToPosition(BlockPosition item, RegionKey region) {
         Long id = item.id.toLong()
         Integer position = item.position.toInteger()
 

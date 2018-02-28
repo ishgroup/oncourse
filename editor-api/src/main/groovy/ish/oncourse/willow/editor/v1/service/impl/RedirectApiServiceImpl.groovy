@@ -4,7 +4,6 @@ import com.google.inject.Inject
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.willow.editor.rest.UpdateRedirects
 import ish.oncourse.willow.editor.services.RequestService
-import ish.oncourse.willow.editor.v1.model.CommonError
 import ish.oncourse.willow.editor.v1.model.RedirectItem
 import ish.oncourse.willow.editor.v1.model.Redirects
 import ish.oncourse.willow.editor.v1.service.RedirectApi
@@ -41,21 +40,19 @@ class RedirectApiServiceImpl implements RedirectApi {
     }
 
     @Override
-    Redirects updateRedirects(Redirects redirectSettingsRequest) {
+    Redirects updateRedirects(Redirects redirects) {
         ObjectContext context = cayenneService.newContext()
-        UpdateRedirects updater = UpdateRedirects.valueOf(redirectSettingsRequest, context, requestService.request).update()
+        UpdateRedirects updater = UpdateRedirects.valueOf(redirects, context, requestService.request).update()
 
         if (updater.errors.empty) {
             context.commitChanges()
-            return redirectSettingsRequest
+            return redirects
         } else {
             context.rollbackChanges()
-            throw createClientException(updater.errors.join('\n'))
+
+            throw new ClientErrorException(updater.errors.join('\n'), Response.status(Response.Status.BAD_REQUEST).entity(redirects).build())
+
         }
     }
-
-    private ClientErrorException createClientException(String message) {
-        logger.error("$message, server name: $requestService.request.serverName")
-        new ClientErrorException(Response.status(400).entity(new CommonError(message: message)).build())
-    }
+    
 }

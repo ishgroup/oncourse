@@ -18,8 +18,7 @@ class WebVersionToVersion {
     }
 
     Version getVersion() {
-        return new Version(webSiteVersion.id.intValue(), 
-                webSiteVersion.deployedOn != null,
+        return new Version(webSiteVersion.id.intValue(),
                 (webSiteVersion.deployedBy ?  "$webSiteVersion.deployedBy.firstName $webSiteVersion.deployedBy.surname".toString() : null),
                 null,
                 webSiteVersion.deployedOn?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDateTime(),

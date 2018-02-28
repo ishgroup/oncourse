@@ -2,6 +2,7 @@
 <Configuration status="warn" monitorInterval="30">
     <Properties>
         <Property name="name">willow_editor-api</Property>
+        <Property name="ConsoleOutputPattern">%d{HH:mm:ss.SSS} [%t] %-5p %c:%L - %m %X%x%n%ex</Property>
     </Properties>
     <Appenders>
         <RollingFile name="FILE" fileName="${sys:logs.path}/${name}.log" filePattern="${sys:logs.path}/${name}.log.%i">
@@ -15,11 +16,16 @@
             <SizeBasedTriggeringPolicy size="10M"/>
             <DefaultRolloverStrategy/>
         </RollingFile>
+        <Console name="STDOUT" target="SYSTEM_OUT">
+            <!-- pattern to output console -->
+            <PatternLayout pattern="${ConsoleOutputPattern}"/>
+        </Console>
     </Appenders>
     <Loggers>
         <Root level="warn">
             <AppenderRef ref="FILE_ERROR" level="error"/>
             <AppenderRef ref="FILE" level="warn"/>
+            <AppenderRef ref="STDOUT" level="debug"/>
         </Root>
         <Logger name="ish.oncourse.util.log.LogAppInfo" level="info">
             <AppenderRef ref="FILE"/>

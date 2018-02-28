@@ -6,7 +6,6 @@ import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.willow.editor.rest.UpdateBlock
 import ish.oncourse.willow.editor.rest.WebContentToBlock
 import ish.oncourse.willow.editor.v1.model.Block
-import ish.oncourse.willow.editor.v1.model.CommonError
 
 import groovy.transform.CompileStatic
 import ish.oncourse.willow.editor.services.RequestService
@@ -75,7 +74,7 @@ class BlockApiServiceImpl implements BlockApi {
 
     private ClientErrorException createClientException(String message) {
         logger.error("$message, server name: $requestService.request.serverName")
-        new ClientErrorException(Response.status(400).entity(new CommonError(message: message)).build())
+        new ClientErrorException(Response.status(400).entity(new UnknownError(message)).build())
     }
     
 }
