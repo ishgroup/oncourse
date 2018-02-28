@@ -26,7 +26,9 @@ ext {
                 "&useBatchMultiSend=false")
         test.systemProperty('oncourse.jdbc.user', dbUser)
         test.systemProperty('oncourse.jdbc.password', dbPassword)
-        test.systemProperty('shouldCreateTables', shouldCreateTables)
+//        test.systemProperty('shouldCreateTables', shouldCreateTables)
+        test.systemProperty('shouldCreateTables', true)
+
     }
 }
 
