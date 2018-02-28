@@ -17,12 +17,12 @@ class LoadByIds {
         }
 
         List<Long> longIds = stringIds.findAll { it && it.isLong() }.collect { it.toLong() }
-        List<Course> courseList = ObjectSelect.query(Course.class)
+        List<Course> courseList = new LinkedList<>(ObjectSelect.query(Course.class)
                 .where(Course.COLLEGE.eq(college))
                 .and(Course.IS_WEB_VISIBLE.isTrue())
                 .and(ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN, longIds))
                 .cacheStrategy(LOCAL_CACHE, Course.class.getSimpleName())
-                .select(context)
+                .select(context))
 
         return courseList.sort { longIds.indexOf(it.id) }
     }
