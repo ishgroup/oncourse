@@ -9,6 +9,8 @@ export const GET_USER_FULFILLED: string = FULFILLED(GET_USER_REQUEST);
 export const LOG_OUT_REQUEST: string = _toRequestType('user/logout');
 export const LOG_OUT_FULFILLED: string = FULFILLED(LOG_OUT_REQUEST);
 
+export const PAGE_RELOAD: string = "page/reload";
+
 export const submitLoginForm = form => ({
   type: SUBMIT_LOGIN_FORM_REQUEST,
   payload: form,
@@ -20,4 +22,8 @@ export const getUser = () => ({
 
 export const logout = () => ({
   type: LOG_OUT_REQUEST,
+});
+
+export const pageReload = () => ({
+  type: PAGE_RELOAD,
 });
