@@ -32,9 +32,9 @@
                 <div class="field-items">
                     {{#bodyParams}}
                         <div class="param">
-                            {{baseName}} {{#baseType}}<span class="model" data-model="{{baseType}}"><a href="#{{baseType}}">{{baseType}}</a></span>
-                            {{/baseType}} {{^required}}(optional){{/required}}{{#required}}(required){{/required}}
-                        </span>
+                            {{baseName}} {{#baseType}}<span class="model" data-model="{{baseType}}"><a href="#{{baseType}}">{{baseType}} </a></span>{{/baseType}}
+                            {{^required}}(optional){{/required}}{{#required}}(required){{/required}}
+                        </div>
                         <div class="param-desc">
                             {{description}} {{#defaultValue}}default: {{{defaultValue}}}{{/defaultValue}}
                         </div>

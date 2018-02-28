@@ -1,13 +1,18 @@
 {{#models}}
     {{#model}}
-
         <h2>{{classname}}</h2>
         {{#title}}<h3>{{title}}</h3>{{/title}}
         <p class='model-description'>{{description}}</p>
         {{#vars}}
             <ul class="parameter">
-                <li class="param-required-{{required}}">{{name}} (<span class="param-type">{{datatype}}</span>)
-                    <div class="param-desc">{{description}}</div>
+                <li class="param-required-{{required}}">
+                    <div>
+                        {{baseName}} {{#baseType}}<span class="model" data-model="{{baseType}}"><a href="#{{baseType}}">{{baseType}} </a></span>{{/baseType}}
+                        {{^required}}(optional{{#defaultValue}} default: {{{defaultValue}}}{{/defaultValue}}){{/required}}{{#required}}(required){{/required}}
+                    </div>
+                    <div class="param-desc">
+                        {{description}}
+                    </div>
                     {{#isEnum}}
                         <dl class="param-enum">
                         <dt>Enum:
