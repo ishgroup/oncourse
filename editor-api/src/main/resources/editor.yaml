@@ -51,7 +51,9 @@ paths:
 #################
     post:
       operationId: createSession
-      description: Authenticate user by email and password. Put session toke to cookie on success. Returns session token.
+      description: |
+        Authenticate user by email and password. Returns session token.
+        For all subsequent requests to the API you should ensure a cookie called ESESSIONID is set with this token value.
       security:
         - loginAuth: []
       tags:
@@ -61,7 +63,7 @@ paths:
       parameters:
         - name: loginRequest
           in: body
-          description: Parameters for request user authorization
+          description: Parameters for request user authorization.
           required: true
           schema:
             $ref: '#/definitions/LoginRequest'
@@ -77,7 +79,7 @@ paths:
         '406':
           description: Login unsuccessful. Invalid login name or password.
         '409':
-          description: There are more than one user with the same login details
+          description: There is more than one user with the same login details.
         default:
           description: Unexpected error
           schema:
@@ -85,7 +87,7 @@ paths:
 
     delete:
       operationId: destroySession
-      description: De-authorize user from editor
+      description: De-authorise user from editor.
       tags:
         - Auth
       consumes:
@@ -105,7 +107,7 @@ paths:
       operationId: getUser
       x-filter:
         - AuthFilter
-      description: Get current logged in user
+      description: Get current logged in user.
       tags:
         - Auth
       consumes:
@@ -127,12 +129,12 @@ paths:
       operationId: getMenus
       x-filter:
         - AuthFilter
-      description: Get all menu items
+      description: Get all menu items.
       tags:
         - Menu
       responses:
         '200':
-          description: A list of menu items
+          description: A list of menu items.
           schema:
             type: array
             items:
@@ -146,7 +148,7 @@ paths:
       operationId: updateMenus
       x-filter:
         - AuthFilter
-      description: Save menu items
+      description: Save menu items.
       tags:
         - Menu
       consumes:
@@ -185,24 +187,24 @@ paths:
       operationId: getPages
       x-filter:
         - AuthFilter
-      description: Get page object by provided page url
+      description: Get list of pages.
       tags:
         - Page
       parameters:
         - name: pageLink
           in: query
-          description: Optional page filter, return singletone array if page with provided unique url exist
+          description: Optional page link to return a list containing just one page
           required: false
           type: string
       responses:
         '200':
-          description: response with array of pages
+          description: List of pages
           schema:
             type: array
             items:
               $ref: '#/definitions/Page'
         '403':
-          description: Attempting to get special system page.
+          description: Special system page cannot be retrieved
         default:
           description: Unexpected error
           schema:
@@ -212,7 +214,7 @@ paths:
       operationId: updatePage
       x-filter:
         - AuthFilter
-      description: Save page parameters
+      description: Save page parameters.
       tags:
         - Page
       consumes:
@@ -220,7 +222,7 @@ paths:
       parameters:
         - name: pageParams
           in: body
-          description: page with new params
+          description: Page with new params
           required: true
           schema:
             $ref: '#/definitions/Page'
@@ -245,7 +247,7 @@ paths:
         - application/json
       responses:
         '200':
-          description: new page with unique id and url
+          description: New page with unique id and URL
           schema:
             $ref: '#/definitions/Page'
         default:
@@ -257,7 +259,7 @@ paths:
       operationId: deletePage
       x-filter:
         - AuthFilter
-      description: Remove page by number
+      description: Remove page by id.
       tags:
         - Page
       consumes:
@@ -265,7 +267,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: number of page which will be deleted
+          description: id of page to be deleted
           required: true
           type: string
       responses:
@@ -283,12 +285,12 @@ paths:
       operationId: getBlocks
       x-filter:
         - AuthFilter
-      description: Get list of blocks
+      description: Get list of blocks.
       tags:
         - Block
       responses:
         '200':
-          description: response with array of blocks
+          description: Response with array of blocks
           schema:
             type: array
             items:
@@ -302,7 +304,7 @@ paths:
       operationId: updateBlock
       x-filter:
         - AuthFilter
-      description: Update an existing block
+      description: Update an existing block.
       tags:
         - Block
       consumes:
@@ -328,14 +330,14 @@ paths:
       operationId: createBlock
       x-filter:
         - AuthFilter
-      description: Add new block
+      description: Add new block.
       tags:
         - Block
       consumes:
         - application/json
       responses:
         '200':
-          description: new block with unique id
+          description: New block with unique id
           schema:
             $ref: '#/definitions/Block'
         default:
@@ -355,7 +357,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: idenifier of block which will be deleted
+          description: Identifier of block which will be deleted.
           required: true
           type: string
       responses:
@@ -373,12 +375,12 @@ paths:
       operationId: getLayouts
       x-filter:
         - AuthFilter
-      description: Get array of layouts
+      description: Get list of layouts.
       tags:
         - Theme
       responses:
         '200':
-          description: response with array of layouts
+          description: List of layouts
           schema:
             type: array
             items:
@@ -395,12 +397,12 @@ paths:
       operationId: getThemes
       x-filter:
         - AuthFilter
-      description: Get array of themes
+      description: Get list of themes.
       tags:
         - Theme
       responses:
         '200':
-          description: response with array of themes
+          description: List of themes
           schema:
             type: array
             items:
@@ -414,7 +416,7 @@ paths:
       operationId: updateTheme
       x-filter:
         - AuthFilter
-      description: Save theme params
+      description: Save theme params.
       tags:
         - Theme
       consumes:
@@ -440,14 +442,14 @@ paths:
       operationId: createTheme
       x-filter:
         - AuthFilter
-      description: Add new theme
+      description: Add new theme.
       tags:
         - Theme
       consumes:
         - application/json
       responses:
         '200':
-          description: new theme with unique id
+          description: New theme with unique id
           schema:
             $ref: '#/definitions/Theme'
         default:
@@ -459,7 +461,7 @@ paths:
       operationId: deleteTheme
       x-filter:
         - AuthFilter
-      description: Remove theme
+      description: Remove theme.
       tags:
         - Theme
       consumes:
@@ -467,7 +469,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: id of theme which will be deleted
+          description: Id of theme which will be deleted
           required: true
           type: string
       responses:
@@ -485,12 +487,14 @@ paths:
       operationId: getVersions
       x-filter:
         - AuthFilter
-      description: Get list of site versions.
+      description: |
+        Get list of site versions including the current published site and current draft site. Historical versions will be also available here
+        up to a limit which is set by the editor server. Older versions (or beyond a certain number of versions) will be discarded and not avaiable.
       tags:
         - Version
       responses:
         '200':
-          description: List of versions including the current published site, current draft site and all history still kept.
+          description: List of versions
           schema:
             type: array
             items:
@@ -536,12 +540,12 @@ paths:
       operationId: getSkillsOnCourseSettings
       x-filter:
         - AuthFilter
-      description: Get SkillsOnCourse settings
+      description: Get SkillsOnCourse settings.
       tags:
         - Settings
       responses:
         '200':
-          description: response with SkillsOnCourse settings object
+          description: SkillsOnCourse settings object
           schema:
             $ref: '#/definitions/SkillsOnCourseSettings'
         default:
@@ -553,7 +557,7 @@ paths:
       operationId: updateSkillsOnCourseSettings
       x-filter:
         - AuthFilter
-      description: Save SkillsOnCourse settings
+      description: Save SkillsOnCourse settings.
       tags:
         - Settings
       consumes:
@@ -582,12 +586,12 @@ paths:
       operationId: getWebsiteSettings
       x-filter:
         - AuthFilter
-      description: Get Website settings
+      description: Get Website settings.
       tags:
         - Settings
       responses:
         '200':
-          description: response with Website settings object
+          description: Website settings object
           schema:
             $ref: '#/definitions/WebsiteSettings'
         default:
@@ -599,7 +603,7 @@ paths:
       operationId: updateWebsiteSettings
       x-filter:
         - AuthFilter
-      description: Save website settings
+      description: Save website settings.
       tags:
         - Settings
       consumes:
@@ -607,7 +611,7 @@ paths:
       parameters:
         - name: WebsiteSettingsRequest
           in: body
-          description: website settings object
+          description: Website settings object
           required: true
           schema:
             $ref: '#/definitions/WebsiteSettings'
@@ -628,7 +632,7 @@ paths:
       operationId: getRedirects
       x-filter:
         - AuthFilter
-      description: Get redirects for the whole site
+      description: Get redirects for the whole site.
       tags:
         - Redirect
       responses:
@@ -645,7 +649,7 @@ paths:
       operationId: updateRedirects
       x-filter:
         - AuthFilter
-      description: Replace all the redirects for the site with a new list of redirects
+      description: Replace all the redirects for the site with a new list of redirects.
       tags:
         - Redirect
       consumes:
@@ -653,13 +657,13 @@ paths:
       parameters:
         - name: RedirectSettingsRequest
           in: body
-          description: A list of redirects
+          description: List of redirects
           required: true
           schema:
             $ref: '#/definitions/Redirects'
       responses:
         '200':
-          description: A list of redirects
+          description: List of redirects
           schema:
             $ref: '#/definitions/Redirects'
         '400':
@@ -797,9 +801,11 @@ definitions:
       id:
         type: integer
         description: unique id of the Block
+        example: 12
       title:
         type: string
         description: Block name
+        example: left-sidebar
       position:
         type: integer
         description: order position of the block
@@ -944,6 +950,7 @@ definitions:
         description: Address to which replies from tutors will be sent.
         type: string
         format: email
+        example: tutors@acme.edu.au
         
   Condition:
     type: string
@@ -953,6 +960,7 @@ definitions:
       - beforeClassStarts
       - afterClassEnds
       - beforeClassEnds
+    example: afterClassStarts
         
   ClassStateTransition:
     type: object
@@ -960,6 +968,7 @@ definitions:
       offset:
         type: integer
         description: Number of days
+        example: 2
       condition:
         $ref: '#/definitions/Condition'
       
@@ -980,6 +989,7 @@ definitions:
         type: boolean
       addThisId:
         type: string
+        example: agd5465274
       enableForCourse:
         type: boolean
       enableForWebpage:
