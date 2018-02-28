@@ -93,10 +93,10 @@ task generateDoc (type: SwaggerDoc) {
     docOutput = file("${buildDir}/doc")
 }
 
-task buildDoc (type: Zip, dependsOn: generateDoc, group: 'documentation') {
-    from generateDoc.outputs
+task packageDoc (type: Zip, dependsOn: generateDoc, group: 'distribution') {
+    from file("${buildDir}/doc/docs")
     archiveName 'doc.zip'
-    destinationDir file("${buildDir}/doc")
+    destinationDir file("${buildDir}/dist/")
 }
 
 task swaggerTemplates (type: SwaggerTemplates) {
