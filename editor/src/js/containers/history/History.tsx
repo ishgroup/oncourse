@@ -65,7 +65,7 @@ class History extends React.Component<Props, any> {
                 <td>{version.id}</td>
                 <td>
                   {version.status === VersionStatus.draft && 'Draft'}
-                  {version.status === VersionStatus.published && version.publishedOn &&
+                  {(version.status === VersionStatus.published && !version.status) && version.publishedOn &&
                     <TimeAgo date={version.publishedOn}/>
                   }
                 </td>
@@ -74,7 +74,7 @@ class History extends React.Component<Props, any> {
                   {version.status === VersionStatus.draft &&
                     <Button color="primary" onClick={() => this.onPublish(version.id)}>Publish</Button>
                   }
-                  {version.status === VersionStatus.published &&
+                  {(version.status === VersionStatus.published || !version.status) &&
                     <Button color="secondary" onClick={() => this.onRevert(version.id)}>Revert</Button>
                   }
                 </td>
