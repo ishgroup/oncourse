@@ -63,6 +63,32 @@ public class KioskSession {
     @Property
     private Tutor tutor;
 
+    /* deprecated properties should be deleted
+    after migration all colleges to bootique web app
+    (OD-11646 - adjusting KioskSession tapestry template
+     OD-11645 - adjusting KioskSession controller)
+     */
+
+    @Deprecated
+    @Property
+    private String name;
+
+    @Deprecated
+    @Property
+    private String code;
+
+    @Deprecated
+    @Property
+    private Date start;
+
+    @Deprecated
+    @Property
+    private Date end;
+
+    @Deprecated
+    @Property
+    private String location;
+
     @SetupRender
     public void setupRender() {
         courseClass = session.getCourseClass();
@@ -90,6 +116,14 @@ public class KioskSession {
         if (!getVisibleTutors.getTutors().isEmpty()) {
             firstTutorName = GetVisibleTutors.getTutorName(getVisibleTutors.getTutors().get(0));
         }
+
+        name = courseClass.getCourse().getName();
+        code = courseClass.getUniqueIdentifier();
+
+        start = session.getStartDate();
+        end = session.getEndDate();
+
+        location = session.getRoom().getName();
     }
 }
 
