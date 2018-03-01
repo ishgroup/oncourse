@@ -1,6 +1,5 @@
 package ish.oncourse.services.search;
 
-import ish.oncourse.configuration.Configuration;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.property.IPropertyService;
@@ -22,12 +21,12 @@ import org.apache.solr.common.SolrException;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Symbol;
 
+import javax.cache.Cache;
+import javax.cache.CacheManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static ish.oncourse.configuration.Configuration.AppProperty.ZK_HOST;
 
 public class SearchService implements ISearchService {
 	static final String TERMS_SEPARATOR_STRING = " || ";
@@ -63,22 +62,32 @@ public class SearchService implements ISearchService {
 
 	private String aliasSuffix;
 	
-	private String zkHost = Configuration.getValue(ZK_HOST);
+	private  CacheManager cacheManager;
+
+
+	protected Map<SolrCore, SolrClient> solrClients = new HashMap<>();
+
 
 
 	public SearchService(@Inject IWebSiteService webSiteService,
 						 @Inject IPropertyService propertyService,
 						 @Inject ITagService tagService,
-						 @Inject @Symbol(ALIAS_SUFFIX_PROPERTY) String aliasSuffix) {
+						 @Inject @Symbol(ALIAS_SUFFIX_PROPERTY) String aliasSuffix,
+						 @Inject CacheManager cacheManager) {
+		
 		this.webSiteService = webSiteService;
 		this.propertyService = propertyService;
 		this.tagService = tagService;
 		this.aliasSuffix = aliasSuffix;
+		this.cacheManager = cacheManager;
+		this.solrClients.put(SolrCore.courses, BuildSolrClient.instance().build());
+		this.solrClients.put(SolrCore.tags, BuildSolrClient.instance().build());
+		this.solrClients.put(SolrCore.suburbs, BuildSolrClient.instance().build());
+
 	}
 
-
-	protected SolrClient getSolrClient() {
-		return BuildSolrClient.instance(zkHost).build();
+	protected SolrClient getSolrClient(SolrCore core) {
+		return solrClients.computeIfAbsent(core, k -> BuildSolrClient.instance().build());
 	}
 
 	/**
@@ -89,34 +98,35 @@ public class SearchService implements ISearchService {
 	 * @throws SolrServerException
 	 */
 	private QueryResponse query(SolrQuery q, SolrCore core) throws Exception {
-		int count = 0;
-		Exception exception = null;
-		while (count < 3) {
-			try {
-				return getSolrClient().query(core.name() + (StringUtils.trimToNull(aliasSuffix) != null ? "-" + aliasSuffix : StringUtils.EMPTY), q);
-			} catch (Exception e) {
-				exception = e;
-				count++;
-				QueryResponse result = handleException(e, q, count);
-				if (result != null)
-					return result;
-				try {
-					Thread.sleep(100);
-				} catch (InterruptedException e1) {
-				}
-			}
+		Cache<String, QueryResponse> cache = cacheManager.getCache(core.name(), String.class, QueryResponse.class);
+		QueryResponse result = cache.get(q.toString());
+		if (result == null) {
+			result = getFromSolr(q, core);
+			cache.put(q.toString(), result);
 		}
-		if (exception != null)
-			throw exception;
-		else
-			throw new IllegalArgumentException();
+		return result;
 	}
+	
+	private QueryResponse getFromSolr(SolrQuery q, SolrCore core) throws Exception {
+		Exception exception;
+		try {
+			return getSolrClient(core).query(core.name() + (StringUtils.trimToNull(aliasSuffix) != null ? "-" + aliasSuffix : StringUtils.EMPTY), q);
+		} catch (Exception e) {
+			exception = e;
+			QueryResponse result = handleException(e, q);
+			if (result != null)
+				return result;
+		}
+
+		throw exception;
+	}
+	
 
 	/**
 	 * The method logs stacktraces every exception from hierarchy. I have added it to see full stack trace of a exception.
 	 */
-	private QueryResponse handleException(Throwable throwable, SolrQuery solrQuery, int count) {
-		logger.warn("Cannot execute query: {} with attempt {}", SearchResult.valueOf(solrQuery).getSolrQueryAsString(), count, throwable);
+	private QueryResponse handleException(Throwable throwable, SolrQuery solrQuery) {
+		logger.warn("Cannot execute query: {}", SearchResult.valueOf(solrQuery).getSolrQueryAsString(), throwable);
 
 		if (throwable instanceof SolrServerException &&
 				throwable.getCause() instanceof SolrException &&

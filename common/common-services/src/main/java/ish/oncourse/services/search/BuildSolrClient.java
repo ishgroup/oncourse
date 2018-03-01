@@ -30,7 +30,10 @@ public class BuildSolrClient {
 		if (url.startsWith("http://") || url.startsWith("https://")) {
 			return new HttpSolrClient.Builder(url).build();
 		} else {
-			return new CloudSolrClient.Builder().withZkHost(url).build();
+			CloudSolrClient solrClient = new CloudSolrClient.Builder().withZkHost(url).build();
+			solrClient.setZkClientTimeout(3000);
+			solrClient.setZkConnectTimeout(1000);
+			return solrClient;
 		}
 	}
 
