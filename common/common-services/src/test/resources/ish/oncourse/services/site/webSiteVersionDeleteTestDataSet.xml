@@ -36,8 +36,8 @@
 	<WebNodeType id="1" name="page" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="1" webSiteLayoutId="1"/>
 	<WebNodeType id="2" name="aboutUs" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="1" webSiteLayoutId="2"/>
 
-	<WebNode id="1" webNodeTypeId="1" isPublished="1" name="Home page" nodeNumber="1" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="1"/>
-	<WebNode id="2" webNodeTypeId="2" isPublished="1" name="About us" nodeNumber="2" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="1"/>
+	<WebNode id="1" webNodeTypeId="1" isPublished="1" name="Home page" nodeNumber="1" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="1" suppressOnSitemap="0"/>
+	<WebNode id="2" webNodeTypeId="2" isPublished="1" name="About us" nodeNumber="2" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="1" suppressOnSitemap="0"/>
 
 	<WebMenu id="1" webNodeId="1" weight="1" name="Home" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="1"/>
 	<WebMenu id="2" webNodeId="1" webMenuParentId="1" weight="0" name="Menu" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="1"/>
@@ -66,8 +66,8 @@
 	<WebNodeType id="3" name="page" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="2" webSiteLayoutId="3"/>
 	<WebNodeType id="4" name="aboutUs" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="2" webSiteLayoutId="4"/>
 
-	<WebNode id="3" webNodeTypeId="3" isPublished="1" name="Home page" nodeNumber="1" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="2"/>
-	<WebNode id="4" webNodeTypeId="4" isPublished="1" name="About us" nodeNumber="2" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="2"/>
+	<WebNode id="3" webNodeTypeId="3" isPublished="1" name="Home page" nodeNumber="1" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="2" suppressOnSitemap="0"/>
+	<WebNode id="4" webNodeTypeId="4" isPublished="1" name="About us" nodeNumber="2" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="2" suppressOnSitemap="0"/>
 
 	<WebMenu id="4" webNodeId="3" weight="1" name="Home" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="2"/>
 	<WebMenu id="5" webNodeId="3" webMenuParentId="4" weight="0" name="Menu" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="2"/>
@@ -96,8 +96,8 @@
 	<WebNodeType id="5" name="page" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="3" webSiteLayoutId="5"/>
 	<WebNodeType id="6" name="aboutUs" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="3" webSiteLayoutId="6"/>
 
-	<WebNode id="5" webNodeTypeId="5" isPublished="1" name="Home page" nodeNumber="1" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="3"/>
-	<WebNode id="6" webNodeTypeId="6" isPublished="1" name="About us" nodeNumber="2" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="3"/>
+	<WebNode id="5" webNodeTypeId="5" isPublished="1" name="Home page" nodeNumber="1" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="3"  suppressOnSitemap="0"/>
+	<WebNode id="6" webNodeTypeId="6" isPublished="1" name="About us" nodeNumber="2" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="3"  suppressOnSitemap="0"/>
 
 	<WebMenu id="7" webNodeId="5" weight="1" name="Home" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="3"/>
 	<WebMenu id="8" webNodeId="5" webMenuParentId="7" weight="0" name="Menu" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="3"/>
