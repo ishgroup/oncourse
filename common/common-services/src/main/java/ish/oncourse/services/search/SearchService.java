@@ -99,10 +99,11 @@ public class SearchService implements ISearchService {
 	 */
 	private QueryResponse query(SolrQuery q, SolrCore core) throws Exception {
 		Cache<String, QueryResponse> cache = cacheManager.getCache(core.name(), String.class, QueryResponse.class);
-		QueryResponse result = cache.get(q.toString());
+		String key = q.toString();
+		QueryResponse result = cache.get(key);
 		if (result == null) {
 			result = getFromSolr(q, core);
-			cache.put(q.toString(), result);
+			cache.put(key, result);
 		}
 		return result;
 	}
