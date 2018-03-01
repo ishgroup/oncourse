@@ -13,7 +13,7 @@ export class BuyButton extends React.Component<BuyButtonProps, BuyButtonState> {
     this.state = {
       showedPopup: false,
       isAlreadyAdded: false,
-      pending: false
+      pending: false,
     };
   }
 
@@ -26,11 +26,11 @@ export class BuyButton extends React.Component<BuyButtonProps, BuyButtonState> {
       stopPropagation(e);
       this.setState({
         showedPopup: true,
-        isAlreadyAdded: true
+        isAlreadyAdded: true,
       });
     } else {
       this.setState({
-        pending: true
+        pending: true,
       });
 
       this.props.addProduct(this.props.product);
@@ -38,16 +38,16 @@ export class BuyButton extends React.Component<BuyButtonProps, BuyButtonState> {
       this.setState({
         showedPopup: true,
         isAlreadyAdded: false,
-        pending: false
+        pending: false,
       });
     }
-  };
+  }
 
   closePopup = () => {
     this.setState({
-      showedPopup: false
+      showedPopup: false,
     });
-  };
+  }
 
   componentDidMount() {
     const {id, requestProductById} = this.props;
@@ -67,13 +67,17 @@ export class BuyButton extends React.Component<BuyButtonProps, BuyButtonState> {
       <div className="classAction">
         <a className={classnames("enrolAction", {"enrol-added-class": isAdded})}
            onClick={this.addProduct}>
-          {isAdded ? "Added" : "BUY NOW"}
+          {isAdded ? "Added" : "Buy now"}
         </a>
-        {this.state.showedPopup && <ConfirmOrderDialog id={id}
-                                                       name={name}
-                                                       isAlreadyAdded={this.state.isAlreadyAdded}
-                                                       close={this.closePopup}
-                                                       checkoutPath={checkoutPath}/>}
+        {this.state.showedPopup &&
+          <ConfirmOrderDialog
+            id={id}
+            name={name}
+            isAlreadyAdded={this.state.isAlreadyAdded}
+            close={this.closePopup}
+            checkoutPath={checkoutPath}
+          />
+        }
       </div>
     );
   }
@@ -89,7 +93,7 @@ export interface BuyButtonProps {
 }
 
 interface BuyButtonState {
-  readonly showedPopup: boolean,
-  readonly isAlreadyAdded: boolean,
+  readonly showedPopup: boolean;
+  readonly isAlreadyAdded: boolean;
   readonly pending: boolean;
 }
