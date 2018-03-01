@@ -1,5 +1,6 @@
 <ehcache:config
         xmlns:ehcache="http://www.ehcache.org/v3">
+    
     <ehcache:cache alias="courses">
         <ehcache:key-type copier="org.ehcache.impl.copy.SerializingCopier">java.lang.String</ehcache:key-type>
         <ehcache:value-type copier="org.ehcache.impl.copy.SerializingCopier">org.apache.solr.client.solrj.response.QueryResponse</ehcache:value-type>
@@ -7,6 +8,7 @@
         <ehcache:expiry>
             <ehcache:tti unit="seconds">15</ehcache:tti>
         </ehcache:expiry>
+        <ehcache:heap unit="entries">1000</ehcache:heap>
     </ehcache:cache>
     
     <ehcache:cache alias="suburbs">
@@ -16,6 +18,7 @@
         <ehcache:expiry>
             <ehcache:tti unit="seconds">15</ehcache:tti>
         </ehcache:expiry>
+        <ehcache:heap unit="entries">1000</ehcache:heap>
     </ehcache:cache>
     
     <ehcache:cache alias="tags">
@@ -25,6 +28,7 @@
         <ehcache:expiry>
             <ehcache:tti unit="seconds">15</ehcache:tti>
         </ehcache:expiry>
+        <ehcache:heap unit="entries">1000</ehcache:heap>
     </ehcache:cache>
     
 </ehcache:config>
