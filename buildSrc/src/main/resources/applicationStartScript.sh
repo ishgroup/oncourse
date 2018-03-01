@@ -10,8 +10,7 @@
 command -v realpath >/dev/null 2>&1 || realpath() {
     echo \$(cd \$(dirname \$1) && pwd)/\$(basename \$1)
 }
-
-PID_FILE="/var/run/onCourse/${applicationName}.pid"
+: \${pidfile:=/var/run/onCourse/${applicationName}.pid}
 if [ ! -d "/var/run/onCourse" ]; then
     mkdir /var/run/onCourse
 fi
@@ -32,13 +31,13 @@ usage() {
 }
 
 stop() {
-    cat "\$PID_FILE" | xargs kill
+    cat "\$pidfile" | xargs kill
 }
 
 # Tell the application to return an error on the health check so we can drain all the remaining connections
 # and have haproxy remove the backend from the pool
 drain() {
-    cat "\$PID_FILE" | xargs kill -2
+    cat "\$pidfile" | xargs kill -2
 }
 
 start() {
@@ -69,15 +68,15 @@ start() {
 
     # FreeBSD has a daemon starting binary which creates the pidfile for us
     if [ -x "/usr/sbin/daemon" ] ; then
-        /usr/sbin/daemon -rP \$PID_FILE -t ${applicationName} -f \$CMD
+        /usr/sbin/daemon -rP \$pidfile -t ${applicationName} -f \$CMD
     else
         nohup \$CMD > ${applicationName}.out 2>&1 &
-        echo \$! > "\$PID_FILE"
+        echo \$! > "\$pidfile"
     fi
 }
 
 status() {
-    pid=`cat "\$PID_FILE" 2>/dev/null`
+    pid=`cat "\$pidfile" 2>/dev/null`
     ps -p \$pid 2>/dev/null>/dev/null
     if [ \$? -eq 0 ]; then
         echo "${applicationName} is running as pid \$pid."
