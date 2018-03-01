@@ -21,8 +21,6 @@ import org.apache.solr.common.SolrException;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Symbol;
 
-import javax.cache.Cache;
-import javax.cache.CacheManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,9 +59,6 @@ public class SearchService implements ISearchService {
 	private ITagService tagService;
 
 	private String aliasSuffix;
-	
-	private  CacheManager cacheManager;
-
 
 	protected Map<SolrCore, SolrClient> solrClients = new HashMap<>();
 
@@ -72,14 +67,12 @@ public class SearchService implements ISearchService {
 	public SearchService(@Inject IWebSiteService webSiteService,
 						 @Inject IPropertyService propertyService,
 						 @Inject ITagService tagService,
-						 @Inject @Symbol(ALIAS_SUFFIX_PROPERTY) String aliasSuffix,
-						 @Inject CacheManager cacheManager) {
+						 @Inject @Symbol(ALIAS_SUFFIX_PROPERTY) String aliasSuffix) {
 		
 		this.webSiteService = webSiteService;
 		this.propertyService = propertyService;
 		this.tagService = tagService;
 		this.aliasSuffix = aliasSuffix;
-		this.cacheManager = cacheManager;
 		this.solrClients.put(SolrCore.courses, BuildSolrClient.instance().build());
 		this.solrClients.put(SolrCore.tags, BuildSolrClient.instance().build());
 		this.solrClients.put(SolrCore.suburbs, BuildSolrClient.instance().build());
@@ -98,17 +91,6 @@ public class SearchService implements ISearchService {
 	 * @throws SolrServerException
 	 */
 	private QueryResponse query(SolrQuery q, SolrCore core) throws Exception {
-		Cache<String, QueryResponse> cache = cacheManager.getCache(core.name(), String.class, QueryResponse.class);
-		String key = q.toString();
-		QueryResponse result = cache.get(key);
-		if (result == null) {
-			result = getFromSolr(q, core);
-			cache.put(key, result);
-		}
-		return result;
-	}
-	
-	private QueryResponse getFromSolr(SolrQuery q, SolrCore core) throws Exception {
 		Exception exception;
 		try {
 			return getSolrClient(core).query(core.name() + (StringUtils.trimToNull(aliasSuffix) != null ? "-" + aliasSuffix : StringUtils.EMPTY), q);
@@ -118,7 +100,6 @@ public class SearchService implements ISearchService {
 			if (result != null)
 				return result;
 		}
-
 		throw exception;
 	}
 	
