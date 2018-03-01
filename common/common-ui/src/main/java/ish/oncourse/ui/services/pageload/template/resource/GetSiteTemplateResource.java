@@ -11,7 +11,6 @@ import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.Resource;
 import org.apache.tapestry5.model.ComponentModel;
 import org.apache.tapestry5.services.ExceptionReporter;
-import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.pageload.ComponentResourceLocator;
 import org.apache.tapestry5.services.pageload.ComponentResourceSelector;
 
@@ -32,9 +31,8 @@ public class GetSiteTemplateResource {
 
 	public GetSiteTemplateResource(IWebNodeService webNodeService,
 								   IResourceService resourceService,
-								   Request request,
 								   ComponentResourceLocator componentResourceLocator) {
-		this.getCustomTemplateResource = new GetCustomTemplateResource(webNodeService, resourceService, request);
+		this.getCustomTemplateResource = new GetCustomTemplateResource(webNodeService, resourceService);
 		this.getDefaultTemplateResource = new GetDefaultTemplateResource(componentResourceLocator);
 		this.webNodeService = webNodeService;
 		this.resourceService = resourceService;
@@ -65,7 +63,7 @@ public class GetSiteTemplateResource {
 		if (layout == null)
 			return getDefaultTemplateResource.get(componentModel, selector);
 
-		Resource resource = getCustomTemplateResource.get(componentModel);
+		Resource resource = getCustomTemplateResource.get(componentModel, selector);
 		if (resource != null)
 			return resource;
 

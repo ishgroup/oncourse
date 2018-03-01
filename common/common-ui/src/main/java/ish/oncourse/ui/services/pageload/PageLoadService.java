@@ -66,7 +66,7 @@ public class PageLoadService {
 		this.templateParser = templateParser;
 		this.pageLoader = pageLoader;
 		this.templateChangeTracker = new WebTemplateChangeTracker(cayenneService, webSiteService, webSiteVersionService);
-		this.getSiteTemplateResource = new GetSiteTemplateResource(webNodeService, resourceService, request, componentResourceLocator);
+		this.getSiteTemplateResource = new GetSiteTemplateResource(webNodeService, resourceService, componentResourceLocator);
 		this.getTemplateKey = new GetTemplateKey(webNodeService, request);
 		this.getOrCreateCache = new JCacheDefaultConfigurationFactory.GetOrCreateCache(cacheManager);
 	}

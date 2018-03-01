@@ -5,7 +5,9 @@ package ish.oncourse.ui.services.pageload.template;
 
 import ish.oncourse.services.textile.CustomTemplateDefinition;
 import ish.oncourse.services.textile.TextileUtil;
-import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.services.pageload.ComponentResourceSelector;
+
+import java.util.Map;
 
 /**
  * User: akoiro
@@ -13,17 +15,15 @@ import org.apache.tapestry5.services.Request;
  */
 public class GetTemplateDefinition {
 
-	private Request request;
+	private ComponentResourceSelector selector;
 
-	public GetTemplateDefinition(Request request) {
-		this.request = request;
+	public GetTemplateDefinition(ComponentResourceSelector selector) {
+		this.selector = selector;
 	}
 
 	public CustomTemplateDefinition get(String name) {
-		CustomTemplateDefinition ctd = (CustomTemplateDefinition) request.getAttribute(TextileUtil.CUSTOM_TEMPLATE_DEFINITION);
-		if (ctd != null && !name.endsWith(ctd.getTemplateClassName())) {
-			ctd = null;
-		}
-		return ctd;
+		Map params = selector.getAxis(Map.class);
+		CustomTemplateDefinition definition = params != null ? (CustomTemplateDefinition) params.get(TextileUtil.CUSTOM_TEMPLATE_DEFINITION) : null;
+		return definition != null && name.endsWith(definition.getTemplateClassName()) ? definition : null;
 	}
 }

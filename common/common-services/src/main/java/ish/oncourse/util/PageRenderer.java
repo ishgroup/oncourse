@@ -1,6 +1,5 @@
 package ish.oncourse.util;
 
-import ish.oncourse.services.textile.CustomTemplateDefinition;
 import ish.oncourse.services.textile.TextileUtil;
 import org.apache.tapestry5.dom.MarkupModel;
 import org.apache.tapestry5.internal.services.PageLoader;
@@ -37,12 +36,7 @@ public class PageRenderer implements IPageRenderer {
 
 		requestGlobals.storeRequestResponse(request, wrapper);
 
-		ComponentResourceSelector selector = new ComponentResourceSelector(Locale.getDefault());
-		CustomTemplateDefinition ctd = (CustomTemplateDefinition) request.getAttribute(TextileUtil.CUSTOM_TEMPLATE_DEFINITION);
-		if (ctd != null) {
-			selector = selector.withAxis(CustomTemplateDefinition.class, ctd);
-		}
-		
+		ComponentResourceSelector selector = new ComponentResourceSelector(Locale.getDefault()).withAxis(Map.class, parameters);
 		Page page = pageLoader.loadPage(pageName, selector);
 
 		try {
