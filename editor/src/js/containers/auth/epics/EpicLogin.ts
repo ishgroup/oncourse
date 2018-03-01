@@ -3,7 +3,7 @@ import "rxjs";
 import {Observable} from "rxjs/Observable";
 import {MiddlewareAPI} from "redux";
 import * as EpicUtils from "../../../epics/EpicUtils";
-import {getUser, PAGE_RELOAD, pageReload, SUBMIT_LOGIN_FORM_FULFILLED, SUBMIT_LOGIN_FORM_REQUEST} from "../actions";
+import {PAGE_RELOAD, pageReload, SUBMIT_LOGIN_FORM_FULFILLED, SUBMIT_LOGIN_FORM_REQUEST} from "../actions";
 import AuthService from "../../../services/AuthService";
 import {CookieService} from "../../../services/CookieService";
 import {DefaultConfig} from "../../../constants/Config";
@@ -25,7 +25,6 @@ const request: EpicUtils.Request<any, any> = {
       {
         type: SUBMIT_LOGIN_FORM_FULFILLED,
       },
-      getUser(),
       pageReload(),
     ];
   },

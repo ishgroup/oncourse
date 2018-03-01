@@ -63,8 +63,8 @@ export class Sidebar extends React.Component<Props, any> {
   render() {
     const {slim, user} = this.props;
     const userName = slim
-      ? `${firstChar(user.firstName)}${firstChar(user.lastName)}`
-      : `${user.firstName} ${user.lastName}`;
+      ? `${firstChar(user.firstName) || ''}${firstChar(user.lastName) || ''}`
+      : `${user.firstName || ''} ${user.lastName || ''}`;
 
     const getSubRoutes = url => (
       routes.filter(route => !route.isPublic && route.parent === url).map((route: Route, index) => (
@@ -133,7 +133,7 @@ export class Sidebar extends React.Component<Props, any> {
               <Row className="center">
                 <Col md="12">
                   <a href="#" className="logout-link" onClick={e => this.onClickLogout(e)}>
-                    <span className="user">{userName}: logout</span>
+                    <span className="user">{userName} {userName && ':'} logout</span>
                   </a>
                 </Col>
               </Row>

@@ -10,7 +10,7 @@ import {Content} from '../components/Layout/Content';
 import {Modal} from "../common/containers/modal/Modal";
 import {getHistoryInstance, setHistoryInstance} from "../history";
 import {URL} from "../routes";
-import {logout} from "./auth/actions";
+import {getUser, logout} from "./auth/actions";
 import {getHistory, publish} from "./history/actions";
 import {hideModal, showModal} from "../common/containers/modal/actions";
 import {AuthState} from "./auth/reducers/State";
@@ -27,6 +27,7 @@ interface Props {
   hideModal: () => any;
   onPublish: (id) => any;
   showModal: () => any;
+  getUser: () => any;
   getPageByUrl: (url) => any;
   getHistory: () => any;
   draftVersion: Version;
@@ -48,8 +49,9 @@ export class Cms extends React.Component<Props, any> {
     setHistoryInstance(this.props.history);
 
     if (this.props.auth.isAuthenticated) {
-      this.props.getPageByUrl(document.location.pathname);
+      this.props.getUser();
       this.props.getHistory();
+      this.props.getPageByUrl(document.location.pathname);
     }
   }
 
@@ -130,6 +132,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
     showModal: props => dispatch(showModal(props)),
     getPageByUrl: url => dispatch(getPageByUrl(url)),
     getHistory: () => dispatch(getHistory()),
+    getUser: () => dispatch(getUser()),
   };
 };
 
