@@ -78,11 +78,11 @@ export class Cms extends React.Component<Props, any> {
       .site-wrapper {
         padding-left:${globalPadding};
       }
-      #content > div[class^='block-'] {
+      #content div[class^='block-'] {
         border: 1px solid transparent;
         cursor: pointer;
       }
-      #content > div[class^='block-']:hover {
+      #content div[class^='block-']:hover {
         border: 1px solid red;
       }
     `;
