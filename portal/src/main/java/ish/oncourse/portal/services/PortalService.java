@@ -1,9 +1,6 @@
 package ish.oncourse.portal.services;
 
-import ish.common.types.AttachmentInfoVisibility;
-import ish.common.types.EnrolmentStatus;
-import ish.common.types.OutcomeStatus;
-import ish.common.types.PaymentStatus;
+import ish.common.types.*;
 import ish.math.Money;
 import ish.oncourse.model.*;
 import ish.oncourse.portal.access.IAuthenticationService;
@@ -841,10 +838,12 @@ public class PortalService implements IPortalService {
         result.setCourseScore(0);
         result.setVenueScore(0);
         result.setTutorScore(0);
+        result.setNetPromoterScore(0);
         for (Survey survey : surveys) {
             result.setCourseScore(result.getCourseScore() + survey.getCourseScore());
             result.setVenueScore(result.getVenueScore() + survey.getVenueScore());
             result.setTutorScore(result.getTutorScore() + survey.getTutorScore());
+            result.setNetPromoterScore(result.getNetPromoterScore() + survey.getNetPromoterScore());
         }
 
         int size = surveys.size();
@@ -852,7 +851,9 @@ public class PortalService implements IPortalService {
             result.setCourseScore(((int) Math.floor(result.getCourseScore() / size)));
             result.setTutorScore(((int) Math.floor(result.getTutorScore() / size)));
             result.setVenueScore(((int) Math.floor(result.getVenueScore() / size)));
+            result.setNetPromoterScore(((int) Math.floor(result.getNetPromoterScore() / size)));
         }
+        result.setVisibility(SurveyVisibility.TESTIMONIAL);
         return result;
     }
 
