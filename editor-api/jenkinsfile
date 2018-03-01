@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh "./gradlew editor-api:build -Dbuild_number=${env.BUILD_NUMBER} -PreleaseVersion=${params.version}"
+                sh "./gradlew editor-api:build editor-api:generateDoc -Dbuild_number=${env.BUILD_NUMBER} -PreleaseVersion=${params.version}"
                 junit 'editor-api/build/test-results/**/*.xml'
             }
         }
@@ -31,8 +31,7 @@ pipeline {
                 script {
                     currentBuild.displayName = "Release ${params.version}"
                 }
-                sh "./gradlew editor-api:publishExecutablesPublicationToExecutablesRepository -PreleaseVersion=${params.version}"
-                sh "./gradlew editor-api:publishReleasesPublicationToReleasesRepository -PreleaseVersion=${params.version}"
+                sh "./gradlew editor-api:packageDoc editor-api:publishExecutablesPublicationToExecutablesRepository editor-api:publishReleasesPublicationToReleasesRepository -PreleaseVersion=${params.version}"
             }
         }
     }
