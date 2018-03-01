@@ -42,8 +42,8 @@ export class Bootstrap {
 
   private renderMarker = (container: HTMLElement, marker: HTMLMarker) => {
     try {
-      if (container.childElementCount > 1) {
-        Logger.log(new LogMessage(Level.DEBUG, `Container ${marker.id} contains children, the application doesn't handle such containers.`));
+      if (container.firstElementChild && container.firstElementChild.hasAttribute('data-reactroot')) {
+        Logger.log(new LogMessage(Level.DEBUG, `Container ${marker.id} contains already mounted react module`));
         return;
       }
       const realProps = HtmlDataService.parse(container, marker);
