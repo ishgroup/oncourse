@@ -1,6 +1,8 @@
 package ish.oncourse.util;
 
 import ish.oncourse.services.textile.TextileUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.dom.MarkupModel;
 import org.apache.tapestry5.internal.services.PageLoader;
 import org.apache.tapestry5.internal.structure.Page;
@@ -14,15 +16,20 @@ import java.util.Locale;
 import java.util.Map;
 
 public class PageRenderer implements IPageRenderer {
+	private static final Logger LOGGER = LogManager.getLogger(PageLoader.class);
 
-	@Inject
 	private PageLoader pageLoader;
 
-	@Inject
 	private RequestGlobals requestGlobals;
 
-	@Inject
 	private IComponentPageResponseRenderer pageResponseRenderer;
+
+	@Inject
+	public PageRenderer(PageLoader pageLoader, RequestGlobals requestGlobals, IComponentPageResponseRenderer pageResponseRenderer) {
+		this.pageLoader = pageLoader;
+		this.requestGlobals = requestGlobals;
+		this.pageResponseRenderer = pageResponseRenderer;
+	}
 
 	public String renderPage(String pageName, Map<String, Object> parameters) {
 		Request request = requestGlobals.getRequest();
@@ -42,7 +49,7 @@ public class PageRenderer implements IPageRenderer {
 		try {
 			pageResponseRenderer.renderPageResponse(page);
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.debug(e);
 		}
 
 		requestGlobals.storeRequestResponse(request, response);
@@ -52,7 +59,7 @@ public class PageRenderer implements IPageRenderer {
 
 	public String encodedPage(String pageName, Map<String, Object> parameters) {
 		String content = renderPage(pageName, parameters);
-		StringBuilder builder = encode(content);
+		StringBuilder builder = PageRenderer.encode(content);
 		return builder.toString();
 	}
 
@@ -63,7 +70,7 @@ public class PageRenderer implements IPageRenderer {
 	 * @param content
 	 * @return
 	 */
-	private StringBuilder encode(String content) {
+	public static StringBuilder encode(String content) {
 		assert content != null;
 		int length = content.length();
 		StringBuilder builder = new StringBuilder();
