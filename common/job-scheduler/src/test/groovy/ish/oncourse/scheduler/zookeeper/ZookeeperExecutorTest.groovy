@@ -10,7 +10,7 @@ import org.junit.Before
 import org.junit.Test
 
 class ZookeeperExecutorTest {
-    private int zooKeeperPort = 2181
+    private int zooKeeperPort = 12181
     private int maxClientConnections = 10
     private ZooKeeperServer zkServer
 
