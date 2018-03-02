@@ -5,6 +5,7 @@ package ish.oncourse.ui.services.pageload.template;
 
 import ish.oncourse.model.WebSiteLayout;
 import ish.oncourse.services.node.IWebNodeService;
+import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.textile.CustomTemplateDefinition;
 import ish.oncourse.services.textile.TextileUtil;
 import org.apache.tapestry5.services.Request;
@@ -19,13 +20,13 @@ import java.util.Map;
  * User: akoiro
  * Date: 3/3/18
  */
-class TestDataFactory {
+public class TestDataFactory {
 
-	static ComponentResourceSelector selector_without_axis() {
+	public static ComponentResourceSelector selector_without_axis() {
 		return new ComponentResourceSelector(Locale.US);
 	}
 
-	static ComponentResourceSelector selector_with_axis_but_without_definition() {
+	public static ComponentResourceSelector selector_with_axis_but_without_definition() {
 		Map<String, Object> params = new HashMap<>();
 		params.put("param1", "param1");
 		params.put("param2", "param2");
@@ -34,7 +35,7 @@ class TestDataFactory {
 		return selector.withAxis(Map.class, params);
 	}
 
-	static ComponentResourceSelector selector_with_axis_with_definition_but_for_other_component() {
+	public static ComponentResourceSelector selector_with_axis_with_definition_but_for_other_component() {
 		Map<String, Object> params = new HashMap<>();
 		params.put("param1", "param1");
 		params.put("param2", "param2");
@@ -45,14 +46,22 @@ class TestDataFactory {
 		return selector.withAxis(Map.class, params);
 	}
 
-	static CustomTemplateDefinition custom_TagItem_definition() {
+	public static CustomTemplateDefinition custom_TagItem_definition() {
 		CustomTemplateDefinition definition = new CustomTemplateDefinition();
 		definition.setTemplateFileName("CustomTagItem.tml");
 		definition.setTemplateClassName("TagItem");
 		return definition;
 	}
 
-	static ComponentResourceSelector selector_with_axis_and_with_definition_for_this_component() {
+	public static CustomTemplateDefinition custom_TextileTag_definition() {
+		CustomTemplateDefinition definition = new CustomTemplateDefinition();
+		definition.setTemplateFileName("CustomTextileTags.tml");
+		definition.setTemplateClassName("TextileTags");
+		return definition;
+	}
+
+
+	public static ComponentResourceSelector selector_with_axis_and_with_definition_for_this_component() {
 		Map<String, Object> params = new HashMap<>();
 		params.put("param1", "param1");
 		params.put("param2", "param2");
@@ -63,24 +72,23 @@ class TestDataFactory {
 		return selector.withAxis(Map.class, params);
 	}
 
-	static CustomTemplateDefinition custom_TextileTag_definition() {
-		CustomTemplateDefinition definition = new CustomTemplateDefinition();
-		definition.setTemplateFileName("CustomTextileTags.tml");
-		definition.setTemplateClassName("TextileTags");
-		return definition;
-	}
-
-	static Request request() {
+	public static Request request() {
 		Request request = Mockito.mock(Request.class);
 		Mockito.when(request.getServerName()).thenReturn("cce.cc");
 		return request;
 	}
 
-	static IWebNodeService webNodeService() {
+	public static IWebNodeService webNodeService() {
 		WebSiteLayout layout = Mockito.mock(WebSiteLayout.class);
 		Mockito.when(layout.getId()).thenReturn(1L);
 		IWebNodeService service = Mockito.mock(IWebNodeService.class);
 		Mockito.when(service.getLayout()).thenReturn(layout);
 		return service;
 	}
+
+	public static IResourceService resourceService() {
+		IResourceService service = Mockito.mock(IResourceService.class);
+		return service;
+	}
+
 }
