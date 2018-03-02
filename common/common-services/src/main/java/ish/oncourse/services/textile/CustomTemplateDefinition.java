@@ -1,7 +1,7 @@
 package ish.oncourse.services.textile;
 
 /**
- * The class was intruduced to have posibilites redifine tapestry template name in rich textiles.
+ * The class was introduced to have possibilities redefine tapestry template name in rich textiles.
  */
 public class CustomTemplateDefinition {
 
