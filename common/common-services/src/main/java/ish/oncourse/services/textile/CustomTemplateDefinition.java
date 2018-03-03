@@ -1,5 +1,7 @@
 package ish.oncourse.services.textile;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 /**
  * The class was introduced to have possibilities redefine tapestry template name in rich textiles.
  */
@@ -36,5 +38,10 @@ public class CustomTemplateDefinition {
 	@Override
 	public int hashCode() {
 		return String.format("%s%s", templateClassName, templateClassName).hashCode();
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("templateClassName", templateClassName).append("templateFileName", templateFileName).toString();
 	}
 }
