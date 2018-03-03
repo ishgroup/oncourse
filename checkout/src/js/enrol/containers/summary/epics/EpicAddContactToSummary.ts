@@ -4,7 +4,10 @@ import {IshState} from "../../../../services/IshState";
 import {MiddlewareAPI} from "redux";
 import {Observable} from "rxjs/Observable";
 
-import {ADD_CONTACT_TO_SUMMARY, changeChildParent, getContactNodeFromBackend} from "../actions/Actions";
+import {
+  ADD_CONTACT_TO_SUMMARY, changeChildParent, getContactNodeFromBackend,
+  uncheckItemsForContact
+} from "../actions/Actions";
 import {
   changePhase, setPayer, updateContactAddProcess, updateParentChilds,
 } from "../../../actions/Actions";
@@ -29,6 +32,10 @@ export const AddContactToSummary: Epic<any, IshState> = (action$: ActionsObserva
     const allChilds = CheckoutService
       .getAllSingleChildIds(state.checkout)
       .concat(ifParentRequired ? contact.id : []);
+
+    // Uncheck all enrolments for contact. Cases:
+    // - if new contact is a parent/guardian for existing children
+    const uncheckContactItems: boolean = allChilds.length && !contact.parentRequired;
 
     const result = [];
 
@@ -58,7 +65,7 @@ export const AddContactToSummary: Epic<any, IshState> = (action$: ActionsObserva
     // case: add new contact to summary and update parentRequired flag
     result.push(addContact({...contact, parent: parent || null, parentRequired: (contact.parentRequired && !parent)}));
 
-    result.push(getContactNodeFromBackend(action.payload));
+    result.push(getContactNodeFromBackend(contact, uncheckContactItems));
     result.push(updateContactAddProcess({}, null, null));
     result.push(changePhase(state.checkout.page));
 

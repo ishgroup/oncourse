@@ -12,6 +12,10 @@ import {Phase} from "../../reducers/State";
 
 class ContactAddForm extends React.Component<any, any> {
 
+  componentDidMount() {
+    // get children age preferences
+  }
+
   getMessages() {
     const {childName, childAge = 18, phase} = this.props;
 

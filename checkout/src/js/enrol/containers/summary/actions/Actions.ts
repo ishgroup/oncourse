@@ -27,6 +27,8 @@ export const CHANGE_CHILD_PARENT_FULFILLED: string = FULFILLED(CHANGE_CHILD_PARE
 
 export const REMOVE_ITEM_FROM_SUMMARY: string = "checkout/remove/summary/item";
 
+export const UNCHECK_ITEMS_FOR_CONTACT: string = "checkout/summary/uncheck/items/contact";
+
 export const addContactToSummary = (contact: Contact): IAction<Contact> => {
   return {
     type: ADD_CONTACT_TO_SUMMARY,
@@ -56,10 +58,10 @@ export const proceedToPayment = (): { type: string } => {
   return {type: PROCEED_TO_PAYMENT};
 };
 
-export const getContactNodeFromBackend = (contact: Contact): IAction<Contact> => {
+export const getContactNodeFromBackend = (contact: Contact, uncheckItems = false): IAction<{contact: Contact, uncheckItems?: boolean}> => {
   return {
     type: GET_CONTACT_NODE_AND_MODEL_FROM_BACKEND,
-    payload: contact,
+    payload: {contact, uncheckItems},
   };
 };
 
@@ -111,3 +113,9 @@ export const removeItemFromSummary = (type, id) => {
   };
 };
 
+export const uncheckItemsForContact = contactId => {
+  return {
+    type: UNCHECK_ITEMS_FOR_CONTACT,
+    payload: contactId,
+  };
+};
