@@ -1,7 +1,6 @@
 package ish.oncourse.portal.services;
 
 import ish.oncourse.model.*;
-import ish.oncourse.portal.usi.UsiController;
 import ish.oncourse.services.courseclass.CourseClassFilter;
 import org.apache.cayenne.CayenneDataObject;
 import org.apache.tapestry5.json.JSONObject;
@@ -136,11 +135,6 @@ public interface IPortalService {
      * create new survey object for selected student and for the <code>courseClass</code>
      */
     Survey createStudentSurveyFor(CourseClass courseClass);
-
-    /**
-     * serializes the <code>Survey</code> to json object.
-     */
-    JSONObject getJSONSurvey(Survey survey);
 
     /**
      * returns average survey for the <code>courseClass</code>

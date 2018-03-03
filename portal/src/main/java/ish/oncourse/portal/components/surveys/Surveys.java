@@ -1,14 +1,20 @@
 package ish.oncourse.portal.components.surveys;
 
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Student;
 import ish.oncourse.model.Survey;
 import ish.oncourse.portal.services.IPortalService;
-import org.apache.commons.lang3.StringUtils;
+import ish.oncourse.portal.util.RequestToSurvey;
+import ish.oncourse.portal.util.SurveyToJSON;
+import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.survey.CreateSurvey;
+import ish.oncourse.services.survey.GetAverageSurvey;
+import ish.oncourse.services.survey.GetSurveyForStudent;
+import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.util.TextStreamResponse;
 
@@ -16,11 +22,12 @@ import java.io.IOException;
 
 public class Surveys {
 
-    private static final String JSONPROPERTY_readOnly = "readOnly";
-
     @Inject
     @Property
     private IPortalService portalService;
+
+    @Inject
+    private ICayenneService cayenneService;
 
     @Inject
     private Request request;
@@ -34,61 +41,43 @@ public class Surveys {
     private boolean isTutor;
 
     @OnEvent(value = "getSurvey")
-    public TextStreamResponse getSurvey(Long id) throws IOException {
+    public TextStreamResponse getSurvey(Long courseClassId) throws IOException {
         if (!request.isXHR())
             return null;
 
         Survey survey;
         //we should check at fist that the current contact is a student and try to load survey for student
-        boolean isTutor  = portalService.getContact().getTutor() != null && portalService.isTutorFor(portalService.getCourseClassBy(id));
+        boolean isTutor = portalService.getContact().getTutor() != null && portalService.isTutorFor(courseClass);
         if (isTutor) {
-            survey = portalService.getAverageSurveyFor(portalService.getCourseClassBy(id));
+            survey = GetAverageSurvey.valueOf(cayenneService.newNonReplicatingContext(), courseClass).get();
         } else {
-            survey = portalService.getStudentSurveyFor(portalService.getCourseClassBy(id));
-            if (survey == null)
-                survey = portalService.createStudentSurveyFor(portalService.getCourseClassBy(id));
+            survey = createIfNotExist(cayenneService.newContext(),
+                                        portalService.getCourseClassBy(courseClassId),
+                                        portalService.getContact().getStudent());
         }
 
-        //adds readonly for tutor
-        JSONObject jsonObject = portalService.getJSONSurvey(survey);
-        jsonObject.put(JSONPROPERTY_readOnly, isTutor);
-        return new TextStreamResponse("text/json", jsonObject.toString());
+        return new TextStreamResponse("text/json", SurveyToJSON.valueOf(survey, isTutor).get().toString());
     }
 
     @OnEvent(value = "saveSurvey")
-    public void saveSurvey(Long id) throws IOException {
+    public void saveSurvey(Long courseClassId) throws IOException {
         if (!request.isXHR())
             return;
 
-        Survey survey = portalService.getStudentSurveyFor(portalService.getCourseClassBy(id));
-        if (survey == null) {
-            survey = portalService.createStudentSurveyFor(portalService.getCourseClassBy(id));
-        }
+        Survey survey = createIfNotExist(cayenneService.newContext(),
+                                portalService.getCourseClassBy(courseClassId),
+                                portalService.getContact().getStudent());
 
-        String value = StringUtils.trimToNull(request.getParameter(Survey.TUTOR_SCORE_PROPERTY));
-        if (StringUtils.isNumeric(value)) {
-            survey.setTutorScore(Integer.valueOf(value));
-        }
-
-        value = StringUtils.trimToNull(request.getParameter(Survey.VENUE_SCORE_PROPERTY));
-        if (StringUtils.isNumeric(value)) {
-            survey.setVenueScore(Integer.valueOf(value));
-        }
-
-        value = StringUtils.trimToNull(request.getParameter(Survey.COURSE_SCORE_PROPERTY));
-        if (StringUtils.isNumeric(value)) {
-            survey.setCourseScore(Integer.valueOf(value));
-        }
-
-        value = StringUtils.trimToEmpty(request.getParameter(Survey.COMMENT_PROPERTY));
-        survey.setComment(value);
-
-        value = StringUtils.trimToEmpty(request.getParameter(Survey.NET_PROMOTER_SCORE_PROPERTY));
-        if (StringUtils.isNumeric(value)) {
-            survey.setNetPromoterScore(Integer.valueOf(value));
-        }
-
+        RequestToSurvey.valueOf(survey, request).parse();
         survey.getObjectContext().commitChanges();
+    }
+
+    private Survey createIfNotExist(ObjectContext context, CourseClass courseClass, Student student) {
+        Survey survey = GetSurveyForStudent.valueOf(student, courseClass).get();
+        if (survey == null) {
+            survey = CreateSurvey.valueOf(context, courseClass, student).create();
+        }
+        return survey;
     }
 
 }

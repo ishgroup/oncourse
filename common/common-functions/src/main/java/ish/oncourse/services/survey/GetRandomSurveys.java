@@ -1,6 +1,7 @@
-package ish.oncourse.services.course;
+package ish.oncourse.services.survey;
 
 import ish.oncourse.model.Survey;
+import ish.oncourse.services.course.GetRandomNonRepeatableInBound;
 
 import java.util.ArrayList;
 import java.util.List;
