@@ -23,7 +23,7 @@ public class WebSiteVersionService extends AbstractWebSiteVersionService {
 	
 	public static final String EDITOR_PREFIX = "editor";
 	
-	private static final String WEB_PREFIX = "web";
+	public static final String WEB_PREFIX = "web";
 
 
 	@Override

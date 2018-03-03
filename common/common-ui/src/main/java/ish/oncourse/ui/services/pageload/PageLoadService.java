@@ -9,6 +9,7 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.ui.services.pageload.template.GetTemplateKey;
 import ish.oncourse.ui.services.pageload.template.resource.GetSiteTemplateResource;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.internal.pageload.ComponentAssembler;
@@ -97,6 +98,8 @@ public class PageLoadService {
 		ComponentTemplate result = missingTemplate;
 		if (resource.exists()) {
 			result = templateParser.parseTemplate(resource);
+		} else {
+			logger.debug("%s resource doesn't exist", resource);
 		}
 		return result;
 	}
@@ -181,9 +184,12 @@ public class PageLoadService {
 			return false;
 		}
 
-		@Override
 		public boolean usesStrictMixinParameters() {
 			return false;
+		}
+
+		public String toString() {
+			return new ToStringBuilder(this).append("missingTemplate").toString();
 		}
 	};
 
