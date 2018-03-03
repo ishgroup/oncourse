@@ -19,10 +19,10 @@ import static ish.oncourse.ui.services.pageload.PageLoadService.CacheKey.templat
  * User: akoiro
  * Date: 14/12/17
  */
-public class PageLoadServiceTest  {
+public class ClearCacheTest {
 
 	@Test
-	public void testClearCache() {
+	public void test() {
 		CacheManager cacheManager = Caching.getCachingProvider().getCacheManager();
 		Cache<MultiKey, ComponentTemplate> cache = new GetOrCreateCache(cacheManager).getOrCreate(templates.getCacheName("test"), MultiKey.class, ComponentTemplate.class);
 		MultiKey multiKey = new MultiKey();
@@ -32,6 +32,5 @@ public class PageLoadServiceTest  {
 
 		new GetOrCreateCache(cacheManager).getOrCreate(templates.getCacheName("test"), MultiKey.class, ComponentTemplate.class);
 		Assert.assertNotNull(cacheManager.getCache(templates.getCacheName("test"), MultiKey.class, ComponentTemplate.class));
-
 	}
 }
