@@ -1,0 +1,56 @@
+
+ext {
+    swaggerSchema = file("${project.projectDir}/src/main/resources/${swaggerName}")
+}
+
+configurations {
+    doc
+}
+
+dependencies {
+    //add this dependency to resolve: io.swagger.annotations.ApiModel
+    //produced by swagger codegen
+    //Need to remove this dependency as soon as we found correct way to exclude this class.
+    compile 'io.swagger:swagger-annotations:1.5.18'
+}
+
+sourceSets {
+    main {
+        groovy {
+            srcDirs += "${project.projectDir}/build/generated-sources/src/main/groovy"
+        }
+    }
+}
+
+task swagger (type: Swagger) {
+    schema = swaggerSchema
+    schemaVersion = 1
+    javaOutput = file("${project.projectDir}/build/generated-sources")
+    jsOutput = file("${rootDir}/editor/build/generated-sources")
+}
+
+compileGroovy {
+    dependsOn swagger
+    groovyOptions.configurationScript = file("config.groovy")
+}
+
+clean.doFirst {
+    delete("${project.projectDir}/build/generated-sources")
+}
+
+
+task generateDoc (type: SwaggerDoc) {
+    schema = swaggerSchema
+    docOutput = file("${buildDir}/doc")
+}
+
+task packageDoc (type: Zip, dependsOn: generateDoc, group: 'distribution') {
+    from file("${buildDir}/doc/docs")
+    archiveName 'doc.zip'
+    destinationDir file("${buildDir}/dist/")
+}
+
+task swaggerTemplates (type: SwaggerTemplates) {
+    schema = swaggerSchema
+    language = "dynamic-html"
+}

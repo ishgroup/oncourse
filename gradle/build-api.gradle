@@ -1,20 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'application'
 
-ext {
-    swaggerSchema = file("${project.projectDir}/src/main/resources/${swaggerName}")
-}
-
-configurations {
-    doc
-}
-
 dependencies {
-    //add this dependency to resolve: io.swagger.annotations.ApiModel
-    //produced by swagger codegen
-    //Need to remove this dependency as soon as we found correct way to exclude this class.
-    compile  'io.swagger:swagger-annotations:1.5.18'
-    
     testCompile 'org.apache.commons:commons-dbcp2:2.1.1'
     testCompile 'org.apache.commons:commons-pool2:2.4.2'
     testCompile project(':common:test-functions')
@@ -23,13 +10,6 @@ dependencies {
 targetCompatibility = '1.8'
 sourceCompatibility = '1.8'
 
-sourceSets {
-    main {
-        groovy {
-            srcDirs += "${project.projectDir}/build/generated-sources/src/main/groovy"
-        }
-    }
-}
 
 test {
     systemProperty "oncourse.jdbc.url", System.getProperty("oncourse.jdbc.url")
@@ -72,34 +52,6 @@ publishing {
     }
 }
 
-task swagger (type: Swagger) {
-    schema = swaggerSchema
-    schemaVersion = 1
-    javaOutput = file("${project.projectDir}/build/generated-sources")
-    jsOutput = file("${rootDir}/editor/build/generated-sources")
-}
-
 compileGroovy {
-    dependsOn swagger
     groovyOptions.configurationScript = file("config.groovy")
-}
-
-clean.doFirst {
-    delete("${project.projectDir}/build/generated-sources")
-}
-
-task generateDoc (type: SwaggerDoc) {
-    schema = swaggerSchema
-    docOutput = file("${buildDir}/doc")
-}
-
-task packageDoc (type: Zip, dependsOn: generateDoc, group: 'distribution') {
-    from file("${buildDir}/doc/docs")
-    archiveName 'doc.zip'
-    destinationDir file("${buildDir}/dist/")
-}
-
-task swaggerTemplates (type: SwaggerTemplates) {
-    schema = swaggerSchema
-    language = "dynamic-html"
 }

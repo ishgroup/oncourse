@@ -8,6 +8,8 @@ ext {
 apply from: "$rootDir/gradle/functions.gradle"
 apply from: "$rootDir/gradle/bootique.gradle"
 apply from: "$rootDir/gradle/build-api.gradle"
+apply from: "$rootDir/gradle/codegen.gradle"
+
 
 mainClassName = 'ish.oncourse.willow.editor.EditorApp'
 
