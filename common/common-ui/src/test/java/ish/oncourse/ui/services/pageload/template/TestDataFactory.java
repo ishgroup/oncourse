@@ -8,7 +8,13 @@ import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.textile.CustomTemplateDefinition;
 import ish.oncourse.services.textile.TextileUtil;
+import ish.oncourse.textile.components.TagItem;
+import ish.oncourse.textile.pages.TextileTags;
+import org.apache.tapestry5.ioc.Resource;
+import org.apache.tapestry5.ioc.internal.util.ClasspathResource;
+import org.apache.tapestry5.model.ComponentModel;
 import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.services.pageload.ComponentResourceLocator;
 import org.apache.tapestry5.services.pageload.ComponentResourceSelector;
 import org.mockito.Mockito;
 
@@ -49,14 +55,14 @@ public class TestDataFactory {
 	public static CustomTemplateDefinition custom_TagItem_definition() {
 		CustomTemplateDefinition definition = new CustomTemplateDefinition();
 		definition.setTemplateFileName("CustomTagItem.tml");
-		definition.setTemplateClassName("TagItem");
+		definition.setTemplateClassName(TagItem.class.getName());
 		return definition;
 	}
 
 	public static CustomTemplateDefinition custom_TextileTag_definition() {
 		CustomTemplateDefinition definition = new CustomTemplateDefinition();
 		definition.setTemplateFileName("CustomTextileTags.tml");
-		definition.setTemplateClassName("TextileTags");
+		definition.setTemplateClassName(TextileTags.class.getName());
 		return definition;
 	}
 
@@ -89,6 +95,22 @@ public class TestDataFactory {
 	public static IResourceService resourceService() {
 		IResourceService service = Mockito.mock(IResourceService.class);
 		return service;
+	}
+
+	public static ComponentModel componentModel() {
+		ComponentModel model = Mockito.mock(ComponentModel.class);
+		Mockito.when(model.getComponentClassName())
+				.thenReturn(TextileTags.class.getName());
+		Mockito.when(model.getBaseResource()).thenReturn(cpResource());
+		return model;
+	}
+
+	public static Resource cpResource() {
+		return new ClasspathResource(TextileTags.class.getName().replace('.', '/'));
+	}
+
+	public static ComponentResourceLocator componentResourceLocator() {
+		return Mockito.mock(ComponentResourceLocator.class);
 	}
 
 }

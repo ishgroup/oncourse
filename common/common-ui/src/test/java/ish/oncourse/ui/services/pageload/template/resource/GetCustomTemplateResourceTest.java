@@ -26,18 +26,15 @@ public class GetCustomTemplateResourceTest {
 	private GetCustomTemplateResource getResource;
 
 	private Resource dbResource = Mockito.mock(Resource.class);
-	private Resource cpResource = Mockito.mock(Resource.class);
+	private Resource cpResource = TestDataFactory.cpResource();
 
 	@Before
 	public void before() {
 		webNodeService = TestDataFactory.webNodeService();
 		resourceService = TestDataFactory.resourceService();
-		model = Mockito.mock(ComponentModel.class);
-		Mockito.when(model.getComponentClassName()).thenReturn("TextileTags");
+		model = TestDataFactory.componentModel();
 		getResource = new GetCustomTemplateResource(webNodeService,
 				resourceService);
-
-		Mockito.when(cpResource.getPath()).thenReturn("ish/oncourse/textile/pages/TextileTags.tml");
 		Mockito.when(model.getBaseResource()).thenReturn(cpResource);
 
 	}
