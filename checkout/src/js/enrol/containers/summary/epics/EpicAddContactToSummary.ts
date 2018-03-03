@@ -59,7 +59,7 @@ export const AddContactToSummary: Epic<any, IshState> = (action$: ActionsObserva
     result.push(addContact({...contact, parent: parent || null, parentRequired: (contact.parentRequired && !parent)}));
 
     result.push(getContactNodeFromBackend(action.payload));
-    result.push(updateContactAddProcess({}, null, null, null));
+    result.push(updateContactAddProcess({}, null, null));
     result.push(changePhase(state.checkout.page));
 
     return result;

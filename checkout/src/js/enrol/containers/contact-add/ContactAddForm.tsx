@@ -10,36 +10,63 @@ import {ContactId} from "../../../model";
 import CheckoutService from "../../services/CheckoutService";
 import {Phase} from "../../reducers/State";
 
-
 class ContactAddForm extends React.Component<any, any> {
+
+  getMessages() {
+    const {childName, childAge = 18, phase} = this.props;
+
+    switch (phase) {
+      case Phase.ChangeParent:
+        return {
+          title: `Change a parent or guardian for ${childName}`,
+          message: `Enter the person who will attend the class or make a purchase.`,
+        };
+      case Phase.AddPayer:
+        return {
+          title: `Add a payer`,
+          message: `Enter the person to be invoiced and paying for this transaction.`,
+        };
+      case Phase.AddContactAsPayer:
+        return {
+          title: `Add a payer`,
+          message: `Enter the person to be invoiced and paying for this transaction.`,
+        };
+      case Phase.AddParent:
+        return {
+          title: `Add a parent or guardian`,
+          message: `Because a student is under ${childAge} we require the details of 
+                  a parent or guardian for our records. Please enter that person.`,
+        };
+
+      default:
+        return {
+          title: `Add a person`,
+          message: `Enter the person who will attend the class or make a purchase.`,
+        };
+    }
+
+  }
+
   render() {
     const {handleSubmit, onCancel, pristine, invalid, submitting, fetching, phase, childName, fieldset} = this.props;
 
-    const getFormLabel = () => (
-      phase === Phase.ChangeParent && childName && `Change guardian or parent for ${childName}` ||
-      phase === Phase.AddContact && `Add a student` ||
-      phase === Phase.AddPayer && `Add a student` ||
-      phase === Phase.AddContactAsPayer && `Add a payer` ||
-      phase === Phase.AddParent && 'Add a parent or guardian'
-    )
-
     return (
       <div>
-        <h2>{getFormLabel()}</h2>
+        <h2>{this.getMessages().title}</h2>
         <form
           onSubmit={handleSubmit(values => CheckoutService.createOrGetContact(values, fieldset))}
           id="contactEditorForm"
           className={classnames({submitting: submitting || fetching})}
         >
-          <ContactAdd/>
+          <ContactAdd header={this.getMessages().message}/>
           <div className="form-controls flex">
             <span>
               {onCancel &&
-                <a
-                  href="#"
-                  onClick={onCancel}
-                > Cancel
-                </a>
+              <a
+                href="#"
+                onClick={onCancel}
+              > Cancel
+              </a>
               }
             </span>
 

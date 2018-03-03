@@ -1,5 +1,3 @@
-import {Contact} from "./../web/Contact";
-
 export class ContactId {
 
   /**
@@ -16,10 +14,5 @@ export class ContactId {
    * Indicates that parent required
    */
   parentRequired?: boolean;
-
-  /**
-   * Related parant, not null if parent required and parent exist
-   */
-  parent?: Contact;
 }
 

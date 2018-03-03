@@ -140,7 +140,7 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
       dispatch(changePhase(Phase.AddParent));
     },
     onChangeParent: (contactId): void => {
-      dispatch(updateContactAddProcess({}, Phase.AddContact, null, contactId));
+      dispatch(updateContactAddProcess({}, Phase.AddContact, contactId));
       dispatch(changePhase(Phase.ChangeParent));
     },
     onProceedToPayment: (forms): void => {

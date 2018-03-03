@@ -30,7 +30,6 @@ const getContactPayload = (contactId, values): SubmitContact => {
     contact,
     newContact: contactId.newContact,
     parentRequired: contactId.parentRequired,
-    parent: contactId.parent,
   };
 };
 

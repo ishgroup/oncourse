@@ -13,7 +13,7 @@ export class ContactAdd extends React.Component<Props, any> {
   }
 
   render() {
-    const {header = "Please enter the details of a person enrolling, applying or making a purchase."} = this.props;
+    const {header = "Enter the person who will attend the class or make a purchase."} = this.props;
     return (
       <div id="addstudent-block">
         <div className="message">

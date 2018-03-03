@@ -81,7 +81,7 @@ export const EpicInit: Epic<any, IshState> = (action$: ActionsObservable<any>, s
 
     const result = [];
 
-    result.push(Actions.updateContactAddProcess({}, null, null, null));
+    result.push(Actions.updateContactAddProcess({}, null, null));
 
     if (!L.isNil(state.checkout.payment.value)) {
       const payment = state.checkout.payment.value;

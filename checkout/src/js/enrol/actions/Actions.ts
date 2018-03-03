@@ -150,9 +150,9 @@ export const addRedeemVoucherToState = voucher => ({
   payload: voucher,
 });
 
-export const updateContactAddProcess = (contact, type, parent = null, childId) => ({
+export const updateContactAddProcess = (contact, type, childId) => ({
   type: UPDATE_CONTACT_ADD_PROCESS,
-  payload: {contact, type, parent, childId},
+  payload: {contact, type, childId},
 });
 
 export const updateParentChilds = (parentId: string, childIds: string[]): IAction<any> => {
