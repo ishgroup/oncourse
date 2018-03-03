@@ -7,7 +7,7 @@ import ish.oncourse.textile.pages.TextileTags;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static ish.oncourse.ui.services.pageload.template.TestDataFactory.*;
+import static ish.oncourse.ui.services.pageload.TestDataFactory.*;
 
 
 /**

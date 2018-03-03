@@ -7,7 +7,7 @@ import org.apache.tapestry5.internal.util.MultiKey;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static ish.oncourse.ui.services.pageload.template.TestDataFactory.*;
+import static ish.oncourse.ui.services.pageload.TestDataFactory.*;
 
 /**
  * User: akoiro

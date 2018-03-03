@@ -5,7 +5,7 @@ package ish.oncourse.ui.services.pageload.template.resource;
 
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.resource.IResourceService;
-import ish.oncourse.ui.services.pageload.template.TestDataFactory;
+import ish.oncourse.ui.services.pageload.TestDataFactory;
 import org.apache.tapestry5.ioc.Resource;
 import org.apache.tapestry5.ioc.internal.util.ClasspathResource;
 import org.apache.tapestry5.model.ComponentModel;
