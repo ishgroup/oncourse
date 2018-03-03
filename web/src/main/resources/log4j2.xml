@@ -2,6 +2,7 @@
 <Configuration status="warn" monitorInterval="30">
     <Properties>
         <Property name="name">willow_web</Property>
+        <Property name="OutputPattern">%m%n</Property>
     </Properties>
     <Appenders>
         <RollingFile name="FILE" fileName="${sys:logs.path}/${name}.log"
@@ -16,6 +17,13 @@
             <SizeBasedTriggeringPolicy size="10M"/>
             <DefaultRolloverStrategy/>
         </RollingFile>
+        <RollingFile name="REQUESTS" fileName="${sys:logs.path}/requests.log"
+                     filePattern="${sys:logs.path}/requests.log.%i">
+            <!-- pattern to output console -->
+            <PatternLayout pattern="${OutputPattern}"/>
+            <SizeBasedTriggeringPolicy size="10M"/>
+            <DefaultRolloverStrategy/>
+        </RollingFile>
     </Appenders>
     <Loggers>
         <Root level="warn">
@@ -27,6 +35,9 @@
         </Logger>
         <Logger name="io.bootique.jetty.server.ServerLifecycleLogger" level="info">
             <AppenderRef ref="FILE"/>
+        </Logger>
+        <Logger name="io.bootique.jetty.server.RequestLogger" level="info">
+            <AppenderRef ref="REQUESTS"/>
         </Logger>
     </Loggers>
 </Configuration>
