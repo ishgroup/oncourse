@@ -118,7 +118,7 @@ public abstract class WebSiteVersionCopy {
             newNode.setPublished(node.isPublished());
             newNode.setWebNodeType(webNodeTypeMap.get(node.getWebNodeType()));
             newNode.setWebSiteVersion(toVersion);
-
+            newNode.setSuppressOnSitemap(node.isSuppressOnSitemap());
             webNodeMap.put(node, newNode);
         }
     }
