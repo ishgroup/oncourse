@@ -15,12 +15,13 @@ const Classes = {
 interface Props {
   model: Model;
   onChange: (Tab) => void;
+  haveTotalAmount?: boolean;
 }
 
 export class Progress extends React.Component<Props, any> {
 
   render() {
-    const {onChange} = this.props;
+    const {onChange, haveTotalAmount} = this.props;
     const detailsClass = this.className(Tab.Details);
     const summaryClass = this.className(Tab.Summary);
     const paymentClass = classnames(Classes.last, this.className(Tab.Payment));
@@ -34,7 +35,7 @@ export class Progress extends React.Component<Props, any> {
         <ul>
           <li className={detailsClass}><a onClick={() => onClick(Tab.Details)} href="#">Your details</a></li>
           <li className={summaryClass}><a onClick={() => onClick(Tab.Summary)} href="#">Summary</a></li>
-          <li className={paymentClass}><a onClick={() => onClick(Tab.Payment)} href="#">Payment</a></li>
+          <li className={paymentClass}><a onClick={() => onClick(Tab.Payment)} href="#">{haveTotalAmount ? 'Payment' : 'Confirmation'}</a></li>
         </ul>
       </div>
     );

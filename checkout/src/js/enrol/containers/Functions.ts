@@ -9,11 +9,15 @@ export const Messages = connect(state => (
 ))(MessagesComp as any);
 
 
-export const Progress = connect(
-  state => ({model: progressModelBy(state.checkout.phase)}),
-  dispatch => ({onChange: (tab: Tab): void => {
-    dispatch(changeTab(tab));
-  }}),
+export const Progress = connect<any, any, any>(
+  state => ({
+    model: progressModelBy(state.checkout.phase),
+    haveTotalAmount: !!(state.checkout.amount && Number(state.checkout.amount.total)),
+  }),
+  dispatch => ({
+    onChange: (tab: Tab): void => {
+      dispatch(changeTab(tab));
+    }}),
 )(ProgressComp);
 
 

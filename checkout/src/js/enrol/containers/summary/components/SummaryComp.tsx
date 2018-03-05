@@ -79,10 +79,12 @@ export class SummaryComp extends React.Component<Props, any> {
     } = this.props;
 
     const buttonLabel = needParent && !isOnlyWaitingLists ? 'Add Guardian' :
-      isOnlyWaitingLists ? 'Add to waiting list' : 'Proceed to Payment';
+      !Number(amount.total) ? 'Proceed' : 'Proceed to Payment';
 
     const onProceed = needParent && !isOnlyWaitingLists ? () => onAddParent() :
       isOnlyWaitingLists ? () => onProceedToJoin(forms) : () => onProceedToPayment(forms);
+
+    const haveTotal = !!(amount && Number(amount.total));
 
     return (
       <div className="payment-summary">
@@ -93,15 +95,19 @@ export class SummaryComp extends React.Component<Props, any> {
 
         <div className="row">
           <div className="col-xs-24">
-            <div className="amount-container">
-              <AmountComp
-                amount={amount}
-                onUpdatePayNow={amount.isEditable ? onUpdatePayNow : undefined}
-                onAddCode={onAddCode}
-                onToggleVoucher={onToggleVoucher}
-                redeemVouchers={redeemVouchers}
-                promotions={promotions}
-              />
+            <div className={classnames("amount-container", {"zero-total": !haveTotal})}>
+
+              {haveTotal &&
+                <AmountComp
+                  amount={amount}
+                  onUpdatePayNow={amount.isEditable ? onUpdatePayNow : undefined}
+                  onAddCode={onAddCode}
+                  onToggleVoucher={onToggleVoucher}
+                  redeemVouchers={redeemVouchers}
+                  promotions={promotions}
+                />
+              }
+
               <ProceedToPayment
                 buttonLabel={buttonLabel}
                 disabled={!hasSelected}
