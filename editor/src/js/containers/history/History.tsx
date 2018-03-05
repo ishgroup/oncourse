@@ -66,7 +66,7 @@ class History extends React.Component<Props, any> {
                 <td>
                   {version.status === VersionStatus.draft && 'Draft'}
                   {(version.status === VersionStatus.published || !version.status) && version.publishedOn &&
-                    <TimeAgo date={version.publishedOn}/>
+                    <TimeAgo date={version.publishedOn} live={false}/>
                   }
                 </td>
                 <td>{version.author}</td>
