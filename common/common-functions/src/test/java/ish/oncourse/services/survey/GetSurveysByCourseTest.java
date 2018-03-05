@@ -13,7 +13,7 @@ import static org.mockito.Mockito.mock;
 public class GetSurveysByCourseTest {
 
     @Test
-    private void test() {
+    public void test() {
         ObjectContext context = mock(ObjectContext.class);
         Course course = mock(Course.class);
 
