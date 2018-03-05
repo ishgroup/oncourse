@@ -783,6 +783,9 @@ definitions:
       googleTagmanagerAccount:
         type: string
         description: Google tag manager account
+      minAge:
+        type: number
+        description: Minimal age which not requiring parent
   field.Suburb:
     type: object
     properties:
@@ -956,10 +959,7 @@ definitions:
         description: Indicates that new contact created
       parentRequired: 
         type: boolean
-        description: Indicates that parent required 
-      parent:
-        $ref: '#/definitions/web.Contact'
-        description: Related parant, not null if parent required and parent exist
+        description: Indicates that parent required
   web.Contact:
     type: object
     properties:

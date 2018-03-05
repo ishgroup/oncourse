@@ -12,12 +12,8 @@ import {Phase} from "../../reducers/State";
 
 class ContactAddForm extends React.Component<any, any> {
 
-  componentDidMount() {
-    // get children age preferences
-  }
-
   getMessages() {
-    const {childName, childAge = 18, phase} = this.props;
+    const {childName, minAge = 18, phase} = this.props;
 
     switch (phase) {
       case Phase.ChangeParent:
@@ -38,7 +34,7 @@ class ContactAddForm extends React.Component<any, any> {
       case Phase.AddParent:
         return {
           title: `Add a parent or guardian`,
-          message: `Because a student is under ${childAge} we require the details of 
+          message: `Because a student is under ${minAge} we require the details of 
                   a parent or guardian for our records. Please enter that person.`,
         };
 

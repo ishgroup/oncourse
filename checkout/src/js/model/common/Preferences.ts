@@ -30,5 +30,10 @@ export class Preferences {
    * Google tag manager account
    */
   googleTagmanagerAccount?: string;
+
+  /**
+   * Minimal age which not requiring parent
+   */
+  minAge?: number;
 }
 

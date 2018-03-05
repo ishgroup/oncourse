@@ -3,11 +3,7 @@ import {ActionsObservable, Epic} from "redux-observable";
 import {IshState} from "../../../../services/IshState";
 import {MiddlewareAPI} from "redux";
 import {Observable} from "rxjs/Observable";
-
-import {
-  ADD_CONTACT_TO_SUMMARY, changeChildParent, getContactNodeFromBackend,
-  uncheckItemsForContact
-} from "../actions/Actions";
+import {ADD_CONTACT_TO_SUMMARY, changeChildParent, getContactNodeFromBackend} from "../actions/Actions";
 import {
   changePhase, setPayer, updateContactAddProcess, updateParentChilds,
 } from "../../../actions/Actions";
@@ -35,7 +31,7 @@ export const AddContactToSummary: Epic<any, IshState> = (action$: ActionsObserva
 
     // Uncheck all enrolments for contact. Cases:
     // - if new contact is a parent/guardian for existing children
-    // - if new contact is payer
+    // - if new contact is a payer
     const uncheckContactItems: boolean =
       (allChilds.length && !contact.parentRequired) ||
       (type === Phase.AddContactAsPayer || type === Phase.AddContactAsCompany);
