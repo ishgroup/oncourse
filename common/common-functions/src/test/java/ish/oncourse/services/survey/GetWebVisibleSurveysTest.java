@@ -1,4 +1,4 @@
-package ish.oncourse.services.course;
+package ish.oncourse.services.survey;
 
 import ish.common.types.SurveyVisibility;
 import ish.oncourse.model.Survey;
@@ -9,8 +9,8 @@ import static org.junit.Assert.assertEquals;
 public class GetWebVisibleSurveysTest {
 
     @Test
-    public void test() {
+    public void testQualifier() {
         assertEquals(Survey.TESTIMONIAL.isNotNull().andExp(Survey.VISIBILITY.eq(SurveyVisibility.TESTIMONIAL)),
-                GetWebVisibleSurveys.valueOf(null).VISIBLE);
+                ish.oncourse.services.survey.GetWebVisibleSurveys.valueOf(null).VISIBLE);
     }
 }

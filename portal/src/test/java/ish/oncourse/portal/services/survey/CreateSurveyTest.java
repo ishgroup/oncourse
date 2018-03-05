@@ -1,11 +1,13 @@
-package ish.oncourse.services.survey;
+package ish.oncourse.portal.services.survey;
 
-import ish.oncourse.model.*;
+import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Enrolment;
+import ish.oncourse.model.Student;
 import org.apache.cayenne.ObjectContext;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
 
 public class CreateSurveyTest {
 

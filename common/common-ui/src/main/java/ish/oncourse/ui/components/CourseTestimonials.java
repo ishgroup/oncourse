@@ -2,9 +2,9 @@ package ish.oncourse.ui.components;
 
 import ish.oncourse.model.Course;
 import ish.oncourse.model.Survey;
-import ish.oncourse.services.course.GetRandomSurveys;
-import ish.oncourse.services.course.GetSurveysByCourse;
-import ish.oncourse.services.course.GetWebVisibleSurveys;
+import ish.oncourse.services.survey.GetRandomSurveys;
+import ish.oncourse.services.survey.GetSurveysByCourse;
+import ish.oncourse.services.survey.GetWebVisibleSurveys;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 

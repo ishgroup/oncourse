@@ -1,8 +1,9 @@
-package ish.oncourse.services.course;
+package ish.oncourse.services.survey;
 
 import ish.common.types.SurveyVisibility;
 import ish.oncourse.model.Survey;
 import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.query.QueryCacheStrategy;
 
 import java.util.List;
 

@@ -8,7 +8,7 @@ public class SurveyToJSON {
     private Survey survey;
     private boolean isTutor;
 
-    private static final String JSONPROPERTY_readOnly = "readOnly";
+    private static final String AVERAGE_SURVEY = "readOnly";
 
     private SurveyToJSON() {}
 
@@ -21,15 +21,15 @@ public class SurveyToJSON {
 
     public JSONObject get(){
         JSONObject result = new JSONObject();
-        result.put(Survey.COURSE_SCORE_PROPERTY, survey.getCourseScore());
-        result.put(Survey.TUTOR_SCORE_PROPERTY, survey.getTutorScore());
-        result.put(Survey.VENUE_SCORE_PROPERTY, survey.getVenueScore());
-        result.put(Survey.COMMENT_PROPERTY, survey.getComment());
-        result.put(Survey.VISIBILITY_PROPERTY, survey.getVisibility().getDatabaseValue());
-        result.put(Survey.NET_PROMOTER_SCORE_PROPERTY, survey.getNetPromoterScore());
+        result.put(Survey.COURSE_SCORE.getName(), survey.getCourseScore());
+        result.put(Survey.TUTOR_SCORE.getName(), survey.getTutorScore());
+        result.put(Survey.VENUE_SCORE.getName(), survey.getVenueScore());
+        result.put(Survey.COMMENT.getName(), survey.getComment());
+        result.put(Survey.VISIBILITY.getName(), survey.getVisibility().getDatabaseValue());
+        result.put(Survey.NET_PROMOTER_SCORE.getName(), survey.getNetPromoterScore());
 
         if (isTutor) {
-            result.put(JSONPROPERTY_readOnly, isTutor);
+            result.put(AVERAGE_SURVEY, isTutor);
         }
         return result;
     }

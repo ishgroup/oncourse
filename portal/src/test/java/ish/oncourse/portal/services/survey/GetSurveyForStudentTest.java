@@ -1,4 +1,4 @@
-package ish.oncourse.services.survey;
+package ish.oncourse.portal.services.survey;
 
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;

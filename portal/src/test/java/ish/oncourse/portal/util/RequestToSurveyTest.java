@@ -50,22 +50,22 @@ public class RequestToSurveyTest {
     private Request prepareRequest() {
         Request request = mock(Request.class);
 
-        when(request.getParameter(Survey.TUTOR_SCORE_PROPERTY)).thenReturn("5 ");
-        when(request.getParameter(Survey.COURSE_SCORE_PROPERTY)).thenReturn(" 4");
-        when(request.getParameter(Survey.VENUE_SCORE_PROPERTY)).thenReturn("3\t");
-        when(request.getParameter(Survey.NET_PROMOTER_SCORE_PROPERTY)).thenReturn("\n10");
-        when(request.getParameter(Survey.COMMENT_PROPERTY)).thenReturn("\ttest comment\n ");
+        when(request.getParameter(Survey.TUTOR_SCORE.getName())).thenReturn("5 ");
+        when(request.getParameter(Survey.COURSE_SCORE.getName())).thenReturn(" 4");
+        when(request.getParameter(Survey.VENUE_SCORE.getName())).thenReturn("3\t");
+        when(request.getParameter(Survey.NET_PROMOTER_SCORE.getName())).thenReturn("\n10");
+        when(request.getParameter(Survey.COMMENT.getName())).thenReturn("\ttest comment\n ");
         return request;
     }
 
     private Request prepareEmptyRequest() {
         Request request = mock(Request.class);
 
-        when(request.getParameter(Survey.TUTOR_SCORE_PROPERTY)).thenReturn(null);
-        when(request.getParameter(Survey.COURSE_SCORE_PROPERTY)).thenReturn(null);
-        when(request.getParameter(Survey.VENUE_SCORE_PROPERTY)).thenReturn(null);
-        when(request.getParameter(Survey.NET_PROMOTER_SCORE_PROPERTY)).thenReturn(null);
-        when(request.getParameter(Survey.COMMENT_PROPERTY)).thenReturn(null);
+        when(request.getParameter(Survey.TUTOR_SCORE.getName())).thenReturn(null);
+        when(request.getParameter(Survey.COURSE_SCORE.getName())).thenReturn(null);
+        when(request.getParameter(Survey.VENUE_SCORE.getName())).thenReturn(null);
+        when(request.getParameter(Survey.NET_PROMOTER_SCORE.getName())).thenReturn(null);
+        when(request.getParameter(Survey.COMMENT.getName())).thenReturn(null);
         return request;
     }
 

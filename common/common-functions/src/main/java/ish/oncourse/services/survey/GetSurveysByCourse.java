@@ -1,13 +1,15 @@
-package ish.oncourse.services.course;
+package ish.oncourse.services.survey;
 
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Survey;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.QueryCacheStrategy;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.apache.cayenne.query.QueryCacheStrategy.LOCAL_CACHE;
@@ -34,12 +36,17 @@ public class GetSurveysByCourse {
 
     public List<Survey> get() {
         ObjectSelect select = ObjectSelect.query(Survey.class)
-                .where(Survey.COLLEGE.eq(course.getCollege())
-                        .andExp(Survey.ENROLMENT
-                                .dot(Enrolment.COURSE_CLASS)
-                                .dot(CourseClass.COURSE)
-                                .eq(course)))
+                .where(getQualifier())
                 .cacheStrategy(cacheStrategy, Survey.class.getSimpleName());
-        return select.select(context);
+
+        return new ArrayList<>(select.select(context));
+    }
+
+    protected Expression getQualifier() {
+        return Survey.COLLEGE.eq(course.getCollege())
+                .andExp(Survey.ENROLMENT
+                        .dot(Enrolment.COURSE_CLASS)
+                        .dot(CourseClass.COURSE)
+                        .eq(course));
     }
 }

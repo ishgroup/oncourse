@@ -19,27 +19,27 @@ public class RequestToSurvey {
     }
 
     public void parse() {
-        String value = StringUtils.trimToNull(src.getParameter(Survey.TUTOR_SCORE_PROPERTY));
+        String value = StringUtils.trimToNull(src.getParameter(Survey.TUTOR_SCORE.getName()));
         if (StringUtils.isNumeric(value)) {
             dest.setTutorScore(Integer.valueOf(value));
         }
 
-        value = StringUtils.trimToNull(src.getParameter(Survey.VENUE_SCORE_PROPERTY));
+        value = StringUtils.trimToNull(src.getParameter(Survey.VENUE_SCORE.getName()));
         if (StringUtils.isNumeric(value)) {
             dest.setVenueScore(Integer.valueOf(value));
         }
 
-        value = StringUtils.trimToNull(src.getParameter(Survey.COURSE_SCORE_PROPERTY));
+        value = StringUtils.trimToNull(src.getParameter(Survey.COURSE_SCORE.getName()));
         if (StringUtils.isNumeric(value)) {
             dest.setCourseScore(Integer.valueOf(value));
         }
 
-        value = StringUtils.trimToNull(src.getParameter(Survey.NET_PROMOTER_SCORE_PROPERTY));
+        value = StringUtils.trimToNull(src.getParameter(Survey.NET_PROMOTER_SCORE.getName()));
         if (StringUtils.isNumeric(value)) {
             dest.setNetPromoterScore(Integer.valueOf(value));
         }
 
-        value = StringUtils.trimToNull(src.getParameter(Survey.COMMENT_PROPERTY));
+        value = StringUtils.trimToNull(src.getParameter(Survey.COMMENT.getName()));
         if (value != null) {
             dest.setComment(value);
         }
