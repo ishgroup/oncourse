@@ -33,11 +33,6 @@ public class GetCourseByCode {
                 .where(Course.COLLEGE.eq(college))
                 .and(Course.IS_WEB_VISIBLE.isTrue())
                 .and(Course.CODE.eq(code))
-                .prefetch(Course.COURSE_CLASSES.joint())
-                .prefetch(Course.COURSE_CLASSES.dot(CourseClass.COLLEGE).joint())
-                .prefetch(Course.COURSE_CLASSES.dot(CourseClass.SESSIONS).joint())
-                .prefetch(Course.COURSE_CLASSES.dot(CourseClass.ROOM).joint())
-                .prefetch(Course.COURSE_CLASSES.dot(CourseClass.ROOM).dot(Room.SITE).joint())
                 .cacheStrategy(LOCAL_CACHE)
                 .cacheGroup(Course.class.getSimpleName())
                 .selectOne(context);
