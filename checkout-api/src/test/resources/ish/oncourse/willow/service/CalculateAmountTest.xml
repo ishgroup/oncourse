@@ -308,7 +308,7 @@
              ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="my test VOUCHER product part 7" TYPE="3" angelId="12"
              TAXADJUSTMENT="0.00" feeGST="0.00"/>
 
-    <FieldConfiguration id="2" collegeId="1"  angelId="-1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Enrolment Configuration1"/>
+    <FieldConfiguration id="2" collegeId="1"  angelId="-1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Enrolment Configuration1" type="1"/>
 
     <Field id="101"  collegeId="1"  angelId="100"
            created="2011-09-20 11:14:54"

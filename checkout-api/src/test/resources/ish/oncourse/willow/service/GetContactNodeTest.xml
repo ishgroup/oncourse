@@ -310,7 +310,8 @@
     <ProductItem collegeId="1" CREATEDON="2012-05-14 14:33:16.537"  ID="1"
                  MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="8" TYPE="2" angelId="1" source="W"
                  status="0" INVOICELINEID="1" confirmationStatus="3" contactId="1001"/>
-    <FieldConfiguration id="2" collegeId="1"  angelId="-1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Enrolment Configuration1"/>
+    
+    <FieldConfiguration id="2" collegeId="1"  angelId="-1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Enrolment Configuration1" type="1"/>
 
     <Field id="101"  collegeId="1"  angelId="100"
            created="2011-09-20 11:14:54"

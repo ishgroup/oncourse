@@ -49,7 +49,7 @@
     <CustomFieldType id="3" collegeId="1"  angelId="3" created="2011-09-12 00:47:26.0" modified="2011-09-12 00:59:00.0" name="Enrolment fee" fieldKey="enrolmentFee"  isMandatory="1" entityName="Enrolment"/>
     <CustomFieldType id="4" collegeId="1"  angelId="4" created="2011-09-12 00:47:26.0" modified="2011-09-12 00:59:00.0" name="Enrolment key" fieldKey="enrolmentKey"  isMandatory="1" entityName="Enrolment"/>
 
-    <FieldConfiguration id="1" collegeId="1"  angelId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Enrolment Configuration"/>
+    <FieldConfiguration id="1" collegeId="1"  angelId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Enrolment Configuration" type="1"/>
 
     <FieldConfigurationScheme id="1"  collegeId="1"  angelId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Name"
                               applicationFieldConfigurationId="1"
@@ -64,7 +64,7 @@
                   description="description" fieldConfigurationId="1" />
 
 
-    <FieldConfiguration id="2" collegeId="1"  angelId="-1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Enrolment Configuration1"/>
+    <FieldConfiguration id="2" collegeId="1"  angelId="-1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Enrolment Configuration1" type="1"/>
 
     <Field id="101"  collegeId="1"  angelId="100"
            created="2011-09-20 11:14:54"

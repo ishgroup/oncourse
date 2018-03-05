@@ -41,7 +41,7 @@
 
     <CustomFieldType id="1" collegeId="1"  angelId="1" created="2011-09-12 00:47:26.0" modified="2011-09-12 00:59:00.0" name="Favorite car maker" fieldKey="carMaker" defaultValue="BMW" isMandatory="0" entityName="Contact"/>
 
-    <FieldConfiguration id="1" collegeId="1"  angelId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Enrolment Configuration"/>
+    <FieldConfiguration id="1" collegeId="1"  angelId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Enrolment Configuration" type="1"/>
 
     <FieldConfigurationScheme id="1"  collegeId="1"  angelId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Name"
                               applicationFieldConfigurationId="1"
@@ -56,7 +56,7 @@
                   description="description" fieldConfigurationId="1" />
 
 
-    <FieldConfiguration id="2" collegeId="1"  angelId="-1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Enrolment Configuration1"/>
+    <FieldConfiguration id="2" collegeId="1"  angelId="-1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Enrolment Configuration1" type="1"/>
 
     <Field id="101"  collegeId="1"  angelId="100"
            created="2011-09-20 11:14:54"

@@ -44,7 +44,7 @@
 
     <CustomFieldType id="1" collegeId="1"  angelId="1" created="2011-09-12 00:47:26.0" modified="2011-09-12 00:59:00.0" name="Favorite car maker" fieldKey="carMaker" defaultValue="BMW" isMandatory="0" entityName="WaitingList"/>
 
-    <FieldConfiguration id="1" collegeId="1"  angelId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Waiting List Configuration"/>
+    <FieldConfiguration id="1" collegeId="1"  angelId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Waiting List Configuration" type="1"/>
 
     <FieldConfigurationScheme id="1"  collegeId="1"  angelId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Name"
                               applicationFieldConfigurationId="1"
