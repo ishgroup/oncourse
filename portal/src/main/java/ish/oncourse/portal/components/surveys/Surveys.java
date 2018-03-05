@@ -45,6 +45,8 @@ public class Surveys {
         if (!request.isXHR())
             return null;
 
+        CourseClass courseClass = portalService.getCourseClassBy(courseClassId);
+
         Survey survey;
         //we should check at fist that the current contact is a student and try to load survey for student
         boolean isTutor = portalService.getContact().getTutor() != null && portalService.isTutorFor(courseClass);
@@ -52,7 +54,7 @@ public class Surveys {
             survey = GetAverageSurvey.valueOf(cayenneService.newNonReplicatingContext(), courseClass).get();
         } else {
             survey = createIfNotExist(cayenneService.newContext(),
-                                        portalService.getCourseClassBy(courseClassId),
+                                        courseClass,
                                         portalService.getContact().getStudent());
         }
 
