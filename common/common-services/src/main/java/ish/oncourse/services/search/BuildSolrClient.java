@@ -49,7 +49,7 @@ public class BuildSolrClient {
 		//THIS PROPERTY TO INITIALIZE ZK NODES.
 		Properties properties = Configuration.loadProperties();
 		result.url = (String) properties.get("solr_url");
-		if (result.url != null) {
+		if (result.url == null) {
 			result.url = (String) properties.get(Configuration.AppProperty.ZK_HOST.getKey());
 		}
 		return result;
