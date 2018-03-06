@@ -154,6 +154,10 @@
     padding: 5px 0;
     text-align: center;
     
+    .user {
+      font-size: 12px;
+    }
+    
     &:hover:not(.active) {
       text-decoration: underline;
       background-color: transparent;
