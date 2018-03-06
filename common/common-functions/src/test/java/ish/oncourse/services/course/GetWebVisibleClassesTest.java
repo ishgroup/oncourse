@@ -6,10 +6,13 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.services.courseclass.ClassAge;
 import ish.oncourse.services.courseclass.ClassAgeType;
 import ish.oncourse.services.preference.Preferences;
+import ish.oncourse.test.LoadDataSet;
+import ish.oncourse.test.TestContext;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.Select;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -23,6 +26,17 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class GetWebVisibleClassesTest {
+
+    protected TestContext testContext;
+
+    @Before
+    public void setup() throws Exception {
+        testContext = new TestContext().open();
+
+        new LoadDataSet().dataSetFile("ish/oncourse/services/course/GetWebVisibleClassesTestDataSet.xml")
+                .load(testContext.getDS());
+
+    }
 
     @Test
     public void test_HIDE_CLASS_ON_WEB_Preferences() {
@@ -39,7 +53,7 @@ public class GetWebVisibleClassesTest {
 
     @Test
     public void test() {
-        Course course = createMockCourse();
+        Course course = createCourse();
 
         assertWebVisibleCourseClassCount(0, course, 16, ClassAgeType.beforeClassStarts);
         assertWebVisibleCourseClassCount(0, course, 14, ClassAgeType.beforeClassStarts);
@@ -62,31 +76,32 @@ public class GetWebVisibleClassesTest {
         assertWebVisibleCourseClassCount(2, course, 8, ClassAgeType.afterClassEnds);
     }
 
-    private Course createMockCourse() {
-        Course course = mock(Course.class);
+    private Course createCourse() {
 
-        List<CourseClass> courseClasses = new ArrayList<>();
+        ObjectContext context = testContext.getServerRuntime().newContext();
+        Course course = ObjectSelect.query(Course.class).selectFirst(context);
+        
         Date currentDate = new Date();
 
-        courseClasses.add(createMockCourseClass(addDays(currentDate, -15), addDays(currentDate, -13), false));
-        courseClasses.add(createMockCourseClass(addDays(currentDate, -1), addDays(currentDate, 1), true));
-        courseClasses.add(createMockCourseClass(addDays(currentDate, 6), addDays(currentDate, 12), true));
+        createCourseClass(course, addDays(currentDate, -15), addDays(currentDate, -13), false);
+        createCourseClass(course, addDays(currentDate, -1), addDays(currentDate, 1), true);
+        createCourseClass(course, addDays(currentDate, 6), addDays(currentDate, 12), true);
 
-        when(course.getCourseClasses()).thenReturn(courseClasses);
-
+        context.commitChanges();
         return course;
     }
 
-    private CourseClass createMockCourseClass(Date startClassDate, Date endClassDate, boolean isHasAvailableEnrolmentPlace) {
-        CourseClass courseClass = mock(CourseClass.class);
-
-        when(courseClass.getIsWebVisible()).thenReturn(true);
-        when(courseClass.isCancelled()).thenReturn(false);
-        when(courseClass.isHasAvailableEnrolmentPlaces()).thenReturn(isHasAvailableEnrolmentPlace);
-        when(courseClass.getStartDate()).thenReturn(startClassDate);
-        when(courseClass.getEndDate()).thenReturn(endClassDate);
-
-        return courseClass;
+    private void createCourseClass(Course course, Date startClassDate, Date endClassDate, boolean isHasAvailableEnrolmentPlace) {
+        CourseClass courseClass = course.getObjectContext().newObject(CourseClass.class);
+        courseClass.setCourse(course);
+        courseClass.setCollege(course.getCollege());
+        courseClass.setIsDistantLearningCourse(false);
+        courseClass.setIsWebVisible(true);
+        courseClass.setIsActive(true);
+        courseClass.setCancelled(false);
+        courseClass.setMaximumPlaces(isHasAvailableEnrolmentPlace? 999: 0);
+        courseClass.setStartDate(startClassDate);
+        courseClass.setEndDate(endClassDate);
     }
 
     private void assertWebVisibleCourseClassCount(int expected, Course course, int dayCount, ClassAgeType ageType) {
