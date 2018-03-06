@@ -18,6 +18,7 @@ $md-checkmark-color: $white;
     margin-bottom: 0;
     color: black;
     font-family: inherit;
+    font-size: 14px;
 
     &:before, &:after {
       content: "";
@@ -45,6 +46,7 @@ $md-checkmark-color: $white;
   input[type="checkbox"] {
     outline: 0;
     margin-right: $md-checkbox-size - 8px;
+    opacity: 0;
     
     &:checked {
       + label:before{
