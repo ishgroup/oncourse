@@ -7,6 +7,9 @@ import ish.oncourse.model.Room;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.apache.cayenne.query.QueryCacheStrategy.LOCAL_CACHE;
 
 /**

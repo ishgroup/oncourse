@@ -4,12 +4,16 @@ import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.services.courseclass.ClassAge;
 import ish.oncourse.services.courseclass.ClassAgeType;
+import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.Preferences;
+import ish.oncourse.test.LoadDataSet;
+import ish.oncourse.test.TestContext;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.Select;
 import org.apache.commons.lang.time.DateUtils;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -23,6 +27,17 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class GetEnrollableClassesTest {
+
+	protected TestContext testContext;
+
+	@Before
+	public void setup() throws Exception {
+		testContext = new TestContext().open();
+
+		new LoadDataSet().dataSetFile("ish/oncourse/services/course/GetEnrollableClassesTestDataSet.xml")
+				.load(testContext.getDS());
+
+	}
 
 	@Test
 	public void test_STOP_WEB_ENROLMENTS_Preferences() {
@@ -39,8 +54,8 @@ public class GetEnrollableClassesTest {
 
 	@Test
 	public void test() {
-		Course course = createMockCourse();
-
+		Course course =createCourse();
+		
 		assertEnrollableCourseClassCount(3, course, 0, ClassAgeType.beforeClassStarts);
 		assertEnrollableCourseClassCount(2, course, 1, ClassAgeType.beforeClassStarts);
 		assertEnrollableCourseClassCount(1, course, 2, ClassAgeType.beforeClassStarts);
@@ -66,44 +81,36 @@ public class GetEnrollableClassesTest {
 		assertEnrollableCourseClassCount(6, course, 3, ClassAgeType.afterClassEnds);
 	}
 
-	private Course createMockCourse() {
-		Course course = mock(Course.class);
-
-		List<CourseClass> courseClasses = new ArrayList<>();
+	private Course createCourse() {
+		ObjectContext context = testContext.getServerRuntime().newContext();
+		Course course = ObjectSelect.query(Course.class).selectFirst(context);
+		
 		Date currentDate = new Date();
 
-		courseClasses.add(createMockCourseClass(addDays(currentDate, -3), addDays(currentDate, -2)));
-		courseClasses.add(createMockCourseClass(addDays(currentDate, -2), addDays(currentDate, -1)));
-		courseClasses.add(createMockCourseClass(addDays(currentDate, -1), currentDate));
-		courseClasses.add(createMockCourseClass(currentDate, addDays(currentDate, 1)));
-		courseClasses.add(createMockCourseClass(addDays(currentDate, 1), addDays(currentDate, 2)));
-		courseClasses.add(createMockCourseClass(addDays(currentDate, 2), addDays(currentDate, 3)));
+		createCourseClass(course, addDays(currentDate, -3), addDays(currentDate, -2));
+		createCourseClass(course, addDays(currentDate, -2), addDays(currentDate, -1));
+		createCourseClass(course, addDays(currentDate, -1), currentDate);
+		createCourseClass(course, currentDate, addDays(currentDate, 1));
+		createCourseClass(course, addDays(currentDate, 1), addDays(currentDate, 2));
+		createCourseClass(course, addDays(currentDate, 2), addDays(currentDate, 3));
 
-		when(course.getCourseClasses()).thenReturn(courseClasses);
-
+		context.commitChanges();
 		return course;
 	}
 
-	private CourseClass createMockCourseClass(Date startClassDate, Date endClassDate) {
-		CourseClass courseClass = mock(CourseClass.class);
-
-		when(courseClass.getIsWebVisible()).thenReturn(true);
-		when(courseClass.isCancelled()).thenReturn(false);
-		when(courseClass.isHasAvailableEnrolmentPlaces()).thenReturn(true);
-		when(courseClass.getStartDate()).thenReturn(startClassDate);
-		when(courseClass.getEndDate()).thenReturn(endClassDate);
-
-		return courseClass;
+	private void createCourseClass(Course course, Date startClassDate, Date endClassDate) {
+		CourseClass courseClass = course.getObjectContext().newObject(CourseClass.class);
+		courseClass.setCourse(course);
+		courseClass.setCollege(course.getCollege());
+		courseClass.setIsDistantLearningCourse(false);
+		courseClass.setIsWebVisible(true);
+		courseClass.setIsActive(true);
+		courseClass.setCancelled(false);
+		courseClass.setMaximumPlaces(999);
+		courseClass.setStartDate(startClassDate);
+		courseClass.setEndDate(endClassDate);
 	}
 
-	private Date createDateWithOffset(int yearOffset, int monthOffset, int dayOffset) {
-		Date currentSystemDate = new Date();
-
-		currentSystemDate = DateUtils.addYears(currentSystemDate, yearOffset);
-		currentSystemDate = DateUtils.addMonths(currentSystemDate, monthOffset);
-		currentSystemDate = DateUtils.addDays(currentSystemDate, dayOffset);
-		return currentSystemDate;
-	}
 
 	private void assertEnrollableCourseClassCount(int expected, Course course, int dayCount, ClassAgeType ageType) {
 		List<CourseClass> courseClasses = GetEnrollableClasses.valueOf(course)
