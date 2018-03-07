@@ -1,7 +1,6 @@
 package ish.oncourse.willow.service;
 
 import java.util.List;
-import ish.oncourse.willow.model.checkout.ChangeParentRequest;
 import ish.oncourse.willow.model.checkout.ConcessionsAndMemberships;
 import ish.oncourse.willow.model.checkout.CreateParentChildrenRequest;
 import ish.oncourse.willow.model.checkout.concession.Concession;
@@ -25,13 +24,6 @@ import javax.ws.rs.core.MediaType;
 
 @Path("/")
 public interface ContactApi  {
-
-    @PUT
-    @Path("/changeParent")
-    @Consumes({ "application/json" })
-    @Produces({ "application/json" })
-    @CollegeInfo
-    void changeParent(ChangeParentRequest request);
 
     @PUT
     @Path("/contact")

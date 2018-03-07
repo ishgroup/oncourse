@@ -66,7 +66,6 @@ class CreateOrGetContact  {
             if (!contact.isCompany) {
                 CheckParent checkParent = new CheckParent(college, context, contact).perform()
                 contactId.parentRequired = checkParent.parentRequired
-                contactId.parent = checkParent.parent
             }
         } else {
             validationError.formErrors << NOT_ALLOW_CREATE_CONTACT

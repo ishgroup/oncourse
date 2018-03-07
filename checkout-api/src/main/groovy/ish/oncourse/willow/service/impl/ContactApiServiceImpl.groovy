@@ -76,21 +76,7 @@ class ContactApiServiceImpl implements ContactApi{
             context.commitChanges()
         }
     }
-
-    @Override
-    void changeParent(ChangeParentRequest request) {
-        ObjectContext context = cayenneService.newContext()
-        College college = collegeService.college
-        ChangeParent changeParent = new ChangeParent(college, context, request).perform()
-        if (changeParent.error) {
-            context.rollbackChanges()
-            logger.info("Can not change parent, college id: ${college.id}, request: ${request}")
-            throw new BadRequestException(Response.status(400).entity(changeParent.error).build())
-        } else {
-            context.commitChanges()
-        }
-    }
-
+    
     @Override
     ContactFields getContactFields(ContactFieldsRequest contactFieldsRequest) {
         ObjectContext context = cayenneService.newContext()
@@ -127,11 +113,8 @@ class ContactApiServiceImpl implements ContactApi{
         ContactId response = new ContactId().id(contact.id.toString()).newContact(false).parentRequired(false)
         
         if (!contact.isCompany) {
-            if (contactFields.concession) {
-                new AddConcession(objectContext: context, errors: errors, college: college).add(contactFields.concession)
-            }
             CheckParent checkParent = new CheckParent(college, context, contact).perform()
-            response = response.parentRequired(checkParent.parentRequired).parent(checkParent.parent)
+            response = response.parentRequired(checkParent.parentRequired)
         }
         
         if (errors.fieldsErrors.empty && errors.formErrors.empty) {
