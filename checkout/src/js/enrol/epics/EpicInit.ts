@@ -16,8 +16,9 @@ import {ProcessError} from "./EpicUtils";
 import {AxiosResponse} from "axios";
 import {getPaymentStatus, resetPaymentState} from "../containers/payment/actions/Actions";
 import {IshState} from "../../services/IshState";
-import {openEditContact} from "../containers/contact-edit/actions/Actions";
+import {openEditContact, setFieldsToState} from "../containers/contact-edit/actions/Actions";
 import {getAllContactNodesFromBackend, getContactNodeFromBackend, removeItemFromSummary} from "../containers/summary/actions/Actions";
+import {changePhase} from "../actions/Actions";
 
 const updateContactNodes = contacts => {
   const result = [];
@@ -80,6 +81,13 @@ export const EpicInit: Epic<any, IshState> = (action$: ActionsObservable<any>, s
     const state = store.getState();
 
     const result = [];
+
+    if (state.checkout.fields.unfilled.length) {
+      return [
+        setFieldsToState(state.checkout.fields.unfilled[0]),
+        changePhase(Phase.EditContact),
+      ];
+    }
 
     result.push(Actions.updateContactAddProcess({}, null, null));
 

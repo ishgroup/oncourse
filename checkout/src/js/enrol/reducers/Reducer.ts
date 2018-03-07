@@ -109,7 +109,7 @@ const FieldsReducer = (state: ContactFieldsState = new ContactFieldsState(), act
         default:
           return {
             current: null,
-            unfilled: state.unfilled,
+            unfilled: state.unfilled.filter(fields => state.current && state.current.contactId !== fields.contactId),
           };
       }
 
