@@ -16,8 +16,12 @@ dependencies {
 
 //cxf
     compile 'org.apache.cxf:cxf-core:3.2.2'
-    compile 'org.apache.cxf:cxf-rt-frontend-jaxrs:3.2.2'
-   // compile 'org.apache.cxf:cxf-rt-transports-http-jetty:3.2.2'
+    compile ('org.apache.cxf:cxf-rt-frontend-jaxrs:3.2.2'){
+        exclude group:'javax.ws.rs'
+    }
+    compile "javax.ws.rs:javax.ws.rs-api:2.1@jar"
+
+    // compile 'org.apache.cxf:cxf-rt-transports-http-jetty:3.2.2'
     compile 'com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.8.7'
     compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.7'
 
