@@ -63,9 +63,6 @@ dependencies {
 	compile "org.apache.cayenne:cayenne-protostuff:$cayenneVersion"
 	compile "org.apache.cayenne:cayenne-java8:$cayenneVersion"
 
-
-	compile 'foxtrot:foxtrot-core:4.0'
-
 	compile "org.eclipse.jetty:jetty-servlet:$jettyVersion"
 	compile "org.eclipse.jetty:jetty-servlets:$jettyVersion"
 	compile "org.eclipse.jetty.http2:http2-server:$jettyVersion"
