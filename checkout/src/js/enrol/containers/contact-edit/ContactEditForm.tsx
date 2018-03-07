@@ -83,7 +83,7 @@ const Form = reduxForm({
   form: NAME,
   validate: (data, props: Props) => {
     const errors = {};
-    props.fields.headings.map(headings =>
+    props.fields && props.fields.headings.map(headings =>
       headings.fields.map(field =>
         (field.mandatory && (field.dataType !== "BOOLEAN" || field.key === "isMale") && !data[toFormKey(field.key)])
           ? errors[toFormKey(field.key)] = `Field '${field.name}' is required`
@@ -110,7 +110,7 @@ const Form = reduxForm({
 const getInitialValues = fields => {
   const initialValues = {};
 
-  fields.headings
+  fields && fields.headings
     .map(h => h.fields
       .filter(f => f.defaultValue)
       .map(f => (initialValues[toFormKey(f.key)] = f.defaultValue)),
@@ -122,7 +122,7 @@ const getInitialValues = fields => {
 const mapStateToProps = (state: IshState) => {
   // state.checkout.contacts.entities.contact[state.checkout.fields.contactId]
   const contact = state.checkout.contactAddProcess.contact;
-  const fields = state.checkout.fields;
+  const fields = state.checkout.fields.current;
   const errors = state.checkout.error;
   const concessionTypes = state.checkout.concession.types;
   const isNewContact = !state.checkout.contacts.result.length;

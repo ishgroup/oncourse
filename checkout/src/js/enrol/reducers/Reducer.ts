@@ -1,5 +1,5 @@
 import {combineReducers} from "redux";
-import {CheckoutState, Phase} from "./State";
+import {CheckoutState, ContactFieldsState, Phase} from "./State";
 import * as L from "lodash";
 import * as Actions from "../actions/Actions";
 import * as ContactEditActions from "../containers/contact-edit/actions/Actions";
@@ -39,7 +39,7 @@ const IsCartModified = (state: boolean = false, action: IAction<boolean>): boole
     default:
       return state;
   }
-}
+};
 
 const PageReducer = (state: Phase = Phase.Summary, action: IAction<Phase>): Phase => {
   switch (action.type) {
@@ -91,19 +91,33 @@ const NewContactReducer = (state: boolean = false, action: IAction<boolean>): bo
   }
 };
 
-const FieldsReducer = (state: ContactFields = null, action: IAction<ContactFields>): ContactFields => {
+const FieldsReducer = (state: ContactFieldsState = new ContactFieldsState(), action: IAction<ContactFields>): ContactFieldsState => {
   switch (action.type) {
 
     case ContactEditActions.SET_FIELDS_TO_STATE:
-      return action.payload;
+      return {
+        current: action.payload,
+        unfilled: state.unfilled.find(fields => fields.contactId === action.payload.contactId)
+                  ? state.unfilled
+                  : state.unfilled.concat(action.payload),
+      };
 
     case Actions.CHANGE_PHASE:
       switch (action.payload) {
         case Phase.EditContact:
           return state;
         default:
-          return null;
+          return {
+            current: null,
+            unfilled: state.unfilled,
+          };
       }
+
+    case ContactEditActions.RESET_FIELDS_STATE:
+      return {
+        current: null,
+        unfilled: state.unfilled.filter(fields => fields.contactId !== state.current.contactId),
+      };
 
     case Actions.RESET_CHECKOUT_STATE:
       return null;
@@ -177,7 +191,7 @@ const AmountReducer = (state: Amount = new Amount(), action: IAction<any>): Amou
       return {
         ...state,
         payNowVisibility: action.payload,
-      }
+      };
 
     default:
       return state;
@@ -264,7 +278,7 @@ const FetchingReducer = (state: boolean = false, action: IAction<any>): boolean 
     default:
       return state;
   }
-}
+};
 
 export const Reducer = combineReducers<CheckoutState>({
   fetching: FetchingReducer,

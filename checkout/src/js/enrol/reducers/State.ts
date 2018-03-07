@@ -7,7 +7,7 @@ export interface CheckoutState {
   newContact: boolean;
   phase: Phase;
   page: Phase;  // Summary, Payment, Result
-  fields: ContactFields;
+  fields: ContactFieldsState;
   error: ValidationError;
   payerId: string;
   contacts: ContactsState;
@@ -39,4 +39,9 @@ export enum Phase {
   AddConcession,
   AddParent,
   ChangeParent,
+}
+
+export class ContactFieldsState {
+  current: ContactFields = null;
+  unfilled: ContactFields[] = [];
 }
