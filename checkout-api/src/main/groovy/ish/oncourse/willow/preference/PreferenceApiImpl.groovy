@@ -3,6 +3,7 @@ package ish.oncourse.willow.preference
 import com.google.inject.Inject
 import ish.oncourse.api.cayenne.CayenneService
 import ish.oncourse.model.College
+import ish.oncourse.services.preference.GetContactAgeWhenNeedParent
 import ish.oncourse.services.preference.GetEnrolSuccessUrl
 import ish.oncourse.services.preference.GetFeatureEnrolmentDisclosure
 import ish.oncourse.services.preference.GetRefundPolicyUrl
@@ -39,6 +40,7 @@ class PreferenceApiImpl implements PreferenceApi {
         preferences.refundPolicyUrl = new GetRefundPolicyUrl(college, context).get()
         preferences.featureEnrolmentDisclosure = new GetFeatureEnrolmentDisclosure(college, context).get()
         preferences.googleTagmanagerAccount = collegeService.webSite.googleTagmanagerAccount
+        preferences.minAge =  new GetContactAgeWhenNeedParent(college, context).get()?.doubleValue()
         return preferences
     }
 }
