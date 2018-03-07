@@ -6,7 +6,7 @@ buildscript {
         waCommonWebservicesClientVersion = '9.5.13'
 		solrVersion = '7.1.0'
 		groovyVersion = '2.4.12'
-		mariadbVersion = '2.2.0'
+		mariadbVersion = '2.2.2'
 		tapestryVersion = '5.4.3'
 	}
 
