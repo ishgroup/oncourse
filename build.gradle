@@ -95,12 +95,8 @@ allprojects {
 
 	dependencies {
 
-		//willow-api: projects don't use any dependencies from the main project
-        if (!project.parent?.name?.equals("willow-api")) {
-			compile "org.apache.logging.log4j:log4j-jcl:$log4j2Version"
-			compile "org.apache.logging.log4j:log4j-web:$log4j2Version"
-		}
-
+        compile "org.apache.logging.log4j:log4j-jcl:$log4j2Version"
+        compile "org.apache.logging.log4j:log4j-web:$log4j2Version"
 		compile "org.apache.logging.log4j:log4j-api:$log4j2Version"
 		compile "org.apache.logging.log4j:log4j-core:$log4j2Version"
 		compile "org.apache.logging.log4j:log4j-slf4j-impl:$log4j2Version"
