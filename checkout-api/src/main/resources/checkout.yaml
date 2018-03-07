@@ -878,11 +878,11 @@ definitions:
       start:
         description: Class start date and time in UTC time zone (+00:00),date format is ISO 8601
         type: string
-        format: date
+        format: date-time
       end:
         description: Class start date and time in UTC time zone (+00:00),date format is ISO 8601
         type: string
-        format: date
+        format: date-time
       hasAvailablePlaces:
         type: boolean
         description: Available places
@@ -941,7 +941,7 @@ definitions:
         description: Internal Unique identifier of discount
       expiryDate:
         type: string
-        format: date
+        format: date-time
       discountedFee:
         type: number
       discountValue:

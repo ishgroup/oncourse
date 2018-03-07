@@ -9,6 +9,7 @@ public class Preferences  {
     private String refundPolicyUrl = null;
     private String featureEnrolmentDisclosure = null;
     private String googleTagmanagerAccount = null;
+    private Double minAge = null;
 
     /**
      * is corporate pass enabled preference
@@ -112,6 +113,23 @@ public class Preferences  {
       return this;
     }
 
+    /**
+     * Minimal age which not requiring parent
+     * @return minAge
+     */
+    public Double getMinAge() {
+        return minAge;
+    }
+
+    public void setMinAge(Double minAge) {
+       this.minAge = minAge;
+    }
+
+    public Preferences minAge(Double minAge) {
+      this.minAge = minAge;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -124,6 +142,7 @@ public class Preferences  {
       sb.append("    refundPolicyUrl: ").append(toIndentedString(refundPolicyUrl)).append("\n");
       sb.append("    featureEnrolmentDisclosure: ").append(toIndentedString(featureEnrolmentDisclosure)).append("\n");
       sb.append("    googleTagmanagerAccount: ").append(toIndentedString(googleTagmanagerAccount)).append("\n");
+      sb.append("    minAge: ").append(toIndentedString(minAge)).append("\n");
       sb.append("}");
       return sb.toString();
     }

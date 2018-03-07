@@ -87,7 +87,7 @@ public class CourseClass  {
     }
 
     /**
-     * Start date of class
+     * Class start date and time in UTC time zone (+00:00),date format is ISO 8601
      * @return start
      */
     public LocalDateTime getStart() {
@@ -104,7 +104,7 @@ public class CourseClass  {
     }
 
     /**
-     * End date of class
+     * Class start date and time in UTC time zone (+00:00),date format is ISO 8601
      * @return end
      */
     public LocalDateTime getEnd() {

@@ -4,6 +4,12 @@ ext {
     swaggerName = 'checkout.yaml'
 }
 
+
+configurations {
+    swagger
+}
+
+
 apply from: "$rootDir/gradle/functions.gradle"
 apply from: "$rootDir/gradle/bootique.gradle"
 apply from: "$rootDir/gradle/build-api.gradle"
@@ -15,8 +21,16 @@ mainClassName = 'ish.oncourse.willow.WillowApp'
 
 dependencies {
     compile project(':common:common-api')
+    swagger project(':common:codegen:jaxrs')
 }
 test {
     forkEvery = 1 //run every test in separate jvm
     initTestDBConfig(project, test)
+}
+
+
+task swagger(type: JavaExec) {
+    main = 'ish.oncourse.codegen.cxf.WillowJaxRsGenerator'
+    classpath = configurations.swagger
+    args  = [ servicesPackage, modelPackage, project.projectDir, "${project.projectDir}/src/main/resources/$swaggerName" ]
 }
