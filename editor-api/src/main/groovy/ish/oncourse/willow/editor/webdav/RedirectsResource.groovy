@@ -19,6 +19,8 @@ import ish.oncourse.willow.editor.v1.model.Redirects
 import ish.oncourse.willow.editor.website.WebUrlAliasFunctions
 import org.apache.cayenne.ObjectContext
 
+import javax.ws.rs.core.Response
+
 class RedirectsResource extends AbstractResource implements GetableResource,PropFindableResource, ReplaceableResource {
 
     public static final String FILE_NAME = 'redirects.txt'
@@ -105,7 +107,8 @@ class RedirectsResource extends AbstractResource implements GetableResource,Prop
             context.commitChanges()
         } else {
             context.rollbackChanges()
-            throw new BadRequestException(updater.errors.join('\n'))
+            requestService.response.sendError(Response.Status.BAD_REQUEST.statusCode,   updater.errors.join('\n'))
+            throw new BadRequestException(this)
         }
         
     }
