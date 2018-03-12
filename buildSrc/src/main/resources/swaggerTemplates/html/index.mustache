@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 
   <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css" media="screen">
   <link rel="stylesheet" type="text/css" href="assets/css/bootstrap-responsive.css" media="screen">
@@ -18,34 +19,33 @@
     </div>
   </div>
   <div class="model-container"></div>
-  <div class="content">
-    <div class="box clearfix">
-      <div class="sidebar">
-        <div class="section-box">
-          <div class="section-header">
-            Overview
-          </div>
-          <ul>
-            <li>Getting Started</li>
-          </ul>
+  <div class="content clearfix">
+    <div class="sidebar">
+      <div class="section-box">
+        <div class="section-header">
+          Overview
         </div>
-        {{#apiInfo}}
-    		{{#apis}}
-        <div class="section-box">
-          <div class="section-header">
-            <a href="#!/{{classname}}">{{classVarName}}</a>
-          </div>
-          <ul>
-			      {{#operations}}
-			      {{#operation}}
-            <li><a href="#!/{{classname}}#{{nickname}}">{{nickname}}</a></li>
-            {{/operation}}
-            {{/operations}}
-          </ul>
-        </div>
-        {{/apis}}
-        {{/apiInfo}}
+        <ul>
+          <li>Getting Started</li>
+        </ul>
       </div>
+      {{#apiInfo}}
+  		{{#apis}}
+      <div class="section-box">
+        <div class="section-header">
+          <a href="#!/{{classname}}">{{classVarName}}</a>
+        </div>
+        <ul>
+		      {{#operations}}
+		      {{#operation}}
+          <li><a href="#!/{{classname}}#{{nickname}}">{{nickname}}</a></li>
+          {{/operation}}
+          {{/operations}}
+        </ul>
+      </div>
+      {{/apis}}
+      {{/apiInfo}}
+    </div>
     <div class="non-sidebar">
       <div class="main-content">
         <h2>Getting Started</h2>
