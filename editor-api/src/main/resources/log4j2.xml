@@ -19,7 +19,6 @@
     <Loggers>
         <Root level="warn">
             <AppenderRef ref="FILE" level="warn"/>
-            <AppenderRef ref="STDOUT" level="debug"/>
         </Root>
         <Logger name="ish.oncourse.util.log.LogAppInfo" level="info">
             <AppenderRef ref="FILE"/>
