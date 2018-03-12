@@ -7,6 +7,7 @@ import {
 
 import {Injector} from "../../injector";
 import {CartState, IshState} from "../../services/IshState";
+import {State as SummaryState} from "../containers/summary/reducers/State";
 import {ContactApi} from "../../http/ContactApi";
 import {CheckoutApi} from "../../http/CheckoutApi";
 import {ContactNodeStorage, State} from "../containers/summary/reducers/State";
@@ -80,6 +81,10 @@ export class CheckoutService {
 
   public loadFields = (contact: Contact, state: IshState): Promise<ContactFields> => {
     return this.contactApi.getContactFields(BuildContactFieldsRequest.fromState(contact, state.cart, state.checkout.newContact));
+  }
+
+  public loadFieldsForSelected = (contact: Contact, state: IshState): Promise<ContactFields> => {
+    return this.contactApi.getContactFields(BuildContactFieldsRequest.fromStateSelected(contact, state.checkout.summary));
   }
 
   public submitContactDetails = (values: ContactFields, fields: { [key: string]: any }): Promise<any> => {
@@ -254,6 +259,34 @@ export class BuildContactFieldsRequest {
     result.waitingCourseIds = cart.waitingCourses.result;
     result.fieldSet = FieldSet.ENROLMENT;
     result.mandatoryOnly = !newContact;
+    return result;
+  }
+
+  static fromStateSelected = (contact: Contact, summary: SummaryState): ContactFieldsRequest => {
+    const result: ContactFieldsRequest = new ContactFieldsRequest();
+    result.contactId = contact.id;
+    result.classIds = [];
+    result.productIds = [];
+    result.waitingCourseIds = [];
+
+    const enrolments = ['enrolments', 'applications'];
+    const products = ['vouchers', 'memberships', 'articles'];
+    const waitingLists = ['waitingLists'];
+
+    enrolments.forEach(item => Object.values(summary.entities[item])
+      .filter(e => e.contactId === contact.id && e.selected)
+      .map(e => result.classIds.push(e.classId)));
+
+    products.forEach(item => Object.values(summary.entities[item])
+      .filter(e => e.contactId === contact.id && e.selected)
+      .map(e => result.productIds.push(e.productId)));
+
+    waitingLists.forEach(item => Object.values(summary.entities[item])
+      .filter(e => e.contactId === contact.id && e.selected)
+      .map(e => result.waitingCourseIds.push(e.courseId)));
+
+    result.fieldSet = FieldSet.ENROLMENT;
+    result.mandatoryOnly = true;
     return result;
   }
 }

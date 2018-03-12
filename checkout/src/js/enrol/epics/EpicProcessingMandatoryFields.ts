@@ -26,7 +26,7 @@ export const EpicProcessingMandatoryFields = (action$, store: Store<IshState>): 
 
       return Observable.combineLatest(contacts.map(contact => {
         return Observable
-          .fromPromise(CheckoutService.loadFields(contact, state))
+          .fromPromise(CheckoutService.loadFieldsForSelected(contact, state))
           .flatMap(data => Observable.of({data, contact}))
           .catch(data => {
             console.warn('Error: load fields for contacts');

@@ -82,13 +82,6 @@ export const EpicInit: Epic<any, IshState> = (action$: ActionsObservable<any>, s
 
     const result = [];
 
-    if (state.checkout.fields.unfilled.length) {
-      return [
-        setFieldsToState(state.checkout.fields.unfilled[0]),
-        changePhase(Phase.EditContact),
-      ];
-    }
-
     result.push(Actions.updateContactAddProcess({}, null, null));
 
     if (!L.isNil(state.checkout.payment.value)) {
