@@ -5,7 +5,6 @@ import groovy.transform.CompileStatic
 import ish.oncourse.api.cayenne.CayenneService
 import ish.oncourse.model.College
 import ish.oncourse.willow.checkout.functions.GetContact
-import ish.oncourse.willow.functions.ChangeParent
 import ish.oncourse.willow.functions.CheckParent
 import ish.oncourse.willow.functions.CreateOrGetContact
 import ish.oncourse.willow.functions.CreateParentChildrenRelation
@@ -15,7 +14,6 @@ import ish.oncourse.willow.functions.SubmitContactFields
 import ish.oncourse.willow.functions.concession.AddConcession
 import ish.oncourse.willow.functions.concession.GetConcessionTypes
 import ish.oncourse.willow.functions.concession.GetConcessionsAndMemberships
-import ish.oncourse.willow.model.checkout.ChangeParentRequest
 import ish.oncourse.willow.model.checkout.ConcessionsAndMemberships
 import ish.oncourse.willow.model.checkout.CreateParentChildrenRequest
 import ish.oncourse.willow.model.checkout.concession.Concession
