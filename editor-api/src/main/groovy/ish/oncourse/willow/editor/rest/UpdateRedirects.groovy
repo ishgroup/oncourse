@@ -18,7 +18,9 @@ class UpdateRedirects extends AbstractUpdate<Redirects> {
     private List<String> errors = []
     private ArrayList<ObjectId> deletedAliasIds = new ArrayList<ObjectId>()
     private WebSiteVersion version
-    
+    private Map<String, String> newRedirects = [:]
+
+
     List<String> getErrors() {
         return errors
     }
@@ -62,6 +64,7 @@ class UpdateRedirects extends AbstractUpdate<Redirects> {
             alias.webSiteVersion = version
             alias.urlPath = redirect.from
             alias.redirectTo  = redirect.to
+            newRedirects[redirect.from] = redirect.to
         }
     }
     
@@ -77,8 +80,10 @@ class UpdateRedirects extends AbstractUpdate<Redirects> {
             errors << redirectItem.error
             return false
         }
+        
         WebUrlAlias fWebUrl = WebUrlAliasFunctions.getAliasByPath(redirectItem.from, request, context)
-        if (fWebUrl != null && !(fWebUrl.objectId in deletedAliasIds)) {
+        
+        if (fWebUrl && !(fWebUrl.objectId in deletedAliasIds)) {
             if (fWebUrl.webNode) {
                 redirectItem.error = "Invalid redirect, from: ${redirectItem.from}, to: ${redirectItem.to}. To create redirects to pages within this CMS, go to that page and add an additional URL in the page options."
                 errors << redirectItem.error
@@ -88,6 +93,13 @@ class UpdateRedirects extends AbstractUpdate<Redirects> {
             }
             return false
         }
+        
+        if (newRedirects[(redirectItem.from)]) {
+            redirectItem.error = "Invalid redirect, from: ${redirectItem.from}, to: ${redirectItem.to}. This URL is already being redirected to ${newRedirects[(redirectItem.from)]}"
+            errors << redirectItem.error
+            return false
+        }
+            
         if (!validator.isValid(redirectItem.to) && !validator.isValidOnlyPath(redirectItem.to)) {
             redirectItem.error = "Invalid redirect, from: ${redirectItem.from}, to: ${redirectItem.to}. The to address must be a valid URL or partial URL starting with /"
             errors << redirectItem.error
