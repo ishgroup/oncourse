@@ -3,19 +3,20 @@ import {Store} from "redux";
 import {Observable} from "rxjs";
 import CheckoutService from "../services/CheckoutService";
 import {IshState} from "../../services/IshState";
-import {FULFILLED} from "../../common/actions/ActionUtils";
 import {Phase} from "../reducers/State";
 import {setFieldsToState} from "../containers/contact-edit/actions/Actions";
 import {changePhase, updateContactAddProcess} from "../actions/Actions";
-import {Actions as WebActions} from "../../web/actions/Actions";
+import {PROCESSING_MANDATORY_FIELDS} from "../containers/payment/actions/Actions";
 
+/**
+ *
+ * Checking new mandatory fields for new enrolments for each contact before payment,
+ * then redirecting to contact details or payment phase
+ *
+ * **/
 
-export const EpicAddToCart = (action$, store: Store<IshState>): any => {
-  return action$.ofType(
-    FULFILLED(WebActions.ADD_WAITING_COURSE_TO_CART),
-    FULFILLED(WebActions.ADD_CLASS_TO_CART),
-    FULFILLED(WebActions.ADD_PRODUCT_TO_CART),
-  )
+export const EpicProcessingMandatoryFields = (action$, store: Store<IshState>): any => {
+  return action$.ofType(PROCESSING_MANDATORY_FIELDS)
     .flatMap(actions => {
       const state = store.getState();
 
@@ -43,7 +44,7 @@ export const EpicAddToCart = (action$, store: Store<IshState>): any => {
             ];
           }
 
-          return [];
+          return [changePhase(Phase.Payment)];
 
         });
 

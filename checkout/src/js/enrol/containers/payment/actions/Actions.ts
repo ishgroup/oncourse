@@ -28,6 +28,8 @@ export const RESET_CORPORATE_PASS = "checkout/payment/reset/corporatePass";
 
 export const CHANGE_TAB = "checkout/payment/change/tab";
 
+export const PROCESSING_MANDATORY_FIELDS = "checkout/payment/processing/mandatoryFields";
+
 export const submitPaymentCreditCard = (values: CreditCardFormValues): IAction<CreditCardFormValues> => {
   return {
     type: SUBMIT_PAYMENT_CREDIT_CARD,
@@ -113,3 +115,8 @@ export const changeTab = tab => ({
     analytics: GABuilder.setCheckoutStep(Phase.Payment, tab),
   },
 });
+
+export const processingMandatoryFields = () => ({
+  type: PROCESSING_MANDATORY_FIELDS,
+});
+

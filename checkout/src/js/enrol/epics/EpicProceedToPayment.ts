@@ -7,6 +7,7 @@ import * as EpicUtils from "./EpicUtils";
 import {CheckoutModel, ContactNode, CommonError} from "../../model";
 import {Phase} from "../reducers/State";
 import {Epic} from "redux-observable";
+import {processingMandatoryFields} from "../containers/payment/actions/Actions";
 
 
 const request: EpicUtils.Request<CheckoutModel, IshState> = {
@@ -29,7 +30,7 @@ export class ProcessCheckoutModel {
     result = [...result, ... ProcessCheckoutModel.processNodes(model.contactNodes)];
 
     if (!result.find(a => a.type === CHANGE_PHASE && a.payload === Phase.Summary)) {
-      result.push(changePhase(Phase.Payment));
+      result.push(processingMandatoryFields());
     }
     return result;
   }
