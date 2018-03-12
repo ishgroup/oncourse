@@ -95,7 +95,8 @@ class RedirectsResource extends AbstractResource implements GetableResource,Prop
             if (line.length() > 0) {
                 String[] pathes = line.trim().split(/\s+/)
                 if (pathes.size() != 2) {
-                    throw new BadRequestException("Wrong redirect line: $line. Please provide /from /to URLs splited by space or tab")
+                    requestService.response.sendError(Response.Status.BAD_REQUEST.statusCode,"Wrong redirect line: $line. Please provide /from /to URLs splited by space or tab")
+                    throw new BadRequestException(this)
                 }
                 settings.rules << new RedirectItem().from(pathes[0]).to(pathes[1])
             }
