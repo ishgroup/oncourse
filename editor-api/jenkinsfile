@@ -19,7 +19,7 @@ pipeline {
         
         stage('Docs') {
             steps {
-                sh "./gradlew editor-api:buildDoc"
+                sh "./gradlew editor-api:generateDoc"
             }
         }
 

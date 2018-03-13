@@ -508,7 +508,14 @@ paths:
       operationId: updateVersion
       x-filter:
         - AuthFilter
-      description: Change version status
+      description: |
+       Change version status. Useage example (put current draft version to production):
+       PATCH /editor/v1/version/123  HTTP/1.1
+       Host: template-a.oncourse.cc
+       Cookie: ESESSIONID=ypCWJgivYKMRM7Hpa8HS
+       Content-Type: application/json
+       
+       { "status": "published" }
       tags:
         - Version
       consumes:
