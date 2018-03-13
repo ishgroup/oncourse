@@ -1,8 +1,10 @@
 import * as React from "react";
 import {reduxForm, FormProps, FormErrors, DataShape} from "redux-form";
+import Rodal from "rodal";
 import classnames from "classnames";
 import CreditCardComp from "./CreditCardComp";
 import CorporatePassComp from "./CorporatePassComp";
+import {CvvHelp} from "./CvvHelp";
 import {Conditions} from "./Conditions";
 import {FieldName, CreditCardFormValues, CorporatePassFormValues} from "../services/PaymentService";
 import {
@@ -51,6 +53,14 @@ export const NAME = "PaymentForm";
 
 class PaymentForm extends React.Component<Props, any> {
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showCvvHelp: false,
+    };
+  }
+
   componentDidMount() {
     const {onChangeTab} = this.props;
     const validCurrentTab = this.getValidTab();
@@ -73,6 +83,14 @@ class PaymentForm extends React.Component<Props, any> {
     onChangeTab(nextTab);
   }
 
+  openCvvHelp() {
+    this.setState({showCvvHelp: true});
+  }
+
+  closeCvvHelp() {
+    this.setState({showCvvHelp: false});
+  }
+
   render() {
     const {
       handleSubmit, contacts, amount, invalid, pristine, submitting, onSubmitPass, corporatePass, corporatePassError,
@@ -86,6 +104,18 @@ class PaymentForm extends React.Component<Props, any> {
       <form onSubmit={handleSubmit} id="payment-form" className={classnames({submitting})}>
         {(Number(amount.payNow) !== 0 || (Number(amount.payNow) === 0 && corporatePass.id)) &&
         <div>
+
+          <Rodal
+            visible={this.state.showCvvHelp}
+            onClose={() => this.closeCvvHelp()}
+            height={400}
+            animation="flip"
+          >
+            <div className="rodal-content">
+              <CvvHelp/>
+            </div>
+          </Rodal>
+
           <div id="tabable-container">
             <PaymentFormNav
               paymentTabOnClick={this.paymentTabOnClick}
@@ -105,6 +135,7 @@ class PaymentForm extends React.Component<Props, any> {
                   onAddPayer={onAddPayer}
                   onAddCompany={onAddCompany}
                   voucherPayerEnabled={voucherPayerEnabled}
+                  openCvvHelp={() => this.openCvvHelp()}
                 />
               }
 
