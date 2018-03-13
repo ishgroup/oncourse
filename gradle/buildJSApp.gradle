@@ -35,3 +35,16 @@ publishing {
         }
     }
 }
+configurations {
+    swagger
+}
+
+dependencies {
+    swagger project(':common:codegen:typescript')
+}
+
+task (swagger, type: JavaExec) {
+    main = 'ish.oncourse.codegen.typescript.WillowClientGenerator'
+    classpath = configurations.swagger
+    args  = [ project.projectDir, "${project.rootDir}/${project.name}-api/src/main/resources/${project.name}.yaml" ]
+}
