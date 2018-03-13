@@ -4,7 +4,7 @@
 
 		<!-- A specialized field for geospatial search. If indexed, this fieldType 
 			must not be multivalued. -->
-		<fieldType name="location" class="solr.LatLonType"
+		<fieldType name="location" class="solr.PointType"
 			subFieldSuffix="_coordinate" />
 
 		<fieldType name="string" class="solr.StrField"
@@ -14,22 +14,22 @@
 			sortMissingLast="true" omitNorms="true" />
 		<fieldtype name="binary" class="solr.BinaryField" />
 
-		<fieldType name="int" class="solr.TrieIntField"
-			precisionStep="0" omitNorms="true" positionIncrementGap="0" />
-		<fieldType name="float" class="solr.TrieFloatField"
-			precisionStep="0" omitNorms="true" positionIncrementGap="0" />
-		<fieldType name="long" class="solr.TrieLongField"
-			precisionStep="0" omitNorms="true" positionIncrementGap="0" />
-		<fieldType name="double" class="solr.TrieDoubleField"
-			precisionStep="0" omitNorms="true" positionIncrementGap="0" />
+		<fieldType name="int" class="solr.IntPointField"
+			omitNorms="true" positionIncrementGap="0" />
+		<fieldType name="float" class="solr.FloatPointField"
+			omitNorms="true" positionIncrementGap="0" />
+		<fieldType name="long" class="solr.LongPointField"
+			omitNorms="true" positionIncrementGap="0" />
+		<fieldType name="double" class="solr.DoublePointField"
+			omitNorms="true" positionIncrementGap="0" />
 
-		<fieldType name="tdouble" class="solr.TrieDoubleField"
-			precisionStep="8" omitNorms="true" positionIncrementGap="0" />
+		<fieldType name="tdouble" class="solr.DoublePointField"
+			omitNorms="true" positionIncrementGap="0" />
 
-		<fieldType name="date" class="solr.TrieDateField" omitNorms="true"
-			precisionStep="0" positionIncrementGap="0" />
+		<fieldType name="date" class="solr.DatePointField" omitNorms="true"
+			positionIncrementGap="0" />
 
-		<fieldType name="sfloat" class="solr.TrieFloatField"
+		<fieldType name="sfloat" class="solr.FloatPointField"
 			sortMissingLast="true" omitNorms="true" />
 
 		<!-- A general unstemmed text field - good if one does not know the language 
@@ -39,14 +39,14 @@
 			<analyzer type="index">
 				<tokenizer class="solr.WhitespaceTokenizerFactory" />
 				<filter class="solr.RemoveDuplicatesTokenFilterFactory" />
-				<filter class="solr.WordDelimiterFilterFactory"
+				<filter class="solr.WordDelimiterGraphFilterFactory"
 					generateWordParts="1" generateNumberParts="1" catenateWords="1"
 					catenateNumbers="1" catenateAll="0" splitOnCaseChange="0" />
 				<filter class="solr.LowerCaseFilterFactory" />
 			</analyzer>
 			<analyzer type="query">
 				<tokenizer class="solr.WhitespaceTokenizerFactory" />
-				<filter class="solr.WordDelimiterFilterFactory"
+				<filter class="solr.WordDelimiterGraphFilterFactory"
 					generateWordParts="1" generateNumberParts="1" catenateWords="0"
 					catenateNumbers="0" catenateAll="0" splitOnCaseChange="0" />
 				<filter class="solr.LowerCaseFilterFactory" />

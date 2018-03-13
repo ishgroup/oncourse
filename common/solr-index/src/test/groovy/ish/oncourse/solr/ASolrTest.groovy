@@ -29,14 +29,17 @@ abstract class ASolrTest extends SolrTestCaseJ4 {
 
     @Before
     void before() throws Exception {
-        initSolr = InitSolr.coursesCore()
-        initSolr.init()
-
+        initSolr()
         testContext = new TestContext()
         testContext.open()
         objectContext = testContext.getServerRuntime().newContext()
         DataContext dataContext = new DataContext(objectContext: objectContext)
         cCollege = dataContext.newCollege()
+    }
+
+    protected void initSolr() throws Exception {
+        initSolr = InitSolr.coursesCore()
+        initSolr.init()
     }
 
     @After

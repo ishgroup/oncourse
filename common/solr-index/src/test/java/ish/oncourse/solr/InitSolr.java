@@ -1,10 +1,12 @@
 package ish.oncourse.solr;
 
 import org.apache.solr.SolrTestCaseJ4;
+import org.apache.solr.schema.PointField;
 
 import java.io.File;
 
 public class InitSolr {
+
     private String url = "http://localhost:8081/search-internal";
     private String config;
     private String schema;
@@ -21,6 +23,7 @@ public class InitSolr {
         System.setProperty("solr.poll", "1");
         System.setProperty("solr.allow.unsafe.resourceloading", "true");
         System.setProperty("test.solr.allowed.securerandom", "NativePRNG");
+
         SolrTestCaseJ4.initCore(config, schema, solrHome, core);
     }
 
@@ -62,5 +65,16 @@ public class InitSolr {
                 "conf/schema.xml",
                 solr.getAbsolutePath(),
                 "tags");
+    }
+
+
+    /**
+     * This init static block should be add  to any junit which use this InitSolr implementation
+     */
+    public static void INIT_STATIC_BLOCK() {
+            System.setProperty("test.solr.allowed.securerandom", "NativePRNG");
+            System.setProperty("tests.timezone", "Australia/Sydney");
+            System.setProperty("tests.locale", "en-AU");
+            PointField.TEST_HACK_IGNORE_USELESS_TRIEFIELD_ARGS = false;
     }
 }
