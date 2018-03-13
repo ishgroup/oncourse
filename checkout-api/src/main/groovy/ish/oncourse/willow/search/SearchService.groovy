@@ -44,7 +44,6 @@ class SearchService {
 
     private QueryResponse searchSuburbs(String qualifier, String value) {
         try {
-            logger.warn(value)
             value = normalizeString(value)
 
             SolrQuery q = new SolrQuery()
