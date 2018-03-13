@@ -17,7 +17,7 @@ import ish.oncourse.configuration.ISHHealthCheckServlet;
 import ish.oncourse.scheduler.ScheduledService;
 import ish.oncourse.scheduler.zookeeper.ZookeeperExecutor;
 import ish.oncourse.services.cache.NoopQueryCache;
-import ish.oncourse.services.search.BuildSolrClient;
+import ish.oncourse.solr.BuildSolrClient;
 import ish.oncourse.solr.reindex.ReindexCoursesJob;
 import ish.oncourse.solr.reindex.ReindexSuburbsJob;
 import ish.oncourse.solr.reindex.ReindexTagsJob;
@@ -28,12 +28,12 @@ import ish.oncourse.util.log.LogAppInfo;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.cxf.transport.servlet.CXFServlet;
-import org.apache.solr.client.solrj.SolrClient;
 import org.apache.tapestry5.internal.spring.SpringModuleDef;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import static ish.oncourse.configuration.Configuration.AppProperty.ZK_HOST;
 import static org.springframework.web.context.ContextLoader.CONFIG_LOCATION_PARAM;
@@ -106,11 +106,12 @@ public class ServicesModule extends ConfigModule {
     @Provides
     public ScheduledService createScheduledService(ServerRuntime runtime) {
         ObjectContext context = runtime.newContext();
-        SolrClient solrClient = BuildSolrClient.instance().build();
-        
-        ZookeeperExecutor courseReindexExecutor = ZookeeperExecutor.valueOf(new ReindexCoursesJob(context, solrClient), Configuration.getValue(ZK_HOST), REINDEEX_PATH + "course");
-        ZookeeperExecutor tagReindexExecutor = ZookeeperExecutor.valueOf(new ReindexTagsJob(context, solrClient), Configuration.getValue(ZK_HOST), REINDEEX_PATH + "tag");
-        ZookeeperExecutor suburbReindexExecutor = ZookeeperExecutor.valueOf(new ReindexSuburbsJob(context, solrClient), Configuration.getValue(ZK_HOST), REINDEEX_PATH + "suburb");
+
+		Properties appProperties = Configuration.loadProperties();
+
+        ZookeeperExecutor courseReindexExecutor = ZookeeperExecutor.valueOf(new ReindexCoursesJob(context, BuildSolrClient.instance(appProperties).build()), Configuration.getValue(ZK_HOST), REINDEEX_PATH + "course");
+        ZookeeperExecutor tagReindexExecutor = ZookeeperExecutor.valueOf(new ReindexTagsJob(context, BuildSolrClient.instance(appProperties).build()), Configuration.getValue(ZK_HOST), REINDEEX_PATH + "tag");
+        ZookeeperExecutor suburbReindexExecutor = ZookeeperExecutor.valueOf(new ReindexSuburbsJob(context, BuildSolrClient.instance(appProperties).build()), Configuration.getValue(ZK_HOST), REINDEEX_PATH + "suburb");
 
         return ScheduledService.valueOf(courseReindexExecutor, tagReindexExecutor, suburbReindexExecutor).start();
     }

@@ -2,43 +2,34 @@ package ish.oncourse.willow.search
 
 import com.google.inject.Inject
 import ish.oncourse.configuration.Configuration
+import ish.oncourse.solr.BuildSolrClient
 import ish.oncourse.willow.model.common.Item
 import ish.oncourse.willow.model.field.Suburb
+import org.apache.solr.client.solrj.SolrClient
 import org.apache.solr.client.solrj.SolrQuery
-import org.apache.solr.client.solrj.impl.CloudSolrClient
 import org.apache.solr.client.solrj.response.QueryResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 import javax.ws.rs.InternalServerErrorException
 
-import static ish.oncourse.configuration.Configuration.AppProperty.ZK_HOST
-
 class SearchService {
 
     private static
     final String SOLR_SYNTAX_CHARACTERS_STRING = '[\\!\\^\\(\\)\\{\\}\\[\\]\\:\"\\?\\+\\~\\*\\|\\&\\;\\\\]'
 
-    private static final int ZK_TIMEOUT = 3000
 
     final static Logger logger = LoggerFactory.getLogger(SearchService.class)
 
-    private String zkHost
-    private CloudSolrClient client
+    private SolrClient client
 
-    SearchService(String zkHost) {
-        if (zkHost == null) {
-            throw new IllegalStateException('Zookeeper host property undefined')
-        }
-        this.zkHost = zkHost
-        this.client = new CloudSolrClient.Builder().withZkHost(zkHost).build()
-        client.setZkClientTimeout(ZK_TIMEOUT)
-        client.setZkConnectTimeout(ZK_TIMEOUT)
+    SearchService(Properties properties) {
+        this.client = BuildSolrClient.instance(properties).build()
     }
 
     @Inject
     SearchService() {
-        this(Configuration.getValue(ZK_HOST))
+        this(Configuration.loadProperties())
     }
 
 

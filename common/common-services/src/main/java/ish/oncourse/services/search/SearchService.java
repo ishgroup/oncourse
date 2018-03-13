@@ -1,10 +1,11 @@
 package ish.oncourse.services.search;
 
+import ish.oncourse.configuration.Configuration;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Tag;
-import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
+import ish.oncourse.solr.BuildSolrClient;
 import ish.oncourse.solr.query.SearchParams;
 import ish.oncourse.solr.query.SolrQueryBuilder;
 import ish.oncourse.solr.query.Suburb;
@@ -21,19 +22,13 @@ import org.apache.solr.common.SolrException;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Symbol;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SearchService implements ISearchService {
 	static final String TERMS_SEPARATOR_STRING = " || ";
-	static final String DIGIT_PATTERN = "(\\d)+";
-	static final String EVERY_DOCUMENT_MATCH_QUERY = "*:*";
+	private static final String EVERY_DOCUMENT_MATCH_QUERY = "*:*";
 	static final String SOLR_ANYTHING_AFTER_CHARACTER = "*";
-	static final String SOLR_OR_STRING = "||";
 	static final String SPACE_PATTERN = "[\\s]+";
-	static final String LIKE_CHARACTER = "%";
 
 	private static final Logger logger = LogManager.getLogger();
 
@@ -54,42 +49,30 @@ public class SearchService implements ISearchService {
 
 	private IWebSiteService webSiteService;
 
-	private IPropertyService propertyService;
-
 	private ITagService tagService;
 
 	private String aliasSuffix;
 
-	protected Map<SolrCore, SolrClient> solrClients = new HashMap<>();
+	private Map<SolrCore, SolrClient> solrClients = new HashMap<>();
 
+
+	private Properties appProperties;
 
 
 	public SearchService(@Inject IWebSiteService webSiteService,
-						 @Inject IPropertyService propertyService,
 						 @Inject ITagService tagService,
 						 @Inject @Symbol(ALIAS_SUFFIX_PROPERTY) String aliasSuffix) {
-		
+
 		this.webSiteService = webSiteService;
-		this.propertyService = propertyService;
 		this.tagService = tagService;
 		this.aliasSuffix = aliasSuffix;
-		this.solrClients.put(SolrCore.courses, BuildSolrClient.instance().build());
-		this.solrClients.put(SolrCore.tags, BuildSolrClient.instance().build());
-		this.solrClients.put(SolrCore.suburbs, BuildSolrClient.instance().build());
-
+		this.appProperties = Configuration.loadProperties();
 	}
 
-	protected SolrClient getSolrClient(SolrCore core) {
-		return solrClients.computeIfAbsent(core, k -> BuildSolrClient.instance().build());
+	private SolrClient getSolrClient(SolrCore core) {
+		return solrClients.computeIfAbsent(core, k -> BuildSolrClient.instance(this.appProperties).build());
 	}
 
-	/**
-	 * TODO the workaround for problem #14293. we should delete it this after the problem will be resolved
-	 *
-	 * @param q
-	 * @return
-	 * @throws SolrServerException
-	 */
 	private QueryResponse query(SolrQuery q, SolrCore core) throws Exception {
 		Exception exception;
 		try {
@@ -102,7 +85,6 @@ public class SearchService implements ISearchService {
 		}
 		throw exception;
 	}
-	
 
 	/**
 	 * The method logs stacktraces every exception from hierarchy. I have added it to see full stack trace of a exception.

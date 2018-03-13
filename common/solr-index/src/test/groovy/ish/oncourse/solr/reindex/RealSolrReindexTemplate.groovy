@@ -2,13 +2,14 @@ package ish.oncourse.solr.reindex
 
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
+import ish.oncourse.solr.BuildSolrClient
 import ish.oncourse.test.MariaDB
 import ish.oncourse.test.functions.Functions
 import org.apache.cayenne.configuration.CayenneRuntime
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import org.apache.solr.client.solrj.SolrClient
 import org.apache.solr.client.solrj.SolrQuery
-import org.apache.solr.client.solrj.impl.CloudSolrClient
 import org.apache.solr.common.SolrDocumentList
 
 import javax.sql.DataSource
@@ -33,7 +34,7 @@ class RealSolrReindexTemplate<E> {
     Integer maxRows = 100000
     String allRecordsQuery = '*:*'
 
-    CloudSolrClient client
+    SolrClient client
     CayenneRuntime runtime
 
     Closure compareCollections
@@ -115,7 +116,7 @@ class RealSolrReindexTemplate<E> {
         RealSolrReindexTemplate conf = new RealSolrReindexTemplate()
         conf.collectionName = collectionName
         conf.solrFullImportURL = "http://localhost:7001/solr/${collectionName}/dataimport?command=full-import".toString()
-        conf.client = new CloudSolrClient(conf.zkHost)
+        conf.client = BuildSolrClient.instance(conf.zkHost).build()
         conf.compareCollections = compareCollections
         conf.getEntities = getEntities
         DataSource ds = Functions.createDS(MariaDB.valueOf())
