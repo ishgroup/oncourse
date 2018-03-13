@@ -59,7 +59,7 @@ class SelectField extends React.Component<any, any> {
     } else {
       return Promise.resolve([]);
     }
-  }, 400);
+  }, 1000);
 
   private onChange = res => {
     const input: WrappedFieldInputProps = inputFrom(this.props);
@@ -106,11 +106,11 @@ class SelectField extends React.Component<any, any> {
     const inner = props => (
       <div>
         {props.label &&
-          <FieldLabel
-            name={props.input.name}
-            label={props.label}
-            required={props.required}
-          />
+        <FieldLabel
+          name={props.input.name}
+          label={props.label}
+          required={props.required}
+        />
         }
         <span className={classnames({
           valid: !isShowError,
