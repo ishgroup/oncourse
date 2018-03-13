@@ -70,7 +70,7 @@ export class Checkout extends React.Component<Props, any> {
         }
 
 
-        {phase === Phase.EditContact && <ContactEditForm/>}
+        {(phase === Phase.EditContact || phase === Phase.ComplementEditContact) && <ContactEditForm/>}
         {phase === Phase.Summary && <Summary/>}
         {phase === Phase.Payment && <Payment/>}
         {phase === Phase.Result && <Result/>}

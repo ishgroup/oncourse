@@ -24,6 +24,7 @@ export const AddContactToSummary: Epic<any, IshState> = (action$: ActionsObserva
     const contact = action.payload;
     const payerId = ((!contact.parentRequired || parent) && contact.id) || null;
     const ifParentRequired = contact.parentRequired && !parent;
+    const nextPage = state.checkout.phase === Phase.ComplementEditContact ? Phase.Payment : state.checkout.page;
 
     const allChilds = CheckoutService
       .getAllSingleChildIds(state.checkout)
@@ -61,7 +62,7 @@ export const AddContactToSummary: Epic<any, IshState> = (action$: ActionsObserva
 
     result.push(getContactNodeFromBackend(contact, uncheckContactItems));
     result.push(updateContactAddProcess({}, null, null));
-    result.push(changePhase(state.checkout.page));
+    result.push(changePhase(nextPage));
 
     return result;
   });

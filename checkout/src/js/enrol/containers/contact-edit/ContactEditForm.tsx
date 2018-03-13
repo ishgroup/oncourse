@@ -24,9 +24,7 @@ class ContactEditForm extends React.Component<Props, any> {
   }
 
   render() {
-    const {
-      handleSubmit, touch, submitting, concessionTypes, isNewContact, onCancel, page, form, onChangeSuburb,
-    } = this.props;
+    const {handleSubmit, touch, submitting, isNewContact, onCancel, page, form, onChangeSuburb} = this.props;
     const contact: Contact = this.props.contact;
     const fields: ContactFields = this.props.fields;
 

@@ -104,6 +104,7 @@ const FieldsReducer = (state: ContactFieldsState = new ContactFieldsState(), act
     case Actions.CHANGE_PHASE:
       switch (action.payload) {
         case Phase.EditContact:
+        case Phase.ComplementEditContact:
           return state;
         default:
           return {
@@ -119,7 +120,7 @@ const FieldsReducer = (state: ContactFieldsState = new ContactFieldsState(), act
       };
 
     case Actions.RESET_CHECKOUT_STATE:
-      return null;
+      return new ContactFieldsState();
 
     default:
       return state;

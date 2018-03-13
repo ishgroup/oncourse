@@ -30,10 +30,16 @@ export class AmountState extends Amount {
   payNowVisibility?: boolean;
 }
 
+export class ContactFieldsState {
+  current: ContactFields = null;
+  unfilled: ContactFields[] = [];
+}
+
 export enum Phase {
   Init,
   AddPayer,
   EditContact,
+  ComplementEditContact,
   Summary,
   Payment,
   Result,
@@ -45,7 +51,3 @@ export enum Phase {
   ChangeParent,
 }
 
-export class ContactFieldsState {
-  current: ContactFields = null;
-  unfilled: ContactFields[] = [];
-}

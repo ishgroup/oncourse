@@ -40,7 +40,7 @@ export const EpicProcessingMandatoryFields = (action$, store: Store<IshState>): 
             return [
               setFieldsToState(val.data),
               updateContactAddProcess(val.contact, state.checkout.phase, null),
-              changePhase(Phase.EditContact),
+              changePhase(Phase.ComplementEditContact),
             ];
           }
 
