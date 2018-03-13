@@ -59,7 +59,7 @@ class SelectField extends React.Component<any, any> {
     } else {
       return Promise.resolve([]);
     }
-  }, 1000);
+  }, 600);
 
   private onChange = res => {
     const input: WrappedFieldInputProps = inputFrom(this.props);
