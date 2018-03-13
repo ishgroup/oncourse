@@ -1,5 +1,4 @@
 import {HttpService} from "../common/services/HttpService";
-import {ChangeParentRequest} from "../model/checkout/ChangeParentRequest";
 import {ConcessionsAndMemberships} from "../model/checkout/ConcessionsAndMemberships";
 import {CreateParentChildrenRequest} from "../model/checkout/CreateParentChildrenRequest";
 import {Concession} from "../model/checkout/concession/Concession";
@@ -17,9 +16,6 @@ export class ContactApi {
   constructor(private http: HttpService) {
   }
 
-  changeParent(request: ChangeParentRequest): Promise<any> {
-    return this.http.PUT(`/changeParent`, request);
-  }
   createOrGetContact(createContactParams: CreateContactParams): Promise<ContactId> {
     return this.http.PUT(`/contact`, createContactParams);
   }

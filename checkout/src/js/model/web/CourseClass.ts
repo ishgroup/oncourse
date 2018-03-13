@@ -16,12 +16,12 @@ export class CourseClass {
   code?: string;
 
   /**
-   * Start date of class
+   * Class start date and time in UTC time zone (+00:00),date format is ISO 8601
    */
   start?: string;
 
   /**
-   * End date of class
+   * Class start date and time in UTC time zone (+00:00),date format is ISO 8601
    */
   end?: string;
 

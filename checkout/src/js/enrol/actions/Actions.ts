@@ -1,5 +1,5 @@
 import {_toRequestType, FULFILLED} from "../../common/actions/ActionUtils";
-import {Phase} from "../reducers/State";
+import {AmountState, Phase} from "../reducers/State";
 import * as L from "lodash";
 import {AxiosResponse} from "axios";
 import {Amount, Preferences} from "../../model";
@@ -100,7 +100,7 @@ export const getAmount = (): { type: string } => {
   };
 };
 
-export const updateAmount = (amount: Amount): IAction<Amount> => {
+export const updateAmount = (amount: AmountState): IAction<Amount> => {
   return {
     type: UPDATE_AMOUNT,
     payload: amount,

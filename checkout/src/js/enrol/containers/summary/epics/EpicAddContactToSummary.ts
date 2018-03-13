@@ -3,7 +3,7 @@ import {ActionsObservable, Epic} from "redux-observable";
 import {IshState} from "../../../../services/IshState";
 import {MiddlewareAPI} from "redux";
 import {Observable} from "rxjs/Observable";
-import {ADD_CONTACT_TO_SUMMARY, changeChildParent, getContactNodeFromBackend} from "../actions/Actions";
+import {ADD_CONTACT_TO_SUMMARY, getContactNodeFromBackend} from "../actions/Actions";
 import {
   changePhase, setPayer, updateContactAddProcess, updateParentChilds,
 } from "../../../actions/Actions";
@@ -52,13 +52,8 @@ export const AddContactToSummary: Epic<any, IshState> = (action$: ActionsObserva
     }
 
     // case: Update parent for existing children
-    if (allChilds.length && !contact.parentRequired) {
-      result.push(updateParentChilds(contact.id, allChilds));
-    }
-
-    // case: Change parent for child if parent age is valid
-    if (forChild && !contact.parentRequired) {
-      result.push(changeChildParent(forChild, contact.id));
+    if (allChilds.length || forChild && !contact.parentRequired) {
+      result.push(updateParentChilds(contact.id, forChild ? [forChild] : allChilds));
     }
 
     // case: add new contact to summary and update parentRequired flag

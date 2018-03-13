@@ -11,7 +11,7 @@ export interface CheckoutState {
   error: ValidationError;
   payerId: string;
   contacts: ContactsState;
-  amount: Amount;
+  amount: AmountState;
   summary: SummaryState;
   payment: PaymentState;
   concession: any;
@@ -24,6 +24,10 @@ export interface CheckoutState {
 
 export interface PayerState {
   entity: Contact;
+}
+
+export class AmountState extends Amount {
+  payNowVisibility?: boolean;
 }
 
 export enum Phase {

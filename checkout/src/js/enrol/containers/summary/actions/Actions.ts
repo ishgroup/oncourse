@@ -22,9 +22,6 @@ export const SELECT_ITEM_REQUEST: string = "checkout/summary/select/item/request
 
 export const UPDATE_ITEM: string = "checkout/summary/update/item";
 
-export const CHANGE_CHILD_PARENT_REQUEST: string = _toRequestType("checkout/summary/change/parent");
-export const CHANGE_CHILD_PARENT_FULFILLED: string = FULFILLED(CHANGE_CHILD_PARENT_REQUEST);
-
 export const REMOVE_ITEM_FROM_SUMMARY: string = "checkout/remove/summary/item";
 
 export const addContactToSummary = (contact: Contact): IAction<Contact> => {
@@ -86,13 +83,6 @@ export const rewriteContactNodeToState = (node: ContactNode): IAction<State> => 
   return {
     payload,
     type: REWRITE_CONTACT_NODE_TO_STATE,
-  };
-};
-
-export const changeChildParent = (childId: string, parentId: string) => {
-  return {
-    type: CHANGE_CHILD_PARENT_REQUEST,
-    payload: {childId, parentId},
   };
 };
 

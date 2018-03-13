@@ -1,13 +1,12 @@
 import * as React from "react";
-import classnames from "classnames";
 
-import {Amount, Promotion, RedeemVoucher as RedeemVoucherModel} from "../../model";
+import {Promotion, RedeemVoucher as RedeemVoucherModel} from "../../model";
 import AddCodeComp from "./AddCodeComp";
-import CheckoutService from "../services/CheckoutService";
 import {Tabs} from "../containers/payment/reducers/State";
+import {AmountState} from "../reducers/State";
 
 interface Props {
-  amount: Amount;
+  amount: AmountState;
   onAddCode: (code: string) => void;
   promotions: Promotion[];
   redeemVouchers?: any;

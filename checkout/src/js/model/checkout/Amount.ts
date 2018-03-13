@@ -41,6 +41,5 @@ export class Amount {
    * voucher payments list - appears if redeem any kind of vouchers
    */
   voucherPayments?: VoucherPayment[];
-  payNowVisibility?: boolean = true;
 }
 

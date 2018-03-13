@@ -1,5 +1,5 @@
 import {combineReducers} from "redux";
-import {CheckoutState, ContactFieldsState, Phase} from "./State";
+import {AmountState, CheckoutState, ContactFieldsState, Phase} from "./State";
 import * as L from "lodash";
 import * as Actions from "../actions/Actions";
 import * as ContactEditActions from "../containers/contact-edit/actions/Actions";
@@ -16,7 +16,6 @@ import {IAction} from "../../actions/IshAction";
 import {normalize} from "normalizr";
 import {FULFILLED} from "../../common/actions/ActionUtils";
 import {CHANGE_TAB} from "../containers/payment/actions/Actions";
-import {CHANGE_CHILD_PARENT_FULFILLED} from "../containers/summary/actions/Actions";
 
 
 // Checking if cart has been modified. 
@@ -147,17 +146,6 @@ const ContactsReducer = (
       ns.result.map(id => ns.entities.contact[id].parentRequired = false);
       return ns;
 
-    case CHANGE_CHILD_PARENT_FULFILLED:
-      const {childId, parentId} = action.payload;
-      ns = L.cloneDeep(state);
-      ns.result.map(
-        id =>
-          ns.entities.contact[id].id === childId
-            ? ns.entities.contact[id].parent = ns.entities.contact[parentId] || null
-            : id);
-
-      return ns;
-
     case Actions.UPDATE_PARENT_CHILDS_FULFILLED: {
       const {childIds, parentId} = action.payload;
       ns = L.cloneDeep(state);
@@ -177,7 +165,7 @@ const ContactsReducer = (
   }
 };
 
-const AmountReducer = (state: Amount = new Amount(), action: IAction<any>): Amount => {
+const AmountReducer = (state: AmountState = new AmountState(), action: IAction<any>): AmountState => {
   switch (action.type) {
 
     case Actions.UPDATE_AMOUNT:

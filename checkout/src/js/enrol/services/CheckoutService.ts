@@ -177,10 +177,6 @@ export class CheckoutService {
     this.contactApi.createParentChildrenRelation({parentId, childrenIds: childIds})
   )
 
-  public changeParent = (parentId, childId): Promise<any> => (
-    this.contactApi.changeParent({parentId, childId})
-  )
-
   public getCorporatePass = (code: string, state: IshState): Promise<any> => (
     this.corporatePassApi.getCorporatePass(BuildGetCorporatePassRequest.fromState(state, code))
   )
