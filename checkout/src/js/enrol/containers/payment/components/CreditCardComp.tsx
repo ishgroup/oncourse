@@ -1,5 +1,6 @@
 import React from "react";
 import {Field} from "redux-form";
+import Rodal from "rodal";
 import valid from 'card-validator';
 import SelectField from "../../../../components/form-new/SelectField";
 import {TextField} from "../../../../components/form/TextField";
@@ -9,6 +10,7 @@ import {PayerAdd} from "./PayerAdd";
 
 import {FieldName, PaymentService} from "../services/PaymentService";
 import {MaskedTextField} from "../../../../components/form-new/MaskedTextField";
+import {CvvHelp} from "./CvvHelp";
 
 interface Props {
   contacts: Contact[];
@@ -33,6 +35,10 @@ class CreditCardComp extends React.Component<Props, any> {
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      showCvvHelp: false,
+    };
   }
 
   getCardNumberMask(val) {
@@ -44,11 +50,30 @@ class CreditCardComp extends React.Component<Props, any> {
     : [/\d/, /\d/, /\d/, /\d/, " ", /\d/, /\d/, /\d/, /\d/, " ", /\d/, /\d/, /\d/, /\d/, " ", /\d/, /\d/, /\d/, /\d/]
   }
 
+  openCvvHelp() {
+    this.setState({showCvvHelp: true});
+  }
+
+  closeCvvHelp() {
+    this.setState({showCvvHelp: false});
+  }
+
   render() {
     const {contacts, amount, onSetPayer, payerId, onAddPayer, onAddCompany, voucherPayerEnabled} = this.props;
 
     return (
       <div id="credit-card" className="single-tab active">
+
+        <Rodal
+          visible={this.state.showCvvHelp}
+          onClose={this.closeCvvHelp}
+          animation="flip"
+        >
+          <div className="rodal-content">
+            <CvvHelp/>
+          </div>
+        </Rodal>
+
         <div id="paymentEditor">
           <Header/>
           <div className="enrolmentsSelected">
@@ -57,7 +82,8 @@ class CreditCardComp extends React.Component<Props, any> {
                 <p>
                   <label>Pay now</label>
                   <span id="cardtotalstring">
-                    ${Number(amount.payNow).toFixed(2)} <img alt="visa card and master card" src="/s/img/visa-mastercard.png"/>
+                    ${Number(amount.payNow).toFixed(2)}
+                    <img alt="visa card and master card" src="/s/img/visa-mastercard.png"/>
                   </span>
                 </p>
 
@@ -113,7 +139,7 @@ class CreditCardComp extends React.Component<Props, any> {
                 >
                   <span className="cvv-help">
                     <img className="vcc-card-image" alt="CVV" src="/s/img/cvv-image.png"/>
-                    <a className="nyromodal" href="/ui/cvv?wrap=false" id="cvvLink">What is CVV?</a>
+                    <a href="#" onClick={() => this.openCvvHelp()}> What is CVV? </a>
                   </span>
 
                 </Field>
