@@ -27,7 +27,7 @@ export interface PayerState {
 }
 
 export class AmountState extends Amount {
-  payNowVisibility?: boolean;
+  payNowVisibility?: boolean = true;
 }
 
 export class ContactFieldsState {
