@@ -3,7 +3,11 @@ package ish.oncourse.willow.editor.v1.service.impl
 import com.google.inject.Inject
 import ish.oncourse.model.College
 import ish.oncourse.services.persistence.ICayenneService
+import ish.oncourse.services.preference.GetContactAgeWhenNeedParent
 import ish.oncourse.services.preference.GetPreference
+import ish.oncourse.services.preference.IsCollectParentDetails
+import ish.oncourse.services.preference.Preferences
+import ish.oncourse.willow.editor.v1.model.CheckoutSettings
 import ish.oncourse.willow.editor.v1.model.ClassStateTransition
 import ish.oncourse.willow.editor.v1.model.ClassAge
 import ish.oncourse.willow.editor.v1.model.Condition
@@ -20,6 +24,7 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 import static ish.oncourse.services.preference.Preferences.*
+import static ish.oncourse.services.preference.Preferences.ConfigProperty.allowCreateContact
 
 @CompileStatic
 class SettingsApiServiceImpl implements SettingsApi {
@@ -34,8 +39,7 @@ class SettingsApiServiceImpl implements SettingsApi {
         this.cayenneService = cayenneService
         this.requestService = requestService
     }
-    
-    
+
     SkillsOnCourseSettings getSkillsOnCourseSettings() {
         ObjectContext context = cayenneService.newContext()
         College college = WebSiteFunctions.getCurrentCollege(requestService.request, context)
@@ -90,8 +94,7 @@ class SettingsApiServiceImpl implements SettingsApi {
             settings
         }
     }
-    
-    
+
     WebsiteSettings updateWebsiteSettings(WebsiteSettings settings) {
         ObjectContext context = cayenneService.newContext()
         College college = WebSiteFunctions.getCurrentCollege(requestService.request, context)
@@ -107,6 +110,41 @@ class SettingsApiServiceImpl implements SettingsApi {
         
         context.commitChanges()
         return settings
+    }
+
+    @Override
+    CheckoutSettings getCheckoutSettings() {
+        ObjectContext context = cayenneService.newContext()
+        College college = WebSiteFunctions.getCurrentCollege(requestService.request, context)
+        
+        return new CheckoutSettings().with { settings ->
+            settings.allowCreateContactOnEnrol = new GetPreference(college, allowCreateContact.getPreferenceNameBy(ContactFieldSet.enrolment), context).booleanValue
+            settings.allowCreateContactOnWaitingList = new GetPreference(college, allowCreateContact.getPreferenceNameBy(ContactFieldSet.waitinglist), context).booleanValue
+            settings.allowCreateContactOnMailingList = new GetPreference(college, allowCreateContact.getPreferenceNameBy(ContactFieldSet.mailinglist), context).booleanValue
+
+            settings.collectParentDetails = new IsCollectParentDetails(college, context).get() 
+            settings.enrolmentMinAge = new GetContactAgeWhenNeedParent(college, context).get()
+
+            settings
+        }
+        
+    }
+
+    @Override
+    CheckoutSettings updateCheckoutSettings(CheckoutSettings settings) {
+        ObjectContext context = cayenneService.newContext()
+        College college = WebSiteFunctions.getCurrentCollege(requestService.request, context)
+
+        new GetPreference(college, allowCreateContact.getPreferenceNameBy(ContactFieldSet.enrolment), context).booleanValue = settings.allowCreateContactOnEnrol
+        new GetPreference(college, allowCreateContact.getPreferenceNameBy(ContactFieldSet.waitinglist), context).booleanValue = settings.allowCreateContactOnWaitingList
+        new GetPreference(college, allowCreateContact.getPreferenceNameBy(ContactFieldSet.mailinglist), context).booleanValue = settings.allowCreateContactOnMailingList
+        new IsCollectParentDetails(college, context).booleanValue = settings.collectParentDetails
+        new GetContactAgeWhenNeedParent(college, context).integerValue = settings.enrolmentMinAge
+        
+        context.commitChanges()
+        
+        return settings
+
     }
 
 }

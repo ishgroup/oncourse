@@ -633,6 +633,52 @@ paths:
             $ref: '#/definitions/UnexpectedError'
 
 #################
+  /settings/checkout:
+#################
+    get:
+      operationId: getCheckoutSettings
+      x-filter:
+        - AuthFilter
+      description: Get checkout settings.
+      tags:
+        - Settings
+      responses:
+        '200':
+          description: Checkout settings object
+          schema:
+            $ref: '#/definitions/CheckoutSettings'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/UnexpectedError'
+
+    put:
+      operationId: updateCheckoutSettings
+      x-filter:
+        - AuthFilter
+      description: Save checkout settings.
+      tags:
+        - Settings
+      consumes:
+        - application/json
+      parameters:
+        - name: CheckoutSettingsRequest
+          in: body
+          description: Website settings object
+          required: true
+          schema:
+            $ref: '#/definitions/CheckoutSettings'
+      responses:
+        '200':
+          description: Updated website settings object
+          schema:
+            $ref: '#/definitions/CheckoutSettings'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/UnexpectedError'
+
+#################
   /redirect:
 #################
     get:
@@ -1003,3 +1049,18 @@ definitions:
         type: boolean
       classAge:
         $ref: '#/definitions/ClassAge'
+      
+  CheckoutSettings:
+    type: object
+    properties:
+      allowCreateContactOnEnrol:
+        type: boolean
+      allowCreateContactOnWaitingList:
+        type: boolean
+      allowCreateContactOnMailingList:
+        type: boolean
+      collectParentDetails:
+        type: boolean
+      enrolmentMinAge:
+        type: integer
+          
