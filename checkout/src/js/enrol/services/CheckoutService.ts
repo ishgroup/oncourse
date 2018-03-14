@@ -84,6 +84,7 @@ export class CheckoutService {
   }
 
   public loadFieldsForSelected = (contact: Contact, state: IshState): Promise<ContactFields> => {
+    console.log(contact);
     return this.contactApi.getContactFields(BuildContactFieldsRequest.fromStateSelected(contact, state.checkout.summary));
   }
 
@@ -180,6 +181,11 @@ export class CheckoutService {
   public getCorporatePass = (code: string, state: IshState): Promise<any> => (
     this.corporatePassApi.getCorporatePass(BuildGetCorporatePassRequest.fromState(state, code))
   )
+
+  public haveContactSelectedItems = (contact: Contact, summary: SummaryState): boolean => {
+    const request: ContactFieldsRequest = BuildContactFieldsRequest.fromStateSelected(contact, summary);
+    return !!(request.classIds.length || request.waitingCourseIds.length || request.productIds.length);
+  }
 
   public processPaymentResponse = (response: PaymentResponse, actions: any[] = []): IAction<any>[] | Observable<any> => {
     switch (response.status) {

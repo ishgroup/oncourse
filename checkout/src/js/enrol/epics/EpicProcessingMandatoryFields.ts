@@ -24,31 +24,36 @@ export const EpicProcessingMandatoryFields = (action$, store: Store<IshState>): 
 
       const contacts = Object.values(state.checkout.contacts.entities.contact);
 
-      return Observable.combineLatest(contacts.map(contact => {
-        return Observable
-          .fromPromise(CheckoutService.loadFieldsForSelected(contact, state))
-          .flatMap(data => Observable.of({data, contact}))
-          .catch(data => {
-            console.warn('Error: load fields for contacts');
-            console.warn(data);
-            return [];
+      return Observable.combineLatest(
+        contacts
+          .filter(contact => CheckoutService.haveContactSelectedItems(contact, state.checkout.summary))
+          .map(contact => {
+            return Observable
+              .fromPromise(CheckoutService.loadFieldsForSelected(contact, state))
+              .flatMap(data => Observable.of({data, contact}))
+              .catch(data => {
+                console.warn('Error: load fields for contact');
+                console.warn(data);
+
+                return [changePhase(Phase.Payment)];
+              });
+          }))
+        .mergeMap((value: any) => {
+          return Observable.of(value).switch().flatMap(val => {
+
+            if (val.data.headings.length > 0) {
+              return [
+                setFieldsToState(val.data),
+                updateContactAddProcess(val.contact, state.checkout.phase, null),
+                changePhase(Phase.ComplementEditContact),
+              ];
+            }
+
+            return [changePhase(Phase.Payment)];
+
           });
-      })).mergeMap((value: any) => {
-        return Observable.of(value).switch().flatMap(val => {
-
-          if (val.data.headings.length > 0) {
-            return [
-              setFieldsToState(val.data),
-              updateContactAddProcess(val.contact, state.checkout.phase, null),
-              changePhase(Phase.ComplementEditContact),
-            ];
-          }
-
-          return [changePhase(Phase.Payment)];
 
         });
-
-      });
 
     });
 };
