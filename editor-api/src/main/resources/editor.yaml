@@ -1035,6 +1035,19 @@ definitions:
         description: The number of days before enrolment is prevented. Depending on the stopWebEnrolmentCondition value this could be before or after the class starts or ends.
         $ref: '#/definitions/ClassStateTransition'
         
+  State:
+    type: string
+    description: List of Australian states 
+    enum:
+      - ACT
+      - NSW
+      - NT
+      - QLD
+      - SA
+      - TAS
+      - VIC
+      - WA
+  
   WebsiteSettings:
     type: object
     properties:
@@ -1049,6 +1062,9 @@ definitions:
         type: boolean
       classAge:
         $ref: '#/definitions/ClassAge'
+      suburbAutocompleteState:
+        description: Show suburbs from selected state only. Show all suburbs if null.
+        $ref: '#/definitions/State'
       
   CheckoutSettings:
     type: object

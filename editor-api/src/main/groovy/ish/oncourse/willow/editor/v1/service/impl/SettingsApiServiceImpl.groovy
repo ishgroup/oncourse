@@ -2,16 +2,18 @@ package ish.oncourse.willow.editor.v1.service.impl
 
 import com.google.inject.Inject
 import ish.oncourse.model.College
+import ish.oncourse.model.WebSite
 import ish.oncourse.services.persistence.ICayenneService
+import ish.oncourse.services.preference.GetAutoCompleteState
 import ish.oncourse.services.preference.GetContactAgeWhenNeedParent
 import ish.oncourse.services.preference.GetPreference
 import ish.oncourse.services.preference.IsCollectParentDetails
-import ish.oncourse.services.preference.Preferences
 import ish.oncourse.willow.editor.v1.model.CheckoutSettings
 import ish.oncourse.willow.editor.v1.model.ClassStateTransition
 import ish.oncourse.willow.editor.v1.model.ClassAge
 import ish.oncourse.willow.editor.v1.model.Condition
 import ish.oncourse.willow.editor.v1.model.SkillsOnCourseSettings
+import ish.oncourse.willow.editor.v1.model.State
 import ish.oncourse.willow.editor.v1.model.WebsiteSettings
 
 import groovy.transform.CompileStatic
@@ -66,15 +68,19 @@ class SettingsApiServiceImpl implements SettingsApi {
     
     WebsiteSettings getWebsiteSettings() {
         ObjectContext context = cayenneService.newContext()
-        College college = WebSiteFunctions.getCurrentCollege(requestService.request, context)
+        WebSite webSite = WebSiteFunctions.getCurrentWebSite(requestService.request, context)
+        College college = webSite.college
         
         return new WebsiteSettings().with { settings ->
             settings.enableSocialMedia = new GetPreference(college,ENABLE_SOCIAL_MEDIA_LINKS,context).booleanValue
             settings.addThisId = new GetPreference(college, ADDTHIS_PROFILE_ID, context).stringValue?:StringUtils.EMPTY
             settings.enableForCourse = new GetPreference(college, ENABLE_SOCIAL_MEDIA_LINKS_COURSE, context).booleanValue
             settings.enableForWebpage = new GetPreference(college, ENABLE_SOCIAL_MEDIA_LINKS_WEB_PAGE, context).booleanValue
+
+            String state = new GetAutoCompleteState(college, context, webSite).get()
+            settings.suburbAutocompleteState = state ? State.fromValue(state) : null
             
-            
+
             settings.classAge = new ClassAge().with { age ->
                 age.hideClass = new ClassStateTransition().with { hideClass ->
                     hideClass.offset = new GetPreference(college, HIDE_CLASS_ON_WEB_AGE, context).integerValue
@@ -97,8 +103,9 @@ class SettingsApiServiceImpl implements SettingsApi {
 
     WebsiteSettings updateWebsiteSettings(WebsiteSettings settings) {
         ObjectContext context = cayenneService.newContext()
-        College college = WebSiteFunctions.getCurrentCollege(requestService.request, context)
-        
+        WebSite webSite = WebSiteFunctions.getCurrentWebSite(requestService.request, context)
+        College college = webSite.college
+
         new GetPreference(college, ENABLE_SOCIAL_MEDIA_LINKS,context).booleanValue = settings.enableSocialMedia
         new GetPreference(college, ENABLE_SOCIAL_MEDIA_LINKS_COURSE, context).booleanValue = settings.enableForCourse
         new GetPreference(college, ENABLE_SOCIAL_MEDIA_LINKS_WEB_PAGE, context).booleanValue = settings.enableForWebpage
@@ -107,6 +114,7 @@ class SettingsApiServiceImpl implements SettingsApi {
         new GetPreference(college, HIDE_CLASS_ON_WEB_AGE_TYPE, context).stringValue = settings.classAge?.hideClass?.condition?.toString()
         new GetPreference(college, STOP_WEB_ENROLMENTS_AGE, context).integerValue = settings.classAge?.stopWebEnrolment?.offset?.toInteger()
         new GetPreference(college, STOP_WEB_ENROLMENTS_AGE_TYPE, context).stringValue = settings.classAge?.stopWebEnrolment?.condition?.toString()
+        new GetAutoCompleteState(college, context, webSite).stringValue = settings.suburbAutocompleteState?.toString()
         
         context.commitChanges()
         return settings
