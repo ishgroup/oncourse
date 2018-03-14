@@ -13,6 +13,7 @@ import {modalReducer} from "../common/containers/modal/reducers";
 import {websiteSettingsReducer} from "../containers/settings/containers/website/reducers";
 import {redirectSettingsReducer} from "../containers/settings/containers/redirect/reducers";
 import {skillsOnCourseReducer} from "../containers/settings/containers/skillsOnCourse/reducers";
+import {checkoutSettingsReducer} from "../containers/settings/containers/checkout/reducers";
 
 import {configReducer, fetchReducer} from "../common/reducers";
 
@@ -30,6 +31,7 @@ export const combinedReducers = combineReducers({
     websiteSettings: websiteSettingsReducer,
     redirectSettings: redirectSettingsReducer,
     skillsOnCourseSettings: skillsOnCourseReducer,
+    checkoutSettings: checkoutSettingsReducer,
   }),
   form: reduxFormReducer,
   fetching: fetchReducer,

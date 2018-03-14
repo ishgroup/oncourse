@@ -17,6 +17,7 @@ import History from './containers/history/History';
 import Skills from './containers/settings/containers/skillsOnCourse/Skills';
 import Redirect from './containers/settings/containers/redirect/Redirect';
 import Website from './containers/settings/containers/website/Website';
+import Checkout from './containers/settings/containers/checkout/Checkout';
 
 export const URL = {
   SITE: '/',
@@ -29,6 +30,7 @@ export const URL = {
   SETTINGS: '/settings',
   SETTINGS_SKILLS: '/settings/skills',
   SETTINGS_WEBSITE: '/settings/website',
+  SETTINGS_CHECKOUT: '/settings/checkout',
   SETTINGS_REDIRECT: '/settings/redirect',
   HISTORY: '/history',
   LOGIN: '/login',
@@ -133,6 +135,13 @@ export const routes: Route[] = [
     url: URL.SETTINGS_WEBSITE,
     parent: URL.SETTINGS,
     main: props => <Website {...props}/>,
+  },
+  {
+    title: 'Checkout',
+    path: URL.SETTINGS_CHECKOUT,
+    url: URL.SETTINGS_CHECKOUT,
+    parent: URL.SETTINGS,
+    main: props => <Checkout {...props}/>,
   },
   {
     title: 'Redirect',

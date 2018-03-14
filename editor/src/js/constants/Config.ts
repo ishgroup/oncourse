@@ -35,6 +35,7 @@ export const API = {
   // Settings
   SKILLS_ON_COURSE: `/${v}/settings/skillsOnCourse`,
   WEBSITE: `/${v}/settings/website`,
+  CHECKOUT: `/${v}/settings/checkout`,
 
   // Redirects
   REDIRECT: `/${v}/redirect`,

@@ -60,4 +60,21 @@ export function settingsApiMock() {
       settings,
     );
   });
+
+  // Checkout settings
+  this.api.onGet(API.CHECKOUT).reply(config => promiseResolve(
+    config,
+    this.db.settings.checkout,
+  ));
+
+  this.api.onPut(API.CHECKOUT).reply(config => {
+    const settings = JSON.parse(config.data);
+    this.db.saveSettings(settings, 'checkout');
+
+    return promiseResolve(
+      config,
+      settings,
+    );
+  });
+
 }

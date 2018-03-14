@@ -8,11 +8,13 @@ import {HistoryState} from "../containers/history/reducers/State";
 import {RedirectSettingsState} from "../containers/settings/containers/redirect/reducers/State";
 import {WebsiteSettingsState} from "../containers/settings/containers/website/reducers/State";
 import {SkillsOnCourseState} from "../containers/settings/containers/skillsOnCourse/reducers/State";
+import {CheckoutSettingsState} from "../containers/settings/containers/checkout/reducers/State";
 
 interface SettingsState {
   redirectSettings: RedirectSettingsState;
   websiteSettings: WebsiteSettingsState;
   skillsOnCourseSettings: SkillsOnCourseState;
+  checkoutSettings: CheckoutSettingsState;
 }
 
 // global cms state

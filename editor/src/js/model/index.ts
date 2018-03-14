@@ -25,6 +25,7 @@ export {VersionStatus} from "../../../build/generated-sources";
 // Settings
 export {SkillsOnCourseSettings} from "../../../build/generated-sources";
 export {WebsiteSettings} from "../../../build/generated-sources";
+export {CheckoutSettings} from "../../../build/generated-sources";
 
 // Redirects
 export {Redirects} from "../../../build/generated-sources";

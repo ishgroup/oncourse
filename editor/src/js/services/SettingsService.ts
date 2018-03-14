@@ -1,5 +1,5 @@
 import {SettingsApi, RedirectApi} from "../../../build/generated-sources";
-import {Redirects, SkillsOnCourseSettings, WebsiteSettings} from "../model";
+import {Redirects, SkillsOnCourseSettings, WebsiteSettings, CheckoutSettings} from "../model";
 import {DefaultHttpService} from "../common/services/HttpService";
 
 class SettingsService {
@@ -29,6 +29,14 @@ class SettingsService {
 
   public setWebsiteSettings(settings: WebsiteSettings): Promise<WebsiteSettings> {
     return this.settingsApi.updateWebsiteSettings(settings);
+  }
+
+  public getCheckoutSettings(): Promise<CheckoutSettings> {
+    return this.settingsApi.getCheckoutSettings();
+  }
+
+  public setCheckoutSettings(settings: CheckoutSettings): Promise<CheckoutSettings> {
+    return this.settingsApi.updateCheckoutSettings(settings);
   }
 
 }

@@ -3,7 +3,7 @@ import update from 'react-addons-update';
 import faker from 'faker';
 import {
   Page, Block, MenuItem, Theme, User, Version, WebsiteSettings, Redirects, VersionStatus,
-  SkillsOnCourseSettings, ThemeBlocks, Layout, Condition,
+  SkillsOnCourseSettings, ThemeBlocks, Layout, Condition, CheckoutSettings,
 } from "../../js/model";
 
 export const CreateMockDB = (): MockDB => {
@@ -22,6 +22,7 @@ interface Settings {
   skillsOnCourse: SkillsOnCourseSettings;
   website: WebsiteSettings;
   redirect: Redirects;
+  checkout: CheckoutSettings;
 }
 
 export class MockDB {
@@ -231,10 +232,10 @@ export class MockDB {
             id: 3,
             position: 1,
           },
-          {
-            id: 4,
-            position: 1,
-          }],
+            {
+              id: 4,
+              position: 1,
+            }],
           right: [],
           footer: [{
             id: 5,
@@ -331,6 +332,13 @@ export class MockDB {
             condition: Condition.beforeClassStarts,
           },
         },
+      },
+      checkout: {
+        allowCreateContactOnEnrol: false,
+        allowCreateContactOnWaitingList: true,
+        allowCreateContactOnMailingList: false,
+        collectParentDetails: true,
+        enrolmentMinAge: 18,
       },
       redirect: {
         rules: [
