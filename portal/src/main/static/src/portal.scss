@@ -1,6 +1,8 @@
 /*  all scss are bundled here  */
-@import "compass";
-@import "compass/reset";
+
+@import "library/index";
+@import "reset";
+
 @import "settings";
 
 @import "mixins";

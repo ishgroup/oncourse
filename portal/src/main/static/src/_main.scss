@@ -379,7 +379,9 @@
     border: 1px solid $loginbox-border-color;
     background: $well-bg;
     @include border-radius(5px);
-    @include box-shadow(0 1px 2px rgba(0, 0, 0, 0.05));
+    -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 
     .login-option {
         label {
@@ -396,7 +398,7 @@
     .forget-pwd {
         padding-top: 0;
         float: left;
-        
+
         input {
         	background: transparent;
             border: none;
@@ -404,14 +406,14 @@
             font-weight: normal;
             text-transform: inherit;
             font-size: 13px;
-            
+
             &:hover {
             	color: #c8706b;
             	text-decoration: underline;
             	background: none;
             }
         }
-        
+
     }
 
     .alert-info {
@@ -953,7 +955,7 @@ strong.link-color {
     >h3 {
         line-height: 1.35;
     }
-    
+
     ol {
         list-style-type: decimal;
         margin-left: 14px;
