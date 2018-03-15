@@ -1,6 +1,5 @@
 import {CreateStore, RestoreState} from "./CreateStore";
 import {Bootstrap} from "./common/utils/Bootstrap";
-import {PublicApi} from "./external/PublicApi";
 import {configLoader} from "./configLoader";
 import {Level, Logger, LogMessage} from "./services/Logger";
 import {ConfigConstants} from "./config/ConfigConstants";
@@ -26,7 +25,7 @@ appStart();
 Logger.log(new LogMessage(Level.INFO, `Application version: "${ConfigConstants.APP_VERSION}"`));
 
 const start = store => {
-  WindowService.set("api", new PublicApi(store));
+  WindowService.initCheckoutApi(store);
 
   // get global preferences
   store.dispatch(getPreferences());
