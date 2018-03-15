@@ -35,3 +35,6 @@ export {Condition} from "../../../build/generated-sources";
 
 // Api
 export {LoginRequest} from "../../../build/generated-sources";
+
+// Suburb State
+export {State} from "../../../build/generated-sources";

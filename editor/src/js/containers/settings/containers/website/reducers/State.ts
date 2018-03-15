@@ -1,4 +1,4 @@
-import {ClassAge} from "../../../../../model";
+import {ClassAge, State} from "../../../../../model";
 
 export class WebsiteSettingsState {
   enableSocialMedia: boolean;
@@ -6,5 +6,6 @@ export class WebsiteSettingsState {
   enableForCourse: boolean;
   enableForWebpage: boolean;
   classAge: ClassAge = {};
+  suburbAutocompleteState?: State;
   refreshSettings?: boolean = false;
 }

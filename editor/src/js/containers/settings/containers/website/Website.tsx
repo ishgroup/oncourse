@@ -4,7 +4,7 @@ import {Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText} fr
 import classnames from "classnames";
 import {getWebsiteSettings, setWebsiteSettings} from "./actions";
 import {Checkbox} from "../../../../common/components/Checkbox";
-import {ClassAge, Condition} from "../../../../model";
+import {Condition, State as SuburbState} from "../../../../model";
 import {State} from "../../../../reducers/state";
 import {WebsiteSettingsState} from "./reducers/State";
 import {toPositive} from "../../../../common/utils/NumberUtils";
@@ -28,6 +28,7 @@ export class Website extends React.Component<Props, any> {
       addThisId: website.addThisId,
       enableForCourse: website.enableForCourse,
       enableForWebpage: website.enableForWebpage,
+      suburbAutocompleteState: website.suburbAutocompleteState,
       classAge: {
         hideClass: (website.classAge && website.classAge.hideClass) || {},
         stopWebEnrolment: (website.classAge && website.classAge.stopWebEnrolment) || {},
@@ -48,6 +49,7 @@ export class Website extends React.Component<Props, any> {
         addThisId: website.addThisId,
         enableForCourse: website.enableForCourse,
         enableForWebpage: website.enableForWebpage,
+        suburbAutocompleteState: website.suburbAutocompleteState,
         classAge: {
           hideClass: website.classAge && website.classAge.hideClass || {},
           stopWebEnrolment: website.classAge && website.classAge.stopWebEnrolment || {},
@@ -85,7 +87,7 @@ export class Website extends React.Component<Props, any> {
   }
 
   render() {
-    const {enableSocialMedia, addThisId, enableForCourse, enableForWebpage, classAge} = this.state;
+    const {enableSocialMedia, addThisId, enableForCourse, enableForWebpage, classAge, suburbAutocompleteState} = this.state;
     const {fetching} = this.props;
 
     return (
@@ -184,6 +186,31 @@ export class Website extends React.Component<Props, any> {
                 <option value={Condition.beforeClassEnds}>before class ends</option>
               </Input>
             </div>
+          </FormGroup>
+
+          <FormGroup>
+            <Label>Show suburbs from</Label>
+            <Row>
+              <Col sm={3}>
+                <Input
+                  type="select"
+                  name="suburbAutocompleteState"
+                  value={suburbAutocompleteState}
+                  onChange={e => {
+                    this.onChange(e.target.value, 'suburbAutocompleteState');
+                  }}
+                >
+                  <option value={null}>All states</option>
+                  <option value={SuburbState.NSW}>NSW</option>
+                  <option value={SuburbState.QLD}>Queensland</option>
+                  <option value={SuburbState.VIC}>Victoria</option>
+                  <option value={SuburbState.TAS}>Tasmania</option>
+                  <option value={SuburbState.ACT}>ACT</option>
+                  <option value={SuburbState.WA}>Western Australia</option>
+                  <option value={SuburbState.SA}>South Australia</option>
+                </Input>
+              </Col>
+            </Row>
           </FormGroup>
 
           <Button color="primary" onClick={() => this.onSave()}>Save</Button>

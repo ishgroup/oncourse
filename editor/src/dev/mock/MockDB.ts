@@ -3,7 +3,7 @@ import update from 'react-addons-update';
 import faker from 'faker';
 import {
   Page, Block, MenuItem, Theme, User, Version, WebsiteSettings, Redirects, VersionStatus,
-  SkillsOnCourseSettings, ThemeBlocks, Layout, Condition, CheckoutSettings,
+  SkillsOnCourseSettings, ThemeBlocks, Layout, Condition, CheckoutSettings, State,
 } from "../../js/model";
 
 export const CreateMockDB = (): MockDB => {
@@ -322,6 +322,7 @@ export class MockDB {
         addThisId: '',
         enableForCourse: true,
         enableForWebpage: false,
+        suburbAutocompleteState: State.NT,
         classAge: {
           hideClass: {
             offset: 0,
