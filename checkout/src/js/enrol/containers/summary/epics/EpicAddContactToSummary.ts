@@ -25,6 +25,7 @@ export const AddContactToSummary: Epic<any, IshState> = (action$: ActionsObserva
     const payerId = ((!contact.parentRequired || parent) && contact.id) || null;
     const ifParentRequired = contact.parentRequired && !parent;
     const nextPage = state.checkout.phase === Phase.ComplementEditContact ? Phase.Payment : state.checkout.page;
+    const isAddParentPhase = (type === Phase.AddParent || type === Phase.ChangeParent);
 
     const allChilds = CheckoutService
       .getAllSingleChildIds(state.checkout)
@@ -35,7 +36,7 @@ export const AddContactToSummary: Epic<any, IshState> = (action$: ActionsObserva
     // - if new contact is a payer
     const uncheckContactItems: boolean =
       (allChilds.length && !contact.parentRequired) ||
-      (type === Phase.AddContactAsPayer || type === Phase.AddContactAsCompany);
+      (type === Phase.AddContactAsPayer || type === Phase.AddContactAsCompany || type === Phase.ChangeParent || type === Phase.AddParent);
 
     const result = [];
 
@@ -53,7 +54,7 @@ export const AddContactToSummary: Epic<any, IshState> = (action$: ActionsObserva
     }
 
     // case: Update parent for existing children
-    if (allChilds.length || forChild && !contact.parentRequired) {
+    if (allChilds.length && !contact.parentRequired && isAddParentPhase) {
       result.push(updateParentChilds(contact.id, forChild ? [forChild] : allChilds));
     }
 
