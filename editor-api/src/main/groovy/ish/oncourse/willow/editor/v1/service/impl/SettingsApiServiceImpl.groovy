@@ -78,7 +78,7 @@ class SettingsApiServiceImpl implements SettingsApi {
             settings.enableForWebpage = new GetPreference(college, ENABLE_SOCIAL_MEDIA_LINKS_WEB_PAGE, context).booleanValue
 
             String state = new GetAutoCompleteState(college, context, webSite).get()
-            settings.suburbAutocompleteState = state ? State.fromValue(state) : null
+            settings.suburbAutocompleteState = state ? State.fromValue(state) : null as State
             
 
             settings.classAge = new ClassAge().with { age ->
