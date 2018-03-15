@@ -35,8 +35,11 @@ export const AddContactToSummary: Epic<any, IshState> = (action$: ActionsObserva
     // - if new contact is a parent/guardian for existing children
     // - if new contact is a payer
     const uncheckContactItems: boolean =
-      (allChilds.length && !contact.parentRequired) ||
-      (type === Phase.AddContactAsPayer || type === Phase.AddContactAsCompany || type === Phase.ChangeParent || type === Phase.AddParent);
+      (type === Phase.AddContactAsPayer ||
+        type === Phase.AddContactAsCompany ||
+        type === Phase.ChangeParent ||
+        type === Phase.AddParent
+      );
 
     const result = [];
 
