@@ -47,7 +47,15 @@ public enum OutcomeStatus implements DisplayableExtendedEnumeration<Integer> {
 	@API
 	STATUS_ASSESSABLE_WITHDRAWN(40, "Withdrawn (40)", null),
 
-	/**
+    /**
+     * Database value: 41
+     *
+     * Incomplete due to RTO closure
+     */
+    @API
+    STATUS_ASSESSABLE_WITHDRAWN_INCOMPLETE_DUE_TO_RTO(41, "Incomplete due to RTO closure (41)", null),
+
+    /**
 	 * Database value: 51
 	 *
 	 * RPL granted
