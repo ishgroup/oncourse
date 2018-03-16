@@ -174,7 +174,7 @@ const AmountReducer = (state: AmountState = new AmountState(), action: IAction<a
       return {...amount, payNowVisibility: state.payNowVisibility};
 
     case Actions.RESET_CHECKOUT_STATE:
-      return new Amount();
+      return new AmountState();
 
     case Actions.TOGGLE_PAYNOW_VISIBILITY:
       return {
