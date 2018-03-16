@@ -97,9 +97,13 @@ export class EnrolButton extends React.Component<Props, State> {
       })} title={text} onClick={isActive && !fetching ? this.add : null}>
         {fetching ? "Enrol Now" : text}
       </button>,
-      showedPlaces && <div key="free_places" className="classStatus">
-        {this.availablePlacesText(availableEnrolmentPlaces)}
-      </div>,
+      showedPlaces &&
+        <div
+          key="free_places"
+          className={classnames("classStatus", "available-places", {"available-places-high": availableEnrolmentPlaces > 5})}
+        >
+          {this.availablePlacesText(availableEnrolmentPlaces)}
+        </div>,
     ];
 
     return (
