@@ -29,7 +29,7 @@ export class WindowService {
   static initCheckoutApi(store: Store<IshState>) {
     const w = window as any;
     
-    w.Checkout = {
+    w.ShopingCart = {
       
       addPromoCode: (code: string) => {
         store.dispatch({
