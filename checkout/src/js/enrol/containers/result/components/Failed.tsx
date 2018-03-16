@@ -26,7 +26,7 @@ export class Failed extends React.Component<Props, any> {
           <a title="Proceed with this enrolment" href="#" onClick={onAnotherCard}>
             Try again with another card or reenter details</a>
           {" Or "}
-          <a href="#" onClick={e => this.handleAbandon(e)}>Abandon</a>{" this enrolment"}.
+          <a className="link-abandon" href="#" onClick={e => this.handleAbandon(e)}>Abandon</a>{" this enrolment"}.
         </p>
       </div>
     );
