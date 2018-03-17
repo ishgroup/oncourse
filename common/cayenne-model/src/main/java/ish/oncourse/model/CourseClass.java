@@ -49,7 +49,7 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 	 */
 	public Integer getTotalDurationMinutes() {
 		int sum = 0;
-		for (Session s : getSessions()) {
+		for (Session s : getTimelineableSessions()) {
 			sum += (s.getDurationMinutes() != null) ? s.getDurationMinutes() : 0;
 		}
 		return sum;
@@ -75,23 +75,22 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 	 * end times
 	 */
 	public boolean isSessionsHaveDifferentTimes() {
-		return !SessionUtils.isSameTime(getSessions());
+		return !SessionUtils.isSameTime(getTimelineableSessions());
 	}
 
 	public boolean isHasSessions() {
-		return getSessions().size() > 0;
+		return getTimelineableSessions().size() > 0;
 	}
 
 	public boolean isHasManySessions() {
-		return getSessions().size() > 1;
+		return getTimelineableSessions().size() > 1;
 	}
 
 	public Session getFirstSession() {
-		if (getSessions().isEmpty()) {
+		List<Session> sessions = getTimelineableSessions();
+		if (sessions.isEmpty())
 			return null;
-		}
-
-		List<Session> list = new ArrayList<>(getSessions());
+		List<Session> list = new ArrayList<>(sessions);
 		new Ordering(Session.START_DATE_PROPERTY, SortOrder.ASCENDING).orderList(list);
 		return list.get(0);
 	}
@@ -139,12 +138,7 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 	}
 
 	public boolean isHasAnyTimelineableSessions() {
-		for (Session session : getSessions()) {
-			if ((session.getStartDate() != null) && (session.getEndDate() != null)) {
-				return true;
-			}
-		}
-		return false;
+		return getTimelineableSessions().size() > 0;
 	}
 
 	public TimeZone getClassTimeZone() {
@@ -202,9 +196,9 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 	 */
 	public Set<String> getDaysOfWeek() {
 		if (daysOfWeek == null) {
-			if (getSessions().size() > 0) {
+			if (getTimelineableSessions().size() > 0) {
 				ArrayList<String> days = new ArrayList<>();
-				for (Session s : getSessions()) {
+				for (Session s : getTimelineableSessions()) {
 					days.add(TimestampUtilities.dayOfWeek(s.getStartDate(), true, TimeZone.getTimeZone(s.getTimeZone())));
 				}
 				daysOfWeek = TimestampUtilities.uniqueDaysInOrder(days);
@@ -229,7 +223,7 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 
 	public Integer getEarliestSessionStartHour() {
 		Integer earliest = null;
-		for (Session session : getSessions()) {
+		for (Session session : getTimelineableSessions()) {
 			Calendar start = Calendar.getInstance(TimeZone.getTimeZone(session.getTimeZone()));
 			start.setTime(session.getStartDate());
 			Integer sessionStartHour = start.get(Calendar.HOUR_OF_DAY);
@@ -242,7 +236,7 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 
 	public Integer getLatestSessionEndHour() {
 		Integer latest = null;
-		for (Session session : getSessions()) {
+		for (Session session : getTimelineableSessions()) {
 			Calendar end = Calendar.getInstance(TimeZone.getTimeZone(getTimeZone()));
 			end.setTime(session.getEndDate());
 			Integer sessionEndHour = end.get(Calendar.HOUR_OF_DAY);
@@ -274,15 +268,11 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Session> getTimelineableSessions() {
-		if (getObjectId().isTemporary()) {
-			return Session.START_DATE.isNotNull().andExp(Session.END_DATE.isNotNull()).filterObjects(getSessions());
-		} else {
-			return getPersistentTimelineableSessions();
-		}
+		return getPersistentTimelineableSessions();
 	}
 
 	public List<Session> getPersistentTimelineableSessions() {
-		ObjectSelect select = ObjectSelect.query(Session.class)
+		ObjectSelect<Session> select = ObjectSelect.query(Session.class)
 				.where(Session.COURSE_CLASS.eq(this))
 				.and(Session.START_DATE.isNotNull())
 				.and(Session.END_DATE.isNotNull())
@@ -290,7 +280,7 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 				.prefetch(Session.ROOM.dot(Room.SITE).joint())
 				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
 				.cacheGroup(Session.class.getSimpleName());
-		return new ArrayList<>(select.select(getObjectContext()));
+		return new LinkedList<>(select.select(getObjectContext()));
 	}
 
 	public boolean isHasRoom() {

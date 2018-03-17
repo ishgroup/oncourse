@@ -2,7 +2,6 @@ package ish.oncourse.ui.pages;
 
 import ish.common.types.CourseEnrolmentType;
 import ish.math.Money;
-import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.Application;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
@@ -11,6 +10,7 @@ import ish.oncourse.services.application.IApplicationService;
 import ish.oncourse.services.contact.IContactService;
 import ish.oncourse.services.html.IFacebookMetaProvider;
 import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.util.HTMLUtils;
 import ish.oncourse.util.ValidationErrors;
 import org.apache.commons.lang.StringUtils;
@@ -113,7 +113,7 @@ public class CourseClassDetails extends ISHCommon {
 	}
 
 	public String getTimedateClass() {
-		return "class_timedate" + (courseClass.isHasSessions() ? " tooltip" : "");
+		return "class_timedate" + (courseClass.getTimelineableSessions().size() > 0 ? " tooltip" : "");
 	}
 
 	public String getCanonicalLinkPath() {

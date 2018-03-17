@@ -132,6 +132,16 @@ public class CourseClassItem extends ISHCommon {
 			timeFormatWithTimeZone = new CustomizedDateFormat(FormatUtils.timeFormatWithTimeZoneString, timeZone);
 
 		timelineableSessions = courseClass.getPersistentTimelineableSessions();
+		timelineableSessions.sort((o1, o2) -> {
+			int siteNameComparison = o1.getStartDate().compareTo(o2.getStartDate());
+			Room room1 = o1.getRoom();
+			Room room2 = o2.getRoom();
+			if (siteNameComparison == 0 && room1 != null && room2 != null) {
+				siteNameComparison = room1.getSite().getName().compareTo(room2.getSite().getName());
+			}
+			return siteNameComparison;
+		});
+
 		sessionDays = SessionUtils.getSessionDays(timelineableSessions);
 		initVisibleTutorRoles();
 	}
@@ -158,7 +168,7 @@ public class CourseClassItem extends ISHCommon {
 	}
 
 	public boolean isHasTutorRoles() {
-		return courseClass.getTutorRoles().size() > 0;
+		return visibleTutorRoles.size() > 0;
 	}
 
 	public String getTutorName() {
@@ -180,11 +190,6 @@ public class CourseClassItem extends ISHCommon {
 	}
 
 	public boolean isTutorPortal() {
-		// if ( context().page() instanceof TutorClasses )
-		// {
-		// return ( ( TutorClasses )context().page() ).isTutor();
-		// }
-		// return false;
 		return false;
 	}
 
@@ -198,22 +203,11 @@ public class CourseClassItem extends ISHCommon {
 	}
 
 	public List<Session> getSortedTimelineableSessions() {
-		Collections.sort(timelineableSessions, new Comparator<Session>() {
-			public int compare(Session o1, Session o2) {
-				int siteNameComparison = o1.getStartDate().compareTo(o2.getStartDate());
-				Room room1 = o1.getRoom();
-				Room room2 = o2.getRoom();
-				if (siteNameComparison == 0 && room1 != null && room2 != null) {
-					siteNameComparison = room1.getSite().getName().compareTo(room2.getSite().getName());
-				}
-				return siteNameComparison;
-			}
-		});
 		return timelineableSessions;
 	}
 
 	public String getClassSessions() {
-		int numberOfSession = courseClass.getSessions().size();
+		int numberOfSession = timelineableSessions.size();
 		int numberOfDay = sessionDays.size();
 		String key = isHasSessionsInTheSameDay() ?
 				(numberOfDay > 1) ? "%s days, %s hours total" : "%s day, %s hours total" :
@@ -245,7 +239,7 @@ public class CourseClassItem extends ISHCommon {
 	}
 
 	public String getTimedateClass() {
-		return "class_timedate" + (courseClass.isHasSessions() ? " tooltip" : "");
+		return "class_timedate" + (timelineableSessions.size() > 0 ? " tooltip" : "");
 	}
 
 	public boolean isLastIndex() {
@@ -270,7 +264,7 @@ public class CourseClassItem extends ISHCommon {
 	}
 
 	public boolean isHasManySessions() {
-		return sessionDays.size() > 1 && courseClass != null && courseClass.isHasManySessions() && courseClass.isSessionsHaveDifferentTimes();
+		return sessionDays.size() > 1 && courseClass != null && timelineableSessions.size() > 1 && courseClass.isSessionsHaveDifferentTimes();
 	}
 
 	public boolean isAddedClass() {
@@ -326,7 +320,7 @@ public class CourseClassItem extends ISHCommon {
 	 */
 	public boolean isShowDateEnd() {
 		Date endDate = courseClass.getEndDate();
-		List<Session> sessions = courseClass.getSessions();
+		List<Session> sessions = timelineableSessions;
 
 		if (endDate == null || sessions.isEmpty())
 			return false;
