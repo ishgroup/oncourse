@@ -158,7 +158,8 @@ public class CourseService implements ICourseService {
 				qualifier = qualifier.andExp(ExpressionFactory.matchExp(searchProperty, value));
 			}
 		}
-		return applyCourseCacheSettings(ObjectSelect.query(Course.class, qualifier)).selectFirst(cayenneService.sharedContext());
+		List<Course> courses = applyCourseCacheSettings(ObjectSelect.query(Course.class, qualifier)).select(cayenneService.sharedContext());
+		return courses.stream().findFirst().orElse(null);
 	}
 
 	public Course getCourseByCode(String code) {
