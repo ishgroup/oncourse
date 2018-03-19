@@ -2,10 +2,12 @@ package ish.oncourse.willow.editor.webdav
 
 import ish.oncourse.configuration.Configuration
 import ish.oncourse.willow.editor.services.access.UserService
+import org.apache.commons.io.IOUtils
 import org.apache.commons.lang3.StringUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+import java.nio.charset.Charset
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Future
@@ -45,16 +47,18 @@ class RunEditScript {
         }
 
         ProcessBuilder processBuilder = new ProcessBuilder(scriptCommand)
-
+        InputStream out
         try {
             logger.debug("Starting script '{}' for file '{}'", scriptPath, filePath)
             long time = System.currentTimeMillis()
             final Process process = processBuilder.start()
+            out = process.getInputStream()
 
             Future<Integer> scriptCallFuture = executorService.submit({process.waitFor()} as Callable)
             scriptCallFuture.get(EDIT_FILE_SCRIPT_WAIT_TIMEOUT, TimeUnit.SECONDS)
             time = Math.round((System.currentTimeMillis() - time) / 1000.0d)
-            logger.debug("script '{}' for file '{}' is finished. Time: '{}' sec", scriptPath, filePath, time)
+            logger.warn("Edit file script '{}' for file '{}' is finished. Time: '{}' sec. Script output: '{}'", scriptPath, filePath, time, IOUtils.toString(out, Charset.defaultCharset()))
+            out.close()
         } catch (Exception e) {
             logger.error("Error executing script '{}' for file '{}'", scriptPath, filePath, e)
         }
