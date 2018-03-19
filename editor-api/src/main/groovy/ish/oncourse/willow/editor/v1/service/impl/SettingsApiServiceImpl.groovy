@@ -8,6 +8,7 @@ import ish.oncourse.services.preference.GetAutoCompleteState
 import ish.oncourse.services.preference.GetContactAgeWhenNeedParent
 import ish.oncourse.services.preference.GetPreference
 import ish.oncourse.services.preference.IsCollectParentDetails
+import ish.oncourse.services.preference.Preferences
 import ish.oncourse.willow.editor.v1.model.CheckoutSettings
 import ish.oncourse.willow.editor.v1.model.ClassStateTransition
 import ish.oncourse.willow.editor.v1.model.ClassAge
@@ -27,6 +28,7 @@ import org.apache.logging.log4j.Logger
 
 import static ish.oncourse.services.preference.Preferences.*
 import static ish.oncourse.services.preference.Preferences.ConfigProperty.allowCreateContact
+import static ish.oncourse.services.preference.Preferences.ENROLMENT_MIN_AGE
 
 @CompileStatic
 class SettingsApiServiceImpl implements SettingsApi {
@@ -131,8 +133,8 @@ class SettingsApiServiceImpl implements SettingsApi {
             settings.allowCreateContactOnMailingList = new GetPreference(college, allowCreateContact.getPreferenceNameBy(ContactFieldSet.mailinglist), context).booleanValue
 
             settings.collectParentDetails = new IsCollectParentDetails(college, context).get() 
-            settings.enrolmentMinAge = new GetContactAgeWhenNeedParent(college, context).get()
-
+            settings.contactAgeWhenNeedParent = new GetContactAgeWhenNeedParent(college, context).get()
+            settings.enrolmentMinAge = new GetPreference(college, ENROLMENT_MIN_AGE, context).integerValue
             settings
         }
         
@@ -147,7 +149,7 @@ class SettingsApiServiceImpl implements SettingsApi {
         new GetPreference(college, allowCreateContact.getPreferenceNameBy(ContactFieldSet.waitinglist), context).booleanValue = settings.allowCreateContactOnWaitingList
         new GetPreference(college, allowCreateContact.getPreferenceNameBy(ContactFieldSet.mailinglist), context).booleanValue = settings.allowCreateContactOnMailingList
         new IsCollectParentDetails(college, context).booleanValue = settings.collectParentDetails
-        new GetContactAgeWhenNeedParent(college, context).integerValue = settings.enrolmentMinAge
+        new GetContactAgeWhenNeedParent(college, context).integerValue = settings.contactAgeWhenNeedParent
         
         context.commitChanges()
         
