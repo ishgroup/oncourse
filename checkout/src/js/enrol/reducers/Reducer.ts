@@ -161,10 +161,18 @@ const ContactsReducer = (
       const {contactId} = action.payload;
       ns = L.cloneDeep(state);
 
-      ns.result = ns.result.filter(
-        id => id !== contactId,
-      );
+      // remove contact
+      ns.result = ns.result.filter(id => id !== contactId);
       delete ns.entities.contact[contactId];
+
+      // check and remove parent
+      const isParentFor = Object.values(ns.entities.contact)
+        .find(contact => contact.parent && contact.parent.id === contactId);
+
+      if (isParentFor) {
+        ns.entities.contact[isParentFor.id].parentRequired = true;
+        delete ns.entities.contact[isParentFor.id].parent;
+      }
 
       return ns;
     }
