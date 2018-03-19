@@ -1,6 +1,6 @@
 import {Bootstrap} from "../common/utils/Bootstrap";
 import {ModalService} from "./ModalService";
-import {Store} from "redux";
+import {Store, Unsubscribe} from "redux";
 import {IshState, PromotionCart} from "./IshState";
 import {Actions} from "../web/actions/Actions";
 
@@ -45,7 +45,16 @@ export class WindowService {
           payload: promotion,
         });
       },
-      
+
+      /**
+       * Subscribe on store changes, so end users can be notified on important changes.
+       *
+       * @param listener
+       * @returns {Unsubscribe} unsubscribe function
+      */
+      subscribe: (listener: (state: IshState) => void) => {
+        return store.subscribe(() => listener(store.getState()));
+      },
     }
   }
   
