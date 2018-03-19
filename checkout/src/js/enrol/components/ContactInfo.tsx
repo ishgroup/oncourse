@@ -8,6 +8,7 @@ interface Props {
   concessions?: Concession[];
   memberships?: StudentMembership[];
   onChangeParent?: (contactId: string) => void;
+  onRemoveContact?: (contactId: string) => void;
 }
 
 export class ContactInfo extends React.Component<Props, any> {
@@ -20,7 +21,8 @@ export class ContactInfo extends React.Component<Props, any> {
   }
 
   public render() {
-    const {contact, controls, concessions, memberships} = this.props;
+    const {contact, controls, concessions, memberships, onRemoveContact} = this.props;
+
     return (
       <div className="col-xs-24 student-name">
         <div className="student-info">
@@ -32,6 +34,10 @@ export class ContactInfo extends React.Component<Props, any> {
               child of <strong>{` ${contact.parent.firstName} ${contact.parent.lastName} `}</strong>
               <a className="add-Guardian" href="#" onClick={e => this.handleChangeGuardian(e)}>change...</a>
             </span>
+          }
+
+          {onRemoveContact &&
+            <span className="student-remove" onClick={() => onRemoveContact(contact.id)}/>
           }
 
         </div>

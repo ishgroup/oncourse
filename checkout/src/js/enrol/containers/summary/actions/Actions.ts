@@ -23,6 +23,7 @@ export const SELECT_ITEM_REQUEST: string = "checkout/summary/select/item/request
 export const UPDATE_ITEM: string = "checkout/summary/update/item";
 
 export const REMOVE_ITEM_FROM_SUMMARY: string = "checkout/remove/summary/item";
+export const REMOVE_CONTACT_FROM_SUMMARY: string = "checkout/remove/summury/contact";
 
 export const addContactToSummary = (contact: Contact): IAction<Contact> => {
   return {
@@ -98,5 +99,13 @@ export const removeItemFromSummary = (type, id) => {
   return {
     type: REMOVE_ITEM_FROM_SUMMARY,
     payload: {type, id},
+  };
+};
+
+export const removeContactFromSummary = contactId => {
+
+  return {
+    type: REMOVE_CONTACT_FROM_SUMMARY,
+    payload: {contactId},
   };
 };

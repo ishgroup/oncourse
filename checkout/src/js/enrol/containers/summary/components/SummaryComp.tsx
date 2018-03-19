@@ -14,6 +14,7 @@ export interface Props {
   amount: Amount;
   onAddContact?: () => void;
   onAddParent?: () => void;
+  onRemoveContact?: () => void;
   onChangeParent?: (contactId: string) => void;
   onAddCode: (code: string) => void;
   promotions: Promotion[];
@@ -53,7 +54,7 @@ export class SummaryComp extends React.Component<Props, any> {
 
   renderContact = (props: ContactProps) => {
     const {onSelect, onPriceValueChange, onAddConcession, concessions, memberships, onChangeParent,
-      onUpdateWaitingCourse, onChangeEnrolmentFields, concessionTypes} = this.props;
+      onUpdateWaitingCourse, onChangeEnrolmentFields, concessionTypes, onRemoveContact} = this.props;
 
     return (
       <ContactComp
@@ -68,6 +69,7 @@ export class SummaryComp extends React.Component<Props, any> {
         studentMemberships={memberships.filter(item => item.contactId === props.contact.id)}
         onUpdateWaitingCourse={onUpdateWaitingCourse}
         onChangeEnrolmentFields={onChangeEnrolmentFields}
+        onRemoveContact={onRemoveContact}
       />
     );
   }
@@ -89,7 +91,7 @@ export class SummaryComp extends React.Component<Props, any> {
     return (
       <div className="payment-summary">
         <div className={classnames("contacts-summary", {fetching})}>
-          {contacts.map(c => this.renderContact(c))}
+          {contacts.map(c => c.contact && this.renderContact(c))}
         </div>
         <AddAnotherContact onAddContact={onAddContact}/>
 

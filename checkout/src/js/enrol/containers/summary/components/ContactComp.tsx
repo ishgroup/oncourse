@@ -31,6 +31,7 @@ export interface Props {
   concessionTypes?: ConcessionType[];
   studentMemberships?: StudentMembership[];
   onChangeParent?: (contactId) => void;
+  onRemoveContact?: (contactId) => void;
   onChangeEnrolmentFields?: (form, type) => any;
 }
 
@@ -39,7 +40,7 @@ class ContactComp extends React.Component<Props, any> {
     const {
       contact, enrolments, applications, vouchers, memberships, concessions, onChangeEnrolmentFields,
       articles, onSelect, onPriceValueChange, onAddConcession, studentMemberships, onChangeParent, waitingLists,
-      onUpdateWaitingCourse, concessionTypes,
+      onUpdateWaitingCourse, concessionTypes, onRemoveContact,
     } = this.props;
 
     return (
@@ -56,6 +57,7 @@ class ContactComp extends React.Component<Props, any> {
           concessions={concessions}
           memberships={studentMemberships}
           onChangeParent={onChangeParent}
+          onRemoveContact={onRemoveContact}
         />
         <div className="col-xs-24 checkoutList">
 

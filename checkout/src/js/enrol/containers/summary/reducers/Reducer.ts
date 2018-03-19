@@ -58,6 +58,17 @@ export const Reducer = (state: State = ContactNodeToState([]), action: IAction<a
 
       return ns;
 
+    // Remove contact node and enrolments from summary state
+    case SummaryActions.REMOVE_CONTACT_FROM_SUMMARY:
+      const {contactId} = action.payload;
+
+      ['enrolments', 'memberships', 'vouchers', 'articles', 'applications'].map(item =>
+        ns.entities.contactNodes[contactId][item].map(id => delete ns.entities[item][id]),
+      );
+      ns.result = state.result.filter(id => id !== contactId);
+      delete ns.entities.contactNodes[contactId];
+      return ns;
+
     case FULFILLED(SummaryActions.SELECT_ITEM_REQUEST):
     case SHOW_MESSAGES:
       return {

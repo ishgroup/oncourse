@@ -14,6 +14,46 @@
       font-weight: bold;
       padding-bottom: 5px;
       position: relative;
+      
+      &:hover {
+        .student-remove {
+          opacity: 1;
+        }
+      }
+      
+      .student-remove {
+        opacity: 0;
+        display: block;
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        margin-top: -9px;
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+        
+        &:hover {
+          opacity: 1;
+        }
+        
+        &:before, &:after {
+          position: absolute;
+          left: 8px;
+          content: ' ';
+          height: 18px;
+          width: 2px;
+          background-color: #333;
+        }
+        
+        &:before {
+          transform: rotate(45deg);
+        }
+        
+        &:after {
+          transform: rotate(-45deg);
+        }
+      }
+      
       h3 {
         font-size: $checkoutPaymentStudentTitleFontSize;
         margin-bottom: $checkoutPaymentStudentTitleMarginBottom;
@@ -21,6 +61,7 @@
         display: $checkoutPaymentStudentTitleDisplay;
         color: $checkoutPaymentStudentTitleColor;
       }
+      
       .student-email {
         position: $checkoutPaymentStudentEmailPosition;
         color: $checkoutPaymentStudentEmailColor;
@@ -31,16 +72,20 @@
         top: $checkoutPaymentStudentEmailPositionTop;
         margin-right: $checkoutPaymentStudentEmailMarginRight;
       }
+      
       .student-affilation {
         color: $checkoutPaymentStudentAffiliationColor;
         font-weight: $checkoutPaymentStudentAffiliationFontWeight;
+        
         strong {
           margin-right: 6px;
         }
       }
     }
   }
+  
 }
+
 .payment-summary {
   font-size: $checkoutPaymentSummaryFontSize;
   .membership, .concession {
@@ -56,7 +101,7 @@
     display: block;
     margin-bottom: $checkoutPaymentPlusLinkMarginBottom;
     padding: $checkoutPaymentPlusLinkPadding;
-
+    
     cursor: pointer;
     background: $checkoutPaymentPlusLinkBackground;
   }
@@ -91,15 +136,15 @@
           font-size: $checkoutPageEnrolItemEmTagFontSize;
           font-style: $checkoutPageEnrolItemEmTagFontWeight;
           margin-left: $checkoutPageEnrolItemEmTagMarginLeft;
-          >span {
+          > span {
             vertical-align: top;
           }
         }
-        >span {
+        > span {
           margin-left: 0px;
         }
         span {
-          >span {
+          > span {
             &.started, &.ended {
               vertical-align: top;
             }
@@ -117,6 +162,7 @@
     }
   }
 }
+
 div.amount-container {
   float: $checkoutPageAmountContainerFloat;
   width: $checkoutPageAmountContainerWidth;
@@ -129,7 +175,7 @@ div.amount-container {
     @extend %checkout-submit-button;
     margin: $checkoutPageAmountContainerButtonMargin;
     float: $checkoutPageAmountContainerButtonFloat;
-
+    
   }
   #addCode {
     text-transform: $checkoutPageAmountContainerAddCodeTextTransform;
@@ -140,7 +186,7 @@ div.amount-container {
     font-size: $checkoutPageAmountContainerAddCodeFontSize;
     float: none;
   }
-
+  
   .amount-content {
     width: $checkoutPageAmountContentWidth;
     float: $checkoutPageAmountContentFloat;
@@ -194,7 +240,7 @@ div.amount-container {
       background-color: $checkoutPageAmountInputBackground;
       border: $checkoutPageAmountInputBorder;
     }
-
+    
     #vouchers {
       white-space: nowrap;
       input[type="checkbox"] {
@@ -264,6 +310,7 @@ div.amount-container {
     margin-left: 20px;
   }
 }
+
 .code-info {
   margin: 0;
   padding-left: 15px;

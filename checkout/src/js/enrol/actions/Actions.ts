@@ -44,6 +44,9 @@ export const UPDATE_PARENT_CHILDS_FULFILLED: string = FULFILLED(UPDATE_PARENT_CH
 
 export const TOGGLE_PAYNOW_VISIBILITY: string = "checkout/update/payNow/visibility";
 
+export const EPIC_REMOVE_CONTACT: string = "epic/checkout/remove/contact";
+export const REMOVE_CONTACT: string = "checkout/remove/contact";
+
 export const addCode = (code: string): { type: string, payload: string } => {
   return {
     type: ADD_CODE_REQUEST,
@@ -173,5 +176,19 @@ export const showSyncErrors = formErrors => {
   return {
     type: SHOW_MESSAGES,
     payload: {formErrors: Object.values(formErrors).map(error => error)},
+  };
+};
+
+export const epicRemoveContact = contactId => {
+  return {
+    type: EPIC_REMOVE_CONTACT,
+    payload: {contactId},
+  };
+};
+
+export const removeContact = contactId => {
+  return {
+    type: REMOVE_CONTACT,
+    payload: {contactId},
   };
 };

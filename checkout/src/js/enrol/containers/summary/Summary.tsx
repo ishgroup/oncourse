@@ -18,6 +18,7 @@ import {proceedToPayment, selectItem, updateEnrolmentFields, updateItem} from ".
 import {processPayment, submitPaymentForWaitingCourses} from "../payment/actions/Actions";
 import {
   changePhase, addCode, getCheckoutModelFromBackend, toggleRedeemVoucher, updatePayNow, updateContactAddProcess,
+  epicRemoveContact,
 } from "../../actions/Actions";
 import {updateConcessionContact, getContactConcessions, getConcessionTypes} from "../concession/actions/Actions";
 import {Phase} from "../../reducers/State";
@@ -138,6 +139,9 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
     },
     onAddParent: (): void => {
       dispatch(changePhase(Phase.AddParent));
+    },
+    onRemoveContact: (contactId): void => {
+      dispatch(epicRemoveContact(contactId));
     },
     onChangeParent: (contactId): void => {
       dispatch(updateContactAddProcess({}, Phase.AddContact, contactId));

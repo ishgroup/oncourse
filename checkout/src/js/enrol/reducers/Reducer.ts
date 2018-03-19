@@ -129,7 +129,7 @@ const FieldsReducer = (state: ContactFieldsState = new ContactFieldsState(), act
 
 const ContactsReducer = (
   state: ContactsState = normalize([], ContactsSchema),
-  action: IAction<ContactsState & {childId?: string, parentId?: string, childIds?: string[]}>,
+  action: IAction<ContactsState & {childId?: string, parentId?: string, childIds?: string[]} & {contactId: string}>,
 ): ContactsState => {
 
   let ns: ContactsState;
@@ -153,6 +153,18 @@ const ContactsReducer = (
       ns.result.map(
         id => childIds.includes(id) ? ns.entities.contact[id].parent = ns.entities.contact[parentId] || null : id,
       );
+
+      return ns;
+    }
+
+    case Actions.REMOVE_CONTACT: {
+      const {contactId} = action.payload;
+      ns = L.cloneDeep(state);
+
+      ns.result = ns.result.filter(
+        id => id !== contactId,
+      );
+      delete ns.entities.contact[contactId];
 
       return ns;
     }

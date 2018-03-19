@@ -29,6 +29,7 @@ import {SubmitEditContact} from "../containers/contact-edit/epics/EpicSubmitEdit
 import {EpicToggleRedeemVoucher} from "./EpicToggleRedeemVoucher";
 import {EpicUpdateEnrolmentFields} from "./EpicUpdateEnrolmentFields";
 import {EpicProcessingMandatoryFields} from "./EpicProcessingMandatoryFields";
+import {EpicRemoveContact} from "./EpicRemoveContact";
 
 
 const {
@@ -45,6 +46,7 @@ export const EpicCheckout = combineEpics(
   GetAllContactNodes,
   EpicAddCode,
   AddContactToSummary,
+  EpicRemoveContact,
   EpicItemSelect,
   EpicUpdateAmount,
   EpicUpdatePayNow,
