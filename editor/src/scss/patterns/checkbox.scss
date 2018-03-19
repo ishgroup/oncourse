@@ -13,6 +13,10 @@ $md-checkmark-color: $white;
   margin: $md-checkbox-margin;
   line-height: 14px;
   
+  &.inline {
+    margin: 0;
+  }
+  
   label {
     cursor: pointer;
     margin-bottom: 0;

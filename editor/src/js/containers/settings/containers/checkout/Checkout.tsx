@@ -7,6 +7,7 @@ import {Checkbox} from "../../../../common/components/Checkbox";
 import {State} from "../../../../reducers/state";
 import {CheckoutSettingsState} from "./reducers/State";
 import {CheckoutSettings} from "../../../../model";
+import {toPositive} from "../../../../common/utils/NumberUtils";
 
 interface Props {
   fetching?: boolean;
@@ -27,6 +28,7 @@ export class Checkout extends React.Component<Props, any> {
       allowCreateContactOnWaitingList:  checkout.allowCreateContactOnWaitingList,
       allowCreateContactOnMailingList: checkout.allowCreateContactOnMailingList,
       collectParentDetails: checkout.collectParentDetails,
+      contactAgeWhenNeedParent: checkout.contactAgeWhenNeedParent,
       enrolmentMinAge: checkout.enrolmentMinAge,
     };
   }
@@ -44,6 +46,7 @@ export class Checkout extends React.Component<Props, any> {
         allowCreateContactOnWaitingList:  checkout.allowCreateContactOnWaitingList,
         allowCreateContactOnMailingList: checkout.allowCreateContactOnMailingList,
         collectParentDetails: checkout.collectParentDetails,
+        contactAgeWhenNeedParent: checkout.contactAgeWhenNeedParent,
         enrolmentMinAge: checkout.enrolmentMinAge,
       });
     }
@@ -64,7 +67,7 @@ export class Checkout extends React.Component<Props, any> {
 
   render() {
     const {allowCreateContactOnEnrol, allowCreateContactOnWaitingList, allowCreateContactOnMailingList,
-      collectParentDetails, enrolmentMinAge} = this.state;
+      collectParentDetails, enrolmentMinAge, contactAgeWhenNeedParent} = this.state;
     const {fetching} = this.props;
 
     return (
@@ -99,18 +102,32 @@ export class Checkout extends React.Component<Props, any> {
           </FormGroup>
 
           <FormGroup>
-            <Checkbox
-              label="Collect parent or guardian details for students"
-              name="collectParentDetails"
-              checked={collectParentDetails}
-              onChange={e => {this.onChange(e.target.checked, 'collectParentDetails');}}
-            />
+            <div className="form-inline">
+
+              <Checkbox
+                label="Collect parent or guardian details for students"
+                className="inline"
+                name="collectParentDetails"
+                checked={collectParentDetails}
+                onChange={e => {this.onChange(e.target.checked, 'collectParentDetails');}}
+              />
+
+              <Input
+                type="number"
+                name="contactAgeWhenNeedParent"
+                className="xs"
+                value={contactAgeWhenNeedParent}
+                onChange={e => {this.onChange(e.target.value, 'contactAgeWhenNeedParent');}}
+                onBlur={e => {this.onChange(toPositive(e.target.value), 'contactAgeWhenNeedParent');}}
+              />
+
+            </div>
           </FormGroup>
 
           <FormGroup>
             <Label htmlFor="addThisId">Enrolment min age</Label>
             <Row>
-              <Col sm={3}>
+              <Col sm={2}>
                 <Input
                   type="number"
                   name="enrolmentMinAge"

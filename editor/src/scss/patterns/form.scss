@@ -7,6 +7,7 @@ form {
 .form-inline {
   label {
     margin: 0 8px;
+    display: inline-flex;
     
     &.error {
       margin-top: 5px;
@@ -15,6 +16,10 @@ form {
       border: 0;
       padding: 0;
     }
+  }
+  
+  [type="checkbox"] + label {
+    margin-left: 0;
   }
 }
 

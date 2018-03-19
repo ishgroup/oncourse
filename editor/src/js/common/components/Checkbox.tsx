@@ -5,13 +5,14 @@ interface Props {
   name?: string;
   checked?: boolean;
   onChange: (e) => void;
+  className?: string;
 }
 
 export const Checkbox = (props: Props) => {
-  const {label, name, checked, onChange} = props;
+  const {label, name, checked, onChange, className} = props;
 
   return (
-    <div className="md-checkbox">
+    <div className={`md-checkbox ${className}`}>
       <input
         id={name}
         type="checkbox"

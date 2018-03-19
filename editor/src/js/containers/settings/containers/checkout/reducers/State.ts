@@ -6,5 +6,6 @@ export class CheckoutSettingsState {
   allowCreateContactOnMailingList?: boolean;
   collectParentDetails?: boolean;
   enrolmentMinAge?: number;
+  contactAgeWhenNeedParent?: number;
   refreshSettings?: boolean = false;
 }

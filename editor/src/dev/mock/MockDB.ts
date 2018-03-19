@@ -339,6 +339,7 @@ export class MockDB {
         allowCreateContactOnWaitingList: true,
         allowCreateContactOnMailingList: false,
         collectParentDetails: true,
+        contactAgeWhenNeedParent: 12,
         enrolmentMinAge: 18,
       },
       redirect: {
