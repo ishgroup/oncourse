@@ -105,7 +105,7 @@ export class Checkout extends React.Component<Props, any> {
             <div className="form-inline">
 
               <Checkbox
-                label="Collect parent or guardian details for students"
+                label="Collect parent or guardian details for students under"
                 className="inline"
                 name="collectParentDetails"
                 checked={collectParentDetails}
