@@ -6,9 +6,7 @@ import {Observable} from "rxjs/Observable";
 
 import {IAction} from "../../actions/IshAction";
 import {Contact} from "../../model";
-import CheckoutService from "../services/CheckoutService";
-import {Phase} from "../reducers/State";
-import {removeContact, EPIC_REMOVE_CONTACT, setPayer} from "../actions/Actions";
+import {removeContact, EPIC_REMOVE_CONTACT, setPayer, removeRedeemVoucher} from "../actions/Actions";
 import {getAllContactNodesFromBackend, removeContactFromSummary} from "../containers/summary/actions/Actions";
 
 
@@ -24,6 +22,10 @@ export const EpicRemoveContact: Epic<any, IshState> = (action$: ActionsObservabl
       } else {
         result.push(setPayer(null));
       }
+    }
+
+    if (state.checkout.redeemVouchers && state.checkout.redeemVouchers.length) {
+      result.push(removeRedeemVoucher(state.checkout.redeemVouchers.find(v => v.payer && v.payer.id === contactId)));
     }
 
     result.push(removeContact(contactId));

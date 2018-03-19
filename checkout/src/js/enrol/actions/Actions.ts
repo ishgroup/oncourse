@@ -36,6 +36,7 @@ export const ADD_REDEEM_VOUCHER_TO_STATE: string = "checkout/add/redeemVoucher";
 
 export const SET_REDEEM_VOUCHER_ACTIVITY: string = "checkout/set/voucher/activity";
 export const TOGGLE_REDEEM_VOUCHER: string = "checkout/toggle/redeemVoucher";
+export const REMOVE_REDEEM_VOUCHER: string = "checkout/remove/redeemVoucher";
 
 export const UPDATE_CONTACT_ADD_PROCESS: string = "checkout/update/process/contact-add";
 
@@ -128,6 +129,13 @@ export const toggleRedeemVoucher = (voucher, enabled: boolean): IAction<any> => 
   return {
     type: TOGGLE_REDEEM_VOUCHER,
     payload: {voucher, enabled},
+  };
+};
+
+export const removeRedeemVoucher = (voucher): IAction<any> => {
+  return {
+    type: REMOVE_REDEEM_VOUCHER,
+    payload: {voucher},
   };
 };
 
