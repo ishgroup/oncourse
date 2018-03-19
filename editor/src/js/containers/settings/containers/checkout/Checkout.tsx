@@ -83,7 +83,7 @@ export class Checkout extends React.Component<Props, any> {
           <FormGroup>
             <Checkbox
               label="Allow create new student on waiting list."
-              name="enableSocialMedia"
+              name="allowCreateContactOnWaitingList"
               checked={allowCreateContactOnWaitingList}
               onChange={e => {this.onChange(e.target.checked, 'allowCreateContactOnWaitingList');}}
             />
@@ -92,7 +92,7 @@ export class Checkout extends React.Component<Props, any> {
           <FormGroup>
             <Checkbox
               label="Allow create new student on mailing list"
-              name="enableSocialMedia"
+              name="allowCreateContactOnMailingList"
               checked={allowCreateContactOnMailingList}
               onChange={e => {this.onChange(e.target.checked, 'allowCreateContactOnMailingList');}}
             />
