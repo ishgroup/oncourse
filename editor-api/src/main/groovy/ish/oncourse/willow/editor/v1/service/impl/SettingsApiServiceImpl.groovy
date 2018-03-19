@@ -150,6 +150,7 @@ class SettingsApiServiceImpl implements SettingsApi {
         new GetPreference(college, allowCreateContact.getPreferenceNameBy(ContactFieldSet.mailinglist), context).booleanValue = settings.allowCreateContactOnMailingList
         new IsCollectParentDetails(college, context).booleanValue = settings.collectParentDetails
         new GetContactAgeWhenNeedParent(college, context).integerValue = settings.contactAgeWhenNeedParent
+        new GetPreference(college, ENROLMENT_MIN_AGE, context).integerValue = settings.enrolmentMinAge
         
         context.commitChanges()
         
