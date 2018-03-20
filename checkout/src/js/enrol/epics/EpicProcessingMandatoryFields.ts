@@ -39,20 +39,23 @@ export const EpicProcessingMandatoryFields = (action$, store: Store<IshState>): 
               });
           }))
         .mergeMap((value: any) => {
-          return Observable.of(value).switch().flatMap(val => {
+          const result = [];
+          let toPayment = true;
 
+          value.map(val => {
             if (val.data.headings.length > 0) {
-              return [
-                setFieldsToState(val.data),
-                updateContactAddProcess(val.contact, state.checkout.phase, null),
-                changePhase(Phase.ComplementEditContact),
-              ];
+              result.push(setFieldsToState(val.data));
+              result.push(updateContactAddProcess(val.contact, state.checkout.phase, null));
+              result.push(changePhase(Phase.ComplementEditContact));
+              toPayment = false;
             }
-
-            return [changePhase(Phase.Payment)];
-
           });
 
+          if (toPayment) {
+            result.push(changePhase(Phase.Payment));
+          }
+
+          return result;
         });
 
     });

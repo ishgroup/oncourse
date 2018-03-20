@@ -84,7 +84,6 @@ export class CheckoutService {
   }
 
   public loadFieldsForSelected = (contact: Contact, state: IshState): Promise<ContactFields> => {
-    console.log(contact);
     return this.contactApi.getContactFields(BuildContactFieldsRequest.fromStateSelected(contact, state.checkout.summary));
   }
 
