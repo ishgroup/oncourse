@@ -1,13 +1,15 @@
 package ish.oncourse.ui.pages;
 
-import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.*;
+import ish.oncourse.services.course.GetCourses;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.node.IWebNodeService;
+import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.sites.ISitesService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.tutor.ITutorService;
+import ish.oncourse.ui.base.ISHCommon;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Meta;
 import org.apache.tapestry5.annotations.Property;
@@ -19,10 +21,14 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
 @Meta("tapestry.response-content-type=text/xml")
 public class SitemapXML extends ISHCommon {
 
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+
+	@Inject
+	private ICayenneService cayenneService;
 
 	@Inject
 	private ICourseService courseService;
@@ -33,63 +39,61 @@ public class SitemapXML extends ISHCommon {
 
 	@Inject
 	private ISitesService sitesService;
-	
+
 	@Inject
 	private IWebSiteService webSiteService;
 
 	@Inject
 	private ITutorService tutorService;
-	
+
 	@Inject
 	private ITagService tagService;
 
 	@Property
 	private String hostName;
-	
+
 	@Property
 	private Date siteModificationDate;
-	
+
 	@Property
-	private List<Course>courses;
-	
+	private List<Course> courses;
+
 	@Property
 	private Course course;
-		
+
 	@Property
-	private List<Site>sites;
-	
+	private List<Site> sites;
+
 	@Property
 	private Site site;
-	
+
 	@Property
 	private List<Tutor> tutors;
-	
+
 	@Property
 	private Tutor tutor;
-	
+
 	@Property
 	private List<WebNode> pages;
-	
+
 	@Property
 	private WebNode page;
-	
+
 	@SetupRender
 	public void beforeRender() {
 		hostName = request.getServerName();
-		siteModificationDate=setupSiteModificationDate();
-
+		siteModificationDate = setupSiteModificationDate();
 		String coursesRootTagName = webSiteService.getCurrentWebSite().getCoursesRootTagName();
 		if (StringUtils.trimToNull(coursesRootTagName) != null) {
 			Tag tag = tagService.getTagByFullPath(coursesRootTagName);
-			if (tag != null) {
-				courses=courseService.getCourses(tag, null, false, null);
-			} else {
-				courses=courseService.getCourses(0, courseService.getCoursesCount());
-			}
-		} else {
-			courses=courseService.getCourses(0, courseService.getCoursesCount());
+			if (tag != null)
+				courses = courseService.getCourses(tag, null, false, null);
 		}
-		
+
+		if (courses == null)
+			courses = new GetCourses(cayenneService.sharedContext(), webSiteService.getCurrentCollege())
+					.get();
+
 		sites = webSiteService.getCurrentCollege().getSites();
 		tutors = tutorService.getTutors();
 		pages = webNodeService.getSiteMapNodes();
@@ -130,8 +134,7 @@ public class SitemapXML extends ISHCommon {
 		return DATE_FORMAT;
 	}
 
-    public boolean isActiveTutor()
-    {
-        return tutorService.isActiveTutor(tutor);
-    }
+	public boolean isActiveTutor() {
+		return tutorService.isActiveTutor(tutor);
+	}
 }

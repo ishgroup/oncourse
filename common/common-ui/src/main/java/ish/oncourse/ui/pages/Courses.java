@@ -2,9 +2,11 @@ package ish.oncourse.ui.pages;
 
 import ish.oncourse.model.*;
 import ish.oncourse.services.cookies.ICookiesService;
+import ish.oncourse.services.course.GetCourses;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.html.IFacebookMetaProvider;
+import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.search.*;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
@@ -56,6 +58,9 @@ public class Courses extends ISHCommon {
 
 
 	private static final String PARAM_UPDATE_COURSES_BY_FILTER = "updateCoursesByFilter";
+
+	@Inject
+	private ICayenneService cayenneService;
 
 	@Inject
 	private ICourseService courseService;
@@ -152,7 +157,7 @@ public class Courses extends ISHCommon {
 		this.itemIndex = getIntParam(request.getParameter("start"), START_DEFAULT);
 		this.isFilterRequest = Boolean.valueOf(request.getHeader(PARAM_UPDATE_COURSES_BY_FILTER));
 
-        initCurrentBlock();
+		initCurrentBlock();
 
 		sitesParameter = request.getParameter("sites");
 		sitesIds = new ArrayList<>();
@@ -191,7 +196,8 @@ public class Courses extends ISHCommon {
 		} catch (SearchException e) {
 			logger.catching(e);
 			this.isException = true;
-			this.courses = courseService.getCourses(this.itemIndex, ROWS_DEFAULT);
+			this.courses = new GetCourses(cayenneService.sharedContext(), webSiteService.getCurrentCollege())
+					.offset(itemIndex != null ? itemIndex : 0).limit(ROWS_DEFAULT).get();
 			this.coursesCount = courseService.getCoursesCount();
 			searchParams = null;
 			focusesForMapSites = null;
@@ -202,15 +208,15 @@ public class Courses extends ISHCommon {
 
 	private void initCurrentBlock() {
 		try {
-			if (isXHR()){
-                if (this.isFilterRequest) {
-                    this.currentBlock = filteredCoursesBlock;
-                } else {
-                    this.currentBlock = moreCoursesBlock;
-                }
-            } else {
-                this.currentBlock = htmlCoursesBlock;
-            }
+			if (isXHR()) {
+				if (this.isFilterRequest) {
+					this.currentBlock = filteredCoursesBlock;
+				} else {
+					this.currentBlock = moreCoursesBlock;
+				}
+			} else {
+				this.currentBlock = htmlCoursesBlock;
+			}
 		} catch (BlockNotFoundException e) {
 			logger.debug("Template {} should be adjusted for the new implementation of Courses.class. College: {}:{}", "Courses.tml", webSiteService.getCurrentCollege().getName(), webSiteService.getCurrentCollege().getId(), e);
 		}
@@ -311,7 +317,7 @@ public class Courses extends ISHCommon {
 			coursesCount = 0;
 			return new ArrayList<>();
 		}
-		
+
 		if (request.getParameter(HTMLUtils.VIEW_ALL_PARAM) != null && Boolean.TRUE.toString().equals(request.getParameter(HTMLUtils.VIEW_ALL_PARAM))) {
 			return searchCourses(itemIndex, Integer.MAX_VALUE);
 		}
@@ -341,7 +347,7 @@ public class Courses extends ISHCommon {
 							"<div class='debug-info-content'>%d</div>\n" +
 							"<div class='debug-info-title'>Solr list courses ids:</div>\n" +
 							"<div class='debug-info-content'>%s</div>\n" +
-					        "<div class='debug-info-title'>DB found courses:</div>\n" +
+							"<div class='debug-info-title'>DB found courses:</div>\n" +
 							"<div class='debug-info-content'>%d</div>\n",
 					searchResult.getSolrQueryAsString(),
 					results.getDebugMap().get("explain").toString(),
@@ -389,7 +395,7 @@ public class Courses extends ISHCommon {
 
 	public String getMetaDescription() {
 
-		if (getBrowseTag() !=null && getBrowseTag().getDetail() != null) {
+		if (getBrowseTag() != null && getBrowseTag().getDetail() != null) {
 			return facebookMetaProvider.getDescriptionContent(getBrowseTag());
 		} else {
 			return null;

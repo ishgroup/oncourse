@@ -57,23 +57,18 @@ public class CourseService implements ICourseService {
 
 	/**
 	 * @see ICourseService#getCourses(Integer, Integer)
+	 *
+	 * @deprecated use {@link GetCourses}
 	 */
+	@Deprecated
 	public List<Course> getCourses(Integer startDefault, Integer rowsDefault) {
-
-		ObjectSelect<Course> q = ObjectSelect.query(Course.class)
-				.where(getSiteQualifier());
-
-		if (startDefault == null) {
+		if (startDefault == null)
 			startDefault = START_DEFAULT;
-		}
 
-		if (rowsDefault == null) {
+		if (rowsDefault == null)
 			rowsDefault = ROWS_DEFAULT;
-		}
 
-		q.offset(startDefault);
-		q.limit(rowsDefault);
-		return new LinkedList<>(applyCourseCacheSettings(q).select(cayenneService.sharedContext()));
+		return new GetCourses(cayenneService.sharedContext(), webSiteService.getCurrentCollege()).offset(startDefault).limit(rowsDefault).get();
 	}
 
 	@Override
