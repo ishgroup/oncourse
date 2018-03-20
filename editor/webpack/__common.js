@@ -19,6 +19,8 @@ const KEYS = {
 };
 
 const _common = (dirname, options) => {
+  const mode = options.NODE_ENV || 'development';
+
   let _main = {
     entry: [options[KEYS.ENTRY]],
     output: {
@@ -26,6 +28,7 @@ const _common = (dirname, options) => {
       publicPath: "/assets/",
       filename: "cms.js"
     },
+    mode: mode,
     resolve: {
       modules: [
         path.resolve(dirname, 'node_modules'),
@@ -52,7 +55,6 @@ const _common = (dirname, options) => {
     plugins: [
       _DefinePlugin('development', options.BUILD_NUMBER),
       new ExtractTextPlugin("cms.css"),
-      new webpack.optimize.ModuleConcatenationPlugin(),
     ],
     devServer: {
       inline: false

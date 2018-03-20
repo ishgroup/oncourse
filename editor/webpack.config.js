@@ -3,8 +3,6 @@ const __common = require('./webpack/__common');
 const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const TypedocWebpackPlugin = require('typedoc-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
 const ZipPlugin = require('zip-webpack-plugin');
@@ -23,6 +21,7 @@ module.exports = function (options = {}) {
 };
 
 const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
+  const mode = NODE_ENV || 'development';
   const appEntry = NODE_ENV === 'mock'
     ? path.resolve(__dirname, 'src', 'dev', 'app.tsx')
     : path.resolve(__dirname, 'src', 'js', 'app.tsx');
@@ -50,6 +49,7 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
       ],
       extensions: [".ts", ".tsx", ".js", ".css", ".scss"]
     },
+    mode: mode,
     module: {
       rules: [
         {
@@ -79,23 +79,6 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
     bail: false,
     devtool: SOURCE_MAP,
     plugins: plugins(NODE_ENV, BUILD_NUMBER),
-    devServer: {
-      inline: false,
-      port: 1707,
-      stats: {
-        chunkModules: false,
-        colors: true
-      },
-      historyApiFallback: true,
-      contentBase: './build/dist',
-      proxy: [{
-        context: '/a',
-        target: API_ROOT,
-        pathRewrite: {
-          '^/a/': ''
-        }
-      }]
-    }
   };
 };
 
@@ -103,7 +86,6 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
   const plugins = [
     __common.DefinePlugin(NODE_ENV, BUILD_NUMBER),
     new ExtractTextPlugin("[name].css"),
-    new webpack.optimize.ModuleConcatenationPlugin(),
   ];
 
   switch (NODE_ENV) {

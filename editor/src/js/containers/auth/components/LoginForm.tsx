@@ -70,7 +70,7 @@ class LoginForm extends React.Component<any, any> {
   }
 }
 
-export default reduxForm({
+export default reduxForm<any, any>({
   validate,
   form: 'login',
 })(LoginForm);
