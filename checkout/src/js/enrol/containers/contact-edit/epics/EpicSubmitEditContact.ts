@@ -22,6 +22,7 @@ export const SubmitEditContact: Epic<any, IshState> = (action$: ActionsObservabl
 
     if (unfilled.length) {
       const nextFileds = unfilled[0];
+      result.push(changePhase(Phase.Summary));
       result.push(setFieldsToState(nextFileds));
       result.push(updateContactAddProcess(state.checkout.contacts.entities.contact[nextFileds.contactId], Phase.Summary, null));
       result.push(changePhase(Phase.ComplementEditContact));
