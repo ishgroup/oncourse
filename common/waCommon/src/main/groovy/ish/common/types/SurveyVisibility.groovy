@@ -1,10 +1,12 @@
 package ish.common.types
 
 import ish.common.util.DisplayableExtendedEnumeration
+import ish.oncourse.API
 
 /**
  * Visibility of surveys on web
  */
+@API
 enum SurveyVisibility implements DisplayableExtendedEnumeration<Integer> {
 
     /**
@@ -12,6 +14,7 @@ enum SurveyVisibility implements DisplayableExtendedEnumeration<Integer> {
      *
      * Testimonial awaiting review
      */
+    @API
     REVIEW(0, 'Waiting review'),
 
     /**
@@ -19,6 +22,7 @@ enum SurveyVisibility implements DisplayableExtendedEnumeration<Integer> {
      *
      * Testimonial is shown on web
      */
+    @API
     TESTIMONIAL(1, 'Public testimonial'),
 
     /**
@@ -26,6 +30,7 @@ enum SurveyVisibility implements DisplayableExtendedEnumeration<Integer> {
      *
      * Testimonial is hidden on web
      */
+    @API
     NOT_TESTIMONIAL(2, 'Not testimonial'),
 
     /**
@@ -33,6 +38,7 @@ enum SurveyVisibility implements DisplayableExtendedEnumeration<Integer> {
      *
      * Testimonial is hidden by student 
      */
+    @API
     STUDENT_HIDDEN(3, 'Hidden by student')
 
     private int value
