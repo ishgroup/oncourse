@@ -57,7 +57,7 @@ class RunEditScript {
             Future<Integer> scriptCallFuture = executorService.submit({process.waitFor()} as Callable)
             scriptCallFuture.get(EDIT_FILE_SCRIPT_WAIT_TIMEOUT, TimeUnit.SECONDS)
             time = Math.round((System.currentTimeMillis() - time) / 1000.0d)
-            logger.warn("Edit file script '{}' for file '{}' is finished. Time: '{}' sec. Script output: '{}'", scriptPath, filePath, time, IOUtils.toString(out, Charset.defaultCharset()))
+            logger.info("Edit file script '{}' for file '{}' is finished. Time: '{}' sec. Script output: '{}'", scriptPath, filePath, time, IOUtils.toString(out, Charset.defaultCharset()))
             out.close()
         } catch (Exception e) {
             logger.error("Error executing script '{}' for file '{}'", scriptPath, filePath, e)

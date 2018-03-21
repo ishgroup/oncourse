@@ -28,7 +28,7 @@ public class ScriptExecutor {
         ExecutorService executorService = Executors.newCachedThreadPool();
         String stringCommand = StringUtils.join(command.toArray(), " ");
 
-        logger.warn("Starting script '{}'", stringCommand);
+        logger.info("Starting script '{}'", stringCommand);
 
         ProcessBuilder processBuilder = new ProcessBuilder(command);
         InputStream out = null;
@@ -40,9 +40,9 @@ public class ScriptExecutor {
             scriptCallFuture.get(EDIT_FILE_SCRIPT_WAIT_TIMEOUT, TimeUnit.SECONDS);
             
             time = Math.round((System.currentTimeMillis() - time) / 1000.0d);
-            logger.warn("Script '{}' is finished. Time: '{}' sec", stringCommand, time);
+            logger.info("Script '{}' is finished. Time: '{}' sec", stringCommand, time);
             
-            logger.warn("Script output: '{}'", IOUtils.toString(out, Charset.defaultCharset()));
+            logger.info("Script output: '{}'", IOUtils.toString(out, Charset.defaultCharset()));
             out.close();
         } catch (IOException ignore) {
             
