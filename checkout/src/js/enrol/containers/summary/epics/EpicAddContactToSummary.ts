@@ -56,8 +56,8 @@ export const AddContactToSummary: Epic<any, IshState> = (action$: ActionsObserva
       result.push(setPayer(payerId));
     }
 
-    // case: Update parent for existing children
-    if (allChilds.length && !contact.parentRequired && isAddParentPhase) {
+    // case: Update parent for existing children or reassign new parent
+    if ((allChilds.length || forChild) && !contact.parentRequired && isAddParentPhase) {
       result.push(updateParentChilds(contact.id, forChild ? [forChild] : allChilds));
     }
 
