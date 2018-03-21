@@ -2,6 +2,7 @@ import React from 'react';
 import {Field, reduxForm} from 'redux-form';
 import classnames from 'classnames';
 import {Container, Row, Col, Button, Form, FormGroup, Label, Input, FormFeedback} from 'reactstrap';
+import {Browser} from "../../../utils";
 
 const input = props => {
   const {type, input, placeholder, id, meta} = props;
@@ -35,9 +36,10 @@ const validate = values => {
   return errors;
 };
 
+
 class LoginForm extends React.Component<any, any> {
 
-  render() {
+  form() {
     const {handleSubmit, pristine, submitting} = this.props;
 
     return (
@@ -67,6 +69,16 @@ class LoginForm extends React.Component<any, any> {
 
       </Form>
     );
+  }
+
+  unsupportedMessage() {
+    return (
+      <div className="browser-warning">Your browser is not supported. Please use another browser</div>
+    );
+  }
+
+  render() {
+    return Browser.unsupported() ? this.unsupportedMessage() : this.form();
   }
 }
 

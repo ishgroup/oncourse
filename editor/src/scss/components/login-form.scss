@@ -1,5 +1,16 @@
 .login-wrapper {
   min-height: 0;
+  
+  .browser-warning {
+    margin-top: 150px;
+    padding: 30px 25px;
+    background: $danger-hover;
+    color: white;
+    border-radius: 3px;
+    line-height: 17px;
+    font-weight: 300;
+    text-align: center;
+  }
 }
 
 .login-form {
@@ -29,4 +40,5 @@
     margin-top: 10px;
     font-size: 14px;
   }
+  
 }

@@ -40,3 +40,37 @@ export class DOM {
     return null;
   }
 }
+
+export class Browser {
+  static isSafari() {
+    // Safari 3.0+ "[object HTMLElementConstructor]"
+    return /constructor/i.test(window['HTMLElement']) ||
+      (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] ||
+        (typeof window['safari'] !== 'undefined' && window['safari'].pushNotification));
+  }
+
+  static isIE() {
+    // Internet Explorer 6-11
+    return /*@cc_on!@*/false || !!document['documentMode'];
+  }
+
+  static isFirefox() {
+    // Firefox 1.0+
+    return typeof window['InstallTrigger'] !== 'undefined';
+  }
+
+  static isOpera() {
+    // Opera 8.0+
+    return (!!window['opr'] && window['opr'].addons) || !!window['opera'] || navigator.userAgent.indexOf(' OPR/') >= 0;
+  }
+
+  static isChrome() {
+    // Chrome 1+
+    return !!window['chrome'] && !!window['chrome'].webstore;
+  }
+
+  static unsupported() {
+    return this.isIE() || this.isSafari();
+  }
+
+}
