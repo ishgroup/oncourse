@@ -29,6 +29,7 @@ interface Props {
   fieldset: FieldSet;
   minAge: number;
   isFirstContact: boolean;
+  isEmptyProducts: boolean;
 }
 
 export class Checkout extends React.Component<Props, any> {
@@ -38,7 +39,7 @@ export class Checkout extends React.Component<Props, any> {
   }
 
   render() {
-    const {phase, page, isNewContact, fetching, childName, fieldset, minAge, isFirstContact} = this.props;
+    const {phase, page, isNewContact, fetching, childName, fieldset, minAge, isFirstContact, isEmptyProducts} = this.props;
 
     return (
       <div>
@@ -51,6 +52,7 @@ export class Checkout extends React.Component<Props, any> {
           childName={childName}
           phase={phase}
           isFirst={isFirstContact}
+          isEmptyProducts={isEmptyProducts}
           onSuccess={submitAddContact}
           onCancel={!isNewContact ? () => this.props.changePhase(page) : undefined}
           fetching={fetching}
@@ -98,6 +100,7 @@ const mapStateToProps = (state: IshState) => ({
   fieldset: CheckoutService.isOnlyWaitingCoursesInCart(state.cart) ? FieldSet.WAITINGLIST : FieldSet.ENROLMENT,
   minAge: state.preferences.minAge,
   isFirstContact: !state.checkout.summary.result.length,
+  isEmptyProducts: !state.cart.products.result.length,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {

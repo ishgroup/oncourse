@@ -13,7 +13,22 @@ import {Phase} from "../../reducers/State";
 class ContactAddForm extends React.Component<any, any> {
 
   getMessages() {
-    const {childName, minAge = 18, phase, isFirst} = this.props;
+    const {childName, minAge = 18, phase, isFirst, isEmptyProducts} = this.props;
+
+    const addStudentMessage = isEmptyProducts ?
+    {
+      title: `Add a student`,
+      message: `Enter the person who will attend the class.`,
+    } :
+    {
+      title: `Add a person`,
+      message: `Enter the person who will attend the class or make a purchase.`,
+    };
+
+    const addPayerMessage = {
+      title: `Add a payer`,
+      message: `Enter the person to be invoiced and paying for this transaction.`,
+    };
 
     switch (phase) {
       case Phase.ChangeParent:
@@ -21,21 +36,16 @@ class ContactAddForm extends React.Component<any, any> {
           title: `Change a parent or guardian for ${childName}`,
           message: `Enter the person who will attend the class or make a purchase.`,
         };
+
       case Phase.AddPayer:
-        return isFirst ?
-          {
-            title: `Add a person`,
-            message: `Enter the person who will attend the class or make a purchase.`,
-          } :
-          {
-            title: `Add a payer`,
-            message: `Enter the person to be invoiced and paying for this transaction.`,
-          };
+        return isFirst ? addStudentMessage : addPayerMessage;
+
       case Phase.AddContactAsPayer:
         return {
           title: `Add a payer`,
           message: `Enter the person to be invoiced and paying for this transaction.`,
         };
+
       case Phase.AddParent:
         return {
           title: `Add a parent or guardian`,
@@ -44,10 +54,7 @@ class ContactAddForm extends React.Component<any, any> {
         };
 
       default:
-        return {
-          title: `Add a person`,
-          message: `Enter the person who will attend the class or make a purchase.`,
-        };
+        return addStudentMessage;
     }
 
   }
