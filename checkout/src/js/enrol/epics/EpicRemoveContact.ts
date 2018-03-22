@@ -19,8 +19,8 @@ export const EpicRemoveContact: Epic<any, IshState> = (action$: ActionsObservabl
 
     if (state.checkout.payerId === contactId) {
       if (state.checkout.summary.result.length > 1) {
-        const availableContacts = state.checkout.summary.result.filter(id => id !== contactId);
-        result.push(setPayer(availableContacts[0]));
+        const nextPayerId = state.checkout.summary.result.find(id => id !== contactId);
+        result.push(setPayer(nextPayerId));
       } else {
         result.push(setPayer(null));
         result.push(changePhase(Phase.AddContact));
