@@ -17,6 +17,7 @@ import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.util.log.LogAppInfo
 import ish.oncourse.willow.editor.services.RequestFilter
 import ish.oncourse.willow.editor.services.RequestService
+import ish.oncourse.willow.editor.services.ZKProvider
 import ish.oncourse.willow.editor.services.access.AuthenticationFilter
 import ish.oncourse.willow.editor.services.access.AuthenticationService
 import ish.oncourse.willow.editor.services.access.UserService
@@ -74,6 +75,7 @@ class EditorApiModule extends ConfigModule {
         CXFModule.contributeResources(binder).addBinding().to(RedirectApiServiceImpl)
 
         binder.bind(RequestService)
+        binder.bind(ZKProvider)
         binder.bind(ZKSessionManager)
         binder.bind(ICayenneService).to(CayenneService)
         binder.bind(AuthenticationService)
