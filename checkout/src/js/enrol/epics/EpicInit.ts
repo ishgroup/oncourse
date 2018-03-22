@@ -18,7 +18,6 @@ import {getPaymentStatus, resetPaymentState} from "../containers/payment/actions
 import {IshState} from "../../services/IshState";
 import {openEditContact, setFieldsToState} from "../containers/contact-edit/actions/Actions";
 import {getAllContactNodesFromBackend, getContactNodeFromBackend, removeItemFromSummary} from "../containers/summary/actions/Actions";
-import {changePhase} from "../actions/Actions";
 
 const updateContactNodes = contacts => {
   const result = [];

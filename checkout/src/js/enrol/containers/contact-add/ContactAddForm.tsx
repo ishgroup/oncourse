@@ -13,7 +13,7 @@ import {Phase} from "../../reducers/State";
 class ContactAddForm extends React.Component<any, any> {
 
   getMessages() {
-    const {childName, minAge = 18, phase} = this.props;
+    const {childName, minAge = 18, phase, isFirst} = this.props;
 
     switch (phase) {
       case Phase.ChangeParent:
@@ -22,10 +22,15 @@ class ContactAddForm extends React.Component<any, any> {
           message: `Enter the person who will attend the class or make a purchase.`,
         };
       case Phase.AddPayer:
-        return {
-          title: `Add a payer`,
-          message: `Enter the person to be invoiced and paying for this transaction.`,
-        };
+        return isFirst ?
+          {
+            title: `Add a person`,
+            message: `Enter the person who will attend the class or make a purchase.`,
+          } :
+          {
+            title: `Add a payer`,
+            message: `Enter the person to be invoiced and paying for this transaction.`,
+          };
       case Phase.AddContactAsPayer:
         return {
           title: `Add a payer`,

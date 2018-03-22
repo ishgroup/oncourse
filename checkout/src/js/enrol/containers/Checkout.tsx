@@ -28,6 +28,7 @@ interface Props {
   childName: any;
   fieldset: FieldSet;
   minAge: number;
+  isFirstContact: boolean;
 }
 
 export class Checkout extends React.Component<Props, any> {
@@ -37,7 +38,7 @@ export class Checkout extends React.Component<Props, any> {
   }
 
   render() {
-    const {phase, page, isNewContact, fetching, childName, fieldset, minAge} = this.props;
+    const {phase, page, isNewContact, fetching, childName, fieldset, minAge, isFirstContact} = this.props;
 
     return (
       <div>
@@ -49,6 +50,7 @@ export class Checkout extends React.Component<Props, any> {
         <ContactAddForm
           childName={childName}
           phase={phase}
+          isFirst={isFirstContact}
           onSuccess={submitAddContact}
           onCancel={!isNewContact ? () => this.props.changePhase(page) : undefined}
           fetching={fetching}
@@ -95,6 +97,7 @@ const mapStateToProps = (state: IshState) => ({
   childName: getChildFromProps(state.checkout),
   fieldset: CheckoutService.isOnlyWaitingCoursesInCart(state.cart) ? FieldSet.WAITINGLIST : FieldSet.ENROLMENT,
   minAge: state.preferences.minAge,
+  isFirstContact: !state.checkout.summary.result.length,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
