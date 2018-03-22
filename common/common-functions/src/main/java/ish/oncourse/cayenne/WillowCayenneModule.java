@@ -24,7 +24,7 @@ public class WillowCayenneModule implements Module {
 
 	@Override
 	public void configure(org.apache.cayenne.di.Binder binder) {
-		binder.bindMap(Object.class, Constants.PROPERTIES_MAP).put(Constants.CI_PROPERTY, "true");
+		binder.bindMap(String.class, Constants.PROPERTIES_MAP).put(Constants.CI_PROPERTY, "true");
 		ServerModule.contributeUserTypes(binder).add(MoneyType.class);
 		binder.bind(ObjectContextFactory.class).toInstance(new WillowDataContextFactory());
 
