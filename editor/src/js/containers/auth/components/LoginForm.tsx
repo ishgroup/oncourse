@@ -73,7 +73,7 @@ class LoginForm extends React.Component<any, any> {
 
   unsupportedMessage() {
     return (
-      <div className="browser-warning">Your browser is not supported. Please use another browser</div>
+      <div className="browser-warning">You are using an unsupported browser. Please download and use Firefox, Chrome or Edge to continue using the onCourse editor.</div>
     );
   }
 
