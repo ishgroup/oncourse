@@ -66,6 +66,7 @@ abstract class AbstractEditorTest {
 
             WebSiteVersion stagedVersion = context.newObject(WebSiteVersion)
             stagedVersion.setWebSite(webSite)
+            stagedVersion.siteVersion = 1L
             
             Date now = new Date()
             WebSiteLayout webSiteLayout = context.newObject(WebSiteLayout)

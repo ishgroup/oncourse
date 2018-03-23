@@ -48,6 +48,7 @@ public class WebNodeServiceTest  extends ServiceTest  {
 
 		WebSiteVersion siteVersion = context.newObject(WebSiteVersion.class);
 		siteVersion.setWebSite(site);
+        siteVersion.setSiteVersion(1L);
 
         WebNodeType page = context.newObject(WebNodeType.class);
         page.setName("page");
