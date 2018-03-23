@@ -25,6 +25,7 @@ public abstract class _WebSiteVersion extends WillowCayenneObject {
     private static final long serialVersionUID = 1L; 
 
     public static final String DEPLOYED_ON_PROPERTY = "deployedOn";
+    public static final String SITE_VERSION_PROPERTY = "siteVersion";
     public static final String CONTENTS_PROPERTY = "contents";
     public static final String DEPLOYED_BY_PROPERTY = "deployedBy";
     public static final String LAYOUTS_PROPERTY = "layouts";
@@ -37,6 +38,7 @@ public abstract class _WebSiteVersion extends WillowCayenneObject {
     public static final String ID_PK_COLUMN = "id";
 
     public static final Property<Date> DEPLOYED_ON = Property.create("deployedOn", Date.class);
+    public static final Property<Long> SITE_VERSION = Property.create("siteVersion", Long.class);
     public static final Property<List<WebContent>> CONTENTS = Property.create("contents", List.class);
     public static final Property<SystemUser> DEPLOYED_BY = Property.create("deployedBy", SystemUser.class);
     public static final Property<List<WebSiteLayout>> LAYOUTS = Property.create("layouts", List.class);
@@ -51,6 +53,13 @@ public abstract class _WebSiteVersion extends WillowCayenneObject {
     }
     public Date getDeployedOn() {
         return (Date)readProperty("deployedOn");
+    }
+
+    public void setSiteVersion(Long siteVersion) {
+        writeProperty("siteVersion", siteVersion);
+    }
+    public Long getSiteVersion() {
+        return (Long)readProperty("siteVersion");
     }
 
     public void addToContents(WebContent obj) {

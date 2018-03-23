@@ -4676,5 +4676,18 @@
 			ALTER TABLE WebNode ADD COLUMN suppressOnSitemap BIT NOT NULL DEFAULT 0;
 		</sql>
 	</changeSet>
+
+	<changeSet id="320" author="artyom" context="production" runOnChange="false" runAlways="false">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="WebSiteVersion" columnName="siteVersion"/>
+			</not>
+		</preConditions>
+		<sql>
+			ALTER TABLE WebSiteVersion ADD COLUMN siteVersion BIGINT NOT NULL DEFAULT 0;
+			UPDATE WebSiteVersion SET siteVersion = id;
+			ALTER TABLE WebSiteVersion ADD UNIQUE siteVersion_webSite_unique (siteVersion, webSiteId);
+		</sql>
+	</changeSet>
 	
 </databaseChangeLog>

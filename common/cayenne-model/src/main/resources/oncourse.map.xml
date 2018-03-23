@@ -1418,6 +1418,7 @@
 		<db-attribute name="deployedOn" type="TIMESTAMP"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="webSiteId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="siteVersion" type="BIGINT" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="WebTemplate">
 		<db-attribute name="content" type="LONGVARCHAR" isMandatory="true" length="16777215"/>
@@ -2664,6 +2665,7 @@
 	</obj-entity>
 	<obj-entity name="WebSiteVersion" className="ish.oncourse.model.WebSiteVersion" dbEntityName="WebSiteVersion" superClassName="WillowCayenneObject">
 		<obj-attribute name="deployedOn" type="java.util.Date" db-attribute-path="deployedOn"/>
+		<obj-attribute name="siteVersion" type="java.lang.Long" db-attribute-path="siteVersion"/>
 	</obj-entity>
 	<obj-entity name="WebTemplate" className="ish.oncourse.model.WebTemplate" dbEntityName="WebTemplate" superClassName="WillowCayenneObject">
 		<obj-attribute name="content" type="java.lang.String" db-attribute-path="content"/>
