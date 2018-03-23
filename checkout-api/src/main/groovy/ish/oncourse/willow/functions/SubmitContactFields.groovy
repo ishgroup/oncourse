@@ -104,9 +104,6 @@ class SubmitContactFields {
                 case CHOICE:
                 case PHONE:
                     result = f.value.trim()
-                    if (isDefaultCountry) {
-                        result = StringUtils.removePattern(result as String, "[^0-9]")
-                    }
                     break
                 case SUBURB:
                     if (StringUtils.trimToNull(f.value)) {
