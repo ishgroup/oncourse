@@ -17,8 +17,8 @@
 	<TagGroupRequirement id="1" tagId="1" collegeId="1" angelId="200" allowsMultipleTags="1" isRequired="0" created="2011-09-12 00:38:55.0" modified="2011-09-12 00:17:14.0" entityIdentifier="Course"/>
 
 
-	<WebSiteVersion id="1" webSiteId="1" deployedOn="2114-01-24 09:00:00"/>
-	<WebSiteVersion id="2" webSiteId="1"/>
+	<WebSiteVersion id="1" webSiteId="1" deployedOn="2114-01-24 09:00:00" siteVersion="1"/>
+	<WebSiteVersion id="2" webSiteId="1" siteVersion="2"/>
 	
 	<WebContent id="19940" content="{tags}"	content_textile="{tags}" name="Side nav"	created="2011-09-12 00:38:55.0" modified="2011-09-12 00:17:20.0" webSiteVersionId="1"/>
 

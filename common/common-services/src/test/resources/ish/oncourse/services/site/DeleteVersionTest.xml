@@ -25,7 +25,7 @@
 
 	<WebHostName name="mammoth.education.com.au" webSiteId="1" collegeId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
 	
-	<WebSiteVersion id="1" webSiteId="1"/>
+	<WebSiteVersion id="1" webSiteId="1" siteVersion="1"/>
 	
 	<WebSiteLayout id="1" layoutKey="default" webSiteVersionId="1"/>
 	<WebSiteLayout id="2" layoutKey="aboutUs" webSiteVersionId="1"/>
@@ -55,7 +55,7 @@
 	<WebURLAlias id="1" webNodeId="2" created="2015-11-20 19:23:57" modified="2015-11-20 19:23:57" urlPath="/about-us" isDefault="1" webSiteVersionId="1"/>
 	<WebURLAlias id="2" created="2015-11-20 19:23:57" modified="2015-11-20 19:23:57" urlPath="/some-path" isDefault="0" redirectTo="/about-us" webSiteVersionId="1"/>
 
-	<WebSiteVersion id="2" webSiteId="1" deployedOn="2010-02-03 09:18:09"/>
+	<WebSiteVersion id="2" webSiteId="1" deployedOn="2010-02-03 09:18:09" siteVersion="2"/>
 
 	<WebSiteLayout id="3" layoutKey="default" webSiteVersionId="2"/>
 	<WebSiteLayout id="4" layoutKey="aboutUs" webSiteVersionId="2"/>
@@ -85,7 +85,7 @@
 	<WebUrlAlias id="3" webNodeId="4" created="2015-11-20 19:23:57" modified="2015-11-20 19:23:57" urlPath="/about-us" isDefault="1" webSiteVersionId="2"/>
 	<WebUrlAlias id="4" created="2015-11-20 19:23:57" modified="2015-11-20 19:23:57" urlPath="/some-path" isDefault="0" redirectTo="/about-us" webSiteVersionId="2"/>
 
-	<WebSiteVersion id="3" webSiteId="1" deployedOn="2010-02-03 09:18:09"/>
+	<WebSiteVersion id="3" webSiteId="1" deployedOn="2010-02-03 09:18:09" siteVersion="3"/>
 
 	<WebSiteLayout id="5" layoutKey="default" webSiteVersionId="3"/>
 	<WebSiteLayout id="6" layoutKey="aboutUs" webSiteVersionId="3"/>

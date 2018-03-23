@@ -10,8 +10,8 @@
 	<WebHostName name="tasm.education.com.au" webSiteId="1" collegeId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
     <WebHostName name="scc.education.com.au" webSiteId="2" collegeId="2" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
 
-	<WebSiteVersion id="1" webSiteId="1"/>
-	<WebSiteVersion id="2" webSiteId="2"/>
+	<WebSiteVersion id="1" webSiteId="1" siteVersion="1"/>
+	<WebSiteVersion id="2" webSiteId="2" siteVersion="2"/>
 	
 	<WebSiteLayout id="200" layoutKey="default" webSiteVersionId="1"/>
 	<WebSiteLayout id="220" layoutKey="default" webSiteVersionId="2"/>
