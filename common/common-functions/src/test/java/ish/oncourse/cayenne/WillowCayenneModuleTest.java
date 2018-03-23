@@ -35,6 +35,6 @@ public class WillowCayenneModuleTest {
 		module.configure(binder);
 
 		Mockito.verify(binder, Mockito.times(1)).bindMap(String.class, Constants.PROPERTIES_MAP);
-		Mockito.verify(mapBuilder, Mockito.times(2)).put(Constants.CI_PROPERTY, "true");
+		Mockito.verify(mapBuilder, Mockito.times(1)).put(Constants.CI_PROPERTY, "true");
 	}
 }
