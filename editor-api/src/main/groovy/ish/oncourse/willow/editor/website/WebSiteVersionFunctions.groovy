@@ -33,9 +33,9 @@ class WebSiteVersionFunctions {
         ordering.orderedList(versions)
     }
 
-    static WebSiteVersion getVersionById(Long id, Request request, ObjectContext context) {
+    static WebSiteVersion getVersionBy(Long siteVersion, Request request, ObjectContext context) {
         WebSite webSite = WebSiteFunctions.getCurrentWebSite(request, context)
-        (ObjectSelect.query(WebSiteVersion).where(ExpressionFactory.matchDbExp(WebSiteVersion.ID_PK_COLUMN, id)) & WebSiteVersion.WEB_SITE.eq(webSite)).selectOne(context)
+        (ObjectSelect.query(WebSiteVersion).where(WebSiteVersion.SITE_VERSION.eq(siteVersion)) & WebSiteVersion.WEB_SITE.eq(webSite)).selectOne(context)
     }
 
 }

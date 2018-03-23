@@ -27,8 +27,6 @@ import org.apache.cayenne.ObjectContext
 import org.apache.commons.lang3.SerializationUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
-import org.apache.zookeeper.CreateMode
-import org.apache.zookeeper.ZooDefs
 import org.apache.zookeeper.ZooKeeper
 import org.apache.zookeeper.data.Stat
 import org.eclipse.jetty.server.Request
@@ -37,7 +35,6 @@ import javax.ws.rs.ClientErrorException
 import javax.ws.rs.InternalServerErrorException
 import javax.ws.rs.core.Response
 import java.time.Duration
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -81,23 +78,30 @@ class VersionApiServiceImpl implements VersionApi {
         }
 
         WebSiteVersion draftVersion = WebSiteVersionFunctions.getCurrentVersion(request, context)
-        WebSiteVersion beployedVersion = WebSiteVersionFunctions.getDeployedVersion(request, context)
+        WebSiteVersion deployedVersion = WebSiteVersionFunctions.getDeployedVersion(request, context)
 
-        versions.find { it.id  == draftVersion.id.toInteger()}.status = VersionStatus.DRAFT
-        versions.find { it.id  == beployedVersion.id.toInteger()}.status = VersionStatus.PUBLISHED
+        versions.find { it.id  == draftVersion.siteVersion.toInteger()}.status = VersionStatus.DRAFT
+        versions.find { it.id  == deployedVersion.siteVersion.toInteger()}.status = VersionStatus.PUBLISHED
         versions
     }
 
     void updateVersion(String id, Version diff) {
+
         Request request = requestService.request
         ObjectContext context = cayenneService.newContext()
+        
+        WebSite webSite = WebSiteFunctions.getCurrentWebSite(request, context)
+
+        if (!updateLock(webSite.siteKey)) {
+            throw new ClientErrorException(Response.status(423).build())
+        }
         
         VersionStatus status = diff.status
         if (!status) {
             throw createClientException('Version status is required')
         }
         
-        WebSiteVersion version = WebSiteVersionFunctions.getVersionById(id.toLong(), request, context)
+        WebSiteVersion version = WebSiteVersionFunctions.getVersionBy(id.toLong(), request, context)
         if (!version) {
             throw createClientException("There is no version for provided id:$id")
         }
@@ -125,10 +129,6 @@ class VersionApiServiceImpl implements VersionApi {
     private void publish() {
         Request request = requestService.request
         WebSite webSite = WebSiteFunctions.getCurrentWebSite(request, cayenneService.newContext())
-
-        if (!updateLock(webSite.siteKey)) {
-           throw new ClientErrorException(Response.status(423).build())
-        }
 
         executorService.submit {
 
@@ -189,7 +189,7 @@ class VersionApiServiceImpl implements VersionApi {
         ObjectContext context = cayenneService.newContext()
 
         WebSiteVersion draftVersion = WebSiteVersionFunctions.getCurrentVersion(request, context)
-        WebSiteVersion sourceVersion = WebSiteVersionFunctions.getVersionById(id.toLong(), request, context)
+        WebSiteVersion sourceVersion = WebSiteVersionFunctions.getVersionBy(id.toLong(), request, context)
 
         try {
             cayenneService.performTransaction {
