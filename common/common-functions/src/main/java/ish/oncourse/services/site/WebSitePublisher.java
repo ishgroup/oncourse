@@ -33,6 +33,8 @@ public class WebSitePublisher extends WebSiteVersionCopy {
         toVersion = context.newObject(WebSiteVersion.class);
         toVersion.setWebSite(fromVersion.getWebSite());
         toVersion.setDeployedOn(new Date());
+        toVersion.setSiteVersion(fromVersion.getSiteVersion());
+        fromVersion.setSiteVersion(GetNextSiteVersion.valueOf(context, fromVersion.getWebSite()).get());
         if (systemUser != null) {
             toVersion.setDeployedBy(context.localObject(systemUser));
         }

@@ -19,6 +19,8 @@ public class WebSiteVersionRevert extends WebSiteVersionCopy {
 
     public void revert() {
         DeleteVersion.valueOf(toVersion, context, true).delete();
+        toVersion.setSiteVersion(fromVersion.getSiteVersion());
+        fromVersion.setSiteVersion(GetNextSiteVersion.valueOf(context, fromVersion.getWebSite()).get());
         copyContent();
         context.commitChanges();
     }

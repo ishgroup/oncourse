@@ -99,6 +99,7 @@ public class CreateNewWebSite {
         //we create staged web site version
         webSiteVersion = context.newObject(WebSiteVersion.class);
         webSiteVersion.setWebSite(webSite);
+        webSiteVersion.setSiteVersion(1L);
     }
 
 
