@@ -57,7 +57,6 @@ public class CourseService implements ICourseService {
 
 	/**
 	 * @see ICourseService#getCourses(Integer, Integer)
-	 *
 	 * @deprecated use {@link GetCourses}
 	 */
 	@Deprecated
@@ -153,7 +152,9 @@ public class CourseService implements ICourseService {
 				qualifier = qualifier.andExp(ExpressionFactory.matchExp(searchProperty, value));
 			}
 		}
-		List<Course> courses = applyCourseCacheSettings(ObjectSelect.query(Course.class, qualifier)).select(cayenneService.sharedContext());
+		List<Course> courses = ObjectSelect.query(Course.class, qualifier)
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, Course.class.getSimpleName())
+				.select(cayenneService.sharedContext());
 		return courses.stream().findFirst().orElse(null);
 	}
 
@@ -162,13 +163,7 @@ public class CourseService implements ICourseService {
 				.where(Course.COLLEGE.eq(webSiteService.getCurrentCollege()))
 				.and(Course.IS_WEB_VISIBLE.isTrue())
 				.and(Course.CODE.eq(code))
-				.prefetch(Course.COURSE_CLASSES.joint())
-				.prefetch(Course.COURSE_CLASSES.dot(CourseClass.COLLEGE).joint())
-				.prefetch(Course.COURSE_CLASSES.dot(CourseClass.SESSIONS).joint())
-				.prefetch(Course.COURSE_CLASSES.dot(CourseClass.ROOM).joint())
-				.prefetch(Course.COURSE_CLASSES.dot(CourseClass.ROOM).dot(Room.SITE).joint())
-				.cacheStrategy(LOCAL_CACHE)
-				.cacheGroup(Course.class.getSimpleName())
+				.cacheStrategy(LOCAL_CACHE, Course.class.getSimpleName())
 				.selectOne(cayenneService.sharedContext());
 	}
 
@@ -186,16 +181,17 @@ public class CourseService implements ICourseService {
 
 		ObjectContext sharedContext = cayenneService.sharedContext();
 
-		Long count = ObjectSelect.query(Course.class).count().where(qualifier).cacheStrategy(QueryCacheStrategy.SHARED_CACHE, Course.class.getSimpleName()).selectOne(sharedContext);
+		Long count = ObjectSelect.query(Course.class).count().where(qualifier)
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, Course.class.getSimpleName())
+				.selectOne(sharedContext);
 
-		Course randomResult = null;
-		int attempt = 0;
+		int random = count > 0 ? new Random().nextInt(count.intValue()) : -1;
 
-		while (randomResult == null && attempt++ < 5) {
-			int random = new Random().nextInt(count.intValue());
-			randomResult = applyCourseCacheSettings(ObjectSelect.query(Course.class).where(qualifier).offset(random).limit(1)).selectFirst(sharedContext);
-		}
-		return randomResult;
+		return random > -1 ?
+				ObjectSelect.query(Course.class).where(qualifier)
+						.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, Course.class.getSimpleName())
+						.limit(1).offset(random)
+						.selectFirst(sharedContext) : null;
 	}
 
 	private Expression getTaggedWithQualifier(String taggedWith) {
@@ -296,15 +292,5 @@ public class CourseService implements ICourseService {
 		});
 	}
 
-	private static ObjectSelect<Course> applyCourseCacheSettings(ObjectSelect<Course> q) {
-		return q.cacheStrategy(LOCAL_CACHE, Course.class.getSimpleName())
-				.prefetch(Course.COURSE_CLASSES.joint())
-				.prefetch(Course.COURSE_CLASSES.dot(CourseClass.ROOM).joint())
-				.prefetch(Course.COURSE_CLASSES.dot(CourseClass.SESSIONS).joint())
-				.prefetch(Course.COURSE_CLASSES.dot(CourseClass.TUTOR_ROLES).joint())
-				.prefetch(Course.COURSE_CLASSES.dot(CourseClass.TUTOR_ROLES).dot(TutorRole.TUTOR).joint())
-				.prefetch(Course.COURSE_CLASSES.dot(CourseClass.TUTOR_ROLES).dot(TutorRole.TUTOR).dot(Tutor.CONTACT).joint())
-				.prefetch(Course.COURSE_CLASSES.dot(CourseClass.DISCOUNT_COURSE_CLASSES).joint());
-	}
 
 }
