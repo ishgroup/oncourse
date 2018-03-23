@@ -4686,7 +4686,6 @@
 		<sql>
 			ALTER TABLE WebSiteVersion ADD COLUMN siteVersion BIGINT NOT NULL DEFAULT 0;
 			UPDATE WebSiteVersion SET siteVersion = id;
-			ALTER TABLE WebSiteVersion ADD UNIQUE siteVersion_webSite_unique (siteVersion, webSiteId);
 		</sql>
 	</changeSet>
 	
