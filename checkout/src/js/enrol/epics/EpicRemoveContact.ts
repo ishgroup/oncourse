@@ -15,20 +15,27 @@ export const EpicRemoveContact: Epic<any, IshState> = (action$: ActionsObservabl
   return action$.ofType(EPIC_REMOVE_CONTACT).flatMap((action: IAction<Contact>) => {
     const state: IshState = store.getState();
     const result = [];
-    const {contactId} = action.payload as {contactId: string};
+    const {contactId} = action.payload as { contactId: string };
 
-    if (state.checkout.payerId === contactId) {
-      if (state.checkout.summary.result.length > 1) {
-        const nextPayerId = state.checkout.summary.result.find(id => id !== contactId);
-        result.push(setPayer(nextPayerId));
-      } else {
-        result.push(setPayer(null));
-        result.push(changePhase(Phase.AddContact));
-      }
+    // If contact is a payer and not last. Set payer to next available contact
+    if (state.checkout.payerId === contactId && state.checkout.summary.result.length > 1) {
+      const nextPayerId = state.checkout.summary.result.find(id => id !== contactId);
+      result.push(setPayer(nextPayerId));
     }
 
-    if (state.checkout.redeemVouchers && state.checkout.redeemVouchers.length) {
-      result.push(removeRedeemVoucher(state.checkout.redeemVouchers.find(v => v.payer && v.payer.id === contactId)));
+    // If contact is last. Set payer to null and redirect
+    if (state.checkout.summary.result.length <= 1) {
+      result.push(setPayer(null));
+      result.push(changePhase(Phase.AddContact));
+    }
+
+    // If contact have redeem vouchers. Remove redeem vouchers
+    const voucher = state.checkout.redeemVouchers &&
+      state.checkout.redeemVouchers.length &&
+      state.checkout.redeemVouchers.find(v => v.payer && v.payer.id === contactId);
+
+    if (voucher) {
+      result.push(removeRedeemVoucher(voucher));
     }
 
     result.push(removeContact(contactId));
