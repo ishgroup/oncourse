@@ -129,7 +129,7 @@ const FieldsReducer = (state: ContactFieldsState = new ContactFieldsState(), act
 
 const ContactsReducer = (
   state: ContactsState = normalize([], ContactsSchema),
-  action: IAction<ContactsState & {childId?: string, parentId?: string, childIds?: string[]} & {contactId: string}>,
+  action: IAction<ContactsState & {childId?: string, parentId?: string, childIds?: string[]} & {contactId: string, message?: string}>,
 ): ContactsState => {
 
   let ns: ContactsState;
@@ -174,6 +174,14 @@ const ContactsReducer = (
         delete ns.entities.contact[isParentFor.id].parent;
       }
 
+      return ns;
+    }
+
+    case Actions.SET_CONTACT_WARNING_MESSAGE: {
+      const {contactId, message} = action.payload;
+      ns = L.cloneDeep(state);
+
+      ns.entities.contact[contactId].warning = message;
       return ns;
     }
 

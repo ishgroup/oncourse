@@ -41,6 +41,11 @@ export class ContactInfo extends React.Component<Props, any> {
           }
 
         </div>
+
+        {contact.warning &&
+          <div className="student-warning">{contact.warning}</div>
+        }
+
         {memberships && memberships.map((item, i) => (
           <div className="membership" key={i}><i>{item.name}</i></div>
         ))}

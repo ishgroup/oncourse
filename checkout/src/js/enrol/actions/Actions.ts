@@ -47,6 +47,7 @@ export const TOGGLE_PAYNOW_VISIBILITY: string = "checkout/update/payNow/visibili
 
 export const EPIC_REMOVE_CONTACT: string = "epic/checkout/remove/contact";
 export const REMOVE_CONTACT: string = "checkout/remove/contact";
+export const SET_CONTACT_WARNING_MESSAGE: string = "checkout/contact/warning/message";
 
 export const addCode = (code: string): { type: string, payload: string } => {
   return {
@@ -200,3 +201,10 @@ export const removeContact = contactId => {
     payload: {contactId},
   };
 };
+
+// export const setContactWarningMessage = (contactId, message) => {
+//   return {
+//     type: SET_CONTACT_WARNING_MESSAGE,
+//     payload: {contactId, message},
+//   };
+// };

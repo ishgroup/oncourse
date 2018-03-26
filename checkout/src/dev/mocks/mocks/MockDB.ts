@@ -686,6 +686,22 @@ export class MockDB {
         key: "3000",
         value: {state: "NSW", suburb: "MELBOURNE", postcode: "3000"},
       },
+      {
+        key: "4000",
+        value: {state: "NSW", suburb: "MELBOURNE1", postcode: "4000"},
+      },
+      {
+        key: "5000",
+        value: {state: "NSW", suburb: "MELBOURNE2", postcode: "5000"},
+      },
+      {
+        key: "6000",
+        value: {state: "NSW", suburb: "MELBOURNE3", postcode: "6000"},
+      },
+      {
+        key: "7000",
+        value: {state: "NSW", suburb: "MELBOURNE4", postcode: "7000"},
+      },
     ];
   }
 

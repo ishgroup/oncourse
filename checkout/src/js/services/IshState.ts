@@ -54,6 +54,7 @@ export interface CourseClassCart extends CourseClass {
 
 export interface ContactState extends Contact {
   parent?: Contact;
+  warning?: string;
 }
 
 export interface ProductCart extends Product {

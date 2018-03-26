@@ -26,6 +26,8 @@ export const AddContactToSummary: Epic<any, IshState> = (action$: ActionsObserva
     const ifParentRequired = contact.parentRequired && !parent;
     const nextPage = state.checkout.phase === Phase.ComplementEditContact ? Phase.Payment : state.checkout.page;
     const isAddParentPhase = (type === Phase.AddParent || type === Phase.ChangeParent);
+    const wrongGuardianMessage = `This contact is under ${state.preferences.minAge} and can not be the nominated guardian. 
+    Add another contact who is over ${state.preferences.minAge}, or contact us to update the guardian details`;
 
     const allChilds = CheckoutService
       .getAllSingleChildIds(state.checkout)
@@ -45,24 +47,29 @@ export const AddContactToSummary: Epic<any, IshState> = (action$: ActionsObserva
 
     if (!contact.id) return [changePhase(state.checkout.page)];
 
-    // case: Set payer if it didn't exist
+    // Set payer if it didn't exist
     if (!CheckoutService.hasPayer(state.checkout)) {
       result.push(setPayer(payerId));
       result.push(addContactToCart(contact));
     }
 
-    // case: Force set payer from payment screen if payer age is valid or have parent
+    // Force set payer from payment screen if payer age is valid or have parent
     if ((type === Phase.AddContactAsPayer || type === Phase.AddContactAsCompany) && payerId) {
       result.push(setPayer(payerId));
     }
 
-    // case: Update parent for existing children or reassign new parent
+    // Update parent for existing children or reassign new parent
     if ((allChilds.length || forChild) && !contact.parentRequired && isAddParentPhase) {
       result.push(updateParentChilds(contact.id, forChild ? [forChild] : allChilds));
     }
 
-    // case: add new contact to summary and update parentRequired flag
-    result.push(addContact({...contact, parent: parent || null, parentRequired: (contact.parentRequired && !parent)}));
+    // Add new contact to summary and update parentRequired flag
+    result.push(addContact({
+      ...contact,
+      parent: parent || null,
+      parentRequired: contact.parentRequired,
+      warning: contact.parentRequired && isAddParentPhase && wrongGuardianMessage,
+    }));
 
     result.push(getContactNodeFromBackend(contact, uncheckContactItems));
     result.push(updateContactAddProcess({}, null, null));
