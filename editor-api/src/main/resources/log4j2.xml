@@ -19,11 +19,26 @@
     <Loggers>
         <Root level="warn">
             <AppenderRef ref="FILE" level="warn"/>
+            <AppenderRef ref="FILE_ERROR" level="error"/>
         </Root>
         <Logger name="ish.oncourse.util.log.LogAppInfo" level="info">
             <AppenderRef ref="FILE"/>
         </Logger>
+        <Logger name="ish.oncourse.services.site.ScriptExecutor" level="info">
+            <AppenderRef ref="FILE"/>
+        </Logger>
+        <Logger name="ish.oncourse.willow.editor.webdav.RunEditScript" level="info">
+            <AppenderRef ref="FILE"/>
+        </Logger>
         <Logger name="io.bootique.jetty.server.ServerLifecycleLogger" level="info">
+            <AppenderRef ref="FILE"/>
+        </Logger>
+        <Logger name="io.milton.http.fs.FsResource" level="error">
+            <AppenderRef ref="FILE_ERROR"/>
+            <AppenderRef ref="FILE"/>
+        </Logger>
+        <Logger name="io.milton.http.HandlerHelper" level="error">
+            <AppenderRef ref="FILE_ERROR"/>
             <AppenderRef ref="FILE"/>
         </Logger>
     </Loggers>

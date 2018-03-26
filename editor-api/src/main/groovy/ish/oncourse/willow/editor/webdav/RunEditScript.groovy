@@ -49,7 +49,7 @@ class RunEditScript {
         ProcessBuilder processBuilder = new ProcessBuilder(scriptCommand)
         InputStream out
         try {
-            logger.debug("Starting script '{}' for file '{}'", scriptPath, filePath)
+            logger.info("Starting script '{}' for file '{}'", scriptPath, filePath)
             long time = System.currentTimeMillis()
             final Process process = processBuilder.start()
             out = process.getInputStream()
