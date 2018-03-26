@@ -48,7 +48,7 @@ public class CourseDetails extends ISHCommon {
 	}
 
 	public CourseItemModel getCourseItemModel() {
-		return CourseItemModel.valueOf(course, searchParams, courseService, courseClassService);
+		return CourseItemModel.valueOf(course, searchParams);
 	}
 
 	public String getCanonicalLinkPath() {

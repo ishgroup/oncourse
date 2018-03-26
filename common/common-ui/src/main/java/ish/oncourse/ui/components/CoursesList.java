@@ -63,9 +63,8 @@ public class CoursesList extends ISHCommon {
 		}
 	}
 
-    public CourseItemModel getCourseItemModel()
-    {
-        return CourseItemModel.valueOf(course, searchParams, courseService, courseClassService);
+    public CourseItemModel getCourseItemModel() {
+        return CourseItemModel.valueOf(course, searchParams);
     }
 
 	@SuppressWarnings("unchecked")
