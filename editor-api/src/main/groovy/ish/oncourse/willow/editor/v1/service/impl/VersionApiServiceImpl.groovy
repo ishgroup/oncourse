@@ -2,7 +2,7 @@ package ish.oncourse.willow.editor.v1.service.impl
 
 import com.google.inject.Inject
 import ish.oncourse.configuration.Configuration
-import ish.oncourse.configuration.InitZKRootNode
+import ish.oncourse.model.SystemUser
 import ish.oncourse.model.WebSite
 import ish.oncourse.model.WebSiteVersion
 import ish.oncourse.services.persistence.ICayenneService
@@ -10,7 +10,6 @@ import ish.oncourse.services.site.GetDeployedVersion
 import ish.oncourse.services.site.WebSitePublisher
 import ish.oncourse.services.site.WebSiteVersionRevert
 import ish.oncourse.services.site.WebSiteVersionsDelete
-import ish.oncourse.willow.editor.EditorProperty
 import ish.oncourse.willow.editor.rest.WebVersionToVersion
 import ish.oncourse.willow.editor.services.ZKProvider
 import ish.oncourse.willow.editor.v1.model.UnexpectedError
@@ -55,6 +54,8 @@ class VersionApiServiceImpl implements VersionApi {
     private UserService userService
     private ZKProvider zkProvider
     private ExecutorService executorService
+    private String deployScriptPath
+
 
     @Inject
     PublishApiServiceImpl(ICayenneService cayenneService, 
@@ -65,7 +66,8 @@ class VersionApiServiceImpl implements VersionApi {
         this.requestService = requestService
         this.userService = userService
         this.zkProvider = provider
-        executorService = Executors.newCachedThreadPool()
+        this.executorService = Executors.newCachedThreadPool()
+        this.deployScriptPath = Configuration.getValue(DEPLOY_SCRIPT_PATH)
     }
 
     List<Version> getVersions() {
@@ -127,30 +129,29 @@ class VersionApiServiceImpl implements VersionApi {
     }
 
     private void publish() {
+        
         Request request = requestService.request
         WebSite webSite = WebSiteFunctions.getCurrentWebSite(request, cayenneService.newContext())
+        SystemUser user = userService.systemUser
+        String userName = "${userService.userFirstName}  ${userService.userLastName}"
+        String userEmail = userService.userEmail
+        String serverName = request.serverName
+        WebSiteVersion draftVersion = WebSiteVersionFunctions.getCurrentVersion(request, cayenneService.newContext())
 
+        
         executorService.submit {
-
-            WebSiteVersion draftVersion = WebSiteVersionFunctions.getCurrentVersion(request, cayenneService.newContext())
-
-            logger.warn("Start to publish: ${request.serverName}, draft version id: ${draftVersion.id}," +
-                    " started by: ${userService.userFirstName}  ${userService.userLastName}")
-
+            logger.warn("Start to publish: $serverName, draft version id: ${draftVersion.id}, started by: $userName")
             Long time = System.currentTimeMillis()
-            WebSitePublisher.valueOf(Configuration.getValue(DEPLOY_SCRIPT_PATH), draftVersion,
-                    userService.systemUser,
-                    userService.userEmail,
-                    cayenneService.newContext()).publish()
+            
+            WebSitePublisher.valueOf(deployScriptPath, draftVersion, user, userEmail, cayenneService.newContext()).publish()
 
             //refresh draft version after publishing
-            draftVersion = WebSiteVersionFunctions.getCurrentVersion(request, cayenneService.newContext())
+            WebSiteVersion freshDraft = WebSiteVersionFunctions.getCurrentVersion(request, cayenneService.newContext())
 
             WebSiteVersion newVersion = GetDeployedVersion.valueOf(cayenneService.newContext(), webSite, false).get()
-            WebSiteVersionsDelete.valueOf(webSite, draftVersion, newVersion,
-                    cayenneService.newContext()).delete()
+            WebSiteVersionsDelete.valueOf(webSite, freshDraft, newVersion, cayenneService.newContext()).delete()
 
-            logger.warn("Site publishing finished successfully:${request.serverName} from draft version id: ${draftVersion.id}," +
+            logger.warn("Site publishing finished successfully: $serverName from draft version id: ${freshDraft.id}," +
                     " new version id:${newVersion.id}, took: ${ System.currentTimeMillis() - time} milliseconds")
         }
  
