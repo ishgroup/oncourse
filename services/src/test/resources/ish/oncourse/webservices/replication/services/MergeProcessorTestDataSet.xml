@@ -136,6 +136,16 @@
 	<TaggableTag id="2" collegeId="1" tagId="1" taggableId="2"/>
 	<TaggableTag id="3" collegeId="1" tagId="2" taggableId="3"/>
 
+	<TaggableTag id="4" collegeId="1" tagId="1" taggableId="1"/>
+	<TaggableTag id="5" collegeId="1" tagId="1" taggableId="1"/>
+
+	<TaggableTag id="6" collegeId="1" tagId="1" taggableId="1"/>
+	<TaggableTag id="7" collegeId="1" tagId="1" taggableId="2"/>
+
+	<TaggableTag id="8" collegeId="1" tagId="2" taggableId="3"/>
+	<TaggableTag id="9" collegeId="1" tagId="2" taggableId="3"/>
+
+
 	<CustomFieldType id="1" angelId="1" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
 					 name="test" defaultValue="test" isMandatory="0" entityName="Contact"/>
 

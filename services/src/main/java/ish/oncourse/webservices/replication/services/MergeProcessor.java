@@ -14,6 +14,7 @@ import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SelectById;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class MergeProcessor {
 
@@ -63,7 +64,7 @@ public class MergeProcessor {
 		
 		if (contactToDelete == null) {
 			return contactDuplicate;
-		} else if (!toDelete(CONTACT_IDENTIFIER, contactToDelete.getId(), contactToDelete.getAngelId())) {
+		} else if (!hasDeleteStub(CONTACT_IDENTIFIER, contactToDelete.getId(), contactToDelete.getAngelId())) {
 			throw new IllegalStateException(String.format("Contact to delete  does not present in MERGE transactionGroup, ContactDuplicate collegeId: %d, angelId:%d, willowId:%d.", contactDuplicate.getCollege().getId(), contactDuplicate.getAngelId(), contactDuplicate.getId()));
 		}
 		
@@ -199,7 +200,7 @@ public class MergeProcessor {
 		return stubList;
 	}
 	
-	private boolean toDelete (String entityIdentifier, Long willowId, Long angelId) {
+	private boolean hasDeleteStub(String entityIdentifier, Long willowId, Long angelId) {
 		for (GenericReplicationStub stub :  getStubBy(entityIdentifier, true)) {
 			if (willowId.equals(stub.getWillowId()) || (angelId != null && angelId.equals(stub.getAngelId()))) {
 				return true;
@@ -214,7 +215,7 @@ public class MergeProcessor {
 				.where(BinaryInfoRelation.ENTITY_IDENTIFIER.eq(entityIdentifier)).and(BinaryInfoRelation.ENTITY_WILLOW_ID.eq(toDeleteWillowId)).select(context);
 
 		for (BinaryInfoRelation documentRelation : new ArrayList<>(documentRelations)) {
-			if (toDelete(entityIdentifier + "AttachmentRelation", documentRelation.getId(), documentRelation.getAngelId())) {
+			if (hasDeleteStub(entityIdentifier + "AttachmentRelation", documentRelation.getId(), documentRelation.getAngelId())) {
 				context.deleteObject(documentRelation);
 			} else {
 				List<BinaryInfoRelation> existingRelations = ObjectSelect.query(BinaryInfoRelation.class)
@@ -235,7 +236,7 @@ public class MergeProcessor {
 		List<ContactRelation> toContactRelations = contactToDelete.getToContacts();
 		
 		for (ContactRelation toContactRelation : new ArrayList<>(toContactRelations)) {
-			if (toDelete("ContactRelation", toContactRelation.getId(), toContactRelation.getAngelId())) {
+			if (hasDeleteStub("ContactRelation", toContactRelation.getId(), toContactRelation.getAngelId())) {
 				context.deleteObject(toContactRelation);
 			} else {
 
@@ -253,7 +254,7 @@ public class MergeProcessor {
 		List<ContactRelation> fromContactRelations = contactToDelete.getFromContacts();
 
 		for (ContactRelation fromContactRelation : new ArrayList<>(fromContactRelations)) {
-			if (toDelete("ContactRelation", fromContactRelation.getId(), fromContactRelation.getAngelId())) {
+			if (hasDeleteStub("ContactRelation", fromContactRelation.getId(), fromContactRelation.getAngelId())) {
 				context.deleteObject(fromContactRelation);
 			} else {
 				List<ContactRelation> existingRelations = ContactRelation.FROM_CONTACT.eq(fromContactRelation.getFromContact())
@@ -269,34 +270,88 @@ public class MergeProcessor {
 	}
 
 	private void mergeTagRelations() {
-		List<TaggableTag> taggables = ObjectSelect.query(TaggableTag.class)
-				.where(TaggableTag.TAGGABLE.dot(Taggable.ENTITY_IDENTIFIER).eq(CONTACT_IDENTIFIER)).and(TaggableTag.TAGGABLE.dot(Taggable.ENTITY_WILLOW_ID).eq(contactToDelete.getId())).select(context);
-		for (TaggableTag taggableTag : new ArrayList<>(taggables)) {
-			if (toDelete("ContactTagRelation", taggableTag.getTaggable().getId(), taggableTag.getTaggable().getAngelId())) {
-				context.deleteObject(taggableTag.getTaggable());
-				context.deleteObject(taggableTag);
+
+		List<TaggableTag> moveQueue = new ArrayList<>();
+		List<TaggableTag> removeQueue = new ArrayList<>();
+
+		List<TaggableTag> taggableTags = getTagRelationsFor(context, contactToDelete);
+
+		for (TaggableTag taggableTag : new ArrayList<>(taggableTags)) {
+			if (hasDeleteStub("ContactTagRelation", taggableTag.getTaggable().getId(), taggableTag.getTaggable().getAngelId())) {
+				removeQueue.add(taggableTag);
 			} else {
-				List<TaggableTag> existingTaggables = ObjectSelect.query(TaggableTag.class)
-						.where(TaggableTag.TAGGABLE.dot(Taggable.ENTITY_IDENTIFIER).eq(CONTACT_IDENTIFIER))
-						.and(TaggableTag.TAGGABLE.dot(Taggable.ENTITY_WILLOW_ID).eq(contactToUpdate.getId()))
-						.and(TaggableTag.TAG.eq(taggableTag.getTag())).select(context);
-				if (existingTaggables.size() > 0) {
-					context.deleteObject(taggableTag.getTaggable());
-					context.deleteObject(taggableTag);
+				if (tagAlreadyUsedFor(context, contactToUpdate, taggableTag.getTag())) {
+					removeQueue.add(taggableTag);
 				} else {
-					taggableTag.getTaggable().setEntityWillowId(contactToUpdate.getId());
-					taggableTag.getTaggable().setEntityAngelId(contactToUpdate.getAngelId());
+					if (!containsRelation(moveQueue, taggableTag)) {
+						moveQueue.add(taggableTag);
+					} else {
+						removeQueue.add(taggableTag);
+					}
 				}
 			}
 		}
+
+		moveRelationsTo(moveQueue, contactToUpdate);
+		removeRelations(context, removeQueue);
+
+		dedupeTagRelationsFor(context, contactToUpdate);
 	}
-	
+
+	private List<TaggableTag> getTagRelationsFor(ObjectContext context, Queueable entity) {
+		return new ArrayList(ObjectSelect.query(TaggableTag.class)
+				.where(TaggableTag.TAGGABLE.dot(Taggable.ENTITY_IDENTIFIER).eq(entity.getClass().getSimpleName())
+						.andExp(TaggableTag.TAGGABLE.dot(Taggable.ENTITY_WILLOW_ID).eq(entity.getId())))
+				.select(context));
+	}
+
+	private void removeRelations(ObjectContext context, List<TaggableTag> relations) {
+		if (relations.isEmpty()) {
+			List<Taggable> taggables = relations.stream().map(t -> t.getTaggable()).collect(Collectors.toList());
+
+			context.deleteObjects(relations);
+			context.deleteObjects(taggables);
+		}
+	}
+
+	private boolean tagAlreadyUsedFor(ObjectContext context, Queueable entity, Tag t) {
+		return !ObjectSelect.query(TaggableTag.class)
+				.where(TaggableTag.TAGGABLE.dot(Taggable.ENTITY_IDENTIFIER).eq(entity.getClass().getSimpleName()))
+				.and(TaggableTag.TAGGABLE.dot(Taggable.ENTITY_WILLOW_ID).eq(entity.getId()))
+				.and(TaggableTag.TAG.eq(t))
+				.select(context)
+				.isEmpty();
+	}
+
+	private void moveRelationsTo(List<TaggableTag> taggableTag, Queueable entity) {
+		taggableTag.forEach(t -> {
+			t.getTaggable().setEntityWillowId(entity.getId());
+			t.getTaggable().setAngelId(entity.getAngelId());
+		});
+	}
+
+	private boolean containsRelation(List<TaggableTag> list, TaggableTag item) {
+		return list.stream()
+				.filter(t -> t.getTaggable().getId() == item.getTaggable().getId() &&
+						t.getTag().getId() == item.getTag().getId())
+				.count() > 0;
+	}
+
+	private void dedupeTagRelationsFor(ObjectContext context, Queueable entity) {
+		List<TaggableTag> taggableTags = ObjectSelect.query(TaggableTag.class)
+				.where(TaggableTag.TAGGABLE.dot(Taggable.ENTITY_IDENTIFIER).eq(entity.getClass().getSimpleName())
+						.andExp(TaggableTag.TAGGABLE.dot(Taggable.ENTITY_WILLOW_ID).eq(entity.getId())))
+				.select(context);
+
+		context.deleteObjects(taggableTags.stream().skip(1).collect(Collectors.toList()));
+	}
+
 	private void mergeAssessmentClassTutors(Tutor tutorToUpdate, Tutor tutorToDelete) {
 		List<AssessmentClassTutor> tutorAssessmentsUpdate = new ArrayList<>(tutorToUpdate.getAssessmentClassTutors());
 		List<AssessmentClassTutor> tutorAssessmentsDelete = new ArrayList<>(tutorToDelete.getAssessmentClassTutors());
 		
 		for (AssessmentClassTutor tutorAssessmentDelete : tutorAssessmentsDelete) {
-			if (toDelete("AssessmentClassTutor", tutorAssessmentDelete.getId(), tutorAssessmentDelete.getAngelId())) {
+			if (hasDeleteStub("AssessmentClassTutor", tutorAssessmentDelete.getId(), tutorAssessmentDelete.getAngelId())) {
 				context.deleteObject(tutorAssessmentDelete);
 			} else {
 				for (AssessmentClassTutor tutorAssessmentUpdate : tutorAssessmentsUpdate) {
@@ -316,7 +371,7 @@ public class MergeProcessor {
 		List<ContactCustomField> contactToUpdateCustomFields = new ArrayList<>(contactToUpdate.getCustomFields());
 		List<ContactCustomField> contactToDeleteCustomFields = new ArrayList<>(contactToDelete.getCustomFields());
 		for (CustomField contactToDeleteCustomField : contactToDeleteCustomFields) {
-			if (toDelete("CustomField", contactToDeleteCustomField.getId(), contactToDeleteCustomField.getAngelId())) {
+			if (hasDeleteStub("CustomField", contactToDeleteCustomField.getId(), contactToDeleteCustomField.getAngelId())) {
 				context.deleteObject(contactToDeleteCustomField);
 			} else {
 				for (CustomField customFieldTypeFirstContact : contactToUpdateCustomFields) {

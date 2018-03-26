@@ -175,24 +175,24 @@ public class MergeProcessorTest extends ServiceTest {
 		assertEquals(3l, docRelation2.getId().longValue());
 
 
-		TaggableTag tagRelation1 =  ObjectSelect.query(TaggableTag.class)
+		List<TaggableTag> tagRelation1 =  ObjectSelect.query(TaggableTag.class)
 				.where(TaggableTag.TAGGABLE.dot(Taggable.ENTITY_IDENTIFIER).eq("Contact"))
 				.where(TaggableTag.TAGGABLE.dot(Taggable.ENTITY_WILLOW_ID).eq(contactToUpdate.getId()))
-				.and(TaggableTag.TAG.dot(Tag.ANGEL_ID).eq(1l)).selectOne(context);
+				.and(TaggableTag.TAG.dot(Tag.ANGEL_ID).eq(1l)).select(context);
 		
-		assertNotNull(tagRelation1);
-		assertEquals(1l, tagRelation1.getId().longValue());
-		assertEquals(1l ,tagRelation1.getTaggable().getId().longValue());
+		assertTrue(!tagRelation1.isEmpty());
+		assertEquals(1l, tagRelation1.get(0).getId().longValue());
+		assertEquals(1l ,tagRelation1.get(0).getTaggable().getId().longValue());
 
 
-		TaggableTag tagRelation2 =  ObjectSelect.query(TaggableTag.class)
+		List<TaggableTag> tagRelation2 =  ObjectSelect.query(TaggableTag.class)
 				.where(TaggableTag.TAGGABLE.dot(Taggable.ENTITY_IDENTIFIER).eq("Contact"))
 				.where(TaggableTag.TAGGABLE.dot(Taggable.ENTITY_WILLOW_ID).eq(contactToUpdate.getId()))
-				.and(TaggableTag.TAG.dot(Tag.ANGEL_ID).eq(2l)).selectOne(context);
+				.and(TaggableTag.TAG.dot(Tag.ANGEL_ID).eq(2l)).select(context);
 
-		assertNotNull(tagRelation2);
-		assertEquals(3l ,tagRelation2.getId().longValue());
-		assertEquals(3l, tagRelation2.getTaggable().getId().longValue());
+		assertTrue(!tagRelation2.isEmpty());
+		assertEquals(3l ,tagRelation2.get(0).getId().longValue());
+		assertEquals(3l, tagRelation2.get(0).getTaggable().getId().longValue());
 		
 		List<AssessmentClassTutor> assessmentClassTutor = ObjectSelect.query(AssessmentClassTutor.class).select(context);
 		assertEquals(2, assessmentClassTutor.size());
