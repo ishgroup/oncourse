@@ -535,6 +535,8 @@ paths:
       responses:
         '200':
           description: Version changed successfully
+        '423': |
+          Version can not been modified at this time - locked by other background task. Please, wait for a few minutes and try again. 
         default:
           description: Unexpected error
           schema:
