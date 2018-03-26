@@ -43,10 +43,9 @@ public class CombineSvg extends DefaultTask {
                     result.append(imageNode)
                 }
             }
-
-            new File(outputDirectoryName).mkdir()
-            new File(outputDirectoryName + '/img').mkdir()
-            def outputFileName = outputDirectoryName + "/img/" + projectName + ".svg"
+            
+            new File(outputDirectoryName + '/img').mkdirs()
+            def outputFileName = "${outputDirectoryName}/img/${projectName}.svg"
             def outputFile = new File(outputFileName)
             outputFile.createNewFile()
 
