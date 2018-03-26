@@ -1,5 +1,5 @@
 apply plugin: 'com.eriwen.gradle.js'
-apply plugin: 'com.github.robfletcher.compass'
+apply plugin: 'io.freefair.jsass'
 
 ext {
     staticSrcPath = "src/main/static"
@@ -27,17 +27,14 @@ gzipJs {
 }
 
 //css combining
-compass {
-    cssDir = file("$staticBuildPath/css")
-    sassDir = file("$staticSrcPath/src")
-    fontsDir = file("$staticSrcPath/fonts")
-    noLineComments = true
-    relativeAssets = true
-    debugInfo = false
-    environment = 'production'
+compileSass {
+    cssPath "../../resource-assemble/static/css"
+    sourceDir = file("$staticSrcPath/src")
+    sourceMapEnabled = false
+    sourceComments = false
 }
 
-task gzipCss(dependsOn: compassCompile) {
+task gzipCss(dependsOn: compileSass) {
     String srcPath = "$staticBuildPath/css/${project.name}.css"
     inputs.file srcPath
     outputs.file "${srcPath}.gz"
@@ -83,7 +80,6 @@ processResources.inputs.files gzipCss
 processResources.inputs.files combineSvg
 
 clean.dependsOn cleanMinifyJs
-clean.dependsOn cleanCompassCompile
 clean.dependsOn cleanCombineSvg
 
 jar {

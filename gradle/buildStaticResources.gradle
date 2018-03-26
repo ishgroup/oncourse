@@ -5,7 +5,7 @@ allprojects.findAll { it.name in projectsWithStaticResources }.each { p ->
         //common tasks for combining java script and css
         apply plugin: 'war'
         apply plugin: 'com.eriwen.gradle.js'
-        apply plugin: 'com.github.robfletcher.compass'
+        apply plugin: 'io.freefair.jsass'
 
 
         javascript.source {
@@ -28,17 +28,14 @@ allprojects.findAll { it.name in projectsWithStaticResources }.each { p ->
         }
 
         //css combining
-        compass {
-            cssDir = file("${buildDir}/resource-assemble/css")
-            sassDir = file('src/main/static/src')
-            fontsDir = file('src/main/static/fonts')
-            noLineComments = true
-            relativeAssets = true
-            debugInfo = false
-            environment = 'production'
+        compileSass {
+            cssPath "../../resource-assemble/static/css"
+            sourceDir = file("$staticSrcPath/src")
+            sourceMapEnabled = false
+            sourceComments = false
         }
-
-        task gzipCss(dependsOn: compassCompile) {
+        
+        task gzipCss(dependsOn: compileSass) {
             String srcPath = "${buildDir}/resource-assemble/css/${project.name}.css"
             inputs.file srcPath
             outputs.file "${srcPath}.gz"
@@ -81,7 +78,6 @@ allprojects.findAll { it.name in projectsWithStaticResources }.each { p ->
         processResources.inputs.files combineSvg
 
         clean.dependsOn cleanMinifyJs
-        clean.dependsOn cleanCompassCompile
         clean.dependsOn cleanCombineSvg
     }
 }
