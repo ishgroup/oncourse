@@ -19,7 +19,7 @@ const KEYS = {
 };
 
 const _common = (dirname, options) => {
-  const mode = options.NODE_ENV || 'development';
+  const mode = (options.NODE_ENV && options.NODE_ENV !== 'mock') ? options.NODE_ENV : 'development';
 
   let _main = {
     entry: [options[KEYS.ENTRY]],
