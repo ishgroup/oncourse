@@ -537,7 +537,7 @@ paths:
           description: Version changed successfully
         '423':
           description: |
-            Version can not been modified at this time - locked by other background task. Please, wait for a few minutes and try again. 
+           Version can not be modified at this time - locked by another background task. Please wait for a few minutes and try again. 
         default:
           description: Unexpected error
           schema:
