@@ -13,6 +13,10 @@ class WebSiteVersionFunctions {
 
     static WebSiteVersion getCurrentVersion(Request request, ObjectContext context) {
         WebSite webSite = WebSiteFunctions.getCurrentWebSite(request, context)
+        getCurrentVersion(webSite,context)
+    }
+
+    static WebSiteVersion getCurrentVersion(WebSite webSite, ObjectContext context) {
         (ObjectSelect.query(WebSiteVersion)
                 .where(WebSiteVersion.WEB_SITE.eq(webSite)) & WebSiteVersion.DEPLOYED_ON.isNull()).
                 selectOne(context)

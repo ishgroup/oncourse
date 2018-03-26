@@ -140,19 +140,24 @@ class VersionApiServiceImpl implements VersionApi {
 
         
         executorService.submit {
-            logger.warn("Start to publish: $serverName, draft version id: ${draftVersion.id}, started by: $userName")
-            Long time = System.currentTimeMillis()
-            
-            WebSitePublisher.valueOf(deployScriptPath, draftVersion, user, userEmail, cayenneService.newContext()).publish()
+            try {
+                logger.warn("Start to publish: $serverName, draft version id: ${draftVersion.id}, started by: $userName")
+                Long time = System.currentTimeMillis()
 
-            //refresh draft version after publishing
-            WebSiteVersion freshDraft = WebSiteVersionFunctions.getCurrentVersion(request, cayenneService.newContext())
+                WebSitePublisher.valueOf(deployScriptPath, draftVersion, user, userEmail, cayenneService.newContext()).publish()
 
-            WebSiteVersion newVersion = GetDeployedVersion.valueOf(cayenneService.newContext(), webSite, false).get()
-            WebSiteVersionsDelete.valueOf(webSite, freshDraft, newVersion, cayenneService.newContext()).delete()
+                //refresh draft version after publishing
+                WebSiteVersion freshDraft = WebSiteVersionFunctions.getCurrentVersion(webSite, cayenneService.newContext())
 
-            logger.warn("Site publishing finished successfully: $serverName from draft version id: ${freshDraft.id}," +
-                    " new version id:${newVersion.id}, took: ${ System.currentTimeMillis() - time} milliseconds")
+                WebSiteVersion newVersion = GetDeployedVersion.valueOf(cayenneService.newContext(), webSite, false).get()
+                WebSiteVersionsDelete.valueOf(webSite, freshDraft, newVersion, cayenneService.newContext()).delete()
+
+                logger.warn("Site publishing finished successfully: $serverName from draft version id: ${freshDraft.id}," +
+                        " new version id:${newVersion.id}, took: ${System.currentTimeMillis() - time} milliseconds")
+            } catch (Exception e) {
+                logger.error("Something unexpected has happened, publish was not completed. See error message for details")
+                logger.catching(e)
+            }
         }
  
     }
