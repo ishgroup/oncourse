@@ -41,5 +41,9 @@
             <AppenderRef ref="FILE_ERROR"/>
             <AppenderRef ref="FILE"/>
         </Logger>
+        <Logger name="io.milton.http.webdav.PropertySourcePatchSetter" level="error">
+            <AppenderRef ref="FILE_ERROR"/>
+            <AppenderRef ref="FILE"/>
+        </Logger>
     </Loggers>
 </Configuration>
