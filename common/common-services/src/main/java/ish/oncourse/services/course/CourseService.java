@@ -1,8 +1,8 @@
 package ish.oncourse.services.course;
 
-import ish.common.types.EntityRelationType;
-import ish.oncourse.model.*;
-import ish.oncourse.model.auto._CourseProductRelation;
+import ish.oncourse.model.Course;
+import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Tag;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.courseclass.LoadByIds;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -26,14 +26,8 @@ import org.apache.solr.common.SolrDocumentList;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
-import static ish.oncourse.model.auto._Course.*;
-import static ish.oncourse.model.auto._CourseCourseRelation.FROM_COURSE;
-import static ish.oncourse.model.auto._CourseCourseRelation.TO_COURSE;
-import static ish.oncourse.model.auto._EntityRelation.FROM_ENTITY_IDENTIFIER;
-import static ish.oncourse.model.auto._EntityRelation.TO_ENTITY_IDENTIFIER;
-import static java.lang.Boolean.TRUE;
+import static ish.oncourse.model.auto._Course.IS_WEB_VISIBLE;
 import static org.apache.cayenne.query.QueryCacheStrategy.LOCAL_CACHE;
 
 public class CourseService implements ICourseService {
@@ -211,33 +205,6 @@ public class CourseService implements ICourseService {
 				.where(getSiteQualifier())
 				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, Course.class.getSimpleName())
 				.selectOne(cayenneService.sharedContext());
-	}
-
-	public List<Product> getRelatedProductsFor(Course course) {
-		ObjectContext context = cayenneService.sharedContext();
-
-		return ObjectSelect.query(CourseProductRelation.class)
-				.where(CourseProductRelation.COURSE.eq(course))
-				.and(CourseProductRelation.PRODUCT.dot(Product.IS_WEB_VISIBLE).eq(TRUE))
-				.cacheStrategy(LOCAL_CACHE, CourseProductRelation.class.getSimpleName()).select(context)
-				.stream()
-				.map(_CourseProductRelation::getProduct).collect(Collectors.toList());
-	}
-
-	public List<Course> getRelatedCoursesFor(Course course) {
-		ObjectContext context = cayenneService.sharedContext();
-		List<Course> courses = ObjectSelect.query(Course.class).where(
-				TO_COURSES.outer().dot(FROM_COURSE).eq(course)
-						.andExp(TO_COURSES.outer().dot(FROM_ENTITY_IDENTIFIER).eq(EntityRelationType.COURSE))
-						.andExp(TO_COURSES.outer().dot(TO_ENTITY_IDENTIFIER).eq(EntityRelationType.COURSE)))
-				.or(FROM_COURSES.outer().dot(TO_COURSE).eq(course)
-						.andExp(FROM_COURSES.outer().dot(FROM_ENTITY_IDENTIFIER).eq(EntityRelationType.COURSE))
-						.andExp(FROM_COURSES.outer().dot(TO_ENTITY_IDENTIFIER).eq(EntityRelationType.COURSE)))
-				.and(IS_WEB_VISIBLE.eq(TRUE))
-				.cacheStrategy(LOCAL_CACHE, CourseCourseRelation.class.getSimpleName())
-				.orderBy(Course.NAME.asc())
-				.select(context);
-		return courses;
 	}
 
 	private void sortByStartDate(final Boolean isAscending, List<Course> result) {

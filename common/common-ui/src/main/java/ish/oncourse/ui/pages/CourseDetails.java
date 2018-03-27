@@ -39,16 +39,19 @@ public class CourseDetails extends ISHCommon {
 
 	private SearchParams searchParams;
 
+	private CourseItemModel courseItemModel;
+
 
 	void beginRender() {
 		SearchParamsParser paramsParser = SearchParamsParser.valueOf(request, searchService, tagService, webSiteService.getTimezone());
 		paramsParser.parse();
 		searchParams = paramsParser.getSearchParams();
 		course = (Course) request.getAttribute(Course.class.getSimpleName());
+		courseItemModel = CourseItemModel.valueOf(course, searchParams);
 	}
 
 	public CourseItemModel getCourseItemModel() {
-		return CourseItemModel.valueOf(course, searchParams);
+		return courseItemModel;
 	}
 
 	public String getCanonicalLinkPath() {

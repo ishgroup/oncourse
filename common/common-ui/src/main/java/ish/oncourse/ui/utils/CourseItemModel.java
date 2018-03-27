@@ -114,6 +114,10 @@ public class CourseItemModel {
 		return relatedProducts;
 	}
 
+	public List<Course> getRelatedCourses() {
+		return relatedCourses;
+	}
+
 	public List<CourseClass> getEnrollableClasses() {
 		return enrollableClasses;
 	}
@@ -131,7 +135,7 @@ public class CourseItemModel {
 		return new CheckClassAge().classAge(ClassAge.valueOf(age, type));
 	}
 
-	static List<Course> selectRelatedCourses(Course course) {
+	public static List<Course> selectRelatedCourses(Course course) {
 		List<CourseCourseRelation> relations = new LinkedList<>(
 				ObjectSelect.query(CourseCourseRelation.class)
 						.or(FROM_ENTITY_IDENTIFIER.eq(COURSE).andExp(FROM_ENTITY_WILLOW_ID.eq(course.getId())),

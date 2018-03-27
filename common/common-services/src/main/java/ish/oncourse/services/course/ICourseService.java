@@ -1,7 +1,6 @@
 package ish.oncourse.services.course;
 
 import ish.oncourse.model.Course;
-import ish.oncourse.model.Product;
 import ish.oncourse.model.Tag;
 
 import java.util.Date;
@@ -70,12 +69,4 @@ public interface ICourseService {
 	 * @return
 	 */
 	Date getLatestModifiedDate();
-
-	List<Product> getRelatedProductsFor(Course course);
-
-	/**
-	 * The method returns courses related to this <source>course</source>.
-	 */
-	List<Course> getRelatedCoursesFor(Course course);
-
 }

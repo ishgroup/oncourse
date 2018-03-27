@@ -1,8 +1,9 @@
 package ish.oncourse.ui.components;
 
-import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.Course;
 import ish.oncourse.services.course.ICourseService;
+import ish.oncourse.ui.base.ISHCommon;
+import ish.oncourse.ui.utils.CourseItemModel;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -27,7 +28,6 @@ public class CourseRelations extends ISHCommon {
 
 	@SetupRender
     public void beforeRender() {
-		courseRelations = courseService.getRelatedCoursesFor(course);
+		courseRelations = CourseItemModel.selectRelatedCourses(course);
     }
-
 }
