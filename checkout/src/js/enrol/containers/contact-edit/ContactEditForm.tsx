@@ -93,7 +93,11 @@ const Form = reduxForm({
     return {...errors, ...validateAge(data, props)};
   },
   onSubmitSuccess: (result, dispatch, props: any) => {
-    dispatch(submitEditContact({...props.contact, parentRequired: result.parentRequired}));
+    dispatch(submitEditContact({
+      ...props.contactAddProcess.contact,
+      parentRequired:
+      result.parentRequired
+    }));
   },
   onSubmitFail: (errors, dispatch, submitError, props) => {
     if (errors && !submitError) {
