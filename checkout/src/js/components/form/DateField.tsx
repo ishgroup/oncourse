@@ -17,7 +17,7 @@ function inputComponent(props: DateFieldProps) {
     required,
     label,
     type,
-    placeholder
+    placeholder,
   } = props;
   const isShowError = showError(props);
 

@@ -60,7 +60,7 @@ export class ContactApiMock extends ContactApi {
     if (!this.config.props.contactApi.contactFieldsIsEmpty) {
       result.headings.push(this.config.db.getFieldHeadingBy([
         "customField.contact.passportType", "street", "postcode", "suburb", "isMale", "isMarketingViaEmailAllowed", "country",
-        "mobilePhoneNumber", "citizenship", "customField.contact.information",
+        "dateOfBirth", "citizenship", "customField.contact.information",
       ]));
     }
 

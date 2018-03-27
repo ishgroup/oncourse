@@ -11,6 +11,7 @@ import {changePhase, showFormValidation, showSyncErrors} from "../../actions/Act
 import {submitEditContact} from "./actions/Actions";
 import {toFormKey} from "../../../components/form/FieldFactory";
 import {scrollToTop, scrollToValidation} from "../../../common/utils/DomUtils";
+import {ContactAddProcessState, Phase} from "../../reducers/State";
 
 export const NAME = "ContactEditForm";
 
@@ -25,7 +26,7 @@ class ContactEditForm extends React.Component<Props, any> {
 
   render() {
     const {handleSubmit, touch, submitting, isNewContact, onCancel, page, form, onChangeSuburb} = this.props;
-    const contact: Contact = this.props.contact;
+    const contact: Contact = this.props.contactAddProcess.contact;
     const fields: ContactFields = this.props.fields;
 
     return (
@@ -66,10 +67,11 @@ class ContactEditForm extends React.Component<Props, any> {
 }
 
 interface Props extends FormProps<FormData, Props, any> {
-  contact: Contact;
+  contactAddProcess: ContactAddProcessState;
   fields: ContactFields;
   errors: ValidationError;
   onInit: () => void;
+  minAge: string;
   onCancel: (page) => void;
   concessionTypes: any;
   isNewContact: boolean;
@@ -89,7 +91,7 @@ const Form = reduxForm({
       ),
     );
 
-    return errors;
+    return {...errors, ...validateAge(data, props)};
   },
   onSubmitSuccess: (result, dispatch, props: any) => {
     dispatch(submitEditContact({...props.contact, parentRequired: result.parentRequired}));
@@ -105,6 +107,26 @@ const Form = reduxForm({
   },
 })(ContactEditForm);
 
+const validateAge = (data, props) => {
+  // validate age if contact is a guardian or parent
+  if (props.contactAddProcess && (props.contactAddProcess.type === Phase.AddParent || props.contactAddProcess.type === Phase.ChangeParent)) {
+    if (!data.dateOfBirth) return {};
+
+    const dd = data.dateOfBirth.split('/')[0];
+    const mm = data.dateOfBirth.split('/')[1];
+    const yyyy = data.dateOfBirth.split('/')[2];
+    const age = new Date().getFullYear() - new Date(`${mm}/${dd}/${yyyy}`).getFullYear();
+
+    if (age < props.minAge) {
+      return {
+        dateOfBirth: `Guardian must be over ${props.minAge}`,
+      };
+    }
+  }
+
+  return {};
+};
+
 const getInitialValues = fields => {
   const initialValues = {};
 
@@ -119,23 +141,25 @@ const getInitialValues = fields => {
 
 const mapStateToProps = (state: IshState) => {
   // state.checkout.contacts.entities.contact[state.checkout.fields.contactId]
-  const contact = state.checkout.contactAddProcess.contact;
+  const contactAddProcess = state.checkout.contactAddProcess;
   const fields = state.checkout.fields.current;
   const errors = state.checkout.error;
   const concessionTypes = state.checkout.concession.types;
   const isNewContact = !state.checkout.contacts.result.length;
   const page = state.checkout.page;
+  const minAge = state.preferences.minAge;
 
   const initialValues = getInitialValues(fields);
 
   return {
-    contact,
+    contactAddProcess,
     fields,
     errors,
     concessionTypes,
     isNewContact,
     page,
     initialValues,
+    minAge,
   };
 };
 

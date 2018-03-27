@@ -2,6 +2,7 @@ import {ValidationError, Contact, ContactFields, Amount, Preferences} from "../.
 import {State as SummaryState} from "../containers/summary/reducers/State";
 import {State as PaymentState} from "../containers/payment/reducers/State";
 import {ContactsState} from "../../NormalizeSchema";
+import {ContactState} from "../../services/IshState";
 
 export interface CheckoutState {
   newContact: boolean;
@@ -16,7 +17,7 @@ export interface CheckoutState {
   payment: PaymentState;
   concession: any;
   redeemVouchers: any;
-  contactAddProcess: any;
+  contactAddProcess: ContactAddProcessState;
   preferences: Preferences;
   fetching?: boolean;
   isCartModified: boolean;
@@ -33,6 +34,13 @@ export class AmountState extends Amount {
 export class ContactFieldsState {
   current: ContactFields = null;
   unfilled: ContactFields[] = [];
+}
+
+export class ContactAddProcessState {
+  contact?: ContactState;
+  forChild?: string;
+  parent?: ContactState;
+  type: Phase;
 }
 
 export enum Phase {
