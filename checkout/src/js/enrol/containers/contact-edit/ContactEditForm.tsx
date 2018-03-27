@@ -96,7 +96,7 @@ const Form = reduxForm({
     dispatch(submitEditContact({
       ...props.contactAddProcess.contact,
       parentRequired:
-      result.parentRequired
+      result.parentRequired,
     }));
   },
   onSubmitFail: (errors, dispatch, submitError, props) => {

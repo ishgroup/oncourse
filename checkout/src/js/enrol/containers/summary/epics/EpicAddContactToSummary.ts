@@ -26,8 +26,8 @@ export const AddContactToSummary: Epic<any, IshState> = (action$: ActionsObserva
     const ifParentRequired = contact.parentRequired && !parent;
     const nextPage = state.checkout.phase === Phase.ComplementEditContact ? Phase.Payment : state.checkout.page;
     const isAddParentPhase = (type === Phase.AddParent || type === Phase.ChangeParent);
-    const wrongGuardianMessage = `This contact is under ${state.preferences.minAge} and can not be the nominated guardian. 
-    Add another contact who is over ${state.preferences.minAge}, or contact us to update the guardian details`;
+    const wrongGuardianMessage = `This contact is under 18 and can not be the nominated guardian. 
+    Add another contact who is over 18, or contact us to update the guardian details`;
 
     const allChilds = CheckoutService
       .getAllSingleChildIds(state.checkout)
