@@ -12,7 +12,6 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static org.apache.cayenne.query.SelectById.query;
 import static org.junit.Assert.*;
 
 public class CourseServiceTest extends ServiceTest {
@@ -96,13 +95,4 @@ public class CourseServiceTest extends ServiceTest {
 		assertEquals("5 courses should be linked with tag", 5, result.size());
 		assertEquals("The id of the top course should be 3", 3L, result.get(0).getId().longValue());
 	}
-
-
-	@Test
-	public void test_getRelatedCoursesFor() {
-		Course course = query(Course.class, 1L).selectOne(cayenneService.newContext());
-		List<Course> courses = service.getRelatedCoursesFor(course);
-		assertEquals(4, courses.size());
-	}
-
 }

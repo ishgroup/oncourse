@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<Language id="2" name="Asian" isActive="1" ishVersion="333"/>
+	<Language id="1" name="Asian" isActive="1" ishVersion="333"/>
+    <Country id="1" ishVersion="1" name="Tuvalu" isoCodeAlpha2="TV" isoCodeAlpha3="TUV" isoCodeNumeric="798" asccssCode="1609" saccCode="1511"/>
+    <TrainingPackage id="1" ishVersion="1" nationalISC="AGR05" title="Conditionally Endorsed Agri-Food Qualifications Training Package"  endorsementFrom="2010-02-03 09:18:09" endorsementTo="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" purchaseFrom="2010-02-03 09:18:09"/>
+    <Qualification id="1" ishVersion="333" nationalCode="10351TAS" level="Certificate IV in" title="Youth &amp; Community Work (Christian)" anzsco="411716" asco="GEN19" fieldOfStudy="1103" fieldOfEducation="0899" nominalHours="13"
+		reviewDate="2009-07-16 16:50:31" isAccreditedCourse="1" created="2009-07-16 16:50:31" modified="2009-07-16 16:50:31"/>
+	
+    <College id="1" name="Sydney Community College"  webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880" communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
+
+    <Course id="1" collegeId="1" code="1" detail="Course1" name="Course1" isWebVisible="1" enrolmentType="1"/>
+    <Course id="2" collegeId="1" code="2" detail="Course2" name="Basic2" isWebVisible="1" enrolmentType="1"/>
+    <Course id="3" collegeId="1" code="3" detail="Course3" name="Basic3" isWebVisible="1" enrolmentType="1"/>
+
+    <Course id="4" collegeId="1" code="4" detail="Course4" name="Course4" isWebVisible="1" enrolmentType="1"/>
+    <Course id="5" collegeId="1" code="5" detail="Course5" name="Course5" isWebVisible="1" enrolmentType="1"/>
+    <Course id="6" collegeId="1" code="6" detail="Course6" name="Course6" isWebVisible="0" enrolmentType="1"/>
+
+
+    <EntityRelation
+            id="1" angelId="1" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+            fromEntityIdentifier="1"
+            toEntityIdentifier="1"
+            fromRecordId="1"
+            toRecordId="2"
+    />
+    <EntityRelation
+            id="2" angelId="2" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+            fromEntityIdentifier="1"
+            toEntityIdentifier="1"
+            fromRecordId="1"
+            toRecordId="3"
+    />
+    <EntityRelation
+            id="3" angelId="3" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+            fromEntityIdentifier="1"
+            toEntityIdentifier="1"
+            fromRecordId="4"
+            toRecordId="1"
+    />
+
+    <EntityRelation
+            id="4" angelId="4" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+            fromEntityIdentifier="1"
+            toEntityIdentifier="1"
+            fromRecordId="5"
+            toRecordId="1"
+    />
+
+    <EntityRelation
+            id="5" angelId="5" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+            fromEntityIdentifier="1"
+            toEntityIdentifier="1"
+            fromRecordId="6"
+            toRecordId="1"
+    />
+
+
+    <Room id="1" collegeId="1"/>
+    <Room id="2" collegeId="1"/>
+    <Room id="3" collegeId="1"/>
+    <Room id="4" collegeId="1"/>
+    <Room id="5" collegeId="1"/>
+    <Room id="6" collegeId="1"/>
+
+
+    <CourseClass isActive="1" id="1" code="1-1" collegeId="1" countOfSessions="1" courseId="1" deliveryMode="1" detail="Test Course Class 1-1" feeExGst="20.00" feeGst="1.25" roomId="1" maximumPlaces="3"
+                 startDate="2011-01-01 00:00:00" isCancelled="0" isDistantLearningCourse="0" isWebVisible="1"/>
+    <CourseClass isActive="1" id="2" code="2-1" collegeId="1" countOfSessions="2" courseId="2" deliveryMode="1" detail="Test Course Class 2-1" feeExGst="20.00" feeGst="1.25" roomId="2" maximumPlaces="3"
+                 startDate="2011-01-02 00:00:00" endDate="2094-01-02 00:00:00"  isCancelled="0" isDistantLearningCourse="0" isWebVisible="1"/>
+    <CourseClass isActive="1" id="3" code="3-1" collegeId="1" countOfSessions="3" courseId="3" deliveryMode="1" detail="Test Course Class 3-1" feeExGst="20.00" feeGst="1.25" roomId="3" maximumPlaces="3"
+                 startDate="2012-01-01 00:00:01" endDate="2100-01-01 00:00:00"  isCancelled="0" isDistantLearningCourse="0"/>
+    <CourseClass isActive="1" id="4" code="4-1" collegeId="1" countOfSessions="4" courseId="4" deliveryMode="1" detail="Test Course Class 4-1" feeExGst="20.00" feeGst="1.25" roomId="4" maximumPlaces="3"
+                 startDate="2012-01-02 00:00:01" endDate="2101-01-02 00:00:00"  isCancelled="0" isDistantLearningCourse="0"/>
+    <CourseClass isActive="1" id="5" code="5-1" collegeId="1" countOfSessions="5" courseId="5" deliveryMode="1" detail="Test Course Class 5-1" feeExGst="20.00" feeGst="1.25" roomId="5" maximumPlaces="3"
+                 startDate="2012-01-03 00:00:00" endDate="2102-01-03 00:00:00" isCancelled="0" isDistantLearningCourse="0"/>
+    <CourseClass isActive="1" id="6" code="5-2" collegeId="1" countOfSessions="6" courseId="5" deliveryMode="1" detail="Test Course Class 6-1" feeExGst="20.00" feeGst="1.25" roomId="6" maximumPlaces="3"
+                 startDate="2012-01-04 00:00:00" endDate="2103-01-04 00:00:00" isCancelled="1" isDistantLearningCourse="0"/>
+
+
+    <Tutor id="1" angelId="1" collegeId="1" created="2010-02-03 09:18:09" finishDate="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" resume="Test resume" startDate="2010-02-03 09:18:09" />
+    <Student id="1" countryOfBirthId="1" languageId="1" collegeId="1" disabilityType="1" englishProficiency="1"
+             highestSchoolLevel="1" concessionType="1" indigenousStatus="1" isOverseasClient="1"
+             isStillAtSchool="1" labourForceType="1" modified="2011-09-12 00:56:00.0" priorEducationCode="1" yearSchoolCompleted="1" created="2011-09-12 00:56:00.0"/>
+
+    <Contact id="1" collegeId="1" tutorId="1"/>
+    <Contact id="2" collegeId="1"/>
+    <Contact id="3" collegeId="1" studentId="1"/>
+
+    <TutorRole id="1" angelId="1" collegeId="1" confirmedDate="2010-02-03 09:18:09" courseClassId="1" created="2010-02-03 09:18:09" isConfirmed="1" modified="2010-02-03 09:18:09" tutorId="1" inPublicity="1"/>
+    <TutorRole id="2" angelId="1" collegeId="1" confirmedDate="2010-02-03 09:18:09" courseClassId="2" created="2010-02-03 09:18:09" isConfirmed="1" modified="2010-02-03 09:18:09" tutorId="1" inPublicity="1"/>
+    <TutorRole id="3" angelId="1" collegeId="1" confirmedDate="2010-02-03 09:18:09" courseClassId="3" created="2010-02-03 09:18:09" isConfirmed="1" modified="2010-02-03 09:18:09" tutorId="1" inPublicity="1"/>
+    <TutorRole id="4" angelId="1" collegeId="1" confirmedDate="2010-02-03 09:18:09" courseClassId="4" created="2010-02-03 09:18:09" isConfirmed="1" modified="2010-02-03 09:18:09" tutorId="1" inPublicity="1"/>
+    <TutorRole id="5" angelId="1" collegeId="1" courseClassId="5" created="2010-02-03 09:18:09" isConfirmed="0" modified="2010-02-03 09:18:09" tutorId="1" inPublicity="1"/>
+    <TutorRole id="6" angelId="1" collegeId="1" confirmedDate="2010-02-03 09:18:09" courseClassId="6" created="2010-02-03 09:18:09" isConfirmed="1" modified="2010-02-03 09:18:09" tutorId="1" inPublicity="1"/>
+
+    <Session id="1"  collegeId="1" courseClassId="1" roomId="1" angelId="201" startDate="1980-01-01 01:00:00" endDate="1980-01-01 01:00:00" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"/>
+    <Session id="2" collegeId="1" courseClassId="2" roomId="2" angelId="202" startDate="1980-01-02 01:00:00" endDate="1980-01-02 00:00:00" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"/>
+    <Session id="3" collegeId="1" courseClassId="3" roomId="3" angelId="203" startDate="2100-01-01 00:00:00" endDate="2100-01-01 00:00:00" created="2011-09-12 00:56:01.0" modified="2011-09-12 00:56:01.0"/>
+    <Session id="4" collegeId="1" courseClassId="4" roomId="4" angelId="204" startDate="2101-01-02 00:00:00" endDate="2101-01-02 00:00:00" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
+    <Session id="5" collegeId="1" courseClassId="5" roomId="5" angelId="205" startDate="2102-01-03 00:00:00" endDate="2102-01-03 00:00:00" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
+    <Session id="6" collegeId="1" courseClassId="6" roomId="6" angelId="206" startDate="2103-01-04 00:00:00" endDate="2103-01-04 00:00:00" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
+
+    <SessionTutor id="1" collegeId="1" sessionId="1" tutorId="1" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
+    <SessionTutor id="2" collegeId="1" sessionId="2" tutorId="1" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
+    <SessionTutor id="3" collegeId="1" sessionId="3" tutorId="1" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
+    <SessionTutor id="4" collegeId="1" sessionId="4" tutorId="1" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
+    <SessionTutor id="5" collegeId="1" sessionId="5" tutorId="1" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
+    <SessionTutor id="6" collegeId="1" sessionId="6" tutorId="1" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
+
+
+    <Enrolment id="1" collegeId="1" courseClassId="1" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O" confirmationStatus="1" feehelpamount="0"/>
+    <Enrolment id="2" collegeId="1" courseClassId="2" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O" confirmationStatus="1" feehelpamount="0"/>
+    <Enrolment id="3" collegeId="1" courseClassId="3" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O" confirmationStatus="1" feehelpamount="0"/>
+    <Enrolment id="4" collegeId="1" courseClassId="4" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O" confirmationStatus="1" feehelpamount="0"/>
+    <Enrolment id="5" collegeId="1" courseClassId="5" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="4" source="O" confirmationStatus="1" feehelpamount="0"/>
+    <Enrolment id="6" collegeId="1" courseClassId="6" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O" confirmationStatus="1" feehelpamount="0"/>
+
+	<Tag id="3471" collegeId="1" angelId="201" isWebVisible="1" nodeType="2" weighting="1" created="2011-09-12 00:38:54.0" modified="2011-09-12 00:17:14.0" shortName="Welcome" name="Welcome page" detail="&lt;h3 id=&quot;Homepage&quot;&gt;Home page &lt;/h3&gt;&lt;p&gt;This is the home page for your college web site. ish onCourse is able to synchronise not only your course and enrolment information with your web site, but also any other pages you wish to create. This content management system is managed completely from within ish onCourse.&lt;/p&gt;" detail_textile="h3. Home page &#xA;&#xA;This is the home page for your college web site. ish onCourse is able to synchronise not only your course and enrolment information with your web site, but also any other pages you wish to create. This content management system is managed completely from within ish onCourse."/>
+	<Tag id="3472" collegeId="1" angelId="200" isWebVisible="1" nodeType="1" weighting="1" created="2011-09-12 00:38:54.0" modified="2011-09-12 00:38:55.0" name="Subjects"/>
+	<Tag id="3473" collegeId="1" angelId="202" isWebVisible="1" nodeType="2" weighting="1" created="2011-09-12 00:38:55.0" modified="2011-09-12 00:17:15.0" shortName="Home" name="Home page" detail="&lt;h3 id=&quot;Homepage&quot;&gt;Home page &lt;/h3&gt;&lt;p&gt;This is the home page for your college web site. ish onCourse is able to synchronise not only your course and enrolment information with your web site, but also any other pages you wish to create. This content management system is managed completely from within ish onCourse.&lt;/p&gt;" detail_textile="h3. Home page &#xA;&#xA;This is the home page for your college web site. ish onCourse is able to synchronise not only your course and enrolment information with your web site, but also any other pages you wish to create. This content management system is managed completely from within ish onCourse."/>
+	<Tag id="3474" collegeId="1" angelId="203" isWebVisible="0" nodeType="1" weighting="1" created="2011-09-12 00:38:55.0" modified="2011-09-12 00:38:55.0" name="Mailing Lists"/>
+	<Tag id="3475" collegeId="1" angelId="207" isWebVisible="0" nodeType="1" weighting="1" created="2011-09-12 00:38:55.0" modified="2011-09-12 00:38:55.0" name="Payroll wage intervals"/>
+	<Tag id="3476" parentId="3475" collegeId="1" angelId="206" isWebVisible="0" nodeType="1" weighting="1" created="2011-09-12 00:38:55.0" modified="2011-09-12 00:17:20.0" name="Weekly"/>
+	<Tag id="3477" parentId="3475" collegeId="1" angelId="204" isWebVisible="0" nodeType="1" weighting="1" created="2011-09-12 00:38:55.0" modified="2011-09-12 00:17:20.0" name="Fortnightly"/>
+	<Tag id="3478" parentId="3475" collegeId="1" angelId="205" isWebVisible="0" nodeType="1" weighting="1" created="2011-09-12 00:38:55.0" modified="2011-09-12 00:17:20.0" name="Monthly"/>
+	
+	<TagGroupRequirement id="477" tagId="3472" collegeId="1" angelId="200" allowsMultipleTags="1" isRequired="0" created="2011-09-12 00:38:55.0" modified="2011-09-12 00:17:14.0"/>
+	<TagGroupRequirement id="478" tagId="3474" collegeId="1" angelId="201" allowsMultipleTags="1" isRequired="0" created="2011-09-12 00:38:55.0" modified="2011-09-12 00:17:16.0"/>
+	<TagGroupRequirement id="479" tagId="3475" collegeId="1" angelId="202" allowsMultipleTags="0" isRequired="0" created="2011-09-12 00:38:55.0" modified="2011-09-12 00:17:20.0"/>
+
+	<Taggable id="2001" collegeId="1" entityIdentifier="Course" entityWillowId="1" />
+	<Taggable id="2002" collegeId="1" entityIdentifier="Course" entityWillowId="2" />
+	<Taggable id="2003" collegeId="1" entityIdentifier="Course" entityWillowId="3" />
+	<Taggable id="2004" collegeId="1" entityIdentifier="Course" entityWillowId="4" />
+	<Taggable id="2005" collegeId="1" entityIdentifier="Course" entityWillowId="5" />
+	
+	<TaggableTag id="3001" collegeId="1" tagId="3472" taggableId="2001"/>
+	<TaggableTag id="3002" collegeId="1" tagId="3472" taggableId="2002"/>
+	<TaggableTag id="3003" collegeId="1" tagId="3472" taggableId="2003"/>
+	<TaggableTag id="3004" collegeId="1" tagId="3472" taggableId="2004"/>
+	<TaggableTag id="3005" collegeId="1" tagId="3472" taggableId="2005"/>
+</dataset>
