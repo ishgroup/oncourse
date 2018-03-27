@@ -2,7 +2,7 @@ buildscript {
 	ext {
 		waCommonWebservicesClientVersion = '9.5.16'
 		log4j2Version = '2.10.0'
-		cayenneVersion = '4.0.B2'
+		cayenneVersion = '4.1.M1'
 		jettyVersion = '9.4.6.v20170531'
 		mariadbVersion = '2.2.2'
 		derbyVersion = '10.14.1.0'
@@ -20,7 +20,6 @@ buildscript {
 
 	dependencies {
 		classpath 'com.github.ben-manes:gradle-versions-plugin:0.15.0'
-		classpath "org.apache.cayenne:cayenne-ant:$cayenneVersion"
 	}
 }
 
