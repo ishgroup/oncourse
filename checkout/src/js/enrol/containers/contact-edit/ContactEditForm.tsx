@@ -71,7 +71,6 @@ interface Props extends FormProps<FormData, Props, any> {
   fields: ContactFields;
   errors: ValidationError;
   onInit: () => void;
-  minAge: string;
   onCancel: (page) => void;
   concessionTypes: any;
   isNewContact: boolean;
@@ -117,9 +116,9 @@ const validateAge = (data, props) => {
     const yyyy = data.dateOfBirth.split('/')[2];
     const age = new Date().getFullYear() - new Date(`${mm}/${dd}/${yyyy}`).getFullYear();
 
-    if (age < props.minAge) {
+    if (age < 18) {
       return {
-        dateOfBirth: `Guardian must be over ${props.minAge}`,
+        dateOfBirth: `Guardian must be over 18`,
       };
     }
   }
@@ -147,7 +146,6 @@ const mapStateToProps = (state: IshState) => {
   const concessionTypes = state.checkout.concession.types;
   const isNewContact = !state.checkout.contacts.result.length;
   const page = state.checkout.page;
-  const minAge = state.preferences.minAge;
 
   const initialValues = getInitialValues(fields);
 
@@ -159,7 +157,6 @@ const mapStateToProps = (state: IshState) => {
     isNewContact,
     page,
     initialValues,
-    minAge,
   };
 };
 
