@@ -54,6 +54,7 @@
 		maximumPlaces="30" minimumPlaces="30" countOfSessions="3"
 		deliveryMode="1" feeExGst="454.55" feeGst="45.45" isDistantLearningCourse="0"/>
 
+	<!-- Invoice 2000: we should send Instruction because it is not balanced but should be -->
 	<PaymentIn id="2000" amount="100" angelId="22" collegeId="1"
 		contactId="2000" created="2011-09-12 00:17:21.0" modified="2011-09-12 00:17:21.0"
 		source="W" status="3" statusNotes="" type="2" confirmationStatus="1"/>
@@ -76,6 +77,7 @@
 				 priceEachExTax="99" taxEach="1" title="Test Invoice Line"
 				 created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
 
+	<!-- Invoice 2001: we shouldn't send Instruction because it is balanced -->
 	<PaymentIn id="2001" amount="100" angelId="2001" collegeId="1"
 			   contactId="2000" created="2011-09-12 00:17:21.0" modified="2011-09-12 00:17:21.0"
 			   source="W" status="3" statusNotes="" type="2" confirmationStatus="1"/>
@@ -98,7 +100,7 @@
 				 priceEachExTax="99" taxEach="1" title="Test Invoice Line"
 				 created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
 
-
+	<!-- Invoice 2002: we shouldn't send Instruction because this invoice has two payments which compensate each other  -->
 	<PaymentIn id="2002" amount="100" angelId="2001" collegeId="1"
 			   contactId="2000" created="2011-09-12 00:17:21.0" modified="2011-09-12 00:17:21.0"
 			   source="W" status="3" statusNotes="" type="6" confirmationStatus="1"/>
@@ -126,9 +128,34 @@
 
 
 	<InvoiceLine id="2002" collegeId="1" enrolmentId="2002"
-				 invoiceId="2001" quantity="1.0" discountEachExTax="0.00"
+				 invoiceId="2002" quantity="1.0" discountEachExTax="0.00"
 				 priceEachExTax="99" taxEach="1" title="Test Invoice Line"
 				 created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+
+	<!-- Invoice 2004: we shouldn't send Instruction because this invoice has two payments which compensate each other  -->
+	<PaymentIn id="2004" amount="100" collegeId="1"
+			   contactId="2000" created="2011-09-12 00:17:21.0" modified="2011-09-12 00:17:21.0"
+			   source="W" status="3" statusNotes="" type="2" confirmationStatus="1"/>
+
+	<PaymentInLine id="2004" amount="100"
+				   collegeId="1" created="2011-09-12 00:17:21.0" invoiceId="2004"
+				   modified="2011-09-12 00:17:21.0" paymentInId="2004" />
+
+	<Invoice type="1" id="2004" source="O" amountOwing="100.00" contactId="2001"
+			 collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
+			 invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="320.00"
+			 totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
+
+	<Enrolment id="2004" source="O" collegeId="1" courseClassId="2000"
+			   studentId="2001" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
+			   status="3" confirmationStatus="1" feehelpamount="0"/>
+
+
+	<InvoiceLine id="2004" collegeId="1" enrolmentId="2004"
+				 invoiceId="2004" quantity="1.0" discountEachExTax="0.00"
+				 priceEachExTax="99" taxEach="1" title="Test Invoice Line"
+				 created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+
 
 	<Preference id="1" collegeId="1" name="license.ccprocessing"
 		value_string="true" />
