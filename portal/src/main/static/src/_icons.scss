@@ -34,3 +34,43 @@
         } */
     }
 }
+
+.icon-class {
+    vertical-align: middle;
+    display: inline-block;
+    width: 25px;
+    height: 28px;
+    text-align: center;
+    position: relative;
+    background: url(../img/icon-class-sprite.png) 0 0 no-repeat;
+    background-size: 245px;
+    margin-right: 10px;
+    &.icon-class-details-h, &.icon-location-h, &.icon-mark-h, &.icon-mark-outcomes-h,
+    &.icon-mark-roll-h, &.icon-resources-h, &.icon-session-details-h, &.icon-session-public-note-h {
+        background-position-y:  -38px;
+    }
+    &.icon-class-details  {
+        background-position:  -55px -1px;
+    }
+    &.icon-location  {
+        background-position:  -30px -1px;
+    }
+    &.icon-mark  {
+        background-position:  -4px -1px;
+    }
+    &.icon-mark-outcomes  {
+        background-position:  -83px -1px;
+    }
+    &.icon-mark-roll  {
+        background-position:  -112px -1px;
+    }
+    &.icon-resources  {
+        background-position:  -143px -1px;
+    }
+    &.icon-session-details  {
+        background-position:  -176px -1px;
+    }
+    &.icon-session-public-note  {
+        background-position:  -207px -1px;
+    }
+}

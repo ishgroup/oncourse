@@ -4,15 +4,9 @@
 			<li class="${getActiveClass('details')}">
 				<a href="#class-details" data-toggle="tab">
 					<t:if test="isTutor">
-						<span>
-							<img class="new-nav-icon" src="/portal/img/portal.svg#mark_roll"/>
-						</span>
-						<span class="new-nav-icon-text">Roll</span>
+						<span class="icon-class icon-mark-roll"></span>Roll
 						<p:else>
-							<span>
-								<img class="new-nav-icon" src="/portal/img/portal.svg#session_details"/>
-							</span>
-							<span class="new-nav-icon-text">Details</span>
+							<span class="icon-class icon-session-details"></span>Details
 						</p:else>
 					</t:if>
 				</a>
@@ -20,39 +14,27 @@
 			<t:if test="allowToEditOutcomes()">
 				<li class="${getActiveClass('outcomes')}">
 					<a href="#class-outcomes" data-toggle="tab">
-						<span>
-							<img class="new-nav-icon" src="/portal/img/portal.svg#mark_outcomes"/>
-						</span>
-						<span class="new-nav-icon-text">Outcomes</span>
+						<span class="icon-class icon-mark-outcomes"></span>Outcomes
 					</a>
 				</li>
 			</t:if>
 			<t:if test="hasResources()">
 				<li class="${getActiveClass('resources')}">
 					<a href="#class-resources" data-toggle="tab">
-                    <span>
-                        <img class="new-nav-icon" src="/portal/img/portal.svg#resources"/>
-                    </span>
-						<span class="new-nav-icon-text">Resources</span>
+						<span class="icon-class icon-resources"></span>Resources
 					</a>
 				</li>
 			</t:if>
 			<t:if test="hasResults()">
 				<li class="${getActiveClass('results')}">
 					<a href="#class-results" data-toggle="tab">
-                    <span>
-                        <img class="new-nav-icon" src="/portal/img/portal.svg#class_details"/>
-                    </span>
-						<span class="new-nav-icon-text">Results</span>
+						<span class="icon-class icon-class-details"></span>Results
 					</a>
 				</li>
 			</t:if>
 			<li id="class-location-tab" class="${getActiveClass('location')}">
 				<a href="#class-location" data-toggle="tab">
-                    <span>
-                        <img class="new-nav-icon" src="/portal/img/portal.svg#location"/>
-                    </span>
-					<span class="new-nav-icon-text">Location</span>
+					<span class="icon-class icon-location"></span>Location
 				</a>
 			</li>
 		</ul>

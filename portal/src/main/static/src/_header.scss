@@ -120,6 +120,23 @@
 			background: $white;
 		}
 	}
+	.nav-menu {
+		&.main-nav li {
+			padding: 12px 15px;
+			&:first-child {
+				padding-left: 0;
+			}
+			a {
+				padding: 6px 0;
+				display: block;
+				&:hover {
+					.icon-class {
+						background-position-y: -38px;
+					}
+				}
+			}
+		}
+	}
 }
 
 .navbar {
