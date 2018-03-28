@@ -77,10 +77,13 @@ public class CourseService implements ICourseService {
 			list.add(Long.valueOf(document.get(CourseClass.ID_PK_COLUMN).toString()));
 		}
 
-		Expression expr = ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN, list).andExp(getSiteQualifier());
+		Expression expr = ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN, list);
 
 		ObjectSelect<Course> q = ObjectSelect.query(Course.class)
-				.where(expr).cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, Course.class.getSimpleName());
+				.where(expr)
+				.and(Course.COLLEGE.eq(webSiteService.getCurrentCollege()))
+				.and(Course.IS_WEB_VISIBLE.isTrue())
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, Course.class.getSimpleName());
 
 		List<Course> result = new ArrayList<>(q.select(cayenneService.sharedContext()));
 
@@ -123,21 +126,21 @@ public class CourseService implements ICourseService {
 		return false;
 	}
 
-	private Expression getSiteQualifier() {
-		return Course.COLLEGE.eq(webSiteService.getCurrentCollege()).andExp(getAvailabilityQualifier());
-	}
-
-	private Expression getAvailabilityQualifier() {
-		return IS_WEB_VISIBLE.eq(true);
-	}
-
 	public List<Course> loadByIds(List<String> ids) {
 		return LoadByIds.load(ids, cayenneService.sharedContext(), webSiteService.getCurrentCollege());
 	}
 
+	/**
+	 * Get the first course which matches some search property. Use getCourseByCode() instead.
+	 *
+	 * @param searchProperty
+	 * @param value
+	 * @return
+	 */
+	@Deprecated
 	public Course getCourse(String searchProperty, Object value) {
 
-		Expression qualifier = getSiteQualifier();
+		Expression qualifier = Course.COLLEGE.eq(webSiteService.getCurrentCollege()).andExp(IS_WEB_VISIBLE.isTrue());
 
 		if (searchProperty != null) {
 			if (searchProperty.equals(Course.CODE_PROPERTY)) {
@@ -161,13 +164,20 @@ public class CourseService implements ICourseService {
 				.selectOne(cayenneService.sharedContext());
 	}
 
-	public Expression getSearchStringPropertyQualifier(String searchProperty, Object value) {
+	@Deprecated
+	private Expression getSearchStringPropertyQualifier(String searchProperty, Object value) {
 		return ExpressionFactory.likeIgnoreCaseExp(searchProperty, value);
 	}
 
+	/**
+	 * Get the first course with a particular tag. If there is more than one, then return a random course.
+	 *
+	 * @param taggedWith
+	 * @return
+	 */
 	public Course getCourse(String taggedWith) {
 
-		Expression qualifier = getSiteQualifier();
+		Expression qualifier = Course.COLLEGE.eq(webSiteService.getCurrentCollege()).andExp(IS_WEB_VISIBLE.isTrue());
 
 		if (taggedWith != null) {
 			qualifier = qualifier.andExp(getTaggedWithQualifier(taggedWith));
@@ -193,16 +203,28 @@ public class CourseService implements ICourseService {
 				tagService.getEntityIdsByTagPath(taggedWith, Course.class.getSimpleName()));
 	}
 
-	public Integer getCoursesCount() {
+	/**
+	 * Count of all the courses for this site, without taking into account any site filter
+	 *
+	 * @return
+	 */
+	public Long getCoursesCount() {
 		return ObjectSelect.query(Course.class).count()
-				.where(getSiteQualifier())
+				.where(Course.COLLEGE.eq(webSiteService.getCurrentCollege()))
+				.and(IS_WEB_VISIBLE.isTrue())
 				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, Course.class.getSimpleName())
-				.selectOne(cayenneService.sharedContext()).intValue();
+				.selectOne(cayenneService.sharedContext());
 	}
 
+	/**
+	 * The most recently modified course date without taking into account any site filter
+	 *
+	 * @return
+	 */
 	public Date getLatestModifiedDate() {
 		return ObjectSelect.query(Course.class).max(Course.MODIFIED)
-				.where(getSiteQualifier())
+				.where(Course.COLLEGE.eq(webSiteService.getCurrentCollege()))
+				.and(IS_WEB_VISIBLE.isTrue())
 				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, Course.class.getSimpleName())
 				.selectOne(cayenneService.sharedContext());
 	}

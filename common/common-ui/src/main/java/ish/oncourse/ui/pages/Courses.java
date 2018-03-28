@@ -90,7 +90,7 @@ public class Courses extends ISHCommon {
 	private Boolean isException;
 
 	@Property
-	private Integer coursesCount;
+	private Long coursesCount;
 
 	@Property
 	private Integer itemIndex;
@@ -314,7 +314,7 @@ public class Courses extends ISHCommon {
 		}
 
 		if (isHasInvalidSearchTerms()) {
-			coursesCount = 0;
+			coursesCount = 0L;
 			return new ArrayList<>();
 		}
 
@@ -330,7 +330,7 @@ public class Courses extends ISHCommon {
 		SolrDocumentList list = results.getResults() != null ? results.getResults() : new SolrDocumentList();
 		logger.info("The number of courses found: {}", list.size());
 		if (coursesCount == null) {
-			coursesCount = ((Number) list.getNumFound()).intValue();
+			coursesCount = list.getNumFound();
 		}
 		List<String> ids = new ArrayList<>(list.size());
 		for (SolrDocument doc : list) {

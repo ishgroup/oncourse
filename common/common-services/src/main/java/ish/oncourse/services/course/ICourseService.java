@@ -62,7 +62,7 @@ public interface ICourseService {
 	 * Get courses count for current site. 
 	 * @return
 	 */
-	Integer getCoursesCount();
+	Long getCoursesCount();
 
 	/**
 	 * Get last modified date for course in current site.
