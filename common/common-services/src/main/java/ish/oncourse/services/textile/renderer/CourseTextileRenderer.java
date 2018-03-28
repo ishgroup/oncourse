@@ -50,7 +50,7 @@ public class CourseTextileRenderer extends AbstractRenderer {
 		String tagName = tagParams.get(CourseTextileAttributes.COURSE_PARAM_TAG.getValue());
 		Course course = null;
 		if (code != null) {
-			course = courseService.getCourse(Course.CODE_PROPERTY, code);
+			course = courseService.getCourseByCode(code);
 		} else {
 			course = courseService.getCourse(tagName);
 		}

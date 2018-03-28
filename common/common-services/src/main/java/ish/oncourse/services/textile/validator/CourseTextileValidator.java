@@ -34,7 +34,7 @@ public class CourseTextileValidator extends AbstractTextileValidator {
 		String code = tagParams.get(CourseTextileAttributes.COURSE_PARAM_CODE.getValue());
 		String tagged = tagParams.get(CourseTextileAttributes.COURSE_PARAM_TAG.getValue());
 		if (code != null) {
-			Course course = courseService.getCourse(Course.CODE_PROPERTY, code);
+			Course course = courseService.getCourseByCode(code);
 			if (course == null) {
 				errors.addFailure(getCourseNotFoundByCode(code),
 						ValidationFailureType.CONTENT_NOT_FOUND);

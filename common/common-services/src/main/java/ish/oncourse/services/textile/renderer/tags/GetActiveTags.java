@@ -56,7 +56,7 @@ public class GetActiveTags {
 
 	private void initTagsForCourse() {
 		String courseCode = path.substring(path.lastIndexOf("/") + 1);
-		Course course = courseService.getCourse(Course.CODE.getName(), courseCode);
+		Course course = courseService.getCourseByCode(courseCode);
 		if (course != null) {
 			tags.addAll(tagService.getTagsForEntity(Course.class.getSimpleName(), course.getId()));
 		}

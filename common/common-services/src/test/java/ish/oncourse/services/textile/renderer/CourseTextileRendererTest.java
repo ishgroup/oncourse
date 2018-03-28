@@ -51,7 +51,7 @@ public class CourseTextileRendererTest {
 		tag = new Tag();
 		renderer = new CourseTextileRenderer(courseService,
 				pageRenderer, tagService);
-		when(courseService.getCourse(Course.CODE_PROPERTY, TEST_COURSE_CODE))
+		when(courseService.getCourseByCode(TEST_COURSE_CODE))
 				.thenReturn(course);
 		when(tagService.getTagByFullPath(TAG_NAME)).thenReturn(tag);
 		when(courseService.getCourse(TAG_NAME)).thenReturn(course);
