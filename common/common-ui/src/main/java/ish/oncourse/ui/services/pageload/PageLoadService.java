@@ -7,6 +7,7 @@ import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.resource.WebTemplateChangeTracker;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
+import ish.oncourse.services.site.WebSiteVersionService;
 import ish.oncourse.ui.services.pageload.template.GetTemplateKey;
 import ish.oncourse.ui.services.pageload.template.resource.GetSiteTemplateResource;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -113,7 +114,10 @@ public class PageLoadService {
 
 	private <V> V getCachedValue(CacheKey cacheKey, MultiKey key, Class<V> valueClass, Supplier<V> get) {
 		try {
-			Cache<MultiKey, V> cache = getOrCreateCache.getOrCreate(cacheKey.getCacheName(webSiteVersionService.getApplicationKey()), MultiKey.class, valueClass);
+			String appKey = webSiteVersionService.getApplicationKey();
+			if (appKey.startsWith(WebSiteVersionService.EDITOR_PREFIX))
+				return get.get();
+			Cache<MultiKey, V> cache = getOrCreateCache.getOrCreate(cacheKey.getCacheName(appKey), MultiKey.class, valueClass);
 			V v = cache.get(key);
 			if (v == null) {
 				v = get.get();
