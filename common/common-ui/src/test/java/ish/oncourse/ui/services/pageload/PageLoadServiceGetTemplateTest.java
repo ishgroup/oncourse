@@ -74,7 +74,7 @@ public class PageLoadServiceGetTemplateTest {
 
 	@Test
 	public void test_getTemplate() {
-		Mockito.when(webSiteVersionService.getApplicationKey()).thenReturn(WebSiteVersionService.EDITOR_PREFIX);
+		Mockito.when(webSiteVersionService.getApplicationKey()).thenReturn(WebSiteVersionService.WEB_PREFIX);
 		ComponentModel model = TestDataFactory.componentModel();
 
 		ComponentTemplate expected = pageLoadService.getTemplate(model, selector);
@@ -83,12 +83,12 @@ public class PageLoadServiceGetTemplateTest {
 		ComponentTemplate second = pageLoadService.getTemplate(model, selector);
 		Assert.assertEquals(second, expected);
 
-		Mockito.when(webSiteVersionService.getApplicationKey()).thenReturn(WebSiteVersionService.WEB_PREFIX);
+		Mockito.when(webSiteVersionService.getApplicationKey()).thenReturn(WebSiteVersionService.EDITOR_PREFIX);
 		second = pageLoadService.getTemplate(model, selector);
 		Assert.assertNotEquals(second, expected);
 
 
-		Mockito.when(webSiteVersionService.getApplicationKey()).thenReturn(WebSiteVersionService.EDITOR_PREFIX);
+		Mockito.when(webSiteVersionService.getApplicationKey()).thenReturn(WebSiteVersionService.WEB_PREFIX);
 		selectors.stream().filter((s) -> !s.equals(selector)).forEach((selector) -> {
 			ComponentTemplate result = pageLoadService.getTemplate(model, selector);
 			Assert.assertNotEquals(String.format("%s not equals %s for selector %s", result, PageLoadService.missingTemplate, selector), PageLoadService.missingTemplate, result);
