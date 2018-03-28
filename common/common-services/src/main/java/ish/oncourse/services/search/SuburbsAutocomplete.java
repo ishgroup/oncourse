@@ -55,19 +55,25 @@ public class SuburbsAutocomplete {
             }
 
             for (SolrDocument doc : responseResults) {
-                String val = doc.getFieldValue(FIELD_suburb) + " "
-                        + doc.getFieldValue(FIELD_postcode);
-
-                JSONObject obj = new JSONObject();
-
-                obj.put("id", val);
-                obj.put("label", val);
-                obj.put("value", val);
-
-                array.put(obj);
+                array.put(buildElement(doc));
             }
         }
         return new TextStreamResponse("text/json", array.toString());
+    }
+
+    protected JSONObject buildElement(SolrDocument doc) {
+        String suburb = (String) doc.getFieldValue(FIELD_suburb);
+        String postcode = (String) doc.getFieldValue(FIELD_postcode);
+        String val = String.format("%s %s", suburb, postcode);
+
+        JSONObject obj = new JSONObject();
+
+        obj.put("id", val);
+        obj.put("label", val);
+        obj.put("value", suburb);
+        obj.put("suburb", suburb);
+        obj.put("postcode", postcode);
+        return obj;
     }
     
 }
