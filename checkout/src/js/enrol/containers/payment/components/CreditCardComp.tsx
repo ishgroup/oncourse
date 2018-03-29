@@ -8,6 +8,7 @@ import {PayerSelect} from "./PayerSelect";
 import {PayerAdd} from "./PayerAdd";
 import {FieldName, PaymentService} from "../services/PaymentService";
 import {MaskedTextField} from "../../../../components/form-new/MaskedTextField";
+import {VisaMasterCardImg, AmexImg, CvvImg} from "./CreditCardImages";
 
 interface Props {
   contacts: Contact[];
@@ -37,7 +38,7 @@ class CreditCardComp extends React.Component<Props, any> {
 
     return card && card.type === 'american-express'
     ? [/\d/, /\d/, /\d/, /\d/, " ", /\d/, /\d/, /\d/, /\d/, " ", /\d/, /\d/, /\d/, /\d/, " ", /\d/, /\d/, /\d/]
-    : [/\d/, /\d/, /\d/, /\d/, " ", /\d/, /\d/, /\d/, /\d/, " ", /\d/, /\d/, /\d/, /\d/, " ", /\d/, /\d/, /\d/, /\d/]
+    : [/\d/, /\d/, /\d/, /\d/, " ", /\d/, /\d/, /\d/, /\d/, " ", /\d/, /\d/, /\d/, /\d/, " ", /\d/, /\d/, /\d/, /\d/];
   }
 
   render() {
@@ -54,7 +55,7 @@ class CreditCardComp extends React.Component<Props, any> {
                   <label>Pay now</label>
                   <span id="cardtotalstring">
                     ${Number(amount.payNow).toFixed(2)}
-                    <img alt="visa card and master card" src="/s/img/visa-mastercard.png"/>
+                    <VisaMasterCardImg/>
                   </span>
                 </p>
 
@@ -93,7 +94,7 @@ class CreditCardComp extends React.Component<Props, any> {
                   label="Number"
                   type="text"
                   required={true}
-                  mask={(val) => this.getCardNumberMask(val)}
+                  mask={ val => this.getCardNumberMask(val)}
                 />
 
                 <Field
@@ -109,7 +110,7 @@ class CreditCardComp extends React.Component<Props, any> {
                   mask={[/\d/, /\d/, /\d/, /\d/]}
                 >
                   <span className="cvv-help">
-                    <img className="vcc-card-image" alt="CVV" src="/s/img/cvv-image.png"/>
+                    <CvvImg/>
                     <a href="#" onClick={openCvvHelp}> What is CVV? </a>
                   </span>
 
