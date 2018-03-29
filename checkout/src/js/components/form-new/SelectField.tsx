@@ -48,7 +48,7 @@ class SelectField extends React.Component<any, any> {
     } else {
       return Promise.resolve([]);
     }
-  };
+  }
 
   private loadOptionsDebounce = debounce((input: string): Promise<any> => {
     const {loadOptions} = this.props;
@@ -59,15 +59,17 @@ class SelectField extends React.Component<any, any> {
     } else {
       return Promise.resolve([]);
     }
-  }, 600);
+  },                                     600);
 
   private onChange = res => {
     const input: WrappedFieldInputProps = inputFrom(this.props);
+    const result = (typeof res === "object" && res.length === 0) ? null : res;
 
     const props: Props = this.toProps();
     props.onBlurSelect && props.onBlurSelect(props.input.name);
-    input.onChange(this.props.returnType === 'object' ? res : res.value);
-  };
+
+    input.onChange(this.props.returnType === 'object' ? result : result.value);
+  }
 
   private onBlur = e => {
     const val = e.target.value;
@@ -77,7 +79,7 @@ class SelectField extends React.Component<any, any> {
     if (val && props.newOptionEnable) {
       this.onChange({key: val, value: val});
     }
-  };
+  }
 
   toProps = (): Props => {
     const input: WrappedFieldInputProps = inputFrom(this.props);
@@ -95,14 +97,14 @@ class SelectField extends React.Component<any, any> {
       newOptionEnable: this.props.newOptionEnable || false,
       onBlurSelect: this.props.onBlurSelect ? this.props.onBlurSelect : undefined,
     };
-  };
+  }
 
   render() {
     const props: any = this.toProps();
     const RenderSelectWrapper = props.newOptionEnable ? Select.AsyncCreatable : Select.Async;
     const isShowError = showError(props);
     const showValuesOnInit: boolean = !props.searchable || props.showOnFocus;
-
+    console.log(props.input);
     const inner = props => (
       <div>
         {props.label &&
