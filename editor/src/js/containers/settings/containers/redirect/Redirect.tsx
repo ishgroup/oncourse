@@ -22,6 +22,7 @@ export class Redirect extends React.PureComponent<Props, any> {
 
     this.state = {
       rules: props.redirect.rules,
+      filter: '',
     };
   }
 
@@ -78,8 +79,14 @@ export class Redirect extends React.PureComponent<Props, any> {
     }));
   }
 
+  onChangeFilter(e) {
+    this.setState({
+      filter: e.target.value,
+    });
+  }
+
   render() {
-    const {rules} = this.state;
+    const {rules, filter} = this.state;
     const {fetching} = this.props;
 
     return (
@@ -90,6 +97,23 @@ export class Redirect extends React.PureComponent<Props, any> {
           http/https for redirecting to another website).
         </p>
 
+        {rules && rules.length > 0 &&
+          <Row>
+            <Col sm="2">
+              <FormGroup>
+                <Input
+                  type="text"
+                  name="filter"
+                  placeholder="Filter"
+                  id="filter"
+                  value={filter}
+                  onChange={e => this.onChangeFilter(e)}
+                />
+              </FormGroup>
+            </Col>
+          </Row>
+        }
+
         <FormGroup>
           <Button onClick={() => this.onAddNew()} color="primary">
             <span className="icon icon-add_circle"/> Add new
@@ -97,14 +121,16 @@ export class Redirect extends React.PureComponent<Props, any> {
         </FormGroup>
 
         <div className="rules">
-          {rules && rules.map((rule, index) =>
-            <RedirectItem
-              key={index}
-              item={rule}
-              index={index}
-              onChange={this.onChange.bind(this)}
-              onRemove={this.onRemove.bind(this)}
-            />,
+          {rules && rules
+            .filter(r => r.from.indexOf(filter) !== -1 || r.to.indexOf(filter) !== -1 || !r.from || !r.to)
+            .map((rule, index) =>
+              <RedirectItem
+                key={index}
+                item={rule}
+                index={index}
+                onChange={this.onChange.bind(this)}
+                onRemove={this.onRemove.bind(this)}
+              />,
           )}
         </div>
 

@@ -38,6 +38,7 @@ class Theme extends React.Component<Props, any> {
           <Col md="5">
             <Source
               className="blocks"
+              showFilter={true}
               placeholder="Blocks"
               id="default"
               list={getFreeBlocks(theme, blocks)}
