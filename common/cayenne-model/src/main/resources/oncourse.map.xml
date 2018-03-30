@@ -1174,7 +1174,7 @@
 	<db-entity name="Survey">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="comment" type="VARCHAR" length="500"/>
+		<db-attribute name="comment" type="LONGVARCHAR"/>
 		<db-attribute name="courseScore" type="INTEGER" isMandatory="true" length="10"/>
 		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="enrolmentId" type="BIGINT" isMandatory="true" length="19"/>
@@ -1417,8 +1417,8 @@
 		<db-attribute name="deployedById" type="BIGINT"/>
 		<db-attribute name="deployedOn" type="TIMESTAMP"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="webSiteId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="siteVersion" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="webSiteId" type="BIGINT" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="WebTemplate">
 		<db-attribute name="content" type="LONGVARCHAR" isMandatory="true" length="16777215"/>

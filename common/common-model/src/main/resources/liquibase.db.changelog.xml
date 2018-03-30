@@ -4688,5 +4688,9 @@
 			UPDATE WebSiteVersion SET siteVersion = id;
 		</sql>
 	</changeSet>
+
+	<changeSet id="321" author="anarut" context="production" runOnChange="false" runAlways="false">
+		<sql>ALTER TABLE Survey MODIFY comment LONGTEXT NULL;</sql>
+	</changeSet>
 	
 </databaseChangeLog>
