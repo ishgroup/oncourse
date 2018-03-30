@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
+
+	<!-- Prepare additional relations for invoices, enrolments -->
 	<Country id="1" ishVersion="1" name="Tuvalu" isoCodeAlpha2="TV" isoCodeAlpha3="TUV" isoCodeNumeric="798" asccssCode="1609" saccCode="1511"/>
 	<College id="1" name="Sydney Community College"
 		webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880"
@@ -54,7 +56,9 @@
 		maximumPlaces="30" minimumPlaces="30" countOfSessions="3"
 		deliveryMode="1" feeExGst="454.55" feeGst="45.45" isDistantLearningCourse="0"/>
 
-	<!-- Invoice 2000: we should send Instruction because it is not balanced but should be -->
+	<!-- 0. Invoice fetch SQL: valid not balanced invoice
+	invoice should be fetched -->
+
 	<PaymentIn id="2000" amount="100" angelId="22" collegeId="1"
 		contactId="2000" created="2011-09-12 00:17:21.0" modified="2011-09-12 00:17:21.0"
 		source="W" status="3" statusNotes="" type="2" confirmationStatus="1"/>
@@ -77,86 +81,212 @@
 				 priceEachExTax="99" taxEach="1" title="Test Invoice Line"
 				 created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
 
-	<!-- Invoice 2001: we shouldn't send Instruction because it is balanced -->
-	<PaymentIn id="2001" amount="100" angelId="2001" collegeId="1"
+	<!-- 1. Invoice fetch SQL: amount owing conditions:
+			- Invoice.amountOwing is negative;
+			- Invoice.amountOwing <> payment amount;
+			- Invoice.amountOwing <> payment line amount
+	invoice shouldn't be fetched -->
+
+	<Invoice type="1" id="4000" angelId="4000" source="O" amountOwing="-100.00" contactId="2000"
+			 collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
+			 invoiceDate="2011-09-10 11:14:54" invoiceNumber="322" totalExGst="320.00"
+			 totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
+
+	<PaymentIn id="4000" angelId="4000" amount="-101" collegeId="1"
+			   contactId="2000" created="2011-09-12 00:17:21.0" modified="2011-09-12 00:17:21.0"
+			   source="W" status="2" statusNotes="" type="2" confirmationStatus="1"/>
+
+	<Enrolment id="4000" angelId="4000" source="O" collegeId="1" courseClassId="2000"
+			   studentId="2000" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
+			   status="3" confirmationStatus="1" feehelpamount="0"/>
+
+	<PaymentInLine id="4000" angelId="4000" amount="-102"
+				   collegeId="1" created="2011-09-12 00:17:21.0" invoiceId="4000"
+				   modified="2011-09-12 00:17:21.0" paymentInId="4000" />
+
+	<InvoiceLine id="4000" angelId="4000" collegeId="1" enrolmentId="4000"
+				 invoiceId="4000" quantity="1.0" discountEachExTax="0.00"
+				 priceEachExTax="99" taxEach="1" title="Test Invoice Line"
+				 created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+
+	<!-- 2. Invoice fetch SQL: replication condition
+			- Invoice.angelId = null, invoice not replicated to angel
+	invoice shouldn't be fetched:-->
+
+	<Invoice type="1" id="4001" source="O" amountOwing="100.00" contactId="2000"
+			 collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
+			 invoiceDate="2011-09-10 11:14:54" invoiceNumber="322" totalExGst="320.00"
+			 totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
+
+	<PaymentIn id="4001" amount="100" collegeId="1"
 			   contactId="2000" created="2011-09-12 00:17:21.0" modified="2011-09-12 00:17:21.0"
 			   source="W" status="3" statusNotes="" type="2" confirmationStatus="1"/>
 
-	<Invoice type="1" id="2001" source="O" amountOwing="0.00" contactId="2001" angelId="2001"
-			 collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
-			 invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="320.00"
-			 totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
-
-	<Enrolment id="2001" source="O" collegeId="1" courseClassId="2000"
-			   studentId="2001" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
+	<Enrolment id="4001" source="O" collegeId="1" courseClassId="2000"
+			   studentId="2000" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
 			   status="3" confirmationStatus="1" feehelpamount="0"/>
 
-	<PaymentInLine id="2001" amount="100" angelId="23"
-				   collegeId="1" created="2011-09-12 00:17:21.0" invoiceId="2001"
-				   modified="2011-09-12 00:17:21.0" paymentInId="2000" />
+	<PaymentInLine id="4001" amount="100"
+				   collegeId="1" created="2011-09-12 00:17:21.0" invoiceId="4001"
+				   modified="2011-09-12 00:17:21.0" paymentInId="4001" />
 
-	<InvoiceLine id="2001" collegeId="1" enrolmentId="2001"
-				 invoiceId="2001" quantity="1.0" discountEachExTax="0.00"
+	<InvoiceLine id="4001" collegeId="1" enrolmentId="4001"
+				 invoiceId="4001" quantity="1.0" discountEachExTax="0.00"
 				 priceEachExTax="99" taxEach="1" title="Test Invoice Line"
 				 created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
 
-	<!-- Invoice 2002: we shouldn't send Instruction because this invoice has two payments which compensate each other  -->
-	<PaymentIn id="2002" amount="100" angelId="2001" collegeId="1"
-			   contactId="2000" created="2011-09-12 00:17:21.0" modified="2011-09-12 00:17:21.0"
-			   source="W" status="3" statusNotes="" type="6" confirmationStatus="1"/>
-	
-	<PaymentIn id="2003" amount="-100" angelId="2001" collegeId="1"
-			   contactId="2000" created="2011-09-12 00:17:21.0" modified="2011-09-12 00:17:21.0"
-			   source="W" status="3" statusNotes="" type="6" confirmationStatus="1"/>
+	<!-- 3. Invoice fetch SQL: invoice line sums:
+			- sum(priceEachExTax - discountEachExTax + taxEach) of invoice lines
+	invoice shouldn't be fetched:-->
 
-	<PaymentInLine id="2002" amount="100" angelId="23"
-				   collegeId="1" created="2011-09-12 00:17:21.0" invoiceId="2002"
-				   modified="2011-09-12 00:17:21.0" paymentInId="2002" />
-	
-	<PaymentInLine id="2003" amount="-100" angelId="23"
-				   collegeId="1" created="2011-09-12 00:17:21.0" invoiceId="2002"
-				   modified="2011-09-12 00:17:21.0" paymentInId="2003" />
-
-	<Invoice type="1" id="2002" source="O" amountOwing="100.00" contactId="2001" angelId="2001"
+	<Invoice type="1" id="4002" angelId="4002" source="O" amountOwing="100.00" contactId="2000"
 			 collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
-			 invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="320.00"
+			 invoiceDate="2011-09-10 11:14:54" invoiceNumber="322" totalExGst="320.00"
 			 totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
 
-	<Enrolment id="2002" source="O" collegeId="1" courseClassId="2000"
-			   studentId="2001" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
-			   status="3" confirmationStatus="1" feehelpamount="0"/>
-
-
-	<InvoiceLine id="2002" collegeId="1" enrolmentId="2002"
-				 invoiceId="2002" quantity="1.0" discountEachExTax="0.00"
-				 priceEachExTax="99" taxEach="1" title="Test Invoice Line"
-				 created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
-
-	<!-- Invoice 2004: we shouldn't send Instruction because this invoice has two payments which compensate each other  -->
-	<PaymentIn id="2004" amount="100" collegeId="1"
+	<PaymentIn id="4002" angelId="4002" amount="100" collegeId="1"
 			   contactId="2000" created="2011-09-12 00:17:21.0" modified="2011-09-12 00:17:21.0"
 			   source="W" status="3" statusNotes="" type="2" confirmationStatus="1"/>
 
-	<PaymentInLine id="2004" amount="100"
-				   collegeId="1" created="2011-09-12 00:17:21.0" invoiceId="2004"
-				   modified="2011-09-12 00:17:21.0" paymentInId="2004" />
-
-	<Invoice type="1" id="2004" source="O" amountOwing="100.00" contactId="2001"
-			 collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
-			 invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="320.00"
-			 totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
-
-	<Enrolment id="2004" source="O" collegeId="1" courseClassId="2000"
-			   studentId="2001" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
+	<Enrolment id="4002" angelId="4002" source="O" collegeId="1" courseClassId="2000"
+			   studentId="2000" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
 			   status="3" confirmationStatus="1" feehelpamount="0"/>
 
+	<Enrolment id="4012" angelId="4012" source="O" collegeId="1" courseClassId="2000"
+			   studentId="2000" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
+			   status="3" confirmationStatus="1" feehelpamount="0"/>
 
-	<InvoiceLine id="2004" collegeId="1" enrolmentId="2004"
-				 invoiceId="2004" quantity="1.0" discountEachExTax="0.00"
+	<PaymentInLine id="4002" angelId="4002" amount="100"
+				   collegeId="1" created="2011-09-12 00:17:21.0" invoiceId="4002"
+				   modified="2011-09-12 00:17:21.0" paymentInId="4002" />
+
+	<InvoiceLine id="4002" angelId="4002" collegeId="1" enrolmentId="4002"
+				 invoiceId="4002" quantity="1.0" discountEachExTax="2.00"
+				 priceEachExTax="179" taxEach="11" title="Test Invoice Line"
+				 created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+
+	<InvoiceLine id="4012" angelId="4012" collegeId="1" enrolmentId="4012"
+				 invoiceId="4002" quantity="1.0" discountEachExTax="1.00"
+				 priceEachExTax="144" taxEach="15" title="Test Invoice Line"
+				 created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+
+	<!-- 4. Invoice fetch SQL: related payment condition:
+			- related Payment (id 4013) with negative PaymentInLine (4013)
+	invoice shouldn't be fetched:-->
+
+	<Invoice type="1" id="4003" angelId="4003" source="O" amountOwing="100.00" contactId="2000"
+			 collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
+			 invoiceDate="2011-09-10 11:14:54" invoiceNumber="322" totalExGst="320.00"
+			 totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
+
+	<PaymentIn id="4003" angelId="4003" amount="100" collegeId="1"
+			   contactId="2000" created="2011-09-12 00:17:21.0" modified="2011-09-12 00:17:21.0"
+			   source="W" status="3" statusNotes="" type="2" confirmationStatus="1"/>
+
+	<Enrolment id="4003" angelId="4003" source="O" collegeId="1" courseClassId="2000"
+			   studentId="2000" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
+			   status="3" confirmationStatus="1" feehelpamount="0"/>
+
+	<PaymentInLine id="4003" angelId="4003" amount="100"
+				   collegeId="1" created="2011-09-12 00:17:21.0" invoiceId="4003"
+				   modified="2011-09-12 00:17:21.0" paymentInId="4003" />
+
+	<InvoiceLine id="4003" angelId="4003" collegeId="1" enrolmentId="4003"
+				 invoiceId="4003" quantity="1.0" discountEachExTax="0.00"
 				 priceEachExTax="99" taxEach="1" title="Test Invoice Line"
 				 created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
 
+	<PaymentInLine id="4023" angelId="4023" amount="-100"
+				   collegeId="1" created="2011-09-12 00:17:21.0" invoiceId="4003"
+				   modified="2011-09-12 00:17:21.0" paymentInId="4003" />
 
-	<Preference id="1" collegeId="1" name="license.ccprocessing"
+	<Invoice type="1" id="4013" angelId="4013" source="O" amountOwing="100.00" contactId="2000"
+			 collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
+			 invoiceDate="2011-09-10 11:14:54" invoiceNumber="322" totalExGst="320.00"
+			 totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
+
+	<PaymentIn id="4013" angelId="4013" amount="-100" collegeId="1"
+			   contactId="2000" created="2011-09-12 00:17:21.0" modified="2011-09-12 00:17:21.0"
+			   source="W" status="3" statusNotes="" type="2" confirmationStatus="1"/>
+
+	<Enrolment id="4013" angelId="4013" source="O" collegeId="1" courseClassId="2000"
+			   studentId="2000" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
+			   status="3" confirmationStatus="1" feehelpamount="0"/>
+
+	<PaymentInLine id="4013" angelId="4013" amount="-100"
+				   collegeId="1" created="2011-09-12 00:17:21.0" invoiceId="4013"
+				   modified="2011-09-12 00:17:21.0" paymentInId="4013" />
+
+	<InvoiceLine id="4013" angelId="4013" collegeId="1" enrolmentId="4013"
+				 invoiceId="4013" quantity="1.0" discountEachExTax="0.00"
+				 priceEachExTax="-99" taxEach="-1" title="Test Invoice Line"
+				 created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+
+	<!-- 5. Invoice fetch SQL: enrolment conditions:
+			- Enrolment.status <> SUCCESS (enrolment id 4004)
+			- InvoiceLine.enrolmentId = null (invoice line id 4014)
+	invoice shouldn't be fetched:-->
+
+	<Invoice type="1" id="4004" angelId="4004" source="O" amountOwing="100.00" contactId="2000"
+			 collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
+			 invoiceDate="2011-09-10 11:14:54" invoiceNumber="322" totalExGst="320.00"
+			 totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
+
+	<PaymentIn id="4004" angelId="4004" amount="200" collegeId="1"
+			   contactId="2000" created="2011-09-12 00:17:21.0" modified="2011-09-12 00:17:21.0"
+			   source="W" status="3" statusNotes="" type="2" confirmationStatus="1"/>
+
+	<Enrolment id="4004" angelId="4004" source="O" collegeId="1" courseClassId="2000"
+			   studentId="2000" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
+			   status="4" confirmationStatus="1" feehelpamount="0"/>
+
+	<PaymentInLine id="4004" angelId="4004" amount="100"
+				   collegeId="1" created="2011-09-12 00:17:21.0" invoiceId="4004"
+				   modified="2011-09-12 00:17:21.0" paymentInId="4004" />
+
+	<InvoiceLine id="4004" angelId="4004" collegeId="1" enrolmentId="4004"
+				 invoiceId="4004" quantity="1.0" discountEachExTax="0.00"
+				 priceEachExTax="99" taxEach="1" title="Test Invoice Line"
+				 created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+
+	<InvoiceLine id="4014" angelId="4014" collegeId="1"
+				 invoiceId="4004" quantity="1.0" discountEachExTax="0.00"
+				 priceEachExTax="99" taxEach="1" title="Test Invoice Line"
+				 created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+
+	<!-- 6. Invoice fetch SQL: college conditions:
+			- College.billingCode = null
+			- College.lastRemoteAuthentication < now() - 1 day
+	invoice shouldn't be fetched-->
+
+	<College id="2" name="Disabled Sydney Community College"
+			 webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880"
+			 communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09"
+			 timezone="Australia/Sydney"
+			 requiresAvetmiss="0" lastRemoteAuthentication="1999-10-21 20:36:22"/>
+
+	<Invoice type="1" id="4005" angelId="4005" source="O" amountOwing="100.00" contactId="2000"
+			 collegeId="2" dateDue="2011-09-20 11:14:54" description="invoice for testing"
+			 invoiceDate="2011-09-10 11:14:54" invoiceNumber="322" totalExGst="320.00"
+			 totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
+
+	<PaymentIn id="4005" angelId="4005" amount="100" collegeId="2"
+			   contactId="2000" created="2011-09-12 00:17:21.0" modified="2011-09-12 00:17:21.0"
+			   source="W" status="3" statusNotes="" type="2" confirmationStatus="1"/>
+
+	<Enrolment id="4005" angelId="4005" source="O" collegeId="2" courseClassId="2000"
+			   studentId="2000" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
+			   status="3" confirmationStatus="1" feehelpamount="0"/>
+
+	<PaymentInLine id="4005" angelId="4005" amount="100"
+				   collegeId="2" created="2011-09-12 00:17:21.0" invoiceId="4005"
+				   modified="2011-09-12 00:17:21.0" paymentInId="4005" />
+
+	<InvoiceLine id="4005" angelId="4005" collegeId="2" enrolmentId="4005"
+				 invoiceId="4005" quantity="1.0" discountEachExTax="0.00"
+				 priceEachExTax="99" taxEach="1" title="Test Invoice Line"
+				 created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+
+	<Preference id="1" collegeId="2" name="license.ccprocessing"
 		value_string="true" />
 </dataset>

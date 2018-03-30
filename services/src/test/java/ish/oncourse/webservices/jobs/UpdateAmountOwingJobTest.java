@@ -39,7 +39,8 @@ public class UpdateAmountOwingJobTest extends ServiceTest {
 
         ObjectContext objectContext = this.cayenneService.newNonReplicatingContext();
         List<Instruction> instructions = ObjectSelect.query(Instruction.class).select(objectContext);
-        assertEquals(1, instructions.size());
+
+        assertEquals("SQL for invoice loading was changed", 1, instructions.size());
         assertEquals("queue:instructWithRelationships:Invoice:2000", instructions.get(0).getMessage());
     }
 }
