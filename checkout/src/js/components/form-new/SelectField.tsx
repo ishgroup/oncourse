@@ -104,7 +104,7 @@ class SelectField extends React.Component<any, any> {
     const RenderSelectWrapper = props.newOptionEnable ? Select.AsyncCreatable : Select.Async;
     const isShowError = showError(props);
     const showValuesOnInit: boolean = !props.searchable || props.showOnFocus;
-    console.log(props.input);
+
     const inner = props => (
       <div>
         {props.label &&
