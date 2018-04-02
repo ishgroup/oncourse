@@ -16,6 +16,7 @@ interface Props {
   onSetPayer?: (id: string) => void;
   onAddPayer?: () => any;
   onAddCompany?: () => any;
+  onInit?: () => any;
   payerId?: string;
   voucherPayerEnabled?: boolean;
   openCvvHelp: () => void;
@@ -31,6 +32,10 @@ const Header = () => {
 };
 
 class CreditCardComp extends React.Component<Props, any> {
+
+  componentDidMount() {
+    this.props.onInit && this.props.onInit();
+  }
 
   getCardNumberMask(val) {
     const number = val.replace(/_/g, '');

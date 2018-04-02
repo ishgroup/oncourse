@@ -3,7 +3,7 @@ import {connect, Dispatch} from "react-redux";
 import {IshState} from "../../../services/IshState";
 import {PaymentComp} from "./components/PaymentComp";
 import PaymentForm from "./components/PaymentForm";
-import {addCode, toggleRedeemVoucher, updateAmount, updatePayNow} from "../../actions/Actions";
+import {addCode, toggleRedeemVoucher, updatePayNow} from "../../actions/Actions";
 
 const PropsBy = (state: IshState): any => {
   return {
@@ -23,7 +23,6 @@ export const ActionsBy = (dispatch: Dispatch<any>): any => {
     },
     onUpdatePayNow: (val: number, validate: boolean) => {
       dispatch(updatePayNow(val, validate));
-      // dispatch(updateAmount({...amount, payNow: val}));
     },
     onToggleVoucher: (voucher, enabled) => {
       dispatch(toggleRedeemVoucher(voucher, enabled));

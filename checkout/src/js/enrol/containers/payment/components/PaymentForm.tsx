@@ -4,6 +4,7 @@ import Rodal from "rodal";
 import classnames from "classnames";
 import CreditCardComp from "./CreditCardComp";
 import CorporatePassComp from "./CorporatePassComp";
+import PayLaterComp from "./PayLaterComp";
 import {CvvHelp} from "./CvvHelp";
 import {Conditions} from "./Conditions";
 import {FieldName, CreditCardFormValues, CorporatePassFormValues} from "../services/PaymentService";
@@ -12,7 +13,9 @@ import {
   submitPaymentCorporatePass, updatePaymentStatus,
 } from "../actions/Actions";
 import {connect} from "react-redux";
-import {changePhase, getAmount, setPayer, showSyncErrors, togglePayNowVisibility} from "../../../actions/Actions";
+import {
+  changePhase, getAmount, setPayer, showSyncErrors, togglePayNowVisibility, updatePayNow,
+} from "../../../actions/Actions";
 import {Phase} from "../../../reducers/State";
 import CheckoutService from "../../../services/CheckoutService";
 import {IshState} from "../../../../services/IshState";
@@ -43,6 +46,8 @@ interface Props extends FormProps<DataShape, any, any> {
   onUnmountPassComponent?: () => void;
   corporatePassAvailable?: boolean;
   creditCardAvailable?: boolean;
+  payLaterAvailable?: boolean;
+  updatePayNow: (val, validate) => void;
   conditions?: {
     refundPolicyUrl?: string,
     featureEnrolmentDisclosure?: string,
@@ -69,6 +74,11 @@ class PaymentForm extends React.Component<Props, any> {
 
   getValidTab = () => {
     const {currentTab, creditCardAvailable} = this.props;
+
+    if (currentTab === Tabs.payLater) {
+      return Tabs.payLater;
+    }
+
     return currentTab === Tabs.creditCard && creditCardAvailable ? Tabs.creditCard : Tabs.corporatePass;
   }
 
@@ -95,63 +105,77 @@ class PaymentForm extends React.Component<Props, any> {
     const {
       handleSubmit, contacts, amount, invalid, pristine, submitting, onSubmitPass, corporatePass, corporatePassError,
       onSetPayer, payerId, onAddPayer, onAddCompany, voucherPayerEnabled, currentTab, corporatePassAvailable, fetching,
-      onUnmountPassComponent, conditions, creditCardAvailable,
+      onUnmountPassComponent, conditions, creditCardAvailable, payLaterAvailable, updatePayNow,
     } = this.props;
 
     const disabled = (pristine || submitting);
 
     return (
       <form onSubmit={handleSubmit} id="payment-form" className={classnames({submitting})}>
-        {(Number(amount.payNow) !== 0 || (Number(amount.payNow) === 0 && corporatePass.id)) &&
-        <div>
 
-          <Rodal
-            visible={this.state.showCvvHelp}
-            onClose={() => this.closeCvvHelp()}
-            height={400}
-            animation="flip"
-          >
-            <div className="rodal-content">
-              <CvvHelp/>
-            </div>
-          </Rodal>
+        {(Number(amount.payNow) !== 0 || (Number(amount.payNow) === 0 && corporatePass.id) || payLaterAvailable) &&
+          <div>
+            <Rodal
+              visible={this.state.showCvvHelp}
+              onClose={() => this.closeCvvHelp()}
+              height={400}
+              animation="flip"
+            >
+              <div className="rodal-content">
+                <CvvHelp/>
+              </div>
+            </Rodal>
 
-          <div id="tabable-container">
-            <PaymentFormNav
-              paymentTabOnClick={this.paymentTabOnClick}
-              currentTab={currentTab}
-              corporatePassAvailable={corporatePassAvailable}
-              creditCardAvailable={creditCardAvailable}
-            />
+            <div id="tabable-container">
+              <PaymentFormNav
+                paymentTabOnClick={this.paymentTabOnClick}
+                currentTab={currentTab}
+                corporatePassAvailable={corporatePassAvailable}
+                creditCardAvailable={creditCardAvailable}
+                payLaterAvailable={payLaterAvailable}
+              />
 
-            <div className="tab-content">
+              <div className="tab-content">
 
-              {currentTab === Tabs.creditCard && creditCardAvailable &&
-                <CreditCardComp
-                  amount={amount}
-                  contacts={contacts}
-                  payerId={payerId}
-                  onSetPayer={onSetPayer}
-                  onAddPayer={onAddPayer}
-                  onAddCompany={onAddCompany}
-                  voucherPayerEnabled={voucherPayerEnabled}
-                  openCvvHelp={() => this.openCvvHelp()}
-                />
-              }
+                {currentTab === Tabs.creditCard && creditCardAvailable &&
+                  <CreditCardComp
+                    amount={amount}
+                    contacts={contacts}
+                    payerId={payerId}
+                    onSetPayer={onSetPayer}
+                    onAddPayer={onAddPayer}
+                    onAddCompany={onAddCompany}
+                    voucherPayerEnabled={voucherPayerEnabled}
+                    openCvvHelp={() => this.openCvvHelp()}
+                    onInit={() => Number(amount.payNow) === 0 ? updatePayNow(amount.subTotal, false) : undefined}
+                  />
+                }
 
-              {currentTab === Tabs.corporatePass && corporatePassAvailable &&
-                <CorporatePassComp
-                  onSubmitPass={onSubmitPass}
-                  corporatePass={corporatePass}
-                  onUnmount={onUnmountPassComponent}
-                  corporatePassError={corporatePassError}
-                  fetching={fetching}
-                />
-              }
+                {currentTab === Tabs.corporatePass && corporatePassAvailable &&
+                  <CorporatePassComp
+                    onSubmitPass={onSubmitPass}
+                    corporatePass={corporatePass}
+                    onUnmount={onUnmountPassComponent}
+                    corporatePassError={corporatePassError}
+                    fetching={fetching}
+                  />
+                }
 
+                {currentTab === Tabs.payLater && payLaterAvailable &&
+                  <PayLaterComp
+                    onInit={() => updatePayNow(0, false)}
+                    contacts={contacts}
+                    payerId={payerId}
+                    onSetPayer={onSetPayer}
+                    onAddPayer={onAddPayer}
+                    onAddCompany={onAddCompany}
+                    voucherPayerEnabled={voucherPayerEnabled}
+                  />
+                }
+
+              </div>
             </div>
           </div>
-        </div>
         }
 
         <Conditions conditions={conditions}/>
@@ -172,7 +196,7 @@ class PaymentForm extends React.Component<Props, any> {
 }
 
 const PaymentFormNav = props => {
-  const {paymentTabOnClick, currentTab, corporatePassAvailable, creditCardAvailable} = props;
+  const {paymentTabOnClick, currentTab, corporatePassAvailable, creditCardAvailable, payLaterAvailable} = props;
 
   return (
     <ul className="nav">
@@ -185,6 +209,12 @@ const PaymentFormNav = props => {
       {corporatePassAvailable &&
         <li className={classnames({active: currentTab === Tabs.corporatePass})}>
           <a href={`#${Tabs.corporatePass}`} onClick={paymentTabOnClick.bind(this)}>CorporatePass</a>
+        </li>
+      }
+
+      {payLaterAvailable &&
+        <li className={classnames({active: currentTab === Tabs.payLater})}>
+          <a href={`#${Tabs.payLater}`} onClick={paymentTabOnClick.bind(this)}>Pay later</a>
         </li>
       }
     </ul>
@@ -282,6 +312,7 @@ const mapStateToProps = (state: IshState) => {
     fetching: state.checkout.payment.fetching,
     corporatePassAvailable: state.preferences.hasOwnProperty('corporatePassEnabled') ? state.preferences.corporatePassEnabled : true,
     creditCardAvailable: state.preferences.hasOwnProperty('creditCardEnabled') ? state.preferences.creditCardEnabled : true,
+    payLaterAvailable: state.checkout.amount.isEditable && Number(state.checkout.amount.minPayNow) === 0,
     conditions: {
       refundPolicyUrl: state.config.termsAndConditions,
       featureEnrolmentDisclosure: state.config.featureEnrolmentDisclosure,
@@ -305,6 +336,9 @@ const mapDispatchToProps = dispatch => {
       dispatch(resetCorporatePass());
       dispatch(togglePayNowVisibility(true));
       dispatch(getAmount());
+    },
+    updatePayNow: (val, validate) => {
+      dispatch(dispatch(updatePayNow(val, validate)));
     },
   };
 };

@@ -12,4 +12,5 @@ export class State {
 export enum Tabs {
   creditCard,
   corporatePass,
+  payLater,
 }
