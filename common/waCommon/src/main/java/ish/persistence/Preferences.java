@@ -125,7 +125,8 @@ public class Preferences {
 	
 	public static final String LICENSE_FEE_HELP_EXPORT = "license.feeHelpExport";
 
-
+	public static final String LICENSE_FUNDING_CONTRACT = "license.fundingContract";
+	
 
 	// **************************************
 	// Messaging
@@ -457,5 +458,119 @@ public class Preferences {
 	
 	public static final String CLASS_DEFAULTS_DELIVERY_MODE = "courseclass_default_deliveryMode";
 	public static final String CLASS_DEFAULTS_FUNDING_SOURCE = "courseclass_default_fundingSource";
+
+
+
+	// **************************************
+	// Other
+	// **************************************
+	public static final String QE_DEFAULTS_TO_ZERO = "qe.payment.default.zero";
+	public static final String QE_DEFAULT_REPORT_ENROLMENT_KEYCODE = "qe.default.report.enrolment.keycode";
+	public static final String QE_DEFAULT_REPORT_INVOICE_KEYCODE = "qe.default.report.invoice.keycode";
+
+	public static final String GRAVATAR = "gravatar.enabled";
+
+
+
+	// **************************************
+	// Frame preferences
+	// **************************************
+	public static final String TOOLBAR_COLLAPSE_STATE = "toolbar.collapse";
+	public static final String FRAME_BOUNDS = "frame.bounds.";
+	public static final String LISTVIEW_COLUMNS = "listview.columns.";
+	public static final String LISTVIEW_DIVIDER = "listview.divider.";
+	public static final String QEVIEW_DIVIDER = "qeview.divider.";
+	public static final String EULA_AGREEMENT = "eula.agreement.";
+	public static final String TOOLBAR_ACTIVE_TAB = "toolbar.tab.active";
+	public static final String LISTVIEW_FILTERS_COLLAPSING = "listview.filters.collapsing.";
+	public static final String LISTVIEW_COLUMN_SORTED = "listview.column.sorted.";
+
+
+
+	// **************************************
+	// Login preferences
+	// **************************************
+	public static final String LASTLOGIN_USERNAME = "oncourse.login.last.username";
+	public static final String LASTLOGIN_SERVER_HOST = "oncourse.login.last.host";
+	public static final String LASTLOGIN_SERVER_PORT = "oncourse.login.last.port";
+	public static final String LASTLOGIN_SERVER_ISSSL = "oncourse.login.last.isssl";
+
 	
+	
+	// **************************************
+	// External storage preferences
+	// **************************************
+	public static final String STORAGE_BUCKET_NAME = "storage.bucket";
+	public static final String STORAGE_ACCESS_ID = "storage.access.id";
+	public static final String STORAGE_ACCESS_KEY = "storage.access.key";
+
+
+
+
+	public static final String AUSKEY_PASSWORD = "auskey.password";
+	public static final String AUSKEY_CERTIFICATE = "auskey.certificate";
+	public static final String AUSKEY_PRIVATE_KEY = "auskey.privatekey";
+	public static final String AUSKEY_SALT = "auskey.salt";
+
+
+
+	// **************************************
+	// Other preferences
+	// **************************************
+	public static final String USE_ONLY_OFFERED_MODULES_AND_QUALIFICATIONS = "use.offered.qualifications.only";
+	public static final String MYOB_LAST_EXPORT_DATE = "myob.last.export.date";
+
+
+
+	public static final String FEATURE_CONCESSIONS_IN_ENROLMENT = "feature.concessionsInEnrolment";
+	public static final String FEATURE_CONCESSION_USERS_CREATE = "feature.concession.existing.users.create";
+	public static final String FEATURE_ENROLMENT_DISCLOSURE = "feature.enrolmentDisclosure";
+	
+	
+	
+	// **************************************
+	// portal
+	// **************************************
+	public static final String PORTAL_HIDE_CLASS_ROLL_CONTACT_PHONE = "portal.hideClassRollContactPhone";
+	public static final String PORTAL_HIDE_CLASS_ROLL_CONTACT_EMAIL = "portal.hideClassRollContactEmail";
+
+	
+	
+	// **************************************
+	// finance
+	// **************************************
+	public static final String FINANCE_TRANSACTION_LOCKED = "finance.transaction_locked";
+
+	
+	
+	public static final String SERVICES_COMMUNICATION_KEY = "services.soap.communication.key";
+	public static final String REPLICATION_ENABLED = "replication.enabled";
+
+
+
+
+	public static final String QE_DEFAULT_REPORT_ENROLMENT = "ish.onCourse.enrolmentConfirmation";
+	public static final String QE_DEFAULT_REPORT_INVOICE = "ish.onCourse.invoiceReport";
+
+
+
+	// **************************************
+	// Printing
+	// **************************************
+	public static final String REPORT_OVERLAY_PREFIX = "report_overlay_";
+	public static final String DEFAULT_REPORT_OVERLAY = "report_overlay_default";
+
+
+
+	// **************************************
+	// File destinations
+	// **************************************
+	public static final String MAILINGLIST_EXPORT_FOLDER = "report.mailingListExport";
+	public static final String REPORT_PDF_FOLDER = "report.pdfSaveFolder";
+	public static final String REPORT_XLS_FOLDER = "report.xlsSaveFolder";
+	public static final String REPORT_IMPORT_FOLDER = "report.jasperImportFolder";
+	public static final String EXPORTTEMPLATE_IMPORT_FOLDER = "exporttemplate.xslImportFolder";
+	public static final String AVETMISS_EXPORT_PATH = "avetmiss.lastpath";
+
+	public static final String DOCUMENT_IMPORT_PATH = "document.lastpath";
 }

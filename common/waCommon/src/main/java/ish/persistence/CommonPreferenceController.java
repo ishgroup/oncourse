@@ -24,9 +24,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
-import java.util.prefs.Preferences;
 import java.util.regex.Pattern;
 
+import static ish.persistence.Preferences.*;
 /**
  * This abstract class is implemented in each of the client and the server. This is needed because the persistent object classes are different in those two
  * places and access to them needs to be implemented separately.
@@ -35,7 +35,7 @@ public abstract class CommonPreferenceController {
 
 	private static final Logger logger = LogManager.getLogger();
 
-	private static final Preferences FILE_PREFS = Preferences.userNodeForPackage(CommonPreferenceController.class);
+	private static final java.util.prefs.Preferences FILE_PREFS = java.util.prefs.Preferences.userNodeForPackage(CommonPreferenceController.class);
 	public static final Pattern NO_WHITESPACE_PATTERN = Pattern.compile("^[^\\s]+$");
 	public static final Pattern WRAPPING_QUOTATION_MARKS =  Pattern.compile("^[\\\"].*[\\\"]$");
 
@@ -50,19 +50,8 @@ public abstract class CommonPreferenceController {
 		DEPRECATED_PREFERENCES.add("print.header");
 	}
 
-	public static final String QE_DEFAULT_REPORT_ENROLMENT = "ish.onCourse.enrolmentConfirmation";
-	public static final String QE_DEFAULT_REPORT_INVOICE = "ish.onCourse.invoiceReport";
-
 	protected static CommonPreferenceController sharedController;
-
-	// **************************************
-	// College information
-	// **************************************
-	public static final String COLLEGE_NAME = "college.name";
-	public static final String COLLEGE_ABN = "college.abn";
-	public static final String COLLEGE_URL = "web.url";
-	public static final String COLLEGE_PAYMENT_INFO = "college.paymentInfo";
-	public static final String COLLEGE_ENROL_SUCCESS_URL = "enrol.postSuccessURL";
+	
 	/**
 	 * <pre>
 	 * state identifier p95
@@ -179,26 +168,6 @@ public abstract class CommonPreferenceController {
 	public void setEnrolSuccessUrl(String value) {
 		setValue(COLLEGE_ENROL_SUCCESS_URL, false, value);
 	}
-
-	// **************************************
-	// Services
-	// **************************************
-	public static final String ONCOURSE_SERVER_DEFAULT_TZ = "oncourse.server.timezone.default";
-	public static final String SERVICES_LDAP_AUTHENTICATION = "services.ldap.authentication";
-	public static final String SERVICES_LDAP_AUTHORISATION = "services.ldap.authorisation";
-	public static final String SERVICES_CC_ENABLED = "services.cc";
-	public static final String SERVICES_CC_AMEX_ENABLED = "services.cc.amex";
-
-	public static final String SERVICES_SECURITYKEY = "services.securitykey";
-
-	public static final String DATA_SVNVERSION = "data.svnversion";
-	public static final String DATA_WED_VERSION = "data.wed.version";
-	public static final String SERVICES_INFO_REPLICATION_VERSION = "data.referencedataversion";
-
-	public static final String DEDUPE_LASTRUN = "services.dedupelastrun";
-	public static final String SERVICES_INFO_REPLICATION_LASTRUN = "services.inforeplicationlastrun";
-	public static final String SERVICES_ANGEL_REPLICATION_LASTRUN = "services.angeloreplicationlastrun";
-	public static final String SERVICES_REPLICATION_REQUEUE_ID = "server.soap.requeueid";
 
 	/**
 	 * @return the timezone ID or null
@@ -349,25 +318,6 @@ public abstract class CommonPreferenceController {
 		setValue(SERVICES_ANGEL_REPLICATION_LASTRUN, false, dateFormat.format(value));
 	}
 
-	// **************************************
-	// Licensing
-	// **************************************
-
-	public static final String LICENSE_ACCESS_CONTROL = "license.accesscontrol";
-	public static final String LICENSE_LDAP = "license.ldap";
-	public static final String LICENSE_BUDGET = "license.budget";
-	public static final String LICENSE_EXTENRNAL_DB = "license.externaldb";
-	public static final String LICENSE_SSL = "license.ssl";
-	public static final String LICENSE_SMS = "license.sms";
-	public static final String LICENSE_CC_PROCESSING = "license.ccprocessing";
-	public static final String LICENSE_PAYROLL = "license.payroll";
-	public static final String LICENSE_VOUCHER = "license.voucher";
-	public static final String LICENSE_MEMBERSHIP = "license.membership";
-	public static final String LICENSE_ATTENDANCE = "license.attendance";
-	public static final String LICENSE_SCRIPTING = "license.scripting";
-	public static final String LICENSE_FEE_HELP_EXPORT = "license.feeHelpExport";
-	public static final String LICENSE_FUNDING_CONTRACT = "license.fundingContract";
-
 	public static boolean LICENSE_BYPASS_MODE = false;
 
 	public boolean getLicenseAccessControl() {
@@ -493,25 +443,6 @@ public abstract class CommonPreferenceController {
 	public void setLicenseFundingContract(boolean value) {
 		throw new IllegalStateException("Licences must replicate from ish");
 	}
-
-	// **************************************
-	// Messaging
-	// **************************************
-
-	public static final String EMAIL_SMTPHOST = "email.smtphost";
-	public static final String EMAIL_ADMIN_ADDRESS = "email.admin";
-	public static final String EMAIL_FROM_ADDRESS = "email.from";
-	public static final String EMAIL_FROM_NAME = "email.from.name";
-	public static final String EMAIL_BOUNCE_ENABLED = "email.bounce";
-	public static final String EMAIL_POP3HOST = "email.pop3host";
-	public static final String EMAIL_BOUNCEADDRESS = "email.bounce.address";
-	public static final String EMAIL_POP3ACCOUNT = "email.pop3.account";
-	public static final String EMAIL_POP3PASSWORD = "email.pop3.password";
-	public static final String SMS_FROM_ADDRESS = "sms.from";
-	public static final String SMTP_USERNAME = "smtp.username";
-	public static final String SMTP_PASSWORD = "smtp.password";
-	public static final String SMTP_START_TLS = "mail.smtp.starttls.enable";
-	public static final String SMTP_PORT = "mail.smtp.port";
 
 	public String getEmailSMTPHost() {
 		return getValue(EMAIL_SMTPHOST, false);
@@ -640,36 +571,6 @@ public abstract class CommonPreferenceController {
 	public void setSMTPPort(int value) {
 		setValue(SMTP_PORT, false, Integer.valueOf(value).toString());
 	}
-
-	// **************************************
-	// LDAP
-	// **************************************
-	// server settings
-	public static final String LDAP_HOST = "ldap.host";
-	public static final String LDAP_SERVERPORT = "ldap.serverport";
-	@Deprecated
-	public static final String LDAP_SECURITY = "ldap.security";
-	public static final String LDAP_SSL = "ldap.ssl";
-	public static final String LDAP_BIND_USER_DN = "ldap.bind.user.dn";
-	public static final String LDAP_BIND_USER_PASS = "ldap.bind.user.pass";
-	public static final String LDAP_BASE_DN = "ldap.base.dn";
-
-	// user settings
-	public static final String LDAP_USERNAME_ATTRIBUTE = "ldap.username.attibute";
-	public static final String LDAP_USER_SEARCH_FILTER = "ldap.user.search.filter";
-
-	// role settigs
-	public static final String LDAP_GROUP_ATTRIBUTE = "ldap.group.attibute";
-	public static final String LDAP_GROUP_MEMBER_ATTRIBUTE = "ldap.group.member.attibute";
-	public static final String LDAP_GROUP_POSIX_STYLE = "ldap.group.posixstyle";
-	public static final String LDAP_GROUP_SEARCH_FILTER = "ldap.group.search.filter";
-
-	// below are values, not keys
-	public static final String LDAP_SIMPLE_AUTHENTICATION = "simple";
-	public static final String LDAP_SASL_AUTHENTICATION = "sasl";
-
-	@Deprecated
-	public static final String LDAP_DOMAIN = "ldap.domain";
 
 	public static final Map<String, String> Ldap_SecurityTypes = Maps.asLinkedMap(new String[] {
 			"Simple Authentication (unencrypted connection)",
@@ -810,27 +711,7 @@ public abstract class CommonPreferenceController {
 	public void setLdapUsernameAttribute(String value) {
 		setValue(LDAP_USERNAME_ATTRIBUTE, false, value);
 	}
-
-	// **************************************
-	// Maintenance and backup
-	// **************************************
-	public static final String LOGOUT_ENABLED = "logout.enabled";
-	public static final String LOGOUT_TIMEOUT = "logout.timeout";
-
-	public static final String DATABASE_USED = "database.used";
-	public static final String DATABASE_USED_DERBY = "database.derby";
-	public static final String DATABASE_USED_MYSQL = "database.mysql";
-	public static final String DATABASE_USED_MSSQL = "database.mssql";
-	public static final String DATABASE_USED_POSTGRE = "database.postgre";
-
-	public static final String BACKUP_ENABLED = "backup.enabled";
-	public static final String BACKUP_DIR = "backup.destination";
-	public static final String BACKUP_DIR_WARNING = "backup.destination.warning";
-
-	public static final String BACKUP_MAX_HISTORY = "backup.maxhistory";
-	public static final String BACKUP_NEXT_NUMBER = "backup.nextnumber";
-	public static final String BACKUP_TIMEOFDAY = "backup.minuteofday";
-
+	
 	public synchronized boolean getBackupEnabled() {
 		String aPref = getValue(BACKUP_ENABLED, false);
 		if (aPref == null) {
@@ -947,21 +828,7 @@ public abstract class CommonPreferenceController {
 	public void setDatabaseUsed(String value) {
 		setValue(DATABASE_USED, false, value);
 	}
-
-	// **************************************
-	// Account defaults
-	// **************************************
-	// For account defaults see AccountDefaults class.
-
-	public static final String ACCOUNT_CURRENCY = "default.currency";
-	public static final String ACCOUNT_TAXPK = "tax.default.pk";
-
-	public static final String PAY_PERIOD_DAYS = "pay_period_type";
-	public static final String ACCOUNT_PREPAID_FEES_POST_AT = "account.prepaidFeesPostAt";
-	public static final String ACCOUNT_PREPAID_FEES_POST_AT_EVERY_SESSION = "everySession";
-	public static final String ACCOUNT_PREPAID_FEES_POST_AT_FIRST_SESSION = "firstSession";
-	public static final String ACCOUNT_INVOICE_TERMS = "account.invoice.terms";
-
+	
 	public Long getDefaultAccountId(String preferenceName) {
 		String value = getValue(preferenceName, false);
 		if (value == null) {
@@ -1048,30 +915,6 @@ public abstract class CommonPreferenceController {
 	public void setAccountPrepaidFeesPostAt(String value) {
 		setValue(ACCOUNT_PREPAID_FEES_POST_AT, false, value);
 	}
-
-	// **************************************
-	// AVETMISS
-	// **************************************
-	public static final String AVETMISS_SHOW_GUI = "enableRTOGUI";
-
-	public static final String AVETMISS_ID = "avetmiss.identifier";
-	public static final String AVETMISS_JURISDICTION = "avetmiss.jurisdiction";
-	public static final String AVETMISS_COLLEGENAME = "avetmiss.collegename";
-	public static final String AVETMISS_COLLEGESHORTNAME = "avetmiss.collegeshortname";
-	public static final String AVETMISS_TYPE = "avetmiss.type";
-	public static final String AVETMISS_ADDRESS1 = "avetmiss.address.line1";
-	public static final String AVETMISS_ADDRESS2 = "avetmiss.address.line2";
-	public static final String AVETMISS_SUBURB = "avetmiss.address.suburb";
-	public static final String AVETMISS_POSTCODE = "avetmiss.address.postcode";
-	public static final String AVETMISS_STATE = "avetmiss.address.state";
-	public static final String AVETMISS_STATE_NAME_VirtualKey = "avetmiss.address.stateName";
-	public static final String AVETMISS_CONTACTNAME = "avetmiss.contactname";
-	public static final String AVETMISS_PHONE = "avetmiss.phone";
-	public static final String AVETMISS_FAX = "avetmiss.fax";
-	public static final String AVETMISS_EMAIL = "avetmiss.email";
-	public static final String AVETMISS_CERT_SIGNATORY_NAME = "avetmiss.certificate.signatory.name";
-	public static final String AVETMISS_QLD_IDENTIFIER = "avetmiss.qld.identifier";
-	public static final String AVETMISS_FEE_HELP_PROVIDER_CODE = "avetmiss.fee.help.provider.code";
 
 	public boolean getShowRTOGUI() {
 		String aPref = getValue(AVETMISS_SHOW_GUI, false);
@@ -1261,13 +1104,7 @@ public abstract class CommonPreferenceController {
 	public void setAvetmissFeeHelpProviderCode(String value) {
 		setValue(AVETMISS_FEE_HELP_PROVIDER_CODE, false, value);
 	}
-
-	// **************************************
-	// Printing
-	// **************************************
-	public static final String REPORT_OVERLAY_PREFIX = "report_overlay_";
-	public static final String DEFAULT_REPORT_OVERLAY = "report_overlay_default";
-
+	
 
 	public void setDefaultReportOverlay(Long overlayId) {
 		setValue(DEFAULT_REPORT_OVERLAY, false, overlayId==null? null : overlayId.toString());
@@ -1302,16 +1139,6 @@ public abstract class CommonPreferenceController {
 			return null;
 		}
 	}
-
-
-
-	// **************************************
-	// CourseClass preferences
-	// **************************************
-	public static final String CLASS_DEFAULTS_MINIMUM_PLACES = "courseclass_default_minimumPlaces";
-	public static final String CLASS_DEFAULTS_MAXIMUM_PLACES = "courseclass_default_maximumPlaces";
-	public static final String CLASS_DEFAULTS_DELIVERY_MODE = "courseclass_default_deliveryMode";
-	public static final String CLASS_DEFAULTS_FUNDING_SOURCE = "courseclass_default_fundingSource";
 
 	public synchronized Integer getCourseClassDefaultMinimumPlaces() {
 		try {
@@ -1379,15 +1206,6 @@ public abstract class CommonPreferenceController {
 		}
 	}
 
-	// **************************************
-	// Other
-	// **************************************
-	public static final String QE_DEFAULTS_TO_ZERO = "qe.payment.default.zero";
-	public static final String QE_DEFAULT_REPORT_ENROLMENT_KEYCODE = "qe.default.report.enrolment.keycode";
-	public static final String QE_DEFAULT_REPORT_INVOICE_KEYCODE = "qe.default.report.invoice.keycode";
-
-	public static final String GRAVATAR = "gravatar.enabled";
-
 	public boolean getQEDefaultsToZeroPayment() {
 		String aPref = getValue(QE_DEFAULTS_TO_ZERO, false);
 		return aPref != null && Boolean.parseBoolean(aPref);
@@ -1433,20 +1251,6 @@ public abstract class CommonPreferenceController {
 		}
 		return Boolean.parseBoolean(value);
 	}
-
-	// **************************************
-	// Frame preferences
-	// **************************************
-
-	public static final String TOOLBAR_COLLAPSE_STATE = "toolbar.collapse";
-	public static final String FRAME_BOUNDS = "frame.bounds.";
-	public static final String LISTVIEW_COLUMNS = "listview.columns.";
-	public static final String LISTVIEW_DIVIDER = "listview.divider.";
-	public static final String QEVIEW_DIVIDER = "qeview.divider.";
-	public static final String EULA_AGREEMENT = "eula.agreement.";
-	public static final String TOOLBAR_ACTIVE_TAB = "toolbar.tab.active";
-	public static final String LISTVIEW_FILTERS_COLLAPSING = "listview.filters.collapsing.";
-	public static final String LISTVIEW_COLUMN_SORTED = "listview.column.sorted.";
 
 	public String getToolbarActiveTab() {
 		return getValue(TOOLBAR_ACTIVE_TAB, true);
@@ -1591,15 +1395,7 @@ public abstract class CommonPreferenceController {
 		}
 		return null;
 	}
-
-	// **************************************
-	// Login preferences
-	// **************************************
-	public static final String LASTLOGIN_USERNAME = "oncourse.login.last.username";
-	public static final String LASTLOGIN_SERVER_HOST = "oncourse.login.last.host";
-	public static final String LASTLOGIN_SERVER_PORT = "oncourse.login.last.port";
-	public static final String LASTLOGIN_SERVER_ISSSL = "oncourse.login.last.isssl";
-
+	
 	/**
 	 * Get the server host name used for the last login of the client on this workstation.
 	 *
@@ -1680,18 +1476,6 @@ public abstract class CommonPreferenceController {
 	public static void setSHA1Fingerprint(String host, String value) {
 		setFilePreference(host, value);
 	}
-
-	// **************************************
-	// File destinations
-	// **************************************
-	public static final String MAILINGLIST_EXPORT_FOLDER = "report.mailingListExport";
-	public static final String REPORT_PDF_FOLDER = "report.pdfSaveFolder";
-	public static final String REPORT_XLS_FOLDER = "report.xlsSaveFolder";
-	public static final String REPORT_IMPORT_FOLDER = "report.jasperImportFolder";
-	public static final String EXPORTTEMPLATE_IMPORT_FOLDER = "exporttemplate.xslImportFolder";
-	public static final String AVETMISS_EXPORT_PATH = "avetmiss.lastpath";
-
-	public static final String DOCUMENT_IMPORT_PATH = "document.lastpath";
 
 	public File getExportMailingListDestination() {
 		String dir = getFilePreference(MAILINGLIST_EXPORT_FOLDER, null);
@@ -1777,13 +1561,6 @@ public abstract class CommonPreferenceController {
 		setFilePreference(DOCUMENT_IMPORT_PATH, value.getAbsolutePath());
 	}
 
-	// **************************************
-	// External storage preferences
-	// **************************************
-	public static final String STORAGE_BUCKET_NAME = "storage.bucket";
-	public static final String STORAGE_ACCESS_ID = "storage.access.id";
-	public static final String STORAGE_ACCESS_KEY = "storage.access.key";
-
 	public void setStorageBucketName(String value) {
 		setValue(STORAGE_BUCKET_NAME, false, value);
 	}
@@ -1811,14 +1588,6 @@ public abstract class CommonPreferenceController {
 	public boolean isUsingExternalStorage() {
 		return StringUtils.trimToNull(getStorageAccessId()) != null;
 	}
-
-	// **************************************
-	// AUSKey preferences
-	// **************************************
-	public static final String AUSKEY_PASSWORD = "auskey.password";
-	public static final String AUSKEY_CERTIFICATE = "auskey.certificate";
-	public static final String AUSKEY_PRIVATE_KEY = "auskey.privatekey";
-	public static final String AUSKEY_SALT = "auskey.salt";
 
 	public void setAuskeyPassword(String value) {
 		setValue(AUSKEY_PASSWORD, false, value);
@@ -1851,12 +1620,6 @@ public abstract class CommonPreferenceController {
 	public String getAuskeySalt() {
 		return getValue(AUSKEY_SALT, false);
 	}
-
-	/*
-	 * Other preferences
-	 */
-	public static final String USE_ONLY_OFFERED_MODULES_AND_QUALIFICATIONS = "use.offered.qualifications.only";
-	public static final String MYOB_LAST_EXPORT_DATE = "myob.last.export.date";
 
 	public boolean getUseOnlyOfferedModulesAndQualifications() {
 		return Boolean.parseBoolean(getValue(USE_ONLY_OFFERED_MODULES_AND_QUALIFICATIONS, false));
@@ -2328,14 +2091,7 @@ public abstract class CommonPreferenceController {
 			setAvetmissFeeHelpProviderCode((String) value);
 		}
 	}
-
-	/**
-	 * V4 replication.
-	 */
-
-	public static final String SERVICES_COMMUNICATION_KEY = "services.soap.communication.key";
-	public static final String REPLICATION_ENABLED = "replication.enabled";
-
+	
 	/**
 	 * Communication key using to track college sessions during replication to prevent copy of data being started to replicate.
 	 *
@@ -2380,10 +2136,6 @@ public abstract class CommonPreferenceController {
 	public void setReplicationEnabled(boolean value) {
 		setValue(REPLICATION_ENABLED, false, Boolean.toString(value));
 	}
-
-	public static final String FEATURE_CONCESSIONS_IN_ENROLMENT = "feature.concessionsInEnrolment";
-	public static final String FEATURE_CONCESSION_USERS_CREATE = "feature.concession.existing.users.create";
-	public static final String FEATURE_ENROLMENT_DISCLOSURE = "feature.enrolmentDisclosure";
 
 	public boolean getFeatureConcessionsInEnrolment() {
 		return Boolean.parseBoolean(getValue(FEATURE_CONCESSIONS_IN_ENROLMENT, false));
@@ -2512,13 +2264,6 @@ public abstract class CommonPreferenceController {
 		return sharedController;
 	}
 
-	// **************************************
-	// portal
-	// **************************************
-
-	public static final String PORTAL_HIDE_CLASS_ROLL_CONTACT_PHONE = "portal.hideClassRollContactPhone";
-	public static final String PORTAL_HIDE_CLASS_ROLL_CONTACT_EMAIL = "portal.hideClassRollContactEmail";
-
 	public String getPortalHideClassRollContactPhone() {
 		return getValue(PORTAL_HIDE_CLASS_ROLL_CONTACT_PHONE, false);
 	}
@@ -2536,9 +2281,5 @@ public abstract class CommonPreferenceController {
 	}
 
 	
-	// **************************************
-	// finance
-	// **************************************
 
-	public static final String FINANCE_TRANSACTION_LOCKED = "finance.transaction_locked";
 }
