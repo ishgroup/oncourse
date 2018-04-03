@@ -10,6 +10,7 @@ import com.github.benmanes.caffeine.jcache.spi.CaffeineCachingProvider;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.cache.CacheManager;
@@ -19,11 +20,13 @@ import java.util.OptionalLong;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * This test is only for manual run, we use it to learn how Caffeine works
  * User: akoiro
  * Date: 2/4/18
  */
 public class CaffeineCacheTest {
 	@Test
+	@Ignore
 	public void test_evict() throws InterruptedException {
 		Cache<String, String> cache = Caffeine.newBuilder()
 //				.weakKeys()
@@ -52,6 +55,7 @@ public class CaffeineCacheTest {
 	}
 
 	@Test
+	@Ignore
 	public void test_jcache() throws InterruptedException {
 		CachingProvider cachingProvider = Caching.getCachingProvider(CaffeineCachingProvider.class.getName());
 		CacheManager cacheManager = cachingProvider.getCacheManager();
