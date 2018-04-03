@@ -10,10 +10,10 @@ produces:
 paths:
   /getContactNode:
     post:
-      x-filter:  
+      x-filter:
       - CollegeInfo
       operationId: getContactNode
-      summary: Get list of purchases 
+      summary: Get list of purchases
       description: Get list of enrolments/applications/product items for certain contact based on selected classes/products
       tags:
       - Checkout
@@ -37,7 +37,7 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /getCheckoutModel:
     post:
-      x-filter:  
+      x-filter:
       - CollegeInfo
       operationId: getCheckoutModel
       summary: Validate all purchase items. Calculate total amount and price for each discounted enrolment.
@@ -49,7 +49,7 @@ paths:
       parameters:
       - name: checkoutModelRequest
         in: body
-        description: List of contact's purchases, current payer ID, list of added promotions 
+        description: List of contact's purchases, current payer ID, list of added promotions
         required: true
         schema:
           $ref: '#/definitions/checkout.CheckoutModelRequest'
@@ -64,7 +64,7 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /makePayment:
     post:
-      x-filter:  
+      x-filter:
       - CollegeInfo
       operationId: makePayment
       summary: Validate model, save purchase items into db and send payment to DPS
@@ -91,7 +91,7 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /getPaymentStatus/{sessionId}:
     get:
-      x-filter:  
+      x-filter:
       - CollegeInfo
       operationId: getPaymentStatus
       summary: Get actual payment status
@@ -115,7 +115,7 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /products:
     post:
-      x-filter:  
+      x-filter:
         - CollegeInfo
       summary: Get list of products
       operationId: getProducts
@@ -144,7 +144,7 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /classes:
     post:
-      x-filter: 
+      x-filter:
         - CollegeInfo
       summary: Get list of CourseClasses
       operationId: getCourseClasses
@@ -202,7 +202,7 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /contact:
     put:
-      x-filter: 
+      x-filter:
         - CollegeInfo
         - ContactValidation
       summary: Create or get Contact
@@ -219,7 +219,7 @@ paths:
           $ref: '#/definitions/web.CreateContactParams'
       responses:
         200:
-          description: ContactId object 
+          description: ContactId object
           schema:
             $ref: '#/definitions/web.ContactId'
         400:
@@ -232,7 +232,7 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /contact/{studentUniqueIdentifier}:
     get:
-      x-filter: 
+      x-filter:
         - CollegeInfo
       summary: Get contact for provided student unique identifier
       operationId: getContact
@@ -256,7 +256,7 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /contactFields:
     post:
-      x-filter: 
+      x-filter:
         - CollegeInfo
       summary: Get contact's empty fields that should be filled based on classes configs
       operationId: getContactFields
@@ -268,7 +268,7 @@ paths:
       parameters:
       - name: contactFieldsRequest
         in: body
-        description: Params for get  contact's fields 
+        description: Params for get  contact's fields
         required: true
         schema:
           $ref: '#/definitions/field.ContactFieldsRequest'
@@ -283,7 +283,7 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /createParentChildrenRelation:
     put:
-      x-filter: 
+      x-filter:
       - CollegeInfo
       summary: Create parent children relation
       operationId: createParentChildrenRelation
@@ -311,7 +311,7 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /submitContactDetails:
     post:
-      x-filter: 
+      x-filter:
       - CollegeInfo
       summary: Save contact details from web form
       operationId: submitContactDetails
@@ -329,7 +329,7 @@ paths:
             $ref: '#/definitions/field.SubmitFieldsRequest'
       responses:
         200:
-          description: ContactId object 
+          description: ContactId object
           schema:
             $ref: '#/definitions/web.ContactId'
         400:
@@ -342,7 +342,7 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /submitCode/{code}:
     get:
-      x-filter: 
+      x-filter:
       - CollegeInfo
       summary: Get promotion discount or voucher by code
       operationId: submitCode
@@ -366,7 +366,7 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /promotion/{code}:
     get:
-      x-filter: 
+      x-filter:
       - CollegeInfo
       summary: Get promotion by code
       operationId: getPromotion
@@ -417,7 +417,7 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /postcode/{text}:
     get:
-      x-filter:  
+      x-filter:
       - SearchText
       - CollegeInfo
       summary: Postcode endpoint
@@ -444,7 +444,7 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /suburb/{text}:
     get:
-      x-filter:  
+      x-filter:
       - SearchText
       - CollegeInfo
       summary: Suburb endpoint
@@ -471,8 +471,8 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /language/{text}:
     get:
-      x-filter:  
-      - SearchText  
+      x-filter:
+      - SearchText
       summary: Suburb endpoint
       operationId: getLanguages
       description: Provide autocomplete candidates for searche text
@@ -497,8 +497,8 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /country/{text}:
     get:
-      x-filter:  
-      - SearchText  
+      x-filter:
+      - SearchText
       summary: Suburb endpoint
       operationId: getCountries
       description: Provide autocomplete candidates for searche text
@@ -523,8 +523,8 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /getConcessionTypes:
     get:
-      x-filter:  
-      - CollegeInfo  
+      x-filter:
+      - CollegeInfo
       summary: Provide list of awalible concessions for college
       operationId: getConcessionTypes
       description: Provide list of awalible concessions for college
@@ -543,8 +543,8 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /getContactConcessionsAndMemberships:
     post:
-      x-filter:  
-      - CollegeInfo  
+      x-filter:
+      - CollegeInfo
       summary: Provide list of student concessions and active memberships
       operationId: getContactConcessionsAndMemberships
       description: Provide list of student concessions and active memberships
@@ -555,7 +555,7 @@ paths:
         in: body
         description: conact's ids
         required: true
-        schema: 
+        schema:
           type: array
           items:
             type: string
@@ -570,8 +570,8 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /submitConcession:
     put:
-      x-filter:  
-      - CollegeInfo  
+      x-filter:
+      - CollegeInfo
       summary: Save conact's concession
       operationId: submitConcession
       description: Save conact's concession
@@ -597,8 +597,8 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /isCorporatePassEnabled:
     get:
-      x-filter:  
-      - CollegeInfo 
+      x-filter:
+      - CollegeInfo
       summary: Check if Corporate Pass process enabled for college
       operationId: isCorporatePassEnabled
       description: Check if Corporate Pass process enabled for college
@@ -615,8 +615,8 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /isCorporatePassEnabledFor:
     post:
-      x-filter:  
-      - CollegeInfo 
+      x-filter:
+      - CollegeInfo
       summary: Check if any corporate pass applicable for purchases list
       operationId: isCorporatePassEnabledFor
       description: Check if any corporate pass applicable for purchases list
@@ -640,8 +640,8 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /getCorporatePass:
     post:
-      x-filter:  
-      - CollegeInfo 
+      x-filter:
+      - CollegeInfo
       summary: Check if Corporate Pass avalible
       operationId: getCorporatePass
       description: Check if Corporate Pass by provided code exist and avalible for choosen Classes/Products
@@ -665,8 +665,8 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /makeCorporatePass:
     post:
-      x-filter:  
-      - CollegeInfo 
+      x-filter:
+      - CollegeInfo
       summary: Make corporate pass process
       operationId: makeCorporatePass
       description: Validate model, save purchase items into db, tine invoices to corporate pass contact
@@ -692,8 +692,8 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /getPreferences:
       get:
-        x-filter:  
-        - CollegeInfo 
+        x-filter:
+        - CollegeInfo
         summary: Get set of college's preferences
         operationId: getPreferences
         description: Get set of college's preferences
@@ -758,6 +758,9 @@ definitions:
       minAge:
         type: number
         description: Minimal age which not requiring parent
+      amexEnabled:
+        type: boolean
+        description: Amex card payment enabled
   field.Suburb:
     type: object
     properties:
@@ -818,7 +821,7 @@ definitions:
       name:
        type: string
        description: Site name
-      street: 
+      street:
         type: string
         description: Site address
       suburb:
@@ -929,7 +932,7 @@ definitions:
       newContact:
         type: boolean
         description: Indicates that new contact created
-      parentRequired: 
+      parentRequired:
         type: boolean
         description: Indicates that parent required
   web.Contact:
@@ -950,7 +953,7 @@ definitions:
       email:
         type: string
         description: email of contact
-      company: 
+      company:
         type: boolean
         description: Is company flag
       parentRequired:
@@ -1056,7 +1059,7 @@ definitions:
         type: string
       fieldSet:
         $ref: '#/definitions/field.FieldSet'
-      company: 
+      company:
         type: boolean
         description: Is company flag
   common.ValidationError:
@@ -1085,7 +1088,7 @@ definitions:
             error:
               type: string
               description: Errors for particular field, or empty array
-        description: Array of fields errors, or empty array  
+        description: Array of fields errors, or empty array
   field.ContactFieldsRequest:
     type: object
     requred:
@@ -1101,22 +1104,22 @@ definitions:
         description: Requested contact id
       classIds:
         type: array
-        items: 
+        items:
           type: string
         description: Requested classe's ids
       productIds:
         type: array
-        items: 
+        items:
           type: string
         description: Requested product's ids
-      waitingCourseIds: 
+      waitingCourseIds:
         type: array
-        items: 
+        items:
           type: string
         description: Requested waiting list courses ids
       mandatoryOnly:
         type: boolean
-        description: Flag to show only mandatory fields 
+        description: Flag to show only mandatory fields
       fieldSet:
         $ref: '#/definitions/field.FieldSet'
   field.DataType:
@@ -1136,7 +1139,7 @@ definitions:
       - POSTCODE
       - PHONE
       - CHOICE
-  field.Field: 
+  field.Field:
     type: object
     requred:
     - id
@@ -1442,11 +1445,11 @@ definitions:
             type: string
         productIds:
           type: array
-          items: 
+          items:
             type: string
         promotionIds:
           type: array
-          items: 
+          items:
             type: string
   checkout.ContactNode:
     type: object
@@ -1496,20 +1499,20 @@ definitions:
         type: number
   checkout.Amount:
     type: object
-    properties: 
+    properties:
       owing:
         type: number
         description: outstanding amount
-      total: 
+      total:
         type: number
         description: total price excluding discounts
-      subTotal: 
+      subTotal:
         type: number
         description: total price including discounts (discounted price)
-      discount: 
+      discount:
         type: number
         description: total discount amount
-      payNow: 
+      payNow:
         type: number
         description: total amount allocated for payment/payments (equalse subTotal if payment plan invoices not presented)
       minPayNow:
@@ -1525,7 +1528,7 @@ definitions:
           $ref: '#/definitions/checkout.VoucherPayment'
   checkout.CheckoutModel:
     type: object
-    properties: 
+    properties:
       error:
         $ref: '#/definitions/common.CommonError'
       validationErrors:
@@ -1540,7 +1543,7 @@ definitions:
         type: string
   checkout.CheckoutModelRequest:
     type: object
-    properties: 
+    properties:
       contactNodes:
         type: array
         items:
@@ -1577,7 +1580,7 @@ definitions:
       sessionId:
         type: string
         description: String length 16 of hexadecimal digits
-      payNow: 
+      payNow:
         type: number
   checkout.payment.PaymentStatus:
     type: string
@@ -1602,9 +1605,9 @@ definitions:
         type: string
       name:
         type: string
-      hasExpireDate: 
+      hasExpireDate:
         type: boolean
-      hasNumber: 
+      hasNumber:
         type: boolean
   checkout.concession.Concession:
     type: object
@@ -1615,9 +1618,9 @@ definitions:
         type: string
       name:
         type: string
-      expiryDate: 
+      expiryDate:
          type: string
-      number: 
+      number:
         type: string
   checkout.StudentMembership:
     type: object
@@ -1646,7 +1649,7 @@ definitions:
          $ref: '#/definitions/web.Contact'
       name:
         type: string
-      code: 
+      code:
         type: string
   checkout.CodeResponse:
     type: object
@@ -1684,7 +1687,7 @@ definitions:
         $ref: '#/definitions/checkout.CheckoutModelRequest'
       agreementFlag:
         type: boolean
-      corporatePassId: 
+      corporatePassId:
         type: string
       reference:
         type: string
