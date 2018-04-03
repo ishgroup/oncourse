@@ -3,19 +3,21 @@
  */
 package ish.oncourse.ui.services.pageload;
 
-import ish.oncourse.cayenne.cache.JCacheDefaultConfigurationFactory.GetOrCreateCache;
+import ish.oncourse.cache.CreateIfAbsent;
+import ish.oncourse.cache.ehcache.EhcacheFactory;
+import ish.oncourse.cache.jcache.JCacheFactory;
 import ish.oncourse.model.WebSiteLayout;
 import org.apache.tapestry5.internal.parser.ComponentTemplate;
 import org.apache.tapestry5.internal.util.MultiKey;
+import org.ehcache.jsr107.EhcacheCachingProvider;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import javax.cache.CacheManager;
 import javax.cache.Caching;
+import javax.cache.configuration.Configuration;
 import java.util.Locale;
-
-import static ish.oncourse.ui.services.pageload.PageLoadService.CacheKey.templates;
 
 /**
  * User: akoiro
@@ -24,7 +26,7 @@ import static ish.oncourse.ui.services.pageload.PageLoadService.CacheKey.templat
 public class MutliKeyTest {
 
 	@Test
-	public void test() {
+	public void test_jcache() {
 		CacheManager cacheManager = Caching.getCachingProvider().getCacheManager();
 
 		Locale locale = Locale.getDefault();
@@ -37,14 +39,43 @@ public class MutliKeyTest {
 
 		Assert.assertEquals(setMultiKey, getMultiKey);
 		Assert.assertEquals(setMultiKey.hashCode(), getMultiKey.hashCode());
-		GetOrCreateCache getOrCreateCache = new GetOrCreateCache(cacheManager);
-		getOrCreateCache.getOrCreate(templates.getCacheName(serverName), MultiKey.class, ComponentTemplate.class);
+		CreateIfAbsent<MultiKey, Object> createIfAbsent = new CreateIfAbsent<>(cacheManager, MultiKey.class, Object.class);
+		Configuration<MultiKey, Object> configuration = JCacheFactory.createDefaultConfig(MultiKey.class, Object.class);
+
+		createIfAbsent.createIfAbsent(serverName, configuration);
 
 		ComponentTemplate template = Mockito.mock(ComponentTemplate.class);
-		getOrCreateCache.getOrCreate(templates.getCacheName(serverName), MultiKey.class, ComponentTemplate.class).put(setMultiKey, template);
+		createIfAbsent.createIfAbsent(serverName, configuration).put(setMultiKey, template);
 
-		ComponentTemplate result = getOrCreateCache.getOrCreate(templates.getCacheName(serverName), MultiKey.class, ComponentTemplate.class).get(getMultiKey);
+		ComponentTemplate result = (ComponentTemplate) createIfAbsent.createIfAbsent(serverName, configuration).get(getMultiKey);
 		Assert.assertEquals(template, result);
 	}
+
+	@Test
+	public void test_ehcache() {
+		CacheManager cacheManager = Caching.getCachingProvider(EhcacheCachingProvider.class.getName()).getCacheManager();
+
+		Locale locale = Locale.getDefault();
+		String name = "template1";
+		String serverName = "serverName1";
+		WebSiteLayout webSiteLayout = new WebSiteLayout();
+
+		MultiKey setMultiKey = new MultiKey(name, locale, serverName, webSiteLayout);
+		MultiKey getMultiKey = new MultiKey(name, locale, serverName, webSiteLayout);
+
+		Assert.assertEquals(setMultiKey, getMultiKey);
+		Assert.assertEquals(setMultiKey.hashCode(), getMultiKey.hashCode());
+		CreateIfAbsent<MultiKey, Object> createIfAbsent = new CreateIfAbsent<>(cacheManager, MultiKey.class, Object.class);
+		Configuration<MultiKey, Object> configuration = EhcacheFactory.createDefaultConfig(MultiKey.class, Object.class);
+
+		createIfAbsent.createIfAbsent(serverName, configuration);
+
+		ComponentTemplate template = Mockito.mock(ComponentTemplate.class);
+		createIfAbsent.createIfAbsent(serverName, configuration).put(setMultiKey, template);
+
+		ComponentTemplate result = (ComponentTemplate) createIfAbsent.createIfAbsent(serverName, configuration).get(getMultiKey);
+		Assert.assertEquals(template, result);
+	}
+
 
 }

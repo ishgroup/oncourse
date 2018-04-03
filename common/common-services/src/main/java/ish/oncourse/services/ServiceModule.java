@@ -1,5 +1,6 @@
 package ish.oncourse.services;
 
+import ish.oncourse.cache.ICacheProvider;
 import ish.oncourse.services.alias.IWebUrlAliasService;
 import ish.oncourse.services.alias.WebUrlAliasService;
 import ish.oncourse.services.application.ApplicationServiceImpl;
@@ -104,6 +105,7 @@ import static org.apache.commons.lang3.StringUtils.trimToNull;
 
 /**
  * A Tapestry IoC module definition for all common services.
+ *
  * @deprecated use @{@link BinderFunctions}
  */
 @Deprecated
@@ -200,6 +202,7 @@ public class ServiceModule {
 		binder.bind(IContentCacheService.class, new BinderFunctions.ContentCacheServiceBuilder());
 		binder.bind(IContentKeyFactory.class, WillowContentKeyFactory.class).scope(ScopeConstants.PERTHREAD);
 		binder.bind(CacheManager.class, new BinderFunctions.CacheManagerBuilder()).eagerLoad();
+		binder.bind(ICacheProvider.class, new BinderFunctions.CacheProviderBuilder()).eagerLoad();
 
 		binder.bind(IPaymentGatewayServiceBuilder.class, ish.oncourse.services.paymentexpress.PaymentGatewayServiceBuilder.class);
 		binder.bind(IPaymentGatewayService.class, new BinderFunctions.PaymentGatewayServiceBuilder()).scope("perthread");

@@ -51,8 +51,7 @@ public class PageLoaderImpl implements PageLoader, ComponentAssemblerSource {
 	public ComponentAssembler getAssembler(String className, ComponentResourceSelector selector) {
 		return pageLoadService.getAssembler(className, selector,
 				() -> {
-					if (className.startsWith(PACKAGE))
-						pageLoaderDelegate.clearCache();
+					if (className.startsWith(PACKAGE)) pageLoaderDelegate.clearCache();
 					return pageLoaderDelegate.getAssembler(className, selector);
 				});
 	}

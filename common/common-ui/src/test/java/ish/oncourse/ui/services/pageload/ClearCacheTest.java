@@ -3,34 +3,65 @@
  */
 package ish.oncourse.ui.services.pageload;
 
-import ish.oncourse.cayenne.cache.JCacheDefaultConfigurationFactory.GetOrCreateCache;
+import ish.oncourse.cache.CreateIfAbsent;
+import ish.oncourse.cache.ehcache.EhcacheFactory;
+import ish.oncourse.cache.jcache.JCacheFactory;
 import org.apache.tapestry5.internal.parser.ComponentTemplate;
 import org.apache.tapestry5.internal.util.MultiKey;
+import org.ehcache.jsr107.EhcacheCachingProvider;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import javax.cache.Cache;
 import javax.cache.CacheManager;
 import javax.cache.Caching;
-
-import static ish.oncourse.ui.services.pageload.PageLoadService.CacheKey.templates;
+import javax.cache.configuration.Configuration;
 
 /**
  * User: akoiro
  * Date: 14/12/17
  */
 public class ClearCacheTest {
+	private CacheManager cacheManager;
+	private Configuration<MultiKey, ComponentTemplate> configuration;
+	private CreateIfAbsent<MultiKey, ComponentTemplate> createIfAbsent;
+
+	@Before
+	public void before() {
+		cacheManager = Caching.getCachingProvider(EhcacheCachingProvider.class.getName()).getCacheManager();
+		configuration = JCacheFactory.createDefaultConfig(MultiKey.class, ComponentTemplate.class);
+		createIfAbsent = new CreateIfAbsent<>(cacheManager, MultiKey.class, ComponentTemplate.class);
+	}
 
 	@Test
-	public void test() {
-		CacheManager cacheManager = Caching.getCachingProvider().getCacheManager();
-		Cache<MultiKey, ComponentTemplate> cache = new GetOrCreateCache(cacheManager).getOrCreate(templates.getCacheName("test"), MultiKey.class, ComponentTemplate.class);
+	public void test_jcache() {
+		Cache<MultiKey, ComponentTemplate> cache = createIfAbsent.createIfAbsent("siteKey", configuration);
+
 		MultiKey multiKey = new MultiKey();
 		cache.put(multiKey, PageLoadService.missingTemplate);
-		cacheManager.destroyCache(templates.getCacheName("test"));
-		Assert.assertNull(cacheManager.getCache(templates.getCacheName("test")));
 
-		new GetOrCreateCache(cacheManager).getOrCreate(templates.getCacheName("test"), MultiKey.class, ComponentTemplate.class);
-		Assert.assertNotNull(cacheManager.getCache(templates.getCacheName("test"), MultiKey.class, ComponentTemplate.class));
+		cacheManager.destroyCache("siteKey");
+		Assert.assertNull(cacheManager.getCache("siteKey"));
+
+		createIfAbsent.createIfAbsent("siteKey", configuration);
+		Assert.assertNotNull(cacheManager.getCache("siteKey", MultiKey.class, ComponentTemplate.class));
 	}
+
+	@Test
+	public void test_ehcache() {
+		configuration = EhcacheFactory.createDefaultConfig(MultiKey.class, ComponentTemplate.class);
+		createIfAbsent = new CreateIfAbsent<>(cacheManager, MultiKey.class, ComponentTemplate.class);
+
+		Cache<MultiKey, ComponentTemplate> cache = createIfAbsent.createIfAbsent("siteKey", configuration);
+		MultiKey multiKey = new MultiKey();
+		cache.put(multiKey, PageLoadService.missingTemplate);
+
+		cacheManager.destroyCache("siteKey");
+		Assert.assertNull(cacheManager.getCache("siteKey"));
+
+		createIfAbsent.createIfAbsent("siteKey", configuration);
+		Assert.assertNotNull(cacheManager.getCache("siteKey", MultiKey.class, ComponentTemplate.class));
+	}
+
 }

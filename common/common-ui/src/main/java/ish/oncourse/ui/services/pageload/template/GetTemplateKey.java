@@ -6,7 +6,6 @@ package ish.oncourse.ui.services.pageload.template;
 import ish.oncourse.model.WebSiteLayout;
 import ish.oncourse.services.node.IWebNodeService;
 import org.apache.tapestry5.internal.util.MultiKey;
-import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.pageload.ComponentResourceSelector;
 
 /**
@@ -15,16 +14,14 @@ import org.apache.tapestry5.services.pageload.ComponentResourceSelector;
  */
 public class GetTemplateKey {
 
-	private final Request request;
 	private final IWebNodeService webNodeService;
 
-	public GetTemplateKey(IWebNodeService webNodeService, Request request) {
+	public GetTemplateKey(IWebNodeService webNodeService) {
 		this.webNodeService = webNodeService;
-		this.request = request;
 	}
 
-	public MultiKey get(String name, ComponentResourceSelector selector) {
+	public MultiKey get(String name, CacheKey cacheKey, ComponentResourceSelector selector) {
 		WebSiteLayout webSiteLayout = webNodeService.getLayout();
-		return new MultiKey(name, selector, request.getServerName(), webSiteLayout != null ? webSiteLayout.getId() : null);
+		return new MultiKey(name, cacheKey, selector, webSiteLayout != null ? webSiteLayout.getId() : null);
 	}
 }

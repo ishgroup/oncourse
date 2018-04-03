@@ -3,6 +3,8 @@
  */
 package ish.oncourse.ui.services.pageload;
 
+import ish.oncourse.cache.ICacheProvider;
+import ish.oncourse.cache.caffeine.CaffeineProvider;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.site.WebSiteVersionService;
 import org.apache.tapestry5.internal.parser.ComponentTemplate;
@@ -19,7 +21,6 @@ import org.junit.runners.Parameterized;
 import org.mockito.Mockito;
 
 import javax.cache.CacheManager;
-import javax.cache.Caching;
 import java.util.List;
 
 /**
@@ -31,6 +32,7 @@ public class PageLoadServiceGetTemplateTest {
 	private List<ComponentResourceSelector> selectors = TestDataFactory.selectors();
 	private ComponentResourceSelector selector;
 
+	private ICacheProvider cacheProvider;
 	private CacheManager cacheManager;
 	private PageLoadService pageLoadService;
 	private TemplateParser templateParser;
@@ -49,7 +51,8 @@ public class PageLoadServiceGetTemplateTest {
 
 	@Before
 	public void before() {
-		cacheManager = Caching.getCachingProvider().getCacheManager();
+		cacheProvider = new CaffeineProvider();
+		cacheManager = cacheProvider.getCacheManager();
 		webSiteVersionService = TestDataFactory.webSiteVersionService();
 		templateParser = TestDataFactory.templateParser();
 
@@ -58,10 +61,9 @@ public class PageLoadServiceGetTemplateTest {
 				webSiteVersionService,
 				TestDataFactory.webNodeService(),
 				TestDataFactory.resourceService(),
-				cacheManager,
+				cacheProvider,
 				TestDataFactory.componentResourceLocator(),
 				null,
-				TestDataFactory.request(),
 				templateParser,
 				null);
 

@@ -1,6 +1,8 @@
 package ish.oncourse.ui.services.pageload;
 
-import ish.oncourse.cayenne.cache.JCacheDefaultConfigurationFactory;
+import ish.oncourse.cache.ICacheFactory;
+import ish.oncourse.cache.ICacheProvider;
+import ish.oncourse.cache.caffeine.CaffeineFactory;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.resource.IResourceService;
@@ -8,6 +10,7 @@ import ish.oncourse.services.resource.WebTemplateChangeTracker;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.site.WebSiteVersionService;
+import ish.oncourse.ui.services.pageload.template.CacheKey;
 import ish.oncourse.ui.services.pageload.template.GetTemplateKey;
 import ish.oncourse.ui.services.pageload.template.resource.GetSiteTemplateResource;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -24,13 +27,12 @@ import org.apache.tapestry5.ioc.Location;
 import org.apache.tapestry5.ioc.Resource;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.model.ComponentModel;
-import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.pageload.ComponentRequestSelectorAnalyzer;
 import org.apache.tapestry5.services.pageload.ComponentResourceLocator;
 import org.apache.tapestry5.services.pageload.ComponentResourceSelector;
 
 import javax.cache.Cache;
-import javax.cache.CacheManager;
+import javax.cache.configuration.Configuration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -43,13 +45,14 @@ public class PageLoadService {
 	private final PageLoader pageLoader;
 	private final TemplateParser templateParser;
 	private final ComponentRequestSelectorAnalyzer selectorAnalyzer;
-
-	private final CacheManager cacheManager;
 	private final IWebSiteVersionService webSiteVersionService;
 	private final WebTemplateChangeTracker templateChangeTracker;
 	private final GetSiteTemplateResource getSiteTemplateResource;
 	private final GetTemplateKey getTemplateKey;
-	private final JCacheDefaultConfigurationFactory.GetOrCreateCache getOrCreateCache;
+
+	private final ICacheProvider cacheProvider;
+	private final ICacheFactory<MultiKey, Object> cacheFactory;
+	private final Configuration<MultiKey, Object> cacheConfig;
 
 
 	@Inject
@@ -57,38 +60,38 @@ public class PageLoadService {
 						   IWebSiteService webSiteService,
 						   IWebSiteVersionService webSiteVersionService,
 						   IWebNodeService webNodeService, IResourceService resourceService,
-						   CacheManager cacheManager,
+						   ICacheProvider cacheProvider,
 						   ComponentResourceLocator componentResourceLocator,
 						   ComponentRequestSelectorAnalyzer selectorAnalyzer,
-						   Request request, TemplateParser templateParser,
+						   TemplateParser templateParser,
 						   PageLoader pageLoader) {
-		this.cacheManager = cacheManager;
+		this.cacheProvider = cacheProvider;
 		this.webSiteVersionService = webSiteVersionService;
 		this.selectorAnalyzer = selectorAnalyzer;
 		this.templateParser = templateParser;
 		this.pageLoader = pageLoader;
 		this.templateChangeTracker = new WebTemplateChangeTracker(cayenneService, webSiteService, webSiteVersionService);
 		this.getSiteTemplateResource = new GetSiteTemplateResource(webNodeService, resourceService, componentResourceLocator);
-		this.getTemplateKey = new GetTemplateKey(webNodeService, request);
-		this.getOrCreateCache = new JCacheDefaultConfigurationFactory.GetOrCreateCache(cacheManager);
+		this.getTemplateKey = new GetTemplateKey(webNodeService);
+
+		this.cacheFactory = cacheProvider.createFactory(MultiKey.class, Object.class);
+		this.cacheConfig = CaffeineFactory.createDefaultConfig(MultiKey.class, Object.class, 1000);
+
 	}
 
 	public ComponentTemplate getTemplate(ComponentModel componentModel, ComponentResourceSelector selector) {
-		MultiKey key = getTemplateKey.get(componentModel.getComponentClassName(), selector);
-		Resource resource = getResource(key, componentModel, selector);
-		return getTemplate(key, resource);
+		MultiKey resourceKey = getTemplateKey.get(componentModel.getComponentClassName(), CacheKey.resources, selector);
+		Resource resource = getResource(resourceKey, componentModel, selector);
+		return getTemplate(getTemplateKey.get(componentModel.getComponentClassName(), CacheKey.templates, selector), resource);
 	}
 
 
 	private Resource getResource(MultiKey key, ComponentModel componentModel, ComponentResourceSelector selector) {
-		return getCachedValue(CacheKey.resources, key, Resource.class,
-				() -> getSiteTemplateResource.get(componentModel, selector));
+		return getCachedValue(key, () -> getSiteTemplateResource.get(componentModel, selector));
 	}
 
 	private ComponentTemplate getTemplate(MultiKey key, Resource resource) {
-		return getCachedValue(CacheKey.templates, key,
-				ComponentTemplate.class,
-				() -> parse(resource));
+		return getCachedValue(key, () -> parse(resource));
 	}
 
 
@@ -106,26 +109,29 @@ public class PageLoadService {
 	}
 
 	public ComponentAssembler getAssembler(String className, ComponentResourceSelector selector, Supplier<ComponentAssembler> delegate) {
-		MultiKey key = getTemplateKey.get(className, selector);
-		return getCachedValue(CacheKey.assemblers, key,
-				ComponentAssembler.class, delegate);
+		MultiKey key = getTemplateKey.get(className, CacheKey.assemblers, selector);
+		return getCachedValue(key, delegate);
 	}
 
 
-	private <V> V getCachedValue(CacheKey cacheKey, MultiKey key, Class<V> valueClass, Supplier<V> get) {
+	/**
+	 * Create cache create if absent, use <code>appKey</code> as group name,
+	 * appkey contains site key so we don't need to use host name in MultiKey
+	 */
+	private <V> V getCachedValue(MultiKey key, Supplier<V> get) {
+		String appKey = webSiteVersionService.getApplicationKey();
 		try {
-			String appKey = webSiteVersionService.getApplicationKey();
 			if (appKey.startsWith(WebSiteVersionService.EDITOR_PREFIX))
 				return get.get();
-			Cache<MultiKey, V> cache = getOrCreateCache.getOrCreate(cacheKey.getCacheName(appKey), MultiKey.class, valueClass);
-			V v = cache.get(key);
+			Cache<MultiKey, Object> cache = cacheFactory.createIfAbsent(appKey, cacheConfig);
+			V v = (V) cache.get(key);
 			if (v == null) {
 				v = get.get();
 				cache.put(key, v);
 			}
 			return v;
 		} catch (Exception e) {
-			logger.error("Exception appeared during reading cached value. cacheGroup {}, key: {}", cacheKey.name(), key);
+			logger.error("Exception appeared during reading cached value. cacheGroup {}, key: {}", appKey, key);
 			logger.catching(e);
 			return get.get();
 		}
@@ -133,10 +139,8 @@ public class PageLoadService {
 
 	public Page getPage(String canonicalPageName) {
 		ComponentResourceSelector selector = selectorAnalyzer.buildSelectorForRequest();
-		MultiKey key = getTemplateKey.get(canonicalPageName, selector);
-		return getCachedValue(CacheKey.pages, key,
-				Page.class,
-				() -> pageLoader.loadPage(canonicalPageName, selector));
+		MultiKey key = getTemplateKey.get(canonicalPageName, CacheKey.pages, selector);
+		return getCachedValue(key, () -> pageLoader.loadPage(canonicalPageName, selector));
 	}
 
 	/**
@@ -157,9 +161,7 @@ public class PageLoadService {
 
 	private void cleanAllCaches() {
 		String cacheKey = webSiteVersionService.getApplicationKey();
-		for (CacheKey key : CacheKey.values()) {
-			cacheManager.destroyCache(key.getCacheName(cacheKey));
-		}
+		cacheProvider.getCacheManager().destroyCache(cacheKey);
 	}
 
 	static final ComponentTemplate missingTemplate = new ComponentTemplate() {
@@ -196,16 +198,4 @@ public class PageLoadService {
 			return new ToStringBuilder(this).append("missingTemplate").toString();
 		}
 	};
-
-	enum CacheKey {
-		resources,
-		templates,
-		assemblers,
-		pages;
-
-		public String getCacheName(String applicationKey) {
-			return String.format("%s_%s", this.name(), applicationKey);
-		}
-	}
-
 }

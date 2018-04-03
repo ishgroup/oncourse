@@ -1,4 +1,5 @@
 apply from: "$rootDir/gradle/functions.gradle"
+apply from: "$rootDir/gradle/caffeine.gradle"
 
 sourceSets.main.java.srcDirs = []
 sourceSets.main.groovy.srcDir 'src/main/java'

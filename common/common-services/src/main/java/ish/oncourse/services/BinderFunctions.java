@@ -3,6 +3,7 @@
  */
 package ish.oncourse.services;
 
+import ish.oncourse.cache.ICacheProvider;
 import ish.oncourse.services.application.ApplicationServiceImpl;
 import ish.oncourse.services.application.IApplicationService;
 import ish.oncourse.services.binary.BinaryDataService;
@@ -141,6 +142,7 @@ public class BinderFunctions {
 	public static void bindEnvServices(ServiceBinder binder, String appName, boolean testMode, ServiceBuilder<IS3Service> s3ServiceBuilder) {
 		binder.bind(ICayenneService.class, new CayenneServiceBuilder()).eagerLoad();
 		binder.bind(CacheManager.class, new BinderFunctions.CacheManagerBuilder());
+		binder.bind(ICacheProvider.class, new BinderFunctions.CacheProviderBuilder());
 
 		binder.bind(PreferenceController.class).withId(PreferenceController.class.getSimpleName());
 		binder.bind(PreferenceControllerFactory.class).withId(PreferenceControllerFactory.class.getSimpleName());
@@ -183,10 +185,9 @@ public class BinderFunctions {
 	}
 
 
-
 	public static void bindTapestryServices(ServiceBinder binder,
 											Class<? extends ICacheMetaProvider> cacheMetaProviderClass,
-											Class<? extends  IPageRenderer> pageRendererClass) {
+											Class<? extends IPageRenderer> pageRendererClass) {
 
 		new BindTapestryServices()
 				.cacheMetaProviderClass(cacheMetaProviderClass)
@@ -227,16 +228,24 @@ public class BinderFunctions {
 	public static class CacheManagerBuilder implements ServiceBuilder<CacheManager> {
 		@Override
 		public CacheManager buildService(ServiceResources resources) {
-			CayenneRuntime cayenneRuntime = resources.getService(ServerRuntime.class);
-			CacheManager cacheManager = cayenneRuntime.getInjector().getInstance(CacheManager.class);
-			return cacheManager;
+			ICacheProvider cacheProvider = resources.getService(ICacheProvider.class);
+			return cacheProvider.getCacheManager();
 		}
 	}
+
+	public static class CacheProviderBuilder implements ServiceBuilder<ICacheProvider> {
+		@Override
+		public ICacheProvider buildService(ServiceResources resources) {
+			CayenneRuntime cayenneRuntime = resources.getService(ServerRuntime.class);
+			return cayenneRuntime.getInjector().getInstance(ICacheProvider.class);
+		}
+	}
+
 
 	public static class ContentCacheServiceBuilder implements ServiceBuilder<IContentCacheService> {
 		@Override
 		public IContentCacheService buildService(ServiceResources resources) {
-			return new ContentCacheService(resources.getService(CacheManager.class));
+			return new ContentCacheService(resources.getService(ICacheProvider.class));
 		}
 	}
 

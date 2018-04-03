@@ -3,47 +3,39 @@
  */
 package ish.oncourse.services.content.cache;
 
-import ish.oncourse.cayenne.cache.JCacheDefaultConfigurationFactory;
+import ish.oncourse.cache.ICacheFactory;
+import ish.oncourse.cache.ICacheProvider;
 
 import javax.cache.Cache;
-import javax.cache.CacheManager;
 
 /**
  * User: akoiro
  * Date: 8/09/2016
  */
 public class ContentCacheService implements IContentCacheService<WillowContentKey, String> {
-	private final CacheManager cacheManager;
+	private ICacheFactory<WillowContentKey, String> cacheFactory;
 
-	private final JCacheDefaultConfigurationFactory.GetOrCreateCache getOrCreateCache;
-
-	public ContentCacheService(CacheManager cacheManager) {
-		this.cacheManager = cacheManager;
-		this.getOrCreateCache = new JCacheDefaultConfigurationFactory.GetOrCreateCache(this.cacheManager);
+	public ContentCacheService(ICacheProvider cacheProvider) {
+		this.cacheFactory = cacheProvider.createFactory(WillowContentKey.class, String.class);
 	}
 
 
 	@Override
 	public void put(WillowContentKey key, String value) {
-		Cache<WillowContentKey, String> cache = this.getOrCreateCache.getOrCreate(key.getElementName(), WillowContentKey.class, String.class);
+		Cache<WillowContentKey, String> cache = cacheFactory.createIfAbsent(key.getElementName());
 		cache.put(key, value);
 	}
 
 	@Override
 	public String get(WillowContentKey key) {
-		Cache<WillowContentKey, String> cache = cacheManager.getCache(key.getElementName(), WillowContentKey.class, String.class);
-		if (cache != null) {
-			return cache.get(key);
-		}
-		return null;
+		Cache<WillowContentKey, String> cache = cacheFactory.getCache(key.getElementName());
+		return cache != null ? cache.get(key) : null;
 	}
 
 
 	@Override
 	public void remove(WillowContentKey key) {
-		Cache<WillowContentKey, String> cache = cacheManager.getCache(key.getElementName(), WillowContentKey.class, String.class);
-		if (cache != null) {
-			cache.remove(key);
-		}
+		Cache<WillowContentKey, String> cache = cacheFactory.getCache(key.getElementName());
+		if (cache != null) cache.remove(key);
 	}
 }
