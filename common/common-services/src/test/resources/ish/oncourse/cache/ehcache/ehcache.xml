@@ -1,0 +1,5 @@
+<ehcache:config xmlns:ehcache="http://www.ehcache.org/v3" >
+    <ehcache:heap-store>
+        <ehcache:max-object-size unit="B">1</ehcache:max-object-size>
+    </ehcache:heap-store>
+</ehcache:config>

@@ -1,16 +1,16 @@
 /*
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
  */
-package ish.oncourse.services.ehcache;
+package ish.oncourse.cache.ehcache;
 
 import io.reactivex.Observable;
 import ish.oncourse.cache.CreateIfAbsent;
-import ish.oncourse.cache.ehcache.EhcacheFactory;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.ehcache.config.builders.CacheConfigurationBuilder;
 import org.ehcache.config.builders.ResourcePoolsBuilder;
 import org.ehcache.config.units.EntryUnit;
-import org.junit.Test;
+import org.ehcache.jsr107.EhcacheCachingProvider;
+import org.junit.Ignore;
 
 import javax.cache.Cache;
 import javax.cache.CacheManager;
@@ -22,13 +22,15 @@ import java.util.concurrent.TimeUnit;
 import static org.ehcache.config.ResourceType.Core.HEAP;
 
 /**
+ * This test can be used only in manual mode. We use it to check how ehcache works
+ *
  * User: akoiro
  * Date: 31/3/18
  */
 public class EhcacheTest {
-	@Test
+	@Ignore
 	public void test() throws URISyntaxException, InterruptedException {
-		CacheManager manager = Caching.getCachingProvider()
+		CacheManager manager = Caching.getCachingProvider(EhcacheCachingProvider.class.getName())
 				.getCacheManager(getClass().getResource("ehcache.xml").toURI(),
 						getClass().getClassLoader());
 
@@ -49,9 +51,9 @@ public class EhcacheTest {
 				.blockingForEach(k -> cache.put(k, RandomStringUtils.randomAlphabetic(1000000)));
 	}
 
-	@Test
+	@Ignore
 	public void test_ehcache() throws URISyntaxException, InterruptedException {
-		CacheManager manager = Caching.getCachingProvider()
+		CacheManager manager = Caching.getCachingProvider(EhcacheCachingProvider.class.getName())
 				.getCacheManager(getClass().getResource("ehcache.xml").toURI(),
 						getClass().getClassLoader());
 

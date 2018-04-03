@@ -15,7 +15,7 @@ import org.junit.Test;
 /*
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
  */
-public class EHCacheTest extends ServiceTest {
+public class CayenneObjectSelectCacheTest extends ServiceTest {
     private ICayenneService cayenneService;
     private IWebContentService service;
     private IWebSiteService webSiteService;
@@ -23,7 +23,7 @@ public class EHCacheTest extends ServiceTest {
     @Before
     public void setup() throws Exception {
         initTest("ish.oncourse.services", "service", ServiceTestModule.class);
-        new LoadDataSet().dataSetFile("ish/oncourse/services/cache/EHCacheTest.xml").load(testContext.getDS());
+        new LoadDataSet().dataSetFile("ish/oncourse/services/cache/CayenneObjectSelectCacheTest.xml").load(testContext.getDS());
 
         cayenneService = getService(ICayenneService.class);
         service = getService(IWebContentService.class);
