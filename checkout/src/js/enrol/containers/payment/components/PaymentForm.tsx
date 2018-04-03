@@ -45,6 +45,7 @@ interface Props extends FormProps<DataShape, any, any> {
   onChangeTab?: (tab) => void;
   onUnmountPassComponent?: () => void;
   corporatePassAvailable?: boolean;
+  amexEnabled?: boolean;
   creditCardAvailable?: boolean;
   payLaterAvailable?: boolean;
   updatePayNow: (val, validate) => void;
@@ -105,7 +106,7 @@ class PaymentForm extends React.Component<Props, any> {
     const {
       handleSubmit, contacts, amount, invalid, pristine, submitting, onSubmitPass, corporatePass, corporatePassError,
       onSetPayer, payerId, onAddPayer, onAddCompany, voucherPayerEnabled, currentTab, corporatePassAvailable, fetching,
-      onUnmountPassComponent, conditions, creditCardAvailable, payLaterAvailable, updatePayNow,
+      onUnmountPassComponent, conditions, creditCardAvailable, payLaterAvailable, updatePayNow, amexEnabled,
     } = this.props;
 
     const disabled = (pristine || submitting);
@@ -122,7 +123,7 @@ class PaymentForm extends React.Component<Props, any> {
               animation="flip"
             >
               <div className="rodal-content">
-                <CvvHelp/>
+                <CvvHelp amexEnabled={amexEnabled}/>
               </div>
             </Rodal>
 
@@ -140,6 +141,7 @@ class PaymentForm extends React.Component<Props, any> {
                 {currentTab === Tabs.creditCard && creditCardAvailable &&
                   <CreditCardComp
                     amount={amount}
+                    amexEnabled={amexEnabled}
                     contacts={contacts}
                     payerId={payerId}
                     onSetPayer={onSetPayer}
@@ -313,6 +315,7 @@ const mapStateToProps = (state: IshState) => {
     corporatePassAvailable: state.preferences.hasOwnProperty('corporatePassEnabled') ? state.preferences.corporatePassEnabled : true,
     creditCardAvailable: state.preferences.hasOwnProperty('creditCardEnabled') ? state.preferences.creditCardEnabled : true,
     payLaterAvailable: state.checkout.amount.isEditable && Number(state.checkout.amount.minPayNow) === 0,
+    amexEnabled: state.preferences.amexEnabled,
     conditions: {
       refundPolicyUrl: state.config.termsAndConditions,
       featureEnrolmentDisclosure: state.config.featureEnrolmentDisclosure,

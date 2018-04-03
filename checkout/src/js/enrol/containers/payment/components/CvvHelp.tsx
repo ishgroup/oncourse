@@ -1,12 +1,14 @@
 import * as React from "react";
 
 interface Props {
-
+  amexEnabled: boolean;
 }
 
 export class CvvHelp extends React.Component<Props, any> {
 
   render() {
+    const {amexEnabled} = this.props;
+
     return (
       <div>
         <div id="popup-content">
@@ -29,18 +31,20 @@ export class CvvHelp extends React.Component<Props, any> {
             </p>
           </div>
 
-          <div className="container">
-            <p>
-              <img
-                className="imgleft"
-                alt="American Express CVV location"
-                height="126"
-                width="197"
-                src="/s/img/amex-cvv.png"
-              /> On <strong>American Express</strong> the CVV appears as a separate 4-digit code printed on the
-              front of your card.
-            </p>
-          </div>
+          {amexEnabled &&
+            <div className="container">
+              <p>
+                <img
+                  className="imgleft"
+                  alt="American Express CVV location"
+                  height="126"
+                  width="197"
+                  src="/s/img/amex-cvv.png"
+                /> On <strong>American Express</strong> the CVV appears as a separate 4-digit code printed on the
+                front of your card.
+              </p>
+            </div>
+          }
 
           <p>
             As the CVV is not embossed (like the card number), the CVV is not

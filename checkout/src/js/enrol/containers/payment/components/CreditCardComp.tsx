@@ -19,6 +19,7 @@ interface Props {
   onInit?: () => any;
   payerId?: string;
   voucherPayerEnabled?: boolean;
+  amexEnabled?: boolean;
   openCvvHelp: () => void;
 }
 
@@ -47,7 +48,9 @@ class CreditCardComp extends React.Component<Props, any> {
   }
 
   render() {
-    const {contacts, amount, onSetPayer, payerId, onAddPayer, onAddCompany, voucherPayerEnabled, openCvvHelp} = this.props;
+    const {
+      contacts, amount, onSetPayer, payerId, onAddPayer, onAddCompany, voucherPayerEnabled, openCvvHelp, amexEnabled,
+    } = this.props;
 
     return (
       <div id="credit-card" className="single-tab active">
@@ -61,6 +64,7 @@ class CreditCardComp extends React.Component<Props, any> {
                   <span id="cardtotalstring">
                     ${Number(amount.payNow).toFixed(2)}
                     <VisaMasterCardImg/>
+                    {amexEnabled && <AmexImg/>}
                   </span>
                 </p>
 

@@ -35,5 +35,10 @@ export class Preferences {
    * Minimal age which not requiring parent
    */
   minAge?: number;
+
+  /**
+   * Amex card payment enabled
+   */
+  amexEnabled?: boolean;
 }
 

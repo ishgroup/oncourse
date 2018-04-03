@@ -17,6 +17,7 @@ export class PreferenceApiMock extends PreferenceApi {
       successLink: '/courses',
       refundPolicyUrl: '/courses',
       minAge: 17,
+      amexEnabled: true,
     });
   }
 }
