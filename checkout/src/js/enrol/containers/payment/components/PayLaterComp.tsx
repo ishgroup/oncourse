@@ -13,6 +13,14 @@ interface Props {
   onInit: () => void;
 }
 
+const Header = () => {
+  return (<div className="header-content">
+    <div className="header">
+      <h1>Pay later</h1>
+    </div>
+  </div>);
+};
+
 class PayLaterComp extends React.Component<Props, any> {
   componentDidMount() {
     this.props.onInit();
@@ -24,11 +32,13 @@ class PayLaterComp extends React.Component<Props, any> {
     return (
       <div id="credit-card" className="single-tab active">
         <div id="paymentEditor">
+          <Header/>
           <div className="enrolmentsSelected">
             <fieldset>
               <div className="form-details">
                 <PayerSelect
                   contacts={contacts}
+
                   payer={contacts.find(c => c.id === payerId)}
                   onChange={onSetPayer}
                   disabled={voucherPayerEnabled}
