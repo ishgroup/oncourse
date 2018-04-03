@@ -1,5 +1,7 @@
 package ish.oncourse.cayenne.cache
 
+import ish.oncourse.cache.ICacheFactory
+import ish.oncourse.cache.ICacheProvider
 import org.apache.cayenne.cache.QueryCache
 import org.apache.cayenne.cache.QueryCacheEntryFactory
 import org.apache.cayenne.di.BeforeScopeEnd
@@ -7,28 +9,22 @@ import org.apache.cayenne.di.Inject
 import org.apache.cayenne.query.QueryMetadata
 
 import javax.cache.Cache
-import javax.cache.CacheException
-import javax.cache.CacheManager
 import java.util.concurrent.ConcurrentHashMap
 
 class JCacheQueryCache implements QueryCache {
 
+    private final ICacheProvider cacheProvider
 
-    protected final CacheManager cacheManager
-    
     private ICacheEnabledService enabledService
 
-    protected final JCacheConfigurationFactory configurationFactory
-
-    private final JCacheDefaultConfigurationFactory.GetOrCreateCache getOrCreateCache
+    private final ICacheFactory<String, List> cacheFactory
 
     private Set<String> seenCacheNames = Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>())
 
-    JCacheQueryCache(@Inject CacheManager cacheManager, @Inject JCacheConfigurationFactory configurationFactory, @Inject ICacheEnabledService enabledService) {
-        this.cacheManager = cacheManager
-        this.configurationFactory = configurationFactory
+    JCacheQueryCache(@Inject ICacheProvider cacheProvider, @Inject ICacheEnabledService enabledService) {
+        this.cacheProvider = cacheProvider
+        this.cacheFactory = cacheProvider.createFactory(String.class, List.class)
         this.enabledService = enabledService
-        getOrCreateCache = new JCacheDefaultConfigurationFactory.GetOrCreateCache(this.cacheManager)
     }
 
     @Override
@@ -42,7 +38,7 @@ class JCacheQueryCache implements QueryCache {
     @Override
     List get(QueryMetadata metadata, QueryCacheEntryFactory factory) {
         String key = Objects.requireNonNull(metadata.getCacheKey())
-        Cache<String, List> cache = createIfAbsent(metadata)
+        Cache<String, List> cache = cacheFactory.createIfAbsent(cacheName(metadata),)
 
         List<?> result = cache.get(key)
         return result && enabledService.cacheEnabled ? result : (List) cache.invoke(key, new JCacheEntryLoader(factory, enabledService.cacheEnabled))
@@ -58,11 +54,8 @@ class JCacheQueryCache implements QueryCache {
 
     @Override
     void remove(String key) {
-        if (key != null) {
-            for (String cache : cacheManager.cacheNames) {
-                getCache(cache).remove(key)
-            }
-        }
+        if (key != null)
+            for (String cache : seenCacheNames) getCache(cache).remove(key)
     }
 
     @Override
@@ -75,7 +68,7 @@ class JCacheQueryCache implements QueryCache {
 
     @Override
     void removeGroup(String groupKey, Class<?> keyType, Class<?> valueType) {
-        removeGroup(groupKey);
+        removeGroup(groupKey)
     }
 
     @Override
@@ -97,41 +90,22 @@ class JCacheQueryCache implements QueryCache {
 
     @SuppressWarnings("unchecked")
     protected Cache<String, List> createIfAbsent(String cacheName) {
-
-        Cache<String, List> cache = getCache(cacheName)
-        if (cache == null) {
-
-            try {
-                cache = createCache(cacheName)
-            } catch (CacheException e) {
-                // someone else just created this cache?
-                cache = getCache(cacheName)
-                if (cache == null) {
-                    // giving up... the error was about something else...
-                    throw e
-                }
-            }
-
-            seenCacheNames.add(cacheName)
-        }
-
+        Cache<String, List> cache = cacheFactory.createIfAbsent(cacheName)
+        seenCacheNames.add(cacheName)
         return cache
     }
 
-    protected Cache createCache(String cacheName) {
-        return cacheManager.createCache(cacheName, configurationFactory.create(cacheName))
-    }
 
     protected Cache<String, List> getCache(String name) {
-        return cacheManager.getCache(name, String, List)
+        return cacheProvider.cacheManager.getCache(name)
     }
 
-    protected String cacheName(QueryMetadata metadata) {
+    private static String cacheName(QueryMetadata metadata) {
         return metadata.cacheGroup ? metadata.cacheGroup : JCacheConstants.DEFAULT_CACHE_NAME
     }
 
     @BeforeScopeEnd
     void shutdown() {
-        cacheManager.close()
+        cacheProvider.cacheManager.close()
     }
 }
