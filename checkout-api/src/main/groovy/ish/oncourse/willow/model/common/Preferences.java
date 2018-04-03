@@ -10,6 +10,7 @@ public class Preferences  {
     private String featureEnrolmentDisclosure = null;
     private String googleTagmanagerAccount = null;
     private Double minAge = null;
+    private Boolean amexEnabled = null;
 
     /**
      * is corporate pass enabled preference
@@ -130,6 +131,23 @@ public class Preferences  {
       return this;
     }
 
+    /**
+     * Amex card payment enabled
+     * @return amexEnabled
+     */
+    public Boolean getAmexEnabled() {
+        return amexEnabled;
+    }
+
+    public void setAmexEnabled(Boolean amexEnabled) {
+       this.amexEnabled = amexEnabled;
+    }
+
+    public Preferences amexEnabled(Boolean amexEnabled) {
+      this.amexEnabled = amexEnabled;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -143,6 +161,7 @@ public class Preferences  {
       sb.append("    featureEnrolmentDisclosure: ").append(toIndentedString(featureEnrolmentDisclosure)).append("\n");
       sb.append("    googleTagmanagerAccount: ").append(toIndentedString(googleTagmanagerAccount)).append("\n");
       sb.append("    minAge: ").append(toIndentedString(minAge)).append("\n");
+      sb.append("    amexEnabled: ").append(toIndentedString(amexEnabled)).append("\n");
       sb.append("}");
       return sb.toString();
     }
