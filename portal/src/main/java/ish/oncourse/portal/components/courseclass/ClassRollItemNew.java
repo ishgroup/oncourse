@@ -1,36 +1,32 @@
 package ish.oncourse.portal.components.courseclass;
 
 
-import ish.common.types.AttendanceType;
-import ish.oncourse.model.Attendance;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Session;
-import ish.oncourse.model.Student;
+import ish.oncourse.model.*;
+import ish.oncourse.portal.services.GetContactPhone;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.attendance.AttendanceUtils;
+import ish.oncourse.portal.util.GetAge;
 import ish.oncourse.services.preference.PreferenceController;
-import ish.oncourse.utils.DateUtils;
-import org.apache.cayenne.query.ObjectSelect;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.joda.time.Interval;
-import org.joda.time.Minutes;
 
-import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
-/**
- * User: artem
- * Date: 10/16/13
- * Time: 3:30 PM
- */
+import static ish.oncourse.services.preference.Preferences.DEFAULT_contactAgeWhenNeedParent;
+
 public class ClassRollItemNew {
+
+    private static final String NAME_AGE = "%s (age %d)";
 
 	@Parameter
 	@Property
 	private Enrolment enrolment;
+
+	@Property
+	private Contact contact;
 
 	@Inject
 	private PreferenceController preferenceController;
@@ -58,21 +54,27 @@ public class ClassRollItemNew {
 		return null;
 	}
 
-	public String getPhoneNumber(){
-
-		if(enrolment.getStudent().getContact().getMobilePhoneNumber()!=null)
-			return enrolment.getStudent().getContact().getMobilePhoneNumber();
-		else if(enrolment.getStudent().getContact().getHomePhoneNumber()!=null)
-			return enrolment.getStudent().getContact().getHomePhoneNumber();
-		else if(enrolment.getStudent().getContact().getBusinessPhoneNumber()!=null)
-			return enrolment.getStudent().getContact().getBusinessPhoneNumber();
-		else if(enrolment.getStudent().getContact().getFaxNumber()!=null)
-			return enrolment.getStudent().getContact().getFaxNumber();
-		else
-			return null;
+	public String getPhoneNumber(Contact c){
+        return GetContactPhone.valueOf(c).get();
 	}
 
 	public Integer getAttendancePercent() {
 		return AttendanceUtils.getAttendancePercent(enrolment);
-	}	
+	}
+
+	public String getFullName(Student s) {
+		Integer age = GetAge.valueOf(s.getContact()).get();
+		if (age != null && age < DEFAULT_contactAgeWhenNeedParent) {
+			return String.format(NAME_AGE, s.getContact().getFullName(), age);
+		} else {
+			return s.getContact().getFullName();
+		}
+	}
+
+	public List<Contact> getGuardians(Student s) {
+		return s.getContact().getFromContacts().stream()
+				.filter(relation -> relation.getRelationType() != null && relation.getRelationType().getAngelId() == -1)
+                .map(relation -> relation.getFromContact())
+				.collect(Collectors.toList());
+	}
 }

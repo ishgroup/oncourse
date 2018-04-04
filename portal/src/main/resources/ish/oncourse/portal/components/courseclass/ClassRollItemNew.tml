@@ -21,15 +21,30 @@
 							<div class="row"><img width="50" height="50" src="${avatarContextPath}"/></div>
 						</div>
 
-						<h5>${enrolment.student.fullName}</h5>
+						<h5>${getFullName(enrolment.student)}</h5>
 
 						<t:if test="enableDetails">
 						<ul class="list-inline">
-							<li><a href="mailto:${enrolment.student.contact.emailAddress}">${enrolment.student.contact.emailAddress}</a></li>
-							<t:if test="phoneNumber">
-								<li>|</li>
-								<li><a href="tel:${phoneNumber}">${phoneNumber}</a></li>
+							<li>
+                                <a href="mailto:${enrolment.student.contact.emailAddress}">${enrolment.student.contact.emailAddress}</a>
+                            </li>
+							<t:if test="getPhoneNumber(enrolment.student.contact)">
+								<li>
+                                    <a href="tel:${getPhoneNumber(enrolment.student.contact)}">${getPhoneNumber(enrolment.student.contact)}</a>
+                                </li>
 							</t:if>
+							<t:loop source="getGuardians(enrolment.student)" value="contact">
+								<li>
+									<span>Guardian: ${contact.fullName}&nbsp;</span>
+									<t:if test="${getPhoneNumber(contact)}">
+										<a href="tel:${getPhoneNumber(contact)}">${getPhoneNumber(contact)}</a>
+									</t:if>
+									<span>&nbsp;</span>
+									<t:if test="contact.emailAddress">
+										<a href="mailto:${contact.emailAddress}">${contact.emailAddress}</a>
+									</t:if>
+								</li>
+							</t:loop>
 						</ul>
 						</t:if>
 					</div>
