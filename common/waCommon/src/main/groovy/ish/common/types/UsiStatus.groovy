@@ -32,7 +32,21 @@ public enum UsiStatus implements DisplayableExtendedEnumeration<Integer> {
      * A verification was made and succeeded.
 	 */
 	@API
-	VERIFIED(2, "Verified");
+	VERIFIED(2, "Verified"),
+
+	/**
+	 * Database value: 3
+	 * A student objected to having a USI and obtained an exemption.
+	 */
+	@API
+	EXEMPTION(3, "Exemption"),
+
+	/**
+	 * Database value: 4
+	 * A student did their training offshore and isn't required to get a USI
+	 */
+	@API
+	INTERNATIONAL(4, "International")
 
 	private String displayName;
 	private int value;
