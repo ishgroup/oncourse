@@ -65,7 +65,7 @@
 
 	<a href="#disableModal" role="button" class="btn btn-danger" data-toggle="modal" data-target="#disableModal">Disable College</a>
 	
-	<div id="disableModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="disableLabel" aria-hidden="true">
+	<div id="disableModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="disableLabel" aria-hidden="true">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 			<h3 id="disableLabel">Disable College</h3>
