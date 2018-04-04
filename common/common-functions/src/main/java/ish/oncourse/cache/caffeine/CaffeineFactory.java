@@ -23,7 +23,7 @@ import static ish.oncourse.cache.Constants.DEFAULT_TTL;
 public class CaffeineFactory<K, V> extends ACacheFactory<K, V> {
 	private static final Logger logger = LogManager.getLogger();
 
-	CaffeineFactory(CacheManager cacheManager, Class<K> keyClass, Class<V> valueClass, Configuration<K, V> defaultConfig) {
+	protected CaffeineFactory(CacheManager cacheManager, Class<K> keyClass, Class<V> valueClass, Configuration<K, V> defaultConfig) {
 		super(cacheManager, keyClass, valueClass, defaultConfig);
 	}
 
@@ -36,13 +36,21 @@ public class CaffeineFactory<K, V> extends ACacheFactory<K, V> {
 	}
 
 	public static <K, V> CaffeineConfiguration<K, V> createDefaultConfig(Class<K> keyClass, Class<V> valueClass, long maximumSize) {
+		return createDefaultConfig(keyClass, valueClass, maximumSize, DEFAULT_TTL, TimeUnit.MINUTES);
+	}
+
+	public static <K, V> CaffeineConfiguration<K, V> createDefaultConfig(Class<K> keyClass, Class<V> valueClass,
+																		 long maximumSize,
+																		 long ttl,
+																		 TimeUnit ttlUnit) {
 		CaffeineConfiguration<K, V> config = new CaffeineConfiguration<>();
 		config.setMaximumSize(OptionalLong.of(maximumSize));
 		config.setManagementEnabled(true);
 		config.setStatisticsEnabled(true);
-		config.setExpireAfterWrite(OptionalLong.of(TimeUnit.MINUTES.toNanos(DEFAULT_TTL)));
+		config.setExpireAfterWrite(OptionalLong.of(ttlUnit.toNanos(ttl)));
 		config.setTypes(keyClass, valueClass);
 		return config;
 	}
+
 
 }

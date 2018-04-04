@@ -3,6 +3,7 @@
  */
 package ish.oncourse.ui.services.pageload;
 
+import com.github.benmanes.caffeine.jcache.spi.CaffeineCachingProvider;
 import ish.oncourse.cache.CreateIfAbsent;
 import ish.oncourse.cache.ehcache.EhcacheFactory;
 import ish.oncourse.cache.jcache.JCacheFactory;
@@ -27,7 +28,7 @@ public class MutliKeyTest {
 
 	@Test
 	public void test_jcache() {
-		CacheManager cacheManager = Caching.getCachingProvider().getCacheManager();
+		CacheManager cacheManager = Caching.getCachingProvider(CaffeineCachingProvider.class.getName()).getCacheManager();
 
 		Locale locale = Locale.getDefault();
 		String name = "template1";
