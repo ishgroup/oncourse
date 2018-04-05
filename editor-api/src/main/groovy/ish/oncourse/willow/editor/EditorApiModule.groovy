@@ -20,6 +20,8 @@ import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.services.ZKProvider
 import ish.oncourse.willow.editor.services.access.AuthenticationFilter
 import ish.oncourse.willow.editor.services.access.AuthenticationService
+import ish.oncourse.willow.editor.services.access.PostProcessFeature
+import ish.oncourse.willow.editor.services.access.PostProcessInterceptor
 import ish.oncourse.willow.editor.services.access.UserService
 import ish.oncourse.willow.editor.services.access.ZKSessionManager
 import ish.oncourse.willow.editor.v1.service.impl.AuthApiServiceImpl
@@ -73,6 +75,7 @@ class EditorApiModule extends ConfigModule {
         CXFModule.contributeResources(binder).addBinding().to(VersionApiServiceImpl)
         CXFModule.contributeResources(binder).addBinding().to(MenuApiServiceImpl)
         CXFModule.contributeResources(binder).addBinding().to(RedirectApiServiceImpl)
+        CXFModule.contributeFeatures(binder).addBinding().to(PostProcessFeature)
 
         binder.bind(RequestService)
         binder.bind(ZKProvider)

@@ -15,9 +15,9 @@ class CXFApplication extends Application{
     private Map<String, Object> props = new HashMap<>()
 
 
-    CXFApplication(Set<Object> resources, Map<String, String> props) {
+    CXFApplication(Set<Object> resources, Set<Object> features, Map<String, String> props) {
         singletons.addAll(resources)
-
+        singletons.addAll(features)
         classes.add(JacksonJsonProvider.class)
         classes.add(JacksonJaxbJsonProvider.class)
 

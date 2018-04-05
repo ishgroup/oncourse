@@ -20,6 +20,10 @@ class CXFModule extends ConfigModule {
         return Multibinder.newSetBinder(binder, Key.get(Object.class, CXFResource))
     }
 
+    static Multibinder<Object> contributeFeatures(Binder binder) {
+        return Multibinder.newSetBinder(binder, Key.get(Object.class, CXFFeature))
+    }
+
     @Override
     void configure(Binder binder) {
         JettyModule.extend(binder).addMappedServlet(Key.get(MappedServlet, CXFServlet))
@@ -42,11 +46,11 @@ class CXFModule extends ConfigModule {
 
     @Singleton
     @Provides
-    private Application createApplication(@CXFResource Set<Object> resources) {
+    private Application createApplication(@CXFResource Set<Object> resources, @CXFFeature Set<Object> features) {
         Map<String, String> props = new HashMap<>()
         props.put('jaxrs.inInterceptors', LoggingInInterceptor.class.name)
 
-        return new CXFApplication(resources, props)
+        return new CXFApplication(resources,features, props)
     }
 
 }
