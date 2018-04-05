@@ -2,7 +2,7 @@
 
 pipeline {
     agent { 
-        label 'freebsd'
+        label 'mac1'
     }
 
     parameters {
