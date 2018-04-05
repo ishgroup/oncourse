@@ -9,6 +9,31 @@ import static org.junit.Assert.assertTrue
 
 class MoneyTestGroovy {
     
+    
+    @Test
+    void testMultiplyReturnType() {
+        def defValue = 1.0
+        assertEquals(Money, Money.ONE.multiply(defValue).class)
+
+        long longValue = 1
+        assertEquals(Money, Money.ONE.multiply(longValue).class)
+
+        Long longClassValue = 1
+        assertEquals(Money, Money.ONE.multiply(longClassValue).class)
+
+        double doubleValue = 1.0
+        assertEquals(Money, Money.ONE.multiply(doubleValue).class)
+
+        Double doubleClassValue = 1.0
+        assertEquals(Money, Money.ONE.multiply(doubleClassValue).class)
+
+        BigDecimal bigDecimalValue = 1.0
+        assertEquals(Money, Money.ONE.multiply(bigDecimalValue).class)
+
+        Money moneyValue = new Money('1.0')
+        assertEquals(Money, Money.ONE.multiply(moneyValue).class)
+    }
+    
     @Test
     void testRelationalOperators() {
         assertEquals(Money.ONE, Money.ONE)

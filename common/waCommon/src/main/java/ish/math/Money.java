@@ -225,7 +225,7 @@ public class Money extends BigDecimal {
 	 * @param val factor
 	 * @return new money object
 	 */
-	public Money multiply(double val) {
+	public Money multiply(Double val) {
 		return multiply(BigDecimal.valueOf(val));
 	}
 
