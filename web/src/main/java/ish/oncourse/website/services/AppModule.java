@@ -15,7 +15,6 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.site.WebSiteService;
 import ish.oncourse.ui.services.UIModule;
-import ish.oncourse.ui.services.locale.PerSiteVariantThreadLocale;
 import ish.oncourse.util.PageRenderer;
 import ish.oncourse.website.services.html.CacheMetaProvider;
 import org.apache.tapestry5.internal.InternalConstants;
@@ -24,7 +23,6 @@ import org.apache.tapestry5.ioc.MethodAdviceReceiver;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.*;
-import org.apache.tapestry5.ioc.services.ThreadLocale;
 import org.apache.tapestry5.services.javascript.JavaScriptStack;
 import org.apache.tapestry5.services.javascript.JavaScriptStackSource;
 import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
@@ -56,11 +54,6 @@ public class AppModule {
 	@Primary
 	public static void provideURLRewriting(OrderedConfiguration<PageRenderLinkTransformer> configuration) {
 		configuration.addInstance("PageLinkRule", PageLinkTransformer.class);
-	}
-
-	@Decorate(serviceInterface = ThreadLocale.class)
-	public static ThreadLocale threadLocaleDecorate(ThreadLocale threadLocale, IWebSiteService webSiteService) {
-		return new PerSiteVariantThreadLocale(webSiteService);
 	}
 
 	@Contribute(JavaScriptStackSource.class)
