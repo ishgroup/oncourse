@@ -19,7 +19,6 @@ import ish.oncourse.services.site.WebSiteVersionService;
 import ish.oncourse.services.visitor.ParsedContentVisitor;
 import ish.oncourse.test.LoadDataSet;
 import ish.oncourse.test.tapestry.ServiceTest;
-import ish.oncourse.ui.services.locale.PerSiteVariantThreadLocale;
 import ish.oncourse.website.services.html.CacheMetaProvider;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.tapestry5.SymbolConstants;
@@ -142,10 +141,6 @@ public class TagTextileParserTest extends ServiceTest {
 			configuration.add(ParsedContentVisitor.WEB_CONTENT_CACHE, "false");
 		}
 
-
-		public ThreadLocale buildThreadLocaleOverride(IWebSiteService webSiteService) {
-			return new PerSiteVariantThreadLocale(webSiteService);
-		}
 
 		public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local ThreadLocale locale) {
 			configuration.add(ThreadLocale.class, locale);
