@@ -19,21 +19,21 @@ public class GetTemplateKeyTest {
 	public void test_key_selector_without_axis_and_with_layout() {
 		GetTemplateKey getTemplateKey = new GetTemplateKey(webNodeService());
 
-		MultiKey multiKey = getTemplateKey.get("TagsTextile", "cce.cc", CacheKey.templates, selector_without_axis());
+		MultiKey multiKey = getTemplateKey.get("TagsTextile", CacheKey.templates, selector_without_axis());
 
-		MultiKey expected = new MultiKey("TagsTextile", "cce.cc", CacheKey.templates, selector_without_axis(),  1L);
+		MultiKey expected = new MultiKey("TagsTextile", CacheKey.templates, selector_without_axis(), 1L);
 		Assert.assertEquals(expected, multiKey);
 
-		expected = new MultiKey("TagsTextile1", "cce.cc", CacheKey.templates, selector_without_axis(), 1L);
+		expected = new MultiKey("TagsTextile1", CacheKey.templates, selector_without_axis(), 1L);
 		Assert.assertNotEquals(expected, multiKey);
 
-		expected = new MultiKey("TagsTextile", "cce.cc", CacheKey.templates, selector_with_axis_but_without_definition(), 1L);
+		expected = new MultiKey("TagsTextile", CacheKey.templates, selector_with_axis_but_without_definition(), 1L);
 		Assert.assertNotEquals(expected, multiKey);
 
-		expected = new MultiKey("TagsTextile", "cce.cc", CacheKey.templates, selector_without_axis(), 2L);
+		expected = new MultiKey("TagsTextile", CacheKey.templates, selector_without_axis(), 2L);
 		Assert.assertNotEquals(expected, multiKey);
 
-		expected = new MultiKey("TagsTextile", "cce.cc", CacheKey.templates, selector_without_axis(), null);
+		expected = new MultiKey("TagsTextile", CacheKey.templates, selector_without_axis(), null);
 		Assert.assertNotEquals(expected, multiKey);
 	}
 
@@ -41,21 +41,21 @@ public class GetTemplateKeyTest {
 	public void test_key_selector_with_axis_and_with_layout() {
 		GetTemplateKey getTemplateKey = new GetTemplateKey(webNodeService());
 
-		MultiKey multiKey = getTemplateKey.get("TagsTextile", "cce.cc", CacheKey.templates, selector_with_axis_and_with_definition_for_this_component());
+		MultiKey multiKey = getTemplateKey.get("TagsTextile", CacheKey.templates, selector_with_axis_and_with_definition_for_this_component());
 
-		MultiKey expected = new MultiKey("TagsTextile", "cce.cc", CacheKey.templates, selector_with_axis_and_with_definition_for_this_component(), 1L);
+		MultiKey expected = new MultiKey("TagsTextile", CacheKey.templates, selector_with_axis_and_with_definition_for_this_component(), 1L);
 		Assert.assertEquals(expected, multiKey);
 
-		expected = new MultiKey("TagsTextile1", "cce.cc", CacheKey.templates, selector_with_axis_and_with_definition_for_this_component(), 1L);
+		expected = new MultiKey("TagsTextile1", CacheKey.templates, selector_with_axis_and_with_definition_for_this_component(), 1L);
 		Assert.assertNotEquals(expected, multiKey);
 
-		expected = new MultiKey("TagsTextile", "cce.cc", CacheKey.templates, selector_with_axis_but_without_definition(), 1L);
+		expected = new MultiKey("TagsTextile", CacheKey.templates, selector_with_axis_but_without_definition(), 1L);
 		Assert.assertNotEquals(expected, multiKey);
 
-		expected = new MultiKey("TagsTextile", "cce.cc", CacheKey.templates, selector_with_axis_and_with_definition_for_this_component(), 2L);
+		expected = new MultiKey("TagsTextile", CacheKey.templates, selector_with_axis_and_with_definition_for_this_component(), 2L);
 		Assert.assertNotEquals(expected, multiKey);
 
-		expected = new MultiKey("TagsTextile", "cce.cc", CacheKey.templates, selector_with_axis_and_with_definition_for_this_component(), null);
+		expected = new MultiKey("TagsTextile", CacheKey.templates, selector_with_axis_and_with_definition_for_this_component(), null);
 		Assert.assertNotEquals(expected, multiKey);
 	}
 

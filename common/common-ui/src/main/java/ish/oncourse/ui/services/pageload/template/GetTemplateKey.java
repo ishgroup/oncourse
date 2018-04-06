@@ -20,8 +20,8 @@ public class GetTemplateKey {
 		this.webNodeService = webNodeService;
 	}
 
-	public MultiKey get(String name, String serverName, CacheKey cacheKey, ComponentResourceSelector selector) {
+	public MultiKey get(String name, CacheKey cacheKey, ComponentResourceSelector selector) {
 		WebSiteLayout webSiteLayout = webNodeService.getLayout();
-		return new MultiKey(name, serverName, cacheKey, selector, webSiteLayout != null ? webSiteLayout.getId() : null);
+		return new MultiKey(name, cacheKey, selector, webSiteLayout != null ? webSiteLayout.getId() : null);
 	}
 }
