@@ -48,6 +48,7 @@ class WillowApiModule extends ConfigModule {
         CXFModule.contributeResources(binder).addBinding().to(CorporatePassApiImpl)
         CXFModule.contributeResources(binder).addBinding().to(PreferenceApiImpl)
         CXFModule.contributeResources(binder).addBinding().to(CayenneService)
+        CXFModule.contributeFeatures(binder)
     }
 
     @Singleton
