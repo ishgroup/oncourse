@@ -64,6 +64,7 @@ public class PageLoadServiceGetTemplateTest {
 				cacheProvider,
 				TestDataFactory.componentResourceLocator(),
 				null,
+				TestDataFactory.request(),
 				templateParser,
 				null);
 

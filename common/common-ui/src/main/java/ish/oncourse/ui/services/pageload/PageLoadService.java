@@ -27,6 +27,7 @@ import org.apache.tapestry5.ioc.Location;
 import org.apache.tapestry5.ioc.Resource;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.model.ComponentModel;
+import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.pageload.ComponentRequestSelectorAnalyzer;
 import org.apache.tapestry5.services.pageload.ComponentResourceLocator;
 import org.apache.tapestry5.services.pageload.ComponentResourceSelector;
@@ -44,6 +45,7 @@ public class PageLoadService {
 
 	private final PageLoader pageLoader;
 	private final TemplateParser templateParser;
+	private final Request request;
 	private final ComponentRequestSelectorAnalyzer selectorAnalyzer;
 	private final IWebSiteVersionService webSiteVersionService;
 	private final WebTemplateChangeTracker templateChangeTracker;
@@ -63,12 +65,14 @@ public class PageLoadService {
 						   ICacheProvider cacheProvider,
 						   ComponentResourceLocator componentResourceLocator,
 						   ComponentRequestSelectorAnalyzer selectorAnalyzer,
+						   Request request,
 						   TemplateParser templateParser,
 						   PageLoader pageLoader) {
 		this.cacheProvider = cacheProvider;
 		this.webSiteVersionService = webSiteVersionService;
 		this.selectorAnalyzer = selectorAnalyzer;
 		this.templateParser = templateParser;
+		this.request = request;
 		this.pageLoader = pageLoader;
 		this.templateChangeTracker = new WebTemplateChangeTracker(cayenneService, webSiteService, webSiteVersionService);
 		this.getSiteTemplateResource = new GetSiteTemplateResource(webNodeService, resourceService, componentResourceLocator);
@@ -80,9 +84,9 @@ public class PageLoadService {
 	}
 
 	public ComponentTemplate getTemplate(ComponentModel componentModel, ComponentResourceSelector selector) {
-		MultiKey resourceKey = getTemplateKey.get(componentModel.getComponentClassName(), CacheKey.resources, selector);
+		MultiKey resourceKey = getTemplateKey.get(componentModel.getComponentClassName(), request.getServerName(), CacheKey.resources, selector);
 		Resource resource = getResource(resourceKey, componentModel, selector);
-		return getTemplate(getTemplateKey.get(componentModel.getComponentClassName(), CacheKey.templates, selector), resource);
+		return getTemplate(getTemplateKey.get(componentModel.getComponentClassName(), request.getServerName(), CacheKey.templates, selector), resource);
 	}
 
 
@@ -109,7 +113,7 @@ public class PageLoadService {
 	}
 
 	public ComponentAssembler getAssembler(String className, ComponentResourceSelector selector, Supplier<ComponentAssembler> delegate) {
-		MultiKey key = getTemplateKey.get(className, CacheKey.assemblers, selector);
+		MultiKey key = getTemplateKey.get(className, request.getServerName(), CacheKey.assemblers, selector);
 		return getCachedValue(key, delegate);
 	}
 
@@ -121,9 +125,9 @@ public class PageLoadService {
 	private <V> V getCachedValue(MultiKey key, Supplier<V> get) {
 		String appKey = webSiteVersionService.getApplicationKey();
 		try {
-			if (appKey.startsWith(WebSiteVersionService.EDITOR_PREFIX))
+			if (appKey == null || appKey.startsWith(WebSiteVersionService.EDITOR_PREFIX))
 				return get.get();
-			Cache<MultiKey, Object> cache = cacheFactory.createIfAbsent(appKey, cacheConfig);
+			Cache<MultiKey, Object> cache = cacheFactory.createIfAbsent(String.format("%s-%s", appKey, request.getServerName()), cacheConfig);
 			V v = (V) cache.get(key);
 			if (v == null) {
 				v = get.get();
@@ -139,7 +143,7 @@ public class PageLoadService {
 
 	public Page getPage(String canonicalPageName) {
 		ComponentResourceSelector selector = selectorAnalyzer.buildSelectorForRequest();
-		MultiKey key = getTemplateKey.get(canonicalPageName, CacheKey.pages, selector);
+		MultiKey key = getTemplateKey.get(canonicalPageName, request.getServerName(), CacheKey.pages, selector);
 		return getCachedValue(key, () -> pageLoader.loadPage(canonicalPageName, selector));
 	}
 
