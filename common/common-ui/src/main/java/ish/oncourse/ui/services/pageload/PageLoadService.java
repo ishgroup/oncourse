@@ -40,6 +40,8 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 public class PageLoadService {
+	public static final String SYS_PROPERTY_CACHE_TAPESTRY_SIZE = "cache.tapestry.size";
+
 	private static final Logger logger = LogManager.getLogger();
 
 	private final PageLoader pageLoader;
@@ -75,7 +77,8 @@ public class PageLoadService {
 		this.getTemplateKey = new GetTemplateKey(webNodeService);
 
 		this.cacheFactory = cacheProvider.createFactory(MultiKey.class, Object.class);
-		this.cacheConfig = CaffeineFactory.createDefaultConfig(MultiKey.class, Object.class, 1000);
+		long cacheSize = new Long(System.getProperty(SYS_PROPERTY_CACHE_TAPESTRY_SIZE, "1000"));
+		this.cacheConfig = CaffeineFactory.createDefaultConfig(MultiKey.class, Object.class, cacheSize);
 
 	}
 
