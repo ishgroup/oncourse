@@ -1,6 +1,7 @@
 package ish.oncourse.util;
 
 import ish.oncourse.services.textile.TextileUtil;
+import ish.oncourse.tapestry.IWillowComponentRequestSelectorAnalyzer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.dom.MarkupModel;
@@ -12,7 +13,6 @@ import org.apache.tapestry5.services.RequestGlobals;
 import org.apache.tapestry5.services.Response;
 import org.apache.tapestry5.services.pageload.ComponentResourceSelector;
 
-import java.util.Locale;
 import java.util.Map;
 
 public class PageRenderer implements IPageRenderer {
@@ -23,12 +23,16 @@ public class PageRenderer implements IPageRenderer {
 	private RequestGlobals requestGlobals;
 
 	private IComponentPageResponseRenderer pageResponseRenderer;
+	private IWillowComponentRequestSelectorAnalyzer analyzer;
 
 	@Inject
-	public PageRenderer(PageLoader pageLoader, RequestGlobals requestGlobals, IComponentPageResponseRenderer pageResponseRenderer) {
+	public PageRenderer(PageLoader pageLoader, RequestGlobals requestGlobals,
+						IComponentPageResponseRenderer pageResponseRenderer,
+						IWillowComponentRequestSelectorAnalyzer analyzer) {
 		this.pageLoader = pageLoader;
 		this.requestGlobals = requestGlobals;
 		this.pageResponseRenderer = pageResponseRenderer;
+		this.analyzer = analyzer;
 	}
 
 	public String renderPage(String pageName, Map<String, Object> parameters) {
@@ -43,7 +47,7 @@ public class PageRenderer implements IPageRenderer {
 
 		requestGlobals.storeRequestResponse(request, wrapper);
 
-		ComponentResourceSelector selector = new ComponentResourceSelector(Locale.getDefault()).withAxis(Map.class, parameters);
+		ComponentResourceSelector selector = analyzer.buildSelectorForRequest(parameters);
 		Page page = pageLoader.loadPage(pageName, selector);
 
 		try {

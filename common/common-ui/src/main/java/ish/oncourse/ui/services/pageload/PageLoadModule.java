@@ -3,6 +3,7 @@
  */
 package ish.oncourse.ui.services.pageload;
 
+import ish.oncourse.tapestry.IWillowComponentRequestSelectorAnalyzer;
 import ish.oncourse.ui.services.pageload.template.ComponentTemplateSourceImpl;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.internal.services.ComponentTemplateSource;
@@ -20,6 +21,7 @@ import org.apache.tapestry5.ioc.services.PerthreadManager;
 import org.apache.tapestry5.services.ComponentClassResolver;
 import org.apache.tapestry5.services.MetaDataLocator;
 import org.apache.tapestry5.services.UpdateListenerHub;
+import org.apache.tapestry5.services.pageload.ComponentRequestSelectorAnalyzer;
 
 /**
  * User: akoiro
@@ -30,6 +32,7 @@ public class PageLoadModule {
 
 	public static void bind(ServiceBinder binder) {
 		binder.bind(PageLoadService.class, PageLoadService.class);
+		binder.bind(IWillowComponentRequestSelectorAnalyzer.class, WillowComponentRequestSelectorAnalyzer.class).withId("WillowComponentRequestSelectorAnalyzer");
 	}
 
 
@@ -52,7 +55,7 @@ public class PageLoadModule {
 
 	public ComponentTemplateSource buildComponentTemplateSourceOverride(@Inject @Symbol(SymbolConstants.PRODUCTION_MODE)
 																				boolean productionMode, @Inject PageLoadService webCacheService, UpdateListenerHub hub) {
-		ComponentTemplateSourceImpl templateSource =  new ComponentTemplateSourceImpl(productionMode, webCacheService);
+		ComponentTemplateSourceImpl templateSource = new ComponentTemplateSourceImpl(productionMode, webCacheService);
 		hub.addUpdateListener(templateSource);
 		return templateSource;
 	}
@@ -65,5 +68,11 @@ public class PageLoadModule {
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration,
 										  @Local PageSource pageSource) {
 		configuration.add(PageSource.class, pageSource);
+	}
+
+	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration,
+										  @Local IWillowComponentRequestSelectorAnalyzer analyzer) {
+
+		configuration.add(ComponentRequestSelectorAnalyzer.class, analyzer);
 	}
 }

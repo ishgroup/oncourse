@@ -4,6 +4,7 @@
 package ish.oncourse.util;
 
 import ish.oncourse.services.textile.TextileUtil;
+import ish.oncourse.tapestry.IWillowComponentRequestSelectorAnalyzer;
 import org.apache.tapestry5.internal.services.PageLoader;
 import org.apache.tapestry5.internal.structure.Page;
 import org.apache.tapestry5.services.Request;
@@ -40,12 +41,17 @@ public class PageRendererTest {
 
 		Page page = Mockito.mock(Page.class);
 		PageLoader pageLoader = Mockito.mock(PageLoader.class);
+
 		ComponentResourceSelector selector = new ComponentResourceSelector(Locale.getDefault()).withAxis(Map.class, params);
+		IWillowComponentRequestSelectorAnalyzer analyzer = Mockito.mock(IWillowComponentRequestSelectorAnalyzer.class);
+		Mockito.when(analyzer.buildSelectorForRequest()).thenReturn(selector);
+		Mockito.when(analyzer.buildSelectorForRequest(Mockito.anyMap())).thenReturn(selector);
+
 		Mockito.when(pageLoader.loadPage("test", selector)).thenReturn(page);
 
 		IComponentPageResponseRenderer pageResponseRenderer = Mockito.mock(IComponentPageResponseRenderer.class);
 
-		PageRenderer pageRenderer = new PageRenderer(pageLoader, requestGlobals, pageResponseRenderer);
+		PageRenderer pageRenderer = new PageRenderer(pageLoader, requestGlobals, pageResponseRenderer, analyzer);
 
 		pageRenderer.encodedPage("test", params);
 
