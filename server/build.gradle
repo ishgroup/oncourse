@@ -91,7 +91,7 @@ dependencies {
 	compile 'org.bouncycastle:bcprov-jdk15on:1.53'
 	compile 'org.bouncycastle:bcmail-jdk15on:1.53'
 
-	compile 'org.codehaus.groovy:groovy-all:2.5.0-beta-3'
+	compile 'org.codehaus.groovy:groovy-all:2.5.0-rc-1'
 	compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.2'
 	compile 'oauth.signpost:signpost-commonshttp4:1.2.1.2'
 
