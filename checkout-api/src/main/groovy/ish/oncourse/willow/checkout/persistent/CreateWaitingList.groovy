@@ -26,6 +26,7 @@ class CreateWaitingList {
         WaitingList waitingList = context.newObject(WaitingList)
         waitingList.college = college
         waitingList.student = contact.student
+        contact.modified = new Date()
         waitingList.course = new GetCourse(context, college, w.courseId).get()
         waitingList.detail = w.detail
         waitingList.potentialStudents = w.studentsCount.intValue()

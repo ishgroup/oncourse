@@ -32,6 +32,7 @@ class CreateApplication {
         Application application = context.newObject(Application)
         application.college = college
         application.student = contact.student
+        contact.modified = new Date()
         application.course = courseClass.course
         application.status = ApplicationStatus.NEW
         application.source = PaymentSource.SOURCE_WEB

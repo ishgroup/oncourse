@@ -45,6 +45,7 @@ class CreateEnrolment {
         Enrolment enrolment = context.newObject(Enrolment)
         enrolment.courseClass = courseClass
         enrolment.student = contact.student
+        contact.modified = new Date()
         enrolment.status = status
         enrolment.source = PaymentSource.SOURCE_WEB
         enrolment.college = college
