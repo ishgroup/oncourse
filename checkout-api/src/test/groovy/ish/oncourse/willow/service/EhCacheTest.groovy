@@ -7,7 +7,6 @@ import ish.oncourse.cayenne.cache.JCacheQueryCache
 import ish.oncourse.test.TestInitialContextFactory
 import org.apache.cayenne.cache.QueryCache
 import org.apache.cayenne.configuration.server.ServerRuntime
-import org.ehcache.jsr107.Eh107CacheManager
 import org.junit.After
 import org.junit.Test
 
