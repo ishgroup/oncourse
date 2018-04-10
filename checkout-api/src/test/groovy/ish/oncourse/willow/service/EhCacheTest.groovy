@@ -1,5 +1,7 @@
 package ish.oncourse.willow.service
 
+import ish.oncourse.cache.ICacheProvider
+import ish.oncourse.cache.caffeine.CaffeineProvider
 import ish.oncourse.cayenne.cache.JCacheModule
 import ish.oncourse.cayenne.cache.JCacheQueryCache
 import ish.oncourse.test.TestInitialContextFactory
@@ -9,7 +11,6 @@ import org.ehcache.jsr107.Eh107CacheManager
 import org.junit.After
 import org.junit.Test
 
-import javax.cache.CacheManager
 import javax.naming.Context
 import javax.naming.InitialContext
 
@@ -26,8 +27,9 @@ class EhCacheTest {
 
         QueryCache  cache = cayenneRuntime.injector.getInstance(QueryCache)
         assertTrue(cache instanceof JCacheQueryCache)
-        CacheManager cacheManager = ((JCacheQueryCache)cache).cacheManager
-        assertEquals(cacheManager.configurationMerger.xmlConfiguration.cacheConfigurations.size(), 0)
+        ICacheProvider cacheProvider = ((JCacheQueryCache)cache).cacheProvider
+        assertTrue(cacheProvider instanceof CaffeineProvider)
+        assertEquals(cacheProvider.cacheManager.cacheNames.size(),0)
     }
 
     @After
