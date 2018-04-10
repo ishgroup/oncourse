@@ -13,6 +13,13 @@ sourceSets.test.groovy.srcDir 'src/test/java'
 compileGroovy.options.encoding = 'UTF-8'
 compileTestGroovy.options.encoding = 'UTF-8'
 
+sourceSets {
+    schema {
+        resources {
+            srcDir 'src/main/resources/solr'
+        }
+    }
+}
 
 dependencies {
     compile project(':common:cayenne-model')
