@@ -169,7 +169,7 @@ class CorporatePassTest extends ApiTest {
         assertEquals(3, queuedTransaction.queuedRecords.findAll {it.entityIdentifier == Enrolment.simpleName}.size())
         assertEquals(1, queuedTransaction.queuedRecords.findAll {it.entityIdentifier == ish.oncourse.model.Voucher.simpleName}.size())
         assertEquals(1, queuedTransaction.queuedRecords.findAll {it.entityIdentifier == Student.simpleName}.size())
-        assertEquals(1, queuedTransaction.queuedRecords.findAll {it.entityIdentifier == Contact.simpleName}.size())
+        assertEquals(2, queuedTransaction.queuedRecords.findAll {it.entityIdentifier == Contact.simpleName}.size())
         assertEquals(1, queuedTransaction.queuedRecords.findAll {it.entityIdentifier == CorporatePass.simpleName}.size())
         assertEquals(0, queuedTransaction.queuedRecords.findAll {it.entityIdentifier == PaymentIn.simpleName}.size())
 
