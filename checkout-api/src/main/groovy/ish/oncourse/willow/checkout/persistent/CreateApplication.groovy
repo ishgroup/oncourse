@@ -32,6 +32,8 @@ class CreateApplication {
         Application application = context.newObject(Application)
         application.college = college
         application.student = contact.student
+        // Put contact record side by side with student into replication queue.
+        // Need to keep newly created Student/Contact records in single replication group
         contact.modified = new Date()
         application.course = courseClass.course
         application.status = ApplicationStatus.NEW

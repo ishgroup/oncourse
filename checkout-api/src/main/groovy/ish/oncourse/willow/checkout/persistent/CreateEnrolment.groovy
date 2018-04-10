@@ -45,6 +45,8 @@ class CreateEnrolment {
         Enrolment enrolment = context.newObject(Enrolment)
         enrolment.courseClass = courseClass
         enrolment.student = contact.student
+        // Put contact record side by side with student into replication queue.
+        // Need to keep newly created Student/Contact records in single replication group
         contact.modified = new Date()
         enrolment.status = status
         enrolment.source = PaymentSource.SOURCE_WEB

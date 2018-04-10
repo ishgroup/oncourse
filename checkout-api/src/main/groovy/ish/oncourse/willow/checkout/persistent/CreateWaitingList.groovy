@@ -26,6 +26,8 @@ class CreateWaitingList {
         WaitingList waitingList = context.newObject(WaitingList)
         waitingList.college = college
         waitingList.student = contact.student
+        // Put contact record side by side with student into replication queue.
+        // Need to keep newly created Student/Contact records in single replication group
         contact.modified = new Date()
         waitingList.course = new GetCourse(context, college, w.courseId).get()
         waitingList.detail = w.detail
