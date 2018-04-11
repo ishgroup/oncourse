@@ -3,7 +3,6 @@ package ish.oncourse.willow.checkout.payment
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import ish.common.GetInvoiceDueDate
-import ish.common.types.ApplicationStatus
 import ish.common.types.ConfirmationStatus
 import ish.common.types.EnrolmentStatus
 import ish.common.types.PaymentSource
@@ -15,21 +14,14 @@ import ish.oncourse.enrol.checkout.model.InvoiceNode
 import ish.oncourse.enrol.checkout.model.PaymentPlanBuilder
 import ish.oncourse.enrol.checkout.model.UpdateInvoiceAmount
 import ish.oncourse.model.Application
-import ish.oncourse.model.Article
-import ish.oncourse.model.ArticleProduct
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
-import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Enrolment
 import ish.oncourse.model.Invoice
 import ish.oncourse.model.InvoiceDueDate
 import ish.oncourse.model.InvoiceLine
-import ish.oncourse.model.Membership
-import ish.oncourse.model.MembershipProduct
 import ish.oncourse.model.PaymentIn
-import ish.oncourse.model.PaymentInLine
 import ish.oncourse.model.Voucher
-import ish.oncourse.model.VoucherProduct
 import ish.oncourse.model.WaitingList
 import ish.oncourse.model.WebSite
 import ish.oncourse.services.preference.GetPreference
@@ -37,8 +29,6 @@ import ish.oncourse.util.payment.CreditCardValidator
 import ish.oncourse.util.payment.PaymentInModel
 import ish.oncourse.util.payment.PaymentInModelFromPaymentInBuilder
 import ish.oncourse.willow.checkout.functions.GetContact
-import ish.oncourse.willow.checkout.functions.GetCourseClass
-import ish.oncourse.willow.checkout.functions.GetProduct
 import ish.oncourse.willow.checkout.persistent.CreateApplication
 import ish.oncourse.willow.checkout.persistent.CreateArticle
 import ish.oncourse.willow.checkout.persistent.CreateEnrolment
@@ -50,12 +40,9 @@ import ish.oncourse.willow.functions.voucher.GetVoucher
 import ish.oncourse.willow.functions.voucher.VoucherRedemptionHelper
 import ish.oncourse.willow.model.checkout.CheckoutModel
 import ish.oncourse.willow.model.checkout.payment.PaymentRequest
-import ish.persistence.CommonPreferenceController
+import ish.persistence.Preferences
 import ish.util.CreditCardUtil
-import ish.util.ProductUtil
-import ish.util.SecurityUtil
 import org.apache.cayenne.ObjectContext
-import org.apache.commons.lang3.time.DateUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -269,7 +256,7 @@ class CreatePaymentModel {
     }
 
     private void  adjustDueDate() {
-        Integer defaultTerms = new GetPreference(college, CommonPreferenceController.ACCOUNT_INVOICE_TERMS, context).integerValue
+        Integer defaultTerms = new GetPreference(college, Preferences.ACCOUNT_INVOICE_TERMS, context).integerValue
         Integer contactTerms = payer.invoiceTerms
         Date dueDate = GetInvoiceDueDate.valueOf(defaultTerms, contactTerms).get()
         mainInvoice.dateDue = dueDate

@@ -8,6 +8,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.webservices.usi.crypto.CryptoUtils;
+import ish.persistence.Preferences;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang.StringUtils;
@@ -32,16 +33,16 @@ public class Overview {
 	private static final Logger logger = LogManager.getLogger();
 	
 	private static final List<String> LICENSE_KEYS = Arrays.asList(
-			PreferenceController.LICENSE_ACCESS_CONTROL,
-			PreferenceController.LICENSE_LDAP,
-			PreferenceController.LICENSE_BUDGET,
-			PreferenceController.LICENSE_EXTENRNAL_DB,
-			PreferenceController.LICENSE_SSL,
-			PreferenceController.LICENSE_SMS,
-			PreferenceController.LICENSE_CC_PROCESSING,
-			PreferenceController.LICENSE_PAYROLL,
-			PreferenceController.LICENSE_VOUCHER,
-			PreferenceController.LICENSE_FUNDING_CONTRACT);
+			Preferences.LICENSE_ACCESS_CONTROL,
+			Preferences.LICENSE_LDAP,
+			Preferences.LICENSE_BUDGET,
+			Preferences.LICENSE_EXTENRNAL_DB,
+			Preferences.LICENSE_SSL,
+			Preferences.LICENSE_SMS,
+			Preferences.LICENSE_CC_PROCESSING,
+			Preferences.LICENSE_PAYROLL,
+			Preferences.LICENSE_VOUCHER,
+			Preferences.LICENSE_FUNDING_CONTRACT);
 	
 	@Inject
 	private ICollegeService collegeService;
@@ -139,33 +140,33 @@ public class Overview {
 		ObjectContext context = cayenneService.newContext();
 		College localCollege = context.localObject(college);
 		
-		Preference password = PreferenceUtil.getPreference(context, localCollege, PreferenceController.AUSKEY_PASSWORD);
-		Preference certificate = PreferenceUtil.getPreference(context, localCollege, PreferenceController.AUSKEY_CERTIFICATE);
-		Preference privateKey = PreferenceUtil.getPreference(context, localCollege, PreferenceController.AUSKEY_PRIVATE_KEY);
-		Preference salt = PreferenceUtil.getPreference(context, localCollege, PreferenceController.AUSKEY_SALT);
+		Preference password = PreferenceUtil.getPreference(context, localCollege, Preferences.AUSKEY_PASSWORD);
+		Preference certificate = PreferenceUtil.getPreference(context, localCollege, Preferences.AUSKEY_CERTIFICATE);
+		Preference privateKey = PreferenceUtil.getPreference(context, localCollege, Preferences.AUSKEY_PRIVATE_KEY);
+		Preference salt = PreferenceUtil.getPreference(context, localCollege, Preferences.AUSKEY_SALT);
 		
 		if (password != null) {
 			password.setValueString(auskeyPassword);
 		} else {
-			PreferenceUtil.createPreference(context, localCollege, PreferenceController.AUSKEY_PASSWORD, auskeyPassword);
+			PreferenceUtil.createPreference(context, localCollege, Preferences.AUSKEY_PASSWORD, auskeyPassword);
 		}
 		
 		if (certificate != null) {
 			certificate.setValueString(ausKey.getCertificate());
 		} else {
-			PreferenceUtil.createPreference(context, localCollege, PreferenceController.AUSKEY_CERTIFICATE, ausKey.getCertificate());
+			PreferenceUtil.createPreference(context, localCollege, Preferences.AUSKEY_CERTIFICATE, ausKey.getCertificate());
 		}
 		
 		if (privateKey != null) {
 			privateKey.setValueString(ausKey.getPrivateKey());
 		} else {
-			PreferenceUtil.createPreference(context, localCollege, PreferenceController.AUSKEY_PRIVATE_KEY, ausKey.getPrivateKey());
+			PreferenceUtil.createPreference(context, localCollege, Preferences.AUSKEY_PRIVATE_KEY, ausKey.getPrivateKey());
 		}
 		
 		if (salt != null) {
 			salt.setValueString(ausKey.getSalt());
 		} else {
-			PreferenceUtil.createPreference(context, localCollege, PreferenceController.AUSKEY_SALT, ausKey.getSalt());
+			PreferenceUtil.createPreference(context, localCollege, Preferences.AUSKEY_SALT, ausKey.getSalt());
 		}
 		
 		context.commitChanges();
@@ -184,7 +185,7 @@ public class Overview {
 		
 		Preference replicationPref = ObjectSelect.query(Preference.class).
 				where(Preference.COLLEGE.eq(college).
-						andExp(Preference.NAME.eq(PreferenceController.REPLICATION_ENABLED))).
+						andExp(Preference.NAME.eq(Preferences.REPLICATION_ENABLED))).
 				selectFirst(context);
 		if (replicationPref != null) {
 			replicationPref.setValueString(Boolean.toString(false));
@@ -195,7 +196,7 @@ public class Overview {
 
 	public String getBucketName() {
 		Preference bucketPref = PreferenceUtil.getPreference(
-				college.getObjectContext(), college, PreferenceController.STORAGE_BUCKET_NAME);
+				college.getObjectContext(), college, Preferences.STORAGE_BUCKET_NAME);
 		if (bucketPref == null || StringUtils.trimToNull(bucketPref.getValueString()) == null) {
 			return null;
 		}
@@ -204,6 +205,6 @@ public class Overview {
 	
 	public boolean isAusKeySet() {
 		return PreferenceUtil.getPreference(
-				college.getObjectContext(), college, PreferenceController.AUSKEY_CERTIFICATE) != null;
+				college.getObjectContext(), college, Preferences.AUSKEY_CERTIFICATE) != null;
 	}
 }

@@ -13,7 +13,6 @@ import ish.oncourse.services.preference.IsCreditCardPaymentEnabled
 import ish.oncourse.willow.model.common.Preferences
 import ish.oncourse.willow.service.PreferenceApi
 import ish.oncourse.willow.service.impl.CollegeService
-import ish.persistence.CommonPreferenceController
 import org.apache.cayenne.ObjectContext
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -43,7 +42,7 @@ class PreferenceApiImpl implements PreferenceApi {
         preferences.featureEnrolmentDisclosure = new GetFeatureEnrolmentDisclosure(college, context).get()
         preferences.googleTagmanagerAccount = collegeService.webSite.googleTagmanagerAccount
         preferences.minAge =  new GetContactAgeWhenNeedParent(college, context).get()?.doubleValue()
-        preferences.amexEnabled = new GetPreference(college, CommonPreferenceController.SERVICES_CC_AMEX_ENABLED, context).booleanValue
+        preferences.amexEnabled = new GetPreference(college, ish.persistence.Preferences.SERVICES_CC_AMEX_ENABLED, context).booleanValue
         return preferences
     }
 }

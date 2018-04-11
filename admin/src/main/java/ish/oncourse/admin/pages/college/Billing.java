@@ -9,7 +9,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
 import ish.oncourse.services.system.ICollegeService;
-import ish.persistence.CommonPreferenceController;
+import ish.persistence.Preferences;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -156,7 +156,7 @@ public class Billing {
 		
 		List<Preference> prefs = ObjectSelect.query(Preference.class).where(Preference.COLLEGE.eq(college)).select(context);
 		for (Preference p : prefs) {
-			if (CommonPreferenceController.SERVICES_CC_AMEX_ENABLED.equals(p.getName())) {
+			if (Preferences.SERVICES_CC_AMEX_ENABLED.equals(p.getName())) {
 				this.amexEnabled = Boolean.parseBoolean(p.getValueString());
 				break;
 			}
@@ -194,15 +194,15 @@ public class Billing {
 
 			boolean found = false;
 			for (Preference p : college.getPreferences()) {
-				if (CommonPreferenceController.SERVICES_CC_AMEX_ENABLED.equals(p.getName())) {
+				if (Preferences.SERVICES_CC_AMEX_ENABLED.equals(p.getName())) {
 					p.setValueString(Boolean.toString(this.amexEnabled));
 					found = true;
 					break;
 				}
 			}
 			if (!found) {
-				PreferenceUtil.createPreference(context, college, 
-						CommonPreferenceController.SERVICES_CC_AMEX_ENABLED, Boolean.toString(this.amexEnabled));
+				PreferenceUtil.createPreference(context, college,
+						Preferences.SERVICES_CC_AMEX_ENABLED, Boolean.toString(this.amexEnabled));
 			}
 		}
 

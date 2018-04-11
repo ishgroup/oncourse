@@ -3,15 +3,11 @@ package ish.oncourse.willow.checkout.corporatepass
 import ish.common.GetInvoiceDueDate
 import ish.common.types.ConfirmationStatus
 import ish.common.types.EnrolmentStatus
-import ish.common.types.PaymentSource
 import ish.common.types.ProductStatus
-import ish.math.Money
 import ish.oncourse.enrol.checkout.model.UpdateInvoiceAmount
-import ish.oncourse.model.Application
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
 import ish.oncourse.model.CorporatePass
-import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Enrolment
 import ish.oncourse.model.Invoice
 import ish.oncourse.model.InvoiceLine
@@ -26,9 +22,8 @@ import ish.oncourse.willow.checkout.persistent.CreateMembership
 import ish.oncourse.willow.checkout.persistent.CreateVoucher
 import ish.oncourse.willow.checkout.persistent.CreateWaitingList
 import ish.oncourse.willow.model.checkout.CheckoutModel
-import ish.persistence.CommonPreferenceController
+import ish.persistence.Preferences
 import org.apache.cayenne.ObjectContext
-import org.apache.commons.lang3.time.DateUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -123,7 +118,7 @@ class CreateCorpPassModel {
     }
     
     private void  adjustDueDate() {
-        Integer defaultTerms = new GetPreference(college, CommonPreferenceController.ACCOUNT_INVOICE_TERMS, context).integerValue
+        Integer defaultTerms = new GetPreference(college, Preferences.ACCOUNT_INVOICE_TERMS, context).integerValue
         Integer contactTerms = pass.contact.invoiceTerms
         Date dueDate = GetInvoiceDueDate.valueOf(defaultTerms, contactTerms).get()
         mainInvoice.dateDue = dueDate

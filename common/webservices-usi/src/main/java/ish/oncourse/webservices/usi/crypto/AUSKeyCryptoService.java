@@ -3,7 +3,6 @@
  */
 package ish.oncourse.webservices.usi.crypto;
 
-import ish.oncourse.services.preference.PreferenceController;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.ws.security.WSPasswordCallback;
 import org.apache.ws.security.WSSecurityException;
