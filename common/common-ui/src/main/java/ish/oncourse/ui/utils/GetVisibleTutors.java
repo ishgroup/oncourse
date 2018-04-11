@@ -1,61 +1,32 @@
 package ish.oncourse.ui.utils;
 
-import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Tutor;
 import ish.oncourse.model.TutorRole;
-import ish.oncourse.services.tutor.ITutorService;
+import ish.oncourse.services.tutor.GetVisibleTutorRoles;
+import ish.oncourse.services.tutor.GetIsActiveTutor;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GetVisibleTutors {
 
     private CourseClass courseClass;
 
-    private ITutorService tutorService;
-
-    private List<TutorRole> tutorRoles = new ArrayList<>();
-    private List<Tutor> tutors = new ArrayList<>();
-    private List<String> tutorNames = new ArrayList<>();
-
-
-    public GetVisibleTutors get() {
-        for (TutorRole role : courseClass.getTutorRoles()) {
-            if (role.getInPublicity() && tutorService.isActiveTutor(role.getTutor())) {
-                tutorRoles.add(role);
-                tutors.add(role.getTutor());
-                tutorNames.add(getTutorName(role.getTutor()));
-            }
-        }
-        return this;
+    public List<Tutor> get() {
+        return getRoles().stream()
+                .filter(role -> GetIsActiveTutor.valueOf(role.getTutor()).get())
+                .map(role -> role.getTutor())
+                .collect(Collectors.toList());
     }
 
-    public List<TutorRole> getTutorRoles() {
-        return tutorRoles;
-    }
-
-    public List<Tutor> getTutors() {
-        return tutors;
-    }
-
-    public List<String> tutorNames() {
-        return tutorNames;
-    }
-
-    public static String getTutorName(Tutor tutor) {
-        Contact contact = tutor.getContact();
-        if (Boolean.TRUE.equals(contact.getIsCompany())) {
-            return contact.getFamilyName();
-        } else {
-            return String.format("%s %s", contact.getGivenName(), contact.getFamilyName());
-        }
-    }
-
-    public static GetVisibleTutors valueOf(CourseClass courseClass, ITutorService tutorService) {
+    public static GetVisibleTutors valueOf(CourseClass courseClass) {
         GetVisibleTutors result = new GetVisibleTutors();
         result.courseClass = courseClass;
-        result.tutorService = tutorService;
         return result;
+    }
+
+    protected List<TutorRole> getRoles() {
+        return GetVisibleTutorRoles.valueOf(courseClass.getObjectContext(), courseClass).get();
     }
 }

@@ -1,7 +1,7 @@
 package ish.oncourse.ui.components.kiosk;
 
 import ish.oncourse.model.*;
-import ish.oncourse.services.tutor.ITutorService;
+import ish.oncourse.ui.utils.GetTutorName;
 import ish.oncourse.ui.utils.GetVisibleTutors;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.tapestry.TapestryFormatUtils;
@@ -9,19 +9,16 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
-import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 
 public class KioskSession {
 
     private String ISO8601 = "yyyy-MM-dd'T'HH:mm:ssZZ";
-
-    @Inject
-    private ITutorService tutorService;
 
     @Parameter
     @Property
@@ -104,17 +101,19 @@ public class KioskSession {
             commencedClass = "course-commenced";
         }
 
-        GetVisibleTutors getVisibleTutors = GetVisibleTutors.valueOf(courseClass, tutorService).get();
-        visibleTutors = getVisibleTutors.getTutors();
-        author = StringUtils.join(getVisibleTutors.tutorNames(), ", ");
+        visibleTutors = GetVisibleTutors.valueOf(courseClass).get();
+        author = StringUtils.join(visibleTutors.stream()
+                        .map(tutor -> GetTutorName.valueOf(tutor).get())
+                        .collect(Collectors.toList()),
+                ", ");
 
 
         isoSessionStartTime = formatUtils.formatDate(session.getStartDatetime(), ISO8601);
         site = session.getRoom().getSite();
 
         firstTutorName = StringUtils.EMPTY;
-        if (!getVisibleTutors.getTutors().isEmpty()) {
-            firstTutorName = GetVisibleTutors.getTutorName(getVisibleTutors.getTutors().get(0));
+        if (!visibleTutors.isEmpty()) {
+            firstTutorName = GetTutorName.valueOf(visibleTutors.get(0)).get();
         }
 
         name = courseClass.getCourse().getName();

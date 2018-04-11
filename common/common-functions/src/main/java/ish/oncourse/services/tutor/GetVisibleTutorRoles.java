@@ -10,7 +10,6 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.QueryCacheStrategy;
 
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,8 +19,18 @@ import java.util.stream.Collectors;
  */
 public class GetVisibleTutorRoles {
 
+	private ObjectContext context;
 	private CourseClass courseClass;
 	private QueryCacheStrategy cacheStrategy = QueryCacheStrategy.LOCAL_CACHE;
+
+	private GetVisibleTutorRoles() {}
+
+	public static GetVisibleTutorRoles valueOf(ObjectContext context, CourseClass courseClass) {
+		GetVisibleTutorRoles obj = new GetVisibleTutorRoles();
+		obj.context = context;
+		obj.courseClass = courseClass;
+		return obj;
+	}
 
 
 	public GetVisibleTutorRoles cacheStrategy(QueryCacheStrategy cacheStrategy) {
@@ -34,7 +43,7 @@ public class GetVisibleTutorRoles {
 		return this;
 	}
 
-	public List<TutorRole> get(ObjectContext context) {
+	public List<TutorRole> get() {
 		return ObjectSelect.query(TutorRole.class)
 				.where(TutorRole.COURSE_CLASS.eq(courseClass))
 				.and(TutorRole.IN_PUBLICITY.isTrue())
@@ -46,7 +55,7 @@ public class GetVisibleTutorRoles {
 				 the stream filter is used instead of Cayenne query expression to have a possibility to cache this request.
 				 if we use Cayenne query expression with new Date(), cayenne always will generate a new cache key for such an expression
 				 */
-				.stream().filter((tr) -> tr.getTutor().getFinishDate() == null || tr.getTutor().getFinishDate().after(new Date()))
+				.stream().filter((tr) -> GetIsActiveTutor.valueOf(tr.getTutor()).get())
 				.collect(Collectors.toList());
 
 	}

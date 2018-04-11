@@ -14,13 +14,10 @@ public interface ITutorService {
 	List<Tutor> getTutors();
 
 	/**
-	 * Retrieves the tutoe with the given angelId.
+	 * Retrieves the tutor with the given angelId.
 	 * 
 	 * @param angelId
 	 * @return
 	 */
 	Tutor findByAngelId(Long angelId);
-
-    public boolean isActiveTutor(Tutor tutor);
-
 }

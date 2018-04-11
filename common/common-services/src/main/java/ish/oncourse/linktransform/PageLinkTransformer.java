@@ -19,6 +19,7 @@ import ish.oncourse.services.room.IRoomService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.sites.ISitesService;
 import ish.oncourse.services.tag.ITagService;
+import ish.oncourse.services.tutor.GetIsActiveTutor;
 import ish.oncourse.services.tutor.ITutorService;
 import ish.oncourse.services.voucher.IVoucherService;
 import org.apache.commons.lang3.ArrayUtils;
@@ -280,7 +281,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 				String tutorId = path.substring(path.lastIndexOf(LEFT_SLASH_CHARACTER) + 1);
 				if (tutorId != null && tutorId.length() > 0 && tutorId.matches("\\d+")) {
 					Tutor tutor = tutorService.findByAngelId(Long.valueOf(tutorId));
-					if (tutor == null || !tutorService.isActiveTutor(tutor)) {
+					if (tutor == null || !GetIsActiveTutor.valueOf(tutor).get()) {
 						pageIdentifier = PageIdentifier.PageNotFound;
 					}
 					request.setAttribute(TUTOR_ATTRIBUTE, tutor);

@@ -8,6 +8,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.sites.ISitesService;
 import ish.oncourse.services.tag.ITagService;
+import ish.oncourse.services.tutor.GetIsActiveTutor;
 import ish.oncourse.services.tutor.ITutorService;
 import ish.oncourse.ui.base.ISHCommon;
 import org.apache.commons.lang.StringUtils;
@@ -135,6 +136,6 @@ public class SitemapXML extends ISHCommon {
 	}
 
 	public boolean isActiveTutor() {
-		return tutorService.isActiveTutor(tutor);
+		return GetIsActiveTutor.valueOf(tutor).get();
 	}
 }

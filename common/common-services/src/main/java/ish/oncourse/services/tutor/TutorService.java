@@ -65,10 +65,4 @@ public class TutorService extends BaseService<Tutor> implements ITutorService {
 				.and(Tutor.ANGEL_ID.eq(angelId))
 				.and(getSiteQualifier()).selectOne(getCayenneService().sharedContext());
 	}
-
-    public boolean isActiveTutor(Tutor tutor)
-    {
-        return tutor.getFinishDate() == null || tutor.getFinishDate().after(new Date());
-    }
-
 }

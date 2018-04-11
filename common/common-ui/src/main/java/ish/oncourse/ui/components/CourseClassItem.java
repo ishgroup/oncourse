@@ -164,7 +164,7 @@ public class CourseClassItem extends ISHCommon {
 	}
 
 	private void initVisibleTutorRoles() {
-		visibleTutorRoles = new GetVisibleTutorRoles().courseClass(courseClass).get(courseClass.getObjectContext());
+		visibleTutorRoles = GetVisibleTutorRoles.valueOf(courseClass.getObjectContext(), courseClass).get();
 	}
 
 	public boolean isHasTutorRoles() {
