@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<solr persistent="true">
-  <cores adminPath="/admin/cores">
-    <core name="courses" instanceDir="courses" />
-    <core name="suburbs" instanceDir="suburbs" />
-    <core name="tags" instanceDir="tags" />
-  </cores>
-</solr>
