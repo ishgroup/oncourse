@@ -45,7 +45,7 @@ pipeline {
             )
         }
         success {
-            archiveArtifacts artifacts: 'search/build/distribution/*.zip'
+            archiveArtifacts artifacts: 'search/build/distributions/*.zip'
         }
     }
 
