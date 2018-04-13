@@ -51,7 +51,7 @@
 
 	<bean id="v17_replicationPortType" class="ish.oncourse.webservices.soap.v17.ReplicationPortTypeImpl" />
 
-	<bean name="controlCharacterHandler" class="ish.oncourse.webservices.soap.ControlCharacterHandler"/>
+	<bean name="controlCharacterHandler" class="ish.oncourse.webservices.soap.CustomEscapeHandler"/>
 
 	<cxf:bus>
 		<cxf:features>
