@@ -5,6 +5,7 @@ package ish.oncourse.services.site;
 
 import ish.oncourse.model.*;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.query.ObjectSelect;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -48,7 +49,11 @@ public abstract class WebSiteVersionCopy {
 
     private void copyWebMenus() {
         // first duplicate all the existing WebMenu records...
-        for (WebMenu menu : fromVersion.getMenus()) {
+
+        ObjectSelect.query(WebMenu.class)
+                .where(WebMenu.WEB_SITE_VERSION.eq(fromVersion))
+                .select(context)
+                .forEach(menu -> {
 
             WebMenu newMenu = context.newObject(WebMenu.class);
 
@@ -61,13 +66,16 @@ public abstract class WebSiteVersionCopy {
             newMenu.setWeight(menu.getWeight());
 
             webMenuMap.put(menu, newMenu);
-        }
+        });
 
         updateParentMenus();
     }
 
     private void copyWebContents() {
-        for (WebContent content : fromVersion.getContents()) {
+        ObjectSelect.query(WebContent.class)
+                .where(WebContent.WEB_SITE_VERSION.eq(fromVersion))
+                .select(context)
+                .forEach(content -> {
             WebContent newContent = context.newObject(WebContent.class);
 
             newContent.setCreated(content.getCreated());
@@ -78,11 +86,15 @@ public abstract class WebSiteVersionCopy {
             newContent.setWebSiteVersion(toVersion);
 
             copyWebContentVisibilities(content, newContent);
-        }
+        });
     }
 
     private void copyWebContentVisibilities(WebContent oldContent, WebContent newContent) {
-        for (WebContentVisibility visibility : oldContent.getWebContentVisibilities()) {
+        
+        ObjectSelect.query(WebContentVisibility.class)
+                .where(WebContentVisibility.WEB_CONTENT.eq(oldContent))
+                .select(context)
+                .forEach(visibility -> {
             WebContentVisibility newVisibility = context.newObject(WebContentVisibility.class);
 
             newVisibility.setRegionKey(visibility.getRegionKey());
@@ -90,11 +102,15 @@ public abstract class WebSiteVersionCopy {
             newVisibility.setWebContent(newContent);
             newVisibility.setWebNode(webNodeMap.get(visibility.getWebNode()));
             newVisibility.setWebNodeType(webNodeTypeMap.get(visibility.getWebNodeType()));
-        }
+        });
     }
 
     private void copyWebUrlAliases() {
-        for (WebUrlAlias webUrlAlias : fromVersion.getWebURLAliases()) {
+        ObjectSelect.query(WebUrlAlias.class)
+                .where(WebUrlAlias.WEB_SITE_VERSION.eq(fromVersion))
+                .select(context)
+                .forEach(webUrlAlias -> {
+                    
             WebUrlAlias newWebUrlAlias = context.newObject(WebUrlAlias.class);
 
             newWebUrlAlias.setCreated(webUrlAlias.getCreated());
@@ -104,11 +120,14 @@ public abstract class WebSiteVersionCopy {
             newWebUrlAlias.setWebNode(webNodeMap.get(webUrlAlias.getWebNode()));
             newWebUrlAlias.setWebSiteVersion(toVersion);
             newWebUrlAlias.setRedirectTo(webUrlAlias.getRedirectTo());
-        }
+        });
     }
 
     private void copyWebNodes() {
-        for (WebNode node : fromVersion.getWebNodes()) {
+        ObjectSelect.query(WebNode.class)
+                .where(WebNode.WEB_SITE_VERSION.eq(fromVersion))
+                .select(context)
+                .forEach(node -> {
             WebNode newNode = context.newObject(WebNode.class);
 
             newNode.setCreated(node.getCreated());
@@ -120,11 +139,14 @@ public abstract class WebSiteVersionCopy {
             newNode.setWebSiteVersion(toVersion);
             newNode.setSuppressOnSitemap(node.isSuppressOnSitemap());
             webNodeMap.put(node, newNode);
-        }
+        });
     }
 
     private void copyWebNodeTypes() {
-        for (WebNodeType webNodeType : fromVersion.getWebNodeTypes()) {
+        ObjectSelect.query(WebNodeType.class)
+                .where(WebNodeType.WEB_SITE_VERSION.eq(fromVersion))
+                .select(context)
+                .forEach(webNodeType ->  {
             WebNodeType newWebNodeType = context.newObject(WebNodeType.class);
 
             newWebNodeType.setCreated(webNodeType.getCreated());
@@ -134,12 +156,15 @@ public abstract class WebSiteVersionCopy {
             newWebNodeType.setWebSiteVersion(toVersion);
 
             webNodeTypeMap.put(webNodeType, newWebNodeType);
-        }
+        });
     }
 
     private void copyLayouts() {
-        for (WebSiteLayout oldLayout : fromVersion.getLayouts()) {
-
+        ObjectSelect.query(WebSiteLayout.class)
+                .where(WebSiteLayout.WEB_SITE_VERSION.eq(fromVersion))
+                .select(context)
+                .forEach(oldLayout -> {
+            
             WebSiteLayout newLayout = context.newObject(WebSiteLayout.class);
 
             newLayout.setLayoutKey(oldLayout.getLayoutKey());
@@ -148,13 +173,18 @@ public abstract class WebSiteVersionCopy {
             copyTemplates(oldLayout, newLayout);
 
             layoutMap.put(oldLayout, newLayout);
-        }
+        });
+        
     }
 
     private void copyTemplates(WebSiteLayout oldLayout, WebSiteLayout newLayout) {
-        for (WebTemplate template : oldLayout.getTemplates()) {
-            WebTemplate newTemplate = context.newObject(WebTemplate.class);
 
+        ObjectSelect.query(WebTemplate.class)
+                .where(WebTemplate.LAYOUT.eq(oldLayout))
+                .select(context)
+                .forEach(template -> {
+                    
+            WebTemplate newTemplate = context.newObject(WebTemplate.class);
             newTemplate.setLayout(newLayout);
             newTemplate.setName(template.getName());
             newTemplate.setContent(template.getContent());
@@ -162,7 +192,7 @@ public abstract class WebSiteVersionCopy {
             // need to change modified date of every template to make
             // tapestry rendering logic to reload them
             template.setModified(new Date());
-        }
+        });
     }
 
 }
