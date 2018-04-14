@@ -10,8 +10,6 @@ buildscript {
 	}
 
 	repositories {
-		mavenCentral()
-		mavenLocal()
 		maven {
 			url 'https://repo.ish.com.au/content/groups/public'
 		}
@@ -55,7 +53,6 @@ allprojects {
 	}
 
 	repositories {
-		mavenCentral()
 		maven {
 			url 'https://repo.ish.com.au/content/groups/public'
 		}

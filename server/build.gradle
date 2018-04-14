@@ -1,4 +1,6 @@
 apply plugin: 'groovy'
+apply plugin: 'apidoc'
+apply plugin: 'cayenne'
 
 apply from: "$rootDir/gradle/bootique.gradle"
 
@@ -62,14 +64,13 @@ dependencies {
 
 	compile "org.apache.cayenne:cayenne-lifecycle:$cayenneVersion"
 	compile "org.apache.cayenne:cayenne-protostuff:$cayenneVersion"
-/*	compile "org.apache.cayenne:cayenne-java8:$cayenneVersion"
 
 	compile "org.eclipse.jetty:jetty-servlet:$jettyVersion"
 	compile "org.eclipse.jetty:jetty-servlets:$jettyVersion"
-*/	compile "org.eclipse.jetty.http2:http2-server:$jettyVersion"
-
+	compile "org.eclipse.jetty.http2:http2-server:$jettyVersion"
 	compile "org.eclipse.jetty.websocket:websocket-servlet:$jettyVersion"
 	compile "org.eclipse.jetty.websocket:websocket-server:$jettyVersion"
+
 	compile "org.apache.derby:derbyclient:$derbyVersion"
 	compile "org.apache.derby:derbynet:$derbyVersion"
 
@@ -77,10 +78,9 @@ dependencies {
 	compile 'org.liquibase:liquibase-core:2.0.5-fix'
 
 	compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: mariadbVersion
-/*	compile 'com.microsoft.sqlserver:mssql-jdbc:6.2.1.jre8'
+	compile 'com.microsoft.sqlserver:mssql-jdbc:6.2.1.jre8'
 
 	compile 'commons-lang:commons-lang:2.6' // this exists only to support some old reports. To be removed when all reports upgraded.
-*/
 	compile ('net.sf.jasperreports:jasperreports:6.1.1') {
 		exclude group: 'org.apache.poi', module: 'poi-ooxml'
 
@@ -121,11 +121,61 @@ dependencies {
 	testCompile 'org.kohsuke:wordnet-random-name:1.3'
 }
 
+configurations {
+    apidocSource
+}
+
+configurations.all {
+	resolutionStrategy {
+		// this is the last MPL version of iText, so we can't go past this
+		forcedModules = ['com.lowagie:itext:2.1.7.js2']
+	}
+}
+
+jar {
+	manifest {
+		from sharedManifest
+		attributes 'Main-Class': 'ish.oncourse.server.AngelServer'
+		attributes 'Class-Path': configurations.runtime.collect { "lib/" + it.name }.join(' ')
+	}
+}
+
 sourceSets {
   main {
 	// generate some manifest files for lists of resources to find at runtime
 	output.dir("$buildDir/generated-resources/main", builtBy: 'createResourceManifests')
   }
+}
+
+dependencies {
+    apidocSource "ish.oncourse.willow:waCommon:$waCommonWebservicesClientVersion:sources"
+}
+
+apiDocs {
+	source = sourceSets.main.groovy.plus(zipTree(configurations.apidocSource.find { it.name.startsWith("waCommon") }))
+	destinationDir = reporting.file("api-docs")
+}
+
+task apidocsBundle(type: Jar) {
+	from reporting.file("api-docs")
+	classifier "apidocs"
+	dependsOn tasks.getByName('apiDocs')
+}
+
+// "gradlew publishToMavenLocal" if you want to publish this to your local .m2 folder
+publishing {
+	publications {
+		apidocs(MavenPublication) {
+			artifact apidocsBundle
+            version (project.hasProperty('releaseVersion') ? project.releaseVersion : "99-SNAPSHOT")
+		}
+		executables(MavenPublication) {
+            artifact(installer_unix) {
+				classifier "unix"
+				extension "zip"
+            }
+        }
+	}
 }
 
 task createResourceManifests {
@@ -149,11 +199,183 @@ task createResourceManifests {
 }
 test.dependsOn(createResourceManifests)
 
+task run(dependsOn: [classes, processResources], type: JavaExec) {
+	main = 'ish.oncourse.server.AngelServer'
+	classpath = sourceSets.main.runtimeClasspath
+	args 'DEBUG=true'
+	jvmArgs '-Xmx1024m', '-XX:+HeapDumpOnOutOfMemoryError'
+}
+
 compileGroovy {
 	//add missing library for Java 9
 	groovyClasspath += classpath.filter { it.absolutePath.contains('jaxb-api') }
 }
 
+test {
+	// the database tests interfere with each other if run in parallel
+	maxParallelForks = 1
+
+	ext.dbTests = project.hasProperty('database') ? project.database : "derby-test"
+
+	logger.lifecycle("will run tests in '"+dbTests+"' mode")
+
+	switch (dbTests) {
+		case "derby-test":
+			exclude '**/db/Mysql*.class'
+			exclude '**/db/Mssql*.class'
+			break
+
+		case "mssql-test":
+			assert project.hasProperty('testDatabaseUriMssql') // Please provide the testDatabaseUriMssql in your ~/.gradle/gradle.properties file
+			systemProperty 'testDatabaseUri', testDatabaseUriMssql
+			exclude '**/db/Mysql*.class'
+			exclude '**/db/Derby*.class'
+			break
+
+		case "mysql-test":
+			assert project.hasProperty('testDatabaseUriMysql') // Please provide the testDatabaseUriMysql in your ~/.gradle/gradle.properties file
+			systemProperty 'testDatabaseUri', testDatabaseUriMysql
+			exclude '**/db/Mssql*.class'
+			exclude '**/db/Derby*.class'
+			break
+	}
+}
+
+cayenne {
+	cayenneMap = file ("${projectDir}/../common/src/main/resources/cayenne/AngelMap.map.xml")
+	superPkg = "ish.oncourse.cayenne.glue"
+	serverSuperPkg = "ish.oncourse.server.cayenne.glue"
+	templateDir = file ("${projectDir}/../common/src/main/resources/cayenne/dotemplates/")
+	type = 'server'
+	mode = 'all'
+	destDir = file ("${projectDir}/src/main/java")
+}
+
+appBundler {
+	distributionPath = project.file("${distsDir}/macosx/")
+	appName = "onCourseServer"
+	appIdentifier = "ish.oncourse"
+	mainClassName = "ish.oncourse.server.AngelServer"
+	iconFile = new File(projectDir, "src/packaging/macosx/onCourseServer.icns")
+	jars = configurations.runtime.plus(configurations.runtime.artifacts.files)
+	keychain = project.osxKeychain
+	certIdentity = project.osxKeychainIdentity
+
+	documentTypes = [[
+			 extensions: "iocdata",
+			 icon      : "onCourseDocument.icns",
+			 name      : "onCourse server data file",
+			 role      : "Editor",
+			 isPackage : "true"
+	]]
+
+	jvmOptions = [
+			"-Dapple.awt.textantialiasing=true",
+			"-DJFileChooser.appBundleIsTraversable=true",
+			"-DJFileChooser.packageIsTraversable=true",
+			"-Dapple.awt.antialiasing=true",
+			"-Dapple.awt.showGrowBox=true",
+			"-Djava.locale.providers=COMPAT,SPI",
+			"-Xmx${project.maxmemoryServer}"
+	]
+}
+
+task installer_osx(dependsOn: [prepareKeychains, codeSign], type: au.com.ish.DmgTask) {
+    outputs.upToDateWhen { false } //disables 'UP_TO_DATE' check. This is need to run task always
+	description "Create the OSX application executable and installer (which is just a dmg file)."
+}
+
+task bundle_win(dependsOn: jar, type: au.com.ish.Exe4JTask) {
+	configFile = file("${projectDir}/src/packaging/windows/server.exe4j.xml")
+	jars = configurations.runtime.plus(configurations.runtime.artifacts.files)
+	resourceFiles = files("${projectDir}/src/packaging/windows/onCourseServer.ico")
+	exeFile = file("${distsDir}/windows/onCourseServer.exe")
+
+	if (project.hasProperty('osxKeychainPassword')) {
+		certificateFile = file (project.codeSigningTemporaryKeystore)
+		certificateFilePassword= project.codeSigningTemporaryPassword
+	}
+}
+
+task bundle_winService(dependsOn: jar, type: au.com.ish.Exe4JTask) {
+	configFile = file("${projectDir}/src/packaging/windows/service.exe4j.xml")
+	jars = configurations.runtime.plus(configurations.runtime.artifacts.files)
+	resourceFiles = files("${projectDir}/src/packaging/windows/onCourseServer.ico")
+	exeFile = file("${distsDir}/windows/onCourseService.exe")
+
+	if (project.hasProperty('osxKeychainPassword')) {
+		certificateFile = file (project.codeSigningTemporaryKeystore)
+		certificateFilePassword= project.codeSigningTemporaryPassword
+	}
+}
+
+task bundle_winService64(dependsOn: jar, type: au.com.ish.Exe4JTask) {
+	configFile = file("${projectDir}/src/packaging/windows/service64.exe4j.xml")
+	jars = configurations.runtime.plus(configurations.runtime.artifacts.files)
+	resourceFiles = files("${projectDir}/src/packaging/windows/onCourseServer.ico")
+	exeFile = file("${distsDir}/windows/onCourseService64.exe")
+
+	if (project.hasProperty('osxKeychainPassword')) {
+		certificateFile = file (project.codeSigningTemporaryKeystore)
+		certificateFilePassword= project.codeSigningTemporaryPassword
+	}
+}
+
+task installer_unix(dependsOn: jar, type: Zip) {
+	description "Create the Unix/Linux package (zip)."
+	doFirst {
+		logger.lifecycle("Creating the unix application executable for $project.name")
+	}
+
+	from (configurations.runtime) {
+		into 'onCourseServer/lib'
+	}
+	from (configurations.runtime.artifacts.files) {
+		into 'onCourseServer'
+	}
+	from (file("src/packaging/unix/")) {
+		into 'onCourseServer'
+	}
+
+	archiveName "onCourseServer.zip"
+	destinationDir file("${distsDir}/unix")
+}
+
+task installer_win(dependsOn: [bundle_win, prepareKeychains], type: au.com.ish.NsisTask) {
+	exeFile = file("${distsDir}/windows/onCourseServer.exe")
+	resourceFolder = file("${projectDir}/src/packaging/windows")
+	nsiFileName = "server-mui.nsi"
+	outputFile = file("${distsDir}/windows/onCourseServer-installer.exe")
+
+	if (project.hasProperty('osxKeychainPassword')) {
+		certificateFile = file (project.codeSigningTemporaryKeystore)
+		certificateFilePassword= project.codeSigningTemporaryPassword
+	}
+}
+
+task installer_winService(dependsOn: [bundle_winService, prepareKeychains], type: au.com.ish.NsisTask) {
+	exeFile = file("${distsDir}/windows/onCourseService.exe")
+	resourceFolder = file("${projectDir}/src/packaging/windows")
+	nsiFileName = "service-mui.nsi"
+	outputFile = file("${distsDir}/windows/onCourseService-installer.exe")
+
+	if (project.hasProperty('osxKeychainPassword')) {
+		certificateFile = file (project.codeSigningTemporaryKeystore)
+		certificateFilePassword= project.codeSigningTemporaryPassword
+	}
+}
+
+task installer_winService64(dependsOn: [bundle_winService64, prepareKeychains], type: au.com.ish.NsisTask) {
+	exeFile = file("${distsDir}/windows/onCourseService64.exe")
+	resourceFolder = file("${projectDir}/src/packaging/windows")
+	nsiFileName = "service64-mui.nsi"
+	outputFile = file("${distsDir}/windows/onCourseService64-installer.exe")
+
+	if (project.hasProperty('osxKeychainPassword')) {
+		certificateFile = file (project.codeSigningTemporaryKeystore)
+		certificateFilePassword= project.codeSigningTemporaryPassword
+	}
+}
 
 task switchReplicationVersion {
 	doLast {
