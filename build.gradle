@@ -8,8 +8,10 @@ buildscript {
 		derbyVersion = '10.14.1.0'
 		googleGuiceVersion = '4.1.0'
 	}
-	
+
 	repositories {
+		mavenCentral()
+		mavenLocal()
 		maven {
 			url 'https://repo.ish.com.au/content/groups/public'
 		}
@@ -53,6 +55,7 @@ allprojects {
 	}
 
 	repositories {
+		mavenCentral()
 		maven {
 			url 'https://repo.ish.com.au/content/groups/public'
 		}

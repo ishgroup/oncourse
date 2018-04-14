@@ -1,0 +1,25 @@
+apply plugin: 'groovy'
+apply plugin: 'java'
+
+ext {
+    swaggerName = 'server-api.yaml'
+    swaggerSchema = file("${project.projectDir}/src/main/resources/${swaggerName}")
+}
+
+configurations {
+    swagger
+}
+
+apply from: "$rootDir/gradle/bootique.gradle"
+apply from: "$rootDir/gradle/codegen.gradle"
+
+
+dependencies {
+    compile project(':server')
+}
+
+
+test {
+    forkEvery = 1 //run every test in separate jvm
+//    initTestDBConfig(project, test)
+}
