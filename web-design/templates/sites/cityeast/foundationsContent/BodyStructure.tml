@@ -6,62 +6,64 @@
 
     <div class="page-content">
       <div class="container" id="container">
-        <nav class="nav-primary u-clearfix">
-          <a class="nav-menu-trigger js-menu-trigger">
-            <span class="menu-trigger-icon"></span>
-            <span class="menu-trigger-text">Menu</span>
-          </a>
+        <section class="content-container" id="contentContainer">
+          <nav class="nav-primary u-clearfix">
+            <a class="nav-menu-trigger js-menu-trigger">
+              <span class="menu-trigger-icon"></span>
+              <span class="menu-trigger-text">Menu</span>
+            </a>
 
-          <div class="main-menu-container main-menu-bp-sml" data-set="js-main-menu">
-            <ul class="main-menu js-main-menu">
-              <li><a href="/english-work-foundations">Home</a></li>
-              <li><a href="/foundations-partners">Partners</a></li>
-              <li><a href="/foundations-support-services">Support Services</a></li>
-              <li><a href="/foundations-locations">Location</a></li>
-              <li><a href="/foundations-faqs">FAQs</a></li>
-              <li><a href="foundations-contact">Contact Us</a></li>
-            </ul>
-          </div>
-
-          <ul class="contact-details">
-            <li class="contact-item contact-phone"><a href="tel:9387 7400">9387 7400</a></li>
-            <li class="contact-item"><a href="mailto:info@cityeastcc.com.au">info@cityeastcc.com.au</a></li>
-            <li class="contact-item"><a class="ico-facebook" href="https://www.facebook.com/pages/AMEP-SEE-City-East-Community-College/1442512529356595?fref=ts" target="_blank"><span class="u-visually-hidden">Follow us on Facebook</span></a></li>
-          </ul><!-- //contact-details -->
-
-          <div class="main-menu-bp-lrg" data-set="js-main-menu">
-            <!-- menu inserted appendAround(); -->
-          </div>
-
-        </nav><!-- nav-primary -->
-
-        <div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:header" />
-
-        <section class="content-block">
-          <div class="grid-row u-clearfix">
-            <aside class="col-1-4 content-complimentary">
-              <ul class="quicklinks u-clearfix">
-                <li>
-                  <a class="quicklink-item quicklink-item--work" href="/foundations-work">Work Skills</a>
-                </li>
-                <li>
-                  <a class="quicklink-item quicklink-item--english" href="/foundations-general-english">General English</a>
-                </li>
-                <li>
-                  <a class="quicklink-item quicklink-item--amep" href="/foundations-business">Business &amp; Computing</a>
-                </li>
-                <li>
-                  <a class="quicklink-item quicklink-item--study" href="/foundations-study">Mentor Program</a>
-                </li>
+            <div class="main-menu-container main-menu-bp-sml" data-set="js-main-menu">
+              <ul class="main-menu js-main-menu">
+                <li><a href="/english-work-foundations">Home</a></li>
+                <li><a href="/foundations-partners">Partners</a></li>
+                <li><a href="/foundations-support-services">Support Services</a></li>
+                <li><a href="/foundations-locations">Location</a></li>
+                <li><a href="/foundations-faqs">FAQs</a></li>
+                <li><a href="foundations-contact">Contact Us</a></li>
               </ul>
-            </aside>
+            </div>
 
-            <article class="col-3-4 content-primary copy">
-              <div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:content" />
-              <t:body />
-            </article>
-          </div>
-        </section><!-- //content-block -->
+            <ul class="contact-details">
+              <li class="contact-item contact-phone"><a href="tel:9387 7400">9387 7400</a></li>
+              <li class="contact-item"><a href="mailto:info@cityeastcc.com.au">info@cityeastcc.com.au</a></li>
+              <li class="contact-item"><a class="ico-facebook" href="https://www.facebook.com/pages/AMEP-SEE-City-East-Community-College/1442512529356595?fref=ts" target="_blank"><span class="u-visually-hidden">Follow us on Facebook</span></a></li>
+            </ul><!-- //contact-details -->
+
+            <div class="main-menu-bp-lrg" data-set="js-main-menu">
+              <!-- menu inserted appendAround(); -->
+            </div>
+
+          </nav><!-- nav-primary -->
+
+          <div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:header" />
+
+          <section class="content-block">
+            <div class="grid-row u-clearfix">
+              <aside class="col-1-4 content-complimentary">
+                <ul class="quicklinks u-clearfix">
+                  <li>
+                    <a class="quicklink-item quicklink-item--work" href="/foundations-work">Work Skills</a>
+                  </li>
+                  <li>
+                    <a class="quicklink-item quicklink-item--english" href="/foundations-general-english">General English</a>
+                  </li>
+                  <li>
+                    <a class="quicklink-item quicklink-item--amep" href="/foundations-business">Business &amp; Computing</a>
+                  </li>
+                  <li>
+                    <a class="quicklink-item quicklink-item--study" href="/foundations-study">Mentor Program</a>
+                  </li>
+                </ul>
+              </aside>
+
+              <article class="col-3-4 content-primary copy" id="content">
+                <div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:content" />
+                <t:body />
+              </article>
+            </div>
+          </section><!-- //content-block -->
+        </section>
 
       </div>
     </div><!-- page-content -->

@@ -6,82 +6,84 @@
 
     <div class="page-content">
       <div class="container" id="container">
-        <nav class="nav-primary u-clearfix">
-          <a class="nav-menu-trigger js-menu-trigger">
-            <span class="menu-trigger-icon"></span>
-            <span class="menu-trigger-text">Menu</span>
-          </a>
-
-          <div class="main-menu-container main-menu-bp-sml" data-set="js-main-menu">
-            <ul class="main-menu js-main-menu">
-              <li><a href="/english-work-foundations">Home</a></li>
-              <li><a href="/foundations-partners">Partners</a></li>
-              <li><a href="/foundations-support-services">Support Services</a></li>
-              <li><a href="/foundations-locations">Location</a></li>
-              <li><a href="/foundations-faqs">FAQs</a></li>
-              <li><a href="foundations-contact">Contact Us</a></li>
-            </ul>
-          </div>
-
-          <ul class="contact-details">
-            <li class="contact-item contact-phone"><a href="tel:9387 7400">9387 7400</a></li>
-            <li class="contact-item"><a href="mailto:info@cityeastcc.com.au">info@cityeastcc.com.au</a></li>
-            <li class="contact-item"><a class="ico-facebook" href="https://www.facebook.com/pages/AMEP-SEE-City-East-Community-College/1442512529356595?fref=ts" target="_blank"><span class="u-visually-hidden">Follow us on Facebook</span></a></li>
-          </ul><!-- //contact-details -->
-
-          <div class="main-menu-bp-lrg" data-set="js-main-menu">
-            <!-- menu inserted appendAround(); -->
-          </div>
-        </nav><!-- nav-primary -->
-
-        <div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:header" />
-
-        <ul class="cards u-clearfix">
-          <li class="card-item-wrapper">
-            <a class="card-item u-clearfix card-item--work" href="/foundations-work">
-              <div class="card-img" style="background-image: url('/s/img/foundations/card-work.jpg');">
-                <span class="card-title">Work Skills</span>
-              </div>
-              <div class="card-desc">
-                Get the training you need today to undertake further study or to find the perfect job.
-              </div>
+        <section class="content-container" id="contentContainer">
+          <nav class="nav-primary u-clearfix">
+            <a class="nav-menu-trigger js-menu-trigger">
+              <span class="menu-trigger-icon"></span>
+              <span class="menu-trigger-text">Menu</span>
             </a>
-          </li>
-          <li class="card-item-wrapper">
-            <a class="card-item u-clearfix card-item--english" href="/foundations-general-english">
-              <div class="card-img" style="background-image: url('/s/img/foundations/card-english.jpg');">
-                <span class="card-title">General English</span>
-              </div>
-              <div class="card-desc">
-                Build your reading, writing, listening and speaking skills with these short engaging and effective courses.
-              </div>
-            </a>
-          </li>
-          <li class="card-item-wrapper">
-            <a class="card-item u-clearfix card-item--amep" href="/foundations-business">
-              <div class="card-img" style="background-image: url('/s/img/foundations/card-amep.jpg');">
-                <span class="card-title">Business &amp; Computing</span>
-              </div>
-              <div class="card-desc">
-                Develop technical skills and business knowledge to boost your career options to the next level.
-              </div>
-            </a>
-          </li>
-          <li class="card-item-wrapper">
-            <a class="card-item u-clearfix card-item--study" href="/foundations-study">
-              <div class="card-img" style="background-image: url('/s/img/foundations/card-study.jpg');">
-                <span class="card-title">Mentor Program</span>
-              </div>
-              <div class="card-desc">
-                We understand how difficult it can be for new migrants to find satisfying jobs in their profession. Benefit from the advice and support or a professional person to guide your career.
-              </div>
-            </a>
-          </li>
-        </ul><!-- //cards -->
 
-        <section class="content-block">
-          <div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:content" />
-        </section><!-- //content-block -->
+            <div class="main-menu-container main-menu-bp-sml" data-set="js-main-menu">
+              <ul class="main-menu js-main-menu">
+                <li><a href="/english-work-foundations">Home</a></li>
+                <li><a href="/foundations-partners">Partners</a></li>
+                <li><a href="/foundations-support-services">Support Services</a></li>
+                <li><a href="/foundations-locations">Location</a></li>
+                <li><a href="/foundations-faqs">FAQs</a></li>
+                <li><a href="foundations-contact">Contact Us</a></li>
+              </ul>
+            </div>
+
+            <ul class="contact-details">
+              <li class="contact-item contact-phone"><a href="tel:9387 7400">9387 7400</a></li>
+              <li class="contact-item"><a href="mailto:info@cityeastcc.com.au">info@cityeastcc.com.au</a></li>
+              <li class="contact-item"><a class="ico-facebook" href="https://www.facebook.com/pages/AMEP-SEE-City-East-Community-College/1442512529356595?fref=ts" target="_blank"><span class="u-visually-hidden">Follow us on Facebook</span></a></li>
+            </ul><!-- //contact-details -->
+
+            <div class="main-menu-bp-lrg" data-set="js-main-menu">
+              <!-- menu inserted appendAround(); -->
+            </div>
+          </nav><!-- nav-primary -->
+
+          <div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:header" />
+
+          <ul class="cards u-clearfix">
+            <li class="card-item-wrapper">
+              <a class="card-item u-clearfix card-item--work" href="/foundations-work">
+                <div class="card-img" style="background-image: url('/s/img/foundations/card-work.jpg');">
+                  <span class="card-title">Work Skills</span>
+                </div>
+                <div class="card-desc">
+                  Get the training you need today to undertake further study or to find the perfect job.
+                </div>
+              </a>
+            </li>
+            <li class="card-item-wrapper">
+              <a class="card-item u-clearfix card-item--english" href="/foundations-general-english">
+                <div class="card-img" style="background-image: url('/s/img/foundations/card-english.jpg');">
+                  <span class="card-title">General English</span>
+                </div>
+                <div class="card-desc">
+                  Build your reading, writing, listening and speaking skills with these short engaging and effective courses.
+                </div>
+              </a>
+            </li>
+            <li class="card-item-wrapper">
+              <a class="card-item u-clearfix card-item--amep" href="/foundations-business">
+                <div class="card-img" style="background-image: url('/s/img/foundations/card-amep.jpg');">
+                  <span class="card-title">Business &amp; Computing</span>
+                </div>
+                <div class="card-desc">
+                  Develop technical skills and business knowledge to boost your career options to the next level.
+                </div>
+              </a>
+            </li>
+            <li class="card-item-wrapper">
+              <a class="card-item u-clearfix card-item--study" href="/foundations-study">
+                <div class="card-img" style="background-image: url('/s/img/foundations/card-study.jpg');">
+                  <span class="card-title">Mentor Program</span>
+                </div>
+                <div class="card-desc">
+                  We understand how difficult it can be for new migrants to find satisfying jobs in their profession. Benefit from the advice and support or a professional person to guide your career.
+                </div>
+              </a>
+            </li>
+          </ul><!-- //cards -->
+
+          <section class="content-block" id="content">
+            <div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:content" />
+          </section><!-- //content-block -->
+        </section>
       </div>
     </div><!-- page-content -->
 
