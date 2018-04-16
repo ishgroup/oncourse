@@ -1,7 +1,7 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
   <t:if t:test="hasLocation">
 
-    <script type="text/javascript">
+    <script>
 
       function initialize() {
         vLat = "${mapPositionLatitude}";

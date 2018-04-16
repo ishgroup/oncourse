@@ -1,35 +1,24 @@
 <div class="site-wrapper" id="top" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-  <header class="site-header" role="banner" id="header" itemscope="itemscope" itemtype="http://schema.org/WPHeader">
+  <header class="site-header" id="header" itemscope="itemscope" itemtype="http://schema.org/WPHeader">
     <div t:type="ui/bodyheader" />
 
     <div class="close-help-btn">HIDE</div>
     <a class="menu-trigger menu-trigger-open menu-trigger-bp-sml" href="#">
       <span class="menu-trigger-icon"></span>
-      Menu
+    Menu
     </a>
 
     <div class="site-info-bar-container" data-set="infobar">
       <div class="site-info-bar u-clearfix">
+        <h1 class="site-info-bar__title">Centre for Continuing Education</h1>
+        <ul class="social-media social-media--header">
+          <li><a class="social-facebook" target="_blank" href="https://www.facebook.com/ccesydney">Facebook</a></li>
+          <li><a class="social-linkedin" target="_blank" href="https://www.linkedin.com/company/ccesydney">LinkedIn</a></li>
+        </ul>
         <div class="info-contact">
           <strong class="contact-phone">(02) 8627 6700</strong>
           <span class="contact-hours">9am - 5pm Mon - Fri</span>
-          <a rel="nofollow" href="https://skillsoncourse.com.au/portal/login" target="_blank" class="contact-login actionLink">Account Login</a>
         </div>
-        <ul class="info-links">
-          <li class="info-link info-link--account">
-            <a rel="nofollow" href="https://skillsoncourse.com.au/portal/login" target="_blank" class="actionLink">Account Login</a>
-          </li>
-          <li class="info-link info-link--discount">
-            <a rel="nofollow" href="/addDiscount" target="_blank" class="nyromodalreload actionLink">Enter a Discount Code</a>
-          </li>
-        </ul>
-        <ul class="social-media social-media--header">
-          <li><a class="social-facebook" target="_blank" href="https://www.facebook.com/ccesydney">Facebook</a></li>
-          <li><a class="social-twitter" target="_blank" href="https://twitter.com/ccesydney">Twitter</a></li>
-          <li><a class="social-google" target="_blank" href="https://plus.google.com/117569777441369286786">Google Plus</a></li>
-          <li><a class="social-linkedin" target="_blank" href="https://www.linkedin.com/company/ccesydney">LinkedIn</a></li>
-          <li><a class="social-youtube" target="_blank" href="https://www.youtube.com/channel/UC78kDdbOqqMtwLOVwsvfwuA">YouTube</a></li>
-        </ul>
       </div>
     </div>
   </header><!-- //site-header -->
@@ -37,24 +26,75 @@
     <div class="feature-slider">
       <ul class="slides">
         <li>
-          <div class="feature-slide-img">
-            <span data-picture="" data-alt="Courses in Sydney">
-              <span data-src="/s/images/banners/home/banner-21-sml.jpg"></span>
-              <span data-src="/s/images/banners/home/banner-21-med.jpg" data-media="(min-width: 768px)"></span>
-              <span data-src="/s/images/banners/home/banner-21-lrg.jpg" data-media="(min-width: 1024px)"></span>
-              <span data-src="/s/images/banners/home/banner-21-wide.jpg" data-media="(min-width: 1200px)"></span>
-              <!--[if (lt IE 9) & (!IEMobile)]>
-                      <span data-src="/s/images/banners/home/banner-01-lrg.jpg"></span>
-                  <![endif]-->
-              <!-- Fallback content for non-JS browsers. -->
-              <noscript>
-                <img alt="Centre for Continuing Education" src="/s/images/banners/home/banner-21-sml.jpg" />
-              </noscript>
-            </span>
-          </div>
+          <a href="/courses">
+            <div class="feature-slide-img">
+              <span data-picture="" data-alt="Courses in Sydney">
+                <span data-src="/s/images/banners/home/CCE_students_in_class-sml.jpg"></span>
+                <span data-src="/s/images/banners/home/CCE_students_in_class-med.jpg" data-media="(min-width: 768px)"></span>
+                <span data-src="/s/images/banners/home/CCE_students_in_class-lrg.jpg" data-media="(min-width: 1024px)"></span>
+                <span data-src="/s/images/banners/home/CCE_students_in_class-wide.jpg" data-media="(min-width: 1200px)"></span>
+                <!--[if (lt IE 9) & (!IEMobile)]>
+                        <span data-src="/s/images/banners/home/banner-01-lrg.jpg"></span>
+                    <![endif]-->
+                <!-- Fallback content for non-JS browsers. -->
+                <noscript>
+                  <img alt="Centre for Continuing Education" src="/s/images/banners/home/banner-21-sml.jpg" />
+                </noscript>
+              </span>
+            </div>
+            <div class="feature-slide-text">
+              <h2 class="feature-banner-title">Short courses,<br/> open to everyone</h2>
+              <h3 class="feature-banner-desc">Learn more now</h3>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="/tutor/37">
+            <div class="feature-slide-img">
+              <span data-picture="" data-alt="Courses in Sydney">
+                <span data-src="/s/images/banners/home/Mark-Treddenick-sml.jpg"></span>
+                <span data-src="/s/images/banners/home/Mark-Treddenick-med.jpg" data-media="(min-width: 768px)"></span>
+                <span data-src="/s/images/banners/home/Mark-Treddenick-lrg.jpg" data-media="(min-width: 1024px)"></span>
+                <span data-src="/s/images/banners/home/Mark-Treddenick-wide.jpg" data-media="(min-width: 1200px)"></span>
+                <!--[if (lt IE 9) & (!IEMobile)]>
+                        <span data-src="/s/images/banners/home/banner-01-lrg.jpg"></span>
+                    <![endif]-->
+                <!-- Fallback content for non-JS browsers. -->
+                <noscript>
+                  <img alt="Centre for Continuing Education" src="/s/images/banners/home/banner-21-sml.jpg" />
+                </noscript>
+              </span>
+            </div>
+            <div class="feature-slide-text">
+              <h2 class="feature-banner-title">Poet in residence</h2>
+              <h3 class="feature-banner-desc">Learn creative writing and poetry writing from an awarded poet</h3>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="/fee-concessions">
+            <div class="feature-slide-img">
+              <span data-picture="" data-alt="Courses in Sydney">
+                <span data-src="/s/images/banners/home/Recent_graduate-sml.jpg"></span>
+                <span data-src="/s/images/banners/home/Recent_graduate-med.jpg" data-media="(min-width: 768px)"></span>
+                <span data-src="/s/images/banners/home/Recent_graduate-lrg.jpg" data-media="(min-width: 1024px)"></span>
+                <span data-src="/s/images/banners/home/Recent_graduate-wide.jpg" data-media="(min-width: 1200px)"></span>
+                <!--[if (lt IE 9) & (!IEMobile)]>
+                        <span data-src="/s/images/banners/home/banner-01-lrg.jpg"></span>
+                    <![endif]-->
+                <!-- Fallback content for non-JS browsers. -->
+                <noscript>
+                  <img alt="Centre for Continuing Education" src="/s/images/banners/home/banner-21-sml.jpg" />
+                </noscript>
+              </span>
+            </div>
+            <div class="feature-slide-text">
+              <h2 class="feature-banner-title">Graduate discount</h2>
+              <h3 class="feature-banner-desc">Recent graduates of the University of Sydney get 50% off on all Professional Development courses</h3>
+            </div>
+          </a>
         </li>
       </ul>
-      <h1 class="feature-banner-title">Centre for <br/>Continuing Education</h1>
     </div> <!-- //feature-slider -->
     <div class="info-bar-bp-sml" data-set="infobar"> <!-- appendAround(); --></div>
     <div class="feature-links">
@@ -63,7 +103,7 @@
         <!-- Append dash dash alt for class with <br /> -->
         <li class="feature-link"><a class="u-clearfix" href="/courses/project-management"><span class="feature-link-title">Project Management</span> <img alt="Project Management" class="feature-link-image" src="/s/images/feature-links/feature-link-project-management.jpg" /></a></li>
         <li class="feature-link"><a class="u-clearfix" href="/courses/business-management"><span class="feature-link-title">Business &amp; Management</span> <img alt="Business &amp; Management Courses" class="feature-link-image" src="/s/images/feature-links/feature-link-business-management.jpg" /></a></li>
-        <li class="feature-link"><a class="u-clearfix" href="/courses/education/hsc"><span class="feature-link-title">HSC Preparation</span> <img alt="HSC Preparation Courses" class="feature-link-image" src="/s/images/feature-links/feature-link-hsc-preparation.jpg" /></a></li>
+        <li class="feature-link"><a class="u-clearfix" href="/courses/education/hsc"><span class="feature-link-title feature-link-title--alt">HSC Preparation<br/>(Years 10 - 12)</span> <img alt="HSC Preparation Courses" class="feature-link-image" src="/s/images/feature-links/feature-link-hsc-preparation.jpg" /></a></li>
         <li class="feature-link"><a class="u-clearfix" href="/courses/marketing"><span class="feature-link-title">Marketing</span> <img alt="Marketing Courses" class="feature-link-image" src="/s/images/feature-links/feature-link-marketing.jpg" /></a></li>
         <li class="feature-link"><a class="u-clearfix" href="/courses/language-culture"><span class="feature-link-title">Language &amp; Culture</span> <img alt="Language &amp; Culture Courses" class="feature-link-image" src="/s/images/feature-links/feature-link-language-&amp;-culture.jpg" /></a></li>
         <li class="feature-link"><a class="u-clearfix" href="/courses/information-technology"><span class="feature-link-title">Information Technology</span> <img alt="Information technology Courses" class="feature-link-image" src="/s/images/feature-links/feature-link-information-technology.jpg" /></a></li>
@@ -78,21 +118,14 @@
         <span class="callout-desc">Short courses, open to the public.</span>
       </h2>
     </section> <!-- //callout -->
-    <div id="courses" class="course-filter">
+    <div id="courses" class="course-filter u-clearfix">
       <div class="filter-search u-clearfix">
         <div class="filter-search-box u-clearfix simple-search">
           <span class="filter-search-title">Search</span>
           <form action="/courses" class="filter-search-form" method="get" id="filter-search" name="search">
-            <input type="text" id="search-field" class="filter-search-field site-search-field" name="s" size="15" autocomplete="off" placeholder="Enter Keyword" />
+            <input type="text" id="search-field" class="filter-search-field site-search-field" name="s" size="15" autocomplete="off" placeholder="Keyword, Tutor or Course" />
             <button type="submit" id="search-button" class="filter-search-button site-search-button">Search</button></form>
           <button class="filter-search-link js-filter-btn js-advanced-search" data-button="filter-by-advanced-search">Advanced Search</button>
-        </div>
-        <div class="filter-by-buttons">
-          <span class="filter-search-title">Filter <strong>Courses</strong> By</span>
-          <ul class="u-clearfix">
-            <li><a class="filter-by-btn filter-by-new js-filter-btn" data-button="filter-by-new" href="#">New Courses</a></li>
-            <li><a class="filter-by-btn filter-by-popular js-filter-btn" data-button="filter-by-popular" href="#">Popular Courses</a></li>
-          </ul>
         </div>
       </div>
       <div class="filter-courses filter-accordion">
@@ -101,6 +134,71 @@
         <div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:content" />
       </div>
     </div><!-- //course-filter -->
+
+    <div class="newsletter-signup">
+      <div class="newsletter-signup__text">
+        <h2 class="newsletter-signup__title">Get our Newsletter</h2>
+        <p class="newsletter-signup__desc">For the latest information on courses, what's coming up and special offers</p>
+      </div>
+      <form action="https://sydney.us1.list-manage.com/subscribe/post?u=71c9b402bd00b3bb786dc7f36&amp;id=9607cf85ce" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="newsletter-signup__form newsletter-subscription-form validate" target="_blank" novalidate="novalidate">
+          <div class="newsletter-subscription-form__group mc-field-group">
+            <label class="newsletter-subscription-form__label" for="mce-FNAME">First Name  <span class="asterisk">*</span></label>
+            <input type="text" value="" name="FNAME" class="newsletter-subscription-form__field" id="mce-FNAME"/>
+          </div>
+          <div class="newsletter-subscription-form__group mc-field-group">
+            <label class="newsletter-subscription-form__label" for="mce-LNAME">Last Name  <span class="asterisk">*</span></label>
+            <input type="text" value="" name="LNAME" class="newsletter-subscription-form__field" id="mce-LNAME"/>
+          </div>
+          <div class="newsletter-subscription-form__group mc-field-group">
+            <label class="newsletter-subscription-form__label" for="mce-EMAIL">Email Address  <span class="asterisk">*</span></label>
+            <input type="email" value="" name="EMAIL" class="newsletter-subscription-form__field email" id="mce-EMAIL"/>
+          </div>
+          <div class="newsletter-subscription-form__group mc-field-group input-group">
+            <strong>Are you interested in:</strong>
+            <ul class="newsletter-subscription-form__sub-group">
+              <li class="newsletter-subscription-form__group">
+                <input class="newsletter-subscription-form__checkbox" type="checkbox" value="1" name="group[9][1]" id="mce-group[9]-9-0"/>
+                <label class="newsletter-subscription-form__sub-label" for="mce-group[9]-9-0">Arts &amp; Humanities</label>
+              </li>
+              <li class="newsletter-subscription-form__group">
+                <input class="newsletter-subscription-form__checkbox" type="checkbox" value="2" name="group[9][2]" id="mce-group[9]-9-1"/>
+                <label class="newsletter-subscription-form__sub-label" for="mce-group[9]-9-1">Corporate Training</label>
+              </li>
+              <li class="newsletter-subscription-form__group">
+                <input class="newsletter-subscription-form__checkbox" type="checkbox" value="4" name="group[9][4]" id="mce-group[9]-9-2"/>
+                <label class="newsletter-subscription-form__sub-label" for="mce-group[9]-9-2">Professional Development</label>
+              </li>
+              <li class="newsletter-subscription-form__group">
+                <input class="newsletter-subscription-form__checkbox" type="checkbox" value="8" name="group[9][8]" id="mce-group[9]-9-3"/>
+                <label class="newsletter-subscription-form__sub-label" for="mce-group[9]-9-3">Hobbies</label>
+              </li>
+              <li class="newsletter-subscription-form__group">
+                <input class="newsletter-subscription-form__checkbox" type="checkbox" value="16" name="group[9][16]" id="mce-group[9]-9-4"/>
+                <label class="newsletter-subscription-form__sub-label" for="mce-group[9]-9-4">HSC</label>
+              </li>
+              <li class="newsletter-subscription-form__group">
+                <input class="newsletter-subscription-form__checkbox" type="checkbox" value="32" name="group[9][32]" id="mce-group[9]-9-5"/>
+                <label class="newsletter-subscription-form__sub-label" for="mce-group[9]-9-5">Languages</label>
+              </li>
+              <li class="newsletter-subscription-form__group">
+                <input class="newsletter-subscription-form__checkbox" type="checkbox" value="64" name="group[9][64]" id="mce-group[9]-9-6"/>
+                <label class="newsletter-subscription-form__sub-label" for="mce-group[9]-9-6">Psychology</label>
+              </li>
+              <li class="newsletter-subscription-form__group">
+                <input class="newsletter-subscription-form__checkbox" type="checkbox" value="128" name="group[9][128]" id="mce-group[9]-9-7"/>
+                <label class="newsletter-subscription-form__sub-label" for="mce-group[9]-9-7">IT Skills</label>
+              </li>
+            </ul>
+          </div>
+          <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_71c9b402bd00b3bb786dc7f36_9607cf85ce" tabindex="-1" value=""/></div> <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+          <div class="newsletter-subscription-form__group newsletter-subscription-form__group--button"><input type="submit" value="Subscribe to List" name="subscribe" id="mc-embedded-subscribe" class="newsletter-subscription-form__button"/></div>
+          <div id="mce-responses" class="newsletter-subscription-form__response">
+            <div class="response" id="mce-error-response" style="display:none"></div>
+            <div class="response" id="mce-success-response" style="display:none"></div>
+          </div>    
+      </form>
+      <script src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script><script type='text/javascript'>(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[1]='FNAME';ftypes[1]='text';fnames[2]='LNAME';ftypes[2]='text';fnames[0]='EMAIL';ftypes[0]='email';fnames[3]='UID';ftypes[3]='text';}(jQuery));var $mcj = jQuery.noConflict(true);</script>
+    </div>
 
     <!-- section removed here -->
 

@@ -11,7 +11,7 @@
   <link rel="stylesheet" type="text/css" media="screen, print" href="/s/kiosk/css/kiosk.css"/>
   <link rel="stylesheet" type="text/css" media="screen, print" href="/s/kiosk/css/kiosk-local.css"/>
 
-  <script type="text/javascript" src="/s/kiosk/js/kiosk.js"></script>
+  <script src="/s/kiosk/js/kiosk.js"></script>
 
 </head>
 <body t:type="any" class="kiosk">
@@ -54,7 +54,7 @@
     </footer>
   </div>
 
-  <script type="text/javascript">
+  <script>
     setTimeout(function(){window.location.reload();}, 900000);
   </script>
 </body>

@@ -74,6 +74,6 @@
   </div>
   <t:if t:test="searchString">
     <h2 class="course-tagline"><strong>Search results.</strong> Here's what we found.</h2>
-    <p>Your search results are listed below. If you need help finding something that's right for you, call us weekdays between 9AM and 5PM on (02) 8999 9608 for free, expert advice.</p>
+    <p>Your search results are listed below. If you need help finding something that's right for you, call us weekdays between 9AM and 5PM on (02) 8627 6700 for free, expert advice.</p>
   </t:if>
 </t:container>

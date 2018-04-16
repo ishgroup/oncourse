@@ -24,13 +24,12 @@
     </t:if>
     <div class="site-info-bar-container" data-set="infobar">
     </div>
-    <div class="site-title site-title-bp-med">Centre for Continuing Education</div>
     <div class="site-menu-overlay">
       <a class="menu-trigger menu-trigger-close" href="#">
         <span class="menu-trigger-icon"></span>
         Menu
       </a>
-      <nav class="site-menu" role="navigation">
+      <nav class="site-menu">
         <div t:type="ui/menu"/>
       </nav>
     </div>

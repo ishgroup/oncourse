@@ -1,5 +1,5 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-  <script type="text/javascript">
+  <script>
     var ciVersion = '${ciVersion}';
   </script>
 
@@ -28,8 +28,8 @@
   <meta property="og:image" content="https://${request.serverName}/s/img/logos/logo.png" />
   <meta name="twitter:image" content="https://${request.serverName}/s/img/logos/logo.png" />
 
-  <meta name="robots" content="noodp,noydir,none" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="robots" content="noodp,noydir" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <div t:type="ui/courseClassMetaInfo"/>
@@ -37,9 +37,9 @@
   <span t:type="ui/title" pageName="pageName" webNode="webNode" />
 
   <meta name="author" content="" />
-  <script type="text/javascript" src="/s/js/vendor/mq.genie.js"></script>
+  <script src="/s/js/vendor/mq.genie.js"></script>
   <link href="/s/stylesheets/css/site.css?v=${ciVersion}" media="screen, print" rel="stylesheet" />
-  <script type="text/javascript" src="/s/js/all.js?v=${ciVersion}"></script>
+  <script src="/s/js/all.js?v=${ciVersion}"></script>
 
   <link href="/s/images/favicon.ico" rel="icon" type="image/vnd.microsoft.icon" />
   <link href="/s/images/favicon.ico" rel="shortcut icon" type="images/x-icon" />
@@ -58,7 +58,7 @@
   <meta property="og:image" content="https://cce.sydney.edu.au/s/images/custom/open-graph/default.png" />
   <meta property="fb:admins" content="670287452" />
 
-  <script type="text/javascript">var _kmq = _kmq || [];
+  <script>var _kmq = _kmq || [];
     var _kmk = _kmk || 'dc6b0c4725b886e25db8a362b0e28332370739a7';
     function _kms(u) {
       setTimeout(function() {

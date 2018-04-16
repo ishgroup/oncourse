@@ -12,9 +12,9 @@
         <t:if t:test="courseItemModel.nrt">
           <img class="logo-nrt-details" alt="NRT" src="/s/images/logo-nrt.png"/>
         </t:if>
-        <span itemprop="description">
+        <div itemprop="description">
           <t:outputraw value="${courseDetail}" />
-        </span>
+        </div>
       </div>
       <t:if t:test="${courseItemModel.showModules}">
         <div t:type="ui/CourseModules" modules="courseItemModel.course.modules" qualification="courseItemModel.course.qualification" course="courseItemModel.course"></div>
@@ -50,15 +50,13 @@
         <p class="other-classes-control clearfix">
           <a href="javascript:return false;" >Show other classes</a>
         </p>
-        <div class="other-classes" style="display:none;">
+        <div class="other-classes">
           <t:loop source="courseItemModel.otherClasses" value="courseClass">
             <span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="linkToLocationsMap" isList="isList" allowByAplication="allowByAplication" feeOverride="feeOverride"/>
           </t:loop>
         </div>
       </t:if>
       <t:if test="courseItemModel.fullClasses.empty" negate="true">
-        <!--<a class="show-full-classes full-classes-control"  >Show Full Classes</a>
-        <div class="full-classes" style="display:none;">-->
         <div class="full-classes">
           <t:loop source="courseItemModel.fullClasses" value="courseClass">
             <span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="linkToLocationsMap" isList="isList" allowByAplication="allowByAplication" feeOverride="feeOverride"/>
@@ -89,6 +87,9 @@
         </div>
       </p:else>
       </t:if>
+    </t:if>
+    <t:if t:test="isList" negate="true">
+      <span t:type="ui/coursetestimonials" course="courseItemModel.course"/>
     </t:if>
   </div>
 </t:container>

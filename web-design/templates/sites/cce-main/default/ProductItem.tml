@@ -53,7 +53,7 @@
                     Price: <t:output value="price" format="moneyFormat(price)" />
                       <t:if test="hasTax()">
                         <span class="gst">
-                           inc <acronym title="Goods and Services Tax">GST</acronym>
+                           inc <abbr title="Goods and Services Tax">GST</abbr>
                         </span>
                       </t:if>
                   </t:unless>

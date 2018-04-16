@@ -19,7 +19,6 @@
   <t:if test="webNode">
     <t:if test="${webNode.name.equals('Home')}">
       <title>Centre for Continuing Education</title>
-      <meta name="description" content="" />
       <meta property="og:title" content="Centre for Continuing Education" />
       <meta property="twitter:title" content="Centre for Continuing Education"/>
       <p:else>

@@ -1,10 +1,10 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
   <t:if test="allowByAplication" negate="true">
-    <span class="hide" itemprop="offers" itemscope="itemscope" itemtype="http://schema.org/Offer">
+    <div class="hide" itemprop="offers" itemscope="itemscope" itemtype="http://schema.org/Offer">
       <div class="price">
         <span t:type="ui/CourseClassPrice" courseClass="courseClass" feeOverride="feeOverride"/>
       </div>
-    </span>
+    </div>
   </t:if>
   <div itemtype="http://schema.org/EducationEvent" itemscope="itemscope" class="clearfix class-item classItem ${classCommenced}" data-classid="${courseClass.id}" data-sku="${courseClass.uniqueIdentifier}">
     <div class="row">
@@ -150,11 +150,11 @@
                     </t:if>
                   </div>
                   <!--<t:if test="allowByAplication" negate="true">-->
-                      <span itemprop="offers" itemscope="itemscope" itemtype="http://schema.org/Offer">
+                      <div itemprop="offers" itemscope="itemscope" itemtype="http://schema.org/Offer">
                         <div class="col-xs-24 col-sm-8 class-price-container">
                           <div data-cid="fees" data-prop-id="${courseClass.id}"></div>
                         </div>
-                      </span>
+                      </div>
                   <!--</t:if>-->
                 </div>
               </div>

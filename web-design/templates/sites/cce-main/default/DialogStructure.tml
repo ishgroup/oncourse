@@ -4,7 +4,7 @@
   <head>
     <title>${title}</title>
 
-    <script type="text/javascript" src="/s/js/all.js"></script>
+    <script src="/s/js/all.js"></script>
     <link href="/s/stylesheets/css/site.css" media="screen" rel="stylesheet" />
   </head>
   <body class="dialogBox">

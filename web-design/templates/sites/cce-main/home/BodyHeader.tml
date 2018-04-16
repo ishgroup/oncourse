@@ -27,7 +27,7 @@
         <span class="menu-trigger-icon"></span>
         Menu
       </a>
-      <nav class="site-menu" role="navigation">
+      <nav class="site-menu">
         <div t:type="ui/menu"/>
       </nav>
     </div>

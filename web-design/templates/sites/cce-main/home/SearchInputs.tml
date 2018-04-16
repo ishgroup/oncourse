@@ -9,7 +9,7 @@
         </div>
         <div class="search-field search-field--select" id="adv_search_tag">
           <t:loop source="tagGroups" value="tagGroup">
-            <label for="tagGroup">In ${tagGroup}</label>
+            <label for="select_2">In ${tagGroup}</label>
             <t:select id="tagGroup" name="subject" model="tagGroupModel" blankLabel="all" value="selectedTagValue" />
           </t:loop>
         </div>
@@ -37,8 +37,8 @@
             <label class="day checkbox" for="weekday-parent">Weekdays</label>
           </div>
           <div class="field-group faux-checkbox checkbox day">
-            <input t:type="Checkbox" t:value="weekend" name="day" class="parent" clientId="weekend- parent" />
-            <label class="day checkbox" for="weekend- parent">Weekends </label>
+            <input t:type="Checkbox" t:value="weekend" name="day" class="parent" clientId="weekend-parent" />
+            <label class="day checkbox" for="weekend-parent">Weekends </label>
           </div>
         </div>
 

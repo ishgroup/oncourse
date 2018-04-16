@@ -7,7 +7,7 @@
     bodyClass="literal:page-course-detail page-default"
     xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
   <t:if t:test="course">
-    <h1 itemprop="name" class="course-title summary page-title">${courseItemModel.course.name}</h1>
+    <h1 class="course-title summary page-title">${courseItemModel.course.name}</h1>
 
     <div class="course-features-container">
       <a class="btn-course-times" href="#courseClasses">View Course Times</a>
@@ -15,7 +15,7 @@
 
     <span t:type="ui/courseitem" course="course" linkToLocationsMap="true" isList="false" courseItemModel="courseItemModel"></span>
 
-    <script type="text/javascript">
+    <script>
       _kmq.push(['record', 'Viewed Potential Purchase', {'Product ID':'${courseItemModel.course.code}', 'Product Name':'${courseItemModel.course.name}'}]);
     </script>
 
