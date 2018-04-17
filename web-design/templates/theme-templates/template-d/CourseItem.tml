@@ -95,5 +95,8 @@
       <h3 class="related-header">Related Products</h3>
       <div t:type="ui/relatedporducts" model="courseItemModel"></div>
     </t:if>
+    <t:if t:test="isList" negate="true">
+      <span t:type="ui/coursetestimonials" course="courseItemModel.course"/>
+    </t:if>
   </div>
 </t:container>
