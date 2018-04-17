@@ -29,6 +29,10 @@
         <t:if t:test="paymentGatewayEnabled">
           <span t:type="ui/ShortList" />
         </t:if>
+        <a class="nav-toggle js-nav-toggle pull-right" href="#">
+          <span class="nav-toggle-icon"></span>
+          <span class="nav-title">Menu</span>
+        </a>
         <a href="#" class="header-search-toggle pull-right">
           <i class="sicon search-icon"></i>
         </a>
@@ -47,9 +51,5 @@
     <h1 class="site-title" id="siteTitle">
       <a href="${homeLink}">${collegeName}</a>
     </h1>
-    <a class="nav-toggle js-nav-toggle pull-right" href="#">
-      <span class="nav-toggle-icon"></span>
-      <span class="nav-title">Menu</span>
-    </a>
   </hgroup>
 </t:container>

@@ -1,7 +1,7 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
   <div class="footer-container" itemscope="itemscope" itemtype="http://schema.org/Organization" itemprop="provider">
-    <p class="footer-AUD">
-      <center>All prices are quoted in Australian dollars</center>
+    <p class="footer-AUD text-center">
+      All prices are quoted in Australian dollars
     </p>
     <p class="footer-info">Copyright © 2007-${year} <span itemprop="name">${collegeName}</span> and
       <a href="http://www.ish.com.au/copyright.html" title="ish copyright notice" class="popup">ish</a>, all rights reserved.
