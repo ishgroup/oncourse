@@ -78,12 +78,12 @@
     <t:if t:test="courseItemModel.course.allowWaitingList">
       <p class="waiting-list-title" data-cid="join-button" data-prop-id="${courseItemModel.course.id}">
         <t:if t:test="courseItemModel.enrollableClasses.empty" negate="true">
-          <t:if t:test="hasMoreAvailablePlaces"> If there isn't a class to suit you, please
-            <p:else> Classes are full. Please </p:else>
+          <t:if t:test="hasMoreAvailablePlaces"> Register your interest <!--If there isn't a class to suit you, please-->
+            <p:else> Register your interest <!--Classes are full. Please--> </p:else>
           </t:if>
-          <p:else> This course has no current classes. Please </p:else>
+          <p:else> Register your interest <!--This course has no current classes. Please--> </p:else>
         </t:if>
-        <button class="join-btn" type="button">Join</button> the waiting list.
+        <button class="join-btn" type="button">Join</button> <!--the waiting list.-->
       </p>
       <div class="clearfix"></div>
     </t:if>
@@ -94,6 +94,9 @@
     <t:if t:test="courseItemModel.hasRelatedProducts()">
       <h3>Related Products</h3>
       <div t:type="ui/relatedporducts" model="courseItemModel"></div>
+    </t:if>
+    <t:if t:test="isList" negate="true">
+      <span t:type="ui/coursetestimonials" course="courseItemModel.course"/>
     </t:if>
   </div>
 </t:container>
