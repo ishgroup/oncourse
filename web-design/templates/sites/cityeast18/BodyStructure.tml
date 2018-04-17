@@ -1,0 +1,51 @@
+<section class="site-wrapper" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+  <section class="site-container" id="container">
+    <div class="slider-fixed-top"></div>
+    <div class="content-images"></div>
+    <header class="site-header" id="header" itemscope="itemscope" itemtype="http://schema.org/WPHeader">
+      <section class="header-container">
+        <section class="top-bar">
+          <hgroup class="container header-hgroup">
+            <div class="site-logo" id="siteLogo">
+              <a href="/">
+                <img src="/s/img/logos/logo.svg" alt="site-logo" class="normal_logo" />
+              </a>
+            </div>
+            <div t:type="ui/bodyheader" />
+          </hgroup>
+          <div class="container">
+            <div class="navbar">
+              <nav class="site-nav" id="nav">
+                <div t:type="ui/menu"/>
+              </nav>
+            </div>
+          </div>
+          <div t:type="ui/globalnavi" />
+        </section>
+      </section>
+      <div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:header" />
+    </header>
+    <section class="container content-container" id="contentContainer">
+      <aside class="sidebar-left" id="sidebarLeft">
+        <div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:left" />
+      </aside>
+      <article class="content" id="content">
+        <div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:content" />
+        <t:body />
+      </article>
+      <aside class="sidebar-right" id="sidebarRight" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
+        <div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:right" />
+      </aside>
+    </section>
+    <footer class="site-footer" id="footer" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
+      <div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:footer" />
+      <div t:type="ui/bodyfooter" />
+    </footer>
+  </section>
+  <div id="overlay" style="display: none; height: 500px" />
+  <div id="timeline-wrap" style="visibility: hidden;">
+    <div id="timeline" />
+  </div>
+
+  <div data-cid="modal" class="reactjs-component"></div>
+</section>
