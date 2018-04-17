@@ -1,9 +1,0 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-    <div class="relatedCourses">
-    <ul>
-        <t:loop source="courseRelations" value="relatedCourse">
-            <li><a href="/course/${relatedCourse.code}" rel="nofollow" target="_blank">${relatedCourse.name}</a></li>
-        </t:loop>
-    </ul>
-    </div>
-</t:container>
