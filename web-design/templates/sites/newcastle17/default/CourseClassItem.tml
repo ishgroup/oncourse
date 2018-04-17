@@ -1,0 +1,187 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+
+    <div class="class-block classItem ${classCommenced}" itemtype="http://schema.org/CourseInstance http://schema.org/EducationEvent" itemscope="itemscope" data-classid="${courseClass.id}" data-sku="${courseClass.uniqueIdentifier}">
+        <meta itemprop="name" content="${courseClass.course.name}" />
+        <meta itemprop="url" content="https://${request.serverName}/course/${courseClass.course.code}" />
+		<meta itemprop="image" content="https://${request.serverName}/s/img/course/${courseClass.course.code}.jpg" />
+		<meta itemprop="description" content="${courseClass.course.name}. Short courses in Sydney from the University of Newcastle. Open to everyone. Enrol online now." />
+        <meta itemprop="eventStatus" content="available" />
+
+        <div class="class-block__grid l-grid">
+            <div class="class-block__cell class-block__cell--date l-grid__cell l-grid__cell--50-at-500 l-grid__cell--60-at-700 l-grid__cell--36-at-950 l-grid__cell--50-at-1024 l-grid__cell--60-at-1140 l-grid__cell--36-at-1410">
+                <t:if t:test="courseClass.firstSession">
+                    <meta itemprop="startDate" content="${formatDate(firstSessionStartDate,'yyyy-MM-dd')}" />
+
+                    <t:if t:test="showDateEnd">
+                        <meta itemprop="duration" content="${formatUtils.duration(firstSessionStartDate, courseClass.endDate)}" />
+                        <meta itemprop="endDate" content="${formatDate(courseClass.endDate,'yyyy-MM-dd')}" />
+                        <p:else>
+                            <meta itemprop="duration" content="${formatUtils.duration(firstSessionStartDate, firstSessionEndDate)}" />
+                            <meta itemprop="endDate" content="${formatDate(firstSessionEndDate,'yyyy-MM-dd')}" />
+                        </p:else>
+                    </t:if>
+                    <a class="class-block__date timeline date-time session-date" timezone="10"  href="https://${request.serverName}/Timeline/sessions?ids=${courseClass.id}" rel="session">
+
+                        <t:output format="literal:EEE d MMM yyyy" value="firstSessionStartDate"/>
+
+                        <t:if t:test="showDateEnd">
+                            -  <t:output format="literal:EEE d MMM yyyy" value="courseClass.endDate"/>
+                        </t:if>
+                    </a>
+                    <a timezone="10" href="https://${request.serverName}/Timeline/sessions?ids=${courseClass.id}" class="class-block__sessions class-block__link timeline session-item" rel="session">${classSessions}</a>
+
+                    <p:else>
+                        <t:if t:test="selfPacedClass">
+                            <meta itemprop="startDate" content="${formatDate(firstSessionStartDate,'yyyy-MM-dd')}" />
+                            <meta itemprop="endDate" content="${formatDate(courseClass.endDate,'yyyy-MM-dd')}" />
+                            <span class="class-block__date">Self paced</span>
+                            <span class="class-block__sessions class-block__link">${expectedHours}, ${maximumDaysToComplete}</span>
+                        </t:if>
+                    </p:else>
+                </t:if>
+                <div class="class-block__detail class-block__detail--duplicate-location">
+                    <svg class="class-block__icon u-print-display-none" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <use xlink:href="#svg-map-marker-circle" />
+                    </svg>
+                    <div class="class-block__label">
+                        <t:if test="courseClass.hasRoom">
+                            <span t:type="ui/roomLocation" room="courseClass.room" withRoomName="false" disabledLink="notExistsOnMap" isList="isList" />
+							<span itemprop="location" itemscope="itemscope" itemtype="http://schema.org/Place">
+								<meta itemprop="name" content="${courseClass.room.site.name}"/>
+								<meta itemprop="mainEntityOfPage" content="https://${request.serverName}/site/${courseClass.room.site.angelId}"/>
+								<meta itemprop="telephone" content="02 8262 6400"/>
+						        <span itemprop="address" itemscope="itemscope" itemtype="http://schema.org/PostalAddress">
+									<meta itemprop="streetAddress" content="${courseClass.room.site.street}"/>
+									<meta itemprop="addressLocality" content="${courseClass.room.site.suburb}"/>
+									<meta itemprop="addressRegion" content="${courseClass.room.site.state}"/>
+									<meta itemprop="postalCode" content="${courseClass.room.site.postcode}"/>
+									<meta itemprop="addressCountry" content="Australia"/>
+						        </span>
+							</span>
+                            <p:else>
+                                <span itemprop="location" itemscope="itemscope" itemtype="http://schema.org/Place">
+                                    <span content="Sydney Campus" itemprop="name">
+                                        <a class="class-block__link class-block__link--underline tooltip" href="/site/200">Sydney Campus, Sydney NSW</a>
+                                    </span>
+									<meta itemprop="mainEntityOfPage" content="https://${request.serverName}/site/200"/>
+									<meta itemprop="telephone" content="02 8262 6400"/>
+							        <span itemprop="address" itemscope="itemscope" itemtype="http://schema.org/PostalAddress">
+										<meta itemprop="streetAddress" content="55 Elizabeth Street"/>
+										<meta itemprop="addressLocality" content="Sydney"/>
+										<meta itemprop="addressRegion" content="NSW"/>
+										<meta itemprop="postalCode" content="2000"/>
+										<meta itemprop="addressCountry" content="Australia"/>
+							        </span>
+                                </span>
+                            </p:else>
+                        </t:if>
+                    </div>
+                </div>
+            </div>
+            <div class="class-block__cell l-grid__cell l-grid__cell--50-at-500 l-grid__cell--40-at-700 l-grid__cell--64-at-950 l-grid__cell--50-at-1024 l-grid__cell--40-at-1140 l-grid__cell--64-at-1410">
+                <div class="class-block__info">
+                    <div class="class-block__detail class-block__detail--location">
+                        <svg class="class-block__icon u-print-display-none" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+                            <use xlink:href="#svg-map-marker-circle" />
+                        </svg>
+                        <div class="class-block__label">
+                            <t:if test="courseClass.hasRoom">
+                                <span t:type="ui/roomLocation" room="courseClass.room" withRoomName="false" disabledLink="notExistsOnMap" isList="isList" />
+                                <p:else>
+                                <span itemprop="location" itemscope="itemscope" itemtype="http://schema.org/Place">
+                                    <span content="Sydney Campus" itemprop="name">
+                                        <a class="class-block__link class-block__link--underline tooltip" href="/site/200">Sydney Campus, Sydney NSW</a>
+                                    </span>
+									<meta itemprop="mainEntityOfPage" content="https://${request.serverName}/site/200"/>
+									<meta itemprop="telephone" content="02 8262 6400"/>
+							        <span itemprop="address" itemscope="itemscope" itemtype="http://schema.org/PostalAddress">
+										<meta itemprop="streetAddress" content="55 Elizabeth Street"/>
+										<meta itemprop="addressLocality" content="Sydney"/>
+										<meta itemprop="addressRegion" content="NSW"/>
+										<meta itemprop="postalCode" content="2000"/>
+										<meta itemprop="addressCountry" content="Australia"/>
+							        </span>
+                                </span>
+                                </p:else>
+                            </t:if>
+                        </div>
+                    </div>
+                    <t:if test="hasTutorRoles">
+                        <t:if test="visibleTutorRoles">
+                            <div class="class-block__detail">
+                                <svg class="class-block__icon u-print-display-none" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                    <use xlink:href="#svg-classroom" />
+                                </svg>
+                                <div class="class-block__label">
+                                    <t:loop source="visibleTutorRoles" value="tutorRole" index="index">
+                                         <span itemprop="performer" itemscope="itemscope" itemtype="http://schema.org/Person">
+                                            <meta content="https://${request.serverName}/tutor/${tutorRole.tutor.angelId}" itemprop="mainEntityOfPage" />
+
+                                            <a class="class-block__link class-block__link--underline" href="/tutor/${tutorRole.tutor.angelId}" title="View tutor profile">
+                                                <span itemprop="name">${tutorName}</span>
+                                            </a>
+                                            <t:if test="lastIndex" negate="true">
+                                                ,
+                                            </t:if>
+                                         </span>
+                                    </t:loop>
+                                </div>
+                            </div>
+                        </t:if>
+                    </t:if>
+                    <t:if t:test="courseClass.firstSession">
+                        <div class="class-block__detail class-block__detail--time">
+                            <svg class="class-block__icon u-print-display-none" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <use xlink:href="#svg-clock-blackboard" />
+                            </svg>
+                            <div class="class-block__label">
+                                <a timezone="10" href="https://${request.serverName}/Timeline/sessions?ids=${courseClass.id}" class="class-block__link timeline date-time session-time" rel="session">
+                                    <t:output format="timeFormat" value="firstSessionStartDate"/>
+                                    -
+                                    <t:output format="timeFormatWithTimeZone" value="firstSessionEndDate"/>
+                                    <t:if t:test="hasManySessions"> (first session)</t:if>
+                                </a>
+                            </div>
+                        </div>
+                    </t:if>
+                    <t:if test="allowByAplication" negate="true">
+                        <div class="class-block__detail class-block__detail--price" itemtype="http://schema.org/Offer" itemscope="itemscope" itemprop="offers">
+                            <svg class="class-block__icon u-print-display-none" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <use xlink:href="#svg-circle-w-dollar" />
+                            </svg>
+                            <div class="class-block__label">
+                                <span t:type="ui/CourseClassPrice" courseClass="courseClass" feeOverride="feeOverride"/>
+                            </div>
+                        </div>
+                    </t:if>
+                </div>
+            </div>
+        </div>
+        <div class="class-block__enrol js-class-block-enrol reactjs-component"
+            data-cid="enrol-button"
+            data-prop-id="${courseClass.id}"
+            data-prop-name="${courseClass.course.name}"
+            data-prop-is-canceled="${courseClass.cancelled}"
+            data-prop-is-finished="${finishedClass}"
+            data-prop-has-available-enrolment-places="${hasAvailableEnrolmentPlaces}"
+            data-prop-payment-gateway-enabled="${paymentGatewayEnabled}"
+            data-prop-allow-by-application="${allowByAplication}"
+            data-prop-free-places="${courseClass.availableEnrolmentPlaces}"
+            data-prop-unique-identifier="${courseClass.uniqueIdentifier}">
+        </div>
+
+        <t:if test="courseClass.detail">
+            <div class="class-block__note info-note" itemprop="description">
+               <span class="info-note__title">Please note:</span> <t:outputraw value="courseClassDetail"/>
+            </div>
+        </t:if>
+
+        <t:if test="${courseClass.cancelled}" negate="true">
+            <t:if test="courseClass.hasAnyTimelineableSessions">
+                <div class="sessions_for_class hidden classSessions" id="sessions_for_class_${courseClass.id}">
+                    <span t:type="ui/TimetableEvents" displayedObjects="sortedTimelineableSessions" cssTableClass="cssTableClass" cssEvenRowClass="cssEvenRowClass" cssOddRowClass="cssOddRowClass"/>
+                </div>
+            </t:if>
+        </t:if>
+    </div>
+</t:container>

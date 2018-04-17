@@ -1,0 +1,8 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+  <t:if test="image">
+  	<div class="course-description__img">
+	    <img itemprop="image" src="${path}" alt="${alt}"/>
+	    <meta property="og:image" content="${path}" />
+	</div>
+  </t:if>
+</t:container>

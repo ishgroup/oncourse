@@ -1,0 +1,275 @@
+<section class="site-wrapper" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" itemscope="itemscope" itemtype="http://schema.org/WebPage">
+		
+	<div class="l-container l-container--no-pad">
+		<header class="masthead masthead--transparent js-masthead u-print-display-none" id="header" itemscope="itemscope" itemtype="http://schema.org/WPHeader">
+			<div t:type="ui/bodyheader" />
+		</header> <!-- //masthead -->
+
+		<section class="feature-banner banner js-feature-banner u-print-display-none">
+			<div class="l-container feature-banner__inner">
+				<h1 class="banner__title feature-banner__title"><strong>New</strong> Short Courses &amp; Training in Sydney</h1>
+				<h2 class="banner__sub-title feature-banner__sub-title">created for you by the University of Newcastle</h2>
+			</div>
+		</section> <!-- //feature-banner -->
+
+		<section class="intro-block">
+			<aside class="key-messages key-messages--default intro-block__feature">
+				<div class="key-messages__carousel key-messages-carousel js-key-message-carousel owl-carousel">
+					<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:right" />
+				</div>
+				<div class="key-messages__pagination js-key-messages-pagination"> <!-- injected by owl.carousel.min.js --> </div>
+			</aside>
+			<div class="intro-block__text-block">
+				<p class="intro-block__lead type-style-02">For over <strong>50 years</strong>, we've been opening doors to people looking for new opportunities for learning and providing seamless access to tertiary education.</p>
+				<p>From state of the art facilities in Sydney, we open even more opportunities by offering <a href="/courses">short courses and training</a> to the general public. Whether you're aiming to learn a new skill, gain insight, progress your professional goals, or seek a qualification through our flexible entry courses and degrees, the University of Newcastle makes it easy.</p>
+				<!--<a class="o-text-link" href="/about">
+					Continue Reading
+					<svg class="intro-block__link o-text-link__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+						<use xlink:href="#svg-angle" />
+					</svg></a>-->
+			</div>
+		</section> <!-- //intro-block -->
+
+	</div>
+
+	<section class="find-course">
+		<h2 class="block-heading u-text-align-center">Find a <strong>Course</strong></h2>
+
+		<div class="find-course__filter course-filter" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
+
+			<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:content" />
+
+			<div class="find-course__buttons l-container">
+				<ul class="course-filter__actions filter-actions">
+					<li class="filter-actions__item">
+						<button class="feature-button course-filter__feature-button js-courses-tab-trigger" data-tab="new-courses">
+							<span class="u-display-flex u-flex-align-items-center">
+								<svg class="feature-button__icon feature-button__icon--new-badge" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+									<use xlink:href="#svg-new-badge" />
+								</svg>
+								<span class="feature-button__label">New courses</span>
+								<span class="feature-button__arrow-box">
+									<svg class="feature-button__arrow-icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+										<use xlink:href="#svg-angle" />
+									</svg>
+								</span>
+							</span>
+						</button>
+					</li>
+
+					<li class ="filter-actions__item">
+						<button class="feature-button course-filter__feature-button js-courses-tab-trigger" data-tab="popular-courses">
+							<span class="u-display-flex u-flex-align-items-center">
+								<svg class="feature-button__icon feature-button__icon--heart" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+									<use xlink:href="#svg-heart" />
+								</svg>
+								<span class="feature-button__label">Popular courses</span>
+								<span class="feature-button__arrow-box">
+									<svg class="feature-button__arrow-icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+										<use xlink:href="#svg-angle" />
+									</svg>
+								</span>
+							</span>
+						</button>
+					</li>
+
+					<li class="filter-actions__item">
+						<button class="feature-button course-filter__feature-button js-courses-tab-trigger" data-tab="upcoming-courses">
+							<span class="u-display-flex u-flex-align-items-center">
+								<svg class="feature-button__icon feature-button__icon--calendar" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+									<use xlink:href="#svg-calendar" />
+								</svg>
+								<span class="feature-button__label">Upcoming courses</span>
+								<span class="feature-button__arrow-box">
+									<svg class="feature-button__arrow-icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+										<use xlink:href="#svg-angle" />
+									</svg>
+								</span>
+							</span>
+						</button>
+					</li>
+				</ul>
+			</div>
+
+		</div>
+
+	</section> <!-- //find-course -->
+
+	<div class="l-container l-container--no-pad">
+
+		<section class="news-block">
+
+			<div class="news-block__heading-container">
+				<div class="l-container">
+					<h2 class="block-heading block-heading--inverse u-text-align-center">News <strong>&amp;</strong> Events</h2>
+				</div>
+			</div>
+
+			<div class="news-block__nav news-carousel-nav js-news-carousel-nav">
+				<button class="news-carousel-nav__item news-carousel-nav__item--prev js-news-carousel-prev">
+					<svg class="news-carousel-nav__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+						<use xlink:href="#svg-arrow" />
+					</svg>
+				</button>
+
+				<button class="news-carousel-nav__item news-carousel-nav__item--next js-news-carousel-next">
+					<svg class="news-carousel-nav__arrow news-carousel-nav__arrow--right" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+						<use xlink:href="#svg-arrow" />
+					</svg>
+				</button>
+			</div> <!-- //news-block__nav -->
+
+			<div class="news-block__carousel news-carousel js-news-carousel owl-carousel">
+				<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:left" />
+			</div> <!-- //news-block__carousel -->
+
+			<div class="news-block__mailing-list mailing-list">
+				<div class="l-container l-container--lrg">
+					<div class="mailing-list__header">
+						<div class="news-block__twitter u-print-display-none">
+							<div class="twitter-feed twitter-feed--inverse">
+								<h3 class="twitter-feed__title">
+									Latest from Twitter
+									<svg class="twitter-feed__logo" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+										<use xlink:href="#svg-twitter" />
+									</svg>
+								</h3>
+								<div class="twitter-feed__timeline owl-carousel twitter-timeline js-twitter-feed" id="twitterFeed"></div>
+							</div>
+						</div> <!-- //news-block-twitter -->
+
+						<div class="mailing-list__title">
+							<h2 class="mailing-list__intro">Stay up to date with all the latest from the University of Newcastle. Join our mailing list today.</h2>
+							<svg class="mailing-list__svg" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+								<use xlink:href="#svg-open-envelope-w-line" />
+							</svg>
+						</div>
+					</div> 
+
+					<form action="https://newcastle.us14.list-manage.com/subscribe/post" class="mailing-list-form" method="POST">
+						<input type="hidden" name="u" value="f263555a4a2cddcab1c0ddbe1" />
+						<input type="hidden" name="id" value="57f5529cce" />
+						<div class="l-grid">
+							<fieldset class="mailing-list-form__fieldset l-grid__cell l-grid__cell--56-at-1024 l-grid__cell--50-at-1480">
+								<legend class="mailing-list-form__legend">What should we call you?</legend>
+								<div class="l-grid">
+									<div class="l-grid__cell l-grid__cell--50-at-768">
+										<label class="u-visually-hidden" for="MERGE1">First name</label>
+										<input class="o-text-input" name="MERGE1" id="MERGE1" type="text" placeholder="First name" />
+									</div>
+									<div class="l-grid__cell l-grid__cell--50-at-768">
+										<label class="u-visually-hidden" for="MERGE2">Last name</label>
+										<input class="o-text-input" name="MERGE2" id="MERGE2" type="text" placeholder="Last name" />
+									</div>
+								</div>
+							</fieldset>
+							<fieldset class="mailing-list-form__fieldset l-grid__cell l-grid__cell--44-at-1024 l-grid__cell--50-at-1480">
+								<legend class="mailing-list-form__legend">How should we contact you?</legend>
+								<div class="l-grid">
+									<div class="l-grid__cell l-grid__cell--78-at-768 l-grid__cell--63-at-1024 l-grid__cell--71-at-1480">
+										<label class="u-visually-hidden" for="MERGE0">Email address</label>
+										<input class="o-text-input js-footer-email-input" autocapitalize="off" autocorrect="off" name="MERGE0" id="MERGE0" type="text" placeholder="Email address" />
+									</div>
+									<div class="l-grid__cell l-grid__cell--22-at-768 mailing-list-form__submit">
+										<button class="btn btn--branding btn--arrow mailing-list-form__btn" type="submit">
+											<div class="btn__inner">
+												<span class="btn__text">Sign up</span>
+												<svg class="btn__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+													<use xlink:href="#svg-angle" />
+												</svg>
+											</div>
+										</button>
+									</div>
+								</div>
+							</fieldset>
+						</div>
+					</form>
+				</div>
+			</div>
+		</section> <!-- //news-block -->
+
+		<section class="testimonials testimonials--feature js-testimonials-carousel owl-carousel">
+			<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:footer" />
+		</section> <!-- //testimonials -->
+
+		<section class="partner-block">
+			<div class="l-container">
+				<div class="partner-block__grid l-grid">
+					<div class="l-grid__cell l-grid__cell--20-at-1480">
+						<h2 class="partner-block__title section-title">We deliver for</h2>
+					</div>
+					<div class="l-grid__cell l-grid__cell--80-at-1480">
+						<div class="partners-block__logos partners-logos partners-logos--static js-partners-carousel-static owl-carousel">
+							<div class="partners-logos__item">
+								<div class="partner-logos__image-wrapper">
+									<img src="/s/img/home/partners/allianz.png" alt="Allianz" class="partners-logos__img" />
+								</div>
+							</div>
+							<div class="partners-logos__item">
+								<div class="partner-logos__image-wrapper">
+									<img src="/s/img/home/partners/ausgrid.png" alt="Ausgrid" class="partners-logos__img" />
+								</div>
+							</div>
+							<!--<div class="partners-logos__item">
+								<div class="partner-logos__image-wrapper">
+									<img src="/s/img/home/partners/gio.png" alt="GIO" class="partners-logos__img" />
+								</div>
+							</div>-->
+							<div class="partners-logos__item">
+								<div class="partner-logos__image-wrapper">
+									<img src="/s/img/home/partners/hcf.png" alt="HCF" class="partners-logos__img" />
+								</div>
+							</div>
+							<div class="partners-logos__item">
+								<div class="partner-logos__image-wrapper">
+									<img src="/s/img/home/partners/lendlease.png" alt="Lendlease" class="partners-logos__img" />
+								</div>
+							</div>
+							<!--<div class="partners-logos__item">
+								<div class="partner-logos__image-wrapper">
+									<img src="/s/img/home/partners/qbe.png" alt="QBE" class="partners-logos__img" />
+								</div>
+							</div>-->
+							<div class="partners-logos__item">
+								<div class="partner-logos__image-wrapper">
+									<img src="/s/img/home/partners/nsw-government.png" alt="NSW Government" class="partners-logos__img" />
+								</div>
+							</div>
+						</div> <!-- //partners-logos -->
+					</div>
+				</div>
+				<div class="partner-block__action partnership-action">
+					<svg class="partnership-action__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+						<use xlink:href="#svg-question-mark-circle" />
+					</svg>
+					<div class="partnership-action__text">
+						<p>Interested in customised training?</p>
+						<a class="partnership-action__link o-text-link" href="/customised-training">
+							Find out more here
+							<svg class="o-text-link__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+								<use xlink:href="#svg-angle" />
+							</svg>
+						</a>
+					</div>
+				</div>
+			</div>
+		</section> <!-- //partner-block -->
+	</div>
+
+	<!-- Removed 22 Dec 2017 by JR to prevent additional h1 tag from rendering on page -->
+	<!--<article class="content" id="content">
+		<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:content" />
+		<t:body />
+	</article>-->
+
+	<div t:type="ui/bodyfooter" />
+		
+	<div id="overlay" style="display: none; height: 500px" />
+	<div id="timeline-wrap" style="visibility: hidden;">
+		<div id="timeline" />
+	</div>
+
+
+
+	<div data-cid="modal" class="reactjs-component"></div>
+</section>

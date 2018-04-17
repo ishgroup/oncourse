@@ -1,0 +1,80 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+
+<t:form t:id="search2" class="site-search js-site-search advanced-search-form" method="get" name="search" secure="request.isSecure()" clientValidation="literal:NONE">
+	<fieldset class="site-search__fieldset">
+		<legend class="u-visually-hidden">Site Search</legend>
+		<div class="l-container">
+			<div class="l-grid">
+				<div class="l-grid__cell l-grid__cell--50-at-768">
+					<label class="site-search__label" for="adv_keyword">I'm looking for</label>
+					<div class="site-search__element">
+						<input class="o-text-input" placeholder="Enter search term(s)..." t:type="TextField" clientId="adv_keyword" t:value="advKeyword" default="keyword" name="s" />
+					</div>
+				</div>
+				<div class="l-grid__cell l-grid__cell--50-at-768">
+					 <t:loop source="tagGroups" value="tagGroup">
+				        <label class="site-search__label" for="tagGroup">In ${tagGroup}</label>
+				        <div class="site-search__element">
+				        	<div class="o-select">
+								<t:select class="o-select__element" id="tagGroup" name="subject" model="tagGroupModel" blankLabel="all" value="selectedTagValue" />
+							</div>
+				    	</div>
+				    </t:loop>
+				</div>
+				<div class="l-grid__cell l-grid__cell--50-at-1024">
+					<div class="l-grid l-grid--sml-gutter l-grid--std-gutter-at-768">
+						<div class="l-grid__cell l-grid__cell--50">
+							<label class="site-search__label" for="suburb-autocomplete">Closest to</label>
+							<div class="site-search__element">
+								<input class="o-text-input suburb-autocomplete" t:type="TextField" name="near" t:value="searchNear" clientId="suburb-autocomplete" default="postcode or suburb" size="18" autocomplete="off" placeholder="Any location" />
+							</div>	
+						</div>
+						<div class="l-grid__cell l-grid__cell--50">
+							<label class="site-search__label" for="adv_price">Costing up to</label>
+							<div class="site-search__element">
+								<input class="o-text-input" t:type="TextField" clientId="adv_price" t:value="searchPrice" name="price" placeholder="Any cost" size="8" />
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="l-grid__cell l-grid__cell--50-at-1024">
+					<fieldset class="site-search__fieldset">
+						<legend class="site-search__legend site-search__label">Schedule</legend>
+						<div class="site-search__checkbox-list">
+							<ul class="l-grid l-grid--sml-gutter l-grid--std-gutter-at-768">
+								<li class="site-search__checkbox-group l-grid__cell l-grid__cell--50 l-grid__cell--25-at-768">
+									<input t:type="Checkbox" t:value="daytime" class="site-search__checkbox u-visually-hidden" />
+									<label class="site-search__checkbox-label" for="checkbox">Day time</label>
+								</li>
+								<li class="site-search__checkbox-group l-grid__cell l-grid__cell--50 l-grid__cell--25-at-768">
+									<input t:type="Checkbox" t:value="evening" class="site-search__checkbox u-visually-hidden" />
+									<label class="site-search__checkbox-label" for="checkbox_0">Evenings</label>
+								</li>
+								<li class="site-search__checkbox-group l-grid__cell l-grid__cell--50 l-grid__cell--25-at-768">
+									<input t:type="Checkbox" t:value="weekday" clientId="weekday-parent" class="site-search__checkbox u-visually-hidden" />
+									<label class="site-search__checkbox-label" for="weekday-parent">Weekdays</label>
+								</li>
+								<li class="site-search__checkbox-group l-grid__cell l-grid__cell--50 l-grid__cell--25-at-768">
+									<input t:type="Checkbox" t:value="weekend" name="day" clientId="weekend-parent" class="site-search__checkbox u-visually-hidden" />
+									<label class="site-search__checkbox-label" for="weekend-parent">Weekends</label>
+								</li>
+							</ul>
+						</div>
+					</fieldset>
+				</div>	
+			</div>
+			<div class="site-search__actions">
+				<div class="l-grid l-grid--sml-gutter">
+					<div class="l-grid__cell l-grid__cell--50 l-grid__cell--auto-at-768">
+						<button class="site-search__btn btn" type="reset" onclick="clearAdvancedSearch();" ><span class="btn__text">Clear</span></button>
+					</div>
+					<div class="l-grid__cell l-grid__cell--50 l-grid__cell--auto-at-768">
+						<button class="site-search__btn btn btn--branding-bright" id="searcher" type="submit"><span class="btn__text">Search</span></button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</fieldset>
+</t:form>
+
+</t:container>

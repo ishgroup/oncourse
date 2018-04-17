@@ -1,0 +1,42 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+	<script type="text/javascript">
+		var ciVersion = '${ciVersion}';
+	</script>
+
+	<t:any element="meta" name="generator" content="prop:metaGeneratorContent" />
+
+   	<link rel="canonical" href="https://${request.serverName}/" />
+   	<link rel="alternate" href="https://${request.serverName}/" hreflang="x-default" />
+	<meta property="og:url" content="https://${request.serverName}" />
+
+	<meta name="google-site-verification" content="9czehQyTtQDHDCMJ2LOALt65B-lXWFXUG5ATRmazgaA" />
+	<meta name="msvalidate.01" content="C43B7ACA5CA59854D564F3B173FBC3D3" />
+
+	<meta property="og:type" content="website" />
+	<meta property="og:locale" content="en_AU" />
+	<meta property="og:image" content="https://${request.serverName}/s/img/course/_default.jpg" />
+	<meta property="og:image:alt" content="University of Newcastle Sydney - Courses &amp; Training in Sydney" />
+	<meta property="og:image:width" content="1480" />
+	<meta property="og:image:height" content="700" />
+	<meta name="twitter:card" content="summary" />
+
+	<meta name="robots" content="noodp,noydir" />
+
+	<div t:type="ui/courseClassMetaInfo"/>
+
+	<link href="/s/img/favicon.ico" rel="icon" type="image/vnd.microsoft.icon" />
+	<link href="/s/img/favicon.ico" rel="shortcut icon" type="images/x-icon" />
+
+	<span t:type="ui/title" pageName="pageName" webNode="webNode"/>
+
+	<meta name="author" content="" />
+	<!--[if lt IE 9]><script src="/s/js/oncourse/vendor/html5shiv-printshiv.min.js"></script><![endif]-->
+	<link href="/s/stylesheets/css/site.css?v=${ciVersion}" media="screen, print" rel="stylesheet" />
+
+	<script type="text/javascript" src="/s/js/all.js?v=${ciVersion}"></script>
+
+</t:container>

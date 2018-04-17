@@ -1,0 +1,463 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+<div class="masthead__inner">
+	<a class="masthead__logo site-logo" href="/">
+		<svg class="site-logo__svg" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+			<title>University of Newcastle</title>
+			<use xlink:href="#svg-logo" />
+		</svg>
+	</a>
+	
+	<div class="masthead__row">
+
+		<ul class="masthead__social social-media social-media--sml u-display-none u-display-flex-at-768">
+			<li class="social-media__item  social-media__item--facebook">
+				<a class="social-media__link" target="_blank" href="https://www.facebook.com/uonsydney" rel="me">
+					<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+						<use xlink:href="#svg-facebook-sml" />
+					</svg>
+				</a>
+			</li>
+			<li class="social-media__item  social-media__item--twitter">
+				<a class="social-media__link" target="_blank" href="https://twitter.com/uonsydney" rel="me">
+					<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+						<use xlink:href="#svg-twitter-sml" />
+					</svg>
+				</a>
+			</li>
+			<li class="social-media__item social-media__item--google-plus">
+				<a class="social-media__link" target="_blank" href="https://plus.google.com/+TheUniversityofNewcastleSydney" rel="me">
+					<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+						<use xlink:href="#svg-google-plus-sml" />
+					</svg>
+				</a>
+			</li>
+			<li class="social-media__item social-media__item--instagram social-media__item--lrg">
+				<a class="social-media__link" target="_blank" href="https://www.instagram.com/uonsydney/" rel="me">
+					<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+						<use xlink:href="#svg-instagram-sml" />
+					</svg>
+				</a>
+			</li>
+			<li class="social-media__item social-media__item--youtube">
+				<a class="social-media__link" target="_blank" href="https://www.youtube.com/channel/UC84Ld00F-xpbYk41MwkCBvA" rel="me">
+					<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+						<use xlink:href="#svg-youtube-sml" />
+					</svg>
+				</a>
+			</li>
+			<li class="social-media__item social-media__item--linkedin">
+				<a class="social-media__link" target="_blank" href="https://www.linkedin.com/company/uonsydney/" rel="me">
+					<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+						<use xlink:href="#svg-linkedin-sml" />
+					</svg>
+				</a>
+			</li>
+		</ul> <!-- //social-media -->
+
+		<a class="masthead__link masthead-link u-display-none u-display-flex-at-768" href="tel:+61282626400">
+			<svg class="masthead-link__icon masthead-link__icon--phone" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+				<use xlink:href="#svg-phone" />
+			</svg>
+			02 8262 6400
+		</a>
+
+		<a class="masthead__link masthead-link u-display-none u-display-flex-at-768" target="_blank" rel="nofollow" href="https://www.skillsoncourse.com.au/portal/login">
+			<svg class="masthead-link__icon masthead-link__icon--padlock" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+				<use xlink:href="#svg-padlock" />
+			</svg>
+			Account Login
+		</a>
+
+		<button class="masthead__search-toggle search-trigger action-toggle js-search-trigger u-display-none-at-768">
+			<svg class="action-toggle__icon search-trigger__icon" aria-label="Search" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+				<use xlink:href="#svg-magnifying-glass" />
+			</svg>
+		</button> <!-- //masthead__search-toggle -->
+		
+		<span t:type="ui/ShortList" />
+
+		<button class="masthead__menu-toggle menu-toggle action-toggle js-primary-menu-toggle">
+			<span class="u-visually-hidden">Menu</span>
+			<span class="menu-toggle__bar menu-toggle__bar--top"></span>
+			<span class="menu-toggle__bar menu-toggle__bar--middle"></span>
+			<span class="menu-toggle__bar menu-toggle__bar--bottom"></span>
+		</button>
+	</div> <!-- //masthead__row -->
+
+	<div class="masthead__row masthead__row--nav js-masthead-navigation">
+		<nav class="masthead__navigation primary-menu" role="navigation" aria-labelledby="primary-menu-title">
+			<h2 class="u-visually-hidden" id="primary-menu-title">Courses</h2>
+			<ul class="primary-menu__links" role="navigation" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
+				<li class="primary-menu__item primary-menu__item--has-mega-menu js-primary-menu-item-parent">
+					<a class="primary-menu__link" href="/courses" itemprop="url"><span itemprop="name">Courses</span></a>
+					<button class="primary-menu__toggle js-primary-sub-toggle">
+						<span class="u-visually-hidden">More navigation</span>
+					</button>
+					<div class="primary-menu__dropdown mega-menu js-mega-menu">
+						<div class="l-container">
+							<div class="l-grid">
+								<div class="l-grid__cell l-grid__cell--75-at-1024 mega-menu__cell mega-menu__cell--lrg">
+									<ul class="mega-menu__menu mega-menu__menu--primary">
+										<li class="mega-menu__item mega-menu__item--feature">
+											<a class="mega-menu__link" href="/courses/arts-humanities" itemprop="url">
+												<img alt="Arts &amp; Humanities Courses" class="mega-menu__icon" src="/s/img/icons/compass-bright.svg" />
+												<span class="mega-menu__label" itemprop="name">Arts &amp; Humanities Courses</span>
+											</a>
+										</li>
+										<li class="mega-menu__item mega-menu__item--feature">
+											<a class="mega-menu__link" href="/courses/business-management" itemprop="url">
+												<img alt="Business &amp; Management Courses" class="mega-menu__icon" src="/s/img/icons/graph-presentation-bright.svg" />
+												<span class="mega-menu__label" itemprop="name">Business &amp; Management Courses</span>
+											</a>
+										</li>
+										<li class="mega-menu__item mega-menu__item--feature">
+											<a class="mega-menu__link" href="/courses/career-development" itemprop="url">
+												<img alt="Career Development Courses" class="mega-menu__icon" src="/s/img/icons/certificate-bright.svg" />
+												<span class="mega-menu__label" itemprop="name">Career Development Courses</span>
+											</a>
+										</li>
+										<li class="mega-menu__item mega-menu__item--feature">
+											<a class="mega-menu__link" href="/courses/education" itemprop="url">
+												<img alt="Education Courses" class="mega-menu__icon" src="/s/img/icons/book-bright.svg" />
+												<span class="mega-menu__label" itemprop="name">Education Courses</span>
+											</a>
+										</li>
+										<li class="mega-menu__item mega-menu__item--feature">
+											<a class="mega-menu__link" href="/courses/environment" itemprop="url">
+												<img alt="Environment Courses" class="mega-menu__icon" src="/s/img/icons/wind-turbine-bright.svg" />
+												<span class="mega-menu__label" itemprop="name">Environment Courses</span>
+											</a>
+										</li>
+										<li class="mega-menu__item mega-menu__item--feature">
+											<a class="mega-menu__link" href="/courses/gardening-horticulture" itemprop="url">
+												<img alt="Gardening &amp; Horticulture Courses" class="mega-menu__icon" src="/s/img/icons/trees.svg" />
+												<span class="mega-menu__label" itemprop="name">Gardening &amp; Horticulture Courses</span>
+											</a>
+										</li>
+										<li class="mega-menu__item mega-menu__item--feature">
+											<a class="mega-menu__link" href="/courses/health-science" itemprop="url">
+												<img alt="Health Science Courses" class="mega-menu__icon" src="/s/img/icons/microscope-bright.svg" />
+												<span class="mega-menu__label" itemprop="name">Health Science Courses</span>
+											</a>
+										</li>
+										<li class="mega-menu__item mega-menu__item--feature">
+											<a class="mega-menu__link" href="/courses/information-technology" itemprop="url">
+												<img alt="Information Technology Courses" class="mega-menu__icon" src="/s/img/icons/laptop-bright.svg" />
+												<span class="mega-menu__label" itemprop="name">Information Technology Courses</span>
+											</a>
+										</li>
+										<li class="mega-menu__item mega-menu__item--feature">
+											<a class="mega-menu__link" href="/courses/language-culture" itemprop="url">
+												<img alt="Language &amp; Culture Courses" class="mega-menu__icon" src="/s/img/icons/speech-bubble-language-bright.svg" />
+												<span class="mega-menu__label" itemprop="name">Language &amp; Culture Courses</span>
+											</a>
+										</li>
+										<li class="mega-menu__item mega-menu__item--feature">
+											<a class="mega-menu__link" href="/courses/logistics" itemprop="url">
+												<img alt="Logistics Courses" class="mega-menu__icon" src="/s/img/icons/plane-bright.svg" />
+												<span class="mega-menu__label" itemprop="name">Logistics Courses</span>
+											</a>
+										</li>
+										<li class="mega-menu__item mega-menu__item--feature">
+											<a class="mega-menu__link" href="/courses/marketing" itemprop="url">
+												<img alt="Marketing Courses" class="mega-menu__icon" src="/s/img/icons/dartboard-bright.svg" />
+												<span class="mega-menu__label" itemprop="name">Marketing Courses</span>
+											</a>
+										</li>
+										<li class="mega-menu__item mega-menu__item--feature">
+											<a class="mega-menu__link" href="/courses/project-management" itemprop="url">
+												<img alt="Project Management Courses" class="mega-menu__icon" src="/s/img/icons/person-presenting-bright.svg" />
+												<span class="mega-menu__label" itemprop="name">Project Management Courses</span>
+											</a>
+										</li>
+										<li class="mega-menu__item mega-menu__item--feature">
+											<a class="mega-menu__link" href="/courses/psychology" itemprop="url">
+												<img alt="Psychology Courses" class="mega-menu__icon" src="/s/img/icons/person-sitting-bright.svg" />
+												<span class="mega-menu__label" itemprop="name">Psychology Courses</span>
+											</a>
+										</li>
+									</ul>
+								</div>
+								<div class="l-grid__cell l-grid__cell--25-at-1024 mega-menu__cell--sml">
+									<div class="mega-menu__supplement">
+										<h2 class="mega-menu__title">Other course views</h2>
+										<ul class="mega-menu__menu mega-menu__menu--secondary">
+											<li class="mega-menu__item"><a class="mega-menu__link" href="/dates">
+												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+													<use xlink:href="#svg-angle" />
+												</svg>
+												Courses by Date
+											</a></li>
+											<li class="mega-menu__item"><a class="mega-menu__link" href="/subjects">
+												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+													<use xlink:href="#svg-angle" />
+												</svg>
+												Courses by Subject
+											</a></li>
+											<li class="mega-menu__item"><a class="mega-menu__link" href="/courses/featured/new">
+												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+													<use xlink:href="#svg-angle" />
+												</svg>
+												New Courses
+											</a></li>
+											<li class="mega-menu__item"><a class="mega-menu__link" href="/courses/featured/popular">
+												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+													<use xlink:href="#svg-angle" />
+												</svg>
+												Popular Courses
+											</a></li>
+										</ul>
+										<h2 class="mega-menu__title">More course information</h2>
+										<ul class="mega-menu__menu mega-menu__menu--secondary">
+											<li class="mega-menu__item"><a class="mega-menu__link" href="/locations">
+												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+													<use xlink:href="#svg-angle" />
+												</svg>
+												Course Locations
+											</a></li>
+											<li class="mega-menu__item"><a class="mega-menu__link" href="/instructors">
+												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+													<use xlink:href="#svg-angle" />
+												</svg>
+												Instructors
+											</a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</li>
+				<li class="primary-menu__item primary-menu__item--has-mega-menu js-primary-menu-item-parent">
+					<a class="primary-menu__link" href="#">Students</a>
+					<button class="primary-menu__toggle js-primary-sub-toggle">
+						<span class="u-visually-hidden">More navigation</span>
+					</button>
+					<div class="primary-menu__dropdown mega-menu js-mega-menu">
+						<div class="l-container">
+							<div class="l-grid">
+								<div class="l-grid__cell l-grid__cell--75-at-1024 mega-menu__cell mega-menu__cell--lrg">
+									<ul class="mega-menu__menu mega-menu__menu--primary">
+										<li class="mega-menu__item">
+											<a class="mega-menu__link" href="/employer-sponsorship" itemprop="url">
+												<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+													<use xlink:href="#svg-angle" />
+												</svg>
+
+												<span class="mega-menu__label" itemprop="name">Employer Sponsored Education</span>
+											</a>
+										</li>
+										<li class="mega-menu__item">
+											<a class="mega-menu__link" href="/concessions" itemprop="url">
+												<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+													<use xlink:href="#svg-angle" />
+												</svg>
+
+												<span class="mega-menu__label" itemprop="name">Fee Concessions</span>
+											</a>
+										</li>
+										<li class="mega-menu__item">
+											<a class="mega-menu__link" href="/legal" itemprop="url">
+												<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+													<use xlink:href="#svg-angle" />
+												</svg>
+
+												<span class="mega-menu__label" itemprop="name">Terms and Conditions</span>
+											</a>
+										</li>
+									</ul>
+								</div>
+								<div class="l-grid__cell l-grid__cell--25-at-1024 mega-menu__cell--sml">
+									<div class="mega-menu__supplement">
+										<h2 class="mega-menu__title">Have a question? Just ask.</h2>
+										<ul class="mega-menu__menu mega-menu__menu--secondary">
+											<li class="mega-menu__item"><a class="mega-menu__link" href="#" onclick="zE.activate();">
+												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+													<use xlink:href="#svg-angle" />
+												</svg>
+												Send us a message
+											</a></li>
+											<li class="mega-menu__item"><a class="mega-menu__link" href="/contact">
+												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+													<use xlink:href="#svg-angle" />
+												</svg>
+												Contact us
+											</a></li>
+										</ul>
+										<h2 class="mega-menu__title">Study a degree</h2>
+										<ul class="mega-menu__menu mega-menu__menu--secondary">
+											<li class="mega-menu__item"><a class="mega-menu__link" target="_blank" rel="nofollow" href="https://www.newcastle.edu.au/study/undergraduate">
+												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+													<use xlink:href="#svg-angle" />
+												</svg>
+												Undergraduate Study
+											</a></li>
+											<li class="mega-menu__item"><a class="mega-menu__link" target="_blank" rel="nofollow" href="https://www.gradschool.edu.au/">
+												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+													<use xlink:href="#svg-angle" />
+												</svg>
+												Postgraduate Study
+											</a></li>
+											<li class="mega-menu__item"><a class="mega-menu__link" target="_blank" rel="nofollow" href="https://www.newcastle.edu.au/research-and-innovation/graduate-research/phd-and-research-degrees">
+												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+													<use xlink:href="#svg-angle" />
+												</svg>
+												PhD &amp; Research Masters
+											</a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</li>
+				<li class="primary-menu__item primary-menu__item--has-mega-menu js-primary-menu-item-parent">
+					<a class="primary-menu__link" href="#">Employers</a>
+					<button class="primary-menu__toggle js-primary-sub-toggle">
+						<span class="u-visually-hidden">More navigation</span>
+					</button>
+					<div class="primary-menu__dropdown mega-menu js-mega-menu">
+						<div class="l-container">
+							<div class="l-grid">
+								<div class="l-grid__cell l-grid__cell--75-at-1024 mega-menu__cell mega-menu__cell--lrg">
+									<ul class="mega-menu__menu mega-menu__menu--primary">
+										<li class="mega-menu__item">
+											<a class="mega-menu__link" href="/customised-training" itemprop="url">
+												<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+													<use xlink:href="#svg-angle" />
+												</svg>
+
+												<span class="mega-menu__label" itemprop="name">Customised Training</span>
+											</a>
+										</li>
+										<li class="mega-menu__item">
+											<a class="mega-menu__link" href="/invoice" itemprop="url">
+												<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+													<use xlink:href="#svg-angle" />
+												</svg>
+
+												<span class="mega-menu__label" itemprop="name">Invoice Authorisation</span>
+											</a>
+										</li>
+										<li class="mega-menu__item">
+											<a class="mega-menu__link" href="/payment" itemprop="url">
+												<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+													<use xlink:href="#svg-angle" />
+												</svg>
+
+												<span class="mega-menu__label" itemprop="name">Make a Payment</span>
+											</a>
+										</li>
+										<li class="mega-menu__item">
+											<a class="mega-menu__link" href="/legal" itemprop="url">
+												<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+													<use xlink:href="#svg-angle" />
+												</svg>
+
+												<span class="mega-menu__label" itemprop="name">Terms and Conditions</span>
+											</a>
+										</li>
+									</ul>
+								</div>
+								<div class="l-grid__cell l-grid__cell--25-at-1024 mega-menu__cell--sml">
+									<div class="mega-menu__supplement">
+										<h2 class="mega-menu__title">Have a question? Just ask.</h2>
+										<ul class="mega-menu__menu mega-menu__menu--secondary">
+											<li class="mega-menu__item"><a class="mega-menu__link" href="#" onclick="zE.activate();">
+												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+													<use xlink:href="#svg-angle" />
+												</svg>
+												Send us a message
+											</a></li>
+											<li class="mega-menu__item"><a class="mega-menu__link" target="_blank" href="/contact">
+												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+													<use xlink:href="#svg-angle" />
+												</svg>
+												Contact us
+											</a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</li>
+				<li class="primary-menu__item">
+					<a class="primary-menu__link" href="/educators" itemprop="url"><span itemprop="name">Educators</span></a>
+				</li>
+				<li class="primary-menu__item">
+					<a class="primary-menu__link" href="/events" itemprop="url"><span itemprop="name">Events</span></a>
+				</li>
+				<li class="primary-menu__item">
+					<a class="primary-menu__link" href="/articles" itemprop="url"><span itemprop="name">Articles</span></a>
+				</li>
+				<li class="primary-menu__item">
+					<a class="primary-menu__link" href="/contact" itemprop="url"><span itemprop="name">Contact</span></a>
+				</li>					
+			</ul> <!-- // -->
+		</nav>
+
+		<a class="masthead__link masthead-link u-display-none-at-768" href="tel:+61282626400">
+			<svg class="masthead-link__icon masthead-link__icon--phone" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+				<use xlink:href="#svg-phone" />
+			</svg>
+			02 8262 6400
+		</a>
+
+		<a class="masthead__link masthead-link u-display-none-at-768" target="_blank" rel="nofollow" href="https://www.skillsoncourse.com.au/portal/login">
+			<svg class="masthead-link__icon masthead-link__icon--padlock" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+				<use xlink:href="#svg-padlock" />
+			</svg>
+			Account Login
+		</a>
+
+		<ul class="masthead__social social-media social-media--sml u-display-flex u-display-none-at-768">
+			<li class="social-media__item  social-media__item--facebook">
+				<a class="social-media__link" href="#">
+					<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+						<use xlink:href="#svg-facebook-sml" />
+					</svg>
+				</a>
+			</li>
+			<li class="social-media__item  social-media__item--twitter">
+				<a class="social-media__link" href="#">
+					<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+						<use xlink:href="#svg-twitter-sml" />
+					</svg>
+				</a>
+			</li>
+			<li class="social-media__item social-media__item--google-plus">
+				<a class="social-media__link" href="#">
+					<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+						<use xlink:href="#svg-google-plus-sml" />
+					</svg>
+				</a>
+			</li>
+			<li class="social-media__item social-media__item--instagram social-media__item--lrg">
+				<a class="social-media__link" href="#">
+					<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+						<use xlink:href="#svg-instagram-sml" />
+					</svg>
+				</a>
+			</li>
+			<li class="social-media__item social-media__item--youtube">
+				<a class="social-media__link" href="#">
+					<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+						<use xlink:href="#svg-youtube-sml" />
+					</svg>
+				</a>
+			</li>
+		</ul> <!-- //social-media -->
+
+		<button class="masthead__search-toggle search-trigger action-toggle js-search-trigger u-display-none u-display-block-at-768" data-element="search">
+			<span class="action-toggle__label search-trigger__label">Search Courses</span>
+			<svg class="action-toggle__icon search-trigger__icon" aria-label="Search" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+				<use xlink:href="#svg-magnifying-glass" />
+			</svg>
+		</button> <!-- //masthead__search-toggle -->
+
+	</div> <!-- //masthead__row -->
+
+	<span t:type="ui/CourseSearchForm" />
+</div>
+</t:container>

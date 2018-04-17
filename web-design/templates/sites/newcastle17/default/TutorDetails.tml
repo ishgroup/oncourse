@@ -1,0 +1,49 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<t:if test="request.XHR">
+		<html t:type="ui/dialogstructure" title="${tutor.contact.givenName} ${tutor.contact.familyName}" bodyId="literal:DetailsPage"
+			  bodyClass="literal:internal-page tutor-details"
+			  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+			<t:delegate to="block:tutorDetailsBlock"/>
+		</html>
+	</t:if>
+	<t:if test="request.XHR" negate="true">
+		<html t:type="ui/internal/pagestructure" title="${tutor.contact.givenName} ${tutor.contact.familyName}" bodyId="literal:DetailsPage"
+				  bodyClass="literal:internal-page tutor-details">
+			<div itemscope="itemscope" itemtype="http://schema.org/Person">
+				<h1>
+					${tutor.contact.givenName} ${tutor.contact.familyName}
+				</h1>
+				<meta itemprop="name" content="${tutor.contact.givenName} ${tutor.contact.familyName}" /> <!-- jQuery bug fix -->
+				<t:if t:test="${profilePicture}">
+					<div class="faux-avatar js-profile-avatar">
+						<img class="o-profile-avatar" src="${profilePictureUrl}" alt="${tutor.contact.givenName} ${tutor.contact.familyName}" />
+					</div>
+				</t:if>
+				<meta itemprop="jobTitle" content="Instructor" />
+				<t:delegate to="block:tutorDetailsBlock"/>
+			</div>
+		</html>
+	</t:if>
+
+	<t:block t:id="tutorDetailsBlock">
+
+			<t:if t:test="${tutorFound}">
+				<t:if t:test="${hasResume}">
+					<div itemprop="description">
+						<h2>Resume</h2>
+						<t:outputraw value="resume"/>
+					</div>
+					<p:else>
+						<div itemprop="description">
+							<h2>Resume</h2>
+							${tutor.contact.givenName} ${tutor.contact.familyName} is an instructor for NEWCourse Sydney - courses created for you by the University of Newcastle. For over 50 years, we've been opening doors to people looking for new opportunities for learning and providing seamless access to tertiary education. From state of the art facilities in Sydney, we're now opening even more opportunities by offering <a href="/courses">short courses</a> to the general public. Whether you're aiming to learn a new skill, gain insight, progress your professional goals, or seek a qualification through our flexible entry courses and degrees, the University of Newcastle makes it easy.
+						</div>
+					</p:else>
+				</t:if>
+
+				<span t:type="ui/Attachments" entityIdentifier="literal:Contact" entityIdNum="${tutor.contact.id}"/>
+
+			</t:if>
+	</t:block>
+
+</t:container>

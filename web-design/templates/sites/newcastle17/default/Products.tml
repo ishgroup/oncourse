@@ -1,0 +1,17 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<t:if test="XHR">
+		<span t:type="ui/ProductsList" products="products" productsCount="productsCount" itemIndex="itemIndex"/>
+		<p:else>
+			<html t:type="ui/internal/pagestructure" bodyId="literal:ListPage" bodyClass="literal:internal-page">
+				<t:if t:test="hasAnyItems" negate="true">
+					<h2>No products available</h2>
+					<p:else>
+						<h1>Products</h1>
+						<span t:type="ui/ProductsList" products="products" productsCount="productsCount"
+							itemIndex="itemIndex"/>
+					</p:else>
+				</t:if>
+			</html>
+		</p:else>
+	</t:if>
+</t:container>

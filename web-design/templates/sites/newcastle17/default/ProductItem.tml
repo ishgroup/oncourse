@@ -1,0 +1,103 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+    <div itemtype="http://schema.org/Product" itemscope="itemscope" class="vevent courseItem producItem">
+        <t:if t:test="isList"  >
+            <t:delegate to="block:list"/>
+        </t:if>
+        <t:unless test="isList" >
+            <t:delegate to="block:nonlist"/>
+        </t:unless>
+    </div>
+
+    <t:block t:id="list">
+        
+        <div class="course-item">
+            <div class="title-bar">
+                <h3 class="title-bar__heading"><a href="/product/${product.sku}">${product.name}</a></h3>
+                <a class="course-item__top-link o-top-link js-top-link u-display-none u-display-flex-at-700" href="#">
+                    Back to top
+                    <svg class="o-top-link__icon bounce" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <use xlink:href="#svg-angle" />
+                    </svg>
+                </a>
+            </div>
+            <div class="description-item" itemprop="description">
+                <div class="description-item__img u-print-display-none">
+                    <img itemprop="image" src="/s/img/product-thumbnail/${product.sku}.jpg" alt="${product.name}"/>
+                </div>
+                <div class="description-item__text">
+                   <t:outputraw value="${detailText}" />
+                    <a class="o-text-link" href="/product/${product.sku}" itemprop="url">
+                        View product information
+                        <svg class="o-text-link__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+                            <use xlink:href="#svg-angle" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <t:delegate to="block:main"/>
+            <a class="course-item__top-link o-top-link js-top-link u-display-flex u-display-none-at-700" href="#">
+                Back to top
+                <svg class="o-top-link__icon bounce" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <use xlink:href="#svg-angle" />
+                </svg>
+            </a>
+        </div>
+    </t:block>
+
+    <t:block t:id="nonlist">
+        <h1 itemprop="name">${product.name}</h1>
+        <span itemprop="description">
+            <t:outputraw value="${detailText}" />
+        </span>
+        <t:delegate to="block:main"/>
+    </t:block>
+
+    <t:block t:id="main">
+        <div itemtype="http://schema.org/EducationEvent" itemscope="itemscope" class="purchase-details classItem vevent" data-classid="${product.id}">
+
+            <div class="purchase-details__price">
+                <svg class="purchase-details__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <use xlink:href="#svg-circle-w-dollar" />
+                </svg>
+                <div class="purchase-details__label">
+                    <t:if t:test="voucherProductWithoutPrice">
+                        <span class="purchase-details__amount purchase-details__amount--no-amount" itemprop="price">Select the value of your voucher in the checkout</span>
+                    </t:if>
+
+                    <t:unless test="voucherProductWithoutPrice" >
+                        <span class="purchase-details__amount"><t:output value="price" format="${formatMoney(price,'$#,###,###,##0.00')}" />
+                            <t:if test="hasTax()">
+                                <span class="purchase-details__tax">
+                                     inc <abbr title="Goods and Services Tax">GST</abbr>
+                                </span>
+                            </t:if>
+                        </span>
+                    </t:unless>
+
+                    <t:if t:test="courseVoucherProduct">
+                        <div class="label">Valid for</div>
+                        <div>
+                            ${courseVoucherDescription}
+                            <ul class="class-listing">
+                                <t:loop source="redemptionCourses" value="course">
+                                    <li>${course.name}</li>
+                                </t:loop>
+                            </ul>
+                        </div>
+                    </t:if>
+                    <t:remove>We need the code only to show product name in confirmation order dialog.
+                    We use the implementation in the template because we have the same for courseClass item.  </t:remove>
+                </div>
+            </div>
+
+            <div class="purchase-details__buy reactjs-component"
+                data-cid="buy-button"
+                data-prop-can-buy="${canBuy()}"
+                data-prop-payment-gateway-enabled="${paymentGatewayEnabled}"
+                data-prop-id="${product.id}"
+                data-prop-name="${product.name}"
+                data-prop-unique-identifier="${product.sku}"></div>
+        </div>
+    </t:block>
+
+</t:container>

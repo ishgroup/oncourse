@@ -1,0 +1,50 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<div class="locationInfo" itemscope="itemscope" itemtype="http://schema.org/Place">
+		<meta itemprop="name" content="${site.name}" />
+
+		<t:if t:test="hasAddress">
+			<div class="faux-overview js-faux-overview js-faux-overview-alt">
+				<h2 itemprop="address" itemscope="itemscope" itemtype="http://schema.org/PostalAddress">
+					<svg class="overview__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+						<use xlink:href="#svg-map-marker-circle" />
+					</svg>
+					<span>
+						<span itemprop="streetAddress">${site.street} <br /></span>
+						<span itemprop="addressLocality">${site.suburb} </span>
+						<span class="addressRegion" itemprop="addressRegion">${site.state}</span>
+						<t:if t:test="hasPostCode">
+							<span itemprop="postalCode">${site.postcode}</span>
+						</t:if>
+						<meta itemprop="telephone" content="02 8262 6400"/>
+					</span>
+				</h2>
+			</div>
+		</t:if>
+
+		<t:if t:test="hasDrivingDirections">
+			<h2 id="siteDirections">Overview</h2>
+			<t:outputRaw value="drivingDirections" />
+		</t:if>
+		<t:if t:test="site.hasCoordinates">
+			<div class="u-print-display-none">
+				<h2 id="getDirections">Get directions from</h2>
+				<span t:type="ui/GoogleDirections" sites="mapSites" showDirections="true" collapseLocationMap="collapseLocationMap" showLocationMap="true" />
+				<span itemprop="geo" itemscope="itemscope" itemtype="http://schema.org/GeoCoordinates">
+					<meta itemprop="latitude" content="${site.latitude}" />
+					<meta itemprop="longitude" content="${site.longitude}" />
+				</span>
+				<div class="google-map">
+					<div class="google-map__map" id="gmapCanvas"></div>
+				</div>
+			</div>
+		</t:if>
+		<t:if t:test="hasPublicTransportDirections">
+			<h2 id="publicTransport">Public Transport</h2>
+			<t:outputRaw value="publicTransportDirections" />
+		</t:if>
+		<t:if t:test="hasSpecialInstructions">
+			<h2 id="otherInformation">Other Information</h2>
+			<t:outputRaw value="specialInstructions" />
+		</t:if>
+	</div>
+</t:container>

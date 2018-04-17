@@ -1,0 +1,144 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+		<t:if t:test="isList" negate="true">
+			<div class="${tagClasses}" itemscope="itemscope" itemtype="http://schema.org/Product">
+				<div class="copy course-details course-details--has-testimonials">
+					<h1 itemprop="name">${courseItemModel.course.name}</h1>
+					<img alt="${courseItemModel.course.name}" class="faux-banner-image js-banner-image" src="/s/img/course/${courseItemModel.course.code}.jpg" />
+					<span itemprop="description">
+						<t:outputraw value="${courseDetail}" />
+					</span>
+
+					<h2 class="section-title">Available dates for ${courseItemModel.course.name}</h2>
+				</div>
+
+				<t:loop source="courseItemModel.availableClasses" value="courseClass">
+					<span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="linkToLocationsMap" isList="isList" allowByAplication="allowByAplication" feeOverride="feeOverride"/>
+				</t:loop>
+				<t:if test="courseItemModel.otherClasses.empty" negate="true">
+					<p class="other-classes-control clearfix">
+						<a href="javascript:return false;" >Show other courses</a>
+					</p>
+					<div class="other-classes" style="display:none;">
+						<t:loop source="courseItemModel.otherClasses" value="courseClass">
+							<span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="linkToLocationsMap" isList="isList" allowByAplication="allowByAplication" feeOverride="feeOverride"/>
+						</t:loop>
+					</div>
+				</t:if>
+				<t:if test="courseItemModel.fullClasses.empty" negate="true">
+					<!--<p class="full-classes-control clearfix">
+						<a href="javascript:return false;" >Show full courses</a>
+					</p>-->
+					<div class="full-classes">
+						<t:loop source="courseItemModel.fullClasses" value="courseClass">
+							<span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="linkToLocationsMap" isList="isList" allowByAplication="allowByAplication" feeOverride="feeOverride"/>
+						</t:loop>
+					</div>
+				</t:if>
+				<t:if t:test="courseItemModel.course.allowWaitingList">
+					<div class="course-item__waiting waiting-list-alert">
+						<svg class="waiting-list-alert__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+							<use xlink:href="#svg-circle-w-question" />
+						</svg>
+						<span class="waiting-list-alert__text">
+							<t:if t:test="courseItemModel.enrollableClasses.empty" negate="true">
+								<t:if t:test="hasMoreAvailablePlaces">
+									No dates that suit you?
+									<p:else> Courses are full.</p:else>
+								</t:if>
+								<p:else> This course has no current dates scheduled. </p:else>
+							</t:if>
+							<a href="/enrol/waitinglistform/${courseItemModel.course.id}">Join our waitlist</a> and we will notify you when new courses are scheduled.
+						</span>
+					</div>
+				</t:if>
+			</div>
+		<p:else>
+			<div class="course-item ${tagClasses}" itemscope="itemscope" itemtype="http://schema.org/Product">
+				<div class="course-item__title-bar">
+					<h3 class="course-item__name" itemprop="name">
+						<a href="/course/${courseItemModel.course.code}">${courseItemModel.course.name}</a>
+					</h3>
+					<a class="course-item__top-link o-top-link js-top-link u-display-none u-display-flex-at-700" href="#content">
+						Back to top
+						<svg class="o-top-link__icon bounce" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+							<use xlink:href="#svg-angle" />
+						</svg>
+					</a>
+				</div>
+
+				<div class="course-item__description course-description">
+
+					<div class="course-description__img">
+					  	<img itemprop="image" src="/s/img/course-thumbnail/${courseItemModel.course.code}.jpg" alt="${courseItemModel.course.name}"/>
+					    <!--<meta property="og:image" content="/s/img/course-thumbnail/${courseItemModel.course.code}" />-->
+					</div>
+
+					<div class="course-description__text" itemprop="description">
+						<t:outputraw value="${courseDetail}"/>
+						<a class="o-text-link" href="/course/${courseItemModel.course.code}">
+							View course information
+							<svg class="o-text-link__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+								<use xlink:href="#svg-angle" />
+							</svg>
+						</a>
+					</div>
+				</div>
+
+				<t:loop source="courseItemModel.availableClasses" value="courseClass">
+					<span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="linkToLocationsMap" isList="isList" allowByAplication="allowByAplication" feeOverride="feeOverride"/>
+				</t:loop>
+				<t:if test="courseItemModel.otherClasses.empty" negate="true">
+					<p class="other-classes-control clearfix">
+						<a href="javascript:return false;" >Show other courses</a>
+					</p>
+					<div class="other-classes" style="display:none;">
+						<t:loop source="courseItemModel.otherClasses" value="courseClass">
+							<span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="linkToLocationsMap" isList="isList" allowByAplication="allowByAplication" feeOverride="feeOverride"/>
+						</t:loop>
+					</div>
+				</t:if>
+				<t:if test="courseItemModel.fullClasses.empty" negate="true">
+					<!--<p class="full-classes-control clearfix">
+						<a href="javascript:return false;" >Show full courses</a>
+					</p>-->
+					<div class="full-classes">
+						<t:loop source="courseItemModel.fullClasses" value="courseClass">
+							<span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="linkToLocationsMap" isList="isList" allowByAplication="allowByAplication" feeOverride="feeOverride"/>
+						</t:loop>
+					</div>
+				</t:if>
+				<t:if t:test="courseItemModel.course.allowWaitingList">
+					<div class="course-item__waiting waiting-list-alert">
+						<svg class="waiting-list-alert__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+							<use xlink:href="#svg-circle-w-question" />
+						</svg>
+						<span class="waiting-list-alert__text">
+							<t:if t:test="courseItemModel.enrollableClasses.empty" negate="true">
+								<t:if t:test="hasMoreAvailablePlaces">
+									No dates that suit you?
+									<p:else> Courses are full.</p:else>
+								</t:if>
+								<p:else> This course has no current dates scheduled. </p:else>
+							</t:if>
+							<!--<span data-cid="join-button" data-prop-id="${courseItemModel.course.id}"><span>Join our waitlist</span></span> and we will notify you when new courses are scheduled.-->
+							<a href="/enrol/waitinglistform/${courseItemModel.course.id}">Join our waitlist</a> and we will notify you when new courses are scheduled.
+						</span>
+					</div>
+				</t:if>
+				<a class="course-item__top-link o-top-link js-top-link u-display-flex u-display-none-at-700" href="#content">
+				Back to top
+				<svg class="o-top-link__icon bounce" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+					<use xlink:href="#svg-angle" />
+				</svg>
+			</a>
+			</div>
+
+		</p:else>
+		</t:if>
+
+		<t:if t:test="${courseItemModel.showModules}">
+			<div t:type="ui/CourseModules" modules="courseItemModel.course.modules"
+				 qualification="courseItemModel.course.qualification"
+				 course="courseItemModel.course"></div>
+		</t:if>
+</t:container>

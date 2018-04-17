@@ -1,0 +1,10 @@
+<html t:type="ui/internal/pagestructure" title="${site.name}" bodyId="literal:DetailPage"
+      bodyClass="literal:internal-page"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+
+	<t:if test="site">
+		<h1 itemprop="name">${site.name}</h1>
+		<span t:type="ui/SiteDetailsComponent" site="site" collapseLocationMap="false" />
+		<span t:type="ui/Attachments" entityIdentifier="literal:Site" entityIdNum="site.id" />
+	</t:if>
+</html>

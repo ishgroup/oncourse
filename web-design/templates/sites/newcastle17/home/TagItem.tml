@@ -1,0 +1,26 @@
+<li class="sub-level-subjects__item ${tagItemClass}" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<a class="sub-level-subjects__link js-courses-submenu-trigger" href="${tagLink}" itemprop="url">
+		<span class="sub-level-subjects__name" itemprop="name">${tag.name} Courses</span>
+		
+		<svg class="sub-level-subjects__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+			<use xlink:href="#svg-angle" />
+		</svg>
+	</a>
+	<div class="sub-level-subjects js-submenu-body">
+		<div class="l-container">
+			<h3 class="course-filter__heading u-text-align-center">
+				${tag.name} Courses
+				<a href="#" class="course-filter__back js-courses-back-trigger">back</a>
+			</h3>			
+			<ul class="course-filter__second-level sub-level-subjects__list">
+				<div>
+					<ul class="courses-list">
+						<ul class="courses-list-sub">
+			    			<t:body />
+			    		</ul>
+			    	</ul>
+			    </div>
+			</ul>
+		</div>
+	</div>
+</li>

@@ -1,0 +1,145 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+
+	<script type="application/ld+json">
+		{
+			"@context": "http://schema.org",
+			"@type": "CollegeOrUniversity",
+			"name": "University of Newcastle Sydney",
+			"legalName": "The University of Newcastle",
+			"url": "https://${request.serverName}/",
+			"logo": {
+				"@type": "ImageObject",
+				"name": "Logo",
+				"url": "https://${request.serverName}/s/img/schema/logo.png",
+				"width": "1000",
+				"height": "1000"
+			},
+			"image": "https://${request.serverName}/s/img/schema/image.jpg",
+			"description": "The University of Newcastle's Sydney-based programs balance the benefits of studying with a high-ranking, long-established institution with easy access to the conveniences of Sydney's CBD and surrounding areas.",
+			"foundingDate": "1965",
+  			"location": {
+  				"@type": "Place",
+	  			"address": {
+	  				"@type": "PostalAddress",
+	  				"streetAddress": "55 Elizabeth Street",
+	  				"addressLocality": "Sydney",
+	  				"addressRegion": "NSW",
+	  				"postalCode": "2000"
+	  			},
+				"geo": {
+					"@type": "GeoCoordinates",
+					"latitude": "-33.868338",
+					"longitude": "151.210336"
+				},
+				"hasMap": "https://www.google.com.au/maps/place/55+Elizabeth+St,+Sydney+NSW+2000/@-33.868338,151.2081473,17z/data=!4m5!3m4!1s0x6b12ae6aa7c01f09:0x2ce4b903e71a23bd!8m2!3d-33.868338!4d151.210336",
+				"openingHoursSpecification": "Mo, Tu, We, Th, Fr 09:00-17:00"
+  			},
+			"contactPoint": [{
+				"@type": "ContactPoint",
+				"telephone": "+61-2-8262-6400",
+				"contactType": "customer service",
+				"areaServed": {
+					"@type": "City",
+					"name": "Sydney",
+					"@id": "https://en.wikipedia.org/wiki/Sydney"
+				},
+				"availableLanguage": {
+					"@type": "Language",
+					"name": "en-AU"
+				}
+			}],
+			"sameAs": [
+				"https://www.facebook.com/uonsydney",
+				"https://twitter.com/uonsydney",
+				"https://plus.google.com/+TheUniversityofNewcastleSydney",
+				"https://www.instagram.com/uonsydney/",
+				"https://www.youtube.com/channel/UC84Ld00F-xpbYk41MwkCBvA",
+				"https://www.linkedin.com/company/uonsydney/",
+				"https://www.yelp.com.au/biz/the-university-of-newcastle-sydney-4",
+				"https://foursquare.com/v/the-university-of-newcastle-sydney-campus/4d4fab614015b1f71a5e5ecf",
+				"http://www.truelocal.com.au/business/university-of-newcastle-sydney/sydney",
+				"https://en.wikipedia.org/wiki/University_of_Newcastle_(Australia)",
+				"http://www.newcastle.edu.au"
+			]
+		}
+	</script>
+
+	<script type="application/ld+json">
+		{
+			"@context": "http://schema.org",
+			"@type": "WebSite",
+			"name": "University of Newcastle Sydney",
+			"alternateName": "The University of Newcastle",
+			"url": "https://${request.serverName}/",
+			"potentialAction": {
+				"@type": "SearchAction",
+				"target": "https://${request.serverName}/courses?s={search_term_string}",
+				"query-input": "required name=search_term_string"
+			}
+		}
+	</script>
+
+	<t:remove>Title for cms pages</t:remove>
+	<t:if test="webNode">
+		<t:if test="${webNode.name.equals('Home')}">
+			<title>University of Newcastle Sydney - Short Courses &amp; Training Sydney</title>
+			<meta property="og:title" content="University of Newcastle Sydney - Courses &amp; Training in Sydney" />
+			<meta property="og:description" name="description" content="Courses &amp; Training in Sydney at University of Newcastle Sydney. Open to the general public. Enrol online now." />
+			<meta property="twitter:title" content="University of Newcastle Sydney - Courses &amp; Training in Sydney"/>
+			<meta property="twitter:description" content="Courses &amp; Training in Sydney at University of Newcastle Sydney. Open to the general public. Enrol online now." />
+			<p:else>
+				<title>${webNode.name} - University of Newcastle Sydney</title>
+				<meta property="og:title" content="${webNode.name} - University of Newcastle Sydney - Courses &amp; Training Sydney" />
+				<meta property="og:description" name="description" content="${webNode.name} - Courses &amp; Training in Sydney at University of Newcastle Sydney. Open to the general public. Enrol online now." />
+				<meta property="twitter:title" content="${webNode.name} - University of Newcastle Sydney - Courses &amp; Training in Sydney"/>
+				<meta property="twitter:description" content="${webNode.name} - Courses &amp; Training in Sydney at University of Newcastle Sydney. Open to the general public. Enrol online now." />
+			</p:else>
+		</t:if>		
+	</t:if>
+	<meta property="og:site_name" content="University of Newcastle Sydney" />
+	<meta name="twitter:site" content="@uonsydney" />
+	<t:unless test="webNode">
+		<t:delegate to="block:pageName"/>
+	</t:unless>
+
+	<t:block t:id="pageName">
+		<t:remove>Title for pages where pageName is defined in correspondent tapestry template (like /course, /class, /site, /room)</t:remove>
+		<t:if test="pageName">
+			<t:if test="tag">
+				<t:remove>Title for pages with browser tag (like /courses/tag1)</t:remove>
+                <title>${tag.name} Courses - ${pageName} University of Newcastle Sydney</title>
+				<meta property="og:title" content="${tag.name} Courses - ${pageName} University of Newcastle Sydney" />
+            	<meta property="og:description" name="description" content="${tag.name}. Courses &amp; Training in Sydney at University of Newcastle Sydney. Open to the general public. Enrol online now." />
+				<meta property="twitter:title" content="${tag.name} Courses - ${pageName} University of Newcastle Sydney"/>
+            	<meta property="twitter:description" content="${tag.name}. Courses &amp; Training in Sydney at University of Newcastle Sydney. Open to the general public. Enrol online now." />
+			</t:if>
+			<t:unless test="tag">
+				<t:remove>Title for pages with urls /course/... /class/... /tutor/... /site/... /room/... /product/...</t:remove>
+                <title>${pageName} - Courses &amp; Training Sydney</title>
+				<meta property="og:title" content="${pageName} - Courses &amp; Training in Sydney" />
+            	<meta property="og:description" name="description" content="${pageName}. Courses &amp; Training in Sydney at University of Newcastle Sydney. Open to the general public. Enrol online now." />
+				<meta property="twitter:title" content="${pageName} - Courses &amp; Training in Sydney"/>
+            	<meta property="twitter:description" content="${pageName}. Courses &amp; Training in Sydney at University of Newcastle Sydney. Open to the general public. Enrol online now." />
+			</t:unless>
+		</t:if>
+		<t:remove>Title for pages where pageName is not defined in tapestry template</t:remove>
+		<t:unless test="pageName">
+			<t:if test="tag">
+				<t:remove>Title for pages with urls /courses/... including custom course tags, like Featured, New, Popular</t:remove>
+                <title>${tag.name} Courses &amp; Training in Sydney - Learn ${tag.name}</title>
+				<meta property="og:title" content="${tag.name} Courses &amp; Training in Sydney - Learn ${tag.name}" />
+            	<meta property="og:description" name="description" content="${tag.name} Courses &amp; Training in Sydney at University of Newcastle Sydney. Open to the general public. Enrol online now." />
+				<meta property="twitter:title" content="${tag.name} Courses &amp; Training in Sydney - Learn ${tag.name}"/>
+            	<meta property="twitter:description" content="${tag.name} Courses &amp; Training in Sydney at University of Newcastle Sydney. Open to the general public. Enrol online now." />
+			</t:if>
+			<t:unless test="tag">
+				<t:remove>Title for summary page urls including /products /courses /sites /tutors</t:remove>
+                <title>University of Newcastle Sydney - Courses &amp; Training in Sydney</title>
+				<meta property="og:title" content="University of Newcastle Sydney - Courses &amp; Training in Sydney" />
+            	<meta property="og:description" name="description" content="${pageName}. Courses &amp; Training in Sydney at University of Newcastle Sydney. Open to the general public. Enrol online now." />
+				<meta property="twitter:title" content="University of Newcastle Sydney - Courses &amp; Training in Sydney"/>
+            	<meta property="twitter:description" content="${pageName}. Courses &amp; Training in Sydney at University of Newcastle Sydney. Open to the general public. Enrol online now." />
+			</t:unless>
+		</t:unless>
+	</t:block>
+</t:container>

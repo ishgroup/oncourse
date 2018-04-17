@@ -1,0 +1,94 @@
+<section class="site-wrapper" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" itemscope="itemscope" itemtype="http://schema.org/WebPage">
+
+	<div class="l-container l-container--no-pad">
+		<header class="masthead js-masthead u-print-display-none" id="header" itemscope="itemscope" itemtype="http://schema.org/WPHeader">
+			<div t:type="ui/bodyheader" />
+		</header> <!-- //masthead -->
+
+		<section class="page-banner page-banner--courses banner js-page-banner">
+			<div class="l-container">
+				<div class="page-banner__tags course-tags js-tag-wrapper u-print-display-none"></div>
+				<div class="js-breadcrumbs-wrapper u-print-display-none"></div>
+
+				<div class="page-banner__title-block">
+					<div class="banner__title js-page-title"></div>
+					<div class="page-banner__social social-share">
+						<div class="social-share__label">Share</div>
+						<div class="addthis_inline_share_toolbox"></div>
+					</div> <!-- social-share -->
+				</div>
+			</div>
+			<div class="page-banner__overview overview js-overview u-print-display-none" id="courseOverview">
+				<div class="overview__inner l-container js-overview-inner">
+					<div class="overview__title section-title js-overview-title"></div>
+				</div>
+			</div>
+		</section> <!-- //page-banner -->
+
+		<main class="page-content js-page-content" id="content">
+			<div class="page-content__main">
+				<div class="l-container page-content__copy js-page-copy">
+					<div class="copy">
+						<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:content" />
+						<t:body />
+					</div>
+				</div>
+			</div>
+			<div class="u-width-100 u-display-none-at-1024 js-course-testimonials" data-set="course-testimonials"><!-- appendAround --></div>
+			<aside class="page-content__side page-sidebar js-sidebar u-print-display-none" id="sidebarRight" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
+				<div class="l-grid l-grid--no-gutter">
+					<div class="l-grid__cell">
+						<nav class="search-filter js-search-filter">
+							<div class="search-filter__trigger js-search-filter-trigger">
+								<h2 class="search-filter__title type-style-01">Find a Short Course</h2>
+								<svg class="search-filter__arrow o-icon-arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+									<use xlink:href="#svg-angle" />
+								</svg>
+							</div>
+							<div class="search-filter__options js-search-filter-options" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
+								<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:right" />
+							</div>
+						</nav>
+					</div>
+					<div class="l-grid__cell l-grid__cell--50-at-600 l-grid__cell--100-at-1024">
+						<div class="page-sidebar__key-messages">
+							<div class="u-display-none u-display-block-at-1024" data-set="feature-box"><!-- //appendAround --></div>
+							<div class="key-messages key-messages--default js-key-messages">
+								<div class="key-messages__carousel key-messages-carousel js-key-message-carousel owl-carousel">
+									<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:left" />
+								</div>
+								<div class="key-messages__pagination js-key-messages-pagination"> <!-- injected by owl.carousel.min.js --> </div>
+							</div>
+						</div>
+					</div>
+					<div class="l-grid__cell l-grid__cell l-grid__cell--50-at-600 l-grid__cell--100-at-1024">
+						<div class="page-sidebar__twitter">
+							<div class="twitter-feed">
+								<h3 class="twitter-feed__title">
+									Latest from Twitter
+									<svg class="twitter-feed__logo" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+										<use xlink:href="#svg-twitter" />
+									</svg>
+								</h3>
+								<div class="twitter-feed__timeline owl-carousel twitter-timeline js-twitter-feed" id="twitterFeed"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</aside>
+		</main>
+		
+		<div class="u-display-none u-display-block-at-1024" data-set="course-testimonials">
+			<!-- appendAround -->
+		</div>
+	</div>
+
+	<div t:type="ui/bodyfooter" />
+
+	<div id="overlay" style="display: none; height: 500px" />
+	<div id="timeline-wrap" style="visibility: hidden;">
+		<div id="timeline" />
+	</div>
+
+	<div data-cid="modal" class="reactjs-component"></div>
+</section>

@@ -1,0 +1,19 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+
+	<ul class="attachedImages">
+		<t:loop source="attachedImages" value="image">
+			<li><img src="${imageUrl}"/></li>
+		</t:loop>
+	</ul>
+	
+	<t:if test="hasAttachments">
+		<h2>Additional information</h2>
+
+		<ul class="file-attachments">
+			<t:loop source="attachments" value="attachment">
+				<li class="file-attachments__item"><a class="file-attachments__link" data-type="${attachment.type}" href="${attachmentUrl}" name="${attachment.name}">${attachment.name}</a> <span class="file-attachment__size">(${attachment.size} kb)</span></li>
+			</t:loop>
+		</ul>
+	</t:if>
+	
+</t:container>

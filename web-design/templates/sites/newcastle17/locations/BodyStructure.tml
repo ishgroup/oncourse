@@ -1,0 +1,41 @@
+<section class="site-wrapper" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" itemscope="itemscope" itemtype="http://schema.org/WebPage">
+
+	<div class="l-container l-container--no-pad">
+		<header class="masthead js-masthead u-print-display-none" id="header" itemscope="itemscope" itemtype="http://schema.org/WPHeader">
+			<div t:type="ui/bodyheader" />
+		</header> <!-- //masthead -->
+
+		<section class="page-banner page-banner--courses banner js-page-banner">
+			<div class="l-container">
+				<div class="page-banner__tags course-tags js-tag-wrapper u-print-display-none"></div>
+				<div class="js-breadcrumbs-wrapper u-print-display-none"></div>
+
+				<div class="page-banner__title-block">
+					<div class="banner__title js-page-title"></div>
+					<div class="page-banner__social social-share">
+						<div class="social-share__label">Share</div>
+						<div class="addthis_inline_share_toolbox"></div>
+					</div> <!-- social-share -->
+				</div>
+			</div>
+			<div class="page-banner__overview overview js-overview u-print-display-none" id="courseOverview">
+				<div class="overview__inner l-container js-overview-inner">
+					<div class="overview__title section-title js-overview-title"></div>
+				</div>
+			</div>
+		</section> <!-- //page-banner -->
+
+		<main class="page-content decorative-word js-page-copy" id="content">
+			<t:body />
+		</main>
+	</div>
+
+	<div t:type="ui/bodyfooter" />
+
+	<div id="overlay" style="display: none; height: 500px" />
+	<div id="timeline-wrap" style="visibility: hidden;">
+		<div id="timeline" />
+	</div>
+
+	<div data-cid="modal" class="reactjs-component"></div>
+</section>

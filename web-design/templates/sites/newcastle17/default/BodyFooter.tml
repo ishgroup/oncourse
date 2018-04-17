@@ -1,0 +1,173 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<footer class="site-footer" id="footer" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
+		<div class="site-footer__mailing-list footer-signup">
+			<div class="l-container">
+				<div class="l-grid l-grid--lrg-gutter footer-signup__grid">
+					<div class="l-grid__cell footer-signup__cell footer-signup__cell--title js-footer-signup-title-cell">
+						<h2 class="footer-signup__title">
+							<svg class="footer-signup__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+								<use xlink:href="#svg-folded-newspaper" />
+							</svg>
+							<span class="footer-signup__title-text section-title">
+								Receive updates
+							</span>
+						</h2>
+					</div>
+					<div class="l-grid__cell footer-signup__cell footer-signup__cell--form js-footer-signup-form-cell">
+						<form action="https://newcastle.us14.list-manage.com/subscribe/post" class="mailing-list-form" method="POST">
+							<input type="hidden" name="u" value="f263555a4a2cddcab1c0ddbe1" />
+							<input type="hidden" name="id" value="57f5529cce" />
+							<div class="l-grid">
+								<div class="l-grid__cell l-grid__cell--50-at-600 footer-signup__name-field js-name-input-wrapper mailing-list-form__field mailing-list-form__field--name">
+									<label class="u-visually-hidden" for="MERGE1">First name</label>
+										<input class="o-text-input" name="MERGE1" id="MERGE1" type="text" placeholder="First name" />
+								</div>
+								<div class="l-grid__cell l-grid__cell--50-at-600 footer-signup__name-field js-name-input-wrapper mailing-list-form__field mailing-list-form__field--name">
+									<label class="u-visually-hidden" for="MERGE2">Last name</label>
+										<input class="o-text-input" name="MERGE2" id="MERGE2" type="text" placeholder="Last name" />
+								</div>
+
+								<div class="l-grid__cell mailing-list-form__field mailing-list-form__field--email">
+									<label class="u-visually-hidden" for="MERGE0">Email address</label>
+										<input class="o-text-input js-footer-email-input" autocapitalize="off" autocorrect="off" name="MERGE0" id="MERGE0" type="text" placeholder="Email address" />
+								</div>
+								<div class="l-grid__cell mailing-list-form__submit">
+									<button class="btn btn--arrow mailing-list-form__btn" type="submit">
+										<span class="btn__inner">
+											<span class="btn__text">Sign up</span>
+											<svg class="btn__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+												<use xlink:href="#svg-angle" />
+											</svg>
+										</span>
+									</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div> <!-- footer-signup -->
+
+		<div class="site-footer__info">
+			<div class="l-container">
+				<div class="l-grid l-grid--lrg-gutter">
+					<div class="l-grid__cell l-grid__cell--50-at-768 l-grid__cell--33-at-1024 l-grid__cell--27-at-1480">
+						<h2 class="site-footer__title">Have a question? Just ask.</h2>
+						<p>Call us</p>
+						<a class="site-footer__phone" href="tel:+61282626400">02 8262 6400</a>
+						<p>or</p>
+						<a class="site-footer__email" href="/contact">
+							email our support team
+							<svg class="site-footer__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+								<use xlink:href="#svg-angle" />
+							</svg>
+						</a>
+						<p><a class="site-footer__vcard" href="/s/documents/contact.vcf">
+							<svg class="site-footer__phone-icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+								<use xlink:href="#svg-iphone" />
+							</svg>
+							<span><strong>Download a vCard</strong> to add us to your address book or email client.</span>
+						</a></p>
+						<address class="site-footer__company-name u-display-none u-display-block-at-768 u-display-none-at-1024">The University of Newcastle, Sydney</address>
+					</div>
+					<div class="l-grid__cell l-grid__cell--50-at-768 l-grid__cell--66-at-1024 l-grid__cell--72-at-1480">
+						<h2 class="site-footer__title">Browse subjects</h2>
+						<div class="l-grid">
+							<div class="l-grid__cell l-grid__cell--50 l-grid__cell--auto-at-768">
+								<ul class="site-footer__links-list site-footer__links-list--first">
+									<li class="site-footer__link"><a href="/courses/arts-humanities">Arts &amp; Humanities</a></li>
+									<li class="site-footer__link"><a href="/courses/business-management">Business &amp; Management</a></li>
+									<li class="site-footer__link"><a href="/courses/career-development">Career Development</a></li>
+									<li class="site-footer__link"><a href="/courses/education">Education</a></li>
+									<li class="site-footer__link"><a href="/courses/environment">Environment</a></li>
+									<li class="site-footer__link"><a href="/courses/gardening-horticulture">Gardening &amp; Horticulture</a></li>
+									<li class="site-footer__link"><a href="/courses/health-science">Health Science</a></li>
+								</ul>
+							</div>
+							<div class="l-grid__cell l-grid__cell--50 l-grid__cell--auto-at-768">
+								<ul class="site-footer__links-list">
+									<li class="site-footer__link"><a href="/courses/information-technology">Information Technology</a></li>
+									<li class="site-footer__link"><a href="/courses/language-culture">Language &amp; Culture</a></li>
+									<li class="site-footer__link"><a href="/courses/logistics">Logistics</a></li>
+									<li class="site-footer__link"><a href="/courses/marketing">Marketing</a></li>
+									<li class="site-footer__link"><a href="/courses/project-management">Project Management</a></li>
+									<li class="site-footer__link"><a href="/courses/psychology">Psychology</a></li>
+								</ul>
+							</div>
+						</div>
+						<ul class="site-footer__social-media social-media social-media--lrg">
+							<li class="social-media__item  social-media__item--facebook">
+								<a class="social-media__link" target="_blank" href="https://www.facebook.com/uonsydney" rel="me">
+									<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+										<use xlink:href="#svg-facebook-lrg" />
+									</svg>
+								</a>
+							</li>
+							<li class="social-media__item  social-media__item--twitter">
+								<a class="social-media__link" target="_blank" href="https://twitter.com/uonsydney" rel="me">
+									<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+										<use xlink:href="#svg-twitter-lrg" />
+									</svg>
+								</a>
+							</li>
+							<li class="social-media__item social-media__item--google-plus">
+								<a class="social-media__link" target="_blank" href="https://plus.google.com/+TheUniversityofNewcastleSydney" rel="me">
+									<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+										<use xlink:href="#svg-google-plus-lrg" />
+									</svg>
+								</a>
+							</li>
+							<li class="social-media__item social-media__item--instagram social-media__item--lrg">
+								<a class="social-media__link" target="_blank" href="https://www.instagram.com/uonsydney/" rel="me">
+									<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+										<use xlink:href="#svg-instagram-lrg" />
+									</svg>
+								</a>
+							</li>
+							<li class="social-media__item social-media__item--youtube">
+								<a class="social-media__link" target="_blank" href="https://www.youtube.com/channel/UC84Ld00F-xpbYk41MwkCBvA" rel="me">
+									<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+										<use xlink:href="#svg-youtube-lrg" />
+									</svg>
+								</a>
+							</li>
+							<li class="social-media__item social-media__item--linkedin">
+								<a class="social-media__link" target="_blank" href="https://www.linkedin.com/company/uonsydney/" rel="me">
+									<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+										<use xlink:href="#svg-linkedin-lrg" />
+									</svg>
+								</a>
+							</li>
+						</ul> <!-- //social-media -->
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="site-footer__legal site-legal">
+			<div class="l-container">
+				<div class="l-grid l-grid--lrg-gutter u-flex-align-items-baseline">
+					<div class="l-grid__cell l-grid__cell--33-at-1024 l-grid__cell--27-at-1480">
+						<address class="site-footer__company-name u-display-none-at-768 u-display-block-at-1024" itemprop="copyrightHolder">The University of Newcastle, Sydney</address>
+					</div>
+					<div class="l-grid__cell l-grid__cell--66-at-1024 l-grid__cell--72-at-1480 site-legal__cell">
+						<ul class="site-legal__list">
+							<li class="site-legal__list-item"><a href="/about">About</a></li>
+							<li class="site-legal__list-item"><a href="/legal">Legal</a></li>
+							<li class="site-legal__list-item"><a href="/copyright">Copyright</a></li>
+							<li class="site-legal__list-item"><a href="/privacy">Privacy</a></li>
+							<li class="site-legal__list-item"><a href="/accessibility">Accessibility</a></li>
+							<li class="site-legal__list-item">CRICOS Provider 00109J</li>
+							<li class="site-legal__list-item">&#169; <span itemprop="copyrightYear">${year}</span> UON</li>
+						</ul>
+						<a class="site-legal__ish" target="_blank" rel="nofollow" href="https://www.ish.com.au"><img alt="powered by ish onCourse" src="/s/img/logo-ish.png" /> </a>
+						<a class="site-legal__rb" target="_blank" rel="nofollow" href="https://rb.com.au"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="13.99" viewBox="0 0 21 13.99"><title>Web Design Newcastle - Redback Solutions</title><path d="M2.84,5.71c0-.53,0-1.49-0.08-1.72H0C0,4.83,0,5.68,0,6.66v7.11H2.84V9.5C2.84,6.83,4,6.3,6.08,6.36V3.77A3.27,3.27,0,0,0,2.84,5.71ZM13,3.77A3.21,3.21,0,0,0,10.11,5V0H7.3V10.58c0,1.06,0,2.13,0,3.19H10a4.28,4.28,0,0,0,.12-0.92A2.77,2.77,0,0,0,12.73,14c2.91,0,4.4-2.49,4.4-5.28S15.76,3.77,13,3.77Zm-0.9,8.07c-1.62,0-2.13-1.26-2.13-2.9,0-2,.57-3,2.17-3S14.3,7.13,14.3,8.77C14.3,10.62,13.53,11.84,12.11,11.84ZM19.54,11A1.41,1.41,0,1,0,21,12.36,1.43,1.43,0,0,0,19.54,11Z" transform="translate(0)"></path></svg></a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</footer> <!-- //site-footer -->
+
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-57e9e20c1694abd2"></script>
+</t:container>

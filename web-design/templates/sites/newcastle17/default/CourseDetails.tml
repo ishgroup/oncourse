@@ -1,0 +1,56 @@
+<html t:type="ui/internal/pagestructure"
+	  canonicalLinkPath="${canonicalLinkPath}"
+	  canonicalRelativeLinkPath="${canonicalRelativeLinkPath}"
+	  metaDescription="${metaDescription}"
+	  title="${courseDetailsTitle}"
+	  bodyId="literal:DetailsPage"
+	  bodyClass="literal:internal-page l-page l-page--course-details"
+	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<t:if t:test="course">
+		<div t:type="ui/confirmorderdialog"/>
+		<div class="quicklinks js-quicklinks u-print-display-none">
+			<div class="l-container quicklinks__inner">
+				<div class="quicklinks__label">Jump to</div>
+				<button class="quicklinks__menu-toggle menu-toggle menu-toggle--branding js-quicklinks-toggle">
+					<span class="u-visually-hidden">Menu</span>
+					<span class="menu-toggle__bar menu-toggle__bar--top"></span>
+					<span class="menu-toggle__bar menu-toggle__bar--middle"></span>
+					<span class="menu-toggle__bar menu-toggle__bar--bottom"></span>
+				</button>
+				<ul class="quicklinks__items js-quicklinks-menu">
+					<li class="js-quicklink-description">
+						<a class="quicklinks__item" href="#content">
+							Course Description
+						</a>
+					</li>
+					<li class="js-quicklink-classes">
+						<a class="quicklinks__item" href="#courseClasses">
+							Classes
+						</a>
+					</li>
+					<t:if t:test="courseItemModel.haveRelatedCourses">
+						<li>
+							<a class="quicklinks__item" href="#relatedCourses">
+								Related Courses
+							</a>
+						</li>
+					</t:if>
+					<li class="js-quicklink-testimonials">
+						<a class="quicklinks__item" href="#courseTestimonials">
+							Testimonials
+						</a>
+					</li>
+				</ul>
+				<a class="quicklinks__counter js-credit-point-counter" href="#">
+					<strong class="js-credit-point-number"></strong> Credit Points
+					<svg class="quicklinks__info-icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+						<use xlink:href="#svg-info-circle" />
+					</svg>
+				</a>
+			</div>
+		</div> <!-- //filter-quicklinks -->
+		<span t:type="ui/courseitem" course="course" linkToLocationsMap="true" isList="false" courseItemModel="courseItemModel"></span>
+	<p:else>The requested course is not found.</p:else>
+	</t:if>
+	<span t:type="ui/Attachments" entityIdentifier="literal:Course" entityIdNum="${course.id}"/>
+</html>

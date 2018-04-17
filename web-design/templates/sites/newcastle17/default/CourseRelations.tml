@@ -1,0 +1,13 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+
+	<ul class="related-block__list">
+		<t:loop source="courseRelations" value="relatedCourse">
+			<li class="related-block__item">
+				<a class="related-block__link" href="/course/${relatedCourse.code}">
+					<img alt="${relatedCourse.name}" class="related-block__img" src="/s/img/course-thumbnail/${relatedCourse.code}.jpg" />
+					<span class="related-block__name">${relatedCourse.name}</span>
+				</a>
+			</li>
+		</t:loop>
+	</ul>
+</t:container>

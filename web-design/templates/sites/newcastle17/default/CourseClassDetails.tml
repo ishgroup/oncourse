@@ -1,0 +1,90 @@
+<html t:type="ui/internal/pagestructure"
+	  canonicalLinkPath="${canonicalLinkPath}"
+	  canonicalRelativeLinkPath="${canonicalRelativeLinkPath}"
+	  metaDescription="${metaDescription}"
+    title="${courseClass.uniqueIdentifier} | ${courseClass.course.name}"
+	  bodyId="literal:DetailsPage"
+    bodyClass="literal:internal-page l-page l-page--course-details"
+    xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+
+	<div class="quicklinks js-quicklinks">
+		<div class="l-container quicklinks__inner">
+			<div class="quicklinks__label">Jump to</div>
+			<button class="quicklinks__menu-toggle menu-toggle menu-toggle--branding js-quicklinks-toggle">
+				<span class="u-visually-hidden">Menu</span>
+				<span class="menu-toggle__bar menu-toggle__bar--top"></span>
+				<span class="menu-toggle__bar menu-toggle__bar--middle"></span>
+				<span class="menu-toggle__bar menu-toggle__bar--bottom"></span>
+			</button>
+			<ul class="quicklinks__items js-quicklinks-menu">
+				<li class="js-quicklink-description">
+					<a class="quicklinks__item" href="#content">
+						Course Description
+					</a>
+				</li>
+				<li class="js-quicklink-classes">
+					<a class="quicklinks__item" href="#courseClasses">
+						Classes
+					</a>
+				</li>
+				<li class="js-quicklink-location">
+					<a class="quicklinks__item" href="#locationInfo">
+						Location Information
+					</a>
+				</li>
+				<li class="js-quicklink-testimonials">
+					<a class="quicklinks__item" href="#courseTestimonials">
+						Testimonials
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div> <!-- //filter-quicklinks -->
+
+    <div class="course-details" itemscope="itemscope" itemtype="http://schema.org/Product">
+
+		<h1 itemprop="name">${courseClass.course.name}</h1>
+		<img alt="${courseClass.course.name}" class="faux-banner-image js-banner-image" src="/s/img/course/${courseClass.course.code}.jpg" />
+
+		<span itemprop="description">
+			<t:outputraw value="${courseDetail}" />
+		</span>
+
+		<h2 class="section-title" id="courseClasses">Available dates for ${courseClass.course.name}</h2>
+		<div class="course-detail__classes">
+			<span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="true" isList="false" allowByAplication="allowByAplication" feeOverride="feeOverride"></span>
+		</div>
+		
+		<t:if t:test="${showInlineTimetable}">
+			<t:if t:test="courseClass.hasAnyTimelineableSessions">
+				<h2>Sessions</h2>
+				<span t:type="ui/TimetableEvents" displayedObjects="sortedTimelineableSessions"
+				cssTableClass="cssTableClass"
+				cssEvenRowClass="cssEvenRowClass" cssOddRowClass="cssOddRowClass"/>
+			</t:if>
+		</t:if>
+
+		<span t:type="ui/Attachments" entityIdentifier="literal:CourseClass" entityIdNum="${courseClass.id}"/>
+
+		<t:if t:test="${courseClass.hasRoom}">
+				
+			<div class="title-bar title-bar--location" id="locationInfo">
+				<h3 class="title-bar__heading">Location Information</h3>
+				<a class="title-bar__top-link o-top-link js-top-link" href="#content">
+					Back to top
+					<svg class="o-top-link__icon bounce" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+						<use xlink:href="#svg-angle" />
+					</svg>
+				</a>
+			</div>
+
+			<h1>${courseClass.room}</h1>
+
+			<div class="courseClassLocationFinder">
+				<span t:type="ui/SiteDetailsComponent" room="courseClass.room" collapseLocationMap="true"></span>
+			</div>
+		</t:if>
+
+	</div>
+
+</html>
