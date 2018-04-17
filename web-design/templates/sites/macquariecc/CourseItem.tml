@@ -71,8 +71,8 @@
         </div>
       </t:if>
       <t:if t:test="courseItemModel.course.allowWaitingList">
-        <p class="waiting-list-title" id="wl${courseItemModel.course.id}">
-          <a class="actionLink" href="/enrol/waitinglistform/${courseItemModel.course.id}">
+        <p class="waiting-list-title" data-cid="join-button" data-prop-id="${courseItemModel.course.id}">
+          <span>
             <t:if t:test="courseItemModel.enrollableClasses.empty" negate="true">
               <t:if t:test="hasMoreAvailablePlaces"> If there isn't a class to suit you, please
                 <p:else> Classes are full. Please </p:else>
@@ -80,7 +80,7 @@
               <p:else> This course has no current classes. Please </p:else>
             </t:if>
             join the <strong>waiting list</strong>. <span>Click here</span>
-          </a>
+          </span>
         </p>
       </t:if>
     </div>
@@ -97,6 +97,9 @@
     <t:if t:test="courseItemModel.hasRelatedProducts()">
       <h3>Related Products</h3>
       <div t:type="ui/relatedporducts" model="courseItemModel"></div>
+    </t:if>
+    <t:if t:test="isList" negate="true">
+      <span t:type="ui/coursetestimonials" course="courseItemModel.course"/>
     </t:if>
   </div>
 </t:container>
