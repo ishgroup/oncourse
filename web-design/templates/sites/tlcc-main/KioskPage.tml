@@ -1,53 +1,59 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 <head>
-    <meta charset="utf-8"/>
-    <meta content="IE=EmulateIE9" http-equiv="X-UA-Compatible"/>
-    <meta content="no-cache" http-equiv="Cache-control"/>
-    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <meta content="onCourse r1951" name="generator"/>
-    <title>Timetable</title>
-    <link rel="stylesheet" type="text/css" media="screen, print" href="${request.contextPath}/css/timetable.css"/>
+  <meta charset="utf-8"/>
+  <meta content="no-cache" http-equiv="Cache-control"/>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <meta content="onCourse r1951" name="generator"/>
+  <title>Timetable</title>
+
+  <link rel="stylesheet" type="text/css" media="screen, print" href="/s/kiosk/css/kiosk.css"/>
+  <link rel="stylesheet" type="text/css" media="screen, print" href="/s/kiosk/css/kiosk-local.css"/>
+
+  <script type="text/javascript" src="/s/kiosk/js/kiosk.js"></script>
+
 </head>
-<body t:type="any">
+<body t:type="any" class="kiosk">
+
 <div class="timetable-wrapper">
-    <header id="header">
-        <div class="container">
-            <div class="logo col-left">
-                <h2>${site.college.name}</h2>
-            </div>
+  <header id="header">
+    <div class="container">
+      <div class="header-logo">
+        <a class="logo" href="/">
+          <img src="/s/kiosk/img/logo.png" />
+        </a>
+      </div>
+      <div class="header-title">
+        <h3 class="site-name">${site.name}</h3>
+      </div>
+    </div>
+  </header>
 
-            <div class="col-right">
-                <h3>${site.name}</h3>
-            </div>
+  <section class="container">
+    <div class="courses-today clearfix">
+      <t:if test="sessions.empty">
+        <div class="container text-center">There are no more classes scheduled today.</div>
+        <p:else>
+          <t:loop source="sessions" value="session">
+            <t:ui.kiosk.kiosksession session="session"/>
+          </t:loop>
+        </p:else>
+      </t:if>
+    </div>
+  </section>
 
-        </div>
-    </header>
-    <section>
-        <div class="courses-today">
-            <t:if test="sessions.empty">
-                <div class="text-center">There are no more classes scheduled today.</div>
-                <p:else>
-                    <t:loop source="sessions" value="session">
-                        <t:ui.kiosk.kiosksession session="session"/>
-                    </t:loop>
-                </p:else>
-            </t:if>
-        </div>
-    </section>
-    <footer>
-        <div class="col-row">
-            <div class="container">
-                <div class="footer-logo col-right">
-                    <a class="popup" href="http://www.ish.com.au/oncourse" target="_blank">
-                        <img alt="powered by ish onCourse" height="9" width="102" src="/s/img/icons/poweredby.png"/>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </footer>
+  <footer>
+    <div class="container">
+      <div class="footer-logo">
+        <a target="_blank" href="http://www.ish.com.au/oncourse" class="popup">
+          <img src="/s/images/logo-ish.png" width="102" height="9" alt="powered by ish onCourse" />
+        </a>
+      </div>
+    </div>
+  </footer>
 </div>
+
 <script type="text/javascript">
     setTimeout(function(){window.location.reload();}, 900000);
 </script>

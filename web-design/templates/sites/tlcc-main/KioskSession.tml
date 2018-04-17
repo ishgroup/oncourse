@@ -1,17 +1,19 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-    <div class="col-row ${commencedClass}">
-        <div class="container">
-            <div class="col-left">
-                <h3>${name}</h3>
-                <div class="code-author">
-                    <span class="course-code">${code}</span>
-                    <span class="course-author">${author}</span>
-                </div>
-            </div>
-            <div class="col-right">
-                <div class="course-time">${time}</div>
-                <div class="course-location">${location}</div>
-            </div>
-        </div>
+  <div class="col-row">
+    <span style="display: none" class="current-time"><t:output format="literal:YYYY-MM-d HH:mm:ss" value="currentDate"/></span>
+    <div class="col-full">
+      <h3 class="class-title">
+        <a href="/class/${courseClass.uniqueIdentifier}">${course.name}</a>
+      </h3>
+      <div class="class-time" data-time="${isoSessionStartTime}"></div>
+      <div class="class-subtitle">
+        <t:if test="site">
+          in <span class="class-location">${session.room.name}</span>
+        </t:if>
+        <t:if test="firstTutorName">
+          with <span class="class-tutor">${firstTutorName}</span>
+        </t:if>
+      </div>
     </div>
+  </div>
 </t:container>
