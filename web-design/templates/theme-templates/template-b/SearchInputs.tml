@@ -6,7 +6,7 @@
 				<h1 class="search-title">Advanced Search</h1>
 				<div id="adv_search_keyword">
 					<label title="Search keywords and functions" for="adv_keyword">I'm Looking For</label>
-					<input t:type="TextField" clientId="adv_keyword" t:value="advKeyword" default="keyword" name="s" />
+					<input t:type="TextField" clientId="adv_keyword" t:value="advKeyword" name="s" />
 				</div>
 				<div id="adv_search_tag">
           <t:loop source="tagGroups" value="tagGroup">
@@ -16,7 +16,7 @@
 				</div>
 				<div id="adv_search_location">
 					<label title="Enter a suburb or postcode near where you'd like to do the course" for="suburb-autocomplete">Closest to</label>
-					<input t:type="TextField" name="near" t:value="searchNear" clientId="suburb-autocomplete" class="suburb-autocomplete" default="postcode or suburb" size="18" autocomplete="off" />
+					<input t:type="TextField" name="near" t:value="searchNear" clientId="suburb-autocomplete" class="suburb-autocomplete" size="18" autocomplete="off" />
 				</div>
 				<div id="adv_search_price">
 					<label title="Select the maximum price you'd like to pay for a course" for="adv_price">Costing up to</label>
