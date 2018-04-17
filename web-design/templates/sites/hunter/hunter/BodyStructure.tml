@@ -69,7 +69,7 @@
     </section>
     <!-- END feature-slider -->
 
-    <div class="page-main container container--std">
+    <div class="page-main container container--std" id="content">
       <t:body />
     </div><!-- //page-main -->
 
