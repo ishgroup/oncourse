@@ -1,10 +1,10 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+﻿<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
   <section class="info-links">
     <div class="container">
       <div class="footer-container" itemscope="itemscope" itemtype="http://schema.org/Organization" itemprop="provider">
         <div class="footer-copyright">
           <p><span itemprop="name">${collegeName}</span> Incorporated</p>
-          <p>© ${year} SGSCC</p>
+          <p>© ${year} SGSCC RTO ID 7091  CRICOS No: 03122K</p>
         </div>
         <div class="right-block">
           <ul class="footer-info">

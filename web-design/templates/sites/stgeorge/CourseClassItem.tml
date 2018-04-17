@@ -69,7 +69,7 @@
 
               <p:else>
                 <t:if t:test="selfPacedClass">
-                  <div class="col-xs-24 date">Self paced<br/>${expectedHours}<br/>${maximumDaysToComplete}</div>
+                  <div class="col-xs-24 date">face-to-face<br/>${expectedHours}<br/>${maximumDaysToComplete}</div>
 
                   <span itemprop="startDate" class="dtstart hide" content="${formatDate(currentDate,'yyyy-MM-dd')}">
                     ${formatDate(currentDate,'yyyy-MM-dd')}
