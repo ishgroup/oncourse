@@ -31,6 +31,37 @@ plugins {
 	id 'com.github.ben-manes.versions' version '0.17.0' // adds the task 'dependencyUpdates -Drevision=release'
 }
 
+apply plugin: 'maven-publish'
+group = 'ish.oncourse.angel'
+publishing {
+	repositories {
+		maven {
+			name "executables"
+			url "https://repo.ish.com.au/content/repositories/ish-exe"
+			credentials {
+				username nexusUsername
+				password nexusPassword
+			}
+		}
+		maven {
+			name "snapshots"
+			url "https://repo.ish.com.au/content/repositories/ish-snapshots"
+			credentials {
+				username nexusUsername
+				password nexusPassword
+			}
+		}
+		maven {
+			name "releases"
+			url "https://repo.ish.com.au/content/repositories/ish-releases"
+			credentials {
+				username nexusUsername
+				password nexusPassword
+			}
+		}
+	}
+}
+
 apply plugin: 'idea'
 
 allprojects {
@@ -38,7 +69,7 @@ allprojects {
 	apply plugin: 'java'
 	apply plugin: 'maven'
 	apply plugin: 'appBundler'
-	apply plugin: 'maven-publish'
+
 
 	// get the version from the command line properties
 	version = project.hasProperty('releaseVersion') ? project.releaseVersion : "SNAPSHOT"
@@ -80,36 +111,6 @@ allprojects {
 			}
 		}
     }
-
-	group = 'ish.oncourse.angel'
-	publishing {
-		repositories {
-			maven {
-				name "executables"
-				url "https://repo.ish.com.au/content/repositories/ish-exe"
-				credentials {
-					username nexusUsername
-					password nexusPassword
-				}
-			}
-			maven {
-				name "snapshots"
-				url "https://repo.ish.com.au/content/repositories/ish-snapshots"
-				credentials {
-					username nexusUsername
-					password nexusPassword
-				}
-			}
-			maven {
-				name "releases"
-				url "https://repo.ish.com.au/content/repositories/ish-releases"
-				credentials {
-					username nexusUsername
-					password nexusPassword
-				}
-			}
-		}
-	}
 
 	ext.sharedManifest = manifest {
 		attributes 'Release-Version': version,

@@ -224,13 +224,11 @@ task installer_unix(dependsOn: jar, type: Zip) {
 }
 
 // For deploying to our repo
-publishing {
-    publications {
-		executables(MavenPublication) {
-            artifact(installer_webstart) {
-				classifier "webstart"
-				extension "zip"
-            }
+publishing.publications {
+	executables(MavenPublication) {
+        artifact(installer_webstart) {
+			classifier "webstart"
+			extension "zip"
         }
     }
 }
