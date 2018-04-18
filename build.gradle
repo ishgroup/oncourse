@@ -10,6 +10,8 @@ buildscript {
 	}
 
 	repositories {
+		mavenCentral()
+		mavenLocal()
 		maven {
 			url 'https://repo.ish.com.au/content/groups/public'
 		}
@@ -31,37 +33,6 @@ plugins {
 	id 'com.github.ben-manes.versions' version '0.17.0' // adds the task 'dependencyUpdates -Drevision=release'
 }
 
-apply plugin: 'maven-publish'
-group = 'ish.oncourse.angel'
-publishing {
-	repositories {
-		maven {
-			name "executables"
-			url "https://repo.ish.com.au/content/repositories/ish-exe"
-			credentials {
-				username nexusUsername
-				password nexusPassword
-			}
-		}
-		maven {
-			name "snapshots"
-			url "https://repo.ish.com.au/content/repositories/ish-snapshots"
-			credentials {
-				username nexusUsername
-				password nexusPassword
-			}
-		}
-		maven {
-			name "releases"
-			url "https://repo.ish.com.au/content/repositories/ish-releases"
-			credentials {
-				username nexusUsername
-				password nexusPassword
-			}
-		}
-	}
-}
-
 apply plugin: 'idea'
 
 allprojects {
@@ -69,7 +40,7 @@ allprojects {
 	apply plugin: 'java'
 	apply plugin: 'maven'
 	apply plugin: 'appBundler'
-
+	apply plugin: 'maven-publish'
 
 	// get the version from the command line properties
 	version = project.hasProperty('releaseVersion') ? project.releaseVersion : "SNAPSHOT"
@@ -84,6 +55,7 @@ allprojects {
 	}
 
 	repositories {
+		mavenCentral()
 		maven {
 			url 'https://repo.ish.com.au/content/groups/public'
 		}
@@ -101,8 +73,8 @@ allprojects {
 		compile "org.apache.logging.log4j:log4j-1.2-api:$log4j2Version"
 		compile "org.apache.logging.log4j:log4j-slf4j-impl:$log4j2Version"
 		compile "org.apache.logging.log4j:log4j-jcl:$log4j2Version"
-		
-        compile 'com.google.code.findbugs:jsr305:3.0.2'
+
+		compile 'com.google.code.findbugs:jsr305:3.0.2'
 
 		// The following is needed until we upgrade waCommon which is forcing Cayenne back to 4.0M3.2
 		configurations.all {
@@ -110,26 +82,56 @@ allprojects {
 				force "org.apache.cayenne:cayenne-server:$cayenneVersion"
 			}
 		}
-    }
+	}
+
+	group = 'ish.oncourse.angel'
+	publishing {
+		repositories {
+			maven {
+				name "executables"
+				url "https://repo.ish.com.au/content/repositories/ish-exe"
+				credentials {
+					username nexusUsername
+					password nexusPassword
+				}
+			}
+			maven {
+				name "snapshots"
+				url "https://repo.ish.com.au/content/repositories/ish-snapshots"
+				credentials {
+					username nexusUsername
+					password nexusPassword
+				}
+			}
+			maven {
+				name "releases"
+				url "https://repo.ish.com.au/content/repositories/ish-releases"
+				credentials {
+					username nexusUsername
+					password nexusPassword
+				}
+			}
+		}
+	}
 
 	ext.sharedManifest = manifest {
 		attributes 'Release-Version': version,
-			'Built-Date': new Date().format("dd-MMM-yyy"),
-			'Built-JDK': System.getProperty('java.version'),
-			'Built-Gradle': gradle.gradleVersion,
-			'Implementation-Version': System.getProperty('build_number') ?: 'local', 
-			'SCM-Revision': System.getProperty('svn_revision') ?: 'development',
-			'Permissions': 'all-permissions',
-			'Codebase': '*',
-			'Application-Name': 'onCourse',
-			'Trusted-Library': 'true'
+				'Built-Date': new Date().format("dd-MMM-yyy"),
+				'Built-JDK': System.getProperty('java.version'),
+				'Built-Gradle': gradle.gradleVersion,
+				'Implementation-Version': System.getProperty('build_number') ?: 'local',
+				'SCM-Revision': System.getProperty('svn_revision') ?: 'development',
+				'Permissions': 'all-permissions',
+				'Codebase': '*',
+				'Application-Name': 'onCourse',
+				'Trusted-Library': 'true'
 	}
 
 	test {
 		forkEvery = 1 //run every test in separate jvm
-		
+
 		systemProperties 'java.awt.headless': 'true',
-		    'java.locale.providers': 'COMPAT,SPI'
+				'java.locale.providers': 'COMPAT,SPI'
 		maxHeapSize = '1024m'
 
 		jacoco {
@@ -137,9 +139,9 @@ allprojects {
 		}
 
 		ignoreFailures = true
-		
+
 		// log each starting test
-		beforeTest { 
+		beforeTest {
 			descriptor -> logger.lifecycle("Running: " + descriptor)
 		}
 	}
@@ -158,8 +160,8 @@ allprojects {
 		}
 	}
 }
-	
-configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) { 
+
+configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 
 	project.ext {
 		appName = getProject().name == 'server' ? "onCourseServer" : "onCourse"
@@ -182,9 +184,9 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 				exec {
 					executable= 'security'
 					args = ['export', 	'-k', project.osxKeychain,
-							'-t', 'all', 
+							'-t', 'all',
 							'-f', 'pkcs12',
-							'-P', project.codeSigningTemporaryPassword, 
+							'-P', project.codeSigningTemporaryPassword,
 							'-o', project.codeSigningTemporaryKeystore]
 				}
 			} else {
@@ -192,7 +194,7 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 			}
 		}
 	}
-	
+
 
 	task bundle(dependsOn: tasks.findAll { task -> task.name.startsWith('bundle_') }) {
 		description "Create all application executables."

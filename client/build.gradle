@@ -1,5 +1,7 @@
 apply plugin: 'cayenne'
 
+apply from: "$rootDir/gradle/bootique.gradle"
+
 dependencies {
 	// Needed by Java 9 and above
 	compile 'javax.xml.bind:jaxb-api:2.3.0'

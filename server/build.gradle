@@ -115,14 +115,14 @@ dependencies {
 
 	testCompile "org.apache.cayenne:cayenne-dbsync:$cayenneVersion"
 	testCompile 'org.mockito:mockito-core:1.10.19'
- 	testCompile "org.apache.derby:derbytools:$derbyVersion"
+	testCompile "org.apache.derby:derbytools:$derbyVersion"
 	testCompile 'commons-dbcp:commons-dbcp:1.4'
 	testCompile 'xmlunit:xmlunit:1.6' //used for xml export validation tests
 	testCompile 'org.kohsuke:wordnet-random-name:1.3'
 }
 
 configurations {
-    apidocSource
+	apidocSource
 }
 
 configurations.all {
@@ -141,14 +141,14 @@ jar {
 }
 
 sourceSets {
-  main {
-	// generate some manifest files for lists of resources to find at runtime
-	output.dir("$buildDir/generated-resources/main", builtBy: 'createResourceManifests')
-  }
+	main {
+		// generate some manifest files for lists of resources to find at runtime
+		output.dir("$buildDir/generated-resources/main", builtBy: 'createResourceManifests')
+	}
 }
 
 dependencies {
-    apidocSource "ish.oncourse.willow:waCommon:$waCommonWebservicesClientVersion:sources"
+	apidocSource "ish.oncourse.willow:waCommon:$waCommonWebservicesClientVersion:sources"
 }
 
 apiDocs {
@@ -160,6 +160,22 @@ task apidocsBundle(type: Jar) {
 	from reporting.file("api-docs")
 	classifier "apidocs"
 	dependsOn tasks.getByName('apiDocs')
+}
+
+// "gradlew publishToMavenLocal" if you want to publish this to your local .m2 folder
+publishing {
+	publications {
+		apidocs(MavenPublication) {
+			artifact apidocsBundle
+			version (project.hasProperty('releaseVersion') ? project.releaseVersion : "99-SNAPSHOT")
+		}
+		executables(MavenPublication) {
+			artifact(installer_unix) {
+				classifier "unix"
+				extension "zip"
+			}
+		}
+	}
 }
 
 task createResourceManifests {
@@ -246,12 +262,12 @@ appBundler {
 	certIdentity = project.osxKeychainIdentity
 
 	documentTypes = [[
-			 extensions: "iocdata",
-			 icon      : "onCourseDocument.icns",
-			 name      : "onCourse server data file",
-			 role      : "Editor",
-			 isPackage : "true"
-	]]
+							 extensions: "iocdata",
+							 icon      : "onCourseDocument.icns",
+							 name      : "onCourse server data file",
+							 role      : "Editor",
+							 isPackage : "true"
+					 ]]
 
 	jvmOptions = [
 			"-Dapple.awt.textantialiasing=true",
@@ -265,7 +281,7 @@ appBundler {
 }
 
 task installer_osx(dependsOn: [prepareKeychains, codeSign], type: au.com.ish.DmgTask) {
-    outputs.upToDateWhen { false } //disables 'UP_TO_DATE' check. This is need to run task always
+	outputs.upToDateWhen { false } //disables 'UP_TO_DATE' check. This is need to run task always
 	description "Create the OSX application executable and installer (which is just a dmg file)."
 }
 
@@ -374,14 +390,15 @@ task switchReplicationVersion {
 			String content = serverFile.getText()
 			serverFile.write(content.readLines().collect { line -> line.startsWith("import") ? line.replaceAll(oldV, newV) : line }.join("\n").concat("\n"))
 		}
-		
+
 		File resourcesFile = file("src/main/java/ish/oncourse/server/modules/SoapPortLocatorImpl.java")
 		String resourcesContent = resourcesFile.getText()
 		resourcesFile.write(resourcesContent.replaceAll("https://secure-payment.oncourse.net.au/services/${oldV}/replication", "https://secure-payment.oncourse.net.au/services/${newV}/replication")
-											.replaceAll("https://secure-payment.oncourse.net.au/services/${oldV}/payment", "https://secure-payment.oncourse.net.au/services/${newV}/payment")
-											.replaceAll("wsdl/${oldV}_replication.wsdl", "wsdl/${newV}_replication.wsdl"))
+				.replaceAll("https://secure-payment.oncourse.net.au/services/${oldV}/payment", "https://secure-payment.oncourse.net.au/services/${newV}/payment")
+				.replaceAll("wsdl/${oldV}_replication.wsdl", "wsdl/${newV}_replication.wsdl"))
 	}
 }
+
 
 String sha256(String filename) {
 	if (! file(filename).exists()) return "missing file"
@@ -394,17 +411,4 @@ String sha256(String filename) {
 		}
 		return result.toString().split()[0]
 	}
-}
-
-// "gradlew publishToMavenLocal" if you want to publish this to your local .m2 folder
-publishing.publications {
-	apidocs(MavenPublication) {
-		artifact apidocsBundle
-	}
-	unix(MavenPublication) {
-        artifact installer_unix {
-			classifier "unix"
-			extension "zip"
-        }
-    }
 }
