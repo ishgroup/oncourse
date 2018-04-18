@@ -10,8 +10,6 @@ buildscript {
 	}
 
 	repositories {
-		mavenCentral()
-		mavenLocal()
 		maven {
 			url 'https://repo.ish.com.au/content/groups/public'
 		}
@@ -55,7 +53,6 @@ allprojects {
 	}
 
 	repositories {
-		mavenCentral()
 		maven {
 			url 'https://repo.ish.com.au/content/groups/public'
 		}
@@ -74,7 +71,7 @@ allprojects {
 		compile "org.apache.logging.log4j:log4j-slf4j-impl:$log4j2Version"
 		compile "org.apache.logging.log4j:log4j-jcl:$log4j2Version"
 
-		compile 'com.google.code.findbugs:jsr305:3.0.2'
+        compile 'com.google.code.findbugs:jsr305:3.0.2'
 
 		// The following is needed until we upgrade waCommon which is forcing Cayenne back to 4.0M3.2
 		configurations.all {
@@ -82,7 +79,7 @@ allprojects {
 				force "org.apache.cayenne:cayenne-server:$cayenneVersion"
 			}
 		}
-	}
+    }
 
 	group = 'ish.oncourse.angel'
 	publishing {
@@ -116,22 +113,22 @@ allprojects {
 
 	ext.sharedManifest = manifest {
 		attributes 'Release-Version': version,
-				'Built-Date': new Date().format("dd-MMM-yyy"),
-				'Built-JDK': System.getProperty('java.version'),
-				'Built-Gradle': gradle.gradleVersion,
-				'Implementation-Version': System.getProperty('build_number') ?: 'local',
-				'SCM-Revision': System.getProperty('svn_revision') ?: 'development',
-				'Permissions': 'all-permissions',
-				'Codebase': '*',
-				'Application-Name': 'onCourse',
-				'Trusted-Library': 'true'
+			'Built-Date': new Date().format("dd-MMM-yyy"),
+			'Built-JDK': System.getProperty('java.version'),
+			'Built-Gradle': gradle.gradleVersion,
+			'Implementation-Version': System.getProperty('build_number') ?: 'local',
+			'SCM-Revision': System.getProperty('svn_revision') ?: 'development',
+			'Permissions': 'all-permissions',
+			'Codebase': '*',
+			'Application-Name': 'onCourse',
+			'Trusted-Library': 'true'
 	}
 
 	test {
 		forkEvery = 1 //run every test in separate jvm
 
 		systemProperties 'java.awt.headless': 'true',
-				'java.locale.providers': 'COMPAT,SPI'
+		    'java.locale.providers': 'COMPAT,SPI'
 		maxHeapSize = '1024m'
 
 		jacoco {
