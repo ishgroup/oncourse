@@ -3,6 +3,7 @@ package ish.oncourse.admin.pages.college;
 import ish.oncourse.admin.services.template.SiteTemplateEncoder;
 import ish.oncourse.admin.services.template.SiteTemplateSelectModel;
 import ish.oncourse.admin.services.website.CreateNewWebSite;
+import ish.oncourse.configuration.Configuration;
 import ish.oncourse.model.College;
 import ish.oncourse.model.WebHostName;
 import ish.oncourse.model.WebSite;
@@ -13,7 +14,6 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.site.WebSiteDelete;
 import ish.oncourse.services.system.ICollegeService;
-import ish.oncourse.util.ContextUtil;
 import ish.oncourse.util.ValidateHandler;
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.ObjectContext;
@@ -31,6 +31,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static ish.oncourse.admin.AdminProperty.S_ROOT;
 
 public class Web {
 
@@ -218,7 +220,7 @@ public class Web {
         CreateNewWebSite createNewWebSite = CreateNewWebSite.valueOf(newSiteNameValue,
 				newSiteKeyValue, newSiteGoogleTagmanagerValue,
 				newSiteCoursesRootTagName, newSiteTemplateValue,
-				ContextUtil.getSRoot(),
+				Configuration.getValue(S_ROOT),
 				college, context,
 				webSiteVersionService, webNodeService);
         createNewWebSite.create();

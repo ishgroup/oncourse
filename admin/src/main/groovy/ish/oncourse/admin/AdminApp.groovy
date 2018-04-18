@@ -6,10 +6,12 @@ import io.bootique.jdbc.JdbcModuleProvider
 import io.bootique.jetty.JettyModuleProvider
 import ish.oncourse.configuration.Configuration
 
+import static ish.oncourse.admin.AdminProperty.S_ROOT;
+
 class AdminApp {
     static void main(String[] args) {
         System.setProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager")
-        Configuration.configure()
+        Configuration.configure(S_ROOT)
         Bootique bootique = init(args)
         bootique.exec()
     }
