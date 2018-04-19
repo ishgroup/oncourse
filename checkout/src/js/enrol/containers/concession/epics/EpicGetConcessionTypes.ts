@@ -7,19 +7,15 @@ import CheckoutService from "../../../services/CheckoutService";
 import {ConcessionType as ConcessionTypeModel} from "../../../../model";
 import {FULFILLED} from "../../../../common/actions/ActionUtils";
 
+//creates Epic that gets available ConcessionTypes and updates app state with them
 const request: EpicUtils.Request<any, IshState> = {
   type: GET_CONCESSION_TYPES_REQUEST,
   getData: () => CheckoutService.getConcessionTypes(),
   processData: (value: ConcessionTypeModel[], state: IshState) => {
 
-    // prepend default concession
-    const defaultConcession:ConcessionTypeModel = new ConcessionTypeModel();
-    defaultConcession.id = '-1';
-    defaultConcession.name = 'No concession';
-
     return [{
       type: FULFILLED(GET_CONCESSION_TYPES_REQUEST),
-      payload: [defaultConcession].concat(value),
+      payload: value,
     }];
   },
 };
