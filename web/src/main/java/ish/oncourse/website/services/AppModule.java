@@ -23,6 +23,7 @@ import org.apache.tapestry5.ioc.MethodAdviceReceiver;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.*;
+import org.apache.tapestry5.services.MarkupRendererFilter;
 import org.apache.tapestry5.services.javascript.JavaScriptStack;
 import org.apache.tapestry5.services.javascript.JavaScriptStackSource;
 import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
@@ -48,6 +49,10 @@ public class AppModule {
 	public static void contributeApplicationDefaults(
 			MappedConfiguration<String, String> configuration) {
 		BinderFunctions.tapestryConfiguration(configuration, HMAC_PASSPHRASE);
+	}
+
+	public static void contributeMarkupRenderer(OrderedConfiguration<MarkupRendererFilter> configuration) {
+		configuration.override("PageNameMeta", null);
 	}
 
 	@Contribute(PageRenderLinkTransformer.class)
