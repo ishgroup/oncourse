@@ -13,6 +13,7 @@
 
 
     <directoryFactory name="DirectoryFactory" class="${solr.directoryFactory:solr.StandardDirectoryFactory}"/>
+    <schemaFactory class="ClassicIndexSchemaFactory"/>
 
     <indexConfig>
         <writeLockTimeout>20000</writeLockTimeout>
