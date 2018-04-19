@@ -12,8 +12,6 @@
     <!-- -->
 
 
-    <lib dir="${solr.solr.home}/lib/" regex=".*\.jar"/>
-
     <directoryFactory name="DirectoryFactory" class="${solr.directoryFactory:solr.StandardDirectoryFactory}"/>
 
     <indexConfig>
@@ -177,16 +175,9 @@
         <!-- default values for query parameters -->
         <lst name="defaults">
             <str name="echoParams">explicit</str>
-            <!--
+            <str name="df">id</str>
             <int name="rows">10</int>
-            <str name="fl">*</str>
-            <str name="version">2.1</str>
-             -->
         </lst>
-        <!-- not included by default -->
-        <!-- arr name="last-components">
-          <str>pivot</str>
-        </arr-->
     </requestHandler>
 
     <!--

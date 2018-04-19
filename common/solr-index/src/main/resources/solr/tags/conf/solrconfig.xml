@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <config>
     <luceneMatchVersion>6.0.0</luceneMatchVersion>
-    <lib dir="${solr.solr.home}/lib/" regex=".*\.jar"/>
 
     <!-- THIS HANDLER SHOULD BE REMOVED AFTER WILLOW SERVICES GETS REINDEX JOBS -->
     <lib dir="${solr.install.dir:../../../..}/dist/" regex="solr-dataimporthandler-.*\.jar"/>
@@ -179,19 +178,11 @@
        will be used.
     -->
     <requestHandler name="standard" class="solr.SearchHandler" default="true">
-        <!-- default values for query parameters -->
         <lst name="defaults">
             <str name="echoParams">explicit</str>
-            <!--
+            <str name="df">id</str>
             <int name="rows">10</int>
-            <str name="fl">*</str>
-            <str name="version">2.1</str>
-             -->
         </lst>
-        <!-- not included by default -->
-        <!-- arr name="last-components">
-          <str>pivot</str>
-        </arr-->
     </requestHandler>
 
     <!--
