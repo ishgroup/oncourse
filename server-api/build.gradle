@@ -1,25 +1,52 @@
 apply plugin: 'groovy'
 apply plugin: 'java'
 
-ext {
-    swaggerName = 'server-api.yaml'
-    swaggerSchema = file("${project.projectDir}/src/main/resources/${swaggerName}")
-}
 
 configurations {
     swagger
 }
 
 apply from: "$rootDir/gradle/bootique.gradle"
-apply from: "$rootDir/gradle/codegen.gradle"
-
 
 dependencies {
     compile project(':server')
+    compile 'io.swagger:swagger-annotations:1.5.18'
+    
+    compile 'org.apache.cxf:cxf-core:3.2.2'
+    compile ('org.apache.cxf:cxf-rt-frontend-jaxrs:3.2.2'){
+        exclude group:'javax.ws.rs'
+    }
+    compile "javax.ws.rs:javax.ws.rs-api:2.1@jar"
+
+    // compile 'org.apache.cxf:cxf-rt-transports-http-jetty:3.2.2'
+    compile 'com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.8.7'
+    compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.7'
+
 }
 
+sourceSets {
+    main {
+        groovy {
+            srcDirs += "${project.projectDir}/build/generated-sources/src/main/groovy"
+        }
+    }
+}
 
 test {
     forkEvery = 1 //run every test in separate jvm
 //    initTestDBConfig(project, test)
+}
+
+task swagger (type: Swagger) {
+    schema = file("${project.projectDir}/src/main/resources/server-api.yaml")
+    schemaVersion = 1
+    javaOutput = file("${project.projectDir}/build/generated-sources")
+}
+
+compileGroovy {
+    dependsOn swagger
+}
+
+clean.doFirst {
+    delete("${project.projectDir}/build/generated-sources")
 }
