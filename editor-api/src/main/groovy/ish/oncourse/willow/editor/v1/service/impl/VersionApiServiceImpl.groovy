@@ -122,7 +122,7 @@ class VersionApiServiceImpl implements VersionApi {
                 if (draft.id == version.id) {
                     throw createClientException("Version (id:$id) is already draft")
                 } else {
-                    revert(version.id)
+                    revert(version.siteVersion)
                 }
                 break
         }
@@ -202,7 +202,7 @@ class VersionApiServiceImpl implements VersionApi {
                 WebSiteVersionRevert.valueOf(draftVersion, sourceVersion, context).revert()
             }
         } catch (Exception e) {
-            logger.error(e)
+            logger.catching(e)
             context.rollbackChanges()
             throw new InternalServerErrorException()
         }
