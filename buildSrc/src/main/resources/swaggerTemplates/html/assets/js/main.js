@@ -39,7 +39,7 @@ $(function() {
     var parentOffset = $(this).parent().offset();
     var encodedWord = encodeURI(model);
 
-    $.get("/models/" + encodedWord + ".html", function(data) {
+    $.get("models/" + encodedWord + ".html", function(data) {
       if(!selectionImage) {
         selectionImage = $('<div>').attr({
           title: 'Model detail',
