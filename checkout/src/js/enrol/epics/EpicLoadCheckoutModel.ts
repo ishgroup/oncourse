@@ -1,6 +1,6 @@
 import {IshState} from "../../services/IshState";
 import CheckoutService from "../services/CheckoutService";
-import * as EpicUtils from "./EpicUtils";
+import * as EpicUtils from "../../common/epics/EpicUtils";
 import {CheckoutModel, ContactNode} from "../../model";
 import {GET_CHECKOUT_MODEL_FROM_BACKEND, updateAmount} from "../actions/Actions";
 import {rewriteContactNodeToState} from "../containers/summary/actions/Actions";

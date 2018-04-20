@@ -1,7 +1,7 @@
 import {Epic} from "redux-observable";
 import "rxjs";
 import {IshState} from "../../services/IshState";
-import * as EpicUtils from "./EpicUtils";
+import * as EpicUtils from "../../common/epics/EpicUtils";
 import {
   ADD_CODE_REQUEST, getCheckoutModelFromBackend, addRedeemVoucherToState,
 } from "../actions/Actions";

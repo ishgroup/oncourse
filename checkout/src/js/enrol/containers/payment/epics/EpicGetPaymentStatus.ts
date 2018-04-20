@@ -2,7 +2,7 @@ import {IshState} from "../../../../services/IshState";
 import CheckoutService from "../../../services/CheckoutService";
 import {IAction} from "../../../../actions/IshAction";
 import {GET_PAYMENT_STATUS} from "../actions/Actions";
-import {Reply, Request} from "../../../epics/EpicUtils";
+import {Reply, Request} from "../../../../common/epics/EpicUtils";
 import {Observable} from "rxjs/Observable";
 import {Epic} from "redux-observable";
 import {PaymentResponse} from "../../../../model";

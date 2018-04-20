@@ -1,7 +1,7 @@
 import {Epic} from "redux-observable";
 import "rxjs";
 import {IshState} from "../../../../services/IshState";
-import * as EpicUtils from "../../../epics/EpicUtils";
+import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import {GET_CONCESSION_TYPES_REQUEST} from "../actions/Actions";
 import CheckoutService from "../../../services/CheckoutService";
 import {ConcessionType as ConcessionTypeModel} from "../../../../model";

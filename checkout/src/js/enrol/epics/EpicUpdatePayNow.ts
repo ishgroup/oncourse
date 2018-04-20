@@ -6,7 +6,7 @@ import "rxjs";
 import CheckoutService from "../services/CheckoutService";
 import {IshState} from "../../services/IshState";
 import {UPDATE_PAYNOW, updateAmount} from "../actions/Actions";
-import {showCommonError} from "./EpicUtils";
+import {showCommonError} from "../../common/epics/EpicUtils";
 import {Tabs} from "../containers/payment/reducers/State";
 import {changeTab} from "../containers/payment/actions/Actions";
 

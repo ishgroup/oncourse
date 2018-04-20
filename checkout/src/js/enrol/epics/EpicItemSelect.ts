@@ -3,7 +3,7 @@ import "rxjs";
 import {SELECT_ITEM_REQUEST, UPDATE_ITEM, updateItem} from "../containers/summary/actions/Actions";
 import CheckoutService from "../services/CheckoutService";
 import {IshState} from "../../services/IshState";
-import * as EpicUtils from "./EpicUtils";
+import * as EpicUtils from "../../common/epics/EpicUtils";
 import {Enrolment, Application, PurchaseItem} from "../../model";
 import {getAmount, getCheckoutModelFromBackend} from "../actions/Actions";
 import {FULFILLED} from "../../common/actions/ActionUtils";

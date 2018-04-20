@@ -7,7 +7,7 @@ import CheckoutService from "../../../services/CheckoutService";
 import {changePhase} from "../../../actions/Actions";
 import {Phase} from "../../../reducers/State";
 import {addContactToSummary} from "../../summary/actions/Actions";
-import {Create, Request} from "../../../epics/EpicUtils";
+import {Create, Request} from "../../../../common/epics/EpicUtils";
 
 const request: Request<ContactFields, IshState> = {
   type: OPEN_EDIT_CONTACT_REQUEST,

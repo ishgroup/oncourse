@@ -17,7 +17,7 @@ import {
 import {Injector} from "../../injector";
 import {PromotionParams, ContactParams} from "../../model";
 import {IshState} from "../../services/IshState";
-import {mapError, mapPayload} from "../../epics/epicsUtils";
+import {mapError, mapPayload} from "../../common/epics/EpicUtils";
 
 const {
   courseClassesApi,

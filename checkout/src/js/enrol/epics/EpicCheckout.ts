@@ -4,7 +4,7 @@ import {Observable} from "rxjs";
 import {IshActions} from "../../constants/IshActions";
 import {Injector} from "../../injector";
 import {normalize} from "normalizr";
-import {mapError, mapPayload} from "../../epics/epicsUtils";
+import {mapError, mapPayload} from "../../common/epics/EpicUtils";
 import {ContactSchema} from "../../NormalizeSchema";
 import {EpicInit} from "./EpicInit";
 import MessagesShowEpic from "./MessagesShowEpic";

@@ -5,7 +5,7 @@ import {Observable} from "rxjs/Observable";
 import {ActionsObservable, combineEpics, Epic} from "redux-observable";
 import uuid from "uuid";
 
-import {Create, ProcessError, Request, showCommonError} from "../../../epics/EpicUtils";
+import {Create, ProcessError, Request, showCommonError} from "../../../../common/epics/EpicUtils";
 import {
   applyCorporatePass,
   GET_CORPORATE_PASS_REQUEST,

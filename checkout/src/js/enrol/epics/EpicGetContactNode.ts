@@ -2,7 +2,7 @@ import "rxjs";
 import * as Actions from "../containers/summary/actions/Actions";
 import CheckoutService from "../services/CheckoutService";
 import {IshState} from "../../services/IshState";
-import {Create, Request} from "./EpicUtils";
+import {Create, Request} from "../../common/epics/EpicUtils";
 import {Contact, ContactNode} from "../../model";
 import {Epic} from "redux-observable";
 import {getAmount, getCheckoutModelFromBackend} from "../actions/Actions";

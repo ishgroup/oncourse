@@ -5,7 +5,7 @@ import {Injector} from "../injector";
 import {Observable} from "rxjs";
 import {normalize} from "normalizr";
 import {ContactSchema} from "../NormalizeSchema";
-import {mapError, mapPayload} from "./epicsUtils";
+import {mapError, mapPayload} from "../common/epics/EpicUtils";
 import {ValidationError} from "../model";
 import {IshAction} from "../actions/IshAction";
 import {IshActions} from "../constants/IshActions";

@@ -12,7 +12,7 @@ import {Phase} from "../reducers/State";
 import CheckoutService from "../services/CheckoutService";
 import {submitAddContact, Values} from "../containers/contact-add/actions/Actions";
 import {IAction} from "../../actions/IshAction";
-import {ProcessError} from "./EpicUtils";
+import {ProcessError} from "../../common/epics/EpicUtils";
 import {AxiosResponse} from "axios";
 import {getPaymentStatus, resetPaymentState} from "../containers/payment/actions/Actions";
 import {IshState} from "../../services/IshState";

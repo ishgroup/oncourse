@@ -1,7 +1,7 @@
 import "rxjs";
 import {Epic} from "redux-observable";
 import {IshState} from "../../services/IshState";
-import * as EpicUtils from "../../epics/epicsUtils";
+import * as EpicUtils from "../../common/epics/EpicUtils";
 import {Actions} from "../actions/Actions";
 import {Preferences} from "../../model";
 import CommonService from "../services/CommonService";

@@ -2,7 +2,7 @@ import {Epic} from "redux-observable";
 import "rxjs";
 import CheckoutService from "../../../services/CheckoutService";
 import {IshState} from "../../../../services/IshState";
-import * as EpicUtils from "../../../epics/EpicUtils";
+import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import {UPDATE_PARENT_CHILDS_FULFILLED, UPDATE_PARENT_CHILDS_REQUEST} from "../../../actions/Actions";
 
 const request: EpicUtils.Request<any, IshState> = {

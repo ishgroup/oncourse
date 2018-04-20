@@ -1,7 +1,7 @@
 import "rxjs";
 import {Epic} from "redux-observable";
 import {IshState} from "../../../../services/IshState";
-import * as EpicUtils from "../../../epics/EpicUtils";
+import * as EpicUtils from "../../../../common/epics/EpicUtils";
 
 import CheckoutService from "../../../services/CheckoutService";
 import {GET_CONTACT_CONCESSIONS_AND_MEMBERSHIPS_REQUEST} from "../actions/Actions";

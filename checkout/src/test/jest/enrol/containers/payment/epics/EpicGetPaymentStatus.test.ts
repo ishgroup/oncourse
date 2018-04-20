@@ -2,7 +2,7 @@ import "rxjs";
 import {ActionsObservable} from "redux-observable";
 
 import {GET_PAYMENT_STATUS} from "../../../../../../js/enrol/containers/payment/actions/Actions";
-import {Request} from "../../../../../../js/enrol/epics/EpicUtils";
+import {Request} from "../../../../../../js/common/epics/EpicUtils";
 import {Observable} from "rxjs/Observable";
 
 

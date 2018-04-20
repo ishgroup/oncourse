@@ -3,7 +3,7 @@ import {IshState} from "../../services/IshState";
 import CheckoutService from "../services/CheckoutService";
 import {addContactNodeToState, PROCEED_TO_PAYMENT} from "../containers/summary/actions/Actions";
 import {CHANGE_PHASE, changePhase, updateAmount} from "../actions/Actions";
-import * as EpicUtils from "./EpicUtils";
+import * as EpicUtils from "../../common/epics/EpicUtils";
 import {CheckoutModel, ContactNode, CommonError} from "../../model";
 import {Phase} from "../reducers/State";
 import {Epic} from "redux-observable";
