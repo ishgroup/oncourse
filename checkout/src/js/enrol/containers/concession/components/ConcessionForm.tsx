@@ -18,7 +18,7 @@ class ConcessionForm extends React.Component<Props, any> {
 
     this.state = {
       concessionType: {},
-      isDefault: true,
+      hasValue: false,
     };
   }
 
@@ -28,7 +28,7 @@ class ConcessionForm extends React.Component<Props, any> {
 
     this.setState({
       concessionType: selectedType,
-      isDefault: key === '-1',
+      hasValue: !!key,
     });
 
     onTypeChange(selectedType);
@@ -37,7 +37,7 @@ class ConcessionForm extends React.Component<Props, any> {
   render(): JSX.Element {
     const {concessionTypes} = this.props;
     const {hasExpireDate, hasNumber} = this.state.concessionType;
-    const {isDefault} = this.state;
+    const {hasValue} = this.state;
 
     return (
       <div>
@@ -60,7 +60,7 @@ class ConcessionForm extends React.Component<Props, any> {
         <Form.Field name="number" label="Number" required component={TextField} type="text"/>
         }
 
-        {!isDefault &&
+        {hasValue &&
         <ConcessionText />
         }
       </div>
