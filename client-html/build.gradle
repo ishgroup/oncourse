@@ -1,0 +1,27 @@
+apply plugin: 'com.moowork.node'
+
+node {
+    version = '9.3.0'
+    npmVersion = '5.5.1'
+    download = true
+}
+
+task webpack(type: NodeTask, dependsOn: 'yarn_install') {
+    script = file('node_modules/.bin/webpack')
+    args = ['--progress', '-p', '--env.NODE_ENV', 'production', '--env.BUILD_NUMBER', version ?: 'SNAPSHOT']
+}
+
+task jest(type: NodeTask, dependsOn: 'yarn_install') {
+    script = project.file('node_modules/.bin/jest')
+    args = ['--ci', '--testResultsProcessor=jest-junit']
+}
+
+sourceSets {
+    main.resources.srcDirs 'src/js', 'build/generated-sources'
+}
+
+test.dependsOn(jest)
+
+build.dependsOn(webpack)
+
+processResources.dependsOn(":server-api:swagger")
