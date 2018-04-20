@@ -45,5 +45,9 @@
             <AppenderRef ref="FILE_ERROR"/>
             <AppenderRef ref="FILE"/>
         </Logger>
+        <Logger name="io.milton.http.StandardFilter" level="error">
+            <AppenderRef ref="FILE_ERROR"/>
+            <AppenderRef ref="FILE"/>
+        </Logger>
     </Loggers>
 </Configuration>
