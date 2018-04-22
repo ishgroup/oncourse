@@ -12,22 +12,24 @@
                    sortMissingLast="true" omitNorms="true" />
         <fieldtype name="binary" class="solr.BinaryField" />
 
-        <fieldType name="int" class="solr.TrieIntField"
-                   precisionStep="0" omitNorms="true" positionIncrementGap="0" />
-        <fieldType name="float" class="solr.TrieFloatField"
-                   precisionStep="0" omitNorms="true" positionIncrementGap="0" />
-        <fieldType name="long" class="solr.TrieLongField"
-                   precisionStep="0" omitNorms="true" positionIncrementGap="0" />
-        <fieldType name="double" class="solr.TrieDoubleField"
-                   precisionStep="0" omitNorms="true" positionIncrementGap="0" />
+        <fieldType name="int" class="solr.IntPointField"
+                   omitNorms="true" positionIncrementGap="0" />
+        <fieldType name="float" class="solr.FloatPointField"
+                   omitNorms="true" positionIncrementGap="0" />
 
-        <fieldType name="tdouble" class="solr.TrieDoubleField"
-                   precisionStep="8" omitNorms="true" positionIncrementGap="0" />
+        <fieldType name="long" class="solr.LongPointField"
+                   omitNorms="true" positionIncrementGap="0" />
 
-        <fieldType name="date" class="solr.TrieDateField" omitNorms="true"
-                   precisionStep="0" positionIncrementGap="0" />
+        <fieldType name="double" class="solr.DoublePointField"
+                   omitNorms="true" positionIncrementGap="0" />
 
-        <fieldType name="sfloat" class="solr.TrieFloatField"
+        <fieldType name="tdouble" class="solr.DoublePointField"
+                   omitNorms="true" positionIncrementGap="0" />
+
+        <fieldType name="date" class="solr.DatePointField" omitNorms="true"
+                   positionIncrementGap="0" />
+
+        <fieldType name="sfloat" class="solr.FloatPointField"
                    sortMissingLast="true" omitNorms="true" />
 
         <fieldType name="exacttext" class="solr.StrField"
@@ -80,7 +82,7 @@
                 The file should exist in the solr/conf directory, and entries are of the form (without quotes) "% => ALPHA" or "\u002C => DIGIT".
                 Allowable types are: LOWER, UPPER, ALPHA, DIGIT, ALPHANUM, SUBWORD_DELIM. [Solr3.1]
                  -->
-                <filter class="solr.WordDelimiterFilterFactory"
+                <filter class="solr.WordDelimiterGraphFilterFactory"
                         generateWordParts="1" generateNumberParts="1" catenateWords="1"
                         catenateNumbers="1" catenateAll="0" splitOnCaseChange="1" />
                 <!--
@@ -109,11 +111,11 @@
                 If expand is true, a synonym will be expanded to all equivalent synonyms.
                 If it is false, all equivalent synonyms will be reduced to the first in the list.
                  -->
-                <filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt"
+                <filter class="solr.SynonymGraphFilterFactory" synonyms="synonyms.txt"
                         ignoreCase="true" expand="true" />
                 <filter class="solr.StopFilterFactory" ignoreCase="true"
                         words="stopwords.txt" />
-                <filter class="solr.WordDelimiterFilterFactory"
+                <filter class="solr.WordDelimiterGraphFilterFactory"
                         generateWordParts="1" generateNumberParts="1" catenateWords="0"
                         catenateNumbers="0" catenateAll="0" splitOnCaseChange="1" />
                 <filter class="solr.LowerCaseFilterFactory" />
@@ -136,7 +138,7 @@
                 <filter class="solr.RemoveDuplicatesTokenFilterFactory" />
                 <filter class="solr.StopFilterFactory" ignoreCase="true"
                         words="stopwords.txt" />
-                <filter class="solr.WordDelimiterFilterFactory"
+                <filter class="solr.WordDelimiterGraphFilterFactory"
                         generateWordParts="1" generateNumberParts="1" catenateWords="1"
                         catenateNumbers="1" catenateAll="0" splitOnCaseChange="0" />
                 <filter class="solr.LowerCaseFilterFactory" />
@@ -146,11 +148,11 @@
 
             <analyzer type="query">
                 <tokenizer class="solr.WhitespaceTokenizerFactory" />
-                <filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt"
+                <filter class="solr.SynonymGraphFilterFactory" synonyms="synonyms.txt"
                         ignoreCase="true" expand="true" />
                 <filter class="solr.StopFilterFactory" ignoreCase="true"
                         words="stopwords.txt" />
-                <filter class="solr.WordDelimiterFilterFactory"
+                <filter class="solr.WordDelimiterGraphFilterFactory"
                         generateWordParts="1" generateNumberParts="1" catenateWords="0"
                         catenateNumbers="0" catenateAll="0" splitOnCaseChange="0" />
                 <filter class="solr.LowerCaseFilterFactory" />
