@@ -20,7 +20,7 @@ sourceSets {
     main.resources.srcDirs 'src/js', 'build/generated-sources'
 }
 
-test.dependsOn(jest)
+//test.dependsOn(jest)
 
 build.dependsOn(webpack)
 
