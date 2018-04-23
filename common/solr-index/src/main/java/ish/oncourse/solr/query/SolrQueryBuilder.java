@@ -15,7 +15,7 @@ public class SolrQueryBuilder {
     static final String DIGIT_PATTERN = "(\\d)+";
     static final String SPACE_PATTERN = "[\\s]+";
 
-    static final double KM_IN_DEGREE_VALUE = 110.567;
+    public static final double KM_IN_DEGREE_VALUE = 110.567;
     private static final String SPACE_REPLACEMENT_CHARACTER = " ";
     private static final String SOLR_SYNTAX_CHARACTERS_STRING = "[\\!\\^\\(\\)\\{\\}\\[\\]\\:\"\\?\\+\\~\\*\\|\\&\\;\\\\]";
 
