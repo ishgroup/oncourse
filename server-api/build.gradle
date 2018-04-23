@@ -41,6 +41,7 @@ task swagger (type: Swagger) {
     schema = file("${project.projectDir}/src/main/resources/server-api.yaml")
     schemaVersion = 1
     javaOutput = file("${project.projectDir}/build/generated-sources")
+    jsOutput = file("${rootDir}/client-html/build/generated-sources")
 }
 
 compileGroovy {
