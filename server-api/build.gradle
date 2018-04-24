@@ -1,16 +1,21 @@
 apply plugin: 'groovy'
-apply plugin: 'java'
 
 
 configurations {
     swagger
 }
 
+sourceSets.main.java.srcDirs = []
+sourceSets.main.groovy.srcDir 'src/main/java'
+sourceSets.test.java.srcDirs = []
+sourceSets.test.groovy.srcDir 'src/test/java'
+
 apply from: "$rootDir/gradle/bootique.gradle"
 
 dependencies {
     compile 'io.swagger:swagger-annotations:1.5.18'
-    
+    compile "org.codehaus.groovy:groovy-all:$groovyVersion"
+
     compile 'org.apache.cxf:cxf-core:3.2.2'
     compile ('org.apache.cxf:cxf-rt-frontend-jaxrs:3.2.2'){
         exclude group:'javax.ws.rs'
