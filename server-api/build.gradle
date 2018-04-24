@@ -9,7 +9,6 @@ configurations {
 apply from: "$rootDir/gradle/bootique.gradle"
 
 dependencies {
-    compile project(':server')
     compile 'io.swagger:swagger-annotations:1.5.18'
     
     compile 'org.apache.cxf:cxf-core:3.2.2'
