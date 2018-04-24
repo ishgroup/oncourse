@@ -88,7 +88,6 @@ public class AppModule {
 
 	public void contributeApplicationDefaults(MappedConfiguration<String, String> configuration) {
 		configuration.add(SymbolConstants.HMAC_PASSPHRASE, HMAC_PASSPHRASE);
-		configuration.add(SearchService.ALIAS_SUFFIX_PROPERTY, EMPTY);
 	}
 
 	public RequestExceptionHandler buildAppRequestExceptionHandler(ComponentSource componentSource, ResponseRenderer renderer, Request request,

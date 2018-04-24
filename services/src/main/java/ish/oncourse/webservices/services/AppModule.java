@@ -246,7 +246,6 @@ public class AppModule {
 		configuration.add(IOCSymbols.THREAD_POOL_MAX_SIZE, "50");
 		configuration.add(IOCSymbols.THREAD_POOL_KEEP_ALIVE, "1 m");
 		configuration.add(IOCSymbols.THREAD_POOL_ENABLED, "true");
-		configuration.add(SearchService.ALIAS_SUFFIX_PROPERTY, EMPTY);
 	}
 
 	public void contributeComponentClassResolver(Configuration<LibraryMapping> configuration) {
