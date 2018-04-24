@@ -23,6 +23,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Symbol;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class SearchService implements ISearchService {
 	static final String TERMS_SEPARATOR_STRING = " || ";
@@ -53,7 +54,7 @@ public class SearchService implements ISearchService {
 
 	private String aliasSuffix;
 
-	private Map<SolrCore, SolrClient> solrClients = new HashMap<>();
+	private Map<SolrCore, SolrClient> solrClients = new ConcurrentHashMap<>();
 
 
 	private Properties appProperties;
