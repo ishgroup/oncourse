@@ -2,6 +2,9 @@ package ish.oncourse.portal.services;
 
 import ish.common.types.*;
 import ish.math.Money;
+import ish.oncourse.cache.ICacheFactory;
+import ish.oncourse.cache.ICacheProvider;
+import ish.oncourse.cache.caffeine.CaffeineFactory;
 import ish.oncourse.model.*;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.services.binary.IBinaryDataService;
@@ -31,8 +34,10 @@ import org.apache.tapestry5.services.Request;
 
 import javax.cache.Cache;
 import javax.cache.CacheManager;
+import javax.cache.configuration.Configuration;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.function.Supplier;
 
 import static ish.oncourse.model.auto._ContactRelation.RELATION_TYPE;
 import static ish.oncourse.model.auto._ContactRelationType.DELEGATED_ACCESS_TO_CONTACT;
@@ -74,6 +79,17 @@ public class PortalService implements IPortalService {
     @Inject
     private Request request;
 
+    private ICacheProvider cacheProvider;
+    private ICacheFactory<String, String> cacheFactory;
+    private Configuration<String, String> cacheConfig;
+
+    public PortalService(@Inject ICacheProvider provider) {
+        cacheProvider = provider;
+        this.cacheFactory = cacheProvider.createFactory(String.class, String.class);
+        long cacheSize = new Long(System.getProperty("cache.tapestry.size", "10000"));
+        this.cacheConfig = CaffeineFactory.createDefaultConfig(String.class, String.class, cacheSize);
+    }
+
     private static final String NOTIFICATION_CACHE =  "notification";
     private static final String NOTIFICATION_CACHE_KEY =  "%s-%s";
     private static final String NOTIFICATION_CACHE_VALUE =  "%d/%d/%d";
@@ -92,23 +108,45 @@ public class PortalService implements IPortalService {
     public Notification getNotification() {
         Contact contact = getContact();
         Date lastLoginTime = getLastLoginTime();
-        Cache<String, String> cache = cacheManager.getCache(NOTIFICATION_CACHE, String.class, String.class);
         String cacheKey = String.format(NOTIFICATION_CACHE_KEY, contact.getId().toString(), lastLoginTime.toString());
         int historyCount, resultsCount, resourcesCount;
-        
-        String value = cache.get(cacheKey);
-        if (value == null) {
-            historyCount = getNewPaymentsCount() + getNewInvoicesCount() + getNewEnrolmentsCount();
-            resultsCount = getNewResultsCount();
-            resourcesCount = getNewResourcesCount();
-            cache.put(cacheKey, String.format(NOTIFICATION_CACHE_VALUE, historyCount, resultsCount, resourcesCount));
-        } else {
-            String[] values = value.split(NOTIFICATION_CACHE_DELIMITER);
-            historyCount = Integer.parseInt(values[0]);
-            resultsCount = Integer.parseInt(values[1]);
-            resourcesCount = Integer.parseInt(values[2]);
-        }
+
+        Supplier<String> get = () -> {
+            int history = getNewPaymentsCount() + getNewInvoicesCount() + getNewEnrolmentsCount();
+            int results = getNewResultsCount();
+            int resources = getNewResourcesCount();
+            return String.format(NOTIFICATION_CACHE_VALUE, history, results, resources);
+        };
+
+        String value = getCachedValue(cacheKey, get);
+
+        String[] values = value.split(NOTIFICATION_CACHE_DELIMITER);
+        historyCount = Integer.parseInt(values[0]);
+        resultsCount = Integer.parseInt(values[1]);
+        resourcesCount = Integer.parseInt(values[2]);
+
         return new Notification(historyCount, resultsCount, resourcesCount);
+    }
+
+    /**
+     * Create cache create if absent, use <code>appKey</code> as group name,
+     * appkey contains site key so we don't need to use host name in MultiKey
+     * appkey can been null for SiteNotFound page
+     */
+    private String getCachedValue(String key, Supplier<String> get) {
+        try {
+            Cache<String, String> cache = cacheFactory.createIfAbsent(NOTIFICATION_CACHE, cacheConfig);
+            String v = cache.get(key);
+            if (v == null) {
+                v = get.get();
+                cache.put(key, v);
+            }
+            return v;
+        } catch (Exception e) {
+            logger.error("Exception appeared during reading cached value. cacheGroup {}, key: {}", NOTIFICATION_CACHE, key);
+            logger.catching(e);
+            return get.get();
+        }
     }
 
     @Override
