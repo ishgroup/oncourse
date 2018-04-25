@@ -1,6 +1,7 @@
 package ish.oncourse.portal.service;
 
 import ish.oncourse.cayenne.WillowCayenneModuleBuilder;
+import ish.oncourse.cayenne.cache.JCacheModule;
 import ish.oncourse.model.College;
 import ish.oncourse.model.WebHostName;
 import ish.oncourse.model.WebSite;
@@ -32,6 +33,7 @@ public class TestModule {
 				.dataSource(getDataSource())
 				.addConfig("cayenne-oncourse.xml")
 				.addModule(new WillowCayenneModuleBuilder().build())
+				.addModule(new JCacheModule())
 				.build());
 	}
 
