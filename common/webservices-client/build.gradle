@@ -13,6 +13,8 @@ dependencies {
     }
     compile ("org.apache.cxf:cxf-rt-databinding-jaxb:$cxfVersion")
     compile ("org.apache.cxf:cxf-rt-ws-rm:$cxfVersion")
+    compile ("org.apache.cxf:cxf-tools-common:$cxfVersion")
+    compile group: 'org.apache.cxf.xjc-utils', name: 'cxf-xjc-runtime', version: '3.2.1'
 }
 
 jar {
