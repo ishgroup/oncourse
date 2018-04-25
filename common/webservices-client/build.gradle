@@ -1,6 +1,9 @@
+ext {
+    cxfVersion = '3.2.2'
+}
 dependencies {
     compile project(':common:waCommon')
-    compile ('org.apache.cxf:cxf-bundle:2.6.16') {
+    compile ("org.apache.cxf:cxf-bundle:$cxfVersion") {
         exclude group:'net.sf.ehcache', module: 'ehcache-core'
         exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
     }
@@ -19,8 +22,8 @@ configurations {
  
 dependencies{
     ws "org.apache.cxf:cxf-tools:2.6.16",
-        "org.apache.cxf:cxf-tools-wsdlto-databinding-jaxb:2.6.16",
-        "org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:2.6.16",
+        "org.apache.cxf:cxf-tools-wsdlto-databinding-jaxb:$cxfVersion",
+        "org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:$cxfVersion",
         "org.jvnet.jaxb2_commons:jaxb2-basics:0.6.5"
         "log4j:log4j:1.2.17"
 }
