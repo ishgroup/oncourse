@@ -11,7 +11,7 @@ dependencies {
     compile ("org.apache.cxf:cxf-rt-ws-security:$cxfVersion") {
         exclude group:'net.sf.ehcache', module: 'ehcache-core'
     }
-    compile ("org.apache.cxf:cxf-rt-ws-security:cxf-rt-databinding-jaxb:$cxfVersion")
+    compile ("org.apache.cxf:cxf-rt-databinding-jaxb:$cxfVersion")
 }
 
 jar {
