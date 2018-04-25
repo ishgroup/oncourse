@@ -3,10 +3,15 @@ ext {
 }
 dependencies {
     compile project(':common:waCommon')
-    compile ("org.apache.cxf:cxf-bundle:$cxfVersion") {
-        exclude group:'net.sf.ehcache', module: 'ehcache-core'
+    compile ("org.apache.cxf:cxf-core:$cxfVersion")
+    compile ("org.apache.cxf:cxf-rt-frontend-jaxws:$cxfVersion") {
         exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
     }
+    compile ("org.apache.cxf:cxf-rt-transports-http:$cxfVersion")
+    compile ("org.apache.cxf:cxf-rt-ws-security:$cxfVersion") {
+        exclude group:'net.sf.ehcache', module: 'ehcache-core'
+    }
+    compile ("org.apache.cxf:cxf-rt-ws-security:cxf-rt-databinding-jaxb:$cxfVersion")
 }
 
 jar {
