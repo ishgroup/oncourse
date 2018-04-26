@@ -10,11 +10,11 @@ public class Adapter1
 
 
     public Date unmarshal(String value) {
-        return (org.apache.cxf.xjc.runtime.DataTypeAdapter.parseDateTime(value));
+        return (org.apache.cxf.tools.common.DataTypeAdapter.parseDateTime(value));
     }
 
     public String marshal(Date value) {
-        return (org.apache.cxf.xjc.runtime.DataTypeAdapter.printDateTime(value));
+        return (org.apache.cxf.tools.common.DataTypeAdapter.printDateTime(value));
     }
 
 }

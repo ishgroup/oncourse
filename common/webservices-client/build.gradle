@@ -1,20 +1,9 @@
-ext {
-    cxfVersion = '3.2.2'
-}
 dependencies {
     compile project(':common:waCommon')
-    compile ("org.apache.cxf:cxf-core:$cxfVersion")
-    compile ("org.apache.cxf:cxf-rt-frontend-jaxws:$cxfVersion") {
+    compile ('org.apache.cxf:cxf-bundle:2.6.16') {
+        exclude group:'net.sf.ehcache', module: 'ehcache-core'
         exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
     }
-    compile ("org.apache.cxf:cxf-rt-transports-http:$cxfVersion")
-    compile ("org.apache.cxf:cxf-rt-ws-security:$cxfVersion") {
-        exclude group:'net.sf.ehcache', module: 'ehcache-core'
-    }
-    compile ("org.apache.cxf:cxf-rt-databinding-jaxb:$cxfVersion")
-    compile ("org.apache.cxf:cxf-rt-ws-rm:$cxfVersion")
-    compile ("org.apache.cxf:cxf-tools-common:$cxfVersion")
-    compile group: 'org.apache.cxf.xjc-utils', name: 'cxf-xjc-runtime', version: '3.2.1'
 }
 
 jar {
@@ -30,10 +19,10 @@ configurations {
  
 dependencies{
     ws "org.apache.cxf:cxf-tools:2.6.16",
-        "org.apache.cxf:cxf-tools-wsdlto-databinding-jaxb:$cxfVersion",
-        "org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:$cxfVersion",
-        "org.jvnet.jaxb2_commons:jaxb2-basics:0.6.5"
-        "log4j:log4j:1.2.17"
+            "org.apache.cxf:cxf-tools-wsdlto-databinding-jaxb:2.6.16",
+            "org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:2.6.16",
+            "org.jvnet.jaxb2_commons:jaxb2-basics:0.6.5"
+    "log4j:log4j:1.2.17"
 }
 
 task wsdl2Java() {
