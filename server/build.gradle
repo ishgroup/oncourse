@@ -129,6 +129,17 @@ dependencies {
 	testCompile 'org.kohsuke:wordnet-random-name:1.3'
 }
 
+processResources{
+	dependsOn ":client-html:build"
+	doLast {
+		copy {                
+			from('../client-html/build/assets') {
+				include '**/*.*'
+			}
+			into 'build/resources/main/static'}
+	}
+}
+
 configurations {
 	apidocSource
 }
