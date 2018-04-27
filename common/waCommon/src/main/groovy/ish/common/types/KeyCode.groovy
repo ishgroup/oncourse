@@ -696,7 +696,15 @@ enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
      * Special single option.
      */
     @API
-    BULK_CONFIRM_TUTOR_WAGES(108, "Bulk confirm tutor wages")
+    BULK_CONFIRM_TUTOR_WAGES(108, "Bulk confirm tutor wages"),
+
+    /**
+     * Database value: 109
+     *
+     * Relates to onCourse application preferences that affect all users and open in java embedded web browser
+     */
+    @API
+    GENERAL_PREFERENCES_HTML(109, "HTML general preferences", NONE, CREATE | PRINT | DELETE)
     
 
 	private int value
