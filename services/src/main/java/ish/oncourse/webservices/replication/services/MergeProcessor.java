@@ -274,28 +274,23 @@ public class MergeProcessor {
 		List<TaggableTag> moveQueue = new ArrayList<>();
 		List<TaggableTag> removeQueue = new ArrayList<>();
 
+		Taggable headTaggable = ObjectSelect.query(Taggable.class).where(Taggable.ENTITY_WILLOW_ID.eq(contactToUpdate.getId())).selectFirst(context);
 		List<TaggableTag> taggableTags = getTagRelationsFor(context, contactToDelete);
 
 		for (TaggableTag taggableTag : new ArrayList<>(taggableTags)) {
 			if (hasDeleteStub("ContactTagRelation", taggableTag.getTaggable().getId(), taggableTag.getTaggable().getAngelId())) {
 				removeQueue.add(taggableTag);
 			} else {
-				if (tagAlreadyUsedFor(context, contactToUpdate, taggableTag.getTag())) {
-					removeQueue.add(taggableTag);
-				} else {
-					if (!containsRelation(moveQueue, taggableTag)) {
-						moveQueue.add(taggableTag);
-					} else {
-						removeQueue.add(taggableTag);
-					}
-				}
+				moveQueue.add(taggableTag);
 			}
 		}
 
-		moveRelationsTo(moveQueue, contactToUpdate);
-		removeRelations(context, removeQueue);
+		moveRelationsTo(moveQueue, headTaggable);
 
-		dedupeTagRelationsFor(context, contactToUpdate);
+		context.deleteObjects(removeQueue);
+		context.deleteObjects(ObjectSelect.query(Taggable.class).where(Taggable.ENTITY_WILLOW_ID.eq(contactToDelete.getId())).select(context));
+
+		TagRelationDeduper.valueOf(context, contactToUpdate).dedupe();
 	}
 
 	private List<TaggableTag> getTagRelationsFor(ObjectContext context, Queueable entity) {
@@ -305,45 +300,10 @@ public class MergeProcessor {
 				.select(context));
 	}
 
-	private void removeRelations(ObjectContext context, List<TaggableTag> relations) {
-		if (relations.isEmpty()) {
-			List<Taggable> taggables = relations.stream().map(t -> t.getTaggable()).collect(Collectors.toList());
-
-			context.deleteObjects(relations);
-			context.deleteObjects(taggables);
-		}
-	}
-
-	private boolean tagAlreadyUsedFor(ObjectContext context, Queueable entity, Tag t) {
-		return !ObjectSelect.query(TaggableTag.class)
-				.where(TaggableTag.TAGGABLE.dot(Taggable.ENTITY_IDENTIFIER).eq(entity.getClass().getSimpleName()))
-				.and(TaggableTag.TAGGABLE.dot(Taggable.ENTITY_WILLOW_ID).eq(entity.getId()))
-				.and(TaggableTag.TAG.eq(t))
-				.select(context)
-				.isEmpty();
-	}
-
-	private void moveRelationsTo(List<TaggableTag> taggableTag, Queueable entity) {
+	private void moveRelationsTo(List<TaggableTag> taggableTag, Taggable taggable) {
 		taggableTag.forEach(t -> {
-			t.getTaggable().setEntityWillowId(entity.getId());
-			t.getTaggable().setAngelId(entity.getAngelId());
+			t.setTaggable(taggable);
 		});
-	}
-
-	private boolean containsRelation(List<TaggableTag> list, TaggableTag item) {
-		return list.stream()
-				.filter(t -> t.getTaggable().getId() == item.getTaggable().getId() &&
-						t.getTag().getId() == item.getTag().getId())
-				.count() > 0;
-	}
-
-	private void dedupeTagRelationsFor(ObjectContext context, Queueable entity) {
-		List<TaggableTag> taggableTags = ObjectSelect.query(TaggableTag.class)
-				.where(TaggableTag.TAGGABLE.dot(Taggable.ENTITY_IDENTIFIER).eq(entity.getClass().getSimpleName())
-						.andExp(TaggableTag.TAGGABLE.dot(Taggable.ENTITY_WILLOW_ID).eq(entity.getId())))
-				.select(context);
-
-		context.deleteObjects(taggableTags.stream().skip(1).collect(Collectors.toList()));
 	}
 
 	private void mergeAssessmentClassTutors(Tutor tutorToUpdate, Tutor tutorToDelete) {

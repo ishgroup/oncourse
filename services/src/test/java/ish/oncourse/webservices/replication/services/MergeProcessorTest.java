@@ -191,8 +191,8 @@ public class MergeProcessorTest extends ServiceTest {
 				.and(TaggableTag.TAG.dot(Tag.ANGEL_ID).eq(2l)).select(context);
 
 		assertTrue(!tagRelation2.isEmpty());
-		assertEquals(3l ,tagRelation2.get(0).getId().longValue());
-		assertEquals(3l, tagRelation2.get(0).getTaggable().getId().longValue());
+		assertEquals(2l ,tagRelation2.get(0).getId().longValue());
+		assertEquals(1l, tagRelation2.get(0).getTaggable().getId().longValue());
 		
 		List<AssessmentClassTutor> assessmentClassTutor = ObjectSelect.query(AssessmentClassTutor.class).select(context);
 		assertEquals(2, assessmentClassTutor.size());

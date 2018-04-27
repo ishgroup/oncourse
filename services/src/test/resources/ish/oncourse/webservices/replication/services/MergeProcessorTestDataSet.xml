@@ -123,27 +123,34 @@
 
 
 	<Tag id="3475" collegeId="1" angelId="207" isWebVisible="0" nodeType="1" weighting="1" created="2011-09-12 00:38:55.0" modified="2011-09-12 00:38:55.0" name="Payroll wage intervals"/>
+
 	<Tag id="1" parentId="3475" collegeId="1" angelId="1" isWebVisible="0" nodeType="1" weighting="1" created="2011-09-12 00:38:55.0" modified="2011-09-12 00:17:20.0" name="Fortnightly"/>
 	<Tag id="2" parentId="3475" collegeId="1" angelId="2" isWebVisible="0" nodeType="1" weighting="1" created="2011-09-12 00:38:55.0" modified="2011-09-12 00:17:20.0" name="Monthly"/>
+	<Tag id="3" parentId="3475" collegeId="1" angelId="3" isWebVisible="0" nodeType="1" weighting="1" created="2011-09-12 00:38:55.0" modified="2011-09-12 00:17:20.0" name="Tag3"/>
+	<Tag id="4" parentId="3475" collegeId="1" angelId="4" isWebVisible="0" nodeType="1" weighting="1" created="2011-09-12 00:38:55.0" modified="2011-09-12 00:17:20.0" name="Tag4"/>
 
 	<TagGroupRequirement id="479" tagId="3475" collegeId="1" angelId="202" allowsMultipleTags="0" isRequired="0" created="2011-09-12 00:38:55.0" modified="2011-09-12 00:17:20.0"/>
 
-	<Taggable id="1" collegeId="1" entityIdentifier="Contact" entityWillowId="1" />
-	<Taggable id="2" collegeId="1" entityIdentifier="Contact" entityWillowId="2" />
-	<Taggable id="3" collegeId="1" entityIdentifier="Contact" entityWillowId="2" />
+	<Taggable id="1" angelId="1" collegeId="1" entityIdentifier="Contact" entityWillowId="1"/>
+	<Taggable id="2" angelId="2" collegeId="1" entityIdentifier="Contact" entityWillowId="1"/>
+	<Taggable id="3" angelId="3" collegeId="1" entityIdentifier="Contact" entityWillowId="2"/>
+	<Taggable id="4" angelId="4" collegeId="1" entityIdentifier="Contact" entityWillowId="2"/>
 
-	<TaggableTag id="1" collegeId="1" tagId="1" taggableId="1"/>
-	<TaggableTag id="2" collegeId="1" tagId="1" taggableId="2"/>
-	<TaggableTag id="3" collegeId="1" tagId="2" taggableId="3"/>
+	<TaggableTag id="1" angelId="1" collegeId="1" tagId="1" taggableId="1"/>
+	<TaggableTag id="2" angelId="2" collegeId="1" tagId="2" taggableId="1"/>
+	<TaggableTag id="3" angelId="3" collegeId="1" tagId="3" taggableId="1"/>
 
-	<TaggableTag id="4" collegeId="1" tagId="1" taggableId="1"/>
-	<TaggableTag id="5" collegeId="1" tagId="1" taggableId="1"/>
+	<TaggableTag id="4" angelId="4" collegeId="1" tagId="1" taggableId="2"/>
+	<TaggableTag id="5" angelId="6" collegeId="1" tagId="2" taggableId="2"/>
+	<TaggableTag id="6" angelId="7" collegeId="1" tagId="3" taggableId="2"/>
 
-	<TaggableTag id="6" collegeId="1" tagId="1" taggableId="1"/>
-	<TaggableTag id="7" collegeId="1" tagId="1" taggableId="2"/>
+	<TaggableTag id="7" angelId="7" collegeId="1" tagId="2" taggableId="3"/>
+	<TaggableTag id="8" angelId="8" collegeId="1" tagId="3" taggableId="3"/>
+	<TaggableTag id="9" angelId="9" collegeId="1" tagId="4" taggableId="3"/>
 
-	<TaggableTag id="8" collegeId="1" tagId="2" taggableId="3"/>
-	<TaggableTag id="9" collegeId="1" tagId="2" taggableId="3"/>
+	<TaggableTag id="10" angelId="10" collegeId="1" tagId="2" taggableId="4"/>
+	<TaggableTag id="11" angelId="11" collegeId="1" tagId="3" taggableId="4"/>
+	<TaggableTag id="12" angelId="12" collegeId="1" tagId="4" taggableId="4"/>
 
 
 	<CustomFieldType id="1" angelId="1" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
