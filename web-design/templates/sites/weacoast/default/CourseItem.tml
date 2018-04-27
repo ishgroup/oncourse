@@ -103,5 +103,8 @@
         <div t:type="ui/relatedporducts" model="courseItemModel"></div>
       </t:if>
     </t:remove>
+    <t:if t:test="isList" negate="true">
+      <span t:type="ui/coursetestimonials" course="courseItemModel.course"/>
+    </t:if>
   </div>
 </t:container>
