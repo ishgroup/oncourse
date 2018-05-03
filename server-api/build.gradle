@@ -18,8 +18,10 @@ dependencies {
 
     compile 'org.apache.cxf:cxf-core:3.2.2'
     compile 'org.apache.cxf:cxf-rt-frontend-jaxrs:3.2.2'
-    compile 'javax.validation:validation-api:1.1.0.Final'
     
+    compile 'javax.validation:validation-api:1.1.0.Final'
+    compile 'org.apache.bval:org.apache.bval.bundle:1.1.2'
+
     compile 'com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.8.7'
     compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.7'
 
