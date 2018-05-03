@@ -32,15 +32,17 @@ public class TagRelationDeduper {
     public void dedupe() {
         List<Taggable> entityTaggables = getAllOf(entity);
 
-        Taggable headTaggable = defineHeadTaggable(entityTaggables);
-        List<Taggable> taggableDuplicates = defineDuplicates(entityTaggables);
+        if (entityTaggables.size() > 1) {
+            Taggable headTaggable = defineHeadTaggable(entityTaggables);
+            List<Taggable> taggableDuplicates = defineDuplicates(entityTaggables);
 
-        relinkTaggableRelations(taggableDuplicates, headTaggable);
-        List<Taggable> unusuableTaggables = taggableDuplicates;
-        List<TaggableTag> unusuableTaggableTags = dedupeTaggableTags(headTaggable);
+            relinkTaggableRelations(taggableDuplicates, headTaggable);
+            List<Taggable> unusuableTaggables = taggableDuplicates;
+            List<TaggableTag> unusuableTaggableTags = dedupeTaggableTags(headTaggable);
 
-        context.deleteObjects(unusuableTaggableTags);
-        context.deleteObjects(unusuableTaggables);
+            context.deleteObjects(unusuableTaggableTags);
+            context.deleteObjects(unusuableTaggables);
+        }
     }
 
     /**

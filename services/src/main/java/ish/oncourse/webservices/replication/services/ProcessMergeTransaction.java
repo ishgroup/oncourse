@@ -73,7 +73,8 @@ public class ProcessMergeTransaction {
 	private void cleanContactDuplicateStubs(GenericTransactionGroup group) {
 		Iterator<GenericReplicationStub> groupIterator = group.getGenericAttendanceOrBinaryDataOrBinaryInfo().iterator();
 		while (groupIterator.hasNext()) {
-			if (ContactDuplicate.class.getSimpleName().equals(groupIterator.next().getEntityIdentifier())) {
+			String entityIdentifier = groupIterator.next().getEntityIdentifier();
+			if (ContactDuplicate.class.getSimpleName().equals(entityIdentifier) || "ContactTagRelation".equals(entityIdentifier)) {
 				groupIterator.remove();
 			}
 		}
