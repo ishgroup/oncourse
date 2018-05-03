@@ -4,7 +4,7 @@ import ish.oncourse.configuration.IProperty
 
 enum AdminProperty implements IProperty {
 
-    S_ROOT('admin_files', 's.root')
+    S_ROOT('editor_files', 's.root')
 
     private String key
     private String systemProperty
