@@ -47,10 +47,10 @@ public class GetAverageSurvey {
 
         int size = surveys.size();
         if (size != 0) {
-            result.setCourseScore(((int) Math.floor(result.getCourseScore() / size)));
-            result.setTutorScore(((int) Math.floor(result.getTutorScore() / size)));
-            result.setVenueScore(((int) Math.floor(result.getVenueScore() / size)));
-            result.setNetPromoterScore(((int) Math.floor(result.getNetPromoterScore() / size)));
+            result.setCourseScore((Math.round(result.getCourseScore() / size)));
+            result.setTutorScore((Math.round(result.getTutorScore() / size)));
+            result.setVenueScore((Math.round(result.getVenueScore() / size)));
+            result.setNetPromoterScore((Math.round(result.getNetPromoterScore() / size)));
         }
         return result;
     }

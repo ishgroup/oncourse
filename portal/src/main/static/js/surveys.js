@@ -46,7 +46,7 @@ Survey.prototype = {
                 var courseScore = $j("div[data='" + self.id + "'].class-reviews").find("span.course-rate").raty("score");
 
                 var evtClasses = evt.target.parentElement.className;
-                var averageRate = Math.floor(
+                var averageRate = Math.round(
                     (evtClasses.endsWith('venue-rate') ? scoreVal + tutorScore + courseScore :
                         evtClasses.endsWith('tutor-rate') ? venueScore + scoreVal + courseScore :
                             venueScore + tutorScore + scoreVal) / 3);
