@@ -24,15 +24,14 @@
 						<h5>${getFullName(enrolment.student)}</h5>
 
 						<t:if test="enableDetails">
-						<ul class="list-inline">
+						<ul>
 							<li>
                                 <a href="mailto:${enrolment.student.contact.emailAddress}">${enrolment.student.contact.emailAddress}</a>
+								<t:if test="getPhoneNumber(enrolment.student.contact)">
+									<span>&nbsp;</span>
+									<a href="tel:${getPhoneNumber(enrolment.student.contact)}">${getPhoneNumber(enrolment.student.contact)}</a>
+								</t:if>
                             </li>
-							<t:if test="getPhoneNumber(enrolment.student.contact)">
-								<li>
-                                    <a href="tel:${getPhoneNumber(enrolment.student.contact)}">${getPhoneNumber(enrolment.student.contact)}</a>
-                                </li>
-							</t:if>
 							<t:loop source="getGuardians(enrolment.student)" value="contact">
 								<li>
 									<span>Guardian: ${contact.fullName}&nbsp;</span>

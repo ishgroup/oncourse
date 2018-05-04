@@ -12,6 +12,7 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -72,9 +73,14 @@ public class ClassRollItemNew {
 	}
 
 	public List<Contact> getGuardians(Student s) {
-		return s.getContact().getFromContacts().stream()
-				.filter(relation -> relation.getRelationType() != null && relation.getRelationType().getAngelId() == -1)
-                .map(relation -> relation.getFromContact())
-				.collect(Collectors.toList());
+		Integer age = GetAge.valueOf(s.getContact()).get();
+		if (age != null  && age < DEFAULT_contactAgeWhenNeedParent) {
+			return s.getContact().getFromContacts().stream()
+					.filter(relation -> relation.getRelationType() != null && relation.getRelationType().getAngelId() == -1)
+					.map(relation -> relation.getFromContact())
+					.collect(Collectors.toList());
+		} else {
+			return new ArrayList<>();
+		}
 	}
 }
