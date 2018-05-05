@@ -10,7 +10,14 @@
 
 $footer-theme: "b";
 
+$footerZigZagContent: "" !default;
 $footerZigZagBackground: url("/s/img/icons/zigzag.svg") !default;
+$footerZigZagBackgroundPosition: 4px !default;
+$footerZigZagWidth: 100% !default;
+$footerZigZagHeight: 8px !default;
+$footerZigZagPosition: absolute !default;
+$footerZigZagPositionTop: -8px !default;
+$footerZigZagPositionLeft: 0 !default;
 
 $footerBG: #0a3a4a no-repeat center top !default;
 $footerFontSize: 15px !default;

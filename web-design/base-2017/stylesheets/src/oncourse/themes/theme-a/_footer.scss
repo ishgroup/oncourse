@@ -11,14 +11,10 @@
 
 @include theme('a', 'footer') {
   #footer {
-    color: $footerTextColor;
-    background: $footerBG;
-    font-size: 14px;
-    line-height: 26px;
-    padding-top: 25px;
+    padding-top: $footerPaddingTop;
 
     @include responsive($media-tablet) {
-      padding-top: 70px;
+      padding-top: $footerPaddingTopMediaTablet;
     }
 
     @include clearfix;
@@ -31,53 +27,53 @@
       }
 
       > p {
-        float: left;
+        float: $footerLeftPtagFloat;
       }
       .social-content {
         @include responsive($media-tablet) {
           @include bootstrap(false) {
-            float: left;
+            float: $footerLeftSocialContentFloatMediaTablet;
           }
         }
         > br {
           display: none;
         }
         > img {
-          background-color: #FFFFFF;
+          background-color: $footerLeftSocialContentSiteLogoBackgroundColor;
         }
         .social-links {
-          margin-top: 25px;
+          margin-top: $footerLeftSocialContentLinksMarginTop;
           li {
-            display: inline-block;
+            display: $footerLeftSocialContentLinksListDisplay;
 
             &:first-child {
-              margin-left: 0;
+              margin-left: $footerLeftSocialContentLinksListFirstChildMarginLeft;
             }
           }
         }
       }
       .address-info {
         @include bootstrap(false) {
-          float: left;
+          float: $footerLeftAddressInfoFloat;
         }
         .title {
-          text-transform: uppercase;
+          text-transform: $footerLeftAddressInfoTitleTextTransform;
           color: $footerTitleColor;
         }
 
         .address {
-          margin-bottom: 20px;
+          margin-bottom: $footerLeftAddressMarginBottom;
         }
       }
     }
 
     .right {
       @include bootstrap(false) {
-        float: right;
-        display: table;
-        width: 100%;
+        float: $footerRightFloat;
+        display: $footerRightDisplay;
+        width: $footerRightWidth;
         @include responsive($media-tablet) {
-          width: 50%;
+          width: $footerRightWidthTablet;
         }
       }
       > p {
@@ -86,11 +82,11 @@
       %right-content {
         > li:first-child {
           color: $footerTitleColor;
-          text-transform: uppercase;
+          text-transform: $footerRightContentListFirstChildTextTransform;
         }
         a {
           color: $footerAnchorColor;
-          text-decoration: none;
+          text-decoration: $footerRightContentAnchorTextDecoration;
           &:hover {
             color: $footerAnchorHoverColor;
           }
@@ -99,12 +95,12 @@
 
       @include bootstrap(false) {
         .row {
-          display: table;
-          width: 100%;
+          display: $footerRightRowDisplay;
+          width: $footerRightRowWidth;
         }
         .row>ul, >ul {
           @include responsive($media-tablet) {
-            display: table-cell;
+            display: $footerRightRowChildDisplayMediaTablet;
           }
           @extend %right-content;
         }
@@ -119,34 +115,34 @@
     .courses-list, .quicklinks {
       ul >li {
         >a, &:first-child {
-          text-transform: capitalize;
+          text-transform: $footerCoursesListAnchorTextTransform;
         }
         ul {
-          display: none;
+          display: $footerCoursesListChildrenDisplay;
         }
       }
     }
 
     .footer-text {
-      padding-top: 15px;
-      clear: both;
+      padding-top: $footerContainerPaddingTop;
+      clear: $footerContainerClear;
       @include responsive($media-tablet) {
-        padding-top: 80px;
+        padding-top: $footerContainerPaddingTopMediaTablet;
       }
       @include clearfix;
       .footer-left {
-        float: left;
+        float: $footerContainerLeftFloat;
       }
       .footer-right {
-        float: right;
+        float: $footerContainerRightFloat;
       }
       .footer-logo {
         a {
           .ish {
-            color: #80A306;
+            color: $footerContainerLogoTextColor;
           }
           &:hover {
-            color: $anchorColor;
+            color: $footerContainerLogoAnchorColorHover;
           }
         }
       }

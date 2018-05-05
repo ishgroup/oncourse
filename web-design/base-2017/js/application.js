@@ -72,13 +72,13 @@ function submitTellAFriend() {
 
 function initAddStudentButton(){
 	//	Show the "add a student" section
-	$j(document).on('click', '#addstudent', function() {
+	$j(document.body).on('click', '#addstudent', function() {
 		$j('#addstudent-block').slideToggle(400);
 	});
 }
 
 function initAddConcessionButtons(){
-	$j(document).on('click', '.add-concession', function() {
+	$j(document.body).on('click', '.add-concession', function() {
 		$j('#'+this.id+'-block').slideToggle(400);
 	});
 }
@@ -100,7 +100,7 @@ function initSuburbAutoComplete(){
 	}
 
 	// return selects the suburb from the popup list. Eat it so it doesn't submit the form.
-	$j(document).on('keydown', '.suburb-autocomplete', function(key) {
+	$j(document.body).on('keydown', '.suburb-autocomplete', function(key) {
 		if (key.which == 13) {
 			key.preventDefault();
 			return false;
@@ -111,7 +111,7 @@ function initSuburbAutoComplete(){
 function initAddDiscountForm()
 {
 
-	$j(document).on('click', '#addDiscountButton', function() {
+	$j(document.body).on('click', '#addDiscountButton', function() {
 		var actionLink = "/ui/adddiscount:adddiscountevent";
 		var f = $j("[id*=addDiscountForm]")[0];
 		var data = $j(f).serialize();
@@ -178,7 +178,7 @@ function deleteCookie( name, path, domain ) {
 
 
 (function($j) {
-	$j(document).ready(function() {
+	$j(document.body).ready(function() {
 
 		//	General navigation: Hide empty dropdown
 		if (jQuery.browser.msie && parseInt(jQuery.browser.version) <= 8) {
@@ -196,14 +196,14 @@ function deleteCookie( name, path, domain ) {
 
 		// if you hit the enter key in the EnrolmentContactEntry component, click "enrol" instead of paying
 		// but not in the suburb autocomplete, where enter will select the suburb
-		$j(document).on('keydown', 'fieldset#student_enrol_credentials input,fieldset#student_enrol_details input', function(e) {
+		$j(document.body).on('keydown', 'fieldset#student_enrol_credentials input,fieldset#student_enrol_details input', function(e) {
 			if (e.keyCode == 13 && $j(this).attr('class').indexOf('suburb-autocomplete')==-1) {
 				$j("#add-student-enrol").click();
 			}
 		});
 
 		// for ajax-inserted elements, register them to do the slide toggle
-		$j(document).on('click', '.toggler', function() {
+		$j(document.body).on('click', '.toggler', function() {
 			$j(this).toggleClass("clicked");
 			$j(this).toggleClass('toggler-expanded');
 			$j(this).nextAll('.post-collapse:first').slideToggle(400);
@@ -211,7 +211,7 @@ function deleteCookie( name, path, domain ) {
 		});
 
 		// display hidden imperfectly matching classes
-		$j(document).on('click', '.more-classes-link', function() {
+		$j(document.body).on('click', '.more-classes-link', function() {
 			$j(this).hide();
 			$j(this).nextAll('.more-classes').slideToggle(400);
 		});
@@ -224,13 +224,13 @@ function deleteCookie( name, path, domain ) {
 		initHints();
 
 		// When a user logs in, show them the company fields or the individual's fields
-		$j(document).on('click', "#iscompany", function() {
+		$j(document.body).on('click', "#iscompany", function() {
 			$j(this).nextAll('.company-details:first').slideToggle(400);
 			$j(this).nextAll('.user-details:first').slideToggle(400);
 		});
 
 		// show default text in text fields with class defaultText using "default" attribute
-		$j(document).on('focus', ".defaultText", function(srcc) {
+		$j(document.body).on('focus', ".defaultText", function(srcc) {
 			if ($j(this).val() == $j(this).attr("default"))
 			{
 				$j(this).removeClass("defaultTextActive");
@@ -238,7 +238,7 @@ function deleteCookie( name, path, domain ) {
 			}
 		});
 
-		$j(document).on('blur', '.defaultText', function() {
+		$j(document.body).on('blur', '.defaultText', function() {
 			if ($j(this).val() == "")
 			{
 				$j(this).addClass("defaultTextActive");
@@ -248,23 +248,23 @@ function deleteCookie( name, path, domain ) {
 		$j(".defaultText").blur();
 
 		// clear default values when submitting any form
-		$j(document).on('submit', 'form', function() {
+		$j(document.body).on('submit', 'form', function() {
 			clearDefaultValues();
 			return true;
 		});
 
 		// Advanced search
 
-		$j(document).on('click', '.show-advanced-search,div#advanced-search-background', function() {
+		$j(document.body).on('click', '.show-advanced-search,div#advanced-search-background', function() {
 			toggleAdvancedSearch();
 		});
 
-		$j(document).on('click', '#cancel-search', function() {
+		$j(document.body).on('click', '#cancel-search', function() {
 			toggleAdvancedSearch();
 		});
 
 		// make the search string in the advanced search update the basic form search input area
-		$j(document).on('keyup', '#adv_keyword', function(e) {
+		$j(document.body).on('keyup', '#adv_keyword', function(e) {
 			text = $j(this).val();
 			$j("form#search > input[type=text]").val(text);
 			if (e.keyCode == 13) $j('form#search2').submit();
@@ -276,7 +276,7 @@ function deleteCookie( name, path, domain ) {
 
 		// reload the tell-a-friend form using JQuery ajax.
 		// Have to do it this way because thickbox is incompatible with Wonder Ajax
-		$j(document).on('click', '#submitTellAFriendLink', function() {
+		$j(document.body).on('click', '#submitTellAFriendLink', function() {
 			submitTellAFriend();
 			return false;
 		});
@@ -309,7 +309,7 @@ function deleteCookie( name, path, domain ) {
 			fade: 250
 		});
 
-		$j(document).on('click', '.nyromodalreload', function(e) {
+		$j(document.body).on('click', '.nyromodalreload', function(e) {
 			e.preventDefault();
 			var href = $j(this).attr('href');
 
@@ -325,7 +325,7 @@ function deleteCookie( name, path, domain ) {
 		});
 
 		var _modalCalled = false;
-		$j(document).on('click', '.nyromodal', function(e) {
+		$j(document.body).on('click', '.nyromodal', function(e) {
 			e.preventDefault();
 			var href = $j(this).attr('href');
 
@@ -357,7 +357,7 @@ function deleteCookie( name, path, domain ) {
 
 		// hide the location map after it has been filled by Google (above), then reveal it when its control is clicked.
 		$j('.collapsedLocationMap').hide();
-		$j(document).on('click', '.showLocationMap', function() {
+		$j(document.body).on('click', '.showLocationMap', function() {
 			$j('.showLocationMap').hide();
 			$j('#location').show();
 			$j('#location').removeClass('collapsedLocationMap');
@@ -367,7 +367,7 @@ function deleteCookie( name, path, domain ) {
 
 		// Show map in search results
 
-		$j(document).on('click', '.toggle_locations', function(e){
+		$j(document.body).on('click', '.toggle_locations', function(e){
 			e.preventDefault();
 			if ($j('#gmapCanvas').length&&!mapLoaded) {
 				mapLoad('gmapCanvas', gMapSites, gMapOptions);
@@ -375,14 +375,14 @@ function deleteCookie( name, path, domain ) {
 			$j('#sitesMap').toggleClass('show');
 		});
 
-		$j(document).on('click', '.location-course', function() {
+		$j(document.body).on('click', '.location-course', function() {
 			var rel = $j(this).attr('rel');
 			if(rel != '') {
 				zoomMapForSite(rel);
 			}
 		});
 
-		$j(document).on('click', 'a.timeline', function(e) {
+		$j(document.body).on('click', 'a.timeline', function(e) {
 			e.preventDefault();
 			e.stopPropagation();
 			var id = '#sessions_for_class_'+$j(this).parents('.classItem').attr('data-classid');
@@ -397,7 +397,7 @@ function deleteCookie( name, path, domain ) {
 			});
 		});
 
-		$j(document).on('click', '#overlay, #timelineClose', function(e) {
+		$j(document.body).on('click', '#overlay, #timelineClose', function(e) {
 			$j('overlay').hide();
 			$j('timeline-wrap').style.visibility = 'hidden';
 			return false;
@@ -419,7 +419,7 @@ function deleteCookie( name, path, domain ) {
 
 
 		var _processing = false;
-		$j(document).on('click', '#showMoreCourses', function() {
+		$j(document.body).on('click', '#showMoreCourses', function() {
 			$j('#showMore').append("<div class='message'></div>");
 			var link = this.href;
 			_processing = true;
@@ -519,13 +519,13 @@ function initHints(parentBlockId){
 function initOtherClassesControl(){
 
 	// display other location classes
-	$j(document).on('click', '.other-classes-control', function() {
+	$j(document.body).on('click', '.other-classes-control', function() {
 		$j(this).hide();
 		$j(this).nextAll('.other-classes').slideToggle(400);
 	});
 
 	// display hidden cancelled or full classes
-	$j(document).on('click', '.full-classes-control', function() {
+	$j(document.body).on('click', '.full-classes-control', function() {
 		$j(this).hide();
 		$j(this).nextAll('.full-classes').slideToggle(400);
 	});

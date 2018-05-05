@@ -84,3 +84,7 @@
     @include responsive-image();
   }
 }
+
+.transition-normal {
+  @include transition(0.5s all ease-in-out);
+}

@@ -61,3 +61,41 @@ $sliderCaptionBackgroundRgba: rgba(80, 80, 80, 0.75) !default;
 $sliderCaptionTextColor: #fff !default;
 $sliderCaptionTextSize: .85em !default;
 $sliderCaptionTextPadding: 10px !default;
+
+//
+// Below settings used in themes
+//
+$home-slider-height-mobile-small: 200px !default;
+$home-slider-height-mobile: 300px !default;
+$home-slider-height: 531px !default;
+
+$homeSliderContainerPosition: relative !default;
+$homeSliderContainerPositionTop: 16.3% !default;
+$homeSliderContainerPositionTopMediaTablet: 129px !default;
+
+$homeSliderContainerContentBackground: $black !default;
+$homeSliderContainerContentBackgroundrgba: rgba(0,0,0,0.54) !default;
+$homeSliderContainerContentColor: #fff !default;
+$homeSliderContainerContentWidth: 85% !default;
+$homeSliderContainerContentPadding: 10px 20px !default;
+$homeSliderContainerContentWidthMediaSmall: 90% !default;
+$homeSliderContainerContentPaddingMediaSmall: 29px 35px 31px !default;
+$homeSliderContainerContentWidthMediaDesktop: 822px !default;
+
+$homeSliderContainerHeadLineFontSize: 20px !default;
+$homeSliderContainerHeadLineLetterSpacing: -0.5px !default;
+$homeSliderContainerHeadLineFontWeight: bold !default;
+
+$homeSliderContainerHeadLineFontSizeMediaSmall: 25px !default;
+$homeSliderContainerHeadLineLetterSpacingMediaSmall: -1px !default;
+
+$homeSliderContainerHeadLineFontSizeMediaTablet: 74px !default;
+$homeSliderContainerHeadLineLetterSpacingMediaTablet: -4.7px !default;
+
+$homeSliderContainerHeadLineFontSizeMediaDesktop: 74px !default;
+
+$homeSliderContainerDescriptionFontSize: 12px !default;
+$homeSliderContainerDescriptionPaddingTop: 2px !default;
+$homeSliderContainerDescriptionFontSizeMediaSmall: 15px !default;
+$homeSliderContainerDescriptionFontSizeMediaTablet: 37px !default;
+$homeSliderContainerDescriptionFontSizeMediaDesktop: 37px !default;

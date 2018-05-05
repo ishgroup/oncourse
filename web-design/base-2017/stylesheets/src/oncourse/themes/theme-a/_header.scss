@@ -11,84 +11,66 @@
 
 @include theme('a', 'header') {
   #header {
-    margin-bottom: 20px;
+    margin-bottom: $headerMarginBottom;
     @include responsive($media-tablet) {
-      margin-bottom: 25px;
+      margin-bottom: $headerMarginBottomMediaTablet;
     }
 
     a.phone-number {
-      color: $white;
-      text-decoration: none;
+      color: $headerTopBarPhoneTextColor;
+      text-decoration: $headerPhoneNumberTextDecoration;
     }
     #siteLogo {
-      z-index: 10;
-      width: 130px;
+      z-index: $headerSiteLogoZIndex;
+      width: $headerSiteLogoWidth;
     }
   }
 
   .navbar {
     nav#nav {
-      display: none;
-      margin-left: 0px;
+      display: $headerNavDisplay;
+      margin-left: $headerNavMarginLeft;
       @include responsive($media-tablet) {
-        margin-left: 148px;
+        margin-left: $headerNavMarginLeftMediaTablet;
       }
       @include responsive($media-desktop) {
-        margin-left: 281px;
+        margin-left: $headerNavMarginLeftMediaDesktop;
       }
       > ul {
-        background: transparent;
-        border: 0px;
+        border: $navBorder;
         &:after {
           content: "";
           display: block;
           clear: both;
         }
         > li {
-          margin-left: 0px;
-          border-bottom: 2px solid transparent;
+          margin-left: $navListMarginLeft;
+          border-bottom: $navListBorderBottom;
           &:first-child {
-            margin-left: 0;
+            margin-left: $navListMarginLeftFirstChild;
           }
 
           @include responsive($media-tablet) {
-            float: left;
-            margin-left: 33px;
+            margin-left: $navListMarginLeftMediaTablet;
           }
           > a {
-            color: $navColor;
-            text-decoration: none;
-            font-size: 16px;
-            display: block;
-            text-transform: initial;
-            font-weight: normal;
-            &:hover {
-              background: transparent;
-              color: initial;
-            }
+            text-decoration: $navAnchorTextDecoration;
+            text-transform: $navAnchorTextTransform;
+            font-weight: $navAnchorFontWeight;
           }
           > ul {
-            display: none;
-            background: $subNavBgColor;
-            top: 100%;
-            left: 0;
-            z-index: 9;
-            @include responsive($media-tablet) {
-              position: absolute;
-            }
             > li {
-              padding: 0px;
+              padding: $firstChildMenuListPadding;
               > a {
-                white-space: nowrap;
-                color: $subNavColor;
-                text-decoration: none;
-                font-size: 14px;
+                white-space: $firstChildMenuListWhiteSpace;
+                text-decoration: $firstChildMenuListTextDecoration;
+                font-size: $firstChildMenuListFontSize;
               }
             }
           }
 
           &:hover {
-            border-bottom: 2px solid #49bed0;
+            border-bottom: $navListBorderBottomHover;
           }
         }
       }
@@ -97,13 +79,13 @@
 
   #headerToolbar #search_box {
     .advanced-search-button .show-advanced-search span {
-      line-height: 1;
+      line-height: $searchMoreOptionsLineHeight;
     }
     #advanced_search .advanced-search-form {
       #adv_search_time, #adv_search_day {
         .checkbox>input {
-          width: 20px;
-          height: 20px;
+          width: $advancedSearchInputCheckboxWidth;
+          height: $advancedSearchInputCheckboxHeight;
         }
       }
     }

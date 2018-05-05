@@ -10,9 +10,52 @@
 
 $footer-theme: "a";
 
-$footerTitleColor: #fff !default;
-$footerAnchorColor: #8ca3ab !default;
-$footerAnchorHoverColor: #fff !default;
-
 $footerBG: #252d30 !default;
 $footerTextColor: #8ca3ab !default;
+$footerPaddingTop: 25px !default;
+$footerPaddingTopMediaTablet: 70px !default;
+
+$footerLeftPtagFloat: left !default;
+
+$footerLeftSocialContentFloatMediaTablet: left !default;
+$footerLeftSocialContentSiteLogoBackgroundColor: #FFFFFF !default;
+
+$footerLeftSocialContentLinksMarginTop: 25px !default;
+$footerLeftSocialContentLinksListDisplay: inline-block !default;
+$footerLeftSocialContentLinksListFirstChildMarginLeft: 0 !default;
+
+$footerTitleColor: #fff !default;
+$footerLeftAddressInfoFloat: left !default;
+$footerLeftAddressInfoTitleTextTransform: uppercase !default;
+
+$footerLeftAddressMarginBottom: 20px !default;
+
+
+$footerRightFloat: right !default;
+$footerRightDisplay: table !default;
+$footerRightWidth: 100% !default;
+$footerRightWidthTablet: 50% !default;
+
+$footerRightContentListFirstChildTextTransform: uppercase !default;
+
+$footerAnchorColor: #8ca3ab !default !default;
+$footerAnchorHoverColor: #fff !default !default;
+$footerRightContentAnchorTextDecoration: none !default;
+
+
+$footerRightRowDisplay: table !default;
+$footerRightRowWidth: 100% !default;
+$footerRightRowChildDisplayMediaTablet: table-cell !default;
+
+$footerCoursesListAnchorTextTransform: capitalize !default;
+$footerCoursesListChildrenDisplay: none !default;
+
+$footerContainerPaddingTop: 15px !default;
+$footerContainerClear: both !default;
+$footerContainerPaddingTopMediaTablet: 80px !default;
+
+$footerContainerLeftFloat: left !default;
+$footerContainerRightFloat: right !default;
+
+$footerContainerLogoTextColor: #80A306 !default;
+$footerContainerLogoAnchorColorHover: $anchorColor !default;

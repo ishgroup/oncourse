@@ -15,13 +15,15 @@
       float: none;
       width: 100%;
     }
-    #sidebarRight {
+    #sidebarRight, #sidebarLeft {
       display: none;
     }
   }
   .container {
-    h1.courses-title {
-      display: block !important;
+    @if $coursesTitleEnable == true {
+      h1.courses-title {
+        display: $coursesTitleDisplay;
+      }
     }
   }
   .content {
@@ -39,25 +41,6 @@
         }
 
       }
-    }
-  }
-  .rodal-dialog #popup-content .tutors_details {
-    ul.attachedImages, .tutor_pic {
-      position: initial;
-      width: 213px;
-      float: right;
-      margin-left: 20px;
-      margin-bottom: 20px;
-      right: 0px;
-    }
-    .tutors_classes {
-      display: table;
-      width: 100%;
-    }
-  }
-  #footer {
-    .footer-text {
-      margin-bottom: 0px;
     }
   }
 }

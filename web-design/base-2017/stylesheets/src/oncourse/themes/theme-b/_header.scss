@@ -11,14 +11,16 @@
 
 @include theme('b', 'header') {
   body {
-    background: #c7dee5; /* Old browsers */
-    background: -moz-linear-gradient(top,  #c7dee5 0%, #d1e3e9 12%, #f4f9fa 39%, #fefeff 50%, #ffffff 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#c7dee5), color-stop(12%,#d1e3e9), color-stop(39%,#f4f9fa), color-stop(50%,#fefeff), color-stop(100%,#ffffff)); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top,  #c7dee5 0%,#d1e3e9 12%,#f4f9fa 39%,#fefeff 50%,#ffffff 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top,  #c7dee5 0%,#d1e3e9 12%,#f4f9fa 39%,#fefeff 50%,#ffffff 100%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(top,  #c7dee5 0%,#d1e3e9 12%,#f4f9fa 39%,#fefeff 50%,#ffffff 100%); /* IE10+ */
-    background: linear-gradient(to bottom,  #c7dee5 0%,#d1e3e9 12%,#f4f9fa 39%,#fefeff 50%,#ffffff 100%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c7dee5', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+    @if $bodyDefaultBackgroundGradientEnable == true {
+      background: #c7dee5; /* Old browsers */
+      background: -moz-linear-gradient(top,  #c7dee5 0%, #d1e3e9 12%, #f4f9fa 39%, #fefeff 50%, #ffffff 100%); /* FF3.6+ */
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#c7dee5), color-stop(12%,#d1e3e9), color-stop(39%,#f4f9fa), color-stop(50%,#fefeff), color-stop(100%,#ffffff)); /* Chrome,Safari4+ */
+      background: -webkit-linear-gradient(top,  #c7dee5 0%,#d1e3e9 12%,#f4f9fa 39%,#fefeff 50%,#ffffff 100%); /* Chrome10+,Safari5.1+ */
+      background: -o-linear-gradient(top,  #c7dee5 0%,#d1e3e9 12%,#f4f9fa 39%,#fefeff 50%,#ffffff 100%); /* Opera 11.10+ */
+      background: -ms-linear-gradient(top,  #c7dee5 0%,#d1e3e9 12%,#f4f9fa 39%,#fefeff 50%,#ffffff 100%); /* IE10+ */
+      background: linear-gradient(to bottom,  #c7dee5 0%,#d1e3e9 12%,#f4f9fa 39%,#fefeff 50%,#ffffff 100%); /* W3C */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c7dee5', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+    }
     min-height: 100%;
 
     .content-images {
@@ -93,7 +95,7 @@
     }
     &.mobile-enabled {
       position: absolute;
-      top: 57px;
+      top: $headerTopBarHeight;
       width: 100%;
       z-index: 9999;
       nav#nav {

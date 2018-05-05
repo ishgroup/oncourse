@@ -10,10 +10,6 @@
 
 
 @include theme('b') {
-  $home-slider-height-mobile-small: 200px;
-  $home-slider-height-mobile: 300px;
-  $home-slider-height: 531px;
-
   .flexslider {
     &.home-slider {
       height: $home-slider-height-mobile-small;
@@ -55,52 +51,52 @@
             }
           }
           .container {
-            position: relative;
-            top: 16.3%;
+            position: $homeSliderContainerPosition;
+            top: $homeSliderContainerPositionTop;
             z-index: 2;
             @include responsive($media-tablet) {
-              top: 129px;
+              top: $homeSliderContainerPositionTopMediaTablet;
             }
             .text-content {
-              background: $black;
-              background: rgba(0,0,0,0.54);
-              color: #fff;
-              width: 85%;
-              padding: 10px 20px;
+              background: $homeSliderContainerContentBackground;
+              background: $homeSliderContainerContentBackgroundrgba;
+              color: $homeSliderContainerContentColor;
+              width: $homeSliderContainerContentWidth;
+              padding: $homeSliderContainerContentPadding;
               @include responsive($media-small) {
-                width: 90%;
-                padding: 29px 35px 31px;
+                width: $homeSliderContainerContentWidthMediaSmall;
+                padding: $homeSliderContainerContentPaddingMediaSmall;
               }
               @include responsive($media-desktop) {
-                width: 822px;
+                width: $homeSliderContainerContentWidthMediaDesktop;
               }
               h1 {
-                font-size: 20px;
-                letter-spacing: -0.5px;
-                font-weight: bold;
+                font-size: $homeSliderContainerHeadLineFontSize;
+                letter-spacing: $homeSliderContainerHeadLineLetterSpacing;
+                font-weight: $homeSliderContainerHeadLineFontWeight;
                 @include responsive($media-small) {
-                  font-size: 25px;
-                  letter-spacing: -1px;
+                  font-size: $homeSliderContainerHeadLineFontSizeMediaSmall;
+                  letter-spacing: $homeSliderContainerHeadLineLetterSpacingMediaSmall;
                 }
                 @include responsive($media-tablet) {
-                  font-size: 74px;
-                  letter-spacing: -4.7px;
+                  font-size: $homeSliderContainerHeadLineFontSizeMediaTablet;
+                  letter-spacing: $homeSliderContainerHeadLineLetterSpacingMediaTablet;
                 }
                 @include responsive($media-desktop) {
-                  font-size: 74px;
+                  font-size: $homeSliderContainerHeadLineFontSizeMediaDesktop;
                 }
               }
               p {
-                font-size: 12px;
-                padding-top: 2px;
+                font-size: $homeSliderContainerDescriptionFontSize;
+                padding-top: $homeSliderContainerDescriptionPaddingTop;
                 @include responsive($media-small) {
-                  font-size: 15px;
+                  font-size: $homeSliderContainerDescriptionFontSizeMediaSmall;
                 }
                 @include responsive($media-tablet) {
-                  font-size: 37px;
+                  font-size: $homeSliderContainerDescriptionFontSizeMediaTablet;
                 }
                 @include responsive($media-desktop) {
-                  font-size: 37px;
+                  font-size: $homeSliderContainerDescriptionFontSizeMediaDesktop;
                 }
               }
             }

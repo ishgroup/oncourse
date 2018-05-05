@@ -11,9 +11,11 @@
 .payment-summary, #contactEditorForm {
   .student-name {
     .student-info {
-      font-weight: bold;
-      padding-bottom: 5px;
-      position: relative;
+      font-weight: $checkoutPaymentStudentInfoFontWeight;
+      position: $checkoutPaymentStudentInfoPosition;
+      padding: $checkoutPaymentStudentInfoPadding;
+      margin-bottom: $checkoutPaymentStudentInfoMarginBottom;
+      @extend .transition-normal;
       h3 {
         font-size: $checkoutPaymentStudentTitleFontSize;
         margin-bottom: $checkoutPaymentStudentTitleMarginBottom;
@@ -36,6 +38,41 @@
         font-weight: $checkoutPaymentStudentAffiliationFontWeight;
         strong {
           margin-right: 6px;
+        }
+      }
+      &:hover {
+        background: $checkoutPaymentStudentInfoBackgroundHover;
+        .student-remove {
+          opacity: $checkoutPaymentStudentRemoveOpacityHover;
+        }
+      }
+      .student-remove {
+        opacity: $checkoutPaymentStudentRemoveOpacity;
+        display: $checkoutPaymentStudentRemoveDisplay;
+        position: $checkoutPaymentStudentRemovePosition;
+        right: $checkoutPaymentStudentRemovePositionRight;
+        top: $checkoutPaymentStudentRemovePositionTop;
+        margin-top: $checkoutPaymentStudentRemoveMarginTop;
+        width: $checkoutPaymentStudentRemoveArea;
+        height: $checkoutPaymentStudentRemoveArea;
+        cursor: pointer;
+        @extend .transition-normal;
+        &:hover {
+          opacity: $checkoutPaymentStudentRemoveOpacityHover;
+        }
+        &:before, &:after {
+          content: $checkoutPaymentStudentRemoveBeforeContent;
+          position: $checkoutPaymentStudentRemoveBeforePosition;
+          left: $checkoutPaymentStudentRemoveBeforePositionLeft;
+          width: $checkoutPaymentStudentRemoveBeforeWidth;
+          height: $checkoutPaymentStudentRemoveBeforeHeight;
+          background-color: $checkoutPaymentStudentRemoveBeforeBackground;
+        }
+        &:before {
+          @include transform(rotate(45deg));
+        }
+        &:after {
+          @include transform(rotate(-45deg));
         }
       }
     }
@@ -62,6 +99,7 @@
   }
   .checkoutList {
     margin-bottom: $checkoutPageListMarginBottom;
+    padding: $checkoutPageListPadding;
     .enrolmentItem {
       margin-bottom: $checkoutPageEnrolItemMarginBottom;
       .enrolmentInfo {

@@ -1150,3 +1150,119 @@
     }
   }
 }
+
+@if $courseTestimonialsEnable == true {
+  #{$courseTestimonialsBlock} {
+    background-color: $courseTestimonialsBackgroundColor;
+    color: $courseTestimonialsColor;
+    font-size: $courseTestimonialsFontSize;
+    font-weight: $courseTestimonialsFontWeight;
+    line-height: $courseTestimonialsLineHeight;
+    padding: $courseTestimonialsPadding;
+    position: $courseTestimonialsPosition;
+    text-align: $courseTestimonialsTextAlign;
+    margin-top: $courseTestimonialsMarginTop;
+    margin-bottom: $courseTestimonialsMarginBottom;
+    width: $courseTestimonialsWidth;
+
+    @include responsive($media-tablet) {
+      font-size: $courseTestimonialsFontSizeMediaTablet;
+    }
+
+    ul {
+      &, li {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+    }
+
+    h3 {
+      color: $courseTestimonialsTitleColor;
+      font-size: $courseTestimonialsTitleFontSize;
+      font-weight: $courseTestimonialsTitleFontWeight;
+      letter-spacing: $courseTestimonialsTitleLetterSpacing;
+      margin-bottom: $courseTestimonialsTitleMarginBottom;
+
+      @include responsive($media-tablet) {
+        font-size: $courseTestimonialsTitleMediaTablet;
+      }
+    }
+
+    p {
+      margin-bottom: 0;
+    }
+
+    @if $courseTestimonialsRatingEnable == true {
+      .testimonial-rating {
+        .icon-rating {
+          position: relative;
+          &::after {
+            content: $courseTestimonialsRatingIconContent;
+            display: $courseTestimonialsRatingIconDisplay;
+            background: $courseTestimonialsRatingIconBackground;
+            width: $courseTestimonialsRatingIconWidth;
+            height: $courseTestimonialsRatingIconHeight;
+            background-position: $courseTestimonialsRatingIconBackgroundPosition;
+          }
+          &.checked::after {
+            background-position: $courseTestimonialsRatingIconBackgroundPositionChecked;
+          }
+        }
+      }
+    }
+
+    @if $courseTestimonialsBxSliderEnable == true {
+      .bx-wrapper {
+        margin-bottom: $courseTestimonialsSliderWrapperMarginBottom;
+        .bx-pager {
+          display: $courseTestimonialsSliderPagerDisplay;
+        }
+        .bx-controls-direction a {
+          &.bx-prev, &.bx-next {
+            border: 0 none;
+            text-decoration: none;
+            background: $courseTestimonialsSliderArrowBackground;
+            background-size: $courseTestimonialsSliderArrowBackgroundSize;
+            width: $courseTestimonialsSliderArrowWidth;
+            height: $courseTestimonialsSliderArrowHeight;
+          }
+          &.bx-prev {
+            left: $courseTestimonialsSliderArrowPosition;
+          }
+          &.bx-next {
+            background-position: $courseTestimonialsSliderArrowRightBackgroundPosition;
+            right: $courseTestimonialsSliderArrowPosition;
+          }
+        }
+      }
+    } @elseif $courseTestimonialsFlexSliderEnable == true {
+      .flex-direction-nav {
+        a {
+          overflow: hidden;
+          text-indent: 100%;
+          white-space: nowrap;
+          background: $courseTestimonialsSliderArrowBackground;
+          background-size: $courseTestimonialsSliderArrowBackgroundSize;
+          display: block;
+          margin-top: -15px;
+          position: absolute;
+          top: 50%;
+          width: $courseTestimonialsSliderArrowWidth;
+          height: $courseTestimonialsSliderArrowHeight;
+          border: 0 none !important;
+          padding: 0 !important;
+        }
+
+        .flex-prev {
+          left: $courseTestimonialsSliderArrowPosition;
+        }
+
+        .flex-next {
+          background-position: $courseTestimonialsSliderArrowRightBackgroundPosition;
+          right: $courseTestimonialsSliderArrowPosition;
+        }
+      }
+    }
+  }
+}

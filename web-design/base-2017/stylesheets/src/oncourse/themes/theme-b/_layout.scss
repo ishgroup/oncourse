@@ -345,49 +345,49 @@
                 margin: 0px;
               }
               ul>li {
-                margin-bottom: 40px;
+                margin-bottom: $homeDesignStartingCourseListMarginBottom;
                 h1, h2, h3, h4, h5, h6 {
-                  font-size: 13px;
+                  font-size: $homeDesignStartingCourseListHeadersFontSize;
+                  line-height: $homeDesignStartingCourseListLineHeight;
                 }
                 >a {
-                  letter-spacing: -1px;
-                  font-size: 20px;
-                  font-weight: bold;
-                  line-height: 0.8;
-                  color: #333;
+                  letter-spacing: $homeDesignStartingCourseListHeaderLetterSpacing;
+                  font-size: $homeDesignStartingCourseListHeaderFontSize;
+                  font-weight: $homeDesignStartingCourseListHeaderFontWeight;
+                  line-height: $homeDesignStartingCourseListLineHeight;
+                  color: $homeDesignStartingCourseListHeaderColor;
                   &:hover {
-                    color: #37b8cb;
+                    color: $homeDesignStartingCourseListHeaderColorHover;
                   }
                 }
                 .courseDescription {
-                  width: 100%;
-                  max-width: 370px;
-                  font-size: 13px;
-                  line-height: 1.2;
-                  letter-spacing: 0;
-                  margin-bottom: 6px;
-                  margin-top: 6px;
-
-                  height: 30px;
+                  width: $homeDesignStartingCourseListDescriptionWidth;
+                  max-width: $homeDesignStartingCourseListDescriptionMaxWidth;
+                  font-size: $homeDesignStartingCourseListDescriptionFontSize;
+                  line-height: $homeDesignStartingCourseListLineHeight;
+                  letter-spacing: $homeDesignStartingCourseListDescriptionLetterSpacing;
+                  margin-bottom: $homeDesignStartingCourseListDescriptionMarginBottom;
+                  margin-top: $homeDesignStartingCourseListDescriptionMarginTop;
+                  height: $homeDesignStartingCourseListDescriptionHeight;
                   overflow: hidden;
                   @include responsive($media-tablet) {
-                    max-width: 300px;
+                    max-width: $homeDesignStartingCourseListDescriptionMaxWidthMediaTablet;
                   }
                   >p, >a, ul> ol {
                     margin: 0px;
-                    line-height: 1.2;
+                    line-height: $homeDesignStartingCourseListLineHeight;
                   }
 
                 }
                 .course-more-link {
-                  font-size: 15px;
-                  color: #f37d50;
-                  font-weight: 700;
+                  font-size: $homeDesignStartingCourseListMoreLinkFontSize;
+                  color: $homeDesignStartingCourseListMoreLinkColor;
+                  font-weight: $homeDesignStartingCourseListMoreLinkFontWeight;
                   @include responsive($media-small) {
-                    font-size: 18px;
+                    font-size: $homeDesignStartingCourseListMoreLinkFontSizeMediaSmall;
                   }
                   @include responsive($media-tablet) {
-                    font-size: 20px;
+                    font-size: $homeDesignStartingCourseListMoreLinkFontSizeMediaTablet;
                   }
                 }
               }

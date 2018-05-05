@@ -205,12 +205,6 @@
           }
         }
 
-        &:first-child {
-          > ul a {
-            padding-left: 3px;
-          }
-        }
-
         // Parent menu has its children menu
         &.hasChild {
           > a {

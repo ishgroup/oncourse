@@ -351,6 +351,12 @@ $checkoutPageValidationMargin: 0 10px 25px 10px !default;
 // Checkout payment summary
 //
 
+$checkoutPaymentStudentInfoFontWeight: bold !default;
+$checkoutPaymentStudentInfoPosition: relative !default;
+$checkoutPaymentStudentInfoPadding: 0px 0px 5px !default;
+$checkoutPaymentStudentInfoMarginBottom: 0px !default;
+$checkoutPaymentStudentInfoBackgroundHover: transparent !default;
+
 $checkoutPaymentStudentTitleFontSize: 18px !default;
 $checkoutPaymentStudentTitleMarginBottom: 0 !default;
 $checkoutPaymentStudentTitleFontWeight: bold !default;
@@ -369,6 +375,24 @@ $checkoutPaymentStudentEmailMarginRight: 5px !default;
 $checkoutPaymentStudentAffiliationColor: #888888 !default;
 $checkoutPaymentStudentAffiliationFontWeight: normal !default;
 
+$checkoutPaymentStudentRemoveOpacityHover: 1 !default;
+
+$checkoutPaymentStudentRemoveOpacity: 0 !default;
+$checkoutPaymentStudentRemoveDisplay: block !default;
+$checkoutPaymentStudentRemovePosition: absolute !default;
+$checkoutPaymentStudentRemovePositionRight: 8px !default;
+$checkoutPaymentStudentRemovePositionTop: 50% !default;
+$checkoutPaymentStudentRemoveMarginTop: -9px !default;
+$checkoutPaymentStudentRemoveArea: 18px !default;
+$checkoutPaymentStudentRemoveArea: 18px !default;
+
+$checkoutPaymentStudentRemoveBeforeContent: "" !default;
+$checkoutPaymentStudentRemoveBeforePosition: absolute !default;
+$checkoutPaymentStudentRemoveBeforePositionLeft: 8px !default;
+$checkoutPaymentStudentRemoveBeforeWidth: 2px !default;
+$checkoutPaymentStudentRemoveBeforeHeight: 18px !default;
+$checkoutPaymentStudentRemoveBeforeBackground: #333 !default;
+
 $checkoutPaymentSummaryFontSize: $checkoutPageFontSize !default;
 
 $checkoutPaymentSummaryConcessionColor: #aaa !default;
@@ -385,6 +409,7 @@ $checkoutPaymentPlusLinkBackground: #f7f7f7 url($imagePath + "add.png") no-repea
 //
 
 $checkoutPageListMarginBottom: 7px !default;
+$checkoutPageListPadding: 0 15px 0 15px !default;
 
 $checkoutPageEnrolItemMarginBottom: 10px !default;
 

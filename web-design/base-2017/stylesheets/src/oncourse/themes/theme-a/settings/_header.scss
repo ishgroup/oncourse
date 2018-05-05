@@ -10,6 +10,16 @@
 
 
 $header-theme: "a";
+
+$headerMarginBottom: 20px !default;
+$headerMarginBottomMediaTablet: 25px !default;
+
+$headerTopBarPhoneTextColor: $white !default;
+$headerPhoneNumberTextDecoration: none !default;
+
+$headerSiteLogoZIndex: 10 !default;
+$headerSiteLogoWidth: 130px !default;
+
 $headerContainerPosition: relative !default;
 $headerContainerMarginBottom: 25px !default;
 $headerGroupPosition: absolute !default;
@@ -17,9 +27,8 @@ $headerGroupPosition: absolute !default;
 $headerTopBarBG: #ee2222 !default;
 $headerTopBarTextColor: #fff !default;
 
-$navColor: #454a4d !default; //navAnchorColor
-$subNavBgColor: #252D30 !default; //$first-accent-color
-$subNavColor: #FFFFFF !default; //firstAccentNavAnchorColor
+$navBG: transparent !default;
+$navBorder: 0px !default;
 
 // Navigation
 $navbarPaddingLeft: 280px !default;
@@ -27,15 +36,26 @@ $navWidth: auto !default;
 $navMarginTop: 0px !default; //$navMargin
 $navBG: transparent !default;
 $navBorderColor: #2e2e2e !default;
-$navAnchorColor: #fff !default;
+$navAnchorColor: #454a4d !default;
 $navAnchorHoverBG: transparent !default;
 $navAnchorHoverTextColor: #2e2e2e !default;
-$navAnchorTopFontSize: $bodyFontSize !default;
+$navAnchorTopFontSize: 16px !default;
 $navAnchorPadding: 0px !default;
+$navAnchorTextDecoration: none !default;
+$navAnchorTextTransform: initial !default;
+$navAnchorFontWeight: normal !default;
+
 $navFirstChildAnchorPadding: $navAnchorPadding !default;
 $navLastChildAnchorPadding: $navAnchorPadding !default;
 $navAnchorHeight: auto !default;
 $navAnchorLineHeight: 28px !default;
+
+$navListMarginLeft: 0px !default;
+$navListBorderBottom: 2px solid transparent !default;
+$navListBorderBottomHover: 2px solid #49bed0 !default;
+$navListMarginLeftFirstChild: 0 !default;
+
+$navListMarginLeftMediaTablet: 33px !default;
 
 $navAnchorArrowColor: #fff !default;
 $firstChildMenuPadding: 0px !default;
@@ -47,11 +67,21 @@ $first-accent-width: 200px !default;
 $firstAccentNavAnchorColor: #fff !default;
 $firstAccentNavAnchorPadding: 8px 20px !default;
 
+$firstChildMenuListPadding: 0px !default;
+$firstChildMenuListWhiteSpace: nowrap !default;
+$firstChildMenuListTextDecoration: none !default;
+$firstChildMenuListFontSize: 14px !default;
+
 $navToggleBG: #e7e7e7 !default;
 $navToggleTextColor: #231f20 !default;
 
 $navToggleHoverBG: #d5d5d5 !default;
 $navToggleHoverTextColor: #231f20 !default;
+
+$headerNavDisplay: none !default;
+$headerNavMarginLeft: 0px !default;
+$headerNavMarginLeftMediaTablet: 148px !default;
+$headerNavMarginLeftMediaDesktop: 281px !default;
 
 // Search
 $advancedSearchOpenFromLeft: "off" !default;
@@ -60,6 +90,11 @@ $advanceSearchButtonBG: $headerTopBarBG !default;
 $advanceSearchButtonClearBackground: $advanceSearchButtonBG !default;
 
 $searchActiveButtonBG: $headerTopBarBG !default;
+
+$searchMoreOptionsLineHeight: 1 !default;
+
+$advancedSearchInputCheckboxWidth: 20px !default;
+$advancedSearchInputCheckboxHeight: 20px !default;
 
 // ShortList
 $shortListOrderLinkFontSize: $bodyFontSize !default;

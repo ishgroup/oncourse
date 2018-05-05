@@ -9,7 +9,7 @@
 //
 
 @include theme('d') {
-  &::selection {
+  ::selection {
     background-color: $theme-color;
     color: $white;
   }

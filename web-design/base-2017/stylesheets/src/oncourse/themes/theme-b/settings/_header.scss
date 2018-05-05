@@ -10,6 +10,8 @@
 
 $header-theme: "b";
 
+$bodyDefaultBackgroundGradientEnable: true !default;
+
 $headerSiteLogoDisplay: block !default;
 $headerSiteLogoDisplay-Internal: none !default;
 $headerSiteLogoDisplaySmall-Internal: block !default;
@@ -199,7 +201,7 @@ $advanceSearchFormInputWrapperPaddingVerticalTablet: 10px !default;
 
 $advanceSearchFormInputCheckBox: 25px !default;
 
-$advancedSearchContainerPosition: initial !default;
+$advancedSearchContainerPosition: static !default;
 
 $searchMoreOptions: transparent !default;
 $searchMoreOptionsWidth: 12px !default;

@@ -14,14 +14,14 @@
     position: relative;
     font-weight: $footerFontWeight;
     &::before {
-      content: "";
+      content: $footerZigZagContent;
       background: $footerZigZagBackground;
-      background-position: 4px;
-      width: 100%;
-      height: 8px;
-      position: absolute;
-      top: -8px;
-      left: 0;
+      background-position: $footerZigZagBackgroundPosition;
+      width: $footerZigZagWidth;
+      height: $footerZigZagHeight;
+      position: $footerZigZagPosition;
+      top: $footerZigZagPositionTop;
+      left: $footerZigZagPositionLeft;
     }
 
     .address {

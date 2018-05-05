@@ -18,53 +18,55 @@
   }
 
   #Main {
-    background: url($imagePath + 'header-bg.png') 36px 25px repeat-x;
+    background: $mainBackground;
     #content h1.page-title {
-      display: none;
+      display: $mainPageTitleDisplay;
     }
 
     .addthis {
-      display: none;
+      display: $mainPageAddThisDisplay;
     }
   }
 
   .container {
-    .slider {
-      list-style: none;
-      margin: 0 0 16px 0;
-      min-height: 445px;
-      li {
-        position: relative;
-        .slider-container {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          .content-block {
-            display: table;
-            width: 100%;
-            height: 100%;
-            .slider-content {
-              display: table-cell;
-              vertical-align: middle;
-              text-align: center;
-              color: #ffffff;
+    @if $sliderEnable == true {
+      .slider {
+        list-style: $sliderListStyle;
+        margin: $sliderMargin;
+        min-height: $sliderMinHeight;
+        li {
+          position: $sliderListPosition;
+          .slider-container {
+            position: $sliderListContainerPosition;
+            top: $sliderListContainerPositionTop;
+            left: $sliderListContainerPositionLeft;
+            width: $sliderListContainerWidth;
+            height: $sliderListContainerHeight;
+            .content-block {
+              display: $sliderListContentBlockDisplay;
+              width: $sliderListContentBlockWidth;
+              height: $sliderListContentBlockHeight;
+              .slider-content {
+                display: $sliderListContentBlockSlideDisplay;
+                vertical-align: $sliderListContentBlockSlideVerticalAlign;
+                text-align: $sliderListContentBlockSlideTextAlign;
+                color: $sliderListContentBlockSlideColor;
 
-              > h3 {
-                margin-bottom: 5px;
-                font-size: 30px;
-                color: #ffffff;
-              }
+                > h3 {
+                  margin-bottom: $sliderListContentBlockTitleMarginBottom;
+                  font-size: $sliderListContentBlockTitleFontSize;
+                  color: $sliderListContentBlockTitleColor;
+                }
 
-              a {
-                display: inline-block;
-                border: 4px solid #FFF;
-                color: #ffffff;
-                text-decoration: none;
-                text-transform: uppercase;
-                padding: 10px 15px;
-                border-radius: 30px;
+                a {
+                  display: $sliderListContentBlockAnchorDisplay;
+                  border: $sliderListContentBlockAnchorBorder;
+                  color: $sliderListContentBlockAnchorColor;
+                  text-decoration: $sliderListContentBlockAnchorTextDecoration;
+                  text-transform: $sliderListContentBlockAnchorTextTransform;
+                  padding: $sliderListContentBlockAnchorPadding;
+                  border-radius: $sliderListContentBlockAnchorBorderRadius;
+                }
               }
             }
           }
@@ -72,275 +74,281 @@
       }
     }
 
-    .blocks {
-      list-style: none;
-      margin: 0 -15px 15px;
-      background: $white;
-      display: block;
-      width: auto;
-      @include responsive($media-tablet) {
-        border-bottom: 1px solid #ddd;
-        margin: 0 -10px 60px;
-      }
-      @include responsive($media-custom, 1090px) {
-        display: table;
-        width: 100%;
-        margin: 0 0 60px 0;
-      }
-      > li {
-        padding: 30px 44px;
-        border-bottom: 1px solid #dfdfdf;
-        text-align: center;
-        &:first-child {
-          border-left: 0;
-        }
-
+    @if $blocksEnable == true {
+      .blocks {
+        list-style: $blocksListStyle;
+        margin: $blocksMargin;
+        background: $blocksBackground;
+        display: $blocksDisplay;
+        width: $blocksWidth;
         @include responsive($media-tablet) {
-          border-left: 1px solid #dfdfdf;
-          border-bottom: 0px;
+          border-bottom: $blocksBorderBottomMediaTablet;
+          margin: $blocksMarginMediaTablet;
         }
-
-        > span {
-          display: block;
-          padding: 20px 0;
-          font-weight: bold;
-          font-size: 14px;
+        @include responsive($media-custom, 1090px) {
+          display: $blocksDisplayMediaCustom;
+          width: $blocksWidthMediaCustom;
+          margin: $blocksMarginMediaCustom;
         }
+        > li {
+          padding: $blocksListPadding;
+          border-bottom: $blocksListBorderBottom;
+          text-align: $blocksListTextAlign;
+          &:first-child {
+            border-left: $blocksListFirstChildBorderLeft;
+          }
 
-        > i {
-          background: url($imagePath + 'icon-sprite.png') 0 0 no-repeat;
-          text-indent: -9999px;
-          display: inline-block;
-          width: 34px;
-          height: 34px;
-          text-align: center;
-          &.icon-progress {
-            background-position: 0px -12px;
+          @include responsive($media-tablet) {
+            border-left: $blocksListBorderLeftMediaTablet;
+            border-bottom: $blocksListBorderBottomMediaTablet;
           }
-          &.icon-laptop {
-            background-position: -38px -12px;
+
+          > span {
+            display: $blocksListTitleDisplay;
+            padding: $blocksListTitlePadding;
+            font-weight: $blocksListTitleFontWeight;
+            font-size: $blocksListTitleFontSize;
           }
-          &.icon-code {
-            background-position: -76px -12px;
+
+          > i {
+            background: $blocksListIconBackground;
+            text-indent: $blocksListIconTextIndent;
+            display: $blocksListIconDisplay;
+            width: $blocksListIconWidth;
+            height: $blocksListIconHeight;
+            text-align: $blocksListIconTextAlign;
+            &.icon-progress {
+              background-position: $blocksListIconBackgroundPositionProgress;
+            }
+            &.icon-laptop {
+              background-position: $blocksListIconBackgroundPositionLaptop;
+            }
+            &.icon-code {
+              background-position: $blocksListIconBackgroundPositionCode;
+            }
           }
         }
       }
     }
-    .popular-courses-list {
-      background: #eeeff3;
-      list-style: none;
-      margin: 0;
-      margin-bottom: 15px;
-      padding: 0;
+
+    @if $popularCoursesEnable == true {
+      .popular-courses-list {
+        background: $popularCoursesBackground;
+        list-style: $popularCoursesListStyle;
+        margin: $popularCoursesMargin;
+        margin-bottom: $popularCoursesMarginBottom;
+        padding: $popularCoursesPadding;
+
+        @include bootstrap(false) {
+          width: $popularCoursesWidth;
+          float: $popularCoursesFloat;
+        }
+
+        @include responsive($media-tablet) {
+          margin-bottom: $popularCoursesMarginBottomMediaTablet;
+
+          @include bootstrap(false) {
+            width: $popularCoursesWidthMediaTablet;
+          }
+        }
+
+        + p {
+          display: none;
+        }
+
+        > li {
+          border-bottom: $popularCoursesListBorderBottom;
+
+          &:first-child {
+            padding: $popularCoursesListFirstChildPadding;
+            text-transform: $popularCoursesListFirstChildTextTransform;
+          }
+          a {
+            text-decoration: $popularCoursesListAnchorTextDecoration;
+            padding: $popularCoursesListAnchorPadding;
+            display: $popularCoursesListAnchorBlock;
+            position: $popularCoursesListAnchorPosition;
+            font-size: $popularCoursesListAnchorFontSize;
+            &:after {
+              content: $popularCoursesListAnchorAfterContent;
+              display: $popularCoursesListAnchorAfterDisplay;
+              background: $popularCoursesListAnchorAfterBackground;
+              width: $popularCoursesListAnchorAfterWidth;
+              height: $popularCoursesListAnchorAfterHeight;
+              position: $popularCoursesListAnchorAfterPosition;
+              right: $popularCoursesListAnchorAfterPositionRight;
+              top: $popularCoursesListAnchorAfterPositionTop;
+              margin-top: $popularCoursesListAnchorAfterMarginTop;
+            }
+            &:hover:after {
+              background-position: $popularCoursesListHoverAfterBackgroundPosition;
+            }
+          }
+        }
+      }
+    }
+
+    @if $coursesInfoEnable == true {
+      .courses-info {
+        padding: $coursesInfoPadding;
+        text-align: $coursesInfoTextAlign;
+        background: $coursesInfoBackground;
+        color: $coursesInfoColor;
+        margin-bottom: $coursesInfoMarginBottom;
+        font-size: $coursesInfoFontSize;
+
+        a {
+          color: $coursesInfoAnchorColor;
+          text-decoration: $coursesInfoAnchorTextDecoration;
+        }
+      }
+    }
+  }
+
+  @if $featuredBlockEnable == true {
+    .featured-block {
+      background: $featuredBlockBackground;
+      background-size: $featuredBlockBackgroundSize;
+      padding: $featuredBlockPadding;
+      color: $featuredBlockColor;
+      margin-bottom: $featuredBlockMarginBottom;
+      min-height: $featuredBlockMinHeight;
 
       @include bootstrap(false) {
-        width: 100%;
-        float: left;
+        float: $featuredBlockFloat;
+        width: $featuredBlockWidth;
       }
 
       @include responsive($media-tablet) {
-        margin-bottom: 0px;
+        margin-bottom: $featuredBlockMarginBottomMediaTablet;
 
         @include bootstrap(false) {
-          width: 33.33333%;
+          width: $featuredBlockWidthMediaTablet;
         }
       }
 
+      > p, > br {
+        display: none;
+      }
+
+      > a {
+        float: $featuredBlockButtonFloat;
+        text-transform: $featuredBlockButtonTextTransform;
+        text-decoration: $featuredBlockButtonTextDecoration;
+        color: $featuredBlockButtonColor;
+        padding: $featuredBlockButtonPadding;
+        border-radius: $featuredBlockButtonBorderRadius;
+        background: $featuredBlockButtonBackground;
+        position: $featuredBlockButtonPosition;
+      }
+
+      ul {
+        font-size: $featuredBlockItemFontSize;
+        list-style: $featuredBlockItemListStyle;
+        margin-bottom: $featuredBlockItemMarginBottom;
+        margin-left: $featuredBlockItemMarginLeft;
+
+        li {
+          &:before {
+            content: $featuredBlockItemListBeforeContent;
+            font-size: $featuredBlockItemListBeforeFontSize;
+            line-height: $featuredBlockItemListBeforeLineHeight;
+            display: $featuredBlockItemListBeforeDisplay;
+            vertical-align: $featuredBlockItemListBeforeVerticalAlign;
+            margin-right: $featuredBlockItemListBeforeMarginRight;
+            color: $featuredBlockItemListBeforeColor;
+          }
+        }
+      }
+
+      h1 {
+        color: $featuredBlockTitleColor;
+        font-size: $featuredBlockTitleFontSize;
+        font-weight: $featuredBlockTitleFontWeight;
+        margin-bottom: $featuredBlockTitleMarginBottom;
+      }
+    }
+  }
+
+  @if $coursesTitleEnable == true {
+    h1.courses-title {
+      text-align: $coursesTitleTextAlign;
+      font-size: $coursesTitleFontSize;
+      padding-top: $coursesTitlePaddingTop;
+      margin-bottom: $coursesTitleMarginBottom;
+      clear: $coursesTitleClear;
+      vertical-align: $coursesTitleVerticalAlign;
+      border-top: $coursesTitleBorderTop;
+      @include responsive($media-tablet) {
+        padding-top: $coursesTitlePaddingTopMediaTablet;
+      }
+      &:before {
+        content: $coursesTitleBeforeContent;
+        display: $coursesTitleBeforeDisplay;
+        background: $coursesTitleBeforeBackground;
+        width: $coursesTitleBeforeWidth;
+        height: $coursesTitleBeforeHeight;
+        margin-right: $coursesTitleBeforeMarginRight;
+        vertical-align: $coursesTitleBeforeVerticalAlign;
+      }
+    }
+  }
+
+  @if $coursesListEnable == true {
+    .courses {
+      ul.courses-list {
+        margin: $coursesListMargin;
+        > li {
+          display: $coursesListChildrenDisplay;
+        }
+        > ul > li > a {
+          color: $coursesListTitleColor;
+          border-bottom: $coursesListTitleBorderBottom;
+          font-weight: $coursesListTitleFontWeight;
+        }
+      }
+
+      ul.courses-list-sub {
+        margin: $coursesListSubMargin;
+        list-style: $coursesListSubListStyle;
+        display: $coursesListSubDisplay;
+        width: $coursesListSubWidth;
+        li {
+          font-size: $coursesListSubItemFontSize;
+          margin-bottom: $coursesListSubItemMarginBottom;
+          a {
+            text-decoration: $coursesListSubItemAnchorTextDecoration;
+          }
+        }
+        > li {
+          display: $coursesListSubItemDisplay;
+          vertical-align: $coursesListSubItemVerticalAlign;
+          width: $coursesListSubItemWidth;
+          @include responsive($media-small) {
+            width: $coursesListSubItemWidthMediaSmall;
+          }
+          @include responsive($media-tablet) {
+            display: $coursesListSubItemDisplayMediaTablet;
+            width: $coursesListSubItemWidthMediaTablet;
+          }
+          > a {
+            font-weight: $coursesListSubItemAnchorFontWeight;
+            text-transform: $coursesListSubItemAnchorTextTransform;
+          }
+          > ul {
+            list-style: $coursesListSubItemChildrenListStyle;
+            padding-top: $coursesListSubItemChildrenPaddingTop;
+            margin: $coursesListSubItemChildrenMargin;
+          }
+        }
+        .courses-list-sub2 .courses-list-sub2 {
+          margin: $coursesListSub2Margin;
+          list-style: $coursesListSubListStyle;
+        }
+      }
       + p {
         display: none;
       }
-
-      > li {
-        border-bottom: 1px solid #d8d9dd;
-
-        &:first-child {
-          padding: 20px 21px;
-          text-transform: uppercase;
-        }
-        a {
-          text-decoration: none;
-          padding: 10px 0 10px 21px;
-          display: block;
-          position: relative;
-          font-size: 14px;
-          &:after {
-            content: "";
-            display: inline-block;
-            background: url($imagePath + 'arrow-icon-sprite.png') -1px 0 no-repeat;
-            width: 6px;
-            height: 10px;
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            margin-top: -5px;
-          }
-          &:hover:after {
-            background-position: -1px -17px;
-          }
-        }
-      }
     }
-    .courses-info {
-      padding: 25px 0;
-      text-align: center;
-      background: url($imagePath + 'texture.png') center center repeat-x;
-      color: #FFFFFF;
-      margin-bottom: 60px;
-      font-size: 26px;
-
-      a {
-        color: #000000;
-        text-decoration: none;
-      }
-    }
-  }
-
-  .featured-block {
-    background: url($imagePath + 'featured-bg.png') center center no-repeat;
-    background-size:  cover;
-    padding: 34px 30px 32px 30px;
-    color: #dfdfdf;
-    margin-bottom: 30px;
-    min-height: 273px;
-
-    @include bootstrap(false) {
-      float: right;
-      width: 100%;
-    }
-
-    @include responsive($media-tablet) {
-      margin-bottom: 60px;
-
-      @include bootstrap(false) {
-        width: 66.66667%;
-      }
-    }
-
-    > p, > br {
-      display: none;
-    }
-
-    > a {
-      float: right;
-      text-transform: uppercase;
-      text-decoration: none;
-      color: #FFF;
-      padding: 5px 7px;
-      border-radius: 3px;
-      background: $primaryColor;
-    }
-
-    ul {
-      font-size: 14px;
-      margin-bottom: 5px;
-      list-style: none;
-      margin-left: 0;
-
-      li {
-        &:before {
-          content: "\2022";
-          font-size: 30px;
-          line-height: 30px;
-          display: inline-block;
-          vertical-align: middle;
-          margin-right: 8px;
-          color: #38b7ca;
-        }
-      }
-    }
-
-    h1 {
-      color: #dfdfdf;
-      font-size: 40px;
-        font-weight: normal;
-        margin-bottom: 18px;
-    }
-  }
-
-  h1.courses-title {
-    text-align: center;
-    font-size: 40px;
-    padding-top: 30px;
-    margin-bottom: 30px;
-    clear: both;
-    vertical-align: top;
-    border-top: 1px solid #DFDFDF;
-    @include responsive($media-tablet) {
-      padding-top: 60px;
-    }
-    &:before {
-      display: inline-block;
-      background: url($imagePath + 'icon-sourse.png') no-repeat;
-      content: "";
-      width: 34px;
-      height: 34px;
-      margin-right: 10px;
-      vertical-align: middle;
-    }
-  }
-
-  .courses {
-    ul.courses-list {
-      margin: 0;
-      > li {
-        display: none;
-      }
-      > ul > li > a {
-        color: $black;
-        border-bottom: 1px dotted #dedee0;
-        font-weight: bold;
-      }
-    }
-
-    ul.courses-list-sub {
-      margin: 0;
-      list-style: none;
-      display: table;
-      width: 100%;
-      > li {
-        display: inline-block;
-        vertical-align: top;
-        width: 100%;
-        @include responsive($media-small) {
-          width: 33%;
-        }
-        @include responsive($media-tablet) {
-          display: table-cell;
-          width: 2.28%;
-        }
-        > a {
-          font-weight: bold;
-          text-transform: uppercase;
-        }
-        > ul {
-          list-style: none;
-          padding-top: 5px;
-          margin: 0;
-        }
-      }
-
-      li {
-        font-size: 16px;
-        margin-bottom: 5px;
-        a {
-          text-decoration: none;
-        }
-      }
-      .courses-list-sub2 .courses-list-sub2 {
-        margin: 0;
-        list-style: none;
-      }
-    }
-
-    + p {
-      display: none;
-    }
-  }
-
-  .classItem .enrolAction.enrol-added-class,
-  .classItem .enrolAction {
-    background: $primaryColor;
-    color: #ffffff;
-    text-decoration: none;
   }
 }

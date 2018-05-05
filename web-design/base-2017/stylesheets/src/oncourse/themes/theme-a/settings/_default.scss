@@ -30,7 +30,7 @@ $discountBlockTextColor: $anchorColor !default;
 $discountBlockTitleColor: $bodyFontColor !default;
 
 // Content container
-$contentContainerMarginTop: 0px;
+$contentContainerMarginTop: 0px !default;
 
 // Courses
 $waitingListTitleHoverBG: $bodyFontColor !default;
@@ -83,3 +83,242 @@ $btnBackgroundHoverColor: $secondaryColor !default;
 $btnType2BackgroundColor: $secondaryColor !default;
 
 $classItemLinkHoverColor: $primaryColor !default;
+
+$mainBackground: url('/s/img/header-bg.png') 36px 25px repeat-x !default;
+
+$mainPageTitleDisplay: none !default;
+
+$mainPageAddThisDisplay: none !default;
+
+
+// Home page container slider
+$sliderEnable: true !default;
+
+$sliderListStyle: none !default;
+$sliderMargin: 0 0 16px 0 !default;
+$sliderMinHeight: 445px !default;
+
+$sliderListPosition: relative !default;
+$sliderListContainerPosition: absolute !default;
+$sliderListContainerPositionTop: 0 !default;
+$sliderListContainerPositionLeft: 0 !default;
+$sliderListContainerWidth: 100% !default;
+$sliderListContainerHeight: 100% !default;
+
+$sliderListContentBlockDisplay: table !default;
+$sliderListContentBlockWidth: 100% !default;
+$sliderListContentBlockHeight: 100% !default;
+
+$sliderListContentBlockSlideDisplay: table-cell !default;
+$sliderListContentBlockSlideVerticalAlign: middle !default;
+$sliderListContentBlockSlideTextAlign: center !default;
+$sliderListContentBlockSlideColor: #ffffff !default;
+
+$sliderListContentBlockTitleMarginBottom: 5px !default;
+$sliderListContentBlockTitleFontSize: 30px !default;
+$sliderListContentBlockTitleColor: #ffffff !default;
+
+$sliderListContentBlockAnchorDisplay: inline-block !default;
+$sliderListContentBlockAnchorBorder: 4px solid #FFF !default;
+$sliderListContentBlockAnchorColor: #ffffff !default;
+$sliderListContentBlockAnchorTextDecoration: none !default;
+$sliderListContentBlockAnchorTextTransform: uppercase !default;
+$sliderListContentBlockAnchorPadding: 10px 15px !default;
+$sliderListContentBlockAnchorBorderRadius: 30px !default;
+
+
+// Home page grid blocks
+$blocksEnable: true !default;
+
+$blocksListStyle: none !default;
+$blocksMargin: 0 -15px 15px !default;
+$blocksBackground: $white !default;
+$blocksDisplay: block !default;
+$blocksWidth: auto !default;
+
+$blocksBorderBottomMediaTablet: 1px solid #ddd !default;
+$blocksMarginMediaTablet: 0 -10px 60px !default;
+
+$blocksDisplayMediaCustom: table !default;
+$blocksWidthMediaCustom: 100% !default;
+$blocksMarginMediaCustom: 0 0 60px 0 !default;
+
+$blocksListPadding: 30px 44px !default;
+$blocksListBorderBottom: 1px solid #dfdfdf !default;
+$blocksListTextAlign: center !default;
+$blocksListFirstChildBorderLeft: 0 !default;
+
+$blocksListBorderLeftMediaTablet: 1px solid #dfdfdf !default;
+$blocksListBorderBottomMediaTablet: 0px !default;
+
+$blocksListTitleDisplay: block !default;
+$blocksListTitlePadding: 20px 0 !default;
+$blocksListTitleFontWeight: bold !default;
+$blocksListTitleFontSize: 14px !default;
+
+$blocksListIconBackground: url('/s/img/icon-sprite.png') 0 0 no-repeat !default;
+$blocksListIconTextIndent: -9999px !default;
+$blocksListIconDisplay: inline-block !default;
+$blocksListIconWidth: 34px !default;
+$blocksListIconHeight: 34px !default;
+$blocksListIconTextAlign: center !default;
+
+$blocksListIconBackgroundPositionProgress: 0px -12px !default;
+$blocksListIconBackgroundPositionLaptop: -38px -12px !default;
+$blocksListIconBackgroundPositionCode: -76px -12px !default;
+
+
+// Home page popular courses list
+$popularCoursesEnable: true !default;
+
+$popularCoursesBackground: #eeeff3 !default;
+$popularCoursesListStyle: none !default;
+$popularCoursesMargin: 0 !default;
+$popularCoursesMarginBottom: 15px !default;
+$popularCoursesPadding: 0 !default;
+$popularCoursesWidth: 100% !default;
+$popularCoursesFloat: left !default;
+
+$popularCoursesMarginBottomMediaTablet: 0px !default;
+$popularCoursesWidthMediaTablet: 33.33333% !default;
+
+$popularCoursesListBorderBottom: 1px solid #d8d9dd !default;
+$popularCoursesListFirstChildPadding: 20px 21px !default;
+
+$popularCoursesListFirstChildTextTransform: uppercase !default;
+
+$popularCoursesListAnchorTextDecoration: none !default;
+$popularCoursesListAnchorPadding: 10px 0 10px 21px !default;
+$popularCoursesListAnchorBlock: block !default;
+$popularCoursesListAnchorPosition: relative !default;
+$popularCoursesListAnchorFontSize: 14px !default;
+
+$popularCoursesListAnchorAfterContent: "" !default;
+$popularCoursesListAnchorAfterDisplay: inline-block !default;
+$popularCoursesListAnchorAfterBackground: url('/s/img/arrow-icon-sprite.png') -1px 0 no-repeat !default;
+$popularCoursesListAnchorAfterWidth: 6px !default;
+$popularCoursesListAnchorAfterHeight: 10px !default;
+$popularCoursesListAnchorAfterPosition: absolute !default;
+$popularCoursesListAnchorAfterPositionRight: 20px !default;
+$popularCoursesListAnchorAfterPositionTop: 50% !default;
+$popularCoursesListAnchorAfterMarginTop: -5px !default;
+
+$popularCoursesListHoverAfterBackgroundPosition: -1px -17px !default;
+
+
+// Home page courses info
+$coursesInfoEnable: true !default;
+
+$coursesInfoPadding: 25px 0 !default;
+$coursesInfoTextAlign: center !default;
+$coursesInfoBackground: url('/s/img/texture.png') center center repeat-x !default;
+$coursesInfoColor: #FFFFFF !default;
+$coursesInfoMarginBottom: 60px !default;
+$coursesInfoFontSize: 26px !default;
+
+$coursesInfoAnchorColor: #000000 !default;
+$coursesInfoAnchorTextDecoration: none !default;
+
+
+// Home page feature block
+$featuredBlockEnable: true !default;
+
+$featuredBlockBackground: url('/s/img/featured-bg.png') center center no-repeat !default;
+$featuredBlockBackgroundSize: cover !default;
+$featuredBlockPadding: 34px 30px 32px 30px !default;
+$featuredBlockColor: #dfdfdf !default;
+$featuredBlockMarginBottom: 30px !default;
+$featuredBlockMinHeight: 273px !default;
+$featuredBlockFloat: right !default;
+$featuredBlockWidth: 100% !default;
+
+$featuredBlockMarginBottomMediaTablet: 60px !default;
+$featuredBlockWidthMediaTablet: 66.66667% !default;
+
+$featuredBlockButtonFloat: right !default;
+$featuredBlockButtonTextTransform: uppercase !default;
+$featuredBlockButtonTextDecoration: none !default;
+$featuredBlockButtonColor: #FFF !default;
+$featuredBlockButtonPadding: 5px 7px !default;
+$featuredBlockButtonBorderRadius: 3px !default;
+$featuredBlockButtonBackground: $primaryColor !default;
+$featuredBlockButtonPosition: relative !default;
+
+$featuredBlockItemFontSize: 14px !default;
+$featuredBlockItemListStyle: none !default;
+$featuredBlockItemMarginBottom: 5px !default;
+$featuredBlockItemMarginLeft: 0 !default;
+
+$featuredBlockItemListBeforeContent: "\2022" !default;
+$featuredBlockItemListBeforeFontSize: 30px !default;
+$featuredBlockItemListBeforeLineHeight: 30px !default;
+$featuredBlockItemListBeforeDisplay: inline-block !default;
+$featuredBlockItemListBeforeVerticalAlign: middle !default;
+$featuredBlockItemListBeforeMarginRight: 8px !default;
+$featuredBlockItemListBeforeColor: #38b7ca !default;
+
+$featuredBlockTitleColor: #dfdfdf !default;
+$featuredBlockTitleFontSize: 40px !default;
+$featuredBlockTitleFontWeight: normal !default;
+$featuredBlockTitleMarginBottom: 18px !default;
+
+
+// Home page courses title
+$coursesTitleEnable: true !default;
+$coursesTitleDisplay: block !important !default;
+
+$coursesTitleTextAlign: center !default;
+$coursesTitleFontSize: 40px !default;
+$coursesTitlePaddingTop: 30px !default;
+$coursesTitleMarginBottom: 30px !default;
+$coursesTitleClear: both !default;
+$coursesTitleVerticalAlign: top !default;
+$coursesTitleBorderTop: 1px solid #DFDFDF !default;
+
+$coursesTitlePaddingTopMediaTablet: 60px !default;
+
+$coursesTitleBeforeContent: "" !default;
+$coursesTitleBeforeDisplay: inline-block !default;
+$coursesTitleBeforeBackground: url('/s/img/icon-sourse.png') no-repeat !default;
+$coursesTitleBeforeWidth: 34px !default;
+$coursesTitleBeforeHeight: 34px !default;
+$coursesTitleBeforeMarginRight: 10px !default;
+$coursesTitleBeforeVerticalAlign: middle !default;
+
+
+// Home page courses list
+$coursesListEnable: true !default;
+
+$coursesListMargin: 0 !default;
+$coursesListChildrenDisplay: none !default;
+$coursesListTitleColor: $black !default;
+$coursesListTitleBorderBottom: 1px dotted #dedee0 !default;
+$coursesListTitleFontWeight: bold !default;
+
+$coursesListSubMargin: 0 !default;
+$coursesListSubListStyle: none !default;
+$coursesListSubDisplay: table !default;
+$coursesListSubWidth: 100% !default;
+
+$coursesListSubItemFontSize: 16px !default;
+$coursesListSubItemMarginBottom: 5px !default;
+
+$coursesListSubItemAnchorTextDecoration: none !default;
+
+$coursesListSubItemDisplay: inline-block !default;
+$coursesListSubItemVerticalAlign: top !default;
+$coursesListSubItemWidth: 100% !default;
+
+$coursesListSubItemWidthMediaSmall: 33% !default;
+
+$coursesListSubItemDisplayMediaTablet: table-cell !default;
+$coursesListSubItemWidthMediaTablet: 2.28% !default;
+
+$coursesListSubItemAnchorFontWeight: bold !default;
+$coursesListSubItemAnchorTextTransform: uppercase !default;
+
+$coursesListSubItemChildrenListStyle: none !default;
+$coursesListSubItemChildrenPaddingTop: 5px !default;
+$coursesListSubItemChildrenMargin: 0 !default;
+
+$coursesListSub2Margin: 0 !default;

@@ -422,3 +422,76 @@ $classDetailsPrintPagePositionLeftMedia: auto !default;
 
 $classDetailsTitleMinHeight: 40px !default;
 $classDetailsTitleMargin: 0 0 5px 0 !default;
+
+
+// Course testimonials
+$courseTestimonialsEnable: true !default;
+$courseTestimonialsBlock: ".internal-page .content .courseItem .courseTestimonials" !default;
+
+$courseTestimonialsBxSliderEnable: true !default;
+$courseTestimonialsFlexSliderEnable: false !default;
+
+$courseTestimonialsBackgroundColor: #d8dbdd !default;
+$courseTestimonialsColor: #000 !default;
+$courseTestimonialsFontSize: 16px !default;
+$courseTestimonialsFontWeight: 100 !default;
+$courseTestimonialsLineHeight: 1.3 !default;
+$courseTestimonialsPadding: 37px 40px 43px !default;
+$courseTestimonialsPosition: relative !default;
+$courseTestimonialsTextAlign: center !default;
+$courseTestimonialsMarginTop: 60px !default;
+$courseTestimonialsMarginBottom: 20px !default;
+$courseTestimonialsWidth: 100% !default;
+
+$courseTestimonialsFontSizeMediaTablet: 20px !default;
+
+$courseTestimonialsBeforeContent: "" !default;
+$courseTestimonialsBeforeBackground: #fff !default;
+$courseTestimonialsBeforeWidth: 92% !default;
+$courseTestimonialsBeforePositionBottom: 0 !default;
+$courseTestimonialsBeforePositionLeft: 0 !default;
+$courseTestimonialsBeforePositionRight: 0 !default;
+$courseTestimonialsBeforeMargin: 0 auto !default;
+$courseTestimonialsBeforeHeight: 15px !default;
+
+$courseTestimonialsAfterArrowPosition: "top" !default;
+$courseTestimonialsAfterArrowWidth: 15px !default;
+$courseTestimonialsAfterArrowColor: $courseTestimonialsBackgroundColor !default;
+
+$courseTestimonialsAfterBottom: 0 !default;
+$courseTestimonialsAfterPositionLeft: 50% !default;
+$courseTestimonialsAfterMarginLeft: -16px !default;
+
+$courseTestimonialsTitleColor: #000 !default;
+$courseTestimonialsTitleFontSize: 25px !default;
+$courseTestimonialsTitleFontWeight: bold !default;
+$courseTestimonialsTitleLetterSpacing: -0.025em !default;
+$courseTestimonialsTitleMarginBottom: 19px !default;
+
+$courseTestimonialsTitleMediaTablet: 30px !default;
+
+$courseTestimonialsSliderWrapperMarginBottom: 30px !default;
+$courseTestimonialsSliderPagerDisplay: none !default;
+
+$courseTestimonialsSliderArrowBackgroundColor: $primaryColor !default;
+$courseTestimonialsSliderArrowBackground: transparent url('data:image/svg+xml;utf8,<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 22 15" enable-background="new 0 0 22 15" xml:space="preserve">
+<g><path fill="'+ $courseTestimonialsSliderArrowBackgroundColor +'" d="M7.6,0.1c0.4,0,0.8,0.1,1.1,0.4c0.6,0.6,0.6,1.5,0,2.1L3.8,7.5l4.9,4.9c0.6,0.6,0.6,1.5,0,2.1 s-1.5,0.6-2.1,0l-6-6C0,7.9,0,7,0.6,6.4l6-6C6.8,0.2,7.2,0.1,7.6,0.1L7.6,0.1z"/></g>
+<g><path fill="'+ $courseTestimonialsSliderArrowBackgroundColor +'" d="M14.5,14.9c-0.4,0-0.8-0.1-1.1-0.4c-0.6-0.6-0.6-1.5,0-2.1l4.9-4.9l-4.9-4.9c-0.6-0.6-0.6-1.5,0-2.1 s1.5-0.6,2.1,0l6,6c0.6,0.6,0.6,1.5,0,2.1l-6,6C15.3,14.8,14.9,14.9,14.5,14.9L14.5,14.9z"/></g></svg>') no-repeat !default;
+
+$courseTestimonialsSliderArrowBackgroundSize: 24px !default;
+$courseTestimonialsSliderArrowWidth: 11px !default;
+$courseTestimonialsSliderArrowHeight: 17px !default;
+
+$courseTestimonialsSliderArrowPosition: -20px !default;
+$courseTestimonialsSliderArrowRightBackgroundPosition: -13px !default;
+
+
+$courseTestimonialsRatingEnable: false !default;
+
+$courseTestimonialsRatingIconContent: "";
+$courseTestimonialsRatingIconDisplay: inline-block;
+$courseTestimonialsRatingIconBackground: transparent url("/s/img/icons/icon-rating.png") 0 0 no-repeat;
+$courseTestimonialsRatingIconWidth: 20px;
+$courseTestimonialsRatingIconHeight: 20px;
+$courseTestimonialsRatingIconBackgroundPosition: -21px 0;
+$courseTestimonialsRatingIconBackgroundPositionChecked: 1px 0;
