@@ -10,4 +10,8 @@ compileTestGroovy.options.encoding = 'UTF-8'
 dependencies {
     compile group: 'org.codehaus.groovy', name: 'groovy-all', version: groovyVersion
     compile group: 'org.apache.zookeeper', name: 'zookeeper', version: '3.4.10'
+
+    testCompile group: 'org.apache.curator', name: 'curator-framework', version: '4.0.1'
+    testCompile group: 'org.apache.curator', name: 'curator-test', version: '4.0.1'
+    testCompile group: 'org.apache.curator', name: 'curator-recipes', version: '4.0.1'
 }
