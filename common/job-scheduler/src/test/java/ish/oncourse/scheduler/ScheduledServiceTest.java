@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -81,4 +82,25 @@ public class ScheduledServiceTest {
 		}
 		scheduledService.close();
 	}
+
+    public static void main(String[] args) throws Exception {
+        CuratorFramework client = CuratorFrameworkFactory.newClient("127.0.0.1:2181", new ExponentialBackoffRetry(1000, 3));
+        client.start();
+        ScheduledService scheduledService = new ScheduledService(client, "/willow/reindex").addJob(new IJob() {
+            @Override
+            public Config getConfig() {
+                return new Config(1, 1, TimeUnit.SECONDS);
+            }
+
+            @Override
+            public void run() {
+                System.out.println(String.format("%s:%s", new Date(), args[0]));
+            }
+        });
+        scheduledService.start();
+
+        while (true) {
+            Thread.sleep(100);
+        }
+    }
 }
