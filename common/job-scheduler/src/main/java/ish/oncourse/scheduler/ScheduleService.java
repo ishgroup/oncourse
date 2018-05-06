@@ -20,7 +20,7 @@ import java.util.concurrent.ScheduledExecutorService;
  * User: akoiro
  * Date: 6/5/18
  */
-public class ScheduledService {
+public class ScheduleService {
 	private static final Logger logger = LogManager.getLogger();
 	private ScheduledExecutorService executorService;
 	private LeaderLatch leaderLatch;
@@ -28,18 +28,19 @@ public class ScheduledService {
 
 	private List<IJob> jobs = new LinkedList<>();
 
-	public ScheduledService(CuratorFramework zClient, String mutexPath) {
+	public ScheduleService(CuratorFramework zClient, String mutexPath) {
 		leaderLatch = new LeaderLatch(zClient, mutexPath);
 		listener = new Listener(this);
 	}
 
-	public void start() {
+	public ScheduleService start() {
 		leaderLatch.addListener(listener);
 		try {
 			leaderLatch.start();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+		return this;
 	}
 
 	private void schedule() {
@@ -56,7 +57,7 @@ public class ScheduledService {
 		}
 	}
 
-	public ScheduledService close() {
+	public ScheduleService close() {
 		unschedule();
 		if (leaderLatch != null) {
 			leaderLatch.removeListener(listener);
@@ -69,17 +70,17 @@ public class ScheduledService {
 		return this;
 	}
 
-	public ScheduledService addJob(IJob job) {
+	public ScheduleService addJob(IJob job) {
 		this.jobs.add(job);
 		return this;
 	}
 
 
 	private static class Listener implements LeaderLatchListener {
-		private ScheduledService scheduledService;
+		private ScheduleService scheduledService;
 
 
-		private Listener(ScheduledService scheduledService) {
+		private Listener(ScheduleService scheduledService) {
 			this.scheduledService = scheduledService;
 		}
 

@@ -57,8 +57,8 @@ public class ScheduledServiceTest {
 	private void startService(String id, long time) {
 		CuratorFramework client = CuratorFrameworkFactory.newClient("127.0.0.1:10181", retryPolicy);
 		client.start();
-		ScheduledService scheduledService =
-				new ScheduledService(client, "/willow/reindex");
+		ScheduleService scheduledService =
+				new ScheduleService(client, "/willow/reindex");
 		scheduledService.addJob(new IJob() {
 			@Override
 			public Config getConfig() {
@@ -87,7 +87,7 @@ public class ScheduledServiceTest {
 	public static void main(String[] args) throws Exception {
 		CuratorFramework client = CuratorFrameworkFactory.newClient("127.0.0.1:2181", new RetryForever(1000));
 		client.start();
-		ScheduledService scheduledService = new ScheduledService(client, "/willow/reindex").addJob(new IJob() {
+		ScheduleService scheduledService = new ScheduleService(client, "/willow/reindex").addJob(new IJob() {
 			@Override
 			public Config getConfig() {
 				return new Config(1, 1, TimeUnit.SECONDS);
