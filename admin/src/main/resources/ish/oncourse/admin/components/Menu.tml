@@ -20,7 +20,6 @@
 						<li><t:pagelink id="UpdatePostcode" page="UpdatePostcode">Postcodes</t:pagelink></li>		
 					</ul>
 				</li>
-				<li class="selectable"><t:pagelink id="Billing" page="Billing">Billing</t:pagelink><div></div></li>
 				<li class="selectable"><t:pagelink id="AddSuperUser" page="AddSuperUser">Super users</t:pagelink><div></div></li>
 				<li class="selectable"><t:pagelink id="ReplicationStatus" page="ReplicationStatus">Replication status</t:pagelink></li>
 			</ul>

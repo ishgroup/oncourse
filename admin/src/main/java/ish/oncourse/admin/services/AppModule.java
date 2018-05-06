@@ -2,8 +2,6 @@ package ish.oncourse.admin.services;
 
 import au.gov.training.services.organisation.IOrganisationService;
 import au.gov.training.services.trainingcomponent.ITrainingComponentService;
-import ish.oncourse.admin.services.billing.BillingDataServiceImpl;
-import ish.oncourse.admin.services.billing.IBillingDataService;
 import ish.oncourse.admin.services.ntis.INTISUpdater;
 import ish.oncourse.admin.services.ntis.NTISUpdaterImpl;
 import ish.oncourse.admin.services.ntis.OrganisationServiceBuilder;
@@ -42,7 +40,6 @@ public class AppModule {
 		BinderFunctions.bindPaymentGatewayServices(binder);
 		BinderFunctions.bindEnvServices(binder, "admin", false, new S3ServiceBuilder());
 
-		binder.bind(IBillingDataService.class, BillingDataServiceImpl.class);
 		binder.bind(ITrainingComponentService.class, new TrainingComponentServiceBuilder());
 		binder.bind(IOrganisationService.class, new OrganisationServiceBuilder());
 		binder.bind(INTISUpdater.class, NTISUpdaterImpl.class);

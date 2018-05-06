@@ -1,7 +1,7 @@
 package ish.oncourse.admin.pages;
 
 import com.amazonaws.services.identitymanagement.model.AccessKey;
-import ish.oncourse.admin.pages.college.Billing;
+import ish.oncourse.admin.pages.college.Overview;
 import ish.oncourse.admin.utils.LicenseFeeUtil;
 import ish.oncourse.admin.utils.PreferenceUtil;
 import ish.oncourse.model.College;
@@ -134,7 +134,7 @@ public class AddCollege {
 		initializeLicensePreferences(context, college);
 		context.commitChanges();
 		//it is return json which contains redirect link in redirectURL parameter
-		return prls.createPageRenderLinkWithContext(Billing.class, collegeId);
+		return prls.createPageRenderLinkWithContext(Overview.class, collegeId);
 	}
 
 
