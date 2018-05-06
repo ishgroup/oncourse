@@ -1,12 +1,20 @@
-
 ext {
     curatorVersion = '4.0.1'
+    zookeeperVersion = '3.4.12'
 }
 
 dependencies {
 
-    compile group: 'org.apache.curator', name: 'curator-framework', version: curatorVersion
-    compile group: 'org.apache.curator', name: 'curator-recipes', version: curatorVersion
+    compile(group: 'org.apache.curator', name: 'curator-framework', version: curatorVersion) {
+        exclude group: 'org.apache.zookeeper', module: 'zookeeper'
+    }
+    compile(group: 'org.apache.curator', name: 'curator-recipes', version: curatorVersion) {
+        exclude group: 'org.apache.zookeeper', module: 'zookeeper'
+    }
 
-    testCompile group: 'org.apache.curator', name: 'curator-test', version: curatorVersion
+    testCompile(group: 'org.apache.curator', name: 'curator-test', version: curatorVersion) {
+        exclude group: 'org.apache.zookeeper', module: 'zookeeper'
+    }
+
+    compile group: 'org.apache.zookeeper', name: 'zookeeper', version: zookeeperVersion
 }
