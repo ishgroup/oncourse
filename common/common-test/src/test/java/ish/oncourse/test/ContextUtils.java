@@ -36,7 +36,7 @@ public class ContextUtils {
 	public static final String SHOULD_CREATE_PK_SUPPORT="createPKSupport";
 
 	static {
-		cayenneRuntime = new ServerRuntime("cayenne-oncourse.xml");
+		cayenneRuntime = ServerRuntime.builder().addConfig("cayenne-oncourse.xml").build();
 	}
 
 	public static ObjectContext createObjectContext() {

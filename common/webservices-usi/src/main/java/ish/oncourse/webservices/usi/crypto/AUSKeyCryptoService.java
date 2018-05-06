@@ -62,7 +62,7 @@ public class AUSKeyCryptoService extends CryptoBase implements CallbackHandler {
 		}
 	}
 
-	@Override
+	@Override @Deprecated
 	public boolean verifyTrust(X509Certificate[] certs) throws WSSecurityException {
 		throw new UnsupportedOperationException();
 	}

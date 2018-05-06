@@ -15,7 +15,7 @@ public class CombineSvg extends DefaultTask {
     def String imgDirectoryName
 
     @TaskAction
-    def void combineSvg() {
+    def void run() {
         def imgDirectory = new File(imgDirectoryName)
         if (imgDirectory.exists()) {
             def xmlParser = new XmlParser()
