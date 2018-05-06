@@ -34,9 +34,9 @@ class SolrCourseQueryWithPriceFilterTest extends ASolrTest{
         cCollege.newCourse("course11").newCourseClassWithSessions("110 dollars current", -1, 1).feeExTax(110).build()
         cCollege.newCourse("course12").newCourseClassWithSessions("110 dollars future", 5, 6).feeExTax(110).build()
         
-        cCollege.newCourse("course13").newCourseClassWithSessions("withoutPrice past", -5, -4).build()
-        cCollege.newCourse("course14").newCourseClassWithSessions("withoutPrice current", -1, 1).build()
-        cCollege.newCourse("course15").newCourseClassWithSessions("withoutPrice future", 5, 6).build()
+        cCollege.newCourse("course13").newCourseClassWithSessions("withoutPrice past", -5, -4).feeExTax(0).build()
+        cCollege.newCourse("course14").newCourseClassWithSessions("withoutPrice current", -1, 1).feeExTax(0).build()
+        cCollege.newCourse("course15").newCourseClassWithSessions("withoutPrice future", 5, 6).feeExTax(0).build()
 
         cCollege.newCourse("course16").newSelfPacedClass("99 dollars selfpaced").feeExTax(99).build()
 

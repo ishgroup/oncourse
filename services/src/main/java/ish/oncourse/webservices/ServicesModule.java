@@ -10,6 +10,7 @@ import io.bootique.jdbc.DataSourceFactory;
 import io.bootique.jetty.JettyModule;
 import io.bootique.jetty.MappedFilter;
 import io.bootique.jetty.MappedServlet;
+import io.bootique.shutdown.ShutdownManager;
 import io.bootique.tapestry.di.InjectorModuleDef;
 import ish.oncourse.cayenne.WillowCayenneModuleBuilder;
 import ish.oncourse.configuration.Configuration;
@@ -103,7 +104,9 @@ public class ServicesModule extends ConfigModule {
 
 	@Provides
 	@Singleton()
-	public SolrClient createSolrClient(Properties applicationProperties) {
-		return BuildSolrClient.instance(applicationProperties).build();
+	public SolrClient createSolrClient(Properties appProps, ShutdownManager shutdownManager) {
+		SolrClient solrClient = BuildSolrClient.instance(appProps).build();
+		shutdownManager.addShutdownHook(solrClient);
+		return solrClient;
 	}
 }

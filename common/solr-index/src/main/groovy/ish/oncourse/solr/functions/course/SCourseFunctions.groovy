@@ -12,6 +12,8 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.ResultIterator
 import org.apache.commons.io.IOUtils
 import org.apache.commons.lang3.time.DateUtils
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 
 import static ish.oncourse.solr.functions.course.CourseFunctions.Courses
 
@@ -20,20 +22,20 @@ import static ish.oncourse.solr.functions.course.CourseFunctions.Courses
  * Date: 5/10/17
  */
 class SCourseFunctions {
+    private static final Logger logger = LogManager.logger
 
     static final Observable<SCourse> SCourses(ObjectContext context, Date current = new Date(),
                                               Scheduler scheduler = Schedulers.io()) {
         ResultIterator<Course> courses = Courses(context)
-        try {
-            return Flowable.fromIterable(courses)
-                    .parallel()
-                    .runOn(scheduler)
-                    .map({ Course c -> GetSCourse.call(new CourseContext(course: c, context: c.objectContext, current: current)) })
-                    .doOnError({ it.printStackTrace() })
-                    .sequential().toObservable()
-        } finally {
+        return Flowable.fromIterable(courses)
+                .parallel()
+                .runOn(scheduler)
+                .map({ Course c -> GetSCourse.call(new CourseContext(course: c, context: c.objectContext, current: current)) })
+                .doOnError({ logger.catching(it) })
+                .sequential().toObservable()
+                .doAfterTerminate({
             IOUtils.closeQuietly({ courses.close() } as Closeable)
-        }
+        })
     }
 
 

@@ -3,10 +3,17 @@
  */
 package ish.oncourse.scheduler.job;
 
+import com.cronutils.model.Cron;
+import com.cronutils.model.CronType;
+import com.cronutils.model.definition.CronDefinition;
+import com.cronutils.model.definition.CronDefinitionBuilder;
+
 /**
  * User: akoiro
  * Date: 6/5/18
  */
 public interface IJob extends Runnable {
-	Config getConfig();
+	CronDefinition DEFAULT_CRON_DEFINITION = CronDefinitionBuilder.instanceDefinitionFor(CronType.QUARTZ);
+
+	Cron getCron();
 }

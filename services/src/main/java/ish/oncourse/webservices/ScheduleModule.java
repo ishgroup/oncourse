@@ -9,6 +9,7 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.multibindings.Multibinder;
 import io.bootique.ConfigModule;
+import io.bootique.shutdown.ShutdownManager;
 import ish.oncourse.scheduler.ScheduleService;
 import ish.oncourse.solr.reindex.ReindexCoursesJob;
 import ish.oncourse.solr.reindex.ReindexSuburbsJob;
@@ -29,6 +30,14 @@ import static ish.oncourse.configuration.Configuration.AppProperty.ZK_HOST;
  * Date: 6/5/18
  */
 public class ScheduleModule extends ConfigModule {
+	public static final String DEFAULT_CRON_REINDEX_COURSES = "0 0 5 ? * *";
+	public static final String DEFAULT_CRON_REINDEX_TAGS = "0 30 5 ? * *";
+	public static final String DEFAULT_CRON_REINDEX_SUBURBS = "0 0 6 ? * *";
+
+	public static final String PROP_CRON_REINDEX_COURSES = "cron_reindex_courses";
+	public static final String PROP_CRON_REINDEX_TAGS = "cron_reindex_tags";
+	public static final String PROP_CRON_REINDEX_SUBURBS = "cron_reindex_suburbs";
+
 	public static final String ZNODE_MUTEX_PATH = "/willow/services/reindex";
 
 
@@ -40,21 +49,26 @@ public class ScheduleModule extends ConfigModule {
 
 	@Provides
 	@Singleton
-	public CuratorFramework curatorFramework(Properties applicationProperties) {
-		CuratorFramework client = CuratorFrameworkFactory.newClient(applicationProperties.getProperty(ZK_HOST.getKey()), new RetryForever(1000));
+	public CuratorFramework curatorFramework(Properties appProps, ShutdownManager shutdownManager) {
+		CuratorFramework client = CuratorFrameworkFactory
+				.newClient(appProps.getProperty(ZK_HOST.getKey()),
+						new RetryForever(1000));
 		client.start();
+		shutdownManager.addShutdownHook(client);
 		return client;
 	}
 
 	@Provides
 	public ScheduleService createScheduledService(ServerRuntime runtime,
 												  CuratorFramework curatorFramework,
-												  SolrClient solrClient) {
+												  SolrClient solrClient,
+												  Properties appProps, ShutdownManager shutdownManager) {
 		ObjectContext context = runtime.newContext();
-
-		return new ScheduleService(curatorFramework, ZNODE_MUTEX_PATH)
-				.addJob(new ReindexCoursesJob(context, solrClient))
-				.addJob(new ReindexTagsJob(context, solrClient))
-				.addJob(new ReindexSuburbsJob(context, solrClient)).start();
+		ScheduleService service = new ScheduleService(curatorFramework, ZNODE_MUTEX_PATH)
+				.addJob(new ReindexCoursesJob(context, solrClient, appProps.getProperty(PROP_CRON_REINDEX_COURSES, DEFAULT_CRON_REINDEX_COURSES)))
+				.addJob(new ReindexTagsJob(context, solrClient, appProps.getProperty(PROP_CRON_REINDEX_TAGS, DEFAULT_CRON_REINDEX_TAGS)))
+				.addJob(new ReindexSuburbsJob(context, solrClient, appProps.getProperty(PROP_CRON_REINDEX_SUBURBS, DEFAULT_CRON_REINDEX_SUBURBS))).start();
+		shutdownManager.addShutdownHook(service);
+		return service;
 	}
 }
