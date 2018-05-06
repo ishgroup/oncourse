@@ -10,7 +10,6 @@ import org.apache.curator.framework.recipes.leader.LeaderLatchListener;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.EOFException;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -41,7 +40,6 @@ public class ScheduledService {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-		this.await();
 	}
 
 	private void schedule() {
@@ -55,20 +53,6 @@ public class ScheduledService {
 		if (executorService != null) {
 			executorService.shutdown();
 			executorService = null;
-		}
-		await();
-	}
-
-	private void await() {
-		try {
-			leaderLatch.await();
-		} catch (InterruptedException e) {
-			leaderLatch.removeListener(listener);
-			logger.debug("ScheduledService is interrupted");
-		} catch (EOFException e) {
-			leaderLatch.removeListener(listener);
-			throw new RuntimeException(e);
-
 		}
 	}
 
