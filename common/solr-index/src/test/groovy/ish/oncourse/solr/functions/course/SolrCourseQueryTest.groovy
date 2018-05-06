@@ -28,9 +28,6 @@ class SolrCourseQueryTest extends ASolrTest {
         
         ReindexCoursesJob job = new ReindexCoursesJob(objectContext, solrClient)
         job.run()
-        while (job.isActive()){
-            Thread.sleep(100)
-        }
 
         List<SCourse> actualSClasses = solrClient.query("courses",
                 SolrQueryBuilder.valueOf(new SearchParams(s: "course"), cCollege.college.id.toString(), null, null).build())

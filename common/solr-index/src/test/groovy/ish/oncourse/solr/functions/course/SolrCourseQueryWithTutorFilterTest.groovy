@@ -99,9 +99,6 @@ class SolrCourseQueryWithTutorFilterTest extends ASolrTest {
 
         job = new ReindexCoursesJob(objectContext, solrClient)
         job.run()
-        while (job.isActive()) {
-            Thread.sleep(100)
-        }
 
         //after reindex
         actualSCourses = solrClient.query("courses",

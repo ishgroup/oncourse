@@ -39,10 +39,7 @@ class SolrCourseQueryWithLocationFilterTest extends ASolrTest{
 
         ReindexCoursesJob job = new ReindexCoursesJob(objectContext, solrClient)
         job.run()
-        while (job.isActive()){
-            Thread.sleep(100)
-        }
-        
+
         Suburb location = new Suburb()
         location.latitude = 15
         location.longitude = 15

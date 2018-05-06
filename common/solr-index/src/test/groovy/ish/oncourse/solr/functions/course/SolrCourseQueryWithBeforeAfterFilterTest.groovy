@@ -42,9 +42,6 @@ class SolrCourseQueryWithBeforeAfterFilterTest extends ASolrTest {
 
         ReindexCoursesJob job = new ReindexCoursesJob(objectContext, solrClient)
         job.run()
-        while (job.isActive()) {
-            Thread.sleep(100)
-        }
 
         //if we use 'before' filter - past classes doesn't selected by solr query because they have startDate = now + 100 years
         actualSCourses = solrClient.query("courses",

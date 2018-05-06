@@ -41,9 +41,6 @@ class SolrCourseQueryWithTimeFilterTest extends ASolrTest {
 
         ReindexCoursesJob job = new ReindexCoursesJob(objectContext, solrClient)
         job.run()
-        while (job.isActive()) {
-            Thread.sleep(100)
-        }
 
         List<SCourse> actualSCourses = solrClient.query("courses",
                 SolrQueryBuilder.valueOf(new SearchParams(s: "course*", time: "daytime"), cCollege.college.id.toString(), null, null).build())

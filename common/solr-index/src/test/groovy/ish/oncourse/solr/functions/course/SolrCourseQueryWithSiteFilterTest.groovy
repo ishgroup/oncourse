@@ -48,10 +48,7 @@ class SolrCourseQueryWithSiteFilterTest extends ASolrTest {
 
         ReindexCoursesJob job = new ReindexCoursesJob(objectContext, solrClient)
         job.run()
-        while (job.isActive()) {
-            Thread.sleep(100)
-        }
-        
+
         actualSCourses = solrClient.query("courses",
                 SolrQueryBuilder.valueOf(new SearchParams(s: "course*", siteId: targetSite.id), collegeId, null, null).build())
                 .getBeans(SCourse.class)

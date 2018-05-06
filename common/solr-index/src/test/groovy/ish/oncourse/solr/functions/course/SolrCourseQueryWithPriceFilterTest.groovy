@@ -42,10 +42,7 @@ class SolrCourseQueryWithPriceFilterTest extends ASolrTest{
 
         ReindexCoursesJob job = new ReindexCoursesJob(objectContext, solrClient)
         job.run()
-        while (job.isActive()){
-            Thread.sleep(100)
-        }
-        
+
         List<SCourse> actualSCourses = solrClient.query("courses",
                 SolrQueryBuilder.valueOf(new SearchParams(s: "course*", price: 100), cCollege.college.id.toString(), null, null).build())
                 .getBeans(SCourse.class)

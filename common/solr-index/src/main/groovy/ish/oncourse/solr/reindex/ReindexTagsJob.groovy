@@ -1,6 +1,6 @@
 package ish.oncourse.solr.reindex
 
-import ish.oncourse.scheduler.ScheduleConfig
+import ish.oncourse.scheduler.job.Config
 import ish.oncourse.scheduler.job.IJob
 import org.apache.cayenne.ObjectContext
 import org.apache.solr.client.solrj.SolrClient
@@ -13,7 +13,7 @@ class ReindexTagsJob implements IJob {
 
     private ObjectContext objectContext
     private SolrClient solrClient
-    private ScheduleConfig config = new ScheduleConfig(0, 15, TimeUnit.MINUTES)
+    private Config config = new Config(0, 15, TimeUnit.MINUTES)
 
     ReindexTagsJob(ObjectContext objectContext, SolrClient solrClient) {
         this.objectContext = objectContext
@@ -21,13 +21,13 @@ class ReindexTagsJob implements IJob {
     }
 
     @Override
-    ScheduleConfig getConfig() {
+    Config getConfig() {
         return config
     }
 
     @Override
     void run() {
-        getSolrTags(objectContext).subscribe({ solrClient.addBean(it) })
+        getSolrTags(objectContext).blockingSubscribe({ solrClient.addBean(it) })
         solrClient.commit()
     }
 }

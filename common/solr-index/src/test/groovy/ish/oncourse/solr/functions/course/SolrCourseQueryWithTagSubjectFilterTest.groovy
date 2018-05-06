@@ -56,9 +56,6 @@ class SolrCourseQueryWithTagSubjectFilterTest extends ASolrTest{
 
         ReindexCoursesJob job = new ReindexCoursesJob(objectContext, solrClient)
         job.run()
-        while (job.isActive()){
-            Thread.sleep(100)
-        }
 
         actualSCourses = solrClient.query("courses",
                 SolrQueryBuilder.valueOf(new SearchParams(s: "course*", subject: tag1), cCollege.college.id.toString(), null, null).build())
