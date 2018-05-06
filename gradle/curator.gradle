@@ -1,0 +1,12 @@
+
+ext {
+    curatorVersion = '4.0.1'
+}
+
+dependencies {
+
+    compile group: 'org.apache.curator', name: 'curator-framework', version: curatorVersion
+    compile group: 'org.apache.curator', name: 'curator-recipes', version: curatorVersion
+
+    testCompile group: 'org.apache.curator', name: 'curator-test', version: curatorVersion
+}
