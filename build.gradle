@@ -185,9 +185,8 @@ allprojects {
 apply from: "$rootDir/gradle/buildStaticResources.gradle"
 
 task createVersion(type: JiraVersionCreate) {
-	oldVersion "11 admin"
-	jiraPassword jiraPassword
-	jiraUsername jiraUsername
+	projectCode "OD"
+	oldVersion version
 }
 
 task wrapper(type: Wrapper) {
