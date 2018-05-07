@@ -27,6 +27,10 @@ public class TestContext {
 	private ServerRuntime serverRuntime;
 	private QueryCache queryCache;
 
+	public TestContext() {
+		initParams();
+	}
+
 	public TestContext queryCache(QueryCache queryCache) {
 		this.queryCache = queryCache;
 		return this;
@@ -54,9 +58,6 @@ public class TestContext {
 	}
 
 	public TestContext open() {
-		initParams();
-
-
 		if (mariaDB == null) {
 			mariaDB = MariaDB.valueOf();
 		}

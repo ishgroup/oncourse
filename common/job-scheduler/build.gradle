@@ -3,4 +3,9 @@ apply from: "$rootDir/gradle/curator.gradle"
 
 dependencies {
     compile group: 'com.cronutils', name: 'cron-utils', version: '7.0.1'
+
+    compile group: 'org.quartz-scheduler', name: 'quartz', version: '2.3.0'
+
+    testCompile project(':common:test-functions')
+    testCompile 'org.liquibase:liquibase-core:2.0.1'
 }
