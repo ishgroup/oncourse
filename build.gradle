@@ -4,7 +4,7 @@ buildscript {
 		log4j2Version = '2.10.0'
 		cayenneVersion = '4.1.M1'
 		jettyVersion = '9.4.6.v20170531'
-		mariadbVersion = '2.2.2'
+		mariadbVersion = '2.2.3'
 		derbyVersion = '10.14.1.0'
 		googleGuiceVersion = '4.1.0'
 		groovyVersion = '2.5.0-rc-2'
