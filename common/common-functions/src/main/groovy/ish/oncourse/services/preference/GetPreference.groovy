@@ -33,7 +33,12 @@ class GetPreference {
     }
 
     Preference getPreference() {
-        Expression exception = Preference.NAME.eq(key).andExp(Preference.COLLEGE.eq(college))
+        Expression exception = Preference.NAME.eq(key)
+        if (college) {
+            exception = exception.andExp(Preference.COLLEGE.eq(college))
+        } else {
+            exception = exception.andExp(Preference.COLLEGE.isNull())
+        }
         if (webSite) {
             exception = exception.andExp(Preference.WEB_SITE.eq(webSite))
         }
@@ -77,13 +82,16 @@ class GetPreference {
     
     void setValue(String value) {
         Preference pref = getPreference()
-        college = objectContext.localObject(college)
+
         if (pref == null) {
             pref = objectContext.newObject(Preference)
             pref.setName(key)
-        } 
-        
-        pref.college = college
+        }
+
+        if (college) {
+            pref.college = objectContext.localObject(college)
+        }
+
         if (webSite) {
             pref.webSite = objectContext.localObject(webSite)
         }
