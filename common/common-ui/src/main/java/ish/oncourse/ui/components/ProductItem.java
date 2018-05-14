@@ -112,7 +112,7 @@ public class ProductItem extends ISHCommon {
 		if (!isCourseVoucherProduct()) {
 			return StringUtils.EMPTY;
 		}
-		return String.format("%s Classes from the following", ((VoucherProduct) product).getRedemptionCourses().size());
+		return String.format("%s Classes from the following", ((VoucherProduct) product).getMaxCoursesRedemption());
 	}
 	
 	public boolean isVoucherProductWithValue() {
