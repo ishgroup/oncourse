@@ -2,6 +2,13 @@ apply plugin: 'cayenne'
 
 apply from: "$rootDir/gradle/bootique.gradle"
 
+repositories {
+	maven {
+		url 'http://maven.teamdev.com/repository/products'
+	}
+}
+
+
 dependencies {
 	// Needed by Java 9 and above
 	compile 'javax.xml.bind:jaxb-api:2.3.0'
@@ -27,6 +34,11 @@ dependencies {
 	compile "org.eclipse.jetty:jetty-client:$jettyVersion"
 	compile "org.eclipse.jetty.http2:http2-client:$jettyVersion"
 	compile "org.eclipse.jetty.http2:http2-http-client-transport:$jettyVersion"
+//	compile "org.eclipse.jetty:jetty-alpn-client:$jettyVersion"
+
+	compile "com.teamdev.jxbrowser:jxbrowser-cross-platform:6.20@pom"
+
+	compile "com.teamdev.jxbrowser:jxbrowser-mac:6.20"
 
     testCompile 'org.mockito:mockito-core:1.10.17'
 	testCompile 'org.apache.poi:poi:3.12-beta1'
