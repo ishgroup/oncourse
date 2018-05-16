@@ -130,17 +130,6 @@ public class QualificationNTISUpdater extends AbstractTrainingComponentNTISUpdat
 	}
 
 	@Override
-	protected void deleteRecord(ObjectContext context, DeletedTrainingComponent component) {
-		Qualification q = ObjectSelect.query(Qualification.class).
-				where(Qualification.NATIONAL_CODE.eq(component.getNationalCode().getValue())).
-				selectOne(context);
-		
-		if (q != null) {
-			context.deleteObjects(q);
-		}
-	}
-
-	@Override
 	protected TrainingComponentTypeFilter getTrainingComponentTypeFilter() {
 		TrainingComponentTypeFilter typeFilter = new TrainingComponentTypeFilter();
 

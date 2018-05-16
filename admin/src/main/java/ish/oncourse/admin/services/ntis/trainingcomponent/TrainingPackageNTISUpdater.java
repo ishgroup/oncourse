@@ -57,15 +57,4 @@ public class TrainingPackageNTISUpdater extends AbstractTrainingComponentNTISUpd
 
 		return isNewRecord;
 	}
-
-	@Override
-	protected void deleteRecord(ObjectContext context, DeletedTrainingComponent component) {
-		TrainingPackage trainingPackage = ObjectSelect.query(TrainingPackage.class).
-				where(TrainingPackage.NATIONAL_ISC.eq(component.getNationalCode().getValue())).
-				selectOne(context);
-		
-		if (trainingPackage != null) {
-			context.deleteObjects(trainingPackage);
-		}
-	}
 }

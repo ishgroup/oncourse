@@ -96,15 +96,4 @@ public class ModuleNTISUpdater extends AbstractTrainingComponentNTISUpdater {
 
 		return isNewRecord;
 	}
-
-	@Override
-	protected void deleteRecord(ObjectContext context, DeletedTrainingComponent component) {
-		Module m = ObjectSelect.query(Module.class).
-				where(Module.NATIONAL_CODE.eq(component.getNationalCode().getValue())).
-				selectOne(context);
-		
-		if (m != null) {
-			context.deleteObjects(m);
-		}
-	}
 }

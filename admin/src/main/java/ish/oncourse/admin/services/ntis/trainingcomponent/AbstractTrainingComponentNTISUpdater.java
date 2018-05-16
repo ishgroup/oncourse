@@ -119,14 +119,6 @@ public abstract class AbstractTrainingComponentNTISUpdater extends AbstractCompo
 				pageNumber++;
 			} while (pageNumber <= pageCount);
 
-			// remove deleted training packages from db
-			List<DeletedTrainingComponent> deletedComponents = trainingService.searchDeletedByDeletedDate(deletedRequest)
-					.getDeletedTrainingComponent();
-
-			for (DeletedTrainingComponent c : deletedComponents) {
-				deleteRecord(context, c);
-			}
-
 			totalModified += saveChanges(totalNew, context);
 
 			NTISResult result = new NTISResult();
@@ -142,8 +134,6 @@ public abstract class AbstractTrainingComponentNTISUpdater extends AbstractCompo
 	}
 
 	protected abstract boolean processRecord(ObjectContext context, TrainingComponentSummary summary) throws Exception;
-
-	protected abstract void deleteRecord(ObjectContext context, DeletedTrainingComponent component);
 
 	protected abstract TrainingComponentTypeFilter getTrainingComponentTypeFilter();
 }

@@ -82,14 +82,6 @@ public class OrganisationNTISUpdater extends AbstractComponentNTISUpdater {
 				pageNumber++;
 			} while (pageNumber <= pageCount);
 
-			// remove deleted training packages from db
-			List<DeletedOrganisation> deletedComponents = organisationService.searchDeletedByDeletedDate(deletedRequest)
-					.getDeletedOrganisation();
-
-			for (DeletedOrganisation organisation : deletedComponents) {
-				deleteRecord(context, organisation);
-			}
-
 			totalModified += saveChanges(totalNew, context);
 
 			NTISResult result = new NTISResult();
@@ -167,15 +159,5 @@ public class OrganisationNTISUpdater extends AbstractComponentNTISUpdater {
 				organisationDetails.getUrls().getValue().getUrl().get(0).getLink() : null;
 
 		organisation.setWebAddress(webAddress);
-	}
-
-	protected void deleteRecord(ObjectContext context, DeletedOrganisation organisation) {
-		Organisation o = ObjectSelect.query(Organisation.class).
-				where(Organisation.CODE.eq(organisation.getOrganisationCode().getValue())).
-				selectOne(context);
-		
-		if (o != null) {
-			context.deleteObjects(o);
-		}
 	}
 }
