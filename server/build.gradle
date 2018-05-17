@@ -225,11 +225,11 @@ task createResourceManifests {
 }
 test.dependsOn(createResourceManifests)
 
-task run(type: JavaExec) {
+task run(dependsOn: [classes, processResources], type: JavaExec) {
 	main = 'ish.oncourse.server.AngelServer'
 	classpath = sourceSets.main.runtimeClasspath
 	args 'DEBUG=true'
-	jvmArgs '-Xmx1024m', '-XX:+HeapDumpOnOutOfMemoryError', '-javaagent:/Users/yuryyasuchenya/.gradle/caches/modules-2/files-2.1/org.mortbay.jetty.alpn/jetty-alpn-agent/2.0.7/17692a89d50355373ff9e11a3fd9725bf1854722/jetty-alpn-agent-2.0.7.jar'
+	jvmArgs '-Xmx1024m', '-XX:+HeapDumpOnOutOfMemoryError'
 }
 
 compileGroovy {
