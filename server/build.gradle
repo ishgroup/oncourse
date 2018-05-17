@@ -296,7 +296,7 @@ appBundler {
 					 ]]
 
 	jvmOptions = [
-			"-javaagent:Java/jetty-alpn-agent-2.0.7.jar",
+			'-javaagent:$APP_ROOT/Contents/Java/jetty-alpn-agent-2.0.7.jar',
 			"-Dapple.awt.textantialiasing=true",
 			"-DJFileChooser.appBundleIsTraversable=true",
 			"-DJFileChooser.packageIsTraversable=true",
