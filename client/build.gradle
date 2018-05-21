@@ -10,8 +10,6 @@ repositories {
 
 
 dependencies {
-	// Needed by Java 9 and above
-	compile 'javax.annotation:javax.annotation-api:1.3.1'
 
 	compile (project(':common')) {
         exclude group: 'org.apache.cayenne', module: 'cayenne-server'
