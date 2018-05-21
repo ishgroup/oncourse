@@ -68,6 +68,9 @@ allprojects {
 	}
 
 	dependencies {
+		// Needed by Java 9 and above
+		compile 'javax.xml.bind:jaxb-api:2.3.0'
+
 		testCompile 'junit:junit:4.12'
 		testCompile 'org.dbunit:dbunit:2.4.9'
 

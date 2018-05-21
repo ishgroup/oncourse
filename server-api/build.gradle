@@ -49,6 +49,7 @@ task swagger (type: Swagger) {
 
 compileGroovy {
     dependsOn swagger
+    groovyClasspath += classpath.filter { it.absolutePath.contains('jaxb-api') }
 }
 
 clean.doFirst {
