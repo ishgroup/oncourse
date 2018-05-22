@@ -141,6 +141,7 @@ dependencies {
 	testCompile 'commons-dbcp:commons-dbcp:1.4'
 	testCompile 'xmlunit:xmlunit:1.6' //used for xml export validation tests
 	testCompile 'org.kohsuke:wordnet-random-name:1.3'
+	testCompile "io.bootique:bootique-test:$bootiqueVersion"
 }
 
 processResources{
