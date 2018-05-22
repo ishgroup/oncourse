@@ -11,6 +11,7 @@ import static ish.oncourse.admin.AdminProperty.S_ROOT;
 class AdminApp {
     static void main(String[] args) {
         System.setProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager")
+        System.setProperty("org.apache.cxf.stax.maxChildElements", "100000")
         Configuration.configure(S_ROOT)
         Bootique bootique = init(args)
         bootique.exec()
