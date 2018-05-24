@@ -27,7 +27,6 @@ public class ServicesApp {
 		bootique.module(new CayenneModuleProvider());
 		bootique.module(new JettyModuleProvider());
 		bootique.module(ServicesModule.class);
-		bootique.module(ScheduleModule.class);
 		return bootique;
 	}
 }
