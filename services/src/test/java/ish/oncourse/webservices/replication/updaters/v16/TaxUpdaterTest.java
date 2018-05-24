@@ -21,6 +21,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class TaxUpdaterTest extends ServiceTest {
 
@@ -57,5 +58,12 @@ public class TaxUpdaterTest extends ServiceTest {
         assertEquals(entity.getDescription(), stub.getDescription());
         assertEquals(entity.getIsGSTTaxType(), stub.isIsGSTTaxType());
         assertEquals(entity.getRate(), stub.getRate());
+
+        Tax nullDates = objectContext.newObject(Tax.class);
+        stub.setCreated(null);
+        stub.setModified(null);
+        updater.updateEntity(stub, nullDates, relationShipCallback);
+        assertNotNull(nullDates.getCreated());
+        assertNotNull(nullDates.getModified());
     }
 }

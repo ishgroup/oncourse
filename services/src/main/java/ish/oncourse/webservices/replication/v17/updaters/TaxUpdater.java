@@ -8,12 +8,14 @@ import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v17.stubs.replication.TaxStub;
 
+import java.util.Date;
+
 public class TaxUpdater extends AbstractWillowUpdater<TaxStub, Tax> {
     
     @Override
     public void updateEntity(TaxStub stub, Tax entity, RelationShipCallback callback) {
-        entity.setCreated(stub.getCreated());
-        entity.setModified(stub.getModified());
+        entity.setCreated(stub.getCreated() != null ? stub.getCreated() : new Date());
+        entity.setModified(stub.getModified() != null ? stub.getModified() : new Date());
         entity.setCode(stub.getTaxCode());
         entity.setDescription(stub.getDescription());
         entity.setIsGSTTaxType(stub.isIsGSTTaxType());
