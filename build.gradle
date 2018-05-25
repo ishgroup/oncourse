@@ -10,7 +10,8 @@ buildscript {
 		groovyVersion = '2.5.0-rc-2'
 		springframeworkVersion = '5.0.6.RELEASE'
 		bouncycastleVersion = '1.59'
-		bootiqueVersion = "0.24"
+		bootiqueVersion = '0.24'
+		jxbrowserVersion = '6.20'
 	}
 
 	repositories {
