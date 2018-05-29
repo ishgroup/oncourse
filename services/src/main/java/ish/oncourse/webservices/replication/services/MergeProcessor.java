@@ -10,6 +10,7 @@ import ish.oncourse.webservices.util.GenericDeletedStub;
 import ish.oncourse.webservices.util.GenericReplicatedRecord;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SelectById;
 
@@ -31,6 +32,7 @@ public class MergeProcessor {
 	
 	private static final String CONTACT_IDENTIFIER = "Contact";
 	private static final String STUDENT_IDENTIFIER = "Student";
+	private static final String CONTACT_TAG_RELATION = "ContactTagRelation";
 
 
 
@@ -270,40 +272,50 @@ public class MergeProcessor {
 	}
 
 	private void mergeTagRelations() {
+		if (isTagRelationsPresentFor(Arrays.asList(contactToUpdate.getId(), contactToDelete.getId()))) {
+			List<GenericReplicationStub> updTaggableStubs = getStubBy(CONTACT_TAG_RELATION, false);
+			List<GenericReplicationStub> delTaggableStubs = getStubBy(CONTACT_TAG_RELATION, true);
 
-		List<TaggableTag> moveQueue = new ArrayList<>();
-		List<TaggableTag> removeQueue = new ArrayList<>();
-
-		Taggable headTaggable = ObjectSelect.query(Taggable.class).where(Taggable.ENTITY_WILLOW_ID.eq(contactToUpdate.getId())).selectFirst(context);
-		List<TaggableTag> taggableTags = getTagRelationsFor(context, contactToDelete);
-
-		for (TaggableTag taggableTag : new ArrayList<>(taggableTags)) {
-			if (hasDeleteStub("ContactTagRelation", taggableTag.getTaggable().getId(), taggableTag.getTaggable().getAngelId())) {
-				removeQueue.add(taggableTag);
-			} else {
-				moveQueue.add(taggableTag);
-			}
+			removeCommonTags(delTaggableStubs);
+			moveDeletableTags(updTaggableStubs, contactToUpdate);
 		}
-
-		moveRelationsTo(moveQueue, headTaggable);
-
-		context.deleteObjects(removeQueue);
-		context.deleteObjects(ObjectSelect.query(Taggable.class).where(Taggable.ENTITY_WILLOW_ID.eq(contactToDelete.getId())).select(context));
-
-		TagRelationDeduper.valueOf(context, contactToUpdate).dedupe();
 	}
 
-	private List<TaggableTag> getTagRelationsFor(ObjectContext context, Queueable entity) {
-		return new ArrayList(ObjectSelect.query(TaggableTag.class)
-				.where(TaggableTag.TAGGABLE.dot(Taggable.ENTITY_IDENTIFIER).eq(entity.getClass().getSimpleName())
-						.andExp(TaggableTag.TAGGABLE.dot(Taggable.ENTITY_WILLOW_ID).eq(entity.getId())))
-				.select(context));
+	private void removeCommonTags(List<GenericReplicationStub> delStubs) {
+		if (delStubs.size() > 0) {
+			List<Long> taggableIds = delStubs.stream().map(GenericReplicationStub::getWillowId).collect(Collectors.toList());
+
+			List<Taggable> taggables = ObjectSelect.query(Taggable.class)
+					.where(ExpressionFactory.inDbExp(Taggable.ID_PK_COLUMN, taggableIds))
+					.select(context);
+
+			List<TaggableTag> relations = taggables.stream()
+					.flatMap(t -> t.getTaggableTags().stream())
+					.collect(Collectors.toList());
+
+			context.deleteObjects(relations);
+			context.deleteObjects(taggables);
+		}
 	}
 
-	private void moveRelationsTo(List<TaggableTag> taggableTag, Taggable taggable) {
-		taggableTag.forEach(t -> {
-			t.setTaggable(taggable);
-		});
+	private void moveDeletableTags(List<GenericReplicationStub> updStubs, Contact upd) {
+		if (updStubs.size() > 0) {
+			List<Long> taggableIds = updStubs.stream().map(GenericReplicationStub::getWillowId).collect(Collectors.toList());
+			List<Taggable> taggables = ObjectSelect.query(Taggable.class)
+					.where(ExpressionFactory.inDbExp(Taggable.ID_PK_COLUMN, taggableIds))
+					.select(context);
+
+			taggables.forEach(t -> {
+				t.setEntityWillowId(upd.getId());
+				t.setEntityAngelId(upd.getAngelId());
+			});
+		}
+	}
+
+	private boolean isTagRelationsPresentFor(List<Long> ids) {
+		return ObjectSelect.query(Taggable.class)
+				.where(Taggable.ENTITY_WILLOW_ID.in(ids))
+				.select(context).size() > 0;
 	}
 
 	private void mergeAssessmentClassTutors(Tutor tutorToUpdate, Tutor tutorToDelete) {

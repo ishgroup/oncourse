@@ -74,7 +74,7 @@ public class ProcessMergeTransaction {
 		Iterator<GenericReplicationStub> groupIterator = group.getGenericAttendanceOrBinaryDataOrBinaryInfo().iterator();
 		while (groupIterator.hasNext()) {
 			String entityIdentifier = groupIterator.next().getEntityIdentifier();
-			if (ContactDuplicate.class.getSimpleName().equals(entityIdentifier) || "ContactTagRelation".equals(entityIdentifier)) {
+			if (ContactDuplicate.class.getSimpleName().equals(entityIdentifier)) {
 				groupIterator.remove();
 			}
 		}
