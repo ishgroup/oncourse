@@ -165,10 +165,6 @@ task bundle_webstart(dependsOn: [jar, prepareKeychains], type: Copy) {
 						attribute(name: 'codebase', value: '*')
 						attribute(name: 'permissions', value: 'all-permissions')
 						attribute(name: 'Trusted-Library', value: 'true')
-
-						if (file.name == "jxbrowser-${jxbrowserVersion}.jar") {
-							attribute(name: 'Multi-Release', value: 'true')
-						}
 					}
 				}
 			}
