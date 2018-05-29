@@ -10,8 +10,10 @@ configurations {
 }
 
 ext {
+	pathToJavaAgent = 'tmp/javaAgent'
+	javaAgentFileName = 'jetty-alpn-agent.jar'
 	jarsCollection = {
-		return configurations.runtime.plus(configurations.runtime.artifacts.files).plus(files("${buildDir}/tmp/javaAgent/jetty-alpn-agent.jar"))
+		return configurations.runtime.plus(configurations.runtime.artifacts.files).plus(files("${buildDir}/${pathToJavaAgent}/${javaAgentFileName}"))
 	}
 }
 
@@ -231,10 +233,11 @@ task createResourceManifests {
 test.dependsOn(createResourceManifests)
 
 task run(dependsOn: [classes, processResources], type: JavaExec) {
+	dependsOn 'agentJar'
 	main = 'ish.oncourse.server.AngelServer'
 	classpath = sourceSets.main.runtimeClasspath
 	args 'DEBUG=true'
-	jvmArgs '-Xmx1024m', '-XX:+HeapDumpOnOutOfMemoryError'
+	jvmArgs '-Xmx1024m', '-XX:+HeapDumpOnOutOfMemoryError', "-javaagent:${buildDir}/${pathToJavaAgent}/${javaAgentFileName}"
 }
 
 test {
@@ -279,8 +282,8 @@ cayenne {
 
 task agentJar(type: Copy) {
 	from configurations.javaAgent
-	into "${buildDir}/tmp/javaAgent/"
-	rename {'jetty-alpn-agent.jar'}
+	into "${buildDir}/${pathToJavaAgent}/"
+	rename { "${javaAgentFileName}" }
 } 
 
 appBundler {
@@ -364,7 +367,7 @@ task installer_unix(dependsOn: [jar,agentJar], type: Zip) {
 		into 'onCourseServer/lib'
 	}
 
-	from ("${buildDir}/tmp/javaAgent/") {
+	from ("${buildDir}/${pathToJavaAgent}/") {
 		into 'onCourseServer/lib'
 	}
 	
