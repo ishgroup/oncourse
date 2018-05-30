@@ -7,7 +7,7 @@ buildscript {
 		mariadbVersion = '2.2.5'
 		derbyVersion = '10.14.2.0'
 		googleGuiceVersion = '4.2.0'
-		groovyVersion = '2.5.0-rc-2'
+		groovyVersion = '2.5.0'
 		springframeworkVersion = '5.0.6.RELEASE'
 		bouncycastleVersion = '1.59'
 		bootiqueVersion = '0.24'
