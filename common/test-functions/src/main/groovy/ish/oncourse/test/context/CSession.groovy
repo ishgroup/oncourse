@@ -10,11 +10,9 @@ import org.apache.cayenne.ObjectContext
  * Created by alex on 11/15/17.
  */
 class CSession {
-    private ObjectContext objectContext
+    ObjectContext objectContext
     Session session
 
-    private CSession(){}
-    
     /**
      * session's start date - 'date'
      * session's end date - 'date' + 1 hour
@@ -82,5 +80,10 @@ class CSession {
     CSession withRoomWithTimeZonedSite(String timezone) {
         session.room = CRoom.instance(objectContext, session.college).timeZone(timezone).room
         this
+    }
+
+    void delete() {
+        objectContext.deleteObject(session)
+        objectContext.commitChanges()
     }
 }

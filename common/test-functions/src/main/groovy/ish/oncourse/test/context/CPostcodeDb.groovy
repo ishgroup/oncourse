@@ -12,7 +12,7 @@ class CPostcodeDb {
     private ObjectContext objectContext
     PostcodeDb postcodeDb
 
-    private static Faker faker = new Faker()
+    private static Faker faker = DataContext.faker
 
     private CPostcodeDb(){}
 

@@ -2,13 +2,13 @@ package ish.oncourse.textile.pages;
 
 import ish.oncourse.model.Site;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.search.Count;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchParamsParser;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.attrs.LocationTextileAttribute;
+import ish.oncourse.solr.query.Count;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.ObjectSelect;

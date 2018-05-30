@@ -54,10 +54,7 @@ public class LoadDataSet {
 		try {
 			InputStream st = LoadDataSet.class.getClassLoader().getResourceAsStream(dataSetFile);
 			this.dataSet = initDataSet(st);
-			DatabaseConnection dbConnection = new DatabaseConnection(dataSource.getConnection());
-			dbConnection.getConfig().setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, false);
-			dbConnection.getConfig().setProperty(DatabaseConfig.FEATURE_ALLOW_EMPTY_FIELDS, true);
-			dbConnection.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new MySqlDataTypeFactory());
+			DatabaseConnection dbConnection = createDatabaseConnection(dataSource);
 			if (clean)
 				DatabaseOperation.CLEAN_INSERT.execute(dbConnection, dataSet);
 			else
@@ -66,6 +63,18 @@ public class LoadDataSet {
 			throw new RuntimeException(e);
 		}
 		return this;
+	}
+
+	public static DatabaseConnection createDatabaseConnection(DataSource dataSource) {
+		try {
+			DatabaseConnection dbConnection = new DatabaseConnection(dataSource.getConnection());
+			dbConnection.getConfig().setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, false);
+			dbConnection.getConfig().setProperty(DatabaseConfig.FEATURE_ALLOW_EMPTY_FIELDS, true);
+			dbConnection.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new MySqlDataTypeFactory());
+			return dbConnection;
+		} catch (Exception e) {
+			throw new IllegalArgumentException(e);
+		}
 	}
 
 	private ReplacementDataSet initDataSet(InputStream st) throws DataSetException {

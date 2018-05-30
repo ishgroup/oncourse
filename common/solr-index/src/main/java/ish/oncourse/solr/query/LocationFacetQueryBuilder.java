@@ -1,9 +1,6 @@
-package ish.oncourse.services.search;
+package ish.oncourse.solr.query;
 
 import ish.oncourse.model.College;
-import ish.oncourse.solr.query.SearchParams;
-import ish.oncourse.solr.query.SolrQueryBuilder;
-import ish.oncourse.solr.query.Suburb;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.solr.client.solrj.SolrQuery;

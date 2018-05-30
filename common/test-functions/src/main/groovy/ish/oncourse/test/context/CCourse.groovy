@@ -1,12 +1,9 @@
 package ish.oncourse.test.context
 
 import ish.common.types.CourseEnrolmentType
-import ish.oncourse.model.College
-import ish.oncourse.model.Course
-import ish.oncourse.model.CourseClass
-import ish.oncourse.model.Site
-import ish.oncourse.model.Tutor
+import ish.oncourse.model.*
 import org.apache.cayenne.ObjectContext
+import org.apache.cayenne.query.ObjectSelect
 
 /**
  * Created by alex on 11/17/17.
@@ -17,7 +14,46 @@ class CCourse {
 
     List<CCourseClass> classes = new LinkedList<>()
 
-    private CCourse() {}
+    CCourse load() {
+        ObjectSelect.query(CourseClass).where(Course.COLLEGE.eq(course.college)).select(objectContext).forEach { cc ->
+            classes.add(new CCourseClass().with {
+                it.objectContext = this.objectContext
+                it.courseClass = cc
+                it
+            }.load())
+        }
+        return this
+    }
+
+    CCourse relatedTo(CProduct product) {
+        CourseProductRelation relation = new CourseProductRelation()
+        relation.setCollege(this.course.college)
+        relation.setCourse(this.course)
+        relation.setProduct(product.product)
+        relation.setCreated(new Date())
+        relation.setModified(new Date())
+        return this
+    }
+
+    CCourse relatedFrom(CCourse from) {
+        CourseCourseRelation relation = new CourseCourseRelation()
+        relation.setToCourse(this.course)
+        relation.setFromCourse(from.course)
+        relation.setCollege(this.course.college)
+        relation.setCreated(new Date())
+        relation.setModified(new Date())
+        return this
+    }
+
+    CCourse relatedTo(CCourse to) {
+        CourseCourseRelation relation = new CourseCourseRelation()
+        relation.setToCourse(to.course)
+        relation.setFromCourse(this.course)
+        relation.setCollege(this.course.college)
+        relation.setCreated(new Date())
+        relation.setModified(new Date())
+        return this
+    }
 
     CCourseClass newCourseClass(String code) {
         CCourseClass cClass = CCourseClass.instance(objectContext, code, course)
@@ -28,8 +64,8 @@ class CCourse {
     CCourseClass newCourseClassWithSessionsAndTutor(String code, Tutor tutor, Integer... sessionStartDatesFromNow) {
         CCourseClass cClass = CCourseClass.instance(objectContext, code, course)
         CTutorRole.instance(objectContext, tutor, cClass.courseClass)
-        sessionStartDatesFromNow.each {s -> cClass.withSession(s)}
-        
+        sessionStartDatesFromNow.each { s -> cClass.withSession(s) }
+
         classes.add(cClass)
         cClass
     }
@@ -45,14 +81,14 @@ class CCourse {
 
     CCourseClass newCourseClassWithSessions(String code, Integer... sessionStartDatesFromNow) {
         CCourseClass cClass = CCourseClass.instance(objectContext, code, course)
-        sessionStartDatesFromNow.each {day -> cClass.withSession(new Date() + day)}
+        sessionStartDatesFromNow.each { day -> cClass.withSession(new Date() + day) }
         classes.add(cClass)
         cClass
     }
 
-    CCourseClass newCourseClassWithSessionsAndSite(String code, Site site, Integer... sessionStartDatesFromNow) {
+    CCourseClass newCourseClassWithSessionsAndSite(String code, CSite site, Integer... sessionStartDatesFromNow) {
         CCourseClass cClass = CCourseClass.instance(objectContext, code, course)
-        sessionStartDatesFromNow.each {day -> cClass.withSessionAndSite(new Date() + day, site)}
+        sessionStartDatesFromNow.each { day -> cClass.withSessionAndSite(new Date() + day, site) }
         classes.add(cClass)
         cClass
     }
@@ -66,7 +102,7 @@ class CCourse {
         CCourseClass cClass = CCourseClass.instance(objectContext, code, course)
         cClass.withSession(new Date())
         cClass.withSession(new Date() + 1)
-        
+
         classes.add(cClass)
         cClass
     }
@@ -101,7 +137,7 @@ class CCourse {
      */
     CCourseClass newCourseClassWithTimezonedSessions(String code, String timezone = "Australia/Sydney", Date... sessionStartDates) {
         CCourseClass cClass = CCourseClass.instance(objectContext, code, course)
-        sessionStartDates.each {s -> cClass.withTimeZonedSession(s, timezone)}
+        sessionStartDates.each { s -> cClass.withTimeZonedSession(s, timezone) }
 
         classes.add(cClass)
         cClass
@@ -124,7 +160,7 @@ class CCourse {
         cCourse.course.isWebVisible = true
         cCourse
     }
-    
+
     CCourse withClass(String code) {
         CCourseClass cClass = CCourseClass.instance(objectContext, code, course)
         classes.add(cClass)
@@ -145,7 +181,7 @@ class CCourse {
 
     CCourse withClassWithSiteLocation(String code, BigDecimal longitude, BigDecimal latitude, Integer... sessionStartDatesFromNow) {
         CCourseClass cClass = CCourseClass.instance(objectContext, code, course)
-        sessionStartDatesFromNow.each {s -> cClass.withSessionWithSiteLocation(new Date() + s, longitude, latitude)}
+        sessionStartDatesFromNow.each { s -> cClass.withSessionWithSiteLocation(new Date() + s, longitude, latitude) }
         classes.add(cClass)
         this
     }
@@ -167,7 +203,7 @@ class CCourse {
 
     CCourse withSelfPacedClassAndTutor(String code, Tutor... tutors) {
         CourseClass clazz = newSelfPacedClass(code).courseClass
-        tutors.each {t -> CTutorRole.instance(objectContext, t, clazz)}
+        tutors.each { t -> CTutorRole.instance(objectContext, t, clazz) }
         this
     }
 
@@ -212,7 +248,7 @@ class CCourse {
         this
     }
 
-    CCourse isWebVisible(boolean isVisible){
+    CCourse isWebVisible(boolean isVisible) {
         course.isWebVisible = isVisible
         this
     }
@@ -220,5 +256,13 @@ class CCourse {
     CCourse build() {
         objectContext.commitChanges()
         this
+    }
+
+    void delete() {
+        this.classes.each { it.delete() }
+        this.classes.clear()
+        objectContext.deleteObjects(this.course.getToCourses())
+        objectContext.deleteObject(this.course)
+        objectContext.commitChanges()
     }
 }

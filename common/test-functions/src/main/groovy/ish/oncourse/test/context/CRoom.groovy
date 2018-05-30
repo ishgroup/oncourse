@@ -1,5 +1,6 @@
 package ish.oncourse.test.context
 
+import com.github.javafaker.Faker
 import ish.oncourse.model.College
 import ish.oncourse.model.Room
 import ish.oncourse.model.Site
@@ -10,6 +11,8 @@ import org.apache.cayenne.ObjectContext
  */
 class CRoom {
     private ObjectContext objectContext
+    private Faker faker = DataContext.faker
+
     Room room
 
     private CRoom(){}
@@ -79,6 +82,7 @@ class CRoom {
 
     private CRoom createRoom(Site site){
         room = objectContext.newObject(Room)
+        room.name = faker.address().fullAddress()
         room.site = objectContext.localObject(site)
         room.college = site.college
         

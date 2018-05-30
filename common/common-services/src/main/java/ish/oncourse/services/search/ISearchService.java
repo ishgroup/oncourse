@@ -1,6 +1,7 @@
 package ish.oncourse.services.search;
 
 import ish.oncourse.model.Tag;
+import ish.oncourse.solr.query.Count;
 import ish.oncourse.solr.query.SearchParams;
 import org.apache.solr.common.SolrDocumentList;
 

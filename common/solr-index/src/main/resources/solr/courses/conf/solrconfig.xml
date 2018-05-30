@@ -15,6 +15,7 @@
     <directoryFactory name="DirectoryFactory" class="${solr.directoryFactory:solr.StandardDirectoryFactory}"/>
     <schemaFactory class="ClassicIndexSchemaFactory"/>
 
+
     <indexConfig>
         <writeLockTimeout>20000</writeLockTimeout>
         <maxIndexingThreads>8</maxIndexingThreads>
@@ -173,7 +174,6 @@
        will be used.
     -->
     <requestHandler name="standard" class="solr.SearchHandler" default="true">
-        <!-- default values for query parameters -->
         <lst name="defaults">
             <str name="echoParams">explicit</str>
             <str name="df">id</str>

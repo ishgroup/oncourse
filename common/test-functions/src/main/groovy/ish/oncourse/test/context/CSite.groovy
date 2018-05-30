@@ -1,5 +1,6 @@
 package ish.oncourse.test.context
 
+import com.github.javafaker.Faker
 import ish.oncourse.model.College
 import ish.oncourse.model.Site
 import org.apache.cayenne.ObjectContext
@@ -8,12 +9,24 @@ import org.apache.cayenne.ObjectContext
  * Created by alex on 11/15/17.
  */
 class CSite {
-    private ObjectContext objectContext
+    ObjectContext objectContext
+
+    private Faker faker = DataContext.faker
+
     Site site
 
     List<CRoom> rooms = new LinkedList<>()
 
-    private CSite() {}
+    CSite load() {
+        return this
+    }
+
+    CSite addRoom(){
+        CRoom cRoom = CRoom.instance(objectContext, site)
+        rooms.add(cRoom)
+        return this
+    }
+
 
     CSite isWebVisible(boolean visible) {
         site.isWebVisible = visible
