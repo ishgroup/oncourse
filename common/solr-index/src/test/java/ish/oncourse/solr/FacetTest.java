@@ -23,9 +23,7 @@ public class FacetTest extends AbstractSolrTest {
 
     @Test
     public void test() throws Exception {
-        Map response = fullImport();
-
-        assertEquals("2", ((Map) response.get("statusMessages")).get("Total Documents Processed"));
+        assertEquals(2, fullImport());
 
 
         Suburb s1 = Suburb.valueOf("2000", -33.88232600, 151.20351100, 5d);

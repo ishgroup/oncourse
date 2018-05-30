@@ -24,17 +24,17 @@ import static ish.oncourse.solr.functions.course.CourseFunctions.Courses
 class SCourseFunctions {
     private static final Logger logger = LogManager.logger
 
-    static final Observable<SCourse> SCourses(ObjectContext context, Date current = new Date(),
-                                              Scheduler scheduler = Schedulers.io()) {
-        ResultIterator<Course> courses = Courses(context)
-        return Flowable.fromIterable(courses)
-                .parallel()
+    static final Observable<SCourse> SCourses(ObjectContext context,
+                                              Date current = new Date(),
+                                              Scheduler scheduler = Schedulers.io(),
+                                              Iterable<Course> courses = Courses(context)) {
+        return Flowable.fromIterable(courses).parallel()
                 .runOn(scheduler)
                 .map({ Course c -> GetSCourse.call(new CourseContext(course: c, context: c.objectContext, current: current)) })
                 .doOnError({ logger.catching(it) })
                 .sequential().toObservable()
                 .doAfterTerminate({
-            IOUtils.closeQuietly({ courses.close() } as Closeable)
+            if (courses instanceof Closeable) IOUtils.closeQuietly(courses as Closeable)
         })
     }
 

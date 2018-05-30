@@ -40,7 +40,7 @@ class CourseClassFunctions {
 
     public static final Closure<Iterable<Site>> CourseClassSites = { CourseClass courseClass ->
         Site site = courseClass.room?.site
-        return site ? Collections.singleton(site) : Collections.emptyIterator()
+        return site ? Collections.singleton(site) : Collections.EMPTY_SET
     }
 
     public static final Closure<ResultIterator<Site>> SessionSites = { CourseClass courseClass ->

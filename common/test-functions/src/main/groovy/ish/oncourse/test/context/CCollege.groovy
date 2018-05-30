@@ -185,8 +185,9 @@ class CCollege {
 
     CSite newSite() {
         CSite cSite = CSite.instance(this.objectContext, this.college)
-        cSite.newRoom()
+        cSite.withNewRoom(this.faker.address().buildingNumber())
         sites.add(cSite)
+        return cSite
     }
 
     CCollege load() {

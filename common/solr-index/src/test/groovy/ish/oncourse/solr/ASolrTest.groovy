@@ -22,10 +22,15 @@ abstract class ASolrTest extends SolrTestCaseJ4 {
         System.setProperty("tests.locale", "en-AU")
     }
 
-    TestContext testContext
-    ObjectContext objectContext
-    InitSolr initSolr
-    CCollege cCollege
+    protected TestContext testContext
+    protected ObjectContext objectContext
+    protected InitSolr initSolr
+    protected CCollege cCollege
+
+    protected void initSolr() throws Exception {
+        initSolr = InitSolr.coursesCore()
+        initSolr.init()
+    }
 
     @Before
     void before() throws Exception {
@@ -37,10 +42,6 @@ abstract class ASolrTest extends SolrTestCaseJ4 {
         cCollege = dataContext.newCollege()
     }
 
-    protected void initSolr() throws Exception {
-        initSolr = InitSolr.coursesCore()
-        initSolr.init()
-    }
 
     @After
     void after() {
