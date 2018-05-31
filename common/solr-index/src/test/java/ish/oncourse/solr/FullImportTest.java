@@ -3,17 +3,12 @@
  */
 package ish.oncourse.solr;
 
-import io.reactivex.schedulers.Schedulers;
-import ish.oncourse.solr.functions.course.SCourseFunctions;
 import ish.oncourse.solr.query.SearchParams;
 import ish.oncourse.solr.query.SolrQueryBuilder;
 import ish.oncourse.test.LoadDataSet;
 import ish.oncourse.test.TestContext;
-import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang3.time.DateUtils;
-import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.junit.Assert;
 import org.junit.Test;
@@ -30,36 +25,14 @@ public class FullImportTest extends ASolrTest {
 
 	@Test
 	public void test() throws IOException, SolrServerException {
-		new LoadDataSet()
-				.dataSetFile("ish/oncourse/solr/model/SolrCourseCoreTestDataSet.xml")
-				.addReplacement("[START_DATE]", DateUtils.addDays(new Date(), 1))
-				.addReplacement("[END_DATE]", DateUtils.addDays(new Date(), 2))
-				.load(testContext.getDS());
+		FullImportTest.loadDataSet(testContext);
 
-		SolrClient solrClient = new EmbeddedSolrServer(h.getCore());
-
-		fullImport(testContext.getServerRuntime().newContext(), solrClient);
-		fullImport(testContext.getServerRuntime().newContext(), solrClient);
+		Assert.assertEquals(5, fullImport());
+		Assert.assertEquals(5, fullImport());
 
 
 		QueryResponse response = solrClient.query(SolrQueryBuilder.valueOf(new SearchParams(), "10").build());
 		assertEquals(5, response.getResults().getNumFound());
-	}
-
-	public static void fullImport(ObjectContext context, SolrClient solrClient) {
-		final int[] imported = new int[1];
-		final Throwable[] error = new Throwable[1];
-		SCourseFunctions.SCourses(context,
-				new Date(), Schedulers.io()).blockingSubscribe(
-				(c) -> {
-					solrClient.addBean(c);
-					imported[0]++;
-				},
-				(e) -> error[0] = e,
-				() -> solrClient.commit()
-		);
-		if (error[0] != null) throw new RuntimeException(error[0]);
-		Assert.assertEquals(5, imported[0]);
 	}
 
 	public static void loadDataSet(TestContext testContext) {

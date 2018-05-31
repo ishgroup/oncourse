@@ -31,7 +31,7 @@ public class AddSiteTest extends ASolrTest {
 
 		SolrClient solrClient = new EmbeddedSolrServer(h.getCore());
 
-		FullImportTest.fullImport(testContext.getServerRuntime().newContext(), solrClient);
+		fullImport();
 
 		DataContext dataContext = new DataContext()
 				.withObjectContext(testContext.getServerRuntime().newContext()).load();

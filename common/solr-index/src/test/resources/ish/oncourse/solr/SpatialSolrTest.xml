@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <Country id="10" ishVersion="1" name="Tuvalu" isoCodeAlpha2="TV" isoCodeAlpha3="TUV" isoCodeNumeric="798" asccssCode="1609" saccCode="1511"/>
+    <College id="10" name="Sydney Community College"
+             webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880"
+             communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09"
+             timezone="Australia/Sydney"
+             requiresAvetmiss="0" paymentGatewayAccount="ishGroup_Dev"
+             paymentGatewayPass="test1234"/>
+
+    <Course id="10" collegeId="10" angelId="10" code="AAV"
+            isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
+            created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
+            allowWaitingList="1" name="Managerial Accounting"
+            enrolmentType="1"/>
+
+    <Course id="11" collegeId="10" angelId="11" code="AAV2"
+            isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
+            created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
+            allowWaitingList="1" name="Managerial Accounting"
+            enrolmentType="1"/>
+
+    <Course id="12" collegeId="10" angelId="12" code="COURSE12"
+            isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
+            created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
+            allowWaitingList="1" name="foo bar"
+            enrolmentType="1"/>
+
+    <Site id="10" collegeId="10" angelId="10" countryId="10" isWebVisible="1" created="2015-10-26 16:33:42.0"
+          modified="2015-12-11 18:46:43.0"
+          latitude="-33.88232600" longitude="151.20351100" name="Sydney"
+          postcode="2000"
+          state="NSW" street="787 George St" suburb="Haymarket"
+          timeZone="Australia/Sydney" isVirtual="0"/>
+
+    <Site id="11" collegeId="10" angelId="11" countryId="10" isWebVisible="1" created="2015-10-26 16:33:42.0"
+          modified="2015-12-11 18:46:43.0"
+          latitude="-37.80416850" longitude="144.95419660" name="142 Peel St  Melbourne" postcode="3051" state="VIC"
+          street="142 Peel St" suburb="North Melbourne" timeZone="Australia/Sydney" isVirtual="0"/>
+
+    <Site id="12" collegeId="10" angelId="12" countryId="10" isWebVisible="1" created="2015-10-26 16:33:42.0"
+          modified="2015-12-11 18:46:43.0"
+          latitude="-27.45962950" longitude="153.02985820" name="2/115 Wickham St Fortitude Valley" postcode="4006" state="QLD"
+          street="2/115 Wickham St" suburb="Fortitude Valley" timeZone="Australia/Sydney" isVirtual="0"/>
+
+    <Room id="10" collegeId="10" siteId="10" angelId="10"
+          capacity="30" created="2011-09-12 00:47:01.0" modified="2011-09-12 01:02:00.0"
+          name="TestRoom" />
+
+    <Room id="11" collegeId="10" siteId="11" angelId="11"
+          capacity="30" created="2011-09-12 00:47:01.0" modified="2011-09-12 01:02:00.0"
+          name="TestRoom" />
+
+    <Room id="12" collegeId="10" siteId="12" angelId="12"
+          capacity="30" created="2011-09-12 00:47:01.0" modified="2011-09-12 01:02:00.0"
+          name="TestRoom" />
+
+    <Student id="10" collegeId="10" angelId="10"
+             created="2011-09-12 00:51:00.0" modified="2011-09-12 00:51:00.0"
+             disabilityType="0" englishProficiency="0" highestSchoolLevel="0"
+             indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0"
+             priorEducationCode="0" labourForceType="0" />
+
+    <Contact id="10" collegeId="10" angelId="10" studentId="10"
+             countryId="10" created="2011-09-12 00:47:26.0" modified="2011-09-12 00:59:00.0"
+             isCompany="0" isMale="1" familyName="Putin" givenName="Vladimir"
+             emailAddress="putin@russia.gov" street="Kremlin 1" suburb="Moscow"
+             isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
+             isMarketingViaSMSAllowed="1" />
+
+    <CourseClass id="10" isActive="1" collegeId="10" code="1" courseId="10"
+                 roomId="10" angelId="10" startDate="[START_DATE]"
+                 endDate="[END_DATE]" isWebVisible="1" isCancelled="0"
+                 created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
+                 maximumPlaces="30" minimumPlaces="30" countOfSessions="3"
+                 deliveryMode="1" feeExGst="454.55" feeGst="45.45" isDistantLearningCourse="0"/>
+
+    <CourseClass id="11" isActive="1" collegeId="10" code="2" courseId="11"
+                 roomId="11" angelId="11" startDate="[START_DATE]"
+                 endDate="[END_DATE]" isWebVisible="1" isCancelled="0"
+                 created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
+                 maximumPlaces="30" minimumPlaces="30" countOfSessions="3"
+                 deliveryMode="1" feeExGst="454.55" feeGst="45.45" isDistantLearningCourse="0"/>
+
+    <CourseClass id="12" isActive="1" collegeId="10" code="1" courseId="12"
+                 roomId="12" angelId="11" startDate="[START_DATE]"
+                 endDate="[END_DATE]" isWebVisible="1" isCancelled="0"
+                 created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
+                 maximumPlaces="30" minimumPlaces="30" countOfSessions="3"
+                 deliveryMode="1" feeExGst="454.55" feeGst="45.45" isDistantLearningCourse="0"/>
+
+    <Session id="10"  collegeId="10" courseClassId="10" roomId="10" angelId="10" startDate="[START_DATE]"
+             endDate="[END_DATE]" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"/>
+
+    <Session id="11"  collegeId="10" courseClassId="12" roomId="12" angelId="11" startDate="[START_DATE]"
+             endDate="[END_DATE]" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"/>
+
+    <Enrolment id="10" source="O" collegeId="10" courseClassId="12"
+               studentId="10" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
+               status="2" confirmationStatus="1" feehelpamount="0"/>
+
+
+    <Preference id="10" collegeId="10" name="payment.gateway.type" value_string="PAYMENT_EXPRESS" />
+    <Preference id="11" collegeId="10" name="license.ccprocessing" value_string="true" />
+
+</dataset>

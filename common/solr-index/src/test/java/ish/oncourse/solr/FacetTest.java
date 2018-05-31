@@ -2,29 +2,30 @@ package ish.oncourse.solr;
 
 import com.google.gson.Gson;
 import ish.oncourse.solr.query.*;
+import ish.oncourse.test.LoadDataSet;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.request.LocalSolrQueryRequest;
 import org.junit.Test;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.Map;
 
 /*
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
  */
-public class FacetTest extends AbstractSolrTest {
-
-
-    @Override
-    protected String getDataSetResource() {
-        return "ish/oncourse/solr/FacetTest.xml";
-    }
-
+public class FacetTest extends ASolrTest {
 
     @Test
     public void test() throws Exception {
-        assertEquals(2, fullImport());
+        new LoadDataSet()
+                .dataSetFile("ish/oncourse/solr/FacetTest.xml")
+                .addReplacement("[START_DATE]", DateUtils.addDays(new Date(), 1))
+                .addReplacement("[END_DATE]", DateUtils.addDays(new Date(), 2))
+                .load(testContext.getDS());
 
+        assertEquals(2, fullImport());
 
         Suburb s1 = Suburb.valueOf("2000", -33.88232600, 151.20351100, 5d);
         Suburb s2 = Suburb.valueOf("3051", -37.80416850, 144.95419660, 5d);

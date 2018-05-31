@@ -2,11 +2,14 @@ package ish.oncourse.solr
 
 import com.carrotsearch.randomizedtesting.annotations.ThreadLeakScope
 import io.reactivex.schedulers.Schedulers
+import ish.oncourse.solr.functions.course.SCourseFunctions
 import ish.oncourse.test.TestContext
 import ish.oncourse.test.context.CCollege
 import ish.oncourse.test.context.DataContext
 import org.apache.cayenne.ObjectContext
 import org.apache.solr.SolrTestCaseJ4
+import org.apache.solr.client.solrj.SolrClient
+import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer
 import org.junit.After
 import org.junit.Before
 
@@ -26,6 +29,7 @@ abstract class ASolrTest extends SolrTestCaseJ4 {
     protected ObjectContext objectContext
     protected InitSolr initSolr
     protected CCollege cCollege
+    protected SolrClient solrClient
 
     protected void initSolr() throws Exception {
         initSolr = InitSolr.coursesCore()
@@ -40,6 +44,7 @@ abstract class ASolrTest extends SolrTestCaseJ4 {
         objectContext = testContext.getServerRuntime().newContext()
         DataContext dataContext = new DataContext(objectContext: objectContext)
         cCollege = dataContext.newCollege()
+        solrClient = new EmbeddedSolrServer(h.core)
     }
 
 
@@ -51,4 +56,18 @@ abstract class ASolrTest extends SolrTestCaseJ4 {
         // TODO: define mariaDB daemon threads and shut them down (OD-11304)
         testContext.close(false)
     }
+
+
+    int fullImport() {
+        final int[] imported = new int[1]
+        final Throwable[] error = new Throwable[1]
+        SCourseFunctions.SCourses(testContext.getServerRuntime().newContext(), new Date(), Schedulers.io())
+                .blockingSubscribe({ c -> solrClient.addBean(c); imported[0]++ },
+                { e -> error[0] = e },
+                { solrClient.commit() }
+        )
+        if (error[0] != null) throw new RuntimeException(error[0])
+        return imported[0]
+    }
+
 }
