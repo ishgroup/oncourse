@@ -9,9 +9,9 @@ import java.time.*
  */
 class DateFunctions {
 
-    private static final String DEFAULT_IME_ZONE = 'Australia/Sydney'
+    public static final String DEFAULT_TIME_ZONE = 'Australia/Sydney'
 
-    static ZonedDateTime toDateTime(Date date, String timeZone) {
+    static ZonedDateTime toDateTime(Date date, String timeZone = DEFAULT_TIME_ZONE) {
         Instant instant = date.toInstant()
         ZonedDateTime dtSydney = ZonedDateTime.ofInstant(instant, ZoneId.systemDefault())
         return timeZone == null ? dtSydney : dtSydney.withZoneSameInstant(ZoneId.of(timeZone))
@@ -19,7 +19,7 @@ class DateFunctions {
 
     static Date toTimeZone(Date date, String timeZone) {
         if (!timeZone) return date
-        if (timeZone == DEFAULT_IME_ZONE) return date
+        if (timeZone == DEFAULT_TIME_ZONE) return date
         Instant instant = date.toInstant()
         ZoneId zoneId = ZoneId.of(timeZone)
         ZoneOffset zoneOffset = ZoneId.systemDefault().getRules().getOffset(instant)
@@ -37,7 +37,9 @@ class DateFunctions {
     /**
      * format "2010-10-01 18:00:00"
      */
-    static Date toDate(String mysqlDate) {
-        return new SimpleDateFormat('yyyy-MM-dd HH:mm:ss').parse(mysqlDate)
+    static Date toDate(String mysqlDate, String timeZone = DEFAULT_TIME_ZONE) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat('yyyy-MM-dd HH:mm:ss')
+        dateFormat.setTimeZone(TimeZone.getTimeZone(timeZone))
+        return dateFormat.parse(mysqlDate)
     }
 }

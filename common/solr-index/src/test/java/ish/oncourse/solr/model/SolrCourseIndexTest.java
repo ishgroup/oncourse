@@ -16,6 +16,10 @@ import java.util.Date;
  * The first test which shows how we can populate SolrCourse document to the solr index
  */
 public class SolrCourseIndexTest extends SolrTestCaseJ4 {
+    static  {
+        InitSolr.INIT_STATIC_BLOCK();
+    }
+
     private static InitSolr initSolr;
 
     @BeforeClass

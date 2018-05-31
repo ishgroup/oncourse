@@ -131,9 +131,9 @@ class CCourseClass {
 
     CCourseClass withSessionAndSite(Date date, CSite site) {
         CSession session = CSession.instance(objectContext, courseClass).date(date)
+        session.session.setRoom(site.getRooms().get(0).room)
         sessions.add(session)
 
-        session.newRoom(site.site)
         setClassStartEndDatesAndRoom()
 
         this

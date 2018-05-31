@@ -41,7 +41,7 @@ public class SolrQueryBuilder {
     public static final String FIELD_suburb = "suburb";
     public static final String FIELD_postcode = "postcode";
 
-    static final String PARAMETER_VALUE_fl = "id,name,course_loc";
+    static final String PARAMETER_VALUE_fl = "*";
     static final String PARAMETER_VALUE_sfield = "course_loc";
 
 

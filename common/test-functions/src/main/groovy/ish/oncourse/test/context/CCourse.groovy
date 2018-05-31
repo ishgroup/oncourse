@@ -194,9 +194,9 @@ class CCourse {
         this
     }
 
-    CCourse withSelfPacedClassWithSite(String code, Site site) {
-        CCourseClass cClass = CCourseClass.instance(objectContext, code, course).isDistantLearningCourse(true).withRoom(site)
-
+    CCourse withSelfPacedClassWithSite(String code, CSite site) {
+        CCourseClass cClass = CCourseClass.instance(objectContext, code, course)
+                .isDistantLearningCourse(true).withRoom(site.site)
         classes.add(cClass)
         this
     }

@@ -64,6 +64,9 @@ class CSite {
     }
 
     CSite build() {
+        if (rooms.isEmpty()) {
+            rooms.add(CRoom.instance(this.objectContext, this.site).name(faker.address().buildingNumber()).build())
+        }
         objectContext.commitChanges()
         this
     }

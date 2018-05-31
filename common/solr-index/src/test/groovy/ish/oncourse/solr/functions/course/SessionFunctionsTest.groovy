@@ -17,9 +17,10 @@ class SessionFunctionsTest {
 
     @Test
     void test_getDayTime_Zone() {
-        Date date = toDate("2017-10-23  18:00:00")
+        Date date = toDate("2017-10-23 18:00:00")
         Session session = mock(Session)
         when(session.startDate).thenReturn(date)
+        when(session.timeZone).thenReturn(DateFunctions.DEFAULT_TIME_ZONE)
         assertEquals("evening", getDayTime(session))
 
         when(session.timeZone).thenReturn("Australia/Perth")
@@ -97,6 +98,7 @@ class SessionFunctionsTest {
     void test_getDayTime() {
         Session session = mock(Session)
         when(session.startDate).thenReturn(toDate("2017-10-29 07:01:00"))
+        when(session.timeZone).thenReturn(DateFunctions.DEFAULT_TIME_ZONE)
         assertEquals("daytime", getDayTime(session))
         when(session.startDate).thenReturn(toDate("2017-10-29 16:01:00"))
         assertEquals("daytime", getDayTime(session))
