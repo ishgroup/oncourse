@@ -20,7 +20,6 @@ dependencies {
 	compile 'commons-beanutils:commons-beanutils-core:1.8.3'
 
 	compile 'com.miglayout:miglayout-javafx:4.2'
-	compile 'org.controlsfx:controlsfx:8.40.13'
 
 	// 0.1.40.WS is a custom build of stilts from https://github.com/dzmitryk/stilts
 	compile 'org.projectodd.stilts:stilts-stomp-client:0.1.40.WS'
