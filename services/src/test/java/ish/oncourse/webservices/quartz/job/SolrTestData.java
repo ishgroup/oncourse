@@ -8,6 +8,7 @@ import ish.oncourse.test.LoadLiquibase;
 import ish.oncourse.test.MariaDB;
 import ish.oncourse.test.TestContext;
 import ish.oncourse.test.context.CCollege;
+import ish.oncourse.test.context.CTag;
 import ish.oncourse.test.context.DataContext;
 
 /**
@@ -45,7 +46,13 @@ public class SolrTestData {
 
 		Observable.range(1, 10)
 				.map((i) -> college.newCourse("CO" + i))
-				.subscribe();
+				.blockingSubscribe();
+
+		Observable.range(1, 100)
+				.map((i) -> CTag.valueOf(college)
+						.name("Tag" + i)
+						.tagCourse(college.getCourses().get((i - 1) % 10))
+						.commit()).blockingSubscribe();
 
 		dataContext.getObjectContext().commitChanges();
 

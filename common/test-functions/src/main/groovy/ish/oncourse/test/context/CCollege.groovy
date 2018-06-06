@@ -27,6 +27,7 @@ class CCollege {
             it.name.equalsIgnoreCase(name)
         }).findFirst().get()
     }
+
     @Deprecated
     Tag tag(String name, boolean webVisible = true) {
         return newTag(name, webVisible)
@@ -35,6 +36,7 @@ class CCollege {
     Tag newTag(String name, boolean webVisible = true) {
         Tag tag = objectContext.newObject(Tag)
         tag.name = name
+        tag.shortName = name
         tag.isWebVisible = webVisible
         tag.isTagGroup = false
         tag.college = objectContext.localObject(college)

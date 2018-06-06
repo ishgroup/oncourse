@@ -12,11 +12,11 @@ import ish.oncourse.webservices.quartz.QuartzModule;
 import ish.oncourse.webservices.quartz.job.SolrTestData;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.junit.*;
-import org.quartz.JobKey;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
+import org.quartz.*;
+import org.quartz.listeners.JobListenerSupport;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -24,7 +24,7 @@ import java.util.Properties;
 /**
  * This test can be run only on real environment
  */
-public class ReindexSuburbsJobTest {
+public class ReindexJobTest {
 	private SolrTestData solrTestData;
 	private SolrClient solrClient;
 	private Scheduler scheduler;
@@ -47,21 +47,47 @@ public class ReindexSuburbsJobTest {
 
 	@Test
 	@Ignore
-	public void test() throws Exception {
+	public void testSuburbs() throws Exception {
+		testJob(ReindexSuburbsJob.class, SolrCollection.suburbs, 16079);
+	}
+
+	@Test
+	@Ignore
+	public void testTags() throws Exception {
+		testJob(ReindexTagsJob.class, SolrCollection.tags, 100);
+	}
+
+	private void testJob(Class<? extends Job> jobClass, SolrCollection collection, long expectedResult) throws SchedulerException, InterruptedException, IOException, SolrServerException {
 		new BuildJob()
 				.groupName(QuartzModule.QUARTZ_GROUP_SOLR)
-				.jobClass(ReindexSuburbsJob.class)
+				.jobClass(jobClass)
 				.cronString("0 0/1 * ? * *")
 				.build(scheduler);
 
 
-		scheduler.triggerJob(JobKey.jobKey(ReindexSuburbsJob.class.getName(), QuartzModule.QUARTZ_GROUP_SOLR));
+		scheduler.triggerJob(JobKey.jobKey(jobClass.getName(), QuartzModule.QUARTZ_GROUP_SOLR));
 
-		while (!scheduler.getCurrentlyExecutingJobs().isEmpty()) Thread.sleep(100);
+		boolean[] executed = new boolean[]{false};
 
-		QueryResponse response = solrClient.query(SolrCollection.suburbs.name(), new SolrQuery("*:*"));
-		Assert.assertEquals(16079, response.getResults().getNumFound());
+		scheduler.getListenerManager().addJobListener(new JobListenerSupport() {
+			@Override
+			public String getName() {
+				return ReindexTagsJob.class.getName();
+			}
+
+			@Override
+			public void jobWasExecuted(JobExecutionContext context, JobExecutionException jobException) {
+				executed[0] = true;
+			}
+		});
+
+		while (!executed[0] || !scheduler.getCurrentlyExecutingJobs().isEmpty())
+			Thread.sleep(100);
+
+		QueryResponse response = solrClient.query(collection.name(), new SolrQuery("*:*"));
+		Assert.assertEquals(expectedResult, response.getResults().getNumFound());
 	}
+
 
 	@After
 	public void after() throws SchedulerException, IOException {

@@ -30,7 +30,7 @@ public class QuartzTest {
     private TestContext context;
 
     public void init() throws Exception {
-        context = new TestContext().shouldCleanTables(false).shouldCreateTables(false).open();
+        context = new TestContext().shouldCleanTables(true).shouldCreateTables(true).open();
 
         ResourceAccessor threadClFO = new ClassLoaderResourceAccessor(QuartzTest.class.getClassLoader());
 
