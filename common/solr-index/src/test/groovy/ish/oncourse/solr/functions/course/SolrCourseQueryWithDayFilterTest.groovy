@@ -5,9 +5,7 @@ import ish.oncourse.solr.model.SCourse
 import ish.oncourse.solr.query.DayOption
 import ish.oncourse.solr.query.SearchParams
 import ish.oncourse.solr.query.SolrQueryBuilder
-import ish.oncourse.solr.reindex.ReindexCoursesJob
-import org.apache.solr.client.solrj.SolrClient
-import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer
+import ish.oncourse.solr.reindex.ReindexCourses
 import org.junit.Test
 
 /**
@@ -17,8 +15,6 @@ class SolrCourseQueryWithDayFilterTest extends ASolrTest {
 
     @Test
     void testSortCoursesWithDayFilter() {
-        SolrClient solrClient = new EmbeddedSolrServer(h.getCore())
-        
         String collegeId = cCollege.college.id
         Date mon = createDate(Calendar.MONDAY)
         Date tue = createDate(Calendar.TUESDAY)
@@ -42,7 +38,7 @@ class SolrCourseQueryWithDayFilterTest extends ASolrTest {
         cCollege.newCourse("course10").newCourseClassWithSessions("futureTuesdayClass", createDate(Calendar.TUESDAY, 7), createDate(Calendar.TUESDAY, 14)).build()
         cCollege.newCourse("course11").newCourseClassWithSessions("currentNotOnlyTuesdayClass", createDate(Calendar.TUESDAY, -7), createDate(Calendar.TUESDAY, 7), thu).build()
 
-        ReindexCoursesJob job = new ReindexCoursesJob(objectContext, solrClient)
+        ReindexCourses job = new ReindexCourses(objectContext, solrClient)
         job.run()
 
         List<SCourse> actualSCourses = solrClient.query("courses",

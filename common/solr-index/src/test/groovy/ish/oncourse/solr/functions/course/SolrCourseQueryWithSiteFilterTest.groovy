@@ -1,10 +1,11 @@
 package ish.oncourse.solr.functions.course
 
 import ish.oncourse.solr.ASolrTest
+import ish.oncourse.solr.ProcessDebug
 import ish.oncourse.solr.model.SCourse
 import ish.oncourse.solr.query.SearchParams
 import ish.oncourse.solr.query.SolrQueryBuilder
-import ish.oncourse.solr.reindex.ReindexCoursesJob
+import ish.oncourse.solr.reindex.ReindexCourses
 import ish.oncourse.test.context.CSite
 import org.apache.solr.client.solrj.response.QueryResponse
 import org.junit.Test
@@ -21,13 +22,13 @@ class SolrCourseQueryWithSiteFilterTest extends ASolrTest {
     void test() {
         String collegeId = buildCollege()
 
-        ReindexCoursesJob job = new ReindexCoursesJob(objectContext, solrClient)
+        ReindexCourses job = new ReindexCourses(objectContext, solrClient)
         job.run()
 
         QueryResponse response = solrClient.query("courses",
                 SolrQueryBuilder.valueOf(new SearchParams(s: "course*", siteId: targetSite.site.id, debugQuery: true), collegeId, null, null).build())
 
-        println(response.debugMap.get("explain"))
+        new ProcessDebug().debugMap(response.debugMap).process()
 
         List<SCourse> actualSCourses = response.getBeans(SCourse.class)
         assertEquals(6, actualSCourses.size())
@@ -48,8 +49,6 @@ class SolrCourseQueryWithSiteFilterTest extends ASolrTest {
         assertTrue(actualSCourses.subList(2, 4).name.contains("course8"))
         assertTrue(actualSCourses.subList(4, 6).name.contains("course11"))
         assertTrue(actualSCourses.subList(4, 6).name.contains("course12"))
-
-        println(actualSCourses)
 
         actualSCourses = solrClient.query("courses",
                 SolrQueryBuilder.valueOf(new SearchParams(s: "course*", siteId: virtualSite.site.id), collegeId, null, null).build())
@@ -108,4 +107,3 @@ class SolrCourseQueryWithSiteFilterTest extends ASolrTest {
     }
 }
 
-//[((org.apache.solr.common.util.NamedList)response.debugMap.get("explain")).get("7").getVal(3)[0],((org.apache.solr.common.util.NamedList)response.debugMap.get("explain")).get("9").getVal(3)[0]]

@@ -4,10 +4,8 @@ import ish.oncourse.solr.ASolrTest
 import ish.oncourse.solr.model.SCourse
 import ish.oncourse.solr.query.SearchParams
 import ish.oncourse.solr.query.SolrQueryBuilder
-import ish.oncourse.solr.reindex.ReindexCoursesJob
-import org.apache.solr.client.solrj.SolrClient
+import ish.oncourse.solr.reindex.ReindexCourses
 import org.apache.solr.client.solrj.SolrServerException
-import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer
 import org.junit.Test
 
 /**
@@ -17,8 +15,6 @@ class SolrCourseQueryTest extends ASolrTest {
 
     @Test
     void testGetCourseClassesWithoutSessions() throws IOException, SolrServerException {
-        SolrClient solrClient = new EmbeddedSolrServer(h.getCore())
-
         cCollege.newCourse("course1").withCancelledClass("cancelled").build()
         cCollege.newCourse("course2").withDistantClass("distantLearning").build()
         cCollege.newCourse("course3").withInactiveClass("inactive").build()
@@ -26,7 +22,7 @@ class SolrCourseQueryTest extends ASolrTest {
         cCollege.newCourse("course5").withWebInvisibleClass("webInvisible").build()
         cCollege.newCourse("course6").isWebVisible(false).withClass("courseWebInvisible").build()
         
-        ReindexCoursesJob job = new ReindexCoursesJob(objectContext, solrClient)
+        ReindexCourses job = new ReindexCourses(objectContext, solrClient)
         job.run()
 
         List<SCourse> actualSClasses = solrClient.query("courses",

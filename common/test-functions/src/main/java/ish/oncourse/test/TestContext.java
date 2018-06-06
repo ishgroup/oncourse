@@ -57,30 +57,35 @@ public class TestContext {
 		return this;
 	}
 
+
 	public TestContext open() {
-		if (mariaDB == null) {
-			mariaDB = MariaDB.valueOf();
+		try {
+			if (mariaDB == null) {
+				mariaDB = MariaDB.valueOf();
+			}
+
+			dataSource = Functions.createDS(mariaDB);
+			Functions.bindDS(dataSource);
+
+			if (shouldCreateTables) {
+				Functions.createIfNotExistsDB(mariaDB);
+				Functions.cleanDB(mariaDB, true);
+			} else {
+				if (shouldCleanTables)
+					Functions.cleanDB(mariaDB, false);
+			}
+
+			if (serverRuntime == null)
+				serverRuntime = new ServerRuntimeBuilder().queryCache(queryCache).build();
+
+			if (shouldCreateTables)
+				new CreateTables(serverRuntime).create();
+			return this;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
-
-		dataSource = Functions.createDS(mariaDB);
-		Functions.bindDS(dataSource);
-
-		if (shouldCreateTables) {
-			Functions.createIfNotExistsDB(mariaDB);
-			Functions.cleanDB(mariaDB, true);
-		} else {
-			if (shouldCleanTables)
-				Functions.cleanDB(mariaDB, false);
-		}
-
-		if (serverRuntime == null)
-			serverRuntime = new ServerRuntimeBuilder().queryCache(queryCache).build();
-
-		if (shouldCreateTables)
-			new CreateTables(serverRuntime).create();
-
-		return this;
 	}
+
 
 	private void initParams() {
 		if (System.getProperty(SHOULD_CREATE_TABLES) != null) {
@@ -94,14 +99,6 @@ public class TestContext {
 
 	public MariaDB getMariaDB() {
 		return mariaDB;
-	}
-
-	/**
-	 * @see LoadDataSet
-	 */
-	@Deprecated
-	public void cleanInsert(String dataSetResource) throws Exception {
-		new LoadDataSet().dataSetFile(dataSetResource).load(dataSource);
 	}
 
 	public void close() {
@@ -124,12 +121,12 @@ public class TestContext {
 			logger.error(e);
 		}
 	}
-	
-	public void close(boolean shouldDropDB){
-        if (shouldDropDB)
-            Functions.dropDB(mariaDB);
-        close();
-    }
+
+	public void close(boolean shouldDropDB) {
+		if (shouldDropDB)
+			Functions.dropDB(mariaDB);
+		close();
+	}
 
 	public ServerRuntime getServerRuntime() {
 		return serverRuntime;

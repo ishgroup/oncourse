@@ -6,10 +6,14 @@ import ish.oncourse.solr.model.SSuburb
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.ResultIterator
 import org.apache.cayenne.query.ObjectSelect
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 
 import static org.apache.cayenne.query.ObjectSelect.query
 
 class Functions {
+    private static final Logger logger = LogManager.logger
+
     static final ObjectSelect<PostcodeDb> PostcodesQuery = query(PostcodeDb).orderBy(PostcodeDb.POSTCODE.asc())
 
     static Closure<SSuburb> getSSuburb = { PostcodeDb postcode ->
@@ -24,7 +28,14 @@ class Functions {
     }
 
     static Closure<Observable<SSuburb>> getSolrSuburbs = { ObjectContext context ->
-        ResultIterator<PostcodeDb> postcodeDbs = PostcodesQuery.iterator(context)
-        return Observable.fromIterable(postcodeDbs).map({ p -> getSSuburb.call(p) })
+        return Observable.fromCallable({ PostcodesQuery.iterator(context) })
+                .flatMap({ ResultIterator<PostcodeDb> iterator ->
+            Observable.fromIterable(iterator)
+                    .map({ p -> getSSuburb.call(p) })
+                    .doAfterTerminate({
+                logger.debug("Closing suburbs iterator ...")
+                iterator.close()
+            })
+        })
     }
 }

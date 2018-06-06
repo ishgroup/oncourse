@@ -4,9 +4,7 @@ import ish.oncourse.solr.ASolrTest
 import ish.oncourse.solr.model.SCourse
 import ish.oncourse.solr.query.SearchParams
 import ish.oncourse.solr.query.SolrQueryBuilder
-import ish.oncourse.solr.reindex.ReindexCoursesJob
-import org.apache.solr.client.solrj.SolrClient
-import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer
+import ish.oncourse.solr.reindex.ReindexCourses
 import org.junit.Test
 
 /**
@@ -16,8 +14,6 @@ class SolrCourseQueryWithPriceFilterTest extends ASolrTest{
     
     @Test
     void testSortCoursesWithPriceFilter(){
-        SolrClient solrClient = new EmbeddedSolrServer(h.getCore())
-
         cCollege.newCourse("course1").newCourseClassWithSessions("cheapestPast", -5, -4).feeExTax(50).build()
         cCollege.newCourse("course2").newCourseClassWithSessions("cheapestCurrent", -1, 1).feeExTax(50).build()
         cCollege.newCourse("course3").newCourseClassWithSessions("cheapestFuture", 5, 6).feeExTax(50).build()
@@ -40,7 +36,7 @@ class SolrCourseQueryWithPriceFilterTest extends ASolrTest{
 
         cCollege.newCourse("course16").newSelfPacedClass("99 dollars selfpaced").feeExTax(99).build()
 
-        ReindexCoursesJob job = new ReindexCoursesJob(objectContext, solrClient)
+        ReindexCourses job = new ReindexCourses(objectContext, solrClient)
         job.run()
 
         List<SCourse> actualSCourses = solrClient.query("courses",

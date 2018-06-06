@@ -3,7 +3,7 @@ package ish.oncourse.solr
 import ish.oncourse.solr.model.SCourse
 import ish.oncourse.solr.query.SearchParams
 import ish.oncourse.solr.query.SolrQueryBuilder
-import ish.oncourse.solr.reindex.ReindexCoursesJob
+import ish.oncourse.solr.reindex.ReindexCourses
 import ish.oncourse.test.context.CCourse
 import org.apache.solr.client.solrj.SolrClient
 import org.apache.solr.client.solrj.SolrServerException
@@ -29,7 +29,7 @@ class ReindexCourseTest extends ASolrTest {
         expectedSCourse.setDetail(course1.course.detail)
         expectedSCourse.setCode(course1.course.code)
 
-        ReindexCoursesJob job = new ReindexCoursesJob(objectContext, solrClient)
+        ReindexCourses job = new ReindexCourses(objectContext, solrClient)
         job.run()
 
         List<SCourse> actualSClasses = solrClient.query("courses",

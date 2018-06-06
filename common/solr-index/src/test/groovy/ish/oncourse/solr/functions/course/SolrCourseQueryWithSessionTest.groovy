@@ -4,10 +4,8 @@ import ish.oncourse.solr.ASolrTest
 import ish.oncourse.solr.model.SCourse
 import ish.oncourse.solr.query.SearchParams
 import ish.oncourse.solr.query.SolrQueryBuilder
-import ish.oncourse.solr.reindex.ReindexCoursesJob
-import org.apache.solr.client.solrj.SolrClient
+import ish.oncourse.solr.reindex.ReindexCourses
 import org.apache.solr.client.solrj.SolrServerException
-import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer
 import org.junit.Test
 
 /**
@@ -17,8 +15,6 @@ class SolrCourseQueryWithSessionTest extends ASolrTest{
 
     @Test
     void testSortClassesWithSessionsAndDistantLearning() throws IOException, SolrServerException {
-        SolrClient solrClient = new EmbeddedSolrServer(h.getCore())
-
         cCollege.newCourse("course1").newCourseClassWithSessions("past", -5, -4).build()
         cCollege.newCourse("course2").newCourseClassWithSessions("pastStartsFirst", -6, -4).build()
         cCollege.newCourse("course3").newCourseClassWithSessions("pastEndsLast", -5, -3).build()
@@ -34,7 +30,7 @@ class SolrCourseQueryWithSessionTest extends ASolrTest{
         cCollege.newCourse("course10").withSelfPacedClass("distantLearning").build()
                 
 
-        ReindexCoursesJob job = new ReindexCoursesJob(objectContext, solrClient)
+        ReindexCourses job = new ReindexCourses(objectContext, solrClient)
         job.run()
 
         List<SCourse> actualSCourses = solrClient.query("courses",

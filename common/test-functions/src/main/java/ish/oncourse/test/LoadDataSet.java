@@ -3,6 +3,7 @@
  */
 package ish.oncourse.test;
 
+import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.DataSetException;
@@ -14,6 +15,8 @@ import org.dbunit.operation.DatabaseOperation;
 
 import javax.sql.DataSource;
 import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,23 +54,32 @@ public class LoadDataSet {
 	}
 
 	public LoadDataSet load(DataSource dataSource) {
+		try (Connection connection = dataSource.getConnection()) {
+			return load(connection);
+		} catch (SQLException e) {
+			throw new IllegalArgumentException(e);
+		}
+	}
+
+	public LoadDataSet load(Connection connection) {
 		try {
 			InputStream st = LoadDataSet.class.getClassLoader().getResourceAsStream(dataSetFile);
 			this.dataSet = initDataSet(st);
-			DatabaseConnection dbConnection = createDatabaseConnection(dataSource);
+			DatabaseConnection dbConnection = createDatabaseConnection(connection);
 			if (clean)
 				DatabaseOperation.CLEAN_INSERT.execute(dbConnection, dataSet);
 			else
 				DatabaseOperation.INSERT.execute(dbConnection, dataSet);
-		} catch (Exception e) {
+			connection.commit();
+		} catch (SQLException | DatabaseUnitException e) {
 			throw new RuntimeException(e);
 		}
 		return this;
 	}
 
-	public static DatabaseConnection createDatabaseConnection(DataSource dataSource) {
+	public static DatabaseConnection createDatabaseConnection(Connection connection) {
 		try {
-			DatabaseConnection dbConnection = new DatabaseConnection(dataSource.getConnection());
+			DatabaseConnection dbConnection = new DatabaseConnection(connection);
 			dbConnection.getConfig().setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, false);
 			dbConnection.getConfig().setProperty(DatabaseConfig.FEATURE_ALLOW_EMPTY_FIELDS, true);
 			dbConnection.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new MySqlDataTypeFactory());

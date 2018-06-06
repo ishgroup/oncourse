@@ -5,9 +5,7 @@ import ish.oncourse.solr.model.SCourse
 import ish.oncourse.solr.query.SearchParams
 import ish.oncourse.solr.query.SolrQueryBuilder
 import ish.oncourse.solr.query.Suburb
-import ish.oncourse.solr.reindex.ReindexCoursesJob
-import org.apache.solr.client.solrj.SolrClient
-import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer
+import ish.oncourse.solr.reindex.ReindexCourses
 import org.junit.Test
 
 /**
@@ -17,8 +15,6 @@ class SolrCourseQueryWithLocationFilterTest extends ASolrTest{
 
     @Test
     void testSortCoursesWithLocationFilter(){
-        SolrClient solrClient = new EmbeddedSolrServer(h.getCore())
-
         cCollege.newCourse("course1").withClassWithSiteLocation("past",15,15, -5, -4).build()
         cCollege.newCourse("course2").withClassWithSiteLocation("current",15,15, -1, 1).build()
         cCollege.newCourse("course3").withClassWithSiteLocation("future",15,15, 5, 6).build()
@@ -37,7 +33,7 @@ class SolrCourseQueryWithLocationFilterTest extends ASolrTest{
         
         cCollege.newCourse("course13").withSelfPacedClass("withoutLocation").build()
 
-        ReindexCoursesJob job = new ReindexCoursesJob(objectContext, solrClient)
+        ReindexCourses job = new ReindexCourses(objectContext, solrClient)
         job.run()
 
         Suburb location = new Suburb()

@@ -4,9 +4,7 @@ import ish.oncourse.solr.ASolrTest
 import ish.oncourse.solr.model.SCourse
 import ish.oncourse.solr.query.SearchParams
 import ish.oncourse.solr.query.SolrQueryBuilder
-import ish.oncourse.solr.reindex.ReindexCoursesJob
-import org.apache.solr.client.solrj.SolrClient
-import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer
+import ish.oncourse.solr.reindex.ReindexCourses
 import org.junit.Test
 
 /**
@@ -16,8 +14,6 @@ class SolrCourseQueryWithBeforeAfterFilterTest extends ASolrTest {
 
     @Test
     void testSortCoursesWithBeforeAfterFilter() {
-        SolrClient solrClient = new EmbeddedSolrServer(h.getCore())
-
         String collegeId = cCollege.college.id.toString()
         List<SCourse> actualSCourses
         
@@ -40,7 +36,7 @@ class SolrCourseQueryWithBeforeAfterFilterTest extends ASolrTest {
 
         cCollege.newCourse("course10").withSelfPacedClass("distantLearning").build()
 
-        ReindexCoursesJob job = new ReindexCoursesJob(objectContext, solrClient)
+        ReindexCourses job = new ReindexCourses(objectContext, solrClient)
         job.run()
 
         //if we use 'before' filter - past classes doesn't selected by solr query because they have startDate = now + 100 years

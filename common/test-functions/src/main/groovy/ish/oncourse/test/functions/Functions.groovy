@@ -1,8 +1,17 @@
 package ish.oncourse.test.functions
 
 import ish.oncourse.test.MariaDB
+import ish.oncourse.test.TestContext
 import ish.oncourse.test.TestInitialContextFactory
 import ish.oncourse.util.ContextUtil
+import liquibase.Liquibase
+import liquibase.database.Database
+import liquibase.database.DatabaseFactory
+import liquibase.database.jvm.JdbcConnection
+import liquibase.resource.ClassLoaderResourceAccessor
+import liquibase.resource.CompositeResourceAccessor
+import liquibase.resource.FileSystemResourceAccessor
+import liquibase.resource.ResourceAccessor
 import org.apache.cayenne.cache.QueryCache
 import org.apache.cayenne.configuration.server.ServerRuntime
 import org.apache.commons.dbcp2.BasicDataSource
@@ -87,13 +96,13 @@ class Functions {
             }
         }
     }
-    
-    static void dropDB(MariaDB mariaDB){
+
+    static void dropDB(MariaDB mariaDB) {
         executeStatement(mariaDB, String.format("DROP SCHEMA IF EXISTS %s", mariaDB.dbName))
     }
 
     static void changePassword(MariaDB mariaDB, String newPassword) {
-        executeStatement(mariaDB,  "ALTER USER 'root'@'localhost' IDENTIFIED BY '${newPassword}'")
+        executeStatement(mariaDB, "ALTER USER 'root'@'localhost' IDENTIFIED BY '${newPassword}'")
     }
 
     static void createIfNotExistsDB(MariaDB mariaDB) {
@@ -133,18 +142,35 @@ class Functions {
         }
     }
 
-    static void main(String[] args) {
+    static void deleteChangeSet(MariaDB mariaDB, String id) {
+        executeStatement(mariaDB, String.format("DELETE FROM %s.DATABASECHANGELOG WHERE ID = %s", mariaDB.dbName, id))
+    }
 
+    static Liquibase createLiquibase(String file, Connection connection) {
+        ResourceAccessor threadClFO = new ClassLoaderResourceAccessor(Functions.class.classLoader)
+
+        ResourceAccessor clFO = new ClassLoaderResourceAccessor()
+        ResourceAccessor fsFO = new FileSystemResourceAccessor()
+
+        Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection))
+        return new Liquibase(file,
+                new CompositeResourceAccessor(clFO, fsFO, threadClFO), database)
+    }
+
+    static void main(String[] args) {
         MariaDB mariaDB = new MariaDB()
-        mariaDB.dbName = "willowTest_services"
-        mariaDB.url = "jdbc:mariadb://127.0.0.1:3310/willowTest_services?autoReconnect=true" +
-            "&zeroDateTimeBehavior=convertToNull" +
-            "&useUnicode=true" +
-            "&characterEncoding=utf8"
+        mariaDB.dbName = args[0]
+        mariaDB.url = "jdbc:mariadb://127.0.0.1:3306/${args[0]}?autoReconnect=true" +
+                "&zeroDateTimeBehavior=convertToNull" +
+                "&useUnicode=true" +
+                "&characterEncoding=utf8"
+        mariaDB.password = "whatsup"
+        mariaDB.user = "root"
 
         createIfNotExistsDB(mariaDB)
 
-//        new TestContext().shouldCreateTables(true).open()
+        TestContext testContext = new TestContext().mariaDB(mariaDB).shouldCreateTables(true).open()
+        testContext.close()
     }
 
 

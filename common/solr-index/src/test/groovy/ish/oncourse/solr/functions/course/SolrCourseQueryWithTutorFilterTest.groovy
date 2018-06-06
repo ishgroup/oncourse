@@ -7,11 +7,9 @@ import ish.oncourse.solr.ASolrTest
 import ish.oncourse.solr.model.SCourse
 import ish.oncourse.solr.query.SearchParams
 import ish.oncourse.solr.query.SolrQueryBuilder
-import ish.oncourse.solr.reindex.ReindexCoursesJob
+import ish.oncourse.solr.reindex.ReindexCourses
 import ish.oncourse.test.context.CTutor
 import org.apache.cayenne.query.ObjectSelect
-import org.apache.solr.client.solrj.SolrClient
-import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer
 import org.junit.Test
 
 /**
@@ -21,8 +19,6 @@ class SolrCourseQueryWithTutorFilterTest extends ASolrTest {
     
     @Test
     void testSortCoursesWithBeforeAfterFilter() {
-        SolrClient solrClient = new EmbeddedSolrServer(h.getCore())
-
         String collegeId = cCollege.college.id.toString()
         List<SCourse> actualSCourses
         
@@ -48,7 +44,7 @@ class SolrCourseQueryWithTutorFilterTest extends ASolrTest {
         cCollege.newCourse("course14").withSelfPacedClassAndTutor("withBothTutors", targetTutor, otherTutor).build()
         cCollege.newCourse("course15").withSelfPacedClass("withoutTutor").build()
 
-        ReindexCoursesJob job = new ReindexCoursesJob(objectContext, solrClient)
+        ReindexCourses job = new ReindexCourses(objectContext, solrClient)
         job.run()
 
         actualSCourses = solrClient.query("courses",
@@ -94,7 +90,7 @@ class SolrCourseQueryWithTutorFilterTest extends ASolrTest {
                 .getBeans(SCourse.class)
         assertEquals(8, actualSCourses.size())
 
-        job = new ReindexCoursesJob(objectContext, solrClient)
+        job = new ReindexCourses(objectContext, solrClient)
         job.run()
 
         //after reindex

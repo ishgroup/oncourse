@@ -4,9 +4,7 @@ import ish.oncourse.solr.ASolrTest
 import ish.oncourse.solr.model.SCourse
 import ish.oncourse.solr.query.SearchParams
 import ish.oncourse.solr.query.SolrQueryBuilder
-import ish.oncourse.solr.reindex.ReindexCoursesJob
-import org.apache.solr.client.solrj.SolrClient
-import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer
+import ish.oncourse.solr.reindex.ReindexCourses
 import org.junit.Test
 
 /**
@@ -23,8 +21,6 @@ class SolrCourseQueryWithTimeFilterTest extends ASolrTest {
 
     @Test
     void testSortCoursesWithTimeFilter() {
-        SolrClient solrClient = new EmbeddedSolrServer(h.getCore())
-
         //from 6 to 17 is daytime. All other hours is evening time
         cCollege.newCourse("course1").newCourseClassWithTimezonedSessions("morningCurrentTimezone", TIMEZONE_SYDNEY, createDate(7, 10)).build()
         cCollege.newCourse("course2").newCourseClassWithTimezonedSessions("morningDifferentTimezone",TIMEZONE_PERTH, createDate(18, 10)).build() //date is 'evening', but will become daytime, cause 6pm will convert to 4pm UTC+8
@@ -39,7 +35,7 @@ class SolrCourseQueryWithTimeFilterTest extends ASolrTest {
         cCollege.timeZone(TIMEZONE_SYDNEY).newCourse("course8").withSelfPacedClass("selfpacedCurrentTimezone").build()
         cCollege.timeZone(TIMEZONE_PERTH).newCourse("course9").withSelfPacedClass("selfpacedDifferentTimezone").build()
 
-        ReindexCoursesJob job = new ReindexCoursesJob(objectContext, solrClient)
+        ReindexCourses job = new ReindexCourses(objectContext, solrClient)
         job.run()
 
         List<SCourse> actualSCourses = solrClient.query("courses",

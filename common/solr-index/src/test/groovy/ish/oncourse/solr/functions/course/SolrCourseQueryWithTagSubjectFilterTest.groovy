@@ -6,10 +6,8 @@ import ish.oncourse.solr.ASolrTest
 import ish.oncourse.solr.model.SCourse
 import ish.oncourse.solr.query.SearchParams
 import ish.oncourse.solr.query.SolrQueryBuilder
-import ish.oncourse.solr.reindex.ReindexCoursesJob
-import org.apache.solr.client.solrj.SolrClient
+import ish.oncourse.solr.reindex.ReindexCourses
 import org.apache.solr.client.solrj.SolrServerException
-import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer
 import org.junit.Test
 
 /**
@@ -19,7 +17,6 @@ class SolrCourseQueryWithTagSubjectFilterTest extends ASolrTest{
     
     @Test
     void testSortCoursesWithTagSubjectFilter() throws IOException, SolrServerException {
-        SolrClient solrClient = new EmbeddedSolrServer(h.getCore())
         List<SCourse> actualSCourses
 
         Tag tag1 = cCollege.tag("Tag1")
@@ -54,7 +51,7 @@ class SolrCourseQueryWithTagSubjectFilterTest extends ASolrTest{
         cCollege.tagCourse(course8, tag11)
         cCollege.tagCourse(course8, tag21)
 
-        ReindexCoursesJob job = new ReindexCoursesJob(objectContext, solrClient)
+        ReindexCourses job = new ReindexCourses(objectContext, solrClient)
         job.run()
 
         actualSCourses = solrClient.query("courses",

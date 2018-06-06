@@ -32,8 +32,14 @@ class MariaDB {
         return result
     }
 
-    static MariaDB valueOf() {
+    static MariaDB valueOf(String schema) {
+        String url = "jdbc:mariadb://localhost:3306/$schema?autoReconnect=true&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf8"
+        String user = "root"
+        String password = "whatsup"
+        return valueOf(url, user, password)
+    }
 
+    static MariaDB valueOf() {
         String url = getProperty('oncourse.jdbc.url')
         String user = getProperty('oncourse.jdbc.user')
         String password = getProperty('oncourse.jdbc.password')
