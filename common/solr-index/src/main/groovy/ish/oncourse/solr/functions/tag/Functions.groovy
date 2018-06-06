@@ -4,9 +4,9 @@ import io.reactivex.Observable
 import ish.oncourse.model.Tag
 import ish.oncourse.model.Taggable
 import ish.oncourse.model.TaggableTag
+import ish.oncourse.solr.RXFunctions
 import ish.oncourse.solr.model.STag
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.ResultIterator
 import org.apache.cayenne.query.ObjectSelect
 
 import static org.apache.cayenne.query.ObjectSelect.query
@@ -29,7 +29,6 @@ class Functions {
     }
 
     static Closure<Observable<STag>> getSolrTags = { ObjectContext context ->
-        ResultIterator<Tag> tags = TagsQuery.iterator(context)
-        return Observable.fromIterable(tags).map({ t -> getSTag.call(t) })
+        return RXFunctions.fromIterable({ TagsQuery.iterator(context) }, getSTag)
     }
 }
