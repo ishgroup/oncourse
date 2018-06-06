@@ -17,6 +17,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class SolrSuburbIndexTest extends SolrTestCaseJ4 {
+    static {
+        InitSolr.INIT_STATIC_BLOCK();
+    }
+
     private static InitSolr initSolr;
 
     @BeforeClass
