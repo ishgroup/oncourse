@@ -18,7 +18,7 @@ import org.junit.Test
 class SolrCourseQueryWithTutorFilterTest extends ASolrTest {
     
     @Test
-    void testSortCoursesWithBeforeAfterFilter() {
+    void test() {
         String collegeId = cCollege.college.id.toString()
         List<SCourse> actualSCourses
         
@@ -57,23 +57,23 @@ class SolrCourseQueryWithTutorFilterTest extends ASolrTest {
                 .getBeans(SCourse.class)
         assertEquals(8, actualSCourses.size())
         assertTrue(actualSCourses.first().name == "course5")
-        assertTrue(actualSCourses.get(1).name == "course13")
-        assertTrue(actualSCourses.get(2).name == "course9")
-        assertTrue(actualSCourses.subList(3, 5).name.contains("course7"))
-        assertTrue(actualSCourses.subList(3, 5).name.contains("course8"))
-        assertTrue(actualSCourses.get(5).name == "course14")
-        assertTrue(actualSCourses.subList(6, 8).name.contains("course11"))
-        assertTrue(actualSCourses.subList(6, 8).name.contains("course12"))
+        assertTrue(actualSCourses.subList(1, 3).name.contains("course7"))
+        assertTrue(actualSCourses.subList(1, 3).name.contains("course8"))
+        assertTrue(actualSCourses.get(3).name == "course13")
+        assertTrue(actualSCourses.get(4).name == "course14")
+        assertTrue(actualSCourses.subList(5, 7).name.contains("course11"))
+        assertTrue(actualSCourses.subList(5, 7).name.contains("course12"))
+        assertTrue(actualSCourses.get(7).name == "course9")
 
         actualSCourses = solrClient.query("courses",
                 SolrQueryBuilder.valueOf(new SearchParams(s: "course*", tutorId: otherTutor.angelId), collegeId, null, null).build())
                 .getBeans(SCourse.class)
         assertEquals(7, actualSCourses.size())
         assertTrue(actualSCourses.first().name == "course6")
-        assertTrue(actualSCourses.get(1).name == "course10")
-        assertTrue(actualSCourses.subList(2, 4).name.contains("course7"))
-        assertTrue(actualSCourses.subList(2, 4).name.contains("course8"))
-        assertTrue(actualSCourses.get(4).name == "course14")
+        assertTrue(actualSCourses.subList(1, 3).name.contains("course7"))
+        assertTrue(actualSCourses.subList(1, 3).name.contains("course8"))
+        assertTrue(actualSCourses.get(3).name == "course14")
+        assertTrue(actualSCourses.get(4).name == "course10")
         assertTrue(actualSCourses.subList(5, 7).name.contains("course11"))
         assertTrue(actualSCourses.subList(5, 7).name.contains("course12"))
         
