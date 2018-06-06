@@ -6,6 +6,7 @@ import ish.oncourse.model.Tag;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.solr.BuildSolrClient;
+import ish.oncourse.solr.SolrCollection;
 import ish.oncourse.solr.query.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -46,7 +47,7 @@ public class SearchService implements ISearchService {
 
 	private ITagService tagService;
 
-	private Map<SolrCore, SolrClient> solrClients = new ConcurrentHashMap<>();
+	private Map<SolrCollection, SolrClient> solrClients = new ConcurrentHashMap<>();
 
 
 	private Properties appProperties;
@@ -60,11 +61,11 @@ public class SearchService implements ISearchService {
 		this.appProperties = Configuration.loadProperties();
 	}
 
-	private SolrClient getSolrClient(SolrCore core) {
+	private SolrClient getSolrClient(SolrCollection core) {
 		return solrClients.computeIfAbsent(core, k -> BuildSolrClient.instance(this.appProperties).build());
 	}
 
-	private QueryResponse query(SolrQuery q, SolrCore core) throws Exception {
+	private QueryResponse query(SolrQuery q, SolrCollection core) throws Exception {
 		Exception exception;
 		try {
 			return getSolrClient(core).query(core.name(), q);
@@ -97,7 +98,7 @@ public class SearchService implements ISearchService {
 		try {
 			String collegeId = String.valueOf(webSiteService.getCurrentCollege().getId());
 			SolrQuery q = applyCourseRootTag(SolrQueryBuilder.valueOf(params, collegeId, start, rows).build());
-			SearchResult searchResult = SearchResult.valueOf(q, query(q, SolrCore.courses));
+			SearchResult searchResult = SearchResult.valueOf(q, query(q, SolrCollection.courses));
 			logger.debug("Solr query: {}", searchResult.getSolrQueryAsString());
 			return searchResult;
 		} catch (Exception e) {
@@ -116,7 +117,7 @@ public class SearchService implements ISearchService {
 				q.setFacet(true);
 				String query = SolrQueryBuilder.getTagQuery(tag);
 				q.addFacetQuery(query);
-				QueryResponse response = query(q, SolrCore.courses);
+				QueryResponse response = query(q, SolrCollection.courses);
 				Map<String, Integer> solrResult = response.getFacetQuery();
 				result.put(tag.getId(), solrResult.get(query).longValue());
 			}
@@ -140,7 +141,7 @@ public class SearchService implements ISearchService {
 			SolrQuery q = applyCourseRootTag(builder.getSolrQuery());
 			Map<String, Count> queries = builder.getFacetQueries();
 
-			QueryResponse response = query(q, SolrCore.courses);
+			QueryResponse response = query(q, SolrCollection.courses);
 
 			HashMap<String, Count> result = new HashMap<>();
 			Map<String, Integer> solrResult = response.getFacetQuery();
@@ -179,21 +180,21 @@ public class SearchService implements ISearchService {
 			SolrDocumentList results = new SolrDocumentList();
 			SolrQuery solrQuery = builder.getCoursesQuery();
 			if (solrQuery != null) {
-				QueryResponse coursesResults = query(applyCourseRootTag(solrQuery), SolrCore.courses);
+				QueryResponse coursesResults = query(applyCourseRootTag(solrQuery), SolrCollection.courses);
 				if (coursesResults != null && coursesResults.getResults() != null && !coursesResults.getResults().isEmpty()) {
 					results.addAll(coursesResults.getResults());
 				}
 			}
 			solrQuery = builder.getSuburbsQuery();
 			if (solrQuery != null) {
-				QueryResponse suburbsResults = query(solrQuery, SolrCore.suburbs);
+				QueryResponse suburbsResults = query(solrQuery, SolrCollection.suburbs);
 				if (suburbsResults != null && suburbsResults.getResults() != null && !suburbsResults.getResults().isEmpty()) {
 					results.addAll(suburbsResults.getResults());
 				}
 			}
 			solrQuery = builder.getTagsQuery();
 			if (solrQuery != null) {
-				QueryResponse tagsResults = query(solrQuery, SolrCore.tags);
+				QueryResponse tagsResults = query(solrQuery, SolrCollection.tags);
 				if (tagsResults != null && tagsResults.getResults() != null && !tagsResults.getResults().isEmpty()) {
 					results.addAll(tagsResults.getResults());
 				}
@@ -239,7 +240,7 @@ public class SearchService implements ISearchService {
 				q.setQuery(EVERY_DOCUMENT_MATCH_QUERY);
 			}
 			SolrDocumentList results = new SolrDocumentList();
-			QueryResponse suburbs = query(q, SolrCore.suburbs);
+			QueryResponse suburbs = query(q, SolrCollection.suburbs);
 			if (suburbs != null && suburbs.getResults() != null && !suburbs.getResults().isEmpty()) {
 				results.addAll(suburbs.getResults());
 			}
@@ -255,7 +256,7 @@ public class SearchService implements ISearchService {
 		try {
 			SolrQuery solrQuery = SolrQueryBuilder.createSearchSuburbByLocationQuery(location);
 			SolrDocumentList results = new SolrDocumentList();
-			QueryResponse suburbs = query(solrQuery, SolrCore.suburbs);
+			QueryResponse suburbs = query(solrQuery, SolrCollection.suburbs);
 			SearchResult searchResult = SearchResult.valueOf(solrQuery, suburbs);
 			logger.debug(searchResult.getSolrQueryAsString());
 			if (suburbs != null && suburbs.getResults() != null && !suburbs.getResults().isEmpty()) {
@@ -266,9 +267,5 @@ public class SearchService implements ISearchService {
 			logger.error("Failed to search suburb.", e);
 			throw new SearchException("Unable to find suburb.", e);
 		}
-	}
-
-	protected enum SolrCore {
-		courses, suburbs, tags
 	}
 }

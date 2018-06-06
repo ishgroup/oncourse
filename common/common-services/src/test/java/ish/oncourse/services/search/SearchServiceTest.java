@@ -1,5 +1,6 @@
 package ish.oncourse.services.search;
 
+import ish.oncourse.solr.SolrCollection;
 import ish.oncourse.solr.query.SearchParams;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -32,7 +33,7 @@ public class SearchServiceTest {
 	public void testCloudSolrClient() throws IOException, SolrServerException {
 		CloudSolrClient cloudSolrClient = new CloudSolrClient.Builder().withZkHost("127.0.0.1:2181,127.0.0.1:2182").build();
 		cloudSolrClient.connect();
-		QueryResponse response = cloudSolrClient.query(SearchService.SolrCore.courses.name(), new SolrQuery("*:*"));
+		QueryResponse response = cloudSolrClient.query(SolrCollection.courses.name(), new SolrQuery("*:*"));
 		System.out.println(response);
 	}
 }
