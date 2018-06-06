@@ -10,6 +10,7 @@ import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;
+import org.apache.solr.client.solrj.response.QueryResponse;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -19,7 +20,10 @@ import java.util.Date;
 import java.util.List;
 
 public class SolrResultOrderTest extends SolrTestCaseJ4 {
-	
+	static {
+		InitSolr.INIT_STATIC_BLOCK();
+	}
+
 	private static InitSolr initSolr;
 	
 	private static final Long collegeId = 666L;
@@ -75,8 +79,8 @@ public class SolrResultOrderTest extends SolrTestCaseJ4 {
 		assertEquals("13", courses.get(0).getId());
 		assertEquals("14", courses.get(1).getId());
 		assertEquals("15", courses.get(2).getId());
-		assertEquals("16", courses.get(3).getId());
-		assertEquals("18", courses.get(4).getId());
+		assertEquals("18", courses.get(3).getId());
+		assertEquals("16", courses.get(4).getId());
 		assertEquals("17", courses.get(5).getId());
 	}
 
@@ -94,7 +98,9 @@ public class SolrResultOrderTest extends SolrTestCaseJ4 {
 		List<SCourse> allCourses = solrClient.query("courses", new SolrQuery("*:*")).getBeans(SCourse.class);
 		assertEquals(7, allCourses.size());
 
-		List<SCourse> courses = solrClient.query("courses", getSolrQuery()).getBeans(SCourse.class);
+
+		QueryResponse response = solrClient.query("courses", getSolrQuery());
+		List<SCourse> courses = response.getBeans(SCourse.class);
 
 		assertEquals(6, courses.size());
 		assertEquals("17", courses.get(0).getId());
@@ -108,6 +114,7 @@ public class SolrResultOrderTest extends SolrTestCaseJ4 {
 	private static SolrQuery getSolrQuery() {
 		SearchParams searchParams = new SearchParams();
 		searchParams.setS("aged care");
+		searchParams.setDebugQuery(true);
 		searchParams = SearchParams.valueOf(searchParams, true);
 		
 		SolrQueryBuilder builder = SolrQueryBuilder.valueOf(searchParams, collegeId.toString(), null, null);
