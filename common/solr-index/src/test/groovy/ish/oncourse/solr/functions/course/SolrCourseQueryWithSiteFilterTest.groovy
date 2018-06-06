@@ -33,22 +33,23 @@ class SolrCourseQueryWithSiteFilterTest extends ASolrTest {
         List<SCourse> actualSCourses = response.getBeans(SCourse.class)
         assertEquals(6, actualSCourses.size())
         assertTrue(actualSCourses.first().name == "course5")
-        assertTrue(actualSCourses.get(1).name == "course9")
-        assertTrue(actualSCourses.subList(2, 4).name.contains("course7"))
-        assertTrue(actualSCourses.subList(2, 4).name.contains("course8"))
-        assertTrue(actualSCourses.subList(4, 6).name.contains("course11"))
-        assertTrue(actualSCourses.subList(4, 6).name.contains("course12"))
+        assertTrue(actualSCourses.subList(1, 3).name.contains("course7"))
+        assertTrue(actualSCourses.subList(1, 3).name.contains("course8"))
+        assertTrue(actualSCourses.subList(3, 5).name.contains("course11"))
+        assertTrue(actualSCourses.subList(3, 5).name.contains("course12"))
+        assertTrue(actualSCourses.get(5).name == "course9")
+
 
         actualSCourses = solrClient.query("courses",
                 SolrQueryBuilder.valueOf(new SearchParams(s: "course*", siteId: otherSite.site.id), collegeId, null, null).build())
                 .getBeans(SCourse.class)
         assertEquals(6, actualSCourses.size())
         assertTrue(actualSCourses.first().name == "course6")
-        assertTrue(actualSCourses.get(1).name == "course10")
-        assertTrue(actualSCourses.subList(2, 4).name.contains("course7"))
-        assertTrue(actualSCourses.subList(2, 4).name.contains("course8"))
-        assertTrue(actualSCourses.subList(4, 6).name.contains("course11"))
-        assertTrue(actualSCourses.subList(4, 6).name.contains("course12"))
+        assertTrue(actualSCourses.subList(1, 3).name.contains("course7"))
+        assertTrue(actualSCourses.subList(1, 3).name.contains("course8"))
+        assertTrue(actualSCourses.subList(3, 5).name.contains("course11"))
+        assertTrue(actualSCourses.subList(3, 5).name.contains("course10"))
+        assertTrue(actualSCourses.get(5).name == "course12")
 
         actualSCourses = solrClient.query("courses",
                 SolrQueryBuilder.valueOf(new SearchParams(s: "course*", siteId: virtualSite.site.id), collegeId, null, null).build())
