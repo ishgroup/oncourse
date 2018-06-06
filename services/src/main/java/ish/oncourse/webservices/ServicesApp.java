@@ -8,6 +8,7 @@ import io.bootique.cayenne.CayenneModuleProvider;
 import io.bootique.jdbc.JdbcModuleProvider;
 import io.bootique.jetty.JettyModuleProvider;
 import ish.oncourse.configuration.Configuration;
+import ish.oncourse.webservices.quartz.QuartzModule;
 
 /**
  * User: akoiro
@@ -27,6 +28,7 @@ public class ServicesApp {
 		bootique.module(new CayenneModuleProvider());
 		bootique.module(new JettyModuleProvider());
 		bootique.module(ServicesModule.class);
+		bootique.module(QuartzModule.class);
 		return bootique;
 	}
 }
