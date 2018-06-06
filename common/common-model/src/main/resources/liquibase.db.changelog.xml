@@ -4692,5 +4692,9 @@
 	<changeSet id="321" author="anarut" context="production" runOnChange="false" runAlways="false">
 		<sql>ALTER TABLE Survey MODIFY comment LONGTEXT NULL;</sql>
 	</changeSet>
-	
+
+	<changeSet id="322" author="andrey" context="production" runOnChange="false">
+		<sqlFile path="org/quartz/impl/jdbcjobstore/tables_mysql_innodb.sql"/>
+	</changeSet>
+
 </databaseChangeLog>
