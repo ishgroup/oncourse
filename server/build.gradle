@@ -3,6 +3,8 @@ apply plugin: 'apidoc'
 apply plugin: 'cayenne'
 
 apply from: "$rootDir/gradle/bootique.gradle"
+apply plugin: 'com.github.psxpaul.execfork'
+
 
 configurations {
 	javaAgent
@@ -231,14 +233,6 @@ task createResourceManifests {
 }
 test.dependsOn(createResourceManifests)
 
-task run(dependsOn: [classes, processResources], type: JavaExec) {
-	dependsOn 'agentJar'
-	main = 'ish.oncourse.server.AngelServer'
-	classpath = sourceSets.main.runtimeClasspath
-	args 'DEBUG=true'
-	jvmArgs '-Xmx1024m', '-XX:+HeapDumpOnOutOfMemoryError', "-javaagent:${buildDir}/${pathToJavaAgent}/${javaAgentFileName}"
-}
-
 test {
 	// the database tests interfere with each other if run in parallel
 	maxParallelForks = 1
@@ -283,7 +277,18 @@ task agentJar(type: Copy) {
 	from configurations.javaAgent
 	into "${buildDir}/${pathToJavaAgent}/"
 	rename { "${javaAgentFileName}" }
-} 
+}
+
+task startDaemon(dependsOn: [classes, processResources, agentJar], type: com.github.psxpaul.task.JavaExecFork) {
+	classpath = sourceSets.main.runtimeClasspath
+	main = 'ish.oncourse.server.AngelServer'
+	args = ['DEBUG=true', 'REPLICATION_DISABLED=true']
+	jvmArgs = ['-Xmx1024m', '-XX:+HeapDumpOnOutOfMemoryError', "-javaagent:${buildDir}/${pathToJavaAgent}/${javaAgentFileName}"]
+	workingDir = "$buildDir"
+	standardOutput = "$buildDir/daemon.log"
+	errorOutput = "$buildDir/daemon-error.log"
+	waitForOutput = 'Server ready for client connections'
+}
 
 appBundler {
 	distributionPath = project.file("${distsDir}/macosx/")
