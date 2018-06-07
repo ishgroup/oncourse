@@ -4,14 +4,17 @@ import io.reactivex.Observable
 import ish.oncourse.model.Tag
 import ish.oncourse.model.Taggable
 import ish.oncourse.model.TaggableTag
-import ish.oncourse.solr.RXFunctions
+import ish.oncourse.solr.RXObservableFromIterable
 import ish.oncourse.solr.model.STag
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 
 import static org.apache.cayenne.query.ObjectSelect.query
 
 class Functions {
+    private static Logger LOGGER = LogManager.logger
 
     private static final String COURSE_IDENTIFIER = 'Course'
 
@@ -29,6 +32,10 @@ class Functions {
     }
 
     static Closure<Observable<STag>> getSolrTags = { ObjectContext context ->
-        return RXFunctions.fromIterable({ TagsQuery.iterator(context) }, getSTag)
+        return new RXObservableFromIterable()
+                .iterable({ TagsQuery.iterator(context) })
+                .mapper(getSTag)
+                .logger(LOGGER)
+                .observable()
     }
 }

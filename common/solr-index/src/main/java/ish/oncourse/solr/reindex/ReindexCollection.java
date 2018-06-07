@@ -14,7 +14,8 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.UpdateResponse;
 
 import java.io.IOException;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  *
@@ -24,7 +25,8 @@ public class ReindexCollection<E> implements Runnable {
 	private Observable<E> collectDoc;
 	private SolrClient solrClient;
 	private SolrCollection collection;
-	private AtomicInteger total = new AtomicInteger(0);
+	private AtomicLong total = new AtomicLong(0);
+	private AtomicReference<Throwable> error = new AtomicReference<>();
 
 	public ReindexCollection(SolrClient solrClient,
 							 SolrCollection collection,
@@ -58,8 +60,10 @@ public class ReindexCollection<E> implements Runnable {
 			}
 			if (notification.isOnComplete())
 				commit();
-			if (notification.isOnError())
+			if (notification.isOnError()) {
+				error.set(notification.getError());
 				logger.error(notification.getError());
+			}
 		} catch (Exception e) {
 			throw new IllegalArgumentException(e);
 		}
@@ -74,4 +78,13 @@ public class ReindexCollection<E> implements Runnable {
 		logger.debug("Total Processed \"{}\" for \"{}\"...", total.intValue(), collection.name());
 		solrClient.commit(collection.name());
 	}
+
+	public Throwable getError() {
+		return this.error.get();
+	}
+
+	public long getTotal() {
+		return this.total.get();
+	}
+
 }

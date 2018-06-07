@@ -7,6 +7,7 @@ import org.apache.solr.SolrTestCaseJ4
 import org.apache.solr.client.solrj.SolrClient
 import org.apache.solr.client.solrj.SolrQuery
 import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
@@ -52,6 +53,10 @@ class SpatialSolrQueryTest extends SolrTestCaseJ4 {
         assertEquals(km10, result.get(0).location.get(0))
         assertEquals(km20, result.get(1).location.get(0))
 
+    }
+
+    @After
+    void after() {
     }
 
     private SCourse createCourse(String km10) {

@@ -1,12 +1,12 @@
 package ish.oncourse.solr.functions.course
 
-import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.schedulers.Schedulers
 import ish.oncourse.model.Course
 import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Tag
+import ish.oncourse.solr.RXObservableFromIterable
 import ish.oncourse.solr.model.*
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.ResultIterator
@@ -15,7 +15,7 @@ import org.apache.commons.lang3.time.DateUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
-import static ish.oncourse.solr.functions.course.CourseFunctions.Courses
+import java.util.concurrent.Callable
 
 /**
  * User: akoiro
@@ -27,15 +27,11 @@ class SCourseFunctions {
     static final Observable<SCourse> SCourses(ObjectContext context,
                                               Date current = new Date(),
                                               Scheduler scheduler = Schedulers.io(),
-                                              Iterable<Course> courses = Courses(context)) {
-        return Flowable.fromIterable(courses).parallel()
-                .runOn(scheduler)
-                .map({ Course c -> GetSCourse.call(new CourseContext(course: c, context: c.objectContext, current: current)) })
-                .doOnError({ logger.catching(it) })
-                .sequential().toObservable()
-                .doAfterTerminate({
-            if (courses instanceof Closeable) IOUtils.closeQuietly(courses as Closeable)
-        })
+                                              Callable<Iterable<Course>> courses) {
+        return new RXObservableFromIterable<Course, SCourse>().iterable(courses)
+                .mapper({ Course c -> GetSCourse.call(new CourseContext(course: c, context: c.objectContext, current: current)) })
+                .scheduler(scheduler)
+                .logger(logger).parallelObservable()
     }
 
 

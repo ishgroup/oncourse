@@ -2,7 +2,7 @@ package ish.oncourse.solr
 
 import com.carrotsearch.randomizedtesting.annotations.ThreadLeakScope
 import io.reactivex.schedulers.Schedulers
-import ish.oncourse.solr.functions.course.SCourseFunctions
+import ish.oncourse.solr.reindex.ReindexCourses
 import ish.oncourse.test.TestContext
 import ish.oncourse.test.context.CCollege
 import ish.oncourse.test.context.DataContext
@@ -58,16 +58,11 @@ abstract class ASolrTest extends SolrTestCaseJ4 {
     }
 
 
-    int fullImport() {
-        final int[] imported = new int[1]
-        final Throwable[] error = new Throwable[1]
-        SCourseFunctions.SCourses(testContext.getServerRuntime().newContext(), new Date(), Schedulers.io())
-                .blockingSubscribe({ c -> solrClient.addBean(c); imported[0]++ },
-                { e -> error[0] = e },
-                { solrClient.commit() }
-        )
-        if (error[0] != null) throw new RuntimeException(error[0])
-        return imported[0]
+    long fullImport() {
+        ReindexCourses reindex = new ReindexCourses(testContext.getServerRuntime().newContext(), solrClient)
+        reindex.run()
+        if (reindex.error != null) throw new RuntimeException(reindex.error)
+        return reindex.total
     }
 
 }

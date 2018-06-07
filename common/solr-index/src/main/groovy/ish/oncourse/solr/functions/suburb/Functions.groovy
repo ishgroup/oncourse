@@ -2,7 +2,7 @@ package ish.oncourse.solr.functions.suburb
 
 import io.reactivex.Observable
 import ish.oncourse.model.PostcodeDb
-import ish.oncourse.solr.RXFunctions
+import ish.oncourse.solr.RXObservableFromIterable
 import ish.oncourse.solr.model.SSuburb
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
@@ -28,6 +28,10 @@ class Functions {
     }
 
     static Closure<Observable<SSuburb>> getSolrSuburbs = { ObjectContext context ->
-        return RXFunctions.fromIterable({ PostcodesQuery.iterator(context) }, getSSuburb)
+        return new RXObservableFromIterable()
+                .iterable({ PostcodesQuery.iterator(context) })
+                .mapper(getSSuburb)
+                .logger(logger)
+                .observable()
     }
 }

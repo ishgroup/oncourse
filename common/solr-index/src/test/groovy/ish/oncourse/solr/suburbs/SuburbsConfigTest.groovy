@@ -54,6 +54,7 @@ class SuburbsConfigTest extends SolrTestCaseJ4 {
 
     @After
     void after() {
+        solrClient.close()
     }
 
 }
