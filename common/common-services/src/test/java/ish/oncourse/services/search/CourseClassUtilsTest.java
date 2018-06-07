@@ -3,6 +3,7 @@ package ish.oncourse.services.search;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.solr.functions.course.DateFunctions;
 import ish.oncourse.solr.query.SearchParams;
 import ish.oncourse.test.LoadDataSet;
 import ish.oncourse.test.tapestry.ServiceTest;
@@ -10,6 +11,9 @@ import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
+
+import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -25,6 +29,23 @@ public class CourseClassUtilsTest extends ServiceTest {
 				.load(testContext.getDS());
         this.cayenneService = getService(ICayenneService.class);
     }
+
+    @Test
+    public void testAfterMatch() {
+
+        CourseClass courseClass = Mockito.mock(CourseClass.class);
+        Mockito.when(courseClass.getStartDate()).thenReturn(DateFunctions.toDate("2011-01-02 00:00:00"));
+
+        Date date = DateFunctions.toDate("2011-01-01 00:00:00");
+        assertEquals("The course class is after this date", 1f , CourseClassUtils.afterScore(courseClass, date), 0);
+
+        date = DateFunctions.toDate("2011-01-03 00:00:00");
+        assertEquals("The course class is 1 day before this date", 0.5f, CourseClassUtils.afterScore(courseClass, date), 0);
+
+        Mockito.when(courseClass.getStartDate()).thenReturn(null);
+        assertEquals("startDate is null and score is 0.0", 0.0f, CourseClassUtils.afterScore(courseClass, date), 0);
+    }
+
 
     @Test
     public void testFocusMatchForTime()
