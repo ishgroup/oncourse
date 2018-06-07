@@ -31,9 +31,9 @@ public class QuartzModule extends ConfigModule {
 	public static final String QUARTZ_GROUP_SOLR = "solrGroup";
 
 
-	public static final String DEFAULT_CRON_REINDEX_COURSES = "0 0 5 ? * *";
-	public static final String DEFAULT_CRON_REINDEX_TAGS = "0 30 5 ? * *";
-	public static final String DEFAULT_CRON_REINDEX_SUBURBS = "0 0 6 ? * *";
+	public static final String DEFAULT_CRON_REINDEX_COURSES = "0 53 3 ? * *";
+	public static final String DEFAULT_CRON_REINDEX_TAGS = "0 9 4 ? * *";
+	public static final String DEFAULT_CRON_REINDEX_SUBURBS = "0 34 4 ? * *";
 
 	@Override
 	public void configure(Binder binder) {
