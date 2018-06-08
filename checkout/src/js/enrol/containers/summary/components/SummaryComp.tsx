@@ -135,7 +135,7 @@ const ProceedToPayment = props => {
     onProceedToPayment();
   };
 
-  return (
+  return (!disabled &&
     <button className={className} onClick={onClick} disabled={disabled}>
       {buttonLabel}
     </button>
