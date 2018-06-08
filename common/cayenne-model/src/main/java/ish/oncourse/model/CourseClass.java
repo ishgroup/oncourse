@@ -36,7 +36,7 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 	public static final String SHORTLIST_COOKIE_KEY = "shortlist";
 
 	public static final int MORNING_START = 6;
-	public static final int EVENING_START = 18;
+	public static final int EVENING_START = 17;
 	private Set<String> daysOfWeek;
 
 	public Long getId() {
@@ -247,20 +247,24 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 		return latest;
 	}
 
+	private boolean isDayTime(int earliest) {
+		return earliest < EVENING_START && earliest > MORNING_START;
+	}
+
 	/**
 	 * Returns true if the course class does not have sessions or if 6:00 < start time < 17:00
 	 */
 	public boolean isDaytime() {
 		Integer earliest = getEarliestSessionStartHour();
-		return earliest == null || earliest < EVENING_START && earliest > MORNING_START;
+		return earliest == null || isDayTime(earliest);
 	}
 
 	/**
-	 * Returns true if the course class does not have sessions or if 17:00 < start time < 6:00
+	 * Returns true if the course class does not have sessions or if 17:00 <= start time <= 6:00
 	 */
 	public boolean isEvening() {
-		Integer latest = getEarliestSessionStartHour();
-		return latest == null || !(latest < EVENING_START && latest > MORNING_START);
+		Integer earliest = getEarliestSessionStartHour();
+		return earliest == null || !isDayTime(earliest);
 	}
 
 	/**

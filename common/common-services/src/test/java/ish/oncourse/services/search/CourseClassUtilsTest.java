@@ -1,6 +1,7 @@
 package ish.oncourse.services.search;
 
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Session;
 import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.solr.functions.course.DateFunctions;
@@ -9,76 +10,137 @@ import ish.oncourse.test.LoadDataSet;
 import ish.oncourse.test.tapestry.ServiceTest;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class CourseClassUtilsTest extends ServiceTest {
 
-    private ICayenneService cayenneService;
+	private ICayenneService cayenneService;
 
-    @Before
-    public void setup() throws Exception {
-        initTest("ish.oncourse.services", "service", ServiceTestModule.class);
+	@Before
+	public void setup() throws Exception {
+		initTest("ish.oncourse.services", "service", ServiceTestModule.class);
 		new LoadDataSet().dataSetFile("ish/oncourse/services/search/CourseClassUtilsTest.xml")
 				.load(testContext.getDS());
-        this.cayenneService = getService(ICayenneService.class);
-    }
+		this.cayenneService = getService(ICayenneService.class);
+	}
 
-    @Test
-    public void testAfterMatch() {
+	@Test
+	public void testAfterMatch() {
 
-        CourseClass courseClass = Mockito.mock(CourseClass.class);
-        Mockito.when(courseClass.getStartDate()).thenReturn(DateFunctions.toDate("2011-01-02 00:00:00"));
+		CourseClass courseClass = Mockito.mock(CourseClass.class);
+		Mockito.when(courseClass.getStartDate()).thenReturn(DateFunctions.toDate("2011-01-02 00:00:00"));
 
-        Date date = DateFunctions.toDate("2011-01-01 00:00:00");
-        assertEquals("The course class is after this date", 1f , CourseClassUtils.afterScore(courseClass, date), 0);
+		Date date = DateFunctions.toDate("2011-01-01 00:00:00");
+		assertEquals("The course class is after this date", 1f, CourseClassUtils.afterScore(courseClass, date), 0);
 
-        date = DateFunctions.toDate("2011-01-03 00:00:00");
-        assertEquals("The course class is 1 day before this date", 0.5f, CourseClassUtils.afterScore(courseClass, date), 0);
+		date = DateFunctions.toDate("2011-01-03 00:00:00");
+		assertEquals("The course class is 1 day before this date", 0.5f, CourseClassUtils.afterScore(courseClass, date), 0);
 
-        Mockito.when(courseClass.getStartDate()).thenReturn(null);
-        assertEquals("startDate is null and score is 0.0", 0.0f, CourseClassUtils.afterScore(courseClass, date), 0);
-    }
-
-
-    @Test
-    public void testFocusMatchForTime()
-    {
-        ObjectContext context = this.cayenneService.newContext();
-
-        CourseClass daytimeClass = Cayenne.objectForPK(context, CourseClass.class, 1);
-        assertTrue("The course class is daytime class", 1 == CourseClassUtils.focusMatchForTime(daytimeClass, SearchParamsParser.PARAM_VALUE_daytime));
-        assertTrue("The course class is not evening class", 1 > CourseClassUtils.focusMatchForTime(daytimeClass, SearchParamsParser.PARAM_VALUE_evening));
-
-        CourseClass eveningClass = Cayenne.objectForPK(context, CourseClass.class, 2);
-        assertTrue("The course class is evening class", 1 == CourseClassUtils.focusMatchForTime(eveningClass, SearchParamsParser.PARAM_VALUE_evening));
-        assertTrue("The course class is not daytime class", 1 > CourseClassUtils.focusMatchForTime(eveningClass, SearchParamsParser.PARAM_VALUE_daytime));
+		Mockito.when(courseClass.getStartDate()).thenReturn(null);
+		assertEquals("startDate is null and score is 0.0", 0.0f, CourseClassUtils.afterScore(courseClass, date), 0);
+	}
 
 
-        CourseClass selfpacedClass = Cayenne.objectForPK(context, CourseClass.class, 3);
-        assertTrue("The course class is evening class", 1 == CourseClassUtils.focusMatchForTime(selfpacedClass, SearchParamsParser.PARAM_VALUE_evening));
-        assertTrue("The course class is daytime class", 1 == CourseClassUtils.focusMatchForTime(selfpacedClass, SearchParamsParser.PARAM_VALUE_daytime));
+	@Test
+	public void testFocusMatchForTime() {
+		ObjectContext context = this.cayenneService.newContext();
+
+		CourseClass daytimeClass = Cayenne.objectForPK(context, CourseClass.class, 1);
+		assertTrue("The course class is daytime class", 1 == CourseClassUtils.focusMatchForTime(daytimeClass, SearchParamsParser.PARAM_VALUE_daytime));
+		assertTrue("The course class is not evening class", 1 > CourseClassUtils.focusMatchForTime(daytimeClass, SearchParamsParser.PARAM_VALUE_evening));
+
+		CourseClass eveningClass = Cayenne.objectForPK(context, CourseClass.class, 2);
+		assertTrue("The course class is evening class", 1 == CourseClassUtils.focusMatchForTime(eveningClass, SearchParamsParser.PARAM_VALUE_evening));
+		assertTrue("The course class is not daytime class", 1 > CourseClassUtils.focusMatchForTime(eveningClass, SearchParamsParser.PARAM_VALUE_daytime));
 
 
-    }
+		CourseClass selfpacedClass = Cayenne.objectForPK(context, CourseClass.class, 3);
+		assertTrue("The course class is evening class", 1 == CourseClassUtils.focusMatchForTime(selfpacedClass, SearchParamsParser.PARAM_VALUE_evening));
+		assertTrue("The course class is daytime class", 1 == CourseClassUtils.focusMatchForTime(selfpacedClass, SearchParamsParser.PARAM_VALUE_daytime));
 
-    @Test
-    public void testFocusMatchForSite() {
-        ObjectContext context = this.cayenneService.newContext();
-        CourseClass courseClass = Cayenne.objectForPK(context, CourseClass.class, 1);
-        SearchParams params = new SearchParams();
 
-        params.setSiteId(1L);
-        assertEquals(1.0f, CourseClassUtils.focusMatchForClass(courseClass, params), 0f);
+	}
 
-        params.setSiteId(2L);
-        assertEquals(0.0f, CourseClassUtils.focusMatchForClass(courseClass, params), 0f);
-    }
+	@Test
+	public void testFocusMatchForSite() {
+		ObjectContext context = this.cayenneService.newContext();
+		CourseClass courseClass = Cayenne.objectForPK(context, CourseClass.class, 1);
+		SearchParams params = new SearchParams();
 
+		params.setSiteId(1L);
+		assertEquals(1.0f, CourseClassUtils.focusMatchForClass(courseClass, params), 0f);
+
+		params.setSiteId(2L);
+		assertEquals(0.0f, CourseClassUtils.focusMatchForClass(courseClass, params), 0f);
+	}
+
+	@Test
+	public void testMatchForEvening() {
+		CourseClass courseClass = getCourseClass();
+
+		List<Session> sessions = getSessions(17, 30);
+		Mockito.when(courseClass.getTimelineableSessions()).thenReturn(sessions);
+		Assert.assertEquals(1.0f, CourseClassUtils.focusMatchForTime(courseClass, "evening"), 0);
+		Assert.assertEquals(0.0f, CourseClassUtils.focusMatchForTime(courseClass, "daytime"), 0);
+
+		sessions = getSessions(17, 0);
+		Mockito.when(courseClass.getTimelineableSessions()).thenReturn(sessions);
+		Assert.assertEquals(1.0f, CourseClassUtils.focusMatchForTime(courseClass, "evening"), 0);
+		Assert.assertEquals(0.0f, CourseClassUtils.focusMatchForTime(courseClass, "daytime"), 0);
+
+		sessions = getSessions(6, 59);
+		Mockito.when(courseClass.getTimelineableSessions()).thenReturn(sessions);
+		Assert.assertEquals(1.0f, CourseClassUtils.focusMatchForTime(courseClass, "evening"), 0);
+		Assert.assertEquals(0.0f, CourseClassUtils.focusMatchForTime(courseClass, "daytime"), 0);
+	}
+
+
+	@Test
+	public void testMatchForDaytime() {
+		CourseClass courseClass = getCourseClass();
+
+		List<Session> sessions = getSessions(7, 00);
+		Mockito.when(courseClass.getTimelineableSessions()).thenReturn(sessions);
+		Assert.assertEquals(1.0f, CourseClassUtils.focusMatchForTime(courseClass, "daytime"), 0);
+		Assert.assertEquals(0.0f, CourseClassUtils.focusMatchForTime(courseClass, "evening"), 0);
+
+		sessions = getSessions(7, 30);
+		Mockito.when(courseClass.getTimelineableSessions()).thenReturn(sessions);
+		Assert.assertEquals(1.0f, CourseClassUtils.focusMatchForTime(courseClass, "daytime"), 0);
+		Assert.assertEquals(0.0f, CourseClassUtils.focusMatchForTime(courseClass, "evening"), 0);
+
+		sessions = getSessions(16, 59);
+		Mockito.when(courseClass.getTimelineableSessions()).thenReturn(sessions);
+		Assert.assertEquals(1.0f, CourseClassUtils.focusMatchForTime(courseClass, "daytime"), 0);
+		Assert.assertEquals(0.0f, CourseClassUtils.focusMatchForTime(courseClass, "evening"), 0);
+	}
+
+	private CourseClass getCourseClass() {
+		CourseClass courseClass = Mockito.mock(CourseClass.class);
+		Mockito.when(courseClass.isEvening()).thenCallRealMethod();
+		Mockito.when(courseClass.isDaytime()).thenCallRealMethod();
+		Mockito.when(courseClass.getEarliestSessionStartHour()).thenCallRealMethod();
+		return courseClass;
+	}
+
+	private List<Session> getSessions(int startHour, int startMinutes) {
+		return IntStream.range(0, 10).mapToObj((i) -> {
+			Session session = Mockito.mock(Session.class);
+			Mockito.when(session.getStartDate()).thenReturn(DateFunctions.toDate(String.format("2018-%02d-03 %02d:%02d:00", i + 1, startHour, startMinutes)));
+			Mockito.when(session.getEndDatetime()).thenReturn(DateFunctions.toDate(String.format("2018-%02d-03 %02d:%02d:00", i + 1, startHour + 1, startMinutes)));
+			Mockito.when(session.getTimeZone()).thenReturn(DateFunctions.DEFAULT_TIME_ZONE);
+			return session;
+		}).collect(Collectors.toList());
+	}
 }
