@@ -6,6 +6,10 @@ import {GET_CHECKOUT_MODEL_FROM_BACKEND, updateAmount} from "../actions/Actions"
 import {rewriteContactNodeToState} from "../containers/summary/actions/Actions";
 import {Epic} from "redux-observable";
 
+//check enrolments for errors to keep error messages in state
+const checkEnrolmentsErrors = (node) => {
+    return node.enrolments && node.enrolments.find(item => item.errors.length);
+};
 
 const request: EpicUtils.Request<CheckoutModel, IshState> = {
   type: GET_CHECKOUT_MODEL_FROM_BACKEND,
@@ -13,7 +17,9 @@ const request: EpicUtils.Request<CheckoutModel, IshState> = {
   processData: (value: CheckoutModel, state: IshState) => {
     const result = [];
     value.contactNodes.forEach((node: ContactNode) => {
-      result.push(rewriteContactNodeToState(node));
+      if(!checkEnrolmentsErrors(node)) {
+        result.push(rewriteContactNodeToState(node));
+      }
     });
     result.push(updateAmount(value.amount));
     return result;

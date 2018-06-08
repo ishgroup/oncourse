@@ -47,6 +47,7 @@ class EnrolmentComp extends React.Component<Props, any> {
     if (!warning && courseClass.start && moment(courseClass.start).isBefore(moment())) {
       warning = ClassHasCommenced;
     }
+
     return (
       <div className={divClass}>
         <ItemWrapper
@@ -54,7 +55,7 @@ class EnrolmentComp extends React.Component<Props, any> {
           name={name}
           error={error}
           warning={warning}
-          selected={enrolment.selected}
+          selected={!error && enrolment.selected}
           item={enrolment}
           contact={contact}
           onChange={onChange}
@@ -62,7 +63,7 @@ class EnrolmentComp extends React.Component<Props, any> {
           <ClassDetails courseClass={courseClass}/>
 
         </ItemWrapper>
-        {enrolment.selected && courseClass.price && <ClassPrice enrolment={enrolment}/>}
+        {!error && enrolment.selected && courseClass.price && <ClassPrice enrolment={enrolment}/>}
 
         <EnrolmentFieldsForm
           headings={enrolment.fieldHeadings}

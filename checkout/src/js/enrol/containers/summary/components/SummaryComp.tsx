@@ -97,25 +97,27 @@ export class SummaryComp extends React.Component<Props, any> {
 
         <div className="row">
           <div className="col-xs-24">
-            <div className={classnames("amount-container", {"zero-total": !haveTotal})}>
+            {hasSelected &&
+              <div className={classnames("amount-container", {"zero-total": !haveTotal})}>
 
-              {haveTotal &&
-                <AmountComp
-                  amount={amount}
-                  onUpdatePayNow={amount.isEditable ? onUpdatePayNow : undefined}
-                  onAddCode={onAddCode}
-                  onToggleVoucher={onToggleVoucher}
-                  redeemVouchers={redeemVouchers}
-                  promotions={promotions}
-                />
-              }
+                  {haveTotal &&
+                  <AmountComp
+                      amount={amount}
+                      onUpdatePayNow={amount.isEditable ? onUpdatePayNow : undefined}
+                      onAddCode={onAddCode}
+                      onToggleVoucher={onToggleVoucher}
+                      redeemVouchers={redeemVouchers}
+                      promotions={promotions}
+                  />
+                  }
 
-              <ProceedToPayment
-                buttonLabel={buttonLabel}
-                disabled={!hasSelected}
-                onProceedToPayment={onProceed}
-              />
-            </div>
+                  <ProceedToPayment
+                      buttonLabel={buttonLabel}
+                      disabled={!hasSelected}
+                      onProceedToPayment={onProceed}
+                  />
+              </div>
+            }
           </div>
         </div>
 
