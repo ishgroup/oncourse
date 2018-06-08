@@ -66,7 +66,7 @@ export class EnrolButton extends React.Component<Props, State> {
     } = this.props.courseClass;
 
     const {isAdded, checkoutPath} = this.props;
-    const isActive = !isFinished && !isCancelled && hasAvailablePlaces && isPaymentGatewayEnabled;
+    const isActive = !isFinished && !isCancelled && hasAvailablePlaces;
     const showedPlaces = hasAvailablePlaces;
     const reverseElements = isFinished;
     const fetching = typeof isCancelled === 'undefined' && typeof isActive === 'undefined';
