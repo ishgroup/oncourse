@@ -25,7 +25,7 @@ pipeline {
                     currentBuild.displayName = "Release ${params.version}"
                 }
                 sh "./gradlew search:publishExecutablesPublicationToExecutablesRepository -PreleaseVersion=${params.version}"
-                sh "./gradlew createVersion -PreleaseVersion=${params.version}"
+                sh "./gradlew createVersion -PreleaseVersion=\"${params.version} search\""
             }
         }
     }

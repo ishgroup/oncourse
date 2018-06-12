@@ -32,7 +32,7 @@ pipeline {
                     currentBuild.displayName = "Release ${params.version}"
                 }
                 sh "./gradlew editor-api:packageDoc editor-api:publishExecutablesPublicationToExecutablesRepository editor-api:publishReleasesPublicationToReleasesRepository -PreleaseVersion=${params.version}"
-                sh "./gradlew createVersion -PreleaseVersion=${params.version}"
+                sh "./gradlew createVersion -PreleaseVersion=\"${params.version} editor-api\""
             }
         }
     }
