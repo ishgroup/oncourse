@@ -10,26 +10,21 @@ import io.bootique.jdbc.DataSourceFactory;
 import io.bootique.jetty.JettyModule;
 import io.bootique.jetty.MappedFilter;
 import io.bootique.jetty.MappedServlet;
-import io.bootique.shutdown.ShutdownManager;
 import io.bootique.tapestry.di.InjectorModuleDef;
 import ish.oncourse.cayenne.WillowCayenneModuleBuilder;
-import ish.oncourse.configuration.Configuration;
 import ish.oncourse.configuration.ISHHealthCheckServlet;
 import ish.oncourse.services.cache.NoopQueryCache;
-import ish.oncourse.solr.BuildSolrClient;
 import ish.oncourse.tapestry.WillowModuleDef;
 import ish.oncourse.tapestry.WillowTapestryFilter;
 import ish.oncourse.tapestry.WillowTapestryFilterBuilder;
 import ish.oncourse.util.log.LogAppInfo;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.cxf.transport.servlet.CXFServlet;
-import org.apache.solr.client.solrj.SolrClient;
 import org.apache.tapestry5.internal.spring.SpringModuleDef;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 import static org.springframework.web.context.ContextLoader.CONFIG_LOCATION_PARAM;
 
@@ -94,19 +89,5 @@ public class ServicesModule extends ConfigModule {
 				.addMappedFilter(TAPESTRY_FILTER)
 				.addMappedServlet(CXF_SERVLET)
 				.addMappedServlet(new MappedServlet<>(new ISHHealthCheckServlet(), ISHHealthCheckServlet.urlPatterns, ISHHealthCheckServlet.SERVLET_NAME));
-	}
-
-	@Provides
-	@Singleton
-	public Properties applicationProperties() {
-		return Configuration.loadProperties();
-	}
-
-	@Provides
-	@Singleton()
-	public SolrClient createSolrClient(Properties appProps, ShutdownManager shutdownManager) {
-		SolrClient solrClient = BuildSolrClient.instance(appProps).build();
-		shutdownManager.addShutdownHook(solrClient);
-		return solrClient;
 	}
 }

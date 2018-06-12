@@ -10,6 +10,8 @@ import com.google.inject.Singleton;
 import com.google.inject.multibindings.Multibinder;
 import io.bootique.ConfigModule;
 import io.bootique.shutdown.ShutdownManager;
+import ish.oncourse.configuration.Configuration;
+import ish.oncourse.solr.BuildSolrClient;
 import ish.oncourse.webservices.quartz.job.solr.ReindexCoursesJob;
 import ish.oncourse.webservices.quartz.job.solr.ReindexSuburbsJob;
 import ish.oncourse.webservices.quartz.job.solr.ReindexTagsJob;
@@ -18,6 +20,7 @@ import org.apache.solr.client.solrj.SolrClient;
 import org.quartz.Scheduler;
 
 import java.util.Arrays;
+import java.util.Properties;
 
 /**
  * User: akoiro
@@ -32,7 +35,7 @@ public class QuartzModule extends ConfigModule {
 
 
 	public static final String DEFAULT_CRON_REINDEX_COURSES = "0 53 3 ? * *";
-	public static final String DEFAULT_CRON_REINDEX_TAGS = "0 9 4 ? * *";
+	public static final String DEFAULT_CRON_REINDEX_TAGS = "0 */5 * ? * *";
 	public static final String DEFAULT_CRON_REINDEX_SUBURBS = "0 34 4 ? * *";
 
 	@Override
@@ -56,6 +59,21 @@ public class QuartzModule extends ConfigModule {
 
 		return scheduler;
 	}
+
+	@Provides
+	@Singleton
+	public Properties applicationProperties() {
+		return Configuration.loadProperties();
+	}
+
+	@Provides
+	@Singleton()
+	public SolrClient createSolrClient(Properties appProps, ShutdownManager shutdownManager) {
+		SolrClient solrClient = BuildSolrClient.instance(appProps).build();
+		shutdownManager.addShutdownHook(solrClient);
+		return solrClient;
+	}
+
 
 	private void unregisterJobs(Scheduler scheduler) {
 		DeleteJob[] list = new DeleteJob[]{
