@@ -15,12 +15,13 @@ class HasErrors {
     
     boolean hasErrors() {
         List<ContactNode> nodes = checkoutModel.contactNodes
-        return !nodes.enrolments.findAll{it.selected}.errors.flatten().empty ||
-          !nodes.applications.findAll{it.selected}.errors.flatten().empty ||
-          !nodes.articles.findAll{it.selected}.errors.flatten().empty ||
-          !nodes.memberships.findAll{it.selected}.errors.flatten().empty ||
-          !nodes.vouchers.findAll{it.selected}.errors.flatten().empty || 
-          !nodes.waitingLists.findAll{it.selected}.errors.flatten().empty || 
+        
+        return !nodes*.enrolments*.findAll{it.selected}*.errors.flatten().empty ||
+          !nodes*.applications*.findAll{it.selected}*.errors.flatten().empty ||
+          !nodes*.articles*.findAll{it.selected}*.errors.flatten().empty ||
+          !nodes*.memberships*.findAll{it.selected}*.errors.flatten().empty ||
+          !nodes*.vouchers*.findAll{it.selected}*.errors.flatten().empty || 
+          !nodes*.waitingLists*.findAll{it.selected}*.errors.flatten().empty || 
           !checkoutModel.validationErrors.formErrors.empty || 
           !checkoutModel.validationErrors.fieldsErrors.empty
     }
