@@ -185,9 +185,9 @@ class ProcessCheckoutModel {
     
     @CompileStatic(TypeCheckingMode.SKIP)
     Enrolment processEnrolment(Enrolment e, Contact contact) {
-        e.errors.clear()
-        e.warnings.clear()
         if (e.selected) {
+            e.errors.clear()
+            e.warnings.clear()
             ProcessClass processClass = new ProcessClass(context, contact, college, e.classId, taxOverridden).process()
             CourseClass courseClass = processClass.persistentClass
             String className = "$courseClass.course.name ($courseClass.course.code - $courseClass.code)"
@@ -228,9 +228,9 @@ class ProcessCheckoutModel {
     }
 
     Application processApplication(Application a, Contact contact) {
-        a.errors.clear()
-        a.warnings.clear()
         if (a.selected) {
+            a.errors.clear()
+            a.warnings.clear()
             ProcessClass processClass = new ProcessClass(context, contact, college, a.classId, taxOverridden).process()
             CourseClass courseClass = processClass.persistentClass
             String className = "$courseClass.course.name ($courseClass.course.code - $courseClass.code)"

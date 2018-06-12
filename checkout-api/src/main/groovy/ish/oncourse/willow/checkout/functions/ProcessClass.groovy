@@ -65,6 +65,9 @@ class ProcessClass {
                 a.errors += validateApplication.errors
                 a.warnings += validateApplication.warnings
                 a.fieldHeadings = new GetApplicationFields(persistentClass).get()
+                if (!a.errors.empty) {
+                    a.selected = false
+                }
                 a
             }
         } else {
@@ -85,7 +88,10 @@ class ProcessClass {
                         }
                         ccp
                     }
+                } else {
+                    e.selected = false
                 }
+                
                 e.fieldHeadings = new GetEnrolmentFields(persistentClass).get()
                 e
             }
