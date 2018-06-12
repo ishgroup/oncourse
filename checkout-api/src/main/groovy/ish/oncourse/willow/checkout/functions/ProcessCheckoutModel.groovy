@@ -185,76 +185,78 @@ class ProcessCheckoutModel {
     
     @CompileStatic(TypeCheckingMode.SKIP)
     Enrolment processEnrolment(Enrolment e, Contact contact) {
-        if (e.selected) {
-            e.errors.clear()
-            e.warnings.clear()
-            ProcessClass processClass = new ProcessClass(context, contact, college, e.classId, taxOverridden).process()
-            CourseClass courseClass = processClass.persistentClass
-            String className = "$courseClass.course.name ($courseClass.course.code - $courseClass.code)"
-            
-            if (processClass.enrolment == null) {
-                e.errors << "Enrolment for $contact.fullName on $className avalible by application".toString()
-            } else if (!checkAndBookPlace(courseClass)) {
-                e.errors << "Unfortunately you just missed out. The class $className was removed from your shopping basket since the last place has now been filled. Please select another class from this course or join the waiting list. <a href=\"/course/$courseClass.course.code\">[ Show course ]</a>".toString()
-            } else {
-                e.errors += processClass.enrolment.errors
-                e.warnings += processClass.enrolment.warnings
-            }
-            
-            if (e.errors.empty) {
-                ValidateCustomFields validateCustomFields = ValidateCustomFields.valueOf(e.fieldHeadings, processClass.enrolment.fieldHeadings, className, 'Enrolment')
-                validateCustomFields.validate()
-                if (validateCustomFields.commonError) {
-                    model.error = validateCustomFields.commonError
-                }
-                validateCustomFields.fieldErrors.each { fieldError -> 
-                    model.validationErrors.formErrors << fieldError.error
-                    model.validationErrors.fieldsErrors << fieldError
-                }
-                
-                e.price = processClass.enrolment.price
-                totalAmount = totalAmount.add(e.price.fee != null ? e.price.fee .toMoney() : e.price.feeOverriden.toMoney())
-                List<CourseClass> classes = enrolmentsToProceed.get(contact)
-                if (classes == null) {
-                    classes = new ArrayList<CourseClass>()
-                    enrolmentsToProceed.put(contact, classes)
-                }
-                classes.add(courseClass)
-            } else {
-                e.selected = false
-            }
+        
+        e.errors.clear()
+        e.warnings.clear()
+        
+        ProcessClass processClass = new ProcessClass(context, contact, college, e.classId, taxOverridden).process()
+        CourseClass courseClass = processClass.persistentClass
+        String className = "$courseClass.course.name ($courseClass.course.code - $courseClass.code)"
+        
+        if (processClass.enrolment == null) {
+            e.errors << "Enrolment for $contact.fullName on $className avalible by application".toString()
+        } else if (!checkAndBookPlace(courseClass)) {
+            e.errors << "Unfortunately you just missed out. The class $className was removed from your shopping basket since the last place has now been filled. Please select another class from this course or join the waiting list. <a href=\"/course/$courseClass.course.code\">[ Show course ]</a>".toString()
+        } else {
+            e.errors += processClass.enrolment.errors
+            e.warnings += processClass.enrolment.warnings
         }
+        
+        if (e.selected && e.errors.empty) {
+            ValidateCustomFields validateCustomFields = ValidateCustomFields.valueOf(e.fieldHeadings, processClass.enrolment.fieldHeadings, className, 'Enrolment')
+            validateCustomFields.validate()
+            if (validateCustomFields.commonError) {
+                model.error = validateCustomFields.commonError
+            }
+            validateCustomFields.fieldErrors.each { fieldError ->
+                model.validationErrors.formErrors << fieldError.error
+                model.validationErrors.fieldsErrors << fieldError
+            }
+            e.price = processClass.enrolment.price
+            totalAmount = totalAmount.add(e.price.fee != null ? e.price.fee .toMoney() : e.price.feeOverriden.toMoney())
+            List<CourseClass> classes = enrolmentsToProceed.get(contact)
+            if (classes == null) {
+                classes = new ArrayList<CourseClass>()
+                enrolmentsToProceed.put(contact, classes)
+            }
+            classes.add(courseClass)
+        } else {
+            e.selected = false
+        }
+        
         return e
     }
 
     Application processApplication(Application a, Contact contact) {
-        if (a.selected) {
-            a.errors.clear()
-            a.warnings.clear()
-            ProcessClass processClass = new ProcessClass(context, contact, college, a.classId, taxOverridden).process()
-            CourseClass courseClass = processClass.persistentClass
-            String className = "$courseClass.course.name ($courseClass.course.code - $courseClass.code)"
+        a.errors.clear()
+        a.warnings.clear()
+        
+        ProcessClass processClass = new ProcessClass(context, contact, college, a.classId, taxOverridden).process()
+        CourseClass courseClass = processClass.persistentClass
+        String className = "$courseClass.course.name ($courseClass.course.code - $courseClass.code)"
 
-            if (processClass.application == null) {
-                a.errors << "Application for $contact.fullName on $className is wrong".toString()
-            } else {
-                a.errors += processClass.application.errors
-                a.warnings += processClass.application.warnings
-                if (!a.errors.empty) {
-                    a.selected = false
-                } else {
-                    ValidateCustomFields validateCustomFields = ValidateCustomFields.valueOf(a.fieldHeadings, processClass.application.fieldHeadings, className, 'Application')
-                    validateCustomFields.validate()
-                    if (validateCustomFields.commonError) {
-                        model.error = validateCustomFields.commonError
-                    }
-                    validateCustomFields.fieldErrors.each { fieldError ->
-                        model.validationErrors.formErrors << fieldError.error
-                        model.validationErrors.fieldsErrors << fieldError
-                    }
+        if (processClass.application == null) {
+            a.errors << "Application for $contact.fullName on $className is wrong".toString()
+            a.selected = false
+        } else {
+            a.errors += processClass.application.errors
+            a.warnings += processClass.application.warnings
+            if (a.selected && a.errors.empty) {
+
+                ValidateCustomFields validateCustomFields = ValidateCustomFields.valueOf(a.fieldHeadings, processClass.application.fieldHeadings, className, 'Application')
+                validateCustomFields.validate()
+                if (validateCustomFields.commonError) {
+                    model.error = validateCustomFields.commonError
                 }
+                validateCustomFields.fieldErrors.each { fieldError ->
+                    model.validationErrors.formErrors << fieldError.error
+                    model.validationErrors.fieldsErrors << fieldError
+                }
+            } else {
+                a.selected = false
             }
         }
+        
         return a
     }
 
