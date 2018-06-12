@@ -3,12 +3,17 @@
  */
 package ish.oncourse.webservices;
 
+import io.bootique.BQModuleProvider;
 import io.bootique.Bootique;
+import io.bootique.ConfigModule;
 import io.bootique.cayenne.CayenneModuleProvider;
 import io.bootique.jdbc.JdbcModuleProvider;
 import io.bootique.jetty.JettyModuleProvider;
 import ish.oncourse.configuration.Configuration;
 import ish.oncourse.webservices.quartz.QuartzModule;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * User: akoiro
@@ -17,19 +22,40 @@ import ish.oncourse.webservices.quartz.QuartzModule;
 public class ServicesApp {
 	public static void main(String[] args) {
 		Configuration.configure();
-		Bootique bootique = init(args);
+		Bootique bootique = new BuildBootique().args(args).build();
 		bootique.exec();
 	}
 
-	public static Bootique init(String[] args) {
-		System.setProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager");
-		Bootique bootique = Bootique.app(args).args("--server", "--config=classpath:application.yml");
-		bootique.module(new JdbcModuleProvider());
-		bootique.module(new CayenneModuleProvider());
-		bootique.module(new JettyModuleProvider());
-		bootique.module(ServicesModule.class);
-		bootique.module(QuartzModule.class);
-		return bootique;
+	public static class BuildBootique {
+		private String[] args;
+		private List<BQModuleProvider> providers = new LinkedList<>();
+		private List<Class<? extends ConfigModule>> modules = new LinkedList<>();
+
+		public BuildBootique() {
+			providers.add(new JdbcModuleProvider());
+			providers.add(new CayenneModuleProvider());
+			providers.add(new JettyModuleProvider());
+			modules.add(ServicesModule.class);
+			modules.add(QuartzModule.class);
+		}
+
+		public BuildBootique args(String[] args) {
+			this.args = args;
+			return this;
+		}
+
+		public BuildBootique exclude(Class<? extends ConfigModule> module) {
+			modules.remove(module);
+			return this;
+		}
+
+		public Bootique build() {
+			System.setProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager");
+			Bootique bootique = Bootique.app(args).args("--server", "--config=classpath:application.yml");
+			providers.forEach(bootique::module);
+			modules.forEach(bootique::module);
+			return bootique;
+		}
 	}
 }
 

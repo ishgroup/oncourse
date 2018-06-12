@@ -19,6 +19,7 @@ import ish.oncourse.test.LoadDataSet;
 import ish.oncourse.test.TestContext;
 import ish.oncourse.webservices.ServicesApp;
 import ish.oncourse.webservices.ServicesModule;
+import ish.oncourse.webservices.quartz.QuartzModule;
 import ish.oncourse.webservices.soap.TestConstants;
 import ish.oncourse.webservices.util.*;
 import org.apache.cayenne.ObjectContext;
@@ -142,7 +143,11 @@ public class TestEnv<T extends TransportConfig> {
 		System.setProperty(USI_TEST_MODE, Boolean.TRUE.toString());
 
 		loadDataSet = new LoadDataSet().dataSetFile(dataSetFile).replacements(replacements);
-		runtime = ServicesApp.init(new String[]{}).createRuntime();
+		runtime = new ServicesApp.BuildBootique()
+				.args(new String[]{})
+				.exclude(QuartzModule.class)
+				.build()
+				.createRuntime();
 		dataSourceFactory.set(runtime.getInstance(DataSourceFactory.class));
 		serverRuntime.set(runtime.getInstance(ServerRuntime.class));
 		server = runtime.getInstance(Server.class);
