@@ -62,7 +62,7 @@ class GetContactNodeTest extends ApiTest {
         
         assertEquals(1, node.memberships.size())
         assertEquals('8', node.memberships[0].productId)
-        assertFalse(node.memberships[0].selected)
+        assertTrue(node.memberships[0].selected)
         assertEquals(1, node.memberships[0].errors.size())
         assertEquals('Student1 Student1 is already has this membership 234567.', node.memberships[0].errors[0])
 
