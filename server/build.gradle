@@ -196,22 +196,6 @@ task apidocsBundle(type: Jar) {
 	dependsOn tasks.getByName('apiDocs')
 }
 
-// "gradlew publishToMavenLocal" if you want to publish this to your local .m2 folder
-publishing {
-	publications {
-		apidocs(MavenPublication) {
-			artifact apidocsBundle
-			version (project.hasProperty('releaseVersion') ? project.releaseVersion : "99-SNAPSHOT")
-		}
-		executables(MavenPublication) {
-			artifact(installer_unix) {
-				classifier "unix"
-				extension "zip"
-			}
-		}
-	}
-}
-
 task createResourceManifests {
 	doLast {
 		def sources = ["resources/oncourse-scripts/export",
@@ -444,6 +428,21 @@ task switchReplicationVersion {
 	}
 }
 
+// "gradlew publishToMavenLocal" if you want to publish this to your local .m2 folder
+publishing {
+	publications {
+		apidocs(MavenPublication) {
+			artifact apidocsBundle
+			version (project.hasProperty('releaseVersion') ? project.releaseVersion : "99-SNAPSHOT")
+		}
+		executables(MavenPublication) {
+			artifact(installer_unix) {
+				classifier "unix"
+				extension "zip"
+			}
+		}
+	}
+}
 
 String sha256(String filename) {
 	if (! file(filename).exists()) return "missing file"
