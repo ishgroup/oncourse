@@ -22,10 +22,6 @@ buildscript {
 			url 'https://repo.ish.com.au/content/groups/ish'
 		}
 	}
-
-	dependencies {
-		classpath 'com.github.ben-manes:gradle-versions-plugin:0.15.0'
-	}
 }
 
 plugins {
@@ -234,8 +230,4 @@ task testReport(type: TestReport) {
 	destinationDir = file("$buildDir/reports/tests")
 	// Include the results from the `test` task in all subprojects
 	reportOn subprojects*.test
-}
-
-task wrapper(type: Wrapper) {
-	gradleVersion = "4.8"
 }
