@@ -21,9 +21,6 @@ buildscript {
 		maven {
 			url 'https://repo.ish.com.au/content/groups/ish'
 		}
-		maven {
-			url 'http://maven.teamdev.com/repository/products'
-		}
 	}
 
 	dependencies {
