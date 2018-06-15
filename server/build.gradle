@@ -270,6 +270,7 @@ task startDaemon(dependsOn: [classes, processResources, agentJar], type: com.git
 	jvmArgs = ['-Xmx1024m', '-XX:+HeapDumpOnOutOfMemoryError', "-javaagent:${buildDir}/${pathToJavaAgent}/${javaAgentFileName}"]
 	workingDir = "$buildDir"
     waitForOutput = 'Server ready for client connections'
+	timeout = 600
 }
 
 appBundler {
