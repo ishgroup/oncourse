@@ -269,8 +269,6 @@ task startDaemon(dependsOn: [classes, processResources, agentJar], type: com.git
 	args = ['DEBUG=true', 'REPLICATION_DISABLED=true']
 	jvmArgs = ['-Xmx1024m', '-XX:+HeapDumpOnOutOfMemoryError', "-javaagent:${buildDir}/${pathToJavaAgent}/${javaAgentFileName}"]
 	workingDir = "$buildDir"
-	standardOutput = "$buildDir/daemon.log"
-	errorOutput = "$buildDir/daemon-error.log"
     waitForOutput = 'Server ready for client connections'
 }
 
