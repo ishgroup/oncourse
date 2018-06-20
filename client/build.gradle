@@ -40,11 +40,6 @@ dependencies {
 	testCompile "io.bootique:bootique-test:$bootiqueVersion"
 }
 
-test {
-	// the client tests can run in parallel
-	maxParallelForks = 4
-}
-
 jar {
 	manifest {
 		from sharedManifest
