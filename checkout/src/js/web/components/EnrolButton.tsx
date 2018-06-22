@@ -123,9 +123,9 @@ export class EnrolButton extends React.Component<Props, State> {
   }
 
   private availablePlacesText = (places: number): string => {
-    if (places > 5) return 'There are places available';
-    if (places === 1) return 'There is one place available';
-    return `There are ${places} places available`;
+    const spanContent = places === 1 ? 'one' : places < 5 ? places + '' : '';
+    const spanElement = <span className="available-places" data-places={places}>{spanContent}</span>;
+    return `There {places === 1 ? "is" : "are"} {spanElement} {places === 1 ? "place" : "places"} available`
   }
 }
 
