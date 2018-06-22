@@ -103,15 +103,13 @@ export class EnrolButton extends React.Component<Props, State> {
           className="classStatus"
         >
             There {availableEnrolmentPlaces === 1 ? "is " : "are "}
-
             <span
               data-places={availableEnrolmentPlaces}
               className={classnames("available-places",{
               ["available-places-high"]:  availableEnrolmentPlaces > 5
             })}>
-              {availableEnrolmentPlaces}
+              {availableEnrolmentPlaces < 6 && availableEnrolmentPlaces}
             </span>
-
             {availableEnrolmentPlaces === 1 ? " place " : " places "}
             available
         </div>,
