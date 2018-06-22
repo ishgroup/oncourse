@@ -66,7 +66,7 @@ export class EnrolButton extends React.Component<Props, State> {
     } = this.props.courseClass;
 
     const {isAdded, checkoutPath} = this.props;
-    const isActive = !isFinished && !isCancelled && hasAvailablePlaces;
+    const isActive = !isFinished && !isCancelled && hasAvailablePlaces && isPaymentGatewayEnabled;
     const showedPlaces = hasAvailablePlaces;
     const reverseElements = isFinished;
     const fetching = typeof isCancelled === 'undefined' && typeof isActive === 'undefined';
@@ -100,9 +100,20 @@ export class EnrolButton extends React.Component<Props, State> {
       showedPlaces &&
         <div
           key="free_places"
-          className={classnames("classStatus", "available-places", {"available-places-high": availableEnrolmentPlaces > 5})}
+          className="classStatus"
         >
-          {this.availablePlacesText(availableEnrolmentPlaces)}
+            There {availableEnrolmentPlaces === 1 ? "is " : "are "}
+
+            <span
+              data-places={availableEnrolmentPlaces}
+              className={classnames("available-places",{
+              ["available-places-high"]:  availableEnrolmentPlaces > 5
+            })}>
+              {availableEnrolmentPlaces}
+            </span>
+
+            {availableEnrolmentPlaces === 1 ? " place " : " places "}
+            available
         </div>,
     ];
 
@@ -120,12 +131,6 @@ export class EnrolButton extends React.Component<Props, State> {
         }
       </div>
     );
-  }
-
-  private availablePlacesText = (places: number): string => {
-    const spanContent = places === 1 ? 'one' : places < 5 ? places + '' : '';
-    const spanElement = <span className="available-places" data-places={places}>{spanContent}</span>;
-    return `There {places === 1 ? "is" : "are"} {spanElement} {places === 1 ? "place" : "places"} available`
   }
 }
 
