@@ -32,6 +32,8 @@ public class PropertyGetSetFactory {
 	public static final String TYPE_ATTRIBUTE = "type";
 	public static final String PARAM_TYPES = "params";
 	public static final String CUSTOM_FIELD_PROPERTY_PATTERN = "customField.";
+	public static final String TAG_FIELD_PATTERN = "tag/";
+	public static final String MAILING_LIST_FIELD_PATTERN = "mailingList/";
 	private String packageName;
 			
 

@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <Language id="1" name="English" isActive="1" ishVersion="1"/>
+
+    <Country id="1" ishVersion="1" name="Australia" isoCodeAlpha2="TV" isoCodeAlpha3="TUV" isoCodeNumeric="798" asccssCode="1609" saccCode="1511"/>
+    <College id="1" name="Sydney Community College"
+             webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880"
+             communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09"
+             timezone="Australia/Sydney"
+             requiresAvetmiss="0"/>
+    
+    <WebSite id="1" collegeId="1" name="Sydney Community College" siteKey="mammoth"
+             created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+
+
+    <Student id="1001" collegeId="1" angelId="1000"
+             created="2011-09-12 00:51:00.0" modified="2011-09-12 00:51:00.0"/>
+
+
+    <Contact uniqueCode="1wjwestablished" id="1001" collegeId="1" studentId="1001"
+             angelId="1001" created="2011-09-12 00:51:00.0" isCompany="0"
+             familyName="Student1" givenName="Student1"
+             isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
+             isMarketingViaSMSAllowed="1" />
+
+    <!-- scheme 1 -->
+
+    <FieldConfiguration id="1" collegeId="1"  angelId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Enrolment Configuration 1" type="1"/>
+
+    <FieldHeading id="1"  collegeId="1"  angelId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="First Heading"
+    description="description" fieldConfigurationId="1" fieldOrder="1"/>
+
+    <Field id="101" collegeId="1" angelId="100"
+    created="2011-09-20 11:14:54"
+    modified="2011-09-20 11:14:54"
+    name = "Field 1"
+    description="Field 1 description"
+    fieldConfigurationId="1"
+    fieldHeadingId="1"
+    mandatory="0"
+    defaultValue="default field 1"
+    fieldOrder="1"
+    property="firstName"/>
+
+    <Field id="102" collegeId="1" angelId="2"
+    created="2011-09-20 11:14:54"
+    modified="2011-09-20 11:14:54"
+    name = "Field 2"
+    description="Field 2 description"
+    fieldConfigurationId="1"
+    fieldHeadingId="1"
+    mandatory="1"
+    defaultValue="default field 2"
+    fieldOrder="2"
+    property="lastName"/>
+
+    <CustomFieldType id="1" collegeId="1" angelId="1" created="2011-09-12 00:47:26.0" modified="2011-09-12 00:59:00.0" name="Custom Field Type 1" fieldKey="customField1" defaultValue="default1" isMandatory="0" entityName="Contact"/>
+
+    <CustomFieldType id="2" collegeId="1" angelId="2" created="2011-09-12 00:47:26.0" modified="2011-09-12 00:59:00.0" name="Custom Field Type 2" fieldKey="customField2" defaultValue="default2" isMandatory="0" entityName="Contact"/>
+
+    <Field id="103" collegeId="1" angelId="103"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name = "Tag Field 1"
+           description="Tag Field 1 description"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="0"
+           defaultValue="default field 1"
+           fieldOrder="1"
+           property="tag/Tag1"/>
+
+    <Field id="104" collegeId="1" angelId="104"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name = "Tag Field 2"
+           description="Tag Field 2 description"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="1"
+           defaultValue="default field 2"
+           fieldOrder="2"
+           property="tag/Tag2"/>
+
+    <Field id="105" collegeId="1" angelId="105"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name = "Mailing list field 1"
+           description="Mailing list field 1 description"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="0"
+           defaultValue="default field 1"
+           fieldOrder="1"
+           property="mailingList/Mailing List 1"/>
+
+    <Field id="106" collegeId="1" angelId="106"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name = "Mailing List field 2"
+           description="Mailing list field 2 description"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="1"
+           defaultValue="default field 2"
+           fieldOrder="2"
+           property="mailingList/Mailing List 2"/>
+
+    <FieldConfigurationScheme id="1"  collegeId="1"  angelId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Field configuration scheme 1"
+    applicationFieldConfigurationId="1"
+    enrolFieldConfigurationId="1"
+    waitingListFieldConfigurationId="1"/>
+
+    <Course id="1001" collegeId="1" angelId="1001" code="AAV"
+            isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
+            created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
+            allowWaitingList="1" name="Managerial Accounting"
+            enrolmentType="1" fieldConfigurationSchemeId="1"/>
+
+    <CourseClass isActive="1" id="1001" code="1" collegeId="1"  courseId="1001" deliveryMode="1" detail="Test Course Class 5-1" feeExGst="20.00" feeGst="1.25"  maximumPlaces="3"
+                 startDate="2012-01-03 00:00:00" endDate="2102-01-03 00:00:00" isCancelled="0" isDistantLearningCourse="0"/>
+
+    <Tag id="1" angelId="1" collegeId="1"
+            created="2011-09-12 00:50:59.0" modified="2011-09-12 00:50:59.0"
+            isTagGroup="1" isWebVisible="1" name="Tag1" nodeType="1" weighting="1"/>
+    <Tag id="2" angelId="2" collegeId="1" parentId="1"
+         created="2011-09-12 00:50:59.0" modified="2011-09-12 00:50:59.0"
+         isTagGroup="0" isWebVisible="1" name="Tag1C1" nodeType="1" weighting="1"/>
+    <Tag id="3" angelId="3" collegeId="1" parentId="1"
+         created="2011-09-12 00:50:59.0" modified="2011-09-12 00:50:59.0"
+         isTagGroup="0" isWebVisible="1" name="Tag1C2" nodeType="1" weighting="1"/>
+    <Tag id="4" angelId="4" collegeId="1" parentId="3"
+         created="2011-09-12 00:50:59.0" modified="2011-09-12 00:50:59.0"
+         isTagGroup="0" isWebVisible="1" name="Tag1C2C1" nodeType="1" weighting="1"/>
+    <Tag id="5" angelId="5" collegeId="1" parentId="3"
+         created="2011-09-12 00:50:59.0" modified="2011-09-12 00:50:59.0"
+         isTagGroup="0" isWebVisible="1" name="Tag1C2C2" nodeType="1" weighting="1"/>
+    <Tag id="6" angelId="6" collegeId="1" parentId="5"
+         created="2011-09-12 00:50:59.0" modified="2011-09-12 00:50:59.0"
+         isTagGroup="0" isWebVisible="1" name="Tag1C2C2C1" nodeType="1" weighting="1"/>
+    <TagGroupRequirement id="1" angelId="1" tagId="1" collegeId="1" allowsMultipleTags="1" isRequired="0"
+                         created="2011-09-12 00:50:59.0" modified="2011-09-12 00:50:59.0" entityIdentifier="Contact"/>
+
+    <Tag id="7" angelId="7" collegeId="1"
+         created="2011-09-12 00:50:59.0" modified="2011-09-12 00:50:59.0"
+         isTagGroup="1" isWebVisible="1" name="Tag2" nodeType="1" weighting="1"/>
+    <Tag id="8" angelId="8" collegeId="1" parentId="7"
+         created="2011-09-12 00:50:59.0" modified="2011-09-12 00:50:59.0"
+         isTagGroup="0" isWebVisible="1" name="Tag2C1" nodeType="1" weighting="1"/>
+    <Tag id="9" angelId="9" collegeId="1" parentId="7"
+         created="2011-09-12 00:50:59.0" modified="2011-09-12 00:50:59.0"
+         isTagGroup="0" isWebVisible="1" name="Tag2C2" nodeType="1" weighting="1"/>
+    <Tag id="10" angelId="10" collegeId="1" parentId="7"
+         created="2011-09-12 00:50:59.0" modified="2011-09-12 00:50:59.0"
+         isTagGroup="0" isWebVisible="1" name="Tag2C3" nodeType="1" weighting="1"/>
+    <Tag id="11" angelId="11" collegeId="1" parentId="7"
+         created="2011-09-12 00:50:59.0" modified="2011-09-12 00:50:59.0"
+         isTagGroup="0" isWebVisible="1" name="Tag2C4" nodeType="1" weighting="1"/>
+    <Tag id="12" angelId="12" collegeId="1" parentId="7"
+         created="2011-09-12 00:50:59.0" modified="2011-09-12 00:50:59.0"
+         isTagGroup="0" isWebVisible="1" name="Tag2C5" nodeType="1" weighting="1"/>
+    <TagGroupRequirement id="2" angelId="2" tagId="7" collegeId="1" allowsMultipleTags="0" isRequired="0"
+                         created="2011-09-12 00:50:59.0" modified="2011-09-12 00:50:59.0" entityIdentifier="Contact"/>
+
+    <Tag id="13" angelId="13" collegeId="1"
+         created="2011-09-12 00:50:59.0" modified="2011-09-12 00:50:59.0"
+         isTagGroup="1" isWebVisible="1" name="Tag3" nodeType="1" weighting="1"/>
+    <Tag id="14" angelId="14" collegeId="1" parentId="13"
+         created="2011-09-12 00:50:59.0" modified="2011-09-12 00:50:59.0"
+         isTagGroup="0" isWebVisible="1" name="Tag3C1" nodeType="1" weighting="1"/>
+    <Tag id="15" angelId="15" collegeId="1" parentId="13"
+         created="2011-09-12 00:50:59.0" modified="2011-09-12 00:50:59.0"
+         isTagGroup="0" isWebVisible="1" name="Tag3C2" nodeType="1" weighting="1"/>
+    <Tag id="16" angelId="16" collegeId="1" parentId="15"
+         created="2011-09-12 00:50:59.0" modified="2011-09-12 00:50:59.0"
+         isTagGroup="0" isWebVisible="1" name="Tag3C2C1" nodeType="1" weighting="1"/>
+    <Tag id="17" angelId="17" collegeId="1" parentId="15"
+         created="2011-09-12 00:50:59.0" modified="2011-09-12 00:50:59.0"
+         isTagGroup="0" isWebVisible="1" name="Tag3C2C2" nodeType="1" weighting="1"/>
+    <Tag id="18" angelId="18" collegeId="1" parentId="17"
+         created="2011-09-12 00:50:59.0" modified="2011-09-12 00:50:59.0"
+         isTagGroup="0" isWebVisible="1" name="Tag3C2C2C1" nodeType="1" weighting="1"/>
+    <TagGroupRequirement id="3" angelId="3" tagId="13" collegeId="1" allowsMultipleTags="1" isRequired="0"
+                         created="2011-09-12 00:50:59.0" modified="2011-09-12 00:50:59.0" entityIdentifier="Contact"/>
+
+    <Tag id="30" angelId="30" collegeId="1"
+         created="2011-09-12 00:50:59.0" modified="2011-09-12 00:50:59.0"
+         isTagGroup="1" isWebVisible="1" name="Tag4" nodeType="1" weighting="1"/>
+    <Tag id="31" angelId="31" collegeId="1" parentId="30"
+         created="2011-09-12 00:50:59.0" modified="2011-09-12 00:50:59.0"
+         isTagGroup="0" isWebVisible="1" name="Tag4C1" nodeType="1" weighting="1"/>
+    <Tag id="32" angelId="32" collegeId="1" parentId="30"
+         created="2011-09-12 00:50:59.0" modified="2011-09-12 00:50:59.0"
+         isTagGroup="0" isWebVisible="1" name="Tag4C2" nodeType="1" weighting="1"/>
+    <Tag id="33" angelId="33" collegeId="1" parentId="30"
+         created="2011-09-12 00:50:59.0" modified="2011-09-12 00:50:59.0"
+         isTagGroup="0" isWebVisible="1" name="Tag4C3" nodeType="1" weighting="1"/>
+    <Tag id="34" angelId="34" collegeId="1" parentId="30"
+         created="2011-09-12 00:50:59.0" modified="2011-09-12 00:50:59.0"
+         isTagGroup="0" isWebVisible="1" name="Tag4C4" nodeType="1" weighting="1"/>
+    <Tag id="35" angelId="35" collegeId="1" parentId="30"
+         created="2011-09-12 00:50:59.0" modified="2011-09-12 00:50:59.0"
+         isTagGroup="0" isWebVisible="1" name="Tag4C5" nodeType="1" weighting="1"/>
+    <TagGroupRequirement id="5" angelId="5" tagId="30" collegeId="1" allowsMultipleTags="0" isRequired="0"
+                         created="2011-09-12 00:50:59.0" modified="2011-09-12 00:50:59.0" entityIdentifier="Contact"/>
+
+    <!-- mailing lists -->
+
+    <Tag id="20" angelId="20" collegeId="1"
+         created="2011-09-12 00:50:59.0" modified="2011-09-12 00:50:59.0"
+         isTagGroup="1" isWebVisible="0" name="Mailing Lists" nodeType="1" weighting="1" specialType="3"/>
+    <Tag id="21" angelId="21" collegeId="1" parentId="20"
+         created="2011-09-12 00:50:59.0" modified="2011-09-12 00:50:59.0"
+         isTagGroup="0" isWebVisible="1" name="Mailing List 1" nodeType="1" weighting="1"/>
+    <Tag id="22" angelId="22" collegeId="1" parentId="20"
+         created="2011-09-12 00:50:59.0" modified="2011-09-12 00:50:59.0"
+         isTagGroup="0" isWebVisible="1" name="Mailing List 2" nodeType="1" weighting="1"/>
+    <Tag id="23" angelId="23" collegeId="1" parentId="20"
+         created="2011-09-12 00:50:59.0" modified="2011-09-12 00:50:59.0"
+         isTagGroup="0" isWebVisible="1" name="Mailing List 3" nodeType="1" weighting="1"/>
+    <Tag id="24" angelId="24" collegeId="1" parentId="20"
+         created="2011-09-12 00:50:59.0" modified="2011-09-12 00:50:59.0"
+         isTagGroup="0" isWebVisible="1" name="Mailing List 4" nodeType="1" weighting="1"/>
+    <TagGroupRequirement id="4" angelId="4" tagId="20" collegeId="1" allowsMultipleTags="0" isRequired="0"
+                         created="2011-09-12 00:50:59.0" modified="2011-09-12 00:50:59.0" entityIdentifier="Contact"/>
+
+</dataset>

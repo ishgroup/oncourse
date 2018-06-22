@@ -6,10 +6,9 @@ import ish.oncourse.model.Course
 import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Field
 import ish.oncourse.model.FieldConfiguration
-import ish.oncourse.model.FieldConfigurationScheme
+import ish.oncourse.model.WebSite
 import ish.oncourse.services.application.FindOfferedApplication
 import ish.oncourse.willow.model.field.ContactFields
-import ish.oncourse.willow.model.field.FieldSet
 import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.QueryCacheStrategy
@@ -22,13 +21,15 @@ class GetContactFields {
     final static Logger logger = LoggerFactory.getLogger(GetContactFields.class)
     
     private Contact contact
+    private WebSite webSite
     private List<String> classIds
     private List<String> courseIds
     private boolean hasProducts
     private boolean mandatoryOnly
 
-    GetContactFields(Contact contact, List<String> classIds, List<String> courseIds, List<String> productIds,  boolean mandatoryOnly) {
+    GetContactFields(Contact contact, WebSite webSite, List<String> classIds, List<String> courseIds, List<String> productIds, boolean mandatoryOnly) {
         this.contact = contact
+        this.webSite = webSite
         this.hasProducts = !productIds.empty
         this.mandatoryOnly = mandatoryOnly
         this.classIds = classIds
@@ -44,7 +45,7 @@ class GetContactFields {
         
         ContactFields result = new ContactFields()
         result.contactId = contact.id.toString()
-        result.headings = FieldHelper.valueOf(mandatoryOnly, contact, fields).buildFieldHeadings()
+        result.headings = FieldHelper.valueOf(mandatoryOnly, contact, webSite, fields).buildFieldHeadings()
         return result
     }
     

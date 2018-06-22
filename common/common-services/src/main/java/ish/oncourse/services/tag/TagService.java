@@ -1,6 +1,5 @@
 package ish.oncourse.services.tag;
 
-import ish.common.types.NodeSpecialType;
 import ish.oncourse.function.IGet;
 import ish.oncourse.model.*;
 import ish.oncourse.services.BaseService;
@@ -10,6 +9,7 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.ObjectSelect;
+import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -184,19 +184,10 @@ public class TagService extends BaseService<Tag> implements ITagService {
 
 	@Override
 	public List<Tag> getMailingLists() {
-
-		List<Tag> tags = Collections.emptyList();
-
-		// MAILING_LISTS(3, "Mailing lists") - see NodeSpecialType
-		Tag parent = ObjectSelect.query(Tag.class).where(Tag.COLLEGE.eq(getWebSiteService().getCurrentCollege()))
-				.and(Tag.SPECIAL_TYPE.eq(NodeSpecialType.MAILING_LISTS))
-				.and(Tag.PARENT.isNull()).selectFirst(getCayenneService().sharedContext());
-
-		if (parent != null) {
-			return ObjectSelect.query(Tag.class).where(getSiteQualifier())
-					.and(Tag.PARENT.eq(parent)).select(getCayenneService().sharedContext());
-		}
-		return tags;
+		return GetMailingLists.valueOf(getCayenneService().sharedContext(),
+					null,
+					getWebSiteService().getCurrentCollege())
+				.get();
 	}
 
 	@Override
@@ -235,26 +226,7 @@ public class TagService extends BaseService<Tag> implements ITagService {
 		if (isContactSubscribedToMailingList(contact, mailingList))
 			return;
 		ObjectContext context = getCayenneService().sharedContext();
-		
-		Date date = new Date();
-		
-		College college = context.localObject(contact.getCollege());
-		
-		Tag list = context.localObject(mailingList);
-		
-		Taggable taggable = context.newObject(Taggable.class);
-		taggable.setCollege(college);
-		taggable.setCreated(date);
-		taggable.setModified(date);
-		taggable.setEntityIdentifier(Contact.class.getSimpleName());
-		taggable.setEntityWillowId(contact.getId());
-		taggable.setEntityAngelId(contact.getAngelId());
-		
-		TaggableTag taggableTag = context.newObject(TaggableTag.class);
-		taggableTag.setCollege(college);
-		taggableTag.setTag(list);
-		taggable.addToTaggableTags(taggableTag);
-		
+		SubscribeToMailingList.valueOf(context, contact, mailingList).subscribe();
 		context.commitChanges();
 	}
 	

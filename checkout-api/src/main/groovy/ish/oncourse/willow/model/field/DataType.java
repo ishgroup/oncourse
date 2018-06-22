@@ -35,7 +35,11 @@ public enum DataType {
   
   PHONE("PHONE"),
   
-  CHOICE("CHOICE");
+  CHOICE("CHOICE"),
+
+  TAGGROUP("TAGGROUP"),
+
+  MAILINGLIST("MAILINGLIST");
 
   private String value;
 

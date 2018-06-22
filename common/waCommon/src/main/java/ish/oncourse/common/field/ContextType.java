@@ -9,7 +9,9 @@ public enum ContextType {
 	COURSE("course"),
 	ENROLMENT("enrolment"),
 	APPLICATION("application"),
-	WAITING_LIST("waitingList");
+	WAITING_LIST("waitingList"),
+	TAG_GROUP("tag"),
+	MAILING_LIST("mailingList");
 
 	private String identifier;
 

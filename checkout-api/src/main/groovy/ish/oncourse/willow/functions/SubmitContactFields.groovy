@@ -1,5 +1,6 @@
 package ish.oncourse.willow.functions
 
+import groovy.json.JsonSlurper
 import groovy.transform.CompileStatic
 import ish.common.types.TypesUtil
 import ish.common.types.YesNoOptions
@@ -12,6 +13,14 @@ import ish.oncourse.model.College
 import ish.oncourse.model.Contact
 import ish.oncourse.model.Country
 import ish.oncourse.model.Language
+import ish.oncourse.model.Tag
+import ish.oncourse.model.TagGroupRequirement
+import ish.oncourse.model.WebSite
+import ish.oncourse.services.tag.GetMailingLists
+import ish.oncourse.services.tag.GetRequirementForType
+import ish.oncourse.services.tag.GetTagByPath
+import ish.oncourse.services.tag.LinkTagToQueueable
+import ish.oncourse.services.tag.SubscribeToMailingList
 import ish.oncourse.util.FormatUtils
 import ish.oncourse.util.contact.CommonContactValidator
 import ish.oncourse.utils.PhoneValidator
@@ -37,6 +46,8 @@ import static ish.oncourse.willow.model.field.DataType.*
 import static ish.oncourse.willow.model.field.DataType.BOOLEAN
 import static ish.oncourse.willow.model.field.DataType.STRING
 import static ish.validation.ContactValidator.Property.*
+import static ish.oncourse.common.field.PropertyGetSetFactory.TAG_FIELD_PATTERN
+import static ish.oncourse.common.field.PropertyGetSetFactory.MAILING_LIST_FIELD_PATTERN
 
 @CompileStatic
 class SubmitContactFields {
@@ -46,6 +57,8 @@ class SubmitContactFields {
     ValidationError errors 
     ObjectContext objectContext
     College college
+    WebSite webSite
+    Contact contact
     
     private PropertyGetSetFactory factory = new PropertyGetSetFactory('ish.oncourse.model')
     boolean isDefaultCountry = false
@@ -55,30 +68,18 @@ class SubmitContactFields {
 
     SubmitContactFields submitContactFields(Contact contact, List<Field> fields) {
 
-        PropertyGetSet getSet
-
         Field country = fields.find { FieldProperty.COUNTRY.key == it.key }
         if (!country || !country.value || CommonContactValidator.DEFAULT_COUNTRY_NAME == country.value) {
             isDefaultCountry = true
         }
         
         fields.each { f ->
-            Object value = normalizeValue(f)
-            if (value != null) {
-                FieldProperty  property = FieldProperty.getByKey(f.key)
-                if (!property) {
-                    logger.error "unsupported property ${f.name}".toString()
-                    errors.formErrors << "unsupported property ${f.name}".toString()
-                    return
-                }
-                
-                FieldError error = validateValue(f.key, property, value)
-                if (error) {
-                    errors.fieldsErrors << error
-                } else {
-                    getSet = factory.get([getProperty: {f.key}] as FieldInterface, getContext.call(property.contextType, contact))
-                    getSet.set(value)
-                }
+            if (isTagProperty(f)) {
+                applyTagsField(f)
+            } else if (isMailingListProperty(f)) {
+                applyMailingListField(f)
+            } else {
+                applyContactField(f)
             }
         }
 
@@ -91,8 +92,116 @@ class SubmitContactFields {
         
         this
     }
-    
-    
+
+    private void applyContactField(Field f) {
+        Object value = normalizeValue(f)
+        FieldProperty  property = FieldProperty.getByKey(f.key)
+        if (value != null) {
+            if (!property) {
+                logger.error "unsupported property ${f.name}".toString()
+                errors.formErrors << "unsupported property ${f.name}".toString()
+                return
+            }
+
+            FieldError error = validateValue(f.key, property, value)
+            if (error) {
+                errors.fieldsErrors << error
+            } else {
+                PropertyGetSet getSet = factory.get([getProperty: {f.key}] as FieldInterface, getContext.call(property.contextType, contact))
+                getSet.set(value)
+            }
+        }
+    }
+
+    private boolean isTagProperty(Field f) {
+        f.key.startsWith(TAG_FIELD_PATTERN)
+    }
+
+    private boolean isMailingListProperty(Field f) {
+        f.key.startsWith(MAILING_LIST_FIELD_PATTERN)
+    }
+
+    private String getRootTagName(Field f) {
+        f.key.replace(TAG_FIELD_PATTERN, StringUtils.EMPTY)
+    }
+
+    private String getMailingListName(Field f) {
+        f.key.replace(MAILING_LIST_FIELD_PATTERN, StringUtils.EMPTY)
+    }
+
+    private void applyTagsField(Field f) {
+        List<String> tagNameset = parseTagNames(f.value)
+        List<FieldError> errs = validateTagGroup(getRootTagName(f), tagNameset)
+        if (tagNameset) {
+            if (errs.isEmpty() && tagNameset) {
+                tagNameset.each { String n ->
+                    Tag tag = GetTagByPath.valueOf(contact.objectContext, webSite, n).get()
+                    if (tag) {
+                        LinkTagToQueueable.valueOf(contact.objectContext, contact, tag).apply()
+                    } else {
+                        logger.error "Contact willowId:${contact.id} tried to apply tag [${n}] but tag not found.".toString()
+                    }
+                }
+            } else {
+                errors.fieldsErrors.addAll(errs)
+            }
+        }
+    }
+
+    private List<FieldError> validateTagGroup(String rootTagName, List<String> selectedTags) {
+        List<FieldError> errors = new ArrayList<>()
+
+        Tag rootTag = GetTagByPath
+                .valueOf(contact.objectContext, webSite, rootTagName)
+                .get()
+
+        if (rootTag) {
+            TagGroupRequirement rootReq = GetRequirementForType.valueOf(rootTag, Contact.class.simpleName).get()
+            if (rootReq) {
+                if (selectedTags == null || selectedTags.isEmpty()) {
+                    errors << new FieldError(name: rootTagName, error: "No one value selected.")
+                } else if (!rootReq.allowsMultipleTags && selectedTags.size() > 1) {
+                    errors << new FieldError(name: rootTagName, error: "Only one value should be selected.")
+                }
+            } else {
+                logger.error "Contact willowId:${contact.id} tried to apply tags [${StringUtils.join(selectedTags,',')}] but tag group requirement not found.".toString()
+            }
+        } else {
+            logger.error "Contact willowId:${contact.id} tried to apply tags [${StringUtils.join(selectedTags,',')}] but root tag not found.".toString()
+        }
+        errors
+    }
+
+    private List<String> parseTagNames(String jsonInput) {
+        List<String> res = null
+        try {
+            def jsonSlurper = new JsonSlurper()
+            res = (List) jsonSlurper.parseText(jsonInput)
+        } catch (java.lang.IllegalArgumentException ex) {
+            logger.error "Tag group field property value is null. Contact willowId:${contact.id}.".toString()
+        } catch (groovy.json.JsonException ex) {
+            logger.error "Contact willowId:${contact.id} tried to apply tags. \"${jsonInput}\" is invalid json".toString()
+        }
+        res
+    }
+
+    private void applyMailingListField(Field f) {
+        String mailingListName = getMailingListName(f)
+        boolean isChecked = f.value == "1"
+
+        if (isChecked) {
+            Tag mailingList = GetMailingLists.valueOf(contact.objectContext, null, college)
+                    .get().stream().filter { Tag t ->
+                t.name == mailingListName
+            }.findFirst().orElse(null)
+            if (mailingList) {
+                SubscribeToMailingList.valueOf(contact.objectContext, contact, mailingList).subscribe()
+            } else {
+                logger.error "Contact willowId:${contact.id} tried to subscribe to mailing list \'${mailingListName}\'. List not found.".toString()
+            }
+        }
+    }
+
     private Object normalizeValue(Field f) {
         Object result = null
         if (StringUtils.trimToNull(f.value) || f.itemValue) {
@@ -234,7 +343,11 @@ class SubmitContactFields {
                 if (ENUM == processor.dataType && !processor.items.collect { it.value }.contains(value)) {
                     stringError = 'Please select a value from the drop-down list'
                 }
-                
+                break
+            case FieldProperty.TAG_GROUP :
+
+                break
+            case FieldProperty.MAILING_LIST :
                 break
             default: 
                 return null

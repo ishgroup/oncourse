@@ -6,6 +6,7 @@ import ish.oncourse.model.College
 import ish.oncourse.model.Contact
 import ish.oncourse.model.Field
 import ish.oncourse.model.FieldConfiguration
+import ish.oncourse.model.WebSite
 import ish.oncourse.services.preference.GetPreference
 import ish.oncourse.willow.model.field.ContactFields
 import ish.oncourse.willow.model.field.FieldSet
@@ -27,13 +28,15 @@ class GetCompanyFields {
     private static final String VALUE_Hide = "Hide"
 
     private Contact company
+    private WebSite webSite
     private College college
     private ObjectContext context
     private boolean mandatoryOnly
 
 
-    GetCompanyFields(Contact company, College college, ObjectContext context, boolean mandatoryOnly) {
+    GetCompanyFields(Contact company, WebSite webSite, College college, ObjectContext context, boolean mandatoryOnly) {
         this.company = company
+        this.webSite = webSite
         this.college = college
         this.context = context
         this.mandatoryOnly = mandatoryOnly
@@ -47,7 +50,7 @@ class GetCompanyFields {
         addAbnField(companyFields)
         ContactFields result = new ContactFields()
         result.contactId = company.id.toString()
-        result.headings = FieldHelper.valueOf(mandatoryOnly, company, companyFields).buildFieldHeadings()
+        result.headings = FieldHelper.valueOf(mandatoryOnly, company, webSite, companyFields).buildFieldHeadings()
         return result
     }
 

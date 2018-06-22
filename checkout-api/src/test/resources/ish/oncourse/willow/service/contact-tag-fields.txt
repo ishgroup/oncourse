@@ -1,0 +1,59 @@
+class ContactFields {
+    contactId: 1001
+    headings: [class FieldHeading {
+        name: First Heading
+        description: description
+        fields: [class Field {
+            id: 103
+            key: tag/Tag1
+            name: Tag Field 1
+            description: Tag Field 1 description
+            mandatory: false
+            dataType: TAGGROUP
+            enumType: MULTIPLE
+            value: null
+            itemValue: null
+            defaultValue: default field 1
+            enumItems: [class Item {
+                key: /Tag1/Tag1C1
+                value: /Tag1/Tag1C1
+            }, class Item {
+                key: /Tag1/Tag1C2/Tag1C2C1
+                value: /Tag1/Tag1C2/Tag1C2C1
+            }, class Item {
+                key: /Tag1/Tag1C2/Tag1C2C2/Tag1C2C2C1
+                value: /Tag1/Tag1C2/Tag1C2C2/Tag1C2C2C1
+            }]
+            ordering: 1
+        }, class Field {
+            id: 104
+            key: tag/Tag2
+            name: Tag Field 2
+            description: Tag Field 2 description
+            mandatory: true
+            dataType: TAGGROUP
+            enumType: MULTIPLE
+            value: null
+            itemValue: null
+            defaultValue: default field 2
+            enumItems: [class Item {
+                key: /Tag2/Tag2C1
+                value: /Tag2/Tag2C1
+            }, class Item {
+                key: /Tag2/Tag2C2
+                value: /Tag2/Tag2C2
+            }, class Item {
+                key: /Tag2/Tag2C3
+                value: /Tag2/Tag2C3
+            }, class Item {
+                key: /Tag2/Tag2C4
+                value: /Tag2/Tag2C4
+            }, class Item {
+                key: /Tag2/Tag2C5
+                value: /Tag2/Tag2C5
+            }]
+            ordering: 2
+        }]
+        ordering: 1
+    }]
+}

@@ -6,7 +6,7 @@ import ish.oncourse.common.field.PropertyGetSet
 import ish.oncourse.common.field.PropertyGetSetFactory
 import ish.oncourse.model.Contact
 import ish.oncourse.model.Field
-import ish.oncourse.willow.model.field.ContactFields
+import ish.oncourse.model.WebSite
 import ish.oncourse.willow.model.field.FieldHeading
 
 class FieldHelper {
@@ -18,6 +18,7 @@ class FieldHelper {
    
     private boolean mandatoryOnly
     private Contact contact
+    private WebSite webSite
     private Set<Field> fields
 
     private PropertyGetSetFactory factory = new PropertyGetSetFactory('ish.oncourse.model')
@@ -41,10 +42,11 @@ class FieldHelper {
 
     private ContactFieldHelper(){}
 
-    static FieldHelper valueOf(boolean mandatoryOnly, Contact contact, Set<Field> fields) {
+    static FieldHelper valueOf(boolean mandatoryOnly, Contact contact, WebSite webSite, Set<Field> fields) {
         FieldHelper helper = new FieldHelper()
         helper.mandatoryOnly = mandatoryOnly
         helper.contact = contact
+        helper.webSite = webSite
         helper.fields = fields
         return helper
     }
@@ -67,9 +69,19 @@ class FieldHelper {
             if (contact) {
                 FieldProperty property = FieldProperty.getByKey(f.property)
                 if (!credentialProperty.contains(property) && !extendedCustomFields.contains(property)) {
-                    PropertyGetSet getSet  = factory.get(f, getContext.call(property.contextType, contact))
-                    if (!mandatoryOnly || (f.mandatory && getSet.get() == null)) {
-                        getHeadingBy(f.fieldHeading).fields << new FieldBuilder(field: f, aClass: getSet.type).build()               // create rest 'field' based on data type and persistent 'field'. Add to corresponded heading
+                    if (!property.key.startsWith(PropertyGetSetFactory.TAG_FIELD_PATTERN) &&
+                            !property.key.startsWith(PropertyGetSetFactory.MAILING_LIST_FIELD_PATTERN)) {
+                        PropertyGetSet getSet = factory.get(f, getContext.call(property.contextType, contact))
+                        if (!mandatoryOnly || (f.mandatory && getSet.get() == null)) {
+                            getHeadingBy(f.fieldHeading).fields << new FieldBuilder(field: f, aClass: getSet.type).build()
+                            // create rest 'field' based on data type and persistent 'field'. Add to corresponded heading
+                        }
+                    } else {
+                        if (!mandatoryOnly) {
+                            ish.oncourse.willow.model.field.Field tagField = new FieldTagBuilder(field: f, contact: contact, webSite: webSite).build()
+                            if (tagField != null)
+                                getHeadingBy(f.fieldHeading).fields << tagField
+                        }
                     }
                 }
             } else {

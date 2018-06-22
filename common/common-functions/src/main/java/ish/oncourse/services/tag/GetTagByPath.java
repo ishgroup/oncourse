@@ -1,4 +1,4 @@
-package ish.oncourse.linktransform.functions;
+package ish.oncourse.services.tag;
 
 import ish.oncourse.model.Tag;
 import ish.oncourse.model.WebSite;

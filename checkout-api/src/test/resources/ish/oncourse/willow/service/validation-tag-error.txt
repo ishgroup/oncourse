@@ -1,0 +1,7 @@
+class ValidationError {
+    formErrors: []
+    fieldsErrors: [class FieldError {
+        name: Tag4
+        error: Only one value should be selected.
+    }]
+}

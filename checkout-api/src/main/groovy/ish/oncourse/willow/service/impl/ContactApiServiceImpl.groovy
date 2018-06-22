@@ -4,6 +4,7 @@ import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.api.cayenne.CayenneService
 import ish.oncourse.model.College
+import ish.oncourse.model.WebSite
 import ish.oncourse.willow.checkout.functions.GetContact
 import ish.oncourse.willow.functions.CheckParent
 import ish.oncourse.willow.functions.CreateOrGetContact
@@ -79,10 +80,11 @@ class ContactApiServiceImpl implements ContactApi{
     ContactFields getContactFields(ContactFieldsRequest contactFieldsRequest) {
         ObjectContext context = cayenneService.newContext()
         College college = collegeService.college
+        WebSite webSite = collegeService.webSite
         ish.oncourse.model.Contact contact = new GetContact(context, college, contactFieldsRequest.contactId).get(false)
         
         if (contact.isCompany) {
-            return new GetCompanyFields(contact, college, context, contactFieldsRequest.mandatoryOnly).get()
+            return new GetCompanyFields(contact, webSite, college, context, contactFieldsRequest.mandatoryOnly).get()
         } else {
             
             if (contactFieldsRequest.classIds.empty 
@@ -95,7 +97,7 @@ class ContactApiServiceImpl implements ContactApi{
                 logger.info("fieldSet required, request param: $contactFieldsRequest")
                 throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'fieldSet required')).build())
             }
-            new GetContactFields(contact, contactFieldsRequest.classIds, contactFieldsRequest.waitingCourseIds, contactFieldsRequest.productIds, contactFieldsRequest.mandatoryOnly).contactFields
+            new GetContactFields(contact, webSite, contactFieldsRequest.classIds, contactFieldsRequest.waitingCourseIds, contactFieldsRequest.productIds, contactFieldsRequest.mandatoryOnly).contactFields
         }
     }
     
@@ -104,10 +106,11 @@ class ContactApiServiceImpl implements ContactApi{
         
         ObjectContext context = cayenneService.newContext()
         College college = collegeService.college
+        WebSite webSite = collegeService.webSite
         ish.oncourse.model.Contact contact = new GetContact(context, college, contactFields.contactId).get(false)
         ValidationError errors = new ValidationError()
         
-        SubmitContactFields submit = new SubmitContactFields(objectContext: context, errors: errors, college: college).submitContactFields(contact, contactFields.fields)
+        SubmitContactFields submit = new SubmitContactFields(objectContext: context, errors: errors, college: college, webSite: webSite, contact: contact).submitContactFields(contact, contactFields.fields)
         ContactId response = new ContactId().id(contact.id.toString()).newContact(false).parentRequired(false)
         
         if (!contact.isCompany) {
