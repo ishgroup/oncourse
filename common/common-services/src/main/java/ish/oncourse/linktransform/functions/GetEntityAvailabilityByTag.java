@@ -1,6 +1,7 @@
 package ish.oncourse.linktransform.functions;
 
 import ish.oncourse.model.*;
+import ish.oncourse.services.tag.GetTagByPath;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.query.ObjectSelect;

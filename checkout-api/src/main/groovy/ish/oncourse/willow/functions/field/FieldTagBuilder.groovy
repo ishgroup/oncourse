@@ -49,7 +49,7 @@ class FieldTagBuilder {
             case MAILING_LIST :
                 List<Tag> mailingLists = GetMailingLists.valueOf(contact.objectContext, null, contact.college).get()
                     Tag tag = mailingLists.stream()
-                            .filter { l -> field.property == l.name }
+                            .filter { Tag l -> field.property == l.name }
                             .findAny().orElse(null)
 
                     if (tag) {
