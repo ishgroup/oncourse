@@ -273,6 +273,13 @@ task startDaemon(dependsOn: [classes, processResources, agentJar], type: com.git
 	timeout = 600
 }
 
+task run(dependsOn: [classes, agentJar], type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'ish.oncourse.server.AngelServer'
+    args = ['DEBUG=true', 'REPLICATION_DISABLED=true']
+    jvmArgs = ['-Xmx1024m', '-XX:+HeapDumpOnOutOfMemoryError', "-javaagent:${buildDir}/${pathToJavaAgent}/${javaAgentFileName}"]
+}
+
 appBundler {
 	distributionPath = project.file("${distsDir}/macosx/")
 	appName = "onCourseServer"
@@ -455,3 +462,5 @@ String sha256(String filename) {
 		return result.toString().split()[0]
 	}
 }
+
+
