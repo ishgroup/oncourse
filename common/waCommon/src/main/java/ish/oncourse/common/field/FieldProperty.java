@@ -3,9 +3,7 @@
  */
 package ish.oncourse.common.field;
 
-import static ish.oncourse.common.field.PropertyGetSetFactory.CUSTOM_FIELD_PROPERTY_PATTERN;
-import static ish.oncourse.common.field.PropertyGetSetFactory.MAILING_LIST_FIELD_PATTERN;
-import static ish.oncourse.common.field.PropertyGetSetFactory.TAG_FIELD_PATTERN;
+import static ish.oncourse.common.field.PropertyGetSetFactory.*;
 
 public enum FieldProperty {
 	
@@ -48,7 +46,9 @@ public enum FieldProperty {
 	CUSTOM_FIELD_APPLICATION(ContextType.APPLICATION, "Custom field ", CUSTOM_FIELD_PROPERTY_PATTERN  + ContextType.APPLICATION.getIdentifier()),
 	CUSTOM_FIELD_WAITING_LIST(ContextType.WAITING_LIST, "Custom field ", CUSTOM_FIELD_PROPERTY_PATTERN  + ContextType.WAITING_LIST.getIdentifier()),
 
-	TAG_GROUP(ContextType.CONTACT, "Tag Field", TAG_FIELD_PATTERN),
+	TAG(ContextType.CONTACT, "Tag field", TAG_PATTERN),
+	S_TAG_GROUP(ContextType.CONTACT, "Single tag field", TAG_S_PATTERN),
+	M_TAG_GROUP(ContextType.CONTACT, "Multiple tag filed", TAG_M_PATTERN),
 	MAILING_LIST(ContextType.CONTACT, "Mailing List Field", MAILING_LIST_FIELD_PATTERN);
 
 	private ContextType contextType;
@@ -105,8 +105,8 @@ public enum FieldProperty {
                     return  CUSTOM_FIELD_WAITING_LIST;
                 default: throw new UnsupportedOperationException("Custom fields supported for Contact only");
 			}
-		} else if (key.startsWith(TAG_FIELD_PATTERN)) {
-			return TAG_GROUP;
+		} else if (key.startsWith(TAG_PATTERN)) {
+			return TAG;
 		} else if (key.startsWith(MAILING_LIST_FIELD_PATTERN)) {
 			return MAILING_LIST;
 		}
