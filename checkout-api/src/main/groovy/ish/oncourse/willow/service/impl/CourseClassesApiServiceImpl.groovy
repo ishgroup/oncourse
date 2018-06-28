@@ -121,7 +121,7 @@ class CourseClassesApiServiceImpl implements CourseClassesApi {
                 it.isCancelled = c.cancelled
                 it.distantLearning = c.isDistantLearningCourse
                 it.isAllowByApplication = allowByApplication
-                it.isPaymentGatewayEnabled = new IsPaymentGatewayEnabled(college, c.objectContext).get()
+                it.isPaymentGatewayEnabled = true//new IsPaymentGatewayEnabled(college, c.objectContext).get()
                 it.price =  new BuildClassPrice(c, allowByApplication, overridenFee, promotions, contact).build()
                 it.timezone = c.timeZone
                 it

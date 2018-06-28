@@ -37,7 +37,9 @@ public enum DataType {
   
   CHOICE("CHOICE"),
 
-  TAGGROUP("TAGGROUP"),
+  TAGGROUP_S("TAGGROUP_S"),
+
+  TAGGROUP_M("TAGGROUP_M"),
 
   MAILINGLIST("MAILINGLIST");
 

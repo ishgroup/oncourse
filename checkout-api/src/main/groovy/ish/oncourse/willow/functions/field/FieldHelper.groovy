@@ -69,7 +69,7 @@ class FieldHelper {
             if (contact) {
                 FieldProperty property = FieldProperty.getByKey(f.property)
                 if (!credentialProperty.contains(property) && !extendedCustomFields.contains(property)) {
-                    if (!property.key.startsWith(PropertyGetSetFactory.TAG_FIELD_PATTERN) &&
+                    if (!property.key.startsWith(PropertyGetSetFactory.TAG_PATTERN) &&
                             !property.key.startsWith(PropertyGetSetFactory.MAILING_LIST_FIELD_PATTERN)) {
                         PropertyGetSet getSet = factory.get(f, getContext.call(property.contextType, contact))
                         if (!mandatoryOnly || (f.mandatory && getSet.get() == null)) {
@@ -77,15 +77,11 @@ class FieldHelper {
                             // create rest 'field' based on data type and persistent 'field'. Add to corresponded heading
                         }
                     } else {
-                        if (!mandatoryOnly) {
-                            ish.oncourse.willow.model.field.Field tagField = new FieldTagBuilder(field: f, contact: contact, webSite: webSite).build()
-                            if (tagField != null)
-                                getHeadingBy(f.fieldHeading).fields << tagField
-                        }
+                        getHeadingBy(f.fieldHeading).fields.addAll(new FieldTagBuilder(field: f, contact: contact, webSite: webSite).build())
                     }
                 }
             } else {
-                getHeadingBy(f.fieldHeading).fields << new FieldBuilder(field: f, aClass: String.class).build() 
+                getHeadingBy(f.fieldHeading).fields << new FieldBuilder(field: f, aClass: String.class).build()
             }
         }
     }

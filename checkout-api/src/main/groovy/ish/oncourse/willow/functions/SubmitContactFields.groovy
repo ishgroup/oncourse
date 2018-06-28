@@ -41,12 +41,14 @@ import org.slf4j.LoggerFactory
 
 import java.text.ParseException
 
+import static ish.oncourse.common.field.PropertyGetSetFactory.TAG_M_PATTERN
+import static ish.oncourse.common.field.PropertyGetSetFactory.TAG_S_PATTERN
 import static ish.oncourse.willow.functions.field.FieldHelper.getContext
 import static ish.oncourse.willow.model.field.DataType.*
 import static ish.oncourse.willow.model.field.DataType.BOOLEAN
 import static ish.oncourse.willow.model.field.DataType.STRING
 import static ish.validation.ContactValidator.Property.*
-import static ish.oncourse.common.field.PropertyGetSetFactory.TAG_FIELD_PATTERN
+import static ish.oncourse.common.field.PropertyGetSetFactory.TAG_PATTERN
 import static ish.oncourse.common.field.PropertyGetSetFactory.MAILING_LIST_FIELD_PATTERN
 
 @CompileStatic
@@ -114,7 +116,7 @@ class SubmitContactFields {
     }
 
     private boolean isTagProperty(Field f) {
-        f.key.startsWith(TAG_FIELD_PATTERN)
+        f.key.startsWith(TAG_S_PATTERN) || f.key.startsWith(TAG_M_PATTERN)
     }
 
     private boolean isMailingListProperty(Field f) {
@@ -122,7 +124,7 @@ class SubmitContactFields {
     }
 
     private String getRootTagName(Field f) {
-        f.key.replace(TAG_FIELD_PATTERN, StringUtils.EMPTY)
+        f.key.replace(TAG_PATTERN, StringUtils.EMPTY)
     }
 
     private String getMailingListName(Field f) {
@@ -130,20 +132,28 @@ class SubmitContactFields {
     }
 
     private void applyTagsField(Field f) {
-        List<String> tagNameset = parseTagNames(f.value)
-        List<FieldError> errs = validateTagGroup(getRootTagName(f), tagNameset)
-        if (tagNameset) {
-            if (errs.isEmpty() && tagNameset) {
-                tagNameset.each { String n ->
-                    Tag tag = GetTagByPath.valueOf(contact.objectContext, webSite, n).get()
-                    if (tag) {
-                        LinkTagToQueueable.valueOf(contact.objectContext, contact, tag).apply()
-                    } else {
-                        logger.error "Contact willowId:${contact.id} tried to apply tag [${n}] but tag not found.".toString()
-                    }
+        if (f.value) {
+
+            String tagPath = null
+
+            switch (f.dataType) {
+                case TAGGROUP_M:
+                    tagPath = f.key.replace(TAG_M_PATTERN, StringUtils.EMPTY)
+                    break
+                case TAGGROUP_S:
+                    tagPath = f.value
+                    break
+            }
+
+            if (tagPath) {
+                Tag tag = GetTagByPath.valueOf(contact.objectContext, webSite, tagPath).get()
+                if (tag) {
+                    LinkTagToQueueable.valueOf(contact.objectContext, contact, tag).apply()
+                } else {
+                    logger.error "Contact willowId:${contact.id} tried to apply tag [${tagPath}] but tag not found.".toString()
                 }
             } else {
-                errors.fieldsErrors.addAll(errs)
+                logger.error "Contact willowId:${contact.id} tried to apply tag but tag path is not found.".toString()
             }
         }
     }
@@ -172,22 +182,9 @@ class SubmitContactFields {
         errors
     }
 
-    private List<String> parseTagNames(String jsonInput) {
-        List<String> res = null
-        try {
-            def jsonSlurper = new JsonSlurper()
-            res = (List) jsonSlurper.parseText(jsonInput)
-        } catch (java.lang.IllegalArgumentException ex) {
-            logger.error "Tag group field property value is null. Contact willowId:${contact.id}.".toString()
-        } catch (groovy.json.JsonException ex) {
-            logger.error "Contact willowId:${contact.id} tried to apply tags. \"${jsonInput}\" is invalid json".toString()
-        }
-        res
-    }
-
     private void applyMailingListField(Field f) {
         String mailingListName = getMailingListName(f)
-        boolean isChecked = f.value == "1"
+        boolean isChecked = f.value == "true"
 
         if (isChecked) {
             Tag mailingList = GetMailingLists.valueOf(contact.objectContext, null, college)
@@ -272,6 +269,10 @@ class SubmitContactFields {
                         errors.fieldsErrors << new FieldError(name: f.key, error: "${f.name} is incorrect")
                     }
                     break
+                case TAGGROUP_S :
+                case TAGGROUP_M :
+                case MAILINGLIST :
+                    break
                 default:
                     result = null
                     logger.error("unsupported type for field value: $f")
@@ -343,11 +344,6 @@ class SubmitContactFields {
                 if (ENUM == processor.dataType && !processor.items.collect { it.value }.contains(value)) {
                     stringError = 'Please select a value from the drop-down list'
                 }
-                break
-            case FieldProperty.TAG_GROUP :
-
-                break
-            case FieldProperty.MAILING_LIST :
                 break
             default: 
                 return null
