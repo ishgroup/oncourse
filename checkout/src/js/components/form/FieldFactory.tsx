@@ -39,7 +39,7 @@ class FieldFactory extends React.Component<any, any> {
           searchable={false}
           returnType="object"
           placeholder="Please Select..."
-        />
+        />;
 
       case DataType.BOOLEAN:
         if (field.key === "isMale") {
@@ -67,7 +67,6 @@ class FieldFactory extends React.Component<any, any> {
         return LanguageField(props);
 
       case DataType.CHOICE:
-
         return <Form.Field
           {...props}
           component={SelectField}
@@ -78,10 +77,33 @@ class FieldFactory extends React.Component<any, any> {
           placeholder="Please Select..."
         />;
 
+      case DataType.TAGGROUP_S:
+        return <Form.Field
+            {...props}
+            component={SelectField}
+            loadOptions={() => Promise.resolve(withOptionNotSet(field.enumItems))}
+            newOptionEnable={true}
+            searchable={true}
+            showOnFocus={true}
+        />;
+
+      case DataType.TAGGROUP_M:
+        return <Form.Field
+            {...props}
+            component={CheckboxField}
+        />;
+
+      case DataType.MAILINGLIST:
+        return <Form.Field
+            {...props}
+            required={false}
+            component={CheckboxField}
+        />;
+
       default:
         return null;
     }
-  };
+  }
 
   render() {
     return (
@@ -152,7 +174,14 @@ const withOptionOther = items => {
   return items.concat({
     key: null,
     value: 'Other',
-  })
+  });
+};
+
+const withOptionNotSet = items => {
+  return items.concat({
+    key: null,
+    value: "Not set",
+  });
 };
 
 const withDefaultItem = items => {
