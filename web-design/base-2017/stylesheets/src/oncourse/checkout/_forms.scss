@@ -7,7 +7,6 @@
 // Copyright ish group (Australia) and part of ish onCourse.
 // It is licensed to you under the Apache License, version 2.0
 //
-
 fieldset {
   clear: both;
   legend {
@@ -31,6 +30,8 @@ fieldset, #tabable-container .tab-content {
       padding: $checkoutFormLabelPaddingSmall;
       margin-bottom: $checkoutFormLabelMarginBottomSmall;
       font-size: $checkoutFormLabelFontSize;
+      overflow: hidden;
+      text-overflow: ellipsis;
       @include responsive($checkout-media-default) {
         padding: $checkoutFormLabelPaddingTablet;
         width: $checkoutFormLabelWidthTablet;
@@ -69,6 +70,13 @@ fieldset, #tabable-container .tab-content {
             margin-left: -20px;
             margin-right: 0px;
           }
+        }
+      }
+      &.with-hint {
+        .validate-text {
+          display: block;
+          bottom: 100%;
+          left: 0;
         }
       }
     }
@@ -243,6 +251,10 @@ fieldset, #tabable-container .tab-content {
     margin-bottom: 10px;
     @include responsive($checkout-media-default) {
       width: $checkoutFormInputWidthTablet;
+    }
+
+    &.always-full-width {
+      width: 100% !important;
     }
 
     &.t-error {

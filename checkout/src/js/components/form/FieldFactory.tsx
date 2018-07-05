@@ -80,22 +80,26 @@ class FieldFactory extends React.Component<any, any> {
       case DataType.TAGGROUP_S:
         return <Form.Field
             {...props}
+            hint={props.label}
             component={SelectField}
             loadOptions={() => Promise.resolve(withOptionNotSet(field.enumItems))}
             newOptionEnable={true}
             searchable={true}
             showOnFocus={true}
+            fullWidth={true}
         />;
 
       case DataType.TAGGROUP_M:
         return <Form.Field
             {...props}
+            hint={props.label}
             component={CheckboxField}
         />;
 
       case DataType.MAILINGLIST:
         return <Form.Field
             {...props}
+            hint={props.label}
             required={false}
             component={CheckboxField}
         />;

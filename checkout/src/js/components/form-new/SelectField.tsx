@@ -7,6 +7,7 @@ import "react-select/dist/react-select.css";
 
 import {MouseHover} from "../form/MouseHover";
 import {showError, ValidateText} from "../form/ValidateText";
+import {HintText} from "../form/HintText";
 import {FieldLabel} from "../form/FieldLabel";
 
 
@@ -26,7 +27,9 @@ interface Props {
   showOnFocus?: boolean;
   required: boolean;
   label: string;
+  hint?: string;
   searchable?: boolean;
+  fullWidth?: boolean;
   onBlurSelect?: (field) => void;
 }
 
@@ -90,6 +93,8 @@ class SelectField extends React.Component<any, any> {
       placeholder: this.props.placeholder || "Please Select...",
       required: this.props.required,
       label: this.props.label,
+      hint: this.props.hint,
+      fullWidth: this.props.fullWidth,
       searchable: this.props.searchable !== false,
       showOnFocus: this.props.showOnFocus,
       labelKey: this.props.labelKey ? this.props.labelKey : "value",
@@ -112,7 +117,10 @@ class SelectField extends React.Component<any, any> {
           name={props.input.name}
           label={props.label}
           required={props.required}
-        />
+          className={classnames({["with-hint"]: Boolean(props.hint)})}
+        >
+            <HintText {...props}/>
+        </FieldLabel>
         }
         <span className={classnames({
           valid: !isShowError,
@@ -121,7 +129,7 @@ class SelectField extends React.Component<any, any> {
         })}>
           <RenderSelectWrapper
             inputProps={{autoComplete: 'off', autoCorrect: 'off', spellCheck: 'off'}}
-            className={classnames({'t-error': isShowError})}
+            className={classnames({'t-error': isShowError, 'always-full-width': props.fullWidth})}
             placeholder={props.placeholder}
             name={name}
             labelKey={props.labelKey}

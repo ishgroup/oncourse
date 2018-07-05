@@ -4,4 +4,5 @@ export interface CommonFieldProps {
   placeholder: string,
   name: string;
   required?: boolean;
+  hint?: string;
 }

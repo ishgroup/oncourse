@@ -84,5 +84,6 @@ interface SelectInputProps extends ComboboxFieldProps, Partial<WrappedFieldProps
 
 interface ComboboxFieldProps extends CommonFieldProps {
   items: Item[];
+  hint: string;
 }
 
