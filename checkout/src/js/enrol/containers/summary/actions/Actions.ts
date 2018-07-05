@@ -25,10 +25,10 @@ export const UPDATE_ITEM: string = "checkout/summary/update/item";
 export const REMOVE_ITEM_FROM_SUMMARY: string = "checkout/remove/summary/item";
 export const REMOVE_CONTACT_FROM_SUMMARY: string = "checkout/remove/summury/contact";
 
-export const addContactToSummary = (contact: Contact): IAction<Contact> => {
+export const addContactToSummary = (contact: Contact, uncheckItems = false): IAction<{contact: Contact, uncheckItems?: boolean}> => {
   return {
     type: ADD_CONTACT_TO_SUMMARY,
-    payload: contact,
+    payload: {contact, uncheckItems}
   };
 };
 

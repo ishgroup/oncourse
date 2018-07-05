@@ -44,7 +44,7 @@ const request: EpicUtils.Request<CodeResponse, IshState> = {
 
       if (voucher.payer) {
         result.push(addPayerFromVoucher(voucher.payer));
-        result.push(addContactToSummary(voucher.payer));
+        result.push(addContactToSummary(voucher.payer, true));
       }
     }
 

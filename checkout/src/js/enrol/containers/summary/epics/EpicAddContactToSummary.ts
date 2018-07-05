@@ -17,11 +17,11 @@ import {Phase} from "../../../reducers/State";
 
 
 export const AddContactToSummary: Epic<any, IshState> = (action$: ActionsObservable<any>, store: MiddlewareAPI<IshState>): Observable<any> => {
-  return action$.ofType(ADD_CONTACT_TO_SUMMARY).flatMap((action: IAction<Contact>) => {
+  return action$.ofType(ADD_CONTACT_TO_SUMMARY).flatMap((action: IAction<{contact: Contact, uncheckItems?: boolean}>) => {
     const state: IshState = store.getState();
 
     const {type, parent, forChild} = state.checkout.contactAddProcess;
-    const contact = action.payload;
+    const contact = action.payload.contact;
     const payerId = ((!contact.parentRequired || parent) && contact.id) || null;
     const ifParentRequired = contact.parentRequired && !parent;
     const nextPage = state.checkout.phase === Phase.ComplementEditContact ? Phase.Payment : state.checkout.page;
@@ -37,7 +37,8 @@ export const AddContactToSummary: Epic<any, IshState> = (action$: ActionsObserva
     // - if new contact is a parent/guardian for existing children
     // - if new contact is a payer
     const uncheckContactItems: boolean =
-      (type === Phase.AddContactAsPayer ||
+      (action.payload.uncheckItems ||
+        type === Phase.AddContactAsPayer ||
         type === Phase.AddContactAsCompany ||
         type === Phase.ChangeParent ||
         type === Phase.AddParent
