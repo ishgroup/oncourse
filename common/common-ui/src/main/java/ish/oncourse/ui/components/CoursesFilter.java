@@ -1,13 +1,16 @@
 package ish.oncourse.ui.components;
 
+import ish.math.Money;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchParamsParser;
 import ish.oncourse.services.search.SearchResult;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
+import ish.oncourse.solr.query.DayOption;
 import ish.oncourse.solr.query.SearchParams;
 import ish.oncourse.solr.query.Suburb;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.solr.client.solrj.response.QueryResponse;
@@ -52,6 +55,21 @@ public class CoursesFilter {
     @Property
     private Tag tag;
 
+    @Property
+    private String keyWord;
+
+    @Property
+    private Double price;
+
+    @Property
+    private Money moneyPrice;
+    
+    @Property
+    private String day;
+    
+    @Property
+    private String time;
+
     private SearchParams searchParams;
 
     @SetupRender
@@ -66,9 +84,19 @@ public class CoursesFilter {
             tags.add(subject);
         }
         tags.addAll(searchParams.getTags());
-
         suburbs = new ArrayList<>(searchParams.getSuburbs());
+        keyWord = StringUtils.trimToNull(searchParams.getS());
+        time = StringUtils.trimToNull(searchParams.getTime());
+        price = searchParams.getPrice();
 
+        if (price != null) {
+            moneyPrice = Money.ONE.multiply(price);
+        }
+        
+        if (searchParams.getDay() != null) {
+            day = searchParams.getDay().getFullName();
+        }
+                
         try {
             SearchResult searchResult = searchService.searchCourses(searchParams, 0, 0);
             QueryResponse queryResponse = searchResult.getQueryResponse();

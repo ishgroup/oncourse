@@ -5,7 +5,7 @@
             <span class="courses-filter-title">Filters:</span>
             <ul class="courses-filter-list">
                 <t:loop source="tags" value="tag">
-                    <li>
+                    <li class="courses-filter-subjects">
                         <span>${tag.name}</span>
                         <a href="#" class="courses-filter-clear-option" data-id="${tag.id}" data-path="${tag.defaultPath.toLowerCase()}">
                             <i class="fa fa-times"></i>
@@ -13,13 +13,50 @@
                     </li>
                 </t:loop>
                 <t:loop source="suburbs" value="suburb">
-                    <li>
+                    <li class="courses-filter-near">
                         <span>${suburb.path}</span>
                         <a href="#" class="courses-filter-clear-option" data-id="${suburb.identifier}" data-path="${suburb.path.toLowerCase()}">
                             <i class="fa fa-times"></i>
                         </a>
                     </li>
                 </t:loop>
+
+                <t:if test="keyWord">
+                    <li class="courses-filter-keyword">
+                        <span>${keyWord}</span>
+                        <a href="#" class="courses-filter-clear-option" data-id="${keyWord}" data-path="${keyWord}">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </li>
+                </t:if>
+
+                <t:if test="price">
+                    <li class="courses-filter-cost">
+                        <span>${moneyPrice}</span>
+                        <a href="#" class="courses-filter-clear-option" data-id="${price}" data-path="${price}">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </li>
+                </t:if>
+
+                <t:if test="day">
+                    <li class="courses-filter-day">
+                        <span>${day}</span>
+                        <a href="#" class="courses-filter-clear-option" data-id="${day}" data-path="${day}">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </li>
+                </t:if>
+
+                <t:if test="time">
+                    <li class="courses-filter-time">
+                        <span>${time}</span>
+                        <a href="#" class="courses-filter-clear-option" data-id="${time}" data-path="${time}">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </li>
+                </t:if>
+
                 <t:if test="showClearAll()">
                     <li><a href="#" class="courses-filter-clear-all btn-link">Clear all</a></li>
                 </t:if>

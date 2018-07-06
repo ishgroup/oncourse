@@ -1,63 +1,62 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-
-    <div class="quicklinks quicklinks--filter js-quicklinks u-print-display-none">
-        <div class="l-container quicklinks__inner">
-            <div class="quicklinks__label">Filters</div>
-            <ul class="quicklinks__items">
-                <t:loop source="tags" value="tag">
-                    <li>
-                        <a class="quicklinks__item courses-filter-clear-option" href="#" title="Remove Search Term" data-id="${tag.id}" data-path="${tag.defaultPath.toLowerCase()}">
-                            ${tag.name}
-                            <svg class="quicklinks__cross" aria-label="Search" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-                                <use xlink:href="#svg-cross" />
-                            </svg>
-                        </a>                        
-                    </li>                    
-                </t:loop>
-                <t:loop source="suburbs" value="suburb">
-                    <li>
-                        <a class="quicklinks__item courses-filter-clear-option" href="#" data-id="${suburb.identifier}" data-path="${suburb.path.toLowerCase()}" title="Remove Search Term">
-                            ${suburb.path}
-                            <svg class="quicklinks__cross" aria-label="Search" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-                                <use xlink:href="#svg-cross" />
-                            </svg>
-                        </a>
-                    </li>
-                </t:loop>
-                <t:if test="showClearAll()">
-                    <li class="quicklinks__action">
-                        <a href="#" class="quicklinks__clear courses-filter-clear-all">Clear all</a>
-                    </li>
-                </t:if>            
-            </ul>
-            <div class="quicklinks__counter">
-                <strong>${counter}</strong> Courses Found
-            </div>
-        </div>
-    </div>
-
-
     <div class="courses-filter-header">
         <!-- filters-added -->
         <div class="courses-filter-added">
-            <div class="quicklinks__label">Filters</div>
+            <span class="courses-filter-title">Filters:</span>
             <ul class="courses-filter-list">
                 <t:loop source="tags" value="tag">
-                    <li>
+                    <li class="courses-filter-subjects">
                         <span>${tag.name}</span>
-                        <a href="#" class="courses-filter-clear-option" data-id="${tag.id}" data-path="${tag.defaultPath.toLowerCase()}" style="height: 10px; width: 10px; display: block; background: blue;">
+                        <a href="#" class="courses-filter-clear-option" data-id="${tag.id}" data-path="${tag.defaultPath.toLowerCase()}">
                             <i class="fa fa-times"></i>
                         </a>
                     </li>
                 </t:loop>
                 <t:loop source="suburbs" value="suburb">
-                    <li>
+                    <li class="courses-filter-near">
                         <span>${suburb.path}</span>
-                        <a href="#" class="courses-filter-clear-option" data-id="${suburb.identifier}" data-path="${suburb.path.toLowerCase()}" style="height: 10px; width: 10px; display: block; background: blue;">
+                        <a href="#" class="courses-filter-clear-option" data-id="${suburb.identifier}" data-path="${suburb.path.toLowerCase()}">
                             <i class="fa fa-times"></i>
                         </a>
                     </li>
                 </t:loop>
+
+                <t:if test="keyWord">
+                    <li class="courses-filter-keyword">
+                        <span>${keyWord}</span>
+                        <a href="#" class="courses-filter-clear-option" data-id="${keyWord}" data-path="${keyWord}">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </li>
+                </t:if>
+
+                <t:if test="price">
+                    <li class="courses-filter-cost">
+                        <span>${moneyPrice}</span>
+                        <a href="#" class="courses-filter-clear-option" data-id="${price}" data-path="${price}">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </li>
+                </t:if>
+
+                <t:if test="day">
+                    <li class="courses-filter-day">
+                        <span>${day}</span>
+                        <a href="#" class="courses-filter-clear-option" data-id="${day}" data-path="${day}">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </li>
+                </t:if>
+
+                <t:if test="time">
+                    <li class="courses-filter-time">
+                        <span>${time}</span>
+                        <a href="#" class="courses-filter-clear-option" data-id="${time}" data-path="${time}">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </li>
+                </t:if>
+
                 <t:if test="showClearAll()">
                     <li><a href="#" class="courses-filter-clear-all btn-link">Clear all</a></li>
                 </t:if>
