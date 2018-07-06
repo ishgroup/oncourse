@@ -34,7 +34,21 @@ enum FieldConfigurationType implements DisplayableExtendedEnumeration<Integer> {
 	 * Field Configuration will be used for surveys
 	 */
 	@API
-	SURVEY(4, "Survey")
+	SURVEY(4, "Survey"),
+
+	/**
+	 * Database value: 5
+	 * Field Configuration will be used for payers
+	 */
+	@API
+	PAYER(5, "Payer"),
+
+	/**
+	 * Database value: 6
+	 * Field Configuration will be used for parents or guardians
+	 */
+	@API
+	PARENT(6, "Parent or Guardian")
 	
 	private String displayName
 	private int value
