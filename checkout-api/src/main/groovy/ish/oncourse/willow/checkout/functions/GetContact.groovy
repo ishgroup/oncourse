@@ -20,12 +20,8 @@ class GetContact extends Get<Contact> {
     GetContact(ObjectContext context, College college, String id) {
         super(context, college, id)
     }
-    
-    Contact get() {
-        get(true)
-    }
 
-    Contact get(boolean checkStudent) {
+    Contact get(boolean checkStudent = true) {
         if (!StringUtils.trimToNull(id)) {
             logger.error("contact Id required")
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'contactId required')).build())
