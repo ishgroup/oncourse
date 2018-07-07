@@ -48,7 +48,7 @@ enum FieldConfigurationType implements DisplayableExtendedEnumeration<Integer> {
 	 * Field Configuration will be used for parents or guardians
 	 */
 	@API
-	PARENT(6, "Parent or Guardian")
+	PARENT(6, "Parent")
 	
 	private String displayName
 	private int value
