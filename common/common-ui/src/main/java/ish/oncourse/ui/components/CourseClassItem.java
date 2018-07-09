@@ -7,7 +7,7 @@ import ish.oncourse.services.courseclass.CheckClassAge;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.textile.ITextileConverter;
-import ish.oncourse.services.tutor.GetVisibleTutorRoles;
+import ish.oncourse.services.tutor.GetCourseClassVisibleTutorRoles;
 import ish.oncourse.services.tutor.ITutorService;
 import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.ui.utils.CourseContext;
@@ -164,7 +164,7 @@ public class CourseClassItem extends ISHCommon {
 	}
 
 	private void initVisibleTutorRoles() {
-		visibleTutorRoles = GetVisibleTutorRoles.valueOf(courseClass.getObjectContext(), courseClass).get();
+		visibleTutorRoles = GetCourseClassVisibleTutorRoles.valueOf(courseClass.getObjectContext(), courseClass).get();
 	}
 
 	public boolean isHasTutorRoles() {

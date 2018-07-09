@@ -19,11 +19,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-/**
- * User: akoiro
- * Date: 21/12/17
- */
-public class GetVisibleTutorRolesTest {
+public class GetCourseClassVisibleTutorRolesTest {
 
 	@Test
 	public void test() {
@@ -38,10 +34,11 @@ public class GetVisibleTutorRolesTest {
 		ObjectContext objectContext = mock(ObjectContext.class);
 		when(objectContext.select(Matchers.any())).thenReturn(roles);
 
-		List<TutorRole> res = GetVisibleTutorRoles.valueOf(objectContext, courseClass).get();
+		List<TutorRole> res = GetCourseClassVisibleTutorRoles.valueOf(objectContext, courseClass).get();
 
 		assertEquals(2, res.size());
-		assertEquals("Only active tutors should be filtered (finish date == null || date.after(now)).", 2, res.stream().filter(role -> role.getId() == 1L || role.getId() == 2L).count());
+		assertEquals("Only active tutors should be filtered (finish date == null || date.after(now)).",
+				2, res.stream().filter(role -> role.getId() == 1L || role.getId() == 2L).count());
 	}
 
 	private TutorRole mockTutorRole(Date date, long roleId) {

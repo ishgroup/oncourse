@@ -3,7 +3,8 @@
  */
 package ish.oncourse.services.tutor;
 
-import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Session;
+import ish.oncourse.model.SessionTutor;
 import ish.oncourse.model.Tutor;
 import ish.oncourse.model.TutorRole;
 import org.apache.cayenne.ObjectContext;
@@ -13,50 +14,41 @@ import org.apache.cayenne.query.QueryCacheStrategy;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * User: akoiro
- * Date: 21/12/17
- */
-public class GetVisibleTutorRoles {
+public class GetSessionVisibleTutorRoles {
 
 	private ObjectContext context;
-	private CourseClass courseClass;
+	private Session session;
 	private QueryCacheStrategy cacheStrategy = QueryCacheStrategy.LOCAL_CACHE;
 
-	private GetVisibleTutorRoles() {}
+	private GetSessionVisibleTutorRoles() {}
 
-	public static GetVisibleTutorRoles valueOf(ObjectContext context, CourseClass courseClass) {
-		GetVisibleTutorRoles obj = new GetVisibleTutorRoles();
+	public static GetSessionVisibleTutorRoles valueOf(ObjectContext context, Session session) {
+		GetSessionVisibleTutorRoles obj = new GetSessionVisibleTutorRoles();
 		obj.context = context;
-		obj.courseClass = courseClass;
+		obj.session = session;
 		return obj;
 	}
 
-
-	public GetVisibleTutorRoles cacheStrategy(QueryCacheStrategy cacheStrategy) {
+	public GetSessionVisibleTutorRoles cacheStrategy(QueryCacheStrategy cacheStrategy) {
 		this.cacheStrategy = cacheStrategy;
 		return this;
 	}
 
-	public GetVisibleTutorRoles courseClass(CourseClass courseClass) {
-		this.courseClass = courseClass;
+	public GetSessionVisibleTutorRoles courseClass(Session session) {
+		this.session = session;
 		return this;
 	}
 
 	public List<TutorRole> get() {
 		return ObjectSelect.query(TutorRole.class)
-				.where(TutorRole.COURSE_CLASS.eq(courseClass))
-				.and(TutorRole.IN_PUBLICITY.isTrue())
+				.where(TutorRole.TUTOR.dot(Tutor.SESSION_TUTORS).dot(SessionTutor.SESSION).eq(session)
+					.andExp(TutorRole.IN_PUBLICITY.isTrue()))
 				.prefetch(TutorRole.TUTOR.joint())
 				.prefetch(TutorRole.TUTOR.dot(Tutor.CONTACT).joint())
 				.cacheStrategy(cacheStrategy, TutorRole.class.getSimpleName())
 				.select(context)
-				/*
-				 the stream filter is used instead of Cayenne query expression to have a possibility to cache this request.
-				 if we use Cayenne query expression with new Date(), cayenne always will generate a new cache key for such an expression
-				 */
-				.stream().filter((tr) -> GetIsActiveTutor.valueOf(tr.getTutor()).get())
+				.stream()
+				.filter(tr -> GetIsActiveTutor.valueOf(tr.getTutor()).get())
 				.collect(Collectors.toList());
-
 	}
 }

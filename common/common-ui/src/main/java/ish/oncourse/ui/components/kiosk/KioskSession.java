@@ -101,7 +101,7 @@ public class KioskSession {
             commencedClass = "course-commenced";
         }
 
-        visibleTutors = GetVisibleTutors.valueOf(courseClass).get();
+        visibleTutors = GetVisibleTutors.valueOf(session).get();
         author = StringUtils.join(visibleTutors.stream()
                         .map(tutor -> GetTutorName.valueOf(tutor).get())
                         .collect(Collectors.toList()),
