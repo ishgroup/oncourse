@@ -70,10 +70,8 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	/**
 	 * Special reserved path for system pages, we do not treat them as webnode nor can have the webnode page with such path.
 	 */
-	public static String[] IMMUTABLE_PATHS = new String[]{"/assets", "/login", "/editpage", "/newpage", "/menubuilder", "/pageoptions",
-			"/ma.", "/site", "/sitesettings", "/pagetypes", "/menus", "/pages", "/blocks", "/blockedit", "/site.blocks.",
-			"/site.pagetypes.", "ish/internal/autocomplete.sub", "/pt.sort", "ui/textileform.send", "/ui/timezoneholder.", "/webdav", "/test", "/api"
-	};
+	public static String[] IMMUTABLE_PATHS = new String[]{"/site", "ish/internal/autocomplete.sub",
+			"ui/textileform.send", "/ui/timezoneholder."};
 
 	/**
 	 * Path of the removing from cookies request
