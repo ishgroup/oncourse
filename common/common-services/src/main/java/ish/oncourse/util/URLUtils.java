@@ -41,6 +41,10 @@ public class URLUtils {
         return new URL(buildURLString(request, path, queryParams, includeContext));
     }
 
+    public static String buildURLString(Request request, String path, boolean includeContext) {
+        return buildURLString(request, path, null, includeContext);
+    }
+
     public static String buildURLString(Request request, String path, String params, boolean includeContext) {
         String res;
         String schema = request.isSecure() ? "https" : "http";
