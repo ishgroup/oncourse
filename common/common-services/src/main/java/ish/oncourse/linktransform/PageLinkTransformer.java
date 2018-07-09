@@ -51,7 +51,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 
 
 	public static final String REQUEST_ATTR_redirectTo = "redirectTo";
-
+	public static final String REQUEST_ATTR_redirectToParams = "redirectToParams";
 
 	private static final String TUTOR_ATTRIBUTE = "tutor";
 	private static final String DIGIT_PATTERN = "\\d+";
@@ -359,11 +359,11 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	private boolean needRedirect(Request request) {
 		String path = requestGlobals.getHTTPServletRequest().getPathInfo();
 		String query = requestGlobals.getHTTPServletRequest().getQueryString();
-		path += query != null ? "?" + query : StringUtils.EMPTY;
 
 		WebUrlAlias redirect = webUrlAliasService.getAliasByPath(URLPath.valueOf(path).getEncodedPath());
 		if (redirect != null && redirect.getRedirectTo() != null) {
 			request.setAttribute(REQUEST_ATTR_redirectTo, redirect.getRedirectTo());
+			request.setAttribute(REQUEST_ATTR_redirectToParams, query);
 			return true;
 		}
 		return false;

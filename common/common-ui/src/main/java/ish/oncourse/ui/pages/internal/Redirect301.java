@@ -44,7 +44,8 @@ public class Redirect301 extends ISHCommon {
 
         //path to another page for the site
         if (URLUtils.HTTP_URL_VALIDATOR.isValidOnlyPath(redirectTo)) {
-            return new HttpStatusCode(HttpServletResponse.SC_MOVED_PERMANENTLY, buildURL(request, redirectTo, false));
+            return new HttpStatusCode(HttpServletResponse.SC_MOVED_PERMANENTLY, buildURL(request, redirectTo,
+                    (String) request.getAttribute(PageLinkTransformer.REQUEST_ATTR_redirectToParams), false));
         }
 
         logger.warn("Wrong redirect path: {}", redirectTo);
