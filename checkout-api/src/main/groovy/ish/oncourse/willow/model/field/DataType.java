@@ -36,11 +36,11 @@ public enum DataType {
   PHONE("PHONE"),
   
   CHOICE("CHOICE"),
-
+  
   TAGGROUP_S("TAGGROUP_S"),
-
+  
   TAGGROUP_M("TAGGROUP_M"),
-
+  
   MAILINGLIST("MAILINGLIST");
 
   private String value;
