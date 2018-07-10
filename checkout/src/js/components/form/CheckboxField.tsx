@@ -15,7 +15,7 @@ export class CheckboxField extends React.Component<any, any> {
 }
 
 export const checkboxFieldComponent = (props: CheckboxFieldProps) => {
-  const {input, label, classes, required, hint} = props;
+  const {input, label, classes, required, hint, placeholder} = props;
 
   return (
     <div >
@@ -27,8 +27,10 @@ export const checkboxFieldComponent = (props: CheckboxFieldProps) => {
           className={classnames({["with-hint"]: Boolean(hint)})}
         >
             <HintText {...props}/>
+            {placeholder && <span className={"label-placeholder"}>{placeholder}</span>}
         </FieldLabel>
       }
+
       <input {...input} checked={input.value} className={classes} type="checkbox"/>
 
     </div>

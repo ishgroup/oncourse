@@ -45,6 +45,13 @@ fieldset, #tabable-container .tab-content {
       >sup {
         color: $checkoutFormSupTagColor;
       }
+      .label-placeholder {
+        font-size: 11px;
+        color: #aaa;
+        text-align: left;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
       &.radio-btn {
         width: auto;
         float: none;
