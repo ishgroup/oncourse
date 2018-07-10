@@ -1139,6 +1139,9 @@ definitions:
       - POSTCODE
       - PHONE
       - CHOICE
+      - TAGGROUP_S
+      - TAGGROUP_M
+      - MAILINGLIST
   field.Field:
     type: object
     requred:
