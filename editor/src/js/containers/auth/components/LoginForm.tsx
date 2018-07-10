@@ -39,6 +39,11 @@ const validate = values => {
 
 class LoginForm extends React.Component<any, any> {
 
+  cancelApplication = () => {
+      document.cookie = "";
+      window.location.href = "";
+  }
+
   form() {
     const {handleSubmit, pristine, submitting} = this.props;
 
@@ -65,7 +70,9 @@ class LoginForm extends React.Component<any, any> {
           />
         </FormGroup>
 
-        <Button disabled={pristine || submitting} color="primary">Log in</Button>
+        <Button disabled={pristine || submitting} color="primary" type="submit">Log in</Button>
+
+        <Button disabled={submitting} className="btn-cancel" type="button" onClick={this.cancelApplication}>Cancel</Button>
 
       </Form>
     );

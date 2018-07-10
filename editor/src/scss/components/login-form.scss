@@ -40,5 +40,18 @@
     margin-top: 10px;
     font-size: 14px;
   }
-  
+
+  .btn.btn-cancel {
+    color: $white;
+    background: transparent;
+    font-size: 0.9em;
+    text-transform: none;
+    box-shadow: none;
+
+    &:hover, &:active, &:focus {
+      color: $gray;
+      background: transparent;
+      box-shadow: none;
+    }
+  }
 }
