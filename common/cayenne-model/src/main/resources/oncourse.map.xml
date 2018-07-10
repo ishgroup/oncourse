@@ -2162,6 +2162,12 @@
 		<obj-attribute name="startDate" type="java.util.Date" db-attribute-path="startDate"/>
 		<obj-attribute name="status" type="ish.common.types.OutcomeStatus" db-attribute-path="status"/>
 	</obj-entity>
+	<obj-entity name="ParentFieldConfiguration" superEntityName="FieldConfiguration" className="ish.oncourse.model.ParentFieldConfiguration">
+		<qualifier><![CDATA[intType = 6]]></qualifier>
+	</obj-entity>
+	<obj-entity name="PayerFieldConfiguration" superEntityName="FieldConfiguration" className="ish.oncourse.model.PayerFieldConfiguration">
+		<qualifier><![CDATA[intType = 5]]></qualifier>
+	</obj-entity>
 	<obj-entity name="PaymentIn" className="ish.oncourse.model.PaymentIn" dbEntityName="PaymentIn" superClassName="WillowCayenneObject">
 		<obj-attribute name="amount" type="ish.math.Money" db-attribute-path="amount"/>
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>

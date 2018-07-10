@@ -100,6 +100,8 @@ private Map<String, IWillowUpdater> updaterMap;
 		updaterMap.put(EnrolmentFieldConfiguration.class.getSimpleName(), new FieldConfigurationUpdater());
 		updaterMap.put(WaitingListFieldConfiguration.class.getSimpleName(), new FieldConfigurationUpdater());
 		updaterMap.put(SurveyFieldConfiguration.class.getSimpleName(), new FieldConfigurationUpdater());
+		updaterMap.put(PayerFieldConfiguration.class.getSimpleName(), new FieldConfigurationUpdater());
+		updaterMap.put(ParentFieldConfiguration.class.getSimpleName(), new FieldConfigurationUpdater());
 		updaterMap.put(FieldHeading.class.getSimpleName(), new FieldHeadingUpdater());
 		updaterMap.put(FieldConfigurationLink.class.getSimpleName(), new FieldConfigurationLinkUpdater());
 		updaterMap.put(FieldConfigurationScheme.class.getSimpleName(), new FieldConfigurationSchemeUpdater());

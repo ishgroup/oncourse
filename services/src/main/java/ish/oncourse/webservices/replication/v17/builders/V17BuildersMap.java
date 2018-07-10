@@ -92,6 +92,8 @@ private Map<String, IWillowStubBuilder> builderMap;
 		builderMap.put(EnrolmentFieldConfiguration.class.getSimpleName(), new FieldConfigurationStubBuilder());
 		builderMap.put(WaitingListFieldConfiguration.class.getSimpleName(), new FieldConfigurationStubBuilder());
 		builderMap.put(SurveyFieldConfiguration.class.getSimpleName(), new FieldConfigurationStubBuilder());
+		builderMap.put(PayerFieldConfiguration.class.getSimpleName(), new FieldConfigurationStubBuilder());
+		builderMap.put(ParentFieldConfiguration.class.getSimpleName(), new FieldConfigurationStubBuilder());
 		builderMap.put(FieldConfigurationLink.class.getSimpleName(), new FieldConfigurationLinkStubBuilder());
 		builderMap.put(FieldConfigurationScheme.class.getSimpleName(), new FieldConfigurationSchemeStubBuilder());
 		builderMap.put(AssessmentClassModule.class.getSimpleName(), new AssessmentClassModuleStubBuilder());

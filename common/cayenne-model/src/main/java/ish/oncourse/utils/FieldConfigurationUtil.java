@@ -19,6 +19,10 @@ public class FieldConfigurationUtil {
                     return WaitingListFieldConfiguration.class;
                 case SURVEY:
                     return SurveyFieldConfiguration.class;
+                case PAYER:
+                    return PayerFieldConfiguration.class;
+                case PARENT:
+                    return ParentFieldConfiguration.class;
                 default:
             }
         }
