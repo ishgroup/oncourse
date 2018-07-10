@@ -4424,7 +4424,7 @@
 	<obj-relationship name="waitingListFieldConfiguration" source="FieldConfigurationScheme" target="FieldConfiguration" deleteRule="Nullify" db-relationship-path="waitingListFieldConfiguration"/>
 	<obj-relationship name="college" source="FieldHeading" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="fieldConfiguration" source="FieldHeading" target="FieldConfiguration" deleteRule="Nullify" db-relationship-path="fieldConfiguration"/>
-	<obj-relationship name="fields" source="FieldHeading" target="Field" deleteRule="Deny" db-relationship-path="fields"/>
+	<obj-relationship name="fields" source="FieldHeading" target="Field" deleteRule="Nullify" db-relationship-path="fields"/>
 	<obj-relationship name="college" source="Instruction" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="parameters" source="Instruction" target="InstructionParameter" deleteRule="Cascade" db-relationship-path="parameters"/>
 	<obj-relationship name="instruction" source="InstructionParameter" target="Instruction" deleteRule="Nullify" db-relationship-path="instruction"/>
