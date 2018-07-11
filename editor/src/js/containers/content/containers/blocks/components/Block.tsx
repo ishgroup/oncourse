@@ -9,32 +9,43 @@ interface Props {
   onSave: (blockId, html) => void;
 }
 
+//custom event to reinitialize site plugins on editing content
+const pluginInitEvent = new Event("plugins:init");
+
 export class Block extends React.Component<Props, any> {
 
   constructor(props) {
     super(props);
     this.state = {
       editMode: false,
-      content: '',
-      draftContent: '',
+      draftContent: ''
     };
   }
 
-  onClickArea(e) {
+  componentDidMount() {
+    document.dispatchEvent(pluginInitEvent);
+  }
+
+  onClickArea() {
+    const {block} = this.props;
+
     this.setState({
       editMode: true,
-      content: e.currentTarget.querySelector('.editor-area').innerHTML,
-      draftContent: e.currentTarget.querySelector('.editor-area').innerHTML,
+      draftContent: block.content
     });
   }
 
   onChangeArea(val) {
-    this.setState({draftContent: val});
+    this.setState({
+      draftContent: val,
+    });
   }
 
   onSave() {
     const {onSave, block} = this.props;
-    this.setState({editMode: false});
+    this.setState({
+      editMode: false
+    });
     onSave(block.id, this.state.draftContent);
   }
 
@@ -43,16 +54,25 @@ export class Block extends React.Component<Props, any> {
 
     this.setState({
       editMode: false,
-      draftContent: block.content,
+      draftContent: block.content
     });
   }
 
-  render() {
-    const {block} = this.props;
+  componentDidUpdate() {
+    const { editMode } = this.state;
 
-    return (
+    if(!editMode && this.props.block.content) {
+      document.dispatchEvent(pluginInitEvent);
+    }
+  }
+
+  render() {
+    const { block } = this.props;
+    const { editMode } = this.state;
+
+      return (
       <div>
-        {this.state.editMode &&
+        {editMode &&
           <div>
             <FormGroup>
               <Editor
@@ -69,11 +89,11 @@ export class Block extends React.Component<Props, any> {
 
         }
 
-        <div onClick={e => this.onClickArea(e)}>
-          {!this.state.editMode &&
+        <div onClick={() => this.onClickArea()}>
+          {!editMode &&
             <div
               className={classnames("editor-area", {'editor-area--empty': !block.content})}
-              dangerouslySetInnerHTML={{__html: block.content}}
+              dangerouslySetInnerHTML={{__html: block.content }}
             />
           }
         </div>
