@@ -12,6 +12,8 @@ public class ContactFieldsRequest  {
     private List<String> waitingCourseIds = new ArrayList<String>();
     private Boolean mandatoryOnly = null;
     private FieldSet fieldSet = null;
+    private Boolean isPayer = null;
+    private Boolean isParent = null;
 
     /**
      * Requested contact id
@@ -130,6 +132,40 @@ public class ContactFieldsRequest  {
       return this;
     }
 
+    /**
+     * Get isPayer
+     * @return isPayer
+     */
+    public Boolean getIsPayer() {
+        return isPayer;
+    }
+
+    public void setIsPayer(Boolean isPayer) {
+       this.isPayer = isPayer;
+    }
+
+    public ContactFieldsRequest isPayer(Boolean isPayer) {
+      this.isPayer = isPayer;
+      return this;
+    }
+
+    /**
+     * Get isParent
+     * @return isParent
+     */
+    public Boolean getIsParent() {
+        return isParent;
+    }
+
+    public void setIsParent(Boolean isParent) {
+       this.isParent = isParent;
+    }
+
+    public ContactFieldsRequest isParent(Boolean isParent) {
+      this.isParent = isParent;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -142,6 +178,8 @@ public class ContactFieldsRequest  {
       sb.append("    waitingCourseIds: ").append(toIndentedString(waitingCourseIds)).append("\n");
       sb.append("    mandatoryOnly: ").append(toIndentedString(mandatoryOnly)).append("\n");
       sb.append("    fieldSet: ").append(toIndentedString(fieldSet)).append("\n");
+      sb.append("    isPayer: ").append(toIndentedString(isPayer)).append("\n");
+      sb.append("    isParent: ").append(toIndentedString(isParent)).append("\n");
       sb.append("}");
       return sb.toString();
     }

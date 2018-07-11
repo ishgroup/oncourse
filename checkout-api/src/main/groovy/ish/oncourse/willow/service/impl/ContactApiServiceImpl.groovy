@@ -4,17 +4,22 @@ import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.api.cayenne.CayenneService
 import ish.oncourse.model.College
+import ish.oncourse.model.Course
+import ish.oncourse.model.Field
 import ish.oncourse.model.WebSite
 import ish.oncourse.willow.checkout.functions.GetContact
 import ish.oncourse.willow.functions.CheckParent
 import ish.oncourse.willow.functions.CreateOrGetContact
 import ish.oncourse.willow.functions.CreateParentChildrenRelation
+import ish.oncourse.willow.functions.field.ContactFieldsBuilder
 import ish.oncourse.willow.functions.field.GetCompanyFields
 import ish.oncourse.willow.functions.field.GetContactFields
 import ish.oncourse.willow.functions.SubmitContactFields
 import ish.oncourse.willow.functions.concession.AddConcession
 import ish.oncourse.willow.functions.concession.GetConcessionTypes
 import ish.oncourse.willow.functions.concession.GetConcessionsAndMemberships
+import ish.oncourse.willow.functions.field.GetCoursesByClassIds
+import ish.oncourse.willow.functions.field.MergeFields
 import ish.oncourse.willow.model.checkout.ConcessionsAndMemberships
 import ish.oncourse.willow.model.checkout.CreateParentChildrenRequest
 import ish.oncourse.willow.model.checkout.concession.Concession
@@ -70,35 +75,48 @@ class ContactApiServiceImpl implements ContactApi{
         if (createRelation.error) {
             context.rollbackChanges()
             logger.info("Can not create parent children relation, college id: ${college.id}, request: ${request}")
-            throw new BadRequestException(Response.status(400).entity(createRelation.error).build())
+            throw new BadRequestException(Response.status(Response.Status.BAD_REQUEST).entity(createRelation.error).build())
         } else {
             context.commitChanges()
         }
     }
     
     @Override
-    ContactFields getContactFields(ContactFieldsRequest contactFieldsRequest) {
+    ContactFields getContactFields(ContactFieldsRequest request) {
         ObjectContext context = cayenneService.newContext()
         College college = collegeService.college
-        WebSite webSite = collegeService.webSite
-        ish.oncourse.model.Contact contact = new GetContact(context, college, contactFieldsRequest.contactId).get(false)
-        
+        ish.oncourse.model.Contact contact = new GetContact(context, college, request.contactId).get(false)
+
+        List<Course> coursesByClassIds = new GetCoursesByClassIds(request.classIds, college, context).courses
+
+        List<Field> fieldsToMerge = []
+
         if (contact.isCompany) {
-            return new GetCompanyFields(contact, webSite, college, context, contactFieldsRequest.mandatoryOnly).get()
+            fieldsToMerge.addAll(new GetCompanyFields(contact, college, context).fields)
         } else {
-            
-            if (contactFieldsRequest.classIds.empty 
-                    && contactFieldsRequest.productIds.empty 
-                    && contactFieldsRequest.waitingCourseIds.empty) {
-                logger.info("classesIds required, request param: $contactFieldsRequest")
-                throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'classesIds required')).build())
+            if (request.classIds.empty
+                    && request.productIds.empty
+                    && request.waitingCourseIds.empty) {
+                logger.info("classesIds required, request param: $request")
+                throw new BadRequestException(Response.status(Response.Status.BAD_REQUEST).entity(new CommonError(message: 'classesIds required')).build())
             }
-            if (!contactFieldsRequest.fieldSet) {
-                logger.info("fieldSet required, request param: $contactFieldsRequest")
-                throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'fieldSet required')).build())
+            if (!request.fieldSet) {
+                logger.info("fieldSet required, request param: $request")
+                throw new BadRequestException(Response.status(Response.Status.BAD_REQUEST).entity(new CommonError(message: 'fieldSet required')).build())
             }
-            new GetContactFields(contact, webSite, contactFieldsRequest.classIds, contactFieldsRequest.waitingCourseIds, contactFieldsRequest.productIds, contactFieldsRequest.mandatoryOnly).contactFields
+            fieldsToMerge.addAll(new GetContactFields(contact, coursesByClassIds, request.waitingCourseIds, request.productIds, request.mandatoryOnly).fields)
         }
+
+        if (request.isPayer) {
+            fieldsToMerge.addAll(coursesByClassIds*.fieldConfigurationScheme*.payerFieldConfiguration*.fields.flatten() as List<Field>)
+        }
+
+        if (request.isParent) {
+            fieldsToMerge.addAll(coursesByClassIds*.fieldConfigurationScheme*.parentFieldConfiguration*.fields.flatten() as List<Field>)
+        }
+
+        Set<Field> fields = new MergeFields(fieldsToMerge).fields
+        new ContactFieldsBuilder(request.mandatoryOnly, contact, collegeService.webSite, fields).build()
     }
     
     @Override
@@ -123,7 +141,7 @@ class ContactApiServiceImpl implements ContactApi{
             return response
         } else {
             logger.info(" Vaidation error: $submit.errors")
-            throw new BadRequestException(Response.status(400).entity(submit.errors).build())
+            throw new BadRequestException(Response.status(Response.Status.BAD_REQUEST).entity(submit.errors).build())
         }
     }
 
@@ -168,7 +186,7 @@ class ContactApiServiceImpl implements ContactApi{
         } else {
             context.rollbackChanges()
             logger.warn(" Vaidation error: $addConcession.errors")
-            throw new BadRequestException(Response.status(400).entity(addConcession.errors).build())        
+            throw new BadRequestException(Response.status(Response.Status.BAD_REQUEST).entity(addConcession.errors).build())
         }
     }
 

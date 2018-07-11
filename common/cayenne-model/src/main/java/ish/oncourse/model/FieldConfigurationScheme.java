@@ -32,4 +32,12 @@ public class FieldConfigurationScheme extends _FieldConfigurationScheme implemen
 	public FieldConfiguration getWaitingListFieldConfiguration() {
 		return FieldConfigurationSchemeUtil.getConfiguration(this, FieldConfigurationType.WAITING_LIST, super.getWaitingListFieldConfiguration());
 	}
+
+	public FieldConfiguration getPayerFieldConfiguration() {
+		return FieldConfigurationSchemeUtil.getConfiguration(this, FieldConfigurationType.PAYER, null);
+	}
+
+	public FieldConfiguration getParentFieldConfiguration() {
+		return FieldConfigurationSchemeUtil.getConfiguration(this, FieldConfigurationType.PARENT, null);
+	}
 }

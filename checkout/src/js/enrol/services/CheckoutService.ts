@@ -175,7 +175,7 @@ export class CheckoutService {
 
   public createParentChildrenRelation = (parentId, childIds): Promise<any> => (
     this.contactApi.createParentChildrenRelation({parentId, childrenIds: childIds})
-  )
+  );
 
   public getCorporatePass = (code: string, state: IshState): Promise<any> => (
     this.corporatePassApi.getCorporatePass(BuildGetCorporatePassRequest.fromState(state, code))
@@ -184,7 +184,7 @@ export class CheckoutService {
   public haveContactSelectedItems = (contact: Contact, summary: SummaryState): boolean => {
     const request: ContactFieldsRequest = BuildContactFieldsRequest.fromStateSelected(contact, summary);
     return !!(request.classIds.length || request.waitingCourseIds.length || request.productIds.length);
-  }
+  };
 
   public processPaymentResponse = (response: PaymentResponse, actions: any[] = []): IAction<any>[] | Observable<any> => {
     switch (response.status) {
@@ -260,6 +260,8 @@ export class BuildContactFieldsRequest {
     result.waitingCourseIds = cart.waitingCourses.result;
     result.fieldSet = FieldSet.ENROLMENT;
     result.mandatoryOnly = !newContact;
+    result.isPayer = false;
+    result.isParent = false;
     return result;
   }
 
@@ -269,6 +271,8 @@ export class BuildContactFieldsRequest {
     result.classIds = [];
     result.productIds = [];
     result.waitingCourseIds = [];
+    result.isPayer = false;
+    result.isParent = false;
 
     const enrolments = ['enrolments', 'applications'];
     const products = ['vouchers', 'memberships', 'articles'];

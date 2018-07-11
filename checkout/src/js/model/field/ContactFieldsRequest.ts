@@ -26,6 +26,11 @@ export class ContactFieldsRequest {
    * Flag to show only mandatory fields
    */
   mandatoryOnly?: boolean;
+
   fieldSet?: FieldSet;
+
+  isPayer ?: boolean;
+
+  isParent ?: boolean;
 }
 

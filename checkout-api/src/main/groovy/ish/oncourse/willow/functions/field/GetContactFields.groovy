@@ -1,6 +1,7 @@
 package ish.oncourse.willow.functions.field
 
 import groovy.transform.CompileStatic
+import ish.common.types.FieldConfigurationType
 import ish.oncourse.model.Contact
 import ish.oncourse.model.Course
 import ish.oncourse.model.CourseClass
@@ -21,59 +22,31 @@ class GetContactFields {
     final static Logger logger = LoggerFactory.getLogger(GetContactFields.class)
     
     private Contact contact
-    private WebSite webSite
-    private List<String> classIds
+    private List<Course> coursesByClassIds
     private List<String> courseIds
     private boolean hasProducts
     private boolean mandatoryOnly
 
-    GetContactFields(Contact contact, WebSite webSite, List<String> classIds, List<String> courseIds, List<String> productIds, boolean mandatoryOnly) {
+    GetContactFields(Contact contact, List<Course> coursesByClassIds, List<String> courseIds, List<String> productIds, boolean mandatoryOnly) {
         this.contact = contact
-        this.webSite = webSite
         this.hasProducts = !productIds.empty
         this.mandatoryOnly = mandatoryOnly
-        this.classIds = classIds
+        this.coursesByClassIds = coursesByClassIds
         this.courseIds = courseIds
-
     }
     
-    ContactFields getContactFields() {
-        //get corresponded field configuration for all classes 
-        Set<FieldConfiguration> configurations = getFieldConfigurations()
-        
-        Set<Field> fields = mergeFieldConfigurations(configurations)
-        
-        ContactFields result = new ContactFields()
-        result.contactId = contact.id.toString()
-        result.headings = FieldHelper.valueOf(mandatoryOnly, contact, webSite, fields).buildFieldHeadings()
-        return result
-    }
-    
-    private Set<Field> mergeFieldConfigurations(Set<FieldConfiguration> configurations) {
-       (configurations*.fields.flatten()  as List<Field>)                                   // collect all fields in single list
-                .groupBy { f -> f.property }                                      // group by unique key to map like [key1: [field1, field2,...], key2: [field3, field4,...],... ]
-                .values()                                                               // get list of lists 
-                .collect { List<Field> list ->  list.sort { !it.mandatory }[0] }         // get first mandatory field (if mandatory field there) from each list
-                .toSet()
+    List<Field> getFields() {
+       fieldConfigurations*.fields.flatten() as List<Field>
     }
     
     private Set<FieldConfiguration> getFieldConfigurations() {
         Set<FieldConfiguration> configurations = []
-        if (!classIds.empty) {
-            List<CourseClass> classes = (ObjectSelect.query(CourseClass)
-                    .where(ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN, classIds))
-                    & CourseClass.COLLEGE.eq(contact.college))
-                    .prefetch(CourseClass.COURSE.joint())
-                    .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
-                    .cacheGroup(CourseClass.class.simpleName)
-                    .select(contact.objectContext)
 
-            classes*.course.findAll { c -> c.fieldConfigurationScheme }.unique().each { c ->
-                if (new FindOfferedApplication(c, contact.student, contact.objectContext).applcation) {
-                    configurations << c.fieldConfigurationScheme.applicationFieldConfiguration
-                } else {
-                    configurations << c.fieldConfigurationScheme.enrolFieldConfiguration
-                }
+        coursesByClassIds.each { c ->
+            if (new FindOfferedApplication(c, contact.student, contact.objectContext).applcation) {
+                configurations << c.fieldConfigurationScheme.applicationFieldConfiguration
+            } else {
+                configurations << c.fieldConfigurationScheme.enrolFieldConfiguration
             }
         }
 

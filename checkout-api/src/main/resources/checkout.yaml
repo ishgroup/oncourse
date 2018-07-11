@@ -1098,6 +1098,8 @@ definitions:
     - waitingCourseIds
     - mandatoryOnly
     - fieldSet
+    - isPayer
+    - isParent
     properties:
       contactId:
         type: string
@@ -1122,6 +1124,10 @@ definitions:
         description: Flag to show only mandatory fields
       fieldSet:
         $ref: '#/definitions/field.FieldSet'
+      isPayer:
+        type: boolean
+      isParent:
+        type: boolean
   field.DataType:
     type: string
     enum:

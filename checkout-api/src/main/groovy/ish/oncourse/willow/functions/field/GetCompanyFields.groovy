@@ -28,33 +28,25 @@ class GetCompanyFields {
     private static final String VALUE_Hide = "Hide"
 
     private Contact company
-    private WebSite webSite
     private College college
     private ObjectContext context
-    private boolean mandatoryOnly
 
 
-    GetCompanyFields(Contact company, WebSite webSite, College college, ObjectContext context, boolean mandatoryOnly) {
+    GetCompanyFields(Contact company, College college, ObjectContext context) {
         this.company = company
-        this.webSite = webSite
         this.college = college
         this.context = context
-        this.mandatoryOnly = mandatoryOnly
     }
 
-
-
-    ContactFields get() {
+    List<Field> getFields() {
         FieldConfiguration configuration = new GetDefaultFieldConfiguration(college, context).get()
-        Set<Field> companyFields = configuration.fields.findAll { COMPANY_FIELDS.contains(getByKey(it.property)) }.toSet()
+        List<Field> companyFields = configuration.fields.findAll { COMPANY_FIELDS.contains(getByKey(it.property)) }
         addAbnField(companyFields)
-        ContactFields result = new ContactFields()
-        result.contactId = company.id.toString()
-        result.headings = FieldHelper.valueOf(mandatoryOnly, company, webSite, companyFields).buildFieldHeadings()
-        return result
+
+        companyFields
     }
 
-    void addAbnField(Set<Field> companyFields) {
+    void addAbnField(List<Field> companyFields) {
         if (company.abn || companyFields.find {it.property == ABN.key}) {
             return
         }
