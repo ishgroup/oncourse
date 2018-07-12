@@ -91,7 +91,11 @@ class ContactApiServiceImpl implements ContactApi{
 
         List<Field> fieldsToMerge = []
 
-        if (contact.isCompany) {
+        if (request.isPayer) {
+            fieldsToMerge.addAll(coursesByClassIds*.fieldConfigurationScheme*.payerFieldConfiguration*.fields.flatten() as List<Field>)
+        } else if (request.isParent) {
+            fieldsToMerge.addAll(coursesByClassIds*.fieldConfigurationScheme*.parentFieldConfiguration*.fields.flatten() as List<Field>)
+        } else if (contact.isCompany) {
             fieldsToMerge.addAll(new GetCompanyFields(contact, college, context).fields)
         } else {
             if (request.classIds.empty
@@ -105,14 +109,6 @@ class ContactApiServiceImpl implements ContactApi{
                 throw new BadRequestException(Response.status(Response.Status.BAD_REQUEST).entity(new CommonError(message: 'fieldSet required')).build())
             }
             fieldsToMerge.addAll(new GetContactFields(contact, coursesByClassIds, request.waitingCourseIds, request.productIds, request.mandatoryOnly).fields)
-        }
-
-        if (request.isPayer) {
-            fieldsToMerge.addAll(coursesByClassIds*.fieldConfigurationScheme*.payerFieldConfiguration*.fields.flatten() as List<Field>)
-        }
-
-        if (request.isParent) {
-            fieldsToMerge.addAll(coursesByClassIds*.fieldConfigurationScheme*.parentFieldConfiguration*.fields.flatten() as List<Field>)
         }
 
         Set<Field> fields = new MergeFields(fieldsToMerge).fields
