@@ -55,11 +55,8 @@ public class SolrQueryBuilder {
 	static final String FILTER_TEMPLATE_tutorId = "tutorId:%d";
 	static final String FILTER_TEMPLATE_between = FIELD_class_start + ":[%s TO %s]";
 
-	static final String FILTER_TEMPLATE_geofilt = "{!score=distance}%s";
-
-	static final String FILTER_TEMPLATE_course_loc = "{!geofilt sfield=%s pt=%s d=%s}";
-
-
+	static final String FILTER_TEMPLATE_geofilt = "{!geofilt score=distance sfield=course_loc pt=%s d=%s}";
+	
 	public static final String FILTER_TEMPLATE_ALL = "*:*";
 
 	static final String QUERY_brackets = "(%s)";
@@ -276,7 +273,8 @@ public class SolrQueryBuilder {
 		for (Suburb suburb : suburbs) {
 			intersects.add(getSuburbQuery(suburb));
 		}
-		final String geoFilterQuery = String.format(FILTER_TEMPLATE_geofilt, StringUtils.join(intersects, " "));
+
+		final String geoFilterQuery = StringUtils.join(intersects, "");
 		query.addFilterQuery(geoFilterQuery);
 		query.setQuery(BOOST_STATEMENT);
 		query.setParam(PARAMETER_BOOST_FUNCTION, GEO_LOCATION_BOOST_FUNCTION);
@@ -301,7 +299,7 @@ public class SolrQueryBuilder {
 
 
 	public static String getSuburbQuery(Suburb suburb) {
-		return String.format(FILTER_TEMPLATE_course_loc, PARAMETER_VALUE_sfield, suburb.getCoordinates(), (suburb.getDistance() / KM_IN_DEGREE_VALUE));
+		return String.format(FILTER_TEMPLATE_geofilt, suburb.getCoordinates(), (suburb.getDistance() / KM_IN_DEGREE_VALUE));
 	}
 
 	public static List<String> getTagQueries(Tag tag) {
