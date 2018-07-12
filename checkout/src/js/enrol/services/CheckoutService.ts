@@ -80,11 +80,11 @@ export class CheckoutService {
   }
 
   public loadFields = (contact: Contact, state: IshState): Promise<ContactFields> => {
-    return this.contactApi.getContactFields(BuildContactFieldsRequest.fromState(contact, state.cart, state.checkout.newContact));
+    return this.contactApi.getContactFields(BuildContactFieldsRequest.fromState(contact, state.cart, state.checkout.newContact, state.checkout.phase));
   }
 
   public loadFieldsForSelected = (contact: Contact, state: IshState): Promise<ContactFields> => {
-    return this.contactApi.getContactFields(BuildContactFieldsRequest.fromStateSelected(contact, state.checkout.summary));
+    return this.contactApi.getContactFields(BuildContactFieldsRequest.fromStateSelected(contact, state.checkout.summary, state.checkout.phase));
   }
 
   public submitContactDetails = (values: ContactFields, fields: { [key: string]: any }): Promise<any> => {
@@ -252,7 +252,7 @@ export class BuildContactNodeRequest {
 }
 
 export class BuildContactFieldsRequest {
-  static fromState = (contact: Contact, cart: CartState, newContact: boolean): ContactFieldsRequest => {
+  static fromState = (contact: Contact, cart: CartState, newContact: boolean, phase?: Phase ): ContactFieldsRequest => {
     const result: ContactFieldsRequest = new ContactFieldsRequest();
     result.contactId = contact.id;
     result.classIds = cart.courses.result;
@@ -260,19 +260,19 @@ export class BuildContactFieldsRequest {
     result.waitingCourseIds = cart.waitingCourses.result;
     result.fieldSet = FieldSet.ENROLMENT;
     result.mandatoryOnly = !newContact;
-    result.isPayer = false;
-    result.isParent = false;
+    result.isPayer = phase && Phase[phase] === "AddContactAsPayer";
+    result.isParent = phase && Phase[phase] === "AddParent";
     return result;
   }
 
-  static fromStateSelected = (contact: Contact, summary: SummaryState): ContactFieldsRequest => {
+  static fromStateSelected = (contact: Contact, summary: SummaryState, phase?: Phase): ContactFieldsRequest => {
     const result: ContactFieldsRequest = new ContactFieldsRequest();
     result.contactId = contact.id;
     result.classIds = [];
     result.productIds = [];
     result.waitingCourseIds = [];
-    result.isPayer = false;
-    result.isParent = false;
+    result.isPayer = phase && Phase[phase] === "AddContactAsPayer";
+    result.isParent = phase && Phase[phase] === "AddParent";
 
     const enrolments = ['enrolments', 'applications'];
     const products = ['vouchers', 'memberships', 'articles'];
