@@ -97,7 +97,7 @@ class ContactApiServiceImpl implements ContactApi{
             fieldsToMerge.addAll(coursesByClassIds*.fieldConfigurationScheme*.parentFieldConfiguration*.fields.flatten() as List<Field>)
         }
 
-        if (!fieldsToMerge) {
+        if (fieldsToMerge.empty) {
             if (contact.isCompany) {
                 fieldsToMerge.addAll(new GetCompanyFields(contact, college, context).fields)
             } else {
