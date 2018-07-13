@@ -77,7 +77,9 @@ class FieldHelper {
                             // create rest 'field' based on data type and persistent 'field'. Add to corresponded heading
                         }
                     } else {
-                        getHeadingBy(f.fieldHeading).fields.addAll(new FieldTagBuilder(field: f, contact: contact, webSite: webSite).build())
+                        if (!mandatoryOnly) {
+                            getHeadingBy(f.fieldHeading).fields.addAll(new FieldTagBuilder(field: f, contact: contact, webSite: webSite).build())
+                        }
                     }
                 }
             } else {

@@ -20,15 +20,17 @@ public class LinkTagToQueueable {
     }
 
     public void apply() {
-       Taggable taggable = context.newObject(Taggable.class);
-       taggable.setEntityIdentifier(target.getClass().getSimpleName());
-       taggable.setCollege(tag.getCollege());
-       taggable.setEntityWillowId(target.getId());
-       taggable.setEntityAngelId(target.getAngelId());
+        if (GetIsTagAssignedTo.valueOf(context, tag, target).get()) {
+            Taggable taggable = context.newObject(Taggable.class);
+            taggable.setEntityIdentifier(target.getClass().getSimpleName());
+            taggable.setCollege(tag.getCollege());
+            taggable.setEntityWillowId(target.getId());
+            taggable.setEntityAngelId(target.getAngelId());
 
-       TaggableTag taggableTag = context.newObject(TaggableTag.class);
-       taggableTag.setTaggable(taggable);
-       taggableTag.setTag(tag);
-       taggableTag.setCollege(tag.getCollege());
+            TaggableTag taggableTag = context.newObject(TaggableTag.class);
+            taggableTag.setTaggable(taggable);
+            taggableTag.setTag(tag);
+            taggableTag.setCollege(tag.getCollege());
+        }
     }
 }
