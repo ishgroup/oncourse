@@ -372,7 +372,8 @@ public class Courses extends ISHCommon {
 	}
 
 	public SearchParams getCourseSearchParams() {
-		SearchParamsParser searchParamsParser = SearchParamsParser.valueOf(request, searchService, tagService, webSiteService.getTimezone());
+		SearchParamsParser searchParamsParser = SearchParamsParser.valueOf(request, webSiteService.getCurrentCollege(),
+				searchService, tagService, webSiteService.getTimezone());
 		searchParamsParser.parse();
 		paramsInError = searchParamsParser.getParamsInError();
 		return searchParamsParser.getSearchParams();

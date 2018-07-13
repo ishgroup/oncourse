@@ -27,7 +27,9 @@ public class LocationFacetQueryBuilder {
     private SolrQuery solrQuery;
 
     public LocationFacetQueryBuilder build() {
-        solrQuery = SolrQueryBuilder.valueOf(searchParams, collegeId).build();
+        solrQuery = new SolrQueryBuilder()
+                .searchParams(searchParams)
+                .collegeId(collegeId).build();
         solrQuery.setFacet(true);
 
         facetQueries = new HashMap<>();

@@ -92,7 +92,8 @@ public class TextileLocation {
             path = StringUtils.join(values, "/");
             identifier = path.replaceAll("[^A-Za-z0-9]", "_");
 
-            SearchParamsParser parser = SearchParamsParser.valueOf(request, searchService, tagService, webSiteService.getTimezone());
+            SearchParamsParser parser = SearchParamsParser.valueOf(request, webSiteService.getCurrentCollege(),
+                    searchService, tagService, webSiteService.getTimezone());
             parser.parse();
             Map<String, Count> result = searchService.getCountersForLocations(parser.getSearchParams(),
                     Collections.singletonList(Count.valueOf(identifier, path, 0)));

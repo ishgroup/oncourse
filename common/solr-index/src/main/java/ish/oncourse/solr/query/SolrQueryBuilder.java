@@ -45,7 +45,7 @@ public class SolrQueryBuilder {
 	static final String PARAMETER_VALUE_sfield = "course_loc";
 
 
-	static final String FILTER_TEMPLATE_collegeId = "+collegeId:%s +doctype:course end:[NOW TO *]";
+	static final String FILTER_TEMPLATE_collegeId = "+collegeId:%s +doctype:course end:[%s TO *]";
 	public static final String FILTER_TEMPLATE_s = "(detail:(%s)^1 || tutor:(%s)^5 || course_code:(%s)^30 || name:(%s)^20)";
 	public static final String EXTENED_FILTER_TEMPLATE_s = "%s || (%s)^100";
 	public static final String FILTER_TEMPLATE_price = "price:[* TO %s]";
@@ -79,10 +79,38 @@ public class SolrQueryBuilder {
 
 	private TagGroups tagGroups;
 
-	public SolrQuery build() {
-		SolrQuery q = new SolrQuery();
+	public SolrQueryBuilder searchParams(SearchParams searchParams) {
+		this.params = searchParams;
+		return this;
+	}
 
-		fillCommons(q);
+	public SolrQueryBuilder collegeId(String collegeId) {
+		this.collegeId = collegeId;
+		return this;
+	}
+
+	public SolrQueryBuilder start(Integer start) {
+		this.start = start;
+		return this;
+	}
+
+	public SolrQueryBuilder rows(Integer rows) {
+		this.rows = rows;
+		return this;
+	}
+
+	public SolrQueryBuilder appendFacet(boolean appendFacet) {
+		this.appendFacet = appendFacet;
+		return this;
+	}
+
+	public SolrQueryBuilder tagGroups(TagGroups tagGroups) {
+		this.tagGroups = tagGroups;
+		return this;
+	}
+
+	public SolrQuery build() {
+		tagGroups = tagGroups == null ? TagGroups.valueOf(params) : tagGroups;
 
 		ArrayList<String> filters = new ArrayList<>();
 		appendFilterS(filters);
@@ -106,14 +134,17 @@ public class SolrQueryBuilder {
 		appendFilterTutorId(filters);
 		appendAnd(filters);
 
-		appendFilterTag(q);
 
 		clearLastAnd(filters);
 
 		if (filters.isEmpty())
 			appendFilterAll(filters);
 
-		setFiltersTo(q, filters);
+		SolrQuery q = createSolrQuery(filters);
+		fillCommons(q);
+
+		appendFilterTag(q);
+
 		q.addSort(FIELD_score, ORDER.desc);
 		q.addSort(FIELD_startDate, ORDER.asc);
 		q.addSort(FIELD_name, ORDER.asc);
@@ -199,7 +230,25 @@ public class SolrQueryBuilder {
 			q.setShowDebugInfo(params.getDebugQuery());
 			q.set(CommonParams.EXPLAIN_STRUCT, String.valueOf(true));
 		}
-		q.addFilterQuery(String.format(FILTER_TEMPLATE_collegeId, collegeId));
+
+
+		getHideAge();
+
+		q.addFilterQuery(String.format(FILTER_TEMPLATE_collegeId, collegeId, getHideAge()));
+	}
+
+	private String getHideAge() {
+		if (params.getClassAge() != null) {
+			switch (params.getClassAge().getType()) {
+				case afterClassEnds:
+					return String.format("NOW-%sDAYS", params.getClassAge().getDays());
+				case beforeClassEnds:
+					return String.format("NOW+%sDAYS", params.getClassAge().getDays());
+				default:
+					return "NOW";
+			}
+		}
+		return "NOW";
 	}
 
 	void appendFilterAll(List<String> filters) {
@@ -266,7 +315,7 @@ public class SolrQueryBuilder {
 	}
 
 
-	void setFiltersAndNearTo(SolrQuery query, List<String> filters) {
+	private SolrQuery createGeoLocationQuery(List<String> filters) {
 		List<Suburb> suburbs = params.getSuburbs();
 
 		ArrayList<String> intersects = new ArrayList<>();
@@ -275,21 +324,21 @@ public class SolrQueryBuilder {
 		}
 
 		final String geoFilterQuery = StringUtils.join(intersects, "");
+		SolrQuery query = new SolrQuery();
 		query.addFilterQuery(geoFilterQuery);
 		query.setQuery(BOOST_STATEMENT);
 		query.setParam(PARAMETER_BOOST_FUNCTION, GEO_LOCATION_BOOST_FUNCTION);
 		query.setParam(PARAMETER_geofq, geoFilterQuery);
 		query.setParam(PARAMETER_qq, String.format(QUERY_brackets, convert(filters)));
+		return query;
 	}
 
-	void setFiltersTo(SolrQuery query, List<String> filters) {
-		if (!params.getSuburbs().isEmpty()) {
-			setFiltersAndNearTo(query, filters);
-		} else {
-			query.setQuery(BOOST_STATEMENT);
-			query.setParam(PARAMETER_BOOST_FUNCTION, DATE_BOOST_FUNCTION);
-			query.setParam(PARAMETER_qq, String.format(QUERY_brackets, convert(filters)));
-		}
+	private SolrQuery createSolrQuery(List<String> filters) {
+		return params.getSuburbs().isEmpty() ?
+				new BuildBoostQuery()
+						.hideAge(params.getClassAge())
+						.mainQuery(String.format(QUERY_brackets, convert(filters)))
+						.build() : createGeoLocationQuery(filters);
 	}
 
 
@@ -342,24 +391,15 @@ public class SolrQueryBuilder {
 		return builder;
 	}
 
-	public static SolrQueryBuilder valueOf(
-			SearchParams params,
-			TagGroups tagGroups,
-			String collegeId) {
-		return valueOf(params, tagGroups, collegeId, 0, 0);
-	}
-
-	public static SolrQueryBuilder valueOf(
-			SearchParams params,
-			String collegeId) {
-		return valueOf(params, TagGroups.valueOf(params), collegeId, 0, 0);
-	}
 
 	public static SolrQueryBuilder valueOf(
 			SearchParams params,
 			String collegeId, Integer start,
 			Integer rows) {
-		return valueOf(params, TagGroups.valueOf(params), collegeId, start, rows);
+		return new SolrQueryBuilder().searchParams(params)
+				.tagGroups(TagGroups.valueOf(params))
+				.collegeId(collegeId)
+				.start(start).rows(rows);
 	}
 
 

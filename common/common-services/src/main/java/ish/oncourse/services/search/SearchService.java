@@ -97,7 +97,7 @@ public class SearchService implements ISearchService {
 
 		try {
 			String collegeId = String.valueOf(webSiteService.getCurrentCollege().getId());
-			SolrQuery q = applyCourseRootTag(SolrQueryBuilder.valueOf(params, collegeId, start, rows).build());
+			SolrQuery q = applyCourseRootTag(new SolrQueryBuilder().searchParams(params).collegeId(collegeId).start(start).rows(rows).build());
 			SearchResult searchResult = SearchResult.valueOf(q, query(q, SolrCollection.courses));
 			logger.debug("Solr query: {}", searchResult.getSolrQueryAsString());
 			return searchResult;
@@ -113,7 +113,7 @@ public class SearchService implements ISearchService {
 
 			for (Tag tag : tags) {
 				TagGroups tagGroups = ish.oncourse.solr.query.TagGroups.valueOf(params, tag);
-				SolrQuery q = applyCourseRootTag(SolrQueryBuilder.valueOf(params, tagGroups, collegeId).build());
+				SolrQuery q = applyCourseRootTag(new SolrQueryBuilder().searchParams(params).tagGroups(tagGroups).collegeId(collegeId).build());
 				q.setFacet(true);
 				String query = SolrQueryBuilder.getTagQuery(tag);
 				q.addFacetQuery(query);

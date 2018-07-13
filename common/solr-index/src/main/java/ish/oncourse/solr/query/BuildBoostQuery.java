@@ -3,7 +3,7 @@
  */
 package ish.oncourse.solr.query;
 
-import ish.oncourse.services.courseclass.ClassAgeType;
+import ish.oncourse.services.courseclass.ClassAge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.solr.client.solrj.SolrQuery;
@@ -25,9 +25,6 @@ public class BuildBoostQuery {
 	private final static String StartDateFunction = "if(lt(ms(startDate), $hideAge ), sub($startDatePlus100Year,ms(NOW-1YEAR/DAY)), $yearAge)";
 
 
-	/**
-	 * if   NOW + hide on web class age</code>
-	 */
 	private final static Function<Integer, String> HideAge = (Integer hideAge) -> String.format("ms(NOW%sDAYS)", new DecimalFormat("+#;-#").format(hideAge));
 	private final static String StartDatePlus100Year = "sum(ms(startDate, NOW),ms(NOW+100YEAR))";
 	private final static String YearAge = "ms(startDate, NOW-1YEAR/DAY)";
@@ -38,16 +35,18 @@ public class BuildBoostQuery {
 	private String mainQuery = "*:*";
 
 
-	public BuildBoostQuery hideAge(int hideAge, ClassAgeType type) {
-		switch (type) {
-			case afterClassStarts:
-				this.hideAge = -hideAge;
-				break;
-			case beforeClassStarts:
-				this.hideAge = hideAge;
-				break;
-			default:
-				this.hideAge = 0;
+	public BuildBoostQuery hideAge(ClassAge classAge) {
+		if (classAge != null) {
+			switch (classAge.getType()) {
+				case afterClassStarts:
+					this.hideAge = -classAge.getDays();
+					break;
+				case beforeClassStarts:
+					this.hideAge = classAge.getDays();
+					break;
+				default:
+					this.hideAge = 0;
+			}
 		}
 		return this;
 	}

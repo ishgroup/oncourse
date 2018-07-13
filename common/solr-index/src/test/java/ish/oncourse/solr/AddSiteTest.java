@@ -61,12 +61,12 @@ public class AddSiteTest extends ASolrTest {
 		SearchParams params = new SearchParams();
 		params.setSiteId(site1.getSite().getId());
 		Assert.assertEquals(1,
-				solrClient.query(SolrQueryBuilder.valueOf(params, "10").build())
+				solrClient.query(new SolrQueryBuilder().searchParams(params).collegeId("10").build())
 						.getResults().getNumFound());
 
 		params.setSiteId(site2.getSite().getId());
 		Assert.assertEquals(1,
-				solrClient.query(SolrQueryBuilder.valueOf(params, "10").build())
+				solrClient.query(new SolrQueryBuilder().searchParams(params).collegeId("10").build())
 						.getResults().getNumFound());
 	}
 }

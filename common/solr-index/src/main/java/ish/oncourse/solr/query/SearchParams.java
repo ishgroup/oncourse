@@ -1,6 +1,7 @@
 package ish.oncourse.solr.query;
 
 import ish.oncourse.model.Tag;
+import ish.oncourse.services.courseclass.ClassAge;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -23,6 +24,7 @@ public class SearchParams {
     private Boolean debugQuery = Boolean.FALSE;
     private TimeZone clientTimezone;
     private List<Tag> tags = new ArrayList<>();
+	private ClassAge classAge;
 
     public List<Tag> getTags() {
         return tags;
@@ -152,4 +154,12 @@ public class SearchParams {
         }
     }
 
+	public ClassAge getClassAge() {
+		return classAge;
+	}
+
+	public SearchParams setClassAge(ClassAge classAge) {
+		this.classAge = classAge;
+		return this;
+	}
 }

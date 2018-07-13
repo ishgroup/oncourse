@@ -43,7 +43,8 @@ public class CourseDetails extends ISHCommon {
 
 
 	void beginRender() {
-		SearchParamsParser paramsParser = SearchParamsParser.valueOf(request, searchService, tagService, webSiteService.getTimezone());
+		SearchParamsParser paramsParser = SearchParamsParser.valueOf(request, webSiteService.getCurrentCollege(),
+				searchService, tagService, webSiteService.getTimezone());
 		paramsParser.parse();
 		searchParams = paramsParser.getSearchParams();
 		course = (Course) request.getAttribute(Course.class.getSimpleName());

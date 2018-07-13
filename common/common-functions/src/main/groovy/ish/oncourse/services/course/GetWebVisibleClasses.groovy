@@ -3,8 +3,7 @@ package ish.oncourse.services.course
 import ish.oncourse.model.Course
 import ish.oncourse.model.CourseClass
 import ish.oncourse.services.courseclass.ClassAge
-import ish.oncourse.services.preference.GetPreference
-import ish.oncourse.services.preference.Preferences
+import ish.oncourse.services.courseclass.GetHideOnWebClassAge
 
 import java.util.concurrent.Callable
 
@@ -33,9 +32,7 @@ class GetWebVisibleClasses {
     List<CourseClass> get() {
         if (!classAge) {
             classAge = {
-                String age = new GetPreference(course.getCollege(), Preferences.HIDE_CLASS_ON_WEB_AGE, course.getObjectContext()).getValue()
-                String type = new GetPreference(course.getCollege(), Preferences.HIDE_CLASS_ON_WEB_AGE_TYPE, course.getObjectContext()).getValue()
-                return ClassAge.valueOf(age, type)
+                return new GetHideOnWebClassAge().college(course.getCollege()).get()
             }
         }
         return GetActiveClasses.valueOf(course, classAge).get()

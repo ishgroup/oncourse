@@ -29,16 +29,34 @@ public class SolrQueryBuilderTest {
 	private static final String TAG2_QUERY = "(tagId:5 || tagId:6 || tagId:7 || tagId:8 || tagId:9 || tagId:10)";
 
 
-	private static final String GEOFILTER_QUERY = "qt=edismax&fl=id,name,course_loc,score&start=5&rows=10&fq=+collegeId:2 +doctype:course end:[NOW TO *]&" +
-			"fq={!score=distance}{!geofilt sfield=course_loc pt=-1.1,2.2 d=0.9044289887579477}&q={!boost b=$boostfunction v=$qq}&" +
-			"boostfunction=recip(query($geofq),1,10,5)&geofq={!score=distance}{!geofilt sfield=course_loc pt=-1.1,2.2 d=0.9044289887579477}&" +
-			"qq=(*:*)&sort=score desc,startDate asc,name asc";
-	private static final String EXPECTED_RESULT_VALUE = "qt=edismax&fl=id,name,course_loc,score&start=0&rows=100&fq=+collegeId:1 +doctype:course " +
-			"end:[NOW TO *]&fq=%s" +
+	private static final String GEOFILTER_QUERY = "fq={!score=distance}{!geofilt sfield=course_loc pt=-1.1,2.2 d=0.9044289887579477}" +
+			"&fq=+collegeId:2 +doctype:course end:[NOW TO *]" +
+			"&q={!boost b=$boostfunction v=$qq}" +
+			"&boostfunction=recip(query($geofq),1,10,5)" +
+			"&geofq={!score=distance}{!geofilt sfield=course_loc pt=-1.1,2.2 d=0.9044289887579477}" +
+			"&qq=(*:*)" +
+			"&qt=edismax&fl=id,name,course_loc,score" +
+			"&start=5" +
+			"&rows=10" +
+			"&sort=score desc,startDate asc,name asc";
+
+	private static final String EXPECTED_RESULT_VALUE = "q={!boost b=$boostFunction v=$mainQuery}" +
+			"&mainQuery=(%s " +
+			"AND price:[* TO 1999.99] " +
+			"AND when:Monday " +
+			"AND when:TIME " +
+			"AND class_start:[2012-01-01T00:00:00Z TO 2012-01-01T00:00:00Z] " +
+			"AND siteId:1000)" +
+			"&yearAge=ms(startDate, NOW-1YEAR/DAY)" +
+			"&boostFunction=recip(max($yearAge,0),1.15e-8,500,500)" +
+			"&qt=edismax" +
+			"&fl=id,name,course_loc,score" +
+			"&start=0" +
+			"&rows=100" +
+			"&fq=+collegeId:1 +doctype:course end:[NOW TO *]" +
 			"&fq=%s" +
-			"&fq=%s&q={!boost b=$boostfunction v=$qq}" +
-			"&boostfunction=recip(max(ms(startDate,NOW-1YEAR/DAY),0),1.15e-8,500,500)&qq=(%s " +
-			"AND price:[* TO 1999.99] AND when:Monday AND when:TIME AND class_start:[2012-01-01T00:00:00Z TO 2012-01-01T00:00:00Z] AND siteId:1000)" +
+			"&fq=%s" +
+			"&fq=%s" +
 			"&sort=score desc,startDate asc,name asc";
 	private static final String EXPECTED_AFTER_REPLACEMENT_S_PARAM = "1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19";
 	private static final String DIGITS_SEPARATED_BY_ALL_REPLACED_SOLR_SYNTAX_CHARACTERS = "1!2^3(4)5{6}7[8]9:10\"11?12+13~14*15|16&17;18\\19";
@@ -92,8 +110,15 @@ public class SolrQueryBuilderTest {
 		SolrQueryBuilder solrQueryBuilder = SolrQueryBuilder.valueOf(searchParams, "1", 0, 100);
 		String value = URLDecoder.decode(solrQueryBuilder.build().toString(), "UTF-8");
 
-		assertEquals("Commons parameters", "qt=edismax&fl=id,name,course_loc,score&start=0&rows=100&fq=+collegeId:1 +doctype:course end:[NOW TO *]" +
-				"&q={!boost b=$boostfunction v=$qq}&boostfunction=recip(max(ms(startDate,NOW-1YEAR/DAY),0),1.15e-8,500,500)&qq=(*:*)" +
+		assertEquals("Commons parameters", "q={!boost b=$boostFunction v=$mainQuery}" +
+				"&mainQuery=(*:*)" +
+				"&yearAge=ms(startDate, NOW-1YEAR/DAY)" +
+				"&boostFunction=recip(max($yearAge,0),1.15e-8,500,500)" +
+				"&qt=edismax" +
+				"&fl=id,name,course_loc,score" +
+				"&start=0" +
+				"&rows=100" +
+				"&fq=+collegeId:1 +doctype:course end:[NOW TO *]" +
 				"&sort=score desc,startDate asc,name asc", value);
 
 		searchParams.setAfter(FormatUtils.getDateFormat(DATE_FORMAT_FOR_AFTER_BEFORE, "UTC").parse("20120101"));
@@ -217,10 +242,10 @@ public class SolrQueryBuilderTest {
 
 		value = URLDecoder.decode(solrQueryBuilder.build().toString(), "UTF-8");
 		String expectedValue = String.format(EXPECTED_RESULT_VALUE,
+				expectedFilterForS,
 				tagQueries.get(0),
 				tagQueries.get(1),
-				tagQueries.get(2),
-				expectedFilterForS);
+				tagQueries.get(2));
 		assertEquals("Query parameters", expectedValue, value);
 
 		//check that if tag1 or tag2 not specified everything works too
@@ -246,21 +271,26 @@ public class SolrQueryBuilderTest {
 		SolrQueryBuilder solrQueryBuilder = SolrQueryBuilder.valueOf(searchParams, "1", null, null);
 		String value = URLDecoder.decode(solrQueryBuilder.build().toString(), "UTF-8");
 
-		assertEquals("Commons parameters", "qt=edismax&fl=id,name,course_loc,score&fq=+collegeId:1 +doctype:course end:[NOW TO *]" +
-				"&q={!boost b=$boostfunction v=$qq}&boostfunction=recip(max(ms(startDate,NOW-1YEAR/DAY),0),1.15e-8,500,500)&qq=(*:*)" +
+		assertEquals("Commons parameters", "q={!boost b=$boostFunction v=$mainQuery}" +
+				"&mainQuery=(*:*)" +
+				"&yearAge=ms(startDate, NOW-1YEAR/DAY)" +
+				"&boostFunction=recip(max($yearAge,0),1.15e-8,500,500)" +
+				"&qt=edismax" +
+				"&fl=id,name,course_loc,score" +
+				"&fq=+collegeId:1 +doctype:course end:[NOW TO *]" +
 				"&sort=score desc,startDate asc,name asc", value);
 	}
 
 
 	@Test
 	public void testDayParameter() throws UnsupportedEncodingException {
-		String template = "qt=edismax&" +
-				"fl=id,name,course_loc,score&" +
-				"fq=+collegeId:1 +doctype:course end:[NOW TO *]&" +
-				"q={!boost b=$boostfunction v=$qq}&" +
-				"boostfunction=recip(max(ms(startDate,NOW-1YEAR/DAY),0),1.15e-8,500,500)&" +
-				"qq=(when:%s)&" +
-				"sort=score desc,startDate asc,name asc";
+		String template = "q={!boost b=$boostFunction v=$mainQuery}" +
+				"&mainQuery=(when:%s)" +
+				"&yearAge=ms(startDate, NOW-1YEAR/DAY)" +
+				"&boostFunction=recip(max($yearAge,0),1.15e-8,500,500)" +
+				"&qt=edismax" +
+				"&fl=id,name,course_loc,score" +
+				"&fq=+collegeId:1 +doctype:course end:[NOW TO *]&sort=score desc,startDate asc,name asc";
 
 		SearchParams searchParams = new SearchParams();
 		for (DayOption dayOption : DayOption.values()) {
@@ -273,12 +303,14 @@ public class SolrQueryBuilderTest {
 
 	@Test
 	public void testTutorIdParameter() throws UnsupportedEncodingException {
-		String template = "qt=edismax&" +
-				"fl=id,name,course_loc,score&" +
-				"fq=+collegeId:1 +doctype:course end:[NOW TO *]&" +
-				"q={!boost b=$boostfunction v=$qq}&" +
-				"boostfunction=recip(max(ms(startDate,NOW-1YEAR/DAY),0),1.15e-8,500,500)&" +
-				"qq=(tutorId:%d)&sort=score desc,startDate asc,name asc";
+		String template = "q={!boost b=$boostFunction v=$mainQuery}" +
+				"&mainQuery=(tutorId:1000)" +
+				"&yearAge=ms(startDate, NOW-1YEAR/DAY)" +
+				"&boostFunction=recip(max($yearAge,0),1.15e-8,500,500)" +
+				"&qt=edismax" +
+				"&fl=id,name,course_loc,score" +
+				"&fq=+collegeId:1 +doctype:course end:[NOW TO *]" +
+				"&sort=score desc,startDate asc,name asc";
 
 		SearchParams searchParams = new SearchParams();
 		searchParams.setTutorId(1000L);

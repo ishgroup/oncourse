@@ -1,8 +1,10 @@
 package ish.oncourse.services.search;
 
 import ish.oncourse.linktransform.PageLinkTransformer;
+import ish.oncourse.model.College;
 import ish.oncourse.model.SearchParam;
 import ish.oncourse.model.Tag;
+import ish.oncourse.services.courseclass.GetHideOnWebClassAge;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.solr.query.SearchParams;
 import ish.oncourse.solr.query.Suburb;
@@ -37,10 +39,12 @@ public class SearchParamsParser
 
     private SearchParams searchParams = new SearchParams();
     private TimeZone clientTimezone;
+	private College college;
 
 	public void parse() {
         Tag browseTag = null, tag = null;
-
+        
+		searchParams.setClassAge(new GetHideOnWebClassAge().college(college).get());
         searchParams.setClientTimezone(clientTimezone);
         for (SearchParam name : SearchParam.values()) {
             String parameter = StringUtils.trimToNull(provider.getParameter(name.name()));
@@ -158,7 +162,8 @@ public class SearchParamsParser
     }
 
     public static SearchParamsParser valueOf(final Request request,
-                                             ISearchService searchService,
+											 College college,
+											 ISearchService searchService,
                                              ITagService tagService,
                                              TimeZone clientTimezone) {
         ParametersProvider provider = new ParametersProvider() {
@@ -177,15 +182,17 @@ public class SearchParamsParser
                 return request.getAttribute(name);
             }
         };
-        return valueOf(provider, searchService, tagService, clientTimezone);
+        return valueOf(provider, college, searchService, tagService, clientTimezone);
     }
 
 
     public static SearchParamsParser valueOf(ParametersProvider provider,
-                                             ISearchService searchService,
+											 College college,
+											 ISearchService searchService,
                                              ITagService tagService,
                                              TimeZone clientTimezone) {
         SearchParamsParser result = new SearchParamsParser();
+        result.college = college;
         result.provider = provider;
         result.searchService = searchService;
         result.tagService = tagService;

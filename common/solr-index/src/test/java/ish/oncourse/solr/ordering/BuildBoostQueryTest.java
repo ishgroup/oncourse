@@ -3,6 +3,7 @@
  */
 package ish.oncourse.solr.ordering;
 
+import ish.oncourse.services.courseclass.ClassAge;
 import ish.oncourse.services.courseclass.ClassAgeType;
 import ish.oncourse.solr.query.BuildBoostQuery;
 import org.apache.solr.client.solrj.SolrQuery;
@@ -18,13 +19,13 @@ public class BuildBoostQueryTest {
 	@Test
 	public void test() {
 		SolrQuery q = new BuildBoostQuery()
-				.hideAge(1, ClassAgeType.afterClassStarts)
+				.hideAge(ClassAge.valueOf(1, ClassAgeType.afterClassStarts))
 				.build();
 
 		Assert.assertEquals("ms(NOW-1DAYS)", q.getParams(BuildBoostQuery.Param.hideAge.name())[0]);
 
 		q = new BuildBoostQuery()
-				.hideAge(1, ClassAgeType.beforeClassStarts)
+				.hideAge(ClassAge.valueOf(1, ClassAgeType.beforeClassStarts))
 				.build();
 		Assert.assertEquals("ms(NOW+1DAYS)", q.getParams(BuildBoostQuery.Param.hideAge.name())[0]);
 	}

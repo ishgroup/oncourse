@@ -31,7 +31,7 @@ public class FullImportTest extends ASolrTest {
 		Assert.assertEquals(5, fullImport());
 
 
-		QueryResponse response = solrClient.query(SolrQueryBuilder.valueOf(new SearchParams(), "10").build());
+		QueryResponse response = solrClient.query(new SolrQueryBuilder().searchParams(new SearchParams()).collegeId("10").build());
 		assertEquals(5, response.getResults().getNumFound());
 	}
 

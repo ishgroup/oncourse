@@ -3,6 +3,7 @@ package ish.oncourse.services.course;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Tag;
+import ish.oncourse.services.courseclass.GetHideOnWebClassAge;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.courseclass.LoadByIds;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -68,6 +69,7 @@ public class CourseService implements ICourseService {
 	public List<Course> getCourses(Tag tag, Sort sort, Boolean isAscending, Integer limit) {
 
 		SearchParams searchParams = new SearchParams();
+		searchParams.setClassAge(new GetHideOnWebClassAge().college(webSiteService.getCurrentCollege()).get());
 		searchParams.setSubject(tag);
 		SearchResult searchResult = searchService.searchCourses(searchParams, 0, limit);
 		SolrDocumentList documents = searchResult.getQueryResponse().getResults();

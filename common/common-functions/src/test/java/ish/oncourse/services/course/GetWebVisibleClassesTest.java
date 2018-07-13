@@ -1,6 +1,7 @@
 package ish.oncourse.services.course;
 
 
+import ish.oncourse.model.College;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.services.courseclass.ClassAge;
@@ -16,7 +17,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -41,8 +41,14 @@ public class GetWebVisibleClassesTest {
     @Test
     public void test_HIDE_CLASS_ON_WEB_Preferences() {
         ObjectContext context = mock(ObjectContext.class);
+        College college = mock(College.class);
+        when(college.getObjectContext()).thenReturn(context);
+
         Course course = mock(Course.class);
+        when(course.getCollege()).thenReturn(college);
         when(course.getObjectContext()).thenReturn(context);
+        when(course.getCollege()).thenReturn(college);
+
         GetWebVisibleClasses.valueOf(course).get();
         Mockito.verify(context,
                 data -> {

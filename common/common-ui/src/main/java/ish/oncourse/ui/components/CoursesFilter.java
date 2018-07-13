@@ -74,7 +74,7 @@ public class CoursesFilter {
 
     @SetupRender
     public void setupRender() {
-        SearchParamsParser parser = SearchParamsParser.valueOf(request, searchService, tagService, webSiteService.getTimezone());
+		SearchParamsParser parser = SearchParamsParser.valueOf(request, webSiteService.getCurrentCollege(), searchService, tagService, webSiteService.getTimezone());
         parser.parse();
         searchParams = parser.getSearchParams();
 

@@ -86,7 +86,11 @@ public class TextileTags {
 				.getAttribute(TextileUtil.TEXTILE_TAGS_PAGE_HIDE_TOP_PARAM);
 
 		if (request.getAttribute(TextileUtil.TEXTILE_TAGS_PAGE_MULTISELECT_TAGS_PARAM) != null) {
-			SearchParamsParser parser = SearchParamsParser.valueOf(request, searchService, tagService, webSiteService.getTimezone());
+			SearchParamsParser parser = SearchParamsParser.valueOf(request,
+					webSiteService.getCurrentCollege(),
+					searchService,
+					tagService,
+					webSiteService.getTimezone());
 			parser.parse();
 			counters = searchService.getCountersForTags(parser.getSearchParams(), rootTag.getAllWebVisibleChildren());
 		} else {

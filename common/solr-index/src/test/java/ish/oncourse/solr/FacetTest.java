@@ -49,8 +49,9 @@ public class FacetTest extends ASolrTest {
         searchParams.setDebugQuery(true);
         searchParams.addSuburb(mainSuburb);
 
-        SolrQuery query = SolrQueryBuilder.valueOf(searchParams, "10", 0, 10).build();
-        query.setFacet(true);
+		SolrQuery query = new SolrQueryBuilder().searchParams(searchParams).collegeId("10").start(0).rows(10).build();
+
+		query.setFacet(true);
 
         LocationFacetQueryBuilder builder = LocationFacetQueryBuilder.valueOf(Collections.singletonList(facetSuburb),
                 Collections.singletonList(new Count()), searchParams, 10l).build();

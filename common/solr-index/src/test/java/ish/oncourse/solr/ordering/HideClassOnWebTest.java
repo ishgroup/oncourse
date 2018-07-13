@@ -5,6 +5,7 @@ package ish.oncourse.solr.ordering;
 
 import com.carrotsearch.randomizedtesting.annotations.ThreadLeakScope;
 import io.reactivex.Observable;
+import ish.oncourse.services.courseclass.ClassAge;
 import ish.oncourse.services.courseclass.ClassAgeType;
 import ish.oncourse.solr.InitSolr;
 import ish.oncourse.solr.model.SCourse;
@@ -74,7 +75,7 @@ public class HideClassOnWebTest extends SolrTestCaseJ4 {
 
 		courses.add(new BuildSCourse().code("ENDED")
 				.id(4)
-				.startDay(356*100)
+				.startDay(356 * 100)
 				.amount(3).build());
 	}
 
@@ -86,7 +87,7 @@ public class HideClassOnWebTest extends SolrTestCaseJ4 {
 
 	@Test
 	public void hide_day_before_start() throws IOException, SolrServerException {
-		assertSolrQuery(ClassAgeType.beforeClassStarts, "2DAYS_AFTER","ENDED", "DAY_BEFORE", "DAY_AFTER");
+		assertSolrQuery(ClassAgeType.beforeClassStarts, "2DAYS_AFTER", "ENDED", "DAY_BEFORE", "DAY_AFTER");
 	}
 
 
@@ -101,7 +102,7 @@ public class HideClassOnWebTest extends SolrTestCaseJ4 {
 		if (throwable[0] != null)
 			throw new IllegalArgumentException(throwable[0]);
 
-		SolrQuery q = new BuildBoostQuery().hideAge(1, classAgeType).build()
+		SolrQuery q = new BuildBoostQuery().hideAge(ClassAge.valueOf(1, classAgeType)).build()
 				.addFilterQuery("+collegeId: 1 end:[NOW TO *]")
 				.setFields("id", "name", "course_code", "score", "$boostFunction", "$startDateFunction", "ms(startDate)", "$hideAge")
 				.setShowDebugInfo(true)
@@ -120,11 +121,6 @@ public class HideClassOnWebTest extends SolrTestCaseJ4 {
 				);
 	}
 
-
-//	@After
-//	public void after() throws IOException {
-//		Schedulers.shutdown();
-//	}
 
 	static class BuildSCourse {
 		private Date now = new Date();
