@@ -20,7 +20,7 @@ public class LinkTagToQueueable {
     }
 
     public void apply() {
-        if (GetIsTagAssignedTo.valueOf(context, tag, target).get()) {
+        if (!GetIsTagAssignedTo.valueOf(context, tag, target).get()) {
             Taggable taggable = context.newObject(Taggable.class);
             taggable.setEntityIdentifier(target.getClass().getSimpleName());
             taggable.setCollege(tag.getCollege());

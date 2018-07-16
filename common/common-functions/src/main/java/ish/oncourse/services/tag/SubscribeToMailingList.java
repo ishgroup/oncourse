@@ -23,7 +23,7 @@ public class SubscribeToMailingList {
     }
 
     public void subscribe() {
-        if (GetIsTagAssignedTo.valueOf(context, mailingList, contact).get()) {
+        if (!GetIsTagAssignedTo.valueOf(context, mailingList, contact).get()) {
             Date date = new Date();
 
             College college = context.localObject(contact.getCollege());
