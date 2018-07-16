@@ -49,10 +49,7 @@ class FieldTagBuilder {
         ish.oncourse.willow.model.field.Field res = new ish.oncourse.willow.model.field.Field()
 
         res.id = field.id?.toString()
-        res.name = field.name
         res.description = field.description
-        res.mandatory = field.mandatory
-        res.key = field.property
         res.defaultValue = field.defaultValue
         res.ordering = field.order
 
@@ -72,13 +69,15 @@ class FieldTagBuilder {
                             f.dataType = DataType.TAGGROUP_M
                             f.name = t.defaultPath
                             f.key = String.format("%s%s", PropertyGetSetFactory.TAG_M_PATTERN, f.name)
+                            f.mandatory = field.mandatory
                             res << f
                         }
                     } else {
                         ish.oncourse.willow.model.field.Field f = fill(field)
                         f.dataType = DataType.TAGGROUP_S
+                        f.name = field.name
                         f.key = String.format("%s%s", PropertyGetSetFactory.TAG_S_PATTERN, f.name)
-
+                        f.mandatory = field.mandatory
                         leafs.each { item ->
                             f.enumItems << new Item(value: item.defaultPath, key: item.defaultPath)
                         }
@@ -104,7 +103,9 @@ class FieldTagBuilder {
         if (tag) {
             ish.oncourse.willow.model.field.Field f = fill(field)
             f.dataType = DataType.MAILINGLIST
+            f.name = field.name
             f.key = String.format("%s%s", PropertyGetSetFactory.MAILING_LIST_FIELD_PATTERN, f.name)
+            f.mandatory = false
             res << f
         } else {
             logger.error("Mailing list {} not found.", field.property.replace(PropertyGetSetFactory.MAILING_LIST_FIELD_PATTERN, StringUtils.EMPTY))
