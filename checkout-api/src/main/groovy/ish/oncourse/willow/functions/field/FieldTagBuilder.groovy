@@ -7,7 +7,6 @@ import ish.oncourse.model.Field
 import ish.oncourse.model.Tag
 import ish.oncourse.model.TagGroupRequirement
 import ish.oncourse.model.WebSite
-import ish.oncourse.services.tag.GetMailingLists
 import ish.oncourse.services.tag.GetRequirementForType
 import ish.oncourse.services.tag.GetTagByPath
 import ish.oncourse.services.tag.GetTagLeafs
@@ -31,16 +30,7 @@ class FieldTagBuilder {
     List<ish.oncourse.willow.model.field.Field> build() {
 
         List<ish.oncourse.willow.model.field.Field> res = new ArrayList<>()
-
-        FieldProperty prop = getByKey(field.property)
-        switch (prop) {
-            case TAG :
-                addTagField(res)
-                break
-            case MAILING_LIST:
-                addMailingListField(res)
-                break
-        }
+        addTagField(res)
         res
     }
 
@@ -91,24 +81,6 @@ class FieldTagBuilder {
             }
         } else {
             logger.error("Tag with path {} not found.", field.property.replace(PropertyGetSetFactory.TAG_PATTERN, StringUtils.EMPTY))
-        }
-    }
-
-    private void addMailingListField(List<ish.oncourse.willow.model.field.Field> res) {
-        List<Tag> mailingLists = GetMailingLists.valueOf(contact.objectContext, null, contact.college).get()
-        Tag tag = mailingLists.stream()
-                .filter { Tag l -> field.property.replace(PropertyGetSetFactory.MAILING_LIST_FIELD_PATTERN, StringUtils.EMPTY) == l.name }
-                .findAny().orElse(null)
-
-        if (tag) {
-            ish.oncourse.willow.model.field.Field f = fill(field)
-            f.dataType = DataType.MAILINGLIST
-            f.name = field.name
-            f.key = String.format("%s%s", PropertyGetSetFactory.MAILING_LIST_FIELD_PATTERN, f.name)
-            f.mandatory = false
-            res << f
-        } else {
-            logger.error("Mailing list {} not found.", field.property.replace(PropertyGetSetFactory.MAILING_LIST_FIELD_PATTERN, StringUtils.EMPTY))
         }
     }
 }

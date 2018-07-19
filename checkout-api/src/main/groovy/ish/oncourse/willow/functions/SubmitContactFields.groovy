@@ -16,11 +16,9 @@ import ish.oncourse.model.Language
 import ish.oncourse.model.Tag
 import ish.oncourse.model.TagGroupRequirement
 import ish.oncourse.model.WebSite
-import ish.oncourse.services.tag.GetMailingLists
 import ish.oncourse.services.tag.GetRequirementForType
 import ish.oncourse.services.tag.GetTagByPath
 import ish.oncourse.services.tag.LinkTagToQueueable
-import ish.oncourse.services.tag.SubscribeToMailingList
 import ish.oncourse.util.FormatUtils
 import ish.oncourse.util.contact.CommonContactValidator
 import ish.oncourse.utils.PhoneValidator
@@ -78,8 +76,6 @@ class SubmitContactFields {
         fields.each { f ->
             if (isTagProperty(f)) {
                 applyTagsField(f)
-            } else if (isMailingListProperty(f)) {
-                applyMailingListField(f)
             } else {
                 applyContactField(f)
             }
@@ -119,16 +115,8 @@ class SubmitContactFields {
         f.key.startsWith(TAG_S_PATTERN) || f.key.startsWith(TAG_M_PATTERN)
     }
 
-    private boolean isMailingListProperty(Field f) {
-        f.key.startsWith(MAILING_LIST_FIELD_PATTERN)
-    }
-
     private String getRootTagName(Field f) {
         f.key.replace(TAG_PATTERN, StringUtils.EMPTY)
-    }
-
-    private String getMailingListName(Field f) {
-        f.key.replace(MAILING_LIST_FIELD_PATTERN, StringUtils.EMPTY)
     }
 
     private void applyTagsField(Field f) {
@@ -180,23 +168,6 @@ class SubmitContactFields {
             logger.error "Contact willowId:${contact.id} tried to apply tags [${StringUtils.join(selectedTags,',')}] but root tag not found.".toString()
         }
         errors
-    }
-
-    private void applyMailingListField(Field f) {
-        String mailingListName = getMailingListName(f)
-        boolean isChecked = f.value == "true"
-
-        if (isChecked) {
-            Tag mailingList = GetMailingLists.valueOf(contact.objectContext, null, college)
-                    .get().stream().filter { Tag t ->
-                t.name == mailingListName
-            }.findFirst().orElse(null)
-            if (mailingList) {
-                SubscribeToMailingList.valueOf(contact.objectContext, contact, mailingList).subscribe()
-            } else {
-                logger.error "Contact willowId:${contact.id} tried to subscribe to mailing list \'${mailingListName}\'. List not found.".toString()
-            }
-        }
     }
 
     private Object normalizeValue(Field f) {
@@ -271,7 +242,6 @@ class SubmitContactFields {
                     break
                 case TAGGROUP_S :
                 case TAGGROUP_M :
-                case MAILINGLIST :
                     break
                 default:
                     result = null
