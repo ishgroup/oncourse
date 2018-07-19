@@ -5,7 +5,9 @@ import ish.oncourse.model.Tag;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.contact.IContactService;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.tag.GetIsTagAssignedTo;
 import ish.oncourse.services.tag.ITagService;
+import ish.oncourse.services.tag.UnlinkTagFromQueuable;
 import org.apache.tapestry5.PersistenceConstants;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -17,11 +19,11 @@ public class Unsubscribe {
 	private static final String PARAM_DELIMETER = "-";
 	
 	@Property
-	private Tag mailingList;
+	private Tag contactTag;
 
 	@Property
 	@Persist(value = PersistenceConstants.CLIENT)
-	private Long mailingListId;
+	private Long contactTagId;
 	
 	@Property
 	private Contact contact;
@@ -57,7 +59,7 @@ public class Unsubscribe {
         try {
 			parseContactAndMailingList(param);
 			initData();
-            if (this.mailingList == null || this.contact == null) {
+            if (this.contactTag == null || this.contact == null) {
                 return pageNotFound;
             }
             return null;
@@ -67,7 +69,7 @@ public class Unsubscribe {
 	}
 	
 	public Object onActivate() {
-		if (mailingListId == null || contactUniqueCode == null ) {
+		if (contactTagId == null || contactUniqueCode == null ) {
 			return pageNotFound;
 		} else {
 			initData();
@@ -77,8 +79,8 @@ public class Unsubscribe {
 
 	@SetupRender
 	Object setupRender() {
-		if (this.mailingList != null && this.contact != null) {
-			if (tagService.isContactSubscribedToMailingList(this.contact, this.mailingList)) {
+		if (this.contactTag != null && this.contact != null) {
+			if (GetIsTagAssignedTo.valueOf(cayenneService.sharedContext(), contactTag, contact).get()) {
 				this.isSubscribed = true;
 			} else {
 				this.isSubscribed = false;
@@ -96,22 +98,22 @@ public class Unsubscribe {
 	@OnEvent(component="unsubscribeForm", value="success")
 	Object submitted() {
 		if (unsubscribe) {
-			tagService.unsubscribeContactFromMailingList(contact, mailingList);
+			UnlinkTagFromQueuable.valueOf(cayenneService.sharedContext(), contact, contactTag).apply();
 			postUnsubscribe = true;
 		}
 		return null;
 	}
 
 	private void parseContactAndMailingList(String param) {
-		mailingListId = Long.parseLong(param.substring(0, param.indexOf(PARAM_DELIMETER)));
+		contactTagId = Long.parseLong(param.substring(0, param.indexOf(PARAM_DELIMETER)));
 		contactUniqueCode = param.substring(param.indexOf(PARAM_DELIMETER) + 1);
 	}
 	
 	private void initData() {
 		contact =  contactService.findByUniqueCode(contactUniqueCode);
-		List<Tag> tagList = tagService.loadByIds(mailingListId);
+		List<Tag> tagList = tagService.loadByIds(contactTagId);
 		if (!tagList.isEmpty()) {
-			this.mailingList = tagList.get(0);
+			this.contactTag = tagList.get(0);
 		}
 	}
 	

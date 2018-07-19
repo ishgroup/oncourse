@@ -168,47 +168,6 @@ private static final Logger logger = LogManager.getLogger();
 		tag = tagService.getTagByFullPath(TAG_NAME_2);
 		assertNull(tag);
 	}
-	
-	@Test
-	public void testMailingListSubscribeUnsubscribe() {
-
-        ObjectContext context = cayenneService.newNonReplicatingContext();
-		final Student student = context.newObject(Student.class);
-        College college = context.localObject(this.college);
-		student.setCollege(college);
-		
-		final Contact contact = context.newObject(Contact.class);
-		contact.setCollege(college);
-		contact.setStudent(student);
-		contact.setFamilyName("FamilyName");
-		contact.setGivenName("GivenName");
-
-		final Tag mailingLists = context.newObject(Tag.class);
-		mailingLists.setCollege(college);
-		mailingLists.setName("Mailing Lists");
-		mailingLists.setSpecialType(NodeSpecialType.MAILING_LISTS);
-		mailingLists.setIsTagGroup(true);
-		mailingLists.setIsWebVisible(true);
-		
-		final Tag list = context.newObject(Tag.class);
-		list.setCollege(college);
-		list.setName("List1");
-		list.setParent(mailingLists);
-		list.setIsWebVisible(true);
-		
-		context.commitChanges();
-		
-		assertTrue(tagService.getMailingListsContactSubscribed(contact).isEmpty());
-		
-		tagService.subscribeContactToMailingList(contact, list);
-		
-		assertFalse(tagService.getMailingListsContactSubscribed(contact).isEmpty());
-		assertEquals("List1", tagService.getMailingListsContactSubscribed(contact).iterator().next().getName());
-		
-		tagService.unsubscribeContactFromMailingList(contact, list);
-		
-		assertTrue(tagService.getMailingListsContactSubscribed(contact).isEmpty());		
-	}
 
 	@Test
 	public void testHasTag() {

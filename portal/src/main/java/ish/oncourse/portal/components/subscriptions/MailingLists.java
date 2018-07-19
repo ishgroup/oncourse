@@ -1,14 +1,17 @@
 package ish.oncourse.portal.components.subscriptions;
 
+import ish.common.types.NodeSpecialType;
 import ish.oncourse.model.*;
 import ish.oncourse.portal.pages.Login;
-import ish.oncourse.portal.pages.Subscriptions;
 import ish.oncourse.portal.services.IPortalService;
-import ish.oncourse.portal.services.MailingListHelper;
+import ish.oncourse.portal.services.TagListHelper;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.services.tag.GetContactTagsSubscribed;
+import ish.oncourse.services.tag.GetTagGroupsFor;
 import ish.oncourse.services.tag.ITagService;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -38,7 +41,7 @@ public class MailingLists {
 	private List<Long> selectedMailingLists;
 
 	@Property
-	private List<Tag> mailingLists;
+	private List<Tag> contactTags;
 	
 	@Property
 	private int index;
@@ -67,31 +70,48 @@ public class MailingLists {
 	void beforeRender() {
         ObjectContext objectContext = cayenneService.newContext();
 		this.currentUser = objectContext.localObject(portalService.getContact());
-		this.mailingLists = tagService.getMailingLists();
+		this.contactTags = GetTagGroupsFor
+				.valueOf(cayenneService.newContext(), null, currentUser.getCollege(), Contact.class.getSimpleName(), true)
+				.get();
+		this.contactTags.addAll(getMailingLists(cayenneService.sharedContext(), webSiteService.getCurrentCollege()));
         this.chkPost = this.currentUser.getIsMarketingViaPostAllowed();
         this.chkSMS = this.currentUser.getIsMarketingViaSMSAllowed();
         this.chkEmail = this.currentUser.getIsMarketingViaEmailAllowed();
 		initSelectedLists();
 	}
 
+	@Deprecated
+	public List<Tag> getMailingLists(ObjectContext context, College college) {
+//		ObjectSelect
+//				.query(Tag.class).where(Tag.COLLEGE.eq(webSiteService.getCurrentCollege())
+//				.andExp(Tag.NAME.eq("Mailing Lists"))
+//				.andExp(Tag.IS_WEB_VISIBLE.eq(false))
+//				.andExp(Tag.SPECIAL_TYPE.eq(NodeSpecialType.MAILING_LISTS)))
+//				.select(cayenneService.sharedContext());
+
+		return ObjectSelect.query(Tag.class).where(Tag.COLLEGE.eq(college)
+				.andExp(Tag.PARENT.dot(Tag.NAME).eq("Mailing Lists")))
+				.select(context);
+	}
+
 	public boolean isSelected() {
-		return selectedMailingLists.contains(mailingLists.get(index).getId());
+		return selectedMailingLists.contains(contactTags.get(index).getId());
 	}
 
 	public Long getId() {
-		return mailingLists.get(index).getId();
+		return contactTags.get(index).getId();
 	}
 
 	public String getName() {
-		return mailingLists.get(index).getName();
+		return contactTags.get(index).getName();
 	}
 
 	public String getDetail() {
-		return mailingLists.get(index).getDetail();
+		return contactTags.get(index).getDetail();
 	}
 
 	private void initSelectedLists() {
-		Set<Tag> listOfUser = tagService.getMailingListsContactSubscribed(currentUser);
+		List<Tag> listOfUser = GetContactTagsSubscribed.valueOf(cayenneService.sharedContext(), null, webSiteService.getCurrentCollege(), currentUser).get();
 		selectedMailingLists =  new ArrayList<>();
 		for (Tag t : listOfUser) {
 			selectedMailingLists.add(t.getId());
@@ -108,7 +128,9 @@ public class MailingLists {
         currentUser.setIsMarketingViaPostAllowed(request.getParameter("chkPost") != null);
         
 		
-		Set<Tag> listOfUser = new HashSet<>(tagService.getMailingListsContactSubscribed(currentUser));
+		Set<Tag> listOfUser = new HashSet<>(GetContactTagsSubscribed
+				.valueOf(cayenneService.sharedContext(), null, webSiteService.getCurrentCollege(), currentUser)
+				.get());
 
 		selectedMailingLists = request.getParameterNames().stream()
 				.filter(s -> s.startsWith(ITEM_ID_PATTERN))
@@ -116,7 +138,7 @@ public class MailingLists {
 				.collect(Collectors.toList());
 		
 		
-		MailingListHelper.valueOf(tagService, selectedMailingLists, listOfUser, objectContext, currentUser, webSiteService.getCurrentCollege()).saveSubscriptions();
+		TagListHelper.valueOf(tagService, selectedMailingLists, listOfUser, objectContext, currentUser, webSiteService.getCurrentCollege()).saveSubscriptions();
 
 		objectContext.commitChanges();
 	}
@@ -126,7 +148,7 @@ public class MailingLists {
 	}
 
 	public boolean getHaveMailingLists() {
-		return !mailingLists.isEmpty();
+		return !contactTags.isEmpty();
 	}
 
 
@@ -134,7 +156,7 @@ public class MailingLists {
 	 * The method has been introduced to redirect users to login page when session expired
 	 */
 	public Object onException(Throwable cause) throws Throwable{
-		if (mailingLists == null) {
+		if (contactTags == null) {
 			logger.warn("Persist properties have been cleared.", cause);
 		} else {
 			throw cause;

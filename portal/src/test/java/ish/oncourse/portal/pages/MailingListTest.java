@@ -8,7 +8,7 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.Tag;
 import ish.oncourse.model.TaggableTag;
 import ish.oncourse.portal.service.TestModule;
-import ish.oncourse.portal.services.MailingListHelper;
+import ish.oncourse.portal.services.TagListHelper;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.test.LoadDataSet;
@@ -50,7 +50,7 @@ public class MailingListTest extends ServiceTest {
 	@Test
 	public void testJustPressSave() {
 	
-		MailingListHelper.valueOf(getService(ITagService.class), Collections.singletonList(2L), tags, context, currentUser, college).saveSubscriptions();
+		TagListHelper.valueOf(getService(ITagService.class), Collections.singletonList(2L), tags, context, currentUser, college).saveSubscriptions();
 
 		context.commitChanges();
 
@@ -68,7 +68,7 @@ public class MailingListTest extends ServiceTest {
 
 	@Test
 	public void testUnsubscribe() {
-		MailingListHelper.valueOf(getService(ITagService.class), new ArrayList<>(), tags, context, currentUser, college).saveSubscriptions();
+		TagListHelper.valueOf(getService(ITagService.class), new ArrayList<>(), tags, context, currentUser, college).saveSubscriptions();
 
 		context.commitChanges();
 
@@ -84,7 +84,7 @@ public class MailingListTest extends ServiceTest {
 		selected.add(2L);
 		selected.add(3L);
 
-		MailingListHelper.valueOf(getService(ITagService.class), selected, tags, context, currentUser, college).saveSubscriptions();
+		TagListHelper.valueOf(getService(ITagService.class), selected, tags, context, currentUser, college).saveSubscriptions();
 
 		context.commitChanges();
 

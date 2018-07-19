@@ -9,7 +9,6 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.ObjectSelect;
-import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -180,70 +179,6 @@ public class TagService extends BaseService<Tag> implements ITagService {
 	public Tag getBrowseTag() {
 		Long browseTagId = (Long) request.getAttribute(Tag.BROWSE_TAG_PARAM);
 		return browseTagId == null ? null : findById(browseTagId);
-	}
-
-	@Override
-	public List<Tag> getMailingLists() {
-		return GetMailingLists.valueOf(getCayenneService().sharedContext(),
-					null,
-					getWebSiteService().getCurrentCollege())
-				.get();
-	}
-
-	@Override
-	public Set<Tag> getMailingListsContactSubscribed(Contact contact) {
-
-		College currentCollege = getWebSiteService().getCurrentCollege();
-
-		List<Taggable> taggableList = ObjectSelect.query(Taggable.class)
-				.where(Taggable.ENTITY_IDENTIFIER.eq(Contact.class.getSimpleName()))
-				.and(Taggable.ENTITY_WILLOW_ID.eq(contact.getId()))
-				.and(Taggable.COLLEGE.eq(currentCollege))
-				.prefetch(Taggable.TAGGABLE_TAGS.disjoint())
-				.select(getCayenneService().sharedContext());
-
-
-		Set<Tag> allMailingLists = new HashSet<>(getMailingLists());
-		Set<Tag> tags = new HashSet<>();
-
-		for (final Taggable t : taggableList) {
-			for (final TaggableTag tg : t.getTaggableTags()) {
-				Tag tag = tg.getTag();
-				if (allMailingLists.stream().anyMatch(m -> m.getId().equals(tag.getId()))) {
-					if(!tags.contains(tag)) {
-						tags.add(tag);
-					} else {
-						logger.error("Contact willowId:{} has more than one relation to MailingList (Tag) willowId:{}", contact.getId(), tag.getId());
-					}
-				}
-			}
-		}
-
-		return tags;
-	}
-	
-	public void subscribeContactToMailingList(Contact contact, Tag mailingList) {
-		if (isContactSubscribedToMailingList(contact, mailingList))
-			return;
-		ObjectContext context = getCayenneService().sharedContext();
-		SubscribeToMailingList.valueOf(context, contact, mailingList).subscribe();
-		context.commitChanges();
-	}
-	
-	public void unsubscribeContactFromMailingList(Contact contact, Tag mailingList) {
-		ObjectContext context = getCayenneService().sharedContext();
-
-		TaggablesSupporter supporter = new TaggablesSupporter(context);
-		List<Taggable> taggables = supporter.load(contact, mailingList);
-		supporter.delete(taggables);
-	}
-
-	@Override
-	public boolean isContactSubscribedToMailingList(Contact contact, Tag mailingList) {
-		ObjectContext context = getCayenneService().sharedContext();
-		TaggablesSupporter supporter = new TaggablesSupporter(context);
-		List<Taggable> taggables = supporter.load(contact, mailingList);
-		return taggables.size() > 0;
 	}
 
 	public <E extends Queueable> boolean hasTag(final E entity, final String tagPath) {

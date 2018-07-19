@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class MailingListHelper {
+public class TagListHelper {
 
 	private List<Long> selectedSubscriptions;
 	private ObjectContext objectContext;
@@ -23,11 +23,11 @@ public class MailingListHelper {
 	private ITagService tagService;
 	private Set<Tag> currentSubscription;
 
-	private MailingListHelper() {
+	private TagListHelper() {
 	}
 
-	public static MailingListHelper valueOf(ITagService tagService, List<Long> selectedSubscriptions, Set<Tag> currentSubscription, ObjectContext objectContext, Contact currentUser, College currentCollege) {
-		MailingListHelper helper = new MailingListHelper();
+	public static TagListHelper valueOf(ITagService tagService, List<Long> selectedSubscriptions, Set<Tag> currentSubscription, ObjectContext objectContext, Contact currentUser, College currentCollege) {
+		TagListHelper helper = new TagListHelper();
 		helper.selectedSubscriptions = selectedSubscriptions;
 		helper.objectContext = objectContext;
 		helper.currentUser = currentUser;

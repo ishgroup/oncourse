@@ -34,6 +34,7 @@ public enum NodeSpecialType implements DisplayableExtendedEnumeration<Integer> {
 	 * but are still just a flag against a contact showing they are part of a mailing list.
 	 */
 	@API
+	@Deprecated
 	MAILING_LISTS(3, "Mailing lists"),
 
 	/**

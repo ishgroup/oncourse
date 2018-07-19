@@ -1,7 +1,7 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 
 	<t:if test="haveMailingLists">
-        <form t:type="form" t:id="mailingListForm" target="mailingLists" clientValidation="literal:NONE">
+        <form t:type="form" t:id="mailingListForm" target="contactTags" clientValidation="literal:NONE">
         <div class="clearfix">
             <h6>I would like to receive information and offers via:</h6>
             <div class="row">
@@ -36,14 +36,14 @@
             </div>
         </div>
 
-		<h6> The following mailing lists are available at ${collegeName}: </h6>
+		<h6> The following special interests are available at ${collegeName}: </h6>
         
           <div id="mailingLists-saved" class="alert alert-success hidden">
             <p>Mailing lists subscription was updated</p>
           </div>
 
 	    	<fieldset>
-				<t:loop source="mailingLists" index="index">
+				<t:loop source="contactTags" index="index">
                     <div>
                         <div class="checkbox">
                             <t:if test="selected">
@@ -71,7 +71,7 @@
 		<br/>
 
 
-        <div class="alert alert-info">Please select any mailing lists above which you wish to subscribe to. If you are subscribed you will receive communication from us.
+        <div class="alert alert-info">Please select any special interest above which you wish to subscribe to. If you are subscribed you will receive communication from us.
 		 You can unsubscribe at any time.</div>
 		<p:else>
 			<h3>${collegeName} has no available mailing lists.</h3>

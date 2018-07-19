@@ -80,37 +80,6 @@ public interface ITagService {
 	 * @return
 	 */
 	Tag getBrowseTag();
-	
-	/**
-	 * All mailing lists
-	 * @return
-	 */
-	List<Tag> getMailingLists();
-
-	/**
-	 * Mailing lists for user
-	 * @param currentUser
-	 * @return
-	 */
-	Set<Tag> getMailingListsContactSubscribed(Contact currentUser);
-	
-	/**
-	 * Subscribe specified contact to specified mailing list.
-	 * 
-	 * @param contact
-	 * @param mailingList
-	 */
-	void subscribeContactToMailingList(Contact contact, Tag mailingList);
-	
-	/**
-	 * Unsubscribe specified contact from specified mailing list.
-	 * 
-	 * @param contact
-	 * @param mailingList
-	 */
-	void unsubscribeContactFromMailingList(Contact contact, Tag mailingList);
-
-	boolean isContactSubscribedToMailingList(Contact contact, Tag mailingList);
 
 	/**
 	 * @return true if the entity has this tag with this <code>tagPath</code>
