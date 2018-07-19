@@ -146,6 +146,7 @@ const SuburbField = (props): any => {
     component={SelectField}
     loadOptions={suburbs}
     newOptionEnable={true}
+    allowEditSelected={true}
     returnType="object"
     onChange={val => updateRelativeFields(val)}
   />;

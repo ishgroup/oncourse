@@ -28,6 +28,7 @@ interface Props {
   required: boolean;
   label: string;
   hint?: string;
+  allowEditSelected?: boolean;
   searchable?: boolean;
   fullWidth?: boolean;
   onBlurSelect?: (field) => void;
@@ -38,6 +39,7 @@ interface Props {
  */
 
 class SelectField extends React.Component<any, any> {
+  private selectComponent: any;
 
   private loadOptions = (input: string): Promise<any> => {
     const {loadOptions} = this.props;
@@ -84,6 +86,12 @@ class SelectField extends React.Component<any, any> {
     }
   }
 
+  private onOpen = valueObj => {
+    if(valueObj) {
+      this.selectComponent.select.handleInputChange({ target: { value: valueObj.value } });
+    }
+  }
+
   toProps = (): Props => {
     const input: WrappedFieldInputProps = inputFrom(this.props);
     const meta = metaFrom(this.props);
@@ -101,6 +109,7 @@ class SelectField extends React.Component<any, any> {
       valueKey: this.props.valueKey ? this.props.valueKey : "key",
       newOptionEnable: this.props.newOptionEnable || false,
       onBlurSelect: this.props.onBlurSelect ? this.props.onBlurSelect : undefined,
+      allowEditSelected: this.props.allowEditSelected,
     };
   }
 
@@ -141,7 +150,12 @@ class SelectField extends React.Component<any, any> {
             options={this.props.options}
             onBlur={this.onBlur}
             onChange={this.onChange}
+            onOpen={props.allowEditSelected ? () => this.onOpen(props.input.value) : undefined}
             promptTextCreator={label => `${label} `}
+            ref={c => {
+                this.selectComponent = c;
+            }}
+
           />
           <ValidateText {...props}/>
         </span>
