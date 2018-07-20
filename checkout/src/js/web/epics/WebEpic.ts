@@ -58,18 +58,27 @@ function createCoursesEpic() {
       const ids: string[] = uniq(actions.map(action => action.payload));
       const chunkIds = chunk(ids, 25);
 
-      return Observable.from(chunkIds).mergeMap(groupedIds =>
+      const courseStream = Observable.from(chunkIds).mergeMap(groupedIds =>
         Observable
           .defer(() => courseClassesApi.getCourseClasses({
             courseClassesIds: groupedIds,
             contact: createContactParams(store.getState()),
             promotions: createPromotionParams(store.getState()),
           }))
-          .retry(2) // Retry to times if request has been rejected
+          .retry(2) // Retry two times if request has been rejected
           .map(payload => normalize(payload, ClassesListSchema))
           .map(mapPayload(Actions.REQUEST_COURSE_CLASS))
-          .catch(mapError(Actions.REQUEST_COURSE_CLASS)),
-      );
+          .catch(mapError(Actions.REQUEST_COURSE_CLASS)));
+
+      const urlParamContact = checkUrlParamContact();
+
+      return urlParamContact ?
+        Observable.concat(
+          Observable
+            .fromPromise(contactApi.getContact(urlParamContact))
+            .map(mapPayload(Actions.REQUEST_CONTACT))
+            .catch(mapError(Actions.REQUEST_CONTACT)),
+          courseStream) : courseStream;
     });
 }
 
@@ -295,6 +304,13 @@ function createLegacySyncEpic() {
     )
     .do(legacySyncStorage.sync)
     .filter(() => false);
+}
+
+function checkUrlParamContact() {
+  const urlObj = new URL(window.location.href);
+  const urlContact = urlObj.searchParams.get("student");
+
+  return urlContact;
 }
 
 function createContactParams(state: IshState): ContactParams {
