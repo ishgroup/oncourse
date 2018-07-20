@@ -14,12 +14,14 @@ export class FeesComponent extends React.Component<Props, any> {
         <div className="price">
           {formatMoney(feeOverriden)}
           {hasTax && this.tax()}
+          {this.feeRange()}
         </div>
       );
     } else {
       return (
         <div className="price">
           {(fee || fee === 0) ? this.fee() : <abbr title="To Be Advised">TBA</abbr>}
+          {this.feeRange()}
         </div>
       );
     }
@@ -34,6 +36,22 @@ export class FeesComponent extends React.Component<Props, any> {
         {hasTax && this.tax()}
         {isPaymentGatewayEnabled && this.discountItems()}
       </div>
+    );
+  }
+
+  private feeRange() {
+    const {fee, appliedDiscount} = this.props;
+
+    const min = appliedDiscount ? appliedDiscount.discountedFee > fee ? fee : appliedDiscount.discountedFee : fee;
+
+    const max = appliedDiscount ? appliedDiscount.discountedFee > fee ? appliedDiscount.discountedFee : fee : fee;
+
+    return (
+        <span  className="fee-discount-range">
+          <span className="price-low">{formatMoney(min)}</span>
+          <span className="price-separator">-</span>
+          <span className="price-high">{formatMoney(max)}</span>
+        </span>
     );
   }
 
