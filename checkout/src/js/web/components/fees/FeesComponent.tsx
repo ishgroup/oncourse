@@ -12,16 +12,25 @@ export class FeesComponent extends React.Component<Props, any> {
     if (feeOverriden) {
       return (
         <div className="price">
-          {formatMoney(feeOverriden)}
-          {hasTax && this.tax()}
-          {this.feeRange()}
+          <ul>
+            {formatMoney(feeOverriden)}
+            {hasTax && this.tax()}
+            {this.feeRange()}
+          </ul>
         </div>
       );
     } else {
       return (
         <div className="price">
-          {(fee || fee === 0) ? this.fee() : <abbr title="To Be Advised">TBA</abbr>}
-          {this.feeRange()}
+          {(fee || fee === 0)
+            ? this.fee()
+            : <ul>
+                <li>
+                  <abbr title="To Be Advised">TBA</abbr>
+                </li>
+                {this.feeRange()}
+              </ul>
+          }
         </div>
       );
     }
@@ -31,11 +40,12 @@ export class FeesComponent extends React.Component<Props, any> {
     const {hasTax, isPaymentGatewayEnabled} = this.props;
 
     return (
-      <div>
+      <ul>
         {this.discount()}
         {hasTax && this.tax()}
         {isPaymentGatewayEnabled && this.discountItems()}
-      </div>
+        {this.feeRange()}
+      </ul>
     );
   }
 
@@ -47,11 +57,11 @@ export class FeesComponent extends React.Component<Props, any> {
     const max = appliedDiscount ? appliedDiscount.discountedFee > fee ? appliedDiscount.discountedFee : fee : fee;
 
     return (
-        <span  className="fee-discount-range">
+        <li  className="fee-discount-range">
           <span className="price-low">{formatMoney(min)}</span>
           <span className="price-separator">-</span>
           <span className="price-high">{formatMoney(max)}</span>
-        </span>
+        </li>
     );
   }
 
@@ -59,27 +69,29 @@ export class FeesComponent extends React.Component<Props, any> {
     const {possibleDiscounts} = this.props;
 
     return (
-      <span>
-        {possibleDiscounts.map((discount, i) => (
-          <span key={i}>
+      <li>
+        <ul>
+          {possibleDiscounts.map((discount, i) => (
+            <li key={i}>
               <span className="discount-price"> / </span>
               <abbr className="discount-price" title={discount.title}>
                 {formatMoney(discount.discountedFee)}
               </abbr>
-            </span>
-        ))}
-      </span>
+            </li>
+          ))}
+        </ul>
+      </li>
     );
   }
 
   private tax() {
     const {hasTax} = this.props;
     return (
-      <span className="gst">
+      <li className="gst">
         {hasTax && ' inc '}
         <abbr title="Goods and Services Tax">GST</abbr>
         {!hasTax && ' free'}
-    </span>
+    </li>
     );
   }
 
@@ -88,22 +100,22 @@ export class FeesComponent extends React.Component<Props, any> {
 
     if (appliedDiscount) {
       return ([
-        <span key="fee-disabled" className="fee-disabled">
+        <li key="fee-disabled" className="fee-disabled">
             {formatMoney(fee)}
-          </span>,
-        <span key="fee-discounted" className="fee-discounted">
+          </li>,
+        <li key="fee-discounted" className="fee-discounted">
           <abbr title={appliedDiscount.title}>
             <span>
               {formatMoney(appliedDiscount.discountedFee)}
             </span>
           </abbr>
-        </span>,
+        </li>,
       ]);
     } else {
       return (
-        <span>
+        <li>
           {formatMoney(fee)}
-        </span>
+        </li>
       );
     }
   }
