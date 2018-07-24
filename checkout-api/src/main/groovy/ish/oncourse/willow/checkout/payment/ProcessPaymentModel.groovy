@@ -12,6 +12,7 @@ import ish.oncourse.services.paymentexpress.NewDisabledPaymentGatewayService
 import ish.oncourse.services.paymentexpress.NewPaymentExpressGatewayService
 import ish.oncourse.services.paymentexpress.NewTestPaymentGatewayService
 import ish.oncourse.services.preference.GetPreference
+import ish.oncourse.util.payment.CreditCardValidator
 import ish.oncourse.util.payment.PaymentInAbandon
 import ish.oncourse.util.payment.PaymentInModel
 import ish.oncourse.util.payment.PaymentInSucceed
@@ -19,6 +20,7 @@ import ish.oncourse.willow.model.checkout.payment.PaymentRequest
 import ish.oncourse.willow.model.checkout.payment.PaymentResponse
 import ish.oncourse.willow.model.checkout.payment.PaymentStatus
 import ish.oncourse.willow.model.common.CommonError
+import ish.util.CreditCardUtil
 import org.apache.cayenne.ObjectContext
 
 import static ish.oncourse.services.preference.Preferences.PAYMENT_GATEWAY_TYPE
@@ -77,6 +79,13 @@ class ProcessPaymentModel {
 
     private ProcessPaymentModel saveZeroPayment() {
         createPaymentModel.paymentIn.type = PaymentType.INTERNAL
+        
+        createPaymentModel.paymentIn.creditCardType = null
+        createPaymentModel.paymentIn.creditCardCVV = null
+        createPaymentModel.paymentIn.creditCardNumber = null
+        createPaymentModel.paymentIn.creditCardName = null
+        createPaymentModel.paymentIn.creditCardExpiry = null
+
         PaymentInSucceed.valueOf(createPaymentModel.model).perform()
         SetConfirmationStatus.valueOf(createPaymentModel.model).set()
         context.commitChanges()
