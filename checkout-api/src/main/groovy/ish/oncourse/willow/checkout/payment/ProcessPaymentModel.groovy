@@ -50,7 +50,7 @@ class ProcessPaymentModel {
             saveItems()
         } else {
             Money actualAmount = createPaymentModel.paymentIn.amount
-            if (actualAmount != paymentRequest.payNow.toMoney()) {
+            if (actualAmount != (paymentRequest.payNow?.toMoney() ?: Money.ZERO)) {
                 context.rollbackChanges()
                 error = new CommonError(message: 'Payment amount is wrong')
                 this

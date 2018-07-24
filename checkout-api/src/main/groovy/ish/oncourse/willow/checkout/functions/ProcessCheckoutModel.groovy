@@ -90,6 +90,9 @@ class ProcessCheckoutModel {
                 a.total = totalAmount.doubleValue()
                 a.discount = totalDiscount.doubleValue()
                 a.subTotal = totalAmount.subtract(totalDiscount).doubleValue()
+                a.owing = 0.0
+                a.payNow = 0.0
+                a.minPayNow = 0.0
                 a
             }
         } else {
