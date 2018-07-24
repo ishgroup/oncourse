@@ -197,7 +197,7 @@ class CreatePaymentModel {
     
     @CompileStatic(TypeCheckingMode.SKIP)
     private allocateExtraMoney() {
-        Money offeredAmount = paymentRequest.payNow.toMoney()
+        Money offeredAmount = paymentRequest.payNow?.toMoney() ?: Money.ZERO
         Money extraAmount = offeredAmount.subtract(paymentIn.amount)
 
         if (checkoutModel.amount.isEditable && offeredAmount.isGreaterThan(paymentIn.amount)) {
