@@ -30,8 +30,8 @@ class ValidatePaymentRequest {
     @CompileStatic(TypeCheckingMode.SKIP)
     ValidatePaymentRequest validate() {
         
-        Money minPayNow = checkoutModel.amount.payNow.toMoney()
-        Money maxPayNow = minPayNow.add(checkoutModel.amount.owing.toMoney())
+        Money minPayNow = checkoutModel.amount.payNow?.toMoney() ?: Money.ZERO
+        Money maxPayNow = minPayNow.add(checkoutModel.amount.owing?.toMoney())
 
         Money actualPayNow = paymentRequest.payNow?.toMoney() ?: Money.ZERO
         
