@@ -91,17 +91,10 @@ class ContactApiServiceImpl implements ContactApi{
 
         List<Field> fieldsToMerge = []
 
-        List<Field> additionalFields = null;
-
         if (request.isPayer) {
-            fieldsToMerge.addAll()
-            additionalFields = coursesByClassIds*.fieldConfigurationScheme*.payerFieldConfiguration*.fields.flatten() as List<Field>
+            fieldsToMerge.addAll(coursesByClassIds*.fieldConfigurationScheme*.payerFieldConfiguration*.fields.flatten() as List<Field>)
         } else if (request.isParent) {
-            additionalFields = coursesByClassIds*.fieldConfigurationScheme*.parentFieldConfiguration*.fields.flatten() as List<Field>
-        }
-
-        if (additionalFields && !additionalFields.empty) {
-            fieldsToMerge.addAll(additionalFields)
+            fieldsToMerge.addAll(coursesByClassIds*.fieldConfigurationScheme*.parentFieldConfiguration*.fields.flatten() as List<Field>)
         }
 
         if (fieldsToMerge.empty) {
