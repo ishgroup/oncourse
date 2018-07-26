@@ -153,7 +153,15 @@ $navChildMenuDisplay: none !default;
 $navChildMenuPosition: relative !default;
 $navChildMenuTextAlign: center !default;
 $navChildMenuTextAlignTablet: left !default;
+
+$navChildMenuPositionMediaTablet: absolute !default;
+$navChildMenuMinWidth: 200px !default;
+
+$navChildMenuWidth: auto !default;
 $navChildMenuTop: 100% !default;
+$navChildMenuMarginTop: -2px !default;
+$navChildMenuPositionLeft: 0 !default;
+$navChildMenuZIndex: 9 !default;
 $navChildMenuHoverTop: 100% !default;
 $navChildMenuHoverLinkDisplayMediaTablet: block !important !default;
 $navChildMenuHoverDisplay: block !important !default;

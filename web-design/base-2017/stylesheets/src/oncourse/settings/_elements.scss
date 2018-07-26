@@ -96,4 +96,44 @@ $appBtnBackgroundHoverColor: $secondaryColor !default;
 
 
 $defaultSpriteImage: url("/s/img/sprite.svg") !default;
+$siconContent: "" !default;
+$siconDisplay: block !default;
+$siconPosition: absolute !default;
+$siconWidth: 17px !default;
+$siconHeight: 17px !default;
+
+$siconSearchBackgroundPosition: -17px 0 !default;
+
+$siconPhonePositionLeft: -26px !default;
+$siconPhonePositionTop: 1px !default;
+$siconPhoneBackgroundPosition: 0px 0px !default;
+
+$siconToggleBackgroundPosition: -33px 0 !default;
+$siconToggleHeight: 12px !default;
+$siconToggleMarginTop: 5px !default;
+$siconTogglePositionLeft: -27px !default;
+
+$siconDeleteBackgroundPosition: -0px -33px !default;
+$siconDeleteWidth: 9px !default;
+$siconDeleteHeight: 9px !default;
+
+
 $defaultSocialImage: url("/s/img/icons/social-icons.png") !default;
+$socialIconDisplay: block !default;
+$socialIconAfterContent: "" !default;
+$socialIconAfterDisplay: block !default;
+$socialIconAfterPosition: relative !default;
+$socialIconAfterHeight: 25px !default;
+$socialIconAfterWidth: 25px !default;
+$socialIconAfterMargin: 0 auto !default;
+
+$socialIconBackgroundPositionFacebook: 0px 0px !default;
+$socialIconBackgroundPositionFacebookWhite: 0px -25px !default;
+$socialIconBackgroundPositionTwitter: -52px 0px !default;
+$socialIconBackgroundPositionTwitterWhite: -28px -24px !default;
+$socialIconBackgroundPositionYouTubeWhite: -55px -27px !default;
+$socialIconBackgroundPositionGPlus: -26px 0px !default;
+$socialIconBackgroundPositionInstagram: -78px 0px !default;
+$socialIconBackgroundPositionInstagramWhite: -78px -24px !default;
+$socialIconBackgroundPositionLinkedin: -104px 0px !default;
+$socialIconBackgroundPositionLinkedinWhite: -104px -24px !default;

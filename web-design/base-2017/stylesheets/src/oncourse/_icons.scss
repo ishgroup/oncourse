@@ -12,30 +12,30 @@
 // Icon styles
 .sicon::after {
   background: $defaultSpriteImage no-repeat;
-  content: "";
-  display: block;
-  position: absolute;
-  height: 17px;
-  width: 17px;
+  content: $siconContent;
+  display: $siconDisplay;
+  position: $siconPosition;
+  height: $siconWidth;
+  width: $siconHeight;
 }
 .search-icon::after {
-  background-position: -17px 0;
+  background-position: $siconSearchBackgroundPosition;
 }
 .phone-icon::after {
-  left: -26px;
-  top: 1px;
-  background-position: 0px 0px;
+  left: $siconPhonePositionLeft;
+  top: $siconPhonePositionTop;
+  background-position: $siconPhoneBackgroundPosition;
 }
 .toggle-icon::after {
-  background-position: -33px 0;
-  height: 12px;
-  margin-top: 5px;
-  left: -27px;
+  background-position: $siconToggleBackgroundPosition;
+  height: $siconToggleHeight;
+  margin-top: $siconToggleMarginTop;
+  left: $siconTogglePositionLeft;
 }
 .delete-icon::after {
-  background-position: -0px -33px;
-  width: 9px;
-  height: 9px;
+  background-position: $siconDeleteBackgroundPosition;
+  width: $siconDeleteWidth;
+  height: $siconDeleteHeight;
 }
 
 //
@@ -43,35 +43,44 @@
 //
 
 .social-icon {
-  display: block;
+  display: $socialIconDisplay;
   &::after {
     background: $defaultSocialImage no-repeat;
-    content: "";
-    display: block;
-    position: relative;
-    height: 25px;
-    width: 25px;
-    margin: 0 auto;
+    content: $socialIconAfterContent;
+    display: $socialIconAfterDisplay;
+    position: $socialIconAfterPosition;
+    height: $socialIconAfterHeight;
+    width: $socialIconAfterWidth;
+    margin: $socialIconAfterMargin;
   }
 }
 .facebook::after {
-  background-position: 0px 0px;
+  background-position: $socialIconBackgroundPositionFacebook;
 }
 .facebook-white::after {
-  background-position: 0px -25px;
+  background-position: $socialIconBackgroundPositionFacebookWhite;
 }
 .twitter::after {
-  background-position: -52px 0px;
+  background-position: $socialIconBackgroundPositionTwitter;
 }
 .twitter-white::after {
-  background-position: -28px -24px;
+  background-position: $socialIconBackgroundPositionTwitterWhite;
 }
 .youtube-white::after {
-  background-position: -55px -27px;
+  background-position: $socialIconBackgroundPositionYouTubeWhite;
 }
 .gplus::after {
-  background-position: -26px 0px;
+  background-position: $socialIconBackgroundPositionGPlus;
 }
 .instagram::after {
-  background-position: -78px 0px;
+  background-position: $socialIconBackgroundPositionInstagram;
+}
+.instagram-white::after {
+  background-position: $socialIconBackgroundPositionInstagramWhite;
+}
+.linkedin::after {
+  background-position: $socialIconBackgroundPositionLinkedin;
+}
+.linkedin-white::after {
+  background-position: $socialIconBackgroundPositionLinkedinWhite;
 }

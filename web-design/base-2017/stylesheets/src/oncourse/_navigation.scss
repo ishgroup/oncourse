@@ -277,16 +277,16 @@
           display: $navChildMenuDisplay;
           position: $navChildMenuPosition;
           background: $first-accent-color;
-          width: auto;
+          width: $navChildMenuWidth;
           top: $navChildMenuTop;
-          margin-top: -2px;
-          left: 0;
-          z-index: 9;
+          margin-top: $navChildMenuMarginTop;
+          left: $navChildMenuPositionLeft;
+          z-index: $navChildMenuZIndex;
           text-align: $navChildMenuTextAlign;
           @include responsive($media-tablet) {
-            position: absolute;
+            position: $navChildMenuPositionMediaTablet;
             width: $first-accent-width;
-            min-width: 200px;
+            min-width: $navChildMenuMinWidth;
             text-align: $navChildMenuTextAlignTablet;
           }
         }

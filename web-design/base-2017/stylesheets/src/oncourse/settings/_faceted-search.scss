@@ -77,7 +77,7 @@ $fstOptionControlDisplay: none !default;
 $fstOptionLabelMarginBottom: 0 !default;
 $fstOptionLabelDisplay: inline-block !default;
 $fstOptionLabelWidth: auto !default;
-$fstOptionLabelPosition: initial !default;
+$fstOptionLabelPosition: static !default;
 
 $fstOptionLabelBeforeContent: "" !default;
 $fstOptionLabelBeforeDisplay: inline-block !default;
@@ -177,7 +177,7 @@ $fstAddedListChildTextTransform: capitalize !default;
 
 $fstAddedListChildLastBorderWidth: 0 !default;
 
-$fstAddedListChildClearAllTextTransform: initial !default;
+$fstAddedListChildClearAllTextTransform: none !default;
 
 $fstAddedListChildBeforeContent: none !default;
 

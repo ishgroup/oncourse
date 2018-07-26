@@ -590,8 +590,24 @@
       abbr {
         border-bottom: 0 none;
       }
+      .fee-discount-range {
+        display: none;
+      }
       .price {
         padding-left: 0 !important;
+        ul {
+          padding: 0;
+          margin: 0;
+          list-style: none;
+          li {
+            display: inline-block;
+            margin: 0;
+            padding: 0;
+            &.fee-discount-range {
+              display: none;
+            }
+          }
+        }
       }
     }
     .link-timetable-location {
@@ -1004,7 +1020,7 @@
       height: 0
     }
     ul.attachedImages, .tutor_pic {
-      position: initial;
+      position: static;
       width: 213px;
       float: right;
       margin-left: 20px;

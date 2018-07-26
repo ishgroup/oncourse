@@ -1,0 +1,113 @@
+//
+//
+// courses-list.scss
+//
+// Contains all settings used for courses-list styles
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+//
+
+$searchTermsZoom: 1 \9 !default;
+$searchTermsColor: black !default;
+$searchTermsPadding: 4px 0px 4px 30px !default;
+$searchTermsMargin: 0 0 6px 0 !default;
+$searchTermsBorder: 1px solid transparent !default;
+$searchTermsMinHeight: 16px !default;
+$searchTermsLineHeight: 1.6 !default;
+$searchTermsBackground: url("/s/img/search2.png") 7px 10px no-repeat !default;
+
+$searchTermsBorderHover: 1px solid gray !default;
+
+$searchTermsValueMargin: 0 !default;
+
+$searchTermsImageMarginBottom: -4px !default;
+
+$searchTermsQueryWidth: auto !default;
+$searchTermsQueryMaxWidth: 924px !default;
+$searchTermsQueryFloat: left !default;
+$searchTermsQueryLineHeight: 1.7 !default;
+$searchTermsQueryColor: #5a6c7a !default;
+
+$searchTermsSpanDisplay: inline-block !default;
+
+$searchTermsHighlighterBackgroundColor: transparent !default;
+$searchTermsHighlighterBorder: 1px solid transparent !default;
+
+$searchTermsHighlightBackgroundColor: #fcf4b2 !default;
+
+$searchTermsNoHighlightBorder: 1px solid transparent !default;
+$searchTermsNoHighlightBorderHover: 1px solid #e4b92e !default;
+
+$searchTermsTagTitleColor: $black !default;
+$searchTermsTagTitlePadding: 0px !default;
+
+$searchTermsValueBorder: 1px solid transparent !default;
+$searchTermsValuePadding: 2px 3px 2px 2px !default;
+
+$searchTermsValueImageDisplay: inline !default;
+$searchTermsValueImagePadding: 2px !default;
+$searchTermsValueImageBorder: 1px solid transparent !default;
+$searchTermsValueImageBackgroundRepeat: no-repeat !default;
+$searchTermsValueImageBackgroundPosition: 2px 2px !default;
+$searchTermsValueImageMarginTop: -6px !default;
+
+$searchTermsRemoveMarginLeft: -8px !default;
+$searchTermsRemoveMarginRight: -6px !default;
+$searchTermsRemovePadding: 0 !default;
+
+$searchTermsValueRemoveHoverBackgroundImage: url("/s/img/x.png") !default;
+$searchTermsValueRemoveHoverBackgroundRepeat: no-repeat !default;
+$searchTermsValueRemoveHoverBackgroundPosition: left top !default;
+
+$searchTermsRemoveImageBorderHover: 1px solid red !default;
+$searchTermsRemoveImageBackgroundColorHover: white !default;
+$searchTermsRemoveImageBorderRadiusHover: 3px !default;
+
+$searchTermsResultsFloat: right !default;
+$searchTermsResultsMargin: 0 7px 0 0 !default;
+
+$searchTermsResultsLinkColor: #5a6c7a !default;
+$searchTermsResultsLinkBorder: 1px solid transparent !default;
+$searchTermsResultsLinkPadding: 2px !default;
+
+$searchTermsResultsLinkBorderHover: 1px dotted silver !default;
+
+$searchTermsResultsLocationsBackground: url("/s/img/icon/location.png") left 2px no-repeat !default;
+$searchTermsResultsLocationsPaddingLeft: 16px !default;
+
+$showMoreCoursesTextAlign: center !default;
+$showMoreCoursesBackground: #fff url("/s/img/loading.gif") center center no-repeat !default;
+$showMoreCoursesBorder: 1px solid #ccc !default;
+$showMoreCoursesPadding: 5px 0 !default;
+$showMoreCoursesBorderRadius: 10px !default;
+$showMoreCoursesHeight: 35px !default;
+
+$showMoreCoursesActionDisplay: none !default;
+$showMoreCoursesActionBackground: #fff url("/s/img/icon/go-down.png") 5px center no-repeat !default;
+$showMoreCoursesActionPadding: 10px 10px 10px 50px !default;
+$showMoreCoursesActionColor: brown !default;
+$showMoreCoursesActionFontWeight: bold !default;
+$showMoreCoursesActionFontSize: 14px !default;
+$showMoreCoursesActionLineHeight: 1.5 !default;
+$showMoreCoursesActionMargin: 18px 0 28px 0 !default;
+$showMoreCoursesActionBorder: 1px solid silver !default;
+$showMoreCoursesActionTextDecoration: none !important !default;
+$showMoreCoursesActionCursor: pointer !default;
+$showMoreCoursesActionVisibility: hidden !default;
+$showMoreCoursesActionHeight: 0px !default;
+$showMoreCoursesActionBorderRadius: 10px !default;
+
+$showMoreCoursesActionBackgroundColorHover: #f0f0f0 !default;
+
+$googleMapHeight: 300px !default;
+$googleMapMarginBottom: 18px !default;
+$googleMapWidth: 100% !default;
+
+$googleSiteMapVisibility: hidden !default;
+$googleSiteMapHeight: 0px !default;
+$googleSiteMapOverflow: hidden !default;
+$googleSiteMapPosition: relative !default;
+$googleSiteMapMarginBottom: 0px !default;
+
+$googleSiteMapVisibilityShow: visible !default;
