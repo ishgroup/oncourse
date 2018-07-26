@@ -1,0 +1,12 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<aside class="header-toolbar" id="headerToolbar">
+		<span t:type="ui/PromoCodesView" />
+		<t:if t:test="paymentGatewayEnabled">
+			<span t:type="ui/ShortList" />
+		</t:if>
+		<a href="#" class="header-search-toggle pull-right">
+			<i class="sicon search-icon"></i>
+		</a>
+		<span t:type="ui/CourseSearchForm" />
+	</aside>
+</t:container>

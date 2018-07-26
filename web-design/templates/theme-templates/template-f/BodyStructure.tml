@@ -1,0 +1,87 @@
+<section class="site-wrapper" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<section class="site-container" id="container">
+		<div class="slider-fixed-top"></div>
+		<div class="content-images"></div>
+		<header class="site-header" id="header" itemscope="itemscope" itemtype="http://schema.org/WPHeader">
+			<section class="header-container">
+				<section class="top-bar">
+					<div class="nav-header clearfix">
+						<div class="navbar-container">
+							<div class="main-nav">
+								<div class="nav-hamburger-toggle">
+								  <div></div>
+								  <div></div>
+								  <div></div>
+								</div>
+							</div>
+						</div>
+
+						<hgroup class="container header-hgroup">
+							<div class="site-logo" id="siteLogo">
+								<a href="/">
+									<img src="/s/img/logos/logo.png" alt="site-logo" class="normal_logo" />
+								</a>
+							</div>
+						</hgroup>
+					</div>
+
+					<div class="nav-full-menu">
+						<div class="navbar-wrapper">
+							<div t:type="ui/bodyheader" />
+
+							<div t:type="ui/globalnavi" />
+
+							<div class="top-nav-items">
+								<ul class="nav-static-menu">
+									<li class="hasChild">
+										<a href="/courses" data-name="courses" data-color="#daf0f6">Courses</a>
+									</li>
+									<li class="hasChild">
+										<a href="/#menu-2" data-name="menu-2" data-color="#ffffff">Menu 2</a>
+									</li>
+								</ul>
+							</div>
+
+							<ul class="nav-static-menu-item">
+								<li data-item="courses"><ul></ul></li>
+								<li data-item="menu-2"><ul></ul></li>
+							</ul>
+
+							<div class="navbar">
+								<nav class="site-nav" id="nav">
+									<div t:type="ui/menu" />
+								</nav>
+							</div>
+						</div>
+					</div>
+
+				</section>
+			</section>
+			<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:header" />
+		</header>
+		<section class="container content-container" id="contentContainer">
+			<aside class="sidebar-left ui-lazyload" id="sidebarLeft">
+				<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:left" />
+			</aside>
+			<article class="content ui-lazyload" id="content">
+				<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:content" />
+				<t:body />
+			</article>
+			<aside class="sidebar-right ui-lazyload" id="sidebarRight" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
+				<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:right" />
+			</aside>
+		</section>
+		<footer class="site-footer ui-lazyload" id="footer" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
+			<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:footer" />
+			<div t:type="ui/bodyfooter" />
+		</footer>
+	</section>
+	<div id="overlay" style="display: none; height: 500px" />
+	<div id="timeline-wrap" style="visibility: hidden;">
+		<div id="timeline" />
+	</div>
+
+	<div data-cid="modal" class="reactjs-component"></div>
+	<div class="splash-page"></div>
+	<div class="page-overlay"></div>
+</section>
