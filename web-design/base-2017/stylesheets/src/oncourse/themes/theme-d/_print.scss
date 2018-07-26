@@ -8,40 +8,42 @@
 // It is licensed to you under the Apache License, version 2.0
 //
 
-@media print {
-  ul {
-    height: auto !important;
-  }
-  body {
-    #header {
-      p {
-        margin: 0 !important;
-      }
+@include theme('d') {
+  @media print {
+    ul {
+      height: auto !important;
     }
-    section {
-      .browse-courses {
-        height: auto !important;
-        margin-bottom: 20px !important;
-        >span {
-          position: static !important;
-          > img {
-            left: 0 !important;
-            @include transform(none !important);
-          }
+    body {
+      #header {
+        p {
+          margin: 0 !important;
         }
       }
-      .top-blocks {
-        ul li {
+      section {
+        .browse-courses {
+          height: auto !important;
           margin-bottom: 20px !important;
-          .t-item {
-            img {
-              display: none !important;
+          >span {
+            position: static !important;
+            > img {
+              left: 0 !important;
+              @include transform(none !important);
             }
           }
         }
-      }
-      .popular-courses {
-        display: none !important;
+        .top-blocks {
+          ul li {
+            margin-bottom: 20px !important;
+            .t-item {
+              img {
+                display: none !important;
+              }
+            }
+          }
+        }
+        .popular-courses {
+          display: none !important;
+        }
       }
     }
   }

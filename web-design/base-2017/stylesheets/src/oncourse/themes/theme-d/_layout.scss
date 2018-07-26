@@ -10,12 +10,12 @@
 
 @include theme('d') {
   ::selection {
-    background-color: $theme-color;
-    color: $white;
+    background-color: $selectionBackgroundColor;
+    color: $selectionColor;
   }
   body {
-    overflow: hidden;
-    overflow-y: scroll;
+    overflow: $bodyOverflow;
+    overflow-y: $bodyOverflowY;
   }
   .theme-color {
     color: $theme-color;
@@ -25,21 +25,21 @@
   }
   #Main.main-page {
     #content {
-      float: none;
-      width: 100%;
+      float: $mainPageContentFloat;
+      width: $mainPageContentWidth;
     }
     #sidebarRight, #sidebarLeft {
-      display: none;
+      display: $mainPageSideBar;
     }
   }
   .content {
     h1 {
-      font-weight: normal;
+      font-weight: $contentH1FontWeight;
     }
   }
   #content, #z_content {
     >p {
-      margin-bottom: 0;
+      margin-bottom: $contentParagraphMarginBottom;
     }
   }
 
@@ -87,47 +87,47 @@
   }
 
   .bottom-line {
-    position: relative;
-    margin-bottom: 45px;
-    line-height: 1.4;
-    text-align: center;
+    position: $bottomLinePosition;
+    margin-bottom: $bottomLineMarginBottom;
+    line-height: $bottomLineLineHeight;
+    text-align: $bottomLineTextAlign;
     &::after {
-      content: "";
-      position: absolute;
-      background: $theme-color;
-      height: 2px;
-      width: 100px;
-      bottom: -30px;
-      margin: 0 auto;
-      left: 0;
-      right: 0;
+      content: $bottomLineAfterContent;
+      position: $bottomLineAfterPosition;
+      background: $bottomLineAfterBackground;
+      height: $bottomLineAfterHeight;
+      width: $bottomLineAfterWidth;
+      margin: $bottomLineAfterMargin;
+      bottom: $bottomLineAfterPositionBottom;
+      left: $bottomLineAfterPositionLeft;
+      right: $bottomLineAfterPositionRight;
     }
   }
   .content, .dialogBox, .rodal-dialog {
     .bottom-line {
-      margin-bottom: 45px;
-      line-height: 1.4;
+      margin-bottom: $bottomLineMarginBottom;
+      line-height: $bottomLineLineHeight;
     }
   }
   #container {
     .slider-wrapper {
-      position: relative;
+      position: $containerSliderWrapperPosition;
     }
 
     #content {
       .main-title {
-        color: $secondaryColor;
+        color: $contentMainTitle;
       }
       .sub-title {
-        color: #0a3a4a;
+        color: $contentSubTitle;
       }
     }
   }
 
   section.block {
     &.browse-courses {
-      position: relative;
-      height: 790px;
+      position: $browseCoursesPosition;
+      height: $browseCoursesHeight;
       @extend .responsive-image-h;
       >span {
         height: 100%;
@@ -137,16 +137,16 @@
         }
       }
       .bc-content {
-        position: relative;
-        margin-top: 260px;
-        font-size: 18px;
+        position: $browseCoursesContentPosition;
+        margin-top: $browseCoursesContentMarginTop;
+        font-size: $browseCoursesContentFontSize;
         h1 {
-          text-transform: uppercase;
-          font-size: 32px;
-          font-weight: bold;
-          margin-bottom: 27px;
+          text-transform: $browseCoursesHeaderTextTransform;
+          font-size: $browseCoursesHeaderFontSize;
+          font-weight: $browseCoursesHeaderFontWeight;
+          margin-bottom: $browseCoursesHeaderMarginBottom;
           @include responsive($media-tablet) {
-            font-size: 40px;
+            font-size: $browseCoursesHeaderFontSizeMediaTablet;
           }
           &, a {
             color: $browseCoursesHeaderColor;
@@ -156,48 +156,48 @@
           }
         }
         p {
-          max-width: 500px;
-          line-height: 1.5;
-          font-size: 23px;
+          max-width: $browseCoursesTextMaxWidth;
+          line-height: $browseCoursesTextLineHeight;
+          font-size: $browseCoursesTextFontSize;
           color: $browseCoursesTextColor;
           a.app-btn {
-            margin-top: 20px;
+            margin-top: $browseCoursesTextAppBtnMarginTop;
           }
         }
       }
     }
     &.top-blocks {
       background: $topBlocksBackground;
-      padding: 40px 0;
+      padding: $topBlocksPadding;
       @include responsive($media-small) {
-        padding: 80px 0;
+        padding: $topBlocksPaddingMediaSmall;
       }
       .container {
         >p {
-          display: none;
+          display: $topBlocksParagraphDisplay;
         }
         >ul {
-          text-align: center;
+          text-align: $topBlocksListTextAlign;
           li {
-            margin-bottom: 40px;
-            vertical-align: top;
+            margin-bottom: $topBlocksListChildMarginBottom;
+            vertical-align: $topBlocksListChildVerticalAlign;
             @include responsive($media-tablet) {
-              margin-bottom: 0px;
+              margin-bottom: $topBlocksListChildMarginBottomMediaTablet;
             }
             .t-item {
               >img, >a>img {
-                margin-bottom: 30px;
+                margin-bottom: $topBlocksListChildItemImgMarginBottom;
               }
               .t-content {
                 color: $topBlocksTextColor;
-                line-height: 1.5;
-                max-width: 275px;
-                margin: 0 auto;
-                font-size: 20px;
+                line-height: $topBlocksTextLineHeight;
+                max-width: $topBlocksTextMaxWidth;
+                margin: $topBlocksTextMargin;
+                font-size: $topBlocksTextFontSize;
                 h4 {
-                  font-size: 18px;
-                  text-transform: uppercase;
-                  letter-spacing: 1.1px;
+                  font-size: $topBlocksHeaderTextFontSize;
+                  text-transform: $topBlocksHeaderTextTransform;
+                  letter-spacing: $topBlocksHeaderTextLetterSpacing;
                   &, a {
                     color: $topBlocksHeaderTextColor;
                   }
@@ -213,43 +213,43 @@
     }
     &.our-courses {
       background: $ourCoursesBackground;
-      padding: 70px 0;
+      padding: $ourCoursesPadding;
       color: $ourCoursesTextColor;
       .container {
-        max-width: 740px;
-        text-align: center;
+        max-width: $ourCoursesContainerMaxWidth;
+        text-align: $ourCoursesContainerTextAlign;
       }
       h3 {
-        font-size: 40px;
-        text-transform: uppercase;
-        font-weight: bold;
-        color: $ourCoursesTextColor;
-        margin-bottom: 35px;
+        font-size: $ourCoursesHeaderFontSize;
+        text-transform: $ourCoursesHeaderTextTransform;
+        font-weight: $ourCoursesHeaderFontWeight;
+        color: $ourCoursesHeaderColor;
+        margin-bottom: $ourCoursesHeaderMarginBottom;
       }
       p {
-        font-size: 21px;
-        line-height: 1.5;
-        max-width: 520px;
-        margin: 0 auto;
+        font-size: $ourCoursesParagraphFontSize;
+        line-height: $ourCoursesParagraphLineHeight;
+        max-width: $ourCoursesParagraphMaxWidth;
+        margin: $ourCoursesParagraphMargin;
       }
       .courses-list {
-        margin-top: 60px;
+        margin-top: $ourCoursesListMarginTop;
         >li {
-          display: none;
+          display: $ourCoursesListChildDisplay;
         }
         ul {
-          margin-left: 0;
-          list-style: none;
+          margin-left: $ourCoursesListChildrenMarginLeft;
+          list-style: $ourCoursesListChildrenListStyle;
           &.courses-list-sub {
             >li {
               background: $ourCoursesListBackground;
-              border-radius: 50px;
+              border-radius: $ourCoursesListBorderRadius;
               border: $ourCoursesListBorder;
-              margin-bottom: 10px;
+              margin-bottom: $ourCoursesListChildrenMarginBottom;
               @include responsive($media-small) {
-                display: inline-block;
-                margin-bottom: 25px;
-                margin-right: 20px;
+                display: $ourCoursesListChildrenDisplayMediaSmall;
+                margin-bottom: $ourCoursesListChildrenMarginBottomMediaSmall;
+                margin-right: $ourCoursesListChildrenMarginRightMediaSmall;
               }
               &:hover {
                 background: $ourCoursesListBackgroundHover;
@@ -260,10 +260,10 @@
               }
               a {
                 color: $ourCoursesListTextColor;
-                display: block;
-                padding: 12px 20px;
-                font-weight: bold;
-                font-size: 16px;
+                display: $ourCoursesListLinkDisplay;
+                padding: $ourCoursesListLinkPadding;
+                font-weight: $ourCoursesListLinkFontWeight;
+                font-size: $ourCoursesListLinkFontSize;
               }
               >ul {
                 display: none;
@@ -275,35 +275,35 @@
     }
     &.popular-courses {
       background: $popularCoursesBackground;
-      padding: 70px 0;
-      text-align: center;
+      padding: $popularCoursesPadding;
+      text-align: $popularCoursesTextAlign;
       h3 {
-        font-size: 40px;
-        text-transform: uppercase;
-        font-weight: bold;
-        color: $popularCoursesHeaderTextColor;
-        margin-bottom: 50px;
+        font-size: $popularCoursesHeaderFontSize;
+        text-transform: $popularCoursesHeaderTextTransform;
+        font-weight: $popularCoursesHeaderFontWeight;
+        color: $popularCoursesHeaderColor;
+        margin-bottom: $popularCoursesHeaderMarginBottom;
         @include responsive($media-small) {
-          margin-bottom: 90px;
+          margin-bottom: $popularCoursesHeaderMarginBottomMediaSmall;
         }
       }
       .pc-slider {
-        margin-left: 0;
+        margin-left: $popularCoursesSliderMarginLeft;
         li {
-          width: 295px;
-          height: 275px;
-          background: $popularCoursesItemBackground;
-          color: $popularCoursesItemTextColor;
-          position: relative;
+          width: $popularCoursesSliderItemWidth;
+          height: $popularCoursesSliderItemHeight;
+          background: $popularCoursesSliderItemBackground;
+          color: $popularCoursesSliderItemTextColor;
+          position: $popularCoursesSliderItemPosition;
           .pc-item {
-            position: absolute;
-            top: 50%;
-            @include transform(translateY(-50%));
-            padding: 20px;
-            font-size: 16px;
+            position: $popularCoursesItemPosition;
+            top: $popularCoursesItemPositionTop;
+            @include transform(translateY($popularCoursesItemTranslateY));
+            padding: $popularCoursesItemPadding;
+            font-size: $popularCoursesItemFontSize;
             > a, > span {
-              font-weight: bold;
-              font-size: 20px;
+              font-weight: $popularCoursesItemTitleFontWeight;
+              font-size: $popularCoursesItemTitleFontSize;
               color: $popularCoursesItemTitleColor;
             }
             >a:hover {

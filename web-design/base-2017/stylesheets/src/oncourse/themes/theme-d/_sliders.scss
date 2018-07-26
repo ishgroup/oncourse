@@ -11,29 +11,28 @@
 @include theme('d') {
   .bx-wrapper {
     .bx-controls-direction a {
-      width: 20px;
+      width: $sliderPagerWidth;
     }
     .bx-prev, .bx-next {
-      background: url($imagePath + 'icons/bx-controls.png') 0 0 no-repeat;
+      background: $sliderNavigationBackground;
     }
     .bx-prev {
-      background-position: 0 0;
+      background-position: $sliderNavigationPrevBackgroundPosition;
       @include responsive($media-custom, $screen-1180) {
-        left: -75px;
+        left: $sliderNavigationPrevPositionLeft;
       }
       &:hover, &:focus {
-        background-position: 0 0;
+        background-position: $sliderNavigationPrevBackgroundPositionHover;
       }
     }
     .bx-next {
-      background-position: -23px 0;
+      background-position: $sliderNavigationNextBackgroundPosition;
       @include responsive($media-custom, $screen-1180) {
-        right: -75px;
+        right: $sliderNavigationNextPositionRight;
       }
       &:hover, &:focus {
-        background-position: -23px 0;
+        background-position: $sliderNavigationNextBackgroundPositionHover;
       }
     }
-
   }
 }

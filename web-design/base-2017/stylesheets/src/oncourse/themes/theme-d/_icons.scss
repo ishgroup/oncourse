@@ -11,25 +11,25 @@
 @include theme('d') {
   .fsocial-icon {
     &::after {
-      content: "";
-      background: url($imagePath + 'icons/social-icons.png') 0 0 no-repeat;
-      background-size: 110px;
-      width: 24px;
-      height: 24px;
-      position: relative;
-      display: block;
+      content: $socialIconContent;
+      background: $socialIconBackground;
+      background-size: $socialIconBackgroundSize;
+      width: $socialIconWidth;
+      height: $socialIconHeight;
+      position: $socialIconPosition;
+      display: $socialIconDisplay;
     }
     &.instagram::after {
-      background-position: 0px 1px;
+      background-position: $socialIconBackgroundPositionInstagram;
     }
     &.facebook::after {
-      background-position: -29px 1px;
+      background-position: $socialIconBackgroundPositionFacebook;
     }
     &.twitter::after {
-      background-position: -58px 1px;
+      background-position: $socialIconBackgroundPositionTwitter;
     }
     &.gplus::after {
-      background-position: -87px 1px;
+      background-position: $socialIconBackgroundPositionGplus;
     }
   }
 }

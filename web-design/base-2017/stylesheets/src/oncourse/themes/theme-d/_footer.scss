@@ -10,50 +10,50 @@
 
 @include theme('d', 'footer') {
   #footer {
-    position: relative;
-    font-weight: 300;
+    position: $footerPosition;
+    font-weight: $footerFontWeight;
     section.block {
       &.the-latest {
         background: $theLatestBackground;
-        padding: 70px 0;
-        position: relative;
-        text-align: left;
+        padding: $theLatestPadding;
+        position: $theLatestPosition;
+        text-align: $theLatestTextAlign;
         >p {
           margin: 0;
         }
         h3 {
-          font-size: 40px;
-          text-transform: uppercase;
-          font-weight: bold;
+          font-size: $theLatestHeaderFontSize;
+          text-transform: $theLatestHeaderTextTransform;
+          font-weight: $theLatestHeaderFontWeight;
           color: $theLatestHeaderTextColor;
-          margin-bottom: 45px;
-          text-align: center;
+          margin-bottom: $theLatestHeaderMarginBottom;
+          text-align: $theLatestHeaderTextAlign;
           @include responsive($media-small) {
-            margin-bottom: 75px;
+            margin-bottom: $theLatestHeaderMarginBottomMediaSmall;
           }
         }
         ul {
-          max-width: 400px;
-          margin: 0 auto;
+          max-width: $theLatestListMaxWidth;
+          margin: $theLatestListMargin;
           @include responsive($media-tablet) {
-            max-width: 100%
+            max-width: $theLatestListMaxWidthMediaTablet;
           }
           >li {
-            margin-bottom: 30px;
-            vertical-align: top;
+            margin-bottom: $theLatestListItemMarginBottom;
+            vertical-align: $theLatestListItemVerticalAlign;
             @include responsive($media-small) {
-              padding-left: 20px;
-              padding-right: 20px;
+              padding-left: $theLatestListItemPaddingLeftMediaSmall;
+              padding-right: $theLatestListItemPaddingRightMediaSmall;
             }
             @include responsive($media-tablet) {
-              margin-bottom: 0;
+              margin-bottom: $theLatestListItemMarginBottomMediaTablet;
             }
           }
         }
         .tl-item {
-          position: relative;
+          position: $theLatestItemPosition;
           background: $theLatestItemBackground;
-          border-style: solid;
+          border-style: $theLatestItemBorderStyle;
           border-color: $theLatestItemBorderColor;
           border-width: $theLatestItemBorderWidth;
           padding-top: $theLatestItemHeight;
@@ -63,120 +63,120 @@
             height: $theLatestItemHeight;
           }
           .tl-date {
-            position: absolute;
-            width: 55px;
-            height: 55px;
-            top: 20px;
-            left: -10px;
+            position: $theLatestItemDatePosition;
+            width: $theLatestItemDateWidth;
+            height: $theLatestItemDateHeight;
+            top: $theLatestItemDatePositionTop;
+            left: $theLatestItemDatePositionLeft;
             background: $theLatestItemDateBackground;
             color: $theLatestItemDateTextColor;
-            font-weight: bold;
-            font-size: 16px;
-            padding: 8px;
-            line-height: 1.2;
-            text-align: center;
-            text-transform: uppercase;
-            z-index: 1;
+            font-weight: $theLatestItemDateFontWeight;
+            font-size: $theLatestItemDateFontSize;
+            padding: $theLatestItemDatePadding;
+            line-height: $theLatestItemDateLineHeight;
+            text-align: $theLatestItemDateTextAlign;
+            text-transform: $theLatestItemDateTextTransform;
+            z-index: $theLatestItemDateZIndex;
             &::after {
-              content: "";
-              position: absolute;
-              border-bottom: 9px solid transparent;
-              border-right: 9px solid $theLatestItemDateBackground;
-              left: 0;
-              top: 55px;
+              content: $theLatestItemDateAfterContent;
+              position: $theLatestItemDateAfterPosition;
+              border-bottom: $theLatestItemDateAfterBorderBottom;
+              border-right: $theLatestItemDateAfterBorderRight;
+              left: $theLatestItemDateAfterPositionLeft;
+              top: $theLatestItemDateAfterPositionTop;
             }
           }
           span.tl-tag {
-            color: $color-5;
+            color: $theLatestItemTagColor;
           }
           &.events {
             border-color: $theLatestItemBorderColorEvents;
             span.tl-tag {
-              color: $color-3;
+              color: $theLatestItemEventsTagColor;
             }
           }
           .tl-info {
-            padding: 20px;
+            padding: $theLatestItemInfoPadding;
             background: $theLatestItemBackground;
             border-top: $theLatestItemInfoBorderTop;
             span.tl-tag {
-              font-size: 15px;
-              text-transform: uppercase;
-              letter-spacing: 2.2px;
-              font-weight: bold;
-              margin-bottom: 7px;
-              display: block;
+              font-size: $theLatestItemInfoTagFontSize;
+              text-transform: $theLatestItemInfoTagTextTransform;
+              letter-spacing: $theLatestItemInfoTagLetterSpacing;
+              font-weight: $theLatestItemInfoTagFontWeight;
+              margin-bottom: $theLatestItemInfoTagMarginBottom;
+              display: $theLatestItemInfoTagDisplay;
             }
             h5 {
-              font-size: 20px;
-              font-weight: bold;
-              line-height: 1.5;
-              text-transform: uppercase;
-              margin-bottom: 5px;
+              font-size: $theLatestItemInfoHeaderFontSize;
+              font-weight: $theLatestItemInfoHeaderFontWeight;
+              line-height: $theLatestItemInfoHeaderLineHeight;
+              text-transform: $theLatestItemInfoHeaderTextTransform;
+              margin-bottom: $theLatestItemInfoHeaderMarginBottom;
               &, a {
-                color: $theLatestItemHeaderColor;
+                color: $theLatestItemInfoHeaderColor;
               }
               a:hover {
-                color: $theLatestItemHeaderColorHover;
+                color: $theLatestItemInfoHeaderColorHover;
               }
             }
             p {
-              font-size: 18px;
+              font-size: $theLatestItemFontSize;
               color: $theLatestItemTextColor;
             }
           }
         }
         a.see-link {
-          display: block;
-          margin-top: 60px;
-          text-align: center;
-          font-size: 18px;
-          text-transform: uppercase;
-          font-weight: bold;
-          letter-spacing: 1.2px;
+          display: $theLatestItemSeeLinkDisplay;
+          margin-top: $theLatestItemSeeLinkMarginTop;
+          text-align: $theLatestItemSeeLinkTextAlign;
+          font-size: $theLatestItemSeeLinkFontSize;
+          text-transform: $theLatestItemSeeLinkTextTransform;
+          font-weight: $theLatestItemSeeLinkFontWeight;
+          letter-spacing: $theLatestItemSeeLinkLetterSpacing;
           color: $theLatestItemSeeLinkColor;
         }
       }
       &.about-us {
         background: $aboutUsBackground;
-        position: relative;
+        position: $aboutUsPosition;
         .cn-left, .cn-right {
-          width: 100%;
+          width: $aboutUsBlockWidth;
           @include responsive($media-tablet) {
-            width: 50%;
+            width: $aboutUsBlockWidthMediaTablet;
           }
         }
         .cn-left {
-          padding: 130px 60px;
+          padding: $aboutUsBlockLeftPadding;
           @include responsive($media-tablet) {
-            float: left;
+            float: $aboutUsBlockLeftFloat;
           }
           h4 {
-            font-size: 25px;
+            font-size: $aboutUsHeaderFontSize;
             color: $aboutUsHeaderTextColor;
-            letter-spacing: 1.2px;
-            font-weight: bold;
+            letter-spacing: $aboutUsHeaderLetterSpacing;
+            font-weight: $aboutUsHeaderFontWeight;
             @include responsive($media-tablet) {
-              font-size: 34px;
+              font-size: $aboutUsHeaderFontSizeMediaTablet;
             }
           }
           p {
-            font-size: 20px;
+            font-size: $aboutUsTextFontSize;
             color: $aboutUsTextColor;
-            line-height: 1.7;
+            line-height: $aboutUsTextLineHeight;
             @include responsive($media-tablet) {
-              font-size: 28px;
+              font-size: $aboutUsTextFontSizeMediaTablet;
             }
           }
           .app-btn {
-            background: transparent;
-            border: 1px solid $aboutUsTextColor;
-            margin-top: 50px;
+            background: $aboutUsAppButtonBackground;
+            border: $aboutUsAppButtonBorder;
+            margin-top: $aboutUsAppButtonMarginTop;
           }
         }
         .cn-right {
-          position: relative;
-          height: 600px;
+          position: $aboutUsBlockRightPosition;
+          height: $aboutUsBlockRightHeight;
           @extend .responsive-image-h;
           >span {
             height: 100%;
@@ -195,23 +195,23 @@
       }
       &.news-subscribe {
         background: $newsSubscribeBackground;
-        padding: 60px 0;
-        color: #171d1c;
-        font-size: 18px;
+        padding: $newsSubscribePadding;
+        color: $newsSubscribeColor;
+        font-size: $newsSubscribeFontSize;
         h5 {
-          font-size: 23px;
-          text-transform: capitalize;
-          font-weight: bold;
-          margin-bottom: 5px;
+          font-size: $newsSubscribeHeaderFontSize;
+          text-transform: $newsSubscribeHeaderTextTransform;
+          font-weight: $newsSubscribeHeaderFontWeight;
+          margin-bottom: $newsSubscribeHeaderMarginBottom;
           color: $newsSubscribeHeaderColor;
         }
         .col-sm-11 {
           p {
-            max-width: 310px;
-            margin: 0 auto;
+            max-width: $newsSubscribeTextMaxWidth;
+            margin: $newsSubscribeTextMargin;
             color: $newsSubscribeTextColor;
             @include responsive($media-tablet) {
-              margin: 0;
+              margin: $newsSubscribeTextMarginMediaTablet;
             }
           }
         }
@@ -219,48 +219,48 @@
           padding: 20px 15px;
         }
         form {
-          max-width: 510px;
-          width: 78%;
-          margin: 30px auto 0;
+          max-width: $newsSubscribeFormMaxWidth;
+          width: $newsSubscribeFormWidth;
+          margin: $newsSubscribeFormMargin;
           @include responsive($media-tablet) {
-            margin: 0;
+            margin: $newsSubscribeFormMarginMediaTablet;
           }
           fieldset {
-            padding: 0;
-            margin: 0;
-            border: 0 none;
-            float: left;
-            width: 100%;
+            padding: $newsSubscribeFormFieldsetPadding;
+            margin: $newsSubscribeFormFieldsetMargin;
+            border: $newsSubscribeFormFieldsetBorder;
+            float: $newsSubscribeFormFieldsetFloat;
+            width: $newsSubscribeFormFieldsetWidth;
             @include responsive($media-small) {
-              width: 59%;
-              max-width: 300px;
+              width: $newsSubscribeFormFieldsetWidthMediaSmall;
+              max-width: $newsSubscribeFormFieldsetMaxWidth;
             }
             .form-cont-row {
               >label {
                 display: none;
               }
               input {
-                padding: 8px 9px;
-                height: 40px;
-                font-size: 17px;
-                width: 100%;
-                max-width: none;
+                padding: $newsSubscribeFormInputPadding;
+                height: $newsSubscribeFormInputHeight;
+                font-size: $newsSubscribeFormInputFontSize;
+                width: $newsSubscribeFormInputWidth;
+                max-width: $newsSubscribeFormInputMaxWidth;
                 @include responsive($media-small) {
-                  border-top-right-radius: 0;
-                  border-bottom-right-radius: 0;
+                  border-top-right-radius: $newsSubscribeFormInputBorderTopRightRadiusMediaSmall;
+                  border-bottom-right-radius: $newsSubscribeFormInputBorderBottomRightRadiusMediaSmall;
                 }
               }
             }
           }
           .form-submit-button {
-            float: left;
-            width: 100%;
-            padding: 7px 15px;
+            float: $newsSubscribeFormSubmitButtonFloat;
+            width: $newsSubscribeFormSubmitButtonWidth;
+            padding: $newsSubscribeFormSubmitButtonPadding;
             background: $newsSubscribeButtonBackground;
             @include responsive($media-small) {
-              width: 40.96%;
-              border-top-left-radius: 0;
-              border-bottom-left-radius: 0;
+              width: $newsSubscribeFormSubmitButtonWidthMediaSmall;
+              border-top-left-radius: $newsSubscribeFormSubmitButtonBorderTopLeftRadiusMediaSmall;
+              border-bottom-left-radius: $newsSubscribeFormSubmitButtonBorderBottomLeftRadiusMediaSmall;
             }
             &:hover {
               background: $newsSubscribeButtonBackgroundHover;
@@ -269,62 +269,62 @@
         }
       }
       &.footer-main {
-        padding: 73px 0 0px;
+        padding: $footerMainPadding;
         .container {
-          padding-bottom: 55px;
+          padding-bottom: $footerMainContainerPaddingBottom;
           .footer-logo {
-            margin-bottom: 30px;
-            display: block;
+            margin-bottom: $footerMainLogoMarginBottom;
+            display: $footerMainLogoDisplay;
           }
           span.phone-text {
-            font-size: 20px;
+            font-size: $footerMainPhoneTextFontSize;
             color: $footerMainTitleTextColor;
-            font-weight: bold;
-            display: block;
+            font-weight: $footerMainPhoneTextFontWeight;
+            display: $footerMainPhoneTextDisplay;
           }
           .social-links {
-            margin-top: 20px;
-            margin-bottom: 20px;
+            margin-top: $footerMainSocialLinksMarginTop;
+            margin-bottom: $footerMainSocialLinksMarginBottom;
             li {
-              width: 34px;
-              padding: 0 0 0px 10px;
-              display: inline-block;
+              width: $footerMainSocialLinksListWidth;
+              padding: $footerMainSocialLinksListPadding;
+              display: $footerMainSocialLinksListDisplay;
               a {
-                display: block;
+                display: $footerMainSocialLinksListAnchorDisplay;
                 &:hover {
-                  @include opacity(0.8);
+                  @include opacity($footerMainSocialLinksListAnchorOpacityHover);
                 }
               }
             }
           }
           .f-title {
-            font-weight: bold;
-            font-size: 20px;
+            font-weight: $footerMainTitleFontWeight;
+            font-size: $footerMainTitleFontSize;
             color: $footerMainTitleTextColor;
-            display: block;
-            margin-bottom: 5px;
+            display: $footerMainTitleDisplay;
+            margin-bottom: $footerMainTitleMarginBottom;
           }
           .courses-list {
-            margin-bottom: 20px;
+            margin-bottom: $footerMainCoursesListMarginBottom;
             >li {
-              display: none;
+              display: $footerMainCoursesListChildDisplay;
             }
             >ul > li {
-              font-weight: bold;
-              margin-bottom: 5px;
+              font-weight: $footerMainCoursesListChildrenFontWeight;
+              margin-bottom: $footerMainCoursesListChildrenMarginBottom;
               @include responsive($media-tablet) {
-                display: inline-block;
-                width: 49%;
-                vertical-align: top;
+                display: $footerMainCoursesListChildrenDisplayMediaTablet;
+                width: $footerMainCoursesListChildrenWidthMediaTablet;
+                vertical-align: $footerMainCoursesListChildrenVerticalAlign;
               }
             }
           }
           .fmain-link {
             li {
-              margin-bottom: 28px;
+              margin-bottom: $footerMainLinkListMarginBottom;
               a {
-                font-size: 20px;
-                font-weight: bold;
+                font-size: $footerMainLinkListAnchorFontSize;
+                font-weight: $footerMainLinkListAnchorFontWeight;
                 color: $footerMainTitleTextColor;
                 &:hover {
                   color: $footerMainTitleTextColorHover;
@@ -337,11 +337,11 @@
     }
 
     .address {
-      line-height: 2;
+      line-height: $footerAddressLineHeight;
     }
     .info-links {
       background: $footerInfoLinksBackground;
-      margin-top: 5px;
+      margin-top: $footerInfoLinksMarginBottom;
       .container {
         color: $footerInfoLinksTextColor;
         a {
@@ -351,18 +351,18 @@
           }
         }
         .footer-info {
-          width: 100%;
-          text-align: center;
+          width: $footerInfoWidth;
+          text-align: $footerInfoTextAlign;
           @include responsive($media-tablet) {
-            text-align: left;
-            width: auto;
+            text-align: $footerInfoTextAlignMediaTablet;
+            width: $footerInfoWidthMediaTablet;
           }
           li {
-            position: relative;
+            position: $footerInfoListPosition;
             color: $footerInfoTextColor;
             @include responsive($media-tablet) {
-              float: left;
-              margin-right: 23px;
+              float: $footerInfoListFloatMediaTablet;
+              margin-right: $footerInfoListMarginRight;
             }
             a {
               color: $footerInfoTextColor;
@@ -394,16 +394,16 @@
     .courses-list, .quicklinks {
       ul >li {
         >a, &:first-child {
-          text-transform: capitalize;
+          text-transform: $footerCoursesHeaderTextTransform;
         }
         ul {
-          display: none;
+          display: $footerCoursesChildrenDisplay;
         }
       }
     }
     ul.footer-info {
-      margin: 0px;
-      list-style: none;
+      margin: $footerInfoMargin;
+      list-style: $footerInfoListStyle;
     }
     .container {
       a {
@@ -413,17 +413,17 @@
         }
       }
       .footer-container {
-        margin-top: 0px;
-        margin-bottom: 14px;
-        padding-top: 20px;
+        margin-top: $footerContainerMarginTop;
+        margin-bottom: $footerContainerMarginBottom;
+        padding-top: $footerContainerPaddingTop;
         border-top: $footerContainerBorderTop;
-        font-size: $bodyFontSize;
+        font-size: $footerContainerFontSize;
         .footer-logo {
-          width: 100%;
-          text-align: center;
+          width: $footerContainerLogoWidth;
+          text-align: $footerContainerLogoTextAlign;
           @include responsive($media-tablet) {
-            width: auto;
-            text-align: right;
+            width: $footerContainerLogoWidthMediaTablet;
+            text-align: $footerContainerLogoTextAlignMediaTablet;
           }
         }
       }

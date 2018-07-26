@@ -17,22 +17,43 @@ $contentContainerPaddingSidebarRightTablet: 75px 75px 35px 75px !default;
 
 $headerContainerPosition: relative !default;
 $headerContainerMarginBottom: 0px !default;
-$headerGroupPosition: relative !default;
+$headerGroupPadding: 18px 15px 32px !default;
+$headerGroupPosition: absolute !default;
+$headerGroupPositionTop: 50% !default;
+$headerGroupMargin: -12px !default;
+$headerGroupDisplay: table !default;
+
+$headerGroupLinkDisplay: table-cell !default;
+$headerGroupLinkVerticalAlign: middle !default;
 
 $headerTopBarFloat: none !default;
 $headerTopBarBG: #0f0f0f !default;
+$headerTopBarMinHeight: 90px !default;
 $headerTopBarTextColor: #dcdcdc !default;
 $headerTopBarMarginBottom: 0 !default;
 
 $headerTopBarContactMargin: 6px 10px 0px 20px !default;
 $headerTopBarPhoneTextColor: $bodyFontColor !default;
 
+$headerTopBarNavLogoFloat: left !default;
+$headerTopBarNavLogoMargin: 12px 35px 12px 20px !default;
+
+$headerTopBarNavToggleMargin: 0px !default;
+$headerTopBarNavToggleWidth: 32px !default;
+$headerTopBarNavTogglePadding: 4px !default;
+$headerTopBarNavToggleFloat: right !default;
+$headerTopBarNavToggleOverflow: hidden !default;
+
 $headerTopBarPaddingTop: 0px !default;
 $headerTopBarHeight: auto !default;
-$headerGroupSiteLogoFloatPosition: none !default;
+$headerGroupSiteLogoFloat: left !default;
+$headerGroupSiteLogoFloatPosition: left !default;
 $headerGroupSiteLogoZIndex: 0 !default;
 
 $faFontSize: 18px !default;
+
+$headerToolbarMarginTop: 10px !default;
+$headerToolbarPosition: relative !default;
 
 // Navigation
 $navbarPaddingLeft: 0px !default;
@@ -41,19 +62,39 @@ $navFontSize: 12px !default;
 $navFontWeight: normal !default;
 $navWidth: auto !default;
 $navMarginTop: 0px !default;
+
+$navFloat: none !default;
+$navFloatTablet: none !default;
 $navBG: transparent !default;
 $navBorderTop: 0px !default;
 $navBorderBottom: 0px !default;
+
+$navTextAlign: left !default;
+$navTextAlignTablet: right !default;
 $navBorderColor: transparent !default;
+
+$navAnchorLetterSpacing: 1px !default;
+$navAnchorFontWeight: bold !default;
 
 $navListTextTransform: capitalize !default;
 
+$navListFloat: none !default;
+$navListFloatTablet: none !default;
+
+$navListDisplay: inline-block !important !default;
+$navListDisplayTablet: inline-block !important !default;
 $navListBottomBorder: 2px solid transparent !default;
+$navListMarginRight: 0 !default;
+
 $navAnchorColor: $white !default;
 $navAnchorHoverBG: $color-2 !default;
 $navAnchorHoverTextColor: $white !default;
 $navAnchorTopFontSize: 15px !default;
+
 $navAnchorPadding: 10px 25px 15px !default;
+$navAnchorPaddingMediaSmall: 10px 20px;
+$navAnchorPaddingMediaTablet: 10px 8px;
+
 $navFirstChildAnchorPadding: $navAnchorPadding !default;
 $navLastChildAnchorPadding: $navAnchorPadding !default;
 
@@ -76,6 +117,18 @@ $navChildMenuLinkHoverColor: $white !default;
 $navChildMenuTextAlign: center !default;
 $navChildMenuTextAlignTablet: left !default;
 
+$navChildMenuPositionLeftMediaTablet: 50% !default;
+$navChildMenuMarginLeftMediaTablet: -100px !default;
+
+$navChildMenuZIndex: 9999 !default;
+
+$navChildMenuLinkWhiteSpace: nowrap !default;
+$navChildMenuLinkOverflow: hidden !default;
+$navChildMenuLinkWidth: 100% !default;
+$navChildMenuLinkTextOverflow: ellipsis !default;
+
+$navChildMenuChildrenDisplay: none !default;
+
 $navToggleBG: transparent !default;
 $navToggleTextColor: #231f20 !default;
 
@@ -90,9 +143,35 @@ $navToggleIconBorderRadius: 100px !default;
 $navToggleIconLinePosition: -7px !default;
 $navToggleIconHoverColor: darken($headerTopBarTextColor, 15%) !default;
 
+$navbarPosition: absolute !default;
+$navbarPositionTop: 0px !default;
+$navbarPositionLeft: 0 !default;
+$navbarPositionRight: auto !default;
+$navbarTextAlign: center !default;
+$navbarDisplay: none !default;
+$navbarMargin: 0 !default;
+$navbarZIndex: 99 !default;
+$navbarBoxShadow: 1px 1px 3px 1px darken($navbarBackgroundColor, 15%) !default;
+
+$navbarBackgroundMediaTablet: none !default;
+$navbarDisplayMediaTablet: block !important !default;
+$navbarBoxShadowMediaTablet: none !default;
+$navbarPositionTopMediaTablet: 0 !default;
+$navbarWidthMediaTablet: 65% !default;
+$navbarMarginRightMediaTablet: 180px !default;
+
+$navTagFloatTablet: none !default;
+$navTagFloat: none !default;
+
 // Short list
 $shortListMarginRightSmall: 5px !default;
 $shortListMarginRightTablet: 5px !default;
+
+$shortListTextTransform: uppercase !default;
+$shortListPosition: relative !default;
+$shortListHeight: 27px !default;
+$shortListWidth: 40px !default;
+$shortListMarginLeft: 20px !default;
 
 $shortListBeforeBackground: url("/s/img/icons/icon-cart.png") 0 0 no-repeat !default;
 $shortListBeforeBackgroundPosition: 0px 0px !default;
@@ -105,8 +184,22 @@ $shortListBeforeDisplay: block !default;
 $shortListInfoSpanBGColor: #525252 !default;
 $shortListInfoSpanColor: #fff !default;
 $shortListInfoSpanFontSize: 11px !default;
-$shortListInfoSpanLineHeight: 2 !default;
+$shortListInfoSpanLineHeight: 0.5 !default;
 $shortListInfoSpanMargin: 0 5px 0 0 !default;
+
+$shortListInfoSpanPosition: absolute !default;
+$shortListInfoSpanPositionTop: -3px !default;
+$shortListInfoSpanPositionLeft: 10px !default;
+$shortListInfoSpanWidth: 20px !default;
+$shortListInfoSpanHeight: 20px !default;
+$shortListInfoSpanPadding: 7.5px 0 !default;
+$shortListInfoSpanBorderRadius: 100% !default;
+$shortListInfoSpanMarginTop: 3px !default;
+$shortListInfoSpanTextAlign: center !default;
+$shortListInfoSpanOverflow: hidden !default;
+$shortListInfoSpanFontWeight: bold !default;
+
+$shortListInfoPtagDisplay: none !default;
 
 $shortListOrderEnrolLinkBackground: $theme-color !default;
 $shortListOrderEnrolLinkBackgroundColor: $theme-color !default;
@@ -129,6 +222,12 @@ $shortListOrderLinkHoverColor: $color-1;
 
 $shortListOrderDeleteIconOpacityHover: 0.7;
 
+$discountBlockMediaSmall: none !default;
+$discountBlockFloat: left !default;
+$discountBlockLineHeight: 1.38095 !default;
+$discountBlockMarginTop: 6px !default;
+$discountBlockMarginRight: 7px !default;
+$discountBlockTextTransform: uppercase !default;
 $discountBlockDisplay: block !default;
 $discountBlockActionLinkDisplay: block !default;
 
@@ -151,6 +250,9 @@ $searchButtonBG: transparent !default;
 $searchButtonWidth: 31px !default;
 $searchButtonHeight: $searchTopHeight !default;
 
+$advanceSearchRight: 0px !default;
+$advanceSearchLeft: auto !default;
+
 $advanceSearchButtonWidth: 125px !default;
 $advanceSearchButtonBorderRadius: 2em !default;
 $advanceSearchButtonPadding: 12px 15px !default;
@@ -170,6 +272,13 @@ $searchActiveButtonBG: $advanceSearchButtonBG !default;
 
 $toggleSearchActiveBackground: $theme-color !default;
 $headerSearchTogglePadding: 6px 10px !default;
+
+$headerSearchToggleDisplay: block !important !default;
+$headerSearchToggleColor: $headerTopBarTextColor !default;
+
+$headerSearchToggleOpacity: 0.8 !default;
+$headerSearchToggleOpacityHover: 1 !default;
+
 $headerSearchToggleAfterBackground: url("/s/img/icons/icon-search-h.png") 0 0 no-repeat !default;
 $headerSearchToggleAfterBackgroundSize: 100% !default;
 $headerSearchToggleAfterWidth: 19px !default;
@@ -185,11 +294,26 @@ $advancedSearchLocationWidth: 50% !default;
 $advancedSearchPriceWidth: $advancedSearchLocationWidth !default;
 $advancedSearchActiveRight: -6px !default;
 $advancedSearchActiveTop: 20px !default;
+
+$advanceSearchTitleFontSize: 30px !default;
+$advanceSearchTitleFontWeight: bold !default;
+$advanceSearchTitleMarginBottom: 25px !default;
 $advanceSearchTitleColor: $white !default;
 $advancedSearchTitleColor-InternalPage: $white !default;
 
 $advanceSearchInputBG-Internal: #cecece !default;
 $advanceSearchInputBG-Home: #cecece !default;
+
+$searchBoxDisplaySmall: none !important !default;
+
+$searchBoxPositionRight: 10px !default;
+$searchBoxWidth: auto !default;
+$searchBoxPositionTop: 8px !default;
+$searchBoxPosition: absolute !default;
+
+$advanceSearchMaxWidth: 410px !default;
+$advanceSearchMinWidth: 285px !default;
+$advanceSearchZIndex: 9999 !default;
 
 $searchBoxBackground: $white !default;
 $searchBoxWidth: 190px !default;
@@ -202,12 +326,31 @@ $searchBoxInputHeight: $searchTopHeight !default;
 $searchBoxInputBorder: 0px !default;
 $searchBoxInputBorderRadius: 14px 0px 0px 14px !default;
 
+$advanceSearchFormInputWrapperPaddingVerticalTablet: 10px !default;
+
+$advanceSearchFormInputCheckBox: 25px !default;
+
+$advancedSearchContainerPosition: static !default;
+
 $searchMoreOptions: transparent !default;
 $searchMoreOptionsWidth: 12px !default;
 $searchMoreOptionsHeight: $searchTopHeight !default;
 $searchMoreOptionsPadding: 0px !default;
 $searchMoreOptionsMinWidth: $searchMoreOptionsWidth !default;
 $searchMoreOptionsDisplay: block !default;
+$searchMoreOptionsPosition: relative !default;
+$searchMoreOptionsFontSize: $faFontSize !default;
+$searchMoreOptionsMarginTop: 5px !default;
+
+$searchMoreOptionsTextDisplay: block !default;
+$searchMoreOptionsTextWidth: 100% !default;
+$searchMoreOptionsTextHeight: 100% !default;
+
+$searchMoreOptionsLinkTextIndent: -9999px !default;
+$searchMoreOptionsLinkPosition: absolute !default;
+$searchMoreOptionsLinkPositionTop: 0 !default;
+
+$searchBoxQuickSearchFontSize: 13px !default;
 
 $sliderPagerItemBackground: transparent !default;
 $sliderPagerItemWidth: 13px !default;

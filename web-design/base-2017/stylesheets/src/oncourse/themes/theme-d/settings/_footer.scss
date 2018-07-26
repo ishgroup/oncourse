@@ -15,6 +15,9 @@ $footerTextColor: #bebebe !default;
 $footerPadding: 0 !default;
 $footerFontSize: 18px !default;
 
+$footerPosition: relative !default;
+$footerFontWeight: 300 !default;
+
 $footerInfoLinksBackground: transparent !default;
 $footerInfoLinksTextColor: #aaa !default;
 $footerInfoLinksAnchorColor: #aaa !default;
@@ -31,31 +34,230 @@ $footerContactLinkColor: #17616f !default;
 $footerContactLinkHoverColor: $white !default;
 
 $theLatestBackground: #F0F0F0 !default;
+$theLatestPadding: 70px 0 !default;
+$theLatestPosition: relative !default;
+$theLatestTextAlign: left !default;
+
 $theLatestHeaderTextColor: $bodyFontColor !default;
+$theLatestHeaderFontSize: 40px !default;
+$theLatestHeaderTextTransform: uppercase !default;
+$theLatestHeaderFontWeight: bold !default;
+$theLatestHeaderMarginBottom: 45px !default;
+$theLatestHeaderTextAlign: center !default;
+$theLatestHeaderMarginBottomMediaSmall: 75px !default;
+
+$theLatestListMaxWidth: 400px !default;
+$theLatestListMargin: 0 auto !default;
+$theLatestListMaxWidthMediaTablet: 100% !default;
+
+$theLatestListItemMarginBottom: 30px !default;
+$theLatestListItemVerticalAlign: top !default;
+$theLatestListItemPaddingLeftMediaSmall: 20px !default;
+$theLatestListItemPaddingRightMediaSmall: 20px !default;
+$theLatestListItemMarginBottomMediaTablet: 0 !default;
+
+$theLatestItemPosition: relative !default;
 $theLatestItemBackground: $white !default;
+$theLatestItemBorderStyle: solid !default;
 $theLatestItemBorderColor: $color-4 !default;
 $theLatestItemBorderColorEvents: $color-4 !default;
 $theLatestItemBorderWidth: 1px !default;
 $theLatestItemHeight: 221px !default;
+
+$theLatestItemDatePosition: absolute !default;
+$theLatestItemDateWidth: 55px !default;
+$theLatestItemDateHeight: 55px !default;
+$theLatestItemDatePositionTop: 20px !default;
+$theLatestItemDatePositionLeft: -10px !default;
 $theLatestItemDateBackground: $color-3 !default;
 $theLatestItemDateTextColor: $white !default;
+$theLatestItemDateFontWeight: bold !default;
+$theLatestItemDateFontSize: 16px !default;
+$theLatestItemDatePadding: 8px !default;
+$theLatestItemDateLineHeight: 1.2 !default;
+$theLatestItemDateTextAlign: center !default;
+$theLatestItemDateTextTransform: uppercase !default;
+$theLatestItemDateZIndex: 1 !default;
+
+$theLatestItemDateAfterContent: "" !default;
+$theLatestItemDateAfterPosition: absolute !default;
+$theLatestItemDateAfterBorderBottom: 9px solid transparent !default;
+$theLatestItemDateAfterBorderRight: 9px solid $theLatestItemDateBackground !default;
+$theLatestItemDateAfterPositionLeft: 0 !default;
+$theLatestItemDateAfterPositionTop: 55px !default;
+
+$theLatestItemTagColor: $color-5 !default;
+$theLatestItemEventsTagColor: $color-3 !default;
+
+$theLatestItemInfoPadding: 20px !default;
 $theLatestItemInfoBorderTop: 1px solid $color-4 !default;
-$theLatestItemHeaderColor: $bodyFontColor !default;
-$theLatestItemHeaderColorHover: $anchorHoverColor !default;
+
+$theLatestItemInfoTagFontSize: 15px !default;
+$theLatestItemInfoTagTextTransform: uppercase !default;
+$theLatestItemInfoTagLetterSpacing: 2.2px !default;
+$theLatestItemInfoTagFontWeight: bold !default;
+$theLatestItemInfoTagMarginBottom: 7px !default;
+$theLatestItemInfoTagDisplay: block !default;
+
+$theLatestItemInfoHeaderFontSize: 20px !default;
+$theLatestItemInfoHeaderFontWeight: bold !default;
+$theLatestItemInfoHeaderLineHeight: 1.5 !default;
+$theLatestItemInfoHeaderTextTransform: uppercase !default;
+$theLatestItemInfoHeaderMarginBottom: 5px !default;
+$theLatestItemInfoHeaderColor: $bodyFontColor !default;
+$theLatestItemInfoHeaderColorHover: $anchorHoverColor !default;
+
+$theLatestItemFontSize: 18px !default;
 $theLatestItemTextColor: #646464 !default;
+
+$theLatestItemSeeLinkDisplay: block !default;
+$theLatestItemSeeLinkMarginTop: 60px !default;
+$theLatestItemSeeLinkTextAlign: center !default;
+$theLatestItemSeeLinkFontSize: 18px !default;
+$theLatestItemSeeLinkTextTransform: uppercase !default;
+$theLatestItemSeeLinkFontWeight: bold !default;
+$theLatestItemSeeLinkLetterSpacing: 1.2px !default;
 $theLatestItemSeeLinkColor: #353535 !default;
 
+
 $aboutUsBackground: $color-6 !default;
+$aboutUsPosition: relative !default;
+
+$aboutUsBlockWidth: 100% !default;
+$aboutUsBlockWidthMediaTablet: 50% !default;
+
+$aboutUsBlockLeftPadding: 130px 60px !default;
+$aboutUsBlockLeftFloat: left !default;
+
+$aboutUsHeaderFontSize: 25px !default;
 $aboutUsHeaderTextColor: #bebebe !default;
+$aboutUsHeaderLetterSpacing: 1.2px !default;
+$aboutUsHeaderFontWeight: bold !default;
+$aboutUsHeaderFontSizeMediaTablet: 34px !default;
+
+$aboutUsTextFontSize: 20px !default;
 $aboutUsTextColor: #f0f0f0 !default;
+$aboutUsTextLineHeight: 1.7 !default;
+$aboutUsTextFontSizeMediaTablet: 28px !default;
+
+$aboutUsAppButtonBackground: transparent !default;
+$aboutUsAppButtonBorder: 1px solid $aboutUsTextColor !default;
+$aboutUsAppButtonMarginTop: 50px !default;
+
+$aboutUsBlockRightPosition: relative !default;
+$aboutUsBlockRightHeight: 600px !default;
+
 
 $newsSubscribeBackground: #f0f0f0 !default;
+$newsSubscribePadding: 60px 0 !default;
+$newsSubscribeColor: #171d1c !default;
+$newsSubscribeFontSize: 18px !default;
+
+$newsSubscribeHeaderFontSize: 23px !default;
+$newsSubscribeHeaderTextTransform: capitalize !default;
+$newsSubscribeHeaderFontWeight: bold !default;
+$newsSubscribeHeaderMarginBottom: 5px !default;
 $newsSubscribeHeaderColor: $bodyFontColor !default;
+
+$newsSubscribeTextMaxWidth: 310px !default;
+$newsSubscribeTextMargin: 0 auto !default;
 $newsSubscribeTextColor: $bodyFontColor !default;
+$newsSubscribeTextMarginMediaTablet: 0 !default;
+
 $newsSubscribeButtonBackground: #0C0C0C !default;
+
+$newsSubscribeFormMaxWidth: 510px !default;
+$newsSubscribeFormWidth: 78% !default;
+$newsSubscribeFormMargin: 30px auto 0 !default;
+$newsSubscribeFormMarginMediaTablet: 0 !default;
+
+$newsSubscribeFormFieldsetPadding: 0 !default;
+$newsSubscribeFormFieldsetMargin: 0 !default;
+$newsSubscribeFormFieldsetBorder: 0 none !default;
+$newsSubscribeFormFieldsetFloat: left !default;
+$newsSubscribeFormFieldsetWidth: 100% !default;
+$newsSubscribeFormFieldsetWidthMediaSmall: 59% !default;
+$newsSubscribeFormFieldsetMaxWidth: 300px !default;
+
+$newsSubscribeFormInputPadding: 8px 9px !default;
+$newsSubscribeFormInputHeight: 40px !default;
+$newsSubscribeFormInputFontSize: 17px !default;
+$newsSubscribeFormInputWidth: 100% !default;
+$newsSubscribeFormInputMaxWidth: none !default;
+$newsSubscribeFormInputBorderTopRightRadiusMediaSmall: 0 !default;
+$newsSubscribeFormInputBorderBottomRightRadiusMediaSmall: 0 !default;
+
+$newsSubscribeFormSubmitButtonFloat: left !default;
+$newsSubscribeFormSubmitButtonWidth: 100% !default;
+$newsSubscribeFormSubmitButtonPadding: 7px 15px !default;
+$newsSubscribeFormSubmitButtonWidthMediaSmall: 40.96% !default;
+$newsSubscribeFormSubmitButtonBorderTopLeftRadiusMediaSmall: 0 !default;
+$newsSubscribeFormSubmitButtonBorderBottomLeftRadiusMediaSmall: 0 !default;
 $newsSubscribeButtonBackgroundHover: $secondaryColor !default;
 
 $footerMainTitleTextColor: $white !default;
 $footerMainTitleTextColorHover: $secondaryColor !default;
 
+$footerMainPadding: 73px 0 0px !default;
+$footerMainContainerPaddingBottom: 55px !default;
+$footerMainLogoMarginBottom: 30px !default;
+$footerMainLogoDisplay: block !default;
+
+$footerMainPhoneTextFontSize: 20px !default;
+
+$footerMainPhoneTextFontWeight: bold !default;
+$footerMainPhoneTextDisplay: block !default;
+
+$footerMainSocialLinksMarginTop: 20px !default;
+$footerMainSocialLinksMarginBottom: 20px !default;
+$footerMainSocialLinksListWidth: 34px !default;
+$footerMainSocialLinksListPadding: 0 0 0px 10px !default;
+$footerMainSocialLinksListDisplay: inline-block !default;
+$footerMainSocialLinksListAnchorDisplay: block !default;
+$footerMainSocialLinksListAnchorOpacityHover: 0.8 !default;
+
+$footerMainTitleFontWeight: bold !default;
+$footerMainTitleFontSize: 20px !default;
+$footerMainTitleDisplay: block !default;
+$footerMainTitleMarginBottom: 5px !default;
+
+$footerMainCoursesListMarginBottom: 20px !default;
+$footerMainCoursesListChildDisplay: none !default;
+$footerMainCoursesListChildrenFontWeight: bold !default;
+$footerMainCoursesListChildrenMarginBottom: 5px !default;
+$footerMainCoursesListChildrenDisplayMediaTablet: inline-block !default;
+$footerMainCoursesListChildrenWidthMediaTablet: 49% !default;
+$footerMainCoursesListChildrenVerticalAlign: top !default;
+
+$footerMainLinkListMarginBottom: 28px !default;
+$footerMainLinkListAnchorFontSize: 20px !default;
+$footerMainLinkListAnchorFontWeight: bold !default;
+
+$footerAddressLineHeight: 2 !default;
+
+$footerInfoLinksMarginBottom: 5px !default;
+
+$footerInfoWidth: 100% !default;
+$footerInfoTextAlign: center !default;
+$footerInfoTextAlignMediaTablet: left !default;
+$footerInfoWidthMediaTablet: auto !default;
+
+$footerInfoListPosition: relative !default;
+$footerInfoListFloatMediaTablet: left !default;
+$footerInfoListMarginRight: 23px !default;
+
+$footerCoursesHeaderTextTransform: capitalize !default;
+$footerCoursesChildrenDisplay: none !default;
+
+$footerInfoMargin: 0px !default;
+$footerInfoListStyle: none !default;
+
+$footerContainerMarginTop: 0px !default;
+$footerContainerMarginBottom: 14px !default;
+$footerContainerPaddingTop: 20px !default;
 $footerContainerBorderTop: 1px solid #646464 !default;
+$footerContainerFontSize: $bodyFontSize !default;
+$footerContainerLogoWidth: 100% !default;
+$footerContainerLogoTextAlign: center !default;
+$footerContainerLogoWidthMediaTablet: auto !default;
+$footerContainerLogoTextAlignMediaTablet: right !default;
