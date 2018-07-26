@@ -1,0 +1,445 @@
+//
+//
+// footer.scss
+//
+// Contains all the styles of footer contents
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+//
+
+@include theme('f', 'footer') {
+  #footer {
+    position: $footerPosition;
+    font-weight: $footerFontWeight;
+    overflow: hidden;
+    section.block {
+      &.the-latest {
+        background: $theLatestBackground;
+        padding: $theLatestPadding;
+        position: $theLatestPosition;
+        text-align: $theLatestTextAlign;
+        >p {
+          margin: 0;
+        }
+        h3 {
+          font-size: $theLatestHeaderFontSize;
+          text-transform: $theLatestHeaderTextTransform;
+          font-weight: $theLatestHeaderFontWeight;
+          color: $theLatestHeaderTextColor;
+          margin-bottom: $theLatestHeaderMarginBottom;
+          text-align: $theLatestHeaderTextAlign;
+          @include responsive($media-small) {
+            margin-bottom: $theLatestHeaderMarginBottomMediaSmall;
+          }
+        }
+        ul {
+          max-width: $theLatestListMaxWidth;
+          margin: $theLatestListMargin;
+          @include responsive($media-tablet) {
+            max-width: $theLatestListMaxWidthMediaTablet;
+          }
+          >li {
+            margin-bottom: $theLatestListItemMarginBottom;
+            vertical-align: $theLatestListItemVerticalAlign;
+            @include responsive($media-small) {
+              padding-left: $theLatestListItemPaddingLeftMediaSmall;
+              padding-right: $theLatestListItemPaddingRightMediaSmall;
+            }
+            @include responsive($media-tablet) {
+              margin-bottom: $theLatestListItemMarginBottomMediaTablet;
+            }
+          }
+        }
+        .tl-item {
+          position: $theLatestItemPosition;
+          background: $theLatestItemBackground;
+          border-style: $theLatestItemBorderStyle;
+          border-color: $theLatestItemBorderColor;
+          border-width: $theLatestItemBorderWidth;
+          padding-top: $theLatestItemHeight;
+          @extend .responsive-image-h;
+          >span {
+            width: 100%;
+            height: $theLatestItemHeight;
+          }
+          .tl-date {
+            position: $theLatestItemDatePosition;
+            width: $theLatestItemDateWidth;
+            height: $theLatestItemDateHeight;
+            top: $theLatestItemDatePositionTop;
+            left: $theLatestItemDatePositionLeft;
+            background: $theLatestItemDateBackground;
+            color: $theLatestItemDateTextColor;
+            font-weight: $theLatestItemDateFontWeight;
+            font-size: $theLatestItemDateFontSize;
+            padding: $theLatestItemDatePadding;
+            line-height: $theLatestItemDateLineHeight;
+            text-align: $theLatestItemDateTextAlign;
+            text-transform: $theLatestItemDateTextTransform;
+            z-index: $theLatestItemDateZIndex;
+            &::after {
+              content: $theLatestItemDateAfterContent;
+              position: $theLatestItemDateAfterPosition;
+              border-bottom: $theLatestItemDateAfterBorderBottom;
+              border-right: $theLatestItemDateAfterBorderRight;
+              left: $theLatestItemDateAfterPositionLeft;
+              top: $theLatestItemDateAfterPositionTop;
+            }
+          }
+          span.tl-tag {
+            color: $theLatestItemTagColor;
+          }
+          &.events {
+            border-color: $theLatestItemBorderColorEvents;
+            span.tl-tag {
+              color: $theLatestItemEventsTagColor;
+            }
+          }
+          .tl-info {
+            padding: $theLatestItemInfoPadding;
+            background: $theLatestItemBackground;
+            border-top: $theLatestItemInfoBorderTop;
+            span.tl-tag {
+              font-size: $theLatestItemInfoTagFontSize;
+              text-transform: $theLatestItemInfoTagTextTransform;
+              letter-spacing: $theLatestItemInfoTagLetterSpacing;
+              font-weight: $theLatestItemInfoTagFontWeight;
+              margin-bottom: $theLatestItemInfoTagMarginBottom;
+              display: $theLatestItemInfoTagDisplay;
+            }
+            h5 {
+              font-size: $theLatestItemInfoHeaderFontSize;
+              font-weight: $theLatestItemInfoHeaderFontWeight;
+              line-height: $theLatestItemInfoHeaderLineHeight;
+              text-transform: $theLatestItemInfoHeaderTextTransform;
+              margin-bottom: $theLatestItemInfoHeaderMarginBottom;
+              &, a {
+                color: $theLatestItemInfoHeaderColor;
+              }
+              a:hover {
+                color: $theLatestItemInfoHeaderColorHover;
+              }
+            }
+            p {
+              font-size: $theLatestItemFontSize;
+              color: $theLatestItemTextColor;
+            }
+          }
+        }
+        a.see-link {
+          display: $theLatestItemSeeLinkDisplay;
+          margin-top: $theLatestItemSeeLinkMarginTop;
+          text-align: $theLatestItemSeeLinkTextAlign;
+          font-size: $theLatestItemSeeLinkFontSize;
+          text-transform: $theLatestItemSeeLinkTextTransform;
+          font-weight: $theLatestItemSeeLinkFontWeight;
+          letter-spacing: $theLatestItemSeeLinkLetterSpacing;
+          color: $theLatestItemSeeLinkColor;
+        }
+      }
+      &.about-us {
+        background: $aboutUsBackground;
+        position: $aboutUsPosition;
+        .cn-left, .cn-right {
+          width: $aboutUsBlockWidth;
+          @include responsive($media-tablet) {
+            width: $aboutUsBlockWidthMediaTablet;
+          }
+        }
+        .cn-left {
+          padding: $aboutUsBlockLeftPadding;
+          @include responsive($media-tablet) {
+            float: $aboutUsBlockLeftFloat;
+          }
+          h4 {
+            font-size: $aboutUsHeaderFontSize;
+            color: $aboutUsHeaderTextColor;
+            letter-spacing: $aboutUsHeaderLetterSpacing;
+            font-weight: $aboutUsHeaderFontWeight;
+            @include responsive($media-tablet) {
+              font-size: $aboutUsHeaderFontSizeMediaTablet;
+            }
+          }
+          p {
+            font-size: $aboutUsTextFontSize;
+            color: $aboutUsTextColor;
+            line-height: $aboutUsTextLineHeight;
+            @include responsive($media-tablet) {
+              font-size: $aboutUsTextFontSizeMediaTablet;
+            }
+          }
+          .app-btn {
+            background: $aboutUsAppButtonBackground;
+            border: $aboutUsAppButtonBorder;
+            margin-top: $aboutUsAppButtonMarginTop;
+          }
+        }
+        .cn-right {
+          position: $aboutUsBlockRightPosition;
+          height: $aboutUsBlockRightHeight;
+          @extend .responsive-image-h;
+          >span {
+            height: 100%;
+            img {
+              min-height: 100%;
+            }
+          }
+          @include responsive($media-tablet) {
+            float: right;
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+          }
+        }
+      }
+      &.news-subscribe {
+        background: $newsSubscribeBackground;
+        padding: $newsSubscribePadding;
+        color: $newsSubscribeColor;
+        font-size: $newsSubscribeFontSize;
+        .container {
+          max-width: 1080px;
+        }
+        .internal-page & {
+          @extend .page-shadow;
+        }
+        h5 {
+          font-size: $newsSubscribeHeaderFontSize;
+          text-transform: $newsSubscribeHeaderTextTransform;
+          font-weight: $newsSubscribeHeaderFontWeight;
+          margin-bottom: $newsSubscribeHeaderMarginBottom;
+          color: $newsSubscribeHeaderColor;
+        }
+        .col-sm-11 {
+          p {
+            max-width: $newsSubscribeTextMaxWidth;
+            margin: $newsSubscribeTextMargin;
+            color: $newsSubscribeTextColor;
+            @include responsive($media-tablet) {
+              margin: $newsSubscribeTextMarginMediaTablet;
+            }
+          }
+        }
+        .col-sm-13 {
+          padding: 20px 15px;
+        }
+        form {
+          max-width: $newsSubscribeFormMaxWidth;
+          width: $newsSubscribeFormWidth;
+          margin: $newsSubscribeFormMargin;
+          @include responsive($media-tablet) {
+            margin: $newsSubscribeFormMarginMediaTablet;
+          }
+          fieldset {
+            padding: $newsSubscribeFormFieldsetPadding;
+            margin: $newsSubscribeFormFieldsetMargin;
+            border: $newsSubscribeFormFieldsetBorder;
+            float: $newsSubscribeFormFieldsetFloat;
+            width: $newsSubscribeFormFieldsetWidth;
+            @include responsive($media-small) {
+              width: $newsSubscribeFormFieldsetWidthMediaSmall;
+              max-width: $newsSubscribeFormFieldsetMaxWidth;
+            }
+            .form-cont-row {
+              >label {
+                display: none;
+              }
+              input {
+                padding: $newsSubscribeFormInputPadding;
+                height: $newsSubscribeFormInputHeight;
+                font-size: $newsSubscribeFormInputFontSize;
+                width: $newsSubscribeFormInputWidth;
+                max-width: $newsSubscribeFormInputMaxWidth;
+                @include responsive($media-small) {
+                  border-top-right-radius: $newsSubscribeFormInputBorderTopRightRadiusMediaSmall;
+                  border-bottom-right-radius: $newsSubscribeFormInputBorderBottomRightRadiusMediaSmall;
+                }
+              }
+            }
+          }
+          .form-submit-button {
+            float: $newsSubscribeFormSubmitButtonFloat;
+            width: $newsSubscribeFormSubmitButtonWidth;
+            padding: $newsSubscribeFormSubmitButtonPadding;
+            background: $newsSubscribeButtonBackground;
+            @include responsive($media-small) {
+              width: $newsSubscribeFormSubmitButtonWidthMediaSmall;
+              border-top-left-radius: $newsSubscribeFormSubmitButtonBorderTopLeftRadiusMediaSmall;
+              border-bottom-left-radius: $newsSubscribeFormSubmitButtonBorderBottomLeftRadiusMediaSmall;
+            }
+            &:hover {
+              background: $newsSubscribeButtonBackgroundHover;
+            }
+          }
+        }
+      }
+      &.footer-main {
+        padding: $footerMainPadding;
+        .container {
+          max-width: $containerWidth;
+          padding-bottom: $footerMainContainerPaddingBottom;
+          padding-left: $pageDefaultPadding;
+          padding-right: $pageDefaultPadding;
+          .footer-logo {
+            margin-bottom: $footerMainLogoMarginBottom;
+            display: $footerMainLogoDisplay;
+          }
+          span.phone-text {
+            font-size: $footerMainPhoneTextFontSize;
+            color: $footerMainTitleTextColor;
+            font-weight: $footerMainPhoneTextFontWeight;
+            display: $footerMainPhoneTextDisplay;
+          }
+          .social-links {
+            margin-top: $footerMainSocialLinksMarginTop;
+            margin-bottom: $footerMainSocialLinksMarginBottom;
+            li {
+              width: $footerMainSocialLinksListWidth;
+              padding: $footerMainSocialLinksListPadding;
+              display: $footerMainSocialLinksListDisplay;
+              a {
+                display: $footerMainSocialLinksListAnchorDisplay;
+                &:hover {
+                  @include opacity($footerMainSocialLinksListAnchorOpacityHover);
+                }
+              }
+            }
+          }
+          .f-title {
+            font-weight: $footerMainTitleFontWeight;
+            font-size: $footerMainTitleFontSize;
+            color: $footerMainTitleTextColor;
+            display: $footerMainTitleDisplay;
+            margin-bottom: $footerMainTitleMarginBottom;
+          }
+          .courses-list {
+            margin-bottom: $footerMainCoursesListMarginBottom;
+            >li {
+              display: $footerMainCoursesListChildDisplay;
+            }
+            >ul > li {
+              font-weight: $footerMainCoursesListChildrenFontWeight;
+              margin-bottom: $footerMainCoursesListChildrenMarginBottom;
+              @include responsive($media-tablet) {
+                display: $footerMainCoursesListChildrenDisplayMediaTablet;
+                width: $footerMainCoursesListChildrenWidthMediaTablet;
+                vertical-align: $footerMainCoursesListChildrenVerticalAlign;
+              }
+            }
+          }
+          .fmain-link {
+            li {
+              margin-bottom: $footerMainLinkListMarginBottom;
+              a {
+                font-size: $footerMainLinkListAnchorFontSize;
+                font-weight: $footerMainLinkListAnchorFontWeight;
+                color: $footerMainTitleTextColor;
+                &:hover {
+                  color: $footerMainTitleTextColorHover;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .address {
+      line-height: $footerAddressLineHeight;
+    }
+    .info-links {
+      background: $footerInfoLinksBackground;
+      margin-top: $footerInfoLinksMarginBottom;
+      .container {
+        color: $footerInfoLinksTextColor;
+        max-width: $containerWidth;
+        padding-left: $pageDefaultPadding;
+        padding-right: $pageDefaultPadding;
+        a {
+          color: $footerInfoLinksAnchorColor;
+          &:hover {
+            color: $footerInfoLinksAnchorHoverColor;
+          }
+        }
+        .footer-info {
+          width: $footerInfoWidth;
+          text-align: $footerInfoTextAlign;
+          @include responsive($media-tablet) {
+            text-align: $footerInfoTextAlignMediaTablet;
+            width: $footerInfoWidthMediaTablet;
+          }
+          li {
+            position: $footerInfoListPosition;
+            color: $footerInfoTextColor;
+            @include responsive($media-tablet) {
+              float: $footerInfoListFloatMediaTablet;
+              margin-right: $footerInfoListMarginRight;
+            }
+            a {
+              color: $footerInfoTextColor;
+              &:hover {
+                color: $footerInfoTextColorHover;
+              }
+            }
+            @include responsive($media-tablet) {
+              &:first-child {
+                &::before {
+                  content: none;
+                }
+              }
+              &::before {
+                content: "";
+                position: absolute;
+                top: 10px;
+                left: -15px;
+                width: 5px;
+                height: 5px;
+                border-radius: 100%;
+                background: $footerInfoTextColor;
+              }
+            }
+          }
+        }
+      }
+    }
+    .courses-list, .quicklinks {
+      ul >li {
+        >a, &:first-child {
+          text-transform: $footerCoursesHeaderTextTransform;
+        }
+        ul {
+          display: $footerCoursesChildrenDisplay;
+        }
+      }
+    }
+    ul.footer-info {
+      margin: $footerInfoMargin;
+      list-style: $footerInfoListStyle;
+    }
+    .container {
+      a {
+        color: $footerInfoColor;
+        &:hover {
+          color: $footerInfoHoverColor;
+        }
+      }
+      .footer-container {
+        margin-top: $footerContainerMarginTop;
+        margin-bottom: $footerContainerMarginBottom;
+        padding-top: $footerContainerPaddingTop;
+        border-top: $footerContainerBorderTop;
+        font-size: $footerContainerFontSize;
+        .footer-logo {
+          width: $footerContainerLogoWidth;
+          text-align: $footerContainerLogoTextAlign;
+          @include responsive($media-tablet) {
+            width: $footerContainerLogoWidthMediaTablet;
+            text-align: $footerContainerLogoTextAlignMediaTablet;
+          }
+        }
+      }
+    }
+  }
+}

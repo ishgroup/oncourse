@@ -1,0 +1,295 @@
+//
+//
+// courses.scss
+//
+// Contains courses settings used in different scss files
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+//
+
+$coursesMenuItemPadding: 0 !default;
+
+$enrolActionFontFamily: $bodyFontFamily !default;
+$enrolActionBackground: $primaryColor !default;
+$enrolActionHoverBackground: $secondaryColor !default;
+
+$enrolActionPadding: 18px 5px !default;
+$enrolActionBorder: 1px solid darken($primaryColor, 15%) !default;
+$enrolActionAddedBackground: $secondaryColor !default;
+
+$enrolActionWidth: 100% !default;
+$enrolActionBorderRadius: 4px !default;
+$enrolActionMargin: 5px 0 8px !default;
+
+$classItemInfoFontSize: $bodyFontSize !default;
+$coursesContentFontSize: $bodyFontSize !default;
+
+$coursesPageTitleFontSize: $h1FontSize !default;
+$coursesPageTitleFontWeight: bold !default;
+
+$classActionTextAlign: left !default;
+$classActionFontSize: $bodyFontSize !default;
+
+$classItemBorderHoverColor: $primaryColor !default;
+$classItemBackgroundColor: transparent !default;
+
+$classItemPadding: 0 !default;
+$classItemBorder: 1px solid #dedede !default;
+$classItemBorderLeft: 1px solid #dedede !default;
+
+$classItemInfoLeftBorderRight: 0 !default;
+
+$classItemRowMargin: 0 !default;
+$classItemWrapperDisplayMediaTablet: table !default;
+$classItemWrapperWidthMediaTablet: 100% !default;
+
+$classItemDateTitleMarginBottom: 16px !default;
+
+$classItemSessionDateFontSize: 20px !default;
+$classItemSessionDateFontWeight: bold !default;
+$classItemSessionDateMarginBottom: 30px !default;
+$classItemSessionDateColor: #353831 !default;
+
+$classItemDateBackground: url("/s/img/icons/calendar.png") left 5px no-repeat !default;
+$classItemDatePaddingLeft: 33px !default;
+$classItemDateSessionIconBackground: url("/s/img/icons/session.png") 0 0 no-repeat !default;
+$classItemDateSessionIconWidth: 20px !default;
+$classItemDateSessionIconHeight: 20px !default;
+$classItemDateSessionIconPositionTop: 4px !default;
+$classItemDateSessionIconPositionLeft: -33px !default;
+
+$classItemLeftPadding: 30px 20px !default;
+$classItemLeftMinHeight: 170px !default;
+$classItemLeftInfoWidthMediaSmall: 50% !default;
+
+$classItemDisplayMediaTablet: table-cell !default;
+$classItemFloatMediaTablet: none !default;
+$classItemVerticalAlignMediaTablet: top !default;
+
+$classItemRightBackground: #efeff1 !default;
+$classItemRightPadding: 30px 18px !default;
+
+$coursesFontFamily: $bodyFontFamily !default;
+$coursesDetailsFontFamily: $bodyFontFamily !default;
+$normalFontFamily: $bodyFontFamily !default;
+
+$courseItemBorderTop: 0px dotted $primaryColor !default;
+$courseItemMarginBottom: 60px !default;
+
+$courseMoreLinkColor: $theme-color !default;
+$courseMoreLinkHoverColor: $primaryColor !default;
+
+$confirmOrderDialogWidth: 100% !default;
+$confirmOrderDialogPositionRight: 0 !important !default;
+$confirmOrderDialogPositionTop: 0 !important !default;
+$confirmOrderDialogPositionLeft: 0 !important !default;
+$confirmOrderDialogMarginLeft: 0 !default;
+$confirmOrderDialogBackground: #f3f3f3 !default;
+$confirmOrderDialogFontSize: 16px !default;
+$confirmOrderDialogBorder: 0 none !default;
+$confirmOrderDialogBoxShadow: none !default;
+$confirmOrderDialogBorderRadius: 0 !default;
+
+$confirmedMessageFontSize: 24px !default;
+
+$confirmedProceedPadding: 15px 25px !default;
+$confirmedProceedBackground: $theme-color !default;
+$confirmedProceedBackgroundHover: $secondaryColor !default;
+$confirmedProceedTextTransform: capitalize !default;
+$confirmedProceedBorder: 1px solid darken($theme-color, 10%) !default;
+$confirmedProceedBorderHover: 1px solid darken($secondaryColor, 10%) !default;
+$confirmedProceedBorderRadius: 2px !default;
+$confirmedProceedFontSize: 18px !default;
+$confirmedProceedMargin: 15px !default;
+
+$confirmedCloseButtonColor: $theme-color !default;
+$confirmedCloseButtonColorHover: $secondaryColor !default;
+
+$confirmedClassDateFontSize: 14px !default;
+$confirmedClassDateColor: $theme-color !default;
+
+$courseShortDescriptionContent: none !default;
+
+$courseMoreDisplay: inline !default;
+$courseMorePosition: relative !default;
+$courseMoreZIndex: 0 !default;
+
+$classItemLinkHoverColor: $primaryColor !default;
+
+$waitingListTitleFontSize: 17px !default;
+$waitingListTitleBG: #F5F5F5 !default;
+$waitingListTitleAnchorColor: #505050 !default;
+$waitingListTitleHoverBG: $color-7 !default;
+
+$coursesJoinButtonBackground: none !default;
+$coursesJoinButtonHoverBackground: transparent !default;
+$coursesJoinButtonMinWidth: auto !default;
+$coursesJoinButtonPadding: 0 !default;
+$coursesJoinButtonFontSize: 17px !default;
+$coursesJoinButtonColor: #505050 !default;
+$coursesJoinButtonLineHeight: 1.5 !default;
+$coursesJoinButtonFontWeight: bold !default;
+
+$coursesClassItemLocationImage: '/s/img/icons/location.png' !default;
+$coursesClassItemLocationImageWidth: 23px !default;
+
+$coursesClassItemTutorImage: '/s/img/icons/person.png' !default;
+$coursesClassItemTutorImageWidth: 23px !default;
+$coursesClassItemTutorImageHeight: 21px !default;
+
+$courseItemClassDescriptionMargin: 10px 0 10px 0 !default;
+
+$classItemPriceColor: $black !default;
+$classItemPriceFontSize: 20px !default;
+$classItemPriceFontWeight: bold !default;
+$classItemPriceGSTColor: #938a8d !default;
+$classItemDiscountedPriceColor: #736565 !default;
+
+$classItemDisabledPriceColor: gray !default;
+$coursesClassItemFeeDiscountColor: $primaryColor !default;
+
+
+$searchTermsBackground: url("/s/img/icons/icon-search-courses.png") 15px 14px no-repeat !default;
+$searchTermsPadding: 10px 10px 10px 40px !default;
+$searchTermsMargin: 0 0 25px 0 !default;
+
+$searchTermsResultsLocationsBackground: url("/s/img/icons/location.png") left 2px no-repeat !default;
+$searchTermsResultsLocationsPaddingLeft: 23px !default;
+
+$searchTermsBorderHover: 1px solid transparent !default;
+
+$googleMapMarginBottom: 25px !default;
+
+$courseItemRelatedHeaderFontSize: 20px !default;
+$courseItemRelatedHeaderFontWeight: bold !default;
+$courseItemRelatedHeaderFloat: left !default;
+$courseItemRelatedHeaderMarginRight: 10px !default;
+$courseItemRelatedHeaderColor: $color-3 !default;
+
+$relatedCoursesFloat: left !default;
+$relatedCoursesMarginLeft: 0 !default;
+$relatedCoursesMarginTop: 2.5px !default;
+$relatedCoursesListDisplay: inline-block !default;
+$relatedCoursesListPosition: relative !default;
+$relatedCoursesListMarginLeft: 19px !default;
+$relatedCoursesListColor: $color-3 !default;
+$relatedCoursesListColorHover: $secondaryColor !default;
+
+$relatedCoursesListFirstChildMarginLeft: 10px !default;
+$relatedCoursesListFirstChildBeforeContent: none !default;
+
+$relatedCoursesListBeforeContent: "" !default;
+$relatedCoursesListBeforeBackground: $color-3 !default;
+$relatedCoursesListBeforeWidth: 5px !default;
+$relatedCoursesListBeforeHeight: 5px !default;
+$relatedCoursesListBeforePosition: absolute !default;
+$relatedCoursesListBeforePositionTop: 10px !default;
+$relatedCoursesListBeforePositionLeft: -12px !default;
+$relatedCoursesListBeforeBorderRadius: 100% !default;
+
+$enableDefaultBubbleInfo: false !default;
+
+$coursesCustomBubbleInfoTranslateX: 300px;
+$coursesCustomBubbleInfoPositionLeft: 0;
+$coursesCustomBubbleInfoPositionRight: auto;
+
+$coursesCustomBubbleInfoPositionLeftHover: -298px;
+$coursesCustomBubbleInfoPositionRightHover: auto;
+
+@if $sidebarRight == "on" and $sidebarLeft == "" {
+  $coursesCustomBubbleInfoPositionLeft: auto;
+  $coursesCustomBubbleInfoPositionRight: 0;
+  $coursesCustomBubbleInfoTranslateX: -300px;
+
+  $coursesCustomBubbleInfoPositionLeftHover: auto;
+  $coursesCustomBubbleInfoPositionRightHover: -298px;
+}
+
+$coursesCustomBubbleTootipBorder: 1px solid $theme-color !default;
+
+$coursesCustomBubbleTootipBorderRightSidebarLeft: 0 !default;
+$coursesCustomBubbleTootipBackgroundColorSidebarLeft: $white !default;
+
+$coursesCustomBubbleTootipBorderLeftSidebarRight: 0 !default;
+$coursesCustomBubbleTootipBackgroundColorSidebarRight: #efeff1 !default;
+
+$coursesCustomBubbleTootipBorderRadius: 0 !default;
+$coursesCustomBubbleTootipBoxShadow: none !default;
+$coursesCustomBubbleTootipHeight: 100% !default;
+$coursesCustomBubbleTootipPadding: 20px 22px 20px 15px !default;
+$coursesCustomBubbleTootipMarginBottom: 20px !default;
+
+$coursesCustomBubbleTootipAfterContent: "" !default;
+$coursesCustomBubbleTootipAfterWidth: 1px !default;
+$coursesCustomBubbleTootipAfterHeight: 50% !default;
+$coursesCustomBubbleTootipAfterBackground: $theme-color !default;
+$coursesCustomBubbleTootipAfterPosition: absolute !default;
+$coursesCustomBubbleTootipAfterPositionTop: 50% !default;
+$coursesCustomBubbleTootipAfterPositionRightSidebarLeft: 0 !default;
+$coursesCustomBubbleTootipAfterPositionLeftSidebarRight: 0 !default;
+
+$coursesCustomBubbleArrowDisplay: none !default;
+
+$coursesCustomBubbleTopBorderBottom: 2px solid $theme-color !default;
+$coursesCustomBubbleTopPaddingBottom: 10px !default;
+$coursesCustomBubbleTopTextAlign: center !default;
+$coursesCustomBubbleTopMarginBottom: 20px !default;
+
+$coursesCustomBubbleTimingDisplay: block !default;
+$coursesCustomBubbleTimingBorder: 0 none !default;
+$coursesCustomBubbleTimingMarginRight: 0 !default;
+$coursesCustomBubbleTimingBackgroundColor: transparent !default;
+
+$coursesCustomBubbleTimingWeekDisplay: inline-block !default;
+$coursesCustomBubbleTimingWeekBackground: $theme-color !default;
+$coursesCustomBubbleTimingWeekBorder: 1px solid transparent !default;
+$coursesCustomBubbleTimingWeekBorderRadius: 100% !default;
+$coursesCustomBubbleTimingWeekPadding: 5px !default;
+$coursesCustomBubbleTimingWeekTextAlign: center !default;
+$coursesCustomBubbleTimingWeekWidth: 30px !default;
+$coursesCustomBubbleTimingWeekHeight: 30px !default;
+$coursesCustomBubbleTimingWeekColor: $white !default;
+$coursesCustomBubbleTimingWeekMarginBottom: 2px !default;
+
+$coursesCustomBubbleTimingWeekNoBackground: silver !default;
+$coursesCustomBubbleTimingWeekNoColor: $white !default;
+
+$coursesCustomBubbleTimingWeekYesColor: $white !default;
+
+$coursesCustomBubbleLinkBackground: none !default;
+$coursesCustomBubbleLinkPosition: relative !default;
+$coursesCustomBubbleLinkPaddingLeft: 21px !default;
+$coursesCustomBubbleLinkMaxHeight: 36px !default;
+$coursesCustomBubbleLinkOverflow: hidden !default;
+
+$coursesCustomBubbleLinkIconPosition: absolute !default;
+$coursesCustomBubbleLinkIconPositionTop: 1px !default;
+$coursesCustomBubbleLinkIconPositionLeft: 0 !default;
+$coursesCustomBubbleLinkIconFontSize: 18px !default;
+$coursesCustomBubbleLinkIconMarginRight: 4px !default;
+
+
+$fstTitlePadding: 9px 0px 13px 0px !default;
+$fstLocationListLabelFontWeight: normal !default;
+$fstLocationListPaddingLeft: 8px !default;
+
+$fstLocationColor: $black !default;
+
+$fstOptionLabelPaddingLeft: 26px !default;
+$fstOptionLabelBeforeBorderColor: #cbcbcb !default;
+
+$fstOptionLabelHasOptionChildBeforeBackground: none !important !default;
+$fstOptionLabelHasOptionChildBeforeBorder: none !important !default;
+
+$fstOptionLabelAfterCheckedBackgroundColor: #213875 !default;
+$fstOptionLabelAfterCheckedBorderColor: #213875 !default;
+
+$siteListContentMarginBottom: 25px !default;
+$siteListContentBorder: 0 none !default;
+$siteListContentBorderRadius: 0 !default;
+
+$siteListTitlePadding: 15px 30px !default;
+$siteListTitleMarginBottom: 0 !default;
+
+$siteListLinkPaddingLeft: 25px !default;

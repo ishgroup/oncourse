@@ -1,0 +1,102 @@
+//
+//
+// elements.scss
+//
+// Contains elements settings used in different scss files
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+
+$btnBackgroundColor: $primaryColor !default;
+$btnBackgroundHoverColor: $secondaryColor !default;
+$btnPadding: 9.5px 30px !default;
+$btnHeight: 40px !default;
+$btnFontSize: 16px !default;
+$btnLineHeight: 1.2 !default;
+$btnFontWeight: bold !default;
+$btnBorderRadius: 2px !default;
+$appBtnBorder: 1px solid $theme-color !default;
+
+$btnType2BackgroundColor: $secondaryColor !default;
+
+$appBtnLetterSpacing: 1.2px !default;
+
+$squareBtnMargin: 35px auto 0 !default;
+$squareBtnDisplay: block !default;
+$squareBtnColor: $white !default;
+$squareBtnPadding: 10px 25px 10px !default;
+$squareBtnFontSize: 15px !default;
+$squareBtnBorderColor: $theme-color !default;
+$squareBtnBorderColorHover: $white !default;
+$squareBtnWidth: 189px !default;
+$squareBtnFontWeight: 700 !default;
+$squareBtnTextTransform: uppercase !default;
+$squareBtnBorderRadius: 2px !default;
+$squareBtnLetterSpacing: 2px !default;
+$squareBtnTextAlign: center !default;
+
+$bottomLinePosition: relative !default;
+$bottomLineMarginBottom: 45px !default;
+$bottomLineLineHeight: 1.4 !default;
+$bottomLineTextAlign: center !default;
+$bottomLineAfterContent: "" !default;
+$bottomLineAfterPosition: absolute !default;
+$bottomLineAfterBackground: $theme-color !default;
+$bottomLineAfterHeight: 2px !default;
+$bottomLineAfterWidth: 100px !default;
+$bottomLineAfterMargin: 0 auto !default;
+$bottomLineAfterPositionBottom: -30px !default;
+$bottomLineAfterPositionLeft: 0 !default;
+$bottomLineAfterPositionRight: 0 !default;
+
+
+$labelFontWeight: normal !default;
+$labelFontSize: 17px !default;
+$labelLineHeight: 1.5 !default;
+
+$inputBorderRadius: 2px !default;
+$inputMaxWidth: 100% !default;
+$inputHeight: 40px !default;
+
+$textAreaMaxWidth: 100% !default;
+
+
+$slideLineLineHeight: 1.5 !default;
+$slideLineMarginBottom: 6px !default;
+
+$slideLineAfterBackgroundColor: $theme-color !default;
+$slideLineAfterPositionBottom: -2px !default;
+$slideLineAfterHeight: 1px !default;
+
+$splashPageBackground: $white !default;
+
+$customCheckboxAfterPaddingTop: 1px !default;
+$customCheckboxAfterPaddingLeft: 1.5px !default;
+$customCheckboxAfterBackgroundColor: #00bcd4 !default;
+$customCheckboxAfterBorderColor: #00bcd4 !default;
+$customCheckboxAfterColor: $white !default;
+
+$customCheckboxLabelPosition: relative !default;
+$customCheckboxLabelBackgroundRepeat: no-repeat !default;
+$customCheckboxLabelBackgroundPosition: 0 0 !default;
+$customCheckboxLabelCursor: pointer !default;
+$customCheckboxLabelFontWeight: normal !default;
+$customCheckboxLabelVerticalAlign: top !default;
+$customCheckboxLabelMarginTop: 0 !default;
+$customCheckboxLabelMarginBottom: 0 !default;
+$customCheckboxLabelPaddingLeft: 23px !default;
+$customCheckboxLabelFontSize: 14px !default;
+$customCheckboxLabelDisplay: inline-block !default;
+$customCheckboxLabelLineHeight: 24px !default;
+
+$customCheckboxLabelBeforeContent: "" !default;
+$customCheckboxLabelBeforeDisplay: inline-block !default;
+$customCheckboxLabelBeforeWidth: 18px !default;
+$customCheckboxLabelBeforeHeight: 18px !default;
+$customCheckboxLabelBeforePosition: absolute !default;
+$customCheckboxLabelBeforePositionTop: 3px !default;
+$customCheckboxLabelBeforePositionLeft: 0 !default;
+$customCheckboxLabelBeforeBackground: $white !default;
+$customCheckboxLabelBeforeFontSize: 15px !default;
+
+$customCheckboxLabelBeforeBorder: 2px solid #000 !default;

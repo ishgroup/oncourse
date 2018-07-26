@@ -1,0 +1,121 @@
+//
+//
+// default.scss
+//
+// Contains all the settings used in different scss files
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+//
+
+
+// Content settings
+$theme: "f";
+
+$theme-color: #213875 !default;
+
+$imagePath: '/s/img/' !default;
+
+$selectionBackgroundColor: $theme-color !default;
+$selectionColor: $white !default;
+
+$containerWidth: 1580px !default;
+$containerWidthHeader: 1280px !default;
+
+$anchorColor: $theme-color !default;
+$anchorHoverColor: #37b8cb !default;
+
+$primaryColor: $theme-color !default; //btn primary color
+$secondaryColor: #0446bd !default;
+
+$color-1: #BFBFBF !default;
+$color-2: #80704a !default;
+$color-3: #635738 !default;
+$color-4: #D2D2D2 !default;
+$color-5: #7d7d7d !default;
+$color-6: #202123 !default;
+$color-7: darken($theme-color, 20%) !default;
+$color-8: #dcdcdc !default;
+
+// media: small, tablet, desktop
+$small-screen: 768px !default;
+$tablet-screen: 1080px !default;
+$desktop-screen: 1280px !default;
+$custom-screen: 1260px !default;
+$screen-1180: 1180px !default;
+
+$useDefaultFont: false !default;
+$useDefaultFont-f: true !default;
+
+$sidebarLeft: "" !default;
+$sidebarRight: "" !default;
+
+@if $sidebarLeft == on {
+  $sidebarRight: "";
+} @elseif $sidebarRight == on {
+  $sidebarLeft: "";
+}
+
+// Font Families
+
+$bodyBackground: $white !default;
+$bodyFontFamily: 'Raleway', sans-serif !default;
+$bodyFontSize: 15px !default;
+$bodyFontColor: $theme-color !default;
+$bodyOverflow: hidden !default;
+$bodyOverflowY: scroll !default;
+
+$fontFamilyOne: 'Roboto', sans-serif !default;
+
+$faFontSize: 18px !default;
+
+$discountBlockTextColor: $anchorColor !default;
+$discountBlockTitleColor: $bodyFontColor !default;
+
+// Content container
+$contentContainerMarginTop: 0px !default;
+
+$h1InnerFontFamily: $bodyFontFamily !default;
+$h1InnerTextColor: $primaryColor !default;
+
+$h1FontSize: 37px !default;
+$h1LinkColor: $primaryColor !default;
+$h1LinkHoverColor: $secondaryColor !default;
+
+$h2FontSize: 28px !default;
+$h2LinkColor: $primaryColor !default;
+$h2LinkHoverColor: $secondaryColor !default;
+$h2FontWeight: bold !default;
+
+$h3FontSize: 22px !default;
+$h3LinkColor: $primaryColor !default;
+$h3LinkHoverColor: $secondaryColor !default;
+
+$h4FontSize: 18px !default;
+$h4LinkColor: $primaryColor !default;
+$h4LinkHoverColor: $secondaryColor !default;
+
+$h5FontSize: 15px !default;
+$h5LinkColor: $primaryColor !default;
+$h5LinkHoverColor: $secondaryColor !default;
+
+$h6FontSize: 12px !default;
+$h6LinkColor: $primaryColor !default;
+$h6LinkHoverColor: $secondaryColor !default;
+
+$mainPageContentFloat: none !default;
+$mainPageContentWidth: 100% !default;
+$mainPageSideBar: none !default;
+
+$contentH1FontWeight: normal !default;
+
+$contentParagraphMarginBottom: 0 !default;
+
+$pageDefaultPadding: 30px !default;
+
+@import "courses";
+@import "elements";
+@import "checkout";
+@import "layouts";
+@import "cms";
+@import "menu";

@@ -1,0 +1,459 @@
+//
+//
+// checkout.scss
+//
+// Contains all the styles of checkout contents
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+//
+
+@include theme('f') {
+  @if $enableCustomCheckout == true {
+    ##{$checkoutWrapper} {
+      fieldset, #tabable-container .tab-content {
+        >div>div, >div>div>div, .form-details >div>div, .form-group, .form-group > div > div, .form-details > p {
+          span {
+            &.validate-text {
+              .hint {
+                .reason-pointer, .hint-pointer {
+                  border-bottom: $checkoutFormValidateHintPointerBorderBottom;
+                }
+              }
+              .reason-pointer, .hint-pointer {
+                border-bottom: $checkoutFormValidatePointerBorderBottom;
+              }
+            }
+          }
+        }
+      }
+      >div>div {
+        max-width: $checkoutWrapperMaxWidth;
+        margin: $checkoutWrapperMargin;
+      }
+      .progress-steps {
+        max-width: $checkoutProgressStepMaxWidth;
+        overflow: hidden;
+        ul {
+          position: $checkoutProgressStepPosition;
+          display: $checkoutProgressStepDisplay;
+          table-layout: $checkoutProgressStepTableLayout;
+          width: $checkoutProgressStepWidth;
+          min-width: 100%;
+          margin: $checkoutProgressStepMargin;
+          @include responsive($media-small) {
+            width: $checkoutProgressStepWidthMediaSmall;
+            margin: $checkoutProgressStepMarginMediaSmall;
+          }
+          li {
+            &::before, &.active.last::before {
+              content: $checkoutProgressStepListBeforeContent;
+              border: $checkoutProgressStepListBeforeBorder;
+              display: $checkoutProgressStepListBeforeDisplay;
+              position: $checkoutProgressStepListBeforePosition;
+              left: $checkoutProgressStepListBeforePositionLeft;
+              top: $checkoutProgressStepListBeforePositionTop;
+              right: $checkoutProgressStepListBeforePositionRight;
+              background: $checkoutProgressStepListBeforeBackground;
+              border-radius: $checkoutProgressStepListBeforeBorderRadius;
+              width: $checkoutProgressStepListBeforeWidth;
+              height: $checkoutProgressStepListBeforeHeight;
+              z-index: $checkoutProgressStepListBeforeZIndex;
+              margin: $checkoutProgressStepListBeforeMargin;
+              line-height: $checkoutProgressStepListBeforeLineHeight;
+              text-align: $checkoutProgressStepListBeforeTextAlign;
+              color: $checkoutProgressStepListBeforeColor;
+              font-size: $checkoutProgressStepListBeforeFontSize;
+            }
+            &::after {
+              content: $checkoutProgressStepListAfterContent;
+              width: $checkoutProgressStepListAfterWidth;
+              position: $checkoutProgressStepListAfterPosition;
+              top: $checkoutProgressStepListAfterPositionTop;
+              left: $checkoutProgressStepListAfterPositionLeft;
+              z-index: $checkoutProgressStepListAfterZIndex;
+              border: $checkoutProgressStepListAfterBorder;
+            }
+            &.disable:first-child, &.disable:first-child + .disable {
+              &::before {
+                content: '\f00c';
+                content: '\2713;';
+                content: '\10003';
+                content: '\10004';
+                content: '\2713';
+              }
+            }
+            &.active {
+              ~ .disable {
+                &::before, &::after {
+                  border-color: $checkoutProgressStepListDisableBorderColor;
+                }
+              }
+            }
+            &.last {
+              &::before {
+                content: "";
+              }
+            }
+          }
+        }
+      }
+
+      #contactEditorForm {
+        fieldset {
+          clear: both;
+          >br {
+            display: none;
+          }
+          >div {
+            width: $checkoutFormRowWidth;
+            padding: $checkoutFormRowPadding;
+            display: $checkoutFormRowDisplay;
+            vertical-align: $checkoutFormRowVerticalAlign;
+            @include responsive($media-tablet) {
+              width: $checkoutFormRowWidthMediaTablet;
+            }
+            &.message {
+              float: $checkoutFormMessageFloat;
+              width: $checkoutFormMessageWidth;
+              padding: $checkoutFormMessagePadding;
+              min-height: $checkoutFormMessageMinHeight;
+            }
+          }
+          @include elements() {
+            &:focus {
+              border: $checkoutFormInputBorderFocus;
+            }
+          }
+          input[type="checkbox"] {
+            margin-top: $checkoutFormInputCheckboxMarginTop;
+            margin-left: $checkoutFormInputCheckboxMarginLeft;
+          }
+          >div.message {
+            width: $checkoutFormMessageWidth;
+          }
+        }
+        >div >fieldset {
+          &:nth-child(3) {
+            >div {
+              width: $checkoutFormThirdFieldsetWidth;
+              padding: $checkoutFormThirdFieldsetPadding;
+              &.message {
+                font-weight: $checkoutFormThirdFieldsetMessageFontWeight;
+              }
+            }
+          }
+        }
+        #addstudent-block {
+          fieldset > div {
+            &:last-child {
+              width: $checkoutFormAddStudentLastChildWidth;
+            }
+          }
+        }
+      }
+
+      #contactEditorForm, .concessionEditor, #payment-form {
+        .form-controls {
+          padding: $checkoutFormFormControlsPadding;
+          >span>a, a#cancelConcession, input.btn, button.btn {
+            max-width: $checkoutFormFormButtonMaxWidth;
+            width: $checkoutFormFormButtonWidth;
+            @include responsive($media-small) {
+              max-width: $checkoutFormFormButtonMaxWidthMediaSmall;
+            }
+          }
+          input.btn, button.btn {
+            @include responsive($media-small) {
+              margin-left: $checkoutFormFormButtonMarginLeftMediaSmall;
+            }
+          }
+          >span>a, a#cancelConcession {
+            text-align: $checkoutCancelButtonTextAlign;
+            padding: $checkoutCancelButtonPadding;
+            vertical-align: $checkoutCancelButtonVericalAlign;
+          }
+        }
+      }
+
+      .student-name {
+        padding: $checkoutPaymentStudentNamePadding;
+        .student-info {
+          font-family: $checkoutPaymentStudentInfoFontFamily;
+        }
+      }
+
+      .payment-summary {
+        .add-concession, .new-student-link {
+          margin: $checkoutPaymentPlusLinkMargin;
+          background-size: $checkoutPaymentPlusLinkBackgroundSize;
+          border-bottom: $checkoutPaymentPlusLinkBorderBottom;
+          color: $checkoutPaymentPlusLinkColor;
+        }
+        .checkoutList {
+          .enrolmentItem {
+            position: $checkoutPageEnrolItemPosition;
+            padding: $checkoutPageEnrolItemPadding;
+            .course-fields {
+              padding: 0 25px;
+              margin-top: 25px;
+              fieldset {
+                border-radius: 0;
+              }
+            }
+          }
+        }
+        .checkoutList .enrolmentItem, #totals {
+          &::before {
+            content: $checkoutPageEnrolItemBeforeContent;
+            position: $checkoutPageEnrolItemBeforePosition;
+            left: $checkoutPageEnrolItemBeforePositionLeft;
+            right: $checkoutPageEnrolItemBeforePositionRight;
+            top: $checkoutPageEnrolItemBeforePositionTop;
+            border-bottom: $checkoutPageEnrolItemBeforeBorderBottom;
+            width: $checkoutPageEnrolItemBeforeWidth;
+            max-width: $checkoutPageEnrolItemBeforeMaxWidth;
+            margin: $checkoutPageEnrolItemBeforeMargin;
+          }
+        }
+        #totals {
+          &::before {
+            top: $checkoutPageTotalsBeforePositionTop;
+          }
+        }
+      }
+
+      div.amount-container {
+        border-top: $checkoutPageAmountContainerBorderTop;
+        border-bottom: $checkoutPageAmountContainerBorderBottom;
+        position: $checkoutPageAmountContainerPosition;
+        >.row {
+          margin: $checkoutPageAmountContainerRowMargin;
+          @include responsive($media-small) {
+            display: $checkoutPageAmountContainerRowDisplayMediaSmall;
+            width: $checkoutPageAmountContainerRowWidthMediaSmall;
+          }
+        }
+        &::after {
+          content: $checkoutPageAmountContainerAfterContent;
+          position: $checkoutPageAmountContainerAfterPosition;
+          width: $checkoutPageAmountContainerAfterWidth;
+          top: $checkoutPageAmountContainerAfterPositionTop;
+          bottom: $checkoutPageAmountContainerAfterPositionBottom;
+          right: $checkoutPageAmountContainerAfterPositionRight;
+          z-index: $checkoutPageAmountContainerAfterZIndex;
+          background: $checkoutPageAmountContainerAfterBackground;
+          @include responsive($media-small) {
+            content: $checkoutPageAmountContainerAfterContentMediaSmall;
+            max-width: $checkoutPageAmountContainerAfterMaxWidthMediaSmall;
+          }
+          @include responsive($media-tablet) {
+            max-width: $checkoutPageAmountContainerAfterMaxWidthMediaTablet;
+          }
+        }
+        div.code-info {
+          width: $checkoutPageAmountCodeInfoWidth;
+          max-width: $checkoutPageAmountCodeInfoMaxWidth;
+          padding: $checkoutPageAmountCodeInfoPadding;
+          @include responsive($media-small) {
+            margin-bottom: $checkoutPageAmountCodeInfoMarginBottomMediaSmall;
+            padding: $checkoutPageAmountCodeInfoPaddingMediaSmall;
+            width: $checkoutPageAmountCodeInfoWidthMediaSmall;
+            display: $checkoutPageAmountCodeInfoDisplayMediaSmall;
+            vertical-align: $checkoutPageAmountCodeInfoVerticalAlignMediaSmall;
+            float: $checkoutPageAmountCodeInfoFloatMediaSmall;
+          }
+          @include responsive($media-tablet) {
+            margin-bottom: $checkoutPageAmountCodeInfoMarginBottomMediaTablet;
+          }
+          input.code_input {
+            width: $checkoutFormInputWidth;
+            @include responsive($media-small) {
+              border-top-right-radius: $checkoutFormInputBorderTopRightRadiusMediaSmall;
+              border-bottom-right-radius: $checkoutFormInputBorderBottomRightRadiusMediaSmall;
+              width: $checkoutFormInputWidthMediaSmall;
+            }
+            @include responsive($media-tablet) {
+              width: $checkoutFormInputWidthMediaTablet;
+            }
+          }
+          #addCode {
+            margin-left: $checkoutPageAmountContainerAddCodeMarginLeft;
+            width: $checkoutPageAmountContainerAddCodeWidth;
+            text-align: $checkoutPageAmountContainerAddCodeTextAlign;
+            background: $checkoutPageAmountContainerAddCodeBackground;
+            @include responsive($media-small) {
+              width: $checkoutPageAmountContainerAddCodeWidthMediaSmall;
+            }
+          }
+        }
+        div.amount-content {
+          width: $checkoutPageAmountContentWidth;
+          max-width: $checkoutPageAmountContentMaxWidth;
+          padding: $checkoutPageAmountContentPadding;
+          background: $checkoutPageAmountContentBackground;
+          @include responsive($media-small) {
+            width: $checkoutPageAmountContentWidthMediaSmall;
+            display: $checkoutPageAmountContentDisplayMediaSmall;
+            vertical-align: $checkoutPageAmountContentVerticalAlignMediaSmall;
+            float: $checkoutPageAmountContentFloatMediaSmall;
+          }
+          >.total-amount, >.grand-total, >.total-discount {
+            font-family: $checkoutPageAmountTotalFontFamily;
+            font-weight: $checkoutPageAmountContentLabelFontWeight;
+            font-size: $checkoutPageAmountTotalFontSize;
+            margin-bottom: $checkoutPageAmountTotalMarginBottom;
+            &, label, span {
+              font-weight: $checkoutPageAmountContentLabelFontWeight;
+              line-height: $checkoutPageAmountTotalLineHeight;
+            }
+          }
+        }
+      }
+
+      #tabable-container {
+        fieldset .form-details {
+          >p, >div.form-group {
+            width: $checkoutFormRowWidth;
+            padding: $checkoutFormRowPadding;
+          }
+          >div.form-group {
+            #cvvLink {
+              position: $checkoutFormCVVLinkPosition;
+              top: $checkoutFormCVVLinkPositionTop;
+              right: $checkoutFormCVVLinkPositionRight;
+              border-bottom: $checkoutFormCVVLinkBorderBottom;
+              color: $checkoutFormCVVLinkColor;
+              font-weight: $checkoutFormCVVLinkFontWeight;
+              font-size: $checkoutFormCVVLinkFontSize;
+              width: $checkoutFormCVVLinkWidth;
+              text-align: $checkoutFormCVVLinkTextAlign;
+              &:hover {
+                color: $checkoutFormCVVLinkColorHover;
+              }
+            }
+            .vcc-card-image {
+              display: $checkoutFormVCCCardImageDisplay;
+            }
+            .input-select-small {
+              .form-group, > div {
+                .Select {
+                  .Select-control .Select-multi-value-wrapper {
+                    width: $checkoutFormSelectWidth;
+                    @include responsive($checkout-media-default) {
+                      width: $checkoutFormSelectWidthMediaDefault;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        .tab-content {
+          .form-details div.form-group {
+            label>small {
+              line-height: $checkoutFormTabContentLabelLineHeight;
+              font-size: $checkoutFormTabContentLabelFontSize;
+              color: $checkoutFormTabContentLabelColor;
+            }
+            .select-payer {
+              width: $checkoutFormTabContentSelectPayerWidth;
+            }
+          }
+          #paymentEditor {
+            padding: $checkoutFormTabContentPaymentEditorPadding;
+          }
+          .payer-selection {
+            margin-bottom: $checkoutPayerMarginBottom;
+            clear: $checkoutPayerClear;
+            a.button {
+              font-family: $checkoutPayerButtonFontFamily;
+              margin-left: $checkoutPayerButtonMarginLeft;
+              padding-left: $checkoutPayerButtonPaddingLeft;
+              &, &:hover, &:focus, &:active {
+                border: $checkoutPayerButtonBorderHover;
+                background: $checkoutPayerButtonBackgroundHover;
+                color: $checkoutPayerButtonColorHover;
+              }
+            }
+            ul {
+              li {
+                a {
+                  background: $checkoutPayerOptionsBackground;
+                  font-family: $checkoutPayerOptionsFontFamily;
+                  font-size: $checkoutPayerOptionsFontSize;
+                  color: $checkoutPayerOptionsColor;
+                  border-bottom: $checkoutPayerOptionsBorderBottom;
+                  &:hover {
+                    color: $checkoutPayerOptionsColorHover;
+                  }
+                }
+              }
+            }
+          }
+          #corporate-pass {
+            fieldset {
+              #addCorporatePass {
+                max-width: $checkoutCorporatePassButtonMaxWidth;
+                width: $checkoutCorporatePassButtonWidth;
+                letter-spacing: $checkoutCorporatePassButtonLetterSpacing;
+                @include responsive($media-small) {
+                  float: $checkoutCorporatePassButtonFloatMediaSmall;
+                  max-width: $checkoutCorporatePassButtonMaxWidthMediaSmall;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      #payment-form {
+        .payment-conditions {
+          width: $checkoutPaymentConditionWidth;
+          @include responsive($media-small) {
+            float: $checkoutPaymentConditionFloatMediaSmall;
+            width: $checkoutPaymentConditionWidthMediaSmall;
+          }
+          >div {
+            display: $checkoutPaymentConditionLabel;
+          }
+          >div.conditions {
+            display: $checkoutPaymentConditionDisplay;
+            left: $checkoutPaymentConditionPositionLeft;
+            top: $checkoutPaymentConditionPositionTop;
+            width: $checkoutPaymentConditionWidth;
+            padding-left: $checkoutPaymentConditionPaddingLeft;
+          }
+        }
+      }
+
+      .Select-placeholder, .Select--single > .Select-control .Select-value {
+        line-height: $checkoutSelectPlaceholderLineHeight;
+      }
+      .Select-placeholder, .Select--single > .Select-control .Select-value, .Select-input {
+        height: $checkoutSelectPlaceholderHeight;
+      }
+      fieldset .Select .Select-control, #tabable-container .tab-content .Select .Select-control {
+        span {
+          height: $checkoutSelectPlaceholderHeight;
+          &.Select-arrow {
+            height: $checkoutSelectArrowHeight;
+            background: $checkoutSelectArrowBackground;
+            border: $checkoutSelectArrowBorder;
+            width: $checkoutSelectArrowWidth;
+            height: $checkoutSelectArrowHeight;
+          }
+        }
+      }
+      p.note {
+        font-size: $checkoutNoteFontSize;
+        padding-bottom: $checkoutNotePaddingBottom;
+        border-bottom: $checkoutNoteBorderBottom;
+        margin-bottom: $checkoutNoteMarginBottom;
+        margin-left: $checkoutNoteMarginLeft;
+        margin-right: $checkoutNoteMarginRight;
+      }
+
+    }
+  }
+}

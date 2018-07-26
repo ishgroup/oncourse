@@ -1,0 +1,245 @@
+//
+//
+// elements.scss
+//
+// All the styles of elements (input, select, checkbox etc)
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+//
+
+@include theme('f') {
+  .btn, form button.form-submit-button {
+    letter-spacing: $appBtnLetterSpacing;
+  }
+
+  // App Button
+  .app-btn {
+    display: $appBtnDisplay;
+    padding: $btnPadding;
+    border-radius: $btnBorderRadius;
+    border: $appBtnBorder;
+    letter-spacing: $appBtnLetterSpacing;
+    font-size: $btnFontSize;
+    line-height: $appBtnLineHeight;
+    font-weight: $btnFontWeight;
+    background: $btnBackgroundColor;
+    color: $btnColor !important;
+    &:hover, &:focus, &:active {
+      background: $btnBackgroundHoverColor;
+      font-weight: $btnFontWeight;
+      font-size: $btnFontSize;
+      color: $btnHoverTextColor !important;
+    }
+  }
+
+  .square-btn {
+    margin: $squareBtnMargin;
+    display: $squareBtnDisplay;
+    color: $squareBtnColor;
+    padding: $squareBtnPadding;
+    font-size: $squareBtnFontSize;
+    border: 2px solid $squareBtnBorderColor;
+    width: $squareBtnWidth;
+    font-weight: $squareBtnFontWeight;
+    text-transform: $squareBtnTextTransform;
+    border-radius: $squareBtnBorderRadius;
+    letter-spacing: $squareBtnLetterSpacing;
+    text-decoration: none;
+    text-align: $squareBtnTextAlign;
+    &:hover {
+      border-color: $squareBtnBorderColorHover;
+    }
+  }
+
+  .bottom-line {
+    position: $bottomLinePosition;
+    margin-bottom: $bottomLineMarginBottom;
+    line-height: $bottomLineLineHeight;
+    text-align: $bottomLineTextAlign;
+    &::after {
+      content: $bottomLineAfterContent;
+      position: $bottomLineAfterPosition;
+      background: $bottomLineAfterBackground;
+      height: $bottomLineAfterHeight;
+      width: $bottomLineAfterWidth;
+      margin: $bottomLineAfterMargin;
+      bottom: $bottomLineAfterPositionBottom;
+      left: $bottomLineAfterPositionLeft;
+      right: $bottomLineAfterPositionRight;
+    }
+  }
+
+  .slide-line {
+    position: relative;
+    display: inline-block;
+    line-height: $slideLineLineHeight;
+    margin-bottom: $slideLineMarginBottom;
+    &::after {
+      content: "";
+      display: block;
+      background-color: $slideLineAfterBackgroundColor;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: $slideLineAfterPositionBottom;
+      width: 100%;
+      height: $slideLineAfterHeight;
+      z-index: 1;
+
+      @include transition(transform .55s cubic-bezier(.19,1,.22,1), background .6s cubic-bezier(.19,1,.22,1));
+      @include transform(scaleX(0));
+      @include transform-origin(left center);
+    }
+    &:hover::after {
+      @include transform(scaleX(1));
+    }
+  }
+
+  .ui-lazyload {
+    @include opacity(0);
+    @include transition(opacity .5s linear,transform .5s cubic-bezier(.19,1,.22,1));
+    &.has-transform {
+      @include transform(translate3d(0,10%,0));
+    }
+  }
+
+  .is-loaded {
+    .ui-lazyload {
+      @include opacity(1);
+      &.has-transform {
+        @include transform(none);
+      }
+    }
+  }
+
+  .is-updating .ui-lazyload {
+    @include transition(opacity .2s ease,transform 1s cubic-bezier(.19,1,.22,1));
+    @include opacity(0);
+  }
+
+  .splash-page {
+    position: fixed;
+    width: 200%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background: $splashPageBackground;
+    z-index: 9999;
+    @include transition(transform .55s cubic-bezier(.19,1,.22,1), background .6s cubic-bezier(.19,1,.22,1));
+    @include transform(translate3d(0px, 0px, 0px));
+    @include transform-origin(left center);
+    .is-loaded & {
+      @include transform(translate3d(-200%, 0px, 0px));
+      @include transform-origin(right center);
+    }
+  }
+
+  .flyout {
+    @include flyout();
+  }
+
+  .theme-color {
+    color: $theme-color;
+  }
+  .theme-bgcolor {
+    background: $theme-color;
+  }
+
+  ._checkbox {
+    input[type="checkbox"] {
+      display: none;
+      &:checked {
+        & + label.checkbox {
+          &::before {
+            @include opacity(0);
+            border: 0px none;
+            @include transition(opacity 650ms cubic-bezier(0.23, 1, 0.32, 1) 150ms);
+          }
+          &::after {
+            content: "\f00c";
+            padding-top: $customCheckboxAfterPaddingTop;
+            padding-left: $customCheckboxAfterPaddingLeft;
+            background-color: $customCheckboxAfterBackgroundColor;
+            border-color: $customCheckboxAfterBorderColor;
+            color: $customCheckboxAfterColor;
+            @include opacity(1);
+            @include transform(scale(1));
+            @include transition(opacity 0ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, transform 800ms cubic-bezier(0.23, 1, 0.32, 1) 0ms);
+          }
+        }
+      }
+    }
+    label.checkbox {
+      position: $customCheckboxLabelPosition;
+      background-repeat: $customCheckboxLabelBackgroundRepeat;
+      background-position: $customCheckboxLabelBackgroundPosition;
+      cursor: $customCheckboxLabelCursor;
+      font-weight: $customCheckboxLabelFontWeight;
+      vertical-align: $customCheckboxLabelVerticalAlign;
+      margin-top: $customCheckboxLabelMarginTop;
+      margin-bottom: $customCheckboxLabelMarginBottom;
+      padding-left: $customCheckboxLabelPaddingLeft;
+      font-size: $customCheckboxLabelFontSize;
+      display: $customCheckboxLabelDisplay;
+      line-height: $customCheckboxLabelLineHeight;
+      &::before, &::after {
+        content: $customCheckboxLabelBeforeContent;
+        display: $customCheckboxLabelBeforeDisplay;
+        width: $customCheckboxLabelBeforeWidth;
+        height: $customCheckboxLabelBeforeHeight;
+        position: $customCheckboxLabelBeforePosition;
+        top: $customCheckboxLabelBeforePositionTop;
+        left: $customCheckboxLabelBeforePositionLeft;
+        background: $customCheckboxLabelBeforeBackground;
+        font: normal normal normal $customCheckboxLabelBeforeFontSize/1 FontAwesome;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      &::before {
+        @include opacity(1);
+        border: $customCheckboxLabelBeforeBorder;
+        @include transition(opacity 1000ms cubic-bezier(0.23, 1, 0.32, 1) 200ms);
+      }
+      &::after {
+        @include opacity(0);
+        @include transform(scale(0));
+        @include transition(opacity 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, transform 0ms cubic-bezier(0.23, 1, 0.32, 1) 450ms);
+      }
+    }
+  }
+
+  .page-shadow {
+    background-color: $white;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
+  }
+
+  .flat-page {
+    background-color: transparent;
+    box-shadow: none;
+    padding: 0;
+  }
+}
+
+#content {
+  form fieldset label.error {
+    position: absolute;
+    background-color: #FEF0F0;
+    color: #000;
+    font-size: 11px;
+    font-weight: bold;
+    border: 1px solid #FCC5C5;
+    border-radius: 0;
+    bottom: -20px;
+    left: 16px;
+    margin: 0 !important;
+    z-index: 1;
+    &::after {
+      border-width: 8px;
+      border-color: transparent transparent #FCC5C5 transparent;
+      top: -16px;
+      left: 8px;
+    }
+  }
+}

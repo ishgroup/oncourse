@@ -1,0 +1,77 @@
+//
+//
+// tutors.scss
+//
+// Contains all the styles of tutor page
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+//
+
+@include theme('f') {
+  body#page8 {
+    &.internal-page #content {
+      @extend .flat-page;
+      .addthis {
+        width: 100%;
+        padding: 20px 30px 10px;
+        @extend .page-shadow;
+        margin-bottom: 25px;
+        >div.addthis_toolbox {
+          float: right;
+        }
+      }
+      .tutor-list {
+        .tutor-item {
+          @extend .page-shadow;
+          padding: $pageDefaultPadding;
+          margin-bottom: 25px;
+          h2 {
+            text-align: center;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #ddd;
+            @include responsive($media-small) {
+              text-align: left;
+            }
+          }
+          .tutors_details {
+            padding-left: 0px;
+            position: relative;
+            margin-top: 30px;
+            @include responsive($media-small) {
+              padding-left: 265px;
+              margin-top: 50px;
+            }
+            >div {
+              margin-bottom: 30px;
+            }
+            .tutor_info {
+              .resume-details {
+                >img {
+                  width: 100%;
+                  max-width: 230px;
+                  height: 230px;
+                  border-radius: 100%;
+                  border: 1px solid transparent;
+                  margin: 0 auto 35px;
+                  display: block;
+                  @extend .page-shadow;
+                  @include responsive($media-small) {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                  }
+                }
+              }
+            }
+            h4 {
+              font-size: 23px;
+              color: #2d3138;
+              font-weight: bold;
+            }
+          }
+        }
+      }
+    }
+  }
+}

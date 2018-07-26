@@ -1,0 +1,151 @@
+//
+//
+// layouts.scss
+//
+// Contains layouts settings used in different scss files
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+//
+
+$containerSliderWrapperPosition: relative !default;
+
+$contentMainTitle: $secondaryColor !default;
+$contentSubTitle: #0a3a4a !default;
+
+$browseCoursesPosition: relative !default;
+$browseCoursesHeight: 95vh !default;
+
+$browseCoursesContentPosition: relative !default;
+$browseCoursesContentMarginTop: 0px !default;
+$browseCoursesContentFontSize: 18px !default;
+
+$browseCoursesHeaderTextTransform: uppercase !default;
+$browseCoursesHeaderFontSize: 32px !default;
+$browseCoursesHeaderFontWeight: bold !default;
+$browseCoursesHeaderMarginBottom: 27px !default;
+$browseCoursesHeaderFontSizeMediaTablet: 40px !default;
+$browseCoursesHeaderColor: $bodyFontColor !default;
+$browseCoursesHeaderColorHover: $anchorHoverColor !default;
+
+$browseCoursesTextMaxWidth: 500px !default;
+$browseCoursesTextLineHeight: 1.5 !default;
+$browseCoursesTextFontSize: 23px !default;
+$browseCoursesTextColor: $bodyFontColor !default;
+$browseCoursesTextAppBtnMarginTop: 20px !default;
+
+$topBlocksBackground: $black !default;
+$topBlocksPadding: 40px 0 !default;
+$topBlocksPaddingMediaSmall: 80px 0 !default;
+
+$topBlocksParagraphDisplay: none !default;
+$topBlocksListTextAlign: center !default;
+
+$topBlocksListChildMarginBottom: 40px !default;
+$topBlocksListChildVerticalAlign: top !default;
+$topBlocksListChildMarginBottomMediaTablet: 0px !default;
+
+$topBlocksListChildItemImgMarginBottom: 30px !default;
+
+$topBlocksTextColor: #f0f0f0 !default;
+$topBlocksTextLineHeight: 1.5 !default;
+$topBlocksTextMaxWidth: 275px !default;
+$topBlocksTextMargin: 0 auto !default;
+$topBlocksTextFontSize: 20px !default;
+
+$topBlocksHeaderTextFontSize: 18px !default;
+$topBlocksHeaderTextTransform: uppercase !default;
+$topBlocksHeaderTextLetterSpacing: 1.1px !default;
+$topBlocksHeaderTextColor: #bebebe !default;
+$topBlocksHeaderTextColorHover: $anchorHoverColor !default;
+
+$ourCoursesBackground: $color-6 !default;
+$ourCoursesPadding: 70px 0 !default;
+$ourCoursesTextColor: $white !default;
+
+$ourCoursesContainerMaxWidth: 740px !default;
+$ourCoursesContainerTextAlign: center !default;
+
+$ourCoursesHeaderFontSize: 40px !default;
+$ourCoursesHeaderTextTransform: uppercase !default;
+$ourCoursesHeaderFontWeight: bold !default;
+$ourCoursesHeaderColor: $ourCoursesTextColor !default;
+$ourCoursesHeaderMarginBottom: 35px !default;
+
+$ourCoursesParagraphFontSize: 21px !default;
+$ourCoursesParagraphLineHeight: 1.5 !default;
+$ourCoursesParagraphMaxWidth: 520px !default;
+$ourCoursesParagraphMargin: 0 auto !default;
+
+$ourCoursesListMarginTop: 60px !default;
+$ourCoursesListChildDisplay: none !default;
+
+$ourCoursesListChildrenMarginLeft: 0 !default;
+$ourCoursesListChildrenListStyle: none !default;
+
+$ourCoursesListBackground: #3e3e3e !default;
+$ourCoursesListBackgroundHover: darken($ourCoursesListBackground, 15%) !default;
+$ourCoursesListBorderRadius: 50px !default;
+$ourCoursesListBorder: 1px solid lighten($ourCoursesListBackground, 10%) !default;
+$ourCoursesListBorderHover: 1px solid lighten($ourCoursesListBackground, 10%) !default;
+$ourCoursesListChildrenMarginBottom: 10px !default;
+$ourCoursesListChildrenDisplayMediaSmall: inline-block !default;
+$ourCoursesListChildrenMarginBottomMediaSmall: 25px !default;
+$ourCoursesListChildrenMarginRightMediaSmall: 20px !default;
+
+$ourCoursesListTextColor: $color-1 !default;
+$ourCoursesListTextColorHover: darken($ourCoursesListTextColor, 15%) !default;
+$ourCoursesListLinkDisplay: block !default;
+$ourCoursesListLinkPadding: 12px 20px !default;
+$ourCoursesListLinkFontWeight: bold !default;
+$ourCoursesListLinkFontSize: 16px !default;
+
+$popularCoursesBackground: $white !default;
+
+$popularCoursesPadding: 70px 0 !default;
+$popularCoursesTextAlign: center !default;
+
+$popularCoursesHeaderFontSize: 40px !default;
+$popularCoursesHeaderTextTransform: uppercase !default;
+$popularCoursesHeaderFontWeight: bold !default;
+$popularCoursesHeaderColor: $bodyFontColor !default;
+$popularCoursesHeaderMarginBottom: 50px !default;
+$popularCoursesHeaderMarginBottomMediaSmall: 90px !default;
+
+$popularCoursesSliderMarginLeft: 0 !default;
+$popularCoursesSliderItemWidth: 295px !default;
+$popularCoursesSliderItemHeight: 275px !default;
+$popularCoursesSliderItemBackground: $color-3 !default;
+$popularCoursesSliderItemTextColor: $white !default;
+$popularCoursesSliderItemPosition: relative !default;
+
+$popularCoursesItemPosition: absolute !default;
+$popularCoursesItemPositionTop: 50% !default;
+$popularCoursesItemTranslateY: -50% !default;
+$popularCoursesItemPadding: 20px !default;
+$popularCoursesItemFontSize: 16px !default;
+
+$popularCoursesItemTitleFontWeight: bold !default;
+$popularCoursesItemTitleFontSize: 20px !default;
+
+$popularCoursesItemTitleColor: $white !default;
+$popularCoursesItemTitleColorHover: $anchorHoverColor !default;
+
+$socialIconBackgroundSize: 110px !default;
+
+$socialIconAfterHeight: 24px !default;
+$socialIconAfterWidth: 24px !default;
+
+$socialIconBackgroundPositionInstagram: 0px 1px !default;
+$socialIconBackgroundPositionFacebook: -29px 1px !default;
+$socialIconBackgroundPositionTwitter: -58px 1px !default;
+$socialIconBackgroundPositionGPlus: -87px 1px !default;
+
+$sliderPagerWidth: 20px !default;
+$sliderNavigationBackground: url($imagePath + 'icons/bx-controls.png') 0 0 no-repeat !default;
+$sliderNavigationPrevBackgroundPosition: 0 0 !default;
+$sliderNavigationPrevPositionLeft: -75px !default;
+$sliderNavigationPrevBackgroundPositionHover: 0 0 !default;
+$sliderNavigationNextBackgroundPosition: -23px 0 !default;
+$sliderNavigationNextPositionRight: -75px !default;
+$sliderNavigationNextBackgroundPositionHover: -23px 0 !default;

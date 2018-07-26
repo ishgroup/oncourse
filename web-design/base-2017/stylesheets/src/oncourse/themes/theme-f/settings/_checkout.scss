@@ -1,0 +1,413 @@
+//
+//
+// checkout.scss
+//
+// Contains all the different variable settings which needs to be used
+// across the enrol checkout app
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+//
+
+//
+// Checkout progress bar
+//
+
+$checkout-media-default: "desktop" !default;
+
+$checkoutProgressStepListPaddingRight: 0 !default;
+$checkoutProgressStepListBackgroundActive: none !default;
+
+$checkoutProgressStepListDisplay: table-cell !default;
+$checkoutProgressStepListTextAlign: center !default;
+$checkoutProgressStepListTextTransform: capitalize !default;
+$checkoutProgressStepListBackground: none !default;
+
+$checkoutProgressStepListLinkBackground: transparent !default;
+
+$checkoutProgressStepListBackgroundHover: none !default;
+$checkoutProgressStepListLinkBackgroundHover: transparent !default;
+
+$checkoutProgressStepListLinkBackgroundDisable: transparent !default;
+
+$checkoutProgressStepListLinkColorActive: $theme-color !default;
+$checkoutProgressStepListLinkBackgroundActive: transparent !default;
+$checkoutProgressStepListLinkColorActive: tomato !default;
+
+$checkoutProgressStepListFontSizeSmall: 10px !default;
+$checkoutProgressStepListFontSizeTablet: 14px !default;
+
+//
+// Checkout button
+//
+
+$checkoutPageAmountContainerAddCodeFontWeight: bold !default;
+$checkoutPageAmountContainerAddCodeFontSize: 14px !default;
+
+$checkoutCorporatePassButtonPadding: 7px 20px !default;
+
+$checkoutPayerButtonPadding: 5px 9px !default;
+
+$checkoutPageFontSize: 17px !default;
+
+$checkoutProgressStepListFontWeight: normal !default;
+
+$checkoutPageMessageBackgroundColor: transparent !default;
+$checkoutPageMessageBorder: 0 none !default;
+$checkoutPageMessageTextColor: #171D1C !default;
+$checkoutPageMessageMarginBottom: 20px !default;
+
+$checkoutFormLabelFontWeight: normal !default;
+$checkoutFormLabelLineHeight: 1.5 !default;
+$checkoutFormLabelFontSize: 17px !default;
+$checkoutFormLabelWidthTablet: 100% !default;
+$checkoutFormLabelMaxWidthTablet: none !default;
+$checkoutFormLabelTextAlignTablet: left !default;
+$checkoutFormLabelMarginBottomTablet: 2px !default;
+
+$checkoutFormSpanTagWidthTablet: 100% !default;
+
+$checkoutFormInputBorderRadius: 2px !default;
+$checkoutFormInputBackgroundColor: $white !default;
+$checkoutFormInputHeight: 40px !default;
+$checkoutFormInputPadding: 7px 12px !default;
+$checkoutFormInputBorder: 1px solid #D3D3D3 !default;
+
+$checkoutFormInputWidthTablet: 100% !default;
+$checkoutFormInputMaxWidthTablet: 100% !default;
+
+$checkoutFormTextAreaHeight: 150px !default;
+
+$checkoutFormValidatePositionBottomSmall: -20px !default;
+$checkoutFormValidatePositionBottomTablet: -20px !default;
+
+$checkoutFormValidatePointerBorderTop: 0 !important !default;
+$checkoutFormValidateHintPointerBorderTop: 0 !important !default;
+
+$checkoutFormValidateHintPointerBorderBottom: 8px solid #F9E99C !default;
+$checkoutFormValidatePointerBorderBottom: 8px solid #FCC5C5 !important !default;
+
+$checkoutFormValidatePointerPositionBottom: 22px !default;
+
+$checkoutSubmitButtonBorderRadius: 2px !default;
+$checkoutSubmitButtonHeight: 40px !default;
+$checkoutSubmitButtonPadding: 9px 30px !default;
+$checkoutSubmitButtonFontSize: 16px !default;
+$checkoutSubmitButtonLineHeight: 1.2 !default;
+$checkoutSubmitButtonLetterSpacing: 1.2px !default;
+
+$checkoutSubmitButtonBackgroundHover: darken($primaryColor, 15%) !default;
+$checkoutSubmitButtonFontWeight: bold !default;
+
+$checkoutCorporatePassButtonFontSize: 16px !default;
+
+$checkoutCancelButtonBackground: $secondaryColor !default;
+$checkoutCancelButtonColor: $white !default;
+$checkoutCancelButtonBackgroundHover: darken($secondaryColor, 15%) !default;
+$checkoutCancelButtonColorHover: $white !default;
+
+$checkoutCancelButtonFontWeight: bold !default;
+$checkoutCancelButtonTextTransform: capitalize !default;
+
+$checkoutPaymentStudentTitleFontSize: 16px !default;
+
+$checkoutPaymentStudentEmailColor: #171D1C !default;
+$checkoutPaymentStudentEmailFontSize: 16px !default;
+
+$checkoutPaymentSummaryFontSize: 17px !default;
+$checkoutPaymentPlusLinkBackground: url("/s/img/icons/plus@1x-orange.png") 6px 50% no-repeat !important !default;
+
+$checkoutPageEnrolInfoPaddingLeft: 48px !default;
+$checkoutPageEnrolInfoSelectPositionLeft: -25px !default;
+
+$checkoutPageEnrolItemEmTagColor: #171D1C !default;
+$checkoutPageEnrolItemEmTagFontSize: 16px !default;
+
+$checkoutPageAmountContainerFloat: none !default;
+$checkoutPageAmountContainerBorder: 0 none !default;
+$checkoutPageAmountContainerPadding: 0 !default;
+$checkoutPageAmountContainerBackground: none !default;
+$checkoutPageAmountContainerBorderRadius: 0 !default;
+
+$checkoutPageAmountContainerButtonMargin: 30px 0 0 !default;
+
+$checkoutPageAmountCodeInfoTextFontSize: 16px !default;
+$checkoutFormInputFontSize: 16px !default;
+
+$checkoutFormLabelMarketingWidthSmall: auto !important !default;
+
+$checkoutFormInputMarketingMarginSmall: 9px 10px 0 !default;
+
+$checkoutFormInputMarketingFloatTablet: left !default;
+$checkoutFormInputMarketingMarginTablet: 9px 10px 0 !default;
+
+$checkoutBtnPadding: 9px 40px !default;
+
+$checkoutFontSize: $bodyFontSize !default;
+$checkoutStudentEmailFontSize: 14px !default;
+
+
+// Custom checkout settings
+
+$enableCustomCheckout: true !default;
+
+$checkoutWrapperMaxWidth: 960px !default;
+$checkoutWrapperMargin: 0 auto !default;
+
+$checkoutProgressStepMaxWidth: none !default;
+$checkoutProgressStepPosition: relative !default;
+$checkoutProgressStepDisplay: table !default;
+$checkoutProgressStepTableLayout: fixed !default;
+$checkoutProgressStepWidth: 111% !default;
+$checkoutProgressStepMargin: 0 -6% 20px !default;
+
+$checkoutProgressStepWidthMediaSmall: 132.23% !default;
+$checkoutProgressStepMarginMediaSmall: 0 -16% 20px !default;
+
+$checkoutProgressStepListBeforeContent: "" !default;
+$checkoutProgressStepListBeforeBorder: 2px solid $theme-color !default;
+$checkoutProgressStepListBeforeDisplay: block !default;
+$checkoutProgressStepListBeforePosition: relative !default;
+$checkoutProgressStepListBeforePositionLeft: 0 !default;
+$checkoutProgressStepListBeforePositionTop: 0 !default;
+$checkoutProgressStepListBeforePositionRight: 0 !default;
+$checkoutProgressStepListBeforeBackground: #fff !default;
+$checkoutProgressStepListBeforeBorderRadius: 50% !default;
+$checkoutProgressStepListBeforeWidth: 40px !default;
+$checkoutProgressStepListBeforeHeight: 40px !default;
+$checkoutProgressStepListBeforeZIndex: 1 !default;
+$checkoutProgressStepListBeforeMargin: 0 auto 6px !default;
+$checkoutProgressStepListBeforeLineHeight: 36px !default;
+$checkoutProgressStepListBeforeTextAlign: center !default;
+$checkoutProgressStepListBeforeColor: $theme-color !default;
+$checkoutProgressStepListBeforeFontSize: 14px !default;
+
+$checkoutProgressStepListAfterContent: "" !default;
+$checkoutProgressStepListAfterWidth: 100% !default;
+$checkoutProgressStepListAfterPosition: absolute !default;
+$checkoutProgressStepListAfterPositionTop: 19px !default;
+$checkoutProgressStepListAfterPositionLeft: 50% !default;
+$checkoutProgressStepListAfterZIndex: 0 !default;
+$checkoutProgressStepListAfterBorder: 1.5px solid $theme-color !default;
+
+$checkoutProgressStepListDisableBorderColor: #e7e7e7 !default;
+
+$checkoutFormRowWidth: 100% !default;
+$checkoutFormRowPadding: 0 10px !default;
+$checkoutFormRowDisplay: inline-block !default;
+$checkoutFormRowVerticalAlign: top !default;
+$checkoutFormRowWidthMediaTablet: 50% !default;
+
+$checkoutFormMessageFloat: none !default;
+$checkoutFormMessageWidth: 100% !important !default;
+$checkoutFormMessagePadding: 0 10px !default;
+$checkoutFormMessageMinHeight: auto !default;
+
+$checkoutFormInputBorderFocus: 1px solid #72d1e0 !default;
+
+$checkoutFormInputCheckboxMarginTop: 5px !default;
+$checkoutFormInputCheckboxMarginLeft: 10px !default;
+
+$checkoutFormThirdFieldsetWidth: auto !default;
+$checkoutFormThirdFieldsetPadding: 0 15px !default;
+$checkoutFormThirdFieldsetMessageFontWeight: bold !default;
+
+$checkoutFormAddStudentLastChildWidth: 100% !default;
+
+$checkoutFormFormControlsPadding: 0 10px !default;
+$checkoutFormFormButtonMaxWidth: 100% !default;
+$checkoutFormFormButtonWidth: 100% !default;
+$checkoutFormFormButtonMaxWidthMediaSmall: 280px !default;
+
+$checkoutFormFormButtonMarginLeftMediaSmall: 15px !default;
+
+$checkoutCancelButtonTextAlign: center !default;
+$checkoutCancelButtonPadding: 10.5px 15px !default;
+$checkoutCancelButtonVericalAlign: top !default;
+
+$checkoutPaymentStudentNamePadding: 0 20px !default;
+$checkoutPaymentStudentInfoFontFamily: $fontFamilyOne !default;
+
+$checkoutPaymentPlusLinkMargin: 15px 0 25px !default;
+$checkoutPaymentPlusLinkBackgroundSize: 11px !important !default;
+$checkoutPaymentPlusLinkBorderBottom: 0 none !default;
+$checkoutPaymentPlusLinkColor: #F88950 !default;
+
+$checkoutPageEnrolItemPosition: relative !default;
+$checkoutPageEnrolItemPadding: 20px 0 !default;
+
+$checkoutPageEnrolItemBeforeContent: "" !default;
+$checkoutPageEnrolItemBeforePosition: relative !default;
+$checkoutPageEnrolItemBeforePositionLeft: 0px !default;
+$checkoutPageEnrolItemBeforePositionRight: 0px !default;
+$checkoutPageEnrolItemBeforePositionTop: -30px !default;
+$checkoutPageEnrolItemBeforeBorderBottom: 1px solid #D3D3D3 !default;
+$checkoutPageEnrolItemBeforeWidth: 100% !default;
+$checkoutPageEnrolItemBeforeMaxWidth: 95.95% !default;
+$checkoutPageEnrolItemBeforeMargin: 0 auto !default;
+
+$checkoutPageTotalsBeforePositionTop: -8px !default;
+
+$checkoutPageAmountContainerBorderTop: 1px solid #D3D3D3 !default;
+$checkoutPageAmountContainerBorderBottom: 1px solid #D3D3D3 !default;
+$checkoutPageAmountContainerPosition: relative !default;
+
+$checkoutPageAmountContainerRowMargin: 0 !default;
+$checkoutPageAmountContainerRowDisplayMediaSmall: table !default;
+$checkoutPageAmountContainerRowWidthMediaSmall: 100% !default;
+
+$checkoutPageAmountContainerAfterContent: none !default;
+$checkoutPageAmountContainerAfterPosition: absolute !default;
+$checkoutPageAmountContainerAfterWidth: 100% !default;
+$checkoutPageAmountContainerAfterPositionTop: 0 !default;
+$checkoutPageAmountContainerAfterPositionBottom: 0 !default;
+$checkoutPageAmountContainerAfterPositionRight: 0 !default;
+$checkoutPageAmountContainerAfterZIndex: -1 !default;
+$checkoutPageAmountContainerAfterBackground: #F2F2F2 !default;
+
+$checkoutPageAmountContainerAfterContentMediaSmall: "" !default;
+$checkoutPageAmountContainerAfterMaxWidthMediaSmall: 45% !default;
+
+$checkoutPageAmountContainerAfterMaxWidthMediaTablet: 46% !default;
+
+$checkoutPageAmountCodeInfoWidth: 100% !important !default;
+$checkoutPageAmountCodeInfoMaxWidth: 100% !default;
+$checkoutPageAmountCodeInfoPadding: 40px 0px 26px 0px !default;
+$checkoutPageAmountCodeInfoMarginBottomMediaSmall: 0 !default;
+$checkoutPageAmountCodeInfoPaddingMediaSmall: 40px 40px 26px 0px !default;
+$checkoutPageAmountCodeInfoWidthMediaSmall: 50% !important !default;
+$checkoutPageAmountCodeInfoDisplayMediaSmall: table-cell !default;
+$checkoutPageAmountCodeInfoVerticalAlignMediaSmall: top !default;
+$checkoutPageAmountCodeInfoFloatMediaSmall: none !default;
+
+$checkoutPageAmountCodeInfoMarginBottomMediaTablet: 0 !default;
+
+$checkoutFormInputPadding: 11px 12px !important !default;
+
+$checkoutFormInputWidth: 100% !important !default;
+
+$checkoutFormInputBorderTopRightRadiusMediaSmall: 0 !default;
+$checkoutFormInputBorderBottomRightRadiusMediaSmall: 0 !default;
+$checkoutFormInputWidthMediaSmall: 57% !important !default;
+
+$checkoutFormInputWidthMediaTablet: 70% !important !default;
+
+$checkoutPageAmountContainerAddCodeMarginLeft: 0 !important !default;
+$checkoutPageAmountContainerAddCodePadding: 12px 20px !default;
+$checkoutPageAmountContainerAddCodeFontSize: 16px !default;
+$checkoutPageAmountContainerAddCodeWidth: 100% !default;
+$checkoutPageAmountContainerAddCodeTextAlign: center !default;
+$checkoutPageAmountContainerAddCodeBackground: #7d7d7d !default;
+$checkoutPageAmountContainerAddCodeHeight: auto !default;
+$checkoutPageAmountContainerAddCodeWidthMediaSmall: auto !default;
+
+$checkoutPageAmountCodeInfoTextFontSize: 16px !default;
+
+$checkoutPageAmountContentWidth: 100% !default;
+$checkoutPageAmountContentMaxWidth: 100% !default;
+$checkoutPageAmountContentPadding: 30px 40px 50px 0 !default;
+$checkoutPageAmountContentBackground: #F2F2F2 !default;
+
+$checkoutPageAmountContentWidthMediaSmall: 50% !default;
+$checkoutPageAmountContentDisplayMediaSmall: table-cell !default;
+$checkoutPageAmountContentVerticalAlignMediaSmall: top !default;
+$checkoutPageAmountContentFloatMediaSmall: none !default;
+
+$checkoutPageAmountTotalFontFamily: $fontFamilyOne, sans-serif !default;
+$checkoutPageAmountContentLabelFontWeight: normal !default;
+$checkoutPageAmountTotalFontSize: 19px !default;
+$checkoutPageAmountTotalMarginBottom: 5px !default;
+$checkoutPageAmountTotalLineHeight: 28px !default;
+
+$checkoutFormRowWidth: 100% !default;
+$checkoutFormRowPadding: 0 10px !default;
+
+$checkoutFormCVVLinkPosition: absolute !default;
+$checkoutFormCVVLinkPositionTop: -30px !default;
+$checkoutFormCVVLinkPositionRight: 0px !default;
+$checkoutFormCVVLinkBorderBottom: 0 !default;
+$checkoutFormCVVLinkColor: #F88950 !default;
+$checkoutFormCVVLinkFontWeight: bold !default;
+$checkoutFormCVVLinkFontSize: 16px !default;
+$checkoutFormCVVLinkWidth: 115px !default;
+$checkoutFormCVVLinkTextAlign: right !default;
+$checkoutFormCVVLinkColorHover: #FC673A !default;
+
+$checkoutFormVCCCardImageDisplay: none !default;
+
+$checkoutFormSelectWidth: 90px !important !default;
+$checkoutFormSelectWidthMediaDefault: 64px !important !default;
+
+$checkoutFormTabContentLabelLineHeight: 1.5 !default;
+$checkoutFormTabContentLabelFontSize: 16px !default;
+$checkoutFormTabContentLabelColor: $bodyFontColor !default;
+
+$checkoutFormTabContentSelectPayerWidth: 100% !default;
+
+$checkoutFormTabContentPaymentEditorPadding: 15px !default;
+
+$checkoutPayerPosition: relative !default;
+$checkoutPayerPositionTop: 0 !default;
+$checkoutPayerPositionRight: 0 !default;
+$checkoutPayerMarginBottom: 35px !default;
+$checkoutPayerClear: both !default;
+
+$checkoutPayerPositionTopMedia: 0 !default;
+$checkoutPayerPositionRightMedia: 0 !default;
+
+$checkoutPayerButtonFontFamily: $fontFamilyOne, sans-serif !default;
+$checkoutPayerButtonMarginLeft: 10px !important !default;
+$checkoutPayerButtonPaddingLeft: 0 !default;
+$checkoutPayerButtonFontSize: 17px !default;
+
+$checkoutPayerButtonBorderHover: none !default;
+$checkoutPayerButtonBackgroundHover: none !default;
+$checkoutPayerButtonColorHover: $primaryColor !default;
+
+$checkoutPayerOptionsBackground: none !important !default;
+$checkoutPayerOptionsFontFamily: $fontFamilyOne, sans-serif !default;
+$checkoutPayerOptionsFontSize: 17px !default;
+$checkoutPayerOptionsColor: $primaryColor !important !default;
+$checkoutPayerOptionsBorderBottom: 0 none !default;
+
+$checkoutPayerOptionsColorHover: darken($primaryColor, 10%) !important !default;
+
+$checkoutCorporatePassButtonMaxWidth: 100% !default;
+$checkoutCorporatePassButtonWidth: 100% !default;
+$checkoutCorporatePassButtonHeight: 40px !default;
+$checkoutCorporatePassButtonFontSize: 16px !default;
+$checkoutCorporatePassButtonLetterSpacing: 1px !default;
+$checkoutCorporatePassButtonMargin: 0 0 15px 0 !default;
+$checkoutCorporatePassButtonPadding: 11px 8px !default;
+
+$checkoutCorporatePassButtonMarginMedia: 0 0 15px 0 !default;
+$checkoutCorporatePassButtonFloatMediaSmall: right !default;
+$checkoutCorporatePassButtonMaxWidthMediaSmall: 180px !default;
+
+$checkoutPaymentConditionWidth: 100% !default;
+$checkoutPaymentConditionFloatMediaSmall: left !default;
+$checkoutPaymentConditionWidthMediaSmall: 50% !default;
+
+$checkoutPaymentConditionLabel: none !default;
+
+$checkoutPaymentConditionDisplay: block !default;
+$checkoutPaymentConditionPositionLeft: 0 !default;
+$checkoutPaymentConditionPositionTop: 0 !default;
+$checkoutPaymentConditionWidth: 100% !default;
+$checkoutPaymentConditionPaddingLeft: 10px !default;
+
+$checkoutSelectPlaceholderLineHeight: 40px !important !default;
+$checkoutSelectPlaceholderHeight: 40px !important !default;
+
+$checkoutSelectArrowHeight: auto !important !default;
+$checkoutSelectArrowBackground: $white url($imagePath + "icons/icon-small-arrow-down.png") right center no-repeat !important !default;
+$checkoutSelectArrowBorder: 0 !default;
+$checkoutSelectArrowWidth: 20px !default;
+$checkoutSelectArrowHeight: 10px !important !default;
+
+$checkoutNoteFontSize: 16px !default;
+$checkoutNotePaddingBottom: 17px !default;
+$checkoutNoteBorderBottom: 1px solid #d3d3d3 !default;
+$checkoutNoteMarginBottom: 30px !default;
+$checkoutNoteMarginLeft: 10px !default;
+$checkoutNoteMarginRight: 10px !default;

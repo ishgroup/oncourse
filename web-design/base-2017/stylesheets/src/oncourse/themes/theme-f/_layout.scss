@@ -1,0 +1,356 @@
+//
+//
+// layout.scss
+//
+// Contains all the styles of different contents
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+//
+
+@include theme('f') {
+  ::selection {
+    background-color: $selectionBackgroundColor;
+    color: $selectionColor;
+  }
+  body {
+    overflow: hidden;
+    &.is-loaded {
+      overflow: $bodyOverflow;
+      overflow-y: $bodyOverflowY;
+    }
+  }
+  #Main.main-page {
+    .container {
+      max-width: 1080px;
+    }
+    #content {
+      float: $mainPageContentFloat;
+      width: $mainPageContentWidth;
+    }
+    #sidebarRight, #sidebarLeft {
+      display: $mainPageSideBar;
+    }
+  }
+  .content {
+    h1 {
+      font-weight: $contentH1FontWeight;
+    }
+  }
+  #content, #z_content {
+    >p {
+      margin-bottom: $contentParagraphMarginBottom;
+    }
+  }
+
+  .content, .dialogBox, .rodal-dialog {
+    .bottom-line {
+      margin-bottom: $bottomLineMarginBottom;
+      line-height: $bottomLineLineHeight;
+    }
+    fieldset {
+      border-radius: 0;
+      font-size: 0;
+      >p.form-cont-row {
+        position: relative;
+        width: 100%;
+        display: inline-block;
+        padding: 0 15px;
+        @include responsive($media-tablet) {
+          width: 50%;
+        }
+        textarea {
+          margin-bottom: 10px;
+        }
+      }
+    }
+  }
+  #container {
+    .slider-wrapper {
+      position: $containerSliderWrapperPosition;
+    }
+
+    #content {
+      .main-title {
+        color: $contentMainTitle;
+      }
+      .sub-title {
+        color: $contentSubTitle;
+      }
+    }
+  }
+
+  section.block {
+    &.browse-courses {
+      position: $browseCoursesPosition;
+      height: $browseCoursesHeight;
+      max-height: $browseCoursesHeight;
+      min-height: $browseCoursesHeight;
+      top: 0;
+      z-index: 0;
+      @extend .responsive-image;
+      >span {
+        height: 100%;
+        img {
+          @include transition(transform .55s cubic-bezier(.19,1,.22,1));
+          min-height: 100%;
+        }
+      }
+      .bc-content {
+        position: $browseCoursesContentPosition;
+        top: 50%;
+        margin-top: $browseCoursesContentMarginTop;
+        font-size: $browseCoursesContentFontSize;
+        @include transform(translateY(-50%));
+        @include transition(transform .55s cubic-bezier(.19,1,.22,1));
+        h1 {
+          text-transform: $browseCoursesHeaderTextTransform;
+          font-size: $browseCoursesHeaderFontSize;
+          font-weight: $browseCoursesHeaderFontWeight;
+          margin-bottom: $browseCoursesHeaderMarginBottom;
+          @include responsive($media-tablet) {
+            font-size: $browseCoursesHeaderFontSizeMediaTablet;
+          }
+          &, a {
+            color: $browseCoursesHeaderColor;
+          }
+          a:hover {
+            color: $browseCoursesHeaderColorHover;
+          }
+        }
+        p {
+          max-width: $browseCoursesTextMaxWidth;
+          line-height: $browseCoursesTextLineHeight;
+          font-size: $browseCoursesTextFontSize;
+          color: $browseCoursesTextColor;
+          a.app-btn {
+            margin-top: $browseCoursesTextAppBtnMarginTop;
+          }
+        }
+      }
+    }
+    &.top-blocks {
+      background: $topBlocksBackground;
+      padding: $topBlocksPadding;
+      @include responsive($media-small) {
+        padding: $topBlocksPaddingMediaSmall;
+      }
+      .container {
+        >p {
+          display: $topBlocksParagraphDisplay;
+        }
+        >ul {
+          text-align: $topBlocksListTextAlign;
+          li {
+            margin-bottom: $topBlocksListChildMarginBottom;
+            vertical-align: $topBlocksListChildVerticalAlign;
+            @include responsive($media-tablet) {
+              margin-bottom: $topBlocksListChildMarginBottomMediaTablet;
+            }
+            .t-item {
+              >img, >a>img {
+                margin-bottom: $topBlocksListChildItemImgMarginBottom;
+              }
+              .t-content {
+                color: $topBlocksTextColor;
+                line-height: $topBlocksTextLineHeight;
+                max-width: $topBlocksTextMaxWidth;
+                margin: $topBlocksTextMargin;
+                font-size: $topBlocksTextFontSize;
+                h4 {
+                  font-size: $topBlocksHeaderTextFontSize;
+                  text-transform: $topBlocksHeaderTextTransform;
+                  letter-spacing: $topBlocksHeaderTextLetterSpacing;
+                  &, a {
+                    color: $topBlocksHeaderTextColor;
+                  }
+                  a:hover {
+                    color: $topBlocksHeaderTextColorHover;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    &.our-courses {
+      background: $ourCoursesBackground;
+      padding: $ourCoursesPadding;
+      color: $ourCoursesTextColor;
+      .container {
+        max-width: $ourCoursesContainerMaxWidth;
+        text-align: $ourCoursesContainerTextAlign;
+      }
+      h3 {
+        font-size: $ourCoursesHeaderFontSize;
+        text-transform: $ourCoursesHeaderTextTransform;
+        font-weight: $ourCoursesHeaderFontWeight;
+        color: $ourCoursesHeaderColor;
+        margin-bottom: $ourCoursesHeaderMarginBottom;
+      }
+      p {
+        font-size: $ourCoursesParagraphFontSize;
+        line-height: $ourCoursesParagraphLineHeight;
+        max-width: $ourCoursesParagraphMaxWidth;
+        margin: $ourCoursesParagraphMargin;
+      }
+      .courses-list {
+        margin-top: $ourCoursesListMarginTop;
+        >li {
+          display: $ourCoursesListChildDisplay;
+        }
+        ul {
+          margin-left: $ourCoursesListChildrenMarginLeft;
+          list-style: $ourCoursesListChildrenListStyle;
+          &.courses-list-sub {
+            >li {
+              background: $ourCoursesListBackground;
+              border-radius: $ourCoursesListBorderRadius;
+              border: $ourCoursesListBorder;
+              margin-bottom: $ourCoursesListChildrenMarginBottom;
+              @include responsive($media-small) {
+                display: $ourCoursesListChildrenDisplayMediaSmall;
+                margin-bottom: $ourCoursesListChildrenMarginBottomMediaSmall;
+                margin-right: $ourCoursesListChildrenMarginRightMediaSmall;
+              }
+              &:hover {
+                background: $ourCoursesListBackgroundHover;
+                border: $ourCoursesListBorderHover;
+                a {
+                  color: $ourCoursesListTextColorHover;
+                }
+              }
+              a {
+                color: $ourCoursesListTextColor;
+                display: $ourCoursesListLinkDisplay;
+                padding: $ourCoursesListLinkPadding;
+                font-weight: $ourCoursesListLinkFontWeight;
+                font-size: $ourCoursesListLinkFontSize;
+              }
+              >ul {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+    }
+    &.popular-courses {
+      background: $popularCoursesBackground;
+      padding: $popularCoursesPadding;
+      text-align: $popularCoursesTextAlign;
+      h3 {
+        font-size: $popularCoursesHeaderFontSize;
+        text-transform: $popularCoursesHeaderTextTransform;
+        font-weight: $popularCoursesHeaderFontWeight;
+        color: $popularCoursesHeaderColor;
+        margin-bottom: $popularCoursesHeaderMarginBottom;
+        @include responsive($media-small) {
+          margin-bottom: $popularCoursesHeaderMarginBottomMediaSmall;
+        }
+      }
+      .pc-slider {
+        margin-left: $popularCoursesSliderMarginLeft;
+        li {
+          width: $popularCoursesSliderItemWidth;
+          height: $popularCoursesSliderItemHeight;
+          background: $popularCoursesSliderItemBackground;
+          color: $popularCoursesSliderItemTextColor;
+          position: $popularCoursesSliderItemPosition;
+          .pc-item {
+            position: $popularCoursesItemPosition;
+            top: $popularCoursesItemPositionTop;
+            @include transform(translateY($popularCoursesItemTranslateY));
+            padding: $popularCoursesItemPadding;
+            font-size: $popularCoursesItemFontSize;
+            > a, > span {
+              font-weight: $popularCoursesItemTitleFontWeight;
+              font-size: $popularCoursesItemTitleFontSize;
+              color: $popularCoursesItemTitleColor;
+            }
+            >a:hover {
+              color: $popularCoursesItemTitleColorHover;
+            }
+          }
+        }
+      }
+    }
+  }
+  .courses {
+    ul.courses-list {
+      margin: 0;
+      > li {
+        display: none;
+      }
+    }
+    ul.courses-list-sub {
+      margin: 0;
+      list-style: none;
+      display: table;
+      width: 100%;
+      li {
+        font-size: 16px;
+        margin-bottom: 5px;
+        a {
+          text-decoration: none;
+        }
+      }
+      > li {
+        display: block;
+        vertical-align: top;
+        width: 100%;
+        margin-bottom: 10px;
+        border-bottom: 1px solid $secondaryColor;
+        @include responsive($media-tablet) {
+          border-bottom: 0px;
+          display: table-cell;
+          width: 14.28%;
+          margin-bottom: 5px;
+        }
+        > a {
+          font-weight: bold;
+          text-transform: uppercase;
+        }
+        > ul {
+          list-style: none;
+          padding-top: 5px;
+          @include responsive($media-tablet) {
+            margin: 0;
+          }
+          >li>ul {
+            display: none;
+          }
+        }
+      }
+    }
+
+    + p {
+      display: none;
+    }
+  }
+
+  .phone-icon::after {
+    left: -23px;
+  }
+  .courses-menu {
+    li {
+      padding-left: 20px;
+    }
+    >ul, ul.courses-list {
+      >ul>li>a {
+        border: 0px;
+      }
+    }
+  }
+  .footer-gmap {
+    height: 500px;
+    margin-bottom: 60px;
+    #gmap_contact {
+      height: 500px;
+      position: absolute !important;
+      width: 100%;
+      left: 0;
+    }
+  }
+}

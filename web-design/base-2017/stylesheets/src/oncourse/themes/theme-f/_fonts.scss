@@ -1,0 +1,17 @@
+//
+//
+// fonts.scss
+//
+// All the styles of fonts
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+
+
+//
+// Following all the style handles font styles and possibility to use default font
+//
+
+@if $useDefaultFont-f == true {
+  @import url("https://fonts.googleapis.com/css?family=Raleway:500,700,700i,900|Roboto:400,400i,700,700i,900");
+}

@@ -1,0 +1,29 @@
+//
+//
+// mixins.scss
+//
+// Contains list of mixins
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+//
+
+@mixin flyout($bg: #fff, $so: top, $eo: bottom) {
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: $bg;
+    @include transform(scaleY(0));
+    @include transform-origin($so);
+    @include transition(transform .55s cubic-bezier(.19,1,.22,1), background .6s cubic-bezier(.19,1,.22,1));
+    z-index: -1;
+  }
+  &:hover::after {
+    @include transform(scaleY(1));
+    @include transform-origin($eo);
+  }
+}

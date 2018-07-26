@@ -1,0 +1,658 @@
+//
+//
+// menu.scss
+//
+// Contains all the styles of header menu contents
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+//
+
+@include theme('f') {
+  body {
+    &.internal-page, &.has-background-menu, &.has-static-menu-open {
+      #header {
+        .header-container {
+          .top-bar {
+            .nav-header {
+              &::after {
+                @include transform(translateY(0));
+              }
+            }
+          }
+        }
+      }
+    }
+    &.has-searchbar-active {
+      overflow: hidden !important;
+    }
+    &.has-static-menu-open {
+      .page-overlay {
+        &::after {
+          content: "";
+          background: rgba($theme-color, 0.57);
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          z-index: 0;
+          display: block;
+          pointer-events: auto;
+        }
+      }
+    }
+    &.hide-header-bar {
+      #header {
+        .header-container {
+          .top-bar {
+            @include transform(translateY(-100%));
+          }
+        }
+      }
+    }
+    &.is-tablet-screen.has-menu-open {
+      #header .header-container .top-bar .nav-full-menu {
+        @include transform(translateY(0));
+      }
+    }
+  }
+  #header {
+    .header-container {
+      .top-bar {
+        @include transform(none);
+        @include transition(.75s transform cubic-bezier(.19,1,.22,1));
+        #headerToolbar {
+          margin-top: $headerToolbarMarginTop;
+          position: $headerToolbarPosition;
+          background: $headerToolbarBackground;
+          top: $headerToolbarPositionTop;
+          right: $headerToolbarPositionRight;
+          z-index: $headerToolbarZIndex;
+          margin: $headerToolbarMargin;
+          float: $headerToolbarFloat;
+          padding: $headerToolbarPadding;
+          @include responsive($media-tablet) {
+            float: $headerToolbarFloatMediaTablet;
+            background: $headerToolbarBackgroundMediaTablet;
+            position: $headerToolbarPositionMediaTablet;
+            top: $headerToolbarPositionTopMediaTablet;
+            right: $headerToolbarPositionRightMediaTablet;
+            margin: $headerToolbarMarginMediaTablet;
+            padding: $headerToolbarPaddingMediaTablet;
+          }
+          .discount-block {
+            display: $discountBlockMediaSmall;
+            float: $discountBlockFloat;
+            line-height: $discountBlockLineHeight;
+            margin-top: $discountBlockMarginTop;
+            margin-right: $discountBlockMarginRight;
+            text-transform: $discountBlockTextTransform;
+            @include responsive($media-small) {
+              display: $discountBlockDisplay;
+            }
+            .actionLink.login-link {
+              text-indent: $loginLinkTextIndent;
+              width: $loginLinkWidth;
+              background: $loginLinkBackground;
+              background-size: $loginLinkBackgroundSize;
+            }
+            .title-block, .nyromodalreload.actionLink {
+              display: none;
+            }
+          }
+          #shortlist {
+            text-transform: $shortListTextTransform;
+            position: $shortListPosition;
+            height: $shortListHeight;
+            width: $shortListWidth;
+            margin-left: $shortListMarginLeft;
+            &::before {
+              display: $shortListBeforeDisplay;
+            }
+            .shortlistInfo {
+              span {
+                position: $shortListInfoSpanPosition;
+                top: $shortListInfoSpanPositionTop;
+                left: $shortListInfoSpanPositionLeft;
+                width: $shortListInfoSpanWidth;
+                height: $shortListInfoSpanHeight;
+                padding: $shortListInfoSpanPadding;
+                line-height: $shortListInfoSpanLineHeight;
+                border-radius: $shortListInfoSpanBorderRadius;
+                margin-top: $shortListInfoSpanMarginTop;
+                text-align: $shortListInfoSpanTextAlign;
+                overflow: $shortListInfoSpanOverflow;
+                font-weight: $shortListInfoSpanFontWeight;
+              }
+              p {
+                display: $shortListInfoPtagDisplay;
+              }
+            }
+            ul.shortListOrder {
+              @include transition(transform .55s cubic-bezier(.19,1,.22,1), opacity 0.2s cubic-bezier(.19,1,.22,1));
+              @include opacity($shortListOrderOpacity);
+              @include transform(translate3d(-100%, 0, 0));
+              visibility: $shortListOrderVisibility;
+              will-change: transform, opacity;
+              @include responsive($media-tablet) {
+                @include transform(translate3d(100%, 0, 0));
+              }
+              .shortList-open & {
+                @include opacity($shortListOrderOpacityOpen);
+                @include transform(translate3d(0, 0, 0));
+                visibility: $shortListOrderVisibilityOpen;
+                right: $shortListOrderRightOpen;
+                @include responsive($media-tablet) {
+                  right: $shortListOrderRightOpenMediaTablet;
+                }
+              }
+            }
+          }
+          .header-search-toggle {
+            display: $headerSearchToggleDisplay;
+            color: $headerSearchToggleColor;
+            z-index: $headerSearchToggleZIndex;
+            text-align: $headerSearchToggleTextAlign;
+            i.search-icon {
+              &::after {
+                background: $headerSearchToggleAfterBackground;
+                background-size: $headerSearchToggleAfterBackgroundSize;
+                width: $headerSearchToggleAfterWidth;
+                height: $headerSearchToggleAfterHeight;
+                top: $headerSearchToggleAfterPositionTop;
+              }
+            }
+            &.is-active {
+              >i {
+                font-size: $headerSearchToggleFontSizeActive;
+                line-height: $headerSearchToggleLineHeightActive;
+              }
+            }
+          }
+
+          #search_box {
+            right: $searchBoxPositionRight;
+            width: $searchBoxWidth;
+            top: $searchBoxPositionTop;
+            position: $searchBoxPosition;
+            display: $searchBoxDisplay;
+            #advanced_search_container {
+              top: $advancedSearchContainerPositionTop;
+              left: $advancedSearchContainerPositionLeft;
+              right: $advancedSearchContainerPositionRight;
+              bottom: $advancedSearchContainerPositionBottom;
+              z-index: $advancedSearchContainerZIndex;
+              @include transform(scaleX(0));
+              @include transform-origin(left);
+              @include transition(transform .99s cubic-bezier(.19,1,.22,1), background 1.0s cubic-bezier(.19,1,.22,1));
+              .has-searchbar-active & {
+                z-index: $advancedSearchContainerZIndexActive;
+                @include transform(scaleX(1));
+                @include transform-origin(right);
+              }
+            }
+            #advanced_search {
+              max-width: $advanceSearchMaxWidth;
+              min-width: $advanceSearchMinWidth;
+              max-height: $advanceSearchMinHeight;
+              height: $advanceSearchHeight;
+              overflow: hidden;
+              overflow-y: auto;
+              .advanced-search-form {
+                max-width: $advancedSearchFormMaxWidth;
+                margin: $advancedSearchFormMargin;
+                float: $advancedSearchFormFloat;
+                input[type="text"], select, input[type="checkbox"] {
+                  background: $advanceSearchInputBG;
+                }
+                .search-title {
+                  font-size: $advanceSearchTitleFontSize;
+                  font-weight: $advanceSearchTitleFontWeight;
+                  color: $advanceSearchTitleColor;
+                  margin-bottom: $advanceSearchTitleMarginBottom;
+                }
+                >div {
+                  margin-bottom: $advancedSearchFormBlocksMarginBottom;
+                  label {
+                    margin-bottom: $advancedSearchFormLabelMarginBottom;
+                  }
+                  &#adv_search_location, &#adv_search_time {
+                    @include responsive($media-tablet) {
+                      padding-right: $advanceSearchFormInputWrapperPaddingVerticalTablet;
+                    }
+                  }
+                  &#adv_search_price, &#adv_search_day {
+                    @include responsive($media-tablet) {
+                      padding-left: $advanceSearchFormInputWrapperPaddingVerticalTablet;
+                    }
+                  }
+                }
+
+                #adv_search_time , #adv_search_day {
+                  .checkbox>input {
+                    width: $advanceSearchFormInputCheckBox;
+                    height: $advanceSearchFormInputCheckBox;
+                  }
+                }
+              }
+            }
+            .advanced-search-button.more-options {
+              position: $searchMoreOptionsPosition;
+              @extend .fa;
+              @extend .fa-search;
+              font-size: $searchMoreOptionsFontSize;
+              margin-top: $searchMoreOptionsMarginTop;
+              width: $searchMoreOptionsWidth;
+              .show-advanced-search span {
+                display: $searchMoreOptionsTextDisplay;
+                width: $searchMoreOptionsTextWidth;
+                height: $searchMoreOptionsTextHeight;
+              }
+              >a {
+                text-indent: $searchMoreOptionsLinkTextIndent;
+                position: $searchMoreOptionsLinkPosition;
+                top: $searchMoreOptionsLinkPositionTop;
+              }
+            }
+            #search {
+              background: $searchBoxBackground;
+              display: $searchBoxDisplaySmall;
+              .quicksearch {
+                font-size: $searchBoxQuickSearchFontSize;
+              }
+            }
+          }
+        }
+        .navbar {
+          background: $navbarBackgroundColor;
+          position: $navbarPosition;
+          top: $navbarPositionTop;
+          left: $navbarPositionLeft;
+          right: $navbarPositionRight;
+          text-align: $navbarTextAlign;
+          margin: $navbarMargin;
+
+          width: 100%;
+          padding: 0px 0 40px;
+          @include transform(translateY(-100%));
+          @include transition(.75s transform cubic-bezier(.19,1,.22,1));
+          z-index: 0;
+          @include responsive($media-tablet) {
+            padding: 120px 0 40px;
+          }
+
+          &.navbar-is-visible {
+            @include transform(translateY(0));
+            z-index: 1;
+          }
+
+          #nav {
+            >ul {
+              a {
+                letter-spacing: $navAnchorLetterSpacing;
+                font-weight: $navAnchorFontWeight;
+              }
+              >li {
+                >a, &:first-child>a, &:last-child>a {
+                  padding: $navAnchorPaddingMediaSmall;
+                  @include responsive($media-tablet) {
+                    padding: $navAnchorPaddingMediaTablet;
+                  }
+                  @include responsive($media-custom, $custom-screen) {
+                    padding: $navAnchorPadding;
+                  }
+                }
+              }
+            }
+          }
+        }
+        .nav-full-menu {
+          position: fixed;
+          left: 0;
+          right: 0;
+          top: 0;
+          background: $white;
+          height: 100%;
+          max-height: 550px;
+          overflow: hidden;
+          overflow-y: auto;
+          @include transform(translateY(-100%));
+          @include transition(.75s transform cubic-bezier(.19,1,.22,1));
+
+          @include responsive($media-tablet) {
+            position: static;
+            background: transparent;
+            padding-top: 0px;
+            height: auto;
+            max-height: none;
+            overflow: visible;
+            @include transform(none);
+          }
+          .navbar-wrapper {
+            position: static;
+            float: left;
+            width: 100%;
+            padding-top: 120px;
+            margin-top: -61px;
+            height: 61px;
+            @include responsive($media-tablet) {
+              padding-top: 0px;
+              max-height: none;
+            }
+            .has-static-menu-open & {
+              height: auto;
+            }
+          }
+          .top-nav-items {
+            display: block;
+            @include responsive($media-tablet) {
+              display: none;
+            }
+            .nav-static-menu {
+              max-width: 1360px;
+              margin: 45px auto 0;
+              padding: 0 25px;
+              >li {
+                display: block;
+                >a {
+                  font-family: $fontFamilyOne;
+                  font-size: $navAnchorTopFontSize;
+                  font-weight: bold;
+                  line-height: 1.5;
+                  margin-bottom: 10px;
+                  @extend .slide-line;
+                }
+              }
+            }
+          }
+          .nav-static-menu-item {
+            > li {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              padding: 120px 0 40px;
+              @include transform(translateY(-100%));
+              @include transition(.75s transform cubic-bezier(.19,1,.22,1));
+              margin-top: -3px;
+              >ul {
+                max-width: 1360px;
+                margin: 0 auto;
+                padding: 0 25px;
+                > li {
+                  display: inline-block;
+                  padding: 35px 40px;
+                  vertical-align: top;
+                  @include opacity(0);
+                  @include transition(.8s opacity cubic-bezier(.19,1,.22,1));
+                  > a {
+                    font-family: $fontFamilyOne;
+                    font-size: $navAnchorTopFontSize;
+                    font-weight: bold;
+                    line-height: 1.5;
+                    margin-bottom: 25px;
+                    display: inline-block;
+                  }
+                }
+                li {
+                  a {
+                    color: $anchorColor;
+                    line-height: 1.3;
+                    @extend .slide-line;
+                  }
+                }
+              }
+              &.is-active {
+                @include transform(translateY(0));
+                z-index: 1;
+                >ul > li {
+                  @include opacity(1);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .nav-header {
+      position: relative;
+      z-index: 3;
+      float: left;
+      width: 100%;
+      border-bottom: 1px solid #e4e4e4;
+      border-bottom: 1px solid rgba(255,255,255,.1);
+      .internal-page & {
+        border-bottom: 0 none;
+        @extend .page-shadow;
+        background: transparent;
+      }
+      .has-static-menu-open & {
+        box-shadow: none;
+      }
+      &::after {
+        content: "";
+        background: $theme-color;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        display: block;
+        @include transform(translateY(-100%));
+        @include transition(.75s transform cubic-bezier(.19,1,.22,1));
+      }
+      .navbar-container {
+        .top-nav-items {
+          position: relative;
+          z-index: 1;
+          display: none;
+          @include responsive($media-tablet) {
+            display: block;
+          }
+          .nav-static-menu {
+            float: left;
+            font-size: 0;
+            > li {
+              display: inline-block;
+              border-right: 1px solid rgba(255,255,255,.1);
+              &:last-child {
+                border-right: 0 none;
+              }
+              > a {
+                padding: 23px 50px;
+                display: block;
+                color: $white;
+                font-family: $fontFamilyOne;
+                font-weight: bold;
+                position: relative;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                @extend .flyout;
+                &:hover, &.is-hover {
+                  color: $anchorColor;
+                  &::after {
+                    @extend .flyout:hover;
+                  }
+                }
+              }
+              a {
+                font-size: 14px;
+              }
+            }
+          }
+        }
+      }
+    }
+    .navbar {
+      .site-nav {
+        .list-horizontal {
+          max-width: 1360px;
+          margin: 0 auto;
+          padding: 0 25px;
+          >li {
+            @include opacity(0);
+            @include transition(.8s opacity cubic-bezier(.19,1,.22,1));
+          }
+          li {
+            a {
+              @extend .slide-line;
+            }
+          }
+          li.hasChild {
+            >ul {
+              @include responsive($media-tablet) {
+                left: $navChildMenuPositionLeftMediaTablet;
+                margin-left: $navChildMenuMarginLeftMediaTablet;
+              }
+              li {
+                a {
+                  white-space: $navChildMenuLinkWhiteSpace;
+                  overflow: $navChildMenuLinkOverflow;
+                  width: $navChildMenuLinkWidth;
+                  text-overflow: $navChildMenuLinkTextOverflow;
+                }
+              }
+              >li.hasChildren>ul {
+                display: $navChildMenuChildrenDisplay;
+              }
+            }
+          }
+        }
+      }
+      &.navbar-is-visible {
+        .site-nav {
+          .list-horizontal {
+            >li {
+              @include opacity(1);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .nav-hamburger-toggle {
+    display: block;
+    float: left;
+    position: relative;
+    padding: 24px 30px;
+    border-right: 1px solid rgba(255,255,255,.1);
+    z-index: 2;
+    cursor: pointer;
+    @include responsive($media-tablet) {
+      padding: 24px 50px;
+    }
+    &::after {
+      display: none;
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: #fff
+    }
+    .has-menu-open & {
+      background-color: $white;
+    }
+    >div {
+      position: relative;
+      width: 19px;
+      height: 2px;
+      @include transition(transform .55s cubic-bezier(.19,1,.22,1), opacity .2s cubic-bezier(.19,1,.22,1));
+      will-change: transform, opacity;
+      overflow: hidden;
+      display: block;
+      &::before, &::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: $white;
+        will-change: transform
+      }
+      &::before {
+        @include transform(translate3d(0,0,0));
+      }
+      &::after {
+        @include transform(translate3d(-100%,0,0));
+      }
+      &:first-child {
+        &::before {
+          @include transition(transform .6s cubic-bezier(.25,.46,.45,.94) 90ms);
+        }
+        &::after {
+          @include transition(transform .6s cubic-bezier(.25,.46,.45,.94));
+        }
+      }
+      &:nth-child(2) {
+        &::before {
+          @include transition(transform .6s cubic-bezier(.25,.46,.45,.94) .14s);
+        }
+        &::after {
+          @include transition(transform .6s cubic-bezier(.25,.46,.45,.94) 30ms);
+        }
+      }
+      &:last-child {
+        &::before {
+          @include transition(transform .6s cubic-bezier(.25,.46,.45,.94) .19s);
+        }
+        &::after {
+          @include transition(transform .6s cubic-bezier(.25,.46,.45,.94) 60ms);
+        }
+      }
+      &:not(:last-child) {
+        margin-bottom: 3px
+      }
+      .has-menu-open & {
+        &::before, &::after {
+          background: $theme-color;
+        }
+      }
+      .has-menu-open &:first-child {
+        @include transform(translate3d(0,5px,0) rotate3d(0,0,1,45deg))
+      }
+      .has-menu-open &:nth-child(2) {
+        opacity: 0
+      }
+      .has-menu-open &:last-child {
+        @include transform(translate3d(0,-5px,0) rotate3d(0,0,1,-45deg))
+      }
+    }
+    &:hover>div {
+      &:first-child {
+        &::before {
+          @include transition(transform .55s cubic-bezier(.19,1,.22,1));
+        }
+        &::after {
+          @include transition(transform .55s cubic-bezier(.19,1,.22,1) .1s);
+        }
+      }
+      &:nth-child(2) {
+        &::before {
+          @include transition(transform .5s cubic-bezier(.19,1,.22,1) 50ms);
+        }
+        &::after {
+          @include transition(transform .5s cubic-bezier(.19,1,.22,1) .15s);
+        }
+      }
+      &:last-child {
+        &::before {
+          @include transition(transform .45s cubic-bezier(.19,1,.22,1) .1s);
+        }
+        &::after {
+          @include transition(transform .45s cubic-bezier(.19,1,.22,1) .2s);
+        }
+      }
+      &::before {
+        @include transform(translate3d(100%,0,0));
+      }
+      &::after {
+        @include transform(translate3d(0,0,0));
+      }
+    }
+  }
+}

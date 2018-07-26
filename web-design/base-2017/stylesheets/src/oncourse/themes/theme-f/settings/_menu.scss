@@ -1,0 +1,242 @@
+//
+//
+// menu.scss
+//
+// Contains all settings used for menu content
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+//
+
+$headerToolbarMarginTop: 10px !default;
+$headerToolbarPosition: relative !default;
+
+$headerToolbarBackground: $theme-color !default;
+$headerToolbarPositionTop: 5px !default;
+$headerToolbarPositionRight: 0 !default;
+$headerToolbarZIndex: 3 !default;
+$headerToolbarMargin: 10px 15px !default;
+$headerToolbarFloat: none !default;
+$headerToolbarPadding: 9px 15px 9px 25px !default;
+
+$headerToolbarFloatMediaTablet: right !default;
+$headerToolbarBackgroundMediaTablet: none !default;
+$headerToolbarPositionMediaTablet: absolute !default;
+$headerToolbarPositionTopMediaTablet: 5px !default;
+$headerToolbarPositionRightMediaTablet: 15px !default;
+$headerToolbarMarginMediaTablet: 10px 0 0 !default;
+$headerToolbarPaddingMediaTablet: 0 !default;
+
+$discountBlockMediaSmall: block !default;
+$discountBlockFloat: left !default;
+$discountBlockLineHeight: 1.38095 !default;
+$discountBlockMarginTop: 6px !default;
+$discountBlockMarginRight: 7px !default;
+$discountBlockTextTransform: uppercase !default;
+$discountBlockDisplay: block !default;
+$discountBlockActionLinkDisplay: block !default;
+
+$loginLinkTextIndent: -9999px !default;
+$loginLinkWidth: 20px !default;
+$loginLinkBackground: url("/s/img/icons/icon-user.png") 0 0 no-repeat !default;
+$loginLinkBackgroundSize: 100% !default;
+
+// Short list
+$shortListMarginRightSmall: 5px !default;
+$shortListMarginRightTablet: 5px !default;
+
+$shortListTextTransform: uppercase !default;
+$shortListPosition: relative !default;
+$shortListHeight: 27px !default;
+$shortListWidth: 40px !default;
+$shortListMarginLeft: 20px !default;
+
+$shortListBeforeBackground: url("/s/img/icons/icon-cart.png") 0 0 no-repeat !default;
+$shortListBeforeBackgroundPosition: 0px 0px !default;
+$shortListBeforeTop: 6px !default;
+$shortListBeforeLeft: -8px !default;
+$shortListBeforeWidth: 27px !default;
+$shortListBeforeHeight: 22px !default;
+$shortListBeforeDisplay: block !default;
+
+$shortListInfoSpanBGColor: #525252 !default;
+$shortListInfoSpanColor: #fff !default;
+$shortListInfoSpanFontSize: 11px !default;
+$shortListInfoSpanLineHeight: 0.5 !default;
+$shortListInfoSpanMargin: 0 5px 0 0 !default;
+
+$shortListInfoSpanPosition: absolute !default;
+$shortListInfoSpanPositionTop: -3px !default;
+$shortListInfoSpanPositionLeft: 10px !default;
+$shortListInfoSpanWidth: 20px !default;
+$shortListInfoSpanHeight: 20px !default;
+$shortListInfoSpanPadding: 7.5px 0 !default;
+$shortListInfoSpanBorderRadius: 100% !default;
+$shortListInfoSpanMarginTop: 3px !default;
+$shortListInfoSpanTextAlign: center !default;
+$shortListInfoSpanOverflow: hidden !default;
+$shortListInfoSpanFontWeight: bold !default;
+
+$shortListInfoPtagDisplay: none !default;
+
+$shortListOrderBackground: $color-2 !default;
+$shortListOrderDisplay: block !important !default;
+$shortListOrderOpacity: 0.5 !default;
+$shortListOrderVisibility: hidden !default;
+$shortListOrderRight: 80px !default;
+
+$shortListOrderRightMediaTablet: -80px !default;
+$shortListOrderLeftMediaTablet: auto !default;
+
+$shortListOrderOpacityOpen: 1 !default;
+$shortListOrderVisibilityOpen: visible !default;
+$shortListOrderRightOpen: -165px !default;
+
+$shortListOrderRightOpenMediaTablet: -3px !default;
+
+$shortListOrderEnrolLinkBackground: $theme-color !default;
+$shortListOrderEnrolLinkBackgroundColor: $theme-color !default;
+$shortListOrderEnrolLinkHoverBackgroundColor: $secondaryColor !default;
+$shortListOrderEnrolLinkPadding: 8px 35px !default;
+$shortListOrderEnrolLinkFontSize: 15px !default;
+
+$shortListOrderLinkFontSize: $bodyFontSize !default;
+
+$shortListOrderBeforePositionLeft: 20px !default;
+$shortListOrderBeforePositionLeftMediaTablet: auto !default;
+
+$shortListOrderBeforePositionRight: auto !default;
+$shortListOrderBeforePositionRightMediaTablet: 30px !default;
+
+$shortListOrderLinkHoverColor: $color-1 !default;
+
+$shortListOrderDeleteIconOpacityHover: 0.7 !default;
+
+
+$headerSearchToggleDisplay: block !important !default;
+$headerSearchToggleColor: $color-8 !default;
+$headerSearchToggleZIndex: 10 !default;
+$headerSearchToggleTextAlign: center !default;
+
+$toggleSearchActiveBackground: #1565C0 !default;
+
+$headerSearchToggleWidth: 30px !default;
+$headerSearchToggleHeight: 30px !default;
+$headerSearchTogglePadding: 5px !default;
+
+$headerSearchToggleFontSizeActive: 21px !default;
+$headerSearchToggleLineHeightActive: 1 !default;
+
+$headerSearchToggleOpacity: 0.8 !default;
+$headerSearchToggleOpacityHover: 1 !default;
+
+$headerSearchToggleAfterBackground: url("/s/img/icons/icon-search-h.png") 0 0 no-repeat !default;
+$headerSearchToggleAfterBackgroundSize: 100% !default;
+$headerSearchToggleAfterWidth: 19px !default;
+$headerSearchToggleAfterHeight: 20px !default;
+$headerSearchToggleAfterPositionTop: 6px !default;
+
+
+$searchBoxPositionRight: 10px !default;
+$searchBoxWidth: auto !default;
+$searchBoxPositionTop: 8px !default;
+$searchBoxPosition: absolute !default;
+$searchBoxDisplay: block !important !default;
+
+$advanceSearchDisplay: block !default;
+$advanceSearchMaxWidth: none !default;
+$advanceSearchMinWidth: 285px !default;
+$advanceSearchZIndex: 0 !default;
+$advanceSearchMinHeight: 100% !default;
+$advanceSearchHeight: 100% !default;
+$advanceSearchPadding: 45px 15px !default;
+$advanceSearchTop: 0 !default;
+$advanceSearchRight: 0px !default;
+$advanceSearchLeft: auto !default;
+
+// Advanced search
+
+$advanceSearchBG: #f1f3f6 !default;
+$advanceSearchBGRGB: $advanceSearchBG !default;
+
+$advanceSearchTitleFontSize: 30px !default;
+$advanceSearchTitleFontWeight: bold !default;
+$advanceSearchTitleColor: $black !default;
+$advanceSearchTitleMarginBottom: 25px !default;
+
+$advanceSearchInputBG: #fff !default;
+
+$advanceSearchFormInputWrapperPaddingVerticalTablet: 10px !default;
+
+$advanceSearchFormInputCheckBox: 25px !default;
+
+$advancedSearchOpenFromLeft: "off" !default;
+$advancedSearchOpenFromRight: "on" !default;
+
+$advancedSearchContainerPosition: fixed !default;
+$advancedSearchContainerPositionTop: 60px !default;
+$advancedSearchContainerPositionLeft: 0 !default;
+$advancedSearchContainerPositionRight: 0 !default;
+$advancedSearchContainerPositionBottom: 0 !default;
+$advancedSearchContainerZIndex: 0 !default;
+
+$advancedSearchContainerZIndexActive: 1 !default;
+
+$advancedSearchPriceDisplay: block !default;
+$advancedSearchLocationWidth: 50% !default;
+$advancedSearchPriceWidth: $advancedSearchLocationWidth !default;
+$advancedSearchActiveRight: -6px !default;
+$advancedSearchActiveTop: 20px !default;
+
+$advancedSearchFormMaxWidth: 450px !default;
+$advancedSearchFormMargin: 0 auto !default;
+$advancedSearchFormFloat: none !default;
+
+$advancedSearchFormInputHeight: 45px !default;
+$advancedSearchFormInputPadding: 10px 12px !default;
+$advancedSearchFormInputFontSize: 16px !default;
+
+$advancedSearchFormBlocksMarginBottom: 30px !default;
+
+$advancedSearchFormLabelFontSize: 17px !default;
+$advancedSearchFormLabelMarginBottom: 7px !default;
+
+$searchTopHeight: 28px !default;
+$searchButtonPadding: 3.5px 7px 3.5px !default;
+$searchButtonBG: transparent !default;
+$searchButtonWidth: 31px !default;
+$searchButtonHeight: $searchTopHeight !default;
+
+$searchBoxDisplaySmall: none !important !default;
+
+$searchBoxBackground: $white !default;
+$searchBoxWidth: 190px !default;
+$searchBoxBorder: 1px solid #ddd !default;
+$searchBoxBorderRadius: 14px !default;
+
+$searchBoxInputPadding: 3.5px 12px 3.5px !default;
+$searchBoxInputWidth: 72% !default;
+$searchBoxInputHeight: $searchTopHeight !default;
+$searchBoxInputBorder: 0px !default;
+$searchBoxInputBorderRadius: 14px 0px 0px 14px !default;
+
+
+$searchMoreOptions: transparent !default;
+$searchMoreOptionsWidth: 12px !default;
+$searchMoreOptionsHeight: $searchTopHeight !default;
+$searchMoreOptionsPadding: 0px !default;
+$searchMoreOptionsMinWidth: $searchMoreOptionsWidth !default;
+$searchMoreOptionsDisplay: block !default;
+$searchMoreOptionsPosition: relative !default;
+$searchMoreOptionsFontSize: $faFontSize !default;
+$searchMoreOptionsMarginTop: 5px !default;
+
+$searchMoreOptionsTextDisplay: block !default;
+$searchMoreOptionsTextWidth: 100% !default;
+$searchMoreOptionsTextHeight: 100% !default;
+
+$searchMoreOptionsLinkTextIndent: -9999px !default;
+$searchMoreOptionsLinkPosition: absolute !default;
+$searchMoreOptionsLinkPositionTop: 0 !default;
+
+$searchBoxQuickSearchFontSize: 13px !default;

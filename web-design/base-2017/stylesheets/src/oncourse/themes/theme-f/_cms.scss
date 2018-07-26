@@ -1,0 +1,42 @@
+//
+//
+// cms.scss
+//
+// Contains all the styles of cms contents
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+//
+
+@include theme('f') {
+  .cms-loaded {
+    .site-wrapper {
+      padding-left: $cmsSiteWrapperPaddingLeft;
+    }
+    .cms-settings {
+      position: $cmsSettingsPosition;
+      bottom: $cmsSettingsPositionBottom;
+      left: $cmsSettingsPositionLeft;
+      background: $cmsSettingsBackground;
+      padding: $cmsSettingsPadding;
+      box-shadow: $cmsSettingsBoxShadow;
+      z-index: $cmsSettingsZIndex;
+    }
+    .cms-scope .sidebar {
+      position: $cmsSidebarPosition;
+      width: $cmsSidebarWidth;
+    }
+    #cms-root > .cms {
+      @extend .transition-normal;
+      @include transform(translate3d(-100%, 0, 0));
+    }
+    .cms-menu-open {
+      .cms-settings {
+        left: $cmsSettingsMenuOpenPositionLeft;
+      }
+      #cms-root > .cms {
+        @include transform(translate3d(0, 0, 0));
+      }
+    }
+  }
+}

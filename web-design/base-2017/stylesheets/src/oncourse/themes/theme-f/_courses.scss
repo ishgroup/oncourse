@@ -1,0 +1,372 @@
+//
+//
+// courses.scss
+//
+// Contains all the styles of courses contents
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+//
+
+@include theme('f') {
+  .classItem {
+    >.row {
+      margin: $classItemRowMargin;
+    }
+    .class-item-wrapper {
+      @include responsive($media-small) {
+        display: $classItemWrapperDisplayMediaTablet;
+        width: $classItemWrapperWidthMediaTablet;
+      }
+      .classItem-left, .classItem-right {
+        @include responsive($media-small) {
+          display: $classItemDisplayMediaTablet;
+          float: $classItemFloatMediaTablet;
+          vertical-align: $classItemVerticalAlignMediaTablet;
+        }
+      }
+      .classItem-left {
+        padding: $classItemLeftPadding;
+        min-height: $classItemLeftMinHeight;
+        .class-item-info-l, .class-item-info-r {
+          @include responsive($media-small) {
+            width: $classItemLeftInfoWidthMediaSmall;
+          }
+        }
+      }
+      .classItem-right {
+        background: $classItemRightBackground;
+        padding: $classItemRightPadding;
+        position: static;
+      }
+    }
+    .class-item-info {
+      .session-date-title {
+        margin-bottom: $classItemDateTitleMarginBottom;
+      }
+      .session-date {
+        font-size: $classItemSessionDateFontSize;
+        font-weight: $classItemSessionDateFontWeight;
+        margin-bottom: $classItemSessionDateMarginBottom;
+        color: $classItemSessionDateColor;
+      }
+      .class-item-info-l .date .timeline, .class-item-info-r .location, .class-item-info-r .tutor {
+        margin-bottom: 10px;
+        display: block;
+        border-bottom: 0;
+      }
+      div.date {
+        background: $classItemDateBackground;
+        padding-left: $classItemDatePaddingLeft;
+        .icon-session-time {
+          position: relative;
+          &::after {
+            content: "";
+            position: absolute;
+            background: $classItemDateSessionIconBackground;
+            width: $classItemDateSessionIconWidth;
+            height: $classItemDateSessionIconHeight;
+            top: $classItemDateSessionIconPositionTop;
+            left: $classItemDateSessionIconPositionLeft;
+          }
+        }
+      }
+    }
+    .price.course-item-price {
+      font-size: $classItemPriceFontSize;
+      color: $classItemPriceColor;
+      font-weight: $classItemPriceFontWeight;
+      .gst {
+        color: $classItemPriceGSTColor;
+      }
+      acronym.discount-price {
+        cursor: help;
+      }
+      .discount-price {
+        color: $classItemDiscountedPriceColor;
+      }
+      .fee-disabled {
+        text-decoration: line-through;
+        color: $classItemDisabledPriceColor;
+      }
+      .fee-discounted {
+        color: $coursesClassItemFeeDiscountColor;
+        margin-left: 5px
+      }
+    }
+  }
+
+  .internal-page {
+    &#ListPage, &#ProductsListPage, &#DetailsPage, &#SiteList {
+      #content {
+        @extend .flat-page;
+      }
+      .content {
+        .courseItem {
+          padding: $pageDefaultPadding;
+          margin-bottom: $courseItemMarginBottom;
+        }
+      }
+    }
+    .content .courseItem {
+      &.app-animate:hover {
+        @include transform(none);
+      }
+      .related-header {
+        font-size: $courseItemRelatedHeaderFontSize;
+        font-weight: $courseItemRelatedHeaderFontWeight;
+        float: $courseItemRelatedHeaderFloat;
+        margin-right: $courseItemRelatedHeaderMarginRight;
+        color: $courseItemRelatedHeaderColor;
+      }
+      .relatedCourses {
+        float: $relatedCoursesFloat;
+        > ul {
+          margin-left: $relatedCoursesMarginLeft;
+          margin-top: $relatedCoursesMarginTop;
+          >li {
+            display: $relatedCoursesListDisplay;
+            position: $relatedCoursesListPosition;
+            margin-left: $relatedCoursesListMarginLeft;
+            a {
+              color: $relatedCoursesListColor;
+              &:hover {
+                color: $relatedCoursesListColorHover;
+              }
+            }
+            &:first-child {
+              margin-left: $relatedCoursesListFirstChildMarginLeft;
+              &::before {
+                content: $relatedCoursesListFirstChildBeforeContent;
+              }
+            }
+            &::before {
+              content: $relatedCoursesListBeforeContent;
+              background: $relatedCoursesListBeforeBackground;
+              width: $relatedCoursesListBeforeWidth;
+              height: $relatedCoursesListBeforeHeight;
+              position: $relatedCoursesListBeforePosition;
+              top: $relatedCoursesListBeforePositionTop;
+              left: $relatedCoursesListBeforePositionLeft;
+              @include border-radius($relatedCoursesListBeforeBorderRadius);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @if $enableDefaultBubbleInfo == false {
+    .classItem {
+      &:hover .bubbleInfo {
+        @include transform(translateX(0));
+        @include opacity(1);
+        visibility: visible;
+        left: $coursesCustomBubbleInfoPositionLeftHover;
+        right: $coursesCustomBubbleInfoPositionRightHover;
+      }
+    }
+    .bubbleInfo {
+      @include transform(translateX($coursesCustomBubbleInfoTranslateX));
+      @include opacity(0);
+      visibility: hidden;
+      width: 300px;
+      height: 101.115%;
+      min-height: 172px;
+      left: $coursesCustomBubbleInfoPositionLeft;
+      right: $coursesCustomBubbleInfoPositionRight;
+      padding: 0;
+      top: -1px;
+      @include transition(transform 1s cubic-bezier(.19,1,.22,1));
+      @include responsive($media-tablet) {
+        display: block;
+      }
+      >.tooltip_popup {
+        border: $coursesCustomBubbleTootipBorder;
+        @if $sidebarLeft == "on" {
+          border-right: $coursesCustomBubbleTootipBorderRightSidebarLeft;
+          background-color: $coursesCustomBubbleTootipBackgroundColorSidebarLeft;
+        } @else {
+          border-left: $coursesCustomBubbleTootipBorderLeftSidebarRight;
+          background-color: $coursesCustomBubbleTootipBackgroundColorSidebarRight;
+        }
+        border-radius: $coursesCustomBubbleTootipBorderRadius;
+        box-shadow: $coursesCustomBubbleTootipBoxShadow;
+        height: $coursesCustomBubbleTootipHeight;
+        padding: $coursesCustomBubbleTootipPadding;
+        margin-bottom: $coursesCustomBubbleTootipMarginBottom;
+        &::after {
+          content: $coursesCustomBubbleTootipAfterContent;
+          width: $coursesCustomBubbleTootipAfterWidth;
+          height: $coursesCustomBubbleTootipAfterHeight;
+          background: $coursesCustomBubbleTootipAfterBackground;
+          position: $coursesCustomBubbleTootipAfterPosition;
+          top: $coursesCustomBubbleTootipAfterPositionTop;
+          @if $sidebarLeft == "on" {
+            right: $coursesCustomBubbleTootipAfterPositionRightSidebarLeft;
+          } @else {
+            left: $coursesCustomBubbleTootipAfterPositionLeftSidebarRight;
+          }
+          @include transform(translateY(-50%));
+        }
+      }
+      .arrow {
+        display: $coursesCustomBubbleArrowDisplay;
+      }
+      .bubble_top {
+        border-bottom: $coursesCustomBubbleTopBorderBottom;
+        padding-bottom: $coursesCustomBubbleTopPaddingBottom;
+        text-align: $coursesCustomBubbleTopTextAlign;
+        margin-bottom: $coursesCustomBubbleTopMarginBottom;
+      }
+      .timing-display {
+        display: $coursesCustomBubbleTimingDisplay;
+        border: $coursesCustomBubbleTimingBorder;
+        margin-right: $coursesCustomBubbleTimingMarginRight;
+        background-color: $coursesCustomBubbleTimingBackgroundColor;
+        span {
+          &.timing-weekday, &.timing-weekend {
+            display: $coursesCustomBubbleTimingWeekDisplay;
+            background: $coursesCustomBubbleTimingWeekBackground;
+            border: $coursesCustomBubbleTimingWeekBorder;
+            border-radius: $coursesCustomBubbleTimingWeekBorderRadius;
+            padding: $coursesCustomBubbleTimingWeekPadding;
+            text-align: $coursesCustomBubbleTimingWeekTextAlign;
+            width: $coursesCustomBubbleTimingWeekWidth;
+            height: $coursesCustomBubbleTimingWeekHeight;
+            color: $coursesCustomBubbleTimingWeekColor;
+            margin-bottom: $coursesCustomBubbleTimingWeekMarginBottom;
+            &.timing-no {
+              background: $coursesCustomBubbleTimingWeekNoBackground;
+              color: $coursesCustomBubbleTimingWeekNoColor;
+            }
+            &.timing-yes {
+              color: $coursesCustomBubbleTimingWeekYesColor;
+            }
+          }
+        }
+      }
+      .class-link, .course-link {
+        background: $coursesCustomBubbleLinkBackground;
+        position: $coursesCustomBubbleLinkPosition;
+        padding-left: $coursesCustomBubbleLinkPaddingLeft;
+        max-height: $coursesCustomBubbleLinkMaxHeight;
+        overflow: $coursesCustomBubbleLinkOverflow;
+        >span.fa {
+          position: $coursesCustomBubbleLinkIconPosition;
+          top: $coursesCustomBubbleLinkIconPositionTop;
+          left: $coursesCustomBubbleLinkIconPositionLeft;
+          font-size: $coursesCustomBubbleLinkIconFontSize;
+          margin-right: $coursesCustomBubbleLinkIconMarginRight;
+        }
+      }
+    }
+  }
+
+  .filters-container .side-box {
+    .taggroup-location {
+      color: $fstLocationColor;
+    }
+    .filter-option {
+      @extend ._checkbox;
+      label.checkbox {
+        &::before {
+          border-color: $fstOptionLabelBeforeBorderColor;
+        }
+      }
+      label.filter-option-label {
+        padding-left: 26px;
+        &.hasOptionChild {
+          &::before, &::after {
+            background: $fstOptionLabelHasOptionChildBeforeBackground;
+            border: $fstOptionLabelHasOptionChildBeforeBorder;
+          }
+        }
+      }
+      input[type="checkbox"]:checked+label.checkbox::after {
+        background-color: $fstOptionLabelAfterCheckedBackgroundColor;
+        border-color: $fstOptionLabelAfterCheckedBorderColor;
+      }
+    }
+  }
+
+  #SiteList.internal-page {
+    .class-details-title, .siteList > li {
+      margin-bottom: $siteListContentMarginBottom;
+      border: $siteListContentBorder;
+      border-radius: $siteListContentBorderRadius;
+      padding: $pageDefaultPadding;
+      @extend .page-shadow;
+    }
+    .class-details-title {
+      padding: $siteListTitlePadding;
+      >h1 {
+        margin-bottom: $siteListTitleMarginBottom;
+      }
+    }
+    .siteList .sites-loc-wrapper {
+      .class_location {
+        background-image: url($coursesClassItemLocationImage);
+        width: $coursesClassItemLocationImageWidth;
+        height: $coursesClassItemLocationImageHeight;
+        @extend .cd-icon;
+      }
+      .sites-map-link {
+        a {
+          padding-left: $siteListLinkPaddingLeft;
+        }
+      }
+    }
+  }
+
+  .classAction .confirmOrderDialog {
+    @include display(flex !important);
+    @include align-items(center);
+    height: 100%;
+    @include flex-direction(column);
+    justify-content: center;
+    font-size: 12px;
+    @include responsive($media-small) {
+      @include flex-direction();
+      justify-content: flex-start;
+      font-size: $confirmOrderDialogFontSize;
+    }
+    .confirm-message {
+      text-align: center;
+      margin-bottom: 15px;
+      @include responsive($media-small) {
+        text-align: left;
+        margin-bottom: 0px;
+        @include flex-grow(1);
+        padding-right: 30px;
+      }
+      p {
+        margin-bottom: 5px;
+      }
+      .confirm-txt {
+        font-size: 15px;
+        @include responsive($media-small) {
+          font-size: $confirmedMessageFontSize;
+        }
+      }
+    }
+    .confirm-proseed .button {
+      white-space: nowrap;
+      padding: 10px 16px;
+      font-size: 16px;
+      @include responsive($media-small) {
+        padding: $confirmedProceedPadding;
+        font-size: $confirmedProceedFontSize;
+      }
+    }
+    .classDate {
+      font-size: 12px;
+      @include responsive($media-small) {
+        font-size: $confirmedClassDateFontSize;
+      }
+    }
+    .confirm-close-wrapper {
+      display: none;
+    }
+  }
+}

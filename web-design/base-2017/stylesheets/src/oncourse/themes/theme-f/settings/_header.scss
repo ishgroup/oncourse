@@ -1,0 +1,171 @@
+//
+//
+// header.scss
+//
+// Contains all settings used for header content
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+//
+
+$header-theme: "f";
+
+$contentContainerBackground: none !default;
+$contentContainerPaddingSidebarLeftTablet: 25px 35px 35px 25px !default;
+$contentContainerPaddingSidebarRightTablet: 25px 15px 35px 25px !default;
+$contentContainerPaddingSmall: 15px !default;
+
+
+$headerContainerPosition: fixed !default;
+$headerContainerMarginBottom: 0px !default;
+$headerGroupPadding: 14.5px 15px 14.5px 80px !default;
+$headerGroupPosition: relative !default;
+
+$headerGroupLinkDisplay: table-cell !default;
+$headerGroupLinkVerticalAlign: middle !default;
+
+$headerTopBarFloat: none !default;
+$headerTopBarBG: transparent !default;
+$headerTopBarMinHeight: 61px !default;
+$headerTopBarTextColor: $color-8 !default;
+$headerTopBarMarginBottom: 0 !default;
+
+$headerTopBarContactMargin: 6px 10px 0px 20px !default;
+$headerTopBarPhoneTextColor: $bodyFontColor !default;
+
+$headerTopBarPaddingTop: 0px !default;
+$headerTopBarHeight: auto !default;
+$headerGroupSiteLogoFloat: left !default;
+$headerGroupSiteLogoFloatPosition: left !default;
+$headerGroupSiteLogoZIndex: 0 !default;
+
+// Navigation
+$navbarPaddingLeft: 0px !default;
+$navbarBackgroundColor: $white !default;
+$navFontSize: 12px !default;
+$navFontWeight: normal !default;
+$navWidth: auto !default;
+$navMarginTop: 0px !default;
+
+$navFloat: none !default;
+$navFloatTablet: none !default;
+$navBG: transparent !default;
+$navBorderTop: 0px !default;
+$navBorderBottom: 0px !default;
+
+$navTextAlign: left !default;
+$navTextAlignTablet: left !default;
+$navBorderColor: transparent !default;
+
+$navAnchorLetterSpacing: 1px !default;
+$navAnchorFontWeight: bold !default;
+
+$navListTextTransform: capitalize !default;
+
+$navListFloat: none !default;
+$navListFloatTablet: none !default;
+
+$navListDisplay: block !important !default;
+$navListDisplayTablet: block !important !default;
+$navListBottomBorder: 2px solid transparent !default;
+$navListMarginRight: 0 !default;
+
+$navAnchorColor: $anchorColor !default;
+$navAnchorHoverBG: transparent !default;
+$navAnchorHoverTextColor: $anchorHoverColor !default;
+$navAnchorTopFontSize: 22px !default;
+
+$navAnchorPadding: 0px !default;
+$navAnchorPaddingMediaSmall: 0px;
+$navAnchorPaddingMediaTablet: 0px;
+
+$navFirstChildAnchorPadding: $navAnchorPadding !default;
+$navLastChildAnchorPadding: $navAnchorPadding !default;
+
+$navAnchorHeight: auto !default;
+$navAnchorLineHeight: 36px !default;
+
+$navAnchorArrowColor: $navAnchorHoverBG !default;
+$firstChildMenuPadding: 0px !default;
+$firstChildMenuTablePadding: 10px 0 !default;
+$displayFullWidthMenu: none !default;
+$first-accent-color: $navAnchorHoverBG !default;
+$firstDropMenufullWidth: 117.1% !default;
+$firstDropMenuMargin: 0px -14.95% !default;
+$first-accent-width: 200px !default;
+$firstAccentNavAnchorColor: #c7c7c7 !default;
+$firstAccentNavAnchorPadding: 8px 20px !default;
+
+$navChildMenuLinkHoverBG: transparent !default;
+$navChildMenuLinkHoverColor: $white !default;
+$navChildMenuTextAlign: center !default;
+$navChildMenuTextAlignTablet: left !default;
+
+$navChildMenuPositionLeftMediaTablet: 50% !default;
+$navChildMenuMarginLeftMediaTablet: -100px !default;
+
+$navChildMenuZIndex: 9999 !default;
+
+$navChildMenuLinkWhiteSpace: nowrap !default;
+$navChildMenuLinkOverflow: hidden !default;
+$navChildMenuLinkWidth: 100% !default;
+$navChildMenuLinkTextOverflow: ellipsis !default;
+
+$navChildMenuChildrenDisplay: none !default;
+
+$navToggleBG: transparent !default;
+$navToggleTextColor: #231f20 !default;
+
+$navToggleHoverBG: transparent !default;
+$navToggleHoverTextColor: #231f20 !default;
+
+$enableHamburgerMenu: true !default;
+$navToggleIconWidth: 23px !default;
+$navToggleIconColor: $headerTopBarTextColor !default;
+$navToggleIconHeight: 4px !default;
+$navToggleIconBorderRadius: 100px !default;
+$navToggleIconLinePosition: -7px !default;
+$navToggleIconHoverColor: darken($headerTopBarTextColor, 15%) !default;
+
+$navbarPosition: relative !default;
+$navbarPositionTop: 0 !default;
+$navbarPositionLeft: 0 !default;
+$navbarPositionRight: 0 !default;
+$navbarTextAlign: left !default;
+$navbarMargin: -3px 0 0 !default;
+
+$navTagFloatTablet: none !default;
+$navTagFloat: none !default;
+
+
+// Search
+
+$advanceSearchButtonWidth: 125px !default;
+$advanceSearchButtonBorderRadius: 2px !default;
+$advanceSearchButtonPadding: 10px 15px !default;
+
+$advanceSearchButtonClearPosition: right !default;
+$advanceSearchButtonSubmitPosition: left !default;
+
+$advanceSearchColor: $black !default;
+$advanceSearchButtonBG: #E91E63 !default;
+
+$advanceSearchButtonClearBackground: #EF5350 !default;
+
+$searchActiveButtonBG: $advanceSearchButtonBG !default;
+
+
+$sliderPagerItemBackground: transparent !default;
+$sliderPagerItemWidth: 13px !default;
+$sliderPagerItemHeight: 13px !default;
+$sliderPagerItemBorderRadius: 100% !default;
+$sliderPagerItemBorder: 2px solid #fff !default;
+$sliderPagerItemActiveBackground: #fff !default;
+
+$internalPageBackground: #f1f3f6 !default;
+
+$sidebarPadding: 25px 0 !default;
+$sidebarMargin: 25px 0 0 !default;
+
+$sidebarMarginSidebarLeftMediaTablet: 0 25px 0 15px !default;
+$sidebarMarginSidebarLeftMediaTablet: 0 15px 0 25px !default;

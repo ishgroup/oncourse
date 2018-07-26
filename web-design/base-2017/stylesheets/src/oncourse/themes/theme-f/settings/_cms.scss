@@ -1,0 +1,24 @@
+//
+//
+// cms.scss
+//
+// Contains all settings used for cms content
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+//
+
+$cmsSiteWrapperPaddingLeft: 0 !important !default;
+
+$cmsSettingsPosition: fixed !default;
+$cmsSettingsPositionBottom: 100px !default;
+$cmsSettingsPositionLeft: 0 !default;
+$cmsSettingsBackground: #f3f3f3 !default;
+$cmsSettingsPadding: 12px !default;
+$cmsSettingsBoxShadow: 5px 1px 10px #ddd !default;
+$cmsSettingsZIndex: 1050 !default;
+
+$cmsSidebarPosition: absolute !default;
+$cmsSidebarWidth: 100% !default;
+
+$cmsSettingsMenuOpenPositionLeft: 16.666667% !default;

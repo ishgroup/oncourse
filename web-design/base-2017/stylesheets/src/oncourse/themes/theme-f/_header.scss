@@ -1,0 +1,98 @@
+//
+//
+// header.scss
+//
+// Contains all the styles of header contents
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+//
+
+
+@include theme('f', 'header') {
+  body {
+    &.header-fixed {
+      padding-top: 74px;
+    }
+    .content-images {
+      display: none;
+    }
+    &.internal-page {
+      padding-top: $headerTopBarMinHeight;
+      background: $internalPageBackground;
+      #contentContainer {
+        background: $contentContainerBackground;
+        position: $contentContainerPosition;
+        padding: $contentContainerPaddingSmall;
+        @include responsive($media-tablet) {
+          @if $sidebarLeft == on {
+            padding: $contentContainerPaddingSidebarLeftTablet;
+          } @else {
+            padding: $contentContainerPaddingSidebarRightTablet;
+          }
+        }
+        .search-terms, #sitesMap, .courseItem, ##{$sidebarWrapper} > div {
+          @extend .page-shadow;
+        }
+        ##{$sidebarWrapper} {
+          >div {
+            padding: $sidebarPadding;
+            margin: $sidebarMargin;
+            @include responsive($media-tablet) {
+              @if $sidebarLeft == on {
+                margin: $sidebarMarginSidebarLeftMediaTablet;
+              } @else {
+                margin: $sidebarMarginSidebarLeftMediaTablet;
+              }
+            }
+          }
+        }
+      }
+      #content, &#DetailsPage.tutor-details #content {
+        @extend .page-shadow;
+        padding: $pageDefaultPadding;
+      }
+    }
+    &._menu-open {
+      overflow: hidden !important;
+    }
+  }
+
+  #header {
+    position: relative;
+    >p {
+      margin: 0px;
+    }
+    .header-container {
+      z-index: 99;
+      left: 0;
+      right: 0;
+      top: 0;
+      .top-bar {
+        min-height: $headerTopBarMinHeight;
+      }
+      .container {
+        max-width: $containerWidthHeader;
+      }
+      .header-hgroup {
+        padding: $headerGroupPadding;
+        max-width: 250px;
+        position: absolute;
+        left: 0;
+        right: 0;
+        z-index: 1;
+        text-align: center;
+        @include responsive($media-tablet) {
+          padding: 14.5px 15px;
+        }
+        #siteLogo {
+          position: $headerGroupPosition;
+          float: none;
+        }
+      }
+    }
+  }
+}
+.fixed-slider-wrapper {
+  display: none;
+}
