@@ -4,27 +4,42 @@
 package ish.oncourse.webservices;
 
 import com.google.inject.*;
+import com.google.inject.Binder;
+import com.google.inject.Injector;
 import io.bootique.ConfigModule;
 import io.bootique.cayenne.CayenneModule;
 import io.bootique.jdbc.DataSourceFactory;
 import io.bootique.jetty.JettyModule;
 import io.bootique.jetty.MappedFilter;
 import io.bootique.jetty.MappedServlet;
+import io.bootique.shutdown.ShutdownManager;
 import io.bootique.tapestry.di.InjectorModuleDef;
 import ish.oncourse.cayenne.WillowCayenneModuleBuilder;
+import ish.oncourse.cayenne.cache.ICacheEnabledService;
 import ish.oncourse.configuration.ISHHealthCheckServlet;
+import ish.oncourse.listeners.IshVersionListener;
 import ish.oncourse.services.cache.NoopQueryCache;
 import ish.oncourse.tapestry.WillowModuleDef;
 import ish.oncourse.tapestry.WillowTapestryFilter;
 import ish.oncourse.tapestry.WillowTapestryFilterBuilder;
 import ish.oncourse.util.log.LogAppInfo;
+import ish.oncourse.webservices.solr.SolrUpdateCourseDocumentsListener;
+import org.apache.cayenne.commitlog.CommitLogFilter;
+import org.apache.cayenne.commitlog.CommitLogListener;
+import org.apache.cayenne.commitlog.CommitLogModule;
+import org.apache.cayenne.commitlog.CommitLogModuleExtender;
+import org.apache.cayenne.commitlog.meta.CommitLogEntityFactory;
+import org.apache.cayenne.commitlog.meta.IncludeAllCommitLogEntityFactory;
+import org.apache.cayenne.configuration.server.ServerModule;
 import org.apache.cayenne.configuration.server.ServerRuntime;
+import org.apache.cayenne.di.*;
+import org.apache.cayenne.di.Module;
+import org.apache.cayenne.tx.TransactionFilter;
 import org.apache.cxf.transport.servlet.CXFServlet;
+import org.apache.solr.client.solrj.SolrClient;
 import org.apache.tapestry5.internal.spring.SpringModuleDef;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static org.springframework.web.context.ContextLoader.CONFIG_LOCATION_PARAM;
 
@@ -80,14 +95,38 @@ public class ServicesModule extends ConfigModule {
 		return new MappedServlet<>(new CXFServlet(), Collections.singleton(URL_PATTERN), CXF_APP_NAME,
 				params);
 	}
-
-
+	
+	@Singleton
+	@Provides
+	public CommitLogModuleEx createCommitLogModule(Injector injector) {
+		return new CommitLogModuleEx(new SolrUpdateCourseDocumentsListener().injector(injector));
+	}
+	
 	@Override
 	public void configure(Binder binder) {
-		CayenneModule.extend(binder).addModule(new WillowCayenneModuleBuilder().queryCache(new NoopQueryCache()).build());
+		CayenneModule.extend(binder)
+				.addModule(new WillowCayenneModuleBuilder().queryCache(new NoopQueryCache()).build())
+				.addModule(CommitLogModuleEx.class);
+		
 		JettyModule.extend(binder)
 				.addMappedFilter(TAPESTRY_FILTER)
 				.addMappedServlet(CXF_SERVLET)
 				.addMappedServlet(new MappedServlet<>(new ISHHealthCheckServlet(), ISHHealthCheckServlet.urlPatterns, ISHHealthCheckServlet.SERVLET_NAME));
 	}
+	
+	static class CommitLogModuleEx implements Module {
+
+		private SolrUpdateCourseDocumentsListener listener;
+
+		CommitLogModuleEx(SolrUpdateCourseDocumentsListener listener) {
+			this.listener = listener;
+		}
+
+		@Override
+		public void configure(org.apache.cayenne.di.Binder binder) {
+			CommitLogModule.extend()
+					.addListener(listener)
+					.module().configure(binder);
+		}
+	} 
 }

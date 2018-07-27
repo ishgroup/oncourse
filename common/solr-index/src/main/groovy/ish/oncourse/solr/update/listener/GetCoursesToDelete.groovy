@@ -11,12 +11,12 @@ import org.apache.cayenne.commitlog.model.ObjectChangeType
 class GetCoursesToDelete {
     Set<ObjectChange> objectChanges
     
-    Set<ObjectId> get(){
-        objectChanges.findAll {wasRemoved(it) || becomeInvisible(it)}.collect {it.postCommitId}
+    Set<Long> get(){
+        objectChanges.findAll {wasRemoved(it) || becomeInvisible(it)}.collect {it.postCommitId.idSnapshot['id'] as Long}
     }
     
     private static boolean becomeInvisible(ObjectChange change){
-        change.attributeChanges.find {it.key == Course.IS_WEB_VISIBLE_PROPERTY && !it.value.newValue }
+        change.type == ObjectChangeType.UPDATE && change.attributeChanges.find {it.key == Course.IS_WEB_VISIBLE_PROPERTY && !it.value.newValue }
     }
     
     private static wasRemoved(ObjectChange change){

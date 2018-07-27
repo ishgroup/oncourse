@@ -3,8 +3,11 @@ package ish.oncourse.solr.functions.course
 import ish.oncourse.model.*
 import ish.oncourse.solr.model.SCourse
 import org.apache.cayenne.ObjectContext
+import org.apache.cayenne.ObjectId
 import org.apache.cayenne.ResultIterator
+import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.ObjectSelect
+import org.apache.cayenne.query.SelectById
 
 import static ish.oncourse.model.auto._CourseClass.*
 import static org.apache.cayenne.query.ObjectSelect.query
@@ -28,6 +31,10 @@ class CourseFunctions {
 
     public static final Closure<ResultIterator<Course>> Courses = { ObjectContext context ->
         query(Course).where(Course.IS_WEB_VISIBLE.isTrue()).iterator(context)
+    }
+    
+    public static final Closure<ResultIterator<Course>> CoursesById = { ObjectContext context, Set<Long> ids ->
+        query(Course).where(ExpressionFactory.inDbExp(Course.ID_PK_COLUMN, ids)).iterator(context)
     }
 
 

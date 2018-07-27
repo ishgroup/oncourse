@@ -11,12 +11,12 @@ import org.apache.cayenne.commitlog.model.ObjectChangeType
 class GetCoursesToUpdate {
     Set<ObjectChange> objectChanges
 
-    Set<ObjectId> get(){
-        objectChanges.findAll {newCourseAdded(it) || becomeVisible(it) || nameChanged(it) || codeChanged(it) || detailChanged(it) || classesChanged(it)}.collect {it.postCommitId}
+    Set<Long> get(){
+        objectChanges.findAll { newCourseAdded(it) || becomeVisible(it) || nameChanged(it) || codeChanged(it) || detailChanged(it) || classesChanged(it)}.collect { it.postCommitId.idSnapshot['id'] as Long }
     }
     
     private static boolean newCourseAdded(ObjectChange change){
-        change.type == ObjectChangeType.INSERT
+        change.type == ObjectChangeType.INSERT && becomeVisible(change)
     }
 
     private static boolean becomeVisible(ObjectChange change){
@@ -36,7 +36,7 @@ class GetCoursesToUpdate {
     }
 
     private static boolean classesChanged(ObjectChange change) {
-        change.attributeChanges.any {it.key == Course.COURSE_CLASSES_PROPERTY}
+        change.toManyRelationshipChanges.any {it.key == Course.COURSE_CLASSES_PROPERTY}
     }
 
     static GetCoursesToUpdate valueOf(Set<ObjectChange> objectChanges){
