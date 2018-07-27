@@ -11,8 +11,8 @@ import org.apache.cayenne.commitlog.model.ObjectChange
  * Created by alex on 2/8/18.
  */
 class SolrUpdateCourseDocumentsListener implements CommitLogListener{
-    Set<ObjectId> courseIdToUpdate = new HashSet<>()
-    Set<ObjectId> courseIdToRemove = new HashSet<>()
+    Set<Long> courseIdToUpdate = new HashSet<>()
+    Set<Long> courseIdToRemove = new HashSet<>()
     
     @Override
     void onPostCommit(ObjectContext originatingContext, ChangeMap changes) {
@@ -26,7 +26,7 @@ class SolrUpdateCourseDocumentsListener implements CommitLogListener{
         executeUpdate(courseIdToUpdate)
     }
     
-    void executeUpdate(Set<ObjectId> courseIdToUpdate){}
+    void executeUpdate(Set<Long> courseIdToUpdate){}
 
-    void executeDelete(Set<ObjectId> courseIdToRemove){}
+    void executeDelete(Set<Long> courseIdToRemove){}
 }

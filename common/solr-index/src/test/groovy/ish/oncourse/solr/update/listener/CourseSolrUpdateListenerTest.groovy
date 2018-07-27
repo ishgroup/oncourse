@@ -28,13 +28,13 @@ class CourseSolrUpdateListenerTest {
         
         SolrUpdateCourseDocumentsListener listener = new SolrUpdateCourseDocumentsListener() {
             @Override
-            void executeUpdate(Set<ObjectId> objectsItUpdate) {
+            void executeUpdate(Set<Long> objectsItUpdate) {
                 if (!objectsItUpdate.isEmpty())
                     updateCount++
             }
 
             @Override
-            void executeDelete(Set<ObjectId> objectsItDelete) {
+            void executeDelete(Set<Long> objectsItDelete) {
                 if (!objectsItDelete.isEmpty())
                     deleteCount++
             }
