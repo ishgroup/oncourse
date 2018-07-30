@@ -5,6 +5,7 @@ import ish.oncourse.model.Tag;
 import ish.oncourse.model.Taggable;
 import ish.oncourse.model.TaggableTag;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.query.ObjectSelect;
 
 public class GetIsTagAssignedTo {
@@ -24,10 +25,9 @@ public class GetIsTagAssignedTo {
     }
 
     public boolean get() {
-        return !ObjectSelect.query(Taggable.class)
+        return ObjectSelect.query(Taggable.class)
                 .where(Taggable.ENTITY_WILLOW_ID.eq(q.getId())
                         .andExp(Taggable.TAGGABLE_TAGS.dot(TaggableTag.TAG).eq(tag)))
-                .select(context)
-                .isEmpty();
+                .select(context).stream().filter(taggable -> taggable.getPersistenceState() != PersistenceState.DELETED).count() > 0;
     }
 }

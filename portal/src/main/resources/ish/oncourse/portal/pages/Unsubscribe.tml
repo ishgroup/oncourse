@@ -9,9 +9,9 @@
 			<div id="unsubscribed"><h4>You are already unsubscribed from the mailing list:</h4></div>
 		</t:if>
 		<br/>
-		${mailingList.name}<br/>
+		${contactTag.name}<br/>
         <br/>
-		<t:outputraw value="mailingList.detail"/><br/>
+		<t:outputraw value="contactTag.detail"/><br/>
         <br/>
 		<t:if test="isSubscribed">
 			<t:form t:id="unsubscribeForm" clientValidation="literal:NONE">
