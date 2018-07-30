@@ -3,7 +3,7 @@
 pipeline {
     agent {
         //should use 'mac os' agent because 'com.moowork.node' doesn't support freebsd
-        label 'mac1'
+        label 'mac2'
     }
 
     parameters {
