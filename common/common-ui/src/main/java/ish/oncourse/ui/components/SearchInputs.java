@@ -167,11 +167,6 @@ public class SearchInputs extends ISHCommon {
 			}
 
 			tagGroupModelMap.put(requestedTagGroup, tagModel);
-			String value = null;
-			if (checkBrowseTag && browseTag != null && tagModel.contains(browseTag.getName())) {
-				value = browseTag.getName();
-			}
-			selectedTagMap.put(requestedTagGroup, value);
 		}
 	}
 
