@@ -37,7 +37,7 @@ export class FeesRangeComponent extends React.Component<Props, any> {
         </div>
       );
     } else {
-      const props: FeesCompProps = Object.assign({isPaymentGatewayEnabled: true}, L.cloneDeep(this.props.model.price));
+      const props: FeesCompProps = Object.assign({isPaymentGatewayEnabled: true, isAllowByApplication: false}, L.cloneDeep(this.props.model.price));
       props.feeOverriden = props.possibleDiscounts[estimatedDiscountIndex].discountedFee;
       return (<FeesComponent  {...props}/>);
     }

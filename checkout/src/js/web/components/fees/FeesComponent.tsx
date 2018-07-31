@@ -4,11 +4,21 @@ import {formatMoney} from "../../../common/utils/FormatUtils";
 
 export interface Props extends CourseClassPriceState {
   isPaymentGatewayEnabled: boolean;
+  isAllowByApplication: boolean;
 }
 
 export class FeesComponent extends React.Component<Props, any> {
   render() {
-    const {fee, feeOverriden, hasTax} = this.props;
+    const {fee, feeOverriden, hasTax, isAllowByApplication} = this.props;
+
+    if (isAllowByApplication) {
+      return (<div className="price">
+        <ul>
+          {this.feeRange()}
+        </ul>
+      </div>);
+    }
+
     if (feeOverriden) {
       return (
         <div className="price">

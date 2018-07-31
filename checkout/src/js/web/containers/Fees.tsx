@@ -5,8 +5,8 @@ import {IshState} from "../../services/IshState";
 import {Actions} from "../actions/Actions";
 
 class FeesContainer extends React.Component<FeesProps, FeesState> {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
   }
 
   componentDidMount() {
@@ -38,6 +38,7 @@ const mapStateToProps = (state: IshState, ownProps: FeesProps) => {
     price: {
       ...course.price,
       isPaymentGatewayEnabled: course.isPaymentGatewayEnabled,
+      isAllowByApplication: course.isAllowByApplication,
     },
   };
 };
