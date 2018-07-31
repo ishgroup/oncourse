@@ -2,8 +2,7 @@
 
 pipeline {
     agent {
-        //should use 'mac os' agent because 'com.moowork.node' doesn't support freebsd
-        label 'mac2'
+        label 'osx'
     }
 
     parameters {
@@ -26,7 +25,6 @@ pipeline {
                     currentBuild.displayName = "Release ${params.version}"
                 }
                 sh "./gradlew checkout:publishExecutablesPublicationToExecutablesRepository -PreleaseVersion=${params.version}"
-                sh "./gradlew createVersion -PreleaseVersion='${params.version} checkout-client'"
             }
         }
     }
@@ -53,7 +51,7 @@ pipeline {
 
     options {
         disableConcurrentBuilds()
-        //buildDiscarder(logRotator(numToKeepStr:'30'))
+        buildDiscarder(logRotator(numToKeepStr:'30'))
         timeout(time: 60, unit: 'MINUTES')
     }
 }
