@@ -4,8 +4,9 @@ apply from: "$rootDir/gradle/cxf-spring.gradle"
 
 sourceSets {
     main {
-        java {
+        groovy {
             srcDirs 'src/main/java'
+            srcDirs 'src/main/groovy'
             srcDirs 'src/main/generated'
         }
     }
