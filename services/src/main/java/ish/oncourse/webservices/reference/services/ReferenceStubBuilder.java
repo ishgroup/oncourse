@@ -1,6 +1,7 @@
 package ish.oncourse.webservices.reference.services;
 
 import ish.oncourse.model.*;
+import ish.oncourse.model.Module;
 import ish.oncourse.webservices.exception.BuilderNotFoundException;
 import ish.oncourse.webservices.util.GenericReferenceStub;
 import ish.oncourse.webservices.util.SupportedVersions;

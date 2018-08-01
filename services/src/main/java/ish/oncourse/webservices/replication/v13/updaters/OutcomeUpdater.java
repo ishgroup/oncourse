@@ -4,6 +4,7 @@ import ish.common.types.ClassFundingSource;
 import ish.common.types.OutcomeStatus;
 import ish.common.types.TypesUtil;
 import ish.oncourse.model.*;
+import ish.oncourse.model.Module;
 import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v13.stubs.replication.OutcomeStub;
