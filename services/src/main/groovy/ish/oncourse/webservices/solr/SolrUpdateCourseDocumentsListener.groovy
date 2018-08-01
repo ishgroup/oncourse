@@ -108,7 +108,7 @@ class SolrUpdateCourseDocumentsListener extends ish.oncourse.solr.update.listene
         }
     }
     
-    private ServerRuntime getCayenne() {
+    protected ServerRuntime getCayenne() {
         if(!serverRuntime) {
             serverRuntime = injector.getInstance(ServerRuntime)
         }
