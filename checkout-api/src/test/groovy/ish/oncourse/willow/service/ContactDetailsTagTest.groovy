@@ -40,21 +40,6 @@ class ContactDetailsTagTest extends ApiTest {
     }
 
     @Test
-    void testSubmitWrongRequest() {
-        RequestFilter.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
-        ContactApi api = new ContactApiServiceImpl(cayenneService, new CollegeService(cayenneService))
-
-        try {
-            api.submitContactDetails( wrongRequest())
-        } catch (BadRequestException e) {
-            def file = new File(getClass().getResource('/ish/oncourse/willow/service/validation-tag-error.txt').toURI())
-            assertEquals(file.text, e.response.entity.toString() )
-            return
-        }
-        assertFalse(true)
-    }
-
-    @Test
     void testSubmitProperRequest() {
 
         ObjectContext context = cayenneService.newContext()
@@ -139,66 +124,6 @@ class ContactDetailsTagTest extends ApiTest {
         assertFalse(isContactLinkedWith.call(tag4C3))
         assertFalse(isContactLinkedWith.call(tag4C4))
         assertFalse(isContactLinkedWith.call(tag4C5))
-
-        // mailing lists
-
-        Tag mailingList1 = getTagById.call(21l)
-        Tag mailingList2 = getTagById.call(22l)
-        Tag mailingList3 = getTagById.call(23l)
-        Tag mailingList4 = getTagById.call(24l)
-
-        assertFalse(isContactLinkedWith.call(mailingList1))
-        assertTrue(isContactLinkedWith.call(mailingList2))
-        assertFalse(isContactLinkedWith.call(mailingList3))
-        assertTrue(isContactLinkedWith.call(mailingList4))
-    }
-
-    private SubmitFieldsRequest wrongRequest() {
-        new SubmitFieldsRequest().with {
-            it.contactId = '1001'
-            it.fields << new Field().with { f ->
-                f.key = 'tag/NonExistedTag'
-                f.name = 'NonExistedTag'
-                f.dataType = DataType.TAGGROUP
-                f.value = ''
-                f.mandatory = false
-                f
-            }
-            it.fields << new Field().with { f ->
-                f.key = 'tag/Tag3'
-                f.name = 'Tag3'
-                f.dataType = DataType.TAGGROUP
-                f.value = null
-                f.mandatory = false
-                f
-            }
-            it.fields << new Field().with { f ->
-                f.key = 'tag/Tag4'
-                f.name = 'Tag4C2'
-                f.dataType = DataType.TAGGROUP
-                f.value = '[\"Tag4/Tag4C2\",\"Tag4/Tag4C3\"]'
-                f.mandatory = false
-                f
-            }
-            it.fields << new Field().with { f ->
-                f.key = 'mailingList/NonExistedMailingList'
-                f.name = 'NonExistedMailingList'
-                f.dataType = DataType.MAILINGLIST
-                f.value = '1'
-                f.mandatory = false
-                f
-            }
-            it.fields << new Field().with { f ->
-                f.key = 'mailingList/Mailing List 1'
-                f.name = 'Mailing List 1'
-                f.dataType = DataType.MAILINGLIST
-                f.value = null
-                f.mandatory = false
-                f
-            }
-
-            it
-        }
     }
 
     private SubmitFieldsRequest properRequest() {
@@ -209,73 +134,54 @@ class ContactDetailsTagTest extends ApiTest {
 
             // non mandatory multiple
             it.fields << new Field().with { f ->
-                f.key = 'tag/Tag1'
+                f.key = 'multipleTag/Tag1/Tag1C1'
                 f.name = 'Tag1'
-                f.dataType = DataType.TAGGROUP
-                f.value = '[\"Tag1/Tag1C1\",\"Tag1/Tag1C2/Tag1C2C1\"]'
+                f.dataType = DataType.TAGGROUP_M
+                f.value = '1'
+                f.mandatory = false
+                f
+            }
+            it.fields << new Field().with { f ->
+                f.key = 'multipleTag/Tag1/Tag1C2/Tag1C2C1'
+                f.name = 'Tag1'
+                f.dataType = DataType.TAGGROUP_M
+                f.value = '1'
                 f.mandatory = false
                 f
             }
             // non mandatory single
             it.fields << new Field().with { f ->
-                f.key = 'tag/Tag2'
+                f.key = 'singleTag/Tag2/Tag2C1'
                 f.name = 'Tag2'
-                f.dataType = DataType.TAGGROUP
-                f.value = '[\"Tag2/Tag2C1\"]'
+                f.dataType = DataType.TAGGROUP_S
+                f.value = '/Tag2/Tag2C1'
                 f.mandatory = false
                 f
             }
             // mandatory multiple
             it.fields << new Field().with { f ->
-                f.key = 'tag/Tag3'
+                f.key = 'multipleTag/Tag3/Tag3C2/Tag3C2C1/'
                 f.name = 'Tag3'
-                f.dataType = DataType.TAGGROUP
-                f.value = '[\"Tag3/Tag3C2/Tag3C2C1/\",\"Tag3/Tag3C2/Tag3C2C2/Tag3C2C2C1\"]'
+                f.dataType = DataType.TAGGROUP_M
+                f.value = 'Tag3/Tag3C2/Tag3C2C1/'
+                f.mandatory = true
+                f
+            }
+            it.fields << new Field().with { f ->
+                f.key = 'multipleTag/Tag3/Tag3C2/Tag3C2C2/Tag3C2C2C1'
+                f.name = 'Tag3'
+                f.dataType = DataType.TAGGROUP_M
+                f.value = '0'
                 f.mandatory = true
                 f
             }
             // mandatory single
             it.fields << new Field().with { f ->
-                f.key = 'tag/Tag4'
+                f.key = 'singleTag/Tag4/Tag4C1'
                 f.name = 'Tag4'
-                f.dataType = DataType.TAGGROUP
-                f.value = '[\"Tag4/Tag4C1\"]'
+                f.dataType = DataType.TAGGROUP_S
+                f.value = '/Tag4/Tag4C1'
                 f.mandatory = true
-                f
-            }
-
-            // mailing lists
-
-            it.fields << new Field().with { f ->
-                f.key = 'mailingList/Mailing list 1'
-                f.name = 'Mailing List 1'
-                f.dataType = DataType.MAILINGLIST
-                f.value = '0'
-                f.mandatory = true
-                f
-            }
-            it.fields << new Field().with { f ->
-                f.key = 'mailingList/Mailing List 2'
-                f.name = 'Mailing List 2'
-                f.dataType = DataType.MAILINGLIST
-                f.value = '1'
-                f.mandatory = true
-                f
-            }
-            it.fields << new Field().with { f ->
-                f.key = 'mailingList/Mailing list 3'
-                f.name = 'Mailing List 3'
-                f.dataType = DataType.MAILINGLIST
-                f.value = '0'
-                f.mandatory = false
-                f
-            }
-            it.fields << new Field().with { f ->
-                f.key = 'mailingList/Mailing List 4'
-                f.name = 'Mailing List 4'
-                f.dataType = DataType.MAILINGLIST
-                f.value = '1'
-                f.mandatory = false
                 f
             }
 

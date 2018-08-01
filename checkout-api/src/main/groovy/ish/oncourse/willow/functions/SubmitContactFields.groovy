@@ -47,7 +47,6 @@ import static ish.oncourse.willow.model.field.DataType.BOOLEAN
 import static ish.oncourse.willow.model.field.DataType.STRING
 import static ish.validation.ContactValidator.Property.*
 import static ish.oncourse.common.field.PropertyGetSetFactory.TAG_PATTERN
-import static ish.oncourse.common.field.PropertyGetSetFactory.MAILING_LIST_FIELD_PATTERN
 
 @CompileStatic
 class SubmitContactFields {

@@ -5,34 +5,51 @@ class ContactFields {
         description: description
         fields: [class Field {
             id: 103
-            key: tag/Tag1
-            name: Tag Field 1
+            key: multipleTag//Tag1/Tag1C1
+            name: /Tag1/Tag1C1
             description: Tag Field 1 description
             mandatory: false
-            dataType: TAGGROUP
-            enumType: MULTIPLE
+            dataType: TAGGROUP_M
+            enumType: null
             value: null
             itemValue: null
             defaultValue: default field 1
-            enumItems: [class Item {
-                key: /Tag1/Tag1C1
-                value: /Tag1/Tag1C1
-            }, class Item {
-                key: /Tag1/Tag1C2/Tag1C2C1
-                value: /Tag1/Tag1C2/Tag1C2C1
-            }, class Item {
-                key: /Tag1/Tag1C2/Tag1C2C2/Tag1C2C2C1
-                value: /Tag1/Tag1C2/Tag1C2C2/Tag1C2C2C1
-            }]
+            enumItems: []
+            ordering: 1
+        }, class Field {
+            id: 103
+            key: multipleTag//Tag1/Tag1C2/Tag1C2C1
+            name: /Tag1/Tag1C2/Tag1C2C1
+            description: Tag Field 1 description
+            mandatory: false
+            dataType: TAGGROUP_M
+            enumType: null
+            value: null
+            itemValue: null
+            defaultValue: default field 1
+            enumItems: []
+            ordering: 1
+        }, class Field {
+            id: 103
+            key: multipleTag//Tag1/Tag1C2/Tag1C2C2/Tag1C2C2C1
+            name: /Tag1/Tag1C2/Tag1C2C2/Tag1C2C2C1
+            description: Tag Field 1 description
+            mandatory: false
+            dataType: TAGGROUP_M
+            enumType: null
+            value: null
+            itemValue: null
+            defaultValue: default field 1
+            enumItems: []
             ordering: 1
         }, class Field {
             id: 104
-            key: tag/Tag2
+            key: singleTag/Tag Field 2
             name: Tag Field 2
             description: Tag Field 2 description
             mandatory: true
-            dataType: TAGGROUP
-            enumType: MULTIPLE
+            dataType: TAGGROUP_S
+            enumType: null
             value: null
             itemValue: null
             defaultValue: default field 2
