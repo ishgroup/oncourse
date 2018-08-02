@@ -323,7 +323,7 @@ public class SolrQueryBuilder {
 			intersects.add(getSuburbQuery(suburb));
 		}
 
-		final String geoFilterQuery = StringUtils.join(intersects, "");
+		final String geoFilterQuery ="{!score=distance}" + StringUtils.join(intersects, " ");
 		SolrQuery query = new SolrQuery();
 		query.addFilterQuery(geoFilterQuery);
 		query.setQuery(BOOST_STATEMENT);

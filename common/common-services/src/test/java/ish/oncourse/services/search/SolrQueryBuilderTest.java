@@ -29,7 +29,7 @@ public class SolrQueryBuilderTest {
 	private static final String TAG2_QUERY = "(tagId:5 || tagId:6 || tagId:7 || tagId:8 || tagId:9 || tagId:10)";
 
 
-	private static final String GEOFILTER_QUERY = "fq={!geofilt score=distance sfield=course_loc pt=-1.1,2.2 d=0.9044289887579477}&fq=+collegeId:2 +doctype:course end:[NOW TO *]&q={!boost b=$boostfunction v=$qq}&boostfunction=recip(query($geofq),1,10,5)&geofq={!geofilt score=distance sfield=course_loc pt=-1.1,2.2 d=0.9044289887579477}&qq=(*:*)&qt=edismax&fl=id,name,course_loc,score&start=5&rows=10&sort=score desc,startDate asc,name asc";
+	private static final String GEOFILTER_QUERY = "fq={!score=distance}{!geofilt score=distance sfield=course_loc pt=-1.1,2.2 d=0.9044289887579477}&fq=+collegeId:2 +doctype:course end:[NOW TO *]&q={!boost b=$boostfunction v=$qq}&boostfunction=recip(query($geofq),1,10,5)&geofq={!score=distance}{!geofilt score=distance sfield=course_loc pt=-1.1,2.2 d=0.9044289887579477}&qq=(*:*)&qt=edismax&fl=id,name,course_loc,score&start=5&rows=10&sort=score desc,startDate asc,name asc";
 
 	private static final String EXPECTED_RESULT_VALUE = "q={!boost b=$boostFunction v=$mainQuery}" +
 			"&mainQuery=(%s " +
