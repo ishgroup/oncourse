@@ -31,7 +31,7 @@ class GetCoursesFromTag {
 
     private static boolean unAssignedTaggable(ObjectChange change) {
         change.type == ObjectChangeType.INSERT &&
-                change.attributeChanges.any { attr -> attr.key == ENTITY_IDENTIFIER_PROPERTY &&  attr.value.oldValue == Course.simpleName } &&
+                change.attributeChanges.any { attr -> attr.key == ENTITY_IDENTIFIER_PROPERTY &&  attr.value.newValue == Course.simpleName } &&
                 !change.attributeChanges.any { attr -> attr.key == ENTITY_WILLOW_ID_PROPERTY }
     }
 
