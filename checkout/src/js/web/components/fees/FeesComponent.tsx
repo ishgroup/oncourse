@@ -25,7 +25,6 @@ export class FeesComponent extends React.Component<Props, any> {
           <ul>
             {formatMoney(feeOverriden)}
             {hasTax && this.tax()}
-            {this.feeRange()}
           </ul>
         </div>
       );
@@ -38,7 +37,6 @@ export class FeesComponent extends React.Component<Props, any> {
                 <li>
                   <abbr title="To Be Advised">TBA</abbr>
                 </li>
-                {this.feeRange()}
               </ul>
           }
         </div>
@@ -47,14 +45,13 @@ export class FeesComponent extends React.Component<Props, any> {
   }
 
   private fee() {
-    const {hasTax, isPaymentGatewayEnabled} = this.props;
+    const {hasTax, isPaymentGatewayEnabled, possibleDiscounts} = this.props;
 
     return (
       <ul>
         {this.discount()}
         {hasTax && this.tax()}
-        {isPaymentGatewayEnabled && this.discountItems()}
-        {this.feeRange()}
+        {isPaymentGatewayEnabled && Boolean(possibleDiscounts.length) && this.discountItems()}
       </ul>
     );
   }
