@@ -9,8 +9,10 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.sites.ISitesService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.tutor.GetIsActiveTutor;
+import ish.oncourse.services.tutor.GetNotFinishedTutors;
 import ish.oncourse.services.tutor.ITutorService;
 import ish.oncourse.ui.base.ISHCommon;
+import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Meta;
 import org.apache.tapestry5.annotations.Property;
@@ -96,7 +98,9 @@ public class SitemapXML extends ISHCommon {
 					.get();
 
 		sites = webSiteService.getCurrentCollege().getSites();
-		tutors = tutorService.getTutors();
+		tutors = GetNotFinishedTutors.valueOf(cayenneService.sharedContext(),
+				null,
+				webSiteService.getCurrentCollege()).get();
 		pages = webNodeService.getSiteMapNodes();
 	}
 
