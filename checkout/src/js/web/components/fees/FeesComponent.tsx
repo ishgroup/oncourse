@@ -25,6 +25,7 @@ export class FeesComponent extends React.Component<Props, any> {
           <ul>
             {formatMoney(feeOverriden)}
             {hasTax && this.tax()}
+            {this.feeRange()}
           </ul>
         </div>
       );
@@ -34,10 +35,11 @@ export class FeesComponent extends React.Component<Props, any> {
           {(fee || fee === 0)
             ? this.fee()
             : <ul>
-                <li>
-                  <abbr title="To Be Advised">TBA</abbr>
-                </li>
-              </ul>
+              <li>
+                <abbr title="To Be Advised">TBA</abbr>
+              </li>
+              {this.feeRange()}
+            </ul>
           }
         </div>
       );
@@ -45,13 +47,14 @@ export class FeesComponent extends React.Component<Props, any> {
   }
 
   private fee() {
-    const {hasTax, isPaymentGatewayEnabled, possibleDiscounts} = this.props;
+    const {hasTax, isPaymentGatewayEnabled} = this.props;
 
     return (
       <ul>
         {this.discount()}
         {hasTax && this.tax()}
-        {isPaymentGatewayEnabled && Boolean(possibleDiscounts.length) && this.discountItems()}
+        {isPaymentGatewayEnabled && this.discountItems()}
+        {this.feeRange()}
       </ul>
     );
   }
@@ -64,11 +67,11 @@ export class FeesComponent extends React.Component<Props, any> {
     const max = appliedDiscount ? appliedDiscount.discountedFee > fee ? appliedDiscount.discountedFee : fee : fee;
 
     return (
-        <li  className="fee-discount-range">
-          <span className="price-low">{formatMoney(min)}</span>
-          <span className="price-separator">-</span>
-          <span className="price-high">{formatMoney(max)}</span>
-        </li>
+      <li  className="fee-discount-range">
+        <span className="price-low">{formatMoney(min)}</span>
+        <span className="price-separator">-</span>
+        <span className="price-high">{formatMoney(max)}</span>
+      </li>
     );
   }
 
@@ -98,7 +101,7 @@ export class FeesComponent extends React.Component<Props, any> {
         {hasTax && ' inc '}
         <abbr title="Goods and Services Tax">GST</abbr>
         {!hasTax && ' free'}
-    </li>
+      </li>
     );
   }
 
@@ -108,8 +111,8 @@ export class FeesComponent extends React.Component<Props, any> {
     if (appliedDiscount) {
       return ([
         <li key="fee-disabled" className="fee-disabled">
-            {formatMoney(fee)}
-          </li>,
+          {formatMoney(fee)}
+        </li>,
         <li key="fee-discounted" className="fee-discounted">
           <abbr title={appliedDiscount.title}>
             <span>
