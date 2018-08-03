@@ -39,10 +39,19 @@ class GetCoursesFromSite {
         .collect { it.postCommitId.idSnapshot[ID_PK_COLUMN]} as List<Long>
 
         if (siteIds.size() > 0) {
-            return ObjectSelect.query(Course).where(Course.IS_WEB_VISIBLE.isTrue())
-                    .and(ExpressionFactory.inDbExp(Course.COURSE_CLASSES.dot(CourseClass.ROOM).dot(Room.SITE).dot(ID_PK_COLUMN).name, siteIds)
-                        .orExp(ExpressionFactory.inDbExp(Course.COURSE_CLASSES.dot(CourseClass.SESSIONS).dot(Session.ROOM).dot(Room.SITE).dot(ID_PK_COLUMN).name, siteIds)))
-                    .select(objectContext).collect { it.id }.toSet()
+            
+            Set<Long> courses = new HashSet<>()
+
+
+            courses += ObjectSelect.query(Course).where(Course.IS_WEB_VISIBLE.isTrue()
+                                    .andExp(ExpressionFactory.inDbExp(Course.COURSE_CLASSES.dot(CourseClass.ROOM).dot(Room.SITE).dot(ID_PK_COLUMN).name, siteIds)))
+                        .select(objectContext)
+                        .collect { it.id }.toSet()
+            courses += ObjectSelect.query(Course).where(Course.IS_WEB_VISIBLE.isTrue()
+                                    .andExp(ExpressionFactory.inDbExp(Course.COURSE_CLASSES.dot(CourseClass.SESSIONS).dot(Session.ROOM).dot(Room.SITE).dot(ID_PK_COLUMN).name, siteIds)))
+                        .select(objectContext)
+                        .collect { it.id }.toSet()
+            return courses       
         }
 
         return []

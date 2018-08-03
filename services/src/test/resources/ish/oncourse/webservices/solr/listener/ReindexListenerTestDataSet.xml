@@ -11,10 +11,10 @@
 
     <Course id="1" collegeId="1" angelId="1" code="1" detail="Course1" name="Course1" enrolmentType="1" isWebVisible="1"/>
     <Course id="2" collegeId="1" code="2" detail="Course2" name="Basic2" enrolmentType="1" isWebVisible="1"/>
-    <Course id="3" collegeId="1" code="3" detail="Course3" name="Basic3" enrolmentType="1"/>
+    <Course id="3" collegeId="1" code="3" detail="Course3" name="Basic3" enrolmentType="1" isWebVisible="1"/>
 
-    <Course id="4" collegeId="1" code="4" detail="Course4" name="Course4" enrolmentType="1"/>
-    <Course id="5" collegeId="1" code="5" detail="Course5" name="Course5" enrolmentType="1"/>
+    <Course id="4" collegeId="1" code="4" detail="Course4" name="Course4" enrolmentType="1" isWebVisible="1"/>
+    <Course id="5" collegeId="1" code="5" detail="Course5" name="Course5" enrolmentType="1" isWebVisible="1"/>
 
 
     <Site id="1" collegeId="1" angelId="1" isWebVisible="1" created="2011-09-12 00:17:18.0"
@@ -96,6 +96,13 @@
     <Session id="5" collegeId="1" courseClassId="5" roomId="5" angelId="205" startDate="2110-02-03 09:18:09" endDate="2110-02-03 09:18:09" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
     <Session id="6" collegeId="1" courseClassId="6" roomId="6" angelId="206" startDate="2110-02-03 09:18:09" endDate="2110-02-03 09:18:09" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
     <Session id="7" collegeId="1" courseClassId="7" roomId="6" angelId="206" startDate="2103-01-04 00:00:00" endDate="2103-01-04 00:00:00" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
+
+    <Session id="8" collegeId="1" courseClassId="2" roomId="1" angelId="208" startDate="2110-02-03 09:18:09" endDate="2110-02-03 09:18:09" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"/>
+    <Session id="9" collegeId="1" courseClassId="3" roomId="1" angelId="209" startDate="2110-02-03 09:18:09" endDate="2110-02-03 09:18:09" created="2011-09-12 00:56:01.0" modified="2011-09-12 00:56:01.0"/>
+    <Session id="10" collegeId="1" courseClassId="4" roomId="1" angelId="210" startDate="2110-02-03 09:18:09" endDate="2110-02-03 09:18:09" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
+    <Session id="11" collegeId="1" courseClassId="5" roomId="1" angelId="211" startDate="2110-02-03 09:18:09" endDate="2110-02-03 09:18:09" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
+    <Session id="12" collegeId="1" courseClassId="6" roomId="1" angelId="212" startDate="2110-02-03 09:18:09" endDate="2110-02-03 09:18:09" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
+    <Session id="13" collegeId="1" courseClassId="7" roomId="1" angelId="213" startDate="2103-01-04 00:00:00" endDate="2103-01-04 00:00:00" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
 
 
 

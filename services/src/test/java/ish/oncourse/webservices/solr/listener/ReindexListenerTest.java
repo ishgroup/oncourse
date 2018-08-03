@@ -185,7 +185,7 @@ public class ReindexListenerTest {
     private void testChanges(ObjectContext objectContext, Long... ids) {
         objectContext.commitChanges();
 
-        assertEquals(1, ids.length);
+        assertEquals(ids.length, updateIds.size());
         assertEquals(0, removeIds.size());
         assertArrayEquals(ids , updateIds.toArray());
 
