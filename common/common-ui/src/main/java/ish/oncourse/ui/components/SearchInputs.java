@@ -60,6 +60,10 @@ public class SearchInputs extends ISHCommon {
 	private String searchTagNames;
 
 	@Property
+	@Parameter
+	private Boolean showSubjectsAllTag;
+
+	@Property
 	private List<String> tagGroups;
 
 	@Property
@@ -167,6 +171,13 @@ public class SearchInputs extends ISHCommon {
 			}
 
 			tagGroupModelMap.put(requestedTagGroup, tagModel);
+			if (showSubjectsAllTag == null || !showSubjectsAllTag) {
+				String value = null;
+				if (checkBrowseTag && browseTag != null && tagModel.contains(browseTag.getName())) {
+					value = browseTag.getName();
+				}
+				selectedTagMap.put(requestedTagGroup, value);
+			}
 		}
 	}
 
