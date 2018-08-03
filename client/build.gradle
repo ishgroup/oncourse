@@ -29,8 +29,11 @@ dependencies {
 	compile "org.eclipse.jetty.http2:http2-client:$jettyVersion"
 	compile "org.eclipse.jetty.http2:http2-http-client-transport:$jettyVersion"
 
-	compile "com.teamdev.jxbrowser:jxbrowser-cross-platform:$jxbrowserVersion"
-	compile files("$rootDir/lib/jxbrowser/license.jar") 
+	compile "com.teamdev.jxbrowser:jxbrowser-win32:$jxbrowserVersion"
+	compile "com.teamdev.jxbrowser:jxbrowser-win64:$jxbrowserVersion"
+	compile "com.teamdev.jxbrowser:jxbrowser-mac:$jxbrowserVersion"
+	compile files("$rootDir/lib/jxbrowser/license.jar")
+
     testCompile 'org.mockito:mockito-core:1.10.17'
 	testCompile 'org.apache.poi:poi:3.12-beta1'
 	testCompile 'org.apache.poi:poi-ooxml:3.12-beta1'
