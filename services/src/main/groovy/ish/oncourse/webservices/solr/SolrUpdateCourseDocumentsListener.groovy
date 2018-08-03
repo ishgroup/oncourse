@@ -58,7 +58,7 @@ class SolrUpdateCourseDocumentsListener extends ish.oncourse.solr.update.listene
             }
 
             Set<ObjectChange> sessionChanges = filter(changes, Session.simpleName)
-            if (!classChanges.empty) {
+            if (!sessionChanges.empty) {
                 courseIdToUpdate.addAll(GetCoursesFromSessions.valueOf(sessionChanges, getCayenne().newContext()).get())
             }
 

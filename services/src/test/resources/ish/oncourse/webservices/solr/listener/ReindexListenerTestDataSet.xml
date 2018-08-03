@@ -10,14 +10,30 @@
     <College id="1" name="Sydney Community College"  webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880" communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
 
     <Course id="1" collegeId="1" angelId="1" code="1" detail="Course1" name="Course1" enrolmentType="1" isWebVisible="1"/>
-    <Course id="2" collegeId="1" code="2" detail="Course2" name="Basic2" enrolmentType="1"/>
+    <Course id="2" collegeId="1" code="2" detail="Course2" name="Basic2" enrolmentType="1" isWebVisible="1"/>
     <Course id="3" collegeId="1" code="3" detail="Course3" name="Basic3" enrolmentType="1"/>
 
     <Course id="4" collegeId="1" code="4" detail="Course4" name="Course4" enrolmentType="1"/>
     <Course id="5" collegeId="1" code="5" detail="Course5" name="Course5" enrolmentType="1"/>
 
-    <Room id="1" collegeId="1"/>
-    <Room id="2" collegeId="1"/>
+
+    <Site id="1" collegeId="1" angelId="1" isWebVisible="1" created="2011-09-12 00:17:18.0"
+          modified="2011-09-12 00:47:30.0" name="TestSite" countryId="1"
+          drivingDirections="drivingDirections" drivingDirections_textile="drivingDirections_textile" latitude="1.11"
+          longitude="1.11" postcode="postcode" publicTransportDirections="publicTransportDirections"
+          publicTransportDirections_textile="publicTransportDirections_textile" specialInstructions="specialInstructions"
+          specialInstructions_textile="specialInstructions_textile" state="state" street="street" suburb="suburb" timeZone="Australia/Sydney" isVirtual="0"/>
+    
+
+    <Site id="2" collegeId="1" angelId="2" isWebVisible="1" created="2011-09-12 00:17:18.0"
+          modified="2011-09-12 00:47:30.0" name="TestSite2" countryId="1"
+          drivingDirections="drivingDirections" drivingDirections_textile="drivingDirections_textile" latitude="1.13"
+          longitude="1.13" postcode="postcode" publicTransportDirections="publicTransportDirections"
+          publicTransportDirections_textile="publicTransportDirections_textile" specialInstructions="specialInstructions"
+          specialInstructions_textile="specialInstructions_textile" state="state" street="street" suburb="suburb" timeZone="Australia/Sydney" isVirtual="0"/>
+    
+    <Room id="1" collegeId="1" siteId="1"/>
+    <Room id="2" collegeId="1" siteId="2"/>
     <Room id="3" collegeId="1"/>
     <Room id="4" collegeId="1"/>
     <Room id="5" collegeId="1"/>
