@@ -45,22 +45,22 @@ class SolrCourseQueryWithLocationFilterTest extends ASolrTest{
                 SolrQueryBuilder.valueOf(new SearchParams(s: "course*", suburbs: Arrays.asList(location)), cCollege.college.id.toString(), null, null).build())
                 .getBeans(SCourse.class)
         assertEquals(4, actualSCourses.size())
-        //sort order is: current first, than future. No past and selfpaced classes. location order isn't in use
-        assertTrue(actualSCourses.subList(0, 2).name.contains("course2"))
-        assertTrue(actualSCourses.subList(0, 2).name.contains("course5"))
-        assertTrue(actualSCourses.subList(2, 4).name.contains("course3"))
-        assertTrue(actualSCourses.subList(2, 4).name.contains("course6"))
+        assertEquals('course2', actualSCourses[0].name)
+        assertEquals('course3', actualSCourses[1].name)
+        assertEquals('course5', actualSCourses[2].name)
+        assertEquals('course6', actualSCourses[3].name)
         
         location.distance = 560
         actualSCourses = solrClient.query("courses",
                 SolrQueryBuilder.valueOf(new SearchParams(s: "course*", suburbs: Arrays.asList(location)), cCollege.college.id.toString(), null, null).build())
                 .getBeans(SCourse.class)
         assertEquals(6, actualSCourses.size())
-        assertTrue(actualSCourses.subList(0, 3).name.contains("course2"))
-        assertTrue(actualSCourses.subList(0, 3).name.contains("course5"))
-        assertTrue(actualSCourses.subList(0, 3).name.contains("course8"))
-        assertTrue(actualSCourses.subList(3, 6).name.contains("course3"))
-        assertTrue(actualSCourses.subList(3, 6).name.contains("course6"))
-        assertTrue(actualSCourses.subList(3, 6).name.contains("course9"))
+
+        assertEquals("course2", actualSCourses[0].name)
+        assertEquals("course3", actualSCourses[1].name)
+        assertEquals("course5", actualSCourses[2].name)
+        assertEquals("course6", actualSCourses[3].name)
+        assertEquals("course8", actualSCourses[4].name)
+        assertEquals("course9", actualSCourses[5].name)
     }
 }
