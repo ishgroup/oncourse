@@ -19,7 +19,7 @@ public class TimezoneHolder extends ISHCommon {
 	@Inject
 	private ICookiesService cookiesService;
 
-	StreamResponse onActionFromSetupOffset() {
+	StreamResponse onAction() {
 		for (String parameter : request.getParameterNames()) {
 			String value = request.getParameter(parameter);
 			switch (parameter) {

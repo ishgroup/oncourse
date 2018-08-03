@@ -38,6 +38,9 @@ import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
+import java.util.function.Predicate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.apache.commons.lang3.StringUtils.isNumeric;
 
@@ -70,8 +73,8 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	/**
 	 * Special reserved path for system pages, we do not treat them as webnode nor can have the webnode page with such path.
 	 */
-	public static String[] IMMUTABLE_PATHS = new String[]{"/site", "ish/internal/autocomplete.sub",
-			"ui/textileform.send", "/ui/timezoneholder."};
+	public static String[] IMMUTABLE_PATHS_REGEX = new String[]{"/site$", "/ish/internal/autocomplete.sub$",
+			"/ui/textileform.send$", "/ui/timezoneholder\\.$"};
 
 	/**
 	 * Path of the removing from cookies request
@@ -338,7 +341,11 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			return new PageRenderRequestParameters(PageIdentifier.Page.getPageName(), new EmptyEventContext(), false);
 		}
 
-		if (Arrays.stream(IMMUTABLE_PATHS).anyMatch(path::startsWith)) return null;
+		if (Arrays.stream(IMMUTABLE_PATHS_REGEX).anyMatch(imm -> {
+            Pattern p = Pattern.compile(imm);
+            Matcher m = p.matcher(path);
+            return m.matches();
+        })) return null;
 
 		if (requestGlobals.getHTTPServletRequest() != null
 				&& requestGlobals.getHTTPServletRequest().getContextPath().equalsIgnoreCase(CMS_PATH)) {
