@@ -11,6 +11,8 @@ import org.apache.cayenne.query.ObjectSelect
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+import java.util.function.Function
+
 import static org.apache.cayenne.query.ObjectSelect.query
 
 class Functions {
@@ -22,7 +24,7 @@ class Functions {
             .where(Tag.IS_WEB_VISIBLE.eq(true))
             .and(Tag.TAGGABLE_TAGS.dot(TaggableTag.TAGGABLE).dot(Taggable.ENTITY_IDENTIFIER).eq(COURSE_IDENTIFIER))
 
-    static Closure<STag> getSTag = { Tag tag ->
+    static Function<Tag, STag> getSTag = { Tag tag ->
         return new STag().with {
             it.id = "${tag.id}"
             it.collegeId = tag.college.id
