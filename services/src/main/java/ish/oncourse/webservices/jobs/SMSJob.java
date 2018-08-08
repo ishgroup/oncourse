@@ -1,5 +1,7 @@
 package ish.oncourse.webservices.jobs;
 
+import com.google.inject.Inject;
+import com.google.inject.Injector;
 import ish.common.types.MessageStatus;
 import ish.oncourse.model.College;
 import ish.oncourse.model.MessagePerson;
@@ -10,6 +12,7 @@ import ish.oncourse.services.preference.PreferenceControllerFactory;
 import ish.oncourse.services.sms.ISMSService;
 import ish.oncourse.services.template.WillowMessagingTemplateEngine;
 import ish.oncourse.services.template.WillowMessagingTemplateResponder;
+import ish.oncourse.webservices.quartz.QuartzModule;
 import ish.persistence.CommonPreferenceController;
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.ObjectContext;
@@ -17,24 +20,30 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.quartz.DisallowConcurrentExecution;
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 
 import java.util.*;
 
 /**
  * Job for sending SMS
  */
+
+@DisallowConcurrentExecution
 public class SMSJob implements Job {
 	
 	private static final int MESSAGE_FETCH_LIMIT = 500;
 
 	private static final Logger logger = LogManager.getLogger();
 
-	private final IMessagePersonService messagePersonService;
-	private final ISMSService smsService;
-	private final ICayenneService cayenneService;
-	private final PreferenceControllerFactory prefFactory;
-
-	public SMSJob(IMessagePersonService messagePersonService, ISMSService smsService, PreferenceControllerFactory prefFactory,
+	private IMessagePersonService messagePersonService;
+	private ISMSService smsService;
+	private ICayenneService cayenneService;
+	private PreferenceControllerFactory prefFactory;
+	
+	SMSJob(IMessagePersonService messagePersonService, ISMSService smsService, PreferenceControllerFactory prefFactory,
 			ICayenneService cayenneService) {
 		this.messagePersonService = messagePersonService;
 		this.smsService = smsService;
@@ -42,11 +51,30 @@ public class SMSJob implements Job {
 		this.cayenneService = cayenneService;
 	}
 
+	public void execute() throws JobExecutionException {
+		execute(null);
+	}
+	
+	public SMSJob(){}
+
 	/**
 	 * Sends sms messages, which were replicated from Angel.
 	 */
-	public void execute() {
-
+	public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+		
+		if (jobExecutionContext != null) {
+			try {
+				QuartzModule.ServiceProvider provider = (QuartzModule.ServiceProvider) jobExecutionContext.getScheduler().getContext().get(QuartzModule.ServiceProvider.class.getSimpleName());
+				messagePersonService = provider.get(IMessagePersonService.class);
+				smsService = provider.get(ISMSService.class);
+				prefFactory = provider.get(PreferenceControllerFactory.class);
+				cayenneService = provider.get(ICayenneService.class);
+			} catch (Exception e) {
+				logger.catching(e);
+				throw new JobExecutionException(e);
+			}
+		}
+		
 		logger.info("SMS Job started. Fetching sms messages...");
 
 		ObjectContext objectContext = null;

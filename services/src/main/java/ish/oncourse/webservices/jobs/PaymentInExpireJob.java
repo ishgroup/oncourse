@@ -1,5 +1,7 @@
 package ish.oncourse.webservices.jobs;
 
+import com.google.inject.Inject;
+import com.google.inject.Injector;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
@@ -13,13 +15,20 @@ import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
 import ish.oncourse.util.payment.*;
 import ish.oncourse.utils.PaymentInUtil;
+import ish.oncourse.webservices.quartz.QuartzModule;
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.PrefetchTreeNode;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.solr.client.solrj.SolrClient;
+import org.quartz.DisallowConcurrentExecution;
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 
 import java.util.*;
 
@@ -34,32 +43,46 @@ import java.util.*;
  * @author anton
  * 
  */
-
+@DisallowConcurrentExecution
 public class PaymentInExpireJob implements Job {
 
 	private static final Logger logger = LogManager.getLogger();
 	
 	private static final int FETCH_LIMIT = 500;
 
-	private final ICayenneService cayenneService; 
-	
+	private ICayenneService cayenneService;
 	private IPaymentService paymentService;
-
-	private final PreferenceControllerFactory prefFactory;
-
-	public PaymentInExpireJob(ICayenneService cayenneService, IPaymentService paymentService, PreferenceControllerFactory prefFactory) {
-		super();
+	private PreferenceControllerFactory prefFactory;
+	
+	PaymentInExpireJob(ICayenneService cayenneService, IPaymentService paymentService, PreferenceControllerFactory prefFactory) {
 		this.cayenneService = cayenneService;
 		this.paymentService = paymentService;
 		this.prefFactory = prefFactory;
 	}
 
+	public void execute() throws JobExecutionException {
+		execute(null);
+	}
+	
+	public PaymentInExpireJob() {}
+	
 	/**
 	 * Main job method, fetches expired paymentIn and abandons them.
 	 */
 	@Override
-	public void execute() {
-
+	public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+		if (jobExecutionContext != null) {
+			try {
+				QuartzModule.ServiceProvider provider = (QuartzModule.ServiceProvider) jobExecutionContext.getScheduler().getContext().get(QuartzModule.ServiceProvider.class.getSimpleName());
+				cayenneService = provider.get(ICayenneService.class);
+				paymentService = provider.get(IPaymentService.class);
+				prefFactory = provider.get(PreferenceControllerFactory.class);
+			} catch (Exception e) {
+				logger.catching(e);
+				throw new JobExecutionException(e);
+			}
+		}
+		
 		logger.debug("PaymentInExpireJob started.");
 
 		try {

@@ -216,10 +216,6 @@ public class AppModule {
 		binder.bind(InternalPaymentService.class, PaymentServiceImpl.class);
 		binder.bind(ITransactionStubBuilder.class, TransactionStubBuilderImpl.class);
 
-		binder.bind(PaymentInExpireJob.class);
-		binder.bind(SMSJob.class);
-		binder.bind(UpdateAmountOwingJob.class);
-
 		binder.bind(CryptoKeys.class, new CryptoKeysBuilder());
 		binder.bind(USIService.class, new USIServiceBuilder()).eagerLoad();
 		binder.bind(IUSIVerificationService.class, USIVerificationService.class);

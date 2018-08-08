@@ -4,6 +4,7 @@
 package ish.oncourse.tapestry;
 
 import org.apache.tapestry5.TapestryFilter;
+import org.apache.tapestry5.ioc.Registry;
 import org.apache.tapestry5.ioc.def.ModuleDef;
 
 import javax.servlet.*;
@@ -21,6 +22,7 @@ import static org.apache.tapestry5.SymbolConstants.PRODUCTION_MODE;
 public class WillowTapestryFilter implements Filter {
 	private TapestryFilter tapestryFilter;
 	private Map<String, String> parameters;
+	private Registry registry;
 
 	WillowTapestryFilter(final List<ModuleDef> moduleDefs,
 						 final List<Class<? extends ModuleDef>> moduleDefClasses,
@@ -40,6 +42,13 @@ public class WillowTapestryFilter implements Filter {
 				result.addAll(moduleDefs);
 				return result.toArray(new ModuleDef[]{});
 			}
+			
+			@Override
+			protected void init(Registry registry) throws ServletException {
+				super.init(registry);
+				WillowTapestryFilter.this.registry = registry;
+			}
+			
 		};
 		this.parameters = parameters;
 	}
@@ -50,6 +59,11 @@ public class WillowTapestryFilter implements Filter {
 		parameters.keySet().forEach((key) -> filterConfig.getServletContext().setInitParameter(key, parameters.get(key)));
 		tapestryFilter.init(filterConfig);
 	}
+
+	public <T> T getService(Class<T> aClass) {
+		return registry.getService(aClass);
+	} 
+	
 
 	@Override
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {

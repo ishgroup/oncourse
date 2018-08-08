@@ -2,12 +2,17 @@ package ish.oncourse.solr.functions.suburb
 
 import io.reactivex.Observable
 import ish.oncourse.model.PostcodeDb
+import ish.oncourse.model.Tag
 import ish.oncourse.solr.RXObservableFromIterable
 import ish.oncourse.solr.model.SSuburb
+import ish.oncourse.solr.model.STag
+import ish.oncourse.solr.query.Suburb
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+
+import java.util.function.Function
 
 import static org.apache.cayenne.query.ObjectSelect.query
 
@@ -16,7 +21,7 @@ class Functions {
 
     static final ObjectSelect<PostcodeDb> PostcodesQuery = query(PostcodeDb).orderBy(PostcodeDb.POSTCODE.asc())
 
-    static Closure<SSuburb> getSSuburb = { PostcodeDb postcode ->
+    static Function<PostcodeDb, SSuburb> getSSuburb = { PostcodeDb postcode ->
         return new SSuburb().with {
             it.id = "${postcode.postcode}${postcode.suburb}"
             it.suburb = postcode.suburb

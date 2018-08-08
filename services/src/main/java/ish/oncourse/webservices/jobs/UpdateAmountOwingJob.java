@@ -1,12 +1,17 @@
 package ish.oncourse.webservices.jobs;
 
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.webservices.quartz.QuartzModule;
 import org.apache.cayenne.DataRow;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.SQLExec;
 import org.apache.cayenne.query.SQLSelect;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.quartz.DisallowConcurrentExecution;
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -16,6 +21,7 @@ import java.util.List;
 /*
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
  */
+@DisallowConcurrentExecution
 public class UpdateAmountOwingJob implements Job {
 	private static final Logger logger = LogManager.getLogger();
 
@@ -34,16 +40,32 @@ public class UpdateAmountOwingJob implements Job {
 			"and c.billingCode is not null\n" +
 			"and c.lastRemoteAuthentication > '%s'\n" +
 			"order by i.collegeId, i.created";
-
+	
 	private ICayenneService cayenneService;
-
-
-	public UpdateAmountOwingJob(ICayenneService cayenneService) {
+	
+	UpdateAmountOwingJob(ICayenneService cayenneService) {
 		this.cayenneService = cayenneService;
 	}
+	
+	public void execute() throws JobExecutionException {
+		execute(null);
+	}
+
+	public UpdateAmountOwingJob() {}
 
 	@Override
-	public void execute() {
+	public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+
+		if (jobExecutionContext != null) {
+			try {
+				QuartzModule.ServiceProvider provider = (QuartzModule.ServiceProvider) jobExecutionContext.getScheduler().getContext().get(QuartzModule.ServiceProvider.class.getSimpleName());
+				cayenneService = provider.get(ICayenneService.class);			
+			} catch (Exception e) {
+				logger.catching(e);
+				throw new JobExecutionException(e);
+			}
+		}
+		
 		ObjectContext objectContext = this.cayenneService.newNonReplicatingContext();
 
 		Calendar calendar = Calendar.getInstance();

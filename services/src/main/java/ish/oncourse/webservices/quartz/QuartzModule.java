@@ -3,15 +3,22 @@
  */
 package ish.oncourse.webservices.quartz;
 
-import com.google.inject.Binder;
-import com.google.inject.Key;
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
+import com.google.inject.*;
 import com.google.inject.multibindings.Multibinder;
 import io.bootique.ConfigModule;
+import io.bootique.jetty.MappedFilter;
 import io.bootique.shutdown.ShutdownManager;
 import ish.oncourse.configuration.Configuration;
+import ish.oncourse.services.message.IMessagePersonService;
+import ish.oncourse.services.payment.IPaymentService;
+import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.preference.PreferenceControllerFactory;
+import ish.oncourse.services.sms.ISMSService;
 import ish.oncourse.solr.BuildSolrClient;
+import ish.oncourse.tapestry.WillowTapestryFilter;
+import ish.oncourse.webservices.jobs.PaymentInExpireJob;
+import ish.oncourse.webservices.jobs.SMSJob;
+import ish.oncourse.webservices.jobs.UpdateAmountOwingJob;
 import ish.oncourse.webservices.quartz.job.solr.ReindexCoursesJob;
 import ish.oncourse.webservices.quartz.job.solr.ReindexSuburbsJob;
 import ish.oncourse.webservices.quartz.job.solr.ReindexTagsJob;
@@ -32,11 +39,17 @@ public class QuartzModule extends ConfigModule {
 	public static final String QUARTZ_CONTEXT_SOLR_CLIENT_KEY = "SolrClient";
 
 	public static final String QUARTZ_GROUP_SOLR = "solrGroup";
+	public static final String QUARTZ_GROUP_DEFAULT = "defaultGroup";
+
 
 
 	public static final String DEFAULT_CRON_REINDEX_COURSES = "0 53 3 ? * *";
 	public static final String DEFAULT_CRON_REINDEX_TAGS = "0 */5 * ? * *";
 	public static final String DEFAULT_CRON_REINDEX_SUBURBS = "0 34 4 ? * *";
+
+	public static final String DEFAULT_CRON_SMS = "0 */20 * ? * * *";
+	public static final String DEFAULT_CRON_PAYMENT = "0 5/20 * ? * * *";
+	public static final String DEFAULT_CRON_INVOICE = "0 10/20 * ? * * *";
 
 	@Override
 	public void configure(Binder binder) {
@@ -46,10 +59,16 @@ public class QuartzModule extends ConfigModule {
 
 	@Provides
 	@Singleton
-	public Scheduler scheduler(ServerRuntime serverRuntime, SolrClient solrClient, ShutdownManager shutdownManager) throws Exception {
+	public Scheduler scheduler(ServerRuntime serverRuntime,
+							   SolrClient solrClient,
+							   ShutdownManager shutdownManager, MappedFilter<WillowTapestryFilter> filter
+	) throws Exception {
+		
 		Scheduler scheduler = new BuildScheduler()
 				.serverRuntime(serverRuntime)
-				.solrClient(solrClient).build();
+				.solrClient(solrClient)
+				.serviceProvider(new ServiceProvider(filter))
+				.build();
 
 		scheduler.start();
 
@@ -85,7 +104,16 @@ public class QuartzModule extends ConfigModule {
 						.jobClass(ReindexSuburbsJob.class),
 				new DeleteJob()
 						.groupName(QUARTZ_GROUP_SOLR)
-						.jobClass(ReindexTagsJob.class)
+						.jobClass(ReindexTagsJob.class),
+				new DeleteJob()
+						.groupName(QUARTZ_GROUP_DEFAULT)
+						.jobClass(SMSJob.class),
+				new DeleteJob()
+						.groupName(QUARTZ_GROUP_DEFAULT)
+						.jobClass(PaymentInExpireJob.class),
+				new DeleteJob()
+						.groupName(QUARTZ_GROUP_DEFAULT)
+						.jobClass(UpdateAmountOwingJob.class)
 		};
 		Arrays.stream(list).forEach((j) -> j.delete(scheduler));
 	}
@@ -103,11 +131,38 @@ public class QuartzModule extends ConfigModule {
 				new BuildJob()
 						.groupName(QUARTZ_GROUP_SOLR)
 						.jobClass(ReindexTagsJob.class)
-						.cronString(DEFAULT_CRON_REINDEX_TAGS)
+						.cronString(DEFAULT_CRON_REINDEX_TAGS),
+				new BuildJob()
+						.groupName(QUARTZ_GROUP_DEFAULT)
+						.jobClass(PaymentInExpireJob.class)
+						.cronString(DEFAULT_CRON_PAYMENT),
+				new BuildJob()
+						.groupName(QUARTZ_GROUP_DEFAULT)
+						.jobClass(SMSJob.class)
+						.cronString(DEFAULT_CRON_SMS),
+				new BuildJob()
+						.groupName(QUARTZ_GROUP_DEFAULT)
+						.jobClass(UpdateAmountOwingJob.class)
+						.cronString(DEFAULT_CRON_INVOICE)
+				
 
 
 		};
 		Arrays.stream(builds).forEach((b) -> b.build(scheduler));
+	}
+
+	public static class ServiceProvider {
+		
+		WillowTapestryFilter tapestry;
+				
+		ServiceProvider(MappedFilter<WillowTapestryFilter> filter) {
+			tapestry = filter.getFilter();
+		}
+		
+		public <T> T get(Class<T> c) {
+			return tapestry.getService(c);
+		} 
+		
 	}
 
 }

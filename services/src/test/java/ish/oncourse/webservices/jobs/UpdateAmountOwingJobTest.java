@@ -9,6 +9,7 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.junit.Before;
 import org.junit.Test;
+import org.quartz.JobExecutionException;
 
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class UpdateAmountOwingJobTest extends ServiceTest {
 
 
     @Test
-    public void test() {
+    public void test() throws JobExecutionException {
         this.job.execute();
 
         ObjectContext objectContext = this.cayenneService.newNonReplicatingContext();
