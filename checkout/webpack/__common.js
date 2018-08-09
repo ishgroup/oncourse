@@ -20,7 +20,7 @@ const KEYS = {
 
 const _common = (dirname, options) => {
   let _main = {
-    entry: [options[KEYS.ENTRY]],
+    entry: ['babel-polyfill', options[KEYS.ENTRY]],
     output: {
       path: path.resolve(dirname, "build"),
       publicPath: "/assets/",
@@ -39,7 +39,15 @@ const _common = (dirname, options) => {
       rules: [
         {
           test: /\.tsx?$/,
-          loaders: ['babel-loader', 'ts-loader'],
+          use: [
+            {
+              loader: 'babel-loader',
+              options: {
+                plugins: ['transform-object-assign']
+              },
+            },
+            { loader: 'ts-loader' }
+          ],
           include: [
             path.resolve(dirname, "src/js"),
             path.resolve(dirname, "src/dev"),

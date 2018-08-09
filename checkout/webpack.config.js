@@ -51,7 +51,15 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
       rules: [
         {
           test: /\.tsx?$/,
-          loaders: ['babel-loader', 'ts-loader'],
+          use: [
+            {
+              loader: 'babel-loader',
+              options: {
+                plugins: ['transform-object-assign']
+              },
+            },
+            { loader: 'ts-loader' }
+          ],
           exclude: /node_modules/,
         }
       ]
