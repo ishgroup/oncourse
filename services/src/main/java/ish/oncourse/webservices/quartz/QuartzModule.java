@@ -47,7 +47,7 @@ public class QuartzModule extends ConfigModule {
 	public static final String DEFAULT_CRON_REINDEX_TAGS = "0 */5 * ? * *";
 	public static final String DEFAULT_CRON_REINDEX_SUBURBS = "0 34 4 ? * *";
 
-	public static final String DEFAULT_CRON_SMS = "0 */20 * ? * * *";
+	public static final String DEFAULT_CRON_SMS = "0 */1 * ? * * *";
 	public static final String DEFAULT_CRON_PAYMENT = "0 5/20 * ? * * *";
 	public static final String DEFAULT_CRON_INVOICE = "0 10/20 * ? * * *";
 
