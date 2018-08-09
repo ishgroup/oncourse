@@ -23,8 +23,8 @@ class CourseFunctions {
     }
 
     static final ObjectSelect<Tag> tagsQuery(Course course){
-        query(Tag).where(Tag.TAGGABLE_TAGS.dot(TaggableTag.TAGGABLE).dot(Taggable.ENTITY_IDENTIFIER).eq("Course"))
-                .and(Tag.TAGGABLE_TAGS.dot(TaggableTag.TAGGABLE).dot(Taggable.ENTITY_WILLOW_ID).eq(course.id))
+        query(Tag).where(Tag.TAGGABLE_TAGS.outer().dot(TaggableTag.TAGGABLE).outer().dot(Taggable.ENTITY_IDENTIFIER).eq("Course"))
+                .and(Tag.TAGGABLE_TAGS.outer().dot(TaggableTag.TAGGABLE).outer().dot(Taggable.ENTITY_WILLOW_ID).eq(course.id))
     }
 
 
