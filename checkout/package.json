@@ -71,12 +71,8 @@
   },
   "dependencies": {
     "axios": "0.16.2",
-    "babel-polyfill": "^6.26.0",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-es2015-classes": "^6.24.1",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-react": "^6.24.1",
+    "babel-loader": "^7.1.5",
+    "babel-polyfill": "6.23.0",
     "card-validator": "^4.2.0",
     "classnames": "2.2.5",
     "debounce-promise": "^3.0.2",
@@ -103,13 +99,6 @@
     "scriptjs": "^2.5.8",
     "uuid": "3.1.0",
     "zip-webpack-plugin": "^2.0.0"
-  },
-  "babel": {
-    "plugins": [
-      "transform-class-properties",
-      "transform-object-rest-spread",
-      [ "transform-es2015-classes", { "loose": true } ]
-    ]
   },
   "jest": {
     "globals": {

@@ -39,7 +39,7 @@ const _common = (dirname, options) => {
       rules: [
         {
           test: /\.tsx?$/,
-          loader: 'ts-loader',
+          loaders: ['babel-loader', 'ts-loader'],
           include: [
             path.resolve(dirname, "src/js"),
             path.resolve(dirname, "src/dev"),
