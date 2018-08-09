@@ -1,3 +1,4 @@
+import "babel-polyfill";
 import {CreateStore, RestoreState} from "./CreateStore";
 import {Bootstrap} from "./common/utils/Bootstrap";
 import {configLoader} from "./configLoader";
