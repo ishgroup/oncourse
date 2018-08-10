@@ -43,6 +43,7 @@ const _common = (dirname, options) => {
             {
               loader: 'babel-loader',
               options: {
+                presets: ["env"],
                 plugins: ['transform-object-assign']
               },
             },
