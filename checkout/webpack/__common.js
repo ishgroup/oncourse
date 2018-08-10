@@ -43,8 +43,7 @@ const _common = (dirname, options) => {
             {
               loader: 'babel-loader',
               options: {
-                presets: ["env"],
-                plugins: ['transform-object-assign']
+                presets:  ["react", "es2015-ie"]
               },
             },
             { loader: 'ts-loader' }

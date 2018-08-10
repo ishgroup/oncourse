@@ -55,8 +55,7 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
             {
               loader: 'babel-loader',
               options: {
-                presets: ["env"],
-                plugins: ['transform-object-assign']
+                presets:  ["react"]
               },
             },
             { loader: 'ts-loader' }
