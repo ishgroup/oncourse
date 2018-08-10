@@ -42,7 +42,7 @@ public class SolrTagIndexTest extends SolrTestCaseJ4 {
 		when(tag.getCollege()).thenReturn(college);
 		when(tag.getName()).thenReturn("Subject");
 
-		STag solrTag = Functions.getGetSTag().call(tag);
+		STag solrTag = Functions.getGetSTag().apply(tag);
 
 		solrClient.addBean(solrTag);
 		solrClient.commit();
