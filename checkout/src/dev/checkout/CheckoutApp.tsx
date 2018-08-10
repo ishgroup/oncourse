@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-
+import EnrolButton from  "../../js/web/containers/EnrolButton";
 import {Provider} from "react-redux";
 import Checkout from "../../js/enrol/containers/Checkout";
 import {MockControl} from "./MockControl";
@@ -25,6 +25,7 @@ config.init((config:MockConfig) => {
 const render = config => ReactDOM.render(
   <Provider store={config.store}>
     <div id="oncourse-checkout">
+      <EnrolButton />
       <Checkout/>
       <MockControl config={config}/>
     </div>
