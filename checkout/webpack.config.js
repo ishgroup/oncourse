@@ -27,6 +27,7 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
     entry: {
       dynamic: [
         'babel-polyfill',
+        'url-polyfill',
         'react',
         'redux',
         'react-redux',
@@ -51,15 +52,7 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
       rules: [
         {
           test: /\.tsx?$/,
-          use: [
-            {
-              loader: 'babel-loader',
-              options: {
-                presets:  ["react"]
-              },
-            },
-            { loader: 'ts-loader' }
-          ],
+          loader: 'ts-loader',
           exclude: /node_modules/,
         }
       ]
