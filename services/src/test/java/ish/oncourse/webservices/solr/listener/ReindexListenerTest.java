@@ -5,6 +5,7 @@ package ish.oncourse.webservices.solr.listener;
 
 import ish.oncourse.model.*;
 import ish.oncourse.services.lifecycle.TaggableListener;
+import ish.oncourse.services.persistence.CayenneService;
 import ish.oncourse.test.LoadDataSet;
 import ish.oncourse.test.TestContext;
 import ish.oncourse.webservices.solr.SolrUpdateCourseDocumentsListener;
@@ -62,8 +63,7 @@ public class ReindexListenerTest {
 
         cayenneRuntime = new ServerRuntime("cayenne-oncourse.xml", CommitLogModule.extend()
                 .addListener(listener).module());
-        cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addListener(new TaggableListener());
-
+        cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addListener(new TaggableListener(null));
 
     }
     
@@ -85,9 +85,6 @@ public class ReindexListenerTest {
 
         objectContext.commitChanges();
 
-        assertEquals(1, updateIds.size());
-        assertEquals((Long)1L , updateIds.get(0));
-        updateIds.clear();
         objectContext.deleteObjects(taggable);
         objectContext.deleteObjects(taggableTag);
         

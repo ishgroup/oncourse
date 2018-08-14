@@ -1,16 +1,42 @@
 package ish.oncourse.services.lifecycle;
 
+import ish.oncourse.configuration.Configuration;
+import ish.oncourse.model.College;
+import ish.oncourse.model.Course;
 import ish.oncourse.model.Queueable;
 import ish.oncourse.model.Taggable;
+import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.solr.BuildSolrClient;
+import ish.oncourse.solr.reindex.ReindexCourses;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.ObjectId;
 import org.apache.cayenne.annotation.PostPersist;
 import org.apache.cayenne.annotation.PostUpdate;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
+import org.apache.solr.client.solrj.SolrClient;
+
+import java.util.Collections;
+import java.util.Deque;
+import java.util.Map;
+import java.util.WeakHashMap;
+
+import static ish.oncourse.configuration.Configuration.AppProperty.ZK_HOST;
 
 public class TaggableListener {
+
+	private ICayenneService cayenneService;
+	private SolrClient solrClient;
+	
+	public TaggableListener(ICayenneService cayenneService) {
+		this.cayenneService = cayenneService;
+		String zkHost = Configuration.getValue(ZK_HOST);
+		if (zkHost != null) {
+			solrClient = BuildSolrClient.instance(zkHost).build();
+		}
+	}
 
 	@PostPersist(value = Taggable.class)
 	public void postPersist(Taggable taggable) {
@@ -58,6 +84,10 @@ public class TaggableListener {
 			if (object != null) {
 				taggable.setEntityWillowId(object.getId());
 				objectContext.commitChanges();
+				
+				if (taggable.getEntityIdentifier().equals(Course.class.getSimpleName()) && solrClient != null) {
+					new ReindexCourses(cayenneService.newNonReplicatingContext(), solrClient, Collections.singleton(taggable.getEntityWillowId())).run();
+				}
 			}
 		}
 	}

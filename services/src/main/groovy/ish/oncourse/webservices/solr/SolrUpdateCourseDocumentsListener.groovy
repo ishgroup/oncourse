@@ -15,7 +15,6 @@ import ish.oncourse.solr.update.listener.GetCoursesFromTag
 import ish.oncourse.solr.update.listener.GetCoursesToDelete
 import ish.oncourse.solr.update.listener.GetCoursesToUpdate
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.ObjectId
 import org.apache.cayenne.commitlog.model.ChangeMap
 import org.apache.cayenne.commitlog.model.ObjectChange
 import org.apache.cayenne.configuration.server.ServerRuntime
@@ -30,8 +29,6 @@ class SolrUpdateCourseDocumentsListener extends ish.oncourse.solr.update.listene
     private SolrClient solrClient
     private ServerRuntime serverRuntime
     private Injector injector
-
-    private  GetCoursesFromTag tagProcessor = new GetCoursesFromTag()
     
     
     SolrUpdateCourseDocumentsListener injector(Injector injector) {
@@ -64,7 +61,7 @@ class SolrUpdateCourseDocumentsListener extends ish.oncourse.solr.update.listene
 
             Set<ObjectChange> tagChanges = filter(changes, Taggable.simpleName)
             if (!tagChanges.empty) {
-                courseIdToUpdate.addAll(tagProcessor.get(tagChanges))
+                courseIdToUpdate.addAll(GetCoursesFromTag.get(tagChanges))
             }
             
             Set<ObjectChange> siteChanges = filter(changes, Site.simpleName)
