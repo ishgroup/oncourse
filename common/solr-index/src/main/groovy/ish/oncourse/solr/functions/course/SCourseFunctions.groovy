@@ -31,7 +31,7 @@ class SCourseFunctions {
         return new RXObservableFromIterable<Course, SCourse>().iterable(courses)
                 .mapper({ Course c -> GetSCourse.call(new CourseContext(course: c, context: c.objectContext, current: current)) })
                 .scheduler(scheduler)
-                .logger(logger).parallelObservable()
+                .logger(logger).observable()
     }
 
 
