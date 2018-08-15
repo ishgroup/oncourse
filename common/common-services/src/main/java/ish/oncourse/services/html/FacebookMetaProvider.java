@@ -17,6 +17,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class FacebookMetaProvider implements IFacebookMetaProvider {
 	private static final Logger logger = LogManager.getLogger();
+	private static final int MAX_META_LENGTH = 250;
 
 	@Inject
 	private ITextileConverter textileConverter;
@@ -36,7 +37,7 @@ public class FacebookMetaProvider implements IFacebookMetaProvider {
 
 	public String getDescriptionContent(Course course) {
 		String detail = StringUtils.trimToEmpty(course.getDetail());
-		return getDescriptionContent(course, detail, detail.length());
+		return getDescriptionContent(course, detail, MAX_META_LENGTH);
 	}
 
 	public String getDescriptionContent(WebNode webNode)
@@ -50,7 +51,7 @@ public class FacebookMetaProvider implements IFacebookMetaProvider {
 	@Override
 	public String getDescriptionContent(Tag tag) {
 		String detail = StringUtils.trimToEmpty(tag.getDetail());
-		return getDescriptionContent(tag, detail, detail.length());
+		return getDescriptionContent(tag, detail, MAX_META_LENGTH);
 	}
 
 	private String getDescriptionContent(PersistentObject key,String details, int size)
