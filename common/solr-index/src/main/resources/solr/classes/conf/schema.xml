@@ -142,8 +142,6 @@
                         generateWordParts="1" generateNumberParts="1" catenateWords="1"
                         catenateNumbers="1" catenateAll="0" splitOnCaseChange="0" />
                 <filter class="solr.LowerCaseFilterFactory" />
-                <!--filter class="solr.HunspellStemFilterFactory" dictionary="../../dictionary/en_AU.dic" affix="../../dictionary/en_AU.aff"
-                    ignoreCase="true" /-->
             </analyzer>
 
             <analyzer type="query">
@@ -156,8 +154,6 @@
                         generateWordParts="1" generateNumberParts="1" catenateWords="0"
                         catenateNumbers="0" catenateAll="0" splitOnCaseChange="0" />
                 <filter class="solr.LowerCaseFilterFactory" />
-                <!--filter class="solr.HunspellStemFilterFactory" dictionary="../../dictionary/en_AU.dic" affix="../../dictionary/en_AU.aff"
-                    ignoreCase="true" /-->
             </analyzer>
         </fieldType>
     </types>
