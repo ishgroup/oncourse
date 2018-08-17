@@ -203,6 +203,8 @@
 
         <field name="price" type="sfloat" indexed="true" stored="true" omitNorms="false"/>
 
+        <field name="content" type="string" stored="true" omitNorms="false"/>
+
     </fields>
 
     <uniqueKey>id</uniqueKey>
