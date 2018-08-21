@@ -263,7 +263,22 @@ task agentJar(type: Copy) {
 	rename { "${javaAgentFileName}" }
 }
 
-task startDaemon(dependsOn: [classes, processResources, agentJar], type: com.github.psxpaul.task.JavaExecFork) {
+
+
+task copyTestDb {
+	copy {
+		from("$rootDir/api-test/src/test/resources/") {
+			include 'onCourse.cfg'
+		}
+		into "$buildDir/"
+	}
+	
+	copy {
+		from zipTree(file("$rootDir/api-test/src/test/resources/onCourse.iocdata.zip"))
+		into "$buildDir/"
+	}
+}
+task startDaemon(dependsOn: [classes, processResources, agentJar, copyTestDb], type: com.github.psxpaul.task.JavaExecFork) {
 	classpath = sourceSets.main.runtimeClasspath
 	main = 'ish.oncourse.server.AngelServer'
 	args = ['DEBUG=true', 'REPLICATION_DISABLED=true']
