@@ -67,41 +67,38 @@ class SCourseFunctions {
                 if (!sc.classEnd.contains(scc.classEnd)) sc.classEnd.add(scc.classEnd)
                 if (!sc.price.contains(scc.price)) sc.price.add(scc.price)
                 if (!sc.classCode.contains(scc.classCode)) sc.classCode.add(scc.classCode)
-                addSessions(sc, scc.sessions)
-                addContacts(sc, scc.contacts)
-                addSites(sc, scc.sites)
+                addSessions(sc, scc)
+                addContacts(sc, scc)
+                addSites(sc, scc)
                 sc
             })
     }
 
-    static final SCourse addSessions(SCourse sc, List<SSession> sessions) {
-        Observable.fromIterable(sessions).map({ SSession s -> sc.when.add("${s.dayName} ${s.dayType} ${s.dayTime}"); s }).blockingSubscribe()
-        sc.when = sc.when.unique().findAll { it != null }
+    static final SCourse addSessions(SCourse sc, SCourseClass sClass) {
+        sc.when.addAll(sClass.when)
+        sc.when = sc.when.unique()
         sc
     }
 
-    static final SCourse addContacts(SCourse sc, List<SContact> contacts) {
-        Observable.fromIterable(contacts).map({ SContact c ->
-            sc.tutorId.add(c.tutorId)
-            sc.tutor.add(c.name)
-            c
-        }).blockingSubscribe()
-        sc.tutorId = sc.tutorId.unique().findAll { it != null }
-        sc.tutor = sc.tutor.unique().findAll { it != null }
+    static final SCourse addContacts(SCourse sc, SCourseClass sClass) {
+        sc.tutorId.addAll(sClass.tutorId)
+        sc.tutor.addAll(sClass.tutor)
+
+        sc.tutorId = sc.tutorId.unique()
+        sc.tutor = sc.tutor.unique()
         sc
     }
 
-    static final SCourse addSites(SCourse sc, List<SSite> sites) {
-        Observable.fromIterable(sites).map({ SSite s ->
-            sc.siteId.add(s.id)
-            sc.suburb.add(s.suburb)
-            sc.postcode.add(s.postcode)
-            sc.location.add(s.location)
-        }).blockingSubscribe()
-        sc.siteId = sc.siteId.unique().findAll { it != null }
-        sc.suburb = sc.suburb.unique().findAll { it != null }
-        sc.postcode = sc.postcode.unique().findAll { it != null }
-        sc.location = sc.location.unique().findAll { it != null }
+    static final SCourse addSites(SCourse sc, SCourseClass c) {
+        sc.siteId.addAll(c.siteId)
+        sc.suburb.addAll(c.suburb)
+        sc.postcode.addAll(c.postcode)
+        sc.location.addAll(c.location)
+        
+        sc.siteId = sc.siteId.unique()
+        sc.suburb = sc.suburb.unique()
+        sc.postcode = sc.postcode.unique()
+        sc.location = sc.location.unique()
         sc
     }
 }

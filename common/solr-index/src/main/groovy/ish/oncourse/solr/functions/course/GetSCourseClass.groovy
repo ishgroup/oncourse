@@ -28,17 +28,30 @@ class GetSCourseClass {
     SCourseClass get() {
         ClassType type = ClassType.valueOf(context.courseClass, context.current)
         SCourseClass scc = new SCourseClass()
+        scc.id = context.courseClass.id
+        scc.collegeId = context.courseClass.college.id
+        scc.courseId = context.courseClass.course.id
         scc.classStart = getStartDate(type)
         scc.classEnd = getEndDate(type)
         scc.classCode = "${context.courseClass.course.code}-${context.courseClass.code}"
         scc.price = context.courseClass.feeExGst.toPlainString()
 
-        scc.sessions = toSSessions(context.courseClass, this.context.sessions)
-        scc.contacts = toSContacts(context.courseClass, this.context.contacts)
+        List<SSession> sessions = toSSessions(context.courseClass, this.context.sessions)
+        scc.when.addAll(sessions.collect {"${it.dayName} ${it.dayType} ${it.dayTime}"}.unique())
+        
+        List<SContact> contacts = toSContacts(context.courseClass, this.context.contacts)
+        scc.tutorId = contacts.tutorId.unique().findAll { it != null }
+        scc.tutor = contacts.name.unique().findAll { it != null }
+        
+        List<SSite> sites = toSSites(context.courseClass, this.context.courseClassSites)
+        sites.addAll(toSSites(context.courseClass, this.context.sessionSites))
+        sites = sites.unique()
 
-        scc.sites.addAll(toSSites(context.courseClass, this.context.courseClassSites))
-        scc.sites.addAll(toSSites(context.courseClass, this.context.sessionSites))
-        scc.sites = scc.sites.unique()
+        scc.suburb = sites.suburb.unique().findAll { it != null }
+        scc.postcode = sites.postcode.unique().findAll { it != null }
+        scc.location = sites.location.unique().findAll { it != null }
+        scc.siteId = sites.id
+
         return scc
     }
 

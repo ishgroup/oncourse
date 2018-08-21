@@ -54,10 +54,7 @@ class SCourseClass {
 
     @Field('content')
     String content
-    
-    List<SSession> sessions = []
 
-    List<SContact> contacts = []
-
-    List<SSite> sites = []
+    @Field('siteId')
+    List<Long> siteId = []
 }
