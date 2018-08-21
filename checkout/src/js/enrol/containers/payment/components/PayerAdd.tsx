@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import classnames from "classnames";
 
 export interface Props {
@@ -19,7 +19,9 @@ export class PayerAdd extends React.Component<Props, any> {
   }
 
   handleBlur(e) {
-    if (this.listEl.contains(e.relatedTarget)) {
+    const related = e.relatedTarget || document.activeElement;
+
+    if (this.listEl.contains(related)) {
       return;
     }
     this.toggleList(false);
