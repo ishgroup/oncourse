@@ -2,6 +2,7 @@ package ish.oncourse.services.course;
 
 import ish.oncourse.model.Course;
 import ish.oncourse.model.Tag;
+import ish.oncourse.model.WebSite;
 
 import java.util.Date;
 import java.util.List;
@@ -69,4 +70,6 @@ public interface ICourseService {
 	 * @return
 	 */
 	Date getLatestModifiedDate();
+
+	String[] getAvailableSiteKeys(Course course);
 }

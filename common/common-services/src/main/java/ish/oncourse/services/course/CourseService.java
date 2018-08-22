@@ -3,6 +3,8 @@ package ish.oncourse.services.course;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Tag;
+import ish.oncourse.model.WebSite;
+import ish.oncourse.model.auto._WebSite;
 import ish.oncourse.services.courseclass.GetHideOnWebClassAge;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.courseclass.LoadByIds;
@@ -114,8 +116,18 @@ public class CourseService implements ICourseService {
 	}
 
 	@Override
+	public String[] getAvailableSiteKeys(Course course) {
+		return (String[]) course.getCollege().getWebSites().stream().filter(s -> availableByRootTag(course, s)).map(WebSite::getSiteKey).toArray();
+	}
+
+	@Override
 	public boolean availableByRootTag(Course course) {
-		Tag rootTag = tagService.getTagByFullPath(StringUtils.trimToNull(webSiteService.getCurrentWebSite().getCoursesRootTagName()));
+		return availableByRootTag(course, webSiteService.getCurrentWebSite());
+	}
+
+	
+	private boolean availableByRootTag(Course course, WebSite webSites) {
+		Tag rootTag = tagService.getTagByFullPath(StringUtils.trimToNull(webSites.getResourceFolderName()));
 		if (rootTag == null) {
 			return true;
 		}
