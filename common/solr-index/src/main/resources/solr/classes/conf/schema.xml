@@ -162,15 +162,20 @@
     <fields>
         <field name="_version_" type="long" indexed="true" stored="true" multiValued="false"/>
 
-        <field name="id" type="string" stored="true"
-               required="true" />
+        <field name="id" type="string" stored="true" required="true" indexed="true"/>
 
+        <field name="siteKey" type="string" stored="true"
+               required="true" />
+        
+        <field name="classId" type="string" stored="true"
+               required="true" />
+        
         <field name="doctype" type="string" indexed="true" stored="true"
                required="true" />
 
         <field name="collegeId" type="int" stored="true" />
 
-        <field name="course_id" type="string" indexed="true" stored="true"
+        <field name="courseId" type="string" indexed="true" stored="true"
                omitNorms="false"/>
         
         <field name="code" type="exacttext"  stored="true" omitNorms="false"/>
@@ -190,12 +195,12 @@
         <field name="end" type="date" indexed="true" stored="true"
                omitNorms="false"/>
 
-        <field name="class_loc" type="location_rpt" indexed="true" stored="true" multiValued="true" />
+        <field name="classLoc" type="location_rpt" indexed="true" stored="true" multiValued="true" />
 
-        <field name="class_suburb" type="textgen" indexed="true"
+        <field name="classSuburb" type="textgen" indexed="true"
                omitNorms="false" stored="true" multiValued="true"/>
 
-        <field name="class_postcode" type="string" indexed="true"
+        <field name="classPostcode" type="string" indexed="true"
                omitNorms="false" stored="true" multiValued="true"/>
 
         <field name="siteId" type="long" indexed="true"

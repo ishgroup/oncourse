@@ -370,8 +370,26 @@
         </arr>
     </requestHandler>
 
+    <updateRequestProcessorChain name="composite-id">
+        <processor class="solr.CloneFieldUpdateProcessorFactory">
+            <str name="source">classId</str>
+            <str name="source">siteKey</str>
+            <str name="dest">id</str>
+        </processor>
+        <processor class="solr.ConcatFieldUpdateProcessorFactory">
+            <str name="fieldName">id</str>
+            <str name="delimiter">-</str>
+        </processor>
+        <processor class="solr.LogUpdateProcessorFactory" />
+        <processor class="solr.RunUpdateProcessorFactory" />
+    </updateRequestProcessorChain>
 
-    <requestHandler name="/update" class="solr.UpdateRequestHandler"/>
+    <requestHandler name="/update" class="solr.UpdateRequestHandler">
+        <lst name="defaults">
+            <str name="update.chain">composite-id</str>
+        </lst>
+    </requestHandler>
+    
     <requestHandler name="/update/javabin" class="solr.UpdateRequestHandler"/>
     <requestHandler name="/analysis/document" class="solr.DocumentAnalysisRequestHandler"/>
     <requestHandler name="/analysis/field" class="solr.FieldAnalysisRequestHandler"/>

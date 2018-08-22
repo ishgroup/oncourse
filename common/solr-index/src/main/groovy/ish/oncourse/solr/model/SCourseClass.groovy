@@ -10,7 +10,7 @@ import org.apache.solr.client.solrj.beans.Field
 @ToString
 class SCourseClass {
 
-    @Field('id')
+    @Field('classId')
     String id
     
     @Field('doctype')
@@ -19,7 +19,7 @@ class SCourseClass {
     @Field('collegeId')
     long collegeId
 
-    @Field('course_id')
+    @Field('courseId')
     long courseId
 
     @Field('code')
@@ -40,13 +40,13 @@ class SCourseClass {
     @Field('end')
     Date classEnd
     
-    @Field('class_loc')
+    @Field('classLoc')
     List<String> location = []
 
-    @Field('class_suburb')
+    @Field('classSuburb')
     List<String> suburb = []
 
-    @Field('class_postcode')
+    @Field('classPostcode')
     List<String> postcode = []
     
     @Field('price')
