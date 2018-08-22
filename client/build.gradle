@@ -244,3 +244,14 @@ task webstartDebug(dependsOn: bundle_webstart, type: Exec) {
 	executable 'javaws'
 	args "-open", "DEBUG=true", "-verbose", "-J-agentlib:jdwp=transport=dt_socket,server=y,address=8000", "${distsDir}/webstart/onCourse.jnlp" 
 }
+
+processResources {
+	dependsOn ":client-html:build"
+	doLast {
+		copy {
+			from('../client-html/build/assets') {
+				include 'fonts/*.*', 'login.html', 'login.css', 'login.js'
+			}
+			into 'build/resources/main/static'}
+	}
+}

@@ -143,7 +143,7 @@ dependencies {
 	testCompile "io.bootique:bootique-test:$bootiqueVersion"
 }
 
-processResources{
+processResources {
 	dependsOn ":client-html:build"
 	doLast {
 		copy {                
