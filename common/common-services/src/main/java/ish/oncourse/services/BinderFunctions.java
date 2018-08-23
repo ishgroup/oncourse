@@ -200,8 +200,9 @@ public class BinderFunctions {
 		public ICayenneService buildService(ServiceResources resources) {
 			RegistryShutdownHub hub = resources.getService(RegistryShutdownHub.class);
 			IWebSiteService webSiteService = resources.getService(IWebSiteService.class);
+			ICourseService courseService = resources.getService(ICourseService.class);
 			CayenneService cayenneService = new CayenneService(resources.getService(ServerRuntime.class),
-					webSiteService);
+					webSiteService, courseService);
 			hub.addRegistryShutdownListener(cayenneService);
 			return cayenneService;
 		}

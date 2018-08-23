@@ -5,6 +5,7 @@ import ish.oncourse.model.College;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.Queueable;
 import ish.oncourse.model.Taggable;
+import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.solr.BuildSolrClient;
 import ish.oncourse.solr.reindex.ReindexCourses;
@@ -29,9 +30,11 @@ public class TaggableListener {
 
 	private ICayenneService cayenneService;
 	private SolrClient solrClient;
+	private ICourseService courseService;
 	
-	public TaggableListener(ICayenneService cayenneService) {
+	public TaggableListener(ICayenneService cayenneService, ICourseService courseService) {
 		this.cayenneService = cayenneService;
+		this.courseService = courseService;
 		String zkHost = Configuration.getValue(ZK_HOST);
 		if (zkHost != null) {
 			solrClient = BuildSolrClient.instance(zkHost).build();
@@ -86,7 +89,10 @@ public class TaggableListener {
 				objectContext.commitChanges();
 				
 				if (taggable.getEntityIdentifier().equals(Course.class.getSimpleName()) && solrClient != null) {
-					new ReindexCourses(cayenneService.newNonReplicatingContext(), solrClient, Collections.singleton(taggable.getEntityWillowId())).run();
+					new ReindexCourses(cayenneService.newNonReplicatingContext(), 
+							solrClient,
+							Collections.singleton(taggable.getEntityWillowId()),
+							courseService::getAvailableSiteKeys).run();
 				}
 			}
 		}

@@ -3,6 +3,7 @@ package ish.oncourse.services.persistence;
 import ish.math.MoneyType;
 import ish.oncourse.cayenne.WillowDataContextFactory;
 import ish.oncourse.listeners.IshVersionListener;
+import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.lifecycle.*;
 import ish.oncourse.services.site.IWebSiteService;
 import org.apache.cayenne.DataChannel;
@@ -23,7 +24,7 @@ public class CayenneService implements ICayenneService, RegistryShutdownListener
 
 	private static final Logger logger = LogManager.getLogger();
 
-	public CayenneService(ServerRuntime serverRuntime, IWebSiteService webSiteService) {
+	public CayenneService(ServerRuntime serverRuntime, IWebSiteService webSiteService, ICourseService courseService) {
 		logger.info("Starting CayenneService....");
 
 		this.cayenneRuntime = serverRuntime;
@@ -39,7 +40,7 @@ public class CayenneService implements ICayenneService, RegistryShutdownListener
 		cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addDefaultListener(listener);
 		cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addListener(new IshVersionListener());
 		cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addListener(new BinaryInfoRelationListener(webSiteService));
-		cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addListener(new TaggableListener(this));
+		cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addListener(new TaggableListener(this, courseService));
 		cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addListener(new QueuedTransactionListener(this));
 		cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addListener(new InvoiceListener());
 
