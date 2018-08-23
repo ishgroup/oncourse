@@ -4567,7 +4567,7 @@
 	</changeSet>
 
 	<changeSet id="311" author="artyom" runOnChange="false" context="production">
-		<preConditions onFail="MARK_RAN">				
+		<preConditions onFail="MARK_RAN">
 			<indexExists tableName="Preference" indexName="collegeId_name_uniq_idx"/>
 		</preConditions>
 		<sql>
@@ -4695,6 +4695,12 @@
 
 	<changeSet id="322" author="andrey" context="production" runOnChange="false">
 		<sqlFile path="org/quartz/impl/jdbcjobstore/tables_mysql_innodb.sql"/>
+	</changeSet>
+
+	<changeSet id="323" author="pnikanovich" context="production" runOnChange="false" runAlways="false">
+		<sql>
+			ALTER TABLE WebURLAlias ADD COLUMN matchType SMALLINT, ADD COLUMN specialPage SMALLINT;
+		</sql>
 	</changeSet>
 
 </databaseChangeLog>

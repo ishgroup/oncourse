@@ -22,6 +22,7 @@ import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.tutor.GetIsActiveTutor;
 import ish.oncourse.services.tutor.ITutorService;
 import ish.oncourse.services.voucher.IVoucherService;
+import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -38,7 +39,6 @@ import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
-import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -355,6 +355,13 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 				return new PageRenderRequestParameters(PageIdentifier.Page.getPageName(), new EmptyEventContext(), false);
 			}
 		}
+
+        String specialPage = SpecialWebPageMatcher
+				.valueOf(cayenneService.sharedContext(), QueryCacheStrategy.LOCAL_CACHE, webSiteService.getCurrentWebSite(), path)
+				.get();
+		if (specialPage != null) {
+		    return new PageRenderRequestParameters(specialPage, new EmptyEventContext(), false);
+        }
 
 		requestGlobals.getResponse().setStatus(404);
 

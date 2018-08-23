@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <data-map xmlns="http://cayenne.apache.org/schema/9/modelMap"
 	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	 xsi:schemaLocation="http://cayenne.apache.org/schema/9/modelMap http://cayenne.apache.org/schema/9/modelMap.xsd"
+	 xsi:schemaLocation="http://cayenne.apache.org/schema/9/modelMap https://cayenne.apache.org/schema/9/modelMap.xsd"
 	 project-version="9">
 	<property name="defaultPackage" value="ish.oncourse.model"/>
 	<property name="defaultSuperclass" value="WillowCayenneObject"/>
@@ -1432,8 +1432,10 @@
 		<db-attribute name="created" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isDefault" type="BIT" isMandatory="true"/>
+		<db-attribute name="matchType" type="SMALLINT" length="32"/>
 		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="redirectTo" type="VARCHAR" length="512"/>
+		<db-attribute name="specialPage" type="SMALLINT"/>
 		<db-attribute name="urlPath" type="VARCHAR" isMandatory="true" length="512"/>
 		<db-attribute name="webNodeId" type="BIGINT" length="19"/>
 		<db-attribute name="webSiteVersionId" type="BIGINT" isMandatory="true"/>
@@ -2684,8 +2686,10 @@
 	<obj-entity name="WebUrlAlias" className="ish.oncourse.model.WebUrlAlias" dbEntityName="WebURLAlias" superClassName="WillowCayenneObject">
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="default" type="boolean" db-attribute-path="isDefault"/>
+		<obj-attribute name="matchType" type="ish.common.types.RequestMatchType" db-attribute-path="matchType"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="redirectTo" type="java.lang.String" db-attribute-path="redirectTo"/>
+		<obj-attribute name="specialPage" type="ish.common.types.SpecialWebPage" db-attribute-path="specialPage"/>
 		<obj-attribute name="urlPath" type="java.lang.String" db-attribute-path="urlPath"/>
 		<post-add method-name="onPostAdd"/>
 	</obj-entity>

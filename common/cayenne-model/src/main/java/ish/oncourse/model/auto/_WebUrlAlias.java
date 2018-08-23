@@ -4,6 +4,8 @@ import java.util.Date;
 
 import org.apache.cayenne.exp.Property;
 
+import ish.common.types.MatchType;
+import ish.common.types.SpecialPage;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebSiteVersion;
 
@@ -19,8 +21,10 @@ public abstract class _WebUrlAlias extends WillowCayenneObject {
 
     public static final String CREATED_PROPERTY = "created";
     public static final String DEFAULT_PROPERTY = "default";
+    public static final String MATCH_TYPE_PROPERTY = "matchType";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String REDIRECT_TO_PROPERTY = "redirectTo";
+    public static final String SPECIAL_PAGE_PROPERTY = "specialPage";
     public static final String URL_PATH_PROPERTY = "urlPath";
     public static final String WEB_NODE_PROPERTY = "webNode";
     public static final String WEB_SITE_VERSION_PROPERTY = "webSiteVersion";
@@ -29,8 +33,10 @@ public abstract class _WebUrlAlias extends WillowCayenneObject {
 
     public static final Property<Date> CREATED = Property.create("created", Date.class);
     public static final Property<Boolean> DEFAULT = Property.create("default", Boolean.class);
+    public static final Property<MatchType> MATCH_TYPE = Property.create("matchType", MatchType.class);
     public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
     public static final Property<String> REDIRECT_TO = Property.create("redirectTo", String.class);
+    public static final Property<SpecialPage> SPECIAL_PAGE = Property.create("specialPage", SpecialPage.class);
     public static final Property<String> URL_PATH = Property.create("urlPath", String.class);
     public static final Property<WebNode> WEB_NODE = Property.create("webNode", WebNode.class);
     public static final Property<WebSiteVersion> WEB_SITE_VERSION = Property.create("webSiteVersion", WebSiteVersion.class);
@@ -50,6 +56,13 @@ public abstract class _WebUrlAlias extends WillowCayenneObject {
         return (value != null) ? value.booleanValue() : false;
     }
 
+    public void setMatchType(MatchType matchType) {
+        writeProperty("matchType", matchType);
+    }
+    public MatchType getMatchType() {
+        return (MatchType)readProperty("matchType");
+    }
+
     public void setModified(Date modified) {
         writeProperty("modified", modified);
     }
@@ -62,6 +75,13 @@ public abstract class _WebUrlAlias extends WillowCayenneObject {
     }
     public String getRedirectTo() {
         return (String)readProperty("redirectTo");
+    }
+
+    public void setSpecialPage(SpecialPage specialPage) {
+        writeProperty("specialPage", specialPage);
+    }
+    public SpecialPage getSpecialPage() {
+        return (SpecialPage)readProperty("specialPage");
     }
 
     public void setUrlPath(String urlPath) {
