@@ -1,5 +1,6 @@
 package ish.oncourse.solr.model
 
+import groovy.transform.AutoClone
 import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
@@ -8,10 +9,14 @@ import org.apache.solr.client.solrj.beans.Field
 @CompileStatic
 @EqualsAndHashCode
 @ToString
+@AutoClone
 class SCourseClass {
 
     @Field('classId')
     String id
+    
+    @Field('classId')
+    String siteKey
     
     @Field('doctype')
     String doctype = 'class'

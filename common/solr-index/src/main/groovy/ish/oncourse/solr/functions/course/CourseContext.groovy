@@ -8,6 +8,8 @@ import ish.oncourse.solr.model.SCourse
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.ResultIterator
 
+import java.util.function.Function
+
 /**
  * User: akoiro
  * Date: 23/10/17
@@ -16,7 +18,8 @@ class CourseContext {
     Course course
     ObjectContext context
     Date current = new Date()
-
+    Closure<String[]> availableSites
+    
     Closure<ResultIterator<Tag>> tags = CourseFunctions.Tags
     Closure<ResultIterator<CourseClass>> courseClasses = CourseFunctions.CourseClasses
     Closure<Observable<SCourse>> applyCourseClass = SCourseFunctions.addCourseClass
