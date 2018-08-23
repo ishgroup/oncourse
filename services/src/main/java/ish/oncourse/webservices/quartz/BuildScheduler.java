@@ -9,6 +9,7 @@ import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
 import ish.oncourse.services.sms.ISMSService;
+import ish.oncourse.webservices.ServicesModule;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -41,9 +42,9 @@ public class BuildScheduler {
 
 	private ServerRuntime serverRuntime;
 	private SolrClient solrClient;
-	private QuartzModule.ServiceProvider provider;
+	private ServicesModule.ServiceProvider provider;
 
-	public BuildScheduler serviceProvider(QuartzModule.ServiceProvider provider) {
+	public BuildScheduler serviceProvider(ServicesModule.ServiceProvider provider) {
 		this.provider = provider;
 		return this;
 	}
@@ -75,7 +76,7 @@ public class BuildScheduler {
 			Scheduler scheduler = factory.getScheduler(QUARTZ_SERVICES_SCHEDULER_NAME);
 			scheduler.getContext().put(QUARTZ_CONTEXT_SERVER_RUNTIME_KEY, serverRuntime);
 			scheduler.getContext().put(QUARTZ_CONTEXT_SOLR_CLIENT_KEY, solrClient);
-			scheduler.getContext().put(QuartzModule.ServiceProvider.class.getSimpleName(), provider);
+			scheduler.getContext().put(ServicesModule.ServiceProvider.class.getSimpleName(), provider);
 			return scheduler;
 		} catch (InvalidConfigurationException | SchedulerException e) {
 			throw new IllegalArgumentException(e);

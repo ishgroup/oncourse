@@ -12,6 +12,7 @@ import ish.oncourse.services.preference.PreferenceControllerFactory;
 import ish.oncourse.services.sms.ISMSService;
 import ish.oncourse.services.template.WillowMessagingTemplateEngine;
 import ish.oncourse.services.template.WillowMessagingTemplateResponder;
+import ish.oncourse.webservices.ServicesModule;
 import ish.oncourse.webservices.quartz.QuartzModule;
 import ish.persistence.CommonPreferenceController;
 import org.apache.cayenne.CayenneRuntimeException;
@@ -64,7 +65,7 @@ public class SMSJob implements Job {
 		
 		if (jobExecutionContext != null) {
 			try {
-				QuartzModule.ServiceProvider provider = (QuartzModule.ServiceProvider) jobExecutionContext.getScheduler().getContext().get(QuartzModule.ServiceProvider.class.getSimpleName());
+				ServicesModule.ServiceProvider provider = (ServicesModule.ServiceProvider) jobExecutionContext.getScheduler().getContext().get(ServicesModule.ServiceProvider.class.getSimpleName());
 				messagePersonService = provider.get(IMessagePersonService.class);
 				smsService = provider.get(ISMSService.class);
 				prefFactory = provider.get(PreferenceControllerFactory.class);

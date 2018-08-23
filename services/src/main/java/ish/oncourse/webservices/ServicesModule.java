@@ -101,6 +101,12 @@ public class ServicesModule extends ConfigModule {
 	public CommitLogModuleEx createCommitLogModule(Injector injector) {
 		return new CommitLogModuleEx(new SolrUpdateCourseDocumentsListener().injector(injector));
 	}
+
+	@Singleton
+	@Provides
+	public ServiceProvider createServiceProvider(MappedFilter<WillowTapestryFilter> filter) {
+		return new ServiceProvider(filter);
+	}
 	
 	@Override
 	public void configure(Binder binder) {
@@ -112,6 +118,22 @@ public class ServicesModule extends ConfigModule {
 				.addMappedFilter(TAPESTRY_FILTER)
 				.addMappedServlet(CXF_SERVLET)
 				.addMappedServlet(new MappedServlet<>(new ISHHealthCheckServlet(), ISHHealthCheckServlet.urlPatterns, ISHHealthCheckServlet.SERVLET_NAME));
+	}
+
+
+	
+	public static class ServiceProvider {
+
+		WillowTapestryFilter tapestry;
+
+		ServiceProvider(MappedFilter<WillowTapestryFilter> filter) {
+			tapestry = filter.getFilter();
+		}
+
+		public <T> T get(Class<T> c) {
+			return tapestry.getService(c);
+		}
+
 	}
 	
 	static class CommitLogModuleEx implements Module {

@@ -1,6 +1,7 @@
 package ish.oncourse.webservices.jobs;
 
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.webservices.ServicesModule;
 import ish.oncourse.webservices.quartz.QuartzModule;
 import org.apache.cayenne.DataRow;
 import org.apache.cayenne.ObjectContext;
@@ -58,7 +59,7 @@ public class UpdateAmountOwingJob implements Job {
 
 		if (jobExecutionContext != null) {
 			try {
-				QuartzModule.ServiceProvider provider = (QuartzModule.ServiceProvider) jobExecutionContext.getScheduler().getContext().get(QuartzModule.ServiceProvider.class.getSimpleName());
+				ServicesModule.ServiceProvider provider = (ServicesModule.ServiceProvider) jobExecutionContext.getScheduler().getContext().get(ServicesModule.ServiceProvider.class.getSimpleName());
 				cayenneService = provider.get(ICayenneService.class);			
 			} catch (Exception e) {
 				logger.catching(e);

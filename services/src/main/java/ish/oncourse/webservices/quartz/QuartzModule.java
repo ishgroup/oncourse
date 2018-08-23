@@ -6,16 +6,10 @@ package ish.oncourse.webservices.quartz;
 import com.google.inject.*;
 import com.google.inject.multibindings.Multibinder;
 import io.bootique.ConfigModule;
-import io.bootique.jetty.MappedFilter;
 import io.bootique.shutdown.ShutdownManager;
 import ish.oncourse.configuration.Configuration;
-import ish.oncourse.services.message.IMessagePersonService;
-import ish.oncourse.services.payment.IPaymentService;
-import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.preference.PreferenceControllerFactory;
-import ish.oncourse.services.sms.ISMSService;
 import ish.oncourse.solr.BuildSolrClient;
-import ish.oncourse.tapestry.WillowTapestryFilter;
+import ish.oncourse.webservices.ServicesModule;
 import ish.oncourse.webservices.jobs.PaymentInExpireJob;
 import ish.oncourse.webservices.jobs.SMSJob;
 import ish.oncourse.webservices.jobs.UpdateAmountOwingJob;
@@ -61,13 +55,13 @@ public class QuartzModule extends ConfigModule {
 	@Singleton
 	public Scheduler scheduler(ServerRuntime serverRuntime,
 							   SolrClient solrClient,
-							   ShutdownManager shutdownManager, MappedFilter<WillowTapestryFilter> filter
+							   ShutdownManager shutdownManager, ServicesModule.ServiceProvider serviceProvider
 	) throws Exception {
 		
 		Scheduler scheduler = new BuildScheduler()
 				.serverRuntime(serverRuntime)
 				.solrClient(solrClient)
-				.serviceProvider(new ServiceProvider(filter))
+				.serviceProvider(serviceProvider)
 				.build();
 
 		scheduler.start();
@@ -149,20 +143,6 @@ public class QuartzModule extends ConfigModule {
 
 		};
 		Arrays.stream(builds).forEach((b) -> b.build(scheduler));
-	}
-
-	public static class ServiceProvider {
-		
-		WillowTapestryFilter tapestry;
-				
-		ServiceProvider(MappedFilter<WillowTapestryFilter> filter) {
-			tapestry = filter.getFilter();
-		}
-		
-		public <T> T get(Class<T> c) {
-			return tapestry.getService(c);
-		} 
-		
 	}
 
 }

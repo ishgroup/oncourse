@@ -15,6 +15,7 @@ import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
 import ish.oncourse.util.payment.*;
 import ish.oncourse.utils.PaymentInUtil;
+import ish.oncourse.webservices.ServicesModule;
 import ish.oncourse.webservices.quartz.QuartzModule;
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.ObjectContext;
@@ -73,7 +74,7 @@ public class PaymentInExpireJob implements Job {
 	public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
 		if (jobExecutionContext != null) {
 			try {
-				QuartzModule.ServiceProvider provider = (QuartzModule.ServiceProvider) jobExecutionContext.getScheduler().getContext().get(QuartzModule.ServiceProvider.class.getSimpleName());
+				ServicesModule.ServiceProvider provider = (ServicesModule.ServiceProvider) jobExecutionContext.getScheduler().getContext().get(ServicesModule.ServiceProvider.class.getSimpleName());
 				cayenneService = provider.get(ICayenneService.class);
 				paymentService = provider.get(IPaymentService.class);
 				prefFactory = provider.get(PreferenceControllerFactory.class);
