@@ -117,7 +117,7 @@ public class CourseService implements ICourseService {
 
 	@Override
 	public String[] getAvailableSiteKeys(Course course) {
-		return (String[]) course.getCollege().getWebSites().stream().filter(s -> availableByRootTag(course, s)).map(WebSite::getSiteKey).toArray();
+		return course.getCollege().getWebSites().stream().filter(s -> availableByRootTag(course, s)).map(WebSite::getSiteKey).toArray(String[]::new);
 	}
 
 	@Override
