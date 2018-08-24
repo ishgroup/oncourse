@@ -2686,10 +2686,10 @@
 	<obj-entity name="WebUrlAlias" className="ish.oncourse.model.WebUrlAlias" dbEntityName="WebURLAlias" superClassName="WillowCayenneObject">
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="default" type="boolean" db-attribute-path="isDefault"/>
-		<obj-attribute name="matchType" type="ish.common.types.RequestMatchType" db-attribute-path="matchType"/>
+		<obj-attribute name="matchType" type="ish.oncourse.specialpages.RequestMatchType" db-attribute-path="matchType"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="redirectTo" type="java.lang.String" db-attribute-path="redirectTo"/>
-		<obj-attribute name="specialPage" type="ish.common.types.SpecialWebPage" db-attribute-path="specialPage"/>
+		<obj-attribute name="specialPage" type="ish.oncourse.specialpages.SpecialWebPage" db-attribute-path="specialPage"/>
 		<obj-attribute name="urlPath" type="java.lang.String" db-attribute-path="urlPath"/>
 		<post-add method-name="onPostAdd"/>
 	</obj-entity>

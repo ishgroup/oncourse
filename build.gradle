@@ -3,7 +3,7 @@ buildscript {
 		cayenneVersion = '4.0.B1'
 		ehcacheVersion = '3.4.0'
 		log4j2Version = '2.8.2'
-        waCommonWebservicesClientVersion = '21'
+        waCommonWebservicesClientVersion = '20'
 		solrVersion = '7.1.0'
 		groovyVersion = '2.4.12'
 		mariadbVersion = '2.2.2'

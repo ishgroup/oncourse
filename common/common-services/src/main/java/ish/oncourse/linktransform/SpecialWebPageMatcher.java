@@ -9,8 +9,8 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.QueryCacheStrategy;
 
-import static ish.common.types.RequestMatchType.EXACT;
-import static ish.common.types.RequestMatchType.STARTS_WITH;
+import static ish.oncourse.specialpages.RequestMatchType.EXACT;
+import static ish.oncourse.specialpages.RequestMatchType.STARTS_WITH;
 
 public class SpecialWebPageMatcher {
 
