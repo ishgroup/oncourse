@@ -6,7 +6,7 @@ import ish.oncourse.API;
 public enum SpecialWebPage implements DisplayableExtendedEnumeration<Integer> {
 
     @API
-    TUTORS(1, "ui/Tutors");
+    TUTORS(1, "ui/tutors/Tutors");
 
     private int value;
     private String templatePath;
