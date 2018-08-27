@@ -24,4 +24,9 @@ sourceSets {
 
 build.dependsOn(webpack)
 
+task buildLogin(type: NodeTask, dependsOn: 'yarn_install') {
+    script = file('node_modules/.bin/webpack')
+    args = ['-p', '--progress', '--env.NODE_ENV', 'production', '--config', 'webpack.login.config.js']
+}
+
 processResources.dependsOn(":server-api:swagger")

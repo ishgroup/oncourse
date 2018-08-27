@@ -246,11 +246,11 @@ task webstartDebug(dependsOn: bundle_webstart, type: Exec) {
 }
 
 processResources {
-	dependsOn ":client-html:build"
+	dependsOn ":client-html:buildLogin"
 	doLast {
 		copy {
-			from('../client-html/build/assets') {
-				include 'fonts/*.*', 'login.html', 'login.css', 'login.js'
+			from('../client-html/build/login') {
+				include '**/*.*'
 			}
 			into 'build/resources/main/static'}
 	}
