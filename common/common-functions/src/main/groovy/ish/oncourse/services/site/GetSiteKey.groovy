@@ -4,6 +4,9 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 class GetSiteKey {
+    
+    public static final String TECHNICAL_DOMAIN = "oncourse.cc"
+    
     private static final Pattern TECHNICAL_SITES_DOMAIN_PATTERN = Pattern
             .compile("([a-z0-9,-]+)([.].+[.]oncourse[.]net[.]au)")
 

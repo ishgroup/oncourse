@@ -1,0 +1,3 @@
+<t:if test="courseClass" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"  >
+    <span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="true" isList="true"></span>
+</t:if>

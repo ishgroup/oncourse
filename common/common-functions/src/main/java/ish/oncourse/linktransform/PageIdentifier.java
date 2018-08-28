@@ -103,6 +103,8 @@ public enum PageIdentifier
 
 	KioskRoom(new PrefixMatcher("/room/kiosk/"), "ui/kiosk/KioskPage"),
 
+	Render("/render", "ui/internal/Render"),
+	
 	Cvv("/ui/cvv", "ui/Cvv");
 
 	private  static final PageIdentifier[] sortedValues;
