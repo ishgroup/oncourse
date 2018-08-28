@@ -8,5 +8,5 @@ package ish.oncourse.solr;
  * Date: 5/6/18
  */
 public enum SolrCollection {
-	courses, suburbs, tags
+	courses, suburbs, tags, classes
 }
