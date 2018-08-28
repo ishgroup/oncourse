@@ -3,9 +3,11 @@ package ish.oncourse.solr.functions.course
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.schedulers.Schedulers
+import ish.oncourse.linktransform.PageIdentifier
 import ish.oncourse.model.Course
 import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Tag
+
 import ish.oncourse.solr.RXObservableFromIterable
 import ish.oncourse.solr.model.*
 import org.apache.cayenne.ResultIterator
@@ -17,13 +19,19 @@ import org.apache.logging.log4j.Logger
 import java.util.concurrent.Callable
 import java.util.function.Function
 
+import static ish.oncourse.linktransform.PageIdentifier.Render
+import static ish.oncourse.services.site.GetSiteKey.TECHNICAL_DOMAIN
+import static ish.oncourse.solr.Constants.CLASS_COMPONENT
+import static ish.oncourse.solr.Constants.PARAM_COMPONENT
+import static ish.oncourse.solr.Constants.PARAM_ID
+
 /**
  * User: akoiro
  * Date: 5/10/17
  */
 class SCourseFunctions {
     private static final Logger logger = LogManager.logger
-
+    
     static final Observable<SCourse> SCourses(Date current = new Date(),
                                               Scheduler scheduler = Schedulers.io(),
                                               Callable<Iterable<Course>> courses,
@@ -79,7 +87,7 @@ class SCourseFunctions {
             SCourseClass copy  = sClass.clone()
             copy.siteKey = key
             try {
-                copy.content = new URL("https://${key}.oncourse.cc/render/class/${sClass.classCode}").text
+                copy.content = new URL("https://${key}.${TECHNICAL_DOMAIN}${Render.matcher.pattern}?$PARAM_COMPONENT=$CLASS_COMPONENT&$PARAM_ID=${sClass.id}").text
             } catch (Exception e) {
                 logger.error("Can not get html content for class id: $sClass.id, web site key: $key")
                 logger.catching(e)
