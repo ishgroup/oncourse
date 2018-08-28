@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh "./gradlew admin:build -Dbuild_number=${env.BUILD_NUMBER} -PreleaseVersion=${params.version}"
+                sh "./gradlew admin:publishExecutablesPublicationToSnapshotsRepository -Dbuild_number=${env.BUILD_NUMBER} -PreleaseVersion=${params.version}"
                 junit 'admin/build/test-results/**/*.xml'
             }
         }
