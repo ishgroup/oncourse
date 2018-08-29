@@ -23,8 +23,8 @@ import static org.mockito.Mockito.when
 class GetCourseTestData {
     Faker faker = new Faker()
     Date current = new Date()
-    Course course = mock(Course)
-    College college = mock(College)
+    Course course = mockCourse()
+    College college = mockCollege()
 
     GetCourseTestData() {
         when(college.id).thenReturn(faker.number().numberBetween(1000L, 2000L))
@@ -95,12 +95,24 @@ class GetCourseTestData {
     private CourseClass mockCourseClass() {
         CourseClass courseClass = mock(CourseClass)
         when(courseClass.course).thenReturn(course)
+        when(courseClass.college).thenReturn(college)
         when(courseClass.feeExGst).thenReturn(new Money(999, 99))
         when(courseClass.code).thenReturn("CLASS")
         when(courseClass.isHasAvailableEnrolmentPlaces()).thenReturn(true)
         courseClass
     }
 
+    Course mockCourse() {
+        Course course = mock(Course)
+        when(course.id).thenReturn(1l)
+        course
+    }
+
+    College mockCollege() {
+        College college = mock(College)
+        when(college.id).thenReturn(1l)
+        college
+    }
 
     Session mockSession(int sHours, int eHours) {
         Session session = mock(Session)
