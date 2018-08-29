@@ -103,7 +103,7 @@ public enum PageIdentifier
 
 	KioskRoom(new PrefixMatcher("/room/kiosk/"), "ui/kiosk/KioskPage"),
 
-	Render("/render", "ui/internal/Render"),
+	Render("/ish.render", "ui/internal/Render"),
 	
 	Cvv("/ui/cvv", "ui/Cvv");
 
