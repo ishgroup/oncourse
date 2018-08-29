@@ -23,9 +23,9 @@ import java.util.concurrent.atomic.AtomicReference;
 public class ReindexCollection<E> implements Runnable {
 	private static Logger logger = LogManager.getLogger();
 	private Observable<E> collectDoc;
-	private SolrClient solrClient;
-	private SolrCollection collection;
-	private AtomicLong total = new AtomicLong(0);
+	protected SolrClient solrClient;
+	protected SolrCollection collection;
+	protected AtomicLong total = new AtomicLong(0);
 	private AtomicReference<Throwable> error = new AtomicReference<>();
 
 	public ReindexCollection(SolrClient solrClient,
@@ -69,12 +69,12 @@ public class ReindexCollection<E> implements Runnable {
 		}
 	}
 
-	private UpdateResponse addBean(E bean) throws IOException, SolrServerException {
+	protected UpdateResponse addBean(E bean) throws IOException, SolrServerException {
 		total.incrementAndGet();
 		return solrClient.addBean(collection.name(), bean);
 	}
 
-	private void commit() throws IOException, SolrServerException {
+	protected void commit() throws IOException, SolrServerException {
 		logger.debug("Total Processed \"{}\" for \"{}\"...", total.intValue(), collection.name());
 		solrClient.commit(collection.name());
 	}

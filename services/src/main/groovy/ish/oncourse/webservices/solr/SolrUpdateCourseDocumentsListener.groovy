@@ -100,6 +100,7 @@ class SolrUpdateCourseDocumentsListener extends ish.oncourse.solr.update.listene
             List<String> stringIds = courseIdToRemove.collect {it.toString()}
             try {
                 getSolr().deleteById(SolrCollection.courses.name(), stringIds)
+                solrClient.deleteByQuery(SolrCollection.classes.name(), "courseId:$stringIds")
                 getSolr().commit(SolrCollection.courses.name())
             } catch (Exception e) {
                 logger.error("Exception occurred during courses deletion: ${stringIds.join(',')}")
