@@ -15,7 +15,7 @@ class SCourseClass {
     @Field('classId')
     String id
     
-    @Field('classId')
+    @Field('siteKey')
     String siteKey
     
     @Field('doctype')
