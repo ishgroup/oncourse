@@ -4,6 +4,7 @@ import ish.oncourse.model.College
 import ish.oncourse.model.Course
 import ish.oncourse.solr.model.SContact
 import ish.oncourse.solr.model.SCourse
+import ish.oncourse.solr.model.SCourseClass
 import org.junit.Test
 
 import static ish.oncourse.solr.functions.course.CourseTestFunctions.emptyCourseContext
@@ -50,9 +51,14 @@ class SCourseFunctionsTest {
                     ContactFunctionsTest.contact()
             ].collect { c -> c.getSContact() }
             SCourse sCourse = new SCourse()
-
+            
+            SCourseClass scc = new SCourseClass()
+            
+            scc.tutorId = contacts.tutorId.unique().findAll { it != null }
+            scc.tutor = contacts.name.unique().findAll { it != null }
+            
             use(SCourseFunctions) {
-                sCourse = sCourse.addContacts(contacts)
+                sCourse = sCourse.addContacts(scc)
                 assertEquals(contacts.tutorId, sCourse.tutorId)
                 assertEquals(contacts.name, sCourse.tutor)
             }
