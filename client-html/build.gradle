@@ -29,4 +29,4 @@ task buildLogin(type: NodeTask, dependsOn: ['yarn_install', ':server-api:swagger
     args = ['-p', '--progress', '--env.NODE_ENV', 'production', '--config', 'webpack.login.config.js']
 }
 
-processResources.dependsOn(':server-api:swagger')
+processResources.dependsOn(':server-api:swagger', ":server:generateQueryLanguageModel")
