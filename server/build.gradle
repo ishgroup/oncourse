@@ -1,6 +1,5 @@
 apply plugin: 'groovy'
 apply plugin: 'apidoc'
-apply plugin: 'queryLanguageModel'
 apply plugin: 'cayenne'
 
 apply from: "$rootDir/gradle/bootique.gradle"
@@ -185,14 +184,6 @@ dependencies {
 apiDocs {
 	source = sourceSets.main.groovy.plus(zipTree(configurations.apidocSource.find { it.name.startsWith("waCommon") }))
 	destinationDir = reporting.file("api-docs")
-}
-
-generateQueryLanguageModel {
-    source = sourceSets.main.groovy
-        .plus(zipTree(configurations.apidocSource.find { it.name.startsWith("waCommon") }))
-        .plus(fileTree("$buildDir/../../common/src/main/java"))
-    
-    destinationDir = file("$buildDir/../../client-html/build/generated-sources")
 }
 
 task apidocsBundle(type: Jar) {

@@ -1,9 +1,18 @@
 apply plugin: 'com.moowork.node'
+apply plugin: 'queryLanguageModel'
 
 node {
     version = '9.3.0'
     npmVersion = '5.5.1'
     download = true
+}
+
+configurations {
+    queryLanguageModelSource
+}
+
+dependencies {
+    queryLanguageModelSource "ish.oncourse.willow:waCommon:$waCommonWebservicesClientVersion:sources"
 }
 
 task webpack(type: NodeTask, dependsOn: 'yarn_install') {
@@ -29,4 +38,11 @@ task buildLogin(type: NodeTask, dependsOn: ['yarn_install', ':server-api:swagger
     args = ['-p', '--progress', '--env.NODE_ENV', 'production', '--config', 'webpack.login.config.js']
 }
 
-processResources.dependsOn(':server-api:swagger', ":server:generateQueryLanguageModel")
+generateQueryLanguageModel {
+    source = zipTree(configurations.queryLanguageModelSource.find { it.name.startsWith("waCommon") })
+        .plus(fileTree("$buildDir/../../common/src/main/java"))
+
+    destinationDir = file("$buildDir/generated-sources")
+}
+
+processResources.dependsOn(':server-api:swagger', "generateQueryLanguageModel")
