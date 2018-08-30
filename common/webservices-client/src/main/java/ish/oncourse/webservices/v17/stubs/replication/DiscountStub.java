@@ -17,36 +17,36 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="discountStub">
- *   &lt;complexContent>
- *     &lt;extension base="{http://repl.v17.soap.webservices.oncourse.ish/}replicationStub">
- *       &lt;sequence>
- *         &lt;element name="code" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="combinationType" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="detail" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="discountAmount" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
- *         &lt;element name="discountRate" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
- *         &lt;element name="maximumDiscount" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
- *         &lt;element name="minimumDiscount" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
- *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="roundingMode" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="studentAge" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="studentAgeOperator" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="studentEnrolledWithinDays" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="studentPostcodes" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="validFrom" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
- *         &lt;element name="validTo" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
- *         &lt;element name="discountType" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="hideOnWeb" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="availableOnWeb" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="minEnrolments" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="minValue" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
- *         &lt;element name="validFromOffset" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="validToOffset" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="discountStub"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{http://repl.v17.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="code" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="combinationType" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="detail" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="discountAmount" type="{http://www.w3.org/2001/XMLSchema}decimal"/&gt;
+ *         &lt;element name="discountRate" type="{http://www.w3.org/2001/XMLSchema}decimal"/&gt;
+ *         &lt;element name="maximumDiscount" type="{http://www.w3.org/2001/XMLSchema}decimal"/&gt;
+ *         &lt;element name="minimumDiscount" type="{http://www.w3.org/2001/XMLSchema}decimal"/&gt;
+ *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="roundingMode" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="studentAge" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="studentAgeOperator" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="studentEnrolledWithinDays" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="studentPostcodes" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="validFrom" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
+ *         &lt;element name="validTo" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
+ *         &lt;element name="discountType" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="hideOnWeb" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="availableOnWeb" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="minEnrolments" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="minValue" type="{http://www.w3.org/2001/XMLSchema}decimal"/&gt;
+ *         &lt;element name="validFromOffset" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="validToOffset" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -83,7 +83,7 @@ public class DiscountStub
     @XmlElement(required = true)
     protected String code;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean combinationType;
     @XmlElement(required = true)
@@ -99,53 +99,53 @@ public class DiscountStub
     @XmlElement(required = true)
     protected String name;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer roundingMode;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer studentAge;
     @XmlElement(required = true)
     protected String studentAgeOperator;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer studentEnrolledWithinDays;
     @XmlElement(required = true)
     protected String studentPostcodes;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter1 .class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "dateTime")
     protected Date validFrom;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter1 .class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "dateTime")
     protected Date validTo;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer discountType;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean hideOnWeb;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean availableOnWeb;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer minEnrolments;
     @XmlElement(required = true)
     protected BigDecimal minValue;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer validFromOffset;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer validToOffset;
 

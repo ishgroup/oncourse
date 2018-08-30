@@ -15,19 +15,19 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="voucherPaymentInStub">
- *   &lt;complexContent>
- *     &lt;extension base="{http://repl.v13.soap.webservices.oncourse.ish/}replicationStub">
- *       &lt;sequence>
- *         &lt;element name="paymentInId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="voucherId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="enrolmentsCount" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="status" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="invoiceLineId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="voucherPaymentInStub"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{http://repl.v13.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="paymentInId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="voucherId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="enrolmentsCount" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="status" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="invoiceLineId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -45,23 +45,23 @@ public class VoucherPaymentInStub
 {
 
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long paymentInId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long voucherId;
     @XmlElement(required = true, type = String.class, nillable = true)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer enrolmentsCount;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer status;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long invoiceLineId;
 

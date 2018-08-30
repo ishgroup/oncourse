@@ -17,32 +17,32 @@ import ish.oncourse.webservices.util.GenericEnrolmentStub;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="enrolmentStub">
- *   &lt;complexContent>
- *     &lt;extension base="{http://repl.v13.soap.webservices.oncourse.ish/}replicationStub">
- *       &lt;sequence>
- *         &lt;element name="reasonForStudy" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="source" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="status" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="studentId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="courseClassId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="invoiceLineId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="feeHelpStatus" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="creditOfferedValue" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="creditProvider" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="creditUsedValue" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="creditType" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="creditFoeId" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="creditLevel" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="creditProviderType" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="feeStatus" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="creditTotal" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="feeHelpAmount" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
- *         &lt;element name="confirmationStatus" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="enrolmentStub"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{http://repl.v13.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="reasonForStudy" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="source" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="status" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="studentId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="courseClassId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="invoiceLineId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="feeHelpStatus" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="creditOfferedValue" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="creditProvider" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="creditUsedValue" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="creditType" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="creditFoeId" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="creditLevel" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="creditProviderType" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="feeStatus" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="creditTotal" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="feeHelpAmount" type="{http://www.w3.org/2001/XMLSchema}decimal"/&gt;
+ *         &lt;element name="confirmationStatus" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -74,7 +74,7 @@ public class EnrolmentStub
 {
 
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer reasonForStudy;
     @XmlElement(required = true)
@@ -82,19 +82,19 @@ public class EnrolmentStub
     @XmlElement(required = true)
     protected String status;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long studentId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long courseClassId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long invoiceLineId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer feeHelpStatus;
     @XmlElement(required = true)
@@ -104,31 +104,31 @@ public class EnrolmentStub
     @XmlElement(required = true)
     protected String creditUsedValue;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer creditType;
     @XmlElement(required = true)
     protected String creditFoeId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer creditLevel;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer creditProviderType;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer feeStatus;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer creditTotal;
     @XmlElement(required = true)
     protected BigDecimal feeHelpAmount;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer confirmationStatus;
 

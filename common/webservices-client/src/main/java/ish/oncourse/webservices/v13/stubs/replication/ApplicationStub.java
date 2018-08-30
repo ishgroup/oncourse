@@ -17,22 +17,22 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="applicationStub">
- *   &lt;complexContent>
- *     &lt;extension base="{http://repl.v13.soap.webservices.oncourse.ish/}replicationStub">
- *       &lt;sequence>
- *         &lt;element name="courseId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="studentId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="source" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="status" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="enrolBy" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
- *         &lt;element name="feeOverride" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
- *         &lt;element name="reason" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="confirmationStatus" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="applicationStub"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{http://repl.v13.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="courseId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="studentId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="source" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="status" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="enrolBy" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
+ *         &lt;element name="feeOverride" type="{http://www.w3.org/2001/XMLSchema}decimal"/&gt;
+ *         &lt;element name="reason" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="confirmationStatus" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -53,21 +53,21 @@ public class ApplicationStub
 {
 
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long courseId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long studentId;
     @XmlElement(required = true)
     protected String source;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer status;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter1 .class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "dateTime")
     protected Date enrolBy;
     @XmlElement(required = true)
@@ -75,7 +75,7 @@ public class ApplicationStub
     @XmlElement(required = true)
     protected String reason;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer confirmationStatus;
 

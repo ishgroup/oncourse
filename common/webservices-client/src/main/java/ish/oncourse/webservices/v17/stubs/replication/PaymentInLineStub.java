@@ -16,17 +16,17 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="paymentInLineStub">
- *   &lt;complexContent>
- *     &lt;extension base="{http://repl.v17.soap.webservices.oncourse.ish/}replicationStub">
- *       &lt;sequence>
- *         &lt;element name="amount" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
- *         &lt;element name="invoiceId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="paymentInId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="paymentInLineStub"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{http://repl.v17.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="amount" type="{http://www.w3.org/2001/XMLSchema}decimal"/&gt;
+ *         &lt;element name="invoiceId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="paymentInId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -44,11 +44,11 @@ public class PaymentInLineStub
     @XmlElement(required = true)
     protected BigDecimal amount;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long invoiceId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long paymentInId;
 

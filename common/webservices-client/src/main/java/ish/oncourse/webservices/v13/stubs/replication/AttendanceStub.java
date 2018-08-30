@@ -16,21 +16,21 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="attendanceStub">
- *   &lt;complexContent>
- *     &lt;extension base="{http://repl.v13.soap.webservices.oncourse.ish/}replicationStub">
- *       &lt;sequence>
- *         &lt;element name="attendanceType" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="sessionId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="studentId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="durationMinutes" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/>
- *         &lt;element name="note" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="markedByTutorId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="markedByTutorDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="attendanceStub"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{http://repl.v13.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="attendanceType" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="sessionId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="studentId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="durationMinutes" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/&gt;
+ *         &lt;element name="note" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="markedByTutorId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="markedByTutorDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -50,28 +50,28 @@ public class AttendanceStub
 {
 
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer attendanceType;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long sessionId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long studentId;
     @XmlElement(type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer durationMinutes;
     protected String note;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long markedByTutorId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter1 .class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "dateTime")
     protected Date markedByTutorDate;
 

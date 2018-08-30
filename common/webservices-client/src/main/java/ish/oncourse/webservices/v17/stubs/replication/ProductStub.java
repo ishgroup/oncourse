@@ -17,26 +17,26 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="productStub">
- *   &lt;complexContent>
- *     &lt;extension base="{http://repl.v17.soap.webservices.oncourse.ish/}replicationStub">
- *       &lt;sequence>
- *         &lt;element name="sku" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="incomeAccountId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="isOnSale" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="isWebVisible" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="notes" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="priceExTax" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
- *         &lt;element name="taxAmount" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
- *         &lt;element name="taxAdjustment" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
- *         &lt;element name="taxId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="type" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="productStub"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{http://repl.v17.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="sku" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="incomeAccountId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="isOnSale" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="isWebVisible" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="notes" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="priceExTax" type="{http://www.w3.org/2001/XMLSchema}decimal"/&gt;
+ *         &lt;element name="taxAmount" type="{http://www.w3.org/2001/XMLSchema}decimal"/&gt;
+ *         &lt;element name="taxAdjustment" type="{http://www.w3.org/2001/XMLSchema}decimal"/&gt;
+ *         &lt;element name="taxId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="type" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -70,15 +70,15 @@ public class ProductStub
     @XmlElement(required = true)
     protected String description;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long incomeAccountId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean isOnSale;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean isWebVisible;
     @XmlElement(required = true)
@@ -92,11 +92,11 @@ public class ProductStub
     @XmlElement(required = true)
     protected BigDecimal taxAdjustment;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long taxId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer type;
 

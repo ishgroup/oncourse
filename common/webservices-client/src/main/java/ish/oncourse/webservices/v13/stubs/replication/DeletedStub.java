@@ -13,14 +13,14 @@ import ish.oncourse.webservices.util.GenericDeletedStub;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="deletedStub">
- *   &lt;complexContent>
- *     &lt;extension base="{http://repl.v13.soap.webservices.oncourse.ish/}replicationStub">
- *       &lt;sequence>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="deletedStub"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{http://repl.v13.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *       &lt;sequence&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 

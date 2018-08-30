@@ -15,23 +15,23 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="scriptStub">
- *   &lt;complexContent>
- *     &lt;extension base="{http://repl.v17.soap.webservices.oncourse.ish/}replicationStub">
- *       &lt;sequence>
- *         &lt;element name="schedule" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="enabled" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="entityClass" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="entityEventType" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="script" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="triggerType" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="systemEventType" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="scriptStub"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{http://repl.v17.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="schedule" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="enabled" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="entityClass" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="entityEventType" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="script" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="triggerType" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="systemEventType" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -55,13 +55,13 @@ public class ScriptStub
     @XmlElement(required = true)
     protected String schedule;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean enabled;
     @XmlElement(required = true)
     protected String entityClass;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer entityEventType;
     @XmlElement(required = true)
@@ -69,13 +69,13 @@ public class ScriptStub
     @XmlElement(required = true)
     protected String script;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer triggerType;
     @XmlElement(required = true)
     protected String description;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer systemEventType;
 

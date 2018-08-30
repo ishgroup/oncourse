@@ -15,19 +15,19 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="tutorAttendanceStub">
- *   &lt;complexContent>
- *     &lt;extension base="{http://repl.v13.soap.webservices.oncourse.ish/}replicationStub">
- *       &lt;sequence>
- *         &lt;element name="attendanceType" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="sessionId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="tutorId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="durationMinutes" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="note" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="tutorAttendanceStub"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{http://repl.v13.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="attendanceType" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="sessionId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="tutorId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="durationMinutes" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="note" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -45,19 +45,19 @@ public class TutorAttendanceStub
 {
 
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer attendanceType;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long sessionId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long tutorId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer durationMinutes;
     @XmlElement(required = true)

@@ -18,11 +18,17 @@ configurations {
 }
  
 dependencies{
-    ws "org.apache.cxf:cxf-tools:2.6.16",
-            "org.apache.cxf:cxf-tools-wsdlto-databinding-jaxb:2.6.16",
-            "org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:2.6.16",
-            "org.jvnet.jaxb2_commons:jaxb2-basics:0.6.5"
-    "log4j:log4j:1.2.17"
+    ws      "org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:3.2.6",
+            "org.apache.cxf:cxf-tools-wsdlto-databinding-jaxb:3.2.6",
+            "org.apache.cxf:cxf-xjc-plugin:3.2.2",
+            "org.jvnet.jaxb2_commons:jaxb2-basics:1.11.1", // provides Xinheritance
+            "javax.activation:activation:1.1.1",
+            "com.sun.xml.bind:jaxb-core:2.3.0.1",
+            "com.sun.xml.bind:jaxb-impl:2.3.0.1",
+            "javax.xml.bind:jaxb-api:2.3.0",
+            "javax.xml.ws:jaxws-api:2.3.0",
+            "javax.annotation:javax.annotation-api:1.3.2",
+            "org.glassfish:javax.jws:3.1.1"
 }
 
 task wsdl2Java() {
@@ -37,7 +43,7 @@ task wsdl2Java() {
             javaexec {
                 classpath configurations.ws
                 main = 'org.apache.cxf.tools.wsdlto.WSDLToJava'
-                args = ['-xjc', '-xjc-Xinheritance',
+                args = ['-xjc-Xinheritance',
                         '-wsdlLocation', "/wsdl/v${v}_replication.wsdl",
                         '-p', "ish.oncourse.webservices.v${v}.stubs.replication",
                         '-b', "${wsdlDir}/replication${v}_binding.xml",

@@ -15,21 +15,21 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="binaryInfoRelationStub">
- *   &lt;complexContent>
- *     &lt;extension base="{http://repl.v17.soap.webservices.oncourse.ish/}replicationStub">
- *       &lt;sequence>
- *         &lt;element name="entityAngelId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="entityWillowId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="entityName" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="binaryInfoId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="specialType" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/>
- *         &lt;element name="documentVersionId" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
- *         &lt;element name="documentId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="binaryInfoRelationStub"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{http://repl.v17.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="entityAngelId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="entityWillowId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="entityName" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="binaryInfoId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="specialType" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/&gt;
+ *         &lt;element name="documentVersionId" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/&gt;
+ *         &lt;element name="documentId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -49,29 +49,29 @@ public class BinaryInfoRelationStub
 {
 
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long entityAngelId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long entityWillowId;
     @XmlElement(required = true)
     protected String entityName;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long binaryInfoId;
     @XmlElement(type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer specialType;
     @XmlElement(type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long documentVersionId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long documentId;
 

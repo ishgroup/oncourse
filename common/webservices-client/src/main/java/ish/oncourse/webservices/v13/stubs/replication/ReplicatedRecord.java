@@ -4,6 +4,7 @@ package ish.oncourse.webservices.v13.stubs.replication;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import ish.oncourse.webservices.util.GenericReplicatedRecord;
 
@@ -14,17 +15,17 @@ import ish.oncourse.webservices.util.GenericReplicatedRecord;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="replicatedRecord">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="status" type="{http://repl.v13.soap.webservices.oncourse.ish/}status"/>
- *         &lt;element name="message" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="stub" type="{http://repl.v13.soap.webservices.oncourse.ish/}hollowStub"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="replicatedRecord"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="status" type="{http://repl.v13.soap.webservices.oncourse.ish/}status"/&gt;
+ *         &lt;element name="message" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="stub" type="{http://repl.v13.soap.webservices.oncourse.ish/}hollowStub"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -40,6 +41,7 @@ public class ReplicatedRecord
 {
 
     @XmlElement(required = true)
+    @XmlSchemaType(name = "string")
     protected Status status;
     @XmlElement(required = true)
     protected String message;

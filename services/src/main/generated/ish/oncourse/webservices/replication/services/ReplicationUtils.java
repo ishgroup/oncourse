@@ -21,8 +21,11 @@ import java.util.*;
 public class ReplicationUtils {
 
 	public static final int GENERIC_EXCEPTION = 1;
-	
-	private static final String ERROR_MESSAGE = "Enrolment record with should always present.";
+
+	public static String getEntityName(Class<? extends Queueable> clazz) {
+		int index = clazz.getName().lastIndexOf(".") + 1;
+		return clazz.getName().substring(index);
+	}
 
 	public static Class<? extends Queueable> getEntityClass(ObjectContext objectContext, String entityIdentifier) {
         ObjEntity entity = objectContext.getEntityResolver().getObjEntity(entityIdentifier);
@@ -50,35 +53,11 @@ public class ReplicationUtils {
 		final SupportedVersions version = PortHelper.getVersionByReplicationStub(stub);
 		switch (version) {
 
-		case V10:
-			ish.oncourse.webservices.v10.stubs.replication.ReplicatedRecord replV10Record = new ish.oncourse.webservices.v10.stubs.replication.ReplicatedRecord();
-			StubUtils.setSuccessStatus(replV10Record);
-			replV10Record.setStub(toV10Hollow(stub, setWillowId));
-			return replV10Record;
-
 		case V13:
 			ish.oncourse.webservices.v13.stubs.replication.ReplicatedRecord replV13Record = new ish.oncourse.webservices.v13.stubs.replication.ReplicatedRecord();
 			StubUtils.setSuccessStatus(replV13Record);
 			replV13Record.setStub(toV13Hollow(stub, setWillowId));
 			return replV13Record;
-
-		case V14:
-			ish.oncourse.webservices.v14.stubs.replication.ReplicatedRecord replV14Record = new ish.oncourse.webservices.v14.stubs.replication.ReplicatedRecord();
-			StubUtils.setSuccessStatus(replV14Record);
-			replV14Record.setStub(toV14Hollow(stub, setWillowId));
-			return replV14Record;
-
-		case V15:
-			ish.oncourse.webservices.v15.stubs.replication.ReplicatedRecord replV15Record = new ish.oncourse.webservices.v15.stubs.replication.ReplicatedRecord();
-			StubUtils.setSuccessStatus(replV15Record);
-			replV15Record.setStub(toV15Hollow(stub, setWillowId));
-			return replV15Record;
-
-		case V16:
-			ish.oncourse.webservices.v16.stubs.replication.ReplicatedRecord replV16Record = new ish.oncourse.webservices.v16.stubs.replication.ReplicatedRecord();
-			StubUtils.setSuccessStatus(replV16Record);
-			replV16Record.setStub(toV16Hollow(stub, setWillowId));
-			return replV16Record;
 
 		case V17:
 			ish.oncourse.webservices.v17.stubs.replication.ReplicatedRecord replV17Record = new ish.oncourse.webservices.v17.stubs.replication.ReplicatedRecord();
@@ -103,32 +82,8 @@ public class ReplicationUtils {
 	}
 
  
-	public static ish.oncourse.webservices.v10.stubs.replication.HollowStub toV10Hollow(final GenericReplicationStub stub, final boolean setWillowId) {
-		ish.oncourse.webservices.v10.stubs.replication.HollowStub hollowStub = new ish.oncourse.webservices.v10.stubs.replication.HollowStub();
-		fillHollowStub(stub, hollowStub, setWillowId);
-		return hollowStub;
-	}
- 
 	public static ish.oncourse.webservices.v13.stubs.replication.HollowStub toV13Hollow(final GenericReplicationStub stub, final boolean setWillowId) {
 		ish.oncourse.webservices.v13.stubs.replication.HollowStub hollowStub = new ish.oncourse.webservices.v13.stubs.replication.HollowStub();
-		fillHollowStub(stub, hollowStub, setWillowId);
-		return hollowStub;
-	}
- 
-	public static ish.oncourse.webservices.v14.stubs.replication.HollowStub toV14Hollow(final GenericReplicationStub stub, final boolean setWillowId) {
-		ish.oncourse.webservices.v14.stubs.replication.HollowStub hollowStub = new ish.oncourse.webservices.v14.stubs.replication.HollowStub();
-		fillHollowStub(stub, hollowStub, setWillowId);
-		return hollowStub;
-	}
- 
-	public static ish.oncourse.webservices.v15.stubs.replication.HollowStub toV15Hollow(final GenericReplicationStub stub, final boolean setWillowId) {
-		ish.oncourse.webservices.v15.stubs.replication.HollowStub hollowStub = new ish.oncourse.webservices.v15.stubs.replication.HollowStub();
-		fillHollowStub(stub, hollowStub, setWillowId);
-		return hollowStub;
-	}
- 
-	public static ish.oncourse.webservices.v16.stubs.replication.HollowStub toV16Hollow(final GenericReplicationStub stub, final boolean setWillowId) {
-		ish.oncourse.webservices.v16.stubs.replication.HollowStub hollowStub = new ish.oncourse.webservices.v16.stubs.replication.HollowStub();
 		fillHollowStub(stub, hollowStub, setWillowId);
 		return hollowStub;
 	}
@@ -168,29 +123,29 @@ public class ReplicationUtils {
 
 	public static GenericReplicatedRecord replicatedEnrolmentRecord(final List<GenericReplicatedRecord> records) {
 		for (GenericReplicatedRecord r : records) {
-			if (Enrolment.class.getSimpleName().equals(r.getStub().getEntityIdentifier())) {
+			if (ReplicationUtils.getEntityName(Enrolment.class).equals(r.getStub().getEntityIdentifier())) {
 				return r;
 			}
 		}
-		throw new RuntimeException(ERROR_MESSAGE);
+		throw new RuntimeException(String.format("Enrolment record with should always present."));
 	}
 
 	public static GenericReplicatedRecord replicatedPaymentInRecord(final List<GenericReplicatedRecord> records) {
 		for (GenericReplicatedRecord r : records) {
-			if (PaymentIn.class.getSimpleName().equals(r.getStub().getEntityIdentifier())) {
+			if (ReplicationUtils.getEntityName(PaymentIn.class).equals(r.getStub().getEntityIdentifier())) {
 				return r;
 			}
 		}
-		throw new RuntimeException(ERROR_MESSAGE);
+		throw new RuntimeException(String.format("Enrolment record with should always present."));
 	}
 
 	public static GenericReplicatedRecord replicatedPaymentOutRecord(final List<GenericReplicatedRecord> records) {
 		for (GenericReplicatedRecord r : records) {
-			if (PaymentOut.class.getSimpleName().equals(r.getStub().getEntityIdentifier())) {
+			if (ReplicationUtils.getEntityName(PaymentOut.class).equals(r.getStub().getEntityIdentifier())) {
 				return r;
 			}
 		}
-		throw new RuntimeException(ERROR_MESSAGE);
+		throw new RuntimeException(String.format("Enrolment record with should always present."));
 	}
 
 	public static GenericEnrolmentStub getEnrolmentStub(final GenericTransactionGroup group) {

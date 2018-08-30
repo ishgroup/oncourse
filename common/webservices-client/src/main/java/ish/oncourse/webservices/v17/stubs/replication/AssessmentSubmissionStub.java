@@ -15,19 +15,19 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="assessmentSubmissionStub">
- *   &lt;complexContent>
- *     &lt;extension base="{http://repl.v17.soap.webservices.oncourse.ish/}replicationStub">
- *       &lt;sequence>
- *         &lt;element name="enrolmentId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="assessmentClassId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="submittedById" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="tutorComments" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="studentComments" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="assessmentSubmissionStub"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{http://repl.v17.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="enrolmentId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="assessmentClassId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="submittedById" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="tutorComments" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="studentComments" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -45,15 +45,15 @@ public class AssessmentSubmissionStub
 {
 
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long enrolmentId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long assessmentClassId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long submittedById;
     @XmlElement(required = true)

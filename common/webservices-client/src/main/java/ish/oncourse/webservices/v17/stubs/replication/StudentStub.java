@@ -15,36 +15,36 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="studentStub">
- *   &lt;complexContent>
- *     &lt;extension base="{http://repl.v17.soap.webservices.oncourse.ish/}replicationStub">
- *       &lt;sequence>
- *         &lt;element name="concessionType" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="disabilityType" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="englishProficiency" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="highestSchoolLevel" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="indigenousStatus" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="overseasClient" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="stillAtSchool" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="labourForceType" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="priorEducationCode" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="yearSchoolCompleted" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="contactId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="languageId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="countryOfBirthId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="languageHomeId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="chessn" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="feeHelpEligible" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="specialNeedsAssistance" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="citizenship" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="specialNeeds" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="townOfBirth" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="usi" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="usiStatus" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="studentStub"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{http://repl.v17.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="concessionType" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="disabilityType" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="englishProficiency" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="highestSchoolLevel" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="indigenousStatus" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="overseasClient" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="stillAtSchool" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="labourForceType" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="priorEducationCode" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="yearSchoolCompleted" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="contactId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="languageId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="countryOfBirthId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="languageHomeId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="chessn" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="feeHelpEligible" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="specialNeedsAssistance" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="citizenship" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="specialNeeds" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="townOfBirth" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="usi" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="usiStatus" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -79,73 +79,73 @@ public class StudentStub
 {
 
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer concessionType;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer disabilityType;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer englishProficiency;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer highestSchoolLevel;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer indigenousStatus;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean overseasClient;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean stillAtSchool;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer labourForceType;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer priorEducationCode;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer yearSchoolCompleted;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long contactId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long languageId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long countryOfBirthId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long languageHomeId;
     @XmlElement(required = true)
     protected String chessn;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean feeHelpEligible;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean specialNeedsAssistance;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer citizenship;
     @XmlElement(required = true)
@@ -155,7 +155,7 @@ public class StudentStub
     @XmlElement(required = true)
     protected String usi;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer usiStatus;
 

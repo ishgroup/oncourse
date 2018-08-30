@@ -16,27 +16,27 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="courseStub">
- *   &lt;complexContent>
- *     &lt;extension base="{http://repl.v13.soap.webservices.oncourse.ish/}replicationStub">
- *       &lt;sequence>
- *         &lt;element name="allowWaitingList" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="code" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="detail" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="detailTextile" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="fieldOfEducation" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="sufficientForQualification" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="VETCourse" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="webVisible" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="nominalHours" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
- *         &lt;element name="searchText" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="qualificationId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="enrolmentType" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="courseStub"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{http://repl.v13.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="allowWaitingList" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="code" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="detail" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="detailTextile" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="fieldOfEducation" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="sufficientForQualification" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="VETCourse" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="webVisible" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="nominalHours" type="{http://www.w3.org/2001/XMLSchema}decimal"/&gt;
+ *         &lt;element name="searchText" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="qualificationId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="enrolmentType" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -62,7 +62,7 @@ public class CourseStub
 {
 
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean allowWaitingList;
     @XmlElement(required = true)
@@ -74,15 +74,15 @@ public class CourseStub
     @XmlElement(required = true)
     protected String fieldOfEducation;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean sufficientForQualification;
     @XmlElement(name = "VETCourse", required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean vetCourse;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean webVisible;
     @XmlElement(required = true)
@@ -92,11 +92,11 @@ public class CourseStub
     @XmlElement(required = true)
     protected String searchText;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long qualificationId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer enrolmentType;
 

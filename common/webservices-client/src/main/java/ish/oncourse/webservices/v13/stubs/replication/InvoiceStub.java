@@ -18,31 +18,31 @@ import ish.oncourse.webservices.util.GenericInvoiceStub;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="invoiceStub">
- *   &lt;complexContent>
- *     &lt;extension base="{http://repl.v13.soap.webservices.oncourse.ish/}replicationStub">
- *       &lt;sequence>
- *         &lt;element name="amountOwing" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
- *         &lt;element name="billToAddress" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="customerReference" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="dateDue" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
- *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="invoiceDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
- *         &lt;element name="invoiceNumber" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="publicNotes" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="shippingAddress" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="source" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="status" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="totalExGst" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
- *         &lt;element name="totalGst" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
- *         &lt;element name="contactId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="corporatePassId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="confirmationStatus" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="authorisedRebillingCardId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="invoiceStub"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{http://repl.v13.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="amountOwing" type="{http://www.w3.org/2001/XMLSchema}decimal"/&gt;
+ *         &lt;element name="billToAddress" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="customerReference" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="dateDue" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
+ *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="invoiceDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
+ *         &lt;element name="invoiceNumber" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="publicNotes" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="shippingAddress" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="source" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="status" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="totalExGst" type="{http://www.w3.org/2001/XMLSchema}decimal"/&gt;
+ *         &lt;element name="totalGst" type="{http://www.w3.org/2001/XMLSchema}decimal"/&gt;
+ *         &lt;element name="contactId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="corporatePassId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="confirmationStatus" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="authorisedRebillingCardId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -79,17 +79,17 @@ public class InvoiceStub
     @XmlElement(required = true)
     protected String customerReference;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter1 .class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "dateTime")
     protected Date dateDue;
     @XmlElement(required = true)
     protected String description;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter1 .class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "dateTime")
     protected Date invoiceDate;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long invoiceNumber;
     @XmlElement(required = true)
@@ -105,19 +105,19 @@ public class InvoiceStub
     @XmlElement(required = true)
     protected BigDecimal totalGst;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long contactId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long corporatePassId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer confirmationStatus;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long authorisedRebillingCardId;
 

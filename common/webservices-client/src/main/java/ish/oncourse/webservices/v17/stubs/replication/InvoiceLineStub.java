@@ -16,25 +16,25 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="invoiceLineStub">
- *   &lt;complexContent>
- *     &lt;extension base="{http://repl.v17.soap.webservices.oncourse.ish/}replicationStub">
- *       &lt;sequence>
- *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="discountEachExTax" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
- *         &lt;element name="priceEachExTax" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
- *         &lt;element name="quantity" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
- *         &lt;element name="taxEach" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
- *         &lt;element name="title" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="unit" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="enrolmentId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="invoiceId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="sortOrder" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/>
- *         &lt;element name="courseClassId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="invoiceLineStub"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{http://repl.v17.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="discountEachExTax" type="{http://www.w3.org/2001/XMLSchema}decimal"/&gt;
+ *         &lt;element name="priceEachExTax" type="{http://www.w3.org/2001/XMLSchema}decimal"/&gt;
+ *         &lt;element name="quantity" type="{http://www.w3.org/2001/XMLSchema}decimal"/&gt;
+ *         &lt;element name="taxEach" type="{http://www.w3.org/2001/XMLSchema}decimal"/&gt;
+ *         &lt;element name="title" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="unit" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="enrolmentId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="invoiceId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="sortOrder" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/&gt;
+ *         &lt;element name="courseClassId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -72,19 +72,19 @@ public class InvoiceLineStub
     @XmlElement(required = true)
     protected String unit;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long enrolmentId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long invoiceId;
     @XmlElement(type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer sortOrder;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long courseClassId;
 

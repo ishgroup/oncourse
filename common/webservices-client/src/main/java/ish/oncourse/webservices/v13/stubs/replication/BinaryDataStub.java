@@ -16,16 +16,16 @@ import ish.oncourse.webservices.util.GenericBinaryDataStub;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="binaryDataStub">
- *   &lt;complexContent>
- *     &lt;extension base="{http://repl.v13.soap.webservices.oncourse.ish/}replicationStub">
- *       &lt;sequence>
- *         &lt;element name="content" type="{http://www.w3.org/2001/XMLSchema}base64Binary"/>
- *         &lt;element name="binaryInfoId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="binaryDataStub"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{http://repl.v13.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="content" type="{http://www.w3.org/2001/XMLSchema}base64Binary"/&gt;
+ *         &lt;element name="binaryInfoId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -43,7 +43,7 @@ public class BinaryDataStub
     @XmlElement(required = true)
     protected byte[] content;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long binaryInfoId;
 
@@ -66,7 +66,7 @@ public class BinaryDataStub
      *     byte[]
      */
     public void setContent(byte[] value) {
-        this.content = ((byte[]) value);
+        this.content = value;
     }
 
     /**

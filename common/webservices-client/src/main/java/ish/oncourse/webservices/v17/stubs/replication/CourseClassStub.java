@@ -17,48 +17,48 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="courseClassStub">
- *   &lt;complexContent>
- *     &lt;extension base="{http://repl.v17.soap.webservices.oncourse.ish/}replicationStub">
- *       &lt;sequence>
- *         &lt;element name="cancelled" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="code" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="countOfSessions" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="deliveryMode" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="detail" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="detailTextile" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="endDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
- *         &lt;element name="feeExGst" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
- *         &lt;element name="feeGst" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
- *         &lt;element name="webVisible" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="materials" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="materialsTextile" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="maximumPlaces" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="minimumPlaces" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="minutesPerSession" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="sessionDetail" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="sessionDetailTextile" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="startDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
- *         &lt;element name="startingMinutePerSession" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="timeZone" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="courseId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="roomId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="maximumDays" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="expectedHours" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
- *         &lt;element name="distantLearningCourse" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="feeHelpClass" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="attendanceType" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="reportingPeriod" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="censusDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
- *         &lt;element name="fullTimeLoad" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="minStudentAge" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="maxStudentAge" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="active" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="fundingSource" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="courseClassStub"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{http://repl.v17.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="cancelled" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="code" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="countOfSessions" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="deliveryMode" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="detail" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="detailTextile" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="endDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
+ *         &lt;element name="feeExGst" type="{http://www.w3.org/2001/XMLSchema}decimal"/&gt;
+ *         &lt;element name="feeGst" type="{http://www.w3.org/2001/XMLSchema}decimal"/&gt;
+ *         &lt;element name="webVisible" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="materials" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="materialsTextile" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="maximumPlaces" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="minimumPlaces" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="minutesPerSession" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="sessionDetail" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="sessionDetailTextile" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="startDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
+ *         &lt;element name="startingMinutePerSession" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="timeZone" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="courseId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="roomId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="maximumDays" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="expectedHours" type="{http://www.w3.org/2001/XMLSchema}decimal"/&gt;
+ *         &lt;element name="distantLearningCourse" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="feeHelpClass" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="attendanceType" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="reportingPeriod" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="censusDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
+ *         &lt;element name="fullTimeLoad" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="minStudentAge" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="maxStudentAge" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="active" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="fundingSource" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -105,17 +105,17 @@ public class CourseClassStub
 {
 
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean cancelled;
     @XmlElement(required = true)
     protected String code;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer countOfSessions;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer deliveryMode;
     @XmlElement(required = true)
@@ -123,7 +123,7 @@ public class CourseClassStub
     @XmlElement(required = true)
     protected String detailTextile;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter1 .class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "dateTime")
     protected Date endDate;
     @XmlElement(required = true)
@@ -131,7 +131,7 @@ public class CourseClassStub
     @XmlElement(required = true)
     protected BigDecimal feeGst;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean webVisible;
     @XmlElement(required = true)
@@ -139,15 +139,15 @@ public class CourseClassStub
     @XmlElement(required = true)
     protected String materialsTextile;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer maximumPlaces;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer minimumPlaces;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer minutesPerSession;
     @XmlElement(required = true)
@@ -155,65 +155,65 @@ public class CourseClassStub
     @XmlElement(required = true)
     protected String sessionDetailTextile;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter1 .class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "dateTime")
     protected Date startDate;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer startingMinutePerSession;
     @XmlElement(required = true)
     protected String timeZone;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long courseId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long roomId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer maximumDays;
     @XmlElement(required = true)
     protected BigDecimal expectedHours;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean distantLearningCourse;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean feeHelpClass;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer attendanceType;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer reportingPeriod;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter1 .class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "dateTime")
     protected Date censusDate;
     @XmlElement(required = true)
     protected String fullTimeLoad;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer minStudentAge;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer maxStudentAge;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean active;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer fundingSource;
 

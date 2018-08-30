@@ -15,20 +15,20 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="surveyStub">
- *   &lt;complexContent>
- *     &lt;extension base="{http://repl.v13.soap.webservices.oncourse.ish/}replicationStub">
- *       &lt;sequence>
- *         &lt;element name="comment" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="courseScore" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="tutorScore" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="venueScore" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="enrolmentId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="publicComment" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="surveyStub"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{http://repl.v13.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="comment" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="courseScore" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="tutorScore" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="venueScore" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="enrolmentId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="publicComment" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -49,23 +49,23 @@ public class SurveyStub
     @XmlElement(required = true)
     protected String comment;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer courseScore;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer tutorScore;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer venueScore;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long enrolmentId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean publicComment;
 

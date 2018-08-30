@@ -11,17 +11,17 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="status">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="EMPTY_ANGELID"/>
- *     &lt;enumeration value="EMPTY_WILLOWID"/>
- *     &lt;enumeration value="UNIQUES_FAILURE"/>
- *     &lt;enumeration value="WILLOWID_NOT_MATCH"/>
- *     &lt;enumeration value="ANGELID_NOT_MATCH"/>
- *     &lt;enumeration value="SUCCESS"/>
- *     &lt;enumeration value="FAILED"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="status"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="EMPTY_ANGELID"/&gt;
+ *     &lt;enumeration value="EMPTY_WILLOWID"/&gt;
+ *     &lt;enumeration value="UNIQUES_FAILURE"/&gt;
+ *     &lt;enumeration value="WILLOWID_NOT_MATCH"/&gt;
+ *     &lt;enumeration value="ANGELID_NOT_MATCH"/&gt;
+ *     &lt;enumeration value="SUCCESS"/&gt;
+ *     &lt;enumeration value="FAILED"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

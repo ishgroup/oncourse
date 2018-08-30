@@ -18,30 +18,30 @@ import ish.oncourse.webservices.util.GenericPaymentInStub;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="paymentInStub">
- *   &lt;complexContent>
- *     &lt;extension base="{http://repl.v13.soap.webservices.oncourse.ish/}replicationStub">
- *       &lt;sequence>
- *         &lt;element name="amount" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
- *         &lt;element name="contactId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="source" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="status" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="type" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="privateNotes" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="gatewayReference" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="gatewayResponse" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="sessionId" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="creditCardExpiry" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="creditCardName" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="creditCardNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="creditCardType" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="dateBanked" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
- *         &lt;element name="confirmationStatus" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="billingId" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="paymentInStub"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{http://repl.v13.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="amount" type="{http://www.w3.org/2001/XMLSchema}decimal"/&gt;
+ *         &lt;element name="contactId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="source" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="status" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="type" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="privateNotes" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="gatewayReference" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="gatewayResponse" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="sessionId" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="creditCardExpiry" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="creditCardName" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="creditCardNumber" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="creditCardType" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="dateBanked" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
+ *         &lt;element name="confirmationStatus" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="billingId" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -73,17 +73,17 @@ public class PaymentInStub
     @XmlElement(required = true)
     protected BigDecimal amount;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long contactId;
     @XmlElement(required = true)
     protected String source;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer status;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer type;
     @XmlElement(required = true)
@@ -103,11 +103,11 @@ public class PaymentInStub
     @XmlElement(required = true)
     protected String creditCardType;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter1 .class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "dateTime")
     protected Date dateBanked;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer confirmationStatus;
     @XmlElement(required = true)

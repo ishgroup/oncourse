@@ -16,18 +16,18 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="voucherProductStub">
- *   &lt;complexContent>
- *     &lt;extension base="{http://repl.v17.soap.webservices.oncourse.ish/}productStub">
- *       &lt;sequence>
- *         &lt;element name="expiryDays" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="expiryType" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="value" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
- *         &lt;element name="maxCoursesRedemption" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="voucherProductStub"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{http://repl.v17.soap.webservices.oncourse.ish/}productStub"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="expiryDays" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="expiryType" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="value" type="{http://www.w3.org/2001/XMLSchema}decimal"/&gt;
+ *         &lt;element name="maxCoursesRedemption" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -44,17 +44,17 @@ public class VoucherProductStub
 {
 
     @XmlElement(required = true, type = String.class, nillable = true)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer expiryDays;
     @XmlElement(required = true, type = String.class, nillable = true)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer expiryType;
     @XmlElement(required = true, nillable = true)
     protected BigDecimal value;
     @XmlElement(required = true, type = String.class, nillable = true)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer maxCoursesRedemption;
 

@@ -16,29 +16,29 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="certificateStub">
- *   &lt;complexContent>
- *     &lt;extension base="{http://repl.v13.soap.webservices.oncourse.ish/}replicationStub">
- *       &lt;sequence>
- *         &lt;element name="certificateNumber" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="endDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
- *         &lt;element name="fundingSource" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="qualification" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="printedWhen" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
- *         &lt;element name="privateNotes" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="publicNotes" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="qualificationId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="revokedWhen" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
- *         &lt;element name="studentFirstName" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="studentLastName" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="studentId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="issued" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
- *         &lt;element name="awarded" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
- *         &lt;element name="uniqueCode" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="certificateStub"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{http://repl.v13.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="certificateNumber" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="endDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
+ *         &lt;element name="fundingSource" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="qualification" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="printedWhen" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
+ *         &lt;element name="privateNotes" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="publicNotes" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="qualificationId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="revokedWhen" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
+ *         &lt;element name="studentFirstName" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="studentLastName" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="studentId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="issued" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
+ *         &lt;element name="awarded" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
+ *         &lt;element name="uniqueCode" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -66,23 +66,23 @@ public class CertificateStub
 {
 
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long certificateNumber;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter1 .class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "dateTime")
     protected Date endDate;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer fundingSource;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean qualification;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter1 .class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "dateTime")
     protected Date printedWhen;
     @XmlElement(required = true)
@@ -90,11 +90,11 @@ public class CertificateStub
     @XmlElement(required = true)
     protected String publicNotes;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long qualificationId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter1 .class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "dateTime")
     protected Date revokedWhen;
     @XmlElement(required = true)
@@ -102,15 +102,15 @@ public class CertificateStub
     @XmlElement(required = true)
     protected String studentLastName;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long studentId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter1 .class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "dateTime")
     protected Date issued;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter1 .class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "dateTime")
     protected Date awarded;
     @XmlElement(required = true)

@@ -16,28 +16,28 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="siteStub">
- *   &lt;complexContent>
- *     &lt;extension base="{http://repl.v17.soap.webservices.oncourse.ish/}replicationStub">
- *       &lt;sequence>
- *         &lt;element name="drivingDirections" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="webVisible" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="latitude" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
- *         &lt;element name="longitude" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
- *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="postcode" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="publicTransportDirections" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="specialInstructions" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="state" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="street" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="suburb" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="timeZone" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="countryId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="virtual" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="siteStub"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{http://repl.v17.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="drivingDirections" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="webVisible" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="latitude" type="{http://www.w3.org/2001/XMLSchema}decimal"/&gt;
+ *         &lt;element name="longitude" type="{http://www.w3.org/2001/XMLSchema}decimal"/&gt;
+ *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="postcode" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="publicTransportDirections" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="specialInstructions" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="state" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="street" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="suburb" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="timeZone" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="countryId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="virtual" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -66,7 +66,7 @@ public class SiteStub
     @XmlElement(required = true)
     protected String drivingDirections;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean webVisible;
     @XmlElement(required = true)
@@ -90,11 +90,11 @@ public class SiteStub
     @XmlElement(required = true)
     protected String timeZone;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long countryId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean virtual;
 

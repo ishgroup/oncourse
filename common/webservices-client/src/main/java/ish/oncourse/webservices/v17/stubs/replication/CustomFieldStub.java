@@ -15,18 +15,18 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="customFieldStub">
- *   &lt;complexContent>
- *     &lt;extension base="{http://repl.v17.soap.webservices.oncourse.ish/}replicationStub">
- *       &lt;sequence>
- *         &lt;element name="customFieldTypeId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="foreignId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="value" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="entityName" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="customFieldStub"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{http://repl.v17.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="customFieldTypeId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="foreignId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="value" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="entityName" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -43,11 +43,11 @@ public class CustomFieldStub
 {
 
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long customFieldTypeId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long foreignId;
     @XmlElement(required = true)

@@ -11,16 +11,16 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="errorCode">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="INVALID_SESSION"/>
- *     &lt;enumeration value="INVALID_SECURITY_CODE"/>
- *     &lt;enumeration value="EMPTY_COMMUNICATION_KEY"/>
- *     &lt;enumeration value="HALT_COMMUNICATION_KEY"/>
- *     &lt;enumeration value="INVALID_COMMUNICATION_KEY"/>
- *     &lt;enumeration value="NO_KEYS"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="errorCode"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="INVALID_SESSION"/&gt;
+ *     &lt;enumeration value="INVALID_SECURITY_CODE"/&gt;
+ *     &lt;enumeration value="EMPTY_COMMUNICATION_KEY"/&gt;
+ *     &lt;enumeration value="HALT_COMMUNICATION_KEY"/&gt;
+ *     &lt;enumeration value="INVALID_COMMUNICATION_KEY"/&gt;
+ *     &lt;enumeration value="NO_KEYS"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

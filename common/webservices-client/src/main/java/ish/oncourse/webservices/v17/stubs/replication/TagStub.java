@@ -15,24 +15,24 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="tagStub">
- *   &lt;complexContent>
- *     &lt;extension base="{http://repl.v17.soap.webservices.oncourse.ish/}replicationStub">
- *       &lt;sequence>
- *         &lt;element name="detail" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="detailTextile" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="tagGroup" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="webVisible" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="nodeType" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="shortName" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="weighting" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="parentId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="specialType" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="tagStub"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{http://repl.v17.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="detail" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="detailTextile" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="tagGroup" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="webVisible" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="nodeType" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="shortName" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="weighting" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="parentId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="specialType" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -59,31 +59,31 @@ public class TagStub
     @XmlElement(required = true)
     protected String detailTextile;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean tagGroup;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean webVisible;
     @XmlElement(required = true)
     protected String name;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer nodeType;
     @XmlElement(required = true)
     protected String shortName;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer weighting;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long parentId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer specialType;
 

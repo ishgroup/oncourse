@@ -18,21 +18,11 @@
 
 	<bean id="v6_referencePortTypeBean" class="ish.oncourse.webservices.soap.v6.TestReferencePortTypeImpl" />
 
-	<bean id="v5_referencePortTypeBean" class="ish.oncourse.webservices.soap.v5.TestReferencePortTypeImpl" />
-
 	<bean id="securityCodeInterceptor" class="ish.oncourse.webservices.soap.interceptors.TestSecurityCodeInterceptor" />
 
 	<bean id="communicationKeyInterceptor" class="ish.oncourse.webservices.soap.interceptors.TestCommunicationKeyInterceptor" />
 
 	<bean id="collegeRequestInterceptor" class="ish.oncourse.webservices.soap.interceptors.TestCollegeRequestInterceptor" />
-
-	<bean id="v15_replicationPortType" class="ish.oncourse.webservices.soap.v15.TestReplicationPortTypeImpl" />
-
-	<bean id="v15_paymentPortType" class="ish.oncourse.webservices.soap.v15.TestPaymentPortTypeImpl" />
-
-	<bean id="v16_replicationPortType" class="ish.oncourse.webservices.soap.v16.TestReplicationPortTypeImpl" />
-
-	<bean id="v16_paymentPortType" class="ish.oncourse.webservices.soap.v16.TestPaymentPortTypeImpl" />
 
 	<bean id="v17_replicationPortType" class="ish.oncourse.webservices.soap.v17.TestReplicationPortTypeImpl" />
 
@@ -44,13 +34,6 @@
 			<ref bean="loggingFeature" />
 		</cxf:features>
 	</cxf:bus>
-
-	<jaxws:endpoint id="v5_reference" implementor="#v5_referencePortTypeBean"
-					address="/v5/reference">
-		<jaxws:inInterceptors>
-			<ref bean="collegeRequestInterceptor" />
-		</jaxws:inInterceptors>
-	</jaxws:endpoint>
 	
     <jaxws:endpoint id="v6_reference" implementor="#v6_referencePortTypeBean"
                     address="/v6/reference">
@@ -58,38 +41,6 @@
             <ref bean="collegeRequestInterceptor" />
         </jaxws:inInterceptors>
     </jaxws:endpoint>
-
-	<jaxws:endpoint id="replication" implementor="#v15_replicationPortType"
-					address="/v15/replication">
-		<jaxws:inInterceptors>
-			<ref bean="communicationKeyInterceptor" />
-			<ref bean="collegeRequestInterceptor" />
-		</jaxws:inInterceptors>
-	</jaxws:endpoint>
-
-	<jaxws:endpoint id="v15_payment" implementor="#v15_paymentPortType"
-					address="/v15/payment">
-		<jaxws:inInterceptors>
-			<ref bean="securityCodeInterceptor" />
-			<ref bean="collegeRequestInterceptor" />
-		</jaxws:inInterceptors>
-	</jaxws:endpoint>
-
-	<jaxws:endpoint id="v16_replication" implementor="#v16_replicationPortType"
-					address="/v16/replication">
-		<jaxws:inInterceptors>
-			<ref bean="communicationKeyInterceptor" />
-			<ref bean="collegeRequestInterceptor" />
-		</jaxws:inInterceptors>
-	</jaxws:endpoint>
-
-	<jaxws:endpoint id="v16_payment" implementor="#v16_paymentPortType"
-					address="/v16/payment">
-		<jaxws:inInterceptors>
-			<ref bean="securityCodeInterceptor" />
-			<ref bean="collegeRequestInterceptor" />
-		</jaxws:inInterceptors>
-	</jaxws:endpoint>
 
 	<jaxws:endpoint id="v17_replication" implementor="#v17_replicationPortType"
 					address="/v17/replication">

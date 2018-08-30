@@ -15,17 +15,17 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="contactRelationTypeStub">
- *   &lt;complexContent>
- *     &lt;extension base="{http://repl.v17.soap.webservices.oncourse.ish/}replicationStub">
- *       &lt;sequence>
- *         &lt;element name="fromContactName" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="toContactName" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="delegatedAccessToContact" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="contactRelationTypeStub"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{http://repl.v17.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="fromContactName" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="toContactName" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="delegatedAccessToContact" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -45,7 +45,7 @@ public class ContactRelationTypeStub
     @XmlElement(required = true)
     protected String toContactName;
     @XmlElement(required = true, type = String.class, nillable = true)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer delegatedAccessToContact;
 

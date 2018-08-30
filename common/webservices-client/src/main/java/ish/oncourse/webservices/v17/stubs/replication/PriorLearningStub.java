@@ -15,20 +15,20 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="priorLearningStub">
- *   &lt;complexContent>
- *     &lt;extension base="{http://repl.v17.soap.webservices.oncourse.ish/}replicationStub">
- *       &lt;sequence>
- *         &lt;element name="externalRef" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="notes" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="outcomeIdTrainingOrg" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="qualificationId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="studentId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="title" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="priorLearningStub"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{http://repl.v17.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="externalRef" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="notes" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="outcomeIdTrainingOrg" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="qualificationId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="studentId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="title" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -53,11 +53,11 @@ public class PriorLearningStub
     @XmlElement(required = true)
     protected String outcomeIdTrainingOrg;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long qualificationId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long studentId;
     @XmlElement(required = true)

@@ -15,21 +15,21 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="concessionTypeStub">
- *   &lt;complexContent>
- *     &lt;extension base="{http://repl.v17.soap.webservices.oncourse.ish/}replicationStub">
- *       &lt;sequence>
- *         &lt;element name="credentialExpiryDays" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="hasConcessionNumber" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="hasExpiryDate" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="isConcession" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="isEnabled" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="requiresCredentialCheck" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="concessionTypeStub"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{http://repl.v17.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="credentialExpiryDays" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="hasConcessionNumber" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="hasExpiryDate" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="isConcession" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="isEnabled" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="requiresCredentialCheck" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -49,29 +49,29 @@ public class ConcessionTypeStub
 {
 
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer credentialExpiryDays;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean hasConcessionNumber;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean hasExpiryDate;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean isConcession;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean isEnabled;
     @XmlElement(required = true)
     protected String name;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean requiresCredentialCheck;
 

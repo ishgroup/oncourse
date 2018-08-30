@@ -18,19 +18,19 @@ import ish.oncourse.webservices.util.GenericReplicationStub;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="replicationStub">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="angelId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="willowId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="entityIdentifier" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="created" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
- *         &lt;element name="modified" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="replicationStub"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="angelId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="willowId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="entityIdentifier" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="created" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
+ *         &lt;element name="modified" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -44,109 +44,109 @@ import ish.oncourse.webservices.util.GenericReplicationStub;
     "modified"
 })
 @XmlSeeAlso({
-    MessagePersonStub.class,
-    DiscountStub.class,
-    DiscountMembershipRelationTypeStub.class,
-    DiscountMembershipStub.class,
-    PaymentInStub.class,
-    EmailTemplateStub.class,
-    PreferenceStub.class,
-    HollowStub.class,
-    CourseClassTutorStub.class,
-    ScriptStub.class,
-    AssessmentSubmissionStub.class,
-    EnrolmentStub.class,
-    PriorLearningStub.class,
-    FieldStub.class,
+    AclAccessKeyStub.class,
+    AclRoleStub.class,
+    ApplicationStub.class,
+    AttendanceStub.class,
     BinaryDataStub.class,
+    BinaryInfoStub.class,
+    BinaryInfoRelationStub.class,
+    CertificateStub.class,
+    CertificateOutcomeStub.class,
+    ConcessionTypeStub.class,
+    ContactStub.class,
+    CourseStub.class,
+    CourseClassStub.class,
+    CourseClassTutorStub.class,
+    CourseModuleStub.class,
+    DiscountStub.class,
+    DiscountConcessionTypeStub.class,
+    DiscountCourseClassStub.class,
+    DiscountMembershipStub.class,
+    DiscountMembershipRelationTypeStub.class,
+    ContactRelationStub.class,
     ContactRelationTypeStub.class,
-    CustomFieldTypeStub.class,
-    FieldConfigurationStub.class,
+    ProductStub.class,
+    ProductItemStub.class,
+    VoucherProductCourseStub.class,
+    VoucherPaymentInStub.class,
+    EnrolmentStub.class,
+    SurveyStub.class,
+    SessionModuleStub.class,
+    EntityRelationStub.class,
+    CorporatePassStub.class,
+    CorporatePassCourseClassStub.class,
+    CorporatePassProductStub.class,
+    MessageStub.class,
+    MessagePersonStub.class,
+    MessageTemplateStub.class,
+    InvoiceStub.class,
+    InvoiceLineStub.class,
+    InvoiceLineDiscountStub.class,
+    OutcomeStub.class,
+    PaymentInStub.class,
+    PaymentInLineStub.class,
+    PaymentOutStub.class,
+    PreferenceStub.class,
+    RoomStub.class,
+    SessionStub.class,
+    TutorAttendanceStub.class,
+    SiteStub.class,
+    StudentStub.class,
+    StudentConcessionStub.class,
+    SystemUserStub.class,
+    QueuedStatisticStub.class,
+    TagStub.class,
+    TagRelationStub.class,
+    TagRequirementStub.class,
+    TutorStub.class,
+    WaitingListStub.class,
     WaitingListSiteStub.class,
     DocumentStub.class,
-    PaymentOutStub.class,
-    TutorAttendanceStub.class,
-    DiscountCourseClassStub.class,
-    ConcessionTypeStub.class,
-    CourseStub.class,
-    InvoiceLineStub.class,
-    SessionModuleStub.class,
-    OutcomeStub.class,
-    CourseClassStub.class,
-    AclRoleStub.class,
-    VoucherPaymentInStub.class,
-    SiteStub.class,
-    DeletedStub.class,
-    QueuedStatisticStub.class,
-    VoucherProductCourseStub.class,
-    EntityRelationStub.class,
-    TagRelationStub.class,
-    MessageTemplateStub.class,
-    CertificateOutcomeStub.class,
-    AssessmentClassTutorStub.class,
-    PaymentInLineStub.class,
-    CorporatePassDiscountStub.class,
     DocumentVersionStub.class,
-    AssessmentStub.class,
-    ContactRelationStub.class,
-    ContactStub.class,
-    CorporatePassStub.class,
-    ContactDuplicateStub.class,
-    TagStub.class,
-    FieldConfigurationSchemeStub.class,
-    DiscountConcessionTypeStub.class,
-    WaitingListStub.class,
-    TaxStub.class,
-    FieldHeadingStub.class,
+    CustomFieldTypeStub.class,
     CustomFieldStub.class,
-    TutorStub.class,
-    CorporatePassCourseClassStub.class,
-    AssessmentClassModuleStub.class,
-    SurveyStub.class,
+    ScriptStub.class,
+    EmailTemplateStub.class,
     CourseClassPaymentPlanLineStub.class,
-    FieldConfigurationLinkStub.class,
-    StudentStub.class,
-    SessionStub.class,
-    CertificateStub.class,
-    SystemUserStub.class,
-    ProductItemStub.class,
-    BinaryInfoStub.class,
-    CorporatePassProductStub.class,
-    StudentConcessionStub.class,
-    BinaryInfoRelationStub.class,
-    AclAccessKeyStub.class,
-    MessageStub.class,
-    RoomStub.class,
     InvoiceDueDateStub.class,
-    ProductStub.class,
-    InvoiceLineDiscountStub.class,
-    ApplicationStub.class,
-    CourseModuleStub.class,
-    TagRequirementStub.class,
-    InvoiceStub.class,
+    CorporatePassDiscountStub.class,
+    PriorLearningStub.class,
+    ContactDuplicateStub.class,
+    AssessmentStub.class,
     AssessmentClassStub.class,
-    AttendanceStub.class
+    AssessmentClassTutorStub.class,
+    AssessmentSubmissionStub.class,
+    AssessmentClassModuleStub.class,
+    FieldStub.class,
+    FieldConfigurationStub.class,
+    FieldConfigurationLinkStub.class,
+    FieldConfigurationSchemeStub.class,
+    FieldHeadingStub.class,
+    TaxStub.class,
+    HollowStub.class,
+    DeletedStub.class
 })
 public abstract class ReplicationStub
     extends GenericReplicationStub
 {
 
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long angelId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long willowId;
     @XmlElement(required = true)
     protected String entityIdentifier;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter1 .class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "dateTime")
     protected Date created;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter1 .class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "dateTime")
     protected Date modified;
 

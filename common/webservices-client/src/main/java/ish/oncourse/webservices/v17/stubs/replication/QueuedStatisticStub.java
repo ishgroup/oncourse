@@ -17,19 +17,19 @@ import ish.oncourse.webservices.util.GenericQueuedStatisticStub;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="queuedStatisticStub">
- *   &lt;complexContent>
- *     &lt;extension base="{http://repl.v17.soap.webservices.oncourse.ish/}replicationStub">
- *       &lt;sequence>
- *         &lt;element name="stackedTransactionsCount" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="stackedCount" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="stackedEntityIdentifier" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="receivedTimestamp" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
- *         &lt;element name="cleanupStub" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="queuedStatisticStub"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{http://repl.v17.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="stackedTransactionsCount" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="stackedCount" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="stackedEntityIdentifier" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="receivedTimestamp" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
+ *         &lt;element name="cleanupStub" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -48,21 +48,21 @@ public class QueuedStatisticStub
 {
 
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long stackedTransactionsCount;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long stackedCount;
     @XmlElement(required = true)
     protected String stackedEntityIdentifier;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter1 .class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "dateTime")
     protected Date receivedTimestamp;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean cleanupStub;
 

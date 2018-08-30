@@ -1,22 +1,20 @@
 
 package ish.oncourse.webservices.v13.stubs.replication;
 
+import java.util.Date;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 public class Adapter2
-    extends XmlAdapter<String, Long>
+    extends XmlAdapter<String, Date>
 {
 
 
-    public Long unmarshal(String value) {
-        return ((long)javax.xml.bind.DatatypeConverter.parseLong(value));
+    public Date unmarshal(String value) {
+        return (org.apache.cxf.tools.common.DataTypeAdapter.parseDateTime(value));
     }
 
-    public String marshal(Long value) {
-        if (value == null) {
-            return null;
-        }
-        return (javax.xml.bind.DatatypeConverter.printLong((long)(long)value));
+    public String marshal(Date value) {
+        return (org.apache.cxf.tools.common.DataTypeAdapter.printDateTime(value));
     }
 
 }

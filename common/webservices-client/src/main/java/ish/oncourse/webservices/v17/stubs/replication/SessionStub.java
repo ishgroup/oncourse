@@ -16,24 +16,24 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="sessionStub">
- *   &lt;complexContent>
- *     &lt;extension base="{http://repl.v17.soap.webservices.oncourse.ish/}replicationStub">
- *       &lt;sequence>
- *         &lt;element name="endDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
- *         &lt;element name="startDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
- *         &lt;element name="timeZone" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="courseClassId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="markerId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="roomId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="oldTutorId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="payAdjustment" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="privateNotes" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="publicNotes" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="sessionStub"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{http://repl.v17.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="endDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
+ *         &lt;element name="startDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
+ *         &lt;element name="timeZone" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="courseClassId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="markerId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="roomId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="oldTutorId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="payAdjustment" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="privateNotes" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="publicNotes" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -56,33 +56,33 @@ public class SessionStub
 {
 
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter1 .class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "dateTime")
     protected Date endDate;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter1 .class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "dateTime")
     protected Date startDate;
     @XmlElement(required = true)
     protected String timeZone;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long courseClassId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long markerId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long roomId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long oldTutorId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer payAdjustment;
     @XmlElement(required = true)

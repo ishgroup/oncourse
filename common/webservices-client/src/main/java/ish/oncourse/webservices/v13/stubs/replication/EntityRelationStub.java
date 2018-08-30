@@ -15,20 +15,20 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="entityRelationStub">
- *   &lt;complexContent>
- *     &lt;extension base="{http://repl.v13.soap.webservices.oncourse.ish/}replicationStub">
- *       &lt;sequence>
- *         &lt;element name="fromEntityIdentifier" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="toEntityIdentifier" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="fromEntityAngelId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="fromEntityWillowId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="toEntityAngelId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="toEntityWillowId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="entityRelationStub"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{http://repl.v13.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="fromEntityIdentifier" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="toEntityIdentifier" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="fromEntityAngelId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="fromEntityWillowId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="toEntityAngelId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="toEntityWillowId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -47,27 +47,27 @@ public class EntityRelationStub
 {
 
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer fromEntityIdentifier;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer toEntityIdentifier;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long fromEntityAngelId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long fromEntityWillowId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long toEntityAngelId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long toEntityWillowId;
 

@@ -16,42 +16,42 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="contactStub">
- *   &lt;complexContent>
- *     &lt;extension base="{http://repl.v13.soap.webservices.oncourse.ish/}replicationStub">
- *       &lt;sequence>
- *         &lt;element name="businessPhoneNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="cookieHash" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="countryId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="dateOfBirth" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
- *         &lt;element name="emailAddress" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="familyName" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="faxNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="givenName" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="homePhoneNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="company" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="male" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="marketingViaEmailAllowed" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="marketingViaPostAllowed" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="marketingViaSMSAllowed" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="mobilePhoneNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="password" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="passwordHash" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="postcode" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="state" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="street" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="suburb" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="taxFileNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="uniqueCode" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="studentId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="tutorId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="middleName" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="abn" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="invoiceTerms" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="contactStub"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{http://repl.v13.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="businessPhoneNumber" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="cookieHash" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="countryId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="dateOfBirth" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
+ *         &lt;element name="emailAddress" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="familyName" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="faxNumber" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="givenName" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="homePhoneNumber" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="company" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="male" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="marketingViaEmailAllowed" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="marketingViaPostAllowed" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="marketingViaSMSAllowed" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="mobilePhoneNumber" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="password" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="passwordHash" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="postcode" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="state" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="street" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="suburb" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="taxFileNumber" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="uniqueCode" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="studentId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="tutorId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="middleName" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="abn" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="invoiceTerms" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -96,11 +96,11 @@ public class ContactStub
     @XmlElement(required = true)
     protected String cookieHash;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long countryId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter1 .class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "dateTime")
     protected Date dateOfBirth;
     @XmlElement(required = true)
@@ -114,23 +114,23 @@ public class ContactStub
     @XmlElement(required = true)
     protected String homePhoneNumber;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean company;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean male;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean marketingViaEmailAllowed;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean marketingViaPostAllowed;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean marketingViaSMSAllowed;
     @XmlElement(required = true)
@@ -152,11 +152,11 @@ public class ContactStub
     @XmlElement(required = true)
     protected String uniqueCode;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long studentId;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
     protected Long tutorId;
     @XmlElement(required = true)
@@ -164,7 +164,7 @@ public class ContactStub
     @XmlElement(required = true)
     protected String abn;
     @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer invoiceTerms;
 

@@ -32,20 +32,17 @@ plugins {
 	id "com.eriwen.gradle.js" version "2.14.1" apply false
 	id 'io.freefair.jsass' version '0.4.0' apply false
 	id 'io.spring.dependency-management' version '1.0.3.RELEASE' apply false
-	id 'com.github.ben-manes.versions' version '0.17.0' // adds the task 'dependencyUpdates -Drevision=release'
+	id 'com.github.ben-manes.versions' version '0.20.0' // adds the task 'dependencyUpdates -Drevision=release'
 	id "com.moowork.node" version "1.2.0" apply false
 }
 
 ext {
-    replicationVersions = [10,  // introduced in onCourse 7.4
-						   13, // introduced in onCourse 9.0
-						   14,  // introduced in onCourse 9.
-						   15, 	// introduced in onCourse sprint14 
-						   16, 	// introduced in onCourse 9.4
-						   17 	// introduced in onCourse 9.5
+    replicationVersions = [
+			13, // introduced in onCourse 9.0
+			17 	// introduced in onCourse 9.5
 	]
-    referenceVersions = [	5,  // introduced in onCourse 7.4
-                            6   // introduced in onCourse 8.2
+    referenceVersions = [
+			6   // introduced in onCourse 8.2
     ]
 }
 
@@ -187,8 +184,4 @@ apply from: "$rootDir/gradle/buildStaticResources.gradle"
 task createVersion(type: JiraVersionCreate) {
 	projectCode "OD"
 	oldVersion version
-}
-
-task wrapper(type: Wrapper) {
-	gradleVersion = '4.8'
 }
