@@ -19,10 +19,11 @@ import java.util.concurrent.Callable;
 import java.util.function.Function;
 
 public class ReindexCourses extends ReindexCollection<SCourse> {
-
+	private boolean reindexClasses = true;
 
 	public ReindexCourses(ObjectContext objectContext, SolrClient solrClient) {
 		this(objectContext, solrClient, s -> new String[0]);
+		reindexClasses = false;
 	}
 	
 	
@@ -44,16 +45,20 @@ public class ReindexCourses extends ReindexCollection<SCourse> {
 
 	public UpdateResponse addBean(SCourse sCourse) throws IOException, SolrServerException {
 		total.incrementAndGet();
-		solrClient.deleteByQuery(SolrCollection.classes.name(), String.format("courseId:%s", sCourse.getId()));
-		
-		for (SCourseClass c : sCourse.getClasses()) {
-			solrClient.addBean(SolrCollection.classes.name(), c);
+		if (reindexClasses) {
+			solrClient.deleteByQuery(SolrCollection.classes.name(), String.format("courseId:%s", sCourse.getId()));
+
+			for (SCourseClass c : sCourse.getClasses()) {
+				solrClient.addBean(SolrCollection.classes.name(), c);
+			}
 		}
 		return solrClient.addBean(SolrCollection.courses.name(), sCourse);
 	}
 
 	protected void commit() throws IOException, SolrServerException {
 		super.commit();
-		solrClient.commit(SolrCollection.classes.name());
+		if (reindexClasses) {
+			solrClient.commit(SolrCollection.classes.name());
+		}
 	}
 }

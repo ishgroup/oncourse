@@ -13,7 +13,6 @@ import ish.oncourse.webservices.ServicesModule;
 import ish.oncourse.webservices.jobs.PaymentInExpireJob;
 import ish.oncourse.webservices.jobs.SMSJob;
 import ish.oncourse.webservices.jobs.UpdateAmountOwingJob;
-import ish.oncourse.webservices.quartz.job.solr.ReindexCoursesJob;
 import ish.oncourse.webservices.quartz.job.solr.ReindexSuburbsJob;
 import ish.oncourse.webservices.quartz.job.solr.ReindexTagsJob;
 import org.apache.cayenne.configuration.server.ServerRuntime;
@@ -34,10 +33,7 @@ public class QuartzModule extends ConfigModule {
 
 	public static final String QUARTZ_GROUP_SOLR = "solrGroup";
 	public static final String QUARTZ_GROUP_DEFAULT = "defaultGroup";
-
-
-
-	public static final String DEFAULT_CRON_REINDEX_COURSES = "0 53 3 ? * *";
+	
 	public static final String DEFAULT_CRON_REINDEX_TAGS = "0 */5 * ? * *";
 	public static final String DEFAULT_CRON_REINDEX_SUBURBS = "0 34 4 ? * *";
 
@@ -90,9 +86,7 @@ public class QuartzModule extends ConfigModule {
 
 	private void unregisterJobs(Scheduler scheduler) {
 		DeleteJob[] list = new DeleteJob[]{
-				new DeleteJob()
-						.groupName(QUARTZ_GROUP_SOLR)
-						.jobClass(ReindexCoursesJob.class),
+
 				new DeleteJob()
 						.groupName(QUARTZ_GROUP_SOLR)
 						.jobClass(ReindexSuburbsJob.class),
@@ -114,10 +108,6 @@ public class QuartzModule extends ConfigModule {
 
 	private void registerJobs(Scheduler scheduler) {
 		BuildJob[] builds = new BuildJob[]{
-//				new BuildJob()
-//						.groupName(QUARTZ_GROUP_SOLR)
-//						.jobClass(ReindexCoursesJob.class)
-//						.cronString(DEFAULT_CRON_REINDEX_COURSES),
 				new BuildJob()
 						.groupName(QUARTZ_GROUP_SOLR)
 						.jobClass(ReindexSuburbsJob.class)
