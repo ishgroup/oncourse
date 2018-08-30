@@ -12,11 +12,18 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh "./gradlew web:publishExecutablesPublicationToSnapshotsRepository -Dbuild_number=${env.BUILD_NUMBER} -PreleaseVersion=${params.version}"
+                sh "./gradlew web:build -Dbuild_number=${env.BUILD_NUMBER} -PreleaseVersion=${params.version}"
                 junit 'web/build/test-results/**/*.xml'
             }
         }
-
+        stage('Snapshot') {
+            when {
+                expression { params.version == '' }
+            }
+            steps {
+                sh "./gradlew web:publishExecutablesPublicationToSnapshotsRepository -Dbuild_number=${env.BUILD_NUMBER} -PreleaseVersion=SNAPSHOT"                    
+            }
+        }
         stage('Create release') {
             when {
                 expression { params.version != '' }

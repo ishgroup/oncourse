@@ -13,10 +13,17 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh "./gradlew editor:publishExecutablesPublicationToSnapshotsRepository -Dbuild_number=${env.BUILD_NUMBER} -PreleaseVersion=${params.version}"
+                sh "./gradlew editor:build -Dbuild_number=${env.BUILD_NUMBER} -PreleaseVersion=${params.version}"
             }
         }
-
+        stage('Snapshot') {
+            when {
+                expression { params.version == '' }
+            }
+            steps {
+                sh "./gradlew editor:publishExecutablesPublicationToSnapshotsRepository -Dbuild_number=${env.BUILD_NUMBER} -PreleaseVersion=SNAPSHOT"                    
+            }
+        }
         stage('Create release') {
             when {
                 expression { params.version != '' }
