@@ -21,8 +21,8 @@ public class SpecialWebPageMatcherTest {
 
         Mockito.verify(context,
                 data -> {
-                    Assert.assertTrue(((ObjectSelect) data.getAllInvocations().get(0).getRawArguments()[0]).getWhere().toEJBQL("site").toString().equals("site.webSite is null"));
-                    Assert.assertTrue(((ObjectSelect) data.getAllInvocations().get(1).getRawArguments()[0]).getWhere().toEJBQL("site").toString().equals("(site.webSiteVersion is null) and (site.matchType = enum:ish.common.specialpages.RequestMatchType.EXACT) and (upper(site.urlPath) like '/REQUESTPATH')"));
+                    Assert.assertTrue(((ObjectSelect) data.getAllInvocations().get(0).getRawArguments()[0]).getWhere().toEJBQL("site").equals("site.webSite is null"));
+                    Assert.assertTrue(((ObjectSelect) data.getAllInvocations().get(1).getRawArguments()[0]).getWhere().toEJBQL("site").equals("(site.webSiteVersion is null) and (site.matchType = enum:ish.oncourse.specialpages.RequestMatchType.EXACT) and (upper(site.urlPath) like '/REQUESTPATH')"));
                 }).selectOne(Mockito.any(Select.class));
     }
 }
