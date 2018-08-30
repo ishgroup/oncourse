@@ -188,6 +188,11 @@ public class PageIdentifierTest {
 		value.setValids("/ui/cvv");
 		value.setInvalids("/cvv", "/ui/cvv/1", "/enrol/cvv");
 		urls.put(Cvv, value);
+
+		value =  new Urls();
+		value.setValids("/ish.render?component=class&id=2345");
+		value.setInvalids("/ish.render/class");
+		urls.put(Render, value);
 	}
 
 	private static Urls forExectMattcher(String prefix, boolean withInvalid)
