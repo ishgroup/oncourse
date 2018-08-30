@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh "./gradlew editor-api:build editor-api:generateDoc -Dbuild_number=${env.BUILD_NUMBER} -PreleaseVersion=${params.version}"
+                sh "./gradlew editor-api:build -Dbuild_number=${env.BUILD_NUMBER} -PreleaseVersion=${params.version}"
                 junit 'editor-api/build/test-results/**/*.xml'
             }
         }
@@ -24,13 +24,13 @@ pipeline {
         }
         stage('Snapshot') {
             when {
-                expression { params.version == 'SNAPSHOT' }
+                expression { params.version == '' }
             }
             steps {
-                sh "./gradlew editor-api:publishExecutablesPublicationToSnapshotsRepository -Dbuild_number=${env.BUILD_NUMBER} -PreleaseVersion=${params.version}"                    
+                sh "./gradlew editor-api:publishExecutablesPublicationToSnapshotsRepository -Dbuild_number=${env.BUILD_NUMBER} -PreleaseVersion=SNAPSHOT"                    
             }
         }
-        stage('Create release') {
+        stage('Release') {
             when {
                 expression { params.version != '' }
             }
