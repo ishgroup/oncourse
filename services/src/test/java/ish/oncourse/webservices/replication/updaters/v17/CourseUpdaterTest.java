@@ -5,7 +5,7 @@ import ish.oncourse.model.FieldConfigurationScheme;
 import ish.oncourse.services.textile.TextileConverter;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.replication.v17.updaters.CourseUpdater;
-import ish.oncourse.webservices.v15.stubs.replication.CourseStub;
+import ish.oncourse.webservices.v17.stubs.replication.CourseStub;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;

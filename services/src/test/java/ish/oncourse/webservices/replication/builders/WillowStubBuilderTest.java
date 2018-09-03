@@ -6,7 +6,7 @@ import ish.oncourse.test.tapestry.ServiceTest;
 import ish.oncourse.webservices.soap.ReplicationTestModule;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.SupportedVersions;
-import ish.oncourse.webservices.v16.stubs.replication.EnrolmentStub;
+import ish.oncourse.webservices.v17.stubs.replication.EnrolmentStub;
 import org.apache.cayenne.Cayenne;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
@@ -47,7 +47,7 @@ public class WillowStubBuilderTest extends ServiceTest {
 		
 		IWillowStubBuilder builder = getService(IWillowStubBuilder.class);
 		
-		GenericReplicationStub replStub = builder.convert(record, SupportedVersions.V16);
+		GenericReplicationStub replStub = builder.convert(record, SupportedVersions.V17);
 		
 		assertNotNull("Expecting not null willow id.", replStub.getWillowId());
 		assertTrue("Expecting EnrolmentStub.", replStub instanceof EnrolmentStub);

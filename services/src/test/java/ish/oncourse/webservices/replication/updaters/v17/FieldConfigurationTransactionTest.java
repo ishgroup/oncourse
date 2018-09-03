@@ -9,7 +9,7 @@ import ish.oncourse.webservices.soap.ReplicationTestModule;
 import ish.oncourse.webservices.util.GenericReplicatedRecord;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
 import ish.oncourse.webservices.util.PortHelper;
-import ish.oncourse.webservices.v16.stubs.replication.*;
+import ish.oncourse.webservices.v17.stubs.replication.*;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.dbunit.database.DatabaseConfig;
@@ -24,8 +24,8 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
-import static ish.oncourse.webservices.util.SupportedVersions.V16;
-import static ish.oncourse.webservices.v16.stubs.replication.Status.SUCCESS;
+import static ish.oncourse.webservices.util.SupportedVersions.V17;
+import static ish.oncourse.webservices.v17.stubs.replication.Status.SUCCESS;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 
@@ -123,7 +123,7 @@ public class FieldConfigurationTransactionTest extends ServiceTest {
         courseStub.setCreated(new Date());
         courseStub.setEntityIdentifier(Course.class.getSimpleName());
         
-        GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(V16);
+        GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(V17);
         transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(schemeStub);
         transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(courseStub);
         transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(fieldStub);

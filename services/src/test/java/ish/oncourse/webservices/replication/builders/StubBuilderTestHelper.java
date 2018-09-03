@@ -17,8 +17,8 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * The bash commond line gets all getters from the Java Class:
@@ -57,7 +57,7 @@ public class StubBuilderTestHelper<E extends Queueable, S extends GenericReplica
 
     public S assertStubBuilder(AbstractWillowStubBuilder<E, S> stubBuilder) {
         LOGGER.info(String.format("test stubBuilder - \"%s\"", stubBuilder.getClass().getSimpleName()));
-        GenericReplicationStub stub = stubBuilder.convert(entity, SupportedVersions.V5);
+        GenericReplicationStub stub = stubBuilder.convert(entity, SupportedVersions.V6);
 
         PropertyDescriptor[] contactDescriptors = PropertyUtils.getPropertyDescriptors(stub);
         for (PropertyDescriptor descriptor : contactDescriptors) {

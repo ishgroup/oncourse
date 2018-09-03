@@ -9,7 +9,7 @@ import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.replication.updaters.UpdaterException;
 import ish.oncourse.webservices.replication.v17.updaters.MessagePersonUpdater;
 import ish.oncourse.webservices.soap.ReplicationTestModule;
-import ish.oncourse.webservices.v15.stubs.replication.MessagePersonStub;
+import ish.oncourse.webservices.v17.stubs.replication.MessagePersonStub;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -36,7 +36,6 @@ public class MessagePersonUpdaterTest extends ServiceTest {
 		stub.setMessageId(1l);
 		stub.setType(2);//sms
 		stub.setStatus(2);//sent
-		stub.setStudentId(1L);
 		stub.setAngelId(1L);
 		
 		final ObjectContext objectContext = getService(ICayenneService.class).newContext();
@@ -60,7 +59,6 @@ public class MessagePersonUpdaterTest extends ServiceTest {
 		stub.setMessageId(null);
 		stub.setType(2);//sms
 		stub.setStatus(1);//queued
-		stub.setStudentId(1L);
 		stub.setAngelId(1L);
 		
 		final ObjectContext objectContext = getService(ICayenneService.class).newContext();
@@ -98,7 +96,6 @@ public class MessagePersonUpdaterTest extends ServiceTest {
 		stub.setMessageId(1l);
 		stub.setType(2);//sms
 		stub.setStatus(2);//sent
-		stub.setStudentId(1L);
 		stub.setAngelId(1L);
 		
 		MessagePersonStub stub2 = new MessagePersonStub();
@@ -106,7 +103,6 @@ public class MessagePersonUpdaterTest extends ServiceTest {
 		stub2.setMessageId(1l);
 		stub2.setType(2);//sms
 		stub2.setStatus(1);//sent
-		stub2.setStudentId(1L);
 		stub2.setAngelId(1L);
 		
 		final ObjectContext objectContext = getService(ICayenneService.class).newContext();

@@ -15,13 +15,10 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.xml.rpc.ServiceException;
 import java.util.Date;
 
 /**
  * Test payment gateway processing.
- *
- * @author ksenia
  */
 public class TestPaymentGatewayService implements IPaymentGatewayService {
 
@@ -226,7 +223,7 @@ public class TestPaymentGatewayService implements IPaymentGatewayService {
     }
 
 	@Override
-	public TransactionResult checkPaymentTransaction(PaymentIn p) throws ServiceException {
+	public TransactionResult checkPaymentTransaction(PaymentIn p) {
 		TransactionResult tr = new TransactionResult();
 		tr.setStatus(TransactionResult.ResultStatus.SUCCESS);
 		TransactionResult2 result2 = new TransactionResult2();
