@@ -76,28 +76,10 @@ public abstract class AbstractWillowStubBuilder<T extends Queueable, V extends G
 	
 	
 	private String getCustomFieldIdentifier(SupportedVersions version) {
-		switch (version) {
-			case V10:
-			case V13:
-			case V14:
-				return CustomField.class.getSimpleName();
-			case V15:
-			case V16:
-			case V17:
-			default:
-				return ContactCustomField.class.getSimpleName();
-		}
+		return ContactCustomField.class.getSimpleName();
 	}
 
 	private String getFieldConfigurationIdentifier(SupportedVersions version) {
-		switch (version) {
-			case V14:
-			case V15:
-			case V16:
-				return FieldConfiguration.class.getSimpleName();
-			case V17:
-			default:
-				return EnrolmentFieldConfiguration.class.getSimpleName();
-		}
+		return EnrolmentFieldConfiguration.class.getSimpleName();
 	}
 }

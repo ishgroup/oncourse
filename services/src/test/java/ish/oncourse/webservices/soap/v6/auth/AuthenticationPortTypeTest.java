@@ -11,7 +11,7 @@ import ish.oncourse.webservices.soap.ReplicationTestModule;
 import ish.oncourse.webservices.soap.v17.AuthFailure;
 import ish.oncourse.webservices.soap.v17.ReplicationPortType;
 import ish.oncourse.webservices.soap.v17.ReplicationPortTypeImpl;
-import ish.oncourse.webservices.v14.stubs.replication.ErrorCode;
+import ish.oncourse.webservices.v17.stubs.replication.ErrorCode;
 import org.apache.cxf.transport.http.AbstractHTTPDestination;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.ITable;

@@ -8,11 +8,9 @@ import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.exception.StackTraceUtils;
 import ish.oncourse.webservices.replication.builders.IWillowStubBuilder;
 import ish.oncourse.webservices.util.*;
-import ish.oncourse.webservices.v14.stubs.replication.BinaryInfoRelationStub;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -22,7 +20,6 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import java.util.*;
 
 import static ish.oncourse.webservices.replication.services.ReplicationUtils.GENERIC_EXCEPTION;
-import static ish.oncourse.webservices.replication.services.ReplicationUtils.getEntityClass;
 
 /**
  * Main version 4 synchronous replication implementation.

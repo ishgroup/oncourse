@@ -1,9 +1,9 @@
 package ish.oncourse.webservices.replication.services;
 
 import ish.common.types.ContactDuplicateStatus;
-import ish.oncourse.webservices.v14.stubs.replication.ContactDuplicateStub;
-import ish.oncourse.webservices.v14.stubs.replication.ContactStub;
-import ish.oncourse.webservices.v14.stubs.replication.DeletedStub;
+import ish.oncourse.webservices.v17.stubs.replication.ContactDuplicateStub;
+import ish.oncourse.webservices.v17.stubs.replication.ContactStub;
+import ish.oncourse.webservices.v17.stubs.replication.DeletedStub;
 
 import java.sql.Date;
 
@@ -12,11 +12,11 @@ import java.sql.Date;
  */
 public class TransactionGroupProcessorTestUtils {
 
-    public static ish.oncourse.webservices.v14.stubs.replication.ContactStub generateContactV14Stub(Long angelId,
+    public static ish.oncourse.webservices.v17.stubs.replication.ContactStub generateContactV17Stub(Long angelId,
                                                                                               Long willowId,
                                                                                               String givenName,
                                                                                               String familyName){
-        ish.oncourse.webservices.v14.stubs.replication.ContactStub stub = new ContactStub();
+        ish.oncourse.webservices.v17.stubs.replication.ContactStub stub = new ContactStub();
         stub.setAngelId(angelId);
         stub.setWillowId(willowId);
         stub.setGivenName(givenName);
@@ -25,22 +25,22 @@ public class TransactionGroupProcessorTestUtils {
         return stub;
     }
 
-    public static ish.oncourse.webservices.v14.stubs.replication.DeletedStub generateDeleteV14Stub(String entityIdentifier,
+    public static ish.oncourse.webservices.v17.stubs.replication.DeletedStub generateDeleteV17Stub(String entityIdentifier,
                                                                                                    Long angelId,
                                                                                                    Long willowId){
-        ish.oncourse.webservices.v14.stubs.replication.DeletedStub stub = new DeletedStub();
+        ish.oncourse.webservices.v17.stubs.replication.DeletedStub stub = new DeletedStub();
         stub.setAngelId(angelId);
         stub.setWillowId(willowId);
         stub.setEntityIdentifier(entityIdentifier);
         return stub;
     }
 
-    public static ish.oncourse.webservices.v14.stubs.replication.ContactDuplicateStub generateContactDuplicateV14Stub(Long angelId,
+    public static ish.oncourse.webservices.v17.stubs.replication.ContactDuplicateStub generateContactDuplicateV17Stub(Long angelId,
                                                                                                                 Long willowId,
                                                                                                                 Long contactToUpdateAngelId,
                                                                                                                 Long contactToDeleteAngelId,
                                                                                                                 Long contactToDeleteWillowId){
-        ish.oncourse.webservices.v14.stubs.replication.ContactDuplicateStub stub = new ContactDuplicateStub();
+        ish.oncourse.webservices.v17.stubs.replication.ContactDuplicateStub stub = new ContactDuplicateStub();
         stub.setAngelId(angelId);
         stub.setWillowId(willowId);
         stub.setContactToUpdateId(contactToUpdateAngelId);

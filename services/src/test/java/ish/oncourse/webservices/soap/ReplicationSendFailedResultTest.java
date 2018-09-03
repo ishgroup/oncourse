@@ -33,10 +33,10 @@ public class ReplicationSendFailedResultTest extends ServiceTest {
 	}
 	
 	@Test
-	public void testV14SendResultsStatusFail() throws Exception {
+	public void testV17SendResultsStatusFail() throws Exception {
 		IReplicationService service = getService(IReplicationService.class);
-		GenericReplicationResult result = PortHelper.createReplicationResult(SupportedVersions.V14);
-		GenericReplicationRecords replicatedRecords = service.getRecords(SupportedVersions.V14);
+		GenericReplicationResult result = PortHelper.createReplicationResult(SupportedVersions.V17);
+		GenericReplicationRecords replicatedRecords = service.getRecords(SupportedVersions.V17);
 		for (GenericTransactionGroup group : replicatedRecords.getGenericGroups()) {
 			for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 				GenericReplicatedRecord confirmedRecord = ReplicationUtils.toReplicatedRecord(stub, true);
