@@ -63,7 +63,7 @@ public class ReindexListenerTest {
 
         cayenneRuntime = new ServerRuntime("cayenne-oncourse.xml", CommitLogModule.extend()
                 .addListener(listener).module());
-        cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addListener(new TaggableListener(null));
+        cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addListener(new TaggableListener(null, null));
 
     }
     
