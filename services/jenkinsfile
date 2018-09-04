@@ -1,10 +1,12 @@
 #!groovy​
 
-def projectName = 'services'
-
 pipeline {
     agent { 
         label 'osx'
+    }
+
+    environment {
+        projectName = 'services'
     }
 
     parameters {
@@ -19,7 +21,7 @@ pipeline {
                     browser: [$class: 'Phabricator', repo: 'C', url: 'https://reviews.ish.com.au/'],
                     filterChangelog: true,
                     ignoreDirPropChanges: false,
-                    includedRegions: '/willow/trunk/${projectName}',
+                    includedRegions: "/willow/trunk/${projectName}",
                     locations: [[cancelProcessOnExternalsFail: false, credentialsId: '0886002b-eb7a-4824-b5c3-f4130b4b7c9e', depthOption: 'infinity', ignoreExternalsOption: false, local: '.', remote: 'https://svn.ish.com.au/ish/willow/trunk']],
                     quietOperation: true,
                     workspaceUpdater: [$class: 'UpdateUpdater']
@@ -67,7 +69,7 @@ pipeline {
             )
         }
         success {
-            archiveArtifacts artifacts: 'services/build/distributions/*.zip'
+            archiveArtifacts artifacts: "${projectName}/build/distributions/*.zip"
         }
     }
 
