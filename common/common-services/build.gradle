@@ -18,7 +18,7 @@ dependencies {
 
     //the jackson verson does not have problem with initializing in hot deployed wars
     compile 'com.fasterxml.jackson.core:jackson-databind:2.2.3'
-	compile 'com.amazonaws:aws-java-sdk:1.6.11'
+	compile 'com.amazonaws:aws-java-sdk:1.1.401'
 
 	//we use DefaultArtifactVersion class from the package to compare angel versions.
 	compile 'org.apache.maven:maven-artifact:3.0.4'
