@@ -1,5 +1,7 @@
 #!groovy​
 
+def projectName = 'services'
+
 pipeline {
     agent { 
         label 'osx'
@@ -12,8 +14,19 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh "./gradlew services:build -Dbuild_number=${env.BUILD_NUMBER} -PreleaseVersion=${params.version}"
-                junit 'services/build/test-results/**/*.xml'
+                checkout([
+                    $class: 'SubversionSCM',
+                    browser: [$class: 'Phabricator', repo: 'C', url: 'https://reviews.ish.com.au/'],
+                    filterChangelog: true,
+                    ignoreDirPropChanges: false,
+                    includedRegions: '/willow/trunk/${projectName}',
+                    locations: [[cancelProcessOnExternalsFail: false, credentialsId: '0886002b-eb7a-4824-b5c3-f4130b4b7c9e', depthOption: 'infinity', ignoreExternalsOption: false, local: '.', remote: 'https://svn.ish.com.au/ish/willow/trunk']],
+                    quietOperation: true,
+                    workspaceUpdater: [$class: 'UpdateUpdater']
+                ])
+
+                sh "./gradlew ${projectName}:build -Dbuild_number=${env.BUILD_NUMBER} -PreleaseVersion=${params.version}"
+                junit '${projectName}/build/test-results/**/*.xml'
             }
         }
         stage('Snapshot') {
@@ -21,7 +34,7 @@ pipeline {
                 expression { params.version == '' }
             }
             steps {
-                sh "./gradlew services:publishExecutablesPublicationToSnapshotsRepository -Dbuild_number=${env.BUILD_NUMBER} -PreleaseVersion=SNAPSHOT"                    
+                sh "./gradlew ${projectName}:publishExecutablesPublicationToSnapshotsRepository -Dbuild_number=${env.BUILD_NUMBER} -PreleaseVersion=SNAPSHOT"
             }
         }
         stage('Create release') {
@@ -32,8 +45,8 @@ pipeline {
                 script {
                     currentBuild.displayName = "Release ${params.version}"
                 }
-                sh "./gradlew services:publishExecutablesPublicationToExecutablesRepository -PreleaseVersion=${params.version}"
-                sh "./gradlew createVersion -PreleaseVersion=\"${params.version} services\""
+                sh "./gradlew ${projectName}:publishExecutablesPublicationToExecutablesRepository -PreleaseVersion=${params.version}"
+                sh "./gradlew createVersion -PreleaseVersion=\"${params.version} ${projectName}\""
             }
         }
     }
