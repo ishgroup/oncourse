@@ -6,7 +6,7 @@ pipeline {
     }
 
     parameters {
-        string(defaultValue: 'SNAPSHOT', description: 'Release version. Leave blank to not release.', name: 'version')
+        string(defaultValue: '', description: 'Release version. Leave blank to not release.', name: 'version')
     }
 
     stages {
@@ -23,6 +23,15 @@ pipeline {
                         workspaceUpdater: [$class: 'UpdateUpdater']
                 ])
                 sh "./gradlew search:build -Dbuild_number=${env.BUILD_NUMBER} -PreleaseVersion=${params.version}"
+            }
+        }
+        
+        stage('Snapshot') {
+            when {
+                expression { params.version == '' }
+            }
+            steps {
+                sh "./gradlew search:publishExecutablesPublicationToSnapshotsRepository -Dbuild_number=${env.BUILD_NUMBER} -PreleaseVersion=SNAPSHOT"                    
             }
         }
 
