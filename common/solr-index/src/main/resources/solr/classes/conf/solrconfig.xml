@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <config>
     <luceneMatchVersion>6.0.0</luceneMatchVersion>
-    <!-- THIS HANDLER SHOULD BE REMOVED AFTER WILLOW SERVICES GETS REINDEX JOBS -->
-    <lib dir="${solr.install.dir:../../../..}/dist/" regex="solr-dataimporthandler-.*\.jar"/>
-    <requestHandler name="/dataimport"
-                    class="org.apache.solr.handler.dataimport.DataImportHandler">
-        <lst name="defaults">
-            <str name="config">oncourse-jdbc.xml</str>
-        </lst>
-    </requestHandler>
-    <!-- -->
-
 
     <directoryFactory name="DirectoryFactory" class="${solr.directoryFactory:solr.StandardDirectoryFactory}"/>
     <schemaFactory class="ClassicIndexSchemaFactory"/>
