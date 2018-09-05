@@ -55,6 +55,7 @@ pipeline {
         }
         success {
             archiveArtifacts artifacts: 'admin/build/distributions/*.zip'
+            sh "sudo /usr/local/bin/salt -I region:minsk state.apply willow.apps"
         }
     }
 
