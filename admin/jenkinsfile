@@ -2,7 +2,7 @@
 
 pipeline {
     agent { 
-        label 'osx'
+        label 'freebsd'
     }
 
     parameters {
@@ -11,12 +11,18 @@ pipeline {
 
     stages {
         stage('Build') {
+            agent {
+                label 'osx'
+            }
             steps {
                 sh "./gradlew admin:build -Dbuild_number=${env.BUILD_NUMBER} -PreleaseVersion=${params.version}"
                 junit 'admin/build/test-results/**/*.xml'
             }
         }
-        stage('Snapshot') {
+        stage('Upload snapshot') {
+            agent {
+                label 'osx'
+            }
             when {
                 expression { params.version == '' }
             }
@@ -24,7 +30,10 @@ pipeline {
                 sh "./gradlew admin:publishExecutablesPublicationToSnapshotsRepository -Dbuild_number=${env.BUILD_NUMBER} -PreleaseVersion=SNAPSHOT"                    
             }
         }
-        stage('Create release') {
+        stage('Upload release') {
+            agent {
+                label 'osx'
+            }
             when {
                 expression { params.version != '' }
             }
@@ -54,7 +63,6 @@ pipeline {
             )
         }
         success {
-            archiveArtifacts artifacts: 'admin/build/distributions/*.zip'
             sh "sudo /usr/local/bin/salt -I region:minsk state.apply willow.apps"
         }
     }
