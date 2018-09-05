@@ -64,9 +64,6 @@ pipeline {
                 body: "Check console output at ${env.BUILD_URL}",
             )
         }
-        success {
-
-        }
     }
 
     options {
