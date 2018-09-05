@@ -73,7 +73,8 @@ public class WillowUpdaterImpl implements IWillowUpdater {
 			if (currentCollege != null) {
 				entity.setCollege(entity.getObjectContext().localObject(currentCollege));
 			}	
-		}
+		}		
+		updater.setCayenneService(cayenneService);
 		updater.updateEntityFromStub(stub, entity, callback);
 	}
 	
