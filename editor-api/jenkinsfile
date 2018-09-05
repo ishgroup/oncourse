@@ -2,7 +2,7 @@
 
 pipeline {
     agent { 
-        label 'osx'
+        label 'freebsd'
     }
 
     parameters {
@@ -11,18 +11,37 @@ pipeline {
 
     stages {
         stage('Build') {
+            agent {
+                label 'osx'
+            }
             steps {
+                checkout([
+                        $class: 'SubversionSCM',
+                        browser: [$class: 'Phabricator', repo: 'C', url: 'https://reviews.ish.com.au/'],
+                        filterChangelog: true,
+                        ignoreDirPropChanges: false,
+                        includedRegions: "/willow/trunk/editor-api/.*",
+                        locations: [[cancelProcessOnExternalsFail: false, credentialsId: '0886002b-eb7a-4824-b5c3-f4130b4b7c9e', depthOption: 'infinity', ignoreExternalsOption: false, local: '.', remote: 'https://svn.ish.com.au/ish/willow/trunk']],
+                        quietOperation: true,
+                        workspaceUpdater: [$class: 'UpdateUpdater']
+                ])
                 sh "./gradlew editor-api:build -Dbuild_number=${env.BUILD_NUMBER} -PreleaseVersion=${params.version}"
                 junit 'editor-api/build/test-results/**/*.xml'
             }
         }
         
         stage('Docs') {
+            agent {
+                label 'osx'
+            }
             steps {
                 sh "./gradlew editor-api:generateDoc"
             }
         }
-        stage('Snapshot') {
+        stage('Upload snapshot') {
+            agent {
+                label 'osx'
+            }
             when {
                 expression { params.version == '' }
             }
@@ -30,7 +49,10 @@ pipeline {
                 sh "./gradlew editor-api:publishExecutablesPublicationToSnapshotsRepository -Dbuild_number=${env.BUILD_NUMBER} -PreleaseVersion=SNAPSHOT"                    
             }
         }
-        stage('Release') {
+        stage('Upload release') {
+            agent {
+                label 'osx'
+            }
             when {
                 expression { params.version != '' }
             }
@@ -60,7 +82,7 @@ pipeline {
             )
         }
         success {
-            archiveArtifacts artifacts: 'editor-api/build/distributions/*.zip'
+            sh "sudo /usr/local/bin/salt -I region:minsk state.apply willow.apps"
         }
     }
 

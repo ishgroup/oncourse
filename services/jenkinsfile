@@ -2,7 +2,7 @@
 
 pipeline {
     agent { 
-        label 'osx'
+        label 'freebsd'
     }
 
     environment {
@@ -15,13 +15,16 @@ pipeline {
 
     stages {
         stage('Build') {
+            agent {
+                label 'osx'
+            }
             steps {
                 checkout([
                     $class: 'SubversionSCM',
                     browser: [$class: 'Phabricator', repo: 'C', url: 'https://reviews.ish.com.au/'],
                     filterChangelog: true,
                     ignoreDirPropChanges: false,
-                    includedRegions: "trunk/services",
+                    includedRegions: "/willow/trunk/services/.*",
                     locations: [[cancelProcessOnExternalsFail: false, credentialsId: '0886002b-eb7a-4824-b5c3-f4130b4b7c9e', depthOption: 'infinity', ignoreExternalsOption: false, local: '.', remote: 'https://svn.ish.com.au/ish/willow/trunk']],
                     quietOperation: true,
                     workspaceUpdater: [$class: 'UpdateUpdater']
@@ -31,7 +34,10 @@ pipeline {
                 junit 'services/build/test-results/**/*.xml'
             }
         }
-        stage('Snapshot') {
+        stage('Upload snapshot') {
+            agent {
+                label 'osx'
+            }
             when {
                 expression { params.version == '' }
             }
@@ -39,7 +45,10 @@ pipeline {
                 sh "./gradlew ${projectName}:publishExecutablesPublicationToSnapshotsRepository -Dbuild_number=${env.BUILD_NUMBER} -PreleaseVersion=SNAPSHOT"
             }
         }
-        stage('Create release') {
+        stage('Upload release') {
+            agent {
+                label 'osx'
+            }
             when {
                 expression { params.version != '' }
             }
@@ -69,7 +78,7 @@ pipeline {
             )
         }
         success {
-            archiveArtifacts artifacts: "${projectName}/build/distributions/*.zip"
+            sh "sudo /usr/local/bin/salt -I region:minsk state.apply willow.apps"
         }
     }
 

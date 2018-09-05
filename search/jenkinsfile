@@ -12,6 +12,16 @@ pipeline {
     stages {
         stage('Build') {
             steps {
+                checkout([
+                        $class: 'SubversionSCM',
+                        browser: [$class: 'Phabricator', repo: 'C', url: 'https://reviews.ish.com.au/'],
+                        filterChangelog: true,
+                        ignoreDirPropChanges: false,
+                        includedRegions: "/willow/trunk/search/.*",
+                        locations: [[cancelProcessOnExternalsFail: false, credentialsId: '0886002b-eb7a-4824-b5c3-f4130b4b7c9e', depthOption: 'infinity', ignoreExternalsOption: false, local: '.', remote: 'https://svn.ish.com.au/ish/willow/trunk']],
+                        quietOperation: true,
+                        workspaceUpdater: [$class: 'UpdateUpdater']
+                ])
                 sh "./gradlew search:build -Dbuild_number=${env.BUILD_NUMBER} -PreleaseVersion=${params.version}"
             }
         }
@@ -46,7 +56,7 @@ pipeline {
             )
         }
         success {
-            archiveArtifacts artifacts: 'search/build/distributions/*.zip'
+
         }
     }
 
