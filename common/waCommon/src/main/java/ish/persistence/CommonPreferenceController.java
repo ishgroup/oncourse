@@ -2327,7 +2327,7 @@ public abstract class CommonPreferenceController {
 	}
 
 	public void setPasswordExpiryPeriod(Integer value) {
-		setValue(PASSWORD_COMPLEXITY, false, value == null ? null : Integer.toString(value));
+		setValue(PASSWORD_EXPIRY_PERIOD, false, value == null ? null : Integer.toString(value));
 	}
 
 	public TwoFactorAuthorizationStatus getTwoFactorAuthStatus() {
