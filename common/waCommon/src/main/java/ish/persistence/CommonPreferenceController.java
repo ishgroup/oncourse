@@ -4,10 +4,7 @@
  */
 package ish.persistence;
 
-import ish.common.types.ClassFundingSource;
-import ish.common.types.CreditCardType;
-import ish.common.types.DeliveryMode;
-import ish.common.types.TypesUtil;
+import ish.common.types.*;
 import ish.math.Country;
 import ish.oncourse.common.ExportJurisdiction;
 import ish.util.Maps;
@@ -1874,6 +1871,16 @@ public abstract class CommonPreferenceController {
 			return getAccountInvoiceTerms();
 		} else if (AVETMISS_FEE_HELP_PROVIDER_CODE.equals(key)) {
 			return getAvetmissFeeHelpProviderCode();
+		} else if (AUTO_DISABLE_INACTIVE_ACCOUNT.equals(key)) {
+			return getAutoDisableInactiveAccounts();
+		} else if (PASSWORD_COMPLEXITY.equals(key)) {
+			return getPasswordComplexity();
+		} else if (PASSWORD_EXPIRY_PERIOD.equals(key)) {
+			return getPasswordExpiryPeriod();
+		} else if (TWO_FACTOR_AUTHENTICATION.equals(key)) {
+			return getTwoFactorAuthStatus();
+		} else if (TFA_EXPIRY_PERIOD.equals(key)) {
+			return getTwoFactorAuthExpiryPeriod();
 		}
 
 		if (DEPRECATED_PREFERENCES.contains(key)) {
@@ -2089,6 +2096,16 @@ public abstract class CommonPreferenceController {
 			setAccountInvoiceTerms((Integer) value);
 		} else if (AVETMISS_FEE_HELP_PROVIDER_CODE.equals(key)) {
 			setAvetmissFeeHelpProviderCode((String) value);
+		} else if (AUTO_DISABLE_INACTIVE_ACCOUNT.equals(key)) {
+			setAutoDisableInactiveAccounts((Boolean) value);
+		} else if (PASSWORD_COMPLEXITY.equals(key)) {
+			setPasswordComplexity((Boolean) value);
+		} else if (PASSWORD_EXPIRY_PERIOD.equals(key)) {
+			setPasswordExpiryPeriod((Integer) value);
+		} else if (TWO_FACTOR_AUTHENTICATION.equals(key)) {
+			setTwoFactorAuthStatus((TwoFactorAuthorizationStatus) value);
+		} else if (TFA_EXPIRY_PERIOD.equals(key)) {
+			setTwoFactorAuthExpiryPeriod((Integer) value);
 		}
 	}
 	
@@ -2280,6 +2297,55 @@ public abstract class CommonPreferenceController {
 		setValue(PORTAL_HIDE_CLASS_ROLL_CONTACT_EMAIL, false, value);
 	}
 
-	
+	private static final boolean DEF_INACTIVE_ACCOUNT = true;
+	private static final boolean DEF_PASSWORD_COMPLEXITY = false;
+	private static final Integer DEF_PASSWORD_EXPIRY_PERIOD = null;
+	private static final TwoFactorAuthorizationStatus DEF_TFA_STATUS = TwoFactorAuthorizationStatus.DISABLED;
+	private static final Integer DEF_TFA_EXPIRY_PERIOD = 16;
 
+	boolean getAutoDisableInactiveAccounts() {
+		String value = getValue(AUTO_DISABLE_INACTIVE_ACCOUNT, false);
+		return value == null ? DEF_INACTIVE_ACCOUNT : Boolean.parseBoolean(value);
+	}
+
+	void setAutoDisableInactiveAccounts(boolean value) {
+		setValue(AUTO_DISABLE_INACTIVE_ACCOUNT, false,Boolean.toString(value));
+	}
+
+	boolean getPasswordComplexity() {
+		String value = getValue(PASSWORD_COMPLEXITY, false);
+		return value == null ? DEF_PASSWORD_COMPLEXITY : Boolean.parseBoolean(value);
+	}
+
+	void setPasswordComplexity(boolean value) {
+		setValue(PASSWORD_COMPLEXITY, false, Boolean.toString(value));
+	}
+
+
+	Integer getPasswordExpiryPeriod() {
+		String value = getValue(PASSWORD_EXPIRY_PERIOD, false);
+		return value == null ? DEF_PASSWORD_EXPIRY_PERIOD : Integer.parseInt(value);
+	}
+
+	void setPasswordExpiryPeriod(Integer value) {
+		setValue(PASSWORD_COMPLEXITY, false, value == null ? null : Integer.toString(value));
+	}
+
+	TwoFactorAuthorizationStatus getTwoFactorAuthStatus() {
+		String value = getValue(TWO_FACTOR_AUTHENTICATION, false);
+		return value == null ? DEF_TFA_STATUS : TypesUtil.getEnumForDatabaseValue(value, TwoFactorAuthorizationStatus.class);
+	}
+
+	void setTwoFactorAuthStatus(TwoFactorAuthorizationStatus value) {
+		setValue(TWO_FACTOR_AUTHENTICATION, false, value == null ? DEF_TFA_STATUS.getDatabaseValue() : value.getDatabaseValue());
+	}
+
+	Integer getTwoFactorAuthExpiryPeriod() {
+		String value = getValue(TFA_EXPIRY_PERIOD, false);
+		return value == null ? DEF_TFA_EXPIRY_PERIOD : Integer.parseInt(value);
+	}
+
+	void setTwoFactorAuthExpiryPeriod(Integer value) {
+		setValue(TFA_EXPIRY_PERIOD, false, value == null ? null : Integer.toString(value));
+	}
 }
