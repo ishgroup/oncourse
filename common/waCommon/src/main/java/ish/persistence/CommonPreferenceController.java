@@ -2303,49 +2303,49 @@ public abstract class CommonPreferenceController {
 	private static final TwoFactorAuthorizationStatus DEF_TFA_STATUS = TwoFactorAuthorizationStatus.DISABLED;
 	private static final Integer DEF_TFA_EXPIRY_PERIOD = 16;
 
-	boolean getAutoDisableInactiveAccounts() {
+	public boolean getAutoDisableInactiveAccounts() {
 		String value = getValue(AUTO_DISABLE_INACTIVE_ACCOUNT, false);
 		return value == null ? DEF_INACTIVE_ACCOUNT : Boolean.parseBoolean(value);
 	}
 
-	void setAutoDisableInactiveAccounts(boolean value) {
+	public void setAutoDisableInactiveAccounts(boolean value) {
 		setValue(AUTO_DISABLE_INACTIVE_ACCOUNT, false,Boolean.toString(value));
 	}
 
-	boolean getPasswordComplexity() {
+	public boolean getPasswordComplexity() {
 		String value = getValue(PASSWORD_COMPLEXITY, false);
 		return value == null ? DEF_PASSWORD_COMPLEXITY : Boolean.parseBoolean(value);
 	}
 
-	void setPasswordComplexity(boolean value) {
+	public void setPasswordComplexity(boolean value) {
 		setValue(PASSWORD_COMPLEXITY, false, Boolean.toString(value));
 	}
 
 
-	Integer getPasswordExpiryPeriod() {
+	public Integer getPasswordExpiryPeriod() {
 		String value = getValue(PASSWORD_EXPIRY_PERIOD, false);
 		return value == null ? DEF_PASSWORD_EXPIRY_PERIOD : Integer.parseInt(value);
 	}
 
-	void setPasswordExpiryPeriod(Integer value) {
+	public void setPasswordExpiryPeriod(Integer value) {
 		setValue(PASSWORD_COMPLEXITY, false, value == null ? null : Integer.toString(value));
 	}
 
-	TwoFactorAuthorizationStatus getTwoFactorAuthStatus() {
+	public TwoFactorAuthorizationStatus getTwoFactorAuthStatus() {
 		String value = getValue(TWO_FACTOR_AUTHENTICATION, false);
 		return value == null ? DEF_TFA_STATUS : TypesUtil.getEnumForDatabaseValue(value, TwoFactorAuthorizationStatus.class);
 	}
 
-	void setTwoFactorAuthStatus(TwoFactorAuthorizationStatus value) {
+	public void setTwoFactorAuthStatus(TwoFactorAuthorizationStatus value) {
 		setValue(TWO_FACTOR_AUTHENTICATION, false, value == null ? DEF_TFA_STATUS.getDatabaseValue() : value.getDatabaseValue());
 	}
 
-	Integer getTwoFactorAuthExpiryPeriod() {
+	public Integer getTwoFactorAuthExpiryPeriod() {
 		String value = getValue(TFA_EXPIRY_PERIOD, false);
 		return value == null ? DEF_TFA_EXPIRY_PERIOD : Integer.parseInt(value);
 	}
 
-	void setTwoFactorAuthExpiryPeriod(Integer value) {
+	public void setTwoFactorAuthExpiryPeriod(Integer value) {
 		setValue(TFA_EXPIRY_PERIOD, false, value == null ? null : Integer.toString(value));
 	}
 }
