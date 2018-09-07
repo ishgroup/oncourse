@@ -2299,7 +2299,6 @@ public abstract class CommonPreferenceController {
 
 	private static final boolean DEF_INACTIVE_ACCOUNT = true;
 	private static final boolean DEF_PASSWORD_COMPLEXITY = false;
-	private static final Integer DEF_PASSWORD_EXPIRY_PERIOD = null;
 	private static final TwoFactorAuthorizationStatus DEF_TFA_STATUS = TwoFactorAuthorizationStatus.DISABLED;
 	private static final Integer DEF_TFA_EXPIRY_PERIOD = 16;
 
@@ -2324,7 +2323,7 @@ public abstract class CommonPreferenceController {
 
 	public Integer getPasswordExpiryPeriod() {
 		String value = getValue(PASSWORD_EXPIRY_PERIOD, false);
-		return value == null ? DEF_PASSWORD_EXPIRY_PERIOD : Integer.parseInt(value);
+		return value == null ? null : Integer.parseInt(value);
 	}
 
 	public void setPasswordExpiryPeriod(Integer value) {
@@ -2342,11 +2341,7 @@ public abstract class CommonPreferenceController {
 
 	public Integer getTwoFactorAuthExpiryPeriod() {
 		String value = getValue(TFA_EXPIRY_PERIOD, false);
-		if (value == null) {
-			return DEF_PASSWORD_EXPIRY_PERIOD;
-		} else {
-			return Integer.parseInt(value);
-		}
+		return value == null ? DEF_TFA_EXPIRY_PERIOD : Integer.parseInt(value);
 	}
 
 	public void setTwoFactorAuthExpiryPeriod(Integer value) {
