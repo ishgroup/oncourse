@@ -15,7 +15,12 @@ dependencies {
     queryLanguageModelSource "ish.oncourse.willow:waCommon:$waCommonWebservicesClientVersion:sources"
 }
 
-task webpack(type: NodeTask, dependsOn: 'yarn_install') {
+task increase_heap(type: NodeTask) {
+    script = project.file('node_modules/.bin/cross-env')
+    args = ['NODE_OPTIONS=--max_old_space_size=8192']
+}
+
+task webpack(type: NodeTask, dependsOn: ['yarn_install', 'increase_heap']) {
     script = file('node_modules/.bin/webpack')
     args = ['--progress', '-p', '--env.NODE_ENV', 'production', '--env.BUILD_NUMBER', version ?: 'SNAPSHOT']
 }
