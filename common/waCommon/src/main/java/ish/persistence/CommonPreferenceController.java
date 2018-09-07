@@ -2342,7 +2342,11 @@ public abstract class CommonPreferenceController {
 
 	public Integer getTwoFactorAuthExpiryPeriod() {
 		String value = getValue(TFA_EXPIRY_PERIOD, false);
-		return value == null ? DEF_TFA_EXPIRY_PERIOD : Integer.parseInt(value);
+		if (value == null) {
+			return DEF_PASSWORD_EXPIRY_PERIOD;
+		} else {
+			return Integer.parseInt(value);
+		}
 	}
 
 	public void setTwoFactorAuthExpiryPeriod(Integer value) {
