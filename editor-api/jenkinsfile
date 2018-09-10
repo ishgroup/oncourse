@@ -8,9 +8,11 @@ pipeline {
     parameters {
         string(defaultValue: '', description: 'Release version. Leave blank to not release.', name: 'version')
     }
+
     triggers {
         pollSCM 'H/5 * * * *'
     }
+
     stages {
         stage('Configure') {
             steps {
