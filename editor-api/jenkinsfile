@@ -83,6 +83,7 @@ pipeline {
         }
         success {
             sh "sudo /usr/local/bin/salt -I region:minsk state.apply willow.apps"
+
         }
     }
 
