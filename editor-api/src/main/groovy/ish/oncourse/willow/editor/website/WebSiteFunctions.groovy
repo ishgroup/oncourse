@@ -30,7 +30,7 @@ class WebSiteFunctions {
             return context.localObject(currentWebSite)
         }
 
-        WebSite site = new GetWebSite(request.serverName, context).get()
+        WebSite site = new GetWebSite(request.serverName, request.getHeader("X-Site-Key"), context).get()
         request.setAttribute(CURRENT_WEB_SITE, site)
         return site
     }

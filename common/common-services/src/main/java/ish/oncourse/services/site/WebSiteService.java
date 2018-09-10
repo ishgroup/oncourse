@@ -60,7 +60,7 @@ public class WebSiteService implements IWebSiteService {
 			return currentWebSite;
 		}
 
-		WebSite site = new GetWebSite(request.getServerName(), cayenneService.sharedContext()).get();
+		WebSite site = new GetWebSite(request.getServerName(), request.getHeader("X-Site-Key"), cayenneService.sharedContext()).get();
 		request.setAttribute(CURRENT_WEB_SITE, site);
 		return site;
 	}

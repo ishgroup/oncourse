@@ -10,6 +10,7 @@ import javax.ws.rs.container.ContainerRequestFilter
 class RequestFilter implements ContainerRequestFilter {
     
     static final ThreadLocal<String> ThreadLocalXOrigin = new ThreadLocal<String>()
+    static final ThreadLocal<String> ThreadLocalSiteKey = new ThreadLocal<String>()
     
     @Override
     void filter(ContainerRequestContext requestContext) throws IOException {
@@ -20,5 +21,10 @@ class RequestFilter implements ContainerRequestFilter {
             throw new IllegalArgumentException("X-Origin should be single value")
         }
         ThreadLocalXOrigin.set(hosts.get(0))
+
+        List<String> siteKeys = requestContext.headers.get('X-Site-Key')
+        if (siteKeys) {
+            ThreadLocalSiteKey.set(siteKeys.get(0))
+        }
     }
 }

@@ -9,19 +9,21 @@ import org.apache.cayenne.query.QueryCacheStrategy
 class GetWebSite {
 
     private String serverName
+    private String siteKeyHeader
     private ObjectContext context
     
-    GetWebSite(String serverName, ObjectContext context) {
+    GetWebSite(String serverName, String siteKeyHeader, ObjectContext context) {
         this.serverName = serverName
+        this.siteKeyHeader = siteKeyHeader
         this.context = context
     }
     
     WebSite get() {
-        WebHostName currentDomain = new GetDomain(serverName, context).get()
+        WebHostName currentDomain = new GetDomain(serverName, siteKeyHeader, context).get()
 
         if (currentDomain == null) {
             ObjectSelect.query(WebSite.class)
-                    .where(WebSite.SITE_KEY.eq(new GetSiteKey(serverName).get()))
+                    .where(WebSite.SITE_KEY.eq(siteKeyHeader))
                     .prefetch(WebSite.COLLEGE.joint())
                     .cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebSite.class.toString())
                     .selectFirst(context)

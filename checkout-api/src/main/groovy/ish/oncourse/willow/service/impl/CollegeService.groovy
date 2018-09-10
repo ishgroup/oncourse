@@ -21,7 +21,7 @@ class CollegeService {
     }
 
     WebSite getWebSite() {
-        new GetWebSite(RequestFilter.ThreadLocalXOrigin.get(), cayenneService.sharedContext()).get()
+        new GetWebSite(RequestFilter.ThreadLocalXOrigin.get(), RequestFilter.ThreadLocalSiteKey, cayenneService.sharedContext()).get()
     }
     
 }
