@@ -36,9 +36,17 @@ abstract class AbstractEditorTest {
     }
     
     private Request mockRequest() {
-        new Request(null, null) {
+        Request rq = new Request(null, null) {
             String getServerName() {
                 return "${webSiteKey}.oncourse.cc"
+            }
+
+            @Override
+            String getHeader(String name) {
+                if ("X-Site-Key".equals(name)) {
+                    return webSiteKey
+                }
+                return super.getHeader(name)
             }
         }
     }
