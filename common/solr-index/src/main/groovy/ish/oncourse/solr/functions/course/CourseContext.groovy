@@ -18,8 +18,8 @@ class CourseContext {
     Course course
     ObjectContext context
     Date current = new Date()
-    Closure<String[]> availableSites
-    
+
+    Closure<String[]> availableSites = CourseFunctions.SiteKeys
     Closure<ResultIterator<Tag>> tags = CourseFunctions.Tags
     Closure<ResultIterator<CourseClass>> courseClasses = CourseFunctions.CourseClasses
     Closure<Observable<SCourse>> applyCourseClass = SCourseFunctions.addCourseClass

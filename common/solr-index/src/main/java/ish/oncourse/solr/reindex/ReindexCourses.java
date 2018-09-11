@@ -22,25 +22,25 @@ public class ReindexCourses extends ReindexCollection<SCourse> {
 	private boolean reindexClasses = true;
 
 	public ReindexCourses(ObjectContext objectContext, SolrClient solrClient) {
-		this(objectContext, solrClient, s -> new String[0]);
-		reindexClasses = false;
+		this(objectContext, solrClient, false);
 	}
 	
 	
-	public ReindexCourses(ObjectContext objectContext, SolrClient solrClient, Function<Course, String[]> availableSites) {
+	public ReindexCourses(ObjectContext objectContext, SolrClient solrClient, boolean reindexClasses) {
 		super(solrClient,
 				SolrCollection.courses,
 				SCourseFunctions.SCourses(
 						new Date(),
-						Schedulers.io(), () -> CourseFunctions.Courses.call(objectContext), availableSites));
+						Schedulers.io(), () -> CourseFunctions.Courses.call(objectContext)));
+		this.reindexClasses = reindexClasses; 
 	}
 
-	public ReindexCourses(ObjectContext objectContext, SolrClient solrClient, Set<Long> ids, Function<Course, String[]> availableSites) {
+	public ReindexCourses(ObjectContext objectContext, SolrClient solrClient, Set<Long> ids) {
 		super(solrClient,
 				SolrCollection.courses,
 				SCourseFunctions.SCourses(
 						new Date(),
-						Schedulers.io(), () -> CourseFunctions.CoursesById.call(objectContext, ids), availableSites));
+						Schedulers.io(), () -> CourseFunctions.CoursesById.call(objectContext, ids)));
 	}
 
 	public UpdateResponse addBean(SCourse sCourse) throws IOException, SolrServerException {

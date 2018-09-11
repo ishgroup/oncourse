@@ -34,10 +34,9 @@ class SCourseFunctions {
     
     static final Observable<SCourse> SCourses(Date current = new Date(),
                                               Scheduler scheduler = Schedulers.io(),
-                                              Callable<Iterable<Course>> courses,
-                                              Function<Course, String[]> availableSites) {
+                                              Callable<Iterable<Course>> courses) {
         return new RXObservableFromIterable<Course, SCourse>().iterable(courses)
-                .mapper({ Course c -> GetSCourse.call(new CourseContext(course: c, context: c.objectContext, current: current, availableSites: { availableSites.apply(c) })) })
+                .mapper({ Course c -> GetSCourse.call(new CourseContext(course: c, context: c.objectContext, current: current)) })
                 .scheduler(scheduler)
                 .logger(logger).observable()
     }

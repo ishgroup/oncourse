@@ -3,11 +3,9 @@ package ish.oncourse.solr.functions.course
 import ish.oncourse.model.*
 import ish.oncourse.solr.model.SCourse
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.ObjectId
 import org.apache.cayenne.ResultIterator
 import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.ObjectSelect
-import org.apache.cayenne.query.SelectById
 
 import static ish.oncourse.model.auto._CourseClass.*
 import static org.apache.cayenne.query.ObjectSelect.query
@@ -58,4 +56,90 @@ class CourseFunctions {
         }
     }
 
+    public static final Closure<String[]> SiteKeys = { Course course ->
+        course.college.webSites.findAll { availableByRootTag(course, it) }.collect {it.siteKey}.toArray(new String[0])
+        
+        return new String[0]
+    }
+
+
+
+    private static availableByRootTag(Course course, WebSite webSites) {
+        Tag rootTag = getTagByFullPath(webSites.coursesRootTagName, webSites.college)
+        if (!rootTag) {
+            return true
+        }
+
+        
+        List<Tag> tags = query(Tag).where(Tag.TAGGABLE_TAGS.dot(TaggableTag.TAGGABLE).dot(Taggable.ENTITY_IDENTIFIER).eq(Course.simpleName))
+                .and(Tag.TAGGABLE_TAGS.dot(TaggableTag.TAGGABLE).dot(Taggable.ENTITY_WILLOW_ID).eq(course.getId())).select(course.objectContext)
+
+        return tags.any {tag -> rootTag.id == tag.id || rootTag.isParentOf(tag)}
+        
+    }
+
+
+    private static Tag getTagByFullPath(String path, College college) {
+        if (path == null) {
+            return null
+        }
+        if (path.startsWith('/')) {
+            path = path.replaceFirst('/', '')
+        }
+        if (path.endsWith('/')) {
+            path = path.substring(0, path.length() - 1)
+        }
+        if (path == '') {
+            return null
+        }
+        
+        String[] tagNames = path.split('/')
+
+        for (int j = 0; j < tagNames.length; j++) {
+            try {
+                tagNames[j] = URLDecoder.decode(tagNames[j], 'UTF-8')
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace()
+            }
+        }
+        Tag rootTag = null
+        Tag subjectsTag = query(Tag).where(Tag.COLLEGE.eq(college))
+                .and(Tag.IS_WEB_VISIBLE.isTrue())
+                .and(Tag.NAME.eq(Tag.SUBJECTS_TAG_NAME))
+                .selectFirst(college.objectContext)
+        
+        int i = 0
+        if (tagNames[0].equalsIgnoreCase(Tag.SUBJECTS_TAG_NAME)) {
+            rootTag = subjectsTag
+            i = 1
+        }
+        if (!rootTag) {
+            if (subjectsTag != null && subjectsTag.hasChildWithName(tagNames[0])) {
+                rootTag = subjectsTag
+            } else {
+                rootTag = query(Tag).where(Tag.COLLEGE.eq(college))
+                        .and(Tag.IS_WEB_VISIBLE.isTrue())
+                        .and(Tag.NAME.eq(tagNames[0]))
+                        .and(Tag.IS_TAG_GROUP.isTrue())
+                        .selectFirst(college.objectContext)
+                //don't need to process tag group if we have it
+                i = 1
+            }
+        }
+
+        if (!rootTag) {
+            return null
+        }
+        for (; i < tagNames.length; i++) {
+            Tag tag = rootTag.getChildWithName(tagNames[i])
+            if (tag == null) {
+                return null
+            } else {
+                rootTag = tag
+            }
+
+        }
+
+        return rootTag
+    }
 }

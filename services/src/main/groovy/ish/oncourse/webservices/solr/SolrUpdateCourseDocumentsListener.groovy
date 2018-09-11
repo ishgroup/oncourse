@@ -29,7 +29,6 @@ class SolrUpdateCourseDocumentsListener extends ish.oncourse.solr.update.listene
 
     private static final Logger logger = LogManager.logger
     
-    private ICourseService courseService
     private SolrClient solrClient
     private ServerRuntime serverRuntime
     private Injector injector
@@ -87,7 +86,7 @@ class SolrUpdateCourseDocumentsListener extends ish.oncourse.solr.update.listene
     void executeUpdate(Set<Long> courseIdToUpdate) {
         if (courseIdToUpdate.size() > 0) {
             try {
-                new ReindexCourses(getCayenne().newContext(), getSolr(), courseIdToUpdate, {s -> getCourseService().getAvailableSiteKeys(s)} ).run()
+                new ReindexCourses(getCayenne().newContext(), getSolr(), courseIdToUpdate).run()
             } catch (Exception e) {
                 logger.error("Exception occurred during courses reindex: ${courseIdToUpdate.join(',')}")
                 logger.catching(e)
@@ -100,8 +99,9 @@ class SolrUpdateCourseDocumentsListener extends ish.oncourse.solr.update.listene
             List<String> stringIds = courseIdToRemove.collect {it.toString()}
             try {
                 getSolr().deleteById(SolrCollection.courses.name(), stringIds)
-                solrClient.deleteByQuery(SolrCollection.classes.name(), "courseId:$stringIds")
+                stringIds.each {id -> solrClient.deleteByQuery(SolrCollection.classes.name(), "courseId:$id")}
                 getSolr().commit(SolrCollection.courses.name())
+                getSolr().commit(SolrCollection.classes.name())
             } catch (Exception e) {
                 logger.error("Exception occurred during courses deletion: ${stringIds.join(',')}")
                 logger.catching(e)
@@ -121,13 +121,6 @@ class SolrUpdateCourseDocumentsListener extends ish.oncourse.solr.update.listene
             solrClient = injector.getInstance(SolrClient)
         }
         return solrClient
-    }
-
-    private ICourseService getCourseService() {
-        if(!courseService) {
-            courseService = injector.getInstance(ServiceProvider)?.get(ICourseService)
-        }
-        return courseService
     }
 
     private static Set<ObjectChange> filter(ChangeMap changes, String entity) {
