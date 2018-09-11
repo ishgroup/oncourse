@@ -127,7 +127,7 @@ public class CourseService implements ICourseService {
 
 	
 	private boolean availableByRootTag(Course course, WebSite webSites) {
-		Tag rootTag = tagService.getTagByFullPath(StringUtils.trimToNull(webSites.getResourceFolderName()));
+		Tag rootTag = tagService.getTagByFullPath(StringUtils.trimToNull(webSites.getCoursesRootTagName()));
 		if (rootTag == null) {
 			return true;
 		}
