@@ -2300,7 +2300,6 @@ public abstract class CommonPreferenceController {
 	private static final boolean DEF_INACTIVE_ACCOUNT = true;
 	private static final boolean DEF_PASSWORD_COMPLEXITY = false;
 	private static final TwoFactorAuthorizationStatus DEF_TFA_STATUS = TwoFactorAuthorizationStatus.DISABLED;
-	private static final Integer DEF_TFA_EXPIRY_PERIOD = 16;
 
 	public boolean getAutoDisableInactiveAccounts() {
 		String value = getValue(AUTO_DISABLE_INACTIVE_ACCOUNT, false);
@@ -2341,7 +2340,7 @@ public abstract class CommonPreferenceController {
 
 	public Integer getTwoFactorAuthExpiryPeriod() {
 		String value = getValue(TFA_EXPIRY_PERIOD, false);
-		return value == null ? DEF_TFA_EXPIRY_PERIOD : Integer.parseInt(value);
+		return value == null ? null : Integer.parseInt(value);
 	}
 
 	public void setTwoFactorAuthExpiryPeriod(Integer value) {
