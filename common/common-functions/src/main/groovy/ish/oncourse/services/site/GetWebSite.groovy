@@ -19,7 +19,7 @@ class GetWebSite {
     }
     
     WebSite get() {
-        WebHostName currentDomain = new GetDomain(serverName, siteKeyHeader, context).get()
+        WebHostName currentDomain = new GetDomain(serverName, context).get()
 
         if (currentDomain == null) {
             ObjectSelect.query(WebSite.class)
