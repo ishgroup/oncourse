@@ -46,9 +46,10 @@ class SCourseFunctions {
         SCourse result = CourseFunctions.BuildSCourse.call(context.course)
         ResultIterator<CourseClass> classes = context.courseClasses(context)
         ResultIterator<Tag> tags = context.tags(context.course)
+        String[] availableSites = CourseFunctions.SiteKeys.call(context.course)
         try {
             result = Observable.fromIterable(classes).filter({ c -> c.hasAvailableEnrolmentPlaces })
-                    .flatMap({ cc -> context.applyCourseClass(result, context.courseClassContext.call(cc, context.current), context.availableSites()) })
+                    .flatMap({ cc -> context.applyCourseClass(result, context.courseClassContext.call(cc, context.current), availableSites) })
                     .lastElement()
                     .defaultIfEmpty(result)
                     .blockingGet()

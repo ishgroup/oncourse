@@ -57,7 +57,6 @@ class SCourseStartDateTest {
             ccc.current = current
             return ccc
         }
-        context.availableSites = { return new String[0] } 
         context
     }
 
