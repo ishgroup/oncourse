@@ -4698,9 +4698,25 @@
 	</changeSet>
 
 	<changeSet id="323" author="pnikanovich" context="production" runOnChange="false" runAlways="false">
-		<sql>
-			ALTER TABLE WebURLAlias ADD COLUMN matchType SMALLINT, ADD COLUMN specialPage SMALLINT;
-		</sql>
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="WebURLAlias" columnName="matchType" />
+			</not>
+		</preConditions>
+		<addColumn tableName="WebURLAlias">
+			<column name="matchType" type="SMALLINT"/>
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="324" author="pnikanovich" context="production" runOnChange="false" runAlways="false">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="WebURLAlias" columnName="specialPage" />
+			</not>
+		</preConditions>
+		<addColumn tableName="WebURLAlias">
+			<column name="specialPage" type="SMALLINT"/>
+		</addColumn>
 	</changeSet>
 
 </databaseChangeLog>
