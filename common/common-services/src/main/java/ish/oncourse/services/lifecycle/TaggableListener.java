@@ -91,8 +91,7 @@ public class TaggableListener {
 				if (taggable.getEntityIdentifier().equals(Course.class.getSimpleName()) && solrClient != null) {
 					new ReindexCourses(cayenneService.newNonReplicatingContext(), 
 							solrClient,
-							Collections.singleton(taggable.getEntityWillowId()),
-							courseService::getAvailableSiteKeys).run();
+							Collections.singleton(taggable.getEntityWillowId())).run();
 				}
 			}
 		}
