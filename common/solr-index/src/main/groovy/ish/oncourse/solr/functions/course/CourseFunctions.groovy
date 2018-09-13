@@ -57,9 +57,7 @@ class CourseFunctions {
     }
 
     public static final Closure<String[]> SiteKeys = { Course course ->
-        course.college.webSites.findAll { availableByRootTag(course, it) }.collect {it.siteKey}.toArray(new String[0])
-        
-        return new String[0]
+        return course.college.webSites.findAll { availableByRootTag(course, it) }.collect {it.siteKey}.toArray(new String[0])
     }
 
 
