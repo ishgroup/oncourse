@@ -15,15 +15,12 @@ import org.quartz.JobExecutionException;
 public abstract class AReindexCollectionJob implements Job {
     protected ServerRuntime serverRuntime;
     protected SolrClient solrClient;
-    protected ICourseService courseService;
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         try {
             serverRuntime = (ServerRuntime) context.getScheduler().getContext().get(QuartzModule.QUARTZ_CONTEXT_SERVER_RUNTIME_KEY);
             solrClient = (SolrClient) context.getScheduler().getContext().get(QuartzModule.QUARTZ_CONTEXT_SOLR_CLIENT_KEY);
-            ServicesModule.ServiceProvider provider = (ServicesModule.ServiceProvider) context.getScheduler().getContext().get(ServicesModule.ServiceProvider.class.getSimpleName());
-            courseService = provider.get(ICourseService.class);
             execute0();
         } catch (Exception e) {
             throw new JobExecutionException(e);
