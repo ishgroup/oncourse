@@ -15,13 +15,15 @@ import ish.oncourse.webservices.quartz.QuartzModule;
 import java.util.LinkedList;
 import java.util.List;
 
+import static ish.oncourse.solr.SolrProperty.WEBAPP_LOCATION;
+
 /**
  * User: akoiro
  * Date: 20/8/17
  */
 public class ServicesApp {
 	public static void main(String[] args) {
-		Configuration.configure();
+		Configuration.configure(WEBAPP_LOCATION);
 		Bootique bootique = new BuildBootique().args(args).build();
 		bootique.exec();
 	}

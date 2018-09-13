@@ -3,12 +3,14 @@ package ish.oncourse.solr.functions.course
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.schedulers.Schedulers
+import ish.oncourse.configuration.Configuration
 import ish.oncourse.linktransform.PageIdentifier
 import ish.oncourse.model.Course
 import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Tag
 
 import ish.oncourse.solr.RXObservableFromIterable
+import ish.oncourse.solr.SolrProperty
 import ish.oncourse.solr.model.*
 import org.apache.cayenne.ResultIterator
 import org.apache.commons.io.IOUtils
@@ -19,11 +21,13 @@ import org.apache.logging.log4j.Logger
 import java.util.concurrent.Callable
 import java.util.function.Function
 
+import static ish.oncourse.configuration.Configuration.getValue
 import static ish.oncourse.linktransform.PageIdentifier.Render
 import static ish.oncourse.services.site.GetSiteKey.TECHNICAL_DOMAIN
 import static ish.oncourse.solr.Constants.CLASS_COMPONENT
 import static ish.oncourse.solr.Constants.PARAM_COMPONENT
 import static ish.oncourse.solr.Constants.PARAM_ID
+import static ish.oncourse.solr.SolrProperty.WEBAPP_LOCATION
 
 /**
  * User: akoiro
@@ -31,7 +35,7 @@ import static ish.oncourse.solr.Constants.PARAM_ID
  */
 class SCourseFunctions {
     private static final Logger logger = LogManager.logger
-    
+    private static final String WEB_URL = getValue(WEBAPP_LOCATION)
     static final Observable<SCourse> SCourses(Date current = new Date(),
                                               Scheduler scheduler = Schedulers.io(),
                                               Callable<Iterable<Course>> courses) {
@@ -87,7 +91,8 @@ class SCourseFunctions {
             SCourseClass copy  = sClass.clone()
             copy.siteKey = key
             try {
-                copy.content = new URL("https://${key}.${TECHNICAL_DOMAIN}${Render.matcher.pattern}?$PARAM_COMPONENT=$CLASS_COMPONENT&$PARAM_ID=${sClass.id}").text
+                String url =  String.format(WEB_URL,key).concat("${Render.matcher.pattern}?$PARAM_COMPONENT=$CLASS_COMPONENT&$PARAM_ID=${sClass.id}")
+                copy.content = new URL(url).text
             } catch (Exception e) {
                 logger.error("Can not get html content for class id: $sClass.id, web site key: $key")
                 logger.catching(e)
