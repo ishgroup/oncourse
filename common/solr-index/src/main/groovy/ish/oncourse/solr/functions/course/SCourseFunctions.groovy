@@ -10,7 +10,6 @@ import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Tag
 
 import ish.oncourse.solr.RXObservableFromIterable
-import ish.oncourse.solr.SolrProperty
 import ish.oncourse.solr.model.*
 import org.apache.cayenne.ResultIterator
 import org.apache.commons.io.IOUtils
@@ -19,11 +18,9 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 import java.util.concurrent.Callable
-import java.util.function.Function
 
 import static ish.oncourse.configuration.Configuration.getValue
 import static ish.oncourse.linktransform.PageIdentifier.Render
-import static ish.oncourse.services.site.GetSiteKey.TECHNICAL_DOMAIN
 import static ish.oncourse.solr.Constants.CLASS_COMPONENT
 import static ish.oncourse.solr.Constants.PARAM_COMPONENT
 import static ish.oncourse.solr.Constants.PARAM_ID
