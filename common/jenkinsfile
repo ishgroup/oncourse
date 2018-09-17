@@ -2,11 +2,28 @@
 
 pipeline {
     agent { 
-        label 'osx'
+        label 'freebsd'
     }
 
     stages {
+        stage("Configure"){
+            steps {
+                checkout([
+                        $class              : 'SubversionSCM',
+                        browser             : [$class: 'Phabricator', repo: 'C', url: 'https://reviews.ish.com.au/'],
+                        filterChangelog     : true,
+                        ignoreDirPropChanges: false,
+                        includedRegions     : "/willow/trunk/common/.*",
+                        locations           : [[cancelProcessOnExternalsFail: false, credentialsId: '0886002b-eb7a-4824-b5c3-f4130b4b7c9e', depthOption: 'infinity', ignoreExternalsOption: false, local: '.', remote: 'https://svn.ish.com.au/ish/willow/trunk']],
+                        quietOperation      : true,
+                        workspaceUpdater    : [$class: 'UpdateUpdater']
+                ])
+            }
+        }
         stage('All tests') {
+            agent {
+                label "osx"
+            }
             steps {
                 sh "./gradlew :common:test"
             }
