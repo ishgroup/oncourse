@@ -11,6 +11,8 @@ import org.apache.tapestry5.services.Request;
 import java.util.List;
 import java.util.TimeZone;
 
+import static ish.oncourse.services.site.GetWebSite.SITE_KEY_HEADER;
+
 public class WebSiteService implements IWebSiteService {
 
 	private static final String CURRENT_COLLEGE = "currentCollege";
@@ -60,7 +62,7 @@ public class WebSiteService implements IWebSiteService {
 			return currentWebSite;
 		}
 
-		WebSite site = new GetWebSite(request.getServerName(), request.getHeader("X-Site-Key"), cayenneService.sharedContext()).get();
+		WebSite site = new GetWebSite(request.getHeader(SITE_KEY_HEADER), cayenneService.sharedContext()).get();
 		request.setAttribute(CURRENT_WEB_SITE, site);
 		return site;
 	}

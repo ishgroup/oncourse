@@ -70,6 +70,22 @@ public class SoapUtil {
 		addHeader(message, SECURITY_CODE_HEADER, securityCode);
 	}
 
+	public static void changeSecurityCode(SoapMessage message, String newSecurityCode) {
+		try {
+			QName qName = new QName(SECURITY_CODE_HEADER);
+			Header hr = message.getHeader(qName);
+
+			Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+
+			Element elem = doc.createElement(SECURITY_CODE_HEADER);
+			elem.setTextContent(newSecurityCode);
+
+			hr.setObject(elem);
+		} catch (ParserConfigurationException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
     public static boolean isRMProtocolMessage(Message message, boolean isOutbound) {
         AddressingProperties maps =
                 RMContextUtils.retrieveMAPs(message, false, isOutbound);

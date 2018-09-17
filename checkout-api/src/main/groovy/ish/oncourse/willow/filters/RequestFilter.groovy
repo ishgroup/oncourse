@@ -5,26 +5,22 @@ import ish.oncourse.willow.service.CollegeInfo
 import javax.ws.rs.container.ContainerRequestContext
 import javax.ws.rs.container.ContainerRequestFilter
 
+import static ish.oncourse.services.site.GetWebSite.SITE_KEY_HEADER
+
 @CollegeInfo
 @CompileStatic
 class RequestFilter implements ContainerRequestFilter {
-    
-    static final ThreadLocal<String> ThreadLocalXOrigin = new ThreadLocal<String>()
+
     static final ThreadLocal<String> ThreadLocalSiteKey = new ThreadLocal<String>()
     
     @Override
     void filter(ContainerRequestContext requestContext) throws IOException {
-        List<String> hosts = requestContext.headers.get('X-Origin')
-        if (!hosts)
-            throw new NullPointerException("X-Origin should be not null.")
-        if (hosts.size() != 1) {
-            throw new IllegalArgumentException("X-Origin should be single value")
+        List<String> siteKeys = requestContext.headers.get(SITE_KEY_HEADER)
+        if (!siteKeys) {
+            throw new NullPointerException("'${SITE_KEY_HEADER}' header should be not null. Application use this for college loading.")
+        } else if (siteKeys.size() != 1) {
+            throw new IllegalArgumentException("'${SITE_KEY_HEADER}' should be single value")
         }
-        ThreadLocalXOrigin.set(hosts.get(0))
-
-        List<String> siteKeys = requestContext.headers.get('X-Site-Key')
-        if (siteKeys) {
-            ThreadLocalSiteKey.set(siteKeys.get(0))
-        }
+        ThreadLocalSiteKey.set(siteKeys.get(0))
     }
 }

@@ -6,6 +6,8 @@ import ish.oncourse.services.site.GetWebSite
 import org.apache.cayenne.ObjectContext
 import org.eclipse.jetty.server.Request
 
+import static ish.oncourse.services.site.GetWebSite.SITE_KEY_HEADER
+
 class WebSiteFunctions {
 
     private static final String  CURRENT_COLLEGE = 'currentCollege'
@@ -30,7 +32,7 @@ class WebSiteFunctions {
             return context.localObject(currentWebSite)
         }
 
-        WebSite site = new GetWebSite(request.serverName, request.getHeader("X-Site-Key"), context).get()
+        WebSite site = new GetWebSite(request.getHeader(SITE_KEY_HEADER), context).get()
         request.setAttribute(CURRENT_WEB_SITE, site)
         return site
     }

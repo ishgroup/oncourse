@@ -7,12 +7,12 @@ import org.apache.cayenne.query.QueryCacheStrategy
 
 class GetWebSite {
 
-    private String serverName
+    public static final String SITE_KEY_HEADER = 'X-Site-Key'
+
     private String siteKeyHeader
     private ObjectContext context
     
-    GetWebSite(String serverName, String siteKeyHeader, ObjectContext context) {
-        this.serverName = serverName
+    GetWebSite(String siteKeyHeader, ObjectContext context) {
         this.siteKeyHeader = siteKeyHeader
         this.context = context
     }
