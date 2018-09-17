@@ -38,7 +38,7 @@ class EnrolmentFieldsTest extends ApiTest {
         SelectById.query(ish.oncourse.model.FieldHeading, 2l).selectOne(context).order = 2
         context.commitChanges()
 
-        RequestFilter.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
+        RequestFilter.ThreadLocalSiteKey.set('mammoth')
         CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, new CollegeService(cayenneService))
 
         ContactNode node = api.getContactNode(new ContactNodeRequest().with { cn ->

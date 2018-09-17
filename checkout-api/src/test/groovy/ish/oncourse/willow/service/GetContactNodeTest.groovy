@@ -19,8 +19,8 @@ class GetContactNodeTest extends ApiTest {
     
     @Test
     void testGetContactNode() {
-        
-        RequestFilter.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
+
+        RequestFilter.ThreadLocalSiteKey.set('mammoth')
         CollegeService service = new CollegeService(cayenneService)
         CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, service)
 

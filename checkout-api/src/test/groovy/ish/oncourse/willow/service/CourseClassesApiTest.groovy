@@ -25,7 +25,7 @@ class CourseClassesApiTest extends ApiTest {
      */
     @Test
     void getCourseClassesTest() {
-        RequestFilter.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
+        RequestFilter.ThreadLocalSiteKey.set('mammoth')
         api = new CourseClassesApiServiceImpl(cayenneService,  new CollegeService(cayenneService))
         List<CourseClass> classes = api.getCourseClasses(new CourseClassesParams().with {
             courseClassesIds=["1001","1002","1003"]

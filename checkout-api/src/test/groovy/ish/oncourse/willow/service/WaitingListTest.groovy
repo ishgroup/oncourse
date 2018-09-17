@@ -30,7 +30,7 @@ class WaitingListTest extends ApiTest {
     
     @Test
     void testGetNode() {
-        RequestFilter.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
+        RequestFilter.ThreadLocalSiteKey.set('mammoth')
         CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, new CollegeService(cayenneService))
         ContactNodeRequest request = new ContactNodeRequest().with { r ->
             r.contactId = '1002'

@@ -24,7 +24,7 @@ class CheckoutApiTest extends ApiTest {
      */
     @Test
     void getPurchaseItemsTest() {
-        RequestFilter.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
+        RequestFilter.ThreadLocalSiteKey.set('mammoth')
         CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, new CollegeService(cayenneService))
         ContactNodeRequest request = new ContactNodeRequest().with { request ->
             request.contactId = '1001'

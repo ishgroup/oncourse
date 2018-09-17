@@ -52,7 +52,7 @@ class ContactDetailsTest extends  ApiTest{
 
         context.commitChanges()
 
-        RequestFilter.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
+        RequestFilter.ThreadLocalSiteKey.set('mammoth')
         ContactApi api = new ContactApiServiceImpl(cayenneService, new CollegeService(cayenneService))
 
         ContactFields fields = api.getContactFields(new ContactFieldsRequest(contactId: '1001', productIds: ['13'], classIds: ['1001', '1002'], fieldSet: FieldSet.ENROLMENT))
@@ -71,7 +71,7 @@ class ContactDetailsTest extends  ApiTest{
 
     @Test
     void testSubmitWrongRequest() {
-        RequestFilter.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
+        RequestFilter.ThreadLocalSiteKey.set('mammoth')
         ContactApi api = new ContactApiServiceImpl(cayenneService, new CollegeService(cayenneService))
         
 
@@ -87,7 +87,7 @@ class ContactDetailsTest extends  ApiTest{
 
     @Test
     void testSubmitProperRequest() {
-        RequestFilter.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
+        RequestFilter.ThreadLocalSiteKey.set('mammoth')
         ContactApi api = new ContactApiServiceImpl(cayenneService, new CollegeService(cayenneService))
         
         api.submitContactDetails(propperRequest())

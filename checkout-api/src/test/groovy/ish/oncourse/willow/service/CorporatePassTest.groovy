@@ -177,7 +177,7 @@ class CorporatePassTest extends ApiTest {
 
     @Test
     void isAvailable() {
-        RequestFilter.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
+        RequestFilter.ThreadLocalSiteKey.set('mammoth')
         CorporatePassApiImpl api = new CorporatePassApiImpl(cayenneService, new CollegeService(cayenneService))
         CheckoutModelRequest modelRequest = new CheckoutModelRequest().with { r ->
             r.contactNodes << new ContactNode().with { n ->

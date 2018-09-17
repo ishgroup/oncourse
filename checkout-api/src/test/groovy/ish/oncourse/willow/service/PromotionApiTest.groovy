@@ -24,7 +24,7 @@ class PromotionApiTest extends ApiTest {
     @Test
     void getPromotionTest() {
 
-        RequestFilter.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
+        RequestFilter.ThreadLocalSiteKey.set('mammoth')
 
         PromotionApi api = new PromotionApiServiceImpl(cayenneService, new CollegeService(cayenneService))
 
@@ -44,7 +44,7 @@ class PromotionApiTest extends ApiTest {
     @Test
     void submitCodeTest() {
 
-        RequestFilter.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
+        RequestFilter.ThreadLocalSiteKey.set('mammoth')
 
         PromotionApi api = new PromotionApiServiceImpl(cayenneService, new CollegeService(cayenneService))
         CodeResponse response

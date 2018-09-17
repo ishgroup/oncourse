@@ -31,7 +31,7 @@ class TaxOverridenTest extends AbstractPaymentTest {
 
     @Test
     void testTaxOverriden() {
-        RequestFilter.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
+        RequestFilter.ThreadLocalSiteKey.set('mammoth')
         CollegeService service = new CollegeService(cayenneService)
         WebSite webSite = service.webSite
         College college = webSite.college

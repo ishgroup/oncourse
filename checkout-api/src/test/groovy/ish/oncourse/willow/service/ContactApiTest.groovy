@@ -18,7 +18,7 @@ class ContactApiTest extends ApiTest {
     
     @Test
     void getContactTest() {
-        RequestFilter.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
+        RequestFilter.ThreadLocalSiteKey.set('mammoth')
         ContactApi api = new ContactApiServiceImpl(cayenneService, new CollegeService(cayenneService))
         
         Contact contact = api.getContact("1wjdestablisheq")
@@ -34,7 +34,7 @@ class ContactApiTest extends ApiTest {
 
     @Test
     void getorCreateContact() {
-        RequestFilter.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
+        RequestFilter.ThreadLocalSiteKey.set('mammoth')
         ContactApi api = new ContactApiServiceImpl(cayenneService, new CollegeService(cayenneService))
         ContactId contactId = api.createOrGetContact(new CreateContactParams(firstName: 'Student1', lastName:'Student1', email:'Student1@Student1.net', fieldSet: ENROLMENT))
 

@@ -29,7 +29,7 @@ class ContactDetailsTagTest extends ApiTest {
 
     @Test
     void testGet() {
-        RequestFilter.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
+        RequestFilter.ThreadLocalSiteKey.set('mammoth')
         ContactApi api = new ContactApiServiceImpl(cayenneService, new CollegeService(cayenneService))
 
         ContactFields fields = api.getContactFields(new ContactFieldsRequest(contactId: '1001', classIds: ['1001'], fieldSet: FieldSet.ENROLMENT))
@@ -44,7 +44,7 @@ class ContactDetailsTagTest extends ApiTest {
 
         ObjectContext context = cayenneService.newContext()
 
-        RequestFilter.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
+        RequestFilter.ThreadLocalSiteKey.set('mammoth')
         ContactApi api = new ContactApiServiceImpl(cayenneService, new CollegeService(cayenneService))
 
         api.submitContactDetails(properRequest())

@@ -21,7 +21,7 @@ class CalculateAmountTest extends ApiTest {
     
     @Test
     void testGetAmount() {
-        RequestFilter.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
+        RequestFilter.ThreadLocalSiteKey.set('mammoth')
         CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, new CollegeService(cayenneService))
 
 

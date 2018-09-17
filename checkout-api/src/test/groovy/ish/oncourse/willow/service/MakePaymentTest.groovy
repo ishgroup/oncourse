@@ -42,7 +42,7 @@ class MakePaymentTest extends AbstractPaymentTest {
 
     @Test
     void makePaymentTest() {
-        RequestFilter.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
+        RequestFilter.ThreadLocalSiteKey.set('mammoth')
         CollegeService service = new CollegeService(cayenneService)
         WebSite webSite = service.webSite
         College college = webSite.college
@@ -131,7 +131,7 @@ class MakePaymentTest extends AbstractPaymentTest {
 
     @Test
     void makeFailedPayment() {
-        RequestFilter.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
+        RequestFilter.ThreadLocalSiteKey.set('mammoth')
         CollegeService service = new CollegeService(cayenneService)
         WebSite webSite = service.webSite
         College college = webSite.college

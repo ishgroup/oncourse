@@ -12,7 +12,7 @@ import static org.junit.Assert.assertEquals
 class ProductsApiTest extends ApiTest {
     @Test
     void getProductsTest() {
-        RequestFilter.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
+        RequestFilter.ThreadLocalSiteKey.set('mammoth')
 
         ProductsApi api = new ProductsApiServiceImpl(cayenneService, new CollegeService(cayenneService))
 
