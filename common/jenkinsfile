@@ -47,6 +47,7 @@ pipeline {
         }
         always {
             junit 'common/**/build/test-results/test/*.xml'
+
         }
     }
 
