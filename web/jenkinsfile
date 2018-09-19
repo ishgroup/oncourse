@@ -17,14 +17,25 @@ pipeline {
         stage('Checkout') {
             steps {
                 checkout([
-                        $class              : 'SubversionSCM',
-                        browser             : [$class: 'Phabricator', repo: 'C', url: 'https://reviews.ish.com.au/'],
-                        filterChangelog     : true,
+                        class: 'SubversionSCM',
+                        additionalCredentials: [],
+                        excludedCommitMessages: '',
+                        excludedRegions: '',
+                        excludedRevprop: '',
+                        excludedUsers: '',
+                        filterChangelog: false,
                         ignoreDirPropChanges: false,
-                        includedRegions     : "/willow/trunk/web/.*",
-                        locations           : [[cancelProcessOnExternalsFail: false, credentialsId: '0886002b-eb7a-4824-b5c3-f4130b4b7c9e', depthOption: 'infinity', ignoreExternalsOption: false, local: '.', remote: 'https://svn.ish.com.au/ish/willow/trunk']],
-                        quietOperation      : true,
-                        workspaceUpdater    : [$class: 'UpdateUpdater']
+                        includedRegions: 'web/.*',
+                        locations: [[
+                                            cancelProcessOnExternalsFail: true,
+                                            credentialsId: '0886002b-eb7a-4824-b5c3-f4130b4b7c9e',
+                                            depthOption: 'infinity',
+                                            ignoreExternalsOption: true,
+                                            local: '.',
+                                            remote: 'https://svn.ish.com.au/ish/willow/trunk']],
+                        quietOperation: true,
+                        workspaceUpdater: [
+                                class: 'UpdateUpdater']
                 ])
             }
         }
