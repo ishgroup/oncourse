@@ -24,8 +24,8 @@ public class WebUrlAlias extends _WebUrlAlias {
 
     @Override
     protected void validateForSave(ValidationResult validationResult) {
-        if (getWebNode() == null && StringUtils.trimToNull(getRedirectTo()) == null) {
-            validationResult.addFailure(ValidationFailure.validationFailure(this, _WebUrlAlias.WEB_NODE.getName(), "WebUrlAlias should have either webNode either targetUrl."));
+        if (getWebNode() == null && StringUtils.trimToNull(getRedirectTo()) == null && (getSpecialPage() == null || getMatchType() == null)) {
+            validationResult.addFailure(ValidationFailure.validationFailure(this, _WebUrlAlias.WEB_NODE.getName(), "WebUrlAlias should have either webNode either targetUrl either special page with match type."));
             return;
         }
         super.validateForSave(validationResult);
