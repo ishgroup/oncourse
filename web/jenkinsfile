@@ -12,23 +12,22 @@ pipeline {
     triggers {
         pollSCM 'H/5 * * * *'
     }
-    node('master') {
-        stage ('Checkout') {
-            checkout([
-                    $class              : 'SubversionSCM',
-                    browser             : [$class: 'Phabricator', repo: 'C', url: 'https://reviews.ish.com.au/'],
-                    filterChangelog     : true,
-                    ignoreDirPropChanges: false,
-                    includedRegions     : "/willow/trunk/web/.*",
-                    locations           : [[cancelProcessOnExternalsFail: false, credentialsId: '0886002b-eb7a-4824-b5c3-f4130b4b7c9e', depthOption: 'infinity', ignoreExternalsOption: false, local: '.', remote: 'https://svn.ish.com.au/ish/willow/trunk']],
-                    quietOperation      : true,
-                    workspaceUpdater    : [$class: 'UpdateUpdater']
-            ])
-        }
-    }
 
     stages {
-
+        stage('Checkout') {
+            steps {
+                checkout([
+                        $class              : 'SubversionSCM',
+                        browser             : [$class: 'Phabricator', repo: 'C', url: 'https://reviews.ish.com.au/'],
+                        filterChangelog     : true,
+                        ignoreDirPropChanges: false,
+                        includedRegions     : "/willow/trunk/web/.*",
+                        locations           : [[cancelProcessOnExternalsFail: false, credentialsId: '0886002b-eb7a-4824-b5c3-f4130b4b7c9e', depthOption: 'infinity', ignoreExternalsOption: false, local: '.', remote: 'https://svn.ish.com.au/ish/willow/trunk']],
+                        quietOperation      : true,
+                        workspaceUpdater    : [$class: 'UpdateUpdater']
+                ])
+            }
+        }
         stage('Build') {
             agent {
                     label 'osx'
