@@ -35,6 +35,8 @@
 
 	<bean name="controlCharacterHandler" class="ish.oncourse.webservices.soap.CustomEscapeHandler"/>
 
+	<bean name="headerInterceptor" class="ish.oncourse.webservices.soap.interceptors.MessageHeaderInterceptor" />
+
 	<cxf:bus>
 		<cxf:features>
 			<ref bean="gzipFeature" />
@@ -46,6 +48,7 @@
 					address="/v6/reference">
 		<jaxws:inInterceptors>
 			<ref bean="collegeRequestInterceptor" />
+			<ref bean="headerInterceptor" />
 		</jaxws:inInterceptors>
 	</jaxws:endpoint>
 
@@ -54,6 +57,7 @@
 		<jaxws:inInterceptors>
 			<ref bean="communicationKeyInterceptor" />
 			<ref bean="collegeRequestInterceptor" />
+			<ref bean="headerInterceptor" />
 		</jaxws:inInterceptors>
 
 		<jaxws:dataBinding>
@@ -72,6 +76,7 @@
 		<jaxws:inInterceptors>
 			<ref bean="securityCodeInterceptor" />
 			<ref bean="collegeRequestInterceptor" />
+			<ref bean="headerInterceptor" />
 		</jaxws:inInterceptors>
 
 		<jaxws:dataBinding>
@@ -90,6 +95,7 @@
 		<jaxws:inInterceptors>
 			<ref bean="communicationKeyInterceptor" />
 			<ref bean="collegeRequestInterceptor" />
+			<ref bean="headerInterceptor" />
 		</jaxws:inInterceptors>
 
 		<jaxws:dataBinding>
@@ -108,6 +114,7 @@
 		<jaxws:inInterceptors>
 			<ref bean="securityCodeInterceptor" />
 			<ref bean="collegeRequestInterceptor" />
+			<ref bean="headerInterceptor" />
 		</jaxws:inInterceptors>
 
 		<jaxws:dataBinding>
