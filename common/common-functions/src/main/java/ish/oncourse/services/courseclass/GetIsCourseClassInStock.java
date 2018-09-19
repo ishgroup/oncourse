@@ -31,8 +31,9 @@ public class GetIsCourseClassInStock {
 
     public boolean get() {
 
+        boolean isSelfPaced = cc.getIsDistantLearningCourse();
         boolean isFinished = !cc.isCancelled() && cc.hasEnded();
-        boolean isInStock = !isFinished && cc.isHasAvailableEnrolmentPlaces() && isPaymentGatewayEnabled;
+        boolean isInStock = (isSelfPaced || (!isFinished && cc.isHasAvailableEnrolmentPlaces())) && isPaymentGatewayEnabled;
 
         if (!isInStock) {
             if (ENROLMENT_BY_APPLICATION == cc.getCourse().getEnrolmentType()) {
