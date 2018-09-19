@@ -12,7 +12,7 @@ class GetCoursesToDelete {
     Set<ObjectChange> objectChanges
     
     Set<Long> get(){
-        objectChanges.findAll {wasRemoved(it) || becomeInvisible(it)}.collect {it.postCommitId.idSnapshot['id'] as Long}
+        objectChanges.findAll {wasRemoved(it) || becomeInvisible(it)}.collect {it.preCommitId?.idSnapshot['id'] as Long}
     }
     
     private static boolean becomeInvisible(ObjectChange change){
