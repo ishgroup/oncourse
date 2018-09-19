@@ -46,7 +46,7 @@ public class AddSiteTest extends ASolrTest {
 		dataContext.getObjectContext().commitChanges();
 
 
-		SCourseFunctions.SCourses(new Date(), Schedulers.io(), () -> Collections.singletonList(course.getCourse()), s -> new String[0] ) 
+		SCourseFunctions.SCourses(new Date(), Schedulers.io(), () -> Collections.singletonList(course.getCourse())) 
 				.blockingSubscribe((c) -> {
 							solrClient.addBean(c);
 							Assert.assertTrue(
