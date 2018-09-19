@@ -6,6 +6,7 @@ import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.CheckClassAge;
 import ish.oncourse.services.courseclass.GetIsCourseClassInStock;
 import ish.oncourse.services.courseclass.ICourseClassService;
+import ish.oncourse.services.preference.IsPaymentGatewayEnabled;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.services.tutor.GetCourseClassVisibleTutorRoles;
@@ -17,7 +18,6 @@ import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.utils.SessionUtils;
 import ish.oncourse.utils.TimestampUtilities;
-import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.tapestry5.annotations.Parameter;
@@ -357,8 +357,7 @@ public class CourseClassItem extends ISHCommon {
 
 	public boolean getIsInStock() {
 		return GetIsCourseClassInStock
-				.valueOf(courseClass.getObjectContext(), QueryCacheStrategy.LOCAL_CACHE, courseClass,
-						null, true)
+				.valueOf(courseClass, new IsPaymentGatewayEnabled(courseClass.getCollege(), courseClass.getObjectContext()).get())
 				.get();
 	}
 }
