@@ -9,6 +9,10 @@ pipeline {
         string(defaultValue: '', description: 'Release version. Leave blank to not release.', name: 'version')
     }
 
+    triggers {
+        pollSCM '@weekly'
+    }
+
     stages {
         stage('Checkout') {
             steps {
