@@ -9,10 +9,6 @@ pipeline {
         string(defaultValue: '', description: 'Release version. Leave blank to not release.', name: 'version')
     }
 
-    triggers {
-        pollSCM 'H/5 * * * *'
-    }
-
     stages {
         stage('Checkout') {
             steps {
@@ -24,7 +20,7 @@ pipeline {
                         includedRegions     : "/willow/trunk/web/.*",
                         locations           : [[cancelProcessOnExternalsFail: false, credentialsId: '0886002b-eb7a-4824-b5c3-f4130b4b7c9e', depthOption: 'infinity', ignoreExternalsOption: false, local: '.', remote: 'https://svn.ish.com.au/ish/willow/trunk']],
                         quietOperation      : true,
-                        workspaceUpdater    : [$class: 'UpdateUpdater']
+                        workspaceUpdater    : [$class: 'UpdateWithCleanUpdater']
                         ])
             }
         }
