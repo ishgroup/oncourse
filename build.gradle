@@ -27,7 +27,6 @@ plugins {
 	id 'java'
 	id 'groovy'
 	id 'maven'
-	id 'jacoco'
 	id 'maven-publish'
 	id "com.eriwen.gradle.js" version "2.14.1" apply false
 	id 'io.freefair.jsass' version '0.4.0' apply false
@@ -50,7 +49,6 @@ allprojects {
 	apply plugin: 'java'
 	apply plugin: 'maven'
 	apply plugin: 'groovy'
-	apply plugin: 'jacoco'
 	apply plugin: 'maven-publish'
 	apply plugin: 'com.github.ben-manes.versions'
 
@@ -139,10 +137,6 @@ allprojects {
 		systemProperties 'java.awt.headless': 'true'
 		maxHeapSize = '2048m'
 		ignoreFailures = true
-
-		jacoco {
-			enabled = project.hasProperty('jacoco-enabled')
-		}
 
 		// log each starting test
 		beforeTest { descriptor -> logger.lifecycle("Running: " + descriptor) }
