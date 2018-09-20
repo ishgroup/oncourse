@@ -117,9 +117,9 @@ allprojects {
 		}
 	}
 	uploadArchives.dependsOn install
-
+    release_version = version == 'SNAPSHOT' ? 'SNAPSHOT-' + System.getProperty('build_number') : version
 	ext.sharedManifest = manifest {
-		attributes 'Release-Version': version,
+		attributes 'Release-Version': release_version,
 			'Built-Date': new Date(),
 			'Built-JDK': System.getProperty('java.version'),
 			'Built-Gradle': gradle.gradleVersion,
