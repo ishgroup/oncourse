@@ -28,19 +28,7 @@ pipeline {
                         ])
             }
         }
-        stage('Build Snapshot') {
-            agent {
-                    label 'osx'
-            }
 
-            when {
-                expression { params.version == ''}
-            }
-            steps {
-                sh "./gradlew web:build -Dbuild_number=${env.BUILD_NUMBER} -PreleaseVersion='SNAPSHOT-${env.BUILD_NUMBER}'"
-                junit 'web/build/test-results/**/*.xml'
-            }
-        }
         stage('Build Release') {
             agent {
                 label 'osx'
