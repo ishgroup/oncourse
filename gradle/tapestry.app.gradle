@@ -73,7 +73,7 @@ startScripts {
 }
 
 processResources.doLast {
-    file("${buildDir}/resources/VERSION").text = version ?: "SNAPSHOT"
+    file("${buildDir}/resources/VERSION").text = (version && version != "SNAPSHOT") ? version : "SNAPSHOT${System.getProperty('build_number')}" 
 }
 
 distZip {
