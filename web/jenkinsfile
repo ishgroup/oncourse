@@ -32,6 +32,11 @@ pipeline {
             agent {
                     label 'osx'
             }
+            script {
+                if (params.version == 'SNAPSHOT') {
+                    params.version = "SNAPSHOT-${env.BUILD_NUMBER}"
+                }
+            }
             steps {
                 sh "./gradlew web:build -Dbuild_number=${env.BUILD_NUMBER} -PreleaseVersion=${params.version}"
                 junit 'web/build/test-results/**/*.xml'
@@ -45,7 +50,7 @@ pipeline {
                 expression { params.version == '' }
             }
             steps {
-                sh "./gradlew web:publishExecutablesPublicationToSnapshotsRepository -Dbuild_number=${env.BUILD_NUMBER} -PreleaseVersion=SNAPSHOT"                    
+                sh "./gradlew web:publishExecutablesPublicationToSnapshotsRepository -Dbuild_number=${env.BUILD_NUMBER} -PreleaseVersion=SNAPSHOT"
             }
         }
         stage('Upload release') {
