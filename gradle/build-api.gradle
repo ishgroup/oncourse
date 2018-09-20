@@ -18,7 +18,7 @@ test {
 }
 
 processResources.doLast {
-    file("${buildDir}/resources/VERSION").text = version ?: "SNAPSHOT"
+    file("${buildDir}/resources/VERSION").text = (version && version != "SNAPSHOT") ? version : "SNAPSHOT${System.getProperty('build_number')}"
 }
 
 // the following block isn't working for me when placed in the top level build.gradle
