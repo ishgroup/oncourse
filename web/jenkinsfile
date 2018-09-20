@@ -32,12 +32,13 @@ pipeline {
             agent {
                     label 'osx'
             }
-            script {
-                if (params.version == 'SNAPSHOT') {
-                    params.version = "SNAPSHOT-${env.BUILD_NUMBER}"
-                }
-            }
+
             steps {
+                script {
+                    if (params.version == 'SNAPSHOT') {
+                        params.version = "SNAPSHOT-${env.BUILD_NUMBER}"
+                    }
+                }
                 sh "./gradlew web:build -Dbuild_number=${env.BUILD_NUMBER} -PreleaseVersion=${params.version}"
                 junit 'web/build/test-results/**/*.xml'
             }
