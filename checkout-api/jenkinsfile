@@ -32,7 +32,7 @@ pipeline {
         }
         stage('Build') {
             agent {
-                label 'osx'
+                label 'mac1'
             }
             steps {
                 sh "./gradlew checkout-api:build -Dbuild_number=${env.BUILD_NUMBER} -PreleaseVersion=${params.version}"
@@ -41,7 +41,7 @@ pipeline {
         }
         stage('Upload snapshot') {
             agent {
-                label 'osx'
+                label 'mac1'
             }
             when {
                 expression { params.version == '' }
@@ -52,7 +52,7 @@ pipeline {
         }
         stage('Upload release') {
             agent {
-                label 'osx'
+                label 'mac1'
             }
             when {
                 expression { params.version != '' }
