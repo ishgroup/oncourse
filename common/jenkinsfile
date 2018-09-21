@@ -2,7 +2,7 @@
 
 pipeline {
     agent { 
-        label 'mac1'
+        label 'freebsd'
     }
 
     stages {
