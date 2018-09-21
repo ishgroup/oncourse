@@ -22,7 +22,7 @@ pipeline {
         }
         stage('All tests') {
             agent {
-                label "osx"
+                label "mac1"
             }
             steps {
                 sh "./gradlew :common:test"
