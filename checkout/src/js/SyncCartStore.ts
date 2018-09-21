@@ -1,8 +1,12 @@
 import 'rxjs';
-import * as localforage from "localforage";
+import localforage from "localforage";
 import {extendPrototype} from "localforage-observable";
 import {Observable} from "rxjs/Observable";
 import {persistStore} from "redux-persist";
+
+localforage.config({
+  driver: [localforage.INDEXEDDB, localforage.WEBSQL, localforage.LOCALSTORAGE],
+});
 
 const localForage = extendPrototype(localforage);
 
