@@ -70,8 +70,8 @@ function initAddBillingCodeAndCollegeKey() {
             $j("#newCollegeValidationResult").empty();
             $j("#newCollegeValidationResult").append(data["message"]);
 
-            if (data["redirectURL"])
-                window.location.replace(data["redirectURL"]);
+            if (data._tapestry && data._tapestry.redirectURL)
+                window.location.replace(data._tapestry.redirectURL);
         }
 
         var actionLink = $j(".addBillingCodeAndCollegeKeyLink").attr('href');
