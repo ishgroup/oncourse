@@ -120,6 +120,8 @@ public abstract class WebSiteVersionCopy {
             newWebUrlAlias.setWebNode(webNodeMap.get(webUrlAlias.getWebNode()));
             newWebUrlAlias.setWebSiteVersion(toVersion);
             newWebUrlAlias.setRedirectTo(webUrlAlias.getRedirectTo());
+            newWebUrlAlias.setSpecialPage(webUrlAlias.getSpecialPage());
+            newWebUrlAlias.setMatchType(webUrlAlias.getMatchType());
         });
     }
 
