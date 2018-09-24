@@ -33,7 +33,7 @@ pipeline {
         }
         stage('Build') {
             agent {
-                label 'mac1'
+                label 'osx'
             }
             steps {
                 sh "./gradlew editor-api:build -Dbuild_number=${env.BUILD_NUMBER} -PreleaseVersion=${params.version}"
@@ -43,7 +43,7 @@ pipeline {
         
         stage('Docs') {
             agent {
-                label 'mac1'
+                label 'osx'
             }
             steps {
                 sh "./gradlew editor-api:generateDoc"
@@ -51,7 +51,7 @@ pipeline {
         }
         stage('Upload snapshot') {
             agent {
-                label 'mac1'
+                label 'osx'
             }
             when {
                 expression { params.version == '' }
