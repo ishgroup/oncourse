@@ -6,13 +6,13 @@ import io.bootique.jdbc.JdbcModuleProvider
 import io.bootique.jetty.JettyModuleProvider
 import ish.oncourse.configuration.Configuration
 
-import static ish.oncourse.admin.AdminProperty.S_ROOT;
+import static ish.oncourse.admin.AdminProperty.*
 
 class AdminApp {
     static void main(String[] args) {
         System.setProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager")
         System.setProperty("org.apache.cxf.stax.maxChildElements", "100000")
-        Configuration.configure(S_ROOT)
+        Configuration.configure(S_ROOT, STORAGE_ACCESS_ID, STORAGE_ACCESS_KEY)
         Bootique bootique = init(args)
         bootique.exec()
     }
