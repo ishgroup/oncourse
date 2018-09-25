@@ -39,6 +39,7 @@ public class VoucherServiceTest extends ServiceTest {
 		this.cayenneService = getService(ICayenneService.class);
 
 		when(request.getServerName()).thenReturn("scc.oncourse.cc");
+		when(request.getHeader("X-Site-Key")).thenReturn("scc");
 
 		webSiteService = new WebSiteService(request, cayenneService);
 	}
@@ -53,6 +54,7 @@ public class VoucherServiceTest extends ServiceTest {
 		
 		Request request2 = mock(Request.class);
 		when(request2.getServerName()).thenReturn("tae.oncourse.cc");
+		when(request2.getHeader("X-Site-Key")).thenReturn("tae");
 		webSiteService = new WebSiteService(request2, cayenneService);
 
 		final VoucherService service2 = new VoucherService(webSiteService, cayenneService);
@@ -64,6 +66,7 @@ public class VoucherServiceTest extends ServiceTest {
 	public void testGetVoucherByCode() {
 		Request request = mock(Request.class);
 		when(request.getServerName()).thenReturn("scc.oncourse.cc");
+		when(request.getHeader("X-Site-Key")).thenReturn("scc");
 
 		IWebSiteService webSiteService = new WebSiteService(request, cayenneService);
 
@@ -81,6 +84,7 @@ public class VoucherServiceTest extends ServiceTest {
 	public void testGetAvailableVoucherProductsForUser() {
 		Request request = mock(Request.class);
 		when(request.getServerName()).thenReturn("scc.oncourse.cc");
+		when(request.getHeader("X-Site-Key")).thenReturn("scc");
 
 		IWebSiteService webSiteService = new WebSiteService(request, cayenneService);
 

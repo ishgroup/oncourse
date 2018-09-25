@@ -29,6 +29,7 @@ public class WebSiteServiceTest extends ServiceTest {
 	public void testTechnicalHostName() {
 		Request request = mock(Request.class);
 		when(request.getServerName()).thenReturn("constant2.live.oncourse.net.au");
+		when(request.getHeader("X-Site-Key")).thenReturn("constant2");
 		WebSiteService service = new WebSiteService(request, cayenneService);
 		assertNotNull(service.getSiteKey());
 
@@ -40,6 +41,7 @@ public class WebSiteServiceTest extends ServiceTest {
 	public void testShortTechnicalHostName() {
 		Request request = mock(Request.class);
 		when(request.getServerName()).thenReturn("constant2.oncourse.cc");
+		when(request.getHeader("X-Site-Key")).thenReturn("constant2");
 		WebSiteService service = new WebSiteService(request, cayenneService);
 		assertNotNull(service.getSiteKey());
 
@@ -51,6 +53,7 @@ public class WebSiteServiceTest extends ServiceTest {
 	public void testCurrentDomain() throws Exception {
 		Request request = mock(Request.class);
 		when(request.getServerName()).thenReturn("scc.staging1.oncourse.net.au");
+		when(request.getHeader("X-Site-Key")).thenReturn("scc");
 		WebSiteService service = new WebSiteService(request, cayenneService);
 		WebHostName host = service.getCurrentDomain();
 		assertNull("Checking that there's no host found for tecknical site.", host);
@@ -58,6 +61,7 @@ public class WebSiteServiceTest extends ServiceTest {
 
 		request = mock(Request.class);
 		when(request.getServerName()).thenReturn("scc.oncourse.cc");
+		when(request.getHeader("X-Site-Key")).thenReturn("scc");
 		service = new WebSiteService(request, cayenneService);
 		host = service.getCurrentDomain();
 		assertNull("Checking that there's no host found for tecknical site.", host);
@@ -65,6 +69,7 @@ public class WebSiteServiceTest extends ServiceTest {
 		
 		Request request2 = mock(Request.class);
 		when(request2.getServerName()).thenReturn("tae.test.oncourse.net.au");
+		when(request2.getHeader("X-Site-Key")).thenReturn("tae");
 		WebSiteService service2 = new WebSiteService(request2, cayenneService);
 		WebHostName host2 = service2.getCurrentDomain();
 		assertNull("Checking that there's no host found for tecknical site.", host2);
@@ -72,6 +77,7 @@ public class WebSiteServiceTest extends ServiceTest {
 
 		request2 = mock(Request.class);
 		when(request2.getServerName()).thenReturn("tae.oncourse.cc");
+		when(request2.getHeader("X-Site-Key")).thenReturn("tae");
 		service2 = new WebSiteService(request2, cayenneService);
 		host2 = service2.getCurrentDomain();
 		assertNull("Checking that there's no host found for tecknical site.", host2);
@@ -79,6 +85,7 @@ public class WebSiteServiceTest extends ServiceTest {
 		
 		Request request3 = mock(Request.class);
 		when(request3.getServerName()).thenReturn("tasm.education.com.au");
+		when(request3.getHeader("X-Site-Key")).thenReturn("tasm");
 		WebSiteService service3 = new WebSiteService(request3, cayenneService);
 		WebHostName host3 = service3.getCurrentDomain();
 		assertNotNull("Checking that host found.", host3);
@@ -86,6 +93,7 @@ public class WebSiteServiceTest extends ServiceTest {
 		
 		Request request4 = mock(Request.class);
 		when(request4.getServerName()).thenReturn("notfound.education.com.au");
+		when(request4.getHeader("X-Site-Key")).thenReturn("tasm");
 		WebSiteService service4 = new WebSiteService(request4, cayenneService);
 		
 		assertNull("Expecting null website", service4.getCurrentWebSite());
