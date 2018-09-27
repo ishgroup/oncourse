@@ -1,7 +1,6 @@
 import * as React from "react";
 import classnames from "classnames";
-
-import moment from "moment";
+import {formatDate} from "../../../common/utils/FormatUtils";
 import {Formats} from "../../../constants/Formats";
 import {TimezoneService} from "../../../services/TImezoneService";
 
@@ -20,11 +19,11 @@ export default {
         {courseClass.start && courseClass.end &&
         <div className="shortListOrderClasses">
           <abbr className="dtstart" title="">
-            {moment(courseClass.start).add(moment().utcOffset(), "m").format(Formats.DATE_TIME_FORMAT)}
+            {formatDate(courseClass.start, Formats.DATE_TIME_FORMAT, courseClass.timezone)}
           </abbr>
           {" - "}
           <abbr className="dtend" title="">
-            {moment(courseClass.end).add(moment().utcOffset(), "m").format(Formats.DATE_TIME_FORMAT)}
+            {formatDate(courseClass.end, Formats.DATE_TIME_FORMAT, courseClass.timezone)}
           </abbr>
           {` (UTC ${TimezoneService.getTimezone()}) `}
         </div>}
