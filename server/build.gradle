@@ -424,28 +424,6 @@ task installer_winService64(dependsOn: [bundle_winService64, prepareKeychains], 
 	}
 }
 
-task switchReplicationVersion {
-	doLast {
-		FileTree serverFiles = fileTree(dir: 'src/main/java/ish/oncourse/server/replication/')
-				.plus(fileTree(dir: 'src/test/java/ish/oncourse/server/replication/'))
-				.plus(fileTree(dir: 'src/main/java/ish/oncourse/server/modules/'))
-				.plus(fileTree(dir: 'src/test/java/ish/oncourse/server/upgrades/'))
-
-
-		serverFiles.each { File serverFile ->
-			print(serverFile.getName())
-			String content = serverFile.getText()
-			serverFile.write(content.readLines().collect { line -> line.startsWith("import") ? line.replaceAll(oldV, newV) : line }.join("\n").concat("\n"))
-		}
-
-		File resourcesFile = file("src/main/java/ish/oncourse/server/modules/SoapPortLocatorImpl.java")
-		String resourcesContent = resourcesFile.getText()
-		resourcesFile.write(resourcesContent.replaceAll("https://secure-payment.oncourse.net.au/services/${oldV}/replication", "https://secure-payment.oncourse.net.au/services/${newV}/replication")
-				.replaceAll("https://secure-payment.oncourse.net.au/services/${oldV}/payment", "https://secure-payment.oncourse.net.au/services/${newV}/payment")
-				.replaceAll("wsdl/${oldV}_replication.wsdl", "wsdl/${newV}_replication.wsdl"))
-	}
-}
-
 // "gradlew publishToMavenLocal" if you want to publish this to your local .m2 folder
 publishing {
 	publications {
