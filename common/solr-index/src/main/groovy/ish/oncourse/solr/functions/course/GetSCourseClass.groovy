@@ -11,7 +11,15 @@ import ish.oncourse.solr.model.SSession
 import ish.oncourse.solr.model.SSite
 import org.apache.cayenne.ResultIterator
 import org.apache.commons.lang3.time.DateUtils
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 
+import static ish.oncourse.configuration.Configuration.getValue
+import static ish.oncourse.linktransform.PageIdentifier.Render
+import static ish.oncourse.solr.Constants.CLASS_COMPONENT
+import static ish.oncourse.solr.Constants.PARAM_COMPONENT
+import static ish.oncourse.solr.Constants.PARAM_ID
+import static ish.oncourse.solr.SolrProperty.WEBAPP_LOCATION
 import static ish.oncourse.solr.functions.course.DateFunctions.toTimeZone
 
 /**
@@ -20,6 +28,8 @@ import static ish.oncourse.solr.functions.course.DateFunctions.toTimeZone
  */
 class GetSCourseClass {
     private CourseClassContext context
+    private static final String WEB_URL = getValue(WEBAPP_LOCATION)
+    private static final Logger logger = LogManager.logger
 
     GetSCourseClass(CourseClassContext context) {
         this.context = context
@@ -52,6 +62,10 @@ class GetSCourseClass {
         scc.location = sites.location.unique().findAll { it != null }
         scc.siteId = sites.id
 
+        if (context.siteKey) {
+            scc.content = getContent(context.siteKey, scc.id)
+        }
+        
         return scc
     }
 
@@ -81,6 +95,16 @@ class GetSCourseClass {
         }
     }
 
+    static String getContent(String siteKey, String id) {
+        try {
+            String url =  String.format(WEB_URL, siteKey).concat("${Render.matcher.pattern}?$PARAM_COMPONENT=$CLASS_COMPONENT&$PARAM_ID=${id}")
+            return  new URL(url).text
+        } catch (Exception e) {
+            logger.error("Can not get html content for class id: $id, web site key: $siteKey")
+            logger.catching(e)
+        }
+        return null
+    }
 
     static List<SSession> toSSessions(CourseClass courseClass, Closure<ResultIterator<Session>> getSessions) {
         ResultIterator<Session> sessions = getSessions.call(courseClass)

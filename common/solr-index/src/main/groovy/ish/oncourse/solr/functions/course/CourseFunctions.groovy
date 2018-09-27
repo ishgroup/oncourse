@@ -6,6 +6,7 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.ResultIterator
 import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.ObjectSelect
+import org.apache.commons.lang3.StringUtils
 
 import static ish.oncourse.model.auto._CourseClass.*
 import static org.apache.cayenne.query.ObjectSelect.query
@@ -35,6 +36,9 @@ class CourseFunctions {
         query(Course).where(ExpressionFactory.inDbExp(Course.ID_PK_COLUMN, ids)).iterator(context)
     }
 
+    public static final Closure<ResultIterator<Course>> CoursesByWebSite = { ObjectContext context, College college ->
+        query(Course).where(Course.COLLEGE.eq(college)).and(Course.IS_WEB_VISIBLE.isTrue()).iterator(context)
+    }
 
     public static final Closure<ResultIterator<CourseClass>> CourseClasses = { CourseContext context ->
         courseClassQuery(context).iterator(context.context)
@@ -62,7 +66,7 @@ class CourseFunctions {
 
 
 
-    private static availableByRootTag(Course course, WebSite webSites) {
+    static availableByRootTag(Course course, WebSite webSites) {
         Tag rootTag = getTagByFullPath(webSites.coursesRootTagName, webSites.college)
         if (!rootTag) {
             return true

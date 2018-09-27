@@ -67,6 +67,14 @@ public class InitSolr {
                 "tags");
     }
 
+    public static InitSolr classesCore() {
+        File solr = new File(InitSolr.class.getClassLoader().getResource("solr").getFile());
+
+        return InitSolr.valueOf("conf/solrconfig.xml",
+                "conf/schema.xml",
+                solr.getAbsolutePath(),
+                "classes");
+    }
 
     /**
      * This init static block should be add  to any junit which use this InitSolr implementation

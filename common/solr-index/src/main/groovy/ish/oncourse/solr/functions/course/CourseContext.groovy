@@ -22,6 +22,6 @@ class CourseContext {
     Closure<ResultIterator<Tag>> tags = CourseFunctions.Tags
     Closure<ResultIterator<CourseClass>> courseClasses = CourseFunctions.CourseClasses
     Closure<Observable<SCourse>> applyCourseClass = SCourseFunctions.addCourseClass
-    Closure<CourseClassContext> courseClassContext = { CourseClass courseClass, Date current -> new CourseClassContext(current: current, courseClass: courseClass) }
+    Closure<CourseClassContext> courseClassContext = { CourseClass courseClass, Date current, String siteKey = null -> new CourseClassContext(current: current, courseClass: courseClass, siteKey: siteKey) }
 }
 

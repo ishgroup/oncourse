@@ -8,7 +8,7 @@ import ish.oncourse.linktransform.PageIdentifier
 import ish.oncourse.model.Course
 import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Tag
-
+import ish.oncourse.model.WebSite
 import ish.oncourse.solr.RXObservableFromIterable
 import ish.oncourse.solr.model.*
 import org.apache.cayenne.ResultIterator
@@ -32,7 +32,6 @@ import static ish.oncourse.solr.SolrProperty.WEBAPP_LOCATION
  */
 class SCourseFunctions {
     private static final Logger logger = LogManager.logger
-    private static final String WEB_URL = getValue(WEBAPP_LOCATION)
     static final Observable<SCourse> SCourses(Date current = new Date(),
                                               Scheduler scheduler = Schedulers.io(),
                                               Callable<Iterable<Course>> courses) {
@@ -41,7 +40,33 @@ class SCourseFunctions {
                 .scheduler(scheduler)
                 .logger(logger).observable()
     }
+    
+    static final Observable<SCourseClass> SClasses(Date current = new Date(),
+                                                   Callable<ResultIterator<Course>> courses, 
+                                                   WebSite site) {
 
+        Observable.fromCallable(courses).flatMap { it ->
+            Observable.fromIterable(it)
+                    .filter ( {Course c ->
+                            CourseFunctions.availableByRootTag(c, site)
+                        } )
+                    .flatMap { c ->
+                        Observable.fromIterable( GetSClasses.call(new CourseContext(course: c, context: c.objectContext, current: current), site.siteKey) )
+                    }
+        }
+    }
+
+
+
+    public static final Closure<Iterable<SCourseClass>> GetSClasses = { CourseContext context, String siteKey  ->
+        ResultIterator<CourseClass> classes = context.courseClasses(context)
+
+        Observable.fromIterable(classes)
+                .filter { c -> c.hasAvailableEnrolmentPlaces }
+                .map { c -> new GetSCourseClass(context.courseClassContext(c, context.current, siteKey)).get() }
+                .doAfterTerminate {IOUtils.closeQuietly({ classes.close() } as Closeable)}
+                .blockingIterable()
+    }
 
     public static final Closure<SCourse> GetSCourse = { CourseContext context ->
         SCourse result = CourseFunctions.BuildSCourse.call(context.course)
@@ -87,13 +112,7 @@ class SCourseFunctions {
         availableSites.each { key ->
             SCourseClass copy  = sClass.clone()
             copy.siteKey = key
-            try {
-                String url =  String.format(WEB_URL,key).concat("${Render.matcher.pattern}?$PARAM_COMPONENT=$CLASS_COMPONENT&$PARAM_ID=${sClass.id}")
-                copy.content = new URL(url).text
-            } catch (Exception e) {
-                logger.error("Can not get html content for class id: $sClass.id, web site key: $key")
-                logger.catching(e)
-            }
+            copy.content = GetSCourseClass.getContent(key, sClass.id)
             sc.classes << copy
         }
     }
@@ -112,7 +131,7 @@ class SCourseFunctions {
         sc.tutor = sc.tutor.unique()
         sc
     }
-
+    
     static final SCourse addSites(SCourse sc, SCourseClass c) {
         sc.siteId.addAll(c.siteId)
         sc.suburb.addAll(c.suburb)

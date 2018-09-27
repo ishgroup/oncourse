@@ -13,6 +13,7 @@ import static ish.oncourse.solr.functions.course.CourseClassFunctions.*
  * Date: 24/10/17
  */
 class CourseClassContext {
+    String siteKey
     CourseClass courseClass
     Date current = new Date()
     Closure<ResultIterator<Session>> sessions = Sessions
