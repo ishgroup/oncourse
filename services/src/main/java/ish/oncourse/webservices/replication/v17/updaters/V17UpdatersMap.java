@@ -82,6 +82,7 @@ private Map<String, IWillowUpdater> updaterMap;
 		updaterMap.put(EnrolmentCustomField.class.getSimpleName(), new CustomFieldUpdater());
 		updaterMap.put(ApplicationCustomField.class.getSimpleName(), new CustomFieldUpdater());
 		updaterMap.put(WaitingListCustomField.class.getSimpleName(), new CustomFieldUpdater());
+		updaterMap.put(SurveyCustomField.class.getSimpleName(), new CustomFieldUpdater());
 		updaterMap.put(Application.class.getSimpleName(), new ApplicationUpdater());
 		updaterMap.put(EmailTemplate.class.getSimpleName(), new EmailTemplateUpdater());
 		updaterMap.put(Script.class.getSimpleName(), new ScriptUpdater());

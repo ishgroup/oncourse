@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <data-map xmlns="http://cayenne.apache.org/schema/9/modelMap"
 	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	 xsi:schemaLocation="http://cayenne.apache.org/schema/9/modelMap https://cayenne.apache.org/schema/9/modelMap.xsd"
+	 xsi:schemaLocation="http://cayenne.apache.org/schema/9/modelMap http://cayenne.apache.org/schema/9/modelMap.xsd"
 	 project-version="9">
 	<property name="defaultPackage" value="ish.oncourse.model"/>
 	<property name="defaultSuperclass" value="WillowCayenneObject"/>
@@ -2459,7 +2459,7 @@
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="password" type="java.lang.String" db-attribute-path="password"/>
 	</obj-entity>
-	<obj-entity name="Survey" className="ish.oncourse.model.Survey" dbEntityName="Survey" superClassName="WillowCayenneObject">
+	<obj-entity name="Survey" className="ish.oncourse.model.Survey" dbEntityName="Survey" superClassName="ish.oncourse.model.ExpandableCayenneDataObject">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="comment" type="java.lang.String" db-attribute-path="comment"/>
 		<obj-attribute name="courseScore" type="java.lang.Integer" db-attribute-path="courseScore"/>
@@ -2471,6 +2471,9 @@
 		<obj-attribute name="venueScore" type="java.lang.Integer" db-attribute-path="venueScore"/>
 		<obj-attribute name="visibility" type="ish.common.types.SurveyVisibility" db-attribute-path="publicComment"/>
 		<post-add method-name="onPostAdd"/>
+	</obj-entity>
+	<obj-entity name="SurveyCustomField" superEntityName="CustomField" className="ish.oncourse.model.SurveyCustomField">
+		<qualifier><![CDATA[entityName = "Survey"]]></qualifier>
 	</obj-entity>
 	<obj-entity name="SurveyFieldConfiguration" superEntityName="FieldConfiguration" className="ish.oncourse.model.SurveyFieldConfiguration">
 		<qualifier><![CDATA[intType = 4]]></qualifier>
@@ -3332,6 +3335,9 @@
 	<db-relationship name="relatedEnrolment" source="CustomField" target="Enrolment" toMany="false">
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
+	<db-relationship name="relatedSurvey" source="CustomField" target="Survey" toMany="false">
+		<db-attribute-pair source="foreignId" target="id"/>
+	</db-relationship>
 	<db-relationship name="relatedWaitingList" source="CustomField" target="WaitingList" toMany="false">
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
@@ -3919,6 +3925,9 @@
 	</db-relationship>
 	<db-relationship name="college" source="Survey" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="customFields" source="Survey" target="CustomField" toMany="true">
+		<db-attribute-pair source="id" target="foreignId"/>
 	</db-relationship>
 	<db-relationship name="enrolment" source="Survey" target="Enrolment" toMany="false">
 		<db-attribute-pair source="enrolmentId" target="id"/>
@@ -4549,7 +4558,9 @@
 	<obj-relationship name="student" source="StudentConcession" target="Student" deleteRule="Nullify" db-relationship-path="student"/>
 	<obj-relationship name="contact" source="SupportPassword" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="college" source="Survey" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="customFields" source="Survey" target="SurveyCustomField" deleteRule="Deny" db-relationship-path="customFields"/>
 	<obj-relationship name="enrolment" source="Survey" target="Enrolment" deleteRule="Nullify" db-relationship-path="enrolment"/>
+	<obj-relationship name="relatedObject" source="SurveyCustomField" target="Survey" deleteRule="Nullify" db-relationship-path="relatedSurvey"/>
 	<obj-relationship name="college" source="SystemUser" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="defaultAdministrationCentre" source="SystemUser" target="Site" deleteRule="Nullify" db-relationship-path="defaultAdministrationCentre"/>
 	<obj-relationship name="documentVersions" source="SystemUser" target="DocumentVersion" deleteRule="Deny" db-relationship-path="documentVersions"/>

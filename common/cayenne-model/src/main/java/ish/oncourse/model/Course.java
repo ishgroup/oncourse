@@ -1,5 +1,8 @@
 package ish.oncourse.model;
 
+import ish.oncourse.common.field.FieldProperty;
+import ish.oncourse.common.field.Property;
+import ish.oncourse.common.field.PropertyGetSetFactory;
 import ish.oncourse.model.auto._Course;
 import ish.oncourse.utils.QueueableObjectUtils;
 import org.apache.cayenne.PersistenceState;
@@ -84,6 +87,7 @@ public class Course extends _Course implements Queueable {
 	}
 
 	@Override
+	@Property(value = FieldProperty.CUSTOM_FIELD_COURSE, type = PropertyGetSetFactory.SET, params = {String.class, String.class})
 	public void setCustomFieldValue(String key, String value) {
 		setCustomFieldValue(key, value, CourseCustomField.class);
 	}

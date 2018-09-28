@@ -71,6 +71,7 @@ private Map<String, IWillowStubBuilder> builderMap;
 		builderMap.put(EnrolmentCustomField.class.getSimpleName(), new CustomFieldStubBuilder());
 		builderMap.put(ApplicationCustomField.class.getSimpleName(), new CustomFieldStubBuilder());
 		builderMap.put(WaitingListCustomField.class.getSimpleName(), new CustomFieldStubBuilder());
+		builderMap.put(SurveyCustomField.class.getSimpleName(), new CustomFieldStubBuilder());
         builderMap.put(ContactRelation.class.getSimpleName(), new ContactRelationStubBuilder());
 		builderMap.put(Application.class.getSimpleName(), new ApplicationStubBuilder());
 		builderMap.put(EmailTemplate.class.getSimpleName(), new EmailTemplateStubBuilred());

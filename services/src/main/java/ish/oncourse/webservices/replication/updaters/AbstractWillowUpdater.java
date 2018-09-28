@@ -24,7 +24,7 @@ public abstract class AbstractWillowUpdater<V extends GenericReplicationStub, T 
 	public static final String ASSESSMENT_ENTITY_NAME = Assessment.class.getSimpleName();
 	public static final String ASSESSMENT_SUBMISSION__ENTITY_NAME = AssessmentSubmission.class.getSimpleName();
 	public static final String WAITING_LIST_ENTITY_NAME = WaitingList.class.getSimpleName();
-
+	public static final String SURVEY_ENTITY_NAME = Survey.class.getSimpleName();
 
 	private ICayenneService cayenneService;
 
