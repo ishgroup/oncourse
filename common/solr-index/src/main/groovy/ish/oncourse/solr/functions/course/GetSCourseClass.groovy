@@ -63,6 +63,7 @@ class GetSCourseClass {
         scc.siteId = sites.id
 
         if (context.siteKey) {
+            scc.siteKey = context.siteKey
             scc.content = getContent(context.siteKey, scc.id)
         }
         

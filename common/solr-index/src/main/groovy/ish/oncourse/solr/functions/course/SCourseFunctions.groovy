@@ -44,28 +44,26 @@ class SCourseFunctions {
     static final Observable<SCourseClass> SClasses(Date current = new Date(),
                                                    Callable<ResultIterator<Course>> courses, 
                                                    WebSite site) {
-
+        
         Observable.fromCallable(courses).flatMap { it ->
             Observable.fromIterable(it)
                     .filter ( {Course c ->
                             CourseFunctions.availableByRootTag(c, site)
-                        } )
-                    .flatMap { c ->
-                        Observable.fromIterable( GetSClasses.call(new CourseContext(course: c, context: c.objectContext, current: current), site.siteKey) )
-                    }
+                        }) 
+                    .flatMap { c ->  GetSClasses.call(new CourseContext(course: c, context: c.objectContext, current: current), site.siteKey )
+            }
         }
     }
+    
 
-
-
-    public static final Closure<Iterable<SCourseClass>> GetSClasses = { CourseContext context, String siteKey  ->
+    public static final Closure<Observable<SCourseClass>> GetSClasses = { CourseContext context, String siteKey  ->
         ResultIterator<CourseClass> classes = context.courseClasses(context)
 
         Observable.fromIterable(classes)
                 .filter { c -> c.hasAvailableEnrolmentPlaces }
                 .map { c -> new GetSCourseClass(context.courseClassContext(c, context.current, siteKey)).get() }
                 .doAfterTerminate {IOUtils.closeQuietly({ classes.close() } as Closeable)}
-                .blockingIterable()
+                
     }
 
     public static final Closure<SCourse> GetSCourse = { CourseContext context ->
