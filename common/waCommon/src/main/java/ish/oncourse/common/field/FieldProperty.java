@@ -45,6 +45,7 @@ public enum FieldProperty {
 	CUSTOM_FIELD_ENROLMENT(ContextType.ENROLMENT, "Custom field ", CUSTOM_FIELD_PROPERTY_PATTERN + ContextType.ENROLMENT.getIdentifier()),
 	CUSTOM_FIELD_APPLICATION(ContextType.APPLICATION, "Custom field ", CUSTOM_FIELD_PROPERTY_PATTERN  + ContextType.APPLICATION.getIdentifier()),
 	CUSTOM_FIELD_WAITING_LIST(ContextType.WAITING_LIST, "Custom field ", CUSTOM_FIELD_PROPERTY_PATTERN  + ContextType.WAITING_LIST.getIdentifier()),
+	CUSTOM_FIELD_SURVEY(ContextType.SURVEY, "Custom field ", CUSTOM_FIELD_PROPERTY_PATTERN  + ContextType.SURVEY.getIdentifier()),
 
 	TAG(ContextType.CONTACT, "Tag field", TAG_PATTERN),
 	S_TAG_GROUP(ContextType.CONTACT, "Single tag field", TAG_S_PATTERN),
