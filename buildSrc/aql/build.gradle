@@ -1,0 +1,19 @@
+plugins {
+    id 'java-gradle-plugin'
+    id 'groovy'
+    id 'antlr'
+}
+
+ext {
+    antlrVersion = '4.7.1'
+}
+
+repositories {
+    maven {
+        url 'https://repo.ish.com.au/content/groups/public'
+    }
+}
+
+dependencies {
+    antlr "org.antlr:antlr4:$antlrVersion"
+}

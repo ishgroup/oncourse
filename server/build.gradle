@@ -9,6 +9,7 @@ apply plugin: 'com.github.psxpaul.execfork'
 configurations {
 	javaAgent
 	apidocSource
+	aql
 }
 
 ext {
@@ -23,6 +24,7 @@ ext {
 // compile everything with the groovy plugin which can handle mixed groovy and Java files
 sourceSets.main.java.srcDirs = []
 sourceSets.main.groovy.srcDir 'src/main/java'
+//sourceSets.main.groovy.srcDir 'build/antlr/java'
 sourceSets.test.java.srcDirs = []
 sourceSets.test.groovy.srcDir 'src/test/java'
 
@@ -37,7 +39,6 @@ dependencies {
 	compile ("org.apache.cxf:cxf-rt-frontend-jaxws:3.2.2") {
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
 	}
-
 
 	compile ("ish.oncourse.willow:webservices-client:$waCommonWebservicesClientVersion") {
 		exclude group: 'org.apache.cayenne', module: 'cayenne-server'
@@ -134,9 +135,10 @@ dependencies {
 	compile 'com.fasterxml.jackson.core:jackson-core:2.9.5'
 
 	compile 'org.yaml:snakeyaml:+'
+	compile "org.antlr:antlr4-runtime:4.7.1"
 
 	testCompile "org.apache.cayenne:cayenne-dbsync:$cayenneVersion"
-	testCompile 'org.mockito:mockito-core:1.10.19'
+	testCompile 'org.mockito:mockito-core:2.18.3'
 	testCompile "org.apache.derby:derbytools:$derbyVersion"
 	testCompile 'commons-dbcp:commons-dbcp:1.4'
 	testCompile 'xmlunit:xmlunit:1.6' //used for xml export validation tests
@@ -145,7 +147,7 @@ dependencies {
 }
 
 processResources {
-	dependsOn ":client-html:build"
+	dependsOn ':client-html:build', 'queryGrammar'
 	doLast {
 		copy {                
 			from('../client-html/build/assets') {
@@ -175,6 +177,9 @@ sourceSets {
 	main {
 		// generate some manifest files for lists of resources to find at runtime
 		output.dir("$buildDir/generated-resources/main", builtBy: 'createResourceManifests')
+		groovy {
+			srcDirs += "$buildDir/antlr/java"
+		}
 	}
 }
 
@@ -452,6 +457,16 @@ String sha256(String filename) {
 		}
 		return result.toString().split()[0]
 	}
+}
+
+task queryGrammar(type: au.com.ish.Aql) {
+	outputDir = file("${project.projectDir}/build/antlr/java/ish/oncourse/aql/impl")
+	packageDir = 'ish.oncourse.aql.impl'
+	target = 'Java'
+}
+
+compileGroovy {
+	dependsOn queryGrammar
 }
 
 

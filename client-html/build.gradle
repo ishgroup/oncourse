@@ -30,13 +30,18 @@ task jest(type: NodeTask, dependsOn: 'yarn_install') {
     args = ['--ci', '--testResultsProcessor=jest-junit']
 }
 
+task queryGrammar(type: au.com.ish.Aql) {
+    outputDir = file("${project.projectDir}/build/generated-sources/aql")
+    target = 'JavaScript'
+}
+
 sourceSets {
     main.resources.srcDirs 'src/js', 'build/generated-sources'
 }
 
 //test.dependsOn(jest)
 
-build.dependsOn(webpack)
+build.dependsOn(webpack, queryGrammar)
 
 task buildLogin(type: NodeTask, dependsOn: ['yarn_install', ':server-api:swagger']) {
     script = file('node_modules/.bin/webpack')
