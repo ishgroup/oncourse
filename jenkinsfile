@@ -1,0 +1,105 @@
+#!groovy​
+
+pipeline {
+    agent { 
+        label 'freebsd'
+    }
+
+    parameters {
+        string(defaultValue: '', description: 'Release version. Leave blank to not release.', name: 'version')
+    }
+
+    triggers {
+        pollSCM 'H/5 * * * *'
+    }
+
+    stages {
+        stage('Configure') {
+            steps {
+                checkout([
+                        $class              : 'SubversionSCM',
+                        browser             : [$class: 'Phabricator', repo: 'C', url: 'https://reviews.ish.com.au/'],
+                        filterChangelog     : true,
+                        ignoreDirPropChanges: false,
+                        includedRegions     : '''/willow/trunk/editor-api/.*
+                                                 /willow/trunk/common/.*
+                                              ''',
+                        locations           : [[cancelProcessOnExternalsFail: false, credentialsId: '0886002b-eb7a-4824-b5c3-f4130b4b7c9e', depthOption: 'infinity', ignoreExternalsOption: false, local: '.', remote: 'https://svn.ish.com.au/ish/willow/trunk']],
+                        quietOperation      : true,
+                        workspaceUpdater    : [$class: 'UpdateUpdater']
+                ])
+            }
+
+        }
+        stage('Build') {
+            agent {
+                label 'osx'
+            }
+            steps {
+                sh "./gradlew editor-api:build -Dbuild_number=${env.BUILD_NUMBER} -PreleaseVersion=${params.version}"
+                junit 'editor-api/build/test-results/**/*.xml'
+            }
+        }
+        
+        stage('Docs') {
+            agent {
+                label 'osx'
+            }
+            steps {
+                sh "./gradlew editor-api:generateDoc"
+            }
+        }
+        stage('Upload snapshot') {
+            agent {
+                label 'osx'
+            }
+            when {
+                expression { params.version == '' }
+            }
+            steps {
+                sh "./gradlew editor-api:publishExecutablesPublicationToSnapshotsRepository -Dbuild_number=${env.BUILD_NUMBER} -PreleaseVersion=SNAPSHOT"                    
+            }
+        }
+        stage('Upload release') {
+            agent {
+                label 'osx'
+            }
+            when {
+                expression { params.version != '' }
+            }
+            steps {
+                script {
+                    currentBuild.displayName = "Release ${params.version}"
+                }
+                sh "./gradlew editor-api:packageDoc editor-api:publishExecutablesPublicationToExecutablesRepository editor-api:publishReleasesPublicationToReleasesRepository -PreleaseVersion=${params.version}"
+                sh "./gradlew createVersion -PreleaseVersion=\"${params.version} editor-api\""
+            }
+        }
+    }
+
+    post {
+        failure {
+            mail(
+                to: "development@ish.com.au",
+                subject: "${currentBuild.result}: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
+                body: "Check console output at ${env.BUILD_URL}",
+            )
+        }
+        unstable {
+            mail(
+                to: "development@ish.com.au",
+                subject: "${currentBuild.result}: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
+                body: "Check console output at ${env.BUILD_URL}",
+            )
+        }
+        success {
+            sh "sudo /usr/local/bin/salt -I region:minsk state.apply willow.apps"
+        }
+    }
+
+    options {
+        disableConcurrentBuilds()
+        buildDiscarder(logRotator(numToKeepStr:'30'))
+        timeout(time: 60, unit: 'MINUTES')
+    }
+}
