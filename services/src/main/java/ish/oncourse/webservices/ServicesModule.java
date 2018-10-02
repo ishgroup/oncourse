@@ -23,6 +23,7 @@ import ish.oncourse.tapestry.WillowModuleDef;
 import ish.oncourse.tapestry.WillowTapestryFilter;
 import ish.oncourse.tapestry.WillowTapestryFilterBuilder;
 import ish.oncourse.util.log.LogAppInfo;
+import ish.oncourse.webservices.solr.ReindexServlet;
 import ish.oncourse.webservices.solr.SolrUpdateCourseDocumentsListener;
 import org.apache.cayenne.commitlog.CommitLogFilter;
 import org.apache.cayenne.commitlog.CommitLogListener;
@@ -70,6 +71,11 @@ public class ServicesModule extends ConfigModule {
 			};
 
 
+	private static final TypeLiteral<MappedServlet<ReindexServlet>> REINDEX_SERVLET =
+			new TypeLiteral<MappedServlet<ReindexServlet>>() {
+			};
+
+
 	@Singleton
 	@Provides
 	MappedFilter<WillowTapestryFilter> createTapestryFilter(Injector injector) {
@@ -98,6 +104,12 @@ public class ServicesModule extends ConfigModule {
 	
 	@Singleton
 	@Provides
+	MappedServlet<ReindexServlet> createReindexServlet(SolrClient solrClient, ServerRuntime serverRuntime) {
+		return new MappedServlet<>(new ReindexServlet(solrClient, serverRuntime), Collections.singleton(ReindexServlet.REINDEX_PATH));
+	}
+	
+	@Singleton
+	@Provides
 	public CommitLogModuleEx createCommitLogModule(Injector injector) {
 		return new CommitLogModuleEx(new SolrUpdateCourseDocumentsListener().injector(injector));
 	}
@@ -117,7 +129,8 @@ public class ServicesModule extends ConfigModule {
 		JettyModule.extend(binder)
 				.addMappedFilter(TAPESTRY_FILTER)
 				.addMappedServlet(CXF_SERVLET)
-				.addMappedServlet(new MappedServlet<>(new ISHHealthCheckServlet(), ISHHealthCheckServlet.urlPatterns, ISHHealthCheckServlet.SERVLET_NAME));
+				.addMappedServlet(new MappedServlet<>(new ISHHealthCheckServlet(), ISHHealthCheckServlet.urlPatterns, ISHHealthCheckServlet.SERVLET_NAME))
+				.addMappedServlet(REINDEX_SERVLET);
 	}
 
 
