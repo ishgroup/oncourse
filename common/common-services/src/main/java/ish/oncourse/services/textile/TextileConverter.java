@@ -4,25 +4,29 @@ import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.node.IWebNodeService;
-import ish.oncourse.services.persistence.CayenneService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.search.ISearchService;
+import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.courseList.CourseListTextileRenderer;
-import ish.oncourse.services.textile.renderer.*;
+import ish.oncourse.services.textile.renderer.IRenderer;
+import ish.oncourse.services.textile.renderer.LocationTextileRenderer;
+import ish.oncourse.services.textile.renderer.ImageTextileRenderer;
+import ish.oncourse.services.textile.renderer.BlockTextileRenderer;
+import ish.oncourse.services.textile.renderer.VideoTextileRenderer;
+import ish.oncourse.services.textile.renderer.CourseTextileRenderer;
+import ish.oncourse.services.textile.renderer.PageTextileRenderer;
+import ish.oncourse.services.textile.renderer.FormTextileRenderer;
+import ish.oncourse.services.textile.renderer.TagsTextileRenderer;
+import ish.oncourse.services.textile.renderer.AttachmentTextileRenderer;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.util.ValidationFailureType;
-import net.java.textilej.parser.MarkupParser;
-import net.java.textilej.parser.builder.HtmlDocumentBuilder;
-import net.java.textilej.parser.markup.textile.TextileDialect;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-import java.io.StringWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -54,6 +58,9 @@ public class TextileConverter implements ITextileConverter {
     @Inject
     private ICayenneService cayenneService;
 
+    @Inject
+    private IWebSiteService webSiteService;
+
     public TextileConverter() {
     }
 
@@ -62,13 +69,14 @@ public class TextileConverter implements ITextileConverter {
      */
     TextileConverter(IBinaryDataService binaryDataService, IWebContentService webContentService,
                      ICourseService courseService, IPageRenderer pageRenderer, IWebNodeService webNodeService,
-                     ITagService tagService) {
+                     ITagService tagService, IWebSiteService webSiteService) {
         this.binaryDataService = binaryDataService;
         this.webContentService = webContentService;
         this.courseService = courseService;
         this.pageRenderer = pageRenderer;
         this.webNodeService = webNodeService;
         this.tagService = tagService;
+        this.webSiteService = webSiteService;
     }
 
     public String convertCoreTextile(String content) {
@@ -142,7 +150,7 @@ public class TextileConverter implements ITextileConverter {
             case ATTACHMENT:
                 return new AttachmentTextileRenderer(binaryDataService, pageRenderer);
             case LOCATION:
-                return new LocationTextileRenderer(pageRenderer, cayenneService);
+                return new LocationTextileRenderer(pageRenderer, cayenneService, webSiteService);
             default:
                 throw new IllegalArgumentException(String.format("Type $s is not supported", type));
         }

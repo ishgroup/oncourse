@@ -1,6 +1,7 @@
 package ish.oncourse.services.textile.renderer;
 
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.attrs.LocationTextileAttribute;
 import ish.oncourse.services.textile.validator.LocationTextileValidator;
@@ -16,9 +17,9 @@ public class LocationTextileRenderer extends AbstractRenderer {
 
     private IPageRenderer pageRenderer;
 
-    public LocationTextileRenderer(IPageRenderer pageRenderer, ICayenneService cayenneService) {
+    public LocationTextileRenderer(IPageRenderer pageRenderer, ICayenneService cayenneService, IWebSiteService webSiteService) {
         this.pageRenderer = pageRenderer;
-        validator = new LocationTextileValidator(cayenneService);
+        validator = new LocationTextileValidator(cayenneService, webSiteService);
     }
 
     @Override
