@@ -6,19 +6,9 @@ import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.search.ISearchService;
-import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.courseList.CourseListTextileRenderer;
-import ish.oncourse.services.textile.renderer.IRenderer;
-import ish.oncourse.services.textile.renderer.LocationTextileRenderer;
-import ish.oncourse.services.textile.renderer.ImageTextileRenderer;
-import ish.oncourse.services.textile.renderer.BlockTextileRenderer;
-import ish.oncourse.services.textile.renderer.VideoTextileRenderer;
-import ish.oncourse.services.textile.renderer.CourseTextileRenderer;
-import ish.oncourse.services.textile.renderer.PageTextileRenderer;
-import ish.oncourse.services.textile.renderer.FormTextileRenderer;
-import ish.oncourse.services.textile.renderer.TagsTextileRenderer;
-import ish.oncourse.services.textile.renderer.AttachmentTextileRenderer;
+import ish.oncourse.services.textile.renderer.*;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.util.ValidationFailureType;
@@ -58,9 +48,6 @@ public class TextileConverter implements ITextileConverter {
     @Inject
     private ICayenneService cayenneService;
 
-    @Inject
-    private IWebSiteService webSiteService;
-
     public TextileConverter() {
     }
 
@@ -69,14 +56,13 @@ public class TextileConverter implements ITextileConverter {
      */
     TextileConverter(IBinaryDataService binaryDataService, IWebContentService webContentService,
                      ICourseService courseService, IPageRenderer pageRenderer, IWebNodeService webNodeService,
-                     ITagService tagService, IWebSiteService webSiteService) {
+                     ITagService tagService) {
         this.binaryDataService = binaryDataService;
         this.webContentService = webContentService;
         this.courseService = courseService;
         this.pageRenderer = pageRenderer;
         this.webNodeService = webNodeService;
         this.tagService = tagService;
-        this.webSiteService = webSiteService;
     }
 
     public String convertCoreTextile(String content) {
@@ -112,7 +98,7 @@ public class TextileConverter implements ITextileConverter {
         }
         return result;
     }
-    
+
 
     private IRenderer getRendererForTag(String tag) {
         for (TextileType type : TextileType.BASE_TYPES) {
@@ -150,7 +136,7 @@ public class TextileConverter implements ITextileConverter {
             case ATTACHMENT:
                 return new AttachmentTextileRenderer(binaryDataService, pageRenderer);
             case LOCATION:
-                return new LocationTextileRenderer(pageRenderer, cayenneService, webSiteService);
+                return new LocationTextileRenderer(pageRenderer, cayenneService);
             default:
                 throw new IllegalArgumentException(String.format("Type $s is not supported", type));
         }
