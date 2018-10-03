@@ -16,9 +16,7 @@ import org.apache.logging.log4j.Logger
 
 import static ish.oncourse.configuration.Configuration.getValue
 import static ish.oncourse.linktransform.PageIdentifier.Render
-import static ish.oncourse.solr.Constants.CLASS_COMPONENT
-import static ish.oncourse.solr.Constants.PARAM_COMPONENT
-import static ish.oncourse.solr.Constants.PARAM_ID
+import static ish.oncourse.solr.ReindexConstants.*
 import static ish.oncourse.solr.SolrProperty.WEBAPP_LOCATION
 import static ish.oncourse.solr.functions.course.DateFunctions.toTimeZone
 

@@ -3,14 +3,14 @@
  */
 package ish.oncourse.solr;
 
-public interface Constants {
+public interface ReindexConstants {
     
     String CLASS_COMPONENT = "class";
     String PARAM_COMPONENT = "component";
     String PARAM_COLLECTION = "collection";
     String PARAM_WEB_SITE = "webSite";
-    
+
     String PARAM_ID = "id";
-    
-    
+
+    String REINDEX_PATH = "/ish.reindex";
 }

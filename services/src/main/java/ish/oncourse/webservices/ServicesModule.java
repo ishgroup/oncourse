@@ -12,30 +12,20 @@ import io.bootique.jdbc.DataSourceFactory;
 import io.bootique.jetty.JettyModule;
 import io.bootique.jetty.MappedFilter;
 import io.bootique.jetty.MappedServlet;
-import io.bootique.shutdown.ShutdownManager;
 import io.bootique.tapestry.di.InjectorModuleDef;
 import ish.oncourse.cayenne.WillowCayenneModuleBuilder;
-import ish.oncourse.cayenne.cache.ICacheEnabledService;
 import ish.oncourse.configuration.ISHHealthCheckServlet;
-import ish.oncourse.listeners.IshVersionListener;
 import ish.oncourse.services.cache.NoopQueryCache;
 import ish.oncourse.tapestry.WillowModuleDef;
 import ish.oncourse.tapestry.WillowTapestryFilter;
 import ish.oncourse.tapestry.WillowTapestryFilterBuilder;
+import ish.oncourse.solr.ReindexConstants;
 import ish.oncourse.util.log.LogAppInfo;
 import ish.oncourse.webservices.solr.ReindexServlet;
 import ish.oncourse.webservices.solr.SolrUpdateCourseDocumentsListener;
-import org.apache.cayenne.commitlog.CommitLogFilter;
-import org.apache.cayenne.commitlog.CommitLogListener;
 import org.apache.cayenne.commitlog.CommitLogModule;
-import org.apache.cayenne.commitlog.CommitLogModuleExtender;
-import org.apache.cayenne.commitlog.meta.CommitLogEntityFactory;
-import org.apache.cayenne.commitlog.meta.IncludeAllCommitLogEntityFactory;
-import org.apache.cayenne.configuration.server.ServerModule;
 import org.apache.cayenne.configuration.server.ServerRuntime;
-import org.apache.cayenne.di.*;
 import org.apache.cayenne.di.Module;
-import org.apache.cayenne.tx.TransactionFilter;
 import org.apache.cxf.transport.servlet.CXFServlet;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.tapestry5.internal.spring.SpringModuleDef;
@@ -50,9 +40,7 @@ import static org.springframework.web.context.ContextLoader.CONFIG_LOCATION_PARA
  */
 public class ServicesModule extends ConfigModule {
 	public static final String APP_PACKAGE = "ish.oncourse.webservices";
-
-	public static final String REINDEEX_PATH = "/willow/solr/";
-
+	
 	private static final String URL_PATTERN = "/*";
 
 	public static final String DATA_SOURCE_NAME = "willow";
@@ -105,7 +93,7 @@ public class ServicesModule extends ConfigModule {
 	@Singleton
 	@Provides
 	MappedServlet<ReindexServlet> createReindexServlet(SolrClient solrClient, ServerRuntime serverRuntime) {
-		return new MappedServlet<>(new ReindexServlet(solrClient, serverRuntime), Collections.singleton(ReindexServlet.REINDEX_PATH));
+		return new MappedServlet<>(new ReindexServlet(solrClient, serverRuntime), Collections.singleton(ReindexConstants.REINDEX_PATH));
 	}
 	
 	@Singleton

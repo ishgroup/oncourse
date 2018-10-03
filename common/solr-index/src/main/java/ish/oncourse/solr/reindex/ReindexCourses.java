@@ -1,7 +1,6 @@
 package ish.oncourse.solr.reindex;
 
 import io.reactivex.schedulers.Schedulers;
-import ish.oncourse.model.Course;
 import ish.oncourse.solr.SolrCollection;
 import ish.oncourse.solr.functions.course.CourseFunctions;
 import ish.oncourse.solr.functions.course.SCourseFunctions;
@@ -15,8 +14,6 @@ import org.apache.solr.client.solrj.response.UpdateResponse;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.function.Function;
 
 public class ReindexCourses extends ReindexCollection<SCourse> {
 	private boolean reindexClasses = true;

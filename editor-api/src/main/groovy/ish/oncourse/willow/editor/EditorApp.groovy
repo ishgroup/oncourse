@@ -12,7 +12,7 @@ import static ish.oncourse.willow.editor.EditorProperty.*
 class EditorApp {
 
     static void main(String[] args) {
-        Configuration.configure(EDIT_SCRIPT_PATH, DEPLOY_SCRIPT_PATH, S_ROOT)
+        Configuration.configure(EDIT_SCRIPT_PATH, DEPLOY_SCRIPT_PATH, S_ROOT, SERVICES_LOCATION)
 
         Bootique.app(args).args('--server', '--config=classpath:application.yml')
                 .module(EditorApiModule)

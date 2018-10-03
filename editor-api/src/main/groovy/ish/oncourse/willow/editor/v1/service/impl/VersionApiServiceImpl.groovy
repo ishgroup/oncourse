@@ -10,6 +10,7 @@ import ish.oncourse.services.site.GetDeployedVersion
 import ish.oncourse.services.site.WebSitePublisher
 import ish.oncourse.services.site.WebSiteVersionRevert
 import ish.oncourse.services.site.WebSiteVersionsDelete
+import ish.oncourse.solr.SolrCollection
 import ish.oncourse.willow.editor.rest.WebVersionToVersion
 import ish.oncourse.willow.editor.services.ZKProvider
 import ish.oncourse.willow.editor.v1.model.UnexpectedError
@@ -39,7 +40,9 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 import static ish.oncourse.configuration.InitZKRootNode.EDITOR_LOCK_NODE
+import static ish.oncourse.solr.ReindexConstants.*
 import static ish.oncourse.willow.editor.EditorProperty.DEPLOY_SCRIPT_PATH
+import static ish.oncourse.willow.editor.EditorProperty.SERVICES_LOCATION
 import static org.apache.zookeeper.CreateMode.PERSISTENT
 import static org.apache.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE
 
@@ -55,6 +58,7 @@ class VersionApiServiceImpl implements VersionApi {
     private ZKProvider zkProvider
     private ExecutorService executorService
     private String deployScriptPath
+    private String servicesUrl
 
 
     @Inject
@@ -68,6 +72,8 @@ class VersionApiServiceImpl implements VersionApi {
         this.zkProvider = provider
         this.executorService = Executors.newCachedThreadPool()
         this.deployScriptPath = Configuration.getValue(DEPLOY_SCRIPT_PATH)
+        this.servicesUrl = Configuration.getValue(SERVICES_LOCATION)
+
     }
 
     List<Version> getVersions() {
@@ -154,6 +160,12 @@ class VersionApiServiceImpl implements VersionApi {
 
                 logger.warn("Site publishing finished successfully: $serverName from draft version id: ${freshDraft.id}," +
                         " new version id:${newVersion.id}, took: ${System.currentTimeMillis() - time} milliseconds")
+
+                logger.warn("Run classes reindex for $webSite.siteKey")
+                
+                new URL("$servicesUrl/${REINDEX_PATH}?${PARAM_COLLECTION}=${SolrCollection.classes.name()}&${PARAM_WEB_SITE}=${webSite.siteKey}").text
+
+
             } catch (Exception e) {
                 logger.error("Something unexpected has happened, publish was not completed. See error message for details")
                 logger.catching(e)
