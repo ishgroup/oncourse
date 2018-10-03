@@ -74,7 +74,11 @@ class ReindexServlet extends GroovyServlet {
 
                 if (testLock(siteKey)) {
                     executorService.submit {
-                        new ReindexClasses(serverRuntime.newContext(), solrClient, webSite).run()
+                        try {
+                            new ReindexClasses(serverRuntime.newContext(), solrClient, webSite).run()
+                        } finally {
+                            zk.delete("/$siteKey", -1)
+                        }
                     }
                     response.writer.print('Ok')
                 } else {
