@@ -195,8 +195,8 @@ public class SolrQueryBuilder {
 		queryString.append("(doctype:suburb");
 		if (suburbParams[0] != null) {
 			String near = suburbParams[0].replaceAll(SPACE_PATTERN, "+");
-			queryString.append(" AND (suburb:").append(near);
-			queryString.append(" || postcode:").append(near);
+			queryString.append(" AND (suburb:").append(StringUtils.isBlank(near) ? "*": near);
+			queryString.append(" OR postcode:").append(StringUtils.isBlank(near) ? "*": near);
 			queryString.append(")");
 		}
 		if (suburbParams[1] != null) {
