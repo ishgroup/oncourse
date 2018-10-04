@@ -53,6 +53,9 @@
                 <t:if test="hasLinkToLocation">
                     <div itemprop="location" class="location">
                         <t:if test="courseClass.hasRoom">
+                            <t:if test="courseClass.room.site.hasCoordinates">
+                                <span id="classLocationData" data-coordinates='${courseClass.room.site.latitude.doubleValue()}, ${courseClass.room.site.longitude.doubleValue()}, "${courseClass.room.site.name}", "${courseClass.room.site.suburb}", ${courseClass.room.site.angelId}, "/site/${courseClass.room.site.angelId}"'/>
+                            </t:if>
                             <span t:type="ui/roomLocation" room="courseClass.room" withRoomName="false"
                                   disabledLink="notExistsOnMap" isList="isList"/>
                             <p:else>Venue TBA</p:else>
