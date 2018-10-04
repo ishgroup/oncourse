@@ -45,10 +45,6 @@ pipeline {
                 body: "Check console output at ${env.BUILD_URL}",
             )
         }
-        always {
-            junit 'common/**/build/test-results/test/*.xml'
-
-        }
     }
 
     options {
