@@ -18,10 +18,15 @@ import ish.oncourse.webservices.quartz.job.solr.ReindexSuburbsJob;
 import ish.oncourse.webservices.quartz.job.solr.ReindexTagsJob;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.solr.client.solrj.SolrClient;
+import org.apache.zookeeper.ZooKeeper;
 import org.quartz.Scheduler;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Properties;
+
+import static ish.oncourse.configuration.Configuration.AppProperty.*;
+import static ish.oncourse.configuration.InitZKRootNode.REINDEX_LOCK_NODE;
 
 /**
  * User: akoiro
@@ -83,6 +88,13 @@ public class QuartzModule extends ConfigModule {
 		SolrClient solrClient = BuildSolrClient.instance(appProps).build();
 		shutdownManager.addShutdownHook(solrClient);
 		return solrClient;
+	}
+
+	@Provides
+	@Singleton()
+	public ZooKeeper createZooKeeper(Properties appProps) throws IOException {
+		String zkHost = appProps.getProperty(ZK_HOST.getKey());
+		return new ZooKeeper(String.format("%s%s", zkHost, REINDEX_LOCK_NODE),20000, null);
 	}
 
 

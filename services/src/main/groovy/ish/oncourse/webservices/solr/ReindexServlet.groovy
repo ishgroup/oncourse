@@ -20,9 +20,6 @@ import java.time.LocalDateTime
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-import static ish.oncourse.configuration.Configuration.AppProperty.ZK_HOST
-import static ish.oncourse.configuration.Configuration.getValue
-import static ish.oncourse.configuration.InitZKRootNode.*
 import static ish.oncourse.solr.ReindexConstants.*
 import static org.apache.zookeeper.CreateMode.PERSISTENT
 import static org.apache.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE
@@ -40,12 +37,11 @@ class ReindexServlet extends GroovyServlet {
     private static final int lockPeriod = 3
 
 
-    ReindexServlet(SolrClient solrClient, ServerRuntime serverRuntime) {
+    ReindexServlet(SolrClient solrClient, ZooKeeper zk, ServerRuntime serverRuntime) {
         this.serverRuntime = serverRuntime
         this.solrClient = solrClient
+        this.zk = zk
         this.executorService = Executors.newCachedThreadPool()
-        this.zk =  new ZooKeeper("${getValue(ZK_HOST)}${REINDEX_LOCK_NODE}", 20000, null)
-                
     }
     
     @Override

@@ -51,6 +51,11 @@ public class ServicesApp {
 			return this;
 		}
 
+		public BuildBootique add(Class<? extends ConfigModule> module) {
+			modules.add(module);
+			return this;
+		}
+
 		public Bootique build() {
 			System.setProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager");
 			Bootique bootique = Bootique.app(args).args("--server", "--config=classpath:application.yml");

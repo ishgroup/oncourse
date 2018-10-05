@@ -4,6 +4,7 @@
 package ish.oncourse.webservices.function;
 
 import io.bootique.BQRuntime;
+import io.bootique.ConfigModule;
 import io.bootique.jdbc.DataSourceFactory;
 import ish.common.types.CreditCardType;
 import ish.common.types.PaymentStatus;
@@ -146,6 +147,7 @@ public class TestEnv<T extends TransportConfig> {
 		runtime = new ServicesApp.BuildBootique()
 				.args(new String[]{})
 				.exclude(QuartzModule.class)
+				.add(SolrClientTestModule.class)
 				.build()
 				.createRuntime();
 		dataSourceFactory.set(runtime.getInstance(DataSourceFactory.class));

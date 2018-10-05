@@ -29,7 +29,9 @@ import org.apache.cayenne.di.Module;
 import org.apache.cxf.transport.servlet.CXFServlet;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.tapestry5.internal.spring.SpringModuleDef;
+import org.apache.zookeeper.ZooKeeper;
 
+import javax.annotation.Nullable;
 import java.util.*;
 
 import static org.springframework.web.context.ContextLoader.CONFIG_LOCATION_PARAM;
@@ -92,8 +94,8 @@ public class ServicesModule extends ConfigModule {
 	
 	@Singleton
 	@Provides
-	MappedServlet<ReindexServlet> createReindexServlet(SolrClient solrClient, ServerRuntime serverRuntime) {
-		return new MappedServlet<>(new ReindexServlet(solrClient, serverRuntime), Collections.singleton(ReindexConstants.REINDEX_PATH));
+	MappedServlet<ReindexServlet> createReindexServlet(@Nullable SolrClient solrClient, @Nullable ZooKeeper zk, ServerRuntime serverRuntime) {
+		return new MappedServlet<>(new ReindexServlet(solrClient, zk, serverRuntime), Collections.singleton(ReindexConstants.REINDEX_PATH));
 	}
 	
 	@Singleton
