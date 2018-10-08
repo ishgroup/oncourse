@@ -267,19 +267,14 @@ task agentJar(type: Copy) {
 
 
 
-task copyTestDb {
-    outputs.upToDateWhen { false } //disables 'UP_TO_DATE' check. This is need to run task always
-	copy {
-		from("$rootDir/api-test/src/test/resources/") {
-			include 'onCourse.cfg'
-		}
-		into "$buildDir/"
-	}
-	
-	copy {
-		from zipTree(file("$rootDir/api-test/src/test/resources/onCourse.iocdata.zip"))
-		into "$buildDir/"
-	}
+task copyTestDb(type: Copy) {
+    from("$rootDir/api-test/src/test/resources/") {
+        include 'onCourse.cfg'
+    }
+    into "$buildDir/"
+
+    from zipTree(file("$rootDir/api-test/src/test/resources/onCourse.iocdata.zip"))
+    into "$buildDir/"
 }
 task startDaemon(dependsOn: [classes, processResources, agentJar, copyTestDb], type: com.github.psxpaul.task.JavaExecFork) {
 	classpath = sourceSets.main.runtimeClasspath
