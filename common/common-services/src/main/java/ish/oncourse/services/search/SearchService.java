@@ -7,6 +7,7 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.solr.BuildSolrClient;
 import ish.oncourse.solr.SolrCollection;
+import ish.oncourse.solr.model.SCourseClass;
 import ish.oncourse.solr.query.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -92,7 +93,20 @@ public class SearchService implements ISearchService {
 			return null;
 		}
 	}
-
+	
+	
+	public List<SCourseClass> searchClasses(SearchParams searchParams,  Set<String> courses) {
+		try {
+			String siteKey = webSiteService.getCurrentWebSite().getSiteKey();
+			ClassesQueryParams params = ClassesQueryParams.valueOf(searchParams, siteKey, courses);
+			SolrQuery q = ClassesQueryBuilder.valueOf(params).build();
+			return query(q, SolrCollection.classes).getBeans(SCourseClass.class);
+		} catch (Exception e) {
+			throw new SearchException("Unable to find classes.", e);
+		}	
+	}
+	
+	
 	public SearchResult searchCourses(SearchParams params, int start, Integer rows) {
 
 		try {

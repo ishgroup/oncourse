@@ -207,7 +207,8 @@ public class SolrQueryBuilder {
 		return query;
 	}
 
-	void clearLastAnd(List<String> filters) {
+	
+	static void clearLastAnd(List<String> filters) {
 		if (filters.size() > 0 && QUERY_AND.equals(filters.get(filters.size() - 1))) {
 			filters.remove(filters.size() - 1);
 		}
@@ -308,7 +309,7 @@ public class SolrQueryBuilder {
 		return String.format(QUERY_brackets, StringUtils.join(queries.toArray(), QUERY_DELIMITER + QUERY_OR + QUERY_DELIMITER));
 	}
 
-	private void appendFilterWhen(List<String> filters, String whenValue) {
+	public static void appendFilterWhen(List<String> filters, String whenValue) {
 		if (whenValue != null) {
 			filters.add(String.format(FILTER_TEMPLATE_when, whenValue));
 		}
@@ -342,7 +343,7 @@ public class SolrQueryBuilder {
 	}
 
 
-	String convert(List<String> filters) {
+	public static  String convert(List<String> filters) {
 		return StringUtils.join(filters.toArray(), QUERY_DELIMITER);
 	}
 
