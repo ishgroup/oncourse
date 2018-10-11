@@ -1,12 +1,11 @@
-import React from "react";
+import * as React from "react";
 import {connect} from "react-redux";
 import classnames from "classnames";
 import {IshState} from "../../../services/IshState";
 import {Contact} from "../../../model";
 import ConcessionForm from "./components/ConcessionForm";
-import {reduxForm, FormErrors} from "redux-form";
-import {changePhase, showFormValidation, showSyncErrors} from "../../actions/Actions";
-import {getConcessionTypes} from "./actions/Actions";
+import {reduxForm} from "redux-form";
+import {changePhase, getCheckoutModelFromBackend, showFormValidation, showSyncErrors} from "../../actions/Actions";
 import CheckoutService from "../../services/CheckoutService";
 import {scrollToTop} from "../../../common/utils/DomUtils";
 
@@ -88,6 +87,7 @@ const Form = reduxForm({
   form: NAME,
   onSubmitSuccess: (result, dispatch, props: any) => {
     dispatch(changePhase(props.page));
+    dispatch(getCheckoutModelFromBackend());
   },
   onSubmitFail: (errors, dispatch, submitError, props) => {
     if (errors && !submitError) {
