@@ -367,13 +367,18 @@ function deleteCookie( name, path, domain ) {
 
 		// Show map in search results
 
-		$j(document.body).on('click', '.toggle_locations', function(e){
-			e.preventDefault();
-			if ($j('#gmapCanvas').length&&!mapLoaded) {
-				mapLoad('gmapCanvas', gMapSites, gMapOptions);
-			}
-			$j('#sitesMap').toggleClass('show');
-		});
+        $j(document).on('click', '.toggle_locations', function (e) {
+            $j('#sitesMap').toggleClass('show');
+            e.preventDefault();
+            if ($j('#gmapCanvas').length && !mapLoaded) {
+                var intervalId = setInterval(function () {
+                    if (mapLoaded) {
+                        clearInterval(intervalId);
+                        mapLoad('gmapCanvas', gMapSites, gMapOptions);
+                    }
+                }, 1000);
+            }
+        });
 
 		$j(document.body).on('click', '.location-course', function() {
 			var rel = $j(this).attr('rel');
@@ -438,8 +443,8 @@ function deleteCookie( name, path, domain ) {
 							type: "GET",
 							url:  "/coursesSitesMap?sites="+$j('#sitesParameter').text(),
 							success: function(msg1) {
-								$j('#sitesMap').replaceWith(msg1);
-								_processing = false;
+                                $j('#sitesMap > #focus-map').replaceWith($j(msg1).children('#focus-map'));
+                                _processing = false;
 							}
 						});
 					}
