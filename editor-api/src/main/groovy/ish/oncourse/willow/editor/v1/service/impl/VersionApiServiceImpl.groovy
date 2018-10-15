@@ -163,7 +163,7 @@ class VersionApiServiceImpl implements VersionApi {
 
                 logger.warn("Run classes reindex for $webSite.siteKey")
                 
-                new URL("$servicesUrl/${REINDEX_PATH}?${PARAM_COLLECTION}=${SolrCollection.classes.name()}&${PARAM_WEB_SITE}=${webSite.siteKey}").text
+                new URL("$servicesUrl${REINDEX_PATH}?${PARAM_COLLECTION}=${SolrCollection.classes.name()}&${PARAM_WEB_SITE}=${webSite.siteKey}").text
 
 
             } catch (Exception e) {
