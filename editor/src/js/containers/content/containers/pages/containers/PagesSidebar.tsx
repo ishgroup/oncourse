@@ -47,7 +47,7 @@ export class PagesSidebar extends React.Component<Props, any> {
 
   render() {
     const {pages, match, onEditSettings, onDeletePage, showModal, fetching, showError, themes} = this.props;
-    const activePage = match.params.id && pages.find(page => page.id == match.params.id);
+    const activePage = match.params.id && pages.find(page => page.id === match.params.id);
 
     return (
       <div className={classnames({fetching})}>
@@ -55,7 +55,7 @@ export class PagesSidebar extends React.Component<Props, any> {
           <SidebarList
             items={pages}
             idKey="id"
-            category="pages"
+            category="page"
             subTitleKey="urls"
             subTitleFilterFunc={(items, page) => this.getDefaultLink(items, page)}
             onBack={() => this.goBack()}
