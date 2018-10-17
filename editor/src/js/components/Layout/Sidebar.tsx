@@ -132,7 +132,7 @@ export class Sidebar extends React.Component<Props, any> {
 
               <Row className="center">
                 <Col md="12">
-                  <a href="#" className="logout-link" onClick={e => this.onClickLogout(e)}>
+                  <a href="javascript:void(0)" className="logout-link" onClick={e => this.onClickLogout(e)}>
                     <span className="user">{userName} {userName && ':'} logout</span>
                   </a>
                 </Col>

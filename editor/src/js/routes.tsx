@@ -23,7 +23,7 @@ export const URL = {
   SITE: '/',
   CONTENT: '/content',
   BLOCKS: '/blocks',
-  PAGES: '/pages',
+  PAGES: '/page',
   MENUS: '/menus',
   DESIGN: '/design',
   THEMES: '/themes',
@@ -97,7 +97,7 @@ export const routes: Route[] = [
   },
   {
     title: 'Pages',
-    path: '/pages/:id?',
+    path: '/page/:id?',
     url: URL.PAGES,
     parent: URL.CONTENT,
     main: props => <Pages {...props}/>,

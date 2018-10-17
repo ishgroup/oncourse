@@ -40,7 +40,7 @@ const checkSlimSidebar = history => (
 );
 
 const checkViewMode = (history, pageEditMode) => (
-  history.location.pathname === '/' || (history.location.pathname.indexOf('/pages/') === 0 && !pageEditMode)
+  history.location.pathname === '/' || (history.location.pathname.indexOf('/page/') === 0 && !pageEditMode)
 );
 
 export class Cms extends React.Component<Props, any> {

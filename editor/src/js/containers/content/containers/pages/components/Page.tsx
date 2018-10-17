@@ -103,7 +103,7 @@ export class Page extends React.PureComponent<PageProps, any> {
       draftContent: page.content,
     });
     toggleEditMode(true);
-    getHistoryInstance().push(`/pages/${page.id}`);
+    getHistoryInstance().push(`/page/${page.id}`);
   }
 
   onChangeArea(val) {

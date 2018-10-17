@@ -57,7 +57,7 @@ export class SidebarList extends React.Component<Props, any> {
       <ul>
 
         <li>
-          <a href="#" className="link-back" onClick={e => this.clickBack(e)}>
+          <a href="javascript:void(0)" className="link-back" onClick={e => this.clickBack(e)}>
             <IconBack text={category}/>
           </a>
         </li>

@@ -16,7 +16,7 @@ const request: EpicUtils.Request<any, any> = {
     const page = response[0];
 
     if (page && page.id && payload) {
-      getHistoryInstance().push(`/pages/${page.id}`);
+      getHistoryInstance().push(`/page/${page.id}`);
     }
 
     return [

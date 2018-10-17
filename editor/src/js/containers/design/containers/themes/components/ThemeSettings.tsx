@@ -63,7 +63,7 @@ export class ThemeSettings extends React.Component<Props, any> {
 
         <ul>
           <li>
-            <a href="#" onClick={e => this.clickBack(e)}>
+            <a href="javascript:void(0)" onClick={e => this.clickBack(e)}>
               <IconBack text={theme.title}/>
             </a>
           </li>
