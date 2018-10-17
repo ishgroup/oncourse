@@ -37,7 +37,7 @@ public class ISHConfigurationFactory extends XmlConfigurationFactory {
                 LOGGER.info("Log4j2 configuration file {} is not found.", configLocation.toString());
                 return null;
             }
-            final ConfigurationSource source = getInputFromUri(configLocation);
+            final ConfigurationSource source = ConfigurationSource.fromUri(configLocation);
             if (source != null) {
                 return getConfiguration(loggerContext, source);
             }

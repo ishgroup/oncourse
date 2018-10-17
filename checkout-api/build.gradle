@@ -11,7 +11,6 @@ configurations {
 
 
 apply from: "$rootDir/gradle/functions.gradle"
-apply from: "$rootDir/gradle/bootique.gradle"
 apply from: "$rootDir/gradle/build-api.gradle"
 
 mainClassName = 'ish.oncourse.willow.WillowApp'
@@ -21,6 +20,7 @@ mainClassName = 'ish.oncourse.willow.WillowApp'
 
 dependencies {
     compile project(':common:common-api')
+    compile project(':common:common-bootique')
     swagger project(':common:codegen:jaxrs')
 }
 test {

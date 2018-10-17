@@ -2,6 +2,7 @@ package ish.oncourse.willow.editor
 
 import io.bootique.Bootique
 import ish.oncourse.configuration.Configuration
+import ish.oncourse.log4j.IshLog4jModule
 
 import static ish.oncourse.willow.editor.EditorProperty.*
 
@@ -15,7 +16,8 @@ class EditorApp {
         Configuration.configure(EDIT_SCRIPT_PATH, DEPLOY_SCRIPT_PATH, S_ROOT, SERVICES_LOCATION)
 
         Bootique.app(args).args('--server', '--config=classpath:application.yml')
-                .module(EditorApiModule)
+                .module(EditorApiModule.class)
+                .module(IshLog4jModule.class)
                 .autoLoadModules().exec().exit()
     }
 }

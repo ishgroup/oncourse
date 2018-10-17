@@ -10,6 +10,7 @@ configurations {
 
 dependencies {
 	compile (project(':common:common-ui'))
+	compile (project(':common:common-bootique'))
 	testCompile project(':common:test-tapestry')
 }
 

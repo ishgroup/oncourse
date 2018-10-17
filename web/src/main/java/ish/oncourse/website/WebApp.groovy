@@ -6,7 +6,10 @@ import io.bootique.jdbc.JdbcModuleProvider
 import io.bootique.jetty.JettyModuleProvider
 
 import ish.oncourse.configuration.Configuration
-import static ish.oncourse.ui.services.WebProperty.*
+import ish.oncourse.log4j.IshLog4jModule
+
+import static ish.oncourse.ui.services.WebProperty.CHECKOUT_VERSION
+import static ish.oncourse.ui.services.WebProperty.EDITOR_VERSION
 
 /**
  * User: akoiro
@@ -26,6 +29,7 @@ class WebApp {
         bootique.module(new CayenneModuleProvider())
         bootique.module(new JettyModuleProvider())
         bootique.module(WebModule.class)
+        bootique.module(IshLog4jModule.class)
         return bootique
     }
 }
