@@ -49,20 +49,27 @@ class EnrolmentInvoiceLine {
         invoiceLine.quantity = BigDecimal.ONE
         invoiceLine.college = e.college
         
+        BigDecimal taxRate
+        if (taxOverridden != null && taxOverridden.rate != null) {
+            taxRate = taxOverridden.rate
+        } else {
+            taxRate = e.courseClass.taxRate
+        }
+        
         if (price.feeOverriden != null) {
             //Calculate enrolment fee (for enrolments whose courses has ENROLMENT_BY_APPLICATION type) as application.feeOverride if !=null.
             //Application.feeOverride doesn't need to combine with discounts.
             Money feeOverriden = price.feeOverriden.toMoney()
-            InvoiceUtil.fillInvoiceLine(invoiceLine, feeOverriden, Money.ZERO, taxOverridden?.rate?:e.courseClass.taxRate, Money.ZERO)
+            InvoiceUtil.fillInvoiceLine(invoiceLine, feeOverriden, Money.ZERO, taxRate, Money.ZERO)
         } else {
             Money taxAdjustment = CalculatePrice.calculateTaxAdjustment(e.courseClass)
             InvoiceUtil.fillInvoiceLine(invoiceLine, e.courseClass.feeExGst, Money.ZERO,
-                    taxOverridden?.rate?:e.courseClass.taxRate, taxOverridden ? Money.ZERO : taxAdjustment)
+                    taxRate, taxOverridden ? Money.ZERO : taxAdjustment)
 
             if (price.appliedDiscount) {
                 DiscountCourseClass chosenDiscount = e.courseClass.discountCourseClasses
                         .find {(it.discount as Discount).id.toString() == price.appliedDiscount.id}
-                DiscountUtils.applyDiscounts(chosenDiscount, invoiceLine, taxOverridden?.rate?:e.courseClass.taxRate, taxOverridden ? Money.ZERO : taxAdjustment)
+                DiscountUtils.applyDiscounts(chosenDiscount, invoiceLine, taxRate, taxOverridden ? Money.ZERO : taxAdjustment)
                 createInvoiceLineDiscounts(invoiceLine, chosenDiscount.discount as Discount, e.objectContext)
             }
         }
