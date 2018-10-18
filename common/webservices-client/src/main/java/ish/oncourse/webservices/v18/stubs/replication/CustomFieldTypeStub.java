@@ -24,6 +24,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="mandatory" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
  *         &lt;element name="key" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
  *         &lt;element name="entityName" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="dataType" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/extension&gt;
  *   &lt;/complexContent&gt;
@@ -38,7 +39,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "defaultValue",
     "mandatory",
     "key",
-    "entityName"
+    "entityName",
+    "dataType"
 })
 public class CustomFieldTypeStub
     extends ReplicationStub
@@ -56,6 +58,10 @@ public class CustomFieldTypeStub
     protected String key;
     @XmlElement(required = true)
     protected String entityName;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlSchemaType(name = "int")
+    protected Integer dataType;
 
     /**
      * Gets the value of the name property.
@@ -175,6 +181,30 @@ public class CustomFieldTypeStub
      */
     public void setEntityName(String value) {
         this.entityName = value;
+    }
+
+    /**
+     * Gets the value of the dataType property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Integer getDataType() {
+        return dataType;
+    }
+
+    /**
+     * Sets the value of the dataType property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setDataType(Integer value) {
+        this.dataType = value;
     }
 
 }

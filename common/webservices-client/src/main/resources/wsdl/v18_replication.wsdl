@@ -833,6 +833,7 @@
                             <xs:element name="visibility" type="xs:int"/>
                             <xs:element name="testimonial" type="xs:string"/>
                             <xs:element name="netPromoterScore" type="xs:int"/>
+                            <xs:element name="fieldConfigurationId" type="xs:long"/>
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
@@ -1390,6 +1391,7 @@
                             <xs:element name="mandatory" type="xs:boolean"/>
                             <xs:element name="key" type="xs:string"/>
                             <xs:element name="entityName" type="xs:string"/>
+                            <xs:element name="dataType" type="xs:int"/>
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>

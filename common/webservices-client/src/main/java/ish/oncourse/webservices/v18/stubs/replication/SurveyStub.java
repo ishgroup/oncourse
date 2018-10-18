@@ -27,6 +27,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="visibility" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
  *         &lt;element name="testimonial" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
  *         &lt;element name="netPromoterScore" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="fieldConfigurationId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/extension&gt;
  *   &lt;/complexContent&gt;
@@ -44,7 +45,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "enrolmentId",
     "visibility",
     "testimonial",
-    "netPromoterScore"
+    "netPromoterScore",
+    "fieldConfigurationId"
 })
 public class SurveyStub
     extends ReplicationStub
@@ -78,6 +80,10 @@ public class SurveyStub
     @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer netPromoterScore;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlSchemaType(name = "long")
+    protected Long fieldConfigurationId;
 
     /**
      * Gets the value of the comment property.
@@ -269,6 +275,30 @@ public class SurveyStub
      */
     public void setNetPromoterScore(Integer value) {
         this.netPromoterScore = value;
+    }
+
+    /**
+     * Gets the value of the fieldConfigurationId property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Long getFieldConfigurationId() {
+        return fieldConfigurationId;
+    }
+
+    /**
+     * Sets the value of the fieldConfigurationId property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setFieldConfigurationId(Long value) {
+        this.fieldConfigurationId = value;
     }
 
 }
