@@ -39,7 +39,9 @@ plugins {
 ext {
     replicationVersions = [
 			13, // introduced in onCourse 9.0
-			17 	// introduced in onCourse 9.5
+			17, 	// introduced in onCourse 9.5
+			18 	// introduced in onCourse 9.7
+
 	]
     referenceVersions = [
 			6   // introduced in onCourse 8.2
