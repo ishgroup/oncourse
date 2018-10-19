@@ -9,6 +9,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.webservices.exception.UpdaterNotFoundException;
 import ish.oncourse.webservices.replication.v13.updaters.V13UpdatersMap;
 import ish.oncourse.webservices.replication.v17.updaters.V17UpdatersMap;
+import ish.oncourse.webservices.replication.v18.updaters.V18UpdatersMap;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.PortHelper;
 import ish.oncourse.webservices.util.SupportedVersions;
@@ -30,6 +31,8 @@ public class WillowUpdaterImpl implements IWillowUpdater {
 	private Map<String, IWillowUpdater> v13updaterMap = new HashMap<>();
  
 	private Map<String, IWillowUpdater> v17updaterMap = new HashMap<>();
+ 
+	private Map<String, IWillowUpdater> v18updaterMap = new HashMap<>();
 
 	public WillowUpdaterImpl(@Inject ITextileConverter textileConverter) {
 
@@ -41,6 +44,10 @@ public class WillowUpdaterImpl implements IWillowUpdater {
 		V17UpdatersMap v17map = new V17UpdatersMap();
 		v17map.initMap(textileConverter);
 		v17updaterMap = v17map.getUpdaterMap();
+
+		V18UpdatersMap v18map = new V18UpdatersMap();
+		v18map.initMap(textileConverter);
+		v18updaterMap = v18map.getUpdaterMap();
 
 	}
 
@@ -62,6 +69,10 @@ public class WillowUpdaterImpl implements IWillowUpdater {
 				updater = v17updaterMap.get(key);
 				break;
 
+			case V18:
+				updater = v18updaterMap.get(key);
+				break;
+
 			default:
 				updater = null;
 		}
@@ -73,8 +84,7 @@ public class WillowUpdaterImpl implements IWillowUpdater {
 			if (currentCollege != null) {
 				entity.setCollege(entity.getObjectContext().localObject(currentCollege));
 			}	
-		}		
-		updater.setCayenneService(cayenneService);
+		}
 		updater.updateEntityFromStub(stub, entity, callback);
 	}
 	
