@@ -60,7 +60,7 @@ class CalculateEnrolmentsPrice {
                 Money classPrice = getOverridenFee(contact, courseClass)
                 
                 if (!classPrice) {
-                    CalculatePrice price = new CalculatePrice(courseClass.feeExGst, Money.ZERO, taxOverridden?.rate?:courseClass.taxRate, taxOverridden ? Money.ZERO : CalculatePrice.calculateTaxAdjustment(courseClass)).calculate()
+                    CalculatePrice price = new CalculatePrice(courseClass.feeExGst, Money.ZERO, taxOverridden, courseClass).calculate()
                     price = applyDiscount(contact, courseClass, price)
                     classPrice = price.finalPriceToPayIncTax
                 }
@@ -128,7 +128,7 @@ class CalculateEnrolmentsPrice {
                 select(context)
 
 
-        GetDiscountForEnrolment discounts = GetDiscountForEnrolment.valueOf(classDiscounts, promotions, corporatePass, enrolmentsToProceed, total, contact.student,  courseClass, taxOverridden?.rate?:courseClass.taxRate).get()
+        GetDiscountForEnrolment discounts = GetDiscountForEnrolment.valueOf(classDiscounts, promotions, corporatePass, enrolmentsToProceed, total, contact.student,  courseClass, taxOverridden?.rate).get()
         DiscountCourseClass chosenDiscount = discounts.chosenDiscount
 
         if (chosenDiscount != null) {

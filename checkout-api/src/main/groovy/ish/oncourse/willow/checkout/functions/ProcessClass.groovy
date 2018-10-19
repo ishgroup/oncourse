@@ -82,9 +82,15 @@ class ProcessClass {
                     e.price = new CourseClassPrice().with { ccp ->
                         ccp.hasTax = !persistentClass.gstExempt 
                         if (overridenFee != null) {
-                            ccp.feeOverriden =  overridenFee.multiply(BigDecimal.ONE.add(taxOverridden?.rate?:persistentClass.taxRate)).doubleValue()
+                            BigDecimal rate 
+                            if (taxOverridden != null && taxOverridden.rate != null) {
+                                rate = taxOverridden.rate
+                            } else {
+                                rate = persistentClass.taxRate
+                            }
+                            ccp.feeOverriden =  overridenFee.multiply(BigDecimal.ONE.add(rate)).doubleValue()
                         } else {
-                            ccp.fee = new CalculatePrice(persistentClass.feeExGst, Money.ZERO, taxOverridden?.rate?:persistentClass.taxRate, taxOverridden ? Money.ZERO : CalculatePrice.calculateTaxAdjustment(persistentClass)).calculate().finalPriceToPayIncTax.doubleValue()
+                            ccp.fee = new CalculatePrice(persistentClass.feeExGst, Money.ZERO, taxOverridden, persistentClass).calculate().finalPriceToPayIncTax.doubleValue()
                         }
                         ccp
                     }
