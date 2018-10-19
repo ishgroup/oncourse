@@ -34,7 +34,7 @@ enum DeliverySchedule implements DisplayableExtendedEnumeration<Integer> {
      * Database value: 5
      */
     @API
-    POST_COMPLETION(5, 'Post completion')
+    ON_DEMAND(5, 'On demand')
 
     private String displayName
     private int value

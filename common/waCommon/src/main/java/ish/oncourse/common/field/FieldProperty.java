@@ -39,6 +39,13 @@ public enum FieldProperty {
 	DISABILITY_TYPE(ContextType.STUDENT, "Disability type", "disabilityType" ),
 	SPECIAL_NEEDS(ContextType.STUDENT, "Special needs", "specialNeeds"),
 
+	NET_PROMOTER_SCORE(ContextType.SURVEY, "Net promoter score", "netPromoterScore"),
+	COURSE_SCORE(ContextType.SURVEY, "Course score", "courseScore"),
+	VENUE_SCORE(ContextType.SURVEY, "Venue score", "venueScore"),
+	TUTOR_SCORE(ContextType.SURVEY, "Tutor score", "tutorScore"),
+	COMMENT(ContextType.SURVEY, "Comment", "comment"),
+
+
 	CUSTOM_FIELD_CONTACT(ContextType.CONTACT, "Custom Field ", CUSTOM_FIELD_PROPERTY_PATTERN   + ContextType.CONTACT.getIdentifier()),
 	CUSTOM_FIELD_STUDENT(ContextType.STUDENT, "Custom field ", CUSTOM_FIELD_PROPERTY_PATTERN + ContextType.STUDENT.getIdentifier()),
 	CUSTOM_FIELD_COURSE(ContextType.COURSE, "Custom field ", CUSTOM_FIELD_PROPERTY_PATTERN  + ContextType.COURSE.getIdentifier()),
