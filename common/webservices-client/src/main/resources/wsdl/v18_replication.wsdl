@@ -52,6 +52,7 @@
             <xs:element name="message" type="tns:messageStub" />
             <xs:element name="messagePerson" type="tns:messagePersonStub" />
             <xs:element name="messageTemplate" type="tns:messageTemplateStub" />
+            <xs:element name="module" type="tns:moduleStub" />
             <xs:element name="invoice" type="tns:invoiceStub" />
             <xs:element name="invoiceLine" type="tns:invoiceLineStub" />
             <xs:element name="invoiceLineDiscount" type="tns:invoiceLineDiscountStub" />
@@ -125,6 +126,7 @@
             <xs:element name="authLastCommunicationKey" type="xs:long"/>
             <xs:element name="authNewCommunicationKey" type="xs:long"/>
             <xs:element name="faultResponse" type="tns:FaultReason"/>
+            <xs:element name="qualification" type="tns:qualificationStub" />
 
             <xs:simpleType name="errorCode">
                 <xs:restriction base="xs:string">
@@ -941,6 +943,25 @@
                 </xs:complexContent>
             </xs:complexType>
 
+            <xs:complexType name="moduleStub">
+                <xs:complexContent>
+                    <xs:extension base="tns:replicationStub">
+                        <xs:sequence>
+                            <xs:element name="creditPoints" type="xs:decimal" />
+                            <xs:element name="disciplineCode" type="xs:string" />
+                            <xs:element name="expiryDays" type="xs:int" />
+                            <xs:element name="fieldOfEducation" type="xs:string" />
+                            <xs:element name="isModule" type="xs:boolean" />
+                            <xs:element name="ishVersion" type="xs:long" />
+                            <xs:element name="nationalCode" type="xs:string" />
+                            <xs:element name="specialisation" type="xs:string" />
+                            <xs:element name="title" type="xs:string" />
+                            <xs:element name="trainingPackageId" type="xs:long" />
+                        </xs:sequence>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+
             <xs:complexType name="invoiceStub">
                 <xs:annotation>
                     <xs:appinfo>
@@ -1644,6 +1665,30 @@
                             <xs:element name="isGSTTaxType" type="xs:boolean"/>
                             <xs:element name="rate" type="xs:decimal"/>
                             <xs:element name="taxCode" type="xs:string"/>
+                        </xs:sequence>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+
+            <xs:complexType name="qualificationStub">
+                <xs:complexContent>
+                    <xs:extension base="tns:replicationStub">
+                        <xs:sequence>
+                            <xs:element name="anzsco" type="xs:string" />
+                            <xs:element name="anzsic" type="xs:string" />
+                            <xs:element name="asco" type="xs:string" />
+                            <xs:element name="fieldOfEducation" type="xs:string" />
+                            <xs:element name="fieldOfStudy" type="xs:string" />
+                            <xs:element name="isAccreditedCourse" type="xs:int" />
+                            <xs:element name="ishVersion" type="xs:long" />
+                            <xs:element name="level" type="xs:string" />
+                            <xs:element name="nationalCode" type="xs:string" />
+                            <xs:element name="newApprentices" type="xs:string" />
+                            <xs:element name="nominalHours" type="xs:float" />
+                            <xs:element name="reviewDate" type="xs:dateTime" />
+                            <xs:element name="specialisation" type="xs:string" />
+                            <xs:element name="title" type="xs:string" />
+                            <xs:element name="trainingPackageId" type="xs:long" />
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>

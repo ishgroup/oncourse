@@ -80,6 +80,7 @@ import ish.oncourse.webservices.util.GenericReplicationStub;
     MessageStub.class,
     MessagePersonStub.class,
     MessageTemplateStub.class,
+    ModuleStub.class,
     InvoiceStub.class,
     InvoiceLineStub.class,
     InvoiceLineDiscountStub.class,
@@ -125,7 +126,8 @@ import ish.oncourse.webservices.util.GenericReplicationStub;
     FieldHeadingStub.class,
     TaxStub.class,
     HollowStub.class,
-    DeletedStub.class
+    DeletedStub.class,
+    QualificationStub.class
 })
 public abstract class ReplicationStub
     extends GenericReplicationStub

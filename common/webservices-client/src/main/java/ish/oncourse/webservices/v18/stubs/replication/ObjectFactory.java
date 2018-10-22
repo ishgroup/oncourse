@@ -68,6 +68,7 @@ public class ObjectFactory {
     private final static QName _Message_QNAME = new QName("http://repl.v18.soap.webservices.oncourse.ish/", "message");
     private final static QName _MessagePerson_QNAME = new QName("http://repl.v18.soap.webservices.oncourse.ish/", "messagePerson");
     private final static QName _MessageTemplate_QNAME = new QName("http://repl.v18.soap.webservices.oncourse.ish/", "messageTemplate");
+    private final static QName _Module_QNAME = new QName("http://repl.v18.soap.webservices.oncourse.ish/", "module");
     private final static QName _Invoice_QNAME = new QName("http://repl.v18.soap.webservices.oncourse.ish/", "invoice");
     private final static QName _InvoiceLine_QNAME = new QName("http://repl.v18.soap.webservices.oncourse.ish/", "invoiceLine");
     private final static QName _InvoiceLineDiscount_QNAME = new QName("http://repl.v18.soap.webservices.oncourse.ish/", "invoiceLineDiscount");
@@ -141,6 +142,7 @@ public class ObjectFactory {
     private final static QName _AuthLastCommunicationKey_QNAME = new QName("http://repl.v18.soap.webservices.oncourse.ish/", "authLastCommunicationKey");
     private final static QName _AuthNewCommunicationKey_QNAME = new QName("http://repl.v18.soap.webservices.oncourse.ish/", "authNewCommunicationKey");
     private final static QName _FaultResponse_QNAME = new QName("http://repl.v18.soap.webservices.oncourse.ish/", "faultResponse");
+    private final static QName _Qualification_QNAME = new QName("http://repl.v18.soap.webservices.oncourse.ish/", "qualification");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: ish.oncourse.webservices.v18.stubs.replication
@@ -483,6 +485,14 @@ public class ObjectFactory {
      */
     public MessageTemplateStub createMessageTemplateStub() {
         return new MessageTemplateStub();
+    }
+
+    /**
+     * Create an instance of {@link ModuleStub }
+     * 
+     */
+    public ModuleStub createModuleStub() {
+        return new ModuleStub();
     }
 
     /**
@@ -934,6 +944,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link QualificationStub }
+     * 
+     */
+    public QualificationStub createQualificationStub() {
+        return new QualificationStub();
+    }
+
+    /**
      * Create an instance of {@link ReplicatedRecord }
      * 
      */
@@ -1350,6 +1368,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://repl.v18.soap.webservices.oncourse.ish/", name = "messageTemplate")
     public JAXBElement<MessageTemplateStub> createMessageTemplate(MessageTemplateStub value) {
         return new JAXBElement<MessageTemplateStub>(_MessageTemplate_QNAME, MessageTemplateStub.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ModuleStub }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://repl.v18.soap.webservices.oncourse.ish/", name = "module")
+    public JAXBElement<ModuleStub> createModule(ModuleStub value) {
+        return new JAXBElement<ModuleStub>(_Module_QNAME, ModuleStub.class, null, value);
     }
 
     /**
@@ -2010,6 +2037,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://repl.v18.soap.webservices.oncourse.ish/", name = "faultResponse")
     public JAXBElement<FaultReason> createFaultResponse(FaultReason value) {
         return new JAXBElement<FaultReason>(_FaultResponse_QNAME, FaultReason.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link QualificationStub }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://repl.v18.soap.webservices.oncourse.ish/", name = "qualification")
+    public JAXBElement<QualificationStub> createQualification(QualificationStub value) {
+        return new JAXBElement<QualificationStub>(_Qualification_QNAME, QualificationStub.class, null, value);
     }
 
 }
