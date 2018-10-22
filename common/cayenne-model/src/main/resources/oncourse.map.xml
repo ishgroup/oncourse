@@ -1178,6 +1178,7 @@
 		<db-attribute name="courseScore" type="INTEGER" isMandatory="true" length="10"/>
 		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="enrolmentId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="fieldConfigurationId" type="BIGINT"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="netPromoterScore" type="INTEGER"/>
@@ -3932,6 +3933,9 @@
 	<db-relationship name="enrolment" source="Survey" target="Enrolment" toMany="false">
 		<db-attribute-pair source="enrolmentId" target="id"/>
 	</db-relationship>
+	<db-relationship name="fieldConfiguration" source="Survey" target="FieldConfiguration" toMany="false">
+		<db-attribute-pair source="fieldConfigurationId" target="id"/>
+	</db-relationship>
 	<db-relationship name="college" source="SystemUser" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
@@ -4560,6 +4564,7 @@
 	<obj-relationship name="college" source="Survey" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="customFields" source="Survey" target="SurveyCustomField" deleteRule="Deny" db-relationship-path="customFields"/>
 	<obj-relationship name="enrolment" source="Survey" target="Enrolment" deleteRule="Nullify" db-relationship-path="enrolment"/>
+	<obj-relationship name="fieldConfiguration" source="Survey" target="FieldConfiguration" deleteRule="Nullify" db-relationship-path="surveyFieldConfiguration"/>
 	<obj-relationship name="relatedObject" source="SurveyCustomField" target="Survey" deleteRule="Nullify" db-relationship-path="relatedSurvey"/>
 	<obj-relationship name="college" source="SystemUser" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="defaultAdministrationCentre" source="SystemUser" target="Site" deleteRule="Nullify" db-relationship-path="defaultAdministrationCentre"/>

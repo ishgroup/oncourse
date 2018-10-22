@@ -4719,4 +4719,14 @@
 		</addColumn>
 	</changeSet>
 
+	<changeSet id="325" author="pnikanovich" context="production" runOnChange="false" runAlways="false">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Survey" columnName="fieldConfigurationId" />
+			</not>
+		</preConditions>
+		<addColumn tableName="Survey">
+			<column name="fieldConfigurationId" type="BIGINT"/>
+		</addColumn>
+	</changeSet>
 </databaseChangeLog>

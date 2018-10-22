@@ -9,6 +9,7 @@ import ish.common.types.SurveyVisibility;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.ExpandableCayenneDataObject;
+import ish.oncourse.model.FieldConfiguration;
 import ish.oncourse.model.SurveyCustomField;
 
 /**
@@ -34,6 +35,7 @@ public abstract class _Survey extends ExpandableCayenneDataObject {
     public static final String COLLEGE_PROPERTY = "college";
     public static final String CUSTOM_FIELDS_PROPERTY = "customFields";
     public static final String ENROLMENT_PROPERTY = "enrolment";
+    public static final String FIELD_CONFIGURATION_PROPERTY = "fieldConfiguration";
 
     public static final String ID_PK_COLUMN = "id";
 
@@ -50,6 +52,7 @@ public abstract class _Survey extends ExpandableCayenneDataObject {
     public static final Property<College> COLLEGE = Property.create("college", College.class);
     public static final Property<List<SurveyCustomField>> CUSTOM_FIELDS = Property.create("customFields", List.class);
     public static final Property<Enrolment> ENROLMENT = Property.create("enrolment", Enrolment.class);
+    public static final Property<FieldConfiguration> FIELD_CONFIGURATION = Property.create("fieldConfiguration", FieldConfiguration.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);
@@ -148,6 +151,15 @@ public abstract class _Survey extends ExpandableCayenneDataObject {
 
     public Enrolment getEnrolment() {
         return (Enrolment)readProperty("enrolment");
+    }
+
+
+    public void setFieldConfiguration(FieldConfiguration fieldConfiguration) {
+        setToOneTarget("fieldConfiguration", fieldConfiguration, true);
+    }
+
+    public FieldConfiguration getFieldConfiguration() {
+        return (FieldConfiguration)readProperty("fieldConfiguration");
     }
 
 
