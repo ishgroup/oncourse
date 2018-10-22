@@ -3,6 +3,7 @@ package ish.oncourse.webservices.replication.v18.updaters;
 import ish.common.types.SurveyVisibility;
 import ish.common.types.TypesUtil;
 import ish.oncourse.model.Enrolment;
+import ish.oncourse.model.FieldConfiguration;
 import ish.oncourse.model.Survey;
 import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
@@ -21,5 +22,6 @@ public class SurveyUpdater extends AbstractWillowUpdater<SurveyStub, Survey> {
         entity.setNetPromoterScore(stub.getNetPromoterScore());
         entity.setEnrolment(callback.updateRelationShip(stub.getEnrolmentId(), Enrolment.class));
         entity.setVisibility(TypesUtil.getEnumForDatabaseValue(stub.getVisibility(), SurveyVisibility.class));
-	}
+        entity.setFieldConfiguration(callback.updateRelationShip(stub.getFieldConfigurationId(), FieldConfiguration.class));
+    }
 }

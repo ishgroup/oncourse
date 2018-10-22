@@ -18,6 +18,9 @@ public class SurveyStubBuilder extends AbstractWillowStubBuilder<Survey, SurveyS
         surveyStub.setNetPromoterScore(entity.getNetPromoterScore());
         surveyStub.setEnrolmentId(entity.getEnrolment().getId());
         surveyStub.setVisibility(entity.getVisibility().getDatabaseValue());
+        if (entity.getFieldConfiguration() != null) {
+            surveyStub.setFieldConfigurationId(entity.getFieldConfiguration().getId());
+        }
         return surveyStub;
     }
 }
