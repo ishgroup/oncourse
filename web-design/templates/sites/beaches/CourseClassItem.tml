@@ -63,8 +63,10 @@
                   </abbr>
                   <t:if t:test="hasManySessions"> (first session)</t:if>
                 </a>
-                <br/>
-                <a timezone="10" href="https://${request.serverName}/Timeline/sessions?ids=${courseClass.id}" class="timeline session-item" rel="session">${classSessions}</a>
+                <t:remove>
+                  <br/>
+                  <a timezone="10" href="https://${request.serverName}/Timeline/sessions?ids=${courseClass.id}" class="timeline session-item" rel="session">${classSessions}</a>
+                </t:remove>
               </div>
 
               <p:else>

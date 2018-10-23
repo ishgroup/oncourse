@@ -3,11 +3,11 @@
 		<div class="confirmOrderDialog dialogContainer">
 			<p class="confirm-message">
 				<strong class="confirm-txt">Added:</strong>
-				<div class="className" />
-				<div class="classDate" />
+				<div class="className"/>
+				<div class="classDate"/>
 			</p>
 			<p class="confirm-proseed">
-				<a href="/checkout" class="button">Proceed to Checkout</a>
+				<a href="https://sydney.newcastle.edu.au/checkout" class="button">Proceed to Checkout</a>
 			</p>
 			<p class="confirm-close-wrapper">
 				<a href="#" class="button closeButton">Continue browsing</a>

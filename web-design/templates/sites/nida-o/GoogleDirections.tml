@@ -1,53 +1,25 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
   <t:if t:test="hasLocation">
 
-    <script type="text/javascript">
 
-      function initializeGoogleDirections() {
-        vLat = "${mapPositionLatitude}";
-        vLong = "${mapPositionLongitude}";
+        <script type="text/javascript">
+            var globalGoogleMapOptions = {
+                vLat: "${mapPositionLatitude}",
+                vLong: "${mapPositionLongitude}",
+                near: "${searchingNear}",
+                vSiteAddress: "${address}",
+                vFrom: "${directionsFrom}",
+                showNearMarker: "${hasGlobalPosition}",
+                showMapItems: "${showMapItems}",
+                gMapSites: ${sitesArray},
 
-        gMapOptions = {
-          zoom: 14,
-          <t:if test="needCenter()">
-            center: new google.maps.LatLng(vLat, vLong),
-          </t:if>
-          mapTypeId: google.maps.MapTypeId.ROADMAP,
-          styles: [
-            {
-              "stylers": [
-                { "visibility": "on" },
-                { "saturation": -100 }
-              ]
-            },
-            {
-              "featureType": "poi.park",
-              "stylers": [
-                { "gamma": 1.54 }
-              ]
-            },
-            {
-              "featureType": "road.highway",
-              "elementType": "geometry.fill",
-              "stylers": [
-                { "lightness": 51 }
-              ]
-            }
-          ]
-        };
-        near = "${searchingNear}";
-        vSiteAddress = "<t:output value='address' format='jsonFormat' filter='true'/>";
-        vFrom = "<t:output value='directionsFrom' format='jsonFormat' filter='true'/>";
-        showNearMarker = "${hasGlobalPosition}";
-        showMapItems = "${showMapItems}";
-        zoom = null;
-        siteMarkers = new Array();
-        gMapSites = ${sitesArray};
-        mapLoaded=false;
-
-        mapLoadCustom('gmapCanvas', gMapSites, gMapOptions);
-      }
-    </script>
+                <t:if test="needCenter()" >
+                    center: function () {
+                        return new google.maps.LatLng(globalGoogleMapOptions.vLat, globalGoogleMapOptions.vLong)
+                    },
+                </t:if>
+            };
+        </script>
 
     <div id="directions" class="directions-wrapper">
       <t:if t:test="hideDirections" negate="true">

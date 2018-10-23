@@ -5,5 +5,5 @@
     <p:else>
       <!-- <img alt="${name}"/> -->
     </p:else>
-  </t:if>
+  </t:if> 
 </t:container>

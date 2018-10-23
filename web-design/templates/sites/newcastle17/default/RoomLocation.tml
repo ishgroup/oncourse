@@ -2,17 +2,17 @@
 	<t:if test="room.site.isWebVisible">
 		<t:unless test="disabledLink">
 			<t:if test="redirect">
-				<a href="${mapLink}" class="class-block__link class-block__link--underline" content="${mapLink}"> <!-- itemprop="mainEntityOfPage"  -->
-					<span t:type="ui/RoomLocationText" room="room" withRoomName="withRoomName" withSiteAddress="withSiteAddress" />
+				<a href="https://sydney.newcastle.edu.au${mapLink}" class="class-block__link class-block__link--underline" content="https://sydney.newcastle.edu.au${mapLink}">
+					<span t:type="ui/RoomLocationText" room="room" withRoomName="withRoomName" withSiteAddress="withSiteAddress"/>
 				</a>
 				<p:else>
-					<a href="https://${request.serverName}/site/${room.site.angelId}" class="class-block__link class-block__link--underline tooltip"> <!-- itemprop="mainEntityOfPage"  -->
-						<span t:type="ui/RoomLocationText" room="room" withRoomName="withRoomName" withSiteAddress="withSiteAddress" />
+					<a href="https://sydney.newcastle.edu.au/site/${room.site.angelId}" class="class-block__link class-block__link--underline tooltip">
+						<span t:type="ui/RoomLocationText" room="room" withRoomName="withRoomName" withSiteAddress="withSiteAddress"/>
 					</a>
 				</p:else>
 			</t:if>
 			<p:else>
-				<span t:type="ui/RoomLocationText" room="room" withRoomName="withRoomName" withSiteAddress="withSiteAddress" />
+				<span t:type="ui/RoomLocationText" room="room" withRoomName="withRoomName" withSiteAddress="withSiteAddress"/>
 			</p:else>
 		</t:unless>
 	</t:if>

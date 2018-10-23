@@ -126,11 +126,9 @@
             </span>
           </t:if>
 
-          <t:if test="allowByAplication" negate="true">
-            <div class="price">
-              <div data-cid="fees" data-prop-id="${courseClass.id}"></div>
-            </div>
-          </t:if>
+          <div class="price">
+            <div data-cid="fees" data-prop-id="${courseClass.id}"></div>
+          </div>
         </div>
         <t:if test="hasTutorRoles">
           <div class="tutor-role">
@@ -152,11 +150,9 @@
       </div>
     </div>
     <div class="price-action">
-      <t:if test="allowByAplication" negate="true">
-        <div class="price">
-          <div data-cid="fees" data-prop-id="${courseClass.id}"></div>
-        </div>
-      </t:if>
+      <div class="price">
+        <div data-cid="fees" data-prop-id="${courseClass.id}"></div>
+      </div>
       <div class="reactjs-component"
           data-cid="enrol-button"
           data-prop-id="${courseClass.id}"></div>

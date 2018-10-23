@@ -10,23 +10,23 @@
 		<t:loop source="displayedObjects" value="event" index="listIndex">
 			<tr class="${cssRowClass}">
 				<td data-label="When">
-					<t:output value="event.startDate" format="itemDateFormatter" />
+					<t:output value="event.startDate" format="itemDateFormatter"/>
 				</td>
 				<td data-label="Time">
-					<t:output value="event.startDate" format="itemTimeFormatter" />
-					<t:if test="hasItemEndDate"> - <t:output value="event.endDate" format="itemTimeFormatterWithTimeZone" />
+					<t:output value="event.startDate" format="itemTimeFormatter"/>
+					<t:if test="hasItemEndDate"> - <t:output value="event.endDate" format="itemTimeFormatterWithTimeZone"/>
 					</t:if>
 				</td>
 				<td data-label="Where">
 					<t:if t:test="event.room">
-						<span t:type="ui/RoomLocation" room="event.room" withRoomName="true" />
+						<span t:type="ui/RoomLocation" room="event.room" withRoomName="true"/>
 					</t:if>
 				</td>
-                <td data-label="Session Notes">
-                    <t:if t:test="event.publicNotes">
-						<t:outputraw value="${detail}" />
-                    </t:if>
-                </td>
+				<td data-label="Session Notes">
+					<t:if t:test="event.publicNotes">
+						<t:outputraw value="${detail}"/>
+					</t:if>
+				</td>
 			</tr>
 		</t:loop>
 	</table>

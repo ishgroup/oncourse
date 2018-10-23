@@ -83,6 +83,12 @@
                   data-prop-name="${product.name}"
                   data-prop-unique-identifier="${product.sku}"></div>
               </div>
+              <div class="cart-alert-box">
+                <div class="cart-alert-box__container">
+                  <div class="cart-alert-box__title">Product added to cart. <a href="/checkout">Checkout now</a>.</div>
+                  <a href="#" class="btn-close-box">Close this message</a>
+                </div>
+              </div>
             </div>
           </div>
         </div>

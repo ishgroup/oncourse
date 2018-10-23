@@ -1,5 +1,5 @@
 <div class="site-wrapper" id="top" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-  <header class="site-header" id="header" itemscope="itemscope" itemtype="http://schema.org/WPHeader">
+  <header class="site-header" id="header">
     <div t:type="ui/bodyheader" />
 
     <div class="close-help-btn">HIDE</div>
@@ -16,7 +16,7 @@
           <li><a class="social-linkedin" target="_blank" href="https://www.linkedin.com/company/ccesydney">LinkedIn</a></li>
         </ul>
         <div class="info-contact">
-          <strong class="contact-phone">(02) 8627 6700</strong>
+          <a class="contact-phone" href="tel:0286276700">(02) 8627 6700</a>
           <span class="contact-hours">9am - 5pm Mon - Fri</span>
         </div>
       </div>
@@ -275,7 +275,10 @@
       </div>
     </section>
   </div><!-- //container -->
-  <footer class="site-footer" id="footer" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
+  <div class="country-acknowledgement container">
+    <a class="country-acknowledgement__link" href="https://sydney.edu.au/about-us/vision-and-values/our-aboriginal-and-torres-strait-islander-community.html" target="_blank">We acknowledge the tradition of custodianship and law of the Country on which the University of Sydney campuses stand. We pay our respects to those who have cared and continue to care for the Country.</a>
+  </div>
+  <footer class="site-footer" id="footer">
     <div t:type="ui/bodyfooter" />
     <div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:footer" />
   </footer><!-- //site-footer -->

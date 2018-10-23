@@ -9,9 +9,11 @@
         </div>
       </t:if>
       <h1 itemprop="name" class="summary page-title">
-        <t:if t:test="courseItemModel.nrt">
-          <img class="NRTLogo" alt="NRT" src="/s/img/core/nrt.png"/>
-        </t:if>
+        <t:remove>
+          <t:if t:test="courseItemModel.nrt">
+            <img class="NRTLogo" alt="NRT" src="/s/img/core/nrt.png"/>
+          </t:if>
+        </t:remove>
         ${courseItemModel.course.name}
       </h1>
       <div class="course-item-image align-left">
@@ -24,9 +26,11 @@
       <h2 itemprop="name">
         <meta content="https://${request.serverName}/course/${courseItemModel.course.code}" itemprop="url" />
         <a href="/course/${courseItemModel.course.code}" class="url">${courseItemModel.course.name}</a>
-        <t:if t:test="courseItemModel.nrt">
-          <img class="NRTLogo" alt="NRT" src="/s/img/core/nrt.png"/>
-        </t:if>
+        <t:remove>
+          <t:if t:test="courseItemModel.nrt">
+            <img class="NRTLogo" alt="NRT" src="/s/img/core/nrt.png"/>
+          </t:if>
+        </t:remove>
       </h2>
       <div class="description courseShortDescription">
         <span itemprop="description">

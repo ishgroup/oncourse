@@ -7,7 +7,7 @@
     bodyClass="literal:page-class-detail page-default"
     xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
-  <div itemtype="http://schema.org/Course" itemscope="itemscope" class="clearfix courseItem">
+  <div itemtype="http://schema.org/Course" class="clearfix courseItem">
     <h1 itemprop="name" class="page-title">${courseClass.course.name}</h1>
     <meta itemprop="provider" content="https://${request.serverName}" />
 

@@ -4,7 +4,7 @@
 		<p:else>
 			<html t:type="ui/internal/pagestructure" bodyId="literal:ListPage" bodyClass="literal:internal-page">
 				<t:if t:test="hasAnyItems" negate="true">
-					<h2>No products available</h2>
+					<h3>No products available</h3>
 					<p:else>
 						<h1>Products</h1>
 						<span t:type="ui/ProductsList" products="products" productsCount="productsCount"

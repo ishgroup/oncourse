@@ -7,7 +7,12 @@
           <h2>No products available</h2>
           <p:else>
             <div class="course-description copy">
-              <h2 class="course-tagline"><strong>Tagline.</strong> Appears here.</h2>
+              <h2 class="course-tagline"><strong>Purchase CCE products online.</strong> Add items to your shopping cart. </h2>
+              <ul>
+              <li>Gift Voucher</li>
+              <li>Myers-Briggs Type Indicator</li>
+              <li>Strength Deployment Indicator</li>
+              </ul>
             </div>
             <span t:type="ui/ProductsList" products="products" productsCount="productsCount" itemIndex="itemIndex"/>
           </p:else>

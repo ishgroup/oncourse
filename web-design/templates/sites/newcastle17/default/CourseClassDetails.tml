@@ -1,12 +1,4 @@
-<html t:type="ui/internal/pagestructure"
-	  canonicalLinkPath="${canonicalLinkPath}"
-	  canonicalRelativeLinkPath="${canonicalRelativeLinkPath}"
-	  metaDescription="${metaDescription}"
-    title="${courseClass.uniqueIdentifier} | ${courseClass.course.name}"
-	  bodyId="literal:DetailsPage"
-    bodyClass="literal:internal-page l-page l-page--course-details"
-    xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-
+<html t:type="ui/internal/pagestructure" canonicalLinkPath="${canonicalLinkPath}" canonicalRelativeLinkPath="${canonicalRelativeLinkPath}" metaDescription="${metaDescription}" title="${courseClass.uniqueIdentifier} ${courseClass.course.name}" bodyId="literal:DetailsPage" bodyClass="literal:internal-page l-page l-page--course-details" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<div class="quicklinks js-quicklinks">
 		<div class="l-container quicklinks__inner">
 			<div class="quicklinks__label">Jump to</div>
@@ -19,17 +11,12 @@
 			<ul class="quicklinks__items js-quicklinks-menu">
 				<li class="js-quicklink-description">
 					<a class="quicklinks__item" href="#content">
-						Course Description
-					</a>
-				</li>
-				<li class="js-quicklink-classes">
-					<a class="quicklinks__item" href="#courseClasses">
-						Classes
+						Overview
 					</a>
 				</li>
 				<li class="js-quicklink-location">
 					<a class="quicklinks__item" href="#locationInfo">
-						Location Information
+						Location Info
 					</a>
 				</li>
 				<li class="js-quicklink-testimonials">
@@ -38,53 +25,56 @@
 					</a>
 				</li>
 			</ul>
+			<a class="quicklinks__btn btn btn--arrow btn--branding u-display-none u-display-inline-block-at-768 u-display-none-at-1024 u-display-inline-block-at-1200" href="#courseClasses">
+				<div class="btn__inner">
+					<span class="btn__text">View Class Times</span>
+					<svg class="btn__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+						<use xlink:href="#svg-angle" />
+					</svg>
+				</div>
+			</a>
 		</div>
-	</div> <!-- //filter-quicklinks -->
-
-    <div class="course-details" itemscope="itemscope" itemtype="http://schema.org/Product">
-
-		<h1 itemprop="name">${courseClass.course.name}</h1>
-		<img alt="${courseClass.course.name}" class="faux-banner-image js-banner-image" src="/s/img/course/${courseClass.course.code}.jpg" />
-
-		<span itemprop="description">
-			<t:outputraw value="${courseDetail}" />
-		</span>
-
-		<h2 class="section-title" id="courseClasses">Available dates for ${courseClass.course.name}</h2>
+	</div>
+	<div class="course-details" itemscope="itemscope" itemtype="http://schema.org/Product">
+		<meta itemprop="name" content="${courseClass.course.name}"/>
+		<meta itemprop="brand" content="The University of Newcastle"/>
+		<meta itemprop="sku" content="${courseClass.course.code}"/>
+		<div id="course-images-${courseClass.course.code}">
+			<img itemprop="image" alt="${courseClass.course.name}" class="faux-banner-image js-banner-image" src="https://d1aed2v9axl5i.cloudfront.net/s/img/course/${courseClass.course.code}.jpg"/>
+			<link itemprop="image" href="https://d1aed2v9axl5i.cloudfront.net/s/img/course-16x9/${courseClass.course.code}.jpg"/>
+			<link itemprop="image" href="https://d1aed2v9axl5i.cloudfront.net/s/img/course-4x3/${courseClass.course.code}.jpg"/>
+			<link itemprop="image" href="https://d1aed2v9axl5i.cloudfront.net/s/img/course-1x1/${courseClass.course.code}.jpg"/>
+		</div>
+		<div itemprop="description">
+			<t:outputraw value="${courseDetail}"/>
+		</div>
+		<h3 class="section-title" id="courseClasses">Course Details</h3>
+		<meta itemprop="provider" content="The University of Newcastle"/>
 		<div class="course-detail__classes">
 			<span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="true" isList="false" allowByAplication="allowByAplication" feeOverride="feeOverride"></span>
 		</div>
-		
 		<t:if t:test="${showInlineTimetable}">
 			<t:if t:test="courseClass.hasAnyTimelineableSessions">
-				<h2>Sessions</h2>
+				<h3>Sessions</h3>
 				<span t:type="ui/TimetableEvents" displayedObjects="sortedTimelineableSessions"
 				cssTableClass="cssTableClass"
 				cssEvenRowClass="cssEvenRowClass" cssOddRowClass="cssOddRowClass"/>
 			</t:if>
 		</t:if>
-
 		<span t:type="ui/Attachments" entityIdentifier="literal:CourseClass" entityIdNum="${courseClass.id}"/>
-
 		<t:if t:test="${courseClass.hasRoom}">
-				
 			<div class="title-bar title-bar--location" id="locationInfo">
 				<h3 class="title-bar__heading">Location Information</h3>
 				<a class="title-bar__top-link o-top-link js-top-link" href="#content">
 					Back to top
 					<svg class="o-top-link__icon bounce" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-						<use xlink:href="#svg-angle" />
+						<use xlink:href="#svg-angle"/>
 					</svg>
 				</a>
 			</div>
-
-			<h1>${courseClass.room}</h1>
-
 			<div class="courseClassLocationFinder">
 				<span t:type="ui/SiteDetailsComponent" room="courseClass.room" collapseLocationMap="true"></span>
 			</div>
 		</t:if>
-
 	</div>
-
 </html>

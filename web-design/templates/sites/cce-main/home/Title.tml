@@ -3,33 +3,35 @@
   <script type="application/ld+json">
     {
       "@context": "http://schema.org",
-      "@type": "WebSite",
-      "name": "${college.name}",
-      "alternateName": "${college.name}",
+      "@type": "CollegeOrUniversity",
+      "name": "Centre for Continuing Education | The University of Sydney",
+      "alternateName": "The University of Sydney",
       "url": "https://${request.serverName}/",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://${request.serverName}/courses?s={search_term_string}",
-        "query-input": "required name=search_term_string"
-      }
+      "sameAs": "https://en.wikipedia.org/wiki/University_of_Sydney_Centre_for_Continuing_Education",
+      "Department": "Centre for Continuing Education",
+      "Address": "160 Missenden Road, Newtown NSW 2042 Australia",
+      "Telephone": "(02) 8627 6700"
     }
   </script>
 
   <t:remove>Title for cms pages</t:remove>
   <t:if test="webNode">
     <t:if test="${webNode.name.equals('Home')}">
-      <title>Centre for Continuing Education</title>
-      <meta property="og:title" content="Centre for Continuing Education" />
-      <meta property="twitter:title" content="Centre for Continuing Education"/>
+      <title>Centre for Continuing Education | The University of Sydney</title>
+      <meta property="og:title" content="Centre for Continuing Education | The University of Sydney" />
+      <meta property="twitter:title" content="Centre for Continuing Education | The University of Sydney"/>
+      <meta content="Learn the smart way. Choose from hundreds of short courses in Sydney at the Centre of Continuing Education, all open to the general public." property="og:description"/>
+      <meta content="Learn the smart way. Choose from hundreds of short courses in Sydney at the Centre of Continuing Education, all open to the general public." property="twitter:description"/>
+      <meta content="Learn the smart way. Choose from hundreds of short courses in Sydney at the Centre of Continuing Education, all open to the general public." name="description" />
       <p:else>
-        <title>${webNode.name}</title>
+        <title>${webNode.name} | CCE University of Sydney</title>
         <meta property="og:title" content="${webNode.name}" />
         <meta property="twitter:title" content="${webNode.name}"/>
       </p:else>
     </t:if>
   </t:if>
-  <meta property="og:site_name" content="CCE University of Sydney" />
-  <meta name="twitter:site" content="CCE University of Sydney" />
+  <meta property="og:site_name" content="Centre for Continuing Education" />
+  <meta name="twitter:site" content="@ccesydney" />
   <t:unless test="webNode">
     <t:delegate to="block:pageName"/>
   </t:unless>
@@ -39,13 +41,13 @@
     <t:if test="pageName">
       <t:remove>Title for pages with browser tag (like /courses/tag1)</t:remove>
       <t:if test="tag">
-        <title>${tag.name}</title>
+        <title>${tag.name} | CCE University of Sydney</title>
         <meta name="description" content="" />
         <meta property="og:title" content="${tag.name}" />
         <meta property="twitter:title" content="${tag.name}" />
       </t:if>
       <t:unless test="tag">
-        <title>${pageName}</title>
+        <title>${pageName} | CCE University of Sydney</title>
         <meta name="description" content="" />
         <meta property="og:title" content="${pageName}" />
         <meta property="twitter:title" content="${pageName}" />
@@ -54,13 +56,13 @@
     <t:remove>Title for pages where pageName is not defined in tapestry template</t:remove>
     <t:unless test="pageName">
       <t:if test="tag">
-        <title>${tag.name}</title>
+        <title>${tag.name} | CCE University of Sydney</title>
         <meta name="description" content="" />
         <meta property="og:title" content="${tag.name}" />
         <meta property="twitter:title" content="${tag.name}" />
       </t:if>
       <t:unless test="tag">
-        <title>Centre for Continuing Education</title>
+        <title>Centre for Continuing Education | The University of Sydney</title>
         <meta name="description" content="" />
         <meta property="og:title" content="Centre for Continuing Education" />
         <meta property="twitter:title" content="Centre for Continuing Education" />

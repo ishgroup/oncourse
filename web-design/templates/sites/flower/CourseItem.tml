@@ -18,6 +18,7 @@
         <div t:type="ui/image" name="${courseItemModel.course.code}_1" width="200" height="200" alt="${courseItemModel.course.name}"></div>
       </div>
     <p:else>
+      <!-- PlantBoxKids -->
       <div class="course-image course-code-list-image">
         <div t:type="ui/image" name="${courseItemModel.course.code}_1" width="200" height="200" alt="${courseItemModel.course.name}"></div>
       </div>

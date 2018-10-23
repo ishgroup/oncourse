@@ -9,7 +9,7 @@
 				<ul class="menu">
 					<t:loop source="promotions" value="promotion">
 						<li class="onshortlist-x">
-							<a class="cutitem" id="${promotion.id}" href="/removeFromCookies?key=promotions&amp;removeItemId=${promotion.id}">
+							<a class="cutitem" id="${promotion.id}" href="https://sydney.newcastle.edu.au/removeFromCookies?key=promotions&amp;removeItemId=${promotion.id}">
 								<span class="hide" title="Remove item">X</span>
 							</a>
 							<a class="viewitem" title="${promotion.code}" href="#" disabled="true">${promotion.name}</a>
@@ -17,7 +17,6 @@
 					</t:loop>
 				</ul>
 			</t:if>
-			<!--<a class="nyromodalreload actionLink" target="_blank" href="https://${serverName}/addDiscount">Add a discount code</a>-->
 			<a class="actionLink" target="_blank" rel="nofollow" href="https://skillsoncourse.com.au/portal/login">My Account</a>
 		</div>
 	</t:if>

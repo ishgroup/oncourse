@@ -1,52 +1,48 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-
 <t:if t:test="browseTagPath">
 	<ol class="breadcrumbs faux-breadcrumbs js-breadcrumbs" itemscope="itemscope" itemtype="http://schema.org/BreadcrumbList">
 		<li class="breadcrumbs__item" itemprop="itemListElement" itemscope="itemscope" itemtype="http://schema.org/ListItem">
-			<a class="breadcrumbs__link breadcrumbs__link--home" itemscope="itemscope" itemtype="http://schema.org/Thing" itemprop="item" href="/">
-				<meta itemprop="name" content="Home" />
-				<meta itemprop="image" content="https://${request.serverName}/s/img/schema/image.jpg" alt="Home" />
-				<svg class="breadcrumbs__home-icon" aria-label="Home" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-					<use xlink:href="#svg-house" />
+			<a class="breadcrumbs__link breadcrumbs__link--home" itemtype="http://schema.org/Thing" itemprop="item" href="https://sydney.newcastle.edu.au/">
+				<meta itemprop="name" content="Home"/>
+				<link itemprop="image" href="https://d1aed2v9axl5i.cloudfront.net/s/img/schema/image.jpg"/>
+				<svg class="breadcrumbs__home-icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="Home">
+					<use xlink:href="#svg-house"/>
 				</svg>
 			</a>
-			<meta itemprop="position" content="1" />
-			<svg class="breadcrumbs__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-				<use xlink:href="#svg-angle" />
+			<meta itemprop="position" content="1"/>
+			<svg class="breadcrumbs__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="Arrow">
+				<use xlink:href="#svg-angle"/>
 			</svg>
 		</li>
 		<li class="breadcrumbs__item" itemprop="itemListElement" itemscope="itemscope" itemtype="http://schema.org/ListItem">
-			<a class="breadcrumbs__link" itemscope="itemscope" itemtype="http://schema.org/Thing" itemprop="item" href="/courses">
+			<a class="breadcrumbs__link" itemtype="http://schema.org/Thing" itemprop="item" href="https://sydney.newcastle.edu.au/courses">
 				<span itemprop="name">Courses</span>
-				<meta itemprop="image" content="https://${request.serverName}/s/img/courses/_default.jpg" alt="Courses" />
+				<link itemprop="image" href="https://d1aed2v9axl5i.cloudfront.net/s/img/courses/_default.jpg"/>
 			</a>
-			<meta itemprop="position" content="2" />
-			<svg class="breadcrumbs__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-				<use xlink:href="#svg-angle" />
+			<meta itemprop="position" content="2"/>
+			<svg class="breadcrumbs__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="Arrow">
+				<use xlink:href="#svg-angle"/>
 			</svg>
 		</li>
 		<t:loop source="browseTagPath" value="tag" index="tagIndex">
 			<t:if t:test="showTagRaquo">
 				<li class="breadcrumbs__item" itemprop="itemListElement" itemscope="itemscope" itemtype="http://schema.org/ListItem">
-					<a href="${tag.link}" class="breadcrumbs__link" itemscope="itemscope" itemtype="http://schema.org/Thing" itemprop="item">
+					<a href="https://sydney.newcastle.edu.au${tag.link}" class="breadcrumbs__link" itemtype="http://schema.org/Thing" itemprop="item">
 						<span itemprop="name">${tag.name} Courses</span>
-						<meta itemprop="image" content="https://${request.serverName}/s/img${tag.link}.jpg" alt="${tag.name} Courses" />
+						<link itemprop="image" href="https://d1aed2v9axl5i.cloudfront.net/s/img${tag.link}.jpg"/>
 					</a>
-					<svg class="breadcrumbs__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-						<use xlink:href="#svg-angle" />
+					<meta itemprop="position" content="3"/>
+					<svg class="breadcrumbs__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="Arrow">
+						<use xlink:href="#svg-angle"/>
 					</svg>
 				</li>
 				<p:else>
-				<li class="breadcrumbs__item  breadcrumbs__item--current" itemprop="itemListElement" itemscope="itemscope" itemtype="http://schema.org/ListItem">
-					<span itemscope="itemscope" itemtype="http://schema.org/Thing" itemprop="item">
-						<span itemprop="name">${tag.name} Courses</span>
-						<meta itemprop="image" content="https://${request.serverName}/s/img${tag.link}.jpg" alt="${tag.name} Courses" />
-					</span>
+				<li class="breadcrumbs__item breadcrumbs__item--current">
+					${tag.name} Courses
 				</li>
 				</p:else>
 			</t:if>
 		</t:loop>
 	</ol>
 </t:if>
-
 </t:container>

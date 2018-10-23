@@ -39,5 +39,5 @@
   <link href="/s/stylesheets/css/site.css?v=${ciVersion}" media="screen, print" rel="stylesheet" />
   <script type="text/javascript" src="/s/js/all.js?v=${ciVersion}"></script>
 
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAuNflSBudVqQyTqAAbgGb2wu43Yq0NtrA&amp;v=3.exp&amp;language=en" type="text/javascript"></script>
+  <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAuNflSBudVqQyTqAAbgGb2wu43Yq0NtrA&amp;v=3.exp&amp;language=en" type="text/javascript"></script> -->
 </t:container>

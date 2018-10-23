@@ -12,18 +12,11 @@
     <meta property="og:url" content="${canonicalLinkPath}" />
   </t:if>
 
-  <t:if test="canonicalRelativeLinkPath">
-    <link rel="canonical" href="${canonicalRelativeLinkPath}" />
-  </t:if>
-
-  <meta property="og:type" content="website"/>
+  <meta property="og:type" content="article"/>
 
   <meta content="${metaDescription}" name="description" />
   <meta content="${metaDescription}" property="og:description"/>
   <meta content="${metaDescription}" property="twitter:description"/>
-
-  <meta property="og:image" content="https://${request.serverName}/s/img/logos/logo.png" />
-  <meta name="twitter:image" content="https://${request.serverName}/s/img/logos/logo.png" />
 
   <meta name="robots" content="noodp,noydir" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -48,7 +41,6 @@
   <link href="https://plus.google.com/117569777441369286786" rel="publisher" />
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@ccesydney" />
-  <meta name="twitter:creator" content="@ccesydney" />
   <meta name="twitter:image" content="http://mycce.com.au/images/custom/open-graph${canonicalRelativeLinkPath}.jpg" />
   <meta property="og:site_name" content="Centre for Continuing Education" />
   <meta property="og:url" content="${canonicalLinkPath}"/>

@@ -5,7 +5,7 @@
 			<span t:type="ui/socialmedia" addThisProfileId="addThisProfileId"/>
 		</div>
 	</t:if>
-    <div class="clearboth"></div>
+	<div class="clearboth"></div>
 	<t:loop source="node.webContentVisibility" value="visibility">
 		<div class="block-${node.nameWithoutSpaces}">
 			<t:outputraw value="regionContent"/>

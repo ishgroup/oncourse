@@ -9,50 +9,64 @@
   <title>Timetable</title>
 
   <link rel="stylesheet" type="text/css" media="screen, print" href="/s/kiosk/css/kiosk.css"/>
-  <link rel="stylesheet" type="text/css" media="screen, print" href="/s/kiosk/css/kiosk-local.css"/>
+	<link rel="stylesheet" type="text/css" media="screen, print" href="/s/kiosk/css/kiosk-local.css"/>
+	<link rel="stylesheet" type="text/css" media="screen, print" href="/s/kiosk/css/kiosk-redback.css"/>
 
   <script src="/s/kiosk/js/kiosk.js"></script>
 
 </head>
-<body t:type="any" class="kiosk">
+<body t:type="any">
 
-  <div class="timetable-wrapper">
-    <header id="header">
-      <div class="container">
-        <div class="header-logo">
-          <a class="logo" href="/">
-            <img src="/s/kiosk/img/logo.png" />
-          </a>
-        </div>
-        <div class="header-title">
-          <h3 class="site-name">${site.name}</h3>
-        </div>
-      </div>
-    </header>
+	<header class="kiosk-header">
+		<div class="kiosk-header__logo">The University of Sydney</div>
+		<h1 class="kiosk-header__site-name">Centre for Continuing Education</h1>
+		<span class="kiosk-header__url">cce.sydney.edu.au</span>
+		<span class="kiosk-header__phone">(02) 8627 6700</span>
+	</header>
 
-    <section class="container">
-      <div class="courses-today clearfix">
-        <t:if test="sessions.empty">
-          <div class="container text-center">There are no more classes scheduled today.</div>
-          <p:else>
-            <t:loop source="sessions" value="session">
-              <t:ui.kiosk.kiosksession session="session"/>
-            </t:loop>
-          </p:else>
-        </t:if>
-      </div>
-    </section>
+	<section class="kiosk-content">
+		<t:if t:test="room">
+			<div class="kiosk-content__instructions kiosk-content__instructions--hidden">
+				<h2><strong>Please proceed directly to your room.</strong> No registration required.</h2>
+				<p>Take the stairs or lift to your level.</p>
+			</div>
+			<p:else>
+				<div class="kiosk-content__instructions">
+					<h2><strong>Please proceed directly to your room.</strong> No registration required.</h2>
+					<p>Take the stairs or lift to your level.</p>
+				</div>
+			</p:else>
+		</t:if>
+		<t:if test="sessions.empty">
+			<div class="kiosk-content__no-classes">There are no more classes scheduled today.</div>
+			<p:else>
+				<div class="kiosk-content__classes">
+				<t:loop source="sessions" value="session">
+					<t:ui.kiosk.kiosksession session="session"/>
+				</t:loop>
+				</div>
+			</p:else>
+		</t:if>
 
-    <footer>
-      <div class="container">
-        <div class="footer-logo">
-          <a target="_blank" href="http://www.ish.com.au/oncourse" class="popup">
-            <img src="/s/images/logo-ish.png" width="102" height="9" alt="powered by ish onCourse" />
-          </a>
-        </div>
-      </div>
-    </footer>
-  </div>
+	</section>
+
+	<footer class="kiosk-footer">
+		<div class="kiosk-footer__cell kiosk-footer__cell--wifi">
+			<div class="kiosk-footer__label kiosk-footer__label--wifi">Free WiFi</div>
+			<ul class="kiosk-footer-list">
+				<li class="kiosk-footer-list__item"><strong>Network:</strong> UniSydney-Guest</li>
+				<li class="kiosk-footer-list__item"><strong>User:</strong> cce</li>
+				<li class="kiosk-footer-list__item"><strong>Password:</strong> 06361551</li>
+			</ul>
+		</div>
+		<div class="kiosk-footer__cell">
+			<div class="kiosk-footer__label">Join the conversation on</div>
+			<ul class="kiosk-footer-list">
+				<li class="kiosk-footer-list__item"><img alt="Facebook" src="/s/images/icon-facebook.svg"/> facebook.com/ccesydney</li>
+				<li class="kiosk-footer-list__item"><img alt="LinkedIn" src="/s/images/icon-linkedin.svg"/> linkedin.com/company/ccesydney</li>
+			</ul>
+		</div>
+	</footer>
 
   <script>
     setTimeout(function(){window.location.reload();}, 900000);

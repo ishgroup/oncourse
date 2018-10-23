@@ -1,19 +1,9 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-  <div class="col-row">
-    <span style="display: none" class="current-time"><t:output format="literal:YYYY-MM-d HH:mm:ss" value="currentDate"/></span>
-    <div class="col-full">
-      <h3 class="class-title">
-        <a href="/class/${courseClass.uniqueIdentifier}">${course.name}</a>
-      </h3>
-      <div class="class-time" data-time="${isoSessionStartTime}"></div>
-      <div class="class-subtitle">
-        <t:if test="site">
-          in <span class="class-location">${session.room.name}</span>
-        </t:if>
-        <t:if test="firstTutorName">
-          with <span class="class-tutor">${firstTutorName}</span>
-        </t:if>
-      </div>
-    </div>
+  <div class="kiosk-classes__item kiosk-class js-kiosk-class">
+    <span style="display: none" class="js-current-time"><t:output format="literal:YYYY-MM-d HH:mm:ss" value="currentDate"/></span>
+    <div class="kiosk-class__detail kiosk-class__time js-class-time" data-time="${isoSessionStartTime}">${isoSessionStartTime}</div>
+    <div class="kiosk-class__detail kiosk-class__name" href="/class/${courseClass.uniqueIdentifier}">${course.name}</div>
+    <div class="kiosk-class__detail kiosk-class__location">${session.room.name}</div>
+    <div class="kiosk-class__detail kiosk-class__tutor">${firstTutorName}</div>
   </div>
 </t:container>

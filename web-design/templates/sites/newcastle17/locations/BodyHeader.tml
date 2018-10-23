@@ -1,95 +1,94 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 <div class="masthead__inner">
-	<a class="masthead__logo site-logo" href="/">
-		<svg class="site-logo__svg" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-			<title>University of Newcastle</title>
-			<use xlink:href="#svg-logo" />
+	<a class="masthead__logo site-logo" href="https://sydney.newcastle.edu.au/">
+		<svg class="site-logo__svg" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="Logo">
+			<title>University of Newcastle Sydney</title>
+			<use xlink:href="#svg-logo"/>
 		</svg>
 	</a>
-	
 	<div class="masthead__row">
-
 		<ul class="masthead__social social-media social-media--sml u-display-none u-display-flex-at-768">
-			<li class="social-media__item  social-media__item--facebook">
-				<a class="social-media__link" target="_blank" href="https://www.facebook.com/uonsydney" rel="me">
-					<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-						<use xlink:href="#svg-facebook-sml" />
+			<li class="social-media__item social-media__item--facebook">
+				<a class="social-media__link" target="_blank" href="https://www.facebook.com/uonsydney" rel="noopener me">
+					<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="Facebook">
+						<use xlink:href="#svg-facebook-sml"/>
 					</svg>
 				</a>
 			</li>
-			<li class="social-media__item  social-media__item--twitter">
-				<a class="social-media__link" target="_blank" href="https://twitter.com/uonsydney" rel="me">
-					<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-						<use xlink:href="#svg-twitter-sml" />
+			<li class="social-media__item social-media__item--twitter">
+				<a class="social-media__link" target="_blank" href="https://twitter.com/uonsydney" rel="noopener me">
+					<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="Twitter">
+						<use xlink:href="#svg-twitter-sml"/>
+					</svg>
+				</a>
+			</li>
+			<li class="social-media__item social-media__item--instagram">
+				<a class="social-media__link" target="_blank" href="https://www.instagram.com/uonsydney/" rel="noopener me">
+					<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="Instagram">
+						<use xlink:href="#svg-instagram-sml"/>
 					</svg>
 				</a>
 			</li>
 			<li class="social-media__item social-media__item--google-plus">
-				<a class="social-media__link" target="_blank" href="https://plus.google.com/+TheUniversityofNewcastleSydney" rel="me">
-					<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-						<use xlink:href="#svg-google-plus-sml" />
-					</svg>
-				</a>
-			</li>
-			<li class="social-media__item social-media__item--instagram social-media__item--lrg">
-				<a class="social-media__link" target="_blank" href="https://www.instagram.com/uonsydney/" rel="me">
-					<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-						<use xlink:href="#svg-instagram-sml" />
+				<a class="social-media__link" target="_blank" href="https://plus.google.com/+TheUniversityofNewcastleSydney" rel="noopener me">
+					<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="Google Plus">
+						<use xlink:href="#svg-google-plus-sml"/>
 					</svg>
 				</a>
 			</li>
 			<li class="social-media__item social-media__item--youtube">
-				<a class="social-media__link" target="_blank" href="https://www.youtube.com/channel/UC84Ld00F-xpbYk41MwkCBvA" rel="me">
-					<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-						<use xlink:href="#svg-youtube-sml" />
+				<a class="social-media__link" target="_blank" href="https://www.youtube.com/channel/UC84Ld00F-xpbYk41MwkCBvA" rel="noopener me">
+					<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="YouTube">
+						<use xlink:href="#svg-youtube-sml"/>
 					</svg>
 				</a>
 			</li>
 			<li class="social-media__item social-media__item--linkedin">
-				<a class="social-media__link" target="_blank" href="https://www.linkedin.com/company/uonsydney/" rel="me">
-					<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-						<use xlink:href="#svg-linkedin-sml" />
+				<a class="social-media__link" target="_blank" href="https://www.linkedin.com/company/uonsydney/" rel="noopener me">
+					<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="LinkedIn">
+						<use xlink:href="#svg-linkedin-sml"/>
 					</svg>
 				</a>
 			</li>
-		</ul> <!-- //social-media -->
-
+			<li class="social-media__item social-media__item--pinterest">
+				<a class="social-media__link" target="_blank" href="https://www.pinterest.com.au/uonsydney/" rel="noopener me">
+					<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="Pinterest">
+						<use xlink:href="#svg-pinterest-sml"/>
+					</svg>
+				</a>
+			</li>
+		</ul>
 		<a class="masthead__link masthead-link u-display-none u-display-flex-at-768" href="tel:+61282626400">
-			<svg class="masthead-link__icon masthead-link__icon--phone" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-				<use xlink:href="#svg-phone" />
+			<svg class="masthead-link__icon masthead-link__icon--phone" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="Phone">
+				<use xlink:href="#svg-phone"/>
 			</svg>
 			02 8262 6400
 		</a>
-
-		<a class="masthead__link masthead-link u-display-none u-display-flex-at-768" target="_blank" rel="nofollow" href="https://www.skillsoncourse.com.au/portal/login">
-			<svg class="masthead-link__icon masthead-link__icon--padlock" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-				<use xlink:href="#svg-padlock" />
+		<a class="masthead__link masthead-link u-display-none u-display-flex-at-768" target="_blank" href="https://www.skillsoncourse.com.au/portal/login" rel="noopener">
+			<svg class="masthead-link__icon masthead-link__icon--padlock" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="Account Login">
+				<use xlink:href="#svg-padlock"/>
 			</svg>
 			Account Login
 		</a>
-
 		<button class="masthead__search-toggle search-trigger action-toggle js-search-trigger u-display-none-at-768">
-			<svg class="action-toggle__icon search-trigger__icon" aria-label="Search" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-				<use xlink:href="#svg-magnifying-glass" />
+			<svg class="action-toggle__icon search-trigger__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="Search">
+				<use xlink:href="#svg-magnifying-glass"/>
 			</svg>
-		</button> <!-- //masthead__search-toggle -->
-		
-		<span t:type="ui/ShortList" />
-
+		</button>
+		<span t:type="ui/ShortList"/>
 		<button class="masthead__menu-toggle menu-toggle action-toggle js-primary-menu-toggle">
 			<span class="u-visually-hidden">Menu</span>
 			<span class="menu-toggle__bar menu-toggle__bar--top"></span>
 			<span class="menu-toggle__bar menu-toggle__bar--middle"></span>
 			<span class="menu-toggle__bar menu-toggle__bar--bottom"></span>
 		</button>
-	</div> <!-- //masthead__row -->
-
+	</div>
 	<div class="masthead__row masthead__row--nav js-masthead-navigation">
-		<nav class="masthead__navigation primary-menu" role="navigation" aria-labelledby="primary-menu-title">
-			<h2 class="u-visually-hidden" id="primary-menu-title">Courses</h2>
-			<ul class="primary-menu__links" role="navigation" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
+		<nav class="masthead__navigation primary-menu" aria-labelledby="primary-menu-title">
+			<div class="u-visually-hidden" id="primary-menu-title">Courses</div>
+			<ul class="primary-menu__links">
 				<li class="primary-menu__item primary-menu__item--has-mega-menu js-primary-menu-item-parent">
-					<a class="primary-menu__link" href="/courses" itemprop="url"><span itemprop="name">Courses</span></a>
+					<a class="primary-menu__link" href="https://sydney.newcastle.edu.au/courses">Courses</a>
 					<button class="primary-menu__toggle js-primary-sub-toggle">
 						<span class="u-visually-hidden">More navigation</span>
 					</button>
@@ -99,127 +98,127 @@
 								<div class="l-grid__cell l-grid__cell--75-at-1024 mega-menu__cell mega-menu__cell--lrg">
 									<ul class="mega-menu__menu mega-menu__menu--primary">
 										<li class="mega-menu__item mega-menu__item--feature">
-											<a class="mega-menu__link" href="/courses/arts-humanities" itemprop="url">
-												<img alt="Arts &amp; Humanities Courses" class="mega-menu__icon" src="/s/img/icons/compass-bright.svg" />
-												<span class="mega-menu__label" itemprop="name">Arts &amp; Humanities Courses</span>
+											<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/courses/arts-humanities">
+												<img alt="Arts &amp; Humanities Courses" class="mega-menu__icon" src="https://d1aed2v9axl5i.cloudfront.net/s/img/icons/compass-bright.svg"/>
+												<span class="mega-menu__label">Arts &amp; Humanities Courses</span>
 											</a>
 										</li>
 										<li class="mega-menu__item mega-menu__item--feature">
-											<a class="mega-menu__link" href="/courses/business-management" itemprop="url">
-												<img alt="Business &amp; Management Courses" class="mega-menu__icon" src="/s/img/icons/graph-presentation-bright.svg" />
-												<span class="mega-menu__label" itemprop="name">Business &amp; Management Courses</span>
+											<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/courses/business">
+												<img alt="Business &amp; Management Courses" class="mega-menu__icon" src="https://d1aed2v9axl5i.cloudfront.net/s/img/icons/graph-presentation-bright.svg"/>
+												<span class="mega-menu__label">Business Courses</span>
 											</a>
 										</li>
 										<li class="mega-menu__item mega-menu__item--feature">
-											<a class="mega-menu__link" href="/courses/career-development" itemprop="url">
-												<img alt="Career Development Courses" class="mega-menu__icon" src="/s/img/icons/certificate-bright.svg" />
-												<span class="mega-menu__label" itemprop="name">Career Development Courses</span>
+											<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/courses/career-development">
+												<img alt="Career Development Courses" class="mega-menu__icon" src="https://d1aed2v9axl5i.cloudfront.net/s/img/icons/certificate-bright.svg"/>
+												<span class="mega-menu__label">Career Development Courses</span>
 											</a>
 										</li>
 										<li class="mega-menu__item mega-menu__item--feature">
-											<a class="mega-menu__link" href="/courses/education" itemprop="url">
-												<img alt="Education Courses" class="mega-menu__icon" src="/s/img/icons/book-bright.svg" />
-												<span class="mega-menu__label" itemprop="name">Education Courses</span>
+											<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/courses/education">
+												<img alt="Education Courses" class="mega-menu__icon" src="https://d1aed2v9axl5i.cloudfront.net/s/img/icons/book-bright.svg"/>
+												<span class="mega-menu__label">Education Courses</span>
 											</a>
 										</li>
 										<li class="mega-menu__item mega-menu__item--feature">
-											<a class="mega-menu__link" href="/courses/environment" itemprop="url">
-												<img alt="Environment Courses" class="mega-menu__icon" src="/s/img/icons/wind-turbine-bright.svg" />
-												<span class="mega-menu__label" itemprop="name">Environment Courses</span>
+											<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/courses/environment">
+												<img alt="Environment Courses" class="mega-menu__icon" src="https://d1aed2v9axl5i.cloudfront.net/s/img/icons/wind-turbine-bright.svg"/>
+												<span class="mega-menu__label">Environment Courses</span>
 											</a>
 										</li>
 										<li class="mega-menu__item mega-menu__item--feature">
-											<a class="mega-menu__link" href="/courses/gardening-horticulture" itemprop="url">
-												<img alt="Gardening &amp; Horticulture Courses" class="mega-menu__icon" src="/s/img/icons/trees.svg" />
-												<span class="mega-menu__label" itemprop="name">Gardening &amp; Horticulture Courses</span>
+											<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/courses/gardening-horticulture">
+												<img alt="Gardening &amp; Horticulture Courses" class="mega-menu__icon" src="https://d1aed2v9axl5i.cloudfront.net/s/img/icons/trees-bright.svg"/>
+												<span class="mega-menu__label">Gardening &amp; Horticulture Courses</span>
 											</a>
 										</li>
 										<li class="mega-menu__item mega-menu__item--feature">
-											<a class="mega-menu__link" href="/courses/health-science" itemprop="url">
-												<img alt="Health Science Courses" class="mega-menu__icon" src="/s/img/icons/microscope-bright.svg" />
-												<span class="mega-menu__label" itemprop="name">Health Science Courses</span>
+											<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/courses/health-science">
+												<img alt="Health Science Courses" class="mega-menu__icon" src="https://d1aed2v9axl5i.cloudfront.net/s/img/icons/microscope-bright.svg"/>
+												<span class="mega-menu__label">Health Science Courses</span>
 											</a>
 										</li>
 										<li class="mega-menu__item mega-menu__item--feature">
-											<a class="mega-menu__link" href="/courses/information-technology" itemprop="url">
-												<img alt="Information Technology Courses" class="mega-menu__icon" src="/s/img/icons/laptop-bright.svg" />
-												<span class="mega-menu__label" itemprop="name">Information Technology Courses</span>
+											<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/courses/human-resources">
+												<img alt="Human Resources Courses" class="mega-menu__icon" src="https://d1aed2v9axl5i.cloudfront.net/s/img/icons/people-bright.svg"/>
+												<span class="mega-menu__label">Human Resources Courses</span>
 											</a>
 										</li>
 										<li class="mega-menu__item mega-menu__item--feature">
-											<a class="mega-menu__link" href="/courses/language-culture" itemprop="url">
-												<img alt="Language &amp; Culture Courses" class="mega-menu__icon" src="/s/img/icons/speech-bubble-language-bright.svg" />
-												<span class="mega-menu__label" itemprop="name">Language &amp; Culture Courses</span>
+											<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/courses/information-technology">
+												<img alt="Information Technology Courses" class="mega-menu__icon" src="https://d1aed2v9axl5i.cloudfront.net/s/img/icons/laptop-bright.svg"/>
+												<span class="mega-menu__label">Information Technology Courses</span>
 											</a>
 										</li>
 										<li class="mega-menu__item mega-menu__item--feature">
-											<a class="mega-menu__link" href="/courses/logistics" itemprop="url">
-												<img alt="Logistics Courses" class="mega-menu__icon" src="/s/img/icons/plane-bright.svg" />
-												<span class="mega-menu__label" itemprop="name">Logistics Courses</span>
+											<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/courses/logistics">
+												<img alt="Logistics Courses" class="mega-menu__icon" src="https://d1aed2v9axl5i.cloudfront.net/s/img/icons/plane-bright.svg"/>
+												<span class="mega-menu__label">Logistics Courses</span>
 											</a>
 										</li>
 										<li class="mega-menu__item mega-menu__item--feature">
-											<a class="mega-menu__link" href="/courses/marketing" itemprop="url">
-												<img alt="Marketing Courses" class="mega-menu__icon" src="/s/img/icons/dartboard-bright.svg" />
-												<span class="mega-menu__label" itemprop="name">Marketing Courses</span>
+											<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/courses/marketing">
+												<img alt="Marketing Courses" class="mega-menu__icon" src="https://d1aed2v9axl5i.cloudfront.net/s/img/icons/dartboard-bright.svg"/>
+												<span class="mega-menu__label">Marketing Courses</span>
 											</a>
 										</li>
 										<li class="mega-menu__item mega-menu__item--feature">
-											<a class="mega-menu__link" href="/courses/project-management" itemprop="url">
-												<img alt="Project Management Courses" class="mega-menu__icon" src="/s/img/icons/person-presenting-bright.svg" />
-												<span class="mega-menu__label" itemprop="name">Project Management Courses</span>
+											<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/courses/project-management">
+												<img alt="Project Management Courses" class="mega-menu__icon" src="https://d1aed2v9axl5i.cloudfront.net/s/img/icons/person-presenting-bright.svg"/>
+												<span class="mega-menu__label">Project Management Courses</span>
 											</a>
 										</li>
 										<li class="mega-menu__item mega-menu__item--feature">
-											<a class="mega-menu__link" href="/courses/psychology" itemprop="url">
-												<img alt="Psychology Courses" class="mega-menu__icon" src="/s/img/icons/person-sitting-bright.svg" />
-												<span class="mega-menu__label" itemprop="name">Psychology Courses</span>
+											<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/courses/psychology">
+												<img alt="Psychology Courses" class="mega-menu__icon" src="https://d1aed2v9axl5i.cloudfront.net/s/img/icons/person-sitting-bright.svg"/>
+												<span class="mega-menu__label">Psychology Courses</span>
 											</a>
 										</li>
 									</ul>
 								</div>
 								<div class="l-grid__cell l-grid__cell--25-at-1024 mega-menu__cell--sml">
 									<div class="mega-menu__supplement">
-										<h2 class="mega-menu__title">Other course views</h2>
+										<div class="mega-menu__title">Other course views</div>
 										<ul class="mega-menu__menu mega-menu__menu--secondary">
-											<li class="mega-menu__item"><a class="mega-menu__link" href="/dates">
-												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-													<use xlink:href="#svg-angle" />
-												</svg>
-												Courses by Date
-											</a></li>
-											<li class="mega-menu__item"><a class="mega-menu__link" href="/subjects">
-												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-													<use xlink:href="#svg-angle" />
-												</svg>
-												Courses by Subject
-											</a></li>
-											<li class="mega-menu__item"><a class="mega-menu__link" href="/courses/featured/new">
-												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-													<use xlink:href="#svg-angle" />
+											<li class="mega-menu__item"><a class="mega-menu__link" href="https://sydney.newcastle.edu.au/courses/featured/new">
+												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="Arrow">
+													<use xlink:href="#svg-angle"/>
 												</svg>
 												New Courses
 											</a></li>
-											<li class="mega-menu__item"><a class="mega-menu__link" href="/courses/featured/popular">
-												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-													<use xlink:href="#svg-angle" />
+											<li class="mega-menu__item"><a class="mega-menu__link" href="https://sydney.newcastle.edu.au/courses/featured/popular">
+												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="Arrow">
+													<use xlink:href="#svg-angle"/>
 												</svg>
 												Popular Courses
 											</a></li>
-										</ul>
-										<h2 class="mega-menu__title">More course information</h2>
-										<ul class="mega-menu__menu mega-menu__menu--secondary">
-											<li class="mega-menu__item"><a class="mega-menu__link" href="/locations">
-												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-													<use xlink:href="#svg-angle" />
+											<li class="mega-menu__item"><a class="mega-menu__link" href="https://sydney.newcastle.edu.au/dates">
+												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="Arrow">
+													<use xlink:href="#svg-angle"/>
 												</svg>
-												Course Locations
+												Upcoming Courses
 											</a></li>
-											<li class="mega-menu__item"><a class="mega-menu__link" href="/instructors">
-												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-													<use xlink:href="#svg-angle" />
+											<li class="mega-menu__item"><a class="mega-menu__link" href="https://sydney.newcastle.edu.au/subjects">
+												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="Arrow">
+													<use xlink:href="#svg-angle"/>
 												</svg>
-												Instructors
+												Courses by Subject
+											</a></li>
+										</ul>
+										<div class="mega-menu__title">More course information</div>
+										<ul class="mega-menu__menu mega-menu__menu--secondary">
+											<li class="mega-menu__item"><a class="mega-menu__link" href="https://sydney.newcastle.edu.au/locations">
+												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="Arrow">
+													<use xlink:href="#svg-angle"/>
+												</svg>
+												Locations
+											</a></li>
+											<li class="mega-menu__item"><a class="mega-menu__link" href="https://sydney.newcastle.edu.au/directory/instructors">
+												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="Arrow">
+													<use xlink:href="#svg-angle"/>
+												</svg>
+												Instructor Directory
 											</a></li>
 										</ul>
 									</div>
@@ -236,73 +235,170 @@
 					<div class="primary-menu__dropdown mega-menu js-mega-menu">
 						<div class="l-container">
 							<div class="l-grid">
-								<div class="l-grid__cell l-grid__cell--75-at-1024 mega-menu__cell mega-menu__cell--lrg">
-									<ul class="mega-menu__menu mega-menu__menu--primary">
-										<li class="mega-menu__item">
-											<a class="mega-menu__link" href="/employer-sponsorship" itemprop="url">
-												<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-													<use xlink:href="#svg-angle" />
-												</svg>
-
-												<span class="mega-menu__label" itemprop="name">Employer Sponsored Education</span>
-											</a>
-										</li>
-										<li class="mega-menu__item">
-											<a class="mega-menu__link" href="/concessions" itemprop="url">
-												<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-													<use xlink:href="#svg-angle" />
-												</svg>
-
-												<span class="mega-menu__label" itemprop="name">Fee Concessions</span>
-											</a>
-										</li>
-										<li class="mega-menu__item">
-											<a class="mega-menu__link" href="/legal" itemprop="url">
-												<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-													<use xlink:href="#svg-angle" />
-												</svg>
-
-												<span class="mega-menu__label" itemprop="name">Terms and Conditions</span>
-											</a>
-										</li>
-									</ul>
+								<div class="l-grid__cell l-grid__cell--75-at-1024 mega-menu__cell mega-menu__cell--x-lrg">
+									<div class="mega-menu__row">
+										<div class="l-grid l-grid--xx-lrg-gutter-at-900">
+											<div class="l-grid__cell l-grid__cell--33-at-768">
+												<a class="mega-menu__feature-heading" href="https://sydney.newcastle.edu.au/courses">
+													<img alt="Courses" class="mega-menu__icon" src="https://d1aed2v9axl5i.cloudfront.net/s/img/icons/course.svg"/>
+													<span class="mega-menu__label">Courses</span>
+												</a>
+												<ul class="mega-menu__menu mega-menu__menu--primary mega-menu__menu--multi-column">
+													<li class="mega-menu__item">
+														<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/courses/featured/new">
+															<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+																<use xlink:href="#svg-angle" />
+															</svg>
+															<span class="mega-menu__label">New Courses</span>
+														</a>
+													</li>
+													<li class="mega-menu__item">
+														<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/courses/featured/popular">
+															<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+																<use xlink:href="#svg-angle" />
+															</svg>
+															<span class="mega-menu__label">Popular Courses</span>
+														</a>
+													</li>
+													<li class="mega-menu__item">
+														<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/dates">
+															<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+																<use xlink:href="#svg-angle" />
+															</svg>
+															<span class="mega-menu__label">Upcoming Courses</span>
+														</a>
+													</li>
+													<li class="mega-menu__item">
+														<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/subjects">
+															<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+																<use xlink:href="#svg-angle" />
+															</svg>
+															<span class="mega-menu__label">Courses by Subject</span>
+														</a>
+													</li>
+												</ul>
+											</div>
+											<div class="l-grid__cell l-grid__cell--33-at-768">
+												<div class="mega-menu__feature-heading">
+													<img alt="Discounts" class="mega-menu__icon" src="https://d1aed2v9axl5i.cloudfront.net/s/img/icons/discount.svg"/>
+													<span class="mega-menu__label">Discounts</span>
+												</div>
+												<ul class="mega-menu__menu mega-menu__menu--primary mega-menu__menu--multi-column">
+													<li class="mega-menu__item">
+														<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/alumni">
+															<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+																<use xlink:href="#svg-angle" />
+															</svg>
+															<span class="mega-menu__label">Alumni</span>
+														</a>
+													</li>
+													<li class="mega-menu__item">
+														<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/concession">
+															<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+																<use xlink:href="#svg-angle" />
+															</svg>
+															<span class="mega-menu__label">Concession Cardholders</span>
+														</a>
+													</li>
+													<li class="mega-menu__item">
+														<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/seniors">
+															<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+																<use xlink:href="#svg-angle" />
+															</svg>
+															<span class="mega-menu__label">Seniors</span>
+														</a>
+													</li>
+													<li class="mega-menu__item">
+														<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/staff">
+															<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+																<use xlink:href="#svg-angle" />
+															</svg>
+															<span class="mega-menu__label">Staff</span>
+														</a>
+													</li>
+													<li class="mega-menu__item">
+														<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/students">
+															<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+																<use xlink:href="#svg-angle" />
+															</svg>
+															<span class="mega-menu__label">Students</span>
+														</a>
+													</li>
+												</ul>
+											</div>
+											<div class="l-grid__cell l-grid__cell--33-at-768">
+												<div class="mega-menu__feature-heading">
+													<img alt="Other" class="mega-menu__icon" src="https://d1aed2v9axl5i.cloudfront.net/s/img/icons/info.svg"/>
+													<span class="mega-menu__label">Other</span>
+												</div>
+												<ul class="mega-menu__menu mega-menu__menu--primary mega-menu__menu--multi-column">
+													<li class="mega-menu__item">
+														<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/employer-sponsorship">
+															<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+																<use xlink:href="#svg-angle" />
+															</svg>
+															<span class="mega-menu__label">Employer Sponsorship</span>
+														</a>
+													</li>
+													<li class="mega-menu__item">
+														<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/product/GIFT">
+															<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+																<use xlink:href="#svg-angle" />
+															</svg>
+															<span class="mega-menu__label">Gift Voucher</span>
+														</a>
+													</li>
+													<li class="mega-menu__item">
+														<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/suggest-a-course">
+															<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+																<use xlink:href="#svg-angle" />
+															</svg>
+															<span class="mega-menu__label">Suggest a Course</span>
+														</a>
+													</li>
+													<li class="mega-menu__item">
+														<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/legal">
+															<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+																<use xlink:href="#svg-angle" />
+															</svg>
+															<span class="mega-menu__label">Terms and Conditions</span>
+														</a>
+													</li>
+												</ul>
+											</div>
+										</div>
+									</div>
 								</div>
 								<div class="l-grid__cell l-grid__cell--25-at-1024 mega-menu__cell--sml">
 									<div class="mega-menu__supplement">
-										<h2 class="mega-menu__title">Have a question? Just ask.</h2>
+										<div class="mega-menu__title">Have a question? Just ask.</div>
 										<ul class="mega-menu__menu mega-menu__menu--secondary">
-											<li class="mega-menu__item"><a class="mega-menu__link" href="#" onclick="zE.activate();">
-												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-													<use xlink:href="#svg-angle" />
-												</svg>
-												Send us a message
-											</a></li>
-											<li class="mega-menu__item"><a class="mega-menu__link" href="/contact">
-												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-													<use xlink:href="#svg-angle" />
+											<li class="mega-menu__item"><a class="mega-menu__link" href="https://sydney.newcastle.edu.au/contact">
+												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="Arrow">
+													<use xlink:href="#svg-angle"/>
 												</svg>
 												Contact us
 											</a></li>
 										</ul>
-										<h2 class="mega-menu__title">Study a degree</h2>
+										<div class="mega-menu__title">Study a degree</div>
 										<ul class="mega-menu__menu mega-menu__menu--secondary">
-											<li class="mega-menu__item"><a class="mega-menu__link" target="_blank" rel="nofollow" href="https://www.newcastle.edu.au/study/undergraduate">
-												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-													<use xlink:href="#svg-angle" />
+											<li class="mega-menu__item"><a class="mega-menu__link" target="_blank" href="https://www.newcastle.edu.au/study/undergraduate" rel="noopener">
+												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="Arrow">
+													<use xlink:href="#svg-angle"/>
 												</svg>
 												Undergraduate Study
 											</a></li>
-											<li class="mega-menu__item"><a class="mega-menu__link" target="_blank" rel="nofollow" href="https://www.gradschool.edu.au/">
-												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-													<use xlink:href="#svg-angle" />
+											<li class="mega-menu__item"><a class="mega-menu__link" target="_blank" href="https://www.newcastle.edu.au/study/postgraduate" rel="noopener">
+												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="Arrow">
+													<use xlink:href="#svg-angle"/>
 												</svg>
 												Postgraduate Study
 											</a></li>
-											<li class="mega-menu__item"><a class="mega-menu__link" target="_blank" rel="nofollow" href="https://www.newcastle.edu.au/research-and-innovation/graduate-research/phd-and-research-degrees">
-												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-													<use xlink:href="#svg-angle" />
+											<li class="mega-menu__item"><a class="mega-menu__link" target="_blank" href="https://www.newcastle.edu.au/study/research" rel="noopener">
+												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="Arrow">
+													<use xlink:href="#svg-angle"/>
 												</svg>
-												PhD &amp; Research Masters
+												PhD and Research Masters
 											</a></li>
 										</ul>
 									</div>
@@ -312,66 +408,248 @@
 					</div>
 				</li>
 				<li class="primary-menu__item primary-menu__item--has-mega-menu js-primary-menu-item-parent">
-					<a class="primary-menu__link" href="#">Employers</a>
+					<a class="primary-menu__link" href="#">Business</a>
 					<button class="primary-menu__toggle js-primary-sub-toggle">
 						<span class="u-visually-hidden">More navigation</span>
 					</button>
 					<div class="primary-menu__dropdown mega-menu js-mega-menu">
 						<div class="l-container">
 							<div class="l-grid">
-								<div class="l-grid__cell l-grid__cell--75-at-1024 mega-menu__cell mega-menu__cell--lrg">
-									<ul class="mega-menu__menu mega-menu__menu--primary">
-										<li class="mega-menu__item">
-											<a class="mega-menu__link" href="/customised-training" itemprop="url">
-												<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-													<use xlink:href="#svg-angle" />
-												</svg>
-
-												<span class="mega-menu__label" itemprop="name">Customised Training</span>
-											</a>
-										</li>
-										<li class="mega-menu__item">
-											<a class="mega-menu__link" href="/invoice" itemprop="url">
-												<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-													<use xlink:href="#svg-angle" />
-												</svg>
-
-												<span class="mega-menu__label" itemprop="name">Invoice Authorisation</span>
-											</a>
-										</li>
-										<li class="mega-menu__item">
-											<a class="mega-menu__link" href="/payment" itemprop="url">
-												<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-													<use xlink:href="#svg-angle" />
-												</svg>
-
-												<span class="mega-menu__label" itemprop="name">Make a Payment</span>
-											</a>
-										</li>
-										<li class="mega-menu__item">
-											<a class="mega-menu__link" href="/legal" itemprop="url">
-												<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-													<use xlink:href="#svg-angle" />
-												</svg>
-
-												<span class="mega-menu__label" itemprop="name">Terms and Conditions</span>
-											</a>
-										</li>
-									</ul>
+								<div class="l-grid__cell l-grid__cell--75-at-1024 mega-menu__cell mega-menu__cell--x-lrg">
+									<div class="mega-menu__row">
+										<div class="l-grid l-grid--xx-lrg-gutter-at-900">
+											<div class="l-grid__cell l-grid__cell--33-at-768">
+												<div class="mega-menu__feature-heading">
+													<img alt="Training" class="mega-menu__icon" src="https://d1aed2v9axl5i.cloudfront.net/s/img/icons/course.svg"/>
+													<span class="mega-menu__label">Services</span>
+												</div>
+												<ul class="mega-menu__menu mega-menu__menu--primary mega-menu__menu--multi-column">
+													<li class="mega-menu__item">
+														<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/enterprise/training">
+															<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+																<use xlink:href="#svg-angle" />
+															</svg>
+															<span class="mega-menu__label">Training</span>
+														</a>
+													</li>
+													<li class="mega-menu__item">
+														<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/customised-solutions">
+															<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+																<use xlink:href="#svg-angle" />
+															</svg>
+															<span class="mega-menu__label">Solutions</span>
+														</a>
+													</li>
+												</ul>
+											</div>
+											<div class="l-grid__cell l-grid__cell--33-at-768">
+												<div class="mega-menu__feature-heading">
+													<img alt="Payment" class="mega-menu__icon" src="https://d1aed2v9axl5i.cloudfront.net/s/img/icons/payment.svg"/>
+													<span class="mega-menu__label">Payment</span>
+												</div>
+												<ul class="mega-menu__menu mega-menu__menu--primary mega-menu__menu--multi-column">
+													<li class="mega-menu__item">
+														<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/invoice">
+															<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+																<use xlink:href="#svg-angle" />
+															</svg>
+															<span class="mega-menu__label">Invoice Authorisation</span>
+														</a>
+													</li>
+													<li class="mega-menu__item">
+														<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/corporatepass">
+															<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+																<use xlink:href="#svg-angle" />
+															</svg>
+															<span class="mega-menu__label">CorporatePass</span>
+														</a>
+													</li>
+													<li class="mega-menu__item">
+														<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/payment">
+															<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+																<use xlink:href="#svg-angle" />
+															</svg>
+															<span class="mega-menu__label">Make a Payment</span>
+														</a>
+													</li>
+													<li class="mega-menu__item">
+														<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/remit">
+															<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+																<use xlink:href="#svg-angle" />
+															</svg>
+															<span class="mega-menu__label">Remittance Advice</span>
+														</a>
+													</li>
+												</ul>
+											</div>
+											<div class="l-grid__cell l-grid__cell--33-at-768">
+												<div class="mega-menu__feature-heading">
+													<img alt="Other" class="mega-menu__icon" src="https://d1aed2v9axl5i.cloudfront.net/s/img/icons/info.svg"/>
+													<span class="mega-menu__label">Other</span>
+												</div>
+												<ul class="mega-menu__menu mega-menu__menu--primary mega-menu__menu--multi-column">
+													<li class="mega-menu__item">
+														<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/nfp">
+															<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+																<use xlink:href="#svg-angle" />
+															</svg>
+															<span class="mega-menu__label">Not-for-profits</span>
+														</a>
+													</li>
+													<li class="mega-menu__item">
+														<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/legal">
+															<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+																<use xlink:href="#svg-angle" />
+															</svg>
+															<span class="mega-menu__label">Terms and Conditions</span>
+														</a>
+													</li>
+												</ul>
+											</div>
+										</div>
+									</div>
 								</div>
 								<div class="l-grid__cell l-grid__cell--25-at-1024 mega-menu__cell--sml">
 									<div class="mega-menu__supplement">
-										<h2 class="mega-menu__title">Have a question? Just ask.</h2>
+										<div class="mega-menu__title">Have a question? Just ask.</div>
 										<ul class="mega-menu__menu mega-menu__menu--secondary">
-											<li class="mega-menu__item"><a class="mega-menu__link" href="#" onclick="zE.activate();">
-												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-													<use xlink:href="#svg-angle" />
+											<li class="mega-menu__item"><a class="mega-menu__link" target="_blank" href="https://sydney.newcastle.edu.au/contact">
+												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="Arrow">
+													<use xlink:href="#svg-angle"/>
 												</svg>
-												Send us a message
+												Contact us
 											</a></li>
-											<li class="mega-menu__item"><a class="mega-menu__link" target="_blank" href="/contact">
-												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-													<use xlink:href="#svg-angle" />
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</li>
+				<li class="primary-menu__item primary-menu__item--has-mega-menu js-primary-menu-item-parent">
+					<a class="primary-menu__link" href="#">Instructors</a>
+					<button class="primary-menu__toggle js-primary-sub-toggle">
+						<span class="u-visually-hidden">More navigation</span>
+					</button>
+					<div class="primary-menu__dropdown mega-menu js-mega-menu">
+						<div class="l-container">
+							<div class="l-grid">
+								<div class="l-grid__cell l-grid__cell--75-at-1024 mega-menu__cell mega-menu__cell--x-lrg">
+									<div class="mega-menu__row">
+										<div class="l-grid l-grid--xx-lrg-gutter-at-900">
+											<div class="l-grid__cell l-grid__cell--50-at-768">
+												<div class="mega-menu__feature-heading">
+													<img alt="Training" class="mega-menu__icon" src="https://d1aed2v9axl5i.cloudfront.net/s/img/icons/course.svg"/>
+													<span class="mega-menu__label">Teaching</span>
+												</div>
+												<ul class="mega-menu__menu mega-menu__menu--primary mega-menu__menu--multi-column">
+													<li class="mega-menu__item">
+														<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/instructors/course-proposal">
+															<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+																<use xlink:href="#svg-angle" />
+															</svg>
+															<span class="mega-menu__label">Course Proposal</span>
+														</a>
+													</li>
+												</ul>
+											</div>
+											<div class="l-grid__cell l-grid__cell--50-at-768">
+												<div class="mega-menu__feature-heading">
+													<img alt="Other" class="mega-menu__icon" src="https://d1aed2v9axl5i.cloudfront.net/s/img/icons/info.svg"/>
+													<span class="mega-menu__label">Other</span>
+												</div>
+												<ul class="mega-menu__menu mega-menu__menu--primary mega-menu__menu--multi-column">
+													<li class="mega-menu__item">
+														<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/directory/instructors">
+															<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+																<use xlink:href="#svg-angle" />
+															</svg>
+															<span class="mega-menu__label">Instructor Directory</span>
+														</a>
+													</li>
+													<li class="mega-menu__item">
+														<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/articles">
+															<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+																<use xlink:href="#svg-angle" />
+															</svg>
+															<span class="mega-menu__label">Articles</span>
+														</a>
+													</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="l-grid__cell l-grid__cell--25-at-1024 mega-menu__cell--sml">
+									<div class="mega-menu__supplement">
+										<div class="mega-menu__title">Have a question? Just ask.</div>
+										<ul class="mega-menu__menu mega-menu__menu--secondary">
+											<li class="mega-menu__item"><a class="mega-menu__link" target="_blank" href="https://sydney.newcastle.edu.au/contact">
+												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="Arrow">
+													<use xlink:href="#svg-angle"/>
+												</svg>
+												Contact us
+											</a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</li>
+				<li class="primary-menu__item primary-menu__item--has-mega-menu js-primary-menu-item-parent">
+					<a class="primary-menu__link" href="#">Campus</a>
+					<button class="primary-menu__toggle js-primary-sub-toggle">
+						<span class="u-visually-hidden">More navigation</span>
+					</button>
+					<div class="primary-menu__dropdown mega-menu js-mega-menu">
+						<div class="l-container">
+							<div class="l-grid">
+								<div class="l-grid__cell l-grid__cell--75-at-1024 mega-menu__cell mega-menu__cell--x-lrg">
+									<div class="mega-menu__row">
+										<div class="l-grid l-grid--xx-lrg-gutter-at-900">
+											<div class="l-grid__cell l-grid__cell--50-at-768">
+												<div class="mega-menu__feature-heading">
+													<img alt="Training" class="mega-menu__icon" src="https://d1aed2v9axl5i.cloudfront.net/s/img/icons/business.svg"/>
+													<span class="mega-menu__label">Facilities</span>
+												</div>
+												<ul class="mega-menu__menu mega-menu__menu--primary mega-menu__menu--multi-column">
+													<li class="mega-menu__item">
+														<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/campus/facilities/roombooking">
+															<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+																<use xlink:href="#svg-angle" />
+															</svg>
+															<span class="mega-menu__label">Room Booking</span>
+														</a>
+													</li>
+												</ul>
+											</div>
+											<div class="l-grid__cell l-grid__cell--50-at-768">
+												<div class="mega-menu__feature-heading">
+													<img alt="Other" class="mega-menu__icon" src="https://d1aed2v9axl5i.cloudfront.net/s/img/icons/disability.svg"/>
+													<span class="mega-menu__label">Accessibility</span>
+												</div>
+												<ul class="mega-menu__menu mega-menu__menu--primary mega-menu__menu--multi-column">
+													<li class="mega-menu__item">
+														<a class="mega-menu__link" href="https://sydney.newcastle.edu.au/campus/accessibility/mobility">
+															<svg class="mega-menu__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
+																<use xlink:href="#svg-angle" />
+															</svg>
+															<span class="mega-menu__label">Mobility Impairment</span>
+														</a>
+													</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="l-grid__cell l-grid__cell--25-at-1024 mega-menu__cell--sml">
+									<div class="mega-menu__supplement">
+										<div class="mega-menu__title">Have a question? Just ask.</div>
+										<ul class="mega-menu__menu mega-menu__menu--secondary">
+											<li class="mega-menu__item"><a class="mega-menu__link" target="_blank" href="https://sydney.newcastle.edu.au/contact">
+												<svg class="mega-menu__arrow" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="Arrow">
+													<use xlink:href="#svg-angle"/>
 												</svg>
 												Contact us
 											</a></li>
@@ -383,81 +661,83 @@
 					</div>
 				</li>
 				<li class="primary-menu__item">
-					<a class="primary-menu__link" href="/educators" itemprop="url"><span itemprop="name">Educators</span></a>
-				</li>
+					<a class="primary-menu__link" href="https://sydney.newcastle.edu.au/about">About</a>
+				</li>	
 				<li class="primary-menu__item">
-					<a class="primary-menu__link" href="/events" itemprop="url"><span itemprop="name">Events</span></a>
-				</li>
-				<li class="primary-menu__item">
-					<a class="primary-menu__link" href="/articles" itemprop="url"><span itemprop="name">Articles</span></a>
-				</li>
-				<li class="primary-menu__item">
-					<a class="primary-menu__link" href="/contact" itemprop="url"><span itemprop="name">Contact</span></a>
+					<a class="primary-menu__link" href="https://sydney.newcastle.edu.au/contact">Contact</a>
 				</li>					
-			</ul> <!-- // -->
+			</ul>
 		</nav>
-
 		<a class="masthead__link masthead-link u-display-none-at-768" href="tel:+61282626400">
 			<svg class="masthead-link__icon masthead-link__icon--phone" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-				<use xlink:href="#svg-phone" />
+				<use xlink:href="#svg-phone"/>
 			</svg>
 			02 8262 6400
 		</a>
-
-		<a class="masthead__link masthead-link u-display-none-at-768" target="_blank" rel="nofollow" href="https://www.skillsoncourse.com.au/portal/login">
+		<a class="masthead__link masthead-link u-display-none-at-768" target="_blank" href="https://www.skillsoncourse.com.au/portal/login" rel="noopener">
 			<svg class="masthead-link__icon masthead-link__icon--padlock" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-				<use xlink:href="#svg-padlock" />
+				<use xlink:href="#svg-padlock"/>
 			</svg>
 			Account Login
 		</a>
-
 		<ul class="masthead__social social-media social-media--sml u-display-flex u-display-none-at-768">
-			<li class="social-media__item  social-media__item--facebook">
-				<a class="social-media__link" href="#">
-					<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-						<use xlink:href="#svg-facebook-sml" />
+			<li class="social-media__item social-media__item--facebook">
+				<a class="social-media__link" target="_blank" href="https://www.facebook.com/uonsydney" rel="noopener me">
+					<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="Facebook">
+						<use xlink:href="#svg-facebook-sml"/>
 					</svg>
 				</a>
 			</li>
-			<li class="social-media__item  social-media__item--twitter">
-				<a class="social-media__link" href="#">
-					<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-						<use xlink:href="#svg-twitter-sml" />
+			<li class="social-media__item social-media__item--twitter">
+				<a class="social-media__link" target="_blank" href="https://twitter.com/uonsydney" rel="noopener me">
+					<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="Twitter">
+						<use xlink:href="#svg-twitter-sml"/>
+					</svg>
+				</a>
+			</li>
+			<li class="social-media__item social-media__item--instagram">
+				<a class="social-media__link" target="_blank" href="https://www.instagram.com/uonsydney/" rel="noopener me">
+					<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="Instagram">
+						<use xlink:href="#svg-instagram-sml"/>
 					</svg>
 				</a>
 			</li>
 			<li class="social-media__item social-media__item--google-plus">
-				<a class="social-media__link" href="#">
-					<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-						<use xlink:href="#svg-google-plus-sml" />
-					</svg>
-				</a>
-			</li>
-			<li class="social-media__item social-media__item--instagram social-media__item--lrg">
-				<a class="social-media__link" href="#">
-					<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-						<use xlink:href="#svg-instagram-sml" />
+				<a class="social-media__link" target="_blank" href="https://plus.google.com/+TheUniversityofNewcastleSydney" rel="noopener me">
+					<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="Google Plus">
+						<use xlink:href="#svg-google-plus-sml"/>
 					</svg>
 				</a>
 			</li>
 			<li class="social-media__item social-media__item--youtube">
-				<a class="social-media__link" href="#">
-					<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-						<use xlink:href="#svg-youtube-sml" />
+				<a class="social-media__link" target="_blank" href="https://www.youtube.com/channel/UC84Ld00F-xpbYk41MwkCBvA" rel="noopener me">
+					<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="YouTube">
+						<use xlink:href="#svg-youtube-sml"/>
 					</svg>
 				</a>
 			</li>
-		</ul> <!-- //social-media -->
-
+			<li class="social-media__item social-media__item--linkedin">
+				<a class="social-media__link" target="_blank" href="https://www.linkedin.com/company/uonsydney/" rel="noopener me">
+					<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="LinkedIn">
+						<use xlink:href="#svg-linkedin-sml"/>
+					</svg>
+				</a>
+			</li>
+			<li class="social-media__item social-media__item--pinterest">
+				<a class="social-media__link" target="_blank" href="https://www.pinterest.com.au/uonsydney/" rel="noopener me">
+					<svg class="social-media__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="Pinterest">
+						<use xlink:href="#svg-pinterest-sml"/>
+					</svg>
+				</a>
+			</li>
+		</ul>
 		<button class="masthead__search-toggle search-trigger action-toggle js-search-trigger u-display-none u-display-block-at-768" data-element="search">
 			<span class="action-toggle__label search-trigger__label">Search Courses</span>
-			<svg class="action-toggle__icon search-trigger__icon" aria-label="Search" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-				<use xlink:href="#svg-magnifying-glass" />
+			<svg class="action-toggle__icon search-trigger__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="Search">
+				<use xlink:href="#svg-magnifying-glass"/>
 			</svg>
-		</button> <!-- //masthead__search-toggle -->
-
-	</div> <!-- //masthead__row -->
-
-	<span t:type="ui/CourseSearchForm" />
+		</button>
+	</div>
+	<span t:type="ui/CourseSearchForm"/>
 </div>
 </t:container>

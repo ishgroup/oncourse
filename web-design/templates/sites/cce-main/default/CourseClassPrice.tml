@@ -19,6 +19,7 @@
             <span itemprop="url" content="https://${request.serverName}/course/${courseClass.course.code}" />
             <span itemprop="category" content="primary" />
             <span itemprop="availability" content="InStock" />
+            <span itemprop="price" content="${formatMoney(fee, '0.00')}" />
             <t:if test="courseClass.startDate">
               <span content="${formatDate(courseClass.startDate,'yyyy-MM-dd')}" itemprop="availabilityStarts" />
               <p:else>

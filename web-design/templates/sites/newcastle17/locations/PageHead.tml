@@ -1,39 +1,38 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-	<meta charset="utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta charset="utf-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-	<script type="text/javascript">
-		var ciVersion = '${ciVersion}';
-	</script>
+	<script>var ciVersion='${ciVersion}';</script>
 
-	<t:any element="meta" name="generator" content="prop:metaGeneratorContent" />
+	<link rel="preconnect" href="https://d1aed2v9axl5i.cloudfront.net"/><link rel="preconnect" href="https://d1htc7cjah2p34.cloudfront.net"/><link rel="preconnect" href="https://s3-ap-southeast-2.amazonaws.com"/><link rel="preconnect" href="https://www.googletagmanager.com"/><link rel="preconnect" href="https://www.google-analytics.com"/><link rel="preconnect" href="https://syndication.twitter.com"/><link rel="preconnect" href="https://pbs.twimg.com"/><link rel="preconnect" href="https://connect.facebook.net"/><link rel="preconnect" href="https://www.facebook.com"/><link rel="preload" href="/s/stylesheets/css/site.css?v=${ciVersion}" as="style"/><link rel="preload" href="/s/js/all.js?v=${ciVersion}" as="script"/><link rel="preload" href="/s/oncourse-releases/checkout/stable/dynamic.js?v=${ciVersion}" as="script"/>
 
-   	<link rel="canonical" href="https://${request.serverName}/locations" />
-   	<link rel="alternate" href="https://${request.serverName}/locations" hreflang="x-default" />
-	<meta property="og:url" content="https://${request.serverName}/locations" />
+	<t:any element="meta" name="generator" content="prop:metaGeneratorContent"/>
 
-	<meta property="og:type" content="website" />
-	<meta property="og:locale" content="en_AU" />
-	<meta property="og:image" content="https://${request.serverName}/s/img/course/_default.jpg" />
-	<meta property="og:image:alt" content="University of Newcastle Sydney - Courses &amp; Training in Sydney" />
-	<meta property="og:image:width" content="1480" />
-	<meta property="og:image:height" content="700" />
-	<meta name="twitter:card" content="summary" />
+	<link rel="canonical" href="https://sydney.newcastle.edu.au/locations"/>
+	<link rel="alternate" href="https://sydney.newcastle.edu.au/locations" hreflang="en-AU"/>
+	<link rel="alternate" href="https://sydney.newcastle.edu.au/locations" hreflang="x-default"/>
+	<meta property="og:url" content="https://sydney.newcastle.edu.au/locations"/>
 
-	<meta name="robots" content="noodp,noydir" />
-
+	<meta property="og:type" content="website"/>
+	<meta property="og:locale" content="en_AU"/>
+	<meta property="og:image" content="https://d1aed2v9axl5i.cloudfront.net/s/img/course/_default.jpg"/>
+	<meta property="og:image:alt" content="University of Newcastle Sydney - Courses &amp; Training in Sydney"/>
+	<meta property="og:image:width" content="1480"/>
+	<meta property="og:image:height" content="700"/>
+	<meta name="twitter:card" content="summary_large_image"/>
+	
 	<div t:type="ui/courseClassMetaInfo"/>
 
-	<link href="/s/img/favicon.ico" rel="icon" type="image/vnd.microsoft.icon" />
-	<link href="/s/img/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+	<link href="/s/img/favicon.ico" rel="icon" type="image/vnd.microsoft.icon"/>
+	<link href="/s/img/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+	<link href="https://sydney.newcastle.edu.au/s/rss.xml" rel="alternate" type="application/rss+xml"/>
 
 	<span t:type="ui/title" pageName="pageName" webNode="webNode"/>
 
-	<meta name="author" content="" />
 	<!--[if lt IE 9]><script src="/s/js/oncourse/vendor/html5shiv-printshiv.min.js"></script><![endif]-->
-	<link href="/s/stylesheets/css/site.css?v=${ciVersion}" media="screen, print" rel="stylesheet" />
+	<link href="/s/stylesheets/css/site.css?v=${ciVersion}" media="screen, print" rel="stylesheet"/>
 
-	<script type="text/javascript" src="/s/js/all.js?v=${ciVersion}"></script>
+	<script src="/s/js/all.js?v=${ciVersion}"></script>
 
 </t:container>

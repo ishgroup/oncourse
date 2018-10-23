@@ -1,5 +1,5 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-  <div class="clearfix course-item courseItem${tagClasses}" itemscope="itemscope" itemtype="http://schema.org/Product">
+  <div class="clearfix course-item js-course-item courseItem${tagClasses}">
     <t:if t:test="isList" negate="true">
       <t:if t:test="addThisEnabled">
         <div class="clearfix">
@@ -41,6 +41,27 @@
       <a class="link-back-top" href="#top">Back to Top</a>
     </p:else>
     </t:if>
+    <div class="class-summary-block js-class-summary-block" style="display: none;">
+      <div class="class-summary-block__cell">
+        <div class="class-summary-block__item class-summary-block__item--sessions">
+          <span class="u-visually-hidden">Sessions:</span>
+          <span class="js-class-summary-sessions"></span>
+        </div>
+        <div class="class-summary-block__item class-summary-block__item--location">
+          <span class="u-visually-hidden">Location:</span>
+          <span class="js-class-summary-locations"></span>
+        </div>
+        <div class="class-summary-block__item class-summary-block__item--tutors">
+          <span class="u-visually-hidden">Tutors:</span>
+          <span class="js-class-summary-tutors"></span>
+        </div>
+      </div>
+      <div class="class-summary-block__cell class-summary-block__cell--price">
+        <span class="u-visually-hidden">Price:</span>
+        <span class="class-summary-block__price js-class-summary-price">
+										</span>
+      </div>
+    </div>
     <div class="course-classes" id="courseClasses">
       <a name="classes" />
       <t:loop source="courseItemModel.availableClasses" value="courseClass">
@@ -80,12 +101,6 @@
           <h2 class="course-related-title"><strong>Related content.</strong> Further your learning.</h2>
           <div t:type="ui/CourseRelations" course="courseItemModel.course"></div>
         </div>
-      <p:else>
-        <div class="course-related course-related--list">
-          <h2 class="course-list-related-title">Related Content</h2>
-          <div t:type="ui/CourseRelations" course="courseItemModel.course"></div>
-        </div>
-      </p:else>
       </t:if>
     </t:if>
     <t:if t:test="isList" negate="true">

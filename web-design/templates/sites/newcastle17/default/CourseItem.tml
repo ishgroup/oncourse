@@ -1,16 +1,21 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 		<t:if t:test="isList" negate="true">
-			<div class="course-details ${tagClasses} js-course-tags" itemscope="itemscope" itemtype="http://schema.org/Course http://schema.org/Product">
-				<h1>${courseItemModel.course.name}</h1>
-				<meta itemprop="name" content="${courseItemModel.course.name}" /> <!-- jQuery bug fix -->
-				<meta itemprop="provider" content="The University of Newcastle" />
-				<img alt="${courseItemModel.course.name}" class="faux-banner-image js-banner-image" src="/s/img/course/${courseItemModel.course.code}.jpg" />
-				<span itemprop="description">
-					<t:outputraw value="${courseDetail}" />
-				</span>
-
-				<h2 class="section-title" id="courseClasses">Available course dates</h2>
-
+			<div class="course-details ${tagClasses} js-course-tags" itemscope="itemscope" itemtype="http://schema.org/Product">
+				<meta itemprop="name" content="${courseItemModel.course.name}"/>
+				<meta itemprop="brand" content="The University of Newcastle"/>
+				<meta itemprop="sku" content="${courseItemModel.course.code}"/>
+				<meta property="twitter:image" content="https://d1aed2v9axl5i.cloudfront.net/s/img/course-2x1/${courseItemModel.course.code}.jpg"/>
+				<meta property="twitter:image:alt" content="${courseItemModel.course.name}"/>
+				<div id="course-images-${courseItemModel.course.code}">
+					<img itemprop="image" alt="${courseItemModel.course.name}" class="faux-banner-image js-banner-image" src="https://d1aed2v9axl5i.cloudfront.net/s/img/course/${courseItemModel.course.code}.jpg"/>
+					<link itemprop="image" href="https://d1aed2v9axl5i.cloudfront.net/s/img/course-16x9/${courseItemModel.course.code}.jpg"/>
+					<link itemprop="image" href="https://d1aed2v9axl5i.cloudfront.net/s/img/course-4x3/${courseItemModel.course.code}.jpg"/>
+					<link itemprop="image" href="https://d1aed2v9axl5i.cloudfront.net/s/img/course-1x1/${courseItemModel.course.code}.jpg"/>
+				</div>
+				<div itemprop="description">
+					<t:outputraw value="${courseDetail}"/>
+				</div>
+				<h3 class="section-title" id="courseClasses">Available dates for ${courseItemModel.course.name}</h3>
 				<div class="course-detail__classes">
 					<t:loop source="courseItemModel.availableClasses" value="courseClass">
 						<span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="linkToLocationsMap" isList="isList" allowByAplication="allowByAplication" feeOverride="feeOverride"/>
@@ -26,9 +31,6 @@
 						</div>
 					</t:if>
 					<t:if test="courseItemModel.fullClasses.empty" negate="true">
-						<!--<p class="full-classes-control clearfix">
-							<a href="javascript:return false;" >Show full courses</a>
-						</p>-->
 						<div class="full-classes">
 							<t:loop source="courseItemModel.fullClasses" value="courseClass">
 								<span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="linkToLocationsMap" isList="isList" allowByAplication="allowByAplication" feeOverride="feeOverride"/>
@@ -38,8 +40,8 @@
 				</div>
 				<t:if t:test="courseItemModel.course.allowWaitingList">
 					<div class="waiting-list-alert u-print-display-none">
-						<svg class="waiting-list-alert__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-							<use xlink:href="#svg-circle-w-question" />
+						<svg class="waiting-list-alert__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="Question mark">
+							<use xlink:href="#svg-circle-w-question"/>
 						</svg>
 						<span class="waiting-list-alert__text">
 							<t:if t:test="courseItemModel.enrollableClasses.empty" negate="true">
@@ -49,52 +51,50 @@
 								</t:if>
 								<p:else> This course has no dates available. </p:else>
 							</t:if>
-							Be the first to know when we schedule more. <span data-cid="join-button" data-prop-id="${courseItemModel.course.id}"><span>Get notified</span></span>.
+							Be the first to know when we schedule more. <span data-cid="join-button" data-prop-id="${courseItemModel.course.id}"><span>Join the waiting list</span></span>.
 						</span>
 					</div>
 				</t:if>
 			</div>
-
 			<t:if t:test="courseItemModel.haveRelatedCourses">
 				<div class="related-block js-related-courses u-print-display-none" id="relatedCourses">
-					<h2 class="related-block__title section-title">Related Courses</h2>
+					<h3 class="related-block__title section-title">Related Courses</h3>
 					<div t:type="ui/CourseRelations" course="courseItemModel.course"></div>
 				</div>
 			</t:if>
-
 		<p:else>
-			<div class="course-item ${tagClasses}" itemscope="itemscope" itemtype="http://schema.org/Course http://schema.org/Product">
+			<div class="course-item ${tagClasses}" itemscope="itemscope" itemtype="http://schema.org/Product">
 				<div class="course-item__title-bar title-bar">
 					<h3 class="title-bar__heading" itemprop="name">
-						<a href="/course/${courseItemModel.course.code}">${courseItemModel.course.name}</a>
+						<a href="https://sydney.newcastle.edu.au/course/${courseItemModel.course.code}">${courseItemModel.course.name}</a>
 					</h3>
-					<meta itemprop="provider" content="The University of Newcastle" />
+					<meta itemprop="brand" content="The University of Newcastle"/>
+					<meta itemprop="sku" content="${courseItemModel.course.code}"/>
 					<a class="course-item__top-link title-bar__top-link o-top-link js-top-link u-display-none u-display-flex-at-700 u-print-display-none" href="#content">
 						Back to top
-						<svg class="o-top-link__icon bounce" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-							<use xlink:href="#svg-angle" />
+						<svg class="o-top-link__icon bounce" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="Arrow">
+							<use xlink:href="#svg-angle"/>
 						</svg>
 					</a>
 				</div>
-
 				<div class="course-item__description description-item">
-
-					<div class="description-item__img u-print-display-none">
-							<a href="/course/${courseItemModel.course.code}"><img itemprop="image" src="/s/img/course-thumbnail/${courseItemModel.course.code}.jpg" alt="${courseItemModel.course.name}"/></a>
+					<div id="course-images-${courseItemModel.course.code}" class="description-item__img u-print-display-none">
+							<a href="https://sydney.newcastle.edu.au/course/${courseItemModel.course.code}"><img itemprop="image" src="https://d1aed2v9axl5i.cloudfront.net/s/img/course-thumbnail/${courseItemModel.course.code}.jpg" alt="${courseItemModel.course.name}"/></a>
+							<link itemprop="image" href="https://d1aed2v9axl5i.cloudfront.net/s/img/course-16x9/${courseItemModel.course.code}.jpg"/>
+							<link itemprop="image" href="https://d1aed2v9axl5i.cloudfront.net/s/img/course-4x3/${courseItemModel.course.code}.jpg"/>
+							<link itemprop="image" href="https://d1aed2v9axl5i.cloudfront.net/s/img/course-1x1/${courseItemModel.course.code}.jpg"/>
 					</div>
-
 					<div class="description-item__text" itemprop="description">
 						<t:outputraw value="${courseDetail}"/>
-						<a class="o-text-link" href="/course/${courseItemModel.course.code}">
-							View course information
-							<svg class="o-text-link__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-								<use xlink:href="#svg-angle" />
+						<a class="o-text-link" href="https://sydney.newcastle.edu.au/course/${courseItemModel.course.code}">
+							View more information for ${courseItemModel.course.name}
+							<svg class="o-text-link__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="Arrow">
+								<use xlink:href="#svg-angle"/>
 							</svg>
 						</a>
 					</div>
 				</div>
-
-				<div class="course-classes" id="courseClasses">
+				<div class="course-classes">
 					<t:loop source="courseItemModel.availableClasses" value="courseClass">
 						<span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="linkToLocationsMap" isList="isList" allowByAplication="allowByAplication" feeOverride="feeOverride"/>
 					</t:loop>
@@ -109,9 +109,6 @@
 						</div>
 					</t:if>
 					<t:if test="courseItemModel.fullClasses.empty" negate="true">
-						<!--<p class="full-classes-control clearfix">
-							<a href="javascript:return false;" >Show full courses</a>
-						</p>-->
 						<div class="full-classes">
 							<t:loop source="courseItemModel.fullClasses" value="courseClass">
 								<span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="linkToLocationsMap" isList="isList" allowByAplication="allowByAplication" feeOverride="feeOverride"/>
@@ -120,8 +117,8 @@
 					</t:if>
 					<t:if t:test="courseItemModel.course.allowWaitingList">
 						<div class="course-item__waiting waiting-list-alert u-print-display-none">
-							<svg class="waiting-list-alert__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-								<use xlink:href="#svg-circle-w-question" />
+							<svg class="waiting-list-alert__icon" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="Question mark">
+								<use xlink:href="#svg-circle-w-question"/>
 							</svg>
 							<span class="waiting-list-alert__text">
 								<t:if t:test="courseItemModel.enrollableClasses.empty" negate="true">
@@ -131,32 +128,27 @@
 									</t:if>
 									<p:else> This course has no dates available. </p:else>
 								</t:if>
-								Be the first to know when we schedule more. <span data-cid="join-button" data-prop-id="${courseItemModel.course.id}"><span>Get notified</span></span>.
+								Be the first to know when we schedule more. <span data-cid="join-button" data-prop-id="${courseItemModel.course.id}"><span>Join the waiting list</span></span>.
 							</span>
 						</div>
 					</t:if>
-
-					<!-- <t:if t:test="courseItemModel.haveRelatedCourses">
+					<t:if t:test="courseItemModel.haveRelatedCourses">
 						<div class="course-item__related related-items">
-							<h4 class="related-items__title">Related Courses</h4>
+							<h5 class="related-items__title">Related Courses</h5>
 							<div t:type="ui/CourseRelations" course="courseItemModel.course"></div>
 						</div>
-					</t:if> -->
+					</t:if>
 				</div>
-
 				<a class="course-item__top-link o-top-link js-top-link u-display-flex u-display-none-at-700 u-print-display-none" href="#content">
 					Back to top
-					<svg class="o-top-link__icon bounce" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink">
-						<use xlink:href="#svg-angle" />
+					<svg class="o-top-link__icon bounce" role="img" focusable="false" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="Arrow">
+						<use xlink:href="#svg-angle"/>
 					</svg>
 				</a>
 			</div>
-
 		</p:else>
 		</t:if>
-
 		<t:if t:test="${courseItemModel.showModules}">
 			<div t:type="ui/CourseModules" modules="courseItemModel.course.modules" qualification="courseItemModel.course.qualification" course="courseItemModel.course"></div>
 		</t:if>
-
 </t:container>

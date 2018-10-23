@@ -2,7 +2,7 @@
   <t:loop source="courses" value="course">
     <span t:type="ui/courseitem" linkToLocationsMap="true" isList="true" courseItemModel="courseItemModel"></span>
   </t:loop>
-  <t:if t:test="hasMoreItems">
+  <t:if t:test="hasMoreItems"> 
     <div id="showMore">
       <div id="sitesParameter" style="display:none;">${sitesParameter}</div>
       <a id="showMoreCourses" href="${request.path}?${searchParamsStr}">

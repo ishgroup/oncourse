@@ -14,7 +14,10 @@
         </t:if>
         ${courseItemModel.course.name}
       </h1>
-      <div class="course-item-image align-left">
+       <div class="hero-image-banner">
+            <div t:type="ui/image" name="${courseItemModel.course.code}_hero" class="course-img" width="275" height="183"></div>
+      </div>  
+       <div class="course-item-image align-left">
         <div t:type="ui/image" name="${courseItemModel.course.code}_1" class="course-img" width="200" height="183" alt="${courseItemModel.course.name}"></div>
       </div>
     <p:else>

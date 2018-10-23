@@ -365,21 +365,6 @@ function deleteCookie( name, path, domain ) {
 			return false;
 		});
 
-		// Show map in search results
-
-        $j(document).on('click', '.toggle_locations', function (e) {
-            $j('#sitesMap').toggleClass('show');
-            e.preventDefault();
-            if ($j('#gmapCanvas').length && !mapLoaded) {
-                var intervalId = setInterval(function () {
-                    if (mapLoaded) {
-                        clearInterval(intervalId);
-                        mapLoad('gmapCanvas', gMapSites, gMapOptions);
-                    }
-                }, 1000);
-            }
-        });
-
 		$j(document.body).on('click', '.location-course', function() {
 			var rel = $j(this).attr('rel');
 			if(rel != '') {

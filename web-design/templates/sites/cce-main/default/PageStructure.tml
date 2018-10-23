@@ -14,7 +14,7 @@
       <span t:type="ui/googletagmanager" eventName="eventName"/>
       <div class="page-overlay element-overlay"> </div>
       <div t:type="ui/BodyStructure" webNodeType="webNodeType">
-        <t:body/>
+        <t:body/> 
       </div>
     </body>
     <p:else>
