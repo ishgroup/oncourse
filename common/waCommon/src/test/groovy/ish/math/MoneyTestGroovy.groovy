@@ -8,36 +8,6 @@ import static org.junit.Assert.assertNotEquals
 import static org.junit.Assert.assertTrue
 
 class MoneyTestGroovy {
-
-    private static final BigDecimal DEFAULT_MONEY_VALUE = 100.0
-
-    @Test
-    void testMoneyLocalization() {
-        Money money = new Money(DEFAULT_MONEY_VALUE)
-        money.setLocale(Country.EUROPE.locale())
-        // 100,00 €
-        assertEquals("100,00 " + Country.EUROPE.currencyShortSymbol(), money.toString())
-
-        money.setLocale(Country.NORWAY.locale())
-        // kr 100,00
-        assertEquals(Country.NORWAY.currencyShortSymbol() + " 100,00", money.toString())
-
-        money.setLocale(Country.ENGLAND.locale())
-        // £100.00
-        assertEquals(Country.ENGLAND.currencyShortSymbol() + "100.00" , money.toString())
-
-        money.setLocale(Country.SOUTH_AFRICA.locale())
-        // R 100.00
-        assertEquals(Country.SOUTH_AFRICA.currencyShortSymbol() + " 100.00" , money.toString())
-
-        money.setLocale(Country.AUSTRALIA.locale())
-        // $100.00
-        assertEquals(Country.AUSTRALIA.currencyShortSymbol() + "100.00" , money.toString())
-
-        money.setLocale(Country.US.locale())
-        // $100.00
-        assertEquals(Country.US.currencyShortSymbol() + "100.00" , money.toString())
-    }
     
     @Test
     void testMultiplyReturnType() {
