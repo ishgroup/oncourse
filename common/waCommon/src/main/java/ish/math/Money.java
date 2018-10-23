@@ -12,8 +12,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.NumberFormat;
-import java.util.Locale;
 
 /**
  * Money is a class which handles all the common features needed for handling currency.
@@ -36,7 +34,6 @@ public class Money extends BigDecimal {
 	public static final Money ONE = new Money(BigDecimal.ONE);
 
 	private BigDecimal decimalValue;
-	private Locale locale = Locale.getDefault();
 
 	/**
 	 * Construct a new money instance. If null is passed, then a Money.ZERO amount will be created.
@@ -46,7 +43,6 @@ public class Money extends BigDecimal {
 	public Money(BigDecimal val) {
 		super(val == null ? BigDecimal.ZERO.toString() : val.toString());
 		setValue(val == null ? BigDecimal.ZERO : val);
-		CurrencyLocalizer.subscribe(this);
 	}
 
 	/**
@@ -58,7 +54,6 @@ public class Money extends BigDecimal {
 	public Money(String val) {
 		super(StringUtils.isBlank(val) ? BigDecimal.ZERO.toString() : val);
 		setValue(StringUtils.isBlank(val) ? BigDecimal.ZERO : new BigDecimal(val));
-		CurrencyLocalizer.subscribe(this);
 	}
 
 	/**
@@ -346,7 +341,7 @@ public class Money extends BigDecimal {
 
 	@Override
 	public String toString() {
-		return NumberFormat.getCurrencyInstance(locale).format(decimalValue);
+		return CurrencyFormat.formatMoney(this);
 	}
 	
 	/**
@@ -410,13 +405,5 @@ public class Money extends BigDecimal {
 		}
 		
 		return decimalValue.equals(val);
-	}
-
-	public void setLocale(Locale locale) {
-		this.locale = locale;
-	}
-
-	public Locale getLocale() {
-		return locale;
 	}
 }
