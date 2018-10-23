@@ -4564,7 +4564,7 @@
 	<obj-relationship name="college" source="Survey" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="customFields" source="Survey" target="SurveyCustomField" deleteRule="Deny" db-relationship-path="customFields"/>
 	<obj-relationship name="enrolment" source="Survey" target="Enrolment" deleteRule="Nullify" db-relationship-path="enrolment"/>
-	<obj-relationship name="fieldConfiguration" source="Survey" target="FieldConfiguration" deleteRule="Nullify" db-relationship-path="surveyFieldConfiguration"/>
+	<obj-relationship name="fieldConfiguration" source="Survey" target="FieldConfiguration" deleteRule="Nullify" db-relationship-path="fieldConfiguration"/>
 	<obj-relationship name="relatedObject" source="SurveyCustomField" target="Survey" deleteRule="Nullify" db-relationship-path="relatedSurvey"/>
 	<obj-relationship name="college" source="SystemUser" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="defaultAdministrationCentre" source="SystemUser" target="Site" deleteRule="Nullify" db-relationship-path="defaultAdministrationCentre"/>
