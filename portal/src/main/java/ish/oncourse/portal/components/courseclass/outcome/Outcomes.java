@@ -4,7 +4,11 @@
 package ish.oncourse.portal.components.courseclass.outcome;
 
 
-import ish.oncourse.model.*;
+import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.CourseModule;
+import ish.oncourse.model.Enrolment;
+import ish.oncourse.model.Module;
+import ish.oncourse.model.Outcome;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.ObjectContext;
