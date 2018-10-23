@@ -5,6 +5,9 @@ import ish.oncourse.model.auto._FieldConfigurationScheme;
 import ish.oncourse.utils.FieldConfigurationSchemeUtil;
 import ish.oncourse.utils.QueueableObjectUtils;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class FieldConfigurationScheme extends _FieldConfigurationScheme implements Queueable {
 
     private static final long serialVersionUID = 1L;
@@ -31,6 +34,13 @@ public class FieldConfigurationScheme extends _FieldConfigurationScheme implemen
 	@Override
 	public FieldConfiguration getWaitingListFieldConfiguration() {
 		return FieldConfigurationSchemeUtil.getConfiguration(this, FieldConfigurationType.WAITING_LIST, super.getWaitingListFieldConfiguration());
+	}
+
+	public List<FieldConfiguration> getSurveyFieldConfigurations() {
+		return this.getFieldConfigurationLinks().stream()
+				.filter(fcl -> FieldConfigurationType.SURVEY.equals(fcl.getFieldConfiguration().getType()))
+				.map(FieldConfigurationLink::getFieldConfiguration)
+				.collect(Collectors.toList());
 	}
 
 	public FieldConfiguration getPayerFieldConfiguration() {

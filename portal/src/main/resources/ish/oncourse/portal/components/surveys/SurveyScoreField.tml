@@ -1,0 +1,20 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+    <li>
+        <t:if test="${isNetPromoterScore()}">
+            <label>How likely are you to recommend us to a friend?</label>
+            <span class="rate rate-inline netPromoterScore-rate"/>
+        </t:if>
+        <t:if test="${isCourseScore()}">
+            <label class="rating-class-details">Course</label>
+            <span class="rate rate-inline course-rate"/>
+        </t:if>
+        <t:if test="${isVenueScore()}">
+            <label class="rating-class-details">Venue</label>
+            <span class="rate rate-inline venue-rate"/>
+        </t:if>
+        <t:if test="${isTutorScore()}">
+            <label class="rating-class-details">Tutor</label>
+            <span class="rate rate-inline tutor-rate"/>
+        </t:if>
+    </li>
+</t:container>

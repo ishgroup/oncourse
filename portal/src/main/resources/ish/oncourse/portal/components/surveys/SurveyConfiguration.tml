@@ -1,0 +1,34 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+                <t:loop source="fieldsWithoutHeading" value="field">
+                    <t:if test="${isScoreField()}">
+                        <t:surveys.surveyScoreField field="field"/>
+                        <p:else>
+                            <t:if test="${isMultilineField()}">
+                                <t:surveys.surveyMultilineField field="field"/>
+                                <p:else>
+                                    <t:if test="${isTextLineField()}">
+                                        <t:surveys.surveyTextLineField field="field"/>
+                                    </t:if>
+                                </p:else>
+                            </t:if>
+                        </p:else>
+                    </t:if>
+                </t:loop>
+                <t:loop source="headings" value="heading">
+                    <t:loop source="heading.fields" value="field">
+                        <t:if test="${isScoreField()}">
+                            <t:surveys.surveyScoreField field="field"/>
+                            <p:else>
+                                <t:if test="${isMultilineField()}">
+                                    <t:surveys.surveyMultilineField field="field"/>
+                                    <p:else>
+                                        <t:if test="${isTextLineField()}">
+                                            <t:surveys.surveyTextLineField field="field"/>
+                                        </t:if>
+                                    </p:else>
+                            </t:if>
+                            </p:else>
+                        </t:if>
+                    </t:loop>
+                </t:loop>
+</t:container>

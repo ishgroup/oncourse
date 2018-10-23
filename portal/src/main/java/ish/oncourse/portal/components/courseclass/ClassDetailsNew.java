@@ -3,10 +3,7 @@ package ish.oncourse.portal.components.courseclass;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
-import ish.oncourse.model.Attendance;
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Session;
+import ish.oncourse.model.*;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.portal.services.attendance.AttendanceTransportUtils;
@@ -57,10 +54,17 @@ public class ClassDetailsNew {
 	@Parameter
 	private boolean activeTab = true;
 
+	@Property
+	private List<FieldConfiguration> surveyConfigurations;
+
+	@Property
+	private FieldConfiguration configuration;
+
 	@Inject
 	private ICayenneService cayenneService;
 
 	@Inject
+	@Property
 	private IPortalService portalService;
 
 	@Property
@@ -92,6 +96,7 @@ public class ClassDetailsNew {
 		if (!isTutor) {
 			enrolment = portalService.getEnrolmentBy(portalService.getContact().getStudent(), courseClass);
 		}
+		surveyConfigurations = courseClass.getCourse().getFieldConfigurationScheme().getSurveyFieldConfigurations();
 	}
 
 	@OnEvent(value = "getAttendences")

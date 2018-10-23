@@ -14,7 +14,16 @@
                 <input type="hidden" name="score"/>
             </span>
 			</h4>
-			<t:surveys.surveys courseClass="courseClass" isTutor="isTutor"/>
+			<div id="class-reviews" class="class-reviews" data="${courseClass.id}">
+                <span class="arrow-top"></span>
+                <t:loop source="surveyConfigurations" value="configuration">
+                    <ul class="promoter-score-details">
+                        <t:surveys.surveyConfiguration configuration="configuration"/>
+                    </ul>
+                </t:loop>
+                <div class="alert alert-info">Your comment and name (${portalService.contact.givenName}<t:if test="${portalService.contact.suburb}"> from ${portalService.contact.suburb}</t:if>) may be used for quality improvement or marketing.</div>
+                <button type="submit" class="btn btn-primary rate-submit">Submit</button>
+            </div>
 		</t:if>
 
 		<t:if test="isTutor">
