@@ -18,7 +18,7 @@ public enum Country {
 	EUROPE(Locale.FRANCE, "\u20AC", "EUR"),
 	ENGLAND(Locale.UK, "\u00A3", "GBP"),
 	US(Locale.US, "$", "USD"),
-	HONG_KONG(new Locale("en", "HK"), "$", "HKD"),
+	HONG_KONG(Locale.US, "$", "HKD"),
 	SWITZERLAND(new Locale("de", "CH"), "SFr.", "CHF"),
 	NORWAY(new Locale("no", "NO"), "kr", "NOK"),
 	SOUTH_AFRICA(new Locale("en", "ZA"), "R", "ZAR");
