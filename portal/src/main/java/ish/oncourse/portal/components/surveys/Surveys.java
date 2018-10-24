@@ -1,6 +1,7 @@
 package ish.oncourse.portal.components.surveys;
 
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.FieldConfiguration;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.Survey;
 import ish.oncourse.portal.services.IPortalService;
@@ -14,11 +15,13 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.util.TextStreamResponse;
 
 import java.io.IOException;
+import java.util.List;
 
 public class Surveys {
 
@@ -40,12 +43,23 @@ public class Surveys {
     @Property
     private boolean isTutor;
 
+    @Property
+    public List<FieldConfiguration> surveyConfigurations;
+
+    @Property
+    public FieldConfiguration configuration;
+
+    @SetupRender
+    public void beforeRender() {
+        surveyConfigurations = courseClass.getCourse().getFieldConfigurationScheme().getSurveyFieldConfigurations();
+    }
+
     @OnEvent(value = "getSurvey")
     public TextStreamResponse getSurvey(Long courseClassId) throws IOException {
         if (!request.isXHR())
             return null;
 
-        CourseClass courseClass = portalService.getCourseClassBy(courseClassId);
+        courseClass = portalService.getCourseClassBy(courseClassId);
 
         Survey survey;
         //we should check at fist that the current contact is a student and try to load survey for student
