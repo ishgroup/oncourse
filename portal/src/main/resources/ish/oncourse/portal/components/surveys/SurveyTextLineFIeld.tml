@@ -1,8 +1,0 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-    <li>
-        <!-- t:if test="" -->
-            <label>${name}</label>
-            <input type="text" name="${property}" id="${property}"/>
-        <!-- /t:if -->
-    </li>
-</t:container>
