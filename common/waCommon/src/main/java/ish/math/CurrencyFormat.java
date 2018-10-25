@@ -5,6 +5,10 @@ import java.util.Locale;
 
 public class CurrencyFormat {
 
+    private static final String SPACE_SYMBOL = "\\s";
+    private static final String EMPTY_SYMBOL = "";
+    private static final String MINUS_SYMBOL = "-";
+
     private static Locale currentLocale = Locale.getDefault();
 
     private CurrencyFormat() {}
@@ -22,6 +26,13 @@ public class CurrencyFormat {
     }
 
     public static String formatMoney(Money money) {
-        return NumberFormat.getCurrencyInstance(currentLocale).format(money.toBigDecimal());
+        String value = NumberFormat.getCurrencyInstance(currentLocale)
+                .format(money.toBigDecimal())
+                .replaceAll(SPACE_SYMBOL, EMPTY_SYMBOL)
+                .replaceAll(MINUS_SYMBOL, EMPTY_SYMBOL);
+        if (money.isNegative()) {
+            value = MINUS_SYMBOL + value;
+        }
+        return value;
     }
 }
