@@ -12,7 +12,7 @@ dependencies {
 	compile "org.codehaus.groovy:groovy-all:$groovyVersion"
     compile 'javax.mail:mail:1.4.7'
 
-	compile 'org.springframework:spring-context:3.1.0.RELEASE'
+	compile 'org.springframework:spring-context:4.2.4.RELEASE'
 }
 
 jar {
