@@ -5,9 +5,9 @@ import java.util.Locale;
 
 public class CurrencyFormat {
 
-    private static final String SPACE_SYMBOL = "\\s";
     private static final String EMPTY_SYMBOL = "";
     private static final String MINUS_SYMBOL = "-";
+    private static final String CLEAR_UP_REGEX = "[-\\(\\)\\s]";
 
     private static Locale currentLocale = Locale.getDefault();
 
@@ -28,10 +28,15 @@ public class CurrencyFormat {
     public static String formatMoney(Money money) {
         String value = NumberFormat.getCurrencyInstance(currentLocale)
                 .format(money.toBigDecimal())
-                .replaceAll(SPACE_SYMBOL, EMPTY_SYMBOL)
-                .replaceAll(MINUS_SYMBOL, EMPTY_SYMBOL);
+                .replaceAll(CLEAR_UP_REGEX, EMPTY_SYMBOL);
         if (money.isNegative()) {
-            value = MINUS_SYMBOL + value;
+            // Use brackets for dollars and "-" for others
+            // Australia has other equals, because Australian locale behaviour is other
+            if ((currentLocale.equals(Locale.US)) || (currentLocale.equals(Country.AUSTRALIA.locale()))) {
+                value = "(" + value + ")";
+            } else {
+                value = MINUS_SYMBOL + value;
+            }
         }
         return value;
     }
