@@ -148,7 +148,7 @@ public class PropertyGetSetFactory {
 			for (MethodMetadata metadata : definition.getMetadata().getAnnotatedMethods(Property.class.getName())) {
 				Map<String, Object> attributes = metadata.getAnnotationAttributes(Property.class.getName());
 				if (attributes.get(VALUE_ATTRIBUTE).equals(field) && attributes.get(TYPE_ATTRIBUTE).equals(type)) {
-					return aClass.getDeclaredMethod(metadata.getMethodName(), convertTypes(attributes.get(PARAM_TYPES)));
+					return aClass.getDeclaredMethod(metadata.getMethodName(), attributes.get(PARAM_TYPES)!=null?(Class[]) attributes.get(PARAM_TYPES):new Class[0]);
 				}
 			}
 			logger.error(String.format("Can not find corresponded class/method, type: %s, context type: %s, property name: %s, package: %s.",
