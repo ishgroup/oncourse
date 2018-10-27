@@ -30,13 +30,7 @@ public class CurrencyFormat {
                 .format(money.toBigDecimal())
                 .replaceAll(CLEAR_UP_REGEX, EMPTY_SYMBOL);
         if (money.isNegative()) {
-            // Use brackets for dollars and "-" for others
-            // Australia has other equals, because Australian locale behaviour is other
-            if ((currentLocale.equals(Locale.US)) || (currentLocale.equals(Country.AUSTRALIA.locale()))) {
-                value = "(" + value + ")";
-            } else {
-                value = MINUS_SYMBOL + value;
-            }
+            value = MINUS_SYMBOL + value;
         }
         return value;
     }
