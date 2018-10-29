@@ -23,13 +23,11 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.EventConstants;
 import org.apache.tapestry5.StreamResponse;
-import org.apache.tapestry5.annotations.OnEvent;
-import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.util.TextStreamResponse;
+import org.apache.tapestry5.corelib.components.Form;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -138,13 +136,9 @@ public class ClassDetailsNew {
 		return courseClass.getEndDate() == null || courseClass.getEndDate().before(new Date());
 	}
 
-	@OnEvent(component = "surveysForm", value = EventConstants.SUCCESS)
-	public void saveSurveys() {
+	@OnEvent(value = "surveysform")
+	public void onSuccess() {
 		System.out.println("SAVE");
-	}
-
-	public SurveyEncoder getSurveyEncoder() {
-		return SurveyEncoder.valueOf();
 	}
 }
 

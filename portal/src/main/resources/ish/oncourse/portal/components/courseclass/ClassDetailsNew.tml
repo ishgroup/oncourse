@@ -9,23 +9,23 @@
 		</div>
 
 		<t:if test="showSurveys()">
-			<h4>Feedback
-            <span class="rating rate-inline rate-class">
-                <input type="hidden" name="score"/>
-            </span>
-			</h4>
-			<div id="class-reviews" class="class-reviews" data="${courseClass.id}">
-			    <t:form t:id="surveysForm" method="post" clientValidation="literal:NONE">
-                    <span class="arrow-top"></span>
                     <t:loop source="sortedSurveys" value="survey">
+                    <h4>Feedback
+                                <span class="rating rate-inline rate-class">
+                                    <input type="hidden" name="score"/>
+                                </span>
+                    			</h4>
+                    			<div id="class-reviews" class="class-reviews" data="${courseClass.id}">
+                    			    <form id="surveysForm" method="post" clientValidation="literal:NONE">
+                                        <span class="arrow-top"></span>
 						<ul class="promoter-score-details">
                             <t:surveys.surveyComponent survey="survey"/>
 						</ul>
+						<div class="alert alert-info">Your comment and name (${portalService.contact.givenName}<t:if test="${portalService.contact.suburb}"> from ${portalService.contact.suburb}</t:if>) may be used for quality improvement or marketing.</div>
+                                            <button type="submit" class="btn btn-primary rate-submit">Submit</button>
+                                        </form>
+                                    </div>
                     </t:loop>
-                    <div class="alert alert-info">Your comment and name (${portalService.contact.givenName}<t:if test="${portalService.contact.suburb}"> from ${portalService.contact.suburb}</t:if>) may be used for quality improvement or marketing.</div>
-                    <button type="submit" class="btn btn-primary rate-submit">Submit</button>
-                </t:form>
-            </div>
 		</t:if>
 
 		<t:if test="isTutor">

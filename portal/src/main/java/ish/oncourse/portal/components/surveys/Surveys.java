@@ -96,9 +96,4 @@ public class Surveys {
         }
         return survey;
     }
-
-    public SurveyEncoder getSurveyEncoder() {
-        return SurveyEncoder.valueOf();
-    }
-
 }

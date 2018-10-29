@@ -1,6 +1,9 @@
 package ish.oncourse.portal.services;
 
 import ish.oncourse.configuration.ISHHealthCheckServlet;
+import ish.oncourse.model.Field;
+import ish.oncourse.model.FieldHeading;
+import ish.oncourse.model.Queueable;
 import ish.oncourse.model.Survey;
 import ish.oncourse.portal.access.*;
 import ish.oncourse.portal.access.validate.AccessLinksValidatorFactory;
@@ -10,7 +13,7 @@ import ish.oncourse.portal.services.discussion.DiscussionServiceImpl;
 import ish.oncourse.portal.services.discussion.IDiscussionService;
 import ish.oncourse.portal.services.pageload.PortalPageRenderer;
 import ish.oncourse.portal.services.site.PortalSiteService;
-import ish.oncourse.portal.util.SurveyValueEncoderFactory;
+import ish.oncourse.portal.util.*;
 import ish.oncourse.services.BinderFunctions;
 import ish.oncourse.services.DisableJavaScriptStack;
 import ish.oncourse.services.html.NoCacheMetaProvider;
@@ -83,9 +86,10 @@ public class AppModule {
 		configuration.add(SymbolConstants.HMAC_PASSPHRASE, HMAC_PASSPHRASE);
 	}
 
-	public static void contributeValueEncoderSource(MappedConfiguration<Class<Survey>, ValueEncoderFactory<Survey>> configuration)
-	{
-		configuration.addInstance(Survey.class, SurveyValueEncoderFactory.class);
+	public void contributeValueEncoderSource(MappedConfiguration<Class<?>, ValueEncoderFactory<?>> configuration) {
+		configuration.addInstance(Survey.class, SurveyEncoderFactory.class);
+		configuration.addInstance(Field.class, FieldEncoderFactory.class);
+		configuration.addInstance(FieldHeading.class, FieldHeadingEncoderFactory.class);
 	}
 
 	public RequestExceptionHandler buildAppRequestExceptionHandler(ComponentSource componentSource, ResponseRenderer renderer, Request request,

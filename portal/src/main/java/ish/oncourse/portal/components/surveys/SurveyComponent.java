@@ -72,8 +72,4 @@ public class SurveyComponent {
         }
         return false;
     }
-
-    public SurveyEncoder getSurveyEncoder() {
-        return SurveyEncoder.valueOf();
-    }
 }

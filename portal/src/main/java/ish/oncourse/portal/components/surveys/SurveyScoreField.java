@@ -31,8 +31,4 @@ public class SurveyScoreField {
     public boolean isTutorScore() {
         return "tutorScore".equals(field.getProperty());
     }
-
-    public SurveyEncoder getSurveyEncoder() {
-        return SurveyEncoder.valueOf();
-    }
 }

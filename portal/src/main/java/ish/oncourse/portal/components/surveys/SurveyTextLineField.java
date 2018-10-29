@@ -48,8 +48,5 @@ public class SurveyTextLineField {
     public String getProperty() {
         return field.getProperty();
     }
-    public SurveyEncoder getSurveyEncoder() {
-        return SurveyEncoder.valueOf();
-    }
 
 }
