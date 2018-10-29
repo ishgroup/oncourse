@@ -10,6 +10,8 @@ import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.portal.services.attendance.AttendanceTransportUtils;
 import ish.oncourse.portal.services.attendance.SessionResponse;
 import ish.oncourse.portal.services.survey.CreateSurvey;
+import ish.oncourse.portal.services.survey.GetSurveyContainers;
+import ish.oncourse.portal.services.survey.SurveyContainer;
 import ish.oncourse.portal.util.SurveyEncoder;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -58,12 +60,6 @@ public class ClassDetailsNew {
 	@Parameter
 	private boolean activeTab = true;
 
-	@Property
-	private List<Survey> sortedSurveys;
-
-	@Property
-	private Survey survey;
-
 	@Inject
 	private ICayenneService cayenneService;
 
@@ -82,7 +78,19 @@ public class ClassDetailsNew {
 
 	@Inject
 	private IPlainTextExtractor extractor;
+
+	@Property
+	private List<SurveyContainer> surveyContainers;
+
+	@Property
+	private SurveyContainer surveyContainer;
 	
+	@Property
+	private Boolean useDefaultSurvey = false;
+	@Property
+	private Survey defaultSurvey = null;
+
+
 	private ObjectMapper mapper = new ObjectMapper();
 
 	private CollectionType requestType = mapper.getTypeFactory().constructCollectionType(List.class, ish.oncourse.portal.services.attendance.Attendance.class);
@@ -101,7 +109,15 @@ public class ClassDetailsNew {
 			enrolment = portalService.getEnrolmentBy(portalService.getContact().getStudent(), courseClass);
 		}
 
-		sortedSurveys = CreateOrGetEnrolmentSurveysForDate.valueOf(cayenneService.newContext(), enrolment, new Date()).get();
+		surveyContainers = GetSurveyContainers.valueOf(enrolment).get();
+		
+		if (surveyContainers == null) {
+			useDefaultSurvey = true;
+
+			if (!enrolment.getSurveys().isEmpty()) {
+				defaultSurvey = enrolment.getSurveys().get(0);
+			}
+		}		
 	}
 
 	@OnEvent(value = "getAttendences")
@@ -132,8 +148,8 @@ public class ClassDetailsNew {
 		return activeTab ? "active" : StringUtils.EMPTY;
 	}
 
-	public boolean showSurveys() {
-		return courseClass.getEndDate() == null || courseClass.getEndDate().before(new Date());
+	public boolean showDefaultSurvey() {
+		return useDefaultSurvey && (courseClass.getEndDate() == null || courseClass.getEndDate().before(new Date()));
 	}
 
 	@OnEvent(value = "surveysform")

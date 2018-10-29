@@ -8,25 +8,28 @@
 					class="icon-arrow-down"></span> <span class="text">Show all</span></a></p>
 		</div>
 
-		<t:if test="showSurveys()">
-                    <t:loop source="sortedSurveys" value="survey">
-                    <h4>Feedback
-                                <span class="rating rate-inline rate-class">
-                                    <input type="hidden" name="score"/>
-                                </span>
-                    			</h4>
-                    			<div id="class-reviews" class="class-reviews" data="${courseClass.id}">
-                    			    <form id="surveysForm" method="post" clientValidation="literal:NONE">
-                                        <span class="arrow-top"></span>
-						<ul class="promoter-score-details">
-                            <t:surveys.surveyComponent survey="survey"/>
-						</ul>
-						<div class="alert alert-info">Your comment and name (${portalService.contact.givenName}<t:if test="${portalService.contact.suburb}"> from ${portalService.contact.suburb}</t:if>) may be used for quality improvement or marketing.</div>
-                                            <button type="submit" class="btn btn-primary rate-submit">Submit</button>
-                                        </form>
-                                    </div>
-                    </t:loop>
-		</t:if>
+		<t:if test="showDefaultSurvey()">
+			
+			
+		</t:if>		
+		<t:loop source="surveyContainers" value="surveyContainer">
+			<h4>Feedback
+				<span class="rating rate-inline rate-class">
+					<input type="hidden" name="score"/>
+				</span>
+			</h4>
+			<div id="class-reviews" class="class-reviews" data="${courseClass.id}">
+				<form id="surveysForm" method="post" clientValidation="literal:NONE">
+					<span class="arrow-top"></span>
+					<ul class="promoter-score-details">
+						<t:surveys.surveyComponent survey="surveyContainer"/>
+					</ul>
+					<div class="alert alert-info">Your comment and name (${portalService.contact.givenName}<t:if test="${portalService.contact.suburb}"> from ${portalService.contact.suburb}</t:if>) may be used for quality improvement or marketing.</div>
+					<button type="submit" class="btn btn-primary rate-submit" data-form-id="${surveyContainer.fieldConfiguration.id}">Submit</button>
+				</form>
+			</div>
+		</t:loop>
+
 
 		<t:if test="isTutor">
 			<div class="row">

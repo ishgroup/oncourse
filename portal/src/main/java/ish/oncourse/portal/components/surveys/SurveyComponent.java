@@ -4,12 +4,16 @@ import ish.oncourse.common.field.FieldProperty;
 import ish.oncourse.model.Field;
 import ish.oncourse.model.FieldHeading;
 import ish.oncourse.model.Survey;
+import ish.oncourse.model.auto._Field;
+import ish.oncourse.model.auto._FieldHeading;
+import ish.oncourse.portal.services.survey.SurveyContainer;
 import ish.oncourse.portal.util.SurveyEncoder;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 import static ish.oncourse.common.field.FieldProperty.*;
@@ -18,7 +22,7 @@ public class SurveyComponent {
 
     @Parameter
     @Property
-    private Survey survey;
+    private SurveyContainer surveyContainer;
 
     @Property
     private List<Field> fieldsWithoutHeading;
@@ -40,11 +44,11 @@ public class SurveyComponent {
 
     @SetupRender
     public void beginRender() {
-        fieldsWithoutHeading = survey.getFieldConfiguration().getFields();
-        fieldsWithoutHeading.sort((f1, f2) -> f1.getOrder().compareTo(f2.getOrder()));
+        fieldsWithoutHeading = surveyContainer.getFieldConfiguration().getFields();
+        fieldsWithoutHeading.sort(Comparator.comparing(_Field::getOrder));
 
-        headings = survey.getFieldConfiguration().getFieldHeadings();
-        headings.sort((h1, h2) -> h1.getOrder().compareTo(h2.getOrder()));
+        headings = surveyContainer.getFieldConfiguration().getFieldHeadings();
+        headings.sort(Comparator.comparing(_FieldHeading::getOrder));
     }
 
     public boolean isScoreField() {

@@ -4,10 +4,10 @@
                         <t:surveys.surveyScoreField field="field" survey="survey"/>
                         <p:else>
                             <t:if test="${isMultilineField()}">
-                                <t:surveys.surveyMultilineField field="field" survey="survey"/>
+                                <t:surveys.surveyMultilineField field="field" survey="surveyContainer.survey"/>
                                 <p:else>
                                     <t:if test="${isTextLineField()}">
-                                        <t:surveys.surveyTextLineField field="field" survey="survey"/>
+                                        <t:surveys.surveyTextLineField field="field" survey="surveyContainer.survey"/>
                                     </t:if>
                                 </p:else>
                             </t:if>
@@ -17,13 +17,13 @@
                 <t:loop source="headings" value="heading">
                     <t:loop source="heading.fields" value="field">
                         <t:if test="${isScoreField()}">
-                            <t:surveys.surveyScoreField field="field" survey="survey"/>
+                            <t:surveys.surveyScoreField field="field" survey="surveyContainer.survey"/>
                             <p:else>
                                 <t:if test="${isMultilineField()}">
-                                    <t:surveys.surveyMultilineField field="field" survey="survey"/>
+                                    <t:surveys.surveyMultilineField field="field" survey="surveyContainer.survey"/>
                                     <p:else>
                                         <t:if test="${isTextLineField()}">
-                                            <t:surveys.surveyTextLineField field="field" survey="survey"/>
+                                            <t:surveys.surveyTextLineField field="field" survey="surveyContainer.survey"/>
                                         </t:if>
                                     </p:else>
                             </t:if>
