@@ -6,6 +6,7 @@ import ish.oncourse.model.Student;
 import ish.oncourse.model.Survey;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.util.RequestToSurvey;
+import ish.oncourse.portal.util.SurveyEncoder;
 import ish.oncourse.portal.util.SurveyToJSON;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.portal.services.survey.CreateSurvey;
@@ -91,9 +92,13 @@ public class Surveys {
     private Survey createIfNotExist(ObjectContext context, CourseClass courseClass, Student student) {
         Survey survey = GetSurveyForStudent.valueOf(student, courseClass).get();
         if (survey == null) {
-            survey = CreateSurvey.valueOf(context, courseClass, student).create();
+            //survey = CreateSurvey.valueOf(context, courseClass, student).create();
         }
         return survey;
+    }
+
+    public SurveyEncoder getSurveyEncoder() {
+        return SurveyEncoder.valueOf();
     }
 
 }

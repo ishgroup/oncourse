@@ -3,19 +3,25 @@ package ish.oncourse.portal.components.courseclass;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
+import ish.common.types.DeliverySchedule;
 import ish.oncourse.model.*;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.portal.services.attendance.AttendanceTransportUtils;
 import ish.oncourse.portal.services.attendance.SessionResponse;
+import ish.oncourse.portal.services.survey.CreateSurvey;
+import ish.oncourse.portal.util.SurveyEncoder;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.survey.CreateOrGetEnrolmentSurveysForDate;
 import ish.oncourse.util.ValidationErrors;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.tapestry5.EventConstants;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
@@ -55,10 +61,10 @@ public class ClassDetailsNew {
 	private boolean activeTab = true;
 
 	@Property
-	private List<FieldConfiguration> surveyConfigurations;
+	private List<Survey> sortedSurveys;
 
 	@Property
-	private FieldConfiguration configuration;
+	private Survey survey;
 
 	@Inject
 	private ICayenneService cayenneService;
@@ -96,7 +102,8 @@ public class ClassDetailsNew {
 		if (!isTutor) {
 			enrolment = portalService.getEnrolmentBy(portalService.getContact().getStudent(), courseClass);
 		}
-		surveyConfigurations = courseClass.getCourse().getFieldConfigurationScheme().getSurveyFieldConfigurations();
+
+		sortedSurveys = CreateOrGetEnrolmentSurveysForDate.valueOf(cayenneService.newContext(), enrolment, new Date()).get();
 	}
 
 	@OnEvent(value = "getAttendences")
@@ -127,11 +134,18 @@ public class ClassDetailsNew {
 		return activeTab ? "active" : StringUtils.EMPTY;
 	}
 
-	public boolean showSurveys()
-	{
+	public boolean showSurveys() {
 		return courseClass.getEndDate() == null || courseClass.getEndDate().before(new Date());
 	}
 
+	@OnEvent(component = "surveysForm", value = EventConstants.SUCCESS)
+	public void saveSurveys() {
+		System.out.println("SAVE");
+	}
+
+	public SurveyEncoder getSurveyEncoder() {
+		return SurveyEncoder.valueOf();
+	}
 }
 
 

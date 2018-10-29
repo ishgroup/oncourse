@@ -1,6 +1,8 @@
 package ish.oncourse.portal.components.surveys;
 
 import ish.oncourse.model.Field;
+import ish.oncourse.model.Survey;
+import ish.oncourse.portal.util.SurveyEncoder;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 
@@ -9,6 +11,10 @@ public class SurveyScoreField {
     @Property
     @Parameter
     private Field field;
+
+    @Property
+    @Parameter
+    private Survey survey;
 
     public boolean isNetPromoterScore() {
         return "netPromoterScore".equals(field.getProperty());
@@ -24,5 +30,9 @@ public class SurveyScoreField {
 
     public boolean isTutorScore() {
         return "tutorScore".equals(field.getProperty());
+    }
+
+    public SurveyEncoder getSurveyEncoder() {
+        return SurveyEncoder.valueOf();
     }
 }

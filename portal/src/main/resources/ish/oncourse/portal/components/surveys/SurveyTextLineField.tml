@@ -1,0 +1,8 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+    <li>
+        <t:if test="${isCustomField()}">
+            <label>${getName()}</label>
+            <input id="${getProperty()}" type="text" value="${getValue()}"/>
+        </t:if>
+    </li>
+</t:container>

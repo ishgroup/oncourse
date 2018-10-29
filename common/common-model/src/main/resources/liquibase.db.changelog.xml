@@ -4729,4 +4729,15 @@
 			<column name="fieldConfigurationId" type="BIGINT"/>
 		</addColumn>
 	</changeSet>
+
+	<changeSet id="326" author="pnikanovich" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<foreignKeyConstraintExists foreignKeyName="Survey_fieldConfigurationId" foreignKeyTableName="Survey" />
+			</not>
+		</preConditions>
+		<addForeignKeyConstraint constraintName="Survey_fieldConfigurationId"
+								 baseTableName="Survey" baseColumnNames="fieldConfigurationId"
+								 referencedTableName="FieldConfiguration" referencedColumnNames="id" />
+	</changeSet>
 </databaseChangeLog>

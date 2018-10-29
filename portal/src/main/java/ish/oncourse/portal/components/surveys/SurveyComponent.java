@@ -1,9 +1,10 @@
 package ish.oncourse.portal.components.surveys;
 
 import ish.oncourse.common.field.FieldProperty;
-import ish.oncourse.model.FieldConfiguration;
 import ish.oncourse.model.Field;
 import ish.oncourse.model.FieldHeading;
+import ish.oncourse.model.Survey;
+import ish.oncourse.portal.util.SurveyEncoder;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -12,13 +13,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import static ish.oncourse.common.field.FieldProperty.*;
-import static ish.oncourse.common.field.FieldProperty.CUSTOM_FIELD_SURVEY;
 
-public class SurveyConfiguration {
+public class SurveyComponent {
 
-    @Property
     @Parameter
-    private FieldConfiguration configuration;
+    @Property
+    private Survey survey;
 
     @Property
     private List<Field> fieldsWithoutHeading;
@@ -40,10 +40,10 @@ public class SurveyConfiguration {
 
     @SetupRender
     public void beginRender() {
-        fieldsWithoutHeading = configuration.getFields();
+        fieldsWithoutHeading = survey.getFieldConfiguration().getFields();
         fieldsWithoutHeading.sort((f1, f2) -> f1.getOrder().compareTo(f2.getOrder()));
 
-        headings = configuration.getFieldHeadings();
+        headings = survey.getFieldConfiguration().getFieldHeadings();
         headings.sort((h1, h2) -> h1.getOrder().compareTo(h2.getOrder()));
     }
 
@@ -71,5 +71,9 @@ public class SurveyConfiguration {
             return true;
         }
         return false;
+    }
+
+    public SurveyEncoder getSurveyEncoder() {
+        return SurveyEncoder.valueOf();
     }
 }

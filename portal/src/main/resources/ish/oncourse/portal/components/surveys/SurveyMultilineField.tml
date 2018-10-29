@@ -1,5 +1,3 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-    <t:if test="${isComment()}">
-        <textarea rows="5" class="form-control survey-comment"/>
-    </t:if>
+    <textarea rows="5" class="form-control survey-comment">${getValue()}</textarea>
 </t:container>

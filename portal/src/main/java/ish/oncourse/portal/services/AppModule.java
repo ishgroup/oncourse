@@ -1,6 +1,7 @@
 package ish.oncourse.portal.services;
 
 import ish.oncourse.configuration.ISHHealthCheckServlet;
+import ish.oncourse.model.Survey;
 import ish.oncourse.portal.access.*;
 import ish.oncourse.portal.access.validate.AccessLinksValidatorFactory;
 import ish.oncourse.portal.services.application.IPortalApplicationService;
@@ -9,18 +10,12 @@ import ish.oncourse.portal.services.discussion.DiscussionServiceImpl;
 import ish.oncourse.portal.services.discussion.IDiscussionService;
 import ish.oncourse.portal.services.pageload.PortalPageRenderer;
 import ish.oncourse.portal.services.site.PortalSiteService;
+import ish.oncourse.portal.util.SurveyValueEncoderFactory;
 import ish.oncourse.services.BinderFunctions;
 import ish.oncourse.services.DisableJavaScriptStack;
-import ish.oncourse.services.cookies.CookiesService;
-import ish.oncourse.services.cookies.ICookiesOverride;
-import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.html.NoCacheMetaProvider;
-import ish.oncourse.services.search.SearchService;
 import ish.oncourse.services.usi.IUSIVerificationService;
 import ish.oncourse.textile.services.TextileModule;
-import ish.oncourse.util.ComponentPageResponseRenderer;
-import ish.oncourse.util.IComponentPageResponseRenderer;
-import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.UIRequestExceptionHandler;
 import org.apache.tapestry5.Asset;
 import org.apache.tapestry5.SymbolConstants;
@@ -38,8 +33,6 @@ import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
 
 import java.util.Collections;
 import java.util.List;
-
-import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 @ImportModule({TextileModule.class})
 public class AppModule {
@@ -88,6 +81,11 @@ public class AppModule {
 
 	public void contributeApplicationDefaults(MappedConfiguration<String, String> configuration) {
 		configuration.add(SymbolConstants.HMAC_PASSPHRASE, HMAC_PASSPHRASE);
+	}
+
+	public static void contributeValueEncoderSource(MappedConfiguration<Class<Survey>, ValueEncoderFactory<Survey>> configuration)
+	{
+		configuration.addInstance(Survey.class, SurveyValueEncoderFactory.class);
 	}
 
 	public RequestExceptionHandler buildAppRequestExceptionHandler(ComponentSource componentSource, ResponseRenderer renderer, Request request,
