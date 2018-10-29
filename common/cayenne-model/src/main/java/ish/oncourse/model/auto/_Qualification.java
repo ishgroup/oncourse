@@ -34,6 +34,7 @@ public abstract class _Qualification extends WillowCayenneObject {
     public static final String NEW_APPRENTICESHIP_PROPERTY = "newApprenticeship";
     public static final String NOMINAL_HOURS_PROPERTY = "nominalHours";
     public static final String REVIEW_DATE_PROPERTY = "reviewDate";
+    public static final String SPECIALIZATION_PROPERTY = "specialization";
     public static final String TITLE_PROPERTY = "title";
     public static final String TRAINING_PACKAGE_ID_PROPERTY = "trainingPackageId";
     public static final String CERTIFICATES_PROPERTY = "certificates";
@@ -56,6 +57,7 @@ public abstract class _Qualification extends WillowCayenneObject {
     public static final Property<String> NEW_APPRENTICESHIP = Property.create("newApprenticeship", String.class);
     public static final Property<Float> NOMINAL_HOURS = Property.create("nominalHours", Float.class);
     public static final Property<Date> REVIEW_DATE = Property.create("reviewDate", Date.class);
+    public static final Property<String> SPECIALIZATION = Property.create("specialization", String.class);
     public static final Property<String> TITLE = Property.create("title", String.class);
     public static final Property<Long> TRAINING_PACKAGE_ID = Property.create("trainingPackageId", Long.class);
     public static final Property<List<Certificate>> CERTIFICATES = Property.create("certificates", List.class);
@@ -158,6 +160,13 @@ public abstract class _Qualification extends WillowCayenneObject {
     }
     public Date getReviewDate() {
         return (Date)readProperty("reviewDate");
+    }
+
+    public void setSpecialization(String specialization) {
+        writeProperty("specialization", specialization);
+    }
+    public String getSpecialization() {
+        return (String)readProperty("specialization");
     }
 
     public void setTitle(String title) {

@@ -1,5 +1,6 @@
 package ish.oncourse.model.auto;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -20,12 +21,15 @@ public abstract class _Module extends WillowCayenneObject {
     private static final long serialVersionUID = 1L; 
 
     public static final String CREATED_PROPERTY = "created";
+    public static final String CREDIT_POINTS_PROPERTY = "creditPoints";
     public static final String DISCIPLINE_CODE_PROPERTY = "disciplineCode";
+    public static final String EXPIRY_DAYS_PROPERTY = "expiryDays";
     public static final String FIELD_OF_EDUCATION_PROPERTY = "fieldOfEducation";
     public static final String IS_MODULE_PROPERTY = "isModule";
     public static final String ISH_VERSION_PROPERTY = "ishVersion";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String NATIONAL_CODE_PROPERTY = "nationalCode";
+    public static final String SPECIALIZATION_PROPERTY = "specialization";
     public static final String TITLE_PROPERTY = "title";
     public static final String TRAINING_PACKAGE_ID_PROPERTY = "trainingPackageId";
     public static final String ASSESSMENT_CLASS_MODULES_PROPERTY = "assessmentClassModules";
@@ -35,12 +39,15 @@ public abstract class _Module extends WillowCayenneObject {
     public static final String ID_PK_COLUMN = "id";
 
     public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<BigDecimal> CREDIT_POINTS = Property.create("creditPoints", BigDecimal.class);
     public static final Property<String> DISCIPLINE_CODE = Property.create("disciplineCode", String.class);
+    public static final Property<Integer> EXPIRY_DAYS = Property.create("expiryDays", Integer.class);
     public static final Property<String> FIELD_OF_EDUCATION = Property.create("fieldOfEducation", String.class);
     public static final Property<Byte> IS_MODULE = Property.create("isModule", Byte.class);
     public static final Property<Long> ISH_VERSION = Property.create("ishVersion", Long.class);
     public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
     public static final Property<String> NATIONAL_CODE = Property.create("nationalCode", String.class);
+    public static final Property<String> SPECIALIZATION = Property.create("specialization", String.class);
     public static final Property<String> TITLE = Property.create("title", String.class);
     public static final Property<Long> TRAINING_PACKAGE_ID = Property.create("trainingPackageId", Long.class);
     public static final Property<List<AssessmentClassModule>> ASSESSMENT_CLASS_MODULES = Property.create("assessmentClassModules", List.class);
@@ -54,11 +61,25 @@ public abstract class _Module extends WillowCayenneObject {
         return (Date)readProperty("created");
     }
 
+    public void setCreditPoints(BigDecimal creditPoints) {
+        writeProperty("creditPoints", creditPoints);
+    }
+    public BigDecimal getCreditPoints() {
+        return (BigDecimal)readProperty("creditPoints");
+    }
+
     public void setDisciplineCode(String disciplineCode) {
         writeProperty("disciplineCode", disciplineCode);
     }
     public String getDisciplineCode() {
         return (String)readProperty("disciplineCode");
+    }
+
+    public void setExpiryDays(Integer expiryDays) {
+        writeProperty("expiryDays", expiryDays);
+    }
+    public Integer getExpiryDays() {
+        return (Integer)readProperty("expiryDays");
     }
 
     public void setFieldOfEducation(String fieldOfEducation) {
@@ -94,6 +115,13 @@ public abstract class _Module extends WillowCayenneObject {
     }
     public String getNationalCode() {
         return (String)readProperty("nationalCode");
+    }
+
+    public void setSpecialization(String specialization) {
+        writeProperty("specialization", specialization);
+    }
+    public String getSpecialization() {
+        return (String)readProperty("specialization");
     }
 
     public void setTitle(String title) {

@@ -4740,4 +4740,47 @@
 								 baseTableName="Survey" baseColumnNames="fieldConfigurationId"
 								 referencedTableName="FieldConfiguration" referencedColumnNames="id" />
 	</changeSet>
+
+	<changeSet id="327" author="anarut" context="production" runOnChange="false" runAlways="false">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Qualification" columnName="specialization"/>
+			</not>
+		</preConditions>
+		<sql>
+			ALTER TABLE Qualification ADD COLUMN specialization VARCHAR(128) NULL;
+		</sql>
+	</changeSet>
+
+	<changeSet id="328" author="anarut" context="production" runOnChange="false" runAlways="false">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Module" columnName="specialization"/>
+			</not>
+		</preConditions>
+		<sql>
+			ALTER TABLE Module ADD COLUMN specialization VARCHAR(128) NULL;
+		</sql>
+	</changeSet>
+	<changeSet id="329" author="anarut" context="production" runOnChange="false" runAlways="false">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Module" columnName="creditPoints"/>
+			</not>
+		</preConditions>
+		<sql>
+			ALTER TABLE Module ADD COLUMN creditPoints DECIMAL(10, 2) NULL;
+		</sql>
+	</changeSet>
+	<changeSet id="330" author="anarut" context="production" runOnChange="false" runAlways="false">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Module" columnName="expiryDays"/>
+			</not>
+		</preConditions>
+		<sql>
+			ALTER TABLE Module ADD COLUMN expiryDays INTEGER NULL;
+		</sql>
+	</changeSet>
+
 </databaseChangeLog>

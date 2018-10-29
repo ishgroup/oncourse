@@ -795,13 +795,16 @@
 	</db-entity>
 	<db-entity name="Module">
 		<db-attribute name="created" type="TIMESTAMP"/>
+		<db-attribute name="creditPoints" type="DECIMAL"/>
 		<db-attribute name="disciplineCode" type="VARCHAR" length="8"/>
+		<db-attribute name="expiryDays" type="TINYINT"/>
 		<db-attribute name="fieldOfEducation" type="VARCHAR" length="8"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isModule" type="TINYINT" isMandatory="true" length="3"/>
 		<db-attribute name="ishVersion" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="nationalCode" type="VARCHAR" isMandatory="true" length="16"/>
+		<db-attribute name="specialization" type="VARCHAR"/>
 		<db-attribute name="title" type="VARCHAR" length="256"/>
 		<db-attribute name="trainingPackageId" type="BIGINT" length="19"/>
 	</db-entity>
@@ -1004,6 +1007,7 @@
 		<db-attribute name="newApprenticeship" type="VARCHAR" length="64"/>
 		<db-attribute name="nominalHours" type="REAL"/>
 		<db-attribute name="reviewDate" type="DATE" length="10"/>
+		<db-attribute name="specialization" type="VARCHAR"/>
 		<db-attribute name="title" type="VARCHAR" length="256"/>
 		<db-attribute name="trainingPackageId" type="BIGINT" length="19"/>
 	</db-entity>
@@ -2119,12 +2123,15 @@
 	</obj-entity>
 	<obj-entity name="Module" className="ish.oncourse.model.Module" dbEntityName="Module" superClassName="WillowCayenneObject">
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="creditPoints" type="java.math.BigDecimal" db-attribute-path="creditPoints"/>
 		<obj-attribute name="disciplineCode" type="java.lang.String" db-attribute-path="disciplineCode"/>
+		<obj-attribute name="expiryDays" type="java.lang.Integer" db-attribute-path="expiryDays"/>
 		<obj-attribute name="fieldOfEducation" type="java.lang.String" db-attribute-path="fieldOfEducation"/>
 		<obj-attribute name="isModule" type="java.lang.Byte" db-attribute-path="isModule"/>
 		<obj-attribute name="ishVersion" type="java.lang.Long" db-attribute-path="ishVersion"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="nationalCode" type="java.lang.String" db-attribute-path="nationalCode"/>
+		<obj-attribute name="specialization" type="java.lang.String" db-attribute-path="specialization"/>
 		<obj-attribute name="title" type="java.lang.String" db-attribute-path="title"/>
 		<obj-attribute name="trainingPackageId" type="java.lang.Long" db-attribute-path="trainingPackageId"/>
 		<pre-persist method-name="onPrePersist"/>
@@ -2326,6 +2333,7 @@
 		<obj-attribute name="newApprenticeship" type="java.lang.String" db-attribute-path="newApprenticeship"/>
 		<obj-attribute name="nominalHours" type="java.lang.Float" db-attribute-path="nominalHours"/>
 		<obj-attribute name="reviewDate" type="java.util.Date" db-attribute-path="reviewDate"/>
+		<obj-attribute name="specialization" type="java.lang.String" db-attribute-path="specialization"/>
 		<obj-attribute name="title" type="java.lang.String" db-attribute-path="title"/>
 		<obj-attribute name="trainingPackageId" type="java.lang.Long" db-attribute-path="trainingPackageId"/>
 		<pre-persist method-name="onPrePersist"/>
