@@ -111,6 +111,8 @@ public enum FieldProperty {
                     return  CUSTOM_FIELD_APPLICATION;
                 case WAITING_LIST:
                     return  CUSTOM_FIELD_WAITING_LIST;
+				case SURVEY:
+					return  CUSTOM_FIELD_SURVEY;
                 default: throw new UnsupportedOperationException("Custom fields supported for Contact only");
 			}
 		} else if (key.startsWith(TAG_PATTERN)) {
