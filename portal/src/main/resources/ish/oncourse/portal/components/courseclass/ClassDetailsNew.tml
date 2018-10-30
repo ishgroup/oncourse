@@ -22,7 +22,7 @@
 				<form id="surveysForm" method="post" clientValidation="literal:NONE">
 					<span class="arrow-top"></span>
 					<ul class="promoter-score-details">
-						<t:surveys.surveyComponent survey="surveyContainer"/>
+						<t:surveys.surveyComponent surveyContainer="surveyContainer"/>
 					</ul>
 					<div class="alert alert-info">Your comment and name (${portalService.contact.givenName}<t:if test="${portalService.contact.suburb}"> from ${portalService.contact.suburb}</t:if>) may be used for quality improvement or marketing.</div>
 					<button type="submit" class="btn btn-primary rate-submit" data-form-id="${surveyContainer.fieldConfiguration.id}">Submit</button>
