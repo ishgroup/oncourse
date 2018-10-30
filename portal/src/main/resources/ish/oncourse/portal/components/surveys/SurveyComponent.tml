@@ -1,7 +1,7 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
                 <t:loop source="fieldsWithoutHeading" value="field">
                     <t:if test="${isScoreField()}">
-                        <t:surveys.surveyScoreField field="field" survey="survey"/>
+                        <t:surveys.surveyScoreField field="field" survey="surveyContainer.survey"/>
                         <p:else>
                             <t:if test="${isMultilineField()}">
                                 <t:surveys.surveyMultilineField field="field" survey="surveyContainer.survey"/>
