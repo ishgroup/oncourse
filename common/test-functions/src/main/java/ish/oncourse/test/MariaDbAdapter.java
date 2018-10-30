@@ -100,6 +100,8 @@ public class MariaDbAdapter implements DbAdapter {
 		if (entity.getName().equals("CustomFieldType")) {
 			sql = sql.replace("defaultValue VARCHAR(32000) NULL", "defaultValue TEXT NULL");
 		}
+		sql = sql.replace("VARCHAR ", "VARCHAR(4096) ");
+		sql = sql.replace("VARCHAR;", "VARCHAR(4096);");
 		return sql;
 	}
 
