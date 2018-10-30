@@ -25,9 +25,8 @@ task jest(type: NodeTask, dependsOn: 'yarn_install') {
     args = ['--ci', '--testResultsProcessor=jest-junit']
 }
 
-task queryGrammar(type: au.com.ish.Aql) {
-    outputDir = file("${project.projectDir}/build/generated-sources/aql")
-    target = 'JavaScript'
+task queryGrammar(type: YarnTask, dependsOn: 'yarn_install') {
+    args = ['antlr4ts']
 }
 
 sourceSets {
