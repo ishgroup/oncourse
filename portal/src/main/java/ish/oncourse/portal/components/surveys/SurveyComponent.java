@@ -12,9 +12,11 @@ import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static ish.oncourse.common.field.FieldProperty.*;
 
@@ -44,11 +46,19 @@ public class SurveyComponent {
 
     @SetupRender
     public void beginRender() {
-        fieldsWithoutHeading = surveyContainer.getFieldConfiguration().getFields();
-        fieldsWithoutHeading.sort(Comparator.comparing(_Field::getOrder));
-
-        headings = surveyContainer.getFieldConfiguration().getFieldHeadings();
-        headings.sort(Comparator.comparing(_FieldHeading::getOrder));
+        fieldsWithoutHeading = surveyContainer.getFieldConfiguration().getFields()
+                .stream().filter(f -> f.getFieldHeading() == null)
+                .sorted(Comparator.comparing(_Field::getOrder))
+                .collect(Collectors.toList());
+        
+        headings = surveyContainer.getFieldConfiguration()
+                .getFieldHeadings()
+                .stream()
+                .sorted(Comparator.comparing(_FieldHeading::getOrder))
+                .collect(Collectors.toList());
+        
+        headings.forEach(h ->  h.getFields().sort(Comparator.comparing(_Field::getOrder)));
+        
     }
 
     public boolean isScoreField() {
