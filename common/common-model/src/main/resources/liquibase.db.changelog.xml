@@ -4783,4 +4783,28 @@
 		</sql>
 	</changeSet>
 
+	<changeSet id="331" author="anarut" context="production" runOnChange="false">
+		<sql>ALTER TABLE Module MODIFY COLUMN ishVersion BIGINT(11) NULL;</sql>
+	</changeSet>
+	<changeSet id="332" author="anarut" context="production" runOnChange="false">
+		<sql>ALTER TABLE Qualification MODIFY COLUMN ishVersion BIGINT(11) NULL;</sql>
+	</changeSet>
+
+	<changeSet id="333" author="anarut" context="production" runOnChange="false">
+		<sql>ALTER TABLE Module DROP INDEX nationalCode_unique;</sql>
+	</changeSet>
+	<changeSet id="334" author="anarut" context="production" runOnChange="false">
+		<sql>ALTER TABLE Module ADD UNIQUE code_college_unique (nationalCode, collegeId);</sql>
+	</changeSet>
+
+	<changeSet id="335" author="anarut" context="production" runOnChange="false">
+		<sql>ALTER TABLE Qualification DROP INDEX nationalCode_unique;</sql>
+	</changeSet>
+	<changeSet id="336" author="anarut" context="production" runOnChange="false">
+		<sql>ALTER TABLE Qualification ADD UNIQUE code_college_unique (nationalCode, collegeId);</sql>
+	</changeSet>
+
+
+
+
 </databaseChangeLog>

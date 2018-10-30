@@ -7,6 +7,7 @@ import org.apache.cayenne.exp.Property;
 
 import ish.common.types.QualificationType;
 import ish.oncourse.model.Certificate;
+import ish.oncourse.model.College;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.PriorLearning;
 
@@ -20,6 +21,7 @@ public abstract class _Qualification extends WillowCayenneObject {
 
     private static final long serialVersionUID = 1L; 
 
+    public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String ANZSCO_PROPERTY = "anzsco";
     public static final String ASCO_PROPERTY = "asco";
     public static final String CREATED_PROPERTY = "created";
@@ -38,11 +40,13 @@ public abstract class _Qualification extends WillowCayenneObject {
     public static final String TITLE_PROPERTY = "title";
     public static final String TRAINING_PACKAGE_ID_PROPERTY = "trainingPackageId";
     public static final String CERTIFICATES_PROPERTY = "certificates";
+    public static final String COLLEGE_PROPERTY = "college";
     public static final String COURSES_PROPERTY = "courses";
     public static final String PRIOR_LEARNINGS_PROPERTY = "priorLearnings";
 
     public static final String ID_PK_COLUMN = "id";
 
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
     public static final Property<String> ANZSCO = Property.create("anzsco", String.class);
     public static final Property<String> ASCO = Property.create("asco", String.class);
     public static final Property<Date> CREATED = Property.create("created", Date.class);
@@ -61,8 +65,16 @@ public abstract class _Qualification extends WillowCayenneObject {
     public static final Property<String> TITLE = Property.create("title", String.class);
     public static final Property<Long> TRAINING_PACKAGE_ID = Property.create("trainingPackageId", Long.class);
     public static final Property<List<Certificate>> CERTIFICATES = Property.create("certificates", List.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
     public static final Property<List<Course>> COURSES = Property.create("courses", List.class);
     public static final Property<List<PriorLearning>> PRIOR_LEARNINGS = Property.create("priorLearnings", List.class);
+
+    public void setAngelId(Long angelId) {
+        writeProperty("angelId", angelId);
+    }
+    public Long getAngelId() {
+        return (Long)readProperty("angelId");
+    }
 
     public void setAnzsco(String anzsco) {
         writeProperty("anzsco", anzsco);
@@ -192,6 +204,15 @@ public abstract class _Qualification extends WillowCayenneObject {
     @SuppressWarnings("unchecked")
     public List<Certificate> getCertificates() {
         return (List<Certificate>)readProperty("certificates");
+    }
+
+
+    public void setCollege(College college) {
+        setToOneTarget("college", college, true);
+    }
+
+    public College getCollege() {
+        return (College)readProperty("college");
     }
 
 

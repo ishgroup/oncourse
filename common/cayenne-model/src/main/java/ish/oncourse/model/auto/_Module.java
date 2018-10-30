@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.cayenne.exp.Property;
 
 import ish.oncourse.model.AssessmentClassModule;
+import ish.oncourse.model.College;
 import ish.oncourse.model.CourseModule;
 import ish.oncourse.model.SessionModule;
 
@@ -20,6 +21,7 @@ public abstract class _Module extends WillowCayenneObject {
 
     private static final long serialVersionUID = 1L; 
 
+    public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String CREATED_PROPERTY = "created";
     public static final String CREDIT_POINTS_PROPERTY = "creditPoints";
     public static final String DISCIPLINE_CODE_PROPERTY = "disciplineCode";
@@ -33,11 +35,13 @@ public abstract class _Module extends WillowCayenneObject {
     public static final String TITLE_PROPERTY = "title";
     public static final String TRAINING_PACKAGE_ID_PROPERTY = "trainingPackageId";
     public static final String ASSESSMENT_CLASS_MODULES_PROPERTY = "assessmentClassModules";
+    public static final String COLLEGE_PROPERTY = "college";
     public static final String MODULE_COURSES_PROPERTY = "moduleCourses";
     public static final String SESSION_MODULES_PROPERTY = "sessionModules";
 
     public static final String ID_PK_COLUMN = "id";
 
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
     public static final Property<Date> CREATED = Property.create("created", Date.class);
     public static final Property<BigDecimal> CREDIT_POINTS = Property.create("creditPoints", BigDecimal.class);
     public static final Property<String> DISCIPLINE_CODE = Property.create("disciplineCode", String.class);
@@ -51,8 +55,16 @@ public abstract class _Module extends WillowCayenneObject {
     public static final Property<String> TITLE = Property.create("title", String.class);
     public static final Property<Long> TRAINING_PACKAGE_ID = Property.create("trainingPackageId", Long.class);
     public static final Property<List<AssessmentClassModule>> ASSESSMENT_CLASS_MODULES = Property.create("assessmentClassModules", List.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
     public static final Property<List<CourseModule>> MODULE_COURSES = Property.create("moduleCourses", List.class);
     public static final Property<List<SessionModule>> SESSION_MODULES = Property.create("sessionModules", List.class);
+
+    public void setAngelId(Long angelId) {
+        writeProperty("angelId", angelId);
+    }
+    public Long getAngelId() {
+        return (Long)readProperty("angelId");
+    }
 
     public void setCreated(Date created) {
         writeProperty("created", created);
@@ -147,6 +159,15 @@ public abstract class _Module extends WillowCayenneObject {
     @SuppressWarnings("unchecked")
     public List<AssessmentClassModule> getAssessmentClassModules() {
         return (List<AssessmentClassModule>)readProperty("assessmentClassModules");
+    }
+
+
+    public void setCollege(College college) {
+        setToOneTarget("college", college, true);
+    }
+
+    public College getCollege() {
+        return (College)readProperty("college");
     }
 
 

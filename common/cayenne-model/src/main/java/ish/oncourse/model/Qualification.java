@@ -5,11 +5,17 @@ import ish.oncourse.utils.QueueableObjectUtils;
 
 import java.util.Date;
 
-public class Qualification extends _Qualification {
+public class Qualification extends _Qualification implements Queueable {
+
 	private static final long serialVersionUID = 5408403857605726093L;
 
 	public Long getId() {
 		return QueueableObjectUtils.getId(this);
+	}
+
+	@Override
+	public boolean isAsyncReplicationAllowed() {
+		return false;
 	}
 
 	/*

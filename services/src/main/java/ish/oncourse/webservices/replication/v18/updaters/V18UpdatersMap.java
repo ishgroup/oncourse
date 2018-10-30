@@ -109,7 +109,8 @@ public class V18UpdatersMap {
 		updaterMap.put(FieldConfigurationScheme.class.getSimpleName(), new FieldConfigurationSchemeUpdater());
 		updaterMap.put(AssessmentClassModule.class.getSimpleName(), new AssessmentClassModuleUpdater());
 		updaterMap.put(Tax.class.getSimpleName(), new TaxUpdater());
-
+		updaterMap.put(Module.class.getSimpleName(), new ModuleUpdater());
+		updaterMap.put(Qualification.class.getSimpleName(), new QualificationUpdater());
 	}
 
 	/**

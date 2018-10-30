@@ -40,6 +40,7 @@ import ish.oncourse.model.Log;
 import ish.oncourse.model.Message;
 import ish.oncourse.model.MessagePerson;
 import ish.oncourse.model.MessageTemplate;
+import ish.oncourse.model.Module;
 import ish.oncourse.model.NotificationTemplate;
 import ish.oncourse.model.Outcome;
 import ish.oncourse.model.PaymentIn;
@@ -49,6 +50,7 @@ import ish.oncourse.model.Preference;
 import ish.oncourse.model.PriorLearning;
 import ish.oncourse.model.Product;
 import ish.oncourse.model.ProductItem;
+import ish.oncourse.model.Qualification;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.model.QueuedTransaction;
 import ish.oncourse.model.Room;
@@ -134,6 +136,7 @@ public abstract class _College extends WillowCayenneObject {
     public static final String MESSAGE_PEOPLE_PROPERTY = "messagePeople";
     public static final String MESSAGE_TEMPLATES_PROPERTY = "messageTemplates";
     public static final String MESSAGES_PROPERTY = "messages";
+    public static final String MODULES_PROPERTY = "modules";
     public static final String NOTIFICATION_TEMPLATES_PROPERTY = "notificationTemplates";
     public static final String OUTCOMES_PROPERTY = "outcomes";
     public static final String PAYMENT_IN_LINES_PROPERTY = "paymentInLines";
@@ -144,6 +147,7 @@ public abstract class _College extends WillowCayenneObject {
     public static final String PRIOR_LEARNINGS_PROPERTY = "priorLearnings";
     public static final String PRODUCT_ITEMS_PROPERTY = "productItems";
     public static final String PRODUCTS_PROPERTY = "products";
+    public static final String QUALIFICATIONS_PROPERTY = "qualifications";
     public static final String QUEUED_RECORDS_PROPERTY = "queuedRecords";
     public static final String QUEUED_TRANSACTIONS_PROPERTY = "queuedTransactions";
     public static final String ROOMS_PROPERTY = "rooms";
@@ -220,6 +224,7 @@ public abstract class _College extends WillowCayenneObject {
     public static final Property<List<MessagePerson>> MESSAGE_PEOPLE = Property.create("messagePeople", List.class);
     public static final Property<List<MessageTemplate>> MESSAGE_TEMPLATES = Property.create("messageTemplates", List.class);
     public static final Property<List<Message>> MESSAGES = Property.create("messages", List.class);
+    public static final Property<List<Module>> MODULES = Property.create("modules", List.class);
     public static final Property<List<NotificationTemplate>> NOTIFICATION_TEMPLATES = Property.create("notificationTemplates", List.class);
     public static final Property<List<Outcome>> OUTCOMES = Property.create("outcomes", List.class);
     public static final Property<List<PaymentInLine>> PAYMENT_IN_LINES = Property.create("paymentInLines", List.class);
@@ -230,6 +235,7 @@ public abstract class _College extends WillowCayenneObject {
     public static final Property<List<PriorLearning>> PRIOR_LEARNINGS = Property.create("priorLearnings", List.class);
     public static final Property<List<ProductItem>> PRODUCT_ITEMS = Property.create("productItems", List.class);
     public static final Property<List<Product>> PRODUCTS = Property.create("products", List.class);
+    public static final Property<List<Qualification>> QUALIFICATIONS = Property.create("qualifications", List.class);
     public static final Property<List<QueuedRecord>> QUEUED_RECORDS = Property.create("queuedRecords", List.class);
     public static final Property<List<QueuedTransaction>> QUEUED_TRANSACTIONS = Property.create("queuedTransactions", List.class);
     public static final Property<List<Room>> ROOMS = Property.create("rooms", List.class);
@@ -804,6 +810,18 @@ public abstract class _College extends WillowCayenneObject {
     }
 
 
+    public void addToModules(Module obj) {
+        addToManyTarget("modules", obj, true);
+    }
+    public void removeFromModules(Module obj) {
+        removeToManyTarget("modules", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<Module> getModules() {
+        return (List<Module>)readProperty("modules");
+    }
+
+
     public void addToNotificationTemplates(NotificationTemplate obj) {
         addToManyTarget("notificationTemplates", obj, true);
     }
@@ -921,6 +939,18 @@ public abstract class _College extends WillowCayenneObject {
     @SuppressWarnings("unchecked")
     public List<Product> getProducts() {
         return (List<Product>)readProperty("products");
+    }
+
+
+    public void addToQualifications(Qualification obj) {
+        addToManyTarget("qualifications", obj, true);
+    }
+    public void removeFromQualifications(Qualification obj) {
+        removeToManyTarget("qualifications", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<Qualification> getQualifications() {
+        return (List<Qualification>)readProperty("qualifications");
     }
 
 

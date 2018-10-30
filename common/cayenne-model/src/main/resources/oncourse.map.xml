@@ -794,6 +794,8 @@
 		<db-attribute name="subject" type="VARCHAR" length="512"/>
 	</db-entity>
 	<db-entity name="Module">
+		<db-attribute name="angelId" type="BIGINT"/>
+		<db-attribute name="collegeId" type="BIGINT"/>
 		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="creditPoints" type="DECIMAL"/>
 		<db-attribute name="disciplineCode" type="VARCHAR" length="8"/>
@@ -801,10 +803,10 @@
 		<db-attribute name="fieldOfEducation" type="VARCHAR" length="8"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isModule" type="TINYINT" isMandatory="true" length="3"/>
-		<db-attribute name="ishVersion" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="ishVersion" type="BIGINT" length="19"/>
 		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="nationalCode" type="VARCHAR" isMandatory="true" length="16"/>
-		<db-attribute name="specialization" type="VARCHAR"/>
+		<db-attribute name="specialization" type="VARCHAR" length="128"/>
 		<db-attribute name="title" type="VARCHAR" length="256"/>
 		<db-attribute name="trainingPackageId" type="BIGINT" length="19"/>
 	</db-entity>
@@ -992,14 +994,16 @@
 		<db-attribute name="valueOnPurchase" type="DECIMAL" length="10" scale="2"/>
 	</db-entity>
 	<db-entity name="Qualification">
+		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="anzsco" type="VARCHAR" length="256"/>
 		<db-attribute name="asco" type="VARCHAR" length="64"/>
+		<db-attribute name="collegeId" type="BIGINT" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="fieldOfEducation" type="VARCHAR" length="8"/>
 		<db-attribute name="fieldOfStudy" type="VARCHAR" length="4"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isAccreditedCourse" type="TINYINT" length="3"/>
-		<db-attribute name="ishVersion" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="ishVersion" type="BIGINT" length="19"/>
 		<db-attribute name="level" type="VARCHAR" length="256"/>
 		<db-attribute name="levelCode" type="VARCHAR" length="3"/>
 		<db-attribute name="modified" type="TIMESTAMP"/>
@@ -1007,7 +1011,7 @@
 		<db-attribute name="newApprenticeship" type="VARCHAR" length="64"/>
 		<db-attribute name="nominalHours" type="REAL"/>
 		<db-attribute name="reviewDate" type="DATE" length="10"/>
-		<db-attribute name="specialization" type="VARCHAR"/>
+		<db-attribute name="specialization" type="VARCHAR" length="128"/>
 		<db-attribute name="title" type="VARCHAR" length="256"/>
 		<db-attribute name="trainingPackageId" type="BIGINT" length="19"/>
 	</db-entity>
@@ -2122,6 +2126,7 @@
 		<obj-attribute name="subject" type="java.lang.String" db-attribute-path="subject"/>
 	</obj-entity>
 	<obj-entity name="Module" className="ish.oncourse.model.Module" dbEntityName="Module" superClassName="WillowCayenneObject">
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="creditPoints" type="java.math.BigDecimal" db-attribute-path="creditPoints"/>
 		<obj-attribute name="disciplineCode" type="java.lang.String" db-attribute-path="disciplineCode"/>
@@ -2319,6 +2324,7 @@
 		<post-add method-name="onPostAdd"/>
 	</obj-entity>
 	<obj-entity name="Qualification" className="ish.oncourse.model.Qualification" dbEntityName="Qualification" superClassName="WillowCayenneObject">
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="anzsco" type="java.lang.String" db-attribute-path="anzsco"/>
 		<obj-attribute name="asco" type="java.lang.String" db-attribute-path="asco"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
@@ -2990,6 +2996,9 @@
 	<db-relationship name="messages" source="College" target="Message" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
+	<db-relationship name="modules" source="College" target="Module" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
 	<db-relationship name="notificationTemplates" source="College" target="NotificationTemplate" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
@@ -3018,6 +3027,9 @@
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
 	<db-relationship name="products" source="College" target="Product" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
+	<db-relationship name="qualifications" source="College" target="Qualification" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
 	<db-relationship name="queuedRecords" source="College" target="QueuedRecord" toMany="true">
@@ -3665,6 +3677,9 @@
 	<db-relationship name="assessmentClassModules" source="Module" target="AssessmentClassModule" toMany="true">
 		<db-attribute-pair source="id" target="moduleId"/>
 	</db-relationship>
+	<db-relationship name="college" source="Module" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
 	<db-relationship name="moduleCourses" source="Module" target="CourseModule" toMany="true">
 		<db-attribute-pair source="id" target="moduleId"/>
 	</db-relationship>
@@ -3793,6 +3808,9 @@
 	</db-relationship>
 	<db-relationship name="certificates" source="Qualification" target="Certificate" toMany="true">
 		<db-attribute-pair source="id" target="qualificationId"/>
+	</db-relationship>
+	<db-relationship name="college" source="Qualification" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="courses" source="Qualification" target="Course" toMany="true">
 		<db-attribute-pair source="id" target="qualificationId"/>
@@ -4276,6 +4294,7 @@
 	<obj-relationship name="messagePeople" source="College" target="MessagePerson" deleteRule="Deny" db-relationship-path="messagePeople"/>
 	<obj-relationship name="messageTemplates" source="College" target="MessageTemplate" deleteRule="Deny" db-relationship-path="messageTemplates"/>
 	<obj-relationship name="messages" source="College" target="Message" deleteRule="Deny" db-relationship-path="messages"/>
+	<obj-relationship name="modules" source="College" target="Module" deleteRule="Deny" db-relationship-path="modules"/>
 	<obj-relationship name="notificationTemplates" source="College" target="NotificationTemplate" deleteRule="Deny" db-relationship-path="notificationTemplates"/>
 	<obj-relationship name="outcomes" source="College" target="Outcome" deleteRule="Deny" db-relationship-path="outcomes"/>
 	<obj-relationship name="paymentInLines" source="College" target="PaymentInLine" deleteRule="Deny" db-relationship-path="paymentInLines"/>
@@ -4286,6 +4305,7 @@
 	<obj-relationship name="priorLearnings" source="College" target="PriorLearning" deleteRule="Deny" db-relationship-path="priorLearnings"/>
 	<obj-relationship name="productItems" source="College" target="ProductItem" deleteRule="Deny" db-relationship-path="productItems"/>
 	<obj-relationship name="products" source="College" target="Product" deleteRule="Deny" db-relationship-path="products"/>
+	<obj-relationship name="qualifications" source="College" target="Qualification" deleteRule="Deny" db-relationship-path="qualifications"/>
 	<obj-relationship name="queuedRecords" source="College" target="QueuedRecord" deleteRule="Deny" db-relationship-path="queuedRecords"/>
 	<obj-relationship name="queuedTransactions" source="College" target="QueuedTransaction" deleteRule="Deny" db-relationship-path="queuedTransactions"/>
 	<obj-relationship name="rooms" source="College" target="Room" deleteRule="Deny" db-relationship-path="rooms"/>
@@ -4486,6 +4506,7 @@
 	<obj-relationship name="message" source="MessagePerson" target="Message" deleteRule="Nullify" db-relationship-path="message"/>
 	<obj-relationship name="college" source="MessageTemplate" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="assessmentClassModules" source="Module" target="AssessmentClassModule" deleteRule="Deny" db-relationship-path="assessmentClassModules"/>
+	<obj-relationship name="college" source="Module" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="moduleCourses" source="Module" target="CourseModule" deleteRule="Deny" db-relationship-path="moduleCourses"/>
 	<obj-relationship name="sessionModules" source="Module" target="SessionModule" deleteRule="Deny" db-relationship-path="sessionModules"/>
 	<obj-relationship name="college" source="NotificationTemplate" target="College" deleteRule="Nullify" db-relationship-path="college"/>
@@ -4523,6 +4544,7 @@
 	<obj-relationship name="invoiceLine" source="ProductItem" target="InvoiceLine" deleteRule="Nullify" db-relationship-path="invoiceLine"/>
 	<obj-relationship name="product" source="ProductItem" target="Product" deleteRule="Nullify" db-relationship-path="product"/>
 	<obj-relationship name="certificates" source="Qualification" target="Certificate" deleteRule="Deny" db-relationship-path="certificates"/>
+	<obj-relationship name="college" source="Qualification" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="courses" source="Qualification" target="Course" deleteRule="Deny" db-relationship-path="courses"/>
 	<obj-relationship name="priorLearnings" source="Qualification" target="PriorLearning" deleteRule="Deny" db-relationship-path="priorLearnings"/>
 	<obj-relationship name="college" source="QueuedRecord" target="College" deleteRule="Nullify" db-relationship-path="college"/>
