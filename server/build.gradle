@@ -425,6 +425,13 @@ task installer_winService64(dependsOn: [bundle_winService64, prepareKeychains], 
 	}
 }
 
+def windowsArtifact = artifacts.add('archives', file("${distsDir}/windows/onCourseServer-installer.exe")) {
+	builtBy installer_win
+}
+
+def osxArtifact = artifacts.add('archives', file("${distsDir}/onCourseServer.dmg")) {
+	builtBy installer_osx
+}
 // "gradlew publishToMavenLocal" if you want to publish this to your local .m2 folder
 publishing {
 	publications {
@@ -437,6 +444,16 @@ publishing {
 				version (project.hasProperty('releaseVersion') ? project.releaseVersion : "SNAPSHOT")
 				classifier "unix"
 				extension "zip"
+			}
+			artifact(windowsArtifact) {
+				version (project.hasProperty('releaseVersion') ? project.releaseVersion : "SNAPSHOT")
+				classifier "windows"
+				extension "exe"
+			}
+			artifact(osxArtifact) {
+				version (project.hasProperty('releaseVersion') ? project.releaseVersion : "SNAPSHOT")
+				classifier "osx"
+				extension "dmg"
 			}
 		}
 	}

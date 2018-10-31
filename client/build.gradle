@@ -224,13 +224,28 @@ task installer_unix(dependsOn: jar, type: Zip) {
 	destinationDir file("${distsDir}/unix")
 }
 
+def windowsArtifact = artifacts.add('archives', file("${distsDir}/windows/onCourse-installer.exe")) {
+	builtBy installer_win
+}
+
+def osxArtifact = artifacts.add('archives', file("${distsDir}/onCourse.dmg")) {
+	builtBy installer_osx
+}
 // For deploying to our repo
 publishing.publications {
 	executables(MavenPublication) {
         artifact(installer_webstart) {
 			classifier "webstart"
 			extension "zip"
-        }
+		}
+		artifact(windowsArtifact) {
+			classifier "windows"
+			extension "exe"
+		}
+		artifact(osxArtifact) {
+			classifier "osx"
+			extension "dmg"
+		}
     }
 }
 
