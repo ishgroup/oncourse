@@ -1134,6 +1134,7 @@ strong.link-color {
 
 .promoter-score-details label {
     min-width: 100px;
+    font-weight: normal;
 }
 
 .promoter-score-details input {
@@ -1148,6 +1149,12 @@ strong.link-color {
         box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 239, 174, 0.6);
         outline: none;
     }
+}
+
+.promoter-score-details h4.heading, p.heading-description {
+    font-size: 1em;
+    color: inherit;
+    font-family: inherit;
 }
 
 .arrow-top {
