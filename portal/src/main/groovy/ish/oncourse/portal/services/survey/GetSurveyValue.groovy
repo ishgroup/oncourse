@@ -1,6 +1,7 @@
 package ish.oncourse.portal.services.survey
 
 import ish.oncourse.common.field.FieldProperty
+import ish.oncourse.model.CustomFieldType
 import ish.oncourse.model.Field
 import ish.oncourse.model.Survey
 
@@ -17,13 +18,13 @@ class GetSurveyValue {
     
     private Survey survey
     private Field field
-    
-    
-    
-    static GetSurveyValue valueOf(Survey survey, Field field) {
+    private CustomFieldType customFieldType
+
+    static GetSurveyValue valueOf(Survey survey, Field field, CustomFieldType customFieldType = null) {
         GetSurveyValue getter = new GetSurveyValue()
         getter.survey = survey
         getter.field = field
+        getter.customFieldType = customFieldType
         return getter
     }
     
@@ -50,7 +51,7 @@ class GetSurveyValue {
                 case COMMENT:
                     return survey.comment
                 case CUSTOM_FIELD_SURVEY:
-                    survey.customFields.find { cf -> cf.customFieldType.name == property.key.split("\\.")[1] }.value
+                    survey.customFields.find { cf -> cf.customFieldType.id == customFieldType.id}.value
             }
         }
     }
