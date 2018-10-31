@@ -1126,7 +1126,7 @@ strong.link-color {
   background-color: $highlight-color;
   padding: 20px;
   border-radius: 10px;
-  margin: 20px 0 20px 0;
+  margin: 20px 0 40px 0;
   position: relative;
   border: 1px solid $class-reviews-border;
   display: none;
@@ -1147,7 +1147,7 @@ strong.link-color {
         border-color: #F3E4A5;
         -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 239, 174, 0.6);
         box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 239, 174, 0.6);
-        outline: none;
+        outline: none;#class-reviews
     }
 }
 
