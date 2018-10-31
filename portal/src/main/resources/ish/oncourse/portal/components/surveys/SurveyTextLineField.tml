@@ -5,7 +5,7 @@
             <input name="customField" data-default="${defaultValue}" autocomplete="off" type="text"  class="ui-autocomplete-input" value="${getValue()}" data-key="${field.property}"/>
         </t:if>
         <t:unless test="hasDefaultValue">
-            <input type="text" value="${getValue()}" data-key="${field.property}"/>
+            <input name="customField"  type="text" value="${getValue()}" data-key="${field.property}"/>
         </t:unless>    
     </li>
 </t:container>

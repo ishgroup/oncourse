@@ -11,8 +11,7 @@ var $j = jQuery.noConflict();
     }
 
 Survey.prototype = {
-
-    survey: 0,
+  
     id:0,
 
     initAverageRating: function (score) {
@@ -74,12 +73,21 @@ Survey.prototype = {
 
     initializeSurveys: function () {
         var self = this;
-
-        this.initNetPromoterScoreRate($j("div[data='" + self.id + "'].class-reviews").find("span.netPromoterScore-rate"), this.survey.netPromoterScore, this.survey.readOnly);
-        this.initRate($j("div[data='" + self.id + "'].class-reviews").find("span.venue-rate"), this.survey.venueScore, this.survey.readOnly);
-        this.initRate($j("div[data='" + self.id + "'].class-reviews").find("span.tutor-rate"), this.survey.tutorScore, this.survey.readOnly);
-        this.initRate($j("div[data='" + self.id + "'].class-reviews").find("span.course-rate"), this.survey.courseScore, this.survey.readOnly);
-
+			  var readOnly = $j("div[data='" + self.id + "'].class-reviews").prop("data-readonly")
+          
+        if ($j("div[data='" + self.id + "'].class-reviews").find("span.netPromoterScore-rate").length) {
+					this.initNetPromoterScoreRate($j("div[data='" + self.id + "'].class-reviews").find("span.netPromoterScore-rate"), $j("div[data='" + self.id + "'].class-reviews").find("span.netPromoterScore-rate").attr("data-value"), readOnly);
+				}
+        if ($j("div[data='" + self.id + "'].class-reviews").find("span.venue-rate").length) {
+          this.initRate($j("div[data='" + self.id + "'].class-reviews").find("span.venue-rate"), $j("div[data='" + self.id + "'].class-reviews").find("span.venue-rate").attr("data-value"), readOnly);
+        }
+        if ($j("div[data='" + self.id + "'].class-reviews").find("span.tutor-rate").length) {
+            this.initRate($j("div[data='" + self.id + "'].class-reviews").find("span.tutor-rate"), $j("div[data='" + self.id + "'].class-reviews").find("span.tutor-rate").attr("data-value"), readOnly);
+        }
+        if ($j("div[data='" + self.id + "'].class-reviews").find("span.tutor-rate").length) {
+            this.initRate($j("div[data='" + self.id + "'].class-reviews").find("span.course-rate"), $j("div[data='" + self.id + "'].class-reviews").find("span.course-rate").attr("data-value"), readOnly);
+        }
+      
         $j("div[data='" + self.id + "'].class-reviews").find("button.rate-submit").click(function () {
             self.saveSurvey();
         });
@@ -89,7 +97,7 @@ Survey.prototype = {
         });
         this.fillSurvey();
 
-        if (self.survey.readOnly) {
+        if (readOnly) {
              $j("div[data='" + self.id + "'].class-reviews").parent().find("span.rate-class").tooltip({ content: 'Click here to see reviews', position: {
                      my: "center bottom",
                      at: "center top-20"
@@ -103,7 +111,10 @@ Survey.prototype = {
                 }
             });
         }
-        this.refreshNetPromoterScore(this.survey.netPromoterScore)
+        
+			  if ($j("div[data='" + self.id + "'].class-reviews").find("span.netPromoterScore-rate").length) {
+					this.refreshNetPromoterScore($j("div[data='" + self.id + "'].class-reviews").find("span.netPromoterScore-rate").attr("data-value"))
+				}
     },
     //slide survey form
     slideSurveys: function () {
@@ -113,10 +124,20 @@ Survey.prototype = {
 
     refreshAverageRating: function () {
         var self = this;
-        this.initAverageRating(Math.floor(
-           ($j("div[data='" + self.id + "'].class-reviews").find("span.venue-rate").raty("score") +
-            $j("div[data='" + self.id + "'].class-reviews").find("span.tutor-rate").raty("score") +
-            $j("div[data='" + self.id + "'].class-reviews").find("span.course-rate").raty("score")) / 3));
+        var venue=0;
+			  var tutor=0;
+			  var course=0;
+			  if ($j("div[data='" + self.id + "'].class-reviews").find("span.venue-rate").length) {
+					venue = $j("div[data='" + self.id + "'].class-reviews").find("span.venue-rate").raty("score")
+        }
+        if ($j("div[data='" + self.id + "'].class-reviews").find("span.tutor-rate").length) {
+					tutor = $j("div[data='" + self.id + "'].class-reviews").find("span.tutor-rate").raty("score")
+        }
+        if ($j("div[data='" + self.id + "'].class-reviews").find("span.tutor-rate").length) {
+          course = $j("div[data='" + self.id + "'].class-reviews").find("span.course-rate").raty("score")
+        }
+      
+        this.initAverageRating(Math.floor( venue + tutor +course / 3));
     },
 
     refreshNetPromoterScore: function(score) {
@@ -135,11 +156,18 @@ Survey.prototype = {
 
     fillSurvey: function () {
         var self = this;
-        $j("div[data='" + self.id + "'].class-reviews").find("span.netPromoterScore-rate").raty("score", this.survey.netPromoterScore);
-        $j("div[data='" + self.id + "'].class-reviews").find("span.venue-rate").raty("score", this.survey.venueScore);
-        $j("div[data='" + self.id + "'].class-reviews").find("span.tutor-rate").raty("score", this.survey.tutorScore);
-        $j("div[data='" + self.id + "'].class-reviews").find("span.course-rate").raty("score", this.survey.courseScore);
-        $j("div[data='" + self.id + "'].class-reviews").find("textarea.survey-comment").val(this.survey.comment);
+        if ($j("div[data='" + self.id + "'].class-reviews").find("span.netPromoterScore-rate").length) {
+					$j("div[data='" + self.id + "'].class-reviews").find("span.netPromoterScore-rate").raty("score", $j("div[data='" + self.id + "'].class-reviews").find("span.venue-netPromoterScore").attr("data-value"));
+				}
+			  if ($j("div[data='" + self.id + "'].class-reviews").find("span.venue-rate").length) {
+					$j("div[data='" + self.id + "'].class-reviews").find("span.venue-rate").raty("score", $j("div[data='" + self.id + "'].class-reviews").find("span.venue-rate").attr("data-value"));
+				}
+			  if ($j("div[data='" + self.id + "'].class-reviews").find("span.tutor-rate").length) {
+					$j("div[data='" + self.id + "'].class-reviews").find("span.tutor-rate").raty("score", $j("div[data='" + self.id + "'].class-reviews").find("span.tutor-rate").attr("data-value"));
+				}
+			  if ($j("div[data='" + self.id + "'].class-reviews").find("span.course-rate").length) {
+					$j("div[data='" + self.id + "'].class-reviews").find("span.course-rate").raty("score", $j("div[data='" + self.id + "'].class-reviews").find("span.course-rate").attr("data-value"));
+				}
         this.refreshAverageRating();
     },
 
@@ -155,6 +183,11 @@ Survey.prototype = {
             "tutorScore": $j("div[data='" + self.id + "'].class-reviews").find("span.tutor-rate").find('input[name=score]').val(),
             "venueScore": $j("div[data='" + self.id + "'].class-reviews").find("span.venue-rate").find('input[name=score]').val()
         };
+
+			  $j("div[data='" + self.id + "'].class-reviews").find("input[name='customField']").each(function (index, element) {
+					data[$j(element).attr("data-key")] = $j(element).val()
+				});
+        
         $j.ajax({
             url: actionLink,
             async: false,

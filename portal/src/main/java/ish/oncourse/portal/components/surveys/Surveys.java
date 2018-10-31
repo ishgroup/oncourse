@@ -42,7 +42,8 @@ public class Surveys {
 
     @Property
     private Enrolment enrolment;
-
+    
+    @Property
     @Parameter
     private CourseClass courseClass;
     
