@@ -4751,6 +4751,26 @@
 			ALTER TABLE Qualification ADD COLUMN specialization VARCHAR(128) NULL;
 		</sql>
 	</changeSet>
+	<changeSet id="327a" author="anarut" context="production" runOnChange="false" runAlways="false">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Qualification" columnName="angelId"/>
+			</not>
+		</preConditions>
+		<sql>
+			ALTER TABLE Qualification ADD COLUMN angelId BIGINT(11) NULL;
+		</sql>
+	</changeSet>
+	<changeSet id="327b" author="anarut" context="production" runOnChange="false" runAlways="false">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Qualification" columnName="collegeId"/>
+			</not>
+		</preConditions>
+		<sql>
+			ALTER TABLE Qualification ADD COLUMN collegeId BIGINT(11) NULL;
+		</sql>
+	</changeSet>
 
 	<changeSet id="328" author="anarut" context="production" runOnChange="false" runAlways="false">
 		<preConditions onFail="MARK_RAN">
@@ -4780,6 +4800,26 @@
 		</preConditions>
 		<sql>
 			ALTER TABLE Module ADD COLUMN expiryDays INTEGER NULL;
+		</sql>
+	</changeSet>
+	<changeSet id="330a" author="anarut" context="production" runOnChange="false" runAlways="false">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Module" columnName="angelId"/>
+			</not>
+		</preConditions>
+		<sql>
+			ALTER TABLE Module ADD COLUMN angelId BIGINT(11) NULL;
+		</sql>
+	</changeSet>
+	<changeSet id="330b" author="anarut" context="production" runOnChange="false" runAlways="false">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Module" columnName="collegeId"/>
+			</not>
+		</preConditions>
+		<sql>
+			ALTER TABLE Module ADD COLUMN collegeId BIGINT(11) NULL;
 		</sql>
 	</changeSet>
 
