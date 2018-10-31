@@ -5,7 +5,7 @@
 					<input type="hidden" name="score"/>
 				</span>
         </h4>
-        <div id="class-reviews" class="class-reviews" data="${courseClass.id}">
+        <div id="class-reviews" class="class-reviews" data="${courseClass.id}" dat-readonly="true">
             <span class="arrow-top"></span>
             <ul class="promoter-score-details">
                 <li>
