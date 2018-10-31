@@ -1132,6 +1132,24 @@ strong.link-color {
   display: none;
 }
 
+.promoter-score-details label {
+    min-width: 100px;
+}
+
+.promoter-score-details input {
+    min-width: 200px;
+    padding: 5px 18px;
+    border: 3px solid #F1EBD3;
+    margin-bottom: 5px;
+
+    &:focus {
+        border-color: #F3E4A5;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 239, 174, 0.6);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 239, 174, 0.6);
+        outline: none;
+    }
+}
+
 .arrow-top {
   border-left: 20px solid rgba(0, 0, 0, 0);
   border-right: 20px solid rgba(0, 0, 0, 0);
@@ -1304,7 +1322,7 @@ strong.link-color {
   background-color: $past-course-diff-bg;
 }
 
-.failed-course.past-course-diff,  {
+.failed-course.past-course-diff {
   background-color: #DD4848;
 }
 
