@@ -4,6 +4,8 @@ package ish.oncourse.portal.pages;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.PortalUtils;
+import ish.oncourse.portal.services.survey.GetAvailableSurveyForms;
+import ish.oncourse.portal.services.survey.GetSurveyContainers;
 import ish.oncourse.services.courseclass.CourseClassFilter;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.site.IWebSiteService;
@@ -74,6 +76,6 @@ public class Results {
 	}
 
 	public boolean showSurveys() {
-		return courseClass.getEndDate() == null || courseClass.getEndDate().before(new Date());
+        return GetAvailableSurveyForms.valueOf(courseClass).get().size() > 0;
 	}
 }

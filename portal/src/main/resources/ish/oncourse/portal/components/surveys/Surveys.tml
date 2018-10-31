@@ -1,36 +1,73 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-    <div id="class-reviews" class="class-reviews" data="${courseClass.id}">
-        <span class="arrow-top"></span>
-        <ul class="promoter-score-details">
-            <li>
-                <label>How likely are you to recommend us to a friend?</label>
-                <span class="rate rate-inline netPromoterScore-rate"/>
-            </li>
-        </ul>
-        <ul class="rating-class-details">
-            <li>
-                <label>Venue</label>
-                <span class="rate rate-inline venue-rate"/>
-            </li>
-            <li>
-                <label>Course</label>
-                <span class="rate rate-inline course-rate"/>
-            </li>
-            <li>
-                <label>Tutor</label>
-                <span class="rate rate-inline tutor-rate"/>
-            </li>
-        </ul>
-        <t:if test="!isTutor">
-            <textarea rows="5" class="form-control survey-comment"/>
+    <t:if test="isTutor">
+        <h4>Feedback
+            <span class="rating rate-inline rate-class" data="${courseClass.id}">
+					<input type="hidden" name="score"/>
+				</span>
+        </h4>
+        <div id="class-reviews" class="class-reviews" data="${courseClass.id}">
+            <span class="arrow-top"></span>
+            <ul class="promoter-score-details">
+                <li>
+                    <label>How likely are you to recommend us to a friend?</label>
+                    <span class="rate rate-inline netPromoterScore-rate">               
+                        <input name="score" type="hidden" value="${averageSurvey.netPromoterScore}"/>
+                    </span>
+                </li>
+            </ul>
+            <ul class="rating-class-details">
+                <li>
+                    <label>Venue</label>
+                    <span class="rate rate-inline venue-rate">               
+                        <input name="score" type="hidden" value="${averageSurvey.venueScore}"/>
+                    </span>
+                </li>
+                <li>
+                    <label>Course</label>
+                    <span class="rate rate-inline course-rate">               
+                        <input name="score" type="hidden" value="${averageSurvey.courseScore}"/>
+                    </span>
+                </li>
+                <li>
+                    <label>Tutor</label>
+                    <span class="rate rate-inline tutor-rate">               
+                        <input name="score" type="hidden" value="${averageSurvey.tutorScore}"/>
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </t:if>
+    <t:unless test="isTutor">
+        <t:if test="showDefaultSurvey()">
 
-            <div class="alert alert-info">
-                Your comment and name (${portalService.contact.givenName}<t:if test="${portalService.contact.suburb}"> from ${portalService.contact.suburb}</t:if>) may be used for quality improvement or marketing.
-            </div>
-            <p>
-                <button type="submit" class="btn btn-primary rate-submit">Submit</button>
-            </p>
         </t:if>
-
-    </div>
+        <t:loop source="surveyContainers" value="surveyContainer">
+            <t:if test="list">
+                <h6>Rate your class
+                    <span class="rating rate-inline rate-class"  data="${enrolment.id}-${surveyContainer.fieldConfiguration.id}">
+                        <input type="hidden" name="score"/>
+                    </span>
+                </h6>
+            </t:if>
+            <t:unless test="list">
+                <h4>Feedback
+                    <span class="rating rate-inline rate-class" data="${enrolment.id}-${surveyContainer.fieldConfiguration.id}">
+                        <input type="hidden" name="score"/>
+                    </span>
+                </h4>
+            </t:unless>
+            <small>${surveyContainer.fieldConfiguration.name}</small>
+            <div id="class-reviews" class="class-reviews" data="${enrolment.id}-${surveyContainer.fieldConfiguration.id}">
+                <form id="surveysForm" method="post" clientValidation="literal:NONE">
+                    <span class="arrow-top"></span>
+                    <ul class="promoter-score-details">
+                        <t:surveys.surveyComponent surveyContainer="surveyContainer"/>
+                    </ul>
+                    <div class="alert alert-info">Your comment and name (${portalService.contact.givenName}<t:if test="${portalService.contact.suburb}"> from ${portalService.contact.suburb}</t:if>) may be used for quality improvement or marketing.</div>
+                    <button class="btn btn-primary rate-submit">Submit</button>
+                </form>
+            </div>
+        </t:loop>
+    </t:unless>
+   
 </t:container>

@@ -1,17 +1,12 @@
 package ish.oncourse.portal.components.surveys;
 
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.FieldConfiguration;
-import ish.oncourse.model.Student;
-import ish.oncourse.model.Survey;
+import ish.oncourse.model.*;
 import ish.oncourse.portal.services.IPortalService;
+import ish.oncourse.portal.services.survey.*;
 import ish.oncourse.portal.util.RequestToSurvey;
 import ish.oncourse.portal.util.SurveyEncoder;
 import ish.oncourse.portal.util.SurveyToJSON;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.portal.services.survey.CreateSurvey;
-import ish.oncourse.portal.services.survey.GetAverageSurvey;
-import ish.oncourse.portal.services.survey.GetSurveyForStudent;
 import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
@@ -22,60 +17,69 @@ import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.util.TextStreamResponse;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 public class Surveys {
 
     @Inject
-    @Property
-    private IPortalService portalService;
+    private Request request;
 
     @Inject
     private ICayenneService cayenneService;
+    
+    @Property
+    private List<SurveyContainer> surveyContainers;
 
-    @Inject
-    private Request request;
+    @Property
+    private SurveyContainer surveyContainer;
 
-    @Parameter(required = true)
-	@Property
+    @Property
+    private Boolean useDefaultSurvey = false;
+    
+    @Property
+    private Survey defaultSurvey = null;
+
+    @Property
+    private Enrolment enrolment;
+
+    @Parameter
     private CourseClass courseClass;
-
-    @Parameter(required = true)
+    
+    @Inject
     @Property
-    private boolean isTutor;
-
-    @Property
-    public List<FieldConfiguration> surveyConfigurations;
+    private IPortalService portalService;
 
     @Property
-    public FieldConfiguration configuration;
+    private Survey averageSurvey;
 
+    @Property
+    private Boolean isTutor;
+
+    @Property
+    @Parameter
+    private Boolean list;
+    
     @SetupRender
     public void beforeRender() {
-        surveyConfigurations = courseClass.getCourse().getFieldConfigurationScheme().getSurveyFieldConfigurations();
-    }
-
-    @OnEvent(value = "getSurvey")
-    public TextStreamResponse getSurvey(Long courseClassId) throws IOException {
-        if (!request.isXHR())
-            return null;
-
-        courseClass = portalService.getCourseClassBy(courseClassId);
-
-        Survey survey;
-        //we should check at fist that the current contact is a student and try to load survey for student
-        boolean isTutor = portalService.getContact().getTutor() != null && portalService.isTutorFor(courseClass);
+        isTutor = portalService.getContact().getTutor() != null && portalService.isTutorFor(courseClass);
         if (isTutor) {
-            survey = GetAverageSurvey.valueOf(cayenneService.newNonReplicatingContext(), courseClass).get();
-        } else {
-            survey = createIfNotExist(cayenneService.newContext(),
-                                        courseClass,
-                                        portalService.getContact().getStudent());
+            averageSurvey = GetAverageSurvey.valueOf(cayenneService.newNonReplicatingContext(), courseClass).get();
+        } else  {
+            enrolment = portalService.getEnrolmentBy(portalService.getContact().getStudent(), courseClass);
+
+            surveyContainers = GetSurveyContainers.valueOf(enrolment).get();
+
+            if (surveyContainers == null) {
+                useDefaultSurvey = true;
+
+                if (!enrolment.getSurveys().isEmpty()) {
+                    defaultSurvey = enrolment.getSurveys().get(0);
+                }
+            }
         }
-
-        return new TextStreamResponse("text/json", SurveyToJSON.valueOf(survey, isTutor).get().toString());
     }
-
+    
     @OnEvent(value = "saveSurvey")
     public void saveSurvey(Long courseClassId) throws IOException {
         if (!request.isXHR())
@@ -96,4 +100,9 @@ public class Surveys {
         }
         return survey;
     }
+
+    public boolean showDefaultSurvey() {
+        return useDefaultSurvey && (enrolment.getCourseClass().getEndDate() == null || enrolment.getCourseClass().getEndDate().before(new Date()));
+    }
+
 }

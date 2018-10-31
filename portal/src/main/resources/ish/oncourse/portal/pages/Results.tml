@@ -15,12 +15,7 @@
 						<p><small class="text-muted">${date}</small></p>
 						<t:courseclass.classresults courseClass="courseClass"/>
 						<t:if test="showSurveys()">
-							<h6>Rate your class
-								<span class="rating rate-inline rate-class">
-									<input type="hidden" name="score"/>
-								</span>
-							</h6>
-							<t:surveys.surveys courseClass="courseClass" isTutor="false"/>
+							<t:surveys.surveys courseClass="courseClass" list="true"/>
 						</t:if>
 					</li>
 				</t:if>

@@ -71,19 +71,7 @@ public class ClassDetailsNew {
 
 	@Inject
 	private IPlainTextExtractor extractor;
-
-	@Property
-	private List<SurveyContainer> surveyContainers;
-
-	@Property
-	private SurveyContainer surveyContainer;
 	
-	@Property
-	private Boolean useDefaultSurvey = false;
-	@Property
-	private Survey defaultSurvey = null;
-
-
 	private ObjectMapper mapper = new ObjectMapper();
 
 	private CollectionType requestType = mapper.getTypeFactory().constructCollectionType(List.class, ish.oncourse.portal.services.attendance.Attendance.class);
@@ -101,16 +89,6 @@ public class ClassDetailsNew {
 		if (!isTutor) {
 			enrolment = portalService.getEnrolmentBy(portalService.getContact().getStudent(), courseClass);
 		}
-
-		surveyContainers = GetSurveyContainers.valueOf(enrolment).get();
-		
-		if (surveyContainers == null) {
-			useDefaultSurvey = true;
-
-			if (!enrolment.getSurveys().isEmpty()) {
-				defaultSurvey = enrolment.getSurveys().get(0);
-			}
-		}		
 	}
 
 	@OnEvent(value = "getAttendences")
@@ -140,15 +118,7 @@ public class ClassDetailsNew {
 	public String getActiveClass() {
 		return activeTab ? "active" : StringUtils.EMPTY;
 	}
-
-	public boolean showDefaultSurvey() {
-		return useDefaultSurvey && (courseClass.getEndDate() == null || courseClass.getEndDate().before(new Date()));
-	}
-
-	@OnEvent(value = "surveysform")
-	public void onSuccess() {
-		System.out.println("SAVE");
-	}
+	
 }
 
 
