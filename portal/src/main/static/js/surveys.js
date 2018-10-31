@@ -73,7 +73,6 @@ Survey.prototype = {
     },
 
     initializeSurveys: function () {
-        this.loadSurvey();
         var self = this;
 
         this.initNetPromoterScoreRate($j("div[data='" + self.id + "'].class-reviews").find("span.netPromoterScore-rate"), this.survey.netPromoterScore, this.survey.readOnly);
@@ -85,7 +84,7 @@ Survey.prototype = {
             self.saveSurvey();
         });
 
-        $j("div[data='" + self.id + "'].class-reviews").parent().find("span.rate-class").click(function () {
+			  $j("span[data='" + self.id + "'].rate-class").click(function () {
             self.slideSurveys()
         });
         this.fillSurvey();
@@ -109,10 +108,7 @@ Survey.prototype = {
     //slide survey form
     slideSurveys: function () {
         var self = this;
-        $j("div[data='" + self.id + "'].class-reviews").slideToggle("fast", function () {
-            // self.loadSurvey();
-            // self.fillSurvey();
-        });
+        $j("div[data='" + self.id + "'].class-reviews").slideToggle("fast");
     },
 
     refreshAverageRating: function () {
@@ -166,25 +162,6 @@ Survey.prototype = {
             data: data,
             success: function (data) {
                 self.slideSurveys();
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                // window.location.reload();
-                console.log("Unexpected exception");
-            }
-        });
-    },
-
-    loadSurvey: function () {
-        var self = this;
-        //get json survey and fill controls
-        var actionLink = "/portal/class.classdetailsnew.surveys:getSurvey/" + self.id;
-        $j.ajax({
-
-            url: actionLink,
-            async: false,
-            cache: false,
-            success: function (data) {
-                self.survey = data;
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 // window.location.reload();
