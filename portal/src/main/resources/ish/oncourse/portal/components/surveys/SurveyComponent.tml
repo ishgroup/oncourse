@@ -15,8 +15,7 @@
                     </t:if>
                 </t:loop>
                 <t:loop source="headings" value="heading">
-                    <h4 class="heading">${heading.name}</h4>
-                    <p class="heading-description">${heading.description}</p>
+                    <h4 class="heading" title="${heading.description}">${heading.name}</h4>
                     <ul>
                     <t:loop source="heading.fields" value="field">
                         <t:if test="${isScoreField()}">
