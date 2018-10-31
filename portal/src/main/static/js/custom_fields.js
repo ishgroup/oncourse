@@ -7,7 +7,7 @@ var $j = jQuery.noConflict();
 
 $j(document).ready(function () {
 
-    $j("input[id^='customField']").each(function () {
+    $j("input[name^='customField']").each(function () {
         if ($j(this).data('default')) {
             var values = $j(this).data('default').split(';');
             values = values.map(function(x){ return "*" == x ? "Other" : x });

@@ -15,6 +15,9 @@
                     </t:if>
                 </t:loop>
                 <t:loop source="headings" value="heading">
+                    <span class="heading">${heading.name}</span>
+                    <span class="heading-description">${heading.description}</span>
+                    <ul>
                     <t:loop source="heading.fields" value="field">
                         <t:if test="${isScoreField()}">
                             <t:surveys.surveyScoreField field="field" survey="surveyContainer.survey"/>
@@ -30,5 +33,6 @@
                             </p:else>
                         </t:if>
                     </t:loop>
+                    </ul>
                 </t:loop>
 </t:container>
