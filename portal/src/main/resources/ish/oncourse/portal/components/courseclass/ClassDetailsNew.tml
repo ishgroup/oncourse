@@ -18,6 +18,7 @@
 					<input type="hidden" name="score"/>
 				</span>
 			</h4>
+			<small>${surveyContainer.fieldConfiguration.name}</small>
 			<div id="class-reviews" class="class-reviews" data="${courseClass.id}">
 				<form id="surveysForm" method="post" clientValidation="literal:NONE">
 					<span class="arrow-top"></span>
