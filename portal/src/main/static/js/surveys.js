@@ -1,8 +1,8 @@
-goog.provide('surveys');
-
-goog.require('jquery');
-goog.require('jquery.raty');
-goog.require('initialise');
+// goog.provide('surveys');
+//
+// goog.require('jquery');
+// goog.require('jquery.raty');
+// goog.require('initialise');
 
 var $j = jQuery.noConflict();
 
@@ -173,7 +173,12 @@ Survey.prototype = {
 
     //commit surfey changes
     saveSurvey: function () {
+        
         var self = this;
+
+        if ($j("div[data='" + self.id + "'].class-reviews > div > div.alert-danger").length) {
+					$j("div[data='" + self.id + "'].class-reviews > div > div.alert-danger").remove();
+        }
         var actionLink = "/portal/class.classdetailsnew.surveys:saveSurvey/" + self.id;
         var data = {
 
@@ -194,7 +199,11 @@ Survey.prototype = {
             cache: false,
             data: data,
             success: function (data) {
-                self.slideSurveys();
+                if (data.error) {
+									$j("div[data='" + self.id + "'].class-reviews > div").append("<div class='alert alert-danger' style='display: inline-block; margin-left: 20px; padding: 8px;'>" + data.error + "</div>")
+                } else {
+									self.slideSurveys();
+								}
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 // window.location.reload();

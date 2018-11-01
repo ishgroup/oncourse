@@ -58,14 +58,14 @@
             </t:unless>
             <small>${surveyContainer.fieldConfiguration.name}</small>
             <div id="class-reviews" class="class-reviews" data="${enrolment.id}/${surveyContainer.fieldConfiguration.id}">
-                <form id="surveysForm" method="post" clientValidation="literal:NONE">
+                <div id="surveysForm" method="post" clientValidation="literal:NONE">
                     <span class="arrow-top"></span>
                     <ul class="promoter-score-details">
                         <t:surveys.surveyComponent surveyContainer="surveyContainer"/>
                     </ul>
                     <div class="alert alert-info">Your comment and name (${portalService.contact.givenName}<t:if test="${portalService.contact.suburb}"> from ${portalService.contact.suburb}</t:if>) may be used for quality improvement or marketing.</div>
                     <button class="btn btn-primary rate-submit">Submit</button>
-                </form>
+                </div>
             </div>
         </t:loop>
     </t:unless>

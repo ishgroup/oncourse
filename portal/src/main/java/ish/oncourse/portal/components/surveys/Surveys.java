@@ -123,7 +123,7 @@ public class Surveys {
         RequestToSurvey parser =  RequestToSurvey.valueOf(survey, request, container.getFieldConfiguration()).parse();
         if (parser.getError() != null) {
             context.rollbackChanges();
-            return new TextStreamResponse("text/json",parser.getError());
+            return new TextStreamResponse("text/json",  "{\"error\": \"" +  parser.getError() + "\"}");
         }
         survey.getObjectContext().commitChanges();
         return null;
