@@ -37,7 +37,7 @@ sourceSets {
 
 build.dependsOn(webpack, queryGrammar)
 
-task buildLogin(type: NodeTask, dependsOn: ['yarn_install', ':server-api:swagger', 'queryGrammar']) {
+task buildLogin(type: NodeTask, dependsOn: ['yarn_install', ':server-api:swagger']) {
     script = file('node_modules/.bin/webpack')
     args = ['-p', '--progress', '--env.NODE_ENV', 'production', '--config', 'webpack.login.config.js']
 }
