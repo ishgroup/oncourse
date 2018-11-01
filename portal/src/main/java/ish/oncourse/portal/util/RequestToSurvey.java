@@ -61,6 +61,7 @@ public class RequestToSurvey {
                             customField = survey.getObjectContext().newObject(SurveyCustomField.class);
                             customField.setRelatedObject(survey);
                             customField.setCustomFieldType(customFieldType);
+                            customField.setCollege(survey.getCollege());
                         }
                         customField.setValue(value);  
                                 
