@@ -30,17 +30,13 @@ public class SurveyTextLineField {
 
     @SetupRender
     public void beforeRender() {
-        CustomFieldType customFieldType = RequestToSurvey.getCustomFieldType(field);
-        
+        customFieldType = RequestToSurvey.getCustomFieldType(field);
         if (customFieldType == null) {
             throw new IllegalArgumentException(String.format("Field key is wrong, id: %d, property: %s", field.getId(), field.getProperty()));
         } else if (hasDefaultValue = StringUtils.trimToNull(customFieldType.getDefaultValue()) != null) {
             defaultValue = customFieldType.getDefaultValue();
         }
     }
-    
-    
-
     
     public String getValue() {
         return (String) GetSurveyValue.valueOf(survey, field, customFieldType).get();
