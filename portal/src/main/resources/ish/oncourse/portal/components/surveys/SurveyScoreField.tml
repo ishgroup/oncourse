@@ -1,19 +1,19 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
     <li>
         <t:if test="${isNetPromoterScore()}">
-            <label title="${field.description}">${field.name}</label>
+            <label title="${field.description}">${field.name}<t:if test="${field.mandatory}"> *</t:if></label>
             <span class="rate rate-inline netPromoterScore-rate" data-value="${value}"/>
         </t:if>
         <t:if test="${isCourseScore()}">
-            <label class="rating-class-details" title="${field.description}">${field.name}</label>
+            <label class="rating-class-details" title="${field.description}">${field.name}<t:if test="${field.mandatory}"> *</t:if></label>
             <span class="rate rate-inline course-rate" data-value="${value}"/>
         </t:if>
         <t:if test="${isVenueScore()}">
-            <label class="rating-class-details" title="${field.description}">${field.name}</label>
+            <label class="rating-class-details" title="${field.description}">${field.name}<t:if test="${field.mandatory}"> *</t:if></label>
             <span class="rate rate-inline venue-rate" data-value="${value}"/>
         </t:if>
         <t:if test="${isTutorScore()}">
-            <label class="rating-class-details" title="${field.description}">${field.name}</label>
+            <label class="rating-class-details" title="${field.description}">${field.name}<t:if test="${field.mandatory}"> *</t:if></label>
             <span class="rate rate-inline tutor-rate" data-value="${value}"/>
         </t:if>
     </li>
