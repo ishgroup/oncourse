@@ -2,6 +2,7 @@ package ish.oncourse.portal.components.surveys;
 
 import ish.oncourse.model.*;
 import ish.oncourse.portal.services.survey.GetSurveyValue;
+import ish.oncourse.portal.util.RequestToSurvey;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
@@ -29,11 +30,7 @@ public class SurveyTextLineField {
 
     @SetupRender
     public void beforeRender() {
-        CustomFieldType customFieldType = ObjectSelect.query(CustomFieldType.class)
-                .where(CustomFieldType.KEY.eq(field.getProperty().split("\\.")[2]))
-                .and(CustomFieldType.COLLEGE.eq(field.getCollege()))
-                .and(CustomFieldType.ENTITY_NAME.eq(Survey.class.getSimpleName()))
-                .selectOne(field.getObjectContext());
+        CustomFieldType customFieldType = RequestToSurvey.getCustomFieldType(field);
         
         if (customFieldType == null) {
             throw new IllegalArgumentException(String.format("Field key is wrong, id: %d, property: %s", field.getId(), field.getProperty()));

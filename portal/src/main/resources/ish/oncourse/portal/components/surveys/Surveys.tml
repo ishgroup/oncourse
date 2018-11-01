@@ -44,20 +44,20 @@
         <t:loop source="surveyContainers" value="surveyContainer">
             <t:if test="list">
                 <h6>Rate your class
-                    <span class="rating rate-inline rate-class"  data="${enrolment.id}-${surveyContainer.fieldConfiguration.id}">
+                    <span class="rating rate-inline rate-class"  data="${enrolment.id}/${surveyContainer.fieldConfiguration.id}">
                         <input type="hidden" name="score"/>
                     </span>
                 </h6>
             </t:if>
             <t:unless test="list">
                 <h4>Feedback
-                    <span class="rating rate-inline rate-class" data="${enrolment.id}-${surveyContainer.fieldConfiguration.id}">
+                    <span class="rating rate-inline rate-class" data="${enrolment.id}/${surveyContainer.fieldConfiguration.id}">
                         <input type="hidden" name="score"/>
                     </span>
                 </h4>
             </t:unless>
             <small>${surveyContainer.fieldConfiguration.name}</small>
-            <div id="class-reviews" class="class-reviews" data="${enrolment.id}-${surveyContainer.fieldConfiguration.id}">
+            <div id="class-reviews" class="class-reviews" data="${enrolment.id}/${surveyContainer.fieldConfiguration.id}">
                 <form id="surveysForm" method="post" clientValidation="literal:NONE">
                     <span class="arrow-top"></span>
                     <ul class="promoter-score-details">
