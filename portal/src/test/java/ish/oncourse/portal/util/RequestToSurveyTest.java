@@ -1,10 +1,14 @@
 package ish.oncourse.portal.util;
 
+import ish.oncourse.model.Field;
+import ish.oncourse.model.FieldConfiguration;
 import ish.oncourse.model.Survey;
 import org.apache.tapestry5.services.Request;
 import org.junit.Test;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -20,7 +24,7 @@ public class RequestToSurveyTest {
     public void testParsingRequest() {
         Survey survey = new Survey();
 
-        RequestToSurvey.valueOf(survey, prepareRequest(), null).parse();
+        RequestToSurvey.valueOf(survey, prepareRequest(), prepareSurveyConfiguration()).parse();
 
         assertEquals((Integer) 5, survey.getTutorScore());
         assertEquals((Integer) 4, survey.getCourseScore());
@@ -38,7 +42,7 @@ public class RequestToSurveyTest {
         Survey survey = new Survey();
         invokePostAdd(survey);
 
-        RequestToSurvey.valueOf(survey, prepareEmptyRequest(), null).parse();
+        RequestToSurvey.valueOf(survey, prepareEmptyRequest(), prepareSurveyConfiguration()).parse();
 
         assertEquals((Integer) 0, survey.getTutorScore());
         assertEquals((Integer) 0, survey.getCourseScore());
@@ -74,5 +78,27 @@ public class RequestToSurveyTest {
         Method m = c.getDeclaredMethod("onPostAdd");
         m.setAccessible(true);
         m.invoke(s);
+    }
+
+    private FieldConfiguration prepareSurveyConfiguration() {
+        FieldConfiguration conf = mock(FieldConfiguration.class);
+
+        List<Field> fields = new ArrayList<>();
+        fields.add(prepareField(Survey.COMMENT.getName(), "Comment", false));
+        fields.add(prepareField(Survey.VENUE_SCORE.getName(), "Venue", false));
+        fields.add(prepareField(Survey.COURSE_SCORE.getName(), "Course", false));
+        fields.add(prepareField(Survey.TUTOR_SCORE.getName(), "Tutor", false));
+        fields.add(prepareField(Survey.NET_PROMOTER_SCORE.getName(), "Abracadabra", false));
+
+        when(conf.getFields()).thenReturn(fields);
+        return conf;
+    }
+
+    private Field prepareField(String property, String name, boolean mandatory) {
+        Field field = mock(Field.class);
+        when(field.getProperty()).thenReturn(property);
+        when(field.getName()).thenReturn(name);
+        when(field.getMandatory()).thenReturn(mandatory);
+        return field;
     }
 }
