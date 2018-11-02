@@ -116,7 +116,7 @@ public class RequestToSurvey {
     }
     
     private void recordFieldError(Field field) {
-        error = String.format("\"%s \"", field.getName());
+        error = String.format("'%s' is required", field.getName());
     }
     
     public static CustomFieldType getCustomFieldType(Field field) {
