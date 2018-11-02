@@ -16,7 +16,7 @@ Survey.prototype = {
 
     initAverageRating: function (score) {
         var self = this;
-        $j("div[data='" + self.id + "'].class-reviews").parent().find(".rating").raty({
+        $j("span[data='" + self.id + "'].rating").raty({
             half: false,
             size: 24,
             starOff: '/portal/img/svg_icons/star-off.svg',
