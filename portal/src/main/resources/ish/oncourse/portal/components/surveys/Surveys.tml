@@ -5,34 +5,26 @@
 					<input type="hidden" name="score"/>
 				</span>
         </h4>
-        <div id="class-reviews" class="class-reviews" data="${courseClass.id}" dat-readonly="true">
+        <div id="class-reviews" class="class-reviews" data="${courseClass.id}" data-readonly="true">
             <span class="arrow-top"></span>
             <ul class="promoter-score-details">
                 <li>
                     <label>How likely are you to recommend us to a friend?</label>
-                    <span class="rate rate-inline netPromoterScore-rate">               
-                        <input name="score" type="hidden" value="${averageSurvey.netPromoterScore}"/>
-                    </span>
+                    <span class="rate rate-inline netPromoterScore-rate"  data-value="${averageSurvey.netPromoterScore}"/> 
                 </li>
             </ul>
             <ul class="rating-class-details">
                 <li>
                     <label>Venue</label>
-                    <span class="rate rate-inline venue-rate">               
-                        <input name="score" type="hidden" value="${averageSurvey.venueScore}"/>
-                    </span>
+                    <span class="rate rate-inline venue-rate" data-value="${averageSurvey.venueScore}"/>
                 </li>
                 <li>
                     <label>Course</label>
-                    <span class="rate rate-inline course-rate">               
-                        <input name="score" type="hidden" value="${averageSurvey.courseScore}"/>
-                    </span>
+                    <span class="rate rate-inline course-rate" data-value="${averageSurvey.courseScore}"/>
                 </li>
                 <li>
                     <label>Tutor</label>
-                    <span class="rate rate-inline tutor-rate">               
-                        <input name="score" type="hidden" value="${averageSurvey.tutorScore}"/>
-                    </span>
+                    <span class="rate rate-inline tutor-rate" data-value="${averageSurvey.tutorScore}"/>
                 </li>
             </ul>
         </div>
