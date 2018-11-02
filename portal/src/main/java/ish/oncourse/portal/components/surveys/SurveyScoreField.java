@@ -33,7 +33,12 @@ public class SurveyScoreField {
     }
 
     public int getValue() {
-        return (int) GetSurveyValue.valueOf(survey, field).get();
+        Object value = GetSurveyValue.valueOf(survey, field).get();
+        if (value == null) {
+            return 0;
+        } else {
+            return (int) value;
+        }
     }
     
 }
