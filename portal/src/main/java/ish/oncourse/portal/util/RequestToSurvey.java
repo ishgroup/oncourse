@@ -41,7 +41,7 @@ public class RequestToSurvey {
                     if (value != null) {
                         survey.setComment(value);
                     } else if (field.getMandatory()) {
-                        error = "Comment is required";
+                        recordFieldError(field);
                         return this;
                     }
                     break;
@@ -66,7 +66,7 @@ public class RequestToSurvey {
                         customField.setValue(value);  
                                 
                     } else if (field.getMandatory()) {
-                        error = field.getName() + "is required";
+                        recordFieldError(field);
                         return this;
                     }
                     break;
@@ -109,10 +109,14 @@ public class RequestToSurvey {
         if (value != null &&  StringUtils.isNumeric(value) && Integer.valueOf(value) > 0) {
             setter.accept(Integer.valueOf(value));
         } else if (field.getMandatory()) {
-            error = field.getName() + "is required";
+            recordFieldError(field);
             return false;
         }
         return true;
+    }
+    
+    private void recordFieldError(Field field) {
+        error = String.format("\"%s \"", field.getName());
     }
     
     public static CustomFieldType getCustomFieldType(Field field) {
