@@ -38,20 +38,43 @@ public class GetAverageSurvey {
     }
 
     protected Survey calculateAverage(Survey result, List<Survey> surveys) {
-        for (Survey survey : surveys) {
-            result.setCourseScore(result.getCourseScore() + survey.getCourseScore());
-            result.setVenueScore(result.getVenueScore() + survey.getVenueScore());
-            result.setTutorScore(result.getTutorScore() + survey.getTutorScore());
-            result.setNetPromoterScore(result.getNetPromoterScore() + (survey.getNetPromoterScore() == null ? 0 : survey.getNetPromoterScore()));
-        }
+        int courseScores = 0;
+        int venueScores = 0;
+        int tutorScores = 0;
+        int netPromoterScores = 0;
 
-        int size = surveys.size();
-        if (size != 0) {
-            result.setCourseScore((Math.round(result.getCourseScore() / size)));
-            result.setTutorScore((Math.round(result.getTutorScore() / size)));
-            result.setVenueScore((Math.round(result.getVenueScore() / size)));
-            result.setNetPromoterScore((Math.round(result.getNetPromoterScore() / size)));
+        for (Survey survey : surveys) {
+            if (survey.getCourseScore() != null ||  survey.getCourseScore() > 0) {
+                result.setCourseScore(result.getCourseScore() + survey.getCourseScore());
+                courseScores++;
+            }
+            if (survey.getVenueScore() != null ||  survey.getVenueScore() > 0) {
+                result.setVenueScore(result.getVenueScore() + survey.getVenueScore());
+                venueScores++;
+            }
+            if (survey.getTutorScore() != null ||  survey.getTutorScore() > 0) {
+                result.setTutorScore(result.getTutorScore() + survey.getTutorScore());
+                tutorScores++;
+            }
+            if (survey.getNetPromoterScore() != null ||  survey.getNetPromoterScore() > 0) {
+                result.setNetPromoterScore(result.getNetPromoterScore() + survey.getNetPromoterScore());
+                netPromoterScores++;
+            }
         }
+        
+        if (result.getVenueScore() > 0) {
+            result.setVenueScore((Math.round(result.getVenueScore() / venueScores)));
+        }
+        if (result.getCourseScore() > 0) {
+            result.setCourseScore((Math.round(result.getCourseScore() / courseScores)));
+        }   
+        if (result.getTutorScore() > 0) {
+            result.setTutorScore((Math.round(result.getTutorScore() / tutorScores)));
+        }   
+        if (result.getNetPromoterScore() > 0) {
+            result.setNetPromoterScore((Math.round(result.getNetPromoterScore() / netPromoterScores)));
+        }
+        
         return result;
     }
 
