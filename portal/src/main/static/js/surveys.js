@@ -1,8 +1,8 @@
-goog.provide('surveys');
-
-goog.require('jquery');
-goog.require('jquery.raty');
-goog.require('initialise');
+// goog.provide('surveys');
+//
+// goog.require('jquery');
+// goog.require('jquery.raty');
+// goog.require('initialise');
 
 var $j = jQuery.noConflict();
 
@@ -73,47 +73,50 @@ Survey.prototype = {
 
     initializeSurveys: function () {
         var self = this;
-			  var readOnly = $j("div[data='" + self.id + "'].class-reviews").prop("data-readonly");
-          
-        if ($j("div[data='" + self.id + "'].class-reviews").find("span.netPromoterScore-rate").length) {
-					this.initNetPromoterScoreRate($j("div[data='" + self.id + "'].class-reviews").find("span.netPromoterScore-rate"), $j("div[data='" + self.id + "'].class-reviews").find("span.netPromoterScore-rate").attr("data-value"), readOnly);
+			  var formElement = $j("div[data='" + self.id + "'].class-reviews")
+			  var readOnly = $j(formElement).prop("data-readonly");
+      
+      
+        if ($j(formElement).find("span.netPromoterScore-rate").length) {
+					this.initNetPromoterScoreRate($j(formElement).find("span.netPromoterScore-rate"), $j(formElement).find("span.netPromoterScore-rate").attr("data-value"), readOnly);
 				}
-        if ($j("div[data='" + self.id + "'].class-reviews").find("span.venue-rate").length) {
-          this.initRate($j("div[data='" + self.id + "'].class-reviews").find("span.venue-rate"), $j("div[data='" + self.id + "'].class-reviews").find("span.venue-rate").attr("data-value"), readOnly);
+        if ($j(formElement).find("span.venue-rate").length) {
+          this.initRate($j(formElement).find("span.venue-rate"), $j(formElement).find("span.venue-rate").attr("data-value"), readOnly);
         }
-        if ($j("div[data='" + self.id + "'].class-reviews").find("span.tutor-rate").length) {
-            this.initRate($j("div[data='" + self.id + "'].class-reviews").find("span.tutor-rate"), $j("div[data='" + self.id + "'].class-reviews").find("span.tutor-rate").attr("data-value"), readOnly);
+        if ($j(formElement).find("span.tutor-rate").length) {
+            this.initRate($j(formElement).find("span.tutor-rate"), $j(formElement).find("span.tutor-rate").attr("data-value"), readOnly);
         }
-        if ($j("div[data='" + self.id + "'].class-reviews").find("span.tutor-rate").length) {
-            this.initRate($j("div[data='" + self.id + "'].class-reviews").find("span.course-rate"), $j("div[data='" + self.id + "'].class-reviews").find("span.course-rate").attr("data-value"), readOnly);
+        if ($j(formElement).find("span.course-rate").length) {
+          this.initRate($j(formElement).find("span.course-rate"), $j(formElement).find("span.course-rate").attr("data-value"), readOnly);
         }
       
-        $j("div[data='" + self.id + "'].class-reviews").find("button.rate-submit").click(function () {
+        $j(formElement).find("button.rate-submit").click(function () {
             self.saveSurvey();
         });
 
 			  $j("span[data='" + self.id + "'].rate-class").click(function () {
             self.slideSurveys()
         });
+			  
         this.fillSurvey();
 
         if (readOnly) {
-             $j("div[data='" + self.id + "'].class-reviews").parent().find("span.rate-class").tooltip({ content: 'Click here to see reviews', position: {
+             $j(formElement).parent().find("span.rate-class").tooltip({ content: 'Click here to see reviews', position: {
                      my: "center bottom",
                      at: "center top-20"
                  }
              });
         }
         else {
-            $j("div[data='" + self.id + "'].class-reviews").parent().find("span.rate-class").tooltip({ content: 'Click here to provide reviews', position: {
+            $j(formElement).parent().find("span.rate-class").tooltip({ content: 'Click here to provide reviews', position: {
                     my: "center bottom",
                     at: "center top-20"
                 }
             });
         }
         
-			  if ($j("div[data='" + self.id + "'].class-reviews").find("span.netPromoterScore-rate").length) {
-					this.refreshNetPromoterScore($j("div[data='" + self.id + "'].class-reviews").find("span.netPromoterScore-rate").attr("data-value"))
+			  if ($j(formElement).find("span.netPromoterScore-rate").length) {
+					this.refreshNetPromoterScore($j(formElement).find("span.netPromoterScore-rate").attr("data-value"))
 				}
     },
     //slide survey form
@@ -127,14 +130,16 @@ Survey.prototype = {
         var venue=0;
 			  var tutor=0;
 			  var course=0;
-			  if ($j("div[data='" + self.id + "'].class-reviews").find("span.venue-rate").length) {
-					venue = $j("div[data='" + self.id + "'].class-reviews").find("span.venue-rate").raty("score")
+			  var formElement = $j("div[data='" + self.id + "'].class-reviews")
+
+			  if ($j(formElement).find("span.venue-rate").length) {
+					venue = $j(formElement).find("span.venue-rate").raty("score")
         }
-        if ($j("div[data='" + self.id + "'].class-reviews").find("span.tutor-rate").length) {
-					tutor = $j("div[data='" + self.id + "'].class-reviews").find("span.tutor-rate").raty("score")
+        if ($j(formElement).find("span.tutor-rate").length) {
+					tutor = $j(formElement).find("span.tutor-rate").raty("score")
         }
-        if ($j("div[data='" + self.id + "'].class-reviews").find("span.tutor-rate").length) {
-          course = $j("div[data='" + self.id + "'].class-reviews").find("span.course-rate").raty("score")
+        if ($j(formElement).find("span.course-rate").length) {
+          course = $j(formElement).find("span.course-rate").raty("score")
         }
       
         this.initAverageRating(Math.floor( venue + tutor +course / 3));
@@ -142,11 +147,12 @@ Survey.prototype = {
 
     refreshNetPromoterScore: function(score) {
 			var self = this;
+			var formElement = $j("div[data='" + self.id + "'].class-reviews")
 
-			var customPlaceholder = $j("div[data='" + self.id + "'].class-reviews").prop("data-placeholder");
+			var customPlaceholder = $j(formElement).prop("data-placeholder");
+			
 			if (customPlaceholder) {
-				$j("div[data='" + self.id + "'].class-reviews").find("textarea.survey-comment").attr('placeholder', customPlaceholder);
-
+				$j(formElement).find("textarea.survey-comment").attr('placeholder', customPlaceholder);
 			} else {
 				var placeholderMessage = '';
 				if (score >= 1 && score <= 6) {
@@ -156,24 +162,34 @@ Survey.prototype = {
 						placeholderMessage = 'What did you most enjoy about your experience.';
 					}
 				}
-				$j("div[data='" + self.id + "'].class-reviews").find("textarea.survey-comment").attr('placeholder', placeholderMessage);
+				$j(formElement).find("textarea.survey-comment").attr('placeholder', placeholderMessage);
 			}
 		},
 
     fillSurvey: function () {
+        
         var self = this;
-        if ($j("div[data='" + self.id + "'].class-reviews").find("span.netPromoterScore-rate").length) {
-					$j("div[data='" + self.id + "'].class-reviews").find("span.netPromoterScore-rate").raty("score", $j("div[data='" + self.id + "'].class-reviews").find("span.venue-netPromoterScore").attr("data-value"));
+			  var formElement = $j("div[data='" + self.id + "'].class-reviews");
+        var netScore = $j(formElement).find("span.netPromoterScore-rate");
+        if ($j(netScore).length) {
+					$j(netScore).raty("score", $j(netScore).attr("data-value"));
 				}
-			  if ($j("div[data='" + self.id + "'].class-reviews").find("span.venue-rate").length) {
-					$j("div[data='" + self.id + "'].class-reviews").find("span.venue-rate").raty("score", $j("div[data='" + self.id + "'].class-reviews").find("span.venue-rate").attr("data-value"));
+				
+			  var venueScore = $j(formElement).find("span.venue-rate");
+			  if ($j(venueScore).length) {
+					$j(venueScore).raty("score", $j(venueScore).attr("data-value"));
 				}
-			  if ($j("div[data='" + self.id + "'].class-reviews").find("span.tutor-rate").length) {
-					$j("div[data='" + self.id + "'].class-reviews").find("span.tutor-rate").raty("score", $j("div[data='" + self.id + "'].class-reviews").find("span.tutor-rate").attr("data-value"));
-				}
-			  if ($j("div[data='" + self.id + "'].class-reviews").find("span.course-rate").length) {
-					$j("div[data='" + self.id + "'].class-reviews").find("span.course-rate").raty("score", $j("div[data='" + self.id + "'].class-reviews").find("span.course-rate").attr("data-value"));
-				}
+				
+        var tutorScore = $j(formElement).find("span.tutor-rate");
+        if ($j(tutorScore).length) {
+            $j(tutorScore).raty("score", $j(tutorScore).attr("data-value"));
+        }
+        
+        var courseScore = $j(formElement).find("span.course-rate");
+        if ($j(courseScore).length) {
+            $j(courseScore).raty("score", $j(courseScore).attr("data-value"));
+        }
+        
         this.refreshAverageRating();
     },
 
@@ -181,21 +197,22 @@ Survey.prototype = {
     saveSurvey: function () {
         
         var self = this;
-
-        if ($j("div[data='" + self.id + "'].class-reviews > div > div.alert-danger").length) {
-					$j("div[data='" + self.id + "'].class-reviews > div > div.alert-danger").remove();
+			  var validationError = $j("div[data='" + self.id + "'].class-reviews > div > div.alert-danger")
+			  var formElement = $j("div[data='" + self.id + "'].class-reviews");
+        if ($j(validationError).length) {
+					$j(validationError).remove();
         }
         var actionLink = "/portal/class.classdetailsnew.surveys:saveSurvey/" + self.id;
         var data = {
 
-            "netPromoterScore": $j("div[data='" + self.id + "'].class-reviews").find("span.netPromoterScore-rate").find('input[name=score]').val(),
-            "comment": $j("div[data='" + self.id + "'].class-reviews").find("textarea.survey-comment").val(),
-            "courseScore": $j("div[data='" + self.id + "'].class-reviews").find("span.course-rate").find('input[name=score]').val(),
-            "tutorScore": $j("div[data='" + self.id + "'].class-reviews").find("span.tutor-rate").find('input[name=score]').val(),
-            "venueScore": $j("div[data='" + self.id + "'].class-reviews").find("span.venue-rate").find('input[name=score]').val()
+            "netPromoterScore": $j(formElement).find("span.netPromoterScore-rate").find('input[name=score]').val(),
+            "comment": $j(formElement).find("textarea.survey-comment").val(),
+            "courseScore": $j(formElement).find("span.course-rate").find('input[name=score]').val(),
+            "tutorScore": $j(formElement).find("span.tutor-rate").find('input[name=score]').val(),
+            "venueScore": $j(formElement).find("span.venue-rate").find('input[name=score]').val()
         };
 
-			  $j("div[data='" + self.id + "'].class-reviews").find("input[name='customField']").each(function (index, element) {
+			  $j(formElement).find("input[name='customField']").each(function (index, element) {
 					data[$j(element).attr("data-key")] = $j(element).val()
 				});
         
