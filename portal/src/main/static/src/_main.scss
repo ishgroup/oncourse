@@ -1133,8 +1133,14 @@ strong.link-color {
 }
 
 .promoter-score-details label {
-    min-width: 130px;
+    width: 200px;
     font-weight: normal;
+}
+
+.promoter-score-details li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1em;
 }
 
 .promoter-score-details input {
