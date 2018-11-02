@@ -42,7 +42,7 @@ public class GetAverageSurvey {
             result.setCourseScore(result.getCourseScore() + survey.getCourseScore());
             result.setVenueScore(result.getVenueScore() + survey.getVenueScore());
             result.setTutorScore(result.getTutorScore() + survey.getTutorScore());
-            result.setNetPromoterScore(result.getNetPromoterScore() + survey.getNetPromoterScore());
+            result.setNetPromoterScore(result.getNetPromoterScore() + (survey.getNetPromoterScore() == null ? 0 : survey.getNetPromoterScore()));
         }
 
         int size = surveys.size();

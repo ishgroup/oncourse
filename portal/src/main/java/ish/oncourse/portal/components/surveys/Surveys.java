@@ -117,6 +117,10 @@ public class Surveys {
             survey.setEnrolment(enrolment);
             survey.setFieldConfiguration(fieldConf);
             survey.setCollege(enrolment.getCollege());
+            survey.setNetPromoterScore(0);
+            survey.setVenueScore(0);
+            survey.setCourseScore(0);
+            survey.setTutorScore(0);
         }
 
 
