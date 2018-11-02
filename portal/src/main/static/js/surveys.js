@@ -1,8 +1,8 @@
-// goog.provide('surveys');
-//
-// goog.require('jquery');
-// goog.require('jquery.raty');
-// goog.require('initialise');
+goog.provide('surveys');
+
+goog.require('jquery');
+goog.require('jquery.raty');
+goog.require('initialise');
 
 var $j = jQuery.noConflict();
 
