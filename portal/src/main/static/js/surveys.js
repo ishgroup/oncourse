@@ -73,7 +73,7 @@ Survey.prototype = {
 
     initializeSurveys: function () {
         var self = this;
-			  var readOnly = $j("div[data='" + self.id + "'].class-reviews").prop("data-readonly")
+			  var readOnly = $j("div[data='" + self.id + "'].class-reviews").prop("data-readonly");
           
         if ($j("div[data='" + self.id + "'].class-reviews").find("span.netPromoterScore-rate").length) {
 					this.initNetPromoterScoreRate($j("div[data='" + self.id + "'].class-reviews").find("span.netPromoterScore-rate"), $j("div[data='" + self.id + "'].class-reviews").find("span.netPromoterScore-rate").attr("data-value"), readOnly);
@@ -141,18 +141,24 @@ Survey.prototype = {
     },
 
     refreshNetPromoterScore: function(score) {
-      var self = this;
-        //var score = $j("div[data='" + self.id + "'].class-reviews").find("span.netPromoterScore-rate").raty('score');
-        var placeholderMessage = '';
-        if (score >= 1 && score <= 6) {
-            placeholderMessage = 'Please tell us how we could have improved your experience.';
-        } else {
-            if (score >= 7 && score <= 10) {
-                placeholderMessage = 'What did you most enjoy about your experience.';
-            }
-        }
-        $j("div[data='" + self.id + "'].class-reviews").find("textarea.survey-comment").attr('placeholder', placeholderMessage);
-    },
+			var self = this;
+
+			var customPlaceholder = $j("div[data='" + self.id + "'].class-reviews").prop("data-placeholder");
+			if (customPlaceholder) {
+				$j("div[data='" + self.id + "'].class-reviews").find("textarea.survey-comment").attr('placeholder', customPlaceholder);
+
+			} else {
+				var placeholderMessage = '';
+				if (score >= 1 && score <= 6) {
+					placeholderMessage = 'Please tell us how we could have improved your experience.';
+				} else {
+					if (score >= 7 && score <= 10) {
+						placeholderMessage = 'What did you most enjoy about your experience.';
+					}
+				}
+				$j("div[data='" + self.id + "'].class-reviews").find("textarea.survey-comment").attr('placeholder', placeholderMessage);
+			}
+		},
 
     fillSurvey: function () {
         var self = this;

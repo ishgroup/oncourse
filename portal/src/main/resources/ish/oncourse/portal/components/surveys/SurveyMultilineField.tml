@@ -1,3 +1,8 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-    <textarea rows="5" class="form-control survey-comment" data-key="${field.property}" title="${field.description}">${getValue()}</textarea>
+    <t:if test="${field.description}">
+        <textarea rows="5" class="form-control survey-comment" data-key="${field.property}" title="${field.name}" data-placeholder="${field.description}">${getValue()}</textarea>
+    </t:if>
+    <t:unless test="${field.description}">
+        <textarea rows="5" class="form-control survey-comment" data-key="${field.property}" title="${field.name}">${getValue()}</textarea>
+    </t:unless>
 </t:container>
