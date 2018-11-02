@@ -1,8 +1,8 @@
-// goog.provide('surveys');
-//
-// goog.require('jquery');
-// goog.require('jquery.raty');
-// goog.require('initialise');
+goog.provide('surveys');
+
+goog.require('jquery');
+goog.require('jquery.raty');
+goog.require('initialise');
 
 var $j = jQuery.noConflict();
 
@@ -92,7 +92,7 @@ Survey.prototype = {
     initializeSurveys: function () {
         var self = this;
 			  var formElement = $j("div[data='" + self.id + "'].class-reviews")
-			  var readOnly = $j(formElement).prop("data-readonly");
+			  var readOnly = $j(formElement).attr("data-readonly");
       
       
         if ($j(formElement).find("span.netPromoterScore-rate").length) {
