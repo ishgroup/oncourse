@@ -105,7 +105,7 @@ public class RequestToSurvey {
     }
 
     private boolean setScoreValue(Field field, Consumer<Integer> setter) {
-        String value = StringUtils.trimToNull(src.getParameter(Survey.COURSE_SCORE.getName()));
+        String value = StringUtils.trimToNull(src.getParameter(field.getProperty()));
         if (value != null &&  StringUtils.isNumeric(value) && Integer.valueOf(value) > 0) {
             setter.accept(Integer.valueOf(value));
         } else if (field.getMandatory()) {
