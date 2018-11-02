@@ -53,10 +53,11 @@ public class RequestToSurvey {
                              
                     value = StringUtils.trimToNull(src.getParameter(field.getProperty()));
                     
+                    SurveyCustomField customField = survey.getCustomFields().stream()
+                            .filter(cf -> cf.getCustomFieldType().getId().equals(customFieldType.getId()))
+                            .findAny().orElse(null);
+                    
                     if (value != null) {
-                        SurveyCustomField customField = survey.getCustomFields().stream()
-                                .filter(cf -> cf.getCustomFieldType().getId().equals(customFieldType.getId()))
-                                .findAny().orElse(null);
                         if (customField == null) {
                             customField = survey.getObjectContext().newObject(SurveyCustomField.class);
                             customField.setRelatedObject(survey);
@@ -68,7 +69,10 @@ public class RequestToSurvey {
                     } else if (field.getMandatory()) {
                         recordFieldError(field);
                         return this;
+                    } else if (customField != null) {
+                        survey.getObjectContext().deleteObject(customField);
                     }
+                    
                     break;
                 case VENUE_SCORE:
                     if (setScoreValue(field, survey::setVenueScore)) {
