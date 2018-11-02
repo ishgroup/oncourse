@@ -1,8 +1,8 @@
-goog.provide('surveys');
-
-goog.require('jquery');
-goog.require('jquery.raty');
-goog.require('initialise');
+// goog.provide('surveys');
+//
+// goog.require('jquery');
+// goog.require('jquery.raty');
+// goog.require('initialise');
 
 var $j = jQuery.noConflict();
 
@@ -40,16 +40,34 @@ Survey.prototype = {
             readOnly: readOnly,
             score: score,
             click: function (scoreVal, evt) {
-                var venueScore = $j("div[data='" + self.id + "'].class-reviews").find("span.venue-rate").raty("score");
-                var tutorScore = $j("div[data='" + self.id + "'].class-reviews").find("span.tutor-rate").raty("score");
-                var courseScore = $j("div[data='" + self.id + "'].class-reviews").find("span.course-rate").raty("score");
+							var venueScore=0;
+							var tutorScore=0;
+							var courseScore=0;
+							
+							var delimiter = 0;
+							var form = $j("div[data='" + self.id + "'].class-reviews");
+							var evtClasses = evt.target.parentElement.className;
 
-                var evtClasses = evt.target.parentElement.className;
-                var averageRate = Math.round(
-                    (evtClasses.endsWith('venue-rate') ? scoreVal + tutorScore + courseScore :
-                        evtClasses.endsWith('tutor-rate') ? venueScore + scoreVal + courseScore :
-                            venueScore + tutorScore + scoreVal) / 3);
-                self.initAverageRating(averageRate);
+							var venue = $j(form).find("span.venue-rate");
+							var tutor = $j(form).find("span.tutor-rate");
+							var course = $j(form).find("span.course-rate");
+							
+							if ($j(venue).length) {
+                venueScore = evtClasses.endsWith('venue-rate') ?scoreVal: $j(venue).raty("score");
+                delimiter++
+              }
+
+							if ($j(tutor).length) {
+								tutorScore = evtClasses.endsWith('tutor-rate') ?scoreVal: $j(tutor).raty("score");
+								delimiter++
+							}
+							
+							if ($j(course).length) {
+								courseScore = evtClasses.endsWith('course-rate') ?scoreVal: $j(course).raty("score");
+								delimiter++
+							}
+              
+                self.initAverageRating(Math.round((venueScore + tutorScore + courseScore) / delimiter));
             }
         });
     },
@@ -130,19 +148,24 @@ Survey.prototype = {
         var venue=0;
 			  var tutor=0;
 			  var course=0;
+			  var delimiter = 0;
 			  var formElement = $j("div[data='" + self.id + "'].class-reviews")
 
 			  if ($j(formElement).find("span.venue-rate").length) {
 					venue = $j(formElement).find("span.venue-rate").raty("score")
+					delimiter++
         }
         if ($j(formElement).find("span.tutor-rate").length) {
 					tutor = $j(formElement).find("span.tutor-rate").raty("score")
+					delimiter++
         }
         if ($j(formElement).find("span.course-rate").length) {
           course = $j(formElement).find("span.course-rate").raty("score")
+					delimiter++
         }
-      
-        this.initAverageRating(Math.floor( venue + tutor +course / 3));
+        if (delimiter>0) {
+					this.initAverageRating(delimiter>0 ? Math.floor( (venue + tutor +course) / delimiter): 0);
+				}
     },
 
     refreshNetPromoterScore: function(score) {
