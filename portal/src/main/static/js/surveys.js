@@ -111,36 +111,12 @@ Survey.prototype = {
         $j(formElement).find("button.rate-submit").click(function () {
             self.saveSurvey();
         });
-
-			  $j("span[data='" + self.id + "'].rate-class").click(function () {
-            self.slideSurveys()
-        });
 			  
         this.fillSurvey();
-
-        if (readOnly) {
-             $j(formElement).parent().find("span.rate-class").tooltip({ content: 'Click here to see reviews', position: {
-                     my: "center bottom",
-                     at: "center top-20"
-                 }
-             });
-        }
-        else {
-            $j(formElement).parent().find("span.rate-class").tooltip({ content: 'Click here to provide reviews', position: {
-                    my: "center bottom",
-                    at: "center top-20"
-                }
-            });
-        }
         
 			  if ($j(formElement).find("span.netPromoterScore-rate").length) {
 					this.refreshNetPromoterScore($j(formElement).find("span.netPromoterScore-rate").attr("data-value"))
 				}
-    },
-    //slide survey form
-    slideSurveys: function () {
-        var self = this;
-        $j("div[data='" + self.id + "'].class-reviews").slideToggle("fast");
     },
 
     refreshAverageRating: function () {
@@ -164,7 +140,7 @@ Survey.prototype = {
 					delimiter++
         }
         if (delimiter>0) {
-					this.initAverageRating(delimiter>0 ? Math.floor( (venue + tutor +course) / delimiter): 0);
+					this.initAverageRating(delimiter>0 ? Math.round( (venue + tutor +course) / delimiter): 0);
 				}
     },
 
@@ -221,10 +197,18 @@ Survey.prototype = {
         
         var self = this;
 			  var validationError = $j("div[data='" + self.id + "'].class-reviews > div > div.alert-danger")
-			  var formElement = $j("div[data='" + self.id + "'].class-reviews");
+				var successResult = $j("div[data='" + self.id + "'].class-reviews > div > div.alert-success")
+
+				var formElement = $j("div[data='" + self.id + "'].class-reviews");
+			  
         if ($j(validationError).length) {
 					$j(validationError).remove();
         }
+        
+				if ($j(successResult).length) {
+					$j(successResult).remove();
+				}
+				
         var actionLink = "/portal/class.classdetailsnew.surveys:saveSurvey/" + self.id;
         var data = {
 
@@ -248,7 +232,7 @@ Survey.prototype = {
                 if (data.error) {
 									$j("div[data='" + self.id + "'].class-reviews > div").append("<div class='alert alert-danger' style='display: inline-block; margin-left: 20px; padding: 8px;'>" + data.error + "</div>")
                 } else {
-									self.slideSurveys();
+									$j("div[data='" + self.id + "'].class-reviews > div").append("<div class='alert alert-success' style='display: inline-block; margin-left: 20px; padding: 8px;'>Success!</div>")
 								}
             },
             error: function (jqXHR, textStatus, errorThrown) {
