@@ -51,7 +51,7 @@ class GetSurveyValue {
                 case COMMENT:
                     return survey.comment
                 case CUSTOM_FIELD_SURVEY:
-                    survey.customFields.find { cf -> cf.customFieldType.id == customFieldType.id}?.value
+                    return survey.customFields.find { cf -> cf.customFieldType.id == customFieldType.id}?.value
             }
         }
     }
