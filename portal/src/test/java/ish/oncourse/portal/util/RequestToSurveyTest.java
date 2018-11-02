@@ -20,7 +20,7 @@ public class RequestToSurveyTest {
     public void testParsingRequest() {
         Survey survey = new Survey();
 
-        RequestToSurvey.valueOf(survey, prepareRequest()).parse();
+        RequestToSurvey.valueOf(survey, prepareRequest(), null).parse();
 
         assertEquals((Integer) 5, survey.getTutorScore());
         assertEquals((Integer) 4, survey.getCourseScore());
@@ -38,7 +38,7 @@ public class RequestToSurveyTest {
         Survey survey = new Survey();
         invokePostAdd(survey);
 
-        RequestToSurvey.valueOf(survey, prepareEmptyRequest()).parse();
+        RequestToSurvey.valueOf(survey, prepareEmptyRequest(), null).parse();
 
         assertEquals((Integer) 0, survey.getTutorScore());
         assertEquals((Integer) 0, survey.getCourseScore());
