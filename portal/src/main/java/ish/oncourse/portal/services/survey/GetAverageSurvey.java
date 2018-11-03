@@ -63,16 +63,16 @@ public class GetAverageSurvey {
         }
         
         if (result.getVenueScore() > 0) {
-            result.setVenueScore((Math.round(result.getVenueScore() / venueScores)));
+            result.setVenueScore((int)(Math.round((double)result.getVenueScore() / venueScores)));
         }
         if (result.getCourseScore() > 0) {
-            result.setCourseScore((Math.round(result.getCourseScore() / courseScores)));
+            result.setCourseScore((int)(Math.round((double)result.getCourseScore() / courseScores)));
         }   
         if (result.getTutorScore() > 0) {
-            result.setTutorScore((Math.round(result.getTutorScore() / tutorScores)));
+            result.setTutorScore((int)(Math.round((double)result.getTutorScore() / tutorScores)));
         }   
         if (result.getNetPromoterScore() > 0) {
-            result.setNetPromoterScore((Math.round(result.getNetPromoterScore() / netPromoterScores)));
+            result.setNetPromoterScore((int)(Math.round((double)result.getNetPromoterScore() / netPromoterScores)));
         }
         
         return result;
