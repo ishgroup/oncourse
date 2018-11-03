@@ -38,9 +38,8 @@ public class RequestToSurvey {
             switch (property) {
                 case COMMENT:
                     value = StringUtils.trimToNull(src.getParameter(field.getProperty()));
-                    if (value != null) {
-                        survey.setComment(value);
-                    } else if (field.getMandatory()) {
+                    survey.setComment(value);
+                    if (field.getMandatory() && value != null) {
                         recordFieldError(field);
                         return this;
                     }
