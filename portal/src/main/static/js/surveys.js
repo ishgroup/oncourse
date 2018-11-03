@@ -52,17 +52,17 @@ Survey.prototype = {
 							var tutor = $j(form).find("span.tutor-rate");
 							var course = $j(form).find("span.course-rate");
 							
-							if ($j(venue).length) {
+							if (self.checkScore(venue) || evtClasses.endsWith('venue-rate')) {
                 venueScore = evtClasses.endsWith('venue-rate') ?scoreVal: $j(venue).raty("score");
                 delimiter++
               }
 
-							if ($j(tutor).length) {
+							if (self.checkScore(tutor) || evtClasses.endsWith('tutor-rate')) {
 								tutorScore = evtClasses.endsWith('tutor-rate') ?scoreVal: $j(tutor).raty("score");
 								delimiter++
 							}
 							
-							if ($j(course).length) {
+							if (self.checkScore(course) || evtClasses.endsWith('course-rate')) {
 								courseScore = evtClasses.endsWith('course-rate') ?scoreVal: $j(course).raty("score");
 								delimiter++
 							}
@@ -119,24 +119,28 @@ Survey.prototype = {
 				}
     },
 
+		checkScore: function (score) { 
+			return $j(score).length && typeof($j(score).raty("score")) === "number" && $j(score).raty("score") > 0
+		},
+
     refreshAverageRating: function () {
         var self = this;
         var venue=0;
 			  var tutor=0;
 			  var course=0;
 			  var delimiter = 0;
-			  var formElement = $j("div[data='" + self.id + "'].class-reviews")
+			  var formElement = $j("div[data='" + self.id + "'].class-reviews");
 
-			  if ($j(formElement).find("span.venue-rate").length) {
-					venue = $j(formElement).find("span.venue-rate").raty("score")
+			  if (this.checkScore($j(formElement).find("span.venue-rate"))) {
+					venue = $j(formElement).find("span.venue-rate").raty("score");
 					delimiter++
         }
-        if ($j(formElement).find("span.tutor-rate").length) {
-					tutor = $j(formElement).find("span.tutor-rate").raty("score")
+				if (this.checkScore($j(formElement).find("span.tutor-rate"))) {
+					tutor = $j(formElement).find("span.tutor-rate").raty("score");
 					delimiter++
         }
-        if ($j(formElement).find("span.course-rate").length) {
-          course = $j(formElement).find("span.course-rate").raty("score")
+				if (this.checkScore($j(formElement).find("span.tutor-rate"))) {
+          course = $j(formElement).find("span.course-rate").raty("score");
 					delimiter++
         }
         if (delimiter>0) {
