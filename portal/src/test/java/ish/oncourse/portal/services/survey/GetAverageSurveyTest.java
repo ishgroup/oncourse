@@ -42,7 +42,7 @@ public class GetAverageSurveyTest {
         assertEquals((Integer) 3, survey.getCourseScore());
         assertEquals((Integer) 2, survey.getVenueScore());
         assertEquals((Integer) 3, survey.getTutorScore());
-        assertEquals((Integer) 5, survey.getNetPromoterScore());
+        assertEquals((Integer) 6, survey.getNetPromoterScore());
     }
 
     private List<Survey> createAverageSurveys() {
