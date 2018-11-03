@@ -44,19 +44,19 @@ public class GetAverageSurvey {
         int netPromoterScores = 0;
 
         for (Survey survey : surveys) {
-            if (survey.getCourseScore() != null ||  survey.getCourseScore() > 0) {
+            if (survey.getCourseScore() != null &&  survey.getCourseScore() > 0) {
                 result.setCourseScore(result.getCourseScore() + survey.getCourseScore());
                 courseScores++;
             }
-            if (survey.getVenueScore() != null ||  survey.getVenueScore() > 0) {
+            if (survey.getVenueScore() != null &&  survey.getVenueScore() > 0) {
                 result.setVenueScore(result.getVenueScore() + survey.getVenueScore());
                 venueScores++;
             }
-            if (survey.getTutorScore() != null ||  survey.getTutorScore() > 0) {
+            if (survey.getTutorScore() != null &&  survey.getTutorScore() > 0) {
                 result.setTutorScore(result.getTutorScore() + survey.getTutorScore());
                 tutorScores++;
             }
-            if (survey.getNetPromoterScore() != null ||  survey.getNetPromoterScore() > 0) {
+            if (survey.getNetPromoterScore() != null &&  survey.getNetPromoterScore() > 0) {
                 result.setNetPromoterScore(result.getNetPromoterScore() + survey.getNetPromoterScore());
                 netPromoterScores++;
             }
