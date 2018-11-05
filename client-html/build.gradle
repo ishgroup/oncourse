@@ -2,7 +2,7 @@ apply plugin: 'com.moowork.node'
 apply plugin: 'queryLanguageModel'
 
 node {
-    version = '9.3.0'
+    version = '9.11.2'
     npmVersion = '5.5.1'
     download = true
 }
