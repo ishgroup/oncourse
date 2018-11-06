@@ -13,6 +13,14 @@ dependencies {
         exclude group: 'org.apache.cayenne', module: 'cayenne-server'
     }
 
+	compile "org.openjfx:javafx-base:$openjfxVersion:$osVersion"
+	compile "org.openjfx:javafx-graphics:$openjfxVersion:$osVersion"
+	compile "org.openjfx:javafx-controls:$openjfxVersion:$osVersion"
+	compile "org.openjfx:javafx-fxml:$openjfxVersion:$osVersion"
+	compile "org.openjfx:javafx-web:$openjfxVersion:$osVersion"
+	compile "org.openjfx:javafx-swing:$openjfxVersion:$osVersion"
+	compile "org.openjfx:javafx-media:$openjfxVersion:$osVersion"
+	
 	compile "org.apache.cayenne:cayenne-client-jetty:$cayenneVersion"
 	compile "org.apache.cayenne:cayenne-protostuff:$cayenneVersion"
 	compile 'com.miglayout:miglayout-swing:4.2'
