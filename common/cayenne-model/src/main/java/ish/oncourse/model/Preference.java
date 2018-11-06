@@ -47,7 +47,8 @@ public class Preference extends _Preference implements Queueable {
 					Preference uncommitedPreference = (Preference) item;
 					boolean hasSameColleges = getCollege().equals(uncommitedPreference.getCollege());
 					boolean hasSameNames = getName().equals(uncommitedPreference.getName());
-					return (hasSameColleges) && (hasSameNames) && (uncommitedPreference.getWebSite() == null);
+					boolean isThisObject = this.equals(uncommitedPreference);
+					return (hasSameColleges) && (hasSameNames) && (uncommitedPreference.getWebSite() == null) && (!isThisObject);
 				});
 	}
 }
