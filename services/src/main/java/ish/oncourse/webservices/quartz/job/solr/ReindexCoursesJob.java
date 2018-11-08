@@ -3,11 +3,60 @@
  */
 package ish.oncourse.webservices.quartz.job.solr;
 
+import ish.oncourse.model.College;
+import ish.oncourse.model.Course;
+import ish.oncourse.solr.SolrCollection;
 import ish.oncourse.solr.reindex.ReindexCourses;
+import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.exp.Property;
+import org.apache.cayenne.query.ObjectSelect;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.common.SolrDocumentList;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ReindexCoursesJob extends AReindexCollectionJob {
+
+    private static Logger logger = LogManager.getLogger();
+
     @Override
     protected void execute0() {
+        ObjectContext context = serverRuntime.newContext();
         new ReindexCourses(serverRuntime.newContext(), solrClient, true).run();
+
+        List<Long> collegeIds = ObjectSelect.columnQuery(College.class, Property.create(College.ID_PK_COLUMN, Long.class)).where(College.BILLING_CODE.isNotNull()).select(context);
+
+        collegeIds.forEach(collegeId -> {
+            List<String> courseIds = ObjectSelect.columnQuery(Course.class, Property.create(Course.ID_PK_COLUMN, String.class))
+                    .where(Course.COLLEGE.dot(College.ID_PK_COLUMN).eq(collegeId))
+                    .and(Course.IS_WEB_VISIBLE.isFalse())
+                    .select(context);
+
+            SolrQuery query = new SolrQuery();
+            query.setParam("q", "collegeId:" + collegeId );
+            query.setParam("fl", "id");
+            
+            try {
+                SolrDocumentList solrDocuments = solrClient.getById(SolrCollection.courses.name(), courseIds, query);
+                if (solrDocuments.size() > 0) {
+                    List<String> toDelete = new ArrayList<>();
+                    solrDocuments.iterator().forEachRemaining(it -> toDelete.add(it.get("id").toString()));
+                    solrClient.deleteById(SolrCollection.courses.name(), toDelete);
+                    solrClient.commit(SolrCollection.courses.name());
+                    solrClient.deleteByQuery(SolrCollection.classes.name(), "courseId:(" + String.join(" ", toDelete) + ")");
+                    solrClient.commit(SolrCollection.classes.name());
+                }
+            } catch (SolrServerException | IOException e) {
+                logger.error(String.format("Can not delete courses from solr, college id: %d, courses: %s", collegeId,  String.join(" ", courseIds)));
+                logger.catching(e);
+            }
+        });
+        
+        
     }
 }
