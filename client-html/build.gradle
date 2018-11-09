@@ -2,8 +2,8 @@ apply plugin: 'com.moowork.node'
 apply plugin: 'queryLanguageModel'
 
 node {
-    version = '10.13.0'
-    npmVersion = '6.4.1'
+    version = '9.3.0'
+    npmVersion = '5.5.1'
     download = true
 }
 
@@ -27,10 +27,6 @@ task jest(type: NodeTask, dependsOn: 'yarn_install') {
 
 task queryGrammar(type: YarnTask, dependsOn: 'yarn_install') {
     args = ['antlr4ts']
-}
-
-yarn_install {
-    args = ['--ignore-engines']
 }
 
 sourceSets {
