@@ -269,7 +269,11 @@ task webstartDebug(dependsOn: bundle_webstart, type: Exec) {
 }
 
 processResources {
-	dependsOn ":client-html:buildLogin"
+    if (osVersion == 'win') {
+        dependsOn ":client-html:buildLogin_win"
+    } else {
+        dependsOn ":client-html:buildLogin_unix"
+    }
 	doLast {
 		copy {
 			from('../client-html/build/login') {
