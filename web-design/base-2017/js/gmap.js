@@ -11,15 +11,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     if (locationstTrigger) {
         locationstTrigger.addEventListener("click", toggleAllMarkers);
-    };
-
+    }
     if (getDirButton) {
         getDirButton.addEventListener("click", function() {
             return makeRoute(document.getElementById("from").value);
         });
-    };
-
-})
+    }
+});
 
 
 document.addEventListener("click", function(e) {
@@ -167,13 +165,11 @@ function toggleAllMarkers() {
             map.fitBounds(bounds);
         }
     });
-};
-
+}
 function createMarkerAttributes(el) {
-    var arrayOfDataset = el.dataset.coordinates.replace(/(")/g, "");
-    arrayOfDataset = arrayOfDataset.split(",");
+    var arrayOfDataset = el.dataset.coordinates.match(/(\-\d*\.\d*)|(\d*\.\d*)|".+?"|\d{3}/g);
     arrayOfDataset = arrayOfDataset.map(function(el) {
-        return el.trim();
+        return el.replace(/"/g, "");
     });
 
     var markerAttributes = {
@@ -192,8 +188,7 @@ function createMarkerAttributes(el) {
     };
 
     return markerAttributes;
-};
-
+}
 function makeRoute(origin) {
     document.getElementById("dirtxt").innerText = "";
     if (typeof directionsRenderer !== "undefined") {
@@ -228,4 +223,4 @@ function makeRoute(origin) {
             );
         }
     });
-};
+}
