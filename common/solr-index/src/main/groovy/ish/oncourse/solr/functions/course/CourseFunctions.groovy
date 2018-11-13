@@ -33,7 +33,7 @@ class CourseFunctions {
     }
     
     public static final Closure<ResultIterator<Course>> CoursesById = { ObjectContext context, Set<Long> ids ->
-        query(Course).where(ExpressionFactory.inDbExp(Course.ID_PK_COLUMN, ids)).iterator(context)
+        query(Course).where(ExpressionFactory.inDbExp(Course.ID_PK_COLUMN, ids)).and(Course.IS_WEB_VISIBLE.isTrue()).iterator(context)
     }
 
     public static final Closure<ResultIterator<Course>> CoursesByWebSite = { ObjectContext context, College college ->
