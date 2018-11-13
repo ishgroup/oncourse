@@ -16,7 +16,7 @@ class GetCoursesToUpdate {
     }
 
     private static boolean courseChanged(ObjectChange change){
-        change.type == ObjectChangeType.INSERT && (becomeVisible(change) || nameChanged(change) || codeChanged(change) || detailChanged(change) || classesChanged(change))
+        change.type == ObjectChangeType.UPDATE && (becomeVisible(change) || nameChanged(change) || codeChanged(change) || detailChanged(change) || classesChanged(change))
     }
     
     private static boolean newCourseAdded(ObjectChange change){
