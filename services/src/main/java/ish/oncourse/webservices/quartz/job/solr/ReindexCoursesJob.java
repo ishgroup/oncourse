@@ -8,7 +8,7 @@ import ish.oncourse.model.Course;
 import ish.oncourse.solr.SolrCollection;
 import ish.oncourse.solr.reindex.ReindexCourses;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.Property;
+import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,6 +19,7 @@ import org.apache.solr.common.SolrDocumentList;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ReindexCoursesJob extends AReindexCollectionJob {
 
@@ -29,13 +30,17 @@ public class ReindexCoursesJob extends AReindexCollectionJob {
         ObjectContext context = serverRuntime.newContext();
         new ReindexCourses(serverRuntime.newContext(), solrClient, true).run();
 
-        List<Long> collegeIds = ObjectSelect.columnQuery(College.class, Property.create(College.ID_PK_COLUMN, Long.class)).where(College.BILLING_CODE.isNotNull()).select(context);
+        List<Long> collegeIds = ObjectSelect.dataRowQuery(College.class)
+                .where(College.BILLING_CODE.isNotNull())
+                .select(context).stream().map(r ->  (Long) r.get(College.ID_PK_COLUMN)).collect(Collectors.toList());
 
         collegeIds.forEach(collegeId -> {
-            List<String> courseIds = ObjectSelect.columnQuery(Course.class, Property.create(Course.ID_PK_COLUMN, String.class))
-                    .where(Course.COLLEGE.dot(College.ID_PK_COLUMN).eq(collegeId))
+            List<String> courseIds = ObjectSelect.dataRowQuery(Course.class)
+                    .where(ExpressionFactory.matchDbExp(Course.COLLEGE.dot(College.ID_PK_COLUMN).getName(), collegeId))
                     .and(Course.IS_WEB_VISIBLE.isFalse())
-                    .select(context);
+                    .select(context).stream()
+                    .map(r ->  r.get(Course.ID_PK_COLUMN).toString())
+                    .collect(Collectors.toList());
 
             SolrQuery query = new SolrQuery();
             query.setParam("q", "collegeId:" + collegeId );
