@@ -22,10 +22,13 @@ public class Preference extends _Preference implements Queueable {
 
 	@Override
 	public void validateForInsert(ValidationResult validationResult) {
-		Preference preference = ObjectSelect.query(Preference.class)
-				.where(COLLEGE.eq(getCollege()))
-				.and(NAME.eq(getName()))
-				.selectFirst(objectContext);
+		Preference preference = null;
+		if (!getCollege().getObjectId().isTemporary()) {
+			preference = ObjectSelect.query(Preference.class)
+					.where(COLLEGE.eq(getCollege()))
+					.and(NAME.eq(getName()))
+					.selectFirst(objectContext);
+		}
 		boolean isPresentedInDatabase = (preference != null) && (preference.getWebSite() == null);
 		if ((isPresentedInDatabase) || (isPresentedInUncommitedObjects())) {
 			String propertyName = COLLEGE.getName() + ":" + NAME.getName();
@@ -45,10 +48,18 @@ public class Preference extends _Preference implements Queueable {
 				.filter(item -> item instanceof Preference)
 				.anyMatch(item -> {
 					Preference uncommitedPreference = (Preference) item;
-					boolean hasSameColleges = getCollege().equals(uncommitedPreference.getCollege());
-					boolean hasSameNames = getName().equals(uncommitedPreference.getName());
+					boolean hasSameColleges = nullSafeEquals(getCollege(), uncommitedPreference.getCollege());
+					boolean hasSameNames = nullSafeEquals(getName(), uncommitedPreference.getName());
 					boolean isThisObject = this.equals(uncommitedPreference);
 					return (hasSameColleges) && (hasSameNames) && (uncommitedPreference.getWebSite() == null) && (!isThisObject);
 				});
+	}
+
+	private boolean nullSafeEquals(Object o1, Object o2) {
+		if (o1 == null) {
+			return o2 == null;
+		} else {
+			return o1.equals(o2);
+		}
 	}
 }
