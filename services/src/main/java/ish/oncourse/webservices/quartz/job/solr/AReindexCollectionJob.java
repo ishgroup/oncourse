@@ -1,8 +1,5 @@
 package ish.oncourse.webservices.quartz.job.solr;
 
-import ish.oncourse.services.course.ICourseService;
-import ish.oncourse.services.message.IMessagePersonService;
-import ish.oncourse.webservices.ServicesModule;
 import ish.oncourse.webservices.quartz.QuartzModule;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.solr.client.solrj.SolrClient;

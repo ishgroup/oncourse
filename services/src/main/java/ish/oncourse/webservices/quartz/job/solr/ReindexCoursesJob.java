@@ -53,7 +53,7 @@ public class ReindexCoursesJob extends AReindexCollectionJob {
             try {
                 QueryRequest queryRequest = new QueryRequest(query, SolrRequest.METHOD.POST);
                 Object response = solrClient.request(queryRequest, SolrCollection.courses.name()).get("response");
-
+                
                 if (response instanceof SolrDocumentList && ((SolrDocumentList) response).size() > 0) {
                     SolrDocumentList solrDocuments =  (SolrDocumentList) response;
                     List<String> toDelete = new ArrayList<>();
