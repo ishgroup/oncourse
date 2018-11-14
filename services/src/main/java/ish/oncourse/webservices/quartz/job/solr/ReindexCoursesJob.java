@@ -14,11 +14,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrRequest;
-import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.request.QueryRequest;
 import org.apache.solr.common.SolrDocumentList;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,29 +41,31 @@ public class ReindexCoursesJob extends AReindexCollectionJob {
                     .select(context).stream()
                     .map(r ->  r.get(Course.ID_PK_COLUMN).toString())
                     .collect(Collectors.toList());
-
-            SolrQuery query = new SolrQuery();
-            query.setQuery("collegeId:" + collegeId);
-            query.setFilterQueries("id:(" + String.join(" ", courseIds) + ")");
-            query.setFields("id");
-            query.setRows(Integer.MAX_VALUE);
             
-            try {
-                QueryRequest queryRequest = new QueryRequest(query, SolrRequest.METHOD.POST);
-                Object response = solrClient.request(queryRequest, SolrCollection.courses.name()).get("response");
-                
-                if (response instanceof SolrDocumentList && ((SolrDocumentList) response).size() > 0) {
-                    SolrDocumentList solrDocuments =  (SolrDocumentList) response;
-                    List<String> toDelete = new ArrayList<>();
-                    solrDocuments.iterator().forEachRemaining(it -> toDelete.add(it.get("id").toString()));
-                    solrClient.deleteById(SolrCollection.courses.name(), toDelete);
-                    solrClient.commit(SolrCollection.courses.name());
-                    solrClient.deleteByQuery(SolrCollection.classes.name(), "courseId:(" + String.join(" ", toDelete) + ")");
-                    solrClient.commit(SolrCollection.classes.name());
+            if (!courseIds.isEmpty()) {
+                SolrQuery query = new SolrQuery();
+                query.setQuery("collegeId:" + collegeId);
+                query.setFilterQueries("id:(" + String.join(" ", courseIds) + ")");
+                query.setFields("id");
+                query.setRows(Integer.MAX_VALUE);
+
+                try {
+                    QueryRequest queryRequest = new QueryRequest(query, SolrRequest.METHOD.POST);
+                    Object response = solrClient.request(queryRequest, SolrCollection.courses.name()).get("response");
+
+                    if (response instanceof SolrDocumentList && ((SolrDocumentList) response).size() > 0) {
+                        SolrDocumentList solrDocuments = (SolrDocumentList) response;
+                        List<String> toDelete = new ArrayList<>();
+                        solrDocuments.iterator().forEachRemaining(it -> toDelete.add(it.get("id").toString()));
+                        solrClient.deleteById(SolrCollection.courses.name(), toDelete);
+                        solrClient.commit(SolrCollection.courses.name());
+                        solrClient.deleteByQuery(SolrCollection.classes.name(), "courseId:(" + String.join(" ", toDelete) + ")");
+                        solrClient.commit(SolrCollection.classes.name());
+                    }
+                } catch (Exception e) {
+                    logger.error(String.format("Can not delete courses from solr, college id: %d, courses: %s", collegeId, String.join(" ", courseIds)));
+                    logger.catching(e);
                 }
-            } catch (SolrServerException | IOException e) {
-                logger.error(String.format("Can not delete courses from solr, college id: %d, courses: %s", collegeId,  String.join(" ", courseIds)));
-                logger.catching(e);
             }
         });
         
