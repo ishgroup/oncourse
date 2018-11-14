@@ -13,7 +13,9 @@ import org.apache.cayenne.query.ObjectSelect;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrRequest;
 import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.request.QueryRequest;
 import org.apache.solr.common.SolrDocumentList;
 
 import java.io.IOException;
@@ -43,12 +45,17 @@ public class ReindexCoursesJob extends AReindexCollectionJob {
                     .collect(Collectors.toList());
 
             SolrQuery query = new SolrQuery();
-            query.setParam("q", "collegeId:" + collegeId );
-            query.setParam("fl", "id");
+            query.setQuery("collegeId:" + collegeId);
+            query.setFilterQueries("id:(" + String.join(" ", courseIds) + ")");
+            query.setFields("id");
+            query.setRows(Integer.MAX_VALUE);
             
             try {
-                SolrDocumentList solrDocuments = solrClient.getById(SolrCollection.courses.name(), courseIds, query);
-                if (solrDocuments.size() > 0) {
+                QueryRequest queryRequest = new QueryRequest(query, SolrRequest.METHOD.POST);
+                Object response = solrClient.request(queryRequest, SolrCollection.courses.name()).get("response");
+
+                if (response instanceof SolrDocumentList && ((SolrDocumentList) response).size() > 0) {
+                    SolrDocumentList solrDocuments =  (SolrDocumentList) response;
                     List<String> toDelete = new ArrayList<>();
                     solrDocuments.iterator().forEachRemaining(it -> toDelete.add(it.get("id").toString()));
                     solrClient.deleteById(SolrCollection.courses.name(), toDelete);

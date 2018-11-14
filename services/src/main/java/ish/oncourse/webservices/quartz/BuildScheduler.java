@@ -3,12 +3,6 @@
  */
 package ish.oncourse.webservices.quartz;
 
-import com.google.inject.Injector;
-import ish.oncourse.services.message.IMessagePersonService;
-import ish.oncourse.services.payment.IPaymentService;
-import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.preference.PreferenceControllerFactory;
-import ish.oncourse.services.sms.ISMSService;
 import ish.oncourse.webservices.ServicesModule;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.logging.log4j.LogManager;
