@@ -23,7 +23,7 @@ public class Preference extends _Preference implements Queueable {
 	@Override
 	public void validateForInsert(ValidationResult validationResult) {
 		Preference preference = null;
-		if (!getCollege().getObjectId().isTemporary()) {
+		if ((getCollege() != null) && (!getCollege().getObjectId().isTemporary())) {
 			preference = ObjectSelect.query(Preference.class)
 					.where(COLLEGE.eq(getCollege()))
 					.and(NAME.eq(getName()))
