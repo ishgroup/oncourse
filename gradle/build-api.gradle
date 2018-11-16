@@ -31,6 +31,7 @@ distZip {
     applicationDistribution.from( "${buildDir}/resources/VERSION" ) {
         into('.')
     }
+    archiveName "${baseName}.zip"
 }
 
 publishing {
