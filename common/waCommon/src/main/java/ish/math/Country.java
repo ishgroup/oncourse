@@ -15,7 +15,7 @@ import java.util.Locale;
 public enum Country {
 
 	AUSTRALIA(new Locale("en", "AU"), "$", "AUD"),
-	EUROPE(Locale.FRANCE, "\u20AC", "EUR"),
+	EUROPE(Locale.ITALY, "\u20AC", "EUR"),
 	ENGLAND(Locale.UK, "\u00A3", "GBP"),
 	US(Locale.US, "$", "USD"),
 	HONG_KONG(Locale.US, "$", "HKD"),
