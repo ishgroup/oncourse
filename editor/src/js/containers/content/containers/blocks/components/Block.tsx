@@ -9,7 +9,7 @@ interface Props {
   onSave: (blockId, html) => void;
 }
 
-//custom event to reinitialize site plugins on editing content
+// custom event to reinitialize site plugins on editing content
 const pluginInitEvent = new Event("plugins:init");
 
 export class Block extends React.Component<Props, any> {
@@ -18,7 +18,7 @@ export class Block extends React.Component<Props, any> {
     super(props);
     this.state = {
       editMode: false,
-      draftContent: ''
+      draftContent: "",
     };
   }
 
@@ -31,7 +31,7 @@ export class Block extends React.Component<Props, any> {
 
     this.setState({
       editMode: true,
-      draftContent: block.content
+      draftContent: block.content || "",
     });
   }
 
@@ -44,7 +44,7 @@ export class Block extends React.Component<Props, any> {
   onSave() {
     const {onSave, block} = this.props;
     this.setState({
-      editMode: false
+      editMode: false,
     });
     onSave(block.id, this.state.draftContent);
   }
@@ -54,23 +54,23 @@ export class Block extends React.Component<Props, any> {
 
     this.setState({
       editMode: false,
-      draftContent: block.content
+      draftContent: block.content || "",
     });
   }
 
   componentDidUpdate() {
-    const { editMode } = this.state;
+    const {editMode} = this.state;
 
-    if(!editMode && this.props.block.content) {
+    if (!editMode && this.props.block.content) {
       document.dispatchEvent(pluginInitEvent);
     }
   }
 
   render() {
-    const { block } = this.props;
-    const { editMode } = this.state;
+    const {block} = this.props;
+    const {editMode} = this.state;
 
-      return (
+    return (
       <div>
         {editMode &&
           <div>
@@ -93,7 +93,7 @@ export class Block extends React.Component<Props, any> {
           {!editMode &&
             <div
               className={classnames("editor-area", {'editor-area--empty': !block.content})}
-              dangerouslySetInnerHTML={{__html: block.content }}
+              dangerouslySetInnerHTML={{__html: block.content}}
             />
           }
         </div>
