@@ -58,7 +58,7 @@ class CalculatePrice {
         if (taxOverride != null && taxOverride.rate != null) {
             this.taxRate = taxOverride.rate
         } else {
-            product.taxRate
+            this.taxRate = product.taxRate
         }
 
         if (taxOverride == null) {
