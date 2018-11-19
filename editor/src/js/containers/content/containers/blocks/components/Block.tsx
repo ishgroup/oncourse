@@ -26,7 +26,9 @@ export class Block extends React.Component<Props, any> {
     document.dispatchEvent(pluginInitEvent);
   }
 
-  onClickArea() {
+  onClickArea(e) {
+    e.preventDefault();
+
     const {block} = this.props;
 
     this.setState({
@@ -89,7 +91,7 @@ export class Block extends React.Component<Props, any> {
 
         }
 
-        <div onClick={() => this.onClickArea()}>
+        <div onClick={e => this.onClickArea(e)}>
           {!editMode &&
             <div
               className={classnames("editor-area", {'editor-area--empty': !block.content})}
