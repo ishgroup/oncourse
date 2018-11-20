@@ -194,7 +194,7 @@ subprojects {
 		oldVersion version
 	}
 
-	task setReleaseVersion(type: JiraGetNextVersion) {
+	task setReleaseVersion(type: JiraSetReleaseVersion) {
 		projectCode "OD"
 		componentName project.name
         doLast {
