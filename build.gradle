@@ -55,18 +55,18 @@ ext {
 }
 
 allprojects {
-	apply plugin: 'java'
-	apply plugin: 'maven'
-	apply plugin: 'groovy'
-	apply plugin: 'maven-publish'
-	apply plugin: 'com.github.ben-manes.versions'
-	apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'java'
+    apply plugin: 'maven'
+    apply plugin: 'groovy'
+    apply plugin: 'maven-publish'
+    apply plugin: 'com.github.ben-manes.versions'
+    apply plugin: 'io.spring.dependency-management'
 
-	dependencyManagement {
-		imports {
-			mavenBom("io.bootique.bom:bootique-bom:$bootiqueVersion")
-		}
-	}
+    dependencyManagement {
+        imports {
+            mavenBom("io.bootique.bom:bootique-bom:$bootiqueVersion")
+        }
+    }
 
     //java compile should read java files in UTF-8
     //because some tests (ish.oncourse.services.textile.TextileUtilTest.test_unicodeQuotesEncoding)
@@ -79,128 +79,129 @@ allprojects {
         options.encoding = 'UTF-8'
     }
 
-	// get the version from the command line properties
-	version = project.hasProperty('releaseVersion') ? project.releaseVersion : "SNAPSHOT"
+    // get the version from the command line properties
+    version = project.hasProperty('releaseVersion') ? project.releaseVersion : "SNAPSHOT"
 
-	sourceCompatibility = 1.8
-	targetCompatibility = 1.8
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
 
-	configurations {
-		deployerJars {
-			description = 'Jars needed for doing deployment to JBoss Nexus repo'
-		}
-	}
+    configurations {
+        deployerJars {
+            description = 'Jars needed for doing deployment to JBoss Nexus repo'
+        }
+    }
 
-	configurations.all {
-		exclude module: 'slf4j-log4j12'
-	}
+    configurations.all {
+        exclude module: 'slf4j-log4j12'
+    }
 
-	repositories {
-		maven {
-			url 'https://repo.ish.com.au/content/groups/public'
-		}
-		maven {
-			url 'https://repo.ish.com.au/content/groups/ish'
-		}
-	}
+    repositories {
+        maven {
+            url 'https://repo.ish.com.au/content/groups/public'
+        }
+        maven {
+            url 'https://repo.ish.com.au/content/groups/ish'
+        }
+    }
 
-	dependencies {
+    dependencies {
 
         compile "org.apache.logging.log4j:log4j-jcl:$log4j2Version"
         compile "org.apache.logging.log4j:log4j-web:$log4j2Version"
-		compile "org.apache.logging.log4j:log4j-api:$log4j2Version"
-		compile "org.apache.logging.log4j:log4j-core:$log4j2Version"
-		compile "org.apache.logging.log4j:log4j-slf4j-impl:$log4j2Version"
-		compile "org.apache.logging.log4j:log4j-jul:$log4j2Version"
+        compile "org.apache.logging.log4j:log4j-api:$log4j2Version"
+        compile "org.apache.logging.log4j:log4j-core:$log4j2Version"
+        compile "org.apache.logging.log4j:log4j-slf4j-impl:$log4j2Version"
+        compile "org.apache.logging.log4j:log4j-jul:$log4j2Version"
 
-		testCompile 'org.mockito:mockito-all:1.10.19'
-		testCompile 'junit:junit:4.12'
+        testCompile 'org.mockito:mockito-all:1.10.19'
+        testCompile 'junit:junit:4.12'
 
         deployerJars 'org.apache.maven.wagon:wagon-http:2.12'
-	}
+    }
 
-	group = 'ish.oncourse.willow'
-	uploadArchives {
-		repositories.mavenDeployer {
-			name = 'ishRepo'
-			configuration = configurations.deployerJars
-			repository(id:'internal-releases', url: 'https://repo.ish.com.au/content/repositories/ish-releases') {
-				authentication(userName: nexusUsername, password: nexusPassword)
-			}
-			snapshotRepository(id:'internal-snapshots', url: 'https://repo.ish.com.au/content/repositories/ish-snapshots') {
-				authentication(userName: nexusUsername, password: nexusPassword)
-			}
-		}
-	}
-	uploadArchives.dependsOn install
-	ext.sharedManifest = manifest {
-		attributes 'Release-Version': version,
-			'Built-Date': new Date(),
-			'Built-JDK': System.getProperty('java.version'),
-			'Built-Gradle': gradle.gradleVersion,
-			'Implementation-Version': System.getProperty('build_number') ?: 'local'
+    group = 'ish.oncourse.willow'
+    uploadArchives {
+        repositories.mavenDeployer {
+            name = 'ishRepo'
+            configuration = configurations.deployerJars
+            repository(id: 'internal-releases', url: 'https://repo.ish.com.au/content/repositories/ish-releases') {
+                authentication(userName: nexusUsername, password: nexusPassword)
+            }
+            snapshotRepository(id: 'internal-snapshots', url: 'https://repo.ish.com.au/content/repositories/ish-snapshots') {
+                authentication(userName: nexusUsername, password: nexusPassword)
+            }
+        }
+    }
+    uploadArchives.dependsOn install
+    ext.sharedManifest = manifest {
+        attributes 'Release-Version': version,
+                'Built-Date': new Date(),
+                'Built-JDK': System.getProperty('java.version'),
+                'Built-Gradle': gradle.gradleVersion,
+                'Implementation-Version': System.getProperty('build_number') ?: 'local'
 //			'SCM-Revision': project.release.scmVersion
+    }
+
+    jar {
+        manifest {
+            from sharedManifest
+        }
+    }
+
+    test {
+        systemProperties 'java.awt.headless': 'true'
+        maxHeapSize = '2048m'
+        ignoreFailures = true
+
+        // log each starting test
+        beforeTest { descriptor -> logger.lifecycle("Running: " + descriptor) }
+    }
+}
+
+subprojects {
+    group = 'ish.oncourse.willow'
+    publishing {
+        repositories {
+            maven {
+                name "executables"
+                url "https://repo.ish.com.au/content/repositories/ish-exe"
+                credentials {
+                    username nexusUsername
+                    password nexusPassword
+                }
+            }
+            maven {
+                name "snapshots"
+                url "https://repo.ish.com.au/content/repositories/ish-snapshots"
+                credentials {
+                    username nexusUsername
+                    password nexusPassword
+                }
+            }
+            maven {
+                name "releases"
+                url "https://repo.ish.com.au/content/repositories/ish-releases"
+                credentials {
+                    username nexusUsername
+                    password nexusPassword
+                }
+            }
+        }
+    }
+
+	task createVersion(type: JiraVersionCreate) {
+		projectCode "OD"
+		oldVersion version
 	}
 
-	jar {
-		manifest {
-			from sharedManifest
-		}
-	}
-
-	test {
-		systemProperties 'java.awt.headless': 'true'
-		maxHeapSize = '2048m'
-		ignoreFailures = true
-
-		// log each starting test
-		beforeTest { descriptor -> logger.lifecycle("Running: " + descriptor) }
-	}
-
-	group = 'ish.oncourse.willow'
-	publishing {
-		repositories {
-			maven {
-				name "executables"
-				url "https://repo.ish.com.au/content/repositories/ish-exe"
-				credentials {
-					username nexusUsername
-					password nexusPassword
-				}
-			}
-			maven {
-				name "snapshots"
-				url "https://repo.ish.com.au/content/repositories/ish-snapshots"
-				credentials {
-					username nexusUsername
-					password nexusPassword
-				}
-			}
-			maven {
-				name "releases"
-				url "https://repo.ish.com.au/content/repositories/ish-releases"
-				credentials {
-					username nexusUsername
-					password nexusPassword
-				}
-			}
-		}
+	task setReleaseVersion(type: JiraGetNextVersion) {
+		projectCode "OD"
+		componentName project.name
+        doLast {
+            publishExecutablesPublicationToExecutablesRepository.dependsOn setReleaseVersion
+            compileJava.mustRunAfter setReleaseVersion
+        }
 	}
 }
 
 apply from: "$rootDir/gradle/buildStaticResources.gradle"
-
-task createVersion(type: JiraVersionCreate) {
-	projectCode "OD"
-	oldVersion version
-}
-
-task getReleaseVersion(type: JiraGetNextVersion) {
-	projectCode "OD"
-	componentName "admin"
-
-	doLast {
-		project.setProperty('releaseVersion', project.ext.releaseVersion)
-		version = project.ext.releaseVersion
-	}
-}

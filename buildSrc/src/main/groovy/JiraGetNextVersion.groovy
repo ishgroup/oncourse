@@ -28,6 +28,9 @@ class JiraGetNextVersion extends DefaultTask {
                 null).findAll { !it.isReleased && it.id > 0 }.sort { it.name }.last()
         logger.info "Found existing version ${lastVersion}"
 
-        project.ext.releaseVersion = lastVersion.name.split().first().toInteger() + 1
+        def nextVersion = lastVersion.name.split().first().toInteger() + 1
+
+        project.setProperty('releaseVersion', nextVersion)
+        project.version = nextVersion
     }
 }
