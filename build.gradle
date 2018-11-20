@@ -138,8 +138,11 @@ allprojects {
                 'Built-Date': new Date(),
                 'Built-JDK': System.getProperty('java.version'),
                 'Built-Gradle': gradle.gradleVersion,
-                'Implementation-Version': System.getProperty('build_number') ?: 'local'
-//			'SCM-Revision': project.release.scmVersion
+                'Implementation-Version': System.getProperty('build_number') ?: 'local',
+                'Permissions': 'all-permissions',
+                'Codebase': '*',
+                'Application-Name': 'onCourse',
+                'Trusted-Library': 'true'
     }
 
     jar {
@@ -156,9 +159,7 @@ allprojects {
         // log each starting test
         beforeTest { descriptor -> logger.lifecycle("Running: " + descriptor) }
     }
-}
 
-subprojects {
     group = 'ish.oncourse.willow'
     publishing {
         repositories {

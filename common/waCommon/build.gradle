@@ -11,22 +11,7 @@ dependencies {
     compile 'commons-codec:commons-codec:1.10'
 	compile "org.codehaus.groovy:groovy-all:$groovyVersion"
     compile 'javax.mail:mail:1.4.7'
-
 	compile 'org.springframework:spring-context:4.2.4.RELEASE'
-}
-
-jar {
-    manifest {
-        attributes 'Release-Version': version,
-        'Built-Date': System.getProperty('build_number') ? new Date(): new Date().format("yy-MMM-dd"),
-        'Built-JDK': System.getProperty('java.version'),
-        'Built-Gradle': gradle.gradleVersion,
-        'Implementation-Version': System.getProperty('build_number') ?: 'local',
-        'Permissions': 'all-permissions',
-        'Codebase': '*',
-        'Application-Name': 'onCourse',
-        'Trusted-Library': 'true'
-    }
 }
 
 task sourceJar(type: Jar, dependsOn: classes) {
