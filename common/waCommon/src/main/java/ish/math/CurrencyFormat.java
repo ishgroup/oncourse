@@ -1,20 +1,19 @@
 package ish.math;
 
-import java.text.NumberFormat;
 import java.util.Locale;
 
-public class CurrencyFormat {
+public final class CurrencyFormat {
 
-    private static final String EMPTY_SYMBOL = "";
-    private static final String MINUS_SYMBOL = "-";
-    private static final String CLEAR_UP_REGEX = "[-\\(\\)\\s]";
-
-    private static Locale currentLocale = Locale.getDefault();
+    private static CurrencyFormatter formatter = new DefaultCurrencyFormatter();
 
     private CurrencyFormat() {}
 
+    public static void registerNewFormatter(CurrencyFormatter currencyFormatter) {
+        formatter = currencyFormatter;
+    }
+
     public static void updateLocale(Locale locale) {
-        currentLocale = locale;
+        formatter.updateLocale(locale);
     }
 
     /**
@@ -22,16 +21,10 @@ public class CurrencyFormat {
      * @return current currency
      */
     public static Locale getCurrentLocale() {
-        return currentLocale;
+        return formatter.getCurrentLocale();
     }
 
     public static String formatMoney(Money money) {
-        String value = NumberFormat.getCurrencyInstance(currentLocale)
-                .format(money.toBigDecimal())
-                .replaceAll(CLEAR_UP_REGEX, EMPTY_SYMBOL);
-        if (money.isNegative()) {
-            value = MINUS_SYMBOL + value;
-        }
-        return value;
+        return formatter.format(money);
     }
 }
