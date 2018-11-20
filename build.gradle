@@ -194,3 +194,13 @@ task createVersion(type: JiraVersionCreate) {
 	projectCode "OD"
 	oldVersion version
 }
+
+task getReleaseVersion(type: JiraGetNextVersion) {
+	projectCode "OD"
+	componentName "admin"
+
+	doLast {
+		project.setProperty('releaseVersion', project.ext.releaseVersion)
+		version = project.ext.releaseVersion
+	}
+}

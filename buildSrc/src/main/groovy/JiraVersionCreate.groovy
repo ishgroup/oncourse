@@ -1,4 +1,3 @@
-import groovy.json.JsonBuilder
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import org.gradle.api.DefaultTask
@@ -65,7 +64,7 @@ public class JiraVersionCreate extends DefaultTask {
         logger.info "Updated old version and set it to released."
     }
 
-    def getJiraResponse(query, data, action="POST") {
+    def static getJiraResponse(query, data, action="POST") {
         // https://developer.atlassian.com/cloud/jira/platform/rest/
         def SQUISH_URL = "https://squish.ish.com.au/rest/"
         def jiraUsername = "gradle"
@@ -73,8 +72,6 @@ public class JiraVersionCreate extends DefaultTask {
         def encoded_auth = "${jiraUsername}:${jiraPassword}".getBytes().encodeBase64().toString()
 
         def connection = (SQUISH_URL + query).toURL().openConnection()
-        logger.lifecycle "Getting " + connection.getURL()
-        logger.debug "Sending data " + new JsonBuilder(data).toPrettyString()
 
         connection.addRequestProperty("Authorization", "Basic ${encoded_auth}")
         connection.addRequestProperty("Content-Type", "application/json")
@@ -95,8 +92,6 @@ public class JiraVersionCreate extends DefaultTask {
 
         def slurper = new JsonSlurper()
         def response = slurper.parseText(connection.content.text)
-        logger.info new JsonBuilder(response).toPrettyString()
-
         return response
     }
 }
