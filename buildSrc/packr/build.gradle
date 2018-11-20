@@ -1,0 +1,15 @@
+plugins {
+    id 'groovy'
+    id 'java'
+    id 'java-gradle-plugin'
+}
+
+repositories {
+    maven {
+        url 'https://repo.ish.com.au/content/groups/public'
+    }
+}
+
+dependencies {
+    compile 'com.bladecoder.packr:packr:2.1'
+}

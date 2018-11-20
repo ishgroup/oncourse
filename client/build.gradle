@@ -1,4 +1,5 @@
 apply plugin: 'cayenne'
+apply plugin: 'de.undercouch.download'
 
 repositories {
 	maven {
@@ -279,6 +280,40 @@ processResources {
 			from('../client-html/build/login') {
 				include '**/*.*'
 			}
-			into 'build/resources/main/static'}
+			into 'build/resources/main/static'
+		}
+	}
+}
+
+task bundleJRE_mac(dependsOn: jar, type: au.com.ish.PackrBundler) {
+	platform = 'mac'
+	jars = configurations.runtime.plus(configurations.runtime.artifacts.files)
+	outDir = project.file("${distsDir}/macosx/")
+	icon = "${projectDir}/src/packaging/windows/onCourse.ico"
+
+	doLast {
+		logger.lifecycle('Downloading JRE')
+		download {
+			//replace to own repository. now it's public
+			src 'https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11%2B28/OpenJDK11-jre_x64_mac_hotspot_11_28.tar.gz'
+			dest "${projectDir}/build/jre-mac.tar.gz"
+		}
+
+		logger.lifecycle("Unzipping JRE into $projectDir/build/")
+		copy {
+			from tarTree(resources.gzip("${projectDir}/build/jre-mac.tar.gz"))
+			into "${projectDir}/build/"
+		}
+
+		logger.lifecycle("Copying JRE")
+		//doing twice for now because archive contains +- signs.
+		copy {
+			from "$projectDir/build/jdk-11+28-jre/"
+			into "$projectDir/build/jre/"
+		}
+		copy {
+			from "$projectDir/build/jre/Contents/Home/"
+			into "$distsDir/macosx/Contents/Resources/jre/"
+		}
 	}
 }
