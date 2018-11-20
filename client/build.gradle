@@ -288,8 +288,9 @@ processResources {
 task bundleJRE_mac(dependsOn: jar, type: au.com.ish.PackrBundler) {
 	platform = 'mac'
 	jars = configurations.runtime.plus(configurations.runtime.artifacts.files)
+			.filter { !it.path.contains('jxbrowser-win32') && !it.path.contains('jxbrowser-win64') }
 	outDir = project.file("${distsDir}/macosx/")
-	icon = "${projectDir}/src/packaging/windows/onCourse.ico"
+	icon = "${projectDir}/src/packaging/macosx/onCourse.icns"
 
 	doLast {
 		logger.lifecycle('Downloading JRE')
@@ -314,6 +315,34 @@ task bundleJRE_mac(dependsOn: jar, type: au.com.ish.PackrBundler) {
 		copy {
 			from "$projectDir/build/jre/Contents/Home/"
 			into "$distsDir/macosx/Contents/Resources/jre/"
+		}
+	}
+}
+
+task bundleJRE_win64(dependsOn: jar, type: au.com.ish.PackrBundler) {
+	platform = 'win64'
+	jars = configurations.runtime.plus(configurations.runtime.artifacts.files)
+			.filter { !it.path.contains('jxbrowser-win32') && !it.path.contains('jxbrowser-mac') }
+	outDir = project.file("${distsDir}/win64/")
+	icon = "${projectDir}/src/packaging/windows/onCourse.ico"
+
+	doLast {
+		logger.lifecycle('Downloading JRE')
+		download {
+			//replace to own repository. now it's public
+			src 'https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11%2B28/OpenJDK11-jre_x64_windows_hotspot_11_28.zip'
+			dest "${projectDir}/build/jre-win64.zip"
+		}
+		logger.lifecycle("Unzipping JRE into $projectDir/build/")
+		copy {
+			from zipTree("${projectDir}/build/jre-win64.zip")
+			into "${projectDir}/build/"
+		}
+
+		logger.lifecycle("Copying JRE")
+		copy {
+			from "$projectDir/build/jdk-11+28-jre/"
+			into "$distsDir/win64/jre/"
 		}
 	}
 }
