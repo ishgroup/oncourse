@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull
 /**
  * Get the next available version of this component from Jira and put it into the variable project.ext.releaseVersion
  */
-class JiraGetNextVersion extends DefaultTask {
+class JiraSetReleaseVersion extends DefaultTask {
     @Input @NotNull
     String componentName
 
@@ -28,7 +28,7 @@ class JiraGetNextVersion extends DefaultTask {
                 null).findAll { !it.isReleased && it.id > 0 }.sort { it.name }.last()
         logger.info "Found existing version ${lastVersion}"
 
-        def nextVersion = lastVersion.name.split().first().toInteger() + 1
+        def nextVersion = lastVersion.name.split().first().toInteger()
 
         project.setProperty('releaseVersion', nextVersion)
         project.version = nextVersion

@@ -190,9 +190,12 @@ subprojects {
     }
 
 	task createVersion(type: JiraVersionCreate) {
-		projectCode "OD"
-		oldVersion version
-	}
+        projectCode "OD"
+        oldVersion version
+        doLast {
+            publishExecutablesPublicationToExecutablesRepository.dependsOn createVersion
+        }
+    }
 
 	task setReleaseVersion(type: JiraSetReleaseVersion) {
 		projectCode "OD"
