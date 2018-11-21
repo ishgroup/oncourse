@@ -105,6 +105,8 @@ appBundler {
     jars = configurations.runtime.plus(configurations.runtime.artifacts.files)
     keychain = project.osxKeychain
     certIdentity = project.osxKeychainIdentity
+	notarizeAccount = project.notarizeAccount
+	notarizePassword = project.notarizePassword
 
     jvmOptions = ["-Dapple.awt.textantialiasing=true",
                   "-DJFileChooser.appBundleIsTraversable=true",
@@ -115,7 +117,7 @@ appBundler {
                   "-Xmx${project.maxmemoryClient}"]
 }
 
-task installer_osx(dependsOn: [prepareKeychains, codeSign], type: au.com.ish.DmgTask) {
+task installer_osx(dependsOn: [prepareKeychains, codeSign, notarize, createDMG], type: au.com.ish.DmgTask) {
     outputs.upToDateWhen { false } //disables 'UP_TO_DATE' check. This is need to run task always
     description "Create the OSX application executable and installer (which is just a dmg file)."
 }
