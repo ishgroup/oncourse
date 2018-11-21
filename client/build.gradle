@@ -1,3 +1,4 @@
+import au.com.ish.PackrBundler
 import org.gradle.internal.os.OperatingSystem
 
 apply plugin: 'cayenne'
@@ -263,31 +264,6 @@ task installer_unix(dependsOn: jar, type: Zip) {
 	destinationDir file("${distsDir}/unix")
 }
 
-//def windowsArtifact = artifacts.add('archives', file("${distsDir}/windows/onCourse-installer.exe")) {
-//	builtBy installer_win
-//}
-//
-//def osxArtifact = artifacts.add('archives', file("${distsDir}/onCourse.dmg")) {
-//	builtBy installer_osx
-//}
-// For deploying to our repo
-publishing.publications {
-	executables(MavenPublication) {
-        artifact(installer_webstart) {
-			classifier "webstart"
-			extension "zip"
-		}
-//		artifact(windowsArtifact) {
-//			classifier "windows"
-//			extension "exe"
-//		}
-//		artifact(osxArtifact) {
-//			classifier "osx"
-//			extension "dmg"
-//		}
-    }
-}
-
 // for help on webstart see src/packaging/webstart/devHowTo.txt
 task webstartRun(dependsOn: bundle_webstart, type: Exec) {
 	executable 'javaws'
@@ -315,7 +291,7 @@ processResources {
 	}
 }
 
-task bundleJRE_mac(dependsOn: jar, type: au.com.ish.PackrBundler) {
+task bundleJRE_mac(type: PackrBundler) {
 	platform = 'mac'
 	jars = (configurations.runtime + configurations.runtime.artifacts.files 
 			- configurations.winCompile - configurations.linuxCompile + configurations.macCompile) 
@@ -347,7 +323,7 @@ task installer_osx(dependsOn: [bundleJRE_mac, prepareKeychains, codeSign, notari
 	description "Create the OSX application executable and installer (which is just a dmg file)."
 }
 
-task bundleJRE_win64(dependsOn: jar, type: au.com.ish.PackrBundler) {
+task bundleJRE_win64(type: PackrBundler) {
 	platform = 'win64'
 	jars = (configurations.runtime + configurations.runtime.artifacts.files 
 			- configurations.macCompile - configurations.linuxCompile + configurations.winCompile)
@@ -365,6 +341,31 @@ task bundleJRE_win64(dependsOn: jar, type: au.com.ish.PackrBundler) {
 		copy {
 			from "$projectDir/build/win/jdk-11+28-jre/"
 			into "$distsDir/win64/jre/"
+		}
+	}
+}
+
+def windowsArtifact = artifacts.add('archives', file("${distsDir}/windows/onCourse-installer.exe")) {
+	builtBy installer_win
+}
+
+def osxArtifact = artifacts.add('archives', file("${distsDir}/onCourse.dmg")) {
+	builtBy installer_osx
+}
+// For deploying to our repo
+publishing.publications {
+	executables(MavenPublication) {
+		artifact(installer_webstart) {
+			classifier "webstart"
+			extension "zip"
+		}
+		artifact(windowsArtifact) {
+			classifier "windows"
+			extension "exe"
+		}
+		artifact(osxArtifact) {
+			classifier "osx"
+			extension "dmg"
 		}
 	}
 }
