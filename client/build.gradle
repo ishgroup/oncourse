@@ -1,17 +1,22 @@
 import org.gradle.internal.os.OperatingSystem
 
 apply plugin: 'cayenne'
-apply plugin: 'de.undercouch.download'
 
 repositories {
 	maven {
 		url 'http://maven.teamdev.com/repository/products'
 	}
+
+	maven {
+		url 'https://repo.ish.com.au/content/groups'
+	}
 }
 
 configurations {
 	macCompile
+	jreMac
 	winCompile
+	jreWin
 	linuxCompile
 
 	compile.extendsFrom (OperatingSystem.current().isMacOsX() ? macCompile : OperatingSystem.current().isWindows() ? winCompile : linuxCompile)
@@ -71,6 +76,9 @@ dependencies {
 	testCompile project(':server')
 
 	testCompile "io.bootique:bootique-test:$bootiqueVersion"
+
+	jreMac 'net.adoptopenjdk:jre11-mac-x64-hotspot:11.28@tar.gz'
+	jreWin 'net.adoptopenjdk:jre11-mac-x64-hotspot:11.28@zip'
 }
 
 jar {
@@ -255,13 +263,13 @@ task installer_unix(dependsOn: jar, type: Zip) {
 	destinationDir file("${distsDir}/unix")
 }
 
-def windowsArtifact = artifacts.add('archives', file("${distsDir}/windows/onCourse-installer.exe")) {
-	builtBy installer_win
-}
-
-def osxArtifact = artifacts.add('archives', file("${distsDir}/onCourse.dmg")) {
-	builtBy installer_osx
-}
+//def windowsArtifact = artifacts.add('archives', file("${distsDir}/windows/onCourse-installer.exe")) {
+//	builtBy installer_win
+//}
+//
+//def osxArtifact = artifacts.add('archives', file("${distsDir}/onCourse.dmg")) {
+//	builtBy installer_osx
+//}
 // For deploying to our repo
 publishing.publications {
 	executables(MavenPublication) {
@@ -269,14 +277,14 @@ publishing.publications {
 			classifier "webstart"
 			extension "zip"
 		}
-		artifact(windowsArtifact) {
-			classifier "windows"
-			extension "exe"
-		}
-		artifact(osxArtifact) {
-			classifier "osx"
-			extension "dmg"
-		}
+//		artifact(windowsArtifact) {
+//			classifier "windows"
+//			extension "exe"
+//		}
+//		artifact(osxArtifact) {
+//			classifier "osx"
+//			extension "dmg"
+//		}
     }
 }
 
@@ -315,16 +323,9 @@ task bundleJRE_mac(dependsOn: jar, type: au.com.ish.PackrBundler) {
 	icon = "${projectDir}/src/packaging/macosx/onCourse.icns"
 
 	doLast {
-		logger.lifecycle('Downloading JRE')
-		download {
-			//replace to own repository. now it's public
-			src 'https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11%2B28/OpenJDK11-jre_x64_mac_hotspot_11_28.tar.gz'
-			dest "${projectDir}/build/jre-mac.tar.gz"
-		}
-
 		logger.lifecycle("Unzipping JRE into $projectDir/build/")
 		copy {
-			from tarTree(resources.gzip("${projectDir}/build/jre-mac.tar.gz"))
+			from tarTree(resources.gzip(configurations.jreMac.singleFile))
 			into "${projectDir}/build/mac"
 		}
 
@@ -354,15 +355,9 @@ task bundleJRE_win64(dependsOn: jar, type: au.com.ish.PackrBundler) {
 	icon = "${projectDir}/src/packaging/windows/onCourse.ico"
 
 	doLast {
-		logger.lifecycle('Downloading JRE')
-		download {
-			//replace to own repository. now it's public
-			src 'https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11%2B28/OpenJDK11-jre_x64_windows_hotspot_11_28.zip'
-			dest "${projectDir}/build/win/jre-win64.zip"
-		}
 		logger.lifecycle("Unzipping JRE into $projectDir/build/")
 		copy {
-			from zipTree("${projectDir}/build/win/jre-win64.zip")
+			from zipTree(configurations.jreWin.singleFile)
 			into "${projectDir}/build/win/"
 		}
 
