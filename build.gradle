@@ -3,9 +3,9 @@ import org.gradle.internal.os.OperatingSystem
 buildscript {
 	ext {
 		waCommonWebservicesClientVersion = '39'
-		log4j2Version = '2.11.0'
+		log4j2Version = '2.11.1'
 		cayenneVersion = '4.1.M1'
-		jettyVersion = '9.4.6.v20170531'
+		jettyVersion = '9.4.14.v20181114'
 		mariadbVersion = '2.2.5'
 		derbyVersion = '10.14.2.0'
 		googleGuiceVersion = '4.2.0'
@@ -30,11 +30,8 @@ buildscript {
 }
 
 plugins {
-	id 'jacoco' // adds the task 'jacocoTestReport'
-
-	id 'findbugs'
 	id 'io.spring.dependency-management' version '1.0.3.RELEASE' apply false
-	id 'com.github.ben-manes.versions' version '0.17.0' // adds the task 'dependencyUpdates -Drevision=release'
+	id 'com.github.ben-manes.versions' version '0.20.0' // adds the task 'dependencyUpdates -Drevision=release'
 	id "com.moowork.node" version "1.2.0" apply false
 	id 'com.github.psxpaul.execfork' version '0.1.8' apply false
 	id 'de.undercouch.download' version '3.4.3' apply false
@@ -151,29 +148,11 @@ allprojects {
 		    'java.locale.providers': 'COMPAT,SPI'
 		maxHeapSize = '1024m'
 
-		jacoco {
-			//enabled = project.hasProperty('jacoco-enabled');
-		}
-
 		ignoreFailures = true
 
 		// log each starting test
 		beforeTest {
 			descriptor -> logger.lifecycle("Running: " + descriptor)
-		}
-	}
-
-	findbugs {
-
-	}
-
-	// special Java 9 hack needed for gradle
-	// https://github.com/gradle/gradle/issues/1095
-	tasks.withType(Test) {
-		if(JavaVersion.current() == JavaVersion.VERSION_1_9) {
-			jvmArgs += ['--add-opens', 'java.base/java.lang=ALL-UNNAMED']
-			jvmArgs += ['--add-opens', 'java.base/java.io=ALL-UNNAMED']
-			jvmArgs += ['--add-opens', 'java.base/java.util=ALL-UNNAMED']
 		}
 	}
 }
@@ -236,4 +215,18 @@ task testReport(type: TestReport) {
 	destinationDir = file("$buildDir/reports/tests")
 	// Include the results from the `test` task in all subprojects
 	reportOn subprojects*.test
+}
+
+// Skip beta and other non-final releases in the update report
+dependencyUpdates.resolutionStrategy {
+	componentSelection { rules ->
+		rules.all { ComponentSelection selection ->
+			boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm', 'preview', 'ea'].any { qualifier ->
+				selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+			}
+			if (rejected) {
+				selection.reject('Release candidate')
+			}
+		}
+	}
 }
