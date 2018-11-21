@@ -5,8 +5,8 @@ dependencies {
     testCompile 'com.intuit.karate:karate-jersey:0.9.0.RC4'
     testCompile 'com.intuit.karate:karate-core:0.9.0.RC4'
     testCompile 'org.glassfish.jersey.connectors:jersey-jetty-connector:2.26'
-    testCompile 'org.eclipse.jetty.http2:http2-http-client-transport:${jettyVersion}'
-    testCompile 'org.eclipse.jetty:jetty-client:${jettyVersion}'
+    testCompile "org.eclipse.jetty.http2:http2-http-client-transport:${jettyVersion}"
+    testCompile "org.eclipse.jetty:jetty-client:${jettyVersion}"
 }
 
 test {
