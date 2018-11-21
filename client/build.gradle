@@ -117,11 +117,6 @@ appBundler {
                   "-Xmx${project.maxmemoryClient}"]
 }
 
-task installer_osx(dependsOn: [prepareKeychains, codeSign, notarize, createDMG], type: au.com.ish.DmgTask) {
-    outputs.upToDateWhen { false } //disables 'UP_TO_DATE' check. This is need to run task always
-    description "Create the OSX application executable and installer (which is just a dmg file)."
-}
-
 project.ext.webstartFiles = copySpec {
 	into('images') {
 		from "${projectDir}/src/main/resources/resources/images/onCourse.png"
@@ -344,6 +339,11 @@ task bundleJRE_mac(dependsOn: jar, type: au.com.ish.PackrBundler) {
 			into "$distsDir/onCourse.app/Contents/Resources/jre/"
 		}
 	}
+}
+
+task installer_osx(dependsOn: [bundleJRE_mac, prepareKeychains, codeSign, notarize, createDMG], type: au.com.ish.DmgTask) {
+	outputs.upToDateWhen { false } //disables 'UP_TO_DATE' check. This is need to run task always
+	description "Create the OSX application executable and installer (which is just a dmg file)."
 }
 
 task bundleJRE_win64(dependsOn: jar, type: au.com.ish.PackrBundler) {
