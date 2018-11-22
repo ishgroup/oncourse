@@ -5,7 +5,7 @@ buildscript {
 		waCommonWebservicesClientVersion = '39'
 		log4j2Version = '2.11.1'
 		cayenneVersion = '4.1.M1'
-		jettyVersion = '9.4.14.v20181114'
+		jettyVersion = '9.4.6.v20170531'
 		mariadbVersion = '2.2.5'
 		derbyVersion = '10.14.2.0'
 		googleGuiceVersion = '4.2.0'
