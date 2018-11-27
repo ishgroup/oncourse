@@ -79,7 +79,7 @@ dependencies {
 	testCompile "io.bootique:bootique-test:$bootiqueVersion"
 
 	jreMac 'net.adoptopenjdk:jre11-mac-x64-hotspot:11.28@tar.gz'
-	jreWin 'net.adoptopenjdk:jre11-mac-x64-hotspot:11.28@zip'
+	jreWin 'net.adoptopenjdk:jre11-win-x64-hotspot:11.28@zip'
 }
 
 jar {
@@ -152,9 +152,29 @@ project.ext.webstartFiles = copySpec {
 	}
 }
 
-task bundle_win(dependsOn: jar, type: au.com.ish.Exe4JTask) {
+task jreWin(type: Copy) {
+	copy {
+		from zipTree(configurations.jreWin.singleFile)
+		into "${buildDir}/tmp/"
+	}
+	copy {
+		from "$buildDir/tmp/jdk-11+28-jre/"
+		into "$buildDir/tmp/bundle_win/jre/"
+	}
+}
+
+task compressJre(type: Zip) {
+
+	archiveName = "jre.zip"
+	destinationDir = file("$buildDir/tmp/bundle_win")
+
+	from "$buildDir/tmp/jre/"
+}
+
+task bundle_win(dependsOn: [jar, jreWin], type: au.com.ish.Exe4JRegularTask) {
 	configFile = file("${projectDir}/src/packaging/windows/${project.name}.exe4j.xml")
-	jars = configurations.runtime.plus(configurations.runtime.artifacts.files)
+	jars = (configurations.runtime + configurations.runtime.artifacts.files
+			- configurations.macCompile - configurations.linuxCompile + configurations.winCompile)
 	resourceFiles = files("${projectDir}/src/packaging/windows/onCourse.ico")
 	exeFile = file("${distsDir}/windows/onCourse.exe")
 
