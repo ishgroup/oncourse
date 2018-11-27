@@ -163,14 +163,6 @@ task jreWin(type: Copy) {
 	}
 }
 
-task compressJre(type: Zip) {
-
-	archiveName = "jre.zip"
-	destinationDir = file("$buildDir/tmp/bundle_win")
-
-	from "$buildDir/tmp/jre/"
-}
-
 task bundle_win(dependsOn: [jar, jreWin], type: au.com.ish.Exe4JRegularTask) {
 	configFile = file("${projectDir}/src/packaging/windows/${project.name}.exe4j.xml")
 	jars = (configurations.runtime + configurations.runtime.artifacts.files
@@ -252,7 +244,15 @@ task installer_webstart(dependsOn: bundle_webstart, type: Zip) {
 	archiveName='onCourse-webstart.zip'
 }
 
-task installer_win(dependsOn: [bundle_win, prepareKeychains], type: au.com.ish.NsisTask) {
+task copyJre(type: Copy) {
+	from("$distsDir/windows/") {
+		include 'libs/**'
+		include 'jre/**'
+	}
+	into "$buildDir/tmp/installer_win"
+}
+
+task installer_win(dependsOn: [bundle_win, copyJre, prepareKeychains], type: au.com.ish.NsisTask) {
 	exeFile = file("${distsDir}/windows/onCourse.exe")
 	resourceFolder = file("${projectDir}/src/packaging/windows")
 	nsiFileName = "client-mui.nsi"
