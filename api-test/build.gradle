@@ -1,13 +1,17 @@
+
 apply plugin: 'java'
 
+
 dependencies {
-    testCompile 'com.intuit.karate:karate-junit4:0.9.0.RC4'
-    testCompile 'com.intuit.karate:karate-jersey:0.9.0.RC4'
-    testCompile 'com.intuit.karate:karate-core:0.9.0.RC4'
-    testCompile 'org.glassfish.jersey.connectors:jersey-jetty-connector:2.26'
-    testCompile "org.eclipse.jetty.http2:http2-http-client-transport:${jettyVersion}"
-    testCompile "org.eclipse.jetty:jetty-client:${jettyVersion}"
+
+    testCompile 'com.intuit.karate:karate-junit4:0.8.0.RC4'
+    testCompile 'com.intuit.karate:karate-jersey:0.8.0.RC4'
+    testCompile 'com.intuit.karate:karate-core:0.8.0.RC4'
+    testCompile group: 'org.glassfish.jersey.connectors', name: 'jersey-jetty-connector', version: '2.26'
+    testCompile 'org.eclipse.jetty.http2:http2-http-client-transport:9.4.8.v20171121'
+    testCompile 'org.eclipse.jetty:jetty-client:9.4.8.v20171121'
 }
+
 
 test {
     dependsOn ":server:startDaemon"
@@ -17,4 +21,5 @@ test {
     systemProperty "karate.env", System.properties.getProperty("karate.env")
     // ensure tests are always run
     outputs.upToDateWhen { false }
+
 }
