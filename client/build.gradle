@@ -27,6 +27,8 @@ dependencies {
 
 	compile (project(':common')) {
         exclude group: 'org.apache.cayenne', module: 'cayenne-server'
+		exclude group: 'org.springframework' , module: 'spring-web'
+		exclude group: 'org.springframework' , module: 'spring-context'
     }
 	
 	compile "org.apache.cayenne:cayenne-client-jetty:$cayenneVersion"
@@ -44,28 +46,22 @@ dependencies {
 	compile files("$rootDir/lib/jxbrowser/license.jar")
 
 	macCompile "org.openjfx:javafx-base:$openjfxVersion:mac"
-	macCompile "org.openjfx:javafx-graphics:$openjfxVersion:mac"
 	macCompile "org.openjfx:javafx-controls:$openjfxVersion:mac"
 	macCompile "org.openjfx:javafx-fxml:$openjfxVersion:mac"
-	macCompile "org.openjfx:javafx-web:$openjfxVersion:mac"
 	macCompile "org.openjfx:javafx-swing:$openjfxVersion:mac"
 	macCompile "org.openjfx:javafx-media:$openjfxVersion:mac"
 	macCompile "com.teamdev.jxbrowser:jxbrowser-mac:$jxbrowserVersion"
 
 	winCompile "org.openjfx:javafx-base:$openjfxVersion:win"
-	winCompile "org.openjfx:javafx-graphics:$openjfxVersion:win"
 	winCompile "org.openjfx:javafx-controls:$openjfxVersion:win"
 	winCompile "org.openjfx:javafx-fxml:$openjfxVersion:win"
-	winCompile "org.openjfx:javafx-web:$openjfxVersion:win"
 	winCompile "org.openjfx:javafx-swing:$openjfxVersion:win"
 	winCompile "org.openjfx:javafx-media:$openjfxVersion:win"
 	winCompile "com.teamdev.jxbrowser:jxbrowser-win64:$jxbrowserVersion"
 
 	linuxCompile "org.openjfx:javafx-base:$openjfxVersion:linux"
-	linuxCompile "org.openjfx:javafx-graphics:$openjfxVersion:linux"
 	linuxCompile "org.openjfx:javafx-controls:$openjfxVersion:linux"
 	linuxCompile "org.openjfx:javafx-fxml:$openjfxVersion:linux"
-	linuxCompile "org.openjfx:javafx-web:$openjfxVersion:linux"
 	linuxCompile "org.openjfx:javafx-swing:$openjfxVersion:linux"
 	linuxCompile "org.openjfx:javafx-media:$openjfxVersion:linux"
 	linuxCompile "com.teamdev.jxbrowser:jxbrowser-linux64:$jxbrowserVersion"
