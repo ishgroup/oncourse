@@ -12,7 +12,9 @@ repositories {
 		url 'https://repo.ish.com.au/content/groups'
 	}
 }
-
+ext {
+	jreWinName='jre11-win-x64-hotspot-11.28'
+}
 configurations {
 	macCompile
 	jreMac
@@ -149,12 +151,13 @@ project.ext.webstartFiles = copySpec {
 task jreWin(type: Copy) {
 	copy {
 		from zipTree(configurations.jreWin.singleFile)
-		into "${buildDir}/tmp/"
+		into "${buildDir}/tmp/bundle_win/"
 	}
 	copy {
-		from "$buildDir/tmp/jdk-11+28-jre/"
-		into "$buildDir/tmp/bundle_win/jre/"
+		from "$buildDir/tmp/bundle_win/jdk-11+28-jre/"
+		into "$buildDir/tmp/bundle_win/jre/$jreWinName/"
 	}
+	delete "$buildDir/tmp/bundle_win/jdk-11+28-jre/"
 }
 
 task bundle_win(dependsOn: [jar, jreWin], type: au.com.ish.Exe4JRegularTask) {
@@ -163,7 +166,7 @@ task bundle_win(dependsOn: [jar, jreWin], type: au.com.ish.Exe4JRegularTask) {
 			- configurations.macCompile - configurations.linuxCompile + configurations.winCompile)
 	resourceFiles = files("${projectDir}/src/packaging/windows/onCourse.ico")
 	exeFile = file("${distsDir}/windows/onCourse.exe")
-
+	jreName = jreWinName
 	if (project.hasProperty('osxKeychainPassword')) {
 		certificateFile = file (project.codeSigningTemporaryKeystore)
 		certificateFilePassword= project.codeSigningTemporaryPassword
