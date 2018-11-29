@@ -27,8 +27,6 @@ dependencies {
 
 	compile (project(':common')) {
         exclude group: 'org.apache.cayenne', module: 'cayenne-server'
-		exclude group: 'org.springframework' , module: 'spring-web'
-		exclude group: 'org.springframework' , module: 'spring-context'
     }
 	
 	compile "org.apache.cayenne:cayenne-client-jetty:$cayenneVersion"
