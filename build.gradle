@@ -195,6 +195,7 @@ allprojects {
         oldVersion version
         doLast {
             publishExecutablesPublicationToExecutablesRepository.dependsOn createVersion
+            publishJarPublicationToReleasesRepository.dependsOn createVersion
         }
     }
 
@@ -203,6 +204,7 @@ allprojects {
 		componentName project.name
         doLast {
             publishExecutablesPublicationToExecutablesRepository.dependsOn setReleaseVersion
+            publishJarPublicationToReleasesRepository.dependsOn setReleaseVersion
             compileJava.mustRunAfter setReleaseVersion
         }
 	}
