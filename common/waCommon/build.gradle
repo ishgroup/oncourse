@@ -14,28 +14,16 @@ dependencies {
 	compile 'org.springframework:spring-context:4.2.4.RELEASE'
 }
 
-
-
 task sourceJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
     from sourceSets.main.allSource
 }
 
-def sourceArtifact = artifacts.add('archives', file("${buildDir}/libs/waCommon-" + version + "-sources.jar")) {
-    builtBy sourceJar
-}
-
-def jarArtifact = artifacts.add('archives', file("${buildDir}/libs/waCommon-" + version + ".jar")) {
-    builtBy sourceJar
-}
 publishing {
     publications {
-        source(MavenPublication) {
-            artifact(sourceArtifact)
-        }
-
         jar(MavenPublication) {
-            artifact(jarArtifact)
+            from components.java
+            artifact sourceJar
         }
     }
 }
