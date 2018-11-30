@@ -46,6 +46,7 @@ dependencies {
 	compile files("$rootDir/lib/jxbrowser/license.jar")
 
 	macCompile "org.openjfx:javafx-base:$openjfxVersion:mac"
+	macCompile "org.openjfx:javafx-graphics:$openjfxVersion:mac"
 	macCompile "org.openjfx:javafx-controls:$openjfxVersion:mac"
 	macCompile "org.openjfx:javafx-fxml:$openjfxVersion:mac"
 	macCompile "org.openjfx:javafx-swing:$openjfxVersion:mac"
@@ -53,6 +54,7 @@ dependencies {
 	macCompile "com.teamdev.jxbrowser:jxbrowser-mac:$jxbrowserVersion"
 
 	winCompile "org.openjfx:javafx-base:$openjfxVersion:win"
+	winCompile "org.openjfx:javafx-graphics:$openjfxVersion:win"
 	winCompile "org.openjfx:javafx-controls:$openjfxVersion:win"
 	winCompile "org.openjfx:javafx-fxml:$openjfxVersion:win"
 	winCompile "org.openjfx:javafx-swing:$openjfxVersion:win"
@@ -60,6 +62,7 @@ dependencies {
 	winCompile "com.teamdev.jxbrowser:jxbrowser-win64:$jxbrowserVersion"
 
 	linuxCompile "org.openjfx:javafx-base:$openjfxVersion:linux"
+	linuxCompile "org.openjfx:javafx-graphics:$openjfxVersion:linux"
 	linuxCompile "org.openjfx:javafx-controls:$openjfxVersion:linux"
 	linuxCompile "org.openjfx:javafx-fxml:$openjfxVersion:linux"
 	linuxCompile "org.openjfx:javafx-swing:$openjfxVersion:linux"
