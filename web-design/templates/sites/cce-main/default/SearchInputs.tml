@@ -5,7 +5,7 @@
       <t:form t:id="search2" class="advanced-search-form" method="get" name="search" clientValidation="literal:NONE">
         <div class="search-field" id="adv_search_keyword">
           <label title="Search keywords and functions" for="adv_keyword">I'm Looking For</label>
-          <input t:type="TextField" clientId="adv_keyword" t:value="advKeyword" default="keyword" name="s" />
+          <input t:type="TextField" clientId="adv_keyword" t:value="advKeyword"  name="s" />
         </div>
         <div class="search-field search-field--select" id="adv_search_tag">
           <t:loop source="tagGroups" value="tagGroup">
@@ -15,7 +15,7 @@
         </div>
         <div class="search-field field-1-4" id="adv_search_location">
           <label title="Enter a suburb or postcode near where you'd like to do the course" for="suburb-autocomplete">Near postcode</label>
-          <input t:type="TextField" name="near" t:value="searchNear" clientId="suburb-autocomplete" class="suburb-autocomplete" default="postcode or suburb" size="18" autocomplete="off" />
+          <input t:type="TextField" name="near" t:value="searchNear" clientId="suburb-autocomplete" class="suburb-autocomplete"  size="18" autocomplete="off" />
         </div>
         <div class="search-field field-1-4 search-field--price" id="adv_search_price">
           <label title="Select the maximum price you'd like to pay for a course" for="adv_price">Costing up to</label>

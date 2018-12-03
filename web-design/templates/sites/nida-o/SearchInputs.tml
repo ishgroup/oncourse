@@ -7,13 +7,13 @@
         <div class="col-md-6">
           <div id="adv_search_keyword">
             <label title="Type your keywords here" for="adv_keyword">I'm Looking For</label>
-            <input t:type="TextField" placeholder="I am looking for" clientId="adv_keyword" t:value="advKeyword" default="keyword" name="s" />
+            <input t:type="TextField" placeholder="I am looking for" clientId="adv_keyword" t:value="advKeyword"  name="s" />
           </div>
         </div>
         <div class="col-md-6">
           <div id="adv_search_location">
             <label title="Enter a suburb or postcode near where you'd like to do the course" for="suburb-autocomplete">Closest to</label>
-            <input t:type="TextField" placeholder="Location (suburb or postcode)" name="near" t:value="searchNear" clientId="suburb-autocomplete" class="suburb-autocomplete" default="postcode or suburb" size="18" autocomplete="off" />
+            <input t:type="TextField" placeholder="Location (suburb or postcode)" name="near" t:value="searchNear" clientId="suburb-autocomplete" class="suburb-autocomplete"  size="18" autocomplete="off" />
           </div>
         </div>
       </div>
