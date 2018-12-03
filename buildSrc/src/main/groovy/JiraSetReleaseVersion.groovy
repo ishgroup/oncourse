@@ -30,7 +30,9 @@ class JiraSetReleaseVersion extends DefaultTask {
 
         def nextVersion = lastVersion.name.split().first().toInteger()
 
-        project.setProperty('releaseVersion', nextVersion)
+        if (project.hasProperty('releaseVersion')) {
+            project.setProperty('releaseVersion', nextVersion)
+        }
         project.version = nextVersion
 
         logger.lifecycle("Release version set:${nextVersion}") // don't change this string since it is detected by buildbot
