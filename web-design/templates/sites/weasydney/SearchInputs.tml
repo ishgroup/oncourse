@@ -5,7 +5,7 @@
       <t:form t:id="search2" class="advanced-search-form" method="get" name="search" secure="request.isSecure()" clientValidation="literal:NONE">
         <div id="adv_search_keyword">
           <label title="Search by the course name, tutor name or subject area" for="adv_keyword">Search by Course, Tutor or Subject:</label>
-          <input t:type="TextField" clientId="adv_keyword" t:value="advKeyword"  name="s" />
+          <input t:type="TextField" clientId="adv_keyword" t:value="advKeyword" default="keyword" name="s" />
         </div>
         <div id="adv_search_time">
           <label class="time checkbox">
