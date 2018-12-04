@@ -192,7 +192,10 @@ task bundle_webstart(dependsOn: [jar, prepareKeychains], type: Copy) {
 	with webstartFiles
 	into file("${distsDir}/webstart")
 	doLast {
-		configurations.runtime.files.each { file ->
+		(configurations.runtime 
+				+ configurations.macCompile + configurations.linuxCompile
+				+ configurations.winCompile).files.each { file ->
+			
 			if (file.name == "common-${version}.jar") {
 				copy {
 					from file
@@ -247,7 +250,7 @@ task installer_webstart(dependsOn: bundle_webstart, type: Zip) {
 task copyJre(type: Copy) {
 	from("$distsDir/windows/") {
 		include 'libs/**'
-		include 'jre/**'
+		include 'jre/'
 	}
 	into "$buildDir/tmp/installer_win"
 }
@@ -274,6 +277,9 @@ task installer_unix(dependsOn: jar, type: Zip) {
 		into 'onCourseClient/lib'
 	}
 	from (configurations.runtime.artifacts.files) {
+		into 'onCourseClient'
+	}
+	from (configurations.linuxCompile) {
 		into 'onCourseClient'
 	}
 	from (file("src/packaging/unix/")) {
