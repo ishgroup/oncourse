@@ -55,11 +55,12 @@ task wsdl2Java() {
     }
 }
 
-processResources {
+task generateSources(type: Copy) {
     from 'src/templates'
     into 'build/generated'
     expand(replicationVersions: replicationVersions, referenceVersions: referenceVersions)
 }
+compileJava.dependsOn generateSources
 
 sourceSets {
     main {
