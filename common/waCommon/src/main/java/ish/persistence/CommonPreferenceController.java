@@ -1417,7 +1417,7 @@ public abstract class CommonPreferenceController {
 	 * @return TCP port
 	 */
 	public static int getLastLoginServerPort() {
-		String value = getFilePreference(LASTLOGIN_SERVER_PORT, "8181");
+		String value = getFilePreference(LASTLOGIN_SERVER_PORT, "443");
 		if (value == null) {
 			return 0;
 		}
