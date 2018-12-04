@@ -15,7 +15,7 @@ import java.util.Locale;
 public enum Country {
 
 	AUSTRALIA(new Locale("en", "AU"), "$", "AUD"),
-	EUROPE(Locale.ITALY, "\u20AC", "EUR"),
+	EUROPE(Locale.GERMANY, "\u20AC", "EUR"),
 	ENGLAND(Locale.UK, "\u00A3", "GBP"),
 	US(Locale.US, "$", "USD"),
 	HONG_KONG(Locale.US, "$", "HKD"),
@@ -85,4 +85,20 @@ public enum Country {
 		}
 		throw new IllegalArgumentException("Enumeration key doesn't exist for value:'" + val + "'");
 	}
+
+    /**
+     * Finds Country instance based on locale
+     * @param locale key
+     * @return country with some locale or null, if country for locale doesn't exist
+     */
+	public static Country findCountryByLocale(Locale locale) {
+	    if (locale != null) {
+            for (Country country : Country.values()) {
+                if (country.locale().equals(locale)) {
+                    return country;
+                }
+            }
+        }
+        return null;
+    }
 }
