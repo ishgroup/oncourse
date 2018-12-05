@@ -375,7 +375,7 @@ def windowsArtifact = artifacts.add('archives', file("${distsDir}/windows/onCour
 	builtBy installer_win
 }
 
-def osxArtifact = artifacts.add('archives', file("${distsDir}/onCourse.dmg")) {
+def osxArtifact = artifacts.add('archives', file("${distsDir}/macosx/onCourse.dmg")) {
 	builtBy installer_osx
 }
 // For deploying to our repo
