@@ -321,7 +321,7 @@ task bundleJRE_mac(type: PackrBundler) {
 	platform = 'mac'
 	jars = (configurations.runtime + configurations.runtime.artifacts.files 
 			- configurations.winCompile - configurations.linuxCompile + configurations.macCompile) 
-	outDir = project.file("${distsDir}/macosx/onCourse.app/")
+	outDir = project.file("${distsDir}/onCourse.app/")
 	icon = "${projectDir}/src/packaging/macosx/onCourse.icns"
 
 	doLast {
@@ -375,7 +375,7 @@ def windowsArtifact = artifacts.add('archives', file("${distsDir}/windows/onCour
 	builtBy installer_win
 }
 
-def osxArtifact = artifacts.add('archives', file("${distsDir}/macosx/onCourse.dmg")) {
+def osxArtifact = artifacts.add('archives', file("${distsDir}/onCourse.dmg")) {
 	builtBy installer_osx
 }
 // For deploying to our repo

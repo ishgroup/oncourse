@@ -295,7 +295,7 @@ task run(dependsOn: [classes, agentJar], type: JavaExec) {
 }
 
 appBundler {
-	distributionPath = project.file("${distsDir}/macosx/")
+	distributionPath = project.file("${distsDir}/")
 	appName = "onCourseServer"
 	appIdentifier = "ish.oncourse"
 	mainClassName = "ish.oncourse.server.AngelServer"
@@ -324,7 +324,7 @@ appBundler {
 	]
 }
 
-task installer_osx(dependsOn: [prepareKeychains, codeSign, agentJar], type: au.com.ish.DmgTask) {
+task installer_osx(dependsOn: [prepareKeychains, codeSign, agentJar, appBundle], type: au.com.ish.DmgTask) {
 	outputs.upToDateWhen { false } //disables 'UP_TO_DATE' check. This is need to run task always
 	description "Create the OSX application executable and installer (which is just a dmg file)."
 }
