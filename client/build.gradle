@@ -321,7 +321,7 @@ task bundleJRE_mac(type: PackrBundler) {
 	platform = 'mac'
 	jars = (configurations.runtime + configurations.runtime.artifacts.files 
 			- configurations.winCompile - configurations.linuxCompile + configurations.macCompile) 
-	outDir = project.file("${distsDir}/onCourse.app/")
+	outDir = project.file("${distsDir}/macosx/onCourse.app/")
 	icon = "${projectDir}/src/packaging/macosx/onCourse.icns"
 
 	doLast {
@@ -339,7 +339,7 @@ task bundleJRE_mac(type: PackrBundler) {
 		}
 		copy {
 			from "$projectDir/build/mac/jre/Contents/Home/"
-			into "$distsDir/onCourse.app/Contents/Resources/jre/"
+			into "${outDir}/Contents/Resources/jre/"
 		}
 	}
 }
