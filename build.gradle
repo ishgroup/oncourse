@@ -189,25 +189,6 @@ allprojects {
             }
         }
     }
-
-	task createVersion(type: JiraVersionCreate) {
-        projectCode "OD"
-        oldVersion version
-        doLast {
-            publishExecutablesPublicationToExecutablesRepository.dependsOn createVersion
-            publishJarPublicationToReleasesRepository.dependsOn createVersion
-        }
-    }
-
-	task setReleaseVersion(type: JiraSetReleaseVersion) {
-		projectCode "OD"
-		componentName project.name
-        doLast {
-            publishExecutablesPublicationToExecutablesRepository.dependsOn setReleaseVersion
-            publishJarPublicationToReleasesRepository.dependsOn setReleaseVersion
-            compileJava.mustRunAfter setReleaseVersion
-        }
-	}
 }
 
 apply from: "$rootDir/gradle/buildStaticResources.gradle"
