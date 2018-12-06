@@ -142,7 +142,9 @@ project.ext.webstartFiles = copySpec {
 		expand([
 			sourceCompatibility:	project.sourceCompatibility,
 			mainJarClasspath:		"Libraries-${project.version}/${project.name}-${project.version}.jar",
-			dependenciesJars:		configurations.runtime.files.collect {
+			dependenciesJars:		(configurations.runtime
+										+ configurations.macCompile + configurations.linuxCompile
+										+ configurations.winCompile).files.collect {
 										file -> "      <jar href=\"../clients/Libraries/${file.name}\"/>"
 									}.join("\n"),
 			version:				version,
