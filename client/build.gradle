@@ -374,11 +374,11 @@ task bundleJRE_win64(type: PackrBundler) {
 }
 
 def windowsArtifact = artifacts.add('archives', file("${distsDir}/windows/onCourse-installer.exe")) {
-	builtBy installer_win
+//	builtBy installer_win
 }
 
 def osxArtifact = artifacts.add('archives', file("${distsDir}/onCourse.dmg")) {
-	builtBy installer_osx
+//	builtBy installer_osx
 }
 // For deploying to our repo
 publishing.publications {
