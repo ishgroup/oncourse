@@ -17,13 +17,13 @@ dependencies {
 
 task webpack_unix(type: NodeTask) {
     script = file('node_modules/.bin/webpack')
-    args = ['--progress', '-p', '--env.NODE_ENV', 'production', '--env.BUILD_NUMBER', version ?: 'SNAPSHOT']
+    args = ['--env.NODE_ENV', 'production', '--env.BUILD_NUMBER', version ?: 'SNAPSHOT']
 }
 
 task webpack_win(type:Exec) {
     workingDir '.'
     executable projectDir.getAbsolutePath() + '\\.gradle\\nodejs\\node-v' + project.extensions.getByName('node').version + '-win-x64\\node.exe'
-    args = ['node_modules/webpack/bin/webpack.js/', '--progress', '-p', '--env.NODE_ENV', 'production', '--env.BUILD_NUMBER', 'SNAPSHOT']
+    args = ['node_modules/webpack/bin/webpack.js/', '--env.NODE_ENV', 'production', '--env.BUILD_NUMBER', 'SNAPSHOT']
 }
 
 task jest(type: NodeTask, dependsOn: 'yarn_install') {
