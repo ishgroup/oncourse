@@ -346,6 +346,8 @@ task bundleJRE_mac(type: PackrBundler) {
 	}
 }
 
+codeSign.mustRunAfter(bundleJRE_mac)
+
 task installer_osx(dependsOn: [bundleJRE_mac, prepareKeychains, codeSign, createDMG], type: au.com.ish.DmgTask) {
 	outputs.upToDateWhen { false } //disables 'UP_TO_DATE' check. This is need to run task always
 	description "Create the OSX application executable and installer (which is just a dmg file)."
