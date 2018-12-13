@@ -20,9 +20,7 @@ configurations {
 	jreMac
 	winCompile
 	jreWin
-	linuxCompile
-
-	compile.extendsFrom (OperatingSystem.current().isMacOsX() ? macCompile : OperatingSystem.current().isWindows() ? winCompile : linuxCompile)
+	compile.extendsFrom (OperatingSystem.current().isMacOsX() ? macCompile : winCompile)
 }
 
 dependencies {
@@ -60,14 +58,6 @@ dependencies {
 	winCompile "org.openjfx:javafx-swing:$openjfxVersion:win"
 	winCompile "org.openjfx:javafx-media:$openjfxVersion:win"
 	winCompile "com.teamdev.jxbrowser:jxbrowser-win64:$jxbrowserVersion"
-
-	linuxCompile "org.openjfx:javafx-base:$openjfxVersion:linux"
-	linuxCompile "org.openjfx:javafx-graphics:$openjfxVersion:linux"
-	linuxCompile "org.openjfx:javafx-controls:$openjfxVersion:linux"
-	linuxCompile "org.openjfx:javafx-fxml:$openjfxVersion:linux"
-	linuxCompile "org.openjfx:javafx-swing:$openjfxVersion:linux"
-	linuxCompile "org.openjfx:javafx-media:$openjfxVersion:linux"
-	linuxCompile "com.teamdev.jxbrowser:jxbrowser-linux64:$jxbrowserVersion"
 
     testCompile 'org.mockito:mockito-core:1.10.17'
 	testCompile 'org.apache.poi:poi:3.12-beta1'
@@ -143,7 +133,7 @@ project.ext.webstartFiles = copySpec {
 			sourceCompatibility:	project.sourceCompatibility,
 			mainJarClasspath:		"Libraries-${project.version}/${project.name}-${project.version}.jar",
 			dependenciesJars:		(configurations.runtime
-										+ configurations.macCompile + configurations.linuxCompile
+										+ configurations.macCompile
 										+ configurations.winCompile).files.collect {
 										file -> "      <jar href=\"../clients/Libraries/${file.name}\"/>"
 									}.join("\n"),
@@ -168,7 +158,7 @@ task jreWin(type: Copy) {
 task bundle_win(dependsOn: [jar, jreWin], type: au.com.ish.Exe4JRegularTask) {
 	configFile = file("${projectDir}/src/packaging/windows/${project.name}.exe4j.xml")
 	jars = (configurations.runtime + configurations.runtime.artifacts.files
-			- configurations.macCompile - configurations.linuxCompile + configurations.winCompile)
+			- configurations.macCompile  + configurations.winCompile)
 	resourceFiles = files("${projectDir}/src/packaging/windows/onCourse.ico")
 	exeFile = file("${distsDir}/windows/onCourse.exe")
 	jreName = jreWinName
@@ -195,7 +185,7 @@ task bundle_webstart(dependsOn: [jar, prepareKeychains], type: Copy) {
 	into file("${distsDir}/webstart")
 	doLast {
 		(configurations.runtime 
-				+ configurations.macCompile + configurations.linuxCompile
+				+ configurations.macCompile 
 				+ configurations.winCompile).files.each { file ->
 			
 			if (file.name == "common-${version}.jar") {
@@ -269,29 +259,6 @@ task installer_win(dependsOn: [bundle_win, copyJre, prepareKeychains], type: au.
 	}
 }
 
-task installer_unix(dependsOn: jar, type: Zip) {
-	description "Create the Unix/Linux package (zip)."
-	doFirst {
-		logger.lifecycle("Creating the unix application executable for $project.name")
-	}
-
-	from (configurations.runtime) {
-		into 'onCourseClient/lib'
-	}
-	from (configurations.runtime.artifacts.files) {
-		into 'onCourseClient'
-	}
-	from (configurations.linuxCompile) {
-		into 'onCourseClient'
-	}
-	from (file("src/packaging/unix/")) {
-		into 'onCourseClient'
-	}
-
-	archiveName "onCourseClient.zip"
-	destinationDir file("${distsDir}/unix")
-}
-
 // for help on webstart see src/packaging/webstart/devHowTo.txt
 task webstartRun(dependsOn: bundle_webstart, type: Exec) {
 	executable 'javaws'
@@ -322,7 +289,7 @@ processResources {
 task bundleJRE_mac(type: PackrBundler) {
 	platform = 'mac'
 	jars = (configurations.runtime + configurations.runtime.artifacts.files 
-			- configurations.winCompile - configurations.linuxCompile + configurations.macCompile) 
+			- configurations.winCompile + configurations.macCompile) 
 	outDir = project.file("${distsDir}/onCourse.app/")
 	icon = "${projectDir}/src/packaging/macosx/onCourse.icns"
 
@@ -356,7 +323,7 @@ task installer_osx(dependsOn: [bundleJRE_mac, prepareKeychains, codeSign, create
 task bundleJRE_win64(type: PackrBundler) {
 	platform = 'win64'
 	jars = (configurations.runtime + configurations.runtime.artifacts.files 
-			- configurations.macCompile - configurations.linuxCompile + configurations.winCompile)
+			- configurations.macCompile + configurations.winCompile)
 	outDir = project.file("${distsDir}/win64/")
 	icon = "${projectDir}/src/packaging/windows/onCourse.ico"
 
