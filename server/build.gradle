@@ -430,6 +430,10 @@ def windowsArtifact = artifacts.add('archives', file("${distsDir}/windows/onCour
 	builtBy installer_win
 }
 
+def windowsServiceArtifact = artifacts.add('archives', file("${distsDir}/windows/onCourseService64-installer.exe")) {
+    builtBy installer_winService64
+}
+
 def osxArtifact = artifacts.add('archives', file("${distsDir}/onCourseServer.dmg")) {
 	builtBy installer_osx
 }
@@ -451,6 +455,12 @@ publishing {
 				classifier "windows"
 				extension "exe"
 			}
+			artifact(windowsServiceArtifact) {
+				version (project.hasProperty('releaseVersion') ? project.releaseVersion : "SNAPSHOT")
+				classifier "winService"
+				extension "exe"
+			}
+
 			artifact(osxArtifact) {
 				version (project.hasProperty('releaseVersion') ? project.releaseVersion : "SNAPSHOT")
 				classifier "osx"
