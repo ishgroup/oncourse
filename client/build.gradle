@@ -351,12 +351,12 @@ publishing.publications {
 			extension "zip"
 		}
 		artifact(new DefaultPublishArtifact("onCourse-installer", "exe", "exe", null, null,
-				file("${distsDir}/windows/onCourse-installer.exe"))) {
+				file("${distsDir}/windows/onCourse-installer.exe")).builtBy(installer_win)) {
 			classifier "windows"
 			extension "exe"
 		}
 		artifact(new DefaultPublishArtifact("onCourse", "dmg", "dmg", null, null,
-				file("${distsDir}/onCourse.dmg"))) {
+				file("${distsDir}/onCourse.dmg")).builtBy(installer_osx)) {
 			classifier "osx"
 			extension "dmg"
 		}

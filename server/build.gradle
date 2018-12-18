@@ -442,20 +442,20 @@ publishing {
 				extension "zip"
 			}
 			artifact(new DefaultPublishArtifact("onCourseServer-installer", "exe", "exe", null, null,
-					file("${distsDir}/windows/onCourseServer-installer.exe"))) {
+					file("${distsDir}/windows/onCourseServer-installer.exe")).builtBy(installer_win)) {
 				version (project.hasProperty('releaseVersion') ? project.releaseVersion : "SNAPSHOT")
 				classifier "windows"
 				extension "exe"
 			}
 			artifact(new DefaultPublishArtifact("onCourseService64-installer", "exe", "exe", null, null,
-					file("${distsDir}/windows/onCourseService64-installer.exe"))) {
+					file("${distsDir}/windows/onCourseService64-installer.exe")).builtBy(installer_winService64)) {
 				version (project.hasProperty('releaseVersion') ? project.releaseVersion : "SNAPSHOT")
 				classifier "winService"
 				extension "exe"
 			}
 
 			artifact(new DefaultPublishArtifact("onCourseServer", "dmg", "dmg", null, null,
-					file("${distsDir}/onCourseServer.dmg"))) {
+					file("${distsDir}/onCourseServer.dmg")).builtBy(installer_osx)) {
 				version (project.hasProperty('releaseVersion') ? project.releaseVersion : "SNAPSHOT")
 				classifier "osx"
 				extension "dmg"
