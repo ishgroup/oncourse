@@ -1,4 +1,5 @@
 import au.com.ish.PackrBundler
+import org.gradle.api.internal.artifacts.publish.DefaultPublishArtifact
 import org.gradle.internal.os.OperatingSystem
 
 apply plugin: 'cayenne'
@@ -342,13 +343,6 @@ task bundleJRE_win64(type: PackrBundler) {
 	}
 }
 
-def windowsArtifact = artifacts.add('archives', file("${distsDir}/windows/onCourse-installer.exe")) {
-	builtBy installer_win
-}
-
-def osxArtifact = artifacts.add('archives', file("${distsDir}/onCourse.dmg")) {
-	builtBy installer_osx
-}
 // For deploying to our repo
 publishing.publications {
 	executables(MavenPublication) {
@@ -356,11 +350,13 @@ publishing.publications {
 			classifier "webstart"
 			extension "zip"
 		}
-		artifact(windowsArtifact) {
+		artifact(new DefaultPublishArtifact("onCourse-installer", "exe", "exe", null, null,
+				file("${distsDir}/windows/onCourse-installer.exe"))) {
 			classifier "windows"
 			extension "exe"
 		}
-		artifact(osxArtifact) {
+		artifact(new DefaultPublishArtifact("onCourse", "dmg", "dmg", null, null,
+				file("${distsDir}/onCourse.dmg"))) {
 			classifier "osx"
 			extension "dmg"
 		}
