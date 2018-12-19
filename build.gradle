@@ -164,24 +164,9 @@ allprojects {
     publishing {
         repositories {
             maven {
-                name "executables"
-                url "https://repo.ish.com.au/content/repositories/ish-exe"
-                credentials {
-                    username nexusUsername
-                    password nexusPassword
-                }
-            }
-            maven {
-                name "snapshots"
-                url "https://repo.ish.com.au/content/repositories/ish-snapshots"
-                credentials {
-                    username nexusUsername
-                    password nexusPassword
-                }
-            }
-            maven {
-                name "releases"
-                url "https://repo.ish.com.au/content/repositories/ish-releases"
+                name = "ish"
+                def repo = version.endsWith('SNAPSHOT') ? 'ish-snapshots' : 'ish-releases'
+                url = "https://repo.ish.com.au/content/repositories/${repo}"
                 credentials {
                     username nexusUsername
                     password nexusPassword
