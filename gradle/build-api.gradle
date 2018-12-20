@@ -43,14 +43,6 @@ publishing {
                 extension "zip"
             }
         }
-        
-        docs(MavenPublication) {
-            artifact("${buildDir}/dist/doc.zip") {
-                classifier "documentation"
-                extension "zip"
-                builtBy packageDoc
-            }
-        }
     }
 }
 

@@ -36,3 +36,16 @@ test {
     forkEvery = 1 //run every test in separate jvm
     initTestDBConfig(project, test)
 }
+
+publishing {
+// For deploying to our repo
+    publications {
+        docs(MavenPublication) {
+            artifact("${buildDir}/dist/doc.zip") {
+                classifier "documentation"
+                extension "zip"
+                builtBy packageDoc
+            }
+        }
+    }
+}
