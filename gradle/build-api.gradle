@@ -48,6 +48,7 @@ publishing {
             artifact("${buildDir}/dist/doc.zip") {
                 classifier "documentation"
                 extension "zip"
+                builtBy packageDoc
             }
         }
     }
