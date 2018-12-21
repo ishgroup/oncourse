@@ -4844,7 +4844,9 @@
 		<sql>ALTER TABLE Qualification ADD UNIQUE code_college_unique (nationalCode, collegeId);</sql>
 	</changeSet>
 
-
+	<changeSet id="337" author="anarut" context="production" runOnChange="false">
+		<sql>ALTER TABLE Qualification MODIFY COLUMN levelCode VARCHAR(3) NULL;</sql>
+	</changeSet>
 
 
 </databaseChangeLog>
