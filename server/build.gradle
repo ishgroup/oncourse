@@ -305,14 +305,12 @@ appBundler {
 	jars = jarsCollection.call()
 	keychain = project.osxKeychain
 	certIdentity = project.osxKeychainIdentity
-
-	documentTypes = [[
-							 extensions: "iocdata",
-							 icon      : "onCourseDocument.icns",
-							 name      : "onCourse server data file",
-							 role      : "Editor",
-							 isPackage : "true"
-					 ]]
+	
+	docExtensions = "iocdata"
+	docIsPackage = "true"
+	docIconFile = "onCourseDocument.icns"
+	docTypeRole = "Editor"
+	docTypeName = "onCourse server data file"
 
 	jvmOptions = [
 			'-javaagent:$APP_ROOT/Contents/Java/jetty-alpn-agent.jar',

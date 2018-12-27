@@ -147,7 +147,21 @@ allprojects {
 }
 
 configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
+	
+	configurations {
+		appBundler
+	}
 
+	repositories {
+		maven {
+			url 'https://repo.ish.com.au/repository/thirdparty'
+		}
+	}
+	
+	dependencies {
+		appBundler "com.oracle:appbundler:1.0ea-20181222"
+	}
+	
 	project.ext {
 		appName = getProject().name == 'server' ? "onCourseServer" : "onCourse"
 	}
@@ -167,7 +181,6 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 		}
 	}
 
-
 	task bundle(dependsOn: tasks.findAll { task -> task.name.startsWith('bundle_') }) {
 		description "Create all application executables."
 	}
@@ -179,9 +192,11 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 	task installer(){
 		description "Create all application installers."
 	}
+	
 	installer.dependsOn {
 		project.tasks.findAll { it.name.startsWith('installer_') }
 	}
+	
 	codeSign.dependsOn {
 		project.prepareKeychains
 	}

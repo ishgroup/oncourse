@@ -1,3 +1,5 @@
+import au.com.ish.AppBundlerTask
+import au.com.ish.DmgTask
 import au.com.ish.PackrBundler
 import org.gradle.api.internal.artifacts.publish.DefaultPublishArtifact
 import org.gradle.internal.os.OperatingSystem
@@ -13,9 +15,11 @@ repositories {
 		url 'https://repo.ish.com.au/content/groups'
 	}
 }
+
 ext {
 	jreWinName='jre11-win-x64-hotspot-11.28'
 }
+
 configurations {
 	macCompile
 	jreMac
@@ -101,7 +105,8 @@ appBundler {
     appIdentifier = "ish.oncourse"
     mainClassName = "ish.oncourse.AngelApp"
     iconFile = new File(projectDir, "src/packaging/macosx/onCourse.icns")
-    jars = configurations.runtime.plus(configurations.runtime.artifacts.files)
+    jars = (configurations.runtime + configurations.runtime.artifacts.files 
+			- configurations.winCompile + configurations.macCompile)
     keychain = project.osxKeychain
     certIdentity = project.osxKeychainIdentity
 	notarizeAccount = project.notarizeAccount
@@ -287,36 +292,33 @@ processResources {
 	}
 }
 
-task bundleJRE_mac(type: PackrBundler) {
-	platform = 'mac'
-	jars = (configurations.runtime + configurations.runtime.artifacts.files 
-			- configurations.winCompile + configurations.macCompile) 
-	outDir = project.file("${distsDir}/onCourse.app/")
-	icon = "${projectDir}/src/packaging/macosx/onCourse.icns"
-
-	doLast {
-		logger.lifecycle("Unzipping JRE into $projectDir/build/")
+task appBundleWithJre_osx(type: AppBundlerTask) {
+	
+	String buildMacDir = "$projectDir/build/mac"
+	
+	doFirst {
+		logger.lifecycle("Extracting JRE into $buildMacDir")
 		copy {
 			from tarTree(resources.gzip(configurations.jreMac.singleFile))
-			into "${projectDir}/build/mac"
+			into buildMacDir
 		}
-
-		logger.lifecycle("Copying JRE")
-		//doing twice for now because archive contains +- signs.
-		copy {
-			from "$projectDir/build/mac/jdk-11+28-jre/"
-			into "$projectDir/build/mac/jre/"
-		}
-		copy {
-			from "$projectDir/build/mac/jre/Contents/Home/"
-			into "${outDir}/Contents/Resources/jre/"
-		}
+		String jreFolderName = file("$buildMacDir").listFiles().find{ it.isDirectory() }.name
+		logger.lifecycle("Extracted JRE folder name: $jreFolderName")
+		logger.lifecycle("Renaming $jreFolderName folder to jre")
+		file("$buildMacDir/$jreFolderName").renameTo(file("$buildMacDir/jre"))
+	}
+	
+	runtimeDir = "$buildMacDir/jre/Contents/Home"
+	
+	doLast {
+		logger.lifecycle("Deleting JRE folder: $buildMacDir/jre")
+		delete file("$buildMacDir/jre")
 	}
 }
 
-codeSign.mustRunAfter(bundleJRE_mac)
+codeSign.mustRunAfter(appBundleWithJre_osx)
 
-task installer_osx(dependsOn: [bundleJRE_mac, prepareKeychains, codeSign, createDMG], type: au.com.ish.DmgTask) {
+task installer_osx(dependsOn: [prepareKeychains, codeSign, appBundleWithJre_osx], type: DmgTask) {
 	outputs.upToDateWhen { false } //disables 'UP_TO_DATE' check. This is need to run task always
 	description "Create the OSX application executable and installer (which is just a dmg file)."
 }
