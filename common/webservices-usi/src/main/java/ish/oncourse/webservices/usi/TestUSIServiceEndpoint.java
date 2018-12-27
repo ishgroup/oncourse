@@ -1,7 +1,7 @@
 package ish.oncourse.webservices.usi;
 
-import au.gov.usi._2015.ws.*;
-import au.gov.usi._2015.ws.servicepolicy.*;
+import au.gov.usi._2018.ws.*;
+import au.gov.usi._2018.ws.servicepolicy.*;
 import ish.common.types.USIVerificationStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -108,6 +108,11 @@ public class TestUSIServiceEndpoint implements IUSIService {
 
 	@Override
 	public BulkVerifyUSIResponseType bulkVerifyUSI(BulkVerifyUSIType in) throws IUSIServiceBulkVerifyUSIErrorInfoFaultFaultMessageSingle, IUSIServiceCreateUSIErrorInfoFaultFaultMessage {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public GetCountriesResponseType getCountries(GetCountriesType in) throws IUSIServiceGetCountriesErrorInfoFaultFaultMessageSingle, IUSIServiceGetCountriesErrorInfoFaultFaultMessage {
 		throw new UnsupportedOperationException();
 	}
 

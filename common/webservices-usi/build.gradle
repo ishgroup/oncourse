@@ -38,10 +38,10 @@ project.ext {
     wsdlDir = file("${projectDir}/src/main/resources/wsdl")
     generatedWsdlDir = file("${projectDir}/src/main/java")
     wsdlsToGenerate = [
-            [       '-wsdlLocation', "/wsdl/USIServiceV2.wsdl",
+            [       '-wsdlLocation', "/wsdl/USIServiceV3.wsdl",
                     '-b', "$wsdlDir/usi_bindings.xml",
                     "-client",
-                    "$wsdlDir/USIServiceV2.wsdl"],
+                    "$wsdlDir/USIServiceV3.wsdl"],
     ]
 }
 
