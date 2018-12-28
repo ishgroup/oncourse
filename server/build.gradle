@@ -283,7 +283,7 @@ task startDaemon(dependsOn: [classes, processResources, agentJar, copyTestDb], t
 	classpath = sourceSets.main.runtimeClasspath
 	main = 'ish.oncourse.server.AngelServer'
 	args = ['DEBUG=true', 'REPLICATION_DISABLED=true']
-	jvmArgs = ['-Xmx1024m', '-XX:+HeapDumpOnOutOfMemoryError', "-javaagent:${buildDir}/${pathToJavaAgent}/${javaAgentFileName}", "disableReplication=true"]
+	jvmArgs = ['-Xmx1024m', '-XX:+HeapDumpOnOutOfMemoryError', "-javaagent:${buildDir}/${pathToJavaAgent}/${javaAgentFileName}", "-DdisableReplication=true"]
 	workingDir = "$buildDir"
     waitForOutput = 'Server ready for client connections'
 	timeout = 600
