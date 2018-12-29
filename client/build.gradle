@@ -1,5 +1,7 @@
 import au.com.ish.AppBundlerTask
 import au.com.ish.DmgTask
+import au.com.ish.Exe4JTask
+import au.com.ish.NsisTask
 import au.com.ish.PackrBundler
 import org.gradle.api.internal.artifacts.publish.DefaultPublishArtifact
 import org.gradle.internal.os.OperatingSystem
@@ -17,7 +19,7 @@ repositories {
 }
 
 ext {
-	jreWinName='jre11-win-x64-hotspot-11.28'
+	distDirWin = "$distsDir/windows"
 }
 
 configurations {
@@ -149,32 +151,6 @@ project.ext.webstartFiles = copySpec {
 	}
 }
 
-task jreWin(type: Copy) {
-	copy {
-		from zipTree(configurations.jreWin.singleFile)
-		into "${buildDir}/tmp/bundle_win/"
-	}
-	copy {
-		from "$buildDir/tmp/bundle_win/jdk-11+28-jre/"
-		into "$buildDir/tmp/bundle_win/jre/$jreWinName/"
-	}
-	delete "$buildDir/tmp/bundle_win/jdk-11+28-jre/"
-}
-
-task bundle_win(dependsOn: [jar, jreWin], type: au.com.ish.Exe4JRegularTask) {
-	configFile = file("${projectDir}/src/packaging/windows/${project.name}.exe4j.xml")
-	jars = (configurations.runtime + configurations.runtime.artifacts.files
-			- configurations.macCompile  + configurations.winCompile)
-	resourceFiles = files("${projectDir}/src/packaging/windows/onCourse.ico")
-	exeFile = file("${distsDir}/windows/onCourse.exe")
-	jreName = jreWinName
-	if (project.hasProperty('osxKeychainPassword')) {
-		certificateFile = file (project.codeSigningTemporaryKeystore)
-		certificateFilePassword= project.codeSigningTemporaryPassword
-	}
-}
-
-
 def checkManifest = {
 	def jarFile = file("${distsDir}/webstart/Libraries/common-${version}.jar")
 	if (!new URL("jar:${jarFile.toURI()}!/").openConnection().manifest.mainAttributes.getValue('Release-Version')) {
@@ -245,6 +221,42 @@ task installer_webstart(dependsOn: bundle_webstart, type: Zip) {
 	archiveName='onCourse-webstart.zip'
 }
 
+/**
+ * Extract windows jre from artifact to distsDir/windows/jre directory 
+ */
+task extractWinJre(type: Copy) {
+	from zipTree(configurations.jreWin.singleFile)
+	into distDirWin
+	doLast {
+		String tmpJreName = file(distDirWin).listFiles().find{ it.isDirectory() }.name
+		file "$distDirWin/$tmpJreName/" renameTo "$distDirWin/jre/"
+	}
+}
+
+task bundle_win(dependsOn: [jar, extractWinJre], type: Exe4JTask) {
+	
+	doFirst {
+		copy {
+			from jars
+			into "$distDirWin/libs"
+		}
+	}
+	
+	configFile = file("${projectDir}/src/packaging/windows/${project.name}.exe4j.xml")
+	jars = files(configurations.runtime.artifacts.files, configurations.runtime.files) -
+				configurations.macCompile + configurations.winCompile
+	
+	resourceFiles = files("${projectDir}/src/packaging/windows/onCourse.ico")
+	exeFile = file("$distDirWin/onCourse.exe")
+	jarLocationPrefix = './libs/'	
+	configExpandParams = [ maxmemoryClient : project.maxmemoryClient ]
+	
+	if (project.hasProperty('osxKeychainPassword')) {
+		certificateFile = file (project.codeSigningTemporaryKeystore)
+		certificateFilePassword = project.codeSigningTemporaryPassword
+	}
+}
+
 task copyJre(type: Copy) {
 	from("$distsDir/windows/") {
 		include 'libs/**'
@@ -253,15 +265,15 @@ task copyJre(type: Copy) {
 	into "$buildDir/tmp/installer_win"
 }
 
-task installer_win(dependsOn: [bundle_win, copyJre, prepareKeychains], type: au.com.ish.NsisTask) {
-	exeFile = file("${distsDir}/windows/onCourse.exe")
+task installer_win(dependsOn: [bundle_win, copyJre, prepareKeychains], type: NsisTask) {
+	exeFile = file("$distDirWin/onCourse.exe")
 	resourceFolder = file("${projectDir}/src/packaging/windows")
 	nsiFileName = "client-mui.nsi"
-	outputFile = file("${distsDir}/windows/onCourse-installer.exe")
+	outputFile = file("$distDirWin/onCourse-installer.exe")
 
 	if (project.hasProperty('osxKeychainPassword')) {
 		certificateFile = file (project.codeSigningTemporaryKeystore)
-		certificateFilePassword= project.codeSigningTemporaryPassword
+		certificateFilePassword = project.codeSigningTemporaryPassword
 	}
 }
 

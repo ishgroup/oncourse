@@ -1,3 +1,5 @@
+import au.com.ish.Exe4JTask
+import au.com.ish.NsisTask
 import org.gradle.api.internal.artifacts.publish.DefaultPublishArtifact
 
 apply plugin: 'groovy'
@@ -21,7 +23,6 @@ ext {
 		return configurations.runtime.plus(configurations.runtime.artifacts.files).plus(files("${buildDir}/${pathToJavaAgent}/${javaAgentFileName}"))
 	}
 }
-
 
 // compile everything with the groovy plugin which can handle mixed groovy and Java files
 sourceSets.main.java.srcDirs = []
@@ -160,7 +161,6 @@ processResources {
 	}
 }
 
-
 configurations.all {
 	resolutionStrategy {
 		// this is the last MPL version of iText, so we can't go past this
@@ -220,6 +220,7 @@ task createResourceManifests {
 		}
 	}
 }
+
 test.dependsOn(createResourceManifests)
 
 test {
@@ -267,8 +268,6 @@ task agentJar(type: Copy) {
 	into "${buildDir}/${pathToJavaAgent}/"
 	rename { "${javaAgentFileName}" }
 }
-
-
 
 task copyTestDb(type: Copy) {
     from("$rootDir/api-test/src/test/resources/") {
@@ -329,39 +328,39 @@ task installer_osx(dependsOn: [prepareKeychains, codeSign, agentJar, appBundle],
 	description "Create the OSX application executable and installer (which is just a dmg file)."
 }
 
-task bundle_win(dependsOn: [jar, agentJar], type: au.com.ish.Exe4JTask) {
+task bundle_win(dependsOn: [jar, agentJar], type: Exe4JTask) {
 	configFile = file("${projectDir}/src/packaging/windows/server.exe4j.xml")
 	jars = jarsCollection.call()
 	resourceFiles = files("${projectDir}/src/packaging/windows/onCourseServer.ico")
 	exeFile = file("${distsDir}/windows/onCourseServer.exe")
-
+	configExpandParams = [maxmemoryServer : project.maxmemoryServer]
 	if (project.hasProperty('osxKeychainPassword')) {
 		certificateFile = file (project.codeSigningTemporaryKeystore)
-		certificateFilePassword= project.codeSigningTemporaryPassword
+		certificateFilePassword = project.codeSigningTemporaryPassword
 	}
 }
 
-task bundle_winService(dependsOn: [jar, agentJar], type: au.com.ish.Exe4JTask) {
+task bundle_winService(dependsOn: [jar, agentJar], type: Exe4JTask) {
 	configFile = file("${projectDir}/src/packaging/windows/service.exe4j.xml")
 	jars = jarsCollection.call()
 	resourceFiles = files("${projectDir}/src/packaging/windows/onCourseServer.ico")
 	exeFile = file("${distsDir}/windows/onCourseService.exe")
-
+	configExpandParams = [maxmemoryServer : project.maxmemoryServer]
 	if (project.hasProperty('osxKeychainPassword')) {
 		certificateFile = file (project.codeSigningTemporaryKeystore)
-		certificateFilePassword= project.codeSigningTemporaryPassword
+		certificateFilePassword = project.codeSigningTemporaryPassword
 	}
 }
 
-task bundle_winService64(dependsOn: [jar, agentJar], type: au.com.ish.Exe4JTask) {
+task bundle_winService64(dependsOn: [jar, agentJar], type: Exe4JTask) {
 	configFile = file("${projectDir}/src/packaging/windows/service64.exe4j.xml")
 	jars = jarsCollection.call()
 	resourceFiles = files("${projectDir}/src/packaging/windows/onCourseServer.ico")
 	exeFile = file("${distsDir}/windows/onCourseService64.exe")
-
+	configExpandParams = [maxmemoryServer64 : project.maxmemoryServer64]
 	if (project.hasProperty('osxKeychainPassword')) {
 		certificateFile = file (project.codeSigningTemporaryKeystore)
-		certificateFilePassword= project.codeSigningTemporaryPassword
+		certificateFilePassword = project.codeSigningTemporaryPassword
 	}
 }
 
@@ -390,7 +389,7 @@ task installer_unix(dependsOn: [jar,agentJar], type: Zip) {
 	destinationDir file("${distsDir}/unix")
 }
 
-task installer_win(dependsOn: [bundle_win, prepareKeychains], type: au.com.ish.NsisTask) {
+task installer_win(dependsOn: [bundle_win, prepareKeychains], type: NsisTask) {
 	exeFile = file("${distsDir}/windows/onCourseServer.exe")
 	resourceFolder = file("${projectDir}/src/packaging/windows")
 	nsiFileName = "server-mui.nsi"
@@ -402,7 +401,7 @@ task installer_win(dependsOn: [bundle_win, prepareKeychains], type: au.com.ish.N
 	}
 }
 
-task installer_winService(dependsOn: [bundle_winService, prepareKeychains], type: au.com.ish.NsisTask) {
+task installer_winService(dependsOn: [bundle_winService, prepareKeychains], type: NsisTask) {
 	exeFile = file("${distsDir}/windows/onCourseService.exe")
 	resourceFolder = file("${projectDir}/src/packaging/windows")
 	nsiFileName = "service-mui.nsi"
@@ -414,7 +413,7 @@ task installer_winService(dependsOn: [bundle_winService, prepareKeychains], type
 	}
 }
 
-task installer_winService64(dependsOn: [bundle_winService64, prepareKeychains], type: au.com.ish.NsisTask) {
+task installer_winService64(dependsOn: [bundle_winService64, prepareKeychains], type: NsisTask) {
 	exeFile = file("${distsDir}/windows/onCourseService64.exe")
 	resourceFolder = file("${projectDir}/src/packaging/windows")
 	nsiFileName = "service64-mui.nsi"
