@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="level" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
  *         &lt;element name="nationalCode" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
  *         &lt;element name="newApprentices" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
- *         &lt;element name="nominalHours" type="{http://www.w3.org/2001/XMLSchema}float"/&gt;
+ *         &lt;element name="nominalHours" type="{http://www.w3.org/2001/XMLSchema}float" minOccurs="0"/&gt;
  *         &lt;element name="reviewDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
  *         &lt;element name="specialisation" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
  *         &lt;element name="title" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
@@ -89,7 +89,7 @@ public class QualificationStub
     protected String nationalCode;
     @XmlElement(required = true)
     protected String newApprentices;
-    protected float nominalHours;
+    protected Float nominalHours;
     @XmlElement(required = true, type = String.class)
     @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "dateTime")
@@ -346,16 +346,24 @@ public class QualificationStub
     /**
      * Gets the value of the nominalHours property.
      * 
+     * @return
+     *     possible object is
+     *     {@link Float }
+     *     
      */
-    public float getNominalHours() {
+    public Float getNominalHours() {
         return nominalHours;
     }
 
     /**
      * Sets the value of the nominalHours property.
      * 
+     * @param value
+     *     allowed object is
+     *     {@link Float }
+     *     
      */
-    public void setNominalHours(float value) {
+    public void setNominalHours(Float value) {
         this.nominalHours = value;
     }
 

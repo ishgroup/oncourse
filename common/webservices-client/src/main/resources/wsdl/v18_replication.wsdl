@@ -1684,7 +1684,7 @@
                             <xs:element name="level" type="xs:string" />
                             <xs:element name="nationalCode" type="xs:string" />
                             <xs:element name="newApprentices" type="xs:string" />
-                            <xs:element name="nominalHours" type="xs:float" />
+                            <xs:element name="nominalHours" type="xs:float" minOccurs="0"/>
                             <xs:element name="reviewDate" type="xs:dateTime" />
                             <xs:element name="specialisation" type="xs:string" />
                             <xs:element name="title" type="xs:string" />
