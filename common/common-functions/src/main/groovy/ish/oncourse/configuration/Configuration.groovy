@@ -1,13 +1,16 @@
 package ish.oncourse.configuration
 
+import java.util.regex.Pattern
+
 import static ish.oncourse.configuration.Configuration.AppProperty.*
 
 class Configuration {
     
     static final String USER_DIR = 'user.dir'
     static final String CONFIG_FILE_NAME = 'application.properties'
-    public static final String JDBC_URL_PROPERTY = 'bq.jdbc.willow.url'
-    static final String BD_URL = 'jdbc:mysql://%s:%s/%s?autoReconnect=true&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf8&useSSL=false'
+    static final Pattern DB_URL_PATTERN = Pattern.compile('(\\w+:)+\\/\\/.+\\/\\w+')
+    
+    static final String BD_URL_PARAMS = 'autoReconnect=true&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf8&useSSL=false'
     
     static configure(IProperty... extendedProps = null) {
         
@@ -20,7 +23,7 @@ class Configuration {
             init(props, PORT)
             init(props, HOST)
             init(props, PATH)
-            System.setProperty(JDBC_URL_PROPERTY, String.format(BD_URL, props.get(DB_HOST.key), props.get(DB_PORT.key), props.get(DB_NAME.key)))
+            init(props, DB_URL)
             init(props, DB_PASS)
             init(props, DB_USER)
             init(props, SMTP)
@@ -59,7 +62,11 @@ class Configuration {
 
     static boolean init(Properties props, IProperty prop) {
         if (props.get(prop.key)) {
-            System.setProperty(prop.systemProperty, props.get(prop.key) as String)
+            String value =  props.get(prop.key) as String
+            if (prop == DB_URL && DB_URL_PATTERN.matcher(value).matches()) {
+                value = "$value?$BD_URL_PARAMS"
+            }
+            System.setProperty(prop.systemProperty, value)
             return true
         }
         return false
@@ -75,9 +82,7 @@ class Configuration {
     static enum AppProperty implements IProperty {
         PORT('port', 'bq.jetty.connector.port'),
         HOST('host', 'bq.jetty.connector.host'),
-        DB_HOST('db_host', null),
-        DB_PORT('db_port', null),
-        DB_NAME('db_name', null),
+        DB_URL('db_url', 'bq.jdbc.willow.url'),
         DB_USER('db_user', 'bq.jdbc.willow.username'),
         DB_PASS('db_pass', 'bq.jdbc.willow.password'),
         PATH('path', 'bq.jetty.context'),
