@@ -321,6 +321,7 @@ task appBundleWithJre_osx(type: AppBundlerTask) {
 	}
 	
 	runtimeDir = "$buildMacDir/jre/Contents/Home"
+	runtimeIncludes = ["conf/"]
 	
 	doLast {
 		logger.lifecycle("Deleting JRE folder: $buildMacDir/jre")
