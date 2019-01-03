@@ -17,6 +17,8 @@ dependencies {
     compile 'org.codehaus.groovy:groovy-ant:2.4.6'
     compile 'org.fusesource.jansi:jansi:1.12'
     compile 'org.apache.ant:ant-antlr:1.9.6'
+	
+	compile project.fileTree(include: ['*.jar'], dir: "${project.rootDir}/buildSrc/apidoc/build/libs/")
 }
 
 
