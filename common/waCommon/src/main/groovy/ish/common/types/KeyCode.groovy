@@ -26,7 +26,7 @@ enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Always disabled: create & delete
 	 */
 	@API
-	NTIS_DATA(1, "Qualification reference data", VIEW + PRINT, CREATE + DELETE),
+	NTIS_DATA(1, "Qualification reference data", VIEW + PRINT),
 
 	/**
 	 * Database value: 2
