@@ -425,12 +425,30 @@ task installer_winService64(dependsOn: [bundle_winService64, prepareKeychains], 
 	}
 }
 
+task generateDoc (type: SwaggerDoc) {
+	schema = file("${rootDir}/server-api/src/main/resources/server-api.yaml")
+	docOutput = file("${buildDir}/doc")
+}
+
+task packageDoc (type: Zip, dependsOn: generateDoc, group: 'distribution') {
+	from file("${buildDir}/doc/docs")
+	archiveName 'doc.zip'
+	destinationDir file("${buildDir}/dist/")
+}
+
 // "gradlew publishToMavenLocal" if you want to publish this to your local .m2 folder
 publishing {
 	publications {
 		apidocs(MavenPublication) {
 			artifact apidocsBundle
 			version (project.hasProperty('releaseVersion') ? project.releaseVersion : "99-SNAPSHOT")
+		}
+		docs(MavenPublication) {
+			artifact("${buildDir}/dist/doc.zip") {
+				classifier "documentation"
+				extension "zip"
+				builtBy packageDoc
+			}
 		}
 		executables(MavenPublication) {
 			artifact(installer_unix) {

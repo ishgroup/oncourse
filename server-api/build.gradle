@@ -55,27 +55,3 @@ compileGroovy {
 clean.doFirst {
     delete("${project.projectDir}/build/generated-sources")
 }
-
-task generateDoc (type: SwaggerDoc) {
-    schema = file("${project.projectDir}/src/main/resources/server-api.yaml")
-    docOutput = file("${buildDir}/doc")
-}
-
-task packageDoc (type: Zip, dependsOn: generateDoc, group: 'distribution') {
-    from file("${buildDir}/doc/docs")
-    archiveName 'doc.zip'
-    destinationDir file("${buildDir}/dist/")
-}
-
-publishing {
-// For deploying to our repo
-    publications {
-        docs(MavenPublication) {
-            artifact("${buildDir}/dist/doc.zip") {
-                classifier "documentation"
-                extension "zip"
-                builtBy packageDoc
-            }
-        }
-    }
-}
