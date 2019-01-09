@@ -305,35 +305,17 @@ processResources {
 	}
 }
 
-String buildMacDir = "$projectDir/build/mac"
-
-task copyJre_osx(type: Exec) {
-	doFirst {
-		mkdir buildMacDir
-	}
-	executable 'tar'
-	args "-xf", "${configurations.jreMac.singleFile.getAbsolutePath()}", "-C", "$buildMacDir"
-}
-
-task appBundleWithJre_osx(dependsOn: copyJre_osx,type: AppBundlerTask) {
-	runtimeDir = "$buildMacDir/jdk-11+28-jre/Contents/Home"
+task bundle_osx(type: AppBundlerTask) {
+	runtimeJRE = configurations.jreMac.singleFile
 	runtimeIncludes = ["conf/"]
 }
 
-codeSign.mustRunAfter(appBundleWithJre_osx)
+codeSign.mustRunAfter(bundle_osx)
 
-task restoreLink_osx(dependsOn: appBundleWithJre_osx, type: Exec) {
-	workingDir = "$distsDir/onCourse.app/Contents/Plugins/jdk-11+28-jre/Contents/MacOS"
-	executable 'ln'
-	args "-sF", "../Home/lib/jli/libjli.dylib", "libjli.dylib"
-}
-
-task installer_osx(dependsOn: [prepareKeychains, codeSign, appBundleWithJre_osx, restoreLink_osx], type: DmgTask) {
+task installer_osx(dependsOn: [prepareKeychains, codeSign, bundle_osx], type: DmgTask) {
 	outputs.upToDateWhen { false } //disables 'UP_TO_DATE' check. This is need to run task always
 	description "Create the OSX application executable and installer (which is just a dmg file)."
 }
-
-installer_osx.mustRunAfter(restoreLink_osx)
 
 task bundleJRE_win64(type: PackrBundler) {
 	platform = 'win64'
