@@ -305,37 +305,35 @@ processResources {
 	}
 }
 
-task appBundleWithJre_osx(type: AppBundlerTask) {
-	
-	String buildMacDir = "$projectDir/build/mac"
-	
+String buildMacDir = "$projectDir/build/mac"
+
+task copyJre_osx(type: Exec) {
 	doFirst {
-		logger.lifecycle("Extracting JRE into $buildMacDir")
-		copy {
-			from tarTree(resources.gzip(configurations.jreMac.singleFile))
-			into buildMacDir
-		}
-		String jreFolderName = file("$buildMacDir").listFiles().find{ it.isDirectory() }.name
-		logger.lifecycle("Extracted JRE folder name: $jreFolderName")
-		logger.lifecycle("Renaming $jreFolderName folder to jre")
-		file("$buildMacDir/$jreFolderName").renameTo(file("$buildMacDir/jre"))
+		mkdir buildMacDir
 	}
-	
-	runtimeDir = "$buildMacDir/jre/Contents/Home"
+	executable 'tar'
+	args "-xf", "${configurations.jreMac.singleFile.getAbsolutePath()}", "-C", "$buildMacDir"
+}
+
+task appBundleWithJre_osx(dependsOn: copyJre_osx,type: AppBundlerTask) {
+	runtimeDir = "$buildMacDir/jdk-11+28-jre/Contents/Home"
 	runtimeIncludes = ["conf/"]
-	
-	doLast {
-		logger.lifecycle("Deleting JRE folder: $buildMacDir/jre")
-		delete file("$buildMacDir/jre")
-	}
 }
 
 codeSign.mustRunAfter(appBundleWithJre_osx)
 
-task installer_osx(dependsOn: [prepareKeychains, codeSign, appBundleWithJre_osx], type: DmgTask) {
+task restoreLink_osx(dependsOn: appBundleWithJre_osx, type: Exec) {
+	workingDir = "$distsDir/onCourse.app/Contents/Plugins/jdk-11+28-jre/Contents/MacOS"
+	executable 'ln'
+	args "-sF", "../Home/lib/jli/libjli.dylib", "libjli.dylib"
+}
+
+task installer_osx(dependsOn: [prepareKeychains, codeSign, appBundleWithJre_osx, restoreLink_osx], type: DmgTask) {
 	outputs.upToDateWhen { false } //disables 'UP_TO_DATE' check. This is need to run task always
 	description "Create the OSX application executable and installer (which is just a dmg file)."
 }
+
+installer_osx.mustRunAfter(restoreLink_osx)
 
 task bundleJRE_win64(type: PackrBundler) {
 	platform = 'win64'
