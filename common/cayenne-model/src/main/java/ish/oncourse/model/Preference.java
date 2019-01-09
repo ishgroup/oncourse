@@ -33,7 +33,7 @@ public class Preference extends _Preference implements Queueable {
 		if ((isPresentedInDatabase) || (isPresentedInUncommitedObjects())) {
 			String propertyName = COLLEGE.getName() + ":" + NAME.getName();
 			validationResult.addFailure(ValidationFailure.validationFailure(
-					this, propertyName, "Entity with this data is exists."
+					this, propertyName, "Entity with this data exists."
 			));
 		}
 		super.validateForInsert(validationResult);
