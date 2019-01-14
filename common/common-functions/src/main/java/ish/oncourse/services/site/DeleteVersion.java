@@ -44,7 +44,8 @@ class DeleteVersion {
 	void deleteVersionRelatedObjects() {
 		deleteEntities(WebMenu.class);
 		deleteEntities(WebUrlAlias.class);
-		deleteEntities(WebNode.class);
+        // constraints ON DELETE CASCADE added for WebNodeType and WebNode (OD-12357)
+		// deleteEntities(WebNode.class);
 		deleteEntities(WebNodeType.class);
 		deleteEntities(WebSiteLayout.class);
 	}

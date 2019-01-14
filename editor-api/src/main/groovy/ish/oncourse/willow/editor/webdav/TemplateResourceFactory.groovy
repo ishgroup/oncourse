@@ -21,7 +21,6 @@ import ish.oncourse.willow.editor.website.WebTemplateFunctions
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.io.IOUtils
-import org.apache.commons.lang3.ArrayUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.reflections.Reflections
@@ -228,8 +227,12 @@ class TemplateResourceFactory implements ResourceFactory {
         void delete() throws NotAuthorizedException, ConflictException, BadRequestException {
             ObjectContext context = cayenneService.newContext()
             WebSiteLayout layoutToChange = context.localObject(layout)
-            context.deleteObjects(layoutToChange)
-            context.commitChanges()
+            if (layoutToChange.webNodeTypes.empty) {
+                context.deleteObjects(layoutToChange)
+                context.commitChanges()
+            } else {
+                throw new BadRequestException(this, "Remove ${layoutToChange.webNodeTypes.size()} blocks from layout.".toString())
+            }
         }
     }
 }
