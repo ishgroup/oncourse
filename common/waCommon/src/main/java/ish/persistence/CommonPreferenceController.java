@@ -977,8 +977,8 @@ public abstract class CommonPreferenceController {
 	public synchronized String getAvetmissAddress1() {
 		String result = getValue(AVETMISS_ADDRESS1, false);
 		if (result == null) {
-			setAvetmissAddress1("");
-			return getAvetmissAddress1();
+			setAvetmissAddress1(StringUtils.EMPTY);
+			return StringUtils.EMPTY;
 		}
 		return result;
 	}
@@ -998,8 +998,8 @@ public abstract class CommonPreferenceController {
 	public synchronized String getAvetmissSuburb() {
 		String result = getValue(AVETMISS_SUBURB, false);
 		if (result == null) {
-			setAvetmissSuburb("");
-			return getAvetmissSuburb();
+			setAvetmissSuburb(StringUtils.EMPTY);
+			return StringUtils.EMPTY;
 		}
 		return result;
 	}
@@ -1076,8 +1076,8 @@ public abstract class CommonPreferenceController {
 	public synchronized String getAvetmissCertSignatoryName() {
 		String result = getValue(AVETMISS_CERT_SIGNATORY_NAME, false);
 		if (result == null) {
-			setAvetmissCertSignatoryName("");
-			return getAvetmissCertSignatoryName();
+			setAvetmissCertSignatoryName(StringUtils.EMPTY);
+			return StringUtils.EMPTY;
 		}
 		return result;
 	}

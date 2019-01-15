@@ -96,6 +96,6 @@ class GetPreference {
             pref.webSite = objectContext.localObject(webSite)
         }
         
-        pref.valueString = StringUtils.trimToNull(value)
+        pref.valueString = StringUtils.trimToEmpty(value)
     }
 }
