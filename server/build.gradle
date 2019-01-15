@@ -441,10 +441,12 @@ publishing {
 	publications {
 		apidocs(MavenPublication) {
 			artifact apidocsBundle
-			version (project.hasProperty('releaseVersion') ? project.releaseVersion : "99-SNAPSHOT")
+			artifactId "apidocs"
+			version (project.hasProperty('releaseVersion') ? project.releaseVersion : "SNAPSHOT")
 		}
 		docs(MavenPublication) {
 			artifact("${buildDir}/dist/doc.zip") {
+				artifactId "docs"
 				classifier "documentation"
 				extension "zip"
 				builtBy packageDoc
