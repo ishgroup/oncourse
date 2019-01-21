@@ -9,4 +9,6 @@ import ish.common.types.USIVerificationResult;
 public interface IUSIVerificationService {
 
 	USIVerificationResult verifyUsi(USIVerificationRequest request);
+
+	LocateUSIResult locateUsi(LocateUSIRequest request);
 }

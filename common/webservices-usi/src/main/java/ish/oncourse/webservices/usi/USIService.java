@@ -3,40 +3,73 @@
  */
 package ish.oncourse.webservices.usi;
 
-import au.gov.usi._2018.ws.VerifyUSIResponseType;
-import au.gov.usi._2018.ws.VerifyUSIType;
+import au.gov.usi._2018.ws.*;
+import au.gov.usi._2018.ws.LocateUSIType;
 import au.gov.usi._2018.ws.servicepolicy.IUSIService;
-import ish.common.types.USIFieldStatus;
-import ish.common.types.USIVerificationRequest;
-import ish.common.types.USIVerificationResult;
-import ish.common.types.USIVerificationStatus;
+import ish.common.types.*;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class USIService {
-	
+
 	private static final Logger logger = LogManager.getLogger();
-	
+
 	private IUSIService endpoint;
-	
+
 	private USIService() {
 	}
-	
+
 	public USIVerificationResult verifyUsi(USIVerificationRequest request) {
-		USIVerificationResult result = sendRequest(VerifyUSITypeBuilder.valueOf(request, false).build());
+		USIVerificationResult result = sendVerifyRequest(VerifyUSITypeBuilder.valueOf(request, false).build());
 		if (needSendSingleNameRequest(request, result)) {
-			return sendRequest(VerifyUSITypeBuilder.valueOf(request, true).build());
+			return sendVerifyRequest(VerifyUSITypeBuilder.valueOf(request, true).build());
 		} else {
 			return result;
 		}
 	}
 
-	private boolean needSendSingleNameRequest(USIVerificationRequest request, USIVerificationResult result) {
-		return (result.getFirstNameStatus() == USIFieldStatus.NO_MATCH || result.getLastNameStatus() == USIFieldStatus.NO_MATCH) &&
-		request.getStudentFirstName().equalsIgnoreCase(request.getStudentLastName());
+	public LocateUSIResult locateUSI(LocateUSIRequest internalRq) {
+		try {
+			LocateUSIType serviceRq = LocateUSITypeBuilder.valueOf(internalRq).build();
+			LocateUSIResponseType serviceRs = endpoint.locateUSI(serviceRq);
+
+			LocateUSIResult internalRs = new LocateUSIResult();
+
+			switch (serviceRs.getResult()) {
+				case EXACT: {
+					internalRs.setResultType(ish.common.types.LocateUSIType.MATCH);
+					internalRs.setUsi(serviceRs.getUSI());
+					internalRs.setMessage(serviceRs.getContactDetailsMessage());
+				}
+				break;
+				case MULTIPLE_EXACT: {
+					internalRs.setResultType(ish.common.types.LocateUSIType.MORE_DETAILS_EXPECTED);
+				}
+				break;
+				case NO_MATCH: {
+					internalRs.setResultType(ish.common.types.LocateUSIType.NO_MATCH);
+				}
+				break;
+				default: {
+					internalRs.setError(StringUtils.join(serviceRs.getErrors().getError(),';'));
+				}
+			}
+			return internalRs;
+		} catch (Exception e) {
+			logger.error("Unable to locate USI code for {} {} in organisation code {}.", internalRq.getFirstName(),
+					internalRq.getFamilyName(), internalRq.getOrgCode(), e);
+
+			return LocateUSIResult.valueOf("Error verifying USI.");
+		}
 	}
 
-	private USIVerificationResult sendRequest(VerifyUSIType verifyUSIType) {
+	private boolean needSendSingleNameRequest(USIVerificationRequest request, USIVerificationResult result) {
+		return (result.getFirstNameStatus() == USIFieldStatus.NO_MATCH || result.getLastNameStatus() == USIFieldStatus.NO_MATCH) &&
+				request.getStudentFirstName().equalsIgnoreCase(request.getStudentLastName());
+	}
+
+	private USIVerificationResult sendVerifyRequest(VerifyUSIType verifyUSIType) {
 		try {
 			VerifyUSIResponseType response = endpoint.verifyUSI(verifyUSIType);
 
@@ -55,7 +88,7 @@ public class USIService {
 
 			return result;
 		} catch (Exception e) {
-			logger.error("Unable to verify USI code for {} {} in organisation code {}.", verifyUSIType.getFirstName(), 
+			logger.error("Unable to verify USI code for {} {} in organisation code {}.", verifyUSIType.getFirstName(),
 					verifyUSIType.getFamilyName(), verifyUSIType.getOrgCode(), e);
 
 			return USIVerificationResult.valueOf("Error verifying USI.");
