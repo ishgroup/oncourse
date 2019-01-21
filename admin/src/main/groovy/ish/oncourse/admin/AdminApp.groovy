@@ -12,7 +12,7 @@ class AdminApp {
     static void main(String[] args) {
         System.setProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager")
         System.setProperty("org.apache.cxf.stax.maxChildElements", "100000")
-        Configuration.configure(S_ROOT, STORAGE_ACCESS_ID, STORAGE_ACCESS_KEY)
+        Configuration.configure(S_ROOT, STORAGE_ACCESS_ID, STORAGE_ACCESS_KEY, DEPLOY_SCRIPT_PATH)
         Bootique bootique = init(args)
         bootique.exec()
     }
