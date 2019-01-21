@@ -86,45 +86,13 @@ class WebNodeResource  extends AbstractResource implements CopyableResource, Del
 
     @Override
     void moveTo(CollectionResource rDest, String newName) throws ConflictException, NotAuthorizedException, BadRequestException {
-
-        // this logic is a bit tricky and is there for the purpose of working around odd Cyberduck behavior when
-        // editing records. When editing record Cyberduck's actions are:
-        //
-        //		1. create new block/page with changed content and temporary name
-        //		2. delete existing block/page
-        //		3. rename new block/page to its real name
-        //
-        // To avoid losing block/page relationships and other non WebDAV editable fields during the step 2
-        // we do the following:
-        //
-        // 		- if the rename does not overwrite anything, then just perform the rename of the name 
-        // 		  of the record in the db leaving all relations intact
-        // 		- if the rename overwrites something, then just copy the content and delete the old record permanently
-
         ObjectContext context = cayenneService.newContext()
-
         WebNode existingNode = WebNodeFunctions.getNodeForName(newName, requestService.request, context)
-
-        // if there is no existing record with such name and we are not renaming current record to the same name
-        // then just change name of the page
-        // otherwise - replace content of existing record with the new one and delete the new record
-
         if (existingNode == null || existingNode.objectId == webNode.objectId) {
             WebNode localNode = context.localObject(webNode)
             localNode.name = newName
-        } else {
-            WebContent webContent = existingNode.webContentVisibility[0].webContent
-
-            webContent.contentTextile = getWebContent().contentTextile
-            webContent.content = getWebContent().content
-
-            context.deleteObjects(context.localObject(webNode))
-            //we should delete not only temporary webNode but also and whole structure of the content
-            context.deleteObjects(context.localObject(webNode.webContentVisibility[0]))
-            context.deleteObjects(context.localObject(webNode.webContentVisibility[0].webContent))
+            context.commitChanges()
         }
-
-        context.commitChanges()
     }
 
     @Override

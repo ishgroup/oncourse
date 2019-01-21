@@ -78,40 +78,13 @@ class WebContentResource  extends AbstractResource implements CopyableResource, 
 
     @Override
     void moveTo(CollectionResource rDest, String newName) throws ConflictException, NotAuthorizedException, BadRequestException {
-
-        // this logic is a bit tricky and is there for the purpose of working around odd Cyberduck behavior when
-        // editing records. When editing record Cyberduck's actions are:
-        //
-        //		1. create new block/page with changed content and temporary name
-        //		2. delete existing block/page
-        //		3. rename new block/page to its real name
-        //
-        // To avoid losing block/page relationships and other non WebDAV editable fields during the step 2
-        // we do the following:
-        //
-        // 		- if the rename does not overwrite anything, then just perform the rename of the name 
-        // 		  of the record in the db leaving all relations intact
-        // 		- if the rename overwrites something, then just copy the content and delete the old record permanently
-
         ObjectContext context = cayenneService.newContext()
-
         WebContent existingBlock = WebContentFunctions.getBlockByName(requestService.request, context, newName)
-
-        // if there is no existing record with such name and we are not renaming current record to the same name
-        // then just change name of the block
-        // otherwise - replace content of existing record with the new one and delete the new record
-
         if (existingBlock == null || existingBlock.objectId == webContent.objectId) {
             WebContent localBlock = context.localObject(webContent)
             localBlock.name = newName
-        } else {
-            WebContent localBlock = existingBlock
-            localBlock.contentTextile = webContent.contentTextile
-            localBlock.content = webContent.content
-            context.deleteObjects(context.localObject(webContent))
+            context.commitChanges()
         }
-
-        context.commitChanges()
     }
 
     @Override
