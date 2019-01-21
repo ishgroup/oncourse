@@ -3,10 +3,11 @@ package ish.oncourse.admin
 import ish.oncourse.configuration.IProperty
 
 enum AdminProperty implements IProperty {
-
     S_ROOT('editor_files', 's.root'),
     STORAGE_ACCESS_ID('storage_access_id', 'storage.access.id'),
-    STORAGE_ACCESS_KEY('storage_access_key', 'storage.access.key')
+    STORAGE_ACCESS_KEY('storage_access_key', 'storage.access.key'),
+    DEPLOY_SCRIPT_PATH('editor_deploy', 'editor.script.deploy')
+
     private String key
     private String systemProperty
 

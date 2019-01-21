@@ -1,6 +1,7 @@
 package ish.oncourse.admin.services.website;
 
 import ish.oncourse.admin.services.AbstractTest;
+import ish.oncourse.configuration.Configuration;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.site.IWebSiteVersionService;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 
+import static ish.oncourse.admin.AdminProperty.S_ROOT;
 import static org.junit.Assert.assertTrue;
 
 /*

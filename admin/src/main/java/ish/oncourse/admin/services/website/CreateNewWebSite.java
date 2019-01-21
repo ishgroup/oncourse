@@ -3,6 +3,7 @@ package ish.oncourse.admin.services.website;
 import ish.oncourse.admin.services.CreateSiteFileStructure;
 import ish.oncourse.admin.services.template.CopyTemplateStaticResources;
 import ish.oncourse.admin.utils.LicenseFeeUtil;
+import ish.oncourse.configuration.Configuration;
 import ish.oncourse.model.College;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.model.WebSiteVersion;
@@ -14,6 +15,8 @@ import org.apache.cayenne.ObjectContext;
 import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
+
+import static ish.oncourse.admin.AdminProperty.DEPLOY_SCRIPT_PATH;
 
 /*
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
@@ -54,7 +57,7 @@ public class CreateNewWebSite {
 
         context.commitChanges();
 
-        WebSitePublisher publisher = WebSitePublisher.valueOf(webSiteVersion, context);
+        WebSitePublisher publisher = WebSitePublisher.valueOf(webSiteVersion, Configuration.getValue(DEPLOY_SCRIPT_PATH), context);
         publisher.publish();
     }
 
@@ -69,7 +72,7 @@ public class CreateNewWebSite {
                                 webSite.getSiteKey()));
             }
             WebSiteVersion templateVersion = webSiteVersionService.getDeployedVersion(template);
-            WebSitePublisher.valueOf(templateVersion, webSiteVersion, context).publish();
+            WebSitePublisher.valueOf(templateVersion, webSiteVersion, Configuration.getValue(DEPLOY_SCRIPT_PATH), context).publish();
         } else {
             CreateDefaultWebSiteStructure.valueOf(webSiteVersion, context, webNodeService).create();
         }
