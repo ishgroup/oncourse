@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
  */
-public class WaitHandler extends AbstractStepHandler {
+public class WaitVerifyHandler extends AbstractStepHandler {
 
     private static final long USI_SERVICE_TIMEOUT = 1000 * 60;
 
@@ -38,8 +38,8 @@ public class WaitHandler extends AbstractStepHandler {
         return nextStep.get();
     }
 
-    public WaitHandler handle(Map<String, Value> input) {
-        if (nextStep.getAndSet(Step.wait) == Step.usi) {
+    public WaitVerifyHandler handle(Map<String, Value> input) {
+        if (nextStep.getAndSet(Step.waitVerify) == Step.usi) {
             verifyUsi();
         }
         return this;

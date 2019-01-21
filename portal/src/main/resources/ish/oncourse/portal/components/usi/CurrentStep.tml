@@ -21,7 +21,10 @@
     <t:block t:id="done">
         <t:usi.done usiController="usiController"/>
     </t:block>
-    <t:block t:id="wait">
-        <t:usi.wait usiController="usiController"/>
+    <t:block t:id="waitVerify">
+        <t:usi.waitVerify usiController="usiController"/>
+    </t:block>
+    <t:block t:id="waitLocate">
+        <t:usi.waitLocate usiController="usiController"/>
     </t:block>
 </t:container>

@@ -21,7 +21,8 @@ public class CurrentStep {
             contactInfo,
             contactInfoDone,
             done,
-            wait;
+            waitVerify,
+            waitLocate;
 
     public Block getBlock()
     {
@@ -40,8 +41,10 @@ public class CurrentStep {
                 return contactInfoDone;
             case done:
                 return done;
-            case wait:
-                return wait;
+            case waitVerify:
+                return waitVerify;
+            case waitLocate:
+                return waitLocate;
             default:
                 throw new IllegalArgumentException();
         }

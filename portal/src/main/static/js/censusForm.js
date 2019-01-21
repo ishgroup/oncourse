@@ -16,6 +16,9 @@ CensusForm.prototype = {
     initialize: function () {
         var self = this;
         this.loadData();
+        if (self.data.values['usiStatus'] !== 'DEFAULT_NOT_SUPPLIED') {
+            self.locateUsi();
+        }
         $j('.form-control[name=usi]').blur(function () {
             var oldUsi = $j.grep(self.data.values, function (obj) {
                 return obj.key === "usi";
@@ -30,8 +33,8 @@ CensusForm.prototype = {
     },
 
     verifyUsi: function () {
-      this.step = 'wait';
-      this.data.step = 'wait';
+      this.step = 'waitVerify';
+      this.data.step = 'waitVerify';
 			var self = this;
         var actionLink = "/portal/profile.censusform:usiVerify";
         $j('.form-control[name=usi]').attr('disabled', false);
@@ -53,6 +56,32 @@ CensusForm.prototype = {
                 window.location.reload();
             }
         });
+    },
+
+    locateUsi: function () {
+          this.step = 'waitLocate';
+          this.data.step = 'waitLocate';
+    			var self = this;
+            var actionLink = "/portal/profile.censusform:usiLocate";
+            $j('.form-control[name=usi]').attr('disabled', false);
+            var data = $j(".form-control[name=usi]").serialize();
+            $j('.form-control[name=usi]').attr('disabled', true);
+            $j.ajax({
+                url: actionLink,
+                type: 'post',
+                cache: false,
+                data: data,
+                success: function (data) {
+    							self.data = data;
+    							self.step = data.step;
+    							self.showData();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                    window.location.reload();
+                }
+            });
     },
 
     loadData: function () {
@@ -90,8 +119,7 @@ CensusForm.prototype = {
             self.fillControl(value);
         });
 
-
-        if (this.step === 'wait') {
+        if (this.step === 'waitVerify' || this.step === 'waitLocate') {
             this.usiEnable = false;
         }
         $j('.form-control[name=usi]').attr('disabled', !this.usiEnable);

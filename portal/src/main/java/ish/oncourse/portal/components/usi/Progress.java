@@ -27,7 +27,8 @@ public class Progress {
                return StringUtils.EMPTY;
            case usi:
            case usiFailed:
-           case wait:
+           case waitVerify:
+           case waitLocate:
                return CLASS_active;
            default:
                return CLASS_finished;

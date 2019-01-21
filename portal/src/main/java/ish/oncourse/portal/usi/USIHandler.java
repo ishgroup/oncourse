@@ -32,7 +32,7 @@ public class USIHandler extends AbstractStepHandler {
 
   @Override
     public Step getNextStep() {
-        return Step.wait;
+        return Step.waitVerify;
     }
 
     public USIHandler handle(Map<String, Value> input) {

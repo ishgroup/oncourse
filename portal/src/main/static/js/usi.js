@@ -99,7 +99,7 @@ Usi.prototype = {
     verifyUsi: function() {
 			$j('#usi-main-form').hide();
 			$j('#main-container').find('.error-message').remove();
-			$j('.usi-progress').show();
+			$j('.usi-progress-verify').show();
       var self = this;
       var data = $j(".form-control").serialize();
       
@@ -110,7 +110,7 @@ Usi.prototype = {
 				    data: data,
             success: function (data) {
 							$j('#usi-main-form').show();
-							$j('.usi-progress').hide();
+							$j('.usi-progress-verify').hide();
 							self.step = data.step;
 							self.data = data;
               if (self.step === 'usi') {
@@ -127,6 +127,33 @@ Usi.prototype = {
         });
     },
 
+    locateUsi: function() {
+    			$j('#usi-main-form').hide();
+    			$j('#main-container').find('.error-message').remove();
+    			$j('.usi-progress-locate').show();
+          var self = this;
+          var data = $j(".form-control").serialize();
+
+    			$j.ajax({
+                url: '/portal/usi/usi:locateUsi' + "/" + self.step + "/" + self.uniqueKey,
+                type: 'post',
+                cache: false,
+    				    data: data,
+                success: function (data) {
+    							$j('#usi-main-form').show();
+    							$j('.usi-progress-locate').hide();
+    							self.step = data.step;
+    							self.data = data;
+    					        self.reload();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                    window.location.reload();
+                }
+            });
+        },
+
     next: function () {
         var self = this;
         var data = $j(".form-control").serialize();
@@ -142,11 +169,13 @@ Usi.prototype = {
                 self.data = data;
 							  self.step = data.step;
                 self.showData();
-                if (data.step === 'wait' && oldStep !== 'wait') {
+                if (data.step === 'waitVerify' && oldStep !== 'waitVerify') {
                     self.verifyUsi();
+                } else if (data.step == 'waitLocate' && oldStep !== 'waitLocate') {
+                    self.locateUsi();
                 } else if (!data.hasErrors) {
-									self.reload();
-								}
+					self.reload();
+				}
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log(textStatus);

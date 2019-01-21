@@ -305,7 +305,7 @@ public class CensusForm {
 
     @OnEvent(value = "usiVerify")
     public Object usiVerify() {
-        UsiController usiController = getUsiController();
+        UsiController usiController = getUsiController(Step.usi);
         Map<String, Value> inputValues = JSONUtils.getValuesFrom(request);
 
         Contact contact = usiController.getContact();
@@ -323,9 +323,31 @@ public class CensusForm {
         return new TextStreamResponse("text/json", jsonResult.toString());
     }
 
+    @OnEvent(value = "usiLocate")
+    public Object usiLocate() {
+        UsiController usiController = getUsiController(Step.waitLocate);
+        Map<String, Value> inputValues = JSONUtils.getValuesFrom(request);
+
+        Contact contact = usiController.getContact();
+        String timeZone = usiController.getContact().getCollege().getTimeZone();
+        Date dob = usiController.getContact().getDateOfBirth();
+        inputValues.put(Contact.DATE_OF_BIRTH.getName(), Value.valueOf(Contact.DATE_OF_BIRTH.getName(), (dob != null ?
+                FormatUtils.getDateFormat(FormatUtils.DATE_FIELD_SHOW_FORMAT, timeZone).format(dob) :
+                null)));
+        inputValues.put(Contact.GIVEN_NAME.getName(), Value.valueOf(Contact.GIVEN_NAME.getName(), contact.getGivenName()));
+        inputValues.put(Contact.FAMILY_NAME.getName(), Value.valueOf(Contact.FAMILY_NAME.getName(), contact.getFamilyName()));
+        inputValues.put(Student.TOWN_OF_BIRTH.getName(), Value.valueOf(Student.TOWN_OF_BIRTH.getName(), contact.getStudent().getTownOfBirth()));
+        usiController.setStep(Step.waitLocate);
+
+        Result result = usiController.next(inputValues);
+
+        JSONObject jsonResult = getJSONResult(result,usiController);
+        return new TextStreamResponse("text/json", jsonResult.toString());
+    }
+
     @OnEvent(value = "value")
     public Object usiValue() {
-        UsiController usiController = getUsiController();
+        UsiController usiController = getUsiController(Step.usi);
         Result result = usiController.getValue();
         JSONObject jsonResult = getJSONResult(result, usiController);
 
@@ -344,7 +366,7 @@ public class CensusForm {
             jsonResult.put("message", usiController.getMessages().format("message-usiVerificationFailed"));
         }
 
-        if (usiController.getStep() == Step.wait)
+        if (usiController.getStep() == Step.waitVerify)
         {
             jsonResult.put("message", usiController.getMessages().format("message-usiVerificationMessage"));
         }
@@ -352,7 +374,7 @@ public class CensusForm {
     }
 
 
-    public UsiController getUsiController() {
+    public UsiController getUsiController(Step startStep) {
         ObjectContext context = cayenneService.newContext();
         UsiControllerModel usiControllerModel = UsiControllerModel.valueOf(context.localObject(portalService.getContact()));
         usiControllerModel.setStep(Step.usi);

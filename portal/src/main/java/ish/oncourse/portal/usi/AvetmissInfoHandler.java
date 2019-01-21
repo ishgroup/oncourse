@@ -93,7 +93,7 @@ public class AvetmissInfoHandler extends AbstractStepHandler {
 
     @Override
     public Step getNextStep() {
-        return Step.usi;
+        return Step.waitLocate;
     }
 
     public AvetmissInfoHandler handle(Map<String, Value> input) {

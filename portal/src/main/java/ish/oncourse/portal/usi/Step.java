@@ -12,7 +12,8 @@ public enum Step implements Serializable {
     contactInfo(ContactInfoHandler.class),
     contactInfoDone(ContactInfoDoneHandler.class),
     done(DoneHandler.class),
-    wait(WaitHandler.class);
+    waitVerify(WaitVerifyHandler.class),
+    waitLocate(WaitLocateHandler.class);
 
     private Class<? extends AbstractStepHandler> handlerClass;
 

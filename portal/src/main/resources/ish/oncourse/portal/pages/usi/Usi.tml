@@ -12,7 +12,8 @@
                     <h1>${contact.fullName}</h1>
                     <div class="row">
                         <div id = "main-container" class="col-sm-12 main-container">
-                            <t:delegate to="block:progress"/>
+                            <t:delegate to="block:progressVerify"/>
+                            <t:delegate to="block:progressLocate"/>
                             <t:usi.currentstep usiController="usiController"/>
                         </div>
                     </div>
@@ -35,7 +36,10 @@
             <t:usi.progress usiController="usiController"/>
         </div>
     </t:block>
-    <t:block t:id="progress">
-        <t:usi.wait usiController="usiController" />
+    <t:block t:id="progressVerify">
+        <t:usi.waitVerify usiController="usiController" />
+    </t:block>
+    <t:block t:id="progressLocate">
+        <t:usi.waitLocate usiController="usiController" />
     </t:block>
 </html>
