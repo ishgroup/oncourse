@@ -3,6 +3,8 @@
  */
 package ish.oncourse.portal.services;
 
+import ish.common.types.LocateUSIRequest;
+import ish.common.types.LocateUSIResult;
 import ish.common.types.USIVerificationRequest;
 import ish.common.types.USIVerificationResult;
 import ish.oncourse.services.usi.IUSIVerificationService;
@@ -22,4 +24,7 @@ public class PortalUSIService implements IUSIVerificationService {
 	public USIVerificationResult verifyUsi(USIVerificationRequest request) {
 		return usiService.verifyUsi(request);
 	}
+
+	@Override
+	public LocateUSIResult locateUsi(LocateUSIRequest request) { return usiService.locateUSI(request); }
 }

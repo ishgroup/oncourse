@@ -157,6 +157,14 @@ public class Usi {
         return getJSONResult(result);
     }
 
+    @OnEvent(value = "locateUsi")
+    public Object locateUsi(String step, String uniqueCode) {
+        parseRequest(step, uniqueCode);
+        Map<String, Value> inputValues = JSONUtils.getValuesFrom(request);
+        Result result = getUsiController().next(inputValues);
+        return getJSONResult(result);
+    }
+
     private void parseRequest(String step, String uniqueCode) {
         this.step = Step.valueOf(step);
         this.uniqueCode = uniqueCode;
