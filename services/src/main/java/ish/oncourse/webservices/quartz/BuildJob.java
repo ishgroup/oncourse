@@ -55,6 +55,7 @@ public class BuildJob {
 			TriggerKey triggerKey = new TriggerKey(jobName, groupName);
 
 			jobDetail = newJob(jobClass)
+					.requestRecovery()
 					.withIdentity(jobKey)
 					.build();
 

@@ -137,7 +137,7 @@ public class TestEnv<T extends TransportConfig> {
 
 		testContext = new TestContext().open();
 
-		System.setProperty(Configuration.JDBC_URL_PROPERTY, testContext.getMariaDB().getUrl());
+		System.setProperty(Configuration.AppProperty.DB_URL.getSystemProperty(), testContext.getMariaDB().getUrl());
 		System.setProperty(Configuration.AppProperty.DB_USER.getSystemProperty(), testContext.getMariaDB().getUser());
 		System.setProperty(Configuration.AppProperty.DB_PASS.getSystemProperty(), testContext.getMariaDB().getPassword());
 

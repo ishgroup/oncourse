@@ -8,13 +8,16 @@ import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.solr.client.solrj.SolrClient;
+import org.quartz.JobPersistenceException;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
+import org.quartz.TriggerKey;
 import org.quartz.impl.DirectSchedulerFactory;
 import org.quartz.impl.jdbcjobstore.InvalidConfigurationException;
 import org.quartz.impl.jdbcjobstore.JobStoreTX;
 import org.quartz.impl.jdbcjobstore.StdJDBCDelegate;
 import org.quartz.simpl.SimpleThreadPool;
+import org.quartz.spi.OperableTrigger;
 import org.quartz.utils.ConnectionProvider;
 import org.quartz.utils.DBConnectionManager;
 
@@ -56,7 +59,22 @@ public class BuildScheduler {
 	public Scheduler build() {
 		try {
 			DBConnectionManager.getInstance().addConnectionProvider("willow", new QuartzConnectionProvider(serverRuntime.getDataSource()));
-			JobStoreTX jobStore = new JobStoreTX();
+			JobStoreTX jobStore = new JobStoreTX() {
+				
+				@Override
+				protected void releaseAcquiredTrigger(Connection conn,
+													  OperableTrigger trigger) throws JobPersistenceException {
+					try {
+						getDelegate().updateTriggerStateFromOtherState(conn, trigger.getKey(), STATE_WAITING, STATE_ERROR);
+					} catch (SQLException e) {
+						throw new JobPersistenceException(
+								"Couldn't release acquired trigger: " + e.getMessage(), e);
+					}
+					super.releaseAcquiredTrigger(conn, trigger);
+
+				}
+			};
+			
 			jobStore.setDataSource("willow");
 			jobStore.setClusterCheckinInterval(20000);
 			jobStore.setIsClustered(true);
