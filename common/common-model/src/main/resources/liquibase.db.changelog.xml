@@ -4855,4 +4855,124 @@
 		<sql>ALTER TABLE WebNode ADD CONSTRAINT WebNode_webNodeType FOREIGN KEY (webNodeTypeId) REFERENCES WebNodeType (id) ON DELETE CASCADE;</sql>
 	</changeSet>
 
+	<changeSet id="340" author="pnikanovich" context="production" runOnChange="false">
+		<preConditions>
+			<foreignKeyConstraintExists foreignKeyTableName="WebContentVisibility" foreignKeyName="WebContentVisibility_WebContent"/>
+		</preConditions>
+		<sql>ALTER TABLE WebContentVisibility DROP FOREIGN KEY WebContentVisibility_WebContent;</sql>
+	</changeSet>
+	<changeSet id="341" author="pnikanovich" context="production" runOnChange="false">
+		<preConditions>
+			<not>
+				<foreignKeyConstraintExists foreignKeyTableName="WebContentVisibility" foreignKeyName="WebContentVisibility_WebContent"/>
+			</not>
+		</preConditions>
+		<sql>ALTER TABLE WebContentVisibility ADD CONSTRAINT WebContentVisibility_WebContent FOREIGN KEY (WebContentId) REFERENCES WebContent (id) ON DELETE CASCADE ON UPDATE NO ACTION;</sql>
+	</changeSet>
+
+	<changeSet id="342" author="pnikanovich" context="production" runOnChange="false">
+		<preConditions>
+			<foreignKeyConstraintExists foreignKeyTableName="WebContent" foreignKeyName="WebContent_webSiteVersion"/>
+		</preConditions>
+		<sql>ALTER TABLE WebContent DROP FOREIGN KEY WebContent_webSiteVersion;</sql>
+	</changeSet>
+	<changeSet id="343" author="pnikanovich" context="production" runOnChange="false">
+		<preConditions>
+			<not>
+				<foreignKeyConstraintExists foreignKeyTableName="WebContent" foreignKeyName="WebContent_webSiteVersion"/>
+			</not>
+		</preConditions>
+		<sql>ALTER TABLE WebContent ADD CONSTRAINT WebContent_webSiteVersion FOREIGN KEY (webSiteVersionId) REFERENCES WebSiteVersion (id) ON DELETE CASCADE;</sql>
+	</changeSet>
+
+	<changeSet id="344" author="pnikanovich" context="production" runOnChange="false">
+		<preConditions>
+			<foreignKeyConstraintExists foreignKeyTableName="WebMenu" foreignKeyName="WebMenu_webSiteVersion"/>
+		</preConditions>
+		<sql>ALTER TABLE WebMenu DROP FOREIGN KEY WebMenu_webSiteVersion;</sql>
+	</changeSet>
+	<changeSet id="345" author="pnikanovich" context="production" runOnChange="false">
+		<preConditions>
+			<not>
+				<foreignKeyConstraintExists foreignKeyTableName="WebMenu" foreignKeyName="WebMenu_webSiteVersion"/>
+			</not>
+		</preConditions>
+		<sql>ALTER TABLE WebMenu ADD CONSTRAINT WebMenu_webSiteVersion FOREIGN KEY (webSiteVersionId) REFERENCES WebSiteVersion (id) ON DELETE CASCADE;</sql>
+	</changeSet>
+
+	<changeSet id="346" author="pnikanovich" context="production" runOnChange="false">
+		<preConditions>
+			<foreignKeyConstraintExists foreignKeyTableName="WebURLAlias" foreignKeyName="WebUrlAlias_webSiteVersion"/>
+		</preConditions>
+		<sql>ALTER TABLE WebURLAlias DROP FOREIGN KEY WebUrlAlias_webSiteVersion;</sql>
+	</changeSet>
+	<changeSet id="347" author="pnikanovich" context="production" runOnChange="false">
+		<preConditions>
+			<not>
+				<foreignKeyConstraintExists foreignKeyTableName="WebURLAlias" foreignKeyName="WebUrlAlias_webSiteVersion"/>
+			</not>
+		</preConditions>
+		<sql>ALTER TABLE WebURLAlias ADD CONSTRAINT WebUrlAlias_webSiteVersion FOREIGN KEY (webSiteVersionId) REFERENCES WebSiteVersion (id) ON DELETE CASCADE;</sql>
+	</changeSet>
+
+	<changeSet id="348" author="pnikanovich" context="production" runOnChange="false">
+		<preConditions>
+			<foreignKeyConstraintExists foreignKeyTableName="WebSiteLayout" foreignKeyName="fk_WebSiteLayout_WebSiteVersion"/>
+		</preConditions>
+		<sql>ALTER TABLE WebSiteLayout DROP FOREIGN KEY fk_WebSiteLayout_WebSiteVersion;</sql>
+	</changeSet>
+	<changeSet id="349" author="pnikanovich" context="production" runOnChange="false">
+		<preConditions>
+			<not>
+				<foreignKeyConstraintExists foreignKeyTableName="WebSiteLayout" foreignKeyName="fk_WebSiteLayout_WebSiteVersion"/>
+			</not>
+		</preConditions>
+		<sql>ALTER TABLE WebSiteLayout ADD CONSTRAINT fk_WebSiteLayout_WebSiteVersion FOREIGN KEY (webSiteVersionId) REFERENCES WebSiteVersion (id) ON DELETE CASCADE;</sql>
+	</changeSet>
+
+	<changeSet id="350" author="pnikanovich" context="production" runOnChange="false">
+		<preConditions>
+			<foreignKeyConstraintExists foreignKeyTableName="WebTemplate" foreignKeyName="fk_WebTemplate_WebSiteLayout"/>
+		</preConditions>
+		<sql>ALTER TABLE WebTemplate DROP FOREIGN KEY fk_WebTemplate_WebSiteLayout;</sql>
+	</changeSet>
+	<changeSet id="351" author="pnikanovich" context="production" runOnChange="false">
+		<preConditions>
+			<not>
+				<foreignKeyConstraintExists foreignKeyTableName="WebTemplate" foreignKeyName="fk_WebTemplate_WebSiteLayout"/>
+			</not>
+		</preConditions>
+		<sql>ALTER TABLE WebTemplate ADD CONSTRAINT fk_WebTemplate_WebSiteLayout FOREIGN KEY (layoutId) REFERENCES WebSiteLayout (id) ON DELETE CASCADE;</sql>
+	</changeSet>
+
+	<changeSet id="352" author="pnikanovich" context="production" runOnChange="false">
+		<preConditions>
+			<foreignKeyConstraintExists foreignKeyTableName="WebNodeType" foreignKeyName="WebNodeType_webSiteVersion"/>
+		</preConditions>
+		<sql>ALTER TABLE WebNodeType DROP FOREIGN KEY WebNodeType_webSiteVersion;</sql>
+	</changeSet>
+	<changeSet id="353" author="pnikanovich" context="production" runOnChange="false">
+		<preConditions>
+			<not>
+				<foreignKeyConstraintExists foreignKeyTableName="WebNodeType" foreignKeyName="WebNodeType_webSiteVersion"/>
+			</not>
+		</preConditions>
+		<sql>ALTER TABLE WebNodeType ADD CONSTRAINT WebNodeType_webSiteVersion FOREIGN KEY (webSiteVersionId) REFERENCES WebSiteVersion (id) ON DELETE CASCADE;</sql>
+	</changeSet>
+
+	<changeSet id="354" author="pnikanovich" context="production" runOnChange="false">
+		<preConditions>
+			<foreignKeyConstraintExists foreignKeyTableName="WebNode" foreignKeyName="WebNode_webSiteVersion"/>
+		</preConditions>
+		<sql>ALTER TABLE WebNode DROP FOREIGN KEY WebNode_webSiteVersion;</sql>
+	</changeSet>
+	<changeSet id="355" author="pnikanovich" context="production" runOnChange="false">
+		<preConditions>
+			<not>
+				<foreignKeyConstraintExists foreignKeyTableName="WebNode" foreignKeyName="WebNode_webSiteVersion"/>
+			</not>
+		</preConditions>
+		<sql>ALTER TABLE WebNode ADD CONSTRAINT WebNode_webSiteVersion FOREIGN KEY (webSiteVersionId) REFERENCES WebSiteVersion (id) ON DELETE CASCADE;;</sql>
+	</changeSet>
+
 </databaseChangeLog>

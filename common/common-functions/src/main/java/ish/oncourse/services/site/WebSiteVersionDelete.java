@@ -17,7 +17,6 @@ public class WebSiteVersionDelete {
 
 	public void delete() {
 		DeleteVersion.valueOf(deleting).delete();
-		context.commitChanges();
 	}
 
     private void validate() {

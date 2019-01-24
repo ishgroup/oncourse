@@ -12,29 +12,31 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
-public class WebSitePublisher extends WebSiteVersionCopy {
+public class WebSitePublisher {
 
     private static final Logger logger = LogManager.getLogger();
+
+    private ObjectContext context;
+    private WebSiteVersion draftVersion;
+    private WebSiteVersion newVersion;
 
     private SystemUser systemUser;
     private String userEmail;
     private String scriptPath;
 
-    //create new published version as copy of draftVersion
     public void publish() {
-        copyContent();
-        context.commitChanges();
-        executeDeployScript(toVersion);
+        WebSiteVersionCopy.valueOf(context, draftVersion, newVersion).copyContent();
+        executeDeployScript(newVersion);
     }
     
     private void initPublishedVersion() {
-        toVersion = context.newObject(WebSiteVersion.class);
-        toVersion.setWebSite(fromVersion.getWebSite());
-        toVersion.setDeployedOn(new Date());
-        toVersion.setSiteVersion(fromVersion.getSiteVersion());
-        fromVersion.setSiteVersion(GetNextSiteVersion.valueOf(context, fromVersion.getWebSite()).get());
+        newVersion = context.newObject(WebSiteVersion.class);
+        newVersion.setWebSite(draftVersion.getWebSite());
+        newVersion.setDeployedOn(new Date());
+        newVersion.setSiteVersion(draftVersion.getSiteVersion());
+        draftVersion.setSiteVersion(GetNextSiteVersion.valueOf(context, draftVersion.getWebSite()).get());
         if (systemUser != null) {
-            toVersion.setDeployedBy(context.localObject(systemUser));
+            newVersion.setDeployedBy(context.localObject(systemUser));
         }
     }
 
@@ -66,15 +68,15 @@ public class WebSitePublisher extends WebSiteVersionCopy {
     }
 
 
-    public static WebSitePublisher valueOf(String scriptPath, WebSiteVersion webSiteVersion, SystemUser systemUser, String userEmail, ObjectContext objectContext) {
-        WebSitePublisher publisher = valueOf(webSiteVersion, systemUser, userEmail, scriptPath, objectContext);
+    public static WebSitePublisher valueOf(String scriptPath, WebSiteVersion draftVersion, SystemUser systemUser, String userEmail, ObjectContext objectContext) {
+        WebSitePublisher publisher = valueOf(draftVersion, systemUser, userEmail, scriptPath, objectContext);
         return publisher;
     }
     
-    public static WebSitePublisher valueOf(WebSiteVersion webSiteVersion, SystemUser systemUser, String userEmail, String scriptPath, ObjectContext objectContext) {
+    public static WebSitePublisher valueOf(WebSiteVersion draftVersion, SystemUser systemUser, String userEmail, String scriptPath, ObjectContext objectContext) {
         WebSitePublisher publisher = new WebSitePublisher();
         publisher.context = objectContext;
-        publisher.fromVersion = objectContext.localObject(webSiteVersion);
+        publisher.draftVersion = objectContext.localObject(draftVersion);
         if (systemUser != null) {
             publisher.systemUser = objectContext.localObject(systemUser);
         }
@@ -84,20 +86,20 @@ public class WebSitePublisher extends WebSiteVersionCopy {
         return publisher;
     }
 
-    public static WebSitePublisher valueOf(WebSiteVersion webSiteVersion, String scriptPath, ObjectContext objectContext) {
+    public static WebSitePublisher valueOf(WebSiteVersion draftVersion, String scriptPath, ObjectContext objectContext) {
         WebSitePublisher publisher = new WebSitePublisher();
         publisher.context = objectContext;
-        publisher.fromVersion = objectContext.localObject(webSiteVersion);
+        publisher.draftVersion = objectContext.localObject(draftVersion);
         publisher.scriptPath = scriptPath;
         publisher.initPublishedVersion();
         return publisher;
     }
 
-    public static WebSitePublisher valueOf(WebSiteVersion webSiteVersion, WebSiteVersion publishedVersion, String scriptPath, ObjectContext objectContext) {
+    public static WebSitePublisher valueOf(WebSiteVersion draftVersion, WebSiteVersion publishedVersion, String scriptPath, ObjectContext objectContext) {
         WebSitePublisher publisher = new WebSitePublisher();
         publisher.context = objectContext;
-        publisher.fromVersion = objectContext.localObject(webSiteVersion);
-        publisher.toVersion = objectContext.localObject(publishedVersion);
+        publisher.draftVersion = objectContext.localObject(draftVersion);
+        publisher.newVersion = objectContext.localObject(publishedVersion);
         publisher.scriptPath = scriptPath;
         return publisher;
     }

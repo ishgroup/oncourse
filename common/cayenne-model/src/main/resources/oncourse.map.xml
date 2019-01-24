@@ -4649,7 +4649,7 @@
 	<obj-relationship name="webNodeType" source="WebContentVisibility" target="WebNodeType" deleteRule="Nullify" db-relationship-path="webNodeType"/>
 	<obj-relationship name="college" source="WebHostName" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="webSite" source="WebHostName" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
-	<obj-relationship name="childrenMenus" source="WebMenu" target="WebMenu" deleteRule="Deny" db-relationship-path="childrenMenus"/>
+	<obj-relationship name="childrenMenus" source="WebMenu" target="WebMenu" db-relationship-path="childrenMenus"/>
 	<obj-relationship name="parentWebMenu" source="WebMenu" target="WebMenu" deleteRule="Nullify" db-relationship-path="parentWebMenu"/>
 	<obj-relationship name="webNode" source="WebMenu" target="WebNode" deleteRule="Nullify" db-relationship-path="webNode"/>
 	<obj-relationship name="webSiteVersion" source="WebMenu" target="WebSiteVersion" deleteRule="Nullify" db-relationship-path="webSiteVersion"/>
@@ -4671,14 +4671,14 @@
 	<obj-relationship name="templates" source="WebSiteLayout" target="WebTemplate" deleteRule="Deny" db-relationship-path="templates"/>
 	<obj-relationship name="webNodeTypes" source="WebSiteLayout" target="WebNodeType" deleteRule="Deny" db-relationship-path="webNodeTypes"/>
 	<obj-relationship name="webSiteVersion" source="WebSiteLayout" target="WebSiteVersion" deleteRule="Nullify" db-relationship-path="webSiteVersion"/>
-	<obj-relationship name="contents" source="WebSiteVersion" target="WebContent" deleteRule="Deny" db-relationship-path="contents"/>
+	<obj-relationship name="contents" source="WebSiteVersion" target="WebContent" db-relationship-path="contents"/>
 	<obj-relationship name="deployedBy" source="WebSiteVersion" target="SystemUser" deleteRule="Nullify" db-relationship-path="deployedBy"/>
-	<obj-relationship name="layouts" source="WebSiteVersion" target="WebSiteLayout" deleteRule="Deny" db-relationship-path="layouts"/>
-	<obj-relationship name="menus" source="WebSiteVersion" target="WebMenu" deleteRule="Deny" db-relationship-path="menus"/>
-	<obj-relationship name="webNodeTypes" source="WebSiteVersion" target="WebNodeType" deleteRule="Deny" db-relationship-path="webNodeTypes"/>
-	<obj-relationship name="webNodes" source="WebSiteVersion" target="WebNode" deleteRule="Deny" db-relationship-path="webNodes"/>
+	<obj-relationship name="layouts" source="WebSiteVersion" target="WebSiteLayout" db-relationship-path="layouts"/>
+	<obj-relationship name="menus" source="WebSiteVersion" target="WebMenu" db-relationship-path="menus"/>
+	<obj-relationship name="webNodeTypes" source="WebSiteVersion" target="WebNodeType" db-relationship-path="webNodeTypes"/>
+	<obj-relationship name="webNodes" source="WebSiteVersion" target="WebNode" db-relationship-path="webNodes"/>
 	<obj-relationship name="webSite" source="WebSiteVersion" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
-	<obj-relationship name="webURLAliases" source="WebSiteVersion" target="WebUrlAlias" deleteRule="Deny" db-relationship-path="webURLAliases"/>
+	<obj-relationship name="webURLAliases" source="WebSiteVersion" target="WebUrlAlias" db-relationship-path="webURLAliases"/>
 	<obj-relationship name="layout" source="WebTemplate" target="WebSiteLayout" deleteRule="Nullify" db-relationship-path="layout"/>
 	<obj-relationship name="webNode" source="WebUrlAlias" target="WebNode" deleteRule="Nullify" db-relationship-path="webNode"/>
 	<obj-relationship name="webSiteVersion" source="WebUrlAlias" target="WebSiteVersion" deleteRule="Nullify" db-relationship-path="webSiteVersion"/>

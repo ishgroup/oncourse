@@ -5,104 +5,56 @@ package ish.oncourse.services.site;
 
 import ish.oncourse.model.*;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.PersistentObject;
-import org.apache.cayenne.query.SQLSelect;
-
-import java.util.ArrayList;
-import java.util.List;
 
 class DeleteVersion {
 	private ObjectContext context;
 	private WebSiteVersion version;
-	private Boolean liveBlankVersion = false;
-	
-	private void sleep() {
-		try {
-			Thread.sleep(1L);
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
-		}
-	}
+	private boolean deleteRelatedObjectsOnly;
 
 	public void delete() {
-		for (WebSiteLayout layoutToDelete : version.getLayouts()) {
-			deleteTemplates(layoutToDelete);
-		}
+		if (deleteRelatedObjectsOnly) {
+			deleteAllWebTemplates(context, version);
+			deleteAllWebContents(context, version);
 
-		deleteAllContents();
-
-		deleteVersionRelatedObjects();
-
-		if (!liveBlankVersion) {
+			context.deleteObjects(version.getMenus());
+			context.deleteObjects(version.getWebURLAliases());
+			context.deleteObjects(version.getWebNodes());
+			context.deleteObjects(version.getWebNodeTypes());
+			context.deleteObjects(version.getLayouts());
+		} else {
 			context.invalidateObjects(version);
-			context.deleteObjects(version);
+			context.deleteObject(version);		// delete version record and related with ON CASCADE DELETE;
 		}
-		
+
 		context.commitChanges();
 	}
 
-	void deleteVersionRelatedObjects() {
-		deleteEntities(WebMenu.class);
-		deleteEntities(WebUrlAlias.class);
-        // constraints ON DELETE CASCADE added for WebNodeType and WebNode (OD-12357)
-		// deleteEntities(WebNode.class);
-		deleteEntities(WebNodeType.class);
-		deleteEntities(WebSiteLayout.class);
-	}
-
-	void deleteEntities(Class<? extends PersistentObject> entityClass) {
-		SQLSelect.dataRowQuery("DELETE FROM $tableName where webSiteVersionId = $id").paramsArray(
-				getTableNameBy(entityClass),
-				version.getId()).select(context);
-	}
-
-	void deleteAllContents() {
-		for (WebContent contentToDelete : version.getContents()) {
-			sleep();
-			context.deleteObjects(contentToDelete.getWebContentVisibilities());
-			context.commitChanges();
+	private void deleteAllWebContents(ObjectContext context, WebSiteVersion version) {
+		for (WebContent content : version.getContents()) {
+			context.deleteObjects(content.getWebContentVisibilities());
 		}
-		SQLSelect.dataRowQuery("DELETE FROM $tableName where webSiteVersionId = $id").paramsArray(
-				getTableNameBy(WebContent.class),
-				version.getId()).select(context);
 		context.deleteObjects(version.getContents());
 	}
 
-	void deleteTemplates(WebSiteLayout layout) {
-		SQLSelect.dataRowQuery("DELETE FROM $tableName where layoutId = $layoutId").paramsArray(
-				getTableNameBy(WebTemplate.class),
-				layout.getId()).select(context);
-	}
-
-	//recursively remove all childrenMenus then remove parent
-	private void deleteChildrenMenus(List<WebMenu> webMenus, ObjectContext objectContext) {
-		sleep();
-		List<WebMenu> copyList = new ArrayList<>(webMenus);
-		for (WebMenu webMenu : copyList) {
-			if (!webMenu.getChildrenMenus().isEmpty()) {
-				deleteChildrenMenus(webMenu.getChildrenMenus(), objectContext);
-			}
-			objectContext.deleteObject(webMenu);
+	private void deleteAllWebTemplates(ObjectContext context, WebSiteVersion version) {
+		for (WebSiteLayout layout : version.getLayouts()) {
+			context.deleteObjects(layout.getTemplates());
 		}
 	}
 
-	String getTableNameBy(Class<? extends PersistentObject> entityClass) {
-		return context.getEntityResolver().getObjEntity(entityClass).getDbEntity().getName();
-	}
-
-	public static DeleteVersion valueOf(WebSiteVersion version) {
-		return valueOf(version, version.getObjectContext());
-	}
-	
 	public static DeleteVersion valueOf(WebSiteVersion version, ObjectContext context) {
 		return valueOf(version, context, false);
 	}
 
-	public static DeleteVersion valueOf(WebSiteVersion version, ObjectContext context, Boolean liveBlankVersion) {
+	public static DeleteVersion valueOf(WebSiteVersion version) {
+		return valueOf(version, version.getObjectContext(), false);
+	}
+
+	public static DeleteVersion valueOf(WebSiteVersion version, ObjectContext context, boolean deleteRelatedObjectsOnly) {
 		DeleteVersion deleteVersion = new DeleteVersion();
 		deleteVersion.version = version;
 		deleteVersion.context = context;
-		deleteVersion.liveBlankVersion = liveBlankVersion;
+		deleteVersion.deleteRelatedObjectsOnly = deleteRelatedObjectsOnly;
 		return deleteVersion;
 	}
 }

@@ -11,31 +11,35 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class WebSiteVersionCopy {
+public class WebSiteVersionCopy {
     
-    protected ObjectContext context;
-    WebSiteVersion fromVersion;
-    WebSiteVersion toVersion;
+    private ObjectContext context;
+    private WebSiteVersion fromVersion;
+    private WebSiteVersion toVersion;
 
     private Map<WebNodeType, WebNodeType> webNodeTypeMap = new HashMap<>();
     private Map<WebNode, WebNode> webNodeMap = new HashMap<>();
     private Map<WebMenu, WebMenu> webMenuMap = new HashMap<>();
     private Map<WebSiteLayout, WebSiteLayout> layoutMap = new HashMap<>();
 
-    
-    void copyContent() {
-        
+    private WebSiteVersionCopy() {}
+
+    public static WebSiteVersionCopy valueOf(ObjectContext context, WebSiteVersion fromVersion, WebSiteVersion toVersion) {
+        WebSiteVersionCopy obj = new WebSiteVersionCopy();
+        obj.context = context;
+        obj.fromVersion = fromVersion;
+        obj.toVersion = toVersion;
+        return obj;
+    }
+
+    public void copyContent() {
         copyLayouts();
-
         copyWebNodeTypes();
-
         copyWebNodes();
-
         copyWebUrlAliases();
-
         copyWebContents();
-
         copyWebMenus();
+        context.commitChanges();
     }
     
     private void updateParentMenus() {

@@ -7,7 +7,11 @@ package ish.oncourse.services.site;
 import ish.oncourse.model.WebSiteVersion;
 import org.apache.cayenne.ObjectContext;
 
-public class WebSiteVersionRevert extends WebSiteVersionCopy {
+public class WebSiteVersionRevert {
+
+    private ObjectContext context;
+    private WebSiteVersion fromVersion;
+    private WebSiteVersion toVersion;
     
     public static WebSiteVersionRevert valueOf(WebSiteVersion draftVersion, WebSiteVersion fromVersion, ObjectContext context) {
         WebSiteVersionRevert reverter = new WebSiteVersionRevert();
@@ -19,10 +23,11 @@ public class WebSiteVersionRevert extends WebSiteVersionCopy {
 
     public void revert() {
         DeleteVersion.valueOf(toVersion, context, true).delete();
+
         toVersion.setSiteVersion(fromVersion.getSiteVersion());
         fromVersion.setSiteVersion(GetNextSiteVersion.valueOf(context, fromVersion.getWebSite()).get());
-        copyContent();
         context.commitChanges();
+
+        WebSiteVersionCopy.valueOf(context,fromVersion, toVersion).copyContent();
     }
-    
 }
