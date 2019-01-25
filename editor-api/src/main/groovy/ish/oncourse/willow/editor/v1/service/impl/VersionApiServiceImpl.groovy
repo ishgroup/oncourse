@@ -6,9 +6,11 @@ import ish.oncourse.model.SystemUser
 import ish.oncourse.model.WebSite
 import ish.oncourse.model.WebSiteVersion
 import ish.oncourse.services.persistence.ICayenneService
+import ish.oncourse.services.site.DeleteVersion
 import ish.oncourse.services.site.GetDeployedVersion
+import ish.oncourse.services.site.GetNextSiteVersion
 import ish.oncourse.services.site.WebSitePublisher
-import ish.oncourse.services.site.WebSiteVersionRevert
+import ish.oncourse.services.site.WebSiteVersionCopy
 import ish.oncourse.services.site.WebSiteVersionsDelete
 import ish.oncourse.solr.SolrCollection
 import ish.oncourse.willow.editor.rest.WebVersionToVersion
@@ -210,9 +212,11 @@ class VersionApiServiceImpl implements VersionApi {
         WebSiteVersion sourceVersion = WebSiteVersionFunctions.getVersionBy(id.toLong(), request, context)
 
         try {
-            cayenneService.performTransaction {
-                WebSiteVersionRevert.valueOf(draftVersion, sourceVersion, context).revert()
-            }
+            DeleteVersion.valueOf(draftVersion, context, true).delete()
+            draftVersion.setSiteVersion(sourceVersion.getSiteVersion())
+            sourceVersion.setSiteVersion(GetNextSiteVersion.valueOf(context, sourceVersion.getWebSite()).get())
+            context.commitChanges()
+            WebSiteVersionCopy.valueOf(context, sourceVersion, draftVersion).copyContent()
         } catch (Exception e) {
             logger.catching(e)
             context.rollbackChanges()

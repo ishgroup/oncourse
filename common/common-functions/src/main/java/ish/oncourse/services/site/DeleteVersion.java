@@ -6,7 +6,7 @@ package ish.oncourse.services.site;
 import ish.oncourse.model.*;
 import org.apache.cayenne.ObjectContext;
 
-class DeleteVersion {
+public class DeleteVersion {
 	private ObjectContext context;
 	private WebSiteVersion version;
 	private boolean deleteRelatedObjectsOnly;
