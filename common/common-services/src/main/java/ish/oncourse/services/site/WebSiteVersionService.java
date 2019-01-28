@@ -10,8 +10,10 @@ import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
+import static ish.oncourse.cayenne.cache.ICacheEnabledService.CacheDisableReason.EDITOR;
+
 /**
- * Generic web implemetation of {@link ish.oncourse.services.site.IWebSiteVersionService}. 
+ * Generic web implementation of {@link ish.oncourse.services.site.IWebSiteVersionService}.
  * Current version is determined as the latest deployed website version.
  */
 public class WebSiteVersionService extends AbstractWebSiteVersionService {
@@ -19,7 +21,7 @@ public class WebSiteVersionService extends AbstractWebSiteVersionService {
     private IWebSiteService webSiteService;
 	
 	@Inject
-	private ICacheEnabledService enabledService;
+	private ICacheEnabledService cacheEnabledService;
 	
 	public static final String EDITOR_PREFIX = "editor";
 	
@@ -47,9 +49,15 @@ public class WebSiteVersionService extends AbstractWebSiteVersionService {
 		throw new UnsupportedOperationException("WebSiteVersions can only be deleted from CMS.");
 	}
 
+	/**
+	 * TODO: Use special separate cookies to resolve cache mode and editor mode
+	 * It is not correct to define editor mode by checking whether enable cache or not.
+	 *
+	 * @return true if cache is disabled and reason to disable cache is EDITOR mode
+	 */
 	@Override
 	public boolean isEditor() {
-		return !enabledService.isCacheEnabled();
+		return !cacheEnabledService.isCacheEnabled() && (cacheEnabledService.getDisableReason() == EDITOR);
 	}
 
 	@Override

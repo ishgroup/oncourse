@@ -26,14 +26,15 @@ public class WillowModuleDef implements ModuleDef {
 		this.dataSourceServiceDef = new DataSourceServiceDef(dataSource);
 		this.serverRuntimeServiceDef = new ServerRuntimeServiceDef(serverRuntime);
 		this.cacheEnabledServiceDef = new CacheEnabledServiceDef(new ICacheEnabledService() {
-			@Override
 			public boolean isCacheEnabled() {
 				return false;
 			}
 
 			@Override
-			public void setCacheEnabled(Boolean enabled) {
-			}
+			public void setCacheEnabled(Boolean enabled) {}
+
+			@Override
+			public void setCacheEnabled(CacheDisableReason reason, Boolean enabled) {}
 		});
 	}
 

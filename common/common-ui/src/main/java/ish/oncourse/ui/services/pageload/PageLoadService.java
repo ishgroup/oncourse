@@ -118,26 +118,26 @@ public class PageLoadService {
 
 
 	/**
-	 * Create cache create if absent, use <code>appKey</code> as group name,
-	 * appkey contains site key so we don't need to use host name in MultiKey
-	 * appkey can been null for SiteNotFound page
+	 * Create cache if absent, use <code>appKey</code> as group name,
+	 * appKey contains site key so we don't need to use host name in MultiKey
+	 * appKey can been null for SiteNotFound page
 	 */
-	private <V> V getCachedValue(MultiKey key, Supplier<V> get) {
+	private <V> V getCachedValue(MultiKey key, Supplier<V> vSupplier) {
 		String appKey = webSiteVersionService.getApplicationKey();
 		try {
 			if (appKey == null || appKey.startsWith(WebSiteVersionService.EDITOR_PREFIX))
-				return get.get();
+				return vSupplier.get();
 			Cache<MultiKey, Object> cache = cacheFactory.createIfAbsent(appKey, cacheConfig);
 			V v = (V) cache.get(key);
 			if (v == null) {
-				v = get.get();
+				v = vSupplier.get();
 				cache.put(key, v);
 			}
 			return v;
 		} catch (Exception e) {
 			logger.error("Exception appeared during reading cached value. cacheGroup {}, key: {}", appKey, key);
 			logger.catching(e);
-			return get.get();
+			return vSupplier.get();
 		}
 	}
 

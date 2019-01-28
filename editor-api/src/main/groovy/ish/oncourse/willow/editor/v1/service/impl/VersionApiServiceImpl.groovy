@@ -41,6 +41,7 @@ import java.time.LocalDateTime
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
+import static ish.oncourse.cayenne.cache.ICacheEnabledService.CacheDisableReason.PUBLISHER
 import static ish.oncourse.configuration.InitZKRootNode.EDITOR_LOCK_NODE
 import static ish.oncourse.solr.ReindexConstants.*
 import static ish.oncourse.willow.editor.EditorProperty.DEPLOY_SCRIPT_PATH
@@ -145,8 +146,8 @@ class VersionApiServiceImpl implements VersionApi {
         String userEmail = userService.userEmail
         String serverName = request.serverName
         WebSiteVersion draftVersion = WebSiteVersionFunctions.getCurrentVersion(request, cayenneService.newContext())
+        URL webappServiceUrl = new URL(request.scheme, request.serverName, request.serverPort, "")
 
-        
         executorService.submit {
             try {
                 logger.warn("Start to publish: $serverName, draft version id: ${draftVersion.id}, started by: $userName")
@@ -163,8 +164,10 @@ class VersionApiServiceImpl implements VersionApi {
                 logger.warn("Site publishing finished successfully: $serverName from draft version id: ${freshDraft.id}," +
                         " new version id:${newVersion.id}, took: ${System.currentTimeMillis() - time} milliseconds")
 
+                logger.warn("Run cache clean for $webSite.siteKey")
+                cleanWebappServiceCache(webappServiceUrl)
+
                 logger.warn("Run classes reindex for $webSite.siteKey")
-                
                 new URL("$servicesUrl${REINDEX_PATH}?${PARAM_COLLECTION}=${SolrCollection.classes.name()}&${PARAM_WEB_SITE}=${webSite.siteKey}").text
 
 
@@ -175,7 +178,15 @@ class VersionApiServiceImpl implements VersionApi {
         }
  
     }
-    
+
+    private void cleanWebappServiceCache(URL serviceUrl) {
+        URLConnection conn = serviceUrl.openConnection()
+        conn.setRequestProperty("Cookie", "${PUBLISHER.toString().toLowerCase()}=true")
+        if (conn.content instanceof InputStream) {
+            (new BufferedReader(new InputStreamReader(conn.content as InputStream))).text
+        }
+    }
+
     private boolean updateLock(String siteKey) {
 
         String nodePath = "/$siteKey"

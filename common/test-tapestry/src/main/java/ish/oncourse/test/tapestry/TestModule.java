@@ -13,6 +13,8 @@ import org.apache.tapestry5.ioc.ServiceBinder;
 
 import javax.sql.DataSource;
 
+import static ish.oncourse.cayenne.cache.ICacheEnabledService.CacheDisableReason.EDITOR;
+
 public class TestModule {
 	public static ThreadLocal<DataSource> dataSource = new ThreadLocal<>();
 	public static ThreadLocal<ServerRuntime> serverRuntime = new ThreadLocal<>();
@@ -34,15 +36,23 @@ public class TestModule {
 				.dataSource(resources -> TestModule.dataSource.get())
 				.serverRuntime(resources -> TestModule.serverRuntime.get())
 				.cacheEnabledService(res -> new ICacheEnabledService() {
+
 					@Override
 					public boolean isCacheEnabled() {
 						return false;
 					}
 
 					@Override
-					public void setCacheEnabled(Boolean enabled) {
-
+					public CacheDisableReason getDisableReason() {
+						return EDITOR;
 					}
+
+					@Override
+					public void setCacheEnabled(Boolean enabled) {}
+
+					@Override
+					public void setCacheEnabled(CacheDisableReason reason, Boolean enabled) {}
+
 				}).bind(binder);
 	}
 }

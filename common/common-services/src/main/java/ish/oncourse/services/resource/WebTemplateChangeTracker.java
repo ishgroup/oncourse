@@ -11,6 +11,8 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.QueryCacheStrategy;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -18,10 +20,11 @@ import java.util.Map;
 
 public class WebTemplateChangeTracker {
 
+	private final static Logger logger = LogManager.getLogger();
+
 	private ICayenneService cayenneService;
 	private IWebSiteVersionService webSiteVersionService;
 	private IWebSiteService webSiteService;
-
 	private Map<String, Long> lastCheckTimestamp = new HashMap<>();
 
 	public WebTemplateChangeTracker(ICayenneService cayenneService, IWebSiteService webSiteService, IWebSiteVersionService webSiteVersionService) {
@@ -48,11 +51,16 @@ public class WebTemplateChangeTracker {
 		if (webSiteService.getCurrentWebSite() == null || applicationKey == null) {
 			return false;
 		}
+
 		WebSiteVersion webSiteVersion = webSiteVersionService.getCurrentVersion();
+		Date timestamp = getTimestamp(applicationKey);
+
+		logger.info("Latest deployed site version: " + webSiteVersion.getId() + " on: " + webSiteVersion.getDeployedOn() + ", last cache invalidation on: " + timestamp);
+
 		return (ObjectSelect.query(WebTemplate.class)
 				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebTemplate.class.getSimpleName())
 				.and(WebTemplate.LAYOUT.dot(WebSiteLayout.WEB_SITE_VERSION).eq(webSiteVersion))
-				.and(WebTemplate.MODIFIED.gt(getTimestamp(applicationKey)))
+				.and(WebTemplate.MODIFIED.gt(timestamp))
 				.limit(1)
 				.selectFirst(cayenneService.sharedContext()) != null);
 	}

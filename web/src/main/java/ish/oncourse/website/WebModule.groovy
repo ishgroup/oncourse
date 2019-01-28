@@ -41,8 +41,8 @@ class WebModule extends ConfigModule {
             new TypeLiteral<MappedFilter<WillowTapestryFilter>>() {
             }
 
-    private static final TypeLiteral<MappedFilter<RequestFilter>> REQUEST_FILTER =
-            new TypeLiteral<MappedFilter<RequestFilter>>() {
+    private static final TypeLiteral<MappedFilter<RequestModeFilter>> REQUEST_FILTER =
+            new TypeLiteral<MappedFilter<RequestModeFilter>>() {
             }
 
 
@@ -63,9 +63,9 @@ class WebModule extends ConfigModule {
 
     @Singleton
     @Provides
-    MappedFilter<RequestFilter> createRequestFilter(ICacheEnabledService service) {
-        new MappedFilter<RequestFilter>(new RequestFilter(service),
-                Collections.singleton(URL_PATTERN), RequestFilter.simpleName, 0)
+    MappedFilter<RequestModeFilter> createRequestFilter(ICacheEnabledService service) {
+        new MappedFilter<RequestModeFilter>(new RequestModeFilter(service),
+                Collections.singleton(URL_PATTERN), RequestModeFilter.simpleName, 0)
     }
 
     @Provides

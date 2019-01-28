@@ -51,14 +51,10 @@ public class TestCayenneCache extends ServiceTest {
 			}
 		}, new ICacheEnabledService() {
 			@Override
-			public boolean isCacheEnabled() {
-				return true;
-			}
+			public void setCacheEnabled(Boolean enabled) {}
 
 			@Override
-			public void setCacheEnabled(Boolean enabled) {
-
-			}
+			public void setCacheEnabled(CacheDisableReason reason, Boolean enabled) {}
 		});
 	}
 

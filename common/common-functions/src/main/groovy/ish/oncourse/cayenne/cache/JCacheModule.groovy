@@ -17,13 +17,9 @@ class JCacheModule implements Module {
 
     static class DefaultCacheEnabledService implements ICacheEnabledService {
         @Override
-        boolean isCacheEnabled() {
-            return true
-        }
+        void setCacheEnabled(Boolean enabled) {}
 
         @Override
-        void setCacheEnabled(Boolean enabled) {
-
-        }
+        void setCacheEnabled(CacheDisableReason reason, Boolean enabled) {}
     }
 }
