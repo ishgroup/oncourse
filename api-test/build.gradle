@@ -1,7 +1,6 @@
 
 apply plugin: 'java'
 
-
 dependencies {
 
     testCompile 'com.intuit.karate:karate-junit4:0.8.0.RC4'
@@ -10,10 +9,27 @@ dependencies {
     testCompile group: 'org.glassfish.jersey.connectors', name: 'jersey-jetty-connector', version: '2.26'
     testCompile "org.eclipse.jetty.http2:http2-http-client-transport:$jettyVersion"
     testCompile "org.eclipse.jetty:jetty-client:$jettyVersion"
+    testCompile "org.apache.derby:derby:$derbyVersion"
 }
 
+task copyEmptyDb(type: Copy) {
+    from("$rootDir/api-test/src/test/resources/") {
+        include 'onCourse.cfg'
+    }
+    into "$rootDir/server/build"
+
+    from zipTree(file("$rootDir/api-test/src/test/resources/onCourse.iocdata.empty.zip"))
+    into "$rootDir/server/build"
+}
+
+task prepareTestDb(dependsOn: [copyEmptyDb], type: JavaExec) {
+    main = 'ish.oncourse.api.test.task.PrepareTestDb'
+    classpath = sourceSets.test.runtimeClasspath
+    args = ["jdbc:derby:$rootDir/server/build/onCourse.iocdata/onCourse;create=true", "$rootDir/api-test/src/test/resources/test-dataset.xml"]
+}
 
 test {
+    dependsOn "prepareTestDb"
     dependsOn ":server:startDaemon"
     // pull cucumber options into the cucumber jvm
     systemProperty "cucumber.options", System.properties.getProperty("cucumber.options")
