@@ -17,6 +17,7 @@ import org.apache.cayenne.query.SelectById;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.tapestry5.Block;
+import org.apache.tapestry5.annotations.Id;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -70,8 +71,10 @@ public class Outcomes {
 	}
 
 	@OnEvent(value = "getModuleOutcomes")
-	public Block getModuleOutcomes(Long moduleId) throws IOException {
-		module = SelectById.query(Module.class, moduleId).selectOne(cayenneService.newContext());
+	public Block getModuleOutcomes(Long courseClassId, Long moduleId) throws IOException {
+		ObjectContext context = cayenneService.newContext();
+		module = SelectById.query(Module.class, moduleId).selectOne(context);
+		courseClass = SelectById.query(CourseClass.class, courseClassId).selectOne(context);
 		return moduleOutcomes;
 	}
 

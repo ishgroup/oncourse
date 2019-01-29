@@ -22,7 +22,7 @@ $j(document).ready(function () {
         outcomesContent = $j('div#class-outcomes > div.tab-content');
 
         $j('li[id^="outcomeModuleId_"]').on('click', function(){
-            renderModuleOutcomes($j(this).attr('id').replace('outcomeModuleId_',''));
+            renderModuleOutcomes($j(this).attr('id').replace('outcomeModuleId_',''), window.location.pathname.match("\\d+$")[0]);
             scrollTop();
         });
         $j('li[id^="outcomeEnrolmentId_"]').on('click', function(){
@@ -41,7 +41,7 @@ $j(document).ready(function () {
     }
 });
 
-function renderModuleOutcomes(moduleId) {
+function renderModuleOutcomes(moduleId, courseClassId) {
     $j('#mark-by-outcome').removeClass('active');
     $j('#module-outcome-content').remove();
     var self = this;
@@ -49,7 +49,7 @@ function renderModuleOutcomes(moduleId) {
         cache: false,
         async: false,
         dataType: "json",
-        url: '/portal/class.outcomes:getModuleOutcomes/' + moduleId,
+        url: '/portal/class.outcomes:getModuleOutcomes/' + courseClassId + '/' + moduleId,
         type: 'GET',
         success: function (data) {
             if (data.content) {
