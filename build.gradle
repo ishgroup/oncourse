@@ -166,8 +166,17 @@ allprojects {
         repositories {
             maven {
                 name = "ish"
-                def repo = version.endsWith('SNAPSHOT') ? 'ish-snapshots' : 'ish-releases'
-                url = "https://repo.ish.com.au/content/repositories/${repo}"
+                if (version.endsWith('SNAPSHOT')) {
+                    url = "https://repo.ish.com.au/content/repositories/ish-snapshots"
+                    mavenContent {
+                        snapshotsOnly()
+                    }
+                } else {
+                    url = "https://repo.ish.com.au/content/repositories/ish-releases"
+                    mavenContent {
+                        releasesOnly()
+                    }
+                }
                 credentials {
                     username nexusUsername
                     password nexusPassword
