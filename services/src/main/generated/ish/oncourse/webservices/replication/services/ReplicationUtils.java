@@ -71,6 +71,12 @@ public class ReplicationUtils {
 			replV18Record.setStub(toV18Hollow(stub, setWillowId));
 			return replV18Record;
 
+		case V19:
+			ish.oncourse.webservices.v19.stubs.replication.ReplicatedRecord replV19Record = new ish.oncourse.webservices.v19.stubs.replication.ReplicatedRecord();
+			StubUtils.setSuccessStatus(replV19Record);
+			replV19Record.setStub(toV19Hollow(stub, setWillowId));
+			return replV19Record;
+
 		default:
 			return null;
 		}
@@ -102,6 +108,12 @@ public class ReplicationUtils {
  
 	public static ish.oncourse.webservices.v18.stubs.replication.HollowStub toV18Hollow(final GenericReplicationStub stub, final boolean setWillowId) {
 		ish.oncourse.webservices.v18.stubs.replication.HollowStub hollowStub = new ish.oncourse.webservices.v18.stubs.replication.HollowStub();
+		fillHollowStub(stub, hollowStub, setWillowId);
+		return hollowStub;
+	}
+
+	public static ish.oncourse.webservices.v19.stubs.replication.HollowStub toV19Hollow(final GenericReplicationStub stub, final boolean setWillowId) {
+		ish.oncourse.webservices.v19.stubs.replication.HollowStub hollowStub = new ish.oncourse.webservices.v19.stubs.replication.HollowStub();
 		fillHollowStub(stub, hollowStub, setWillowId);
 		return hollowStub;
 	}

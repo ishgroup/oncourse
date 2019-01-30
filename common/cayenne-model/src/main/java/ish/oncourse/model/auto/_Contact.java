@@ -44,6 +44,7 @@ public abstract class _Contact extends ExpandableCayenneDataObject {
     public static final String FAX_NUMBER_PROPERTY = "faxNumber";
     public static final String GIVEN_NAME_PROPERTY = "givenName";
     public static final String HOME_PHONE_NUMBER_PROPERTY = "homePhoneNumber";
+    public static final String HONORIFIC_PROPERTY = "honorific";
     public static final String INVOICE_TERMS_PROPERTY = "invoiceTerms";
     public static final String IS_COMPANY_PROPERTY = "isCompany";
     public static final String IS_MALE_PROPERTY = "isMale";
@@ -63,6 +64,7 @@ public abstract class _Contact extends ExpandableCayenneDataObject {
     public static final String STREET_PROPERTY = "street";
     public static final String SUBURB_PROPERTY = "suburb";
     public static final String TAX_FILE_NUMBER_PROPERTY = "taxFileNumber";
+    public static final String TITLE_PROPERTY = "title";
     public static final String UNIQUE_CODE_PROPERTY = "uniqueCode";
     public static final String ASSESSMENT_SUBMISSIONS_PROPERTY = "assessmentSubmissions";
     public static final String COLLEGE_PROPERTY = "college";
@@ -95,6 +97,7 @@ public abstract class _Contact extends ExpandableCayenneDataObject {
     public static final Property<String> FAX_NUMBER = Property.create("faxNumber", String.class);
     public static final Property<String> GIVEN_NAME = Property.create("givenName", String.class);
     public static final Property<String> HOME_PHONE_NUMBER = Property.create("homePhoneNumber", String.class);
+    public static final Property<String> HONORIFIC = Property.create("honorific", String.class);
     public static final Property<Integer> INVOICE_TERMS = Property.create("invoiceTerms", Integer.class);
     public static final Property<Boolean> IS_COMPANY = Property.create("isCompany", Boolean.class);
     public static final Property<Boolean> IS_MALE = Property.create("isMale", Boolean.class);
@@ -114,6 +117,7 @@ public abstract class _Contact extends ExpandableCayenneDataObject {
     public static final Property<String> STREET = Property.create("street", String.class);
     public static final Property<String> SUBURB = Property.create("suburb", String.class);
     public static final Property<String> TAX_FILE_NUMBER = Property.create("taxFileNumber", String.class);
+    public static final Property<String> TITLE = Property.create("title", String.class);
     public static final Property<String> UNIQUE_CODE = Property.create("uniqueCode", String.class);
     public static final Property<List<AssessmentSubmission>> ASSESSMENT_SUBMISSIONS = Property.create("assessmentSubmissions", List.class);
     public static final Property<College> COLLEGE = Property.create("college", College.class);
@@ -208,6 +212,13 @@ public abstract class _Contact extends ExpandableCayenneDataObject {
     }
     public String getHomePhoneNumber() {
         return (String)readProperty("homePhoneNumber");
+    }
+
+    public void setHonorific(String honorific) {
+        writeProperty("honorific", honorific);
+    }
+    public String getHonorific() {
+        return (String)readProperty("honorific");
     }
 
     public void setInvoiceTerms(Integer invoiceTerms) {
@@ -341,6 +352,13 @@ public abstract class _Contact extends ExpandableCayenneDataObject {
     }
     public String getTaxFileNumber() {
         return (String)readProperty("taxFileNumber");
+    }
+
+    public void setTitle(String title) {
+        writeProperty("title", title);
+    }
+    public String getTitle() {
+        return (String)readProperty("title");
     }
 
     public void setUniqueCode(String uniqueCode) {

@@ -37,6 +37,10 @@
 
 	<bean id="v18_replicationPortType" class="ish.oncourse.webservices.soap.v18.ReplicationPortTypeImpl" />
 
+	<bean id="v19_paymentPortType" class="ish.oncourse.webservices.soap.v19.PaymentPortTypeImpl" />
+
+	<bean id="v19_replicationPortType" class="ish.oncourse.webservices.soap.v19.ReplicationPortTypeImpl" />
+
 	<bean name="controlCharacterHandler" class="ish.oncourse.webservices.soap.CustomEscapeHandler"/>
 
 	<bean name="headerInterceptor" class="ish.oncourse.webservices.soap.interceptors.MessageHeaderInterceptor" />
@@ -153,6 +157,44 @@
 
 	<jaxws:endpoint id="v18_payment" implementor="#v18_paymentPortType"
 					address="/v18/payment">
+		<jaxws:inInterceptors>
+			<ref bean="securityCodeInterceptor" />
+			<ref bean="collegeRequestInterceptor" />
+			<ref bean="headerInterceptor" />
+		</jaxws:inInterceptors>
+
+		<jaxws:dataBinding>
+			<bean class="org.apache.cxf.jaxb.JAXBDataBinding">
+				<property name="marshallerProperties">
+					<map>
+						<entry key="com.sun.xml.bind.marshaller.CharacterEscapeHandler" value-ref="controlCharacterHandler"/>
+					</map>
+				</property>
+			</bean>
+		</jaxws:dataBinding>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="v19_replication" implementor="#v19_replicationPortType"
+					address="/v19/replication">
+		<jaxws:inInterceptors>
+			<ref bean="communicationKeyInterceptor" />
+			<ref bean="collegeRequestInterceptor" />
+			<ref bean="headerInterceptor" />
+		</jaxws:inInterceptors>
+
+		<jaxws:dataBinding>
+			<bean class="org.apache.cxf.jaxb.JAXBDataBinding">
+				<property name="marshallerProperties">
+					<map>
+						<entry key="com.sun.xml.bind.marshaller.CharacterEscapeHandler" value-ref="controlCharacterHandler"/>
+					</map>
+				</property>
+			</bean>
+		</jaxws:dataBinding>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="v19_payment" implementor="#v19_paymentPortType"
+					address="/v19/payment">
 		<jaxws:inInterceptors>
 			<ref bean="securityCodeInterceptor" />
 			<ref bean="collegeRequestInterceptor" />

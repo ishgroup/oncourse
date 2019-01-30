@@ -4975,4 +4975,25 @@
 		<sql>ALTER TABLE WebNode ADD CONSTRAINT WebNode_webSiteVersion FOREIGN KEY (webSiteVersionId) REFERENCES WebSiteVersion (id) ON DELETE CASCADE;;</sql>
 	</changeSet>
 
+	<changeSet id="356" author="pnikanovich" context="production" runOnChange="false">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Contact" columnName="title" />
+			</not>
+		</preConditions>
+		<sql>
+			ALTER TABLE Contact ADD COLUMN title VARCHAR(32) NULL;
+		</sql>
+	</changeSet>
+	<changeSet id="357" author="pnikanovich" context="production" runOnChange="false">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Contact" columnName="honorific" />
+			</not>
+		</preConditions>
+		<sql>
+			ALTER TABLE Contact ADD COLUMN honorific VARCHAR(256) NULL;
+		</sql>
+	</changeSet>
+
 </databaseChangeLog>
