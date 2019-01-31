@@ -1,17 +1,24 @@
 package ish.oncourse.willow.editor.rest
 
+import groovy.transform.CompileStatic
 import ish.oncourse.linktransform.URLPath
 import ish.oncourse.model.WebSiteVersion
 import ish.oncourse.model.WebUrlAlias
+import ish.oncourse.specialpages.RequestMatchType
+import ish.oncourse.specialpages.SpecialWebPage
 import ish.oncourse.util.ISHUrlValidator
+import ish.oncourse.willow.editor.utils.BidiMap
 import ish.oncourse.willow.editor.v1.model.RedirectItem
 import ish.oncourse.willow.editor.v1.model.Redirects
+import ish.oncourse.willow.editor.v1.model.SpecialPage
+import ish.oncourse.willow.editor.v1.model.URLMatchRule
 import ish.oncourse.willow.editor.website.WebSiteVersionFunctions
 import ish.oncourse.willow.editor.website.WebUrlAliasFunctions
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.ObjectId
 import org.eclipse.jetty.server.Request
 
+@CompileStatic
 class UpdateRedirects extends AbstractUpdate<Redirects> {
 
   
@@ -19,6 +26,16 @@ class UpdateRedirects extends AbstractUpdate<Redirects> {
     private ArrayList<ObjectId> deletedAliasIds = new ArrayList<ObjectId>()
     private WebSiteVersion version
     private Map<String, String> newRedirects = [:]
+
+    public static BidiMap<URLMatchRule, RequestMatchType> matchTypeRuleMapping = new BidiMap<>()
+    public static BidiMap<SpecialPage, SpecialWebPage> specialPageMapping = new BidiMap<>()
+
+    static{
+        matchTypeRuleMapping.put(URLMatchRule.EXACT, RequestMatchType.EXACT)
+        matchTypeRuleMapping.put(URLMatchRule.STARTS_WITH, RequestMatchType.STARTS_WITH)
+
+        specialPageMapping.put(SpecialPage.TUTORS, SpecialWebPage.TUTORS)
+    }
 
 
     List<String> getErrors() {
@@ -40,13 +57,13 @@ class UpdateRedirects extends AbstractUpdate<Redirects> {
         
         Map<String, RedirectItem> providedUrlsMap = resourceToSave.rules
                 .collect { redirect -> redirect.from(URLPath.valueOf(redirect.from).encodedPath) }
-                .collectEntries { redirect -> [("${redirect.from}-${redirect.to}".toString()) : redirect]}
+                .collectEntries { redirect -> [("${redirect.from}-${redirect.to}-${redirect.specialPage}".toString()) : redirect]}
         
 
         List<WebUrlAlias> persistentAliases = WebUrlAliasFunctions.getRedirects(request, context)
         
         new ArrayList<WebUrlAlias>(persistentAliases).each { alias ->
-            RedirectItem redirect  = providedUrlsMap.remove("${alias.urlPath}-${alias.redirectTo}".toString())
+            RedirectItem redirect  = providedUrlsMap.remove("${alias.urlPath}-${alias.redirectTo}-${alias.specialPage}alias.matchType}".toString())
             if (!redirect) {
                 //remove redirect if no present in save request
                 deleteAlias(alias)
@@ -64,6 +81,8 @@ class UpdateRedirects extends AbstractUpdate<Redirects> {
             alias.webSiteVersion = version
             alias.urlPath = redirect.from
             alias.redirectTo  = redirect.to
+            alias.specialPage = specialPageMapping.get(redirect.specialPage)
+            alias.matchType = matchTypeRuleMapping.get(redirect.matchType)
             newRedirects[redirect.from] = redirect.to
         }
     }

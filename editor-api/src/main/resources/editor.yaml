@@ -978,6 +978,16 @@ definitions:
         description: |
           The to address must be a valid URL or partial URL starting with /
         example: https://github.com
+      specialPage:
+        $ref: '#/definitions/SpecialPage'
+        description: |
+          The special page which shown by URL /
+        example: TUTORS
+      matchType:
+        $ref: '#/definitions/URLMatchRule'
+        description: |
+          Match type rule for URL /
+        example: EXACT
       error:
         type: string
         description: Describes reason why redirect item cannot be saved.
@@ -1037,6 +1047,12 @@ definitions:
       stopWebEnrolment:
         description: The number of days before enrolment is prevented. Depending on the stopWebEnrolmentCondition value this could be before or after the class starts or ends.
         $ref: '#/definitions/ClassStateTransition'
+
+  SpecialPage:
+     type: string
+     description: List of default pages
+     enum:
+      - TUTORS
         
   State:
     type: string
@@ -1050,6 +1066,13 @@ definitions:
       - TAS
       - VIC
       - WA
+
+  URLMatchRule:
+    type: string
+    description: List of URL match rules for special pages
+    enum:
+      - EXACT
+      - STARTS WITH
   
   WebsiteSettings:
     type: object
