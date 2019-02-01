@@ -130,7 +130,7 @@ AttendanceCtrl.prototype = {
             contentType: 'application/json',
             processData: false,
             success: function (data) {
-                $j('div#' + data.studentId + '.mark-buttons').next('.percents-of-attendance').children('span').children('span').text(data.percent);
+                $j('div#student-' + data.studentId + '.mark-buttons').next('.percents-of-attendance').children('span').children('span').text(data.percent);
                 updatePercenColours();
                 var sessionLink = $j('a#' + data.sessionId);
                 sessionLink.text(data.labelText);
@@ -156,7 +156,7 @@ AttendanceCtrl.prototype = {
         this.attendance = attendance;
         this.attendance.sessionStart = moment(this.attendance.sessionStart).second(0).valueOf();
         this.attendance.sessionEnd = moment(this.attendance.sessionEnd).second(0).valueOf();
-        this.btnGroup = $j('#' + this.attendance.studentId + '> div.btn-group');
+        this.btnGroup = $j('#student-' + this.attendance.studentId + '> div.btn-group');
         this.btnCancel = this.btnGroup.children('a[is=cancel]');
         this.btnOk = this.btnGroup.children('a[is=ok]');
         this.dlgConfirm = $j('#marking-' + this.attendance.studentId);
@@ -166,7 +166,7 @@ AttendanceCtrl.prototype = {
         this.dlgPartialReason = $j('#absence-' + this.attendance.studentId);
         this.txtReasonNote = $j('#absent-reason-' + this.attendance.studentId + ' textarea');
         this.txtPartialNote = $j('#absent-partial-' + this.attendance.studentId + ' textarea');
-        this.markButtons = $j('#' + this.attendance.studentId + '.mark-buttons');
+        this.markButtons = $j('#student-' + this.attendance.studentId + '.mark-buttons');
 
         this.txtReasonNote.val(this.attendance.note);
         this.txtPartialNote.val(this.attendance.note);
@@ -349,7 +349,7 @@ ClassTimetable.prototype = {
             success: function (data) {
                 $j.each(data, function (index, attendance) {
                     var attendanceItem = new AttendanceCtrl();
-                    $j('#' + attendance.studentId).removeClass('collapse');
+                    $j('#student-' + attendance.studentId).removeClass('collapse');
                     attendanceItem.init(attendance);
                     self.attendanceItems.push(attendanceItem)
                 });

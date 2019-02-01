@@ -52,7 +52,7 @@
 
 				<div class="pull-right col-lg-4 col-sm-6 col-xs-4 zero-right student-card-action-wrapper">
 					<div class="col-sm-8 col-xs-12 text-right tick-cross-wrapper">
-						<div class="collapse mark-buttons"  id="${enrolment.student.id}">
+						<div class="collapse mark-buttons"  id="student-${enrolment.student.id}">
 							<div class="btn-group">
 								<a is="cancel" class="btn btn-default">
 									<span class="glyphicon glyphicon-remove"/>
