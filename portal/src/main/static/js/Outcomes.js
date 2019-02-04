@@ -186,7 +186,7 @@ ModuleCtrl.prototype = {
                     url: '/portal/class.outcomes:saveModule/' + self.moduleId + '/'+ self.classId + '/' + self.status + '/' + setDate,
                     type: 'GET',
                     success: function () {
-                        renderModuleOutcomes(self.moduleId);
+                        renderModuleOutcomes(self.moduleId, window.location.pathname.match("\\d+$")[0]);
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         window.location.reload();
@@ -235,7 +235,7 @@ OutcomeCtrl.prototype = {
                     url: '/portal/class.outcomes:saveOutcome/' + self.outcomeId + '/' + self.status + '/' + setDate,
                     type: 'GET',
                     success: function () {
-                        self.source == OutcomeSouce.ENROLMENT_SOURCE ? renderEnrolmentOutcomes(self.sourceId) : renderModuleOutcomes(self.sourceId);
+                        self.source == OutcomeSouce.ENROLMENT_SOURCE ? renderEnrolmentOutcomes(self.sourceId) : renderModuleOutcomes(self.sourceId, window.location.pathname.match("\\d+$")[0]);
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         window.location.reload();
