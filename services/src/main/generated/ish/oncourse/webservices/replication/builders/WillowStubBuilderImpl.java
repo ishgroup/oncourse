@@ -6,6 +6,7 @@ import ish.oncourse.webservices.exception.BuilderNotFoundException;
 import ish.oncourse.webservices.replication.v13.builders.V13BuildersMap;
 import ish.oncourse.webservices.replication.v17.builders.V17BuildersMap;
 import ish.oncourse.webservices.replication.v18.builders.V18BuildersMap;
+import ish.oncourse.webservices.replication.v19.builders.V19BuildersMap;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.SupportedVersions;
 
@@ -21,6 +22,8 @@ public class WillowStubBuilderImpl implements IWillowStubBuilder {
 
 	private Map<String, IWillowStubBuilder> v18builderMap = new HashMap<>();
 
+	private Map<String, IWillowStubBuilder> v19builderMap = new HashMap<>();
+
 
 	public WillowStubBuilderImpl() {
 
@@ -35,6 +38,10 @@ public class WillowStubBuilderImpl implements IWillowStubBuilder {
 		V18BuildersMap v18map = new V18BuildersMap();
 		v18map.initMap();
 		v18builderMap = v18map.getBuilderMap();
+
+		V19BuildersMap v19map = new V19BuildersMap();
+		v19map.initMap();
+		v19builderMap = v19map.getBuilderMap();
 
     }
 
@@ -56,6 +63,11 @@ public class WillowStubBuilderImpl implements IWillowStubBuilder {
 			case V18:
 				builder = v18builderMap.get(key);
 				break;
+
+			case V19:
+				builder = v19builderMap.get(key);
+				break;
+
 
 			default:
 				builder = null;
@@ -87,6 +99,10 @@ public class WillowStubBuilderImpl implements IWillowStubBuilder {
 
 			case V18:
 				builder = v18builderMap.get(key);
+				break;
+
+			case V19:
+				builder = v19builderMap.get(key);
 				break;
 
 			default:
