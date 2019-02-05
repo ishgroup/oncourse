@@ -424,4 +424,40 @@ public class Contact extends _Contact implements Queueable {
 		return super.getIsMarketingViaSMSAllowed();
 	}
 
+	@Property(value = FieldProperty.HONORIFIC, type = PropertyGetSetFactory.SET, params = {String.class})
+	@Override
+	public void setHonorific(String honorific) {
+		super.setHonorific(honorific);
+	}
+
+	@Property(value = FieldProperty.HONORIFIC, type = PropertyGetSetFactory.GET, params = {})
+	@Override
+	public String getHonorific() {
+		return super.getHonorific();
+	}
+
+	@Property(value = FieldProperty.TITLE, type = PropertyGetSetFactory.SET, params = {String.class})
+	@Override
+	public void setTitle(String title) {
+		super.setTitle(title);
+	}
+
+	@Property(value = FieldProperty.TITLE, type = PropertyGetSetFactory.GET, params = {})
+	@Override
+	public String getTitle() {
+		return super.getTitle();
+	}
+
+	@Property(value = FieldProperty.MIDDLE_NAME, type = PropertyGetSetFactory.SET, params = {String.class})
+	@Override
+	public void setMiddleName(String middleName) {
+		super.setMiddleName(middleName);
+	}
+
+	@Property(value = FieldProperty.MIDDLE_NAME, type = PropertyGetSetFactory.GET, params = {})
+	@Override
+	public String getMiddleName() {
+		return super.getMiddleName();
+	}
+
 }
