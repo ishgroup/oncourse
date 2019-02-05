@@ -42,6 +42,7 @@ publishing {
     publications {
         docs(MavenPublication) {
             artifact("${buildDir}/dist/doc.zip") {
+                artifactId "editor-api-docs"
                 classifier "documentation"
                 extension "zip"
                 builtBy packageDoc
