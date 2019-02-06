@@ -73,7 +73,7 @@ class SelectField extends React.Component<any, any> {
     const props: Props = this.toProps();
     props.onBlurSelect && props.onBlurSelect(props.input.name);
 
-    input.onChange(this.props.returnType === 'object' ? result : result.value);
+    input.onChange(this.props.returnType === 'object' ? result : result && result.value);
   }
 
   private onBlur = e => {
