@@ -87,9 +87,16 @@ class SelectField extends React.Component<any, any> {
   }
 
   private onOpen = valueObj => {
-    if(valueObj) {
-      this.selectComponent.select.handleInputChange({ target: { value: valueObj.value } });
+    if (valueObj) {
+      this.selectComponent.select.handleInputChange({target: {value: typeof valueObj === "object" ? valueObj.value : valueObj}});
     }
+  }
+
+  private normalizeObject = value => {
+    if (value && typeof value === "string") {
+      return {value};
+    }
+    return value;
   }
 
   toProps = (): Props => {
@@ -145,7 +152,7 @@ class SelectField extends React.Component<any, any> {
             valueKey={props.valueKey}
             searchable={props.searchable}
             clearable={false}
-            value={this.props.returnType === 'object' ? props.input.value : props.input.value && props.input}
+            value={this.props.returnType === 'object' ? this.normalizeObject(props.input.value) : props.input.value && props.input}
             loadOptions={input => input.length > 0 && !showValuesOnInit ? this.loadOptionsDebounce(input) : this.loadOptions(input)}
             options={this.props.options}
             onBlur={this.onBlur}
@@ -153,7 +160,7 @@ class SelectField extends React.Component<any, any> {
             onOpen={props.allowEditSelected ? () => this.onOpen(props.input.value) : undefined}
             promptTextCreator={label => `${label} `}
             ref={c => {
-                this.selectComponent = c;
+              this.selectComponent = c;
             }}
 
           />

@@ -37,6 +37,7 @@ class ContactEditForm extends React.Component<Props, any> {
             contact={contact}
             fields={fields}
             onChangeSuburb={item => onChangeSuburb(form, item)}
+            form={form}
           />
 
           <div className="form-controls flex">

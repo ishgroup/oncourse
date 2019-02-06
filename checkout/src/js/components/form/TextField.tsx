@@ -20,6 +20,11 @@ function inputComponent(props: any) {
   } = props;
   const isShowError = showError({...props, meta: props.meta || {}});
 
+  // normalize value if changing from select field to text field
+  if (typeof input.value === "object") {
+    input.value = input.value.value;
+  }
+
   return (
     <div>
       <FieldLabel

@@ -1,8 +1,6 @@
 import * as React from "react";
 import * as Form from "redux-form";
-
 import {Field, DataType, Item} from "../../model";
-
 import {CheckboxField} from "./CheckboxField";
 import {TextField} from "./TextField";
 import {TextAreaField} from "./TextAreaField";
@@ -10,6 +8,7 @@ import {RadioGroupField} from "./RadioGroupField";
 import {DateField} from "./DateField";
 import SelectField from "../form-new/SelectField";
 import SearchService from "../../enrol/services/SearchService";
+import {connect} from "react-redux";
 
 class FieldFactory extends React.Component<any, any> {
 
@@ -61,7 +60,7 @@ class FieldFactory extends React.Component<any, any> {
         return CountryField(props);
 
       case DataType.SUBURB:
-        return SuburbField(props);
+        return <SuburbField { ...props} form={this.props.form}/>;
 
       case DataType.LANGUAGE:
         return LanguageField(props);
@@ -79,29 +78,29 @@ class FieldFactory extends React.Component<any, any> {
 
       case DataType.TAGGROUP_S:
         return <Form.Field
-            {...props}
-            hint={props.label}
-            component={SelectField}
-            loadOptions={() => Promise.resolve(withOptionNotSet(field.enumItems))}
-            newOptionEnable={true}
-            searchable={true}
-            showOnFocus={true}
-            fullWidth={true}
+          {...props}
+          hint={props.label}
+          component={SelectField}
+          loadOptions={() => Promise.resolve(withOptionNotSet(field.enumItems))}
+          newOptionEnable={true}
+          searchable={true}
+          showOnFocus={true}
+          fullWidth={true}
         />;
 
       case DataType.TAGGROUP_M:
         return <Form.Field
-            {...props}
-            hint={props.label}
-            component={CheckboxField}
+          {...props}
+          hint={props.label}
+          component={CheckboxField}
         />;
 
       case DataType.MAILINGLIST:
         return <Form.Field
-            {...props}
-            hint={props.label}
-            required={false}
-            component={CheckboxField}
+          {...props}
+          hint={props.label}
+          required={false}
+          component={CheckboxField}
         />;
 
       default:
@@ -133,7 +132,7 @@ export const toFormFieldProps = (field: Field): any => {
 export const toFormKey = name => (name.replace(/\./g, '/'));
 
 
-const SuburbField = (props): any => {
+const SuburbFieldBase = (props): any => {
   const suburbs = (i: string): Promise<Item[]> => {
     return SearchService.getPreparedSuburbs(i);
   };
@@ -141,16 +140,25 @@ const SuburbField = (props): any => {
     props.onChangeSuburb && props.onChangeSuburb(value);
   };
 
-  return <Form.Field
-    {...props}
-    component={SelectField}
-    loadOptions={suburbs}
-    newOptionEnable={true}
-    allowEditSelected={true}
-    returnType="object"
-    onChange={val => updateRelativeFields(val)}
-  />;
+  const isAustralia = props.values && (!props.values["country"] || props.values["country"] === "Australia");
+
+  return isAustralia ?
+    <Form.Field
+      {...props}
+      component={SelectField}
+      loadOptions={suburbs}
+      newOptionEnable={true}
+      allowEditSelected={true}
+      returnType="object"
+      onChange={val => updateRelativeFields(val)}
+    /> :
+    <Form.Field {...props} component={TextField} type="text"/> ;
 };
+
+const SuburbField =  connect((state,{form}) => ({
+  values: Form.getFormValues(form)(state),
+}),
+)(SuburbFieldBase);
 
 const CountryField = (props): any => {
   const countries = (i: string): Promise<Item[]> => {

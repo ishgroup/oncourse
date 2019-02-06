@@ -5,19 +5,20 @@ import HeadingComp from "../../../components/HeadingComp";
 import {ContactInfo} from "../../../components/ContactInfo";
 
 export interface Props {
-  contact: Contact,
-  fields: ContactFields,
-  header?: string,
+  contact: Contact;
+  fields: ContactFields;
+  header?: string;
+  form?: string;
   touch?: (field) => void; // hack: Fire touch event on blur react select
   onChangeSuburb?: (item) => void;
 }
 
 export class ContactEdit extends React.Component<Props, any> {
   render() {
-    const {contact, fields, header, touch, onChangeSuburb} = this.props;
+    const {contact, fields, header, touch, onChangeSuburb, form } = this.props;
 
     const headings = isNil(fields) ? [] : fields.headings.map((h, index) => (
-      <HeadingComp heading={h} key={index} touch={touch} onChangeSuburb={onChangeSuburb}/>
+      <HeadingComp heading={h} key={index} touch={touch} onChangeSuburb={onChangeSuburb} form={form}/>
     ));
 
     return (

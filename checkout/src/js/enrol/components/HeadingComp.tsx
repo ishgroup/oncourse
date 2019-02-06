@@ -7,12 +7,13 @@ interface Prop {
   heading: FieldHeading;
   touch?: (field) => void;
   onChangeSuburb?: (item) => void;
+  form?: string;
 }
 
 export class HeadingComp extends React.Component<Prop, any> {
 
   render() {
-    const {heading, touch, onChangeSuburb} = this.props;
+    const {heading, touch, onChangeSuburb, form} = this.props;
 
     return (
       <fieldset>
@@ -27,6 +28,7 @@ export class HeadingComp extends React.Component<Prop, any> {
           field={field}
           onBlurSelect={touch}
           onChangeSuburb={onChangeSuburb}
+          form={form}
         />)}
       </fieldset>
     );
