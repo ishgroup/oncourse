@@ -12,6 +12,7 @@ public class LocateUSIRequest {
     private Date dateOfBirth;
     private String townCityOfBirth;
     private String emailAddress;
+    private String userReference;
 
     public String getOrgCode() { return orgCode; }
 
@@ -72,4 +73,8 @@ public class LocateUSIRequest {
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
     }
+
+    public String getUserReference() { return userReference; }
+
+    public void setUserReference(String userReference) { this.userReference = userReference; }
 }

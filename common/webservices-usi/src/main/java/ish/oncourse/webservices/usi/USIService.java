@@ -29,39 +29,52 @@ public class USIService {
 		}
 	}
 
-	public LocateUSIResult locateUSI(LocateUSIRequest internalRq) {
-		try {
-			LocateUSIType serviceRq = LocateUSITypeBuilder.valueOf(internalRq).build();
-			LocateUSIResponseType serviceRs = endpoint.locateUSI(serviceRq);
-
-			LocateUSIResult internalRs = new LocateUSIResult();
-
-			switch (serviceRs.getResult()) {
-				case EXACT: {
-					internalRs.setResultType(ish.common.types.LocateUSIType.MATCH);
-					internalRs.setUsi(serviceRs.getUSI());
-					internalRs.setMessage(serviceRs.getContactDetailsMessage());
-				}
-				break;
-				case MULTIPLE_EXACT: {
-					internalRs.setResultType(ish.common.types.LocateUSIType.MORE_DETAILS_EXPECTED);
-				}
-				break;
-				case NO_MATCH: {
-					internalRs.setResultType(ish.common.types.LocateUSIType.NO_MATCH);
-				}
-				break;
-				default: {
-					internalRs.setError(StringUtils.join(serviceRs.getErrors().getError(),';'));
-				}
-			}
-			return internalRs;
-		} catch (Exception e) {
-			logger.error("Unable to locate USI code for {} {} in organisation code {}.", internalRq.getFirstName(),
-					internalRq.getFamilyName(), internalRq.getOrgCode(), e);
-
-			return LocateUSIResult.valueOf("Error verifying USI.");
+	public LocateUSIResult locateUSI(LocateUSIRequest intRq) {
+		LocateUSIType extRq = LocateUSITypeBuilder.valueOf(intRq).build();
+		LocateUSIResult intRs = null;
+		if (extRq != null) {
+			LocateUSIResponseType extRs = sendLocateRequest(extRq);
+			intRs = castToInternalLocateRs(extRs);
+		} else {
+			intRs = LocateUSIResult.valueOf(String.format("USI can not be located for orgCode: %s, firstName: %s, lastName: %s. Internal request has incomplete field set.",
+					intRq.getOrgCode(), intRq.getFirstName(), intRq.getFamilyName()));
 		}
+		return intRs;
+	}
+
+	private LocateUSIResponseType sendLocateRequest(LocateUSIType rq) {
+		LocateUSIResponseType rs = null;
+		try {
+			rs = endpoint.locateUSI(rq);
+		} catch (Exception e) {
+			logger.error("Locate USI service request failed. OrgCode: {}, firstName: {}, lastName: {}", e);
+		}
+		return rs;
+	}
+
+	private LocateUSIResult castToInternalLocateRs(LocateUSIResponseType extRs) {
+		LocateUSIResult intRs = new LocateUSIResult();
+
+		switch (extRs.getResult()) {
+			case EXACT: {
+				intRs.setResultType(ish.common.types.LocateUSIType.MATCH);
+				intRs.setUsi(extRs.getUSI());
+				intRs.setMessage(extRs.getContactDetailsMessage());
+			}
+			break;
+			case MULTIPLE_EXACT: {
+				intRs.setResultType(ish.common.types.LocateUSIType.MORE_DETAILS_EXPECTED);
+			}
+			break;
+			case NO_MATCH: {
+				intRs.setResultType(ish.common.types.LocateUSIType.NO_MATCH);
+			}
+			break;
+			default: {
+				intRs.setError(StringUtils.join(extRs.getErrors().getError(), ';'));
+			}
+		}
+		return intRs;
 	}
 
 	private boolean needSendSingleNameRequest(USIVerificationRequest request, USIVerificationResult result) {
