@@ -24,10 +24,11 @@ CensusForm.prototype = {
                 return obj.key === "usi";
             })[0].value;
             var newUsi = $j('.form-control[name=usi]').val();
-            if (self.data.values['usiStatus'] !== 'VERIFIED' &&
-                (self.step === 'usi' || self.step === 'usiFailed') &&
-                oldUsi !== newUsi) {
+            if (self.data.values['usiStatus'] != 'VERIFIED' &&
+                (self.data.step == 'usi' || self.data.step == 'usiFailed' || self.data.step == 'waitLocate') &&
+                oldUsi != newUsi) {
                 self.verifyUsi();
+                self.reloadByTimeout();
             }
         });
     },
