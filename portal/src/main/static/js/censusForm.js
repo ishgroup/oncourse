@@ -119,7 +119,7 @@ CensusForm.prototype = {
             self.fillControl(value);
         });
 
-        if (this.step === 'waitVerify' || this.step === 'waitLocate') {
+        if (this.step === 'waitVerify') {
             this.usiEnable = false;
         }
         $j('.form-control[name=usi]').attr('disabled', !this.usiEnable);
