@@ -139,17 +139,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label for="townCityOfBirth"  class="control-label">Town or city of birth</label>
-                            <div class="${validateHandler.validateClass('townCityOfBirth')}">
-                                 <t:textfield value="contact.student.townOfBirth" t:id="townCItyOfBirth" class="form-control ${validateHandler.errorClass('townCityOfBirth')}"/>
-                                 <span t:type="HintComponent" validationMessage="${validateHandler.error('townCityOfBirth')}"/>
+                <t:if test="contact.student">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="townCityOfBirth"  class="control-label">Town or city of birth</label>
+                                <div class="${validateHandler.validateClass('townCityOfBirth')}">
+                                     <t:textfield value="contact.student.townOfBirth" t:id="townCityOfBirth" class="form-control ${validateHandler.errorClass('townCityOfBirth')}"/>
+                                     <span t:type="HintComponent" validationMessage="${validateHandler.error('townCityOfBirth')}"/>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </t:if>
 				<t:loop source="customFieldKeys" value="customFieldKey">
 					<div class="row">
 						<div class="col-sm-6">

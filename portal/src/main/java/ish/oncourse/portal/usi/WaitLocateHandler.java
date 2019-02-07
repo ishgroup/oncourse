@@ -3,8 +3,6 @@ package ish.oncourse.portal.usi;
 import ish.common.types.*;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Student;
-import ish.util.UsiUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -49,7 +47,7 @@ public class WaitLocateHandler extends AbstractStepHandler {
         Contact contact = getUsiController().getContact();
         Student student = contact.getStudent();
 
-        if (student.getUsiStatus() == null || !student.getUsiStatus().equals(UsiStatus.VERIFIED)) {
+        if (isUsiCanLocated(contact)) {
             LocateUSIRequest rq = prepareLocateUsiRequest(contact);
             LocateUSIResult usiResult = getUsiController().getUsiVerificationService().locateUsi(rq);
             if (LocateUSIType.MATCH.equals(usiResult.getResultType())) {
@@ -64,28 +62,30 @@ public class WaitLocateHandler extends AbstractStepHandler {
         }
     }
 
-    private LocateUSIRequest prepareLocateUsiRequest(Contact c) {
-        LocateUSIRequest rq = null;
-        if (c.getFamilyName() != null && c.getIsMale() != null && c.getDateOfBirth() != null) {
-            rq = new LocateUSIRequest();
-            rq.setOrgCode(getUsiController().getPreferenceController().getAvetmissID());
-            rq.setFamilyName(c.getFamilyName());
-            rq.setGender(c.getIsMale() ? USIGender.MALE : USIGender.FEMALE);
-            rq.setDateOfBirth(c.getDateOfBirth());
-
-            if (c.getGivenName() != null) {
-                rq.setFirstName(c.getGivenName());
-            }
-            if (c.getMiddleName() != null) {
-                rq.setMiddleName(c.getMiddleName());
-            }
-            if (c.getEmailAddress() != null) {
-                rq.setEmailAddress(c.getEmailAddress());
-            }
-            if (c.getStudent().getTownOfBirth() != null) {
-                rq.setTownCityOfBirth(c.getStudent().getTownOfBirth());
+    private boolean isUsiCanLocated(Contact c) {
+        Student s = c.getStudent();
+        if (s != null && !s.getUsiStatus().equals(UsiStatus.VERIFIED)) {
+            if (c.getGivenName() != null &&
+                    c.getFamilyName() != null &&
+                    c.getIsMale() != null &&
+                    c.getDateOfBirth() != null &&
+                    s.getTownOfBirth() != null) {
+                return true;
             }
         }
+        return false;
+    }
+
+    private LocateUSIRequest prepareLocateUsiRequest(Contact c) {
+        LocateUSIRequest rq = new LocateUSIRequest();
+
+        rq.setOrgCode(getUsiController().getPreferenceController().getAvetmissID());
+        rq.setUserReference(c.getCollege().getName());
+        rq.setFamilyName(c.getFamilyName());
+        rq.setGender(c.getIsMale() ? USIGender.MALE : USIGender.FEMALE);
+        rq.setDateOfBirth(c.getDateOfBirth());
+        rq.setFirstName(c.getGivenName());
+        rq.setTownCityOfBirth(c.getStudent().getTownOfBirth());
         return rq;
     }
 }
