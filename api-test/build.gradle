@@ -2,7 +2,7 @@
 apply plugin: 'java'
 
 dependencies {
-
+    compile 'org.dbunit:dbunit:2.4.9'
     testCompile 'com.intuit.karate:karate-junit4:0.8.0.RC4'
     testCompile 'com.intuit.karate:karate-jersey:0.8.0.RC4'
     testCompile 'com.intuit.karate:karate-core:0.8.0.RC4'
