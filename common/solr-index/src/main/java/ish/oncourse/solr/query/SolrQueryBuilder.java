@@ -69,7 +69,7 @@ public class SolrQueryBuilder {
 	private static final String DATE_BOOST_FUNCTION = "recip(max(ms(startDate,NOW-1YEAR/DAY),0),1.15e-8,500,500)";
 	private static final String GEO_LOCATION_BOOST_FUNCTION = "recip(query($geofq),1,10,5)";
 
-	private SearchParams params;
+	protected SearchParams params;
 	private String collegeId;
 	private Integer start;
 	private Integer rows;

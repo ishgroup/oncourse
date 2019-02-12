@@ -97,9 +97,7 @@ public class SearchService implements ISearchService {
 	
 	public List<SCourseClass> searchClasses(SearchParams searchParams,  Set<String> courses) {
 		try {
-			String siteKey = webSiteService.getCurrentWebSite().getSiteKey();
-			ClassesQueryParams params = ClassesQueryParams.valueOf(searchParams, siteKey, courses);
-			SolrQuery q = ClassesQueryBuilder.valueOf(params).build();
+			SolrQuery q = ClassesQueryBuilder.valueOf(searchParams, courses).build();
 			return query(q, SolrCollection.classes).getBeans(SCourseClass.class);
 		} catch (Exception e) {
 			throw new SearchException("Unable to find classes.", e);

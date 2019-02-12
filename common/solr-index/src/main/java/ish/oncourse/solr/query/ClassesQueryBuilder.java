@@ -3,78 +3,97 @@
  */
 package ish.oncourse.solr.query;
 
-import ish.oncourse.util.FormatUtils;
 import org.apache.solr.client.solrj.SolrQuery;
 
 import java.util.ArrayList;
+import java.util.Set;
 
+public class ClassesQueryBuilder extends SolrQueryBuilder {
 
-import static ish.oncourse.solr.query.SolrQueryBuilder.*;
+	private static final String QUERY_TYPE_SELECT = "edismax";
+	private static final String FILTER_TEMPLATE_start_between = "start:[%s TO %s]";
+	private static final String FILTER_TEMPLATE_courses = "courseId:(%s)";
+	private static final String FILTER_TEMPLATE_site = "siteKey:%s";
 
-public class ClassesQueryBuilder {
+	private Set<String> coursesIds;
 
+	private SolrQuery query;
 
-    private static final String QUERY_TYPE_SELECT = "select";
-    private static final String FILTER_TEMPLATE_start_between = "start:[%s TO %s]";
-    private static final String FILTER_TEMPLATE_courses = "courseId:(%s)";
-    private static final String FILTER_TEMPLATE_site = "siteKey:%s";
+	public static SolrQueryBuilder valueOf(SearchParams params, Set<String> coursesIds) {
+		ClassesQueryBuilder builder = new ClassesQueryBuilder();
+		builder.searchParams(params);
+		builder.coursesIds = coursesIds;
+		return builder;
+	}
 
+	public SolrQuery build() {
 
-    private ClassesQueryParams params;
+		this.query = new SolrQuery();
 
-    public static ClassesQueryBuilder valueOf(ClassesQueryParams params) {
-        ClassesQueryBuilder builder = new ClassesQueryBuilder();
-        builder.params = params;
-        return builder;
-    }
+		ArrayList<String> filtersList = new ArrayList<>();
 
-    public SolrQuery build() {
-        ArrayList<String> filters = new ArrayList<>();
-        
-        filters.add(String.format(FILTER_TEMPLATE_courses, params.getCoursesString()));
-        filters.add(QUERY_AND);
-        filters.add(String.format(FILTER_TEMPLATE_site, params.getSiteKey()));
-        filters.add(QUERY_AND);
-        
+		filtersList.add(String.format(FILTER_TEMPLATE_courses, String.join(" ", coursesIds)));
+		filtersList.add(QUERY_AND);
 
-        if (params.getPrice() != null) {
-            filters.add(String.format(FILTER_TEMPLATE_price, params.getPrice()));
-            filters.add(QUERY_AND);
-        }
+		/*if (searchParams.getPrice() != null) {
+			filtersList.add(String.format(FILTER_TEMPLATE_price, searchParams.getPrice()));
+			filtersList.add(QUERY_AND);
+		}
 
-        if (params.getDay() != null) {
-            appendFilterWhen(filters, params.getDay().getFullName());
-            filters.add(QUERY_AND);
-        }
-        
-        appendFilterWhen(filters, params.getTime());
-        
-        if (params.getAfter() != null || params.getBefore() != null) {
-            filters.add(String.format(FILTER_TEMPLATE_start_between,
-                    params.getAfter() != null ? FormatUtils.convertDateToISO8601(params.getAfter()) : "*",
-                    params.getBefore() != null ? FormatUtils.convertDateToISO8601(params.getBefore()) : "*"));
-            filters.add(QUERY_AND);
-        }
-        
-        if (params.getSiteId() != null) {
-            filters.add(String.format(FILTER_TEMPLATE_siteId, params.getSiteId()));
-            filters.add(QUERY_AND);
-        }
-        if (params.getTutorId() != null) {
-            filters.add(String.format(FILTER_TEMPLATE_tutorId, params.getTutorId()));
-            filters.add(QUERY_AND);
-        }
-        clearLastAnd(filters);
-        
-        SolrQuery q =  new BuildBoostQuery()
-                .hideAge(params.getClassAge())
-                .mainQuery(String.format(QUERY_brackets, convert(filters))).build();
+		if (searchParams.getDay() != null) {
+			appendFilterWhen(filtersList, searchParams.getDay().getFullName());
+			filtersList.add(QUERY_AND);
+		}
 
-        q.setRequestHandler(QUERY_TYPE_SELECT);
-        q.setStart(0);
-        q.setRows(Integer.MAX_VALUE);
-        return q;
-    }
+		appendFilterWhen(filtersList, searchParams.getTime());
 
+		if (searchParams.getAfter() != null || searchParams.getBefore() != null) {
+			filtersList.add(String.format(FILTER_TEMPLATE_start_between,
+					searchParams.getAfter() != null ? FormatUtils.convertDateToISO8601(searchParams.getAfter()) : "*",
+					searchParams.getBefore() != null ? FormatUtils.convertDateToISO8601(searchParams.getBefore()) : "*"));
+			filtersList.add(QUERY_AND);
+		}
 
+		if (searchParams.getSiteId() != null) {
+			filtersList.add(String.format(FILTER_TEMPLATE_siteId, searchParams.getSiteId()));
+			filtersList.add(QUERY_AND);
+		}
+		if (searchParams.getTutorId() != null) {
+			filtersList.add(String.format(FILTER_TEMPLATE_tutorId, searchParams.getTutorId()));
+			filtersList.add(QUERY_AND);
+		}
+
+		// %20dist:{!func}geodist()&sfield=classLoc&pt=-33.896449,151.180013
+		*/
+
+		clearLastAnd(filtersList);
+
+		query.setRequestHandler(QUERY_TYPE_SELECT);
+		query.setFields("* score [explain]");
+		query.setFilterQueries(convert(filtersList));
+
+		setUpDistanceField();
+		setUpPage(0, Integer.MAX_VALUE);
+
+		return query;
+	}
+
+	private void setUpDistanceField() {
+		Suburb suburb = params.getSuburbs().get(0);
+		query.setFields("dist:geodist()");
+		query.set("sfield", "classLoc");
+		query.set("pt", suburb.getCoordinates());
+	}
+
+	/**
+	 * Grouping by courseId and score
+	 */
+	private void setUpFacets() {
+
+	}
+
+	private void setUpPage(int start, int rows) {
+		query.setStart(start);
+		query.setRows(rows);
+	}
 }
