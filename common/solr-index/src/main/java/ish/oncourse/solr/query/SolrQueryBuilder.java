@@ -7,9 +7,7 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrQuery.ORDER;
 import org.apache.solr.common.params.CommonParams;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class SolrQueryBuilder {
 	static final String DIGIT_PATTERN = "(\\d)+";
@@ -70,6 +68,9 @@ public class SolrQueryBuilder {
 	private static final String GEO_LOCATION_BOOST_FUNCTION = "recip(query($geofq),1,10,5)";
 
 	protected SearchParams params;
+	protected Set<String> fieldList = new HashSet<>();
+	protected ArrayList<String> filtersList = new ArrayList<>();
+
 	private String collegeId;
 	private Integer start;
 	private Integer rows;

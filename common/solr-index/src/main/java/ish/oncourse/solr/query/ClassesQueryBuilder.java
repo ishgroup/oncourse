@@ -3,23 +3,38 @@
  */
 package ish.oncourse.solr.query;
 
+import ish.oncourse.util.FormatUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrQuery;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Set;
 
 public class ClassesQueryBuilder extends SolrQueryBuilder {
 
-	private static final String QUERY_TYPE_SELECT = "edismax";
-	private static final String FILTER_TEMPLATE_start_between = "start:[%s TO %s]";
-	private static final String FILTER_TEMPLATE_courses = "courseId:(%s)";
-	private static final String FILTER_TEMPLATE_site = "siteKey:%s";
+	private static final String DEFAULT_QUERY_TYPE         = "edismax";
+	private static final String DEFAULT_FILED_LIST         = "*";
+	private static final String DEFAULT_CRITERIA_DELIMITER = " AND ";
 
-	private Set<String> coursesIds;
+	private static final String FILTER_TEMPLATE_COURSES    = "courseId:(%s)";
 
-	private SolrQuery query;
+	private static final String CRITERION_TEMPLATE_CLASSES_GEOFILT    = "({!geofilt pt=%s sfield=classLoc d=%s})";
+	private static final String CRITERION_TEMPLATE_CLASSES_PRICE      = "(price:[0 TO %s])";
+	private static final String CRITERION_TEMPLATE_CLASSES_WHEN       = "(when:%s)";
+	private static final String CRITERION_TEMPLATE_CLASSES_SITE_ID    = "(siteId:%s)";
+	private static final String CRITERION_TEMPLATE_CLASSES_TUTOR_ID   = "(tutorId:%s)";
+	private static final String CRITERION_TEMPLATE_CLASSES_START_DATE = "(start:[%s TO %s])";
+	private static final String CRITERION_TEMPLATE_CLASSES_COURSES    = "(courseId:(%s))^=0";
 
-	public static SolrQueryBuilder valueOf(SearchParams params, Set<String> coursesIds) {
+	private static final String DISTANCE_FIELD_NAME = "dist";
+
+	protected Set<String> coursesIds;
+	protected SolrQuery query;
+
+	private boolean enabledGrouping;
+	private boolean enabledReturnDistance;
+
+	public static ClassesQueryBuilder valueOf(SearchParams params, Set<String> coursesIds) {
 		ClassesQueryBuilder builder = new ClassesQueryBuilder();
 		builder.searchParams(params);
 		builder.coursesIds = coursesIds;
@@ -27,69 +42,127 @@ public class ClassesQueryBuilder extends SolrQueryBuilder {
 	}
 
 	public SolrQuery build() {
-
 		this.query = new SolrQuery();
 
-		ArrayList<String> filtersList = new ArrayList<>();
-
-		filtersList.add(String.format(FILTER_TEMPLATE_courses, String.join(" ", coursesIds)));
-		filtersList.add(QUERY_AND);
-
-		/*if (searchParams.getPrice() != null) {
-			filtersList.add(String.format(FILTER_TEMPLATE_price, searchParams.getPrice()));
-			filtersList.add(QUERY_AND);
-		}
-
-		if (searchParams.getDay() != null) {
-			appendFilterWhen(filtersList, searchParams.getDay().getFullName());
-			filtersList.add(QUERY_AND);
-		}
-
-		appendFilterWhen(filtersList, searchParams.getTime());
-
-		if (searchParams.getAfter() != null || searchParams.getBefore() != null) {
-			filtersList.add(String.format(FILTER_TEMPLATE_start_between,
-					searchParams.getAfter() != null ? FormatUtils.convertDateToISO8601(searchParams.getAfter()) : "*",
-					searchParams.getBefore() != null ? FormatUtils.convertDateToISO8601(searchParams.getBefore()) : "*"));
-			filtersList.add(QUERY_AND);
-		}
-
-		if (searchParams.getSiteId() != null) {
-			filtersList.add(String.format(FILTER_TEMPLATE_siteId, searchParams.getSiteId()));
-			filtersList.add(QUERY_AND);
-		}
-		if (searchParams.getTutorId() != null) {
-			filtersList.add(String.format(FILTER_TEMPLATE_tutorId, searchParams.getTutorId()));
-			filtersList.add(QUERY_AND);
-		}
-
-		// %20dist:{!func}geodist()&sfield=classLoc&pt=-33.896449,151.180013
-		*/
-
-		clearLastAnd(filtersList);
-
-		query.setRequestHandler(QUERY_TYPE_SELECT);
-		query.setFields("* score [explain]");
-		query.setFilterQueries(convert(filtersList));
+		query.setRequestHandler(DEFAULT_QUERY_TYPE);
 
 		setUpDistanceField();
+		setUpGroupByCourseId();
+
+		setUpSearchParams();
+		setUpFilterQueryList();
+		setUpFieldList();
 		setUpPage(0, Integer.MAX_VALUE);
 
 		return query;
 	}
 
-	private void setUpDistanceField() {
-		Suburb suburb = params.getSuburbs().get(0);
-		query.setFields("dist:geodist()");
-		query.set("sfield", "classLoc");
-		query.set("pt", suburb.getCoordinates());
+	public ClassesQueryBuilder enableGrouping() {
+		enabledGrouping = true;
+		return this;
 	}
 
-	/**
-	 * Grouping by courseId and score
-	 */
-	private void setUpFacets() {
+	public ClassesQueryBuilder enableDistanceField() {
+		enabledReturnDistance = true;
+		return this;
+	}
 
+	private void setUpSearchParams() {
+
+		StringBuilder searchCriteria = new StringBuilder();
+
+		if (params != null) {
+
+			if (params.getPrice() != null) {
+				searchCriteria.append(String.format(CRITERION_TEMPLATE_CLASSES_PRICE, params.getPrice()));
+			}
+
+			if (params.getDay() != null) {
+				searchCriteria.append(DEFAULT_CRITERIA_DELIMITER);
+				searchCriteria.append(String.format(CRITERION_TEMPLATE_CLASSES_WHEN, params.getDay().getFullName()));
+			}
+
+			if (params.getTime() != null) {
+				searchCriteria.append(DEFAULT_CRITERIA_DELIMITER);
+				searchCriteria.append(String.format(CRITERION_TEMPLATE_CLASSES_WHEN, params.getTime()));
+			}
+
+			if (params.hasSuburbs()) {
+				searchCriteria.append(DEFAULT_CRITERIA_DELIMITER);
+				Suburb suburb = params.getSuburbs().get(0);
+				searchCriteria.append(String.format(CRITERION_TEMPLATE_CLASSES_GEOFILT, suburb.getCoordinates(), suburb.getDistance()));
+			}
+
+			if (params.getSiteId() != null) {
+				searchCriteria.append(DEFAULT_CRITERIA_DELIMITER);
+				searchCriteria.append(String.format(CRITERION_TEMPLATE_CLASSES_SITE_ID, params.getSiteId()));
+			}
+
+			if (params.getTutorId() != null) {
+				searchCriteria.append(DEFAULT_CRITERIA_DELIMITER);
+				searchCriteria.append(String.format(CRITERION_TEMPLATE_CLASSES_TUTOR_ID, params.getTutorId()));
+			}
+
+			if (params.getAfter() != null || params.getBefore() != null) {
+				searchCriteria.append(DEFAULT_CRITERIA_DELIMITER);
+				String dateAfter = params.getAfter() == null ? "*" : FormatUtils.convertDateToISO8601(params.getAfter());
+				String dateBefore = params.getBefore() == null ? "*" : FormatUtils.convertDateToISO8601(params.getBefore());
+				searchCriteria.append(String.format(CRITERION_TEMPLATE_CLASSES_START_DATE, dateAfter, dateBefore));
+			}
+		}
+
+		String commonCriterion = String.format(CRITERION_TEMPLATE_CLASSES_COURSES, StringUtils.join(coursesIds, " "));
+		query.setQuery(commonCriterion + String.format(" (%s)^=1.0", searchCriteria.toString()));
+	}
+
+	private void addDefaultFilters() {
+		filtersList.add(String.format(FILTER_TEMPLATE_COURSES, String.join(" ", coursesIds)));
+	}
+
+	private void setUpFilterQueryList() {
+		if (filtersList == null || filtersList.isEmpty()) {
+			addDefaultFilters();
+		}
+		query.setFilterQueries(StringUtils.join(filtersList, " "));
+	}
+
+	public ClassesQueryBuilder addFieldList(String fields) {
+		this.fieldList.addAll(Arrays.asList(fields.split(" ")));
+		return this;
+	}
+
+	public ClassesQueryBuilder addFieldList(Set<String> fields) {
+		this.fieldList.addAll(fields);
+		return this;
+	}
+
+	public ClassesQueryBuilder addField(String field){
+		this.fieldList.add(field);
+		return this;
+	}
+
+	private void setUpFieldList() {
+		if(fieldList.isEmpty()) {
+			fieldList.add(DEFAULT_FILED_LIST);
+		}
+		query.setFields(String.join(" ", fieldList));
+	}
+
+	private void setUpDistanceField() {
+		if (enabledReturnDistance && params.hasSuburbs()) {
+			Suburb suburb = params.getSuburbs().get(0);
+			addField(DISTANCE_FIELD_NAME + ":geodist()");
+			query.set("sfield", "classLoc");
+			query.set("pt", suburb.getCoordinates());
+		}
+	}
+
+	private void setUpGroupByCourseId() {
+		if (enabledGrouping) {
+			query.set("group", "true");
+			query.set("group.field", "courseId");
+			query.set("group.limit", "1000");
+		}
 	}
 
 	private void setUpPage(int start, int rows) {

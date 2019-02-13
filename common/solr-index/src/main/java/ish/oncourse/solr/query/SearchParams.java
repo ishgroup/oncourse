@@ -162,4 +162,8 @@ public class SearchParams {
 		this.classAge = classAge;
 		return this;
 	}
+
+    public boolean hasSuburbs() {
+        return suburbs != null && !suburbs.isEmpty();
+    }
 }
