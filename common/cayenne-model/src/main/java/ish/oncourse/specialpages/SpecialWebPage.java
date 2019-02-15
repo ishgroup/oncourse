@@ -14,7 +14,9 @@ public enum SpecialWebPage implements DisplayableExtendedEnumeration<Integer> {
      * Database value: 1, path: ui/tutors/Tutors
      */
     @API
-    TUTORS(1, "ui/tutors/Tutors");
+    TUTORS(1, "ui/tutors/Tutors"),
+
+    DRIED_COURSES(2, "ui/DriedCourses");
 
     private int value;
     private String templatePath;

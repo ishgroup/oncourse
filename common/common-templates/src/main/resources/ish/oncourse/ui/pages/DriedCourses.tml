@@ -1,0 +1,43 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+			 xmlns:p="tapestry:parameter">
+	<html t:type="ui/internal/pagestructure" bodyId="literal:ListPage"
+		  bodyClass="literal:internal-page"
+		  canonicalLinkPath="${canonicalLinkPath}"
+		  canonicalRelativeLinkPath="${canonicalRelativeLinkPath}"
+		  metaDescription="${metaDescription}">
+		<span id="courses-list">
+			<t:if t:test="wrongAnySearchParam">
+				<span t:type="ui/SearchTermsClarification" paramsInError="searchParamsErrorsMap"></span>
+				<p:else>
+					<span t:type="ui/SearchCriteria" hasMapItemList="mapSitesEmpty"></span>
+					<div id="sitesMap">
+						<span t:type="ui/GoogleMapSites"
+							  sites="mapSites"
+							  focuses="focusesForMapSites"
+							  collapsed="true"
+							  showLocationMap="false">
+						</span>
+					</div>
+					<t:if test="browseTag">
+						<t:if test="browseTag.hasDetails">
+							<t:outputraw value="${browseTagDetail}"/>
+						</t:if>
+					</t:if>
+					<t:if t:test="wasSearchException">
+						<h2>Because of an error in the search engine, all courses are
+							being displayed. Our technical team is working to resolve this
+							problem now.</h2>
+					</t:if>
+					<t:if test="enabledDebugInfo">
+						<t:outputraw value="${debugInfo}"/>
+					</t:if>
+					<t:if t:test="mapSitesEmpty" negate="true">
+						<h2>No results</h2>
+						<p:else>
+						</p:else>
+					</t:if>
+				</p:else>
+			</t:if>
+		</span>
+	</html>
+</t:container>
