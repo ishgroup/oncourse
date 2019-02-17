@@ -31,7 +31,18 @@ usage() {
 }
 
 stop() {
-    cat "\$pidfile" | xargs kill
+    pid=\$(cat \$pidfile)
+    kill \$pid
+    i=0
+    while ps -p \$pid > /dev/null && [ \$i -lt 10 ];
+    do
+      echo "Waiting for process to end"
+      sleep 1
+      i=\$((\$i+1))
+    done
+    if [ \$i -eq 10 ]; then
+        kill -9 \$pid
+    fi
 }
 
 # Tell the application to return an error on the health check so we can drain all the remaining connections
