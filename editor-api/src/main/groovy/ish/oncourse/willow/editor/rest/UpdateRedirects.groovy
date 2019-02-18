@@ -58,12 +58,11 @@ class UpdateRedirects extends AbstractUpdate<Redirects> {
         Map<String, RedirectItem> providedUrlsMap = resourceToSave.rules
                 .collect { redirect -> redirect.from(URLPath.valueOf(redirect.from).encodedPath) }
                 .collectEntries { redirect -> [("${redirect.from}-${redirect.to}-${redirect.specialPage}".toString()) : redirect]}
-        
 
         List<WebUrlAlias> persistentAliases = WebUrlAliasFunctions.getRedirects(request, context)
         
         new ArrayList<WebUrlAlias>(persistentAliases).each { alias ->
-            RedirectItem redirect  = providedUrlsMap.remove("${alias.urlPath}-${alias.redirectTo}-${alias.specialPage}alias.matchType}".toString())
+            RedirectItem redirect  = providedUrlsMap.remove("${alias.urlPath}-${alias.redirectTo}-${alias.specialPage}".toString())
             if (!redirect) {
                 //remove redirect if no present in save request
                 deleteAlias(alias)

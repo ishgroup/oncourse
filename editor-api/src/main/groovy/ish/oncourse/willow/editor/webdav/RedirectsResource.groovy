@@ -16,8 +16,11 @@ import ish.oncourse.willow.editor.rest.UpdateRedirects
 import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.v1.model.RedirectItem
 import ish.oncourse.willow.editor.v1.model.Redirects
+import ish.oncourse.willow.editor.v1.model.SpecialPage
+import ish.oncourse.willow.editor.v1.model.URLMatchRule
 import ish.oncourse.willow.editor.website.WebUrlAliasFunctions
 import org.apache.cayenne.ObjectContext
+import org.xbill.DNS.Update
 
 import javax.ws.rs.core.Response
 
@@ -38,7 +41,13 @@ class RedirectsResource extends AbstractResource implements GetableResource,Prop
     @Override
     void sendContent(OutputStream out, Range range, Map<String, String> params, String contentType) throws IOException, NotAuthorizedException, BadRequestException, NotFoundException {
         List<WebUrlAlias> urlAliases = WebUrlAliasFunctions.getRedirects(requestService.request, cayenneService.newContext())
-        urlAliases.each { urlAlias -> out.write("${urlAlias.urlPath}\t${urlAlias.redirectTo}\n".bytes) }
+        urlAliases.each { urlAlias ->
+            if (!urlAlias.redirectTo && urlAlias.specialPage && urlAlias.matchType) {
+                out.write("${urlAlias.urlPath}\t${UpdateRedirects.specialPageMapping.getByValue(urlAlias.specialPage).toString()}\t${UpdateRedirects.matchTypeRuleMapping.getByValue(urlAlias.matchType).toString()}\n".bytes)
+            } else {
+                out.write("${urlAlias.urlPath}\t${urlAlias.redirectTo}\n".bytes)
+            }
+        }
        
     }
 
@@ -94,11 +103,14 @@ class RedirectsResource extends AbstractResource implements GetableResource,Prop
             line = line.trim()
             if (line.length() > 0) {
                 String[] pathes = line.trim().split(/\s+/)
-                if (pathes.size() != 2) {
+                if(pathes.length == 2) {
+                    settings.rules << new RedirectItem().from(pathes[0]).to(pathes[1])
+                } else if (pathes.length == 3) {
+                    settings.rules << new RedirectItem().from(pathes[0]).specialPage(SpecialPage.valueOf(pathes[1])).matchType(URLMatchRule.valueOf(pathes[2]))
+                } else {
                     requestService.response.sendError(Response.Status.BAD_REQUEST.statusCode,"Wrong redirect line: $line. Please provide /from /to URLs splited by space or tab")
                     throw new BadRequestException(this)
                 }
-                settings.rules << new RedirectItem().from(pathes[0]).to(pathes[1])
             }
         }
 
