@@ -32,16 +32,19 @@ usage() {
 
 stop() {
     pid=\$(cat \$pidfile)
+    # parent is /usr/sbin/daemon, child is the actual java process
+    child_pid=\$(ps -p \$pid|grep \$pid|awk -F "[][]" '{ print \$2 }')
     kill \$pid
+
     i=0
-    while ps -p \$pid > /dev/null && [ \$i -lt 10 ];
+    while ps -p \$child_pid > /dev/null && [ \$i -lt 10 ];
     do
       echo "Waiting for process to end"
       sleep 1
       i=\$((\$i+1))
     done
     if [ \$i -eq 10 ]; then
-        kill -9 \$pid
+        kill -9 \$child_pid
     fi
 }
 
