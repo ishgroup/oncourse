@@ -7,13 +7,13 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.solr.BuildSolrClient;
 import ish.oncourse.solr.SolrCollection;
-import ish.oncourse.solr.model.SCourseClass;
 import ish.oncourse.solr.query.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrRequest;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocumentList;
@@ -67,9 +67,13 @@ public class SearchService implements ISearchService {
 	}
 
 	private QueryResponse query(SolrQuery q, SolrCollection core) throws Exception {
+		return query(q, core, SolrRequest.METHOD.GET);
+	}
+
+	private QueryResponse query(SolrQuery q, SolrCollection core, SolrRequest.METHOD method) throws Exception {
 		Exception exception;
 		try {
-			return getSolrClient(core).query(core.name(), q);
+			return getSolrClient(core).query(core.name(), q, method);
 		} catch (Exception e) {
 			exception = e;
 			QueryResponse result = handleException(e, q);
@@ -93,17 +97,17 @@ public class SearchService implements ISearchService {
 			return null;
 		}
 	}
-	
-	
-	public List<SCourseClass> searchClasses(SearchParams searchParams,  Set<String> courses) {
+
+	@Override
+	public SolrDocumentList searchClasses(SearchParams searchParams, List<Long> coursesIds) {
+		SolrQuery query = ClassesQueryBuilder.valueOf(searchParams, coursesIds).enableGrouping().build();
 		try {
-			SolrQuery q = ClassesQueryBuilder.valueOf(searchParams, courses).build();
-			return query(q, SolrCollection.classes).getBeans(SCourseClass.class);
+			QueryResponse queryResponse = query(query, SolrCollection.classes, SolrRequest.METHOD.POST);
+			return null;
 		} catch (Exception e) {
-			throw new SearchException("Unable to find classes.", e);
-		}	
+			throw new SearchException("Error fetching classes from solr");
+		}
 	}
-	
 	
 	public SearchResult searchCourses(SearchParams params, int start, Integer rows) {
 
