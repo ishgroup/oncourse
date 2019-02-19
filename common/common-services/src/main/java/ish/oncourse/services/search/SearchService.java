@@ -99,7 +99,7 @@ public class SearchService implements ISearchService {
 	}
 
 	@Override
-	public SolrDocumentList searchClasses(SearchParams searchParams, List<Long> coursesIds) {
+	public SolrDocumentList searchClasses(SearchParams searchParams, Set<Long> coursesIds) {
 		SolrQuery query = ClassesQueryBuilder.valueOf(searchParams, coursesIds).enableGrouping().build();
 		try {
 			QueryResponse queryResponse = query(query, SolrCollection.classes, SolrRequest.METHOD.POST);

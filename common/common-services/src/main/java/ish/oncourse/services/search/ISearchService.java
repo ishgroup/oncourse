@@ -1,7 +1,6 @@
 package ish.oncourse.services.search;
 
 import ish.oncourse.model.Tag;
-import ish.oncourse.solr.model.SCourseClass;
 import ish.oncourse.solr.query.Count;
 import ish.oncourse.solr.query.SearchParams;
 import org.apache.solr.common.SolrDocumentList;
@@ -15,7 +14,7 @@ public interface ISearchService {
 
 	SearchResult searchCourses(SearchParams searchParams, int start, Integer rows);
 
-    SolrDocumentList searchClasses(SearchParams searchParams, List<Long> coursesIds);
+    SolrDocumentList searchClasses(SearchParams searchParams, Set<Long> coursesIds);
 
     SolrDocumentList searchSuburbs(String term);
     

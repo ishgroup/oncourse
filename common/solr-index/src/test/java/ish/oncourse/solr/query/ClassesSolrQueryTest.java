@@ -1,13 +1,19 @@
 package ish.oncourse.solr.query;
 
+import ish.oncourse.solr.BuildSolrClient;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrRequest;
+import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocumentList;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.net.URI;
+import java.io.IOException;
 import java.util.*;
 
 public class ClassesSolrQueryTest {
@@ -32,7 +38,7 @@ public class ClassesSolrQueryTest {
 	 * group	"true"
 	 */
 	@Test
-	public void buildClassesSolrQueryTest() {
+	public void buildClassesSolrQueryTest() throws IOException, SolrServerException {
 
 		SearchParams searchParams = new SearchParams();
 		searchParams.setDay(DayOption.tues);
@@ -44,7 +50,7 @@ public class ClassesSolrQueryTest {
 		searchParams.setTutorId(302L);
 		searchParams.setSiteId(493061L);
 
-		Set<String> coursesIds = new HashSet<String>(){{add("503434"); add("503205"); add("672619");}};
+		Set<Long> coursesIds = new HashSet<Long>(){{add(503434L); add(503205L); add(672619L);}};
 
 		SolrQuery classesQuery = ClassesQueryBuilder.valueOf(searchParams, coursesIds)
 				.addFieldList("* score")
@@ -58,7 +64,21 @@ public class ClassesSolrQueryTest {
 		Assert.assertTrue(fields.contains("*"));
 		Assert.assertTrue(fields.contains("score"));
 
-		logger.info(classesQuery.toString());
+		SolrClient solrClient = BuildSolrClient.instance("127.0.0.1:2181/solr").build();
+		QueryResponse classes = solrClient.query("classes", classesQuery, SolrRequest.METHOD.POST);
 
+		ClassesGroupResponseParser parser = ClassesGroupResponseParser.valueOf(classes.getGroupResponse(), "courseId");
+		Set<String> groupValues = parser.getGroupValues();
+		groupValues.forEach(groupValue -> {
+			SolrDocumentList groupDocumentList = parser.getGroupDocumentList(groupValue);
+			Assert.assertTrue(!getContent(groupDocumentList).isEmpty());
+			//logger.info(getContent(groupDocumentList));
+		});
+
+		//logger.info(classesQuery.toString());
+	}
+
+	private String getContent(SolrDocumentList groupDocumentList) {
+		return (String)groupDocumentList.get(0).get("content");
 	}
 }

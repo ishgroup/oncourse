@@ -28,13 +28,13 @@ public class ClassesQueryBuilder extends SolrQueryBuilder {
 
 	private static final String DISTANCE_FIELD_NAME = "dist";
 
-	protected Set<String> coursesIds;
+	protected Set<Long> coursesIds;
 	protected SolrQuery query;
 
 	private boolean enabledGrouping;
 	private boolean enabledReturnDistance;
 
-	public static ClassesQueryBuilder valueOf(SearchParams params, Set<String> coursesIds) {
+	public static ClassesQueryBuilder valueOf(SearchParams params, Set<Long> coursesIds) {
 		ClassesQueryBuilder builder = new ClassesQueryBuilder();
 		builder.searchParams(params);
 		builder.coursesIds = coursesIds;
@@ -112,11 +112,18 @@ public class ClassesQueryBuilder extends SolrQueryBuilder {
 		}
 
 		String commonCriterion = String.format(CRITERION_TEMPLATE_CLASSES_COURSES, StringUtils.join(coursesIds, " "));
-		query.setQuery(commonCriterion + String.format(" (%s)^=1.0", searchCriteria.toString()));
+		String searchCriteriaString = searchCriteria.toString();
+
+		if (searchCriteriaString.isEmpty()){
+			query.setQuery(commonCriterion);
+		}
+		else {
+			query.setQuery(commonCriterion + String.format(" (%s)^=1.0", searchCriteriaString));
+		}
 	}
 
 	private void addDefaultFilters() {
-		filtersList.add(String.format(FILTER_TEMPLATE_COURSES, String.join(" ", coursesIds)));
+		filtersList.add(String.format(FILTER_TEMPLATE_COURSES, StringUtils.join(coursesIds, " ")));
 	}
 
 	private void setUpFilterQueryList() {
