@@ -65,8 +65,8 @@ public class CourseItemModelTestData {
 		CourseItemModel courseItemModel = CourseItemModel.valueOf(objectContext.localObject(course)
 				, new SearchParams());
 
-		System.out.println(CourseItemModel.selectRelatedCourses(course));
+		System.out.println(CourseItemModelDaoHelper.selectRelatedCourses(course));
 
-		System.out.println(CourseItemModel.selectRelatedProducts(course));
+		System.out.println(CourseItemModelDaoHelper.selectRelatedProducts(course));
 	}
 }

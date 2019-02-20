@@ -34,7 +34,7 @@ public class CourseItemModelTest {
 	public void test_selectRelatedCourses() {
 		CayenneService cayenneService = new CayenneService(testContext.getServerRuntime(), null, null);
 		Course course = query(Course.class, 1L).selectOne(cayenneService.newContext());
-		List<Course> courses = CourseItemModel.selectRelatedCourses(course);
+		List<Course> courses = CourseItemModelDaoHelper.selectRelatedCourses(course);
 		assertEquals(4, courses.size());
 	}
 

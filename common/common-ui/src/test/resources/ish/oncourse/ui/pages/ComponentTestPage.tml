@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+<head>
+	<meta charset="UTF-8"/>
+	<title>Title</title>
+</head>
+<body>
+
+	<t:delegate to="renderedComponentName"/>
+
+	<t:block t:id="relatedProducts">
+		<div t:type="ui/relatedporducts" model="getCourseItemModel()"/>
+	</t:block>
+
+	<t:block t:id="relatedCourses">
+		<div t:type="ui/CourseRelations" model="getCourseItemModel()" course="getCourse()"/>
+	</t:block>
+
+</body>
+</html>

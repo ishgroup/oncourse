@@ -69,7 +69,7 @@
 		</t:if>
 		<t:if t:test="courseItemModel.haveRelatedCourses">
 			<h3>Related Courses</h3>
-			<div t:type="ui/CourseRelations" course="courseItemModel.course"></div>
+			<div t:type="ui/CourseRelations" model="courseItemModel" course="courseItemModel.course"></div>
 		</t:if>
 		<t:if t:test="courseItemModel.hasRelatedProducts()">
 			<h3>Related Products</h3>
