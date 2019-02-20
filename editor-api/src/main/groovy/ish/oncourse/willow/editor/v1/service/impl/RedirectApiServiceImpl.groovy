@@ -34,8 +34,6 @@ class RedirectApiServiceImpl implements RedirectApi {
                 .collect { alias  -> new RedirectItem().with { redirect ->
             redirect.from = alias.urlPath
             redirect.to = alias.redirectTo
-            redirect.specialPage = UpdateRedirects.specialPageMapping.getByValue(alias.specialPage)
-            redirect.matchType = UpdateRedirects.matchTypeRuleMapping.getByValue(alias.matchType)
             redirect
         }
         })

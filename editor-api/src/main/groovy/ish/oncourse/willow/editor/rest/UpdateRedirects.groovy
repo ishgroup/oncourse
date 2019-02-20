@@ -21,7 +21,7 @@ import org.eclipse.jetty.server.Request
 @CompileStatic
 class UpdateRedirects extends AbstractUpdate<Redirects> {
 
-  
+
     private List<String> errors = []
     private ArrayList<ObjectId> deletedAliasIds = new ArrayList<ObjectId>()
     private WebSiteVersion version
@@ -41,9 +41,9 @@ class UpdateRedirects extends AbstractUpdate<Redirects> {
     List<String> getErrors() {
         return errors
     }
-    
+
     private UpdateRedirects() {}
-    
+
     static UpdateRedirects valueOf(Redirects redirects, ObjectContext context, Request request) {
         UpdateRedirects updater = new UpdateRedirects()
         updater.init(redirects, context, request)
@@ -54,13 +54,13 @@ class UpdateRedirects extends AbstractUpdate<Redirects> {
 
     @Override
     UpdateRedirects update() {
-        
+
         Map<String, RedirectItem> providedUrlsMap = resourceToSave.rules
                 .collect { redirect -> redirect.from(URLPath.valueOf(redirect.from).encodedPath) }
-                .collectEntries { redirect -> [("${redirect.from}-${redirect.to}-${redirect.specialPage}".toString()) : redirect]}
+                .collectEntries { redirect -> [("${redirect.from}-${redirect.to}".toString()) : redirect]}
 
         List<WebUrlAlias> persistentAliases = WebUrlAliasFunctions.getRedirects(request, context)
-        
+
         new ArrayList<WebUrlAlias>(persistentAliases).each { alias ->
             RedirectItem redirect  = providedUrlsMap.remove("${alias.urlPath}-${alias.redirectTo}-${alias.specialPage}".toString())
             if (!redirect) {
@@ -80,8 +80,6 @@ class UpdateRedirects extends AbstractUpdate<Redirects> {
             alias.webSiteVersion = version
             alias.urlPath = redirect.from
             alias.redirectTo  = redirect.to
-            alias.specialPage = specialPageMapping.get(redirect.specialPage)
-            alias.matchType = matchTypeRuleMapping.get(redirect.matchType)
             newRedirects[redirect.from] = redirect.to
         }
     }

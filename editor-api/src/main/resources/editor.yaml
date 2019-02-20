@@ -731,6 +731,64 @@ paths:
           schema:
             $ref: '#/definitions/UnexpectedError'
 
+  #################
+  /specialPage:
+    #################
+    get:
+      operationId: getSpecialPages
+      x-filter:
+        - AuthFilter
+      description: Get special page redirects for the whole site.
+      tags:
+        - SpecialPage
+      responses:
+        '200':
+          description: A list of redirects
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SpecialPageItem'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/UnexpectedError'
+
+    put:
+      operationId: updateSpecialPages
+      x-filter:
+        - AuthFilter
+      description: Update all special redirects for web site
+      tags:
+        - SpecialPage
+      consumes:
+        - application/json
+      parameters:
+        - name: specialPages
+          in: body
+          description: List of special pages
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SpecialPageItem'
+      responses:
+        '200':
+          description: List of special pages
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SpecialPageItem'
+        '400':
+          description: Special redirects not saved. Returns list of redirects, some of which may have errors and/or warnings.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SpecialPageItem'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/UnexpectedError'
+
 #################
 #################
 
@@ -978,6 +1036,21 @@ definitions:
         description: |
           The to address must be a valid URL or partial URL starting with /
         example: https://github.com
+      error:
+        type: string
+        description: Describes reason why redirect item cannot be saved.
+        example: |
+          This URL is already being redirected
+
+  SpecialPageItem:
+    type: object
+    description: A redirect from one page or URL to another
+    properties:
+      from:
+        type: string
+        description: |
+          The from address must be a valid path within the site starting with /
+        example: /subject/art
       specialPage:
         $ref: '#/definitions/SpecialPage'
         description: |
