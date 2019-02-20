@@ -38,13 +38,12 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 import java.text.ParseException
+import java.text.SimpleDateFormat
 
 import static ish.oncourse.common.field.PropertyGetSetFactory.TAG_M_PATTERN
 import static ish.oncourse.common.field.PropertyGetSetFactory.TAG_S_PATTERN
 import static ish.oncourse.willow.functions.field.FieldHelper.getContext
 import static ish.oncourse.willow.model.field.DataType.*
-import static ish.oncourse.willow.model.field.DataType.BOOLEAN
-import static ish.oncourse.willow.model.field.DataType.STRING
 import static ish.validation.ContactValidator.Property.*
 import static ish.oncourse.common.field.PropertyGetSetFactory.TAG_PATTERN
 
@@ -201,7 +200,10 @@ class SubmitContactFields {
                 case DATE:
                 case DATETIME:
                     try {
-                        result =  DateUtils.truncate(Date.parse(FormatUtils.DATE_FIELD_PARSE_FORMAT, f.value), Calendar.DAY_OF_MONTH)
+                        SimpleDateFormat sdf = new SimpleDateFormat(FormatUtils.DATE_FIELD_PARSE_FORMAT)
+                        sdf.setLenient(false)
+
+                        result =  DateUtils.truncate(sdf.parse(f.value), Calendar.DAY_OF_MONTH)
 
                     } catch (ParseException e) {
                         result = null
