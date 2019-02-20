@@ -9,6 +9,7 @@ import {DateField} from "./DateField";
 import SelectField from "../form-new/SelectField";
 import SearchService from "../../enrol/services/SearchService";
 import {connect} from "react-redux";
+import {validateDate} from "../../common/utils/FormControlsValidation";
 
 class FieldFactory extends React.Component<any, any> {
 
@@ -16,6 +17,8 @@ class FieldFactory extends React.Component<any, any> {
     const props: any = toFormFieldProps(field);
     props.onBlurSelect = this.props.onBlurSelect;
     props.onChangeSuburb = this.props.onChangeSuburb;
+
+    console.log(props);
 
     switch (field.dataType) {
       case DataType.STRING:
@@ -54,7 +57,7 @@ class FieldFactory extends React.Component<any, any> {
           />;
         }
       case DataType.DATE:
-        return <Form.Field {...props} component={DateField}/>;
+        return <Form.Field {...props} component={DateField} validate={validateDate}/>;
 
       case DataType.COUNTRY:
         return CountryField(props);
