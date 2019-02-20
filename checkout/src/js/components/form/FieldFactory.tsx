@@ -18,8 +18,6 @@ class FieldFactory extends React.Component<any, any> {
     props.onBlurSelect = this.props.onBlurSelect;
     props.onChangeSuburb = this.props.onChangeSuburb;
 
-    console.log(props);
-
     switch (field.dataType) {
       case DataType.STRING:
       case DataType.PHONE:
