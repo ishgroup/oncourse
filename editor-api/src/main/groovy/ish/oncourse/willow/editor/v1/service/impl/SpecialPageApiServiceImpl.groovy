@@ -6,6 +6,7 @@ import ish.oncourse.willow.editor.rest.UpdateRedirects
 import ish.oncourse.willow.editor.rest.UpdateSpecialPages
 import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.v1.model.SpecialPageItem
+import ish.oncourse.willow.editor.v1.model.SpecialPages
 import ish.oncourse.willow.editor.v1.service.SpecialPageApi
 import ish.oncourse.willow.editor.website.WebUrlAliasFunctions
 import org.apache.cayenne.ObjectContext
@@ -15,7 +16,7 @@ import org.apache.logging.log4j.Logger
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
 
-class SpecialPageApiImpl implements SpecialPageApi {
+class SpecialPageApiServiceImpl implements SpecialPageApi {
 
     private static Logger logger = LogManager.logger
 
@@ -23,25 +24,26 @@ class SpecialPageApiImpl implements SpecialPageApi {
     private RequestService requestService
 
     @Inject
-    SpecialPageApiImpl(ICayenneService cayenneService, RequestService requestService) {
+    SpecialPageApiServiceImpl(ICayenneService cayenneService, RequestService requestService) {
         this.cayenneService = cayenneService
         this.requestService = requestService
     }
 
     @Override
-    List<SpecialPageItem> getSpecialPages() {
-        WebUrlAliasFunctions.getRedirects(requestService.request, cayenneService.newContext())
-                .findAll { !it.redirectTo && it.specialPage && it.matchType}
-                .collect {redirect -> new SpecialPageItem().with { item ->
-            item.from = redirect.urlPath
-            item.specialPage = UpdateRedirects.specialPageMapping.getByValue(redirect.specialPage)
-            item.matchType = UpdateRedirects.matchTypeRuleMapping.getByValue(redirect.matchType)
-            item
-        }}
+    SpecialPages getSpecialPages() {
+        return new SpecialPages()
+                .rules( WebUrlAliasFunctions.getRedirects(requestService.request, cayenneService.newContext())
+                .collect { alias  -> new SpecialPageItem().with { redirect ->
+            redirect.from = alias.urlPath
+            redirect.specialPage = UpdateRedirects.specialPageMapping.getByValue(redirect.specialPage)
+            redirect.matchType = UpdateRedirects.matchTypeRuleMapping.getByValue(redirect.matchType)
+            redirect
+        }
+        })
     }
 
     @Override
-    List<SpecialPageItem> updateSpecialPages(List<SpecialPageItem> specialPages) {
+    SpecialPages updateSpecialPages(SpecialPages specialPages) {
         ObjectContext context = cayenneService.newContext()
         UpdateSpecialPages updater = UpdateSpecialPages.valueOf(specialPages, context, requestService.request).update()
 

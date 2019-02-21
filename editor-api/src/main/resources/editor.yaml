@@ -745,9 +745,7 @@ paths:
         '200':
           description: A list of redirects
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/SpecialPageItem'
+            $ref: '#/definitions/SpecialPages'
         default:
           description: Unexpected error
           schema:
@@ -768,16 +766,12 @@ paths:
           description: List of special pages
           required: true
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/SpecialPageItem'
+            $ref: '#/definitions/SpecialPages'
       responses:
         '200':
           description: List of special pages
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/SpecialPageItem'
+            $ref: '#/definitions/SpecialPages'
         '400':
           description: Special redirects not saved. Returns list of redirects, some of which may have errors and/or warnings.
           schema:
@@ -1075,6 +1069,15 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/RedirectItem'
+
+  SpecialPages:
+    type: object
+    properties:
+      rules:
+        description: A list of special pages
+        type: array
+        items:
+          $ref: '#/definitions/SpecialPageItem'
           
   SkillsOnCourseSettings:
     type: object

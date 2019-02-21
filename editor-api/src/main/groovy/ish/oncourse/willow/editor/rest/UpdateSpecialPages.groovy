@@ -10,6 +10,7 @@ import ish.oncourse.util.ISHUrlValidator
 import ish.oncourse.willow.editor.utils.BidiMap
 import ish.oncourse.willow.editor.v1.model.SpecialPage
 import ish.oncourse.willow.editor.v1.model.SpecialPageItem
+import ish.oncourse.willow.editor.v1.model.SpecialPages
 import ish.oncourse.willow.editor.v1.model.URLMatchRule
 import ish.oncourse.willow.editor.website.WebSiteVersionFunctions
 import ish.oncourse.willow.editor.website.WebUrlAliasFunctions
@@ -18,7 +19,7 @@ import org.apache.cayenne.ObjectId
 import org.eclipse.jetty.server.Request
 
 @CompileStatic
-class UpdateSpecialPages extends AbstractUpdate<List<SpecialPageItem>> {
+class UpdateSpecialPages extends AbstractUpdate<SpecialPages> {
 
 
     private List<String> errors = []
@@ -42,7 +43,7 @@ class UpdateSpecialPages extends AbstractUpdate<List<SpecialPageItem>> {
 
     private UpdateSpecialPages() {}
 
-    static UpdateSpecialPages valueOf(List<SpecialPageItem> specialPages, ObjectContext context, Request request) {
+    static UpdateSpecialPages valueOf(SpecialPages specialPages, ObjectContext context, Request request) {
         UpdateSpecialPages updater = new UpdateSpecialPages()
         updater.init(specialPages, context, request)
         updater.version = WebSiteVersionFunctions.getCurrentVersion(request, context)
@@ -53,7 +54,7 @@ class UpdateSpecialPages extends AbstractUpdate<List<SpecialPageItem>> {
     @Override
     UpdateSpecialPages update() {
 
-        Map<String, SpecialPageItem> providedUrlsMap = resourceToSave
+        Map<String, SpecialPageItem> providedUrlsMap = resourceToSave.rules
                 .collect { redirect -> redirect.from(URLPath.valueOf(redirect.from).encodedPath) }
                 .collectEntries { redirect -> [("${redirect.from}-${redirect.specialPage}".toString()) : redirect]}
 

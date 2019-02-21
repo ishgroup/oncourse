@@ -21,7 +21,6 @@ import ish.oncourse.willow.editor.services.ZKProvider
 import ish.oncourse.willow.editor.services.access.AuthenticationFilter
 import ish.oncourse.willow.editor.services.access.AuthenticationService
 import ish.oncourse.willow.editor.services.access.PostProcessFeature
-import ish.oncourse.willow.editor.services.access.PostProcessInterceptor
 import ish.oncourse.willow.editor.services.access.UserService
 import ish.oncourse.willow.editor.services.access.ZKSessionManager
 import ish.oncourse.willow.editor.v1.service.impl.AuthApiServiceImpl
@@ -30,6 +29,7 @@ import ish.oncourse.willow.editor.v1.service.impl.MenuApiServiceImpl
 import ish.oncourse.willow.editor.v1.service.impl.PageApiServiceImpl
 import ish.oncourse.willow.editor.v1.service.impl.RedirectApiServiceImpl
 import ish.oncourse.willow.editor.v1.service.impl.SettingsApiServiceImpl
+import ish.oncourse.willow.editor.v1.service.impl.SpecialPageApiServiceImpl
 import ish.oncourse.willow.editor.v1.service.impl.ThemeApiServiceImpl
 import ish.oncourse.willow.editor.v1.service.impl.VersionApiServiceImpl
 import org.apache.cxf.jaxrs.validation.JAXRSBeanValidationFeature
@@ -75,6 +75,7 @@ class EditorApiModule extends ConfigModule {
         CXFModule.contributeResources(binder).addBinding().to(VersionApiServiceImpl)
         CXFModule.contributeResources(binder).addBinding().to(MenuApiServiceImpl)
         CXFModule.contributeResources(binder).addBinding().to(RedirectApiServiceImpl)
+        CXFModule.contributeResources(binder).addBinding().to(SpecialPageApiServiceImpl)
         CXFModule.contributeFeatures(binder).addBinding().to(PostProcessFeature)
 
         binder.bind(RequestService)
