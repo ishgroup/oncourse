@@ -3,12 +3,12 @@ import "rxjs";
 import * as EpicUtils from "../../../../../epics/EpicUtils";
 import {GET_SPECIAL_PAGE_SETTINGS_REQUEST, GET_SPECIAL_PAGE_SETTINGS_FULFILLED} from "../actions";
 import SettingsService from "../../../../../services/SettingsService";
-import {SpecialPageItem} from "../../../../../../../build/generated-sources";
+import {SpecialPages} from "../../../../../../../build/generated-sources";
 
 const request: EpicUtils.Request<any, any> = {
   type: GET_SPECIAL_PAGE_SETTINGS_REQUEST,
-  getData: (payload, state) => SettingsService.getSpecialPages(),
-  processData: (specialPages: SpecialPageItem[], state: any) => {
+  getData: () => SettingsService.getSpecialPages(),
+  processData: (specialPages: SpecialPages) => {
     return [
       {
         type: GET_SPECIAL_PAGE_SETTINGS_FULFILLED,

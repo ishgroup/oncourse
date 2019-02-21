@@ -25,7 +25,7 @@ import {
 interface Props {
   onInit: () => any;
   onSave: (settings) => any;
-  specialPage: SpecialPageSettingsState;
+  specialPages: SpecialPageSettingsState;
   fetching: boolean;
 }
 
@@ -34,7 +34,7 @@ export class SpecialPage extends React.PureComponent<Props, any> {
     super(props);
 
     this.state = {
-      rules: props.specialPage.rules,
+      rules: props.specialPages.rules,
       filter: "",
     };
   }
@@ -44,8 +44,8 @@ export class SpecialPage extends React.PureComponent<Props, any> {
   }
 
   componentWillReceiveProps(props: Props) {
-    if (props.specialPage.refreshSettings) {
-      this.setState({rules: props.specialPage.rules});
+    if (props.specialPages.refreshSettings) {
+      this.setState({rules: props.specialPages.rules});
     }
   }
 
@@ -89,7 +89,7 @@ export class SpecialPage extends React.PureComponent<Props, any> {
       return;
 
     this.setState({rules});
-    onSave({specialPages: rules});
+    onSave({rules});
   }
 
   onRemove(index) {
@@ -170,7 +170,7 @@ export class SpecialPage extends React.PureComponent<Props, any> {
 }
 
 const mapStateToProps = (state: State) => ({
-  specialPage: state.settings.specialPageSettings,
+  specialPages: state.settings.specialPageSettings,
   fetching: state.fetching,
 });
 

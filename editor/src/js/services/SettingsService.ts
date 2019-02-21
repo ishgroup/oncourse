@@ -1,5 +1,13 @@
-import {SettingsApi, RedirectApi, SpecialPageApi, SpecialPageItem} from "../../../build/generated-sources";
-import {Redirects, SkillsOnCourseSettings, WebsiteSettings, CheckoutSettings} from "../model";
+import {
+  SettingsApi,
+  RedirectApi,
+  SpecialPageApi,
+  Redirects,
+  SkillsOnCourseSettings,
+  WebsiteSettings,
+  CheckoutSettings,
+  SpecialPages,
+} from "../model";
 import {DefaultHttpService} from "../common/services/HttpService";
 
 class SettingsService {
@@ -7,12 +15,13 @@ class SettingsService {
   readonly redirectApi = new RedirectApi(new DefaultHttpService());
   readonly specialPageApi = new SpecialPageApi(new DefaultHttpService());
 
-
   public getSkillsOnCourseSettings(): Promise<SkillsOnCourseSettings> {
     return this.settingsApi.getSkillsOnCourseSettings();
   }
 
-  public setSkillsOnCourseSettings(settings: SkillsOnCourseSettings): Promise<SkillsOnCourseSettings> {
+  public setSkillsOnCourseSettings(
+    settings: SkillsOnCourseSettings,
+  ): Promise<SkillsOnCourseSettings> {
     return this.settingsApi.updateSkillsOnCourseSettings(settings);
   }
 
@@ -24,12 +33,13 @@ class SettingsService {
     return this.redirectApi.updateRedirects(settings);
   }
 
-
-  public getSpecialPages(): Promise<SpecialPageItem[]> {
+  public getSpecialPages(): Promise<SpecialPages> {
     return this.specialPageApi.getSpecialPages();
   }
 
-  public updateSpecialPages(specialPages: SpecialPageItem[]): Promise<SpecialPageItem[]> {
+  public updateSpecialPages(
+    specialPages: SpecialPages,
+  ): Promise<SpecialPages> {
     return this.specialPageApi.updateSpecialPages(specialPages);
   }
 
@@ -37,7 +47,9 @@ class SettingsService {
     return this.settingsApi.getWebsiteSettings();
   }
 
-  public setWebsiteSettings(settings: WebsiteSettings): Promise<WebsiteSettings> {
+  public setWebsiteSettings(
+    settings: WebsiteSettings,
+  ): Promise<WebsiteSettings> {
     return this.settingsApi.updateWebsiteSettings(settings);
   }
 
@@ -45,10 +57,11 @@ class SettingsService {
     return this.settingsApi.getCheckoutSettings();
   }
 
-  public setCheckoutSettings(settings: CheckoutSettings): Promise<CheckoutSettings> {
+  public setCheckoutSettings(
+    settings: CheckoutSettings,
+  ): Promise<CheckoutSettings> {
     return this.settingsApi.updateCheckoutSettings(settings);
   }
-
 }
 
-export default new SettingsService;
+export default new SettingsService();
