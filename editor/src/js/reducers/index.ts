@@ -16,6 +16,7 @@ import {skillsOnCourseReducer} from "../containers/settings/containers/skillsOnC
 import {checkoutSettingsReducer} from "../containers/settings/containers/checkout/reducers";
 
 import {configReducer, fetchReducer} from "../common/reducers";
+import {specialPagesReducer} from "../containers/settings/containers/specialPages/reducers";
 
 export const combinedReducers = combineReducers({
   notifications,
@@ -30,6 +31,7 @@ export const combinedReducers = combineReducers({
   settings: combineReducers({
     websiteSettings: websiteSettingsReducer,
     redirectSettings: redirectSettingsReducer,
+    specialPageSettings: specialPagesReducer,
     skillsOnCourseSettings: skillsOnCourseReducer,
     checkoutSettings: checkoutSettingsReducer,
   }),

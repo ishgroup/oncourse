@@ -18,6 +18,7 @@ import Skills from './containers/settings/containers/skillsOnCourse/Skills';
 import Redirect from './containers/settings/containers/redirect/Redirect';
 import Website from './containers/settings/containers/website/Website';
 import Checkout from './containers/settings/containers/checkout/Checkout';
+import SpecialPage from "./containers/settings/containers/specialPages/SpecialPage";
 
 export const URL = {
   SITE: '/',
@@ -32,6 +33,7 @@ export const URL = {
   SETTINGS_WEBSITE: '/settings/website',
   SETTINGS_CHECKOUT: '/settings/checkout',
   SETTINGS_REDIRECT: '/settings/redirect',
+  SETTINGS_SPECIAL_PAGES: '/settings/specialPages',
   HISTORY: '/history',
   LOGIN: '/login',
 };
@@ -149,6 +151,14 @@ export const routes: Route[] = [
     url: URL.SETTINGS_REDIRECT,
     parent: URL.SETTINGS,
     main: props => <Redirect {...props}/>,
+  },
+
+  {
+    title: 'Special pages',
+    path: URL.SETTINGS_SPECIAL_PAGES,
+    url: URL.SETTINGS_SPECIAL_PAGES,
+    parent: URL.SETTINGS,
+    main: props => <SpecialPage {...props}/>,
   },
 
   // History

@@ -9,6 +9,7 @@ import {EpicSkillsOnCourseSettings} from "./containers/settings/containers/skill
 import {EpicRedirectSettings} from "./containers/settings/containers/redirect/epics";
 import {EpicWebsiteSettings} from "./containers/settings/containers/website/epics";
 import {EpicCheckoutSettings} from "./containers/settings/containers/checkout/epics";
+import {EpicSpecialPages} from "./containers/settings/containers/specialPages/epics";
 
 export const EpicRoot = combineEpics(
   EpicAuth,
@@ -21,4 +22,5 @@ export const EpicRoot = combineEpics(
   EpicRedirectSettings,
   EpicWebsiteSettings,
   EpicCheckoutSettings,
+  EpicSpecialPages,
 );

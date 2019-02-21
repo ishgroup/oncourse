@@ -9,10 +9,12 @@ import {RedirectSettingsState} from "../containers/settings/containers/redirect/
 import {WebsiteSettingsState} from "../containers/settings/containers/website/reducers/State";
 import {SkillsOnCourseState} from "../containers/settings/containers/skillsOnCourse/reducers/State";
 import {CheckoutSettingsState} from "../containers/settings/containers/checkout/reducers/State";
+import {SpecialPageSettingsState} from "../containers/settings/containers/specialPages/reducers/State";
 
 interface SettingsState {
   redirectSettings: RedirectSettingsState;
   websiteSettings: WebsiteSettingsState;
+  specialPageSettings: SpecialPageSettingsState;
   skillsOnCourseSettings: SkillsOnCourseState;
   checkoutSettings: CheckoutSettingsState;
 }

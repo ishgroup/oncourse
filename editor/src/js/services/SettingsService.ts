@@ -1,10 +1,11 @@
-import {SettingsApi, RedirectApi} from "../../../build/generated-sources";
+import {SettingsApi, RedirectApi, SpecialPageApi, SpecialPageItem} from "../../../build/generated-sources";
 import {Redirects, SkillsOnCourseSettings, WebsiteSettings, CheckoutSettings} from "../model";
 import {DefaultHttpService} from "../common/services/HttpService";
 
 class SettingsService {
   readonly settingsApi = new SettingsApi(new DefaultHttpService());
   readonly redirectApi = new RedirectApi(new DefaultHttpService());
+  readonly specialPageApi = new SpecialPageApi(new DefaultHttpService());
 
 
   public getSkillsOnCourseSettings(): Promise<SkillsOnCourseSettings> {
@@ -21,6 +22,15 @@ class SettingsService {
 
   public setRedirectSettings(settings: Redirects): Promise<any> {
     return this.redirectApi.updateRedirects(settings);
+  }
+
+
+  public getSpecialPages(): Promise<SpecialPageItem[]> {
+    return this.specialPageApi.getSpecialPages();
+  }
+
+  public updateSpecialPages(specialPages: SpecialPageItem[]): Promise<SpecialPageItem[]> {
+    return this.specialPageApi.updateSpecialPages(specialPages);
   }
 
   public getWebsiteSettings(): Promise<WebsiteSettings> {
