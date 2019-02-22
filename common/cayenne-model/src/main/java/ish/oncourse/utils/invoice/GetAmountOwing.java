@@ -5,7 +5,7 @@ package ish.oncourse.utils.invoice;
 
 import ish.common.types.PaymentStatus;
 import ish.math.Money;
-import ish.oncourse.model.Invoice;
+import ish.oncourse.model.AbstractInvoice;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.PaymentInLine;
 
@@ -16,7 +16,7 @@ import java.util.List;
  * Date: 20/07/2016
  */
 public class GetAmountOwing {
-	private Invoice invoice;
+	private AbstractInvoice invoice;
 
 	private GetAmountOwing() {
 		super();
@@ -49,7 +49,7 @@ public class GetAmountOwing {
 		return result;
 	}
 
-	public static GetAmountOwing valueOf(Invoice invoice) {
+	public static GetAmountOwing valueOf(AbstractInvoice invoice) {
 		GetAmountOwing result = new GetAmountOwing();
 		result.invoice = invoice;
 		return result;
