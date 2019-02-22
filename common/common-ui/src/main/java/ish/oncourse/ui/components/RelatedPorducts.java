@@ -2,7 +2,7 @@ package ish.oncourse.ui.components;
 
 import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.Product;
-import ish.oncourse.ui.utils.CourseItemModel;
+import ish.oncourse.ui.utils.CourseItemModelGeneric;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -17,7 +17,7 @@ import java.util.List;
 public class RelatedPorducts extends ISHCommon {
     @Property
     @Parameter(required = true)
-    private CourseItemModel model;
+    private CourseItemModelGeneric model;
 
     @Property
     private Product product;

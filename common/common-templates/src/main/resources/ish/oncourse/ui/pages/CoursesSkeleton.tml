@@ -1,6 +1,7 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 			 xmlns:p="tapestry:parameter">
-	<html t:type="ui/internal/pagestructure" bodyId="literal:ListPage"
+	<html t:type="ui/internal/pagestructure"
+		  bodyId="literal:ListPage"
 		  bodyClass="literal:internal-page"
 		  canonicalLinkPath="${canonicalLinkPath}"
 		  canonicalRelativeLinkPath="${canonicalRelativeLinkPath}"
@@ -31,10 +32,17 @@
 					<t:if test="enabledDebugInfo">
 						<t:outputraw value="${debugInfo}"/>
 					</t:if>
-					<t:if t:test="mapSitesEmpty" negate="true">
-						<h2>No results</h2>
+					<t:if t:test="coursesListEmpty">
 						<p:else>
+							<span t:type="ui/CoursesListSkeleton"
+										courses="courses"
+										coursesCount="coursesCount"
+										sitesParameter="sitesParameter"
+										searchParams="searchParams"
+										debugInfoMap="debugInfoMap"
+										coursesIds="coursesIds"/>
 						</p:else>
+						<h2>No results</h2>
 					</t:if>
 				</p:else>
 			</t:if>

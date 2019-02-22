@@ -31,7 +31,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class DriedCourses extends ISHCommon {
+public class CoursesSkeleton extends ISHCommon {
 
 	private static final Logger logger = LogManager.getLogger();
 
@@ -94,7 +94,8 @@ public class DriedCourses extends ISHCommon {
 	private Map<Long, Float> focusesForMapSites;
 
 	@Persist("client")
-	private List<Long> coursesIds;
+	@Property
+	private Set<Long> coursesIds;
 
 	@Property
 	private String debugInfo;
@@ -103,7 +104,7 @@ public class DriedCourses extends ISHCommon {
 	private Map debugInfoMap;
 
 	@Property
-	private List<Site> mapSites;
+	private List<Site> mapSites = new ArrayList<>();
 
 	@SetupRender
 	public void beforeRender() {
@@ -122,8 +123,8 @@ public class DriedCourses extends ISHCommon {
 			focusesForMapSites = null;
 		}
 
-		coursesIds = courses.stream().map(Course::getId).collect(Collectors.toList());
-		setupMapSites();
+		coursesIds = courses.stream().map(Course::getId).collect(Collectors.toSet());
+		//setupMapSites();
 	}
 
 	public boolean isWrongAnySearchParam() {
@@ -301,10 +302,14 @@ public class DriedCourses extends ISHCommon {
 	}
 
 	public boolean isMapSitesEmpty() {
-		return !mapSites.isEmpty();
+		return mapSites.isEmpty();
 	}
 
 	public boolean isEnabledDebugInfo() {
 		return debugInfo != null;
+	}
+
+	public boolean isCoursesListEmpty() {
+		return courses.isEmpty();
 	}
 }

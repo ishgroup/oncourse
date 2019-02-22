@@ -6,6 +6,7 @@ import org.apache.solr.client.solrj.response.GroupResponse;
 import org.apache.solr.common.SolrDocumentList;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -56,5 +57,9 @@ public class ClassesGroupResponseParser {
 										.findFirst()
 										.orElseThrow(() -> new IllegalArgumentException("GroupValue: " + groupValue + " not found"))
 										.getResult();
+	}
+
+	public Map<String, SolrDocumentList> getCompactGroupsView() {
+		return currentGroup.getValues().stream().collect(Collectors.toMap(Group::getGroupValue, Group::getResult));
 	}
 }

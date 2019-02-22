@@ -99,11 +99,12 @@ public class SearchService implements ISearchService {
 	}
 
 	@Override
-	public SolrDocumentList searchClasses(SearchParams searchParams, Set<Long> coursesIds) {
+	public Map<String, SolrDocumentList> searchClasses(SearchParams searchParams, Set<Long> coursesIds) {
 		SolrQuery query = ClassesQueryBuilder.valueOf(searchParams, coursesIds).enableGrouping().build();
 		try {
 			QueryResponse queryResponse = query(query, SolrCollection.classes, SolrRequest.METHOD.POST);
-			return null;
+			ClassesGroupResponseParser responseParser = ClassesGroupResponseParser.valueOf(queryResponse.getGroupResponse(), "courseId");
+			return responseParser.getCompactGroupsView();
 		} catch (Exception e) {
 			throw new SearchException("Error fetching classes from solr");
 		}

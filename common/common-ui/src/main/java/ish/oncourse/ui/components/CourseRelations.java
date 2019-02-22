@@ -3,7 +3,7 @@ package ish.oncourse.ui.components;
 import ish.oncourse.model.Course;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.ui.base.ISHCommon;
-import ish.oncourse.ui.utils.CourseItemModel;
+import ish.oncourse.ui.utils.CourseItemModelGeneric;
 import ish.oncourse.ui.utils.CourseItemModelDaoHelper;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -29,7 +29,7 @@ public class CourseRelations extends ISHCommon {
 
 	@Property
 	@Parameter
-	private CourseItemModel model;
+	private CourseItemModelGeneric model;
 
 	@SetupRender
     public void beforeRender() {

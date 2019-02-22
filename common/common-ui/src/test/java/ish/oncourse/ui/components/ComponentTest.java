@@ -29,7 +29,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 import static ish.oncourse.cayenne.cache.ICacheEnabledService.CacheDisableReason.EDITOR;
 import static ish.oncourse.ui.pages.ComponentTestPage.CURRENT_RENDERED_COMPONENT_ATTRIBUTE_NAME;
@@ -38,6 +41,25 @@ public class ComponentTest extends ServiceTest {
 
 	private static Logger logger = LogManager.getLogger();
 	private static boolean enableWriteToFile;
+
+	@Test
+	public void driedCoursesListComponentTest() throws IOException {
+		Request request = prepateRequest("cce-main", "ui/CoursesListSkeleton");
+		ICourseService courseService = getPageTester().getService(ICourseService.class);
+
+		List<Course> courses = courseService.getCourses(0, Integer.MAX_VALUE);
+		request.setAttribute("ui_test_courses", courses);
+
+		request.setAttribute("ui_test_coursesCount", courses.size());
+		request.setAttribute("ui_test_sitesParameter", "");
+		request.setAttribute("ui_test_searchParams", new SearchParams());
+		request.setAttribute("ui_test_coursesIds", courses.stream().map(Course::getId).collect(Collectors.toSet()));
+		request.setAttribute("ui_test_debugInfoMap", new HashMap<>());
+
+		Document document = tester.renderPage("ui/ComponentTestPage");
+
+		writeToFile(document, "CoursesListSkeleton.html");
+	}
 
 	@Test
 	public void relatedProductsComponentTest() throws IOException {

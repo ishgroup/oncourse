@@ -16,5 +16,15 @@
 		<div t:type="ui/CourseRelations" model="getCourseItemModel()" course="getCourse()"/>
 	</t:block>
 
+	<t:block t:id="coursesListSkeleton">
+		<div t:type="ui/CoursesListSkeleton"
+			  courses="courses"
+			  coursesCount="coursesCount"
+			  sitesParameter="sitesParameter"
+			  searchParams="searchParams"
+			  debugInfoMap="debugInfoMap"
+			  coursesIds="coursesIds"/>
+	</t:block>
+
 </body>
 </html>

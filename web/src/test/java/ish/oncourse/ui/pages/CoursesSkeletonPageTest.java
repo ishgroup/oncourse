@@ -17,7 +17,7 @@ import org.junit.Test;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class DriedCoursesPageTest extends ServiceTest {
+public class CoursesSkeletonPageTest extends ServiceTest {
 
 	private static Logger logger = LogManager.getLogger();
 
@@ -42,7 +42,7 @@ public class DriedCoursesPageTest extends ServiceTest {
 		request.setAttribute("currentWebSite", webSite);
 		request.setAttribute("currentCollege", webSite.getCollege());
 
-		Document document = tester.renderPage("DriedCourses");
+		Document document = tester.renderPage("CoursesSkeleton");
 		writeToFile(document);
 	}
 

@@ -14,7 +14,7 @@ public interface ISearchService {
 
 	SearchResult searchCourses(SearchParams searchParams, int start, Integer rows);
 
-    SolrDocumentList searchClasses(SearchParams searchParams, Set<Long> coursesIds);
+    Map<String, SolrDocumentList> searchClasses(SearchParams searchParams, Set<Long> coursesIds);
 
     SolrDocumentList searchSuburbs(String term);
     
