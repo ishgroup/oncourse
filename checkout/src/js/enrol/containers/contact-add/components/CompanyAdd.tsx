@@ -8,7 +8,7 @@ export interface Props {
 
 export class CompanyAdd extends React.Component<Props, any> {
   render() {
-    const {header = "Please enter the details of a person enrolling, applying or making a purchase."} = this.props;
+    const {header = "Enter the business to be invoiced and paying for this transaction."} = this.props;
     return (
       <div id="addstudent-block">
         <div className="message">
