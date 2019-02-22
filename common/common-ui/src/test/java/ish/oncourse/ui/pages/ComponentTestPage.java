@@ -3,6 +3,7 @@ package ish.oncourse.ui.pages;
 import ish.oncourse.model.Course;
 import ish.oncourse.solr.query.SearchParams;
 import ish.oncourse.ui.base.ISHCommon;
+import ish.oncourse.ui.components.CoursesListSkeleton;
 import ish.oncourse.ui.utils.CourseItemModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,7 +24,7 @@ public class ComponentTestPage extends ISHCommon {
 	private String renderedComponentName;
 
 	@Inject
-	private Block relatedProducts, relatedCourses, driedCoursesList;
+	private Block relatedProducts, relatedCourses, coursesListSkeleton;
 
 	public CourseItemModel getCourseItemModel() {
 		return (CourseItemModel) request.getAttribute("ui_test_courseItemModel");
@@ -64,7 +65,7 @@ public class ComponentTestPage extends ISHCommon {
 			case "ui/CourseRelations":
 				return relatedCourses;
 			case "ui/CoursesListSkeleton":
-				return driedCoursesList;
+				return coursesListSkeleton;
 			default:
 				return null;
 		}
