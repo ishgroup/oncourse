@@ -167,6 +167,11 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			return new PageRenderRequestParameters(PageIdentifier.SiteNotFound.getPageName(), new EmptyEventContext(), false);
 		}
 
+		PageRenderRequestParameters specialRqParams = getSpecialRedirect(path);
+		if (specialRqParams != null) {
+		    return specialRqParams;
+        }
+
 		/**
 		 * ISHHealthCheck can be used without college keyCode.
 		 */
@@ -356,13 +361,6 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			}
 		}
 
-        String specialPage = SpecialWebPageMatcher
-				.valueOf(cayenneService.sharedContext(), QueryCacheStrategy.LOCAL_CACHE, webSiteService.getCurrentWebSite(), path)
-				.get();
-		if (specialPage != null) {
-		    return new PageRenderRequestParameters(specialPage, new EmptyEventContext(), false);
-        }
-
 		requestGlobals.getResponse().setStatus(404);
 
 		return new PageRenderRequestParameters(PageIdentifier.PageNotFound.getPageName(), new EmptyEventContext(), false);
@@ -380,6 +378,18 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 		}
 		return false;
 	}
+
+	private PageRenderRequestParameters getSpecialRedirect(String path) {
+        PageRenderRequestParameters rqParams = null;
+
+        WebUrlAlias specialRedirectAlias = SpecialWebPageMatcher
+                .valueOf(cayenneService.newContext(), QueryCacheStrategy.LOCAL_CACHE, webSiteService.getCurrentWebSite(), path)
+                .get();
+        if (specialRedirectAlias != null && specialRedirectAlias.getSpecialPage() != null && specialRedirectAlias.getMatchType() != null) {
+            rqParams = new PageRenderRequestParameters(specialRedirectAlias.getSpecialPage().getTemplatePath(), new EmptyEventContext(), false);
+        }
+        return  rqParams;
+    }
 
 	public Link transformPageRenderLink(Link defaultLink, PageRenderRequestParameters parameters) {
 		logger.info("Rewrite OutBound: path is: {}", defaultLink.getBasePath());

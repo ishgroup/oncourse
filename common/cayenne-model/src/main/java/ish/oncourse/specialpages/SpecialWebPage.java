@@ -11,10 +11,10 @@ public enum SpecialWebPage implements DisplayableExtendedEnumeration<Integer> {
     /**
      * Tutors page
      *
-     * Database value: 1, path: ui/tutors/Tutors
+     * Database value: 1, path: ui/Tutors
      */
     @API
-    TUTORS(1, "ui/tutors/Tutors"),
+    TUTORS(1, "ui/Tutors"),
 
     COURSES_SKELETON(2, "ui/CoursesSkeleton");
 

@@ -30,20 +30,20 @@ public class SpecialWebPageMatcher {
         return obj;
     }
 
-    public String get() {
-        String templatePath = aliasByQualifier(context, strategy, webSite, WebUrlAlias.MATCH_TYPE.eq(EXACT).andExp(WebUrlAlias.URL_PATH.likeIgnoreCase(requestPath)));
-        if (templatePath == null) {
-            templatePath = aliasByQualifier(context, strategy, webSite, WebUrlAlias.MATCH_TYPE.eq(STARTS_WITH).andExp(WebUrlAlias.URL_PATH.startsWithIgnoreCase(requestPath)));
+    public WebUrlAlias get() {
+        WebUrlAlias alias = aliasByQualifier(context, strategy, webSite, WebUrlAlias.MATCH_TYPE.eq(EXACT).andExp(WebUrlAlias.URL_PATH.likeIgnoreCase(requestPath)));
+        if (alias == null) {
+            alias = aliasByQualifier(context, strategy, webSite, WebUrlAlias.MATCH_TYPE.eq(STARTS_WITH).andExp(WebUrlAlias.URL_PATH.startsWithIgnoreCase(requestPath)));
         }
-        return templatePath;
+        return alias;
     }
 
-    private String aliasByQualifier(ObjectContext context, QueryCacheStrategy strategy, WebSite webSite,
+    private WebUrlAlias aliasByQualifier(ObjectContext context, QueryCacheStrategy strategy, WebSite webSite,
                                     Expression filterExpr) {
         WebUrlAlias alias = ObjectSelect.query(WebUrlAlias.class)
                 .where(siteQualifier(context, strategy, webSite).andExp(filterExpr))
                 .selectFirst(context);
-        return alias != null ? alias.getSpecialPage().getTemplatePath() : null;
+        return alias;
     }
 
     private Expression siteQualifier(ObjectContext context, QueryCacheStrategy strategy, WebSite webSite) {

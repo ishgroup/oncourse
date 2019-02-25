@@ -1,0 +1,23 @@
+<html t:type="ui/internal/pagestructure" bodyId="literal:Tutors" bodyClass="literal:internal-page"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+    <div class="tutor-list">
+        <t:loop source="tutors" value="tutor">
+            <div class="tutor-item" data-app="fade-up">
+                <h2 itemprop="name">${tutor.fullName}</h2>
+                <div class="tutors_details">
+                    <div class="tutor_info">
+                        <div itemprop="description" class="resume-details">
+                            <img src="${getTutorImage(tutor)}"/>
+                            ${tutor.resume}
+                        </div>
+                    </div>
+                    <div class="tutors_classes">
+                        <h4>Classes</h4>
+                        <span t:type="ui/TutorClasses" tutor="tutor"></span>
+                    </div>
+                </div>
+            </div>
+        </t:loop>
+    </div>
+    <span id="showMoreTutors">SHOW MORE</span>
+</html>

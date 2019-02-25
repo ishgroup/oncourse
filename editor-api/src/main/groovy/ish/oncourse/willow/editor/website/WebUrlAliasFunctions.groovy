@@ -8,12 +8,13 @@ import ish.oncourse.services.alias.GetSpecialPages
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.query.ObjectSelect
+import org.apache.cayenne.query.QueryCacheStrategy
 import org.eclipse.jetty.server.Request
 
 class WebUrlAliasFunctions {
 
     static List<WebUrlAlias> getRedirects(Request request, ObjectContext context) {
-        GetRedirects.valueOf(WebSiteVersionFunctions.getCurrentVersion(request, context), context, true).get()
+        GetRedirects.valueOf(WebSiteVersionFunctions.getCurrentVersion(request, context), context, QueryCacheStrategy.LOCAL_CACHE).get()
     }
 
     static List<WebUrlAlias> getSpecialPages(Request request, ObjectContext context) {

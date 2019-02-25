@@ -56,6 +56,6 @@ public class WebUrlAliasService extends BaseService<WebUrlAlias> implements
 
     @Override
     public List<WebUrlAlias> getRedirects() {
-		return  GetRedirects.valueOf(webSiteVersionService.getCurrentVersion(), cayenneService.sharedContext(), true).get();
+		return  GetRedirects.valueOf(webSiteVersionService.getCurrentVersion(), cayenneService.sharedContext(), QueryCacheStrategy.LOCAL_CACHE).get();
     }
 }

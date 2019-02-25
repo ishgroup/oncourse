@@ -14,12 +14,12 @@ import java.util.List;
 public class GetRedirects {
     private WebSiteVersion webSiteVersion;
     private ObjectContext objectContext;
-    private boolean useCache = true;
+    private QueryCacheStrategy strategy;
 
 
     public List<WebUrlAlias> get() {
         return ObjectSelect.query(WebUrlAlias.class)
-                .cacheStrategy(useCache ? QueryCacheStrategy.LOCAL_CACHE : QueryCacheStrategy.LOCAL_CACHE_REFRESH, WebUrlAlias.class.getSimpleName())
+                .cacheStrategy(strategy != null ? strategy : QueryCacheStrategy.LOCAL_CACHE_REFRESH, WebUrlAlias.class.getSimpleName())
                 .and(WebUrlAlias.WEB_SITE_VERSION.eq(webSiteVersion))
                 .and(WebUrlAlias.REDIRECT_TO.isNotNull())
                 .and(WebUrlAlias.SPECIAL_PAGE.isNull())
@@ -27,11 +27,11 @@ public class GetRedirects {
                 .orderBy(WebUrlAlias.MODIFIED.desc()).select(objectContext);
     }
 
-    public static GetRedirects valueOf(WebSiteVersion webSiteVersion, ObjectContext objectContext, boolean useCache) {
+    public static GetRedirects valueOf(WebSiteVersion webSiteVersion, ObjectContext objectContext, QueryCacheStrategy strategy) {
         GetRedirects result = new GetRedirects();
         result.webSiteVersion = webSiteVersion;
         result.objectContext = objectContext;
-        result.useCache = useCache;
+        result.strategy = strategy;
         return result;
     }
 }
