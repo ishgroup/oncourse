@@ -196,6 +196,9 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 	installer.dependsOn {
 		project.tasks.findAll { it.name.startsWith('installer_') }
 	}
+	if (version != "SNAPSHOT") {
+		installer.dependsOn(notarize)
+	}
 	
 	codeSign.dependsOn {
 		project.prepareKeychains
