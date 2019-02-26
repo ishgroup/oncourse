@@ -162,15 +162,6 @@ public class CourseItemSkeleton extends ISHCommon {
 		}
 	}
 
-/*	*//**
-	 * Shows, whether to hide the class if it is outdated for the list view.
-	 * 
-	 * @return
-	 *//*
-	public boolean isShouldHideClass() {
-		return courseClass.hasEnded();
-	}*/
-
     public boolean isHasMoreAvailablePlaces() {
 /*        int places = 0;
         for (CourseClass courseClass : courseItemModel.getEnrollableClasses()) {

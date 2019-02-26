@@ -11,13 +11,17 @@ public class CourseItemSkeletonModel extends CourseItemModelGeneric<CourseItemSk
 		super(course, relatedProducts, relatedCourses);
 	}
 
-	public void setAvailableClasses(List<CourseClassProjection> classes){
-		this.availableClasses = classes;
+	public void setAvailableClasses(List<CourseClassProjection> projections){
+		this.availableClasses = projections;
+	}
+
+	public void setOtherCLasses(List<CourseClassProjection> projections){
+		this.otherClasses = projections;
 	}
 
 	public static class CourseClassProjection {
 		private String id;
-		private String score;
+		private Float score;
 
 		public String getId() {
 			return id;
@@ -27,11 +31,11 @@ public class CourseItemSkeletonModel extends CourseItemModelGeneric<CourseItemSk
 			this.id = id;
 		}
 
-		public String getScore() {
+		public Float getScore() {
 			return score;
 		}
 
-		public void setScore(String score) {
+		public void setScore(Float score) {
 			this.score = score;
 		}
 	}

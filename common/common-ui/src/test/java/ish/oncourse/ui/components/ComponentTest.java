@@ -43,7 +43,7 @@ public class ComponentTest extends ServiceTest {
 	private static boolean enableWriteToFile;
 
 	@Test
-	public void driedCoursesListComponentTest() throws IOException {
+	public void coursesListSkeletonComponentTest() throws IOException {
 		Request request = prepateRequest("cce-main", "ui/CoursesListSkeleton");
 		ICourseService courseService = getPageTester().getService(ICourseService.class);
 

@@ -8,7 +8,6 @@ import ish.oncourse.services.html.IFacebookMetaProvider;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.search.*;
 import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.solr.query.SearchParams;
@@ -21,7 +20,6 @@ import org.apache.logging.log4j.Logger;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
-import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -29,7 +27,6 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class CoursesSkeleton extends ISHCommon {
 
@@ -41,9 +38,6 @@ public class CoursesSkeleton extends ISHCommon {
 
 	@Inject
 	private ISearchService searchService;
-
-	@Inject
-	private ICollegeService collegeService;
 
 	@Inject
 	private IWebSiteService webSiteService;
@@ -73,7 +67,7 @@ public class CoursesSkeleton extends ISHCommon {
 	private SearchParams searchParams;
 
 	@Property
-	private Map<SearchParam, String> searchParamsErrorsMap;
+	private Map<SearchParam, String> searchParamsErrors;
 
 	@Inject
 	private ITextileConverter textileConverter;
@@ -92,10 +86,6 @@ public class CoursesSkeleton extends ISHCommon {
 
 	@Property
 	private Map<Long, Float> focusesForMapSites;
-
-	@Persist("client")
-	@Property
-	private Set<Long> coursesIds;
 
 	@Property
 	private String debugInfo;
@@ -122,13 +112,14 @@ public class CoursesSkeleton extends ISHCommon {
 			searchParams = null;
 			focusesForMapSites = null;
 		}
-
-		coursesIds = courses.stream().map(Course::getId).collect(Collectors.toSet());
-		//setupMapSites();
 	}
 
 	public boolean isWrongAnySearchParam() {
-		return searchParamsErrorsMap != null && !searchParamsErrorsMap.isEmpty();
+		return searchParamsErrors != null && !searchParamsErrors.isEmpty();
+	}
+
+	public boolean isMapSitesNotEmpty() {
+		return !mapSites.isEmpty();
 	}
 
 	private List<Course> searchCourses() {
@@ -187,8 +178,8 @@ public class CoursesSkeleton extends ISHCommon {
 		}
 	}
 
+	//is this function used?
 	private void setupMapSites() {
-		mapSites = new ArrayList<>();
 		boolean hasValuesForFocus = hasAnyFormValuesForFocus();
 		if (hasValuesForFocus) {
 			focusesForMapSites = new HashMap<>();
@@ -248,7 +239,7 @@ public class CoursesSkeleton extends ISHCommon {
 		SearchParamsParser searchParamsParser = SearchParamsParser.valueOf(request, currentCollege, searchService, tagService, timezone);
 		searchParamsParser.parse();
 
-		searchParamsErrorsMap = searchParamsParser.getParamsInError();
+		searchParamsErrors = searchParamsParser.getParamsInError();
 		searchParams = searchParamsParser.getSearchParams();
 	}
 
@@ -270,11 +261,23 @@ public class CoursesSkeleton extends ISHCommon {
 	}
 
 	public String getBrowseTagDetail() {
-		return textileConverter.convertCustomTextile(getBrowseTag().getDetail(), new ValidationErrors());
+		Tag browseTag = getBrowseTag();
+		if(browseTag == null) {
+			logger.error("Unexpected case: `browse tag` and `subject tag` both are null.");
+			return "";
+		}
+		return textileConverter.convertCustomTextile(browseTag.getDetail(), new ValidationErrors());
+	}
+
+	public Tag getBrowseTag() {
+		Tag tag = tagService.getBrowseTag();
+		if (tag == null) {
+			tag = tagService.getSubjectsTag();
+		}
+		return tag;
 	}
 
 	public String getMetaDescription() {
-
 		if (getBrowseTag() != null && getBrowseTag().getDetail() != null) {
 			return facebookMetaProvider.getDescriptionContent(getBrowseTag());
 		} else {
@@ -290,26 +293,11 @@ public class CoursesSkeleton extends ISHCommon {
 		return HTMLUtils.getCanonicalRelativeLinkPathForCourses(request, tagService.getBrowseTag());
 	}
 
-	public Tag getBrowseTag() {
-		Tag tag = tagService.getBrowseTag();
-		if (tag == null) {
-			tag = tagService.getSubjectsTag();
-			if (tag != null && tag.getIsWebVisible()) {
-				return tag;
-			}
-		}
-		return tag;
-	}
-
-	public boolean isMapSitesEmpty() {
-		return mapSites.isEmpty();
-	}
-
 	public boolean isEnabledDebugInfo() {
 		return debugInfo != null;
 	}
 
-	public boolean isCoursesListEmpty() {
+	public boolean isCoursesEmpty() {
 		return courses.isEmpty();
 	}
 }

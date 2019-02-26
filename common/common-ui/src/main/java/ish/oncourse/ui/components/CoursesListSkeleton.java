@@ -2,8 +2,6 @@ package ish.oncourse.ui.components;
 
 import ish.oncourse.model.Course;
 import ish.oncourse.model.Product;
-import ish.oncourse.services.course.ICourseService;
-import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.solr.query.SearchParams;
 import ish.oncourse.ui.base.ISHCommon;
@@ -12,6 +10,7 @@ import ish.oncourse.ui.utils.CourseItemSkeletonModel;
 import ish.oncourse.ui.utils.CourseItemSkeletonModel.CourseClassProjection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -28,74 +27,42 @@ public class CoursesListSkeleton extends ISHCommon {
 	private static Logger logger = LogManager.getLogger();
 
 	@Inject
-	private ICourseService courseService;
-
-	@Inject
-	private ICourseClassService courseClassService;
-
-	@Inject
 	private ISearchService searchService;
 
-	@Parameter
-	private Integer coursesCount;
-
-	/*
-	@Parameter
-	private Integer itemIndex;
-
-    @Parameter
 	@Property
-    private List<Long> loadedCoursesIds;
-
-	public boolean isHasMoreItems() {
-        return itemIndex < coursesCount;
-    }
-	*/
-
-	@SuppressWarnings("all")
-	@Parameter
-	@Property
+	@Parameter(required = true)
 	private List<Course> courses;
 
-	@Parameter
 	@Property
-	private String sitesParameter;
+	@Parameter(required = true)
+	private SearchParams searchParams;
 
-	@SuppressWarnings("all")
 	@Property
 	private Course course;
 
-	@Property
-	@Parameter
-	private SearchParams searchParams;
-
 	@Parameter
 	private Map debugInfoMap;
-
-	@Parameter
-	@Property
-	private Set<Long> coursesIds;
-
-	private Map<String, SolrDocumentList> coursesClasses;
 
 	@Property
 	Map<String, List<CourseClassProjection>> coursesClassProjections;
 
 	@SetupRender
 	public void beforeRender() {
-		coursesClasses = searchService.searchClasses(searchParams, coursesIds);
-
+		Set<Long> coursesIds = courses.stream().map(Course::getId).collect(Collectors.toSet());
+		Map<String, SolrDocumentList> coursesClasses = searchService.searchClasses(searchParams, coursesIds);
 		coursesClassProjections = coursesClasses.entrySet()
 			.stream()
-			.collect(Collectors.toMap(Map.Entry::getKey, o -> o.getValue()
+			.collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue()
 					.stream()
-					.map(solrDocument -> {
-						CourseClassProjection projection = new CourseClassProjection();
-						projection.setId((String) solrDocument.get("id"));
-						projection.setScore("");
-						return projection;
-					})
+					.map(this::createCourseClassProjection)
 					.collect(Collectors.toList())));
+	}
+
+	private CourseClassProjection createCourseClassProjection(SolrDocument solrDocument) {
+		CourseClassProjection projection = new CourseClassProjection();
+		projection.setId((String) solrDocument.get("id"));
+		projection.setScore((Float) solrDocument.get("score"));
+		return projection;
 	}
 
 	public Object getCourseDebugInfo() {
@@ -111,40 +78,21 @@ public class CoursesListSkeleton extends ISHCommon {
 		List<Course> relatedCourses = CourseItemModelDaoHelper.selectRelatedCourses(course);
 
 		CourseItemSkeletonModel courseItemModel = new CourseItemSkeletonModel(course, relatedProducts, relatedCourses);
-		courseItemModel.setAvailableClasses(coursesClassProjections.get(course.getId().toString()));
-		return courseItemModel;
-		//return CourseItemModel.valueOf(course, searchParams);
-	}
+		List<CourseClassProjection> projections = coursesClassProjections.get(course.getId().toString());
 
-	@SuppressWarnings("unchecked")
-	public String getSearchParamsStr() {
-		StringBuilder result = new StringBuilder();
-		//result.append("start=").append(itemIndex);
-		result.append("&sites=").append(sitesParameter);
-		for (String paramName : request.getParameterNames()) {
-			if (!"start".equals(paramName) && !"sites".equals(paramName) && !"loadedCoursesIds".equals(paramName)) {
-				String[] values = request.getParameters(paramName);
-				for (String value : values) {
-					result.append("&");
-					result.append(String.format("%s=%s", paramName, value));
-				}
+		if (searchParams == null || searchParams.isEmpty()) {
+			courseItemModel.setAvailableClasses(projections);
+		}
+		else {
+			Map<Boolean, List<CourseClassProjection>> groups = projections.stream().collect(Collectors.groupingBy(item -> item.getScore() > 0));
+			if (groups.containsKey(true)) {
+				courseItemModel.setAvailableClasses(groups.get(true));
+			}
+			if (groups.containsKey(false)) {
+				courseItemModel.setOtherCLasses(groups.get(false));
 			}
 		}
-/*		if (loadedCoursesIds == null) {
-			loadedCoursesIds = Collections.EMPTY_LIST;
-		} else {
-			result.append("&loadedCoursesIds=");
-		}*/
-		boolean isFirstId = true;
-/*		for (Long loadedCourseId : loadedCoursesIds) {
-			if (!isFirstId) {
-				result.append(",");
-			}
-			result.append(loadedCourseId);
-			if (isFirstId) {
-				isFirstId = false;
-			}
-		}*/
-		return result.toString();
+
+		return courseItemModel;
 	}
 }

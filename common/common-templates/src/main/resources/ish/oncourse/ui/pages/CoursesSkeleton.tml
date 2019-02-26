@@ -8,9 +8,9 @@
 		  metaDescription="${metaDescription}">
 		<span id="courses-list">
 			<t:if t:test="wrongAnySearchParam">
-				<span t:type="ui/SearchTermsClarification" paramsInError="searchParamsErrorsMap"></span>
+				<span t:type="ui/SearchTermsClarification" paramsInError="searchParamsErrors"/>
 				<p:else>
-					<span t:type="ui/SearchCriteria" hasMapItemList="mapSitesEmpty"></span>
+					<span t:type="ui/SearchCriteria" hasMapItemList="mapSitesNotEmpty"/>
 					<div id="sitesMap">
 						<span t:type="ui/GoogleMapSites"
 							  sites="mapSites"
@@ -32,15 +32,12 @@
 					<t:if test="enabledDebugInfo">
 						<t:outputraw value="${debugInfo}"/>
 					</t:if>
-					<t:if t:test="coursesListEmpty">
+					<t:if t:test="coursesEmpty">
 						<p:else>
 							<span t:type="ui/CoursesListSkeleton"
-										courses="courses"
-										coursesCount="coursesCount"
-										sitesParameter="sitesParameter"
-										searchParams="searchParams"
-										debugInfoMap="debugInfoMap"
-										coursesIds="coursesIds"/>
+									courses="courses"
+									searchParams="searchParams"
+									debugInfoMap="debugInfoMap"/>
 						</p:else>
 						<h2>No results</h2>
 					</t:if>
