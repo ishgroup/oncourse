@@ -1,5 +1,6 @@
 package ish.oncourse.model;
 
+import ish.common.types.InvoiceType;
 import ish.math.Money;
 import ish.oncourse.model.auto._Invoice;
 import org.apache.cayenne.validation.ValidationResult;
@@ -34,5 +35,10 @@ public class Invoice extends _Invoice {
 		}
 
 		return refundInvoice;
+	}
+
+	@Override
+	public InvoiceType getType() {
+		return InvoiceType.INVOICE;
 	}
 }
