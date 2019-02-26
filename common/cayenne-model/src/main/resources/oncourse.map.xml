@@ -2048,6 +2048,7 @@
 		<obj-attribute name="value" type="java.lang.String" db-attribute-path="value"/>
 	</obj-entity>
 	<obj-entity name="Invoice" superEntityName="AbstractInvoice" className="ish.oncourse.model.Invoice">
+		<qualifier><![CDATA[type = 1]]></qualifier>
 	</obj-entity>
 	<obj-entity name="InvoiceDueDate" className="ish.oncourse.model.InvoiceDueDate" dbEntityName="InvoiceDueDate" superClassName="WillowCayenneObject">
 		<obj-attribute name="amount" type="ish.math.Money" db-attribute-path="amount"/>
