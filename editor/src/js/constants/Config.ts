@@ -39,4 +39,7 @@ export const API = {
 
   // Redirects
   REDIRECT: `/${v}/redirect`,
+
+  // Special Pages
+  SETTINGS_SPECIAL_PAGES: `/${v}/specialPage`,
 };

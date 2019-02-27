@@ -3,7 +3,7 @@ import update from 'react-addons-update';
 import faker from 'faker';
 import {
   Page, Block, MenuItem, Theme, User, Version, WebsiteSettings, Redirects, VersionStatus,
-  SkillsOnCourseSettings, ThemeBlocks, Layout, Condition, CheckoutSettings, State,
+  SkillsOnCourseSettings, ThemeBlocks, Layout, Condition, CheckoutSettings, State, SpecialPages,
 } from "../../js/model";
 
 export const CreateMockDB = (): MockDB => {
@@ -23,6 +23,7 @@ interface Settings {
   website: WebsiteSettings;
   redirect: Redirects;
   checkout: CheckoutSettings;
+  specialPages: SpecialPages;
 }
 
 export class MockDB {
@@ -232,10 +233,10 @@ export class MockDB {
             id: 3,
             position: 1,
           },
-            {
-              id: 4,
-              position: 1,
-            }],
+          {
+            id: 4,
+            position: 1,
+          }],
           right: [],
           footer: [{
             id: 5,
@@ -352,6 +353,35 @@ export class MockDB {
             from: '/page3',
             to: '/page4',
           },
+        ],
+      },
+      specialPages: {
+        rules: [
+          {
+            from: '/page1',
+            specialPage: "TUTORS",
+            matchType: 'STARTS WITH',
+            error: "",
+          },
+          {
+            from: '/page2',
+            specialPage: "TUTORS",
+            matchType: 'STARTS WITH',
+            error: "",
+          },
+          {
+            from: '/page3',
+            specialPage: "TUTORS",
+            matchType: 'STARTS WITH',
+            error: "",
+          },
+          {
+            from: '/page4',
+            specialPage: "TUTORS",
+            matchType: 'STARTS WITH',
+            error: "",
+          },
+
         ],
       },
     };

@@ -35,6 +35,22 @@ export function settingsApiMock() {
     );
   });
 
+  // Special Pages
+  this.api.onGet(API.SETTINGS_SPECIAL_PAGES).reply(config => promiseResolve(
+    config,
+    this.db.settings.specialPages,
+  ));
+
+  this.api.onPut(API.SETTINGS_SPECIAL_PAGES).reply(config => {
+    const settings = JSON.parse(config.data);
+    this.db.saveSettings(settings, 'specialPages');
+
+    return promiseResolve(
+      config,
+      settings,
+    );
+  });
+
   // Redirect settings
   this.api.onGet(API.REDIRECT).reply(config => promiseResolve(
     config,

@@ -14,13 +14,9 @@ import {
   FormText,
 } from "reactstrap";
 import {getSpecialPageSettings, setSpecialPageSettings} from "./actions";
-import {SpecialPageSettingsState} from "./reducers/State";
+import {SpecialPageSettingsState, URLMatchRuleKeys} from "./reducers/State";
 import {State} from "../../../../reducers/state";
 import {SpecialPageItem} from "./components/SpecialPageItem";
-import {
-  SpecialPage as SpecialPageType,
-  URLMatchRule,
-} from "../../../../model";
 
 interface Props {
   onInit: () => any;
@@ -62,16 +58,6 @@ export class SpecialPage extends React.PureComponent<Props, any> {
     );
   }
 
-  onAddNew() {
-    this.setState(
-      update(this.state, {
-        rules: {
-          $unshift: [{from: "", specialPage: SpecialPageType[Object.keys(SpecialPageType)[0]], matchType: URLMatchRule[Object.keys(URLMatchRule)[0]]}],
-        },
-      }),
-    );
-  }
-
   onSave() {
     const {onSave} = this.props;
     this.setState({
@@ -79,27 +65,11 @@ export class SpecialPage extends React.PureComponent<Props, any> {
     });
     
     const rules = this.state.rules
-      .filter(({from, specialPage, matchType}) => from || specialPage || matchType)
       .map(({from, specialPage, matchType}) => ({from, specialPage, matchType}));
 
-    if (
-      rules.filter(({from, specialPage, matchType}) => !from || !specialPage || !matchType)
-        .length
-    )
-      return;
 
     this.setState({rules});
     onSave({rules});
-  }
-
-  onRemove(index) {
-    this.setState(
-      update(this.state, {
-        rules: {
-          $splice: [[index, 1]],
-        },
-      }),
-    );
   }
 
   onChangeFilter(e) {
@@ -118,25 +88,17 @@ export class SpecialPage extends React.PureComponent<Props, any> {
           rules.length > 0 && (
             <Row>
               <Col sm="2">
-                <FormGroup>
-                  <Input
-                    type="text"
-                    name="filter"
-                    placeholder="Filter"
-                    id="filter"
-                    value={filter}
-                    onChange={e => this.onChangeFilter(e)}
+                <Input
+                  type="text"
+                  name="filter"
+                  placeholder="Filter"
+                  id="filter"
+                  value={filter}
+                  onChange={e => this.onChangeFilter(e)}
                   />
-                </FormGroup>
               </Col>
             </Row>
           )}
-
-        <FormGroup>
-          <Button onClick={() => this.onAddNew()} color="primary">
-            <span className="icon icon-add_circle" /> Add new
-          </Button>
-        </FormGroup>
 
         <div className="rules">
           {rules &&
@@ -156,7 +118,6 @@ export class SpecialPage extends React.PureComponent<Props, any> {
                   item={rule}
                   index={index}
                   onChange={this.onChange.bind(this)}
-                  onRemove={this.onRemove.bind(this)}
                 />
               ))}
         </div>
