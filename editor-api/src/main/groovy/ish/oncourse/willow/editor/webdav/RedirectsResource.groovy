@@ -13,10 +13,13 @@ import io.milton.resource.ReplaceableResource
 import ish.oncourse.model.WebUrlAlias
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.willow.editor.rest.UpdateRedirects
+import ish.oncourse.willow.editor.rest.UpdateSpecialPages
 import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.v1.model.RedirectItem
 import ish.oncourse.willow.editor.v1.model.Redirects
 import ish.oncourse.willow.editor.v1.model.SpecialPage
+import ish.oncourse.willow.editor.v1.model.SpecialPageItem
+import ish.oncourse.willow.editor.v1.model.SpecialPages
 import ish.oncourse.willow.editor.v1.model.URLMatchRule
 import ish.oncourse.willow.editor.website.WebUrlAliasFunctions
 import org.apache.cayenne.ObjectContext
@@ -96,7 +99,8 @@ class RedirectsResource extends AbstractResource implements GetableResource,Prop
         ObjectContext context = cayenneService.newContext()
 
         BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))
-        Redirects settings = new Redirects()
+        Redirects redirects = new Redirects()
+        SpecialPages specialPages = new SpecialPages()
         
         String line
         while((line = br.readLine()) != null) {
@@ -104,9 +108,9 @@ class RedirectsResource extends AbstractResource implements GetableResource,Prop
             if (line.length() > 0) {
                 String[] pathes = line.trim().split(/\s+/)
                 if(pathes.length == 2) {
-                    settings.rules << new RedirectItem().from(pathes[0]).to(pathes[1])
+                    redirects.rules << new RedirectItem().from(pathes[0]).to(pathes[1])
                 } else if (pathes.length == 3) {
-                    settings.rules << new RedirectItem().from(pathes[0]).specialPage(SpecialPage.valueOf(pathes[1])).matchType(URLMatchRule.valueOf(pathes[2]))
+                    specialPages.rules << new SpecialPageItem().from(pathes[0]).specialPage(SpecialPage.valueOf(pathes[1])).matchType(URLMatchRule.valueOf(pathes[2]))
                 } else {
                     requestService.response.sendError(Response.Status.BAD_REQUEST.statusCode,"Wrong redirect line: $line. Please provide /from /to URLs splited by space or tab")
                     throw new BadRequestException(this)
@@ -114,13 +118,14 @@ class RedirectsResource extends AbstractResource implements GetableResource,Prop
             }
         }
 
-        UpdateRedirects updater = UpdateRedirects.valueOf(settings, context, requestService.request).update()
+        UpdateRedirects redirUpdater = UpdateRedirects.valueOf(redirects, context, requestService.request).update()
+        UpdateSpecialPages specUpdater = UpdateSpecialPages.valueOf(specialPages, context, requestService.request).update()
         
-        if (updater.errors.empty) {
+        if (redirUpdater.errors.empty && specUpdater.errors.empty) {
             context.commitChanges()
         } else {
             context.rollbackChanges()
-            requestService.response.sendError(Response.Status.BAD_REQUEST.statusCode,   updater.errors.join('\n'))
+            requestService.response.sendError(Response.Status.BAD_REQUEST.statusCode, !redirUpdater.errors.empty ? redirUpdater.errors.join('\n') : redirUpdater.errors.join('\n'))
             throw new BadRequestException(this)
         }
         
