@@ -304,10 +304,12 @@ appBundler {
 	jars = jarsCollection.call()
 	keychain = project.osxKeychain
 	certIdentity = project.osxKeychainIdentity
+	notarizeAccount = project.notarizeAccount
+	notarizePassword = project.notarizePassword
 	
 	docExtensions = "iocdata"
 	docIsPackage = "true"
-	docIconFile = "onCourseDocument.icns"
+	docIconFile =  new File(projectDir, "src/packaging/macosx/onCourseDocument.icns")
 	docTypeRole = "Editor"
 	docTypeName = "onCourse server data file"
 
