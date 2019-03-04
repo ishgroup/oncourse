@@ -14,7 +14,7 @@ import {
   FormText,
 } from "reactstrap";
 import {getSpecialPageSettings, setSpecialPageSettings} from "./actions";
-import {SpecialPageSettingsState, URLMatchRuleKeys} from "./reducers/State";
+import {SpecialPageSettingsState} from "./reducers/State";
 import {State} from "../../../../reducers/state";
 import {SpecialPageItem} from "./components/SpecialPageItem";
 
@@ -31,7 +31,6 @@ export class SpecialPage extends React.PureComponent<Props, any> {
 
     this.state = {
       rules: props.specialPages.rules,
-      filter: "",
     };
   }
 
@@ -72,46 +71,15 @@ export class SpecialPage extends React.PureComponent<Props, any> {
     onSave({rules});
   }
 
-  onChangeFilter(e) {
-    this.setState({
-      filter: e.target.value,
-    });
-  }
-
   render() {
-    const {rules, filter} = this.state;
+    const {rules} = this.state;
     const {fetching} = this.props;
 
     return (
       <div className={classnames({fetching})}>
-        {rules &&
-          rules.length > 0 && (
-            <Row>
-              <Col sm="2">
-                <Input
-                  type="text"
-                  name="filter"
-                  placeholder="Filter"
-                  id="filter"
-                  value={filter}
-                  onChange={e => this.onChangeFilter(e)}
-                  />
-              </Col>
-            </Row>
-          )}
-
         <div className="rules">
           {rules &&
             rules
-              .filter(
-                r =>
-                  r.from.indexOf(filter) !== -1 ||
-                  r.specialPage.indexOf(filter) !== -1 ||
-                  r.matchType.indexOf(filter) !== -1 ||
-                  !r.from ||
-                  !r.specialPage ||
-                  !r.matchType,
-              )
               .map((rule, index) => (
                 <SpecialPageItem
                   key={index}
