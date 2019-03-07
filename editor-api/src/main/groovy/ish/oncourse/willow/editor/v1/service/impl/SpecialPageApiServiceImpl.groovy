@@ -34,7 +34,8 @@ class SpecialPageApiServiceImpl implements SpecialPageApi {
     @Override
     SpecialPages getSpecialPages() {
         Map<SpecialPage, SpecialPageItem> resultMap = new HashMap<>()
-        SpecialPage.values().each {SpecialPage v -> resultMap.put(v, new SpecialPageItem(null, v, null, null))}
+        SpecialPage.values().each {SpecialPage v ->
+            resultMap.put(v, new SpecialPageItem(null, v, UpdateRedirects.matchTypeRuleMapping.getByValue(UpdateRedirects.specialPageMapping.get(v).matchType), null))}
 
         ObjectContext context = cayenneService.newContext()
 

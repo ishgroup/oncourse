@@ -55,7 +55,7 @@ class UpdateSpecialPages extends AbstractUpdate<SpecialPages> {
     UpdateSpecialPages update() {
 
         Map<String, SpecialPageItem> providedUrlsMap = resourceToSave.rules
-                .collect { redirect -> redirect.from(URLPath.valueOf(redirect.from).encodedPath) }
+                .collect { redirect -> redirect.from(redirect.from) }
                 .collectEntries { redirect -> [("${redirect.from}-${redirect.specialPage}".toString()) : redirect]}
 
         List<WebUrlAlias> persistentAliases = WebUrlAliasFunctions.getSpecialPages(request, context)
@@ -73,7 +73,7 @@ class UpdateSpecialPages extends AbstractUpdate<SpecialPages> {
     }
 
     private void createAlias(SpecialPageItem item) {
-        if (validate(item)) {
+        if (item.from != null && !item.from.empty && validate(item)) {
             WebUrlAlias alias = context.newObject(WebUrlAlias)
             alias.webSiteVersion = version
             alias.urlPath = item.from
@@ -90,7 +90,7 @@ class UpdateSpecialPages extends AbstractUpdate<SpecialPages> {
     private boolean validate(SpecialPageItem item) {
         ISHUrlValidator validator = new ISHUrlValidator('http', 'https')
         if (!validator.isValidOnlyPath(item.from)) {
-            item.error = "Invalid special redirect, from: ${item.from}, special page: ${item.specialPage}, match rule: ${item.matchType}.  The from address must be a valid path within the site starting with /"
+            item.error = "Invalid special redirect, from: ${item.from}, special page: ${item.specialPage}.  The from address must be a valid path within the site starting with /"
             errors << item.error
             return false
         }
@@ -99,10 +99,10 @@ class UpdateSpecialPages extends AbstractUpdate<SpecialPages> {
 
         if (fWebUrl && !(fWebUrl.objectId in deletedAliasIds)) {
             if (fWebUrl.webNode) {
-                item.error = "Invalid special redirect, from: ${item.from}, special page: ${item.specialPage}, match rule: ${item.matchType}. To create redirects to pages within this CMS, go to that page and add an additional URL in the page options."
+                item.error = "Invalid special redirect, from: ${item.from}, special page: ${item.specialPage}. To create redirects to pages within this CMS, go to that page and add an additional URL in the page options."
                 errors << item.error
             } else {
-                item.error = "Invalid special redirect, from: ${item.from}, special page: ${item.specialPage}, match rule: ${item.matchType}. This URL is already being redirected to ${fWebUrl.redirectTo}"
+                item.error = "Invalid special redirect, from: ${item.from}, special page: ${item.specialPage}. This URL is already being redirected to ${fWebUrl.redirectTo}"
                 errors << item.error
             }
             return false
