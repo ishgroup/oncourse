@@ -9,7 +9,7 @@ export const validateContact = (values: any): any => {
   }
   if (!values.email) {
     errors.email = "The student's email is required.";
-  } else if (!/^[^@\s.]+@[^@\s.]+\.[^@\s.]+$/i.test(values.email)) {
+  } else if (!/^[^@\s.]+@[^@\s.]+\..+$/i.test(values.email)) {
     errors.email = "The email address does not appear to be valid.";
   }
   return errors;
@@ -23,7 +23,7 @@ export const validateCompany = (values: any): any => {
   }
   if (!values.email) {
     errors.email = "The student's email is required.";
-  } else if (!/^[^@\s.]+@[^@\s.]+\.[^@\s.]+$/i.test(values.email)) {
+  } else if (!/^[^@\s.]+@[^@\s.]+\..+$/i.test(values.email)) {
     errors.email = "The email address does not appear to be valid.";
   }
   return errors;
