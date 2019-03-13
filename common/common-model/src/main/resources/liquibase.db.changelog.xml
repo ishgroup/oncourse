@@ -4996,4 +4996,10 @@
 		</sql>
 	</changeSet>
 
+	<changeSet id="358" author="pnikanovich" context="production" runOnChange="false">
+		<sql>
+			ALTER TABLE Module CHANGE isModule type INTEGER(10) NOT NULL;
+		</sql>
+	</changeSet>
+
 </databaseChangeLog>

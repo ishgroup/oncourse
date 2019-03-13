@@ -5,6 +5,7 @@
 
 package ish.oncourse.webservices.reference.v6.builders;
 
+import ish.common.types.ModuleType;
 import ish.oncourse.model.Module;
 import ish.oncourse.webservices.reference.services.IReferenceStubBuilder;
 import ish.oncourse.webservices.v6.stubs.reference.ModuleStub;
@@ -32,8 +33,8 @@ public final class ModuleStubBuilder implements IReferenceStubBuilder<Module> {
 		stub.setDisciplineCode(record.getDisciplineCode());
 		stub.setFieldOfEducation(record.getFieldOfEducation());
 		stub.setIshVersion(record.getIshVersion());
-		Boolean isModule = (record.getIsModule() == null) ? null
-				: (record.getIsModule().intValue() == 1);
+		Boolean isModule = (record.getType() == null) ? null
+				: (ModuleType.MODULE.equals(record.getType()));
 		stub.setIsModule(isModule);
 		stub.setModified(record.getModified());
 		stub.setNationalCode(record.getNationalCode());

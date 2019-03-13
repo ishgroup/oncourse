@@ -47,11 +47,11 @@ enum ModuleType implements DisplayableExtendedEnumeration<Integer> {
     }
 
     @Override
-    String getDisplayName() { this.displayName }
+    String getDisplayName() {  this.displayName }
 
     @Override
-    Integer getDatabaseValue() { this.databaseValue }
+    Integer getDatabaseValue() { this.value }
 
     @Override
-    String toString() { this.displayName }
+    String toString() { getDisplayName() }
 }

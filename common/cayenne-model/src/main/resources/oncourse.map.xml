@@ -804,13 +804,13 @@
 		<db-attribute name="expiryDays" type="TINYINT"/>
 		<db-attribute name="fieldOfEducation" type="VARCHAR" length="8"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="isModule" type="TINYINT" isMandatory="true" length="3"/>
 		<db-attribute name="ishVersion" type="BIGINT" length="19"/>
 		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="nationalCode" type="VARCHAR" isMandatory="true" length="16"/>
 		<db-attribute name="specialization" type="VARCHAR" length="128"/>
 		<db-attribute name="title" type="VARCHAR" length="256"/>
 		<db-attribute name="trainingPackageId" type="BIGINT" length="19"/>
+		<db-attribute name="type" type="INTEGER" isMandatory="true" length="8"/>
 	</db-entity>
 	<db-entity name="NotificationTemplate">
 		<db-attribute name="allowWebobjectsTags" type="BIT"/>
@@ -2139,13 +2139,13 @@
 		<obj-attribute name="disciplineCode" type="java.lang.String" db-attribute-path="disciplineCode"/>
 		<obj-attribute name="expiryDays" type="java.lang.Integer" db-attribute-path="expiryDays"/>
 		<obj-attribute name="fieldOfEducation" type="java.lang.String" db-attribute-path="fieldOfEducation"/>
-		<obj-attribute name="isModule" type="java.lang.Byte" db-attribute-path="isModule"/>
 		<obj-attribute name="ishVersion" type="java.lang.Long" db-attribute-path="ishVersion"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="nationalCode" type="java.lang.String" db-attribute-path="nationalCode"/>
 		<obj-attribute name="specialization" type="java.lang.String" db-attribute-path="specialization"/>
 		<obj-attribute name="title" type="java.lang.String" db-attribute-path="title"/>
 		<obj-attribute name="trainingPackageId" type="java.lang.Long" db-attribute-path="trainingPackageId"/>
+		<obj-attribute name="type" type="ish.common.types.ModuleType" db-attribute-path="type"/>
 		<pre-persist method-name="onPrePersist"/>
 		<pre-update method-name="onPreUpdate"/>
 	</obj-entity>

@@ -1,5 +1,6 @@
 package ish.oncourse.webservices.replication.v18.updaters;
 
+import ish.common.types.ModuleType;
 import ish.oncourse.model.Module;
 import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
@@ -14,7 +15,7 @@ public class ModuleUpdater extends AbstractWillowUpdater<ModuleStub, Module> {
         entity.setDisciplineCode(stub.getDisciplineCode());
         entity.setExpiryDays(stub.getExpiryDays());
         entity.setFieldOfEducation(stub.getFieldOfEducation());
-        entity.setIsModule((byte)(stub.isIsModule() ? 1 : 0));
+        entity.setType(stub.isIsModule() ? ModuleType.MODULE : ModuleType.UNIT_OF_COMPETENCY);
         entity.setModified(stub.getModified());
         entity.setNationalCode(stub.getNationalCode());
         entity.setSpecialization(stub.getSpecialisation());

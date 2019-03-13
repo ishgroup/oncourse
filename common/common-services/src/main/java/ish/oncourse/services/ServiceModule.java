@@ -130,6 +130,7 @@ public class ServiceModule {
 		// Tapestry and environment specific services
 		binder.bind(V5ReferenceService.class);
 		binder.bind(V6ReferenceService.class);
+		binder.bind(V7ReferenceService.class);
 
 		binder.bind(IComponentPageResponseRenderer.class, ComponentPageResponseRenderer.class);
 		binder.bind(ICookiesService.class, CookiesService.class);

@@ -5,6 +5,7 @@
 package ish.oncourse.admin.services.ntis.trainingcomponent;
 
 import au.gov.training.services.trainingcomponent.*;
+import ish.common.types.ModuleType;
 import ish.oncourse.model.Module;
 import ish.oncourse.model.TrainingPackage;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -65,9 +66,9 @@ public class ModuleNTISUpdater extends AbstractTrainingComponentNTISUpdater {
 			m.setTitle(summary.getTitle().getValue());
 
 			if (MODULE.equals(summary.getComponentType().get(0))) {
-				m.setIsModule((byte) 1);
+				m.setType(ModuleType.MODULE);
 			} else {
-				m.setIsModule((byte) 0);
+				m.setType(ModuleType.UNIT_OF_COMPETENCY);
 			}
 
 			detailsRequest.setCode(summary.getCode().getValue());

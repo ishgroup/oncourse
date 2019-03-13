@@ -99,6 +99,7 @@ public class BinderFunctions {
 		// Reference Data services
 		binder.bind(V5ReferenceService.class);
 		binder.bind(V6ReferenceService.class);
+		binder.bind(V7ReferenceService.class);
 		binder.bind(ICountryService.class, CountryService.class).withId("CountryService");
 		binder.bind(ILanguageService.class, LanguageService.class).withId("LanguageService");
 		binder.bind(IModuleService.class, ModuleService.class).withId("ModuleService");
