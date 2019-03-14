@@ -2,7 +2,7 @@ import org.gradle.internal.os.OperatingSystem
 
 buildscript {
 	ext {
-		waCommonWebservicesClientVersion = '50'
+		waCommonWebservicesClientVersion = '52'
 		log4j2Version = '2.11.1'
 		cayenneVersion = '4.1.M1'
 		jettyVersion = '9.4.6.v20170531'
@@ -20,6 +20,7 @@ buildscript {
 	}
 
 	repositories {
+		mavenCentral()
 		maven {
 			url 'https://repo.ish.com.au/content/groups/public'
 		}
