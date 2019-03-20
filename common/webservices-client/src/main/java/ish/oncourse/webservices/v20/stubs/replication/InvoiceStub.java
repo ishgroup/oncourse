@@ -40,6 +40,7 @@ import ish.oncourse.webservices.util.GenericInvoiceStub;
  *         &lt;element name="confirmationStatus" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
  *         &lt;element name="authorisedRebillingCardId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
  *         &lt;element name="type" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="allowAutoPay" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/extension&gt;
  *   &lt;/complexContent&gt;
@@ -67,7 +68,8 @@ import ish.oncourse.webservices.util.GenericInvoiceStub;
     "corporatePassId",
     "confirmationStatus",
     "authorisedRebillingCardId",
-    "type"
+    "type",
+    "allowAutoPay"
 })
 public class InvoiceStub
     extends ReplicationStub
@@ -126,6 +128,10 @@ public class InvoiceStub
     @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer type;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
+    @XmlSchemaType(name = "boolean")
+    protected Boolean allowAutoPay;
 
     /**
      * Gets the value of the amountOwing property.
@@ -557,6 +563,30 @@ public class InvoiceStub
      */
     public void setType(Integer value) {
         this.type = value;
+    }
+
+    /**
+     * Gets the value of the allowAutoPay property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Boolean isAllowAutoPay() {
+        return allowAutoPay;
+    }
+
+    /**
+     * Sets the value of the allowAutoPay property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setAllowAutoPay(Boolean value) {
+        this.allowAutoPay = value;
     }
 
 }

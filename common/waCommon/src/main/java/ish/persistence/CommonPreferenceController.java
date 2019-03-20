@@ -441,6 +441,14 @@ public abstract class CommonPreferenceController {
 		throw new IllegalStateException("Licences must replicate from ish");
 	}
 
+	public boolean getLicenseAutopay() {
+		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_AUTO_PAY, false));
+	}
+
+	public void setLicenseAutopay(boolean value) {
+		throw new IllegalStateException("Licences must replicate from ish");
+	}
+
 	public String getEmailSMTPHost() {
 		return getValue(EMAIL_SMTPHOST, false);
 	}

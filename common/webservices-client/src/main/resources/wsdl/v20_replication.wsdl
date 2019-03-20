@@ -993,6 +993,7 @@
                             <xs:element name="confirmationStatus" type="xs:int"/>
                             <xs:element name="authorisedRebillingCardId" type="xs:long"/>
                             <xs:element name="type" type="xs:int" />
+                            <xs:element name="allowAutoPay" type="xs:boolean" />
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>

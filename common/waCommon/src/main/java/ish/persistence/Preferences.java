@@ -126,6 +126,8 @@ public interface Preferences {
 	String LICENSE_FEE_HELP_EXPORT = "license.feeHelpExport";
 
 	String LICENSE_FUNDING_CONTRACT = "license.fundingContract";
+
+	String LICENSE_AUTO_PAY = "license.autopay";
 	
 
 	// **************************************
