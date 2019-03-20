@@ -1,6 +1,7 @@
 package ish.oncourse.webservices.replication.v20.updaters;
 
 import ish.oncourse.model.ContactRelationType;
+import ish.oncourse.model.SystemUser;
 import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v20.stubs.replication.ContactRelationTypeStub;
@@ -19,6 +20,7 @@ public class ContactRelationTypeUpdater extends AbstractWillowUpdater<ContactRel
          * We can adjust it only in V8 replication
          */
         entity.setDelegatedAccessToContact(stub.getDelegatedAccessToContact() != null && stub.getDelegatedAccessToContact() != 0);
+        entity.setCreatedBy(callback.updateRelationShip(stub.getCreatedBy(), SystemUser.class));
 	}
 
 }

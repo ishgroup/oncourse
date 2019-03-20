@@ -4,6 +4,7 @@
 package ish.oncourse.webservices.replication.v20.updaters;
 
 import ish.oncourse.model.FieldConfigurationScheme;
+import ish.oncourse.model.SystemUser;
 import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v20.stubs.replication.FieldConfigurationSchemeStub;
@@ -17,5 +18,6 @@ public class FieldConfigurationSchemeUpdater extends AbstractWillowUpdater<Field
 		entity.setApplicationFieldConfiguration(null);
 		entity.setWaitingListFieldConfiguration(null);
 		entity.setEnrolFieldConfiguration(null);
+		entity.setCreatedBy(callback.updateRelationShip(stub.getCreatedBy(), SystemUser.class));
 	}
 }

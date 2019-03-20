@@ -22,6 +22,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
  *         &lt;element name="type" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
  *         &lt;element name="deliverySchedule" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="createdBy" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/extension&gt;
  *   &lt;/complexContent&gt;
@@ -34,7 +35,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlType(name = "fieldConfigurationStub", propOrder = {
     "name",
     "type",
-    "deliverySchedule"
+    "deliverySchedule",
+    "createdBy"
 })
 public class FieldConfigurationStub
     extends ReplicationStub
@@ -50,6 +52,10 @@ public class FieldConfigurationStub
     @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer deliverySchedule;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlSchemaType(name = "long")
+    protected Long createdBy;
 
     /**
      * Gets the value of the name property.
@@ -121,6 +127,30 @@ public class FieldConfigurationStub
      */
     public void setDeliverySchedule(Integer value) {
         this.deliverySchedule = value;
+    }
+
+    /**
+     * Gets the value of the createdBy property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Long getCreatedBy() {
+        return createdBy;
+    }
+
+    /**
+     * Sets the value of the createdBy property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setCreatedBy(Long value) {
+        this.createdBy = value;
     }
 
 }

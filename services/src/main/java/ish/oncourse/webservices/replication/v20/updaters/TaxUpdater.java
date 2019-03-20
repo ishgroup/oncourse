@@ -3,6 +3,7 @@
  */
 package ish.oncourse.webservices.replication.v20.updaters;
 
+import ish.oncourse.model.SystemUser;
 import ish.oncourse.model.Tax;
 import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
@@ -20,5 +21,6 @@ public class TaxUpdater extends AbstractWillowUpdater<TaxStub, Tax> {
         entity.setDescription(stub.getDescription());
         entity.setIsGSTTaxType(stub.isIsGSTTaxType());
         entity.setRate(stub.getRate());
+        entity.setCreatedBy(callback.updateRelationShip(stub.getCreatedBy(), SystemUser.class));
     }
 }

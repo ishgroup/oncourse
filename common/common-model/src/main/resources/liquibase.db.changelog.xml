@@ -5002,4 +5002,69 @@
 		</sql>
 	</changeSet>
 
+	<changeSet id="359" author="pnikanovich" context="production" runOnChange="false">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="ConcessionType" columnName="createdById" />
+			</not>
+		</preConditions>
+		<sql>
+			ALTER TABLE ConcessionType
+			ADD COLUMN createdById BIGINT NULL,
+			ADD CONSTRAINT fk_ConcessionType_SystemUser FOREIGN KEY (createdById) REFERENCES SystemUser (id);
+		</sql>
+	</changeSet>
+
+	<changeSet id="360" author="pnikanovich" context="production" runOnChange="false">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="ContactRelationType" columnName="createdById" />
+			</not>
+		</preConditions>
+		<sql>
+			ALTER TABLE ContactRelationType
+			ADD COLUMN createdById BIGINT NULL,
+			ADD CONSTRAINT fk_ContactRelationType_SystemUser FOREIGN KEY (createdById) REFERENCES SystemUser (id);
+		</sql>
+	</changeSet>
+
+	<changeSet id="361" author="pnikanovich" context="production" runOnChange="false">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Tax" columnName="createdById" />
+			</not>
+		</preConditions>
+		<sql>
+			ALTER TABLE Tax
+			ADD COLUMN createdById BIGINT NULL,
+			ADD CONSTRAINT fk_Tax_SystemUser FOREIGN KEY (createdById) REFERENCES SystemUser (id);
+		</sql>
+	</changeSet>
+
+	<changeSet id="362" author="pnikanovich" context="production" runOnChange="false">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="FieldConfiguration" columnName="createdById" />
+			</not>
+		</preConditions>
+		<sql>
+			ALTER TABLE FieldConfiguration
+			ADD COLUMN createdById BIGINT NULL,
+			ADD CONSTRAINT fk_FieldConfiguration_SystemUser FOREIGN KEY (createdById) REFERENCES SystemUser (id);
+		</sql>
+	</changeSet>
+
+	<changeSet id="363" author="pnikanovich" context="production" runOnChange="false">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="FieldConfigurationScheme" columnName="createdById" />
+			</not>
+		</preConditions>
+		<sql>
+			ALTER TABLE FieldConfigurationScheme
+			ADD COLUMN createdById BIGINT NULL,
+			ADD CONSTRAINT fk_FieldConfigurationSchema_SystemUser FOREIGN KEY (createdById) REFERENCES SystemUser (id);
+		</sql>
+	</changeSet>
+
 </databaseChangeLog>

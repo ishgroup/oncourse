@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <data-map xmlns="http://cayenne.apache.org/schema/9/modelMap"
 	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	 xsi:schemaLocation="http://cayenne.apache.org/schema/9/modelMap http://cayenne.apache.org/schema/9/modelMap.xsd"
+	 xsi:schemaLocation="http://cayenne.apache.org/schema/9/modelMap https://cayenne.apache.org/schema/9/modelMap.xsd"
 	 project-version="9">
 	<property name="defaultPackage" value="ish.oncourse.model"/>
 	<property name="defaultSuperclass" value="WillowCayenneObject"/>
@@ -177,6 +177,7 @@
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP"/>
+		<db-attribute name="createdById" type="BIGINT"/>
 		<db-attribute name="credentialExpiryDays" type="INTEGER" length="10"/>
 		<db-attribute name="hasConcessionNumber" type="BIT"/>
 		<db-attribute name="hasExpiryDate" type="BIT"/>
@@ -254,6 +255,7 @@
 	<db-entity name="ContactRelationType">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="createdById" type="BIGINT"/>
 		<db-attribute name="createdOn" type="TIMESTAMP"/>
 		<db-attribute name="delegatedAccessToContact" type="BIT" isMandatory="true"/>
 		<db-attribute name="fromContactName" type="VARCHAR" isMandatory="true" length="100"/>
@@ -615,6 +617,7 @@
 		<db-attribute name="angelId" type="BIGINT"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="created" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="createdById" type="BIGINT"/>
 		<db-attribute name="deliverySchedule" type="SMALLINT"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
@@ -635,6 +638,7 @@
 		<db-attribute name="applicationFieldConfigurationId" type="BIGINT"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="created" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="createdById" type="BIGINT"/>
 		<db-attribute name="enrolFieldConfigurationId" type="BIGINT"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
@@ -1270,6 +1274,7 @@
 		<db-attribute name="code" type="VARCHAR" isMandatory="true" length="10"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="createdById" type="BIGINT"/>
 		<db-attribute name="description" type="VARCHAR" length="500"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isGSTTaxType" type="BIT" isMandatory="true"/>
@@ -3119,6 +3124,9 @@
 	<db-relationship name="college" source="ConcessionType" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
+	<db-relationship name="createdBy" source="ConcessionType" target="SystemUser" toMany="false">
+		<db-attribute-pair source="createdById" target="id"/>
+	</db-relationship>
 	<db-relationship name="discountConcessionTypes" source="ConcessionType" target="DiscountConcessionType" toMany="true">
 		<db-attribute-pair source="id" target="concessionTypeId"/>
 	</db-relationship>
@@ -3205,6 +3213,9 @@
 	</db-relationship>
 	<db-relationship name="contactRelations" source="ContactRelationType" target="ContactRelation" toMany="true">
 		<db-attribute-pair source="id" target="typeId"/>
+	</db-relationship>
+	<db-relationship name="createdBy" source="ContactRelationType" target="SystemUser" toMany="false">
+		<db-attribute-pair source="createdById" target="id"/>
 	</db-relationship>
 	<db-relationship name="membeshipDiscountRelations" source="ContactRelationType" target="DiscountMembershipRelationType" toMany="true">
 		<db-attribute-pair source="id" target="contactRelationTypeId"/>
@@ -3530,6 +3541,9 @@
 	<db-relationship name="college" source="FieldConfiguration" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
+	<db-relationship name="createdBy" source="FieldConfiguration" target="SystemUser" toMany="false">
+		<db-attribute-pair source="createdById" target="id"/>
+	</db-relationship>
 	<db-relationship name="enrolFieldConfigurationSchemes" source="FieldConfiguration" target="FieldConfigurationScheme" toMany="true">
 		<db-attribute-pair source="id" target="enrolFieldConfigurationId"/>
 	</db-relationship>
@@ -3562,6 +3576,9 @@
 	</db-relationship>
 	<db-relationship name="courses" source="FieldConfigurationScheme" target="Course" toMany="true">
 		<db-attribute-pair source="id" target="fieldConfigurationSchemeId"/>
+	</db-relationship>
+	<db-relationship name="createdBy" source="FieldConfigurationScheme" target="SystemUser" toMany="false">
+		<db-attribute-pair source="createdById" target="id"/>
 	</db-relationship>
 	<db-relationship name="enrolFieldConfiguration" source="FieldConfigurationScheme" target="FieldConfiguration" toMany="false">
 		<db-attribute-pair source="enrolFieldConfigurationId" target="id"/>
@@ -3974,8 +3991,14 @@
 	<db-relationship name="college" source="SystemUser" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
+	<db-relationship name="concessionTypesCreated" source="SystemUser" target="ConcessionType" toMany="true">
+		<db-attribute-pair source="id" target="createdById"/>
+	</db-relationship>
 	<db-relationship name="contactDuplicates" source="SystemUser" target="ContactDuplicate" toMany="true">
 		<db-attribute-pair source="id" target="createdBy"/>
+	</db-relationship>
+	<db-relationship name="contactrelationsCreated" source="SystemUser" target="ContactRelationType" toMany="true">
+		<db-attribute-pair source="id" target="createdById"/>
 	</db-relationship>
 	<db-relationship name="defaultAdministrationCentre" source="SystemUser" target="Site" toMany="false">
 		<db-attribute-pair source="siteId" target="id"/>
@@ -3983,8 +4006,17 @@
 	<db-relationship name="documentVersions" source="SystemUser" target="DocumentVersion" toMany="true">
 		<db-attribute-pair source="id" target="createdByUserId"/>
 	</db-relationship>
+	<db-relationship name="fieldConfigurationSchemesCreated" source="SystemUser" target="FieldConfigurationScheme" toMany="true">
+		<db-attribute-pair source="id" target="createdById"/>
+	</db-relationship>
+	<db-relationship name="fieldConfigurationsCreated" source="SystemUser" target="FieldConfiguration" toMany="true">
+		<db-attribute-pair source="id" target="createdById"/>
+	</db-relationship>
 	<db-relationship name="sitesDeployed" source="SystemUser" target="WebSiteVersion" toMany="true">
 		<db-attribute-pair source="id" target="deployedById"/>
+	</db-relationship>
+	<db-relationship name="taxesCreated" source="SystemUser" target="Tax" toMany="true">
+		<db-attribute-pair source="id" target="createdById"/>
 	</db-relationship>
 	<db-relationship name="college" source="Tag" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
@@ -4027,6 +4059,9 @@
 	</db-relationship>
 	<db-relationship name="contacts" source="Tax" target="Contact" toMany="true">
 		<db-attribute-pair source="id" target="taxOverrideId"/>
+	</db-relationship>
+	<db-relationship name="createdBy" source="Tax" target="SystemUser" toMany="false">
+		<db-attribute-pair source="createdById" target="id"/>
 	</db-relationship>
 	<db-relationship name="assessmentClassTutors" source="Tutor" target="AssessmentClassTutor" toMany="true">
 		<db-attribute-pair source="id" target="tutorId"/>
@@ -4342,6 +4377,7 @@
 	<obj-relationship name="waitingLists" source="College" target="WaitingList" deleteRule="Deny" db-relationship-path="waitingLists"/>
 	<obj-relationship name="webSites" source="College" target="WebSite" deleteRule="Deny" db-relationship-path="webSites"/>
 	<obj-relationship name="college" source="ConcessionType" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="createdBy" source="ConcessionType" target="SystemUser" deleteRule="Nullify" db-relationship-path="createdBy"/>
 	<obj-relationship name="discountConcessionTypes" source="ConcessionType" target="DiscountConcessionType" deleteRule="Deny" db-relationship-path="discountConcessionTypes"/>
 	<obj-relationship name="studentConcessions" source="ConcessionType" target="StudentConcession" deleteRule="Deny" db-relationship-path="studentConcessions"/>
 	<obj-relationship name="assessmentSubmissions" source="Contact" target="AssessmentSubmission" deleteRule="Deny" db-relationship-path="assessmentSubmissions"/>
@@ -4371,6 +4407,7 @@
 	<obj-relationship name="toContact" source="ContactRelation" target="Contact" deleteRule="Nullify" db-relationship-path="toContact"/>
 	<obj-relationship name="college" source="ContactRelationType" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="contactRelations" source="ContactRelationType" target="ContactRelation" deleteRule="Deny" db-relationship-path="contactRelations"/>
+	<obj-relationship name="createdBy" source="ContactRelationType" target="SystemUser" deleteRule="Nullify" db-relationship-path="createdBy"/>
 	<obj-relationship name="membeshipDiscountRelations" source="ContactRelationType" target="DiscountMembershipRelationType" deleteRule="Deny" db-relationship-path="membeshipDiscountRelations"/>
 	<obj-relationship name="college" source="CorporatePass" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="contact" source="CorporatePass" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
@@ -4470,6 +4507,7 @@
 	<obj-relationship name="fieldHeading" source="Field" target="FieldHeading" deleteRule="Nullify" db-relationship-path="fieldHeading"/>
 	<obj-relationship name="applicationFieldConfigurationSchemes" source="FieldConfiguration" target="FieldConfigurationScheme" deleteRule="Deny" db-relationship-path="applicationFieldConfigurationSchemes"/>
 	<obj-relationship name="college" source="FieldConfiguration" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="createdBy" source="FieldConfiguration" target="SystemUser" deleteRule="Nullify" db-relationship-path="createdBy"/>
 	<obj-relationship name="enrolFieldConfigurationSchemes" source="FieldConfiguration" target="FieldConfigurationScheme" deleteRule="Deny" db-relationship-path="enrolFieldConfigurationSchemes"/>
 	<obj-relationship name="fieldConfigurationLinks" source="FieldConfiguration" target="FieldConfigurationLink" deleteRule="Deny" db-relationship-path="fieldConfigurationLink"/>
 	<obj-relationship name="fieldHeadings" source="FieldConfiguration" target="FieldHeading" deleteRule="Deny" db-relationship-path="fieldHeadings"/>
@@ -4481,6 +4519,7 @@
 	<obj-relationship name="applicationFieldConfiguration" source="FieldConfigurationScheme" target="FieldConfiguration" deleteRule="Nullify" db-relationship-path="applicationFieldConfiguration"/>
 	<obj-relationship name="college" source="FieldConfigurationScheme" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="courses" source="FieldConfigurationScheme" target="Course" deleteRule="Deny" db-relationship-path="courses"/>
+	<obj-relationship name="createdBy" source="FieldConfigurationScheme" target="SystemUser" deleteRule="Nullify" db-relationship-path="createdBy"/>
 	<obj-relationship name="enrolFieldConfiguration" source="FieldConfigurationScheme" target="FieldConfiguration" deleteRule="Nullify" db-relationship-path="enrolFieldConfiguration"/>
 	<obj-relationship name="fieldConfigurationLinks" source="FieldConfigurationScheme" target="FieldConfigurationLink" deleteRule="Cascade" db-relationship-path="fieldConfigurationLink"/>
 	<obj-relationship name="waitingListFieldConfiguration" source="FieldConfigurationScheme" target="FieldConfiguration" deleteRule="Nullify" db-relationship-path="waitingListFieldConfiguration"/>
@@ -4622,6 +4661,7 @@
 	<obj-relationship name="tag" source="TaggableTag" target="Tag" deleteRule="Nullify" db-relationship-path="tag"/>
 	<obj-relationship name="taggable" source="TaggableTag" target="Taggable" deleteRule="Nullify" db-relationship-path="taggable"/>
 	<obj-relationship name="college" source="Tax" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="createdBy" source="Tax" target="SystemUser" deleteRule="Nullify" db-relationship-path="createdBy"/>
 	<obj-relationship name="assessmentClassTutors" source="Tutor" target="AssessmentClassTutor" deleteRule="Deny" db-relationship-path="assessmentClassTutors"/>
 	<obj-relationship name="attendances" source="Tutor" target="Attendance" deleteRule="Deny" db-relationship-path="attendances"/>
 	<obj-relationship name="college" source="Tutor" target="College" deleteRule="Nullify" db-relationship-path="college"/>

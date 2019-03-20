@@ -1,6 +1,7 @@
 package ish.oncourse.webservices.replication.v20.updaters;
 
 import ish.oncourse.model.ConcessionType;
+import ish.oncourse.model.SystemUser;
 import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v20.stubs.replication.ConcessionTypeStub;
@@ -18,5 +19,6 @@ public class ConcessionTypeUpdater extends AbstractWillowUpdater<ConcessionTypeS
 		entity.setModified(stub.getModified());
 		entity.setName(stub.getName());
 		entity.setRequiresCredentialCheck(stub.isRequiresCredentialCheck());
+		entity.setCreatedBy(callback.updateRelationShip(stub.getCreatedBy(), SystemUser.class));
 	}
 }

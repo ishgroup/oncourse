@@ -21,6 +21,7 @@ public class FieldConfigurationStubBuilder extends AbstractWillowStubBuilder<Fie
 		if (FieldConfigurationType.SURVEY.equals(entity.getType())) {
 			stub.setDeliverySchedule(((SurveyFieldConfiguration)entity).getDeliverySchedule().getDatabaseValue());
 		}
+		stub.setCreatedBy(entity.getCreatedBy().getId());
 		
 		return stub;
 	}

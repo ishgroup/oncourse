@@ -26,6 +26,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="isEnabled" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
  *         &lt;element name="requiresCredentialCheck" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="createdBy" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/extension&gt;
  *   &lt;/complexContent&gt;
@@ -42,7 +43,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "isConcession",
     "isEnabled",
     "name",
-    "requiresCredentialCheck"
+    "requiresCredentialCheck",
+    "createdBy"
 })
 public class ConcessionTypeStub
     extends ReplicationStub
@@ -74,6 +76,10 @@ public class ConcessionTypeStub
     @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean requiresCredentialCheck;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlSchemaType(name = "long")
+    protected Long createdBy;
 
     /**
      * Gets the value of the credentialExpiryDays property.
@@ -241,6 +247,30 @@ public class ConcessionTypeStub
      */
     public void setRequiresCredentialCheck(Boolean value) {
         this.requiresCredentialCheck = value;
+    }
+
+    /**
+     * Gets the value of the createdBy property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Long getCreatedBy() {
+        return createdBy;
+    }
+
+    /**
+     * Sets the value of the createdBy property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setCreatedBy(Long value) {
+        this.createdBy = value;
     }
 
 }

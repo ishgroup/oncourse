@@ -423,6 +423,7 @@
                             <xs:element name="isEnabled" type="xs:boolean" />
                             <xs:element name="name" type="xs:string" />
                             <xs:element name="requiresCredentialCheck" type="xs:boolean" />
+                            <xs:element name="createdBy" type="xs:long"/>
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
@@ -632,6 +633,7 @@
                             <xs:element name="fromContactName" type="xs:string" nillable="false"/>
                             <xs:element name="toContactName" type="xs:string" nillable="false"/>
                             <xs:element name="delegatedAccessToContact" type="xs:int" nillable="true"/>
+                            <xs:element name="createdBy" type="xs:long"/>
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
@@ -1618,6 +1620,7 @@
                             <xs:element name="name" type="xs:string"/>
                             <xs:element name="type" type="xs:int"/>
                             <xs:element name="deliverySchedule" type="xs:int"/>
+                            <xs:element name="createdBy" type="xs:long"/>
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
@@ -1640,6 +1643,7 @@
                     <xs:extension base="tns:replicationStub">
                         <xs:sequence>
                             <xs:element name="name" type="xs:string"/>
+                            <xs:element name="createdBy" type="xs:long"/>
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
@@ -1667,6 +1671,7 @@
                             <xs:element name="isGSTTaxType" type="xs:boolean"/>
                             <xs:element name="rate" type="xs:decimal"/>
                             <xs:element name="taxCode" type="xs:string"/>
+                            <xs:element name="createdBy" type="xs:long"/>
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>

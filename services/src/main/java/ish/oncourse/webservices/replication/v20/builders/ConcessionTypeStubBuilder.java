@@ -18,6 +18,7 @@ public class ConcessionTypeStubBuilder extends AbstractWillowStubBuilder<Concess
 		stub.setModified(entity.getModified());
 		stub.setName(entity.getName());
 		stub.setRequiresCredentialCheck(entity.getRequiresCredentialCheck());
+		stub.setCreatedBy(entity.getCreatedBy().getId());
 		return stub;
 	}
 }

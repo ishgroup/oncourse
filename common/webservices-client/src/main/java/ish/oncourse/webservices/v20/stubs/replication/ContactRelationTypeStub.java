@@ -22,6 +22,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="fromContactName" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
  *         &lt;element name="toContactName" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
  *         &lt;element name="delegatedAccessToContact" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="createdBy" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/extension&gt;
  *   &lt;/complexContent&gt;
@@ -34,7 +35,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlType(name = "contactRelationTypeStub", propOrder = {
     "fromContactName",
     "toContactName",
-    "delegatedAccessToContact"
+    "delegatedAccessToContact",
+    "createdBy"
 })
 public class ContactRelationTypeStub
     extends ReplicationStub
@@ -48,6 +50,10 @@ public class ContactRelationTypeStub
     @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer delegatedAccessToContact;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlSchemaType(name = "long")
+    protected Long createdBy;
 
     /**
      * Gets the value of the fromContactName property.
@@ -119,6 +125,30 @@ public class ContactRelationTypeStub
      */
     public void setDelegatedAccessToContact(Integer value) {
         this.delegatedAccessToContact = value;
+    }
+
+    /**
+     * Gets the value of the createdBy property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Long getCreatedBy() {
+        return createdBy;
+    }
+
+    /**
+     * Sets the value of the createdBy property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setCreatedBy(Long value) {
+        this.createdBy = value;
     }
 
 }

@@ -24,6 +24,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="isGSTTaxType" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
  *         &lt;element name="rate" type="{http://www.w3.org/2001/XMLSchema}decimal"/&gt;
  *         &lt;element name="taxCode" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="createdBy" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/extension&gt;
  *   &lt;/complexContent&gt;
@@ -37,7 +38,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "description",
     "isGSTTaxType",
     "rate",
-    "taxCode"
+    "taxCode",
+    "createdBy"
 })
 public class TaxStub
     extends ReplicationStub
@@ -53,6 +55,10 @@ public class TaxStub
     protected BigDecimal rate;
     @XmlElement(required = true)
     protected String taxCode;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlSchemaType(name = "long")
+    protected Long createdBy;
 
     /**
      * Gets the value of the description property.
@@ -148,6 +154,30 @@ public class TaxStub
      */
     public void setTaxCode(String value) {
         this.taxCode = value;
+    }
+
+    /**
+     * Gets the value of the createdBy property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Long getCreatedBy() {
+        return createdBy;
+    }
+
+    /**
+     * Sets the value of the createdBy property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setCreatedBy(Long value) {
+        this.createdBy = value;
     }
 
 }

@@ -15,6 +15,7 @@ public class FieldConfigurationSchemeStubBuilder extends AbstractWillowStubBuild
 		stub.setCreated(entity.getCreated());
 		stub.setModified(entity.getModified());
 		stub.setName(entity.getName());
+		stub.setCreatedBy(entity.getCreatedBy().getId());
 		return stub;
 	}
 }
