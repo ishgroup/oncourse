@@ -5067,4 +5067,16 @@
 		</sql>
 	</changeSet>
 
+	<changeSet id="364" author="pnikanovich" context="production" runOnChange="false">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Invoice" columnName="allowAutoPay" />
+			</not>
+		</preConditions>
+		<sql>
+			ALTER TABLE Invoice
+			ADD COLUMN allowAutoPay TINYINT(1) NOT NULL DEFAULT 1;
+		</sql>
+	</changeSet>
+
 </databaseChangeLog>

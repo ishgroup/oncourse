@@ -672,6 +672,7 @@
 		<db-attribute name="value" type="VARCHAR" length="1024"/>
 	</db-entity>
 	<db-entity name="Invoice">
+		<db-attribute name="allowAutoPay" type="BIT" isMandatory="true"/>
 		<db-attribute name="amountOwing" type="DECIMAL" isMandatory="true" length="14" scale="2"/>
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="authorisedRebillingCardId" type="BIGINT"/>
@@ -1494,6 +1495,7 @@
 		<db-attribute name="type" type="INTEGER" isMandatory="true"/>
 	</db-entity>
 	<obj-entity name="AbstractInvoice" abstract="true" className="ish.oncourse.model.AbstractInvoice" dbEntityName="Invoice" superClassName="WillowCayenneObject">
+		<obj-attribute name="allowAutoPay" type="java.lang.Boolean" db-attribute-path="allowAutoPay"/>
 		<obj-attribute name="amountOwing" type="ish.math.Money" db-attribute-path="amountOwing"/>
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="billToAddress" type="java.lang.String" db-attribute-path="billToAddress"/>

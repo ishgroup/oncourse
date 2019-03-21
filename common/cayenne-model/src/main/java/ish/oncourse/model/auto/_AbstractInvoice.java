@@ -28,6 +28,7 @@ public abstract class _AbstractInvoice extends WillowCayenneObject {
 
     private static final long serialVersionUID = 1L; 
 
+    public static final String ALLOW_AUTO_PAY_PROPERTY = "allowAutoPay";
     public static final String AMOUNT_OWING_PROPERTY = "amountOwing";
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String BILL_TO_ADDRESS_PROPERTY = "billToAddress";
@@ -57,6 +58,7 @@ public abstract class _AbstractInvoice extends WillowCayenneObject {
 
     public static final String ID_PK_COLUMN = "id";
 
+    public static final Property<Boolean> ALLOW_AUTO_PAY = Property.create("allowAutoPay", Boolean.class);
     public static final Property<Money> AMOUNT_OWING = Property.create("amountOwing", Money.class);
     public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
     public static final Property<String> BILL_TO_ADDRESS = Property.create("billToAddress", String.class);
@@ -83,6 +85,13 @@ public abstract class _AbstractInvoice extends WillowCayenneObject {
     public static final Property<List<InvoiceLine>> INVOICE_LINES = Property.create("invoiceLines", List.class);
     public static final Property<List<PaymentInLine>> PAYMENT_IN_LINES = Property.create("paymentInLines", List.class);
     public static final Property<WebSite> WEB_SITE = Property.create("webSite", WebSite.class);
+
+    public void setAllowAutoPay(Boolean allowAutoPay) {
+        writeProperty("allowAutoPay", allowAutoPay);
+    }
+    public Boolean getAllowAutoPay() {
+        return (Boolean)readProperty("allowAutoPay");
+    }
 
     public void setAmountOwing(Money amountOwing) {
         writeProperty("amountOwing", amountOwing);

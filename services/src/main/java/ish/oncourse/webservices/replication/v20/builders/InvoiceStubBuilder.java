@@ -32,6 +32,7 @@ public class InvoiceStubBuilder extends AbstractWillowStubBuilder<Invoice, Invoi
 		}
 		stub.setAuthorisedRebillingCardId(entity.getAuthorisedRebillingCard() != null ? entity.getAuthorisedRebillingCard().getId() : null);
 		stub.setType(entity.getType().getDatabaseValue());
+		stub.setAllowAutoPay(entity.getAllowAutoPay());
 		return stub;
 	}
 }
