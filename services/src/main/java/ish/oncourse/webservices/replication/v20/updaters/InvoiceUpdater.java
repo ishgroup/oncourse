@@ -42,6 +42,7 @@ public class InvoiceUpdater extends AbstractWillowUpdater<InvoiceStub, Invoice> 
 		if (stub.getType() != null) {
 			entity.setType(TypesUtil.getEnumForDatabaseValue(stub.getType(), InvoiceType.class));
 		}
+		entity.setAllowAutoPay(stub.isAllowAutoPay());
 	}
 
 }
