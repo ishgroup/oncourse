@@ -5075,7 +5075,7 @@
 		</preConditions>
 		<sql>
 			ALTER TABLE Invoice
-			ADD COLUMN allowAutoPay TINYINT(1) NOT NULL DEFAULT 1;
+			ADD COLUMN allowAutoPay TINYINT(1) NOT NULL DEFAULT 0;
 		</sql>
 	</changeSet>
 
