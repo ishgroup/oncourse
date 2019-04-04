@@ -1,14 +1,15 @@
 package ish.oncourse.webservices.replication.v20.builders;
 
+import ish.oncourse.model.AbstractInvoice;
 import ish.oncourse.model.CorporatePass;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.webservices.replication.builders.AbstractWillowStubBuilder;
 import ish.oncourse.webservices.v20.stubs.replication.InvoiceStub;
 
-public class InvoiceStubBuilder extends AbstractWillowStubBuilder<Invoice, InvoiceStub> {
+public class InvoiceStubBuilder extends AbstractWillowStubBuilder<AbstractInvoice, InvoiceStub> {
 
 	@Override
-	protected InvoiceStub createFullStub(Invoice entity) {
+	protected InvoiceStub createFullStub(AbstractInvoice entity) {
 		InvoiceStub stub = new InvoiceStub();
 		stub.setAmountOwing(entity.getAmountOwing().toBigDecimal());
 		stub.setBillToAddress(entity.getBillToAddress());

@@ -5,18 +5,15 @@ import ish.common.types.InvoiceType;
 import ish.common.types.PaymentSource;
 import ish.common.types.TypesUtil;
 import ish.math.Money;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.CorporatePass;
-import ish.oncourse.model.Invoice;
-import ish.oncourse.model.PaymentIn;
+import ish.oncourse.model.*;
 import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v20.stubs.replication.InvoiceStub;
 
-public class InvoiceUpdater extends AbstractWillowUpdater<InvoiceStub, Invoice> {
+public class InvoiceUpdater extends AbstractWillowUpdater<InvoiceStub, AbstractInvoice> {
 
 	@Override
-	protected void updateEntity(InvoiceStub stub, Invoice entity, RelationShipCallback callback) {
+	protected void updateEntity(InvoiceStub stub, AbstractInvoice entity, RelationShipCallback callback) {
 		entity.setContact(callback.updateRelationShip(stub.getContactId(), Contact.class));
 		entity.setAmountOwing(new Money(stub.getAmountOwing()));
 		entity.setBillToAddress(stub.getBillToAddress());
