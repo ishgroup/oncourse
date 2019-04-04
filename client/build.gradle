@@ -121,8 +121,12 @@ appBundler {
     appIdentifier = "ish.oncourse"
     mainClassName = "ish.oncourse.AngelApp"
     iconFile = new File(projectDir, "src/packaging/macosx/onCourse.icns")
-    jars = (configurations.runtime + configurations.runtime.artifacts.files 
-			- configurations.winCompile + configurations.macCompile + configurations.macJava11)
+    jars = (configurations.runtime
+			+ configurations.runtime.artifacts.files
+			- configurations.winCompile
+			- configurations.winJava11
+			+ configurations.macCompile
+			+ configurations.macJava11)
     keychain = project.osxKeychain
     certIdentity = project.osxKeychainIdentity
 	notarizeAccount = project.notarizeAccount
@@ -255,8 +259,9 @@ task bundle_win(dependsOn: [jar, extractWinJre], type: Exe4JTask) {
 	}
 	
 	configFile = file("${projectDir}/src/packaging/windows/${project.name}.exe4j.xml")
-	jars = files(configurations.runtime.artifacts.files, configurations.runtime.files) -
-				configurations.macCompile + configurations.winCompile + configurations.winJava11
+	jars = files(configurations.runtime.artifacts.files, configurations.runtime.files)
+			- configurations.macCompile - configurations.macJava11
+			+ configurations.winCompile + configurations.winJava11
 	
 	resourceFiles = files("${projectDir}/src/packaging/windows/onCourse.ico")
 	exeFile = file("$distDirWin/onCourse.exe")
