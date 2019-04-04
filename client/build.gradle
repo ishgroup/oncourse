@@ -33,7 +33,7 @@ configurations {
 
 	compile.extendsFrom (OperatingSystem.current().isMacOsX() ? macCompile : winCompile)
 	if (JavaVersion.current() != JavaVersion.VERSION_1_8) {
-		testCompile.extendsFrom(OperatingSystem.current().isMacOsX() ? macJava11 : winJava11)
+		compile.extendsFrom(OperatingSystem.current().isMacOsX() ? macJava11 : winJava11)
 	}
 }
 
