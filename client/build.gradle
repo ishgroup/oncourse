@@ -24,10 +24,17 @@ ext {
 
 configurations {
 	macCompile
+	macJava11
 	jreMac
+
 	winCompile
+	winJava11
 	jreWin
+
 	compile.extendsFrom (OperatingSystem.current().isMacOsX() ? macCompile : winCompile)
+	if (JavaVersion.current() != JavaVersion.VERSION_1_8) {
+		testCompile.extendsFrom(OperatingSystem.current().isMacOsX() ? macJava11 : winJava11)
+	}
 }
 
 dependencies {
@@ -50,20 +57,26 @@ dependencies {
 	
 	compile files("$rootDir/lib/jxbrowser/license.jar")
 
-	macCompile "org.openjfx:javafx-base:$openjfxVersion:mac"
-	macCompile "org.openjfx:javafx-graphics:$openjfxVersion:mac"
-	macCompile "org.openjfx:javafx-controls:$openjfxVersion:mac"
-	macCompile "org.openjfx:javafx-fxml:$openjfxVersion:mac"
-	macCompile "org.openjfx:javafx-swing:$openjfxVersion:mac"
-	macCompile "org.openjfx:javafx-media:$openjfxVersion:mac"
+	// the following are needed when compiling on OSX Java 11
+	macJava11 "org.openjfx:javafx-base:$openjfxVersion:mac"
+	macJava11 "org.openjfx:javafx-graphics:$openjfxVersion:mac"
+	macJava11 "org.openjfx:javafx-controls:$openjfxVersion:mac"
+	macJava11 "org.openjfx:javafx-fxml:$openjfxVersion:mac"
+	macJava11 "org.openjfx:javafx-swing:$openjfxVersion:mac"
+	macJava11 "org.openjfx:javafx-media:$openjfxVersion:mac"
+
+	// the following are needed when compiling on OSX any Java version
 	macCompile "com.teamdev.jxbrowser:jxbrowser-mac:$jxbrowserVersion"
 
-	winCompile "org.openjfx:javafx-base:$openjfxVersion:win"
-	winCompile "org.openjfx:javafx-graphics:$openjfxVersion:win"
-	winCompile "org.openjfx:javafx-controls:$openjfxVersion:win"
-	winCompile "org.openjfx:javafx-fxml:$openjfxVersion:win"
-	winCompile "org.openjfx:javafx-swing:$openjfxVersion:win"
-	winCompile "org.openjfx:javafx-media:$openjfxVersion:win"
+	// the following are needed when compiling on Windows Java 11
+	winJava11 "org.openjfx:javafx-base:$openjfxVersion:win"
+	winJava11 "org.openjfx:javafx-graphics:$openjfxVersion:win"
+	winJava11 "org.openjfx:javafx-controls:$openjfxVersion:win"
+	winJava11 "org.openjfx:javafx-fxml:$openjfxVersion:win"
+	winJava11 "org.openjfx:javafx-swing:$openjfxVersion:win"
+	winJava11 "org.openjfx:javafx-media:$openjfxVersion:win"
+
+	// the following are needed when compiling on Windows any Java version
 	winCompile "com.teamdev.jxbrowser:jxbrowser-win64:$jxbrowserVersion"
 	winCompile "com.teamdev.jxbrowser:jxbrowser-win32:$jxbrowserVersion"
 
@@ -109,7 +122,7 @@ appBundler {
     mainClassName = "ish.oncourse.AngelApp"
     iconFile = new File(projectDir, "src/packaging/macosx/onCourse.icns")
     jars = (configurations.runtime + configurations.runtime.artifacts.files 
-			- configurations.winCompile + configurations.macCompile)
+			- configurations.winCompile + configurations.macCompile + configurations.macJava11)
     keychain = project.osxKeychain
     certIdentity = project.osxKeychainIdentity
 	notarizeAccount = project.notarizeAccount
@@ -167,9 +180,7 @@ task bundle_webstart(dependsOn: [jar, prepareKeychains], type: Copy) {
 	with webstartFiles
 	into file("${distsDir}/webstart")
 	doLast {
-		(configurations.runtime 
-				+ configurations.macCompile 
-				+ configurations.winCompile).files.each { file ->
+		(configurations.runtime).files.each { file ->
 			
 			if (file.name == "common-${version}.jar") {
 				copy {
@@ -179,10 +190,10 @@ task bundle_webstart(dependsOn: [jar, prepareKeychains], type: Copy) {
 			} else {
 				ant.jar(destFile: "${distsDir}/webstart/Libraries/${file.name}", filesetmanifest: "merge") {
 					zipfileset(src: file) {
-						exclude(name: '**/*MF')
-						exclude(name: '**/*SF')
-						exclude(name: '**/*RSA')
-						exclude(name: '**/*DSA')
+						exclude('**/*MF')
+						exclude('**/*SF')
+						exclude('**/*RSA')
+						exclude('**/*DSA')
 					}
 					delegate.manifest {
 						attribute(name: 'codebase', value: '*')
@@ -245,7 +256,7 @@ task bundle_win(dependsOn: [jar, extractWinJre], type: Exe4JTask) {
 	
 	configFile = file("${projectDir}/src/packaging/windows/${project.name}.exe4j.xml")
 	jars = files(configurations.runtime.artifacts.files, configurations.runtime.files) -
-				configurations.macCompile + configurations.winCompile
+				configurations.macCompile + configurations.winCompile + configurations.winJava11
 	
 	resourceFiles = files("${projectDir}/src/packaging/windows/onCourse.ico")
 	exeFile = file("$distDirWin/onCourse.exe")
