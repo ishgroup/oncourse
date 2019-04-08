@@ -60,6 +60,9 @@ public abstract class AbstractInvoice extends _AbstractInvoice implements Queuea
         if (getConfirmationStatus() == null) {
             setConfirmationStatus(ConfirmationStatus.DO_NOT_SEND);
         }
+        if (getAllowAutoPay() == null) {
+            setAllowAutoPay(false);
+        }
     }
 
     @Override

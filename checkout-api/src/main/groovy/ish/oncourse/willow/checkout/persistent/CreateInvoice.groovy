@@ -41,7 +41,7 @@ class CreateInvoice {
         invoice.webSite = webSite
         invoice.contact = contact
         invoice.billToAddress = contact.address
-        invoice.allowAutoPay = true
+        invoice.allowAutoPay = false
     }
 
     Invoice forPaymentModel(PaymentIn paymentIn, String sessionId) {
