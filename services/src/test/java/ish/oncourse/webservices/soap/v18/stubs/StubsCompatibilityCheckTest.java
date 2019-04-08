@@ -22,8 +22,8 @@ import java.util.*;
 import static org.junit.Assert.*;
 
 /**
- * Stub compatibility check for v17 stubs.
- * This test should care of stub health till v17 stubs will be supported.
+ * Stub compatibility check for v18 stubs.
+ * This test should care of stub health till v18 stubs will be supported.
  * Test stubsPropertyMap definition should not be updated at all, because only if new fields will be added into stub test execution result will be OK.
  * @author vdavidovich
  */
@@ -1365,7 +1365,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		fillFieldDependency(parameters, stub);
 		for (final PropertyDescriptor descriptor : descriptors) {
 			//we should skipp class
-			// and attendanceOrBinaryDataOrBinaryInfo because in v17 this property replaced with replicationStub
+			// and attendanceOrBinaryDataOrBinaryInfo because in v18 this property replaced with replicationStub
 			// but method should exists to have backward compatibility with  V4 and V5
 			if ("class".equals(descriptor.getName()) || ATTENDANCE_OR_BINARY_DATA_OR_BINARY_INFO_METHOD_NAME.equals(descriptor.getName())) {
 				continue;

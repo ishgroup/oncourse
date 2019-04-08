@@ -57,6 +57,9 @@ public abstract class AbstractInvoice extends _AbstractInvoice implements Queuea
         if (getModified() == null) {
             setModified(getCreated());
         }
+        if (getAllowAutoPay() == null) {
+            setAllowAutoPay(false);
+        }
         if (getConfirmationStatus() == null) {
             setConfirmationStatus(ConfirmationStatus.DO_NOT_SEND);
         }
@@ -111,4 +114,31 @@ public abstract class AbstractInvoice extends _AbstractInvoice implements Queuea
 
         return true;
     }
+
+    public abstract void addToInvoiceLines(InvoiceLine invoiceLine);
+    public abstract List<InvoiceLine> getInvoiceLines();
+    public abstract void removeFromInvoiceLines(InvoiceLine invoiceLine);
+
+    public abstract void addToPaymentInLines(PaymentInLine paymentInLine);
+    public abstract List<PaymentInLine> getPaymentInLines();
+    public abstract void removeFromPaymentInLines(PaymentInLine paymentInLine);
+
+    public abstract void addToInvoiceDueDates(InvoiceDueDate invoiceDueDate);
+    public abstract List<InvoiceDueDate> getInvoiceDueDates();
+    public abstract void removeFromInvoiceDueDates(InvoiceDueDate invoiceDueDate);
+
+    public abstract Contact getContact();
+    public abstract void setContact(Contact contact);
+
+    public abstract CorporatePass getCorporatePassUsed();
+    public abstract void setCorporatePassUsed(CorporatePass corporatePass);
+
+    public abstract PaymentIn getAuthorisedRebillingCard();
+    public abstract void setAuthorisedRebillingCard(PaymentIn paymentIn);
+
+    public abstract College getCollege();
+    public abstract void setCollege(College college);
+
+    public abstract WebSite getWebSite();
+    public abstract void setWebSite(WebSite webSite);
 }

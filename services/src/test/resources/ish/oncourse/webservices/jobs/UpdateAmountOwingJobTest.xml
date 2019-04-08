@@ -66,7 +66,7 @@
 	<Invoice type="1" id="2000" source="O" amountOwing="100.00" contactId="2000" angelId="2000"
 			 collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
 			 invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="320.00"
-			 totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
+			 totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1" allowAutoPay="0"/>
 
 	<Enrolment id="2000" source="O" collegeId="1" courseClassId="2000"
 			   studentId="2000" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
@@ -90,7 +90,7 @@
 	<Invoice type="1" id="4000" angelId="4000" source="O" amountOwing="-100.00" contactId="2000"
 			 collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
 			 invoiceDate="2011-09-10 11:14:54" invoiceNumber="322" totalExGst="320.00"
-			 totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
+			 totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1" allowAutoPay="0"/>
 
 	<PaymentIn id="4000" angelId="4000" amount="-101" collegeId="1"
 			   contactId="2000" created="2011-09-12 00:17:21.0" modified="2011-09-12 00:17:21.0"
@@ -116,7 +116,7 @@
 	<Invoice type="1" id="4001" source="O" amountOwing="100.00" contactId="2000"
 			 collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
 			 invoiceDate="2011-09-10 11:14:54" invoiceNumber="322" totalExGst="320.00"
-			 totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
+			 totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1" allowAutoPay="0"/>
 
 	<PaymentIn id="4001" amount="100" collegeId="1"
 			   contactId="2000" created="2011-09-12 00:17:21.0" modified="2011-09-12 00:17:21.0"
@@ -142,7 +142,7 @@
 	<Invoice type="1" id="4002" angelId="4002" source="O" amountOwing="100.00" contactId="2000"
 			 collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
 			 invoiceDate="2011-09-10 11:14:54" invoiceNumber="322" totalExGst="320.00"
-			 totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
+			 totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1" allowAutoPay="0"/>
 
 	<PaymentIn id="4002" angelId="4002" amount="100" collegeId="1"
 			   contactId="2000" created="2011-09-12 00:17:21.0" modified="2011-09-12 00:17:21.0"
@@ -177,7 +177,7 @@
 	<Invoice type="1" id="4003" angelId="4003" source="O" amountOwing="100.00" contactId="2000"
 			 collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
 			 invoiceDate="2011-09-10 11:14:54" invoiceNumber="322" totalExGst="320.00"
-			 totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
+			 totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1" allowAutoPay="0"/>
 
 	<PaymentIn id="4003" angelId="4003" amount="100" collegeId="1"
 			   contactId="2000" created="2011-09-12 00:17:21.0" modified="2011-09-12 00:17:21.0"
@@ -203,7 +203,7 @@
 	<Invoice type="1" id="4013" angelId="4013" source="O" amountOwing="100.00" contactId="2000"
 			 collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
 			 invoiceDate="2011-09-10 11:14:54" invoiceNumber="322" totalExGst="320.00"
-			 totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
+			 totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1" allowAutoPay="0"/>
 
 	<PaymentIn id="4013" angelId="4013" amount="-100" collegeId="1"
 			   contactId="2000" created="2011-09-12 00:17:21.0" modified="2011-09-12 00:17:21.0"
@@ -230,7 +230,7 @@
 	<Invoice type="1" id="4004" angelId="4004" source="O" amountOwing="100.00" contactId="2000"
 			 collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
 			 invoiceDate="2011-09-10 11:14:54" invoiceNumber="322" totalExGst="320.00"
-			 totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
+			 totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1" allowAutoPay="0"/>
 
 	<PaymentIn id="4004" angelId="4004" amount="200" collegeId="1"
 			   contactId="2000" created="2011-09-12 00:17:21.0" modified="2011-09-12 00:17:21.0"
@@ -268,7 +268,7 @@
 	<Invoice type="1" id="4005" angelId="4005" source="O" amountOwing="100.00" contactId="2000"
 			 collegeId="2" dateDue="2011-09-20 11:14:54" description="invoice for testing"
 			 invoiceDate="2011-09-10 11:14:54" invoiceNumber="322" totalExGst="320.00"
-			 totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
+			 totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1" allowAutoPay="0"/>
 
 	<PaymentIn id="4005" angelId="4005" amount="100" collegeId="2"
 			   contactId="2000" created="2011-09-12 00:17:21.0" modified="2011-09-12 00:17:21.0"

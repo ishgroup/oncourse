@@ -4266,14 +4266,6 @@
 	<db-relationship name="logs" source="WillowUser" target="Log" toMany="true">
 		<db-attribute-pair source="id" target="userId"/>
 	</db-relationship>
-	<obj-relationship name="authorisedRebillingCard" source="AbstractInvoice" target="PaymentIn" deleteRule="Nullify" db-relationship-path="authorisedRebillingCard"/>
-	<obj-relationship name="college" source="AbstractInvoice" target="College" deleteRule="Nullify" db-relationship-path="college"/>
-	<obj-relationship name="contact" source="AbstractInvoice" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
-	<obj-relationship name="corporatePassUsed" source="AbstractInvoice" target="CorporatePass" deleteRule="Nullify" db-relationship-path="corporatePassUsed"/>
-	<obj-relationship name="invoiceDueDates" source="AbstractInvoice" target="InvoiceDueDate" deleteRule="Deny" db-relationship-path="invoiceDueDates"/>
-	<obj-relationship name="invoiceLines" source="AbstractInvoice" target="InvoiceLine" deleteRule="Deny" db-relationship-path="invoiceLines"/>
-	<obj-relationship name="paymentInLines" source="AbstractInvoice" target="PaymentInLine" deleteRule="Deny" db-relationship-path="paymentInLines"/>
-	<obj-relationship name="webSite" source="AbstractInvoice" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
 	<obj-relationship name="college" source="Application" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="course" source="Application" target="Course" deleteRule="Nullify" db-relationship-path="course"/>
 	<obj-relationship name="customFields" source="Application" target="ApplicationCustomField" deleteRule="Deny" db-relationship-path="customFields"/>
@@ -4531,6 +4523,14 @@
 	<obj-relationship name="college" source="Instruction" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="parameters" source="Instruction" target="InstructionParameter" deleteRule="Cascade" db-relationship-path="parameters"/>
 	<obj-relationship name="instruction" source="InstructionParameter" target="Instruction" deleteRule="Nullify" db-relationship-path="instruction"/>
+	<obj-relationship name="authorisedRebillingCard" source="Invoice" target="PaymentIn" deleteRule="Nullify" db-relationship-path="authorisedRebillingCard"/>
+	<obj-relationship name="college" source="Invoice" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="contact" source="Invoice" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
+	<obj-relationship name="corporatePassUsed" source="Invoice" target="CorporatePass" deleteRule="Nullify" db-relationship-path="corporatePassUsed"/>
+	<obj-relationship name="invoiceDueDates" source="Invoice" target="InvoiceDueDate" deleteRule="Nullify" db-relationship-path="invoiceDueDates"/>
+	<obj-relationship name="invoiceLines" source="Invoice" target="InvoiceLine" deleteRule="Nullify" db-relationship-path="invoiceLines"/>
+	<obj-relationship name="paymentInLines" source="Invoice" target="PaymentInLine" deleteRule="Nullify" db-relationship-path="paymentInLines"/>
+	<obj-relationship name="webSite" source="Invoice" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
 	<obj-relationship name="college" source="InvoiceDueDate" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="invoice" source="InvoiceDueDate" target="Invoice" deleteRule="Nullify" db-relationship-path="invoice"/>
 	<obj-relationship name="college" source="InvoiceLine" target="College" deleteRule="Nullify" db-relationship-path="college"/>
@@ -4606,6 +4606,14 @@
 	<obj-relationship name="courseClasses" source="Room" target="CourseClass" deleteRule="Deny" db-relationship-path="courseClasses"/>
 	<obj-relationship name="sessions" source="Room" target="Session" deleteRule="Deny" db-relationship-path="sessions"/>
 	<obj-relationship name="site" source="Room" target="Site" deleteRule="Nullify" db-relationship-path="site"/>
+	<obj-relationship name="authorisedRebillingCard" source="SaleOrder" target="PaymentIn" deleteRule="Nullify" db-relationship-path="authorisedRebillingCard"/>
+	<obj-relationship name="college" source="SaleOrder" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="contact" source="SaleOrder" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
+	<obj-relationship name="corporatePassUsed" source="SaleOrder" target="CorporatePass" deleteRule="Nullify" db-relationship-path="corporatePassUsed"/>
+	<obj-relationship name="invoiceDueDates" source="SaleOrder" target="InvoiceDueDate" deleteRule="Nullify" db-relationship-path="invoiceDueDates"/>
+	<obj-relationship name="invoiceLines" source="SaleOrder" target="InvoiceLine" deleteRule="Nullify" db-relationship-path="invoiceLines"/>
+	<obj-relationship name="paymentInLines" source="SaleOrder" target="PaymentInLine" deleteRule="Nullify" db-relationship-path="paymentInLines"/>
+	<obj-relationship name="webSite" source="SaleOrder" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
 	<obj-relationship name="college" source="Script" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="attendances" source="Session" target="Attendance" deleteRule="Cascade" db-relationship-path="attendances"/>
 	<obj-relationship name="college" source="Session" target="College" deleteRule="Nullify" db-relationship-path="college"/>
