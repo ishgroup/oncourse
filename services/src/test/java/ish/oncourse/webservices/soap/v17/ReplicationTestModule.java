@@ -1,4 +1,4 @@
-package ish.oncourse.webservices.soap;
+package ish.oncourse.webservices.soap.v17;
 
 import ish.oncourse.model.College;
 import ish.oncourse.services.BinderFunctions;
@@ -20,8 +20,8 @@ import ish.oncourse.webservices.replication.builders.WillowStubBuilderImpl;
 import ish.oncourse.webservices.replication.services.*;
 import ish.oncourse.webservices.replication.updaters.IWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.WillowUpdaterImpl;
-import ish.oncourse.webservices.soap.v7.ReferencePortType;
-import ish.oncourse.webservices.soap.v7.ReferencePortTypeImpl;
+import ish.oncourse.webservices.soap.v6.ReferencePortType;
+import ish.oncourse.webservices.soap.v6.ReferencePortTypeImpl;
 import ish.oncourse.webservices.usi.USIVerificationService;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.tapestry5.ioc.MappedConfiguration;

@@ -1,7 +1,7 @@
 package ish.oncourse.webservices.soap.v6;
 
 import ish.oncourse.test.tapestry.ServiceTest;
-import ish.oncourse.webservices.soap.ReplicationTestModule;
+import ish.oncourse.webservices.soap.v17.ReplicationTestModule;
 import ish.oncourse.webservices.util.GenericReferenceResult;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
