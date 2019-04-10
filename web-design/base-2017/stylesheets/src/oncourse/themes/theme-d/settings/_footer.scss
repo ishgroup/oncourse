@@ -213,8 +213,11 @@ $footerMainSocialLinksMarginBottom: 20px !default;
 $footerMainSocialLinksListWidth: 34px !default;
 $footerMainSocialLinksListPadding: 0 0 0px 10px !default;
 $footerMainSocialLinksListDisplay: inline-block !default;
-$footerMainSocialLinksListAnchorDisplay: block !default;
+$footerMainSocialLinksListAnchorDisplay: inline-block !default;
+$footerMainSocialLinksListAnchorColor: #fff !default;
+
 $footerMainSocialLinksListAnchorOpacityHover: 0.8 !default;
+$footerMainSocialLinksListAnchorColorHover: #fff !default;
 
 $footerMainTitleFontWeight: bold !default;
 $footerMainTitleFontSize: 20px !default;

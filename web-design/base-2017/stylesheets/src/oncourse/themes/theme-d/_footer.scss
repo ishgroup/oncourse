@@ -291,8 +291,10 @@
               display: $footerMainSocialLinksListDisplay;
               a {
                 display: $footerMainSocialLinksListAnchorDisplay;
+                color: $footerMainSocialLinksListAnchorColor;
                 &:hover {
                   @include opacity($footerMainSocialLinksListAnchorOpacityHover);
+                  color: $footerMainSocialLinksListAnchorColorHover;
                 }
               }
             }

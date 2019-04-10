@@ -81,7 +81,7 @@ $navListTextTransform: capitalize !default;
 $navListFloat: none !default;
 $navListFloatTablet: none !default;
 
-$navListDisplay: inline-block !important !default;
+$navListDisplay: block !important !default;
 $navListDisplayTablet: inline-block !important !default;
 $navListBottomBorder: 2px solid transparent !default;
 $navListMarginRight: 0 !default;
@@ -146,17 +146,17 @@ $navToggleIconHoverColor: darken($headerTopBarTextColor, 15%) !default;
 $navbarPosition: absolute !default;
 $navbarPositionTop: 0px !default;
 $navbarPositionLeft: 0 !default;
-$navbarPositionRight: auto !default;
+$navbarPositionRight: 0 !default;
 $navbarTextAlign: center !default;
 $navbarDisplay: none !default;
-$navbarMargin: 0 !default;
+$navbarMargin: 0 auto !default;
 $navbarZIndex: 99 !default;
 $navbarBoxShadow: 1px 1px 3px 1px darken($navbarBackgroundColor, 15%) !default;
 
 $navbarBackgroundMediaTablet: none !default;
 $navbarDisplayMediaTablet: block !important !default;
 $navbarBoxShadowMediaTablet: none !default;
-$navbarPositionTopMediaTablet: 0 !default;
+$navbarPositionTopMediaTablet: -72px !default;
 $navbarWidthMediaTablet: 65% !default;
 $navbarMarginRightMediaTablet: 180px !default;
 
@@ -304,7 +304,8 @@ $advancedSearchTitleColor-InternalPage: $white !default;
 $advanceSearchInputBG-Internal: #cecece !default;
 $advanceSearchInputBG-Home: #cecece !default;
 
-$searchBoxDisplaySmall: none !important !default;
+$searchBoxDisplay: none !default;
+$searchBoxDisplaySmall: none !default;
 
 $searchBoxPositionRight: 10px !default;
 $searchBoxWidth: auto !default;

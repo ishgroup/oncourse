@@ -103,6 +103,28 @@
         color: $coursesClassItemFeeDiscountColor;
         margin-left: 5px
       }
+      .fee-discount-range {
+        display: none;
+      }
+      .price {
+        padding-left: 0 !important;
+        ul {
+          padding: 0;
+          margin: 0;
+          list-style: none;
+          li {
+            display: inline-block;
+            margin: 0;
+            padding: 0;
+            &.fee-discount-range {
+              display: none;
+            }
+            &.fee-discounted {
+              margin-left: 2px;
+            }
+          }
+        }
+      }
     }
   }
 

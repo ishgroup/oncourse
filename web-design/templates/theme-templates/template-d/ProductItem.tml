@@ -10,7 +10,8 @@
 
   <t:block t:id="list">
     <h2 itemprop="name">
-      <a href="/product/${product.sku}" class="url" itemprop="url">${product.name}</a>
+      <meta content="https://${request.serverName}/product/${product.sku}" itemprop="url" />
+      <a href="/product/${product.sku}" class="url">${product.name}</a>
     </h2>
 
     <div class="description courseShortDescription">
