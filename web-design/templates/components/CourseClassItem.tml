@@ -148,13 +148,11 @@
                 </t:if>
               </div>
             </t:if>
-            <t:if test="allowByAplication" negate="true">
-              <span itemprop="offers" itemscope="itemscope" itemtype="http://schema.org/Offer">
-                <div class="col-xs-24 price">
-                  <div data-cid="fees" data-prop-id="${courseClass.id}"></div>
-                </div>
-              </span>
-            </t:if>
+            <span itemprop="offers" itemscope="itemscope" itemtype="http://schema.org/Offer">
+              <div class="col-xs-24 price">
+                <div data-cid="fees" data-prop-id="${courseClass.id}"></div>
+              </div>
+            </span>
           </div>
         </div>
       </div>

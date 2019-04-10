@@ -606,6 +606,9 @@
             &.fee-discount-range {
               display: none;
             }
+            &.fee-discounted {
+              margin-left: 2px;
+            }
           }
         }
       }
