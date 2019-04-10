@@ -27,6 +27,7 @@
       overflow: hidden !important;
     }
     &.has-static-menu-open {
+      overflow: hidden !important;
       .page-overlay {
         &::after {
           content: "";
@@ -289,9 +290,13 @@
 
           #nav {
             >ul {
-              a {
-                letter-spacing: $navAnchorLetterSpacing;
+              >li > a {
+                font-family: $fontFamilyOne;
+                font-size: $navAnchorTopFontSize;
                 font-weight: $navAnchorFontWeight;
+                line-height: 1.5;
+                margin-bottom: 25px;
+                display: inline-block;
               }
               >li {
                 >a, &:first-child>a, &:last-child>a {
@@ -345,10 +350,10 @@
             }
           }
           .top-nav-items {
-            display: block;
-            @include responsive($media-tablet) {
-              display: none;
-            }
+            display: none;
+            // @include responsive($media-tablet) {
+            //   display: none;
+            // }
             .nav-static-menu {
               max-width: 1360px;
               margin: 45px auto 0;
@@ -368,7 +373,7 @@
           }
           .nav-static-menu-item {
             > li {
-              position: absolute;
+              position: fixed;
               top: 0;
               left: 0;
               width: 100%;
@@ -376,6 +381,8 @@
               @include transform(translateY(-100%));
               @include transition(.75s transform cubic-bezier(.19,1,.22,1));
               margin-top: -3px;
+              max-height: 101%;
+              overflow-y: auto;
               >ul {
                 max-width: 1360px;
                 margin: 0 auto;
@@ -409,6 +416,14 @@
                 >ul > li {
                   @include opacity(1);
                 }
+              }
+            }
+          }
+          .navbar #nav {
+            ul.is-mobile {
+              display: block;
+              @include responsive($media-tablet) {
+                display: none;
               }
             }
           }
@@ -495,6 +510,22 @@
           >li {
             @include opacity(0);
             @include transition(.8s opacity cubic-bezier(.19,1,.22,1));
+
+            @include responsive($media-tablet) {
+              margin-bottom: 35px;
+            }
+            &.opened {
+              margin-bottom: 35px;
+              >a {
+                margin-bottom: 25px !important;
+              }
+            }
+            >a {
+              margin-bottom: 10px !important;
+              @include responsive($media-tablet) {
+                margin-bottom: 25px !important;
+              }
+            }
           }
           li {
             a {
@@ -503,17 +534,14 @@
           }
           li.hasChild {
             >ul {
+              display: none;
               @include responsive($media-tablet) {
+                display: $navChildMenuDisplay;
                 left: $navChildMenuPositionLeftMediaTablet;
                 margin-left: $navChildMenuMarginLeftMediaTablet;
               }
-              li {
-                a {
-                  white-space: $navChildMenuLinkWhiteSpace;
-                  overflow: $navChildMenuLinkOverflow;
-                  width: $navChildMenuLinkWidth;
-                  text-overflow: $navChildMenuLinkTextOverflow;
-                }
+              >li {
+                float: none;
               }
               >li.hasChildren>ul {
                 display: $navChildMenuChildrenDisplay;

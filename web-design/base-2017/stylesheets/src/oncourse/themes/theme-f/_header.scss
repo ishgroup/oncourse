@@ -31,7 +31,7 @@
             padding: $contentContainerPaddingSidebarRightTablet;
           }
         }
-        .search-terms, #sitesMap, .courseItem, ##{$sidebarWrapper} > div {
+        .search-terms, #sitesMap, .courses-browse-tag-details, .courseItem, ##{$sidebarWrapper} > div {
           @extend .page-shadow;
         }
         ##{$sidebarWrapper} {

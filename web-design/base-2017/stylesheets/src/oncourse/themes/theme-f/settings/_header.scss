@@ -42,7 +42,7 @@ $headerGroupSiteLogoZIndex: 0 !default;
 // Navigation
 $navbarPaddingLeft: 0px !default;
 $navbarBackgroundColor: $white !default;
-$navFontSize: 12px !default;
+$navFontSize: 15px !default;
 $navFontWeight: normal !default;
 $navWidth: auto !default;
 $navMarginTop: 0px !default;
@@ -57,7 +57,6 @@ $navTextAlign: left !default;
 $navTextAlignTablet: left !default;
 $navBorderColor: transparent !default;
 
-$navAnchorLetterSpacing: 1px !default;
 $navAnchorFontWeight: bold !default;
 
 $navListTextTransform: capitalize !default;
@@ -70,9 +69,9 @@ $navListDisplayTablet: block !important !default;
 $navListBottomBorder: 2px solid transparent !default;
 $navListMarginRight: 0 !default;
 
-$navAnchorColor: $anchorColor !default;
+$navAnchorColor: $primaryColor !default;
 $navAnchorHoverBG: transparent !default;
-$navAnchorHoverTextColor: $anchorHoverColor !default;
+$navAnchorHoverTextColor: $primaryColor !default;
 $navAnchorTopFontSize: 22px !default;
 
 $navAnchorPadding: 0px !default;
@@ -87,22 +86,23 @@ $navAnchorLineHeight: 36px !default;
 
 $navAnchorArrowColor: $navAnchorHoverBG !default;
 $firstChildMenuPadding: 0px !default;
-$firstChildMenuTablePadding: 10px 0 !default;
+$firstChildMenuTablePadding: 0 !default;
 $displayFullWidthMenu: none !default;
 $first-accent-color: $navAnchorHoverBG !default;
 $firstDropMenufullWidth: 117.1% !default;
 $firstDropMenuMargin: 0px -14.95% !default;
-$first-accent-width: 200px !default;
-$firstAccentNavAnchorColor: #c7c7c7 !default;
-$firstAccentNavAnchorPadding: 8px 20px !default;
+$first-accent-width: 100% !default;
+$firstAccentNavAnchorColor: $primaryColor !default;
+$firstAccentNavAnchorPadding: 0px !default;
+$firstAccentNavTextTransform: capitalize !default;
 
 $navChildMenuLinkHoverBG: transparent !default;
-$navChildMenuLinkHoverColor: $white !default;
-$navChildMenuTextAlign: center !default;
+$navChildMenuLinkHoverColor: $primaryColor !default;
+$navChildMenuTextAlign: left !default;
 $navChildMenuTextAlignTablet: left !default;
 
-$navChildMenuPositionLeftMediaTablet: 50% !default;
-$navChildMenuMarginLeftMediaTablet: -100px !default;
+$navChildMenuPositionLeftMediaTablet: 0 !default;
+$navChildMenuMarginLeftMediaTablet: 0 !default;
 
 $navChildMenuZIndex: 9999 !default;
 
@@ -112,6 +112,15 @@ $navChildMenuLinkWidth: 100% !default;
 $navChildMenuLinkTextOverflow: ellipsis !default;
 
 $navChildMenuChildrenDisplay: none !default;
+
+$navChildMenuDisplay: block !default;
+$navChildMenuMarginTop: 0 !default;
+$navChildMenuTop: 0 !default;
+
+$navChildMenuPositionMediaTablet: relative !default;
+
+$navChildMenuHoverTop: 0 !default;
+$navChildMenuHoverLinkDisplayMediaTablet: none !default;
 
 $navToggleBG: transparent !default;
 $navToggleTextColor: #231f20 !default;

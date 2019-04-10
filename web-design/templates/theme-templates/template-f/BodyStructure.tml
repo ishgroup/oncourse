@@ -34,10 +34,10 @@
 							<div class="top-nav-items">
 								<ul class="nav-static-menu">
 									<li class="hasChild">
-										<a href="/courses" data-name="courses" data-color="#daf0f6">Courses</a>
+										<a href="/courses" data-name="courses" data-identifier=".courses-menu-list .courses-list > ul" data-color="#daf0f6">Courses</a>
 									</li>
 									<li class="hasChild">
-										<a href="/#menu-2" data-name="menu-2" data-color="#ffffff">Menu 2</a>
+										<a href="/#menu-2" data-name="menu-2" data-identifier=".courses-menu-list .courses-list > ul" data-color="#ffffff">Menu 2</a>
 									</li>
 								</ul>
 							</div>
