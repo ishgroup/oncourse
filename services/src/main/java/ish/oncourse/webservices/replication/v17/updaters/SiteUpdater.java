@@ -7,6 +7,7 @@ import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v17.stubs.replication.SiteStub;
 import org.apache.cayenne.Cayenne;
+import org.apache.commons.lang3.StringUtils;
 
 public class SiteUpdater extends AbstractWillowUpdater<SiteStub, Site> {
 
@@ -23,31 +24,36 @@ public class SiteUpdater extends AbstractWillowUpdater<SiteStub, Site> {
 		if (stub.getCountryId() != null) {
 			entity.setCountry(Cayenne.objectForPK(entity.getObjectContext(), Country.class, stub.getCountryId()));
 		}
-		String drivingDirections = stub.getDrivingDirections();
-		if (drivingDirections != null) {
-			entity.setDrivingDirections(textileConverter.convertCoreTextile(drivingDirections));
-		}
-		entity.setDrivingDirectionsTextile(drivingDirections);
+
 		entity.setIsWebVisible(stub.isWebVisible());
 		entity.setLatitude(stub.getLatitude());
 		entity.setLongitude(stub.getLongitude());
 		entity.setName(stub.getName());
 		entity.setPostcode(stub.getPostcode());
-		String publicTransportDirections = stub.getPublicTransportDirections();
-		if (publicTransportDirections != null) {
-			entity.setPublicTransportDirections(textileConverter.convertCoreTextile(publicTransportDirections));
-		}
-		entity.setPublicTransportDirectionsTextile(publicTransportDirections);
-		String specialInstructions = stub.getSpecialInstructions();
-		if (specialInstructions != null) {
-			entity.setSpecialInstructions(textileConverter.convertCoreTextile(specialInstructions));
-		}
-		entity.setSpecialInstructionsTextile(specialInstructions);
-		entity.setState(stub.getState());
 		entity.setStreet(stub.getStreet());
 		entity.setSuburb(stub.getSuburb());
 		entity.setTimeZone(stub.getTimeZone());
 		entity.setIsVirtual(stub.isVirtual());
+		entity.setState(stub.getState());
+
+		entity.setDrivingDirectionsTextile(stub.getDrivingDirections());
+		entity.setDrivingDirections(
+				convertTextileOrNull(stub.getDrivingDirections()));
+
+		entity.setPublicTransportDirectionsTextile(stub.getPublicTransportDirections());
+		entity.setPublicTransportDirections(
+				convertTextileOrNull(stub.getPublicTransportDirections()));
+
+		entity.setSpecialInstructionsTextile(stub.getSpecialInstructions());
+		entity.setSpecialInstructions(
+				convertTextileOrNull(stub.getSpecialInstructions()));
 	}
 
+	public String convertTextileOrNull(String value) {
+	    String res = null;
+        if (value != null && !StringUtils.EMPTY.equals(value)) {
+            res = textileConverter.convertCoreTextile(value);
+        }
+        return res;
+    }
 }
