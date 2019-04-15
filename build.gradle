@@ -104,7 +104,16 @@ allprojects {
     }
 
 	group = 'ish.oncourse.angel'
-    publishing {
+
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                uniqueVersion = !version.endsWith('SNAPSHOT')
+            }
+        }
+    }
+    
+	publishing {
         repositories {
             maven {
                 name = "ish"
