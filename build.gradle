@@ -104,14 +104,6 @@ allprojects {
     }
 
 	group = 'ish.oncourse.angel'
-
-    uploadArchives {
-        repositories {
-            mavenDeployer {
-                uniqueVersion = !version.endsWith('SNAPSHOT')
-            }
-        }
-    }
     
 	publishing {
         repositories {
