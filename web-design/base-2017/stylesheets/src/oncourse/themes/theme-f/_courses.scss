@@ -127,6 +127,14 @@
         .courseItem {
           padding: $pageDefaultPadding;
           margin-bottom: $courseItemMarginBottom;
+          &.producItem {
+            .classItem {
+              padding: 55px 5px;
+              .classItem-right {
+                position: static;
+              }
+            }
+          }
         }
         .courses-browse-tag-details {
           padding: $pageDefaultPadding;
