@@ -29,34 +29,49 @@ public class TransactionStubBuilderImpl implements ITransactionStubBuilder {
 	 * @return soap stub
 	 */
 	public Set<GenericReplicationStub> createPaymentInTransaction(List<PaymentIn> payments, final SupportedVersions version) {
-
 		Set<GenericReplicationStub> paymentRelated = new LinkedHashSet<GenericReplicationStub>(20);
-
 		for (PaymentIn paymentIn : payments) {
-			
-			addRelatedStub(paymentRelated, paymentIn, version);
-			for (VoucherPaymentIn voucherPaymentIn : paymentIn.getVoucherPaymentIns()) {
-				addRelatedStub(paymentRelated, voucherPaymentIn, version);
-				addInvoiceRelatedStub(paymentRelated, voucherPaymentIn.getVoucher().getInvoiceLine().getInvoice(), version);
-			}
-
-			for (PaymentInLine paymentLine : paymentIn.getPaymentInLines()) {
-
-				addRelatedStub(paymentRelated, paymentLine, version);
-
-				Invoice invoice = paymentLine.getInvoice();
-				addInvoiceRelatedStub(paymentRelated, invoice, version);
-			}
-
-			addRelatedStub(paymentRelated, paymentIn.getContact(), version);
-			
-			if (paymentIn.getContact() != null) {
-				addRelatedStub(paymentRelated, paymentIn.getContact().getStudent(), version);
-				addRelatedStub(paymentRelated, paymentIn.getContact().getTutor(), version);
-			}
+			addRelatedTransactionEntities(paymentRelated, paymentIn, version);
 		}
-		
 		return paymentRelated;
+	}
+
+	public Set<GenericReplicationStub> createPaymentInTransaction(PaymentIn paymentIn, final SupportedVersions version) {
+		Set<GenericReplicationStub> paymentRelated = new LinkedHashSet<GenericReplicationStub>(20);
+		addRelatedTransactionEntities(paymentRelated, paymentIn, version);
+		return paymentRelated;
+	}
+
+	private void addRelatedTransactionEntities(Set<GenericReplicationStub> paymentRelated, PaymentIn paymentIn, SupportedVersions version) {
+		addRelatedPaymentIn(paymentRelated, paymentIn, version);
+		addRelatedVouchers(paymentRelated, paymentIn.getVoucherPaymentIns(), version);
+		addRelatedPaymentInLines(paymentRelated, paymentIn.getPaymentInLines(), version);
+		addRelatedStub(paymentRelated, paymentIn.getContact(), version);
+
+		if (paymentIn.getContact() != null) {
+			addRelatedStub(paymentRelated, paymentIn.getContact().getStudent(), version);
+			addRelatedStub(paymentRelated, paymentIn.getContact().getTutor(), version);
+		}
+	}
+
+	private void addRelatedPaymentIn(Set<GenericReplicationStub> paymentRelated, PaymentIn paymentIn, SupportedVersions version) {
+		addRelatedStub(paymentRelated, paymentIn, version);
+	}
+
+	private void addRelatedVouchers(Set<GenericReplicationStub> paymentRelated, List<VoucherPaymentIn> voucherPaymentIns, SupportedVersions version) {
+		for (VoucherPaymentIn voucherPaymentIn : voucherPaymentIns) {
+			addRelatedStub(paymentRelated, voucherPaymentIn, version);
+			addInvoiceRelatedStub(paymentRelated, voucherPaymentIn.getVoucher().getInvoiceLine().getInvoice(), version);
+		}
+
+	}
+
+	private void addRelatedPaymentInLines(Set<GenericReplicationStub> paymentRelated, List<PaymentInLine> paymentInLines, SupportedVersions version) {
+		for (PaymentInLine paymentLine : paymentInLines) {
+			addRelatedStub(paymentRelated, paymentLine, version);
+			Invoice invoice = paymentLine.getInvoice();
+			addInvoiceRelatedStub(paymentRelated, invoice, version);
+		}
 	}
 
 	public Set<GenericReplicationStub> createRefundTransaction(PaymentOut paymentOut, final SupportedVersions version) {

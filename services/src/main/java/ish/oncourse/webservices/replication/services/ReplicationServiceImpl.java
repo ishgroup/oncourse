@@ -1,11 +1,13 @@
 package ish.oncourse.webservices.replication.services;
 
 import ish.common.types.EntityMapping;
+import ish.oncourse.function.GetEntityTransactionByInstruction;
 import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.exception.StackTraceUtils;
+import ish.oncourse.webservices.replication.builders.ITransactionStubBuilder;
 import ish.oncourse.webservices.replication.builders.IWillowStubBuilder;
 import ish.oncourse.webservices.util.*;
 import org.apache.cayenne.Cayenne;
@@ -53,10 +55,18 @@ public class ReplicationServiceImpl implements IReplicationService {
 	@Inject
 	private IWebSiteService webSiteService;
 
+	@Inject
+	private ITransactionStubBuilder transactionBuilder;
+
 
 	@Override
 	public GenericTransactionGroup getRecordByInstruction(String instruction, SupportedVersions version) throws InternalReplicationFault {
-		return PortHelper.createTransactionGroup(version);
+
+		return GetEntityTransactionByInstruction
+				.valueOf(cayenneService.newContext(), stubBuilder,
+						transactionBuilder, webSiteService.getCurrentCollege(),
+						instruction, version)
+				.get();
 	}
 
 	/**

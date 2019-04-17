@@ -109,7 +109,6 @@ public class PaymentServiceImpl implements InternalPaymentService {
             List<PaymentIn> updatedPayments = processModel(paymentInModel);
 
             newContext.commitChanges();
-
             return createResponse(transaction, updatedPayments);
         } catch (Exception e) {
             logger.error("Exception happened after paymentIn: {} was saved. ", paymentInModel.getPaymentIn().getId(), e);

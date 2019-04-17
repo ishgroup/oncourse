@@ -15,5 +15,7 @@ public interface ITransactionStubBuilder {
 
 	Set<GenericReplicationStub> createPaymentInTransaction(List<PaymentIn> paymentIn, final SupportedVersions version);
 
+	Set<GenericReplicationStub> createPaymentInTransaction(PaymentIn paymentIn, final SupportedVersions version);
+
 	Set<GenericReplicationStub> createRefundTransaction(PaymentOut paymentOut, final SupportedVersions version);
 }
