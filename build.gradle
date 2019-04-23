@@ -3,11 +3,11 @@ buildscript {
 		cayenneVersion = '4.0.B1'
 		ehcacheVersion = '3.4.0'
 		log4j2Version = '2.10.0'
-        waCommonWebservicesClientVersion = '54'
+        waCommonWebservicesClientVersion = '55'
 		solrVersion = '7.1.0'
 		groovyVersion = '2.4.12'
-		mariadbVersion = '2.2.2'
-		tapestryVersion = '5.4.3'
+        mariadbVersion = '2.4.1'
+        tapestryVersion = '5.4.3'
 		bootiqueVersion = '0.23'
 	}
 

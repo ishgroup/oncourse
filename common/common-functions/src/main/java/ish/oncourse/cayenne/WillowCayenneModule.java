@@ -4,6 +4,7 @@
 package ish.oncourse.cayenne;
 
 import ish.math.MoneyType;
+import ish.oncourse.cayenne.adapter.MariaDbSniffer;
 import org.apache.cayenne.cache.QueryCache;
 import org.apache.cayenne.configuration.Constants;
 import org.apache.cayenne.configuration.ObjectContextFactory;
@@ -26,6 +27,7 @@ public class WillowCayenneModule implements Module {
 	public void configure(org.apache.cayenne.di.Binder binder) {
 		binder.bindMap(String.class, Constants.PROPERTIES_MAP).put(Constants.CI_PROPERTY, "true");
 		ServerModule.contributeUserTypes(binder).add(MoneyType.class);
+		ServerModule.contributeAdapterDetectors(binder).add(MariaDbSniffer.class);
 		binder.bind(ObjectContextFactory.class).toInstance(new WillowDataContextFactory());
 
 		if (queryCache != null) {
