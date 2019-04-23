@@ -198,10 +198,16 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 	installer.dependsOn {
 		project.tasks.findAll { it.name.startsWith('installer_') }
 	}
-	if (version != "SNAPSHOT") {
-		installer.dependsOn(notarize)
+
+	notarize.onlyIf {
+				version != 'SNAPSHOT'
 	}
-	
+
+	afterEvaluate {
+		installer_osx.dependsOn(notarize)
+	}
+
+
 	codeSign.dependsOn {
 		project.prepareKeychains
 	}
