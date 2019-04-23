@@ -8,5 +8,7 @@ dependencies {
     compile group: 'org.codehaus.groovy', name: 'groovy-all', version: groovyVersion
 
     testCompile project(':common:test-functions')
-    testCompile 'org.liquibase:liquibase-core:2.0.1'
+    compile ('org.liquibase:liquibase-core:3.6.3') {
+        exclude group: 'ch.qos.logback', module: 'logback-classic'
+    }
 }

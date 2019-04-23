@@ -1001,9 +1001,9 @@
     <dropIndex tableName="postcode_db" indexName="postcode"/>
     </changeSet>
     
-    <changeSet id="66" author="viacheslav" context="production" runOnChange="true">
-    	<customChange class="ish.oncourse.utils.MigrateReferencesUpgrage"/>
-    </changeSet>
+    <!--<changeSet id="66" author="viacheslav" context="production" runOnChange="true">-->
+    	<!--<customChange class="ish.oncourse.utils.MigrateReferencesUpgrage"/>-->
+    <!--</changeSet>-->
     
     <changeSet id="67" author="andrey" context="production" runOnChange="true">
         <sql>ALTER TABLE WebContentVisibility DROP FOREIGN KEY WebContentVisibility_WebNode</sql>
@@ -1025,9 +1025,9 @@
     	</addColumn>
     </changeSet>
     
-    <changeSet id="69" author="dzmitry" context="production" runOnChange="true">
-    	<customChange class="ish.oncourse.model.liquibase.LicenseFeeBillingMonthUpgrade"/>
-    </changeSet>
+    <!--<changeSet id="69" author="dzmitry" context="production" runOnChange="true">-->
+    	<!--<customChange class="ish.oncourse.model.liquibase.LicenseFeeBillingMonthUpgrade"/>-->
+    <!--</changeSet>-->
     
     <changeSet id="70" author="dzmitry" context="production" runOnChange="true">
     	<preConditions>
@@ -1517,9 +1517,9 @@
     	<dropColumn tableName="Qualification" columnName="anzsic"/>
     </changeSet>
     
-    <changeSet id="95" author="viacheslav" context="production" runOnChange="true">
-    	<customChange class="ish.oncourse.model.liquibase.CleanupDuplicatedPaymentInLinesUpgrage"/>
-    </changeSet>
+    <!--<changeSet id="95" author="viacheslav" context="production" runOnChange="true">-->
+    	<!--<customChange class="ish.oncourse.model.liquibase.CleanupDuplicatedPaymentInLinesUpgrage"/>-->
+    <!--</changeSet>-->
     
     <changeSet id="96" author="viacheslav" context="production" runOnChange="true">
     	<preConditions onFail="MARK_RAN">
@@ -1648,9 +1648,9 @@
 		</addColumn>
 	</changeSet>
 
-	<changeSet id="109" author="andrey" context="production" runOnChange="true">
-		<customChange class="ish.oncourse.model.liquibase.ReplaceId2NameForImageTag"/>
-	</changeSet>
+	<!--<changeSet id="109" author="andrey" context="production" runOnChange="true">-->
+		<!--<customChange class="ish.oncourse.model.liquibase.ReplaceId2NameForImageTag"/>-->
+	<!--</changeSet>-->
 
     <changeSet id="110" author="viacheslav" context="production" runOnChange="true">
         <preConditions onFail="MARK_RAN">
@@ -2137,9 +2137,9 @@
             ALTER TABLE SessionTutor CHANGE COLUMN collegeId collegeId bigint NOT NULL
         </sql>
     </changeSet>
-    <changeSet id="142" author="andrey" context="production" runOnChange="true">
-        <customChange class="ish.oncourse.model.liquibase.CreatedAndModifiedFieldFix"/>
-    </changeSet>
+    <!--<changeSet id="142" author="andrey" context="production" runOnChange="true">-->
+        <!--<customChange class="ish.oncourse.model.liquibase.CreatedAndModifiedFieldFix"/>-->
+    <!--</changeSet>-->
     <changeSet id="143" author="andrey" context="production" runOnChange="true">
         <sql>
             ALTER TABLE Enrolment MODIFY created DATETIME NOT NULL
