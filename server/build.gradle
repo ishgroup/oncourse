@@ -104,7 +104,6 @@ dependencies {
 	compile "org.apache.derby:derbyclient:$derbyVersion"
 	compile "org.apache.derby:derbynet:$derbyVersion"
 
-	// can't go above 2.0.5 due to the bug in liquibase [https://liquibase.jira.com/browse/CORE-2265]
 	compile group: 'org.liquibase', name: 'liquibase-maven-plugin', version: '3.6.3'
 
 	compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: mariadbVersion
