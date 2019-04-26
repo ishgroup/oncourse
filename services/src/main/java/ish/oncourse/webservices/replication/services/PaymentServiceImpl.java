@@ -97,7 +97,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
 
             newContext = cayenneService.newContext();
 
-            paymentInModel = parametersMap == null ? PaymentInModelFromReplicatedRecordsBuilder.valueOf(replicatedRecords, newContext).build().getModel():
+            paymentInModel = parametersMap == null || parametersMap.getEntry().size() == 0 ? PaymentInModelFromReplicatedRecordsBuilder.valueOf(replicatedRecords, newContext).build().getModel():
                     PaymentInModelFromParametersMapBuilder.valueOf(parametersMap, replicatedRecords, webSiteService.getCurrentCollege(), newContext).build().getModel();
         } catch (Exception e) {
             logger.error("Unable to process payment in.", e);
