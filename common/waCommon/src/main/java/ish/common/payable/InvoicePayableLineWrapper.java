@@ -101,6 +101,10 @@ public class InvoicePayableLineWrapper implements IInvoiceLineInterface {
 		return this.invoiceLine.getQuantity();
 	}
 
+	public void setQuantity(BigDecimal quantity) {
+		this.invoiceLine.setQuantity(quantity);
+	}
+
 	public Money getDiscountEachExTax() {
 		return this.invoiceLine.getDiscountEachExTax();
 	}

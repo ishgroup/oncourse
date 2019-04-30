@@ -19,6 +19,11 @@ public interface IInvoiceLineInterface extends PayableLineInterface {
 	BigDecimal getQuantity();
 
 	/**
+	 * this method is supposed to be overridden by cayenne-generated _InvoiceLine - writing of the quantity property
+	 */
+	void setQuantity(BigDecimal quantity);
+
+	/**
 	 * this method is supposed to be overridden by cayenne-generated _InvoiceLine - writing of the discountEachExTax property
 	 * 
 	 * @return discount per unit wihout tax
