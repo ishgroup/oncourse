@@ -148,6 +148,11 @@ public class MockInvoiceLine implements IInvoiceLineInterface {
 		return this.quantity;
 	}
 
+	@Override
+	public void setQuantity(BigDecimal quantity) {
+		this.quantity = quantity;
+	}
+
 	public Money getFinalPriceToPayIncTax() {
 		return getPriceTotalIncTax().subtract(getDiscountTotalIncTax());
 	}
