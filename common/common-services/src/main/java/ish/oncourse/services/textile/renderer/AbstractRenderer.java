@@ -31,7 +31,7 @@ public abstract class AbstractRenderer implements IRenderer {
 		if (StringUtils.trimToNull(paramStringValue) != null) {
 			paramStringValue = paramStringValue.toLowerCase();
 		}
-		return Boolean.getBoolean(paramStringValue) || YES_REQUIRED_PARAM_VALUE.equals(paramStringValue);
+		return Boolean.parseBoolean(paramStringValue) || YES_REQUIRED_PARAM_VALUE.equals(paramStringValue);
 	}
 
 	public String render(String tag) {
