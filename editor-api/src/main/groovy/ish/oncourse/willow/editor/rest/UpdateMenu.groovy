@@ -2,6 +2,7 @@ package ish.oncourse.willow.editor.rest
 
 import ish.oncourse.model.WebMenu
 import ish.oncourse.model.WebNode
+import ish.oncourse.utils.ResourceEmptyNameValidator
 import ish.oncourse.utils.ResourceNameValidator
 import ish.oncourse.willow.editor.v1.model.MenuItem
 import ish.oncourse.willow.editor.website.WebMenuFunctions
@@ -54,9 +55,9 @@ class UpdateMenu extends AbstractUpdate<List<MenuItem>> {
             WebMenu menu = null
             menuItem.title = StringUtils.trimToEmpty(menuItem.title)
             menuItem.url = StringUtils.trimToEmpty(menuItem.url)
-            String error = new ResourceNameValidator().validate(menuItem.title)
+            String error = new ResourceEmptyNameValidator().validate(menuItem.title)
             if (error) {
-                menuItem.error = "Menu name: $menuItem.title is wrong. $error"
+                menuItem.error = "Menu name $menuItem.title is wrong. $error"
                 errors << menuItem.error
             } else if (root.childrenMenus.find { child -> child.name == menuItem.title }.any()) {
                 menuItem.error = "Menu name: $menuItem.title is wrong. The name is already used."
