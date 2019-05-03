@@ -55,7 +55,7 @@ class UpdateMenu extends AbstractUpdate<List<MenuItem>> {
             WebMenu menu = null
             menuItem.title = StringUtils.trimToEmpty(menuItem.title)
             menuItem.url = StringUtils.trimToEmpty(menuItem.url)
-            String error = new ResourceEmptyNameValidator().validate(menuItem.title)
+            String error = ResourceEmptyNameValidator.valueOf().validate(menuItem.title)
             if (error) {
                 menuItem.error = "Menu name $menuItem.title is wrong. $error"
                 errors << menuItem.error

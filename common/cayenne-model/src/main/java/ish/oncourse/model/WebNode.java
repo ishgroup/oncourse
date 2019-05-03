@@ -79,7 +79,7 @@ public class WebNode extends _WebNode {
     @Override
     protected void validateForSave(ValidationResult validationResult) {
         super.validateForSave(validationResult);
-        String error = new ResourceNameValidator().validate(getName());
+        String error = ResourceNameValidator.valueOf().validate(getName());
         if (error != null)
             validationResult.addFailure(ValidationFailure.validationFailure(this, WebNode.NAME_PROPERTY, error));
     }

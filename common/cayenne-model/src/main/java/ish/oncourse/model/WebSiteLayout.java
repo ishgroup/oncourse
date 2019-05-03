@@ -14,7 +14,7 @@ public class WebSiteLayout extends _WebSiteLayout {
 
     protected void validateForSave(ValidationResult validationResult) {
         super.validateForSave(validationResult);
-        String error = new ResourceNameValidator().validate(getLayoutKey());
+        String error = ResourceNameValidator.valueOf().validate(getLayoutKey());
         if (error != null) {
             validationResult.addFailure(ValidationFailure.validationFailure(this, WebSiteLayout.LAYOUT_KEY.getName(), error));
         }

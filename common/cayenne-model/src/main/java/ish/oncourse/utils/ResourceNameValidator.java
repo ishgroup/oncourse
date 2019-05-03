@@ -9,6 +9,20 @@ import org.apache.commons.lang3.StringUtils;
  */
 
 public class ResourceNameValidator {
+
+    private char[] excludeChars = null;
+
+    private ResourceNameValidator() {}
+
+    public static ResourceNameValidator valueOf() {
+        return new ResourceNameValidator();
+    }
+
+    public static ResourceNameValidator valueOf(char[] excludeChars) {
+        ResourceNameValidator obj = new ResourceNameValidator();
+        obj.excludeChars = excludeChars;
+        return obj;
+    }
     
     public String validate(String name) {
         name = StringUtils.trimToEmpty(name);
@@ -16,6 +30,6 @@ public class ResourceNameValidator {
             return "Name length cannot be less than 3 characters.";
         }
 
-        return ResourceInvalidCharsValidator.valueOf(null).validate(name);
+        return ResourceInvalidCharsValidator.valueOf(excludeChars).validate(name);
     }
 }

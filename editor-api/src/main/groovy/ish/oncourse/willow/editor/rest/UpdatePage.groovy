@@ -44,7 +44,7 @@ class UpdatePage extends AbstractUpdate<Page> {
         }
         
         resourceToSave.title = StringUtils.trimToEmpty(resourceToSave.title)
-        error = new ResourceNameValidator().validate(resourceToSave.title)
+        error = ResourceNameValidator.valueOf().validate(resourceToSave.title)
         if (error) {
             return this
         }

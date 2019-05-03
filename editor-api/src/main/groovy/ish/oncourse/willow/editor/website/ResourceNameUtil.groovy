@@ -61,6 +61,6 @@ class ResourceNameUtil {
     }
     
     static ResourceNameValidator getNameValidator() {
-        new ResourceNameValidator().excludeChars([/$/, /#/, /&/, /?/] as char[])
+        ResourceNameValidator.valueOf([/$/, /#/, /&/, /?/] as char[])
     }
 }
