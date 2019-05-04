@@ -39,7 +39,7 @@ task testSecureRandom(dependsOn: testClasses) {
 	doLast {
 		def f = file("build/randomPasswordTest.txt")
 		if (f.exists()) {
-			f.delete();
+			f.delete()
 		}
 
 		100.times {
@@ -54,7 +54,7 @@ task testSecureRandom(dependsOn: testClasses) {
 			// read the file, check that they are all unique
 			Set<String> lines = new HashSet<String>()
 			f.eachLine { s ->
-	      		assert lines.add(s);
+	      		assert lines.add(s)
 			}
 		}
 	}
