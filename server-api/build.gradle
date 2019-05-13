@@ -13,7 +13,7 @@ sourceSets.test.groovy.srcDir 'src/test/java'
 apply from: "$rootDir/gradle/bootique.gradle"
 
 dependencies {
-    compile 'io.swagger:swagger-annotations:1.5.18'
+    compile 'io.swagger:swagger-annotations:1.5.21'
     compile "org.codehaus.groovy:groovy-all:$groovyVersion"
 
     compile 'org.apache.cxf:cxf-core:3.2.2'
