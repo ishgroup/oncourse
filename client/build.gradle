@@ -88,8 +88,8 @@ dependencies {
 
 	testCompile "io.bootique:bootique-test:$bootiqueVersion"
 
-	jreMac 'net.adoptopenjdk:jre11-mac-x64-hotspot:11.28@tar.gz'
-	jreWin 'net.adoptopenjdk:jre11-win-x64-hotspot:11.28@zip'
+	jreMac 'net.adoptopenjdk:jre11-mac-x64-hotspot:11.0.3-7@tar.gz'
+	jreWin 'net.adoptopenjdk:jre11-win-x64-hotspot:11.0.3-7@zip'
 }
 
 jar {
