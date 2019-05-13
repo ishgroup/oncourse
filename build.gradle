@@ -4,10 +4,10 @@ buildscript {
 	ext {
 		waCommonWebservicesClientVersion = '55'
 		log4j2Version = '2.11.1'
-		cayenneVersion = '4.1.M1'
+		cayenneVersion = '4.1.B2'
 		jettyVersion = '9.4.18.v20190429'
         mariadbVersion = '2.4.1'
-		derbyVersion = '10.14.2.0'
+		derbyVersion = '10.14.2.0' // note that 10.15 requires Java9
 		googleGuiceVersion = '4.2.0'
 		groovyVersion = '2.5.7'
 		springframeworkVersion = '5.0.6.RELEASE'
