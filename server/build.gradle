@@ -87,7 +87,9 @@ dependencies {
 	}
 
 	compile "org.apache.cayenne:cayenne-lifecycle:$cayenneVersion"
+	compile "org.apache.cayenne:cayenne-rop-server:$cayenneVersion"
 	compile "org.apache.cayenne:cayenne-protostuff:$cayenneVersion"
+	compile "org.apache.cayenne:cayenne-commitlog:$cayenneVersion"
 
 	compile "org.eclipse.jetty:jetty-servlet:$jettyVersion"
 	
