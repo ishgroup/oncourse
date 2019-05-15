@@ -4,7 +4,7 @@ import org.gradle.api.internal.artifacts.publish.DefaultPublishArtifact
 
 apply plugin: 'groovy'
 apply plugin: 'apidoc'
-apply plugin: 'cayenne'
+apply plugin: 'org.apache.cayenne'
 
 apply from: "$rootDir/gradle/bootique.gradle"
 apply plugin: 'com.github.psxpaul.execfork'
@@ -254,16 +254,6 @@ test {
 	}
 }
 
-cayenne {
-	cayenneMap = file ("${projectDir}/../common/src/main/resources/cayenne/AngelMap.map.xml")
-	superPkg = "ish.oncourse.cayenne.glue"
-	serverSuperPkg = "ish.oncourse.server.cayenne.glue"
-	templateDir = file ("${projectDir}/../common/src/main/resources/cayenne/dotemplates/")
-	type = 'server'
-	mode = 'all'
-	destDir = file ("${projectDir}/src/main/java")
-}
-
 task agentJar(type: Copy) {
 	from configurations.javaAgent
 	into "${buildDir}/${pathToJavaAgent}/"
@@ -503,8 +493,32 @@ task queryGrammar(type: au.com.ish.Aql) {
 	target = 'Java'
 }
 
+cayenne.defaultDataMap "${projectDir}/../common/src/main/resources/cayenne/AngelMap.map.xml"
+
+task clientCgen(type: cayenne.cgen) {
+	client = true
+	makePairs = true
+	createPropertyNames = true
+	template = "${projectDir}/../common/src/main/resources/cayenne/dotemplates/client-subclass-serverside.vm"
+	superTemplate = "${projectDir}/../common/src/main/resources/cayenne/dotemplates/client-superclass-serverside.vm"
+	mode = 'entity'
+	superPkg = 'ish.oncourse.cayenne.glue'
+	destDir = file ("${projectDir}/src/main/java")
+}
+
+task serverCgen(type: cayenne.cgen) {
+	client = false
+	makePairs = true
+	createPropertyNames = true
+	template = "${projectDir}/../common/src/main/resources/cayenne/dotemplates/subclass.vm"
+	superTemplate = "${projectDir}/../common/src/main/resources/cayenne/dotemplates/superclass.vm"
+	mode = 'entity'
+	superPkg = 'ish.oncourse.server.cayenne.glue'
+	destDir = file ("${projectDir}/src/main/java")
+}
+
 compileGroovy {
-	dependsOn queryGrammar
+	dependsOn queryGrammar, clientCgen, serverCgen
 }
 
 
