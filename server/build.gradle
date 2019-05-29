@@ -87,7 +87,10 @@ dependencies {
 	}
 
 	compile "org.apache.cayenne:cayenne-lifecycle:$cayenneVersion"
-	compile "org.apache.cayenne:cayenne-rop-server:$cayenneVersion"
+	compile ("org.apache.cayenne:cayenne-rop-server:$cayenneVersion") {
+		exclude group: "org.slf4"
+	}
+	
 	compile "org.apache.cayenne:cayenne-protostuff:$cayenneVersion"
 	compile "org.apache.cayenne:cayenne-commitlog:$cayenneVersion"
 
@@ -108,7 +111,9 @@ dependencies {
 	compile "org.apache.derby:derbyclient:$derbyVersion"
 	compile "org.apache.derby:derbynet:$derbyVersion"
 
-	compile group: 'org.liquibase', name: 'liquibase-maven-plugin', version: '3.6.3'
+	compile ("org.liquibase:liquibase-maven-plugin:3.6.3") {
+		exclude group: "ch.qos.logback"
+	}
 
 	compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: mariadbVersion
 	compile 'com.microsoft.sqlserver:mssql-jdbc:6.2.1.jre8'
