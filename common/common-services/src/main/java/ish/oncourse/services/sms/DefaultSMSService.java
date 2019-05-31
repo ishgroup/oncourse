@@ -21,7 +21,6 @@ public class DefaultSMSService implements ISMSService {
 
 	private static final Logger logger = LogManager.getLogger();
 
-	private static final String EncodeType = "UTF-8";
 
 	private static final Pattern NO_WHITESPACE_PATTERN = Pattern.compile("^[^\\s]+$");
 
@@ -95,17 +94,7 @@ public class DefaultSMSService implements ISMSService {
 
 		try {
 
-			String toEncoded = to.replaceAll("\\D", "");
-
-			if (toEncoded.startsWith("0")) {
-				toEncoded = toEncoded.replaceFirst("0", "+61");
-			}
-
-			String fromEncoded = URLEncoder.encode(from.trim().replaceAll("(\\s)+", "."), EncodeType);
-			String textEncoded = URLEncoder.encode(text.trim(), EncodeType);
-
-			URL sendingUrl = new URL(smsGatewayURL + "sendmsg?session_id=" + sessionId + "&to=" + toEncoded + "&from=" + fromEncoded
-					+ "&text=" + textEncoded);
+			URL sendingUrl = ClicatelApiUrlBuilder.valueOf(sessionId, to,from,text, smsGatewayURL).build();
 
 			BufferedReader in = new BufferedReader(new InputStreamReader(sendingUrl.openStream()));
 			// the response should be one line ERR: errorCode, errorDescription
