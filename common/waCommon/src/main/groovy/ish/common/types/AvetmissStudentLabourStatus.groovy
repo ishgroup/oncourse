@@ -44,7 +44,7 @@ public enum AvetmissStudentLabourStatus implements DisplayableExtendedEnumeratio
 	 * Database value: 4 Employer
 	 */
 	@API
-	EMPLOYER(4, "Employer"),
+	EMPLOYER(4, "Self-employed – employing others"),
 
 	/**
 	 * Database value: 5 Employed - unpaid in family business
