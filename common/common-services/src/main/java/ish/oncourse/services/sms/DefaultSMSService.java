@@ -101,7 +101,7 @@ public class DefaultSMSService implements ISMSService {
 				toEncoded = toEncoded.replaceFirst("0", "+61");
 			}
 
-			String fromEncoded = URLEncoder.encode(from.trim(), EncodeType);
+			String fromEncoded = URLEncoder.encode(from.trim().replaceAll("(\\s)+", "."), EncodeType);
 			String textEncoded = URLEncoder.encode(text.trim(), EncodeType);
 
 			URL sendingUrl = new URL(smsGatewayURL + "sendmsg?session_id=" + sessionId + "&to=" + toEncoded + "&from=" + fromEncoded
