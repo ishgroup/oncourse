@@ -2,7 +2,7 @@ import org.gradle.internal.os.OperatingSystem
 
 buildscript {
 	ext {
-		waCommonWebservicesClientVersion = '55'
+		waCommonWebservicesClientVersion = '57'
 		log4j2Version = '2.11.1'
 		cayenneVersion = '4.1.B2'
 		jettyVersion = '9.4.18.v20190429'
