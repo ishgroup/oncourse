@@ -1,6 +1,5 @@
 package ish.oncourse.willow.checkout.persistent
 
-import ish.common.types.ConfirmationStatus
 import ish.common.types.ProductStatus
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact

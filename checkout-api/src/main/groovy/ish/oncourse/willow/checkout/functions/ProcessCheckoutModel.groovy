@@ -295,7 +295,7 @@ class ProcessCheckoutModel {
         a.errors.clear()
         a.warnings.clear()
         if (a.selected) {
-            ProcessProduct processProduct = new ProcessProduct(context, contact, college, a.productId, model.payerId, taxOverridden).process()
+            ProcessProduct processProduct = new ProcessProduct(context, contact, college, a.productId, a.quantity, model.payerId, taxOverridden).process()
             if (processProduct.article == null) {
                 a.errors << "Purchase is wrong"
             } else {
@@ -319,7 +319,7 @@ class ProcessCheckoutModel {
         m.errors.clear()
         m.warnings.clear()
         if (m.selected) {
-            ProcessProduct processProduct = new ProcessProduct(context, contact, college, m.productId, model.payerId, taxOverridden).process()
+            ProcessProduct processProduct = new ProcessProduct(context, contact, college, m.productId, 1, model.payerId, taxOverridden).process()
             if (processProduct.membership == null) {
                 m.errors << "Purchase is wrong"
             } else {

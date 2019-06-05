@@ -36,7 +36,7 @@ class ContactApiTest extends ApiTest {
     void getorCreateContact() {
         RequestFilter.ThreadLocalSiteKey.set('mammoth')
         ContactApi api = new ContactApiServiceImpl(cayenneService, new CollegeService(cayenneService))
-        ContactId contactId = api.createOrGetContact(new CreateContactParams(firstName: 'Student1', lastName:'Student1', email:'Student1@Student1.net', fieldSet: ENROLMENT))
+        ContactId contactId = api.createOrGetContact(new CreateContactParams(firstName: 'Student1', lastName:'Student1N', email:'Student1@Student1.net', fieldSet: ENROLMENT))
 
         assertEquals("1001", contactId.id)
         assertEquals(false, contactId.newContact)

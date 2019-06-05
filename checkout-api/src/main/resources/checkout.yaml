@@ -1094,7 +1094,7 @@ definitions:
     requred:
     - contactId
     - classIds
-    - productIds
+    - products
     - waitingCourseIds
     - mandatoryOnly
     - fieldSet
@@ -1109,10 +1109,10 @@ definitions:
         items:
           type: string
         description: Requested classe's ids
-      productIds:
+      products:
         type: array
         items:
-          type: string
+          $ref: '#/definitions/checkout.request.ProductContainer'
         description: Requested product's ids
       waitingCourseIds:
         type: array
@@ -1321,6 +1321,7 @@ definitions:
     - errors
     - price
     - selected
+    - quantity
     properties:
       contactId:
         type: string
@@ -1338,6 +1339,8 @@ definitions:
         type: number
       selected:
         type: boolean
+      quantity:
+        type: integer
   checkout.Membership:
     type: object
     requred:
@@ -1374,6 +1377,7 @@ definitions:
     - price
     - selected
     - isEditablePrice
+    - quantity
     properties:
       contactId:
         type: string
@@ -1399,6 +1403,8 @@ definitions:
         type: boolean
       isEditablePrice:
         type: boolean
+      quantity:
+        type: integer
   checkout.WaitingList:
     type: object
     requred:
@@ -1433,12 +1439,22 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/field.FieldHeading'
+  checkout.request.ProductContainer:
+      type: object
+      required:
+        - productId
+        - quantity
+      properties:
+        productId:
+          type: string
+        quantity:
+          type: integer
   checkout.request.ContactNodeRequest:
       type: object
       requred:
       - contactId
       - classIds
-      - productIds
+      - products
       - waitingCourseIds
       - promotionIds
       properties:
@@ -1452,10 +1468,10 @@ definitions:
           type: array
           items:
             type: string
-        productIds:
+        products:
           type: array
           items:
-            type: string
+            $ref: '#/definitions/checkout.request.ProductContainer'
         promotionIds:
           type: array
           items:
@@ -1598,6 +1614,8 @@ definitions:
       - FAILED
       - SUCCESSFUL
       - UNDEFINED
+      - SUCCESSFUL_WAITING_COURSES
+      - SUCCESSFUL_BY_PASS
   checkout.payment.PaymentResponse:
     type: object
     properties:

@@ -118,6 +118,13 @@ public class InvoicePayableLine extends WillowCayenneObject implements IInvoiceL
 	}
 
 	/**
+	 * @see ish.common.payable.IInvoiceLineInterface#setQuantity(BigDecimal)
+	 */
+	public void setQuantity(BigDecimal quantity) {
+		waPayableLine.setQuantity(quantity);
+	}
+
+	/**
 	 * @see ish.common.payable.IInvoiceLineInterface#getInvoiceTax()
 	 */
 	public TaxInterface getInvoiceTax() {

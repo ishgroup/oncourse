@@ -28,6 +28,7 @@ class ProcessProduct {
     Contact contact
     College college
     String productId
+    Integer quantityVal
     String payerId
 
     Article article
@@ -36,12 +37,13 @@ class ProcessProduct {
     Product persistentProduct
     private Tax taxOverridden
     
-    ProcessProduct(ObjectContext context, Contact contact, College college, String productId, String payerId, Tax taxOverridden) {
+    ProcessProduct(ObjectContext context, Contact contact, College college, String productId, Integer quantity, String payerId, Tax taxOverridden) {
         this.context = context
         this.contact = contact
         this.college = college
         this.productId = productId
         this.payerId = payerId
+        this.quantityVal = quantity
         this.taxOverridden = taxOverridden
     }
     
@@ -56,7 +58,8 @@ class ProcessProduct {
                     a.contactId = contact.id.toString()
                     a.productId = persistentProduct.id.toString()
                     a.selected = true
-                    a.price =  new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, taxOverridden, persistentProduct).calculate().finalPriceToPayIncTax.doubleValue()
+                    a.quantity = quantity
+                    a.price =  new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, taxOverridden, persistentProduct, quantity).calculate().finalPriceToPayIncTax.doubleValue()
                     a
                 }
                 break
@@ -65,7 +68,7 @@ class ProcessProduct {
                     m.contactId = contact.id.toString()
                     m.productId = persistentProduct.id.toString()
                     m.selected = true
-                    m.price = new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, taxOverridden, persistentProduct).calculate().finalPriceToPayIncTax.doubleValue()
+                    m.price = new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, taxOverridden, persistentProduct, BigDecimal.ONE).calculate().finalPriceToPayIncTax.doubleValue()
                     ValidateMembership validateMembership = new ValidateMembership(context, college).validate(persistentProduct as MembershipProduct, contact)
                     m.errors += validateMembership.errors
                     m.warnings += validateMembership.warnings
@@ -82,21 +85,25 @@ class ProcessProduct {
                     v.productId = voucher.id.toString()
                     v.selected = true
 
+                    BigDecimal quantity = quantityVal != null ? new BigDecimal(quantityVal) : BigDecimal.ONE
+                    v.quantity = quantity.toInteger()
+
+
                     if (voucher.redemptionCourses.empty && voucher.value == null) {
                         v.price =  DEFAULT_VOUCHER_PRICE.doubleValue()
                         v.value = v.price
                         v.isEditablePrice = true
                     } else if (voucher.value != null) {
-                        v.price =  new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, persistentProduct.taxRate, persistentProduct.taxAdjustment).calculate().finalPriceToPayIncTax.doubleValue()
+                        v.price =  new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, persistentProduct.taxRate, persistentProduct.taxAdjustment, quantity).calculate().finalPriceToPayIncTax.doubleValue()
                         v.value = voucher.value.doubleValue()
                         v.isEditablePrice = false
                     } else {
-                        v.price =  new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, persistentProduct.taxRate, persistentProduct.taxAdjustment).calculate().finalPriceToPayIncTax.doubleValue()
+                        v.price =  new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, persistentProduct.taxRate, persistentProduct.taxAdjustment, quantity).calculate().finalPriceToPayIncTax.doubleValue()
                         v.classes += voucher.redemptionCourses.collect{c -> c.name}
                         v.isEditablePrice = false
                     }
 
-                    ValidateVoucher validateVoucher = new ValidateVoucher(context, college, payerId).validate(voucher as VoucherProduct, v.price.toMoney() , v.contactId)
+                    ValidateVoucher validateVoucher = new ValidateVoucher(context, college, payerId).validate(voucher as VoucherProduct, v.price.toMoney(), v.contactId, quantity)
                     v.errors += validateVoucher.errors
                     v.warnings += validateVoucher.warnings
                     v

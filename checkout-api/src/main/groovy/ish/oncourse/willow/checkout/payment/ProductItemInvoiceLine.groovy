@@ -28,8 +28,7 @@ class ProductItemInvoiceLine {
         InvoiceLine invoiceLine = productItem.objectContext.newObject(InvoiceLine)
         invoiceLine.description = "$contact.fullName ($product.sku $product.name)"
         invoiceLine.title = "$contact.fullName $product.name"
-        invoiceLine.quantity = BigDecimal.ONE
-        InvoiceUtil.fillInvoiceLine(invoiceLine, priceExTax, Money.ZERO, taxOverride?.rate?:product.taxRate, taxOverride ? Money.ZERO : product.taxAdjustment)
+        InvoiceUtil.fillInvoiceLine(invoiceLine, priceExTax, Money.ZERO, taxOverride?.rate?:product.taxRate, taxOverride ? Money.ZERO : product.taxAdjustment, BigDecimal.ONE)
         productItem.invoiceLine = invoiceLine
         invoiceLine.college = productItem.college
 

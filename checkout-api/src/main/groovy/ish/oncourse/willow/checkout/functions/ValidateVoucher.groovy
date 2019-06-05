@@ -28,18 +28,18 @@ class ValidateVoucher extends Validate<Voucher>{
     ValidateVoucher validate(Voucher voucher) {
         Money price =  voucher.price?.toMoney() ?: Money.ZERO
         persistentProduct = new GetProduct(context, college, voucher.productId).get()
-        validate(persistentProduct as VoucherProduct, price, voucher.contactId)  
+        validate(persistentProduct as VoucherProduct, price, voucher.contactId, voucher.quantity)
     }
 
 
-    ValidateVoucher validate(VoucherProduct product, Money price, String contactId) {
+    ValidateVoucher validate(VoucherProduct product, Money price, String contactId, BigDecimal quantity) {
         
         if (payerId && payerId != contactId) {
             errors << "Voucher purchase avalible for payer only: $product.name".toString()
         } else if (product.redemptionCourses.empty && product.priceExTax == null && !price.isGreaterThan(Money.ZERO)) {
             errors << "Please enter the correct price for voucher: $product.name".toString()
         } else if (!product.redemptionCourses.empty) {
-            Money productPrice = new CalculatePrice(product.priceExTax, Money.ZERO, product.taxRate, product.taxAdjustment).calculate().finalPriceToPayIncTax
+            Money productPrice = new CalculatePrice(product.priceExTax, Money.ZERO, product.taxRate, product.taxAdjustment, quantity).calculate().finalPriceToPayIncTax
             if (productPrice != price) {
                 errors << "Voucher price is wrong".toString()
             }

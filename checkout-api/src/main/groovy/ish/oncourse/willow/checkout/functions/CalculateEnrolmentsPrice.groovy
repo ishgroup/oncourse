@@ -60,7 +60,7 @@ class CalculateEnrolmentsPrice {
                 Money classPrice = getOverridenFee(contact, courseClass)
                 
                 if (!classPrice) {
-                    CalculatePrice price = new CalculatePrice(courseClass.feeExGst, Money.ZERO, taxOverridden, courseClass).calculate()
+                    CalculatePrice price = new CalculatePrice(courseClass.feeExGst, Money.ZERO, taxOverridden, courseClass, BigDecimal.ONE).calculate()
                     price = applyDiscount(contact, courseClass, price)
                     classPrice = price.finalPriceToPayIncTax
                 }

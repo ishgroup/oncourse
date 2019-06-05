@@ -90,7 +90,7 @@ class ProcessClass {
                             }
                             ccp.feeOverriden =  overridenFee.multiply(BigDecimal.ONE.add(rate)).doubleValue()
                         } else {
-                            ccp.fee = new CalculatePrice(persistentClass.feeExGst, Money.ZERO, taxOverridden, persistentClass).calculate().finalPriceToPayIncTax.doubleValue()
+                            ccp.fee = new CalculatePrice(persistentClass.feeExGst, Money.ZERO, taxOverridden, persistentClass, BigDecimal.ONE).calculate().finalPriceToPayIncTax.doubleValue()
                         }
                         ccp
                     }

@@ -16,26 +16,25 @@ class CalculatePrice {
     
     BigDecimal taxRate
     Money taxAdjustment
+    BigDecimal quantity
 
     private InvoiceLine invoiceLine
 
-    private CalculatePrice (Money priceEachEx, Money discountEachEx) {
+    private CalculatePrice (Money priceEachEx, Money discountEachEx, BigDecimal quantity) {
         this.priceEachEx = priceEachEx
         this.discountEachEx = discountEachEx
         this.invoiceLine = new InvoiceLine()
-        this.invoiceLine.quantity = BigDecimal.ONE
+        this.quantity = quantity
     }
 
-    CalculatePrice(Money priceEachEx, Money discountEachEx, BigDecimal taxRate, Money taxAdjustment) {
-        this(priceEachEx, discountEachEx)
+    CalculatePrice(Money priceEachEx, Money discountEachEx, BigDecimal taxRate, Money taxAdjustment, BigDecimal quantity) {
+        this(priceEachEx, discountEachEx, quantity)
         this.taxRate = taxRate
         this.taxAdjustment = taxAdjustment
     }
 
-
-
-   CalculatePrice(Money priceEachEx, Money discountEachEx, Tax taxOverride, CourseClass courseClass) {
-        this(priceEachEx, discountEachEx)
+   CalculatePrice(Money priceEachEx, Money discountEachEx, Tax taxOverride, CourseClass courseClass, BigDecimal quantity) {
+        this(priceEachEx, discountEachEx, quantity)
        
         if (taxOverride != null && taxOverride.rate != null) {
             this.taxRate = taxOverride.rate
@@ -51,9 +50,9 @@ class CalculatePrice {
 
     }
 
-   CalculatePrice(Money priceEachEx, Money discountEachEx, Tax taxOverride, Product product) {
+   CalculatePrice(Money priceEachEx, Money discountEachEx, Tax taxOverride, Product product, BigDecimal quantity) {
        
-        this(priceEachEx, discountEachEx)
+        this(priceEachEx, discountEachEx, quantity)
 
         if (taxOverride != null && taxOverride.rate != null) {
             this.taxRate = taxOverride.rate
@@ -70,7 +69,7 @@ class CalculatePrice {
     }
 
     CalculatePrice calculate() {
-        InvoiceUtil.fillInvoiceLine(invoiceLine, priceEachEx, Money.ZERO, taxRate, taxAdjustment)
+        InvoiceUtil.fillInvoiceLine(invoiceLine, priceEachEx, Money.ZERO, taxRate, taxAdjustment, quantity)
         this
     }
     

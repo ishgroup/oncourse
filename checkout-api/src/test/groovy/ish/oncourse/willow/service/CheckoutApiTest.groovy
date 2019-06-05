@@ -29,7 +29,7 @@ class CheckoutApiTest extends ApiTest {
         ContactNodeRequest request = new ContactNodeRequest().with { request ->
             request.contactId = '1001'
             request.classIds = ['1001', '1002']
-            request.productIds = ['7','8','12']
+            request.productIds = ['7':1,'8':1,'12':1]
             request
         }
 
@@ -41,5 +41,24 @@ class CheckoutApiTest extends ApiTest {
         assertEquals(1, items.memberships.size())
         assertEquals(1, items.vouchers.size())
     }
-    
+
+    @Test
+    void getPurchaseItemsWithQuantityTest() {
+        RequestFilter.ThreadLocalSiteKey.set('mammoth')
+        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, new CollegeService(cayenneService))
+        ContactNodeRequest request = new ContactNodeRequest().with { request ->
+            request.contactId = '1001'
+            request.classIds = ['1001', '1002']
+            request.productIds = ['8':3,'12':4, '13':5]
+            request
+        }
+
+        ContactNode items = api.getContactNode(request)
+
+        assertEquals(1, items.enrolments.size())
+        assertEquals(1, items.applications.size())
+        assertEquals(4, items.articles.size())
+        assertEquals(1, items.memberships.size())
+        assertEquals(5, items.vouchers.size())
+    }
 }

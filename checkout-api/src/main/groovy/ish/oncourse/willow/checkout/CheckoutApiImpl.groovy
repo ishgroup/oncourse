@@ -59,7 +59,7 @@ class CheckoutApiImpl implements CheckoutApi {
     ContactNode getContactNode(ContactNodeRequest contactNodeRequest) {
 
         if (contactNodeRequest.classIds.empty 
-                && contactNodeRequest.productIds.empty
+                && contactNodeRequest.products.empty
                 && contactNodeRequest.waitingCourseIds.empty) {
             logger.info('There are no selected items for purchase')
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'There are no selected items for purchase')).build())
@@ -82,7 +82,7 @@ class CheckoutApiImpl implements CheckoutApi {
             node.waitingLists += processWaitingLists.waitingLists
         }
 
-        ProcessProducts processProducts = new ProcessProducts(context, contact, college, contactNodeRequest.productIds).process()
+        ProcessProducts processProducts = new ProcessProducts(context, contact, college, contactNodeRequest.products).process()
         node.articles += processProducts.articles
         node.memberships += processProducts.memberships
         node.vouchers += processProducts.vouchers

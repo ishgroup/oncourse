@@ -10,16 +10,17 @@ import ish.oncourse.model.College
 import ish.oncourse.model.Contact
 import ish.oncourse.model.Invoice
 import ish.oncourse.model.InvoiceLine
+import ish.oncourse.model.ProductItem
 import ish.oncourse.model.Voucher
 import ish.oncourse.model.VoucherProduct
 import ish.oncourse.willow.checkout.functions.GetProduct
-import ish.oncourse.willow.checkout.payment.ProductItemInvoiceLine
+import ish.oncourse.willow.checkout.payment.ProductsItemInvoiceLine
 import ish.util.ProductUtil
 import ish.util.SecurityUtil
 import org.apache.cayenne.ObjectContext
 
 class CreateVoucher {
-    
+
     private ObjectContext context
     private College college
     private ish.oncourse.willow.model.checkout.Voucher v
@@ -41,6 +42,31 @@ class CreateVoucher {
     @CompileStatic(TypeCheckingMode.SKIP)
     void create() {
         VoucherProduct voucherProduct = new GetProduct(context, college, v.productId).get() as VoucherProduct
+
+        Money price = new Money(BigDecimal.ZERO)
+
+        List<ProductItem> vouchers = new ArrayList<>()
+        for (int i = 0; i < v.quantity; i++) {
+            Voucher voucher = createVoucher(college, status, voucherProduct, confirmationStatus)
+            if (voucherProduct.redemptionCourses.empty && voucherProduct.priceExTax == null) {
+                price.add(v.value.toMoney())
+                voucher.redemptionValue = price
+                voucher.valueOnPurchase = price
+            } else if (voucherProduct.priceExTax != null) {
+                voucher.redemptionValue = voucherProduct.value
+                voucher.valueOnPurchase = voucherProduct.value
+                price.add(voucherProduct.priceExTax)
+            }
+            vouchers << voucher
+        }
+
+        InvoiceLine invoiceLine
+
+        invoiceLine = new ProductsItemInvoiceLine(context, vouchers, contact, price?: voucherProduct.priceExTax, null).create()
+        invoiceLine.invoice = invoice
+    }
+
+    private Voucher createVoucher(College college, ProductStatus status, VoucherProduct voucherProduct, ConfirmationStatus confirmationStatus) {
         Voucher voucher = context.newObject(Voucher)
         voucher.code = SecurityUtil.generateRandomPassword(Voucher.VOUCHER_CODE_LENGTH)
         voucher.college = college
@@ -52,20 +78,7 @@ class CreateVoucher {
         voucher.confirmationStatus = confirmationStatus
 
         voucher.expiryDate = ProductUtil.calculateExpiryDate(new Date(), voucherProduct.expiryType, voucherProduct.expiryDays)
-
-        InvoiceLine invoiceLine
-        Money price = null
-        if (voucherProduct.redemptionCourses.empty && voucherProduct.priceExTax == null) {
-            price = v.value.toMoney()
-            voucher.redemptionValue = price
-            voucher.valueOnPurchase = price
-        } else if (voucherProduct.priceExTax != null) {
-            voucher.redemptionValue = voucherProduct.value
-            voucher.valueOnPurchase = voucherProduct.value
-            price = voucherProduct.priceExTax
-        }
-        invoiceLine = new ProductItemInvoiceLine(voucher, contact, price?: voucherProduct.priceExTax, null).create()
-        invoiceLine.invoice = invoice
+        voucher
     }
 
 }

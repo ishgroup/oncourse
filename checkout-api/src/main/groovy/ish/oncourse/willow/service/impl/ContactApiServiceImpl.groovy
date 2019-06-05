@@ -102,7 +102,7 @@ class ContactApiServiceImpl implements ContactApi{
                 fieldsToMerge.addAll(new GetCompanyFields(contact, college, context).fields)
             } else {
                 if (request.classIds.empty
-                        && request.productIds.empty
+                        && request.products.empty
                         && request.waitingCourseIds.empty) {
                     logger.info("classesIds required, request param: $request")
                     throw new BadRequestException(Response.status(Response.Status.BAD_REQUEST).entity(new CommonError(message: 'classesIds required')).build())
@@ -111,7 +111,8 @@ class ContactApiServiceImpl implements ContactApi{
                     logger.info("fieldSet required, request param: $request")
                     throw new BadRequestException(Response.status(Response.Status.BAD_REQUEST).entity(new CommonError(message: 'fieldSet required')).build())
                 }
-                fieldsToMerge.addAll(new GetContactFields(contact, coursesByClassIds, request.waitingCourseIds, request.productIds, request.mandatoryOnly).fields)
+                List<String> productIds = request.products.collect{p -> p.productId}
+                fieldsToMerge.addAll(new GetContactFields(contact, coursesByClassIds, request.waitingCourseIds, productIds, request.mandatoryOnly).fields)
             }
         }
 

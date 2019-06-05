@@ -434,7 +434,7 @@ public final class InvoiceUtil {
 	 * @param taxRate - applied tax rate
 	 * @param taxAdjustment - applied taxAdjustment
 	 */
-	public static void fillInvoiceLine(IInvoiceLineInterface invoiceLine, Money priceEachEx, Money discountEachEx, BigDecimal taxRate, Money taxAdjustment, int quantity) {
+	public static void fillInvoiceLine(IInvoiceLineInterface invoiceLine, Money priceEachEx, Money discountEachEx, BigDecimal taxRate, Money taxAdjustment, BigDecimal quantity) {
 		if (invoiceLine == null) {
 			throw new IllegalArgumentException("Invoice line cannot be null");
 		}
@@ -443,7 +443,7 @@ public final class InvoiceUtil {
 		invoiceLine.setDiscountEachExTax(discountEachEx);
 		Money taxEach = calculateTaxEachForInvoiceLine(priceEachEx, discountEachEx, taxRate, taxAdjustment);
 		invoiceLine.setTaxEach(taxEach);
-		invoiceLine.setQuantity(new BigDecimal(quantity));
+		invoiceLine.setQuantity(quantity);
 	}
 
 	/**
