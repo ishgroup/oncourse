@@ -38,10 +38,4 @@ public class LocateUSIResult {
     public void setError(String error) {
         this.error = error;
     }
-
-    public static LocateUSIResult valueOf(String errorMessage) {
-        LocateUSIResult obj = new LocateUSIResult();
-        obj.setError(errorMessage);
-        return obj;
-    }
 }

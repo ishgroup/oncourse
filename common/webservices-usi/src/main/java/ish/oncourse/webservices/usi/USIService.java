@@ -13,6 +13,8 @@ import org.apache.logging.log4j.Logger;
 
 public class USIService {
 
+	private static final String ERROR_LOCATE_MESSAGE_TEMPLATE = "USI service failed during locate request, orgCode: %s, firstName: %s, lastName: %s. ";
+
 	private static final Logger logger = LogManager.getLogger();
 
 	private IUSIService endpoint;
@@ -30,49 +32,50 @@ public class USIService {
 	}
 
 	public LocateUSIResult locateUSI(LocateUSIRequest intRq) {
-		LocateUSIType extRq = LocateUSITypeBuilder.valueOf(intRq).build();
-		LocateUSIResult intRs = null;
-		if (extRq != null) {
-			LocateUSIResponseType extRs = sendLocateRequest(extRq);
-			intRs = castToInternalLocateRs(extRs);
-		} else {
-			intRs = LocateUSIResult.valueOf(String.format("USI can not be located for orgCode: %s, firstName: %s, lastName: %s. Internal request has incomplete field set.",
-					intRq.getOrgCode(), intRq.getFirstName(), intRq.getFamilyName()));
-		}
-		return intRs;
-	}
-
-	private LocateUSIResponseType sendLocateRequest(LocateUSIType rq) {
-		LocateUSIResponseType rs = null;
-		try {
-			rs = endpoint.locateUSI(rq);
-		} catch (Exception e) {
-			logger.error("Locate USI service request failed. OrgCode: {}, firstName: {}, lastName: {}", e);
-		}
-		return rs;
-	}
-
-	private LocateUSIResult castToInternalLocateRs(LocateUSIResponseType extRs) {
 		LocateUSIResult intRs = new LocateUSIResult();
 
-		switch (extRs.getResult()) {
-			case EXACT: {
-				intRs.setResultType(ish.common.types.LocateUSIType.MATCH);
-				intRs.setUsi(extRs.getUSI());
-				intRs.setMessage(extRs.getContactDetailsMessage());
+		LocateUSIType extRq = LocateUSITypeBuilder.valueOf(intRq).build();
+
+		if (extRq != null) {
+			try {
+				LocateUSIResponseType extRs = endpoint.locateUSI(extRq);
+
+				switch (extRs.getResult()) {
+					case EXACT: {
+						intRs.setResultType(ish.common.types.LocateUSIType.MATCH);
+						intRs.setUsi(extRs.getUSI());
+						intRs.setMessage(extRs.getContactDetailsMessage());
+					}
+					break;
+					case MULTIPLE_EXACT: {
+						intRs.setResultType(ish.common.types.LocateUSIType.MORE_DETAILS_EXPECTED);
+					}
+					break;
+					case NO_MATCH: {
+						intRs.setResultType(ish.common.types.LocateUSIType.NO_MATCH);
+					}
+					break;
+					default: {
+						String warnMessage = createLocateDetailErrorMessage(intRq);
+						logger.warn(warnMessage.concat(StringUtils.join(extRs.getErrors().getError(), ';')));
+
+						intRs.setResultType(ish.common.types.LocateUSIType.ERROR);
+						intRs.setError(warnMessage);
+					}
+				}
+			} catch (Exception e) {
+				String errorMessage = createLocateDetailErrorMessage(intRq);
+				logger.error(errorMessage, e);
+
+				intRs.setResultType(ish.common.types.LocateUSIType.ERROR);
+				intRs.setError(errorMessage);
 			}
-			break;
-			case MULTIPLE_EXACT: {
-				intRs.setResultType(ish.common.types.LocateUSIType.MORE_DETAILS_EXPECTED);
-			}
-			break;
-			case NO_MATCH: {
-				intRs.setResultType(ish.common.types.LocateUSIType.NO_MATCH);
-			}
-			break;
-			default: {
-				intRs.setError(StringUtils.join(extRs.getErrors().getError(), ';'));
-			}
+		} else {
+			String warnMessage = createLocateDetailErrorMessage(intRq).concat("Internal request has incomplete field set.");
+			logger.warn(warnMessage);
+
+			intRs.setResultType(ish.common.types.LocateUSIType.ERROR);
+			intRs.setError(warnMessage);
 		}
 		return intRs;
 	}
@@ -106,6 +109,10 @@ public class USIService {
 
 			return USIVerificationResult.valueOf("Error verifying USI.");
 		}
+	}
+
+	private String createLocateDetailErrorMessage(LocateUSIRequest intRq) {
+		return String.format(ERROR_LOCATE_MESSAGE_TEMPLATE, intRq.getOrgCode(), intRq.getFirstName(), intRq.getFamilyName());
 	}
 
 	public static USIService valueOf(IUSIService endpoint) {
