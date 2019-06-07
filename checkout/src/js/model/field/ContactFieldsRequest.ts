@@ -1,3 +1,4 @@
+import {ProductContainer} from "./../checkout/request/ProductContainer";
 import {FieldSet} from "./../field/FieldSet";
 
 export class ContactFieldsRequest {
@@ -15,7 +16,7 @@ export class ContactFieldsRequest {
   /**
    * Requested product's ids
    */
-  productIds?: string[];
+  products?: ProductContainer[];
 
   /**
    * Requested waiting list courses ids
@@ -26,11 +27,8 @@ export class ContactFieldsRequest {
    * Flag to show only mandatory fields
    */
   mandatoryOnly?: boolean;
-
   fieldSet?: FieldSet;
-
-  isPayer ?: boolean;
-
-  isParent ?: boolean;
+  isPayer?: boolean;
+  isParent?: boolean;
 }
 

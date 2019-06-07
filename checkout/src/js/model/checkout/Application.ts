@@ -1,4 +1,4 @@
-import {FieldHeading} from "../field/FieldHeading";
+import {FieldHeading} from "./../field/FieldHeading";
 
 export class Application {
   contactId?: string;

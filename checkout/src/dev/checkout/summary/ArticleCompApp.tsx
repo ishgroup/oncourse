@@ -6,7 +6,7 @@ import {Messages, Progress} from "../../../js/enrol/containers/Functions";
 
 import "../../../scss/index.scss";
 
-import {Contact, Article, Product} from "../../../js/model";
+import {Contact, Article, Product, Voucher, PurchaseItem} from "../../../js/model";
 import {NoCourseClassPlaces} from "../../../js/enrol/containers/summary/Messages";
 import {
   default as ArticleComp,
@@ -35,10 +35,10 @@ article[0].errors = [NoCourseClassPlaces];
 
 const createContactProps = (contact: Contact): ArticleProps => {
   return {
-    contact: contact,
-    article: article.filter((e) => e.contactId == contact.id)[0],
-    product: article.filter((e) => e.contactId == contact.id).map((e: Article) => db.getProductClassById(e.productId))[0],
-  }
+    contact,
+    article: article.filter( e => e.contactId == contact.id)[0],
+    product: article.filter( e => e.contactId == contact.id).map((e: Article) => db.getProductClassById(e.productId))[0],
+  };
 };
 
 export const articlePropses: ArticleProps[] = contacts.map(createContactProps);

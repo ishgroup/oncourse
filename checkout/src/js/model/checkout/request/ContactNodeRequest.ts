@@ -1,9 +1,10 @@
+import {ProductContainer} from "./../../checkout/request/ProductContainer";
 
 export class ContactNodeRequest {
   contactId?: string;
   classIds?: string[];
   waitingCourseIds?: string[];
-  productIds?: string[];
+  products?: ProductContainer[];
   promotionIds?: string[];
 }
 

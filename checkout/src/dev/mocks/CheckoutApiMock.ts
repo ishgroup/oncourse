@@ -30,7 +30,7 @@ export class CheckoutApiMock extends CheckoutApi {
     result.enrolments = this.createEnrolmentsBy([contact], classes);
     // result.applications = this.createApplicationBy([contact], classes);
 
-    const products: Product[] = request.productIds.map(id => this.config.db.getProductClassById(id));
+    const products: Product[] = request.products.map(p => this.config.db.getProductClassById(p.productId));
     result.vouchers = this.createVouchersBy([contact], products);
 
     const courses = request.waitingCourseIds.map(id => this.config.db.getWaitingCourseById(id));

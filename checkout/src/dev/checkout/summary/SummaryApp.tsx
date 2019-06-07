@@ -96,6 +96,9 @@ const onSelect = (contact, item) => {
 };
 const onPriceValueChange = (productItem) => {
 };
+
+const onQuantityValueChange = (productItem) => {
+};
 const onAddCode = (code: string): void => {
   alert(code);
 };
@@ -114,6 +117,7 @@ const render = config => ReactDOM.render(
         onProceedToPayment={f => onProceedToPayment(f)}
         onSelect={onSelect}
         onPriceValueChange={onPriceValueChange}
+        onQuantityValueChange={onQuantityValueChange}
         hasSelected={true}
         needParent={false}
       />

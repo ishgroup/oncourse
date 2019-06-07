@@ -24,6 +24,7 @@ export interface Props {
   onProceedToJoin?: (forms) => void;
   onSelect?: (item: PurchaseItem, selected: boolean) => void;
   onPriceValueChange?: (productItem: PurchaseItem, val: any) => void;
+  onQuantityValueChange?: (productItem: PurchaseItem, val: any) => void;
   onUpdateWaitingCourse?: () => void;
   onAddConcession?: () => void;
   onInit?: () => void;
@@ -53,7 +54,7 @@ export class SummaryComp extends React.Component<Props, any> {
   }
 
   renderContact = (props: ContactProps) => {
-    const {onSelect, onPriceValueChange, onAddConcession, concessions, memberships, onChangeParent,
+    const {onSelect, onPriceValueChange, onQuantityValueChange, onAddConcession, concessions, memberships, onChangeParent,
       onUpdateWaitingCourse, onChangeEnrolmentFields, concessionTypes, onRemoveContact} = this.props;
 
     return (
@@ -62,6 +63,7 @@ export class SummaryComp extends React.Component<Props, any> {
         key={props.contact.id}
         onSelect={(item, selected) => onSelect(item, selected)}
         onPriceValueChange={(productItem, val) => onPriceValueChange(productItem, val)}
+        onQuantityValueChange={(productItem, val) => onQuantityValueChange(productItem, val)}
         onChangeParent={onChangeParent}
         onAddConcession={onAddConcession}
         concessions={concessions.filter(item => item.contactId === props.contact.id)}

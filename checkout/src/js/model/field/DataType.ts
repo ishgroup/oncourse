@@ -1,4 +1,5 @@
-import {createStringEnum} from "../../common/utils/EnumUtils";
+
+import {createStringEnum} from "common/utils/EnumUtils";
 
 export const DataType = createStringEnum([
   'STRING',
@@ -15,7 +16,6 @@ export const DataType = createStringEnum([
   'POSTCODE',
   'PHONE',
   'CHOICE',
-  'LONG_STRING',
   'TAGGROUP_S',
   'TAGGROUP_M',
   'MAILINGLIST',

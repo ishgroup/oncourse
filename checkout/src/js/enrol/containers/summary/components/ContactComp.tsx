@@ -26,6 +26,7 @@ export interface Props {
   onUpdateWaitingCourse?: (waitingCourse, prop) => void;
   onSelect?: (item: PurchaseItem, selected: boolean) => void;
   onPriceValueChange?: (productItem: PurchaseItem, val: any) => void;
+  onQuantityValueChange?: (productItem: PurchaseItem, val: any) => void;
   onAddConcession?: () => void;
   concessions?: Concession[];
   concessionTypes?: ConcessionType[];
@@ -39,7 +40,7 @@ class ContactComp extends React.Component<Props, any> {
   render() {
     const {
       contact, enrolments, applications, vouchers, memberships, concessions, onChangeEnrolmentFields,
-      articles, onSelect, onPriceValueChange, onAddConcession, studentMemberships, onChangeParent, waitingLists,
+      articles, onSelect, onPriceValueChange, onQuantityValueChange, onAddConcession, studentMemberships, onChangeParent, waitingLists,
       onUpdateWaitingCourse, concessionTypes, onRemoveContact,
     } = this.props;
 
@@ -82,6 +83,7 @@ class ContactComp extends React.Component<Props, any> {
               key={index} {...props}
               onChange={() => onSelect(Object.assign(new Voucher(), props.voucher), !props.voucher.selected)}
               onPriceValueChange={val => onPriceValueChange(Object.assign(new Voucher(), props.voucher), val)}
+              onQuantityValueChange={val => onQuantityValueChange(Object.assign(new Voucher(), props.voucher), val)}
             />,
           )}
 

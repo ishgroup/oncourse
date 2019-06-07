@@ -175,6 +175,11 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
       dispatch(updateItem(item));
       dispatch(getCheckoutModelFromBackend());
     },
+    onQuantityValueChange: (productItem: PurchaseItem, val: any): void => {
+      const item = Object.assign(productItem, {value: val, quantity: val});
+      dispatch(updateItem(item));
+      dispatch(getCheckoutModelFromBackend());
+    },
     onAddConcession: (contactId): void => {
       dispatch(updateConcessionContact(contactId));
       dispatch(changePhase(Phase.AddConcession));

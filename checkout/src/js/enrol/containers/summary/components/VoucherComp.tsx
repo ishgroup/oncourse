@@ -11,6 +11,7 @@ export interface Props {
   product: Product;
   onChange?: () => void;
   onPriceValueChange?: (val: any) => any;
+  onQuantityValueChange?: (val: any) => any;
   updateCheckoutModel?: () => void;
 }
 
@@ -21,12 +22,14 @@ class VoucherComp extends React.PureComponent<Props, any> {
 
     this.state = {
       price: props.voucher.price || 0,
+      quantity: props.voucher.quantity || 1,
     };
   }
 
   componentWillReceiveProps(props) {
     this.setState({
       price: Number(props.voucher.price).toFixed(2),
+      quantity: Number(props.voucher.quantity).toFixed(0),
     });
   }
 
@@ -41,9 +44,25 @@ class VoucherComp extends React.PureComponent<Props, any> {
     return false;
   }
 
-  private handleBlur(val) {
+  private updateQuantity = val => {
+    const reg = (/^[0-9]+/);
+
+    if (val === '' || (val > 0 && reg.test(val))) {
+      this.setState({
+        quantity: val,
+      });
+    }
+    return false;
+  }
+
+  private handlePriceBlur(val) {
     const {onPriceValueChange} = this.props;
     onPriceValueChange(Number(val).toFixed(2));
+  }
+
+  private handleQuantityBlur(val) {
+    const {onQuantityValueChange} = this.props;
+    onQuantityValueChange(val);
   }
 
   public render(): JSX.Element {
@@ -61,12 +80,19 @@ class VoucherComp extends React.PureComponent<Props, any> {
           <VoucherDetails voucher={voucher}/>
         </ItemWrapper>
         {voucher.selected &&
-        <VoucherPrice
-          voucher={voucher}
-          price={this.state.price}
-          onChange={val => this.updatePrice(val)}
-          onBlur={val => this.handleBlur(val)}
-        />
+            <div>
+              <VoucherQuantity
+                  voucher={voucher}
+                  quantity={this.state.quantity}
+                  onChange={val => this.updateQuantity(val)}
+                  onBlur={val => this.handleQuantityBlur(val)}/>
+              <VoucherPrice
+                voucher={voucher}
+                price={this.state.price}
+                onChange={val => this.updatePrice(val)}
+                onBlur={val => this.handlePriceBlur(val)}
+              />
+            </div>
         }
       </div>
     );
@@ -128,6 +154,28 @@ const VoucherPrice = (props): any => {
         }
       </div>
     </div>
+  );
+};
+
+const VoucherQuantity = (props): any => {
+  const quantity = props.quantity;
+
+  return (
+      <div className="col-xs-8 col-md-7 alignright quantityValue">
+        <div className="row">
+          <div className="col-xs-24 col-md-24 fee-full quantity text-right">
+            <span className="col-xs-24 col-md-24 fee-full quantity text-right">Quantity:</span>
+            <input
+                type="text"
+                className="text-left"
+                name="quantityValue"
+                value={quantity}
+                onChange={e => props.onChange(e.target.value)}
+                onBlur={e => props.onBlur(e.currentTarget.value)}
+            />
+          </div>
+        </div>
+      </div>
   );
 };
 

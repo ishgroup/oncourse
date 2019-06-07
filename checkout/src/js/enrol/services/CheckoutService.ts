@@ -27,6 +27,7 @@ import {ContactNodeService} from "./ContactNodeService";
 import {PromotionApi} from "../../http/PromotionApi";
 import {CorporatePassApi} from "../../http/CorporatePassApi";
 import {toFormKey} from "../../components/form/FieldFactory";
+import {ProductContainer} from "../../model/checkout/request/ProductContainer";
 
 const DELAY_NEXT_PAYMENT_STATUS: number = 5000;
 
@@ -175,7 +176,7 @@ export class CheckoutService {
 
   public createParentChildrenRelation = (parentId, childIds): Promise<any> => (
     this.contactApi.createParentChildrenRelation({parentId, childrenIds: childIds})
-  );
+  )
 
   public getCorporatePass = (code: string, state: IshState): Promise<any> => (
     this.corporatePassApi.getCorporatePass(BuildGetCorporatePassRequest.fromState(state, code))
@@ -183,8 +184,8 @@ export class CheckoutService {
 
   public haveContactSelectedItems = (contact: Contact, summary: SummaryState): boolean => {
     const request: ContactFieldsRequest = BuildContactFieldsRequest.fromStateSelected(contact, summary);
-    return !!(request.classIds.length || request.waitingCourseIds.length || request.productIds.length);
-  };
+    return !!(request.classIds.length || request.waitingCourseIds.length || request.products.length);
+  }
 
   public processPaymentResponse = (response: PaymentResponse, actions: any[] = []): IAction<any>[] | Observable<any> => {
     switch (response.status) {
@@ -224,7 +225,10 @@ export class BuildContactNodeRequest {
     const result: ContactNodeRequest = new ContactNodeRequest();
     result.contactId = item.contactId;
     result.classIds = item.classId ? [item.classId] : [];
-    result.productIds = item.productId ? [item.productId] : [];
+    const productContainer: ProductContainer = new ProductContainer();
+    productContainer.productId = item.productId ? item.productId : [];
+    productContainer.quantity = item.quantity ? item.quantity : [];
+    result.products = [productContainer];
     result.promotionIds = state.cart.promotions.result;
     result.waitingCourseIds = state.cart.waitingCourses.result;
     return result;
@@ -234,7 +238,12 @@ export class BuildContactNodeRequest {
     const result: ContactNodeRequest = new ContactNodeRequest();
     result.contactId = cart.contact.id;
     result.classIds = cart.courses.result;
-    result.productIds = cart.products.result;
+    result.products = cart.products.result.map(productId => {
+      const container = new ProductContainer();
+      container.productId = productId;
+      container.quantity = cart.products.entities[productId].quantity;
+      return container;
+    });
     result.promotionIds = cart.promotions.result;
     result.waitingCourseIds = cart.waitingCourses.result;
     return result;
@@ -244,7 +253,12 @@ export class BuildContactNodeRequest {
     const result: ContactNodeRequest = new ContactNodeRequest();
     result.contactId = contact.id;
     result.classIds = cart.courses.result;
-    result.productIds = cart.products.result;
+    result.products = cart.products.result.map(productId => {
+      const container = new ProductContainer();
+      container.productId = productId;
+      container.quantity = cart.products.entities[productId].quantity;
+      return container;
+    });
     result.promotionIds = cart.promotions.result;
     result.waitingCourseIds = cart.waitingCourses.result;
     return result;
@@ -256,7 +270,12 @@ export class BuildContactFieldsRequest {
     const result: ContactFieldsRequest = new ContactFieldsRequest();
     result.contactId = contact.id;
     result.classIds = cart.courses.result;
-    result.productIds = cart.products.result;
+    result.products = cart.products.result.map(productId => {
+      const container = new ProductContainer();
+      container.productId = productId;
+      container.quantity = cart.products.entities[productId].quantity;
+      return container;
+    });
     result.waitingCourseIds = cart.waitingCourses.result;
     result.fieldSet = FieldSet.ENROLMENT;
     result.mandatoryOnly = !newContact;
@@ -269,7 +288,7 @@ export class BuildContactFieldsRequest {
     const result: ContactFieldsRequest = new ContactFieldsRequest();
     result.contactId = contact.id;
     result.classIds = [];
-    result.productIds = [];
+    result.products = [];
     result.waitingCourseIds = [];
     result.isPayer = phase && Phase[phase] === "AddContactAsPayer";
     result.isParent = phase && Phase[phase] === "AddParent";
@@ -284,7 +303,12 @@ export class BuildContactFieldsRequest {
 
     products.forEach(item => Object.values(summary.entities[item])
       .filter(e => e.contactId === contact.id && e.selected)
-      .map(e => result.productIds.push(e.productId)));
+      .map(e => {
+        const productContainer: ProductContainer = new ProductContainer();
+        productContainer.productId = e.productId;
+        productContainer.quantity = e.quantity;
+        result.products = [productContainer];
+      }));
 
     waitingLists.forEach(item => Object.values(summary.entities[item])
       .filter(e => e.contactId === contact.id && e.selected)
