@@ -8,7 +8,7 @@ public class ContactNodeRequest  {
     private String contactId = null;
     private List<String> classIds = new ArrayList<String>();
     private List<String> waitingCourseIds = new ArrayList<String>();
-    private List<String> productIds = new ArrayList<String>();
+    private List<ProductContainer> products = new ArrayList<ProductContainer>();
     private List<String> promotionIds = new ArrayList<String>();
 
     /**
@@ -73,24 +73,24 @@ public class ContactNodeRequest  {
     }
 
     /**
-     * Get productIds
-     * @return productIds
+     * Get products
+     * @return products
      */
-    public List<String> getProductIds() {
-        return productIds;
+    public List<ProductContainer> getProducts() {
+        return products;
     }
 
-    public void setProductIds(List<String> productIds) {
-       this.productIds = productIds;
+    public void setProducts(List<ProductContainer> products) {
+       this.products = products;
     }
 
-    public ContactNodeRequest productIds(List<String> productIds) {
-      this.productIds = productIds;
+    public ContactNodeRequest products(List<ProductContainer> products) {
+      this.products = products;
       return this;
     }
 
-    public ContactNodeRequest addProductIdsItem(String productIdsItem) {
-      this.productIds.add(productIdsItem);
+    public ContactNodeRequest addProductsItem(ProductContainer productsItem) {
+      this.products.add(productsItem);
       return this;
     }
 
@@ -125,7 +125,7 @@ public class ContactNodeRequest  {
       sb.append("    contactId: ").append(toIndentedString(contactId)).append("\n");
       sb.append("    classIds: ").append(toIndentedString(classIds)).append("\n");
       sb.append("    waitingCourseIds: ").append(toIndentedString(waitingCourseIds)).append("\n");
-      sb.append("    productIds: ").append(toIndentedString(productIds)).append("\n");
+      sb.append("    products: ").append(toIndentedString(products)).append("\n");
       sb.append("    promotionIds: ").append(toIndentedString(promotionIds)).append("\n");
       sb.append("}");
       return sb.toString();

@@ -11,6 +11,7 @@ public class Article  {
     private List<String> errors = new ArrayList<String>();
     private Double price = null;
     private Boolean selected = null;
+    private Integer quantity = null;
 
     /**
      * Get contactId
@@ -124,6 +125,23 @@ public class Article  {
       return this;
     }
 
+    /**
+     * Get quantity
+     * @return quantity
+     */
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+       this.quantity = quantity;
+    }
+
+    public Article quantity(Integer quantity) {
+      this.quantity = quantity;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -136,6 +154,7 @@ public class Article  {
       sb.append("    errors: ").append(toIndentedString(errors)).append("\n");
       sb.append("    price: ").append(toIndentedString(price)).append("\n");
       sb.append("    selected: ").append(toIndentedString(selected)).append("\n");
+      sb.append("    quantity: ").append(toIndentedString(quantity)).append("\n");
       sb.append("}");
       return sb.toString();
     }

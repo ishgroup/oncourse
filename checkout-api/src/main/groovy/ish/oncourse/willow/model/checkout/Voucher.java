@@ -14,6 +14,7 @@ public class Voucher  {
     private List<String> classes = new ArrayList<String>();
     private Boolean selected = null;
     private Boolean isEditablePrice = null;
+    private Integer quantity = null;
 
     /**
      * Get contactId
@@ -183,6 +184,23 @@ public class Voucher  {
       return this;
     }
 
+    /**
+     * Get quantity
+     * @return quantity
+     */
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+       this.quantity = quantity;
+    }
+
+    public Voucher quantity(Integer quantity) {
+      this.quantity = quantity;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -198,6 +216,7 @@ public class Voucher  {
       sb.append("    classes: ").append(toIndentedString(classes)).append("\n");
       sb.append("    selected: ").append(toIndentedString(selected)).append("\n");
       sb.append("    isEditablePrice: ").append(toIndentedString(isEditablePrice)).append("\n");
+      sb.append("    quantity: ").append(toIndentedString(quantity)).append("\n");
       sb.append("}");
       return sb.toString();
     }

@@ -1,7 +1,5 @@
 package ish.oncourse.willow.model.web;
 
-import ish.oncourse.willow.model.web.ContactParams;
-import ish.oncourse.willow.model.web.PromotionParams;
 import java.util.ArrayList;
 import java.util.List;
 

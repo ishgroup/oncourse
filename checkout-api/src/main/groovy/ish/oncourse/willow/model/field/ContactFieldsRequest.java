@@ -1,5 +1,6 @@
 package ish.oncourse.willow.model.field;
 
+import ish.oncourse.willow.model.checkout.request.ProductContainer;
 import ish.oncourse.willow.model.field.FieldSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +9,7 @@ public class ContactFieldsRequest  {
   
     private String contactId = null;
     private List<String> classIds = new ArrayList<String>();
-    private List<String> productIds = new ArrayList<String>();
+    private List<ProductContainer> products = new ArrayList<ProductContainer>();
     private List<String> waitingCourseIds = new ArrayList<String>();
     private Boolean mandatoryOnly = null;
     private FieldSet fieldSet = null;
@@ -56,23 +57,23 @@ public class ContactFieldsRequest  {
 
     /**
      * Requested product's ids
-     * @return productIds
+     * @return products
      */
-    public List<String> getProductIds() {
-        return productIds;
+    public List<ProductContainer> getProducts() {
+        return products;
     }
 
-    public void setProductIds(List<String> productIds) {
-       this.productIds = productIds;
+    public void setProducts(List<ProductContainer> products) {
+       this.products = products;
     }
 
-    public ContactFieldsRequest productIds(List<String> productIds) {
-      this.productIds = productIds;
+    public ContactFieldsRequest products(List<ProductContainer> products) {
+      this.products = products;
       return this;
     }
 
-    public ContactFieldsRequest addProductIdsItem(String productIdsItem) {
-      this.productIds.add(productIdsItem);
+    public ContactFieldsRequest addProductsItem(ProductContainer productsItem) {
+      this.products.add(productsItem);
       return this;
     }
 
@@ -174,7 +175,7 @@ public class ContactFieldsRequest  {
       
       sb.append("    contactId: ").append(toIndentedString(contactId)).append("\n");
       sb.append("    classIds: ").append(toIndentedString(classIds)).append("\n");
-      sb.append("    productIds: ").append(toIndentedString(productIds)).append("\n");
+      sb.append("    products: ").append(toIndentedString(products)).append("\n");
       sb.append("    waitingCourseIds: ").append(toIndentedString(waitingCourseIds)).append("\n");
       sb.append("    mandatoryOnly: ").append(toIndentedString(mandatoryOnly)).append("\n");
       sb.append("    fieldSet: ").append(toIndentedString(fieldSet)).append("\n");
