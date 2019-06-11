@@ -58,8 +58,9 @@ class ProcessProduct {
                     a.contactId = contact.id.toString()
                     a.productId = persistentProduct.id.toString()
                     a.selected = true
-                    a.quantity = quantity
-                    a.price =  new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, taxOverridden, persistentProduct, quantity).calculate().finalPriceToPayIncTax.doubleValue()
+                    a.quantity = quantityVal
+                    a.total = new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, taxOverridden, persistentProduct, new BigDecimal(quantityVal)).calculate().finalPriceToPayIncTax.doubleValue()
+                    a.price = new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, taxOverridden, persistentProduct, BigDecimal.ONE).calculate().finalPriceToPayIncTax.doubleValue()
                     a
                 }
                 break
@@ -85,25 +86,26 @@ class ProcessProduct {
                     v.productId = voucher.id.toString()
                     v.selected = true
 
-                    BigDecimal quantity = quantityVal != null ? new BigDecimal(quantityVal) : BigDecimal.ONE
-                    v.quantity = quantity.toInteger()
-
-
+                    v.quantity = quantityVal
+                    
                     if (voucher.redemptionCourses.empty && voucher.value == null) {
                         v.price =  DEFAULT_VOUCHER_PRICE.doubleValue()
                         v.value = v.price
+                        v.total = DEFAULT_VOUCHER_PRICE.multiply(new BigDecimal(quantityVal)).toBigDecimal()
                         v.isEditablePrice = true
                     } else if (voucher.value != null) {
-                        v.price =  new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, persistentProduct.taxRate, persistentProduct.taxAdjustment, quantity).calculate().finalPriceToPayIncTax.doubleValue()
+                        v.price =  new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, persistentProduct.taxRate, persistentProduct.taxAdjustment, BigDecimal.ONE).calculate().finalPriceToPayIncTax.doubleValue()
+                        v.total =  new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, persistentProduct.taxRate, persistentProduct.taxAdjustment, new BigDecimal(quantityVal)).calculate().finalPriceToPayIncTax.doubleValue()
                         v.value = voucher.value.doubleValue()
                         v.isEditablePrice = false
                     } else {
-                        v.price =  new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, persistentProduct.taxRate, persistentProduct.taxAdjustment, quantity).calculate().finalPriceToPayIncTax.doubleValue()
+                        v.price =  new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, persistentProduct.taxRate, persistentProduct.taxAdjustment, BigDecimal.ONE).calculate().finalPriceToPayIncTax.doubleValue()
+                        v.total = new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, persistentProduct.taxRate, persistentProduct.taxAdjustment, new BigDecimal(quantityVal)).calculate().finalPriceToPayIncTax.doubleValue()
                         v.classes += voucher.redemptionCourses.collect{c -> c.name}
                         v.isEditablePrice = false
                     }
 
-                    ValidateVoucher validateVoucher = new ValidateVoucher(context, college, payerId).validate(voucher as VoucherProduct, v.price.toMoney(), v.contactId, quantity)
+                    ValidateVoucher validateVoucher = new ValidateVoucher(context, college, payerId).validate(voucher as VoucherProduct, v.price, v.total, v.contactId,  quantityVal)
                     v.errors += validateVoucher.errors
                     v.warnings += validateVoucher.warnings
                     v

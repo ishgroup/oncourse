@@ -10,12 +10,18 @@ export interface Props {
   voucher: Voucher;
   product: Product;
   onChange?: () => void;
-  onPriceValueChange?: (val: any) => any;
-  onQuantityValueChange?: (val: any) => any;
+  onPriceValueChange?: (val: number) => any;
+  onQuantityValueChange?: (val: number) => any;
   updateCheckoutModel?: () => void;
 }
 
-class VoucherComp extends React.PureComponent<Props, any> {
+
+export interface State {
+  price: number;
+  quantity: number;
+}
+
+class VoucherComp extends React.PureComponent<Props, State> {
 
   constructor(props) {
     super(props)
@@ -28,17 +34,17 @@ class VoucherComp extends React.PureComponent<Props, any> {
 
   componentWillReceiveProps(props) {
     this.setState({
-      price: Number(props.voucher.price).toFixed(2),
-      quantity: Number(props.voucher.quantity).toFixed(0),
+      price:  props.voucher.price,
+      quantity: props.voucher.quantity,
     });
   }
 
-  private updatePrice = val => {
+  private updateValue = val => {
     const reg = (/^[0-9]+\.?[0-9]*$/);
 
     if (val > 0 && reg.test(val)) {
       this.setState({
-        price: val,
+        price: Number(val),
       });
     }
     return false;
@@ -49,20 +55,20 @@ class VoucherComp extends React.PureComponent<Props, any> {
 
     if (val === '' || (val > 0 && reg.test(val))) {
       this.setState({
-        quantity: val,
+        quantity: Number(val),
       });
     }
     return false;
   }
 
-  private handlePriceBlur(val) {
+  private handleValueBlur() {
     const {onPriceValueChange} = this.props;
-    onPriceValueChange(Number(val).toFixed(2));
+    onPriceValueChange(this.state.price);
   }
 
-  private handleQuantityBlur(val) {
+  private handleQuantityBlur() {
     const {onQuantityValueChange} = this.props;
-    onQuantityValueChange(val);
+    onQuantityValueChange(this.state.quantity);
   }
 
   public render(): JSX.Element {
@@ -85,12 +91,12 @@ class VoucherComp extends React.PureComponent<Props, any> {
                   voucher={voucher}
                   quantity={this.state.quantity}
                   onChange={val => this.updateQuantity(val)}
-                  onBlur={val => this.handleQuantityBlur(val)}/>
+                  onBlur={ val => this.handleQuantityBlur()}/>
               <VoucherPrice
                 voucher={voucher}
                 price={this.state.price}
-                onChange={val => this.updatePrice(val)}
-                onBlur={val => this.handlePriceBlur(val)}
+                onChange={val => this.updateValue(val)}
+                onBlur={ val => this.handleValueBlur()}
               />
             </div>
         }
@@ -136,7 +142,7 @@ const VoucherPrice = (props): any => {
   return (
     <div className="col-xs-8 col-md-7 alignright priceValue">
       <div className="row">
-        {voucher.isEditablePrice ?
+        {voucher.isEditablePrice &&
           <div className="col-xs-24 col-md-24 fee-full fullPrice text-right">
             <input
               type="text"
@@ -144,14 +150,14 @@ const VoucherPrice = (props): any => {
               name="priceValue"
               value={`$${price}`}
               onChange={e => props.onChange(e.target.value.replace('$', ''))}
-              onBlur={e => props.onBlur(e.currentTarget.value.replace('$', ''))}
+              onBlur={e => props.onBlur(e)}
             />
           </div>
-          :
-          <span className="col-xs-24 col-md-24 fee-full fullPrice text-right">
-          ${Number(voucher.price).toFixed(2)}
-          </span>
         }
+        
+        <span className="col-xs-24 col-md-24 fee-full fullPrice text-right">
+        ${Number(voucher.total).toFixed(2)}
+        </span>
       </div>
     </div>
   );
@@ -171,7 +177,7 @@ const VoucherQuantity = (props): any => {
                 name="quantityValue"
                 value={quantity}
                 onChange={e => props.onChange(e.target.value)}
-                onBlur={e => props.onBlur(e.currentTarget.value)}
+                onBlur={e => props.onBlur(e)}
             />
           </div>
         </div>

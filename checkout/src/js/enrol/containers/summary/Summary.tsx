@@ -170,13 +170,13 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
     onUpdateWaitingCourse: (waitingCourse, prop) => {
       dispatch(updateItem(Object.assign(waitingCourse, prop)));
     },
-    onPriceValueChange: (productItem: PurchaseItem, val: any): void => {
-      const item = Object.assign(productItem, {value: val, price: val});
+    onPriceValueChange: (productItem: Voucher, val: number): void => {
+      const item = Object.assign(productItem, {value: val, price: val, total: (val * productItem.quantity)});
       dispatch(updateItem(item));
       dispatch(getCheckoutModelFromBackend());
     },
-    onQuantityValueChange: (productItem: PurchaseItem, val: any): void => {
-      const item = Object.assign(productItem, {value: val, quantity: val});
+    onQuantityValueChange: (productItem: Voucher|Article, val: number): void => {
+      const item = Object.assign(productItem, {quantity: val, total: (val * productItem.price)});
       dispatch(updateItem(item));
       dispatch(getCheckoutModelFromBackend());
     },

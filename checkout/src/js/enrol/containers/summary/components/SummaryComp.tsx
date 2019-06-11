@@ -3,7 +3,7 @@ import classnames from "classnames";
 
 import AmountComp from "../../../components/AmountComp";
 import ContactComp, {Props as ContactProps} from "./ContactComp";
-import {Amount, RedeemVoucher, Promotion, PurchaseItem, ConcessionType} from "../../../../model";
+import {Amount, RedeemVoucher, Promotion, PurchaseItem, ConcessionType, Voucher, Article} from "../../../../model";
 import {StudentMembership} from "../../../../model/checkout/StudentMembership";
 import {Concession} from "../../../../model/checkout/concession/Concession";
 import {scrollToTop} from "../../../../common/utils/DomUtils";
@@ -23,8 +23,8 @@ export interface Props {
   onProceedToPayment?: (forms) => void;
   onProceedToJoin?: (forms) => void;
   onSelect?: (item: PurchaseItem, selected: boolean) => void;
-  onPriceValueChange?: (productItem: PurchaseItem, val: any) => void;
-  onQuantityValueChange?: (productItem: PurchaseItem, val: any) => void;
+  onPriceValueChange?: (productItem: Voucher, val: number) => void;
+  onQuantityValueChange?: (productItem: Voucher|Article, val: number) => void;
   onUpdateWaitingCourse?: () => void;
   onAddConcession?: () => void;
   onInit?: () => void;

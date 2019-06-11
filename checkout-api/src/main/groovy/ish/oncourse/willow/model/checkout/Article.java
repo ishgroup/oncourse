@@ -10,6 +10,7 @@ public class Article  {
     private List<String> warnings = new ArrayList<String>();
     private List<String> errors = new ArrayList<String>();
     private Double price = null;
+    private Double total = null;
     private Boolean selected = null;
     private Integer quantity = null;
 
@@ -109,6 +110,23 @@ public class Article  {
     }
 
     /**
+     * Get total
+     * @return total
+     */
+    public Double getTotal() {
+        return total;
+    }
+
+    public void setTotal(Double total) {
+       this.total = total;
+    }
+
+    public Article total(Double total) {
+      this.total = total;
+      return this;
+    }
+
+    /**
      * Get selected
      * @return selected
      */
@@ -153,6 +171,7 @@ public class Article  {
       sb.append("    warnings: ").append(toIndentedString(warnings)).append("\n");
       sb.append("    errors: ").append(toIndentedString(errors)).append("\n");
       sb.append("    price: ").append(toIndentedString(price)).append("\n");
+      sb.append("    total: ").append(toIndentedString(total)).append("\n");
       sb.append("    selected: ").append(toIndentedString(selected)).append("\n");
       sb.append("    quantity: ").append(toIndentedString(quantity)).append("\n");
       sb.append("}");

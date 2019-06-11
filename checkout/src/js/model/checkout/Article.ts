@@ -5,6 +5,7 @@ export class Article {
   warnings?: string[];
   errors?: string[];
   price?: number;
+  total?: number;
   selected?: boolean;
   quantity?: number;
 }

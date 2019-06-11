@@ -26,21 +26,20 @@ class ValidateVoucher extends Validate<Voucher>{
     @Override
     @CompileStatic(TypeCheckingMode.SKIP)
     ValidateVoucher validate(Voucher voucher) {
-        Money price =  voucher.price?.toMoney() ?: Money.ZERO
         persistentProduct = new GetProduct(context, college, voucher.productId).get()
-        validate(persistentProduct as VoucherProduct, price, voucher.contactId, voucher.quantity)
+        validate(persistentProduct as VoucherProduct, voucher.price, voucher.total,  voucher.contactId, voucher.quantity)
     }
 
 
-    ValidateVoucher validate(VoucherProduct product, Money price, String contactId, BigDecimal quantity) {
+    ValidateVoucher validate(VoucherProduct product, Double price, Double total, String contactId, Integer quantity) {
         
         if (payerId && payerId != contactId) {
             errors << "Voucher purchase avalible for payer only: $product.name".toString()
-        } else if (product.redemptionCourses.empty && product.priceExTax == null && !price.isGreaterThan(Money.ZERO)) {
+        } else if (product.redemptionCourses.empty && product.priceExTax == null && !price.toMoney().isGreaterThan(Money.ZERO)) {
             errors << "Please enter the correct price for voucher: $product.name".toString()
         } else if (!product.redemptionCourses.empty) {
-            Money productPrice = new CalculatePrice(product.priceExTax, Money.ZERO, product.taxRate, product.taxAdjustment, quantity).calculate().finalPriceToPayIncTax
-            if (productPrice != price) {
+            Money productPrice = new CalculatePrice(product.priceExTax, Money.ZERO, product.taxRate, product.taxAdjustment, new BigDecimal(quantity)).calculate().finalPriceToPayIncTax
+            if (productPrice != total.toMoney()) {
                 errors << "Voucher price is wrong".toString()
             }
         } 

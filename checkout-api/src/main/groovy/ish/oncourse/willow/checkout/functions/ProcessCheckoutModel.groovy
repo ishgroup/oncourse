@@ -79,7 +79,7 @@ class ProcessCheckoutModel {
         
         if (corporatePass) {
             enrolmentsToProceed.values().flatten().unique()
-            ValidateCorporatePass corporatePassValidate = new ValidateCorporatePass(corporatePass, enrolmentsToProceed.values().flatten().unique(), products.unique())
+            ValidateCorporatePass corporatePassValidate = new ValidateCorporatePass(corporatePass, enrolmentsToProceed.values().flatten().unique() as List<CourseClass>, products.unique())
             if (!corporatePassValidate.validate()) {
                 model.error = corporatePassValidate.error
                 return this
@@ -304,8 +304,8 @@ class ProcessCheckoutModel {
                 if (a.errors.empty) {
                     products << processProduct.persistentProduct
                     a.price = processProduct.article.price
-                    totalAmount = totalAmount.add(a.price.toMoney())
-                    payNowAmount = payNowAmount.add(a.price.toMoney())
+                    totalAmount = totalAmount.add(a.total.toMoney())
+                    payNowAmount = payNowAmount.add(a.total.toMoney())
                 } else {
                     a.selected = false
                 }
@@ -348,8 +348,8 @@ class ProcessCheckoutModel {
             v.warnings += validateVoucher.warnings
             if (v.errors.empty) {
                 products << validateVoucher.persistentProduct
-                totalAmount = totalAmount.add(v.price.toMoney())
-                payNowAmount = payNowAmount.add(v.price.toMoney())
+                totalAmount = totalAmount.add(v.total.toMoney())
+                payNowAmount = payNowAmount.add(v.total.toMoney())
             } else {
                 v.selected = false 
             }

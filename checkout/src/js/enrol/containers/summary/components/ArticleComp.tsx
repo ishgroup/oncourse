@@ -8,28 +8,42 @@ export interface Props {
   contact: Contact;
   article: Article;
   product: Product;
+  onQuantityValueChange?: (val: number) => any;
   onChange?: (item, contact) => void;
 }
-
-class ArticleComp extends React.Component<Props, any> {
+export interface State {
+  quantity: number;
+}
+class ArticleComp extends React.Component<Props, State> {
 
   constructor(props) {
-    super(props)
+    super(props);
 
-    this.props.article.quantity = 1;
+    this.state = {
+      quantity: props.article.quantity || 1,
+    };
+  }
+  
+  componentWillReceiveProps(props) {
+    this.setState({
+      quantity: props.article.quantity,
+    });
   }
 
   private updateQuantity = val => {
     const reg = (/^[0-9]+/);
 
-    if (val > 0 && reg.test(val)) {
-      this.props.article.quantity = Number(val);
+    if (val === '' || (val > 0 && reg.test(val))) {
+      this.setState({
+        quantity: Number(val),
+      });
     }
     return false;
   }
 
-  private onChangeQuantity = val => {
-    this.props.article.quantity = Number(val);
+  private handleQuantityBlur() {
+    const {onQuantityValueChange} = this.props;
+    onQuantityValueChange(this.state.quantity);  
   }
 
   public render(): JSX.Element {
@@ -38,6 +52,7 @@ class ArticleComp extends React.Component<Props, any> {
     const warning = article.warnings && article.warnings.length ? this.props.article.warnings[0] : null;
     const error = article.warnings && article.errors.length ? this.props.article.errors[0] : null;
     const name = `article-${contact.id}-${article.productId}`;
+    const quantity = this.state.quantity;
 
     return (
       <div className={divClass}>
@@ -53,13 +68,13 @@ class ArticleComp extends React.Component<Props, any> {
               type="text"
               className="text-left"
               name="quantityValue"
-              value={article.quantity}
-              // onChange={e => {this.updateQuantity(e.target.value);}}
-              onBlur={e => {this.onChangeQuantity(e.currentTarget.value);}}
+              value={quantity}
+              onChange={e => {this.updateQuantity(e.target.value);}}
+              onBlur={e => {this.handleQuantityBlur();}}
           />
 
           <div className="row">
-            <span className="col-xs-24 col-md-24 fee-full fullPrice text-right">${article.price}</span>
+            <span className="col-xs-24 col-md-24 fee-full fullPrice text-right">${article.total}</span>
           </div>
         </div>
         }

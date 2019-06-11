@@ -25,8 +25,8 @@ export interface Props {
   waitingLists: any;
   onUpdateWaitingCourse?: (waitingCourse, prop) => void;
   onSelect?: (item: PurchaseItem, selected: boolean) => void;
-  onPriceValueChange?: (productItem: PurchaseItem, val: any) => void;
-  onQuantityValueChange?: (productItem: PurchaseItem, val: any) => void;
+  onPriceValueChange?: (productItem: Voucher, val: number) => void;
+  onQuantityValueChange?: (productItem: Voucher|Article, val: number) => void;
   onAddConcession?: () => void;
   concessions?: Concession[];
   concessionTypes?: ConcessionType[];
@@ -98,6 +98,7 @@ class ContactComp extends React.Component<Props, any> {
             props.product && <ArticleComp
               key={index} {...props}
               onChange={() => onSelect(Object.assign(new Article(), props.article), !props.article.selected)}
+							onQuantityValueChange={val => onQuantityValueChange(Object.assign(new Article(), props.article), val)}
             />,
           )}
 

@@ -30,11 +30,4 @@ class ValidateMembership extends Validate<Membership>{
         }
         this
     }
-    
-    private boolean validateVoucher(VoucherProduct product, Money price) {
-        if (product.redemptionCourses.empty && product.priceExTax == null && !price.isGreaterThan(Money.ZERO)) {
-           errors << "Please enter the correct price for voucher: $product.name".toString()
-        }
-    }
-
 }

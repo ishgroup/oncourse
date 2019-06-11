@@ -43,26 +43,30 @@ class CreateVoucher {
     void create() {
         VoucherProduct voucherProduct = new GetProduct(context, college, v.productId).get() as VoucherProduct
 
-        Money price = new Money(BigDecimal.ZERO)
+        Money price = null
 
         List<ProductItem> vouchers = new ArrayList<>()
-        for (int i = 0; i < v.quantity; i++) {
-            Voucher voucher = createVoucher(college, status, voucherProduct, confirmationStatus)
-            if (voucherProduct.redemptionCourses.empty && voucherProduct.priceExTax == null) {
-                price.add(v.value.toMoney())
+        if (voucherProduct.redemptionCourses.empty && voucherProduct.priceExTax == null) {
+            price = v.value.toMoney()
+            (1..v.quantity).each {
+                Voucher voucher = createVoucher(college, status, voucherProduct, confirmationStatus)
                 voucher.redemptionValue = price
                 voucher.valueOnPurchase = price
-            } else if (voucherProduct.priceExTax != null) {
-                voucher.redemptionValue = voucherProduct.value
-                voucher.valueOnPurchase = voucherProduct.value
-                price.add(voucherProduct.priceExTax)
+                vouchers << voucher
             }
-            vouchers << voucher
+        } else if (voucherProduct.priceExTax != null) {
+            price = voucherProduct.priceExTax
+            (1..v.quantity).each {
+                Voucher voucher = createVoucher(college, status, voucherProduct, confirmationStatus)
+                voucher.redemptionValue = price
+                voucher.valueOnPurchase = price
+                vouchers << voucher
+            }
         }
 
         InvoiceLine invoiceLine
 
-        invoiceLine = new ProductsItemInvoiceLine(context, vouchers, contact, price?: voucherProduct.priceExTax, null).create()
+        invoiceLine = new ProductsItemInvoiceLine(context, vouchers, contact, price, null).create()
         invoiceLine.invoice = invoice
     }
 

@@ -241,7 +241,7 @@ export class BuildContactNodeRequest {
     result.products = cart.products.result.map(productId => {
       const container = new ProductContainer();
       container.productId = productId;
-      container.quantity = cart.products.entities[productId].quantity;
+      container.quantity = 1;
       return container;
     });
     result.promotionIds = cart.promotions.result;
@@ -256,7 +256,7 @@ export class BuildContactNodeRequest {
     result.products = cart.products.result.map(productId => {
       const container = new ProductContainer();
       container.productId = productId;
-      container.quantity = cart.products.entities[productId].quantity;
+      container.quantity = 1;
       return container;
     });
     result.promotionIds = cart.promotions.result;
@@ -273,7 +273,7 @@ export class BuildContactFieldsRequest {
     result.products = cart.products.result.map(productId => {
       const container = new ProductContainer();
       container.productId = productId;
-      container.quantity = cart.products.entities[productId].quantity;
+      container.quantity = 1;
       return container;
     });
     result.waitingCourseIds = cart.waitingCourses.result;

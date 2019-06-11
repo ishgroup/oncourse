@@ -38,13 +38,11 @@ class CreateArticle {
         ArticleProduct ap = new GetProduct(context, college, a.productId).get() as ArticleProduct
 
         List<ProductItem> articles = new ArrayList<>()
-        Money price = new Money(BigDecimal.ZERO)
-        for(int i = 0; i < a.quantity; i++) {
+        (1..a.quantity).each {
             Article a = createArticle(context, college, contact, ap, status)
-            price.add(a.product.priceExTax)
             articles << a
         }
-        InvoiceLine invoiceLine = new ProductsItemInvoiceLine(context, articles, contact, price, taxOverride).create()
+        InvoiceLine invoiceLine = new ProductsItemInvoiceLine(context, articles, contact, ap.priceExTax, taxOverride).create()
         invoiceLine.invoice = invoice
     }
 
@@ -52,7 +50,7 @@ class CreateArticle {
         Article article = context.newObject(Article)
         article.college = college
         article.contact = contact
-        article.setProduct(ap)
+        article.product = ap
         article.status = status
         article
     }

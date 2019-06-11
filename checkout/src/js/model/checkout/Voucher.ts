@@ -5,6 +5,7 @@ export class Voucher {
   warnings?: string[];
   errors?: string[];
   price?: number;
+  total?: number;
   value?: number;
   classes?: string[];
   selected?: boolean;

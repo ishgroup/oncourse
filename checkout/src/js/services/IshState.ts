@@ -58,7 +58,6 @@ export interface ContactState extends Contact {
 }
 
 export interface ProductCart extends Product {
-  quantity?: number;
 }
 
 export interface WaitingCourseCart extends Course {
