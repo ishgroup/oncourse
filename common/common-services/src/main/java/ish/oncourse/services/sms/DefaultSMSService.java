@@ -11,7 +11,6 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.regex.Pattern;
 
 /**
@@ -32,7 +31,7 @@ public class DefaultSMSService implements ISMSService {
 	private final String smsGatewayPass = (System.getProperty("smsGatewayPass") != null) ? System.getProperty("smsGatewayPass") : "8ujgdw";
 
 	private final String smsGatewayURL = (System.getProperty("smsGatewayURL") != null) ? System.getProperty("smsGatewayURL")
-			: "http://api.clickatell.com/http/";
+			: "https://api.clickatell.com/http/";
 
 	@Override
 	public String authenticate() {
