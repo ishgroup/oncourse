@@ -30,7 +30,7 @@ class ValidateVoucher extends Validate<Voucher>{
         validate(persistentProduct as VoucherProduct, voucher.price, voucher.total,  voucher.contactId, voucher.quantity)
     }
 
-
+    @CompileStatic(TypeCheckingMode.SKIP)
     ValidateVoucher validate(VoucherProduct product, Double price, Double total, String contactId, Integer quantity) {
         
         if (payerId && payerId != contactId) {
