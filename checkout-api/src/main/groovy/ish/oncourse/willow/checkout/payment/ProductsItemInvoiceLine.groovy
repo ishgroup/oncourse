@@ -24,29 +24,17 @@ class ProductsItemInvoiceLine {
 
     InvoiceLine create() {
 
-        List<Product> products = productItems.collect{p -> p.product}
-
+        Product product = productItems[0].product
+        BigDecimal quantity = new BigDecimal(productItems.size())
+        
         InvoiceLine invoiceLine = context.newObject(InvoiceLine)
-        invoiceLine.description = createInvoiceLineDescription(contact, products)
-        invoiceLine.title = createInvoiceLineTitle(contact, products)
-        InvoiceUtil.fillInvoiceLine(invoiceLine, priceExTax, Money.ZERO, taxOverride?.rate?:products[0].taxRate, taxOverride ? Money.ZERO : products[0].taxAdjustment, new BigDecimal(products.size()))
+        invoiceLine.description = "$contact.fullName ($product.sku $product.name)${quantity > 1 ? ", quantity:$quantity" :''}"
+        invoiceLine.title = "$contact.fullName $product.name"
+        InvoiceUtil.fillInvoiceLine(invoiceLine, priceExTax, Money.ZERO, taxOverride?.rate?:product.taxRate, taxOverride ? Money.ZERO : product.taxAdjustment, quantity)
         productItems.each {p -> p.invoiceLine = invoiceLine}
-        invoiceLine.college = products[0].college
+        invoiceLine.college = product.college
 
         return invoiceLine
     }
-
-    private String createInvoiceLineDescription(Contact contact, List<Product> products) {
-        List<String> joinList = new ArrayList<>()
-        products.each {p -> joinList.add("$p.sku $p.name".toString())}
-        String productsDescription = StringUtils.join(joinList, " ")
-        return "$contact.fullName ($productsDescription)"
-    }
-
-    private String createInvoiceLineTitle(Contact contact, List<Product> products) {
-        List<String> joinList = new ArrayList<>()
-        products.each {p -> joinList.add("$p.name".toString())}
-        String productsTitle = StringUtils.join(joinList, " ")
-        return "$contact.fullName $productsTitle"
-    }
+    
 }
