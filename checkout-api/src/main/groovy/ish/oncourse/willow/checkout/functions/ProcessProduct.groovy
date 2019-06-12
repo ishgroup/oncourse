@@ -63,6 +63,9 @@ class ProcessProduct {
                     a.price = new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, taxOverridden, persistentProduct, BigDecimal.ONE).calculate().finalPriceToPayIncTax.doubleValue()
                     a
                 }
+                ValidateArticle validate = new ValidateArticle(context, college).validate(article)
+                article.errors += validate.errors
+                article.warnings += validate.warnings
                 break
             case MEMBERSHIP:
                 membership = new Membership().with { m ->

@@ -225,10 +225,7 @@ export class BuildContactNodeRequest {
     const result: ContactNodeRequest = new ContactNodeRequest();
     result.contactId = item.contactId;
     result.classIds = item.classId ? [item.classId] : [];
-    const productContainer: ProductContainer = new ProductContainer();
-    productContainer.productId = item.productId ? item.productId : [];
-    productContainer.quantity = item.quantity ? item.quantity : 1;
-    result.products = [productContainer];
+    result.products = item.productId ? [{productId: item.productId, quantity:1} as ProductContainer] : [];
     result.promotionIds = state.cart.promotions.result;
     result.waitingCourseIds = state.cart.waitingCourses.result;
     return result;
