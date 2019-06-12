@@ -68,7 +68,7 @@ class VoucherComp extends React.PureComponent<Props, State> {
 
   private handleQuantityBlur() {
     const {onQuantityValueChange} = this.props;
-    onQuantityValueChange(this.state.quantity);
+    onQuantityValueChange(this.state.quantity || 1);
   }
 
   public render(): JSX.Element {
