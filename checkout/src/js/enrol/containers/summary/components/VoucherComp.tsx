@@ -86,19 +86,21 @@ class VoucherComp extends React.PureComponent<Props, State> {
           <VoucherDetails voucher={voucher}/>
         </ItemWrapper>
         {voucher.selected &&
-            <div>
-              <VoucherQuantity
-                  voucher={voucher}
-                  quantity={this.state.quantity}
-                  onChange={val => this.updateQuantity(val)}
-                  onBlur={ val => this.handleQuantityBlur()}/>
-              <VoucherPrice
-                voucher={voucher}
-                price={this.state.price}
-                onChange={val => this.updateValue(val)}
-                onBlur={ val => this.handleValueBlur()}
-              />
-            </div>
+				<div className="col-xs-8 col-md-7">
+					<div className="row">
+						<VoucherQuantity
+							voucher={voucher}
+							quantity={this.state.quantity}
+							onChange={val => this.updateQuantity(val)}
+							onBlur={ val => this.handleQuantityBlur()}/>
+						<VoucherPrice
+							voucher={voucher}
+							price={this.state.price}
+							onChange={val => this.updateValue(val)}
+							onBlur={ val => this.handleValueBlur()}
+						/>
+					</div>
+				</div>
         }
       </div>
     );
@@ -139,49 +141,53 @@ const VoucherPrice = (props): any => {
   const voucher = props.voucher;
   const price = props.price;
 
-  return (
-    <div className="col-xs-8 col-md-7 alignright priceValue">
-      <div className="row">
-        {voucher.isEditablePrice &&
-          <div className="col-xs-24 col-md-24 fee-full fullPrice text-right">
-            <input
-              type="text"
-              className="text-right"
-              name="priceValue"
-              value={`$${price}`}
-              onChange={e => props.onChange(e.target.value.replace('$', ''))}
-              onBlur={e => props.onBlur(e)}
-            />
-          </div>
-        }
+  return voucher.isEditablePrice ?
+        <div className="col-xs-14 col-md-14 alignright priceValue">
+					<div className = "row">
+            
+            <span className="col-xs-14 col-md-14">
+              <input
+                type="text"
+                className="text-right"
+                name="priceValue"
+                value={`$${price}`}
+                onChange={e => props.onChange(e.target.value.replace('$', ''))}
+                onBlur={e => props.onBlur(e)}
+              />
+            </span>
         
-        <span className="col-xs-24 col-md-24 fee-full fullPrice text-right">
-        ${Number(voucher.total).toFixed(2)}
-        </span>
-      </div>
-    </div>
-  );
+            <span className="col-xs-10 col-md-10 fee-full fullPrice text-right">
+              ${Number(voucher.total).toFixed(2)}
+            </span>
+            
+          </div>
+        </div> 
+        :
+        <div className="col-xs-14 col-md-14 alignright priceValue text-right">
+          ${Number(voucher.total).toFixed(2)}
+        </div>;
+
 };
 
 const VoucherQuantity = (props): any => {
   const quantity = props.quantity;
 
   return (
-      <div className="col-xs-8 col-md-7 alignright quantityValue">
-        <div className="row">
-          <div className="col-xs-24 col-md-24 fee-full quantity text-right">
-            <span className="col-xs-24 col-md-24 fee-full quantity text-right">Quantity:</span>
-            <input
-                type="text"
-                className="text-left"
-                name="quantityValue"
-                value={quantity}
-                onChange={e => props.onChange(e.target.value)}
-                onBlur={e => props.onBlur(e)}
-            />
-          </div>
-        </div>
+    <div className="col-xs-10 col-md-10">
+      <div className="row">
+        <span className="col-xs-12 col-md-12 fee-full quantity">Quantity</span>
+        <span className="col-xs-12 col-md-12" >
+          <input
+            type="text"
+            className="text-right"
+            name="quantityValue"
+            value={quantity}
+            onChange={e => props.onChange(e.target.value)}
+            onBlur={e => props.onBlur(e)}
+          />
+        </span>
       </div>
+    </div>
   );
 };
 
