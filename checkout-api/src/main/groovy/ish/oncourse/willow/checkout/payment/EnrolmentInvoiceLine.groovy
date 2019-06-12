@@ -60,11 +60,11 @@ class EnrolmentInvoiceLine {
             //Calculate enrolment fee (for enrolments whose courses has ENROLMENT_BY_APPLICATION type) as application.feeOverride if !=null.
             //Application.feeOverride doesn't need to combine with discounts.
             Money feeOverriden = price.feeOverriden.toMoney()
-            InvoiceUtil.fillInvoiceLine(invoiceLine, feeOverriden, Money.ZERO, taxRate, Money.ZERO)
+            InvoiceUtil.fillInvoiceLine(invoiceLine, feeOverriden, Money.ZERO, taxRate, Money.ZERO, BigDecimal.ONE)
         } else {
             Money taxAdjustment = CalculatePrice.calculateTaxAdjustment(e.courseClass)
             InvoiceUtil.fillInvoiceLine(invoiceLine, e.courseClass.feeExGst, Money.ZERO,
-                    taxRate, taxOverridden ? Money.ZERO : taxAdjustment)
+                    taxRate, taxOverridden ? Money.ZERO : taxAdjustment, BigDecimal.ONE)
 
             if (price.appliedDiscount) {
                 DiscountCourseClass chosenDiscount = e.courseClass.discountCourseClasses
