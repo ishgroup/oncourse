@@ -63,7 +63,7 @@ class ProcessProduct {
                     a.price = new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, taxOverridden, persistentProduct, BigDecimal.ONE).calculate().finalPriceToPayIncTax.doubleValue()
                     a
                 }
-                ValidateArticle validate = new ValidateArticle(context, college).validate(article)
+                ValidateArticle validate = new ValidateArticle(context, college, taxOverridden).validate(article)
                 article.errors += validate.errors
                 article.warnings += validate.warnings
                 break
