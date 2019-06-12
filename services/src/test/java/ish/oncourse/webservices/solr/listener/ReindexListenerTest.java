@@ -3,9 +3,10 @@
  */
 package ish.oncourse.webservices.solr.listener;
 
+import ish.oncourse.cayenne.WillowCayenneModuleBuilder;
+import ish.oncourse.cayenne.cache.JCacheModule;
 import ish.oncourse.model.*;
 import ish.oncourse.services.lifecycle.TaggableListener;
-import ish.oncourse.services.persistence.CayenneService;
 import ish.oncourse.test.LoadDataSet;
 import ish.oncourse.test.TestContext;
 import ish.oncourse.webservices.solr.SolrUpdateCourseDocumentsListener;
@@ -61,7 +62,7 @@ public class ReindexListenerTest {
             
         };
 
-        cayenneRuntime = new ServerRuntime("cayenne-oncourse.xml", CommitLogModule.extend()
+        cayenneRuntime = new ServerRuntime("cayenne-oncourse.xml", new WillowCayenneModuleBuilder().queryCache(null).build(), new JCacheModule(), CommitLogModule.extend()
                 .addListener(listener).module());
         cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addListener(new TaggableListener(null, null));
 
