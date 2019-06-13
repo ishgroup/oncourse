@@ -66,6 +66,8 @@ class CorporatePassTest extends ApiTest {
                     v.price = 100.00
                     v.isEditablePrice = true
                     v.selected = true
+                    v.quantity = 1
+                    v.total = 100.0
                     v
                 }
                 

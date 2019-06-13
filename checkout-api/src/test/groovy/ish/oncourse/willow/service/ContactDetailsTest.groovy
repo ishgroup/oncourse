@@ -8,6 +8,7 @@ import ish.oncourse.model.FieldHeading
 import ish.oncourse.util.FormatUtils
 import ish.oncourse.willow.filters.RequestFilter
 import ish.oncourse.willow.functions.field.FieldBuilder
+import ish.oncourse.willow.model.checkout.request.ProductContainer
 import ish.oncourse.willow.model.field.ContactFields
 import ish.oncourse.willow.model.field.ContactFieldsRequest
 import ish.oncourse.willow.model.field.DataType
@@ -55,7 +56,7 @@ class ContactDetailsTest extends  ApiTest{
         RequestFilter.ThreadLocalSiteKey.set('mammoth')
         ContactApi api = new ContactApiServiceImpl(cayenneService, new CollegeService(cayenneService))
 
-        ContactFields fields = api.getContactFields(new ContactFieldsRequest(contactId: '1001', productIds: ['13'], classIds: ['1001', '1002'], fieldSet: FieldSet.ENROLMENT))
+        ContactFields fields = api.getContactFields(new ContactFieldsRequest(contactId: '1001', products: [[productId:'131',quantity:1] as ProductContainer ], classIds: ['1001', '1002'], fieldSet: FieldSet.ENROLMENT))
         
         def file = new File(getClass().getResource('/ish/oncourse/willow/service/contact-fields.txt').toURI())
 

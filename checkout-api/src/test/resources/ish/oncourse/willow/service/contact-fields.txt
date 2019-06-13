@@ -378,7 +378,7 @@ class ContactFields {
                 value: Self-employed, not employing others
             }, class Item {
                 key: 4
-                value: Employer
+                value: Self-employed – employing others
             }, class Item {
                 key: 5
                 value: Employed - unpaid in family business

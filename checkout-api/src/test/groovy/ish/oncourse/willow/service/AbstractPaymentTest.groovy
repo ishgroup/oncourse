@@ -55,6 +55,8 @@ abstract class AbstractPaymentTest extends ApiTest {
                         v.contactId = '1001'
                         v.selected = true
                         v.isEditablePrice = true
+                        v.total=100.0
+                        v.quantity=1
                         v
                     }]
                     cNode

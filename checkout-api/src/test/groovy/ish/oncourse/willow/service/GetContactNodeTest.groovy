@@ -5,6 +5,7 @@ import ish.oncourse.willow.checkout.CheckoutApiImpl
 import ish.oncourse.willow.filters.RequestFilter
 import ish.oncourse.willow.model.checkout.ContactNode
 import ish.oncourse.willow.model.checkout.request.ContactNodeRequest
+import ish.oncourse.willow.model.checkout.request.ProductContainer
 import ish.oncourse.willow.service.impl.CollegeService
 import org.junit.Test
 
@@ -27,7 +28,7 @@ class GetContactNodeTest extends ApiTest {
         ContactNodeRequest nodeRequest = new ContactNodeRequest().with { request -> 
             request.contactId = '1001'
             request.classIds = ['1001', '1002', '1005']
-            request.productIds = ['7', '8', '12']
+            request.products = [[productId:'7', quantity:1], [productId:'8', quantity:1], [productId:'12', quantity:1]] as ProductContainer[]
             request
         }
         
