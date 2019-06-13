@@ -4,6 +4,7 @@ import ish.oncourse.willow.checkout.CheckoutApiImpl
 import ish.oncourse.willow.filters.RequestFilter
 import ish.oncourse.willow.model.checkout.ContactNode
 import ish.oncourse.willow.model.checkout.request.ContactNodeRequest
+import ish.oncourse.willow.model.checkout.request.ProductContainer
 import ish.oncourse.willow.service.impl.CollegeService
 
 import org.junit.Test
@@ -29,7 +30,7 @@ class CheckoutApiTest extends ApiTest {
         ContactNodeRequest request = new ContactNodeRequest().with { request ->
             request.contactId = '1001'
             request.classIds = ['1001', '1002']
-            request.productIds = ['7':1,'8':1,'12':1]
+            request.products = [[productId:'7', quantity:1], [productId:'8', quantity:1], [productId:'12', quantity:1]] as ProductContainer[]
             request
         }
 
@@ -49,7 +50,7 @@ class CheckoutApiTest extends ApiTest {
         ContactNodeRequest request = new ContactNodeRequest().with { request ->
             request.contactId = '1001'
             request.classIds = ['1001', '1002']
-            request.productIds = ['8':3,'12':4, '13':5]
+            request.products = [[productId:'8', quantity:3], [productId:'12', quantity:4], [productId:'13', quantity:5]] as ProductContainer[]
             request
         }
 
@@ -57,8 +58,11 @@ class CheckoutApiTest extends ApiTest {
 
         assertEquals(1, items.enrolments.size())
         assertEquals(1, items.applications.size())
-        assertEquals(4, items.articles.size())
+        assertEquals(1, items.articles.size())
+        assertEquals(4, items.articles[0].quantity)
         assertEquals(1, items.memberships.size())
-        assertEquals(5, items.vouchers.size())
+        assertEquals(1, items.vouchers.size())
+        assertEquals(5, items.vouchers[0].quantity)
+
     }
 }
