@@ -47,6 +47,8 @@ class CalculateAmountTest extends ApiTest {
                     v.contactId = '1001'
                     v.selected = true
                     v.isEditablePrice = true
+                    v.quantity = 1
+                    v.total = 150.00
                     v
                 }]
                 cNode
