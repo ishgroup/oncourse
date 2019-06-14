@@ -6,6 +6,7 @@ package ish.oncourse.cayenne;
 import org.apache.cayenne.access.types.ExtendedType;
 import org.apache.cayenne.cache.QueryCache;
 import org.apache.cayenne.configuration.Constants;
+import org.apache.cayenne.configuration.server.DbAdapterDetector;
 import org.apache.cayenne.di.*;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -29,7 +30,7 @@ public class WillowCayenneModuleTest {
 		Mockito.when(binder.bindMap(String.class, Constants.PROPERTIES_MAP)).thenReturn(mapBuilder);
 		Mockito.when(binder.bind(Mockito.any(Class.class))).thenReturn(bindingBuilder);
 		Mockito.when(binder.bind(Mockito.any(Key.class))).thenReturn(bindingBuilder);
-
+		Mockito.when(binder.bindList(DbAdapterDetector.class, Constants.SERVER_ADAPTER_DETECTORS_LIST)).thenReturn(listBuilder);
 
 		WillowCayenneModule module = new WillowCayenneModule(queryCache);
 		module.configure(binder);
