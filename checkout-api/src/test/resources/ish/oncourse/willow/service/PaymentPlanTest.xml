@@ -36,7 +36,7 @@
 
     <Invoice type="1" id="1001" angelId="1" source="O" amountOwing="0.00" contactId="1001" collegeId="1" dateDue="2011-09-20 11:14:54"
              description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="0.00" totalGst="0.00"
-             created="2011-09-12 00:38:54.0" modified="2011-09-12 00:38:55.0" confirmationStatus="1"/>
+             created="2011-09-12 00:38:54.0" modified="2011-09-12 00:38:55.0" confirmationStatus="1" allowAutoPay="1"/>
 
     <InvoiceLine id="1001" angelId="1" collegeId="1" invoiceId="1001" quantity="1.0" discountEachExTax="0.00" priceEachExTax="0.00"
                  taxEach="0.00" title="Test Invoice Line"
@@ -156,7 +156,7 @@
                   angelId="1001"
                   collegeId="1"
                   createdOn="2017-01-31 21:31:37"
-                  expiryDate="2019-01-31 00:00:00"
+                  expiryDate="2119-01-31 00:00:00"
                   invoiceLineId="1001"
                   modifiedOn="2017-06-22 00:21:30"
                   productId="1001"
@@ -181,7 +181,7 @@
                   angelId="1002"
                   collegeId="1"
                   createdOn="2017-01-31 21:31:37"
-                  expiryDate="2019-01-31 00:00:00"
+                  expiryDate="2119-01-31 00:00:00"
                   invoiceLineId="1002"
                   modifiedOn="2017-06-22 00:21:30"
                   productId="1002"

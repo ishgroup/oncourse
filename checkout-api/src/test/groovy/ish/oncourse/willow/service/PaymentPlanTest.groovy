@@ -149,7 +149,7 @@ class PaymentPlanTest extends ApiTest {
                         new Enrolment(contactId: '1001', classId: '1002', selected: true),
                         new Enrolment(contactId: '1001', classId: '1003', selected: true)
                 ]
-                n.articles << new Article(contactId: '1001', productId: '1003', selected: true)
+                n.articles << new Article(contactId: '1001', productId: '1003', selected: true, quantity: 1, price: 100.00, total: 100.00)
                 n
             }
             r.redeemedVoucherIds.addAll(voucherIsd)
@@ -163,7 +163,7 @@ class PaymentPlanTest extends ApiTest {
             r.contactNodes << new ContactNode().with { n ->
                 n.contactId = '1001'
                 n.enrolments <<  new Enrolment(contactId: '1001', classId: '1003', selected: true)
-                n.articles << new Article(contactId: '1001', productId: '1003', selected: true)
+                n.articles << new Article(contactId: '1001', productId: '1003', selected: true, quantity: 1, price: 100.00, total: 100.00)
                 n
             }
             r.redeemedVoucherIds.addAll(voucherIsd)
