@@ -17,7 +17,7 @@ class CreditNoteTest extends ApiTest {
     
     @Override
     protected String getDataSetResource() {
-        return 'ish/oncourse/willow/service/CreditNoteTest.xml'
+        return 'ish/oncourse/willow/checkout/CreditNoteTest.xml'
     }
 
     @Test
