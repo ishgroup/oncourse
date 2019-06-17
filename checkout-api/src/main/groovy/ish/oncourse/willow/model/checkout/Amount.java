@@ -6,6 +6,7 @@ import java.util.List;
 
 public class Amount  {
   
+    private Double credit = null;
     private Double owing = null;
     private Double total = null;
     private Double subTotal = null;
@@ -14,6 +15,23 @@ public class Amount  {
     private Double minPayNow = null;
     private Boolean isEditable = null;
     private List<VoucherPayment> voucherPayments = new ArrayList<VoucherPayment>();
+
+    /**
+     * awalible credit amount (students credit notes)
+     * @return credit
+     */
+    public Double getCredit() {
+        return credit;
+    }
+
+    public void setCredit(Double credit) {
+       this.credit = credit;
+    }
+
+    public Amount credit(Double credit) {
+      this.credit = credit;
+      return this;
+    }
 
     /**
      * outstanding amount
@@ -162,6 +180,7 @@ public class Amount  {
       StringBuilder sb = new StringBuilder();
       sb.append("class Amount {\n");
       
+      sb.append("    credit: ").append(toIndentedString(credit)).append("\n");
       sb.append("    owing: ").append(toIndentedString(owing)).append("\n");
       sb.append("    total: ").append(toIndentedString(total)).append("\n");
       sb.append("    subTotal: ").append(toIndentedString(subTotal)).append("\n");

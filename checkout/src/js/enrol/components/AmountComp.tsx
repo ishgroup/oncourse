@@ -74,7 +74,9 @@ class AmountComp extends React.Component<Props, any> {
           ))}
 
           {amount && amount.discount !== 0 && <Discount discount={amount.discount}/>}
-
+          
+          {amount && amount.credit !== 0 && currentTab === Tabs.creditCard && <Credit credit={amount.credit}/> }
+          
           {(amount && currentTab !== Tabs.corporatePass) &&
           (amount.payNow || amount.payNow === 0) && amount.payNowVisibility &&
           <PayNow
@@ -108,6 +110,15 @@ const Discount = props => {
     </div>
   );
 };
+
+const Credit = props => {
+  return (
+    <div className="row total-discount">
+    <label className="col-xs-12">Credit</label>
+    <span className="col-xs-12">${parseFloat(props.credit).toFixed(2)}</span>
+    </div>
+  );
+};            
 
 const RedeemVoucher = props => {
   const {redeemVoucher, voucherPayment, onChange, disabled} = props;

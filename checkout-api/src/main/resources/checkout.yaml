@@ -1531,6 +1531,9 @@ definitions:
   checkout.Amount:
     type: object
     properties:
+      credit:
+        type: number
+        description: awalible credit amount (students credit notes)
       owing:
         type: number
         description: outstanding amount

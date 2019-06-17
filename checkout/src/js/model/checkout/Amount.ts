@@ -3,6 +3,11 @@ import {VoucherPayment} from "./../checkout/VoucherPayment";
 export class Amount {
 
   /**
+   * awalible credit amount (students credit notes)
+   */
+  credit?: number;
+
+  /**
    * outstanding amount
    */
   owing?: number;
