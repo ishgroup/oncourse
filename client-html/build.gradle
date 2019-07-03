@@ -2,8 +2,8 @@ apply plugin: 'com.moowork.node'
 apply plugin: 'queryLanguageModel'
 
 node {
-    version = '9.3.0'
-    npmVersion = '5.5.1'
+    version = '9.11.2'
+    npmVersion = '6.9.2'
     download = true
 }
 
@@ -26,12 +26,12 @@ task webpack_win(type:Exec) {
     args = ['node_modules/webpack/bin/webpack.js/', '--env.NODE_ENV', 'production', '--env.BUILD_NUMBER', 'SNAPSHOT']
 }
 
-task jest(type: NodeTask, dependsOn: 'yarn_install') {
+task jest(type: NodeTask, dependsOn: 'yarn') {
     script = project.file('node_modules/.bin/jest')
     args = ['--ci', '--testResultsProcessor=jest-junit']
 }
 
-task queryGrammar(type: YarnTask, dependsOn: 'yarn_install') {
+task queryGrammar(type: YarnTask, dependsOn: 'yarn') {
     args = ['antlr4ts']
 }
 
@@ -46,12 +46,12 @@ if (osVersion == 'win')
 else
     build.dependsOn(webpack_unix, queryGrammar)
 
-task buildLogin_unix(type: NodeTask, dependsOn: ['yarn_install', ':server-api:swagger']) {
+task buildLogin_unix(type: NodeTask, dependsOn: ['yarn', ':server-api:swagger']) {
     script = file('node_modules/.bin/webpack')
     args = ['--env.NODE_ENV', 'production', '--config', 'webpack.login.config.js']
 }
 
-task buildLogin_win(type:Exec, dependsOn: ['yarn_install', ':server-api:swagger']) {
+task buildLogin_win(type:Exec, dependsOn: ['yarn', ':server-api:swagger']) {
     workingDir '.'
     executable projectDir.getAbsolutePath() + '\\.gradle\\nodejs\\node-v' + project.extensions.getByName('node').version + '-win-x64\\node.exe'
     args = ['node_modules/webpack/bin/webpack.js/', '--env.NODE_ENV', 'production', '--config', 'webpack.login.config.js']
