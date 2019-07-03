@@ -15,12 +15,24 @@ dependencies {
     queryLanguageModelSource "ish.oncourse.willow:waCommon:$waCommonWebservicesClientVersion:sources"
 }
 
+yarn.outputs.cacheIf { true }
+
 task webpack_unix(type: NodeTask) {
+    inputs.file("yarn.lock")
+    inputs.file("webpack.config.js")
+    inputs.dir("src/js")
+    outputs.dir("$buildDir/assets")
+
     script = file('node_modules/.bin/webpack')
     args = ['--env.NODE_ENV', 'production', '--env.BUILD_NUMBER', version ?: 'SNAPSHOT']
 }
 
-task webpack_win(type:Exec) {
+task webpack_win(type: Exec) {
+    inputs.file("yarn.lock")
+    inputs.dir("src/js")
+    inputs.file("webpack.config.js")
+    outputs.dir("$buildDir/assets")
+
     workingDir '.'
     executable projectDir.getAbsolutePath() + '\\.gradle\\nodejs\\node-v' + project.extensions.getByName('node').version + '-win-x64\\node.exe'
     args = ['node_modules/webpack/bin/webpack.js/', '--env.NODE_ENV', 'production', '--env.BUILD_NUMBER', 'SNAPSHOT']
@@ -31,7 +43,7 @@ task jest(type: NodeTask, dependsOn: 'yarn') {
     args = ['--ci', '--testResultsProcessor=jest-junit']
 }
 
-task queryGrammar(type: YarnTask, dependsOn: 'yarn') {
+task queryGrammar(type: YarnTask, dependsOn: 'yarn_install') {
     args = ['antlr4ts']
 }
 
@@ -47,11 +59,21 @@ else
     build.dependsOn(webpack_unix, queryGrammar)
 
 task buildLogin_unix(type: NodeTask, dependsOn: ['yarn', ':server-api:swagger']) {
+    inputs.file("yarn.lock")
+    inputs.file("webpack.login.config.js")
+    inputs.dir("src/js")
+    outputs.dir("$buildDir/login")
+
     script = file('node_modules/.bin/webpack')
     args = ['--env.NODE_ENV', 'production', '--config', 'webpack.login.config.js']
 }
 
 task buildLogin_win(type:Exec, dependsOn: ['yarn', ':server-api:swagger']) {
+    inputs.file("yarn.lock")
+    inputs.file("webpack.login.config.js")
+    inputs.dir("src/js")
+    outputs.dir("$buildDir/login")
+
     workingDir '.'
     executable projectDir.getAbsolutePath() + '\\.gradle\\nodejs\\node-v' + project.extensions.getByName('node').version + '-win-x64\\node.exe'
     args = ['node_modules/webpack/bin/webpack.js/', '--env.NODE_ENV', 'production', '--config', 'webpack.login.config.js']
