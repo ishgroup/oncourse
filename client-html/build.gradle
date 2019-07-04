@@ -18,8 +18,7 @@ dependencies {
 yarn.outputs.cacheIf { true }
 
 task webpack_unix(type: NodeTask) {
-    inputs.file("yarn.lock")
-    inputs.file("webpack.config.js")
+    inputs.files("webpack.config.js", "tsconfig.json", "yarn.lock", "package.json")
     inputs.dir("src/js")
     outputs.dir("$buildDir/assets")
 
@@ -28,9 +27,8 @@ task webpack_unix(type: NodeTask) {
 }
 
 task webpack_win(type: Exec) {
-    inputs.file("yarn.lock")
+    inputs.files("webpack.config.js", "tsconfig.json", "yarn.lock", "package.json")
     inputs.dir("src/js")
-    inputs.file("webpack.config.js")
     outputs.dir("$buildDir/assets")
 
     workingDir '.'
@@ -59,8 +57,7 @@ else
     build.dependsOn(webpack_unix, queryGrammar)
 
 task buildLogin_unix(type: NodeTask, dependsOn: ['yarn', ':server-api:swagger']) {
-    inputs.file("yarn.lock")
-    inputs.file("webpack.login.config.js")
+    inputs.files("webpack.login.config.js", "tsconfig.json", "yarn.lock", "loginBundleTsConifig.json", "package.json")
     inputs.dir("src/js")
     outputs.dir("$buildDir/login")
 
@@ -69,8 +66,7 @@ task buildLogin_unix(type: NodeTask, dependsOn: ['yarn', ':server-api:swagger'])
 }
 
 task buildLogin_win(type:Exec, dependsOn: ['yarn', ':server-api:swagger']) {
-    inputs.file("yarn.lock")
-    inputs.file("webpack.login.config.js")
+    inputs.files("webpack.login.config.js", "tsconfig.json", "yarn.lock", "loginBundleTsConifig.json", "package.json")
     inputs.dir("src/js")
     outputs.dir("$buildDir/login")
 
