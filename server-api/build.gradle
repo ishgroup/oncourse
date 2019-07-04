@@ -22,8 +22,8 @@ dependencies {
     compile 'javax.validation:validation-api:1.1.0.Final'
     compile 'org.apache.bval:org.apache.bval.bundle:1.1.2'
 
-    compile "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:$jacksonVersion"
-    compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion"
+    compile "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.8.7"
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.7"
 
 }
 
