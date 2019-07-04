@@ -39,7 +39,7 @@ dependencies {
 
 	compile (project(':server-api')) 
 
-	compile ("org.apache.cxf:cxf-rt-frontend-jaxws:3.3.2") {
+	compile ("org.apache.cxf:cxf-rt-frontend-jaxws:$cfxVersion") {
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
 	}
 
@@ -144,7 +144,7 @@ dependencies {
 	compile 'net.sf.supercsv:super-csv-java8:2.4.0'
 
 	// Needed for log4j to json or gelf formats
-	compile 'com.fasterxml.jackson.core:jackson-core:2.9.9'
+	compile "com.fasterxml.jackson.core:jackson-core:$jacksonVersion"
 
 	compile 'org.yaml:snakeyaml:+'
 	compile "org.antlr:antlr4-runtime:4.7.1"

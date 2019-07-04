@@ -14,6 +14,8 @@ buildscript {
 		bouncycastleVersion = '1.59'
 		bootiqueVersion = '0.24'
 		jxbrowserVersion = '6.23.1'
+		cfxVersion = '3.3.2'
+		jacksonVersion = '2.9.9'
 		
 		openjfxVersion = '11'
 		osVersion = OperatingSystem.current().isMacOsX() ? 'mac' : OperatingSystem.current().isWindows() ? 'win' : 'linux'
