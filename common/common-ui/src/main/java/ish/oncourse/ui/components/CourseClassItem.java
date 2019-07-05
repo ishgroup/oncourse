@@ -27,6 +27,7 @@ import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static ish.oncourse.utils.SessionUtils.StartEndTime;
@@ -88,6 +89,9 @@ public class CourseClassItem extends ISHCommon {
 	@Property
 	private Format timeFormatWithTimeZone;
 
+	@Property
+	private Format isoDateTimeFormat;
+
 	@SuppressWarnings("all")
 	@Property
 	private List<String> weekdays = TimestampUtilities.DaysOfWeekNames;
@@ -127,6 +131,8 @@ public class CourseClassItem extends ISHCommon {
 				FormatUtils.getDateFormat(FormatUtils.dateFormatString, timeZone);
 
 		timeFormat = new CustomizedDateFormat(FormatUtils.shortTimeFormatString, timeZone);
+
+		isoDateTimeFormat = FormatUtils.getDateFormat(FormatUtils.DATE_FORMAT_ISO8601);
 
 		if (timeZone.getRawOffset() == TimeZone.getTimeZone(courseClass.getCollege().getTimeZone()).getRawOffset())
 			timeFormatWithTimeZone = new CustomizedDateFormat(FormatUtils.shortTimeFormatString, timeZone);
@@ -359,5 +365,13 @@ public class CourseClassItem extends ISHCommon {
 		return GetIsCourseClassInStock
 				.valueOf(courseClass, new IsPaymentGatewayEnabled(courseClass.getCollege(), courseClass.getObjectContext()).get())
 				.get();
+	}
+
+	public String getIsoDateTimeString(Date date) {
+		return new SimpleDateFormat(FormatUtils.DATE_FORMAT_ISO8601).format(date);
+	}
+
+	public String getSitePostalAddress(Site site) {
+		return String.format("%s, %s, %s, %s", site.getCountry().getName(), site.getState(), site.getSuburb(), site.getStreet());
 	}
 }

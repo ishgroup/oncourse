@@ -15,11 +15,11 @@
                 <t:if t:test="courseClass.firstSession">
                     <div class="date">
                         <a timezone="10" rel="session" href="/Timeline/sessions?ids=${courseClass.id}" class="timeline">
-                            <abbr itemprop="startDate" class="dtstart" title="">
+                            <abbr itemprop="startDate" class="dtstart" title="" content="${getIsoDateTimeString(firstSessionStartdate)}}">
                                 <t:output format="startDateFormat" value="firstSessionStartDate"/>
                             </abbr>
 
-                            <t:if t:test="showDateEnd"> - <abbr class="dtend" itemprop="endDate" title="">
+                            <t:if t:test="showDateEnd"> - <abbr class="dtend" itemprop="endDate" title="" content="${getIsoDateTimeString(courseClass.endDate)}}">
                                 <t:output format="endDateFormat" value="courseClass.endDate"/>
                             </abbr>
                             </t:if>
@@ -51,8 +51,11 @@
             </div>
             <div class="class-item-info-r">
                 <t:if test="hasLinkToLocation">
-                    <div itemprop="location" class="location">
+                    <div itemprop="location" class="location" itemscope="itemscope" itemtype="http://schema.org/Place">
                         <t:if test="courseClass.hasRoom">
+                            <span itemprop="address" itemscope="itemscope" itemtype="http://schema.org/PostalAddress">
+                              <meta itemprop="streetAddress" content="${getSitePostalAddress(courseclass.room.site)}"/>
+                            </span>
                             <span t:type="ui/roomLocation" room="courseClass.room" withRoomName="false"
                                   disabledLink="notExistsOnMap" isList="isList"/>
                             <p:else>Venue TBA</p:else>
