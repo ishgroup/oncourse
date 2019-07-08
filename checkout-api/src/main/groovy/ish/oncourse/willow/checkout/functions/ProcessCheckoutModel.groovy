@@ -304,6 +304,7 @@ class ProcessCheckoutModel {
                 if (a.errors.empty) {
                     products << processProduct.persistentProduct
                     a.price = processProduct.article.price
+                    a.total = processProduct.article.total
                     totalAmount = totalAmount.add(a.total.toMoney())
                     payNowAmount = payNowAmount.add(a.total.toMoney())
                 } else {
