@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
     
-    <Preference id="1" collegeId="1" name="license.ccprocessing"
-                value_string="true" />
-    <Preference id="2" collegeId="1" name="payment.gateway.type"
-                value_string="TEST" />
-    
     <Country id="1" ishVersion="1" name="Tuvalu" isoCodeAlpha2="TV" isoCodeAlpha3="TUV" isoCodeNumeric="798" asccssCode="1609" saccCode="1511"/>
     <College id="1" name="Sydney Community College"
              webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880"
              communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09"
              timezone="Australia/Sydney"
              requiresAvetmiss="0"/>
-
+    
+    <Preference id="1" collegeId="1" name="license.ccprocessing"
+                value_string="true" />
+    <Preference id="2" collegeId="1" name="payment.gateway.type"
+                value_string="TEST" />
+    
     <Site id="1" collegeId="1" angelId="1000" isWebVisible="0"
           created="2011-09-12 00:17:18.0" modified="2011-09-12 00:47:30.0" name="TestSite" isVirtual="0"/>
 
@@ -36,6 +36,8 @@
              isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
              isMarketingViaSMSAllowed="1" />
 
+    
+<!--    Avavalbe credit-->
     <Invoice type="1" id="1" angelId="1" source="O" amountOwing="-200" contactId="1001" collegeId="1" dateDue="2011-09-20 11:14:54"
              description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="-200" totalGst="-200"
              created="2011-09-12 00:38:54.0" modified="2011-09-12 00:38:55.0" confirmationStatus="1" allowAutoPay="1"/>
@@ -43,7 +45,131 @@
     <InvoiceLine id="1" angelId="1" collegeId="1" invoiceId="1" quantity="1.0" discountEachExTax="0.00" priceEachExTax="-200"
                  taxEach="0.00" title="Test Invoice Line"
                  created="2011-09-12 00:38:54.0" modified="2011-09-12 00:38:55.0"/>
+
+    <!--    locked amount-->
+    <Invoice type="1" id="2" angelId="2" source="O" amountOwing="-10" contactId="1001" collegeId="1" dateDue="2011-09-20 11:14:54"
+             description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="-10" totalGst="-10"
+             created="2011-09-12 00:38:54.0" modified="2011-09-12 00:38:55.0" confirmationStatus="1" allowAutoPay="1"/>
+
+    <InvoiceLine id="2" angelId="2" collegeId="1" invoiceId="2" quantity="1.0" discountEachExTax="0.00" priceEachExTax="-10"
+                 taxEach="0.00" title="Test Invoice Line"
+                 created="2011-09-12 00:38:54.0" modified="2011-09-12 00:38:55.0"/>
+
+
+    <Invoice type="1" id="3" angelId="3" source="O" amountOwing="10" contactId="1001" collegeId="1" dateDue="2011-09-20 11:14:54"
+             description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="10" totalGst="10"
+             created="2011-09-12 00:38:54.0" modified="2011-09-12 00:38:55.0" confirmationStatus="1" allowAutoPay="1"/>
+
+    <InvoiceLine id="3" angelId="3" collegeId="1" invoiceId="3" quantity="1.0" discountEachExTax="0.00" priceEachExTax="10"
+                 taxEach="0.00" title="Test Invoice Line"
+                 created="2011-09-12 00:38:54.0" modified="2011-09-12 00:38:55.0"/>
     
+    <PaymentIn
+            amount="0"
+            angelId="1"
+            collegeId="1"
+            contactId="1001"
+            created="2011-09-20 11:14:54"
+            creditCardCVV="QWER"
+            creditCardExpiry="creditCardExpiry"
+            creditCardName="creditCardName"
+            creditCardNumber="creditCardNumberX"
+            creditCardType="VISA"
+            dateBanked="2011-09-20 11:14:54"
+            gatewayReference="gatewayReference"
+            gatewayResponse="gatewayResponse"
+            id="1"
+            modified="2011-09-20 11:14:54"
+            sessionId="sessionId"
+            source="W"
+            status="2"
+            statusNotes="statusNotes"
+            type="5" confirmationStatus="1"/>
+
+    <PaymentInLine
+            amount="-10"
+            angelId="1"
+            collegeId="1"
+            created="2011-09-20 11:14:54"
+            id="1"
+            invoiceId="2"
+            modified="2011-09-20 11:14:54"
+            paymentInId="1"/>
+    
+    <PaymentInLine
+            amount="-10"
+            angelId="2"
+            collegeId="1"
+            created="2011-09-20 11:14:54"
+            id="2"
+            invoiceId="3"
+            modified="2011-09-20 11:14:54"
+            paymentInId="1"/>
+
+
+    <!--    locked amount-->
+    
+    <Invoice type="1" id="4" angelId="4" source="O" amountOwing="-10" contactId="1001" collegeId="1" dateDue="2011-09-20 11:14:54"
+             description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="-10" totalGst="-10"
+             created="2011-09-12 00:38:54.0" modified="2011-09-12 00:38:55.0" confirmationStatus="1" allowAutoPay="1"/>
+
+    <InvoiceLine id="4" angelId="4" collegeId="1" invoiceId="4" quantity="1.0" discountEachExTax="0.00" priceEachExTax="-10"
+                 taxEach="0.00" title="Test Invoice Line"
+                 created="2011-09-12 00:38:54.0" modified="2011-09-12 00:38:55.0"/>
+
+
+    <Invoice type="1" id="5" angelId="5" source="O" amountOwing="0" contactId="1001" collegeId="1" dateDue="2011-09-20 11:14:54"
+             description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="10" totalGst="10"
+             created="2011-09-12 00:38:54.0" modified="2011-09-12 00:38:55.0" confirmationStatus="1" allowAutoPay="1"/>
+
+    <InvoiceLine id="5" angelId="5" collegeId="1" invoiceId="5" quantity="1.0" discountEachExTax="0.00" priceEachExTax="10"
+                 taxEach="0.00" title="Test Invoice Line"
+                 created="2011-09-12 00:38:54.0" modified="2011-09-12 00:38:55.0"/>
+
+
+    <PaymentIn
+            amount="0"
+            angelId="2"
+            collegeId="1"
+            contactId="1001"
+            created="2011-09-20 11:14:54"
+            creditCardCVV="QWER"
+            creditCardExpiry="creditCardExpiry"
+            creditCardName="creditCardName"
+            creditCardNumber="creditCardNumberX"
+            creditCardType="VISA"
+            dateBanked="2011-09-20 11:14:54"
+            gatewayReference="gatewayReference"
+            gatewayResponse="gatewayResponse"
+            id="2"
+            modified="2011-09-20 11:14:54"
+            sessionId="sessionId"
+            source="W"
+            status="3"
+            statusNotes="statusNotes"
+            type="10" confirmationStatus="1"/>
+
+    <PaymentInLine
+            amount="-10"
+            angelId="3"
+            collegeId="1"
+            created="2011-09-20 11:14:54"
+            id="3"
+            invoiceId="4"
+            modified="2011-09-20 11:14:54"
+            paymentInId="2"/>
+
+    <PaymentInLine
+            amount="10"
+            angelId="4"
+            collegeId="1"
+            created="2011-09-20 11:14:54"
+            id="4"
+            invoiceId="5"
+            modified="2011-09-20 11:14:54"
+            paymentInId="2"/>
+    
+
     <Course id="1001" collegeId="1" angelId="1001" code="AAV"
             isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
             created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"

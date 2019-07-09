@@ -13,6 +13,7 @@ import ish.oncourse.model.Tax
 import ish.oncourse.services.preference.IsCorporatePassEnabled
 import ish.oncourse.services.preference.IsCreditCardPaymentEnabled
 import ish.oncourse.services.preference.IsPaymentGatewayEnabled
+import ish.oncourse.willow.FinancialService
 import ish.oncourse.willow.checkout.corporatepass.IsCorporatePassEnabledFor
 import ish.oncourse.willow.checkout.corporatepass.ValidateCorporatePass
 import ish.oncourse.willow.functions.field.GetWaitingListFields
@@ -54,15 +55,20 @@ class ProcessCheckoutModel {
     
     private CheckoutModel model
     private Tax taxOverridden
+    private Money avalibleCredit
+
+    private FinancialService financialService
 
 
-    ProcessCheckoutModel(ObjectContext context, College college, CheckoutModelRequest checkoutModelRequest) {
+
+    ProcessCheckoutModel(ObjectContext context, College college, CheckoutModelRequest checkoutModelRequest, FinancialService financialService) {
         this.context = context
         this.college = college
         this.checkoutModelRequest = checkoutModelRequest
         this.model = new CheckoutModel()
         this.model.validationErrors = new ValidationError()
         this.model.payerId = checkoutModelRequest.payerId
+        this.financialService = financialService
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
@@ -70,6 +76,7 @@ class ProcessCheckoutModel {
         processCorporatePass()
         if (!corporatePass && this.model.payerId) {
             taxOverridden = new GetContact(context, college, this.model.payerId).get(false).taxOverride
+            
         }
         
         processNodes()
@@ -99,6 +106,8 @@ class ProcessCheckoutModel {
             CalculateEnrolmentsPrice enrolmentsPrice = new CalculateEnrolmentsPrice(context, college, totalAmount, model, enrolmentsToProceed, checkoutModelRequest.promotionIds, null, taxOverridden).calculate()
             totalDiscount = totalDiscount.add(enrolmentsPrice.totalDiscount)
             
+            Money avalibleCredit = financialService.getAvalibleCredit(model.payerId).negate()
+            
             ProcessRedeemedVouchers redeemedVouchers = new ProcessRedeemedVouchers(context, college, checkoutModelRequest, payNowAmount.add(enrolmentsPrice.totalPayNow), enrolmentsPrice.enrolmentNodes).process()
             if (redeemedVouchers.error) {
                 model.error = redeemedVouchers.error
@@ -115,6 +124,7 @@ class ProcessCheckoutModel {
                 a.subTotal = subTotal.doubleValue()
                 a.discount = totalDiscount.doubleValue()
                 a.payNow =  payNowAmount.doubleValue()
+                a.credit = avalibleCredit.doubleValue()
                 a.minPayNow = a.payNow
                 a.isEditable = owing.isGreaterThan(Money.ZERO)
                 a.voucherPayments = redeemedVouchers.voucherPayments

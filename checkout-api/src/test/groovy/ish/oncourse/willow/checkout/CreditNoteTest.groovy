@@ -8,7 +8,6 @@ import ish.oncourse.willow.model.checkout.Enrolment
 import ish.oncourse.willow.model.web.CourseClassPrice
 import ish.oncourse.willow.model.web.Discount
 import ish.oncourse.willow.service.ApiTest
-import ish.oncourse.willow.service.impl.CollegeService
 import org.junit.Test
 
 import static org.junit.Assert.assertEquals
@@ -24,7 +23,7 @@ class CreditNoteTest extends ApiTest {
     void testGetAmount() {
         RequestFilter.ThreadLocalSiteKey.set('mammoth')
 
-        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, new CollegeService(cayenneService))
+        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService)
 
         CheckoutModelRequest request = new CheckoutModelRequest().with { modelRequest ->
             modelRequest.contactNodes = [new ContactNode().with { cNode ->
@@ -57,7 +56,7 @@ class CreditNoteTest extends ApiTest {
 
         CheckoutModel model = api.getCheckoutModel(request)
 
-        assertEquals(200.00,  model.amount.credit, 0)
+        assertEquals(210.00,  model.amount.credit, 0)
         assertEquals(220.00,  model.amount.total, 0)
         assertEquals(209.00,  model.amount.subTotal, 0)
         assertEquals(0.00,  model.amount.payNow, 0)

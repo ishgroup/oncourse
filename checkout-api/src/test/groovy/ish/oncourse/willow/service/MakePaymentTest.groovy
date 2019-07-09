@@ -47,7 +47,7 @@ class MakePaymentTest extends AbstractPaymentTest {
         WebSite webSite = service.webSite
         College college = webSite.college
 
-        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, service)
+        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService)
         
         PaymentRequest request = buildPaymentRequest()
         CheckoutModel model = api.getCheckoutModel(request.checkoutModelRequest)
@@ -136,7 +136,7 @@ class MakePaymentTest extends AbstractPaymentTest {
         WebSite webSite = service.webSite
         College college = webSite.college
 
-        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, service)
+        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService)
 
         PaymentRequest request = buildPaymentRequest()
         CheckoutModel model = api.getCheckoutModel(request.checkoutModelRequest)

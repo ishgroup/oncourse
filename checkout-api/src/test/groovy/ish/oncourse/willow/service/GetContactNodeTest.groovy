@@ -23,7 +23,7 @@ class GetContactNodeTest extends ApiTest {
 
         RequestFilter.ThreadLocalSiteKey.set('mammoth')
         CollegeService service = new CollegeService(cayenneService)
-        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, service)
+        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService)
 
         ContactNodeRequest nodeRequest = new ContactNodeRequest().with { request -> 
             request.contactId = '1001'

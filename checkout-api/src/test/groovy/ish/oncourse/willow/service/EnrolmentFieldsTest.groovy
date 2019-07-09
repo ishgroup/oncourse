@@ -39,7 +39,7 @@ class EnrolmentFieldsTest extends ApiTest {
         context.commitChanges()
 
         RequestFilter.ThreadLocalSiteKey.set('mammoth')
-        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, new CollegeService(cayenneService))
+        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService)
 
         ContactNode node = api.getContactNode(new ContactNodeRequest().with { cn ->
             cn.contactId = '1002'

@@ -7,6 +7,7 @@ import ish.oncourse.api.cayenne.CayenneService
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
 import ish.oncourse.model.WebSite
+import ish.oncourse.willow.FinancialService
 import ish.oncourse.willow.checkout.functions.*
 import ish.oncourse.willow.checkout.payment.CreatePaymentModel
 import ish.oncourse.willow.checkout.payment.GetPaymentStatus
@@ -35,18 +36,20 @@ class CheckoutApiImpl implements CheckoutApi {
 
     private CayenneService cayenneService
     private CollegeService collegeService
+    private FinancialService financialService
 
     @Inject
-    CheckoutApiImpl(CayenneService cayenneService, CollegeService collegeService) {
+    CheckoutApiImpl(CayenneService cayenneService, CollegeService collegeService, FinancialService financialService) {
         this.cayenneService = cayenneService
         this.collegeService = collegeService
+        this.financialService = financialService
     }
 
     @Override
     CheckoutModel getCheckoutModel(CheckoutModelRequest checkoutModelRequest) {
         ObjectContext context = cayenneService.newContext()
         College college = collegeService.college
-        ProcessCheckoutModel processModel = new ProcessCheckoutModel(context, college, checkoutModelRequest).process()
+        ProcessCheckoutModel processModel = new ProcessCheckoutModel(context, college, checkoutModelRequest, financialService).process()
         
         if (processModel.model.error) {
             throw new BadRequestException(Response.status(400).entity(processModel.model).build())
