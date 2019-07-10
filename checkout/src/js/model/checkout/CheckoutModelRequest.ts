@@ -5,6 +5,7 @@ export class CheckoutModelRequest {
   promotionIds?: string[];
   redeemedVoucherIds?: string[];
   payerId?: string;
+  applyCredit?: boolean;
   corporatePassId?: string;
 }
 

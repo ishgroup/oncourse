@@ -1531,35 +1531,39 @@ definitions:
   checkout.Amount:
     type: object
     properties:
-      credit:
-        type: number
-        description: awalible credit amount (students credit notes)
-      owing:
-        type: number
-        description: outstanding amount
       total:
         type: number
         description: total price excluding discounts
-      subTotal:
-        type: number
-        description: total price including discounts (discounted price)
       discount:
         type: number
         description: total discount amount
-      payNow:
+      subTotal:
         type: number
-        description: total amount allocated for payment/payments (equalse subTotal if payment plan invoices not presented)
+        description: total price including discounts (discounted price)
       minPayNow:
         type: number
-        description: min amount for cc payment (can be less than subTotal if payment plan invoices precented)
+        description: min amount that user need to pay for invoice/invoices (can be less than subTotal if payment plan invoices precented)
+      payNow:
+        type: number
+        description: aclyal amount allocated for invoice/invoices (equalse subTotal if payment plan invoices not presented)
       isEditable:
         type: boolean
-        description: true if owing greate that zero
+        description: true if minPayNow less that subTotal
       voucherPayments:
         type: array
         description: voucher payments list - appears if redeem any kind of vouchers
         items:
           $ref: '#/definitions/checkout.VoucherPayment'
+      credit:
+        type: number
+        description: credit amount that will be used to pay for current invoice/invoices (students credit notes)
+      ccPayment:
+        type: number
+        description: amount of CC payment
+      owing:
+        type: number
+        description: outstanding owing amount
+
   checkout.CheckoutModel:
     type: object
     properties:
@@ -1592,6 +1596,8 @@ definitions:
           type: string
       payerId:
         type: string
+      applyCredit:
+        type: boolean
       corporatePassId:
         type: string
   checkout.payment.PaymentRequest:
