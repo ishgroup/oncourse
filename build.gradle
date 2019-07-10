@@ -155,6 +155,10 @@ allprojects {
 
         // log each starting test
         beforeTest { descriptor -> logger.lifecycle("Running: " + descriptor) }
+
+        reports {
+            junitXml.enabled = true
+        }
     }
 
     group = 'ish.oncourse.willow'
