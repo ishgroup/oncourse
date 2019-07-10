@@ -44,7 +44,7 @@ class FinancialService {
                 .and(Invoice.ANGEL_ID.isNotNull())
                 .and(paymentFilter)
                 .column(Invoice.AMOUNT_OWING)
-                .select(cayenneService.newContext()).inject(Money.ZERO) { a,b -> a.add(b)}
+                .select(cayenneService.newContext()).inject(Money.ZERO) { a,b -> a.add(b)}.negate()
     }
     
 }
