@@ -12,7 +12,7 @@ import ish.oncourse.webservices.util.GenericParametersMap;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
 import ish.oncourse.webservices.util.PortHelper;
-import ish.oncourse.webservices.v17.stubs.replication.*;
+import ish.oncourse.webservices.v20.stubs.replication.*;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

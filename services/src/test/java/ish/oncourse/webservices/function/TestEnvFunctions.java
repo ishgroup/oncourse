@@ -4,7 +4,6 @@
 package ish.oncourse.webservices.function;
 
 import io.bootique.BQRuntime;
-import io.bootique.ConfigModule;
 import io.bootique.jdbc.DataSourceFactory;
 import ish.common.types.CreditCardType;
 import ish.common.types.PaymentStatus;
@@ -55,11 +54,11 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class TestEnv<T extends TransportConfig> {
+public class TestEnvFunctions<T extends TransportConfigFunctions> {
 	private static Logger logger = LogManager.getLogger();
 
 	//input
-	private Function<TestEnv<T>, T> transportConfigProvider;
+	private Function<TestEnvFunctions<T>, T> transportConfigProvider;
 	private String dataSetFile;
 	private Map<Object, Object> replacements = Collections.singletonMap("[null]", null);
 
@@ -79,9 +78,9 @@ public class TestEnv<T extends TransportConfig> {
 
 	private ExecutorService executor = Executors.newSingleThreadExecutor();
 
-	public TestEnv(Function<TestEnv<T>, T> transportConfigProvider,
-				   String dataSetFile,
-				   Map<Object, Object> replacements) {
+	public TestEnvFunctions(Function<TestEnvFunctions<T>, T> transportConfigProvider,
+							String dataSetFile,
+							Map<Object, Object> replacements) {
 		this.dataSetFile = dataSetFile;
 		this.replacements = replacements;
 		this.transportConfigProvider = transportConfigProvider;

@@ -34,7 +34,7 @@ import java.util.function.Supplier;
 
 import static org.junit.Assert.assertTrue;
 
-public class TransportConfig<TransactionGroup extends GenericTransactionGroup,
+public class TransportConfigFunctions<TransactionGroup extends GenericTransactionGroup,
 		ParametersMap extends GenericParametersMap,
 		ReplicationRecords extends GenericReplicationRecords,
 		ReplicationResult extends GenericReplicationResult,
@@ -292,19 +292,19 @@ public class TransportConfig<TransactionGroup extends GenericTransactionGroup,
 	private void createBus() {
 		// create bus
 		SpringBusFactory busFactory = new SpringBusFactory();
-		URL cxfConfig = TransportConfig.class.getClassLoader().getResource("ish/oncourse/webservices/soap/cxf-client.xml");
+		URL cxfConfig = TransportConfigFunctions.class.getClassLoader().getResource("ish/oncourse/webservices/soap/cxf-client.xml");
 		Bus bus = busFactory.createBus(cxfConfig);
 		BusFactory.setDefaultBus(bus);
 	}
 
-	public TransportConfig<TransactionGroup,
-			ParametersMap,
-			ReplicationRecords,
-			ReplicationResult,
-			ReplicationStub,
-			ReferenceStub,
-			ReferencePortType,
-			ReplicationPortType, PaymentPortType> init() {
+	public TransportConfigFunctions<TransactionGroup,
+				ParametersMap,
+				ReplicationRecords,
+				ReplicationResult,
+				ReplicationStub,
+				ReferenceStub,
+				ReferencePortType,
+				ReplicationPortType, PaymentPortType> init() {
 		try {
 			initReferencePort();
 
@@ -349,62 +349,62 @@ public class TransportConfig<TransactionGroup extends GenericTransactionGroup,
 	}
 
 
-	public TransportConfig<TransactionGroup,
-			ParametersMap,
-			ReplicationRecords,
-			ReplicationResult,
-			ReplicationStub,
-			ReferenceStub,
-			ReferencePortType,
-			ReplicationPortType, PaymentPortType> replicationVersion(SupportedVersions v) {
+	public TransportConfigFunctions<TransactionGroup,
+				ParametersMap,
+				ReplicationRecords,
+				ReplicationResult,
+				ReplicationStub,
+				ReferenceStub,
+				ReferencePortType,
+				ReplicationPortType, PaymentPortType> replicationVersion(SupportedVersions v) {
 		replicationVersion = v;
 		return this;
 	}
 
-	public TransportConfig<TransactionGroup,
-			ParametersMap,
-			ReplicationRecords,
-			ReplicationResult,
-			ReplicationStub,
-			ReferenceStub,
-			ReferencePortType,
-			ReplicationPortType, PaymentPortType> referenceVersion(SupportedVersions v) {
+	public TransportConfigFunctions<TransactionGroup,
+				ParametersMap,
+				ReplicationRecords,
+				ReplicationResult,
+				ReplicationStub,
+				ReferenceStub,
+				ReferencePortType,
+				ReplicationPortType, PaymentPortType> referenceVersion(SupportedVersions v) {
 		referenceVersion = v;
 		return this;
 	}
 
-	public TransportConfig<TransactionGroup,
-			ParametersMap,
-			ReplicationRecords,
-			ReplicationResult,
-			ReplicationStub,
-			ReferenceStub,
-			ReferencePortType,
-			ReplicationPortType, PaymentPortType> securityCode(Supplier<String> securityCode) {
+	public TransportConfigFunctions<TransactionGroup,
+				ParametersMap,
+				ReplicationRecords,
+				ReplicationResult,
+				ReplicationStub,
+				ReferenceStub,
+				ReferencePortType,
+				ReplicationPortType, PaymentPortType> securityCode(Supplier<String> securityCode) {
 		this.securityCode = securityCode;
 		return this;
 	}
 
-	public TransportConfig<TransactionGroup,
-			ParametersMap,
-			ReplicationRecords,
-			ReplicationResult,
-			ReplicationStub,
-			ReferenceStub,
-			ReferencePortType,
-			ReplicationPortType, PaymentPortType> communicationKey(Supplier<Long> communicationKey) {
+	public TransportConfigFunctions<TransactionGroup,
+				ParametersMap,
+				ReplicationRecords,
+				ReplicationResult,
+				ReplicationStub,
+				ReferenceStub,
+				ReferencePortType,
+				ReplicationPortType, PaymentPortType> communicationKey(Supplier<Long> communicationKey) {
 		this.communicationKey = communicationKey;
 		return this;
 	}
 
-	public TransportConfig<TransactionGroup,
-			ParametersMap,
-			ReplicationRecords,
-			ReplicationResult,
-			ReplicationStub,
-			ReferenceStub,
-			ReferencePortType,
-			ReplicationPortType, PaymentPortType> serverURI(URI serverURI) {
+	public TransportConfigFunctions<TransactionGroup,
+				ParametersMap,
+				ReplicationRecords,
+				ReplicationResult,
+				ReplicationStub,
+				ReferenceStub,
+				ReferencePortType,
+				ReplicationPortType, PaymentPortType> serverURI(URI serverURI) {
 		this.serverURI = serverURI;
 		return this;
 	}

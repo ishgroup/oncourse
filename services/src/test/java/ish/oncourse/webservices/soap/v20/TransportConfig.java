@@ -1,10 +1,8 @@
 package ish.oncourse.webservices.soap.v20;
 
 import ish.oncourse.services.system.ICollegeService;
-import ish.oncourse.webservices.function.TestEnv;
-import ish.oncourse.webservices.function.TransportConfig;
-import ish.oncourse.webservices.soap.v20.PaymentPortType;
-import ish.oncourse.webservices.soap.v20.ReplicationPortType;
+import ish.oncourse.webservices.function.TestEnvFunctions;
+import ish.oncourse.webservices.function.TransportConfigFunctions;
 import ish.oncourse.webservices.soap.v7.ReferencePortType;
 import ish.oncourse.webservices.util.SupportedVersions;
 import ish.oncourse.webservices.v20.stubs.replication.*;
@@ -12,11 +10,11 @@ import ish.oncourse.webservices.v7.stubs.reference.ReferenceStub;
 
 import static ish.oncourse.webservices.soap.TestConstants.DEFAULT_COLLEGE_KEY;
 
-public class TransportConfig extends ish.oncourse.webservices.function.TransportConfig<
+public class TransportConfig extends TransportConfigFunctions<
 		TransactionGroup, ParametersMap, ReplicationRecords, ReplicationResult,
 		ReplicationStub, ReferenceStub, ReferencePortType, ReplicationPortType, PaymentPortType> {
 
-	public TransportConfig(TestEnv testEnv) {
+	public TransportConfig(TestEnvFunctions testEnv) {
 		this.serverURI(testEnv.getURI());
 		this.replicationVersion(SupportedVersions.V20);
 		this.referenceVersion(SupportedVersions.V7);

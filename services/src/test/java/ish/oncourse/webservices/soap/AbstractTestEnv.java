@@ -3,7 +3,7 @@
  */
 package ish.oncourse.webservices.soap;
 
-import ish.oncourse.webservices.function.TestEnv;
+import ish.oncourse.webservices.function.TestEnvFunctions;
 
 import java.util.Collections;
 import java.util.Map;
@@ -15,7 +15,7 @@ import java.util.Map;
 public abstract class AbstractTestEnv<TransportConfig> {
 	private String dataSetFile;
 	private Map<Object, Object> replacements = Collections.singletonMap("[null]", null);
-	private TestEnv testEnv;
+	private TestEnvFunctions testEnv;
 	private TransportConfig transportConfig;
 	private org.apache.tapestry5.ioc.Messages messages;
 

@@ -3,13 +3,15 @@
  */
 package ish.oncourse.webservices.soap.v20;
 
+import ish.oncourse.webservices.function.TestEnvFunctions;
+
 import java.util.Collections;
 import java.util.Map;
 
 public class TestEnv {
 	private String dataSetFile;
 	private Map<Object, Object> replacements = Collections.singletonMap("[null]", null);
-	private ish.oncourse.webservices.function.TestEnv testEnv;
+	private TestEnvFunctions testEnv;
 
 
 	public TestEnv(String dataSetFile, Map<Object, Object> replacements) {
@@ -18,8 +20,8 @@ public class TestEnv {
 	}
 
 	public TestEnv start() {
-		testEnv = new ish.oncourse.webservices.function.TestEnv((ish.oncourse.webservices.function.TestEnv testEnv) -> {
-			TransportConfig transportConfig = new TransportConfig(testEnv);
+		this.testEnv = new TestEnvFunctions(testEnv -> {
+			TransportConfig transportConfig = new TransportConfig(this.testEnv);
 			transportConfig.init();
 			transportConfig.pingReplicationPort();
 			transportConfig.pingPaymentPort();
@@ -36,7 +38,7 @@ public class TestEnv {
 		testEnv.shutdown();
 	}
 
-	public ish.oncourse.webservices.function.TestEnv getTestEnv() {
+	public TestEnvFunctions getTestEnv() {
 		return testEnv;
 	}
 }

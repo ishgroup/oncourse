@@ -17,14 +17,14 @@ import java.util.function.Function;
  * Date: 28/8/17
  */
 public class TestCase {
-	private TestEnv<TransportConfig> testEnv;
+	private TestEnvFunctions<TransportConfigFunctions> testEnv;
 	private BiConsumer<GenericTransactionGroup, GenericParametersMap> fillStubs;
 	private Function<GenericTransactionGroup, String> getSessionId;
 	private Consumer<ObjectContext> assertQueuedRecords;
 	private Consumer<GenericTransactionGroup> assertResponse;
 	private Consumer<String> processPayment;
 
-	public TestCase(TestEnv<TransportConfig> testEnv, BiConsumer<GenericTransactionGroup, GenericParametersMap> fillStubs,
+	public TestCase(TestEnvFunctions<TransportConfigFunctions> testEnv, BiConsumer<GenericTransactionGroup, GenericParametersMap> fillStubs,
 					Function<GenericTransactionGroup, String> getSessionId,
 					Consumer<String> processPayment,
 					Consumer<ObjectContext> assertQueuedRecords,
