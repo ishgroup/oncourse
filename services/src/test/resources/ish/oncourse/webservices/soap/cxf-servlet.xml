@@ -26,9 +26,9 @@
 
 	<bean id="collegeRequestInterceptor" class="ish.oncourse.webservices.soap.interceptors.TestCollegeRequestInterceptor" />
 
-	<bean id="v17_replicationPortType" class="ish.oncourse.webservices.soap.v17.TestReplicationPortTypeImpl" />
+	<bean id="v17_replicationPortType" class="ish.oncourse.webservices.soap.v20.TestReplicationPortTypeImpl" />
 
-	<bean id="v17_paymentPortType" class="ish.oncourse.webservices.soap.v17.TestPaymentPortTypeImpl" />
+	<bean id="v17_paymentPortType" class="ish.oncourse.webservices.soap.v20.TestPaymentPortTypeImpl" />
 
 	<bean id="v18_replicationPortType" class="ish.oncourse.webservices.soap.v18.TestReplicationPortTypeImpl" />
 

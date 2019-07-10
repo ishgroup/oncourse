@@ -55,10 +55,6 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-/**
- * User: akoiro
- * Date: 26/8/17
- */
 public class TestEnv<T extends TransportConfig> {
 	private static Logger logger = LogManager.getLogger();
 

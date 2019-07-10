@@ -43,7 +43,7 @@ public class OutcomeUpdater extends AbstractWillowUpdater<OutcomeStub, Outcome> 
 			entity.setFundingSource(TypesUtil.getEnumForDatabaseValue(stub.getFundingSource(), ClassFundingSource.class));
 		}
 		if (stub.getModuleId() != null) {
-			entity.setModule(Cayenne.objectForPK(entity.getObjectContext(), Module.class, stub.getModuleId()));
+			entity.setModule(Cayenne.objectForPK(entity.getObjectContext(), ish.oncourse.model.Module.class, stub.getModuleId()));
 		}
 		if (stub.getReportableHours() != null) {
 			entity.setReportableHours(stub.getReportableHours().doubleValue());

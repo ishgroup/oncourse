@@ -12,18 +12,9 @@ import java.util.Map;
 
 public class ReferenceStubBuilder {
 
-	private Map<String, IReferenceStubBuilder> buildersv6 = new HashMap<>();
 	private Map<String, IReferenceStubBuilder> buildersv7 = new HashMap<>();
 
 	public ReferenceStubBuilder() {
-
-		buildersv6.put(getClassName(Country.class), new ish.oncourse.webservices.reference.v6.builders.CountryStubBuilder());
-		buildersv6.put(getClassName(Language.class), new ish.oncourse.webservices.reference.v6.builders.LanguageStubBuilder());
-		buildersv6.put(getClassName(Module.class), new ish.oncourse.webservices.reference.v6.builders.ModuleStubBuilder());
-		buildersv6.put(getClassName(Qualification.class), new ish.oncourse.webservices.reference.v6.builders.QualificationStubBuilder());
-		buildersv6.put(getClassName(TrainingPackage.class), new ish.oncourse.webservices.reference.v6.builders.TrainingPackageStubBuilder());
-		buildersv6.put(getClassName(PostcodeDb.class), new ish.oncourse.webservices.reference.v6.builders.PostcodeStubBuilder());
-
 		buildersv7.put(getClassName(Country.class), new ish.oncourse.webservices.reference.v7.builders.CountryStubBuilder());
 		buildersv7.put(getClassName(Language.class), new ish.oncourse.webservices.reference.v7.builders.LanguageStubBuilder());
 		buildersv7.put(getClassName(Module.class), new ish.oncourse.webservices.reference.v7.builders.ModuleStubBuilder());
@@ -37,9 +28,6 @@ public class ReferenceStubBuilder {
 		IReferenceStubBuilder builder;
 		
 		switch (version) {
-			case V6:
-				builder = buildersv6.get(key);
-				break;
 			case V7:
 				builder = buildersv7.get(key);
 				break;

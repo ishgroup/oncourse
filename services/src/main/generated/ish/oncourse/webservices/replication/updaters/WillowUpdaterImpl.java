@@ -7,10 +7,6 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.webservices.exception.UpdaterNotFoundException;
-import ish.oncourse.webservices.replication.v13.updaters.V13UpdatersMap;
-import ish.oncourse.webservices.replication.v17.updaters.V17UpdatersMap;
-import ish.oncourse.webservices.replication.v18.updaters.V18UpdatersMap;
-import ish.oncourse.webservices.replication.v19.updaters.V19UpdatersMap;
 import ish.oncourse.webservices.replication.v20.updaters.V20UpdatersMap;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.PortHelper;
@@ -30,34 +26,9 @@ public class WillowUpdaterImpl implements IWillowUpdater {
 	 * Willow updaters mappings
 	 */
  
-	private Map<String, IWillowUpdater> v13updaterMap = new HashMap<>();
- 
-	private Map<String, IWillowUpdater> v17updaterMap = new HashMap<>();
- 
-	private Map<String, IWillowUpdater> v18updaterMap = new HashMap<>();
- 
-	private Map<String, IWillowUpdater> v19updaterMap = new HashMap<>();
- 
 	private Map<String, IWillowUpdater> v20updaterMap = new HashMap<>();
 
 	public WillowUpdaterImpl(@Inject ITextileConverter textileConverter) {
-
-
-		V13UpdatersMap v13map = new V13UpdatersMap();
-		v13map.initMap(textileConverter);
-		v13updaterMap = v13map.getUpdaterMap();
-
-		V17UpdatersMap v17map = new V17UpdatersMap();
-		v17map.initMap(textileConverter);
-		v17updaterMap = v17map.getUpdaterMap();
-
-		V18UpdatersMap v18map = new V18UpdatersMap();
-		v18map.initMap(textileConverter);
-		v18updaterMap = v18map.getUpdaterMap();
-
-		V19UpdatersMap v19map = new V19UpdatersMap();
-		v19map.initMap(textileConverter);
-		v19updaterMap = v19map.getUpdaterMap();
 
 		V20UpdatersMap v20map = new V20UpdatersMap();
 		v20map.initMap(textileConverter);
@@ -74,22 +45,6 @@ public class WillowUpdaterImpl implements IWillowUpdater {
 		String key = EntityMapping.getWillowEntityIdentifer(stub.getEntityIdentifier());
 		final IWillowUpdater updater;
 		switch (version) {
-
-			case V13:
-				updater = v13updaterMap.get(key);
-				break;
-
-			case V17:
-				updater = v17updaterMap.get(key);
-				break;
-
-			case V18:
-				updater = v18updaterMap.get(key);
-				break;
-
-			case V19:
-				updater = v19updaterMap.get(key);
-				break;
 
 			case V20:
 				updater = v20updaterMap.get(key);
