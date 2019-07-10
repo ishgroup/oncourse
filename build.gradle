@@ -33,8 +33,8 @@ plugins {
 	id 'io.freefair.jsass' version '0.4.0' apply false
 	id 'io.spring.dependency-management' version '1.0.3.RELEASE' apply false
 	id 'com.github.ben-manes.versions' version '0.20.0' // adds the task 'dependencyUpdates -Drevision=release'
-	id "com.moowork.node" version "1.2.0" apply false
-	id 'com.dorongold.task-tree' version '1.3.1' // adds the task 'taskTree [some task]'
+	id "com.moowork.node" version "1.3.1" apply false
+	id 'com.dorongold.task-tree' version '1.4' // adds the task 'taskTree [some task]'
 }
 
 taskTree{
@@ -44,14 +44,9 @@ taskTree{
 
 ext {
     replicationVersions = [
-			13,     // introduced in onCourse 9.0
-			17, 	// introduced in onCourse 9.5
-			18, 	// introduced in onCourse 9.7
-            19,     // introduced in onCourse 9.9
-            20      // intriduced in onCourse 9.10
+            20      // introduced in onCourse 9.10
 	]
     referenceVersions = [
-			6,     // introduced in onCourse 8.2
             7      // introduced in onCourse 9.10
     ]
 }
