@@ -36,6 +36,31 @@
              isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
              isMarketingViaSMSAllowed="1" />
 
+    <Student id="1002" collegeId="1" angelId="1002"
+             created="2011-09-12 00:51:00.0" modified="2011-09-12 00:51:00.0"
+             disabilityType="0" englishProficiency="0" highestSchoolLevel="0"
+             indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0"
+             priorEducationCode="0" labourForceType="0" />
+
+
+    <Contact uniqueCode="1w3westablished" id="1002" collegeId="1" studentId="1002"
+             angelId="1001" countryId="1" created="2011-09-12 00:51:00.0" isCompany="0"
+             isMale="1" familyName="Student2" givenName="Student2" emailAddress="Student1@Student1.net"
+             dateOfBirth="2011-09-08" street="Independence av. 13" suburb="Minsk"
+             isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
+             isMarketingViaSMSAllowed="1" />
+
+    <!--    Avavalbe credit-->
+    <Invoice type="1" id="8" angelId="8" source="O" amountOwing="-200" contactId="1002" collegeId="1" dateDue="2011-09-20 11:14:54"
+             description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="-200" totalGst="-200"
+             created="2011-09-12 00:38:54.0" modified="2011-09-12 00:38:55.0" confirmationStatus="1" allowAutoPay="1"/>
+
+    <InvoiceLine id="8" angelId="8" collegeId="1" invoiceId="8" quantity="1.0" discountEachExTax="0.00" priceEachExTax="-200"
+                 taxEach="0.00" title="Test Invoice Line"
+                 created="2011-09-12 00:38:54.0" modified="2011-09-12 00:38:55.0"/>
+    
+    
+
     
 <!--    Avavalbe credit-->
     <Invoice type="1" id="1" angelId="1" source="O" amountOwing="-200" contactId="1001" collegeId="1" dateDue="2011-09-20 11:14:54"
@@ -233,17 +258,6 @@
              emailAddress="putin@russia.gov" street="Kremlin 1" suburb="Moscow"
              isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
              isMarketingViaSMSAllowed="1" uniqueCode="1wjdest3blished"/>
-
-    <CorporatePass id="2001" collegeId="1" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"
-                   contactId="2001" password="password1"/>
-
-    <CorporatePass_CourseClass id="1" collegeId="1" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"
-                               corporatePassId="2001" courseClassId="1001"/>
-
-    <CorporatePass_Discount id="1" collegeId="1" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"
-                            corporatePassId="2001" discountId="1001"/>
-
-   
 
     <FieldConfiguration id="2" collegeId="1"  angelId="-1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Enrolment Configuration1" type="1"/>
 

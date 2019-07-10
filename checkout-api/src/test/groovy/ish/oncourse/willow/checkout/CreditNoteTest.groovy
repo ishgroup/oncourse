@@ -24,8 +24,43 @@ class CreditNoteTest extends ApiTest {
         RequestFilter.ThreadLocalSiteKey.set('mammoth')
 
         CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService)
+        CheckoutModel model = api.getCheckoutModel(createRequest(false, '1001'))
 
-        CheckoutModelRequest request = new CheckoutModelRequest().with { modelRequest ->
+        assertEquals(210.00,  model.amount.credit, 0)
+        assertEquals(220.00,  model.amount.total, 0)
+        assertEquals(209.00,  model.amount.subTotal, 0)
+        assertEquals(170.00,  model.amount.payNow, 0)
+        assertEquals(170.00,  model.amount.minPayNow, 0)
+        assertEquals(39.00,  model.amount.owing, 0)
+        assertEquals(11.00,  model.amount.discount, 0)
+        assertEquals(true,  model.amount.isEditable)
+
+        model = api.getCheckoutModel(createRequest(true, '1001'))
+        
+        assertEquals(209.00,  model.amount.credit, 0)
+        assertEquals(220.00,  model.amount.total, 0)
+        assertEquals(209.00,  model.amount.subTotal, 0)
+        assertEquals(0.00,  model.amount.payNow, 0)
+        assertEquals(0.00,  model.amount.minPayNow, 0)
+        assertEquals(0.00,  model.amount.owing, 0)
+        assertEquals(11.00,  model.amount.discount, 0)
+        assertEquals(true,  model.amount.isEditable)
+
+        model = api.getCheckoutModel(createRequest(true, '1002'))
+
+        assertEquals(200.00,  model.amount.credit, 0)
+        assertEquals(220.00,  model.amount.total, 0)
+        assertEquals(209.00,  model.amount.subTotal, 0)
+        assertEquals(0.00,  model.amount.payNow, 0)
+        assertEquals(0.00,  model.amount.minPayNow, 0)
+        assertEquals(9.00,  model.amount.owing, 0)
+        assertEquals(11.00,  model.amount.discount, 0)
+        assertEquals(true,  model.amount.isEditable)
+        
+    }
+
+    private CheckoutModelRequest createRequest(boolean applyCredit, String payerId) {
+        return new CheckoutModelRequest().with { modelRequest ->
             modelRequest.contactNodes = [new ContactNode().with { cNode ->
                 cNode.contactId = '1001'
                 cNode.enrolments = [new Enrolment().with { e ->
@@ -46,25 +81,14 @@ class CreditNoteTest extends ApiTest {
                     e.selected = true
                     e
                 }]
-               
+
                 cNode
             }]
             modelRequest.promotionIds = ['1001']
-            modelRequest.payerId = '1001'
+            modelRequest.payerId = payerId
+            modelRequest.applyCredit = applyCredit
             modelRequest
         }
-
-        CheckoutModel model = api.getCheckoutModel(request)
-
-        assertEquals(210.00,  model.amount.credit, 0)
-        assertEquals(220.00,  model.amount.total, 0)
-        assertEquals(209.00,  model.amount.subTotal, 0)
-        assertEquals(0.00,  model.amount.payNow, 0)
-        assertEquals(0.00,  model.amount.minPayNow, 0)
-        assertEquals(9.00,  model.amount.owing, 0)
-        assertEquals(11.00,  model.amount.discount, 0)
-        assertEquals(true,  model.amount.isEditable)
-
     }
     
     
