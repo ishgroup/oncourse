@@ -151,6 +151,10 @@ allprojects {
 		beforeTest {
 			descriptor -> logger.lifecycle("Running: " + descriptor)
 		}
+
+		reports {
+			junitXml.enabled = true
+		}
 	}
 }
 
