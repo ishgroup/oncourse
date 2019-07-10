@@ -27,7 +27,7 @@ class SendEmail {
     }
 
     boolean send() {
-        final Message message
+        Message message
         try {
             Session session = getSession()
             message = builder.toMessage(session)
