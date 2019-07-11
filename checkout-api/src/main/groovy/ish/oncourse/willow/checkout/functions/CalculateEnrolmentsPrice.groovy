@@ -32,7 +32,7 @@ class CalculateEnrolmentsPrice {
     CorporatePass corporatePass
     
     Money totalDiscount = Money.ZERO
-    Money totalPayNow = Money.ZERO
+    Money minPayNow = Money.ZERO
     List<EnrolmentNode> enrolmentNodes = []
 
     List<Discount> promotions = []
@@ -70,7 +70,7 @@ class CalculateEnrolmentsPrice {
                 } else {
                     payNow = getPayNow(courseClass, classPrice)
                 }
-                totalPayNow = totalPayNow.add(payNow)
+                minPayNow = minPayNow.add(payNow)
                 enrolmentNodes << new EnrolmentNode(finalPrice: classPrice, contact: contact, course: courseClass.course, payNow: payNow)
             }
         }

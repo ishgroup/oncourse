@@ -12,9 +12,7 @@ import ish.oncourse.model.Product
 import ish.oncourse.model.Tax
 import ish.oncourse.services.preference.IsCorporatePassEnabled
 import ish.oncourse.services.preference.IsCreditCardPaymentEnabled
-import ish.oncourse.services.preference.IsPaymentGatewayEnabled
 import ish.oncourse.willow.FinancialService
-import ish.oncourse.willow.checkout.corporatepass.IsCorporatePassEnabledFor
 import ish.oncourse.willow.checkout.corporatepass.ValidateCorporatePass
 import ish.oncourse.willow.functions.field.GetWaitingListFields
 import ish.oncourse.willow.functions.field.ValidateCustomFields
@@ -28,12 +26,15 @@ import ish.oncourse.willow.model.checkout.ContactNode
 import ish.oncourse.willow.model.checkout.Enrolment
 import ish.oncourse.willow.model.checkout.Membership
 import ish.oncourse.willow.model.checkout.Voucher
+import ish.oncourse.willow.model.checkout.VoucherPayment
 import ish.oncourse.willow.model.checkout.WaitingList
 import ish.oncourse.willow.model.common.CommonError
 import ish.oncourse.willow.model.common.ValidationError
 import ish.oncourse.willow.model.field.FieldHeading
 import org.apache.cayenne.ObjectContext
 import org.apache.commons.lang3.StringUtils
+
+import static ish.math.Money.ZERO
 
 @CompileStatic
 class ProcessCheckoutModel {
@@ -42,9 +43,8 @@ class ProcessCheckoutModel {
     private College college
     private CheckoutModelRequest checkoutModelRequest
 
-    private Money totalAmount = Money.ZERO
-    private Money payNowAmount = Money.ZERO
-    private Money totalDiscount = Money.ZERO
+    private Money totalAmount = ZERO
+    private Money totalProductsAmount = ZERO
 
     private Map<Contact, List<CourseClass>> enrolmentsToProceed  = [:]
     private List<Product> products = []
@@ -55,7 +55,6 @@ class ProcessCheckoutModel {
     
     private CheckoutModel model
     private Tax taxOverridden
-    private Money avalibleCredit
 
     private FinancialService financialService
 
@@ -87,62 +86,85 @@ class ProcessCheckoutModel {
         if (model.error) {
             return this
         }
+
+        CalculateEnrolmentsPrice enrolmentsPrice = new CalculateEnrolmentsPrice(context, college, totalAmount, model, enrolmentsToProceed, checkoutModelRequest.promotionIds, corporatePass, taxOverridden).calculate()
+        Money subTotal = totalAmount.subtract( enrolmentsPrice.totalDiscount)
         
-        if (corporatePass) {
-            enrolmentsToProceed.values().flatten().unique()
-            ValidateCorporatePass corporatePassValidate = new ValidateCorporatePass(corporatePass, enrolmentsToProceed.values().flatten().unique() as List<CourseClass>, products.unique())
-            if (!corporatePassValidate.validate()) {
-                model.error = corporatePassValidate.error
-                return this
-            }
-            CalculateEnrolmentsPrice enrolmentsPrice = new CalculateEnrolmentsPrice(context, college, totalAmount, model, enrolmentsToProceed, checkoutModelRequest.promotionIds, corporatePass, taxOverridden).calculate()
-            totalDiscount =  totalDiscount.add(enrolmentsPrice.totalDiscount)
-            model.amount = new Amount().with { a ->
-                a.total = totalAmount.doubleValue()
-                a.discount = totalDiscount.doubleValue()
-                a.subTotal = totalAmount.subtract(totalDiscount).doubleValue()
-                a.owing = 0.0
-                a.payNow = 0.0
-                a.minPayNow = 0.0
-                a
-            }
-        } else {
-            CalculateEnrolmentsPrice enrolmentsPrice = new CalculateEnrolmentsPrice(context, college, totalAmount, model, enrolmentsToProceed, checkoutModelRequest.promotionIds, null, taxOverridden).calculate()
-            totalDiscount = totalDiscount.add(enrolmentsPrice.totalDiscount)
+        if (!corporatePass) {
             
-            Money avalibleCredit = financialService.getAvalibleCredit(model.payerId).negate()
-            
-            ProcessRedeemedVouchers redeemedVouchers = new ProcessRedeemedVouchers(context, college, checkoutModelRequest, payNowAmount.add(enrolmentsPrice.totalPayNow), enrolmentsPrice.enrolmentNodes).process()
+            Money minPayNow = totalProductsAmount.add(enrolmentsPrice.minPayNow)
+            Money availableCredit = checkoutModelRequest.applyCredit ? financialService.getAvalibleCredit(model.payerId).min(subTotal):  ZERO
+            Money payNow = checkoutModelRequest.payNow != null ? checkoutModelRequest.payNow.toMoney() : minPayNow
+
+            Money ccPayment = ZERO
+            Money usedCredit = ZERO
+                    
+            ProcessRedeemedVouchers redeemedVouchers = new ProcessRedeemedVouchers(context, college, checkoutModelRequest, payNow, enrolmentsPrice.enrolmentNodes).process()
             if (redeemedVouchers.error) {
                 model.error = redeemedVouchers.error
                 return this
             }
-            
-            payNowAmount = redeemedVouchers.leftToPay
+
+            //adjust minPayNow if course voucher cover all payment plan invoice
+            if (payNow.isLessThan(redeemedVouchers.vouchersTotal) && redeemedVouchers.leftToPay.isGreaterThan(ZERO) &&  checkoutModelRequest.payNow == null) {
+                minPayNow = redeemedVouchers.vouchersTotal.add(redeemedVouchers.leftToPay)
+                payNow = ZERO.add(minPayNow)
+            }
+
+            if (payNow.isLessThan(minPayNow) || payNow.isGreaterThan(subTotal)) {
+                model.error = new CommonError(message: "Pay now amount is wrong")
+                return this
+            }
+
+            ccPayment = payNow.subtract(redeemedVouchers.vouchersTotal)
+
+            if (ccPayment.isGreaterThan(ZERO)) {
+                if (ccPayment.isGreaterThan(availableCredit)) {
+                    ccPayment = ccPayment.subtract(availableCredit)
+                    usedCredit = usedCredit.add(availableCredit)
+                } else  {
+                    usedCredit = usedCredit.add(ccPayment)
+                    ccPayment = ZERO
+                }
+            }
             
             model.amount = new Amount().with { a ->
-                Money subTotal = totalAmount.subtract(totalDiscount)
-                Money owing = subTotal.subtract(payNowAmount).subtract(redeemedVouchers.vouchersTotal)
-                a.owing = owing.doubleValue()
                 a.total = totalAmount.doubleValue()
+                a.discount = enrolmentsPrice.totalDiscount.doubleValue()
                 a.subTotal = subTotal.doubleValue()
-                a.discount = totalDiscount.doubleValue()
-                a.payNow =  payNowAmount.doubleValue()
-                a.credit = avalibleCredit.doubleValue()
-                a.minPayNow = a.payNow
-                a.isEditable = owing.isGreaterThan(Money.ZERO)
+                a.minPayNow = minPayNow.doubleValue()
+                a.payNow = payNow.doubleValue()
+                a.isEditable = minPayNow.isLessThan(subTotal)
+                
                 a.voucherPayments = redeemedVouchers.voucherPayments
+                a.credit = usedCredit.doubleValue()
+                a.ccPayment = ccPayment.doubleValue()
+                a.owing = subTotal.subtract(payNow).doubleValue()
                 a
             }
 
             boolean paymentMethodsEnabled = (new IsCorporatePassEnabled(college, context).get() || new IsCreditCardPaymentEnabled(college, context).get())
             
             
-            if (payNowAmount.isGreaterThan(Money.ZERO) && !paymentMethodsEnabled) {
+            if (ccPayment.isGreaterThan(ZERO) && !paymentMethodsEnabled) {
                 model.error  = new CommonError(message: 'No payment method is enabled for this college.')
             }
             
-        }
+        } else {
+            ValidateCorporatePass corporatePassValidate = new ValidateCorporatePass(corporatePass, enrolmentsToProceed.values().flatten().unique() as List<CourseClass>, products.unique())
+            if (!corporatePassValidate.validate()) {
+                model.error = corporatePassValidate.error
+                return this
+            }
+            model.amount = new Amount().with { a ->
+                a.total = totalAmount.doubleValue()
+                a.discount = enrolmentsPrice.totalDiscount.doubleValue()
+                a.subTotal = subTotal.doubleValue()
+                a.owing = 0.0
+                a.minPayNow = 0.0
+                a
+            }
+        } 
 
         this
     }
@@ -320,7 +342,7 @@ class ProcessCheckoutModel {
                     a.price = processProduct.article.price
                     a.total = processProduct.article.total
                     totalAmount = totalAmount.add(a.total.toMoney())
-                    payNowAmount = payNowAmount.add(a.total.toMoney())
+                    totalProductsAmount = totalProductsAmount.add(a.total.toMoney())
                 } else {
                     a.selected = false
                 }
@@ -344,7 +366,7 @@ class ProcessCheckoutModel {
                     products << processProduct.persistentProduct
                     m.price = processProduct.membership.price
                     totalAmount = totalAmount.add(m.price.toMoney())
-                    payNowAmount = payNowAmount.add(m.price.toMoney())
+                    totalProductsAmount = totalProductsAmount.add(m.price.toMoney())
                 } else {
                     m.selected = false
                 }
@@ -364,7 +386,7 @@ class ProcessCheckoutModel {
             if (v.errors.empty) {
                 products << validateVoucher.persistentProduct
                 totalAmount = totalAmount.add(v.total.toMoney())
-                payNowAmount = payNowAmount.add(v.total.toMoney())
+                totalProductsAmount = totalProductsAmount.add(v.total.toMoney())
             } else {
                 v.selected = false 
             }
