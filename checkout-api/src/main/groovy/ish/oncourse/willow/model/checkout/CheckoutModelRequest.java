@@ -11,6 +11,7 @@ public class CheckoutModelRequest  {
     private List<String> redeemedVoucherIds = new ArrayList<String>();
     private String payerId = null;
     private Boolean applyCredit = null;
+    private Double payNow = null;
     private String corporatePassId = null;
 
     /**
@@ -114,6 +115,23 @@ public class CheckoutModelRequest  {
     }
 
     /**
+     * aclyal amount allocated for invoice/invoices (equalse subTotal if payment plan invoices not presented)
+     * @return payNow
+     */
+    public Double getPayNow() {
+        return payNow;
+    }
+
+    public void setPayNow(Double payNow) {
+       this.payNow = payNow;
+    }
+
+    public CheckoutModelRequest payNow(Double payNow) {
+      this.payNow = payNow;
+      return this;
+    }
+
+    /**
      * Get corporatePassId
      * @return corporatePassId
      */
@@ -141,6 +159,7 @@ public class CheckoutModelRequest  {
       sb.append("    redeemedVoucherIds: ").append(toIndentedString(redeemedVoucherIds)).append("\n");
       sb.append("    payerId: ").append(toIndentedString(payerId)).append("\n");
       sb.append("    applyCredit: ").append(toIndentedString(applyCredit)).append("\n");
+      sb.append("    payNow: ").append(toIndentedString(payNow)).append("\n");
       sb.append("    corporatePassId: ").append(toIndentedString(corporatePassId)).append("\n");
       sb.append("}");
       return sb.toString();
