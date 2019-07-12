@@ -140,6 +140,13 @@ export class CheckoutService {
     return this.checkoutApi.getCheckoutModel(BuildCheckoutModelRequest.fromState(state));
   }
 
+  public getUpdateModel = (state: IshState, payNow: number): Promise<CheckoutModel> => {
+    let request:CheckoutModelRequest = BuildCheckoutModelRequest.fromState(state);
+    request.payNow = payNow;
+    return this.checkoutApi.getCheckoutModel(request);
+  }
+
+
   public makePayment = (values: CreditCardFormValues, state: IshState): Promise<PaymentResponse> => {
     const request: PaymentRequest = PaymentService.creditFormValuesToRequest(values, state);
     return this.checkoutApi.makePayment(request);
@@ -402,7 +409,7 @@ export class BuildCheckoutModelRequest {
     result.redeemedVoucherIds = state.checkout.redeemVouchers.filter(v => v.enabled).map(v => v.id);
     result.contactNodes = BuildContactNodes.fromState(state.checkout.summary);
     result.corporatePassId = (state.checkout.payment.corporatePass && state.checkout.payment.corporatePass.id) || null;
-
+    result.payNow = (state.checkout.amount.isEditable && state.checkout.amount.payNow !== state.checkout.amount.minPayNow) ? state.checkout.amount.payNow : null;
     return result;
   }
 }

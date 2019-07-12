@@ -85,7 +85,6 @@ class AmountComp extends React.Component<Props, any> {
             payNow={amount.payNow}
             onChange={onUpdatePayNow ? val => this.handleChangePayNow(val) : undefined}
             onBlur={el => this.handleBlur(el)}
-            stateVal={this.state.payNowVal}
           />
           }
         </div>
