@@ -59,6 +59,7 @@ class AmountComp extends React.Component<Props, any> {
         <AddCodeComp onAdd={onAddCode} promotions={promotions}/>
         <div className="col-xs-24 col-sm-8 amount-content text-right">
           {amount && (amount.subTotal || amount.subTotal === 0) && <Total total={amount.subTotal}/>}
+          {amount && amount.discount !== 0 && <Discount discount={amount.discount}/>}
 
           {amount && redeemVouchers &&
           redeemVouchers.map(v => (
@@ -73,10 +74,11 @@ class AmountComp extends React.Component<Props, any> {
             />
           ))}
 
-          {amount && amount.discount !== 0 && <Discount discount={amount.discount}/>}
-          
-          {amount && amount.credit !== 0 && currentTab === Tabs.creditCard && <Credit credit={amount.credit}/> }
-          
+          {amount && amount.credit !== 0 && <Credit credit={amount.credit}/> }
+
+          {amount && (amount.voucherPayments.length !== 0 || amount.credit !== 0)
+          && amount.ccPayment !== 0 && <CCPayment credit={amount.ccPayment}/> }
+
           {(amount && currentTab !== Tabs.corporatePass) &&
           (amount.payNow || amount.payNow === 0) && amount.payNowVisibility &&
           <PayNow
@@ -113,12 +115,21 @@ const Discount = props => {
 
 const Credit = props => {
   return (
-    <div className="row total-discount">
+    <div className="row total-credit">
     <label className="col-xs-12">Credit</label>
     <span className="col-xs-12">${parseFloat(props.credit).toFixed(2)}</span>
     </div>
   );
-};            
+};
+
+const CCPayment = props => {
+  return (
+      <div className="row total-cc">
+        <label className="col-xs-12">Credit Card Amount</label>
+        <span className="col-xs-12">${parseFloat(props.credit).toFixed(2)}</span>
+      </div>
+  );
+};
 
 const RedeemVoucher = props => {
   const {redeemVoucher, voucherPayment, onChange, disabled} = props;

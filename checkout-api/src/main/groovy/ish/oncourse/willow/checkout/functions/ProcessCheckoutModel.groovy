@@ -93,7 +93,7 @@ class ProcessCheckoutModel {
         if (!corporatePass) {
             
             Money minPayNow = totalProductsAmount.add(enrolmentsPrice.minPayNow)
-            Money availableCredit = checkoutModelRequest.applyCredit ? financialService.getAvalibleCredit(model.payerId).min(subTotal):  ZERO
+            Money availableCredit = financialService.getAvalibleCredit(model.payerId).min(subTotal)
             Money payNow = checkoutModelRequest.payNow != null ? checkoutModelRequest.payNow.toMoney() : minPayNow
 
             Money ccPayment = ZERO
@@ -106,7 +106,7 @@ class ProcessCheckoutModel {
             }
 
             //adjust minPayNow if course voucher cover all payment plan invoice
-            if (payNow.isLessThan(redeemedVouchers.vouchersTotal) && redeemedVouchers.leftToPay.isGreaterThan(ZERO) &&  checkoutModelRequest.payNow == null) {
+            if (payNow.isLessThan(redeemedVouchers.vouchersTotal.add(redeemedVouchers.leftToPay)) && checkoutModelRequest.payNow == null) {
                 minPayNow = redeemedVouchers.vouchersTotal.add(redeemedVouchers.leftToPay)
                 payNow = ZERO.add(minPayNow)
             }
