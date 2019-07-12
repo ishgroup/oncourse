@@ -15,9 +15,10 @@ interface Props {
   currentTab?: Tabs;
 }
 
-class AmountComp extends React.Component<Props, any> {
-  private payNowInput;
-
+interface State {
+  payNowVal:any
+}
+class AmountComp extends React.Component<Props, State> {
   constructor(props) {
     super(props);
 
@@ -35,19 +36,17 @@ class AmountComp extends React.Component<Props, any> {
   handleChangePayNow(val) {
     const {onUpdatePayNow, amount} = this.props;
     const reg = (/^[0-9]+\.?[0-9]*$/);
-
-    this.setState({
-      payNowVal: val,
-    });
-
-    if ((val > 0 || Number(val) === 0 && amount.minPayNow === 0) && reg.test(val)) {
-      onUpdatePayNow(val);
+    if (reg.test(val)) {
+      this.setState({
+        payNowVal: val,
+      });
     }
   }
 
   handleBlur(value) {
+    const val = this.state.payNowVal;
     const {onUpdatePayNow} = this.props;
-    onUpdatePayNow(Number(value).toFixed(2), true);
+    onUpdatePayNow(Number(val).toFixed(2), true);
   }
 
   render(): JSX.Element {
@@ -82,7 +81,7 @@ class AmountComp extends React.Component<Props, any> {
           {(amount && currentTab !== Tabs.corporatePass) &&
           (amount.payNow || amount.payNow === 0) && amount.payNowVisibility &&
           <PayNow
-            payNow={amount.payNow}
+            payNow={this.state.payNowVal}
             onChange={onUpdatePayNow ? val => this.handleChangePayNow(val) : undefined}
             onBlur={el => this.handleBlur(el)}
           />
@@ -115,7 +114,7 @@ const Discount = props => {
 const Credit = props => {
   return (
     <div className="row total-credit">
-    <label className="col-xs-12">Credit</label>
+    <label className="col-xs-12">Previous credit</label>
     <span className="col-xs-12">${parseFloat(props.credit).toFixed(2)}</span>
     </div>
   );
@@ -158,10 +157,9 @@ const PayNow = props => {
     <span className="col-xs-12">
       <input
         type="text"
-        value={`$${props.stateVal === '' ? '' : props.payNow}`}
+        value={`$${props.payNow}`}
         onChange={e => props.onChange(e.target.value.replace('$', ''))}
-        onBlur={e => props.onBlur(this.payNowInput.value.replace('$', ''))}
-        ref={el => this.payNowInput = el}
+        onBlur={e => props.onBlur(e)}
       />
 
     </span>
