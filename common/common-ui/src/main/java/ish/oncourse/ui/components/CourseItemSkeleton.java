@@ -64,7 +64,7 @@ public class CourseItemSkeleton extends ISHCommon {
 	
 	@SuppressWarnings("all")
 	@Property
-	private Module module;
+	private ish.oncourse.model.Module module;
 		
 	@Inject
 	private ICourseService courseService;
