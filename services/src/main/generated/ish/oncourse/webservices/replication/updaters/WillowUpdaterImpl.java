@@ -30,6 +30,7 @@ public class WillowUpdaterImpl implements IWillowUpdater {
 
 	public WillowUpdaterImpl(@Inject ITextileConverter textileConverter) {
 
+
 		V20UpdatersMap v20map = new V20UpdatersMap();
 		v20map.initMap(textileConverter);
 		v20updaterMap = v20map.getUpdaterMap();

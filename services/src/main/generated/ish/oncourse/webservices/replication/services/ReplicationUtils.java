@@ -53,30 +53,6 @@ public class ReplicationUtils {
 		final SupportedVersions version = PortHelper.getVersionByReplicationStub(stub);
 		switch (version) {
 
-		case V13:
-			ish.oncourse.webservices.v13.stubs.replication.ReplicatedRecord replV13Record = new ish.oncourse.webservices.v13.stubs.replication.ReplicatedRecord();
-			StubUtils.setSuccessStatus(replV13Record);
-			replV13Record.setStub(toV13Hollow(stub, setWillowId));
-			return replV13Record;
-
-		case V17:
-			ish.oncourse.webservices.v17.stubs.replication.ReplicatedRecord replV17Record = new ish.oncourse.webservices.v17.stubs.replication.ReplicatedRecord();
-			StubUtils.setSuccessStatus(replV17Record);
-			replV17Record.setStub(toV17Hollow(stub, setWillowId));
-			return replV17Record;
-
-		case V18:
-			ish.oncourse.webservices.v18.stubs.replication.ReplicatedRecord replV18Record = new ish.oncourse.webservices.v18.stubs.replication.ReplicatedRecord();
-			StubUtils.setSuccessStatus(replV18Record);
-			replV18Record.setStub(toV18Hollow(stub, setWillowId));
-			return replV18Record;
-
-		case V19:
-			ish.oncourse.webservices.v19.stubs.replication.ReplicatedRecord replV19Record = new ish.oncourse.webservices.v19.stubs.replication.ReplicatedRecord();
-			StubUtils.setSuccessStatus(replV19Record);
-			replV19Record.setStub(toV19Hollow(stub, setWillowId));
-			return replV19Record;
-
 		case V20:
 			ish.oncourse.webservices.v20.stubs.replication.ReplicatedRecord replV20Record = new ish.oncourse.webservices.v20.stubs.replication.ReplicatedRecord();
 			StubUtils.setSuccessStatus(replV20Record);
@@ -99,30 +75,6 @@ public class ReplicationUtils {
 		}
 	}
 
- 
-	public static ish.oncourse.webservices.v13.stubs.replication.HollowStub toV13Hollow(final GenericReplicationStub stub, final boolean setWillowId) {
-		ish.oncourse.webservices.v13.stubs.replication.HollowStub hollowStub = new ish.oncourse.webservices.v13.stubs.replication.HollowStub();
-		fillHollowStub(stub, hollowStub, setWillowId);
-		return hollowStub;
-	}
- 
-	public static ish.oncourse.webservices.v17.stubs.replication.HollowStub toV17Hollow(final GenericReplicationStub stub, final boolean setWillowId) {
-		ish.oncourse.webservices.v17.stubs.replication.HollowStub hollowStub = new ish.oncourse.webservices.v17.stubs.replication.HollowStub();
-		fillHollowStub(stub, hollowStub, setWillowId);
-		return hollowStub;
-	}
- 
-	public static ish.oncourse.webservices.v18.stubs.replication.HollowStub toV18Hollow(final GenericReplicationStub stub, final boolean setWillowId) {
-		ish.oncourse.webservices.v18.stubs.replication.HollowStub hollowStub = new ish.oncourse.webservices.v18.stubs.replication.HollowStub();
-		fillHollowStub(stub, hollowStub, setWillowId);
-		return hollowStub;
-	}
-
-	public static ish.oncourse.webservices.v19.stubs.replication.HollowStub toV19Hollow(final GenericReplicationStub stub, final boolean setWillowId) {
-		ish.oncourse.webservices.v19.stubs.replication.HollowStub hollowStub = new ish.oncourse.webservices.v19.stubs.replication.HollowStub();
-		fillHollowStub(stub, hollowStub, setWillowId);
-		return hollowStub;
-	}
  
 	public static ish.oncourse.webservices.v20.stubs.replication.HollowStub toV20Hollow(final GenericReplicationStub stub, final boolean setWillowId) {
 		ish.oncourse.webservices.v20.stubs.replication.HollowStub hollowStub = new ish.oncourse.webservices.v20.stubs.replication.HollowStub();
