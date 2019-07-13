@@ -1,5 +1,1 @@
 apply from: "$rootDir/gradle/bootique.gradle"
-
-dependencies {
-    compile "org.codehaus.groovy:groovy-all:$groovyVersion"
-}

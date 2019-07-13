@@ -9,7 +9,6 @@ dependencies {
 	compile "org.apache.cayenne:cayenne-server:$cayenneVersion"
     compile 'org.apache.commons:commons-lang3:3.3.2'
     compile 'commons-codec:commons-codec:1.10'
-	compile "org.codehaus.groovy:groovy-all:$groovyVersion"
     compile 'javax.mail:mail:1.4.7'
 	compile 'org.springframework:spring-context:4.2.4.RELEASE'
 }
