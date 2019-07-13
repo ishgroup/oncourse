@@ -1,5 +1,6 @@
 package ish.oncourse.willow.model.checkout.request;
 
+import ish.oncourse.willow.model.checkout.request.ProductContainer;
 import java.util.ArrayList;
 import java.util.List;
 

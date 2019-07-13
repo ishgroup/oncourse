@@ -135,7 +135,7 @@ public class TestPaymentGatewayService implements IPaymentGatewayService {
         PaymentIn local = context.localObject(payment);
         paymentTransaction.setPayment(local);
 
-        /**
+        /*
          * Emulate of the rail payment behavior
          */
         try {

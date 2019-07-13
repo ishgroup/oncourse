@@ -8,10 +8,10 @@ import ish.oncourse.willow.model.field.DataType
 
 import static ish.oncourse.common.field.FieldProperty.*
 
-class FieldBuilder {
+class FieldBuilder<T> {
     
     Field field
-    Class aClass
+    Class<T> aClass
     
     ish.oncourse.willow.model.field.Field build() {
         new ish.oncourse.willow.model.field.Field().with { f ->
@@ -52,10 +52,10 @@ class FieldBuilder {
                 case DISABILITY_TYPE:
                     f.dataType = DataType.ENUM
                     f.enumType = aClass.simpleName
-
-                    aClass.enumConstants.each { DisplayableExtendedEnumeration item ->
-                        f.enumItems  << new Item(value: item.displayName, key: item.databaseValue.toString())
-                    }
+                     ((Class<DisplayableExtendedEnumeration>)aClass).enumConstants.each {
+                         DisplayableExtendedEnumeration item ->
+                            f.enumItems << new Item(value: item.displayName, key: item.databaseValue.toString())
+                     }
                     break
                 case CUSTOM_FIELD_CONTACT:
                 case CUSTOM_FIELD_ENROLMENT:

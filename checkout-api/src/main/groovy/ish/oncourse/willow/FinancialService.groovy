@@ -38,13 +38,14 @@ class FinancialService {
             throw new NullPointerException("Payer undefined")
         }
 
-       return ObjectSelect.query(Invoice)
+        Money amount = ObjectSelect.query(Invoice)
                 .where(Invoice.CONTACT.eq(payer))
                 .and(Invoice.AMOUNT_OWING.lt(Money.ZERO))
                 .and(Invoice.ANGEL_ID.isNotNull())
                 .and(paymentFilter)
                 .column(Invoice.AMOUNT_OWING)
-                .select(cayenneService.newContext()).inject(Money.ZERO) { a,b -> a.add(b)}.negate()
+                .select(cayenneService.newContext()).inject(Money.ZERO) { a,b -> a.add(b)}
+        return amount.negate()
     }
     
 }
