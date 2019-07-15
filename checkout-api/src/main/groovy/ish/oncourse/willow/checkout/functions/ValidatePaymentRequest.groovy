@@ -16,12 +16,14 @@ class ValidatePaymentRequest {
     CheckoutModel checkoutModel
     PaymentRequest paymentRequest
     ObjectContext context
+    private Money availableCredit
 
 
-    ValidatePaymentRequest(CheckoutModel checkoutModel, PaymentRequest paymentRequest, ObjectContext context) {
+    ValidatePaymentRequest(CheckoutModel checkoutModel, PaymentRequest paymentRequest, ObjectContext context, Money availableCredit) {
         this.checkoutModel = checkoutModel
         this.paymentRequest = paymentRequest
         this.context = context
+        this.availableCredit = availableCredit
     }
     
     CommonError commonError
@@ -30,27 +32,23 @@ class ValidatePaymentRequest {
     @CompileStatic(TypeCheckingMode.SKIP)
     ValidatePaymentRequest validate() {
         
-        Money minPayNow = checkoutModel.amount.payNow?.toMoney() ?: Money.ZERO
-        Money maxPayNow = minPayNow.add(checkoutModel.amount.owing?.toMoney())
+        Money expectedPayNow = checkoutModel.amount.ccPayment.toMoney()
+        Money actualPayNow = paymentRequest.ccAmount?.toMoney() ?: Money.ZERO
 
-        Money actualPayNow = paymentRequest.payNow?.toMoney() ?: Money.ZERO
-        
+        Money applyCredit = checkoutModel.amount.credit?.toMoney() ?: Money.ZERO
+
         if (new HasErrors(checkoutModel).hasErrors()) {
             commonError  = new CommonError(message: 'Purchase items are not valid')
         } 
-        
-        if (checkoutModel.amount.isEditable) {
-            if (actualPayNow.isLessThan(minPayNow)) {
-                commonError  = new CommonError(message: "Payment amount can not be less than $minPayNow" )
-            } else if (actualPayNow.isGreaterThan(maxPayNow)) {
-                commonError  = new CommonError(message: "Payment amount can not be more than $maxPayNow" )
-            }
-        } else {
-            if (actualPayNow != minPayNow) {
-                checkoutModel.error = new CommonError(message: 'Payment amount is wrong')
-            }
+
+        if (actualPayNow != expectedPayNow) {
+            checkoutModel.error = new CommonError(message: 'Credit card payment amount is wrong')
         }
-        
+
+        if (applyCredit.isGreaterThan(availableCredit)) {
+            checkoutModel.error = new CommonError(message: 'Credit amount is wrong')
+        }
+
         ValidationError erroe = new ValidateCreditCardForm(paymentRequest, context).validate(Money.ZERO == actualPayNow)
         if (!erroe.formErrors.empty || !erroe.fieldsErrors.empty) {
             validationError = erroe
