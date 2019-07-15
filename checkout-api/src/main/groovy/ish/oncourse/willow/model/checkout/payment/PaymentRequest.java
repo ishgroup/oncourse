@@ -12,7 +12,7 @@ public class PaymentRequest  {
     private String creditCardCvv = null;
     private Boolean agreementFlag = null;
     private String sessionId = null;
-    private Double payNow = null;
+    private Double ccAmount = null;
 
     /**
      * Get checkoutModelRequest
@@ -151,19 +151,19 @@ public class PaymentRequest  {
     }
 
     /**
-     * Get payNow
-     * @return payNow
+     * Amount allocated for credit card payment
+     * @return ccAmount
      */
-    public Double getPayNow() {
-        return payNow;
+    public Double getCcAmount() {
+        return ccAmount;
     }
 
-    public void setPayNow(Double payNow) {
-       this.payNow = payNow;
+    public void setCcAmount(Double ccAmount) {
+       this.ccAmount = ccAmount;
     }
 
-    public PaymentRequest payNow(Double payNow) {
-      this.payNow = payNow;
+    public PaymentRequest ccAmount(Double ccAmount) {
+      this.ccAmount = ccAmount;
       return this;
     }
 
@@ -181,7 +181,7 @@ public class PaymentRequest  {
       sb.append("    creditCardCvv: ").append(toIndentedString(creditCardCvv)).append("\n");
       sb.append("    agreementFlag: ").append(toIndentedString(agreementFlag)).append("\n");
       sb.append("    sessionId: ").append(toIndentedString(sessionId)).append("\n");
-      sb.append("    payNow: ").append(toIndentedString(payNow)).append("\n");
+      sb.append("    ccAmount: ").append(toIndentedString(ccAmount)).append("\n");
       sb.append("}");
       return sb.toString();
     }

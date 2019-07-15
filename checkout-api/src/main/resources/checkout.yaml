@@ -1623,7 +1623,8 @@ definitions:
       sessionId:
         type: string
         description: String length 16 of hexadecimal digits
-      payNow:
+      ccAmount:
+        description: Amount allocated for credit card payment
         type: number
   checkout.payment.PaymentStatus:
     type: string

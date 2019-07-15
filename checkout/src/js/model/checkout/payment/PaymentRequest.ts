@@ -13,6 +13,10 @@ export class PaymentRequest {
    * String length 16 of hexadecimal digits
    */
   sessionId?: string;
-  payNow?: number;
+
+  /**
+   * Amount allocated for credit card payment
+   */
+  ccAmount?: number;
 }
 
