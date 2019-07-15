@@ -18,34 +18,43 @@ class FinancialService {
     private CayenneService cayenneService
     private CollegeService collegeService
 
-    
     private static final Expression paymentFilter = Invoice.PAYMENT_IN_LINES.outer().isNull().orExp(
             Invoice.PAYMENT_IN_LINES.outer().dot(PaymentInLine.PAYMENT_IN).outer().dot(PaymentIn.STATUS).nin([PaymentStatus.NEW, PaymentStatus.IN_TRANSACTION]).andExp(
                     Invoice.PAYMENT_IN_LINES.outer().dot(PaymentInLine.PAYMENT_IN).outer().dot(PaymentIn.ANGEL_ID).outer().isNotNull()
             )
     )
-    
+
     @Inject
     FinancialService(CayenneService cayenneService, CollegeService collegeService) {
         this.cayenneService = cayenneService
         this.collegeService = collegeService
     }
-    
-    Money getAvalibleCredit(String payerId) {
-        
+
+    Money getAvailableCredit(String payerId) {
+        Contact payer = contactById(payerId)
+        return creditNoteQuery(payer)
+                .column(Invoice.AMOUNT_OWING)
+                .select(cayenneService.newContext()).inject(Money.ZERO) { a, b -> a.add(b) }.negate()
+    }
+
+    Map<Invoice, Money> getAvailableCreditMap(Contact payer) {
+        return creditNoteQuery(payer)
+                .select(cayenneService.newContext())
+                .collectEntries { it -> [it, it.amountOwing.negate()]}
+    }
+
+    private static ObjectSelect creditNoteQuery(Contact payer) {
+        return ((ObjectSelect.query(Invoice)
+                .where(Invoice.CONTACT.eq(payer)) & Invoice.AMOUNT_OWING.lt(Money.ZERO)) & Invoice.ANGEL_ID.isNotNull()) & paymentFilter
+    }
+
+    private Contact contactById(String payerId) {
         Contact payer = new GetContact(cayenneService.newContext(), collegeService.college, payerId).get(false)
         if (!payer) {
             throw new NullPointerException("Payer undefined")
+        } else {
+            return payer
         }
-
-        Money amount = ObjectSelect.query(Invoice)
-                .where(Invoice.CONTACT.eq(payer))
-                .and(Invoice.AMOUNT_OWING.lt(Money.ZERO))
-                .and(Invoice.ANGEL_ID.isNotNull())
-                .and(paymentFilter)
-                .column(Invoice.AMOUNT_OWING)
-                .select(cayenneService.newContext()).inject(Money.ZERO) { a,b -> a.add(b)}
-        return amount.negate()
     }
-    
+
 }
