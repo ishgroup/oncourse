@@ -112,8 +112,8 @@ class ProcessCheckoutModel {
             }
 
             if (payNow.isLessThan(minPayNow) || payNow.isGreaterThan(subTotal)) {
+                payNow =  ZERO.add(minPayNow)
                 model.error = new CommonError(message: "You must pay at least ${minPayNow} and not more than ${subTotal}")
-                return this
             }
 
             ccPayment = payNow.subtract(redeemedVouchers.vouchersTotal)
