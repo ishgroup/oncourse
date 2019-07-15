@@ -93,7 +93,7 @@ class ProcessCheckoutModel {
         if (!corporatePass) {
             
             Money minPayNow = totalProductsAmount.add(enrolmentsPrice.minPayNow)
-            Money availableCredit = financialService.getAvalibleCredit(model.payerId).min(subTotal)
+            Money availableCredit = financialService.getAvailableCredit(model.payerId).min(subTotal)
             Money payNow = checkoutModelRequest.payNow != null ? checkoutModelRequest.payNow.toMoney() : minPayNow
 
             Money ccPayment = ZERO

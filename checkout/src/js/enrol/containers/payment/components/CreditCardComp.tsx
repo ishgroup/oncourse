@@ -62,7 +62,7 @@ class CreditCardComp extends React.Component<Props, any> {
                 <p>
                   <label>Pay now</label>
                   <span id="cardtotalstring">
-                    ${Number(amount.payNow).toFixed(2)}
+                    ${Number(amount.ccPayment).toFixed(2)}
                     <VisaMasterCardImg/>
                     {amexEnabled && <AmexImg/>}
                   </span>
