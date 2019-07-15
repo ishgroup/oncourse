@@ -58,7 +58,7 @@ export class PaymentService {
     result.expiryYear = values.expiryYear;
     result.agreementFlag = values.agreementFlag;
     result.checkoutModelRequest = BuildCheckoutModelRequest.fromState(state);
-    result.payNow = state.checkout.amount.payNow;
+    result.ccAmount = state.checkout.amount.ccPayment;
     result.sessionId = uuid();
     return result;
   }
