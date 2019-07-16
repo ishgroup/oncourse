@@ -138,18 +138,19 @@ class CreatePaymentModel {
         }
     }
 
+    @CompileStatic(TypeCheckingMode.SKIP)
     private void applyCredit() {
 
         Money creditRemained = Money.ZERO.add(checkoutModel.amount.credit.toMoney())
         List<CreditNode> creditMap = financialService.getAvailableCreditMap(payer)
 
         for (CreditNode credit : creditMap) {
+            if (creditRemained == Money.ZERO) {
+                return
+            }
             Money apply  = creditRemained.isGreaterThan(credit.amount) ? credit.amount : creditRemained
             creditRemained.subtract(apply)
             financialService.contraPay(paymentIn, credit.invoice, apply)
-            if (creditRemained == Money.ZERO) {
-                break
-            }
         }
     }
 
