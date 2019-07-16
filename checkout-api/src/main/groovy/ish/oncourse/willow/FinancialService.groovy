@@ -50,7 +50,7 @@ class FinancialService {
         PaymentInLine line = payment.objectContext.newObject(PaymentInLine)
         line.college = payment.college
         line.paymentIn = payment
-        line.invoice = credit
+        line.invoice = payment.objectContext.localObject(credit)
         line.amount = apply.negate()
     }
 
