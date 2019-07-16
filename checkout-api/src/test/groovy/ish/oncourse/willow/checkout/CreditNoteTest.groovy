@@ -1,16 +1,22 @@
 package ish.oncourse.willow.checkout
 
-import ish.oncourse.willow.filters.RequestFilter
+import ish.common.types.PaymentType
+import ish.math.Money
+import ish.oncourse.model.PaymentIn
 import ish.oncourse.willow.model.checkout.CheckoutModel
 import ish.oncourse.willow.model.checkout.CheckoutModelRequest
 import ish.oncourse.willow.model.checkout.ContactNode
 import ish.oncourse.willow.model.checkout.Enrolment
+import ish.oncourse.willow.model.checkout.payment.PaymentRequest
 import ish.oncourse.willow.model.web.CourseClassPrice
 import ish.oncourse.willow.model.web.Discount
 import ish.oncourse.willow.service.ApiTest
+import org.apache.cayenne.query.ObjectSelect
 import org.junit.Test
 
+import static ish.common.types.PaymentStatus.*
 import static org.junit.Assert.assertEquals
+import static org.junit.Assert.assertNotNull
 
 class CreditNoteTest extends ApiTest {
 
@@ -23,36 +29,39 @@ class CreditNoteTest extends ApiTest {
 
     @Test
     void testGetAmount() {
-        RequestFilter.ThreadLocalSiteKey.set('mammoth')
-
         CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService)
-        model = api.getCheckoutModel(createRequest(false, '1001'))
+        model = api.getCheckoutModel(createRequest( '1001'))
 
-        assertEquals(210.00,  model.amount.credit, 0)
+        assertEquals(170.00,  model.amount.credit, 0)
         assertEquals(220.00,  model.amount.total, 0)
         assertEquals(209.00,  model.amount.subTotal, 0)
         assertEquals(170.00,  model.amount.minPayNow, 0)
+        assertEquals(170.00,  model.amount.payNow, 0)
         assertEquals(39.00,  model.amount.owing, 0)
         assertEquals(11.00,  model.amount.discount, 0)
+        assertEquals(0.00,  model.amount.ccPayment, 0)
+
         assertEquals(true,  model.amount.isEditable)
 
-        model = api.getCheckoutModel(createRequest(true, '1001'))
-        
+        model = api.getCheckoutModel(createRequest( '1001', 209))
+
         assertEquals(209.00,  model.amount.credit, 0)
         assertEquals(220.00,  model.amount.total, 0)
         assertEquals(209.00,  model.amount.subTotal, 0)
-        assertEquals(0.00,  model.amount.minPayNow, 0)
+        assertEquals(170.00,  model.amount.minPayNow, 0)
+        assertEquals(0.00,  model.amount.ccPayment, 0)
         assertEquals(0.00,  model.amount.owing, 0)
         assertEquals(11.00,  model.amount.discount, 0)
         assertEquals(true,  model.amount.isEditable)
 
-        model = api.getCheckoutModel(createRequest(true, '1002'))
+        model = api.getCheckoutModel(createRequest( '1002', 209))
 
         assertEquals(200.00,  model.amount.credit, 0)
         assertEquals(220.00,  model.amount.total, 0)
         assertEquals(209.00,  model.amount.subTotal, 0)
-        assertEquals(0.00,  model.amount.minPayNow, 0)
-        assertEquals(9.00,  model.amount.owing, 0)
+        assertEquals(170.00,  model.amount.minPayNow, 0)
+        assertEquals(9.00,  model.amount.ccPayment, 0)
+        assertEquals(0.00,  model.amount.owing, 0)
         assertEquals(11.00,  model.amount.discount, 0)
         assertEquals(true,  model.amount.isEditable)
         
@@ -60,10 +69,9 @@ class CreditNoteTest extends ApiTest {
 
     @Test
     void testVoucherWithCredit() {
-        RequestFilter.ThreadLocalSiteKey.set('mammoth')
         CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService)
         
-        model = api.getCheckoutModel(createRequest(true, '1003', ['1001', '1002'], ['1001','1002']))
+        model = api.getCheckoutModel(createRequest( '1003', null, ['1001', '1002'], ['1001','1002']))
 
         assertEquals(440.00,  model.amount.total, 0)
         assertEquals(22.00,  model.amount.discount, 0)
@@ -83,7 +91,34 @@ class CreditNoteTest extends ApiTest {
         assertEquals(39,  model.amount.owing, 0)
     }
 
-    private CheckoutModelRequest createRequest(boolean applyCredit, String payerId,List<String> classes = ['1001'], List<String> vouchers=[]) {
+    @Test
+    void testMakePayment() {
+        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService)
+        api.makePayment(new PaymentRequest().with {
+            it.checkoutModelRequest = createRequest('1003', null, ['1001', '1002'], ['1001','1002'])
+            it.creditCardNumber = '5431111111111111'
+            it.creditCardName = 'john smith'
+            it.expiryMonth = '11'
+            it.expiryYear = '2027'
+            it.creditCardCvv = '321'
+            it.agreementFlag = true
+            it.sessionId = 'paymentRandomSession'
+            it.ccAmount = 0
+            it
+        })
+
+        PaymentIn payment = ObjectSelect.query(PaymentIn).where(PaymentIn.SESSION_ID.eq('paymentRandomSession')).selectOne(cayenneService.newContext())
+        assertEquals(Money.ZERO, payment.amount)
+        assertEquals(SUCCESS, payment.status)
+        assertEquals(PaymentType.INTERNAL, payment.type)
+        assertEquals(3, payment.paymentInLines.size())
+        assertNotNull(payment.paymentInLines.find {it.amount == 0.toMoney()})
+        assertNotNull(payment.paymentInLines.find {it.amount == 20.toMoney()})
+        assertNotNull(payment.paymentInLines.find {it.amount == -20.toMoney()})
+
+    }
+
+    private static CheckoutModelRequest createRequest(String payerId, Double payNow = null, List<String> classes = ['1001'], List<String> vouchers=[]) {
         return new CheckoutModelRequest().with { modelRequest ->
             modelRequest.contactNodes = [new ContactNode().with { cNode ->
                 cNode.contactId = payerId
@@ -113,7 +148,7 @@ class CreditNoteTest extends ApiTest {
             modelRequest.redeemedVoucherIds = vouchers
             modelRequest.promotionIds = ['1001']
             modelRequest.payerId = payerId
-            modelRequest.applyCredit = applyCredit
+            modelRequest.payNow = payNow
             modelRequest
         }
     }

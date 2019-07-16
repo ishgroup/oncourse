@@ -405,7 +405,8 @@
                   value="150"
                   status="0"
                   source="O"
-                  confirmationStatus="2"/>
+                  confirmationStatus="2"
+                  valueOnPurchase="150"/>
     
     
 </dataset>
