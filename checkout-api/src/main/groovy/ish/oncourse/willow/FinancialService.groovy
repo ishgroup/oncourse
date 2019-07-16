@@ -32,15 +32,22 @@ class FinancialService {
 
     Money getAvailableCredit(String payerId) {
         Contact payer = contactById(payerId)
-        return creditNoteQuery(payer)
+        Money credit = creditNoteQuery(payer)
                 .column(Invoice.AMOUNT_OWING)
-                .select(cayenneService.newContext()).inject(Money.ZERO) { a, b -> a.add(b) }.negate()
+                .select(cayenneService.newContext()).inject(Money.ZERO) { a, b -> a.add(b) }
+        return credit.negate()
     }
 
     Map<Invoice, Money> getAvailableCreditMap(Contact payer) {
-        return creditNoteQuery(payer)
+        List <Invoice> credits = creditNoteQuery(payer)
                 .select(cayenneService.newContext())
-                .collectEntries { it -> [it, it.amountOwing.negate()]}
+        return credits.collectEntries { it -> [it, it.amountOwing.negate()]}
+    }
+
+    Money calculateOutstandingAmount(Invoice invoice) {
+        Money totalPurchases =  invoice.invoiceLines.collect {it.finalPriceToPayIncTax}.inject(Money.ZERO) {a, b -> a.add(b)}
+        Money paymentTotal = invoice.paymentInLines.collect{it.amount}.inject(Money.ZERO) {a, b -> a.add(b)}
+        return totalPurchases.subtract(paymentTotal)
     }
 
     private static ObjectSelect creditNoteQuery(Contact payer) {
