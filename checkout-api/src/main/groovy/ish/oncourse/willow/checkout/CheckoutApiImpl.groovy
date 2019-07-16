@@ -114,7 +114,7 @@ class CheckoutApiImpl implements CheckoutApi {
             throw new BadRequestException(Response.status(400).entity(validatePaymentRequest.validationError).build())
         }
         
-        CreatePaymentModel createPaymentModel =  new CreatePaymentModel(context, college, webSite, paymentRequest, checkoutModel).create()
+        CreatePaymentModel createPaymentModel =  new CreatePaymentModel(context, college, webSite, paymentRequest, checkoutModel, financialService).create()
         ProcessPaymentModel processPaymentModel = new ProcessPaymentModel(context, cayenneService.newNonReplicatingContext(), college, createPaymentModel, paymentRequest).process()
         
         if (processPaymentModel.error == null) {
