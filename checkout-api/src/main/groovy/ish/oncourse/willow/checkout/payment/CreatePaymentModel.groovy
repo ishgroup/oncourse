@@ -28,6 +28,7 @@ import ish.oncourse.services.preference.GetPreference
 import ish.oncourse.util.payment.CreditCardValidator
 import ish.oncourse.util.payment.PaymentInModel
 import ish.oncourse.util.payment.PaymentInModelFromPaymentInBuilder
+import ish.oncourse.willow.FinancialService
 import ish.oncourse.willow.checkout.functions.GetContact
 import ish.oncourse.willow.checkout.persistent.CreateApplication
 import ish.oncourse.willow.checkout.persistent.CreateArticle
@@ -45,6 +46,8 @@ import ish.util.CreditCardUtil
 import org.apache.cayenne.ObjectContext
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+
+import static ish.oncourse.willow.FinancialService.*
 
 
 class CreatePaymentModel {
@@ -64,15 +67,22 @@ class CreatePaymentModel {
     PaymentInModel model
     CheckoutModel checkoutModel
 
+    private FinancialService financialService
+
     final static Logger logger = LoggerFactory.getLogger(CreatePaymentModel.class)
 
 
     CreatePaymentModel(ObjectContext context, College college, WebSite webSite, PaymentRequest paymentRequest, CheckoutModel checkoutModel) {
+        this(context, college, webSite, paymentRequest, checkoutModel, null)
+    }
+
+    CreatePaymentModel(ObjectContext context, College college, WebSite webSite, PaymentRequest paymentRequest, CheckoutModel checkoutModel, FinancialService financialService) {
         this.context = context
         this.webSite = this.context.localObject(webSite)
         this.college = this.context.localObject(college)
         this.paymentRequest = paymentRequest
         this.checkoutModel = checkoutModel
+        this.financialService = financialService
         if (checkoutModel.payerId) {
             this.payer = new GetContact(context, college, checkoutModel.payerId).get(false)
         }
@@ -83,6 +93,7 @@ class CreatePaymentModel {
         
         if (paymentIn) {
             updateVoucherPayments()
+            applyCredit()
             updateSumm()
             fillCCDetails()
             createModel()
@@ -126,7 +137,23 @@ class CreatePaymentModel {
             }
         }
     }
-    
+
+    private void applyCredit() {
+
+        Money creditRemained = Money.ZERO.add(checkoutModel.amount.credit.toMoney())
+        List<CreditNode> creditMap = financialService.getAvailableCreditMap(payer)
+
+        for (CreditNode credit : creditMap) {
+            Money apply  = creditRemained.isGreaterThan(credit.amount) ? credit.amount : creditRemained
+            creditRemained.subtract(apply)
+            financialService.contraPay(paymentIn, credit.invoice, apply)
+            if (creditRemained == Money.ZERO) {
+                break
+            }
+        }
+    }
+
+
     @CompileStatic(TypeCheckingMode.SKIP)
     private void updateVoucherPayments() {
         

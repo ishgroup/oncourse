@@ -38,16 +38,20 @@ class FinancialService {
         return credit.negate()
     }
 
-    Map<Invoice, Money> getAvailableCreditMap(Contact payer) {
+    List<CreditNode> getAvailableCreditMap(Contact payer) {
         List <Invoice> credits = creditNoteQuery(payer)
+                .orderBy(Invoice.AMOUNT_OWING.asc())
                 .select(cayenneService.newContext())
-        return credits.collectEntries { it -> [it, it.amountOwing.negate()]}
+        return credits.collect { new CreditNode(invoice: it, amount: it.amountOwing.negate())}
     }
 
-    Money calculateOutstandingAmount(Invoice invoice) {
-        Money totalPurchases =  invoice.invoiceLines.collect {it.finalPriceToPayIncTax}.inject(Money.ZERO) {a, b -> a.add(b)}
-        Money paymentTotal = invoice.paymentInLines.collect{it.amount}.inject(Money.ZERO) {a, b -> a.add(b)}
-        return totalPurchases.subtract(paymentTotal)
+
+    void contraPay(PaymentIn payment, Invoice credit, Money apply) {
+        PaymentInLine line = payment.objectContext.newObject(PaymentInLine)
+        line.college = payment.college
+        line.paymentIn = payment
+        line.invoice = credit
+        line.amount = apply.negate()
     }
 
     private static ObjectSelect creditNoteQuery(Contact payer) {
@@ -62,6 +66,27 @@ class FinancialService {
         } else {
             return payer
         }
+    }
+
+    static class CreditNode {
+        private Invoice invoice
+        private Money amount
+        Invoice getInvoice() {
+            return invoice
+        }
+
+        void setInvoice(Invoice invoice) {
+            this.invoice = invoice
+        }
+
+        Money getAmount() {
+            return amount
+        }
+
+        void setAmount(Money amount) {
+            this.amount = amount
+        }
+
     }
 
 }
