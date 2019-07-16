@@ -2,7 +2,6 @@ package ish.oncourse.webservices.replication.v20.builders;
 
 import ish.oncourse.model.AbstractInvoice;
 import ish.oncourse.model.CorporatePass;
-import ish.oncourse.model.Invoice;
 import ish.oncourse.webservices.replication.builders.AbstractWillowStubBuilder;
 import ish.oncourse.webservices.v20.stubs.replication.InvoiceStub;
 

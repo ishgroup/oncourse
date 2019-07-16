@@ -126,7 +126,7 @@ public class ReplicationPortTypeTest extends ServiceTest {
 	
 	@Test
 	public void testV17GetRecordsSuccess() throws Exception {
-		testGetRecordsSuccess(SupportedVersions.V17);
+		testGetRecordsSuccess(SupportedVersions.V20);
 	}
 	
 	@Test
@@ -138,18 +138,18 @@ public class ReplicationPortTypeTest extends ServiceTest {
 		actualData = dbUnitConnection.createQueryTable("Student", "select * from Student where id=200");
 		assertEquals("Initially have one student with id.", 1, actualData.getRowCount());
 		
-		ish.oncourse.webservices.v17.stubs.replication.DeletedStub contactDeleteStub = new ish.oncourse.webservices.v17.stubs.replication.DeletedStub();
+		ish.oncourse.webservices.v20.stubs.replication.DeletedStub contactDeleteStub = new ish.oncourse.webservices.v20.stubs.replication.DeletedStub();
 		contactDeleteStub.setWillowId(1l);
 		contactDeleteStub.setAngelId(250l);
 		contactDeleteStub.setEntityIdentifier("Contact");
-		ish.oncourse.webservices.v17.stubs.replication.DeletedStub studentDeleteStub = new ish.oncourse.webservices.v17.stubs.replication.DeletedStub();
+		ish.oncourse.webservices.v20.stubs.replication.DeletedStub studentDeleteStub = new ish.oncourse.webservices.v20.stubs.replication.DeletedStub();
 		studentDeleteStub.setWillowId(200l);
 		studentDeleteStub.setAngelId(1200l);
 		studentDeleteStub.setEntityIdentifier("Student");
-		GenericTransactionGroup group = PortHelper.createTransactionGroup(SupportedVersions.V17);
+		GenericTransactionGroup group = PortHelper.createTransactionGroup(SupportedVersions.V20);
 		group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(contactDeleteStub);
 		group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(studentDeleteStub);
-		GenericReplicationRecords records = PortHelper.createReplicationRecords(SupportedVersions.V17);
+		GenericReplicationRecords records = PortHelper.createReplicationRecords(SupportedVersions.V20);
 		records.getGenericGroups().add(group);
 		GenericReplicationResult replResult = service.sendRecords(records);
 		
@@ -179,9 +179,9 @@ public class ReplicationPortTypeTest extends ServiceTest {
 		actualData = dbUnitConnection.createQueryTable("CourseClass", "select * from CourseClass where angelId=123");
 		assertEquals("Initially don't have courseClass with angelId.", 0, actualData.getRowCount());
 		
-		GenericReplicationRecords records = PortHelper.createReplicationRecords(SupportedVersions.V17);
+		GenericReplicationRecords records = PortHelper.createReplicationRecords(SupportedVersions.V20);
 
-		ish.oncourse.webservices.v17.stubs.replication.CourseClassStub rootStub = new ish.oncourse.webservices.v17.stubs.replication.CourseClassStub();
+		ish.oncourse.webservices.v20.stubs.replication.CourseClassStub rootStub = new ish.oncourse.webservices.v20.stubs.replication.CourseClassStub();
 
 		rootStub.setAngelId(123l);
 		rootStub.setEntityIdentifier("CourseClass");
@@ -200,17 +200,17 @@ public class ReplicationPortTypeTest extends ServiceTest {
 		rootStub.setRoomId(1l);
 		rootStub.setDistantLearningCourse(false);
 		
-		ish.oncourse.webservices.v17.stubs.replication.DeletedStub contactDeleteStub = new ish.oncourse.webservices.v17.stubs.replication.DeletedStub();
+		ish.oncourse.webservices.v20.stubs.replication.DeletedStub contactDeleteStub = new ish.oncourse.webservices.v20.stubs.replication.DeletedStub();
 		contactDeleteStub.setWillowId(1658l);
 		contactDeleteStub.setAngelId(2658l);
 		contactDeleteStub.setEntityIdentifier("Contact");
 		
-		ish.oncourse.webservices.v17.stubs.replication.DeletedStub studentDeleteStub = new ish.oncourse.webservices.v17.stubs.replication.DeletedStub();
+		ish.oncourse.webservices.v20.stubs.replication.DeletedStub studentDeleteStub = new ish.oncourse.webservices.v20.stubs.replication.DeletedStub();
 		studentDeleteStub.setWillowId(1540l);
 		studentDeleteStub.setAngelId(2540l);
 		studentDeleteStub.setEntityIdentifier("Student");
 
-		GenericTransactionGroup group = PortHelper.createTransactionGroup(SupportedVersions.V17);
+		GenericTransactionGroup group = PortHelper.createTransactionGroup(SupportedVersions.V20);
 		group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(rootStub);
 		group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(contactDeleteStub);
 		group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(studentDeleteStub);
@@ -243,11 +243,11 @@ public class ReplicationPortTypeTest extends ServiceTest {
 	
 	@Test
 	public void testV17SendResult() throws Exception {
-		testSendResult(SupportedVersions.V17, false);
+		testSendResult(SupportedVersions.V20, false);
 	}
 	
 	@Test
 	public void testV17SendResultWithConcurentDelete() throws Exception {
-		testSendResult(SupportedVersions.V17, true);
+		testSendResult(SupportedVersions.V20, true);
 	}
 }

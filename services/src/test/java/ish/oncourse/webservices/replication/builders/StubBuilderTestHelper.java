@@ -57,7 +57,7 @@ public class StubBuilderTestHelper<E extends Queueable, S extends GenericReplica
 
     public S assertStubBuilder(AbstractWillowStubBuilder<E, S> stubBuilder) {
         LOGGER.info(String.format("test stubBuilder - \"%s\"", stubBuilder.getClass().getSimpleName()));
-        GenericReplicationStub stub = stubBuilder.convert(entity, SupportedVersions.V6);
+        GenericReplicationStub stub = stubBuilder.convert(entity, SupportedVersions.V7);
 
         PropertyDescriptor[] contactDescriptors = PropertyUtils.getPropertyDescriptors(stub);
         for (PropertyDescriptor descriptor : contactDescriptors) {
