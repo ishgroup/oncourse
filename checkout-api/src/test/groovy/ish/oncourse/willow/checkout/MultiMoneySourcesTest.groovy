@@ -4,6 +4,7 @@ import ish.common.types.EnrolmentStatus
 import ish.common.types.PaymentStatus
 import ish.common.types.PaymentType
 import ish.math.Money
+import ish.oncourse.model.Invoice
 import ish.oncourse.model.PaymentIn
 import ish.oncourse.willow.model.checkout.CheckoutModelRequest
 import ish.oncourse.willow.model.checkout.ContactNode
@@ -83,7 +84,7 @@ class MultiMoneySourcesTest extends ApiTest {
 
         assertEquals(new Money("20.00"), ccPayment.amount)
         assertEquals(PaymentStatus.SUCCESS, ccPayment.status)
-        assertEquals(3, payment.paymentInLines.size())
+        assertEquals(3, ccPayment.paymentInLines.size())
         assertNotNull(ccPayment.paymentInLines.find {it.invoice.invoiceLines[0].enrolment?.courseClass?.id == 1001l})
         assertEquals(new Money("0.00"), ccPayment.paymentInLines.find {it.invoice.invoiceLines[0].enrolment?.courseClass?.id == 1001l}.amount)
         assertNotNull(ccPayment.paymentInLines.find {it.invoice.invoiceLines[0].enrolment?.courseClass?.id == 1002l})
@@ -100,6 +101,51 @@ class MultiMoneySourcesTest extends ApiTest {
         assertEquals(new Money("100.00"), moneyVoucherPayment.amount)
         assertEquals(1, moneyVoucherPayment.paymentInLines.size())
         assertEquals(new Money("100.00"), moneyVoucherPayment.paymentInLines[0].amount)
+
+        List<ish.oncourse.model.Enrolment> enrolments = ObjectSelect.query(ish.oncourse.model.Enrolment).select(cayenneService.newContext())
+        assertEquals(2, enrolments.size())
+        enrolments.each {
+            assertEquals(EnrolmentStatus.SUCCESS, it.status)
+
+        }
+    }
+
+    @Test
+    void testCredit_CCPayment_CourseVoucher_MoneyVoucher_SingleInvoice() {
+        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService)
+        CheckoutModelRequest modelRequest = modelRequest('1001', 440.00, ['1011', '1012'], ['1001', '1002'])
+        api.makePayment(validPaymentRequest(modelRequest, 20.00))
+
+        List<PaymentIn> payment = ObjectSelect.query(PaymentIn).select(cayenneService.newContext())
+        PaymentIn ccPayment = payment.find {it.type == PaymentType.CREDIT_CARD}
+        PaymentIn courseVoucherPayment = payment.find {it.type == PaymentType.VOUCHER && it.voucherPaymentIns[0].voucher.id == 1001l }
+        PaymentIn moneyVoucherPayment = payment.find {it.type == PaymentType.VOUCHER && it.voucherPaymentIns[0].voucher.id == 1002l}
+
+        assertEquals(new Money("20.00"), ccPayment.amount)
+        assertEquals(PaymentStatus.SUCCESS, ccPayment.status)
+        assertEquals(2, ccPayment.paymentInLines.size())
+
+        assertNotNull(ccPayment.paymentInLines.find {it.invoice.id != 1003l})
+        assertEquals(new Money("120.00"), ccPayment.paymentInLines.find {it.invoice.id != 1003l}.amount)
+        assertNotNull(ccPayment.paymentInLines.find {it.invoice.id == 1003l})
+        assertEquals(new Money("-100.00"), ccPayment.paymentInLines.find {it.invoice.id == 1003l}.amount)
+
+        assertEquals(PaymentStatus.SUCCESS, courseVoucherPayment.status)
+        assertEquals(new Money("220.00"), courseVoucherPayment.amount)
+        assertEquals(1, courseVoucherPayment.paymentInLines.size())
+        assertEquals(new Money("220.00"), courseVoucherPayment.paymentInLines[0].amount)
+
+        assertEquals(PaymentStatus.SUCCESS, moneyVoucherPayment.status)
+        assertEquals(new Money("100.00"), moneyVoucherPayment.amount)
+        assertEquals(1, moneyVoucherPayment.paymentInLines.size())
+        assertEquals(new Money("100.00"), moneyVoucherPayment.paymentInLines[0].amount)
+
+        Invoice invoice = ccPayment.paymentInLines.find{it.invoice.id != 1003l}.invoice
+
+        assertEquals(3, invoice.paymentInLines.size())
+        assertNotNull( invoice.paymentInLines.find {it.amount == new Money("220.00")})
+        assertNotNull( invoice.paymentInLines.find {it.amount == new Money("120.00")})
+        assertNotNull( invoice.paymentInLines.find {it.amount == new Money("100.00")})
 
         List<ish.oncourse.model.Enrolment> enrolments = ObjectSelect.query(ish.oncourse.model.Enrolment).select(cayenneService.newContext())
         assertEquals(2, enrolments.size())

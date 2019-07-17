@@ -126,6 +126,13 @@
             allowWaitingList="1" name="Managerial Accounting"
             enrolmentType="1"/>
 
+    <CourseClass id="1011" collegeId="1" code="2" courseId="1001"
+                 angelId="1011" startDate="2011-10-12 00:55:59.0"
+                 endDate="2111-10-16 01:55:59.0" isWebVisible="1" isCancelled="0" isActive="1"
+                 created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
+                 maximumPlaces="4" minimumPlaces="30" countOfSessions="3"
+                 deliveryMode="1" feeExGst="200" feeGst="20" isDistantLearningCourse="0"/>
+
     <CourseClass id="1001" collegeId="1" code="1" courseId="1001"
                  angelId="1001" startDate="2011-10-12 00:55:59.0"
                  endDate="2111-10-16 01:55:59.0" isWebVisible="1" isCancelled="0" isActive="1"
@@ -150,6 +157,13 @@
             created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
             allowWaitingList="1" name="Managerial Accounting"
             enrolmentType="1"/>
+
+    <CourseClass id="1012" collegeId="1" code="2" courseId="1002"
+                 angelId="1012" startDate="2011-10-12 00:55:59.0"
+                 endDate="2111-10-16 01:55:59.0" isWebVisible="1" isCancelled="0" isActive="1"
+                 created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
+                 maximumPlaces="4" minimumPlaces="30" countOfSessions="3"
+                 deliveryMode="1" feeExGst="200" feeGst="20" isDistantLearningCourse="0"/>
 
     <CourseClass id="1002" collegeId="1" code="1" courseId="1002"
                  angelId="1002" startDate="2011-10-12 00:55:59.0"
