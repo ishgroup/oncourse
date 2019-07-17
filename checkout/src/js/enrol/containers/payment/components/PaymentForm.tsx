@@ -114,7 +114,7 @@ class PaymentForm extends React.Component<Props, any> {
     return (
       <form onSubmit={handleSubmit} id="payment-form" className={classnames({submitting})}>
 
-        {(Number(amount.payNow) !== 0 || (Number(amount.payNow) === 0 && corporatePass.id) || payLaterAvailable) &&
+        {(Number(amount.ccPayment) !== 0 || (Number(amount.ccPayment) === 0 && corporatePass.id) || payLaterAvailable) &&
           <div>
             <Rodal
               visible={this.state.showCvvHelp}
@@ -226,7 +226,7 @@ const PaymentFormNav = props => {
 const validateCreditCard = (data, props) => {
   const errors = {};
 
-  if (Number(props.amount.payNow) !== 0) {
+  if (Number(props.amount.ccPayment) !== 0) {
     if (!data.creditCardName) {
       errors[FieldName.creditCardName] = 'Please supply your name as printed on the card (maximum 40 characters)';
     }
@@ -281,7 +281,7 @@ const Form = reduxForm({
     return errors;
   },
   onSubmit: (data: CreditCardFormValues & CorporatePassFormValues, dispatch, props): void => {
-    if (Number(props.amount.payNow) !== 0 && props.currentTab === Tabs.creditCard) {
+    if (Number(props.amount.ccPayment) !== 0 && props.currentTab === Tabs.creditCard) {
       data.creditCardNumber = data.creditCardNumber.replace(/\s+/g, "");
       data.creditCardCvv = data.creditCardCvv.replace(/\_/g, "");
     }

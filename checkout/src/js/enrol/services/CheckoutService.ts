@@ -171,15 +171,6 @@ export class CheckoutService {
     return this.checkoutApi.getPaymentStatus(state.value.sessionId);
   }
 
-  public validatePayNow = (amount: Amount) => {
-    const errors = [];
-
-    if (Number(amount.payNow) < Number(amount.minPayNow) || Number(amount.payNow) > Number(amount.subTotal)) {
-      errors.push(`You must pay at least $${amount.minPayNow} and not more than $${amount.subTotal}.`);
-    }
-
-    return errors;
-  }
 
   public createParentChildrenRelation = (parentId, childIds): Promise<any> => (
     this.contactApi.createParentChildrenRelation({parentId, childrenIds: childIds})
