@@ -230,7 +230,7 @@ class CreatePaymentModel {
 
         if (checkoutModel.amount.isEditable && offeredAmount.isGreaterThan(paymentIn.amount)) {
             for(InvoiceNode node : paymentPlan) {
-                Money leftToPay = node.invoice.amountOwing.subtract(node.paymentAmount)
+                Money leftToPay = node.invoice.amountOwing.subtract(node.invoice.paymentInLines*.amount.inject(Money.ZERO) {a,b -> a.add(b)})
                 Money amountToAdd = leftToPay.min(extraAmount)
                 node.paymentInLine.amount = node.paymentInLine.amount.add(amountToAdd)
                 paymentIn.amount = paymentIn.amount.add(amountToAdd)
