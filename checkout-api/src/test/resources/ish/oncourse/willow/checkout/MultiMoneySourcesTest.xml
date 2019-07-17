@@ -145,7 +145,13 @@
     <CourseClassPaymentPlanLine id="4" angelId="4" collegeId="1" created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0"
                                 courseClassId = "1001" dayOffset="30000" amount="20.00"/>
 
-    <CourseClass id="1002" collegeId="1" code="1" courseId="1001"
+    <Course id="1002" collegeId="1" angelId="1002" code="AAV2"
+            isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
+            created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
+            allowWaitingList="1" name="Managerial Accounting"
+            enrolmentType="1"/>
+
+    <CourseClass id="1002" collegeId="1" code="1" courseId="1002"
                  angelId="1002" startDate="2011-10-12 00:55:59.0"
                  endDate="2111-10-16 01:55:59.0" isWebVisible="1" isCancelled="0" isActive="1"
                  created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
@@ -221,7 +227,7 @@
                   productId="1002"
                   type="3"
                   code="voucher"
-                  value="150"
+                  value="100"
                   status="0"
                   source="O"
                   confirmationStatus="2"

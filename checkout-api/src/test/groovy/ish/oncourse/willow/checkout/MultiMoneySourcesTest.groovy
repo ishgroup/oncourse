@@ -70,6 +70,45 @@ class MultiMoneySourcesTest extends ApiTest {
         }
     }
 
+    @Test
+    void testCredit_CCPayment_CourseVoucher_MoneyVoucher() {
+        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService)
+        CheckoutModelRequest modelRequest = modelRequest('1001', 440.00, ['1001', '1002'], ['1001', '1002'])
+        api.makePayment(validPaymentRequest(modelRequest, 20.00))
+
+        List<PaymentIn> payment = ObjectSelect.query(PaymentIn).select(cayenneService.newContext())
+        PaymentIn ccPayment = payment.find {it.type == PaymentType.CREDIT_CARD}
+        PaymentIn courseVoucherPayment = payment.find {it.type == PaymentType.VOUCHER && it.voucherPaymentIns[0].voucher.id == 1001l }
+        PaymentIn moneyVoucherPayment = payment.find {it.type == PaymentType.VOUCHER && it.voucherPaymentIns[0].voucher.id == 1002l}
+
+        assertEquals(new Money("20.00"), ccPayment.amount)
+        assertEquals(PaymentStatus.SUCCESS, ccPayment.status)
+        assertEquals(3, payment.paymentInLines.size())
+        assertNotNull(ccPayment.paymentInLines.find {it.invoice.invoiceLines[0].enrolment?.courseClass?.id == 1001l})
+        assertEquals(new Money("0.00"), ccPayment.paymentInLines.find {it.invoice.invoiceLines[0].enrolment?.courseClass?.id == 1001l}.amount)
+        assertNotNull(ccPayment.paymentInLines.find {it.invoice.invoiceLines[0].enrolment?.courseClass?.id == 1002l})
+        assertEquals(new Money("120.00"), ccPayment.paymentInLines.find {it.invoice.invoiceLines[0].enrolment?.courseClass?.id == 1002l}.amount)
+        assertNotNull(ccPayment.paymentInLines.find {it.invoice.id == 1003l})
+        assertEquals(new Money("-100.00"), ccPayment.paymentInLines.find {it.invoice.id == 1003l}.amount)
+
+        assertEquals(PaymentStatus.SUCCESS, courseVoucherPayment.status)
+        assertEquals(new Money("220.00"), courseVoucherPayment.amount)
+        assertEquals(1, courseVoucherPayment.paymentInLines.size())
+        assertEquals(new Money("220.00"), courseVoucherPayment.paymentInLines[0].amount)
+
+        assertEquals(PaymentStatus.SUCCESS, moneyVoucherPayment.status)
+        assertEquals(new Money("100.00"), moneyVoucherPayment.amount)
+        assertEquals(1, moneyVoucherPayment.paymentInLines.size())
+        assertEquals(new Money("100.00"), moneyVoucherPayment.paymentInLines[0].amount)
+
+        List<ish.oncourse.model.Enrolment> enrolments = ObjectSelect.query(ish.oncourse.model.Enrolment).select(cayenneService.newContext())
+        assertEquals(2, enrolments.size())
+        enrolments.each {
+            assertEquals(EnrolmentStatus.SUCCESS, it.status)
+
+        }
+    }
+
 
     private static PaymentRequest validPaymentRequest(CheckoutModelRequest modelRequest,   Double ccAmount) {
         new PaymentRequest().with {
