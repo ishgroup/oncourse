@@ -1,5 +1,6 @@
 package ish.oncourse.willow.checkout
 
+import ish.common.types.EnrolmentStatus
 import ish.common.types.PaymentStatus
 import ish.common.types.PaymentType
 import ish.math.Money
@@ -21,6 +22,26 @@ class MultiMoneySourcesTest extends ApiTest {
         return 'ish/oncourse/willow/checkout/MultiMoneySourcesTest.xml'
     }
 
+    @Test
+    void testCredit_only() {
+        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService)
+        CheckoutModelRequest modelRequest = modelRequest('1004', 220.00, ['1001'], [])
+        api.makePayment(zeroPaymentRequest(modelRequest))
+
+        PaymentIn payment = ObjectSelect.query(PaymentIn).selectOne(cayenneService.newContext())
+
+        assertEquals(Money.ZERO, payment.amount)
+        assertEquals(PaymentStatus.SUCCESS, payment.status)
+        assertEquals(PaymentType.INTERNAL, payment.type)
+        assertEquals(2, payment.paymentInLines.size())
+        assertNotNull(payment.paymentInLines.find {it.invoice.invoiceLines[0].enrolment?.courseClass?.id == 1001l})
+        assertEquals(new Money("220.00"), payment.paymentInLines.find {it.invoice.invoiceLines[0].enrolment?.courseClass?.id == 1001l}.amount)
+        assertNotNull(payment.paymentInLines.find {it.invoice.id == 1004l})
+        assertEquals(new Money("-220.00"), payment.paymentInLines.find {it.invoice.id == 1004l}.amount)
+
+        assertEquals(EnrolmentStatus.SUCCESS, ObjectSelect.query(ish.oncourse.model.Enrolment).selectOne(cayenneService.newContext()).status)
+
+    }
 
     @Test
     void testCredit_CCPayment() {
@@ -34,17 +55,17 @@ class MultiMoneySourcesTest extends ApiTest {
         assertEquals(PaymentStatus.SUCCESS, payment.status)
         assertEquals(PaymentType.CREDIT_CARD, payment.type)
         assertEquals(3, payment.paymentInLines.size())
-        assertNotNull(payment.paymentInLines.find {it.invoice.invoiceLines[0].enrolment.courseClass.id == 1001l})
-        assertEquals(new Money("170.00"), payment.paymentInLines.find {it.invoice.invoiceLines[0].enrolment.courseClass.id == 1001l}.amount)
-        assertNotNull(payment.paymentInLines.find {it.invoice.invoiceLines[0].enrolment.courseClass.id == 1002l})
-        assertEquals(new Money("170.00"), payment.paymentInLines.find {it.invoice.invoiceLines[0].enrolment.courseClass.id == 1002l}.amount)
+        assertNotNull(payment.paymentInLines.find {it.invoice.invoiceLines[0].enrolment?.courseClass?.id == 1001l})
+        assertEquals(new Money("170.00"), payment.paymentInLines.find {it.invoice.invoiceLines[0].enrolment?.courseClass?.id == 1001l}.amount)
+        assertNotNull(payment.paymentInLines.find {it.invoice.invoiceLines[0].enrolment?.courseClass?.id == 1002l})
+        assertEquals(new Money("170.00"), payment.paymentInLines.find {it.invoice.invoiceLines[0].enrolment?.courseClass?.id == 1002l}.amount)
         assertNotNull(payment.paymentInLines.find {it.invoice.id == 1003l})
         assertEquals(new Money("-100.00"), payment.paymentInLines.find {it.invoice.id == 1003l}.amount)
 
-        List<ish.oncourse.model.Enrolment> enrolments = ObjectSelect.query(Enrolment).select(cayenneService.newContext())
+        List<ish.oncourse.model.Enrolment> enrolments = ObjectSelect.query(ish.oncourse.model.Enrolment).select(cayenneService.newContext())
         assertEquals(2, enrolments.size())
         enrolments.each {
-            assertEquals(2, it.status)
+            assertEquals(EnrolmentStatus.SUCCESS, it.status)
 
         }
     }
@@ -61,6 +82,16 @@ class MultiMoneySourcesTest extends ApiTest {
             it.agreementFlag = true
             it.sessionId = "sessionId"
             it.ccAmount = ccAmount
+            it
+        }
+    }
+
+    private static PaymentRequest zeroPaymentRequest(CheckoutModelRequest modelRequest) {
+        new PaymentRequest().with {
+            it.checkoutModelRequest = modelRequest
+            it.agreementFlag = true
+            it.sessionId = "sessionId"
+            it.ccAmount = 0.00
             it
         }
     }
