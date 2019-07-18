@@ -58,25 +58,16 @@ class ArticleComp extends React.Component<Props, State> {
       <div className={divClass}>
         <ItemWrapper title={product.name} name={name} error={error} warning={warning} selected={article.selected}
                      item={article} contact={contact}
-                     onChange={onChange}>
+                     onChange={onChange}
+                     quantity={quantity}
+                     onQuantityChange={val => this.updateQuantity(val)}
+                     onQuantityBlur={val => this.handleQuantityBlur()}>
           <div/>
         </ItemWrapper>
         {article.selected &&
-        <div className="col-xs-8 col-md-7 alignright priceValue">
-					<div className="row">
-            <span className="col-xs-5 col-md-5 fee-full quantity text-right">Quantity:</span>
-						<span className="col-xs-5 col-md-5">
-              <input
-                  type="text"
-                  className="text-right"
-                  name="quantityValue"
-                  value={quantity}
-                  onChange={e => {this.updateQuantity(e.target.value);}}
-                  onBlur={e => {this.handleQuantityBlur();}}
-              />
-            </span>
-            
-            <span className="col-xs-14 col-md-14 fee-full fullPrice text-right">${article.total.toFixed(2)}</span>
+        <div className="col-xs-8 col-md-7 alignright">
+          <div className="text-right">
+            <span className="fee-full fullPrice">${article.total.toFixed(2)}</span>
           </div>
         </div>
         }

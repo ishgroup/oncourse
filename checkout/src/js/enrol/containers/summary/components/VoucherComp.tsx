@@ -80,27 +80,30 @@ class VoucherComp extends React.PureComponent<Props, State> {
 
     return (
       <div className={divClass}>
-        <ItemWrapper title={product.name} name={name} error={error} warning={warning} selected={voucher.selected}
-                     item={voucher} contact={contact}
-                     onChange={onChange}>
+        <ItemWrapper title={product.name}
+                     name={name}
+                     error={error}
+                     warning={warning}
+                     selected={voucher.selected}
+                     item={voucher}
+                     contact={contact}
+                     onChange={onChange}
+                     quantity={this.state.quantity}
+                     onQuantityChange={val => this.updateQuantity(val)}
+                     onQuantityBlur={val => this.handleQuantityBlur()}
+
+        >
           <VoucherDetails voucher={voucher}/>
         </ItemWrapper>
         {voucher.selected &&
-				<div className="col-xs-8 col-md-7">
-					<div className="row">
-						<VoucherQuantity
-							voucher={voucher}
-							quantity={this.state.quantity}
-							onChange={val => this.updateQuantity(val)}
-							onBlur={ val => this.handleQuantityBlur()}/>
-						<VoucherPrice
-							voucher={voucher}
-							price={this.state.price}
-							onChange={val => this.updateValue(val)}
-							onBlur={ val => this.handleValueBlur()}
-						/>
-					</div>
-				</div>
+          <div className="col-xs-8 col-md-7 alignright">
+            <VoucherPrice
+                voucher={voucher}
+                price={this.state.price}
+                onChange={val => this.updateValue(val)}
+                onBlur={ val => this.handleValueBlur()}
+            />
+          </div>
         }
       </div>
     );
@@ -142,8 +145,7 @@ const VoucherPrice = (props): any => {
   const price = props.price;
 
   return voucher.isEditablePrice ?
-        <div className="col-xs-14 col-md-14 alignright priceValue">
-					<div className = "row">
+          <div className = "row">
             
             <span className="col-xs-14 col-md-14">
               <input
@@ -161,34 +163,12 @@ const VoucherPrice = (props): any => {
             </span>
             
           </div>
-        </div> 
         :
-        <div className="col-xs-14 col-md-14 alignright priceValue text-right">
+        <div className="text-right">
           ${Number(voucher.total).toFixed(2)}
         </div>;
 
 };
 
-const VoucherQuantity = (props): any => {
-  const quantity = props.quantity;
-
-  return (
-    <div className="col-xs-10 col-md-10">
-      <div className="row">
-        <span className="col-xs-12 col-md-12 fee-full quantity">Quantity</span>
-        <span className="col-xs-12 col-md-12" >
-          <input
-            type="text"
-            className="text-right"
-            name="quantityValue"
-            value={quantity}
-            onChange={e => props.onChange(e.target.value)}
-            onBlur={e => props.onBlur(e)}
-          />
-        </span>
-      </div>
-    </div>
-  );
-};
 
 export default VoucherComp;
