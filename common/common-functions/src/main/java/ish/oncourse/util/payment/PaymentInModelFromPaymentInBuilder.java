@@ -1,5 +1,6 @@
 package ish.oncourse.util.payment;
 
+import ish.math.Money;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
@@ -16,11 +17,13 @@ public class PaymentInModelFromPaymentInBuilder {
     public PaymentInModelFromPaymentInBuilder build() {
         model.setPaymentIn(paymentIn);
         for (PaymentInLine line: paymentIn.getPaymentInLines()) {
-            model.getInvoices().add(line.getInvoice());
-            for (InvoiceLine invoiceLine: line.getInvoice().getInvoiceLines())
-            {
-                if (invoiceLine.getEnrolment() != null) {
-                    model.getEnrolments().add(invoiceLine.getEnrolment());
+            //exclude previous credit invoices
+            if (!line.getAmount().isLessThan(Money.ZERO)) {
+                model.getInvoices().add(line.getInvoice());
+                for (InvoiceLine invoiceLine : line.getInvoice().getInvoiceLines()) {
+                    if (invoiceLine.getEnrolment() != null) {
+                        model.getEnrolments().add(invoiceLine.getEnrolment());
+                    }
                 }
             }
         }
