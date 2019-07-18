@@ -13,6 +13,7 @@ import ish.oncourse.willow.model.checkout.payment.PaymentRequest
 import ish.oncourse.willow.model.web.CourseClassPrice
 import ish.oncourse.willow.service.ApiTest
 import org.apache.cayenne.query.ObjectSelect
+import org.apache.cayenne.query.SelectById
 import org.junit.Test
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertNotNull
@@ -155,6 +156,41 @@ class MultiMoneySourcesTest extends ApiTest {
         }
     }
 
+    @Test
+    void testCredit_CCPayment_Revers() {
+        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService)
+        CheckoutModelRequest modelRequest = modelRequest('1001', 440.00, ['1011', '1012'], [])
+
+        api.makePayment(invalidPaymentRequest(modelRequest, 340.00))
+
+        PaymentIn payment = ObjectSelect.query(PaymentIn).where(PaymentIn.TYPE.eq(PaymentType.CREDIT_CARD)).selectOne(cayenneService.newContext())
+        assertNotNull(payment)
+        assertEquals(PaymentStatus.FAILED_CARD_DECLINED, payment.status)
+
+        PaymentIn reversPayment = ObjectSelect.query(PaymentIn).where(PaymentIn.TYPE.eq(PaymentType.REVERSE)).selectOne(cayenneService.newContext())
+        assertNotNull(reversPayment)
+        assertEquals(PaymentStatus.SUCCESS, reversPayment.status)
+        assertEquals(Money.ZERO, reversPayment.amount)
+        assertEquals(2, reversPayment.paymentInLines.size())
+        assertEquals(2, reversPayment.paymentInLines.size())
+        assertNotNull(reversPayment.paymentInLines.find {it.amount == new Money("440.00")})
+        assertNotNull(reversPayment.paymentInLines.find {it.amount == new Money("-440.00")})
+
+        Invoice credit =  SelectById.query(Invoice, 1003l).selectOne(cayenneService.newContext())
+
+        assertEquals(1, credit.paymentInLines.size())
+
+        assertEquals(new Money("-100.00"), credit.paymentInLines[0].amount)
+        assertNotNull(credit.paymentInLines[0].paymentIn)
+        assertEquals(PaymentType.CREDIT_CARD, credit.paymentInLines[0].paymentIn.type)
+
+    }
+
+    private static PaymentRequest invalidPaymentRequest(CheckoutModelRequest modelRequest,   Double ccAmount) {
+        PaymentRequest request = validPaymentRequest(modelRequest, ccAmount)
+        request.creditCardNumber = '9999990000000378'
+        return request
+    }
 
     private static PaymentRequest validPaymentRequest(CheckoutModelRequest modelRequest,   Double ccAmount) {
         new PaymentRequest().with {
