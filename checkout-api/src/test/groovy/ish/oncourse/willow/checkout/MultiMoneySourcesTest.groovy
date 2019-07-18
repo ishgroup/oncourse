@@ -25,6 +25,29 @@ class MultiMoneySourcesTest extends ApiTest {
     }
 
     @Test
+    void testMultiCredit_PPlan() {
+
+        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService)
+        CheckoutModelRequest modelRequest = modelRequest('1005', 200.00, ['1003'], [])
+        api.makePayment(zeroPaymentRequest(modelRequest))
+        PaymentIn payment = ObjectSelect.query(PaymentIn).selectOne(cayenneService.newContext())
+        assertEquals(Money.ZERO, payment.amount)
+
+        assertEquals(PaymentStatus.SUCCESS, payment.status)
+
+        assertNotNull(payment.paymentInLines.find { it.invoice.id == 1005l })
+        assertEquals(new Money("-50.00"), payment.paymentInLines.find { it.invoice.id == 1005l }.amount)
+
+        assertNotNull(payment.paymentInLines.find { it.invoice.id == 1006l })
+        assertEquals(new Money("-100.00"), payment.paymentInLines.find { it.invoice.id == 1006l }.amount)
+
+        assertNotNull(payment.paymentInLines.find { it.invoice.id == 1007l })
+        assertEquals(new Money("-50.00"), payment.paymentInLines.find { it.invoice.id == 1007l }.amount)
+
+        assertEquals(EnrolmentStatus.SUCCESS, ObjectSelect.query(ish.oncourse.model.Enrolment).selectOne(cayenneService.newContext()).status)
+    }
+
+    @Test
     void testCredit_only() {
         CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService)
         CheckoutModelRequest modelRequest = modelRequest('1004', 220.00, ['1001'], [])

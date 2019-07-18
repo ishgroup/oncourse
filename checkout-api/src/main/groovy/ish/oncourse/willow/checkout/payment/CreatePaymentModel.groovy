@@ -149,7 +149,7 @@ class CreatePaymentModel {
                 return
             }
             Money apply  = creditRemained.isGreaterThan(credit.amount) ? credit.amount : creditRemained
-            creditRemained.subtract(apply)
+            creditRemained = creditRemained.subtract(apply)
             financialService.contraPay(paymentIn, credit.invoice, apply)
         }
     }

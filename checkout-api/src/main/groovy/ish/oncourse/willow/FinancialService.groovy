@@ -40,7 +40,7 @@ class FinancialService {
 
     List<CreditNode> getAvailableCreditMap(Contact payer) {
         List <Invoice> credits = creditNoteQuery(payer)
-                .orderBy(Invoice.AMOUNT_OWING.asc())
+                .orderBy(Invoice.AMOUNT_OWING.desc())
                 .select(cayenneService.newContext())
         return credits.collect { new CreditNode(invoice: it, amount: it.amountOwing.negate())}
     }
