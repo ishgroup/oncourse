@@ -210,7 +210,7 @@ const PaymentFormNav = props => {
 
       {corporatePassAvailable &&
         <li className={classnames({active: currentTab === Tabs.corporatePass})}>
-          <a href={`#${Tabs.corporatePass}`} onClick={paymentTabOnClick.bind(this)}>CorporatePass</a>
+          <a href={`#${Tabs.corporatePass}`} onClick={paymentTabOnClick.bind(this)}>Corporate Pass</a>
         </li>
       }
 

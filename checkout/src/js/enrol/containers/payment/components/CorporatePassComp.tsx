@@ -69,8 +69,8 @@ class CorporatePassComp extends React.Component<Props, any> {
       <div id="corporate-pass" className={classnames("single-tab active", {fetching})}>
         <fieldset>
           <p className="info-content">
-            Enter a CorporatePass code below to complete this transaction without any payment at this time.
-            CorporatePass is available to pre-approved corporate clients only.
+            Enter a Corporate Pass code below to complete this transaction without any payment at this time.
+            Corporate Pass is available to pre-approved corporate clients only.
           </p>
 
           {!corporatePass.id &&
