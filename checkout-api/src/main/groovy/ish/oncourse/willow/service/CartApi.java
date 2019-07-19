@@ -18,6 +18,6 @@ public interface CartApi  {
     @Path("/v1/cart")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
-    Token v1CartPost();
+    Token cartPost();
 }
 
