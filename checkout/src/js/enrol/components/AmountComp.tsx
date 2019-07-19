@@ -23,7 +23,7 @@ class AmountComp extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      payNowVal: '',
+      payNowVal: props.amount.payNow || 0
     };
   }
 
