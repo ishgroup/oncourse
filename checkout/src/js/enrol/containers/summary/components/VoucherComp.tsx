@@ -3,7 +3,18 @@ import classnames from "classnames";
 
 import {Contact, Voucher, Product} from "../../../../model";
 import {ItemWrapper} from "./ItemWrapper";
+import {CSSProperties} from "react";
 
+const styles: CSSProperties = {
+  voucherPrice: {
+    margin: "0 15px 0 0",
+    display: "flex",
+    alignItems: "center"
+  },
+  voucherInput: {
+    margin: "0"
+  }
+}
 
 export interface Props {
   contact: Contact;
@@ -145,9 +156,9 @@ const VoucherPrice = (props): any => {
   const price = props.price;
 
   return voucher.isEditablePrice ?
-          <div className = "row">
+          <div className="row" style={styles.voucherPrice}>
             
-            <span className="col-xs-14 col-md-14">
+            <span className="col-xs-14 col-md-14" >
               <input
                 type="text"
                 className="text-right"
@@ -155,6 +166,7 @@ const VoucherPrice = (props): any => {
                 value={`$${price}`}
                 onChange={e => props.onChange(e.target.value.replace('$', ''))}
                 onBlur={e => props.onBlur(e)}
+                style={styles.voucherInput}
               />
             </span>
         
@@ -164,7 +176,7 @@ const VoucherPrice = (props): any => {
             
           </div>
         :
-        <div className="text-right">
+        <div className="text-right" style={styles.voucherPrice}>
           ${Number(voucher.total).toFixed(2)}
         </div>;
 

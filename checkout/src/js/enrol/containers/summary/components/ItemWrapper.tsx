@@ -1,19 +1,31 @@
 import * as React from "react";
 import {isNil} from "lodash";
 import classnames from "classnames";
+import {CSSProperties} from "react";
 
+const styles: CSSProperties = {
+  divStyle: {
+    width: '2em',
+    paddingRight: '0px',
+    paddingLeft: '0px'
+  },
+  inputStyle: {
+    width: '2em',
+    paddingLeft: '5px',
+    paddingRight: '5px',
+    margin: "0 8px 0 0"
+  },
+  enrolmentSelect: {
+    position: "relative",
+    marginRight: "8px"
+  },
+  quantity: {
+    display: 'flex',
+    alignItems: "center",
+    margin: "0 -19px"
+  }
+}
 
-const divStyle = {
-  width: '2em',
-  paddingRight: '0px',
-  paddingLeft: '0px'
-};
-
-const inputStyle = {
-  width: '2em',
-  paddingLeft: '5px',
-  paddingRight: '5px'
-};
 
 export interface Props {
   name: string;
@@ -39,16 +51,15 @@ export class ItemWrapper extends React.Component<Props, any> {
       <div className={classnames("enrolmentInfo", {"col-xs-16 col-md-17": !fullWidth, "col-md-24": fullWidth})}>
 
         {selected && quantity  && quantity > 0 ?
-          <div className="row">
-              <div className="col-xs-1">
-                <input className="enrolmentSelect"
+            <div style={styles.quantity}>
+                <div style={styles.enrolmentSelect}>
+                <input
                        type="checkbox"
                        name={name}
                        onChange={ onChange.bind(this, item, contact) }
                        checked={selected} disabled={!isNil(error)}/>
-              </div>
+                </div>
 
-              <div className="col-xs-2" style={divStyle}>
                 <input
                     type="text"
                     className="text-right"
@@ -56,16 +67,15 @@ export class ItemWrapper extends React.Component<Props, any> {
                     value={quantity}
                     onChange={e => onQuantityChange(e.target.value)}
                     onBlur={e => onQuantityBlur(e)}
-                    style={inputStyle}
+                    style={styles.inputStyle}
                 />
-              </div>
-              <div className="col-xs-10">
+
+
                 <label>
                 { title }
                 </label>
-              </div>
 
-          </div>
+            </div>
           :
             <label>
               <input className="enrolmentSelect"
