@@ -8,6 +8,6 @@ export class ProductsApi {
   }
 
   getProducts(productsParams: ProductsParams): Promise<Product[]> {
-    return this.http.POST(`/products`, productsParams);
+    return this.http.POST(`/v1/products`, productsParams);
   }
 }

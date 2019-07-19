@@ -17,13 +17,13 @@ import javax.ws.rs.core.MediaType;
 public interface PromotionApi  {
 
     @GET
-    @Path("/promotion/{code}")
+    @Path("/v1/promotion/{code}")
     @Produces({ "application/json" })
     @CollegeInfo
     Promotion getPromotion(@PathParam("code") String code);
 
     @GET
-    @Path("/submitCode/{code}")
+    @Path("/v1/submitCode/{code}")
     @Produces({ "application/json" })
     @CollegeInfo
     CodeResponse submitCode(@PathParam("code") String code);

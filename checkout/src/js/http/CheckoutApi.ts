@@ -12,15 +12,15 @@ export class CheckoutApi {
   }
 
   getCheckoutModel(checkoutModelRequest: CheckoutModelRequest): Promise<CheckoutModel> {
-    return this.http.POST(`/getCheckoutModel`, checkoutModelRequest);
+    return this.http.POST(`/v1/getCheckoutModel`, checkoutModelRequest);
   }
   getContactNode(contactNodeRequest: ContactNodeRequest): Promise<ContactNode> {
-    return this.http.POST(`/getContactNode`, contactNodeRequest);
+    return this.http.POST(`/v1/getContactNode`, contactNodeRequest);
   }
   getPaymentStatus(sessionId: string): Promise<PaymentResponse> {
-    return this.http.GET(`/getPaymentStatus/${sessionId}`);
+    return this.http.GET(`/v1/getPaymentStatus/${sessionId}`);
   }
   makePayment(paymentRequest: PaymentRequest): Promise<PaymentResponse> {
-    return this.http.POST(`/makePayment`, paymentRequest);
+    return this.http.POST(`/v1/makePayment`, paymentRequest);
   }
 }

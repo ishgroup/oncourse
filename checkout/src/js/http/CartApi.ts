@@ -7,6 +7,6 @@ export class CartApi {
   }
 
   cartPost(): Promise<Token> {
-    return this.http.POST(`/cart`);
+    return this.http.POST(`/v1/cart`);
   }
 }

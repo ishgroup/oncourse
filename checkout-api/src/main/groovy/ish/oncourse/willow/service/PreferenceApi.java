@@ -15,7 +15,7 @@ import javax.ws.rs.core.MediaType;
 public interface PreferenceApi  {
 
     @GET
-    @Path("/getPreferences")
+    @Path("/v1/getPreferences")
     @Produces({ "application/json" })
     @CollegeInfo
     Preferences getPreferences();

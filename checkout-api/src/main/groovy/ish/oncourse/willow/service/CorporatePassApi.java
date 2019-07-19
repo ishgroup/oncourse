@@ -19,25 +19,25 @@ import javax.ws.rs.core.MediaType;
 public interface CorporatePassApi  {
 
     @POST
-    @Path("/getCorporatePass")
+    @Path("/v1/getCorporatePass")
     @Produces({ "application/json" })
     @CollegeInfo
     CorporatePass getCorporatePass(GetCorporatePassRequest request);
 
     @GET
-    @Path("/isCorporatePassEnabled")
+    @Path("/v1/isCorporatePassEnabled")
     @Produces({ "application/json" })
     @CollegeInfo
     Boolean isCorporatePassEnabled();
 
     @POST
-    @Path("/isCorporatePassEnabledFor")
+    @Path("/v1/isCorporatePassEnabledFor")
     @Produces({ "application/json" })
     @CollegeInfo
     Boolean isCorporatePassEnabledFor(CheckoutModelRequest checkoutModelRequest);
 
     @POST
-    @Path("/makeCorporatePass")
+    @Path("/v1/makeCorporatePass")
     @Produces({ "application/json" })
     @CollegeInfo
     void makeCorporatePass(MakeCorporatePassRequest request);

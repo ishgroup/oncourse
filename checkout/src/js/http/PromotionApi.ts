@@ -9,9 +9,9 @@ export class PromotionApi {
   }
 
   getPromotion(code: string): Promise<Promotion> {
-    return this.http.GET(`/promotion/${code}`);
+    return this.http.GET(`/v1/promotion/${code}`);
   }
   submitCode(code: string): Promise<CodeResponse> {
-    return this.http.GET(`/submitCode/${code}`);
+    return this.http.GET(`/v1/submitCode/${code}`);
   }
 }

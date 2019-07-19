@@ -18,14 +18,14 @@ import javax.ws.rs.core.MediaType;
 public interface CourseClassesApi  {
 
     @POST
-    @Path("/classes")
+    @Path("/v1/classes")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @CollegeInfo
     List<CourseClass> getCourseClasses(CourseClassesParams courseClassesParams);
 
     @POST
-    @Path("/courses")
+    @Path("/v1/courses")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @CollegeInfo

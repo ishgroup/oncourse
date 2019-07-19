@@ -16,7 +16,7 @@ import javax.ws.rs.core.MediaType;
 public interface ProductsApi  {
 
     @POST
-    @Path("/products")
+    @Path("/v1/products")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @CollegeInfo

@@ -10,9 +10,9 @@ export class CourseClassesApi {
   }
 
   getCourseClasses(courseClassesParams: CourseClassesParams): Promise<CourseClass[]> {
-    return this.http.POST(`/classes`, courseClassesParams);
+    return this.http.POST(`/v1/classes`, courseClassesParams);
   }
   getCourses(coursesParams: CoursesParams): Promise<Course[]> {
-    return this.http.POST(`/courses`, coursesParams);
+    return this.http.POST(`/v1/courses`, coursesParams);
   }
 }

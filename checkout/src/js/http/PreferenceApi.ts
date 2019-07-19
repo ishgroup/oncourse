@@ -7,6 +7,6 @@ export class PreferenceApi {
   }
 
   getPreferences(): Promise<Preferences> {
-    return this.http.GET(`/getPreferences`);
+    return this.http.GET(`/v1/getPreferences`);
   }
 }

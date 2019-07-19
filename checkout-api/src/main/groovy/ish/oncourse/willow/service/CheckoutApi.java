@@ -20,27 +20,27 @@ import javax.ws.rs.core.MediaType;
 public interface CheckoutApi  {
 
     @POST
-    @Path("/getCheckoutModel")
+    @Path("/v1/getCheckoutModel")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @CollegeInfo
     CheckoutModel getCheckoutModel(CheckoutModelRequest checkoutModelRequest);
 
     @POST
-    @Path("/getContactNode")
+    @Path("/v1/getContactNode")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @CollegeInfo
     ContactNode getContactNode(ContactNodeRequest contactNodeRequest);
 
     @GET
-    @Path("/getPaymentStatus/{sessionId}")
+    @Path("/v1/getPaymentStatus/{sessionId}")
     @Produces({ "application/json" })
     @CollegeInfo
     PaymentResponse getPaymentStatus(@PathParam("sessionId") String sessionId);
 
     @POST
-    @Path("/makePayment")
+    @Path("/v1/makePayment")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @CollegeInfo

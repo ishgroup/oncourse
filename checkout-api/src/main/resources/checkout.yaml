@@ -8,7 +8,7 @@ schemes:
 produces:
   - application/json
 paths:
-  /getContactNode:
+  /v1/getContactNode:
     post:
       x-filter:
       - CollegeInfo
@@ -35,7 +35,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /getCheckoutModel:
+  /v1/getCheckoutModel:
     post:
       x-filter:
       - CollegeInfo
@@ -62,7 +62,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /makePayment:
+  /v1/makePayment:
     post:
       x-filter:
       - CollegeInfo
@@ -89,7 +89,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /getPaymentStatus/{sessionId}:
+  /v1/getPaymentStatus/{sessionId}:
     get:
       x-filter:
       - CollegeInfo
@@ -113,7 +113,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /products:
+  /v1/products:
     post:
       x-filter:
         - CollegeInfo
@@ -142,7 +142,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /classes:
+  /v1/classes:
     post:
       x-filter:
         - CollegeInfo
@@ -171,7 +171,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /courses:
+  /v1/courses:
     post:
       x-filter:
         - CollegeInfo
@@ -200,7 +200,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /contact:
+  /v1/contact:
     put:
       x-filter:
         - CollegeInfo
@@ -230,7 +230,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /contact/{studentUniqueIdentifier}:
+  /v1/contact/{studentUniqueIdentifier}:
     get:
       x-filter:
         - CollegeInfo
@@ -254,7 +254,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /contactFields:
+  /v1/contactFields:
     post:
       x-filter:
         - CollegeInfo
@@ -281,7 +281,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /createParentChildrenRelation:
+  /v1/createParentChildrenRelation:
     put:
       x-filter:
       - CollegeInfo
@@ -309,7 +309,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /submitContactDetails:
+  /v1/submitContactDetails:
     post:
       x-filter:
       - CollegeInfo
@@ -340,7 +340,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /submitCode/{code}:
+  /v1/submitCode/{code}:
     get:
       x-filter:
       - CollegeInfo
@@ -364,7 +364,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /promotion/{code}:
+  /v1/promotion/{code}:
     get:
       x-filter:
       - CollegeInfo
@@ -397,7 +397,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /cart:
+  /v1/cart:
     post:
       summary: Create new Cart session
       description: |
@@ -415,7 +415,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /postcode/{text}:
+  /v1/postcode/{text}:
     get:
       x-filter:
       - SearchText
@@ -442,7 +442,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /suburb/{text}:
+  /v1/suburb/{text}:
     get:
       x-filter:
       - SearchText
@@ -469,7 +469,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /language/{text}:
+  /v1/language/{text}:
     get:
       x-filter:
       - SearchText
@@ -495,7 +495,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /country/{text}:
+  /v1/country/{text}:
     get:
       x-filter:
       - SearchText
@@ -521,7 +521,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /getConcessionTypes:
+  /v1/getConcessionTypes:
     get:
       x-filter:
       - CollegeInfo
@@ -541,7 +541,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /getContactConcessionsAndMemberships:
+  /v1/getContactConcessionsAndMemberships:
     post:
       x-filter:
       - CollegeInfo
@@ -568,7 +568,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /submitConcession:
+  /v1/submitConcession:
     put:
       x-filter:
       - CollegeInfo
@@ -595,7 +595,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /isCorporatePassEnabled:
+  /v1/isCorporatePassEnabled:
     get:
       x-filter:
       - CollegeInfo
@@ -613,7 +613,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /isCorporatePassEnabledFor:
+  /v1/isCorporatePassEnabledFor:
     post:
       x-filter:
       - CollegeInfo
@@ -638,7 +638,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /getCorporatePass:
+  /v1/getCorporatePass:
     post:
       x-filter:
       - CollegeInfo
@@ -663,7 +663,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /makeCorporatePass:
+  /v1/makeCorporatePass:
     post:
       x-filter:
       - CollegeInfo
@@ -690,7 +690,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /getPreferences:
+  /v1/getPreferences:
       get:
         x-filter:
         - CollegeInfo

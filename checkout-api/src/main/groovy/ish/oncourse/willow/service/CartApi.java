@@ -15,9 +15,9 @@ import javax.ws.rs.core.MediaType;
 public interface CartApi  {
 
     @POST
-    @Path("/cart")
+    @Path("/v1/cart")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
-    Token cartPost();
+    Token v1CartPost();
 }
 

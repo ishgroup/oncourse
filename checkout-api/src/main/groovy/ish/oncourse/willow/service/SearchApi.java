@@ -15,26 +15,26 @@ import javax.ws.rs.core.MediaType;
 public interface SearchApi  {
 
     @GET
-    @Path("/country/{text}")
+    @Path("/v1/country/{text}")
     @Produces({ "application/json" })
     @SearchText
     List<Item> getCountries(@PathParam("text") String text);
 
     @GET
-    @Path("/language/{text}")
+    @Path("/v1/language/{text}")
     @Produces({ "application/json" })
     @SearchText
     List<Item> getLanguages(@PathParam("text") String text);
 
     @GET
-    @Path("/postcode/{text}")
+    @Path("/v1/postcode/{text}")
     @Produces({ "application/json" })
     @SearchText
     @CollegeInfo
     List<Item> getPostcodes(@PathParam("text") String text);
 
     @GET
-    @Path("/suburb/{text}")
+    @Path("/v1/suburb/{text}")
     @Produces({ "application/json" })
     @SearchText
     @CollegeInfo

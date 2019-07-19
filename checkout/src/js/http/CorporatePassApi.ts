@@ -11,15 +11,15 @@ export class CorporatePassApi {
   }
 
   getCorporatePass(request: GetCorporatePassRequest): Promise<CorporatePass> {
-    return this.http.POST(`/getCorporatePass`, request);
+    return this.http.POST(`/v1/getCorporatePass`, request);
   }
   isCorporatePassEnabled(): Promise<boolean> {
-    return this.http.GET(`/isCorporatePassEnabled`);
+    return this.http.GET(`/v1/isCorporatePassEnabled`);
   }
   isCorporatePassEnabledFor(checkoutModelRequest: CheckoutModelRequest): Promise<boolean> {
-    return this.http.POST(`/isCorporatePassEnabledFor`, checkoutModelRequest);
+    return this.http.POST(`/v1/isCorporatePassEnabledFor`, checkoutModelRequest);
   }
   makeCorporatePass(request: MakeCorporatePassRequest): Promise<any> {
-    return this.http.POST(`/makeCorporatePass`, request);
+    return this.http.POST(`/v1/makeCorporatePass`, request);
   }
 }

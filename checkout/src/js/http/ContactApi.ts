@@ -17,27 +17,27 @@ export class ContactApi {
   }
 
   createOrGetContact(createContactParams: CreateContactParams): Promise<ContactId> {
-    return this.http.PUT(`/contact`, createContactParams);
+    return this.http.PUT(`/v1/contact`, createContactParams);
   }
   createParentChildrenRelation(request: CreateParentChildrenRequest): Promise<any> {
-    return this.http.PUT(`/createParentChildrenRelation`, request);
+    return this.http.PUT(`/v1/createParentChildrenRelation`, request);
   }
   getConcessionTypes(): Promise<ConcessionType[]> {
-    return this.http.GET(`/getConcessionTypes`);
+    return this.http.GET(`/v1/getConcessionTypes`);
   }
   getContact(studentUniqueIdentifier: string): Promise<Contact> {
-    return this.http.GET(`/contact/${studentUniqueIdentifier}`);
+    return this.http.GET(`/v1/contact/${studentUniqueIdentifier}`);
   }
   getContactConcessionsAndMemberships(contactIds: string[]): Promise<ConcessionsAndMemberships> {
-    return this.http.POST(`/getContactConcessionsAndMemberships`, contactIds);
+    return this.http.POST(`/v1/getContactConcessionsAndMemberships`, contactIds);
   }
   getContactFields(contactFieldsRequest: ContactFieldsRequest): Promise<ContactFields> {
-    return this.http.POST(`/contactFields`, contactFieldsRequest);
+    return this.http.POST(`/v1/contactFields`, contactFieldsRequest);
   }
   submitConcession(concession: Concession): Promise<any> {
-    return this.http.PUT(`/submitConcession`, concession);
+    return this.http.PUT(`/v1/submitConcession`, concession);
   }
   submitContactDetails(contactFields: SubmitFieldsRequest): Promise<ContactId> {
-    return this.http.POST(`/submitContactDetails`, contactFields);
+    return this.http.POST(`/v1/submitContactDetails`, contactFields);
   }
 }

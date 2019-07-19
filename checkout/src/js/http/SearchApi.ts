@@ -7,15 +7,15 @@ export class SearchApi {
   }
 
   getCountries(text: string): Promise<Item[]> {
-    return this.http.GET(`/country/${text}`);
+    return this.http.GET(`/v1/country/${text}`);
   }
   getLanguages(text: string): Promise<Item[]> {
-    return this.http.GET(`/language/${text}`);
+    return this.http.GET(`/v1/language/${text}`);
   }
   getPostcodes(text: string): Promise<Item[]> {
-    return this.http.GET(`/postcode/${text}`);
+    return this.http.GET(`/v1/postcode/${text}`);
   }
   getSuburbs(text: string): Promise<Item[]> {
-    return this.http.GET(`/suburb/${text}`);
+    return this.http.GET(`/v1/suburb/${text}`);
   }
 }

@@ -26,52 +26,52 @@ import javax.ws.rs.core.MediaType;
 public interface ContactApi  {
 
     @PUT
-    @Path("/contact")
+    @Path("/v1/contact")
     @Produces({ "application/json" })
     @CollegeInfo
     @ContactValidation
     ContactId createOrGetContact(CreateContactParams createContactParams);
 
     @PUT
-    @Path("/createParentChildrenRelation")
+    @Path("/v1/createParentChildrenRelation")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @CollegeInfo
     void createParentChildrenRelation(CreateParentChildrenRequest request);
 
     @GET
-    @Path("/getConcessionTypes")
+    @Path("/v1/getConcessionTypes")
     @Produces({ "application/json" })
     @CollegeInfo
     List<ConcessionType> getConcessionTypes();
 
     @GET
-    @Path("/contact/{studentUniqueIdentifier}")
+    @Path("/v1/contact/{studentUniqueIdentifier}")
     @Produces({ "application/json" })
     @CollegeInfo
     Contact getContact(@PathParam("studentUniqueIdentifier") String studentUniqueIdentifier);
 
     @POST
-    @Path("/getContactConcessionsAndMemberships")
+    @Path("/v1/getContactConcessionsAndMemberships")
     @Produces({ "application/json" })
     @CollegeInfo
     ConcessionsAndMemberships getContactConcessionsAndMemberships(List<String> contactIds);
 
     @POST
-    @Path("/contactFields")
+    @Path("/v1/contactFields")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @CollegeInfo
     ContactFields getContactFields(ContactFieldsRequest contactFieldsRequest);
 
     @PUT
-    @Path("/submitConcession")
+    @Path("/v1/submitConcession")
     @Produces({ "application/json" })
     @CollegeInfo
     void submitConcession(Concession concession);
 
     @POST
-    @Path("/submitContactDetails")
+    @Path("/v1/submitContactDetails")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @CollegeInfo
