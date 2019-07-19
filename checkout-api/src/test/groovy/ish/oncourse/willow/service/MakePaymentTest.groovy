@@ -142,7 +142,7 @@ class MakePaymentTest extends AbstractPaymentTest {
         CheckoutModel model = api.getCheckoutModel(request.checkoutModelRequest)
 
         ObjectContext ctx = cayenneService.newContext()
-        CreatePaymentModel createPaymentModel =  new CreatePaymentModel(ctx, college, webSite, request, model).create()
+        CreatePaymentModel createPaymentModel =  new CreatePaymentModel(ctx, college, webSite, request, model, financialService).create()
         PaymentInModel paymentInModel = createPaymentModel.model
         ish.oncourse.model.Enrolment enrolment = paymentInModel.invoices[0].invoiceLines[0].enrolment
         ish.oncourse.model.Voucher voucher = paymentInModel.invoices[0].invoiceLines[1].productItems[0] as ish.oncourse.model.Voucher

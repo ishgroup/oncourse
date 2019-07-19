@@ -66,7 +66,8 @@ class RedeemVoucherTest extends ApiTest {
         Amount amount = processModel.model.amount
         assertEquals(amount.total, 430.00, 0)
         assertEquals(amount.discount, 33.00, 0)
-        assertEquals(amount.payNow, 69.00, 0)
+        assertEquals(amount.payNow, 318.00, 0)
+        assertEquals(amount.ccPayment, 69.00, 0)
         assertEquals(amount.owing, 79.00, 0)
         assertEquals(amount.voucherPayments.size(), 2)
         assertEquals(amount.voucherPayments[0].redeemVoucherId, '1001')
@@ -85,7 +86,8 @@ class RedeemVoucherTest extends ApiTest {
         Amount amount = processModel.model.amount
         assertEquals(amount.total, 330.00, 0)
         assertEquals(amount.discount, 33.00, 0)
-        assertEquals(amount.payNow, 0.00, 0)
+        assertEquals(amount.payNow, 218.0, 0)
+        assertEquals(amount.ccPayment, 0.0, 0)
         assertEquals(amount.owing, 79.00, 0)
         assertEquals(amount.voucherPayments.size(), 2)
         assertEquals(amount.voucherPayments[0].redeemVoucherId, '1001')
@@ -103,7 +105,7 @@ class RedeemVoucherTest extends ApiTest {
         
         ProcessCheckoutModel processModel = new ProcessCheckoutModel(context, college, getModelRequest(),financialService).process()
 
-        CreatePaymentModel createPaymentModel =  new CreatePaymentModel(cayenneService.newContext(), college, webSite, paymentRequest, processModel.model).create()
+        CreatePaymentModel createPaymentModel =  new CreatePaymentModel(cayenneService.newContext(), college, webSite, paymentRequest, processModel.model,financialService).create()
 
         assertNotNull(createPaymentModel.model)
 
@@ -154,7 +156,7 @@ class RedeemVoucherTest extends ApiTest {
 
         ProcessCheckoutModel processModel = new ProcessCheckoutModel(context, college, getModelRequest(false), financialService).process()
 
-        CreatePaymentModel createPaymentModel =  new CreatePaymentModel(cayenneService.newContext(), college, webSite, getPaymentRequest(false), processModel.model).create()
+        CreatePaymentModel createPaymentModel =  new CreatePaymentModel(cayenneService.newContext(), college, webSite, getPaymentRequest(false), processModel.model,financialService).create()
 
         assertNotNull(createPaymentModel.model)
 

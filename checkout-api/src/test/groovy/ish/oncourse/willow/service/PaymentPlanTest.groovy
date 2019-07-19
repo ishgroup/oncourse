@@ -37,8 +37,9 @@ class PaymentPlanTest extends ApiTest {
 
         assertEquals(amount.total, 430.00, 0)
         assertEquals(amount.discount, 33.00, 0)
-        assertEquals(amount.payNow, 69.00, 0)
-        assertEquals(amount.minPayNow, 69.00, 0)
+        assertEquals(amount.payNow, 318.00, 0)
+        assertEquals(amount.minPayNow, 318.00, 0)
+        assertEquals(amount.ccPayment, 69.00, 0)
         assertTrue(amount.isEditable)
         assertEquals(amount.owing, 79.00, 0)
         assertEquals(amount.voucherPayments.size(), 2)
@@ -75,7 +76,7 @@ class PaymentPlanTest extends ApiTest {
         College college = webSite.college
 
         ProcessCheckoutModel processModel = new ProcessCheckoutModel(context, college, getPPlanModelRequest(), financialService).process()
-        CreatePaymentModel createPaymentModel =  new CreatePaymentModel(cayenneService.newContext(), college, webSite, new PaymentRequest(ccAmount: 397.00, checkoutModelRequest:getPPlanModelRequest()), processModel.model).create()
+        CreatePaymentModel createPaymentModel =  new CreatePaymentModel(cayenneService.newContext(), college, webSite, new PaymentRequest(ccAmount: 397.00, checkoutModelRequest:getPPlanModelRequest()), processModel.model,financialService).create()
         
         assertNotNull(createPaymentModel.model)
         assertNotNull(createPaymentModel.model.paymentIn)
@@ -104,7 +105,7 @@ class PaymentPlanTest extends ApiTest {
         College college = webSite.college
 
         ProcessCheckoutModel processModel = new ProcessCheckoutModel(context, college, getPPlanModelRequest(), financialService).process()
-        CreatePaymentModel createPaymentModel =  new CreatePaymentModel(cayenneService.newContext(), college, webSite, new PaymentRequest(ccAmount: 300.00, checkoutModelRequest:getPPlanModelRequest()), processModel.model).create()
+        CreatePaymentModel createPaymentModel =  new CreatePaymentModel(cayenneService.newContext(), college, webSite, new PaymentRequest(ccAmount: 300.00, checkoutModelRequest:getPPlanModelRequest()), processModel.model, financialService).create()
 
         assertNotNull(createPaymentModel.model)
         assertNotNull(createPaymentModel.model.paymentIn)
@@ -134,7 +135,7 @@ class PaymentPlanTest extends ApiTest {
 
         ProcessCheckoutModel processModel = new ProcessCheckoutModel(context, college, getPPlanModelRequest(), financialService).process()
         try {
-            new CreatePaymentModel(cayenneService.newContext(), college, webSite, new PaymentRequest(ccAmount: 400.00, checkoutModelRequest:getPPlanModelRequest()), processModel.model).create()
+            new CreatePaymentModel(cayenneService.newContext(), college, webSite, new PaymentRequest(ccAmount: 400.00, checkoutModelRequest:getPPlanModelRequest()), processModel.model,financialService).create()
             assertTrue('Exception expected',false)
         } catch (IllegalStateException ignore) {}
      

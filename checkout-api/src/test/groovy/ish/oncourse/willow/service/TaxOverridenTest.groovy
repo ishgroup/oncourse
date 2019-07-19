@@ -41,7 +41,7 @@ class TaxOverridenTest extends AbstractPaymentTest {
         CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService)
 
         PaymentRequest request = buildPaymentRequest()
-        request.payNow = 169D
+        request.ccAmount = 169D
         CheckoutModel model = api.getCheckoutModel(request.checkoutModelRequest)
 
         assertEquals(169D, model.amount.payNow, 0)
@@ -54,7 +54,7 @@ class TaxOverridenTest extends AbstractPaymentTest {
 
         model.amount
 
-        CreatePaymentModel createPaymentModel = new CreatePaymentModel(context, college, webSite, request, model).create()
+        CreatePaymentModel createPaymentModel = new CreatePaymentModel(context, college, webSite, request, model,financialService).create()
         PaymentInModel paymentInModel = createPaymentModel.model
 
         assertEquals(new Money('169.00'), paymentInModel.paymentIn.amount)
