@@ -58,12 +58,6 @@ class ProcessCheckoutModel {
 
     private FinancialService financialService
 
-
-    ProcessCheckoutModel(ObjectContext context, College college, CheckoutModelRequest checkoutModelRequest) {
-        this(context, college, checkoutModelRequest, null)
-    }
-
-
     ProcessCheckoutModel(ObjectContext context, College college, CheckoutModelRequest checkoutModelRequest, FinancialService financialService) {
         this.context = context
         this.college = college

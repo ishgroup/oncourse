@@ -22,6 +22,15 @@ abstract class ApiTest {
 
     @Before
     void setup() throws Exception {
+
+        System.setProperty('oncourse.jdbc.url', 'jdbc:mariadb:sequential://localhost:3306/willow_api_test')
+        System.setProperty('oncourse.jdbc.user', 'root')
+        System.setProperty('oncourse.jdbc.password', 'X3f8kVjj')
+        System.setProperty('oncourse.jdbc.password', 'X3f8kVjj')
+
+        System.setProperty('https.proxyHost','fish.ish.com.au')
+
+        System.setProperty('https.proxyPort','8080')
         RequestFilter.ThreadLocalSiteKey.set('mammoth')
 
         testContext = new TestContext().shouldCreateTables(true).open()

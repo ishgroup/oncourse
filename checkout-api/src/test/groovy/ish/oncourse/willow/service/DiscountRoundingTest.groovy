@@ -37,7 +37,7 @@ class DiscountRoundingTest extends ApiTest {
             r
         }
         
-        Amount amount = new ProcessCheckoutModel(context, college, request).process().model.amount
+        Amount amount = new ProcessCheckoutModel(context, college, request,financialService).process().model.amount
         assertEquals(20.96, amount.discount, 0)
         assertEquals(83.80, amount.payNow, 0)
         assertEquals(104.76, amount.total, 0)

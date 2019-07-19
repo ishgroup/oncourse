@@ -47,7 +47,7 @@ class ProcessCorporatePassRequest {
 
         request.checkoutModelRequest.corporatePassId = request.corporatePassId
         
-        processModel = new ProcessCheckoutModel(context, college, request.checkoutModelRequest).process()
+        processModel = new ProcessCheckoutModel(context, college, request.checkoutModelRequest, null).process()
         
         if (processModel.model.error) {
             throw new BadRequestException(Response.status(400).entity(processModel.model).build())

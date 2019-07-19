@@ -20,7 +20,7 @@ abstract class AbstractPaymentTest extends ApiTest {
             paymentRequest.expiryYear = '2027'
             paymentRequest.creditCardCvv = '321'
             paymentRequest.agreementFlag = true
-            paymentRequest.payNow = 200.00
+            paymentRequest.ccAmount = 200.00
             paymentRequest.checkoutModelRequest = new CheckoutModelRequest().with { modelRequest ->
                 modelRequest.contactNodes = [new ContactNode().with { cNode ->
                     cNode.contactId = '1001'
@@ -65,7 +65,7 @@ abstract class AbstractPaymentTest extends ApiTest {
                 modelRequest.payerId = '1001'
                 modelRequest
             }
-            paymentRequest.payNow = 166.00
+            paymentRequest.ccAmount = 166.00
             paymentRequest
         }
     }

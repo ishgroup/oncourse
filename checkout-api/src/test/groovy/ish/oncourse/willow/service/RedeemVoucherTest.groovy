@@ -49,7 +49,7 @@ class RedeemVoucherTest extends ApiTest {
 
     private PaymentRequest getPaymentRequest(boolean addProduct = true) {
         new PaymentRequest().with { r ->
-            r.payNow = addProduct ? 69.00 : 0.00
+            r.ccAmount = addProduct ? 69.00 : 0.00
             r.checkoutModelRequest = getModelRequest(addProduct)
             r
         }
@@ -62,7 +62,7 @@ class RedeemVoucherTest extends ApiTest {
         College college = SelectById.query(College, 1l).selectOne(context)
 
         CheckoutModelRequest checkoutModelRequest = getModelRequest()
-        ProcessCheckoutModel processModel = new ProcessCheckoutModel(context, college, checkoutModelRequest).process()
+        ProcessCheckoutModel processModel = new ProcessCheckoutModel(context, college, checkoutModelRequest, financialService).process()
         Amount amount = processModel.model.amount
         assertEquals(amount.total, 430.00, 0)
         assertEquals(amount.discount, 33.00, 0)
@@ -81,7 +81,7 @@ class RedeemVoucherTest extends ApiTest {
         College college = SelectById.query(College, 1l).selectOne(context)
 
         CheckoutModelRequest checkoutModelRequest = getModelRequest(false)
-        ProcessCheckoutModel processModel = new ProcessCheckoutModel(context, college, checkoutModelRequest).process()
+        ProcessCheckoutModel processModel = new ProcessCheckoutModel(context, college, checkoutModelRequest, financialService).process()
         Amount amount = processModel.model.amount
         assertEquals(amount.total, 330.00, 0)
         assertEquals(amount.discount, 33.00, 0)
@@ -101,7 +101,7 @@ class RedeemVoucherTest extends ApiTest {
         WebSite webSite = SelectById.query(WebSite, 1l).selectOne(context)
         College college = webSite.college
         
-        ProcessCheckoutModel processModel = new ProcessCheckoutModel(context, college, getModelRequest()).process()
+        ProcessCheckoutModel processModel = new ProcessCheckoutModel(context, college, getModelRequest(),financialService).process()
 
         CreatePaymentModel createPaymentModel =  new CreatePaymentModel(cayenneService.newContext(), college, webSite, paymentRequest, processModel.model).create()
 
@@ -152,7 +152,7 @@ class RedeemVoucherTest extends ApiTest {
         WebSite webSite = SelectById.query(WebSite, 1l).selectOne(context)
         College college = webSite.college
 
-        ProcessCheckoutModel processModel = new ProcessCheckoutModel(context, college, getModelRequest(false)).process()
+        ProcessCheckoutModel processModel = new ProcessCheckoutModel(context, college, getModelRequest(false), financialService).process()
 
         CreatePaymentModel createPaymentModel =  new CreatePaymentModel(cayenneService.newContext(), college, webSite, getPaymentRequest(false), processModel.model).create()
 

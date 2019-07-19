@@ -102,7 +102,7 @@ class EnrolmentFieldsTest extends ApiTest {
             pr.creditCardCvv = '321'
             pr.agreementFlag = true
             pr.sessionId = 'paymentRandomSession'
-            pr.payNow = model.amount.payNow
+            pr.ccAmount = model.amount.payNow
             pr
         })
         

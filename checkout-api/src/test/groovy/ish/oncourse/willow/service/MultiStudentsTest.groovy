@@ -26,7 +26,7 @@ class MultiStudentsTest extends ApiTest {
         ObjectContext context = cayenneService.newContext()
         College college = SelectById.query(College, 1l).selectOne(context)
 
-        Amount amount = new ProcessCheckoutModel(context, college, getModelRequest()).process().model.amount
+        Amount amount = new ProcessCheckoutModel(context, college, getModelRequest(), financialService).process().model.amount
 
         assertEquals(amount.payNow, 209.00, 0)
 
