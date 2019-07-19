@@ -52,7 +52,7 @@ class MakePaymentTest extends AbstractPaymentTest {
         PaymentRequest request = buildPaymentRequest()
         CheckoutModel model = api.getCheckoutModel(request.checkoutModelRequest)
         assertNull(model.error)
-        assertEquals(request.payNow, model.amount.payNow, 0)
+        assertEquals(request.ccAmount, model.amount.payNow, 0)
         assertEquals(1, model.contactNodes.size())
         assertEquals(1, model.contactNodes[0].enrolments.size())
         assertTrue(model.contactNodes[0].enrolments[0].selected)
@@ -69,7 +69,7 @@ class MakePaymentTest extends AbstractPaymentTest {
         assertTrue(validationError.formErrors.empty)
         assertTrue(validationError.fieldsErrors.empty)
 
-        CreatePaymentModel createPaymentModel =  new CreatePaymentModel(ctx, college, webSite, request, model).create()
+        CreatePaymentModel createPaymentModel =  new CreatePaymentModel(ctx, college, webSite, request, model, financialService).create()
         PaymentInModel paymentInModel = createPaymentModel.model
 
         assertEquals(1, createPaymentModel.applications.size())

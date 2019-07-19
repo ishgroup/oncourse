@@ -71,11 +71,6 @@ class CreatePaymentModel {
 
     final static Logger logger = LoggerFactory.getLogger(CreatePaymentModel.class)
 
-
-    CreatePaymentModel(ObjectContext context, College college, WebSite webSite, PaymentRequest paymentRequest, CheckoutModel checkoutModel) {
-        this(context, college, webSite, paymentRequest, checkoutModel, null)
-    }
-
     CreatePaymentModel(ObjectContext context, College college, WebSite webSite, PaymentRequest paymentRequest, CheckoutModel checkoutModel, FinancialService financialService) {
         this.context = context
         this.webSite = this.context.localObject(webSite)
