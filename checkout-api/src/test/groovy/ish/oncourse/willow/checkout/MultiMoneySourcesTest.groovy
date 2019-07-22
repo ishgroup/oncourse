@@ -25,6 +25,16 @@ class MultiMoneySourcesTest extends ApiTest {
     }
 
     @Test
+    void testTwoEqCredit() {
+
+        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService)
+        CheckoutModelRequest modelRequest = modelRequest('1100', 220.00, ['1001'], [])
+        api.makePayment(zeroPaymentRequest(modelRequest))
+        PaymentIn payment = ObjectSelect.query(PaymentIn).selectOne(cayenneService.newContext())
+        assertEquals(Money.ZERO, payment.amount)
+    }
+
+    @Test
     void testMultiCredit_PPlan() {
 
         CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService)

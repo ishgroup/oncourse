@@ -32,9 +32,11 @@ class FinancialService {
 
     Money getAvailableCredit(String payerId) {
         Contact payer = contactById(payerId)
-        Money credit = creditNoteQuery(payer)
-                .column(Invoice.AMOUNT_OWING)
-                .select(cayenneService.newContext()).inject(Money.ZERO) { a, b -> a.add(b) }
+        List<Money> invoices = creditNoteQuery(payer)
+                .select(cayenneService.newContext())
+                .collect { it.amountOwing }
+
+        Money credit = invoices.inject(Money.ZERO) { a, b -> a.add(b) }
         return credit.negate()
     }
 
@@ -54,7 +56,7 @@ class FinancialService {
         line.amount = apply.negate()
     }
 
-    private static ObjectSelect creditNoteQuery(Contact payer) {
+    private static ObjectSelect<Invoice> creditNoteQuery(Contact payer) {
         return ((ObjectSelect.query(Invoice)
                 .where(Invoice.CONTACT.eq(payer)) & Invoice.AMOUNT_OWING.lt(Money.ZERO)) & Invoice.ANGEL_ID.isNotNull()) & paymentFilter
     }
