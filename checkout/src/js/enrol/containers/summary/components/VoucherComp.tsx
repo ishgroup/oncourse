@@ -3,18 +3,7 @@ import classnames from "classnames";
 
 import {Contact, Voucher, Product} from "../../../../model";
 import {ItemWrapper} from "./ItemWrapper";
-import {CSSProperties} from "react";
 
-const styles: CSSProperties = {
-  voucherPrice: {
-    margin: "0 15px 0 0",
-    display: "flex",
-    alignItems: "center"
-  },
-  voucherInput: {
-    margin: "0"
-  }
-}
 
 export interface Props {
   contact: Contact;
@@ -35,7 +24,7 @@ export interface State {
 class VoucherComp extends React.PureComponent<Props, State> {
 
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       price: props.voucher.price || 0,
@@ -45,7 +34,7 @@ class VoucherComp extends React.PureComponent<Props, State> {
 
   componentWillReceiveProps(props) {
     this.setState({
-      price:  props.voucher.price,
+      price: props.voucher.price,
       quantity: props.voucher.quantity,
     });
   }
@@ -107,14 +96,14 @@ class VoucherComp extends React.PureComponent<Props, State> {
           <VoucherDetails voucher={voucher}/>
         </ItemWrapper>
         {voucher.selected &&
-          <div className="col-xs-8 col-md-7 alignright">
+        <div className="col-xs-8 col-md-7 alignright">
             <VoucherPrice
                 voucher={voucher}
                 price={this.state.price}
                 onChange={val => this.updateValue(val)}
-                onBlur={ val => this.handleValueBlur()}
+                onBlur={val => this.handleValueBlur()}
             />
-          </div>
+        </div>
         }
       </div>
     );
@@ -156,9 +145,9 @@ const VoucherPrice = (props): any => {
   const price = props.price;
 
   return voucher.isEditablePrice ?
-          <div className="row" style={styles.voucherPrice}>
-            
-            <span className="col-xs-14 col-md-14" >
+    <div className="row">
+
+            <span className="col-xs-10 col-md-10">
               <input
                 type="text"
                 className="text-right"
@@ -166,17 +155,16 @@ const VoucherPrice = (props): any => {
                 value={`$${price}`}
                 onChange={e => props.onChange(e.target.value.replace('$', ''))}
                 onBlur={e => props.onBlur(e)}
-                style={styles.voucherInput}
               />
             </span>
-        
-            <span className="col-xs-10 col-md-10 fee-full fullPrice text-right">
+
+            <span className="col-xs-10 col-md-11 fee-full fullPrice text-right">
               ${Number(voucher.total).toFixed(2)}
             </span>
-            
+
           </div>
         :
-        <div className="text-right" style={styles.voucherPrice}>
+        <div className="text-right">
           ${Number(voucher.total).toFixed(2)}
         </div>;
 

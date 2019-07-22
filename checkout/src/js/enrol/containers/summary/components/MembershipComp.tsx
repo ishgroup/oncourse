@@ -27,7 +27,7 @@ class MembershipComp extends React.Component<Props, any> {
         {membership.selected &&
         <div className="col-xs-8 col-md-7 alignright priceValue">
           <div className="row">
-            <span className="col-xs-24 col-md-24 fee-full fullPrice text-right">${membership.price}</span>
+            <span className="col-xs-21 col-md-21 fee-full fullPrice text-right">${membership.price}</span>
           </div>
         </div>
         }

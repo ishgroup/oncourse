@@ -2,7 +2,13 @@ import * as React from "react";
 import {Contact, Article, Product} from "../../../../model";
 import classnames from "classnames";
 import {ItemWrapper} from "./ItemWrapper";
+import {CSSProperties} from "react";
 
+const styles: CSSProperties = {
+  article: {
+    textAlign: "right",
+  },
+};
 
 export interface Props {
   contact: Contact;
@@ -66,8 +72,8 @@ class ArticleComp extends React.Component<Props, State> {
         </ItemWrapper>
         {article.selected &&
         <div className="col-xs-8 col-md-7 alignright">
-          <div className="text-right">
-            <span className="fee-full fullPrice">${article.total.toFixed(2)}</span>
+          <div className="row">
+            <span className="col-xs-21 col-md-21 fee-full fullPrice text-right">${article.total.toFixed(2)}</span>
           </div>
         </div>
         }
