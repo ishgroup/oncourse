@@ -12,6 +12,7 @@ import ish.oncourse.model.Product
 import ish.oncourse.model.Tax
 import ish.oncourse.services.preference.IsCorporatePassEnabled
 import ish.oncourse.services.preference.IsCreditCardPaymentEnabled
+import ish.oncourse.services.preference.IsCreditNoteEnabled
 import ish.oncourse.willow.FinancialService
 import ish.oncourse.willow.checkout.corporatepass.ValidateCorporatePass
 import ish.oncourse.willow.functions.field.GetWaitingListFields
@@ -87,7 +88,9 @@ class ProcessCheckoutModel {
         if (!corporatePass) {
             
             Money minPayNow = totalProductsAmount.add(enrolmentsPrice.minPayNow)
-            Money availableCredit = financialService.getAvailableCredit(model.payerId).min(subTotal)
+
+            Boolean creditEnabled = new IsCreditNoteEnabled(college, context).get()
+            Money availableCredit = creditEnabled ? financialService.getAvailableCredit(model.payerId).min(subTotal) : ZERO
             Money payNow = checkoutModelRequest.payNow != null ? checkoutModelRequest.payNow.toMoney() : minPayNow
 
             Money ccPayment = ZERO
