@@ -95,7 +95,7 @@ public class PaymentInUtil {
 			productItems.addAll(il.getProductItems());
 
 			for (ProductItem productItem : productItems) {
-				if (productItem.getStatus() == ProductStatus.NEW) {
+				if (productItem.getStatus() == null || productItem.getStatus() == ProductStatus.NEW) {
 					productItem.setStatus(productStatus);
 				}
 			}
