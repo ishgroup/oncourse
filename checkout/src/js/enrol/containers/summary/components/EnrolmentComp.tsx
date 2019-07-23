@@ -2,12 +2,12 @@ import * as React from "react";
 import classnames from "classnames";
 import moment from "moment";
 
-import {Formats} from "../../../../constants/Formats";
+import { Formats } from "../../../../constants/Formats";
 import * as FormatUtils from "../../../../common/utils/FormatUtils";
-import {Enrolment, Contact, CourseClass, CourseClassPrice} from "../../../../model";
-import {ClassHasCommenced} from "../Messages";
-import {ItemWrapper} from "./ItemWrapper";
-import {toFormKey} from "../../../../components/form/FieldFactory";
+import { Enrolment, Contact, CourseClass, CourseClassPrice } from "../../../../model";
+import { ClassHasCommenced } from "../Messages";
+import { ItemWrapper } from "./ItemWrapper";
+import { toFormKey } from "../../../../components/form/FieldFactory";
 import EnrolmentFieldsForm from "./EnrolmentFieldsForm";
 
 
@@ -37,8 +37,8 @@ class EnrolmentComp extends React.Component<Props, any> {
   }
 
   public render(): JSX.Element {
-    const {enrolment, courseClass, contact, onChange, onChangeFields} = this.props;
-    const divClass = classnames("row", "enrolmentItem", {disabled: !enrolment.selected});
+    const { enrolment, courseClass, contact, onChange, onChangeFields } = this.props;
+    const divClass = classnames("row", "enrolmentItem", { disabled: !enrolment.selected });
     const name = `enrolment-${contact.id}-${enrolment.classId}`;
     const title: string = `${courseClass.course.name}`;
 
@@ -60,10 +60,10 @@ class EnrolmentComp extends React.Component<Props, any> {
           contact={contact}
           onChange={onChange}
         >
-          <ClassDetails courseClass={courseClass}/>
+          <ClassDetails courseClass={courseClass} />
 
         </ItemWrapper>
-        {!error && enrolment.selected && courseClass.price && <ClassPrice enrolment={enrolment}/>}
+        {!error && enrolment.selected && courseClass.price && <ClassPrice enrolment={enrolment} />}
 
         <EnrolmentFieldsForm
           headings={enrolment.fieldHeadings}
@@ -87,31 +87,31 @@ const ClassPrice = (props): any => {
   const discountedFee = price.appliedDiscount ? Number(price.appliedDiscount.discountedFee).toFixed(2) : null;
   const discount = price.appliedDiscount ? Number(price.appliedDiscount.discountValue).toFixed(2) : null;
 
-  const feeStyle = price.appliedDiscount ? {textDecoration: "line-through"} : null;
+  const feeStyle = price.appliedDiscount ? { textDecoration: "line-through" } : null;
 
   return (
-    <div className="col-xs-8 col-md-7 alignright">
+    <div className="col-xs-8 col-md-8 alignright">
       {(fee || Number(fee) === 0) &&
-      <div className="text-right">
-        <span className="fee-full fullPrice" style={feeStyle}>${fee}</span>
-      </div>
+        <div className="text-right">
+          <span className="fee-full fullPrice" style={feeStyle}>${fee}</span>
+        </div>
       }
 
       {discountedFee !== null &&
-      <div className="text-right">
-        <span className="fee-discounted discountedPrice">${discountedFee}</span>
-      </div>
+        <div className="text-right">
+          <span className="fee-discounted discountedPrice">${discountedFee}</span>
+        </div>
       }
 
       {discount !== null &&
-      <span style={{display: "none"}} className="discount">${discount}</span>
+        <span style={{ display: "none" }} className="discount">${discount}</span>
       }
     </div>
   );
 };
 
 const ClassDetails = (props): any => {
-  const {courseClass} = props;
+  const { courseClass } = props;
   const start: string = FormatUtils.formatDate(courseClass.start, Formats.ClassDateFormat, courseClass.timezone);
   const end: string = FormatUtils.formatDate(courseClass.end, Formats.ClassDateFormat, courseClass.timezone);
   return (
@@ -120,7 +120,7 @@ const ClassDetails = (props): any => {
         {courseClass.room && <span>{`${courseClass.room.site.name} » `}</span>}
         {courseClass.distantLearning && <span className="started">Self paced</span>}
         {start && end &&
-        <span><span className="started">{start}</span>&nbsp;-&nbsp;<span className="ended">{end}</span></span>}
+          <span><span className="started">{start}</span>&nbsp;-&nbsp;<span className="ended">{end}</span></span>}
       </em>
     </div>
   );

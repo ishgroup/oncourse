@@ -1,7 +1,7 @@
 import * as React from "react";
-import {isNil} from "lodash";
+import { isNil } from "lodash";
 import classnames from "classnames";
-import {CSSProperties} from "react";
+import { CSSProperties } from "react";
 
 const styles: CSSProperties = {
   divStyle: {
@@ -37,58 +37,57 @@ export interface Props {
   contact: any;
   onChange: (item, contact) => void;
   fullWidth?: boolean;
-  quantity?:number;
+  quantity?: number;
   onQuantityChange?: (val) => void;
   onQuantityBlur?: (val) => void;
 }
 
 export class ItemWrapper extends React.Component<Props, any> {
   public render(): JSX.Element {
-    const {name, title, selected, error, warning, onChange, item, contact, children, fullWidth,
+    const { name, title, selected, error, warning, onChange, item, contact, children, fullWidth,
       quantity, onQuantityChange, onQuantityBlur } = this.props;
 
     return (
-      <div className={classnames("enrolmentInfo", {"col-xs-16 col-md-17": !fullWidth, "col-md-24": fullWidth})}>
+      <div className={classnames("enrolmentInfo", { "col-xs-16 col-md-16": !fullWidth, "col-md-24": fullWidth })}>
 
-        {selected && quantity  && quantity > 0 ?
-            <div style={styles.quantity}>
-                <div style={styles.enrolmentSelect}>
-                <input
-                       type="checkbox"
-                       name={name}
-                       onChange={ onChange.bind(this, item, contact) }
-                       checked={selected} disabled={!isNil(error)}/>
-                </div>
-
-                <input
-                    type="text"
-                    className="text-right"
-                    name="quantityValue"
-                    value={quantity}
-                    onChange={e => onQuantityChange(e.target.value)}
-                    onBlur={e => onQuantityBlur(e)}
-                    style={styles.inputStyle}
-                />
-
-
-                <label>
-                { title }
-                </label>
-
+        {selected && quantity && quantity > 0 ?
+          <div style={styles.quantity}>
+            <div style={styles.enrolmentSelect}>
+              <input
+                type="checkbox"
+                name={name}
+                onChange={onChange.bind(this, item, contact)}
+                checked={selected} disabled={!isNil(error)} />
             </div>
-          :
+
+            <input
+              type="text"
+              name="quantityValue"
+              value={quantity}
+              onChange={e => onQuantityChange(e.target.value)}
+              onBlur={e => onQuantityBlur(e)}
+              style={styles.inputStyle}
+            />
+
+
             <label>
-              <input className="enrolmentSelect"
-                     type="checkbox"
-                     name={name}
-                     onChange={ onChange.bind(this, item, contact) }
-                     checked={selected} disabled={!isNil(error)}/>
-              { title }
+              {title}
             </label>
+
+          </div>
+          :
+          <label>
+            <input className="enrolmentSelect"
+              type="checkbox"
+              name={name}
+              onChange={onChange.bind(this, item, contact)}
+              checked={selected} disabled={!isNil(error)} />
+            {title}
+          </label>
         }
-        {warning && (<span dangerouslySetInnerHTML={{__html: warning}}/>)}
-        {error && <span className="disabled" dangerouslySetInnerHTML={{__html: error}}/>}
-        <br/>
+        {warning && (<span dangerouslySetInnerHTML={{ __html: warning }} />)}
+        {error && <span className="disabled" dangerouslySetInnerHTML={{ __html: error }} />}
+        <br />
         {children}
 
       </div>

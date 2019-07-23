@@ -1,8 +1,8 @@
 import * as React from "react";
 import classnames from "classnames";
 
-import {Contact, Voucher, Product} from "../../../../model";
-import {ItemWrapper} from "./ItemWrapper";
+import { Contact, Voucher, Product } from "../../../../model";
+import { ItemWrapper } from "./ItemWrapper";
 
 
 export interface Props {
@@ -62,18 +62,18 @@ class VoucherComp extends React.PureComponent<Props, State> {
   }
 
   private handleValueBlur() {
-    const {onPriceValueChange} = this.props;
+    const { onPriceValueChange } = this.props;
     onPriceValueChange(this.state.price);
   }
 
   private handleQuantityBlur() {
-    const {onQuantityValueChange} = this.props;
+    const { onQuantityValueChange } = this.props;
     onQuantityValueChange(this.state.quantity || 1);
   }
 
   public render(): JSX.Element {
-    const {voucher, product, contact, onChange} = this.props;
-    const divClass = classnames("row", "enrolmentItem", {disabled: !voucher.selected});
+    const { voucher, product, contact, onChange } = this.props;
+    const divClass = classnames("row", "enrolmentItem", { disabled: !voucher.selected });
     const warning = voucher.warnings && voucher.warnings.length ? this.props.voucher.warnings[0] : null;
     const error = voucher.warnings && voucher.errors.length ? this.props.voucher.errors[0] : null;
     const name = `voucher-${contact.id}-${voucher.productId}`;
@@ -81,29 +81,29 @@ class VoucherComp extends React.PureComponent<Props, State> {
     return (
       <div className={divClass}>
         <ItemWrapper title={product.name}
-                     name={name}
-                     error={error}
-                     warning={warning}
-                     selected={voucher.selected}
-                     item={voucher}
-                     contact={contact}
-                     onChange={onChange}
-                     quantity={this.state.quantity}
-                     onQuantityChange={val => this.updateQuantity(val)}
-                     onQuantityBlur={val => this.handleQuantityBlur()}
+          name={name}
+          error={error}
+          warning={warning}
+          selected={voucher.selected}
+          item={voucher}
+          contact={contact}
+          onChange={onChange}
+          quantity={this.state.quantity}
+          onQuantityChange={val => this.updateQuantity(val)}
+          onQuantityBlur={val => this.handleQuantityBlur()}
 
         >
-          <VoucherDetails voucher={voucher}/>
+          <VoucherDetails voucher={voucher} />
         </ItemWrapper>
         {voucher.selected &&
-        <div className="col-xs-8 col-md-7 alignright">
+          <div className="col-xs-8 col-md-8 alignright">
             <VoucherPrice
-                voucher={voucher}
-                price={this.state.price}
-                onChange={val => this.updateValue(val)}
-                onBlur={val => this.handleValueBlur()}
+              voucher={voucher}
+              price={this.state.price}
+              onChange={val => this.updateValue(val)}
+              onBlur={val => this.handleValueBlur()}
             />
-        </div>
+          </div>
         }
       </div>
     );
@@ -122,12 +122,12 @@ const VoucherDetails = (props): any => {
         : (<div>
           This is a voucher with specified price.
           {voucher.classes && voucher.classes.length > 0 ? (
-              <div>
-                <dt className="label">This voucher valid for</dt>
-                <dd>{voucher.classes.map((c, i) =>
-                  <li key={i}>{c}</li>)}
-                </dd>
-              </div>)
+            <div>
+              <dt className="label">This voucher valid for</dt>
+              <dd>{voucher.classes.map((c, i) =>
+                <li key={i}>{c}</li>)}
+              </dd>
+            </div>)
             : (
               <div>
                 <dt className="label">Value</dt>
@@ -145,28 +145,30 @@ const VoucherPrice = (props): any => {
   const price = props.price;
 
   return voucher.isEditablePrice ?
+    <div className="row" style={{ display: "flex", alignItems: "center" }}>
+
+      <span className="col-xs-12 col-md-12">
+        <input
+          type="text"
+          name="priceValue"
+          value={`$${price}`}
+          onChange={e => props.onChange(e.target.value.replace('$', ''))}
+          onBlur={e => props.onBlur(e)}
+          style={{ margin: 0 }}
+        />
+      </span>
+
+      <span className="col-xs-12 col-md-12 fee-full fullPrice text-right">
+        ${Number(voucher.total).toFixed(2)}
+      </span>
+
+    </div>
+    :
     <div className="row">
-
-            <span className="col-xs-10 col-md-10">
-              <input
-                type="text"
-                className="text-right"
-                name="priceValue"
-                value={`$${price}`}
-                onChange={e => props.onChange(e.target.value.replace('$', ''))}
-                onBlur={e => props.onBlur(e)}
-              />
-            </span>
-
-            <span className="col-xs-10 col-md-11 fee-full fullPrice text-right">
-              ${Number(voucher.total).toFixed(2)}
-            </span>
-
-          </div>
-        :
-        <div className="text-right">
-          ${Number(voucher.total).toFixed(2)}
-        </div>;
+      <div className="col-xs-24 col-md-24 fullPrice text-right">
+        ${Number(voucher.total).toFixed(2)}
+      </div>
+    </div>;
 
 };
 
