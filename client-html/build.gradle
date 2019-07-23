@@ -18,8 +18,8 @@ dependencies {
 yarn.outputs.cacheIf { true }
 
 task webpack_unix(type: NodeTask) {
-    inputs.files("webpack.config.js", "tsconfig.json", "yarn.lock", "package.json")
-    inputs.dir("src/js")
+    inputs.files("webpack.config.js", "tsconfig.json", "yarn.lock", "package.json", "jest.config.js")
+    inputs.dir("src")
     outputs.dir("$buildDir/assets")
 
     script = file('node_modules/.bin/webpack')
@@ -27,13 +27,13 @@ task webpack_unix(type: NodeTask) {
 }
 
 task webpack_win(type: Exec) {
-    inputs.files("webpack.config.js", "tsconfig.json", "yarn.lock", "package.json")
-    inputs.dir("src/js")
+    inputs.files("webpack.config.js", "tsconfig.json", "yarn.lock", "package.json", "jest.config.js")
+    inputs.dir("src")
     outputs.dir("$buildDir/assets")
 
     workingDir '.'
     executable projectDir.getAbsolutePath() + '\\.gradle\\nodejs\\node-v' + project.extensions.getByName('node').version + '-win-x64\\node.exe'
-    args = ['node_modules/webpack/bin/webpack.js/', '--env.NODE_ENV', 'production', '--env.BUILD_NUMBER', 'SNAPSHOT']
+    args = ['node_modules/webpack/bin/webpack.js/', '--env.NODE_ENV', 'production', '--env.BUILD_NUMBER', version ?: 'SNAPSHOT']
 }
 
 task jest(type: NodeTask, dependsOn: 'yarn') {
@@ -58,7 +58,7 @@ else
 
 task buildLogin_unix(type: NodeTask, dependsOn: ['yarn', ':server-api:swagger']) {
     inputs.files("webpack.login.config.js", "tsconfig.json", "yarn.lock", "loginBundleTsConifig.json", "package.json")
-    inputs.dir("src/js")
+    inputs.dir("src")
     outputs.dir("$buildDir/login")
 
     script = file('node_modules/.bin/webpack')
@@ -67,7 +67,7 @@ task buildLogin_unix(type: NodeTask, dependsOn: ['yarn', ':server-api:swagger'])
 
 task buildLogin_win(type:Exec, dependsOn: ['yarn', ':server-api:swagger']) {
     inputs.files("webpack.login.config.js", "tsconfig.json", "yarn.lock", "loginBundleTsConifig.json", "package.json")
-    inputs.dir("src/js")
+    inputs.dir("src")
     outputs.dir("$buildDir/login")
 
     workingDir '.'
