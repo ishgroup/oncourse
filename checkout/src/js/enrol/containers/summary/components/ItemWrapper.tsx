@@ -76,12 +76,19 @@ export class ItemWrapper extends React.Component<Props, any> {
 
           </div>
           :
-          <label>
+          <label style={{ position: "relative" }}>
             <input className="enrolmentSelect"
               type="checkbox"
               name={name}
               onChange={onChange.bind(this, item, contact)}
-              checked={selected} disabled={!isNil(error)} />
+              checked={selected} disabled={!isNil(error)}
+              style={{
+                position: "absolute",
+                left: "-19px",
+                margin: 0,
+                fontSize: "0.8rem"
+              }}
+            />
             {title}
           </label>
         }
