@@ -5,6 +5,7 @@ node {
     version = '9.11.2'
     npmVersion = '6.9.2'
     download = true
+    workDir = file("${project.buildDir}/nodejs")
 }
 
 configurations {
