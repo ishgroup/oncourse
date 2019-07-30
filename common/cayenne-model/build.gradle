@@ -1,10 +1,5 @@
-configurations {
-    cayenneTools
-}
 
-dependencies {
-    cayenneTools "org.apache.cayenne:cayenne-ant:$cayenneVersion"
-}
+apply plugin: 'org.apache.cayenne'
 
 dependencies {
     compile ("ish.oncourse.willow:waCommon:$waCommonWebservicesClientVersion") {
@@ -22,19 +17,14 @@ dependencies {
     compile "org.apache.cayenne:cayenne-cache-invalidation:$cayenneVersion"
 }
 
-task cayenne {
-    doLast {
-        ant.taskdef(resource: 'org/apache/cayenne/tools/antlib.xml', classpath: project.configurations.cayenneTools.asPath)
-
-        ant.cgen(map: file("${projectDir}/src/main/resources/oncourse.map.xml"),
-                superPkg: "ish.oncourse.model.auto",
-                destDir: file("${projectDir}/src/main/java"),
-                makepairs: true,
-                mode: 'all',
-                overwrite: true,
-                createPropertyNames: true
-        )
-    }
+cgen {
+    map 'src/main/resources/oncourse.map.xml'
+    superPkg 'ish.oncourse.model.auto'
+    makePairs true
+    mode 'all'
+    overwrite true
+    createPropertyNames true
+    force true
 }
 
-compileJava.dependsOn(cayenne)
+compileJava.dependsOn(cgen)

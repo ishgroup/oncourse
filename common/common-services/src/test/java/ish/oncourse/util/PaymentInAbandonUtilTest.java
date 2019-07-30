@@ -18,8 +18,8 @@ import ish.oncourse.utils.PaymentInUtil;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.Ordering;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 import org.junit.Before;
 import org.junit.Test;
@@ -54,8 +54,9 @@ public class PaymentInAbandonUtilTest extends ServiceTest {
 
 		//load courseclass for enrolment
 
-		CourseClass courseClass = (CourseClass) context.performQuery(
-				SelectQuery.query(CourseClass.class, ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, 1L))).get(0);
+		CourseClass courseClass =
+				ObjectSelect.query(CourseClass.class, ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, 1L))
+						.selectFirst(context);
 		assertNotNull("Course class should be loaded", courseClass);
 
 		for (InvoiceLine invoiceLine : invoice.getInvoiceLines()) {
@@ -70,8 +71,9 @@ public class PaymentInAbandonUtilTest extends ServiceTest {
 				enrolment.setStudent(paymentIn.getContact().getStudent());
 				assertEquals("This student should have id=4", 4L, enrolment.getStudent().getId().longValue());
 			} else if (invoiceLine.getId() == 21L) {
-				Student student3 = (Student) context.performQuery(
-						SelectQuery.query(Student.class, ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, 3L))).get(0);
+				Student student3 =
+						ObjectSelect.query(Student.class, ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, 3L))
+								.selectFirst(context);
 				assertNotNull("Student with id 3 should be loaded", student3);
 				enrolment.setStudent(student3);
 			}
@@ -145,8 +147,9 @@ public class PaymentInAbandonUtilTest extends ServiceTest {
 		//link enrollment to the invoice line
 		//load courseclass for enrolment
 
-		CourseClass courseClass = (CourseClass) context.performQuery(
-				SelectQuery.query(CourseClass.class, ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, 1L))).get(0);
+		CourseClass courseClass =
+				ObjectSelect.query(CourseClass.class, ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, 1L))
+						.selectFirst(context);
 		//prepare and add the enrollment to the invoiceLine
 		Enrolment enrolment = context.newObject(Enrolment.class);
 		enrolment.setCollege(paymentIn.getCollege());
@@ -226,8 +229,9 @@ public class PaymentInAbandonUtilTest extends ServiceTest {
 		//link enrollment to the invoice line
 		//load courseclass for enrolment
 
-		CourseClass courseClass = (CourseClass) context.performQuery(
-				SelectQuery.query(CourseClass.class, ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, 1L))).get(0);
+		CourseClass courseClass =
+				ObjectSelect.query(CourseClass.class, ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, 1L))
+						.selectFirst(context);
 		//prepare and add the enrollment to the invoiceLine
 		Enrolment enrolment = context.newObject(Enrolment.class);
 		enrolment.setCollege(paymentIn.getCollege());
@@ -285,8 +289,9 @@ public class PaymentInAbandonUtilTest extends ServiceTest {
 		//link enrollment to the invoice line
 		//load courseclass for enrolment
 
-		CourseClass courseClass = (CourseClass) context.performQuery(
-				SelectQuery.query(CourseClass.class, ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, 1L))).get(0);
+		CourseClass courseClass =
+				ObjectSelect.query(CourseClass.class, ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, 1L))
+						.selectFirst(context);
 		//prepare and add the enrollment to the invoiceLine
 		Enrolment enrolment = context.newObject(Enrolment.class);
 		enrolment.setCollege(paymentIn.getCollege());
@@ -638,10 +643,9 @@ public class PaymentInAbandonUtilTest extends ServiceTest {
 
 		assertEquals(Money.ZERO, invoice.getAmountOwing());
 
-		SelectQuery<Invoice> query = SelectQuery.query(Invoice.class);
-		query.addOrdering(new Ordering(Invoice.INVOICE_DATE.getName(), SortOrder.DESCENDING));
-
-		Invoice refundInvoice = (Invoice) context.performQuery(query).get(0);
+		Invoice refundInvoice = ObjectSelect.query(Invoice.class)
+				.orderBy(Invoice.INVOICE_DATE.desc())
+				.selectFirst(context);
 
 		assertNotEquals(invoice, refundInvoice);
 
@@ -732,7 +736,7 @@ public class PaymentInAbandonUtilTest extends ServiceTest {
 		// succeed payment
 		PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(moneyPayment).build().getModel();
 		PaymentInSucceed.valueOf(model).perform();
-		assertTrue(model.getPaymentIn().getStatus() == PaymentStatus.SUCCESS);
+		assertEquals(PaymentStatus.SUCCESS, model.getPaymentIn().getStatus());
 
 		assertEquals(ProductStatus.REDEEMED, voucher.getStatus());
 		assertEquals(Money.ZERO, voucher.getValueRemaining());

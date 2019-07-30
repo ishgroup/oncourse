@@ -7,7 +7,7 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.test.LoadDataSet;
 import ish.oncourse.test.tapestry.ServiceTest;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -41,9 +41,8 @@ public class WebContentServiceTest extends ServiceTest {
 		website = context.localObject(website);
 
 		WebSiteVersion webSiteVersion = website.getVersions().get(0);
-		
-		@SuppressWarnings("unchecked")
-		List<WebNodeType> webnodes = context.performQuery(new SelectQuery(WebNodeType.class));
+
+		List<WebNodeType> webnodes = ObjectSelect.query(WebNodeType.class).select(context);
 		context.deleteObjects(webnodes);
 		context.commitChanges();
 
@@ -83,9 +82,8 @@ public class WebContentServiceTest extends ServiceTest {
 		website = context.localObject(website);
 
 		WebSiteVersion webSiteVersion = website.getVersions().get(0);
-		
-		@SuppressWarnings("unchecked")
-		List<WebNodeType> webnodes = context.performQuery(new SelectQuery(WebNodeType.class));
+
+		List<WebNodeType> webnodes = ObjectSelect.query(WebNodeType.class).select(context);
 		context.deleteObjects(webnodes);
 		context.commitChanges();
 

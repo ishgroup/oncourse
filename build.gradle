@@ -20,7 +20,7 @@ buildscript {
 		}
 	}
 	dependencies {
-		classpath "org.apache.cayenne:cayenne-ant:$cayenneVersion"
+        classpath "org.apache.cayenne.plugins:cayenne-gradle-plugin:$cayenneVersion"
         classpath "org.codehaus.groovy:groovy-all:$groovyVersion"
 	}
 }

@@ -12,7 +12,7 @@ import ish.oncourse.test.LoadDataSet;
 import ish.oncourse.test.tapestry.ServiceTest;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.tapestry5.internal.test.TestableRequest;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Session;
@@ -54,7 +54,7 @@ public class PaymentProcessControllerBuilderTest extends ServiceTest {
 		try {
 			paymentInModel = PaymentInModelFromSessionIdBuilder.valueOf(sessionId, cayenneService.newContext()).build().getModel();
             builder.build(paymentInModel);
-			assertFalse("Builder should throw an exception for cases when session is null", true);
+			fail("Builder should throw an exception for cases when session is null");
 		} catch (Throwable t) {
 			assertTrue("Builder should throw an Illegal argument exception for cases when session is null", 
 				(t instanceof IllegalArgumentException && 
@@ -86,7 +86,7 @@ public class PaymentProcessControllerBuilderTest extends ServiceTest {
 		assertNotNull("Correctly initiated builder should receive not null PaymentGatewayService", builder.receivePaymentGatewayService());
 		ObjectContext content = cayenneService.newNonReplicatingContext();
 
-		Preference preference =  SelectQuery.query(Preference.class, ExpressionFactory.matchDbExp(Preference.ID_PK_COLUMN, 1L)).selectOne(content);
+		Preference preference =  ObjectSelect.query(Preference.class, ExpressionFactory.matchDbExp(Preference.ID_PK_COLUMN, 1L)).selectOne(content);
 		assertNotNull("Preference should not null", preference);
 		content.deleteObjects(preference);
 		content.commitChanges();
@@ -94,7 +94,7 @@ public class PaymentProcessControllerBuilderTest extends ServiceTest {
 
 		try {
 			builder.build(paymentInModel);
-			assertFalse("illegal state exception should throws when college have not preference allow to use payment express", true);
+			fail("illegal state exception should throws when college have not preference allow to use payment express");
 		} catch (Throwable t) {
 			assertTrue("Builder should throw an Illegal state exception for cases when college have not preference allow to use payment express", 
 				(t instanceof IllegalStateException && "Unable to process payments for this college.".equals(t.getMessage())));
