@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 
 import org.apache.cayenne.exp.Property;
@@ -49,88 +52,139 @@ public abstract class _Script extends WillowCayenneObject {
     public static final Property<TriggerType> TRIGGER_TYPE = Property.create("triggerType", TriggerType.class);
     public static final Property<College> COLLEGE = Property.create("college", College.class);
 
+    protected Long angelId;
+    protected Date created;
+    protected String description;
+    protected Boolean enabled;
+    protected String entityClass;
+    protected EntityEvent entityEventType;
+    protected Date modified;
+    protected String name;
+    protected String schedule;
+    protected String script;
+    protected SystemEventType systemEventType;
+    protected TriggerType triggerType;
+
+    protected Object college;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setDescription(String description) {
-        writeProperty("description", description);
+        beforePropertyWrite("description", this.description, description);
+        this.description = description;
     }
+
     public String getDescription() {
-        return (String)readProperty("description");
+        beforePropertyRead("description");
+        return this.description;
     }
 
     public void setEnabled(Boolean enabled) {
-        writeProperty("enabled", enabled);
+        beforePropertyWrite("enabled", this.enabled, enabled);
+        this.enabled = enabled;
     }
+
     public Boolean getEnabled() {
-        return (Boolean)readProperty("enabled");
+        beforePropertyRead("enabled");
+        return this.enabled;
     }
 
     public void setEntityClass(String entityClass) {
-        writeProperty("entityClass", entityClass);
+        beforePropertyWrite("entityClass", this.entityClass, entityClass);
+        this.entityClass = entityClass;
     }
+
     public String getEntityClass() {
-        return (String)readProperty("entityClass");
+        beforePropertyRead("entityClass");
+        return this.entityClass;
     }
 
     public void setEntityEventType(EntityEvent entityEventType) {
-        writeProperty("entityEventType", entityEventType);
+        beforePropertyWrite("entityEventType", this.entityEventType, entityEventType);
+        this.entityEventType = entityEventType;
     }
+
     public EntityEvent getEntityEventType() {
-        return (EntityEvent)readProperty("entityEventType");
+        beforePropertyRead("entityEventType");
+        return this.entityEventType;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        beforePropertyWrite("name", this.name, name);
+        this.name = name;
     }
+
     public String getName() {
-        return (String)readProperty("name");
+        beforePropertyRead("name");
+        return this.name;
     }
 
     public void setSchedule(String schedule) {
-        writeProperty("schedule", schedule);
+        beforePropertyWrite("schedule", this.schedule, schedule);
+        this.schedule = schedule;
     }
+
     public String getSchedule() {
-        return (String)readProperty("schedule");
+        beforePropertyRead("schedule");
+        return this.schedule;
     }
 
     public void setScript(String script) {
-        writeProperty("script", script);
+        beforePropertyWrite("script", this.script, script);
+        this.script = script;
     }
+
     public String getScript() {
-        return (String)readProperty("script");
+        beforePropertyRead("script");
+        return this.script;
     }
 
     public void setSystemEventType(SystemEventType systemEventType) {
-        writeProperty("systemEventType", systemEventType);
+        beforePropertyWrite("systemEventType", this.systemEventType, systemEventType);
+        this.systemEventType = systemEventType;
     }
+
     public SystemEventType getSystemEventType() {
-        return (SystemEventType)readProperty("systemEventType");
+        beforePropertyRead("systemEventType");
+        return this.systemEventType;
     }
 
     public void setTriggerType(TriggerType triggerType) {
-        writeProperty("triggerType", triggerType);
+        beforePropertyWrite("triggerType", this.triggerType, triggerType);
+        this.triggerType = triggerType;
     }
+
     public TriggerType getTriggerType() {
-        return (TriggerType)readProperty("triggerType");
+        beforePropertyRead("triggerType");
+        return this.triggerType;
     }
 
     public void setCollege(College college) {
@@ -141,5 +195,137 @@ public abstract class _Script extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "created":
+                return this.created;
+            case "description":
+                return this.description;
+            case "enabled":
+                return this.enabled;
+            case "entityClass":
+                return this.entityClass;
+            case "entityEventType":
+                return this.entityEventType;
+            case "modified":
+                return this.modified;
+            case "name":
+                return this.name;
+            case "schedule":
+                return this.schedule;
+            case "script":
+                return this.script;
+            case "systemEventType":
+                return this.systemEventType;
+            case "triggerType":
+                return this.triggerType;
+            case "college":
+                return this.college;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "description":
+                this.description = (String)val;
+                break;
+            case "enabled":
+                this.enabled = (Boolean)val;
+                break;
+            case "entityClass":
+                this.entityClass = (String)val;
+                break;
+            case "entityEventType":
+                this.entityEventType = (EntityEvent)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "name":
+                this.name = (String)val;
+                break;
+            case "schedule":
+                this.schedule = (String)val;
+                break;
+            case "script":
+                this.script = (String)val;
+                break;
+            case "systemEventType":
+                this.systemEventType = (SystemEventType)val;
+                break;
+            case "triggerType":
+                this.triggerType = (TriggerType)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.created);
+        out.writeObject(this.description);
+        out.writeObject(this.enabled);
+        out.writeObject(this.entityClass);
+        out.writeObject(this.entityEventType);
+        out.writeObject(this.modified);
+        out.writeObject(this.name);
+        out.writeObject(this.schedule);
+        out.writeObject(this.script);
+        out.writeObject(this.systemEventType);
+        out.writeObject(this.triggerType);
+        out.writeObject(this.college);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.created = (Date)in.readObject();
+        this.description = (String)in.readObject();
+        this.enabled = (Boolean)in.readObject();
+        this.entityClass = (String)in.readObject();
+        this.entityEventType = (EntityEvent)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.name = (String)in.readObject();
+        this.schedule = (String)in.readObject();
+        this.script = (String)in.readObject();
+        this.systemEventType = (SystemEventType)in.readObject();
+        this.triggerType = (TriggerType)in.readObject();
+        this.college = in.readObject();
+    }
 
 }

@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 
 import org.apache.cayenne.exp.Property;
@@ -31,25 +34,41 @@ public abstract class _WebHostName extends WillowCayenneObject {
     public static final Property<College> COLLEGE = Property.create("college", College.class);
     public static final Property<WebSite> WEB_SITE = Property.create("webSite", WebSite.class);
 
+    protected Date created;
+    protected Date modified;
+    protected String name;
+
+    protected Object college;
+    protected Object webSite;
+
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        beforePropertyWrite("name", this.name, name);
+        this.name = name;
     }
+
     public String getName() {
-        return (String)readProperty("name");
+        beforePropertyRead("name");
+        return this.name;
     }
 
     public void setCollege(College college) {
@@ -60,7 +79,6 @@ public abstract class _WebHostName extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void setWebSite(WebSite webSite) {
         setToOneTarget("webSite", webSite, true);
     }
@@ -69,5 +87,81 @@ public abstract class _WebHostName extends WillowCayenneObject {
         return (WebSite)readProperty("webSite");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "created":
+                return this.created;
+            case "modified":
+                return this.modified;
+            case "name":
+                return this.name;
+            case "college":
+                return this.college;
+            case "webSite":
+                return this.webSite;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "name":
+                this.name = (String)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "webSite":
+                this.webSite = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.created);
+        out.writeObject(this.modified);
+        out.writeObject(this.name);
+        out.writeObject(this.college);
+        out.writeObject(this.webSite);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.created = (Date)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.name = (String)in.readObject();
+        this.college = in.readObject();
+        this.webSite = in.readObject();
+    }
 
 }

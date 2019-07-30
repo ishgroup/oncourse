@@ -12,7 +12,6 @@ import org.apache.cayenne.*;
 import org.apache.cayenne.annotation.PostRemove;
 import org.apache.cayenne.graph.GraphDiff;
 import org.apache.cayenne.query.ObjectIdQuery;
-import org.apache.cayenne.query.Query;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,7 +24,7 @@ import java.util.*;
  *
  * @author marek
  */
-public class QueueableLifecycleListener implements LifecycleListener, DataChannelFilter {
+public class QueueableLifecycleListener implements LifecycleListener, DataChannelSyncFilter {
 
     /**
      * Logger
@@ -51,28 +50,8 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
         this.cayenneService = cayenneService;
     }
 
-    /**
-     * @see DataChannelFilter#init(DataChannel)
-     */
     @Override
-    public void init(DataChannel dataChannel) {
-
-    }
-
-    /**
-     * @see DataChannelFilter#onQuery(ObjectContext, Query, DataChannelFilterChain)
-     */
-    @Override
-    public QueryResponse onQuery(ObjectContext originatingContext, Query query, DataChannelFilterChain filterChain) {
-        return filterChain.onQuery(originatingContext, query);
-    }
-
-    /**
-     * @see DataChannelFilter#onSync(ObjectContext, GraphDiff, int, DataChannelFilterChain)
-     */
-    @Override
-    public GraphDiff onSync(ObjectContext originatingContext, GraphDiff changes, int syncType, DataChannelFilterChain filterChain) {
-
+    public GraphDiff onSync(ObjectContext originatingContext, GraphDiff changes, int syncType, DataChannelSyncFilterChain filterChain) {
         try {
             Deque<StackFrame> stack = STACK_STORAGE.get();
 
@@ -81,8 +60,9 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
                 STACK_STORAGE.set(stack);
             }
 
-            StackFrame frame = stack.isEmpty() ? new StackFrame(cayenneService.newNonReplicatingContext(), new HashMap<String, QueuedTransaction>()) : stack
-                    .peek();
+            StackFrame frame = stack.isEmpty() 
+                    ? new StackFrame(cayenneService.newNonReplicatingContext(), new HashMap<>())
+                    : stack.peek();
 
             try {
                 stack.push(frame);
@@ -128,7 +108,7 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
         if (entity instanceof Queueable) {
             Queueable p = (Queueable) entity;
             Date today = new Date();
-            /**
+            /*
              * The test has been introduced to exclude rewrite created date when the entity came from angel
              */
             if (p.getCreated() == null)

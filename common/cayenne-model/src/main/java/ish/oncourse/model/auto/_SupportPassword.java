@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 
 import org.apache.cayenne.exp.Property;
@@ -30,32 +33,51 @@ public abstract class _SupportPassword extends WillowCayenneObject {
     public static final Property<String> PASSWORD = Property.create("password", String.class);
     public static final Property<Contact> CONTACT = Property.create("contact", Contact.class);
 
+    protected Date createdOn;
+    protected Date expiresOn;
+    protected Date modifiedOn;
+    protected String password;
+
+    protected Object contact;
+
     public void setCreatedOn(Date createdOn) {
-        writeProperty("createdOn", createdOn);
+        beforePropertyWrite("createdOn", this.createdOn, createdOn);
+        this.createdOn = createdOn;
     }
+
     public Date getCreatedOn() {
-        return (Date)readProperty("createdOn");
+        beforePropertyRead("createdOn");
+        return this.createdOn;
     }
 
     public void setExpiresOn(Date expiresOn) {
-        writeProperty("expiresOn", expiresOn);
+        beforePropertyWrite("expiresOn", this.expiresOn, expiresOn);
+        this.expiresOn = expiresOn;
     }
+
     public Date getExpiresOn() {
-        return (Date)readProperty("expiresOn");
+        beforePropertyRead("expiresOn");
+        return this.expiresOn;
     }
 
     public void setModifiedOn(Date modifiedOn) {
-        writeProperty("modifiedOn", modifiedOn);
+        beforePropertyWrite("modifiedOn", this.modifiedOn, modifiedOn);
+        this.modifiedOn = modifiedOn;
     }
+
     public Date getModifiedOn() {
-        return (Date)readProperty("modifiedOn");
+        beforePropertyRead("modifiedOn");
+        return this.modifiedOn;
     }
 
     public void setPassword(String password) {
-        writeProperty("password", password);
+        beforePropertyWrite("password", this.password, password);
+        this.password = password;
     }
+
     public String getPassword() {
-        return (String)readProperty("password");
+        beforePropertyRead("password");
+        return this.password;
     }
 
     public void setContact(Contact contact) {
@@ -66,5 +88,81 @@ public abstract class _SupportPassword extends WillowCayenneObject {
         return (Contact)readProperty("contact");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "createdOn":
+                return this.createdOn;
+            case "expiresOn":
+                return this.expiresOn;
+            case "modifiedOn":
+                return this.modifiedOn;
+            case "password":
+                return this.password;
+            case "contact":
+                return this.contact;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "createdOn":
+                this.createdOn = (Date)val;
+                break;
+            case "expiresOn":
+                this.expiresOn = (Date)val;
+                break;
+            case "modifiedOn":
+                this.modifiedOn = (Date)val;
+                break;
+            case "password":
+                this.password = (String)val;
+                break;
+            case "contact":
+                this.contact = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.createdOn);
+        out.writeObject(this.expiresOn);
+        out.writeObject(this.modifiedOn);
+        out.writeObject(this.password);
+        out.writeObject(this.contact);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.createdOn = (Date)in.readObject();
+        this.expiresOn = (Date)in.readObject();
+        this.modifiedOn = (Date)in.readObject();
+        this.password = (String)in.readObject();
+        this.contact = in.readObject();
+    }
 
 }

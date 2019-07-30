@@ -1,5 +1,9 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import org.apache.cayenne.exp.Property;
 
 import ish.oncourse.model.RegionKey;
@@ -31,18 +35,31 @@ public abstract class _WebContentVisibility extends WillowCayenneObject {
     public static final Property<WebNode> WEB_NODE = Property.create("webNode", WebNode.class);
     public static final Property<WebNodeType> WEB_NODE_TYPE = Property.create("webNodeType", WebNodeType.class);
 
+    protected RegionKey regionKey;
+    protected Integer weight;
+
+    protected Object webContent;
+    protected Object webNode;
+    protected Object webNodeType;
+
     public void setRegionKey(RegionKey regionKey) {
-        writeProperty("regionKey", regionKey);
+        beforePropertyWrite("regionKey", this.regionKey, regionKey);
+        this.regionKey = regionKey;
     }
+
     public RegionKey getRegionKey() {
-        return (RegionKey)readProperty("regionKey");
+        beforePropertyRead("regionKey");
+        return this.regionKey;
     }
 
     public void setWeight(Integer weight) {
-        writeProperty("weight", weight);
+        beforePropertyWrite("weight", this.weight, weight);
+        this.weight = weight;
     }
+
     public Integer getWeight() {
-        return (Integer)readProperty("weight");
+        beforePropertyRead("weight");
+        return this.weight;
     }
 
     public void setWebContent(WebContent webContent) {
@@ -53,7 +70,6 @@ public abstract class _WebContentVisibility extends WillowCayenneObject {
         return (WebContent)readProperty("webContent");
     }
 
-
     public void setWebNode(WebNode webNode) {
         setToOneTarget("webNode", webNode, true);
     }
@@ -61,7 +77,6 @@ public abstract class _WebContentVisibility extends WillowCayenneObject {
     public WebNode getWebNode() {
         return (WebNode)readProperty("webNode");
     }
-
 
     public void setWebNodeType(WebNodeType webNodeType) {
         setToOneTarget("webNodeType", webNodeType, true);
@@ -71,7 +86,83 @@ public abstract class _WebContentVisibility extends WillowCayenneObject {
         return (WebNodeType)readProperty("webNodeType");
     }
 
-
     protected abstract void onPostAdd();
+
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "regionKey":
+                return this.regionKey;
+            case "weight":
+                return this.weight;
+            case "webContent":
+                return this.webContent;
+            case "webNode":
+                return this.webNode;
+            case "webNodeType":
+                return this.webNodeType;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "regionKey":
+                this.regionKey = (RegionKey)val;
+                break;
+            case "weight":
+                this.weight = (Integer)val;
+                break;
+            case "webContent":
+                this.webContent = val;
+                break;
+            case "webNode":
+                this.webNode = val;
+                break;
+            case "webNodeType":
+                this.webNodeType = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.regionKey);
+        out.writeObject(this.weight);
+        out.writeObject(this.webContent);
+        out.writeObject(this.webNode);
+        out.writeObject(this.webNodeType);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.regionKey = (RegionKey)in.readObject();
+        this.weight = (Integer)in.readObject();
+        this.webContent = in.readObject();
+        this.webNode = in.readObject();
+        this.webNodeType = in.readObject();
+    }
 
 }

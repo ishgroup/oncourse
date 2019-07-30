@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 
 import org.apache.cayenne.exp.Property;
@@ -40,46 +43,75 @@ public abstract class _TutorRole extends WillowCayenneObject {
     public static final Property<CourseClass> COURSE_CLASS = Property.create("courseClass", CourseClass.class);
     public static final Property<Tutor> TUTOR = Property.create("tutor", Tutor.class);
 
+    protected Long angelId;
+    protected Date confirmedDate;
+    protected Date created;
+    protected Boolean inPublicity;
+    protected Boolean isConfirmed;
+    protected Date modified;
+
+    protected Object college;
+    protected Object courseClass;
+    protected Object tutor;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setConfirmedDate(Date confirmedDate) {
-        writeProperty("confirmedDate", confirmedDate);
+        beforePropertyWrite("confirmedDate", this.confirmedDate, confirmedDate);
+        this.confirmedDate = confirmedDate;
     }
+
     public Date getConfirmedDate() {
-        return (Date)readProperty("confirmedDate");
+        beforePropertyRead("confirmedDate");
+        return this.confirmedDate;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setInPublicity(Boolean inPublicity) {
-        writeProperty("inPublicity", inPublicity);
+        beforePropertyWrite("inPublicity", this.inPublicity, inPublicity);
+        this.inPublicity = inPublicity;
     }
+
     public Boolean getInPublicity() {
-        return (Boolean)readProperty("inPublicity");
+        beforePropertyRead("inPublicity");
+        return this.inPublicity;
     }
 
     public void setIsConfirmed(Boolean isConfirmed) {
-        writeProperty("isConfirmed", isConfirmed);
+        beforePropertyWrite("isConfirmed", this.isConfirmed, isConfirmed);
+        this.isConfirmed = isConfirmed;
     }
+
     public Boolean getIsConfirmed() {
-        return (Boolean)readProperty("isConfirmed");
+        beforePropertyRead("isConfirmed");
+        return this.isConfirmed;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setCollege(College college) {
@@ -90,7 +122,6 @@ public abstract class _TutorRole extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void setCourseClass(CourseClass courseClass) {
         setToOneTarget("courseClass", courseClass, true);
     }
@@ -98,7 +129,6 @@ public abstract class _TutorRole extends WillowCayenneObject {
     public CourseClass getCourseClass() {
         return (CourseClass)readProperty("courseClass");
     }
-
 
     public void setTutor(Tutor tutor) {
         setToOneTarget("tutor", tutor, true);
@@ -108,5 +138,109 @@ public abstract class _TutorRole extends WillowCayenneObject {
         return (Tutor)readProperty("tutor");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "confirmedDate":
+                return this.confirmedDate;
+            case "created":
+                return this.created;
+            case "inPublicity":
+                return this.inPublicity;
+            case "isConfirmed":
+                return this.isConfirmed;
+            case "modified":
+                return this.modified;
+            case "college":
+                return this.college;
+            case "courseClass":
+                return this.courseClass;
+            case "tutor":
+                return this.tutor;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "confirmedDate":
+                this.confirmedDate = (Date)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "inPublicity":
+                this.inPublicity = (Boolean)val;
+                break;
+            case "isConfirmed":
+                this.isConfirmed = (Boolean)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "courseClass":
+                this.courseClass = val;
+                break;
+            case "tutor":
+                this.tutor = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.confirmedDate);
+        out.writeObject(this.created);
+        out.writeObject(this.inPublicity);
+        out.writeObject(this.isConfirmed);
+        out.writeObject(this.modified);
+        out.writeObject(this.college);
+        out.writeObject(this.courseClass);
+        out.writeObject(this.tutor);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.confirmedDate = (Date)in.readObject();
+        this.created = (Date)in.readObject();
+        this.inPublicity = (Boolean)in.readObject();
+        this.isConfirmed = (Boolean)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.college = in.readObject();
+        this.courseClass = in.readObject();
+        this.tutor = in.readObject();
+    }
 
 }

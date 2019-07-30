@@ -1,5 +1,9 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import org.apache.cayenne.exp.Property;
 
 import ish.oncourse.model.College;
@@ -28,11 +32,20 @@ public abstract class _WaitingListSite extends WillowCayenneObject {
     public static final Property<Site> SITE = Property.create("site", Site.class);
     public static final Property<WaitingList> WAITING_LIST = Property.create("waitingList", WaitingList.class);
 
+    protected Long angelId;
+
+    protected Object college;
+    protected Object site;
+    protected Object waitingList;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setCollege(College college) {
@@ -43,7 +56,6 @@ public abstract class _WaitingListSite extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void setSite(Site site) {
         setToOneTarget("site", site, true);
     }
@@ -51,7 +63,6 @@ public abstract class _WaitingListSite extends WillowCayenneObject {
     public Site getSite() {
         return (Site)readProperty("site");
     }
-
 
     public void setWaitingList(WaitingList waitingList) {
         setToOneTarget("waitingList", waitingList, true);
@@ -61,5 +72,74 @@ public abstract class _WaitingListSite extends WillowCayenneObject {
         return (WaitingList)readProperty("waitingList");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "college":
+                return this.college;
+            case "site":
+                return this.site;
+            case "waitingList":
+                return this.waitingList;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "site":
+                this.site = val;
+                break;
+            case "waitingList":
+                this.waitingList = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.college);
+        out.writeObject(this.site);
+        out.writeObject(this.waitingList);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.college = in.readObject();
+        this.site = in.readObject();
+        this.waitingList = in.readObject();
+    }
 
 }

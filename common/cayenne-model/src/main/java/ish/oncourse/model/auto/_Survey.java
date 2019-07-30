@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -54,74 +57,120 @@ public abstract class _Survey extends ExpandableCayenneDataObject {
     public static final Property<Enrolment> ENROLMENT = Property.create("enrolment", Enrolment.class);
     public static final Property<FieldConfiguration> FIELD_CONFIGURATION = Property.create("fieldConfiguration", FieldConfiguration.class);
 
+    protected Long angelId;
+    protected String comment;
+    protected Integer courseScore;
+    protected Date created;
+    protected Date modified;
+    protected Integer netPromoterScore;
+    protected String testimonial;
+    protected Integer tutorScore;
+    protected Integer venueScore;
+    protected SurveyVisibility visibility;
+
+    protected Object college;
+    protected Object customFields;
+    protected Object enrolment;
+    protected Object fieldConfiguration;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setComment(String comment) {
-        writeProperty("comment", comment);
+        beforePropertyWrite("comment", this.comment, comment);
+        this.comment = comment;
     }
+
     public String getComment() {
-        return (String)readProperty("comment");
+        beforePropertyRead("comment");
+        return this.comment;
     }
 
     public void setCourseScore(Integer courseScore) {
-        writeProperty("courseScore", courseScore);
+        beforePropertyWrite("courseScore", this.courseScore, courseScore);
+        this.courseScore = courseScore;
     }
+
     public Integer getCourseScore() {
-        return (Integer)readProperty("courseScore");
+        beforePropertyRead("courseScore");
+        return this.courseScore;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setNetPromoterScore(Integer netPromoterScore) {
-        writeProperty("netPromoterScore", netPromoterScore);
+        beforePropertyWrite("netPromoterScore", this.netPromoterScore, netPromoterScore);
+        this.netPromoterScore = netPromoterScore;
     }
+
     public Integer getNetPromoterScore() {
-        return (Integer)readProperty("netPromoterScore");
+        beforePropertyRead("netPromoterScore");
+        return this.netPromoterScore;
     }
 
     public void setTestimonial(String testimonial) {
-        writeProperty("testimonial", testimonial);
+        beforePropertyWrite("testimonial", this.testimonial, testimonial);
+        this.testimonial = testimonial;
     }
+
     public String getTestimonial() {
-        return (String)readProperty("testimonial");
+        beforePropertyRead("testimonial");
+        return this.testimonial;
     }
 
     public void setTutorScore(Integer tutorScore) {
-        writeProperty("tutorScore", tutorScore);
+        beforePropertyWrite("tutorScore", this.tutorScore, tutorScore);
+        this.tutorScore = tutorScore;
     }
+
     public Integer getTutorScore() {
-        return (Integer)readProperty("tutorScore");
+        beforePropertyRead("tutorScore");
+        return this.tutorScore;
     }
 
     public void setVenueScore(Integer venueScore) {
-        writeProperty("venueScore", venueScore);
+        beforePropertyWrite("venueScore", this.venueScore, venueScore);
+        this.venueScore = venueScore;
     }
+
     public Integer getVenueScore() {
-        return (Integer)readProperty("venueScore");
+        beforePropertyRead("venueScore");
+        return this.venueScore;
     }
 
     public void setVisibility(SurveyVisibility visibility) {
-        writeProperty("visibility", visibility);
+        beforePropertyWrite("visibility", this.visibility, visibility);
+        this.visibility = visibility;
     }
+
     public SurveyVisibility getVisibility() {
-        return (SurveyVisibility)readProperty("visibility");
+        beforePropertyRead("visibility");
+        return this.visibility;
     }
 
     public void setCollege(College college) {
@@ -132,18 +181,18 @@ public abstract class _Survey extends ExpandableCayenneDataObject {
         return (College)readProperty("college");
     }
 
-
     public void addToCustomFields(SurveyCustomField obj) {
         addToManyTarget("customFields", obj, true);
     }
+
     public void removeFromCustomFields(SurveyCustomField obj) {
         removeToManyTarget("customFields", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<SurveyCustomField> getCustomFields() {
         return (List<SurveyCustomField>)readProperty("customFields");
     }
-
 
     public void setEnrolment(Enrolment enrolment) {
         setToOneTarget("enrolment", enrolment, true);
@@ -153,7 +202,6 @@ public abstract class _Survey extends ExpandableCayenneDataObject {
         return (Enrolment)readProperty("enrolment");
     }
 
-
     public void setFieldConfiguration(FieldConfiguration fieldConfiguration) {
         setToOneTarget("fieldConfiguration", fieldConfiguration, true);
     }
@@ -162,7 +210,146 @@ public abstract class _Survey extends ExpandableCayenneDataObject {
         return (FieldConfiguration)readProperty("fieldConfiguration");
     }
 
-
     protected abstract void onPostAdd();
+
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "comment":
+                return this.comment;
+            case "courseScore":
+                return this.courseScore;
+            case "created":
+                return this.created;
+            case "modified":
+                return this.modified;
+            case "netPromoterScore":
+                return this.netPromoterScore;
+            case "testimonial":
+                return this.testimonial;
+            case "tutorScore":
+                return this.tutorScore;
+            case "venueScore":
+                return this.venueScore;
+            case "visibility":
+                return this.visibility;
+            case "college":
+                return this.college;
+            case "customFields":
+                return this.customFields;
+            case "enrolment":
+                return this.enrolment;
+            case "fieldConfiguration":
+                return this.fieldConfiguration;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "comment":
+                this.comment = (String)val;
+                break;
+            case "courseScore":
+                this.courseScore = (Integer)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "netPromoterScore":
+                this.netPromoterScore = (Integer)val;
+                break;
+            case "testimonial":
+                this.testimonial = (String)val;
+                break;
+            case "tutorScore":
+                this.tutorScore = (Integer)val;
+                break;
+            case "venueScore":
+                this.venueScore = (Integer)val;
+                break;
+            case "visibility":
+                this.visibility = (SurveyVisibility)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "customFields":
+                this.customFields = val;
+                break;
+            case "enrolment":
+                this.enrolment = val;
+                break;
+            case "fieldConfiguration":
+                this.fieldConfiguration = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.comment);
+        out.writeObject(this.courseScore);
+        out.writeObject(this.created);
+        out.writeObject(this.modified);
+        out.writeObject(this.netPromoterScore);
+        out.writeObject(this.testimonial);
+        out.writeObject(this.tutorScore);
+        out.writeObject(this.venueScore);
+        out.writeObject(this.visibility);
+        out.writeObject(this.college);
+        out.writeObject(this.customFields);
+        out.writeObject(this.enrolment);
+        out.writeObject(this.fieldConfiguration);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.comment = (String)in.readObject();
+        this.courseScore = (Integer)in.readObject();
+        this.created = (Date)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.netPromoterScore = (Integer)in.readObject();
+        this.testimonial = (String)in.readObject();
+        this.tutorScore = (Integer)in.readObject();
+        this.venueScore = (Integer)in.readObject();
+        this.visibility = (SurveyVisibility)in.readObject();
+        this.college = in.readObject();
+        this.customFields = in.readObject();
+        this.enrolment = in.readObject();
+        this.fieldConfiguration = in.readObject();
+    }
 
 }

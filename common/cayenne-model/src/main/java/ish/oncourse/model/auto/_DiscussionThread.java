@@ -1,5 +1,9 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import org.apache.cayenne.exp.Property;
 
 /**
@@ -18,11 +22,66 @@ public abstract class _DiscussionThread extends WillowCayenneObject {
 
     public static final Property<String> TOPIC = Property.create("topic", String.class);
 
+    protected String topic;
+
+
     public void setTopic(String topic) {
-        writeProperty("topic", topic);
+        beforePropertyWrite("topic", this.topic, topic);
+        this.topic = topic;
     }
+
     public String getTopic() {
-        return (String)readProperty("topic");
+        beforePropertyRead("topic");
+        return this.topic;
+    }
+
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "topic":
+                return this.topic;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "topic":
+                this.topic = (String)val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.topic);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.topic = (String)in.readObject();
     }
 
 }

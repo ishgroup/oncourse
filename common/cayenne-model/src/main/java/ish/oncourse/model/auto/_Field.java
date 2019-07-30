@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 
 import org.apache.cayenne.exp.Property;
@@ -46,67 +49,108 @@ public abstract class _Field extends WillowCayenneObject {
     public static final Property<FieldConfiguration> FIELD_CONFIGURATION = Property.create("fieldConfiguration", FieldConfiguration.class);
     public static final Property<FieldHeading> FIELD_HEADING = Property.create("fieldHeading", FieldHeading.class);
 
+    protected Long angelId;
+    protected Date created;
+    protected String defaultValue;
+    protected String description;
+    protected Boolean mandatory;
+    protected Date modified;
+    protected String name;
+    protected Integer order;
+    protected String property;
+
+    protected Object college;
+    protected Object fieldConfiguration;
+    protected Object fieldHeading;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setDefaultValue(String defaultValue) {
-        writeProperty("defaultValue", defaultValue);
+        beforePropertyWrite("defaultValue", this.defaultValue, defaultValue);
+        this.defaultValue = defaultValue;
     }
+
     public String getDefaultValue() {
-        return (String)readProperty("defaultValue");
+        beforePropertyRead("defaultValue");
+        return this.defaultValue;
     }
 
     public void setDescription(String description) {
-        writeProperty("description", description);
+        beforePropertyWrite("description", this.description, description);
+        this.description = description;
     }
+
     public String getDescription() {
-        return (String)readProperty("description");
+        beforePropertyRead("description");
+        return this.description;
     }
 
     public void setMandatory(Boolean mandatory) {
-        writeProperty("mandatory", mandatory);
+        beforePropertyWrite("mandatory", this.mandatory, mandatory);
+        this.mandatory = mandatory;
     }
+
     public Boolean getMandatory() {
-        return (Boolean)readProperty("mandatory");
+        beforePropertyRead("mandatory");
+        return this.mandatory;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        beforePropertyWrite("name", this.name, name);
+        this.name = name;
     }
+
     public String getName() {
-        return (String)readProperty("name");
+        beforePropertyRead("name");
+        return this.name;
     }
 
     public void setOrder(Integer order) {
-        writeProperty("order", order);
+        beforePropertyWrite("order", this.order, order);
+        this.order = order;
     }
+
     public Integer getOrder() {
-        return (Integer)readProperty("order");
+        beforePropertyRead("order");
+        return this.order;
     }
 
     public void setProperty(String property) {
-        writeProperty("property", property);
+        beforePropertyWrite("property", this.property, property);
+        this.property = property;
     }
+
     public String getProperty() {
-        return (String)readProperty("property");
+        beforePropertyRead("property");
+        return this.property;
     }
 
     public void setCollege(College college) {
@@ -117,7 +161,6 @@ public abstract class _Field extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void setFieldConfiguration(FieldConfiguration fieldConfiguration) {
         setToOneTarget("fieldConfiguration", fieldConfiguration, true);
     }
@@ -125,7 +168,6 @@ public abstract class _Field extends WillowCayenneObject {
     public FieldConfiguration getFieldConfiguration() {
         return (FieldConfiguration)readProperty("fieldConfiguration");
     }
-
 
     public void setFieldHeading(FieldHeading fieldHeading) {
         setToOneTarget("fieldHeading", fieldHeading, true);
@@ -135,5 +177,130 @@ public abstract class _Field extends WillowCayenneObject {
         return (FieldHeading)readProperty("fieldHeading");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "created":
+                return this.created;
+            case "defaultValue":
+                return this.defaultValue;
+            case "description":
+                return this.description;
+            case "mandatory":
+                return this.mandatory;
+            case "modified":
+                return this.modified;
+            case "name":
+                return this.name;
+            case "order":
+                return this.order;
+            case "property":
+                return this.property;
+            case "college":
+                return this.college;
+            case "fieldConfiguration":
+                return this.fieldConfiguration;
+            case "fieldHeading":
+                return this.fieldHeading;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "defaultValue":
+                this.defaultValue = (String)val;
+                break;
+            case "description":
+                this.description = (String)val;
+                break;
+            case "mandatory":
+                this.mandatory = (Boolean)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "name":
+                this.name = (String)val;
+                break;
+            case "order":
+                this.order = (Integer)val;
+                break;
+            case "property":
+                this.property = (String)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "fieldConfiguration":
+                this.fieldConfiguration = val;
+                break;
+            case "fieldHeading":
+                this.fieldHeading = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.created);
+        out.writeObject(this.defaultValue);
+        out.writeObject(this.description);
+        out.writeObject(this.mandatory);
+        out.writeObject(this.modified);
+        out.writeObject(this.name);
+        out.writeObject(this.order);
+        out.writeObject(this.property);
+        out.writeObject(this.college);
+        out.writeObject(this.fieldConfiguration);
+        out.writeObject(this.fieldHeading);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.created = (Date)in.readObject();
+        this.defaultValue = (String)in.readObject();
+        this.description = (String)in.readObject();
+        this.mandatory = (Boolean)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.name = (String)in.readObject();
+        this.order = (Integer)in.readObject();
+        this.property = (String)in.readObject();
+        this.college = in.readObject();
+        this.fieldConfiguration = in.readObject();
+        this.fieldHeading = in.readObject();
+    }
 
 }

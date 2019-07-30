@@ -15,7 +15,7 @@ import ish.oncourse.utils.QueueableObjectUtils;
 import ish.util.SecurityUtil;
 import ish.validation.ContactErrorCode;
 import ish.validation.ContactValidator;
-import org.apache.cayenne.CayenneDataObject;
+import org.apache.cayenne.BaseDataObject;
 import org.apache.cayenne.DataObject;
 import org.apache.cayenne.map.ObjRelationship;
 import org.apache.cayenne.validation.ValidationResult;
@@ -186,14 +186,14 @@ public class Contact extends _Contact implements Queueable {
 	/**
 	 * The alternative for setToOneTarget(relationshipName, value, setReverse) but with check that reverse relationship also updated.
 	 * Should be used only in case when we can't be sure that relationships will be changed for all required entities.
-	 * @see org.apache.cayenne.CayenneDataObject#setToOneTarget(java.lang.String, org.apache.cayenne.DataObject, boolean)
+	 * @see org.apache.cayenne.BaseDataObject#setToOneTarget(java.lang.String, org.apache.cayenne.DataObject, boolean)
 	 * @param relationshipName
 	 * @param value
 	 * @param setReverse
 	 * @param object - object to update
 	 */
 	public static void setObjectToOneTargetWithCheck(final String relationshipName, final DataObject value, final boolean setReverse, 
-		final CayenneDataObject object) {
+		final BaseDataObject object) {
 		final DataObject oldValue = (DataObject) object.readProperty(relationshipName);
 		DataObject oldObject = null;
 		if ((oldValue != null && !oldValue.equals(value)) && value != null || (oldValue == null && value != null)) {
@@ -208,7 +208,7 @@ public class Contact extends _Contact implements Queueable {
 		}
 	}
 	
-	private static DataObject getObjectReverseRelationShip(final String relationshipName, final DataObject value, final CayenneDataObject object) {
+	private static DataObject getObjectReverseRelationShip(final String relationshipName, final DataObject value, final BaseDataObject object) {
 		final ObjRelationship relation = (ObjRelationship) object.getObjectContext().getEntityResolver()
 			.getObjEntity(object.getObjectId().getEntityName()).getRelationship(relationshipName);
 		final ObjRelationship reverseRelation = relation.getReverseRelationship();

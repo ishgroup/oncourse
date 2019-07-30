@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 
 import org.apache.cayenne.exp.Property;
@@ -43,53 +46,86 @@ public abstract class _ContactDuplicate extends WillowCayenneObject {
     public static final Property<Contact> CONTACT_TO_UPDATE = Property.create("contactToUpdate", Contact.class);
     public static final Property<SystemUser> CREATED_BY_USER = Property.create("createdByUser", SystemUser.class);
 
+    protected Long angelId;
+    protected Long contactToDeleteAngelId;
+    protected Long contactToDeleteId;
+    protected Date created;
+    protected String description;
+    protected Date modified;
+    protected ContactDuplicateStatus status;
+
+    protected Object college;
+    protected Object contactToUpdate;
+    protected Object createdByUser;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setContactToDeleteAngelId(Long contactToDeleteAngelId) {
-        writeProperty("contactToDeleteAngelId", contactToDeleteAngelId);
+        beforePropertyWrite("contactToDeleteAngelId", this.contactToDeleteAngelId, contactToDeleteAngelId);
+        this.contactToDeleteAngelId = contactToDeleteAngelId;
     }
+
     public Long getContactToDeleteAngelId() {
-        return (Long)readProperty("contactToDeleteAngelId");
+        beforePropertyRead("contactToDeleteAngelId");
+        return this.contactToDeleteAngelId;
     }
 
     public void setContactToDeleteId(Long contactToDeleteId) {
-        writeProperty("contactToDeleteId", contactToDeleteId);
+        beforePropertyWrite("contactToDeleteId", this.contactToDeleteId, contactToDeleteId);
+        this.contactToDeleteId = contactToDeleteId;
     }
+
     public Long getContactToDeleteId() {
-        return (Long)readProperty("contactToDeleteId");
+        beforePropertyRead("contactToDeleteId");
+        return this.contactToDeleteId;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setDescription(String description) {
-        writeProperty("description", description);
+        beforePropertyWrite("description", this.description, description);
+        this.description = description;
     }
+
     public String getDescription() {
-        return (String)readProperty("description");
+        beforePropertyRead("description");
+        return this.description;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setStatus(ContactDuplicateStatus status) {
-        writeProperty("status", status);
+        beforePropertyWrite("status", this.status, status);
+        this.status = status;
     }
+
     public ContactDuplicateStatus getStatus() {
-        return (ContactDuplicateStatus)readProperty("status");
+        beforePropertyRead("status");
+        return this.status;
     }
 
     public void setCollege(College college) {
@@ -100,7 +136,6 @@ public abstract class _ContactDuplicate extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void setContactToUpdate(Contact contactToUpdate) {
         setToOneTarget("contactToUpdate", contactToUpdate, true);
     }
@@ -108,7 +143,6 @@ public abstract class _ContactDuplicate extends WillowCayenneObject {
     public Contact getContactToUpdate() {
         return (Contact)readProperty("contactToUpdate");
     }
-
 
     public void setCreatedByUser(SystemUser createdByUser) {
         setToOneTarget("createdByUser", createdByUser, true);
@@ -118,5 +152,116 @@ public abstract class _ContactDuplicate extends WillowCayenneObject {
         return (SystemUser)readProperty("createdByUser");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "contactToDeleteAngelId":
+                return this.contactToDeleteAngelId;
+            case "contactToDeleteId":
+                return this.contactToDeleteId;
+            case "created":
+                return this.created;
+            case "description":
+                return this.description;
+            case "modified":
+                return this.modified;
+            case "status":
+                return this.status;
+            case "college":
+                return this.college;
+            case "contactToUpdate":
+                return this.contactToUpdate;
+            case "createdByUser":
+                return this.createdByUser;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "contactToDeleteAngelId":
+                this.contactToDeleteAngelId = (Long)val;
+                break;
+            case "contactToDeleteId":
+                this.contactToDeleteId = (Long)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "description":
+                this.description = (String)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "status":
+                this.status = (ContactDuplicateStatus)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "contactToUpdate":
+                this.contactToUpdate = val;
+                break;
+            case "createdByUser":
+                this.createdByUser = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.contactToDeleteAngelId);
+        out.writeObject(this.contactToDeleteId);
+        out.writeObject(this.created);
+        out.writeObject(this.description);
+        out.writeObject(this.modified);
+        out.writeObject(this.status);
+        out.writeObject(this.college);
+        out.writeObject(this.contactToUpdate);
+        out.writeObject(this.createdByUser);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.contactToDeleteAngelId = (Long)in.readObject();
+        this.contactToDeleteId = (Long)in.readObject();
+        this.created = (Date)in.readObject();
+        this.description = (String)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.status = (ContactDuplicateStatus)in.readObject();
+        this.college = in.readObject();
+        this.contactToUpdate = in.readObject();
+        this.createdByUser = in.readObject();
+    }
 
 }

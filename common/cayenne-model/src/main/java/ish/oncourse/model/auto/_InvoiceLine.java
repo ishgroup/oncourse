@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -66,81 +69,134 @@ public abstract class _InvoiceLine extends InvoicePayableLine {
     public static final Property<List<ProductItem>> PRODUCT_ITEMS = Property.create("productItems", List.class);
     public static final Property<List<VoucherPaymentIn>> VOUCHER_PAYMENTS_IN = Property.create("voucherPaymentsIn", List.class);
 
+    protected Long angelId;
+    protected Date created;
+    protected String description;
+    protected Money discountEachExTax;
+    protected Date modified;
+    protected Money priceEachExTax;
+    protected BigDecimal quantity;
+    protected Integer sortOrder;
+    protected Money taxEach;
+    protected String title;
+    protected String unit;
+
+    protected Object college;
+    protected Object courseClass;
+    protected Object enrolment;
+    protected Object invoice;
+    protected Object invoiceLineDiscounts;
+    protected Object productItems;
+    protected Object voucherPaymentsIn;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setDescription(String description) {
-        writeProperty("description", description);
+        beforePropertyWrite("description", this.description, description);
+        this.description = description;
     }
+
     public String getDescription() {
-        return (String)readProperty("description");
+        beforePropertyRead("description");
+        return this.description;
     }
 
     public void setDiscountEachExTax(Money discountEachExTax) {
-        writeProperty("discountEachExTax", discountEachExTax);
+        beforePropertyWrite("discountEachExTax", this.discountEachExTax, discountEachExTax);
+        this.discountEachExTax = discountEachExTax;
     }
+
     public Money getDiscountEachExTax() {
-        return (Money)readProperty("discountEachExTax");
+        beforePropertyRead("discountEachExTax");
+        return this.discountEachExTax;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setPriceEachExTax(Money priceEachExTax) {
-        writeProperty("priceEachExTax", priceEachExTax);
+        beforePropertyWrite("priceEachExTax", this.priceEachExTax, priceEachExTax);
+        this.priceEachExTax = priceEachExTax;
     }
+
     public Money getPriceEachExTax() {
-        return (Money)readProperty("priceEachExTax");
+        beforePropertyRead("priceEachExTax");
+        return this.priceEachExTax;
     }
 
     public void setQuantity(BigDecimal quantity) {
-        writeProperty("quantity", quantity);
+        beforePropertyWrite("quantity", this.quantity, quantity);
+        this.quantity = quantity;
     }
+
     public BigDecimal getQuantity() {
-        return (BigDecimal)readProperty("quantity");
+        beforePropertyRead("quantity");
+        return this.quantity;
     }
 
     public void setSortOrder(Integer sortOrder) {
-        writeProperty("sortOrder", sortOrder);
+        beforePropertyWrite("sortOrder", this.sortOrder, sortOrder);
+        this.sortOrder = sortOrder;
     }
+
     public Integer getSortOrder() {
-        return (Integer)readProperty("sortOrder");
+        beforePropertyRead("sortOrder");
+        return this.sortOrder;
     }
 
     public void setTaxEach(Money taxEach) {
-        writeProperty("taxEach", taxEach);
+        beforePropertyWrite("taxEach", this.taxEach, taxEach);
+        this.taxEach = taxEach;
     }
+
     public Money getTaxEach() {
-        return (Money)readProperty("taxEach");
+        beforePropertyRead("taxEach");
+        return this.taxEach;
     }
 
     public void setTitle(String title) {
-        writeProperty("title", title);
+        beforePropertyWrite("title", this.title, title);
+        this.title = title;
     }
+
     public String getTitle() {
-        return (String)readProperty("title");
+        beforePropertyRead("title");
+        return this.title;
     }
 
     public void setUnit(String unit) {
-        writeProperty("unit", unit);
+        beforePropertyWrite("unit", this.unit, unit);
+        this.unit = unit;
     }
+
     public String getUnit() {
-        return (String)readProperty("unit");
+        beforePropertyRead("unit");
+        return this.unit;
     }
 
     public void setCollege(College college) {
@@ -151,7 +207,6 @@ public abstract class _InvoiceLine extends InvoicePayableLine {
         return (College)readProperty("college");
     }
 
-
     public void setCourseClass(CourseClass courseClass) {
         setToOneTarget("courseClass", courseClass, true);
     }
@@ -159,7 +214,6 @@ public abstract class _InvoiceLine extends InvoicePayableLine {
     public CourseClass getCourseClass() {
         return (CourseClass)readProperty("courseClass");
     }
-
 
     public void setEnrolment(Enrolment enrolment) {
         setToOneTarget("enrolment", enrolment, true);
@@ -169,7 +223,6 @@ public abstract class _InvoiceLine extends InvoicePayableLine {
         return (Enrolment)readProperty("enrolment");
     }
 
-
     public void setInvoice(Invoice invoice) {
         setToOneTarget("invoice", invoice, true);
     }
@@ -178,43 +231,213 @@ public abstract class _InvoiceLine extends InvoicePayableLine {
         return (Invoice)readProperty("invoice");
     }
 
-
     public void addToInvoiceLineDiscounts(InvoiceLineDiscount obj) {
         addToManyTarget("invoiceLineDiscounts", obj, true);
     }
+
     public void removeFromInvoiceLineDiscounts(InvoiceLineDiscount obj) {
         removeToManyTarget("invoiceLineDiscounts", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<InvoiceLineDiscount> getInvoiceLineDiscounts() {
         return (List<InvoiceLineDiscount>)readProperty("invoiceLineDiscounts");
     }
 
-
     public void addToProductItems(ProductItem obj) {
         addToManyTarget("productItems", obj, true);
     }
+
     public void removeFromProductItems(ProductItem obj) {
         removeToManyTarget("productItems", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<ProductItem> getProductItems() {
         return (List<ProductItem>)readProperty("productItems");
     }
 
-
     public void addToVoucherPaymentsIn(VoucherPaymentIn obj) {
         addToManyTarget("voucherPaymentsIn", obj, true);
     }
+
     public void removeFromVoucherPaymentsIn(VoucherPaymentIn obj) {
         removeToManyTarget("voucherPaymentsIn", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<VoucherPaymentIn> getVoucherPaymentsIn() {
         return (List<VoucherPaymentIn>)readProperty("voucherPaymentsIn");
     }
 
-
     protected abstract void onPostAdd();
+
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "created":
+                return this.created;
+            case "description":
+                return this.description;
+            case "discountEachExTax":
+                return this.discountEachExTax;
+            case "modified":
+                return this.modified;
+            case "priceEachExTax":
+                return this.priceEachExTax;
+            case "quantity":
+                return this.quantity;
+            case "sortOrder":
+                return this.sortOrder;
+            case "taxEach":
+                return this.taxEach;
+            case "title":
+                return this.title;
+            case "unit":
+                return this.unit;
+            case "college":
+                return this.college;
+            case "courseClass":
+                return this.courseClass;
+            case "enrolment":
+                return this.enrolment;
+            case "invoice":
+                return this.invoice;
+            case "invoiceLineDiscounts":
+                return this.invoiceLineDiscounts;
+            case "productItems":
+                return this.productItems;
+            case "voucherPaymentsIn":
+                return this.voucherPaymentsIn;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "description":
+                this.description = (String)val;
+                break;
+            case "discountEachExTax":
+                this.discountEachExTax = (Money)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "priceEachExTax":
+                this.priceEachExTax = (Money)val;
+                break;
+            case "quantity":
+                this.quantity = (BigDecimal)val;
+                break;
+            case "sortOrder":
+                this.sortOrder = (Integer)val;
+                break;
+            case "taxEach":
+                this.taxEach = (Money)val;
+                break;
+            case "title":
+                this.title = (String)val;
+                break;
+            case "unit":
+                this.unit = (String)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "courseClass":
+                this.courseClass = val;
+                break;
+            case "enrolment":
+                this.enrolment = val;
+                break;
+            case "invoice":
+                this.invoice = val;
+                break;
+            case "invoiceLineDiscounts":
+                this.invoiceLineDiscounts = val;
+                break;
+            case "productItems":
+                this.productItems = val;
+                break;
+            case "voucherPaymentsIn":
+                this.voucherPaymentsIn = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.created);
+        out.writeObject(this.description);
+        out.writeObject(this.discountEachExTax);
+        out.writeObject(this.modified);
+        out.writeObject(this.priceEachExTax);
+        out.writeObject(this.quantity);
+        out.writeObject(this.sortOrder);
+        out.writeObject(this.taxEach);
+        out.writeObject(this.title);
+        out.writeObject(this.unit);
+        out.writeObject(this.college);
+        out.writeObject(this.courseClass);
+        out.writeObject(this.enrolment);
+        out.writeObject(this.invoice);
+        out.writeObject(this.invoiceLineDiscounts);
+        out.writeObject(this.productItems);
+        out.writeObject(this.voucherPaymentsIn);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.created = (Date)in.readObject();
+        this.description = (String)in.readObject();
+        this.discountEachExTax = (Money)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.priceEachExTax = (Money)in.readObject();
+        this.quantity = (BigDecimal)in.readObject();
+        this.sortOrder = (Integer)in.readObject();
+        this.taxEach = (Money)in.readObject();
+        this.title = (String)in.readObject();
+        this.unit = (String)in.readObject();
+        this.college = in.readObject();
+        this.courseClass = in.readObject();
+        this.enrolment = in.readObject();
+        this.invoice = in.readObject();
+        this.invoiceLineDiscounts = in.readObject();
+        this.productItems = in.readObject();
+        this.voucherPaymentsIn = in.readObject();
+    }
 
 }

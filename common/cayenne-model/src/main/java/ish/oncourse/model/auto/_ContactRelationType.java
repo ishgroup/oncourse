@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -44,46 +47,76 @@ public abstract class _ContactRelationType extends WillowCayenneObject {
     public static final Property<SystemUser> CREATED_BY = Property.create("createdBy", SystemUser.class);
     public static final Property<List<DiscountMembershipRelationType>> MEMBESHIP_DISCOUNT_RELATIONS = Property.create("membeshipDiscountRelations", List.class);
 
+    protected Long angelId;
+    protected Date created;
+    protected Boolean delegatedAccessToContact;
+    protected String fromContactName;
+    protected Date modified;
+    protected String toContactName;
+
+    protected Object college;
+    protected Object contactRelations;
+    protected Object createdBy;
+    protected Object membeshipDiscountRelations;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setDelegatedAccessToContact(Boolean delegatedAccessToContact) {
-        writeProperty("delegatedAccessToContact", delegatedAccessToContact);
+        beforePropertyWrite("delegatedAccessToContact", this.delegatedAccessToContact, delegatedAccessToContact);
+        this.delegatedAccessToContact = delegatedAccessToContact;
     }
+
     public Boolean getDelegatedAccessToContact() {
-        return (Boolean)readProperty("delegatedAccessToContact");
+        beforePropertyRead("delegatedAccessToContact");
+        return this.delegatedAccessToContact;
     }
 
     public void setFromContactName(String fromContactName) {
-        writeProperty("fromContactName", fromContactName);
+        beforePropertyWrite("fromContactName", this.fromContactName, fromContactName);
+        this.fromContactName = fromContactName;
     }
+
     public String getFromContactName() {
-        return (String)readProperty("fromContactName");
+        beforePropertyRead("fromContactName");
+        return this.fromContactName;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setToContactName(String toContactName) {
-        writeProperty("toContactName", toContactName);
+        beforePropertyWrite("toContactName", this.toContactName, toContactName);
+        this.toContactName = toContactName;
     }
+
     public String getToContactName() {
-        return (String)readProperty("toContactName");
+        beforePropertyRead("toContactName");
+        return this.toContactName;
     }
 
     public void setCollege(College college) {
@@ -94,18 +127,18 @@ public abstract class _ContactRelationType extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void addToContactRelations(ContactRelation obj) {
         addToManyTarget("contactRelations", obj, true);
     }
+
     public void removeFromContactRelations(ContactRelation obj) {
         removeToManyTarget("contactRelations", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<ContactRelation> getContactRelations() {
         return (List<ContactRelation>)readProperty("contactRelations");
     }
-
 
     public void setCreatedBy(SystemUser createdBy) {
         setToOneTarget("createdBy", createdBy, true);
@@ -115,19 +148,131 @@ public abstract class _ContactRelationType extends WillowCayenneObject {
         return (SystemUser)readProperty("createdBy");
     }
 
-
     public void addToMembeshipDiscountRelations(DiscountMembershipRelationType obj) {
         addToManyTarget("membeshipDiscountRelations", obj, true);
     }
+
     public void removeFromMembeshipDiscountRelations(DiscountMembershipRelationType obj) {
         removeToManyTarget("membeshipDiscountRelations", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<DiscountMembershipRelationType> getMembeshipDiscountRelations() {
         return (List<DiscountMembershipRelationType>)readProperty("membeshipDiscountRelations");
     }
 
-
     protected abstract void onPostAdd();
+
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "created":
+                return this.created;
+            case "delegatedAccessToContact":
+                return this.delegatedAccessToContact;
+            case "fromContactName":
+                return this.fromContactName;
+            case "modified":
+                return this.modified;
+            case "toContactName":
+                return this.toContactName;
+            case "college":
+                return this.college;
+            case "contactRelations":
+                return this.contactRelations;
+            case "createdBy":
+                return this.createdBy;
+            case "membeshipDiscountRelations":
+                return this.membeshipDiscountRelations;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "delegatedAccessToContact":
+                this.delegatedAccessToContact = (Boolean)val;
+                break;
+            case "fromContactName":
+                this.fromContactName = (String)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "toContactName":
+                this.toContactName = (String)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "contactRelations":
+                this.contactRelations = val;
+                break;
+            case "createdBy":
+                this.createdBy = val;
+                break;
+            case "membeshipDiscountRelations":
+                this.membeshipDiscountRelations = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.created);
+        out.writeObject(this.delegatedAccessToContact);
+        out.writeObject(this.fromContactName);
+        out.writeObject(this.modified);
+        out.writeObject(this.toContactName);
+        out.writeObject(this.college);
+        out.writeObject(this.contactRelations);
+        out.writeObject(this.createdBy);
+        out.writeObject(this.membeshipDiscountRelations);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.created = (Date)in.readObject();
+        this.delegatedAccessToContact = (Boolean)in.readObject();
+        this.fromContactName = (String)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.toContactName = (String)in.readObject();
+        this.college = in.readObject();
+        this.contactRelations = in.readObject();
+        this.createdBy = in.readObject();
+        this.membeshipDiscountRelations = in.readObject();
+    }
 
 }

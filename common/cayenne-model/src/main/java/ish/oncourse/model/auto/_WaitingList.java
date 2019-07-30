@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -46,39 +49,66 @@ public abstract class _WaitingList extends ExpandableCayenneDataObject {
     public static final Property<Student> STUDENT = Property.create("student", Student.class);
     public static final Property<List<WaitingListSite>> WAITING_LIST_SITES = Property.create("waitingListSites", List.class);
 
+    protected Long angelId;
+    protected Date created;
+    protected String detail;
+    protected Date modified;
+    protected Integer potentialStudents;
+
+    protected Object college;
+    protected Object course;
+    protected Object customFields;
+    protected Object student;
+    protected Object waitingListSites;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setDetail(String detail) {
-        writeProperty("detail", detail);
+        beforePropertyWrite("detail", this.detail, detail);
+        this.detail = detail;
     }
+
     public String getDetail() {
-        return (String)readProperty("detail");
+        beforePropertyRead("detail");
+        return this.detail;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setPotentialStudents(Integer potentialStudents) {
-        writeProperty("potentialStudents", potentialStudents);
+        beforePropertyWrite("potentialStudents", this.potentialStudents, potentialStudents);
+        this.potentialStudents = potentialStudents;
     }
+
     public Integer getPotentialStudents() {
-        return (Integer)readProperty("potentialStudents");
+        beforePropertyRead("potentialStudents");
+        return this.potentialStudents;
     }
 
     public void setCollege(College college) {
@@ -89,7 +119,6 @@ public abstract class _WaitingList extends ExpandableCayenneDataObject {
         return (College)readProperty("college");
     }
 
-
     public void setCourse(Course course) {
         setToOneTarget("course", course, true);
     }
@@ -98,18 +127,18 @@ public abstract class _WaitingList extends ExpandableCayenneDataObject {
         return (Course)readProperty("course");
     }
 
-
     public void addToCustomFields(WaitingListCustomField obj) {
         addToManyTarget("customFields", obj, true);
     }
+
     public void removeFromCustomFields(WaitingListCustomField obj) {
         removeToManyTarget("customFields", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<WaitingListCustomField> getCustomFields() {
         return (List<WaitingListCustomField>)readProperty("customFields");
     }
-
 
     public void setStudent(Student student) {
         setToOneTarget("student", student, true);
@@ -119,17 +148,129 @@ public abstract class _WaitingList extends ExpandableCayenneDataObject {
         return (Student)readProperty("student");
     }
 
-
     public void addToWaitingListSites(WaitingListSite obj) {
         addToManyTarget("waitingListSites", obj, true);
     }
+
     public void removeFromWaitingListSites(WaitingListSite obj) {
         removeToManyTarget("waitingListSites", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<WaitingListSite> getWaitingListSites() {
         return (List<WaitingListSite>)readProperty("waitingListSites");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "created":
+                return this.created;
+            case "detail":
+                return this.detail;
+            case "modified":
+                return this.modified;
+            case "potentialStudents":
+                return this.potentialStudents;
+            case "college":
+                return this.college;
+            case "course":
+                return this.course;
+            case "customFields":
+                return this.customFields;
+            case "student":
+                return this.student;
+            case "waitingListSites":
+                return this.waitingListSites;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "detail":
+                this.detail = (String)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "potentialStudents":
+                this.potentialStudents = (Integer)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "course":
+                this.course = val;
+                break;
+            case "customFields":
+                this.customFields = val;
+                break;
+            case "student":
+                this.student = val;
+                break;
+            case "waitingListSites":
+                this.waitingListSites = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.created);
+        out.writeObject(this.detail);
+        out.writeObject(this.modified);
+        out.writeObject(this.potentialStudents);
+        out.writeObject(this.college);
+        out.writeObject(this.course);
+        out.writeObject(this.customFields);
+        out.writeObject(this.student);
+        out.writeObject(this.waitingListSites);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.created = (Date)in.readObject();
+        this.detail = (String)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.potentialStudents = (Integer)in.readObject();
+        this.college = in.readObject();
+        this.course = in.readObject();
+        this.customFields = in.readObject();
+        this.student = in.readObject();
+        this.waitingListSites = in.readObject();
+    }
 
 }

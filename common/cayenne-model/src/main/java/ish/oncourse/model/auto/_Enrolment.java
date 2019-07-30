@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -94,150 +97,237 @@ public abstract class _Enrolment extends ExpandableCayenneDataObject {
     public static final Property<Student> STUDENT = Property.create("student", Student.class);
     public static final Property<List<Survey>> SURVEYS = Property.create("surveys", List.class);
 
+    protected Long angelId;
+    protected ConfirmationStatus confirmationStatus;
+    protected Date created;
+    protected String creditFOEId;
+    protected CreditLevel creditLevel;
+    protected String creditOfferedValue;
+    protected String creditProvider;
+    protected CreditProviderType creditProviderType;
+    protected RecognitionOfPriorLearningIndicator creditTotal;
+    protected CreditType creditType;
+    protected String creditUsedValue;
+    protected Money feeHelpAmount;
+    protected EnrolmentVETFeeHelpStatus feeHelpStatus;
+    protected StudentStatusForUnitOfStudy feeStatus;
+    protected ClassFundingSource fundingSource;
+    protected Date modified;
+    protected Integer reasonForStudy;
+    protected PaymentSource source;
+    protected EnrolmentStatus status;
+
+    protected Object assessmentSubmissions;
+    protected Object college;
+    protected Object courseClass;
+    protected Object customFields;
+    protected Object invoiceLines;
+    protected Object outcomes;
+    protected Object student;
+    protected Object surveys;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setConfirmationStatus(ConfirmationStatus confirmationStatus) {
-        writeProperty("confirmationStatus", confirmationStatus);
+        beforePropertyWrite("confirmationStatus", this.confirmationStatus, confirmationStatus);
+        this.confirmationStatus = confirmationStatus;
     }
+
     public ConfirmationStatus getConfirmationStatus() {
-        return (ConfirmationStatus)readProperty("confirmationStatus");
+        beforePropertyRead("confirmationStatus");
+        return this.confirmationStatus;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setCreditFOEId(String creditFOEId) {
-        writeProperty("creditFOEId", creditFOEId);
+        beforePropertyWrite("creditFOEId", this.creditFOEId, creditFOEId);
+        this.creditFOEId = creditFOEId;
     }
+
     public String getCreditFOEId() {
-        return (String)readProperty("creditFOEId");
+        beforePropertyRead("creditFOEId");
+        return this.creditFOEId;
     }
 
     public void setCreditLevel(CreditLevel creditLevel) {
-        writeProperty("creditLevel", creditLevel);
+        beforePropertyWrite("creditLevel", this.creditLevel, creditLevel);
+        this.creditLevel = creditLevel;
     }
+
     public CreditLevel getCreditLevel() {
-        return (CreditLevel)readProperty("creditLevel");
+        beforePropertyRead("creditLevel");
+        return this.creditLevel;
     }
 
     public void setCreditOfferedValue(String creditOfferedValue) {
-        writeProperty("creditOfferedValue", creditOfferedValue);
+        beforePropertyWrite("creditOfferedValue", this.creditOfferedValue, creditOfferedValue);
+        this.creditOfferedValue = creditOfferedValue;
     }
+
     public String getCreditOfferedValue() {
-        return (String)readProperty("creditOfferedValue");
+        beforePropertyRead("creditOfferedValue");
+        return this.creditOfferedValue;
     }
 
     public void setCreditProvider(String creditProvider) {
-        writeProperty("creditProvider", creditProvider);
+        beforePropertyWrite("creditProvider", this.creditProvider, creditProvider);
+        this.creditProvider = creditProvider;
     }
+
     public String getCreditProvider() {
-        return (String)readProperty("creditProvider");
+        beforePropertyRead("creditProvider");
+        return this.creditProvider;
     }
 
     public void setCreditProviderType(CreditProviderType creditProviderType) {
-        writeProperty("creditProviderType", creditProviderType);
+        beforePropertyWrite("creditProviderType", this.creditProviderType, creditProviderType);
+        this.creditProviderType = creditProviderType;
     }
+
     public CreditProviderType getCreditProviderType() {
-        return (CreditProviderType)readProperty("creditProviderType");
+        beforePropertyRead("creditProviderType");
+        return this.creditProviderType;
     }
 
     public void setCreditTotal(RecognitionOfPriorLearningIndicator creditTotal) {
-        writeProperty("creditTotal", creditTotal);
+        beforePropertyWrite("creditTotal", this.creditTotal, creditTotal);
+        this.creditTotal = creditTotal;
     }
+
     public RecognitionOfPriorLearningIndicator getCreditTotal() {
-        return (RecognitionOfPriorLearningIndicator)readProperty("creditTotal");
+        beforePropertyRead("creditTotal");
+        return this.creditTotal;
     }
 
     public void setCreditType(CreditType creditType) {
-        writeProperty("creditType", creditType);
+        beforePropertyWrite("creditType", this.creditType, creditType);
+        this.creditType = creditType;
     }
+
     public CreditType getCreditType() {
-        return (CreditType)readProperty("creditType");
+        beforePropertyRead("creditType");
+        return this.creditType;
     }
 
     public void setCreditUsedValue(String creditUsedValue) {
-        writeProperty("creditUsedValue", creditUsedValue);
+        beforePropertyWrite("creditUsedValue", this.creditUsedValue, creditUsedValue);
+        this.creditUsedValue = creditUsedValue;
     }
+
     public String getCreditUsedValue() {
-        return (String)readProperty("creditUsedValue");
+        beforePropertyRead("creditUsedValue");
+        return this.creditUsedValue;
     }
 
     public void setFeeHelpAmount(Money feeHelpAmount) {
-        writeProperty("feeHelpAmount", feeHelpAmount);
+        beforePropertyWrite("feeHelpAmount", this.feeHelpAmount, feeHelpAmount);
+        this.feeHelpAmount = feeHelpAmount;
     }
+
     public Money getFeeHelpAmount() {
-        return (Money)readProperty("feeHelpAmount");
+        beforePropertyRead("feeHelpAmount");
+        return this.feeHelpAmount;
     }
 
     public void setFeeHelpStatus(EnrolmentVETFeeHelpStatus feeHelpStatus) {
-        writeProperty("feeHelpStatus", feeHelpStatus);
+        beforePropertyWrite("feeHelpStatus", this.feeHelpStatus, feeHelpStatus);
+        this.feeHelpStatus = feeHelpStatus;
     }
+
     public EnrolmentVETFeeHelpStatus getFeeHelpStatus() {
-        return (EnrolmentVETFeeHelpStatus)readProperty("feeHelpStatus");
+        beforePropertyRead("feeHelpStatus");
+        return this.feeHelpStatus;
     }
 
     public void setFeeStatus(StudentStatusForUnitOfStudy feeStatus) {
-        writeProperty("feeStatus", feeStatus);
+        beforePropertyWrite("feeStatus", this.feeStatus, feeStatus);
+        this.feeStatus = feeStatus;
     }
+
     public StudentStatusForUnitOfStudy getFeeStatus() {
-        return (StudentStatusForUnitOfStudy)readProperty("feeStatus");
+        beforePropertyRead("feeStatus");
+        return this.feeStatus;
     }
 
     public void setFundingSource(ClassFundingSource fundingSource) {
-        writeProperty("fundingSource", fundingSource);
+        beforePropertyWrite("fundingSource", this.fundingSource, fundingSource);
+        this.fundingSource = fundingSource;
     }
+
     public ClassFundingSource getFundingSource() {
-        return (ClassFundingSource)readProperty("fundingSource");
+        beforePropertyRead("fundingSource");
+        return this.fundingSource;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setReasonForStudy(Integer reasonForStudy) {
-        writeProperty("reasonForStudy", reasonForStudy);
+        beforePropertyWrite("reasonForStudy", this.reasonForStudy, reasonForStudy);
+        this.reasonForStudy = reasonForStudy;
     }
+
     public Integer getReasonForStudy() {
-        return (Integer)readProperty("reasonForStudy");
+        beforePropertyRead("reasonForStudy");
+        return this.reasonForStudy;
     }
 
     public void setSource(PaymentSource source) {
-        writeProperty("source", source);
+        beforePropertyWrite("source", this.source, source);
+        this.source = source;
     }
+
     public PaymentSource getSource() {
-        return (PaymentSource)readProperty("source");
+        beforePropertyRead("source");
+        return this.source;
     }
 
     public void setStatus(EnrolmentStatus status) {
-        writeProperty("status", status);
+        beforePropertyWrite("status", this.status, status);
+        this.status = status;
     }
+
     public EnrolmentStatus getStatus() {
-        return (EnrolmentStatus)readProperty("status");
+        beforePropertyRead("status");
+        return this.status;
     }
 
     public void addToAssessmentSubmissions(AssessmentSubmission obj) {
         addToManyTarget("assessmentSubmissions", obj, true);
     }
+
     public void removeFromAssessmentSubmissions(AssessmentSubmission obj) {
         removeToManyTarget("assessmentSubmissions", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<AssessmentSubmission> getAssessmentSubmissions() {
         return (List<AssessmentSubmission>)readProperty("assessmentSubmissions");
     }
-
 
     public void setCollege(College college) {
         setToOneTarget("college", college, true);
@@ -247,7 +337,6 @@ public abstract class _Enrolment extends ExpandableCayenneDataObject {
         return (College)readProperty("college");
     }
 
-
     public void setCourseClass(CourseClass courseClass) {
         setToOneTarget("courseClass", courseClass, true);
     }
@@ -256,42 +345,44 @@ public abstract class _Enrolment extends ExpandableCayenneDataObject {
         return (CourseClass)readProperty("courseClass");
     }
 
-
     public void addToCustomFields(EnrolmentCustomField obj) {
         addToManyTarget("customFields", obj, true);
     }
+
     public void removeFromCustomFields(EnrolmentCustomField obj) {
         removeToManyTarget("customFields", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<EnrolmentCustomField> getCustomFields() {
         return (List<EnrolmentCustomField>)readProperty("customFields");
     }
 
-
     public void addToInvoiceLines(InvoiceLine obj) {
         addToManyTarget("invoiceLines", obj, true);
     }
+
     public void removeFromInvoiceLines(InvoiceLine obj) {
         removeToManyTarget("invoiceLines", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<InvoiceLine> getInvoiceLines() {
         return (List<InvoiceLine>)readProperty("invoiceLines");
     }
 
-
     public void addToOutcomes(Outcome obj) {
         addToManyTarget("outcomes", obj, true);
     }
+
     public void removeFromOutcomes(Outcome obj) {
         removeToManyTarget("outcomes", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Outcome> getOutcomes() {
         return (List<Outcome>)readProperty("outcomes");
     }
-
 
     public void setStudent(Student student) {
         setToOneTarget("student", student, true);
@@ -301,21 +392,252 @@ public abstract class _Enrolment extends ExpandableCayenneDataObject {
         return (Student)readProperty("student");
     }
 
-
     public void addToSurveys(Survey obj) {
         addToManyTarget("surveys", obj, true);
     }
+
     public void removeFromSurveys(Survey obj) {
         removeToManyTarget("surveys", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Survey> getSurveys() {
         return (List<Survey>)readProperty("surveys");
     }
 
-
     protected abstract void onPostAdd();
 
     protected abstract void onPrePersist();
+
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "confirmationStatus":
+                return this.confirmationStatus;
+            case "created":
+                return this.created;
+            case "creditFOEId":
+                return this.creditFOEId;
+            case "creditLevel":
+                return this.creditLevel;
+            case "creditOfferedValue":
+                return this.creditOfferedValue;
+            case "creditProvider":
+                return this.creditProvider;
+            case "creditProviderType":
+                return this.creditProviderType;
+            case "creditTotal":
+                return this.creditTotal;
+            case "creditType":
+                return this.creditType;
+            case "creditUsedValue":
+                return this.creditUsedValue;
+            case "feeHelpAmount":
+                return this.feeHelpAmount;
+            case "feeHelpStatus":
+                return this.feeHelpStatus;
+            case "feeStatus":
+                return this.feeStatus;
+            case "fundingSource":
+                return this.fundingSource;
+            case "modified":
+                return this.modified;
+            case "reasonForStudy":
+                return this.reasonForStudy;
+            case "source":
+                return this.source;
+            case "status":
+                return this.status;
+            case "assessmentSubmissions":
+                return this.assessmentSubmissions;
+            case "college":
+                return this.college;
+            case "courseClass":
+                return this.courseClass;
+            case "customFields":
+                return this.customFields;
+            case "invoiceLines":
+                return this.invoiceLines;
+            case "outcomes":
+                return this.outcomes;
+            case "student":
+                return this.student;
+            case "surveys":
+                return this.surveys;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "confirmationStatus":
+                this.confirmationStatus = (ConfirmationStatus)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "creditFOEId":
+                this.creditFOEId = (String)val;
+                break;
+            case "creditLevel":
+                this.creditLevel = (CreditLevel)val;
+                break;
+            case "creditOfferedValue":
+                this.creditOfferedValue = (String)val;
+                break;
+            case "creditProvider":
+                this.creditProvider = (String)val;
+                break;
+            case "creditProviderType":
+                this.creditProviderType = (CreditProviderType)val;
+                break;
+            case "creditTotal":
+                this.creditTotal = (RecognitionOfPriorLearningIndicator)val;
+                break;
+            case "creditType":
+                this.creditType = (CreditType)val;
+                break;
+            case "creditUsedValue":
+                this.creditUsedValue = (String)val;
+                break;
+            case "feeHelpAmount":
+                this.feeHelpAmount = (Money)val;
+                break;
+            case "feeHelpStatus":
+                this.feeHelpStatus = (EnrolmentVETFeeHelpStatus)val;
+                break;
+            case "feeStatus":
+                this.feeStatus = (StudentStatusForUnitOfStudy)val;
+                break;
+            case "fundingSource":
+                this.fundingSource = (ClassFundingSource)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "reasonForStudy":
+                this.reasonForStudy = (Integer)val;
+                break;
+            case "source":
+                this.source = (PaymentSource)val;
+                break;
+            case "status":
+                this.status = (EnrolmentStatus)val;
+                break;
+            case "assessmentSubmissions":
+                this.assessmentSubmissions = val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "courseClass":
+                this.courseClass = val;
+                break;
+            case "customFields":
+                this.customFields = val;
+                break;
+            case "invoiceLines":
+                this.invoiceLines = val;
+                break;
+            case "outcomes":
+                this.outcomes = val;
+                break;
+            case "student":
+                this.student = val;
+                break;
+            case "surveys":
+                this.surveys = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.confirmationStatus);
+        out.writeObject(this.created);
+        out.writeObject(this.creditFOEId);
+        out.writeObject(this.creditLevel);
+        out.writeObject(this.creditOfferedValue);
+        out.writeObject(this.creditProvider);
+        out.writeObject(this.creditProviderType);
+        out.writeObject(this.creditTotal);
+        out.writeObject(this.creditType);
+        out.writeObject(this.creditUsedValue);
+        out.writeObject(this.feeHelpAmount);
+        out.writeObject(this.feeHelpStatus);
+        out.writeObject(this.feeStatus);
+        out.writeObject(this.fundingSource);
+        out.writeObject(this.modified);
+        out.writeObject(this.reasonForStudy);
+        out.writeObject(this.source);
+        out.writeObject(this.status);
+        out.writeObject(this.assessmentSubmissions);
+        out.writeObject(this.college);
+        out.writeObject(this.courseClass);
+        out.writeObject(this.customFields);
+        out.writeObject(this.invoiceLines);
+        out.writeObject(this.outcomes);
+        out.writeObject(this.student);
+        out.writeObject(this.surveys);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.confirmationStatus = (ConfirmationStatus)in.readObject();
+        this.created = (Date)in.readObject();
+        this.creditFOEId = (String)in.readObject();
+        this.creditLevel = (CreditLevel)in.readObject();
+        this.creditOfferedValue = (String)in.readObject();
+        this.creditProvider = (String)in.readObject();
+        this.creditProviderType = (CreditProviderType)in.readObject();
+        this.creditTotal = (RecognitionOfPriorLearningIndicator)in.readObject();
+        this.creditType = (CreditType)in.readObject();
+        this.creditUsedValue = (String)in.readObject();
+        this.feeHelpAmount = (Money)in.readObject();
+        this.feeHelpStatus = (EnrolmentVETFeeHelpStatus)in.readObject();
+        this.feeStatus = (StudentStatusForUnitOfStudy)in.readObject();
+        this.fundingSource = (ClassFundingSource)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.reasonForStudy = (Integer)in.readObject();
+        this.source = (PaymentSource)in.readObject();
+        this.status = (EnrolmentStatus)in.readObject();
+        this.assessmentSubmissions = in.readObject();
+        this.college = in.readObject();
+        this.courseClass = in.readObject();
+        this.customFields = in.readObject();
+        this.invoiceLines = in.readObject();
+        this.outcomes = in.readObject();
+        this.student = in.readObject();
+        this.surveys = in.readObject();
+    }
 
 }

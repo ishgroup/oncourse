@@ -1,6 +1,6 @@
 package ish.oncourse.portal.services;
 
-import org.apache.cayenne.CayenneDataObject;
+import org.apache.cayenne.BaseDataObject;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectIdQuery;
 
@@ -12,24 +12,24 @@ import java.util.List;
 public class RestoreCayenneDataObject {
     private ObjectContext objectContext;
     private Object candidate;
-    private CayenneDataObject result;
+    private BaseDataObject result;
 
     public void restore() {
-        ObjectIdQuery objectIdQuery = new ObjectIdQuery(((CayenneDataObject) candidate).getObjectId());
+        ObjectIdQuery objectIdQuery = new ObjectIdQuery(((BaseDataObject) candidate).getObjectId());
         List list = objectContext.performQuery(objectIdQuery);
         if (list.size() == 1) {
-            result = (CayenneDataObject) list.get(0);
+            result = (BaseDataObject) list.get(0);
         } else {
             result = null;
         }
     }
 
     public boolean needToBeRestored() {
-        return (candidate instanceof CayenneDataObject && ((CayenneDataObject) candidate).getObjectContext() == null);
+        return (candidate instanceof BaseDataObject && ((BaseDataObject) candidate).getObjectContext() == null);
     }
 
 
-    public CayenneDataObject getResult() {
+    public BaseDataObject getResult() {
         return result;
     }
 

@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -40,32 +43,54 @@ public abstract class _DiscountMembership extends WillowCayenneObject {
     public static final Property<List<DiscountMembershipRelationType>> DISCOUNT_MEMBERSHIP_RELATION_TYPES = Property.create("discountMembershipRelationTypes", List.class);
     public static final Property<MembershipProduct> MEMBERSHIP_PRODUCT = Property.create("membershipProduct", MembershipProduct.class);
 
+    protected Long angelId;
+    protected Boolean applyToMemberOnly;
+    protected Date created;
+    protected Date modified;
+
+    protected Object college;
+    protected Object discount;
+    protected Object discountMembershipRelationTypes;
+    protected Object membershipProduct;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setApplyToMemberOnly(Boolean applyToMemberOnly) {
-        writeProperty("applyToMemberOnly", applyToMemberOnly);
+        beforePropertyWrite("applyToMemberOnly", this.applyToMemberOnly, applyToMemberOnly);
+        this.applyToMemberOnly = applyToMemberOnly;
     }
+
     public Boolean getApplyToMemberOnly() {
-        return (Boolean)readProperty("applyToMemberOnly");
+        beforePropertyRead("applyToMemberOnly");
+        return this.applyToMemberOnly;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setCollege(College college) {
@@ -76,7 +101,6 @@ public abstract class _DiscountMembership extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void setDiscount(Discount discount) {
         setToOneTarget("discount", discount, true);
     }
@@ -85,18 +109,18 @@ public abstract class _DiscountMembership extends WillowCayenneObject {
         return (Discount)readProperty("discount");
     }
 
-
     public void addToDiscountMembershipRelationTypes(DiscountMembershipRelationType obj) {
         addToManyTarget("discountMembershipRelationTypes", obj, true);
     }
+
     public void removeFromDiscountMembershipRelationTypes(DiscountMembershipRelationType obj) {
         removeToManyTarget("discountMembershipRelationTypes", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<DiscountMembershipRelationType> getDiscountMembershipRelationTypes() {
         return (List<DiscountMembershipRelationType>)readProperty("discountMembershipRelationTypes");
     }
-
 
     public void setMembershipProduct(MembershipProduct membershipProduct) {
         setToOneTarget("membershipProduct", membershipProduct, true);
@@ -106,5 +130,102 @@ public abstract class _DiscountMembership extends WillowCayenneObject {
         return (MembershipProduct)readProperty("membershipProduct");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "applyToMemberOnly":
+                return this.applyToMemberOnly;
+            case "created":
+                return this.created;
+            case "modified":
+                return this.modified;
+            case "college":
+                return this.college;
+            case "discount":
+                return this.discount;
+            case "discountMembershipRelationTypes":
+                return this.discountMembershipRelationTypes;
+            case "membershipProduct":
+                return this.membershipProduct;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "applyToMemberOnly":
+                this.applyToMemberOnly = (Boolean)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "discount":
+                this.discount = val;
+                break;
+            case "discountMembershipRelationTypes":
+                this.discountMembershipRelationTypes = val;
+                break;
+            case "membershipProduct":
+                this.membershipProduct = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.applyToMemberOnly);
+        out.writeObject(this.created);
+        out.writeObject(this.modified);
+        out.writeObject(this.college);
+        out.writeObject(this.discount);
+        out.writeObject(this.discountMembershipRelationTypes);
+        out.writeObject(this.membershipProduct);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.applyToMemberOnly = (Boolean)in.readObject();
+        this.created = (Date)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.college = in.readObject();
+        this.discount = in.readObject();
+        this.discountMembershipRelationTypes = in.readObject();
+        this.membershipProduct = in.readObject();
+    }
 
 }

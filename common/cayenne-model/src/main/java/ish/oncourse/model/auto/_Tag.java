@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -59,88 +62,143 @@ public abstract class _Tag extends WillowCayenneObject {
     public static final Property<List<TaggableTag>> TAGGABLE_TAGS = Property.create("taggableTags", List.class);
     public static final Property<List<Tag>> TAGS = Property.create("tags", List.class);
 
+    protected Long angelId;
+    protected Date created;
+    protected String detail;
+    protected String detailTextile;
+    protected Boolean isTagGroup;
+    protected Boolean isWebVisible;
+    protected Date modified;
+    protected String name;
+    protected Integer nodeType;
+    protected String shortName;
+    protected NodeSpecialType specialType;
+    protected Integer weighting;
+
+    protected Object college;
+    protected Object parent;
+    protected Object tagGroupRequirements;
+    protected Object taggableTags;
+    protected Object tags;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setDetail(String detail) {
-        writeProperty("detail", detail);
+        beforePropertyWrite("detail", this.detail, detail);
+        this.detail = detail;
     }
+
     public String getDetail() {
-        return (String)readProperty("detail");
+        beforePropertyRead("detail");
+        return this.detail;
     }
 
     public void setDetailTextile(String detailTextile) {
-        writeProperty("detailTextile", detailTextile);
+        beforePropertyWrite("detailTextile", this.detailTextile, detailTextile);
+        this.detailTextile = detailTextile;
     }
+
     public String getDetailTextile() {
-        return (String)readProperty("detailTextile");
+        beforePropertyRead("detailTextile");
+        return this.detailTextile;
     }
 
     public void setIsTagGroup(Boolean isTagGroup) {
-        writeProperty("isTagGroup", isTagGroup);
+        beforePropertyWrite("isTagGroup", this.isTagGroup, isTagGroup);
+        this.isTagGroup = isTagGroup;
     }
+
     public Boolean getIsTagGroup() {
-        return (Boolean)readProperty("isTagGroup");
+        beforePropertyRead("isTagGroup");
+        return this.isTagGroup;
     }
 
     public void setIsWebVisible(Boolean isWebVisible) {
-        writeProperty("isWebVisible", isWebVisible);
+        beforePropertyWrite("isWebVisible", this.isWebVisible, isWebVisible);
+        this.isWebVisible = isWebVisible;
     }
+
     public Boolean getIsWebVisible() {
-        return (Boolean)readProperty("isWebVisible");
+        beforePropertyRead("isWebVisible");
+        return this.isWebVisible;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        beforePropertyWrite("name", this.name, name);
+        this.name = name;
     }
+
     public String getName() {
-        return (String)readProperty("name");
+        beforePropertyRead("name");
+        return this.name;
     }
 
     public void setNodeType(Integer nodeType) {
-        writeProperty("nodeType", nodeType);
+        beforePropertyWrite("nodeType", this.nodeType, nodeType);
+        this.nodeType = nodeType;
     }
+
     public Integer getNodeType() {
-        return (Integer)readProperty("nodeType");
+        beforePropertyRead("nodeType");
+        return this.nodeType;
     }
 
     public void setShortName(String shortName) {
-        writeProperty("shortName", shortName);
+        beforePropertyWrite("shortName", this.shortName, shortName);
+        this.shortName = shortName;
     }
+
     public String getShortName() {
-        return (String)readProperty("shortName");
+        beforePropertyRead("shortName");
+        return this.shortName;
     }
 
     public void setSpecialType(NodeSpecialType specialType) {
-        writeProperty("specialType", specialType);
+        beforePropertyWrite("specialType", this.specialType, specialType);
+        this.specialType = specialType;
     }
+
     public NodeSpecialType getSpecialType() {
-        return (NodeSpecialType)readProperty("specialType");
+        beforePropertyRead("specialType");
+        return this.specialType;
     }
 
     public void setWeighting(Integer weighting) {
-        writeProperty("weighting", weighting);
+        beforePropertyWrite("weighting", this.weighting, weighting);
+        this.weighting = weighting;
     }
+
     public Integer getWeighting() {
-        return (Integer)readProperty("weighting");
+        beforePropertyRead("weighting");
+        return this.weighting;
     }
 
     public void setCollege(College college) {
@@ -151,7 +209,6 @@ public abstract class _Tag extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void setParent(Tag parent) {
         setToOneTarget("parent", parent, true);
     }
@@ -160,41 +217,204 @@ public abstract class _Tag extends WillowCayenneObject {
         return (Tag)readProperty("parent");
     }
 
-
     public void addToTagGroupRequirements(TagGroupRequirement obj) {
         addToManyTarget("tagGroupRequirements", obj, true);
     }
+
     public void removeFromTagGroupRequirements(TagGroupRequirement obj) {
         removeToManyTarget("tagGroupRequirements", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<TagGroupRequirement> getTagGroupRequirements() {
         return (List<TagGroupRequirement>)readProperty("tagGroupRequirements");
     }
 
-
     public void addToTaggableTags(TaggableTag obj) {
         addToManyTarget("taggableTags", obj, true);
     }
+
     public void removeFromTaggableTags(TaggableTag obj) {
         removeToManyTarget("taggableTags", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<TaggableTag> getTaggableTags() {
         return (List<TaggableTag>)readProperty("taggableTags");
     }
 
-
     public void addToTags(Tag obj) {
         addToManyTarget("tags", obj, true);
     }
+
     public void removeFromTags(Tag obj) {
         removeToManyTarget("tags", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Tag> getTags() {
         return (List<Tag>)readProperty("tags");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "created":
+                return this.created;
+            case "detail":
+                return this.detail;
+            case "detailTextile":
+                return this.detailTextile;
+            case "isTagGroup":
+                return this.isTagGroup;
+            case "isWebVisible":
+                return this.isWebVisible;
+            case "modified":
+                return this.modified;
+            case "name":
+                return this.name;
+            case "nodeType":
+                return this.nodeType;
+            case "shortName":
+                return this.shortName;
+            case "specialType":
+                return this.specialType;
+            case "weighting":
+                return this.weighting;
+            case "college":
+                return this.college;
+            case "parent":
+                return this.parent;
+            case "tagGroupRequirements":
+                return this.tagGroupRequirements;
+            case "taggableTags":
+                return this.taggableTags;
+            case "tags":
+                return this.tags;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "detail":
+                this.detail = (String)val;
+                break;
+            case "detailTextile":
+                this.detailTextile = (String)val;
+                break;
+            case "isTagGroup":
+                this.isTagGroup = (Boolean)val;
+                break;
+            case "isWebVisible":
+                this.isWebVisible = (Boolean)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "name":
+                this.name = (String)val;
+                break;
+            case "nodeType":
+                this.nodeType = (Integer)val;
+                break;
+            case "shortName":
+                this.shortName = (String)val;
+                break;
+            case "specialType":
+                this.specialType = (NodeSpecialType)val;
+                break;
+            case "weighting":
+                this.weighting = (Integer)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "parent":
+                this.parent = val;
+                break;
+            case "tagGroupRequirements":
+                this.tagGroupRequirements = val;
+                break;
+            case "taggableTags":
+                this.taggableTags = val;
+                break;
+            case "tags":
+                this.tags = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.created);
+        out.writeObject(this.detail);
+        out.writeObject(this.detailTextile);
+        out.writeObject(this.isTagGroup);
+        out.writeObject(this.isWebVisible);
+        out.writeObject(this.modified);
+        out.writeObject(this.name);
+        out.writeObject(this.nodeType);
+        out.writeObject(this.shortName);
+        out.writeObject(this.specialType);
+        out.writeObject(this.weighting);
+        out.writeObject(this.college);
+        out.writeObject(this.parent);
+        out.writeObject(this.tagGroupRequirements);
+        out.writeObject(this.taggableTags);
+        out.writeObject(this.tags);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.created = (Date)in.readObject();
+        this.detail = (String)in.readObject();
+        this.detailTextile = (String)in.readObject();
+        this.isTagGroup = (Boolean)in.readObject();
+        this.isWebVisible = (Boolean)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.name = (String)in.readObject();
+        this.nodeType = (Integer)in.readObject();
+        this.shortName = (String)in.readObject();
+        this.specialType = (NodeSpecialType)in.readObject();
+        this.weighting = (Integer)in.readObject();
+        this.college = in.readObject();
+        this.parent = in.readObject();
+        this.tagGroupRequirements = in.readObject();
+        this.taggableTags = in.readObject();
+        this.tags = in.readObject();
+    }
 
 }

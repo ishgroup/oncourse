@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -60,108 +63,167 @@ public abstract class _Module extends WillowCayenneObject {
     public static final Property<List<CourseModule>> MODULE_COURSES = Property.create("moduleCourses", List.class);
     public static final Property<List<SessionModule>> SESSION_MODULES = Property.create("sessionModules", List.class);
 
+    protected Long angelId;
+    protected Date created;
+    protected BigDecimal creditPoints;
+    protected String disciplineCode;
+    protected Integer expiryDays;
+    protected String fieldOfEducation;
+    protected Long ishVersion;
+    protected Date modified;
+    protected String nationalCode;
+    protected String specialization;
+    protected String title;
+    protected Long trainingPackageId;
+    protected ModuleType type;
+
+    protected Object assessmentClassModules;
+    protected Object college;
+    protected Object moduleCourses;
+    protected Object sessionModules;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setCreditPoints(BigDecimal creditPoints) {
-        writeProperty("creditPoints", creditPoints);
+        beforePropertyWrite("creditPoints", this.creditPoints, creditPoints);
+        this.creditPoints = creditPoints;
     }
+
     public BigDecimal getCreditPoints() {
-        return (BigDecimal)readProperty("creditPoints");
+        beforePropertyRead("creditPoints");
+        return this.creditPoints;
     }
 
     public void setDisciplineCode(String disciplineCode) {
-        writeProperty("disciplineCode", disciplineCode);
+        beforePropertyWrite("disciplineCode", this.disciplineCode, disciplineCode);
+        this.disciplineCode = disciplineCode;
     }
+
     public String getDisciplineCode() {
-        return (String)readProperty("disciplineCode");
+        beforePropertyRead("disciplineCode");
+        return this.disciplineCode;
     }
 
     public void setExpiryDays(Integer expiryDays) {
-        writeProperty("expiryDays", expiryDays);
+        beforePropertyWrite("expiryDays", this.expiryDays, expiryDays);
+        this.expiryDays = expiryDays;
     }
+
     public Integer getExpiryDays() {
-        return (Integer)readProperty("expiryDays");
+        beforePropertyRead("expiryDays");
+        return this.expiryDays;
     }
 
     public void setFieldOfEducation(String fieldOfEducation) {
-        writeProperty("fieldOfEducation", fieldOfEducation);
+        beforePropertyWrite("fieldOfEducation", this.fieldOfEducation, fieldOfEducation);
+        this.fieldOfEducation = fieldOfEducation;
     }
+
     public String getFieldOfEducation() {
-        return (String)readProperty("fieldOfEducation");
+        beforePropertyRead("fieldOfEducation");
+        return this.fieldOfEducation;
     }
 
     public void setIshVersion(Long ishVersion) {
-        writeProperty("ishVersion", ishVersion);
+        beforePropertyWrite("ishVersion", this.ishVersion, ishVersion);
+        this.ishVersion = ishVersion;
     }
+
     public Long getIshVersion() {
-        return (Long)readProperty("ishVersion");
+        beforePropertyRead("ishVersion");
+        return this.ishVersion;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setNationalCode(String nationalCode) {
-        writeProperty("nationalCode", nationalCode);
+        beforePropertyWrite("nationalCode", this.nationalCode, nationalCode);
+        this.nationalCode = nationalCode;
     }
+
     public String getNationalCode() {
-        return (String)readProperty("nationalCode");
+        beforePropertyRead("nationalCode");
+        return this.nationalCode;
     }
 
     public void setSpecialization(String specialization) {
-        writeProperty("specialization", specialization);
+        beforePropertyWrite("specialization", this.specialization, specialization);
+        this.specialization = specialization;
     }
+
     public String getSpecialization() {
-        return (String)readProperty("specialization");
+        beforePropertyRead("specialization");
+        return this.specialization;
     }
 
     public void setTitle(String title) {
-        writeProperty("title", title);
+        beforePropertyWrite("title", this.title, title);
+        this.title = title;
     }
+
     public String getTitle() {
-        return (String)readProperty("title");
+        beforePropertyRead("title");
+        return this.title;
     }
 
     public void setTrainingPackageId(Long trainingPackageId) {
-        writeProperty("trainingPackageId", trainingPackageId);
+        beforePropertyWrite("trainingPackageId", this.trainingPackageId, trainingPackageId);
+        this.trainingPackageId = trainingPackageId;
     }
+
     public Long getTrainingPackageId() {
-        return (Long)readProperty("trainingPackageId");
+        beforePropertyRead("trainingPackageId");
+        return this.trainingPackageId;
     }
 
     public void setType(ModuleType type) {
-        writeProperty("type", type);
+        beforePropertyWrite("type", this.type, type);
+        this.type = type;
     }
+
     public ModuleType getType() {
-        return (ModuleType)readProperty("type");
+        beforePropertyRead("type");
+        return this.type;
     }
 
     public void addToAssessmentClassModules(AssessmentClassModule obj) {
         addToManyTarget("assessmentClassModules", obj, true);
     }
+
     public void removeFromAssessmentClassModules(AssessmentClassModule obj) {
         removeToManyTarget("assessmentClassModules", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<AssessmentClassModule> getAssessmentClassModules() {
         return (List<AssessmentClassModule>)readProperty("assessmentClassModules");
     }
-
 
     public void setCollege(College college) {
         setToOneTarget("college", college, true);
@@ -171,33 +233,195 @@ public abstract class _Module extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void addToModuleCourses(CourseModule obj) {
         addToManyTarget("moduleCourses", obj, true);
     }
+
     public void removeFromModuleCourses(CourseModule obj) {
         removeToManyTarget("moduleCourses", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<CourseModule> getModuleCourses() {
         return (List<CourseModule>)readProperty("moduleCourses");
     }
 
-
     public void addToSessionModules(SessionModule obj) {
         addToManyTarget("sessionModules", obj, true);
     }
+
     public void removeFromSessionModules(SessionModule obj) {
         removeToManyTarget("sessionModules", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<SessionModule> getSessionModules() {
         return (List<SessionModule>)readProperty("sessionModules");
     }
 
-
     protected abstract void onPreUpdate();
 
     protected abstract void onPrePersist();
+
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "created":
+                return this.created;
+            case "creditPoints":
+                return this.creditPoints;
+            case "disciplineCode":
+                return this.disciplineCode;
+            case "expiryDays":
+                return this.expiryDays;
+            case "fieldOfEducation":
+                return this.fieldOfEducation;
+            case "ishVersion":
+                return this.ishVersion;
+            case "modified":
+                return this.modified;
+            case "nationalCode":
+                return this.nationalCode;
+            case "specialization":
+                return this.specialization;
+            case "title":
+                return this.title;
+            case "trainingPackageId":
+                return this.trainingPackageId;
+            case "type":
+                return this.type;
+            case "assessmentClassModules":
+                return this.assessmentClassModules;
+            case "college":
+                return this.college;
+            case "moduleCourses":
+                return this.moduleCourses;
+            case "sessionModules":
+                return this.sessionModules;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "creditPoints":
+                this.creditPoints = (BigDecimal)val;
+                break;
+            case "disciplineCode":
+                this.disciplineCode = (String)val;
+                break;
+            case "expiryDays":
+                this.expiryDays = (Integer)val;
+                break;
+            case "fieldOfEducation":
+                this.fieldOfEducation = (String)val;
+                break;
+            case "ishVersion":
+                this.ishVersion = (Long)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "nationalCode":
+                this.nationalCode = (String)val;
+                break;
+            case "specialization":
+                this.specialization = (String)val;
+                break;
+            case "title":
+                this.title = (String)val;
+                break;
+            case "trainingPackageId":
+                this.trainingPackageId = (Long)val;
+                break;
+            case "type":
+                this.type = (ModuleType)val;
+                break;
+            case "assessmentClassModules":
+                this.assessmentClassModules = val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "moduleCourses":
+                this.moduleCourses = val;
+                break;
+            case "sessionModules":
+                this.sessionModules = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.created);
+        out.writeObject(this.creditPoints);
+        out.writeObject(this.disciplineCode);
+        out.writeObject(this.expiryDays);
+        out.writeObject(this.fieldOfEducation);
+        out.writeObject(this.ishVersion);
+        out.writeObject(this.modified);
+        out.writeObject(this.nationalCode);
+        out.writeObject(this.specialization);
+        out.writeObject(this.title);
+        out.writeObject(this.trainingPackageId);
+        out.writeObject(this.type);
+        out.writeObject(this.assessmentClassModules);
+        out.writeObject(this.college);
+        out.writeObject(this.moduleCourses);
+        out.writeObject(this.sessionModules);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.created = (Date)in.readObject();
+        this.creditPoints = (BigDecimal)in.readObject();
+        this.disciplineCode = (String)in.readObject();
+        this.expiryDays = (Integer)in.readObject();
+        this.fieldOfEducation = (String)in.readObject();
+        this.ishVersion = (Long)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.nationalCode = (String)in.readObject();
+        this.specialization = (String)in.readObject();
+        this.title = (String)in.readObject();
+        this.trainingPackageId = (Long)in.readObject();
+        this.type = (ModuleType)in.readObject();
+        this.assessmentClassModules = in.readObject();
+        this.college = in.readObject();
+        this.moduleCourses = in.readObject();
+        this.sessionModules = in.readObject();
+    }
 
 }

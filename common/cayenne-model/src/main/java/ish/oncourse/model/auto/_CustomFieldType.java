@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -48,81 +51,129 @@ public abstract class _CustomFieldType extends WillowCayenneObject {
     public static final Property<College> COLLEGE = Property.create("college", College.class);
     public static final Property<List<CustomField>> CUSTOM_FIELDS = Property.create("customFields", List.class);
 
+    protected Long angelId;
+    protected Date created;
+    protected String defaultValue;
+    protected String entityName;
+    protected Boolean isMandatory;
+    protected String key;
+    protected Date modified;
+    protected String name;
+    protected String requireForEnrolment;
+    protected String requireForMailingList;
+    protected String requireForWaitingList;
+
+    protected Object college;
+    protected Object customFields;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setDefaultValue(String defaultValue) {
-        writeProperty("defaultValue", defaultValue);
+        beforePropertyWrite("defaultValue", this.defaultValue, defaultValue);
+        this.defaultValue = defaultValue;
     }
+
     public String getDefaultValue() {
-        return (String)readProperty("defaultValue");
+        beforePropertyRead("defaultValue");
+        return this.defaultValue;
     }
 
     public void setEntityName(String entityName) {
-        writeProperty("entityName", entityName);
+        beforePropertyWrite("entityName", this.entityName, entityName);
+        this.entityName = entityName;
     }
+
     public String getEntityName() {
-        return (String)readProperty("entityName");
+        beforePropertyRead("entityName");
+        return this.entityName;
     }
 
     public void setIsMandatory(Boolean isMandatory) {
-        writeProperty("isMandatory", isMandatory);
+        beforePropertyWrite("isMandatory", this.isMandatory, isMandatory);
+        this.isMandatory = isMandatory;
     }
+
     public Boolean getIsMandatory() {
-        return (Boolean)readProperty("isMandatory");
+        beforePropertyRead("isMandatory");
+        return this.isMandatory;
     }
 
     public void setKey(String key) {
-        writeProperty("key", key);
+        beforePropertyWrite("key", this.key, key);
+        this.key = key;
     }
+
     public String getKey() {
-        return (String)readProperty("key");
+        beforePropertyRead("key");
+        return this.key;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        beforePropertyWrite("name", this.name, name);
+        this.name = name;
     }
+
     public String getName() {
-        return (String)readProperty("name");
+        beforePropertyRead("name");
+        return this.name;
     }
 
     public void setRequireForEnrolment(String requireForEnrolment) {
-        writeProperty("requireForEnrolment", requireForEnrolment);
+        beforePropertyWrite("requireForEnrolment", this.requireForEnrolment, requireForEnrolment);
+        this.requireForEnrolment = requireForEnrolment;
     }
+
     public String getRequireForEnrolment() {
-        return (String)readProperty("requireForEnrolment");
+        beforePropertyRead("requireForEnrolment");
+        return this.requireForEnrolment;
     }
 
     public void setRequireForMailingList(String requireForMailingList) {
-        writeProperty("requireForMailingList", requireForMailingList);
+        beforePropertyWrite("requireForMailingList", this.requireForMailingList, requireForMailingList);
+        this.requireForMailingList = requireForMailingList;
     }
+
     public String getRequireForMailingList() {
-        return (String)readProperty("requireForMailingList");
+        beforePropertyRead("requireForMailingList");
+        return this.requireForMailingList;
     }
 
     public void setRequireForWaitingList(String requireForWaitingList) {
-        writeProperty("requireForWaitingList", requireForWaitingList);
+        beforePropertyWrite("requireForWaitingList", this.requireForWaitingList, requireForWaitingList);
+        this.requireForWaitingList = requireForWaitingList;
     }
+
     public String getRequireForWaitingList() {
-        return (String)readProperty("requireForWaitingList");
+        beforePropertyRead("requireForWaitingList");
+        return this.requireForWaitingList;
     }
 
     public void setCollege(College college) {
@@ -133,19 +184,152 @@ public abstract class _CustomFieldType extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void addToCustomFields(CustomField obj) {
         addToManyTarget("customFields", obj, true);
     }
+
     public void removeFromCustomFields(CustomField obj) {
         removeToManyTarget("customFields", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<CustomField> getCustomFields() {
         return (List<CustomField>)readProperty("customFields");
     }
 
-
     protected abstract void onPostAdd();
+
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "created":
+                return this.created;
+            case "defaultValue":
+                return this.defaultValue;
+            case "entityName":
+                return this.entityName;
+            case "isMandatory":
+                return this.isMandatory;
+            case "key":
+                return this.key;
+            case "modified":
+                return this.modified;
+            case "name":
+                return this.name;
+            case "requireForEnrolment":
+                return this.requireForEnrolment;
+            case "requireForMailingList":
+                return this.requireForMailingList;
+            case "requireForWaitingList":
+                return this.requireForWaitingList;
+            case "college":
+                return this.college;
+            case "customFields":
+                return this.customFields;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "defaultValue":
+                this.defaultValue = (String)val;
+                break;
+            case "entityName":
+                this.entityName = (String)val;
+                break;
+            case "isMandatory":
+                this.isMandatory = (Boolean)val;
+                break;
+            case "key":
+                this.key = (String)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "name":
+                this.name = (String)val;
+                break;
+            case "requireForEnrolment":
+                this.requireForEnrolment = (String)val;
+                break;
+            case "requireForMailingList":
+                this.requireForMailingList = (String)val;
+                break;
+            case "requireForWaitingList":
+                this.requireForWaitingList = (String)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "customFields":
+                this.customFields = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.created);
+        out.writeObject(this.defaultValue);
+        out.writeObject(this.entityName);
+        out.writeObject(this.isMandatory);
+        out.writeObject(this.key);
+        out.writeObject(this.modified);
+        out.writeObject(this.name);
+        out.writeObject(this.requireForEnrolment);
+        out.writeObject(this.requireForMailingList);
+        out.writeObject(this.requireForWaitingList);
+        out.writeObject(this.college);
+        out.writeObject(this.customFields);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.created = (Date)in.readObject();
+        this.defaultValue = (String)in.readObject();
+        this.entityName = (String)in.readObject();
+        this.isMandatory = (Boolean)in.readObject();
+        this.key = (String)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.name = (String)in.readObject();
+        this.requireForEnrolment = (String)in.readObject();
+        this.requireForMailingList = (String)in.readObject();
+        this.requireForWaitingList = (String)in.readObject();
+        this.college = in.readObject();
+        this.customFields = in.readObject();
+    }
 
 }

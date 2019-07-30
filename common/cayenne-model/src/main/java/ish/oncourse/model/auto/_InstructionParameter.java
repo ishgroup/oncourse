@@ -1,5 +1,9 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import org.apache.cayenne.exp.Property;
 
 import ish.oncourse.model.Instruction;
@@ -24,18 +28,29 @@ public abstract class _InstructionParameter extends WillowCayenneObject {
     public static final Property<String> VALUE = Property.create("value", String.class);
     public static final Property<Instruction> INSTRUCTION = Property.create("instruction", Instruction.class);
 
+    protected String name;
+    protected String value;
+
+    protected Object instruction;
+
     public void setName(String name) {
-        writeProperty("name", name);
+        beforePropertyWrite("name", this.name, name);
+        this.name = name;
     }
+
     public String getName() {
-        return (String)readProperty("name");
+        beforePropertyRead("name");
+        return this.name;
     }
 
     public void setValue(String value) {
-        writeProperty("value", value);
+        beforePropertyWrite("value", this.value, value);
+        this.value = value;
     }
+
     public String getValue() {
-        return (String)readProperty("value");
+        beforePropertyRead("value");
+        return this.value;
     }
 
     public void setInstruction(Instruction instruction) {
@@ -46,5 +61,67 @@ public abstract class _InstructionParameter extends WillowCayenneObject {
         return (Instruction)readProperty("instruction");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "name":
+                return this.name;
+            case "value":
+                return this.value;
+            case "instruction":
+                return this.instruction;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "name":
+                this.name = (String)val;
+                break;
+            case "value":
+                this.value = (String)val;
+                break;
+            case "instruction":
+                this.instruction = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.name);
+        out.writeObject(this.value);
+        out.writeObject(this.instruction);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.name = (String)in.readObject();
+        this.value = (String)in.readObject();
+        this.instruction = in.readObject();
+    }
 
 }

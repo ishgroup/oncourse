@@ -3,7 +3,6 @@ package ish.oncourse.services.lifecycle;
 import org.apache.cayenne.*;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.graph.GraphDiff;
 import org.apache.cayenne.map.ObjRelationship;
 import org.apache.cayenne.query.Query;
 import org.apache.cayenne.query.RelationshipQuery;
@@ -13,14 +12,10 @@ import org.apache.cayenne.query.SelectQuery;
  * DataChannelFilter implementation which intercepts relationship queries
  * and forces them to fetch data from db skipping object cache.
  */
-public class RelationshipQueryInvalidatingFilter implements DataChannelFilter {
+public class RelationshipQueryInvalidatingFilter implements DataChannelQueryFilter {
 
 	@Override
-	public void init(DataChannel channel) {
-	}
-
-	@Override
-	public QueryResponse onQuery(ObjectContext originatingContext, Query query, DataChannelFilterChain filterChain) {
+	public QueryResponse onQuery(ObjectContext originatingContext, Query query, DataChannelQueryFilterChain filterChain) {
 		if (query instanceof RelationshipQuery) {
 			ObjectId objectId = ((RelationshipQuery) query).getObjectId();
 			if (objectId.isTemporary() && !objectId.isReplacementIdAttached()) {
@@ -45,10 +40,5 @@ public class RelationshipQueryInvalidatingFilter implements DataChannelFilter {
 		}
 
 		return filterChain.onQuery(originatingContext, query);
-	}
-
-	@Override
-	public GraphDiff onSync(ObjectContext originatingContext, GraphDiff changes, int syncType, DataChannelFilterChain filterChain) {
-		return filterChain.onSync(originatingContext, changes, syncType);
 	}
 }

@@ -3,13 +3,11 @@ package ish.oncourse.listeners;
 import ish.oncourse.model.Module;
 import ish.oncourse.model.Qualification;
 import ish.oncourse.model.TrainingPackage;
+import ish.oncourse.services.lifecycle.PropertyChangeFilter;
 import org.apache.cayenne.Persistent;
 import org.apache.cayenne.annotation.PostAdd;
 import org.apache.cayenne.annotation.PrePersist;
 import org.apache.cayenne.annotation.PreUpdate;
-import org.apache.cayenne.lifecycle.changeset.ChangeSet;
-import org.apache.cayenne.lifecycle.changeset.ChangeSetFilter;
-import org.apache.cayenne.lifecycle.changeset.PropertyChange;
 import org.apache.commons.lang3.ObjectUtils;
 
 import java.util.Map;
@@ -18,7 +16,7 @@ public class IshVersionListener {
 
 	@PostAdd(value = Qualification.class)
 	public void postAddQualification(Qualification q) {
-		q.setIshVersion(-1l);
+		q.setIshVersion(-1L);
 	}
 
 	@PrePersist(value = Qualification.class)
@@ -41,7 +39,7 @@ public class IshVersionListener {
 
 	@PostAdd(value = TrainingPackage.class)
 	public void postAddTrainingPackage(TrainingPackage tp) {
-		tp.setIshVersion(-1l);
+		tp.setIshVersion(-1L);
 	}
 
 	@PrePersist(value = TrainingPackage.class)
@@ -64,7 +62,7 @@ public class IshVersionListener {
 
 	@PostAdd(value = Module.class)
 	public void postAddModule(Module m) {
-		m.setIshVersion(-1l);
+		m.setIshVersion(-1L);
 	}
 
 	@PrePersist(value = Module.class)
@@ -96,13 +94,12 @@ public class IshVersionListener {
 	 */
 	private boolean shouldUpdateIshVersion(Persistent q) {
 
-		ChangeSet changeSet = ChangeSetFilter.preCommitChangeSet();
-		Map<String, PropertyChange> changes = changeSet.getChanges(q);
+		Map<String, PropertyChangeFilter.PropertyChange> changes = PropertyChangeFilter.getChangesForObject(q);
 
 		boolean shouldSetIshVersion = false;
 
-		for (Map.Entry<String, PropertyChange> change : changes.entrySet()) {
-			PropertyChange propChange = change.getValue();
+		for (Map.Entry<String, PropertyChangeFilter.PropertyChange> change : changes.entrySet()) {
+			PropertyChangeFilter.PropertyChange propChange = change.getValue();
 			if (ObjectUtils.notEqual(propChange.getOldValue(), propChange.getNewValue())) {
 				shouldSetIshVersion = true;
 				break;

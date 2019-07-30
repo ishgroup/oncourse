@@ -10,7 +10,6 @@ import org.apache.cayenne.DataChannel;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataNode;
 import org.apache.cayenne.configuration.server.ServerRuntime;
-import org.apache.cayenne.lifecycle.changeset.ChangeSetFilter;
 import org.apache.cayenne.tx.TransactionalOperation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,22 +26,22 @@ public class CayenneService implements ICayenneService, RegistryShutdownListener
 	public CayenneService(ServerRuntime serverRuntime, IWebSiteService webSiteService, ICourseService courseService) {
 		logger.info("Starting CayenneService....");
 
-		this.cayenneRuntime = serverRuntime;
-
-		this.cayenneRuntime.getDataDomain().addFilter(new ChangeSetFilter());
-
-		this.sharedContext = cayenneRuntime.newContext();
+		cayenneRuntime = serverRuntime;
+		sharedContext = cayenneRuntime.newContext();
 
 		QueueableLifecycleListener listener = new QueueableLifecycleListener(this);
-		cayenneRuntime.getDataDomain().addFilter(listener);
-		// cayenneRuntime.getDataDomain().addFilter(new CacheInvalidationFilter());
-		cayenneRuntime.getDataDomain().addFilter(new RelationshipQueryInvalidatingFilter());
+		cayenneRuntime.getDataDomain().addSyncFilter(listener);
 		cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addDefaultListener(listener);
-		cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addListener(new IshVersionListener());
-		cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addListener(new BinaryInfoRelationListener(webSiteService));
-		cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addListener(new TaggableListener(this, courseService));
-		cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addListener(new QueuedTransactionListener(this));
-		cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addListener(new InvoiceListener());
+
+		cayenneRuntime.getDataDomain().addSyncFilter(new PropertyChangeFilter());
+		// cayenneRuntime.getDataDomain().addFilter(new CacheInvalidationFilter());
+		cayenneRuntime.getDataDomain().addQueryFilter(new RelationshipQueryInvalidatingFilter());
+
+		cayenneRuntime.getDataDomain().addListener(new IshVersionListener());
+		cayenneRuntime.getDataDomain().addListener(new BinaryInfoRelationListener(webSiteService));
+		cayenneRuntime.getDataDomain().addListener(new TaggableListener(this, courseService));
+		cayenneRuntime.getDataDomain().addListener(new QueuedTransactionListener(this));
+		cayenneRuntime.getDataDomain().addListener(new InvoiceListener());
 
 		for (DataNode dataNode : cayenneRuntime.getDataDomain().getDataNodes()) {
 			dataNode.getAdapter().getExtendedTypes().registerType(new MoneyType());

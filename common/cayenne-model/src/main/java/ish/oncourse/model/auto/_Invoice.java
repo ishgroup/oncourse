@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.List;
 
 import org.apache.cayenne.exp.Property;
@@ -44,6 +47,16 @@ public abstract class _Invoice extends AbstractInvoice {
     public static final Property<List<PaymentInLine>> PAYMENT_IN_LINES = Property.create("paymentInLines", List.class);
     public static final Property<WebSite> WEB_SITE = Property.create("webSite", WebSite.class);
 
+
+    protected Object authorisedRebillingCard;
+    protected Object college;
+    protected Object contact;
+    protected Object corporatePassUsed;
+    protected Object invoiceDueDates;
+    protected Object invoiceLines;
+    protected Object paymentInLines;
+    protected Object webSite;
+
     public void setAuthorisedRebillingCard(PaymentIn authorisedRebillingCard) {
         setToOneTarget("authorisedRebillingCard", authorisedRebillingCard, true);
     }
@@ -51,7 +64,6 @@ public abstract class _Invoice extends AbstractInvoice {
     public PaymentIn getAuthorisedRebillingCard() {
         return (PaymentIn)readProperty("authorisedRebillingCard");
     }
-
 
     public void setCollege(College college) {
         setToOneTarget("college", college, true);
@@ -61,7 +73,6 @@ public abstract class _Invoice extends AbstractInvoice {
         return (College)readProperty("college");
     }
 
-
     public void setContact(Contact contact) {
         setToOneTarget("contact", contact, true);
     }
@@ -69,7 +80,6 @@ public abstract class _Invoice extends AbstractInvoice {
     public Contact getContact() {
         return (Contact)readProperty("contact");
     }
-
 
     public void setCorporatePassUsed(CorporatePass corporatePassUsed) {
         setToOneTarget("corporatePassUsed", corporatePassUsed, true);
@@ -79,42 +89,44 @@ public abstract class _Invoice extends AbstractInvoice {
         return (CorporatePass)readProperty("corporatePassUsed");
     }
 
-
     public void addToInvoiceDueDates(InvoiceDueDate obj) {
         addToManyTarget("invoiceDueDates", obj, true);
     }
+
     public void removeFromInvoiceDueDates(InvoiceDueDate obj) {
         removeToManyTarget("invoiceDueDates", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<InvoiceDueDate> getInvoiceDueDates() {
         return (List<InvoiceDueDate>)readProperty("invoiceDueDates");
     }
 
-
     public void addToInvoiceLines(InvoiceLine obj) {
         addToManyTarget("invoiceLines", obj, true);
     }
+
     public void removeFromInvoiceLines(InvoiceLine obj) {
         removeToManyTarget("invoiceLines", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<InvoiceLine> getInvoiceLines() {
         return (List<InvoiceLine>)readProperty("invoiceLines");
     }
 
-
     public void addToPaymentInLines(PaymentInLine obj) {
         addToManyTarget("paymentInLines", obj, true);
     }
+
     public void removeFromPaymentInLines(PaymentInLine obj) {
         removeToManyTarget("paymentInLines", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<PaymentInLine> getPaymentInLines() {
         return (List<PaymentInLine>)readProperty("paymentInLines");
     }
-
 
     public void setWebSite(WebSite webSite) {
         setToOneTarget("webSite", webSite, true);
@@ -124,5 +136,102 @@ public abstract class _Invoice extends AbstractInvoice {
         return (WebSite)readProperty("webSite");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "authorisedRebillingCard":
+                return this.authorisedRebillingCard;
+            case "college":
+                return this.college;
+            case "contact":
+                return this.contact;
+            case "corporatePassUsed":
+                return this.corporatePassUsed;
+            case "invoiceDueDates":
+                return this.invoiceDueDates;
+            case "invoiceLines":
+                return this.invoiceLines;
+            case "paymentInLines":
+                return this.paymentInLines;
+            case "webSite":
+                return this.webSite;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "authorisedRebillingCard":
+                this.authorisedRebillingCard = val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "contact":
+                this.contact = val;
+                break;
+            case "corporatePassUsed":
+                this.corporatePassUsed = val;
+                break;
+            case "invoiceDueDates":
+                this.invoiceDueDates = val;
+                break;
+            case "invoiceLines":
+                this.invoiceLines = val;
+                break;
+            case "paymentInLines":
+                this.paymentInLines = val;
+                break;
+            case "webSite":
+                this.webSite = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.authorisedRebillingCard);
+        out.writeObject(this.college);
+        out.writeObject(this.contact);
+        out.writeObject(this.corporatePassUsed);
+        out.writeObject(this.invoiceDueDates);
+        out.writeObject(this.invoiceLines);
+        out.writeObject(this.paymentInLines);
+        out.writeObject(this.webSite);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.authorisedRebillingCard = in.readObject();
+        this.college = in.readObject();
+        this.contact = in.readObject();
+        this.corporatePassUsed = in.readObject();
+        this.invoiceDueDates = in.readObject();
+        this.invoiceLines = in.readObject();
+        this.paymentInLines = in.readObject();
+        this.webSite = in.readObject();
+    }
 
 }

@@ -13,11 +13,9 @@ public class CityEastFix extends AbstractUtil{
 
 	private ServerRuntime cayenneRuntime;
 
-
-
 	public void fixEnrolments()
 	{
-		ObjectContext context = cayenneRuntime.getContext();
+		ObjectContext context = cayenneRuntime.newContext();
 
 		List<Enrolment> list = ObjectSelect.query(Enrolment.class)
 				.where(Enrolment.ANGEL_ID.isNotNull())
@@ -38,7 +36,7 @@ public class CityEastFix extends AbstractUtil{
 
 	public void fixContacts()
 	{
-		ObjectContext context = cayenneRuntime.getContext();
+		ObjectContext context = cayenneRuntime.newContext();
 
 		List<Contact> list = ObjectSelect.query(Contact.class)
 				.where(Contact.ANGEL_ID.isNotNull())
@@ -59,7 +57,7 @@ public class CityEastFix extends AbstractUtil{
 
 	public void fixCourseClasses()
 	{
-		ObjectContext context = cayenneRuntime.getContext();
+		ObjectContext context = cayenneRuntime.newContext();
 		List<CourseClass> list = ObjectSelect.query(CourseClass.class)
 				.where(CourseClass.ANGEL_ID.isNotNull())
 				.and(ExpressionFactory.matchDbExp(CourseClass.COLLEGE.dot(College.ID_PK_COLUMN).getName(), 338))

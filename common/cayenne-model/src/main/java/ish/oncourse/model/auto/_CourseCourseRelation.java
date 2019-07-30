@@ -1,5 +1,9 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import org.apache.cayenne.exp.Property;
 
 import ish.oncourse.model.Course;
@@ -23,6 +27,10 @@ public abstract class _CourseCourseRelation extends EntityRelation {
     public static final Property<Course> FROM_COURSE = Property.create("fromCourse", Course.class);
     public static final Property<Course> TO_COURSE = Property.create("toCourse", Course.class);
 
+
+    protected Object fromCourse;
+    protected Object toCourse;
+
     public void setFromCourse(Course fromCourse) {
         setToOneTarget("fromCourse", fromCourse, true);
     }
@@ -30,7 +38,6 @@ public abstract class _CourseCourseRelation extends EntityRelation {
     public Course getFromCourse() {
         return (Course)readProperty("fromCourse");
     }
-
 
     public void setToCourse(Course toCourse) {
         setToOneTarget("toCourse", toCourse, true);
@@ -40,5 +47,60 @@ public abstract class _CourseCourseRelation extends EntityRelation {
         return (Course)readProperty("toCourse");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "fromCourse":
+                return this.fromCourse;
+            case "toCourse":
+                return this.toCourse;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "fromCourse":
+                this.fromCourse = val;
+                break;
+            case "toCourse":
+                this.toCourse = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.fromCourse);
+        out.writeObject(this.toCourse);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.fromCourse = in.readObject();
+        this.toCourse = in.readObject();
+    }
 
 }

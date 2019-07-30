@@ -1,10 +1,9 @@
 package ish.oncourse.services.paymentexpress;
 
 import com.paymentexpress.stubs.TransactionDetails;
-import com.paymentexpress.stubs.TransactionResult2;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Queueable;
-import org.apache.cayenne.CayenneDataObject;
+import org.apache.cayenne.BaseDataObject;
 
 /**
  * The interface is helper for processing payment express gateway operation. It was introduced to exclude code duplication.
@@ -13,7 +12,7 @@ import org.apache.cayenne.CayenneDataObject;
  * @param <P> - payment (PaymentIn or PaymentOut)
  * @param <T> - transaction (PaymentTransaction or PaymentOutTransaction)
  */
-public interface IPaymentSupport<P extends Queueable, T extends CayenneDataObject> {
+public interface IPaymentSupport<P extends Queueable, T extends BaseDataObject> {
 
     College getCollege();
 

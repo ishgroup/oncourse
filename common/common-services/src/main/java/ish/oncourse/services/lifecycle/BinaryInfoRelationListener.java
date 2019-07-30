@@ -7,11 +7,9 @@ import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.annotation.PostPersist;
 import org.apache.cayenne.annotation.PostUpdate;
-import org.apache.cayenne.annotation.PrePersist;
-import org.apache.cayenne.annotation.PreUpdate;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 
 public class BinaryInfoRelationListener {
 
@@ -42,7 +40,7 @@ public class BinaryInfoRelationListener {
 			Expression expr = ExpressionFactory.matchDbExp("angelId", relation.getEntityAngelId()).andExp(
 					ExpressionFactory.matchExp("college", webSiteService.getCurrentCollege()));
 
-			SelectQuery q = new SelectQuery(entityClass, expr);
+			ObjectSelect<? extends Queueable> q = ObjectSelect.query(entityClass, expr);
 
 			Queueable object = (Queueable) Cayenne.objectForQuery(objectContext, q);
 

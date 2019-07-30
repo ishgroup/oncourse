@@ -16,7 +16,10 @@ abstract class NoDbApiTest {
     @Before
     void setup() throws Exception {
         testContext = new TestContext().shouldCreateTables(false).open()
-        cayenneRuntime = new ServerRuntime("cayenne-oncourse.xml", new WillowCayenneModuleBuilder().build())
+        cayenneRuntime = ServerRuntime.builder()
+                .addConfig("cayenne-oncourse.xml")
+                .addModule(new WillowCayenneModuleBuilder().build())
+                .build()
         cayenneService = new CayenneService(cayenneRuntime)
     }
 

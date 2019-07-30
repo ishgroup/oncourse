@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -255,919 +258,1770 @@ public abstract class _College extends WillowCayenneObject {
     public static final Property<List<WaitingList>> WAITING_LISTS = Property.create("waitingLists", List.class);
     public static final Property<List<WebSite>> WEB_SITES = Property.create("webSites", List.class);
 
+    protected String angelVersion;
+    protected String billingCode;
+    protected String collegeKey;
+    protected Long communicationKey;
+    protected KeyStatus communicationKeyStatus;
+    protected Date created;
+    protected Date firstRemoteAuthentication;
+    protected String ipAddress;
+    protected Boolean isTestingWebServicePayments;
+    protected Boolean isTestingWebSitePayments;
+    protected Boolean isWebServicePaymentsEnabled;
+    protected Boolean isWebSitePaymentsEnabled;
+    protected Date lastRemoteAuthentication;
+    protected Date modified;
+    protected String name;
+    protected String paymentGatewayAccount;
+    protected String paymentGatewayPass;
+    protected String purchaseOrder;
+    protected Boolean requiresAvetmiss;
+    protected String timeZone;
+    protected String webServicesSecurityCode;
+
+    protected Object applications;
+    protected Object assessmentClassModules;
+    protected Object attendances;
+    protected Object binaryInfoRelations;
+    protected Object binaryInfos;
+    protected Object certificateOutcomes;
+    protected Object certificates;
+    protected Object collegeDomains;
+    protected Object concessionTypes;
+    protected Object contactRelationTypes;
+    protected Object contactRelations;
+    protected Object contacts;
+    protected Object courseClasses;
+    protected Object courseModules;
+    protected Object courses;
+    protected Object customFees;
+    protected Object customFieldTypes;
+    protected Object discountConcessionTypes;
+    protected Object discountCourseClasses;
+    protected Object discountMembershipRelationTypes;
+    protected Object discountMemberships;
+    protected Object discounts;
+    protected Object emailTemplates;
+    protected Object enrolments;
+    protected Object instructions;
+    protected Object invoiceDueDates;
+    protected Object invoiceLineDiscounts;
+    protected Object invoiceLines;
+    protected Object invoices;
+    protected Object licenseFees;
+    protected Object logs;
+    protected Object messagePeople;
+    protected Object messageTemplates;
+    protected Object messages;
+    protected Object modules;
+    protected Object notificationTemplates;
+    protected Object outcomes;
+    protected Object paymentInLines;
+    protected Object paymentPlanLines;
+    protected Object paymentsIn;
+    protected Object paymentsOut;
+    protected Object preferences;
+    protected Object priorLearnings;
+    protected Object productItems;
+    protected Object products;
+    protected Object qualifications;
+    protected Object queuedRecords;
+    protected Object queuedTransactions;
+    protected Object rooms;
+    protected Object scripts;
+    protected Object sessionTutors;
+    protected Object sessions;
+    protected Object sites;
+    protected Object studentConcessions;
+    protected Object students;
+    protected Object tagGroupRequirements;
+    protected Object taggableTags;
+    protected Object taggables;
+    protected Object tags;
+    protected Object tutorRoles;
+    protected Object tutors;
+    protected Object waitingListSites;
+    protected Object waitingLists;
+    protected Object webSites;
+
     public void setAngelVersion(String angelVersion) {
-        writeProperty("angelVersion", angelVersion);
+        beforePropertyWrite("angelVersion", this.angelVersion, angelVersion);
+        this.angelVersion = angelVersion;
     }
+
     public String getAngelVersion() {
-        return (String)readProperty("angelVersion");
+        beforePropertyRead("angelVersion");
+        return this.angelVersion;
     }
 
     public void setBillingCode(String billingCode) {
-        writeProperty("billingCode", billingCode);
+        beforePropertyWrite("billingCode", this.billingCode, billingCode);
+        this.billingCode = billingCode;
     }
+
     public String getBillingCode() {
-        return (String)readProperty("billingCode");
+        beforePropertyRead("billingCode");
+        return this.billingCode;
     }
 
     public void setCollegeKey(String collegeKey) {
-        writeProperty("collegeKey", collegeKey);
+        beforePropertyWrite("collegeKey", this.collegeKey, collegeKey);
+        this.collegeKey = collegeKey;
     }
+
     public String getCollegeKey() {
-        return (String)readProperty("collegeKey");
+        beforePropertyRead("collegeKey");
+        return this.collegeKey;
     }
 
     public void setCommunicationKey(Long communicationKey) {
-        writeProperty("communicationKey", communicationKey);
+        beforePropertyWrite("communicationKey", this.communicationKey, communicationKey);
+        this.communicationKey = communicationKey;
     }
+
     public Long getCommunicationKey() {
-        return (Long)readProperty("communicationKey");
+        beforePropertyRead("communicationKey");
+        return this.communicationKey;
     }
 
     public void setCommunicationKeyStatus(KeyStatus communicationKeyStatus) {
-        writeProperty("communicationKeyStatus", communicationKeyStatus);
+        beforePropertyWrite("communicationKeyStatus", this.communicationKeyStatus, communicationKeyStatus);
+        this.communicationKeyStatus = communicationKeyStatus;
     }
+
     public KeyStatus getCommunicationKeyStatus() {
-        return (KeyStatus)readProperty("communicationKeyStatus");
+        beforePropertyRead("communicationKeyStatus");
+        return this.communicationKeyStatus;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setFirstRemoteAuthentication(Date firstRemoteAuthentication) {
-        writeProperty("firstRemoteAuthentication", firstRemoteAuthentication);
+        beforePropertyWrite("firstRemoteAuthentication", this.firstRemoteAuthentication, firstRemoteAuthentication);
+        this.firstRemoteAuthentication = firstRemoteAuthentication;
     }
+
     public Date getFirstRemoteAuthentication() {
-        return (Date)readProperty("firstRemoteAuthentication");
+        beforePropertyRead("firstRemoteAuthentication");
+        return this.firstRemoteAuthentication;
     }
 
     public void setIpAddress(String ipAddress) {
-        writeProperty("ipAddress", ipAddress);
+        beforePropertyWrite("ipAddress", this.ipAddress, ipAddress);
+        this.ipAddress = ipAddress;
     }
+
     public String getIpAddress() {
-        return (String)readProperty("ipAddress");
+        beforePropertyRead("ipAddress");
+        return this.ipAddress;
     }
 
     public void setIsTestingWebServicePayments(Boolean isTestingWebServicePayments) {
-        writeProperty("isTestingWebServicePayments", isTestingWebServicePayments);
+        beforePropertyWrite("isTestingWebServicePayments", this.isTestingWebServicePayments, isTestingWebServicePayments);
+        this.isTestingWebServicePayments = isTestingWebServicePayments;
     }
+
     public Boolean getIsTestingWebServicePayments() {
-        return (Boolean)readProperty("isTestingWebServicePayments");
+        beforePropertyRead("isTestingWebServicePayments");
+        return this.isTestingWebServicePayments;
     }
 
     public void setIsTestingWebSitePayments(Boolean isTestingWebSitePayments) {
-        writeProperty("isTestingWebSitePayments", isTestingWebSitePayments);
+        beforePropertyWrite("isTestingWebSitePayments", this.isTestingWebSitePayments, isTestingWebSitePayments);
+        this.isTestingWebSitePayments = isTestingWebSitePayments;
     }
+
     public Boolean getIsTestingWebSitePayments() {
-        return (Boolean)readProperty("isTestingWebSitePayments");
+        beforePropertyRead("isTestingWebSitePayments");
+        return this.isTestingWebSitePayments;
     }
 
     public void setIsWebServicePaymentsEnabled(Boolean isWebServicePaymentsEnabled) {
-        writeProperty("isWebServicePaymentsEnabled", isWebServicePaymentsEnabled);
+        beforePropertyWrite("isWebServicePaymentsEnabled", this.isWebServicePaymentsEnabled, isWebServicePaymentsEnabled);
+        this.isWebServicePaymentsEnabled = isWebServicePaymentsEnabled;
     }
+
     public Boolean getIsWebServicePaymentsEnabled() {
-        return (Boolean)readProperty("isWebServicePaymentsEnabled");
+        beforePropertyRead("isWebServicePaymentsEnabled");
+        return this.isWebServicePaymentsEnabled;
     }
 
     public void setIsWebSitePaymentsEnabled(Boolean isWebSitePaymentsEnabled) {
-        writeProperty("isWebSitePaymentsEnabled", isWebSitePaymentsEnabled);
+        beforePropertyWrite("isWebSitePaymentsEnabled", this.isWebSitePaymentsEnabled, isWebSitePaymentsEnabled);
+        this.isWebSitePaymentsEnabled = isWebSitePaymentsEnabled;
     }
+
     public Boolean getIsWebSitePaymentsEnabled() {
-        return (Boolean)readProperty("isWebSitePaymentsEnabled");
+        beforePropertyRead("isWebSitePaymentsEnabled");
+        return this.isWebSitePaymentsEnabled;
     }
 
     public void setLastRemoteAuthentication(Date lastRemoteAuthentication) {
-        writeProperty("lastRemoteAuthentication", lastRemoteAuthentication);
+        beforePropertyWrite("lastRemoteAuthentication", this.lastRemoteAuthentication, lastRemoteAuthentication);
+        this.lastRemoteAuthentication = lastRemoteAuthentication;
     }
+
     public Date getLastRemoteAuthentication() {
-        return (Date)readProperty("lastRemoteAuthentication");
+        beforePropertyRead("lastRemoteAuthentication");
+        return this.lastRemoteAuthentication;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        beforePropertyWrite("name", this.name, name);
+        this.name = name;
     }
+
     public String getName() {
-        return (String)readProperty("name");
+        beforePropertyRead("name");
+        return this.name;
     }
 
     public void setPaymentGatewayAccount(String paymentGatewayAccount) {
-        writeProperty("paymentGatewayAccount", paymentGatewayAccount);
+        beforePropertyWrite("paymentGatewayAccount", this.paymentGatewayAccount, paymentGatewayAccount);
+        this.paymentGatewayAccount = paymentGatewayAccount;
     }
+
     public String getPaymentGatewayAccount() {
-        return (String)readProperty("paymentGatewayAccount");
+        beforePropertyRead("paymentGatewayAccount");
+        return this.paymentGatewayAccount;
     }
 
     public void setPaymentGatewayPass(String paymentGatewayPass) {
-        writeProperty("paymentGatewayPass", paymentGatewayPass);
+        beforePropertyWrite("paymentGatewayPass", this.paymentGatewayPass, paymentGatewayPass);
+        this.paymentGatewayPass = paymentGatewayPass;
     }
+
     public String getPaymentGatewayPass() {
-        return (String)readProperty("paymentGatewayPass");
+        beforePropertyRead("paymentGatewayPass");
+        return this.paymentGatewayPass;
     }
 
     public void setPurchaseOrder(String purchaseOrder) {
-        writeProperty("purchaseOrder", purchaseOrder);
+        beforePropertyWrite("purchaseOrder", this.purchaseOrder, purchaseOrder);
+        this.purchaseOrder = purchaseOrder;
     }
+
     public String getPurchaseOrder() {
-        return (String)readProperty("purchaseOrder");
+        beforePropertyRead("purchaseOrder");
+        return this.purchaseOrder;
     }
 
     public void setRequiresAvetmiss(Boolean requiresAvetmiss) {
-        writeProperty("requiresAvetmiss", requiresAvetmiss);
+        beforePropertyWrite("requiresAvetmiss", this.requiresAvetmiss, requiresAvetmiss);
+        this.requiresAvetmiss = requiresAvetmiss;
     }
+
     public Boolean getRequiresAvetmiss() {
-        return (Boolean)readProperty("requiresAvetmiss");
+        beforePropertyRead("requiresAvetmiss");
+        return this.requiresAvetmiss;
     }
 
     public void setTimeZone(String timeZone) {
-        writeProperty("timeZone", timeZone);
+        beforePropertyWrite("timeZone", this.timeZone, timeZone);
+        this.timeZone = timeZone;
     }
+
     public String getTimeZone() {
-        return (String)readProperty("timeZone");
+        beforePropertyRead("timeZone");
+        return this.timeZone;
     }
 
     public void setWebServicesSecurityCode(String webServicesSecurityCode) {
-        writeProperty("webServicesSecurityCode", webServicesSecurityCode);
+        beforePropertyWrite("webServicesSecurityCode", this.webServicesSecurityCode, webServicesSecurityCode);
+        this.webServicesSecurityCode = webServicesSecurityCode;
     }
+
     public String getWebServicesSecurityCode() {
-        return (String)readProperty("webServicesSecurityCode");
+        beforePropertyRead("webServicesSecurityCode");
+        return this.webServicesSecurityCode;
     }
 
     public void addToApplications(Application obj) {
         addToManyTarget("applications", obj, true);
     }
+
     public void removeFromApplications(Application obj) {
         removeToManyTarget("applications", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Application> getApplications() {
         return (List<Application>)readProperty("applications");
     }
 
-
     public void addToAssessmentClassModules(AssessmentClassModule obj) {
         addToManyTarget("assessmentClassModules", obj, true);
     }
+
     public void removeFromAssessmentClassModules(AssessmentClassModule obj) {
         removeToManyTarget("assessmentClassModules", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<AssessmentClassModule> getAssessmentClassModules() {
         return (List<AssessmentClassModule>)readProperty("assessmentClassModules");
     }
 
-
     public void addToAttendances(Attendance obj) {
         addToManyTarget("attendances", obj, true);
     }
+
     public void removeFromAttendances(Attendance obj) {
         removeToManyTarget("attendances", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Attendance> getAttendances() {
         return (List<Attendance>)readProperty("attendances");
     }
 
-
     public void addToBinaryInfoRelations(BinaryInfoRelation obj) {
         addToManyTarget("binaryInfoRelations", obj, true);
     }
+
     public void removeFromBinaryInfoRelations(BinaryInfoRelation obj) {
         removeToManyTarget("binaryInfoRelations", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<BinaryInfoRelation> getBinaryInfoRelations() {
         return (List<BinaryInfoRelation>)readProperty("binaryInfoRelations");
     }
 
-
     public void addToBinaryInfos(BinaryInfo obj) {
         addToManyTarget("binaryInfos", obj, true);
     }
+
     public void removeFromBinaryInfos(BinaryInfo obj) {
         removeToManyTarget("binaryInfos", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<BinaryInfo> getBinaryInfos() {
         return (List<BinaryInfo>)readProperty("binaryInfos");
     }
 
-
     public void addToCertificateOutcomes(CertificateOutcome obj) {
         addToManyTarget("certificateOutcomes", obj, true);
     }
+
     public void removeFromCertificateOutcomes(CertificateOutcome obj) {
         removeToManyTarget("certificateOutcomes", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<CertificateOutcome> getCertificateOutcomes() {
         return (List<CertificateOutcome>)readProperty("certificateOutcomes");
     }
 
-
     public void addToCertificates(Certificate obj) {
         addToManyTarget("certificates", obj, true);
     }
+
     public void removeFromCertificates(Certificate obj) {
         removeToManyTarget("certificates", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Certificate> getCertificates() {
         return (List<Certificate>)readProperty("certificates");
     }
 
-
     public void addToCollegeDomains(WebHostName obj) {
         addToManyTarget("collegeDomains", obj, true);
     }
+
     public void removeFromCollegeDomains(WebHostName obj) {
         removeToManyTarget("collegeDomains", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<WebHostName> getCollegeDomains() {
         return (List<WebHostName>)readProperty("collegeDomains");
     }
 
-
     public void addToConcessionTypes(ConcessionType obj) {
         addToManyTarget("concessionTypes", obj, true);
     }
+
     public void removeFromConcessionTypes(ConcessionType obj) {
         removeToManyTarget("concessionTypes", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<ConcessionType> getConcessionTypes() {
         return (List<ConcessionType>)readProperty("concessionTypes");
     }
 
-
     public void addToContactRelationTypes(ContactRelationType obj) {
         addToManyTarget("contactRelationTypes", obj, true);
     }
+
     public void removeFromContactRelationTypes(ContactRelationType obj) {
         removeToManyTarget("contactRelationTypes", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<ContactRelationType> getContactRelationTypes() {
         return (List<ContactRelationType>)readProperty("contactRelationTypes");
     }
 
-
     public void addToContactRelations(ContactRelation obj) {
         addToManyTarget("contactRelations", obj, true);
     }
+
     public void removeFromContactRelations(ContactRelation obj) {
         removeToManyTarget("contactRelations", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<ContactRelation> getContactRelations() {
         return (List<ContactRelation>)readProperty("contactRelations");
     }
 
-
     public void addToContacts(Contact obj) {
         addToManyTarget("contacts", obj, true);
     }
+
     public void removeFromContacts(Contact obj) {
         removeToManyTarget("contacts", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Contact> getContacts() {
         return (List<Contact>)readProperty("contacts");
     }
 
-
     public void addToCourseClasses(CourseClass obj) {
         addToManyTarget("courseClasses", obj, true);
     }
+
     public void removeFromCourseClasses(CourseClass obj) {
         removeToManyTarget("courseClasses", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<CourseClass> getCourseClasses() {
         return (List<CourseClass>)readProperty("courseClasses");
     }
 
-
     public void addToCourseModules(CourseModule obj) {
         addToManyTarget("courseModules", obj, true);
     }
+
     public void removeFromCourseModules(CourseModule obj) {
         removeToManyTarget("courseModules", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<CourseModule> getCourseModules() {
         return (List<CourseModule>)readProperty("courseModules");
     }
 
-
     public void addToCourses(Course obj) {
         addToManyTarget("courses", obj, true);
     }
+
     public void removeFromCourses(Course obj) {
         removeToManyTarget("courses", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Course> getCourses() {
         return (List<Course>)readProperty("courses");
     }
 
-
     public void addToCustomFees(CustomFee obj) {
         addToManyTarget("customFees", obj, true);
     }
+
     public void removeFromCustomFees(CustomFee obj) {
         removeToManyTarget("customFees", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<CustomFee> getCustomFees() {
         return (List<CustomFee>)readProperty("customFees");
     }
 
-
     public void addToCustomFieldTypes(CustomFieldType obj) {
         addToManyTarget("customFieldTypes", obj, true);
     }
+
     public void removeFromCustomFieldTypes(CustomFieldType obj) {
         removeToManyTarget("customFieldTypes", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<CustomFieldType> getCustomFieldTypes() {
         return (List<CustomFieldType>)readProperty("customFieldTypes");
     }
 
-
     public void addToDiscountConcessionTypes(DiscountConcessionType obj) {
         addToManyTarget("discountConcessionTypes", obj, true);
     }
+
     public void removeFromDiscountConcessionTypes(DiscountConcessionType obj) {
         removeToManyTarget("discountConcessionTypes", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<DiscountConcessionType> getDiscountConcessionTypes() {
         return (List<DiscountConcessionType>)readProperty("discountConcessionTypes");
     }
 
-
     public void addToDiscountCourseClasses(DiscountCourseClass obj) {
         addToManyTarget("discountCourseClasses", obj, true);
     }
+
     public void removeFromDiscountCourseClasses(DiscountCourseClass obj) {
         removeToManyTarget("discountCourseClasses", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<DiscountCourseClass> getDiscountCourseClasses() {
         return (List<DiscountCourseClass>)readProperty("discountCourseClasses");
     }
 
-
     public void addToDiscountMembershipRelationTypes(DiscountMembershipRelationType obj) {
         addToManyTarget("discountMembershipRelationTypes", obj, true);
     }
+
     public void removeFromDiscountMembershipRelationTypes(DiscountMembershipRelationType obj) {
         removeToManyTarget("discountMembershipRelationTypes", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<DiscountMembershipRelationType> getDiscountMembershipRelationTypes() {
         return (List<DiscountMembershipRelationType>)readProperty("discountMembershipRelationTypes");
     }
 
-
     public void addToDiscountMemberships(DiscountMembership obj) {
         addToManyTarget("discountMemberships", obj, true);
     }
+
     public void removeFromDiscountMemberships(DiscountMembership obj) {
         removeToManyTarget("discountMemberships", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<DiscountMembership> getDiscountMemberships() {
         return (List<DiscountMembership>)readProperty("discountMemberships");
     }
 
-
     public void addToDiscounts(Discount obj) {
         addToManyTarget("discounts", obj, true);
     }
+
     public void removeFromDiscounts(Discount obj) {
         removeToManyTarget("discounts", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Discount> getDiscounts() {
         return (List<Discount>)readProperty("discounts");
     }
 
-
     public void addToEmailTemplates(EmailTemplate obj) {
         addToManyTarget("emailTemplates", obj, true);
     }
+
     public void removeFromEmailTemplates(EmailTemplate obj) {
         removeToManyTarget("emailTemplates", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<EmailTemplate> getEmailTemplates() {
         return (List<EmailTemplate>)readProperty("emailTemplates");
     }
 
-
     public void addToEnrolments(Enrolment obj) {
         addToManyTarget("enrolments", obj, true);
     }
+
     public void removeFromEnrolments(Enrolment obj) {
         removeToManyTarget("enrolments", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Enrolment> getEnrolments() {
         return (List<Enrolment>)readProperty("enrolments");
     }
 
-
     public void addToInstructions(Instruction obj) {
         addToManyTarget("instructions", obj, true);
     }
+
     public void removeFromInstructions(Instruction obj) {
         removeToManyTarget("instructions", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Instruction> getInstructions() {
         return (List<Instruction>)readProperty("instructions");
     }
 
-
     public void addToInvoiceDueDates(InvoiceDueDate obj) {
         addToManyTarget("invoiceDueDates", obj, true);
     }
+
     public void removeFromInvoiceDueDates(InvoiceDueDate obj) {
         removeToManyTarget("invoiceDueDates", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<InvoiceDueDate> getInvoiceDueDates() {
         return (List<InvoiceDueDate>)readProperty("invoiceDueDates");
     }
 
-
     public void addToInvoiceLineDiscounts(InvoiceLineDiscount obj) {
         addToManyTarget("invoiceLineDiscounts", obj, true);
     }
+
     public void removeFromInvoiceLineDiscounts(InvoiceLineDiscount obj) {
         removeToManyTarget("invoiceLineDiscounts", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<InvoiceLineDiscount> getInvoiceLineDiscounts() {
         return (List<InvoiceLineDiscount>)readProperty("invoiceLineDiscounts");
     }
 
-
     public void addToInvoiceLines(InvoiceLine obj) {
         addToManyTarget("invoiceLines", obj, true);
     }
+
     public void removeFromInvoiceLines(InvoiceLine obj) {
         removeToManyTarget("invoiceLines", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<InvoiceLine> getInvoiceLines() {
         return (List<InvoiceLine>)readProperty("invoiceLines");
     }
 
-
     public void addToInvoices(Invoice obj) {
         addToManyTarget("invoices", obj, true);
     }
+
     public void removeFromInvoices(Invoice obj) {
         removeToManyTarget("invoices", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Invoice> getInvoices() {
         return (List<Invoice>)readProperty("invoices");
     }
 
-
     public void addToLicenseFees(LicenseFee obj) {
         addToManyTarget("licenseFees", obj, true);
     }
+
     public void removeFromLicenseFees(LicenseFee obj) {
         removeToManyTarget("licenseFees", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<LicenseFee> getLicenseFees() {
         return (List<LicenseFee>)readProperty("licenseFees");
     }
 
-
     public void addToLogs(Log obj) {
         addToManyTarget("logs", obj, true);
     }
+
     public void removeFromLogs(Log obj) {
         removeToManyTarget("logs", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Log> getLogs() {
         return (List<Log>)readProperty("logs");
     }
 
-
     public void addToMessagePeople(MessagePerson obj) {
         addToManyTarget("messagePeople", obj, true);
     }
+
     public void removeFromMessagePeople(MessagePerson obj) {
         removeToManyTarget("messagePeople", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<MessagePerson> getMessagePeople() {
         return (List<MessagePerson>)readProperty("messagePeople");
     }
 
-
     public void addToMessageTemplates(MessageTemplate obj) {
         addToManyTarget("messageTemplates", obj, true);
     }
+
     public void removeFromMessageTemplates(MessageTemplate obj) {
         removeToManyTarget("messageTemplates", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<MessageTemplate> getMessageTemplates() {
         return (List<MessageTemplate>)readProperty("messageTemplates");
     }
 
-
     public void addToMessages(Message obj) {
         addToManyTarget("messages", obj, true);
     }
+
     public void removeFromMessages(Message obj) {
         removeToManyTarget("messages", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Message> getMessages() {
         return (List<Message>)readProperty("messages");
     }
 
-
     public void addToModules(Module obj) {
         addToManyTarget("modules", obj, true);
     }
+
     public void removeFromModules(Module obj) {
         removeToManyTarget("modules", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Module> getModules() {
         return (List<Module>)readProperty("modules");
     }
 
-
     public void addToNotificationTemplates(NotificationTemplate obj) {
         addToManyTarget("notificationTemplates", obj, true);
     }
+
     public void removeFromNotificationTemplates(NotificationTemplate obj) {
         removeToManyTarget("notificationTemplates", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<NotificationTemplate> getNotificationTemplates() {
         return (List<NotificationTemplate>)readProperty("notificationTemplates");
     }
 
-
     public void addToOutcomes(Outcome obj) {
         addToManyTarget("outcomes", obj, true);
     }
+
     public void removeFromOutcomes(Outcome obj) {
         removeToManyTarget("outcomes", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Outcome> getOutcomes() {
         return (List<Outcome>)readProperty("outcomes");
     }
 
-
     public void addToPaymentInLines(PaymentInLine obj) {
         addToManyTarget("paymentInLines", obj, true);
     }
+
     public void removeFromPaymentInLines(PaymentInLine obj) {
         removeToManyTarget("paymentInLines", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<PaymentInLine> getPaymentInLines() {
         return (List<PaymentInLine>)readProperty("paymentInLines");
     }
 
-
     public void addToPaymentPlanLines(CourseClassPaymentPlanLine obj) {
         addToManyTarget("paymentPlanLines", obj, true);
     }
+
     public void removeFromPaymentPlanLines(CourseClassPaymentPlanLine obj) {
         removeToManyTarget("paymentPlanLines", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<CourseClassPaymentPlanLine> getPaymentPlanLines() {
         return (List<CourseClassPaymentPlanLine>)readProperty("paymentPlanLines");
     }
 
-
     public void addToPaymentsIn(PaymentIn obj) {
         addToManyTarget("paymentsIn", obj, true);
     }
+
     public void removeFromPaymentsIn(PaymentIn obj) {
         removeToManyTarget("paymentsIn", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<PaymentIn> getPaymentsIn() {
         return (List<PaymentIn>)readProperty("paymentsIn");
     }
 
-
     public void addToPaymentsOut(PaymentOut obj) {
         addToManyTarget("paymentsOut", obj, true);
     }
+
     public void removeFromPaymentsOut(PaymentOut obj) {
         removeToManyTarget("paymentsOut", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<PaymentOut> getPaymentsOut() {
         return (List<PaymentOut>)readProperty("paymentsOut");
     }
 
-
     public void addToPreferences(Preference obj) {
         addToManyTarget("preferences", obj, true);
     }
+
     public void removeFromPreferences(Preference obj) {
         removeToManyTarget("preferences", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Preference> getPreferences() {
         return (List<Preference>)readProperty("preferences");
     }
 
-
     public void addToPriorLearnings(PriorLearning obj) {
         addToManyTarget("priorLearnings", obj, true);
     }
+
     public void removeFromPriorLearnings(PriorLearning obj) {
         removeToManyTarget("priorLearnings", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<PriorLearning> getPriorLearnings() {
         return (List<PriorLearning>)readProperty("priorLearnings");
     }
 
-
     public void addToProductItems(ProductItem obj) {
         addToManyTarget("productItems", obj, true);
     }
+
     public void removeFromProductItems(ProductItem obj) {
         removeToManyTarget("productItems", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<ProductItem> getProductItems() {
         return (List<ProductItem>)readProperty("productItems");
     }
 
-
     public void addToProducts(Product obj) {
         addToManyTarget("products", obj, true);
     }
+
     public void removeFromProducts(Product obj) {
         removeToManyTarget("products", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Product> getProducts() {
         return (List<Product>)readProperty("products");
     }
 
-
     public void addToQualifications(Qualification obj) {
         addToManyTarget("qualifications", obj, true);
     }
+
     public void removeFromQualifications(Qualification obj) {
         removeToManyTarget("qualifications", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Qualification> getQualifications() {
         return (List<Qualification>)readProperty("qualifications");
     }
 
-
     public void addToQueuedRecords(QueuedRecord obj) {
         addToManyTarget("queuedRecords", obj, true);
     }
+
     public void removeFromQueuedRecords(QueuedRecord obj) {
         removeToManyTarget("queuedRecords", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<QueuedRecord> getQueuedRecords() {
         return (List<QueuedRecord>)readProperty("queuedRecords");
     }
 
-
     public void addToQueuedTransactions(QueuedTransaction obj) {
         addToManyTarget("queuedTransactions", obj, true);
     }
+
     public void removeFromQueuedTransactions(QueuedTransaction obj) {
         removeToManyTarget("queuedTransactions", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<QueuedTransaction> getQueuedTransactions() {
         return (List<QueuedTransaction>)readProperty("queuedTransactions");
     }
 
-
     public void addToRooms(Room obj) {
         addToManyTarget("rooms", obj, true);
     }
+
     public void removeFromRooms(Room obj) {
         removeToManyTarget("rooms", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Room> getRooms() {
         return (List<Room>)readProperty("rooms");
     }
 
-
     public void addToScripts(Script obj) {
         addToManyTarget("scripts", obj, true);
     }
+
     public void removeFromScripts(Script obj) {
         removeToManyTarget("scripts", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Script> getScripts() {
         return (List<Script>)readProperty("scripts");
     }
 
-
     public void addToSessionTutors(SessionTutor obj) {
         addToManyTarget("sessionTutors", obj, true);
     }
+
     public void removeFromSessionTutors(SessionTutor obj) {
         removeToManyTarget("sessionTutors", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<SessionTutor> getSessionTutors() {
         return (List<SessionTutor>)readProperty("sessionTutors");
     }
 
-
     public void addToSessions(Session obj) {
         addToManyTarget("sessions", obj, true);
     }
+
     public void removeFromSessions(Session obj) {
         removeToManyTarget("sessions", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Session> getSessions() {
         return (List<Session>)readProperty("sessions");
     }
 
-
     public void addToSites(Site obj) {
         addToManyTarget("sites", obj, true);
     }
+
     public void removeFromSites(Site obj) {
         removeToManyTarget("sites", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Site> getSites() {
         return (List<Site>)readProperty("sites");
     }
 
-
     public void addToStudentConcessions(StudentConcession obj) {
         addToManyTarget("studentConcessions", obj, true);
     }
+
     public void removeFromStudentConcessions(StudentConcession obj) {
         removeToManyTarget("studentConcessions", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<StudentConcession> getStudentConcessions() {
         return (List<StudentConcession>)readProperty("studentConcessions");
     }
 
-
     public void addToStudents(Student obj) {
         addToManyTarget("students", obj, true);
     }
+
     public void removeFromStudents(Student obj) {
         removeToManyTarget("students", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Student> getStudents() {
         return (List<Student>)readProperty("students");
     }
 
-
     public void addToTagGroupRequirements(TagGroupRequirement obj) {
         addToManyTarget("tagGroupRequirements", obj, true);
     }
+
     public void removeFromTagGroupRequirements(TagGroupRequirement obj) {
         removeToManyTarget("tagGroupRequirements", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<TagGroupRequirement> getTagGroupRequirements() {
         return (List<TagGroupRequirement>)readProperty("tagGroupRequirements");
     }
 
-
     public void addToTaggableTags(TaggableTag obj) {
         addToManyTarget("taggableTags", obj, true);
     }
+
     public void removeFromTaggableTags(TaggableTag obj) {
         removeToManyTarget("taggableTags", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<TaggableTag> getTaggableTags() {
         return (List<TaggableTag>)readProperty("taggableTags");
     }
 
-
     public void addToTaggables(Taggable obj) {
         addToManyTarget("taggables", obj, true);
     }
+
     public void removeFromTaggables(Taggable obj) {
         removeToManyTarget("taggables", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Taggable> getTaggables() {
         return (List<Taggable>)readProperty("taggables");
     }
 
-
     public void addToTags(Tag obj) {
         addToManyTarget("tags", obj, true);
     }
+
     public void removeFromTags(Tag obj) {
         removeToManyTarget("tags", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Tag> getTags() {
         return (List<Tag>)readProperty("tags");
     }
 
-
     public void addToTutorRoles(TutorRole obj) {
         addToManyTarget("tutorRoles", obj, true);
     }
+
     public void removeFromTutorRoles(TutorRole obj) {
         removeToManyTarget("tutorRoles", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<TutorRole> getTutorRoles() {
         return (List<TutorRole>)readProperty("tutorRoles");
     }
 
-
     public void addToTutors(Tutor obj) {
         addToManyTarget("tutors", obj, true);
     }
+
     public void removeFromTutors(Tutor obj) {
         removeToManyTarget("tutors", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Tutor> getTutors() {
         return (List<Tutor>)readProperty("tutors");
     }
 
-
     public void addToWaitingListSites(WaitingListSite obj) {
         addToManyTarget("waitingListSites", obj, true);
     }
+
     public void removeFromWaitingListSites(WaitingListSite obj) {
         removeToManyTarget("waitingListSites", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<WaitingListSite> getWaitingListSites() {
         return (List<WaitingListSite>)readProperty("waitingListSites");
     }
 
-
     public void addToWaitingLists(WaitingList obj) {
         addToManyTarget("waitingLists", obj, true);
     }
+
     public void removeFromWaitingLists(WaitingList obj) {
         removeToManyTarget("waitingLists", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<WaitingList> getWaitingLists() {
         return (List<WaitingList>)readProperty("waitingLists");
     }
 
-
     public void addToWebSites(WebSite obj) {
         addToManyTarget("webSites", obj, true);
     }
+
     public void removeFromWebSites(WebSite obj) {
         removeToManyTarget("webSites", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<WebSite> getWebSites() {
         return (List<WebSite>)readProperty("webSites");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelVersion":
+                return this.angelVersion;
+            case "billingCode":
+                return this.billingCode;
+            case "collegeKey":
+                return this.collegeKey;
+            case "communicationKey":
+                return this.communicationKey;
+            case "communicationKeyStatus":
+                return this.communicationKeyStatus;
+            case "created":
+                return this.created;
+            case "firstRemoteAuthentication":
+                return this.firstRemoteAuthentication;
+            case "ipAddress":
+                return this.ipAddress;
+            case "isTestingWebServicePayments":
+                return this.isTestingWebServicePayments;
+            case "isTestingWebSitePayments":
+                return this.isTestingWebSitePayments;
+            case "isWebServicePaymentsEnabled":
+                return this.isWebServicePaymentsEnabled;
+            case "isWebSitePaymentsEnabled":
+                return this.isWebSitePaymentsEnabled;
+            case "lastRemoteAuthentication":
+                return this.lastRemoteAuthentication;
+            case "modified":
+                return this.modified;
+            case "name":
+                return this.name;
+            case "paymentGatewayAccount":
+                return this.paymentGatewayAccount;
+            case "paymentGatewayPass":
+                return this.paymentGatewayPass;
+            case "purchaseOrder":
+                return this.purchaseOrder;
+            case "requiresAvetmiss":
+                return this.requiresAvetmiss;
+            case "timeZone":
+                return this.timeZone;
+            case "webServicesSecurityCode":
+                return this.webServicesSecurityCode;
+            case "applications":
+                return this.applications;
+            case "assessmentClassModules":
+                return this.assessmentClassModules;
+            case "attendances":
+                return this.attendances;
+            case "binaryInfoRelations":
+                return this.binaryInfoRelations;
+            case "binaryInfos":
+                return this.binaryInfos;
+            case "certificateOutcomes":
+                return this.certificateOutcomes;
+            case "certificates":
+                return this.certificates;
+            case "collegeDomains":
+                return this.collegeDomains;
+            case "concessionTypes":
+                return this.concessionTypes;
+            case "contactRelationTypes":
+                return this.contactRelationTypes;
+            case "contactRelations":
+                return this.contactRelations;
+            case "contacts":
+                return this.contacts;
+            case "courseClasses":
+                return this.courseClasses;
+            case "courseModules":
+                return this.courseModules;
+            case "courses":
+                return this.courses;
+            case "customFees":
+                return this.customFees;
+            case "customFieldTypes":
+                return this.customFieldTypes;
+            case "discountConcessionTypes":
+                return this.discountConcessionTypes;
+            case "discountCourseClasses":
+                return this.discountCourseClasses;
+            case "discountMembershipRelationTypes":
+                return this.discountMembershipRelationTypes;
+            case "discountMemberships":
+                return this.discountMemberships;
+            case "discounts":
+                return this.discounts;
+            case "emailTemplates":
+                return this.emailTemplates;
+            case "enrolments":
+                return this.enrolments;
+            case "instructions":
+                return this.instructions;
+            case "invoiceDueDates":
+                return this.invoiceDueDates;
+            case "invoiceLineDiscounts":
+                return this.invoiceLineDiscounts;
+            case "invoiceLines":
+                return this.invoiceLines;
+            case "invoices":
+                return this.invoices;
+            case "licenseFees":
+                return this.licenseFees;
+            case "logs":
+                return this.logs;
+            case "messagePeople":
+                return this.messagePeople;
+            case "messageTemplates":
+                return this.messageTemplates;
+            case "messages":
+                return this.messages;
+            case "modules":
+                return this.modules;
+            case "notificationTemplates":
+                return this.notificationTemplates;
+            case "outcomes":
+                return this.outcomes;
+            case "paymentInLines":
+                return this.paymentInLines;
+            case "paymentPlanLines":
+                return this.paymentPlanLines;
+            case "paymentsIn":
+                return this.paymentsIn;
+            case "paymentsOut":
+                return this.paymentsOut;
+            case "preferences":
+                return this.preferences;
+            case "priorLearnings":
+                return this.priorLearnings;
+            case "productItems":
+                return this.productItems;
+            case "products":
+                return this.products;
+            case "qualifications":
+                return this.qualifications;
+            case "queuedRecords":
+                return this.queuedRecords;
+            case "queuedTransactions":
+                return this.queuedTransactions;
+            case "rooms":
+                return this.rooms;
+            case "scripts":
+                return this.scripts;
+            case "sessionTutors":
+                return this.sessionTutors;
+            case "sessions":
+                return this.sessions;
+            case "sites":
+                return this.sites;
+            case "studentConcessions":
+                return this.studentConcessions;
+            case "students":
+                return this.students;
+            case "tagGroupRequirements":
+                return this.tagGroupRequirements;
+            case "taggableTags":
+                return this.taggableTags;
+            case "taggables":
+                return this.taggables;
+            case "tags":
+                return this.tags;
+            case "tutorRoles":
+                return this.tutorRoles;
+            case "tutors":
+                return this.tutors;
+            case "waitingListSites":
+                return this.waitingListSites;
+            case "waitingLists":
+                return this.waitingLists;
+            case "webSites":
+                return this.webSites;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelVersion":
+                this.angelVersion = (String)val;
+                break;
+            case "billingCode":
+                this.billingCode = (String)val;
+                break;
+            case "collegeKey":
+                this.collegeKey = (String)val;
+                break;
+            case "communicationKey":
+                this.communicationKey = (Long)val;
+                break;
+            case "communicationKeyStatus":
+                this.communicationKeyStatus = (KeyStatus)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "firstRemoteAuthentication":
+                this.firstRemoteAuthentication = (Date)val;
+                break;
+            case "ipAddress":
+                this.ipAddress = (String)val;
+                break;
+            case "isTestingWebServicePayments":
+                this.isTestingWebServicePayments = (Boolean)val;
+                break;
+            case "isTestingWebSitePayments":
+                this.isTestingWebSitePayments = (Boolean)val;
+                break;
+            case "isWebServicePaymentsEnabled":
+                this.isWebServicePaymentsEnabled = (Boolean)val;
+                break;
+            case "isWebSitePaymentsEnabled":
+                this.isWebSitePaymentsEnabled = (Boolean)val;
+                break;
+            case "lastRemoteAuthentication":
+                this.lastRemoteAuthentication = (Date)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "name":
+                this.name = (String)val;
+                break;
+            case "paymentGatewayAccount":
+                this.paymentGatewayAccount = (String)val;
+                break;
+            case "paymentGatewayPass":
+                this.paymentGatewayPass = (String)val;
+                break;
+            case "purchaseOrder":
+                this.purchaseOrder = (String)val;
+                break;
+            case "requiresAvetmiss":
+                this.requiresAvetmiss = (Boolean)val;
+                break;
+            case "timeZone":
+                this.timeZone = (String)val;
+                break;
+            case "webServicesSecurityCode":
+                this.webServicesSecurityCode = (String)val;
+                break;
+            case "applications":
+                this.applications = val;
+                break;
+            case "assessmentClassModules":
+                this.assessmentClassModules = val;
+                break;
+            case "attendances":
+                this.attendances = val;
+                break;
+            case "binaryInfoRelations":
+                this.binaryInfoRelations = val;
+                break;
+            case "binaryInfos":
+                this.binaryInfos = val;
+                break;
+            case "certificateOutcomes":
+                this.certificateOutcomes = val;
+                break;
+            case "certificates":
+                this.certificates = val;
+                break;
+            case "collegeDomains":
+                this.collegeDomains = val;
+                break;
+            case "concessionTypes":
+                this.concessionTypes = val;
+                break;
+            case "contactRelationTypes":
+                this.contactRelationTypes = val;
+                break;
+            case "contactRelations":
+                this.contactRelations = val;
+                break;
+            case "contacts":
+                this.contacts = val;
+                break;
+            case "courseClasses":
+                this.courseClasses = val;
+                break;
+            case "courseModules":
+                this.courseModules = val;
+                break;
+            case "courses":
+                this.courses = val;
+                break;
+            case "customFees":
+                this.customFees = val;
+                break;
+            case "customFieldTypes":
+                this.customFieldTypes = val;
+                break;
+            case "discountConcessionTypes":
+                this.discountConcessionTypes = val;
+                break;
+            case "discountCourseClasses":
+                this.discountCourseClasses = val;
+                break;
+            case "discountMembershipRelationTypes":
+                this.discountMembershipRelationTypes = val;
+                break;
+            case "discountMemberships":
+                this.discountMemberships = val;
+                break;
+            case "discounts":
+                this.discounts = val;
+                break;
+            case "emailTemplates":
+                this.emailTemplates = val;
+                break;
+            case "enrolments":
+                this.enrolments = val;
+                break;
+            case "instructions":
+                this.instructions = val;
+                break;
+            case "invoiceDueDates":
+                this.invoiceDueDates = val;
+                break;
+            case "invoiceLineDiscounts":
+                this.invoiceLineDiscounts = val;
+                break;
+            case "invoiceLines":
+                this.invoiceLines = val;
+                break;
+            case "invoices":
+                this.invoices = val;
+                break;
+            case "licenseFees":
+                this.licenseFees = val;
+                break;
+            case "logs":
+                this.logs = val;
+                break;
+            case "messagePeople":
+                this.messagePeople = val;
+                break;
+            case "messageTemplates":
+                this.messageTemplates = val;
+                break;
+            case "messages":
+                this.messages = val;
+                break;
+            case "modules":
+                this.modules = val;
+                break;
+            case "notificationTemplates":
+                this.notificationTemplates = val;
+                break;
+            case "outcomes":
+                this.outcomes = val;
+                break;
+            case "paymentInLines":
+                this.paymentInLines = val;
+                break;
+            case "paymentPlanLines":
+                this.paymentPlanLines = val;
+                break;
+            case "paymentsIn":
+                this.paymentsIn = val;
+                break;
+            case "paymentsOut":
+                this.paymentsOut = val;
+                break;
+            case "preferences":
+                this.preferences = val;
+                break;
+            case "priorLearnings":
+                this.priorLearnings = val;
+                break;
+            case "productItems":
+                this.productItems = val;
+                break;
+            case "products":
+                this.products = val;
+                break;
+            case "qualifications":
+                this.qualifications = val;
+                break;
+            case "queuedRecords":
+                this.queuedRecords = val;
+                break;
+            case "queuedTransactions":
+                this.queuedTransactions = val;
+                break;
+            case "rooms":
+                this.rooms = val;
+                break;
+            case "scripts":
+                this.scripts = val;
+                break;
+            case "sessionTutors":
+                this.sessionTutors = val;
+                break;
+            case "sessions":
+                this.sessions = val;
+                break;
+            case "sites":
+                this.sites = val;
+                break;
+            case "studentConcessions":
+                this.studentConcessions = val;
+                break;
+            case "students":
+                this.students = val;
+                break;
+            case "tagGroupRequirements":
+                this.tagGroupRequirements = val;
+                break;
+            case "taggableTags":
+                this.taggableTags = val;
+                break;
+            case "taggables":
+                this.taggables = val;
+                break;
+            case "tags":
+                this.tags = val;
+                break;
+            case "tutorRoles":
+                this.tutorRoles = val;
+                break;
+            case "tutors":
+                this.tutors = val;
+                break;
+            case "waitingListSites":
+                this.waitingListSites = val;
+                break;
+            case "waitingLists":
+                this.waitingLists = val;
+                break;
+            case "webSites":
+                this.webSites = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelVersion);
+        out.writeObject(this.billingCode);
+        out.writeObject(this.collegeKey);
+        out.writeObject(this.communicationKey);
+        out.writeObject(this.communicationKeyStatus);
+        out.writeObject(this.created);
+        out.writeObject(this.firstRemoteAuthentication);
+        out.writeObject(this.ipAddress);
+        out.writeObject(this.isTestingWebServicePayments);
+        out.writeObject(this.isTestingWebSitePayments);
+        out.writeObject(this.isWebServicePaymentsEnabled);
+        out.writeObject(this.isWebSitePaymentsEnabled);
+        out.writeObject(this.lastRemoteAuthentication);
+        out.writeObject(this.modified);
+        out.writeObject(this.name);
+        out.writeObject(this.paymentGatewayAccount);
+        out.writeObject(this.paymentGatewayPass);
+        out.writeObject(this.purchaseOrder);
+        out.writeObject(this.requiresAvetmiss);
+        out.writeObject(this.timeZone);
+        out.writeObject(this.webServicesSecurityCode);
+        out.writeObject(this.applications);
+        out.writeObject(this.assessmentClassModules);
+        out.writeObject(this.attendances);
+        out.writeObject(this.binaryInfoRelations);
+        out.writeObject(this.binaryInfos);
+        out.writeObject(this.certificateOutcomes);
+        out.writeObject(this.certificates);
+        out.writeObject(this.collegeDomains);
+        out.writeObject(this.concessionTypes);
+        out.writeObject(this.contactRelationTypes);
+        out.writeObject(this.contactRelations);
+        out.writeObject(this.contacts);
+        out.writeObject(this.courseClasses);
+        out.writeObject(this.courseModules);
+        out.writeObject(this.courses);
+        out.writeObject(this.customFees);
+        out.writeObject(this.customFieldTypes);
+        out.writeObject(this.discountConcessionTypes);
+        out.writeObject(this.discountCourseClasses);
+        out.writeObject(this.discountMembershipRelationTypes);
+        out.writeObject(this.discountMemberships);
+        out.writeObject(this.discounts);
+        out.writeObject(this.emailTemplates);
+        out.writeObject(this.enrolments);
+        out.writeObject(this.instructions);
+        out.writeObject(this.invoiceDueDates);
+        out.writeObject(this.invoiceLineDiscounts);
+        out.writeObject(this.invoiceLines);
+        out.writeObject(this.invoices);
+        out.writeObject(this.licenseFees);
+        out.writeObject(this.logs);
+        out.writeObject(this.messagePeople);
+        out.writeObject(this.messageTemplates);
+        out.writeObject(this.messages);
+        out.writeObject(this.modules);
+        out.writeObject(this.notificationTemplates);
+        out.writeObject(this.outcomes);
+        out.writeObject(this.paymentInLines);
+        out.writeObject(this.paymentPlanLines);
+        out.writeObject(this.paymentsIn);
+        out.writeObject(this.paymentsOut);
+        out.writeObject(this.preferences);
+        out.writeObject(this.priorLearnings);
+        out.writeObject(this.productItems);
+        out.writeObject(this.products);
+        out.writeObject(this.qualifications);
+        out.writeObject(this.queuedRecords);
+        out.writeObject(this.queuedTransactions);
+        out.writeObject(this.rooms);
+        out.writeObject(this.scripts);
+        out.writeObject(this.sessionTutors);
+        out.writeObject(this.sessions);
+        out.writeObject(this.sites);
+        out.writeObject(this.studentConcessions);
+        out.writeObject(this.students);
+        out.writeObject(this.tagGroupRequirements);
+        out.writeObject(this.taggableTags);
+        out.writeObject(this.taggables);
+        out.writeObject(this.tags);
+        out.writeObject(this.tutorRoles);
+        out.writeObject(this.tutors);
+        out.writeObject(this.waitingListSites);
+        out.writeObject(this.waitingLists);
+        out.writeObject(this.webSites);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelVersion = (String)in.readObject();
+        this.billingCode = (String)in.readObject();
+        this.collegeKey = (String)in.readObject();
+        this.communicationKey = (Long)in.readObject();
+        this.communicationKeyStatus = (KeyStatus)in.readObject();
+        this.created = (Date)in.readObject();
+        this.firstRemoteAuthentication = (Date)in.readObject();
+        this.ipAddress = (String)in.readObject();
+        this.isTestingWebServicePayments = (Boolean)in.readObject();
+        this.isTestingWebSitePayments = (Boolean)in.readObject();
+        this.isWebServicePaymentsEnabled = (Boolean)in.readObject();
+        this.isWebSitePaymentsEnabled = (Boolean)in.readObject();
+        this.lastRemoteAuthentication = (Date)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.name = (String)in.readObject();
+        this.paymentGatewayAccount = (String)in.readObject();
+        this.paymentGatewayPass = (String)in.readObject();
+        this.purchaseOrder = (String)in.readObject();
+        this.requiresAvetmiss = (Boolean)in.readObject();
+        this.timeZone = (String)in.readObject();
+        this.webServicesSecurityCode = (String)in.readObject();
+        this.applications = in.readObject();
+        this.assessmentClassModules = in.readObject();
+        this.attendances = in.readObject();
+        this.binaryInfoRelations = in.readObject();
+        this.binaryInfos = in.readObject();
+        this.certificateOutcomes = in.readObject();
+        this.certificates = in.readObject();
+        this.collegeDomains = in.readObject();
+        this.concessionTypes = in.readObject();
+        this.contactRelationTypes = in.readObject();
+        this.contactRelations = in.readObject();
+        this.contacts = in.readObject();
+        this.courseClasses = in.readObject();
+        this.courseModules = in.readObject();
+        this.courses = in.readObject();
+        this.customFees = in.readObject();
+        this.customFieldTypes = in.readObject();
+        this.discountConcessionTypes = in.readObject();
+        this.discountCourseClasses = in.readObject();
+        this.discountMembershipRelationTypes = in.readObject();
+        this.discountMemberships = in.readObject();
+        this.discounts = in.readObject();
+        this.emailTemplates = in.readObject();
+        this.enrolments = in.readObject();
+        this.instructions = in.readObject();
+        this.invoiceDueDates = in.readObject();
+        this.invoiceLineDiscounts = in.readObject();
+        this.invoiceLines = in.readObject();
+        this.invoices = in.readObject();
+        this.licenseFees = in.readObject();
+        this.logs = in.readObject();
+        this.messagePeople = in.readObject();
+        this.messageTemplates = in.readObject();
+        this.messages = in.readObject();
+        this.modules = in.readObject();
+        this.notificationTemplates = in.readObject();
+        this.outcomes = in.readObject();
+        this.paymentInLines = in.readObject();
+        this.paymentPlanLines = in.readObject();
+        this.paymentsIn = in.readObject();
+        this.paymentsOut = in.readObject();
+        this.preferences = in.readObject();
+        this.priorLearnings = in.readObject();
+        this.productItems = in.readObject();
+        this.products = in.readObject();
+        this.qualifications = in.readObject();
+        this.queuedRecords = in.readObject();
+        this.queuedTransactions = in.readObject();
+        this.rooms = in.readObject();
+        this.scripts = in.readObject();
+        this.sessionTutors = in.readObject();
+        this.sessions = in.readObject();
+        this.sites = in.readObject();
+        this.studentConcessions = in.readObject();
+        this.students = in.readObject();
+        this.tagGroupRequirements = in.readObject();
+        this.taggableTags = in.readObject();
+        this.taggables = in.readObject();
+        this.tags = in.readObject();
+        this.tutorRoles = in.readObject();
+        this.tutors = in.readObject();
+        this.waitingListSites = in.readObject();
+        this.waitingLists = in.readObject();
+        this.webSites = in.readObject();
+    }
 
 }

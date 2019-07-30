@@ -1,13 +1,14 @@
 package ish.oncourse.solr.update.listener
 
+import ish.math.MoneyType
 import ish.oncourse.model.CourseClass
 import ish.oncourse.test.TestContext
 import ish.oncourse.test.context.CCollege
 import ish.oncourse.test.context.CCourse
 import ish.oncourse.test.context.DataContext
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.ObjectId
 import org.apache.cayenne.commitlog.CommitLogModule
+import org.apache.cayenne.configuration.server.ServerModule
 import org.apache.cayenne.configuration.server.ServerRuntime
 import org.junit.After
 import org.junit.Assert
@@ -40,8 +41,11 @@ class CourseSolrUpdateListenerTest {
             }
         }
 
-        ServerRuntime runtime = new ServerRuntime("cayenne-oncourse.xml", CommitLogModule.extend()
-                .addListener(listener).module())
+        ServerRuntime runtime = ServerRuntime.builder()
+                .addConfig("cayenne-oncourse.xml")
+                .addModule(CommitLogModule.extend().addListener(listener).module())
+                .addModule({ binder -> ServerModule.contributeUserTypes(binder).add(MoneyType) })
+                .build()
         testContext = new TestContext(serverRuntime: runtime)
         
         testContext.open()

@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 
 import org.apache.cayenne.exp.Property;
@@ -44,60 +47,97 @@ public abstract class _StudentConcession extends WillowCayenneObject {
     public static final Property<ConcessionType> CONCESSION_TYPE = Property.create("concessionType", ConcessionType.class);
     public static final Property<Student> STUDENT = Property.create("student", Student.class);
 
+    protected Long angelId;
+    protected Date authorisationExpiresOn;
+    protected Date authorisedOn;
+    protected String concessionNumber;
+    protected Date created;
+    protected Date expiresOn;
+    protected Date modified;
+    protected String timeZone;
+
+    protected Object college;
+    protected Object concessionType;
+    protected Object student;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setAuthorisationExpiresOn(Date authorisationExpiresOn) {
-        writeProperty("authorisationExpiresOn", authorisationExpiresOn);
+        beforePropertyWrite("authorisationExpiresOn", this.authorisationExpiresOn, authorisationExpiresOn);
+        this.authorisationExpiresOn = authorisationExpiresOn;
     }
+
     public Date getAuthorisationExpiresOn() {
-        return (Date)readProperty("authorisationExpiresOn");
+        beforePropertyRead("authorisationExpiresOn");
+        return this.authorisationExpiresOn;
     }
 
     public void setAuthorisedOn(Date authorisedOn) {
-        writeProperty("authorisedOn", authorisedOn);
+        beforePropertyWrite("authorisedOn", this.authorisedOn, authorisedOn);
+        this.authorisedOn = authorisedOn;
     }
+
     public Date getAuthorisedOn() {
-        return (Date)readProperty("authorisedOn");
+        beforePropertyRead("authorisedOn");
+        return this.authorisedOn;
     }
 
     public void setConcessionNumber(String concessionNumber) {
-        writeProperty("concessionNumber", concessionNumber);
+        beforePropertyWrite("concessionNumber", this.concessionNumber, concessionNumber);
+        this.concessionNumber = concessionNumber;
     }
+
     public String getConcessionNumber() {
-        return (String)readProperty("concessionNumber");
+        beforePropertyRead("concessionNumber");
+        return this.concessionNumber;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setExpiresOn(Date expiresOn) {
-        writeProperty("expiresOn", expiresOn);
+        beforePropertyWrite("expiresOn", this.expiresOn, expiresOn);
+        this.expiresOn = expiresOn;
     }
+
     public Date getExpiresOn() {
-        return (Date)readProperty("expiresOn");
+        beforePropertyRead("expiresOn");
+        return this.expiresOn;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setTimeZone(String timeZone) {
-        writeProperty("timeZone", timeZone);
+        beforePropertyWrite("timeZone", this.timeZone, timeZone);
+        this.timeZone = timeZone;
     }
+
     public String getTimeZone() {
-        return (String)readProperty("timeZone");
+        beforePropertyRead("timeZone");
+        return this.timeZone;
     }
 
     public void setCollege(College college) {
@@ -108,7 +148,6 @@ public abstract class _StudentConcession extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void setConcessionType(ConcessionType concessionType) {
         setToOneTarget("concessionType", concessionType, true);
     }
@@ -116,7 +155,6 @@ public abstract class _StudentConcession extends WillowCayenneObject {
     public ConcessionType getConcessionType() {
         return (ConcessionType)readProperty("concessionType");
     }
-
 
     public void setStudent(Student student) {
         setToOneTarget("student", student, true);
@@ -126,5 +164,123 @@ public abstract class _StudentConcession extends WillowCayenneObject {
         return (Student)readProperty("student");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "authorisationExpiresOn":
+                return this.authorisationExpiresOn;
+            case "authorisedOn":
+                return this.authorisedOn;
+            case "concessionNumber":
+                return this.concessionNumber;
+            case "created":
+                return this.created;
+            case "expiresOn":
+                return this.expiresOn;
+            case "modified":
+                return this.modified;
+            case "timeZone":
+                return this.timeZone;
+            case "college":
+                return this.college;
+            case "concessionType":
+                return this.concessionType;
+            case "student":
+                return this.student;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "authorisationExpiresOn":
+                this.authorisationExpiresOn = (Date)val;
+                break;
+            case "authorisedOn":
+                this.authorisedOn = (Date)val;
+                break;
+            case "concessionNumber":
+                this.concessionNumber = (String)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "expiresOn":
+                this.expiresOn = (Date)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "timeZone":
+                this.timeZone = (String)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "concessionType":
+                this.concessionType = val;
+                break;
+            case "student":
+                this.student = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.authorisationExpiresOn);
+        out.writeObject(this.authorisedOn);
+        out.writeObject(this.concessionNumber);
+        out.writeObject(this.created);
+        out.writeObject(this.expiresOn);
+        out.writeObject(this.modified);
+        out.writeObject(this.timeZone);
+        out.writeObject(this.college);
+        out.writeObject(this.concessionType);
+        out.writeObject(this.student);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.authorisationExpiresOn = (Date)in.readObject();
+        this.authorisedOn = (Date)in.readObject();
+        this.concessionNumber = (String)in.readObject();
+        this.created = (Date)in.readObject();
+        this.expiresOn = (Date)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.timeZone = (String)in.readObject();
+        this.college = in.readObject();
+        this.concessionType = in.readObject();
+        this.student = in.readObject();
+    }
 
 }

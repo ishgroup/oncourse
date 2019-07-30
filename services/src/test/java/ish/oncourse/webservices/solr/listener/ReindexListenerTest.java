@@ -62,8 +62,12 @@ public class ReindexListenerTest {
             
         };
 
-        cayenneRuntime = new ServerRuntime("cayenne-oncourse.xml", new WillowCayenneModuleBuilder().queryCache(null).build(), new JCacheModule(), CommitLogModule.extend()
-                .addListener(listener).module());
+        cayenneRuntime = ServerRuntime.builder()
+                .addConfig("cayenne-oncourse.xml")
+                .addModule(new WillowCayenneModuleBuilder().queryCache(null).build())
+                .addModule(new JCacheModule())
+                .addModule(CommitLogModule.extend().addListener(listener).module())
+                .build();
         cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addListener(new TaggableListener(null, null));
 
     }

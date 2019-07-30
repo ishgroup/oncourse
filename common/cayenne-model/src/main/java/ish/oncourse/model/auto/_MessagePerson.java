@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 
 import org.apache.cayenne.exp.Property;
@@ -48,67 +51,108 @@ public abstract class _MessagePerson extends WillowCayenneObject {
     public static final Property<Contact> CONTACT = Property.create("contact", Contact.class);
     public static final Property<Message> MESSAGE = Property.create("message", Message.class);
 
+    protected Long angelId;
+    protected Date created;
+    protected String destinationAddress;
+    protected Date modified;
+    protected Integer numberOfAttempts;
+    protected String response;
+    protected MessageStatus status;
+    protected Date timeOfDelivery;
+    protected MessageType type;
+
+    protected Object college;
+    protected Object contact;
+    protected Object message;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setDestinationAddress(String destinationAddress) {
-        writeProperty("destinationAddress", destinationAddress);
+        beforePropertyWrite("destinationAddress", this.destinationAddress, destinationAddress);
+        this.destinationAddress = destinationAddress;
     }
+
     public String getDestinationAddress() {
-        return (String)readProperty("destinationAddress");
+        beforePropertyRead("destinationAddress");
+        return this.destinationAddress;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setNumberOfAttempts(Integer numberOfAttempts) {
-        writeProperty("numberOfAttempts", numberOfAttempts);
+        beforePropertyWrite("numberOfAttempts", this.numberOfAttempts, numberOfAttempts);
+        this.numberOfAttempts = numberOfAttempts;
     }
+
     public Integer getNumberOfAttempts() {
-        return (Integer)readProperty("numberOfAttempts");
+        beforePropertyRead("numberOfAttempts");
+        return this.numberOfAttempts;
     }
 
     public void setResponse(String response) {
-        writeProperty("response", response);
+        beforePropertyWrite("response", this.response, response);
+        this.response = response;
     }
+
     public String getResponse() {
-        return (String)readProperty("response");
+        beforePropertyRead("response");
+        return this.response;
     }
 
     public void setStatus(MessageStatus status) {
-        writeProperty("status", status);
+        beforePropertyWrite("status", this.status, status);
+        this.status = status;
     }
+
     public MessageStatus getStatus() {
-        return (MessageStatus)readProperty("status");
+        beforePropertyRead("status");
+        return this.status;
     }
 
     public void setTimeOfDelivery(Date timeOfDelivery) {
-        writeProperty("timeOfDelivery", timeOfDelivery);
+        beforePropertyWrite("timeOfDelivery", this.timeOfDelivery, timeOfDelivery);
+        this.timeOfDelivery = timeOfDelivery;
     }
+
     public Date getTimeOfDelivery() {
-        return (Date)readProperty("timeOfDelivery");
+        beforePropertyRead("timeOfDelivery");
+        return this.timeOfDelivery;
     }
 
     public void setType(MessageType type) {
-        writeProperty("type", type);
+        beforePropertyWrite("type", this.type, type);
+        this.type = type;
     }
+
     public MessageType getType() {
-        return (MessageType)readProperty("type");
+        beforePropertyRead("type");
+        return this.type;
     }
 
     public void setCollege(College college) {
@@ -119,7 +163,6 @@ public abstract class _MessagePerson extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void setContact(Contact contact) {
         setToOneTarget("contact", contact, true);
     }
@@ -127,7 +170,6 @@ public abstract class _MessagePerson extends WillowCayenneObject {
     public Contact getContact() {
         return (Contact)readProperty("contact");
     }
-
 
     public void setMessage(Message message) {
         setToOneTarget("message", message, true);
@@ -137,5 +179,130 @@ public abstract class _MessagePerson extends WillowCayenneObject {
         return (Message)readProperty("message");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "created":
+                return this.created;
+            case "destinationAddress":
+                return this.destinationAddress;
+            case "modified":
+                return this.modified;
+            case "numberOfAttempts":
+                return this.numberOfAttempts;
+            case "response":
+                return this.response;
+            case "status":
+                return this.status;
+            case "timeOfDelivery":
+                return this.timeOfDelivery;
+            case "type":
+                return this.type;
+            case "college":
+                return this.college;
+            case "contact":
+                return this.contact;
+            case "message":
+                return this.message;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "destinationAddress":
+                this.destinationAddress = (String)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "numberOfAttempts":
+                this.numberOfAttempts = (Integer)val;
+                break;
+            case "response":
+                this.response = (String)val;
+                break;
+            case "status":
+                this.status = (MessageStatus)val;
+                break;
+            case "timeOfDelivery":
+                this.timeOfDelivery = (Date)val;
+                break;
+            case "type":
+                this.type = (MessageType)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "contact":
+                this.contact = val;
+                break;
+            case "message":
+                this.message = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.created);
+        out.writeObject(this.destinationAddress);
+        out.writeObject(this.modified);
+        out.writeObject(this.numberOfAttempts);
+        out.writeObject(this.response);
+        out.writeObject(this.status);
+        out.writeObject(this.timeOfDelivery);
+        out.writeObject(this.type);
+        out.writeObject(this.college);
+        out.writeObject(this.contact);
+        out.writeObject(this.message);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.created = (Date)in.readObject();
+        this.destinationAddress = (String)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.numberOfAttempts = (Integer)in.readObject();
+        this.response = (String)in.readObject();
+        this.status = (MessageStatus)in.readObject();
+        this.timeOfDelivery = (Date)in.readObject();
+        this.type = (MessageType)in.readObject();
+        this.college = in.readObject();
+        this.contact = in.readObject();
+        this.message = in.readObject();
+    }
 
 }

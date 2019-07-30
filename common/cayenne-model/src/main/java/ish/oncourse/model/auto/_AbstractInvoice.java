@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 
 import org.apache.cayenne.exp.Property;
@@ -61,137 +64,215 @@ public abstract class _AbstractInvoice extends WillowCayenneObject {
     public static final Property<Money> TOTAL_GST = Property.create("totalGst", Money.class);
     public static final Property<InvoiceType> TYPE = Property.create("type", InvoiceType.class);
 
+    protected Boolean allowAutoPay;
+    protected Money amountOwing;
+    protected Long angelId;
+    protected String billToAddress;
+    protected ConfirmationStatus confirmationStatus;
+    protected Date created;
+    protected String customerReference;
+    protected Date dateDue;
+    protected String description;
+    protected Date invoiceDate;
+    protected Long invoiceNumber;
+    protected Date modified;
+    protected String publicNotes;
+    protected String sessionId;
+    protected String shippingAddress;
+    protected PaymentSource source;
+    protected Money totalExGst;
+    protected Money totalGst;
+    protected InvoiceType type;
+
+
     public void setAllowAutoPay(Boolean allowAutoPay) {
-        writeProperty("allowAutoPay", allowAutoPay);
+        beforePropertyWrite("allowAutoPay", this.allowAutoPay, allowAutoPay);
+        this.allowAutoPay = allowAutoPay;
     }
+
     public Boolean getAllowAutoPay() {
-        return (Boolean)readProperty("allowAutoPay");
+        beforePropertyRead("allowAutoPay");
+        return this.allowAutoPay;
     }
 
     public void setAmountOwing(Money amountOwing) {
-        writeProperty("amountOwing", amountOwing);
+        beforePropertyWrite("amountOwing", this.amountOwing, amountOwing);
+        this.amountOwing = amountOwing;
     }
+
     public Money getAmountOwing() {
-        return (Money)readProperty("amountOwing");
+        beforePropertyRead("amountOwing");
+        return this.amountOwing;
     }
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setBillToAddress(String billToAddress) {
-        writeProperty("billToAddress", billToAddress);
+        beforePropertyWrite("billToAddress", this.billToAddress, billToAddress);
+        this.billToAddress = billToAddress;
     }
+
     public String getBillToAddress() {
-        return (String)readProperty("billToAddress");
+        beforePropertyRead("billToAddress");
+        return this.billToAddress;
     }
 
     public void setConfirmationStatus(ConfirmationStatus confirmationStatus) {
-        writeProperty("confirmationStatus", confirmationStatus);
+        beforePropertyWrite("confirmationStatus", this.confirmationStatus, confirmationStatus);
+        this.confirmationStatus = confirmationStatus;
     }
+
     public ConfirmationStatus getConfirmationStatus() {
-        return (ConfirmationStatus)readProperty("confirmationStatus");
+        beforePropertyRead("confirmationStatus");
+        return this.confirmationStatus;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setCustomerReference(String customerReference) {
-        writeProperty("customerReference", customerReference);
+        beforePropertyWrite("customerReference", this.customerReference, customerReference);
+        this.customerReference = customerReference;
     }
+
     public String getCustomerReference() {
-        return (String)readProperty("customerReference");
+        beforePropertyRead("customerReference");
+        return this.customerReference;
     }
 
     public void setDateDue(Date dateDue) {
-        writeProperty("dateDue", dateDue);
+        beforePropertyWrite("dateDue", this.dateDue, dateDue);
+        this.dateDue = dateDue;
     }
+
     public Date getDateDue() {
-        return (Date)readProperty("dateDue");
+        beforePropertyRead("dateDue");
+        return this.dateDue;
     }
 
     public void setDescription(String description) {
-        writeProperty("description", description);
+        beforePropertyWrite("description", this.description, description);
+        this.description = description;
     }
+
     public String getDescription() {
-        return (String)readProperty("description");
+        beforePropertyRead("description");
+        return this.description;
     }
 
     public void setInvoiceDate(Date invoiceDate) {
-        writeProperty("invoiceDate", invoiceDate);
+        beforePropertyWrite("invoiceDate", this.invoiceDate, invoiceDate);
+        this.invoiceDate = invoiceDate;
     }
+
     public Date getInvoiceDate() {
-        return (Date)readProperty("invoiceDate");
+        beforePropertyRead("invoiceDate");
+        return this.invoiceDate;
     }
 
     public void setInvoiceNumber(Long invoiceNumber) {
-        writeProperty("invoiceNumber", invoiceNumber);
+        beforePropertyWrite("invoiceNumber", this.invoiceNumber, invoiceNumber);
+        this.invoiceNumber = invoiceNumber;
     }
+
     public Long getInvoiceNumber() {
-        return (Long)readProperty("invoiceNumber");
+        beforePropertyRead("invoiceNumber");
+        return this.invoiceNumber;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setPublicNotes(String publicNotes) {
-        writeProperty("publicNotes", publicNotes);
+        beforePropertyWrite("publicNotes", this.publicNotes, publicNotes);
+        this.publicNotes = publicNotes;
     }
+
     public String getPublicNotes() {
-        return (String)readProperty("publicNotes");
+        beforePropertyRead("publicNotes");
+        return this.publicNotes;
     }
 
     public void setSessionId(String sessionId) {
-        writeProperty("sessionId", sessionId);
+        beforePropertyWrite("sessionId", this.sessionId, sessionId);
+        this.sessionId = sessionId;
     }
+
     public String getSessionId() {
-        return (String)readProperty("sessionId");
+        beforePropertyRead("sessionId");
+        return this.sessionId;
     }
 
     public void setShippingAddress(String shippingAddress) {
-        writeProperty("shippingAddress", shippingAddress);
+        beforePropertyWrite("shippingAddress", this.shippingAddress, shippingAddress);
+        this.shippingAddress = shippingAddress;
     }
+
     public String getShippingAddress() {
-        return (String)readProperty("shippingAddress");
+        beforePropertyRead("shippingAddress");
+        return this.shippingAddress;
     }
 
     public void setSource(PaymentSource source) {
-        writeProperty("source", source);
+        beforePropertyWrite("source", this.source, source);
+        this.source = source;
     }
+
     public PaymentSource getSource() {
-        return (PaymentSource)readProperty("source");
+        beforePropertyRead("source");
+        return this.source;
     }
 
     public void setTotalExGst(Money totalExGst) {
-        writeProperty("totalExGst", totalExGst);
+        beforePropertyWrite("totalExGst", this.totalExGst, totalExGst);
+        this.totalExGst = totalExGst;
     }
+
     public Money getTotalExGst() {
-        return (Money)readProperty("totalExGst");
+        beforePropertyRead("totalExGst");
+        return this.totalExGst;
     }
 
     public void setTotalGst(Money totalGst) {
-        writeProperty("totalGst", totalGst);
+        beforePropertyWrite("totalGst", this.totalGst, totalGst);
+        this.totalGst = totalGst;
     }
+
     public Money getTotalGst() {
-        return (Money)readProperty("totalGst");
+        beforePropertyRead("totalGst");
+        return this.totalGst;
     }
 
     public void setType(InvoiceType type) {
-        writeProperty("type", type);
+        beforePropertyWrite("type", this.type, type);
+        this.type = type;
     }
+
     public InvoiceType getType() {
-        return (InvoiceType)readProperty("type");
+        beforePropertyRead("type");
+        return this.type;
     }
 
     protected abstract void onPostAdd();
@@ -199,5 +280,180 @@ public abstract class _AbstractInvoice extends WillowCayenneObject {
     protected abstract void onPreUpdate();
 
     protected abstract void onPrePersist();
+
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "allowAutoPay":
+                return this.allowAutoPay;
+            case "amountOwing":
+                return this.amountOwing;
+            case "angelId":
+                return this.angelId;
+            case "billToAddress":
+                return this.billToAddress;
+            case "confirmationStatus":
+                return this.confirmationStatus;
+            case "created":
+                return this.created;
+            case "customerReference":
+                return this.customerReference;
+            case "dateDue":
+                return this.dateDue;
+            case "description":
+                return this.description;
+            case "invoiceDate":
+                return this.invoiceDate;
+            case "invoiceNumber":
+                return this.invoiceNumber;
+            case "modified":
+                return this.modified;
+            case "publicNotes":
+                return this.publicNotes;
+            case "sessionId":
+                return this.sessionId;
+            case "shippingAddress":
+                return this.shippingAddress;
+            case "source":
+                return this.source;
+            case "totalExGst":
+                return this.totalExGst;
+            case "totalGst":
+                return this.totalGst;
+            case "type":
+                return this.type;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "allowAutoPay":
+                this.allowAutoPay = (Boolean)val;
+                break;
+            case "amountOwing":
+                this.amountOwing = (Money)val;
+                break;
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "billToAddress":
+                this.billToAddress = (String)val;
+                break;
+            case "confirmationStatus":
+                this.confirmationStatus = (ConfirmationStatus)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "customerReference":
+                this.customerReference = (String)val;
+                break;
+            case "dateDue":
+                this.dateDue = (Date)val;
+                break;
+            case "description":
+                this.description = (String)val;
+                break;
+            case "invoiceDate":
+                this.invoiceDate = (Date)val;
+                break;
+            case "invoiceNumber":
+                this.invoiceNumber = (Long)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "publicNotes":
+                this.publicNotes = (String)val;
+                break;
+            case "sessionId":
+                this.sessionId = (String)val;
+                break;
+            case "shippingAddress":
+                this.shippingAddress = (String)val;
+                break;
+            case "source":
+                this.source = (PaymentSource)val;
+                break;
+            case "totalExGst":
+                this.totalExGst = (Money)val;
+                break;
+            case "totalGst":
+                this.totalGst = (Money)val;
+                break;
+            case "type":
+                this.type = (InvoiceType)val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.allowAutoPay);
+        out.writeObject(this.amountOwing);
+        out.writeObject(this.angelId);
+        out.writeObject(this.billToAddress);
+        out.writeObject(this.confirmationStatus);
+        out.writeObject(this.created);
+        out.writeObject(this.customerReference);
+        out.writeObject(this.dateDue);
+        out.writeObject(this.description);
+        out.writeObject(this.invoiceDate);
+        out.writeObject(this.invoiceNumber);
+        out.writeObject(this.modified);
+        out.writeObject(this.publicNotes);
+        out.writeObject(this.sessionId);
+        out.writeObject(this.shippingAddress);
+        out.writeObject(this.source);
+        out.writeObject(this.totalExGst);
+        out.writeObject(this.totalGst);
+        out.writeObject(this.type);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.allowAutoPay = (Boolean)in.readObject();
+        this.amountOwing = (Money)in.readObject();
+        this.angelId = (Long)in.readObject();
+        this.billToAddress = (String)in.readObject();
+        this.confirmationStatus = (ConfirmationStatus)in.readObject();
+        this.created = (Date)in.readObject();
+        this.customerReference = (String)in.readObject();
+        this.dateDue = (Date)in.readObject();
+        this.description = (String)in.readObject();
+        this.invoiceDate = (Date)in.readObject();
+        this.invoiceNumber = (Long)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.publicNotes = (String)in.readObject();
+        this.sessionId = (String)in.readObject();
+        this.shippingAddress = (String)in.readObject();
+        this.source = (PaymentSource)in.readObject();
+        this.totalExGst = (Money)in.readObject();
+        this.totalGst = (Money)in.readObject();
+        this.type = (InvoiceType)in.readObject();
+    }
 
 }

@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -64,129 +67,200 @@ public abstract class _Certificate extends WillowCayenneObject {
     public static final Property<Qualification> QUALIFICATION = Property.create("qualification", Qualification.class);
     public static final Property<Student> STUDENT = Property.create("student", Student.class);
 
+    protected Long angelId;
+    protected Date awarded;
+    protected Long certificateNumber;
+    protected Date created;
+    protected Date endDate;
+    protected Integer fundingSource;
+    protected Boolean isQualification;
+    protected Date issued;
+    protected Date modified;
+    protected Date printedWhen;
+    protected String privateNotes;
+    protected String publicNotes;
+    protected Date revokedWhen;
+    protected String studentFirstName;
+    protected String studentLastName;
+    protected String uniqueCode;
+
+    protected Object certificateOutcomes;
+    protected Object college;
+    protected Object qualification;
+    protected Object student;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setAwarded(Date awarded) {
-        writeProperty("awarded", awarded);
+        beforePropertyWrite("awarded", this.awarded, awarded);
+        this.awarded = awarded;
     }
+
     public Date getAwarded() {
-        return (Date)readProperty("awarded");
+        beforePropertyRead("awarded");
+        return this.awarded;
     }
 
     public void setCertificateNumber(Long certificateNumber) {
-        writeProperty("certificateNumber", certificateNumber);
+        beforePropertyWrite("certificateNumber", this.certificateNumber, certificateNumber);
+        this.certificateNumber = certificateNumber;
     }
+
     public Long getCertificateNumber() {
-        return (Long)readProperty("certificateNumber");
+        beforePropertyRead("certificateNumber");
+        return this.certificateNumber;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setEndDate(Date endDate) {
-        writeProperty("endDate", endDate);
+        beforePropertyWrite("endDate", this.endDate, endDate);
+        this.endDate = endDate;
     }
+
     public Date getEndDate() {
-        return (Date)readProperty("endDate");
+        beforePropertyRead("endDate");
+        return this.endDate;
     }
 
     public void setFundingSource(Integer fundingSource) {
-        writeProperty("fundingSource", fundingSource);
+        beforePropertyWrite("fundingSource", this.fundingSource, fundingSource);
+        this.fundingSource = fundingSource;
     }
+
     public Integer getFundingSource() {
-        return (Integer)readProperty("fundingSource");
+        beforePropertyRead("fundingSource");
+        return this.fundingSource;
     }
 
     public void setIsQualification(Boolean isQualification) {
-        writeProperty("isQualification", isQualification);
+        beforePropertyWrite("isQualification", this.isQualification, isQualification);
+        this.isQualification = isQualification;
     }
+
     public Boolean getIsQualification() {
-        return (Boolean)readProperty("isQualification");
+        beforePropertyRead("isQualification");
+        return this.isQualification;
     }
 
     public void setIssued(Date issued) {
-        writeProperty("issued", issued);
+        beforePropertyWrite("issued", this.issued, issued);
+        this.issued = issued;
     }
+
     public Date getIssued() {
-        return (Date)readProperty("issued");
+        beforePropertyRead("issued");
+        return this.issued;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setPrintedWhen(Date printedWhen) {
-        writeProperty("printedWhen", printedWhen);
+        beforePropertyWrite("printedWhen", this.printedWhen, printedWhen);
+        this.printedWhen = printedWhen;
     }
+
     public Date getPrintedWhen() {
-        return (Date)readProperty("printedWhen");
+        beforePropertyRead("printedWhen");
+        return this.printedWhen;
     }
 
     public void setPrivateNotes(String privateNotes) {
-        writeProperty("privateNotes", privateNotes);
+        beforePropertyWrite("privateNotes", this.privateNotes, privateNotes);
+        this.privateNotes = privateNotes;
     }
+
     public String getPrivateNotes() {
-        return (String)readProperty("privateNotes");
+        beforePropertyRead("privateNotes");
+        return this.privateNotes;
     }
 
     public void setPublicNotes(String publicNotes) {
-        writeProperty("publicNotes", publicNotes);
+        beforePropertyWrite("publicNotes", this.publicNotes, publicNotes);
+        this.publicNotes = publicNotes;
     }
+
     public String getPublicNotes() {
-        return (String)readProperty("publicNotes");
+        beforePropertyRead("publicNotes");
+        return this.publicNotes;
     }
 
     public void setRevokedWhen(Date revokedWhen) {
-        writeProperty("revokedWhen", revokedWhen);
+        beforePropertyWrite("revokedWhen", this.revokedWhen, revokedWhen);
+        this.revokedWhen = revokedWhen;
     }
+
     public Date getRevokedWhen() {
-        return (Date)readProperty("revokedWhen");
+        beforePropertyRead("revokedWhen");
+        return this.revokedWhen;
     }
 
     public void setStudentFirstName(String studentFirstName) {
-        writeProperty("studentFirstName", studentFirstName);
+        beforePropertyWrite("studentFirstName", this.studentFirstName, studentFirstName);
+        this.studentFirstName = studentFirstName;
     }
+
     public String getStudentFirstName() {
-        return (String)readProperty("studentFirstName");
+        beforePropertyRead("studentFirstName");
+        return this.studentFirstName;
     }
 
     public void setStudentLastName(String studentLastName) {
-        writeProperty("studentLastName", studentLastName);
+        beforePropertyWrite("studentLastName", this.studentLastName, studentLastName);
+        this.studentLastName = studentLastName;
     }
+
     public String getStudentLastName() {
-        return (String)readProperty("studentLastName");
+        beforePropertyRead("studentLastName");
+        return this.studentLastName;
     }
 
     public void setUniqueCode(String uniqueCode) {
-        writeProperty("uniqueCode", uniqueCode);
+        beforePropertyWrite("uniqueCode", this.uniqueCode, uniqueCode);
+        this.uniqueCode = uniqueCode;
     }
+
     public String getUniqueCode() {
-        return (String)readProperty("uniqueCode");
+        beforePropertyRead("uniqueCode");
+        return this.uniqueCode;
     }
 
     public void addToCertificateOutcomes(CertificateOutcome obj) {
         addToManyTarget("certificateOutcomes", obj, true);
     }
+
     public void removeFromCertificateOutcomes(CertificateOutcome obj) {
         removeToManyTarget("certificateOutcomes", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<CertificateOutcome> getCertificateOutcomes() {
         return (List<CertificateOutcome>)readProperty("certificateOutcomes");
     }
-
 
     public void setCollege(College college) {
         setToOneTarget("college", college, true);
@@ -196,7 +270,6 @@ public abstract class _Certificate extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void setQualification(Qualification qualification) {
         setToOneTarget("qualification", qualification, true);
     }
@@ -204,7 +277,6 @@ public abstract class _Certificate extends WillowCayenneObject {
     public Qualification getQualification() {
         return (Qualification)readProperty("qualification");
     }
-
 
     public void setStudent(Student student) {
         setToOneTarget("student", student, true);
@@ -214,5 +286,186 @@ public abstract class _Certificate extends WillowCayenneObject {
         return (Student)readProperty("student");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "awarded":
+                return this.awarded;
+            case "certificateNumber":
+                return this.certificateNumber;
+            case "created":
+                return this.created;
+            case "endDate":
+                return this.endDate;
+            case "fundingSource":
+                return this.fundingSource;
+            case "isQualification":
+                return this.isQualification;
+            case "issued":
+                return this.issued;
+            case "modified":
+                return this.modified;
+            case "printedWhen":
+                return this.printedWhen;
+            case "privateNotes":
+                return this.privateNotes;
+            case "publicNotes":
+                return this.publicNotes;
+            case "revokedWhen":
+                return this.revokedWhen;
+            case "studentFirstName":
+                return this.studentFirstName;
+            case "studentLastName":
+                return this.studentLastName;
+            case "uniqueCode":
+                return this.uniqueCode;
+            case "certificateOutcomes":
+                return this.certificateOutcomes;
+            case "college":
+                return this.college;
+            case "qualification":
+                return this.qualification;
+            case "student":
+                return this.student;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "awarded":
+                this.awarded = (Date)val;
+                break;
+            case "certificateNumber":
+                this.certificateNumber = (Long)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "endDate":
+                this.endDate = (Date)val;
+                break;
+            case "fundingSource":
+                this.fundingSource = (Integer)val;
+                break;
+            case "isQualification":
+                this.isQualification = (Boolean)val;
+                break;
+            case "issued":
+                this.issued = (Date)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "printedWhen":
+                this.printedWhen = (Date)val;
+                break;
+            case "privateNotes":
+                this.privateNotes = (String)val;
+                break;
+            case "publicNotes":
+                this.publicNotes = (String)val;
+                break;
+            case "revokedWhen":
+                this.revokedWhen = (Date)val;
+                break;
+            case "studentFirstName":
+                this.studentFirstName = (String)val;
+                break;
+            case "studentLastName":
+                this.studentLastName = (String)val;
+                break;
+            case "uniqueCode":
+                this.uniqueCode = (String)val;
+                break;
+            case "certificateOutcomes":
+                this.certificateOutcomes = val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "qualification":
+                this.qualification = val;
+                break;
+            case "student":
+                this.student = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.awarded);
+        out.writeObject(this.certificateNumber);
+        out.writeObject(this.created);
+        out.writeObject(this.endDate);
+        out.writeObject(this.fundingSource);
+        out.writeObject(this.isQualification);
+        out.writeObject(this.issued);
+        out.writeObject(this.modified);
+        out.writeObject(this.printedWhen);
+        out.writeObject(this.privateNotes);
+        out.writeObject(this.publicNotes);
+        out.writeObject(this.revokedWhen);
+        out.writeObject(this.studentFirstName);
+        out.writeObject(this.studentLastName);
+        out.writeObject(this.uniqueCode);
+        out.writeObject(this.certificateOutcomes);
+        out.writeObject(this.college);
+        out.writeObject(this.qualification);
+        out.writeObject(this.student);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.awarded = (Date)in.readObject();
+        this.certificateNumber = (Long)in.readObject();
+        this.created = (Date)in.readObject();
+        this.endDate = (Date)in.readObject();
+        this.fundingSource = (Integer)in.readObject();
+        this.isQualification = (Boolean)in.readObject();
+        this.issued = (Date)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.printedWhen = (Date)in.readObject();
+        this.privateNotes = (String)in.readObject();
+        this.publicNotes = (String)in.readObject();
+        this.revokedWhen = (Date)in.readObject();
+        this.studentFirstName = (String)in.readObject();
+        this.studentLastName = (String)in.readObject();
+        this.uniqueCode = (String)in.readObject();
+        this.certificateOutcomes = in.readObject();
+        this.college = in.readObject();
+        this.qualification = in.readObject();
+        this.student = in.readObject();
+    }
 
 }

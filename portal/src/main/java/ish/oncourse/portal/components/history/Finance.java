@@ -1,13 +1,12 @@
 package ish.oncourse.portal.components.history;
 
-import ish.common.types.PaymentStatus;
 import ish.math.Money;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentOut;
 import ish.oncourse.portal.services.IPortalService;
-import org.apache.cayenne.CayenneDataObject;
+import org.apache.cayenne.BaseDataObject;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.tapestry5.annotations.Property;
@@ -33,10 +32,10 @@ public class Finance {
 	private Contact contact;
 
 	@Property
-	private List<CayenneDataObject> items;
+	private List<BaseDataObject> items;
 
 	@Property
-	private CayenneDataObject item;
+	private BaseDataObject item;
 
 	@Inject
 	private Messages messages;

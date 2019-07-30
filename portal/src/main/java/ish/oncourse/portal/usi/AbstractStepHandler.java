@@ -6,7 +6,7 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.Country;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.MessagesNamingConvention;
-import org.apache.cayenne.CayenneDataObject;
+import org.apache.cayenne.BaseDataObject;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.BeanUtilsBean2;
 import org.apache.commons.lang.time.DateUtils;
@@ -88,7 +88,7 @@ public abstract class AbstractStepHandler implements StepHandler {
         }
     }
 
-    protected <T extends CayenneDataObject> void handleCountryValue(T entity, String key) {
+    protected <T extends BaseDataObject> void handleCountryValue(T entity, String key) {
         try {
             Value value = inputValues.get(key);
             if (value != null && value.getValue() != null) {
@@ -106,7 +106,7 @@ public abstract class AbstractStepHandler implements StepHandler {
         }
     }
 
-    protected <T extends CayenneDataObject> Value getEnumValue(T entity, String key) {
+    protected <T extends BaseDataObject> Value getEnumValue(T entity, String key) {
         try {
 
             Enum property = (Enum) BeanUtilsBean2.getInstance().getPropertyUtils().getProperty(entity, key);
@@ -138,7 +138,7 @@ public abstract class AbstractStepHandler implements StepHandler {
     }
 
 
-    protected <T extends CayenneDataObject> void handleEnumValue(T entity, String key) {
+    protected <T extends BaseDataObject> void handleEnumValue(T entity, String key) {
         Value value = inputValues.get(key);
         if (value != null && value.getValue() != null) {
             try {

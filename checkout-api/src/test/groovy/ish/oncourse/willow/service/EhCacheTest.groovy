@@ -22,7 +22,10 @@ class EhCacheTest {
     void ehCacheTest() {
         System.setProperty(Context.INITIAL_CONTEXT_FACTORY, TestInitialContextFactory.class.getName())
         TestInitialContextFactory.bind("java:comp/env", new InitialContext())
-        ServerRuntime cayenneRuntime = new ServerRuntime("cayenne-oncourse.xml", new JCacheModule())
+        ServerRuntime cayenneRuntime = ServerRuntime.builder()
+                .addConfig("cayenne-oncourse.xml")
+                .addModule(new JCacheModule())
+                .build()
 
         QueryCache  cache = cayenneRuntime.injector.getInstance(QueryCache)
         assertTrue(cache instanceof JCacheQueryCache)

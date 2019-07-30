@@ -13,17 +13,17 @@ public class InvoiceListener {
 
 	@PrePersist(value = Invoice.class)
 	public void prePersist(Invoice invoice) {
-		updateAmoutOwing(invoice);
+		updateAmountOwing(invoice);
 
 	}
 
 	@PreUpdate(value = Invoice.class)
 	public void preUpdate(Invoice invoice) {
-		updateAmoutOwing(invoice);
+		updateAmountOwing(invoice);
 	}
 
 
-	private void updateAmoutOwing(Invoice invoice) {
+	private void updateAmountOwing(Invoice invoice) {
 		ISHObjectContext context = (ISHObjectContext) invoice.getObjectContext();
 		if (context.getIsRecordQueueingEnabled())
 			invoice.updateAmountOwing();

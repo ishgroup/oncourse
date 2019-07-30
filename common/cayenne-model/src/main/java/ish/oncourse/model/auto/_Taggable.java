@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -38,46 +41,74 @@ public abstract class _Taggable extends WillowCayenneObject {
     public static final Property<College> COLLEGE = Property.create("college", College.class);
     public static final Property<List<TaggableTag>> TAGGABLE_TAGS = Property.create("taggableTags", List.class);
 
+    protected Long angelId;
+    protected Date created;
+    protected Long entityAngelId;
+    protected String entityIdentifier;
+    protected Long entityWillowId;
+    protected Date modified;
+
+    protected Object college;
+    protected Object taggableTags;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setEntityAngelId(Long entityAngelId) {
-        writeProperty("entityAngelId", entityAngelId);
+        beforePropertyWrite("entityAngelId", this.entityAngelId, entityAngelId);
+        this.entityAngelId = entityAngelId;
     }
+
     public Long getEntityAngelId() {
-        return (Long)readProperty("entityAngelId");
+        beforePropertyRead("entityAngelId");
+        return this.entityAngelId;
     }
 
     public void setEntityIdentifier(String entityIdentifier) {
-        writeProperty("entityIdentifier", entityIdentifier);
+        beforePropertyWrite("entityIdentifier", this.entityIdentifier, entityIdentifier);
+        this.entityIdentifier = entityIdentifier;
     }
+
     public String getEntityIdentifier() {
-        return (String)readProperty("entityIdentifier");
+        beforePropertyRead("entityIdentifier");
+        return this.entityIdentifier;
     }
 
     public void setEntityWillowId(Long entityWillowId) {
-        writeProperty("entityWillowId", entityWillowId);
+        beforePropertyWrite("entityWillowId", this.entityWillowId, entityWillowId);
+        this.entityWillowId = entityWillowId;
     }
+
     public Long getEntityWillowId() {
-        return (Long)readProperty("entityWillowId");
+        beforePropertyRead("entityWillowId");
+        return this.entityWillowId;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setCollege(College college) {
@@ -88,17 +119,115 @@ public abstract class _Taggable extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void addToTaggableTags(TaggableTag obj) {
         addToManyTarget("taggableTags", obj, true);
     }
+
     public void removeFromTaggableTags(TaggableTag obj) {
         removeToManyTarget("taggableTags", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<TaggableTag> getTaggableTags() {
         return (List<TaggableTag>)readProperty("taggableTags");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "created":
+                return this.created;
+            case "entityAngelId":
+                return this.entityAngelId;
+            case "entityIdentifier":
+                return this.entityIdentifier;
+            case "entityWillowId":
+                return this.entityWillowId;
+            case "modified":
+                return this.modified;
+            case "college":
+                return this.college;
+            case "taggableTags":
+                return this.taggableTags;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "entityAngelId":
+                this.entityAngelId = (Long)val;
+                break;
+            case "entityIdentifier":
+                this.entityIdentifier = (String)val;
+                break;
+            case "entityWillowId":
+                this.entityWillowId = (Long)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "taggableTags":
+                this.taggableTags = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.created);
+        out.writeObject(this.entityAngelId);
+        out.writeObject(this.entityIdentifier);
+        out.writeObject(this.entityWillowId);
+        out.writeObject(this.modified);
+        out.writeObject(this.college);
+        out.writeObject(this.taggableTags);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.created = (Date)in.readObject();
+        this.entityAngelId = (Long)in.readObject();
+        this.entityIdentifier = (String)in.readObject();
+        this.entityWillowId = (Long)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.college = in.readObject();
+        this.taggableTags = in.readObject();
+    }
 
 }

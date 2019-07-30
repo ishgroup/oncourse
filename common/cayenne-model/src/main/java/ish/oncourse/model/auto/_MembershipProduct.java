@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.List;
 
 import org.apache.cayenne.exp.Property;
@@ -26,28 +29,90 @@ public abstract class _MembershipProduct extends Product {
     public static final Property<List<DiscountMembership>> DISCOUNT_MEMBERSHIP_PRODUCTS = Property.create("discountMembershipProducts", List.class);
     public static final Property<List<Discount>> DISCOUNTS_AVAILABLE = Property.create("discountsAvailable", List.class);
 
+
+    protected Object discountMembershipProducts;
+    protected Object discountsAvailable;
+
     public void addToDiscountMembershipProducts(DiscountMembership obj) {
         addToManyTarget("discountMembershipProducts", obj, true);
     }
+
     public void removeFromDiscountMembershipProducts(DiscountMembership obj) {
         removeToManyTarget("discountMembershipProducts", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<DiscountMembership> getDiscountMembershipProducts() {
         return (List<DiscountMembership>)readProperty("discountMembershipProducts");
     }
 
-
     public void addToDiscountsAvailable(Discount obj) {
         addToManyTarget("discountsAvailable", obj, true);
     }
+
     public void removeFromDiscountsAvailable(Discount obj) {
         removeToManyTarget("discountsAvailable", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Discount> getDiscountsAvailable() {
         return (List<Discount>)readProperty("discountsAvailable");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "discountMembershipProducts":
+                return this.discountMembershipProducts;
+            case "discountsAvailable":
+                return this.discountsAvailable;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "discountMembershipProducts":
+                this.discountMembershipProducts = val;
+                break;
+            case "discountsAvailable":
+                this.discountsAvailable = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.discountMembershipProducts);
+        out.writeObject(this.discountsAvailable);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.discountMembershipProducts = in.readObject();
+        this.discountsAvailable = in.readObject();
+    }
 
 }

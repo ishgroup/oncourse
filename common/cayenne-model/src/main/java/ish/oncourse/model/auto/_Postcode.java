@@ -1,5 +1,9 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import org.apache.cayenne.exp.Property;
 
 /**
@@ -38,81 +42,246 @@ public abstract class _Postcode extends WillowCayenneObject {
     public static final Property<Short> PRESORT_INDICATOR = Property.create("presortIndicator", Short.class);
     public static final Property<String> STATE = Property.create("state", String.class);
 
+    protected String bSPname;
+    protected Short bSPnumber;
+    protected String category;
+    protected String comments;
+    protected String deliveryOffice;
+    protected Long ishVersion;
+    protected String locality;
+    protected String parcelZone;
+    protected Short postcode;
+    protected Short presortIndicator;
+    protected String state;
+
+
     public void setBSPname(String bSPname) {
-        writeProperty("bSPname", bSPname);
+        beforePropertyWrite("bSPname", this.bSPname, bSPname);
+        this.bSPname = bSPname;
     }
+
     public String getBSPname() {
-        return (String)readProperty("bSPname");
+        beforePropertyRead("bSPname");
+        return this.bSPname;
     }
 
     public void setBSPnumber(Short bSPnumber) {
-        writeProperty("bSPnumber", bSPnumber);
+        beforePropertyWrite("bSPnumber", this.bSPnumber, bSPnumber);
+        this.bSPnumber = bSPnumber;
     }
+
     public Short getBSPnumber() {
-        return (Short)readProperty("bSPnumber");
+        beforePropertyRead("bSPnumber");
+        return this.bSPnumber;
     }
 
     public void setCategory(String category) {
-        writeProperty("category", category);
+        beforePropertyWrite("category", this.category, category);
+        this.category = category;
     }
+
     public String getCategory() {
-        return (String)readProperty("category");
+        beforePropertyRead("category");
+        return this.category;
     }
 
     public void setComments(String comments) {
-        writeProperty("comments", comments);
+        beforePropertyWrite("comments", this.comments, comments);
+        this.comments = comments;
     }
+
     public String getComments() {
-        return (String)readProperty("comments");
+        beforePropertyRead("comments");
+        return this.comments;
     }
 
     public void setDeliveryOffice(String deliveryOffice) {
-        writeProperty("deliveryOffice", deliveryOffice);
+        beforePropertyWrite("deliveryOffice", this.deliveryOffice, deliveryOffice);
+        this.deliveryOffice = deliveryOffice;
     }
+
     public String getDeliveryOffice() {
-        return (String)readProperty("deliveryOffice");
+        beforePropertyRead("deliveryOffice");
+        return this.deliveryOffice;
     }
 
     public void setIshVersion(Long ishVersion) {
-        writeProperty("ishVersion", ishVersion);
+        beforePropertyWrite("ishVersion", this.ishVersion, ishVersion);
+        this.ishVersion = ishVersion;
     }
+
     public Long getIshVersion() {
-        return (Long)readProperty("ishVersion");
+        beforePropertyRead("ishVersion");
+        return this.ishVersion;
     }
 
     public void setLocality(String locality) {
-        writeProperty("locality", locality);
+        beforePropertyWrite("locality", this.locality, locality);
+        this.locality = locality;
     }
+
     public String getLocality() {
-        return (String)readProperty("locality");
+        beforePropertyRead("locality");
+        return this.locality;
     }
 
     public void setParcelZone(String parcelZone) {
-        writeProperty("parcelZone", parcelZone);
+        beforePropertyWrite("parcelZone", this.parcelZone, parcelZone);
+        this.parcelZone = parcelZone;
     }
+
     public String getParcelZone() {
-        return (String)readProperty("parcelZone");
+        beforePropertyRead("parcelZone");
+        return this.parcelZone;
     }
 
     public void setPostcode(Short postcode) {
-        writeProperty("postcode", postcode);
+        beforePropertyWrite("postcode", this.postcode, postcode);
+        this.postcode = postcode;
     }
+
     public Short getPostcode() {
-        return (Short)readProperty("postcode");
+        beforePropertyRead("postcode");
+        return this.postcode;
     }
 
     public void setPresortIndicator(Short presortIndicator) {
-        writeProperty("presortIndicator", presortIndicator);
+        beforePropertyWrite("presortIndicator", this.presortIndicator, presortIndicator);
+        this.presortIndicator = presortIndicator;
     }
+
     public Short getPresortIndicator() {
-        return (Short)readProperty("presortIndicator");
+        beforePropertyRead("presortIndicator");
+        return this.presortIndicator;
     }
 
     public void setState(String state) {
-        writeProperty("state", state);
+        beforePropertyWrite("state", this.state, state);
+        this.state = state;
     }
+
     public String getState() {
-        return (String)readProperty("state");
+        beforePropertyRead("state");
+        return this.state;
+    }
+
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "bSPname":
+                return this.bSPname;
+            case "bSPnumber":
+                return this.bSPnumber;
+            case "category":
+                return this.category;
+            case "comments":
+                return this.comments;
+            case "deliveryOffice":
+                return this.deliveryOffice;
+            case "ishVersion":
+                return this.ishVersion;
+            case "locality":
+                return this.locality;
+            case "parcelZone":
+                return this.parcelZone;
+            case "postcode":
+                return this.postcode;
+            case "presortIndicator":
+                return this.presortIndicator;
+            case "state":
+                return this.state;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "bSPname":
+                this.bSPname = (String)val;
+                break;
+            case "bSPnumber":
+                this.bSPnumber = (Short)val;
+                break;
+            case "category":
+                this.category = (String)val;
+                break;
+            case "comments":
+                this.comments = (String)val;
+                break;
+            case "deliveryOffice":
+                this.deliveryOffice = (String)val;
+                break;
+            case "ishVersion":
+                this.ishVersion = (Long)val;
+                break;
+            case "locality":
+                this.locality = (String)val;
+                break;
+            case "parcelZone":
+                this.parcelZone = (String)val;
+                break;
+            case "postcode":
+                this.postcode = (Short)val;
+                break;
+            case "presortIndicator":
+                this.presortIndicator = (Short)val;
+                break;
+            case "state":
+                this.state = (String)val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.bSPname);
+        out.writeObject(this.bSPnumber);
+        out.writeObject(this.category);
+        out.writeObject(this.comments);
+        out.writeObject(this.deliveryOffice);
+        out.writeObject(this.ishVersion);
+        out.writeObject(this.locality);
+        out.writeObject(this.parcelZone);
+        out.writeObject(this.postcode);
+        out.writeObject(this.presortIndicator);
+        out.writeObject(this.state);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.bSPname = (String)in.readObject();
+        this.bSPnumber = (Short)in.readObject();
+        this.category = (String)in.readObject();
+        this.comments = (String)in.readObject();
+        this.deliveryOffice = (String)in.readObject();
+        this.ishVersion = (Long)in.readObject();
+        this.locality = (String)in.readObject();
+        this.parcelZone = (String)in.readObject();
+        this.postcode = (Short)in.readObject();
+        this.presortIndicator = (Short)in.readObject();
+        this.state = (String)in.readObject();
     }
 
 }

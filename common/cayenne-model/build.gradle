@@ -16,6 +16,7 @@ dependencies {
         exclude group:'commons-collections', module: 'commons-collections'
     }
 
+    compile "commons-lang:commons-lang:2.6"
     compile "org.apache.cayenne:cayenne-server:$cayenneVersion"
     compile "org.apache.cayenne:cayenne-lifecycle:$cayenneVersion"
     compile "org.apache.cayenne:cayenne-cache-invalidation:$cayenneVersion"

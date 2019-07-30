@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -43,86 +46,249 @@ public abstract class _WillowUser extends WillowCayenneObject {
     public static final Property<String> PASSWORD = Property.create("password", String.class);
     public static final Property<List<Log>> LOGS = Property.create("logs", List.class);
 
+    protected Date created;
+    protected String email;
+    protected Integer failedLoginCount;
+    protected String firstName;
+    protected Boolean isActive;
+    protected Date lastFailedLogin;
+    protected Date lastLogin;
+    protected String lastName;
+    protected Date modified;
+    protected String password;
+
+    protected Object logs;
+
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setEmail(String email) {
-        writeProperty("email", email);
+        beforePropertyWrite("email", this.email, email);
+        this.email = email;
     }
+
     public String getEmail() {
-        return (String)readProperty("email");
+        beforePropertyRead("email");
+        return this.email;
     }
 
     public void setFailedLoginCount(Integer failedLoginCount) {
-        writeProperty("failedLoginCount", failedLoginCount);
+        beforePropertyWrite("failedLoginCount", this.failedLoginCount, failedLoginCount);
+        this.failedLoginCount = failedLoginCount;
     }
+
     public Integer getFailedLoginCount() {
-        return (Integer)readProperty("failedLoginCount");
+        beforePropertyRead("failedLoginCount");
+        return this.failedLoginCount;
     }
 
     public void setFirstName(String firstName) {
-        writeProperty("firstName", firstName);
+        beforePropertyWrite("firstName", this.firstName, firstName);
+        this.firstName = firstName;
     }
+
     public String getFirstName() {
-        return (String)readProperty("firstName");
+        beforePropertyRead("firstName");
+        return this.firstName;
     }
 
     public void setIsActive(Boolean isActive) {
-        writeProperty("isActive", isActive);
+        beforePropertyWrite("isActive", this.isActive, isActive);
+        this.isActive = isActive;
     }
+
     public Boolean getIsActive() {
-        return (Boolean)readProperty("isActive");
+        beforePropertyRead("isActive");
+        return this.isActive;
     }
 
     public void setLastFailedLogin(Date lastFailedLogin) {
-        writeProperty("lastFailedLogin", lastFailedLogin);
+        beforePropertyWrite("lastFailedLogin", this.lastFailedLogin, lastFailedLogin);
+        this.lastFailedLogin = lastFailedLogin;
     }
+
     public Date getLastFailedLogin() {
-        return (Date)readProperty("lastFailedLogin");
+        beforePropertyRead("lastFailedLogin");
+        return this.lastFailedLogin;
     }
 
     public void setLastLogin(Date lastLogin) {
-        writeProperty("lastLogin", lastLogin);
+        beforePropertyWrite("lastLogin", this.lastLogin, lastLogin);
+        this.lastLogin = lastLogin;
     }
+
     public Date getLastLogin() {
-        return (Date)readProperty("lastLogin");
+        beforePropertyRead("lastLogin");
+        return this.lastLogin;
     }
 
     public void setLastName(String lastName) {
-        writeProperty("lastName", lastName);
+        beforePropertyWrite("lastName", this.lastName, lastName);
+        this.lastName = lastName;
     }
+
     public String getLastName() {
-        return (String)readProperty("lastName");
+        beforePropertyRead("lastName");
+        return this.lastName;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setPassword(String password) {
-        writeProperty("password", password);
+        beforePropertyWrite("password", this.password, password);
+        this.password = password;
     }
+
     public String getPassword() {
-        return (String)readProperty("password");
+        beforePropertyRead("password");
+        return this.password;
     }
 
     public void addToLogs(Log obj) {
         addToManyTarget("logs", obj, true);
     }
+
     public void removeFromLogs(Log obj) {
         removeToManyTarget("logs", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Log> getLogs() {
         return (List<Log>)readProperty("logs");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "created":
+                return this.created;
+            case "email":
+                return this.email;
+            case "failedLoginCount":
+                return this.failedLoginCount;
+            case "firstName":
+                return this.firstName;
+            case "isActive":
+                return this.isActive;
+            case "lastFailedLogin":
+                return this.lastFailedLogin;
+            case "lastLogin":
+                return this.lastLogin;
+            case "lastName":
+                return this.lastName;
+            case "modified":
+                return this.modified;
+            case "password":
+                return this.password;
+            case "logs":
+                return this.logs;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "email":
+                this.email = (String)val;
+                break;
+            case "failedLoginCount":
+                this.failedLoginCount = (Integer)val;
+                break;
+            case "firstName":
+                this.firstName = (String)val;
+                break;
+            case "isActive":
+                this.isActive = (Boolean)val;
+                break;
+            case "lastFailedLogin":
+                this.lastFailedLogin = (Date)val;
+                break;
+            case "lastLogin":
+                this.lastLogin = (Date)val;
+                break;
+            case "lastName":
+                this.lastName = (String)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "password":
+                this.password = (String)val;
+                break;
+            case "logs":
+                this.logs = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.created);
+        out.writeObject(this.email);
+        out.writeObject(this.failedLoginCount);
+        out.writeObject(this.firstName);
+        out.writeObject(this.isActive);
+        out.writeObject(this.lastFailedLogin);
+        out.writeObject(this.lastLogin);
+        out.writeObject(this.lastName);
+        out.writeObject(this.modified);
+        out.writeObject(this.password);
+        out.writeObject(this.logs);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.created = (Date)in.readObject();
+        this.email = (String)in.readObject();
+        this.failedLoginCount = (Integer)in.readObject();
+        this.firstName = (String)in.readObject();
+        this.isActive = (Boolean)in.readObject();
+        this.lastFailedLogin = (Date)in.readObject();
+        this.lastLogin = (Date)in.readObject();
+        this.lastName = (String)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.password = (String)in.readObject();
+        this.logs = in.readObject();
+    }
 
 }

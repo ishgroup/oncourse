@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -46,53 +49,87 @@ public abstract class _PriorLearning extends WillowCayenneObject {
     public static final Property<Qualification> QUALIFICATION = Property.create("qualification", Qualification.class);
     public static final Property<Student> STUDENT = Property.create("student", Student.class);
 
+    protected Long angelId;
+    protected Date created;
+    protected String externalRef;
+    protected Date modified;
+    protected String notes;
+    protected String outcomeIdTrainingOrg;
+    protected String title;
+
+    protected Object college;
+    protected Object outcomes;
+    protected Object qualification;
+    protected Object student;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setExternalRef(String externalRef) {
-        writeProperty("externalRef", externalRef);
+        beforePropertyWrite("externalRef", this.externalRef, externalRef);
+        this.externalRef = externalRef;
     }
+
     public String getExternalRef() {
-        return (String)readProperty("externalRef");
+        beforePropertyRead("externalRef");
+        return this.externalRef;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setNotes(String notes) {
-        writeProperty("notes", notes);
+        beforePropertyWrite("notes", this.notes, notes);
+        this.notes = notes;
     }
+
     public String getNotes() {
-        return (String)readProperty("notes");
+        beforePropertyRead("notes");
+        return this.notes;
     }
 
     public void setOutcomeIdTrainingOrg(String outcomeIdTrainingOrg) {
-        writeProperty("outcomeIdTrainingOrg", outcomeIdTrainingOrg);
+        beforePropertyWrite("outcomeIdTrainingOrg", this.outcomeIdTrainingOrg, outcomeIdTrainingOrg);
+        this.outcomeIdTrainingOrg = outcomeIdTrainingOrg;
     }
+
     public String getOutcomeIdTrainingOrg() {
-        return (String)readProperty("outcomeIdTrainingOrg");
+        beforePropertyRead("outcomeIdTrainingOrg");
+        return this.outcomeIdTrainingOrg;
     }
 
     public void setTitle(String title) {
-        writeProperty("title", title);
+        beforePropertyWrite("title", this.title, title);
+        this.title = title;
     }
+
     public String getTitle() {
-        return (String)readProperty("title");
+        beforePropertyRead("title");
+        return this.title;
     }
 
     public void setCollege(College college) {
@@ -103,18 +140,18 @@ public abstract class _PriorLearning extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void addToOutcomes(Outcome obj) {
         addToManyTarget("outcomes", obj, true);
     }
+
     public void removeFromOutcomes(Outcome obj) {
         removeToManyTarget("outcomes", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Outcome> getOutcomes() {
         return (List<Outcome>)readProperty("outcomes");
     }
-
 
     public void setQualification(Qualification qualification) {
         setToOneTarget("qualification", qualification, true);
@@ -124,7 +161,6 @@ public abstract class _PriorLearning extends WillowCayenneObject {
         return (Qualification)readProperty("qualification");
     }
 
-
     public void setStudent(Student student) {
         setToOneTarget("student", student, true);
     }
@@ -133,5 +169,123 @@ public abstract class _PriorLearning extends WillowCayenneObject {
         return (Student)readProperty("student");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "created":
+                return this.created;
+            case "externalRef":
+                return this.externalRef;
+            case "modified":
+                return this.modified;
+            case "notes":
+                return this.notes;
+            case "outcomeIdTrainingOrg":
+                return this.outcomeIdTrainingOrg;
+            case "title":
+                return this.title;
+            case "college":
+                return this.college;
+            case "outcomes":
+                return this.outcomes;
+            case "qualification":
+                return this.qualification;
+            case "student":
+                return this.student;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "externalRef":
+                this.externalRef = (String)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "notes":
+                this.notes = (String)val;
+                break;
+            case "outcomeIdTrainingOrg":
+                this.outcomeIdTrainingOrg = (String)val;
+                break;
+            case "title":
+                this.title = (String)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "outcomes":
+                this.outcomes = val;
+                break;
+            case "qualification":
+                this.qualification = val;
+                break;
+            case "student":
+                this.student = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.created);
+        out.writeObject(this.externalRef);
+        out.writeObject(this.modified);
+        out.writeObject(this.notes);
+        out.writeObject(this.outcomeIdTrainingOrg);
+        out.writeObject(this.title);
+        out.writeObject(this.college);
+        out.writeObject(this.outcomes);
+        out.writeObject(this.qualification);
+        out.writeObject(this.student);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.created = (Date)in.readObject();
+        this.externalRef = (String)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.notes = (String)in.readObject();
+        this.outcomeIdTrainingOrg = (String)in.readObject();
+        this.title = (String)in.readObject();
+        this.college = in.readObject();
+        this.outcomes = in.readObject();
+        this.qualification = in.readObject();
+        this.student = in.readObject();
+    }
 
 }

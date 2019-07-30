@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 
 import org.apache.cayenne.exp.Property;
@@ -38,60 +41,95 @@ public abstract class _EmailTemplate extends WillowCayenneObject {
     public static final Property<String> SUBJECT = Property.create("subject", String.class);
     public static final Property<College> COLLEGE = Property.create("college", College.class);
 
+    protected Long angelId;
+    protected String bodyHtml;
+    protected String bodyPlain;
+    protected Date created;
+    protected String entity;
+    protected Date modified;
+    protected String name;
+    protected String subject;
+
+    protected Object college;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setBodyHtml(String bodyHtml) {
-        writeProperty("bodyHtml", bodyHtml);
+        beforePropertyWrite("bodyHtml", this.bodyHtml, bodyHtml);
+        this.bodyHtml = bodyHtml;
     }
+
     public String getBodyHtml() {
-        return (String)readProperty("bodyHtml");
+        beforePropertyRead("bodyHtml");
+        return this.bodyHtml;
     }
 
     public void setBodyPlain(String bodyPlain) {
-        writeProperty("bodyPlain", bodyPlain);
+        beforePropertyWrite("bodyPlain", this.bodyPlain, bodyPlain);
+        this.bodyPlain = bodyPlain;
     }
+
     public String getBodyPlain() {
-        return (String)readProperty("bodyPlain");
+        beforePropertyRead("bodyPlain");
+        return this.bodyPlain;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setEntity(String entity) {
-        writeProperty("entity", entity);
+        beforePropertyWrite("entity", this.entity, entity);
+        this.entity = entity;
     }
+
     public String getEntity() {
-        return (String)readProperty("entity");
+        beforePropertyRead("entity");
+        return this.entity;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        beforePropertyWrite("name", this.name, name);
+        this.name = name;
     }
+
     public String getName() {
-        return (String)readProperty("name");
+        beforePropertyRead("name");
+        return this.name;
     }
 
     public void setSubject(String subject) {
-        writeProperty("subject", subject);
+        beforePropertyWrite("subject", this.subject, subject);
+        this.subject = subject;
     }
+
     public String getSubject() {
-        return (String)readProperty("subject");
+        beforePropertyRead("subject");
+        return this.subject;
     }
 
     public void setCollege(College college) {
@@ -102,5 +140,109 @@ public abstract class _EmailTemplate extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "bodyHtml":
+                return this.bodyHtml;
+            case "bodyPlain":
+                return this.bodyPlain;
+            case "created":
+                return this.created;
+            case "entity":
+                return this.entity;
+            case "modified":
+                return this.modified;
+            case "name":
+                return this.name;
+            case "subject":
+                return this.subject;
+            case "college":
+                return this.college;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "bodyHtml":
+                this.bodyHtml = (String)val;
+                break;
+            case "bodyPlain":
+                this.bodyPlain = (String)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "entity":
+                this.entity = (String)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "name":
+                this.name = (String)val;
+                break;
+            case "subject":
+                this.subject = (String)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.bodyHtml);
+        out.writeObject(this.bodyPlain);
+        out.writeObject(this.created);
+        out.writeObject(this.entity);
+        out.writeObject(this.modified);
+        out.writeObject(this.name);
+        out.writeObject(this.subject);
+        out.writeObject(this.college);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.bodyHtml = (String)in.readObject();
+        this.bodyPlain = (String)in.readObject();
+        this.created = (Date)in.readObject();
+        this.entity = (String)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.name = (String)in.readObject();
+        this.subject = (String)in.readObject();
+        this.college = in.readObject();
+    }
 
 }

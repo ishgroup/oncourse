@@ -24,10 +24,12 @@ class ServerRuntimeBuilder {
     }
 
     ServerRuntime build() {
+        def runtimeBuilder = ServerRuntime.builder().addConfig(cayenneXml)
         if (queryCache == null) {
-            return new ServerRuntime(cayenneXml, new WillowCayenneModuleBuilder().queryCache().build(), new JCacheModule())
+            runtimeBuilder.addModule(new WillowCayenneModuleBuilder().queryCache().build()).addModule(new JCacheModule())
         } else {
-            return new ServerRuntime(cayenneXml, new WillowCayenneModuleBuilder().queryCache(queryCache).build())
+            runtimeBuilder.addModule(new WillowCayenneModuleBuilder().queryCache(queryCache).build())
         }
+        runtimeBuilder.build()
     }
 }

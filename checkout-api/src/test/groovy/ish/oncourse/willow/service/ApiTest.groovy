@@ -26,7 +26,10 @@ abstract class ApiTest {
 
         testContext = new TestContext().shouldCreateTables(true).open()
         new LoadDataSet().dataSetFile(dataSetResource).replacements(["[null]":null]).load(testContext.DS)
-        cayenneRuntime = new ServerRuntime("cayenne-oncourse.xml", new WillowCayenneModuleBuilder().build())
+        cayenneRuntime = ServerRuntime.builder()
+                .addConfig("cayenne-oncourse.xml")
+                .addModule(new WillowCayenneModuleBuilder().build())
+                .build()
         cayenneService = new CayenneService(cayenneRuntime)
         collegeService = new CollegeService(cayenneService)
         financialService = new FinancialService(cayenneService, collegeService)

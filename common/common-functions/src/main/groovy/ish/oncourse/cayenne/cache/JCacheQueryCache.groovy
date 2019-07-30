@@ -78,12 +78,6 @@ class JCacheQueryCache implements QueryCache {
         }
     }
 
-    @Override
-    @Deprecated
-    int size() {
-        return -1
-    }
-
     protected Cache<String, List> createIfAbsent(QueryMetadata metadata) {
         return createIfAbsent(cacheName(metadata))
     }

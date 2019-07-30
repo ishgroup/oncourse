@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -52,52 +55,83 @@ public abstract class _FieldConfiguration extends WillowCayenneObject {
     public static final Property<List<Field>> FIELDS = Property.create("fields", List.class);
     public static final Property<List<FieldConfigurationScheme>> WAITING_LIST_FIELD_CONFIGURATION_SCHEMES = Property.create("waitingListFieldConfigurationSchemes", List.class);
 
+    protected Long angelId;
+    protected Date created;
+    protected Integer intType;
+    protected Date modified;
+    protected String name;
+
+    protected Object applicationFieldConfigurationSchemes;
+    protected Object college;
+    protected Object createdBy;
+    protected Object enrolFieldConfigurationSchemes;
+    protected Object fieldConfigurationLinks;
+    protected Object fieldHeadings;
+    protected Object fields;
+    protected Object waitingListFieldConfigurationSchemes;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setIntType(Integer intType) {
-        writeProperty("intType", intType);
+        beforePropertyWrite("intType", this.intType, intType);
+        this.intType = intType;
     }
+
     public Integer getIntType() {
-        return (Integer)readProperty("intType");
+        beforePropertyRead("intType");
+        return this.intType;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        beforePropertyWrite("name", this.name, name);
+        this.name = name;
     }
+
     public String getName() {
-        return (String)readProperty("name");
+        beforePropertyRead("name");
+        return this.name;
     }
 
     public void addToApplicationFieldConfigurationSchemes(FieldConfigurationScheme obj) {
         addToManyTarget("applicationFieldConfigurationSchemes", obj, true);
     }
+
     public void removeFromApplicationFieldConfigurationSchemes(FieldConfigurationScheme obj) {
         removeToManyTarget("applicationFieldConfigurationSchemes", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<FieldConfigurationScheme> getApplicationFieldConfigurationSchemes() {
         return (List<FieldConfigurationScheme>)readProperty("applicationFieldConfigurationSchemes");
     }
-
 
     public void setCollege(College college) {
         setToOneTarget("college", college, true);
@@ -107,7 +141,6 @@ public abstract class _FieldConfiguration extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void setCreatedBy(SystemUser createdBy) {
         setToOneTarget("createdBy", createdBy, true);
     }
@@ -116,65 +149,202 @@ public abstract class _FieldConfiguration extends WillowCayenneObject {
         return (SystemUser)readProperty("createdBy");
     }
 
-
     public void addToEnrolFieldConfigurationSchemes(FieldConfigurationScheme obj) {
         addToManyTarget("enrolFieldConfigurationSchemes", obj, true);
     }
+
     public void removeFromEnrolFieldConfigurationSchemes(FieldConfigurationScheme obj) {
         removeToManyTarget("enrolFieldConfigurationSchemes", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<FieldConfigurationScheme> getEnrolFieldConfigurationSchemes() {
         return (List<FieldConfigurationScheme>)readProperty("enrolFieldConfigurationSchemes");
     }
 
-
     public void addToFieldConfigurationLinks(FieldConfigurationLink obj) {
         addToManyTarget("fieldConfigurationLinks", obj, true);
     }
+
     public void removeFromFieldConfigurationLinks(FieldConfigurationLink obj) {
         removeToManyTarget("fieldConfigurationLinks", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<FieldConfigurationLink> getFieldConfigurationLinks() {
         return (List<FieldConfigurationLink>)readProperty("fieldConfigurationLinks");
     }
 
-
     public void addToFieldHeadings(FieldHeading obj) {
         addToManyTarget("fieldHeadings", obj, true);
     }
+
     public void removeFromFieldHeadings(FieldHeading obj) {
         removeToManyTarget("fieldHeadings", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<FieldHeading> getFieldHeadings() {
         return (List<FieldHeading>)readProperty("fieldHeadings");
     }
 
-
     public void addToFields(Field obj) {
         addToManyTarget("fields", obj, true);
     }
+
     public void removeFromFields(Field obj) {
         removeToManyTarget("fields", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Field> getFields() {
         return (List<Field>)readProperty("fields");
     }
 
-
     public void addToWaitingListFieldConfigurationSchemes(FieldConfigurationScheme obj) {
         addToManyTarget("waitingListFieldConfigurationSchemes", obj, true);
     }
+
     public void removeFromWaitingListFieldConfigurationSchemes(FieldConfigurationScheme obj) {
         removeToManyTarget("waitingListFieldConfigurationSchemes", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<FieldConfigurationScheme> getWaitingListFieldConfigurationSchemes() {
         return (List<FieldConfigurationScheme>)readProperty("waitingListFieldConfigurationSchemes");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "created":
+                return this.created;
+            case "intType":
+                return this.intType;
+            case "modified":
+                return this.modified;
+            case "name":
+                return this.name;
+            case "applicationFieldConfigurationSchemes":
+                return this.applicationFieldConfigurationSchemes;
+            case "college":
+                return this.college;
+            case "createdBy":
+                return this.createdBy;
+            case "enrolFieldConfigurationSchemes":
+                return this.enrolFieldConfigurationSchemes;
+            case "fieldConfigurationLinks":
+                return this.fieldConfigurationLinks;
+            case "fieldHeadings":
+                return this.fieldHeadings;
+            case "fields":
+                return this.fields;
+            case "waitingListFieldConfigurationSchemes":
+                return this.waitingListFieldConfigurationSchemes;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "intType":
+                this.intType = (Integer)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "name":
+                this.name = (String)val;
+                break;
+            case "applicationFieldConfigurationSchemes":
+                this.applicationFieldConfigurationSchemes = val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "createdBy":
+                this.createdBy = val;
+                break;
+            case "enrolFieldConfigurationSchemes":
+                this.enrolFieldConfigurationSchemes = val;
+                break;
+            case "fieldConfigurationLinks":
+                this.fieldConfigurationLinks = val;
+                break;
+            case "fieldHeadings":
+                this.fieldHeadings = val;
+                break;
+            case "fields":
+                this.fields = val;
+                break;
+            case "waitingListFieldConfigurationSchemes":
+                this.waitingListFieldConfigurationSchemes = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.created);
+        out.writeObject(this.intType);
+        out.writeObject(this.modified);
+        out.writeObject(this.name);
+        out.writeObject(this.applicationFieldConfigurationSchemes);
+        out.writeObject(this.college);
+        out.writeObject(this.createdBy);
+        out.writeObject(this.enrolFieldConfigurationSchemes);
+        out.writeObject(this.fieldConfigurationLinks);
+        out.writeObject(this.fieldHeadings);
+        out.writeObject(this.fields);
+        out.writeObject(this.waitingListFieldConfigurationSchemes);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.created = (Date)in.readObject();
+        this.intType = (Integer)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.name = (String)in.readObject();
+        this.applicationFieldConfigurationSchemes = in.readObject();
+        this.college = in.readObject();
+        this.createdBy = in.readObject();
+        this.enrolFieldConfigurationSchemes = in.readObject();
+        this.fieldConfigurationLinks = in.readObject();
+        this.fieldHeadings = in.readObject();
+        this.fields = in.readObject();
+        this.waitingListFieldConfigurationSchemes = in.readObject();
+    }
 
 }

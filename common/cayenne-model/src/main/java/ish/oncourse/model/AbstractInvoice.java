@@ -48,7 +48,8 @@ public abstract class AbstractInvoice extends _AbstractInvoice implements Queuea
         if (getSource() == null) {
             setSource(PaymentSource.SOURCE_WEB);
         }
-        if (getType() == null) {
+        // getType() is overloaded in subtype, so check field directly
+        if (type == null) {
             setType(InvoiceType.INVOICE);
         }
         if (getCreated() == null) {

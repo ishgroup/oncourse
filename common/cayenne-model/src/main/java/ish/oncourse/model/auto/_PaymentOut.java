@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -60,95 +63,152 @@ public abstract class _PaymentOut extends WillowCayenneObject {
     public static final Property<Contact> CONTACT = Property.create("contact", Contact.class);
     public static final Property<List<PaymentOutTransaction>> PAYMENT_OUT_TRANSACTIONS = Property.create("paymentOutTransactions", List.class);
 
+    protected Long angelId;
+    protected ConfirmationStatus confirmationStatus;
+    protected Date created;
+    protected String creditCardCVV;
+    protected CreditCardType creditCardType;
+    protected Date dateBanked;
+    protected Date datePaid;
+    protected Date modified;
+    protected String paymentInTxnReference;
+    protected PaymentSource source;
+    protected PaymentStatus status;
+    protected String statusNotes;
+    protected Money totalAmount;
+
+    protected Object college;
+    protected Object contact;
+    protected Object paymentOutTransactions;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setConfirmationStatus(ConfirmationStatus confirmationStatus) {
-        writeProperty("confirmationStatus", confirmationStatus);
+        beforePropertyWrite("confirmationStatus", this.confirmationStatus, confirmationStatus);
+        this.confirmationStatus = confirmationStatus;
     }
+
     public ConfirmationStatus getConfirmationStatus() {
-        return (ConfirmationStatus)readProperty("confirmationStatus");
+        beforePropertyRead("confirmationStatus");
+        return this.confirmationStatus;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setCreditCardCVV(String creditCardCVV) {
-        writeProperty("creditCardCVV", creditCardCVV);
+        beforePropertyWrite("creditCardCVV", this.creditCardCVV, creditCardCVV);
+        this.creditCardCVV = creditCardCVV;
     }
+
     public String getCreditCardCVV() {
-        return (String)readProperty("creditCardCVV");
+        beforePropertyRead("creditCardCVV");
+        return this.creditCardCVV;
     }
 
     public void setCreditCardType(CreditCardType creditCardType) {
-        writeProperty("creditCardType", creditCardType);
+        beforePropertyWrite("creditCardType", this.creditCardType, creditCardType);
+        this.creditCardType = creditCardType;
     }
+
     public CreditCardType getCreditCardType() {
-        return (CreditCardType)readProperty("creditCardType");
+        beforePropertyRead("creditCardType");
+        return this.creditCardType;
     }
 
     public void setDateBanked(Date dateBanked) {
-        writeProperty("dateBanked", dateBanked);
+        beforePropertyWrite("dateBanked", this.dateBanked, dateBanked);
+        this.dateBanked = dateBanked;
     }
+
     public Date getDateBanked() {
-        return (Date)readProperty("dateBanked");
+        beforePropertyRead("dateBanked");
+        return this.dateBanked;
     }
 
     public void setDatePaid(Date datePaid) {
-        writeProperty("datePaid", datePaid);
+        beforePropertyWrite("datePaid", this.datePaid, datePaid);
+        this.datePaid = datePaid;
     }
+
     public Date getDatePaid() {
-        return (Date)readProperty("datePaid");
+        beforePropertyRead("datePaid");
+        return this.datePaid;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setPaymentInTxnReference(String paymentInTxnReference) {
-        writeProperty("paymentInTxnReference", paymentInTxnReference);
+        beforePropertyWrite("paymentInTxnReference", this.paymentInTxnReference, paymentInTxnReference);
+        this.paymentInTxnReference = paymentInTxnReference;
     }
+
     public String getPaymentInTxnReference() {
-        return (String)readProperty("paymentInTxnReference");
+        beforePropertyRead("paymentInTxnReference");
+        return this.paymentInTxnReference;
     }
 
     public void setSource(PaymentSource source) {
-        writeProperty("source", source);
+        beforePropertyWrite("source", this.source, source);
+        this.source = source;
     }
+
     public PaymentSource getSource() {
-        return (PaymentSource)readProperty("source");
+        beforePropertyRead("source");
+        return this.source;
     }
 
     public void setStatus(PaymentStatus status) {
-        writeProperty("status", status);
+        beforePropertyWrite("status", this.status, status);
+        this.status = status;
     }
+
     public PaymentStatus getStatus() {
-        return (PaymentStatus)readProperty("status");
+        beforePropertyRead("status");
+        return this.status;
     }
 
     public void setStatusNotes(String statusNotes) {
-        writeProperty("statusNotes", statusNotes);
+        beforePropertyWrite("statusNotes", this.statusNotes, statusNotes);
+        this.statusNotes = statusNotes;
     }
+
     public String getStatusNotes() {
-        return (String)readProperty("statusNotes");
+        beforePropertyRead("statusNotes");
+        return this.statusNotes;
     }
 
     public void setTotalAmount(Money totalAmount) {
-        writeProperty("totalAmount", totalAmount);
+        beforePropertyWrite("totalAmount", this.totalAmount, totalAmount);
+        this.totalAmount = totalAmount;
     }
+
     public Money getTotalAmount() {
-        return (Money)readProperty("totalAmount");
+        beforePropertyRead("totalAmount");
+        return this.totalAmount;
     }
 
     public void setCollege(College college) {
@@ -159,7 +219,6 @@ public abstract class _PaymentOut extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void setContact(Contact contact) {
         setToOneTarget("contact", contact, true);
     }
@@ -168,21 +227,175 @@ public abstract class _PaymentOut extends WillowCayenneObject {
         return (Contact)readProperty("contact");
     }
 
-
     public void addToPaymentOutTransactions(PaymentOutTransaction obj) {
         addToManyTarget("paymentOutTransactions", obj, true);
     }
+
     public void removeFromPaymentOutTransactions(PaymentOutTransaction obj) {
         removeToManyTarget("paymentOutTransactions", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<PaymentOutTransaction> getPaymentOutTransactions() {
         return (List<PaymentOutTransaction>)readProperty("paymentOutTransactions");
     }
 
-
     protected abstract void onPostAdd();
 
     protected abstract void onPrePersist();
+
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "confirmationStatus":
+                return this.confirmationStatus;
+            case "created":
+                return this.created;
+            case "creditCardCVV":
+                return this.creditCardCVV;
+            case "creditCardType":
+                return this.creditCardType;
+            case "dateBanked":
+                return this.dateBanked;
+            case "datePaid":
+                return this.datePaid;
+            case "modified":
+                return this.modified;
+            case "paymentInTxnReference":
+                return this.paymentInTxnReference;
+            case "source":
+                return this.source;
+            case "status":
+                return this.status;
+            case "statusNotes":
+                return this.statusNotes;
+            case "totalAmount":
+                return this.totalAmount;
+            case "college":
+                return this.college;
+            case "contact":
+                return this.contact;
+            case "paymentOutTransactions":
+                return this.paymentOutTransactions;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "confirmationStatus":
+                this.confirmationStatus = (ConfirmationStatus)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "creditCardCVV":
+                this.creditCardCVV = (String)val;
+                break;
+            case "creditCardType":
+                this.creditCardType = (CreditCardType)val;
+                break;
+            case "dateBanked":
+                this.dateBanked = (Date)val;
+                break;
+            case "datePaid":
+                this.datePaid = (Date)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "paymentInTxnReference":
+                this.paymentInTxnReference = (String)val;
+                break;
+            case "source":
+                this.source = (PaymentSource)val;
+                break;
+            case "status":
+                this.status = (PaymentStatus)val;
+                break;
+            case "statusNotes":
+                this.statusNotes = (String)val;
+                break;
+            case "totalAmount":
+                this.totalAmount = (Money)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "contact":
+                this.contact = val;
+                break;
+            case "paymentOutTransactions":
+                this.paymentOutTransactions = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.confirmationStatus);
+        out.writeObject(this.created);
+        out.writeObject(this.creditCardCVV);
+        out.writeObject(this.creditCardType);
+        out.writeObject(this.dateBanked);
+        out.writeObject(this.datePaid);
+        out.writeObject(this.modified);
+        out.writeObject(this.paymentInTxnReference);
+        out.writeObject(this.source);
+        out.writeObject(this.status);
+        out.writeObject(this.statusNotes);
+        out.writeObject(this.totalAmount);
+        out.writeObject(this.college);
+        out.writeObject(this.contact);
+        out.writeObject(this.paymentOutTransactions);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.confirmationStatus = (ConfirmationStatus)in.readObject();
+        this.created = (Date)in.readObject();
+        this.creditCardCVV = (String)in.readObject();
+        this.creditCardType = (CreditCardType)in.readObject();
+        this.dateBanked = (Date)in.readObject();
+        this.datePaid = (Date)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.paymentInTxnReference = (String)in.readObject();
+        this.source = (PaymentSource)in.readObject();
+        this.status = (PaymentStatus)in.readObject();
+        this.statusNotes = (String)in.readObject();
+        this.totalAmount = (Money)in.readObject();
+        this.college = in.readObject();
+        this.contact = in.readObject();
+        this.paymentOutTransactions = in.readObject();
+    }
 
 }

@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -50,46 +53,78 @@ public abstract class _CorporatePass extends WillowCayenneObject {
     public static final Property<List<CourseClass>> VALID_CLASSES = Property.create("validClasses", List.class);
     public static final Property<List<Product>> VALID_PRODUCTS = Property.create("validProducts", List.class);
 
+    protected Long angelId;
+    protected Date created;
+    protected Date expiryDate;
+    protected String invoiceEmail;
+    protected Date modified;
+    protected String password;
+
+    protected Object college;
+    protected Object contact;
+    protected Object corporatePassDiscounts;
+    protected Object invoice;
+    protected Object validClasses;
+    protected Object validProducts;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setExpiryDate(Date expiryDate) {
-        writeProperty("expiryDate", expiryDate);
+        beforePropertyWrite("expiryDate", this.expiryDate, expiryDate);
+        this.expiryDate = expiryDate;
     }
+
     public Date getExpiryDate() {
-        return (Date)readProperty("expiryDate");
+        beforePropertyRead("expiryDate");
+        return this.expiryDate;
     }
 
     public void setInvoiceEmail(String invoiceEmail) {
-        writeProperty("invoiceEmail", invoiceEmail);
+        beforePropertyWrite("invoiceEmail", this.invoiceEmail, invoiceEmail);
+        this.invoiceEmail = invoiceEmail;
     }
+
     public String getInvoiceEmail() {
-        return (String)readProperty("invoiceEmail");
+        beforePropertyRead("invoiceEmail");
+        return this.invoiceEmail;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setPassword(String password) {
-        writeProperty("password", password);
+        beforePropertyWrite("password", this.password, password);
+        this.password = password;
     }
+
     public String getPassword() {
-        return (String)readProperty("password");
+        beforePropertyRead("password");
+        return this.password;
     }
 
     public void setCollege(College college) {
@@ -100,7 +135,6 @@ public abstract class _CorporatePass extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void setContact(Contact contact) {
         setToOneTarget("contact", contact, true);
     }
@@ -109,53 +143,182 @@ public abstract class _CorporatePass extends WillowCayenneObject {
         return (Contact)readProperty("contact");
     }
 
-
     public void addToCorporatePassDiscounts(CorporatePassDiscount obj) {
         addToManyTarget("corporatePassDiscounts", obj, true);
     }
+
     public void removeFromCorporatePassDiscounts(CorporatePassDiscount obj) {
         removeToManyTarget("corporatePassDiscounts", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<CorporatePassDiscount> getCorporatePassDiscounts() {
         return (List<CorporatePassDiscount>)readProperty("corporatePassDiscounts");
     }
 
-
     public void addToInvoice(Invoice obj) {
         addToManyTarget("invoice", obj, true);
     }
+
     public void removeFromInvoice(Invoice obj) {
         removeToManyTarget("invoice", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Invoice> getInvoice() {
         return (List<Invoice>)readProperty("invoice");
     }
 
-
     public void addToValidClasses(CourseClass obj) {
         addToManyTarget("validClasses", obj, true);
     }
+
     public void removeFromValidClasses(CourseClass obj) {
         removeToManyTarget("validClasses", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<CourseClass> getValidClasses() {
         return (List<CourseClass>)readProperty("validClasses");
     }
 
-
     public void addToValidProducts(Product obj) {
         addToManyTarget("validProducts", obj, true);
     }
+
     public void removeFromValidProducts(Product obj) {
         removeToManyTarget("validProducts", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Product> getValidProducts() {
         return (List<Product>)readProperty("validProducts");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "created":
+                return this.created;
+            case "expiryDate":
+                return this.expiryDate;
+            case "invoiceEmail":
+                return this.invoiceEmail;
+            case "modified":
+                return this.modified;
+            case "password":
+                return this.password;
+            case "college":
+                return this.college;
+            case "contact":
+                return this.contact;
+            case "corporatePassDiscounts":
+                return this.corporatePassDiscounts;
+            case "invoice":
+                return this.invoice;
+            case "validClasses":
+                return this.validClasses;
+            case "validProducts":
+                return this.validProducts;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "expiryDate":
+                this.expiryDate = (Date)val;
+                break;
+            case "invoiceEmail":
+                this.invoiceEmail = (String)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "password":
+                this.password = (String)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "contact":
+                this.contact = val;
+                break;
+            case "corporatePassDiscounts":
+                this.corporatePassDiscounts = val;
+                break;
+            case "invoice":
+                this.invoice = val;
+                break;
+            case "validClasses":
+                this.validClasses = val;
+                break;
+            case "validProducts":
+                this.validProducts = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.created);
+        out.writeObject(this.expiryDate);
+        out.writeObject(this.invoiceEmail);
+        out.writeObject(this.modified);
+        out.writeObject(this.password);
+        out.writeObject(this.college);
+        out.writeObject(this.contact);
+        out.writeObject(this.corporatePassDiscounts);
+        out.writeObject(this.invoice);
+        out.writeObject(this.validClasses);
+        out.writeObject(this.validProducts);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.created = (Date)in.readObject();
+        this.expiryDate = (Date)in.readObject();
+        this.invoiceEmail = (String)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.password = (String)in.readObject();
+        this.college = in.readObject();
+        this.contact = in.readObject();
+        this.corporatePassDiscounts = in.readObject();
+        this.invoice = in.readObject();
+        this.validClasses = in.readObject();
+        this.validProducts = in.readObject();
+    }
 
 }

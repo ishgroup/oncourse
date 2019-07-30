@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 
 import org.apache.cayenne.exp.Property;
@@ -37,46 +40,74 @@ public abstract class _TagGroupRequirement extends WillowCayenneObject {
     public static final Property<College> COLLEGE = Property.create("college", College.class);
     public static final Property<Tag> TAG = Property.create("tag", Tag.class);
 
+    protected Boolean allowsMultipleTags;
+    protected Long angelId;
+    protected Date created;
+    protected String entityIdentifier;
+    protected Boolean isRequired;
+    protected Date modified;
+
+    protected Object college;
+    protected Object tag;
+
     public void setAllowsMultipleTags(Boolean allowsMultipleTags) {
-        writeProperty("allowsMultipleTags", allowsMultipleTags);
+        beforePropertyWrite("allowsMultipleTags", this.allowsMultipleTags, allowsMultipleTags);
+        this.allowsMultipleTags = allowsMultipleTags;
     }
+
     public Boolean getAllowsMultipleTags() {
-        return (Boolean)readProperty("allowsMultipleTags");
+        beforePropertyRead("allowsMultipleTags");
+        return this.allowsMultipleTags;
     }
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setEntityIdentifier(String entityIdentifier) {
-        writeProperty("entityIdentifier", entityIdentifier);
+        beforePropertyWrite("entityIdentifier", this.entityIdentifier, entityIdentifier);
+        this.entityIdentifier = entityIdentifier;
     }
+
     public String getEntityIdentifier() {
-        return (String)readProperty("entityIdentifier");
+        beforePropertyRead("entityIdentifier");
+        return this.entityIdentifier;
     }
 
     public void setIsRequired(Boolean isRequired) {
-        writeProperty("isRequired", isRequired);
+        beforePropertyWrite("isRequired", this.isRequired, isRequired);
+        this.isRequired = isRequired;
     }
+
     public Boolean getIsRequired() {
-        return (Boolean)readProperty("isRequired");
+        beforePropertyRead("isRequired");
+        return this.isRequired;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setCollege(College college) {
@@ -87,7 +118,6 @@ public abstract class _TagGroupRequirement extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void setTag(Tag tag) {
         setToOneTarget("tag", tag, true);
     }
@@ -96,5 +126,102 @@ public abstract class _TagGroupRequirement extends WillowCayenneObject {
         return (Tag)readProperty("tag");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "allowsMultipleTags":
+                return this.allowsMultipleTags;
+            case "angelId":
+                return this.angelId;
+            case "created":
+                return this.created;
+            case "entityIdentifier":
+                return this.entityIdentifier;
+            case "isRequired":
+                return this.isRequired;
+            case "modified":
+                return this.modified;
+            case "college":
+                return this.college;
+            case "tag":
+                return this.tag;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "allowsMultipleTags":
+                this.allowsMultipleTags = (Boolean)val;
+                break;
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "entityIdentifier":
+                this.entityIdentifier = (String)val;
+                break;
+            case "isRequired":
+                this.isRequired = (Boolean)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "tag":
+                this.tag = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.allowsMultipleTags);
+        out.writeObject(this.angelId);
+        out.writeObject(this.created);
+        out.writeObject(this.entityIdentifier);
+        out.writeObject(this.isRequired);
+        out.writeObject(this.modified);
+        out.writeObject(this.college);
+        out.writeObject(this.tag);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.allowsMultipleTags = (Boolean)in.readObject();
+        this.angelId = (Long)in.readObject();
+        this.created = (Date)in.readObject();
+        this.entityIdentifier = (String)in.readObject();
+        this.isRequired = (Boolean)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.college = in.readObject();
+        this.tag = in.readObject();
+    }
 
 }

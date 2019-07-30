@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -58,109 +61,173 @@ public abstract class _Product extends WillowCayenneObject {
     public static final Property<College> COLLEGE = Property.create("college", College.class);
     public static final Property<List<ProductItem>> PRODUCT_ITEMS = Property.create("productItems", List.class);
 
+    protected Long angelId;
+    protected Date created;
+    protected String description;
+    protected Integer expiryDays;
+    protected ExpiryType expiryType;
+    protected Boolean isOnSale;
+    protected Boolean isWebVisible;
+    protected Date modified;
+    protected String name;
+    protected String notes;
+    protected Money priceExTax;
+    protected String sku;
+    protected Money taxAdjustment;
+    protected Money taxAmount;
+    protected Integer type;
+
+    protected Object college;
+    protected Object productItems;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setDescription(String description) {
-        writeProperty("description", description);
+        beforePropertyWrite("description", this.description, description);
+        this.description = description;
     }
+
     public String getDescription() {
-        return (String)readProperty("description");
+        beforePropertyRead("description");
+        return this.description;
     }
 
     public void setExpiryDays(Integer expiryDays) {
-        writeProperty("expiryDays", expiryDays);
+        beforePropertyWrite("expiryDays", this.expiryDays, expiryDays);
+        this.expiryDays = expiryDays;
     }
+
     public Integer getExpiryDays() {
-        return (Integer)readProperty("expiryDays");
+        beforePropertyRead("expiryDays");
+        return this.expiryDays;
     }
 
     public void setExpiryType(ExpiryType expiryType) {
-        writeProperty("expiryType", expiryType);
+        beforePropertyWrite("expiryType", this.expiryType, expiryType);
+        this.expiryType = expiryType;
     }
+
     public ExpiryType getExpiryType() {
-        return (ExpiryType)readProperty("expiryType");
+        beforePropertyRead("expiryType");
+        return this.expiryType;
     }
 
     public void setIsOnSale(Boolean isOnSale) {
-        writeProperty("isOnSale", isOnSale);
+        beforePropertyWrite("isOnSale", this.isOnSale, isOnSale);
+        this.isOnSale = isOnSale;
     }
+
     public Boolean getIsOnSale() {
-        return (Boolean)readProperty("isOnSale");
+        beforePropertyRead("isOnSale");
+        return this.isOnSale;
     }
 
     public void setIsWebVisible(Boolean isWebVisible) {
-        writeProperty("isWebVisible", isWebVisible);
+        beforePropertyWrite("isWebVisible", this.isWebVisible, isWebVisible);
+        this.isWebVisible = isWebVisible;
     }
+
     public Boolean getIsWebVisible() {
-        return (Boolean)readProperty("isWebVisible");
+        beforePropertyRead("isWebVisible");
+        return this.isWebVisible;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        beforePropertyWrite("name", this.name, name);
+        this.name = name;
     }
+
     public String getName() {
-        return (String)readProperty("name");
+        beforePropertyRead("name");
+        return this.name;
     }
 
     public void setNotes(String notes) {
-        writeProperty("notes", notes);
+        beforePropertyWrite("notes", this.notes, notes);
+        this.notes = notes;
     }
+
     public String getNotes() {
-        return (String)readProperty("notes");
+        beforePropertyRead("notes");
+        return this.notes;
     }
 
     public void setPriceExTax(Money priceExTax) {
-        writeProperty("priceExTax", priceExTax);
+        beforePropertyWrite("priceExTax", this.priceExTax, priceExTax);
+        this.priceExTax = priceExTax;
     }
+
     public Money getPriceExTax() {
-        return (Money)readProperty("priceExTax");
+        beforePropertyRead("priceExTax");
+        return this.priceExTax;
     }
 
     public void setSku(String sku) {
-        writeProperty("sku", sku);
+        beforePropertyWrite("sku", this.sku, sku);
+        this.sku = sku;
     }
+
     public String getSku() {
-        return (String)readProperty("sku");
+        beforePropertyRead("sku");
+        return this.sku;
     }
 
     public void setTaxAdjustment(Money taxAdjustment) {
-        writeProperty("taxAdjustment", taxAdjustment);
+        beforePropertyWrite("taxAdjustment", this.taxAdjustment, taxAdjustment);
+        this.taxAdjustment = taxAdjustment;
     }
+
     public Money getTaxAdjustment() {
-        return (Money)readProperty("taxAdjustment");
+        beforePropertyRead("taxAdjustment");
+        return this.taxAdjustment;
     }
 
     public void setTaxAmount(Money taxAmount) {
-        writeProperty("taxAmount", taxAmount);
+        beforePropertyWrite("taxAmount", this.taxAmount, taxAmount);
+        this.taxAmount = taxAmount;
     }
+
     public Money getTaxAmount() {
-        return (Money)readProperty("taxAmount");
+        beforePropertyRead("taxAmount");
+        return this.taxAmount;
     }
 
     public void setType(Integer type) {
-        writeProperty("type", type);
+        beforePropertyWrite("type", this.type, type);
+        this.type = type;
     }
+
     public Integer getType() {
-        return (Integer)readProperty("type");
+        beforePropertyRead("type");
+        return this.type;
     }
 
     public void setCollege(College college) {
@@ -171,19 +238,180 @@ public abstract class _Product extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void addToProductItems(ProductItem obj) {
         addToManyTarget("productItems", obj, true);
     }
+
     public void removeFromProductItems(ProductItem obj) {
         removeToManyTarget("productItems", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<ProductItem> getProductItems() {
         return (List<ProductItem>)readProperty("productItems");
     }
 
-
     protected abstract void onPostAdd();
+
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "created":
+                return this.created;
+            case "description":
+                return this.description;
+            case "expiryDays":
+                return this.expiryDays;
+            case "expiryType":
+                return this.expiryType;
+            case "isOnSale":
+                return this.isOnSale;
+            case "isWebVisible":
+                return this.isWebVisible;
+            case "modified":
+                return this.modified;
+            case "name":
+                return this.name;
+            case "notes":
+                return this.notes;
+            case "priceExTax":
+                return this.priceExTax;
+            case "sku":
+                return this.sku;
+            case "taxAdjustment":
+                return this.taxAdjustment;
+            case "taxAmount":
+                return this.taxAmount;
+            case "type":
+                return this.type;
+            case "college":
+                return this.college;
+            case "productItems":
+                return this.productItems;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "description":
+                this.description = (String)val;
+                break;
+            case "expiryDays":
+                this.expiryDays = (Integer)val;
+                break;
+            case "expiryType":
+                this.expiryType = (ExpiryType)val;
+                break;
+            case "isOnSale":
+                this.isOnSale = (Boolean)val;
+                break;
+            case "isWebVisible":
+                this.isWebVisible = (Boolean)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "name":
+                this.name = (String)val;
+                break;
+            case "notes":
+                this.notes = (String)val;
+                break;
+            case "priceExTax":
+                this.priceExTax = (Money)val;
+                break;
+            case "sku":
+                this.sku = (String)val;
+                break;
+            case "taxAdjustment":
+                this.taxAdjustment = (Money)val;
+                break;
+            case "taxAmount":
+                this.taxAmount = (Money)val;
+                break;
+            case "type":
+                this.type = (Integer)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "productItems":
+                this.productItems = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.created);
+        out.writeObject(this.description);
+        out.writeObject(this.expiryDays);
+        out.writeObject(this.expiryType);
+        out.writeObject(this.isOnSale);
+        out.writeObject(this.isWebVisible);
+        out.writeObject(this.modified);
+        out.writeObject(this.name);
+        out.writeObject(this.notes);
+        out.writeObject(this.priceExTax);
+        out.writeObject(this.sku);
+        out.writeObject(this.taxAdjustment);
+        out.writeObject(this.taxAmount);
+        out.writeObject(this.type);
+        out.writeObject(this.college);
+        out.writeObject(this.productItems);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.created = (Date)in.readObject();
+        this.description = (String)in.readObject();
+        this.expiryDays = (Integer)in.readObject();
+        this.expiryType = (ExpiryType)in.readObject();
+        this.isOnSale = (Boolean)in.readObject();
+        this.isWebVisible = (Boolean)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.name = (String)in.readObject();
+        this.notes = (String)in.readObject();
+        this.priceExTax = (Money)in.readObject();
+        this.sku = (String)in.readObject();
+        this.taxAdjustment = (Money)in.readObject();
+        this.taxAmount = (Money)in.readObject();
+        this.type = (Integer)in.readObject();
+        this.college = in.readObject();
+        this.productItems = in.readObject();
+    }
 
 }

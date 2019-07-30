@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -38,46 +41,74 @@ public abstract class _Message extends WillowCayenneObject {
     public static final Property<College> COLLEGE = Property.create("college", College.class);
     public static final Property<List<MessagePerson>> MESSAGE_PEOPLE = Property.create("messagePeople", List.class);
 
+    protected Long angelId;
+    protected Date created;
+    protected String emailBody;
+    protected String emailSubject;
+    protected Date modified;
+    protected String smsText;
+
+    protected Object college;
+    protected Object messagePeople;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setEmailBody(String emailBody) {
-        writeProperty("emailBody", emailBody);
+        beforePropertyWrite("emailBody", this.emailBody, emailBody);
+        this.emailBody = emailBody;
     }
+
     public String getEmailBody() {
-        return (String)readProperty("emailBody");
+        beforePropertyRead("emailBody");
+        return this.emailBody;
     }
 
     public void setEmailSubject(String emailSubject) {
-        writeProperty("emailSubject", emailSubject);
+        beforePropertyWrite("emailSubject", this.emailSubject, emailSubject);
+        this.emailSubject = emailSubject;
     }
+
     public String getEmailSubject() {
-        return (String)readProperty("emailSubject");
+        beforePropertyRead("emailSubject");
+        return this.emailSubject;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setSmsText(String smsText) {
-        writeProperty("smsText", smsText);
+        beforePropertyWrite("smsText", this.smsText, smsText);
+        this.smsText = smsText;
     }
+
     public String getSmsText() {
-        return (String)readProperty("smsText");
+        beforePropertyRead("smsText");
+        return this.smsText;
     }
 
     public void setCollege(College college) {
@@ -88,17 +119,115 @@ public abstract class _Message extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void addToMessagePeople(MessagePerson obj) {
         addToManyTarget("messagePeople", obj, true);
     }
+
     public void removeFromMessagePeople(MessagePerson obj) {
         removeToManyTarget("messagePeople", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<MessagePerson> getMessagePeople() {
         return (List<MessagePerson>)readProperty("messagePeople");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "created":
+                return this.created;
+            case "emailBody":
+                return this.emailBody;
+            case "emailSubject":
+                return this.emailSubject;
+            case "modified":
+                return this.modified;
+            case "smsText":
+                return this.smsText;
+            case "college":
+                return this.college;
+            case "messagePeople":
+                return this.messagePeople;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "emailBody":
+                this.emailBody = (String)val;
+                break;
+            case "emailSubject":
+                this.emailSubject = (String)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "smsText":
+                this.smsText = (String)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "messagePeople":
+                this.messagePeople = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.created);
+        out.writeObject(this.emailBody);
+        out.writeObject(this.emailSubject);
+        out.writeObject(this.modified);
+        out.writeObject(this.smsText);
+        out.writeObject(this.college);
+        out.writeObject(this.messagePeople);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.created = (Date)in.readObject();
+        this.emailBody = (String)in.readObject();
+        this.emailSubject = (String)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.smsText = (String)in.readObject();
+        this.college = in.readObject();
+        this.messagePeople = in.readObject();
+    }
 
 }

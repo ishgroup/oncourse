@@ -1,8 +1,8 @@
 package ish.oncourse.model.auto;
 
-import org.apache.cayenne.CayenneDataObject;
+import org.apache.cayenne.BaseDataObject;
 
-public abstract class WillowCayenneObject extends CayenneDataObject {
+public abstract class WillowCayenneObject extends BaseDataObject {
 
     @Override
     public boolean equals(Object object) {

@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -31,32 +34,51 @@ public abstract class _CustomFee extends WillowCayenneObject {
     public static final Property<Date> PAID_UNTIL = Property.create("paidUntil", Date.class);
     public static final Property<College> COLLEGE = Property.create("college", College.class);
 
+    protected String code;
+    protected BigDecimal fee;
+    protected String name;
+    protected Date paidUntil;
+
+    protected Object college;
+
     public void setCode(String code) {
-        writeProperty("code", code);
+        beforePropertyWrite("code", this.code, code);
+        this.code = code;
     }
+
     public String getCode() {
-        return (String)readProperty("code");
+        beforePropertyRead("code");
+        return this.code;
     }
 
     public void setFee(BigDecimal fee) {
-        writeProperty("fee", fee);
+        beforePropertyWrite("fee", this.fee, fee);
+        this.fee = fee;
     }
+
     public BigDecimal getFee() {
-        return (BigDecimal)readProperty("fee");
+        beforePropertyRead("fee");
+        return this.fee;
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        beforePropertyWrite("name", this.name, name);
+        this.name = name;
     }
+
     public String getName() {
-        return (String)readProperty("name");
+        beforePropertyRead("name");
+        return this.name;
     }
 
     public void setPaidUntil(Date paidUntil) {
-        writeProperty("paidUntil", paidUntil);
+        beforePropertyWrite("paidUntil", this.paidUntil, paidUntil);
+        this.paidUntil = paidUntil;
     }
+
     public Date getPaidUntil() {
-        return (Date)readProperty("paidUntil");
+        beforePropertyRead("paidUntil");
+        return this.paidUntil;
     }
 
     public void setCollege(College college) {
@@ -67,5 +89,81 @@ public abstract class _CustomFee extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "code":
+                return this.code;
+            case "fee":
+                return this.fee;
+            case "name":
+                return this.name;
+            case "paidUntil":
+                return this.paidUntil;
+            case "college":
+                return this.college;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "code":
+                this.code = (String)val;
+                break;
+            case "fee":
+                this.fee = (BigDecimal)val;
+                break;
+            case "name":
+                this.name = (String)val;
+                break;
+            case "paidUntil":
+                this.paidUntil = (Date)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.code);
+        out.writeObject(this.fee);
+        out.writeObject(this.name);
+        out.writeObject(this.paidUntil);
+        out.writeObject(this.college);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.code = (String)in.readObject();
+        this.fee = (BigDecimal)in.readObject();
+        this.name = (String)in.readObject();
+        this.paidUntil = (Date)in.readObject();
+        this.college = in.readObject();
+    }
 
 }

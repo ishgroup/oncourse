@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -69,143 +72,222 @@ public abstract class _Qualification extends WillowCayenneObject {
     public static final Property<List<Course>> COURSES = Property.create("courses", List.class);
     public static final Property<List<PriorLearning>> PRIOR_LEARNINGS = Property.create("priorLearnings", List.class);
 
+    protected Long angelId;
+    protected String anzsco;
+    protected String asco;
+    protected Date created;
+    protected String fieldOfEducation;
+    protected String fieldOfStudy;
+    protected QualificationType isAccreditedCourse;
+    protected Long ishVersion;
+    protected String level;
+    protected String levelCode;
+    protected Date modified;
+    protected String nationalCode;
+    protected String newApprenticeship;
+    protected Float nominalHours;
+    protected Date reviewDate;
+    protected String specialization;
+    protected String title;
+    protected Long trainingPackageId;
+
+    protected Object certificates;
+    protected Object college;
+    protected Object courses;
+    protected Object priorLearnings;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setAnzsco(String anzsco) {
-        writeProperty("anzsco", anzsco);
+        beforePropertyWrite("anzsco", this.anzsco, anzsco);
+        this.anzsco = anzsco;
     }
+
     public String getAnzsco() {
-        return (String)readProperty("anzsco");
+        beforePropertyRead("anzsco");
+        return this.anzsco;
     }
 
     public void setAsco(String asco) {
-        writeProperty("asco", asco);
+        beforePropertyWrite("asco", this.asco, asco);
+        this.asco = asco;
     }
+
     public String getAsco() {
-        return (String)readProperty("asco");
+        beforePropertyRead("asco");
+        return this.asco;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setFieldOfEducation(String fieldOfEducation) {
-        writeProperty("fieldOfEducation", fieldOfEducation);
+        beforePropertyWrite("fieldOfEducation", this.fieldOfEducation, fieldOfEducation);
+        this.fieldOfEducation = fieldOfEducation;
     }
+
     public String getFieldOfEducation() {
-        return (String)readProperty("fieldOfEducation");
+        beforePropertyRead("fieldOfEducation");
+        return this.fieldOfEducation;
     }
 
     public void setFieldOfStudy(String fieldOfStudy) {
-        writeProperty("fieldOfStudy", fieldOfStudy);
+        beforePropertyWrite("fieldOfStudy", this.fieldOfStudy, fieldOfStudy);
+        this.fieldOfStudy = fieldOfStudy;
     }
+
     public String getFieldOfStudy() {
-        return (String)readProperty("fieldOfStudy");
+        beforePropertyRead("fieldOfStudy");
+        return this.fieldOfStudy;
     }
 
     public void setIsAccreditedCourse(QualificationType isAccreditedCourse) {
-        writeProperty("isAccreditedCourse", isAccreditedCourse);
+        beforePropertyWrite("isAccreditedCourse", this.isAccreditedCourse, isAccreditedCourse);
+        this.isAccreditedCourse = isAccreditedCourse;
     }
+
     public QualificationType getIsAccreditedCourse() {
-        return (QualificationType)readProperty("isAccreditedCourse");
+        beforePropertyRead("isAccreditedCourse");
+        return this.isAccreditedCourse;
     }
 
     public void setIshVersion(Long ishVersion) {
-        writeProperty("ishVersion", ishVersion);
+        beforePropertyWrite("ishVersion", this.ishVersion, ishVersion);
+        this.ishVersion = ishVersion;
     }
+
     public Long getIshVersion() {
-        return (Long)readProperty("ishVersion");
+        beforePropertyRead("ishVersion");
+        return this.ishVersion;
     }
 
     public void setLevel(String level) {
-        writeProperty("level", level);
+        beforePropertyWrite("level", this.level, level);
+        this.level = level;
     }
+
     public String getLevel() {
-        return (String)readProperty("level");
+        beforePropertyRead("level");
+        return this.level;
     }
 
     public void setLevelCode(String levelCode) {
-        writeProperty("levelCode", levelCode);
+        beforePropertyWrite("levelCode", this.levelCode, levelCode);
+        this.levelCode = levelCode;
     }
+
     public String getLevelCode() {
-        return (String)readProperty("levelCode");
+        beforePropertyRead("levelCode");
+        return this.levelCode;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setNationalCode(String nationalCode) {
-        writeProperty("nationalCode", nationalCode);
+        beforePropertyWrite("nationalCode", this.nationalCode, nationalCode);
+        this.nationalCode = nationalCode;
     }
+
     public String getNationalCode() {
-        return (String)readProperty("nationalCode");
+        beforePropertyRead("nationalCode");
+        return this.nationalCode;
     }
 
     public void setNewApprenticeship(String newApprenticeship) {
-        writeProperty("newApprenticeship", newApprenticeship);
+        beforePropertyWrite("newApprenticeship", this.newApprenticeship, newApprenticeship);
+        this.newApprenticeship = newApprenticeship;
     }
+
     public String getNewApprenticeship() {
-        return (String)readProperty("newApprenticeship");
+        beforePropertyRead("newApprenticeship");
+        return this.newApprenticeship;
     }
 
     public void setNominalHours(Float nominalHours) {
-        writeProperty("nominalHours", nominalHours);
+        beforePropertyWrite("nominalHours", this.nominalHours, nominalHours);
+        this.nominalHours = nominalHours;
     }
+
     public Float getNominalHours() {
-        return (Float)readProperty("nominalHours");
+        beforePropertyRead("nominalHours");
+        return this.nominalHours;
     }
 
     public void setReviewDate(Date reviewDate) {
-        writeProperty("reviewDate", reviewDate);
+        beforePropertyWrite("reviewDate", this.reviewDate, reviewDate);
+        this.reviewDate = reviewDate;
     }
+
     public Date getReviewDate() {
-        return (Date)readProperty("reviewDate");
+        beforePropertyRead("reviewDate");
+        return this.reviewDate;
     }
 
     public void setSpecialization(String specialization) {
-        writeProperty("specialization", specialization);
+        beforePropertyWrite("specialization", this.specialization, specialization);
+        this.specialization = specialization;
     }
+
     public String getSpecialization() {
-        return (String)readProperty("specialization");
+        beforePropertyRead("specialization");
+        return this.specialization;
     }
 
     public void setTitle(String title) {
-        writeProperty("title", title);
+        beforePropertyWrite("title", this.title, title);
+        this.title = title;
     }
+
     public String getTitle() {
-        return (String)readProperty("title");
+        beforePropertyRead("title");
+        return this.title;
     }
 
     public void setTrainingPackageId(Long trainingPackageId) {
-        writeProperty("trainingPackageId", trainingPackageId);
+        beforePropertyWrite("trainingPackageId", this.trainingPackageId, trainingPackageId);
+        this.trainingPackageId = trainingPackageId;
     }
+
     public Long getTrainingPackageId() {
-        return (Long)readProperty("trainingPackageId");
+        beforePropertyRead("trainingPackageId");
+        return this.trainingPackageId;
     }
 
     public void addToCertificates(Certificate obj) {
         addToManyTarget("certificates", obj, true);
     }
+
     public void removeFromCertificates(Certificate obj) {
         removeToManyTarget("certificates", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Certificate> getCertificates() {
         return (List<Certificate>)readProperty("certificates");
     }
-
 
     public void setCollege(College college) {
         setToOneTarget("college", college, true);
@@ -215,33 +297,230 @@ public abstract class _Qualification extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void addToCourses(Course obj) {
         addToManyTarget("courses", obj, true);
     }
+
     public void removeFromCourses(Course obj) {
         removeToManyTarget("courses", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Course> getCourses() {
         return (List<Course>)readProperty("courses");
     }
 
-
     public void addToPriorLearnings(PriorLearning obj) {
         addToManyTarget("priorLearnings", obj, true);
     }
+
     public void removeFromPriorLearnings(PriorLearning obj) {
         removeToManyTarget("priorLearnings", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<PriorLearning> getPriorLearnings() {
         return (List<PriorLearning>)readProperty("priorLearnings");
     }
 
-
     protected abstract void onPreUpdate();
 
     protected abstract void onPrePersist();
+
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "anzsco":
+                return this.anzsco;
+            case "asco":
+                return this.asco;
+            case "created":
+                return this.created;
+            case "fieldOfEducation":
+                return this.fieldOfEducation;
+            case "fieldOfStudy":
+                return this.fieldOfStudy;
+            case "isAccreditedCourse":
+                return this.isAccreditedCourse;
+            case "ishVersion":
+                return this.ishVersion;
+            case "level":
+                return this.level;
+            case "levelCode":
+                return this.levelCode;
+            case "modified":
+                return this.modified;
+            case "nationalCode":
+                return this.nationalCode;
+            case "newApprenticeship":
+                return this.newApprenticeship;
+            case "nominalHours":
+                return this.nominalHours;
+            case "reviewDate":
+                return this.reviewDate;
+            case "specialization":
+                return this.specialization;
+            case "title":
+                return this.title;
+            case "trainingPackageId":
+                return this.trainingPackageId;
+            case "certificates":
+                return this.certificates;
+            case "college":
+                return this.college;
+            case "courses":
+                return this.courses;
+            case "priorLearnings":
+                return this.priorLearnings;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "anzsco":
+                this.anzsco = (String)val;
+                break;
+            case "asco":
+                this.asco = (String)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "fieldOfEducation":
+                this.fieldOfEducation = (String)val;
+                break;
+            case "fieldOfStudy":
+                this.fieldOfStudy = (String)val;
+                break;
+            case "isAccreditedCourse":
+                this.isAccreditedCourse = (QualificationType)val;
+                break;
+            case "ishVersion":
+                this.ishVersion = (Long)val;
+                break;
+            case "level":
+                this.level = (String)val;
+                break;
+            case "levelCode":
+                this.levelCode = (String)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "nationalCode":
+                this.nationalCode = (String)val;
+                break;
+            case "newApprenticeship":
+                this.newApprenticeship = (String)val;
+                break;
+            case "nominalHours":
+                this.nominalHours = (Float)val;
+                break;
+            case "reviewDate":
+                this.reviewDate = (Date)val;
+                break;
+            case "specialization":
+                this.specialization = (String)val;
+                break;
+            case "title":
+                this.title = (String)val;
+                break;
+            case "trainingPackageId":
+                this.trainingPackageId = (Long)val;
+                break;
+            case "certificates":
+                this.certificates = val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "courses":
+                this.courses = val;
+                break;
+            case "priorLearnings":
+                this.priorLearnings = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.anzsco);
+        out.writeObject(this.asco);
+        out.writeObject(this.created);
+        out.writeObject(this.fieldOfEducation);
+        out.writeObject(this.fieldOfStudy);
+        out.writeObject(this.isAccreditedCourse);
+        out.writeObject(this.ishVersion);
+        out.writeObject(this.level);
+        out.writeObject(this.levelCode);
+        out.writeObject(this.modified);
+        out.writeObject(this.nationalCode);
+        out.writeObject(this.newApprenticeship);
+        out.writeObject(this.nominalHours);
+        out.writeObject(this.reviewDate);
+        out.writeObject(this.specialization);
+        out.writeObject(this.title);
+        out.writeObject(this.trainingPackageId);
+        out.writeObject(this.certificates);
+        out.writeObject(this.college);
+        out.writeObject(this.courses);
+        out.writeObject(this.priorLearnings);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.anzsco = (String)in.readObject();
+        this.asco = (String)in.readObject();
+        this.created = (Date)in.readObject();
+        this.fieldOfEducation = (String)in.readObject();
+        this.fieldOfStudy = (String)in.readObject();
+        this.isAccreditedCourse = (QualificationType)in.readObject();
+        this.ishVersion = (Long)in.readObject();
+        this.level = (String)in.readObject();
+        this.levelCode = (String)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.nationalCode = (String)in.readObject();
+        this.newApprenticeship = (String)in.readObject();
+        this.nominalHours = (Float)in.readObject();
+        this.reviewDate = (Date)in.readObject();
+        this.specialization = (String)in.readObject();
+        this.title = (String)in.readObject();
+        this.trainingPackageId = (Long)in.readObject();
+        this.certificates = in.readObject();
+        this.college = in.readObject();
+        this.courses = in.readObject();
+        this.priorLearnings = in.readObject();
+    }
 
 }

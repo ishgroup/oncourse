@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -48,80 +51,122 @@ public abstract class _Document extends WillowCayenneObject {
     public static final Property<College> COLLEGE = Property.create("college", College.class);
     public static final Property<List<DocumentVersion>> VERSIONS = Property.create("versions", List.class);
 
+    protected Long angelId;
+    protected Date created;
+    protected String description;
+    protected String fileUUID;
+    protected Boolean isRemoved;
+    protected Boolean isShared;
+    protected Date modified;
+    protected String name;
+    protected AttachmentInfoVisibility webVisibility;
+
+    protected Object binaryInfoRelations;
+    protected Object college;
+    protected Object versions;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setDescription(String description) {
-        writeProperty("description", description);
+        beforePropertyWrite("description", this.description, description);
+        this.description = description;
     }
+
     public String getDescription() {
-        return (String)readProperty("description");
+        beforePropertyRead("description");
+        return this.description;
     }
 
     public void setFileUUID(String fileUUID) {
-        writeProperty("fileUUID", fileUUID);
+        beforePropertyWrite("fileUUID", this.fileUUID, fileUUID);
+        this.fileUUID = fileUUID;
     }
+
     public String getFileUUID() {
-        return (String)readProperty("fileUUID");
+        beforePropertyRead("fileUUID");
+        return this.fileUUID;
     }
 
     public void setIsRemoved(Boolean isRemoved) {
-        writeProperty("isRemoved", isRemoved);
+        beforePropertyWrite("isRemoved", this.isRemoved, isRemoved);
+        this.isRemoved = isRemoved;
     }
+
     public Boolean getIsRemoved() {
-        return (Boolean)readProperty("isRemoved");
+        beforePropertyRead("isRemoved");
+        return this.isRemoved;
     }
 
     public void setIsShared(Boolean isShared) {
-        writeProperty("isShared", isShared);
+        beforePropertyWrite("isShared", this.isShared, isShared);
+        this.isShared = isShared;
     }
+
     public Boolean getIsShared() {
-        return (Boolean)readProperty("isShared");
+        beforePropertyRead("isShared");
+        return this.isShared;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        beforePropertyWrite("name", this.name, name);
+        this.name = name;
     }
+
     public String getName() {
-        return (String)readProperty("name");
+        beforePropertyRead("name");
+        return this.name;
     }
 
     public void setWebVisibility(AttachmentInfoVisibility webVisibility) {
-        writeProperty("webVisibility", webVisibility);
+        beforePropertyWrite("webVisibility", this.webVisibility, webVisibility);
+        this.webVisibility = webVisibility;
     }
+
     public AttachmentInfoVisibility getWebVisibility() {
-        return (AttachmentInfoVisibility)readProperty("webVisibility");
+        beforePropertyRead("webVisibility");
+        return this.webVisibility;
     }
 
     public void addToBinaryInfoRelations(BinaryInfoRelation obj) {
         addToManyTarget("binaryInfoRelations", obj, true);
     }
+
     public void removeFromBinaryInfoRelations(BinaryInfoRelation obj) {
         removeToManyTarget("binaryInfoRelations", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<BinaryInfoRelation> getBinaryInfoRelations() {
         return (List<BinaryInfoRelation>)readProperty("binaryInfoRelations");
     }
-
 
     public void setCollege(College college) {
         setToOneTarget("college", college, true);
@@ -131,17 +176,143 @@ public abstract class _Document extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void addToVersions(DocumentVersion obj) {
         addToManyTarget("versions", obj, true);
     }
+
     public void removeFromVersions(DocumentVersion obj) {
         removeToManyTarget("versions", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<DocumentVersion> getVersions() {
         return (List<DocumentVersion>)readProperty("versions");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "created":
+                return this.created;
+            case "description":
+                return this.description;
+            case "fileUUID":
+                return this.fileUUID;
+            case "isRemoved":
+                return this.isRemoved;
+            case "isShared":
+                return this.isShared;
+            case "modified":
+                return this.modified;
+            case "name":
+                return this.name;
+            case "webVisibility":
+                return this.webVisibility;
+            case "binaryInfoRelations":
+                return this.binaryInfoRelations;
+            case "college":
+                return this.college;
+            case "versions":
+                return this.versions;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "description":
+                this.description = (String)val;
+                break;
+            case "fileUUID":
+                this.fileUUID = (String)val;
+                break;
+            case "isRemoved":
+                this.isRemoved = (Boolean)val;
+                break;
+            case "isShared":
+                this.isShared = (Boolean)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "name":
+                this.name = (String)val;
+                break;
+            case "webVisibility":
+                this.webVisibility = (AttachmentInfoVisibility)val;
+                break;
+            case "binaryInfoRelations":
+                this.binaryInfoRelations = val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "versions":
+                this.versions = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.created);
+        out.writeObject(this.description);
+        out.writeObject(this.fileUUID);
+        out.writeObject(this.isRemoved);
+        out.writeObject(this.isShared);
+        out.writeObject(this.modified);
+        out.writeObject(this.name);
+        out.writeObject(this.webVisibility);
+        out.writeObject(this.binaryInfoRelations);
+        out.writeObject(this.college);
+        out.writeObject(this.versions);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.created = (Date)in.readObject();
+        this.description = (String)in.readObject();
+        this.fileUUID = (String)in.readObject();
+        this.isRemoved = (Boolean)in.readObject();
+        this.isShared = (Boolean)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.name = (String)in.readObject();
+        this.webVisibility = (AttachmentInfoVisibility)in.readObject();
+        this.binaryInfoRelations = in.readObject();
+        this.college = in.readObject();
+        this.versions = in.readObject();
+    }
 
 }

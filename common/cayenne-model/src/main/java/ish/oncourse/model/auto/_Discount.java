@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -96,193 +99,309 @@ public abstract class _Discount extends WillowCayenneObject {
     public static final Property<List<DiscountMembership>> DISCOUNT_MEMBERSHIP_PRODUCTS = Property.create("discountMembershipProducts", List.class);
     public static final Property<List<InvoiceLineDiscount>> INVOICE_LINE_DISCOUNTS = Property.create("invoiceLineDiscounts", List.class);
 
+    protected Long angelId;
+    protected String code;
+    protected Boolean combinationType;
+    protected Date created;
+    protected String detail;
+    protected Money discountAmount;
+    protected BigDecimal discountRate;
+    protected DiscountType discountType;
+    protected Boolean hideOnWeb;
+    protected Boolean isAvailableOnWeb;
+    protected Money maximumDiscount;
+    protected Integer minEnrolments;
+    protected Money minValue;
+    protected Money minimumDiscount;
+    protected Date modified;
+    protected String name;
+    protected MoneyRounding roundingMode;
+    protected Integer studentAge;
+    protected String studentAgeOperator;
+    protected Integer studentEnrolledWithinDays;
+    protected String studentPostcodes;
+    protected byte[] studentsQualifier;
+    protected String timeZone;
+    protected Date validFrom;
+    protected Integer validFromOffset;
+    protected Date validTo;
+    protected Integer validToOffset;
+
+    protected Object college;
+    protected Object corporatePassDiscounts;
+    protected Object discountConcessionTypes;
+    protected Object discountCourseClasses;
+    protected Object discountMembershipProducts;
+    protected Object invoiceLineDiscounts;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setCode(String code) {
-        writeProperty("code", code);
+        beforePropertyWrite("code", this.code, code);
+        this.code = code;
     }
+
     public String getCode() {
-        return (String)readProperty("code");
+        beforePropertyRead("code");
+        return this.code;
     }
 
     public void setCombinationType(Boolean combinationType) {
-        writeProperty("combinationType", combinationType);
+        beforePropertyWrite("combinationType", this.combinationType, combinationType);
+        this.combinationType = combinationType;
     }
+
     public Boolean getCombinationType() {
-        return (Boolean)readProperty("combinationType");
+        beforePropertyRead("combinationType");
+        return this.combinationType;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setDetail(String detail) {
-        writeProperty("detail", detail);
+        beforePropertyWrite("detail", this.detail, detail);
+        this.detail = detail;
     }
+
     public String getDetail() {
-        return (String)readProperty("detail");
+        beforePropertyRead("detail");
+        return this.detail;
     }
 
     public void setDiscountAmount(Money discountAmount) {
-        writeProperty("discountAmount", discountAmount);
+        beforePropertyWrite("discountAmount", this.discountAmount, discountAmount);
+        this.discountAmount = discountAmount;
     }
+
     public Money getDiscountAmount() {
-        return (Money)readProperty("discountAmount");
+        beforePropertyRead("discountAmount");
+        return this.discountAmount;
     }
 
     public void setDiscountRate(BigDecimal discountRate) {
-        writeProperty("discountRate", discountRate);
+        beforePropertyWrite("discountRate", this.discountRate, discountRate);
+        this.discountRate = discountRate;
     }
+
     public BigDecimal getDiscountRate() {
-        return (BigDecimal)readProperty("discountRate");
+        beforePropertyRead("discountRate");
+        return this.discountRate;
     }
 
     public void setDiscountType(DiscountType discountType) {
-        writeProperty("discountType", discountType);
+        beforePropertyWrite("discountType", this.discountType, discountType);
+        this.discountType = discountType;
     }
+
     public DiscountType getDiscountType() {
-        return (DiscountType)readProperty("discountType");
+        beforePropertyRead("discountType");
+        return this.discountType;
     }
 
     public void setHideOnWeb(Boolean hideOnWeb) {
-        writeProperty("hideOnWeb", hideOnWeb);
+        beforePropertyWrite("hideOnWeb", this.hideOnWeb, hideOnWeb);
+        this.hideOnWeb = hideOnWeb;
     }
+
     public Boolean getHideOnWeb() {
-        return (Boolean)readProperty("hideOnWeb");
+        beforePropertyRead("hideOnWeb");
+        return this.hideOnWeb;
     }
 
     public void setIsAvailableOnWeb(Boolean isAvailableOnWeb) {
-        writeProperty("isAvailableOnWeb", isAvailableOnWeb);
+        beforePropertyWrite("isAvailableOnWeb", this.isAvailableOnWeb, isAvailableOnWeb);
+        this.isAvailableOnWeb = isAvailableOnWeb;
     }
+
     public Boolean getIsAvailableOnWeb() {
-        return (Boolean)readProperty("isAvailableOnWeb");
+        beforePropertyRead("isAvailableOnWeb");
+        return this.isAvailableOnWeb;
     }
 
     public void setMaximumDiscount(Money maximumDiscount) {
-        writeProperty("maximumDiscount", maximumDiscount);
+        beforePropertyWrite("maximumDiscount", this.maximumDiscount, maximumDiscount);
+        this.maximumDiscount = maximumDiscount;
     }
+
     public Money getMaximumDiscount() {
-        return (Money)readProperty("maximumDiscount");
+        beforePropertyRead("maximumDiscount");
+        return this.maximumDiscount;
     }
 
     public void setMinEnrolments(Integer minEnrolments) {
-        writeProperty("minEnrolments", minEnrolments);
+        beforePropertyWrite("minEnrolments", this.minEnrolments, minEnrolments);
+        this.minEnrolments = minEnrolments;
     }
+
     public Integer getMinEnrolments() {
-        return (Integer)readProperty("minEnrolments");
+        beforePropertyRead("minEnrolments");
+        return this.minEnrolments;
     }
 
     public void setMinValue(Money minValue) {
-        writeProperty("minValue", minValue);
+        beforePropertyWrite("minValue", this.minValue, minValue);
+        this.minValue = minValue;
     }
+
     public Money getMinValue() {
-        return (Money)readProperty("minValue");
+        beforePropertyRead("minValue");
+        return this.minValue;
     }
 
     public void setMinimumDiscount(Money minimumDiscount) {
-        writeProperty("minimumDiscount", minimumDiscount);
+        beforePropertyWrite("minimumDiscount", this.minimumDiscount, minimumDiscount);
+        this.minimumDiscount = minimumDiscount;
     }
+
     public Money getMinimumDiscount() {
-        return (Money)readProperty("minimumDiscount");
+        beforePropertyRead("minimumDiscount");
+        return this.minimumDiscount;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        beforePropertyWrite("name", this.name, name);
+        this.name = name;
     }
+
     public String getName() {
-        return (String)readProperty("name");
+        beforePropertyRead("name");
+        return this.name;
     }
 
     public void setRoundingMode(MoneyRounding roundingMode) {
-        writeProperty("roundingMode", roundingMode);
+        beforePropertyWrite("roundingMode", this.roundingMode, roundingMode);
+        this.roundingMode = roundingMode;
     }
+
     public MoneyRounding getRoundingMode() {
-        return (MoneyRounding)readProperty("roundingMode");
+        beforePropertyRead("roundingMode");
+        return this.roundingMode;
     }
 
     public void setStudentAge(Integer studentAge) {
-        writeProperty("studentAge", studentAge);
+        beforePropertyWrite("studentAge", this.studentAge, studentAge);
+        this.studentAge = studentAge;
     }
+
     public Integer getStudentAge() {
-        return (Integer)readProperty("studentAge");
+        beforePropertyRead("studentAge");
+        return this.studentAge;
     }
 
     public void setStudentAgeOperator(String studentAgeOperator) {
-        writeProperty("studentAgeOperator", studentAgeOperator);
+        beforePropertyWrite("studentAgeOperator", this.studentAgeOperator, studentAgeOperator);
+        this.studentAgeOperator = studentAgeOperator;
     }
+
     public String getStudentAgeOperator() {
-        return (String)readProperty("studentAgeOperator");
+        beforePropertyRead("studentAgeOperator");
+        return this.studentAgeOperator;
     }
 
     public void setStudentEnrolledWithinDays(Integer studentEnrolledWithinDays) {
-        writeProperty("studentEnrolledWithinDays", studentEnrolledWithinDays);
+        beforePropertyWrite("studentEnrolledWithinDays", this.studentEnrolledWithinDays, studentEnrolledWithinDays);
+        this.studentEnrolledWithinDays = studentEnrolledWithinDays;
     }
+
     public Integer getStudentEnrolledWithinDays() {
-        return (Integer)readProperty("studentEnrolledWithinDays");
+        beforePropertyRead("studentEnrolledWithinDays");
+        return this.studentEnrolledWithinDays;
     }
 
     public void setStudentPostcodes(String studentPostcodes) {
-        writeProperty("studentPostcodes", studentPostcodes);
+        beforePropertyWrite("studentPostcodes", this.studentPostcodes, studentPostcodes);
+        this.studentPostcodes = studentPostcodes;
     }
+
     public String getStudentPostcodes() {
-        return (String)readProperty("studentPostcodes");
+        beforePropertyRead("studentPostcodes");
+        return this.studentPostcodes;
     }
 
     public void setStudentsQualifier(byte[] studentsQualifier) {
-        writeProperty("studentsQualifier", studentsQualifier);
+        beforePropertyWrite("studentsQualifier", this.studentsQualifier, studentsQualifier);
+        this.studentsQualifier = studentsQualifier;
     }
+
     public byte[] getStudentsQualifier() {
-        return (byte[])readProperty("studentsQualifier");
+        beforePropertyRead("studentsQualifier");
+        return this.studentsQualifier;
     }
 
     public void setTimeZone(String timeZone) {
-        writeProperty("timeZone", timeZone);
+        beforePropertyWrite("timeZone", this.timeZone, timeZone);
+        this.timeZone = timeZone;
     }
+
     public String getTimeZone() {
-        return (String)readProperty("timeZone");
+        beforePropertyRead("timeZone");
+        return this.timeZone;
     }
 
     public void setValidFrom(Date validFrom) {
-        writeProperty("validFrom", validFrom);
+        beforePropertyWrite("validFrom", this.validFrom, validFrom);
+        this.validFrom = validFrom;
     }
+
     public Date getValidFrom() {
-        return (Date)readProperty("validFrom");
+        beforePropertyRead("validFrom");
+        return this.validFrom;
     }
 
     public void setValidFromOffset(Integer validFromOffset) {
-        writeProperty("validFromOffset", validFromOffset);
+        beforePropertyWrite("validFromOffset", this.validFromOffset, validFromOffset);
+        this.validFromOffset = validFromOffset;
     }
+
     public Integer getValidFromOffset() {
-        return (Integer)readProperty("validFromOffset");
+        beforePropertyRead("validFromOffset");
+        return this.validFromOffset;
     }
 
     public void setValidTo(Date validTo) {
-        writeProperty("validTo", validTo);
+        beforePropertyWrite("validTo", this.validTo, validTo);
+        this.validTo = validTo;
     }
+
     public Date getValidTo() {
-        return (Date)readProperty("validTo");
+        beforePropertyRead("validTo");
+        return this.validTo;
     }
 
     public void setValidToOffset(Integer validToOffset) {
-        writeProperty("validToOffset", validToOffset);
+        beforePropertyWrite("validToOffset", this.validToOffset, validToOffset);
+        this.validToOffset = validToOffset;
     }
+
     public Integer getValidToOffset() {
-        return (Integer)readProperty("validToOffset");
+        beforePropertyRead("validToOffset");
+        return this.validToOffset;
     }
 
     public void setCollege(College college) {
@@ -293,65 +412,342 @@ public abstract class _Discount extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void addToCorporatePassDiscounts(CorporatePassDiscount obj) {
         addToManyTarget("corporatePassDiscounts", obj, true);
     }
+
     public void removeFromCorporatePassDiscounts(CorporatePassDiscount obj) {
         removeToManyTarget("corporatePassDiscounts", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<CorporatePassDiscount> getCorporatePassDiscounts() {
         return (List<CorporatePassDiscount>)readProperty("corporatePassDiscounts");
     }
 
-
     public void addToDiscountConcessionTypes(DiscountConcessionType obj) {
         addToManyTarget("discountConcessionTypes", obj, true);
     }
+
     public void removeFromDiscountConcessionTypes(DiscountConcessionType obj) {
         removeToManyTarget("discountConcessionTypes", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<DiscountConcessionType> getDiscountConcessionTypes() {
         return (List<DiscountConcessionType>)readProperty("discountConcessionTypes");
     }
 
-
     public void addToDiscountCourseClasses(DiscountCourseClass obj) {
         addToManyTarget("discountCourseClasses", obj, true);
     }
+
     public void removeFromDiscountCourseClasses(DiscountCourseClass obj) {
         removeToManyTarget("discountCourseClasses", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<DiscountCourseClass> getDiscountCourseClasses() {
         return (List<DiscountCourseClass>)readProperty("discountCourseClasses");
     }
 
-
     public void addToDiscountMembershipProducts(DiscountMembership obj) {
         addToManyTarget("discountMembershipProducts", obj, true);
     }
+
     public void removeFromDiscountMembershipProducts(DiscountMembership obj) {
         removeToManyTarget("discountMembershipProducts", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<DiscountMembership> getDiscountMembershipProducts() {
         return (List<DiscountMembership>)readProperty("discountMembershipProducts");
     }
 
-
     public void addToInvoiceLineDiscounts(InvoiceLineDiscount obj) {
         addToManyTarget("invoiceLineDiscounts", obj, true);
     }
+
     public void removeFromInvoiceLineDiscounts(InvoiceLineDiscount obj) {
         removeToManyTarget("invoiceLineDiscounts", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<InvoiceLineDiscount> getInvoiceLineDiscounts() {
         return (List<InvoiceLineDiscount>)readProperty("invoiceLineDiscounts");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "code":
+                return this.code;
+            case "combinationType":
+                return this.combinationType;
+            case "created":
+                return this.created;
+            case "detail":
+                return this.detail;
+            case "discountAmount":
+                return this.discountAmount;
+            case "discountRate":
+                return this.discountRate;
+            case "discountType":
+                return this.discountType;
+            case "hideOnWeb":
+                return this.hideOnWeb;
+            case "isAvailableOnWeb":
+                return this.isAvailableOnWeb;
+            case "maximumDiscount":
+                return this.maximumDiscount;
+            case "minEnrolments":
+                return this.minEnrolments;
+            case "minValue":
+                return this.minValue;
+            case "minimumDiscount":
+                return this.minimumDiscount;
+            case "modified":
+                return this.modified;
+            case "name":
+                return this.name;
+            case "roundingMode":
+                return this.roundingMode;
+            case "studentAge":
+                return this.studentAge;
+            case "studentAgeOperator":
+                return this.studentAgeOperator;
+            case "studentEnrolledWithinDays":
+                return this.studentEnrolledWithinDays;
+            case "studentPostcodes":
+                return this.studentPostcodes;
+            case "studentsQualifier":
+                return this.studentsQualifier;
+            case "timeZone":
+                return this.timeZone;
+            case "validFrom":
+                return this.validFrom;
+            case "validFromOffset":
+                return this.validFromOffset;
+            case "validTo":
+                return this.validTo;
+            case "validToOffset":
+                return this.validToOffset;
+            case "college":
+                return this.college;
+            case "corporatePassDiscounts":
+                return this.corporatePassDiscounts;
+            case "discountConcessionTypes":
+                return this.discountConcessionTypes;
+            case "discountCourseClasses":
+                return this.discountCourseClasses;
+            case "discountMembershipProducts":
+                return this.discountMembershipProducts;
+            case "invoiceLineDiscounts":
+                return this.invoiceLineDiscounts;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "code":
+                this.code = (String)val;
+                break;
+            case "combinationType":
+                this.combinationType = (Boolean)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "detail":
+                this.detail = (String)val;
+                break;
+            case "discountAmount":
+                this.discountAmount = (Money)val;
+                break;
+            case "discountRate":
+                this.discountRate = (BigDecimal)val;
+                break;
+            case "discountType":
+                this.discountType = (DiscountType)val;
+                break;
+            case "hideOnWeb":
+                this.hideOnWeb = (Boolean)val;
+                break;
+            case "isAvailableOnWeb":
+                this.isAvailableOnWeb = (Boolean)val;
+                break;
+            case "maximumDiscount":
+                this.maximumDiscount = (Money)val;
+                break;
+            case "minEnrolments":
+                this.minEnrolments = (Integer)val;
+                break;
+            case "minValue":
+                this.minValue = (Money)val;
+                break;
+            case "minimumDiscount":
+                this.minimumDiscount = (Money)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "name":
+                this.name = (String)val;
+                break;
+            case "roundingMode":
+                this.roundingMode = (MoneyRounding)val;
+                break;
+            case "studentAge":
+                this.studentAge = (Integer)val;
+                break;
+            case "studentAgeOperator":
+                this.studentAgeOperator = (String)val;
+                break;
+            case "studentEnrolledWithinDays":
+                this.studentEnrolledWithinDays = (Integer)val;
+                break;
+            case "studentPostcodes":
+                this.studentPostcodes = (String)val;
+                break;
+            case "studentsQualifier":
+                this.studentsQualifier = (byte[])val;
+                break;
+            case "timeZone":
+                this.timeZone = (String)val;
+                break;
+            case "validFrom":
+                this.validFrom = (Date)val;
+                break;
+            case "validFromOffset":
+                this.validFromOffset = (Integer)val;
+                break;
+            case "validTo":
+                this.validTo = (Date)val;
+                break;
+            case "validToOffset":
+                this.validToOffset = (Integer)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "corporatePassDiscounts":
+                this.corporatePassDiscounts = val;
+                break;
+            case "discountConcessionTypes":
+                this.discountConcessionTypes = val;
+                break;
+            case "discountCourseClasses":
+                this.discountCourseClasses = val;
+                break;
+            case "discountMembershipProducts":
+                this.discountMembershipProducts = val;
+                break;
+            case "invoiceLineDiscounts":
+                this.invoiceLineDiscounts = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.code);
+        out.writeObject(this.combinationType);
+        out.writeObject(this.created);
+        out.writeObject(this.detail);
+        out.writeObject(this.discountAmount);
+        out.writeObject(this.discountRate);
+        out.writeObject(this.discountType);
+        out.writeObject(this.hideOnWeb);
+        out.writeObject(this.isAvailableOnWeb);
+        out.writeObject(this.maximumDiscount);
+        out.writeObject(this.minEnrolments);
+        out.writeObject(this.minValue);
+        out.writeObject(this.minimumDiscount);
+        out.writeObject(this.modified);
+        out.writeObject(this.name);
+        out.writeObject(this.roundingMode);
+        out.writeObject(this.studentAge);
+        out.writeObject(this.studentAgeOperator);
+        out.writeObject(this.studentEnrolledWithinDays);
+        out.writeObject(this.studentPostcodes);
+        out.writeObject(this.studentsQualifier);
+        out.writeObject(this.timeZone);
+        out.writeObject(this.validFrom);
+        out.writeObject(this.validFromOffset);
+        out.writeObject(this.validTo);
+        out.writeObject(this.validToOffset);
+        out.writeObject(this.college);
+        out.writeObject(this.corporatePassDiscounts);
+        out.writeObject(this.discountConcessionTypes);
+        out.writeObject(this.discountCourseClasses);
+        out.writeObject(this.discountMembershipProducts);
+        out.writeObject(this.invoiceLineDiscounts);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.code = (String)in.readObject();
+        this.combinationType = (Boolean)in.readObject();
+        this.created = (Date)in.readObject();
+        this.detail = (String)in.readObject();
+        this.discountAmount = (Money)in.readObject();
+        this.discountRate = (BigDecimal)in.readObject();
+        this.discountType = (DiscountType)in.readObject();
+        this.hideOnWeb = (Boolean)in.readObject();
+        this.isAvailableOnWeb = (Boolean)in.readObject();
+        this.maximumDiscount = (Money)in.readObject();
+        this.minEnrolments = (Integer)in.readObject();
+        this.minValue = (Money)in.readObject();
+        this.minimumDiscount = (Money)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.name = (String)in.readObject();
+        this.roundingMode = (MoneyRounding)in.readObject();
+        this.studentAge = (Integer)in.readObject();
+        this.studentAgeOperator = (String)in.readObject();
+        this.studentEnrolledWithinDays = (Integer)in.readObject();
+        this.studentPostcodes = (String)in.readObject();
+        this.studentsQualifier = (byte[])in.readObject();
+        this.timeZone = (String)in.readObject();
+        this.validFrom = (Date)in.readObject();
+        this.validFromOffset = (Integer)in.readObject();
+        this.validTo = (Date)in.readObject();
+        this.validToOffset = (Integer)in.readObject();
+        this.college = in.readObject();
+        this.corporatePassDiscounts = in.readObject();
+        this.discountConcessionTypes = in.readObject();
+        this.discountCourseClasses = in.readObject();
+        this.discountMembershipProducts = in.readObject();
+        this.invoiceLineDiscounts = in.readObject();
+    }
 
 }

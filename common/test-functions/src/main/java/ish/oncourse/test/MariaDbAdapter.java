@@ -140,6 +140,11 @@ public class MariaDbAdapter implements DbAdapter {
 	}
 
 	@Override
+	public void setPkGenerator(PkGenerator pkGenerator) {
+		delegate.setPkGenerator(pkGenerator);
+	}
+
+	@Override
 	public DbAttribute buildAttribute(String name, String typeName, int type, int size, int scale, boolean allowNulls) {
 		return delegate.buildAttribute(name, typeName, type, size, scale, allowNulls);
 	}
@@ -167,12 +172,6 @@ public class MariaDbAdapter implements DbAdapter {
 		if (column.getType() == 12 && column.getMaxLength() > 2000) {
 			System.out.println(sqlBuffer);
 		}
-	}
-
-	@Override
-	@Deprecated
-	public QuotingStrategy getQuotingStrategy(boolean needQuotes) {
-		return delegate.getQuotingStrategy(needQuotes);
 	}
 
 	@Override

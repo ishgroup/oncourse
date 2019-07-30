@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -41,52 +44,79 @@ public abstract class _WebMenu extends WillowCayenneObject {
     public static final Property<WebNode> WEB_NODE = Property.create("webNode", WebNode.class);
     public static final Property<WebSiteVersion> WEB_SITE_VERSION = Property.create("webSiteVersion", WebSiteVersion.class);
 
+    protected Date created;
+    protected Date modified;
+    protected String name;
+    protected String url;
+    protected Integer weight;
+
+    protected Object childrenMenus;
+    protected Object parentWebMenu;
+    protected Object webNode;
+    protected Object webSiteVersion;
+
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        beforePropertyWrite("name", this.name, name);
+        this.name = name;
     }
+
     public String getName() {
-        return (String)readProperty("name");
+        beforePropertyRead("name");
+        return this.name;
     }
 
     public void setUrl(String url) {
-        writeProperty("url", url);
+        beforePropertyWrite("url", this.url, url);
+        this.url = url;
     }
+
     public String getUrl() {
-        return (String)readProperty("url");
+        beforePropertyRead("url");
+        return this.url;
     }
 
     public void setWeight(Integer weight) {
-        writeProperty("weight", weight);
+        beforePropertyWrite("weight", this.weight, weight);
+        this.weight = weight;
     }
+
     public Integer getWeight() {
-        return (Integer)readProperty("weight");
+        beforePropertyRead("weight");
+        return this.weight;
     }
 
     public void addToChildrenMenus(WebMenu obj) {
         addToManyTarget("childrenMenus", obj, true);
     }
+
     public void removeFromChildrenMenus(WebMenu obj) {
         removeToManyTarget("childrenMenus", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<WebMenu> getChildrenMenus() {
         return (List<WebMenu>)readProperty("childrenMenus");
     }
-
 
     public void setParentWebMenu(WebMenu parentWebMenu) {
         setToOneTarget("parentWebMenu", parentWebMenu, true);
@@ -96,7 +126,6 @@ public abstract class _WebMenu extends WillowCayenneObject {
         return (WebMenu)readProperty("parentWebMenu");
     }
 
-
     public void setWebNode(WebNode webNode) {
         setToOneTarget("webNode", webNode, true);
     }
@@ -104,7 +133,6 @@ public abstract class _WebMenu extends WillowCayenneObject {
     public WebNode getWebNode() {
         return (WebNode)readProperty("webNode");
     }
-
 
     public void setWebSiteVersion(WebSiteVersion webSiteVersion) {
         setToOneTarget("webSiteVersion", webSiteVersion, true);
@@ -114,7 +142,111 @@ public abstract class _WebMenu extends WillowCayenneObject {
         return (WebSiteVersion)readProperty("webSiteVersion");
     }
 
-
     protected abstract void onPostAdd();
+
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "created":
+                return this.created;
+            case "modified":
+                return this.modified;
+            case "name":
+                return this.name;
+            case "url":
+                return this.url;
+            case "weight":
+                return this.weight;
+            case "childrenMenus":
+                return this.childrenMenus;
+            case "parentWebMenu":
+                return this.parentWebMenu;
+            case "webNode":
+                return this.webNode;
+            case "webSiteVersion":
+                return this.webSiteVersion;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "name":
+                this.name = (String)val;
+                break;
+            case "url":
+                this.url = (String)val;
+                break;
+            case "weight":
+                this.weight = (Integer)val;
+                break;
+            case "childrenMenus":
+                this.childrenMenus = val;
+                break;
+            case "parentWebMenu":
+                this.parentWebMenu = val;
+                break;
+            case "webNode":
+                this.webNode = val;
+                break;
+            case "webSiteVersion":
+                this.webSiteVersion = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.created);
+        out.writeObject(this.modified);
+        out.writeObject(this.name);
+        out.writeObject(this.url);
+        out.writeObject(this.weight);
+        out.writeObject(this.childrenMenus);
+        out.writeObject(this.parentWebMenu);
+        out.writeObject(this.webNode);
+        out.writeObject(this.webSiteVersion);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.created = (Date)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.name = (String)in.readObject();
+        this.url = (String)in.readObject();
+        this.weight = (Integer)in.readObject();
+        this.childrenMenus = in.readObject();
+        this.parentWebMenu = in.readObject();
+        this.webNode = in.readObject();
+        this.webSiteVersion = in.readObject();
+    }
 
 }

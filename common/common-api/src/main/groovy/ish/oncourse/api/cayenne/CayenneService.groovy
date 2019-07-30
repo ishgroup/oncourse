@@ -19,7 +19,7 @@ class CayenneService implements ICayenneService {
     CayenneService(ServerRuntime runtime) {
         QueueableLifecycleListener listener = new QueueableLifecycleListener(this)
         this.runtime = runtime
-        this.runtime.dataDomain.addFilter(listener)
+        this.runtime.dataDomain.addSyncFilter(listener)
         this.runtime.channel.entityResolver.callbackRegistry.addDefaultListener(listener)
         this.sharedContext = newContext()
     }

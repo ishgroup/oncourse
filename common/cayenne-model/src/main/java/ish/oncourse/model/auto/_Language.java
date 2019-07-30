@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 
 import org.apache.cayenne.exp.Property;
@@ -30,46 +33,156 @@ public abstract class _Language extends WillowCayenneObject {
     public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
     public static final Property<String> NAME = Property.create("name", String.class);
 
+    protected String absCode;
+    protected Date created;
+    protected Byte isActive;
+    protected Long ishVersion;
+    protected Date modified;
+    protected String name;
+
+
     public void setAbsCode(String absCode) {
-        writeProperty("absCode", absCode);
+        beforePropertyWrite("absCode", this.absCode, absCode);
+        this.absCode = absCode;
     }
+
     public String getAbsCode() {
-        return (String)readProperty("absCode");
+        beforePropertyRead("absCode");
+        return this.absCode;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setIsActive(Byte isActive) {
-        writeProperty("isActive", isActive);
+        beforePropertyWrite("isActive", this.isActive, isActive);
+        this.isActive = isActive;
     }
+
     public Byte getIsActive() {
-        return (Byte)readProperty("isActive");
+        beforePropertyRead("isActive");
+        return this.isActive;
     }
 
     public void setIshVersion(Long ishVersion) {
-        writeProperty("ishVersion", ishVersion);
+        beforePropertyWrite("ishVersion", this.ishVersion, ishVersion);
+        this.ishVersion = ishVersion;
     }
+
     public Long getIshVersion() {
-        return (Long)readProperty("ishVersion");
+        beforePropertyRead("ishVersion");
+        return this.ishVersion;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        beforePropertyWrite("name", this.name, name);
+        this.name = name;
     }
+
     public String getName() {
-        return (String)readProperty("name");
+        beforePropertyRead("name");
+        return this.name;
+    }
+
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "absCode":
+                return this.absCode;
+            case "created":
+                return this.created;
+            case "isActive":
+                return this.isActive;
+            case "ishVersion":
+                return this.ishVersion;
+            case "modified":
+                return this.modified;
+            case "name":
+                return this.name;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "absCode":
+                this.absCode = (String)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "isActive":
+                this.isActive = (Byte)val;
+                break;
+            case "ishVersion":
+                this.ishVersion = (Long)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "name":
+                this.name = (String)val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.absCode);
+        out.writeObject(this.created);
+        out.writeObject(this.isActive);
+        out.writeObject(this.ishVersion);
+        out.writeObject(this.modified);
+        out.writeObject(this.name);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.absCode = (String)in.readObject();
+        this.created = (Date)in.readObject();
+        this.isActive = (Byte)in.readObject();
+        this.ishVersion = (Long)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.name = (String)in.readObject();
     }
 
 }

@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -104,188 +107,289 @@ public abstract class _Student extends WillowCayenneObject {
     public static final Property<List<StudentConcession>> STUDENT_CONCESSIONS = Property.create("studentConcessions", List.class);
     public static final Property<List<WaitingList>> WAITING_LISTS = Property.create("waitingLists", List.class);
 
+    protected Long angelId;
+    protected String chessn;
+    protected StudentCitizenship citizenship;
+    protected Integer concessionType;
+    protected Date created;
+    protected AvetmissStudentDisabilityType disabilityType;
+    protected AvetmissStudentEnglishProficiency englishProficiency;
+    protected Boolean feeHelpEligible;
+    protected AvetmissStudentSchoolLevel highestSchoolLevel;
+    protected AvetmissStudentIndigenousStatus indigenousStatus;
+    protected Boolean isOverseasClient;
+    protected Boolean isStillAtSchool;
+    protected Integer labourForceType;
+    protected Date modified;
+    protected AvetmissStudentPriorEducation priorEducationCode;
+    protected String specialNeeds;
+    protected Boolean specialNeedsAssistance;
+    protected String townOfBirth;
+    protected String usi;
+    protected UsiStatus usiStatus;
+    protected Integer yearSchoolCompleted;
+
+    protected Object applications;
+    protected Object attendances;
+    protected Object certificates;
+    protected Object college;
+    protected Object contact;
+    protected Object countryOfBirth;
+    protected Object enrolments;
+    protected Object language;
+    protected Object languageHome;
+    protected Object priorLearnings;
+    protected Object studentConcessions;
+    protected Object waitingLists;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setChessn(String chessn) {
-        writeProperty("chessn", chessn);
+        beforePropertyWrite("chessn", this.chessn, chessn);
+        this.chessn = chessn;
     }
+
     public String getChessn() {
-        return (String)readProperty("chessn");
+        beforePropertyRead("chessn");
+        return this.chessn;
     }
 
     public void setCitizenship(StudentCitizenship citizenship) {
-        writeProperty("citizenship", citizenship);
+        beforePropertyWrite("citizenship", this.citizenship, citizenship);
+        this.citizenship = citizenship;
     }
+
     public StudentCitizenship getCitizenship() {
-        return (StudentCitizenship)readProperty("citizenship");
+        beforePropertyRead("citizenship");
+        return this.citizenship;
     }
 
     public void setConcessionType(Integer concessionType) {
-        writeProperty("concessionType", concessionType);
+        beforePropertyWrite("concessionType", this.concessionType, concessionType);
+        this.concessionType = concessionType;
     }
+
     public Integer getConcessionType() {
-        return (Integer)readProperty("concessionType");
+        beforePropertyRead("concessionType");
+        return this.concessionType;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setDisabilityType(AvetmissStudentDisabilityType disabilityType) {
-        writeProperty("disabilityType", disabilityType);
+        beforePropertyWrite("disabilityType", this.disabilityType, disabilityType);
+        this.disabilityType = disabilityType;
     }
+
     public AvetmissStudentDisabilityType getDisabilityType() {
-        return (AvetmissStudentDisabilityType)readProperty("disabilityType");
+        beforePropertyRead("disabilityType");
+        return this.disabilityType;
     }
 
     public void setEnglishProficiency(AvetmissStudentEnglishProficiency englishProficiency) {
-        writeProperty("englishProficiency", englishProficiency);
+        beforePropertyWrite("englishProficiency", this.englishProficiency, englishProficiency);
+        this.englishProficiency = englishProficiency;
     }
+
     public AvetmissStudentEnglishProficiency getEnglishProficiency() {
-        return (AvetmissStudentEnglishProficiency)readProperty("englishProficiency");
+        beforePropertyRead("englishProficiency");
+        return this.englishProficiency;
     }
 
     public void setFeeHelpEligible(Boolean feeHelpEligible) {
-        writeProperty("feeHelpEligible", feeHelpEligible);
+        beforePropertyWrite("feeHelpEligible", this.feeHelpEligible, feeHelpEligible);
+        this.feeHelpEligible = feeHelpEligible;
     }
+
     public Boolean getFeeHelpEligible() {
-        return (Boolean)readProperty("feeHelpEligible");
+        beforePropertyRead("feeHelpEligible");
+        return this.feeHelpEligible;
     }
 
     public void setHighestSchoolLevel(AvetmissStudentSchoolLevel highestSchoolLevel) {
-        writeProperty("highestSchoolLevel", highestSchoolLevel);
+        beforePropertyWrite("highestSchoolLevel", this.highestSchoolLevel, highestSchoolLevel);
+        this.highestSchoolLevel = highestSchoolLevel;
     }
+
     public AvetmissStudentSchoolLevel getHighestSchoolLevel() {
-        return (AvetmissStudentSchoolLevel)readProperty("highestSchoolLevel");
+        beforePropertyRead("highestSchoolLevel");
+        return this.highestSchoolLevel;
     }
 
     public void setIndigenousStatus(AvetmissStudentIndigenousStatus indigenousStatus) {
-        writeProperty("indigenousStatus", indigenousStatus);
+        beforePropertyWrite("indigenousStatus", this.indigenousStatus, indigenousStatus);
+        this.indigenousStatus = indigenousStatus;
     }
+
     public AvetmissStudentIndigenousStatus getIndigenousStatus() {
-        return (AvetmissStudentIndigenousStatus)readProperty("indigenousStatus");
+        beforePropertyRead("indigenousStatus");
+        return this.indigenousStatus;
     }
 
     public void setIsOverseasClient(Boolean isOverseasClient) {
-        writeProperty("isOverseasClient", isOverseasClient);
+        beforePropertyWrite("isOverseasClient", this.isOverseasClient, isOverseasClient);
+        this.isOverseasClient = isOverseasClient;
     }
+
     public Boolean getIsOverseasClient() {
-        return (Boolean)readProperty("isOverseasClient");
+        beforePropertyRead("isOverseasClient");
+        return this.isOverseasClient;
     }
 
     public void setIsStillAtSchool(Boolean isStillAtSchool) {
-        writeProperty("isStillAtSchool", isStillAtSchool);
+        beforePropertyWrite("isStillAtSchool", this.isStillAtSchool, isStillAtSchool);
+        this.isStillAtSchool = isStillAtSchool;
     }
+
     public Boolean getIsStillAtSchool() {
-        return (Boolean)readProperty("isStillAtSchool");
+        beforePropertyRead("isStillAtSchool");
+        return this.isStillAtSchool;
     }
 
     public void setLabourForceType(Integer labourForceType) {
-        writeProperty("labourForceType", labourForceType);
+        beforePropertyWrite("labourForceType", this.labourForceType, labourForceType);
+        this.labourForceType = labourForceType;
     }
+
     public Integer getLabourForceType() {
-        return (Integer)readProperty("labourForceType");
+        beforePropertyRead("labourForceType");
+        return this.labourForceType;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setPriorEducationCode(AvetmissStudentPriorEducation priorEducationCode) {
-        writeProperty("priorEducationCode", priorEducationCode);
+        beforePropertyWrite("priorEducationCode", this.priorEducationCode, priorEducationCode);
+        this.priorEducationCode = priorEducationCode;
     }
+
     public AvetmissStudentPriorEducation getPriorEducationCode() {
-        return (AvetmissStudentPriorEducation)readProperty("priorEducationCode");
+        beforePropertyRead("priorEducationCode");
+        return this.priorEducationCode;
     }
 
     public void setSpecialNeeds(String specialNeeds) {
-        writeProperty("specialNeeds", specialNeeds);
+        beforePropertyWrite("specialNeeds", this.specialNeeds, specialNeeds);
+        this.specialNeeds = specialNeeds;
     }
+
     public String getSpecialNeeds() {
-        return (String)readProperty("specialNeeds");
+        beforePropertyRead("specialNeeds");
+        return this.specialNeeds;
     }
 
     public void setSpecialNeedsAssistance(Boolean specialNeedsAssistance) {
-        writeProperty("specialNeedsAssistance", specialNeedsAssistance);
+        beforePropertyWrite("specialNeedsAssistance", this.specialNeedsAssistance, specialNeedsAssistance);
+        this.specialNeedsAssistance = specialNeedsAssistance;
     }
+
     public Boolean getSpecialNeedsAssistance() {
-        return (Boolean)readProperty("specialNeedsAssistance");
+        beforePropertyRead("specialNeedsAssistance");
+        return this.specialNeedsAssistance;
     }
 
     public void setTownOfBirth(String townOfBirth) {
-        writeProperty("townOfBirth", townOfBirth);
+        beforePropertyWrite("townOfBirth", this.townOfBirth, townOfBirth);
+        this.townOfBirth = townOfBirth;
     }
+
     public String getTownOfBirth() {
-        return (String)readProperty("townOfBirth");
+        beforePropertyRead("townOfBirth");
+        return this.townOfBirth;
     }
 
     public void setUsi(String usi) {
-        writeProperty("usi", usi);
+        beforePropertyWrite("usi", this.usi, usi);
+        this.usi = usi;
     }
+
     public String getUsi() {
-        return (String)readProperty("usi");
+        beforePropertyRead("usi");
+        return this.usi;
     }
 
     public void setUsiStatus(UsiStatus usiStatus) {
-        writeProperty("usiStatus", usiStatus);
+        beforePropertyWrite("usiStatus", this.usiStatus, usiStatus);
+        this.usiStatus = usiStatus;
     }
+
     public UsiStatus getUsiStatus() {
-        return (UsiStatus)readProperty("usiStatus");
+        beforePropertyRead("usiStatus");
+        return this.usiStatus;
     }
 
     public void setYearSchoolCompleted(Integer yearSchoolCompleted) {
-        writeProperty("yearSchoolCompleted", yearSchoolCompleted);
+        beforePropertyWrite("yearSchoolCompleted", this.yearSchoolCompleted, yearSchoolCompleted);
+        this.yearSchoolCompleted = yearSchoolCompleted;
     }
+
     public Integer getYearSchoolCompleted() {
-        return (Integer)readProperty("yearSchoolCompleted");
+        beforePropertyRead("yearSchoolCompleted");
+        return this.yearSchoolCompleted;
     }
 
     public void addToApplications(Application obj) {
         addToManyTarget("applications", obj, true);
     }
+
     public void removeFromApplications(Application obj) {
         removeToManyTarget("applications", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Application> getApplications() {
         return (List<Application>)readProperty("applications");
     }
 
-
     public void addToAttendances(Attendance obj) {
         addToManyTarget("attendances", obj, true);
     }
+
     public void removeFromAttendances(Attendance obj) {
         removeToManyTarget("attendances", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Attendance> getAttendances() {
         return (List<Attendance>)readProperty("attendances");
     }
 
-
     public void addToCertificates(Certificate obj) {
         addToManyTarget("certificates", obj, true);
     }
+
     public void removeFromCertificates(Certificate obj) {
         removeToManyTarget("certificates", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Certificate> getCertificates() {
         return (List<Certificate>)readProperty("certificates");
     }
-
 
     public void setCollege(College college) {
         setToOneTarget("college", college, true);
@@ -295,7 +399,6 @@ public abstract class _Student extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void setContact(Contact contact) {
         setToOneTarget("contact", contact, true);
     }
@@ -303,7 +406,6 @@ public abstract class _Student extends WillowCayenneObject {
     public Contact getContact() {
         return (Contact)readProperty("contact");
     }
-
 
     public void setCountryOfBirth(Country countryOfBirth) {
         setToOneTarget("countryOfBirth", countryOfBirth, true);
@@ -313,18 +415,18 @@ public abstract class _Student extends WillowCayenneObject {
         return (Country)readProperty("countryOfBirth");
     }
 
-
     public void addToEnrolments(Enrolment obj) {
         addToManyTarget("enrolments", obj, true);
     }
+
     public void removeFromEnrolments(Enrolment obj) {
         removeToManyTarget("enrolments", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Enrolment> getEnrolments() {
         return (List<Enrolment>)readProperty("enrolments");
     }
-
 
     public void setLanguage(Language language) {
         setToOneTarget("language", language, true);
@@ -334,7 +436,6 @@ public abstract class _Student extends WillowCayenneObject {
         return (Language)readProperty("language");
     }
 
-
     public void setLanguageHome(Language languageHome) {
         setToOneTarget("languageHome", languageHome, true);
     }
@@ -343,43 +444,318 @@ public abstract class _Student extends WillowCayenneObject {
         return (Language)readProperty("languageHome");
     }
 
-
     public void addToPriorLearnings(PriorLearning obj) {
         addToManyTarget("priorLearnings", obj, true);
     }
+
     public void removeFromPriorLearnings(PriorLearning obj) {
         removeToManyTarget("priorLearnings", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<PriorLearning> getPriorLearnings() {
         return (List<PriorLearning>)readProperty("priorLearnings");
     }
 
-
     public void addToStudentConcessions(StudentConcession obj) {
         addToManyTarget("studentConcessions", obj, true);
     }
+
     public void removeFromStudentConcessions(StudentConcession obj) {
         removeToManyTarget("studentConcessions", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<StudentConcession> getStudentConcessions() {
         return (List<StudentConcession>)readProperty("studentConcessions");
     }
 
-
     public void addToWaitingLists(WaitingList obj) {
         addToManyTarget("waitingLists", obj, true);
     }
+
     public void removeFromWaitingLists(WaitingList obj) {
         removeToManyTarget("waitingLists", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<WaitingList> getWaitingLists() {
         return (List<WaitingList>)readProperty("waitingLists");
     }
 
-
     protected abstract void onPostAdd();
+
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "chessn":
+                return this.chessn;
+            case "citizenship":
+                return this.citizenship;
+            case "concessionType":
+                return this.concessionType;
+            case "created":
+                return this.created;
+            case "disabilityType":
+                return this.disabilityType;
+            case "englishProficiency":
+                return this.englishProficiency;
+            case "feeHelpEligible":
+                return this.feeHelpEligible;
+            case "highestSchoolLevel":
+                return this.highestSchoolLevel;
+            case "indigenousStatus":
+                return this.indigenousStatus;
+            case "isOverseasClient":
+                return this.isOverseasClient;
+            case "isStillAtSchool":
+                return this.isStillAtSchool;
+            case "labourForceType":
+                return this.labourForceType;
+            case "modified":
+                return this.modified;
+            case "priorEducationCode":
+                return this.priorEducationCode;
+            case "specialNeeds":
+                return this.specialNeeds;
+            case "specialNeedsAssistance":
+                return this.specialNeedsAssistance;
+            case "townOfBirth":
+                return this.townOfBirth;
+            case "usi":
+                return this.usi;
+            case "usiStatus":
+                return this.usiStatus;
+            case "yearSchoolCompleted":
+                return this.yearSchoolCompleted;
+            case "applications":
+                return this.applications;
+            case "attendances":
+                return this.attendances;
+            case "certificates":
+                return this.certificates;
+            case "college":
+                return this.college;
+            case "contact":
+                return this.contact;
+            case "countryOfBirth":
+                return this.countryOfBirth;
+            case "enrolments":
+                return this.enrolments;
+            case "language":
+                return this.language;
+            case "languageHome":
+                return this.languageHome;
+            case "priorLearnings":
+                return this.priorLearnings;
+            case "studentConcessions":
+                return this.studentConcessions;
+            case "waitingLists":
+                return this.waitingLists;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "chessn":
+                this.chessn = (String)val;
+                break;
+            case "citizenship":
+                this.citizenship = (StudentCitizenship)val;
+                break;
+            case "concessionType":
+                this.concessionType = (Integer)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "disabilityType":
+                this.disabilityType = (AvetmissStudentDisabilityType)val;
+                break;
+            case "englishProficiency":
+                this.englishProficiency = (AvetmissStudentEnglishProficiency)val;
+                break;
+            case "feeHelpEligible":
+                this.feeHelpEligible = (Boolean)val;
+                break;
+            case "highestSchoolLevel":
+                this.highestSchoolLevel = (AvetmissStudentSchoolLevel)val;
+                break;
+            case "indigenousStatus":
+                this.indigenousStatus = (AvetmissStudentIndigenousStatus)val;
+                break;
+            case "isOverseasClient":
+                this.isOverseasClient = (Boolean)val;
+                break;
+            case "isStillAtSchool":
+                this.isStillAtSchool = (Boolean)val;
+                break;
+            case "labourForceType":
+                this.labourForceType = (Integer)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "priorEducationCode":
+                this.priorEducationCode = (AvetmissStudentPriorEducation)val;
+                break;
+            case "specialNeeds":
+                this.specialNeeds = (String)val;
+                break;
+            case "specialNeedsAssistance":
+                this.specialNeedsAssistance = (Boolean)val;
+                break;
+            case "townOfBirth":
+                this.townOfBirth = (String)val;
+                break;
+            case "usi":
+                this.usi = (String)val;
+                break;
+            case "usiStatus":
+                this.usiStatus = (UsiStatus)val;
+                break;
+            case "yearSchoolCompleted":
+                this.yearSchoolCompleted = (Integer)val;
+                break;
+            case "applications":
+                this.applications = val;
+                break;
+            case "attendances":
+                this.attendances = val;
+                break;
+            case "certificates":
+                this.certificates = val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "contact":
+                this.contact = val;
+                break;
+            case "countryOfBirth":
+                this.countryOfBirth = val;
+                break;
+            case "enrolments":
+                this.enrolments = val;
+                break;
+            case "language":
+                this.language = val;
+                break;
+            case "languageHome":
+                this.languageHome = val;
+                break;
+            case "priorLearnings":
+                this.priorLearnings = val;
+                break;
+            case "studentConcessions":
+                this.studentConcessions = val;
+                break;
+            case "waitingLists":
+                this.waitingLists = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.chessn);
+        out.writeObject(this.citizenship);
+        out.writeObject(this.concessionType);
+        out.writeObject(this.created);
+        out.writeObject(this.disabilityType);
+        out.writeObject(this.englishProficiency);
+        out.writeObject(this.feeHelpEligible);
+        out.writeObject(this.highestSchoolLevel);
+        out.writeObject(this.indigenousStatus);
+        out.writeObject(this.isOverseasClient);
+        out.writeObject(this.isStillAtSchool);
+        out.writeObject(this.labourForceType);
+        out.writeObject(this.modified);
+        out.writeObject(this.priorEducationCode);
+        out.writeObject(this.specialNeeds);
+        out.writeObject(this.specialNeedsAssistance);
+        out.writeObject(this.townOfBirth);
+        out.writeObject(this.usi);
+        out.writeObject(this.usiStatus);
+        out.writeObject(this.yearSchoolCompleted);
+        out.writeObject(this.applications);
+        out.writeObject(this.attendances);
+        out.writeObject(this.certificates);
+        out.writeObject(this.college);
+        out.writeObject(this.contact);
+        out.writeObject(this.countryOfBirth);
+        out.writeObject(this.enrolments);
+        out.writeObject(this.language);
+        out.writeObject(this.languageHome);
+        out.writeObject(this.priorLearnings);
+        out.writeObject(this.studentConcessions);
+        out.writeObject(this.waitingLists);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.chessn = (String)in.readObject();
+        this.citizenship = (StudentCitizenship)in.readObject();
+        this.concessionType = (Integer)in.readObject();
+        this.created = (Date)in.readObject();
+        this.disabilityType = (AvetmissStudentDisabilityType)in.readObject();
+        this.englishProficiency = (AvetmissStudentEnglishProficiency)in.readObject();
+        this.feeHelpEligible = (Boolean)in.readObject();
+        this.highestSchoolLevel = (AvetmissStudentSchoolLevel)in.readObject();
+        this.indigenousStatus = (AvetmissStudentIndigenousStatus)in.readObject();
+        this.isOverseasClient = (Boolean)in.readObject();
+        this.isStillAtSchool = (Boolean)in.readObject();
+        this.labourForceType = (Integer)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.priorEducationCode = (AvetmissStudentPriorEducation)in.readObject();
+        this.specialNeeds = (String)in.readObject();
+        this.specialNeedsAssistance = (Boolean)in.readObject();
+        this.townOfBirth = (String)in.readObject();
+        this.usi = (String)in.readObject();
+        this.usiStatus = (UsiStatus)in.readObject();
+        this.yearSchoolCompleted = (Integer)in.readObject();
+        this.applications = in.readObject();
+        this.attendances = in.readObject();
+        this.certificates = in.readObject();
+        this.college = in.readObject();
+        this.contact = in.readObject();
+        this.countryOfBirth = in.readObject();
+        this.enrolments = in.readObject();
+        this.language = in.readObject();
+        this.languageHome = in.readObject();
+        this.priorLearnings = in.readObject();
+        this.studentConcessions = in.readObject();
+        this.waitingLists = in.readObject();
+    }
 
 }

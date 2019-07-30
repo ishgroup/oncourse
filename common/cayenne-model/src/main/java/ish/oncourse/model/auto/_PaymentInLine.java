@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 
 import org.apache.cayenne.exp.Property;
@@ -37,32 +40,53 @@ public abstract class _PaymentInLine extends WillowCayenneObject {
     public static final Property<Invoice> INVOICE = Property.create("invoice", Invoice.class);
     public static final Property<PaymentIn> PAYMENT_IN = Property.create("paymentIn", PaymentIn.class);
 
+    protected Money amount;
+    protected Long angelId;
+    protected Date created;
+    protected Date modified;
+
+    protected Object college;
+    protected Object invoice;
+    protected Object paymentIn;
+
     public void setAmount(Money amount) {
-        writeProperty("amount", amount);
+        beforePropertyWrite("amount", this.amount, amount);
+        this.amount = amount;
     }
+
     public Money getAmount() {
-        return (Money)readProperty("amount");
+        beforePropertyRead("amount");
+        return this.amount;
     }
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setCollege(College college) {
@@ -73,7 +97,6 @@ public abstract class _PaymentInLine extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void setInvoice(Invoice invoice) {
         setToOneTarget("invoice", invoice, true);
     }
@@ -81,7 +104,6 @@ public abstract class _PaymentInLine extends WillowCayenneObject {
     public Invoice getInvoice() {
         return (Invoice)readProperty("invoice");
     }
-
 
     public void setPaymentIn(PaymentIn paymentIn) {
         setToOneTarget("paymentIn", paymentIn, true);
@@ -91,11 +113,101 @@ public abstract class _PaymentInLine extends WillowCayenneObject {
         return (PaymentIn)readProperty("paymentIn");
     }
 
-
     protected abstract void onPostAdd();
 
     protected abstract void onPreUpdate();
 
     protected abstract void onPrePersist();
+
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "amount":
+                return this.amount;
+            case "angelId":
+                return this.angelId;
+            case "created":
+                return this.created;
+            case "modified":
+                return this.modified;
+            case "college":
+                return this.college;
+            case "invoice":
+                return this.invoice;
+            case "paymentIn":
+                return this.paymentIn;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "amount":
+                this.amount = (Money)val;
+                break;
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "invoice":
+                this.invoice = val;
+                break;
+            case "paymentIn":
+                this.paymentIn = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.amount);
+        out.writeObject(this.angelId);
+        out.writeObject(this.created);
+        out.writeObject(this.modified);
+        out.writeObject(this.college);
+        out.writeObject(this.invoice);
+        out.writeObject(this.paymentIn);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.amount = (Money)in.readObject();
+        this.angelId = (Long)in.readObject();
+        this.created = (Date)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.college = in.readObject();
+        this.invoice = in.readObject();
+        this.paymentIn = in.readObject();
+    }
 
 }

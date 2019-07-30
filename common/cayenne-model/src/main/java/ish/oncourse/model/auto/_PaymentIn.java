@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -85,150 +88,236 @@ public abstract class _PaymentIn extends WillowCayenneObject {
     public static final Property<List<VoucherPaymentIn>> VOUCHER_PAYMENT_INS = Property.create("voucherPaymentIns", List.class);
     public static final Property<List<Voucher>> VOUCHERS = Property.create("vouchers", List.class);
 
+    protected Money amount;
+    protected Long angelId;
+    protected String billingId;
+    protected ConfirmationStatus confirmationStatus;
+    protected Date created;
+    protected String creditCardCVV;
+    protected String creditCardExpiry;
+    protected String creditCardName;
+    protected String creditCardNumber;
+    protected CreditCardType creditCardType;
+    protected Date dateBanked;
+    protected String gatewayReference;
+    protected String gatewayResponse;
+    protected Date modified;
+    protected String sessionId;
+    protected PaymentSource source;
+    protected PaymentStatus status;
+    protected String statusNotes;
+    protected PaymentType type;
+
+    protected Object authorisedInvoices;
+    protected Object college;
+    protected Object contact;
+    protected Object paymentInLines;
+    protected Object paymentTransactions;
+    protected Object voucherPaymentIns;
+    protected Object vouchers;
+
     public void setAmount(Money amount) {
-        writeProperty("amount", amount);
+        beforePropertyWrite("amount", this.amount, amount);
+        this.amount = amount;
     }
+
     public Money getAmount() {
-        return (Money)readProperty("amount");
+        beforePropertyRead("amount");
+        return this.amount;
     }
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setBillingId(String billingId) {
-        writeProperty("billingId", billingId);
+        beforePropertyWrite("billingId", this.billingId, billingId);
+        this.billingId = billingId;
     }
+
     public String getBillingId() {
-        return (String)readProperty("billingId");
+        beforePropertyRead("billingId");
+        return this.billingId;
     }
 
     public void setConfirmationStatus(ConfirmationStatus confirmationStatus) {
-        writeProperty("confirmationStatus", confirmationStatus);
+        beforePropertyWrite("confirmationStatus", this.confirmationStatus, confirmationStatus);
+        this.confirmationStatus = confirmationStatus;
     }
+
     public ConfirmationStatus getConfirmationStatus() {
-        return (ConfirmationStatus)readProperty("confirmationStatus");
+        beforePropertyRead("confirmationStatus");
+        return this.confirmationStatus;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setCreditCardCVV(String creditCardCVV) {
-        writeProperty("creditCardCVV", creditCardCVV);
+        beforePropertyWrite("creditCardCVV", this.creditCardCVV, creditCardCVV);
+        this.creditCardCVV = creditCardCVV;
     }
+
     public String getCreditCardCVV() {
-        return (String)readProperty("creditCardCVV");
+        beforePropertyRead("creditCardCVV");
+        return this.creditCardCVV;
     }
 
     public void setCreditCardExpiry(String creditCardExpiry) {
-        writeProperty("creditCardExpiry", creditCardExpiry);
+        beforePropertyWrite("creditCardExpiry", this.creditCardExpiry, creditCardExpiry);
+        this.creditCardExpiry = creditCardExpiry;
     }
+
     public String getCreditCardExpiry() {
-        return (String)readProperty("creditCardExpiry");
+        beforePropertyRead("creditCardExpiry");
+        return this.creditCardExpiry;
     }
 
     public void setCreditCardName(String creditCardName) {
-        writeProperty("creditCardName", creditCardName);
+        beforePropertyWrite("creditCardName", this.creditCardName, creditCardName);
+        this.creditCardName = creditCardName;
     }
+
     public String getCreditCardName() {
-        return (String)readProperty("creditCardName");
+        beforePropertyRead("creditCardName");
+        return this.creditCardName;
     }
 
     public void setCreditCardNumber(String creditCardNumber) {
-        writeProperty("creditCardNumber", creditCardNumber);
+        beforePropertyWrite("creditCardNumber", this.creditCardNumber, creditCardNumber);
+        this.creditCardNumber = creditCardNumber;
     }
+
     public String getCreditCardNumber() {
-        return (String)readProperty("creditCardNumber");
+        beforePropertyRead("creditCardNumber");
+        return this.creditCardNumber;
     }
 
     public void setCreditCardType(CreditCardType creditCardType) {
-        writeProperty("creditCardType", creditCardType);
+        beforePropertyWrite("creditCardType", this.creditCardType, creditCardType);
+        this.creditCardType = creditCardType;
     }
+
     public CreditCardType getCreditCardType() {
-        return (CreditCardType)readProperty("creditCardType");
+        beforePropertyRead("creditCardType");
+        return this.creditCardType;
     }
 
     public void setDateBanked(Date dateBanked) {
-        writeProperty("dateBanked", dateBanked);
+        beforePropertyWrite("dateBanked", this.dateBanked, dateBanked);
+        this.dateBanked = dateBanked;
     }
+
     public Date getDateBanked() {
-        return (Date)readProperty("dateBanked");
+        beforePropertyRead("dateBanked");
+        return this.dateBanked;
     }
 
     public void setGatewayReference(String gatewayReference) {
-        writeProperty("gatewayReference", gatewayReference);
+        beforePropertyWrite("gatewayReference", this.gatewayReference, gatewayReference);
+        this.gatewayReference = gatewayReference;
     }
+
     public String getGatewayReference() {
-        return (String)readProperty("gatewayReference");
+        beforePropertyRead("gatewayReference");
+        return this.gatewayReference;
     }
 
     public void setGatewayResponse(String gatewayResponse) {
-        writeProperty("gatewayResponse", gatewayResponse);
+        beforePropertyWrite("gatewayResponse", this.gatewayResponse, gatewayResponse);
+        this.gatewayResponse = gatewayResponse;
     }
+
     public String getGatewayResponse() {
-        return (String)readProperty("gatewayResponse");
+        beforePropertyRead("gatewayResponse");
+        return this.gatewayResponse;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setSessionId(String sessionId) {
-        writeProperty("sessionId", sessionId);
+        beforePropertyWrite("sessionId", this.sessionId, sessionId);
+        this.sessionId = sessionId;
     }
+
     public String getSessionId() {
-        return (String)readProperty("sessionId");
+        beforePropertyRead("sessionId");
+        return this.sessionId;
     }
 
     public void setSource(PaymentSource source) {
-        writeProperty("source", source);
+        beforePropertyWrite("source", this.source, source);
+        this.source = source;
     }
+
     public PaymentSource getSource() {
-        return (PaymentSource)readProperty("source");
+        beforePropertyRead("source");
+        return this.source;
     }
 
     public void setStatus(PaymentStatus status) {
-        writeProperty("status", status);
+        beforePropertyWrite("status", this.status, status);
+        this.status = status;
     }
+
     public PaymentStatus getStatus() {
-        return (PaymentStatus)readProperty("status");
+        beforePropertyRead("status");
+        return this.status;
     }
 
     public void setStatusNotes(String statusNotes) {
-        writeProperty("statusNotes", statusNotes);
+        beforePropertyWrite("statusNotes", this.statusNotes, statusNotes);
+        this.statusNotes = statusNotes;
     }
+
     public String getStatusNotes() {
-        return (String)readProperty("statusNotes");
+        beforePropertyRead("statusNotes");
+        return this.statusNotes;
     }
 
     public void setType(PaymentType type) {
-        writeProperty("type", type);
+        beforePropertyWrite("type", this.type, type);
+        this.type = type;
     }
+
     public PaymentType getType() {
-        return (PaymentType)readProperty("type");
+        beforePropertyRead("type");
+        return this.type;
     }
 
     public void addToAuthorisedInvoices(Invoice obj) {
         addToManyTarget("authorisedInvoices", obj, true);
     }
+
     public void removeFromAuthorisedInvoices(Invoice obj) {
         removeToManyTarget("authorisedInvoices", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Invoice> getAuthorisedInvoices() {
         return (List<Invoice>)readProperty("authorisedInvoices");
     }
-
 
     public void setCollege(College college) {
         setToOneTarget("college", college, true);
@@ -238,7 +327,6 @@ public abstract class _PaymentIn extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void setContact(Contact contact) {
         setToOneTarget("contact", contact, true);
     }
@@ -247,59 +335,286 @@ public abstract class _PaymentIn extends WillowCayenneObject {
         return (Contact)readProperty("contact");
     }
 
-
     public void addToPaymentInLines(PaymentInLine obj) {
         addToManyTarget("paymentInLines", obj, true);
     }
+
     public void removeFromPaymentInLines(PaymentInLine obj) {
         removeToManyTarget("paymentInLines", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<PaymentInLine> getPaymentInLines() {
         return (List<PaymentInLine>)readProperty("paymentInLines");
     }
 
-
     public void addToPaymentTransactions(PaymentTransaction obj) {
         addToManyTarget("paymentTransactions", obj, true);
     }
+
     public void removeFromPaymentTransactions(PaymentTransaction obj) {
         removeToManyTarget("paymentTransactions", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<PaymentTransaction> getPaymentTransactions() {
         return (List<PaymentTransaction>)readProperty("paymentTransactions");
     }
 
-
     public void addToVoucherPaymentIns(VoucherPaymentIn obj) {
         addToManyTarget("voucherPaymentIns", obj, true);
     }
+
     public void removeFromVoucherPaymentIns(VoucherPaymentIn obj) {
         removeToManyTarget("voucherPaymentIns", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<VoucherPaymentIn> getVoucherPaymentIns() {
         return (List<VoucherPaymentIn>)readProperty("voucherPaymentIns");
     }
 
-
     public void addToVouchers(Voucher obj) {
         addToManyTarget("vouchers", obj, true);
     }
+
     public void removeFromVouchers(Voucher obj) {
         removeToManyTarget("vouchers", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Voucher> getVouchers() {
         return (List<Voucher>)readProperty("vouchers");
     }
-
 
     protected abstract void onPostAdd();
 
     protected abstract void onPreUpdate();
 
     protected abstract void onPrePersist();
+
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "amount":
+                return this.amount;
+            case "angelId":
+                return this.angelId;
+            case "billingId":
+                return this.billingId;
+            case "confirmationStatus":
+                return this.confirmationStatus;
+            case "created":
+                return this.created;
+            case "creditCardCVV":
+                return this.creditCardCVV;
+            case "creditCardExpiry":
+                return this.creditCardExpiry;
+            case "creditCardName":
+                return this.creditCardName;
+            case "creditCardNumber":
+                return this.creditCardNumber;
+            case "creditCardType":
+                return this.creditCardType;
+            case "dateBanked":
+                return this.dateBanked;
+            case "gatewayReference":
+                return this.gatewayReference;
+            case "gatewayResponse":
+                return this.gatewayResponse;
+            case "modified":
+                return this.modified;
+            case "sessionId":
+                return this.sessionId;
+            case "source":
+                return this.source;
+            case "status":
+                return this.status;
+            case "statusNotes":
+                return this.statusNotes;
+            case "type":
+                return this.type;
+            case "authorisedInvoices":
+                return this.authorisedInvoices;
+            case "college":
+                return this.college;
+            case "contact":
+                return this.contact;
+            case "paymentInLines":
+                return this.paymentInLines;
+            case "paymentTransactions":
+                return this.paymentTransactions;
+            case "voucherPaymentIns":
+                return this.voucherPaymentIns;
+            case "vouchers":
+                return this.vouchers;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "amount":
+                this.amount = (Money)val;
+                break;
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "billingId":
+                this.billingId = (String)val;
+                break;
+            case "confirmationStatus":
+                this.confirmationStatus = (ConfirmationStatus)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "creditCardCVV":
+                this.creditCardCVV = (String)val;
+                break;
+            case "creditCardExpiry":
+                this.creditCardExpiry = (String)val;
+                break;
+            case "creditCardName":
+                this.creditCardName = (String)val;
+                break;
+            case "creditCardNumber":
+                this.creditCardNumber = (String)val;
+                break;
+            case "creditCardType":
+                this.creditCardType = (CreditCardType)val;
+                break;
+            case "dateBanked":
+                this.dateBanked = (Date)val;
+                break;
+            case "gatewayReference":
+                this.gatewayReference = (String)val;
+                break;
+            case "gatewayResponse":
+                this.gatewayResponse = (String)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "sessionId":
+                this.sessionId = (String)val;
+                break;
+            case "source":
+                this.source = (PaymentSource)val;
+                break;
+            case "status":
+                this.status = (PaymentStatus)val;
+                break;
+            case "statusNotes":
+                this.statusNotes = (String)val;
+                break;
+            case "type":
+                this.type = (PaymentType)val;
+                break;
+            case "authorisedInvoices":
+                this.authorisedInvoices = val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "contact":
+                this.contact = val;
+                break;
+            case "paymentInLines":
+                this.paymentInLines = val;
+                break;
+            case "paymentTransactions":
+                this.paymentTransactions = val;
+                break;
+            case "voucherPaymentIns":
+                this.voucherPaymentIns = val;
+                break;
+            case "vouchers":
+                this.vouchers = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.amount);
+        out.writeObject(this.angelId);
+        out.writeObject(this.billingId);
+        out.writeObject(this.confirmationStatus);
+        out.writeObject(this.created);
+        out.writeObject(this.creditCardCVV);
+        out.writeObject(this.creditCardExpiry);
+        out.writeObject(this.creditCardName);
+        out.writeObject(this.creditCardNumber);
+        out.writeObject(this.creditCardType);
+        out.writeObject(this.dateBanked);
+        out.writeObject(this.gatewayReference);
+        out.writeObject(this.gatewayResponse);
+        out.writeObject(this.modified);
+        out.writeObject(this.sessionId);
+        out.writeObject(this.source);
+        out.writeObject(this.status);
+        out.writeObject(this.statusNotes);
+        out.writeObject(this.type);
+        out.writeObject(this.authorisedInvoices);
+        out.writeObject(this.college);
+        out.writeObject(this.contact);
+        out.writeObject(this.paymentInLines);
+        out.writeObject(this.paymentTransactions);
+        out.writeObject(this.voucherPaymentIns);
+        out.writeObject(this.vouchers);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.amount = (Money)in.readObject();
+        this.angelId = (Long)in.readObject();
+        this.billingId = (String)in.readObject();
+        this.confirmationStatus = (ConfirmationStatus)in.readObject();
+        this.created = (Date)in.readObject();
+        this.creditCardCVV = (String)in.readObject();
+        this.creditCardExpiry = (String)in.readObject();
+        this.creditCardName = (String)in.readObject();
+        this.creditCardNumber = (String)in.readObject();
+        this.creditCardType = (CreditCardType)in.readObject();
+        this.dateBanked = (Date)in.readObject();
+        this.gatewayReference = (String)in.readObject();
+        this.gatewayResponse = (String)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.sessionId = (String)in.readObject();
+        this.source = (PaymentSource)in.readObject();
+        this.status = (PaymentStatus)in.readObject();
+        this.statusNotes = (String)in.readObject();
+        this.type = (PaymentType)in.readObject();
+        this.authorisedInvoices = in.readObject();
+        this.college = in.readObject();
+        this.contact = in.readObject();
+        this.paymentInLines = in.readObject();
+        this.paymentTransactions = in.readObject();
+        this.voucherPaymentIns = in.readObject();
+        this.vouchers = in.readObject();
+    }
 
 }

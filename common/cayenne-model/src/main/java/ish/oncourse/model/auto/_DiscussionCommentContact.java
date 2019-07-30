@@ -1,5 +1,9 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import org.apache.cayenne.exp.Property;
 
 import ish.oncourse.model.Contact;
@@ -25,11 +29,19 @@ public abstract class _DiscussionCommentContact extends WillowCayenneObject {
     public static final Property<DiscussionComment> COMMENT = Property.create("comment", DiscussionComment.class);
     public static final Property<Contact> CONTACT = Property.create("contact", Contact.class);
 
+    protected Boolean isNew;
+
+    protected Object comment;
+    protected Object contact;
+
     public void setIsNew(Boolean isNew) {
-        writeProperty("isNew", isNew);
+        beforePropertyWrite("isNew", this.isNew, isNew);
+        this.isNew = isNew;
     }
+
     public Boolean getIsNew() {
-        return (Boolean)readProperty("isNew");
+        beforePropertyRead("isNew");
+        return this.isNew;
     }
 
     public void setComment(DiscussionComment comment) {
@@ -40,7 +52,6 @@ public abstract class _DiscussionCommentContact extends WillowCayenneObject {
         return (DiscussionComment)readProperty("comment");
     }
 
-
     public void setContact(Contact contact) {
         setToOneTarget("contact", contact, true);
     }
@@ -49,5 +60,67 @@ public abstract class _DiscussionCommentContact extends WillowCayenneObject {
         return (Contact)readProperty("contact");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "isNew":
+                return this.isNew;
+            case "comment":
+                return this.comment;
+            case "contact":
+                return this.contact;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "isNew":
+                this.isNew = (Boolean)val;
+                break;
+            case "comment":
+                this.comment = val;
+                break;
+            case "contact":
+                this.contact = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.isNew);
+        out.writeObject(this.comment);
+        out.writeObject(this.contact);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.isNew = (Boolean)in.readObject();
+        this.comment = in.readObject();
+        this.contact = in.readObject();
+    }
 
 }

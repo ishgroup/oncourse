@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 
 import org.apache.cayenne.exp.Property;
@@ -34,46 +37,73 @@ public abstract class _PaymentTransaction extends WillowCayenneObject {
     public static final Property<String> TXN_REFERENCE = Property.create("txnReference", String.class);
     public static final Property<PaymentIn> PAYMENT = Property.create("payment", PaymentIn.class);
 
+    protected Date created;
+    protected Boolean isFinalised;
+    protected Date modified;
+    protected String response;
+    protected String soapResponse;
+    protected String txnReference;
+
+    protected Object payment;
+
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setIsFinalised(Boolean isFinalised) {
-        writeProperty("isFinalised", isFinalised);
+        beforePropertyWrite("isFinalised", this.isFinalised, isFinalised);
+        this.isFinalised = isFinalised;
     }
+
     public Boolean getIsFinalised() {
-        return (Boolean)readProperty("isFinalised");
+        beforePropertyRead("isFinalised");
+        return this.isFinalised;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setResponse(String response) {
-        writeProperty("response", response);
+        beforePropertyWrite("response", this.response, response);
+        this.response = response;
     }
+
     public String getResponse() {
-        return (String)readProperty("response");
+        beforePropertyRead("response");
+        return this.response;
     }
 
     public void setSoapResponse(String soapResponse) {
-        writeProperty("soapResponse", soapResponse);
+        beforePropertyWrite("soapResponse", this.soapResponse, soapResponse);
+        this.soapResponse = soapResponse;
     }
+
     public String getSoapResponse() {
-        return (String)readProperty("soapResponse");
+        beforePropertyRead("soapResponse");
+        return this.soapResponse;
     }
 
     public void setTxnReference(String txnReference) {
-        writeProperty("txnReference", txnReference);
+        beforePropertyWrite("txnReference", this.txnReference, txnReference);
+        this.txnReference = txnReference;
     }
+
     public String getTxnReference() {
-        return (String)readProperty("txnReference");
+        beforePropertyRead("txnReference");
+        return this.txnReference;
     }
 
     public void setPayment(PaymentIn payment) {
@@ -84,9 +114,99 @@ public abstract class _PaymentTransaction extends WillowCayenneObject {
         return (PaymentIn)readProperty("payment");
     }
 
-
     protected abstract void onPreUpdate();
 
     protected abstract void onPrePersist();
+
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "created":
+                return this.created;
+            case "isFinalised":
+                return this.isFinalised;
+            case "modified":
+                return this.modified;
+            case "response":
+                return this.response;
+            case "soapResponse":
+                return this.soapResponse;
+            case "txnReference":
+                return this.txnReference;
+            case "payment":
+                return this.payment;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "isFinalised":
+                this.isFinalised = (Boolean)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "response":
+                this.response = (String)val;
+                break;
+            case "soapResponse":
+                this.soapResponse = (String)val;
+                break;
+            case "txnReference":
+                this.txnReference = (String)val;
+                break;
+            case "payment":
+                this.payment = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.created);
+        out.writeObject(this.isFinalised);
+        out.writeObject(this.modified);
+        out.writeObject(this.response);
+        out.writeObject(this.soapResponse);
+        out.writeObject(this.txnReference);
+        out.writeObject(this.payment);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.created = (Date)in.readObject();
+        this.isFinalised = (Boolean)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.response = (String)in.readObject();
+        this.soapResponse = (String)in.readObject();
+        this.txnReference = (String)in.readObject();
+        this.payment = in.readObject();
+    }
 
 }

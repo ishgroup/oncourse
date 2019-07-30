@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -47,73 +50,104 @@ public abstract class _WebNode extends WillowCayenneObject {
     public static final Property<WebSiteVersion> WEB_SITE_VERSION = Property.create("webSiteVersion", WebSiteVersion.class);
     public static final Property<List<WebUrlAlias>> WEB_URL_ALIASES = Property.create("webUrlAliases", List.class);
 
+    protected Date created;
+    protected Date modified;
+    protected String name;
+    protected Integer nodeNumber;
+    protected boolean published;
+    protected boolean suppressOnSitemap;
+
+    protected Object webContentVisibility;
+    protected Object webMenus;
+    protected Object webNodeType;
+    protected Object webSiteVersion;
+    protected Object webUrlAliases;
+
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        beforePropertyWrite("name", this.name, name);
+        this.name = name;
     }
+
     public String getName() {
-        return (String)readProperty("name");
+        beforePropertyRead("name");
+        return this.name;
     }
 
     public void setNodeNumber(Integer nodeNumber) {
-        writeProperty("nodeNumber", nodeNumber);
+        beforePropertyWrite("nodeNumber", this.nodeNumber, nodeNumber);
+        this.nodeNumber = nodeNumber;
     }
+
     public Integer getNodeNumber() {
-        return (Integer)readProperty("nodeNumber");
+        beforePropertyRead("nodeNumber");
+        return this.nodeNumber;
     }
 
     public void setPublished(boolean published) {
-        writeProperty("published", published);
+        beforePropertyWrite("published", this.published, published);
+        this.published = published;
     }
+
 	public boolean isPublished() {
-        Boolean value = (Boolean)readProperty("published");
-        return (value != null) ? value.booleanValue() : false;
+        beforePropertyRead("published");
+        return this.published;
     }
 
     public void setSuppressOnSitemap(boolean suppressOnSitemap) {
-        writeProperty("suppressOnSitemap", suppressOnSitemap);
+        beforePropertyWrite("suppressOnSitemap", this.suppressOnSitemap, suppressOnSitemap);
+        this.suppressOnSitemap = suppressOnSitemap;
     }
+
 	public boolean isSuppressOnSitemap() {
-        Boolean value = (Boolean)readProperty("suppressOnSitemap");
-        return (value != null) ? value.booleanValue() : false;
+        beforePropertyRead("suppressOnSitemap");
+        return this.suppressOnSitemap;
     }
 
     public void addToWebContentVisibility(WebContentVisibility obj) {
         addToManyTarget("webContentVisibility", obj, true);
     }
+
     public void removeFromWebContentVisibility(WebContentVisibility obj) {
         removeToManyTarget("webContentVisibility", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<WebContentVisibility> getWebContentVisibility() {
         return (List<WebContentVisibility>)readProperty("webContentVisibility");
     }
 
-
     public void addToWebMenus(WebMenu obj) {
         addToManyTarget("webMenus", obj, true);
     }
+
     public void removeFromWebMenus(WebMenu obj) {
         removeToManyTarget("webMenus", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<WebMenu> getWebMenus() {
         return (List<WebMenu>)readProperty("webMenus");
     }
-
 
     public void setWebNodeType(WebNodeType webNodeType) {
         setToOneTarget("webNodeType", webNodeType, true);
@@ -123,7 +157,6 @@ public abstract class _WebNode extends WillowCayenneObject {
         return (WebNodeType)readProperty("webNodeType");
     }
 
-
     public void setWebSiteVersion(WebSiteVersion webSiteVersion) {
         setToOneTarget("webSiteVersion", webSiteVersion, true);
     }
@@ -132,21 +165,140 @@ public abstract class _WebNode extends WillowCayenneObject {
         return (WebSiteVersion)readProperty("webSiteVersion");
     }
 
-
     public void addToWebUrlAliases(WebUrlAlias obj) {
         addToManyTarget("webUrlAliases", obj, true);
     }
+
     public void removeFromWebUrlAliases(WebUrlAlias obj) {
         removeToManyTarget("webUrlAliases", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<WebUrlAlias> getWebUrlAliases() {
         return (List<WebUrlAlias>)readProperty("webUrlAliases");
     }
 
-
     protected abstract void onPostAdd();
 
     protected abstract void onPreUpdate();
+
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "created":
+                return this.created;
+            case "modified":
+                return this.modified;
+            case "name":
+                return this.name;
+            case "nodeNumber":
+                return this.nodeNumber;
+            case "published":
+                return this.published;
+            case "suppressOnSitemap":
+                return this.suppressOnSitemap;
+            case "webContentVisibility":
+                return this.webContentVisibility;
+            case "webMenus":
+                return this.webMenus;
+            case "webNodeType":
+                return this.webNodeType;
+            case "webSiteVersion":
+                return this.webSiteVersion;
+            case "webUrlAliases":
+                return this.webUrlAliases;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "name":
+                this.name = (String)val;
+                break;
+            case "nodeNumber":
+                this.nodeNumber = (Integer)val;
+                break;
+            case "published":
+                this.published = val == null ? false : (boolean)val;
+                break;
+            case "suppressOnSitemap":
+                this.suppressOnSitemap = val == null ? false : (boolean)val;
+                break;
+            case "webContentVisibility":
+                this.webContentVisibility = val;
+                break;
+            case "webMenus":
+                this.webMenus = val;
+                break;
+            case "webNodeType":
+                this.webNodeType = val;
+                break;
+            case "webSiteVersion":
+                this.webSiteVersion = val;
+                break;
+            case "webUrlAliases":
+                this.webUrlAliases = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.created);
+        out.writeObject(this.modified);
+        out.writeObject(this.name);
+        out.writeObject(this.nodeNumber);
+        out.writeBoolean(this.published);
+        out.writeBoolean(this.suppressOnSitemap);
+        out.writeObject(this.webContentVisibility);
+        out.writeObject(this.webMenus);
+        out.writeObject(this.webNodeType);
+        out.writeObject(this.webSiteVersion);
+        out.writeObject(this.webUrlAliases);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.created = (Date)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.name = (String)in.readObject();
+        this.nodeNumber = (Integer)in.readObject();
+        this.published = in.readBoolean();
+        this.suppressOnSitemap = in.readBoolean();
+        this.webContentVisibility = in.readObject();
+        this.webMenus = in.readObject();
+        this.webNodeType = in.readObject();
+        this.webSiteVersion = in.readObject();
+        this.webUrlAliases = in.readObject();
+    }
 
 }

@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.List;
 
 import org.apache.cayenne.exp.Property;
@@ -25,6 +28,10 @@ public abstract class _Discussion extends WillowCayenneObject {
     public static final Property<CourseClass> COURSE_CLASS = Property.create("courseClass", CourseClass.class);
     public static final Property<List<DiscussionThread>> DISCUSSION_THREAD = Property.create("discussionThread", List.class);
 
+
+    protected Object courseClass;
+    protected Object discussionThread;
+
     public void setCourseClass(CourseClass courseClass) {
         setToOneTarget("courseClass", courseClass, true);
     }
@@ -33,17 +40,73 @@ public abstract class _Discussion extends WillowCayenneObject {
         return (CourseClass)readProperty("courseClass");
     }
 
-
     public void addToDiscussionThread(DiscussionThread obj) {
         addToManyTarget("discussionThread", obj, true);
     }
+
     public void removeFromDiscussionThread(DiscussionThread obj) {
         removeToManyTarget("discussionThread", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<DiscussionThread> getDiscussionThread() {
         return (List<DiscussionThread>)readProperty("discussionThread");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "courseClass":
+                return this.courseClass;
+            case "discussionThread":
+                return this.discussionThread;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "courseClass":
+                this.courseClass = val;
+                break;
+            case "discussionThread":
+                this.discussionThread = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.courseClass);
+        out.writeObject(this.discussionThread);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.courseClass = in.readObject();
+        this.discussionThread = in.readObject();
+    }
 
 }

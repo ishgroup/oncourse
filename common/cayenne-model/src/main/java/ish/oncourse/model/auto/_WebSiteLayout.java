@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.List;
 
 import org.apache.cayenne.exp.Property;
@@ -30,36 +33,47 @@ public abstract class _WebSiteLayout extends WillowCayenneObject {
     public static final Property<List<WebNodeType>> WEB_NODE_TYPES = Property.create("webNodeTypes", List.class);
     public static final Property<WebSiteVersion> WEB_SITE_VERSION = Property.create("webSiteVersion", WebSiteVersion.class);
 
+    protected String layoutKey;
+
+    protected Object templates;
+    protected Object webNodeTypes;
+    protected Object webSiteVersion;
+
     public void setLayoutKey(String layoutKey) {
-        writeProperty("layoutKey", layoutKey);
+        beforePropertyWrite("layoutKey", this.layoutKey, layoutKey);
+        this.layoutKey = layoutKey;
     }
+
     public String getLayoutKey() {
-        return (String)readProperty("layoutKey");
+        beforePropertyRead("layoutKey");
+        return this.layoutKey;
     }
 
     public void addToTemplates(WebTemplate obj) {
         addToManyTarget("templates", obj, true);
     }
+
     public void removeFromTemplates(WebTemplate obj) {
         removeToManyTarget("templates", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<WebTemplate> getTemplates() {
         return (List<WebTemplate>)readProperty("templates");
     }
 
-
     public void addToWebNodeTypes(WebNodeType obj) {
         addToManyTarget("webNodeTypes", obj, true);
     }
+
     public void removeFromWebNodeTypes(WebNodeType obj) {
         removeToManyTarget("webNodeTypes", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<WebNodeType> getWebNodeTypes() {
         return (List<WebNodeType>)readProperty("webNodeTypes");
     }
-
 
     public void setWebSiteVersion(WebSiteVersion webSiteVersion) {
         setToOneTarget("webSiteVersion", webSiteVersion, true);
@@ -69,5 +83,74 @@ public abstract class _WebSiteLayout extends WillowCayenneObject {
         return (WebSiteVersion)readProperty("webSiteVersion");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "layoutKey":
+                return this.layoutKey;
+            case "templates":
+                return this.templates;
+            case "webNodeTypes":
+                return this.webNodeTypes;
+            case "webSiteVersion":
+                return this.webSiteVersion;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "layoutKey":
+                this.layoutKey = (String)val;
+                break;
+            case "templates":
+                this.templates = val;
+                break;
+            case "webNodeTypes":
+                this.webNodeTypes = val;
+                break;
+            case "webSiteVersion":
+                this.webSiteVersion = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.layoutKey);
+        out.writeObject(this.templates);
+        out.writeObject(this.webNodeTypes);
+        out.writeObject(this.webSiteVersion);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.layoutKey = (String)in.readObject();
+        this.templates = in.readObject();
+        this.webNodeTypes = in.readObject();
+        this.webSiteVersion = in.readObject();
+    }
 
 }

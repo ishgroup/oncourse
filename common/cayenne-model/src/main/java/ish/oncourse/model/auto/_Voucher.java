@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.List;
 
 import org.apache.cayenne.exp.Property;
@@ -40,70 +43,198 @@ public abstract class _Voucher extends ProductItem {
     public static final Property<List<PaymentIn>> PAYMENTS = Property.create("payments", List.class);
     public static final Property<List<VoucherPaymentIn>> VOUCHER_PAYMENT_INS = Property.create("voucherPaymentIns", List.class);
 
+    protected String code;
+    protected String idKey;
+    protected Integer redeemedCoursesCount;
+    protected Money redemptionValue;
+    protected PaymentSource source;
+    protected Money valueOnPurchase;
+
+    protected Object payments;
+    protected Object voucherPaymentIns;
+
     public void setCode(String code) {
-        writeProperty("code", code);
+        beforePropertyWrite("code", this.code, code);
+        this.code = code;
     }
+
     public String getCode() {
-        return (String)readProperty("code");
+        beforePropertyRead("code");
+        return this.code;
     }
 
     public void setIdKey(String idKey) {
-        writeProperty("idKey", idKey);
+        beforePropertyWrite("idKey", this.idKey, idKey);
+        this.idKey = idKey;
     }
+
     public String getIdKey() {
-        return (String)readProperty("idKey");
+        beforePropertyRead("idKey");
+        return this.idKey;
     }
 
     public void setRedeemedCoursesCount(Integer redeemedCoursesCount) {
-        writeProperty("redeemedCoursesCount", redeemedCoursesCount);
+        beforePropertyWrite("redeemedCoursesCount", this.redeemedCoursesCount, redeemedCoursesCount);
+        this.redeemedCoursesCount = redeemedCoursesCount;
     }
+
     public Integer getRedeemedCoursesCount() {
-        return (Integer)readProperty("redeemedCoursesCount");
+        beforePropertyRead("redeemedCoursesCount");
+        return this.redeemedCoursesCount;
     }
 
     public void setRedemptionValue(Money redemptionValue) {
-        writeProperty("redemptionValue", redemptionValue);
+        beforePropertyWrite("redemptionValue", this.redemptionValue, redemptionValue);
+        this.redemptionValue = redemptionValue;
     }
+
     public Money getRedemptionValue() {
-        return (Money)readProperty("redemptionValue");
+        beforePropertyRead("redemptionValue");
+        return this.redemptionValue;
     }
 
     public void setSource(PaymentSource source) {
-        writeProperty("source", source);
+        beforePropertyWrite("source", this.source, source);
+        this.source = source;
     }
+
     public PaymentSource getSource() {
-        return (PaymentSource)readProperty("source");
+        beforePropertyRead("source");
+        return this.source;
     }
 
     public void setValueOnPurchase(Money valueOnPurchase) {
-        writeProperty("valueOnPurchase", valueOnPurchase);
+        beforePropertyWrite("valueOnPurchase", this.valueOnPurchase, valueOnPurchase);
+        this.valueOnPurchase = valueOnPurchase;
     }
+
     public Money getValueOnPurchase() {
-        return (Money)readProperty("valueOnPurchase");
+        beforePropertyRead("valueOnPurchase");
+        return this.valueOnPurchase;
     }
 
     public void addToPayments(PaymentIn obj) {
         addToManyTarget("payments", obj, true);
     }
+
     public void removeFromPayments(PaymentIn obj) {
         removeToManyTarget("payments", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<PaymentIn> getPayments() {
         return (List<PaymentIn>)readProperty("payments");
     }
 
-
     public void addToVoucherPaymentIns(VoucherPaymentIn obj) {
         addToManyTarget("voucherPaymentIns", obj, true);
     }
+
     public void removeFromVoucherPaymentIns(VoucherPaymentIn obj) {
         removeToManyTarget("voucherPaymentIns", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<VoucherPaymentIn> getVoucherPaymentIns() {
         return (List<VoucherPaymentIn>)readProperty("voucherPaymentIns");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "code":
+                return this.code;
+            case "idKey":
+                return this.idKey;
+            case "redeemedCoursesCount":
+                return this.redeemedCoursesCount;
+            case "redemptionValue":
+                return this.redemptionValue;
+            case "source":
+                return this.source;
+            case "valueOnPurchase":
+                return this.valueOnPurchase;
+            case "payments":
+                return this.payments;
+            case "voucherPaymentIns":
+                return this.voucherPaymentIns;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "code":
+                this.code = (String)val;
+                break;
+            case "idKey":
+                this.idKey = (String)val;
+                break;
+            case "redeemedCoursesCount":
+                this.redeemedCoursesCount = (Integer)val;
+                break;
+            case "redemptionValue":
+                this.redemptionValue = (Money)val;
+                break;
+            case "source":
+                this.source = (PaymentSource)val;
+                break;
+            case "valueOnPurchase":
+                this.valueOnPurchase = (Money)val;
+                break;
+            case "payments":
+                this.payments = val;
+                break;
+            case "voucherPaymentIns":
+                this.voucherPaymentIns = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.code);
+        out.writeObject(this.idKey);
+        out.writeObject(this.redeemedCoursesCount);
+        out.writeObject(this.redemptionValue);
+        out.writeObject(this.source);
+        out.writeObject(this.valueOnPurchase);
+        out.writeObject(this.payments);
+        out.writeObject(this.voucherPaymentIns);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.code = (String)in.readObject();
+        this.idKey = (String)in.readObject();
+        this.redeemedCoursesCount = (Integer)in.readObject();
+        this.redemptionValue = (Money)in.readObject();
+        this.source = (PaymentSource)in.readObject();
+        this.valueOnPurchase = (Money)in.readObject();
+        this.payments = in.readObject();
+        this.voucherPaymentIns = in.readObject();
+    }
 
 }

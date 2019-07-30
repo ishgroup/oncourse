@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -55,78 +58,117 @@ public abstract class _Tutor extends WillowCayenneObject {
     public static final Property<List<Session>> SESSIONS = Property.create("sessions", List.class);
     public static final Property<List<TutorRole>> TUTOR_ROLES = Property.create("tutorRoles", List.class);
 
+    protected Long angelId;
+    protected Date created;
+    protected Date finishDate;
+    protected Date modified;
+    protected String resume;
+    protected String resumeTextile;
+    protected Date startDate;
+
+    protected Object assessmentClassTutors;
+    protected Object attendances;
+    protected Object college;
+    protected Object contact;
+    protected Object sessionTutors;
+    protected Object sessions;
+    protected Object tutorRoles;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setFinishDate(Date finishDate) {
-        writeProperty("finishDate", finishDate);
+        beforePropertyWrite("finishDate", this.finishDate, finishDate);
+        this.finishDate = finishDate;
     }
+
     public Date getFinishDate() {
-        return (Date)readProperty("finishDate");
+        beforePropertyRead("finishDate");
+        return this.finishDate;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setResume(String resume) {
-        writeProperty("resume", resume);
+        beforePropertyWrite("resume", this.resume, resume);
+        this.resume = resume;
     }
+
     public String getResume() {
-        return (String)readProperty("resume");
+        beforePropertyRead("resume");
+        return this.resume;
     }
 
     public void setResumeTextile(String resumeTextile) {
-        writeProperty("resumeTextile", resumeTextile);
+        beforePropertyWrite("resumeTextile", this.resumeTextile, resumeTextile);
+        this.resumeTextile = resumeTextile;
     }
+
     public String getResumeTextile() {
-        return (String)readProperty("resumeTextile");
+        beforePropertyRead("resumeTextile");
+        return this.resumeTextile;
     }
 
     public void setStartDate(Date startDate) {
-        writeProperty("startDate", startDate);
+        beforePropertyWrite("startDate", this.startDate, startDate);
+        this.startDate = startDate;
     }
+
     public Date getStartDate() {
-        return (Date)readProperty("startDate");
+        beforePropertyRead("startDate");
+        return this.startDate;
     }
 
     public void addToAssessmentClassTutors(AssessmentClassTutor obj) {
         addToManyTarget("assessmentClassTutors", obj, true);
     }
+
     public void removeFromAssessmentClassTutors(AssessmentClassTutor obj) {
         removeToManyTarget("assessmentClassTutors", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<AssessmentClassTutor> getAssessmentClassTutors() {
         return (List<AssessmentClassTutor>)readProperty("assessmentClassTutors");
     }
 
-
     public void addToAttendances(Attendance obj) {
         addToManyTarget("attendances", obj, true);
     }
+
     public void removeFromAttendances(Attendance obj) {
         removeToManyTarget("attendances", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Attendance> getAttendances() {
         return (List<Attendance>)readProperty("attendances");
     }
-
 
     public void setCollege(College college) {
         setToOneTarget("college", college, true);
@@ -136,7 +178,6 @@ public abstract class _Tutor extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void setContact(Contact contact) {
         setToOneTarget("contact", contact, true);
     }
@@ -145,41 +186,183 @@ public abstract class _Tutor extends WillowCayenneObject {
         return (Contact)readProperty("contact");
     }
 
-
     public void addToSessionTutors(SessionTutor obj) {
         addToManyTarget("sessionTutors", obj, true);
     }
+
     public void removeFromSessionTutors(SessionTutor obj) {
         removeToManyTarget("sessionTutors", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<SessionTutor> getSessionTutors() {
         return (List<SessionTutor>)readProperty("sessionTutors");
     }
 
-
     public void addToSessions(Session obj) {
         addToManyTarget("sessions", obj, true);
     }
+
     public void removeFromSessions(Session obj) {
         removeToManyTarget("sessions", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Session> getSessions() {
         return (List<Session>)readProperty("sessions");
     }
 
-
     public void addToTutorRoles(TutorRole obj) {
         addToManyTarget("tutorRoles", obj, true);
     }
+
     public void removeFromTutorRoles(TutorRole obj) {
         removeToManyTarget("tutorRoles", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<TutorRole> getTutorRoles() {
         return (List<TutorRole>)readProperty("tutorRoles");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "created":
+                return this.created;
+            case "finishDate":
+                return this.finishDate;
+            case "modified":
+                return this.modified;
+            case "resume":
+                return this.resume;
+            case "resumeTextile":
+                return this.resumeTextile;
+            case "startDate":
+                return this.startDate;
+            case "assessmentClassTutors":
+                return this.assessmentClassTutors;
+            case "attendances":
+                return this.attendances;
+            case "college":
+                return this.college;
+            case "contact":
+                return this.contact;
+            case "sessionTutors":
+                return this.sessionTutors;
+            case "sessions":
+                return this.sessions;
+            case "tutorRoles":
+                return this.tutorRoles;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "finishDate":
+                this.finishDate = (Date)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "resume":
+                this.resume = (String)val;
+                break;
+            case "resumeTextile":
+                this.resumeTextile = (String)val;
+                break;
+            case "startDate":
+                this.startDate = (Date)val;
+                break;
+            case "assessmentClassTutors":
+                this.assessmentClassTutors = val;
+                break;
+            case "attendances":
+                this.attendances = val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "contact":
+                this.contact = val;
+                break;
+            case "sessionTutors":
+                this.sessionTutors = val;
+                break;
+            case "sessions":
+                this.sessions = val;
+                break;
+            case "tutorRoles":
+                this.tutorRoles = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.created);
+        out.writeObject(this.finishDate);
+        out.writeObject(this.modified);
+        out.writeObject(this.resume);
+        out.writeObject(this.resumeTextile);
+        out.writeObject(this.startDate);
+        out.writeObject(this.assessmentClassTutors);
+        out.writeObject(this.attendances);
+        out.writeObject(this.college);
+        out.writeObject(this.contact);
+        out.writeObject(this.sessionTutors);
+        out.writeObject(this.sessions);
+        out.writeObject(this.tutorRoles);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.created = (Date)in.readObject();
+        this.finishDate = (Date)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.resume = (String)in.readObject();
+        this.resumeTextile = (String)in.readObject();
+        this.startDate = (Date)in.readObject();
+        this.assessmentClassTutors = in.readObject();
+        this.attendances = in.readObject();
+        this.college = in.readObject();
+        this.contact = in.readObject();
+        this.sessionTutors = in.readObject();
+        this.sessions = in.readObject();
+        this.tutorRoles = in.readObject();
+    }
 
 }

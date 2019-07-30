@@ -1,5 +1,9 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import org.apache.cayenne.exp.Property;
 
 import ish.oncourse.model.Course;
@@ -24,6 +28,10 @@ public abstract class _CourseProductRelation extends EntityRelation {
     public static final Property<Course> COURSE = Property.create("course", Course.class);
     public static final Property<Product> PRODUCT = Property.create("product", Product.class);
 
+
+    protected Object course;
+    protected Object product;
+
     public void setCourse(Course course) {
         setToOneTarget("course", course, true);
     }
@@ -31,7 +39,6 @@ public abstract class _CourseProductRelation extends EntityRelation {
     public Course getCourse() {
         return (Course)readProperty("course");
     }
-
 
     public void setProduct(Product product) {
         setToOneTarget("product", product, true);
@@ -41,5 +48,60 @@ public abstract class _CourseProductRelation extends EntityRelation {
         return (Product)readProperty("product");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "course":
+                return this.course;
+            case "product":
+                return this.product;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "course":
+                this.course = val;
+                break;
+            case "product":
+                this.product = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.course);
+        out.writeObject(this.product);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.course = in.readObject();
+        this.product = in.readObject();
+    }
 
 }

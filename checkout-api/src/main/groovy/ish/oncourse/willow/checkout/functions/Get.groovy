@@ -1,10 +1,10 @@
 package ish.oncourse.willow.checkout.functions
 
 import ish.oncourse.model.College
-import org.apache.cayenne.CayenneDataObject
+import org.apache.cayenne.BaseDataObject
 import org.apache.cayenne.ObjectContext
 
-abstract class Get<T extends CayenneDataObject> {
+abstract class Get<T extends BaseDataObject> {
 
     ObjectContext context
     College college

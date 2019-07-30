@@ -1,5 +1,9 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import org.apache.cayenne.exp.Property;
 
 /**
@@ -22,25 +26,102 @@ public abstract class _DiscussionComment extends WillowCayenneObject {
     public static final Property<Long> DISCUSSION_THREAD_ID = Property.create("discussionThreadId", Long.class);
     public static final Property<Boolean> IS_DELETED = Property.create("isDeleted", Boolean.class);
 
+    protected String body;
+    protected Long discussionThreadId;
+    protected Boolean isDeleted;
+
+
     public void setBody(String body) {
-        writeProperty("body", body);
+        beforePropertyWrite("body", this.body, body);
+        this.body = body;
     }
+
     public String getBody() {
-        return (String)readProperty("body");
+        beforePropertyRead("body");
+        return this.body;
     }
 
     public void setDiscussionThreadId(Long discussionThreadId) {
-        writeProperty("discussionThreadId", discussionThreadId);
+        beforePropertyWrite("discussionThreadId", this.discussionThreadId, discussionThreadId);
+        this.discussionThreadId = discussionThreadId;
     }
+
     public Long getDiscussionThreadId() {
-        return (Long)readProperty("discussionThreadId");
+        beforePropertyRead("discussionThreadId");
+        return this.discussionThreadId;
     }
 
     public void setIsDeleted(Boolean isDeleted) {
-        writeProperty("isDeleted", isDeleted);
+        beforePropertyWrite("isDeleted", this.isDeleted, isDeleted);
+        this.isDeleted = isDeleted;
     }
+
     public Boolean getIsDeleted() {
-        return (Boolean)readProperty("isDeleted");
+        beforePropertyRead("isDeleted");
+        return this.isDeleted;
+    }
+
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "body":
+                return this.body;
+            case "discussionThreadId":
+                return this.discussionThreadId;
+            case "isDeleted":
+                return this.isDeleted;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "body":
+                this.body = (String)val;
+                break;
+            case "discussionThreadId":
+                this.discussionThreadId = (Long)val;
+                break;
+            case "isDeleted":
+                this.isDeleted = (Boolean)val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.body);
+        out.writeObject(this.discussionThreadId);
+        out.writeObject(this.isDeleted);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.body = (String)in.readObject();
+        this.discussionThreadId = (Long)in.readObject();
+        this.isDeleted = (Boolean)in.readObject();
     }
 
 }

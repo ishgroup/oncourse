@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 
 import org.apache.cayenne.exp.Property;
@@ -30,32 +33,51 @@ public abstract class _QueuedStatistic extends WillowCayenneObject {
     public static final Property<Integer> STACKED_TRANSACTIONS_COUNT = Property.create("stackedTransactionsCount", Integer.class);
     public static final Property<College> COLLEGE = Property.create("college", College.class);
 
+    protected String entityIdentifier;
+    protected Date receivedTimestamp;
+    protected Integer stackedCount;
+    protected Integer stackedTransactionsCount;
+
+    protected Object college;
+
     public void setEntityIdentifier(String entityIdentifier) {
-        writeProperty("entityIdentifier", entityIdentifier);
+        beforePropertyWrite("entityIdentifier", this.entityIdentifier, entityIdentifier);
+        this.entityIdentifier = entityIdentifier;
     }
+
     public String getEntityIdentifier() {
-        return (String)readProperty("entityIdentifier");
+        beforePropertyRead("entityIdentifier");
+        return this.entityIdentifier;
     }
 
     public void setReceivedTimestamp(Date receivedTimestamp) {
-        writeProperty("receivedTimestamp", receivedTimestamp);
+        beforePropertyWrite("receivedTimestamp", this.receivedTimestamp, receivedTimestamp);
+        this.receivedTimestamp = receivedTimestamp;
     }
+
     public Date getReceivedTimestamp() {
-        return (Date)readProperty("receivedTimestamp");
+        beforePropertyRead("receivedTimestamp");
+        return this.receivedTimestamp;
     }
 
     public void setStackedCount(Integer stackedCount) {
-        writeProperty("stackedCount", stackedCount);
+        beforePropertyWrite("stackedCount", this.stackedCount, stackedCount);
+        this.stackedCount = stackedCount;
     }
+
     public Integer getStackedCount() {
-        return (Integer)readProperty("stackedCount");
+        beforePropertyRead("stackedCount");
+        return this.stackedCount;
     }
 
     public void setStackedTransactionsCount(Integer stackedTransactionsCount) {
-        writeProperty("stackedTransactionsCount", stackedTransactionsCount);
+        beforePropertyWrite("stackedTransactionsCount", this.stackedTransactionsCount, stackedTransactionsCount);
+        this.stackedTransactionsCount = stackedTransactionsCount;
     }
+
     public Integer getStackedTransactionsCount() {
-        return (Integer)readProperty("stackedTransactionsCount");
+        beforePropertyRead("stackedTransactionsCount");
+        return this.stackedTransactionsCount;
     }
 
     public void setCollege(College college) {
@@ -66,5 +88,81 @@ public abstract class _QueuedStatistic extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "entityIdentifier":
+                return this.entityIdentifier;
+            case "receivedTimestamp":
+                return this.receivedTimestamp;
+            case "stackedCount":
+                return this.stackedCount;
+            case "stackedTransactionsCount":
+                return this.stackedTransactionsCount;
+            case "college":
+                return this.college;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "entityIdentifier":
+                this.entityIdentifier = (String)val;
+                break;
+            case "receivedTimestamp":
+                this.receivedTimestamp = (Date)val;
+                break;
+            case "stackedCount":
+                this.stackedCount = (Integer)val;
+                break;
+            case "stackedTransactionsCount":
+                this.stackedTransactionsCount = (Integer)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.entityIdentifier);
+        out.writeObject(this.receivedTimestamp);
+        out.writeObject(this.stackedCount);
+        out.writeObject(this.stackedTransactionsCount);
+        out.writeObject(this.college);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.entityIdentifier = (String)in.readObject();
+        this.receivedTimestamp = (Date)in.readObject();
+        this.stackedCount = (Integer)in.readObject();
+        this.stackedTransactionsCount = (Integer)in.readObject();
+        this.college = in.readObject();
+    }
 
 }

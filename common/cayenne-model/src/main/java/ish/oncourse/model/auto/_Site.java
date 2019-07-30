@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -76,144 +79,231 @@ public abstract class _Site extends WillowCayenneObject {
     public static final Property<List<SystemUser>> SYSTEM_USERS = Property.create("systemUsers", List.class);
     public static final Property<List<WaitingListSite>> WAITING_LIST_SITES = Property.create("waitingListSites", List.class);
 
+    protected Long angelId;
+    protected Long countryId;
+    protected Date created;
+    protected String drivingDirections;
+    protected String drivingDirectionsTextile;
+    protected Boolean isVirtual;
+    protected Boolean isWebVisible;
+    protected BigDecimal latitude;
+    protected BigDecimal longitude;
+    protected Date modified;
+    protected String name;
+    protected String postcode;
+    protected String publicTransportDirections;
+    protected String publicTransportDirectionsTextile;
+    protected String specialInstructions;
+    protected String specialInstructionsTextile;
+    protected String state;
+    protected String street;
+    protected String suburb;
+    protected String timeZone;
+
+    protected Object college;
+    protected Object country;
+    protected Object rooms;
+    protected Object systemUsers;
+    protected Object waitingListSites;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setCountryId(Long countryId) {
-        writeProperty("countryId", countryId);
+        beforePropertyWrite("countryId", this.countryId, countryId);
+        this.countryId = countryId;
     }
+
     public Long getCountryId() {
-        return (Long)readProperty("countryId");
+        beforePropertyRead("countryId");
+        return this.countryId;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setDrivingDirections(String drivingDirections) {
-        writeProperty("drivingDirections", drivingDirections);
+        beforePropertyWrite("drivingDirections", this.drivingDirections, drivingDirections);
+        this.drivingDirections = drivingDirections;
     }
+
     public String getDrivingDirections() {
-        return (String)readProperty("drivingDirections");
+        beforePropertyRead("drivingDirections");
+        return this.drivingDirections;
     }
 
     public void setDrivingDirectionsTextile(String drivingDirectionsTextile) {
-        writeProperty("drivingDirectionsTextile", drivingDirectionsTextile);
+        beforePropertyWrite("drivingDirectionsTextile", this.drivingDirectionsTextile, drivingDirectionsTextile);
+        this.drivingDirectionsTextile = drivingDirectionsTextile;
     }
+
     public String getDrivingDirectionsTextile() {
-        return (String)readProperty("drivingDirectionsTextile");
+        beforePropertyRead("drivingDirectionsTextile");
+        return this.drivingDirectionsTextile;
     }
 
     public void setIsVirtual(Boolean isVirtual) {
-        writeProperty("isVirtual", isVirtual);
+        beforePropertyWrite("isVirtual", this.isVirtual, isVirtual);
+        this.isVirtual = isVirtual;
     }
+
     public Boolean getIsVirtual() {
-        return (Boolean)readProperty("isVirtual");
+        beforePropertyRead("isVirtual");
+        return this.isVirtual;
     }
 
     public void setIsWebVisible(Boolean isWebVisible) {
-        writeProperty("isWebVisible", isWebVisible);
+        beforePropertyWrite("isWebVisible", this.isWebVisible, isWebVisible);
+        this.isWebVisible = isWebVisible;
     }
+
     public Boolean getIsWebVisible() {
-        return (Boolean)readProperty("isWebVisible");
+        beforePropertyRead("isWebVisible");
+        return this.isWebVisible;
     }
 
     public void setLatitude(BigDecimal latitude) {
-        writeProperty("latitude", latitude);
+        beforePropertyWrite("latitude", this.latitude, latitude);
+        this.latitude = latitude;
     }
+
     public BigDecimal getLatitude() {
-        return (BigDecimal)readProperty("latitude");
+        beforePropertyRead("latitude");
+        return this.latitude;
     }
 
     public void setLongitude(BigDecimal longitude) {
-        writeProperty("longitude", longitude);
+        beforePropertyWrite("longitude", this.longitude, longitude);
+        this.longitude = longitude;
     }
+
     public BigDecimal getLongitude() {
-        return (BigDecimal)readProperty("longitude");
+        beforePropertyRead("longitude");
+        return this.longitude;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        beforePropertyWrite("name", this.name, name);
+        this.name = name;
     }
+
     public String getName() {
-        return (String)readProperty("name");
+        beforePropertyRead("name");
+        return this.name;
     }
 
     public void setPostcode(String postcode) {
-        writeProperty("postcode", postcode);
+        beforePropertyWrite("postcode", this.postcode, postcode);
+        this.postcode = postcode;
     }
+
     public String getPostcode() {
-        return (String)readProperty("postcode");
+        beforePropertyRead("postcode");
+        return this.postcode;
     }
 
     public void setPublicTransportDirections(String publicTransportDirections) {
-        writeProperty("publicTransportDirections", publicTransportDirections);
+        beforePropertyWrite("publicTransportDirections", this.publicTransportDirections, publicTransportDirections);
+        this.publicTransportDirections = publicTransportDirections;
     }
+
     public String getPublicTransportDirections() {
-        return (String)readProperty("publicTransportDirections");
+        beforePropertyRead("publicTransportDirections");
+        return this.publicTransportDirections;
     }
 
     public void setPublicTransportDirectionsTextile(String publicTransportDirectionsTextile) {
-        writeProperty("publicTransportDirectionsTextile", publicTransportDirectionsTextile);
+        beforePropertyWrite("publicTransportDirectionsTextile", this.publicTransportDirectionsTextile, publicTransportDirectionsTextile);
+        this.publicTransportDirectionsTextile = publicTransportDirectionsTextile;
     }
+
     public String getPublicTransportDirectionsTextile() {
-        return (String)readProperty("publicTransportDirectionsTextile");
+        beforePropertyRead("publicTransportDirectionsTextile");
+        return this.publicTransportDirectionsTextile;
     }
 
     public void setSpecialInstructions(String specialInstructions) {
-        writeProperty("specialInstructions", specialInstructions);
+        beforePropertyWrite("specialInstructions", this.specialInstructions, specialInstructions);
+        this.specialInstructions = specialInstructions;
     }
+
     public String getSpecialInstructions() {
-        return (String)readProperty("specialInstructions");
+        beforePropertyRead("specialInstructions");
+        return this.specialInstructions;
     }
 
     public void setSpecialInstructionsTextile(String specialInstructionsTextile) {
-        writeProperty("specialInstructionsTextile", specialInstructionsTextile);
+        beforePropertyWrite("specialInstructionsTextile", this.specialInstructionsTextile, specialInstructionsTextile);
+        this.specialInstructionsTextile = specialInstructionsTextile;
     }
+
     public String getSpecialInstructionsTextile() {
-        return (String)readProperty("specialInstructionsTextile");
+        beforePropertyRead("specialInstructionsTextile");
+        return this.specialInstructionsTextile;
     }
 
     public void setState(String state) {
-        writeProperty("state", state);
+        beforePropertyWrite("state", this.state, state);
+        this.state = state;
     }
+
     public String getState() {
-        return (String)readProperty("state");
+        beforePropertyRead("state");
+        return this.state;
     }
 
     public void setStreet(String street) {
-        writeProperty("street", street);
+        beforePropertyWrite("street", this.street, street);
+        this.street = street;
     }
+
     public String getStreet() {
-        return (String)readProperty("street");
+        beforePropertyRead("street");
+        return this.street;
     }
 
     public void setSuburb(String suburb) {
-        writeProperty("suburb", suburb);
+        beforePropertyWrite("suburb", this.suburb, suburb);
+        this.suburb = suburb;
     }
+
     public String getSuburb() {
-        return (String)readProperty("suburb");
+        beforePropertyRead("suburb");
+        return this.suburb;
     }
 
     public void setTimeZone(String timeZone) {
-        writeProperty("timeZone", timeZone);
+        beforePropertyWrite("timeZone", this.timeZone, timeZone);
+        this.timeZone = timeZone;
     }
+
     public String getTimeZone() {
-        return (String)readProperty("timeZone");
+        beforePropertyRead("timeZone");
+        return this.timeZone;
     }
 
     public void setCollege(College college) {
@@ -224,7 +314,6 @@ public abstract class _Site extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void setCountry(Country country) {
         setToOneTarget("country", country, true);
     }
@@ -233,41 +322,260 @@ public abstract class _Site extends WillowCayenneObject {
         return (Country)readProperty("country");
     }
 
-
     public void addToRooms(Room obj) {
         addToManyTarget("rooms", obj, true);
     }
+
     public void removeFromRooms(Room obj) {
         removeToManyTarget("rooms", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Room> getRooms() {
         return (List<Room>)readProperty("rooms");
     }
 
-
     public void addToSystemUsers(SystemUser obj) {
         addToManyTarget("systemUsers", obj, true);
     }
+
     public void removeFromSystemUsers(SystemUser obj) {
         removeToManyTarget("systemUsers", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<SystemUser> getSystemUsers() {
         return (List<SystemUser>)readProperty("systemUsers");
     }
 
-
     public void addToWaitingListSites(WaitingListSite obj) {
         addToManyTarget("waitingListSites", obj, true);
     }
+
     public void removeFromWaitingListSites(WaitingListSite obj) {
         removeToManyTarget("waitingListSites", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<WaitingListSite> getWaitingListSites() {
         return (List<WaitingListSite>)readProperty("waitingListSites");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "countryId":
+                return this.countryId;
+            case "created":
+                return this.created;
+            case "drivingDirections":
+                return this.drivingDirections;
+            case "drivingDirectionsTextile":
+                return this.drivingDirectionsTextile;
+            case "isVirtual":
+                return this.isVirtual;
+            case "isWebVisible":
+                return this.isWebVisible;
+            case "latitude":
+                return this.latitude;
+            case "longitude":
+                return this.longitude;
+            case "modified":
+                return this.modified;
+            case "name":
+                return this.name;
+            case "postcode":
+                return this.postcode;
+            case "publicTransportDirections":
+                return this.publicTransportDirections;
+            case "publicTransportDirectionsTextile":
+                return this.publicTransportDirectionsTextile;
+            case "specialInstructions":
+                return this.specialInstructions;
+            case "specialInstructionsTextile":
+                return this.specialInstructionsTextile;
+            case "state":
+                return this.state;
+            case "street":
+                return this.street;
+            case "suburb":
+                return this.suburb;
+            case "timeZone":
+                return this.timeZone;
+            case "college":
+                return this.college;
+            case "country":
+                return this.country;
+            case "rooms":
+                return this.rooms;
+            case "systemUsers":
+                return this.systemUsers;
+            case "waitingListSites":
+                return this.waitingListSites;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "countryId":
+                this.countryId = (Long)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "drivingDirections":
+                this.drivingDirections = (String)val;
+                break;
+            case "drivingDirectionsTextile":
+                this.drivingDirectionsTextile = (String)val;
+                break;
+            case "isVirtual":
+                this.isVirtual = (Boolean)val;
+                break;
+            case "isWebVisible":
+                this.isWebVisible = (Boolean)val;
+                break;
+            case "latitude":
+                this.latitude = (BigDecimal)val;
+                break;
+            case "longitude":
+                this.longitude = (BigDecimal)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "name":
+                this.name = (String)val;
+                break;
+            case "postcode":
+                this.postcode = (String)val;
+                break;
+            case "publicTransportDirections":
+                this.publicTransportDirections = (String)val;
+                break;
+            case "publicTransportDirectionsTextile":
+                this.publicTransportDirectionsTextile = (String)val;
+                break;
+            case "specialInstructions":
+                this.specialInstructions = (String)val;
+                break;
+            case "specialInstructionsTextile":
+                this.specialInstructionsTextile = (String)val;
+                break;
+            case "state":
+                this.state = (String)val;
+                break;
+            case "street":
+                this.street = (String)val;
+                break;
+            case "suburb":
+                this.suburb = (String)val;
+                break;
+            case "timeZone":
+                this.timeZone = (String)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "country":
+                this.country = val;
+                break;
+            case "rooms":
+                this.rooms = val;
+                break;
+            case "systemUsers":
+                this.systemUsers = val;
+                break;
+            case "waitingListSites":
+                this.waitingListSites = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.countryId);
+        out.writeObject(this.created);
+        out.writeObject(this.drivingDirections);
+        out.writeObject(this.drivingDirectionsTextile);
+        out.writeObject(this.isVirtual);
+        out.writeObject(this.isWebVisible);
+        out.writeObject(this.latitude);
+        out.writeObject(this.longitude);
+        out.writeObject(this.modified);
+        out.writeObject(this.name);
+        out.writeObject(this.postcode);
+        out.writeObject(this.publicTransportDirections);
+        out.writeObject(this.publicTransportDirectionsTextile);
+        out.writeObject(this.specialInstructions);
+        out.writeObject(this.specialInstructionsTextile);
+        out.writeObject(this.state);
+        out.writeObject(this.street);
+        out.writeObject(this.suburb);
+        out.writeObject(this.timeZone);
+        out.writeObject(this.college);
+        out.writeObject(this.country);
+        out.writeObject(this.rooms);
+        out.writeObject(this.systemUsers);
+        out.writeObject(this.waitingListSites);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.countryId = (Long)in.readObject();
+        this.created = (Date)in.readObject();
+        this.drivingDirections = (String)in.readObject();
+        this.drivingDirectionsTextile = (String)in.readObject();
+        this.isVirtual = (Boolean)in.readObject();
+        this.isWebVisible = (Boolean)in.readObject();
+        this.latitude = (BigDecimal)in.readObject();
+        this.longitude = (BigDecimal)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.name = (String)in.readObject();
+        this.postcode = (String)in.readObject();
+        this.publicTransportDirections = (String)in.readObject();
+        this.publicTransportDirectionsTextile = (String)in.readObject();
+        this.specialInstructions = (String)in.readObject();
+        this.specialInstructionsTextile = (String)in.readObject();
+        this.state = (String)in.readObject();
+        this.street = (String)in.readObject();
+        this.suburb = (String)in.readObject();
+        this.timeZone = (String)in.readObject();
+        this.college = in.readObject();
+        this.country = in.readObject();
+        this.rooms = in.readObject();
+        this.systemUsers = in.readObject();
+        this.waitingListSites = in.readObject();
+    }
 
 }

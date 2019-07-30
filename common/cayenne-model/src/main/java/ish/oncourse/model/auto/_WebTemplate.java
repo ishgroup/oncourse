@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 
 import org.apache.cayenne.exp.Property;
@@ -30,32 +33,51 @@ public abstract class _WebTemplate extends WillowCayenneObject {
     public static final Property<String> NAME = Property.create("name", String.class);
     public static final Property<WebSiteLayout> LAYOUT = Property.create("layout", WebSiteLayout.class);
 
+    protected String content;
+    protected Date created;
+    protected Date modified;
+    protected String name;
+
+    protected Object layout;
+
     public void setContent(String content) {
-        writeProperty("content", content);
+        beforePropertyWrite("content", this.content, content);
+        this.content = content;
     }
+
     public String getContent() {
-        return (String)readProperty("content");
+        beforePropertyRead("content");
+        return this.content;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        beforePropertyWrite("name", this.name, name);
+        this.name = name;
     }
+
     public String getName() {
-        return (String)readProperty("name");
+        beforePropertyRead("name");
+        return this.name;
     }
 
     public void setLayout(WebSiteLayout layout) {
@@ -66,9 +88,85 @@ public abstract class _WebTemplate extends WillowCayenneObject {
         return (WebSiteLayout)readProperty("layout");
     }
 
-
     protected abstract void onPostAdd();
 
     protected abstract void onPreUpdate();
+
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "content":
+                return this.content;
+            case "created":
+                return this.created;
+            case "modified":
+                return this.modified;
+            case "name":
+                return this.name;
+            case "layout":
+                return this.layout;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "content":
+                this.content = (String)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "name":
+                this.name = (String)val;
+                break;
+            case "layout":
+                this.layout = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.content);
+        out.writeObject(this.created);
+        out.writeObject(this.modified);
+        out.writeObject(this.name);
+        out.writeObject(this.layout);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.content = (String)in.readObject();
+        this.created = (Date)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.name = (String)in.readObject();
+        this.layout = in.readObject();
+    }
 
 }

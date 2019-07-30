@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -32,25 +35,41 @@ public abstract class _QueuedTransaction extends WillowCayenneObject {
     public static final Property<College> COLLEGE = Property.create("college", College.class);
     public static final Property<List<QueuedRecord>> QUEUED_RECORDS = Property.create("queuedRecords", List.class);
 
+    protected Date created;
+    protected Date modified;
+    protected String transactionKey;
+
+    protected Object college;
+    protected Object queuedRecords;
+
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setTransactionKey(String transactionKey) {
-        writeProperty("transactionKey", transactionKey);
+        beforePropertyWrite("transactionKey", this.transactionKey, transactionKey);
+        this.transactionKey = transactionKey;
     }
+
     public String getTransactionKey() {
-        return (String)readProperty("transactionKey");
+        beforePropertyRead("transactionKey");
+        return this.transactionKey;
     }
 
     public void setCollege(College college) {
@@ -61,17 +80,94 @@ public abstract class _QueuedTransaction extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void addToQueuedRecords(QueuedRecord obj) {
         addToManyTarget("queuedRecords", obj, true);
     }
+
     public void removeFromQueuedRecords(QueuedRecord obj) {
         removeToManyTarget("queuedRecords", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<QueuedRecord> getQueuedRecords() {
         return (List<QueuedRecord>)readProperty("queuedRecords");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "created":
+                return this.created;
+            case "modified":
+                return this.modified;
+            case "transactionKey":
+                return this.transactionKey;
+            case "college":
+                return this.college;
+            case "queuedRecords":
+                return this.queuedRecords;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "transactionKey":
+                this.transactionKey = (String)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "queuedRecords":
+                this.queuedRecords = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.created);
+        out.writeObject(this.modified);
+        out.writeObject(this.transactionKey);
+        out.writeObject(this.college);
+        out.writeObject(this.queuedRecords);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.created = (Date)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.transactionKey = (String)in.readObject();
+        this.college = in.readObject();
+        this.queuedRecords = in.readObject();
+    }
 
 }

@@ -1,5 +1,9 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import org.apache.cayenne.exp.Property;
 
 import ish.common.types.PostcodeType;
@@ -34,60 +38,192 @@ public abstract class _PostcodeDb extends WillowCayenneObject {
     public static final Property<String> SUBURB = Property.create("suburb", String.class);
     public static final Property<PostcodeType> TYPE = Property.create("type", PostcodeType.class);
 
+    protected String dc;
+    protected Long ishVersion;
+    protected Double lat;
+    protected Double lon;
+    protected Long postcode;
+    protected String state;
+    protected String suburb;
+    protected PostcodeType type;
+
+
     public void setDc(String dc) {
-        writeProperty("dc", dc);
+        beforePropertyWrite("dc", this.dc, dc);
+        this.dc = dc;
     }
+
     public String getDc() {
-        return (String)readProperty("dc");
+        beforePropertyRead("dc");
+        return this.dc;
     }
 
     public void setIshVersion(Long ishVersion) {
-        writeProperty("ishVersion", ishVersion);
+        beforePropertyWrite("ishVersion", this.ishVersion, ishVersion);
+        this.ishVersion = ishVersion;
     }
+
     public Long getIshVersion() {
-        return (Long)readProperty("ishVersion");
+        beforePropertyRead("ishVersion");
+        return this.ishVersion;
     }
 
     public void setLat(Double lat) {
-        writeProperty("lat", lat);
+        beforePropertyWrite("lat", this.lat, lat);
+        this.lat = lat;
     }
+
     public Double getLat() {
-        return (Double)readProperty("lat");
+        beforePropertyRead("lat");
+        return this.lat;
     }
 
     public void setLon(Double lon) {
-        writeProperty("lon", lon);
+        beforePropertyWrite("lon", this.lon, lon);
+        this.lon = lon;
     }
+
     public Double getLon() {
-        return (Double)readProperty("lon");
+        beforePropertyRead("lon");
+        return this.lon;
     }
 
     public void setPostcode(Long postcode) {
-        writeProperty("postcode", postcode);
+        beforePropertyWrite("postcode", this.postcode, postcode);
+        this.postcode = postcode;
     }
+
     public Long getPostcode() {
-        return (Long)readProperty("postcode");
+        beforePropertyRead("postcode");
+        return this.postcode;
     }
 
     public void setState(String state) {
-        writeProperty("state", state);
+        beforePropertyWrite("state", this.state, state);
+        this.state = state;
     }
+
     public String getState() {
-        return (String)readProperty("state");
+        beforePropertyRead("state");
+        return this.state;
     }
 
     public void setSuburb(String suburb) {
-        writeProperty("suburb", suburb);
+        beforePropertyWrite("suburb", this.suburb, suburb);
+        this.suburb = suburb;
     }
+
     public String getSuburb() {
-        return (String)readProperty("suburb");
+        beforePropertyRead("suburb");
+        return this.suburb;
     }
 
     public void setType(PostcodeType type) {
-        writeProperty("type", type);
+        beforePropertyWrite("type", this.type, type);
+        this.type = type;
     }
+
     public PostcodeType getType() {
-        return (PostcodeType)readProperty("type");
+        beforePropertyRead("type");
+        return this.type;
+    }
+
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "dc":
+                return this.dc;
+            case "ishVersion":
+                return this.ishVersion;
+            case "lat":
+                return this.lat;
+            case "lon":
+                return this.lon;
+            case "postcode":
+                return this.postcode;
+            case "state":
+                return this.state;
+            case "suburb":
+                return this.suburb;
+            case "type":
+                return this.type;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "dc":
+                this.dc = (String)val;
+                break;
+            case "ishVersion":
+                this.ishVersion = (Long)val;
+                break;
+            case "lat":
+                this.lat = (Double)val;
+                break;
+            case "lon":
+                this.lon = (Double)val;
+                break;
+            case "postcode":
+                this.postcode = (Long)val;
+                break;
+            case "state":
+                this.state = (String)val;
+                break;
+            case "suburb":
+                this.suburb = (String)val;
+                break;
+            case "type":
+                this.type = (PostcodeType)val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.dc);
+        out.writeObject(this.ishVersion);
+        out.writeObject(this.lat);
+        out.writeObject(this.lon);
+        out.writeObject(this.postcode);
+        out.writeObject(this.state);
+        out.writeObject(this.suburb);
+        out.writeObject(this.type);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.dc = (String)in.readObject();
+        this.ishVersion = (Long)in.readObject();
+        this.lat = (Double)in.readObject();
+        this.lon = (Double)in.readObject();
+        this.postcode = (Long)in.readObject();
+        this.state = (String)in.readObject();
+        this.suburb = (String)in.readObject();
+        this.type = (PostcodeType)in.readObject();
     }
 
 }

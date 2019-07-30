@@ -16,7 +16,7 @@ import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.util.FormatUtils;
 import org.apache.cayenne.Cayenne;
-import org.apache.cayenne.CayenneDataObject;
+import org.apache.cayenne.BaseDataObject;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -781,7 +781,7 @@ public class PortalService implements IPortalService {
     }
 
 
-    public boolean isNew(CayenneDataObject object) {
+    public boolean isNew(BaseDataObject object) {
 
         /**
          * we added value != null condition to exlude NPE when some old CayenneDataObject has null value in create field.

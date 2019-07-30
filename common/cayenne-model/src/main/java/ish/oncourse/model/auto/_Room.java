@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -50,67 +53,109 @@ public abstract class _Room extends WillowCayenneObject {
     public static final Property<List<Session>> SESSIONS = Property.create("sessions", List.class);
     public static final Property<Site> SITE = Property.create("site", Site.class);
 
+    protected Long angelId;
+    protected Integer capacity;
+    protected Date created;
+    protected String directions;
+    protected String directionsTextile;
+    protected String facilities;
+    protected String facilitiesTextile;
+    protected Date modified;
+    protected String name;
+
+    protected Object college;
+    protected Object courseClasses;
+    protected Object sessions;
+    protected Object site;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setCapacity(Integer capacity) {
-        writeProperty("capacity", capacity);
+        beforePropertyWrite("capacity", this.capacity, capacity);
+        this.capacity = capacity;
     }
+
     public Integer getCapacity() {
-        return (Integer)readProperty("capacity");
+        beforePropertyRead("capacity");
+        return this.capacity;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setDirections(String directions) {
-        writeProperty("directions", directions);
+        beforePropertyWrite("directions", this.directions, directions);
+        this.directions = directions;
     }
+
     public String getDirections() {
-        return (String)readProperty("directions");
+        beforePropertyRead("directions");
+        return this.directions;
     }
 
     public void setDirectionsTextile(String directionsTextile) {
-        writeProperty("directionsTextile", directionsTextile);
+        beforePropertyWrite("directionsTextile", this.directionsTextile, directionsTextile);
+        this.directionsTextile = directionsTextile;
     }
+
     public String getDirectionsTextile() {
-        return (String)readProperty("directionsTextile");
+        beforePropertyRead("directionsTextile");
+        return this.directionsTextile;
     }
 
     public void setFacilities(String facilities) {
-        writeProperty("facilities", facilities);
+        beforePropertyWrite("facilities", this.facilities, facilities);
+        this.facilities = facilities;
     }
+
     public String getFacilities() {
-        return (String)readProperty("facilities");
+        beforePropertyRead("facilities");
+        return this.facilities;
     }
 
     public void setFacilitiesTextile(String facilitiesTextile) {
-        writeProperty("facilitiesTextile", facilitiesTextile);
+        beforePropertyWrite("facilitiesTextile", this.facilitiesTextile, facilitiesTextile);
+        this.facilitiesTextile = facilitiesTextile;
     }
+
     public String getFacilitiesTextile() {
-        return (String)readProperty("facilitiesTextile");
+        beforePropertyRead("facilitiesTextile");
+        return this.facilitiesTextile;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        beforePropertyWrite("name", this.name, name);
+        this.name = name;
     }
+
     public String getName() {
-        return (String)readProperty("name");
+        beforePropertyRead("name");
+        return this.name;
     }
 
     public void setCollege(College college) {
@@ -121,30 +166,31 @@ public abstract class _Room extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void addToCourseClasses(CourseClass obj) {
         addToManyTarget("courseClasses", obj, true);
     }
+
     public void removeFromCourseClasses(CourseClass obj) {
         removeToManyTarget("courseClasses", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<CourseClass> getCourseClasses() {
         return (List<CourseClass>)readProperty("courseClasses");
     }
 
-
     public void addToSessions(Session obj) {
         addToManyTarget("sessions", obj, true);
     }
+
     public void removeFromSessions(Session obj) {
         removeToManyTarget("sessions", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Session> getSessions() {
         return (List<Session>)readProperty("sessions");
     }
-
 
     public void setSite(Site site) {
         setToOneTarget("site", site, true);
@@ -154,5 +200,137 @@ public abstract class _Room extends WillowCayenneObject {
         return (Site)readProperty("site");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "capacity":
+                return this.capacity;
+            case "created":
+                return this.created;
+            case "directions":
+                return this.directions;
+            case "directionsTextile":
+                return this.directionsTextile;
+            case "facilities":
+                return this.facilities;
+            case "facilitiesTextile":
+                return this.facilitiesTextile;
+            case "modified":
+                return this.modified;
+            case "name":
+                return this.name;
+            case "college":
+                return this.college;
+            case "courseClasses":
+                return this.courseClasses;
+            case "sessions":
+                return this.sessions;
+            case "site":
+                return this.site;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "capacity":
+                this.capacity = (Integer)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "directions":
+                this.directions = (String)val;
+                break;
+            case "directionsTextile":
+                this.directionsTextile = (String)val;
+                break;
+            case "facilities":
+                this.facilities = (String)val;
+                break;
+            case "facilitiesTextile":
+                this.facilitiesTextile = (String)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "name":
+                this.name = (String)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "courseClasses":
+                this.courseClasses = val;
+                break;
+            case "sessions":
+                this.sessions = val;
+                break;
+            case "site":
+                this.site = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.capacity);
+        out.writeObject(this.created);
+        out.writeObject(this.directions);
+        out.writeObject(this.directionsTextile);
+        out.writeObject(this.facilities);
+        out.writeObject(this.facilitiesTextile);
+        out.writeObject(this.modified);
+        out.writeObject(this.name);
+        out.writeObject(this.college);
+        out.writeObject(this.courseClasses);
+        out.writeObject(this.sessions);
+        out.writeObject(this.site);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.capacity = (Integer)in.readObject();
+        this.created = (Date)in.readObject();
+        this.directions = (String)in.readObject();
+        this.directionsTextile = (String)in.readObject();
+        this.facilities = (String)in.readObject();
+        this.facilitiesTextile = (String)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.name = (String)in.readObject();
+        this.college = in.readObject();
+        this.courseClasses = in.readObject();
+        this.sessions = in.readObject();
+        this.site = in.readObject();
+    }
 
 }

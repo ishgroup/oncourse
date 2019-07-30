@@ -2,9 +2,7 @@ package ish.oncourse.willow.filters
 
 import ish.oncourse.willow.model.common.CommonError
 import ish.oncourse.willow.service.SearchText
-import org.apache.commons.collections.map.MultiValueMap
 import org.apache.commons.lang3.StringUtils
-import org.apache.cxf.jaxrs.impl.MetadataMap
 
 import javax.ws.rs.BadRequestException
 import javax.ws.rs.container.ContainerRequestContext

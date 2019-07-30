@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 
 import org.apache.cayenne.exp.Property;
@@ -47,53 +50,87 @@ public abstract class _ProductItem extends WillowCayenneObject {
     public static final Property<InvoiceLine> INVOICE_LINE = Property.create("invoiceLine", InvoiceLine.class);
     public static final Property<Product> PRODUCT = Property.create("product", Product.class);
 
+    protected Long angelId;
+    protected ConfirmationStatus confirmationStatus;
+    protected Date created;
+    protected Date expiryDate;
+    protected Date modified;
+    protected ProductStatus status;
+    protected Integer type;
+
+    protected Object college;
+    protected Object contact;
+    protected Object invoiceLine;
+    protected Object product;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setConfirmationStatus(ConfirmationStatus confirmationStatus) {
-        writeProperty("confirmationStatus", confirmationStatus);
+        beforePropertyWrite("confirmationStatus", this.confirmationStatus, confirmationStatus);
+        this.confirmationStatus = confirmationStatus;
     }
+
     public ConfirmationStatus getConfirmationStatus() {
-        return (ConfirmationStatus)readProperty("confirmationStatus");
+        beforePropertyRead("confirmationStatus");
+        return this.confirmationStatus;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setExpiryDate(Date expiryDate) {
-        writeProperty("expiryDate", expiryDate);
+        beforePropertyWrite("expiryDate", this.expiryDate, expiryDate);
+        this.expiryDate = expiryDate;
     }
+
     public Date getExpiryDate() {
-        return (Date)readProperty("expiryDate");
+        beforePropertyRead("expiryDate");
+        return this.expiryDate;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setStatus(ProductStatus status) {
-        writeProperty("status", status);
+        beforePropertyWrite("status", this.status, status);
+        this.status = status;
     }
+
     public ProductStatus getStatus() {
-        return (ProductStatus)readProperty("status");
+        beforePropertyRead("status");
+        return this.status;
     }
 
     public void setType(Integer type) {
-        writeProperty("type", type);
+        beforePropertyWrite("type", this.type, type);
+        this.type = type;
     }
+
     public Integer getType() {
-        return (Integer)readProperty("type");
+        beforePropertyRead("type");
+        return this.type;
     }
 
     public void setCollege(College college) {
@@ -104,7 +141,6 @@ public abstract class _ProductItem extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void setContact(Contact contact) {
         setToOneTarget("contact", contact, true);
     }
@@ -112,7 +148,6 @@ public abstract class _ProductItem extends WillowCayenneObject {
     public Contact getContact() {
         return (Contact)readProperty("contact");
     }
-
 
     public void setInvoiceLine(InvoiceLine invoiceLine) {
         setToOneTarget("invoiceLine", invoiceLine, true);
@@ -122,7 +157,6 @@ public abstract class _ProductItem extends WillowCayenneObject {
         return (InvoiceLine)readProperty("invoiceLine");
     }
 
-
     public void setProduct(Product product) {
         setToOneTarget("product", product, true);
     }
@@ -131,7 +165,125 @@ public abstract class _ProductItem extends WillowCayenneObject {
         return (Product)readProperty("product");
     }
 
-
     protected abstract void onPostAdd();
+
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "confirmationStatus":
+                return this.confirmationStatus;
+            case "created":
+                return this.created;
+            case "expiryDate":
+                return this.expiryDate;
+            case "modified":
+                return this.modified;
+            case "status":
+                return this.status;
+            case "type":
+                return this.type;
+            case "college":
+                return this.college;
+            case "contact":
+                return this.contact;
+            case "invoiceLine":
+                return this.invoiceLine;
+            case "product":
+                return this.product;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "confirmationStatus":
+                this.confirmationStatus = (ConfirmationStatus)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "expiryDate":
+                this.expiryDate = (Date)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "status":
+                this.status = (ProductStatus)val;
+                break;
+            case "type":
+                this.type = (Integer)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "contact":
+                this.contact = val;
+                break;
+            case "invoiceLine":
+                this.invoiceLine = val;
+                break;
+            case "product":
+                this.product = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.confirmationStatus);
+        out.writeObject(this.created);
+        out.writeObject(this.expiryDate);
+        out.writeObject(this.modified);
+        out.writeObject(this.status);
+        out.writeObject(this.type);
+        out.writeObject(this.college);
+        out.writeObject(this.contact);
+        out.writeObject(this.invoiceLine);
+        out.writeObject(this.product);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.confirmationStatus = (ConfirmationStatus)in.readObject();
+        this.created = (Date)in.readObject();
+        this.expiryDate = (Date)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.status = (ProductStatus)in.readObject();
+        this.type = (Integer)in.readObject();
+        this.college = in.readObject();
+        this.contact = in.readObject();
+        this.invoiceLine = in.readObject();
+        this.product = in.readObject();
+    }
 
 }

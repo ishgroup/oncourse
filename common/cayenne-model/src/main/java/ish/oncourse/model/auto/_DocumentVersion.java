@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -58,108 +61,167 @@ public abstract class _DocumentVersion extends WillowCayenneObject {
     public static final Property<SystemUser> CREATED_BY_USER = Property.create("createdByUser", SystemUser.class);
     public static final Property<Document> DOCUMENT = Property.create("document", Document.class);
 
+    protected Long angelId;
+    protected Long byteSize;
+    protected Date created;
+    protected String description;
+    protected String fileName;
+    protected String filePath;
+    protected String mimeType;
+    protected Date modified;
+    protected Integer pixelHeight;
+    protected Integer pixelWidth;
+    protected byte[] thumbnail;
+    protected Date timestamp;
+    protected String versionId;
+
+    protected Object binaryInfoRelations;
+    protected Object college;
+    protected Object createdByUser;
+    protected Object document;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setByteSize(Long byteSize) {
-        writeProperty("byteSize", byteSize);
+        beforePropertyWrite("byteSize", this.byteSize, byteSize);
+        this.byteSize = byteSize;
     }
+
     public Long getByteSize() {
-        return (Long)readProperty("byteSize");
+        beforePropertyRead("byteSize");
+        return this.byteSize;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setDescription(String description) {
-        writeProperty("description", description);
+        beforePropertyWrite("description", this.description, description);
+        this.description = description;
     }
+
     public String getDescription() {
-        return (String)readProperty("description");
+        beforePropertyRead("description");
+        return this.description;
     }
 
     public void setFileName(String fileName) {
-        writeProperty("fileName", fileName);
+        beforePropertyWrite("fileName", this.fileName, fileName);
+        this.fileName = fileName;
     }
+
     public String getFileName() {
-        return (String)readProperty("fileName");
+        beforePropertyRead("fileName");
+        return this.fileName;
     }
 
     public void setFilePath(String filePath) {
-        writeProperty("filePath", filePath);
+        beforePropertyWrite("filePath", this.filePath, filePath);
+        this.filePath = filePath;
     }
+
     public String getFilePath() {
-        return (String)readProperty("filePath");
+        beforePropertyRead("filePath");
+        return this.filePath;
     }
 
     public void setMimeType(String mimeType) {
-        writeProperty("mimeType", mimeType);
+        beforePropertyWrite("mimeType", this.mimeType, mimeType);
+        this.mimeType = mimeType;
     }
+
     public String getMimeType() {
-        return (String)readProperty("mimeType");
+        beforePropertyRead("mimeType");
+        return this.mimeType;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setPixelHeight(Integer pixelHeight) {
-        writeProperty("pixelHeight", pixelHeight);
+        beforePropertyWrite("pixelHeight", this.pixelHeight, pixelHeight);
+        this.pixelHeight = pixelHeight;
     }
+
     public Integer getPixelHeight() {
-        return (Integer)readProperty("pixelHeight");
+        beforePropertyRead("pixelHeight");
+        return this.pixelHeight;
     }
 
     public void setPixelWidth(Integer pixelWidth) {
-        writeProperty("pixelWidth", pixelWidth);
+        beforePropertyWrite("pixelWidth", this.pixelWidth, pixelWidth);
+        this.pixelWidth = pixelWidth;
     }
+
     public Integer getPixelWidth() {
-        return (Integer)readProperty("pixelWidth");
+        beforePropertyRead("pixelWidth");
+        return this.pixelWidth;
     }
 
     public void setThumbnail(byte[] thumbnail) {
-        writeProperty("thumbnail", thumbnail);
+        beforePropertyWrite("thumbnail", this.thumbnail, thumbnail);
+        this.thumbnail = thumbnail;
     }
+
     public byte[] getThumbnail() {
-        return (byte[])readProperty("thumbnail");
+        beforePropertyRead("thumbnail");
+        return this.thumbnail;
     }
 
     public void setTimestamp(Date timestamp) {
-        writeProperty("timestamp", timestamp);
+        beforePropertyWrite("timestamp", this.timestamp, timestamp);
+        this.timestamp = timestamp;
     }
+
     public Date getTimestamp() {
-        return (Date)readProperty("timestamp");
+        beforePropertyRead("timestamp");
+        return this.timestamp;
     }
 
     public void setVersionId(String versionId) {
-        writeProperty("versionId", versionId);
+        beforePropertyWrite("versionId", this.versionId, versionId);
+        this.versionId = versionId;
     }
+
     public String getVersionId() {
-        return (String)readProperty("versionId");
+        beforePropertyRead("versionId");
+        return this.versionId;
     }
 
     public void addToBinaryInfoRelations(BinaryInfoRelation obj) {
         addToManyTarget("binaryInfoRelations", obj, true);
     }
+
     public void removeFromBinaryInfoRelations(BinaryInfoRelation obj) {
         removeToManyTarget("binaryInfoRelations", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<BinaryInfoRelation> getBinaryInfoRelations() {
         return (List<BinaryInfoRelation>)readProperty("binaryInfoRelations");
     }
-
 
     public void setCollege(College college) {
         setToOneTarget("college", college, true);
@@ -169,7 +231,6 @@ public abstract class _DocumentVersion extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void setCreatedByUser(SystemUser createdByUser) {
         setToOneTarget("createdByUser", createdByUser, true);
     }
@@ -177,7 +238,6 @@ public abstract class _DocumentVersion extends WillowCayenneObject {
     public SystemUser getCreatedByUser() {
         return (SystemUser)readProperty("createdByUser");
     }
-
 
     public void setDocument(Document document) {
         setToOneTarget("document", document, true);
@@ -187,5 +247,165 @@ public abstract class _DocumentVersion extends WillowCayenneObject {
         return (Document)readProperty("document");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "byteSize":
+                return this.byteSize;
+            case "created":
+                return this.created;
+            case "description":
+                return this.description;
+            case "fileName":
+                return this.fileName;
+            case "filePath":
+                return this.filePath;
+            case "mimeType":
+                return this.mimeType;
+            case "modified":
+                return this.modified;
+            case "pixelHeight":
+                return this.pixelHeight;
+            case "pixelWidth":
+                return this.pixelWidth;
+            case "thumbnail":
+                return this.thumbnail;
+            case "timestamp":
+                return this.timestamp;
+            case "versionId":
+                return this.versionId;
+            case "binaryInfoRelations":
+                return this.binaryInfoRelations;
+            case "college":
+                return this.college;
+            case "createdByUser":
+                return this.createdByUser;
+            case "document":
+                return this.document;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "byteSize":
+                this.byteSize = (Long)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "description":
+                this.description = (String)val;
+                break;
+            case "fileName":
+                this.fileName = (String)val;
+                break;
+            case "filePath":
+                this.filePath = (String)val;
+                break;
+            case "mimeType":
+                this.mimeType = (String)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "pixelHeight":
+                this.pixelHeight = (Integer)val;
+                break;
+            case "pixelWidth":
+                this.pixelWidth = (Integer)val;
+                break;
+            case "thumbnail":
+                this.thumbnail = (byte[])val;
+                break;
+            case "timestamp":
+                this.timestamp = (Date)val;
+                break;
+            case "versionId":
+                this.versionId = (String)val;
+                break;
+            case "binaryInfoRelations":
+                this.binaryInfoRelations = val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "createdByUser":
+                this.createdByUser = val;
+                break;
+            case "document":
+                this.document = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.byteSize);
+        out.writeObject(this.created);
+        out.writeObject(this.description);
+        out.writeObject(this.fileName);
+        out.writeObject(this.filePath);
+        out.writeObject(this.mimeType);
+        out.writeObject(this.modified);
+        out.writeObject(this.pixelHeight);
+        out.writeObject(this.pixelWidth);
+        out.writeObject(this.thumbnail);
+        out.writeObject(this.timestamp);
+        out.writeObject(this.versionId);
+        out.writeObject(this.binaryInfoRelations);
+        out.writeObject(this.college);
+        out.writeObject(this.createdByUser);
+        out.writeObject(this.document);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.byteSize = (Long)in.readObject();
+        this.created = (Date)in.readObject();
+        this.description = (String)in.readObject();
+        this.fileName = (String)in.readObject();
+        this.filePath = (String)in.readObject();
+        this.mimeType = (String)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.pixelHeight = (Integer)in.readObject();
+        this.pixelWidth = (Integer)in.readObject();
+        this.thumbnail = (byte[])in.readObject();
+        this.timestamp = (Date)in.readObject();
+        this.versionId = (String)in.readObject();
+        this.binaryInfoRelations = in.readObject();
+        this.college = in.readObject();
+        this.createdByUser = in.readObject();
+        this.document = in.readObject();
+    }
 
 }

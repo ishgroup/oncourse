@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 
 import org.apache.cayenne.exp.Property;
@@ -40,67 +43,106 @@ public abstract class _NotificationTemplate extends WillowCayenneObject {
     public static final Property<String> SUBJECT = Property.create("subject", String.class);
     public static final Property<College> COLLEGE = Property.create("college", College.class);
 
+    protected Boolean allowWebobjectsTags;
+    protected Boolean allowedInTextileTags;
+    protected Long angelId;
+    protected Date created;
+    protected String message;
+    protected String mimeType;
+    protected Date modified;
+    protected String name;
+    protected String subject;
+
+    protected Object college;
+
     public void setAllowWebobjectsTags(Boolean allowWebobjectsTags) {
-        writeProperty("allowWebobjectsTags", allowWebobjectsTags);
+        beforePropertyWrite("allowWebobjectsTags", this.allowWebobjectsTags, allowWebobjectsTags);
+        this.allowWebobjectsTags = allowWebobjectsTags;
     }
+
     public Boolean getAllowWebobjectsTags() {
-        return (Boolean)readProperty("allowWebobjectsTags");
+        beforePropertyRead("allowWebobjectsTags");
+        return this.allowWebobjectsTags;
     }
 
     public void setAllowedInTextileTags(Boolean allowedInTextileTags) {
-        writeProperty("allowedInTextileTags", allowedInTextileTags);
+        beforePropertyWrite("allowedInTextileTags", this.allowedInTextileTags, allowedInTextileTags);
+        this.allowedInTextileTags = allowedInTextileTags;
     }
+
     public Boolean getAllowedInTextileTags() {
-        return (Boolean)readProperty("allowedInTextileTags");
+        beforePropertyRead("allowedInTextileTags");
+        return this.allowedInTextileTags;
     }
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setMessage(String message) {
-        writeProperty("message", message);
+        beforePropertyWrite("message", this.message, message);
+        this.message = message;
     }
+
     public String getMessage() {
-        return (String)readProperty("message");
+        beforePropertyRead("message");
+        return this.message;
     }
 
     public void setMimeType(String mimeType) {
-        writeProperty("mimeType", mimeType);
+        beforePropertyWrite("mimeType", this.mimeType, mimeType);
+        this.mimeType = mimeType;
     }
+
     public String getMimeType() {
-        return (String)readProperty("mimeType");
+        beforePropertyRead("mimeType");
+        return this.mimeType;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        beforePropertyWrite("name", this.name, name);
+        this.name = name;
     }
+
     public String getName() {
-        return (String)readProperty("name");
+        beforePropertyRead("name");
+        return this.name;
     }
 
     public void setSubject(String subject) {
-        writeProperty("subject", subject);
+        beforePropertyWrite("subject", this.subject, subject);
+        this.subject = subject;
     }
+
     public String getSubject() {
-        return (String)readProperty("subject");
+        beforePropertyRead("subject");
+        return this.subject;
     }
 
     public void setCollege(College college) {
@@ -111,5 +153,116 @@ public abstract class _NotificationTemplate extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "allowWebobjectsTags":
+                return this.allowWebobjectsTags;
+            case "allowedInTextileTags":
+                return this.allowedInTextileTags;
+            case "angelId":
+                return this.angelId;
+            case "created":
+                return this.created;
+            case "message":
+                return this.message;
+            case "mimeType":
+                return this.mimeType;
+            case "modified":
+                return this.modified;
+            case "name":
+                return this.name;
+            case "subject":
+                return this.subject;
+            case "college":
+                return this.college;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "allowWebobjectsTags":
+                this.allowWebobjectsTags = (Boolean)val;
+                break;
+            case "allowedInTextileTags":
+                this.allowedInTextileTags = (Boolean)val;
+                break;
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "message":
+                this.message = (String)val;
+                break;
+            case "mimeType":
+                this.mimeType = (String)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "name":
+                this.name = (String)val;
+                break;
+            case "subject":
+                this.subject = (String)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.allowWebobjectsTags);
+        out.writeObject(this.allowedInTextileTags);
+        out.writeObject(this.angelId);
+        out.writeObject(this.created);
+        out.writeObject(this.message);
+        out.writeObject(this.mimeType);
+        out.writeObject(this.modified);
+        out.writeObject(this.name);
+        out.writeObject(this.subject);
+        out.writeObject(this.college);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.allowWebobjectsTags = (Boolean)in.readObject();
+        this.allowedInTextileTags = (Boolean)in.readObject();
+        this.angelId = (Long)in.readObject();
+        this.created = (Date)in.readObject();
+        this.message = (String)in.readObject();
+        this.mimeType = (String)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.name = (String)in.readObject();
+        this.subject = (String)in.readObject();
+        this.college = in.readObject();
+    }
 
 }

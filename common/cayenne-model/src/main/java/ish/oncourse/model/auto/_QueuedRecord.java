@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 
 import org.apache.cayenne.exp.Property;
@@ -40,53 +43,85 @@ public abstract class _QueuedRecord extends WillowCayenneObject {
     public static final Property<College> COLLEGE = Property.create("college", College.class);
     public static final Property<QueuedTransaction> QUEUED_TRANSACTION = Property.create("queuedTransaction", QueuedTransaction.class);
 
+    protected QueuedRecordAction action;
+    protected Long angelId;
+    protected String entityIdentifier;
+    protected Long entityWillowId;
+    protected String errorMessage;
+    protected Date lastAttemptTimestamp;
+    protected Integer numberOfAttempts;
+
+    protected Object college;
+    protected Object queuedTransaction;
+
     public void setAction(QueuedRecordAction action) {
-        writeProperty("action", action);
+        beforePropertyWrite("action", this.action, action);
+        this.action = action;
     }
+
     public QueuedRecordAction getAction() {
-        return (QueuedRecordAction)readProperty("action");
+        beforePropertyRead("action");
+        return this.action;
     }
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setEntityIdentifier(String entityIdentifier) {
-        writeProperty("entityIdentifier", entityIdentifier);
+        beforePropertyWrite("entityIdentifier", this.entityIdentifier, entityIdentifier);
+        this.entityIdentifier = entityIdentifier;
     }
+
     public String getEntityIdentifier() {
-        return (String)readProperty("entityIdentifier");
+        beforePropertyRead("entityIdentifier");
+        return this.entityIdentifier;
     }
 
     public void setEntityWillowId(Long entityWillowId) {
-        writeProperty("entityWillowId", entityWillowId);
+        beforePropertyWrite("entityWillowId", this.entityWillowId, entityWillowId);
+        this.entityWillowId = entityWillowId;
     }
+
     public Long getEntityWillowId() {
-        return (Long)readProperty("entityWillowId");
+        beforePropertyRead("entityWillowId");
+        return this.entityWillowId;
     }
 
     public void setErrorMessage(String errorMessage) {
-        writeProperty("errorMessage", errorMessage);
+        beforePropertyWrite("errorMessage", this.errorMessage, errorMessage);
+        this.errorMessage = errorMessage;
     }
+
     public String getErrorMessage() {
-        return (String)readProperty("errorMessage");
+        beforePropertyRead("errorMessage");
+        return this.errorMessage;
     }
 
     public void setLastAttemptTimestamp(Date lastAttemptTimestamp) {
-        writeProperty("lastAttemptTimestamp", lastAttemptTimestamp);
+        beforePropertyWrite("lastAttemptTimestamp", this.lastAttemptTimestamp, lastAttemptTimestamp);
+        this.lastAttemptTimestamp = lastAttemptTimestamp;
     }
+
     public Date getLastAttemptTimestamp() {
-        return (Date)readProperty("lastAttemptTimestamp");
+        beforePropertyRead("lastAttemptTimestamp");
+        return this.lastAttemptTimestamp;
     }
 
     public void setNumberOfAttempts(Integer numberOfAttempts) {
-        writeProperty("numberOfAttempts", numberOfAttempts);
+        beforePropertyWrite("numberOfAttempts", this.numberOfAttempts, numberOfAttempts);
+        this.numberOfAttempts = numberOfAttempts;
     }
+
     public Integer getNumberOfAttempts() {
-        return (Integer)readProperty("numberOfAttempts");
+        beforePropertyRead("numberOfAttempts");
+        return this.numberOfAttempts;
     }
 
     public void setCollege(College college) {
@@ -97,7 +132,6 @@ public abstract class _QueuedRecord extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void setQueuedTransaction(QueuedTransaction queuedTransaction) {
         setToOneTarget("queuedTransaction", queuedTransaction, true);
     }
@@ -106,7 +140,111 @@ public abstract class _QueuedRecord extends WillowCayenneObject {
         return (QueuedTransaction)readProperty("queuedTransaction");
     }
 
-
     protected abstract void onPreRemove();
+
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "action":
+                return this.action;
+            case "angelId":
+                return this.angelId;
+            case "entityIdentifier":
+                return this.entityIdentifier;
+            case "entityWillowId":
+                return this.entityWillowId;
+            case "errorMessage":
+                return this.errorMessage;
+            case "lastAttemptTimestamp":
+                return this.lastAttemptTimestamp;
+            case "numberOfAttempts":
+                return this.numberOfAttempts;
+            case "college":
+                return this.college;
+            case "queuedTransaction":
+                return this.queuedTransaction;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "action":
+                this.action = (QueuedRecordAction)val;
+                break;
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "entityIdentifier":
+                this.entityIdentifier = (String)val;
+                break;
+            case "entityWillowId":
+                this.entityWillowId = (Long)val;
+                break;
+            case "errorMessage":
+                this.errorMessage = (String)val;
+                break;
+            case "lastAttemptTimestamp":
+                this.lastAttemptTimestamp = (Date)val;
+                break;
+            case "numberOfAttempts":
+                this.numberOfAttempts = (Integer)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "queuedTransaction":
+                this.queuedTransaction = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.action);
+        out.writeObject(this.angelId);
+        out.writeObject(this.entityIdentifier);
+        out.writeObject(this.entityWillowId);
+        out.writeObject(this.errorMessage);
+        out.writeObject(this.lastAttemptTimestamp);
+        out.writeObject(this.numberOfAttempts);
+        out.writeObject(this.college);
+        out.writeObject(this.queuedTransaction);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.action = (QueuedRecordAction)in.readObject();
+        this.angelId = (Long)in.readObject();
+        this.entityIdentifier = (String)in.readObject();
+        this.entityWillowId = (Long)in.readObject();
+        this.errorMessage = (String)in.readObject();
+        this.lastAttemptTimestamp = (Date)in.readObject();
+        this.numberOfAttempts = (Integer)in.readObject();
+        this.college = in.readObject();
+        this.queuedTransaction = in.readObject();
+    }
 
 }

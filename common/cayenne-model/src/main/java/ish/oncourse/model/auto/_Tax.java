@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -40,53 +43,85 @@ public abstract class _Tax extends WillowCayenneObject {
     public static final Property<College> COLLEGE = Property.create("college", College.class);
     public static final Property<SystemUser> CREATED_BY = Property.create("createdBy", SystemUser.class);
 
+    protected Long angelId;
+    protected String code;
+    protected Date created;
+    protected String description;
+    protected Boolean isGSTTaxType;
+    protected Date modified;
+    protected BigDecimal rate;
+
+    protected Object college;
+    protected Object createdBy;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setCode(String code) {
-        writeProperty("code", code);
+        beforePropertyWrite("code", this.code, code);
+        this.code = code;
     }
+
     public String getCode() {
-        return (String)readProperty("code");
+        beforePropertyRead("code");
+        return this.code;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setDescription(String description) {
-        writeProperty("description", description);
+        beforePropertyWrite("description", this.description, description);
+        this.description = description;
     }
+
     public String getDescription() {
-        return (String)readProperty("description");
+        beforePropertyRead("description");
+        return this.description;
     }
 
     public void setIsGSTTaxType(Boolean isGSTTaxType) {
-        writeProperty("isGSTTaxType", isGSTTaxType);
+        beforePropertyWrite("isGSTTaxType", this.isGSTTaxType, isGSTTaxType);
+        this.isGSTTaxType = isGSTTaxType;
     }
+
     public Boolean getIsGSTTaxType() {
-        return (Boolean)readProperty("isGSTTaxType");
+        beforePropertyRead("isGSTTaxType");
+        return this.isGSTTaxType;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setRate(BigDecimal rate) {
-        writeProperty("rate", rate);
+        beforePropertyWrite("rate", this.rate, rate);
+        this.rate = rate;
     }
+
     public BigDecimal getRate() {
-        return (BigDecimal)readProperty("rate");
+        beforePropertyRead("rate");
+        return this.rate;
     }
 
     public void setCollege(College college) {
@@ -97,7 +132,6 @@ public abstract class _Tax extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void setCreatedBy(SystemUser createdBy) {
         setToOneTarget("createdBy", createdBy, true);
     }
@@ -106,5 +140,109 @@ public abstract class _Tax extends WillowCayenneObject {
         return (SystemUser)readProperty("createdBy");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "code":
+                return this.code;
+            case "created":
+                return this.created;
+            case "description":
+                return this.description;
+            case "isGSTTaxType":
+                return this.isGSTTaxType;
+            case "modified":
+                return this.modified;
+            case "rate":
+                return this.rate;
+            case "college":
+                return this.college;
+            case "createdBy":
+                return this.createdBy;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "code":
+                this.code = (String)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "description":
+                this.description = (String)val;
+                break;
+            case "isGSTTaxType":
+                this.isGSTTaxType = (Boolean)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "rate":
+                this.rate = (BigDecimal)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "createdBy":
+                this.createdBy = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.code);
+        out.writeObject(this.created);
+        out.writeObject(this.description);
+        out.writeObject(this.isGSTTaxType);
+        out.writeObject(this.modified);
+        out.writeObject(this.rate);
+        out.writeObject(this.college);
+        out.writeObject(this.createdBy);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.code = (String)in.readObject();
+        this.created = (Date)in.readObject();
+        this.description = (String)in.readObject();
+        this.isGSTTaxType = (Boolean)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.rate = (BigDecimal)in.readObject();
+        this.college = in.readObject();
+        this.createdBy = in.readObject();
+    }
 
 }

@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 
 import org.apache.cayenne.exp.Property;
@@ -41,54 +44,85 @@ public abstract class _WebUrlAlias extends WillowCayenneObject {
     public static final Property<WebNode> WEB_NODE = Property.create("webNode", WebNode.class);
     public static final Property<WebSiteVersion> WEB_SITE_VERSION = Property.create("webSiteVersion", WebSiteVersion.class);
 
+    protected Date created;
+    protected boolean _default;
+    protected RequestMatchType matchType;
+    protected Date modified;
+    protected String redirectTo;
+    protected SpecialWebPage specialPage;
+    protected String urlPath;
+
+    protected Object webNode;
+    protected Object webSiteVersion;
+
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setDefault(boolean _default) {
-        writeProperty("default", _default);
+        beforePropertyWrite("default", this._default, _default);
+        this._default = _default;
     }
+
 	public boolean isDefault() {
-        Boolean value = (Boolean)readProperty("default");
-        return (value != null) ? value.booleanValue() : false;
+        beforePropertyRead("default");
+        return this._default;
     }
 
     public void setMatchType(RequestMatchType matchType) {
-        writeProperty("matchType", matchType);
+        beforePropertyWrite("matchType", this.matchType, matchType);
+        this.matchType = matchType;
     }
+
     public RequestMatchType getMatchType() {
-        return (RequestMatchType)readProperty("matchType");
+        beforePropertyRead("matchType");
+        return this.matchType;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setRedirectTo(String redirectTo) {
-        writeProperty("redirectTo", redirectTo);
+        beforePropertyWrite("redirectTo", this.redirectTo, redirectTo);
+        this.redirectTo = redirectTo;
     }
+
     public String getRedirectTo() {
-        return (String)readProperty("redirectTo");
+        beforePropertyRead("redirectTo");
+        return this.redirectTo;
     }
 
     public void setSpecialPage(SpecialWebPage specialPage) {
-        writeProperty("specialPage", specialPage);
+        beforePropertyWrite("specialPage", this.specialPage, specialPage);
+        this.specialPage = specialPage;
     }
+
     public SpecialWebPage getSpecialPage() {
-        return (SpecialWebPage)readProperty("specialPage");
+        beforePropertyRead("specialPage");
+        return this.specialPage;
     }
 
     public void setUrlPath(String urlPath) {
-        writeProperty("urlPath", urlPath);
+        beforePropertyWrite("urlPath", this.urlPath, urlPath);
+        this.urlPath = urlPath;
     }
+
     public String getUrlPath() {
-        return (String)readProperty("urlPath");
+        beforePropertyRead("urlPath");
+        return this.urlPath;
     }
 
     public void setWebNode(WebNode webNode) {
@@ -99,7 +133,6 @@ public abstract class _WebUrlAlias extends WillowCayenneObject {
         return (WebNode)readProperty("webNode");
     }
 
-
     public void setWebSiteVersion(WebSiteVersion webSiteVersion) {
         setToOneTarget("webSiteVersion", webSiteVersion, true);
     }
@@ -108,7 +141,111 @@ public abstract class _WebUrlAlias extends WillowCayenneObject {
         return (WebSiteVersion)readProperty("webSiteVersion");
     }
 
-
     protected abstract void onPostAdd();
+
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "created":
+                return this.created;
+            case "default":
+                return this._default;
+            case "matchType":
+                return this.matchType;
+            case "modified":
+                return this.modified;
+            case "redirectTo":
+                return this.redirectTo;
+            case "specialPage":
+                return this.specialPage;
+            case "urlPath":
+                return this.urlPath;
+            case "webNode":
+                return this.webNode;
+            case "webSiteVersion":
+                return this.webSiteVersion;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "default":
+                this._default = val == null ? false : (boolean)val;
+                break;
+            case "matchType":
+                this.matchType = (RequestMatchType)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "redirectTo":
+                this.redirectTo = (String)val;
+                break;
+            case "specialPage":
+                this.specialPage = (SpecialWebPage)val;
+                break;
+            case "urlPath":
+                this.urlPath = (String)val;
+                break;
+            case "webNode":
+                this.webNode = val;
+                break;
+            case "webSiteVersion":
+                this.webSiteVersion = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.created);
+        out.writeBoolean(this._default);
+        out.writeObject(this.matchType);
+        out.writeObject(this.modified);
+        out.writeObject(this.redirectTo);
+        out.writeObject(this.specialPage);
+        out.writeObject(this.urlPath);
+        out.writeObject(this.webNode);
+        out.writeObject(this.webSiteVersion);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.created = (Date)in.readObject();
+        this._default = in.readBoolean();
+        this.matchType = (RequestMatchType)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.redirectTo = (String)in.readObject();
+        this.specialPage = (SpecialWebPage)in.readObject();
+        this.urlPath = (String)in.readObject();
+        this.webNode = in.readObject();
+        this.webSiteVersion = in.readObject();
+    }
 
 }

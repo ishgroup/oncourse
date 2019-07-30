@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -127,263 +130,416 @@ public abstract class _CourseClass extends WillowCayenneObject {
     public static final Property<List<Session>> SESSIONS = Property.create("sessions", List.class);
     public static final Property<List<TutorRole>> TUTOR_ROLES = Property.create("tutorRoles", List.class);
 
+    protected Long angelId;
+    protected CourseClassAttendanceType attendanceType;
+    protected boolean cancelled;
+    protected Date censusDate;
+    protected String code;
+    protected Integer countOfSessions;
+    protected Date created;
+    protected Integer deliveryMode;
+    protected String detail;
+    protected String detailTextile;
+    protected Date endDate;
+    protected BigDecimal expectedHours;
+    protected Money feeExGst;
+    protected Money feeGst;
+    protected Boolean feeHelpClass;
+    protected String fullTimeLoad;
+    protected ClassFundingSource fundingSource;
+    protected Boolean isActive;
+    protected Boolean isDistantLearningCourse;
+    protected Boolean isWebVisible;
+    protected String materials;
+    protected String materialsTextile;
+    protected Integer maxStudentAge;
+    protected Integer maximumDays;
+    protected Integer maximumPlaces;
+    protected Integer minStudentAge;
+    protected Integer minimumPlaces;
+    protected Integer minutesPerSession;
+    protected Date modified;
+    protected Integer reportingPeriod;
+    protected String sessionDetail;
+    protected String sessionDetailTextile;
+    protected Date startDate;
+    protected Integer startingMinutePerSession;
+    protected String timeZone;
+
+    protected Object assessmentClasses;
+    protected Object college;
+    protected Object course;
+    protected Object discountCourseClasses;
+    protected Object discussions;
+    protected Object enrolments;
+    protected Object invoiceLines;
+    protected Object paymentPlanLines;
+    protected Object room;
+    protected Object sessions;
+    protected Object tutorRoles;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setAttendanceType(CourseClassAttendanceType attendanceType) {
-        writeProperty("attendanceType", attendanceType);
+        beforePropertyWrite("attendanceType", this.attendanceType, attendanceType);
+        this.attendanceType = attendanceType;
     }
+
     public CourseClassAttendanceType getAttendanceType() {
-        return (CourseClassAttendanceType)readProperty("attendanceType");
+        beforePropertyRead("attendanceType");
+        return this.attendanceType;
     }
 
     public void setCancelled(boolean cancelled) {
-        writeProperty("cancelled", cancelled);
+        beforePropertyWrite("cancelled", this.cancelled, cancelled);
+        this.cancelled = cancelled;
     }
+
 	public boolean isCancelled() {
-        Boolean value = (Boolean)readProperty("cancelled");
-        return (value != null) ? value.booleanValue() : false;
+        beforePropertyRead("cancelled");
+        return this.cancelled;
     }
 
     public void setCensusDate(Date censusDate) {
-        writeProperty("censusDate", censusDate);
+        beforePropertyWrite("censusDate", this.censusDate, censusDate);
+        this.censusDate = censusDate;
     }
+
     public Date getCensusDate() {
-        return (Date)readProperty("censusDate");
+        beforePropertyRead("censusDate");
+        return this.censusDate;
     }
 
     public void setCode(String code) {
-        writeProperty("code", code);
+        beforePropertyWrite("code", this.code, code);
+        this.code = code;
     }
+
     public String getCode() {
-        return (String)readProperty("code");
+        beforePropertyRead("code");
+        return this.code;
     }
 
     public void setCountOfSessions(Integer countOfSessions) {
-        writeProperty("countOfSessions", countOfSessions);
+        beforePropertyWrite("countOfSessions", this.countOfSessions, countOfSessions);
+        this.countOfSessions = countOfSessions;
     }
+
     public Integer getCountOfSessions() {
-        return (Integer)readProperty("countOfSessions");
+        beforePropertyRead("countOfSessions");
+        return this.countOfSessions;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setDeliveryMode(Integer deliveryMode) {
-        writeProperty("deliveryMode", deliveryMode);
+        beforePropertyWrite("deliveryMode", this.deliveryMode, deliveryMode);
+        this.deliveryMode = deliveryMode;
     }
+
     public Integer getDeliveryMode() {
-        return (Integer)readProperty("deliveryMode");
+        beforePropertyRead("deliveryMode");
+        return this.deliveryMode;
     }
 
     public void setDetail(String detail) {
-        writeProperty("detail", detail);
+        beforePropertyWrite("detail", this.detail, detail);
+        this.detail = detail;
     }
+
     public String getDetail() {
-        return (String)readProperty("detail");
+        beforePropertyRead("detail");
+        return this.detail;
     }
 
     public void setDetailTextile(String detailTextile) {
-        writeProperty("detailTextile", detailTextile);
+        beforePropertyWrite("detailTextile", this.detailTextile, detailTextile);
+        this.detailTextile = detailTextile;
     }
+
     public String getDetailTextile() {
-        return (String)readProperty("detailTextile");
+        beforePropertyRead("detailTextile");
+        return this.detailTextile;
     }
 
     public void setEndDate(Date endDate) {
-        writeProperty("endDate", endDate);
+        beforePropertyWrite("endDate", this.endDate, endDate);
+        this.endDate = endDate;
     }
+
     public Date getEndDate() {
-        return (Date)readProperty("endDate");
+        beforePropertyRead("endDate");
+        return this.endDate;
     }
 
     public void setExpectedHours(BigDecimal expectedHours) {
-        writeProperty("expectedHours", expectedHours);
+        beforePropertyWrite("expectedHours", this.expectedHours, expectedHours);
+        this.expectedHours = expectedHours;
     }
+
     public BigDecimal getExpectedHours() {
-        return (BigDecimal)readProperty("expectedHours");
+        beforePropertyRead("expectedHours");
+        return this.expectedHours;
     }
 
     public void setFeeExGst(Money feeExGst) {
-        writeProperty("feeExGst", feeExGst);
+        beforePropertyWrite("feeExGst", this.feeExGst, feeExGst);
+        this.feeExGst = feeExGst;
     }
+
     public Money getFeeExGst() {
-        return (Money)readProperty("feeExGst");
+        beforePropertyRead("feeExGst");
+        return this.feeExGst;
     }
 
     public void setFeeGst(Money feeGst) {
-        writeProperty("feeGst", feeGst);
+        beforePropertyWrite("feeGst", this.feeGst, feeGst);
+        this.feeGst = feeGst;
     }
+
     public Money getFeeGst() {
-        return (Money)readProperty("feeGst");
+        beforePropertyRead("feeGst");
+        return this.feeGst;
     }
 
     public void setFeeHelpClass(Boolean feeHelpClass) {
-        writeProperty("feeHelpClass", feeHelpClass);
+        beforePropertyWrite("feeHelpClass", this.feeHelpClass, feeHelpClass);
+        this.feeHelpClass = feeHelpClass;
     }
+
     public Boolean getFeeHelpClass() {
-        return (Boolean)readProperty("feeHelpClass");
+        beforePropertyRead("feeHelpClass");
+        return this.feeHelpClass;
     }
 
     public void setFullTimeLoad(String fullTimeLoad) {
-        writeProperty("fullTimeLoad", fullTimeLoad);
+        beforePropertyWrite("fullTimeLoad", this.fullTimeLoad, fullTimeLoad);
+        this.fullTimeLoad = fullTimeLoad;
     }
+
     public String getFullTimeLoad() {
-        return (String)readProperty("fullTimeLoad");
+        beforePropertyRead("fullTimeLoad");
+        return this.fullTimeLoad;
     }
 
     public void setFundingSource(ClassFundingSource fundingSource) {
-        writeProperty("fundingSource", fundingSource);
+        beforePropertyWrite("fundingSource", this.fundingSource, fundingSource);
+        this.fundingSource = fundingSource;
     }
+
     public ClassFundingSource getFundingSource() {
-        return (ClassFundingSource)readProperty("fundingSource");
+        beforePropertyRead("fundingSource");
+        return this.fundingSource;
     }
 
     public void setIsActive(Boolean isActive) {
-        writeProperty("isActive", isActive);
+        beforePropertyWrite("isActive", this.isActive, isActive);
+        this.isActive = isActive;
     }
+
     public Boolean getIsActive() {
-        return (Boolean)readProperty("isActive");
+        beforePropertyRead("isActive");
+        return this.isActive;
     }
 
     public void setIsDistantLearningCourse(Boolean isDistantLearningCourse) {
-        writeProperty("isDistantLearningCourse", isDistantLearningCourse);
+        beforePropertyWrite("isDistantLearningCourse", this.isDistantLearningCourse, isDistantLearningCourse);
+        this.isDistantLearningCourse = isDistantLearningCourse;
     }
+
     public Boolean getIsDistantLearningCourse() {
-        return (Boolean)readProperty("isDistantLearningCourse");
+        beforePropertyRead("isDistantLearningCourse");
+        return this.isDistantLearningCourse;
     }
 
     public void setIsWebVisible(Boolean isWebVisible) {
-        writeProperty("isWebVisible", isWebVisible);
+        beforePropertyWrite("isWebVisible", this.isWebVisible, isWebVisible);
+        this.isWebVisible = isWebVisible;
     }
+
     public Boolean getIsWebVisible() {
-        return (Boolean)readProperty("isWebVisible");
+        beforePropertyRead("isWebVisible");
+        return this.isWebVisible;
     }
 
     public void setMaterials(String materials) {
-        writeProperty("materials", materials);
+        beforePropertyWrite("materials", this.materials, materials);
+        this.materials = materials;
     }
+
     public String getMaterials() {
-        return (String)readProperty("materials");
+        beforePropertyRead("materials");
+        return this.materials;
     }
 
     public void setMaterialsTextile(String materialsTextile) {
-        writeProperty("materialsTextile", materialsTextile);
+        beforePropertyWrite("materialsTextile", this.materialsTextile, materialsTextile);
+        this.materialsTextile = materialsTextile;
     }
+
     public String getMaterialsTextile() {
-        return (String)readProperty("materialsTextile");
+        beforePropertyRead("materialsTextile");
+        return this.materialsTextile;
     }
 
     public void setMaxStudentAge(Integer maxStudentAge) {
-        writeProperty("maxStudentAge", maxStudentAge);
+        beforePropertyWrite("maxStudentAge", this.maxStudentAge, maxStudentAge);
+        this.maxStudentAge = maxStudentAge;
     }
+
     public Integer getMaxStudentAge() {
-        return (Integer)readProperty("maxStudentAge");
+        beforePropertyRead("maxStudentAge");
+        return this.maxStudentAge;
     }
 
     public void setMaximumDays(Integer maximumDays) {
-        writeProperty("maximumDays", maximumDays);
+        beforePropertyWrite("maximumDays", this.maximumDays, maximumDays);
+        this.maximumDays = maximumDays;
     }
+
     public Integer getMaximumDays() {
-        return (Integer)readProperty("maximumDays");
+        beforePropertyRead("maximumDays");
+        return this.maximumDays;
     }
 
     public void setMaximumPlaces(Integer maximumPlaces) {
-        writeProperty("maximumPlaces", maximumPlaces);
+        beforePropertyWrite("maximumPlaces", this.maximumPlaces, maximumPlaces);
+        this.maximumPlaces = maximumPlaces;
     }
+
     public Integer getMaximumPlaces() {
-        return (Integer)readProperty("maximumPlaces");
+        beforePropertyRead("maximumPlaces");
+        return this.maximumPlaces;
     }
 
     public void setMinStudentAge(Integer minStudentAge) {
-        writeProperty("minStudentAge", minStudentAge);
+        beforePropertyWrite("minStudentAge", this.minStudentAge, minStudentAge);
+        this.minStudentAge = minStudentAge;
     }
+
     public Integer getMinStudentAge() {
-        return (Integer)readProperty("minStudentAge");
+        beforePropertyRead("minStudentAge");
+        return this.minStudentAge;
     }
 
     public void setMinimumPlaces(Integer minimumPlaces) {
-        writeProperty("minimumPlaces", minimumPlaces);
+        beforePropertyWrite("minimumPlaces", this.minimumPlaces, minimumPlaces);
+        this.minimumPlaces = minimumPlaces;
     }
+
     public Integer getMinimumPlaces() {
-        return (Integer)readProperty("minimumPlaces");
+        beforePropertyRead("minimumPlaces");
+        return this.minimumPlaces;
     }
 
     public void setMinutesPerSession(Integer minutesPerSession) {
-        writeProperty("minutesPerSession", minutesPerSession);
+        beforePropertyWrite("minutesPerSession", this.minutesPerSession, minutesPerSession);
+        this.minutesPerSession = minutesPerSession;
     }
+
     public Integer getMinutesPerSession() {
-        return (Integer)readProperty("minutesPerSession");
+        beforePropertyRead("minutesPerSession");
+        return this.minutesPerSession;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setReportingPeriod(Integer reportingPeriod) {
-        writeProperty("reportingPeriod", reportingPeriod);
+        beforePropertyWrite("reportingPeriod", this.reportingPeriod, reportingPeriod);
+        this.reportingPeriod = reportingPeriod;
     }
+
     public Integer getReportingPeriod() {
-        return (Integer)readProperty("reportingPeriod");
+        beforePropertyRead("reportingPeriod");
+        return this.reportingPeriod;
     }
 
     public void setSessionDetail(String sessionDetail) {
-        writeProperty("sessionDetail", sessionDetail);
+        beforePropertyWrite("sessionDetail", this.sessionDetail, sessionDetail);
+        this.sessionDetail = sessionDetail;
     }
+
     public String getSessionDetail() {
-        return (String)readProperty("sessionDetail");
+        beforePropertyRead("sessionDetail");
+        return this.sessionDetail;
     }
 
     public void setSessionDetailTextile(String sessionDetailTextile) {
-        writeProperty("sessionDetailTextile", sessionDetailTextile);
+        beforePropertyWrite("sessionDetailTextile", this.sessionDetailTextile, sessionDetailTextile);
+        this.sessionDetailTextile = sessionDetailTextile;
     }
+
     public String getSessionDetailTextile() {
-        return (String)readProperty("sessionDetailTextile");
+        beforePropertyRead("sessionDetailTextile");
+        return this.sessionDetailTextile;
     }
 
     public void setStartDate(Date startDate) {
-        writeProperty("startDate", startDate);
+        beforePropertyWrite("startDate", this.startDate, startDate);
+        this.startDate = startDate;
     }
+
     public Date getStartDate() {
-        return (Date)readProperty("startDate");
+        beforePropertyRead("startDate");
+        return this.startDate;
     }
 
     public void setStartingMinutePerSession(Integer startingMinutePerSession) {
-        writeProperty("startingMinutePerSession", startingMinutePerSession);
+        beforePropertyWrite("startingMinutePerSession", this.startingMinutePerSession, startingMinutePerSession);
+        this.startingMinutePerSession = startingMinutePerSession;
     }
+
     public Integer getStartingMinutePerSession() {
-        return (Integer)readProperty("startingMinutePerSession");
+        beforePropertyRead("startingMinutePerSession");
+        return this.startingMinutePerSession;
     }
 
     public void setTimeZone(String timeZone) {
-        writeProperty("timeZone", timeZone);
+        beforePropertyWrite("timeZone", this.timeZone, timeZone);
+        this.timeZone = timeZone;
     }
+
     public String getTimeZone() {
-        return (String)readProperty("timeZone");
+        beforePropertyRead("timeZone");
+        return this.timeZone;
     }
 
     public void addToAssessmentClasses(AssessmentClass obj) {
         addToManyTarget("assessmentClasses", obj, true);
     }
+
     public void removeFromAssessmentClasses(AssessmentClass obj) {
         removeToManyTarget("assessmentClasses", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<AssessmentClass> getAssessmentClasses() {
         return (List<AssessmentClass>)readProperty("assessmentClasses");
     }
-
 
     public void setCollege(College college) {
         setToOneTarget("college", college, true);
@@ -393,7 +549,6 @@ public abstract class _CourseClass extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void setCourse(Course course) {
         setToOneTarget("course", course, true);
     }
@@ -402,66 +557,70 @@ public abstract class _CourseClass extends WillowCayenneObject {
         return (Course)readProperty("course");
     }
 
-
     public void addToDiscountCourseClasses(DiscountCourseClass obj) {
         addToManyTarget("discountCourseClasses", obj, true);
     }
+
     public void removeFromDiscountCourseClasses(DiscountCourseClass obj) {
         removeToManyTarget("discountCourseClasses", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<DiscountCourseClass> getDiscountCourseClasses() {
         return (List<DiscountCourseClass>)readProperty("discountCourseClasses");
     }
 
-
     public void addToDiscussions(Discussion obj) {
         addToManyTarget("discussions", obj, true);
     }
+
     public void removeFromDiscussions(Discussion obj) {
         removeToManyTarget("discussions", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Discussion> getDiscussions() {
         return (List<Discussion>)readProperty("discussions");
     }
 
-
     public void addToEnrolments(Enrolment obj) {
         addToManyTarget("enrolments", obj, true);
     }
+
     public void removeFromEnrolments(Enrolment obj) {
         removeToManyTarget("enrolments", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Enrolment> getEnrolments() {
         return (List<Enrolment>)readProperty("enrolments");
     }
 
-
     public void addToInvoiceLines(InvoiceLine obj) {
         addToManyTarget("invoiceLines", obj, true);
     }
+
     public void removeFromInvoiceLines(InvoiceLine obj) {
         removeToManyTarget("invoiceLines", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<InvoiceLine> getInvoiceLines() {
         return (List<InvoiceLine>)readProperty("invoiceLines");
     }
 
-
     public void addToPaymentPlanLines(CourseClassPaymentPlanLine obj) {
         addToManyTarget("paymentPlanLines", obj, true);
     }
+
     public void removeFromPaymentPlanLines(CourseClassPaymentPlanLine obj) {
         removeToManyTarget("paymentPlanLines", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<CourseClassPaymentPlanLine> getPaymentPlanLines() {
         return (List<CourseClassPaymentPlanLine>)readProperty("paymentPlanLines");
     }
-
 
     public void setRoom(Room room) {
         setToOneTarget("room", room, true);
@@ -471,29 +630,394 @@ public abstract class _CourseClass extends WillowCayenneObject {
         return (Room)readProperty("room");
     }
 
-
     public void addToSessions(Session obj) {
         addToManyTarget("sessions", obj, true);
     }
+
     public void removeFromSessions(Session obj) {
         removeToManyTarget("sessions", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Session> getSessions() {
         return (List<Session>)readProperty("sessions");
     }
 
-
     public void addToTutorRoles(TutorRole obj) {
         addToManyTarget("tutorRoles", obj, true);
     }
+
     public void removeFromTutorRoles(TutorRole obj) {
         removeToManyTarget("tutorRoles", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<TutorRole> getTutorRoles() {
         return (List<TutorRole>)readProperty("tutorRoles");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "attendanceType":
+                return this.attendanceType;
+            case "cancelled":
+                return this.cancelled;
+            case "censusDate":
+                return this.censusDate;
+            case "code":
+                return this.code;
+            case "countOfSessions":
+                return this.countOfSessions;
+            case "created":
+                return this.created;
+            case "deliveryMode":
+                return this.deliveryMode;
+            case "detail":
+                return this.detail;
+            case "detailTextile":
+                return this.detailTextile;
+            case "endDate":
+                return this.endDate;
+            case "expectedHours":
+                return this.expectedHours;
+            case "feeExGst":
+                return this.feeExGst;
+            case "feeGst":
+                return this.feeGst;
+            case "feeHelpClass":
+                return this.feeHelpClass;
+            case "fullTimeLoad":
+                return this.fullTimeLoad;
+            case "fundingSource":
+                return this.fundingSource;
+            case "isActive":
+                return this.isActive;
+            case "isDistantLearningCourse":
+                return this.isDistantLearningCourse;
+            case "isWebVisible":
+                return this.isWebVisible;
+            case "materials":
+                return this.materials;
+            case "materialsTextile":
+                return this.materialsTextile;
+            case "maxStudentAge":
+                return this.maxStudentAge;
+            case "maximumDays":
+                return this.maximumDays;
+            case "maximumPlaces":
+                return this.maximumPlaces;
+            case "minStudentAge":
+                return this.minStudentAge;
+            case "minimumPlaces":
+                return this.minimumPlaces;
+            case "minutesPerSession":
+                return this.minutesPerSession;
+            case "modified":
+                return this.modified;
+            case "reportingPeriod":
+                return this.reportingPeriod;
+            case "sessionDetail":
+                return this.sessionDetail;
+            case "sessionDetailTextile":
+                return this.sessionDetailTextile;
+            case "startDate":
+                return this.startDate;
+            case "startingMinutePerSession":
+                return this.startingMinutePerSession;
+            case "timeZone":
+                return this.timeZone;
+            case "assessmentClasses":
+                return this.assessmentClasses;
+            case "college":
+                return this.college;
+            case "course":
+                return this.course;
+            case "discountCourseClasses":
+                return this.discountCourseClasses;
+            case "discussions":
+                return this.discussions;
+            case "enrolments":
+                return this.enrolments;
+            case "invoiceLines":
+                return this.invoiceLines;
+            case "paymentPlanLines":
+                return this.paymentPlanLines;
+            case "room":
+                return this.room;
+            case "sessions":
+                return this.sessions;
+            case "tutorRoles":
+                return this.tutorRoles;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "attendanceType":
+                this.attendanceType = (CourseClassAttendanceType)val;
+                break;
+            case "cancelled":
+                this.cancelled = val == null ? false : (boolean)val;
+                break;
+            case "censusDate":
+                this.censusDate = (Date)val;
+                break;
+            case "code":
+                this.code = (String)val;
+                break;
+            case "countOfSessions":
+                this.countOfSessions = (Integer)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "deliveryMode":
+                this.deliveryMode = (Integer)val;
+                break;
+            case "detail":
+                this.detail = (String)val;
+                break;
+            case "detailTextile":
+                this.detailTextile = (String)val;
+                break;
+            case "endDate":
+                this.endDate = (Date)val;
+                break;
+            case "expectedHours":
+                this.expectedHours = (BigDecimal)val;
+                break;
+            case "feeExGst":
+                this.feeExGst = (Money)val;
+                break;
+            case "feeGst":
+                this.feeGst = (Money)val;
+                break;
+            case "feeHelpClass":
+                this.feeHelpClass = (Boolean)val;
+                break;
+            case "fullTimeLoad":
+                this.fullTimeLoad = (String)val;
+                break;
+            case "fundingSource":
+                this.fundingSource = (ClassFundingSource)val;
+                break;
+            case "isActive":
+                this.isActive = (Boolean)val;
+                break;
+            case "isDistantLearningCourse":
+                this.isDistantLearningCourse = (Boolean)val;
+                break;
+            case "isWebVisible":
+                this.isWebVisible = (Boolean)val;
+                break;
+            case "materials":
+                this.materials = (String)val;
+                break;
+            case "materialsTextile":
+                this.materialsTextile = (String)val;
+                break;
+            case "maxStudentAge":
+                this.maxStudentAge = (Integer)val;
+                break;
+            case "maximumDays":
+                this.maximumDays = (Integer)val;
+                break;
+            case "maximumPlaces":
+                this.maximumPlaces = (Integer)val;
+                break;
+            case "minStudentAge":
+                this.minStudentAge = (Integer)val;
+                break;
+            case "minimumPlaces":
+                this.minimumPlaces = (Integer)val;
+                break;
+            case "minutesPerSession":
+                this.minutesPerSession = (Integer)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "reportingPeriod":
+                this.reportingPeriod = (Integer)val;
+                break;
+            case "sessionDetail":
+                this.sessionDetail = (String)val;
+                break;
+            case "sessionDetailTextile":
+                this.sessionDetailTextile = (String)val;
+                break;
+            case "startDate":
+                this.startDate = (Date)val;
+                break;
+            case "startingMinutePerSession":
+                this.startingMinutePerSession = (Integer)val;
+                break;
+            case "timeZone":
+                this.timeZone = (String)val;
+                break;
+            case "assessmentClasses":
+                this.assessmentClasses = val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "course":
+                this.course = val;
+                break;
+            case "discountCourseClasses":
+                this.discountCourseClasses = val;
+                break;
+            case "discussions":
+                this.discussions = val;
+                break;
+            case "enrolments":
+                this.enrolments = val;
+                break;
+            case "invoiceLines":
+                this.invoiceLines = val;
+                break;
+            case "paymentPlanLines":
+                this.paymentPlanLines = val;
+                break;
+            case "room":
+                this.room = val;
+                break;
+            case "sessions":
+                this.sessions = val;
+                break;
+            case "tutorRoles":
+                this.tutorRoles = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.attendanceType);
+        out.writeBoolean(this.cancelled);
+        out.writeObject(this.censusDate);
+        out.writeObject(this.code);
+        out.writeObject(this.countOfSessions);
+        out.writeObject(this.created);
+        out.writeObject(this.deliveryMode);
+        out.writeObject(this.detail);
+        out.writeObject(this.detailTextile);
+        out.writeObject(this.endDate);
+        out.writeObject(this.expectedHours);
+        out.writeObject(this.feeExGst);
+        out.writeObject(this.feeGst);
+        out.writeObject(this.feeHelpClass);
+        out.writeObject(this.fullTimeLoad);
+        out.writeObject(this.fundingSource);
+        out.writeObject(this.isActive);
+        out.writeObject(this.isDistantLearningCourse);
+        out.writeObject(this.isWebVisible);
+        out.writeObject(this.materials);
+        out.writeObject(this.materialsTextile);
+        out.writeObject(this.maxStudentAge);
+        out.writeObject(this.maximumDays);
+        out.writeObject(this.maximumPlaces);
+        out.writeObject(this.minStudentAge);
+        out.writeObject(this.minimumPlaces);
+        out.writeObject(this.minutesPerSession);
+        out.writeObject(this.modified);
+        out.writeObject(this.reportingPeriod);
+        out.writeObject(this.sessionDetail);
+        out.writeObject(this.sessionDetailTextile);
+        out.writeObject(this.startDate);
+        out.writeObject(this.startingMinutePerSession);
+        out.writeObject(this.timeZone);
+        out.writeObject(this.assessmentClasses);
+        out.writeObject(this.college);
+        out.writeObject(this.course);
+        out.writeObject(this.discountCourseClasses);
+        out.writeObject(this.discussions);
+        out.writeObject(this.enrolments);
+        out.writeObject(this.invoiceLines);
+        out.writeObject(this.paymentPlanLines);
+        out.writeObject(this.room);
+        out.writeObject(this.sessions);
+        out.writeObject(this.tutorRoles);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.attendanceType = (CourseClassAttendanceType)in.readObject();
+        this.cancelled = in.readBoolean();
+        this.censusDate = (Date)in.readObject();
+        this.code = (String)in.readObject();
+        this.countOfSessions = (Integer)in.readObject();
+        this.created = (Date)in.readObject();
+        this.deliveryMode = (Integer)in.readObject();
+        this.detail = (String)in.readObject();
+        this.detailTextile = (String)in.readObject();
+        this.endDate = (Date)in.readObject();
+        this.expectedHours = (BigDecimal)in.readObject();
+        this.feeExGst = (Money)in.readObject();
+        this.feeGst = (Money)in.readObject();
+        this.feeHelpClass = (Boolean)in.readObject();
+        this.fullTimeLoad = (String)in.readObject();
+        this.fundingSource = (ClassFundingSource)in.readObject();
+        this.isActive = (Boolean)in.readObject();
+        this.isDistantLearningCourse = (Boolean)in.readObject();
+        this.isWebVisible = (Boolean)in.readObject();
+        this.materials = (String)in.readObject();
+        this.materialsTextile = (String)in.readObject();
+        this.maxStudentAge = (Integer)in.readObject();
+        this.maximumDays = (Integer)in.readObject();
+        this.maximumPlaces = (Integer)in.readObject();
+        this.minStudentAge = (Integer)in.readObject();
+        this.minimumPlaces = (Integer)in.readObject();
+        this.minutesPerSession = (Integer)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.reportingPeriod = (Integer)in.readObject();
+        this.sessionDetail = (String)in.readObject();
+        this.sessionDetailTextile = (String)in.readObject();
+        this.startDate = (Date)in.readObject();
+        this.startingMinutePerSession = (Integer)in.readObject();
+        this.timeZone = (String)in.readObject();
+        this.assessmentClasses = in.readObject();
+        this.college = in.readObject();
+        this.course = in.readObject();
+        this.discountCourseClasses = in.readObject();
+        this.discussions = in.readObject();
+        this.enrolments = in.readObject();
+        this.invoiceLines = in.readObject();
+        this.paymentPlanLines = in.readObject();
+        this.room = in.readObject();
+        this.sessions = in.readObject();
+        this.tutorRoles = in.readObject();
+    }
 
 }

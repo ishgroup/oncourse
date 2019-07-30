@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 
 import org.apache.cayenne.exp.Property;
@@ -35,39 +38,63 @@ public abstract class _CustomField extends WillowCayenneObject {
     public static final Property<College> COLLEGE = Property.create("college", College.class);
     public static final Property<CustomFieldType> CUSTOM_FIELD_TYPE = Property.create("customFieldType", CustomFieldType.class);
 
+    protected Long angelId;
+    protected Date created;
+    protected String entityName;
+    protected Date modified;
+    protected String value;
+
+    protected Object college;
+    protected Object customFieldType;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setEntityName(String entityName) {
-        writeProperty("entityName", entityName);
+        beforePropertyWrite("entityName", this.entityName, entityName);
+        this.entityName = entityName;
     }
+
     public String getEntityName() {
-        return (String)readProperty("entityName");
+        beforePropertyRead("entityName");
+        return this.entityName;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setValue(String value) {
-        writeProperty("value", value);
+        beforePropertyWrite("value", this.value, value);
+        this.value = value;
     }
+
     public String getValue() {
-        return (String)readProperty("value");
+        beforePropertyRead("value");
+        return this.value;
     }
 
     public void setCollege(College college) {
@@ -78,7 +105,6 @@ public abstract class _CustomField extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void setCustomFieldType(CustomFieldType customFieldType) {
         setToOneTarget("customFieldType", customFieldType, true);
     }
@@ -87,7 +113,97 @@ public abstract class _CustomField extends WillowCayenneObject {
         return (CustomFieldType)readProperty("customFieldType");
     }
 
-
     protected abstract void onPostAdd();
+
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "created":
+                return this.created;
+            case "entityName":
+                return this.entityName;
+            case "modified":
+                return this.modified;
+            case "value":
+                return this.value;
+            case "college":
+                return this.college;
+            case "customFieldType":
+                return this.customFieldType;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "entityName":
+                this.entityName = (String)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "value":
+                this.value = (String)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "customFieldType":
+                this.customFieldType = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.created);
+        out.writeObject(this.entityName);
+        out.writeObject(this.modified);
+        out.writeObject(this.value);
+        out.writeObject(this.college);
+        out.writeObject(this.customFieldType);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.created = (Date)in.readObject();
+        this.entityName = (String)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.value = (String)in.readObject();
+        this.college = in.readObject();
+        this.customFieldType = in.readObject();
+    }
 
 }

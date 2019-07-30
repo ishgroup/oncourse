@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<data-map xmlns="http://cayenne.apache.org/schema/9/modelMap"
+<data-map xmlns="http://cayenne.apache.org/schema/10/modelMap"
 	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	 xsi:schemaLocation="http://cayenne.apache.org/schema/9/modelMap https://cayenne.apache.org/schema/9/modelMap.xsd"
-	 project-version="9">
+	 xsi:schemaLocation="http://cayenne.apache.org/schema/10/modelMap https://cayenne.apache.org/schema/10/modelMap.xsd"
+	 project-version="10">
 	<property name="defaultPackage" value="ish.oncourse.model"/>
 	<property name="defaultSuperclass" value="WillowCayenneObject"/>
 	<db-entity name="Application">
@@ -1827,7 +1827,7 @@
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 	</obj-entity>
 	<obj-entity name="CourseCourseRelation" superEntityName="EntityRelation" className="ish.oncourse.model.CourseCourseRelation">
-		<qualifier><![CDATA[(fromEntityIdentifier = 1) and (toEntityIdentifier = 1)]]></qualifier>
+		<qualifier><![CDATA[(fromEntityIdentifier = enum:ish.common.types.EntityRelationType.COURSE) and (toEntityIdentifier = enum:ish.common.types.EntityRelationType.COURSE)]]></qualifier>
 	</obj-entity>
 	<obj-entity name="CourseCustomField" superEntityName="CustomField" className="ish.oncourse.model.CourseCustomField">
 		<qualifier><![CDATA[entityName = "Course"]]></qualifier>
@@ -1919,8 +1919,7 @@
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modifiedOn"/>
 	</obj-entity>
-	<obj-entity name="Discussion" className="ish.oncourse.model.Discussion" dbEntityName="Discussion" superClassName="WillowCayenneObject">
-	</obj-entity>
+	<obj-entity name="Discussion" className="ish.oncourse.model.Discussion" dbEntityName="Discussion" superClassName="WillowCayenneObject"/>
 	<obj-entity name="DiscussionComment" className="ish.oncourse.model.DiscussionComment" dbEntityName="DiscussionComment" superClassName="WillowCayenneObject">
 		<obj-attribute name="body" type="java.lang.String" db-attribute-path="body"/>
 		<obj-attribute name="discussionThreadId" type="java.lang.Long" db-attribute-path="discussionThreadId"/>
@@ -2391,8 +2390,7 @@
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 	</obj-entity>
-	<obj-entity name="SaleOrder" superEntityName="AbstractInvoice" className="ish.oncourse.model.SaleOrder">
-	</obj-entity>
+	<obj-entity name="SaleOrder" superEntityName="AbstractInvoice" className="ish.oncourse.model.SaleOrder"/>
 	<obj-entity name="Script" className="ish.oncourse.model.Script" dbEntityName="Script" superClassName="WillowCayenneObject">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
@@ -2739,25 +2737,25 @@
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="password" type="java.lang.String" db-attribute-path="password"/>
 	</obj-entity>
-	<db-relationship name="college" source="Application" target="College" toMany="false">
+	<db-relationship name="college" source="Application" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="course" source="Application" target="Course" toMany="false">
+	<db-relationship name="course" source="Application" target="Course">
 		<db-attribute-pair source="courseId" target="id"/>
 	</db-relationship>
 	<db-relationship name="customFields" source="Application" target="CustomField" toMany="true">
 		<db-attribute-pair source="id" target="foreignId"/>
 	</db-relationship>
-	<db-relationship name="student" source="Application" target="Student" toMany="false">
+	<db-relationship name="student" source="Application" target="Student">
 		<db-attribute-pair source="studentId" target="id"/>
 	</db-relationship>
 	<db-relationship name="assessmentClasses" source="Assessment" target="AssessmentClass" toMany="true">
 		<db-attribute-pair source="id" target="assessmentId"/>
 	</db-relationship>
-	<db-relationship name="college" source="Assessment" target="College" toMany="false">
+	<db-relationship name="college" source="Assessment" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="assessment" source="AssessmentClass" target="Assessment" toMany="false">
+	<db-relationship name="assessment" source="AssessmentClass" target="Assessment">
 		<db-attribute-pair source="assessmentId" target="id"/>
 	</db-relationship>
 	<db-relationship name="assessmentClassModules" source="AssessmentClass" target="AssessmentClassModule" toMany="true">
@@ -2769,91 +2767,91 @@
 	<db-relationship name="assessmentSubmissions" source="AssessmentClass" target="AssessmentSubmission" toMany="true">
 		<db-attribute-pair source="id" target="assessmentClassId"/>
 	</db-relationship>
-	<db-relationship name="college" source="AssessmentClass" target="College" toMany="false">
+	<db-relationship name="college" source="AssessmentClass" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="courseClass" source="AssessmentClass" target="CourseClass" toMany="false">
+	<db-relationship name="courseClass" source="AssessmentClass" target="CourseClass">
 		<db-attribute-pair source="courseClassId" target="id"/>
 	</db-relationship>
-	<db-relationship name="assessmentClass" source="AssessmentClassModule" target="AssessmentClass" toMany="false">
+	<db-relationship name="assessmentClass" source="AssessmentClassModule" target="AssessmentClass">
 		<db-attribute-pair source="assessmentClassId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="AssessmentClassModule" target="College" toMany="false">
+	<db-relationship name="college" source="AssessmentClassModule" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="module" source="AssessmentClassModule" target="Module" toMany="false">
+	<db-relationship name="module" source="AssessmentClassModule" target="Module">
 		<db-attribute-pair source="moduleId" target="id"/>
 	</db-relationship>
-	<db-relationship name="assessmentClass" source="AssessmentClassTutor" target="AssessmentClass" toMany="false">
+	<db-relationship name="assessmentClass" source="AssessmentClassTutor" target="AssessmentClass">
 		<db-attribute-pair source="assessmentClassId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="AssessmentClassTutor" target="College" toMany="false">
+	<db-relationship name="college" source="AssessmentClassTutor" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="tutor" source="AssessmentClassTutor" target="Tutor" toMany="false">
+	<db-relationship name="tutor" source="AssessmentClassTutor" target="Tutor">
 		<db-attribute-pair source="tutorId" target="id"/>
 	</db-relationship>
-	<db-relationship name="assessmentClass" source="AssessmentSubmission" target="AssessmentClass" toMany="false">
+	<db-relationship name="assessmentClass" source="AssessmentSubmission" target="AssessmentClass">
 		<db-attribute-pair source="assessmentClassId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="AssessmentSubmission" target="College" toMany="false">
+	<db-relationship name="college" source="AssessmentSubmission" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="enrolment" source="AssessmentSubmission" target="Enrolment" toMany="false">
+	<db-relationship name="enrolment" source="AssessmentSubmission" target="Enrolment">
 		<db-attribute-pair source="enrolmentId" target="id"/>
 	</db-relationship>
-	<db-relationship name="submittedBy" source="AssessmentSubmission" target="Contact" toMany="false">
+	<db-relationship name="submittedBy" source="AssessmentSubmission" target="Contact">
 		<db-attribute-pair source="submittedById" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="Attendance" target="College" toMany="false">
+	<db-relationship name="college" source="Attendance" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="markedByTutor" source="Attendance" target="Tutor" toMany="false">
+	<db-relationship name="markedByTutor" source="Attendance" target="Tutor">
 		<db-attribute-pair source="markedByTutorId" target="id"/>
 	</db-relationship>
-	<db-relationship name="session" source="Attendance" target="Session" toMany="false">
+	<db-relationship name="session" source="Attendance" target="Session">
 		<db-attribute-pair source="sessionId" target="id"/>
 	</db-relationship>
-	<db-relationship name="student" source="Attendance" target="Student" toMany="false">
+	<db-relationship name="student" source="Attendance" target="Student">
 		<db-attribute-pair source="studentId" target="id"/>
 	</db-relationship>
 	<db-relationship name="binaryInfoRelations" source="BinaryInfo" target="BinaryInfoRelation" toMany="true">
 		<db-attribute-pair source="id" target="binaryInfoId"/>
 	</db-relationship>
-	<db-relationship name="college" source="BinaryInfo" target="College" toMany="false">
+	<db-relationship name="college" source="BinaryInfo" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="binaryInfo" source="BinaryInfoRelation" target="BinaryInfo" toMany="false">
+	<db-relationship name="binaryInfo" source="BinaryInfoRelation" target="BinaryInfo">
 		<db-attribute-pair source="binaryInfoId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="BinaryInfoRelation" target="College" toMany="false">
+	<db-relationship name="college" source="BinaryInfoRelation" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="document" source="BinaryInfoRelation" target="Document" toMany="false">
+	<db-relationship name="document" source="BinaryInfoRelation" target="Document">
 		<db-attribute-pair source="documentId" target="id"/>
 	</db-relationship>
-	<db-relationship name="documentVersion" source="BinaryInfoRelation" target="DocumentVersion" toMany="false">
+	<db-relationship name="documentVersion" source="BinaryInfoRelation" target="DocumentVersion">
 		<db-attribute-pair source="documentVersionId" target="id"/>
 	</db-relationship>
 	<db-relationship name="certificateOutcomes" source="Certificate" target="CertificateOutcome" toMany="true">
 		<db-attribute-pair source="id" target="certificateId"/>
 	</db-relationship>
-	<db-relationship name="college" source="Certificate" target="College" toMany="false">
+	<db-relationship name="college" source="Certificate" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="qualification" source="Certificate" target="Qualification" toMany="false">
+	<db-relationship name="qualification" source="Certificate" target="Qualification">
 		<db-attribute-pair source="qualificationId" target="id"/>
 	</db-relationship>
-	<db-relationship name="student" source="Certificate" target="Student" toMany="false">
+	<db-relationship name="student" source="Certificate" target="Student">
 		<db-attribute-pair source="studentId" target="id"/>
 	</db-relationship>
-	<db-relationship name="certificate" source="CertificateOutcome" target="Certificate" toMany="false">
+	<db-relationship name="certificate" source="CertificateOutcome" target="Certificate">
 		<db-attribute-pair source="certificateId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="CertificateOutcome" target="College" toMany="false">
+	<db-relationship name="college" source="CertificateOutcome" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="outcome" source="CertificateOutcome" target="Outcome" toMany="false">
+	<db-relationship name="outcome" source="CertificateOutcome" target="Outcome">
 		<db-attribute-pair source="outcomeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="applications" source="College" target="Application" toMany="true">
@@ -3123,10 +3121,10 @@
 	<db-relationship name="webSites" source="College" target="WebSite" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
-	<db-relationship name="college" source="ConcessionType" target="College" toMany="false">
+	<db-relationship name="college" source="ConcessionType" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="createdBy" source="ConcessionType" target="SystemUser" toMany="false">
+	<db-relationship name="createdBy" source="ConcessionType" target="SystemUser">
 		<db-attribute-pair source="createdById" target="id"/>
 	</db-relationship>
 	<db-relationship name="discountConcessionTypes" source="ConcessionType" target="DiscountConcessionType" toMany="true">
@@ -3138,7 +3136,7 @@
 	<db-relationship name="assessmentSubmissions" source="Contact" target="AssessmentSubmission" toMany="true">
 		<db-attribute-pair source="id" target="submittedById"/>
 	</db-relationship>
-	<db-relationship name="college" source="Contact" target="College" toMany="false">
+	<db-relationship name="college" source="Contact" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="contactComments" source="Contact" target="DiscussionCommentContact" toMany="true">
@@ -3150,7 +3148,7 @@
 	<db-relationship name="corporatePasses" source="Contact" target="CorporatePass" toMany="true">
 		<db-attribute-pair source="id" target="contactId"/>
 	</db-relationship>
-	<db-relationship name="country" source="Contact" target="Country" toMany="false">
+	<db-relationship name="country" source="Contact" target="Country">
 		<db-attribute-pair source="countryId" target="id"/>
 	</db-relationship>
 	<db-relationship name="customFields" source="Contact" target="CustomField" toMany="true">
@@ -3174,58 +3172,58 @@
 	<db-relationship name="products" source="Contact" target="ProductItem" toMany="true">
 		<db-attribute-pair source="id" target="contactId"/>
 	</db-relationship>
-	<db-relationship name="student" source="Contact" target="Student" toMany="false">
+	<db-relationship name="student" source="Contact" target="Student">
 		<db-attribute-pair source="studentId" target="id"/>
 	</db-relationship>
-	<db-relationship name="supportPassword" source="Contact" target="SupportPassword" toMany="false">
+	<db-relationship name="supportPassword" source="Contact" target="SupportPassword">
 		<db-attribute-pair source="id" target="contactId"/>
 	</db-relationship>
-	<db-relationship name="taxOverride" source="Contact" target="Tax" toMany="false">
+	<db-relationship name="taxOverride" source="Contact" target="Tax">
 		<db-attribute-pair source="taxOverrideId" target="id"/>
 	</db-relationship>
 	<db-relationship name="toContacts" source="Contact" target="ContactRelation" toMany="true">
 		<db-attribute-pair source="id" target="fromContactId"/>
 	</db-relationship>
-	<db-relationship name="tutor" source="Contact" target="Tutor" toMany="false">
+	<db-relationship name="tutor" source="Contact" target="Tutor">
 		<db-attribute-pair source="tutorId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="ContactDuplicate" target="College" toMany="false">
+	<db-relationship name="college" source="ContactDuplicate" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="contactToUpdate" source="ContactDuplicate" target="Contact" toMany="false">
+	<db-relationship name="contactToUpdate" source="ContactDuplicate" target="Contact">
 		<db-attribute-pair source="contactToUpdateId" target="id"/>
 	</db-relationship>
-	<db-relationship name="createdByUser" source="ContactDuplicate" target="SystemUser" toMany="false">
+	<db-relationship name="createdByUser" source="ContactDuplicate" target="SystemUser">
 		<db-attribute-pair source="createdBy" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="ContactRelation" target="College" toMany="false">
+	<db-relationship name="college" source="ContactRelation" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="fromContact" source="ContactRelation" target="Contact" toMany="false">
+	<db-relationship name="fromContact" source="ContactRelation" target="Contact">
 		<db-attribute-pair source="fromContactId" target="id"/>
 	</db-relationship>
-	<db-relationship name="relationType" source="ContactRelation" target="ContactRelationType" toMany="false">
+	<db-relationship name="relationType" source="ContactRelation" target="ContactRelationType">
 		<db-attribute-pair source="typeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="toContact" source="ContactRelation" target="Contact" toMany="false">
+	<db-relationship name="toContact" source="ContactRelation" target="Contact">
 		<db-attribute-pair source="toContactId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="ContactRelationType" target="College" toMany="false">
+	<db-relationship name="college" source="ContactRelationType" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="contactRelations" source="ContactRelationType" target="ContactRelation" toMany="true">
 		<db-attribute-pair source="id" target="typeId"/>
 	</db-relationship>
-	<db-relationship name="createdBy" source="ContactRelationType" target="SystemUser" toMany="false">
+	<db-relationship name="createdBy" source="ContactRelationType" target="SystemUser">
 		<db-attribute-pair source="createdById" target="id"/>
 	</db-relationship>
 	<db-relationship name="membeshipDiscountRelations" source="ContactRelationType" target="DiscountMembershipRelationType" toMany="true">
 		<db-attribute-pair source="id" target="contactRelationTypeId"/>
 	</db-relationship>
-	<db-relationship name="college" source="CorporatePass" target="College" toMany="false">
+	<db-relationship name="college" source="CorporatePass" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="contact" source="CorporatePass" target="Contact" toMany="false">
+	<db-relationship name="contact" source="CorporatePass" target="Contact">
 		<db-attribute-pair source="contactId" target="id"/>
 	</db-relationship>
 	<db-relationship name="corporatePassCourseClass" source="CorporatePass" target="CorporatePass_CourseClass" toMany="true">
@@ -3240,31 +3238,31 @@
 	<db-relationship name="invoice" source="CorporatePass" target="Invoice" toMany="true">
 		<db-attribute-pair source="id" target="corporatePassId"/>
 	</db-relationship>
-	<db-relationship name="college" source="CorporatePass_CourseClass" target="College" toMany="false">
+	<db-relationship name="college" source="CorporatePass_CourseClass" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="corporatePass" source="CorporatePass_CourseClass" target="CorporatePass" toMany="false">
+	<db-relationship name="corporatePass" source="CorporatePass_CourseClass" target="CorporatePass">
 		<db-attribute-pair source="corporatePassId" target="id"/>
 	</db-relationship>
-	<db-relationship name="courseClass" source="CorporatePass_CourseClass" target="CourseClass" toMany="false">
+	<db-relationship name="courseClass" source="CorporatePass_CourseClass" target="CourseClass">
 		<db-attribute-pair source="courseClassId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="CorporatePass_Discount" target="College" toMany="false">
+	<db-relationship name="college" source="CorporatePass_Discount" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="corporatePass" source="CorporatePass_Discount" target="CorporatePass" toMany="false">
+	<db-relationship name="corporatePass" source="CorporatePass_Discount" target="CorporatePass">
 		<db-attribute-pair source="corporatePassId" target="id"/>
 	</db-relationship>
-	<db-relationship name="discount" source="CorporatePass_Discount" target="Discount" toMany="false">
+	<db-relationship name="discount" source="CorporatePass_Discount" target="Discount">
 		<db-attribute-pair source="discountId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="CorporatePass_Product" target="College" toMany="false">
+	<db-relationship name="college" source="CorporatePass_Product" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="corporatePass" source="CorporatePass_Product" target="CorporatePass" toMany="false">
+	<db-relationship name="corporatePass" source="CorporatePass_Product" target="CorporatePass">
 		<db-attribute-pair source="corporatePassId" target="id"/>
 	</db-relationship>
-	<db-relationship name="product" source="CorporatePass_Product" target="Product" toMany="false">
+	<db-relationship name="product" source="CorporatePass_Product" target="Product">
 		<db-attribute-pair source="productId" target="id"/>
 	</db-relationship>
 	<db-relationship name="contacts" source="Country" target="Contact" toMany="true">
@@ -3276,7 +3274,7 @@
 	<db-relationship name="applications" source="Course" target="Application" toMany="true">
 		<db-attribute-pair source="id" target="courseId"/>
 	</db-relationship>
-	<db-relationship name="college" source="Course" target="College" toMany="false">
+	<db-relationship name="college" source="Course" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="courseClasses" source="Course" target="CourseClass" toMany="true">
@@ -3294,10 +3292,10 @@
 	<db-relationship name="customFields" source="Course" target="CustomField" toMany="true">
 		<db-attribute-pair source="id" target="foreignId"/>
 	</db-relationship>
-	<db-relationship name="fieldConfigurationScheme" source="Course" target="FieldConfigurationScheme" toMany="false">
+	<db-relationship name="fieldConfigurationScheme" source="Course" target="FieldConfigurationScheme">
 		<db-attribute-pair source="fieldConfigurationSchemeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="qualification" source="Course" target="Qualification" toMany="false">
+	<db-relationship name="qualification" source="Course" target="Qualification">
 		<db-attribute-pair source="qualificationId" target="id"/>
 	</db-relationship>
 	<db-relationship name="voucherProductCourses" source="Course" target="VoucherProductCourse" toMany="true">
@@ -3309,13 +3307,13 @@
 	<db-relationship name="assessmentClasses" source="CourseClass" target="AssessmentClass" toMany="true">
 		<db-attribute-pair source="id" target="courseClassId"/>
 	</db-relationship>
-	<db-relationship name="college" source="CourseClass" target="College" toMany="false">
+	<db-relationship name="college" source="CourseClass" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="corporatePassCourseClass" source="CourseClass" target="CorporatePass_CourseClass" toMany="true">
 		<db-attribute-pair source="id" target="courseClassId"/>
 	</db-relationship>
-	<db-relationship name="course" source="CourseClass" target="Course" toMany="false">
+	<db-relationship name="course" source="CourseClass" target="Course">
 		<db-attribute-pair source="courseId" target="id"/>
 	</db-relationship>
 	<db-relationship name="discountCourseClasses" source="CourseClass" target="DiscountCourseClass" toMany="true">
@@ -3333,7 +3331,7 @@
 	<db-relationship name="paymentPlanLines" source="CourseClass" target="CourseClassPaymentPlanLine" toMany="true">
 		<db-attribute-pair source="id" target="courseClassId"/>
 	</db-relationship>
-	<db-relationship name="room" source="CourseClass" target="Room" toMany="false">
+	<db-relationship name="room" source="CourseClass" target="Room">
 		<db-attribute-pair source="roomId" target="id"/>
 	</db-relationship>
 	<db-relationship name="sessions" source="CourseClass" target="Session" toMany="true">
@@ -3342,55 +3340,55 @@
 	<db-relationship name="tutorRoles" source="CourseClass" target="TutorRole" toMany="true">
 		<db-attribute-pair source="id" target="courseClassId"/>
 	</db-relationship>
-	<db-relationship name="college" source="CourseClassPaymentPlanLine" target="College" toMany="false">
+	<db-relationship name="college" source="CourseClassPaymentPlanLine" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="courseClass" source="CourseClassPaymentPlanLine" target="CourseClass" toMany="false">
+	<db-relationship name="courseClass" source="CourseClassPaymentPlanLine" target="CourseClass">
 		<db-attribute-pair source="courseClassId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="CourseModule" target="College" toMany="false">
+	<db-relationship name="college" source="CourseModule" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="course" source="CourseModule" target="Course" toMany="false">
+	<db-relationship name="course" source="CourseModule" target="Course">
 		<db-attribute-pair source="courseId" target="id"/>
 	</db-relationship>
-	<db-relationship name="module" source="CourseModule" target="Module" toMany="false">
+	<db-relationship name="module" source="CourseModule" target="Module">
 		<db-attribute-pair source="moduleId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="CustomFee" target="College" toMany="false">
+	<db-relationship name="college" source="CustomFee" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="CustomField" target="College" toMany="false">
+	<db-relationship name="college" source="CustomField" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="customFieldType" source="CustomField" target="CustomFieldType" toMany="false">
+	<db-relationship name="customFieldType" source="CustomField" target="CustomFieldType">
 		<db-attribute-pair source="customFieldTypeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="relatedApplication" source="CustomField" target="Application" toMany="false">
+	<db-relationship name="relatedApplication" source="CustomField" target="Application">
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
-	<db-relationship name="relatedContact" source="CustomField" target="Contact" toMany="false">
+	<db-relationship name="relatedContact" source="CustomField" target="Contact">
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
-	<db-relationship name="relatedCourse" source="CustomField" target="Course" toMany="false">
+	<db-relationship name="relatedCourse" source="CustomField" target="Course">
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
-	<db-relationship name="relatedEnrolment" source="CustomField" target="Enrolment" toMany="false">
+	<db-relationship name="relatedEnrolment" source="CustomField" target="Enrolment">
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
-	<db-relationship name="relatedSurvey" source="CustomField" target="Survey" toMany="false">
+	<db-relationship name="relatedSurvey" source="CustomField" target="Survey">
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
-	<db-relationship name="relatedWaitingList" source="CustomField" target="WaitingList" toMany="false">
+	<db-relationship name="relatedWaitingList" source="CustomField" target="WaitingList">
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="CustomFieldType" target="College" toMany="false">
+	<db-relationship name="college" source="CustomFieldType" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="customFields" source="CustomFieldType" target="CustomField" toMany="true">
 		<db-attribute-pair source="id" target="customFieldTypeId"/>
 	</db-relationship>
-	<db-relationship name="college" source="Discount" target="College" toMany="false">
+	<db-relationship name="college" source="Discount" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="corporatePassDiscounts" source="Discount" target="CorporatePass_Discount" toMany="true">
@@ -3408,46 +3406,46 @@
 	<db-relationship name="invoiceLineDiscounts" source="Discount" target="InvoiceLine_Discount" toMany="true">
 		<db-attribute-pair source="id" target="discountId"/>
 	</db-relationship>
-	<db-relationship name="college" source="DiscountConcessionType" target="College" toMany="false">
+	<db-relationship name="college" source="DiscountConcessionType" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="concessionType" source="DiscountConcessionType" target="ConcessionType" toMany="false">
+	<db-relationship name="concessionType" source="DiscountConcessionType" target="ConcessionType">
 		<db-attribute-pair source="concessionTypeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="discount" source="DiscountConcessionType" target="Discount" toMany="false">
+	<db-relationship name="discount" source="DiscountConcessionType" target="Discount">
 		<db-attribute-pair source="discountId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="DiscountCourseClass" target="College" toMany="false">
+	<db-relationship name="college" source="DiscountCourseClass" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="courseClass" source="DiscountCourseClass" target="CourseClass" toMany="false">
+	<db-relationship name="courseClass" source="DiscountCourseClass" target="CourseClass">
 		<db-attribute-pair source="courseClassId" target="id"/>
 	</db-relationship>
-	<db-relationship name="discount" source="DiscountCourseClass" target="Discount" toMany="false">
+	<db-relationship name="discount" source="DiscountCourseClass" target="Discount">
 		<db-attribute-pair source="discountId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="DiscountMembership" target="College" toMany="false">
+	<db-relationship name="college" source="DiscountMembership" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="discount" source="DiscountMembership" target="Discount" toMany="false">
+	<db-relationship name="discount" source="DiscountMembership" target="Discount">
 		<db-attribute-pair source="discountId" target="id"/>
 	</db-relationship>
 	<db-relationship name="discountMembershipRelationTypes" source="DiscountMembership" target="DiscountMembershipRelationType" toMany="true">
 		<db-attribute-pair source="id" target="membershipDiscountId"/>
 	</db-relationship>
-	<db-relationship name="membershipProduct" source="DiscountMembership" target="Product" toMany="false">
+	<db-relationship name="membershipProduct" source="DiscountMembership" target="Product">
 		<db-attribute-pair source="membershipProductId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="DiscountMembershipRelationType" target="College" toMany="false">
+	<db-relationship name="college" source="DiscountMembershipRelationType" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="contactRelationType" source="DiscountMembershipRelationType" target="ContactRelationType" toMany="false">
+	<db-relationship name="contactRelationType" source="DiscountMembershipRelationType" target="ContactRelationType">
 		<db-attribute-pair source="contactRelationTypeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="discountMembership" source="DiscountMembershipRelationType" target="DiscountMembership" toMany="false">
+	<db-relationship name="discountMembership" source="DiscountMembershipRelationType" target="DiscountMembership">
 		<db-attribute-pair source="membershipDiscountId" target="id"/>
 	</db-relationship>
-	<db-relationship name="courseClass" source="Discussion" target="CourseClass" toMany="false">
+	<db-relationship name="courseClass" source="Discussion" target="CourseClass">
 		<db-attribute-pair source="courseClassId" target="id"/>
 	</db-relationship>
 	<db-relationship name="discussionThread" source="Discussion" target="DiscussionThread" toMany="true">
@@ -3456,19 +3454,19 @@
 	<db-relationship name="commentContacts" source="DiscussionComment" target="DiscussionCommentContact" toMany="true">
 		<db-attribute-pair source="id" target="discussionCommentId"/>
 	</db-relationship>
-	<db-relationship name="comment" source="DiscussionCommentContact" target="DiscussionComment" toMany="false">
+	<db-relationship name="comment" source="DiscussionCommentContact" target="DiscussionComment">
 		<db-attribute-pair source="discussionCommentId" target="id"/>
 	</db-relationship>
-	<db-relationship name="contact" source="DiscussionCommentContact" target="Contact" toMany="false">
+	<db-relationship name="contact" source="DiscussionCommentContact" target="Contact">
 		<db-attribute-pair source="contactId" target="id"/>
 	</db-relationship>
-	<db-relationship name="discussion" source="DiscussionThread" target="Discussion" toMany="false">
+	<db-relationship name="discussion" source="DiscussionThread" target="Discussion">
 		<db-attribute-pair source="discussionId" target="id"/>
 	</db-relationship>
 	<db-relationship name="binaryInfoRelations" source="Document" target="BinaryInfoRelation" toMany="true">
 		<db-attribute-pair source="id" target="documentId"/>
 	</db-relationship>
-	<db-relationship name="college" source="Document" target="College" toMany="false">
+	<db-relationship name="college" source="Document" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="versions" source="Document" target="DocumentVersion" toMany="true">
@@ -3477,25 +3475,25 @@
 	<db-relationship name="binaryInfoRelations" source="DocumentVersion" target="BinaryInfoRelation" toMany="true">
 		<db-attribute-pair source="id" target="documentVersionId"/>
 	</db-relationship>
-	<db-relationship name="college" source="DocumentVersion" target="College" toMany="false">
+	<db-relationship name="college" source="DocumentVersion" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="createdByUser" source="DocumentVersion" target="SystemUser" toMany="false">
+	<db-relationship name="createdByUser" source="DocumentVersion" target="SystemUser">
 		<db-attribute-pair source="createdByUserId" target="id"/>
 	</db-relationship>
-	<db-relationship name="document" source="DocumentVersion" target="Document" toMany="false">
+	<db-relationship name="document" source="DocumentVersion" target="Document">
 		<db-attribute-pair source="documentId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="EmailTemplate" target="College" toMany="false">
+	<db-relationship name="college" source="EmailTemplate" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="assessmentSubmissions" source="Enrolment" target="AssessmentSubmission" toMany="true">
 		<db-attribute-pair source="id" target="enrolmentId"/>
 	</db-relationship>
-	<db-relationship name="college" source="Enrolment" target="College" toMany="false">
+	<db-relationship name="college" source="Enrolment" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="courseClass" source="Enrolment" target="CourseClass" toMany="false">
+	<db-relationship name="courseClass" source="Enrolment" target="CourseClass">
 		<db-attribute-pair source="courseClassId" target="id"/>
 	</db-relationship>
 	<db-relationship name="customFields" source="Enrolment" target="CustomField" toMany="true">
@@ -3507,43 +3505,43 @@
 	<db-relationship name="outcomes" source="Enrolment" target="Outcome" toMany="true">
 		<db-attribute-pair source="id" target="enrolmentId"/>
 	</db-relationship>
-	<db-relationship name="student" source="Enrolment" target="Student" toMany="false">
+	<db-relationship name="student" source="Enrolment" target="Student">
 		<db-attribute-pair source="studentId" target="id"/>
 	</db-relationship>
 	<db-relationship name="surveys" source="Enrolment" target="Survey" toMany="true">
 		<db-attribute-pair source="id" target="enrolmentId"/>
 	</db-relationship>
-	<db-relationship name="college" source="EntityRelation" target="College" toMany="false">
+	<db-relationship name="college" source="EntityRelation" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="relationFromCourse" source="EntityRelation" target="Course" toMany="false">
+	<db-relationship name="relationFromCourse" source="EntityRelation" target="Course">
 		<db-attribute-pair source="fromRecordId" target="id"/>
 	</db-relationship>
-	<db-relationship name="relationFromProduct" source="EntityRelation" target="Product" toMany="false">
+	<db-relationship name="relationFromProduct" source="EntityRelation" target="Product">
 		<db-attribute-pair source="fromRecordId" target="id"/>
 	</db-relationship>
-	<db-relationship name="relationToCourse" source="EntityRelation" target="Course" toMany="false">
+	<db-relationship name="relationToCourse" source="EntityRelation" target="Course">
 		<db-attribute-pair source="toRecordId" target="id"/>
 	</db-relationship>
-	<db-relationship name="relationToProduct" source="EntityRelation" target="Product" toMany="false">
+	<db-relationship name="relationToProduct" source="EntityRelation" target="Product">
 		<db-attribute-pair source="toRecordId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="Field" target="College" toMany="false">
+	<db-relationship name="college" source="Field" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="fieldConfiguration" source="Field" target="FieldConfiguration" toMany="false">
+	<db-relationship name="fieldConfiguration" source="Field" target="FieldConfiguration">
 		<db-attribute-pair source="fieldConfigurationId" target="id"/>
 	</db-relationship>
-	<db-relationship name="fieldHeading" source="Field" target="FieldHeading" toMany="false">
+	<db-relationship name="fieldHeading" source="Field" target="FieldHeading">
 		<db-attribute-pair source="fieldHeadingId" target="id"/>
 	</db-relationship>
 	<db-relationship name="applicationFieldConfigurationSchemes" source="FieldConfiguration" target="FieldConfigurationScheme" toMany="true">
 		<db-attribute-pair source="id" target="applicationFieldConfigurationId"/>
 	</db-relationship>
-	<db-relationship name="college" source="FieldConfiguration" target="College" toMany="false">
+	<db-relationship name="college" source="FieldConfiguration" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="createdBy" source="FieldConfiguration" target="SystemUser" toMany="false">
+	<db-relationship name="createdBy" source="FieldConfiguration" target="SystemUser">
 		<db-attribute-pair source="createdById" target="id"/>
 	</db-relationship>
 	<db-relationship name="enrolFieldConfigurationSchemes" source="FieldConfiguration" target="FieldConfigurationScheme" toMany="true">
@@ -3561,64 +3559,64 @@
 	<db-relationship name="waitingListFieldConfigurationSchemes" source="FieldConfiguration" target="FieldConfigurationScheme" toMany="true">
 		<db-attribute-pair source="id" target="waitingListFieldConfigurationId"/>
 	</db-relationship>
-	<db-relationship name="college" source="FieldConfigurationLink" target="College" toMany="false">
+	<db-relationship name="college" source="FieldConfigurationLink" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="fieldConfiguration" source="FieldConfigurationLink" target="FieldConfiguration" toMany="false">
+	<db-relationship name="fieldConfiguration" source="FieldConfigurationLink" target="FieldConfiguration">
 		<db-attribute-pair source="configurationId" target="id"/>
 	</db-relationship>
-	<db-relationship name="fieldConfigurationScheme" source="FieldConfigurationLink" target="FieldConfigurationScheme" toMany="false">
+	<db-relationship name="fieldConfigurationScheme" source="FieldConfigurationLink" target="FieldConfigurationScheme">
 		<db-attribute-pair source="schemeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="applicationFieldConfiguration" source="FieldConfigurationScheme" target="FieldConfiguration" toMany="false">
+	<db-relationship name="applicationFieldConfiguration" source="FieldConfigurationScheme" target="FieldConfiguration">
 		<db-attribute-pair source="applicationFieldConfigurationId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="FieldConfigurationScheme" target="College" toMany="false">
+	<db-relationship name="college" source="FieldConfigurationScheme" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="courses" source="FieldConfigurationScheme" target="Course" toMany="true">
 		<db-attribute-pair source="id" target="fieldConfigurationSchemeId"/>
 	</db-relationship>
-	<db-relationship name="createdBy" source="FieldConfigurationScheme" target="SystemUser" toMany="false">
+	<db-relationship name="createdBy" source="FieldConfigurationScheme" target="SystemUser">
 		<db-attribute-pair source="createdById" target="id"/>
 	</db-relationship>
-	<db-relationship name="enrolFieldConfiguration" source="FieldConfigurationScheme" target="FieldConfiguration" toMany="false">
+	<db-relationship name="enrolFieldConfiguration" source="FieldConfigurationScheme" target="FieldConfiguration">
 		<db-attribute-pair source="enrolFieldConfigurationId" target="id"/>
 	</db-relationship>
 	<db-relationship name="fieldConfigurationLink" source="FieldConfigurationScheme" target="FieldConfigurationLink" toMany="true">
 		<db-attribute-pair source="id" target="schemeId"/>
 	</db-relationship>
-	<db-relationship name="waitingListFieldConfiguration" source="FieldConfigurationScheme" target="FieldConfiguration" toMany="false">
+	<db-relationship name="waitingListFieldConfiguration" source="FieldConfigurationScheme" target="FieldConfiguration">
 		<db-attribute-pair source="waitingListFieldConfigurationId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="FieldHeading" target="College" toMany="false">
+	<db-relationship name="college" source="FieldHeading" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="fieldConfiguration" source="FieldHeading" target="FieldConfiguration" toMany="false">
+	<db-relationship name="fieldConfiguration" source="FieldHeading" target="FieldConfiguration">
 		<db-attribute-pair source="fieldConfigurationId" target="id"/>
 	</db-relationship>
 	<db-relationship name="fields" source="FieldHeading" target="Field" toMany="true">
 		<db-attribute-pair source="id" target="fieldHeadingId"/>
 	</db-relationship>
-	<db-relationship name="college" source="Instruction" target="College" toMany="false">
+	<db-relationship name="college" source="Instruction" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="parameters" source="Instruction" target="InstructionParameter" toMany="true">
 		<db-attribute-pair source="id" target="instruction_id"/>
 	</db-relationship>
-	<db-relationship name="instruction" source="InstructionParameter" target="Instruction" toMany="false">
+	<db-relationship name="instruction" source="InstructionParameter" target="Instruction">
 		<db-attribute-pair source="instruction_id" target="id"/>
 	</db-relationship>
-	<db-relationship name="authorisedRebillingCard" source="Invoice" target="PaymentIn" toMany="false">
+	<db-relationship name="authorisedRebillingCard" source="Invoice" target="PaymentIn">
 		<db-attribute-pair source="authorisedRebillingCardId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="Invoice" target="College" toMany="false">
+	<db-relationship name="college" source="Invoice" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="contact" source="Invoice" target="Contact" toMany="false">
+	<db-relationship name="contact" source="Invoice" target="Contact">
 		<db-attribute-pair source="contactId" target="id"/>
 	</db-relationship>
-	<db-relationship name="corporatePassUsed" source="Invoice" target="CorporatePass" toMany="false">
+	<db-relationship name="corporatePassUsed" source="Invoice" target="CorporatePass">
 		<db-attribute-pair source="corporatePassId" target="id"/>
 	</db-relationship>
 	<db-relationship name="invoiceDueDates" source="Invoice" target="InvoiceDueDate" toMany="true">
@@ -3630,25 +3628,25 @@
 	<db-relationship name="paymentInLines" source="Invoice" target="PaymentInLine" toMany="true">
 		<db-attribute-pair source="id" target="invoiceId"/>
 	</db-relationship>
-	<db-relationship name="webSite" source="Invoice" target="WebSite" toMany="false">
+	<db-relationship name="webSite" source="Invoice" target="WebSite">
 		<db-attribute-pair source="webSiteId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="InvoiceDueDate" target="College" toMany="false">
+	<db-relationship name="college" source="InvoiceDueDate" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="invoice" source="InvoiceDueDate" target="Invoice" toMany="false">
+	<db-relationship name="invoice" source="InvoiceDueDate" target="Invoice">
 		<db-attribute-pair source="invoiceId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="InvoiceLine" target="College" toMany="false">
+	<db-relationship name="college" source="InvoiceLine" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="courseClass" source="InvoiceLine" target="CourseClass" toMany="false">
+	<db-relationship name="courseClass" source="InvoiceLine" target="CourseClass">
 		<db-attribute-pair source="courseClassId" target="id"/>
 	</db-relationship>
-	<db-relationship name="enrolment" source="InvoiceLine" target="Enrolment" toMany="false">
+	<db-relationship name="enrolment" source="InvoiceLine" target="Enrolment">
 		<db-attribute-pair source="enrolmentId" target="id"/>
 	</db-relationship>
-	<db-relationship name="invoice" source="InvoiceLine" target="Invoice" toMany="false">
+	<db-relationship name="invoice" source="InvoiceLine" target="Invoice">
 		<db-attribute-pair source="invoiceId" target="id"/>
 	</db-relationship>
 	<db-relationship name="invoicelineDiscounts" source="InvoiceLine" target="InvoiceLine_Discount" toMany="true">
@@ -3660,52 +3658,52 @@
 	<db-relationship name="voucherPaymentIn" source="InvoiceLine" target="VoucherPaymentIn" toMany="true">
 		<db-attribute-pair source="id" target="invoiceLineId"/>
 	</db-relationship>
-	<db-relationship name="college" source="InvoiceLine_Discount" target="College" toMany="false">
+	<db-relationship name="college" source="InvoiceLine_Discount" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="discount" source="InvoiceLine_Discount" target="Discount" toMany="false">
+	<db-relationship name="discount" source="InvoiceLine_Discount" target="Discount">
 		<db-attribute-pair source="discountId" target="id"/>
 	</db-relationship>
-	<db-relationship name="invoiceLine" source="InvoiceLine_Discount" target="InvoiceLine" toMany="false">
+	<db-relationship name="invoiceLine" source="InvoiceLine_Discount" target="InvoiceLine">
 		<db-attribute-pair source="invoiceLineId" target="id"/>
 	</db-relationship>
 	<db-relationship name="untitledRel" source="Language" target="Student" toMany="true">
 		<db-attribute-pair source="id" target="languageId"/>
 	</db-relationship>
-	<db-relationship name="college" source="LicenseFee" target="College" toMany="false">
+	<db-relationship name="college" source="LicenseFee" target="College">
 		<db-attribute-pair source="college_id" target="id"/>
 	</db-relationship>
-	<db-relationship name="webSite" source="LicenseFee" target="WebSite" toMany="false">
+	<db-relationship name="webSite" source="LicenseFee" target="WebSite">
 		<db-attribute-pair source="webSiteId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="Log" target="College" toMany="false">
+	<db-relationship name="college" source="Log" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="user" source="Log" target="WillowUser" toMany="false">
+	<db-relationship name="user" source="Log" target="WillowUser">
 		<db-attribute-pair source="userId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="Message" target="College" toMany="false">
+	<db-relationship name="college" source="Message" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="messagePeople" source="Message" target="MessagePerson" toMany="true">
 		<db-attribute-pair source="id" target="messageId"/>
 	</db-relationship>
-	<db-relationship name="college" source="MessagePerson" target="College" toMany="false">
+	<db-relationship name="college" source="MessagePerson" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="contact" source="MessagePerson" target="Contact" toMany="false">
+	<db-relationship name="contact" source="MessagePerson" target="Contact">
 		<db-attribute-pair source="contactId" target="id"/>
 	</db-relationship>
-	<db-relationship name="message" source="MessagePerson" target="Message" toMany="false">
+	<db-relationship name="message" source="MessagePerson" target="Message">
 		<db-attribute-pair source="messageId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="MessageTemplate" target="College" toMany="false">
+	<db-relationship name="college" source="MessageTemplate" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="assessmentClassModules" source="Module" target="AssessmentClassModule" toMany="true">
 		<db-attribute-pair source="id" target="moduleId"/>
 	</db-relationship>
-	<db-relationship name="college" source="Module" target="College" toMany="false">
+	<db-relationship name="college" source="Module" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="moduleCourses" source="Module" target="CourseModule" toMany="true">
@@ -3717,34 +3715,34 @@
 	<db-relationship name="sessionModules" source="Module" target="SessionModule" toMany="true">
 		<db-attribute-pair source="id" target="moduleId"/>
 	</db-relationship>
-	<db-relationship name="college" source="NotificationTemplate" target="College" toMany="false">
+	<db-relationship name="college" source="NotificationTemplate" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="certificateOutcomes" source="Outcome" target="CertificateOutcome" toMany="true">
 		<db-attribute-pair source="id" target="outcomeId"/>
 	</db-relationship>
-	<db-relationship name="college" source="Outcome" target="College" toMany="false">
+	<db-relationship name="college" source="Outcome" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="enrolment" source="Outcome" target="Enrolment" toMany="false">
+	<db-relationship name="enrolment" source="Outcome" target="Enrolment">
 		<db-attribute-pair source="enrolmentId" target="id"/>
 	</db-relationship>
-	<db-relationship name="markedByTutor" source="Outcome" target="Tutor" toMany="false">
+	<db-relationship name="markedByTutor" source="Outcome" target="Tutor">
 		<db-attribute-pair source="markedByTutorId" target="id"/>
 	</db-relationship>
-	<db-relationship name="module" source="Outcome" target="Module" toMany="false">
+	<db-relationship name="module" source="Outcome" target="Module">
 		<db-attribute-pair source="moduleId" target="id"/>
 	</db-relationship>
-	<db-relationship name="priorLearning" source="Outcome" target="PriorLearning" toMany="false">
+	<db-relationship name="priorLearning" source="Outcome" target="PriorLearning">
 		<db-attribute-pair source="priorLearningId" target="id"/>
 	</db-relationship>
 	<db-relationship name="authorisedInvoices" source="PaymentIn" target="Invoice" toMany="true">
 		<db-attribute-pair source="id" target="authorisedRebillingCardId"/>
 	</db-relationship>
-	<db-relationship name="college" source="PaymentIn" target="College" toMany="false">
+	<db-relationship name="college" source="PaymentIn" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="contact" source="PaymentIn" target="Contact" toMany="false">
+	<db-relationship name="contact" source="PaymentIn" target="Contact">
 		<db-attribute-pair source="contactId" target="id"/>
 	</db-relationship>
 	<db-relationship name="paymentInLines" source="PaymentIn" target="PaymentInLine" toMany="true">
@@ -3756,49 +3754,49 @@
 	<db-relationship name="voucherPaymentIn" source="PaymentIn" target="VoucherPaymentIn" toMany="true">
 		<db-attribute-pair source="id" target="paymentInId"/>
 	</db-relationship>
-	<db-relationship name="college" source="PaymentInLine" target="College" toMany="false">
+	<db-relationship name="college" source="PaymentInLine" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="invoice" source="PaymentInLine" target="Invoice" toMany="false">
+	<db-relationship name="invoice" source="PaymentInLine" target="Invoice">
 		<db-attribute-pair source="invoiceId" target="id"/>
 	</db-relationship>
-	<db-relationship name="paymentIn" source="PaymentInLine" target="PaymentIn" toMany="false">
+	<db-relationship name="paymentIn" source="PaymentInLine" target="PaymentIn">
 		<db-attribute-pair source="paymentInId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="PaymentOut" target="College" toMany="false">
+	<db-relationship name="college" source="PaymentOut" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="contact" source="PaymentOut" target="Contact" toMany="false">
+	<db-relationship name="contact" source="PaymentOut" target="Contact">
 		<db-attribute-pair source="contactId" target="id"/>
 	</db-relationship>
 	<db-relationship name="paymentOutTransactions" source="PaymentOut" target="PaymentOutTransaction" toMany="true">
 		<db-attribute-pair source="id" target="paymentOutId"/>
 	</db-relationship>
-	<db-relationship name="paymentOut" source="PaymentOutTransaction" target="PaymentOut" toMany="false">
+	<db-relationship name="paymentOut" source="PaymentOutTransaction" target="PaymentOut">
 		<db-attribute-pair source="paymentOutId" target="id"/>
 	</db-relationship>
-	<db-relationship name="payment" source="PaymentTransaction" target="PaymentIn" toMany="false">
+	<db-relationship name="payment" source="PaymentTransaction" target="PaymentIn">
 		<db-attribute-pair source="paymentId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="Preference" target="College" toMany="false">
+	<db-relationship name="college" source="Preference" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="webSite" source="Preference" target="WebSite" toMany="false">
+	<db-relationship name="webSite" source="Preference" target="WebSite">
 		<db-attribute-pair source="webSiteId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="PriorLearning" target="College" toMany="false">
+	<db-relationship name="college" source="PriorLearning" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="outcomes" source="PriorLearning" target="Outcome" toMany="true">
 		<db-attribute-pair source="id" target="priorLearningId"/>
 	</db-relationship>
-	<db-relationship name="qualification" source="PriorLearning" target="Qualification" toMany="false">
+	<db-relationship name="qualification" source="PriorLearning" target="Qualification">
 		<db-attribute-pair source="qualificationId" target="id"/>
 	</db-relationship>
-	<db-relationship name="student" source="PriorLearning" target="Student" toMany="false">
+	<db-relationship name="student" source="PriorLearning" target="Student">
 		<db-attribute-pair source="studentId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="Product" target="College" toMany="false">
+	<db-relationship name="college" source="Product" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="corporatePassProducts" source="Product" target="CorporatePass_Product" toMany="true">
@@ -3819,16 +3817,16 @@
 	<db-relationship name="voucherProductCourses" source="Product" target="VoucherProductCourse" toMany="true">
 		<db-attribute-pair source="id" target="voucherProductId"/>
 	</db-relationship>
-	<db-relationship name="college" source="ProductItem" target="College" toMany="false">
+	<db-relationship name="college" source="ProductItem" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="contact" source="ProductItem" target="Contact" toMany="false">
+	<db-relationship name="contact" source="ProductItem" target="Contact">
 		<db-attribute-pair source="contactId" target="id"/>
 	</db-relationship>
-	<db-relationship name="invoiceLine" source="ProductItem" target="InvoiceLine" toMany="false">
+	<db-relationship name="invoiceLine" source="ProductItem" target="InvoiceLine">
 		<db-attribute-pair source="invoiceLineId" target="id"/>
 	</db-relationship>
-	<db-relationship name="product" source="ProductItem" target="Product" toMany="false">
+	<db-relationship name="product" source="ProductItem" target="Product">
 		<db-attribute-pair source="productId" target="id"/>
 	</db-relationship>
 	<db-relationship name="voucherPaymentIn" source="ProductItem" target="VoucherPaymentIn" toMany="true">
@@ -3837,7 +3835,7 @@
 	<db-relationship name="certificates" source="Qualification" target="Certificate" toMany="true">
 		<db-attribute-pair source="id" target="qualificationId"/>
 	</db-relationship>
-	<db-relationship name="college" source="Qualification" target="College" toMany="false">
+	<db-relationship name="college" source="Qualification" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="courses" source="Qualification" target="Course" toMany="true">
@@ -3846,22 +3844,22 @@
 	<db-relationship name="priorLearnings" source="Qualification" target="PriorLearning" toMany="true">
 		<db-attribute-pair source="id" target="qualificationId"/>
 	</db-relationship>
-	<db-relationship name="college" source="QueuedRecord" target="College" toMany="false">
+	<db-relationship name="college" source="QueuedRecord" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="queuedTransaction" source="QueuedRecord" target="QueuedTransaction" toMany="false">
+	<db-relationship name="queuedTransaction" source="QueuedRecord" target="QueuedTransaction">
 		<db-attribute-pair source="transactionId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="QueuedStatistic" target="College" toMany="false">
+	<db-relationship name="college" source="QueuedStatistic" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="QueuedTransaction" target="College" toMany="false">
+	<db-relationship name="college" source="QueuedTransaction" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="queuedRecords" source="QueuedTransaction" target="QueuedRecord" toMany="true">
 		<db-attribute-pair source="id" target="transactionId"/>
 	</db-relationship>
-	<db-relationship name="college" source="Room" target="College" toMany="false">
+	<db-relationship name="college" source="Room" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="courseClasses" source="Room" target="CourseClass" toMany="true">
@@ -3870,25 +3868,25 @@
 	<db-relationship name="sessions" source="Room" target="Session" toMany="true">
 		<db-attribute-pair source="id" target="roomId"/>
 	</db-relationship>
-	<db-relationship name="site" source="Room" target="Site" toMany="false">
+	<db-relationship name="site" source="Room" target="Site">
 		<db-attribute-pair source="siteId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="Script" target="College" toMany="false">
+	<db-relationship name="college" source="Script" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="attendances" source="Session" target="Attendance" toMany="true">
 		<db-attribute-pair source="id" target="sessionId"/>
 	</db-relationship>
-	<db-relationship name="college" source="Session" target="College" toMany="false">
+	<db-relationship name="college" source="Session" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="courseClass" source="Session" target="CourseClass" toMany="false">
+	<db-relationship name="courseClass" source="Session" target="CourseClass">
 		<db-attribute-pair source="courseClassId" target="id"/>
 	</db-relationship>
-	<db-relationship name="marker" source="Session" target="Tutor" toMany="false">
+	<db-relationship name="marker" source="Session" target="Tutor">
 		<db-attribute-pair source="markerId" target="id"/>
 	</db-relationship>
-	<db-relationship name="room" source="Session" target="Room" toMany="false">
+	<db-relationship name="room" source="Session" target="Room">
 		<db-attribute-pair source="roomId" target="id"/>
 	</db-relationship>
 	<db-relationship name="sessionModules" source="Session" target="SessionModule" toMany="true">
@@ -3897,28 +3895,28 @@
 	<db-relationship name="sessionTutors" source="Session" target="SessionTutor" toMany="true">
 		<db-attribute-pair source="id" target="sessionId"/>
 	</db-relationship>
-	<db-relationship name="college" source="SessionModule" target="College" toMany="false">
+	<db-relationship name="college" source="SessionModule" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="module" source="SessionModule" target="Module" toMany="false">
+	<db-relationship name="module" source="SessionModule" target="Module">
 		<db-attribute-pair source="moduleId" target="id"/>
 	</db-relationship>
-	<db-relationship name="session" source="SessionModule" target="Session" toMany="false">
+	<db-relationship name="session" source="SessionModule" target="Session">
 		<db-attribute-pair source="sessionId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="SessionTutor" target="College" toMany="false">
+	<db-relationship name="college" source="SessionTutor" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="session" source="SessionTutor" target="Session" toMany="false">
+	<db-relationship name="session" source="SessionTutor" target="Session">
 		<db-attribute-pair source="sessionId" target="id"/>
 	</db-relationship>
-	<db-relationship name="tutor" source="SessionTutor" target="Tutor" toMany="false">
+	<db-relationship name="tutor" source="SessionTutor" target="Tutor">
 		<db-attribute-pair source="tutorId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="Site" target="College" toMany="false">
+	<db-relationship name="college" source="Site" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="country" source="Site" target="Country" toMany="false">
+	<db-relationship name="country" source="Site" target="Country">
 		<db-attribute-pair source="countryId" target="id"/>
 	</db-relationship>
 	<db-relationship name="rooms" source="Site" target="Room" toMany="true">
@@ -3939,22 +3937,22 @@
 	<db-relationship name="certificates" source="Student" target="Certificate" toMany="true">
 		<db-attribute-pair source="id" target="studentId"/>
 	</db-relationship>
-	<db-relationship name="college" source="Student" target="College" toMany="false">
+	<db-relationship name="college" source="Student" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="contact" source="Student" target="Contact" toMany="false">
+	<db-relationship name="contact" source="Student" target="Contact">
 		<db-attribute-pair source="id" target="studentId"/>
 	</db-relationship>
-	<db-relationship name="countryOfBirth" source="Student" target="Country" toMany="false">
+	<db-relationship name="countryOfBirth" source="Student" target="Country">
 		<db-attribute-pair source="countryOfBirthId" target="id"/>
 	</db-relationship>
 	<db-relationship name="enrolments" source="Student" target="Enrolment" toMany="true">
 		<db-attribute-pair source="id" target="studentId"/>
 	</db-relationship>
-	<db-relationship name="language" source="Student" target="Language" toMany="false">
+	<db-relationship name="language" source="Student" target="Language">
 		<db-attribute-pair source="languageId" target="id"/>
 	</db-relationship>
-	<db-relationship name="languageHome" source="Student" target="Language" toMany="false">
+	<db-relationship name="languageHome" source="Student" target="Language">
 		<db-attribute-pair source="languageId" target="id"/>
 	</db-relationship>
 	<db-relationship name="priorLearnings" source="Student" target="PriorLearning" toMany="true">
@@ -3966,31 +3964,31 @@
 	<db-relationship name="waitingLists" source="Student" target="WaitingList" toMany="true">
 		<db-attribute-pair source="id" target="studentId"/>
 	</db-relationship>
-	<db-relationship name="college" source="StudentConcession" target="College" toMany="false">
+	<db-relationship name="college" source="StudentConcession" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="concessionType" source="StudentConcession" target="ConcessionType" toMany="false">
+	<db-relationship name="concessionType" source="StudentConcession" target="ConcessionType">
 		<db-attribute-pair source="concessionTypeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="student" source="StudentConcession" target="Student" toMany="false">
+	<db-relationship name="student" source="StudentConcession" target="Student">
 		<db-attribute-pair source="studentId" target="id"/>
 	</db-relationship>
-	<db-relationship name="contact" source="SupportPassword" target="Contact" toMany="false">
+	<db-relationship name="contact" source="SupportPassword" target="Contact">
 		<db-attribute-pair source="contactId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="Survey" target="College" toMany="false">
+	<db-relationship name="college" source="Survey" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="customFields" source="Survey" target="CustomField" toMany="true">
 		<db-attribute-pair source="id" target="foreignId"/>
 	</db-relationship>
-	<db-relationship name="enrolment" source="Survey" target="Enrolment" toMany="false">
+	<db-relationship name="enrolment" source="Survey" target="Enrolment">
 		<db-attribute-pair source="enrolmentId" target="id"/>
 	</db-relationship>
-	<db-relationship name="fieldConfiguration" source="Survey" target="FieldConfiguration" toMany="false">
+	<db-relationship name="fieldConfiguration" source="Survey" target="FieldConfiguration">
 		<db-attribute-pair source="fieldConfigurationId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="SystemUser" target="College" toMany="false">
+	<db-relationship name="college" source="SystemUser" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="concessionTypesCreated" source="SystemUser" target="ConcessionType" toMany="true">
@@ -4002,7 +4000,7 @@
 	<db-relationship name="contactrelationsCreated" source="SystemUser" target="ContactRelationType" toMany="true">
 		<db-attribute-pair source="id" target="createdById"/>
 	</db-relationship>
-	<db-relationship name="defaultAdministrationCentre" source="SystemUser" target="Site" toMany="false">
+	<db-relationship name="defaultAdministrationCentre" source="SystemUser" target="Site">
 		<db-attribute-pair source="siteId" target="id"/>
 	</db-relationship>
 	<db-relationship name="documentVersions" source="SystemUser" target="DocumentVersion" toMany="true">
@@ -4020,10 +4018,10 @@
 	<db-relationship name="taxesCreated" source="SystemUser" target="Tax" toMany="true">
 		<db-attribute-pair source="id" target="createdById"/>
 	</db-relationship>
-	<db-relationship name="college" source="Tag" target="College" toMany="false">
+	<db-relationship name="college" source="Tag" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="parent" source="Tag" target="Tag" toMany="false">
+	<db-relationship name="parent" source="Tag" target="Tag">
 		<db-attribute-pair source="parentId" target="id"/>
 	</db-relationship>
 	<db-relationship name="tagGroupRequirements" source="Tag" target="TagGroupRequirement" toMany="true">
@@ -4035,34 +4033,34 @@
 	<db-relationship name="tags" source="Tag" target="Tag" toMany="true">
 		<db-attribute-pair source="id" target="parentId"/>
 	</db-relationship>
-	<db-relationship name="college" source="TagGroupRequirement" target="College" toMany="false">
+	<db-relationship name="college" source="TagGroupRequirement" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="tag" source="TagGroupRequirement" target="Tag" toMany="false">
+	<db-relationship name="tag" source="TagGroupRequirement" target="Tag">
 		<db-attribute-pair source="tagId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="Taggable" target="College" toMany="false">
+	<db-relationship name="college" source="Taggable" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="taggableTags" source="Taggable" target="TaggableTag" toMany="true">
 		<db-attribute-pair source="id" target="taggableId"/>
 	</db-relationship>
-	<db-relationship name="college" source="TaggableTag" target="College" toMany="false">
+	<db-relationship name="college" source="TaggableTag" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="tag" source="TaggableTag" target="Tag" toMany="false">
+	<db-relationship name="tag" source="TaggableTag" target="Tag">
 		<db-attribute-pair source="tagId" target="id"/>
 	</db-relationship>
-	<db-relationship name="taggable" source="TaggableTag" target="Taggable" toMany="false">
+	<db-relationship name="taggable" source="TaggableTag" target="Taggable">
 		<db-attribute-pair source="taggableId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="Tax" target="College" toMany="false">
+	<db-relationship name="college" source="Tax" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="contacts" source="Tax" target="Contact" toMany="true">
 		<db-attribute-pair source="id" target="taxOverrideId"/>
 	</db-relationship>
-	<db-relationship name="createdBy" source="Tax" target="SystemUser" toMany="false">
+	<db-relationship name="createdBy" source="Tax" target="SystemUser">
 		<db-attribute-pair source="createdById" target="id"/>
 	</db-relationship>
 	<db-relationship name="assessmentClassTutors" source="Tutor" target="AssessmentClassTutor" toMany="true">
@@ -4071,10 +4069,10 @@
 	<db-relationship name="attendances" source="Tutor" target="Attendance" toMany="true">
 		<db-attribute-pair source="id" target="markedByTutorId"/>
 	</db-relationship>
-	<db-relationship name="college" source="Tutor" target="College" toMany="false">
+	<db-relationship name="college" source="Tutor" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="contact" source="Tutor" target="Contact" toMany="false">
+	<db-relationship name="contact" source="Tutor" target="Contact">
 		<db-attribute-pair source="id" target="tutorId"/>
 	</db-relationship>
 	<db-relationship name="markedOutcomes" source="Tutor" target="Outcome" toMany="true">
@@ -4089,91 +4087,91 @@
 	<db-relationship name="tutorRoles" source="Tutor" target="TutorRole" toMany="true">
 		<db-attribute-pair source="id" target="tutorId"/>
 	</db-relationship>
-	<db-relationship name="college" source="TutorRole" target="College" toMany="false">
+	<db-relationship name="college" source="TutorRole" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="courseClass" source="TutorRole" target="CourseClass" toMany="false">
+	<db-relationship name="courseClass" source="TutorRole" target="CourseClass">
 		<db-attribute-pair source="courseClassId" target="id"/>
 	</db-relationship>
-	<db-relationship name="tutor" source="TutorRole" target="Tutor" toMany="false">
+	<db-relationship name="tutor" source="TutorRole" target="Tutor">
 		<db-attribute-pair source="tutorId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="VoucherPaymentIn" target="College" toMany="false">
+	<db-relationship name="college" source="VoucherPaymentIn" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="invoiceLine" source="VoucherPaymentIn" target="InvoiceLine" toMany="false">
+	<db-relationship name="invoiceLine" source="VoucherPaymentIn" target="InvoiceLine">
 		<db-attribute-pair source="invoiceLineId" target="id"/>
 	</db-relationship>
-	<db-relationship name="payment" source="VoucherPaymentIn" target="PaymentIn" toMany="false">
+	<db-relationship name="payment" source="VoucherPaymentIn" target="PaymentIn">
 		<db-attribute-pair source="paymentInId" target="id"/>
 	</db-relationship>
-	<db-relationship name="voucher" source="VoucherPaymentIn" target="ProductItem" toMany="false">
+	<db-relationship name="voucher" source="VoucherPaymentIn" target="ProductItem">
 		<db-attribute-pair source="voucherId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="VoucherProductCourse" target="College" toMany="false">
+	<db-relationship name="college" source="VoucherProductCourse" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="course" source="VoucherProductCourse" target="Course" toMany="false">
+	<db-relationship name="course" source="VoucherProductCourse" target="Course">
 		<db-attribute-pair source="courseId" target="id"/>
 	</db-relationship>
-	<db-relationship name="voucherProduct" source="VoucherProductCourse" target="Product" toMany="false">
+	<db-relationship name="voucherProduct" source="VoucherProductCourse" target="Product">
 		<db-attribute-pair source="voucherProductId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="WaitingList" target="College" toMany="false">
+	<db-relationship name="college" source="WaitingList" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="course" source="WaitingList" target="Course" toMany="false">
+	<db-relationship name="course" source="WaitingList" target="Course">
 		<db-attribute-pair source="courseId" target="id"/>
 	</db-relationship>
 	<db-relationship name="customFields" source="WaitingList" target="CustomField" toMany="true">
 		<db-attribute-pair source="id" target="foreignId"/>
 	</db-relationship>
-	<db-relationship name="student" source="WaitingList" target="Student" toMany="false">
+	<db-relationship name="student" source="WaitingList" target="Student">
 		<db-attribute-pair source="studentId" target="id"/>
 	</db-relationship>
 	<db-relationship name="waitingListSites" source="WaitingList" target="WaitingListSite" toMany="true">
 		<db-attribute-pair source="id" target="waitingListId"/>
 	</db-relationship>
-	<db-relationship name="college" source="WaitingListSite" target="College" toMany="false">
+	<db-relationship name="college" source="WaitingListSite" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="site" source="WaitingListSite" target="Site" toMany="false">
+	<db-relationship name="site" source="WaitingListSite" target="Site">
 		<db-attribute-pair source="siteId" target="id"/>
 	</db-relationship>
-	<db-relationship name="waitingList" source="WaitingListSite" target="WaitingList" toMany="false">
+	<db-relationship name="waitingList" source="WaitingListSite" target="WaitingList">
 		<db-attribute-pair source="waitingListId" target="id"/>
 	</db-relationship>
 	<db-relationship name="webContentVisibilities" source="WebContent" target="WebContentVisibility" toMany="true">
 		<db-attribute-pair source="id" target="WebContentId"/>
 	</db-relationship>
-	<db-relationship name="webSiteVersion" source="WebContent" target="WebSiteVersion" toMany="false">
+	<db-relationship name="webSiteVersion" source="WebContent" target="WebSiteVersion">
 		<db-attribute-pair source="webSiteVersionId" target="id"/>
 	</db-relationship>
-	<db-relationship name="webContent" source="WebContentVisibility" target="WebContent" toMany="false">
+	<db-relationship name="webContent" source="WebContentVisibility" target="WebContent">
 		<db-attribute-pair source="WebContentId" target="id"/>
 	</db-relationship>
-	<db-relationship name="webNode" source="WebContentVisibility" target="WebNode" toMany="false">
+	<db-relationship name="webNode" source="WebContentVisibility" target="WebNode">
 		<db-attribute-pair source="WebNodeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="webNodeType" source="WebContentVisibility" target="WebNodeType" toMany="false">
+	<db-relationship name="webNodeType" source="WebContentVisibility" target="WebNodeType">
 		<db-attribute-pair source="WebNodeTypeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="WebHostName" target="College" toMany="false">
+	<db-relationship name="college" source="WebHostName" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="webSite" source="WebHostName" target="WebSite" toMany="false">
+	<db-relationship name="webSite" source="WebHostName" target="WebSite">
 		<db-attribute-pair source="webSiteId" target="id"/>
 	</db-relationship>
 	<db-relationship name="childrenMenus" source="WebMenu" target="WebMenu" toMany="true">
 		<db-attribute-pair source="id" target="webMenuParentId"/>
 	</db-relationship>
-	<db-relationship name="parentWebMenu" source="WebMenu" target="WebMenu" toMany="false">
+	<db-relationship name="parentWebMenu" source="WebMenu" target="WebMenu">
 		<db-attribute-pair source="webMenuParentId" target="id"/>
 	</db-relationship>
-	<db-relationship name="webNode" source="WebMenu" target="WebNode" toMany="false">
+	<db-relationship name="webNode" source="WebMenu" target="WebNode">
 		<db-attribute-pair source="webNodeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="webSiteVersion" source="WebMenu" target="WebSiteVersion" toMany="false">
+	<db-relationship name="webSiteVersion" source="WebMenu" target="WebSiteVersion">
 		<db-attribute-pair source="webSiteVersionId" target="id"/>
 	</db-relationship>
 	<db-relationship name="webContentVisibility" source="WebNode" target="WebContentVisibility" toMany="true">
@@ -4182,10 +4180,10 @@
 	<db-relationship name="webMenus" source="WebNode" target="WebMenu" toMany="true">
 		<db-attribute-pair source="id" target="webNodeId"/>
 	</db-relationship>
-	<db-relationship name="webNodeType" source="WebNode" target="WebNodeType" toMany="false">
+	<db-relationship name="webNodeType" source="WebNode" target="WebNodeType">
 		<db-attribute-pair source="webNodeTypeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="webSiteVersion" source="WebNode" target="WebSiteVersion" toMany="false">
+	<db-relationship name="webSiteVersion" source="WebNode" target="WebSiteVersion">
 		<db-attribute-pair source="webSiteVersionId" target="id"/>
 	</db-relationship>
 	<db-relationship name="webUrlAliases" source="WebNode" target="WebURLAlias" toMany="true">
@@ -4197,13 +4195,13 @@
 	<db-relationship name="webNode" source="WebNodeType" target="WebNode" toMany="true">
 		<db-attribute-pair source="id" target="webNodeTypeId"/>
 	</db-relationship>
-	<db-relationship name="webSiteLayout" source="WebNodeType" target="WebSiteLayout" toMany="false">
+	<db-relationship name="webSiteLayout" source="WebNodeType" target="WebSiteLayout">
 		<db-attribute-pair source="webSiteLayoutId" target="id"/>
 	</db-relationship>
-	<db-relationship name="webSiteVersion" source="WebNodeType" target="WebSiteVersion" toMany="false">
+	<db-relationship name="webSiteVersion" source="WebNodeType" target="WebSiteVersion">
 		<db-attribute-pair source="webSiteVersionId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="WebSite" target="College" toMany="false">
+	<db-relationship name="college" source="WebSite" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="collegeDomains" source="WebSite" target="WebHostName" toMany="true">
@@ -4227,13 +4225,13 @@
 	<db-relationship name="webNodeTypes" source="WebSiteLayout" target="WebNodeType" toMany="true">
 		<db-attribute-pair source="id" target="webSiteLayoutId"/>
 	</db-relationship>
-	<db-relationship name="webSiteVersion" source="WebSiteLayout" target="WebSiteVersion" toMany="false">
+	<db-relationship name="webSiteVersion" source="WebSiteLayout" target="WebSiteVersion">
 		<db-attribute-pair source="webSiteVersionId" target="id"/>
 	</db-relationship>
 	<db-relationship name="contents" source="WebSiteVersion" target="WebContent" toMany="true">
 		<db-attribute-pair source="id" target="webSiteVersionId"/>
 	</db-relationship>
-	<db-relationship name="deployedBy" source="WebSiteVersion" target="SystemUser" toMany="false">
+	<db-relationship name="deployedBy" source="WebSiteVersion" target="SystemUser">
 		<db-attribute-pair source="deployedById" target="id"/>
 	</db-relationship>
 	<db-relationship name="layouts" source="WebSiteVersion" target="WebSiteLayout" toMany="true">
@@ -4248,19 +4246,19 @@
 	<db-relationship name="webNodes" source="WebSiteVersion" target="WebNode" toMany="true">
 		<db-attribute-pair source="id" target="webSiteVersionId"/>
 	</db-relationship>
-	<db-relationship name="webSite" source="WebSiteVersion" target="WebSite" toMany="false">
+	<db-relationship name="webSite" source="WebSiteVersion" target="WebSite">
 		<db-attribute-pair source="webSiteId" target="id"/>
 	</db-relationship>
 	<db-relationship name="webURLAliases" source="WebSiteVersion" target="WebURLAlias" toMany="true">
 		<db-attribute-pair source="id" target="webSiteVersionId"/>
 	</db-relationship>
-	<db-relationship name="layout" source="WebTemplate" target="WebSiteLayout" toMany="false">
+	<db-relationship name="layout" source="WebTemplate" target="WebSiteLayout">
 		<db-attribute-pair source="layoutId" target="id"/>
 	</db-relationship>
-	<db-relationship name="webNode" source="WebURLAlias" target="WebNode" toMany="false">
+	<db-relationship name="webNode" source="WebURLAlias" target="WebNode">
 		<db-attribute-pair source="webNodeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="webSiteVersion" source="WebURLAlias" target="WebSiteVersion" toMany="false">
+	<db-relationship name="webSiteVersion" source="WebURLAlias" target="WebSiteVersion">
 		<db-attribute-pair source="webSiteVersionId" target="id"/>
 	</db-relationship>
 	<db-relationship name="logs" source="WillowUser" target="Log" toMany="true">

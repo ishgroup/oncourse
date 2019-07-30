@@ -42,7 +42,7 @@ public abstract class AbstractUtil {
 		TestInitialContextFactory.bind("jdbc/oncourse", oncourse);
 		TestInitialContextFactory.bind("java:comp/env/jdbc/oncourse", oncourse);
 
-		cayenneRuntime = new ServerRuntime("cayenne-oncourse.xml");
+		cayenneRuntime = ServerRuntime.builder().addConfig("cayenne-oncourse.xml").build();
 
 		for(DataNode dataNode: cayenneRuntime.getDataDomain().getDataNodes()){
 			dataNode.getAdapter().getExtendedTypes().registerType(new MoneyType());

@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -36,52 +39,77 @@ public abstract class _WebContent extends WillowCayenneObject {
     public static final Property<List<WebContentVisibility>> WEB_CONTENT_VISIBILITIES = Property.create("webContentVisibilities", List.class);
     public static final Property<WebSiteVersion> WEB_SITE_VERSION = Property.create("webSiteVersion", WebSiteVersion.class);
 
+    protected String content;
+    protected String contentTextile;
+    protected Date created;
+    protected Date modified;
+    protected String name;
+
+    protected Object webContentVisibilities;
+    protected Object webSiteVersion;
+
     public void setContent(String content) {
-        writeProperty("content", content);
+        beforePropertyWrite("content", this.content, content);
+        this.content = content;
     }
+
     public String getContent() {
-        return (String)readProperty("content");
+        beforePropertyRead("content");
+        return this.content;
     }
 
     public void setContentTextile(String contentTextile) {
-        writeProperty("contentTextile", contentTextile);
+        beforePropertyWrite("contentTextile", this.contentTextile, contentTextile);
+        this.contentTextile = contentTextile;
     }
+
     public String getContentTextile() {
-        return (String)readProperty("contentTextile");
+        beforePropertyRead("contentTextile");
+        return this.contentTextile;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        beforePropertyWrite("name", this.name, name);
+        this.name = name;
     }
+
     public String getName() {
-        return (String)readProperty("name");
+        beforePropertyRead("name");
+        return this.name;
     }
 
     public void addToWebContentVisibilities(WebContentVisibility obj) {
         addToManyTarget("webContentVisibilities", obj, true);
     }
+
     public void removeFromWebContentVisibilities(WebContentVisibility obj) {
         removeToManyTarget("webContentVisibilities", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<WebContentVisibility> getWebContentVisibilities() {
         return (List<WebContentVisibility>)readProperty("webContentVisibilities");
     }
-
 
     public void setWebSiteVersion(WebSiteVersion webSiteVersion) {
         setToOneTarget("webSiteVersion", webSiteVersion, true);
@@ -91,9 +119,99 @@ public abstract class _WebContent extends WillowCayenneObject {
         return (WebSiteVersion)readProperty("webSiteVersion");
     }
 
-
     protected abstract void onPostAdd();
 
     protected abstract void onPreUpdate();
+
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "content":
+                return this.content;
+            case "contentTextile":
+                return this.contentTextile;
+            case "created":
+                return this.created;
+            case "modified":
+                return this.modified;
+            case "name":
+                return this.name;
+            case "webContentVisibilities":
+                return this.webContentVisibilities;
+            case "webSiteVersion":
+                return this.webSiteVersion;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "content":
+                this.content = (String)val;
+                break;
+            case "contentTextile":
+                this.contentTextile = (String)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "name":
+                this.name = (String)val;
+                break;
+            case "webContentVisibilities":
+                this.webContentVisibilities = val;
+                break;
+            case "webSiteVersion":
+                this.webSiteVersion = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.content);
+        out.writeObject(this.contentTextile);
+        out.writeObject(this.created);
+        out.writeObject(this.modified);
+        out.writeObject(this.name);
+        out.writeObject(this.webContentVisibilities);
+        out.writeObject(this.webSiteVersion);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.content = (String)in.readObject();
+        this.contentTextile = (String)in.readObject();
+        this.created = (Date)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.name = (String)in.readObject();
+        this.webContentVisibilities = in.readObject();
+        this.webSiteVersion = in.readObject();
+    }
 
 }

@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -51,101 +54,154 @@ public abstract class _BinaryInfo extends WillowCayenneObject {
     public static final Property<List<BinaryInfoRelation>> BINARY_INFO_RELATIONS = Property.create("binaryInfoRelations", List.class);
     public static final Property<College> COLLEGE = Property.create("college", College.class);
 
+    protected Long angelId;
+    protected Long byteSize;
+    protected Date created;
+    protected String filePath;
+    protected String fileUUID;
+    protected String mimeType;
+    protected Date modified;
+    protected String name;
+    protected Integer pixelHeight;
+    protected Integer pixelWidth;
+    protected Integer referenceNumber;
+    protected AttachmentInfoVisibility webVisible;
+
+    protected Object binaryInfoRelations;
+    protected Object college;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setByteSize(Long byteSize) {
-        writeProperty("byteSize", byteSize);
+        beforePropertyWrite("byteSize", this.byteSize, byteSize);
+        this.byteSize = byteSize;
     }
+
     public Long getByteSize() {
-        return (Long)readProperty("byteSize");
+        beforePropertyRead("byteSize");
+        return this.byteSize;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setFilePath(String filePath) {
-        writeProperty("filePath", filePath);
+        beforePropertyWrite("filePath", this.filePath, filePath);
+        this.filePath = filePath;
     }
+
     public String getFilePath() {
-        return (String)readProperty("filePath");
+        beforePropertyRead("filePath");
+        return this.filePath;
     }
 
     public void setFileUUID(String fileUUID) {
-        writeProperty("fileUUID", fileUUID);
+        beforePropertyWrite("fileUUID", this.fileUUID, fileUUID);
+        this.fileUUID = fileUUID;
     }
+
     public String getFileUUID() {
-        return (String)readProperty("fileUUID");
+        beforePropertyRead("fileUUID");
+        return this.fileUUID;
     }
 
     public void setMimeType(String mimeType) {
-        writeProperty("mimeType", mimeType);
+        beforePropertyWrite("mimeType", this.mimeType, mimeType);
+        this.mimeType = mimeType;
     }
+
     public String getMimeType() {
-        return (String)readProperty("mimeType");
+        beforePropertyRead("mimeType");
+        return this.mimeType;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        beforePropertyWrite("name", this.name, name);
+        this.name = name;
     }
+
     public String getName() {
-        return (String)readProperty("name");
+        beforePropertyRead("name");
+        return this.name;
     }
 
     public void setPixelHeight(Integer pixelHeight) {
-        writeProperty("pixelHeight", pixelHeight);
+        beforePropertyWrite("pixelHeight", this.pixelHeight, pixelHeight);
+        this.pixelHeight = pixelHeight;
     }
+
     public Integer getPixelHeight() {
-        return (Integer)readProperty("pixelHeight");
+        beforePropertyRead("pixelHeight");
+        return this.pixelHeight;
     }
 
     public void setPixelWidth(Integer pixelWidth) {
-        writeProperty("pixelWidth", pixelWidth);
+        beforePropertyWrite("pixelWidth", this.pixelWidth, pixelWidth);
+        this.pixelWidth = pixelWidth;
     }
+
     public Integer getPixelWidth() {
-        return (Integer)readProperty("pixelWidth");
+        beforePropertyRead("pixelWidth");
+        return this.pixelWidth;
     }
 
     public void setReferenceNumber(Integer referenceNumber) {
-        writeProperty("referenceNumber", referenceNumber);
+        beforePropertyWrite("referenceNumber", this.referenceNumber, referenceNumber);
+        this.referenceNumber = referenceNumber;
     }
+
     public Integer getReferenceNumber() {
-        return (Integer)readProperty("referenceNumber");
+        beforePropertyRead("referenceNumber");
+        return this.referenceNumber;
     }
 
     public void setWebVisible(AttachmentInfoVisibility webVisible) {
-        writeProperty("webVisible", webVisible);
+        beforePropertyWrite("webVisible", this.webVisible, webVisible);
+        this.webVisible = webVisible;
     }
+
     public AttachmentInfoVisibility getWebVisible() {
-        return (AttachmentInfoVisibility)readProperty("webVisible");
+        beforePropertyRead("webVisible");
+        return this.webVisible;
     }
 
     public void addToBinaryInfoRelations(BinaryInfoRelation obj) {
         addToManyTarget("binaryInfoRelations", obj, true);
     }
+
     public void removeFromBinaryInfoRelations(BinaryInfoRelation obj) {
         removeToManyTarget("binaryInfoRelations", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<BinaryInfoRelation> getBinaryInfoRelations() {
         return (List<BinaryInfoRelation>)readProperty("binaryInfoRelations");
     }
-
 
     public void setCollege(College college) {
         setToOneTarget("college", college, true);
@@ -155,5 +211,144 @@ public abstract class _BinaryInfo extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "byteSize":
+                return this.byteSize;
+            case "created":
+                return this.created;
+            case "filePath":
+                return this.filePath;
+            case "fileUUID":
+                return this.fileUUID;
+            case "mimeType":
+                return this.mimeType;
+            case "modified":
+                return this.modified;
+            case "name":
+                return this.name;
+            case "pixelHeight":
+                return this.pixelHeight;
+            case "pixelWidth":
+                return this.pixelWidth;
+            case "referenceNumber":
+                return this.referenceNumber;
+            case "webVisible":
+                return this.webVisible;
+            case "binaryInfoRelations":
+                return this.binaryInfoRelations;
+            case "college":
+                return this.college;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "byteSize":
+                this.byteSize = (Long)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "filePath":
+                this.filePath = (String)val;
+                break;
+            case "fileUUID":
+                this.fileUUID = (String)val;
+                break;
+            case "mimeType":
+                this.mimeType = (String)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "name":
+                this.name = (String)val;
+                break;
+            case "pixelHeight":
+                this.pixelHeight = (Integer)val;
+                break;
+            case "pixelWidth":
+                this.pixelWidth = (Integer)val;
+                break;
+            case "referenceNumber":
+                this.referenceNumber = (Integer)val;
+                break;
+            case "webVisible":
+                this.webVisible = (AttachmentInfoVisibility)val;
+                break;
+            case "binaryInfoRelations":
+                this.binaryInfoRelations = val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.byteSize);
+        out.writeObject(this.created);
+        out.writeObject(this.filePath);
+        out.writeObject(this.fileUUID);
+        out.writeObject(this.mimeType);
+        out.writeObject(this.modified);
+        out.writeObject(this.name);
+        out.writeObject(this.pixelHeight);
+        out.writeObject(this.pixelWidth);
+        out.writeObject(this.referenceNumber);
+        out.writeObject(this.webVisible);
+        out.writeObject(this.binaryInfoRelations);
+        out.writeObject(this.college);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.byteSize = (Long)in.readObject();
+        this.created = (Date)in.readObject();
+        this.filePath = (String)in.readObject();
+        this.fileUUID = (String)in.readObject();
+        this.mimeType = (String)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.name = (String)in.readObject();
+        this.pixelHeight = (Integer)in.readObject();
+        this.pixelWidth = (Integer)in.readObject();
+        this.referenceNumber = (Integer)in.readObject();
+        this.webVisible = (AttachmentInfoVisibility)in.readObject();
+        this.binaryInfoRelations = in.readObject();
+        this.college = in.readObject();
+    }
 
 }

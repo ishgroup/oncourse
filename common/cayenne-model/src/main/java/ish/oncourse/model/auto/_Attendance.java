@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 
 import org.apache.cayenne.exp.Property;
@@ -49,67 +52,109 @@ public abstract class _Attendance extends WillowCayenneObject {
     public static final Property<Session> SESSION = Property.create("session", Session.class);
     public static final Property<Student> STUDENT = Property.create("student", Student.class);
 
+    protected Long angelId;
+    protected Integer attendanceType;
+    protected Date attendedFrom;
+    protected Date attendedUntil;
+    protected Date created;
+    protected Integer durationMinutes;
+    protected Date markedByTutorDate;
+    protected Date modified;
+    protected String note;
+
+    protected Object college;
+    protected Object markedByTutor;
+    protected Object session;
+    protected Object student;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setAttendanceType(Integer attendanceType) {
-        writeProperty("attendanceType", attendanceType);
+        beforePropertyWrite("attendanceType", this.attendanceType, attendanceType);
+        this.attendanceType = attendanceType;
     }
+
     public Integer getAttendanceType() {
-        return (Integer)readProperty("attendanceType");
+        beforePropertyRead("attendanceType");
+        return this.attendanceType;
     }
 
     public void setAttendedFrom(Date attendedFrom) {
-        writeProperty("attendedFrom", attendedFrom);
+        beforePropertyWrite("attendedFrom", this.attendedFrom, attendedFrom);
+        this.attendedFrom = attendedFrom;
     }
+
     public Date getAttendedFrom() {
-        return (Date)readProperty("attendedFrom");
+        beforePropertyRead("attendedFrom");
+        return this.attendedFrom;
     }
 
     public void setAttendedUntil(Date attendedUntil) {
-        writeProperty("attendedUntil", attendedUntil);
+        beforePropertyWrite("attendedUntil", this.attendedUntil, attendedUntil);
+        this.attendedUntil = attendedUntil;
     }
+
     public Date getAttendedUntil() {
-        return (Date)readProperty("attendedUntil");
+        beforePropertyRead("attendedUntil");
+        return this.attendedUntil;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setDurationMinutes(Integer durationMinutes) {
-        writeProperty("durationMinutes", durationMinutes);
+        beforePropertyWrite("durationMinutes", this.durationMinutes, durationMinutes);
+        this.durationMinutes = durationMinutes;
     }
+
     public Integer getDurationMinutes() {
-        return (Integer)readProperty("durationMinutes");
+        beforePropertyRead("durationMinutes");
+        return this.durationMinutes;
     }
 
     public void setMarkedByTutorDate(Date markedByTutorDate) {
-        writeProperty("markedByTutorDate", markedByTutorDate);
+        beforePropertyWrite("markedByTutorDate", this.markedByTutorDate, markedByTutorDate);
+        this.markedByTutorDate = markedByTutorDate;
     }
+
     public Date getMarkedByTutorDate() {
-        return (Date)readProperty("markedByTutorDate");
+        beforePropertyRead("markedByTutorDate");
+        return this.markedByTutorDate;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setNote(String note) {
-        writeProperty("note", note);
+        beforePropertyWrite("note", this.note, note);
+        this.note = note;
     }
+
     public String getNote() {
-        return (String)readProperty("note");
+        beforePropertyRead("note");
+        return this.note;
     }
 
     public void setCollege(College college) {
@@ -120,7 +165,6 @@ public abstract class _Attendance extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void setMarkedByTutor(Tutor markedByTutor) {
         setToOneTarget("markedByTutor", markedByTutor, true);
     }
@@ -128,7 +172,6 @@ public abstract class _Attendance extends WillowCayenneObject {
     public Tutor getMarkedByTutor() {
         return (Tutor)readProperty("markedByTutor");
     }
-
 
     public void setSession(Session session) {
         setToOneTarget("session", session, true);
@@ -138,7 +181,6 @@ public abstract class _Attendance extends WillowCayenneObject {
         return (Session)readProperty("session");
     }
 
-
     public void setStudent(Student student) {
         setToOneTarget("student", student, true);
     }
@@ -147,5 +189,137 @@ public abstract class _Attendance extends WillowCayenneObject {
         return (Student)readProperty("student");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "attendanceType":
+                return this.attendanceType;
+            case "attendedFrom":
+                return this.attendedFrom;
+            case "attendedUntil":
+                return this.attendedUntil;
+            case "created":
+                return this.created;
+            case "durationMinutes":
+                return this.durationMinutes;
+            case "markedByTutorDate":
+                return this.markedByTutorDate;
+            case "modified":
+                return this.modified;
+            case "note":
+                return this.note;
+            case "college":
+                return this.college;
+            case "markedByTutor":
+                return this.markedByTutor;
+            case "session":
+                return this.session;
+            case "student":
+                return this.student;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "attendanceType":
+                this.attendanceType = (Integer)val;
+                break;
+            case "attendedFrom":
+                this.attendedFrom = (Date)val;
+                break;
+            case "attendedUntil":
+                this.attendedUntil = (Date)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "durationMinutes":
+                this.durationMinutes = (Integer)val;
+                break;
+            case "markedByTutorDate":
+                this.markedByTutorDate = (Date)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "note":
+                this.note = (String)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "markedByTutor":
+                this.markedByTutor = val;
+                break;
+            case "session":
+                this.session = val;
+                break;
+            case "student":
+                this.student = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.attendanceType);
+        out.writeObject(this.attendedFrom);
+        out.writeObject(this.attendedUntil);
+        out.writeObject(this.created);
+        out.writeObject(this.durationMinutes);
+        out.writeObject(this.markedByTutorDate);
+        out.writeObject(this.modified);
+        out.writeObject(this.note);
+        out.writeObject(this.college);
+        out.writeObject(this.markedByTutor);
+        out.writeObject(this.session);
+        out.writeObject(this.student);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.attendanceType = (Integer)in.readObject();
+        this.attendedFrom = (Date)in.readObject();
+        this.attendedUntil = (Date)in.readObject();
+        this.created = (Date)in.readObject();
+        this.durationMinutes = (Integer)in.readObject();
+        this.markedByTutorDate = (Date)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.note = (String)in.readObject();
+        this.college = in.readObject();
+        this.markedByTutor = in.readObject();
+        this.session = in.readObject();
+        this.student = in.readObject();
+    }
 
 }

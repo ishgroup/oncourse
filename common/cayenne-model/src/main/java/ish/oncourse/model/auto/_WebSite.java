@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -52,53 +55,89 @@ public abstract class _WebSite extends WillowCayenneObject {
     public static final Property<List<Preference>> PREFERENCES = Property.create("preferences", List.class);
     public static final Property<List<WebSiteVersion>> VERSIONS = Property.create("versions", List.class);
 
+    protected String coursesRootTagName;
+    protected Date created;
+    protected String googleDirectionsFrom;
+    protected String googleTagmanagerAccount;
+    protected Date modified;
+    protected String name;
+    protected String siteKey;
+
+    protected Object college;
+    protected Object collegeDomains;
+    protected Object invoices;
+    protected Object licenseFees;
+    protected Object preferences;
+    protected Object versions;
+
     public void setCoursesRootTagName(String coursesRootTagName) {
-        writeProperty("coursesRootTagName", coursesRootTagName);
+        beforePropertyWrite("coursesRootTagName", this.coursesRootTagName, coursesRootTagName);
+        this.coursesRootTagName = coursesRootTagName;
     }
+
     public String getCoursesRootTagName() {
-        return (String)readProperty("coursesRootTagName");
+        beforePropertyRead("coursesRootTagName");
+        return this.coursesRootTagName;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setGoogleDirectionsFrom(String googleDirectionsFrom) {
-        writeProperty("googleDirectionsFrom", googleDirectionsFrom);
+        beforePropertyWrite("googleDirectionsFrom", this.googleDirectionsFrom, googleDirectionsFrom);
+        this.googleDirectionsFrom = googleDirectionsFrom;
     }
+
     public String getGoogleDirectionsFrom() {
-        return (String)readProperty("googleDirectionsFrom");
+        beforePropertyRead("googleDirectionsFrom");
+        return this.googleDirectionsFrom;
     }
 
     public void setGoogleTagmanagerAccount(String googleTagmanagerAccount) {
-        writeProperty("googleTagmanagerAccount", googleTagmanagerAccount);
+        beforePropertyWrite("googleTagmanagerAccount", this.googleTagmanagerAccount, googleTagmanagerAccount);
+        this.googleTagmanagerAccount = googleTagmanagerAccount;
     }
+
     public String getGoogleTagmanagerAccount() {
-        return (String)readProperty("googleTagmanagerAccount");
+        beforePropertyRead("googleTagmanagerAccount");
+        return this.googleTagmanagerAccount;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        beforePropertyWrite("name", this.name, name);
+        this.name = name;
     }
+
     public String getName() {
-        return (String)readProperty("name");
+        beforePropertyRead("name");
+        return this.name;
     }
 
     public void setSiteKey(String siteKey) {
-        writeProperty("siteKey", siteKey);
+        beforePropertyWrite("siteKey", this.siteKey, siteKey);
+        this.siteKey = siteKey;
     }
+
     public String getSiteKey() {
-        return (String)readProperty("siteKey");
+        beforePropertyRead("siteKey");
+        return this.siteKey;
     }
 
     public void setCollege(College college) {
@@ -109,65 +148,202 @@ public abstract class _WebSite extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void addToCollegeDomains(WebHostName obj) {
         addToManyTarget("collegeDomains", obj, true);
     }
+
     public void removeFromCollegeDomains(WebHostName obj) {
         removeToManyTarget("collegeDomains", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<WebHostName> getCollegeDomains() {
         return (List<WebHostName>)readProperty("collegeDomains");
     }
 
-
     public void addToInvoices(Invoice obj) {
         addToManyTarget("invoices", obj, true);
     }
+
     public void removeFromInvoices(Invoice obj) {
         removeToManyTarget("invoices", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Invoice> getInvoices() {
         return (List<Invoice>)readProperty("invoices");
     }
 
-
     public void addToLicenseFees(LicenseFee obj) {
         addToManyTarget("licenseFees", obj, true);
     }
+
     public void removeFromLicenseFees(LicenseFee obj) {
         removeToManyTarget("licenseFees", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<LicenseFee> getLicenseFees() {
         return (List<LicenseFee>)readProperty("licenseFees");
     }
 
-
     public void addToPreferences(Preference obj) {
         addToManyTarget("preferences", obj, true);
     }
+
     public void removeFromPreferences(Preference obj) {
         removeToManyTarget("preferences", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Preference> getPreferences() {
         return (List<Preference>)readProperty("preferences");
     }
 
-
     public void addToVersions(WebSiteVersion obj) {
         addToManyTarget("versions", obj, true);
     }
+
     public void removeFromVersions(WebSiteVersion obj) {
         removeToManyTarget("versions", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<WebSiteVersion> getVersions() {
         return (List<WebSiteVersion>)readProperty("versions");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "coursesRootTagName":
+                return this.coursesRootTagName;
+            case "created":
+                return this.created;
+            case "googleDirectionsFrom":
+                return this.googleDirectionsFrom;
+            case "googleTagmanagerAccount":
+                return this.googleTagmanagerAccount;
+            case "modified":
+                return this.modified;
+            case "name":
+                return this.name;
+            case "siteKey":
+                return this.siteKey;
+            case "college":
+                return this.college;
+            case "collegeDomains":
+                return this.collegeDomains;
+            case "invoices":
+                return this.invoices;
+            case "licenseFees":
+                return this.licenseFees;
+            case "preferences":
+                return this.preferences;
+            case "versions":
+                return this.versions;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "coursesRootTagName":
+                this.coursesRootTagName = (String)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "googleDirectionsFrom":
+                this.googleDirectionsFrom = (String)val;
+                break;
+            case "googleTagmanagerAccount":
+                this.googleTagmanagerAccount = (String)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "name":
+                this.name = (String)val;
+                break;
+            case "siteKey":
+                this.siteKey = (String)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "collegeDomains":
+                this.collegeDomains = val;
+                break;
+            case "invoices":
+                this.invoices = val;
+                break;
+            case "licenseFees":
+                this.licenseFees = val;
+                break;
+            case "preferences":
+                this.preferences = val;
+                break;
+            case "versions":
+                this.versions = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.coursesRootTagName);
+        out.writeObject(this.created);
+        out.writeObject(this.googleDirectionsFrom);
+        out.writeObject(this.googleTagmanagerAccount);
+        out.writeObject(this.modified);
+        out.writeObject(this.name);
+        out.writeObject(this.siteKey);
+        out.writeObject(this.college);
+        out.writeObject(this.collegeDomains);
+        out.writeObject(this.invoices);
+        out.writeObject(this.licenseFees);
+        out.writeObject(this.preferences);
+        out.writeObject(this.versions);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.coursesRootTagName = (String)in.readObject();
+        this.created = (Date)in.readObject();
+        this.googleDirectionsFrom = (String)in.readObject();
+        this.googleTagmanagerAccount = (String)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.name = (String)in.readObject();
+        this.siteKey = (String)in.readObject();
+        this.college = in.readObject();
+        this.collegeDomains = in.readObject();
+        this.invoices = in.readObject();
+        this.licenseFees = in.readObject();
+        this.preferences = in.readObject();
+        this.versions = in.readObject();
+    }
 
 }

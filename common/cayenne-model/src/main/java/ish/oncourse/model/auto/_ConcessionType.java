@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -52,74 +55,120 @@ public abstract class _ConcessionType extends WillowCayenneObject {
     public static final Property<List<DiscountConcessionType>> DISCOUNT_CONCESSION_TYPES = Property.create("discountConcessionTypes", List.class);
     public static final Property<List<StudentConcession>> STUDENT_CONCESSIONS = Property.create("studentConcessions", List.class);
 
+    protected Long angelId;
+    protected Date created;
+    protected Integer credentialExpiryDays;
+    protected Boolean hasConcessionNumber;
+    protected Boolean hasExpiryDate;
+    protected Boolean isConcession;
+    protected Boolean isEnabled;
+    protected Date modified;
+    protected String name;
+    protected Boolean requiresCredentialCheck;
+
+    protected Object college;
+    protected Object createdBy;
+    protected Object discountConcessionTypes;
+    protected Object studentConcessions;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setCredentialExpiryDays(Integer credentialExpiryDays) {
-        writeProperty("credentialExpiryDays", credentialExpiryDays);
+        beforePropertyWrite("credentialExpiryDays", this.credentialExpiryDays, credentialExpiryDays);
+        this.credentialExpiryDays = credentialExpiryDays;
     }
+
     public Integer getCredentialExpiryDays() {
-        return (Integer)readProperty("credentialExpiryDays");
+        beforePropertyRead("credentialExpiryDays");
+        return this.credentialExpiryDays;
     }
 
     public void setHasConcessionNumber(Boolean hasConcessionNumber) {
-        writeProperty("hasConcessionNumber", hasConcessionNumber);
+        beforePropertyWrite("hasConcessionNumber", this.hasConcessionNumber, hasConcessionNumber);
+        this.hasConcessionNumber = hasConcessionNumber;
     }
+
     public Boolean getHasConcessionNumber() {
-        return (Boolean)readProperty("hasConcessionNumber");
+        beforePropertyRead("hasConcessionNumber");
+        return this.hasConcessionNumber;
     }
 
     public void setHasExpiryDate(Boolean hasExpiryDate) {
-        writeProperty("hasExpiryDate", hasExpiryDate);
+        beforePropertyWrite("hasExpiryDate", this.hasExpiryDate, hasExpiryDate);
+        this.hasExpiryDate = hasExpiryDate;
     }
+
     public Boolean getHasExpiryDate() {
-        return (Boolean)readProperty("hasExpiryDate");
+        beforePropertyRead("hasExpiryDate");
+        return this.hasExpiryDate;
     }
 
     public void setIsConcession(Boolean isConcession) {
-        writeProperty("isConcession", isConcession);
+        beforePropertyWrite("isConcession", this.isConcession, isConcession);
+        this.isConcession = isConcession;
     }
+
     public Boolean getIsConcession() {
-        return (Boolean)readProperty("isConcession");
+        beforePropertyRead("isConcession");
+        return this.isConcession;
     }
 
     public void setIsEnabled(Boolean isEnabled) {
-        writeProperty("isEnabled", isEnabled);
+        beforePropertyWrite("isEnabled", this.isEnabled, isEnabled);
+        this.isEnabled = isEnabled;
     }
+
     public Boolean getIsEnabled() {
-        return (Boolean)readProperty("isEnabled");
+        beforePropertyRead("isEnabled");
+        return this.isEnabled;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        beforePropertyWrite("name", this.name, name);
+        this.name = name;
     }
+
     public String getName() {
-        return (String)readProperty("name");
+        beforePropertyRead("name");
+        return this.name;
     }
 
     public void setRequiresCredentialCheck(Boolean requiresCredentialCheck) {
-        writeProperty("requiresCredentialCheck", requiresCredentialCheck);
+        beforePropertyWrite("requiresCredentialCheck", this.requiresCredentialCheck, requiresCredentialCheck);
+        this.requiresCredentialCheck = requiresCredentialCheck;
     }
+
     public Boolean getRequiresCredentialCheck() {
-        return (Boolean)readProperty("requiresCredentialCheck");
+        beforePropertyRead("requiresCredentialCheck");
+        return this.requiresCredentialCheck;
     }
 
     public void setCollege(College college) {
@@ -130,7 +179,6 @@ public abstract class _ConcessionType extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void setCreatedBy(SystemUser createdBy) {
         setToOneTarget("createdBy", createdBy, true);
     }
@@ -139,29 +187,170 @@ public abstract class _ConcessionType extends WillowCayenneObject {
         return (SystemUser)readProperty("createdBy");
     }
 
-
     public void addToDiscountConcessionTypes(DiscountConcessionType obj) {
         addToManyTarget("discountConcessionTypes", obj, true);
     }
+
     public void removeFromDiscountConcessionTypes(DiscountConcessionType obj) {
         removeToManyTarget("discountConcessionTypes", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<DiscountConcessionType> getDiscountConcessionTypes() {
         return (List<DiscountConcessionType>)readProperty("discountConcessionTypes");
     }
 
-
     public void addToStudentConcessions(StudentConcession obj) {
         addToManyTarget("studentConcessions", obj, true);
     }
+
     public void removeFromStudentConcessions(StudentConcession obj) {
         removeToManyTarget("studentConcessions", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<StudentConcession> getStudentConcessions() {
         return (List<StudentConcession>)readProperty("studentConcessions");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "created":
+                return this.created;
+            case "credentialExpiryDays":
+                return this.credentialExpiryDays;
+            case "hasConcessionNumber":
+                return this.hasConcessionNumber;
+            case "hasExpiryDate":
+                return this.hasExpiryDate;
+            case "isConcession":
+                return this.isConcession;
+            case "isEnabled":
+                return this.isEnabled;
+            case "modified":
+                return this.modified;
+            case "name":
+                return this.name;
+            case "requiresCredentialCheck":
+                return this.requiresCredentialCheck;
+            case "college":
+                return this.college;
+            case "createdBy":
+                return this.createdBy;
+            case "discountConcessionTypes":
+                return this.discountConcessionTypes;
+            case "studentConcessions":
+                return this.studentConcessions;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "credentialExpiryDays":
+                this.credentialExpiryDays = (Integer)val;
+                break;
+            case "hasConcessionNumber":
+                this.hasConcessionNumber = (Boolean)val;
+                break;
+            case "hasExpiryDate":
+                this.hasExpiryDate = (Boolean)val;
+                break;
+            case "isConcession":
+                this.isConcession = (Boolean)val;
+                break;
+            case "isEnabled":
+                this.isEnabled = (Boolean)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "name":
+                this.name = (String)val;
+                break;
+            case "requiresCredentialCheck":
+                this.requiresCredentialCheck = (Boolean)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "createdBy":
+                this.createdBy = val;
+                break;
+            case "discountConcessionTypes":
+                this.discountConcessionTypes = val;
+                break;
+            case "studentConcessions":
+                this.studentConcessions = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.created);
+        out.writeObject(this.credentialExpiryDays);
+        out.writeObject(this.hasConcessionNumber);
+        out.writeObject(this.hasExpiryDate);
+        out.writeObject(this.isConcession);
+        out.writeObject(this.isEnabled);
+        out.writeObject(this.modified);
+        out.writeObject(this.name);
+        out.writeObject(this.requiresCredentialCheck);
+        out.writeObject(this.college);
+        out.writeObject(this.createdBy);
+        out.writeObject(this.discountConcessionTypes);
+        out.writeObject(this.studentConcessions);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.created = (Date)in.readObject();
+        this.credentialExpiryDays = (Integer)in.readObject();
+        this.hasConcessionNumber = (Boolean)in.readObject();
+        this.hasExpiryDate = (Boolean)in.readObject();
+        this.isConcession = (Boolean)in.readObject();
+        this.isEnabled = (Boolean)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.name = (String)in.readObject();
+        this.requiresCredentialCheck = (Boolean)in.readObject();
+        this.college = in.readObject();
+        this.createdBy = in.readObject();
+        this.discountConcessionTypes = in.readObject();
+        this.studentConcessions = in.readObject();
+    }
 
 }

@@ -1,5 +1,9 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import org.apache.cayenne.exp.Property;
 
 import ish.common.types.DeliverySchedule;
@@ -21,11 +25,66 @@ public abstract class _SurveyFieldConfiguration extends FieldConfiguration {
 
     public static final Property<DeliverySchedule> DELIVERY_SCHEDULE = Property.create("deliverySchedule", DeliverySchedule.class);
 
+    protected DeliverySchedule deliverySchedule;
+
+
     public void setDeliverySchedule(DeliverySchedule deliverySchedule) {
-        writeProperty("deliverySchedule", deliverySchedule);
+        beforePropertyWrite("deliverySchedule", this.deliverySchedule, deliverySchedule);
+        this.deliverySchedule = deliverySchedule;
     }
+
     public DeliverySchedule getDeliverySchedule() {
-        return (DeliverySchedule)readProperty("deliverySchedule");
+        beforePropertyRead("deliverySchedule");
+        return this.deliverySchedule;
+    }
+
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "deliverySchedule":
+                return this.deliverySchedule;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "deliverySchedule":
+                this.deliverySchedule = (DeliverySchedule)val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.deliverySchedule);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.deliverySchedule = (DeliverySchedule)in.readObject();
     }
 
 }

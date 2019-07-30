@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -64,116 +67,186 @@ public abstract class _SystemUser extends WillowCayenneObject {
     public static final Property<List<DocumentVersion>> DOCUMENT_VERSIONS = Property.create("documentVersions", List.class);
     public static final Property<List<WebSiteVersion>> SITES_DEPLOYED = Property.create("sitesDeployed", List.class);
 
+    protected Long angelId;
+    protected Date created;
+    protected Boolean editCMS;
+    protected Boolean editTara;
+    protected String email;
+    protected String firstName;
+    protected Boolean isActive;
+    protected Boolean isAdmin;
+    protected String lastLoginIP;
+    protected Date lastLoginOn;
+    protected String login;
+    protected Date modified;
+    protected String password;
+    protected String surname;
+    protected String token;
+    protected String tokenScratchCodes;
+
+    protected Object college;
+    protected Object defaultAdministrationCentre;
+    protected Object documentVersions;
+    protected Object sitesDeployed;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setEditCMS(Boolean editCMS) {
-        writeProperty("editCMS", editCMS);
+        beforePropertyWrite("editCMS", this.editCMS, editCMS);
+        this.editCMS = editCMS;
     }
+
     public Boolean getEditCMS() {
-        return (Boolean)readProperty("editCMS");
+        beforePropertyRead("editCMS");
+        return this.editCMS;
     }
 
     public void setEditTara(Boolean editTara) {
-        writeProperty("editTara", editTara);
+        beforePropertyWrite("editTara", this.editTara, editTara);
+        this.editTara = editTara;
     }
+
     public Boolean getEditTara() {
-        return (Boolean)readProperty("editTara");
+        beforePropertyRead("editTara");
+        return this.editTara;
     }
 
     public void setEmail(String email) {
-        writeProperty("email", email);
+        beforePropertyWrite("email", this.email, email);
+        this.email = email;
     }
+
     public String getEmail() {
-        return (String)readProperty("email");
+        beforePropertyRead("email");
+        return this.email;
     }
 
     public void setFirstName(String firstName) {
-        writeProperty("firstName", firstName);
+        beforePropertyWrite("firstName", this.firstName, firstName);
+        this.firstName = firstName;
     }
+
     public String getFirstName() {
-        return (String)readProperty("firstName");
+        beforePropertyRead("firstName");
+        return this.firstName;
     }
 
     public void setIsActive(Boolean isActive) {
-        writeProperty("isActive", isActive);
+        beforePropertyWrite("isActive", this.isActive, isActive);
+        this.isActive = isActive;
     }
+
     public Boolean getIsActive() {
-        return (Boolean)readProperty("isActive");
+        beforePropertyRead("isActive");
+        return this.isActive;
     }
 
     public void setIsAdmin(Boolean isAdmin) {
-        writeProperty("isAdmin", isAdmin);
+        beforePropertyWrite("isAdmin", this.isAdmin, isAdmin);
+        this.isAdmin = isAdmin;
     }
+
     public Boolean getIsAdmin() {
-        return (Boolean)readProperty("isAdmin");
+        beforePropertyRead("isAdmin");
+        return this.isAdmin;
     }
 
     public void setLastLoginIP(String lastLoginIP) {
-        writeProperty("lastLoginIP", lastLoginIP);
+        beforePropertyWrite("lastLoginIP", this.lastLoginIP, lastLoginIP);
+        this.lastLoginIP = lastLoginIP;
     }
+
     public String getLastLoginIP() {
-        return (String)readProperty("lastLoginIP");
+        beforePropertyRead("lastLoginIP");
+        return this.lastLoginIP;
     }
 
     public void setLastLoginOn(Date lastLoginOn) {
-        writeProperty("lastLoginOn", lastLoginOn);
+        beforePropertyWrite("lastLoginOn", this.lastLoginOn, lastLoginOn);
+        this.lastLoginOn = lastLoginOn;
     }
+
     public Date getLastLoginOn() {
-        return (Date)readProperty("lastLoginOn");
+        beforePropertyRead("lastLoginOn");
+        return this.lastLoginOn;
     }
 
     public void setLogin(String login) {
-        writeProperty("login", login);
+        beforePropertyWrite("login", this.login, login);
+        this.login = login;
     }
+
     public String getLogin() {
-        return (String)readProperty("login");
+        beforePropertyRead("login");
+        return this.login;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setPassword(String password) {
-        writeProperty("password", password);
+        beforePropertyWrite("password", this.password, password);
+        this.password = password;
     }
+
     public String getPassword() {
-        return (String)readProperty("password");
+        beforePropertyRead("password");
+        return this.password;
     }
 
     public void setSurname(String surname) {
-        writeProperty("surname", surname);
+        beforePropertyWrite("surname", this.surname, surname);
+        this.surname = surname;
     }
+
     public String getSurname() {
-        return (String)readProperty("surname");
+        beforePropertyRead("surname");
+        return this.surname;
     }
 
     public void setToken(String token) {
-        writeProperty("token", token);
+        beforePropertyWrite("token", this.token, token);
+        this.token = token;
     }
+
     public String getToken() {
-        return (String)readProperty("token");
+        beforePropertyRead("token");
+        return this.token;
     }
 
     public void setTokenScratchCodes(String tokenScratchCodes) {
-        writeProperty("tokenScratchCodes", tokenScratchCodes);
+        beforePropertyWrite("tokenScratchCodes", this.tokenScratchCodes, tokenScratchCodes);
+        this.tokenScratchCodes = tokenScratchCodes;
     }
+
     public String getTokenScratchCodes() {
-        return (String)readProperty("tokenScratchCodes");
+        beforePropertyRead("tokenScratchCodes");
+        return this.tokenScratchCodes;
     }
 
     public void setCollege(College college) {
@@ -184,7 +257,6 @@ public abstract class _SystemUser extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void setDefaultAdministrationCentre(Site defaultAdministrationCentre) {
         setToOneTarget("defaultAdministrationCentre", defaultAdministrationCentre, true);
     }
@@ -193,29 +265,212 @@ public abstract class _SystemUser extends WillowCayenneObject {
         return (Site)readProperty("defaultAdministrationCentre");
     }
 
-
     public void addToDocumentVersions(DocumentVersion obj) {
         addToManyTarget("documentVersions", obj, true);
     }
+
     public void removeFromDocumentVersions(DocumentVersion obj) {
         removeToManyTarget("documentVersions", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<DocumentVersion> getDocumentVersions() {
         return (List<DocumentVersion>)readProperty("documentVersions");
     }
 
-
     public void addToSitesDeployed(WebSiteVersion obj) {
         addToManyTarget("sitesDeployed", obj, true);
     }
+
     public void removeFromSitesDeployed(WebSiteVersion obj) {
         removeToManyTarget("sitesDeployed", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<WebSiteVersion> getSitesDeployed() {
         return (List<WebSiteVersion>)readProperty("sitesDeployed");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "created":
+                return this.created;
+            case "editCMS":
+                return this.editCMS;
+            case "editTara":
+                return this.editTara;
+            case "email":
+                return this.email;
+            case "firstName":
+                return this.firstName;
+            case "isActive":
+                return this.isActive;
+            case "isAdmin":
+                return this.isAdmin;
+            case "lastLoginIP":
+                return this.lastLoginIP;
+            case "lastLoginOn":
+                return this.lastLoginOn;
+            case "login":
+                return this.login;
+            case "modified":
+                return this.modified;
+            case "password":
+                return this.password;
+            case "surname":
+                return this.surname;
+            case "token":
+                return this.token;
+            case "tokenScratchCodes":
+                return this.tokenScratchCodes;
+            case "college":
+                return this.college;
+            case "defaultAdministrationCentre":
+                return this.defaultAdministrationCentre;
+            case "documentVersions":
+                return this.documentVersions;
+            case "sitesDeployed":
+                return this.sitesDeployed;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "editCMS":
+                this.editCMS = (Boolean)val;
+                break;
+            case "editTara":
+                this.editTara = (Boolean)val;
+                break;
+            case "email":
+                this.email = (String)val;
+                break;
+            case "firstName":
+                this.firstName = (String)val;
+                break;
+            case "isActive":
+                this.isActive = (Boolean)val;
+                break;
+            case "isAdmin":
+                this.isAdmin = (Boolean)val;
+                break;
+            case "lastLoginIP":
+                this.lastLoginIP = (String)val;
+                break;
+            case "lastLoginOn":
+                this.lastLoginOn = (Date)val;
+                break;
+            case "login":
+                this.login = (String)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "password":
+                this.password = (String)val;
+                break;
+            case "surname":
+                this.surname = (String)val;
+                break;
+            case "token":
+                this.token = (String)val;
+                break;
+            case "tokenScratchCodes":
+                this.tokenScratchCodes = (String)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "defaultAdministrationCentre":
+                this.defaultAdministrationCentre = val;
+                break;
+            case "documentVersions":
+                this.documentVersions = val;
+                break;
+            case "sitesDeployed":
+                this.sitesDeployed = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.created);
+        out.writeObject(this.editCMS);
+        out.writeObject(this.editTara);
+        out.writeObject(this.email);
+        out.writeObject(this.firstName);
+        out.writeObject(this.isActive);
+        out.writeObject(this.isAdmin);
+        out.writeObject(this.lastLoginIP);
+        out.writeObject(this.lastLoginOn);
+        out.writeObject(this.login);
+        out.writeObject(this.modified);
+        out.writeObject(this.password);
+        out.writeObject(this.surname);
+        out.writeObject(this.token);
+        out.writeObject(this.tokenScratchCodes);
+        out.writeObject(this.college);
+        out.writeObject(this.defaultAdministrationCentre);
+        out.writeObject(this.documentVersions);
+        out.writeObject(this.sitesDeployed);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.created = (Date)in.readObject();
+        this.editCMS = (Boolean)in.readObject();
+        this.editTara = (Boolean)in.readObject();
+        this.email = (String)in.readObject();
+        this.firstName = (String)in.readObject();
+        this.isActive = (Boolean)in.readObject();
+        this.isAdmin = (Boolean)in.readObject();
+        this.lastLoginIP = (String)in.readObject();
+        this.lastLoginOn = (Date)in.readObject();
+        this.login = (String)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.password = (String)in.readObject();
+        this.surname = (String)in.readObject();
+        this.token = (String)in.readObject();
+        this.tokenScratchCodes = (String)in.readObject();
+        this.college = in.readObject();
+        this.defaultAdministrationCentre = in.readObject();
+        this.documentVersions = in.readObject();
+        this.sitesDeployed = in.readObject();
+    }
 
 }

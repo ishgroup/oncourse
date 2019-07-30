@@ -2,7 +2,7 @@ package ish.oncourse.portal.services;
 
 import ish.oncourse.model.*;
 import ish.oncourse.services.courseclass.CourseClassFilter;
-import org.apache.cayenne.CayenneDataObject;
+import org.apache.cayenne.BaseDataObject;
 import org.apache.tapestry5.json.JSONObject;
 
 import java.util.Date;
@@ -102,7 +102,7 @@ public interface IPortalService {
     /**
      * The method returns true if the <source>object</source> was created after <source>lastLoginTime</source>
      */
-    public boolean isNew(CayenneDataObject object);
+    public boolean isNew(BaseDataObject object);
 
     /**
      * Returns ContactRelation for authenticated contact where ContactRelationType.delegatedAccessToContact is true.

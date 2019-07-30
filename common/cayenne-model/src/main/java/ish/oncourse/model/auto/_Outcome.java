@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -60,87 +63,136 @@ public abstract class _Outcome extends WillowCayenneObject {
     public static final Property<Module> MODULE = Property.create("module", Module.class);
     public static final Property<PriorLearning> PRIOR_LEARNING = Property.create("priorLearning", PriorLearning.class);
 
+    protected Long angelId;
+    protected Date created;
+    protected Integer deliveryMode;
+    protected Date endDate;
+    protected ClassFundingSource fundingSource;
+    protected Date markedByTutorDate;
+    protected Date modified;
+    protected Double reportableHours;
+    protected Date startDate;
+    protected OutcomeStatus status;
+
+    protected Object certificateOutcomes;
+    protected Object college;
+    protected Object enrolment;
+    protected Object markedByTutor;
+    protected Object module;
+    protected Object priorLearning;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setDeliveryMode(Integer deliveryMode) {
-        writeProperty("deliveryMode", deliveryMode);
+        beforePropertyWrite("deliveryMode", this.deliveryMode, deliveryMode);
+        this.deliveryMode = deliveryMode;
     }
+
     public Integer getDeliveryMode() {
-        return (Integer)readProperty("deliveryMode");
+        beforePropertyRead("deliveryMode");
+        return this.deliveryMode;
     }
 
     public void setEndDate(Date endDate) {
-        writeProperty("endDate", endDate);
+        beforePropertyWrite("endDate", this.endDate, endDate);
+        this.endDate = endDate;
     }
+
     public Date getEndDate() {
-        return (Date)readProperty("endDate");
+        beforePropertyRead("endDate");
+        return this.endDate;
     }
 
     public void setFundingSource(ClassFundingSource fundingSource) {
-        writeProperty("fundingSource", fundingSource);
+        beforePropertyWrite("fundingSource", this.fundingSource, fundingSource);
+        this.fundingSource = fundingSource;
     }
+
     public ClassFundingSource getFundingSource() {
-        return (ClassFundingSource)readProperty("fundingSource");
+        beforePropertyRead("fundingSource");
+        return this.fundingSource;
     }
 
     public void setMarkedByTutorDate(Date markedByTutorDate) {
-        writeProperty("markedByTutorDate", markedByTutorDate);
+        beforePropertyWrite("markedByTutorDate", this.markedByTutorDate, markedByTutorDate);
+        this.markedByTutorDate = markedByTutorDate;
     }
+
     public Date getMarkedByTutorDate() {
-        return (Date)readProperty("markedByTutorDate");
+        beforePropertyRead("markedByTutorDate");
+        return this.markedByTutorDate;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setReportableHours(Double reportableHours) {
-        writeProperty("reportableHours", reportableHours);
+        beforePropertyWrite("reportableHours", this.reportableHours, reportableHours);
+        this.reportableHours = reportableHours;
     }
+
     public Double getReportableHours() {
-        return (Double)readProperty("reportableHours");
+        beforePropertyRead("reportableHours");
+        return this.reportableHours;
     }
 
     public void setStartDate(Date startDate) {
-        writeProperty("startDate", startDate);
+        beforePropertyWrite("startDate", this.startDate, startDate);
+        this.startDate = startDate;
     }
+
     public Date getStartDate() {
-        return (Date)readProperty("startDate");
+        beforePropertyRead("startDate");
+        return this.startDate;
     }
 
     public void setStatus(OutcomeStatus status) {
-        writeProperty("status", status);
+        beforePropertyWrite("status", this.status, status);
+        this.status = status;
     }
+
     public OutcomeStatus getStatus() {
-        return (OutcomeStatus)readProperty("status");
+        beforePropertyRead("status");
+        return this.status;
     }
 
     public void addToCertificateOutcomes(CertificateOutcome obj) {
         addToManyTarget("certificateOutcomes", obj, true);
     }
+
     public void removeFromCertificateOutcomes(CertificateOutcome obj) {
         removeToManyTarget("certificateOutcomes", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<CertificateOutcome> getCertificateOutcomes() {
         return (List<CertificateOutcome>)readProperty("certificateOutcomes");
     }
-
 
     public void setCollege(College college) {
         setToOneTarget("college", college, true);
@@ -150,7 +202,6 @@ public abstract class _Outcome extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void setEnrolment(Enrolment enrolment) {
         setToOneTarget("enrolment", enrolment, true);
     }
@@ -158,7 +209,6 @@ public abstract class _Outcome extends WillowCayenneObject {
     public Enrolment getEnrolment() {
         return (Enrolment)readProperty("enrolment");
     }
-
 
     public void setMarkedByTutor(Tutor markedByTutor) {
         setToOneTarget("markedByTutor", markedByTutor, true);
@@ -168,7 +218,6 @@ public abstract class _Outcome extends WillowCayenneObject {
         return (Tutor)readProperty("markedByTutor");
     }
 
-
     public void setModule(Module module) {
         setToOneTarget("module", module, true);
     }
@@ -176,7 +225,6 @@ public abstract class _Outcome extends WillowCayenneObject {
     public Module getModule() {
         return (Module)readProperty("module");
     }
-
 
     public void setPriorLearning(PriorLearning priorLearning) {
         setToOneTarget("priorLearning", priorLearning, true);
@@ -186,5 +234,158 @@ public abstract class _Outcome extends WillowCayenneObject {
         return (PriorLearning)readProperty("priorLearning");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "created":
+                return this.created;
+            case "deliveryMode":
+                return this.deliveryMode;
+            case "endDate":
+                return this.endDate;
+            case "fundingSource":
+                return this.fundingSource;
+            case "markedByTutorDate":
+                return this.markedByTutorDate;
+            case "modified":
+                return this.modified;
+            case "reportableHours":
+                return this.reportableHours;
+            case "startDate":
+                return this.startDate;
+            case "status":
+                return this.status;
+            case "certificateOutcomes":
+                return this.certificateOutcomes;
+            case "college":
+                return this.college;
+            case "enrolment":
+                return this.enrolment;
+            case "markedByTutor":
+                return this.markedByTutor;
+            case "module":
+                return this.module;
+            case "priorLearning":
+                return this.priorLearning;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "deliveryMode":
+                this.deliveryMode = (Integer)val;
+                break;
+            case "endDate":
+                this.endDate = (Date)val;
+                break;
+            case "fundingSource":
+                this.fundingSource = (ClassFundingSource)val;
+                break;
+            case "markedByTutorDate":
+                this.markedByTutorDate = (Date)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "reportableHours":
+                this.reportableHours = (Double)val;
+                break;
+            case "startDate":
+                this.startDate = (Date)val;
+                break;
+            case "status":
+                this.status = (OutcomeStatus)val;
+                break;
+            case "certificateOutcomes":
+                this.certificateOutcomes = val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "enrolment":
+                this.enrolment = val;
+                break;
+            case "markedByTutor":
+                this.markedByTutor = val;
+                break;
+            case "module":
+                this.module = val;
+                break;
+            case "priorLearning":
+                this.priorLearning = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.created);
+        out.writeObject(this.deliveryMode);
+        out.writeObject(this.endDate);
+        out.writeObject(this.fundingSource);
+        out.writeObject(this.markedByTutorDate);
+        out.writeObject(this.modified);
+        out.writeObject(this.reportableHours);
+        out.writeObject(this.startDate);
+        out.writeObject(this.status);
+        out.writeObject(this.certificateOutcomes);
+        out.writeObject(this.college);
+        out.writeObject(this.enrolment);
+        out.writeObject(this.markedByTutor);
+        out.writeObject(this.module);
+        out.writeObject(this.priorLearning);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.created = (Date)in.readObject();
+        this.deliveryMode = (Integer)in.readObject();
+        this.endDate = (Date)in.readObject();
+        this.fundingSource = (ClassFundingSource)in.readObject();
+        this.markedByTutorDate = (Date)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.reportableHours = (Double)in.readObject();
+        this.startDate = (Date)in.readObject();
+        this.status = (OutcomeStatus)in.readObject();
+        this.certificateOutcomes = in.readObject();
+        this.college = in.readObject();
+        this.enrolment = in.readObject();
+        this.markedByTutor = in.readObject();
+        this.module = in.readObject();
+        this.priorLearning = in.readObject();
+    }
 
 }

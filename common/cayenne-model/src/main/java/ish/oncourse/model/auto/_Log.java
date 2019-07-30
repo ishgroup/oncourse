@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 
 import org.apache.cayenne.exp.Property;
@@ -33,32 +36,52 @@ public abstract class _Log extends WillowCayenneObject {
     public static final Property<College> COLLEGE = Property.create("college", College.class);
     public static final Property<WillowUser> USER = Property.create("user", WillowUser.class);
 
+    protected String action;
+    protected Date created;
+    protected Date modified;
+    protected String page;
+
+    protected Object college;
+    protected Object user;
+
     public void setAction(String action) {
-        writeProperty("action", action);
+        beforePropertyWrite("action", this.action, action);
+        this.action = action;
     }
+
     public String getAction() {
-        return (String)readProperty("action");
+        beforePropertyRead("action");
+        return this.action;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setPage(String page) {
-        writeProperty("page", page);
+        beforePropertyWrite("page", this.page, page);
+        this.page = page;
     }
+
     public String getPage() {
-        return (String)readProperty("page");
+        beforePropertyRead("page");
+        return this.page;
     }
 
     public void setCollege(College college) {
@@ -69,7 +92,6 @@ public abstract class _Log extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void setUser(WillowUser user) {
         setToOneTarget("user", user, true);
     }
@@ -78,5 +100,88 @@ public abstract class _Log extends WillowCayenneObject {
         return (WillowUser)readProperty("user");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "action":
+                return this.action;
+            case "created":
+                return this.created;
+            case "modified":
+                return this.modified;
+            case "page":
+                return this.page;
+            case "college":
+                return this.college;
+            case "user":
+                return this.user;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "action":
+                this.action = (String)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "page":
+                this.page = (String)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "user":
+                this.user = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.action);
+        out.writeObject(this.created);
+        out.writeObject(this.modified);
+        out.writeObject(this.page);
+        out.writeObject(this.college);
+        out.writeObject(this.user);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.action = (String)in.readObject();
+        this.created = (Date)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.page = (String)in.readObject();
+        this.college = in.readObject();
+        this.user = in.readObject();
+    }
 
 }

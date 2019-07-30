@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -38,50 +41,70 @@ public abstract class _WebNodeType extends WillowCayenneObject {
     public static final Property<WebSiteLayout> WEB_SITE_LAYOUT = Property.create("webSiteLayout", WebSiteLayout.class);
     public static final Property<WebSiteVersion> WEB_SITE_VERSION = Property.create("webSiteVersion", WebSiteVersion.class);
 
+    protected Date created;
+    protected Date modified;
+    protected String name;
+
+    protected Object webContentVisibilities;
+    protected Object webNodes;
+    protected Object webSiteLayout;
+    protected Object webSiteVersion;
+
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        beforePropertyWrite("name", this.name, name);
+        this.name = name;
     }
+
     public String getName() {
-        return (String)readProperty("name");
+        beforePropertyRead("name");
+        return this.name;
     }
 
     public void addToWebContentVisibilities(WebContentVisibility obj) {
         addToManyTarget("webContentVisibilities", obj, true);
     }
+
     public void removeFromWebContentVisibilities(WebContentVisibility obj) {
         removeToManyTarget("webContentVisibilities", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<WebContentVisibility> getWebContentVisibilities() {
         return (List<WebContentVisibility>)readProperty("webContentVisibilities");
     }
 
-
     public void addToWebNodes(WebNode obj) {
         addToManyTarget("webNodes", obj, true);
     }
+
     public void removeFromWebNodes(WebNode obj) {
         removeToManyTarget("webNodes", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<WebNode> getWebNodes() {
         return (List<WebNode>)readProperty("webNodes");
     }
-
 
     public void setWebSiteLayout(WebSiteLayout webSiteLayout) {
         setToOneTarget("webSiteLayout", webSiteLayout, true);
@@ -91,7 +114,6 @@ public abstract class _WebNodeType extends WillowCayenneObject {
         return (WebSiteLayout)readProperty("webSiteLayout");
     }
 
-
     public void setWebSiteVersion(WebSiteVersion webSiteVersion) {
         setToOneTarget("webSiteVersion", webSiteVersion, true);
     }
@@ -100,7 +122,97 @@ public abstract class _WebNodeType extends WillowCayenneObject {
         return (WebSiteVersion)readProperty("webSiteVersion");
     }
 
-
     protected abstract void onPostAdd();
+
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "created":
+                return this.created;
+            case "modified":
+                return this.modified;
+            case "name":
+                return this.name;
+            case "webContentVisibilities":
+                return this.webContentVisibilities;
+            case "webNodes":
+                return this.webNodes;
+            case "webSiteLayout":
+                return this.webSiteLayout;
+            case "webSiteVersion":
+                return this.webSiteVersion;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "name":
+                this.name = (String)val;
+                break;
+            case "webContentVisibilities":
+                this.webContentVisibilities = val;
+                break;
+            case "webNodes":
+                this.webNodes = val;
+                break;
+            case "webSiteLayout":
+                this.webSiteLayout = val;
+                break;
+            case "webSiteVersion":
+                this.webSiteVersion = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.created);
+        out.writeObject(this.modified);
+        out.writeObject(this.name);
+        out.writeObject(this.webContentVisibilities);
+        out.writeObject(this.webNodes);
+        out.writeObject(this.webSiteLayout);
+        out.writeObject(this.webSiteVersion);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.created = (Date)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.name = (String)in.readObject();
+        this.webContentVisibilities = in.readObject();
+        this.webNodes = in.readObject();
+        this.webSiteLayout = in.readObject();
+        this.webSiteVersion = in.readObject();
+    }
 
 }

@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -137,248 +140,400 @@ public abstract class _Contact extends ExpandableCayenneDataObject {
     public static final Property<List<ContactRelation>> TO_CONTACTS = Property.create("toContacts", List.class);
     public static final Property<Tutor> TUTOR = Property.create("tutor", Tutor.class);
 
+    protected String abn;
+    protected Long angelId;
+    protected String businessPhoneNumber;
+    protected String cookieHash;
+    protected Date created;
+    protected Date dateOfBirth;
+    protected String emailAddress;
+    protected String familyName;
+    protected String faxNumber;
+    protected String givenName;
+    protected String homePhoneNumber;
+    protected String honorific;
+    protected Integer invoiceTerms;
+    protected Boolean isCompany;
+    protected Boolean isMale;
+    protected Boolean isMarketingViaEmailAllowed;
+    protected Boolean isMarketingViaPostAllowed;
+    protected Boolean isMarketingViaSMSAllowed;
+    protected Date lastLoginTime;
+    protected String middleName;
+    protected String mobilePhoneNumber;
+    protected Date modified;
+    protected String password;
+    protected String passwordHash;
+    protected Date passwordRecoverExpire;
+    protected String passwordRecoveryKey;
+    protected String postcode;
+    protected String state;
+    protected String street;
+    protected String suburb;
+    protected String taxFileNumber;
+    protected String title;
+    protected String uniqueCode;
+
+    protected Object assessmentSubmissions;
+    protected Object college;
+    protected Object contactComments;
+    protected Object corporatePasses;
+    protected Object country;
+    protected Object customFields;
+    protected Object fromContacts;
+    protected Object invoices;
+    protected Object messagePeople;
+    protected Object paymentsIn;
+    protected Object paymentsOut;
+    protected Object products;
+    protected Object student;
+    protected Object supportPassword;
+    protected Object taxOverride;
+    protected Object toContacts;
+    protected Object tutor;
+
     public void setAbn(String abn) {
-        writeProperty("abn", abn);
+        beforePropertyWrite("abn", this.abn, abn);
+        this.abn = abn;
     }
+
     public String getAbn() {
-        return (String)readProperty("abn");
+        beforePropertyRead("abn");
+        return this.abn;
     }
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setBusinessPhoneNumber(String businessPhoneNumber) {
-        writeProperty("businessPhoneNumber", businessPhoneNumber);
+        beforePropertyWrite("businessPhoneNumber", this.businessPhoneNumber, businessPhoneNumber);
+        this.businessPhoneNumber = businessPhoneNumber;
     }
+
     public String getBusinessPhoneNumber() {
-        return (String)readProperty("businessPhoneNumber");
+        beforePropertyRead("businessPhoneNumber");
+        return this.businessPhoneNumber;
     }
 
     public void setCookieHash(String cookieHash) {
-        writeProperty("cookieHash", cookieHash);
+        beforePropertyWrite("cookieHash", this.cookieHash, cookieHash);
+        this.cookieHash = cookieHash;
     }
+
     public String getCookieHash() {
-        return (String)readProperty("cookieHash");
+        beforePropertyRead("cookieHash");
+        return this.cookieHash;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setDateOfBirth(Date dateOfBirth) {
-        writeProperty("dateOfBirth", dateOfBirth);
+        beforePropertyWrite("dateOfBirth", this.dateOfBirth, dateOfBirth);
+        this.dateOfBirth = dateOfBirth;
     }
+
     public Date getDateOfBirth() {
-        return (Date)readProperty("dateOfBirth");
+        beforePropertyRead("dateOfBirth");
+        return this.dateOfBirth;
     }
 
     public void setEmailAddress(String emailAddress) {
-        writeProperty("emailAddress", emailAddress);
+        beforePropertyWrite("emailAddress", this.emailAddress, emailAddress);
+        this.emailAddress = emailAddress;
     }
+
     public String getEmailAddress() {
-        return (String)readProperty("emailAddress");
+        beforePropertyRead("emailAddress");
+        return this.emailAddress;
     }
 
     public void setFamilyName(String familyName) {
-        writeProperty("familyName", familyName);
+        beforePropertyWrite("familyName", this.familyName, familyName);
+        this.familyName = familyName;
     }
+
     public String getFamilyName() {
-        return (String)readProperty("familyName");
+        beforePropertyRead("familyName");
+        return this.familyName;
     }
 
     public void setFaxNumber(String faxNumber) {
-        writeProperty("faxNumber", faxNumber);
+        beforePropertyWrite("faxNumber", this.faxNumber, faxNumber);
+        this.faxNumber = faxNumber;
     }
+
     public String getFaxNumber() {
-        return (String)readProperty("faxNumber");
+        beforePropertyRead("faxNumber");
+        return this.faxNumber;
     }
 
     public void setGivenName(String givenName) {
-        writeProperty("givenName", givenName);
+        beforePropertyWrite("givenName", this.givenName, givenName);
+        this.givenName = givenName;
     }
+
     public String getGivenName() {
-        return (String)readProperty("givenName");
+        beforePropertyRead("givenName");
+        return this.givenName;
     }
 
     public void setHomePhoneNumber(String homePhoneNumber) {
-        writeProperty("homePhoneNumber", homePhoneNumber);
+        beforePropertyWrite("homePhoneNumber", this.homePhoneNumber, homePhoneNumber);
+        this.homePhoneNumber = homePhoneNumber;
     }
+
     public String getHomePhoneNumber() {
-        return (String)readProperty("homePhoneNumber");
+        beforePropertyRead("homePhoneNumber");
+        return this.homePhoneNumber;
     }
 
     public void setHonorific(String honorific) {
-        writeProperty("honorific", honorific);
+        beforePropertyWrite("honorific", this.honorific, honorific);
+        this.honorific = honorific;
     }
+
     public String getHonorific() {
-        return (String)readProperty("honorific");
+        beforePropertyRead("honorific");
+        return this.honorific;
     }
 
     public void setInvoiceTerms(Integer invoiceTerms) {
-        writeProperty("invoiceTerms", invoiceTerms);
+        beforePropertyWrite("invoiceTerms", this.invoiceTerms, invoiceTerms);
+        this.invoiceTerms = invoiceTerms;
     }
+
     public Integer getInvoiceTerms() {
-        return (Integer)readProperty("invoiceTerms");
+        beforePropertyRead("invoiceTerms");
+        return this.invoiceTerms;
     }
 
     public void setIsCompany(Boolean isCompany) {
-        writeProperty("isCompany", isCompany);
+        beforePropertyWrite("isCompany", this.isCompany, isCompany);
+        this.isCompany = isCompany;
     }
+
     public Boolean getIsCompany() {
-        return (Boolean)readProperty("isCompany");
+        beforePropertyRead("isCompany");
+        return this.isCompany;
     }
 
     public void setIsMale(Boolean isMale) {
-        writeProperty("isMale", isMale);
+        beforePropertyWrite("isMale", this.isMale, isMale);
+        this.isMale = isMale;
     }
+
     public Boolean getIsMale() {
-        return (Boolean)readProperty("isMale");
+        beforePropertyRead("isMale");
+        return this.isMale;
     }
 
     public void setIsMarketingViaEmailAllowed(Boolean isMarketingViaEmailAllowed) {
-        writeProperty("isMarketingViaEmailAllowed", isMarketingViaEmailAllowed);
+        beforePropertyWrite("isMarketingViaEmailAllowed", this.isMarketingViaEmailAllowed, isMarketingViaEmailAllowed);
+        this.isMarketingViaEmailAllowed = isMarketingViaEmailAllowed;
     }
+
     public Boolean getIsMarketingViaEmailAllowed() {
-        return (Boolean)readProperty("isMarketingViaEmailAllowed");
+        beforePropertyRead("isMarketingViaEmailAllowed");
+        return this.isMarketingViaEmailAllowed;
     }
 
     public void setIsMarketingViaPostAllowed(Boolean isMarketingViaPostAllowed) {
-        writeProperty("isMarketingViaPostAllowed", isMarketingViaPostAllowed);
+        beforePropertyWrite("isMarketingViaPostAllowed", this.isMarketingViaPostAllowed, isMarketingViaPostAllowed);
+        this.isMarketingViaPostAllowed = isMarketingViaPostAllowed;
     }
+
     public Boolean getIsMarketingViaPostAllowed() {
-        return (Boolean)readProperty("isMarketingViaPostAllowed");
+        beforePropertyRead("isMarketingViaPostAllowed");
+        return this.isMarketingViaPostAllowed;
     }
 
     public void setIsMarketingViaSMSAllowed(Boolean isMarketingViaSMSAllowed) {
-        writeProperty("isMarketingViaSMSAllowed", isMarketingViaSMSAllowed);
+        beforePropertyWrite("isMarketingViaSMSAllowed", this.isMarketingViaSMSAllowed, isMarketingViaSMSAllowed);
+        this.isMarketingViaSMSAllowed = isMarketingViaSMSAllowed;
     }
+
     public Boolean getIsMarketingViaSMSAllowed() {
-        return (Boolean)readProperty("isMarketingViaSMSAllowed");
+        beforePropertyRead("isMarketingViaSMSAllowed");
+        return this.isMarketingViaSMSAllowed;
     }
 
     public void setLastLoginTime(Date lastLoginTime) {
-        writeProperty("lastLoginTime", lastLoginTime);
+        beforePropertyWrite("lastLoginTime", this.lastLoginTime, lastLoginTime);
+        this.lastLoginTime = lastLoginTime;
     }
+
     public Date getLastLoginTime() {
-        return (Date)readProperty("lastLoginTime");
+        beforePropertyRead("lastLoginTime");
+        return this.lastLoginTime;
     }
 
     public void setMiddleName(String middleName) {
-        writeProperty("middleName", middleName);
+        beforePropertyWrite("middleName", this.middleName, middleName);
+        this.middleName = middleName;
     }
+
     public String getMiddleName() {
-        return (String)readProperty("middleName");
+        beforePropertyRead("middleName");
+        return this.middleName;
     }
 
     public void setMobilePhoneNumber(String mobilePhoneNumber) {
-        writeProperty("mobilePhoneNumber", mobilePhoneNumber);
+        beforePropertyWrite("mobilePhoneNumber", this.mobilePhoneNumber, mobilePhoneNumber);
+        this.mobilePhoneNumber = mobilePhoneNumber;
     }
+
     public String getMobilePhoneNumber() {
-        return (String)readProperty("mobilePhoneNumber");
+        beforePropertyRead("mobilePhoneNumber");
+        return this.mobilePhoneNumber;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setPassword(String password) {
-        writeProperty("password", password);
+        beforePropertyWrite("password", this.password, password);
+        this.password = password;
     }
+
     public String getPassword() {
-        return (String)readProperty("password");
+        beforePropertyRead("password");
+        return this.password;
     }
 
     public void setPasswordHash(String passwordHash) {
-        writeProperty("passwordHash", passwordHash);
+        beforePropertyWrite("passwordHash", this.passwordHash, passwordHash);
+        this.passwordHash = passwordHash;
     }
+
     public String getPasswordHash() {
-        return (String)readProperty("passwordHash");
+        beforePropertyRead("passwordHash");
+        return this.passwordHash;
     }
 
     public void setPasswordRecoverExpire(Date passwordRecoverExpire) {
-        writeProperty("passwordRecoverExpire", passwordRecoverExpire);
+        beforePropertyWrite("passwordRecoverExpire", this.passwordRecoverExpire, passwordRecoverExpire);
+        this.passwordRecoverExpire = passwordRecoverExpire;
     }
+
     public Date getPasswordRecoverExpire() {
-        return (Date)readProperty("passwordRecoverExpire");
+        beforePropertyRead("passwordRecoverExpire");
+        return this.passwordRecoverExpire;
     }
 
     public void setPasswordRecoveryKey(String passwordRecoveryKey) {
-        writeProperty("passwordRecoveryKey", passwordRecoveryKey);
+        beforePropertyWrite("passwordRecoveryKey", this.passwordRecoveryKey, passwordRecoveryKey);
+        this.passwordRecoveryKey = passwordRecoveryKey;
     }
+
     public String getPasswordRecoveryKey() {
-        return (String)readProperty("passwordRecoveryKey");
+        beforePropertyRead("passwordRecoveryKey");
+        return this.passwordRecoveryKey;
     }
 
     public void setPostcode(String postcode) {
-        writeProperty("postcode", postcode);
+        beforePropertyWrite("postcode", this.postcode, postcode);
+        this.postcode = postcode;
     }
+
     public String getPostcode() {
-        return (String)readProperty("postcode");
+        beforePropertyRead("postcode");
+        return this.postcode;
     }
 
     public void setState(String state) {
-        writeProperty("state", state);
+        beforePropertyWrite("state", this.state, state);
+        this.state = state;
     }
+
     public String getState() {
-        return (String)readProperty("state");
+        beforePropertyRead("state");
+        return this.state;
     }
 
     public void setStreet(String street) {
-        writeProperty("street", street);
+        beforePropertyWrite("street", this.street, street);
+        this.street = street;
     }
+
     public String getStreet() {
-        return (String)readProperty("street");
+        beforePropertyRead("street");
+        return this.street;
     }
 
     public void setSuburb(String suburb) {
-        writeProperty("suburb", suburb);
+        beforePropertyWrite("suburb", this.suburb, suburb);
+        this.suburb = suburb;
     }
+
     public String getSuburb() {
-        return (String)readProperty("suburb");
+        beforePropertyRead("suburb");
+        return this.suburb;
     }
 
     public void setTaxFileNumber(String taxFileNumber) {
-        writeProperty("taxFileNumber", taxFileNumber);
+        beforePropertyWrite("taxFileNumber", this.taxFileNumber, taxFileNumber);
+        this.taxFileNumber = taxFileNumber;
     }
+
     public String getTaxFileNumber() {
-        return (String)readProperty("taxFileNumber");
+        beforePropertyRead("taxFileNumber");
+        return this.taxFileNumber;
     }
 
     public void setTitle(String title) {
-        writeProperty("title", title);
+        beforePropertyWrite("title", this.title, title);
+        this.title = title;
     }
+
     public String getTitle() {
-        return (String)readProperty("title");
+        beforePropertyRead("title");
+        return this.title;
     }
 
     public void setUniqueCode(String uniqueCode) {
-        writeProperty("uniqueCode", uniqueCode);
+        beforePropertyWrite("uniqueCode", this.uniqueCode, uniqueCode);
+        this.uniqueCode = uniqueCode;
     }
+
     public String getUniqueCode() {
-        return (String)readProperty("uniqueCode");
+        beforePropertyRead("uniqueCode");
+        return this.uniqueCode;
     }
 
     public void addToAssessmentSubmissions(AssessmentSubmission obj) {
         addToManyTarget("assessmentSubmissions", obj, true);
     }
+
     public void removeFromAssessmentSubmissions(AssessmentSubmission obj) {
         removeToManyTarget("assessmentSubmissions", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<AssessmentSubmission> getAssessmentSubmissions() {
         return (List<AssessmentSubmission>)readProperty("assessmentSubmissions");
     }
-
 
     public void setCollege(College college) {
         setToOneTarget("college", college, true);
@@ -388,30 +543,31 @@ public abstract class _Contact extends ExpandableCayenneDataObject {
         return (College)readProperty("college");
     }
 
-
     public void addToContactComments(DiscussionCommentContact obj) {
         addToManyTarget("contactComments", obj, true);
     }
+
     public void removeFromContactComments(DiscussionCommentContact obj) {
         removeToManyTarget("contactComments", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<DiscussionCommentContact> getContactComments() {
         return (List<DiscussionCommentContact>)readProperty("contactComments");
     }
 
-
     public void addToCorporatePasses(CorporatePass obj) {
         addToManyTarget("corporatePasses", obj, true);
     }
+
     public void removeFromCorporatePasses(CorporatePass obj) {
         removeToManyTarget("corporatePasses", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<CorporatePass> getCorporatePasses() {
         return (List<CorporatePass>)readProperty("corporatePasses");
     }
-
 
     public void setCountry(Country country) {
         setToOneTarget("country", country, true);
@@ -421,90 +577,96 @@ public abstract class _Contact extends ExpandableCayenneDataObject {
         return (Country)readProperty("country");
     }
 
-
     public void addToCustomFields(ContactCustomField obj) {
         addToManyTarget("customFields", obj, true);
     }
+
     public void removeFromCustomFields(ContactCustomField obj) {
         removeToManyTarget("customFields", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<ContactCustomField> getCustomFields() {
         return (List<ContactCustomField>)readProperty("customFields");
     }
 
-
     public void addToFromContacts(ContactRelation obj) {
         addToManyTarget("fromContacts", obj, true);
     }
+
     public void removeFromFromContacts(ContactRelation obj) {
         removeToManyTarget("fromContacts", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<ContactRelation> getFromContacts() {
         return (List<ContactRelation>)readProperty("fromContacts");
     }
 
-
     public void addToInvoices(Invoice obj) {
         addToManyTarget("invoices", obj, true);
     }
+
     public void removeFromInvoices(Invoice obj) {
         removeToManyTarget("invoices", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Invoice> getInvoices() {
         return (List<Invoice>)readProperty("invoices");
     }
 
-
     public void addToMessagePeople(MessagePerson obj) {
         addToManyTarget("messagePeople", obj, true);
     }
+
     public void removeFromMessagePeople(MessagePerson obj) {
         removeToManyTarget("messagePeople", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<MessagePerson> getMessagePeople() {
         return (List<MessagePerson>)readProperty("messagePeople");
     }
 
-
     public void addToPaymentsIn(PaymentIn obj) {
         addToManyTarget("paymentsIn", obj, true);
     }
+
     public void removeFromPaymentsIn(PaymentIn obj) {
         removeToManyTarget("paymentsIn", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<PaymentIn> getPaymentsIn() {
         return (List<PaymentIn>)readProperty("paymentsIn");
     }
 
-
     public void addToPaymentsOut(PaymentOut obj) {
         addToManyTarget("paymentsOut", obj, true);
     }
+
     public void removeFromPaymentsOut(PaymentOut obj) {
         removeToManyTarget("paymentsOut", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<PaymentOut> getPaymentsOut() {
         return (List<PaymentOut>)readProperty("paymentsOut");
     }
 
-
     public void addToProducts(ProductItem obj) {
         addToManyTarget("products", obj, true);
     }
+
     public void removeFromProducts(ProductItem obj) {
         removeToManyTarget("products", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<ProductItem> getProducts() {
         return (List<ProductItem>)readProperty("products");
     }
-
 
     public void setStudent(Student student) {
         setToOneTarget("student", student, true);
@@ -514,7 +676,6 @@ public abstract class _Contact extends ExpandableCayenneDataObject {
         return (Student)readProperty("student");
     }
 
-
     public void setSupportPassword(SupportPassword supportPassword) {
         setToOneTarget("supportPassword", supportPassword, true);
     }
@@ -522,7 +683,6 @@ public abstract class _Contact extends ExpandableCayenneDataObject {
     public SupportPassword getSupportPassword() {
         return (SupportPassword)readProperty("supportPassword");
     }
-
 
     public void setTaxOverride(Tax taxOverride) {
         setToOneTarget("taxOverride", taxOverride, true);
@@ -532,18 +692,18 @@ public abstract class _Contact extends ExpandableCayenneDataObject {
         return (Tax)readProperty("taxOverride");
     }
 
-
     public void addToToContacts(ContactRelation obj) {
         addToManyTarget("toContacts", obj, true);
     }
+
     public void removeFromToContacts(ContactRelation obj) {
         removeToManyTarget("toContacts", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<ContactRelation> getToContacts() {
         return (List<ContactRelation>)readProperty("toContacts");
     }
-
 
     public void setTutor(Tutor tutor) {
         setToOneTarget("tutor", tutor, true);
@@ -553,9 +713,400 @@ public abstract class _Contact extends ExpandableCayenneDataObject {
         return (Tutor)readProperty("tutor");
     }
 
-
     protected abstract void onPostAdd();
 
     protected abstract void onPrePersist();
+
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "abn":
+                return this.abn;
+            case "angelId":
+                return this.angelId;
+            case "businessPhoneNumber":
+                return this.businessPhoneNumber;
+            case "cookieHash":
+                return this.cookieHash;
+            case "created":
+                return this.created;
+            case "dateOfBirth":
+                return this.dateOfBirth;
+            case "emailAddress":
+                return this.emailAddress;
+            case "familyName":
+                return this.familyName;
+            case "faxNumber":
+                return this.faxNumber;
+            case "givenName":
+                return this.givenName;
+            case "homePhoneNumber":
+                return this.homePhoneNumber;
+            case "honorific":
+                return this.honorific;
+            case "invoiceTerms":
+                return this.invoiceTerms;
+            case "isCompany":
+                return this.isCompany;
+            case "isMale":
+                return this.isMale;
+            case "isMarketingViaEmailAllowed":
+                return this.isMarketingViaEmailAllowed;
+            case "isMarketingViaPostAllowed":
+                return this.isMarketingViaPostAllowed;
+            case "isMarketingViaSMSAllowed":
+                return this.isMarketingViaSMSAllowed;
+            case "lastLoginTime":
+                return this.lastLoginTime;
+            case "middleName":
+                return this.middleName;
+            case "mobilePhoneNumber":
+                return this.mobilePhoneNumber;
+            case "modified":
+                return this.modified;
+            case "password":
+                return this.password;
+            case "passwordHash":
+                return this.passwordHash;
+            case "passwordRecoverExpire":
+                return this.passwordRecoverExpire;
+            case "passwordRecoveryKey":
+                return this.passwordRecoveryKey;
+            case "postcode":
+                return this.postcode;
+            case "state":
+                return this.state;
+            case "street":
+                return this.street;
+            case "suburb":
+                return this.suburb;
+            case "taxFileNumber":
+                return this.taxFileNumber;
+            case "title":
+                return this.title;
+            case "uniqueCode":
+                return this.uniqueCode;
+            case "assessmentSubmissions":
+                return this.assessmentSubmissions;
+            case "college":
+                return this.college;
+            case "contactComments":
+                return this.contactComments;
+            case "corporatePasses":
+                return this.corporatePasses;
+            case "country":
+                return this.country;
+            case "customFields":
+                return this.customFields;
+            case "fromContacts":
+                return this.fromContacts;
+            case "invoices":
+                return this.invoices;
+            case "messagePeople":
+                return this.messagePeople;
+            case "paymentsIn":
+                return this.paymentsIn;
+            case "paymentsOut":
+                return this.paymentsOut;
+            case "products":
+                return this.products;
+            case "student":
+                return this.student;
+            case "supportPassword":
+                return this.supportPassword;
+            case "taxOverride":
+                return this.taxOverride;
+            case "toContacts":
+                return this.toContacts;
+            case "tutor":
+                return this.tutor;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "abn":
+                this.abn = (String)val;
+                break;
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "businessPhoneNumber":
+                this.businessPhoneNumber = (String)val;
+                break;
+            case "cookieHash":
+                this.cookieHash = (String)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "dateOfBirth":
+                this.dateOfBirth = (Date)val;
+                break;
+            case "emailAddress":
+                this.emailAddress = (String)val;
+                break;
+            case "familyName":
+                this.familyName = (String)val;
+                break;
+            case "faxNumber":
+                this.faxNumber = (String)val;
+                break;
+            case "givenName":
+                this.givenName = (String)val;
+                break;
+            case "homePhoneNumber":
+                this.homePhoneNumber = (String)val;
+                break;
+            case "honorific":
+                this.honorific = (String)val;
+                break;
+            case "invoiceTerms":
+                this.invoiceTerms = (Integer)val;
+                break;
+            case "isCompany":
+                this.isCompany = (Boolean)val;
+                break;
+            case "isMale":
+                this.isMale = (Boolean)val;
+                break;
+            case "isMarketingViaEmailAllowed":
+                this.isMarketingViaEmailAllowed = (Boolean)val;
+                break;
+            case "isMarketingViaPostAllowed":
+                this.isMarketingViaPostAllowed = (Boolean)val;
+                break;
+            case "isMarketingViaSMSAllowed":
+                this.isMarketingViaSMSAllowed = (Boolean)val;
+                break;
+            case "lastLoginTime":
+                this.lastLoginTime = (Date)val;
+                break;
+            case "middleName":
+                this.middleName = (String)val;
+                break;
+            case "mobilePhoneNumber":
+                this.mobilePhoneNumber = (String)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "password":
+                this.password = (String)val;
+                break;
+            case "passwordHash":
+                this.passwordHash = (String)val;
+                break;
+            case "passwordRecoverExpire":
+                this.passwordRecoverExpire = (Date)val;
+                break;
+            case "passwordRecoveryKey":
+                this.passwordRecoveryKey = (String)val;
+                break;
+            case "postcode":
+                this.postcode = (String)val;
+                break;
+            case "state":
+                this.state = (String)val;
+                break;
+            case "street":
+                this.street = (String)val;
+                break;
+            case "suburb":
+                this.suburb = (String)val;
+                break;
+            case "taxFileNumber":
+                this.taxFileNumber = (String)val;
+                break;
+            case "title":
+                this.title = (String)val;
+                break;
+            case "uniqueCode":
+                this.uniqueCode = (String)val;
+                break;
+            case "assessmentSubmissions":
+                this.assessmentSubmissions = val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "contactComments":
+                this.contactComments = val;
+                break;
+            case "corporatePasses":
+                this.corporatePasses = val;
+                break;
+            case "country":
+                this.country = val;
+                break;
+            case "customFields":
+                this.customFields = val;
+                break;
+            case "fromContacts":
+                this.fromContacts = val;
+                break;
+            case "invoices":
+                this.invoices = val;
+                break;
+            case "messagePeople":
+                this.messagePeople = val;
+                break;
+            case "paymentsIn":
+                this.paymentsIn = val;
+                break;
+            case "paymentsOut":
+                this.paymentsOut = val;
+                break;
+            case "products":
+                this.products = val;
+                break;
+            case "student":
+                this.student = val;
+                break;
+            case "supportPassword":
+                this.supportPassword = val;
+                break;
+            case "taxOverride":
+                this.taxOverride = val;
+                break;
+            case "toContacts":
+                this.toContacts = val;
+                break;
+            case "tutor":
+                this.tutor = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.abn);
+        out.writeObject(this.angelId);
+        out.writeObject(this.businessPhoneNumber);
+        out.writeObject(this.cookieHash);
+        out.writeObject(this.created);
+        out.writeObject(this.dateOfBirth);
+        out.writeObject(this.emailAddress);
+        out.writeObject(this.familyName);
+        out.writeObject(this.faxNumber);
+        out.writeObject(this.givenName);
+        out.writeObject(this.homePhoneNumber);
+        out.writeObject(this.honorific);
+        out.writeObject(this.invoiceTerms);
+        out.writeObject(this.isCompany);
+        out.writeObject(this.isMale);
+        out.writeObject(this.isMarketingViaEmailAllowed);
+        out.writeObject(this.isMarketingViaPostAllowed);
+        out.writeObject(this.isMarketingViaSMSAllowed);
+        out.writeObject(this.lastLoginTime);
+        out.writeObject(this.middleName);
+        out.writeObject(this.mobilePhoneNumber);
+        out.writeObject(this.modified);
+        out.writeObject(this.password);
+        out.writeObject(this.passwordHash);
+        out.writeObject(this.passwordRecoverExpire);
+        out.writeObject(this.passwordRecoveryKey);
+        out.writeObject(this.postcode);
+        out.writeObject(this.state);
+        out.writeObject(this.street);
+        out.writeObject(this.suburb);
+        out.writeObject(this.taxFileNumber);
+        out.writeObject(this.title);
+        out.writeObject(this.uniqueCode);
+        out.writeObject(this.assessmentSubmissions);
+        out.writeObject(this.college);
+        out.writeObject(this.contactComments);
+        out.writeObject(this.corporatePasses);
+        out.writeObject(this.country);
+        out.writeObject(this.customFields);
+        out.writeObject(this.fromContacts);
+        out.writeObject(this.invoices);
+        out.writeObject(this.messagePeople);
+        out.writeObject(this.paymentsIn);
+        out.writeObject(this.paymentsOut);
+        out.writeObject(this.products);
+        out.writeObject(this.student);
+        out.writeObject(this.supportPassword);
+        out.writeObject(this.taxOverride);
+        out.writeObject(this.toContacts);
+        out.writeObject(this.tutor);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.abn = (String)in.readObject();
+        this.angelId = (Long)in.readObject();
+        this.businessPhoneNumber = (String)in.readObject();
+        this.cookieHash = (String)in.readObject();
+        this.created = (Date)in.readObject();
+        this.dateOfBirth = (Date)in.readObject();
+        this.emailAddress = (String)in.readObject();
+        this.familyName = (String)in.readObject();
+        this.faxNumber = (String)in.readObject();
+        this.givenName = (String)in.readObject();
+        this.homePhoneNumber = (String)in.readObject();
+        this.honorific = (String)in.readObject();
+        this.invoiceTerms = (Integer)in.readObject();
+        this.isCompany = (Boolean)in.readObject();
+        this.isMale = (Boolean)in.readObject();
+        this.isMarketingViaEmailAllowed = (Boolean)in.readObject();
+        this.isMarketingViaPostAllowed = (Boolean)in.readObject();
+        this.isMarketingViaSMSAllowed = (Boolean)in.readObject();
+        this.lastLoginTime = (Date)in.readObject();
+        this.middleName = (String)in.readObject();
+        this.mobilePhoneNumber = (String)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.password = (String)in.readObject();
+        this.passwordHash = (String)in.readObject();
+        this.passwordRecoverExpire = (Date)in.readObject();
+        this.passwordRecoveryKey = (String)in.readObject();
+        this.postcode = (String)in.readObject();
+        this.state = (String)in.readObject();
+        this.street = (String)in.readObject();
+        this.suburb = (String)in.readObject();
+        this.taxFileNumber = (String)in.readObject();
+        this.title = (String)in.readObject();
+        this.uniqueCode = (String)in.readObject();
+        this.assessmentSubmissions = in.readObject();
+        this.college = in.readObject();
+        this.contactComments = in.readObject();
+        this.corporatePasses = in.readObject();
+        this.country = in.readObject();
+        this.customFields = in.readObject();
+        this.fromContacts = in.readObject();
+        this.invoices = in.readObject();
+        this.messagePeople = in.readObject();
+        this.paymentsIn = in.readObject();
+        this.paymentsOut = in.readObject();
+        this.products = in.readObject();
+        this.student = in.readObject();
+        this.supportPassword = in.readObject();
+        this.taxOverride = in.readObject();
+        this.toContacts = in.readObject();
+        this.tutor = in.readObject();
+    }
 
 }

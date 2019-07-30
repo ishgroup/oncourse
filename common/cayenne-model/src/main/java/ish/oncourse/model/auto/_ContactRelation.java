@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 
 import org.apache.cayenne.exp.Property;
@@ -36,25 +39,43 @@ public abstract class _ContactRelation extends WillowCayenneObject {
     public static final Property<ContactRelationType> RELATION_TYPE = Property.create("relationType", ContactRelationType.class);
     public static final Property<Contact> TO_CONTACT = Property.create("toContact", Contact.class);
 
+    protected Long angelId;
+    protected Date created;
+    protected Date modified;
+
+    protected Object college;
+    protected Object fromContact;
+    protected Object relationType;
+    protected Object toContact;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setCollege(College college) {
@@ -65,7 +86,6 @@ public abstract class _ContactRelation extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void setFromContact(Contact fromContact) {
         setToOneTarget("fromContact", fromContact, true);
     }
@@ -73,7 +93,6 @@ public abstract class _ContactRelation extends WillowCayenneObject {
     public Contact getFromContact() {
         return (Contact)readProperty("fromContact");
     }
-
 
     public void setRelationType(ContactRelationType relationType) {
         setToOneTarget("relationType", relationType, true);
@@ -83,7 +102,6 @@ public abstract class _ContactRelation extends WillowCayenneObject {
         return (ContactRelationType)readProperty("relationType");
     }
 
-
     public void setToContact(Contact toContact) {
         setToOneTarget("toContact", toContact, true);
     }
@@ -92,5 +110,95 @@ public abstract class _ContactRelation extends WillowCayenneObject {
         return (Contact)readProperty("toContact");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "created":
+                return this.created;
+            case "modified":
+                return this.modified;
+            case "college":
+                return this.college;
+            case "fromContact":
+                return this.fromContact;
+            case "relationType":
+                return this.relationType;
+            case "toContact":
+                return this.toContact;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "fromContact":
+                this.fromContact = val;
+                break;
+            case "relationType":
+                this.relationType = val;
+                break;
+            case "toContact":
+                this.toContact = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.created);
+        out.writeObject(this.modified);
+        out.writeObject(this.college);
+        out.writeObject(this.fromContact);
+        out.writeObject(this.relationType);
+        out.writeObject(this.toContact);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.created = (Date)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.college = in.readObject();
+        this.fromContact = in.readObject();
+        this.relationType = in.readObject();
+        this.toContact = in.readObject();
+    }
 
 }

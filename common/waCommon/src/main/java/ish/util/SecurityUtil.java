@@ -4,9 +4,10 @@
  */
 package ish.util;
 
-import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -73,7 +74,7 @@ public final class SecurityUtil {
 		if (pass == null) {
 			return null;
 		}
-		return hashByteArray(pass.getBytes("UTF-8"));
+		return hashByteArray(pass.getBytes(StandardCharsets.UTF_8));
 
 	}
 
@@ -96,9 +97,7 @@ public final class SecurityUtil {
 				result.append(Integer.toHexString(aHash & 0xFF));
 			}
 			return result.toString();
-		} catch (NoSuchAlgorithmException e) {
-			return null;
-		} catch (NoSuchProviderException e) {
+		} catch (NoSuchAlgorithmException | NoSuchProviderException e) {
 			return null;
 		}
 	}

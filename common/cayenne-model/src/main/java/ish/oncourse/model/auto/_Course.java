@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -84,122 +87,196 @@ public abstract class _Course extends ExpandableCayenneDataObject {
     public static final Property<List<VoucherProductCourse>> VOUCHER_PRODUCT_COURSES = Property.create("voucherProductCourses", List.class);
     public static final Property<List<WaitingList>> WAITING_LISTS = Property.create("waitingLists", List.class);
 
+    protected Boolean allowWaitingList;
+    protected Long angelId;
+    protected String code;
+    protected Date created;
+    protected String detail;
+    protected String detailTextile;
+    protected CourseEnrolmentType enrolmentType;
+    protected String fieldOfEducation;
+    protected Boolean isSufficientForQualification;
+    protected Boolean isVETCourse;
+    protected Boolean isWebVisible;
+    protected Date modified;
+    protected String name;
+    protected Float nominalHours;
+    protected String searchText;
+
+    protected Object applications;
+    protected Object college;
+    protected Object courseClasses;
+    protected Object courseModules;
+    protected Object customFields;
+    protected Object fieldConfigurationScheme;
+    protected Object fromCourses;
+    protected Object qualification;
+    protected Object toCourses;
+    protected Object voucherProductCourses;
+    protected Object waitingLists;
+
     public void setAllowWaitingList(Boolean allowWaitingList) {
-        writeProperty("allowWaitingList", allowWaitingList);
+        beforePropertyWrite("allowWaitingList", this.allowWaitingList, allowWaitingList);
+        this.allowWaitingList = allowWaitingList;
     }
+
     public Boolean getAllowWaitingList() {
-        return (Boolean)readProperty("allowWaitingList");
+        beforePropertyRead("allowWaitingList");
+        return this.allowWaitingList;
     }
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setCode(String code) {
-        writeProperty("code", code);
+        beforePropertyWrite("code", this.code, code);
+        this.code = code;
     }
+
     public String getCode() {
-        return (String)readProperty("code");
+        beforePropertyRead("code");
+        return this.code;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setDetail(String detail) {
-        writeProperty("detail", detail);
+        beforePropertyWrite("detail", this.detail, detail);
+        this.detail = detail;
     }
+
     public String getDetail() {
-        return (String)readProperty("detail");
+        beforePropertyRead("detail");
+        return this.detail;
     }
 
     public void setDetailTextile(String detailTextile) {
-        writeProperty("detailTextile", detailTextile);
+        beforePropertyWrite("detailTextile", this.detailTextile, detailTextile);
+        this.detailTextile = detailTextile;
     }
+
     public String getDetailTextile() {
-        return (String)readProperty("detailTextile");
+        beforePropertyRead("detailTextile");
+        return this.detailTextile;
     }
 
     public void setEnrolmentType(CourseEnrolmentType enrolmentType) {
-        writeProperty("enrolmentType", enrolmentType);
+        beforePropertyWrite("enrolmentType", this.enrolmentType, enrolmentType);
+        this.enrolmentType = enrolmentType;
     }
+
     public CourseEnrolmentType getEnrolmentType() {
-        return (CourseEnrolmentType)readProperty("enrolmentType");
+        beforePropertyRead("enrolmentType");
+        return this.enrolmentType;
     }
 
     public void setFieldOfEducation(String fieldOfEducation) {
-        writeProperty("fieldOfEducation", fieldOfEducation);
+        beforePropertyWrite("fieldOfEducation", this.fieldOfEducation, fieldOfEducation);
+        this.fieldOfEducation = fieldOfEducation;
     }
+
     public String getFieldOfEducation() {
-        return (String)readProperty("fieldOfEducation");
+        beforePropertyRead("fieldOfEducation");
+        return this.fieldOfEducation;
     }
 
     public void setIsSufficientForQualification(Boolean isSufficientForQualification) {
-        writeProperty("isSufficientForQualification", isSufficientForQualification);
+        beforePropertyWrite("isSufficientForQualification", this.isSufficientForQualification, isSufficientForQualification);
+        this.isSufficientForQualification = isSufficientForQualification;
     }
+
     public Boolean getIsSufficientForQualification() {
-        return (Boolean)readProperty("isSufficientForQualification");
+        beforePropertyRead("isSufficientForQualification");
+        return this.isSufficientForQualification;
     }
 
     public void setIsVETCourse(Boolean isVETCourse) {
-        writeProperty("isVETCourse", isVETCourse);
+        beforePropertyWrite("isVETCourse", this.isVETCourse, isVETCourse);
+        this.isVETCourse = isVETCourse;
     }
+
     public Boolean getIsVETCourse() {
-        return (Boolean)readProperty("isVETCourse");
+        beforePropertyRead("isVETCourse");
+        return this.isVETCourse;
     }
 
     public void setIsWebVisible(Boolean isWebVisible) {
-        writeProperty("isWebVisible", isWebVisible);
+        beforePropertyWrite("isWebVisible", this.isWebVisible, isWebVisible);
+        this.isWebVisible = isWebVisible;
     }
+
     public Boolean getIsWebVisible() {
-        return (Boolean)readProperty("isWebVisible");
+        beforePropertyRead("isWebVisible");
+        return this.isWebVisible;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        beforePropertyWrite("name", this.name, name);
+        this.name = name;
     }
+
     public String getName() {
-        return (String)readProperty("name");
+        beforePropertyRead("name");
+        return this.name;
     }
 
     public void setNominalHours(Float nominalHours) {
-        writeProperty("nominalHours", nominalHours);
+        beforePropertyWrite("nominalHours", this.nominalHours, nominalHours);
+        this.nominalHours = nominalHours;
     }
+
     public Float getNominalHours() {
-        return (Float)readProperty("nominalHours");
+        beforePropertyRead("nominalHours");
+        return this.nominalHours;
     }
 
     public void setSearchText(String searchText) {
-        writeProperty("searchText", searchText);
+        beforePropertyWrite("searchText", this.searchText, searchText);
+        this.searchText = searchText;
     }
+
     public String getSearchText() {
-        return (String)readProperty("searchText");
+        beforePropertyRead("searchText");
+        return this.searchText;
     }
 
     public void addToApplications(Application obj) {
         addToManyTarget("applications", obj, true);
     }
+
     public void removeFromApplications(Application obj) {
         removeToManyTarget("applications", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Application> getApplications() {
         return (List<Application>)readProperty("applications");
     }
-
 
     public void setCollege(College college) {
         setToOneTarget("college", college, true);
@@ -209,42 +286,44 @@ public abstract class _Course extends ExpandableCayenneDataObject {
         return (College)readProperty("college");
     }
 
-
     public void addToCourseClasses(CourseClass obj) {
         addToManyTarget("courseClasses", obj, true);
     }
+
     public void removeFromCourseClasses(CourseClass obj) {
         removeToManyTarget("courseClasses", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<CourseClass> getCourseClasses() {
         return (List<CourseClass>)readProperty("courseClasses");
     }
 
-
     public void addToCourseModules(CourseModule obj) {
         addToManyTarget("courseModules", obj, true);
     }
+
     public void removeFromCourseModules(CourseModule obj) {
         removeToManyTarget("courseModules", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<CourseModule> getCourseModules() {
         return (List<CourseModule>)readProperty("courseModules");
     }
 
-
     public void addToCustomFields(CourseCustomField obj) {
         addToManyTarget("customFields", obj, true);
     }
+
     public void removeFromCustomFields(CourseCustomField obj) {
         removeToManyTarget("customFields", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<CourseCustomField> getCustomFields() {
         return (List<CourseCustomField>)readProperty("customFields");
     }
-
 
     public void setFieldConfigurationScheme(FieldConfigurationScheme fieldConfigurationScheme) {
         setToOneTarget("fieldConfigurationScheme", fieldConfigurationScheme, true);
@@ -254,18 +333,18 @@ public abstract class _Course extends ExpandableCayenneDataObject {
         return (FieldConfigurationScheme)readProperty("fieldConfigurationScheme");
     }
 
-
     public void addToFromCourses(CourseCourseRelation obj) {
         addToManyTarget("fromCourses", obj, true);
     }
+
     public void removeFromFromCourses(CourseCourseRelation obj) {
         removeToManyTarget("fromCourses", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<CourseCourseRelation> getFromCourses() {
         return (List<CourseCourseRelation>)readProperty("fromCourses");
     }
-
 
     public void setQualification(Qualification qualification) {
         setToOneTarget("qualification", qualification, true);
@@ -275,41 +354,267 @@ public abstract class _Course extends ExpandableCayenneDataObject {
         return (Qualification)readProperty("qualification");
     }
 
-
     public void addToToCourses(CourseCourseRelation obj) {
         addToManyTarget("toCourses", obj, true);
     }
+
     public void removeFromToCourses(CourseCourseRelation obj) {
         removeToManyTarget("toCourses", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<CourseCourseRelation> getToCourses() {
         return (List<CourseCourseRelation>)readProperty("toCourses");
     }
 
-
     public void addToVoucherProductCourses(VoucherProductCourse obj) {
         addToManyTarget("voucherProductCourses", obj, true);
     }
+
     public void removeFromVoucherProductCourses(VoucherProductCourse obj) {
         removeToManyTarget("voucherProductCourses", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<VoucherProductCourse> getVoucherProductCourses() {
         return (List<VoucherProductCourse>)readProperty("voucherProductCourses");
     }
 
-
     public void addToWaitingLists(WaitingList obj) {
         addToManyTarget("waitingLists", obj, true);
     }
+
     public void removeFromWaitingLists(WaitingList obj) {
         removeToManyTarget("waitingLists", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<WaitingList> getWaitingLists() {
         return (List<WaitingList>)readProperty("waitingLists");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "allowWaitingList":
+                return this.allowWaitingList;
+            case "angelId":
+                return this.angelId;
+            case "code":
+                return this.code;
+            case "created":
+                return this.created;
+            case "detail":
+                return this.detail;
+            case "detailTextile":
+                return this.detailTextile;
+            case "enrolmentType":
+                return this.enrolmentType;
+            case "fieldOfEducation":
+                return this.fieldOfEducation;
+            case "isSufficientForQualification":
+                return this.isSufficientForQualification;
+            case "isVETCourse":
+                return this.isVETCourse;
+            case "isWebVisible":
+                return this.isWebVisible;
+            case "modified":
+                return this.modified;
+            case "name":
+                return this.name;
+            case "nominalHours":
+                return this.nominalHours;
+            case "searchText":
+                return this.searchText;
+            case "applications":
+                return this.applications;
+            case "college":
+                return this.college;
+            case "courseClasses":
+                return this.courseClasses;
+            case "courseModules":
+                return this.courseModules;
+            case "customFields":
+                return this.customFields;
+            case "fieldConfigurationScheme":
+                return this.fieldConfigurationScheme;
+            case "fromCourses":
+                return this.fromCourses;
+            case "qualification":
+                return this.qualification;
+            case "toCourses":
+                return this.toCourses;
+            case "voucherProductCourses":
+                return this.voucherProductCourses;
+            case "waitingLists":
+                return this.waitingLists;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "allowWaitingList":
+                this.allowWaitingList = (Boolean)val;
+                break;
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "code":
+                this.code = (String)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "detail":
+                this.detail = (String)val;
+                break;
+            case "detailTextile":
+                this.detailTextile = (String)val;
+                break;
+            case "enrolmentType":
+                this.enrolmentType = (CourseEnrolmentType)val;
+                break;
+            case "fieldOfEducation":
+                this.fieldOfEducation = (String)val;
+                break;
+            case "isSufficientForQualification":
+                this.isSufficientForQualification = (Boolean)val;
+                break;
+            case "isVETCourse":
+                this.isVETCourse = (Boolean)val;
+                break;
+            case "isWebVisible":
+                this.isWebVisible = (Boolean)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "name":
+                this.name = (String)val;
+                break;
+            case "nominalHours":
+                this.nominalHours = (Float)val;
+                break;
+            case "searchText":
+                this.searchText = (String)val;
+                break;
+            case "applications":
+                this.applications = val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "courseClasses":
+                this.courseClasses = val;
+                break;
+            case "courseModules":
+                this.courseModules = val;
+                break;
+            case "customFields":
+                this.customFields = val;
+                break;
+            case "fieldConfigurationScheme":
+                this.fieldConfigurationScheme = val;
+                break;
+            case "fromCourses":
+                this.fromCourses = val;
+                break;
+            case "qualification":
+                this.qualification = val;
+                break;
+            case "toCourses":
+                this.toCourses = val;
+                break;
+            case "voucherProductCourses":
+                this.voucherProductCourses = val;
+                break;
+            case "waitingLists":
+                this.waitingLists = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.allowWaitingList);
+        out.writeObject(this.angelId);
+        out.writeObject(this.code);
+        out.writeObject(this.created);
+        out.writeObject(this.detail);
+        out.writeObject(this.detailTextile);
+        out.writeObject(this.enrolmentType);
+        out.writeObject(this.fieldOfEducation);
+        out.writeObject(this.isSufficientForQualification);
+        out.writeObject(this.isVETCourse);
+        out.writeObject(this.isWebVisible);
+        out.writeObject(this.modified);
+        out.writeObject(this.name);
+        out.writeObject(this.nominalHours);
+        out.writeObject(this.searchText);
+        out.writeObject(this.applications);
+        out.writeObject(this.college);
+        out.writeObject(this.courseClasses);
+        out.writeObject(this.courseModules);
+        out.writeObject(this.customFields);
+        out.writeObject(this.fieldConfigurationScheme);
+        out.writeObject(this.fromCourses);
+        out.writeObject(this.qualification);
+        out.writeObject(this.toCourses);
+        out.writeObject(this.voucherProductCourses);
+        out.writeObject(this.waitingLists);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.allowWaitingList = (Boolean)in.readObject();
+        this.angelId = (Long)in.readObject();
+        this.code = (String)in.readObject();
+        this.created = (Date)in.readObject();
+        this.detail = (String)in.readObject();
+        this.detailTextile = (String)in.readObject();
+        this.enrolmentType = (CourseEnrolmentType)in.readObject();
+        this.fieldOfEducation = (String)in.readObject();
+        this.isSufficientForQualification = (Boolean)in.readObject();
+        this.isVETCourse = (Boolean)in.readObject();
+        this.isWebVisible = (Boolean)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.name = (String)in.readObject();
+        this.nominalHours = (Float)in.readObject();
+        this.searchText = (String)in.readObject();
+        this.applications = in.readObject();
+        this.college = in.readObject();
+        this.courseClasses = in.readObject();
+        this.courseModules = in.readObject();
+        this.customFields = in.readObject();
+        this.fieldConfigurationScheme = in.readObject();
+        this.fromCourses = in.readObject();
+        this.qualification = in.readObject();
+        this.toCourses = in.readObject();
+        this.voucherProductCourses = in.readObject();
+        this.waitingLists = in.readObject();
+    }
 
 }

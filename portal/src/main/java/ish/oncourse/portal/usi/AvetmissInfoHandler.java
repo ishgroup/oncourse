@@ -8,7 +8,7 @@ import ish.oncourse.model.Student;
 import ish.oncourse.selectutils.BooleanSelection;
 import ish.oncourse.util.MessagesNamingConvention;
 import org.apache.cayenne.Cayenne;
-import org.apache.cayenne.CayenneDataObject;
+import org.apache.cayenne.BaseDataObject;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Calendar;
@@ -80,7 +80,7 @@ public class AvetmissInfoHandler extends AbstractStepHandler {
     }
 
 
-    private Value getBooleanSelectionValue(CayenneDataObject entity, String key) {
+    private Value getBooleanSelectionValue(BaseDataObject entity, String key) {
         BooleanSelection value = BooleanSelection.valueOf((Boolean) entity.readProperty(key));
         BooleanSelection[] enumValues = BooleanSelection.values();
         Value[] options = new Value[BooleanSelection.values().length];

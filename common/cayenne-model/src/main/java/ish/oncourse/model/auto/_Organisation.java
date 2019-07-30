@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 
 import org.apache.cayenne.exp.Property;
@@ -38,74 +41,228 @@ public abstract class _Organisation extends WillowCayenneObject {
     public static final Property<String> TRADING_NAME = Property.create("tradingName", String.class);
     public static final Property<String> WEB_ADDRESS = Property.create("webAddress", String.class);
 
+    protected String abn;
+    protected String code;
+    protected Date created;
+    protected Boolean hasActiveRegistration;
+    protected String legalPersonName;
+    protected Date modified;
+    protected Date registrationEnd;
+    protected Date registrationStart;
+    protected String tradingName;
+    protected String webAddress;
+
+
     public void setAbn(String abn) {
-        writeProperty("abn", abn);
+        beforePropertyWrite("abn", this.abn, abn);
+        this.abn = abn;
     }
+
     public String getAbn() {
-        return (String)readProperty("abn");
+        beforePropertyRead("abn");
+        return this.abn;
     }
 
     public void setCode(String code) {
-        writeProperty("code", code);
+        beforePropertyWrite("code", this.code, code);
+        this.code = code;
     }
+
     public String getCode() {
-        return (String)readProperty("code");
+        beforePropertyRead("code");
+        return this.code;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setHasActiveRegistration(Boolean hasActiveRegistration) {
-        writeProperty("hasActiveRegistration", hasActiveRegistration);
+        beforePropertyWrite("hasActiveRegistration", this.hasActiveRegistration, hasActiveRegistration);
+        this.hasActiveRegistration = hasActiveRegistration;
     }
+
     public Boolean getHasActiveRegistration() {
-        return (Boolean)readProperty("hasActiveRegistration");
+        beforePropertyRead("hasActiveRegistration");
+        return this.hasActiveRegistration;
     }
 
     public void setLegalPersonName(String legalPersonName) {
-        writeProperty("legalPersonName", legalPersonName);
+        beforePropertyWrite("legalPersonName", this.legalPersonName, legalPersonName);
+        this.legalPersonName = legalPersonName;
     }
+
     public String getLegalPersonName() {
-        return (String)readProperty("legalPersonName");
+        beforePropertyRead("legalPersonName");
+        return this.legalPersonName;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setRegistrationEnd(Date registrationEnd) {
-        writeProperty("registrationEnd", registrationEnd);
+        beforePropertyWrite("registrationEnd", this.registrationEnd, registrationEnd);
+        this.registrationEnd = registrationEnd;
     }
+
     public Date getRegistrationEnd() {
-        return (Date)readProperty("registrationEnd");
+        beforePropertyRead("registrationEnd");
+        return this.registrationEnd;
     }
 
     public void setRegistrationStart(Date registrationStart) {
-        writeProperty("registrationStart", registrationStart);
+        beforePropertyWrite("registrationStart", this.registrationStart, registrationStart);
+        this.registrationStart = registrationStart;
     }
+
     public Date getRegistrationStart() {
-        return (Date)readProperty("registrationStart");
+        beforePropertyRead("registrationStart");
+        return this.registrationStart;
     }
 
     public void setTradingName(String tradingName) {
-        writeProperty("tradingName", tradingName);
+        beforePropertyWrite("tradingName", this.tradingName, tradingName);
+        this.tradingName = tradingName;
     }
+
     public String getTradingName() {
-        return (String)readProperty("tradingName");
+        beforePropertyRead("tradingName");
+        return this.tradingName;
     }
 
     public void setWebAddress(String webAddress) {
-        writeProperty("webAddress", webAddress);
+        beforePropertyWrite("webAddress", this.webAddress, webAddress);
+        this.webAddress = webAddress;
     }
+
     public String getWebAddress() {
-        return (String)readProperty("webAddress");
+        beforePropertyRead("webAddress");
+        return this.webAddress;
+    }
+
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "abn":
+                return this.abn;
+            case "code":
+                return this.code;
+            case "created":
+                return this.created;
+            case "hasActiveRegistration":
+                return this.hasActiveRegistration;
+            case "legalPersonName":
+                return this.legalPersonName;
+            case "modified":
+                return this.modified;
+            case "registrationEnd":
+                return this.registrationEnd;
+            case "registrationStart":
+                return this.registrationStart;
+            case "tradingName":
+                return this.tradingName;
+            case "webAddress":
+                return this.webAddress;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "abn":
+                this.abn = (String)val;
+                break;
+            case "code":
+                this.code = (String)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "hasActiveRegistration":
+                this.hasActiveRegistration = (Boolean)val;
+                break;
+            case "legalPersonName":
+                this.legalPersonName = (String)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "registrationEnd":
+                this.registrationEnd = (Date)val;
+                break;
+            case "registrationStart":
+                this.registrationStart = (Date)val;
+                break;
+            case "tradingName":
+                this.tradingName = (String)val;
+                break;
+            case "webAddress":
+                this.webAddress = (String)val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.abn);
+        out.writeObject(this.code);
+        out.writeObject(this.created);
+        out.writeObject(this.hasActiveRegistration);
+        out.writeObject(this.legalPersonName);
+        out.writeObject(this.modified);
+        out.writeObject(this.registrationEnd);
+        out.writeObject(this.registrationStart);
+        out.writeObject(this.tradingName);
+        out.writeObject(this.webAddress);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.abn = (String)in.readObject();
+        this.code = (String)in.readObject();
+        this.created = (Date)in.readObject();
+        this.hasActiveRegistration = (Boolean)in.readObject();
+        this.legalPersonName = (String)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.registrationEnd = (Date)in.readObject();
+        this.registrationStart = (Date)in.readObject();
+        this.tradingName = (String)in.readObject();
+        this.webAddress = (String)in.readObject();
     }
 
 }

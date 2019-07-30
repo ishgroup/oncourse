@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -40,53 +43,85 @@ public abstract class _LicenseFee extends WillowCayenneObject {
     public static final Property<College> COLLEGE = Property.create("college", College.class);
     public static final Property<WebSite> WEB_SITE = Property.create("webSite", WebSite.class);
 
+    protected Integer billingMonth;
+    protected BigDecimal fee;
+    protected Integer freeTransactions;
+    protected String keyCode;
+    protected Date paidUntil;
+    protected String planName;
+    protected Date validUntil;
+
+    protected Object college;
+    protected Object webSite;
+
     public void setBillingMonth(Integer billingMonth) {
-        writeProperty("billingMonth", billingMonth);
+        beforePropertyWrite("billingMonth", this.billingMonth, billingMonth);
+        this.billingMonth = billingMonth;
     }
+
     public Integer getBillingMonth() {
-        return (Integer)readProperty("billingMonth");
+        beforePropertyRead("billingMonth");
+        return this.billingMonth;
     }
 
     public void setFee(BigDecimal fee) {
-        writeProperty("fee", fee);
+        beforePropertyWrite("fee", this.fee, fee);
+        this.fee = fee;
     }
+
     public BigDecimal getFee() {
-        return (BigDecimal)readProperty("fee");
+        beforePropertyRead("fee");
+        return this.fee;
     }
 
     public void setFreeTransactions(Integer freeTransactions) {
-        writeProperty("freeTransactions", freeTransactions);
+        beforePropertyWrite("freeTransactions", this.freeTransactions, freeTransactions);
+        this.freeTransactions = freeTransactions;
     }
+
     public Integer getFreeTransactions() {
-        return (Integer)readProperty("freeTransactions");
+        beforePropertyRead("freeTransactions");
+        return this.freeTransactions;
     }
 
     public void setKeyCode(String keyCode) {
-        writeProperty("keyCode", keyCode);
+        beforePropertyWrite("keyCode", this.keyCode, keyCode);
+        this.keyCode = keyCode;
     }
+
     public String getKeyCode() {
-        return (String)readProperty("keyCode");
+        beforePropertyRead("keyCode");
+        return this.keyCode;
     }
 
     public void setPaidUntil(Date paidUntil) {
-        writeProperty("paidUntil", paidUntil);
+        beforePropertyWrite("paidUntil", this.paidUntil, paidUntil);
+        this.paidUntil = paidUntil;
     }
+
     public Date getPaidUntil() {
-        return (Date)readProperty("paidUntil");
+        beforePropertyRead("paidUntil");
+        return this.paidUntil;
     }
 
     public void setPlanName(String planName) {
-        writeProperty("planName", planName);
+        beforePropertyWrite("planName", this.planName, planName);
+        this.planName = planName;
     }
+
     public String getPlanName() {
-        return (String)readProperty("planName");
+        beforePropertyRead("planName");
+        return this.planName;
     }
 
     public void setValidUntil(Date validUntil) {
-        writeProperty("validUntil", validUntil);
+        beforePropertyWrite("validUntil", this.validUntil, validUntil);
+        this.validUntil = validUntil;
     }
+
     public Date getValidUntil() {
-        return (Date)readProperty("validUntil");
+        beforePropertyRead("validUntil");
+        return this.validUntil;
     }
 
     public void setCollege(College college) {
@@ -97,7 +132,6 @@ public abstract class _LicenseFee extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void setWebSite(WebSite webSite) {
         setToOneTarget("webSite", webSite, true);
     }
@@ -106,5 +140,109 @@ public abstract class _LicenseFee extends WillowCayenneObject {
         return (WebSite)readProperty("webSite");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "billingMonth":
+                return this.billingMonth;
+            case "fee":
+                return this.fee;
+            case "freeTransactions":
+                return this.freeTransactions;
+            case "keyCode":
+                return this.keyCode;
+            case "paidUntil":
+                return this.paidUntil;
+            case "planName":
+                return this.planName;
+            case "validUntil":
+                return this.validUntil;
+            case "college":
+                return this.college;
+            case "webSite":
+                return this.webSite;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "billingMonth":
+                this.billingMonth = (Integer)val;
+                break;
+            case "fee":
+                this.fee = (BigDecimal)val;
+                break;
+            case "freeTransactions":
+                this.freeTransactions = (Integer)val;
+                break;
+            case "keyCode":
+                this.keyCode = (String)val;
+                break;
+            case "paidUntil":
+                this.paidUntil = (Date)val;
+                break;
+            case "planName":
+                this.planName = (String)val;
+                break;
+            case "validUntil":
+                this.validUntil = (Date)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "webSite":
+                this.webSite = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.billingMonth);
+        out.writeObject(this.fee);
+        out.writeObject(this.freeTransactions);
+        out.writeObject(this.keyCode);
+        out.writeObject(this.paidUntil);
+        out.writeObject(this.planName);
+        out.writeObject(this.validUntil);
+        out.writeObject(this.college);
+        out.writeObject(this.webSite);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.billingMonth = (Integer)in.readObject();
+        this.fee = (BigDecimal)in.readObject();
+        this.freeTransactions = (Integer)in.readObject();
+        this.keyCode = (String)in.readObject();
+        this.paidUntil = (Date)in.readObject();
+        this.planName = (String)in.readObject();
+        this.validUntil = (Date)in.readObject();
+        this.college = in.readObject();
+        this.webSite = in.readObject();
+    }
 
 }

@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 
 import org.apache.cayenne.exp.Property;
@@ -42,92 +45,268 @@ public abstract class _TrainingPackage extends WillowCayenneObject {
     public static final Property<String> TITLE = Property.create("title", String.class);
     public static final Property<String> TYPE = Property.create("type", String.class);
 
+    protected String copyrightCategory;
+    protected String copyrightContact;
+    protected Date created;
+    protected String developer;
+    protected Date endorsementFrom;
+    protected Date endorsementTo;
+    protected Long ishVersion;
+    protected Date modified;
+    protected String nationalISC;
+    protected String purchaseFrom;
+    protected String title;
+    protected String type;
+
+
     public void setCopyrightCategory(String copyrightCategory) {
-        writeProperty("copyrightCategory", copyrightCategory);
+        beforePropertyWrite("copyrightCategory", this.copyrightCategory, copyrightCategory);
+        this.copyrightCategory = copyrightCategory;
     }
+
     public String getCopyrightCategory() {
-        return (String)readProperty("copyrightCategory");
+        beforePropertyRead("copyrightCategory");
+        return this.copyrightCategory;
     }
 
     public void setCopyrightContact(String copyrightContact) {
-        writeProperty("copyrightContact", copyrightContact);
+        beforePropertyWrite("copyrightContact", this.copyrightContact, copyrightContact);
+        this.copyrightContact = copyrightContact;
     }
+
     public String getCopyrightContact() {
-        return (String)readProperty("copyrightContact");
+        beforePropertyRead("copyrightContact");
+        return this.copyrightContact;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setDeveloper(String developer) {
-        writeProperty("developer", developer);
+        beforePropertyWrite("developer", this.developer, developer);
+        this.developer = developer;
     }
+
     public String getDeveloper() {
-        return (String)readProperty("developer");
+        beforePropertyRead("developer");
+        return this.developer;
     }
 
     public void setEndorsementFrom(Date endorsementFrom) {
-        writeProperty("endorsementFrom", endorsementFrom);
+        beforePropertyWrite("endorsementFrom", this.endorsementFrom, endorsementFrom);
+        this.endorsementFrom = endorsementFrom;
     }
+
     public Date getEndorsementFrom() {
-        return (Date)readProperty("endorsementFrom");
+        beforePropertyRead("endorsementFrom");
+        return this.endorsementFrom;
     }
 
     public void setEndorsementTo(Date endorsementTo) {
-        writeProperty("endorsementTo", endorsementTo);
+        beforePropertyWrite("endorsementTo", this.endorsementTo, endorsementTo);
+        this.endorsementTo = endorsementTo;
     }
+
     public Date getEndorsementTo() {
-        return (Date)readProperty("endorsementTo");
+        beforePropertyRead("endorsementTo");
+        return this.endorsementTo;
     }
 
     public void setIshVersion(Long ishVersion) {
-        writeProperty("ishVersion", ishVersion);
+        beforePropertyWrite("ishVersion", this.ishVersion, ishVersion);
+        this.ishVersion = ishVersion;
     }
+
     public Long getIshVersion() {
-        return (Long)readProperty("ishVersion");
+        beforePropertyRead("ishVersion");
+        return this.ishVersion;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setNationalISC(String nationalISC) {
-        writeProperty("nationalISC", nationalISC);
+        beforePropertyWrite("nationalISC", this.nationalISC, nationalISC);
+        this.nationalISC = nationalISC;
     }
+
     public String getNationalISC() {
-        return (String)readProperty("nationalISC");
+        beforePropertyRead("nationalISC");
+        return this.nationalISC;
     }
 
     public void setPurchaseFrom(String purchaseFrom) {
-        writeProperty("purchaseFrom", purchaseFrom);
+        beforePropertyWrite("purchaseFrom", this.purchaseFrom, purchaseFrom);
+        this.purchaseFrom = purchaseFrom;
     }
+
     public String getPurchaseFrom() {
-        return (String)readProperty("purchaseFrom");
+        beforePropertyRead("purchaseFrom");
+        return this.purchaseFrom;
     }
 
     public void setTitle(String title) {
-        writeProperty("title", title);
+        beforePropertyWrite("title", this.title, title);
+        this.title = title;
     }
+
     public String getTitle() {
-        return (String)readProperty("title");
+        beforePropertyRead("title");
+        return this.title;
     }
 
     public void setType(String type) {
-        writeProperty("type", type);
+        beforePropertyWrite("type", this.type, type);
+        this.type = type;
     }
+
     public String getType() {
-        return (String)readProperty("type");
+        beforePropertyRead("type");
+        return this.type;
     }
 
     protected abstract void onPreUpdate();
 
     protected abstract void onPrePersist();
+
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "copyrightCategory":
+                return this.copyrightCategory;
+            case "copyrightContact":
+                return this.copyrightContact;
+            case "created":
+                return this.created;
+            case "developer":
+                return this.developer;
+            case "endorsementFrom":
+                return this.endorsementFrom;
+            case "endorsementTo":
+                return this.endorsementTo;
+            case "ishVersion":
+                return this.ishVersion;
+            case "modified":
+                return this.modified;
+            case "nationalISC":
+                return this.nationalISC;
+            case "purchaseFrom":
+                return this.purchaseFrom;
+            case "title":
+                return this.title;
+            case "type":
+                return this.type;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "copyrightCategory":
+                this.copyrightCategory = (String)val;
+                break;
+            case "copyrightContact":
+                this.copyrightContact = (String)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "developer":
+                this.developer = (String)val;
+                break;
+            case "endorsementFrom":
+                this.endorsementFrom = (Date)val;
+                break;
+            case "endorsementTo":
+                this.endorsementTo = (Date)val;
+                break;
+            case "ishVersion":
+                this.ishVersion = (Long)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "nationalISC":
+                this.nationalISC = (String)val;
+                break;
+            case "purchaseFrom":
+                this.purchaseFrom = (String)val;
+                break;
+            case "title":
+                this.title = (String)val;
+                break;
+            case "type":
+                this.type = (String)val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.copyrightCategory);
+        out.writeObject(this.copyrightContact);
+        out.writeObject(this.created);
+        out.writeObject(this.developer);
+        out.writeObject(this.endorsementFrom);
+        out.writeObject(this.endorsementTo);
+        out.writeObject(this.ishVersion);
+        out.writeObject(this.modified);
+        out.writeObject(this.nationalISC);
+        out.writeObject(this.purchaseFrom);
+        out.writeObject(this.title);
+        out.writeObject(this.type);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.copyrightCategory = (String)in.readObject();
+        this.copyrightContact = (String)in.readObject();
+        this.created = (Date)in.readObject();
+        this.developer = (String)in.readObject();
+        this.endorsementFrom = (Date)in.readObject();
+        this.endorsementTo = (Date)in.readObject();
+        this.ishVersion = (Long)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.nationalISC = (String)in.readObject();
+        this.purchaseFrom = (String)in.readObject();
+        this.title = (String)in.readObject();
+        this.type = (String)in.readObject();
+    }
 
 }

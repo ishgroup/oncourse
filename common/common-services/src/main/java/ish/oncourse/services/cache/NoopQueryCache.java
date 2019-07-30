@@ -38,9 +38,4 @@ public class NoopQueryCache implements QueryCache {
 	@Override
 	public void clear() {}
 
-	@Override
-	public int size() {
-		return 0;
-	}
-
 }

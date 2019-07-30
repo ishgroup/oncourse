@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 
 import org.apache.cayenne.exp.Property;
@@ -34,25 +37,42 @@ public abstract class _CourseModule extends WillowCayenneObject {
     public static final Property<Course> COURSE = Property.create("course", Course.class);
     public static final Property<Module> MODULE = Property.create("module", Module.class);
 
+    protected Long angelId;
+    protected Date created;
+    protected Date modified;
+
+    protected Object college;
+    protected Object course;
+    protected Object module;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setCollege(College college) {
@@ -63,7 +83,6 @@ public abstract class _CourseModule extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void setCourse(Course course) {
         setToOneTarget("course", course, true);
     }
@@ -71,7 +90,6 @@ public abstract class _CourseModule extends WillowCayenneObject {
     public Course getCourse() {
         return (Course)readProperty("course");
     }
-
 
     public void setModule(Module module) {
         setToOneTarget("module", module, true);
@@ -81,5 +99,88 @@ public abstract class _CourseModule extends WillowCayenneObject {
         return (Module)readProperty("module");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "created":
+                return this.created;
+            case "modified":
+                return this.modified;
+            case "college":
+                return this.college;
+            case "course":
+                return this.course;
+            case "module":
+                return this.module;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "course":
+                this.course = val;
+                break;
+            case "module":
+                this.module = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.created);
+        out.writeObject(this.modified);
+        out.writeObject(this.college);
+        out.writeObject(this.course);
+        out.writeObject(this.module);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.created = (Date)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.college = in.readObject();
+        this.course = in.readObject();
+        this.module = in.readObject();
+    }
 
 }

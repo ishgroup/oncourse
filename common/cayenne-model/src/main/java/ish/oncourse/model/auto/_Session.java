@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -57,73 +60,115 @@ public abstract class _Session extends WillowCayenneObject {
     public static final Property<List<SessionModule>> SESSION_MODULES = Property.create("sessionModules", List.class);
     public static final Property<List<SessionTutor>> SESSION_TUTORS = Property.create("sessionTutors", List.class);
 
+    protected Long angelId;
+    protected Date created;
+    protected Date endDate;
+    protected Date modified;
+    protected String privateNotes;
+    protected String publicNotes;
+    protected Date startDate;
+    protected String timeZone;
+
+    protected Object attendances;
+    protected Object college;
+    protected Object courseClass;
+    protected Object marker;
+    protected Object room;
+    protected Object sessionModules;
+    protected Object sessionTutors;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setEndDate(Date endDate) {
-        writeProperty("endDate", endDate);
+        beforePropertyWrite("endDate", this.endDate, endDate);
+        this.endDate = endDate;
     }
+
     public Date getEndDate() {
-        return (Date)readProperty("endDate");
+        beforePropertyRead("endDate");
+        return this.endDate;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setPrivateNotes(String privateNotes) {
-        writeProperty("privateNotes", privateNotes);
+        beforePropertyWrite("privateNotes", this.privateNotes, privateNotes);
+        this.privateNotes = privateNotes;
     }
+
     public String getPrivateNotes() {
-        return (String)readProperty("privateNotes");
+        beforePropertyRead("privateNotes");
+        return this.privateNotes;
     }
 
     public void setPublicNotes(String publicNotes) {
-        writeProperty("publicNotes", publicNotes);
+        beforePropertyWrite("publicNotes", this.publicNotes, publicNotes);
+        this.publicNotes = publicNotes;
     }
+
     public String getPublicNotes() {
-        return (String)readProperty("publicNotes");
+        beforePropertyRead("publicNotes");
+        return this.publicNotes;
     }
 
     public void setStartDate(Date startDate) {
-        writeProperty("startDate", startDate);
+        beforePropertyWrite("startDate", this.startDate, startDate);
+        this.startDate = startDate;
     }
+
     public Date getStartDate() {
-        return (Date)readProperty("startDate");
+        beforePropertyRead("startDate");
+        return this.startDate;
     }
 
     public void setTimeZone(String timeZone) {
-        writeProperty("timeZone", timeZone);
+        beforePropertyWrite("timeZone", this.timeZone, timeZone);
+        this.timeZone = timeZone;
     }
+
     public String getTimeZone() {
-        return (String)readProperty("timeZone");
+        beforePropertyRead("timeZone");
+        return this.timeZone;
     }
 
     public void addToAttendances(Attendance obj) {
         addToManyTarget("attendances", obj, true);
     }
+
     public void removeFromAttendances(Attendance obj) {
         removeToManyTarget("attendances", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Attendance> getAttendances() {
         return (List<Attendance>)readProperty("attendances");
     }
-
 
     public void setCollege(College college) {
         setToOneTarget("college", college, true);
@@ -133,7 +178,6 @@ public abstract class _Session extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void setCourseClass(CourseClass courseClass) {
         setToOneTarget("courseClass", courseClass, true);
     }
@@ -141,7 +185,6 @@ public abstract class _Session extends WillowCayenneObject {
     public CourseClass getCourseClass() {
         return (CourseClass)readProperty("courseClass");
     }
-
 
     public void setMarker(Tutor marker) {
         setToOneTarget("marker", marker, true);
@@ -151,7 +194,6 @@ public abstract class _Session extends WillowCayenneObject {
         return (Tutor)readProperty("marker");
     }
 
-
     public void setRoom(Room room) {
         setToOneTarget("room", room, true);
     }
@@ -160,29 +202,177 @@ public abstract class _Session extends WillowCayenneObject {
         return (Room)readProperty("room");
     }
 
-
     public void addToSessionModules(SessionModule obj) {
         addToManyTarget("sessionModules", obj, true);
     }
+
     public void removeFromSessionModules(SessionModule obj) {
         removeToManyTarget("sessionModules", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<SessionModule> getSessionModules() {
         return (List<SessionModule>)readProperty("sessionModules");
     }
 
-
     public void addToSessionTutors(SessionTutor obj) {
         addToManyTarget("sessionTutors", obj, true);
     }
+
     public void removeFromSessionTutors(SessionTutor obj) {
         removeToManyTarget("sessionTutors", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<SessionTutor> getSessionTutors() {
         return (List<SessionTutor>)readProperty("sessionTutors");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "created":
+                return this.created;
+            case "endDate":
+                return this.endDate;
+            case "modified":
+                return this.modified;
+            case "privateNotes":
+                return this.privateNotes;
+            case "publicNotes":
+                return this.publicNotes;
+            case "startDate":
+                return this.startDate;
+            case "timeZone":
+                return this.timeZone;
+            case "attendances":
+                return this.attendances;
+            case "college":
+                return this.college;
+            case "courseClass":
+                return this.courseClass;
+            case "marker":
+                return this.marker;
+            case "room":
+                return this.room;
+            case "sessionModules":
+                return this.sessionModules;
+            case "sessionTutors":
+                return this.sessionTutors;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "endDate":
+                this.endDate = (Date)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "privateNotes":
+                this.privateNotes = (String)val;
+                break;
+            case "publicNotes":
+                this.publicNotes = (String)val;
+                break;
+            case "startDate":
+                this.startDate = (Date)val;
+                break;
+            case "timeZone":
+                this.timeZone = (String)val;
+                break;
+            case "attendances":
+                this.attendances = val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "courseClass":
+                this.courseClass = val;
+                break;
+            case "marker":
+                this.marker = val;
+                break;
+            case "room":
+                this.room = val;
+                break;
+            case "sessionModules":
+                this.sessionModules = val;
+                break;
+            case "sessionTutors":
+                this.sessionTutors = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.created);
+        out.writeObject(this.endDate);
+        out.writeObject(this.modified);
+        out.writeObject(this.privateNotes);
+        out.writeObject(this.publicNotes);
+        out.writeObject(this.startDate);
+        out.writeObject(this.timeZone);
+        out.writeObject(this.attendances);
+        out.writeObject(this.college);
+        out.writeObject(this.courseClass);
+        out.writeObject(this.marker);
+        out.writeObject(this.room);
+        out.writeObject(this.sessionModules);
+        out.writeObject(this.sessionTutors);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.created = (Date)in.readObject();
+        this.endDate = (Date)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.privateNotes = (String)in.readObject();
+        this.publicNotes = (String)in.readObject();
+        this.startDate = (Date)in.readObject();
+        this.timeZone = (String)in.readObject();
+        this.attendances = in.readObject();
+        this.college = in.readObject();
+        this.courseClass = in.readObject();
+        this.marker = in.readObject();
+        this.room = in.readObject();
+        this.sessionModules = in.readObject();
+        this.sessionTutors = in.readObject();
+    }
 
 }

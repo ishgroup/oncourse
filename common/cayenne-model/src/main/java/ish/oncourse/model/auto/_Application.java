@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -55,67 +58,109 @@ public abstract class _Application extends ExpandableCayenneDataObject {
     public static final Property<List<ApplicationCustomField>> CUSTOM_FIELDS = Property.create("customFields", List.class);
     public static final Property<Student> STUDENT = Property.create("student", Student.class);
 
+    protected Long angelId;
+    protected ConfirmationStatus confirmationStatus;
+    protected Date created;
+    protected Date enrolBy;
+    protected Money feeOverride;
+    protected Date modified;
+    protected String reason;
+    protected PaymentSource source;
+    protected ApplicationStatus status;
+
+    protected Object college;
+    protected Object course;
+    protected Object customFields;
+    protected Object student;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setConfirmationStatus(ConfirmationStatus confirmationStatus) {
-        writeProperty("confirmationStatus", confirmationStatus);
+        beforePropertyWrite("confirmationStatus", this.confirmationStatus, confirmationStatus);
+        this.confirmationStatus = confirmationStatus;
     }
+
     public ConfirmationStatus getConfirmationStatus() {
-        return (ConfirmationStatus)readProperty("confirmationStatus");
+        beforePropertyRead("confirmationStatus");
+        return this.confirmationStatus;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setEnrolBy(Date enrolBy) {
-        writeProperty("enrolBy", enrolBy);
+        beforePropertyWrite("enrolBy", this.enrolBy, enrolBy);
+        this.enrolBy = enrolBy;
     }
+
     public Date getEnrolBy() {
-        return (Date)readProperty("enrolBy");
+        beforePropertyRead("enrolBy");
+        return this.enrolBy;
     }
 
     public void setFeeOverride(Money feeOverride) {
-        writeProperty("feeOverride", feeOverride);
+        beforePropertyWrite("feeOverride", this.feeOverride, feeOverride);
+        this.feeOverride = feeOverride;
     }
+
     public Money getFeeOverride() {
-        return (Money)readProperty("feeOverride");
+        beforePropertyRead("feeOverride");
+        return this.feeOverride;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setReason(String reason) {
-        writeProperty("reason", reason);
+        beforePropertyWrite("reason", this.reason, reason);
+        this.reason = reason;
     }
+
     public String getReason() {
-        return (String)readProperty("reason");
+        beforePropertyRead("reason");
+        return this.reason;
     }
 
     public void setSource(PaymentSource source) {
-        writeProperty("source", source);
+        beforePropertyWrite("source", this.source, source);
+        this.source = source;
     }
+
     public PaymentSource getSource() {
-        return (PaymentSource)readProperty("source");
+        beforePropertyRead("source");
+        return this.source;
     }
 
     public void setStatus(ApplicationStatus status) {
-        writeProperty("status", status);
+        beforePropertyWrite("status", this.status, status);
+        this.status = status;
     }
+
     public ApplicationStatus getStatus() {
-        return (ApplicationStatus)readProperty("status");
+        beforePropertyRead("status");
+        return this.status;
     }
 
     public void setCollege(College college) {
@@ -126,7 +171,6 @@ public abstract class _Application extends ExpandableCayenneDataObject {
         return (College)readProperty("college");
     }
 
-
     public void setCourse(Course course) {
         setToOneTarget("course", course, true);
     }
@@ -135,18 +179,18 @@ public abstract class _Application extends ExpandableCayenneDataObject {
         return (Course)readProperty("course");
     }
 
-
     public void addToCustomFields(ApplicationCustomField obj) {
         addToManyTarget("customFields", obj, true);
     }
+
     public void removeFromCustomFields(ApplicationCustomField obj) {
         removeToManyTarget("customFields", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<ApplicationCustomField> getCustomFields() {
         return (List<ApplicationCustomField>)readProperty("customFields");
     }
-
 
     public void setStudent(Student student) {
         setToOneTarget("student", student, true);
@@ -156,7 +200,139 @@ public abstract class _Application extends ExpandableCayenneDataObject {
         return (Student)readProperty("student");
     }
 
-
     protected abstract void onPostAdd();
+
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "confirmationStatus":
+                return this.confirmationStatus;
+            case "created":
+                return this.created;
+            case "enrolBy":
+                return this.enrolBy;
+            case "feeOverride":
+                return this.feeOverride;
+            case "modified":
+                return this.modified;
+            case "reason":
+                return this.reason;
+            case "source":
+                return this.source;
+            case "status":
+                return this.status;
+            case "college":
+                return this.college;
+            case "course":
+                return this.course;
+            case "customFields":
+                return this.customFields;
+            case "student":
+                return this.student;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "confirmationStatus":
+                this.confirmationStatus = (ConfirmationStatus)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "enrolBy":
+                this.enrolBy = (Date)val;
+                break;
+            case "feeOverride":
+                this.feeOverride = (Money)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "reason":
+                this.reason = (String)val;
+                break;
+            case "source":
+                this.source = (PaymentSource)val;
+                break;
+            case "status":
+                this.status = (ApplicationStatus)val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "course":
+                this.course = val;
+                break;
+            case "customFields":
+                this.customFields = val;
+                break;
+            case "student":
+                this.student = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.confirmationStatus);
+        out.writeObject(this.created);
+        out.writeObject(this.enrolBy);
+        out.writeObject(this.feeOverride);
+        out.writeObject(this.modified);
+        out.writeObject(this.reason);
+        out.writeObject(this.source);
+        out.writeObject(this.status);
+        out.writeObject(this.college);
+        out.writeObject(this.course);
+        out.writeObject(this.customFields);
+        out.writeObject(this.student);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.confirmationStatus = (ConfirmationStatus)in.readObject();
+        this.created = (Date)in.readObject();
+        this.enrolBy = (Date)in.readObject();
+        this.feeOverride = (Money)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.reason = (String)in.readObject();
+        this.source = (PaymentSource)in.readObject();
+        this.status = (ApplicationStatus)in.readObject();
+        this.college = in.readObject();
+        this.course = in.readObject();
+        this.customFields = in.readObject();
+        this.student = in.readObject();
+    }
 
 }

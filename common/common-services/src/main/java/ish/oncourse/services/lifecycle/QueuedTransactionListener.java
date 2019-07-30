@@ -5,8 +5,7 @@ import ish.oncourse.model.QueuedTransaction;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.annotation.PostUpdate;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 
 import java.util.List;
 
@@ -23,16 +22,14 @@ public class QueuedTransactionListener {
 	private ICayenneService cayenneService;
 
 	public QueuedTransactionListener(ICayenneService cayenneService) {
-		super();
 		this.cayenneService = cayenneService;
 	}
 
 	@PostUpdate(value = QueuedTransaction.class)
 	public void postUpdate(QueuedTransaction t) {
-		
-		SelectQuery q = new SelectQuery(QueuedRecord.class);
-		q.andQualifier(ExpressionFactory.matchExp(QueuedRecord.QUEUED_TRANSACTION_PROPERTY, t));
-		List<QueuedRecord> list = t.getObjectContext().performQuery(q);
+
+		List<QueuedRecord> list = ObjectSelect.query(QueuedRecord.class, QueuedRecord.QUEUED_TRANSACTION.eq(t))
+				.select(t.getObjectContext());
 
 		if (list.isEmpty()) {
 			ObjectContext objectContext = cayenneService.newNonReplicatingContext();

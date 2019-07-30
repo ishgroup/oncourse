@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -47,32 +50,57 @@ public abstract class _FieldConfigurationScheme extends WillowCayenneObject {
     public static final Property<List<FieldConfigurationLink>> FIELD_CONFIGURATION_LINKS = Property.create("fieldConfigurationLinks", List.class);
     public static final Property<FieldConfiguration> WAITING_LIST_FIELD_CONFIGURATION = Property.create("waitingListFieldConfiguration", FieldConfiguration.class);
 
+    protected Long angelId;
+    protected Date created;
+    protected Date modified;
+    protected String name;
+
+    protected Object applicationFieldConfiguration;
+    protected Object college;
+    protected Object courses;
+    protected Object createdBy;
+    protected Object enrolFieldConfiguration;
+    protected Object fieldConfigurationLinks;
+    protected Object waitingListFieldConfiguration;
+
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        beforePropertyWrite("name", this.name, name);
+        this.name = name;
     }
+
     public String getName() {
-        return (String)readProperty("name");
+        beforePropertyRead("name");
+        return this.name;
     }
 
     public void setApplicationFieldConfiguration(FieldConfiguration applicationFieldConfiguration) {
@@ -83,7 +111,6 @@ public abstract class _FieldConfigurationScheme extends WillowCayenneObject {
         return (FieldConfiguration)readProperty("applicationFieldConfiguration");
     }
 
-
     public void setCollege(College college) {
         setToOneTarget("college", college, true);
     }
@@ -92,18 +119,18 @@ public abstract class _FieldConfigurationScheme extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
-
     public void addToCourses(Course obj) {
         addToManyTarget("courses", obj, true);
     }
+
     public void removeFromCourses(Course obj) {
         removeToManyTarget("courses", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Course> getCourses() {
         return (List<Course>)readProperty("courses");
     }
-
 
     public void setCreatedBy(SystemUser createdBy) {
         setToOneTarget("createdBy", createdBy, true);
@@ -113,7 +140,6 @@ public abstract class _FieldConfigurationScheme extends WillowCayenneObject {
         return (SystemUser)readProperty("createdBy");
     }
 
-
     public void setEnrolFieldConfiguration(FieldConfiguration enrolFieldConfiguration) {
         setToOneTarget("enrolFieldConfiguration", enrolFieldConfiguration, true);
     }
@@ -122,18 +148,18 @@ public abstract class _FieldConfigurationScheme extends WillowCayenneObject {
         return (FieldConfiguration)readProperty("enrolFieldConfiguration");
     }
 
-
     public void addToFieldConfigurationLinks(FieldConfigurationLink obj) {
         addToManyTarget("fieldConfigurationLinks", obj, true);
     }
+
     public void removeFromFieldConfigurationLinks(FieldConfigurationLink obj) {
         removeToManyTarget("fieldConfigurationLinks", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<FieldConfigurationLink> getFieldConfigurationLinks() {
         return (List<FieldConfigurationLink>)readProperty("fieldConfigurationLinks");
     }
-
 
     public void setWaitingListFieldConfiguration(FieldConfiguration waitingListFieldConfiguration) {
         setToOneTarget("waitingListFieldConfiguration", waitingListFieldConfiguration, true);
@@ -143,5 +169,123 @@ public abstract class _FieldConfigurationScheme extends WillowCayenneObject {
         return (FieldConfiguration)readProperty("waitingListFieldConfiguration");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "angelId":
+                return this.angelId;
+            case "created":
+                return this.created;
+            case "modified":
+                return this.modified;
+            case "name":
+                return this.name;
+            case "applicationFieldConfiguration":
+                return this.applicationFieldConfiguration;
+            case "college":
+                return this.college;
+            case "courses":
+                return this.courses;
+            case "createdBy":
+                return this.createdBy;
+            case "enrolFieldConfiguration":
+                return this.enrolFieldConfiguration;
+            case "fieldConfigurationLinks":
+                return this.fieldConfigurationLinks;
+            case "waitingListFieldConfiguration":
+                return this.waitingListFieldConfiguration;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "name":
+                this.name = (String)val;
+                break;
+            case "applicationFieldConfiguration":
+                this.applicationFieldConfiguration = val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            case "courses":
+                this.courses = val;
+                break;
+            case "createdBy":
+                this.createdBy = val;
+                break;
+            case "enrolFieldConfiguration":
+                this.enrolFieldConfiguration = val;
+                break;
+            case "fieldConfigurationLinks":
+                this.fieldConfigurationLinks = val;
+                break;
+            case "waitingListFieldConfiguration":
+                this.waitingListFieldConfiguration = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.angelId);
+        out.writeObject(this.created);
+        out.writeObject(this.modified);
+        out.writeObject(this.name);
+        out.writeObject(this.applicationFieldConfiguration);
+        out.writeObject(this.college);
+        out.writeObject(this.courses);
+        out.writeObject(this.createdBy);
+        out.writeObject(this.enrolFieldConfiguration);
+        out.writeObject(this.fieldConfigurationLinks);
+        out.writeObject(this.waitingListFieldConfiguration);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.angelId = (Long)in.readObject();
+        this.created = (Date)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.name = (String)in.readObject();
+        this.applicationFieldConfiguration = in.readObject();
+        this.college = in.readObject();
+        this.courses = in.readObject();
+        this.createdBy = in.readObject();
+        this.enrolFieldConfiguration = in.readObject();
+        this.fieldConfigurationLinks = in.readObject();
+        this.waitingListFieldConfiguration = in.readObject();
+    }
 
 }

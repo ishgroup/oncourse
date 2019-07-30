@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -40,66 +43,99 @@ public abstract class _Assessment extends WillowCayenneObject {
     public static final Property<List<AssessmentClass>> ASSESSMENT_CLASSES = Property.create("assessmentClasses", List.class);
     public static final Property<College> COLLEGE = Property.create("college", College.class);
 
+    protected Boolean active;
+    protected Long angelId;
+    protected String code;
+    protected Date created;
+    protected String description;
+    protected Date modified;
+    protected String name;
+
+    protected Object assessmentClasses;
+    protected Object college;
+
     public void setActive(Boolean active) {
-        writeProperty("active", active);
+        beforePropertyWrite("active", this.active, active);
+        this.active = active;
     }
+
     public Boolean getActive() {
-        return (Boolean)readProperty("active");
+        beforePropertyRead("active");
+        return this.active;
     }
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        beforePropertyWrite("angelId", this.angelId, angelId);
+        this.angelId = angelId;
     }
+
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        beforePropertyRead("angelId");
+        return this.angelId;
     }
 
     public void setCode(String code) {
-        writeProperty("code", code);
+        beforePropertyWrite("code", this.code, code);
+        this.code = code;
     }
+
     public String getCode() {
-        return (String)readProperty("code");
+        beforePropertyRead("code");
+        return this.code;
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        beforePropertyWrite("created", this.created, created);
+        this.created = created;
     }
+
     public Date getCreated() {
-        return (Date)readProperty("created");
+        beforePropertyRead("created");
+        return this.created;
     }
 
     public void setDescription(String description) {
-        writeProperty("description", description);
+        beforePropertyWrite("description", this.description, description);
+        this.description = description;
     }
+
     public String getDescription() {
-        return (String)readProperty("description");
+        beforePropertyRead("description");
+        return this.description;
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        beforePropertyWrite("modified", this.modified, modified);
+        this.modified = modified;
     }
+
     public Date getModified() {
-        return (Date)readProperty("modified");
+        beforePropertyRead("modified");
+        return this.modified;
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        beforePropertyWrite("name", this.name, name);
+        this.name = name;
     }
+
     public String getName() {
-        return (String)readProperty("name");
+        beforePropertyRead("name");
+        return this.name;
     }
 
     public void addToAssessmentClasses(AssessmentClass obj) {
         addToManyTarget("assessmentClasses", obj, true);
     }
+
     public void removeFromAssessmentClasses(AssessmentClass obj) {
         removeToManyTarget("assessmentClasses", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<AssessmentClass> getAssessmentClasses() {
         return (List<AssessmentClass>)readProperty("assessmentClasses");
     }
-
 
     public void setCollege(College college) {
         setToOneTarget("college", college, true);
@@ -109,5 +145,109 @@ public abstract class _Assessment extends WillowCayenneObject {
         return (College)readProperty("college");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "active":
+                return this.active;
+            case "angelId":
+                return this.angelId;
+            case "code":
+                return this.code;
+            case "created":
+                return this.created;
+            case "description":
+                return this.description;
+            case "modified":
+                return this.modified;
+            case "name":
+                return this.name;
+            case "assessmentClasses":
+                return this.assessmentClasses;
+            case "college":
+                return this.college;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "active":
+                this.active = (Boolean)val;
+                break;
+            case "angelId":
+                this.angelId = (Long)val;
+                break;
+            case "code":
+                this.code = (String)val;
+                break;
+            case "created":
+                this.created = (Date)val;
+                break;
+            case "description":
+                this.description = (String)val;
+                break;
+            case "modified":
+                this.modified = (Date)val;
+                break;
+            case "name":
+                this.name = (String)val;
+                break;
+            case "assessmentClasses":
+                this.assessmentClasses = val;
+                break;
+            case "college":
+                this.college = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.active);
+        out.writeObject(this.angelId);
+        out.writeObject(this.code);
+        out.writeObject(this.created);
+        out.writeObject(this.description);
+        out.writeObject(this.modified);
+        out.writeObject(this.name);
+        out.writeObject(this.assessmentClasses);
+        out.writeObject(this.college);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.active = (Boolean)in.readObject();
+        this.angelId = (Long)in.readObject();
+        this.code = (String)in.readObject();
+        this.created = (Date)in.readObject();
+        this.description = (String)in.readObject();
+        this.modified = (Date)in.readObject();
+        this.name = (String)in.readObject();
+        this.assessmentClasses = in.readObject();
+        this.college = in.readObject();
+    }
 
 }
