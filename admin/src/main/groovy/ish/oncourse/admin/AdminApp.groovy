@@ -3,6 +3,7 @@ package ish.oncourse.admin
 import io.bootique.Bootique
 import io.bootique.cayenne.CayenneModuleProvider
 import io.bootique.jdbc.JdbcModuleProvider
+import io.bootique.jdbc.tomcat.JdbcTomcatModuleProvider
 import io.bootique.jetty.JettyModuleProvider
 import ish.oncourse.configuration.Configuration
 
@@ -22,6 +23,7 @@ class AdminApp {
         bootique.module(new JdbcModuleProvider())
         bootique.module(new CayenneModuleProvider())
         bootique.module(new JettyModuleProvider())
+        bootique.module(new JdbcTomcatModuleProvider())
         bootique.module(AdminModule.class)
         return bootique
     }

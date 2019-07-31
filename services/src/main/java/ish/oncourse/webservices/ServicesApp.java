@@ -8,6 +8,7 @@ import io.bootique.Bootique;
 import io.bootique.ConfigModule;
 import io.bootique.cayenne.CayenneModuleProvider;
 import io.bootique.jdbc.JdbcModuleProvider;
+import io.bootique.jdbc.tomcat.JdbcTomcatModuleProvider;
 import io.bootique.jetty.JettyModuleProvider;
 import ish.oncourse.configuration.Configuration;
 import ish.oncourse.webservices.quartz.QuartzModule;
@@ -35,6 +36,7 @@ public class ServicesApp {
 
 		public BuildBootique() {
 			providers.add(new JdbcModuleProvider());
+			providers.add(new JdbcTomcatModuleProvider());
 			providers.add(new CayenneModuleProvider());
 			providers.add(new JettyModuleProvider());
 			modules.add(ServicesModule.class);

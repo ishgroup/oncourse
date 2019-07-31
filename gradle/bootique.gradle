@@ -8,6 +8,7 @@ dependencies {
     compile 'io.bootique.jetty:bootique-jetty'
     compile 'io.bootique.jcache:bootique-jcache'
     compile 'io.bootique.cayenne:bootique-cayenne'
+    compile 'io.bootique.jdbc:bootique-jdbc-tomcat'
 }
 
 

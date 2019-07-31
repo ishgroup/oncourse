@@ -80,8 +80,8 @@ class Configuration {
      * properties which supported into 'application.properties' files
      */
     static enum AppProperty implements IProperty {
-        PORT('port', 'bq.jetty.connector.port'),
-        HOST('host', 'bq.jetty.connector.host'),
+        PORT('port', 'bq.jetty.connectors[0].port'),
+        HOST('host', 'bq.jetty.connectors[0].host'),
         DB_URL('db_url', 'bq.jdbc.willow.url'),
         DB_USER('db_user', 'bq.jdbc.willow.username'),
         DB_PASS('db_pass', 'bq.jdbc.willow.password'),

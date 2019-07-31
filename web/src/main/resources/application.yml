@@ -1,8 +1,8 @@
 jetty:
   context: /
-  connector:
-    port: 8305
-    host: 127.0.0.1
+  connectors:
+    - port: 8305
+      host: 127.0.0.1
   idleThreadTimeout: 300000
 jdbc:
   willow:
