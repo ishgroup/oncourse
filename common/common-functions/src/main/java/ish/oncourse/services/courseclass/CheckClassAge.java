@@ -4,7 +4,6 @@ import ish.oncourse.model.College;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.services.preference.GetPreference;
 import ish.oncourse.services.preference.Preferences;
-import ish.oncourse.utils.TimestampUtilities;
 import org.apache.commons.lang3.time.DateUtils;
 
 import java.util.Date;
@@ -18,7 +17,7 @@ public class CheckClassAge {
     private CourseClass courseClass;
 
     public boolean check() {
-        Date startOfDay = TimestampUtilities.normalisedDate(new Date());
+        Date startOfDay = ish.oncourse.utils.DateUtils.normalisedDate(new Date());
         switch (classAge.getType()) {
             case afterClassStarts:
                 return courseClass.getStartDate() == null || DateUtils.addDays(courseClass.getStartDate(), classAge.getDays())

@@ -3,7 +3,7 @@ package ish.oncourse.ui.components;
 import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.tag.ITagService;
-import ish.oncourse.utils.TimestampUtilities;
+import ish.oncourse.utils.DateUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -96,7 +96,7 @@ public class SearchCriteria extends ISHCommon {
 			return false;
 		}
 		for (String day : searchDays) {
-			if (TimestampUtilities.DaysOfWorkingWeekNamesLowerCase.contains(day
+			if (DateUtils.DaysOfWorkingWeekNamesLowerCase.contains(day
 					.toLowerCase())) {
 				return true;
 			}
@@ -112,7 +112,7 @@ public class SearchCriteria extends ISHCommon {
 			return false;
 		}
 		for (String day : searchDays) {
-			if (TimestampUtilities.DaysOfWeekendNamesLowerCase.contains(day
+			if (DateUtils.DaysOfWeekendNamesLowerCase.contains(day
 					.toLowerCase())) {
 				return true;
 			}

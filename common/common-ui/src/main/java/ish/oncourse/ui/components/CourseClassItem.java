@@ -17,7 +17,6 @@ import ish.oncourse.util.CustomizedDateFormat;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.utils.SessionUtils;
-import ish.oncourse.utils.TimestampUtilities;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.tapestry5.annotations.Parameter;
@@ -94,7 +93,7 @@ public class CourseClassItem extends ISHCommon {
 
 	@SuppressWarnings("all")
 	@Property
-	private List<String> weekdays = TimestampUtilities.DaysOfWeekNames;
+	private List<String> weekdays = ish.oncourse.utils.DateUtils.DaysOfWeekNames;
 
 	@Property
 	private String day;
@@ -298,11 +297,11 @@ public class CourseClassItem extends ISHCommon {
 	}
 
 	public String getDayKind() {
-		return TimestampUtilities.DaysOfWeekendNames.contains(day) ? "end" : "day";
+		return ish.oncourse.utils.DateUtils.DaysOfWeekendNames.contains(day) ? "end" : "day";
 	}
 
 	public String getDayClass() {
-		return TimestampUtilities.DaysOfWeekendNames.contains(day) ? "match-9 match-6" : "match-8 match-1";
+		return ish.oncourse.utils.DateUtils.DaysOfWeekendNames.contains(day) ? "match-9 match-6" : "match-8 match-1";
 	}
 
 	public String getHasTiming() {
@@ -311,7 +310,7 @@ public class CourseClassItem extends ISHCommon {
 	}
 
 	public String getDayShortName() {
-		String shortName = TimestampUtilities.DaysOfWeekAbbreviatedNames.get(dayIndex);
+		String shortName = ish.oncourse.utils.DateUtils.DaysOfWeekAbbreviatedNames.get(dayIndex);
 		return shortName.substring(0, shortName.length() - 1);
 	}
 

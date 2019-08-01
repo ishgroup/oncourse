@@ -1,7 +1,7 @@
 package ish.oncourse.services.search;
 
 import ish.oncourse.solr.query.DayOption;
-import ish.oncourse.utils.TimestampUtilities;
+import ish.oncourse.utils.DateUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,10 +23,10 @@ public class FocusMatchForDays {
         boolean match = false;
         switch (searchDay) {
             case weekday:
-                match = CollectionUtils.containsAny(TimestampUtilities.DaysOfWorkingWeekNames, uniqueDays);
+                match = CollectionUtils.containsAny(DateUtils.DaysOfWorkingWeekNames, uniqueDays);
                 break;
             case weekend:
-                match = CollectionUtils.containsAny(TimestampUtilities.DaysOfWeekendNames, uniqueDays);
+                match = CollectionUtils.containsAny(DateUtils.DaysOfWeekendNames, uniqueDays);
                 break;
             case mon:
             case tues:

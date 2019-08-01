@@ -1,7 +1,6 @@
 package ish.oncourse.services.search;
 
 import ish.oncourse.solr.query.DayOption;
-import ish.oncourse.utils.TimestampUtilities;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Test;
 
@@ -38,7 +37,7 @@ public class FocusMatchForDaysTest {
 
     private void assertDay(Date testDate, DayOption[] matched) {
         HashSet<String> days = new HashSet<>();
-        days.add(TimestampUtilities.dayOfWeek(testDate, true, TimeZone.getDefault()));
+        days.add(ish.oncourse.utils.DateUtils.dayOfWeek(testDate, true, TimeZone.getDefault()));
 
         for (DayOption dayOption : DayOption.values()) {
             assertEquals(Arrays.asList(matched).contains(dayOption) ? 1f: 0f, FocusMatchForDays.valueOf(days, dayOption).match(), 0);

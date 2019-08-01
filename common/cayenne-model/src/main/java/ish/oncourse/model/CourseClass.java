@@ -4,9 +4,9 @@ import ish.common.types.EnrolmentStatus;
 import ish.math.Money;
 import ish.oncourse.cayenne.CourseClassInterface;
 import ish.oncourse.model.auto._CourseClass;
+import ish.oncourse.utils.DateUtils;
 import ish.oncourse.utils.QueueableObjectUtils;
 import ish.oncourse.utils.SessionUtils;
-import ish.oncourse.utils.TimestampUtilities;
 import ish.util.DiscountUtils;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.Ordering;
@@ -199,20 +199,20 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 			if (getTimelineableSessions().size() > 0) {
 				ArrayList<String> days = new ArrayList<>();
 				for (Session s : getTimelineableSessions()) {
-					days.add(TimestampUtilities.dayOfWeek(s.getStartDate(), true, TimeZone.getTimeZone(s.getTimeZone())));
+					days.add(DateUtils.dayOfWeek(s.getStartDate(), true, TimeZone.getTimeZone(s.getTimeZone())));
 				}
-				daysOfWeek = TimestampUtilities.uniqueDaysInOrder(days);
+				daysOfWeek = DateUtils.uniqueDaysInOrder(days);
 			} else {
 				// no sessions recorded, so guess from class start / finish time
 				daysOfWeek = new HashSet<>();
 				if (getStartDate() != null) {
-					daysOfWeek.add(TimestampUtilities.dayOfWeek(getStartDate(), true,
+					daysOfWeek.add(DateUtils.dayOfWeek(getStartDate(), true,
 							TimeZone.getTimeZone(getTimeZone())));
 
 				}
 				if (getEndDate() != null) {
 					daysOfWeek
-							.add(TimestampUtilities.dayOfWeek(getEndDate(), true, TimeZone.getTimeZone(getTimeZone())));
+							.add(DateUtils.dayOfWeek(getEndDate(), true, TimeZone.getTimeZone(getTimeZone())));
 
 				}
 
