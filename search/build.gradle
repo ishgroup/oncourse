@@ -3,7 +3,9 @@ apply plugin: 'distribution'
 distributions {
     main {
         contents {
-            from { project(':common:solr-index').sourceSets.schema.resources }
+            from {
+                 "$rootDir/common/solr-index/src/main/resources/solr"
+            }
         }
     }
 }
