@@ -9,7 +9,7 @@ buildscript {
         mariadbVersion = '2.4.2'
 		derbyVersion = '10.14.2.0' // note that 10.15 requires Java9
 		googleGuiceVersion = '4.2.0'
-		groovyVersion = '2.5.7'
+		groovyVersion = '2.5.8'
 		springframeworkVersion = '5.0.6.RELEASE'
 		bouncycastleVersion = '1.59'
 		bootiqueVersion = '1.0'
