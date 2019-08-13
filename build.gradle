@@ -13,7 +13,7 @@ buildscript {
 		springframeworkVersion = '5.0.6.RELEASE'
 		bouncycastleVersion = '1.59'
 		bootiqueVersion = '1.0'
-		jxbrowserVersion = '6.23.1'
+		jxbrowserVersion = '6.24'
 		cfxVersion = '3.3.2'
 		jacksonVersion = '2.9.9'
 		
