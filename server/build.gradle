@@ -116,7 +116,6 @@ dependencies {
 	}
 
 	compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: mariadbVersion
-	compile 'com.microsoft.sqlserver:mssql-jdbc:6.2.1.jre8'
 
 	compile 'commons-lang:commons-lang:2.6' // this exists only to support some old reports. To be removed when all reports upgraded.
 	compile ('net.sf.jasperreports:jasperreports:6.1.1') {
