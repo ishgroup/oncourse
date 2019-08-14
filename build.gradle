@@ -8,7 +8,7 @@ buildscript {
 		jettyVersion = '9.4.19.v20190610'
         mariadbVersion = '2.4.2'
 		derbyVersion = '10.14.2.0' // note that 10.15 requires Java9
-		googleGuiceVersion = '4.2.0'
+		googleGuiceVersion = '4.2.2'
 		groovyVersion = '2.5.8'
 		springframeworkVersion = '5.0.6.RELEASE'
 		bouncycastleVersion = '1.59'
