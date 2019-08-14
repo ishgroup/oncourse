@@ -586,6 +586,7 @@
                             <xs:element name="minValue" type="xs:decimal"/>
                             <xs:element name="validFromOffset" type="xs:int"/>
                             <xs:element name="validToOffset" type="xs:int"/>
+                            <xs:element name="limitPreviousEnrolment" type="xs:boolean"/>
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>

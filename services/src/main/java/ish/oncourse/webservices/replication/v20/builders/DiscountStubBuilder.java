@@ -53,6 +53,7 @@ public class DiscountStubBuilder extends AbstractWillowStubBuilder<Discount, Dis
 		}
 		stub.setValidFromOffset(entity.getValidFromOffset());
 		stub.setValidToOffset(entity.getValidToOffset());
+		stub.setLimitPreviousEnrolment(entity.getLimitPreviousEnrolment());
 		return stub;
 	}
 

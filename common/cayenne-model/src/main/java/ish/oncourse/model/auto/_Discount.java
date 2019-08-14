@@ -39,6 +39,7 @@ public abstract class _Discount extends WillowCayenneObject {
     public static final String DISCOUNT_TYPE_PROPERTY = "discountType";
     public static final String HIDE_ON_WEB_PROPERTY = "hideOnWeb";
     public static final String IS_AVAILABLE_ON_WEB_PROPERTY = "isAvailableOnWeb";
+    public static final String LIMIT_PREVIOUS_ENROLMENT_PROPERTY = "limitPreviousEnrolment";
     public static final String MAXIMUM_DISCOUNT_PROPERTY = "maximumDiscount";
     public static final String MIN_ENROLMENTS_PROPERTY = "minEnrolments";
     public static final String MIN_VALUE_PROPERTY = "minValue";
@@ -75,6 +76,7 @@ public abstract class _Discount extends WillowCayenneObject {
     public static final Property<DiscountType> DISCOUNT_TYPE = Property.create("discountType", DiscountType.class);
     public static final Property<Boolean> HIDE_ON_WEB = Property.create("hideOnWeb", Boolean.class);
     public static final Property<Boolean> IS_AVAILABLE_ON_WEB = Property.create("isAvailableOnWeb", Boolean.class);
+    public static final Property<Boolean> LIMIT_PREVIOUS_ENROLMENT = Property.create("limitPreviousEnrolment", Boolean.class);
     public static final Property<Money> MAXIMUM_DISCOUNT = Property.create("maximumDiscount", Money.class);
     public static final Property<Integer> MIN_ENROLMENTS = Property.create("minEnrolments", Integer.class);
     public static final Property<Money> MIN_VALUE = Property.create("minValue", Money.class);
@@ -232,6 +234,13 @@ public abstract class _Discount extends WillowCayenneObject {
     public Boolean getIsAvailableOnWeb() {
         beforePropertyRead("isAvailableOnWeb");
         return this.isAvailableOnWeb;
+    }
+
+    public void setLimitPreviousEnrolment(Boolean limitPreviousEnrolment) {
+        writeProperty("limitPreviousEnrolment", limitPreviousEnrolment);
+    }
+    public Boolean getLimitPreviousEnrolment() {
+        return (Boolean)readProperty("limitPreviousEnrolment");
     }
 
     public void setMaximumDiscount(Money maximumDiscount) {

@@ -74,7 +74,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "minEnrolments",
     "minValue",
     "validFromOffset",
-    "validToOffset"
+    "validToOffset",
+    "limitPreviousEnrolment"
 })
 public class DiscountStub
     extends ReplicationStub
@@ -148,6 +149,10 @@ public class DiscountStub
     @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer validToOffset;
+    @XmlElement(type = String.class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
+    @XmlSchemaType(name = "boolean")
+    protected Boolean limitPreviousEnrolment;
 
     /**
      * Gets the value of the code property.
@@ -675,6 +680,30 @@ public class DiscountStub
      */
     public void setValidToOffset(Integer value) {
         this.validToOffset = value;
+    }
+
+    /**
+     * Gets the value of the limitPreviousEnrolment property.
+     *
+     * @return
+     *     possible object is
+     *     {@link String }
+     *
+     */
+    public Boolean getLimitPreviousEnrolment() {
+        return limitPreviousEnrolment;
+    }
+
+    /**
+     * Sets the value of the limitPreviousEnrolment property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *
+     */
+    public void setLimitPreviousEnrolment(Boolean value) {
+        this.limitPreviousEnrolment = value;
     }
 
 }
