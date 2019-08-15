@@ -14,4 +14,13 @@
 		</sql>
 	</changeSet>
 
+	<changeSet id="1" author="pavel" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<columnExists columnName="limitPreviousEnrolment" tableName="Discount"/>
+		</preConditions>
+		<addColumn tableName="Discount">
+			<column name="limitPreviousEnrolment" type="SMALLINT"/>
+		</addColumn>
+	</changeSet>
+
 </databaseChangeLog>
