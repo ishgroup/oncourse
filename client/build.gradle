@@ -1,8 +1,4 @@
-import au.com.ish.AppBundlerTask
-import au.com.ish.DmgTask
-import au.com.ish.Exe4JTask
-import au.com.ish.NsisTask
-import au.com.ish.PackrBundler
+import au.com.ish.*
 import org.gradle.api.internal.artifacts.publish.DefaultPublishArtifact
 import org.gradle.internal.os.OperatingSystem
 
