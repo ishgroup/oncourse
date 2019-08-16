@@ -2,7 +2,7 @@ import org.gradle.internal.os.OperatingSystem
 
 buildscript {
 	ext {
-		waCommonWebservicesClientVersion = '57'
+		waCommonWebservicesClientVersion = '61'
 		log4j2Version = '2.12.1'
 		cayenneVersion = '4.1.B2'
 		jettyVersion = '9.4.19.v20190610'
@@ -91,6 +91,8 @@ allprojects {
 	}
 
 	dependencies {
+		implementation "org.codehaus.groovy:groovy-all:$groovyVersion"
+		implementation "org.codehaus.groovy:groovy-dateutil:$groovyVersion"
 		// Needed by Java 9 and above
 		compile 'javax.xml.bind:jaxb-api:2.3.0'
 		compile 'javax.xml.ws:jaxws-api:2.3.0'
