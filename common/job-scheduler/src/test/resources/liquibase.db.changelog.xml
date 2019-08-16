@@ -10,4 +10,18 @@
         <!-- if precondition fail, the further changes are not performed -->
         <sqlFile path="org/quartz/impl/jdbcjobstore/tables_mysql_innodb.sql"/>
     </changeSet>
+
+    <changeSet id="2" author="pavel" context="production"
+               runOnChange="true">
+        <!-- if precondition fail, the further changes are not performed -->
+        <preConditions onError="MARK_RAN">
+            <not>
+                <columnExists tableName="Discount" columnName="limitPreviousEnrolment"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="Discount">
+            <column name="limitPreviousEnrolment" type="SMALLINT"></column>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

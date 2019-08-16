@@ -39,7 +39,6 @@ public abstract class _Discount extends WillowCayenneObject {
     public static final String DISCOUNT_TYPE_PROPERTY = "discountType";
     public static final String HIDE_ON_WEB_PROPERTY = "hideOnWeb";
     public static final String IS_AVAILABLE_ON_WEB_PROPERTY = "isAvailableOnWeb";
-    public static final String LIMIT_PREVIOUS_ENROLMENT_PROPERTY = "limitPreviousEnrolment";
     public static final String MAXIMUM_DISCOUNT_PROPERTY = "maximumDiscount";
     public static final String MIN_ENROLMENTS_PROPERTY = "minEnrolments";
     public static final String MIN_VALUE_PROPERTY = "minValue";
@@ -57,6 +56,7 @@ public abstract class _Discount extends WillowCayenneObject {
     public static final String VALID_FROM_OFFSET_PROPERTY = "validFromOffset";
     public static final String VALID_TO_PROPERTY = "validTo";
     public static final String VALID_TO_OFFSET_PROPERTY = "validToOffset";
+    public static final String LIMIT_PREVIOUS_ENROLMENT_PROPERTY = "limitPreviousEnrolment";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String CORPORATE_PASS_DISCOUNTS_PROPERTY = "corporatePassDiscounts";
     public static final String DISCOUNT_CONCESSION_TYPES_PROPERTY = "discountConcessionTypes";
@@ -76,7 +76,6 @@ public abstract class _Discount extends WillowCayenneObject {
     public static final Property<DiscountType> DISCOUNT_TYPE = Property.create("discountType", DiscountType.class);
     public static final Property<Boolean> HIDE_ON_WEB = Property.create("hideOnWeb", Boolean.class);
     public static final Property<Boolean> IS_AVAILABLE_ON_WEB = Property.create("isAvailableOnWeb", Boolean.class);
-    public static final Property<Boolean> LIMIT_PREVIOUS_ENROLMENT = Property.create("limitPreviousEnrolment", Boolean.class);
     public static final Property<Money> MAXIMUM_DISCOUNT = Property.create("maximumDiscount", Money.class);
     public static final Property<Integer> MIN_ENROLMENTS = Property.create("minEnrolments", Integer.class);
     public static final Property<Money> MIN_VALUE = Property.create("minValue", Money.class);
@@ -94,6 +93,7 @@ public abstract class _Discount extends WillowCayenneObject {
     public static final Property<Integer> VALID_FROM_OFFSET = Property.create("validFromOffset", Integer.class);
     public static final Property<Date> VALID_TO = Property.create("validTo", Date.class);
     public static final Property<Integer> VALID_TO_OFFSET = Property.create("validToOffset", Integer.class);
+    public static final Property<Boolean> LIMIT_PREVIOUS_ENROLMENT = Property.create("limitPreviousEnrolment", Boolean.class);
     public static final Property<College> COLLEGE = Property.create("college", College.class);
     public static final Property<List<CorporatePassDiscount>> CORPORATE_PASS_DISCOUNTS = Property.create("corporatePassDiscounts", List.class);
     public static final Property<List<DiscountConcessionType>> DISCOUNT_CONCESSION_TYPES = Property.create("discountConcessionTypes", List.class);
@@ -128,6 +128,7 @@ public abstract class _Discount extends WillowCayenneObject {
     protected Integer validFromOffset;
     protected Date validTo;
     protected Integer validToOffset;
+    protected Boolean limitPreviousEnrolment;
 
     protected Object college;
     protected Object corporatePassDiscounts;
@@ -234,13 +235,6 @@ public abstract class _Discount extends WillowCayenneObject {
     public Boolean getIsAvailableOnWeb() {
         beforePropertyRead("isAvailableOnWeb");
         return this.isAvailableOnWeb;
-    }
-
-    public void setLimitPreviousEnrolment(Boolean limitPreviousEnrolment) {
-        writeProperty("limitPreviousEnrolment", limitPreviousEnrolment);
-    }
-    public Boolean getLimitPreviousEnrolment() {
-        return (Boolean)readProperty("limitPreviousEnrolment");
     }
 
     public void setMaximumDiscount(Money maximumDiscount) {
@@ -413,6 +407,16 @@ public abstract class _Discount extends WillowCayenneObject {
         return this.validToOffset;
     }
 
+    public void setLimitPreviousEnrolment(Boolean limitPreviousEnrolment) {
+        beforePropertyWrite("limitPreviousEnrolment", this.limitPreviousEnrolment, limitPreviousEnrolment);
+        this.limitPreviousEnrolment = limitPreviousEnrolment;
+    }
+
+    public Boolean getLimitPreviousEnrolment() {
+        beforePropertyRead("limitPreviousEnrolment");
+        return this.limitPreviousEnrolment;
+    }
+
     public void setCollege(College college) {
         setToOneTarget("college", college, true);
     }
@@ -547,6 +551,8 @@ public abstract class _Discount extends WillowCayenneObject {
                 return this.validTo;
             case "validToOffset":
                 return this.validToOffset;
+            case "limitPreviousEnrolment":
+                return this.limitPreviousEnrolment;
             case "college":
                 return this.college;
             case "corporatePassDiscounts":
@@ -652,6 +658,9 @@ public abstract class _Discount extends WillowCayenneObject {
             case "validToOffset":
                 this.validToOffset = (Integer)val;
                 break;
+            case "limitPreviousEnrolment":
+                this.limitPreviousEnrolment = (Boolean)val;
+                break;
             case "college":
                 this.college = val;
                 break;
@@ -713,6 +722,7 @@ public abstract class _Discount extends WillowCayenneObject {
         out.writeObject(this.validFromOffset);
         out.writeObject(this.validTo);
         out.writeObject(this.validToOffset);
+        out.writeObject(this.limitPreviousEnrolment);
         out.writeObject(this.college);
         out.writeObject(this.corporatePassDiscounts);
         out.writeObject(this.discountConcessionTypes);
@@ -751,6 +761,7 @@ public abstract class _Discount extends WillowCayenneObject {
         this.validFromOffset = (Integer)in.readObject();
         this.validTo = (Date)in.readObject();
         this.validToOffset = (Integer)in.readObject();
+        this.limitPreviousEnrolment = (Boolean)in.readObject();
         this.college = in.readObject();
         this.corporatePassDiscounts = in.readObject();
         this.discountConcessionTypes = in.readObject();
