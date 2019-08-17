@@ -20,7 +20,7 @@ ext {
 	pathToJavaAgent = 'tmp/javaAgent'
 	javaAgentFileName = 'jetty-alpn-agent.jar'
 	jarsCollection = {
-		return configurations.runtime.plus(configurations.runtime.artifacts.files).plus(files("${buildDir}/${pathToJavaAgent}/${javaAgentFileName}"))
+		return (configurations.runtime + configurations.runtime.artifacts.files) + files("${buildDir}/${pathToJavaAgent}/${javaAgentFileName}")
 	}
 }
 
@@ -240,7 +240,7 @@ test {
 
 	ext.dbTests = project.hasProperty('database') ? project.database : "derby-test"
 
-	logger.lifecycle("will run tests in '"+dbTests+"' mode")
+	logger.lifecycle("will run tests in '${dbTests}' mode")
 
 	switch (dbTests) {
 		case "derby-test":
@@ -488,7 +488,7 @@ String sha256(String filename) {
 	if (! file(filename).exists()) return "missing file"
 
 	new ByteArrayOutputStream().withStream { result ->
-		def e = exec {
+		exec {
 			executable = 'shasum' // this is only going to work on OSX
 			args = ['-a', '256', filename]
 			standardOutput = result
