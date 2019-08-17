@@ -92,8 +92,8 @@ $navAnchorHoverTextColor: $white !default;
 $navAnchorTopFontSize: 15px !default;
 
 $navAnchorPadding: 10px 25px 15px !default;
-$navAnchorPaddingMediaSmall: 10px 20px;
-$navAnchorPaddingMediaTablet: 10px 8px;
+$navAnchorPaddingMediaSmall: 10px 20px !default;
+$navAnchorPaddingMediaTablet: 10px 8px !default;
 
 $navFirstChildAnchorPadding: $navAnchorPadding !default;
 $navLastChildAnchorPadding: $navAnchorPadding !default;

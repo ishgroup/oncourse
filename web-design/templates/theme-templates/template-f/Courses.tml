@@ -14,12 +14,12 @@
           </div>
 
           <t:if test="browseTag">
-            <div class="courses-browse-tag-details">
               <t:if test="browseTag.hasDetails">
-                <t:outputraw value="${browseTagDetail}"/>
+                <div class="courses-browse-tag-details">
+                  <t:outputraw value="${browseTagDetail}"/>
+                </div>
+                <div class="clearfix"></div>
               </t:if>
-            </div>
-            <div class="clearfix"></div>
           </t:if>
 
           <t:if t:test="isException">

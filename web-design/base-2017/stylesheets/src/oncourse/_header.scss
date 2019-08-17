@@ -105,7 +105,7 @@ header {
           float: $headerGroupSiteLogoFloatPosition;
         }
         @include responsive($media-tablet) {
-          position: $headerGroupPosition;
+          position: $headerGroupSiteLogoPosition;
         }
       }
       #siteTitle {

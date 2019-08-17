@@ -286,6 +286,8 @@
           &.navbar-is-visible {
             @include transform(translateY(0));
             z-index: 1;
+            max-height: 101vh;
+            overflow-y: auto;
           }
 
           #nav {

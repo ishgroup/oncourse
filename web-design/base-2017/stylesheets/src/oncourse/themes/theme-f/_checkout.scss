@@ -410,6 +410,8 @@
       #payment-form {
         .payment-conditions {
           width: $checkoutPaymentConditionWidth;
+          position: relative;
+          z-index: 1;
           @include responsive($media-small) {
             float: $checkoutPaymentConditionFloatMediaSmall;
             width: $checkoutPaymentConditionWidthMediaSmall;

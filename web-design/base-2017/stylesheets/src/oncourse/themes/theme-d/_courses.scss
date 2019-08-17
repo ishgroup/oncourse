@@ -137,6 +137,11 @@
       }
     }
     .content .courseItem {
+      &.productItem {
+        .classItem .class-item-wrapper .classItem-left .class-item-info-l {
+          width: 100%;
+        }
+      }
       .related-header {
         font-size: $courseItemRelatedHeaderFontSize;
         font-weight: $courseItemRelatedHeaderFontWeight;

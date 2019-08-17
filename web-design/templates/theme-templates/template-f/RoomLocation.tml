@@ -7,7 +7,7 @@
 						<span t:type="ui/RoomLocationText" room="room" withRoomName="withRoomName" withSiteAddress="withSiteAddress" />
 					</a>
 					<p:else>
-						<a href="#" title="Show venue details" class="tooltip" onclick="zoomMapForSite(${room.site.angelId});" content="https://${request.serverName}/site/${room.site.angelId}" data-coordinates='${room.site.latitude.doubleValue()}, ${room.site.longitude.doubleValue()}, "${room.site.name}", "${room.site.suburb}", ${room.site.angelId}, "/site/${room.site.angelId}"'> <!-- itemprop="mainEntityOfPage"  -->
+						<a title="Show venue details" class="tooltip" content="https://${request.serverName}/site/${room.site.angelId}" data-coordinates='${room.site.latitude.doubleValue()}, ${room.site.longitude.doubleValue()}, "${room.site.name}", "${room.site.suburb}", ${room.site.angelId}, "/site/${room.site.angelId}"'> <!-- itemprop="mainEntityOfPage"  -->
 							<span t:type="ui/RoomLocationText" room="room" withRoomName="withRoomName" withSiteAddress="withSiteAddress" />
 						</a>
 					</p:else>

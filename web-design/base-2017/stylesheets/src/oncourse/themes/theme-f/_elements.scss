@@ -9,6 +9,42 @@
 //
 
 @include theme('f') {
+  @include keyframes('line-scale') {
+    0% {
+      @include transform(scaley(1));
+    }
+
+    50% {
+      @include transform(scaley(.4));
+    }
+
+    100% {
+      @include transform(scaley(1));
+    }
+  }
+
+  @for $i from 1 through 5 {
+    .line-scale>div:nth-child(#{$i}) {
+      @include animation(line-scale 1s #{($i - 5)/10}s infinite cubic-bezier(.2,.68,.18,1.08));
+    }
+  }
+
+  .line-scale>div {
+    background-color: $theme-color;
+    width: 4px;
+    height: 35px;
+    border-radius: 2px;
+    margin: 2px;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    display: inline-block
+  }
+
+  .loader-inner {
+    position: relative;
+    font-size: 0;
+  }
+
   .btn, form button.form-submit-button {
     letter-spacing: $appBtnLetterSpacing;
   }
@@ -120,7 +156,7 @@
 
   .splash-page {
     position: fixed;
-    width: 200%;
+    width: 100%;
     height: 100%;
     left: 0;
     top: 0;
@@ -129,8 +165,11 @@
     @include transition(transform .55s cubic-bezier(.19,1,.22,1), background .6s cubic-bezier(.19,1,.22,1));
     @include transform(translate3d(0px, 0px, 0px));
     @include transform-origin(left center);
+    display: flex;
+    @include align-items(center);
+    @include justify-content(center);
     .is-loaded & {
-      @include transform(translate3d(-200%, 0px, 0px));
+      @include transform(translate3d(-100%, 0px, 0px));
       @include transform-origin(right center);
     }
   }
@@ -220,26 +259,26 @@
     box-shadow: none;
     padding: 0;
   }
-}
 
-#content {
-  form fieldset label.error {
-    position: absolute;
-    background-color: #FEF0F0;
-    color: #000;
-    font-size: 11px;
-    font-weight: bold;
-    border: 1px solid #FCC5C5;
-    border-radius: 0;
-    bottom: -20px;
-    left: 16px;
-    margin: 0 !important;
-    z-index: 1;
-    &::after {
-      border-width: 8px;
-      border-color: transparent transparent #FCC5C5 transparent;
-      top: -16px;
-      left: 8px;
+  #content {
+    form fieldset label.error {
+      position: absolute;
+      background-color: #FEF0F0;
+      color: #000;
+      font-size: 11px;
+      font-weight: bold;
+      border: 1px solid #FCC5C5;
+      border-radius: 0;
+      bottom: -20px;
+      left: 16px;
+      margin: 0 !important;
+      z-index: 1;
+      &::after {
+        border-width: 8px;
+        border-color: transparent transparent #FCC5C5 transparent;
+        top: -16px;
+        left: 8px;
+      }
     }
   }
 }

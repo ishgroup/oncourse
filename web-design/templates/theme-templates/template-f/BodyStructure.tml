@@ -82,6 +82,14 @@
 	</div>
 
 	<div data-cid="modal" class="reactjs-component"></div>
-	<div class="splash-page"></div>
+	<div class="splash-page">
+		<div class="loader-inner line-scale">
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+		</div>
+	</div>
 	<div class="page-overlay"></div>
 </section>

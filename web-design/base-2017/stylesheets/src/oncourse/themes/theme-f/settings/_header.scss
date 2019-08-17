@@ -15,11 +15,18 @@ $contentContainerPaddingSidebarLeftTablet: 25px 35px 35px 25px !default;
 $contentContainerPaddingSidebarRightTablet: 25px 15px 35px 25px !default;
 $contentContainerPaddingSmall: 15px !default;
 
-
 $headerContainerPosition: fixed !default;
 $headerContainerMarginBottom: 0px !default;
+
 $headerGroupPadding: 14.5px 15px 14.5px 80px !default;
-$headerGroupPosition: relative !default;
+$headerGroupMaxWidth: 250px !default;
+$headerGroupPosition: absolute !default;
+$headerGroupPositionLeft: 0 !default;
+$headerGroupPositionRight: 0 !default;
+$headerGroupZIndex: 1 !default;
+$headerGroupTextAlign: center !default;
+
+$headerGroupPaddingMediaTablet: 14.5px 15px !default;
 
 $headerGroupLinkDisplay: table-cell !default;
 $headerGroupLinkVerticalAlign: middle !default;
@@ -35,8 +42,10 @@ $headerTopBarPhoneTextColor: $bodyFontColor !default;
 
 $headerTopBarPaddingTop: 0px !default;
 $headerTopBarHeight: auto !default;
-$headerGroupSiteLogoFloat: left !default;
-$headerGroupSiteLogoFloatPosition: left !default;
+
+$headerGroupSiteLogoPosition: relative !default;
+$headerGroupSiteLogoFloat: none !default;
+$headerGroupSiteLogoFloatPosition: none !default;
 $headerGroupSiteLogoZIndex: 0 !default;
 
 // Navigation
@@ -65,9 +74,12 @@ $navListFloat: none !default;
 $navListFloatTablet: none !default;
 
 $navListDisplay: block !important !default;
-$navListDisplayTablet: block !important !default;
+$navListDisplayTablet: inline-block !important !default;
 $navListBottomBorder: 2px solid transparent !default;
 $navListMarginRight: 0 !default;
+
+$navListVerticalAlignTablet: top !default;
+$navListMarginTablet: 0 10px !default;
 
 $navAnchorColor: $primaryColor !default;
 $navAnchorHoverBG: transparent !default;
@@ -100,6 +112,8 @@ $navChildMenuLinkHoverBG: transparent !default;
 $navChildMenuLinkHoverColor: $primaryColor !default;
 $navChildMenuTextAlign: left !default;
 $navChildMenuTextAlignTablet: left !default;
+
+$navChildMenuMinWidth: 212px !default;
 
 $navChildMenuPositionLeftMediaTablet: 0 !default;
 $navChildMenuMarginLeftMediaTablet: 0 !default;

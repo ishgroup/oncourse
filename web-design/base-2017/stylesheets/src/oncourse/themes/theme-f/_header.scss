@@ -76,18 +76,30 @@
       }
       .header-hgroup {
         padding: $headerGroupPadding;
-        max-width: 250px;
-        position: absolute;
-        left: 0;
-        right: 0;
-        z-index: 1;
-        text-align: center;
+        max-width: $headerGroupMaxWidth;
+        position: $headerGroupPosition;
+        left: $headerGroupPositionLeft;
+        right: $headerGroupPositionRight;
+        z-index: $headerGroupZIndex;
+        text-align: $headerGroupTextAlign;
         @include responsive($media-tablet) {
-          padding: 14.5px 15px;
+          padding: $headerGroupPaddingMediaTablet;
         }
         #siteLogo {
-          position: $headerGroupPosition;
-          float: none;
+          position: $headerGroupSiteLogoPosition;
+          float: $headerGroupSiteLogoFloat;
+        }
+      }
+    }
+  }
+  .navbar {
+    #nav {
+      >ul {
+        >li {
+          @include responsive($media-tablet) {
+            vertical-align: $navListVerticalAlignTablet;
+            margin: $navListMarginTablet;
+          }
         }
       }
     }
