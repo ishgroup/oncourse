@@ -79,6 +79,10 @@ allprojects {
 		}
 	}
 
+	tasks.withType(GroovyCompile).configureEach {
+		options.incremental = true
+	}
+	
 	if (it.name != 'api-test') {
 		dependencies {
 
@@ -203,7 +207,7 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 		project.tasks.findAll { it.name.startsWith('bundle_') }
 	}
 
-	task installer(){
+	task installer() {
 		description "Create all application installers."
 	}
 	
@@ -218,7 +222,6 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 	afterEvaluate {
 		installer_osx.dependsOn(notarize)
 	}
-
 
 	codeSign.dependsOn {
 		project.prepareKeychains
