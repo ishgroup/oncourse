@@ -25,11 +25,30 @@ ext {
 }
 
 // compile everything with the groovy plugin which can handle mixed groovy and Java files
-sourceSets.main.java.srcDirs = []
-sourceSets.main.groovy.srcDir 'src/main/java'
-//sourceSets.main.groovy.srcDir 'build/antlr/java'
-sourceSets.test.java.srcDirs = []
-sourceSets.test.groovy.srcDir 'src/test/java'
+sourceSets {
+	main {
+		// generate some manifest files for lists of resources to find at runtime
+		output.dir("$buildDir/generated-resources/main", builtBy: 'createResourceManifests')
+		groovy {
+			srcDirs += 'src/main/java'
+			srcDirs += 'src/main/groovy'
+			srcDirs += "$buildDir/antlr/java"
+			srcDirs += "${buildDir}/generated-resources/main/java"
+		}
+		java {
+			srcDirs = []
+		}
+	}
+	test {
+		groovy {
+			srcDirs += 'src/main/java'
+			srcDirs += 'src/main/groovy'
+		}
+		java {
+			srcDirs = []
+		}
+	}
+}
 
 dependencies {
 
@@ -160,18 +179,6 @@ dependencies {
 	testCompile "io.bootique:bootique-test:$bootiqueVersion"
 	testCompile "org.testng:testng:6.13.1"
 }
-
-processResources {
-	dependsOn ':client-html:build', 'queryGrammar'
-	doLast {
-		copy {                
-			from('../client-html/build/assets') {
-				include '**/*.*'
-			}
-			into 'build/resources/main/static'}
-	}
-}
-
 configurations.all {
 	resolutionStrategy {
 		// this is the last MPL version of iText, so we can't go past this
@@ -184,16 +191,6 @@ jar {
 		from sharedManifest
 		attributes 'Main-Class': 'ish.oncourse.server.AngelServer'
 		attributes 'Class-Path': configurations.runtime.collect { "lib/" + it.name }.join(' ')
-	}
-}
-
-sourceSets {
-	main {
-		// generate some manifest files for lists of resources to find at runtime
-		output.dir("$buildDir/generated-resources/main", builtBy: 'createResourceManifests')
-		groovy {
-			srcDirs += "$buildDir/antlr/java"
-		}
 	}
 }
 
@@ -509,26 +506,44 @@ task clientCgen(type: cayenne.cgen) {
 	client = true
 	makePairs = true
 	createPropertyNames = true
-	template = "${projectDir}/../common/src/main/resources/cayenne/dotemplates/client-subclass-serverside.vm"
-	superTemplate = "${projectDir}/../common/src/main/resources/cayenne/dotemplates/client-superclass-serverside.vm"
+	template = "${rootDir}/common/src/main/resources/cayenne/dotemplates/client-subclass-serverside.vm"
+	superTemplate = "${rootDir}/common/src/main/resources/cayenne/dotemplates/client-superclass-serverside.vm"
 	mode = 'entity'
 	superPkg = 'ish.oncourse.cayenne.glue'
-	destDir = file ("${projectDir}/src/main/java")
+	destDir = file ("${buildDir}/generated-resources/main/java")
+	doLast {
+		delete fileTree("${buildDir}/generated-resources/main/java/ish/oncourse/cayenne").matching {
+			exclude '**/glue/*'
+		}
+	}
 }
 
 task serverCgen(type: cayenne.cgen) {
 	client = false
 	makePairs = true
 	createPropertyNames = true
-	template = "${projectDir}/../common/src/main/resources/cayenne/dotemplates/subclass.vm"
-	superTemplate = "${projectDir}/../common/src/main/resources/cayenne/dotemplates/superclass.vm"
+	template = "${rootDir}/common/src/main/resources/cayenne/dotemplates/subclass.vm"
+	superTemplate = "${rootDir}/common/src/main/resources/cayenne/dotemplates/superclass.vm"
 	mode = 'entity'
 	superPkg = 'ish.oncourse.server.cayenne.glue'
-	destDir = file ("${projectDir}/src/main/java")
+	destDir = file ("${buildDir}/generated-resources/main/java")
+	doLast {
+		delete fileTree("${buildDir}/generated-resources/main/java/ish/oncourse/server/cayenne") {
+			exclude '**/glue/*'
+		}
+	}
 }
 
-compileGroovy {
+compileJava {
 	dependsOn queryGrammar, clientCgen, serverCgen
 }
-
-
+processResources {
+	dependsOn ':client-html:build'
+	doLast {
+		copy {
+			from('../client-html/build/assets') {
+				include '**/*.*'
+			}
+			into 'build/resources/main/static'}
+	}
+}
