@@ -503,7 +503,7 @@ task queryGrammar(type: au.com.ish.Aql) {
 	target = 'Java'
 }
 
-cayenne.defaultDataMap "${projectDir}/../common/src/main/resources/cayenne/AngelMap.map.xml"
+cayenne.defaultDataMap "${rootDir}/common/src/main/resources/cayenne/AngelMap.map.xml"
 
 task clientCgen(type: cayenne.cgen) {
 	client = true
