@@ -79,10 +79,6 @@ allprojects {
 		}
 	}
 
-	tasks.withType(GroovyCompile).configureEach {
-		options.incremental = true
-	}
-	
 	if (it.name != 'api-test') {
 		dependencies {
 

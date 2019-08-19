@@ -186,6 +186,11 @@ configurations.all {
 	}
 }
 
+tasks.withType(GroovyCompile).configureEach {
+    options.incremental = true
+}
+//compileGroovy.groovyOptions.configurationScript = file("${rootDir}/gradle/groovyConfig.groovy")
+
 jar {
 	manifest {
 		from sharedManifest
