@@ -19,7 +19,9 @@
 			<columnExists columnName="limitPreviousEnrolment" tableName="Discount"/>
 		</preConditions>
 		<addColumn tableName="Discount">
-			<column name="limitPreviousEnrolment" type="SMALLINT"/>
+			<column name="limitPreviousEnrolment" type="SMALLINT" defaultValueNumeric="0">
+				<constraints nullable="false"/>
+			</column>
 		</addColumn>
 	</changeSet>
 
