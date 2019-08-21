@@ -16,7 +16,9 @@
 
 	<changeSet id="1" author="pavel" runOnChange="false" runAlways="false" context="production">
 		<preConditions onFail="MARK_RAN">
-			<columnExists columnName="limitPreviousEnrolment" tableName="Discount"/>
+			<not>
+				<columnExists columnName="limitPreviousEnrolment" tableName="Discount"/>
+			</not>
 		</preConditions>
 		<addColumn tableName="Discount">
 			<column name="limitPreviousEnrolment" type="SMALLINT" defaultValueNumeric="0">
