@@ -44,9 +44,7 @@ sourceSets {
 			srcDirs += 'src/main/java'
 			srcDirs += 'src/main/groovy'
 		}
-		java {
-			srcDirs = []
-		}
+
 	}
 }
 
