@@ -533,6 +533,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 		invoiceStub.setAmountOwing(new BigDecimal(110));
 		invoiceStub.setSource("W");
 		invoiceStub.setStatus("Pending");
+		invoiceStub.setAllowAutoPay(false);
 		return invoiceStub;
 	}
 

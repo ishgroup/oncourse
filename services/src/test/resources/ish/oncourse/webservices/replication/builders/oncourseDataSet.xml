@@ -22,6 +22,10 @@
           publicTransportDirections_textile="publicTransportDirections_textile" specialInstructions="specialInstructions"
           specialInstructions_textile="specialInstructions_textile" state="state" street="street" suburb="suburb" timeZone="timeZone" isVirtual="0"/>
 
+	<SystemUser angelId="2" canEditCMS="1" canEditTara="0" collegeId="3" id="1" created="2011-09-20 11:14:54" modified="2011-09-20 11:14:54"
+				siteId="1" email="test@test.by" firstName="StubTest" isActive="1" isAdmin="1" lastLoginIP="127.0.0.1"
+				lastLoginOn="2011-09-20 11:14:54" lastName="StubTest" login="StubTest" password="StubTest" token="4HNRF6AE4YHIEP3F" tokenScratchCodes="40676203,19811312,51082860,78200870,83349253"/>
+
 
     <Room id="1"  collegeId="3" siteId="1" angelId="2" capacity="30" created="2011-09-12 00:47:01.0"
           modified="2011-09-12 01:02:00.0" name="TestRoom" directions="directions" directions_textile="directions_textile"
@@ -32,9 +36,9 @@
            resume_textile="This is mister Putin resume." startDate="2011-09-12 01:02:00.0"
            finishDate="2011-09-12 01:02:00.0"/>
 
-	<FieldConfiguration id="1" angelId="1" collegeId="3" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Name1" type="4" deliverySchedule="1"/>
+	<FieldConfiguration id="1" angelId="1" collegeId="3" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Name1" type="4" deliverySchedule="1" createdById="1"/>
 
-	<FieldConfigurationScheme id="1" angelId="1" collegeId="3" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Name" applicationFieldConfigurationId="1" enrolFieldConfigurationId="1" waitingListFieldConfigurationId="1"/>
+	<FieldConfigurationScheme id="1" angelId="1" collegeId="3" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Name" applicationFieldConfigurationId="1" enrolFieldConfigurationId="1" waitingListFieldConfigurationId="1" createdById="1"/>
 
 	<FieldConfigurationLink id="1" angelId="1" collegeId="3" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" schemeId="1" configurationId="1"/>
 
@@ -124,6 +128,8 @@
              uniqueCode="uniqueCode"
              dateOfBirth="1952-10-07"
              emailAddress="putin@kremlin.ru"
+			 title="mr"
+			 honorific="abc"
              familyName="StubTest"
 			 middleName="StubTest"
              givenName="StubTest"
@@ -158,7 +164,9 @@
                     isEnabled="1"
                     name="true"
                     requiresCredentialCheck="1"
-                    created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"/>
+                    created="2011-09-12 00:56:00.0"
+					modified="2011-09-12 00:56:00.0"
+					createdById="1"/>
 
     <Discount
             id="1"
@@ -189,7 +197,8 @@
 			minEnrolments="1"
 			minValue="0"
 			validFromOffset="-5"
-			validToOffset="5"/>
+			validToOffset="5"
+			limitPreviousEnrolment="0"/>
 
     <Enrolment id="1" angelId="2" source="W" collegeId="3" courseClassId="1"
                studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
@@ -438,10 +447,6 @@
         modified="2011-09-20 11:14:54"
         studentId="1"
         timeZone="timeZone"/>
-        
-	<SystemUser angelId="2" canEditCMS="1" canEditTara="0" collegeId="3" id="1" created="2011-09-20 11:14:54" modified="2011-09-20 11:14:54"
-	siteId="1" email="test@test.by" firstName="StubTest" isActive="1" isAdmin="1" lastLoginIP="127.0.0.1" 
-	lastLoginOn="2011-09-20 11:14:54" lastName="StubTest" login="StubTest" password="StubTest" token="4HNRF6AE4YHIEP3F" tokenScratchCodes="40676203,19811312,51082860,78200870,83349253"/>
 
     <Tag
             angelId="2"

@@ -125,12 +125,12 @@ public class ReplicationPortTypeTest extends ServiceTest {
 	}
 	
 	@Test
-	public void testV17GetRecordsSuccess() throws Exception {
+	public void testV20GetRecordsSuccess() throws Exception {
 		testGetRecordsSuccess(SupportedVersions.V20);
 	}
 	
 	@Test
-	public void testV17SendRecordsFailToDelete() throws Exception {
+	public void testV20SendRecordsFailToDelete() throws Exception {
 		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource().getConnection(), null);
 		IReplicationService service = getService(IReplicationService.class);
 		ITable actualData = dbUnitConnection.createQueryTable("Contact", "select * from Contact where id=1");
@@ -166,7 +166,7 @@ public class ReplicationPortTypeTest extends ServiceTest {
 	}
 	
 	@Test
-	public void testV17SendRecordsCreateAndDeleteSucess() throws Exception {
+	public void testV20SendRecordsCreateAndDeleteSucess() throws Exception {
 
 		IReplicationService service = getService(IReplicationService.class);
 		
@@ -242,12 +242,12 @@ public class ReplicationPortTypeTest extends ServiceTest {
 	}
 	
 	@Test
-	public void testV17SendResult() throws Exception {
+	public void testV20SendResult() throws Exception {
 		testSendResult(SupportedVersions.V20, false);
 	}
 	
 	@Test
-	public void testV17SendResultWithConcurentDelete() throws Exception {
+	public void testV20SendResultWithConcurentDelete() throws Exception {
 		testSendResult(SupportedVersions.V20, true);
 	}
 }
