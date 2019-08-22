@@ -6,7 +6,6 @@ import {stopPropagation} from "../../common/utils/HtmlUtils";
 
 
 export class EnrolButton extends React.Component<Props, State> {
-
   constructor() {
     super();
 
@@ -15,6 +14,13 @@ export class EnrolButton extends React.Component<Props, State> {
       isAlreadyAdded: false,
       pending: false,
     };
+  }
+
+  setButtonRef = node => {
+    if (node) {
+      const event = new CustomEvent('enrolButtonRendered', {bubbles: true});
+      node.dispatchEvent(event);
+    }
   }
 
   add = e => {
@@ -93,7 +99,7 @@ export class EnrolButton extends React.Component<Props, State> {
       <button key="enrol_button" className={classnames('enrolAction', {
         'enrol-added-class': isAdded,
         disabled: !isActive && !fetching,
-        fetching: fetching,
+        fetching,
       })} title={text} onClick={isActive && !fetching ? this.add : null}>
         {fetching ? "Enrol Now" : text}
       </button>,
@@ -106,8 +112,8 @@ export class EnrolButton extends React.Component<Props, State> {
             <span
               data-places={availableEnrolmentPlaces}
               className={classnames("available-places",{
-              ["available-places-high"]:  availableEnrolmentPlaces > 5
-            })}>
+                ["available-places-high"]:  availableEnrolmentPlaces > 5,
+              })}>
               {availableEnrolmentPlaces < 6 && availableEnrolmentPlaces}
             </span>
             {availableEnrolmentPlaces === 1 ? " place " : " places "}
@@ -116,7 +122,7 @@ export class EnrolButton extends React.Component<Props, State> {
     ];
 
     return (
-      <div className="classAction">
+      <div className="classAction" ref={this.setButtonRef}>
         {reverseElements ? elements.reverse() : elements}
         {this.state.showedPopup && course &&
         <ConfirmOrderDialog
