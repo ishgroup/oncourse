@@ -2056,7 +2056,7 @@
 		<obj-attribute name="value" type="java.lang.String" db-attribute-path="value"/>
 	</obj-entity>
 	<obj-entity name="Invoice" superEntityName="AbstractInvoice" className="ish.oncourse.model.Invoice">
-		<qualifier><![CDATA[type = 1]]></qualifier>
+		<qualifier><![CDATA[type = enum:ish.common.types.InvoiceType.INVOICE]]></qualifier>
 	</obj-entity>
 	<obj-entity name="InvoiceDueDate" className="ish.oncourse.model.InvoiceDueDate" dbEntityName="InvoiceDueDate" superClassName="WillowCayenneObject">
 		<obj-attribute name="amount" type="ish.math.Money" db-attribute-path="amount"/>
@@ -2392,7 +2392,9 @@
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 	</obj-entity>
-	<obj-entity name="SaleOrder" superEntityName="AbstractInvoice" className="ish.oncourse.model.SaleOrder"/>
+	<obj-entity name="SaleOrder" superEntityName="AbstractInvoice" className="ish.oncourse.model.SaleOrder">
+		<qualifier><![CDATA[type = enum:ish.common.types.InvoiceType.SALE_ORDER]]></qualifier>
+	</obj-entity>
 	<obj-entity name="Script" className="ish.oncourse.model.Script" dbEntityName="Script" superClassName="WillowCayenneObject">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
