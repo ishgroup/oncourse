@@ -4,13 +4,13 @@
 package ish.oncourse.webservices.usi;
 
 import ish.oncourse.webservices.soap.v20.PaymentPortType;
-import ish.oncourse.webservices.soap.v20.RealWSTransportTest;
+import ish.oncourse.webservices.soap.RealWSTransportTest;
 import ish.oncourse.webservices.util.GenericParametersMap;
 import ish.oncourse.webservices.util.SupportedVersions;
 import ish.oncourse.webservices.v20.stubs.replication.ParametersMap;
 import org.junit.Test;
 
-public class USIVerificationServiceTest extends RealWSTransportTest {
+public class V20USIVerificationServiceTest extends RealWSTransportTest {
 	@Test
 	public void testUSI() throws Exception {
 
@@ -27,7 +27,7 @@ public class USIVerificationServiceTest extends RealWSTransportTest {
 
 			@Override
 			public SupportedVersions getVersion() {
-				return SupportedVersions.V17;
+				return SupportedVersions.V20;
 			}
 		}).testUSI();
 	}
