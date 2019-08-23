@@ -4,7 +4,7 @@ import ish.common.types.VoucherPaymentStatus;
 import ish.oncourse.webservices.util.GenericParametersMap;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
-import ish.oncourse.webservices.v17.stubs.replication.VoucherPaymentInStub;
+import ish.oncourse.webservices.v20.stubs.replication.VoucherPaymentInStub;
 
 import java.util.Date;
 import java.util.List;

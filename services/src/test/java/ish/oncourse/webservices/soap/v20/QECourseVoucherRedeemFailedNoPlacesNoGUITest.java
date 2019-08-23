@@ -1,7 +1,6 @@
 package ish.oncourse.webservices.soap.v20;
 
 import ish.common.types.*;
-import ish.oncourse.webservices.function.TestEnvFunctions;
 import ish.oncourse.webservices.util.*;
 import ish.oncourse.webservices.v20.stubs.replication.VoucherStub;
 import org.apache.cayenne.ObjectContext;

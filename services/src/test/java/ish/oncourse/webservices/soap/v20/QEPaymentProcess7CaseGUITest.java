@@ -7,7 +7,7 @@ import ish.oncourse.model.PaymentIn;
 import ish.oncourse.webservices.util.GenericParametersMap;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
-import ish.oncourse.webservices.v17.stubs.replication.*;
+import ish.oncourse.webservices.v20.stubs.replication.*;
 import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;

@@ -10,7 +10,7 @@ import ish.oncourse.model.Invoice;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.webservices.util.*;
-import ish.oncourse.webservices.v17.stubs.replication.*;
+import ish.oncourse.webservices.v20.stubs.replication.*;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang.StringUtils;
@@ -63,6 +63,7 @@ public abstract class QEPaymentPlanGUITest extends QEPaymentProcessTest {
 		invoiceStub.setTotalExGst(invoiceStub.getAmountOwing());
 		invoiceStub.setTotalGst(invoiceStub.getAmountOwing());
 		invoiceStub.setConfirmationStatus(ConfirmationStatus.DO_NOT_SEND.getDatabaseValue());
+		invoiceStub.setAllowAutoPay(false);
 		stubs.add(invoiceStub);
 
 		parametersMap.getGenericEntry().add(createEntry(
@@ -85,6 +86,7 @@ public abstract class QEPaymentPlanGUITest extends QEPaymentProcessTest {
 		invoiceStub2.setTotalExGst(invoiceStub2.getAmountOwing());
 		invoiceStub2.setTotalGst(invoiceStub2.getAmountOwing());
 		invoiceStub2.setConfirmationStatus(ConfirmationStatus.DO_NOT_SEND.getDatabaseValue());
+		invoiceStub2.setAllowAutoPay(false);
 		stubs.add(invoiceStub2);
 
 		parametersMap.getGenericEntry().add(createEntry(

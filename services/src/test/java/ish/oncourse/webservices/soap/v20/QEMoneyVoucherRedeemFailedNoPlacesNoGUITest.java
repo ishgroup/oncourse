@@ -2,7 +2,7 @@ package ish.oncourse.webservices.soap.v20;
 
 import ish.common.types.*;
 import ish.oncourse.webservices.util.*;
-import ish.oncourse.webservices.v17.stubs.replication.VoucherStub;
+import ish.oncourse.webservices.v20.stubs.replication.VoucherStub;
 import org.apache.cayenne.ObjectContext;
 import org.junit.Before;
 import org.junit.Test;

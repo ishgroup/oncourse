@@ -8,7 +8,7 @@ import ish.oncourse.model.PaymentIn;
 import ish.oncourse.webservices.util.GenericParametersMap;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
-import ish.oncourse.webservices.v17.stubs.replication.*;
+import ish.oncourse.webservices.v20.stubs.replication.*;
 import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;
@@ -55,6 +55,7 @@ public abstract class QEPaymentProcess1_4CasesGUITest extends QEPaymentProcessTe
 		invoiceStub.setTotalExGst(invoiceStub.getAmountOwing());
 		invoiceStub.setTotalGst(invoiceStub.getAmountOwing());
         invoiceStub.setConfirmationStatus(ConfirmationStatus.DO_NOT_SEND.getDatabaseValue());
+        invoiceStub.setAllowAutoPay(false);
 		stubs.add(invoiceStub);
 		
 		parametersMap.getGenericEntry().add(createEntry(

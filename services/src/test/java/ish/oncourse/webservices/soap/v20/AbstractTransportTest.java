@@ -47,8 +47,8 @@ public abstract class AbstractTransportTest extends AbstractServerTest {
     public static final long PAYMENT_SERVICE_TIMEOUT = 1000l * 60 * 25;
     //protected static TestServer server;
 
-    public static final String PACKAGE_NAME_REPLICATION_STUBS = "ish.oncourse.webservices.v17.stubs.replication";
-    public static final String PACKAGE_NAME_REFERENCE_STUBS = "ish.oncourse.webservices.v6.stubs.reference";
+    public static final String PACKAGE_NAME_REPLICATION_STUBS = "ish.oncourse.webservices.v20.stubs.replication";
+    public static final String PACKAGE_NAME_REFERENCE_STUBS = "ish.oncourse.webservices.v7.stubs.reference";
 
 
     public Client initPortType(BindingProvider bindingProvider, String url) throws JAXBException {
@@ -151,17 +151,17 @@ public abstract class AbstractTransportTest extends AbstractServerTest {
     }
 
     protected ReferencePortType getReferencePortType() {
-        return getPortType("/services/v6/reference", new QName("http://ref.v6.soap.webservices.oncourse.ish/", "ReferenceService"), ReferencePortType.class);
+        return getPortType("/services/v7/reference", new QName("http://ref.v7.soap.webservices.oncourse.ish/", "ReferenceService"), ReferencePortType.class);
     }
 
     protected PaymentPortType getPaymentPortType() {
-        return getPortType("/services/v17/payment",  new QName("http://repl.v17.soap.webservices.oncourse.ish/", "ReplicationService"), PaymentPortType.class);
+        return getPortType("/services/v20/payment",  new QName("http://repl.v20.soap.webservices.oncourse.ish/", "ReplicationService"), PaymentPortType.class);
     }
 
 
 
     protected ReplicationPortType getReplicationPortType() {
-        return getPortType("/services/v17/replication", new QName("http://repl.v17.soap.webservices.oncourse.ish/", "ReplicationService") , ReplicationPortType.class);
+        return getPortType("/services/v20/replication", new QName("http://repl.v20.soap.webservices.oncourse.ish/", "ReplicationService") , ReplicationPortType.class);
     }
 
     private <P> P getPortType(String endpointPath, QName serviceName, Class<P> portClass) {

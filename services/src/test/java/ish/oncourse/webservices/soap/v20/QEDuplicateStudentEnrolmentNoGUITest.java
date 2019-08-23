@@ -8,7 +8,7 @@ import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.webservices.replication.services.PaymentInModelValidator;
 import ish.oncourse.webservices.util.*;
-import ish.oncourse.webservices.v17.stubs.replication.*;
+import ish.oncourse.webservices.v20.stubs.replication.*;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.beanutils.BeanUtils;
@@ -65,6 +65,7 @@ public class QEDuplicateStudentEnrolmentNoGUITest extends QEVoucherRedeemNoGUITe
 		invoiceStub.setSource(PaymentSource.SOURCE_ONCOURSE.getDatabaseValue());
 		invoiceStub.setTotalExGst(invoiceStub.getAmountOwing());
 		invoiceStub.setTotalGst(invoiceStub.getAmountOwing());
+		invoiceStub.setAllowAutoPay(false);
 		stubs.add(invoiceStub);
 		parametersMap.getGenericEntry().add(createEntry(String.format("%s_%d", Invoice.class.getSimpleName(),invoiceStub.getAngelId()),
 				invoiceStub.getAngelId().toString()));

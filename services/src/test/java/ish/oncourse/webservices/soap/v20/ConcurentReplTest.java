@@ -125,6 +125,7 @@ public class ConcurentReplTest extends RealWSTransportTest {
 		invoiceStub.setTotalExGst(invoiceStub.getAmountOwing());
 		invoiceStub.setTotalGst(invoiceStub.getAmountOwing());
 		invoiceStub.setConfirmationStatus(ConfirmationStatus.DO_NOT_SEND.getDatabaseValue());
+		invoiceStub.setAllowAutoPay(false);
 
 		parametersMap.getGenericEntry().add(testEnv.getTestEnv().createEntry(
 				String.format("%s_%d", Invoice.class.getSimpleName(), invoiceStub.getAngelId()),
@@ -312,6 +313,7 @@ public class ConcurentReplTest extends RealWSTransportTest {
 		invoiceStub.setTotalExGst(invoiceStub.getAmountOwing());
 		invoiceStub.setTotalGst(invoiceStub.getAmountOwing());
 		invoiceStub.setConfirmationStatus(ConfirmationStatus.DO_NOT_SEND.getDatabaseValue());
+		invoiceStub.setAllowAutoPay(false);
 		stubs.add(invoiceStub);
 
 		InvoiceLineStub invoiceLineStub0 = new InvoiceLineStub();

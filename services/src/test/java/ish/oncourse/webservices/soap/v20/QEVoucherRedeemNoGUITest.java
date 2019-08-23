@@ -9,7 +9,7 @@ import ish.oncourse.webservices.util.GenericParametersMap;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
 import ish.oncourse.webservices.util.PortHelper;
-import ish.oncourse.webservices.v17.stubs.replication.*;
+import ish.oncourse.webservices.v20.stubs.replication.*;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang.StringUtils;
 
@@ -76,6 +76,7 @@ public abstract class QEVoucherRedeemNoGUITest extends QEPaymentProcessTest {
 		invoiceStub.setSource(PaymentSource.SOURCE_ONCOURSE.getDatabaseValue());
 		invoiceStub.setTotalExGst(invoiceStub.getAmountOwing());
 		invoiceStub.setTotalGst(invoiceStub.getAmountOwing());
+		invoiceStub.setAllowAutoPay(false);
 		stubs.add(invoiceStub);
 
 		parametersMap.getGenericEntry().add(createEntry(String.format("%s_%d", Invoice.class.getSimpleName(), invoiceStub.getAngelId()),

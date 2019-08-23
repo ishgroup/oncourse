@@ -2,7 +2,7 @@ package ish.oncourse.webservices.soap.v20.stubs;
 
 import ish.oncourse.test.tapestry.ServiceTest;
 import ish.oncourse.webservices.util.*;
-import ish.oncourse.webservices.v17.stubs.replication.*;
+import ish.oncourse.webservices.v20.stubs.replication.*;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
@@ -84,6 +84,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		concessionTypeParameters.add(new ReplicationStubFieldParameter("isEnabled", Boolean.class));
 		concessionTypeParameters.add(new ReplicationStubFieldParameter("name", String.class));
 		concessionTypeParameters.add(new ReplicationStubFieldParameter("requiresCredentialCheck", Boolean.class));
+		concessionTypeParameters.add(new ReplicationStubFieldParameter("createdBy", Long.class));
 		stubsPropertyMap.put(getStubName(ConcessionTypeStub.class), concessionTypeParameters);
 		final List<ReplicationStubFieldParameter> contactParameters = fillDefaultReplicationStubFields();
 		contactParameters.add(new ReplicationStubFieldParameter("businessPhoneNumber", String.class));
@@ -115,6 +116,8 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		contactParameters.add(new ReplicationStubFieldParameter("abn", String.class));
 		contactParameters.add(new ReplicationStubFieldParameter("invoiceTerms", Integer.class));
 		contactParameters.add(new ReplicationStubFieldParameter("taxOverrideId", Long.class));
+		contactParameters.add(new ReplicationStubFieldParameter("title", String.class));
+		contactParameters.add(new ReplicationStubFieldParameter("honorific", String.class));
 		stubsPropertyMap.put(getStubName(ContactStub.class), contactParameters);
 
 		List<ReplicationStubFieldParameter> courseClassParameters = fillDefaultReplicationStubFields();
@@ -194,6 +197,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		discountParameters.add(new ReplicationStubFieldParameter("minEnrolments", Integer.class));
 		discountParameters.add(new ReplicationStubFieldParameter("validFromOffset", Integer.class));
 		discountParameters.add(new ReplicationStubFieldParameter("validToOffset", Integer.class));
+		discountParameters.add(new ReplicationStubFieldParameter("limitPreviousEnrolment", Boolean.class));
 		stubsPropertyMap.put(getStubName(DiscountStub.class), discountParameters);
 
 		final List<ReplicationStubFieldParameter> discountCourseClassParameters = fillDefaultReplicationStubFields();
@@ -264,6 +268,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		invoiceParameters.add(new ReplicationStubFieldParameter("confirmationStatus", Integer.class));
 		invoiceParameters.add(new ReplicationStubFieldParameter("authorisedRebillingCardId", Long.class));
 		invoiceParameters.add(new ReplicationStubFieldParameter("type", Integer.class));
+		invoiceParameters.add(new ReplicationStubFieldParameter("allowAutoPay", Boolean.class));
 		stubsPropertyMap.put(getStubName(InvoiceStub.class), invoiceParameters);
 		final List<ReplicationStubFieldParameter> messagePersonParameters = fillDefaultReplicationStubFields();
 		messagePersonParameters.add(new ReplicationStubFieldParameter("destinationAddress", String.class));
@@ -522,6 +527,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		surveyParameters.add(new ReplicationStubFieldParameter("testimonial", String.class));
 		surveyParameters.add(new ReplicationStubFieldParameter("netPromoterScore", Integer.class));
 		surveyParameters.add(new ReplicationStubFieldParameter("visibility", Integer.class));
+		surveyParameters.add(new ReplicationStubFieldParameter("fieldConfigurationId", Long.class));
 		stubsPropertyMap.put(getStubName(SurveyStub.class), surveyParameters);
 
 		List<ReplicationStubFieldParameter> entityRelationParameters = fillDefaultReplicationStubFields();
@@ -574,6 +580,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		customFieldTypeParameters.add(new ReplicationStubFieldParameter("mandatory", Boolean.class));
 		customFieldTypeParameters.add(new ReplicationStubFieldParameter("key", String.class));
 		customFieldTypeParameters.add(new ReplicationStubFieldParameter("entityName", String.class));
+		customFieldTypeParameters.add(new ReplicationStubFieldParameter("dataType", Integer.class));
 		stubsPropertyMap.put(getStubName(CustomFieldTypeStub.class), customFieldTypeParameters);
 		
 		List<ReplicationStubFieldParameter> customFieldParameters = fillDefaultReplicationStubFields();
@@ -711,6 +718,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		fieldConfigurationParameters.add(new ReplicationStubFieldParameter("name", String.class));
 		fieldConfigurationParameters.add(new ReplicationStubFieldParameter("type", Integer.class));
 		fieldConfigurationParameters.add(new ReplicationStubFieldParameter("deliverySchedule", Integer.class));
+		fieldConfigurationParameters.add(new ReplicationStubFieldParameter("createdBy", Long.class));
 		stubsPropertyMap.put(getStubName(FieldConfigurationStub.class), fieldConfigurationParameters);
 
 		List<ReplicationStubFieldParameter> fieldConfigurationLinkParameters = fillDefaultReplicationStubFields();
@@ -721,6 +729,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 
 		List<ReplicationStubFieldParameter> fieldConfigurationSchemeParameters = fillDefaultReplicationStubFields();
 		fieldConfigurationSchemeParameters.add(new ReplicationStubFieldParameter("name", String.class));
+		fieldConfigurationSchemeParameters.add(new ReplicationStubFieldParameter("createdBy", Long.class));
 		stubsPropertyMap.put(getStubName(FieldConfigurationSchemeStub.class), fieldConfigurationSchemeParameters);
 
 		List<ReplicationStubFieldParameter> taxParameters = fillDefaultReplicationStubFields();
@@ -728,6 +737,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		taxParameters.add(new ReplicationStubFieldParameter("isGSTTaxType", Boolean.class));
 		taxParameters.add(new ReplicationStubFieldParameter("rate", BigDecimal.class));
 		taxParameters.add(new ReplicationStubFieldParameter("taxCode", String.class));
+		taxParameters.add(new ReplicationStubFieldParameter("createdBy", Long.class));
 		stubsPropertyMap.put(getStubName(TaxStub.class), taxParameters);
 
 		//TODO: add new stubs here
@@ -1526,7 +1536,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 							readMethod.getModifiers(), descriptor.getWriteMethod().getModifiers());
 					assertTrue(String.format("Method modifiers should be public for property %s", descriptor.getName()),
 							readMethod.getModifiers() == Modifier.PUBLIC);
-					assertTrue(String.format("Required anotation should be equal to defined for property %s", descriptor.getName()),
+					assertTrue(String.format("Required annotation should be equal to defined for property %s", descriptor.getName()),
 							parameter.isRequerdedField() == requiredField);
 				}
 			}

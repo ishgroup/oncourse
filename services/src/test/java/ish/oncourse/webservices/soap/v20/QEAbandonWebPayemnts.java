@@ -9,7 +9,6 @@ import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
-import ish.oncourse.webservices.function.TestEnvFunctions;
 import ish.oncourse.webservices.util.GenericParametersMap;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
@@ -149,6 +148,7 @@ public class QEAbandonWebPayemnts extends QEPaymentProcessTest {
 		invoiceStub.setTotalExGst(new BigDecimal("90"));
 		invoiceStub.setTotalGst(new BigDecimal("10"));
 		invoiceStub.setConfirmationStatus(ConfirmationStatus.DO_NOT_SEND.getDatabaseValue());
+		invoiceStub.setAllowAutoPay(false);
 
 		parametersMap.getGenericEntry().add(createEntry(
 				String.format("%s_%d", Invoice.class.getSimpleName(), invoiceStub.getAngelId()),

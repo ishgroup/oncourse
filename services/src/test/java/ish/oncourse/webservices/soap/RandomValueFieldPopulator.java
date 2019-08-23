@@ -50,6 +50,8 @@ public class RandomValueFieldPopulator {
             return random.nextBoolean();
         } else if (Date.class.isAssignableFrom(fieldType)) {
             return new Date(System.currentTimeMillis() - random.nextInt(60 * 60 * 1000));
+        } else if (Float.class.isAssignableFrom(fieldType)) {
+            return random.nextFloat();
         } else if (Double.class.isAssignableFrom(fieldType) || fieldType.equals(Double.TYPE)) {
             return random.nextDouble();
         } else if (fieldType.equals(Integer.TYPE) || fieldType.equals(Integer.class)) {
