@@ -36,6 +36,7 @@ public abstract class _Tag extends WillowCayenneObject {
     public static final String SHORT_NAME_PROPERTY = "shortName";
     public static final String SPECIAL_TYPE_PROPERTY = "specialType";
     public static final String WEIGHTING_PROPERTY = "weighting";
+    public static final String COLOUR_PROPERTY = "colour";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String PARENT_PROPERTY = "parent";
     public static final String TAG_GROUP_REQUIREMENTS_PROPERTY = "tagGroupRequirements";
@@ -56,6 +57,7 @@ public abstract class _Tag extends WillowCayenneObject {
     public static final Property<String> SHORT_NAME = Property.create("shortName", String.class);
     public static final Property<NodeSpecialType> SPECIAL_TYPE = Property.create("specialType", NodeSpecialType.class);
     public static final Property<Integer> WEIGHTING = Property.create("weighting", Integer.class);
+    public static final Property<String> COLOUR = Property.create("colour", String.class);
     public static final Property<College> COLLEGE = Property.create("college", College.class);
     public static final Property<Tag> PARENT = Property.create("parent", Tag.class);
     public static final Property<List<TagGroupRequirement>> TAG_GROUP_REQUIREMENTS = Property.create("tagGroupRequirements", List.class);
@@ -74,6 +76,7 @@ public abstract class _Tag extends WillowCayenneObject {
     protected String shortName;
     protected NodeSpecialType specialType;
     protected Integer weighting;
+    protected String colour;
 
     protected Object college;
     protected Object parent;
@@ -201,6 +204,16 @@ public abstract class _Tag extends WillowCayenneObject {
         return this.weighting;
     }
 
+    public void setColour(String colour) {
+        beforePropertyWrite("colour", this.colour, colour);
+        this.colour = colour;
+    }
+
+    public String getColour() {
+        beforePropertyRead("colour");
+        return this.colour;
+    }
+
     public void setCollege(College college) {
         setToOneTarget("college", college, true);
     }
@@ -287,6 +300,8 @@ public abstract class _Tag extends WillowCayenneObject {
                 return this.specialType;
             case "weighting":
                 return this.weighting;
+            case "colour":
+                return this.colour;
             case "college":
                 return this.college;
             case "parent":
@@ -345,6 +360,9 @@ public abstract class _Tag extends WillowCayenneObject {
             case "weighting":
                 this.weighting = (Integer)val;
                 break;
+            case "colour":
+                this.colour = (String)val;
+                break;
             case "college":
                 this.college = val;
                 break;
@@ -388,6 +406,7 @@ public abstract class _Tag extends WillowCayenneObject {
         out.writeObject(this.shortName);
         out.writeObject(this.specialType);
         out.writeObject(this.weighting);
+        out.writeObject(this.colour);
         out.writeObject(this.college);
         out.writeObject(this.parent);
         out.writeObject(this.tagGroupRequirements);
@@ -410,6 +429,7 @@ public abstract class _Tag extends WillowCayenneObject {
         this.shortName = (String)in.readObject();
         this.specialType = (NodeSpecialType)in.readObject();
         this.weighting = (Integer)in.readObject();
+        this.colour = (String)in.readObject();
         this.college = in.readObject();
         this.parent = in.readObject();
         this.tagGroupRequirements = in.readObject();

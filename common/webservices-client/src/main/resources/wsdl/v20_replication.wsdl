@@ -1340,6 +1340,7 @@
                             <xs:element name="weighting" type="xs:int" />
                             <xs:element name="parentId" type="xs:long" />
                             <xs:element name="specialType" type="xs:int" />
+                            <xs:element name="colour" type="xs:string" />
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>

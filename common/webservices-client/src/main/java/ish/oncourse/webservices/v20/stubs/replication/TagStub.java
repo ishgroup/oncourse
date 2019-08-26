@@ -48,7 +48,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "shortName",
     "weighting",
     "parentId",
-    "specialType"
+    "specialType",
+    "colour"
 })
 public class TagStub
     extends ReplicationStub
@@ -86,6 +87,8 @@ public class TagStub
     @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer specialType;
+    @XmlElement(required = true)
+    protected String colour;
 
     /**
      * Gets the value of the detail property.
@@ -327,4 +330,27 @@ public class TagStub
         this.specialType = value;
     }
 
+    /**
+     * Gets the value of the colour property.
+     *
+     * @return
+     *     possible object is
+     *     {@link String }
+     *
+     */
+    public String getColour() {
+        return colour;
+    }
+
+    /**
+     * Sets the value of the colour property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *
+     */
+    public void setColour(String value) {
+        this.colour = value;
+    }
 }

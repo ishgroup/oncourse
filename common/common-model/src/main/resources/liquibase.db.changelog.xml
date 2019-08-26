@@ -27,4 +27,15 @@
 		</addColumn>
 	</changeSet>
 
+	<changeSet id="2" author="pavel" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists columnName="colour" tableName="Tag"/>
+			</not>
+		</preConditions>
+		<addColumn tableName="Tag">
+			<column name="colour" type="CHAR(6)"/>
+		</addColumn>
+	</changeSet>
+
 </databaseChangeLog>

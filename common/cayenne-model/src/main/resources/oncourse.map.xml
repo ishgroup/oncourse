@@ -1240,6 +1240,7 @@
 		<db-attribute name="shortName" type="VARCHAR" length="128"/>
 		<db-attribute name="specialType" type="INTEGER"/>
 		<db-attribute name="weighting" type="INTEGER" length="10"/>
+		<db-attribute name="colour" type="CHAR" length="6"/>
 	</db-entity>
 	<db-entity name="TagGroupRequirement">
 		<db-attribute name="allowsMultipleTags" type="BIT"/>
@@ -2543,6 +2544,7 @@
 		<obj-attribute name="shortName" type="java.lang.String" db-attribute-path="shortName"/>
 		<obj-attribute name="specialType" type="ish.common.types.NodeSpecialType" db-attribute-path="specialType"/>
 		<obj-attribute name="weighting" type="java.lang.Integer" db-attribute-path="weighting"/>
+		<obj-attribute name="colour" type="java.lang.String" db-attribute-path="colour"/>
 	</obj-entity>
 	<obj-entity name="TagGroupRequirement" className="ish.oncourse.model.TagGroupRequirement" dbEntityName="TagGroupRequirement" superClassName="WillowCayenneObject">
 		<obj-attribute name="allowsMultipleTags" type="java.lang.Boolean" db-attribute-path="allowsMultipleTags"/>
