@@ -83,6 +83,8 @@ dependencies {
 	testCompile project(':server')
 
 	testCompile "io.bootique:bootique-test:$bootiqueVersion"
+	testCompile "io.bootique.cayenne:bootique-cayenne:$bootiqueVersion"
+	testCompile "io.bootique.jdbc:bootique-jdbc-tomcat:$bootiqueVersion"
 
 	jreMac 'net.adoptopenjdk:jre11-mac-x64-hotspot:11.0.3_7@tar.gz'
 	jreWin 'net.adoptopenjdk:jre11-win-x64-hotspot:11.0.3_7@zip'
