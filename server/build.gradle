@@ -14,6 +14,10 @@ configurations {
 	javaAgent
 	apidocSource
 	aql
+
+	// exclude these here since they are pulled in in various ways
+	all*.exclude group: "org.slf4j", module: "slf4j-simple"
+	all*.exclude module: "hessian"
 }
 
 ext {
@@ -52,6 +56,8 @@ dependencies {
 
 	compile (project(':common')) {
 		exclude group: 'org.bouncycastle'
+		exclude module: "hessian"
+		exclude group: "org.slf4j", module: "slf4j-simple"
 	}
 
 	compile (project(':server-api')) 
