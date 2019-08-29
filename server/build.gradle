@@ -209,11 +209,11 @@ dependencies {
 
 apiDocs {
 	source = sourceSets.main.groovy.plus(zipTree(configurations.apidocSource.find { it.name.startsWith("waCommon") }))
-	destinationDir = reporting.file("api-docs")
+	destinationDir = file("${buildDir}/distributions/apidoc")
 }
 
 task apidocsBundle(type: Jar) {
-	from reporting.file("api-docs")
+	from file("${buildDir}/distributions/apidoc")
 	classifier "apidocs"
 	dependsOn tasks.getByName('apiDocs')
 }
