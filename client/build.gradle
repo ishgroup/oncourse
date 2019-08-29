@@ -133,7 +133,7 @@ project.ext.webstartFiles = copySpec {
 	}
 
 	into("Libraries") {
-		from file("${libsDir}/${project.name}-${project.version}.jar")
+		from file("${buildDir}/libs/${project.name}-${project.version}.jar")
 	}
 
 	into('jnlp') {
@@ -167,7 +167,7 @@ task bundle_webstart(dependsOn: [jar, prepareKeychains], type: Copy) {
 		logger.lifecycle("Creating the webstart application executable for $project.name")
 	}
 	with webstartFiles
-	into file("${distsDir}/webstart")
+	into file("${buildDir}/distributions/webstart")
 	doLast {
 		(configurations.runtime + configurations.macCompile
 				+ configurations.winCompile).files.each { file ->
