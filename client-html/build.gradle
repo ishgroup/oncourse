@@ -3,7 +3,7 @@ apply plugin: 'queryLanguageModel'
 
 node {
     version = '9.11.2'
-    npmVersion = '6.9.2'
+    yarnVersion = '1.17.3'
     download = true
     workDir = file("${project.buildDir}/nodejs")
 }
@@ -18,23 +18,11 @@ dependencies {
 
 yarn.outputs.cacheIf { true }
 
-task webpack_unix(type: NodeTask) {
+task webpack(type: YarnTask) {
     inputs.files("webpack.config.js", "tsconfig.json", "yarn.lock", "package.json", "jest.config.js")
     inputs.dir("src")
     outputs.dir("$buildDir/assets")
-
-    script = file('node_modules/.bin/webpack')
-    args = ['--env.NODE_ENV', 'production', '--env.BUILD_NUMBER', version ?: 'SNAPSHOT']
-}
-
-task webpack_win(type: Exec) {
-    inputs.files("webpack.config.js", "tsconfig.json", "yarn.lock", "package.json", "jest.config.js")
-    inputs.dir("src")
-    outputs.dir("$buildDir/assets")
-
-    workingDir '.'
-    executable projectDir.getAbsolutePath() + '\\.gradle\\nodejs\\node-v' + project.extensions.getByName('node').version + '-win-x64\\node.exe'
-    args = ['node_modules/webpack/bin/webpack.js/', '--env.NODE_ENV', 'production', '--env.BUILD_NUMBER', version ?: 'SNAPSHOT']
+    args = ['build:prod', '--env.BUILD_NUMBER', version ?: 'SNAPSHOT']
 }
 
 task jest(type: NodeTask, dependsOn: 'yarn') {
@@ -50,12 +38,7 @@ sourceSets {
     main.resources.srcDirs 'src/js', 'build/generated-sources'
 }
 
-//test.dependsOn(jest)
-
-if (osVersion == 'win')
-    build.dependsOn(webpack_win, queryGrammar)
-else
-    build.dependsOn(webpack_unix, queryGrammar)
+build.dependsOn(webpack, queryGrammar)
 
 task buildLogin_unix(type: NodeTask, dependsOn: ['yarn', ':server-api:swagger']) {
     inputs.files("webpack.login.config.js", "tsconfig.json", "yarn.lock", "loginBundleTsConifig.json", "package.json")
