@@ -14,10 +14,6 @@ repositories {
 	}
 }
 
-ext {
-	distDirWin = "$distsDir/windows"
-}
-
 configurations {
 	macCompile
 	macJava11
@@ -86,8 +82,8 @@ dependencies {
 	testCompile "io.bootique.cayenne:bootique-cayenne:$bootiqueVersion"
 	testCompile "io.bootique.jdbc:bootique-jdbc-tomcat:$bootiqueVersion"
 
-	jreMac 'net.adoptopenjdk:jre11-mac-x64-hotspot:11.0.3_7@tar.gz'
-	jreWin 'net.adoptopenjdk:jre11-win-x64-hotspot:11.0.3_7@zip'
+	jreMac 'net.adoptopenjdk:jre11-mac-x64-hotspot:11.0.4_11@tar.gz'
+	jreWin 'net.adoptopenjdk:jre11-win-x64-hotspot:11.0.4_11@zip'
 }
 
 jar {
@@ -105,7 +101,7 @@ task run(dependsOn: [classes, processResources], type: JavaExec) {
 }
 
 appBundler {
-    distributionPath = project.file("${distsDir}/")
+    distributionPath = project.file("${buildDir}/distributions")
     appName = "onCourse"
     appIdentifier = "ish.oncourse"
     mainClassName = "ish.oncourse.AngelApp"
@@ -159,7 +155,7 @@ project.ext.webstartFiles = copySpec {
 }
 
 def checkManifest = {
-	def jarFile = file("${distsDir}/webstart/Libraries/common-${version}.jar")
+	def jarFile = file("${buildDir}/distributions/webstart/Libraries/common-${version}.jar")
 	if (!new URL("jar:${jarFile.toURI()}!/").openConnection().manifest.mainAttributes.getValue('Release-Version')) {
 		throw new RuntimeException("Manifest missed from ${jarFile.name}")
 	}
@@ -179,10 +175,10 @@ task bundle_webstart(dependsOn: [jar, prepareKeychains], type: Copy) {
 			if (file.name == "common-${version}.jar") {
 				copy {
 					from file
-					into "${distsDir}/webstart/Libraries/"
+					into "${buildDir}/distributions/webstart/Libraries/"
 				}
 			} else {
-				ant.jar(destFile: "${distsDir}/webstart/Libraries/${file.name}", filesetmanifest: "merge") {
+				ant.jar(destFile: "${buildDir}/distributions/webstart/Libraries/${file.name}", filesetmanifest: "merge") {
 					zipfileset(src: file) {
 						exclude(name: '**/*MF')
 						exclude(name: '**/*SF')
@@ -221,9 +217,9 @@ task bundle_webstart(dependsOn: [jar, prepareKeychains], type: Copy) {
 }
 
 task installer_webstart(dependsOn: bundle_webstart, type: Zip) {
-	from "${distsDir}/webstart/"
+	from "${buildDir}/distributions/webstart/"
 	exclude "*.zip"
-	destinationDir = file("${distsDir}/webstart/")
+	destinationDir = file("${buildDir}/distributions/webstart/")
 	archiveName='onCourse-webstart.zip'
 }
 
@@ -232,10 +228,10 @@ task installer_webstart(dependsOn: bundle_webstart, type: Zip) {
  */
 task extractWinJre(type: Copy) {
 	from zipTree(configurations.jreWin.singleFile)
-	into distDirWin
+	into "${buildDir}/distributions/windows"
 	doLast {
 		String tmpJreName = file(distDirWin).listFiles().find{ it.isDirectory() }.name
-		file "$distDirWin/$tmpJreName/" renameTo "$distDirWin/jre/"
+		file "${buildDir}/distributions/windows/$tmpJreName/" renameTo "${buildDir}/distributions/windows/jre/"
 	}
 }
 
@@ -244,7 +240,7 @@ task bundle_win(dependsOn: [jar, extractWinJre], type: Exe4JTask) {
 	doFirst {
 		copy {
 			from jars
-			into "$distDirWin/libs"
+			into "${buildDir}/distributions/windows/libs"
 		}
 	}
 	
@@ -254,7 +250,7 @@ task bundle_win(dependsOn: [jar, extractWinJre], type: Exe4JTask) {
 			+ configurations.winCompile + configurations.winJava11)
 	
 	resourceFiles = files("${projectDir}/src/packaging/windows/onCourse.ico")
-	exeFile = file("$distDirWin/onCourse.exe")
+	exeFile = file("${buildDir}/distributions/windows/onCourse.exe")
 	jarLocationPrefix = './libs/'	
 	configExpandParams = [ maxmemoryClient : project.maxmemoryClient ]
 	
@@ -265,7 +261,7 @@ task bundle_win(dependsOn: [jar, extractWinJre], type: Exe4JTask) {
 }
 
 task copyJre(type: Copy) {
-	from("$distsDir/windows/") {
+	from("${buildDir}/distributions/windows") {
 		include 'libs/**'
 		include 'jre/'
 	}
@@ -273,10 +269,10 @@ task copyJre(type: Copy) {
 }
 
 task installer_win(dependsOn: [bundle_win, copyJre, prepareKeychains], type: NsisTask) {
-	exeFile = file("$distDirWin/onCourse.exe")
+	exeFile = file("${buildDir}/distributions/windows/onCourse.exe")
 	resourceFolder = file("${projectDir}/src/packaging/windows")
 	nsiFileName = "client-mui.nsi"
-	outputFile = file("$distDirWin/onCourse-installer.exe")
+	outputFile = file("${buildDir}/distributions/windows/onCourse-installer.exe")
 
 	if (project.hasProperty('osxKeychainPassword')) {
 		certificateFile = file (project.codeSigningTemporaryKeystore)
@@ -287,12 +283,12 @@ task installer_win(dependsOn: [bundle_win, copyJre, prepareKeychains], type: Nsi
 // for help on webstart see src/packaging/webstart/devHowTo.txt
 task webstartRun(dependsOn: bundle_webstart, type: Exec) {
 	executable 'javaws'
-	args "-open", "DEBUG=true", "${distsDir}/webstart/onCourse.jnlp"
+	args "-open", "DEBUG=true", "${buildDir}/distributions/webstart/onCourse.jnlp"
 }
 
 task webstartDebug(dependsOn: bundle_webstart, type: Exec) {
 	executable 'javaws'
-	args "-open", "DEBUG=true", "-verbose", "-J-agentlib:jdwp=transport=dt_socket,server=y,address=8000", "${distsDir}/webstart/onCourse.jnlp" 
+	args "-open", "DEBUG=true", "-verbose", "-J-agentlib:jdwp=transport=dt_socket,server=y,address=8000", "${buildDir}/distributions/webstart/onCourse.jnlp"
 }
 
 processResources {
@@ -327,7 +323,7 @@ task bundleJRE_win64(type: PackrBundler) {
 	platform = 'win64'
 	jars = (configurations.runtime + configurations.runtime.artifacts.files 
 			- configurations.macCompile + configurations.winCompile)
-	outDir = project.file("${distsDir}/win64/")
+	outDir = project.file("${buildDir}/distributions/win64/")
 	icon = "${projectDir}/src/packaging/windows/onCourse.ico"
 
 	doLast {
@@ -340,7 +336,7 @@ task bundleJRE_win64(type: PackrBundler) {
 		logger.lifecycle("Copying JRE")
 		copy {
 			from "$projectDir/build/win/jdk-11+28-jre/"
-			into "$distsDir/win64/jre/"
+			into "${buildDir}/distributions/win64/jre/"
 		}
 	}
 }
@@ -353,12 +349,12 @@ publishing.publications {
 			extension "zip"
 		}
 		artifact(new DefaultPublishArtifact("onCourse-installer", "exe", "exe", null, null,
-				file("${distsDir}/windows/onCourse-installer.exe")).builtBy(installer_win)) {
+				file("${buildDir}/distributions/windows/onCourse-installer.exe")).builtBy(installer_win)) {
 			classifier "windows"
 			extension "exe"
 		}
 		artifact(new DefaultPublishArtifact("onCourse", "dmg", "dmg", null, null,
-				file("${distsDir}/onCourse.dmg")).builtBy(installer_osx)) {
+				file("${buildDir}/distributions/onCourse.dmg")).builtBy(installer_osx)) {
 			classifier "osx"
 			extension "dmg"
 		}

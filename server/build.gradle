@@ -1,5 +1,8 @@
+import au.com.ish.Aql
+import au.com.ish.DmgTask
 import au.com.ish.Exe4JTask
 import au.com.ish.NsisTask
+import com.github.psxpaul.task.JavaExecFork
 import org.gradle.api.internal.artifacts.publish.DefaultPublishArtifact
 
 apply plugin: 'groovy'
@@ -190,9 +193,6 @@ configurations.all {
 	}
 }
 
-tasks.withType(GroovyCompile).configureEach {
-    options.incremental = true
-}
 compileGroovy.groovyOptions.configurationScript = file("${rootDir}/gradle/groovyConfig.groovy")
 
 jar {
@@ -285,7 +285,7 @@ task copyTestDb(type: Copy) {
     from zipTree(file("$rootDir/api-test/src/test/resources/onCourse.iocdata.zip"))
     into "$buildDir/"
 }
-task startDaemon(dependsOn: [classes, processResources, agentJar], type: com.github.psxpaul.task.JavaExecFork) {
+task startDaemon(dependsOn: [classes, processResources, agentJar], type: JavaExecFork) {
 	classpath = sourceSets.main.runtimeClasspath
 	main = 'ish.oncourse.server.AngelServer'
 	args = ['DEBUG=true', 'REPLICATION_DISABLED=true']
@@ -303,7 +303,7 @@ task run(dependsOn: [classes, agentJar], type: JavaExec) {
 }
 
 appBundler {
-	distributionPath = project.file("${distsDir}/")
+	distributionPath = project.file("${buildDir}/distributions/")
 	appName = "onCourseServer"
 	appIdentifier = "ish.oncourse"
 	mainClassName = "ish.oncourse.server.AngelServer"
@@ -332,7 +332,7 @@ appBundler {
 	]
 }
 
-task installer_osx(dependsOn: [prepareKeychains, codeSign, agentJar, appBundle], type: au.com.ish.DmgTask) {
+task installer_osx(dependsOn: [prepareKeychains, codeSign, agentJar, appBundle], type: DmgTask) {
 	outputs.upToDateWhen { false } //disables 'UP_TO_DATE' check. This is need to run task always
 	description "Create the OSX application executable and installer (which is just a dmg file)."
 }
@@ -341,7 +341,7 @@ task bundle_win(dependsOn: [jar, agentJar], type: Exe4JTask) {
 	configFile = file("${projectDir}/src/packaging/windows/server.exe4j.xml")
 	jars = jarsCollection.call()
 	resourceFiles = files("${projectDir}/src/packaging/windows/onCourseServer.ico")
-	exeFile = file("${distsDir}/windows/onCourseServer.exe")
+	exeFile = file("${buildDir}/distributions/windows/onCourseServer.exe")
 	configExpandParams = [maxmemoryServer : project.maxmemoryServer]
 	if (project.hasProperty('osxKeychainPassword')) {
 		certificateFile = file (project.codeSigningTemporaryKeystore)
@@ -353,7 +353,7 @@ task bundle_winService(dependsOn: [jar, agentJar], type: Exe4JTask) {
 	configFile = file("${projectDir}/src/packaging/windows/service.exe4j.xml")
 	jars = jarsCollection.call()
 	resourceFiles = files("${projectDir}/src/packaging/windows/onCourseServer.ico")
-	exeFile = file("${distsDir}/windows/onCourseService.exe")
+	exeFile = file("${buildDir}/distributions/windows/onCourseService.exe")
 	configExpandParams = [maxmemoryServer : project.maxmemoryServer]
 	if (project.hasProperty('osxKeychainPassword')) {
 		certificateFile = file (project.codeSigningTemporaryKeystore)
@@ -365,7 +365,7 @@ task bundle_winService64(dependsOn: [jar, agentJar], type: Exe4JTask) {
 	configFile = file("${projectDir}/src/packaging/windows/service64.exe4j.xml")
 	jars = jarsCollection.call()
 	resourceFiles = files("${projectDir}/src/packaging/windows/onCourseServer.ico")
-	exeFile = file("${distsDir}/windows/onCourseService64.exe")
+	exeFile = file("${buildDir}/distributions/windows/onCourseService64.exe")
 	configExpandParams = [maxmemoryServer64 : project.maxmemoryServer64]
 	if (project.hasProperty('osxKeychainPassword')) {
 		certificateFile = file (project.codeSigningTemporaryKeystore)
@@ -395,14 +395,14 @@ task installer_unix(dependsOn: [jar,agentJar], type: Zip) {
 	}
 
 	archiveName "onCourseServer.zip"
-	destinationDir file("${distsDir}/unix")
+	destinationDir file("${buildDir}/distributions/unix")
 }
 
 task installer_win(dependsOn: [bundle_win, prepareKeychains], type: NsisTask) {
 	exeFile = file("${distsDir}/windows/onCourseServer.exe")
 	resourceFolder = file("${projectDir}/src/packaging/windows")
 	nsiFileName = "server-mui.nsi"
-	outputFile = file("${distsDir}/windows/onCourseServer-installer.exe")
+	outputFile = file("${buildDir}/distributions/windows/onCourseServer-installer.exe")
 
 	if (project.hasProperty('osxKeychainPassword')) {
 		certificateFile = file (project.codeSigningTemporaryKeystore)
@@ -411,10 +411,10 @@ task installer_win(dependsOn: [bundle_win, prepareKeychains], type: NsisTask) {
 }
 
 task installer_winService(dependsOn: [bundle_winService, prepareKeychains], type: NsisTask) {
-	exeFile = file("${distsDir}/windows/onCourseService.exe")
+	exeFile = file("${buildDir}/distributions/windows/onCourseService.exe")
 	resourceFolder = file("${projectDir}/src/packaging/windows")
 	nsiFileName = "service-mui.nsi"
-	outputFile = file("${distsDir}/windows/onCourseService-installer.exe")
+	outputFile = file("${buildDir}/distributions/windows/onCourseService-installer.exe")
 
 	if (project.hasProperty('osxKeychainPassword')) {
 		certificateFile = file (project.codeSigningTemporaryKeystore)
@@ -423,10 +423,10 @@ task installer_winService(dependsOn: [bundle_winService, prepareKeychains], type
 }
 
 task installer_winService64(dependsOn: [bundle_winService64, prepareKeychains], type: NsisTask) {
-	exeFile = file("${distsDir}/windows/onCourseService64.exe")
+	exeFile = file("${buildDir}/distributions/windows/onCourseService64.exe")
 	resourceFolder = file("${projectDir}/src/packaging/windows")
 	nsiFileName = "service64-mui.nsi"
-	outputFile = file("${distsDir}/windows/onCourseService64-installer.exe")
+	outputFile = file("${buildDir}/distributions/windows/onCourseService64-installer.exe")
 
 	if (project.hasProperty('osxKeychainPassword')) {
 		certificateFile = file (project.codeSigningTemporaryKeystore)
@@ -442,7 +442,7 @@ task generateDoc (type: SwaggerDoc) {
 task packageDoc (type: Zip, dependsOn: generateDoc, group: 'distribution') {
 	from file("${buildDir}/doc/docs")
 	archiveName 'doc.zip'
-	destinationDir file("${buildDir}/dist/")
+	destinationDir file("${buildDir}/distributions/")
 }
 
 // "gradlew publishToMavenLocal" if you want to publish this to your local .m2 folder
@@ -454,7 +454,7 @@ publishing {
 			version (project.hasProperty('releaseVersion') ? project.releaseVersion : "SNAPSHOT")
 		}
 		docs(MavenPublication) {
-			artifact("${buildDir}/dist/doc.zip") {
+			artifact("${buildDir}/distributions/doc.zip") {
 				artifactId "docs"
 				classifier "documentation"
 				extension "zip"
@@ -468,20 +468,20 @@ publishing {
 				extension "zip"
 			}
 			artifact(new DefaultPublishArtifact("onCourseServer-installer", "exe", "exe", null, null,
-					file("${distsDir}/windows/onCourseServer-installer.exe")).builtBy(installer_win)) {
+					file("${buildDir}/distributions/windows/onCourseServer-installer.exe")).builtBy(installer_win)) {
 				version (project.hasProperty('releaseVersion') ? project.releaseVersion : "SNAPSHOT")
 				classifier "windows"
 				extension "exe"
 			}
 			artifact(new DefaultPublishArtifact("onCourseService64-installer", "exe", "exe", null, null,
-					file("${distsDir}/windows/onCourseService64-installer.exe")).builtBy(installer_winService64)) {
+					file("${buildDir}/distributions/windows/onCourseService64-installer.exe")).builtBy(installer_winService64)) {
 				version (project.hasProperty('releaseVersion') ? project.releaseVersion : "SNAPSHOT")
 				classifier "winService"
 				extension "exe"
 			}
 
 			artifact(new DefaultPublishArtifact("onCourseServer", "dmg", "dmg", null, null,
-					file("${distsDir}/onCourseServer.dmg")).builtBy(installer_osx)) {
+					file("${buildDir}/distributions/onCourseServer.dmg")).builtBy(installer_osx)) {
 				version (project.hasProperty('releaseVersion') ? project.releaseVersion : "SNAPSHOT")
 				classifier "osx"
 				extension "dmg"
@@ -503,8 +503,8 @@ String sha256(String filename) {
 	}
 }
 
-task queryGrammar(type: au.com.ish.Aql) {
-	outputDir = file("${project.projectDir}/build/antlr/java/ish/oncourse/aql/impl")
+task queryGrammar(type: Aql) {
+	outputDir = file("${buildDir}/antlr/java/ish/oncourse/aql/impl")
 	packageDir = 'ish.oncourse.aql.impl'
 	target = 'Java'
 }
