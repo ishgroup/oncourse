@@ -230,7 +230,7 @@ task extractWinJre(type: Copy) {
 	from zipTree(configurations.jreWin.singleFile)
 	into "${buildDir}/distributions/windows"
 	doLast {
-		String tmpJreName = file(distDirWin).listFiles().find{ it.isDirectory() }.name
+		String tmpJreName = file("${buildDir}/distributions/windows").listFiles().find{ it.isDirectory() }.name
 		file "${buildDir}/distributions/windows/$tmpJreName/" renameTo "${buildDir}/distributions/windows/jre/"
 	}
 }
