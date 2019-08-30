@@ -72,6 +72,14 @@ dependencies {
 	winCompile "com.teamdev.jxbrowser:jxbrowser-win64:$jxbrowserVersion"
 	winCompile "com.teamdev.jxbrowser:jxbrowser-win32:$jxbrowserVersion"
 
+	compile "org.openjfx:javafx-base:$openjfxVersion:linux"
+	compile "org.openjfx:javafx-graphics:$openjfxVersion:linux"
+	compile "org.openjfx:javafx-controls:$openjfxVersion:linux"
+	compile "org.openjfx:javafx-fxml:$openjfxVersion:linux"
+	compile "org.openjfx:javafx-swing:$openjfxVersion:linux"
+	compile "org.openjfx:javafx-media:$openjfxVersion:linux"
+	compile "com.teamdev.jxbrowser:jxbrowser-linux64:$jxbrowserVersion"
+
     testCompile 'org.mockito:mockito-core:1.10.17'
 	testCompile 'org.apache.poi:poi:3.12-beta1'
 	testCompile 'org.apache.poi:poi-ooxml:3.12-beta1'
@@ -370,7 +378,7 @@ cgen {
 	template = "${projectDir}/../common/src/main/resources/cayenne/dotemplates/client-subclass.vm"
 	superTemplate = "${projectDir}/../common/src/main/resources/cayenne/dotemplates/client-superclass.vm"
 	mode = 'entity'
-	// can not generate cayenne superclasses out of version control, 
+	// can not generate cayenne superclasses out of version control,
 	// since cgen always generate pairs sub/supes classes (Course.java/_Course.java) or just sub classes (Course.java) - should be under svn
 	//destDir =  file ("${projectDir}/build/generated-sources/src/main/java")
 	superPkg = 'ish.oncourse.cayenne.glue'
