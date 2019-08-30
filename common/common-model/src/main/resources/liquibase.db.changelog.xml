@@ -34,7 +34,7 @@
 			</not>
 		</preConditions>
 		<addColumn tableName="Tag">
-			<column name="colour" type="CHAR(6)"/>
+			<column name="colour" type="CHAR(32)"/>
 		</addColumn>
 	</changeSet>
 

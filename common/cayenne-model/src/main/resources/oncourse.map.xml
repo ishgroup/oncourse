@@ -1240,7 +1240,7 @@
 		<db-attribute name="shortName" type="VARCHAR" length="128"/>
 		<db-attribute name="specialType" type="INTEGER"/>
 		<db-attribute name="weighting" type="INTEGER" length="10"/>
-		<db-attribute name="colour" type="CHAR" length="6"/>
+		<db-attribute name="colour" type="CHAR" length="32"/>
 	</db-entity>
 	<db-entity name="TagGroupRequirement">
 		<db-attribute name="allowsMultipleTags" type="BIT"/>
