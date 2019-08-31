@@ -66,7 +66,6 @@ allprojects {
 	tasks.withType(AbstractCompile) {
 		options.with {
 			incremental = true
-			fork = true
 		}
 	}
 
@@ -147,8 +146,6 @@ allprojects {
 	}
 
 	test {
-		forkEvery = 1 //run every test in separate jvm
-
 		systemProperties 'java.awt.headless': 'true',
 		    'java.locale.providers': 'COMPAT,SPI'
 		maxHeapSize = '1024m'
@@ -240,7 +237,7 @@ task testReport(type: TestReport) {
 dependencyUpdates.resolutionStrategy {
 	componentSelection { rules ->
 		rules.all { ComponentSelection selection ->
-			boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm', 'preview', 'ea'].any { qualifier ->
+			boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm', 'pr', 'preview', 'ea'].any { qualifier ->
 				selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
 			}
 			if (rejected) {

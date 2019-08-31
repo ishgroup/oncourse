@@ -18,19 +18,22 @@ dependencies {
 
 yarn.outputs.cacheIf { true }
 
-task webpack(type: YarnTask) {
+task webpack(type: YarnTask, dependsOn: [':server-api:swagger', 'yarn']) {
     inputs.files("webpack.config.js", "tsconfig.json", "yarn.lock", "package.json", "jest.config.js")
     inputs.dir("src")
     outputs.dir("$buildDir/assets")
     args = ['build:prod', '--env.BUILD_NUMBER', version ?: 'SNAPSHOT']
 }
 
-task jest(type: NodeTask, dependsOn: 'yarn') {
-    script = project.file('node_modules/.bin/jest')
-    args = ['--ci', '--testResultsProcessor=jest-junit']
+task yarn_outdated(type: YarnTask) {
+    args = ['outdated']
 }
 
-task queryGrammar(type: YarnTask, dependsOn: 'yarn_install') {
+task jest(type: YarnTask, dependsOn: [':server-api:swagger', 'yarn']) {
+    args = ['test']
+}
+
+task queryGrammar(type: YarnTask, dependsOn: [':server-api:swagger', 'yarn']) {
     args = ['antlr4ts']
 }
 
@@ -38,26 +41,14 @@ sourceSets {
     main.resources.srcDirs 'src/js', 'build/generated-sources'
 }
 
-build.dependsOn(webpack, queryGrammar)
-
-task buildLogin_unix(type: NodeTask, dependsOn: ['yarn', ':server-api:swagger']) {
+task buildLogin(type: YarnTask, dependsOn: [':server-api:swagger', 'yarn']) {
     inputs.files("webpack.login.config.js", "tsconfig.json", "yarn.lock", "loginBundleTsConifig.json", "package.json")
     inputs.dir("src")
     outputs.dir("$buildDir/login")
-
-    script = file('node_modules/.bin/webpack')
-    args = ['--env.NODE_ENV', 'production', '--config', 'webpack.login.config.js']
+    args = ['build:prod:loginApp']
 }
 
-task buildLogin_win(type:Exec, dependsOn: ['yarn', ':server-api:swagger']) {
-    inputs.files("webpack.login.config.js", "tsconfig.json", "yarn.lock", "loginBundleTsConifig.json", "package.json")
-    inputs.dir("src")
-    outputs.dir("$buildDir/login")
-
-    workingDir '.'
-    executable projectDir.getAbsolutePath() + '\\.gradle\\nodejs\\node-v' + project.extensions.getByName('node').version + '-win-x64\\node.exe'
-    args = ['node_modules/webpack/bin/webpack.js/', '--env.NODE_ENV', 'production', '--config', 'webpack.login.config.js']
-}
+build.dependsOn(webpack, queryGrammar, buildLogin)
 
 generateQueryLanguageModel {
     source = zipTree(configurations.queryLanguageModelSource.find { it.name.startsWith("waCommon") })
