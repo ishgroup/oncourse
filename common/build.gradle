@@ -3,8 +3,7 @@ dependencies {
 		exclude group: 'org.apache.logging.log4j'
 		exclude group: 'org.springframework'
 	}
-	compile 'javax.jmdns:jmdns:3.4.1'
-	compile"org.apache.cayenne:cayenne-client:$cayenneVersion"
+	compile "org.apache.cayenne:cayenne-client:$cayenneVersion"
 	compile 'commons-httpclient:commons-httpclient:3.1'
 	compile 'org.apache.commons:commons-lang3:3.7'
 	compile 'org.apache.commons:commons-collections4:4.1'
