@@ -18,11 +18,15 @@ dependencies {
 
 yarn.outputs.cacheIf { true }
 
-task webpack(type: YarnTask, dependsOn: [':server-api:swagger', 'yarn']) {
+task webpack(type: YarnTask, dependsOn: 'queryGrammar') {
     inputs.files("webpack.config.js", "tsconfig.json", "yarn.lock", "package.json", "jest.config.js")
     inputs.dir("src")
     outputs.dir("$buildDir/assets")
     args = ['build:prod', '--env.BUILD_NUMBER', version ?: 'SNAPSHOT']
+}
+
+clean {
+    delete "${projectDir}/node_modules"
 }
 
 task yarn_outdated(type: YarnTask) {
@@ -41,18 +45,18 @@ sourceSets {
     main.resources.srcDirs 'src/js', 'build/generated-sources'
 }
 
-task buildLogin(type: YarnTask, dependsOn: [':server-api:swagger', 'yarn']) {
+task buildLogin(type: YarnTask, dependsOn: 'queryGrammar') {
     inputs.files("webpack.login.config.js", "tsconfig.json", "yarn.lock", "loginBundleTsConifig.json", "package.json")
     inputs.dir("src")
     outputs.dir("$buildDir/login")
     args = ['build:prod:loginApp']
 }
 
-build.dependsOn(webpack, queryGrammar, buildLogin)
+build.dependsOn(webpack, buildLogin)
 
 generateQueryLanguageModel {
     source = zipTree(configurations.queryLanguageModelSource.find { it.name.startsWith("waCommon") })
-        .plus(fileTree("$buildDir/../../common/src/main/java"))
+            .plus(fileTree("$buildDir/../../common/src/main/java"))
 
     destinationDir = file("$buildDir/generated-sources")
 }
