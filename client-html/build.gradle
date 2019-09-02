@@ -2,7 +2,7 @@ apply plugin: 'com.moowork.node'
 apply plugin: 'queryLanguageModel'
 
 node {
-    version = '9.11.2'
+    version = '12.9.1'
     yarnVersion = '1.17.3'
     download = true
     workDir = file("${project.buildDir}/nodejs")
@@ -37,7 +37,9 @@ task jest(type: YarnTask, dependsOn: [':server-api:swagger', 'yarn']) {
     args = ['test']
 }
 
-task queryGrammar(type: YarnTask, dependsOn: [':server-api:swagger', 'yarn']) {
+task queryGrammar(type: YarnTask, dependsOn: [':server-api:swagger', 'yarn', 'generateQueryLanguageModel']) {
+    inputs.dir("$rootDir/buildSrc/aql/src/main/resources/")
+    outputs.dir("$buildDir/generated-sources/aql")
     args = ['antlr4ts']
 }
 
