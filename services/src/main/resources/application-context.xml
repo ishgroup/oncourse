@@ -29,6 +29,10 @@
 
 	<bean id="v20_replicationPortType" class="ish.oncourse.webservices.soap.v20.ReplicationPortTypeImpl" />
 
+    <bean id="v21_paymentPortType" class="ish.oncourse.webservices.soap.v21.PaymentPortTypeImpl" />
+
+    <bean id="v21_replicationPortType" class="ish.oncourse.webservices.soap.v21.ReplicationPortTypeImpl" />
+
 	<bean name="controlCharacterHandler" class="ish.oncourse.webservices.soap.CustomEscapeHandler"/>
 
 	<bean name="headerInterceptor" class="ish.oncourse.webservices.soap.interceptors.MessageHeaderInterceptor" />
@@ -38,9 +42,6 @@
 			<ref bean="gzipFeature" />
 			<ref bean="loggingFeature" />
 		</cxf:features>
-		<cxf:properties>
-			<entry key="set-jaxb-validation-event-handler" value="false" />
-		</cxf:properties>
 	</cxf:bus>
 
 	<jaxws:endpoint id="v7_reference" implementor="#v7_referencePortTypeBean"
@@ -88,4 +89,42 @@
 			</bean>
 		</jaxws:dataBinding>
 	</jaxws:endpoint>
+
+    <jaxws:endpoint id="v21_replication" implementor="#v21_replicationPortType"
+                    address="/v21/replication">
+        <jaxws:inInterceptors>
+            <ref bean="communicationKeyInterceptor" />
+            <ref bean="collegeRequestInterceptor" />
+            <ref bean="headerInterceptor" />
+        </jaxws:inInterceptors>
+
+        <jaxws:dataBinding>
+            <bean class="org.apache.cxf.jaxb.JAXBDataBinding">
+                <property name="marshallerProperties">
+                    <map>
+                        <entry key="com.sun.xml.bind.marshaller.CharacterEscapeHandler" value-ref="controlCharacterHandler"/>
+                    </map>
+                </property>
+            </bean>
+        </jaxws:dataBinding>
+    </jaxws:endpoint>
+
+    <jaxws:endpoint id="v21_payment" implementor="#v21_paymentPortType"
+                    address="/v21/payment">
+        <jaxws:inInterceptors>
+            <ref bean="securityCodeInterceptor" />
+            <ref bean="collegeRequestInterceptor" />
+            <ref bean="headerInterceptor" />
+        </jaxws:inInterceptors>
+
+        <jaxws:dataBinding>
+            <bean class="org.apache.cxf.jaxb.JAXBDataBinding">
+                <property name="marshallerProperties">
+                    <map>
+                        <entry key="com.sun.xml.bind.marshaller.CharacterEscapeHandler" value-ref="controlCharacterHandler"/>
+                    </map>
+                </property>
+            </bean>
+        </jaxws:dataBinding>
+    </jaxws:endpoint>
 </beans>

@@ -586,7 +586,6 @@
                             <xs:element name="minValue" type="xs:decimal"/>
                             <xs:element name="validFromOffset" type="xs:int"/>
                             <xs:element name="validToOffset" type="xs:int"/>
-                            <xs:element name="limitPreviousEnrolment" type="xs:boolean"/>
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
@@ -1340,7 +1339,6 @@
                             <xs:element name="weighting" type="xs:int" />
                             <xs:element name="parentId" type="xs:long" />
                             <xs:element name="specialType" type="xs:int" />
-                            <xs:element name="colour" type="xs:string" />
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>

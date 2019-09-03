@@ -74,8 +74,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "minEnrolments",
     "minValue",
     "validFromOffset",
-    "validToOffset",
-    "limitPreviousEnrolment"
+    "validToOffset"
 })
 public class DiscountStub
     extends ReplicationStub
@@ -149,18 +148,14 @@ public class DiscountStub
     @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
     protected Integer validToOffset;
-    @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter1 .class)
-    @XmlSchemaType(name = "boolean")
-    protected Boolean limitPreviousEnrolment;
 
     /**
      * Gets the value of the code property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCode() {
         return code;
@@ -168,11 +163,11 @@ public class DiscountStub
 
     /**
      * Sets the value of the code property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCode(String value) {
         this.code = value;
@@ -180,11 +175,11 @@ public class DiscountStub
 
     /**
      * Gets the value of the combinationType property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public Boolean isCombinationType() {
         return combinationType;
@@ -192,11 +187,11 @@ public class DiscountStub
 
     /**
      * Sets the value of the combinationType property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCombinationType(Boolean value) {
         this.combinationType = value;
@@ -204,11 +199,11 @@ public class DiscountStub
 
     /**
      * Gets the value of the detail property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getDetail() {
         return detail;
@@ -216,11 +211,11 @@ public class DiscountStub
 
     /**
      * Sets the value of the detail property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setDetail(String value) {
         this.detail = value;
@@ -228,11 +223,11 @@ public class DiscountStub
 
     /**
      * Gets the value of the discountAmount property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link BigDecimal }
-     *     
+     *
      */
     public BigDecimal getDiscountAmount() {
         return discountAmount;
@@ -240,11 +235,11 @@ public class DiscountStub
 
     /**
      * Sets the value of the discountAmount property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link BigDecimal }
-     *     
+     *
      */
     public void setDiscountAmount(BigDecimal value) {
         this.discountAmount = value;
@@ -252,11 +247,11 @@ public class DiscountStub
 
     /**
      * Gets the value of the discountRate property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link BigDecimal }
-     *     
+     *
      */
     public BigDecimal getDiscountRate() {
         return discountRate;
@@ -264,11 +259,11 @@ public class DiscountStub
 
     /**
      * Sets the value of the discountRate property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link BigDecimal }
-     *     
+     *
      */
     public void setDiscountRate(BigDecimal value) {
         this.discountRate = value;
@@ -276,11 +271,11 @@ public class DiscountStub
 
     /**
      * Gets the value of the maximumDiscount property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link BigDecimal }
-     *     
+     *
      */
     public BigDecimal getMaximumDiscount() {
         return maximumDiscount;
@@ -288,11 +283,11 @@ public class DiscountStub
 
     /**
      * Sets the value of the maximumDiscount property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link BigDecimal }
-     *     
+     *
      */
     public void setMaximumDiscount(BigDecimal value) {
         this.maximumDiscount = value;
@@ -300,11 +295,11 @@ public class DiscountStub
 
     /**
      * Gets the value of the minimumDiscount property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link BigDecimal }
-     *     
+     *
      */
     public BigDecimal getMinimumDiscount() {
         return minimumDiscount;
@@ -312,11 +307,11 @@ public class DiscountStub
 
     /**
      * Sets the value of the minimumDiscount property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link BigDecimal }
-     *     
+     *
      */
     public void setMinimumDiscount(BigDecimal value) {
         this.minimumDiscount = value;
@@ -324,11 +319,11 @@ public class DiscountStub
 
     /**
      * Gets the value of the name property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getName() {
         return name;
@@ -336,11 +331,11 @@ public class DiscountStub
 
     /**
      * Sets the value of the name property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setName(String value) {
         this.name = value;
@@ -348,11 +343,11 @@ public class DiscountStub
 
     /**
      * Gets the value of the roundingMode property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public Integer getRoundingMode() {
         return roundingMode;
@@ -360,11 +355,11 @@ public class DiscountStub
 
     /**
      * Sets the value of the roundingMode property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setRoundingMode(Integer value) {
         this.roundingMode = value;
@@ -372,11 +367,11 @@ public class DiscountStub
 
     /**
      * Gets the value of the studentAge property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public Integer getStudentAge() {
         return studentAge;
@@ -384,11 +379,11 @@ public class DiscountStub
 
     /**
      * Sets the value of the studentAge property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setStudentAge(Integer value) {
         this.studentAge = value;
@@ -396,11 +391,11 @@ public class DiscountStub
 
     /**
      * Gets the value of the studentAgeOperator property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getStudentAgeOperator() {
         return studentAgeOperator;
@@ -408,11 +403,11 @@ public class DiscountStub
 
     /**
      * Sets the value of the studentAgeOperator property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setStudentAgeOperator(String value) {
         this.studentAgeOperator = value;
@@ -420,11 +415,11 @@ public class DiscountStub
 
     /**
      * Gets the value of the studentEnrolledWithinDays property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public Integer getStudentEnrolledWithinDays() {
         return studentEnrolledWithinDays;
@@ -432,11 +427,11 @@ public class DiscountStub
 
     /**
      * Sets the value of the studentEnrolledWithinDays property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setStudentEnrolledWithinDays(Integer value) {
         this.studentEnrolledWithinDays = value;
@@ -444,11 +439,11 @@ public class DiscountStub
 
     /**
      * Gets the value of the studentPostcodes property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getStudentPostcodes() {
         return studentPostcodes;
@@ -456,11 +451,11 @@ public class DiscountStub
 
     /**
      * Sets the value of the studentPostcodes property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setStudentPostcodes(String value) {
         this.studentPostcodes = value;
@@ -468,11 +463,11 @@ public class DiscountStub
 
     /**
      * Gets the value of the validFrom property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public Date getValidFrom() {
         return validFrom;
@@ -480,11 +475,11 @@ public class DiscountStub
 
     /**
      * Sets the value of the validFrom property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setValidFrom(Date value) {
         this.validFrom = value;
@@ -492,11 +487,11 @@ public class DiscountStub
 
     /**
      * Gets the value of the validTo property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public Date getValidTo() {
         return validTo;
@@ -504,11 +499,11 @@ public class DiscountStub
 
     /**
      * Sets the value of the validTo property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setValidTo(Date value) {
         this.validTo = value;
@@ -516,11 +511,11 @@ public class DiscountStub
 
     /**
      * Gets the value of the discountType property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public Integer getDiscountType() {
         return discountType;
@@ -528,11 +523,11 @@ public class DiscountStub
 
     /**
      * Sets the value of the discountType property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setDiscountType(Integer value) {
         this.discountType = value;
@@ -540,11 +535,11 @@ public class DiscountStub
 
     /**
      * Gets the value of the hideOnWeb property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public Boolean isHideOnWeb() {
         return hideOnWeb;
@@ -552,11 +547,11 @@ public class DiscountStub
 
     /**
      * Sets the value of the hideOnWeb property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setHideOnWeb(Boolean value) {
         this.hideOnWeb = value;
@@ -564,11 +559,11 @@ public class DiscountStub
 
     /**
      * Gets the value of the availableOnWeb property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public Boolean isAvailableOnWeb() {
         return availableOnWeb;
@@ -576,11 +571,11 @@ public class DiscountStub
 
     /**
      * Sets the value of the availableOnWeb property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setAvailableOnWeb(Boolean value) {
         this.availableOnWeb = value;
@@ -588,11 +583,11 @@ public class DiscountStub
 
     /**
      * Gets the value of the minEnrolments property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public Integer getMinEnrolments() {
         return minEnrolments;
@@ -600,11 +595,11 @@ public class DiscountStub
 
     /**
      * Sets the value of the minEnrolments property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setMinEnrolments(Integer value) {
         this.minEnrolments = value;
@@ -612,11 +607,11 @@ public class DiscountStub
 
     /**
      * Gets the value of the minValue property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link BigDecimal }
-     *     
+     *
      */
     public BigDecimal getMinValue() {
         return minValue;
@@ -624,11 +619,11 @@ public class DiscountStub
 
     /**
      * Sets the value of the minValue property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link BigDecimal }
-     *     
+     *
      */
     public void setMinValue(BigDecimal value) {
         this.minValue = value;
@@ -636,11 +631,11 @@ public class DiscountStub
 
     /**
      * Gets the value of the validFromOffset property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public Integer getValidFromOffset() {
         return validFromOffset;
@@ -648,11 +643,11 @@ public class DiscountStub
 
     /**
      * Sets the value of the validFromOffset property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setValidFromOffset(Integer value) {
         this.validFromOffset = value;
@@ -660,11 +655,11 @@ public class DiscountStub
 
     /**
      * Gets the value of the validToOffset property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public Integer getValidToOffset() {
         return validToOffset;
@@ -672,38 +667,14 @@ public class DiscountStub
 
     /**
      * Sets the value of the validToOffset property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setValidToOffset(Integer value) {
         this.validToOffset = value;
-    }
-
-    /**
-     * Gets the value of the limitPreviousEnrolment property.
-     *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
-     */
-    public Boolean getLimitPreviousEnrolment() {
-        return limitPreviousEnrolment;
-    }
-
-    /**
-     * Sets the value of the limitPreviousEnrolment property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
-     */
-    public void setLimitPreviousEnrolment(Boolean value) {
-        this.limitPreviousEnrolment = value;
     }
 
 }

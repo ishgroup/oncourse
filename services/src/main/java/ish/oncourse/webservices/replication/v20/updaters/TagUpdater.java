@@ -36,6 +36,5 @@ public class TagUpdater extends AbstractWillowUpdater<TagStub, Tag>{
 		}
 		entity.setShortName(stub.getShortName());
 		entity.setWeighting(stub.getWeighting());
-		entity.setColour(stub.getColour());
 	}
 }
