@@ -21,9 +21,7 @@
 			</not>
 		</preConditions>
 		<addColumn tableName="Discount">
-			<column name="limitPreviousEnrolment" type="SMALLINT" defaultValueNumeric="0">
-				<constraints nullable="false"/>
-			</column>
+			<column name="limitPreviousEnrolment" type="SMALLINT" defaultValueNumeric="0"/>
 		</addColumn>
 	</changeSet>
 
