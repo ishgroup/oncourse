@@ -23,6 +23,13 @@ public class Discount extends _Discount implements DiscountInterface, Queueable 
 		return QueueableObjectUtils.getId(this);
 	}
 
+	@Override
+	protected void onPrePersist() {
+		if (getLimitPreviousEnrolment() == null) {
+			setLimitPreviousEnrolment(false);
+		}
+	}
+
 	/**
 	 * Returns filter for retrieving the current discounts(with valid or
 	 * undefined date range)

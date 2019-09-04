@@ -490,6 +490,8 @@ public abstract class _Discount extends WillowCayenneObject {
         return (List<InvoiceLineDiscount>)readProperty("invoiceLineDiscounts");
     }
 
+    protected abstract void onPrePersist();
+
     @Override
     public Object readPropertyDirectly(String propName) {
         if(propName == null) {

@@ -458,7 +458,7 @@
 		<db-attribute name="validFromOffset" type="INTEGER"/>
 		<db-attribute name="validTo" type="TIMESTAMP"/>
 		<db-attribute name="validToOffset" type="INTEGER"/>
-		<db-attribute name="limitPreviousEnrolment" type="SMALLINT" isMandatory="true"/>
+		<db-attribute name="limitPreviousEnrolment" type="SMALLINT"/>
 	</db-entity>
 	<db-entity name="DiscountConcessionType">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
@@ -1899,6 +1899,7 @@
 		<obj-attribute name="validTo" type="java.util.Date" db-attribute-path="validTo"/>
 		<obj-attribute name="validToOffset" type="java.lang.Integer" db-attribute-path="validToOffset"/>
 		<obj-attribute name="limitPreviousEnrolment" type="java.lang.Boolean" db-attribute-path="limitPreviousEnrolment"/>
+        <pre-persist method-name="onPrePersist"/>
 	</obj-entity>
 	<obj-entity name="DiscountConcessionType" className="ish.oncourse.model.DiscountConcessionType" dbEntityName="DiscountConcessionType" superClassName="WillowCayenneObject">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>

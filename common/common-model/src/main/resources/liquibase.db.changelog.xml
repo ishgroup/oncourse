@@ -21,7 +21,7 @@
 			</not>
 		</preConditions>
 		<addColumn tableName="Discount">
-			<column name="limitPreviousEnrolment" type="SMALLINT" defaultValueNumeric="0"/>
+			<column name="limitPreviousEnrolment" type="SMALLINT"/>
 		</addColumn>
 	</changeSet>
 
@@ -34,6 +34,10 @@
 		<addColumn tableName="Tag">
 			<column name="colour" type="CHAR(6)"/>
 		</addColumn>
+	</changeSet>
+
+	<changeSet id="3" author="pavel" runOnChange="false" runAlways="false" context="production">
+		<sql>UPDATE Discount SET limitPreviousEnrolment = 0</sql>
 	</changeSet>
 
 </databaseChangeLog>
