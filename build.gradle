@@ -149,7 +149,7 @@ allprojects {
 		systemProperties 'java.awt.headless': 'true',
 		    'java.locale.providers': 'COMPAT,SPI'
 		maxHeapSize = '1024m'
-
+		maxParallelForks = 1
 		ignoreFailures = true
 
 		// log each starting test
