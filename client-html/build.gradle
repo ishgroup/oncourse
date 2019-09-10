@@ -41,6 +41,7 @@ task yarn_outdated(type: YarnTask) {
 task jest(type: YarnTask, dependsOn: [':server-api:swagger', 'yarn']) {
     args = ['test']
 }
+test.dependsOn(jest)
 
 task queryGrammar(type: YarnTask, dependsOn: [':server-api:swagger', 'yarn', 'generateQueryLanguageModel']) {
     inputs.dir("$rootDir/buildSrc/aql/src/main/resources/")
