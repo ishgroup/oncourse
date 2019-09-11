@@ -20,7 +20,7 @@ const KEYS = {
 
 const _common = (dirname, options) => {
   let _main = {
-    entry: ['babel-polyfill', 'url-polyfill', options[KEYS.ENTRY]],
+    entry: ['babel-polyfill', 'url-polyfill', 'custom-event-polyfill', options[KEYS.ENTRY]],
     output: {
       path: path.resolve(dirname, "build"),
       publicPath: "/assets/",
