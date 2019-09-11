@@ -449,9 +449,11 @@ task packageDoc (type: Zip, dependsOn: generateDoc, group: 'distribution') {
 publishing {
 	publications {
 		apidocs(MavenPublication) {
-			artifact apidocsBundle
-			artifactId "apidocs"
-			version (project.hasProperty('releaseVersion') ? project.releaseVersion : "SNAPSHOT")
+			artifact (apidocsBundle) {
+				artifactId "apidocs"
+				extension "zip"
+				version(project.hasProperty('releaseVersion') ? project.releaseVersion : "SNAPSHOT")
+			}
 		}
 		docs(MavenPublication) {
 			artifact("${buildDir}/distributions/doc.zip") {
