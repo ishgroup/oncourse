@@ -207,17 +207,6 @@ dependencies {
 	apidocSource "ish.oncourse.willow:waCommon:$waCommonWebservicesClientVersion:sources"
 }
 
-apiDocs {
-	source = sourceSets.main.groovy.plus(zipTree(configurations.apidocSource.find { it.name.startsWith("waCommon") }))
-	destinationDir = file("${buildDir}/distributions/apidoc")
-}
-
-task apidocsBundle(type: Jar) {
-	from file("${buildDir}/distributions/apidoc")
-	classifier "apidocs"
-	dependsOn tasks.getByName('apiDocs')
-}
-
 task createResourceManifests {
 	doLast {
 		def sources = ["resources/oncourse-scripts/export",
@@ -434,16 +423,32 @@ task installer_winService64(dependsOn: [bundle_winService64, prepareKeychains], 
 	}
 }
 
-task generateDoc (type: SwaggerDoc) {
+//
+// Documentation
+//
+
+task generateApiDoc (type: SwaggerDoc) {
 	schema = file("${rootDir}/server-api/src/main/resources/server-api.yaml")
 	docOutput = file("${buildDir}/doc")
 }
 
-task packageDoc (type: Zip, dependsOn: generateDoc, group: 'distribution') {
+task packageApiDoc (type: Zip, dependsOn: generateApiDoc) {
 	from file("${buildDir}/doc/docs")
-	archiveName 'doc.zip'
-	destinationDir file("${buildDir}/distributions/")
+	archiveClassifier = 'documentation'
 }
+
+apiDocs {
+	source = sourceSets.main.groovy.plus(zipTree(configurations.apidocSource.find { it.name.startsWith("waCommon") }))
+	destinationDir = file("${buildDir}/distributions/apidoc")
+}
+
+task apidocsBundle(type: Zip) {
+	from file("${buildDir}/distributions/apidoc")
+	archiveClassifier = 'documentation'
+	archiveBaseName = "dsl"
+	dependsOn tasks.getByName('apiDocs')
+}
+
 
 // "gradlew publishToMavenLocal" if you want to publish this to your local .m2 folder
 publishing {
@@ -451,16 +456,11 @@ publishing {
 		apidocs(MavenPublication) {
 			artifact (apidocsBundle) {
 				artifactId "apidocs"
-				extension "zip"
-				version(project.hasProperty('releaseVersion') ? project.releaseVersion : "SNAPSHOT")
 			}
 		}
 		docs(MavenPublication) {
-			artifact("${buildDir}/distributions/doc.zip") {
+			artifact(packageApiDoc) {
 				artifactId "docs"
-				classifier "documentation"
-				extension "zip"
-				builtBy packageDoc
 			}
 		}
 		executables(MavenPublication) {
