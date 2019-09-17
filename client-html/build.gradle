@@ -38,16 +38,16 @@ task yarn_outdated(type: YarnTask) {
     args = ['outdated']
 }
 
-task jest(type: YarnTask, dependsOn: [':server-api:swagger', 'yarn']) {
-    args = ['test']
-}
-test.dependsOn(jest)
-
 task queryGrammar(type: YarnTask, dependsOn: [':server-api:swagger', 'yarn', 'generateQueryLanguageModel']) {
     inputs.dir("$rootDir/buildSrc/aql/src/main/resources/")
     outputs.dir("$buildDir/generated-sources/aql")
     args = ['antlr4ts']
 }
+
+task jest(type: YarnTask, dependsOn: 'queryGrammar') {
+    args = ['test']
+}
+test.dependsOn(jest)
 
 sourceSets {
     main.resources.srcDirs 'src/js', 'build/generated-sources'
