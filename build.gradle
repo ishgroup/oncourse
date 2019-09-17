@@ -7,7 +7,7 @@ buildscript {
 		cayenneVersion = '4.1.B2'
 		jettyVersion = '9.4.20.v20190813'
         mariadbVersion = '2.4.3'
-		derbyVersion = '10.14.2.0' // note that 10.15 requires Java9
+		derbyVersion = '10.13.1.1' // note that 10.15 requires Java9
 		googleGuiceVersion = '4.2.2'
 		groovyVersion = '2.5.8'
 		springframeworkVersion = '5.0.6.RELEASE'
