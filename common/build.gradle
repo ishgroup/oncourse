@@ -21,37 +21,10 @@ dependencies {
 
 	//we use DefaultArtifactVersion class from the package to compare angel versions.
 	compile 'org.apache.maven:maven-artifact:3.3.3'
-
-	testCompile 'org.mockito:mockito-core:1.10.19'
 }
 
 jar {
 	manifest {
 		from sharedManifest
-	}
-}
-
-task testSecureRandom(dependsOn: testClasses) {
-	doLast {
-		def f = file("build/randomPasswordTest.txt")
-		if (f.exists()) {
-			f.delete()
-		}
-
-		100.times {
-			ant.java(
-				classname: 'ish.util.SecurityUtilTest',
-				fork: true,
-				classpath: sourceSets.test.runtimeClasspath.asPath,
-				dir: project.projectDir,
-				failonerror: true
-			)
-			
-			// read the file, check that they are all unique
-			Set<String> lines = new HashSet<String>()
-			f.eachLine { s ->
-	      		assert lines.add(s)
-			}
-		}
 	}
 }
