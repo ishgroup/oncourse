@@ -1,8 +1,13 @@
-import au.com.ish.*
+import au.com.ish.AppBundlerTask
+import au.com.ish.DmgTask
+import au.com.ish.Exe4JTask
+import au.com.ish.NsisTask
+import au.com.ish.PackrBundler
 import org.gradle.api.internal.artifacts.publish.DefaultPublishArtifact
 import org.gradle.internal.os.OperatingSystem
 
 apply plugin: 'org.apache.cayenne'
+apply plugin: 'apidoc'
 
 repositories {
 	maven {
@@ -76,7 +81,9 @@ dependencies {
 	testCompile 'org.apache.poi:poi:3.12-beta1'
 	testCompile 'org.apache.poi:poi-ooxml:3.12-beta1'
 	testCompile group: 'com.github.javafaker', name: 'javafaker', version: '0.13'
-	testCompile project(':server')
+	testCompile(project(':server')) {
+		exclude module: ':client-html'
+	}
 
 	testCompile "io.bootique:bootique-test:$bootiqueVersion"
 	testCompile "io.bootique.cayenne:bootique-cayenne:$bootiqueVersion"
