@@ -189,6 +189,12 @@ public class GetDiscountForEnrolment {
 
 	public boolean isDiscountEligibile(Discount discount) {
 
+		if (discount.getLimitPreviousEnrolment() && currentStudent.getEnrolments().stream()
+				.noneMatch(e -> EnrolmentStatus.SUCCESS.equals(e.getStatus())
+						&& currentCourseClass.getCourse().getId().equals(e.getCourseClass().getCourse().getId())) ) {
+			return false;
+		}
+
 		List<CorporatePassDiscount> passDiscounts = discount.getCorporatePassDiscounts();
 		
 		if (passDiscounts != null && !passDiscounts.isEmpty() 

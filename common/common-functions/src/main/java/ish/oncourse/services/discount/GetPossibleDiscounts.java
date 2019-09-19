@@ -27,6 +27,7 @@ public class GetPossibleDiscounts {
 				and(
 						DiscountCourseClass.DISCOUNT.dot(Discount.STUDENT_ENROLLED_WITHIN_DAYS).isNotNull().
 								orExp(DiscountCourseClass.DISCOUNT.dot(Discount.STUDENT_AGE).isNotNull()).
+								orExp(DiscountCourseClass.DISCOUNT.dot(Discount.LIMIT_PREVIOUS_ENROLMENT).isTrue()).
 								orExp(DiscountCourseClass.DISCOUNT.dot(Discount.STUDENT_POSTCODES).isNotNull()).
 								orExp(DiscountCourseClass.DISCOUNT.dot(Discount.DISCOUNT_MEMBERSHIP_PRODUCTS).outer().dot(DiscountMembership.CREATED).isNotNull()).
 								orExp(DiscountCourseClass.DISCOUNT.dot(Discount.DISCOUNT_CONCESSION_TYPES).outer().dot(DiscountConcessionType.CONCESSION_TYPE).isNotNull())
