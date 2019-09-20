@@ -11,7 +11,7 @@ export class Successful extends React.Component<Props, any> {
 
     return (
       <div>
-        <h2>Payment <span>»</span> Successful</h2>
+        <h2>Transaction <span>»</span> Successful</h2>
         <p>Your transaction was <strong>SUCCESSFUL</strong> and recorded in our system against reference number
           <strong> {refId}</strong>.</p>
         <p>Each student will shortly receive an enrolment or application confirmation, if a fee was incurred a tax
