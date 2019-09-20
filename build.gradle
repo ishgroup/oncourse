@@ -148,7 +148,7 @@ allprojects {
 	test {
 		systemProperties 'java.awt.headless': 'true',
 		    'java.locale.providers': 'COMPAT,SPI'
-		maxHeapSize = '1024m'
+		maxHeapSize = '2G'
 		maxParallelForks = 1
 		ignoreFailures = true
 
