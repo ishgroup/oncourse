@@ -65,12 +65,14 @@ export class FeesComponent extends React.Component<Props, any> {
     const min = appliedDiscount ? appliedDiscount.discountedFee > fee ? fee : appliedDiscount.discountedFee : fee;
 
     const max = appliedDiscount ? appliedDiscount.discountedFee > fee ? appliedDiscount.discountedFee : fee : fee;
+    
+    const isNotEqual = min !== max;
 
     return (
       <li  className="fee-discount-range">
         <span className="price-low">{formatMoney(min)}</span>
-        <span className="price-separator">-</span>
-        <span className="price-high">{formatMoney(max)}</span>
+        <span className="price-separator">{isNotEqual && "-"}</span>
+        <span className="price-high">{isNotEqual && formatMoney(max)}</span>
       </li>
     );
   }
