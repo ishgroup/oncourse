@@ -10,6 +10,7 @@ import {combinedReducers} from "./reducers/reducers";
 import {EnvironmentConstants} from "./config/EnvironmentConstants";
 import {autoRehydrate, getStoredState, OnComplete, persistStore} from "redux-persist";
 import {syncCartStore} from "./SyncCartStore";
+import {createBlacklistFilter} from 'redux-persist-transform-filter';
 
 
 const getMiddleware = (): StoreEnhancer<IshState> => {
@@ -38,9 +39,21 @@ export const CreateStore = (): Store<IshState> => {
   return store;
 };
 
+// Clear only Payment form values on store persist
+const formBlacklistFilter = createBlacklistFilter(
+  'form',
+  ['PaymentForm'],
+);
+
 export const RestoreState = (store: Store<IshState>, onComplete: OnComplete<any>): void => {
   const persistStoreWrapper = () => {
-    persistStore(store, {storage: localforage, blacklist: ["form", "phase", "page", "contactAddProcess", "config"]}, onComplete);
+    persistStore(store,
+      {
+        storage: localforage,
+        blacklist: ["phase", "page", "contactAddProcess", "config"],
+        transforms: [formBlacklistFilter],
+      },
+                 onComplete);
     localforage.setItem('appVersion', ConfigConstants.APP_VERSION);
   };
 
