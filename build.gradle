@@ -7,7 +7,7 @@ buildscript {
 		cayenneVersion = '4.1.B2'
 		jettyVersion = '9.4.20.v20190813'
         mariadbVersion = '2.4.3'
-		derbyVersion = '10.13.1.1' // note that 10.15 requires Java9
+		derbyVersion = '10.14.2.0' // note that 10.15 requires Java9
 		googleGuiceVersion = '4.2.2'
 		groovyVersion = '2.5.8'
 		springframeworkVersion = '5.0.6.RELEASE'
@@ -16,7 +16,7 @@ buildscript {
 		jxbrowserVersion = '6.23.1'
 		cfxVersion = '3.3.3'
 		jacksonVersion = '2.9.9'
-		
+
 		openjfxVersion = '11'
 		osVersion = OperatingSystem.current().isMacOsX() ? 'mac' : OperatingSystem.current().isWindows() ? 'win' : 'linux'
 	}
@@ -117,7 +117,7 @@ allprojects {
     }
 
 	group = 'ish.oncourse.angel'
-    
+
 	publishing {
         repositories {
             maven {
@@ -164,7 +164,7 @@ allprojects {
 }
 
 configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
-	
+
 	configurations {
 		appBundler
 	}
@@ -174,11 +174,11 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 			url 'https://repo.ish.com.au/repository/thirdparty'
 		}
 	}
-	
+
 	dependencies {
 		appBundler "com.oracle:appbundler:1.0ea-20181222"
 	}
-	
+
 	project.ext {
 		appName = getProject().name == 'server' ? "onCourseServer" : "onCourse"
 	}
@@ -209,7 +209,7 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 	task installer() {
 		description "Create all application installers."
 	}
-	
+
 	installer.dependsOn {
 		project.tasks.findAll { it.name.startsWith('installer_') }
 	}
