@@ -57,12 +57,6 @@ sourceSets {
 
 dependencies {
 
-	compile (project(':common')) {
-		exclude group: 'org.bouncycastle'
-		exclude module: "hessian"
-		exclude group: "org.slf4j", module: "slf4j-simple"
-	}
-
 	compile (project(':server-api')) 
 
 	compile ("org.apache.cxf:cxf-rt-frontend-jaxws:$cfxVersion") {

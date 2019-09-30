@@ -13,6 +13,13 @@ sourceSets.test.groovy.srcDir 'src/test/java'
 apply from: "$rootDir/gradle/bootique.gradle"
 
 dependencies {
+
+    compile (project(':common')) {
+        exclude group: 'org.bouncycastle'
+        exclude module: "hessian"
+        exclude group: "org.slf4j", module: "slf4j-simple"
+    }
+
     compile 'io.swagger:swagger-annotations:1.5.21'
     compile "org.codehaus.groovy:groovy-all:$groovyVersion"
 
