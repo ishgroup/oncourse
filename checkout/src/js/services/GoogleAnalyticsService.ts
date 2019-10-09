@@ -20,6 +20,7 @@ export const initGAEvent = (data, state) => {
   // window['ga'] = window['ga'] ? window['ga'] : (...params) => {console.log(params);};
   const cart = state.cart;
   const amount = state.checkout.amount;
+  const summary = state.checkout.summary;
 
   // TODO: move to config.js
   trackingName = 'gtmEC';
@@ -37,13 +38,13 @@ export const initGAEvent = (data, state) => {
           return sendRemoveItemFromCartEvent(data);
 
         case 'checkoutStep':
-          return sendCheckoutStepEvent(data, cart);
+          return sendCheckoutStepEvent(data, cart, summary);
 
         case 'checkoutStepOption':
-          return sendCheckoutStepOptionEvent(data, cart);
+          return sendCheckoutStepOptionEvent(data, cart, summary);
 
         case 'purchase':
-          return sendPurchaseCartEvent(data, cart, amount);
+          return sendPurchaseCartEvent(data, cart, amount, summary);
       }
     }
   } catch (e) {
@@ -70,16 +71,16 @@ const sendItemToCartEvent = (data: ProductEvent) => {
   // window['ga'](`${trackingName}.ec:setAction`, 'add');
 
   window['dataLayer'].push({
-    'event': 'addToCart',
-    'ecommerce': {
-      'currencyCode': 'USD',
-      'add': {
-        'products': [{
-          'name': data.name,
-          'id': data.id,
-          'price': data.price,
-          'category': data.category,
-          'quantity': 1,
+    event: 'addToCart',
+    ecommerce: {
+      currencyCode: 'USD',
+      add: {
+        products: [{
+          name: data.name,
+          id: data.id,
+          price: data.price,
+          category: data.category,
+          quantity: 1,
         }],
       },
     },
@@ -113,22 +114,22 @@ const sendRemoveItemFromCartEvent = (data: ProductEvent) => {
 
   // Measure the removal of a product from a shopping cart.
   window['dataLayer'].push({
-    'event': 'removeFromCart',
-    'ecommerce': {
-      'remove': {                               // 'remove' actionFieldObject measures.
-        'products': [{                          //  removing a product to a shopping cart.
-          'name': data.name,
-          'id': data.id,
-          'price': data.price,
-          'category': data.category,
-          'quantity': 1,
+    event: 'removeFromCart',
+    ecommerce: {
+      remove: {                               // 'remove' actionFieldObject measures.
+        products: [{                          //  removing a product to a shopping cart.
+          name: data.name,
+          id: data.id,
+          price: data.price,
+          category: data.category,
+          quantity: 1,
         }],
       },
     },
   });
 };
 
-const sendCheckoutStepEvent = (data, cart) => {
+const sendCheckoutStepEvent = (data, cart, summary) => {
   const {step} = data;
 
   if (!step || !step.step) return;
@@ -149,28 +150,32 @@ const sendCheckoutStepEvent = (data, cart) => {
   // });
 
   const products = getProducts(cart);
+  const productsSummary = getProductsSummary(summary);
 
   window['dataLayer'].push({
-    'event': 'checkout',
-    'ecommerce': {
-      'checkout': {
-        'actionField': {
-          'step': step.step,
-          'option': step.initialOption
+    event: 'checkout',
+    ecommerce: {
+      checkout: {
+        actionField: {
+          step: step.step,
+          option: step.initialOption,
         },
-        'products': products.map(product => ({
-          'name': product.name,
-          'id': product.id,
-          'price': product.price,
-          'category': product.category,
-          'quantity': 1,
-        })),
+        products: products.map(product => {
+
+          return {
+            name: product.name,
+            id: product.id,
+            price: productsSummary[product.id].price,
+            category: product.category,
+            quantity: productsSummary[product.id].quantity,
+          };
+        }),
       },
     },
   });
 };
 
-const sendCheckoutStepOptionEvent = (data, cart) => {
+const sendCheckoutStepOptionEvent = (data, cart, summary) => {
   const {step} = data;
 
   if (!step || !step.option) return;
@@ -191,19 +196,19 @@ const sendCheckoutStepOptionEvent = (data, cart) => {
   // });
 
   window['dataLayer'].push({
-    'event': 'checkoutOption',
-    'ecommerce': {
-      'checkout_option': {
-        'actionField': {
-          'step': step.step,
-          'option': step.option
+    event: 'checkoutOption',
+    ecommerce: {
+      checkout_option: {
+        actionField: {
+          step: step.step,
+          option: step.option,
         },
       },
     },
   });
 };
 
-const sendPurchaseCartEvent = (data, cart, amount) => {
+const sendPurchaseCartEvent = (data, cart, amount, summary) => {
   // sendInitActions();
   // sendAddProductsFromCart(cart);
 
@@ -221,26 +226,64 @@ const sendPurchaseCartEvent = (data, cart, amount) => {
   // });
 
   const products = getProducts(cart);
+  const productsSummary = getProductsSummary(summary);
 
   window['dataLayer'].push({
-    'event': 'purchase',
-    'ecommerce': {
-      'purchase': {
-        'actionField': {
-          'id': data.id,                        // Transaction ID. Required for purchases and refunds.
-          'affiliation': data.type,
-          'revenue': amount.total,              // Total transaction value (incl. tax and shipping)
+    event: 'purchase',
+    ecommerce: {
+      purchase: {
+        actionField: {
+          id: data.id,                        // Transaction ID. Required for purchases and refunds.
+          affiliation: data.type,
+          revenue: amount.total,              // Total transaction value (incl. tax and shipping)
         },
-        'products': products.map(product => ({
-          'name': product.name,
-          'id': product.id,
-          'price': product.price,
-          'category': product.category,
-          'quantity': 1,
+        products: products.map(product => ({
+          name: product.name,
+          id: product.id,
+          price: productsSummary[product.id].price,
+          category: product.category,
+          quantity: productsSummary[product.id].quantity,
         })),
       },
     },
   });
+};
+
+const getProductsSummary = summary => {
+  const productsSummary = {};
+
+  const productTypes = ["articles","enrolments","memberships","vouchers"];
+
+  Object.keys(summary.entities).forEach(e => {
+    if (e === "contactNodes") {
+      Object.keys(summary.entities[e]).forEach(k => {
+        Object.keys(summary.entities[e][k]).forEach(entity => {
+          if (productTypes.includes(entity) && summary.entities[e][k][entity].length) {
+            summary.entities[e][k][entity].forEach(id => {
+              const product = summary.entities[entity][id];
+              const productId = product.productId || product.classId;
+
+              if (!productsSummary.hasOwnProperty(productId)) {
+                productsSummary[productId] = {
+                  price: 0,
+                  quantity: 0,
+                };
+              }
+              if (product.classId) {
+                productsSummary[productId].price = productsSummary[productId].price + product.price.fee;
+                productsSummary[productId].quantity++;
+              } else {
+                productsSummary[productId].price = product.total;
+                productsSummary[productId].quantity =  product.quantity;
+              }
+            });
+          }
+        });
+      });
+    }
+  });
+
+  return productsSummary;
 };
 
 const getProducts = cart => {
@@ -253,22 +296,16 @@ const getProducts = cart => {
         id: product.id,
         name: product.name,
         category: 'product',
-        price: product.price || 0,
-        quantity: 1,
       });
     });
   }
 
   if (items.courses && items.courses.length) {
     items.courses.map(course => {
-      const price = getCoursePrice(course.price);
-
       products.push({
         id: course.id,
         name: course.course.name,
         category: 'Course Class',
-        price,
-        quantity: 1,
       });
     });
   }
