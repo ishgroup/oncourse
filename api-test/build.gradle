@@ -12,6 +12,9 @@ dependencies {
     testCompile "org.apache.derby:derby:$derbyVersion"
 }
 
+sourceCompatibility = 11
+targetCompatibility = 11
+
 task copyEmptyDb(type: Copy) {
     from("$rootDir/api-test/src/test/resources/") {
         include 'onCourse.cfg'

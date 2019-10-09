@@ -12,6 +12,9 @@ sourceSets.test.groovy.srcDir 'src/test/java'
 
 apply from: "$rootDir/gradle/bootique.gradle"
 
+sourceCompatibility = 11
+targetCompatibility = 11
+
 dependencies {
 
     compile (project(':common')) {

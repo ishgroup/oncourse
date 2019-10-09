@@ -12,6 +12,8 @@ apply plugin: 'org.apache.cayenne'
 apply from: "$rootDir/gradle/bootique.gradle"
 apply plugin: 'com.github.psxpaul.execfork'
 
+sourceCompatibility = 11
+targetCompatibility = 11
 
 configurations {
 	javaAgent
