@@ -112,16 +112,18 @@
         <tr class="not-top-border">
             <th colspan="2"></th>
             <th colspan="2">Payment Plan</th>
-            <th class="text-right"></th>
+            <th class="text-right" colspan="2">Amount Payable</th>
         </tr>
         </thead>
         <tbody class="payment-plan">
             <t:loop source="invoiceDueDates" value="invoiceDueDate">
-                <tr>
-                    <td colspan="2"></td>
-                    <td colspan="2"><t:output value="invoiceDueDate.dueDate" format="dateFormat()"/></td>
-                    <td class="text-right"><t:output value="invoiceDueDate.amount" format="moneyFormat(invoiceDueDate.amount)"/></td>
-                </tr>
+                <t:if test="isUnpaidAmountNonZero(invoiceDueDate)">
+                    <tr>
+                        <td colspan="2"></td>
+                        <td colspan="2"><t:output value="invoiceDueDate.dueDate" format="dateFormat()"/></td>
+                        <td class="text-right"><t:output value="getUnpaidAmount(invoiceDueDate)" format="moneyFormat(invoiceDueDate.amount)"/></td>
+                    </tr>
+                    </t:if>
             </t:loop>
         </tbody>
     </t:if>

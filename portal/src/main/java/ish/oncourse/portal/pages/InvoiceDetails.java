@@ -17,6 +17,7 @@ import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
+import java.math.BigDecimal;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -128,5 +129,20 @@ public class InvoiceDetails {
 
     public Format dateFormat() {
         return new SimpleDateFormat(PortalUtils.DATE_FORMAT_dd_MMMMM_yyyy);
+    }
+
+    public Money getUnpaidAmount(InvoiceDueDate dueDate) {
+
+        Money amountPaid = dueDate.getInvoice().getTotalGst().subtract(dueDate.getInvoice().getAmountOwing());
+
+        Money amountToBePaid = dueDate.getInvoice().getInvoiceDueDates().stream()
+                .filter(idd -> idd.getDueDate().compareTo(dueDate.getDueDate()) <= 0).map(InvoiceDueDate::getAmount)
+                .reduce(Money.ZERO, (total, d) -> total.add(d));
+
+        return amountToBePaid.subtract(amountPaid).max(Money.ZERO).min(dueDate.getAmount());
+    }
+
+    public boolean isUnpaidAmountNonZero(InvoiceDueDate dueDate) {
+        return getUnpaidAmount(dueDate).compareTo(BigDecimal.ZERO) != 0;
     }
 }
