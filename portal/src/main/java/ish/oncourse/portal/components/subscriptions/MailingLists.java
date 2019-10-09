@@ -82,15 +82,9 @@ public class MailingLists {
 
 	@Deprecated
 	public List<Tag> getMailingLists(ObjectContext context, College college) {
-//		ObjectSelect
-//				.query(Tag.class).where(Tag.COLLEGE.eq(webSiteService.getCurrentCollege())
-//				.andExp(Tag.NAME.eq("Mailing Lists"))
-//				.andExp(Tag.IS_WEB_VISIBLE.eq(false))
-//				.andExp(Tag.SPECIAL_TYPE.eq(NodeSpecialType.MAILING_LISTS)))
-//				.select(cayenneService.sharedContext());
-
 		return ObjectSelect.query(Tag.class).where(Tag.COLLEGE.eq(college)
-				.andExp(Tag.PARENT.dot(Tag.NAME).eq("Mailing Lists")))
+				.andExp(Tag.PARENT.dot(Tag.NAME).eq("Mailing Lists"))
+				.andExp(Tag.IS_WEB_VISIBLE.isTrue()))
 				.select(context);
 	}
 
