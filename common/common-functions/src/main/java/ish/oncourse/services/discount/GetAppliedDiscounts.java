@@ -33,7 +33,7 @@ public class GetAppliedDiscounts {
 				and(DiscountCourseClass.DISCOUNT.dot(Discount.STUDENT_ENROLLED_WITHIN_DAYS).isNull()).
 				and(DiscountCourseClass.DISCOUNT.dot(Discount.STUDENT_AGE).isNull()).
 				and(DiscountCourseClass.DISCOUNT.dot(Discount.STUDENT_POSTCODES).isNull()).
-				and(DiscountCourseClass.DISCOUNT.dot(Discount.LIMIT_PREVIOUS_ENROLMENT).isNull()).
+				and(DiscountCourseClass.DISCOUNT.dot(Discount.LIMIT_PREVIOUS_ENROLMENT).isFalse()).
 				and(DiscountCourseClass.DISCOUNT.dot(Discount.MIN_ENROLMENTS).lte(1)).
 				and(DiscountCourseClass.DISCOUNT.dot(Discount.MIN_VALUE).lte(courseClass.getFeeIncGst(taxRate))).
 				and(DiscountCourseClass.DISCOUNT.dot(Discount.DISCOUNT_CONCESSION_TYPES).outer().dot(DiscountConcessionType.CONCESSION_TYPE).isNull()).
