@@ -30,6 +30,7 @@ public interface ContactInterface {
 	String PHONE_HOME_KEY = "homePhone";
 	String FAX_KEY = "fax";
 	String BIRTH_DATE_KEY = "birthDate";
+	String CONTACT_TYPE_PROP = "contactType";
 
 	String FULLNAME_FIRSTNAME_LASTNAME_PROP = "contactName";
 	String FULLNAME_LASTNAME_FIRSTNAME_PROP = "full_name";
