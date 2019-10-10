@@ -26,10 +26,8 @@ configurations {
 }
 
 ext {
-	pathToJavaAgent = 'tmp/javaAgent'
-	javaAgentFileName = 'jetty-alpn-agent.jar'
 	jarsCollection = {
-		return (configurations.runtime + configurations.runtime.artifacts.files) + files("${buildDir}/${pathToJavaAgent}/${javaAgentFileName}")
+		return (configurations.runtime + configurations.runtime.artifacts.files)
 	}
 }
 
@@ -126,7 +124,6 @@ dependencies {
 	compile "org.eclipse.jetty:jetty-alpn-openjdk8-server:$jettyVersion"
 
 	compile 'org.eclipse.jetty.alpn:alpn-api:1.1.3.v20160715'
-	javaAgent 'org.mortbay.jetty.alpn:jetty-alpn-agent:2.0.9'
 
 	compile 'com.nulab-inc:zxcvbn:1.2.5'
 
@@ -255,12 +252,6 @@ test {
 	}
 }
 
-task agentJar(type: Copy) {
-	from configurations.javaAgent
-	into "${buildDir}/${pathToJavaAgent}/"
-	rename { "${javaAgentFileName}" }
-}
-
 task copyTestDb(type: Copy) {
     from("$rootDir/api-test/src/test/resources/") {
         include 'onCourse.cfg'
@@ -270,21 +261,21 @@ task copyTestDb(type: Copy) {
     from zipTree(file("$rootDir/api-test/src/test/resources/onCourse.iocdata.zip"))
     into "$buildDir/"
 }
-task startDaemon(dependsOn: [classes, processResources, agentJar], type: JavaExecFork) {
+task startDaemon(dependsOn: [classes, processResources], type: JavaExecFork) {
 	classpath = sourceSets.main.runtimeClasspath
 	main = 'ish.oncourse.server.AngelServer'
 	args = ['DEBUG=true', 'REPLICATION_DISABLED=true']
-	jvmArgs = ['-Xmx1024m', '-XX:+HeapDumpOnOutOfMemoryError', "-javaagent:${buildDir}/${pathToJavaAgent}/${javaAgentFileName}", "-DdisableReplication=true"]
+	jvmArgs = ['-Xmx1024m', '-XX:+HeapDumpOnOutOfMemoryError', "-DdisableReplication=true"]
 	workingDir = "$buildDir"
     waitForOutput = 'Server ready for client connections'
 	timeout = 60 * 20
 }
 
-task run(dependsOn: [classes, agentJar], type: JavaExec) {
+task run(dependsOn: [classes], type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     main = 'ish.oncourse.server.AngelServer'
     args = ['DEBUG=true', 'REPLICATION_DISABLED=true', 'disableReplication=true']
-    jvmArgs = ['-Xmx1024m', '-XX:+HeapDumpOnOutOfMemoryError', "-javaagent:${buildDir}/${pathToJavaAgent}/${javaAgentFileName}"]
+    jvmArgs = ['-Xmx1024m', '-XX:+HeapDumpOnOutOfMemoryError']
 }
 
 appBundler {
@@ -306,7 +297,6 @@ appBundler {
 	docTypeName = "onCourse server data file"
 
 	jvmOptions = [
-			'-javaagent:$APP_ROOT/Contents/Java/jetty-alpn-agent.jar',
 			"-Dapple.awt.textantialiasing=true",
 			"-DJFileChooser.appBundleIsTraversable=true",
 			"-DJFileChooser.packageIsTraversable=true",
@@ -317,12 +307,12 @@ appBundler {
 	]
 }
 
-task installer_osx(dependsOn: [prepareKeychains, codeSign, agentJar, appBundle], type: DmgTask) {
+task installer_osx(dependsOn: [prepareKeychains, codeSign, appBundle], type: DmgTask) {
 	outputs.upToDateWhen { false } //disables 'UP_TO_DATE' check. This is need to run task always
 	description "Create the OSX application executable and installer (which is just a dmg file)."
 }
 
-task bundle_win(dependsOn: [jar, agentJar], type: Exe4JTask) {
+task bundle_win(dependsOn: [jar], type: Exe4JTask) {
 	configFile = file("${projectDir}/src/packaging/windows/server.exe4j.xml")
 	jars = jarsCollection.call()
 	resourceFiles = files("${projectDir}/src/packaging/windows/onCourseServer.ico")
@@ -334,7 +324,7 @@ task bundle_win(dependsOn: [jar, agentJar], type: Exe4JTask) {
 	}
 }
 
-task bundle_winService(dependsOn: [jar, agentJar], type: Exe4JTask) {
+task bundle_winService(dependsOn: [jar], type: Exe4JTask) {
 	configFile = file("${projectDir}/src/packaging/windows/service.exe4j.xml")
 	jars = jarsCollection.call()
 	resourceFiles = files("${projectDir}/src/packaging/windows/onCourseServer.ico")
@@ -346,7 +336,7 @@ task bundle_winService(dependsOn: [jar, agentJar], type: Exe4JTask) {
 	}
 }
 
-task bundle_winService64(dependsOn: [jar, agentJar], type: Exe4JTask) {
+task bundle_winService64(dependsOn: [jar], type: Exe4JTask) {
 	configFile = file("${projectDir}/src/packaging/windows/service64.exe4j.xml")
 	jars = jarsCollection.call()
 	resourceFiles = files("${projectDir}/src/packaging/windows/onCourseServer.ico")
@@ -358,17 +348,13 @@ task bundle_winService64(dependsOn: [jar, agentJar], type: Exe4JTask) {
 	}
 }
 
-task installer_unix(dependsOn: [jar,agentJar], type: Zip) {
+task installer_unix(dependsOn: [jar], type: Zip) {
 	description "Create the Unix/Linux package (zip)."
 	doFirst {
 		logger.lifecycle("Creating the unix application executable for $project.name")
 	}
 
 	from (configurations.runtime) {
-		into 'onCourseServer/lib'
-	}
-
-	from ("${buildDir}/${pathToJavaAgent}/") {
 		into 'onCourseServer/lib'
 	}
 
