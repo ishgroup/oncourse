@@ -1,6 +1,7 @@
 package ish.oncourse.willow
 
 import com.google.inject.Inject
+import ish.common.types.PaymentSource
 import ish.common.types.PaymentStatus
 import ish.math.Money
 import ish.oncourse.api.cayenne.CayenneService
@@ -58,7 +59,7 @@ class FinancialService {
 
     private static ObjectSelect<Invoice> creditNoteQuery(Contact payer) {
         return ((ObjectSelect.query(Invoice)
-                .where(Invoice.CONTACT.eq(payer)) & Invoice.AMOUNT_OWING.lt(Money.ZERO)) & Invoice.ANGEL_ID.isNotNull()) & paymentFilter
+                .where(Invoice.CONTACT.eq(payer)) & Invoice.SOURCE.eq(PaymentSource.SOURCE_ONCOURSE) & Invoice.AMOUNT_OWING.lt(Money.ZERO)) & Invoice.ANGEL_ID.isNotNull()) & paymentFilter
     }
 
     private Contact contactById(String payerId) {
