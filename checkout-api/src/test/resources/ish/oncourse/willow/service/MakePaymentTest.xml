@@ -138,7 +138,8 @@
             isAvailableOnWeb="1"
             minEnrolments="1"
             minValue="0"
-            studentPostcodes="ABS"/>
+            studentPostcodes="ABS"
+            limitPreviousEnrolment="0"/>
 
     <Discount
             id="1001"
@@ -159,7 +160,8 @@
             hideOnWeb="0"
             isAvailableOnWeb="1"
             minEnrolments="1"
-            minValue="0"/>
+            minValue="0"
+            limitPreviousEnrolment="0"/>
 
     <Discount
             id="1002"
@@ -180,7 +182,8 @@
             hideOnWeb="0"
             isAvailableOnWeb="1"
             minEnrolments="1"
-            minValue="0"/>
+            minValue="0"
+            limitPreviousEnrolment="0"/>
 
     <Discount
             id="1003"
@@ -201,7 +204,8 @@
             isAvailableOnWeb="1"
             minEnrolments="1"
             minValue="0"
-            studentPostcodes="ABS"/>
+            studentPostcodes="ABS"
+            limitPreviousEnrolment="0"/>
 
     <Discount
             id="1005"
@@ -221,7 +225,8 @@
             minEnrolments="1"
             minValue="0"
             validFromOffset="-3"
-            validToOffset="3"/>
+            validToOffset="3"
+            limitPreviousEnrolment="0"/>
 
     <DiscountCourseClass id="1001" angelId="1001" collegeId="1" courseClassId="1001"
                          created="2011-09-12 00:56:00.0"

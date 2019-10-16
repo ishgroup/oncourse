@@ -136,7 +136,8 @@
             hideOnWeb="0"
             isAvailableOnWeb="1"
             minEnrolments="1"
-            minValue="0"/>
+            minValue="0"
+            limitPreviousEnrolment="0"/>
 
     <Discount
             id="1003"
@@ -156,7 +157,8 @@
             hideOnWeb="0"
             isAvailableOnWeb="1"
             minEnrolments="1"
-            minValue="0"/>
+            minValue="0"
+            limitPreviousEnrolment="0"/>
     
 
 

@@ -357,7 +357,8 @@
             hideOnWeb="0"
             isAvailableOnWeb="1"
             minEnrolments="1"
-            minValue="0"/>
+            minValue="0"
+            limitPreviousEnrolment="0"/>
 
 
     <DiscountCourseClass id="1001" angelId="1001" collegeId="1" courseClassId="1003"
