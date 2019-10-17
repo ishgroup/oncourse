@@ -4,7 +4,7 @@ buildscript {
 	ext {
 		waCommonWebservicesClientVersion = '68'
 		log4j2Version = '2.12.1'
-		cayenneVersion = '4.1.B2'
+		cayenneVersion = '4.1.RC1'
 		jettyVersion = '9.4.20.v20190813'
         mariadbVersion = '2.4.3'
 		derbyVersion = '10.14.2.0' // note that 10.15 requires Java9
@@ -30,10 +30,9 @@ buildscript {
 			url 'https://repo.ish.com.au/content/groups/ish'
 		}
 	}
-	//use stable cayenne-gradle-plugin version since latest one (4.1.B2) broken - doesn't handle custom velosity templates
-	//https://issues.apache.org/jira/browse/CAY-2580
+
 	dependencies {
-		classpath group: 'org.apache.cayenne.plugins', name: 'cayenne-gradle-plugin', version: '4.1.M1'
+		classpath "org.apache.cayenne.plugins:cayenne-gradle-plugin:${cayenneVersion}"
 	}
 }
 
