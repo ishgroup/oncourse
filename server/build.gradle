@@ -129,6 +129,8 @@ dependencies {
 
 	compile "org.apache.derby:derbyclient:$derbyVersion"
 	compile "org.apache.derby:derbynet:$derbyVersion"
+	compile "org.apache.derby:derbytools:$derbyVersion"
+	compile "org.apache.derby:derbyshared:$derbyVersion"
 
 	compile ("org.liquibase:liquibase-maven-plugin:3.6.3") {
 		exclude group: "ch.qos.logback"
