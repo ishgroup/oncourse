@@ -31,8 +31,11 @@ buildscript {
 		}
 	}
 
+	//use stable cayenne-gradle-plugin version since latest one (4.1.RC1) broken - properties from parent class
+	// are added to subclass
+	//https://issues.apache.org/jira/browse/CAY-2633
 	dependencies {
-		classpath "org.apache.cayenne.plugins:cayenne-gradle-plugin:${cayenneVersion}"
+		classpath group: 'org.apache.cayenne.plugins', name: 'cayenne-gradle-plugin', version: '4.1.M1'
 	}
 }
 
