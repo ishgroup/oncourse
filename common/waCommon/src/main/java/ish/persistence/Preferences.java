@@ -555,15 +555,6 @@ public interface Preferences {
 	String QE_DEFAULT_REPORT_INVOICE = "ish.onCourse.invoiceReport";
 
 
-
-	// **************************************
-	// Printing
-	// **************************************
-	String REPORT_OVERLAY_PREFIX = "report_overlay_";
-	String DEFAULT_REPORT_OVERLAY = "report_overlay_default";
-
-
-
 	// **************************************
 	// File destinations
 	// **************************************

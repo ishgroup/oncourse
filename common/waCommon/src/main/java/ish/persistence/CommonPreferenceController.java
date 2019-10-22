@@ -1109,41 +1109,7 @@ public abstract class CommonPreferenceController {
 	public void setAvetmissFeeHelpProviderCode(String value) {
 		setValue(AVETMISS_FEE_HELP_PROVIDER_CODE, false, value);
 	}
-	
 
-	public void setDefaultReportOverlay(Long overlayId) {
-		setValue(DEFAULT_REPORT_OVERLAY, false, overlayId==null? null : overlayId.toString());
-	}
-
-	public Long getDefaultReportOverlay() {
-		String value = getValue(DEFAULT_REPORT_OVERLAY, false);
-		if (value != null) {
-			return Long.valueOf(value);
-		}
-		return null;
-	}
-
-	public synchronized void setReportOverlay(String reportKey, Long overlayId) {
-		if (reportKey == null) {
-			// defualt value
-			setDefaultReportOverlay(overlayId);
-		} else {
-			setValue(REPORT_OVERLAY_PREFIX + reportKey, false, overlayId==null? null : overlayId.toString());
-		}
-	}
-
-	public Long getReportOverlay(String reportKey) {
-		if (reportKey == null) {
-			// defualt value
-			return getDefaultReportOverlay();
-		} else {
-			String value = getValue(REPORT_OVERLAY_PREFIX + reportKey, false);
-			if (value != null) {
-				return Long.valueOf(value);
-			}
-			return null;
-		}
-	}
 
 	public synchronized Integer getCourseClassDefaultMinimumPlaces() {
 		try {
@@ -1807,8 +1773,6 @@ public abstract class CommonPreferenceController {
 			return getAvetmissCertSignatoryName();
 		} else if (AVETMISS_QLD_IDENTIFIER.equals(key)) {
 			return getAvetmissQldIdentifier();
-		} else if (DEFAULT_REPORT_OVERLAY.equals(key)) {
-			return getDefaultReportOverlay();
 		} else if (TOOLBAR_COLLAPSE_STATE.equals(key)) {
 			return getToolbarCollapsed();
 		} else if (LASTLOGIN_USERNAME.equals(key)) {
@@ -2036,8 +2000,6 @@ public abstract class CommonPreferenceController {
 			setAvetmissCertSignatoryName((String) value);
 		} else if (AVETMISS_QLD_IDENTIFIER.equals(key)) {
 			setAvetmissQldIdentifier((String) value);
-		} else if (DEFAULT_REPORT_OVERLAY.equals(key)) {
-			setDefaultReportOverlay((Long) value);
 		} else if (TOOLBAR_COLLAPSE_STATE.equals(key)) {
 			setToolbarCollapsed((Boolean) value);
 		} else if (LASTLOGIN_USERNAME.equals(key)) {
