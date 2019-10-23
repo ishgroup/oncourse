@@ -21,6 +21,9 @@ dependencies {
 
 	//we use DefaultArtifactVersion class from the package to compare angel versions.
 	compile 'org.apache.maven:maven-artifact:3.3.3'
+
+	compile 'org.apache.pdfbox:pdfbox:2.0.17'
+
 }
 
 jar {
