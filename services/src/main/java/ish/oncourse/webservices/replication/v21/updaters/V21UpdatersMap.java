@@ -1,5 +1,6 @@
 package ish.oncourse.webservices.replication.v21.updaters;
 
+import ish.oncourse.model.Module;
 import ish.oncourse.model.*;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.webservices.replication.updaters.IWillowUpdater;
