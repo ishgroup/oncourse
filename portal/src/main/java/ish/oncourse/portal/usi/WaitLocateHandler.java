@@ -80,10 +80,13 @@ public class WaitLocateHandler extends AbstractStepHandler {
     }
 
     private LocateUSIRequest prepareLocateUsiRequest(Contact c) {
+
         LocateUSIRequest rq = new LocateUSIRequest();
 
+        String billingCode = c.getCollege().getBillingCode().length() <=  40 ? c.getCollege().getBillingCode() : c.getCollege().getBillingCode().substring(0, 40);
+
         rq.setOrgCode(getUsiController().getPreferenceController().getAvetmissID());
-        rq.setUserReference(c.getCollege().getName());
+        rq.setUserReference(billingCode);
         rq.setFamilyName(c.getFamilyName());
         rq.setGender(c.getIsMale() ? USIGender.MALE : USIGender.FEMALE);
         rq.setDateOfBirth(c.getDateOfBirth());

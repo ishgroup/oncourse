@@ -10,6 +10,7 @@
 	<context:annotation-config />
 	
 	<bean id="ausKeyCryptoService" class="ish.oncourse.webservices.usi.crypto.AUSKeyCryptoService"/>
+	<bean id="unexpectedResponseNodeInterceptor" class="ish.oncourse.webservices.usi.interceptors.UnexpectedResponseNodeInterceptor"/>
 
 	<cxf:bus id="usiClientBus" name="usiClientBus">
 		<cxf:features>
@@ -18,6 +19,9 @@
 	</cxf:bus>
 
 	<jaxws:client name="{http://usi.gov.au/2018/ws/servicepolicy}WS2007FederationHttpBinding_IUSIService" createdFromAPI="true">
+		<jaxws:inInterceptors>
+			<ref bean="unexpectedResponseNodeInterceptor"/>
+		</jaxws:inInterceptors>
 		<jaxws:properties>
 			<entry key="ws-security.sts.client">
 				<bean class="org.apache.cxf.ws.security.trust.STSClient">

@@ -64,11 +64,10 @@ public class USIService {
 					}
 				}
 			} catch (Exception e) {
-				String errorMessage = createLocateDetailErrorMessage(intRq);
-				logger.error(errorMessage, e);
+				logger.error(e.getMessage(), e);
 
 				intRs.setResultType(ish.common.types.LocateUSIType.ERROR);
-				intRs.setError(errorMessage);
+				intRs.setError(createLocateDetailErrorMessage(intRq));
 			}
 		} else {
 			String warnMessage = createLocateDetailErrorMessage(intRq).concat("Internal request has incomplete field set.");
