@@ -56,11 +56,9 @@ public class WaitLocateHandler extends AbstractStepHandler {
                 student.getObjectContext().commitChanges();
                 nextStep.set(Step.done);
             } else {
-                contact.getStudent().setUsiStatus(UsiStatus.NON_VERIFIED);
                 nextStep.set(Step.usi);
             }
         } else {
-            contact.getStudent().setUsiStatus(UsiStatus.NON_VERIFIED);
             nextStep.set(Step.usi);
         }
     }
