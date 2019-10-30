@@ -55,7 +55,7 @@ public class GetInvoiceOverdue {
 					dateDue = dueDate.getDueDate();
 				} else {
 					if (next.isZero()) {
-						next = dueDate.getAmount();
+						next = GetAmountOwing.valueOf(dueDate.getInvoice()).get();
 						nextDateDue = dueDate.getDueDate();
 					}
 				}
