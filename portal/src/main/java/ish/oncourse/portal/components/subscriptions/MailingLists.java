@@ -1,6 +1,5 @@
 package ish.oncourse.portal.components.subscriptions;
 
-import ish.common.types.NodeSpecialType;
 import ish.oncourse.model.*;
 import ish.oncourse.portal.pages.Login;
 import ish.oncourse.portal.services.IPortalService;
@@ -9,6 +8,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.GetContactTagsSubscribed;
 import ish.oncourse.services.tag.GetTagGroupsFor;
+import ish.oncourse.services.tag.GetTagLeafs;
 import ish.oncourse.services.tag.ITagService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
@@ -68,11 +68,14 @@ public class MailingLists {
 	
 	@SetupRender
 	void beforeRender() {
-        ObjectContext objectContext = cayenneService.newContext();
+		ObjectContext objectContext = cayenneService.newContext();
 		this.currentUser = objectContext.localObject(portalService.getContact());
-		this.contactTags = GetTagGroupsFor
+		List<Tag> tagGroups = GetTagGroupsFor
 				.valueOf(cayenneService.newContext(), null, currentUser.getCollege(), Contact.class.getSimpleName(), true)
 				.get();
+
+		this.contactTags = new ArrayList<>();
+		tagGroups.forEach(t -> this.contactTags.addAll(GetTagLeafs.valueOf(t).get()));
 		this.contactTags.addAll(getMailingLists(cayenneService.sharedContext(), webSiteService.getCurrentCollege()));
         this.chkPost = this.currentUser.getIsMarketingViaPostAllowed();
         this.chkSMS = this.currentUser.getIsMarketingViaSMSAllowed();
