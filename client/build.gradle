@@ -39,7 +39,7 @@ dependencies {
 	compile (project(':common')) {
         exclude group: 'org.apache.cayenne', module: 'cayenne-server'
     }
-	
+
 	compile "org.apache.cayenne:cayenne-client-jetty:$cayenneVersion"
 	compile "org.apache.cayenne:cayenne-protostuff:$cayenneVersion"
 	compile 'com.miglayout:miglayout-swing:4.2'
@@ -51,7 +51,7 @@ dependencies {
 	compile "org.eclipse.jetty:jetty-client:$jettyVersion"
 	compile "org.eclipse.jetty.http2:http2-client:$jettyVersion"
 	compile "org.eclipse.jetty.http2:http2-http-client-transport:$jettyVersion"
-	
+
 	compile files("$rootDir/lib/jxbrowser/license.jar")
 
 	// the following are needed when compiling on OSX Java 11
@@ -164,7 +164,7 @@ project.ext.webstartFiles = copySpec {
 										file -> "      <jar href=\"../clients/Libraries/${file.name}\"/>"
 									}.join("\n"),
 			version:				version,
-			maxmemoryClient:		maxmemoryClient	
+			maxmemoryClient:		maxmemoryClient
 		])
 	}
 }
@@ -186,7 +186,7 @@ task bundle_webstart(dependsOn: [jar, prepareKeychains], type: Copy) {
 	doLast {
 		(configurations.runtime + configurations.macCompile
 				+ configurations.winCompile).files.each { file ->
-			
+
 			if (file.name == "common-${version}.jar") {
 				copy {
 					from file
@@ -213,10 +213,10 @@ task bundle_webstart(dependsOn: [jar, prepareKeychains], type: Copy) {
 		if (project.hasProperty('osxKeychainPassword')) {
 			logger.lifecycle("Signing jars in webstart bundle")
 			ant.signjar(
-				keystore:				project.codeSigningTemporaryKeystore, 
+				keystore:				project.codeSigningTemporaryKeystore,
 				storetype:				'pkcs12',
 				storepass:				project.codeSigningTemporaryPassword,
-				alias:					"oncourse", 
+				alias:					"oncourse",
 				keypass:				project.codeSigningTemporaryPassword,
 				sigalg:					"SHA256withRSA",
 				digestalg:				"SHA-256",
@@ -239,7 +239,7 @@ task installer_webstart(dependsOn: bundle_webstart, type: Zip) {
 }
 
 /**
- * Extract windows jre from artifact to distsDir/windows/jre directory 
+ * Extract windows jre from artifact to distsDir/windows/jre directory
  */
 task extractWinJre(type: Copy) {
 	from zipTree(configurations.jreWin.singleFile)
@@ -251,24 +251,24 @@ task extractWinJre(type: Copy) {
 }
 
 task bundle_win(dependsOn: [jar, extractWinJre], type: Exe4JTask) {
-	
+
 	doFirst {
 		copy {
 			from jars
 			into "${buildDir}/distributions/windows/libs"
 		}
 	}
-	
+
 	configFile = file("${projectDir}/src/packaging/windows/${project.name}.exe4j.xml")
 	jars = files(configurations.runtime.artifacts.files, configurations.runtime.files
 			- configurations.macCompile - configurations.macJava11
 			+ configurations.winCompile + configurations.winJava11)
-	
+
 	resourceFiles = files("${projectDir}/src/packaging/windows/onCourse.ico")
 	exeFile = file("${buildDir}/distributions/windows/onCourse.exe")
-	jarLocationPrefix = './libs/'	
+	jarLocationPrefix = './libs/'
 	configExpandParams = [ maxmemoryClient : project.maxmemoryClient ]
-	
+
 	if (project.hasProperty('osxKeychainPassword')) {
 		certificateFile = file (project.codeSigningTemporaryKeystore)
 		certificateFilePassword = project.codeSigningTemporaryPassword
@@ -332,7 +332,7 @@ task installer_osx(dependsOn: [prepareKeychains, codeSign, bundle_osx], type: Dm
 
 task bundleJRE_win64(type: PackrBundler) {
 	platform = 'win64'
-	jars = (configurations.runtime + configurations.runtime.artifacts.files 
+	jars = (configurations.runtime + configurations.runtime.artifacts.files
 			- configurations.macCompile + configurations.winCompile)
 	outDir = project.file("${buildDir}/distributions/win64/")
 	icon = "${projectDir}/src/packaging/windows/onCourse.ico"
@@ -381,10 +381,11 @@ cgen {
 	template = "${projectDir}/../common/src/main/resources/cayenne/dotemplates/client-subclass.vm"
 	superTemplate = "${projectDir}/../common/src/main/resources/cayenne/dotemplates/client-superclass.vm"
 	mode = 'entity'
-	// can not generate cayenne superclasses out of version control, 
+	// can not generate cayenne superclasses out of version control,
 	// since cgen always generate pairs sub/supes classes (Course.java/_Course.java) or just sub classes (Course.java) - should be under svn
 	//destDir =  file ("${projectDir}/build/generated-sources/src/main/java")
 	superPkg = 'ish.oncourse.cayenne.glue'
+	force = true
 }
 
 compileJava.dependsOn cgen

@@ -508,6 +508,7 @@ task clientCgen(type: cayenne.cgen) {
 	mode = 'entity'
 	superPkg = 'ish.oncourse.cayenne.glue'
 	destDir = file ("${buildDir}/generated-resources/main/java")
+	force = true
 	doLast {
 		delete fileTree("${buildDir}/generated-resources/main/java/ish/oncourse/cayenne").matching {
 			exclude '**/glue/*'
@@ -524,6 +525,7 @@ task serverCgen(type: cayenne.cgen) {
 	mode = 'entity'
 	superPkg = 'ish.oncourse.server.cayenne.glue'
 	destDir = file ("${buildDir}/generated-resources/main/java")
+	force = true
 	doLast {
 		delete fileTree("${buildDir}/generated-resources/main/java/ish/oncourse/server/cayenne") {
 			exclude '**/glue/*'
