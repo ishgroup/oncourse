@@ -7,12 +7,12 @@ repositories {
 }
 
 dependencies {
-    compile gradleApi()
-    compile "antlr:antlr:2.7.7"
-    compile 'org.apache.ant:ant-antlr:1.9.6'
-	compile project.fileTree(include: ['*.jar'], dir: "${project.rootDir}/buildSrc/apidoc/build/libs/")
+	implementation gradleApi()
+    implementation 'antlr:antlr:2.7.7'
+	implementation 'org.apache.ant:ant-antlr:1.9.6'
+	implementation project.fileTree(include: ['*.jar'], dir: "${project.rootDir}/buildSrc/apidoc/build/libs/")
 
-	testCompile 'junit:junit:4.11'
+	testImplementation 'junit:junit:4.11'
 }
 
 

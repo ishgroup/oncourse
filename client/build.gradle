@@ -11,7 +11,7 @@ apply plugin: 'apidoc'
 
 repositories {
 	maven {
-		url 'http://maven.teamdev.com/repository/products'
+		url 'https://maven.teamdev.com/repository/products'
 	}
 
 	maven {
@@ -36,23 +36,23 @@ configurations {
 
 dependencies {
 
-	compile (project(':common')) {
+	implementation (project(':common')) {
         exclude group: 'org.apache.cayenne', module: 'cayenne-server'
     }
 
-	compile "org.apache.cayenne:cayenne-client-jetty:$cayenneVersion"
-	compile "org.apache.cayenne:cayenne-protostuff:$cayenneVersion"
-	compile 'com.miglayout:miglayout-swing:4.2'
-	compile 'com.migcalendar:migcalendar:6.9.3'
-	compile 'commons-beanutils:commons-beanutils-core:1.8.3'
+	implementation "org.apache.cayenne:cayenne-client-jetty:$cayenneVersion"
+	implementation "org.apache.cayenne:cayenne-protostuff:$cayenneVersion"
+	implementation 'com.miglayout:miglayout-swing:4.2'
+	implementation 'com.migcalendar:migcalendar:6.9.3'
+	implementation 'commons-beanutils:commons-beanutils-core:1.8.3'
 
-	compile 'com.miglayout:miglayout-javafx:4.2'
+	implementation 'com.miglayout:miglayout-javafx:4.2'
 
-	compile "org.eclipse.jetty:jetty-client:$jettyVersion"
-	compile "org.eclipse.jetty.http2:http2-client:$jettyVersion"
-	compile "org.eclipse.jetty.http2:http2-http-client-transport:$jettyVersion"
+	implementation "org.eclipse.jetty:jetty-client:$jettyVersion"
+	implementation "org.eclipse.jetty.http2:http2-client:$jettyVersion"
+	implementation "org.eclipse.jetty.http2:http2-http-client-transport:$jettyVersion"
 
-	compile files("$rootDir/lib/jxbrowser/license.jar")
+	implementation files("$rootDir/lib/jxbrowser/license.jar")
 
 	// the following are needed when compiling on OSX Java 11
 	macJava11 "org.openjfx:javafx-base:$openjfxVersion:mac"
@@ -77,25 +77,25 @@ dependencies {
 	winCompile "com.teamdev.jxbrowser:jxbrowser-win64:$jxbrowserVersion"
 	winCompile "com.teamdev.jxbrowser:jxbrowser-win32:$jxbrowserVersion"
 
-	compile "org.openjfx:javafx-base:$openjfxVersion:linux"
-	compile "org.openjfx:javafx-graphics:$openjfxVersion:linux"
-	compile "org.openjfx:javafx-controls:$openjfxVersion:linux"
-	compile "org.openjfx:javafx-fxml:$openjfxVersion:linux"
-	compile "org.openjfx:javafx-swing:$openjfxVersion:linux"
-	compile "org.openjfx:javafx-media:$openjfxVersion:linux"
-	compile "com.teamdev.jxbrowser:jxbrowser-linux64:$jxbrowserVersion"
+	implementation "org.openjfx:javafx-base:$openjfxVersion:linux"
+	implementation "org.openjfx:javafx-graphics:$openjfxVersion:linux"
+	implementation "org.openjfx:javafx-controls:$openjfxVersion:linux"
+	implementation "org.openjfx:javafx-fxml:$openjfxVersion:linux"
+	implementation "org.openjfx:javafx-swing:$openjfxVersion:linux"
+	implementation "org.openjfx:javafx-media:$openjfxVersion:linux"
+	implementation "com.teamdev.jxbrowser:jxbrowser-linux64:$jxbrowserVersion"
 
-    testCompile 'org.mockito:mockito-core:1.10.17'
-	testCompile 'org.apache.poi:poi:3.12-beta1'
-	testCompile 'org.apache.poi:poi-ooxml:3.12-beta1'
-	testCompile group: 'com.github.javafaker', name: 'javafaker', version: '0.13'
-	testCompile(project(':server')) {
+    testImplementation 'org.mockito:mockito-core:1.10.17'
+	testImplementation 'org.apache.poi:poi:3.12-beta1'
+	testImplementation 'org.apache.poi:poi-ooxml:3.12-beta1'
+	testImplementation group: 'com.github.javafaker', name: 'javafaker', version: '0.13'
+	testImplementation(project(':server')) {
 		exclude module: ':client-html'
 	}
 
-	testCompile "io.bootique:bootique-test:$bootiqueVersion"
-	testCompile "io.bootique.cayenne:bootique-cayenne:$bootiqueVersion"
-	testCompile "io.bootique.jdbc:bootique-jdbc-tomcat:$bootiqueVersion"
+	testImplementation "io.bootique:bootique-test:$bootiqueVersion"
+	testImplementation "io.bootique.cayenne:bootique-cayenne:$bootiqueVersion"
+	testImplementation "io.bootique.jdbc:bootique-jdbc-tomcat:$bootiqueVersion"
 
 	jreMac 'net.adoptopenjdk:jre11-mac-x64-hotspot:11.0.4_11@tar.gz'
 	jreWin 'net.adoptopenjdk:jre11-win-x64-hotspot:11.0.4_11@zip'
@@ -121,8 +121,8 @@ appBundler {
     appIdentifier = "ish.oncourse"
     mainClassName = "ish.oncourse.AngelApp"
     iconFile = new File(projectDir, "src/packaging/macosx/onCourse.icns")
-    jars = (configurations.runtime
-			+ configurations.runtime.artifacts.files
+    jars = (configurations.runtimeClasspath
+			+ configurations.runtimeClasspath.artifacts.files
 			- configurations.winCompile
 			- configurations.winJava11
 			+ configurations.macCompile
@@ -158,7 +158,7 @@ project.ext.webstartFiles = copySpec {
 		expand([
 			sourceCompatibility:	project.sourceCompatibility,
 			mainJarClasspath:		"Libraries-${project.version}/${project.name}-${project.version}.jar",
-			dependenciesJars:		(configurations.runtime
+			dependenciesJars:		(configurations.runtimeClasspath
 										+ configurations.macCompile
 										+ configurations.winCompile).files.collect {
 										file -> "      <jar href=\"../clients/Libraries/${file.name}\"/>"
@@ -184,7 +184,7 @@ task bundle_webstart(dependsOn: [jar, prepareKeychains], type: Copy) {
 	with webstartFiles
 	into file("${buildDir}/distributions/webstart")
 	doLast {
-		(configurations.runtime + configurations.macCompile
+		(configurations.runtimeClasspath + configurations.macCompile
 				+ configurations.winCompile).files.each { file ->
 
 			if (file.name == "common-${version}.jar") {
@@ -223,7 +223,7 @@ task bundle_webstart(dependsOn: [jar, prepareKeychains], type: Copy) {
 				tsaurl:					'http://timestamp.comodoca.com?td=sha256',
 				lazy: 					"true",
 				preservelastmodified:	"true") {
-					fileset(dir: "${distsDir}/webstart/Libraries/") {
+					fileset(dir: "${buildDir}/distributions/webstart/Libraries/") {
 						include(name: '*.jar')
 					}
 				}
@@ -234,8 +234,8 @@ task bundle_webstart(dependsOn: [jar, prepareKeychains], type: Copy) {
 task installer_webstart(dependsOn: bundle_webstart, type: Zip) {
 	from "${buildDir}/distributions/webstart/"
 	exclude "*.zip"
-	destinationDir = file("${buildDir}/distributions/webstart/")
-	archiveName='onCourse-webstart.zip'
+	destinationDirectory = file("${buildDir}/distributions/webstart/")
+	archiveFileName='onCourse-webstart.zip'
 }
 
 /**
@@ -260,7 +260,7 @@ task bundle_win(dependsOn: [jar, extractWinJre], type: Exe4JTask) {
 	}
 
 	configFile = file("${projectDir}/src/packaging/windows/${project.name}.exe4j.xml")
-	jars = files(configurations.runtime.artifacts.files, configurations.runtime.files
+	jars = files(configurations.runtimeClasspath.artifacts.files, configurations.runtimeClasspath.files
 			- configurations.macCompile - configurations.macJava11
 			+ configurations.winCompile + configurations.winJava11)
 
@@ -332,7 +332,7 @@ task installer_osx(dependsOn: [prepareKeychains, codeSign, bundle_osx], type: Dm
 
 task bundleJRE_win64(type: PackrBundler) {
 	platform = 'win64'
-	jars = (configurations.runtime + configurations.runtime.artifacts.files
+	jars = (configurations.runtimeClasspath + configurations.runtimeClasspath.artifacts.files
 			- configurations.macCompile + configurations.winCompile)
 	outDir = project.file("${buildDir}/distributions/win64/")
 	icon = "${projectDir}/src/packaging/windows/onCourse.ico"

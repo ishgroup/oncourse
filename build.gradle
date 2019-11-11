@@ -56,7 +56,6 @@ apply plugin: 'idea'
 allprojects {
 
 	apply plugin: 'java'
-	apply plugin: 'maven'
 	apply plugin: 'appBundler'
 	apply plugin: 'maven-publish'
 
@@ -90,11 +89,11 @@ allprojects {
 	if (it.name != 'api-test') {
 		dependencies {
 
-			compile "org.apache.logging.log4j:log4j-api:$log4j2Version"
-			compile "org.apache.logging.log4j:log4j-core:$log4j2Version"
-			compile "org.apache.logging.log4j:log4j-1.2-api:$log4j2Version"
-			compile "org.apache.logging.log4j:log4j-slf4j-impl:$log4j2Version"
-			compile "org.apache.logging.log4j:log4j-jcl:$log4j2Version"
+			implementation "org.apache.logging.log4j:log4j-api:$log4j2Version"
+			implementation "org.apache.logging.log4j:log4j-core:$log4j2Version"
+			implementation "org.apache.logging.log4j:log4j-1.2-api:$log4j2Version"
+			implementation "org.apache.logging.log4j:log4j-slf4j-impl:$log4j2Version"
+			implementation "org.apache.logging.log4j:log4j-jcl:$log4j2Version"
 		}
 	}
 
@@ -102,14 +101,14 @@ allprojects {
 		implementation "org.codehaus.groovy:groovy-all:$groovyVersion"
 		implementation "org.codehaus.groovy:groovy-dateutil:$groovyVersion"
 		// Needed by Java 9 and above
-		compile 'javax.xml.bind:jaxb-api:2.3.0'
-		compile 'javax.xml.ws:jaxws-api:2.3.0'
-		compile 'javax.annotation:javax.annotation-api:1.3.2'
+		implementation 'javax.xml.bind:jaxb-api:2.3.0'
+		implementation 'javax.xml.ws:jaxws-api:2.3.0'
+		implementation 'javax.annotation:javax.annotation-api:1.3.2'
 
-		testCompile 'junit:junit:4.12'
-		testCompile 'org.dbunit:dbunit:2.6.0'
+		testImplementation 'junit:junit:4.12'
+		testImplementation 'org.dbunit:dbunit:2.6.0'
 
-        compile 'com.google.code.findbugs:jsr305:3.0.2'
+		implementation 'com.google.code.findbugs:jsr305:3.0.2'
 
 		// The following is needed until we upgrade waCommon which is forcing Cayenne back to 4.0M3.2
 		configurations.all {

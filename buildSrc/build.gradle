@@ -6,6 +6,6 @@ repositories {
 
 subprojects {
     rootProject.dependencies {
-        runtime project(path)
+        runtimeOnly project(path)
     }
 }

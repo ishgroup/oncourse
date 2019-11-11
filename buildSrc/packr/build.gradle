@@ -11,5 +11,5 @@ repositories {
 }
 
 dependencies {
-    compile 'com.bladecoder.packr:packr:2.1'
+    implementation 'com.bladecoder.packr:packr:2.1'
 }
