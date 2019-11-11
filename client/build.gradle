@@ -88,8 +88,8 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:1.10.17'
 	testImplementation 'org.apache.poi:poi:3.12-beta1'
 	testImplementation 'org.apache.poi:poi-ooxml:3.12-beta1'
-	testImplementation group: 'com.github.javafaker', name: 'javafaker', version: '0.13'
-	testImplementation(project(':server')) {
+	testImplementation 'com.github.javafaker:javafaker:0.13'
+	testImplementation (project(':server')) {
 		exclude module: ':client-html'
 	}
 

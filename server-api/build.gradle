@@ -1,5 +1,5 @@
 apply plugin: 'groovy'
-
+apply plugin: 'java-library'
 
 configurations {
     swagger
@@ -12,30 +12,29 @@ sourceSets.test.groovy.srcDir 'src/test/java'
 
 apply from: "$rootDir/gradle/bootique.gradle"
 
-sourceCompatibility = 11
+sourceCompatibility = 8
 targetCompatibility = 11
 
 dependencies {
 
-    implementation (project(':common')) {
+    api (project(':common')) {
         exclude group: 'org.bouncycastle'
         exclude module: "hessian"
         exclude group: "org.slf4j", module: "slf4j-simple"
     }
 
-    implementation 'io.swagger:swagger-annotations:1.5.21'
-    implementation "org.codehaus.groovy:groovy-all:$groovyVersion"
+    api 'io.swagger:swagger-annotations:1.5.21'
+    api "org.codehaus.groovy:groovy-all:$groovyVersion"
 
-    implementation "org.apache.cxf:cxf-core:$cfxVersion"
-    implementation "org.apache.cxf:cxf-rt-frontend-jaxrs:$cfxVersion"
+    api "org.apache.cxf:cxf-core:$cfxVersion"
+    api "org.apache.cxf:cxf-rt-frontend-jaxrs:$cfxVersion"
 
-    implementation 'javax.validation:validation-api:1.1.0.Final'
-    implementation 'org.apache.bval:org.apache.bval.bundle:1.1.2'
+    api 'javax.validation:validation-api:1.1.0.Final'
+    api 'org.apache.bval:org.apache.bval.bundle:1.1.2'
 
     //latest jackson 2.9.9 conflicts with spring AbstractApplicationContext
-    implementation "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.8.7"
-    implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.7"
-
+    api "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.8.7"
+    api "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.7"
 }
 
 sourceSets {
