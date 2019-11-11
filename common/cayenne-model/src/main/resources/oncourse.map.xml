@@ -964,7 +964,7 @@
 		<db-attribute name="angelId" type="BIGINT"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
-		<db-attribute name="description" type="VARCHAR" length="1000"/>
+		<db-attribute name="description" type="VARCHAR" length="8000"/>
 		<db-attribute name="expiryDays" type="INTEGER"/>
 		<db-attribute name="expiryType" type="INTEGER"/>
 		<db-attribute name="feeGST" type="DECIMAL" length="10" scale="2"/>
@@ -974,7 +974,7 @@
 		<db-attribute name="maxCoursesRedemption" type="INTEGER"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" length="500"/>
-		<db-attribute name="notes" type="VARCHAR" length="100"/>
+		<db-attribute name="notes" type="VARCHAR" length="8000"/>
 		<db-attribute name="priceExTax" type="DECIMAL" length="10" scale="2"/>
 		<db-attribute name="sku" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="taxAdjustment" type="DECIMAL" length="10" scale="2"/>
