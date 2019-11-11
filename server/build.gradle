@@ -374,7 +374,7 @@ task installer_unix(dependsOn: [jar], type: Zip) {
 }
 
 task installer_win(dependsOn: [bundle_win, prepareKeychains], type: NsisTask) {
-	exeFile = file("${distsDir}/windows/onCourseServer.exe")
+	exeFile = file("${buildDir}/distributions/windows/onCourseServer.exe")
 	resourceFolder = file("${projectDir}/src/packaging/windows")
 	nsiFileName = "server-mui.nsi"
 	outputFile = file("${buildDir}/distributions/windows/onCourseServer-installer.exe")
