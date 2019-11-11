@@ -17,24 +17,24 @@ targetCompatibility = 11
 
 dependencies {
 
-    api (project(':common')) {
+    compile (project(':common')) {
         exclude group: 'org.bouncycastle'
         exclude module: "hessian"
         exclude group: "org.slf4j", module: "slf4j-simple"
     }
 
-    api 'io.swagger:swagger-annotations:1.5.21'
-    api "org.codehaus.groovy:groovy-all:$groovyVersion"
+    compile 'io.swagger:swagger-annotations:1.5.21'
+    compile "org.codehaus.groovy:groovy-all:$groovyVersion"
 
-    api "org.apache.cxf:cxf-core:$cfxVersion"
-    api "org.apache.cxf:cxf-rt-frontend-jaxrs:$cfxVersion"
+    compile "org.apache.cxf:cxf-core:$cfxVersion"
+    compile "org.apache.cxf:cxf-rt-frontend-jaxrs:$cfxVersion"
 
-    api 'javax.validation:validation-api:1.1.0.Final'
-    api 'org.apache.bval:org.apache.bval.bundle:1.1.2'
+    compile 'javax.validation:validation-api:1.1.0.Final'
+    compile 'org.apache.bval:org.apache.bval.bundle:1.1.2'
 
     //latest jackson 2.9.9 conflicts with spring AbstractApplicationContext
-    api "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.8.7"
-    api "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.7"
+    compile "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.8.7"
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.7"
 }
 
 sourceSets {
