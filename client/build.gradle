@@ -85,17 +85,17 @@ dependencies {
 	implementation "org.openjfx:javafx-media:$openjfxVersion:linux"
 	implementation "com.teamdev.jxbrowser:jxbrowser-linux64:$jxbrowserVersion"
 
-    testImplementation 'org.mockito:mockito-core:1.10.17'
-	testImplementation 'org.apache.poi:poi:3.12-beta1'
-	testImplementation 'org.apache.poi:poi-ooxml:3.12-beta1'
-	testImplementation 'com.github.javafaker:javafaker:0.13'
-	testImplementation (project(':server')) {
-		exclude module: ':client-html'
-	}
-
-	testImplementation "io.bootique:bootique-test:$bootiqueVersion"
-	testImplementation "io.bootique.cayenne:bootique-cayenne:$bootiqueVersion"
-	testImplementation "io.bootique.jdbc:bootique-jdbc-tomcat:$bootiqueVersion"
+//    testImplementation 'org.mockito:mockito-core:1.10.17'
+//	testImplementation 'org.apache.poi:poi:3.12-beta1'
+//	testImplementation 'org.apache.poi:poi-ooxml:3.12-beta1'
+//	testImplementation 'com.github.javafaker:javafaker:0.13'
+//	testImplementation (project(':server')) {
+//		exclude module: ':client-html'
+//	}
+//
+//	testImplementation "io.bootique:bootique-test:$bootiqueVersion"
+//	testImplementation "io.bootique.cayenne:bootique-cayenne:$bootiqueVersion"
+//	testImplementation "io.bootique.jdbc:bootique-jdbc-tomcat:$bootiqueVersion"
 
 	jreMac 'net.adoptopenjdk:jre11-mac-x64-hotspot:11.0.4_11@tar.gz'
 	jreWin 'net.adoptopenjdk:jre11-win-x64-hotspot:11.0.4_11@zip'
