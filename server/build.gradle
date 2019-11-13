@@ -283,7 +283,7 @@ task run(dependsOn: [classes], type: JavaExec) {
 }
 
 appBundler {
-	distributionPath = file("${buildDir}/distributions/")
+	distributionPath = "${buildDir}/distributions/"
 	appName = "onCourseServer"
 	appFile = file("${distributionPath}/${appName}.app")
 	dmgFile = file("${distributionPath}/${appName}.dmg")
