@@ -314,7 +314,7 @@ task installer_osx(dependsOn: [codeSign, appBundle], type: DmgTask) {
 
 task bundle_win(dependsOn: [jar], type: Exe4JTask) {
 	configFile = file("${projectDir}/src/packaging/windows/server.exe4j.xml")
-	jars = configurations.runtimeClasspath + configurations.archives
+	jars = configurations.runtimeClasspath + configurations.runtime.artifacts.files
 	resourceFiles = files("${projectDir}/src/packaging/windows/onCourseServer.ico")
 	exeFile = file("${buildDir}/distributions/windows/onCourseServer.exe")
 	configExpandParams = [maxmemoryServer : project.maxmemoryServer]
@@ -326,7 +326,7 @@ task bundle_win(dependsOn: [jar], type: Exe4JTask) {
 
 task bundle_winService(dependsOn: [jar], type: Exe4JTask) {
 	configFile = file("${projectDir}/src/packaging/windows/service.exe4j.xml")
-	jars = configurations.runtimeClasspath + configurations.archives
+	jars = configurations.runtimeClasspath + configurations.runtime.artifacts.files
 	resourceFiles = files("${projectDir}/src/packaging/windows/onCourseServer.ico")
 	exeFile = file("${buildDir}/distributions/windows/onCourseService.exe")
 	configExpandParams = [maxmemoryServer : project.maxmemoryServer]
@@ -338,7 +338,7 @@ task bundle_winService(dependsOn: [jar], type: Exe4JTask) {
 
 task bundle_winService64(dependsOn: [jar], type: Exe4JTask) {
 	configFile = file("${projectDir}/src/packaging/windows/service64.exe4j.xml")
-	jars = configurations.runtimeClasspath + configurations.archives
+	jars = configurations.runtimeClasspath + configurations.runtime.artifacts.files
 	resourceFiles = files("${projectDir}/src/packaging/windows/onCourseServer.ico")
 	exeFile = file("${buildDir}/distributions/windows/onCourseService64.exe")
 	configExpandParams = [maxmemoryServer64 : project.maxmemoryServer64]
@@ -357,7 +357,7 @@ task installer_unix(dependsOn: [jar], type: Zip) {
 	from (configurations.runtimeClasspath) {
 		into 'onCourseServer/lib'
 	}
-	from (configurations.archives) {
+	from (configurations.runtime.artifacts.files) {
 		into 'onCourseServer'
 	}
 	from (file("src/packaging/unix/")) {
