@@ -25,12 +25,6 @@ configurations {
 	all*.exclude module: "hessian"
 }
 
-ext {
-	jarsCollection = {
-		return (configurations.runtime + configurations.runtime.artifacts.files)
-	}
-}
-
 // compile everything with the groovy plugin which can handle mixed groovy and Java files
 sourceSets {
 	main {
@@ -291,7 +285,7 @@ appBundler {
 	appIdentifier = "ish.oncourse"
 	mainClassName = "ish.oncourse.server.AngelServer"
 	iconFile = new File(projectDir, "src/packaging/macosx/onCourseServer.icns")
-	jars = jarsCollection.call()
+	jars = configurations.runtimeClasspath + configurations.archives
 	keychain = project.osxKeychain
 	certIdentity = project.osxKeychainIdentity
 	notarizeAccount = project.notarizeAccount
@@ -320,7 +314,7 @@ task installer_osx(dependsOn: [codeSign, appBundle], type: DmgTask) {
 
 task bundle_win(dependsOn: [jar], type: Exe4JTask) {
 	configFile = file("${projectDir}/src/packaging/windows/server.exe4j.xml")
-	jars = jarsCollection.call()
+	jars = configurations.runtimeClasspath + configurations.archives
 	resourceFiles = files("${projectDir}/src/packaging/windows/onCourseServer.ico")
 	exeFile = file("${buildDir}/distributions/windows/onCourseServer.exe")
 	configExpandParams = [maxmemoryServer : project.maxmemoryServer]
@@ -332,7 +326,7 @@ task bundle_win(dependsOn: [jar], type: Exe4JTask) {
 
 task bundle_winService(dependsOn: [jar], type: Exe4JTask) {
 	configFile = file("${projectDir}/src/packaging/windows/service.exe4j.xml")
-	jars = jarsCollection.call()
+	jars = configurations.runtimeClasspath + configurations.archives
 	resourceFiles = files("${projectDir}/src/packaging/windows/onCourseServer.ico")
 	exeFile = file("${buildDir}/distributions/windows/onCourseService.exe")
 	configExpandParams = [maxmemoryServer : project.maxmemoryServer]
@@ -344,7 +338,7 @@ task bundle_winService(dependsOn: [jar], type: Exe4JTask) {
 
 task bundle_winService64(dependsOn: [jar], type: Exe4JTask) {
 	configFile = file("${projectDir}/src/packaging/windows/service64.exe4j.xml")
-	jars = jarsCollection.call()
+	jars = configurations.runtimeClasspath + configurations.archives
 	resourceFiles = files("${projectDir}/src/packaging/windows/onCourseServer.ico")
 	exeFile = file("${buildDir}/distributions/windows/onCourseService64.exe")
 	configExpandParams = [maxmemoryServer64 : project.maxmemoryServer64]
@@ -360,10 +354,10 @@ task installer_unix(dependsOn: [jar], type: Zip) {
 		logger.lifecycle("Creating the unix application executable for ${project.name}")
 	}
 
-	from (configurations.runtime) {
+	from (configurations.runtimeClasspath) {
 		into 'onCourseServer/lib'
 	}
-	from (configurations.runtime.artifacts.files) {
+	from (configurations.archives) {
 		into 'onCourseServer'
 	}
 	from (file("src/packaging/unix/")) {
