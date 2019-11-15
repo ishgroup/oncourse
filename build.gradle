@@ -54,7 +54,7 @@ taskTree{
 apply plugin: 'idea'
 
 allprojects {
-
+	apply plugin: 'java-library'
 	apply plugin: 'java'
 	apply plugin: 'appBundler'
 	apply plugin: 'maven-publish'

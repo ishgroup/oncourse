@@ -57,7 +57,8 @@ sourceSets {
 
 dependencies {
 
-	implementation (project(':server-api'))
+	implementation project(':server-api')
+	implementation project(':common')
 
 	implementation ("org.apache.cxf:cxf-rt-frontend-jaxws:$cfxVersion") {
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
