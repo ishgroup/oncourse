@@ -58,8 +58,10 @@ compileGroovy.groovyOptions.configurationScript = file("${rootDir}/gradle/groovy
 
 task swagger (type: Swagger) {
     schema = file("${project.projectDir}/src/main/resources/server-api.yaml")
+    sourceFolder = file("${project.projectDir}/src/main/groovy")
     schemaVersion = 1
     javaOutput = file("${project.projectDir}/build/generated-sources")
+    traitOutput = file("${project.projectDir}/src/main/groovy/ish/oncourse/server/api/traits/")
     jsOutput = file("${rootDir}/client-html/build/generated-sources")
 }
 
