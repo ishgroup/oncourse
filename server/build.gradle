@@ -225,26 +225,26 @@ test {
 	// the database tests interfere with each other if run in parallel
 	maxParallelForks = 1
 
-	ext.dbTests = project.hasProperty('database') ? project.database : "derby-test"
+//	default database for running test is mysql
+	ext.dbTests = project.hasProperty('database') ? project.database : "mysql-test"
 
 	logger.lifecycle("will run tests in '${dbTests}' mode")
 
 	switch (dbTests) {
 		case "derby-test":
+			systemProperty 'databaseType', 'derby'
 			exclude '**/db/Mysql*.class'
 			exclude '**/db/Mssql*.class'
 			break
 
 		case "mssql-test":
-			assert project.hasProperty('testDatabaseUriMssql') // Please provide the testDatabaseUriMssql in your ~/.gradle/gradle.properties file
-			systemProperty 'testDatabaseUri', testDatabaseUriMssql
+			systemProperty 'databaseType', 'mssql'
 			exclude '**/db/Mysql*.class'
 			exclude '**/db/Derby*.class'
 			break
 
 		case "mysql-test":
-			assert project.hasProperty('testDatabaseUriMysql') // Please provide the testDatabaseUriMysql in your ~/.gradle/gradle.properties file
-			systemProperty 'testDatabaseUri', testDatabaseUriMysql
+			systemProperty 'databaseType', 'mysql'
 			exclude '**/db/Mssql*.class'
 			exclude '**/db/Derby*.class'
 			break
