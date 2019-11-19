@@ -122,7 +122,7 @@ appBundler {
     mainClassName = "ish.oncourse.AngelApp"
     iconFile = new File(projectDir, "src/packaging/macosx/onCourse.icns")
     jars = (configurations.runtimeClasspath
-			+ configurations.runtimeClasspath.artifacts.files
+			+ configurations.runtime.artifacts.files
 			- configurations.winCompile
 			- configurations.winJava11
 			+ configurations.macCompile
@@ -260,7 +260,7 @@ task bundle_win(dependsOn: [jar, extractWinJre], type: Exe4JTask) {
 	}
 
 	configFile = file("${projectDir}/src/packaging/windows/${project.name}.exe4j.xml")
-	jars = files(configurations.runtimeClasspath.artifacts.files, configurations.runtimeClasspath.files
+	jars = files(configurations.runtime.artifacts.files, configurations.runtimeClasspath.files
 			- configurations.macCompile - configurations.macJava11
 			+ configurations.winCompile + configurations.winJava11)
 
@@ -326,7 +326,7 @@ processResources {
 
 task bundleJRE_win64(type: PackrBundler) {
 	platform = 'win64'
-	jars = (configurations.runtimeClasspath + configurations.runtimeClasspath.artifacts.files
+	jars = (configurations.runtimeClasspath + configurations.runtime.artifacts.files
 			- configurations.macCompile + configurations.winCompile)
 	outDir = project.file("${buildDir}/distributions/win64/")
 	icon = "${projectDir}/src/packaging/windows/onCourse.ico"
