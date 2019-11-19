@@ -40,6 +40,13 @@ public class InvoiceLine extends _InvoiceLine implements Queueable {
 		// calculate the refund amount based on this enrolment paid price, so include the discount:
 		refundInvoiceLine.setPriceEachExTax(Money.ZERO.subtract(getPriceEachExTax()));
 		refundInvoiceLine.setDiscountEachExTax(Money.ZERO.subtract(getDiscountEachExTax()));
+
+		this.getInvoiceLineDiscounts().forEach( invoiceDiscounts -> {
+			InvoiceLineDiscount refundInvoiceDiscount = getObjectContext().newObject(InvoiceLineDiscount.class);
+			refundInvoiceDiscount.setInvoiceLine(refundInvoiceLine);
+			refundInvoiceDiscount.setDiscount(invoiceDiscounts.getDiscount());
+			refundInvoiceDiscount.setCollege(getCollege());
+		});
 	}
 
 	/**
