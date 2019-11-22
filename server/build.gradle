@@ -211,7 +211,7 @@ task createResourceManifests {
 			exportManifest.getParentFile().mkdirs()
 			exportManifest.write("")
 
-			FileTree tree = fileTree(dir: "src/main/resources/$s", includes: ['**/*.jrxml', '**/*.properties'])
+			FileTree tree = fileTree(dir: "src/main/resources/$s", includes: ['**/*.jrxml', '**/*.properties', '**/*.yaml', '**/*.yml'])
 			tree.visit {element ->
 				if (!element.isDirectory()) exportManifest.append("$s/$element.relativePath\n")
 			}
