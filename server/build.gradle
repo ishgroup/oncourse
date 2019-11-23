@@ -226,7 +226,7 @@ test {
 	maxParallelForks = 1
 
 //	default database for running test is mysql
-	ext.dbTests = project.hasProperty('database') ? project.database : "mysql-test"
+	ext.dbTests = project.hasProperty('database') ? project.database : "derby-test"
 
 	logger.lifecycle("will run tests in '${dbTests}' mode")
 
