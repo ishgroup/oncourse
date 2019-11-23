@@ -124,8 +124,8 @@ dependencies {
 
 	implementation "org.apache.derby:derbyclient:$derbyVersion"
 	implementation "org.apache.derby:derbynet:$derbyVersion"
-	implementation "org.apache.derby:derbytools:$derbyVersion"
-	implementation "org.apache.derby:derbyshared:$derbyVersion"
+	//	implementation "org.apache.derby:derbytools:$derbyVersion"
+	//	implementation "org.apache.derby:derbyshared:$derbyVersion"
 
 	implementation ("org.liquibase:liquibase-maven-plugin:3.6.3") {
 		exclude group: "ch.qos.logback"
@@ -531,13 +531,13 @@ task serverCgen(type: cayenne.cgen) {
 compileJava {
 	dependsOn queryGrammar, clientCgen, serverCgen
 }
-processResources {
-	dependsOn ':client-html:build'
-	doLast {
-		copy {
-			from('../client-html/build/assets') {
-				include '**/*.*'
-			}
-			into 'build/resources/main/static'}
-	}
-}
+//processResources {
+//	dependsOn ':client-html:build'
+//	doLast {
+//		copy {
+//			from('../client-html/build/assets') {
+//				include '**/*.*'
+//			}
+//			into 'build/resources/main/static'}
+//	}
+//}
