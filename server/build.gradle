@@ -223,7 +223,7 @@ test.dependsOn(createResourceManifests)
 
 test {
 	// the database tests interfere with each other if run in parallel
-	maxParallelForks = 1
+	maxParallelForks = 5
 
 //	default database for running test is mysql
 	ext.dbTests = project.hasProperty('database') ? project.database : "derby-test"
@@ -531,13 +531,13 @@ task serverCgen(type: cayenne.cgen) {
 compileJava {
 	dependsOn queryGrammar, clientCgen, serverCgen
 }
-processResources {
-	dependsOn ':client-html:build'
-	doLast {
-		copy {
-			from('../client-html/build/assets') {
-				include '**/*.*'
-			}
-			into 'build/resources/main/static'}
-	}
-}
+//processResources {
+//	dependsOn ':client-html:build'
+//	doLast {
+//		copy {
+//			from('../client-html/build/assets') {
+//				include '**/*.*'
+//			}
+//			into 'build/resources/main/static'}
+//	}
+//}
