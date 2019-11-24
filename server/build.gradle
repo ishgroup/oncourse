@@ -531,13 +531,13 @@ task serverCgen(type: cayenne.cgen) {
 compileJava {
 	dependsOn queryGrammar, clientCgen, serverCgen
 }
-//processResources {
-//	dependsOn ':client-html:build'
-//	doLast {
-//		copy {
-//			from('../client-html/build/assets') {
-//				include '**/*.*'
-//			}
-//			into 'build/resources/main/static'}
-//	}
-//}
+processResources {
+	dependsOn ':client-html:build'
+	doLast {
+		copy {
+			from('../client-html/build/assets') {
+				include '**/*.*'
+			}
+			into 'build/resources/main/static'}
+	}
+}
