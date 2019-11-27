@@ -427,7 +427,7 @@ task apidocsBundle(type: Zip) {
 	from file("${buildDir}/distributions/apidoc")
 	archiveClassifier = 'documentation'
 	archiveBaseName = "dsl"
-	dependsOn tasks.getByName('apiDocs')
+	dependsOn tasks.getByName('classes'), tasks.getByName('apiDocs')
 }
 
 
