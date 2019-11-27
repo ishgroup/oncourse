@@ -472,6 +472,9 @@ publishing {
 		}
 	}
 }
+if (!project.version.endsWith('SNAPSHOT')) {
+	publish.dependsOn 'notarize'
+}
 
 String sha256(String filename) {
 	if (! file(filename).exists()) return "missing file"

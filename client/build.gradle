@@ -366,6 +366,9 @@ publishing.publications {
 	}
 }
 
+if (!project.version.endsWith('SNAPSHOT')) {
+	publish.dependsOn 'notarize'
+}
 cayenne.defaultDataMap "${projectDir}/../common/src/main/resources/cayenne/AngelMap.map.xml"
 
 cgen {
