@@ -5,6 +5,7 @@ buildscript {
 		waCommonWebservicesClientVersion = '69'
 		log4j2Version = '2.12.1'
 		cayenneVersion = '4.1.RC2'
+		//'9.4.24 doesn't work - client rejected to login
 		jettyVersion = '9.4.21.v20190926'
         mariadbVersion = '2.4.3'
 		derbyVersion = '10.14.2.0'
