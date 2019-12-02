@@ -196,7 +196,7 @@ task bundle_webstart(dependsOn: [jar], type: Copy) {
 				keystore:				project.codeSigningTemporaryKeystore,
 				storetype:				'pkcs12',
 				storepass:				project.codeSigningTemporaryPassword,
-				alias:					"oncourse",
+				alias:					"ish group's sectigo limited id",
 				keypass:				project.codeSigningTemporaryPassword,
 				sigalg:					"SHA256withRSA",
 				digestalg:				"SHA-256",
