@@ -3,7 +3,7 @@ apply plugin: 'queryLanguageModel'
 
 node {
     version = '12.9.1'
-    yarnVersion = '1.19.1'
+    yarnVersion = '1.19.2'
     download = true
     workDir = file("${project.buildDir}/nodejs")
 }
