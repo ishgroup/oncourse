@@ -29,7 +29,7 @@ clean {
     delete "${projectDir}/node_modules"
 }
 
-task yarn_start(type: YarnTask) {
+task yarn_start(type: YarnTask, dependsOn:['webpack']) {
     inputs.files("webpack.config.js", "webpack.dev.config.js", "tsconfig.json", "yarn.lock", "package.json")
     args = ['start']
 }
