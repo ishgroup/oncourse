@@ -90,7 +90,7 @@ class ProcessCheckoutModel {
             Money minPayNow = totalProductsAmount.add(enrolmentsPrice.minPayNow)
 
             Boolean creditEnabled = new IsCreditNoteEnabled(college, context).get()
-            Money availableCredit = creditEnabled ? financialService.getAvailableCredit(model.payerId).min(subTotal) : ZERO
+            Money availableCredit = (creditEnabled && model.payerId != null) ? financialService.getAvailableCredit(model.payerId).min(subTotal) : ZERO
             Money payNow = checkoutModelRequest.payNow != null ? checkoutModelRequest.payNow.toMoney() : minPayNow
 
             Money ccPayment = ZERO
