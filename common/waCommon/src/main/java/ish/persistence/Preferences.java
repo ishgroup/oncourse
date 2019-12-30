@@ -513,6 +513,7 @@ public interface Preferences {
 	String AUSKEY_CERTIFICATE = "auskey.certificate";
 	String AUSKEY_PRIVATE_KEY = "auskey.privatekey";
 	String AUSKEY_SALT = "auskey.salt";
+	String USI_SOFTWARE_ID = "usi.softwareid";
 
 
 
