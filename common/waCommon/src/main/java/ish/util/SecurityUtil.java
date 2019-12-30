@@ -5,6 +5,7 @@
 package ish.util;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
@@ -12,12 +13,15 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * No comment at this time.
  */
 public final class SecurityUtil {
 	public static final int VOUCHER_CODE_LENGTH = 8;
+	public static final int USI_SOFTWARE_ID_LENGTH = 9;
 	public static final int CERTIFICATE_CODE_LENGTH = 11;
 	public static final String CERTIFICATE_NAME_SPACE = "c";
 
@@ -32,6 +36,8 @@ public final class SecurityUtil {
 	 * A list of legal for voucher code human readable characters without ambiguous '1/l/L/i/I' and 'O/0'
 	 */
 	private static String voucherCodeLegalChars = "23456789qwertyupkjhgfdsazxcvbnmQWERTYUPKJHGFDSAZXCVBNM";
+
+	private static int[] numericChars = {1,2,3,4,5,6,7,8,9,0};
 
 	private SecurityUtil() {}
 
@@ -63,6 +69,17 @@ public final class SecurityUtil {
 		return  String.format("%s%s",CERTIFICATE_NAME_SPACE, (RandomStringUtils.random(CERTIFICATE_CODE_LENGTH, 0, voucherCodeLegalChars.length(), false, false, voucherCodeLegalChars.toCharArray(), random)));
 	}
 
+	public static String generateUSISoftwareId() {
+		StringBuilder code = new StringBuilder();
+		int summ = 0;
+		while (code.length() < USI_SOFTWARE_ID_LENGTH) {
+			int index = random.nextInt(numericChars.length);
+			int digit = numericChars[index];
+			summ += digit;
+			code.append(numericChars[index]);
+		}
+		return code.toString() + summ % 10;
+	}
 
 	/**
 	 * Take a clear text password and return a hash. If an error occurs, null is returned.
