@@ -3,6 +3,8 @@ goog.require('jquery');
 //we need add initialise.js code before the code because initialise.js contains common functionality
 // for all input controls (like unbind blur and focus functions)
 goog.require('initialise');
+goog.require('timepicki');
+
 
 
 var $j = jQuery.noConflict();
@@ -14,7 +16,8 @@ Usi.prototype = {
     data: 0,
     step: 0,
     uniqueKey: 0,
-  
+
+
     initialize: function () {
         var self = this;
 			  this.step = $j("#usiStep").attr('data-step');
@@ -22,7 +25,23 @@ Usi.prototype = {
         $j("#usi-next").click(function () {
             self.next();
         });
-        this.loadData();
+
+	    if (this.step) {
+            this.loadData();
+        }
+
+        if ($j('input#dateOfBirth') && $j('input#dateOfBirth').length) {
+            $j('input#dateOfBirth').datepicker({
+                dateFormat: "dd/mm/yy",
+                selectOtherMonths: true,
+                selectOtherYear:true,
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "c-100:c",
+                maxDate: 0
+            });
+        }
+
     },
 
     showData: function () {
