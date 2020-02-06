@@ -39,6 +39,7 @@ public class AuthenticationService implements IAuthenticationService {
 	private static final String TOKEN_PATTERN = "%s&%s";
 
 	private static final int SESSION_ID_MAX_AGE = 14400;
+	private static final boolean SESSION_ID_SECURE = true;
 
 	/**
 	 * @see IAuthenticationService#authenticate(String, String, String, String)
@@ -73,7 +74,10 @@ public class AuthenticationService implements IAuthenticationService {
 		if (supportPassword != null) {
 			Contact contact = cayenneService.newContext().localObject(supportPassword.getContact());
 			String contactId = contact.getId().toString();
-			cookieService.writeCookieValue(SESSION_TOKEN, String.format(TOKEN_PATTERN, contactId, sessionManager.createContactSession(contactId)) , SESSION_ID_MAX_AGE);
+			cookieService.writeCookieValue(SESSION_TOKEN,
+					String.format(TOKEN_PATTERN, contactId, sessionManager.createContactSession(contactId)),
+					SESSION_ID_MAX_AGE,
+					SESSION_ID_SECURE);
 			return true;
 		} else {
 			return true;
@@ -228,7 +232,7 @@ public class AuthenticationService implements IAuthenticationService {
 		context.commitChanges();
 		String contactId = user.getId().toString();
 		String token = String.format(TOKEN_PATTERN, contactId, sessionManager.createContactSession(contactId));
-		cookieService.writeCookieValue(SESSION_TOKEN, token, SESSION_ID_MAX_AGE);
+		cookieService.writeCookieValue(SESSION_TOKEN, token, SESSION_ID_MAX_AGE, SESSION_ID_SECURE);
 		request.setAttribute(AuthenticationService.SESSION_TOKEN, token);
 		request.setAttribute(LOGGED_OUT, null);
 	}
@@ -238,7 +242,7 @@ public class AuthenticationService implements IAuthenticationService {
 	 */
 	public void logout() {
 		request.setAttribute(LOGGED_OUT, true);
-		cookieService.writeCookieValue(SESSION_TOKEN, null, 0);
+		cookieService.writeCookieValue(SESSION_TOKEN, null, 0, SESSION_ID_SECURE);
 		request.setAttribute(SESSION_TOKEN, null);
 		Session session = request.getSession(false);
 

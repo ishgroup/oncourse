@@ -45,6 +45,15 @@ public class CookiesImplOverride implements ICookiesOverride {
 	}
 
 	@Override
+	public void writeCookieValue(String name, String value, int maxAge, boolean isSecure) {
+		Cookie cookie = new Cookie(name, value);
+		cookie.setPath(request.getContextPath() + "/");
+		cookie.setMaxAge(maxAge);
+		cookie.setSecure(isSecure);
+		cookieSink.addCookie(cookie);
+	}
+
+	@Override
 	public void writeCookieValue(String name, String value) {
 		writeCookieValue(name, value, defaultMaxAge);
 	}

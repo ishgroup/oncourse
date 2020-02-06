@@ -29,6 +29,17 @@ public interface ICookiesOverride {
 	void writeCookieValue(String name, String value, int maxAge);
 
 	/**
+	 * As with {@link #writeCookieValue(String, String)} but an explicit maximum age may be set.
+	 *
+	 * @param name   the name of the cookie
+	 * @param value  the value to be stored in the cookie
+	 * @param maxAge the maximum age, in seconds, to store the cookie
+	 * @param isSecure cookie secure flag
+	 */
+
+	void writeCookieValue(String name, String value, int maxAge, boolean isSecure);
+
+	/**
 	 * As with {@link #writeCookieValue(String, String)} but an explicit path may be set.
 	 */
 	void writeCookieValue(String name, String value, String path);
