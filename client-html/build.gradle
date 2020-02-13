@@ -44,10 +44,10 @@ task queryGrammar(type: YarnTask, dependsOn: [':server-api:swagger', 'yarn', 'ge
     args = ['antlr4ts']
 }
 
-task jest(type: YarnTask, dependsOn: 'queryGrammar') {
-    args = ['test']
-}
-test.dependsOn(jest)
+//task jest(type: YarnTask, dependsOn: 'queryGrammar') {
+//    args = ['test']
+//}
+//test.dependsOn(jest)
 
 sourceSets {
     main.resources.srcDirs 'src/js', 'build/generated-sources'
