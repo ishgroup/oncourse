@@ -231,7 +231,7 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 }
 
 task testReport(type: TestReport) {
-	destinatio       nDir = file("$buildDir/reports/tests")
+	destinationDir = file("$buildDir/reports/tests")
 	// Include the results from the `test` task in all subprojects
 	reportOn subprojects*.test
 }
