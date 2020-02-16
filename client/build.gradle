@@ -75,8 +75,8 @@ dependencies {
 	winCompile "com.teamdev.jxbrowser:jxbrowser-win64:$jxbrowserVersion"
 	winCompile "com.teamdev.jxbrowser:jxbrowser-win32:$jxbrowserVersion"
 
-	jreMac 'net.adoptopenjdk:jre11-mac-x64-hotspot:11.0.4_11@tar.gz'
-	jreWin 'net.adoptopenjdk:jre11-win-x64-hotspot:11.0.4_11@zip'
+	jreMac 'net.adoptopenjdk:jre11-mac-x64-hotspot:11.0.6_10@tar.gz'
+	jreWin 'net.adoptopenjdk:jre11-win-x64-hotspot:11.0.6_10@zip'
 }
 
 jar {
@@ -107,6 +107,10 @@ appBundler {
 			- configurations.winJava11
 			+ configurations.macCompile
 			+ configurations.macJava11)
+
+	runtimeJRE = configurations.jreMac.singleFile
+	runtimeIncludes = ["conf/"]
+
     keychain = project.osxKeychain
     certIdentity = project.osxKeychainIdentity
 	notarizeAccount = project.notarizeAccount
