@@ -1,5 +1,3 @@
-import au.com.ish.AppBundlerTask
-import au.com.ish.DmgTask
 import au.com.ish.Exe4JTask
 import au.com.ish.NsisTask
 import au.com.ish.PackrBundler
@@ -96,8 +94,10 @@ task run(dependsOn: [classes, processResources], type: JavaExec) {
 }
 
 appBundler {
-	distributionPath = project.file("${buildDir}/distributions")
+	distributionPath = "${buildDir}/distributions"
 	appName = "onCourse"
+	appFile = file("${distributionPath}/${appName}.app")
+	dmgFile = file("${distributionPath}/${appName}.dmg")
     appIdentifier = "ish.oncourse"
     mainClassName = "ish.oncourse.AngelApp"
     iconFile = new File(projectDir, "src/packaging/macosx/onCourse.icns")
@@ -160,7 +160,7 @@ def checkManifest = {
 	}
 }
 
-task bundle_webstart(dependsOn: [jar, prepareKeychains], type: Copy) {
+task bundle_webstart(dependsOn: [jar], type: Copy) {
 	description "Create the webstart application executable."
 	doFirst {
 		logger.lifecycle("Creating the webstart application executable for $project.name")
@@ -267,7 +267,7 @@ task copyJre(type: Copy) {
 	into "$buildDir/tmp/installer_win"
 }
 
-task installer_win(dependsOn: [bundle_win, copyJre, prepareKeychains], type: NsisTask) {
+task installer_win(dependsOn: [bundle_win, copyJre], type: NsisTask) {
 	exeFile = file("${buildDir}/distributions/windows/onCourse.exe")
 	resourceFolder = file("${projectDir}/src/packaging/windows")
 	nsiFileName = "client-mui.nsi"
@@ -302,17 +302,11 @@ processResources {
 	}
 }
 
-task bundle_osx(type: AppBundlerTask) {
-	runtimeJRE = configurations.jreMac.singleFile
-	runtimeIncludes = ["conf/"]
-}
-
-codeSign.mustRunAfter(bundle_osx)
-
-task installer_osx(dependsOn: [prepareKeychains, codeSign, bundle_osx], type: DmgTask) {
-	outputs.upToDateWhen { false } //disables 'UP_TO_DATE' check. This is need to run task always
-	description "Create the OSX application executable and installer (which is just a dmg file)."
-}
+//task bundle_osx(type: AppBundlerTask) {
+//	runtimeJRE = configurations.jreMac.singleFile
+//	runtimeIncludes = ["conf/"]
+//}
+//codeSign.mustRunAfter(bundle_osx)
 
 task bundleJRE_win64(type: PackrBundler) {
 	platform = 'win64'
@@ -349,7 +343,7 @@ publishing.publications {
 			extension "exe"
 		}
 		artifact(new DefaultPublishArtifact("onCourse", "dmg", "dmg", null, null,
-				file("${buildDir}/distributions/onCourse.dmg")).builtBy(installer_osx)) {
+				file("${buildDir}/distributions/onCourse.dmg")).builtBy(createDMG)) {
 			classifier "osx"
 			extension "dmg"
 		}

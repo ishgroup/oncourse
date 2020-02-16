@@ -185,49 +185,6 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 		appName = getProject().name == 'server' ? "onCourseServer" : "onCourse"
 	}
 
-
-	task prepareKeychains {
-		doLast {
-			if (project.hasProperty('osxKeychainPassword')) {
-				logger.lifecycle("Unlocking the keychain: " + project.osxKeychain)
-				exec {
-					executable = 'security'
-					args = ['unlock-keychain', '-p', project.osxKeychainPassword, project.osxKeychain]
-				}
-				logger.lifecycle("Unlocking the keychain: " + project.osxKeychain)
-			} else {
-				logger.lifecycle("Cannot unlock keychain, please provide osxKeychainPassword in gradle.properties")
-			}
-		}
-	}
-
-	task bundle(dependsOn: tasks.findAll { task -> task.name.startsWith('bundle_') }) {
-		description "Create all application executables."
-	}
-
-	bundle.dependsOn {
-		project.tasks.findAll { it.name.startsWith('bundle_') }
-	}
-
-	task installer() {
-		description "Create all application installers."
-	}
-
-	installer.dependsOn {
-		project.tasks.findAll { it.name.startsWith('installer_') }
-	}
-
-	notarize.onlyIf {
-		!version.endsWith('SNAPSHOT')
-	}
-
-	afterEvaluate {
-		installer_osx.dependsOn(notarize)
-	}
-
-	codeSign.dependsOn {
-		project.prepareKeychains
-	}
 }
 
 task testReport(type: TestReport) {

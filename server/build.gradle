@@ -278,8 +278,10 @@ task run(dependsOn: [classes], type: JavaExec) {
 }
 
 appBundler {
-	distributionPath = project.file("${buildDir}/distributions/")
+	distributionPath = "${buildDir}/distributions/"
 	appName = "onCourseServer"
+	appFile = file("${distributionPath}/${appName}.app")
+	dmgFile = file("${distributionPath}/${appName}.dmg")
 	appIdentifier = "ish.oncourse"
 	mainClassName = "ish.oncourse.server.AngelServer"
 	iconFile = new File(projectDir, "src/packaging/macosx/onCourseServer.icns")
@@ -306,8 +308,7 @@ appBundler {
 	]
 }
 
-task installer_osx(dependsOn: [prepareKeychains, codeSign, appBundle], type: DmgTask) {
-	outputs.upToDateWhen { false } //disables 'UP_TO_DATE' check. This is need to run task always
+task installer_osx(dependsOn: [codeSign, appBundle], type: DmgTask) {
 	description "Create the OSX application executable and installer (which is just a dmg file)."
 }
 
@@ -367,7 +368,7 @@ task installer_unix(dependsOn: [jar], type: Zip) {
 	destinationDir file("${buildDir}/distributions/unix")
 }
 
-task installer_win(dependsOn: [bundle_win, prepareKeychains], type: NsisTask) {
+task installer_win(dependsOn: [bundle_win], type: NsisTask) {
 	exeFile = file("${buildDir}/distributions/windows/onCourseServer.exe")
 	resourceFolder = file("${projectDir}/src/packaging/windows")
 	nsiFileName = "server-mui.nsi"
@@ -379,7 +380,7 @@ task installer_win(dependsOn: [bundle_win, prepareKeychains], type: NsisTask) {
 	}
 }
 
-task installer_winService(dependsOn: [bundle_winService, prepareKeychains], type: NsisTask) {
+task installer_winService(dependsOn: [bundle_winService], type: NsisTask) {
 	exeFile = file("${buildDir}/distributions/windows/onCourseService.exe")
 	resourceFolder = file("${projectDir}/src/packaging/windows")
 	nsiFileName = "service-mui.nsi"
@@ -391,7 +392,7 @@ task installer_winService(dependsOn: [bundle_winService, prepareKeychains], type
 	}
 }
 
-task installer_winService64(dependsOn: [bundle_winService64, prepareKeychains], type: NsisTask) {
+task installer_winService64(dependsOn: [bundle_winService64], type: NsisTask) {
 	exeFile = file("${buildDir}/distributions/windows/onCourseService64.exe")
 	resourceFolder = file("${projectDir}/src/packaging/windows")
 	nsiFileName = "service64-mui.nsi"
@@ -464,7 +465,7 @@ publishing {
 			}
 
 			artifact(new DefaultPublishArtifact("onCourseServer", "dmg", "dmg", null, null,
-					file("${buildDir}/distributions/onCourseServer.dmg")).builtBy(installer_osx)) {
+					file("${buildDir}/distributions/onCourseServer.dmg")).builtBy(createDMG)) {
 				version (project.hasProperty('releaseVersion') ? project.releaseVersion : "SNAPSHOT")
 				classifier "osx"
 				extension "dmg"
