@@ -77,8 +77,8 @@ dependencies {
 
 //	jreMac 'net.adoptopenjdk:jre11-mac-x64-hotspot:11.0.6_10@tar.gz'
 //	jreWin 'net.adoptopenjdk:jre11-win-x64-hotspot:11.0.6_10@zip'
-	jreMac 'net.adoptopenjdk:jre11-mac-x64-hotspot:8.242_08@tar.gz'
-	jreWin 'net.adoptopenjdk:jre11-win-x64-hotspot:8.242_08@zip'
+	jreMac 'net.adoptopenjdk:jre8-mac-x64-hotspot:8.242_08@tar.gz'
+	jreWin 'net.adoptopenjdk:jre8-win-x64-hotspot:8.242_08@zip'
 }
 
 jar {
