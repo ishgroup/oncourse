@@ -53,32 +53,30 @@ dependencies {
 	implementation files("$rootDir/lib/jxbrowser/license.jar")
 
 	// the following are needed when compiling on OSX Java 11
-//	macJava11 "org.openjfx:javafx-base:$openjfxVersion:mac"
-//	macJava11 "org.openjfx:javafx-graphics:$openjfxVersion:mac"
-//	macJava11 "org.openjfx:javafx-controls:$openjfxVersion:mac"
-//	macJava11 "org.openjfx:javafx-fxml:$openjfxVersion:mac"
-//	macJava11 "org.openjfx:javafx-swing:$openjfxVersion:mac"
-//	macJava11 "org.openjfx:javafx-media:$openjfxVersion:mac"
+	macJava11 "org.openjfx:javafx-base:$openjfxVersion:mac"
+	macJava11 "org.openjfx:javafx-graphics:$openjfxVersion:mac"
+	macJava11 "org.openjfx:javafx-controls:$openjfxVersion:mac"
+	macJava11 "org.openjfx:javafx-fxml:$openjfxVersion:mac"
+	macJava11 "org.openjfx:javafx-swing:$openjfxVersion:mac"
+	macJava11 "org.openjfx:javafx-media:$openjfxVersion:mac"
 
 	// the following are needed when compiling on OSX any Java version
 	macCompile "com.teamdev.jxbrowser:jxbrowser-mac:$jxbrowserVersion"
 
 	// the following are needed when compiling on Windows Java 11
-//	winJava11 "org.openjfx:javafx-base:$openjfxVersion:win"
-//	winJava11 "org.openjfx:javafx-graphics:$openjfxVersion:win"
-//	winJava11 "org.openjfx:javafx-controls:$openjfxVersion:win"
-//	winJava11 "org.openjfx:javafx-fxml:$openjfxVersion:win"
-//	winJava11 "org.openjfx:javafx-swing:$openjfxVersion:win"
-//	winJava11 "org.openjfx:javafx-media:$openjfxVersion:win"
+	winJava11 "org.openjfx:javafx-base:$openjfxVersion:win"
+	winJava11 "org.openjfx:javafx-graphics:$openjfxVersion:win"
+	winJava11 "org.openjfx:javafx-controls:$openjfxVersion:win"
+	winJava11 "org.openjfx:javafx-fxml:$openjfxVersion:win"
+	winJava11 "org.openjfx:javafx-swing:$openjfxVersion:win"
+	winJava11 "org.openjfx:javafx-media:$openjfxVersion:win"
 
 	// the following are needed when compiling on Windows any Java version
 	winCompile "com.teamdev.jxbrowser:jxbrowser-win64:$jxbrowserVersion"
 	winCompile "com.teamdev.jxbrowser:jxbrowser-win32:$jxbrowserVersion"
 
-//	jreMac 'net.adoptopenjdk:jre11-mac-x64-hotspot:11.0.6_10@tar.gz'
-//	jreWin 'net.adoptopenjdk:jre11-win-x64-hotspot:11.0.6_10@zip'
-	jreMac 'net.adoptopenjdk:jre8-mac-x64-hotspot:8.242_08@tar.gz'
-	jreWin 'net.adoptopenjdk:jre8-win-x64-hotspot:8.242_08@zip'
+	jreMac 'net.adoptopenjdk:jre11-mac-x64-hotspot:11.0.6_10@tar.gz'
+	jreWin 'net.adoptopenjdk:jre11-win-x64-hotspot:11.0.6_10@zip'
 }
 
 jar {
