@@ -223,10 +223,10 @@ test.dependsOn(createResourceManifests)
 
 test {
 	// the database tests interfere with each other if run in parallel
-	maxParallelForks = 5
+	maxParallelForks = 1
 
 //	default database for running test is mysql
-	ext.dbTests = project.hasProperty('database') ? project.database : "derby-test"
+	ext.dbTests = project.hasProperty('database') ? project.database : "mysql-test"
 
 	logger.lifecycle("will run tests in '${dbTests}' mode")
 
