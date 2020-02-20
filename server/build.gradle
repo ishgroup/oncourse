@@ -364,8 +364,8 @@ task installer_unix(dependsOn: [jar], type: Zip) {
 		into 'onCourseServer'
 	}
 
-	archiveName 'onCourseServer.zip'
-	destinationDir file("${buildDir}/distributions/unix")
+	archiveFileName = 'onCourseServer.zip'
+	destinationDirectory = file("${buildDir}/distributions/unix")
 }
 
 task installer_win(dependsOn: [bundle_win], type: NsisTask) {
