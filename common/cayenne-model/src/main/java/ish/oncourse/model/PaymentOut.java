@@ -45,7 +45,6 @@ public class PaymentOut extends _PaymentOut implements Queueable {
 	 */
 	public void succeed() {
 		setStatus(ish.common.types.PaymentStatus.SUCCESS);
-		setConfirmationStatus(ConfirmationStatus.NOT_SENT);
 	}
 
 	/**
