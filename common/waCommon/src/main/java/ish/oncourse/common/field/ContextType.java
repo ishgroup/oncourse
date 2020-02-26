@@ -12,7 +12,8 @@ public enum ContextType {
 	WAITING_LIST("waitingList"),
 	TAG_GROUP("tag"),
 	MAILING_LIST("mailingList"),
-	SURVEY("survey");
+	SURVEY("survey"),
+	COURSE_CLASS("courseClass");
 
 	private String identifier;
 

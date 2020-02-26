@@ -56,7 +56,8 @@ public enum FieldProperty {
 	CUSTOM_FIELD_APPLICATION(ContextType.APPLICATION, "Custom field ", CUSTOM_FIELD_PROPERTY_PATTERN  + ContextType.APPLICATION.getIdentifier()),
 	CUSTOM_FIELD_WAITING_LIST(ContextType.WAITING_LIST, "Custom field ", CUSTOM_FIELD_PROPERTY_PATTERN  + ContextType.WAITING_LIST.getIdentifier()),
 	CUSTOM_FIELD_SURVEY(ContextType.SURVEY, "Custom field ", CUSTOM_FIELD_PROPERTY_PATTERN  + ContextType.SURVEY.getIdentifier()),
-
+	CUSTOM_FIELD_COURSE_CLASS(ContextType.COURSE_CLASS, "Custom field", CUSTOM_FIELD_PROPERTY_PATTERN + ContextType.COURSE_CLASS.getIdentifier())
+,
 	TAG(ContextType.CONTACT, "Tag field", TAG_PATTERN),
 	S_TAG_GROUP(ContextType.CONTACT, "Single tag field", TAG_S_PATTERN),
 	M_TAG_GROUP(ContextType.CONTACT, "Multiple tag filed", TAG_M_PATTERN),
@@ -103,19 +104,21 @@ public enum FieldProperty {
 			ContextType context = ContextType.getByIdentifier(contextIdentifier);
 			switch (context) {
 				case CONTACT:
-					return  CUSTOM_FIELD_CONTACT;
+					return CUSTOM_FIELD_CONTACT;
 				case STUDENT:
-                    return  CUSTOM_FIELD_STUDENT;
+                    return CUSTOM_FIELD_STUDENT;
                 case COURSE:
-                    return  CUSTOM_FIELD_COURSE;
+                    return CUSTOM_FIELD_COURSE;
                 case ENROLMENT:
-                    return  CUSTOM_FIELD_ENROLMENT;
+                    return CUSTOM_FIELD_ENROLMENT;
                 case APPLICATION:
-                    return  CUSTOM_FIELD_APPLICATION;
+                    return CUSTOM_FIELD_APPLICATION;
                 case WAITING_LIST:
-                    return  CUSTOM_FIELD_WAITING_LIST;
+                    return CUSTOM_FIELD_WAITING_LIST;
 				case SURVEY:
-					return  CUSTOM_FIELD_SURVEY;
+					return CUSTOM_FIELD_SURVEY;
+				case COURSE_CLASS:
+					return CUSTOM_FIELD_COURSE_CLASS;
                 default: throw new UnsupportedOperationException("Custom fields supported for Contact only");
 			}
 		} else if (key.startsWith(TAG_PATTERN)) {
