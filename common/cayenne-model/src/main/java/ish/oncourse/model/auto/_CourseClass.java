@@ -15,10 +15,12 @@ import ish.math.Money;
 import ish.oncourse.model.AssessmentClass;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Course;
+import ish.oncourse.model.CourseClassCustomField;
 import ish.oncourse.model.CourseClassPaymentPlanLine;
 import ish.oncourse.model.DiscountCourseClass;
 import ish.oncourse.model.Discussion;
 import ish.oncourse.model.Enrolment;
+import ish.oncourse.model.ExpandableCayenneDataObject;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.Room;
 import ish.oncourse.model.Session;
@@ -30,7 +32,7 @@ import ish.oncourse.model.TutorRole;
  * since it may be overwritten next time code is regenerated.
  * If you need to make any customizations, please use subclass.
  */
-public abstract class _CourseClass extends WillowCayenneObject {
+public abstract class _CourseClass extends ExpandableCayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
@@ -80,6 +82,7 @@ public abstract class _CourseClass extends WillowCayenneObject {
     public static final String ROOM_PROPERTY = "room";
     public static final String SESSIONS_PROPERTY = "sessions";
     public static final String TUTOR_ROLES_PROPERTY = "tutorRoles";
+    public static final String CUSTOM_FIELDS_PROPERTY = "customFields";
 
     public static final String ID_PK_COLUMN = "id";
 
@@ -129,6 +132,7 @@ public abstract class _CourseClass extends WillowCayenneObject {
     public static final Property<Room> ROOM = Property.create("room", Room.class);
     public static final Property<List<Session>> SESSIONS = Property.create("sessions", List.class);
     public static final Property<List<TutorRole>> TUTOR_ROLES = Property.create("tutorRoles", List.class);
+    public static final Property<List<CourseClassCustomField>> CUSTOM_FIELDS = Property.create("customFields", List.class);
 
     protected Long angelId;
     protected CourseClassAttendanceType attendanceType;
@@ -177,6 +181,7 @@ public abstract class _CourseClass extends WillowCayenneObject {
     protected Object room;
     protected Object sessions;
     protected Object tutorRoles;
+    protected Object customFields;
 
     public void setAngelId(Long angelId) {
         beforePropertyWrite("angelId", this.angelId, angelId);
@@ -656,6 +661,19 @@ public abstract class _CourseClass extends WillowCayenneObject {
         return (List<TutorRole>)readProperty("tutorRoles");
     }
 
+    public void addToCustomFields(CourseClassCustomField obj) {
+        addToManyTarget("customFields", obj, true);
+    }
+
+    public void removeFromCustomFields(CourseClassCustomField obj) {
+        removeToManyTarget("customFields", obj, true);
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<CourseClassCustomField> getCustomFields() {
+        return (List<CourseClassCustomField>)readProperty("customFields");
+    }
+
     @Override
     public Object readPropertyDirectly(String propName) {
         if(propName == null) {
@@ -755,6 +773,8 @@ public abstract class _CourseClass extends WillowCayenneObject {
                 return this.sessions;
             case "tutorRoles":
                 return this.tutorRoles;
+            case "customFields":
+                return this.customFields;
             default:
                 return super.readPropertyDirectly(propName);
         }
@@ -905,6 +925,9 @@ public abstract class _CourseClass extends WillowCayenneObject {
             case "tutorRoles":
                 this.tutorRoles = val;
                 break;
+            case "customFields":
+                this.customFields = val;
+                break;
             default:
                 super.writePropertyDirectly(propName, val);
         }
@@ -967,6 +990,7 @@ public abstract class _CourseClass extends WillowCayenneObject {
         out.writeObject(this.room);
         out.writeObject(this.sessions);
         out.writeObject(this.tutorRoles);
+        out.writeObject(this.customFields);
     }
 
     @Override
@@ -1018,6 +1042,7 @@ public abstract class _CourseClass extends WillowCayenneObject {
         this.room = in.readObject();
         this.sessions = in.readObject();
         this.tutorRoles = in.readObject();
+        this.customFields = in.readObject();
     }
 
 }

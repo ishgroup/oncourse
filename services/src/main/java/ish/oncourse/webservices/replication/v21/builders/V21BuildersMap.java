@@ -70,6 +70,7 @@ public class V21BuildersMap {
 		builderMap.put(CustomFieldType.class.getSimpleName(), new CustomFieldTypeStubBuilder());
 		builderMap.put(ContactCustomField.class.getSimpleName(), new CustomFieldStubBuilder());
 		builderMap.put(CourseCustomField.class.getSimpleName(), new CustomFieldStubBuilder());
+		builderMap.put(CourseClassCustomField.class.getSimpleName(), new CustomFieldStubBuilder());
 		builderMap.put(EnrolmentCustomField.class.getSimpleName(), new CustomFieldStubBuilder());
 		builderMap.put(ApplicationCustomField.class.getSimpleName(), new CustomFieldStubBuilder());
 		builderMap.put(WaitingListCustomField.class.getSimpleName(), new CustomFieldStubBuilder());

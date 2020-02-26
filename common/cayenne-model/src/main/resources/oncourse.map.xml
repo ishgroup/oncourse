@@ -1784,7 +1784,7 @@
 		<obj-attribute name="nominalHours" type="java.lang.Float" db-attribute-path="nominalHours"/>
 		<obj-attribute name="searchText" type="java.lang.String" db-attribute-path="searchText"/>
 	</obj-entity>
-	<obj-entity name="CourseClass" className="ish.oncourse.model.CourseClass" dbEntityName="CourseClass" superClassName="WillowCayenneObject">
+	<obj-entity name="CourseClass" className="ish.oncourse.model.CourseClass" dbEntityName="CourseClass" superClassName="ish.oncourse.model.ExpandableCayenneDataObject">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="attendanceType" type="ish.common.types.CourseClassAttendanceType" db-attribute-path="attendanceType"/>
 		<obj-attribute name="cancelled" type="boolean" db-attribute-path="isCancelled"/>
@@ -1820,6 +1820,9 @@
 		<obj-attribute name="startDate" type="java.util.Date" db-attribute-path="startDate"/>
 		<obj-attribute name="startingMinutePerSession" type="java.lang.Integer" db-attribute-path="startingMinutePerSession"/>
 		<obj-attribute name="timeZone" type="java.lang.String" db-attribute-path="timeZone"/>
+	</obj-entity>
+	<obj-entity name="CourseClassCustomField" superEntityName="CustomField" className="ish.oncourse.model.CourseClassCustomField">
+		<qualifier><![CDATA[entityName = "CourseClass"]]></qualifier>
 	</obj-entity>
 	<obj-entity name="CourseClassPaymentPlanLine" className="ish.oncourse.model.CourseClassPaymentPlanLine" dbEntityName="CourseClassPaymentPlanLine" superClassName="WillowCayenneObject">
 		<obj-attribute name="amount" type="ish.math.Money" db-attribute-path="amount"/>
@@ -3347,6 +3350,9 @@
 	<db-relationship name="tutorRoles" source="CourseClass" target="TutorRole" toMany="true">
 		<db-attribute-pair source="id" target="courseClassId"/>
 	</db-relationship>
+	<db-relationship name="customFields" source="CourseClass" target="CustomField" toMany="true">
+		<db-attribute-pair source="id" target="foreignId"/>
+	</db-relationship>
 	<db-relationship name="college" source="CourseClassPaymentPlanLine" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
@@ -3387,6 +3393,9 @@
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
 	<db-relationship name="relatedWaitingList" source="CustomField" target="WaitingList">
+		<db-attribute-pair source="foreignId" target="id"/>
+	</db-relationship>
+	<db-relationship name="relatedCourseClass" source="CustomField" target="CourseClass">
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
 	<db-relationship name="college" source="CustomFieldType" target="College">
@@ -4445,6 +4454,8 @@
 	<obj-relationship name="room" source="CourseClass" target="Room" deleteRule="Nullify" db-relationship-path="room"/>
 	<obj-relationship name="sessions" source="CourseClass" target="Session" deleteRule="Deny" db-relationship-path="sessions"/>
 	<obj-relationship name="tutorRoles" source="CourseClass" target="TutorRole" deleteRule="Deny" db-relationship-path="tutorRoles"/>
+	<obj-relationship name="customFields" source="CourseClass" target="CourseClassCustomField" deleteRule="Deny" db-relationship-path="customFields"/>
+	<obj-relationship name="relatedObject" source="CourseClassCustomField" target="CourseClass" deleteRule="Nullify" db-relationship-path="relatedCourseClass"/>
 	<obj-relationship name="college" source="CourseClassPaymentPlanLine" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="courseClass" source="CourseClassPaymentPlanLine" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
 	<obj-relationship name="fromCourse" source="CourseCourseRelation" target="Course" deleteRule="Nullify" db-relationship-path="relationFromCourse"/>

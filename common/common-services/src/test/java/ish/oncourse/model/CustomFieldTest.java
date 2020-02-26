@@ -118,6 +118,33 @@ public class CustomFieldTest extends ServiceTest{
     }
 
     @Test
+    public void createCourseClassCustomFieldTest(){
+        CourseClass courseClass = SelectById.query(CourseClass.class, 12L).selectOne(context);
+
+        //customFields amount of course before adding a new one
+        int customFieldAmount = courseClass.getCustomFields().size();
+
+        //creating and filling with data new ContactCustomField
+        CourseClassCustomField courseClassField = context.newObject(CourseClassCustomField.class);
+        courseClassField.setCreated(new Date());
+        courseClassField.setModified(new Date());
+        CustomFieldType fieldType = SelectById.query(CustomFieldType.class, 500L).selectOne(context);
+        courseClassField.setCustomFieldType(fieldType);
+        courseClassField.setCollege(college);
+
+        //adding new CourseCustomField to our course
+        courseClassField.setRelatedObject(courseClass);
+
+        context.commitChanges();
+
+        //getting course again with new context
+        CourseClass actual = SelectById.query(CourseClass.class, 12L).selectOne(cayenneService.newContext());
+
+        //check if amount of related CustomField is increased
+        Assert.assertEquals(customFieldAmount + 1, actual.getCustomFields().size());
+    }
+
+    @Test
     public void createEnrolmentCustomFieldTest(){
         Enrolment enrolment = SelectById.query(Enrolment.class, 3L).selectOne(context);
 
@@ -182,6 +209,25 @@ public class CustomFieldTest extends ServiceTest{
         courseField.setRelatedObject(course);
         courseField.setCustomFieldType(fieldType);
         courseField.setCollege(college);
+
+        try {
+            context.commitChanges();
+        } catch (CayenneRuntimeException e){
+            Assert.fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void checkCourseClassCustomFieldAutofillEntityidentifierOnCommit(){
+        CourseClass course = SelectById.query(CourseClass.class, 12L).selectOne(context);
+        CustomFieldType fieldType = SelectById.query(CustomFieldType.class, 500L).selectOne(context);
+
+        CourseClassCustomField courseClassField = context.newObject(CourseClassCustomField.class);
+        courseClassField.setCreated(new Date());
+        courseClassField.setModified(new Date());
+        courseClassField.setRelatedObject(course);
+        courseClassField.setCustomFieldType(fieldType);
+        courseClassField.setCollege(college);
 
         try {
             context.commitChanges();

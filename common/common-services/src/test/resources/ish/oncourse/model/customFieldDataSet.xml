@@ -55,6 +55,7 @@
     <CustomFieldType id="200" isMandatory="0" created="2017-04-17 19:22:59" modified="2017-04-17 19:23:29" name="courseNumber" fieldKey="afwrrvdv" entityName="Course" collegeId="10"/>
     <CustomFieldType id="300" isMandatory="0" created="2017-04-17 19:22:59" modified="2017-04-17 19:23:29" name="enrolmentNumber" fieldKey="qweqeq" entityName="Enrolment" collegeId="10"/>
     <CustomFieldType id="400" isMandatory="0" created="2017-04-17 19:22:59" modified="2017-04-17 19:23:29" name="pasportNumber2" fieldKey="hghkj" entityName="Contact" collegeId="10"/>
+    <CustomFieldType id="500" isMandatory="0" created="2017-04-17 19:22:59" modified="2017-04-17 19:23:29" name="course field" fieldKey="mkivgti" entityName="CourseClass" collegeId="10"/>
 
     <CustomField id="10" entityName="Contact" foreignId="1" customFieldTypeId="100" value="value10" created="2017-04-17 19:22:59" modified="2017-04-17 19:23:29" collegeId="10"/>
     <CustomField id="20" entityName="Contact" foreignId="2" customFieldTypeId="100" value="value20" created="2017-04-17 19:22:59" modified="2017-04-17 19:23:29" collegeId="10"/>

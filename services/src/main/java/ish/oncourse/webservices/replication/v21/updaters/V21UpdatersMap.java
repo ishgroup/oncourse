@@ -82,6 +82,7 @@ public class V21UpdatersMap {
 		updaterMap.put(CustomFieldType.class.getSimpleName(), new CustomFieldTypeUpdater());
 		updaterMap.put(ContactCustomField.class.getSimpleName(), new CustomFieldUpdater());
 		updaterMap.put(CourseCustomField.class.getSimpleName(), new CustomFieldUpdater());
+		updaterMap.put(CourseClassCustomField.class.getSimpleName(), new CustomFieldUpdater());
 		updaterMap.put(EnrolmentCustomField.class.getSimpleName(), new CustomFieldUpdater());
 		updaterMap.put(ApplicationCustomField.class.getSimpleName(), new CustomFieldUpdater());
 		updaterMap.put(WaitingListCustomField.class.getSimpleName(), new CustomFieldUpdater());

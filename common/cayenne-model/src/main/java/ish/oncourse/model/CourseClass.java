@@ -3,6 +3,9 @@ package ish.oncourse.model;
 import ish.common.types.EnrolmentStatus;
 import ish.math.Money;
 import ish.oncourse.cayenne.CourseClassInterface;
+import ish.oncourse.common.field.FieldProperty;
+import ish.oncourse.common.field.Property;
+import ish.oncourse.common.field.PropertyGetSetFactory;
 import ish.oncourse.model.auto._CourseClass;
 import ish.oncourse.utils.DateUtils;
 import ish.oncourse.utils.QueueableObjectUtils;
@@ -483,5 +486,11 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 	@Override
 	public Date getEndDateTime() {
 		return super.getEndDate();
+	}
+
+	@Override
+	@Property(value = FieldProperty.CUSTOM_FIELD_COURSE_CLASS, type = PropertyGetSetFactory.SET, params = {String.class, String.class})
+	public void setCustomFieldValue(String key, String value) {
+		setCustomFieldValue(key, value, CourseCustomField.class);
 	}
 }
