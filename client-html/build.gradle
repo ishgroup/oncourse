@@ -46,6 +46,10 @@ task queryGrammar(type: YarnTask, dependsOn: [':server-api:swagger', 'yarn', 'ge
 
 task jest(type: YarnTask, dependsOn: 'queryGrammar') {
     args = ['test']
+    execOverrides {
+        // yarn returns error code even if tests fail
+        it.ignoreExitValue = true
+    }
 }
 test.dependsOn(jest)
 
