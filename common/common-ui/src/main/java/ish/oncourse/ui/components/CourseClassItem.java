@@ -25,6 +25,7 @@ import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
+import java.math.BigDecimal;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -224,7 +225,7 @@ public class CourseClassItem extends ISHCommon {
 	}
 
 	public String getExpectedHours() {
-		return (courseClass.getIsDistantLearningCourse() && courseClass.getExpectedHours() != null) ?
+		return (courseClass.getIsDistantLearningCourse() && courseClass.getExpectedHours() != null && courseClass.getExpectedHours().compareTo(BigDecimal.ZERO) > 0) ?
 				String.format("Approximately %.0f hours", courseClass.getExpectedHours().doubleValue()) : StringUtils.EMPTY;
 	}
 
