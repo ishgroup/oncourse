@@ -226,7 +226,9 @@ test {
 	maxParallelForks = 1
 
 //	default database for running test is mysql
-	ext.dbTests = project.hasProperty('databaseConfig') ? project.database : System.getProperty('databaseConfig') ?: "mysql-test1"
+
+	def dbTests = project.hasProperty('databaseConfig') ? databaseConfig : "derby-test"
+	systemProperty 'databaseName', project.hasProperty('buildername') ? buildername : "angelTest_trunk"
 
 	logger.lifecycle("will run tests in '${dbTests}' mode")
 
@@ -234,23 +236,10 @@ test {
 		case "derby-test":
 			systemProperty 'yamlTestConfig', 'application-test-derby.yml'
 			exclude '**/db/Mysql*.class'
-			exclude '**/db/Mssql*.class'
 			break
 
-		case "mssql-test":
-			systemProperty 'yamlTestConfig', 'application-test-mssql.yml'
-			exclude '**/db/Mysql*.class'
-			exclude '**/db/Derby*.class'
-			break
-
-		case "mysql-test1":
-			systemProperty 'yamlTestConfig', 'application-test-mysql1.yml'
-			exclude '**/db/Mssql*.class'
-			exclude '**/db/Derby*.class'
-			break
-		case "mysql-test2":
-			systemProperty 'yamlTestConfig', 'application-test-mysql2.yml'
-			exclude '**/db/Mssql*.class'
+		case "mysql-test":
+			systemProperty 'yamlTestConfig', 'application-test-mariadb.yml'
 			exclude '**/db/Derby*.class'
 			break
 	}
