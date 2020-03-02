@@ -40,7 +40,7 @@ task yarn_outdated(type: YarnTask) {
 
 task queryGrammar(type: YarnTask, dependsOn: [':server-api:swagger', 'yarn', 'generateQueryLanguageModel']) {
     inputs.dir("$rootDir/buildSrc/aql/src/main/resources/")
-    outputs.dir("$buildDir/generated-sources/aql")
+    outputs.dir("$buildDir/generated-sources/aql-parser")
     args = ['antlr4ts']
 }
 
@@ -54,7 +54,7 @@ task jest(type: YarnTask, dependsOn: 'queryGrammar') {
 test.dependsOn(jest)
 
 sourceSets {
-    main.resources.srcDirs 'src/js', 'build/generated-sources'
+    main.resources.srcDirs 'src/js', 'build/generated-sources/swagger-js', 'build/generated-sources/aql-model', 'build/generated-sources/aql-parser'
 }
 
 task buildLogin(type: YarnTask, dependsOn: 'queryGrammar') {
@@ -70,7 +70,7 @@ generateQueryLanguageModel {
     source = zipTree(configurations.queryLanguageModelSource.find { it.name.startsWith("waCommon") })
             .plus(fileTree("$buildDir/../../common/src/main/java"))
 
-    destinationDir = file("$buildDir/generated-sources")
+    destinationDir = file("$buildDir/generated-sources/aql-model")
 }
 
 processResources.dependsOn(':server-api:swagger', "generateQueryLanguageModel")
