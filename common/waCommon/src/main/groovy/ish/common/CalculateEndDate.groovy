@@ -4,10 +4,7 @@ import groovy.time.TimeCategory
 import ish.oncourse.cayenne.AssessmentClassModuleInterface
 import ish.oncourse.cayenne.CourseClassInterface
 import ish.oncourse.cayenne.OutcomeInterface
-import ish.oncourse.cayenne.SessionInterface
 import ish.oncourse.cayenne.SessionModuleInterface
-import org.apache.cayenne.query.Ordering
-import org.apache.cayenne.query.SortOrder
 
 class CalculateEndDate {
 
@@ -40,13 +37,18 @@ class CalculateEndDate {
 			List<AssessmentClassModuleInterface> assessmentClassModules = courseClass.assessmentClasses*.assessmentClassModules
 					.flatten()
 					.findAll { acm -> acm.module == outcome.module } as List<AssessmentClassModuleInterface>
+
+			List<SessionModuleInterface> attendedSessionModules = filterAttendedModulesOnly(sessionModules, outcome)
 			
-			if (sessionModules || assessmentClassModules) {
-				return (sessionModules*.session*.endDatetime + assessmentClassModules*.assessmentClass*.dueDate).sort().last()
+			if (!attendedSessionModules.isEmpty() || !assessmentClassModules.isEmpty()) {
+				return (attendedSessionModules*.session*.endDatetime + assessmentClassModules*.assessmentClass*.dueDate).sort().last()
 			}
 		}
 		// if the module for the outcome isn't found in the sessions, return the class end date
 		return courseClass.endDateTime
 	}
-	
+
+	private List<SessionModuleInterface> filterAttendedModulesOnly(List<SessionModuleInterface> sessionModule, OutcomeInterface outcome) {
+		sessionModule.findAll { !it.getAttendanceForOutcome(outcome).absent }
+	}
 }

@@ -86,4 +86,7 @@ public enum AttendanceType implements DisplayableExtendedEnumeration<Integer> {
 	public String toString() {
 		return getDisplayName();
 	}
+
+	public static final List<AttendanceType> STATUSES_ABSENCE = Arrays.asList(DID_NOT_ATTEND_WITHOUT_REASON,
+			DID_NOT_ATTEND_WITH_REASON);
 }

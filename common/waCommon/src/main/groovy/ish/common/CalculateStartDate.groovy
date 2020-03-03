@@ -35,8 +35,10 @@ class CalculateStartDate {
 					.flatten()
 					.findAll { acm -> acm.module == outcome.module } as List<AssessmentClassModuleInterface>
 
-			if (sessionModules || assessmentClassModules) {
-				return (sessionModules*.session*.startDatetime + assessmentClassModules*.assessmentClass*.dueDate).sort().first()
+			List<SessionModuleInterface> attendedSessionModules = filterAttendedModulesOnly(sessionModules, outcome)
+
+			if (!sessionModules.isEmpty() || !assessmentClassModules.isEmpty()) {
+				return (attendedSessionModules*.session*.startDatetime + assessmentClassModules*.assessmentClass*.dueDate).sort().first()
 			}
 		}
 
@@ -44,4 +46,7 @@ class CalculateStartDate {
 		return courseClass.startDateTime;
 	}
 
+	private List<SessionModuleInterface> filterAttendedModulesOnly(List<SessionModuleInterface> sessionModuleList, OutcomeInterface outcome) {
+		sessionModuleList.findAll { !it.getAttendanceForOutcome(outcome).absent }
+	}
 }
