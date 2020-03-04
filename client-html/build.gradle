@@ -42,12 +42,6 @@ task queryGrammar(type: YarnTask, dependsOn: [':server-api:swagger', 'yarn', 'ge
     inputs.dir("$rootDir/buildSrc/aql/src/main/resources/")
     outputs.dir("$buildDir/generated-sources/aql-parser")
     args = ['antlr4ts']
-    doLast {
-        project.copy {
-            from "$projectDir/src/generated/aql-parser"
-            into "$buildDir/generated-sources/aql-parser"
-        }
-    }
 }
 
 task jest(type: YarnTask, dependsOn: 'queryGrammar') {
@@ -77,7 +71,6 @@ generateQueryLanguageModel {
             .plus(fileTree("$buildDir/../../common/src/main/java"))
 
     destinationDir = file("$buildDir/generated-sources/aql-model")
-    extraFiles = fileTree("$projectDir/src/generated/aql-model/index.d.ts")
 }
 
 processResources.dependsOn(':server-api:swagger', "generateQueryLanguageModel")
