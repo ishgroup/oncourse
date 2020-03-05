@@ -169,6 +169,8 @@ dependencies {
 
 	implementation group: 'com.sun.xml.ws', name: 'jaxws-ri', version: '2.3.2'
 
+	compile group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '8.9'
+
 	testImplementation "org.apache.cayenne:cayenne-dbsync:$cayenneVersion"
 	testImplementation 'org.mockito:mockito-core:2.18.3'
 	testImplementation "org.apache.derby:derbytools:$derbyVersion"
