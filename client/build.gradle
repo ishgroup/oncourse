@@ -4,6 +4,7 @@ import au.com.ish.PackrBundler
 import org.gradle.api.internal.artifacts.publish.DefaultPublishArtifact
 import org.gradle.internal.os.OperatingSystem
 
+
 apply plugin: 'org.apache.cayenne'
 apply plugin: 'apidoc'
 
