@@ -37,7 +37,7 @@ class CalculateStartDate {
 
 			List<SessionModuleInterface> attendedSessionModules = filterAttendedModulesOnly(sessionModules, outcome)
 
-			if (!sessionModules.isEmpty() || !assessmentClassModules.isEmpty()) {
+			if (!attendedSessionModules.isEmpty() || !assessmentClassModules.isEmpty()) {
 				return (attendedSessionModules*.session*.startDatetime + assessmentClassModules*.assessmentClass*.dueDate).sort().first()
 			}
 		}
