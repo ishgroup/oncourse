@@ -47,6 +47,6 @@ class CalculateStartDate {
 	}
 
 	private List<SessionModuleInterface> filterAttendedModulesOnly(List<SessionModuleInterface> sessionModuleList, OutcomeInterface outcome) {
-		sessionModuleList.findAll { !it.getAttendanceForOutcome(outcome).absent }
+		sessionModuleList.findAll { !it.getAttendanceForOutcome(outcome)?.absent }
 	}
 }

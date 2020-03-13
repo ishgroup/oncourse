@@ -49,6 +49,6 @@ class CalculateEndDate {
 	}
 
 	private List<SessionModuleInterface> filterAttendedModulesOnly(List<SessionModuleInterface> sessionModule, OutcomeInterface outcome) {
-		sessionModule.findAll { !it.getAttendanceForOutcome(outcome).absent }
+		sessionModule.findAll { !it.getAttendanceForOutcome(outcome)?.absent }
 	}
 }
