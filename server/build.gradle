@@ -207,7 +207,9 @@ task createResourceManifests {
 					   "resources/oncourse-scripts/import",
 					   "resources/oncourse-scripts/reports",
 					   "resources/oncourse-scripts/scripts",
-					   "resources/oncourse-scripts/email"]
+					   "resources/oncourse-scripts/email",
+					   "templates"
+		]
 		sources.each { s ->
 			def exportManifest = new File("$buildDir/generated-resources/main/$s", "manifest")
 			exportManifest.getParentFile().mkdirs()
