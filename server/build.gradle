@@ -208,7 +208,8 @@ task createResourceManifests {
 					   "resources/oncourse-scripts/reports",
 					   "resources/oncourse-scripts/scripts",
 					   "resources/oncourse-scripts/email",
-					   "templates"
+					   "templates",
+					   "messages"
 		]
 		sources.each { s ->
 			def exportManifest = new File("$buildDir/generated-resources/main/$s", "manifest")
