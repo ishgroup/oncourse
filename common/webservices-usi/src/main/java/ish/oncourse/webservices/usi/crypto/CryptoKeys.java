@@ -5,8 +5,8 @@ package ish.oncourse.webservices.usi.crypto;
  */
 public interface CryptoKeys {
     String getServicesSecurityKey();
-    String getAuskeyCertificate();
-    String getAuskeyPrivateKey();
-    String getAuskeySalt();
-    String getAuskeyPassword();
+    String getCertificate();
+    String getPrivateKey();
+    String getSalt();
+    String getPassword();
 }

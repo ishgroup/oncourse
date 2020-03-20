@@ -34,7 +34,7 @@ public class AUSKeyCryptoService extends CryptoBase implements CallbackHandler {
 	@Override
 	public X509Certificate[] getX509Certificates(CryptoType cryptoType) throws WSSecurityException {
 		try {
-			return CryptoUtils.getCertificateChain(Base64.decode(cryptoKeys.getAuskeyCertificate()));
+			return CryptoUtils.getCertificateChain(Base64.decode(cryptoKeys.getCertificate()));
 		} catch (IOException | CertificateException e) {
 			throw new WSSecurityException("Error parsing certificate.", e);
 		}
@@ -54,9 +54,9 @@ public class AUSKeyCryptoService extends CryptoBase implements CallbackHandler {
 	public PrivateKey getPrivateKey(String identifier, String password) throws WSSecurityException {
 		try {
 			return CryptoUtils.decryptPrivateKey(
-					Base64.decode(cryptoKeys.getAuskeyPrivateKey()),
+					Base64.decode(cryptoKeys.getPrivateKey()),
 					password.toCharArray(),
-					Base64.decode(cryptoKeys.getAuskeySalt()));
+					Base64.decode(cryptoKeys.getSalt()));
 		} catch (Exception e) {
 			throw new WSSecurityException("Error decrypting private key.", e);
 		}
@@ -84,7 +84,7 @@ public class AUSKeyCryptoService extends CryptoBase implements CallbackHandler {
 				WSPasswordCallback passwordCallback = (WSPasswordCallback) callback;
 
 				if (cryptoKeys.getServicesSecurityKey().equals(passwordCallback.getIdentifier())) {
-					passwordCallback.setPassword(cryptoKeys.getAuskeyPassword());
+					passwordCallback.setPassword(cryptoKeys.getPassword());
 				}
 			}
 		}

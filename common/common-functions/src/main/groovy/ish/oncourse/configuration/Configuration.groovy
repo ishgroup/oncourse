@@ -27,6 +27,8 @@ class Configuration {
             init(props, DB_PASS)
             init(props, DB_USER)
             init(props, SMTP)
+            init(props, CREDENTIAL_STORE)
+            init(props, CREDENTIAL_STORE_PASSWORD)
 
             if (init(props, ZK_HOST)) {
                 String zkHostPort = props.get(ZK_HOST.key) as String
@@ -88,7 +90,9 @@ class Configuration {
         PATH('path', 'bq.jetty.context'),
         ZK_HOST('zk_host', 'zk.host.property'),
         LOGS_PATH('logs_path', 'logs.path'),
-        SMTP('smtp', 'mail.smtp.host')
+        SMTP('smtp', 'mail.smtp.host'),
+        CREDENTIAL_STORE('credentialStore', 'credentialStore'),
+        CREDENTIAL_STORE_PASSWORD('credentialStorePassword', 'credentialStorePassword')
 
         private String key
         private String systemProperty

@@ -103,8 +103,12 @@ import ish.oncourse.webservices.replication.updaters.WillowUpdaterImpl;
 import ish.oncourse.webservices.usi.USIService;
 import ish.oncourse.webservices.usi.USIVerificationService;
 import ish.oncourse.webservices.usi.crypto.CryptoKeys;
+import ish.oncourse.webservices.usi.crypto.UsiCertificate;
+import ish.oncourse.webservices.usi.crypto.UsiPrivateKey;
 import ish.oncourse.webservices.usi.tapestry.CryptoKeysBuilder;
 import ish.oncourse.webservices.usi.tapestry.USIServiceBuilder;
+import ish.oncourse.webservices.usi.tapestry.UsiCertificateBuilder;
+import ish.oncourse.webservices.usi.tapestry.UsiPrivateKeyBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.SymbolConstants;
@@ -120,7 +124,6 @@ import org.apache.tapestry5.services.LibraryMapping;
 import org.apache.tapestry5.services.RequestExceptionHandler;
 
 import static ish.oncourse.services.ServiceModule.APP_TEST_MODE;
-import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.trimToNull;
 import static org.apache.tapestry5.ioc.ScopeConstants.PERTHREAD;
 
@@ -220,6 +223,8 @@ public class AppModule {
 		binder.bind(CryptoKeys.class, new CryptoKeysBuilder());
 		binder.bind(USIService.class, new USIServiceBuilder()).eagerLoad();
 		binder.bind(IUSIVerificationService.class, USIVerificationService.class);
+		binder.bind(UsiCertificate.class, new UsiCertificateBuilder()).eagerLoad();
+		binder.bind(UsiPrivateKey.class, new UsiPrivateKeyBuilder()).eagerLoad();
 
 		binder.bind(ICayenneService.class, new BinderFunctions.CayenneServiceBuilder()).eagerLoad();
 		binder.bind(IJMXInitService.class, new BinderFunctions.JMXInitServiceBuilder("services")).eagerLoad();

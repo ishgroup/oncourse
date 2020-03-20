@@ -3,10 +3,15 @@
  */
 package ish.oncourse.webservices.usi.tapestry;
 
-import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.webservices.usi.crypto.CryptoKeys;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.ServiceBuilder;
 import org.apache.tapestry5.ioc.ServiceResources;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 
 /**
  * User: akoiro
@@ -14,33 +19,44 @@ import org.apache.tapestry5.ioc.ServiceResources;
  */
 public class CryptoKeysBuilder implements ServiceBuilder<CryptoKeys> {
 
+	private static final Logger logger = LogManager.getLogger();
+
 	@Override
 	public CryptoKeys buildService(ServiceResources resources) {
-		final PreferenceController preferenceController = resources.getService(PreferenceController.class);
+
+		final СredentialStoreReader reader = СredentialStoreReader.valueOf(System.getProperty("credentialStore"), System.getProperty("credentialStorePassword"));
+		try {
+			reader.read();
+		} catch (ParserConfigurationException | SAXException e) {
+			logger.error("Can not parse credential store file for USI.");
+		} catch (IOException e) {
+			logger.error("Credential store file not found.");
+		}
+
 		return new CryptoKeys() {
 			@Override
 			public String getServicesSecurityKey() {
-				return preferenceController.getServicesSecurityKey();
+				return reader.getId();
 			}
 
 			@Override
-			public String getAuskeyCertificate() {
-				return preferenceController.getAuskeyCertificate();
+			public String getCertificate() {
+				return reader.getPublicCertificate();
 			}
 
 			@Override
-			public String getAuskeyPrivateKey() {
-				return preferenceController.getAuskeyPrivateKey();
+			public String getPrivateKey() {
+				return reader.getPrivateKey();
 			}
 
 			@Override
-			public String getAuskeySalt() {
-				return preferenceController.getAuskeySalt();
+			public String getSalt() {
+				return reader.getSalt();
 			}
 
 			@Override
-			public String getAuskeyPassword() {
-				return preferenceController.getAuskeyPassword();
+			public String getPassword() {
+				return reader.getPassword();
 			}
 		};
 	}

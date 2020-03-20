@@ -11,6 +11,8 @@
 	
 	<bean id="ausKeyCryptoService" class="ish.oncourse.webservices.usi.crypto.AUSKeyCryptoService"/>
 	<bean id="unexpectedResponseNodeInterceptor" class="ish.oncourse.webservices.usi.interceptors.UnexpectedResponseNodeInterceptor"/>
+	<bean id="certificate" class="ish.oncourse.webservices.usi.crypto.UsiCertificate"/>
+	<bean id="privateKey" class="ish.oncourse.webservices.usi.crypto.UsiPrivateKey"/>
 
 	<cxf:bus id="usiClientBus" name="usiClientBus">
 		<cxf:features>
@@ -34,6 +36,8 @@
 							<entry key="ws-security.sts.client-soap12-binding" value="true"/>
 							<entry key="ws-security.signature.crypto" value-ref="ausKeyCryptoService"/>
 							<entry key="ws-security.callback-handler" value-ref="ausKeyCryptoService"/>
+							<entry key="certificate" value-ref="certificate"/>
+							<entry key="privatekey" value-ref="privateKey"/>
 						</map>
 					</property>
 				</bean>
