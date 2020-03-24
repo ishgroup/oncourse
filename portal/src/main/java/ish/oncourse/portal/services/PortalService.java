@@ -535,7 +535,7 @@ public class PortalService implements IPortalService {
                     .andExp(Document.COLLEGE.eq(webSiteService.getCurrentCollege()))
                     .andExp(Document.BINARY_INFO_RELATIONS.outer().dot(BinaryInfoRelation.CREATED).isNull());
 
-            if (allowedClasses != null) {
+            if (!allowedClasses.isEmpty()) {
                 List<Long> allowedCourseIds = allowedClasses.stream().map(cc -> cc.getCourse().getId()).distinct().collect(Collectors.toList());
                 expr = expr.andExp(Document.BINARY_INFO_RELATIONS.outer().dot(BinaryInfoRelation.ENTITY_IDENTIFIER).eq(Course.class.getSimpleName())
                         .andExp(Document.BINARY_INFO_RELATIONS.outer().dot(BinaryInfoRelation.ENTITY_WILLOW_ID).in(allowedCourseIds)));
@@ -621,7 +621,7 @@ public class PortalService implements IPortalService {
     public List<Document> getResources() {
         List<Document> resources = new ArrayList<>();
         resources.addAll(getTutorCommonResources());
-        resources.addAll(getStudentAndTutorCommonResources(null));
+        resources.addAll(getStudentAndTutorCommonResources(Collections.emptyList()));
 
         List<PCourseClass> courseClasses = fillCourseClassSessions(CourseClassFilter.CURRENT);
 
