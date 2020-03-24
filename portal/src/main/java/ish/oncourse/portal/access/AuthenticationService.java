@@ -39,7 +39,7 @@ public class AuthenticationService implements IAuthenticationService {
 	private static final String TOKEN_PATTERN = "%s&%s";
 
 	private static final int SESSION_ID_MAX_AGE = 14400;
-	private static final boolean SESSION_ID_SECURE = true;
+	private static final boolean SESSION_ID_SECURE = false;
 
 	/**
 	 * @see IAuthenticationService#authenticate(String, String, String, String)
