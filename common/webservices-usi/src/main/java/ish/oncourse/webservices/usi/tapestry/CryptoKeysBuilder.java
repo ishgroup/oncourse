@@ -24,6 +24,10 @@ public class CryptoKeysBuilder implements ServiceBuilder<CryptoKeys> {
 	@Override
 	public CryptoKeys buildService(ServiceResources resources) {
 
+		if (System.getProperty("credentialStore") == null || System.getProperty("credentialStorePassword") == null) {
+			return nullCryptoKeys();
+		}
+
 		final СredentialStoreReader reader = СredentialStoreReader.valueOf(System.getProperty("credentialStore"), System.getProperty("credentialStorePassword"));
 		try {
 			reader.read();
@@ -57,6 +61,35 @@ public class CryptoKeysBuilder implements ServiceBuilder<CryptoKeys> {
 			@Override
 			public String getPassword() {
 				return reader.getPassword();
+			}
+		};
+	}
+
+	private CryptoKeys nullCryptoKeys() {
+		return new CryptoKeys() {
+			@Override
+			public String getServicesSecurityKey() {
+				return null;
+			}
+
+			@Override
+			public String getCertificate() {
+				return null;
+			}
+
+			@Override
+			public String getPrivateKey() {
+				return null;
+			}
+
+			@Override
+			public String getSalt() {
+				return null;
+			}
+
+			@Override
+			public String getPassword() {
+				return null;
 			}
 		};
 	}
