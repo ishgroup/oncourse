@@ -17,24 +17,44 @@ public class TestConfig {
         }
 
         @Override
-        public String getAuskeyCertificate() {
+        public String getCertificate() {
             return "";
         }
 
         @Override
-        public String getAuskeyPrivateKey() {
+        public String getPrivateKey() {
             return "";
         }
 
         @Override
-        public String getAuskeySalt() {
+        public String getSalt() {
             return "";
         }
 
         @Override
-        public String getAuskeyPassword() {
+        public String getPassword() {
             return "";
         }
+
+//        @Override
+//        public String getAuskeyCertificate() {
+//            return "";
+//        }
+//
+//        @Override
+//        public String getAuskeyPrivateKey() {
+//            return "";
+//        }
+//
+//        @Override
+//        public String getAuskeySalt() {
+//            return "";
+//        }
+//
+//        @Override
+//        public String getAuskeyPassword() {
+//            return "";
+//        }
     };
 
     @Bean
