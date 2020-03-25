@@ -537,7 +537,7 @@ public class PortalService implements IPortalService {
 
             if (!allowedClasses.isEmpty()) {
                 List<Long> allowedCourseIds = allowedClasses.stream().map(cc -> cc.getCourse().getId()).distinct().collect(Collectors.toList());
-                expr = expr.andExp(Document.BINARY_INFO_RELATIONS.outer().dot(BinaryInfoRelation.ENTITY_IDENTIFIER).eq(Course.class.getSimpleName())
+                expr = expr.orExp(Document.BINARY_INFO_RELATIONS.outer().dot(BinaryInfoRelation.ENTITY_IDENTIFIER).eq(Course.class.getSimpleName())
                         .andExp(Document.BINARY_INFO_RELATIONS.outer().dot(BinaryInfoRelation.ENTITY_WILLOW_ID).in(allowedCourseIds)));
             }
 
