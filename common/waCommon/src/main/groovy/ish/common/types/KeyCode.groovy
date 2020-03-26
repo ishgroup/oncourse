@@ -704,7 +704,15 @@ enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
      * Relates to onCourse application preferences that affect all users and open in java embedded web browser
      */
     @API
-    GENERAL_PREFERENCES_HTML(109, "HTML general preferences", NONE, CREATE | PRINT | DELETE)
+    GENERAL_PREFERENCES_HTML(109, "HTML general preferences", NONE, CREATE | PRINT | DELETE),
+
+	/**
+     * Database value: 110
+     *
+     * Permission to work with any assessment.
+     */
+	@API
+    ASSESSMENT(110, "Assessment", VIEW, NONE, ALL)
     
 
 	private int value
