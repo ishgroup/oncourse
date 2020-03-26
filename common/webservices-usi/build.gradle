@@ -11,7 +11,7 @@ dependencies {
     compile 'org.springframework:spring-beans:3.0.5.RELEASE'
     compile 'org.bouncycastle:bcprov-jdk15:1.45'
     compile 'au.gov.abr.akm:abrakm:1.0.0'
-    compile 'au.gov.abr.akm:auskey-dep:1.0.0'
+    compile 'au.gov.abr.akm:auskey-dep:10.0.0'
 
     testCompile 'org.springframework:spring-context:3.1.0.RELEASE'
     testCompile 'cglib:cglib:2.2.2'
