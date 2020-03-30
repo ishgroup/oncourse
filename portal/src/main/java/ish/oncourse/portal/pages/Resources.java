@@ -80,13 +80,11 @@ public class Resources {
     void setupRender() {
 
         lastLoginDate = portalService.getLastLoginTime();
-        if (portalService.getContact().getTutor() != null) {
-            tutorsMaterials = portalService.getTutorCommonResources();
-        }
         courseClasses = portalService.getContactCourseClasses(CourseClassFilter.CURRENT);
-		if (portalService.getContact().getStudent() != null) {
-			sudentAndTutorsMaterials = portalService.getStudentAndTutorCommonResources(courseClasses);
-		}
+        if (portalService.getContact().getTutor() != null) {
+            tutorsMaterials = portalService.getTutorCommonResources(courseClasses);
+        }
+        sudentAndTutorsMaterials = portalService.getStudentAndTutorCommonResources(courseClasses);
     }
 
 
@@ -125,7 +123,7 @@ public class Resources {
         return lastLoginDate == null || material.after(lastLoginDate);
     }
 
-    public String getMaterialUrl(Document document) {
+    public String  getMaterialUrl(Document document) {
         return binaryDataService.getUrl(document);
     }
 
