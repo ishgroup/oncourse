@@ -170,5 +170,6 @@
 	<BinaryInfoRelation id="2" collegeId="1" entityIdentifier="CourseClass" entityWillowId="1" documentId="3" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"/>
 	<BinaryInfoRelation id="3" collegeId="1" entityIdentifier="CourseClass" entityWillowId="1" documentId="2" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"/>
 	<BinaryInfoRelation id="4" collegeId="1" entityIdentifier="CourseClass" entityWillowId="1" documentId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"/>
+	<BinaryInfoRelation id="5" collegeId="1" entityIdentifier="Course" entityWillowId="1" documentId="4" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"/>
 
 </dataset>

@@ -228,7 +228,7 @@ public class PortalServiceTest extends ServiceTest {
 
 		List<Document> tutorClassResources = service.getResourcesBy(courseClass);
 
-		assertEquals(2, tutorClassResources.size());
+		assertEquals(3, tutorClassResources.size());
 		assertFalse(tutorClassResources.contains(privateResource));
 	}
 	
