@@ -1,10 +1,7 @@
 package ish.oncourse.portal.services;
 
 import ish.oncourse.configuration.InitZKRootNode;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Document;
-import ish.oncourse.model.Session;
+import ish.oncourse.model.*;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.service.TestModule;
 import ish.oncourse.services.courseclass.CourseClassFilter;
@@ -208,8 +205,9 @@ public class PortalServiceTest extends ServiceTest {
 
 		Contact contact = Cayenne.objectForPK(objectContext, Contact.class, 1);
 		authenticationService.storeCurrentUser(contact);
-		
-		List<Document> tutorResources = service.getTutorCommonResources();
+
+		List<CourseClass> courseClasses = service.getContactCourseClasses(CourseClassFilter.ALL);
+		List<Document> tutorResources = service.getTutorCommonResources(courseClasses);
 		
 		assertEquals(1, tutorResources.size());
 		assertEquals(tutorResource.getId(), tutorResources.get(0).getId());
