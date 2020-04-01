@@ -55,9 +55,7 @@ public interface Preferences {
 	
 	String COLLEGE_ENROL_SUCCESS_URL = "enrol.postSuccessURL";
 
-	String PAYMENT_GATEWAY_ACCOUNT = "payment.gateway.account";
-
-	String PAYMENT_GATEWAY_PASS = "payment.gateway.pass";
+	String PAYMENT_GATEWAY_PASS = "payment.gateway.api.key";
 
 
 
