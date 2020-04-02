@@ -6,13 +6,12 @@
 			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 			http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
 			http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+	<!--					https://softwareauthorisations.acc.ato.gov.au/R3.0/S007v1.3/service.svc-->
 
 	<context:annotation-config />
 	
 	<bean id="ausKeyCryptoService" class="ish.oncourse.webservices.usi.crypto.AUSKeyCryptoService"/>
 	<bean id="unexpectedResponseNodeInterceptor" class="ish.oncourse.webservices.usi.interceptors.UnexpectedResponseNodeInterceptor"/>
-	<bean id="certificate" class="ish.oncourse.webservices.usi.crypto.UsiCertificate"/>
-	<bean id="privateKey" class="ish.oncourse.webservices.usi.crypto.UsiPrivateKey"/>
 
 	<cxf:bus id="usiClientBus" name="usiClientBus">
 		<cxf:features>
@@ -27,8 +26,8 @@
 		<jaxws:properties>
 			<entry key="ws-security.sts.client">
 				<bean class="org.apache.cxf.ws.security.trust.STSClient">
-					<constructor-arg ref="usiClientBus"/>
-					<property name="wsdlLocation" value="https://authentication.business.gov.au/R3.0/vanguard/S007v1.2/Service.svc?wsdl"/>
+				<constructor-arg ref="usiClientBus"/>
+					<property name="wsdlLocation" value="https://softwareauthorisations.ato.gov.au/R3.0/S007v1.3/service.svc"/>
 					<property name="serviceName" value="{http://schemas.microsoft.com/ws/2008/06/identity/securitytokenservice}SecurityTokenService"/>
 					<property name="endpointName" value="{http://schemas.microsoft.com/ws/2008/06/identity/securitytokenservice}S007SecurityTokenServiceEndpoint"/>
 					<property name="properties">
@@ -36,8 +35,6 @@
 							<entry key="ws-security.sts.client-soap12-binding" value="true"/>
 							<entry key="ws-security.signature.crypto" value-ref="ausKeyCryptoService"/>
 							<entry key="ws-security.callback-handler" value-ref="ausKeyCryptoService"/>
-							<entry key="certificate" value-ref="certificate"/>
-							<entry key="privatekey" value-ref="privateKey"/>
 						</map>
 					</property>
 				</bean>
