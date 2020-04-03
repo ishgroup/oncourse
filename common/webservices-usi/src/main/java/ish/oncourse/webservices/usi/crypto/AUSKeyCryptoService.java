@@ -3,90 +3,147 @@
  */
 package ish.oncourse.webservices.usi.crypto;
 
-import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.ws.security.WSPasswordCallback;
+import au.gov.abr.akm.credential.store.ABRCredential;
+import au.gov.abr.akm.credential.store.ABRKeyStore;
+import au.gov.abr.akm.credential.store.ABRProperties;
+import ish.oncourse.configuration.Configuration;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.ws.security.WSSecurityException;
-import org.apache.ws.security.components.crypto.CryptoBase;
+import org.apache.ws.security.components.crypto.Crypto;
 import org.apache.ws.security.components.crypto.CryptoType;
-import org.bouncycastle.util.encoders.Base64;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
-import javax.security.auth.callback.UnsupportedCallbackException;
-import java.io.IOException;
+import java.io.*;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 
-public class AUSKeyCryptoService extends CryptoBase implements CallbackHandler {
+import static ish.oncourse.configuration.Configuration.AppProperty.CREDENTIAL_STORE;
+import static ish.oncourse.configuration.Configuration.AppProperty.CREDENTIAL_STORE_PASSWORD;
 
-	@Inject
-	@Autowired
-	private CryptoKeys cryptoKeys;
+public class AUSKeyCryptoService implements Crypto, CallbackHandler {
 
-	@Override
-	public String getDefaultX509Identifier() throws WSSecurityException {
-		return cryptoKeys.getServicesSecurityKey();
-	}
+	private static final Logger logger = LogManager.getLogger();
+	private X509Certificate[] certificates;
+	private  PrivateKey key;
+	private String alias;
 
-	@Override
-	public X509Certificate[] getX509Certificates(CryptoType cryptoType) throws WSSecurityException {
+	public AUSKeyCryptoService() {
+
+		String xmlCredentialPath = Configuration.getValue(CREDENTIAL_STORE);
+		String passwordPath = Configuration.getValue(CREDENTIAL_STORE_PASSWORD);
+
 		try {
-			return CryptoUtils.getCertificateChain(Base64.decode(cryptoKeys.getCertificate()));
-		} catch (IOException | CertificateException e) {
-			throw new WSSecurityException("Error parsing certificate.", e);
-		}
-	}
+			File keystoreFile = new File(xmlCredentialPath).getAbsoluteFile();
+			char[] pass = new BufferedReader(new FileReader(passwordPath)).readLine().trim().toCharArray();
 
-	@Override
-	public String getX509Identifier(X509Certificate cert) throws WSSecurityException {
-		throw new UnsupportedOperationException();
-	}
+			ABRProperties.setSoftwareInfo("ish pty ltd", "Ish onCourse", "v1.0", "20-10-2006");
 
-	@Override
-	public PrivateKey getPrivateKey(X509Certificate certificate, CallbackHandler callbackHandler) throws WSSecurityException {
-		throw new UnsupportedOperationException();
-	}
 
-	@Override
-	public PrivateKey getPrivateKey(String identifier, String password) throws WSSecurityException {
-		try {
-			return CryptoUtils.decryptPrivateKey(
-					Base64.decode(cryptoKeys.getPrivateKey()),
-					password.toCharArray(),
-					Base64.decode(cryptoKeys.getSalt()));
-		} catch (Exception e) {
-			throw new WSSecurityException("Error decrypting private key.", e);
-		}
-	}
+			ABRKeyStore keyStore = new ABRKeyStore(new FileInputStream(keystoreFile));
+			alias = keyStore.getCredentials().get(0).getId();
+			ABRCredential abrCredential = keyStore.getCredential(alias);
 
-	@Override @Deprecated
-	public boolean verifyTrust(X509Certificate[] certs) throws WSSecurityException {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public boolean verifyTrust(X509Certificate[] certs, boolean enableRevocation) throws WSSecurityException {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public boolean verifyTrust(PublicKey publicKey) throws WSSecurityException {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
-		for (Callback callback : callbacks) {
-			if (callback instanceof WSPasswordCallback) {
-				WSPasswordCallback passwordCallback = (WSPasswordCallback) callback;
-
-				if (cryptoKeys.getServicesSecurityKey().equals(passwordCallback.getIdentifier())) {
-					passwordCallback.setPassword(cryptoKeys.getPassword());
-				}
+			if (abrCredential.isReadyForRenewal()) {
+				abrCredential.renew(pass);
 			}
+			key = abrCredential.getPrivateKey(pass);
+			certificates =  abrCredential.getCertificateChain();
+
+		} catch (Exception e) {
+			logger.catching(e);
+			logger.error("Cannot read usi certificate");
 		}
+	}
+
+
+	@Override
+	public void handle(Callback[] callbacks) {
+	}
+
+	@Override
+	public String getCryptoProvider() {
+		return null;
+	}
+
+	@Override
+	public void setCryptoProvider(String provider) {
+	}
+
+	@Override
+	public String getDefaultX509Identifier() {
+		return alias;
+	}
+
+	@Override
+	public void setDefaultX509Identifier(String identifier) {
+		System.out.println(identifier);
+	}
+
+	@Override
+	public void setCertificateFactory(String provider, CertificateFactory certFactory) {
+	}
+
+	@Override
+	public CertificateFactory getCertificateFactory() {
+		return null;
+	}
+
+	@Override
+	public X509Certificate loadCertificate(InputStream in) {
+		return certificates[0];
+	}
+
+	@Override
+	public byte[] getSKIBytesFromCert(X509Certificate cert) {
+		return new byte[0];
+	}
+
+	@Override
+	public byte[] getBytesFromCertificates(X509Certificate[] certs)  {
+		return new byte[0];
+	}
+
+	@Override
+	public X509Certificate[] getCertificatesFromBytes(byte[] data) throws WSSecurityException {
+		return certificates;
+	}
+
+	@Override
+	public X509Certificate[] getX509Certificates(CryptoType cryptoType)  {
+		return certificates;
+	}
+
+	@Override
+	public String getX509Identifier(X509Certificate cert) {
+		return alias;
+	}
+
+	@Override
+	public PrivateKey getPrivateKey(X509Certificate certificate, CallbackHandler callbackHandler) {
+		return key;
+	}
+
+	@Override
+	public PrivateKey getPrivateKey(String identifier, String password) {
+		return key;
+	}
+
+	@Override
+	public boolean verifyTrust(X509Certificate[] certs) {
+		return true;
+	}
+
+	@Override
+	public boolean verifyTrust(X509Certificate[] certs, boolean enableRevocation)  {
+		return true;
+	}
+
+	@Override
+	public boolean verifyTrust(PublicKey publicKey)  {
+		return true;
 	}
 }

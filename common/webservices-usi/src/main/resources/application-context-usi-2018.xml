@@ -6,10 +6,9 @@
 			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 			http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
 			http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
-	<!--					https://softwareauthorisations.acc.ato.gov.au/R3.0/S007v1.3/service.svc-->
 
 	<context:annotation-config />
-	
+
 	<bean id="ausKeyCryptoService" class="ish.oncourse.webservices.usi.crypto.AUSKeyCryptoService"/>
 	<bean id="unexpectedResponseNodeInterceptor" class="ish.oncourse.webservices.usi.interceptors.UnexpectedResponseNodeInterceptor"/>
 
