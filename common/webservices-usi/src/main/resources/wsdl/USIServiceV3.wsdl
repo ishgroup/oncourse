@@ -29,7 +29,7 @@
             </sp:TransportToken>
             <sp:AlgorithmSuite>
               <wsp:Policy>
-                <sp:Basic256/>
+                <sp:Basic256Sha256Rsa15/>
               </wsp:Policy>
             </sp:AlgorithmSuite>
             <sp:Layout>
@@ -47,7 +47,7 @@
                 <Address xmlns="http://www.w3.org/2005/08/addressing">https://authentication.business.gov.au/R3.0/vanguard/S007v1.3/Service.svc</Address>
                 <Metadata xmlns="http://www.w3.org/2005/08/addressing">
                   <Metadata xmlns="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-                    <wsx:MetadataSection xmlnsn="">
+                    <wsx:MetadataSection xmlns="">
                       <wsx:MetadataReference>
                         <Address xmlns="http://www.w3.org/2005/08/addressing">https://authentication.business.gov.au/R3.0/vanguard/S007v1.3/Service.svc/mex</Address>
                       </wsx:MetadataReference>
@@ -88,9 +88,9 @@
   </wsp:Policy>
   <wsdl:types>
     <xs:schema targetNamespace="http://usi.gov.au/2018/ws"
-        elementFormDefault="qualified"
-        xmlns="http://usi.gov.au/2018/ws"
-        xmlns:xs="http://www.w3.org/2001/XMLSchema">
+               elementFormDefault="qualified"
+               xmlns="http://usi.gov.au/2018/ws"
+               xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
       <xs:element name="BulkUpload" type="BulkUploadType" />
       <xs:element name="BulkUploadResponse" type="BulkUploadResponseType" />
@@ -759,6 +759,46 @@
           </xs:extension>
         </xs:complexContent>
       </xs:complexType>
+
+      <xs:complexType name="CentrelinkCardType">
+        <xs:complexContent>
+          <xs:extension base="DVSDocumentType">
+            <xs:sequence>
+              <xs:element name="CRN">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:length value="10" />
+                    <xs:pattern value="[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][a-zA-Z]" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Name">
+                <!--The sequence in which the elements are defined must match up with the data contract-->
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="32" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ExpiryDate">
+                <xs:simpleType>
+                  <xs:union memberTypes="xs:date"/>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Type">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:enumeration value="PCC" />
+                    <xs:enumeration value="HCC" />
+                    <xs:enumeration value="SHC" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+
       <xs:complexType name="NationalAddressType">
         <xs:sequence>
           <xs:element name="Address1">

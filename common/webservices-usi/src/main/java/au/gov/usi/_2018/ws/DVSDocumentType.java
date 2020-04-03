@@ -33,6 +33,7 @@ import javax.xml.bind.annotation.XmlType;
     VisaDocumentType.class,
     PassportDocumentType.class,
     MedicareDocumentType.class,
+    CentrelinkCardType.class,
     CertificateOfRegistrationByDescentDocumentType.class
 })
 public abstract class DVSDocumentType {

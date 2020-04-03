@@ -60,9 +60,9 @@ public class ApplicationType {
     protected PersonalDetailsType personalDetails;
     @XmlElement(name = "DVSDocument")
     protected DVSDocumentType dvsDocument;
-    @XmlElementRef(name = "NonDvsDocumentTypeId", namespace = "http://usi.gov.au/2018/ws", type = JAXBElement.class, required = false)
+    @XmlElementRef(name = "NonDvsDocumentTypeId", namespace = "http://usi.gov.au/2018/ws", type = JAXBElement.class)
     protected JAXBElement<Integer> nonDvsDocumentTypeId;
-    @XmlElementRef(name = "NonDvsDocumentTypeOther", namespace = "http://usi.gov.au/2018/ws", type = JAXBElement.class, required = false)
+    @XmlElementRef(name = "NonDvsDocumentTypeOther", namespace = "http://usi.gov.au/2018/ws", type = JAXBElement.class)
     protected JAXBElement<String> nonDvsDocumentTypeOther;
 
     /**
@@ -222,7 +222,7 @@ public class ApplicationType {
      *     
      */
     public void setNonDvsDocumentTypeId(JAXBElement<Integer> value) {
-        this.nonDvsDocumentTypeId = value;
+        this.nonDvsDocumentTypeId = ((JAXBElement<Integer> ) value);
     }
 
     /**
@@ -246,7 +246,7 @@ public class ApplicationType {
      *     
      */
     public void setNonDvsDocumentTypeOther(JAXBElement<String> value) {
-        this.nonDvsDocumentTypeOther = value;
+        this.nonDvsDocumentTypeOther = ((JAXBElement<String> ) value);
     }
 
 }
