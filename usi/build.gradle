@@ -19,8 +19,8 @@ dependencies {
     compile 'au.gov.abr.akm:token-manager:1.0.0'
 
     compile 'au.gov.abr.akm:webservices-api:1.1.0'
-    compile 'au.gov.abr.akm:webservices-extra:1.0.0'
-    compile 'au.gov.abr.akm:webservices-rt:1.0.0'
+    compile 'au.gov.abr.akm:webservices-extra:1.1.0'
+    compile 'au.gov.abr.akm:webservices-rt:1.1.0'
 
     ws "org.apache.cxf:cxf-tools:3.3.5",
             "org.apache.cxf:cxf-tools-wsdlto-databinding-jaxb:3.3.5",
