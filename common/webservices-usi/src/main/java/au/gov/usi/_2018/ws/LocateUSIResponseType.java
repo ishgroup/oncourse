@@ -1,9 +1,13 @@
 
 package au.gov.usi._2018.ws;
 
-import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlType;
 
 
 /**
@@ -59,11 +63,11 @@ public class LocateUSIResponseType {
 
     /**
      * Gets the value of the result property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link LocateResultType }
-     *
+     *     
      */
     public LocateResultType getResult() {
         return result;
@@ -71,11 +75,11 @@ public class LocateUSIResponseType {
 
     /**
      * Sets the value of the result property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link LocateResultType }
-     *
+     *     
      */
     public void setResult(LocateResultType value) {
         this.result = value;
@@ -83,11 +87,11 @@ public class LocateUSIResponseType {
 
     /**
      * Gets the value of the usi property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link String }
-     *
+     *     
      */
     public String getUSI() {
         return usi;
@@ -95,11 +99,11 @@ public class LocateUSIResponseType {
 
     /**
      * Sets the value of the usi property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link String }
-     *
+     *     
      */
     public void setUSI(String value) {
         this.usi = value;
@@ -107,11 +111,11 @@ public class LocateUSIResponseType {
 
     /**
      * Gets the value of the contactDetailsMessage property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link String }
-     *
+     *     
      */
     public String getContactDetailsMessage() {
         return contactDetailsMessage;
@@ -119,11 +123,11 @@ public class LocateUSIResponseType {
 
     /**
      * Sets the value of the contactDetailsMessage property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link String }
-     *
+     *     
      */
     public void setContactDetailsMessage(String value) {
         this.contactDetailsMessage = value;
@@ -131,11 +135,11 @@ public class LocateUSIResponseType {
 
     /**
      * Gets the value of the errors property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link LocateUSIResponseType.Errors }
-     *
+     *     
      */
     public LocateUSIResponseType.Errors getErrors() {
         return errors;
@@ -143,11 +147,11 @@ public class LocateUSIResponseType {
 
     /**
      * Sets the value of the errors property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link LocateUSIResponseType.Errors }
-     *
+     *     
      */
     public void setErrors(LocateUSIResponseType.Errors value) {
         this.errors = value;

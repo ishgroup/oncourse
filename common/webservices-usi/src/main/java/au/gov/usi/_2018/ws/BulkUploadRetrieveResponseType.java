@@ -1,12 +1,12 @@
 
 package au.gov.usi._2018.ws;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -73,11 +73,11 @@ public class BulkUploadRetrieveResponseType {
 
     /**
      * Gets the value of the requestId property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link String }
-     *
+     *     
      */
     public String getRequestId() {
         return requestId;
@@ -85,11 +85,11 @@ public class BulkUploadRetrieveResponseType {
 
     /**
      * Sets the value of the requestId property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link String }
-     *
+     *     
      */
     public void setRequestId(String value) {
         this.requestId = value;
@@ -97,7 +97,7 @@ public class BulkUploadRetrieveResponseType {
 
     /**
      * Gets the value of the noOfApplications property.
-     *
+     * 
      */
     public int getNoOfApplications() {
         return noOfApplications;
@@ -105,7 +105,7 @@ public class BulkUploadRetrieveResponseType {
 
     /**
      * Sets the value of the noOfApplications property.
-     *
+     * 
      */
     public void setNoOfApplications(int value) {
         this.noOfApplications = value;
@@ -113,7 +113,7 @@ public class BulkUploadRetrieveResponseType {
 
     /**
      * Gets the value of the noOfApplicationsFailed property.
-     *
+     * 
      */
     public int getNoOfApplicationsFailed() {
         return noOfApplicationsFailed;
@@ -121,7 +121,7 @@ public class BulkUploadRetrieveResponseType {
 
     /**
      * Sets the value of the noOfApplicationsFailed property.
-     *
+     * 
      */
     public void setNoOfApplicationsFailed(int value) {
         this.noOfApplicationsFailed = value;
@@ -129,11 +129,11 @@ public class BulkUploadRetrieveResponseType {
 
     /**
      * Gets the value of the applications property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link BulkUploadRetrieveResponseType.Applications }
-     *
+     *     
      */
     public BulkUploadRetrieveResponseType.Applications getApplications() {
         return applications;
@@ -141,11 +141,11 @@ public class BulkUploadRetrieveResponseType {
 
     /**
      * Sets the value of the applications property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link BulkUploadRetrieveResponseType.Applications }
-     *
+     *     
      */
     public void setApplications(BulkUploadRetrieveResponseType.Applications value) {
         this.applications = value;

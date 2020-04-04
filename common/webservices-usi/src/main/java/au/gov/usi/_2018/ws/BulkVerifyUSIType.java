@@ -1,12 +1,12 @@
 
 package au.gov.usi._2018.ws;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -63,11 +63,11 @@ public class BulkVerifyUSIType {
 
     /**
      * Gets the value of the orgCode property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link String }
-     *
+     *     
      */
     public String getOrgCode() {
         return orgCode;
@@ -75,11 +75,11 @@ public class BulkVerifyUSIType {
 
     /**
      * Sets the value of the orgCode property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link String }
-     *
+     *     
      */
     public void setOrgCode(String value) {
         this.orgCode = value;
@@ -87,7 +87,7 @@ public class BulkVerifyUSIType {
 
     /**
      * Gets the value of the noOfVerifications property.
-     *
+     * 
      */
     public int getNoOfVerifications() {
         return noOfVerifications;
@@ -95,7 +95,7 @@ public class BulkVerifyUSIType {
 
     /**
      * Sets the value of the noOfVerifications property.
-     *
+     * 
      */
     public void setNoOfVerifications(int value) {
         this.noOfVerifications = value;
@@ -103,11 +103,11 @@ public class BulkVerifyUSIType {
 
     /**
      * Gets the value of the verifications property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link BulkVerifyUSIType.Verifications }
-     *
+     *     
      */
     public BulkVerifyUSIType.Verifications getVerifications() {
         return verifications;
@@ -115,11 +115,11 @@ public class BulkVerifyUSIType {
 
     /**
      * Sets the value of the verifications property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link BulkVerifyUSIType.Verifications }
-     *
+     *     
      */
     public void setVerifications(BulkVerifyUSIType.Verifications value) {
         this.verifications = value;

@@ -1,12 +1,12 @@
 
 package au.gov.usi._2018.ws;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -60,11 +60,11 @@ public class UpdateUSIContactDetailsResponseType {
 
     /**
      * Gets the value of the result property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link String }
-     *
+     *     
      */
     public String getResult() {
         return result;
@@ -72,11 +72,11 @@ public class UpdateUSIContactDetailsResponseType {
 
     /**
      * Sets the value of the result property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link String }
-     *
+     *     
      */
     public void setResult(String value) {
         this.result = value;
@@ -84,11 +84,11 @@ public class UpdateUSIContactDetailsResponseType {
 
     /**
      * Gets the value of the errors property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link UpdateUSIContactDetailsResponseType.Errors }
-     *
+     *     
      */
     public UpdateUSIContactDetailsResponseType.Errors getErrors() {
         return errors;
@@ -96,11 +96,11 @@ public class UpdateUSIContactDetailsResponseType {
 
     /**
      * Sets the value of the errors property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link UpdateUSIContactDetailsResponseType.Errors }
-     *
+     *     
      */
     public void setErrors(UpdateUSIContactDetailsResponseType.Errors value) {
         this.errors = value;

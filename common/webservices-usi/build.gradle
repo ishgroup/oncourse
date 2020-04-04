@@ -11,7 +11,12 @@ dependencies {
     compile 'org.springframework:spring-beans:3.0.5.RELEASE'
     compile 'org.bouncycastle:bcprov-jdk15:1.45'
     compile 'au.gov.abr.akm:abrakm:1.0.0'
-    compile 'au.gov.abr.akm:auskey-dep:10.0.0'
+    compile 'au.gov.abr.akm:auskey-dep:1.1.0'
+    compile 'au.gov.abr.akm:token-manager:1.0.0'
+
+//    compile 'au.gov.abr.akm:webservices-api:1.0.0'
+//    compile 'au.gov.abr.akm:webservices-extra:1.0.0'
+//    compile 'au.gov.abr.akm:webservices-rt:1.0.0'
 
     testCompile 'org.springframework:spring-context:3.1.0.RELEASE'
     testCompile 'cglib:cglib:2.2.2'
@@ -30,38 +35,28 @@ configurations {
 
 dependencies{
     ws "org.apache.cxf:cxf-tools:${cxfVersion}",
-            "org.apache.cxf:cxf-tools-wsdlto-databinding-jaxb:${cxfVersion}",
-            "org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:${cxfVersion}",
+            "org.apache.cxf:cxf-tools-wsdlto-databinding-jaxb:3.3.5",
+            "org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:3.3.5",
             "org.jvnet.jaxb2_commons:jaxb2-basics:0.6.5"
     "log4j:log4j:1.2.17"
 }
 
-project.ext {
-    wsdlDir = file("${projectDir}/src/main/resources/wsdl")
-    generatedWsdlDir = file("${projectDir}/src/main/java")
-    wsdlsToGenerate = [
-            [       '-wsdlLocation', "/wsdl/USIServiceV3.wsdl",
-                    '-b', "$wsdlDir/usi_bindings.xml",
-                    "-client",
-                    "$wsdlDir/USIServiceV3.wsdl"],
-    ]
-}
 
 task wsdl2Java() {
-    inputs.files wsdlDir.listFiles()
-    outputs.files generatedWsdlDir
-
+//require java8
     doLast {
-        wsdlsToGenerate.each { argsin ->
-            argsin.add(argsin.size - 1, '-d')
-            argsin.add(argsin.size - 1, generatedWsdlDir)
             javaexec {
                 classpath configurations.ws
                 main = 'org.apache.cxf.tools.wsdlto.WSDLToJava'
-                args = argsin
+                args = ['-V',
+                        '-wsdlLocation', '/wsdl/USIServiceV3.wsdl',
+                        '-b', "${projectDir}/src/main/resources/wsdl/usi_bindings.xml",
+                        '-client',
+                        '-d', "${projectDir}/src/main/java",
+                        "${projectDir}/src/main/resources/wsdl/USIServiceV3.wsdl"
+                ]
                 systemProperties = ['exitOnFinish':'TRUE']
             }
-        }
     }
 }
 

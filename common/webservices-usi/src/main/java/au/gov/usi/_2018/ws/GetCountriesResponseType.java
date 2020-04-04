@@ -1,12 +1,12 @@
 
 package au.gov.usi._2018.ws;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -49,11 +49,11 @@ public class GetCountriesResponseType {
 
     /**
      * Gets the value of the countries property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link GetCountriesResponseType.Countries }
-     *
+     *     
      */
     public GetCountriesResponseType.Countries getCountries() {
         return countries;
@@ -61,11 +61,11 @@ public class GetCountriesResponseType {
 
     /**
      * Sets the value of the countries property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link GetCountriesResponseType.Countries }
-     *
+     *     
      */
     public void setCountries(GetCountriesResponseType.Countries value) {
         this.countries = value;

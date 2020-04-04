@@ -1,12 +1,12 @@
 
 package au.gov.usi._2018.ws;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -67,11 +67,11 @@ public class BulkUploadType {
 
     /**
      * Gets the value of the orgCode property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link String }
-     *
+     *     
      */
     public String getOrgCode() {
         return orgCode;
@@ -79,11 +79,11 @@ public class BulkUploadType {
 
     /**
      * Sets the value of the orgCode property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link String }
-     *
+     *     
      */
     public void setOrgCode(String value) {
         this.orgCode = value;
@@ -91,11 +91,11 @@ public class BulkUploadType {
 
     /**
      * Gets the value of the requestId property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link String }
-     *
+     *     
      */
     public String getRequestId() {
         return requestId;
@@ -103,11 +103,11 @@ public class BulkUploadType {
 
     /**
      * Sets the value of the requestId property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link String }
-     *
+     *     
      */
     public void setRequestId(String value) {
         this.requestId = value;
@@ -115,7 +115,7 @@ public class BulkUploadType {
 
     /**
      * Gets the value of the noOfApplications property.
-     *
+     * 
      */
     public int getNoOfApplications() {
         return noOfApplications;
@@ -123,7 +123,7 @@ public class BulkUploadType {
 
     /**
      * Sets the value of the noOfApplications property.
-     *
+     * 
      */
     public void setNoOfApplications(int value) {
         this.noOfApplications = value;
@@ -131,11 +131,11 @@ public class BulkUploadType {
 
     /**
      * Gets the value of the applications property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link BulkUploadType.Applications }
-     *
+     *     
      */
     public BulkUploadType.Applications getApplications() {
         return applications;
@@ -143,11 +143,11 @@ public class BulkUploadType {
 
     /**
      * Sets the value of the applications property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link BulkUploadType.Applications }
-     *
+     *     
      */
     public void setApplications(BulkUploadType.Applications value) {
         this.applications = value;

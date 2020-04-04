@@ -1,12 +1,12 @@
 
 package au.gov.usi._2018.ws;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -49,11 +49,11 @@ public class GetNonDvsDocumentTypesResponseType {
 
     /**
      * Gets the value of the nonDvsDocumentTypes property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link GetNonDvsDocumentTypesResponseType.NonDvsDocumentTypes }
-     *
+     *     
      */
     public GetNonDvsDocumentTypesResponseType.NonDvsDocumentTypes getNonDvsDocumentTypes() {
         return nonDvsDocumentTypes;
@@ -61,11 +61,11 @@ public class GetNonDvsDocumentTypesResponseType {
 
     /**
      * Sets the value of the nonDvsDocumentTypes property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link GetNonDvsDocumentTypesResponseType.NonDvsDocumentTypes }
-     *
+     *     
      */
     public void setNonDvsDocumentTypes(GetNonDvsDocumentTypesResponseType.NonDvsDocumentTypes value) {
         this.nonDvsDocumentTypes = value;

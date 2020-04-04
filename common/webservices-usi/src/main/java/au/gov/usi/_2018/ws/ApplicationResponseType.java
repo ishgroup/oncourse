@@ -1,10 +1,14 @@
 
 package au.gov.usi._2018.ws;
 
-import javax.xml.bind.annotation.*;
-import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
@@ -84,11 +88,11 @@ public class ApplicationResponseType {
 
     /**
      * Gets the value of the processedDate property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link XMLGregorianCalendar }
-     *
+     *     
      */
     public XMLGregorianCalendar getProcessedDate() {
         return processedDate;
@@ -96,11 +100,11 @@ public class ApplicationResponseType {
 
     /**
      * Sets the value of the processedDate property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link XMLGregorianCalendar }
-     *
+     *     
      */
     public void setProcessedDate(XMLGregorianCalendar value) {
         this.processedDate = value;
@@ -108,11 +112,11 @@ public class ApplicationResponseType {
 
     /**
      * Gets the value of the applicationId property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link String }
-     *
+     *     
      */
     public String getApplicationId() {
         return applicationId;
@@ -120,11 +124,11 @@ public class ApplicationResponseType {
 
     /**
      * Sets the value of the applicationId property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link String }
-     *
+     *     
      */
     public void setApplicationId(String value) {
         this.applicationId = value;
@@ -132,11 +136,11 @@ public class ApplicationResponseType {
 
     /**
      * Gets the value of the result property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link String }
-     *
+     *     
      */
     public String getResult() {
         return result;
@@ -144,11 +148,11 @@ public class ApplicationResponseType {
 
     /**
      * Sets the value of the result property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link String }
-     *
+     *     
      */
     public void setResult(String value) {
         this.result = value;
@@ -156,11 +160,11 @@ public class ApplicationResponseType {
 
     /**
      * Gets the value of the identityDocumentVerified property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link String }
-     *
+     *     
      */
     public String getIdentityDocumentVerified() {
         return identityDocumentVerified;
@@ -168,11 +172,11 @@ public class ApplicationResponseType {
 
     /**
      * Sets the value of the identityDocumentVerified property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link String }
-     *
+     *     
      */
     public void setIdentityDocumentVerified(String value) {
         this.identityDocumentVerified = value;
@@ -180,11 +184,11 @@ public class ApplicationResponseType {
 
     /**
      * Gets the value of the usi property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link String }
-     *
+     *     
      */
     public String getUSI() {
         return usi;
@@ -192,11 +196,11 @@ public class ApplicationResponseType {
 
     /**
      * Sets the value of the usi property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link String }
-     *
+     *     
      */
     public void setUSI(String value) {
         this.usi = value;
@@ -204,11 +208,11 @@ public class ApplicationResponseType {
 
     /**
      * Gets the value of the errors property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link ApplicationResponseType.Errors }
-     *
+     *     
      */
     public ApplicationResponseType.Errors getErrors() {
         return errors;
@@ -216,11 +220,11 @@ public class ApplicationResponseType {
 
     /**
      * Sets the value of the errors property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link ApplicationResponseType.Errors }
-     *
+     *     
      */
     public void setErrors(ApplicationResponseType.Errors value) {
         this.errors = value;
