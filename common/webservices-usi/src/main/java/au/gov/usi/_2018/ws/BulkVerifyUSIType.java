@@ -1,12 +1,12 @@
 
 package au.gov.usi._2018.ws;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -15,33 +15,33 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="BulkVerifyUSIType">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="OrgCode" type="{http://usi.gov.au/2018/ws}OrgCodeType"/>
- *         &lt;element name="NoOfVerifications">
- *           &lt;simpleType>
- *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}int">
- *               &lt;maxInclusive value="500"/>
- *             &lt;/restriction>
- *           &lt;/simpleType>
- *         &lt;/element>
- *         &lt;element name="Verifications">
- *           &lt;complexType>
- *             &lt;complexContent>
- *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                 &lt;sequence>
- *                   &lt;element name="Verification" type="{http://usi.gov.au/2018/ws}VerificationType" maxOccurs="500"/>
- *                 &lt;/sequence>
- *               &lt;/restriction>
- *             &lt;/complexContent>
- *           &lt;/complexType>
- *         &lt;/element>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="BulkVerifyUSIType"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="OrgCode" type="{http://usi.gov.au/2018/ws}OrgCodeType"/&gt;
+ *         &lt;element name="NoOfVerifications"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}int"&gt;
+ *               &lt;maxInclusive value="500"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="Verifications"&gt;
+ *           &lt;complexType&gt;
+ *             &lt;complexContent&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *                 &lt;sequence&gt;
+ *                   &lt;element name="Verification" type="{http://usi.gov.au/2018/ws}VerificationType" maxOccurs="500"/&gt;
+ *                 &lt;/sequence&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/complexContent&gt;
+ *           &lt;/complexType&gt;
+ *         &lt;/element&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -63,11 +63,11 @@ public class BulkVerifyUSIType {
 
     /**
      * Gets the value of the orgCode property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getOrgCode() {
         return orgCode;
@@ -75,11 +75,11 @@ public class BulkVerifyUSIType {
 
     /**
      * Sets the value of the orgCode property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setOrgCode(String value) {
         this.orgCode = value;
@@ -87,7 +87,7 @@ public class BulkVerifyUSIType {
 
     /**
      * Gets the value of the noOfVerifications property.
-     * 
+     *
      */
     public int getNoOfVerifications() {
         return noOfVerifications;
@@ -95,7 +95,7 @@ public class BulkVerifyUSIType {
 
     /**
      * Sets the value of the noOfVerifications property.
-     * 
+     *
      */
     public void setNoOfVerifications(int value) {
         this.noOfVerifications = value;
@@ -103,11 +103,11 @@ public class BulkVerifyUSIType {
 
     /**
      * Gets the value of the verifications property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link BulkVerifyUSIType.Verifications }
-     *     
+     *
      */
     public BulkVerifyUSIType.Verifications getVerifications() {
         return verifications;
@@ -115,11 +115,11 @@ public class BulkVerifyUSIType {
 
     /**
      * Sets the value of the verifications property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link BulkVerifyUSIType.Verifications }
-     *     
+     *
      */
     public void setVerifications(BulkVerifyUSIType.Verifications value) {
         this.verifications = value;
@@ -132,15 +132,15 @@ public class BulkVerifyUSIType {
      * <p>The following schema fragment specifies the expected content contained within this class.
      * 
      * <pre>
-     * &lt;complexType>
-     *   &lt;complexContent>
-     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-     *       &lt;sequence>
-     *         &lt;element name="Verification" type="{http://usi.gov.au/2018/ws}VerificationType" maxOccurs="500"/>
-     *       &lt;/sequence>
-     *     &lt;/restriction>
-     *   &lt;/complexContent>
-     * &lt;/complexType>
+     * &lt;complexType&gt;
+     *   &lt;complexContent&gt;
+     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+     *       &lt;sequence&gt;
+     *         &lt;element name="Verification" type="{http://usi.gov.au/2018/ws}VerificationType" maxOccurs="500"/&gt;
+     *       &lt;/sequence&gt;
+     *     &lt;/restriction&gt;
+     *   &lt;/complexContent&gt;
+     * &lt;/complexType&gt;
      * </pre>
      * 
      * 

@@ -1,12 +1,12 @@
 
 package au.gov.usi._2018.ws;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -15,25 +15,25 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="GetNonDvsDocumentTypesResponseType">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="NonDvsDocumentTypes">
- *           &lt;complexType>
- *             &lt;complexContent>
- *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                 &lt;sequence>
- *                   &lt;element name="NonDvsDocumentType" type="{http://usi.gov.au/2018/ws}NonDvsDocumentTypeType" maxOccurs="unbounded" minOccurs="0"/>
- *                 &lt;/sequence>
- *               &lt;/restriction>
- *             &lt;/complexContent>
- *           &lt;/complexType>
- *         &lt;/element>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="GetNonDvsDocumentTypesResponseType"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="NonDvsDocumentTypes"&gt;
+ *           &lt;complexType&gt;
+ *             &lt;complexContent&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *                 &lt;sequence&gt;
+ *                   &lt;element name="NonDvsDocumentType" type="{http://usi.gov.au/2018/ws}NonDvsDocumentTypeType" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *                 &lt;/sequence&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/complexContent&gt;
+ *           &lt;/complexType&gt;
+ *         &lt;/element&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -49,11 +49,11 @@ public class GetNonDvsDocumentTypesResponseType {
 
     /**
      * Gets the value of the nonDvsDocumentTypes property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link GetNonDvsDocumentTypesResponseType.NonDvsDocumentTypes }
-     *     
+     *
      */
     public GetNonDvsDocumentTypesResponseType.NonDvsDocumentTypes getNonDvsDocumentTypes() {
         return nonDvsDocumentTypes;
@@ -61,11 +61,11 @@ public class GetNonDvsDocumentTypesResponseType {
 
     /**
      * Sets the value of the nonDvsDocumentTypes property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link GetNonDvsDocumentTypesResponseType.NonDvsDocumentTypes }
-     *     
+     *
      */
     public void setNonDvsDocumentTypes(GetNonDvsDocumentTypesResponseType.NonDvsDocumentTypes value) {
         this.nonDvsDocumentTypes = value;
@@ -78,15 +78,15 @@ public class GetNonDvsDocumentTypesResponseType {
      * <p>The following schema fragment specifies the expected content contained within this class.
      * 
      * <pre>
-     * &lt;complexType>
-     *   &lt;complexContent>
-     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-     *       &lt;sequence>
-     *         &lt;element name="NonDvsDocumentType" type="{http://usi.gov.au/2018/ws}NonDvsDocumentTypeType" maxOccurs="unbounded" minOccurs="0"/>
-     *       &lt;/sequence>
-     *     &lt;/restriction>
-     *   &lt;/complexContent>
-     * &lt;/complexType>
+     * &lt;complexType&gt;
+     *   &lt;complexContent&gt;
+     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+     *       &lt;sequence&gt;
+     *         &lt;element name="NonDvsDocumentType" type="{http://usi.gov.au/2018/ws}NonDvsDocumentTypeType" maxOccurs="unbounded" minOccurs="0"/&gt;
+     *       &lt;/sequence&gt;
+     *     &lt;/restriction&gt;
+     *   &lt;/complexContent&gt;
+     * &lt;/complexType&gt;
      * </pre>
      * 
      * 

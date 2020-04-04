@@ -1,12 +1,12 @@
 
 package au.gov.usi._2018.ws;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -15,42 +15,42 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="UpdateUSIPersonalDetailsResponseType">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="Result">
- *           &lt;simpleType>
- *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *               &lt;enumeration value="Success"/>
- *               &lt;enumeration value="Failure"/>
- *             &lt;/restriction>
- *           &lt;/simpleType>
- *         &lt;/element>
- *         &lt;element name="IdentityDocumentVerified">
- *           &lt;simpleType>
- *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *               &lt;enumeration value="True"/>
- *               &lt;enumeration value="False"/>
- *               &lt;enumeration value="NotRequired"/>
- *             &lt;/restriction>
- *           &lt;/simpleType>
- *         &lt;/element>
- *         &lt;element name="Errors" minOccurs="0">
- *           &lt;complexType>
- *             &lt;complexContent>
- *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                 &lt;sequence>
- *                   &lt;element name="Error" type="{http://usi.gov.au/2018/ws}ErrorType" maxOccurs="unbounded"/>
- *                 &lt;/sequence>
- *               &lt;/restriction>
- *             &lt;/complexContent>
- *           &lt;/complexType>
- *         &lt;/element>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="UpdateUSIPersonalDetailsResponseType"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="Result"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;enumeration value="Success"/&gt;
+ *               &lt;enumeration value="Failure"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="IdentityDocumentVerified"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;enumeration value="True"/&gt;
+ *               &lt;enumeration value="False"/&gt;
+ *               &lt;enumeration value="NotRequired"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="Errors" minOccurs="0"&gt;
+ *           &lt;complexType&gt;
+ *             &lt;complexContent&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *                 &lt;sequence&gt;
+ *                   &lt;element name="Error" type="{http://usi.gov.au/2018/ws}ErrorType" maxOccurs="unbounded"/&gt;
+ *                 &lt;/sequence&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/complexContent&gt;
+ *           &lt;/complexType&gt;
+ *         &lt;/element&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -72,11 +72,11 @@ public class UpdateUSIPersonalDetailsResponseType {
 
     /**
      * Gets the value of the result property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getResult() {
         return result;
@@ -84,11 +84,11 @@ public class UpdateUSIPersonalDetailsResponseType {
 
     /**
      * Sets the value of the result property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setResult(String value) {
         this.result = value;
@@ -96,11 +96,11 @@ public class UpdateUSIPersonalDetailsResponseType {
 
     /**
      * Gets the value of the identityDocumentVerified property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getIdentityDocumentVerified() {
         return identityDocumentVerified;
@@ -108,11 +108,11 @@ public class UpdateUSIPersonalDetailsResponseType {
 
     /**
      * Sets the value of the identityDocumentVerified property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setIdentityDocumentVerified(String value) {
         this.identityDocumentVerified = value;
@@ -120,11 +120,11 @@ public class UpdateUSIPersonalDetailsResponseType {
 
     /**
      * Gets the value of the errors property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link UpdateUSIPersonalDetailsResponseType.Errors }
-     *     
+     *
      */
     public UpdateUSIPersonalDetailsResponseType.Errors getErrors() {
         return errors;
@@ -132,11 +132,11 @@ public class UpdateUSIPersonalDetailsResponseType {
 
     /**
      * Sets the value of the errors property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link UpdateUSIPersonalDetailsResponseType.Errors }
-     *     
+     *
      */
     public void setErrors(UpdateUSIPersonalDetailsResponseType.Errors value) {
         this.errors = value;
@@ -149,15 +149,15 @@ public class UpdateUSIPersonalDetailsResponseType {
      * <p>The following schema fragment specifies the expected content contained within this class.
      * 
      * <pre>
-     * &lt;complexType>
-     *   &lt;complexContent>
-     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-     *       &lt;sequence>
-     *         &lt;element name="Error" type="{http://usi.gov.au/2018/ws}ErrorType" maxOccurs="unbounded"/>
-     *       &lt;/sequence>
-     *     &lt;/restriction>
-     *   &lt;/complexContent>
-     * &lt;/complexType>
+     * &lt;complexType&gt;
+     *   &lt;complexContent&gt;
+     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+     *       &lt;sequence&gt;
+     *         &lt;element name="Error" type="{http://usi.gov.au/2018/ws}ErrorType" maxOccurs="unbounded"/&gt;
+     *       &lt;/sequence&gt;
+     *     &lt;/restriction&gt;
+     *   &lt;/complexContent&gt;
+     * &lt;/complexType&gt;
      * </pre>
      * 
      * 

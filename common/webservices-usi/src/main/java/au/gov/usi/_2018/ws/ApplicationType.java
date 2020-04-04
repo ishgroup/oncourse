@@ -2,11 +2,7 @@
 package au.gov.usi._2018.ws;
 
 import javax.xml.bind.JAXBElement;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementRef;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 
 
 /**
@@ -15,22 +11,22 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="ApplicationType">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="ApplicationId" type="{http://usi.gov.au/2018/ws}ApplicationIDType"/>
- *         &lt;element name="DVSCheckRequired" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="UserReference" type="{http://usi.gov.au/2018/ws}UserReferenceType"/>
- *         &lt;element name="ContactDetails" type="{http://usi.gov.au/2018/ws}ContactDetailsType"/>
- *         &lt;element name="PersonalDetails" type="{http://usi.gov.au/2018/ws}PersonalDetailsType"/>
- *         &lt;element name="DVSDocument" type="{http://usi.gov.au/2018/ws}DVSDocumentType" minOccurs="0"/>
- *         &lt;element name="NonDvsDocumentTypeId" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/>
- *         &lt;element name="NonDvsDocumentTypeOther" type="{http://usi.gov.au/2018/ws}NonDvsDocumentTypeOtherType" minOccurs="0"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="ApplicationType"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="ApplicationId" type="{http://usi.gov.au/2018/ws}ApplicationIDType"/&gt;
+ *         &lt;element name="DVSCheckRequired" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="UserReference" type="{http://usi.gov.au/2018/ws}UserReferenceType"/&gt;
+ *         &lt;element name="ContactDetails" type="{http://usi.gov.au/2018/ws}ContactDetailsType"/&gt;
+ *         &lt;element name="PersonalDetails" type="{http://usi.gov.au/2018/ws}PersonalDetailsType"/&gt;
+ *         &lt;element name="DVSDocument" type="{http://usi.gov.au/2018/ws}DVSDocumentType" minOccurs="0"/&gt;
+ *         &lt;element name="NonDvsDocumentTypeId" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/&gt;
+ *         &lt;element name="NonDvsDocumentTypeOther" type="{http://usi.gov.au/2018/ws}NonDvsDocumentTypeOtherType" minOccurs="0"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -60,9 +56,9 @@ public class ApplicationType {
     protected PersonalDetailsType personalDetails;
     @XmlElement(name = "DVSDocument")
     protected DVSDocumentType dvsDocument;
-    @XmlElementRef(name = "NonDvsDocumentTypeId", namespace = "http://usi.gov.au/2018/ws", type = JAXBElement.class)
+    @XmlElementRef(name = "NonDvsDocumentTypeId", namespace = "http://usi.gov.au/2018/ws", type = JAXBElement.class, required = false)
     protected JAXBElement<Integer> nonDvsDocumentTypeId;
-    @XmlElementRef(name = "NonDvsDocumentTypeOther", namespace = "http://usi.gov.au/2018/ws", type = JAXBElement.class)
+    @XmlElementRef(name = "NonDvsDocumentTypeOther", namespace = "http://usi.gov.au/2018/ws", type = JAXBElement.class, required = false)
     protected JAXBElement<String> nonDvsDocumentTypeOther;
 
     /**
@@ -222,7 +218,7 @@ public class ApplicationType {
      *     
      */
     public void setNonDvsDocumentTypeId(JAXBElement<Integer> value) {
-        this.nonDvsDocumentTypeId = ((JAXBElement<Integer> ) value);
+        this.nonDvsDocumentTypeId = value;
     }
 
     /**
@@ -246,7 +242,7 @@ public class ApplicationType {
      *     
      */
     public void setNonDvsDocumentTypeOther(JAXBElement<String> value) {
-        this.nonDvsDocumentTypeOther = ((JAXBElement<String> ) value);
+        this.nonDvsDocumentTypeOther = value;
     }
 
 }

@@ -12,16 +12,16 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="LocateResultType">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="Exact"/>
- *     &lt;enumeration value="MultipleExact"/>
- *     &lt;enumeration value="SingleNoContactMatch"/>
- *     &lt;enumeration value="MultipleNoContactMatch"/>
- *     &lt;enumeration value="NoMatch"/>
- *     &lt;enumeration value="NoIdenticalStrongPartial"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="LocateResultType"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="Exact"/&gt;
+ *     &lt;enumeration value="MultipleExact"/&gt;
+ *     &lt;enumeration value="SingleNoContactMatch"/&gt;
+ *     &lt;enumeration value="MultipleNoContactMatch"/&gt;
+ *     &lt;enumeration value="NoMatch"/&gt;
+ *     &lt;enumeration value="NoIdenticalStrongPartial"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

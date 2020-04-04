@@ -13,12 +13,12 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="DVSDocumentType">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="DVSDocumentType"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -26,15 +26,15 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "DVSDocumentType")
 @XmlSeeAlso({
+    BirthCertificateDocumentType.class,
+    CertificateOfRegistrationByDescentDocumentType.class,
     CitizenshipCertificateDocumentType.class,
     DriversLicenceDocumentType.class,
-    BirthCertificateDocumentType.class,
     ImmiCardDocumentType.class,
-    VisaDocumentType.class,
-    PassportDocumentType.class,
     MedicareDocumentType.class,
     CentrelinkCardType.class,
-    CertificateOfRegistrationByDescentDocumentType.class
+    PassportDocumentType.class,
+    VisaDocumentType.class
 })
 public abstract class DVSDocumentType {
 

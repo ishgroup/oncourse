@@ -1,11 +1,7 @@
 
 package au.gov.usi._2018.ws;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 
@@ -15,47 +11,47 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="VerificationType">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="RecordId">
- *           &lt;simpleType>
- *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}int">
- *             &lt;/restriction>
- *           &lt;/simpleType>
- *         &lt;/element>
- *         &lt;element name="USI" type="{http://usi.gov.au/2018/ws}USIType"/>
- *         &lt;choice>
- *           &lt;sequence>
- *             &lt;element name="FirstName">
- *               &lt;simpleType>
- *                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *                   &lt;maxLength value="40"/>
- *                 &lt;/restriction>
- *               &lt;/simpleType>
- *             &lt;/element>
- *             &lt;element name="FamilyName">
- *               &lt;simpleType>
- *                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *                   &lt;maxLength value="40"/>
- *                 &lt;/restriction>
- *               &lt;/simpleType>
- *             &lt;/element>
- *           &lt;/sequence>
- *           &lt;element name="SingleName">
- *             &lt;simpleType>
- *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *                 &lt;maxLength value="40"/>
- *               &lt;/restriction>
- *             &lt;/simpleType>
- *           &lt;/element>
- *         &lt;/choice>
- *         &lt;element name="DateOfBirth" type="{http://www.w3.org/2001/XMLSchema}date"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="VerificationType"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="RecordId"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}int"&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="USI" type="{http://usi.gov.au/2018/ws}USIType"/&gt;
+ *         &lt;choice&gt;
+ *           &lt;sequence&gt;
+ *             &lt;element name="FirstName"&gt;
+ *               &lt;simpleType&gt;
+ *                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *                   &lt;maxLength value="40"/&gt;
+ *                 &lt;/restriction&gt;
+ *               &lt;/simpleType&gt;
+ *             &lt;/element&gt;
+ *             &lt;element name="FamilyName"&gt;
+ *               &lt;simpleType&gt;
+ *                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *                   &lt;maxLength value="40"/&gt;
+ *                 &lt;/restriction&gt;
+ *               &lt;/simpleType&gt;
+ *             &lt;/element&gt;
+ *           &lt;/sequence&gt;
+ *           &lt;element name="SingleName"&gt;
+ *             &lt;simpleType&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *                 &lt;maxLength value="40"/&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/simpleType&gt;
+ *           &lt;/element&gt;
+ *         &lt;/choice&gt;
+ *         &lt;element name="DateOfBirth" type="{http://www.w3.org/2001/XMLSchema}date"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 

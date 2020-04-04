@@ -1,11 +1,7 @@
 
 package au.gov.usi._2018.ws;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 
@@ -15,35 +11,35 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="BirthCertificateDocumentType">
- *   &lt;complexContent>
- *     &lt;extension base="{http://usi.gov.au/2018/ws}DVSDocumentType">
- *       &lt;sequence>
- *         &lt;element name="RegistrationNumber" minOccurs="0">
- *           &lt;simpleType>
- *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *               &lt;minLength value="1"/>
- *               &lt;maxLength value="10"/>
- *             &lt;/restriction>
- *           &lt;/simpleType>
- *         &lt;/element>
- *         &lt;element name="RegistrationState" type="{http://usi.gov.au/2018/ws}StateListType"/>
- *         &lt;element name="RegistrationDate" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/>
- *         &lt;element name="RegistrationYear" type="{http://usi.gov.au/2018/ws}YearListType" minOccurs="0"/>
- *         &lt;element name="DatePrinted" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/>
- *         &lt;element name="CertificateNumber" minOccurs="0">
- *           &lt;simpleType>
- *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *               &lt;minLength value="1"/>
- *               &lt;maxLength value="11"/>
- *               &lt;pattern value="[A-Za-z0-9]*"/>
- *             &lt;/restriction>
- *           &lt;/simpleType>
- *         &lt;/element>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="BirthCertificateDocumentType"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{http://usi.gov.au/2018/ws}DVSDocumentType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="RegistrationNumber" minOccurs="0"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;minLength value="1"/&gt;
+ *               &lt;maxLength value="10"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="RegistrationState" type="{http://usi.gov.au/2018/ws}StateListType"/&gt;
+ *         &lt;element name="RegistrationDate" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/&gt;
+ *         &lt;element name="RegistrationYear" type="{http://usi.gov.au/2018/ws}YearListType" minOccurs="0"/&gt;
+ *         &lt;element name="DatePrinted" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/&gt;
+ *         &lt;element name="CertificateNumber" minOccurs="0"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;minLength value="1"/&gt;
+ *               &lt;maxLength value="11"/&gt;
+ *               &lt;pattern value="[A-Za-z0-9]*"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -64,6 +60,7 @@ public class BirthCertificateDocumentType
     @XmlElement(name = "RegistrationNumber")
     protected String registrationNumber;
     @XmlElement(name = "RegistrationState", required = true)
+    @XmlSchemaType(name = "string")
     protected StateListType registrationState;
     @XmlElement(name = "RegistrationDate")
     @XmlSchemaType(name = "date")

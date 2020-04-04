@@ -1,11 +1,7 @@
 
 package au.gov.usi._2018.ws;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 
@@ -15,15 +11,15 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="CertificateOfRegistrationByDescentDocumentType">
- *   &lt;complexContent>
- *     &lt;extension base="{http://usi.gov.au/2018/ws}DVSDocumentType">
- *       &lt;sequence>
- *         &lt;element name="AcquisitionDate" type="{http://www.w3.org/2001/XMLSchema}date"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="CertificateOfRegistrationByDescentDocumentType"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{http://usi.gov.au/2018/ws}DVSDocumentType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="AcquisitionDate" type="{http://www.w3.org/2001/XMLSchema}date"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 

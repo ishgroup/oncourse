@@ -1,11 +1,7 @@
 
 package au.gov.usi._2018.ws;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 
@@ -15,92 +11,92 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="PersonalDetailsType">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="Gender">
- *           &lt;simpleType>
- *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *               &lt;enumeration value="M"/>
- *               &lt;enumeration value="F"/>
- *               &lt;enumeration value="X"/>
- *             &lt;/restriction>
- *           &lt;/simpleType>
- *         &lt;/element>
- *         &lt;choice>
- *           &lt;sequence>
- *             &lt;element name="FirstName">
- *               &lt;simpleType>
- *                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *                   &lt;maxLength value="40"/>
- *                 &lt;/restriction>
- *               &lt;/simpleType>
- *             &lt;/element>
- *             &lt;element name="MiddleName" minOccurs="0">
- *               &lt;simpleType>
- *                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *                   &lt;maxLength value="80"/>
- *                 &lt;/restriction>
- *               &lt;/simpleType>
- *             &lt;/element>
- *             &lt;element name="FamilyName">
- *               &lt;simpleType>
- *                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *                   &lt;maxLength value="40"/>
- *                 &lt;/restriction>
- *               &lt;/simpleType>
- *             &lt;/element>
- *           &lt;/sequence>
- *           &lt;element name="SingleName">
- *             &lt;simpleType>
- *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *                 &lt;maxLength value="40"/>
- *               &lt;/restriction>
- *             &lt;/simpleType>
- *           &lt;/element>
- *         &lt;/choice>
- *         &lt;element name="DateOfBirth" type="{http://www.w3.org/2001/XMLSchema}date"/>
- *         &lt;element name="CountryOfBirthCode">
- *           &lt;simpleType>
- *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *               &lt;maxLength value="4"/>
- *             &lt;/restriction>
- *           &lt;/simpleType>
- *         &lt;/element>
- *         &lt;element name="TownCityOfBirth">
- *           &lt;simpleType>
- *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *               &lt;maxLength value="50"/>
- *             &lt;/restriction>
- *           &lt;/simpleType>
- *         &lt;/element>
- *         &lt;element name="IsPreferredName" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="PreferredFirstName" minOccurs="0">
- *           &lt;simpleType>
- *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *               &lt;maxLength value="40"/>
- *             &lt;/restriction>
- *           &lt;/simpleType>
- *         &lt;/element>
- *         &lt;element name="PreferredFamilyName" minOccurs="0">
- *           &lt;simpleType>
- *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *               &lt;maxLength value="40"/>
- *             &lt;/restriction>
- *           &lt;/simpleType>
- *         &lt;/element>
- *         &lt;element name="PreferredSingleName" minOccurs="0">
- *           &lt;simpleType>
- *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *               &lt;maxLength value="40"/>
- *             &lt;/restriction>
- *           &lt;/simpleType>
- *         &lt;/element>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="PersonalDetailsType"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="Gender"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;enumeration value="M"/&gt;
+ *               &lt;enumeration value="F"/&gt;
+ *               &lt;enumeration value="X"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;choice&gt;
+ *           &lt;sequence&gt;
+ *             &lt;element name="FirstName"&gt;
+ *               &lt;simpleType&gt;
+ *                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *                   &lt;maxLength value="40"/&gt;
+ *                 &lt;/restriction&gt;
+ *               &lt;/simpleType&gt;
+ *             &lt;/element&gt;
+ *             &lt;element name="MiddleName" minOccurs="0"&gt;
+ *               &lt;simpleType&gt;
+ *                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *                   &lt;maxLength value="80"/&gt;
+ *                 &lt;/restriction&gt;
+ *               &lt;/simpleType&gt;
+ *             &lt;/element&gt;
+ *             &lt;element name="FamilyName"&gt;
+ *               &lt;simpleType&gt;
+ *                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *                   &lt;maxLength value="40"/&gt;
+ *                 &lt;/restriction&gt;
+ *               &lt;/simpleType&gt;
+ *             &lt;/element&gt;
+ *           &lt;/sequence&gt;
+ *           &lt;element name="SingleName"&gt;
+ *             &lt;simpleType&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *                 &lt;maxLength value="40"/&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/simpleType&gt;
+ *           &lt;/element&gt;
+ *         &lt;/choice&gt;
+ *         &lt;element name="DateOfBirth" type="{http://www.w3.org/2001/XMLSchema}date"/&gt;
+ *         &lt;element name="CountryOfBirthCode"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;maxLength value="4"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="TownCityOfBirth"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;maxLength value="50"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="IsPreferredName" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="PreferredFirstName" minOccurs="0"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;maxLength value="40"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="PreferredFamilyName" minOccurs="0"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;maxLength value="40"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="PreferredSingleName" minOccurs="0"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;maxLength value="40"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 

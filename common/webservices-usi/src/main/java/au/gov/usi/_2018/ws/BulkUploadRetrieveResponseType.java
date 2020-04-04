@@ -1,12 +1,12 @@
 
 package au.gov.usi._2018.ws;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -15,40 +15,40 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="BulkUploadRetrieveResponseType">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="RequestId" type="{http://usi.gov.au/2018/ws}RequestIDType"/>
- *         &lt;element name="NoOfApplications">
- *           &lt;simpleType>
- *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}int">
- *               &lt;maxInclusive value="500"/>
- *             &lt;/restriction>
- *           &lt;/simpleType>
- *         &lt;/element>
- *         &lt;element name="NoOfApplicationsFailed">
- *           &lt;simpleType>
- *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}int">
- *               &lt;maxInclusive value="500"/>
- *             &lt;/restriction>
- *           &lt;/simpleType>
- *         &lt;/element>
- *         &lt;element name="Applications">
- *           &lt;complexType>
- *             &lt;complexContent>
- *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                 &lt;sequence>
- *                   &lt;element name="Application" type="{http://usi.gov.au/2018/ws}ApplicationResponseType" maxOccurs="500"/>
- *                 &lt;/sequence>
- *               &lt;/restriction>
- *             &lt;/complexContent>
- *           &lt;/complexType>
- *         &lt;/element>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="BulkUploadRetrieveResponseType"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="RequestId" type="{http://usi.gov.au/2018/ws}RequestIDType"/&gt;
+ *         &lt;element name="NoOfApplications"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}int"&gt;
+ *               &lt;maxInclusive value="500"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="NoOfApplicationsFailed"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}int"&gt;
+ *               &lt;maxInclusive value="500"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="Applications"&gt;
+ *           &lt;complexType&gt;
+ *             &lt;complexContent&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *                 &lt;sequence&gt;
+ *                   &lt;element name="Application" type="{http://usi.gov.au/2018/ws}ApplicationResponseType" maxOccurs="500"/&gt;
+ *                 &lt;/sequence&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/complexContent&gt;
+ *           &lt;/complexType&gt;
+ *         &lt;/element&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -73,11 +73,11 @@ public class BulkUploadRetrieveResponseType {
 
     /**
      * Gets the value of the requestId property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getRequestId() {
         return requestId;
@@ -85,11 +85,11 @@ public class BulkUploadRetrieveResponseType {
 
     /**
      * Sets the value of the requestId property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setRequestId(String value) {
         this.requestId = value;
@@ -97,7 +97,7 @@ public class BulkUploadRetrieveResponseType {
 
     /**
      * Gets the value of the noOfApplications property.
-     * 
+     *
      */
     public int getNoOfApplications() {
         return noOfApplications;
@@ -105,7 +105,7 @@ public class BulkUploadRetrieveResponseType {
 
     /**
      * Sets the value of the noOfApplications property.
-     * 
+     *
      */
     public void setNoOfApplications(int value) {
         this.noOfApplications = value;
@@ -113,7 +113,7 @@ public class BulkUploadRetrieveResponseType {
 
     /**
      * Gets the value of the noOfApplicationsFailed property.
-     * 
+     *
      */
     public int getNoOfApplicationsFailed() {
         return noOfApplicationsFailed;
@@ -121,7 +121,7 @@ public class BulkUploadRetrieveResponseType {
 
     /**
      * Sets the value of the noOfApplicationsFailed property.
-     * 
+     *
      */
     public void setNoOfApplicationsFailed(int value) {
         this.noOfApplicationsFailed = value;
@@ -129,11 +129,11 @@ public class BulkUploadRetrieveResponseType {
 
     /**
      * Gets the value of the applications property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link BulkUploadRetrieveResponseType.Applications }
-     *     
+     *
      */
     public BulkUploadRetrieveResponseType.Applications getApplications() {
         return applications;
@@ -141,11 +141,11 @@ public class BulkUploadRetrieveResponseType {
 
     /**
      * Sets the value of the applications property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link BulkUploadRetrieveResponseType.Applications }
-     *     
+     *
      */
     public void setApplications(BulkUploadRetrieveResponseType.Applications value) {
         this.applications = value;
@@ -158,15 +158,15 @@ public class BulkUploadRetrieveResponseType {
      * <p>The following schema fragment specifies the expected content contained within this class.
      * 
      * <pre>
-     * &lt;complexType>
-     *   &lt;complexContent>
-     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-     *       &lt;sequence>
-     *         &lt;element name="Application" type="{http://usi.gov.au/2018/ws}ApplicationResponseType" maxOccurs="500"/>
-     *       &lt;/sequence>
-     *     &lt;/restriction>
-     *   &lt;/complexContent>
-     * &lt;/complexType>
+     * &lt;complexType&gt;
+     *   &lt;complexContent&gt;
+     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+     *       &lt;sequence&gt;
+     *         &lt;element name="Application" type="{http://usi.gov.au/2018/ws}ApplicationResponseType" maxOccurs="500"/&gt;
+     *       &lt;/sequence&gt;
+     *     &lt;/restriction&gt;
+     *   &lt;/complexContent&gt;
+     * &lt;/complexType&gt;
      * </pre>
      * 
      * 

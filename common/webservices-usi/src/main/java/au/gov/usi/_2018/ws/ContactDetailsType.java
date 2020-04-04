@@ -13,39 +13,39 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="ContactDetailsType">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="CountryOfResidenceCode">
- *           &lt;simpleType>
- *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *               &lt;maxLength value="4"/>
- *             &lt;/restriction>
- *           &lt;/simpleType>
- *         &lt;/element>
- *         &lt;element name="EmailAddress" minOccurs="0">
- *           &lt;simpleType>
- *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *               &lt;maxLength value="254"/>
- *             &lt;/restriction>
- *           &lt;/simpleType>
- *         &lt;/element>
- *         &lt;element name="Phone" type="{http://usi.gov.au/2018/ws}PhoneType" minOccurs="0"/>
- *         &lt;choice minOccurs="0">
- *           &lt;element name="InternationalAddress">
- *             &lt;simpleType>
- *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *                 &lt;maxLength value="250"/>
- *               &lt;/restriction>
- *             &lt;/simpleType>
- *           &lt;/element>
- *           &lt;element name="NationalAddress" type="{http://usi.gov.au/2018/ws}NationalAddressType"/>
- *         &lt;/choice>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="ContactDetailsType"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="CountryOfResidenceCode"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;maxLength value="4"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="EmailAddress" minOccurs="0"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;maxLength value="254"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="Phone" type="{http://usi.gov.au/2018/ws}PhoneType" minOccurs="0"/&gt;
+ *         &lt;choice minOccurs="0"&gt;
+ *           &lt;element name="InternationalAddress"&gt;
+ *             &lt;simpleType&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *                 &lt;maxLength value="250"/&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/simpleType&gt;
+ *           &lt;/element&gt;
+ *           &lt;element name="NationalAddress" type="{http://usi.gov.au/2018/ws}NationalAddressType"/&gt;
+ *         &lt;/choice&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 

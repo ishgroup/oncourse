@@ -13,17 +13,17 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="CreateUSIType">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="RequestId" type="{http://usi.gov.au/2018/ws}RequestIDType"/>
- *         &lt;element name="OrgCode" type="{http://usi.gov.au/2018/ws}OrgCodeType"/>
- *         &lt;element name="Application" type="{http://usi.gov.au/2018/ws}ApplicationType"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="CreateUSIType"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="RequestId" type="{http://usi.gov.au/2018/ws}RequestIDType"/&gt;
+ *         &lt;element name="OrgCode" type="{http://usi.gov.au/2018/ws}OrgCodeType"/&gt;
+ *         &lt;element name="Application" type="{http://usi.gov.au/2018/ws}ApplicationType"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 

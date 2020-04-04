@@ -1,12 +1,9 @@
 
 package au.gov.usi._2018.ws;
 
+import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
 
 
 /**
@@ -15,28 +12,28 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="LocateUSIResponseType">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="Result" type="{http://usi.gov.au/2018/ws}LocateResultType"/>
- *         &lt;element name="USI" type="{http://usi.gov.au/2018/ws}USIType"/>
- *         &lt;element name="ContactDetailsMessage" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="Errors" minOccurs="0">
- *           &lt;complexType>
- *             &lt;complexContent>
- *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                 &lt;sequence>
- *                   &lt;element name="Error" type="{http://usi.gov.au/2018/ws}ErrorType" maxOccurs="unbounded"/>
- *                 &lt;/sequence>
- *               &lt;/restriction>
- *             &lt;/complexContent>
- *           &lt;/complexType>
- *         &lt;/element>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="LocateUSIResponseType"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="Result" type="{http://usi.gov.au/2018/ws}LocateResultType"/&gt;
+ *         &lt;element name="USI" type="{http://usi.gov.au/2018/ws}USIType"/&gt;
+ *         &lt;element name="ContactDetailsMessage" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="Errors" minOccurs="0"&gt;
+ *           &lt;complexType&gt;
+ *             &lt;complexContent&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *                 &lt;sequence&gt;
+ *                   &lt;element name="Error" type="{http://usi.gov.au/2018/ws}ErrorType" maxOccurs="unbounded"/&gt;
+ *                 &lt;/sequence&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/complexContent&gt;
+ *           &lt;/complexType&gt;
+ *         &lt;/element&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -51,6 +48,7 @@ import javax.xml.bind.annotation.XmlType;
 public class LocateUSIResponseType {
 
     @XmlElement(name = "Result", required = true)
+    @XmlSchemaType(name = "string")
     protected LocateResultType result;
     @XmlElement(name = "USI", required = true)
     protected String usi;
@@ -61,11 +59,11 @@ public class LocateUSIResponseType {
 
     /**
      * Gets the value of the result property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link LocateResultType }
-     *     
+     *
      */
     public LocateResultType getResult() {
         return result;
@@ -73,11 +71,11 @@ public class LocateUSIResponseType {
 
     /**
      * Sets the value of the result property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link LocateResultType }
-     *     
+     *
      */
     public void setResult(LocateResultType value) {
         this.result = value;
@@ -85,11 +83,11 @@ public class LocateUSIResponseType {
 
     /**
      * Gets the value of the usi property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getUSI() {
         return usi;
@@ -97,11 +95,11 @@ public class LocateUSIResponseType {
 
     /**
      * Sets the value of the usi property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setUSI(String value) {
         this.usi = value;
@@ -109,11 +107,11 @@ public class LocateUSIResponseType {
 
     /**
      * Gets the value of the contactDetailsMessage property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getContactDetailsMessage() {
         return contactDetailsMessage;
@@ -121,11 +119,11 @@ public class LocateUSIResponseType {
 
     /**
      * Sets the value of the contactDetailsMessage property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setContactDetailsMessage(String value) {
         this.contactDetailsMessage = value;
@@ -133,11 +131,11 @@ public class LocateUSIResponseType {
 
     /**
      * Gets the value of the errors property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link LocateUSIResponseType.Errors }
-     *     
+     *
      */
     public LocateUSIResponseType.Errors getErrors() {
         return errors;
@@ -145,11 +143,11 @@ public class LocateUSIResponseType {
 
     /**
      * Sets the value of the errors property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link LocateUSIResponseType.Errors }
-     *     
+     *
      */
     public void setErrors(LocateUSIResponseType.Errors value) {
         this.errors = value;
@@ -162,15 +160,15 @@ public class LocateUSIResponseType {
      * <p>The following schema fragment specifies the expected content contained within this class.
      * 
      * <pre>
-     * &lt;complexType>
-     *   &lt;complexContent>
-     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-     *       &lt;sequence>
-     *         &lt;element name="Error" type="{http://usi.gov.au/2018/ws}ErrorType" maxOccurs="unbounded"/>
-     *       &lt;/sequence>
-     *     &lt;/restriction>
-     *   &lt;/complexContent>
-     * &lt;/complexType>
+     * &lt;complexType&gt;
+     *   &lt;complexContent&gt;
+     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+     *       &lt;sequence&gt;
+     *         &lt;element name="Error" type="{http://usi.gov.au/2018/ws}ErrorType" maxOccurs="unbounded"/&gt;
+     *       &lt;/sequence&gt;
+     *     &lt;/restriction&gt;
+     *   &lt;/complexContent&gt;
+     * &lt;/complexType&gt;
      * </pre>
      * 
      * 

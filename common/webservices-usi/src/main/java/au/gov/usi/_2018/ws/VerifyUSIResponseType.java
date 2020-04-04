@@ -1,10 +1,7 @@
 
 package au.gov.usi._2018.ws;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 
 
 /**
@@ -13,31 +10,31 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="VerifyUSIResponseType">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="USIStatus">
- *           &lt;simpleType>
- *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *               &lt;enumeration value="Valid"/>
- *               &lt;enumeration value="Invalid"/>
- *               &lt;enumeration value="Deactivated"/>
- *             &lt;/restriction>
- *           &lt;/simpleType>
- *         &lt;/element>
- *         &lt;choice>
- *           &lt;sequence>
- *             &lt;element name="FirstName" type="{http://usi.gov.au/2018/ws}MatchResultType" minOccurs="0"/>
- *             &lt;element name="FamilyName" type="{http://usi.gov.au/2018/ws}MatchResultType" minOccurs="0"/>
- *           &lt;/sequence>
- *           &lt;element name="SingleName" type="{http://usi.gov.au/2018/ws}MatchResultType" minOccurs="0"/>
- *         &lt;/choice>
- *         &lt;element name="DateOfBirth" type="{http://usi.gov.au/2018/ws}MatchResultType" minOccurs="0"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="VerifyUSIResponseType"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="USIStatus"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;enumeration value="Valid"/&gt;
+ *               &lt;enumeration value="Invalid"/&gt;
+ *               &lt;enumeration value="Deactivated"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;choice&gt;
+ *           &lt;sequence&gt;
+ *             &lt;element name="FirstName" type="{http://usi.gov.au/2018/ws}MatchResultType" minOccurs="0"/&gt;
+ *             &lt;element name="FamilyName" type="{http://usi.gov.au/2018/ws}MatchResultType" minOccurs="0"/&gt;
+ *           &lt;/sequence&gt;
+ *           &lt;element name="SingleName" type="{http://usi.gov.au/2018/ws}MatchResultType" minOccurs="0"/&gt;
+ *         &lt;/choice&gt;
+ *         &lt;element name="DateOfBirth" type="{http://usi.gov.au/2018/ws}MatchResultType" minOccurs="0"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -55,12 +52,16 @@ public class VerifyUSIResponseType {
     @XmlElement(name = "USIStatus", required = true)
     protected String usiStatus;
     @XmlElement(name = "FirstName")
+    @XmlSchemaType(name = "string")
     protected MatchResultType firstName;
     @XmlElement(name = "FamilyName")
+    @XmlSchemaType(name = "string")
     protected MatchResultType familyName;
     @XmlElement(name = "SingleName")
+    @XmlSchemaType(name = "string")
     protected MatchResultType singleName;
     @XmlElement(name = "DateOfBirth")
+    @XmlSchemaType(name = "string")
     protected MatchResultType dateOfBirth;
 
     /**

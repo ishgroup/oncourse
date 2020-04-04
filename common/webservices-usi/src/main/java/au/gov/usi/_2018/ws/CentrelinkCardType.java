@@ -13,44 +13,44 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="CentrelinkCardType">
- *   &lt;complexContent>
- *     &lt;extension base="{http://usi.gov.au/2018/ws}DVSDocumentType">
- *       &lt;sequence>
- *         &lt;element name="CRN">
- *           &lt;simpleType>
- *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *               &lt;length value="10"/>
- *               &lt;pattern value="[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][a-zA-Z]"/>
- *             &lt;/restriction>
- *           &lt;/simpleType>
- *         &lt;/element>
- *         &lt;element name="Name">
- *           &lt;simpleType>
- *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *               &lt;maxLength value="32"/>
- *             &lt;/restriction>
- *           &lt;/simpleType>
- *         &lt;/element>
- *         &lt;element name="ExpiryDate">
- *           &lt;simpleType>
- *             &lt;union memberTypes=" {http://www.w3.org/2001/XMLSchema}date">
- *             &lt;/union>
- *           &lt;/simpleType>
- *         &lt;/element>
- *         &lt;element name="Type">
- *           &lt;simpleType>
- *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *               &lt;enumeration value="PCC"/>
- *               &lt;enumeration value="HCC"/>
- *               &lt;enumeration value="SHC"/>
- *             &lt;/restriction>
- *           &lt;/simpleType>
- *         &lt;/element>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="CentrelinkCardType"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{http://usi.gov.au/2018/ws}DVSDocumentType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="CRN"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;length value="10"/&gt;
+ *               &lt;pattern value="[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][a-zA-Z]"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="Name"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;maxLength value="32"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="ExpiryDate"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;union memberTypes=" {http://www.w3.org/2001/XMLSchema}date"&gt;
+ *             &lt;/union&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="Type"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;enumeration value="PCC"/&gt;
+ *               &lt;enumeration value="HCC"/&gt;
+ *               &lt;enumeration value="SHC"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 

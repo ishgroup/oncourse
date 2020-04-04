@@ -1,10 +1,7 @@
 
 package au.gov.usi._2018.ws;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 
 
 /**
@@ -13,23 +10,23 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="DriversLicenceDocumentType">
- *   &lt;complexContent>
- *     &lt;extension base="{http://usi.gov.au/2018/ws}DVSDocumentType">
- *       &lt;sequence>
- *         &lt;element name="LicenceNumber">
- *           &lt;simpleType>
- *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *               &lt;minLength value="1"/>
- *               &lt;maxLength value="10"/>
- *             &lt;/restriction>
- *           &lt;/simpleType>
- *         &lt;/element>
- *         &lt;element name="State" type="{http://usi.gov.au/2018/ws}StateListType"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="DriversLicenceDocumentType"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{http://usi.gov.au/2018/ws}DVSDocumentType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="LicenceNumber"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;minLength value="1"/&gt;
+ *               &lt;maxLength value="10"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="State" type="{http://usi.gov.au/2018/ws}StateListType"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -46,6 +43,7 @@ public class DriversLicenceDocumentType
     @XmlElement(name = "LicenceNumber", required = true)
     protected String licenceNumber;
     @XmlElement(name = "State", required = true)
+    @XmlSchemaType(name = "string")
     protected StateListType state;
 
     /**

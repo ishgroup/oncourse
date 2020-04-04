@@ -13,39 +13,39 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="UpdateUSIPersonalDetailsType">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="OrgCode" type="{http://usi.gov.au/2018/ws}OrgCodeType"/>
- *         &lt;element name="USI" type="{http://usi.gov.au/2018/ws}USIType"/>
- *         &lt;element name="DVSCheckRequired" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="UserReference" type="{http://usi.gov.au/2018/ws}UserReferenceType"/>
- *         &lt;element name="PersonalDetailsModifier">
- *           &lt;simpleType>
- *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *               &lt;enumeration value="FirstName"/>
- *               &lt;enumeration value="MiddleName"/>
- *               &lt;enumeration value="FamilyName"/>
- *               &lt;enumeration value="SingleName"/>
- *               &lt;enumeration value="DateOfBirth"/>
- *               &lt;enumeration value="CountryOfBirth"/>
- *               &lt;enumeration value="TownCityOfBirth"/>
- *               &lt;enumeration value="Gender"/>
- *               &lt;enumeration value="PreferredFirstName"/>
- *               &lt;enumeration value="PreferredFamilyName"/>
- *               &lt;enumeration value="PreferredSingleName"/>
- *             &lt;/restriction>
- *           &lt;/simpleType>
- *         &lt;/element>
- *         &lt;element name="PersonalDetailsUpdate" type="{http://usi.gov.au/2018/ws}PersonalDetailsUpdateType"/>
- *         &lt;element name="DVSDocument" type="{http://usi.gov.au/2018/ws}DVSDocumentType" minOccurs="0"/>
- *         &lt;element name="NonDvsDocumentTypeId" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/>
- *         &lt;element name="NonDvsDocumentTypeOther" type="{http://usi.gov.au/2018/ws}NonDvsDocumentTypeOtherType" minOccurs="0"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="UpdateUSIPersonalDetailsType"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="OrgCode" type="{http://usi.gov.au/2018/ws}OrgCodeType"/&gt;
+ *         &lt;element name="USI" type="{http://usi.gov.au/2018/ws}USIType"/&gt;
+ *         &lt;element name="DVSCheckRequired" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="UserReference" type="{http://usi.gov.au/2018/ws}UserReferenceType"/&gt;
+ *         &lt;element name="PersonalDetailsModifier"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;enumeration value="FirstName"/&gt;
+ *               &lt;enumeration value="MiddleName"/&gt;
+ *               &lt;enumeration value="FamilyName"/&gt;
+ *               &lt;enumeration value="SingleName"/&gt;
+ *               &lt;enumeration value="DateOfBirth"/&gt;
+ *               &lt;enumeration value="CountryOfBirth"/&gt;
+ *               &lt;enumeration value="TownCityOfBirth"/&gt;
+ *               &lt;enumeration value="Gender"/&gt;
+ *               &lt;enumeration value="PreferredFirstName"/&gt;
+ *               &lt;enumeration value="PreferredFamilyName"/&gt;
+ *               &lt;enumeration value="PreferredSingleName"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="PersonalDetailsUpdate" type="{http://usi.gov.au/2018/ws}PersonalDetailsUpdateType"/&gt;
+ *         &lt;element name="DVSDocument" type="{http://usi.gov.au/2018/ws}DVSDocumentType" minOccurs="0"/&gt;
+ *         &lt;element name="NonDvsDocumentTypeId" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/&gt;
+ *         &lt;element name="NonDvsDocumentTypeOther" type="{http://usi.gov.au/2018/ws}NonDvsDocumentTypeOtherType" minOccurs="0"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
