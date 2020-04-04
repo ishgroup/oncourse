@@ -12,7 +12,7 @@ import static ish.oncourse.configuration.Configuration.AppProperty.CREDENTIAL_ST
 
 public class UsiApp {
 
-    static void main(String[] args) {
+    public static void main(String[] args) {
         Configuration.configure(CREDENTIAL_STORE_PASSWORD, CREDENTIAL_STORE);
 
         Bootique.app(args).args("--server", "--config=classpath:application.yml")
