@@ -1,0 +1,54 @@
+apply from: "$rootDir/gradle/build-api.gradle"
+
+mainClassName = 'ish.oncourse.usi.UsiwApp'
+
+configurations {
+    ws
+}
+
+dependencies {
+    compile "org.codehaus.groovy:groovy-all:${groovyVersion}"
+    compile (project(':common:common-api'),{
+        exclude group:'org.apache.cayenne'
+        exclude group:'org.apache.solr'
+        exclude group:'org.mariadb.jdbc'
+    })
+    compile project(':common:common-bootique')
+    compile 'au.gov.abr.akm:abrakm:1.0.0'
+    compile 'au.gov.abr.akm:auskey-dep:1.1.0'
+    compile 'au.gov.abr.akm:token-manager:1.0.0'
+
+    compile 'au.gov.abr.akm:webservices-api:1.1.0'
+    compile 'au.gov.abr.akm:webservices-extra:1.0.0'
+    compile 'au.gov.abr.akm:webservices-rt:1.0.0'
+
+    ws "org.apache.cxf:cxf-tools:3.3.5",
+            "org.apache.cxf:cxf-tools-wsdlto-databinding-jaxb:3.3.5",
+            "org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:3.3.5",
+            "org.jvnet.jaxb2_commons:jaxb2-basics:0.6.5"
+    "log4j:log4j:1.2.17"
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+
+
+
+
+task wsdl2Java() {
+//require java8
+    doLast {
+        javaexec {
+            classpath configurations.ws
+            main = 'org.apache.cxf.tools.wsdlto.WSDLToJava'
+            args = ['-V',
+                    '-wsdlLocation', '/wsdl/USIServiceV3.wsdl',
+                    '-b', "${projectDir}/src/main/resources/wsdl/usi_bindings.xml",
+                    '-client',
+                    '-d', "${projectDir}/src/main/java",
+                    "${projectDir}/src/main/resources/wsdl/USIServiceV3.wsdl"
+            ]
+            systemProperties = ['exitOnFinish':'TRUE']
+        }
+    }
+}
