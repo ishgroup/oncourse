@@ -1,0 +1,9 @@
+jetty:
+  context: /usi
+  connectors:
+    - type: willow
+      port: 8888
+      host: 127.0.0.1
+  compactPath: true
+cxf:
+  welcomeText: 'usi REST API'

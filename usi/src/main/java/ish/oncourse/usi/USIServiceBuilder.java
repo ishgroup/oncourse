@@ -98,7 +98,7 @@ public class USIServiceBuilder {
 
         au.gov.usi._2018.ws.servicepolicy.USIService service = new au.gov.usi._2018.ws.servicepolicy.USIService();
         DefaultSTSIssuedTokenConfiguration config = new DefaultSTSIssuedTokenConfiguration();
-        Map<String, Object> otherOptions = config.getOtherOptions();
+        otherOptions = config.getOtherOptions();
         config.setSignatureAlgorithm("SHA256withRSA");
 
 

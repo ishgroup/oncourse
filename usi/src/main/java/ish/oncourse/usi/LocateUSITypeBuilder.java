@@ -18,24 +18,50 @@ import java.util.GregorianCalendar;
  */
 public class LocateUSITypeBuilder {
 
-    private LocateUSIRequest internalRq;
+    private String orgCode;
+    private String firstName;
+    private String middleName;
+    private String familyName;
+    private String gender;
+    private Date dateOfBirth;
+    private String townCityOfBirth;
+    private String emailAddress;
+    private String userReference;
 
-    public static LocateUSITypeBuilder valueOf(LocateUSIRequest internalRq) {
-        LocateUSITypeBuilder obj = new LocateUSITypeBuilder();
-        obj.internalRq = internalRq;
-        return obj;
+
+
+    public static LocateUSITypeBuilder valueOf(String orgCode,
+                                               String firstName,
+                                               String middleName,
+                                               String familyName,
+                                               String gender,
+                                               Date dateOfBirth,
+                                               String townCityOfBirth,
+                                               String emailAddress,
+                                               String userReference) {
+        LocateUSITypeBuilder builder = new LocateUSITypeBuilder();
+        builder.orgCode =orgCode;
+        builder.firstName =firstName;
+        builder.middleName =middleName;
+        builder.familyName =familyName;
+        builder.gender =gender;
+        builder.dateOfBirth =dateOfBirth;
+        builder.townCityOfBirth =townCityOfBirth;
+        builder.emailAddress =emailAddress;
+        builder.userReference =userReference;
+        return builder;
     }
 
     public LocateUSIType build() {
         LocateUSIType serviceRq = null;
-        if (internalRq.getOrgCode() != null && internalRq.getUserReference() != null) {
-            PersonalDetailsLocateType personal = createPersonalDetails(internalRq);
+        if (orgCode != null && userReference != null) {
+            PersonalDetailsLocateType personal = createPersonalDetails();
             if (personal != null) {
-                ContactDetailsLocateType contact = createContactDetails(internalRq);
+                ContactDetailsLocateType contact = createContactDetails();
 
                 serviceRq = new LocateUSIType();
-                serviceRq.setOrgCode(internalRq.getOrgCode());
-                serviceRq.setUserReference(internalRq.getUserReference());
+                serviceRq.setOrgCode(orgCode);
+                serviceRq.setUserReference(orgCode);
                 serviceRq.setPersonalDetails(personal);
                 serviceRq.setContactDetails(contact);
             }
@@ -43,23 +69,23 @@ public class LocateUSITypeBuilder {
         return serviceRq;
     }
 
-    private PersonalDetailsLocateType createPersonalDetails(LocateUSIRequest rq) {
+    private PersonalDetailsLocateType createPersonalDetails() {
         PersonalDetailsLocateType obj = null;
-        if (rq.getDateOfBirth() != null && rq.getGender() != null) {
+        if (dateOfBirth != null) {
             obj = new PersonalDetailsLocateType();
-            obj.setFirstName(strToEmpty(rq.getFirstName()));
-            obj.setMiddleName(strToEmpty(rq.getMiddleName()));
-            obj.setFamilyName(strToEmpty(rq.getFamilyName()));
-            obj.setGender(rq.getGender() != null ? rq.getGender().getRequestCode() : StringUtils.EMPTY);
-            obj.setDateOfBirth(dateToXML(rq.getDateOfBirth()));
-            obj.setTownCityOfBirth(strToEmpty(rq.getTownCityOfBirth()));
+            obj.setFirstName(strToEmpty(firstName));
+            obj.setMiddleName(strToEmpty(middleName));
+            obj.setFamilyName(strToEmpty(familyName));
+            obj.setGender(gender != null ? gender : StringUtils.EMPTY);
+            obj.setDateOfBirth(dateToXML(dateOfBirth));
+            obj.setTownCityOfBirth(strToEmpty(townCityOfBirth));
         }
         return obj;
     }
 
-    private ContactDetailsLocateType createContactDetails(LocateUSIRequest rq) {
+    private ContactDetailsLocateType createContactDetails() {
         ContactDetailsLocateType obj = new ContactDetailsLocateType();
-        obj.setEmailAddress(strToEmpty(rq.getEmailAddress()));
+        obj.setEmailAddress(strToEmpty(emailAddress));
         return obj;
     }
 

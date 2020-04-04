@@ -37,8 +37,8 @@ public class USITest {
         request.setOrgCode("90054");
 
         USIVerificationResult result = usiService.verifyUsi("Simone",
-                "Claudia Stockl",
-                DateUtils.parseDate("1988-05-02", "yyyy-MM-dd"),
+                "Stockl",
+                "1988-02-05",
                 "DB5PW8SXU6",
                 "90054" , "53136500313", "5176926411" );
         System.out.println(result);

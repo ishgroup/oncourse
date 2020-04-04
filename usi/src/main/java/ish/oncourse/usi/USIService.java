@@ -12,6 +12,7 @@ import com.sun.xml.wss.XWSSecurityException;
 import com.sun.xml.wss.saml.util.SAMLUtil;
 import ish.common.types.*;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Element;
@@ -20,9 +21,11 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.StringReader;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
+
 
 public class USIService {
 
@@ -41,26 +44,49 @@ public class USIService {
 
     public USIVerificationResult verifyUsi(String studentFirstName,
                                            String studentLastName,
-                                           Date studentBirthDate,
+                                           String studentBirthDate,
                                            String usiCode,
                                            String orgCode,
                                            String collegeABN,
-                                           String softwareId) {
+                                           String softwareId) throws ParseException {
 
 
-
-        USIVerificationResult result = sendVerifyRequest(VerifyUSITypeBuilder.valueOf(studentFirstName, studentLastName, studentBirthDate,usiCode,orgCode, false).build(), collegeABN, softwareId);
+        Date dob = DateUtils.parseDate(studentBirthDate, "yyyy-MM-dd");
+        USIVerificationResult result = sendVerifyRequest(VerifyUSITypeBuilder.valueOf(studentFirstName, studentLastName, dob,usiCode,orgCode, false).build(), collegeABN, softwareId);
         if (needSendSingleNameRequest(studentFirstName, studentLastName, result)) {
-            return sendVerifyRequest(VerifyUSITypeBuilder.valueOf(studentFirstName, studentLastName, studentBirthDate,usiCode,orgCode, true).build(), collegeABN, softwareId );
+            return sendVerifyRequest(VerifyUSITypeBuilder.valueOf(studentFirstName, studentLastName, dob,usiCode,orgCode, true).build(), collegeABN, softwareId );
         } else {
             return result;
         }
     }
 
-    public LocateUSIResult locateUSI(LocateUSIRequest intRq) {
-        LocateUSIResult intRs = new LocateUSIResult();
+    synchronized public LocateUSIResult locateUSI(
+                                    String orgCode,
+                                    String firstName,
+                                    String middleName,
+                                    String familyName,
+                                    String gender,
+                                    String dateOfBirth,
+                                    String townCityOfBirth,
+                                    String emailAddress,
+                                    String userReference,
+                                    String collegeABN,
+                                    String softwareId) throws ParseException, XWSSecurityException, XMLStreamException {
 
-        LocateUSIType extRq = LocateUSITypeBuilder.valueOf(intRq).build();
+
+        Date dob = DateUtils.parseDate(dateOfBirth, "yyyy-MM-dd");
+
+        LocateUSIResult intRs = new LocateUSIResult();
+        setActAs(collegeABN, softwareId);
+        LocateUSIType extRq = LocateUSITypeBuilder.valueOf(orgCode,
+                firstName,
+                middleName,
+                familyName,
+                gender,
+                dob,
+                townCityOfBirth,
+                emailAddress,
+                userReference).build();
 
         if (extRq != null) {
             try {
@@ -82,7 +108,7 @@ public class USIService {
                     }
                     break;
                     default: {
-                        String warnMessage = createLocateDetailErrorMessage(intRq);
+                        String warnMessage = createLocateDetailErrorMessage(orgCode, firstName, familyName);
                         logger.warn(warnMessage.concat(StringUtils.join(extRs.getErrors().getError(), ';')));
 
                         intRs.setResultType(ish.common.types.LocateUSIType.ERROR);
@@ -93,10 +119,10 @@ public class USIService {
                 logger.error(e.getMessage(), e);
 
                 intRs.setResultType(ish.common.types.LocateUSIType.ERROR);
-                intRs.setError(createLocateDetailErrorMessage(intRq));
+                intRs.setError(createLocateDetailErrorMessage(orgCode, firstName, familyName));
             }
         } else {
-            String warnMessage = createLocateDetailErrorMessage(intRq).concat("Internal request has incomplete field set.");
+            String warnMessage = createLocateDetailErrorMessage(orgCode, firstName, familyName).concat("Internal request has incomplete field set.");
             logger.warn(warnMessage);
 
             intRs.setResultType(ish.common.types.LocateUSIType.ERROR);
@@ -154,8 +180,8 @@ public class USIService {
         options.put(STSIssuedTokenConfiguration.ACT_AS, new GenericToken(actAsElt));
     }
 
-    private String createLocateDetailErrorMessage(LocateUSIRequest intRq) {
-        return String.format(ERROR_LOCATE_MESSAGE_TEMPLATE, intRq.getOrgCode(), intRq.getFirstName(), intRq.getFamilyName());
+    private String createLocateDetailErrorMessage(String orgCode, String firstName, String familyName) {
+        return String.format(ERROR_LOCATE_MESSAGE_TEMPLATE, orgCode, firstName,familyName);
     }
 
     public static USIService valueOf(IUSIService endpoint, String ishABN, Map<String, Object> options) {

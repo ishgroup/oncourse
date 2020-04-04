@@ -27,8 +27,6 @@ class Configuration {
             init(props, DB_PASS)
             init(props, DB_USER)
             init(props, SMTP)
-            init(props, CREDENTIAL_STORE)
-            init(props, CREDENTIAL_STORE_PASSWORD)
 
             if (init(props, ZK_HOST)) {
                 String zkHostPort = props.get(ZK_HOST.key) as String
