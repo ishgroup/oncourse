@@ -44,12 +44,12 @@
           <wsp:Policy>
             <sp:IssuedToken sp:IncludeToken="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702/IncludeToken/AlwaysToRecipient">
               <!--Issuer xmlns="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702">
-                <Address xmlns="http://www.w3.org/2005/08/addressing">https://softwareauthorisations.acc.ato.gov.au/R3.0/S007v1.3/service.svc</Address>
+                <Address xmlns="http://www.w3.org/2005/08/addressing">https://softwareauthorisations.ato.gov.au/R3.0/S007v1.3/service.svc</Address>
                 <Metadata xmlns="http://www.w3.org/2005/08/addressing">
                   <Metadata xmlns="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                     <wsx:MetadataSection xmlns="">
                       <wsx:MetadataReference>
-                        <Address xmlns="http://www.w3.org/2005/08/addressing">https://softwareauthorisations.acc.ato.gov.au/R3.0/S007v1.3/service.svc/mex</Address>
+                        <Address xmlns="http://www.w3.org/2005/08/addressing">https://softwareauthorisations.ato.gov.au/R3.0/S007v1.3/service.svc/mex</Address>
                       </wsx:MetadataReference>
                     </wsx:MetadataSection>
                   </Metadata>
@@ -95,8 +95,8 @@
                 shareToken="true"
                 renewExpiredToken="true"
                 wstVersion="http://docs.oasis-open.org/ws-sx/ws-trust/200512"
-                endpoint="https://softwareauthorisations.acc.ato.gov.au/R3.0/S007v1.3/service.svc"
-                wsdlLocation="https://softwareauthorisations.acc.ato.gov.au/R3.0/S007v1.3/service.svc"
+                endpoint="https://softwareauthorisations.ato.gov.au/R3.0/S007v1.3/service.svc"
+                wsdlLocation="https://softwareauthorisations.ato.gov.au/R3.0/S007v1.3/service.svc"
                 serviceName="SecurityTokenService"
                 portName="S007SecurityTokenServiceEndpoint"
                 namespace="http://schemas.microsoft.com/ws/2008/06/identity/securitytokenservice">
@@ -1652,12 +1652,12 @@
   <wsdl:service name="USIService">
     <wsdl:documentation>
       Version: 3.0
-      Environment: 3PT
+      Environment: PRODUCTION
     </wsdl:documentation>
     <wsdl:port name="WS2007FederationHttpBinding_IUSIService" binding="tns:WS2007FederationHttpBinding_IUSIService">
-      <soap12:address location="https://3pt.portal.usi.gov.au/Service/v3/UsiCreateService.svc"/>
+      <soap12:address location="https://portal.usi.gov.au/Service/v3/UsiCreateService.svc"/>
       <wsa10:EndpointReference>
-        <wsa10:Address>https://3pt.portal.usi.gov.au/Service/v3/UsiCreateService.svc</wsa10:Address>
+        <wsa10:Address>https://portal.usi.gov.au/Service/v3/UsiCreateService.svc</wsa10:Address>
       </wsa10:EndpointReference>
     </wsdl:port>
   </wsdl:service>
