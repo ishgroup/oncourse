@@ -89,8 +89,9 @@ class Configuration {
         ZK_HOST('zk_host', 'zk.host.property'),
         LOGS_PATH('logs_path', 'logs.path'),
         SMTP('smtp', 'mail.smtp.host'),
-        CREDENTIAL_STORE('credentialStore', 'credentialStore'),
-        CREDENTIAL_STORE_PASSWORD('credentialStorePassword', 'credentialStorePassword')
+        USI_LOCATION('usi_location', 'usi.location'),
+        CREDENTIAL_STORE('usi_keystore', 'usi.keystore'),
+        CREDENTIAL_STORE_PASSWORD('usi_keystore_password', 'usi.keystore.password')
 
         private String key
         private String systemProperty

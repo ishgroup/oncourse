@@ -13,14 +13,14 @@ import javax.ws.rs.QueryParam;
 import javax.xml.stream.XMLStreamException;
 import java.text.ParseException;
 
-@Path("/api")
+@Path("/")
 public class UsiRestService {
 
     @Inject
     private USIService usiService;
 
     @GET
-    @Path("/v1/verify")
+    @Path("/verify")
     @Produces({ "application/json" })
     public USIVerificationResult verify(@QueryParam("studentFirstName") String studentFirstName,
                                         @QueryParam("studentLastName") String studentLastName,
@@ -33,7 +33,7 @@ public class UsiRestService {
     }
 
     @GET
-    @Path("/v1/locate")
+    @Path("/locate")
     @Produces({ "application/json" })
     public LocateUSIResult locate(@QueryParam("orgCode") String orgCode,
                                   @QueryParam("firstName") String firstName,

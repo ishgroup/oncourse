@@ -7,6 +7,8 @@ import io.bootique.jdbc.tomcat.JdbcTomcatModuleProvider
 import io.bootique.jetty.JettyModuleProvider
 import ish.oncourse.configuration.Configuration
 
+import static ish.oncourse.configuration.Configuration.AppProperty.USI_LOCATION
+
 /**
  * User: akoiro
  * Date: 16/9/17
@@ -14,7 +16,7 @@ import ish.oncourse.configuration.Configuration
 class PortalApp {
     static void main(String[] args) {
         System.setProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager")
-        Configuration.configure()
+        Configuration.configure(USI_LOCATION)
         Bootique bootique = init(args)
         bootique.exec()
     }
