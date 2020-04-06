@@ -8,22 +8,26 @@ import ish.common.types.LocateUSIResult;
 import ish.common.types.USIVerificationRequest;
 import ish.common.types.USIVerificationResult;
 import ish.oncourse.services.usi.IUSIVerificationService;
+import ish.oncourse.services.usi.IUsiRestService;
+import ish.oncourse.services.usi.UsiRestService;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class USIVerificationService implements IUSIVerificationService {
 
 	@Inject
-	private USIService usiService;
-	
+	private IUsiRestService restService;
+
 	@Inject
 	public USIVerificationService() {
 	}
 
 	@Override
 	public USIVerificationResult verifyUsi(USIVerificationRequest request) {
-		return usiService.verifyUsi(request);
+		return restService.verify(request);
 	}
 
 	@Override
-	public LocateUSIResult locateUsi(LocateUSIRequest request) { return usiService.locateUSI(request); }
+	public LocateUSIResult locateUsi(LocateUSIRequest request) {
+		return restService.locate(request);
+	}
 }
