@@ -9,7 +9,6 @@
 	<import resource="classpath:META-INF/cxf/cxf.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
-	<import resource="classpath:application-context-usi-2018.xml" />
-	
+
 	<bean id="loggingFeature" class="org.apache.cxf.feature.LoggingFeature" />
 </beans>
