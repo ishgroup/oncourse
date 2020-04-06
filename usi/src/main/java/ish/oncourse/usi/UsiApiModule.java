@@ -23,11 +23,12 @@ public class UsiApiModule extends ConfigModule {
 
     public void configure(Binder binder) {
 
-        JettyModule.extend(binder).addMappedServlet(ISH_HEALTH_CHECK_SERVLET);
-
         CXFModule.contributeResources(binder).addBinding().to(JAXRSBeanValidationFeature.class);
         CXFModule.contributeResources(binder).addBinding().to(UsiRestService.class);
         CXFModule.contributeFeatures(binder);
+
+        JettyModule.extend(binder).addMappedServlet(ISH_HEALTH_CHECK_SERVLET);
+
 
     }
     @Singleton

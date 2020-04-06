@@ -4,6 +4,7 @@ import com.sun.xml.wss.XWSSecurityException;
 import ish.common.types.USIVerificationRequest;
 import ish.common.types.USIVerificationResult;
 import org.apache.commons.lang3.time.DateUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.xml.stream.XMLStreamException;
@@ -13,6 +14,7 @@ import java.text.ParseException;
 public class USITest {
 
     @Test
+    @Ignore
     public void verifyUsi() throws XMLStreamException, XWSSecurityException, ParseException {
         System.setProperty("com.sun.xml.ws.transport.http.client.HttpTransportPipe.dump", "true");
         System.setProperty("com.sun.xml.internal.ws.transport.http.client.HttpTransportPipe.dump", "true");
@@ -23,13 +25,7 @@ public class USITest {
 
 
         USIService usiService = new USIServiceBuilder().buildService();
-        USIVerificationRequest request = new USIVerificationRequest();
 
-        request.setStudentBirthDate(DateUtils.parseDate("1988-05-02", "yyyy-MM-dd"));
-        request.setStudentFirstName("Simone");
-        request.setStudentLastName("Claudia Stockl");
-        request.setUsiCode("DB5PW8SXU6");
-        request.setOrgCode("90054");
 
         USIVerificationResult result = usiService.verifyUsi("Simone",
                 "Stockl",
