@@ -7,13 +7,10 @@ import ish.oncourse.api.cxf.CXFModuleProvider;
 import ish.oncourse.configuration.Configuration;
 import ish.oncourse.log4j.IshLog4jModule;
 
-import static ish.oncourse.configuration.Configuration.AppProperty.CREDENTIAL_STORE;
-import static ish.oncourse.configuration.Configuration.AppProperty.CREDENTIAL_STORE_PASSWORD;
-
 public class UsiApp {
 
     public static void main(String[] args) {
-        Configuration.configure(CREDENTIAL_STORE_PASSWORD, CREDENTIAL_STORE);
+        Configuration.configure();
 
         Bootique.app(args).args("--server", "--config=classpath:application.yml")
                 .module(UsiApiModule.class)
