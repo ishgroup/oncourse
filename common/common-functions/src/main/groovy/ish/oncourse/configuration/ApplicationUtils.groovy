@@ -1,6 +1,5 @@
 package ish.oncourse.configuration
 
-import org.apache.commons.io.IOUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
@@ -22,8 +21,9 @@ class ApplicationUtils {
                 logger.error(e)
                 return VERSION_DEVELOPMENT
             } finally {
-                IOUtils.closeQuietly(reader)
-            }
+                if (reader != null) {
+                    reader.close();
+                }            }
         } else {
             return VERSION_DEVELOPMENT
         }
