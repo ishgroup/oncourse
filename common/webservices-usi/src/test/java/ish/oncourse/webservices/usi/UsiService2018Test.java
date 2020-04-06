@@ -5,6 +5,7 @@ import au.gov.usi._2018.ws.servicepolicy.IUSIServiceVerifyUSIErrorInfoFaultFault
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.cxf.bus.spring.BusApplicationContext;
 import org.apache.cxf.ws.security.trust.STSClient;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -19,16 +20,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import static ish.oncourse.configuration.Configuration.AppProperty.CREDENTIAL_STORE;
-import static ish.oncourse.configuration.Configuration.AppProperty.CREDENTIAL_STORE_PASSWORD;
-
 public class UsiService2018Test {
 
     @Test
+    @Ignore
     public void test() throws au.gov.usi._2018.ws.servicepolicy.IUSIServiceVerifyUSIErrorInfoFaultFaultMessage, ParseException, DatatypeConfigurationException, IUSIServiceVerifyUSIErrorInfoFaultFaultMessageSingle {
 
-        System.setProperty(CREDENTIAL_STORE.getSystemProperty(), "oncourse-usi-keystore.xml");
-        System.setProperty(CREDENTIAL_STORE_PASSWORD.getSystemProperty(), "oncourse-usi-keystore.pass");
 
         AnnotationConfigApplicationContext parentContext = new AnnotationConfigApplicationContext(TestConfig.class);
 
