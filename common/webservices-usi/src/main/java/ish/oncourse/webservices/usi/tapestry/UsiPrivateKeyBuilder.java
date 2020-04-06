@@ -20,9 +20,6 @@ import java.io.IOException;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 
-import static ish.oncourse.configuration.Configuration.AppProperty.CREDENTIAL_STORE;
-import static ish.oncourse.configuration.Configuration.AppProperty.CREDENTIAL_STORE_PASSWORD;
-
 
 public class UsiPrivateKeyBuilder implements ServiceBuilder<UsiPrivateKey> {
 
@@ -30,8 +27,8 @@ public class UsiPrivateKeyBuilder implements ServiceBuilder<UsiPrivateKey> {
 
     @Override
     public UsiPrivateKey buildService(ServiceResources resources) {
-        String xmlCredentialPath = Configuration.getValue(CREDENTIAL_STORE);
-        String passwordPath = Configuration.getValue(CREDENTIAL_STORE_PASSWORD);
+        String xmlCredentialPath = Configuration.getValue(null);
+        String passwordPath = Configuration.getValue(null);
 
         СredentialStoreReader reader = СredentialStoreReader.valueOf(xmlCredentialPath, passwordPath);
         final PrivateKey privateKey;

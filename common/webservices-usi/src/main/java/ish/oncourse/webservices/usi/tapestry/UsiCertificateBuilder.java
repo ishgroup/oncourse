@@ -21,9 +21,6 @@ import java.security.cert.*;
 import java.util.Date;
 import java.util.Set;
 
-import static ish.oncourse.configuration.Configuration.AppProperty.CREDENTIAL_STORE;
-import static ish.oncourse.configuration.Configuration.AppProperty.CREDENTIAL_STORE_PASSWORD;
-
 public class UsiCertificateBuilder implements ServiceBuilder<UsiCertificate> {
 
     private static final Logger logger = LogManager.getLogger();
@@ -31,8 +28,8 @@ public class UsiCertificateBuilder implements ServiceBuilder<UsiCertificate> {
     @Override
     public UsiCertificate buildService(ServiceResources resources) {
 
-        String xmlCredentialPath = Configuration.getValue(CREDENTIAL_STORE);
-        String passwordPath = Configuration.getValue(CREDENTIAL_STORE_PASSWORD);
+        String xmlCredentialPath = null;
+        String passwordPath = null;
 
         СredentialStoreReader reader = СredentialStoreReader.valueOf(xmlCredentialPath, passwordPath);
         final X509Certificate certificate;

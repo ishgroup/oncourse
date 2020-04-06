@@ -21,9 +21,6 @@ import java.security.PublicKey;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 
-import static ish.oncourse.configuration.Configuration.AppProperty.CREDENTIAL_STORE;
-import static ish.oncourse.configuration.Configuration.AppProperty.CREDENTIAL_STORE_PASSWORD;
-
 public class AUSKeyCryptoService implements Crypto, CallbackHandler {
 
 	private static final Logger logger = LogManager.getLogger();
@@ -33,8 +30,8 @@ public class AUSKeyCryptoService implements Crypto, CallbackHandler {
 
 	public AUSKeyCryptoService() {
 
-		String xmlCredentialPath = Configuration.getValue(CREDENTIAL_STORE);
-		String passwordPath = Configuration.getValue(CREDENTIAL_STORE_PASSWORD);
+		String xmlCredentialPath = null;
+		String passwordPath = null;
 
 		try {
 			File keystoreFile = new File(xmlCredentialPath).getAbsoluteFile();

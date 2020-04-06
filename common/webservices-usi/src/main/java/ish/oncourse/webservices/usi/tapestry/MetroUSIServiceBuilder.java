@@ -38,10 +38,6 @@ import java.security.cert.X509Certificate;
 import java.text.ParseException;
 import java.util.Map;
 import java.util.UUID;
-
-import static ish.oncourse.configuration.Configuration.AppProperty.CREDENTIAL_STORE;
-import static ish.oncourse.configuration.Configuration.AppProperty.CREDENTIAL_STORE_PASSWORD;
-
 /**
  * User: akoiro
  * Date: 23/8/17
@@ -66,9 +62,6 @@ public class MetroUSIServiceBuilder implements ServiceBuilder<USIService> {
         System.setProperty("com.sun.xml.internal.ws.transport.http.HttpAdapter.dump", "true");
         System.setProperty("com.sun.xml.internal.ws.transport.http.HttpAdapter.dumpTreshold", "999999");
         System.setProperty("com.sun.xml.ws.transport.http.HttpAdapter.dumpTreshold", "999999");
-
-        System.setProperty(CREDENTIAL_STORE.getSystemProperty(), "oncourse-usi-keystore.xml");
-        System.setProperty(CREDENTIAL_STORE_PASSWORD.getSystemProperty(), "oncourse-usi-keystore.pass");
 
         USIService usiService = new MetroUSIServiceBuilder().buildService(null);
         USIVerificationRequest request = new USIVerificationRequest();
