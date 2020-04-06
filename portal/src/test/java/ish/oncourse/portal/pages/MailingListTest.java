@@ -13,7 +13,6 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.test.LoadDataSet;
 import ish.oncourse.test.ServiceTest;
-import ish.oncourse.webservices.usi.TestUSIServiceEndpoint;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SelectById;
@@ -33,7 +32,6 @@ public class MailingListTest extends ServiceTest {
 	private Set<Tag> tags;
 	@Before
 	public void setup() throws Exception {
-		System.setProperty(TestUSIServiceEndpoint.USI_TEST_MODE, "true");
 
 		initTest("ish.oncourse.portal", "portal", "src/main/resources/desktop/ish/oncourse/portal/pages", TestModule.class);
 		new LoadDataSet().dataSetFile("ish/oncourse/portal/pages/mailingListTestDataSet.xml").load(getDataSource("jdbc/oncourse"));

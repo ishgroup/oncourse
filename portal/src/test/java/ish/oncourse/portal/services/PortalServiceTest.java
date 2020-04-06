@@ -8,7 +8,6 @@ import ish.oncourse.services.courseclass.CourseClassFilter;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.util.DateFormatter;
-import ish.oncourse.webservices.usi.TestUSIServiceEndpoint;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang3.time.DateUtils;
@@ -59,7 +58,6 @@ public class PortalServiceTest extends ServiceTest {
     
     @Before
     public void setup() throws Exception {
-        System.setProperty(TestUSIServiceEndpoint.USI_TEST_MODE, "true");
 
 		initTest("ish.oncourse.portal", "portal", "src/main/resources/desktop/ish/oncourse/portal/pages", TestModule.class);
 		InputStream st = PortalServiceTest.class.getClassLoader().getResourceAsStream("ish/oncourse/portal/services/oncourseDataSet.xml");

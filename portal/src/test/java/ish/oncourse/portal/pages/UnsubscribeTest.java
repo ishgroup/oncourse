@@ -3,7 +3,6 @@ package ish.oncourse.portal.pages;
 
 import ish.oncourse.portal.service.TestModule;
 import ish.oncourse.test.ServiceTest;
-import ish.oncourse.webservices.usi.TestUSIServiceEndpoint;
 import org.apache.tapestry5.dom.Document;
 import org.apache.tapestry5.dom.Element;
 import org.apache.tapestry5.test.PageTester;
@@ -28,7 +27,6 @@ public class UnsubscribeTest extends ServiceTest {
 	
 	@Before
 	public void setup() throws Exception {
-		System.setProperty(TestUSIServiceEndpoint.USI_TEST_MODE, "true");
 		initTest(APP_PACKAGE, "", CONTEXT_PATH, TestModule.class);
 		
 		InputStream st = UnsubscribeTest.class.getClassLoader().getResourceAsStream("ish/oncourse/portal/unsubscribeDataSet.xml");
