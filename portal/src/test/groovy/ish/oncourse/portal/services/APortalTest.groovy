@@ -5,7 +5,6 @@ import ish.oncourse.services.paymentexpress.INewPaymentGatewayService
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.test.LoadDataSet
 import ish.oncourse.test.ServiceTest
-import ish.oncourse.webservices.usi.TestUSIServiceEndpoint
 import org.apache.cayenne.ObjectContext
 import org.junit.Before
 
@@ -25,7 +24,6 @@ abstract class APortalTest extends ServiceTest {
 
     @Before
     public void setup() throws Exception {
-        System.setProperty(TestUSIServiceEndpoint.USI_TEST_MODE, "true");
 
         initTest("ish.oncourse.portal", "portal", "src/main/resources/desktop/ish/oncourse/portal/pages", TestModule.class);
 
