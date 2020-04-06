@@ -40,14 +40,14 @@ class UsiRestService implements IUsiRestService {
         try {
             new HTTPBuilder().get(
                 [uri: USI_URL,
-                 path:   "/verify" +
-                         "?studentFirstName=$request.studentFirstName" +
-                         "&studentLastName=$request.studentLastName" +
-                         "&studentBirthDate=${request.studentBirthDate.format('yyyy-MM-dd')}" +
-                         "&usiCode=$request.usiCode" +
-                         "&orgCode=$request.orgCode" +
-                         "&collegeABN=$abn" +
-                         "&softwareId=$ssid"
+                 path:   '/usi/verify',
+                 query: ['studentFirstName' : request.studentFirstName,
+                         'studentLastName' : request.studentLastName,
+                         'studentBirthDate' : request.studentBirthDate.format('yyyy-MM-dd'),
+                         'usiCode' : request.usiCode,
+                         'orgCode' : request.orgCode,
+                         'collegeABN' : abn,
+                         'softwareId' : ssid]
                 ])
                 { response, body ->
                     String error = body["errorMessage"] as String
@@ -77,19 +77,38 @@ class UsiRestService implements IUsiRestService {
         String ssid = preferenceController.getUsiSoftwareId()
 
         LocateUSIResult result = new LocateUSIResult()
-        try {
-            String path = "/locate?collegeABN=$abn&softwareId=$ssid&orgCode=$request.orgCode&firstName=$request.firstName&familyName=$request.familyName"
-            path += request.middleName ? "&middleName=${request.middleName}" : ''
-            path += request.dateOfBirth ? "&dateOfBirth${request.dateOfBirth.format('yyyy-MM-dd')}" : ''
-            path += request.townCityOfBirth ? "&townCityOfBirth=${request.townCityOfBirth}" : ''
-            path += request.emailAddress ? "&emailAddress=${request.emailAddress}" : ''
-            path += request.userReference ? "&userReference=${request.userReference}" : ''
-            path += request.gender ? "&gender=${request.gender.requestCode}" : ''
 
+        Map queryParams = ['collegeABN' : abn,
+                           'softwareId' : ssid,
+                           'orgCode' : request.orgCode,
+                           'firstName' : request.firstName,
+                           'familyName' : request.familyName ]
+        if (request.middleName) {
+            queryParams['middleName'] = request.middleName
+        }
+        if (request.dateOfBirth) {
+            queryParams['dateOfBirth'] = request.dateOfBirth.format('yyyy-MM-dd')
+        }
+        if (request.townCityOfBirth) {
+            queryParams['townCityOfBirth'] = request.townCityOfBirth
+        }
+        if (request.emailAddress) {
+            queryParams['emailAddress'] = request.emailAddress
+        }
+        if (request.userReference) {
+            queryParams['userReference'] = request.userReference
+        }
+        if (request.gender) {
+            queryParams['gender'] = request.gender.requestCode
+        }
+
+
+        try {
 
             new HTTPBuilder().get(
                     [uri: USI_URL,
-                     path:   path
+                     path:   "/usi/locate",
+                     query: queryParams
                     ]) { response, body ->
                             result.resultType = LocateUSIType.values().find {it.name() == body["resultType"] }
                             result.usi = body["usi"]
