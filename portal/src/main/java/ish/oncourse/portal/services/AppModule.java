@@ -18,6 +18,8 @@ import ish.oncourse.services.BinderFunctions;
 import ish.oncourse.services.DisableJavaScriptStack;
 import ish.oncourse.services.html.NoCacheMetaProvider;
 import ish.oncourse.services.usi.IUSIVerificationService;
+import ish.oncourse.services.usi.IUsiRestService;
+import ish.oncourse.services.usi.UsiRestService;
 import ish.oncourse.textile.services.TextileModule;
 import ish.oncourse.util.UIRequestExceptionHandler;
 import org.apache.tapestry5.Asset;
@@ -51,7 +53,6 @@ public class AppModule {
 		BinderFunctions.bindPaymentGatewayServices(binder);
 		BinderFunctions.bindEnvServices(binder, "portal", false);
 		BinderFunctions.bindTapestryServices(binder, NoCacheMetaProvider.class, PortalPageRenderer.class);
-		ish.oncourse.webservices.usi.tapestry.BinderFunctions.bindUSIServices(binder);
 
 		binder.bind(ISessionManager.class, ZKSessionManager.class).scope(ScopeConstants.DEFAULT);
 		binder.bind(IAuthenticationService.class, AuthenticationService.class);
@@ -63,6 +64,7 @@ public class AppModule {
 
 		binder.bind(TapestrySessionFactory.class, ISHTapestrySessionFactoryImpl.class).withId("ISHTapestrySessionFactoryImpl");
 		binder.bind(AccessLinksValidatorFactory.class, AccessLinksValidatorFactory.class);
+		binder.bind(IUsiRestService.class, UsiRestService.class);
 		binder.bind(IUSIVerificationService.class, PortalUSIService.class);
 
 	}
