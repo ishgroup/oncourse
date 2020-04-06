@@ -11,7 +11,23 @@ class Configuration {
     static final Pattern DB_URL_PATTERN = Pattern.compile('(\\w+:)+\\/\\/.+\\/\\w+')
     
     static final String BD_URL_PARAMS = 'autoReconnect=true&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf8&useSSL=false'
-    
+
+    static configureOnly(IProperty... extendedProps) {
+        String userDir = System.getProperties().get(USER_DIR) as String
+        Properties props = loadProperties()
+
+        if (props) {
+            if (!init(props, LOGS_PATH)) {
+                System.setProperty(LOGS_PATH.systemProperty, "${userDir}/logs/")
+            }
+            extendedProps.each { it
+                init(props, it)
+
+            }
+        }
+    }
+
+
     static configure(IProperty... extendedProps = null) {
         
         String userDir = System.getProperties().get(USER_DIR) as String

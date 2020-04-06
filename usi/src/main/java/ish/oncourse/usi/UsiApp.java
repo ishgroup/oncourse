@@ -7,10 +7,14 @@ import ish.oncourse.api.cxf.CXFModuleProvider;
 import ish.oncourse.configuration.Configuration;
 import ish.oncourse.log4j.IshLog4jModule;
 
+import java.util.Properties;
+
+import static ish.oncourse.configuration.Configuration.AppProperty.*;
+
 public class UsiApp {
 
     public static void main(String[] args) {
-        Configuration.configure();
+        Configuration.configureOnly(HOST, PORT, PATH);
 
         Bootique.app(args).args("--server", "--config=classpath:application.yml")
                 .module(UsiApiModule.class)
