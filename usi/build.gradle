@@ -1,6 +1,6 @@
 apply from: "$rootDir/gradle/build-api.gradle"
 
-mainClassName = 'ish.oncourse.usi.UsiwApp'
+mainClassName = 'ish.oncourse.usi.UsiApp'
 
 configurations {
     ws
