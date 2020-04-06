@@ -38,9 +38,6 @@ import java.text.ParseException;
 import java.util.Map;
 import java.util.UUID;
 
-import static ish.oncourse.configuration.Configuration.AppProperty.CREDENTIAL_STORE;
-import static ish.oncourse.configuration.Configuration.AppProperty.CREDENTIAL_STORE_PASSWORD;
-
 /**
  * User: akoiro
  * Date: 23/8/17
@@ -48,13 +45,15 @@ import static ish.oncourse.configuration.Configuration.AppProperty.CREDENTIAL_ST
 public class USIServiceBuilder {
     private static final Logger logger = LogManager.getLogger();
 
+    final private static String KEYSTORE_PATH = "oncourse-usi-keystore.xml";
+    final private static String KEYSTORE_PASS_PATH = "oncourse-usi-keystore.pass";
 
     final private static String ENDPOINT = "https://softwareauthorisations.acc.ato.gov.au/R3.0/S007v1.3/service.svc";
     final private static String WSDL_LOCATION = ENDPOINT;
     final private static String STS_NAMESPACE ="http://schemas.microsoft.com/ws/2008/06/identity/securitytokenservice";
     final private static String STS_SERVICE_NAME = "SecurityTokenService";
     final private static String STS_PORT_NAME = "S007SecurityTokenServiceEndpoint";
-    final private static String STS_PROTOCOL = WSTrustVersion.WS_TRUST_13.getNamespaceURI(); //STSIssuedTokenConfiguration.PROTOCOL_13;
+    final private static String STS_PROTOCOL = WSTrustVersion.WS_TRUST_13.getNamespaceURI();
 
     PrivateKey key;
     X509Certificate certificate;
@@ -62,12 +61,10 @@ public class USIServiceBuilder {
     Map<String, Object> otherOptions;
 
     public USIService buildService() throws XMLStreamException, XWSSecurityException {
-        String xmlCredentialPath = Configuration.getValue(CREDENTIAL_STORE);
-        String passwordPath = Configuration.getValue(CREDENTIAL_STORE_PASSWORD);
 
         try {
-            File keystoreFile = new File(xmlCredentialPath).getAbsoluteFile();
-            char[] pass = new BufferedReader(new FileReader(passwordPath)).readLine().trim().toCharArray();
+            File keystoreFile = new File(KEYSTORE_PATH).getAbsoluteFile();
+            char[] pass = new BufferedReader(new FileReader(KEYSTORE_PASS_PATH)).readLine().trim().toCharArray();
 
             ABRProperties.setSoftwareInfo("ish pty ltd", "Ish onCourse", "v1.0", "20-10-2006");
 
