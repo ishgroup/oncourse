@@ -48,7 +48,7 @@ import java.util.concurrent.Executors;
 import java.util.function.Function;
 
 import static ish.oncourse.webservices.soap.TestConstants.*;
-import static ish.oncourse.webservices.usi.TestUSIServiceEndpoint.USI_TEST_MODE;
+import static ish.oncourse.webservices.usi.USITest.USI_TEST_MODE;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;

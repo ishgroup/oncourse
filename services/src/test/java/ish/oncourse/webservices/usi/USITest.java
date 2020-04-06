@@ -15,7 +15,6 @@ import org.apache.commons.lang3.time.DateUtils;
 
 import java.util.Date;
 
-import static ish.oncourse.webservices.usi.TestUSIServiceEndpoint.*;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -23,6 +22,21 @@ import static org.junit.Assert.assertEquals;
  * Date: 29/7/17
  */
 public class USITest {
+
+	public static final String USI_INVALID = "SYWQ7D4YBT";
+	public static final String USI_NOT_MATCH_LAST_NAME = "ZTCP6RPU6M";
+	public static final String USI_NOT_MATCH_FIRST_NAME = "KLP2ZP6NCW";
+	public static final String USI_NOT_MATCH_DOB = "G2RN4G89SD";
+	public static final String USI_VALID = "PCVA64XU3D";
+
+	public static final String USI_NOT_MATCH_SINGLE_NAME = "CVPZXK7N9H";
+	public static final String USI_NOT_MATCH_SINGLE_DOB = "QBK9UZYQNJ";
+	public static final String USI_VALID_SINGLE = "W2NBT2FW66";
+	public static final String USI_INVALID_SINGLE = "TSXEDK8HVP";
+
+	public static final String NO_MATCH = "NO_MATCH";
+
+	public static final String USI_TEST_MODE = "test.usi.endpoint";
 
 	private Parent parent;
 
