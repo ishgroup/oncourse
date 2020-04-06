@@ -104,6 +104,15 @@ public abstract class CommonPreferenceController {
 	}
 
 	/**
+	 * Get the college USI SOFTWARE ID
+	 * @return USI_SOFTWARE_ID
+	 */
+	public String getUsiSoftwareId() {
+		return getValue(USI_SOFTWARE_ID, false);
+	}
+
+
+	/**
 	 * Set the college ABN
 	 *
 	 * @param value ABN
