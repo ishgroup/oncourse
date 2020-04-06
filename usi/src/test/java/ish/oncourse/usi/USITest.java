@@ -10,9 +10,6 @@ import javax.xml.stream.XMLStreamException;
 
 import java.text.ParseException;
 
-import static ish.oncourse.configuration.Configuration.AppProperty.CREDENTIAL_STORE;
-import static ish.oncourse.configuration.Configuration.AppProperty.CREDENTIAL_STORE_PASSWORD;
-
 public class USITest {
 
     @Test
@@ -24,8 +21,6 @@ public class USITest {
         System.setProperty("com.sun.xml.internal.ws.transport.http.HttpAdapter.dumpTreshold", "999999");
         System.setProperty("com.sun.xml.ws.transport.http.HttpAdapter.dumpTreshold", "999999");
 
-        System.setProperty(CREDENTIAL_STORE.getSystemProperty(), "oncourse-usi-keystore.xml");
-        System.setProperty(CREDENTIAL_STORE_PASSWORD.getSystemProperty(), "oncourse-usi-keystore.pass");
 
         USIService usiService = new USIServiceBuilder().buildService();
         USIVerificationRequest request = new USIVerificationRequest();
