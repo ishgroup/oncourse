@@ -54,7 +54,7 @@ public interface IPortalService {
 
     public List<Outcome> getResultsBy(CourseClass courseClass);
 
-    public List<Document> getTutorCommonResources(List<CourseClass> courseClasses);
+    public List<Document> getTutorCommonResources();
 
 	public List<Document> getStudentAndTutorCommonResources(List<CourseClass> courseClasses);
 

@@ -75,18 +75,18 @@ public class Resources {
     @Property
     private String target;
 
-
     @SetupRender
     void setupRender() {
 
         lastLoginDate = portalService.getLastLoginTime();
-        courseClasses = portalService.getContactCourseClasses(CourseClassFilter.CURRENT);
         if (portalService.getContact().getTutor() != null) {
-            tutorsMaterials = portalService.getTutorCommonResources(courseClasses);
+            tutorsMaterials = portalService.getTutorCommonResources();
         }
-        sudentAndTutorsMaterials = portalService.getStudentAndTutorCommonResources(courseClasses);
+        courseClasses = portalService.getContactCourseClasses(CourseClassFilter.CURRENT);
+        if (portalService.getContact().getStudent() != null) {
+            sudentAndTutorsMaterials = portalService.getStudentAndTutorCommonResources(courseClasses);
+        }
     }
-
 
     public String getDate(CourseClass courseClass) {
         if (courseClass.getIsDistantLearningCourse())
