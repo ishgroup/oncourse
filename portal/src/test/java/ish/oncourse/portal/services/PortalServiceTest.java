@@ -205,7 +205,7 @@ public class PortalServiceTest extends ServiceTest {
 		authenticationService.storeCurrentUser(contact);
 
 		List<CourseClass> courseClasses = service.getContactCourseClasses(CourseClassFilter.ALL);
-		List<Document> tutorResources = service.getTutorCommonResources(courseClasses);
+		List<Document> tutorResources = service.getTutorCommonResources();
 		
 		assertEquals(1, tutorResources.size());
 		assertEquals(tutorResource.getId(), tutorResources.get(0).getId());
