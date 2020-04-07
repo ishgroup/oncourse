@@ -199,16 +199,18 @@ public class PortalServiceTest extends ServiceTest {
 		IAuthenticationService authenticationService = getService(IAuthenticationService.class);
 		ObjectContext objectContext = cayenneService.newContext();
 
-		Document tutorResource = Cayenne.objectForPK(objectContext, Document.class, 4);
+		Document document = Cayenne.objectForPK(objectContext, Document.class, 4);
 
 		Contact contact = Cayenne.objectForPK(objectContext, Contact.class, 1);
 		authenticationService.storeCurrentUser(contact);
 
 		List<CourseClass> courseClasses = service.getContactCourseClasses(CourseClassFilter.ALL);
-		List<Document> tutorResources = service.getTutorCommonResources();
-		
-		assertEquals(1, tutorResources.size());
-		assertEquals(tutorResource.getId(), tutorResources.get(0).getId());
+
+        List<Document> tutorStudentResources = service.getStudentAndTutorCommonResources(courseClasses);
+
+        assertEquals(1, tutorStudentResources.size());
+
+        assertEquals(document.getId(), tutorStudentResources.get(0).getId());
 	}
 	
 	@Test
