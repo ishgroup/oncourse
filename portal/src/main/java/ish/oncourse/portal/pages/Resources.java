@@ -83,7 +83,7 @@ public class Resources {
             tutorsMaterials = portalService.getTutorCommonResources();
         }
         courseClasses = portalService.getContactCourseClasses(CourseClassFilter.CURRENT);
-        if (portalService.getContact().getStudent() != null) {
+        if (portalService.getContact().getStudent() != null || portalService.getContact().getTutor() != null) {
             sudentAndTutorsMaterials = portalService.getStudentAndTutorCommonResources(courseClasses);
         }
     }
