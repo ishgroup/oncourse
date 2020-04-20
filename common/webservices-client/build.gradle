@@ -32,25 +32,18 @@ dependencies{
 }
 
 task wsdl2Java() {
-    def wsdlDir = file("${projectDir}/src/main/resources/wsdl")
-    def generatedWsdlDir = file("${projectDir}/src/main/java")
-            
-    inputs.files wsdlDir.listFiles()
-    outputs.files generatedWsdlDir
-    
     doLast {
-        replicationVersions.each { v ->
-            javaexec {
-                classpath configurations.ws
-                main = 'org.apache.cxf.tools.wsdlto.WSDLToJava'
-                args = ['-xjc-Xinheritance',
-                        '-wsdlLocation', "/wsdl/v${v}_replication.wsdl",
-                        '-p', "ish.oncourse.webservices.v${v}.stubs.replication",
-                        '-b', "${wsdlDir}/replication${v}_binding.xml",
-                        '-d', generatedWsdlDir,
-                        "${wsdlDir}/v${v}_replication.wsdl"]
-                systemProperties = ['exitOnFinish':'TRUE']
-            }
+        javaexec {
+            classpath configurations.ws
+            main = 'org.apache.cxf.tools.wsdlto.WSDLToJava'
+            args = ['-xjc-Xinheritance',
+                    '-wsdlLocation', '/wsdl/v21_replication.wsdl',
+                    '-b', "${projectDir}/src/main/resources/wsdl/replication21_binding.xml",
+                    '-p', "ish.oncourse.webservices.v21.stubs.replication",
+                    '-d', "${projectDir}/src/main/java",
+                    "${projectDir}/src/main/resources/wsdl/v21_replication.wsdl"
+            ]
+            systemProperties = ['exitOnFinish':'TRUE']
         }
     }
 }

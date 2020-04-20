@@ -122,6 +122,8 @@
             <xs:element name="instructionResponse"  type="tns:transactionGroup"/>
             <xs:element name="usiRequest" type="tns:ParametersMap"/>
             <xs:element name="usiResponse" type="tns:ParametersMap"/>
+            <xs:element name="checkoutRequest" type="tns:ParametersMap"/>
+            <xs:element name="checkoutResponse" type="tns:ParametersMap"/>
             <xs:element name="authSecurityCode" type="xs:string"/>
             <xs:element name="authLastCommunicationKey" type="xs:long"/>
             <xs:element name="authNewCommunicationKey" type="xs:long"/>
@@ -1894,6 +1896,16 @@
         <wsdl:part name="verificationResponse" element="tns:usiResponse"/>
     </wsdl:message>
 
+    <wsdl:message name="verifyCheckoutRequest">
+        <wsdl:part name="verificationRequest" element="tns:checkoutRequest"/>
+    </wsdl:message>
+
+    <wsdl:message name="verifyCheckoutResponse">
+        <wsdl:part name="verifyCheckoutResponse" element="tns:checkoutResponse"/>
+    </wsdl:message>
+
+
+    verifyCheckoutRequest
     <wsdl:portType name="ReplicationPortType">
 
         <wsdl:operation name="getRecords">
@@ -1977,6 +1989,12 @@
         <wsdl:operation name="verifyUSI">
             <wsdl:input message="tns:verifyUSIRequest" name="verifyUSIRequest"/>
             <wsdl:output message="tns:verifyUSIResponse" name="verifyUSIResponse"/>
+            <wsdl:fault name="fault" message="tns:replicationFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="verifyCheckout">
+            <wsdl:input message="tns:verifyCheckoutRequest" name="verifyCheckoutRequest"/>
+            <wsdl:output message="tns:verifyCheckoutResponse" name="verifyCheckoutResponse"/>
             <wsdl:fault name="fault" message="tns:replicationFault"/>
         </wsdl:operation>
     </wsdl:portType>
@@ -2139,6 +2157,19 @@
                 <soap:body use="literal"/>
             </wsdl:input>
             <wsdl:output name="verifyUSIResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="fault">
+                <soap:fault use="literal" name="fault" />
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="verifyCheckout">
+            <soap:operation soapAction="verifyCheckout" style="document"/>
+            <wsdl:input name="verifyCheckoutRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="verifyCheckoutResponse">
                 <soap:body use="literal"/>
             </wsdl:output>
             <wsdl:fault name="fault">
