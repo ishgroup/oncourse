@@ -1,5 +1,7 @@
 package ish.oncourse.webservices.soap.v21;
 
+import ish.oncourse.webservices.v21.stubs.replication.ParametersMap;
+
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -44,6 +46,13 @@ public interface PaymentPortType {
     public ish.oncourse.webservices.v21.stubs.replication.ParametersMap verifyUSI(
             @WebParam(partName = "verificationRequest", name = "usiRequest", targetNamespace = "http://repl.v21.soap.webservices.oncourse.ish/")
                     ish.oncourse.webservices.v21.stubs.replication.ParametersMap verificationRequest
+    ) throws ReplicationFault;
+
+    @WebMethod(action = "verifyCheckout")
+    @WebResult(name = "checkoutResponse", targetNamespace = "http://repl.v21.soap.webservices.oncourse.ish/", partName = "verifyCheckoutResponse")
+    public ParametersMap verifyCheckout(
+            @WebParam(partName = "verificationRequest", name = "checkoutRequest", targetNamespace = "http://repl.v21.soap.webservices.oncourse.ish/")
+                    ParametersMap verificationRequest
     ) throws ReplicationFault;
 
     @WebMethod(action = "processPayment")
