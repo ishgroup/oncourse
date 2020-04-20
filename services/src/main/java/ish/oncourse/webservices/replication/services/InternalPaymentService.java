@@ -12,4 +12,5 @@ public interface InternalPaymentService {
 	GenericTransactionGroup getPaymentStatus(String sessionId, final SupportedVersions version) throws InternalReplicationFault;
 	GenericTransactionGroup getVouchers(GenericTransactionGroup transactionGroup, SupportedVersions version) throws InternalReplicationFault;
 	GenericParametersMap verifyUSI(GenericParametersMap parametersMap) throws InternalReplicationFault;
+	GenericParametersMap verifyCheckout(GenericParametersMap verificationRequest,  SupportedVersions version) throws InternalReplicationFault;
 }

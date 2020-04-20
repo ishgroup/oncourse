@@ -61,7 +61,16 @@ public class PaymentPortTypeImpl implements PaymentPortType {
 			throw ReplicationPortTypeImpl.createReplicationFaultForException(e);
 		}
 	}
-	
+
+	@Override
+	public ParametersMap verifyCheckout(ParametersMap verificationRequest) throws ReplicationFault {
+		try {
+			return (ParametersMap) paymentPort.verifyCheckout(verificationRequest, SupportedVersions.V21);
+		} catch (Exception e) {
+			throw ReplicationPortTypeImpl.createReplicationFaultForException(e);
+		}
+	}
+
 	@WebMethod(operationName = "processPayment")
 	@Override
 	public TransactionGroup processPayment(TransactionGroup transactionGroup, ParametersMap parametersMap) throws ReplicationFault {

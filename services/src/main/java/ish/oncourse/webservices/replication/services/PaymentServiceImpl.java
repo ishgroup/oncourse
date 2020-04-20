@@ -21,6 +21,8 @@ import ish.oncourse.util.payment.PaymentInModel;
 import ish.oncourse.util.payment.PaymentInSucceed;
 import ish.oncourse.utils.PaymentInUtil;
 import ish.oncourse.utils.SessionIdGenerator;
+import ish.oncourse.webservices.CheckoutValidationResult;
+import ish.oncourse.webservices.ICheckoutVerificationService;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.replication.builders.ITransactionStubBuilder;
 import ish.oncourse.webservices.replication.builders.IWillowStubBuilder;
@@ -35,6 +37,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static ish.oncourse.webservices.replication.services.ReplicationUtils.GENERIC_EXCEPTION;
 
@@ -56,6 +59,8 @@ public class PaymentServiceImpl implements InternalPaymentService {
 
     private final IUSIVerificationService usiVerificationService;
 
+    private final ICheckoutVerificationService checkoutVerificationService;
+
     private final ITransactionStubBuilder transactionBuilder;
 
     private final SessionIdGenerator idGenerator;
@@ -69,7 +74,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
     @Inject
     public PaymentServiceImpl(ITransactionGroupProcessor groupProcessor, IPaymentGatewayService paymentGatewayService,
                               ICayenneService cayenneService, IPaymentService paymentInService, IEnrolmentService enrolService, IVoucherService voucherService,
-                              IUSIVerificationService usiVerificationService, ITransactionStubBuilder transactionBuilder, IWillowStubBuilder stubBuilder,
+                              IUSIVerificationService usiVerificationService, ICheckoutVerificationService checkoutVerificationService, ITransactionStubBuilder transactionBuilder, IWillowStubBuilder stubBuilder,
                               PreferenceControllerFactory prefsFactory,
                               IWebSiteService webSiteService
                               ) {
@@ -81,6 +86,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
         this.enrolService = enrolService;
         this.voucherService = voucherService;
         this.usiVerificationService = usiVerificationService;
+        this.checkoutVerificationService = checkoutVerificationService;
         this.transactionBuilder = transactionBuilder;
         this.stubBuilder = stubBuilder;
         this.prefsFactory = prefsFactory;
@@ -324,5 +330,41 @@ public class PaymentServiceImpl implements InternalPaymentService {
         SupportedVersions version = PortHelper.getVersionByParametersMap(parametersMap);
 
         return USIVerificationUtil.createVerificationResultParametersMap(result, version);
+    }
+
+    @Override
+    public GenericParametersMap verifyCheckout(GenericParametersMap verificationRequest, SupportedVersions version) throws InternalReplicationFault {
+        AtomicReference<Long> studentId = new AtomicReference<>();
+        AtomicReference<Long>  courseClassId = new AtomicReference<>();
+
+        verificationRequest.getEntry().forEach(entry -> {
+            switch (entry.getName()) {
+                case "studentId":
+                    studentId.set(Long.valueOf(entry.getValue()));
+                case "courseClassId":
+                    courseClassId.set(Long.valueOf(entry.getValue()));
+                default:
+                    throw new RuntimeException("unexpected parameter: " + entry.getName());
+
+            }
+        } );
+
+        if (courseClassId.get() == null) {
+            throw new RuntimeException("courseClassId is mandatory");
+        }
+
+        CheckoutValidationResult result = checkoutVerificationService.verify(studentId.get(), courseClassId.get());
+        GenericParametersMap response = PortHelper.createParametersMap(version);
+
+        GenericParameterEntry studentError = PortHelper.createParameterEntry(version);
+        studentError.setName("studentError");
+        studentError.setValue(result.getStudentError());
+        response.getGenericEntry().add(studentError);
+
+        GenericParameterEntry courseClassError = PortHelper.createParameterEntry(version);
+        studentError.setName("courseClassError");
+        studentError.setValue(result.getCourseClassError());
+        response.getGenericEntry().add(courseClassError);
+        return response;
     }
 }
