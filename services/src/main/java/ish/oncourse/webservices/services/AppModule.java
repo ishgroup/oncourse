@@ -89,6 +89,8 @@ import ish.oncourse.services.visitor.ParsedContentVisitor;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherService;
 import ish.oncourse.util.*;
+import ish.oncourse.webservices.CheckoutVerificationService;
+import ish.oncourse.webservices.ICheckoutVerificationService;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.jobs.PaymentInExpireJob;
 import ish.oncourse.webservices.jobs.SMSJob;
@@ -215,7 +217,7 @@ public class AppModule {
 
 		binder.bind(UsiRestService.class, UsiRestService.class);
 		binder.bind(IUSIVerificationService.class, USIVerificationService.class);
-
+		binder.bind(ICheckoutVerificationService.class, CheckoutVerificationService.class);
 		binder.bind(ICayenneService.class, new BinderFunctions.CayenneServiceBuilder()).eagerLoad();
 		binder.bind(IJMXInitService.class, new BinderFunctions.JMXInitServiceBuilder("services")).eagerLoad();
 		binder.bind(RequestExceptionHandler.class, ServiceRequestExceptionHandler.class).withId(ServiceRequestExceptionHandler.class.getSimpleName());
