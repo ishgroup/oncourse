@@ -33,11 +33,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 import static ish.oncourse.webservices.replication.services.ReplicationUtils.GENERIC_EXCEPTION;
 
@@ -334,37 +332,24 @@ public class PaymentServiceImpl implements InternalPaymentService {
 
     @Override
     public GenericParametersMap verifyCheckout(GenericParametersMap verificationRequest, SupportedVersions version) throws InternalReplicationFault {
-        AtomicReference<Long> studentId = new AtomicReference<>();
-        AtomicReference<Long>  courseClassId = new AtomicReference<>();
+
+        Map<Long, List<Long>> classContacts = new HashMap<>();
 
         verificationRequest.getEntry().forEach(entry -> {
-            switch (entry.getName()) {
-                case "studentId":
-                    studentId.set(Long.valueOf(entry.getValue()));
-                case "courseClassId":
-                    courseClassId.set(Long.valueOf(entry.getValue()));
-                default:
-                    throw new RuntimeException("unexpected parameter: " + entry.getName());
+            classContacts.put(Long.valueOf(entry.getName()), Arrays.stream(entry.getValue().split(",")).map(Long::valueOf).collect(Collectors.toList()));
+        });
 
-            }
-        } );
-
-        if (courseClassId.get() == null) {
-            throw new RuntimeException("courseClassId is mandatory");
-        }
-
-        CheckoutValidationResult result = checkoutVerificationService.verify(studentId.get(), courseClassId.get());
+        List<CheckoutValidationResult> result = checkoutVerificationService.verify(classContacts);
         GenericParametersMap response = PortHelper.createParametersMap(version);
 
-        GenericParameterEntry studentError = PortHelper.createParameterEntry(version);
-        studentError.setName("studentError");
-        studentError.setValue(result.getStudentError());
-        response.getGenericEntry().add(studentError);
+        result.forEach( error -> {
+            GenericParameterEntry entry = PortHelper.createParameterEntry(version);
+            entry.setName(String.format("%d-%d",error.getCourseClassId(), error.getContactId()));
+            entry.setValue(error.getError());
+            response.getGenericEntry().add(entry);
 
-        GenericParameterEntry courseClassError = PortHelper.createParameterEntry(version);
-        studentError.setName("courseClassError");
-        studentError.setValue(result.getCourseClassError());
-        response.getGenericEntry().add(courseClassError);
+        });
+
         return response;
     }
 }

@@ -2,5 +2,5 @@ package ish.oncourse.webservices
 
 interface ICheckoutVerificationService {
 
-    CheckoutValidationResult verify(Long studentId, Long courseClassId)
+    List<CheckoutValidationResult> verify(Map<Long, List<Long>> enrolmentsMap)
 }

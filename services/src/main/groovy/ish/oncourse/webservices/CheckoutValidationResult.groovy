@@ -1,6 +1,9 @@
 package ish.oncourse.webservices
 
 class CheckoutValidationResult {
-    String studentError
-    String courseClassError
+
+    Long contactId
+    Long courseClassId
+    String error
+
 }
