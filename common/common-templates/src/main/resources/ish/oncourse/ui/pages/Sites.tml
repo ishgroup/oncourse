@@ -18,6 +18,10 @@
                             <a href="/site/${site.angelId}">Details and directions</a>
                             <br />
                         </t:if>
+                        <p:else>
+                            <a href="/site/${site.angelId}">Details</a>
+                            <br />
+                        </p:else>
                         <a href="/courses?site=${site.id}">Show classes</a>
                     </div>
                     <div class="siteAddress adr">
