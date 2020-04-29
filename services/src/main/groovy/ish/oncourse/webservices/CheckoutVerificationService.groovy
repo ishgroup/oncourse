@@ -43,7 +43,7 @@ class CheckoutVerificationService implements ICheckoutVerificationService {
                 } else {
                     contacts.each { contactId ->
                         Contact contact = ObjectSelect.query(Contact)
-                                .where(Contact.ANGEL_ID.eq(courseClassId))
+                                .where(Contact.ANGEL_ID.eq(contactId))
                                 .and(Contact.COLLEGE.eq(college))
                                 .selectOne(context)
                         if (contact && contact.student && validEnrolments.any {it.student.id == contact.student.id }) {
