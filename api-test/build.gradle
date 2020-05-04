@@ -7,9 +7,9 @@ dependencies {
 //    implementation "org.apache.derby:derbyshared:$derbyVersion"
 
     testImplementation "com.sun.activation:javax.activation:$javaxActivationVersion"
-    testImplementation 'com.intuit.karate:karate-junit4:0.8.0.RC4'
-    testImplementation 'com.intuit.karate:karate-jersey:0.8.0.RC4'
-    testImplementation 'com.intuit.karate:karate-core:0.8.0.RC4'
+    testImplementation 'com.intuit.karate:karate-junit4:0.9.5'
+    testImplementation 'com.intuit.karate:karate-jersey:0.9.5'
+    testImplementation 'com.intuit.karate:karate-core:0.9.5'
     testImplementation group: 'org.glassfish.jersey.connectors', name: 'jersey-jetty-connector', version: '2.26'
     testImplementation "org.eclipse.jetty.http2:http2-http-client-transport:$jettyVersion"
     testImplementation "org.eclipse.jetty:jetty-client:$jettyVersion"
