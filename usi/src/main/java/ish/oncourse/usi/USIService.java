@@ -20,6 +20,7 @@ import org.w3c.dom.Element;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.ws.soap.SOAPFaultException;
 import java.io.StringReader;
 import java.text.ParseException;
 import java.util.Date;
@@ -160,11 +161,29 @@ public class USIService {
             }
 
             return result;
-        } catch (Exception e) {
-            logger.error("Unable to verify USI code for {} {} in organisation code {}.", verifyUSIType.getFirstName(),
-                    verifyUSIType.getFamilyName(), verifyUSIType.getOrgCode(), e);
+        } catch (SOAPFaultException e) {
+            String  error = StringUtils.substringBetween(e.getLocalizedMessage(), "Event Description: [", "].");
+            String  advice = StringUtils.substringBetween(e.getLocalizedMessage(), "User Advice: [", "].");
 
-            return USIVerificationResult.valueOf("Error verifying USI.");
+
+            logger.error("Unable to verify USI code for {} {} in organisation code {}.", verifyUSIType.getFirstName(),
+                    verifyUSIType.getFamilyName(), verifyUSIType.getOrgCode());
+            logger.catching(e);
+            String message = "Error verifying USI.";
+            if (error != null) {
+                message += " " + error + " ";
+            }
+            if (advice != null) {
+                message += " " + advice + " ";
+            }
+            return USIVerificationResult.valueOf(message);
+
+        } catch (Exception e) {
+
+            logger.error("Unable to verify USI code for {} {} in organisation code {}.", verifyUSIType.getFirstName(),
+                    verifyUSIType.getFamilyName(), verifyUSIType.getOrgCode());
+            logger.catching(e);
+            return USIVerificationResult.valueOf("The USI system could not be contacted. Please contact ish support.");
         }
     }
 
