@@ -60,9 +60,9 @@ public class ServicesModule extends ConfigModule {
 			};
 
 
-	private static final TypeLiteral<MappedServlet<ReindexServlet>> REINDEX_SERVLET =
-			new TypeLiteral<MappedServlet<ReindexServlet>>() {
-			};
+//	private static final TypeLiteral<MappedServlet<ReindexServlet>> REINDEX_SERVLET =
+//			new TypeLiteral<MappedServlet<ReindexServlet>>() {
+//			};
 
 
 	@Singleton
@@ -90,12 +90,12 @@ public class ServicesModule extends ConfigModule {
 		return new MappedServlet<>(new CXFServlet(), Collections.singleton(URL_PATTERN), CXF_APP_NAME,
 				params);
 	}
-	
-	@Singleton
-	@Provides
-	MappedServlet<ReindexServlet> createReindexServlet(SolrClient solrClient, ZooKeeper zk, ServerRuntime serverRuntime) {
-		return new MappedServlet<>(new ReindexServlet(solrClient, zk, serverRuntime), Collections.singleton(ReindexConstants.REINDEX_PATH));
-	}
+//
+//	@Singleton
+//	@Provides
+//	MappedServlet<ReindexServlet> createReindexServlet(SolrClient solrClient, ZooKeeper zk, ServerRuntime serverRuntime) {
+//		return new MappedServlet<>(new ReindexServlet(solrClient, zk, serverRuntime), Collections.singleton(ReindexConstants.REINDEX_PATH));
+//	}
 	
 	@Singleton
 	@Provides
@@ -118,8 +118,8 @@ public class ServicesModule extends ConfigModule {
 		JettyModule.extend(binder)
 				.addMappedFilter(TAPESTRY_FILTER)
 				.addMappedServlet(CXF_SERVLET)
-				.addMappedServlet(new MappedServlet<>(new ISHHealthCheckServlet(), ISHHealthCheckServlet.urlPatterns, ISHHealthCheckServlet.SERVLET_NAME))
-				.addMappedServlet(REINDEX_SERVLET);
+				.addMappedServlet(new MappedServlet<>(new ISHHealthCheckServlet(), ISHHealthCheckServlet.urlPatterns, ISHHealthCheckServlet.SERVLET_NAME));
+//				.addMappedServlet(REINDEX_SERVLET);
 	}
 
 
