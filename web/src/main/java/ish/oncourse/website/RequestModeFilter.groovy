@@ -62,7 +62,7 @@ class RequestModeFilter implements Filter {
             cacheDisableReason = PUBLISHER
         }
 
-        logger.warn("Cache enabled:$isCacheEnabled cache mode:`$cacheDisableReason`. Note: cache can be invalidated due to expiration")
+        logger.info("Cache enabled:$isCacheEnabled cache mode:`$cacheDisableReason`. Note: cache can be invalidated due to expiration")
         service.setCacheEnabled(cacheDisableReason, isCacheEnabled)
 
         filterChain.doFilter(servletRequest, servletResponse)
