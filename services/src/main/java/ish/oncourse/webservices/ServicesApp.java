@@ -41,7 +41,7 @@ public class ServicesApp {
 			providers.add(new CayenneModuleProvider());
 			providers.add(new JettyModuleProvider());
 			modules.add(ServicesModule.class);
-//			modules.add(QuartzModule.class);
+			modules.add(QuartzModule.class);
 		}
 
 		public BuildBootique args(String[] args) {
