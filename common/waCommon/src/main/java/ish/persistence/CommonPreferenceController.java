@@ -166,6 +166,18 @@ public abstract class CommonPreferenceController {
 		return getValue(COLLEGE_ENROL_SUCCESS_URL, false);
 	}
 
+
+	public  String getPaymentGatewayPass() {
+		String apiKey = getValue(PAYMENT_GATEWAY_PASS, false);
+		if (apiKey == null) {
+			throw new IllegalArgumentException();
+		}
+		return apiKey;
+	}
+
+	public Boolean isPaymentGatewayAuthSupported() {
+		return Boolean.parseBoolean(getValue(PAYMENT_GATEWAY_SUPPORT_AUTH, false));
+	}
 	/**
 	 * Sets the url to redirect after the successful enrolment.
 	 *

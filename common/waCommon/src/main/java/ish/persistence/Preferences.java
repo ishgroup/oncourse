@@ -57,6 +57,8 @@ public interface Preferences {
 
 	String PAYMENT_GATEWAY_PASS = "payment.gateway.api.key";
 
+	String PAYMENT_GATEWAY_SUPPORT_AUTH = "payment.gateway.support.auth";
+
 
 
 	// **************************************
