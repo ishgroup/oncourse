@@ -175,8 +175,8 @@ public abstract class CommonPreferenceController {
 		return apiKey;
 	}
 
-	public Boolean isPaymentGatewayAuthSupported() {
-		return Boolean.parseBoolean(getValue(PAYMENT_GATEWAY_SUPPORT_AUTH, false));
+	public Boolean isPurchaseWithoutAuth() {
+		return Boolean.parseBoolean(getValue(PAYMENT_GATEWAY_PURCHASE_WITHOUT_AUTH, false));
 	}
 	/**
 	 * Sets the url to redirect after the successful enrolment.
