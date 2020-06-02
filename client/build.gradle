@@ -20,8 +20,6 @@ repositories {
 
 configurations {
 	macCompile
-	macJava11
-	jreMac
 
 	winCompile
 	winJava11
@@ -29,7 +27,7 @@ configurations {
 
 	compile.extendsFrom (OperatingSystem.current().isMacOsX() ? macCompile : winCompile)
 	if (JavaVersion.current() != JavaVersion.VERSION_1_8) {
-		compile.extendsFrom(OperatingSystem.current().isMacOsX() ? macJava11 : winJava11)
+		compile.extendsFrom(winJava11)
 	}
 }
 
@@ -53,14 +51,6 @@ dependencies {
 
 	implementation files("$rootDir/lib/jxbrowser/license.jar")
 
-	// the following are needed when compiling on OSX Java 11
-	macJava11 "org.openjfx:javafx-base:$openjfxVersion:mac"
-	macJava11 "org.openjfx:javafx-graphics:$openjfxVersion:mac"
-	macJava11 "org.openjfx:javafx-controls:$openjfxVersion:mac"
-	macJava11 "org.openjfx:javafx-fxml:$openjfxVersion:mac"
-	macJava11 "org.openjfx:javafx-swing:$openjfxVersion:mac"
-	macJava11 "org.openjfx:javafx-media:$openjfxVersion:mac"
-
 	// the following are needed when compiling on OSX any Java version
 	macCompile "com.teamdev.jxbrowser:jxbrowser-mac:$jxbrowserVersion"
 
@@ -76,7 +66,6 @@ dependencies {
 	winCompile "com.teamdev.jxbrowser:jxbrowser-win64:$jxbrowserVersion"
 	winCompile "com.teamdev.jxbrowser:jxbrowser-win32:$jxbrowserVersion"
 
-	jreMac 'net.adoptopenjdk:jre11-mac-x64-hotspot:11.0.6_10@tar.gz'
 	jreWin 'net.adoptopenjdk:jre11-win-x64-hotspot:11.0.6_10@zip'
 }
 
@@ -92,38 +81,6 @@ task run(dependsOn: [classes, processResources], type: JavaExec) {
 	classpath = sourceSets.main.runtimeClasspath
 	args 'DEBUG=true'
 	//systemProperty 'simple.message', 'Hello '
-}
-
-appBundler {
-	distributionPath = "${buildDir}/distributions"
-	appName = "onCourse"
-	appFile = file("${distributionPath}/${appName}.app")
-	dmgFile = file("${distributionPath}/${appName}.dmg")
-    appIdentifier = "ish.oncourse"
-    mainClassName = "ish.oncourse.AngelApp"
-    iconFile = new File(projectDir, "src/packaging/macosx/onCourse.icns")
-    jars = (configurations.runtimeClasspath
-			+ configurations.runtime.artifacts.files
-			- configurations.winCompile
-			- configurations.winJava11
-			+ configurations.macCompile
-			+ configurations.macJava11)
-
-	runtimeJRE = configurations.jreMac.singleFile
-	runtimeIncludes = ["conf/"]
-
-    keychain = project.osxKeychain
-    certIdentity = project.osxKeychainIdentity
-	notarizeAccount = project.notarizeAccount
-	notarizePassword = project.notarizePassword
-
-    jvmOptions = ["-Dapple.awt.textantialiasing=true",
-                  "-DJFileChooser.appBundleIsTraversable=true",
-                  "-DJFileChooser.packageIsTraversable=true",
-                  "-Dapple.awt.antialiasing=true",
-                  "-Dapple.awt.showGrowBox=true",
-				  "-Djava.locale.providers=COMPAT,SPI",
-                  "-Xmx${project.maxmemoryClient}"]
 }
 
 project.ext.webstartFiles = copySpec {
@@ -303,12 +260,6 @@ processResources {
 	}
 }
 
-//task bundle_osx(type: AppBundlerTask) {
-//	runtimeJRE = configurations.jreMac.singleFile
-//	runtimeIncludes = ["conf/"]
-//}
-//codeSign.mustRunAfter(bundle_osx)
-
 task bundleJRE_win64(type: PackrBundler) {
 	platform = 'win64'
 	jars = (configurations.runtimeClasspath + configurations.runtime.artifacts.files
@@ -343,17 +294,9 @@ publishing.publications {
 			classifier "windows"
 			extension "exe"
 		}
-		artifact(new DefaultPublishArtifact("onCourse", "dmg", "dmg", null, null,
-				file("${buildDir}/distributions/onCourse.dmg")).builtBy(createDMG)) {
-			classifier "osx"
-			extension "dmg"
-		}
 	}
 }
 
-if (!project.version.endsWith('SNAPSHOT')) {
-	publish.dependsOn 'notarize'
-}
 cayenne.defaultDataMap "${projectDir}/../common/src/main/resources/cayenne/AngelMap.map.xml"
 
 cgen {
