@@ -203,8 +203,7 @@ task bundle_win(dependsOn: [jar, extractWinJre], type: Exe4JTask) {
 
 	configFile = file("${projectDir}/src/packaging/windows/${project.name}.exe4j.xml")
 	jars = files(configurations.runtime.artifacts.files, configurations.runtimeClasspath.files
-			- configurations.macCompile - configurations.macJava11
-			+ configurations.winCompile + configurations.winJava11)
+			- configurations.macCompile + configurations.winCompile + configurations.winJava11)
 
 	resourceFiles = files("${projectDir}/src/packaging/windows/onCourse.ico")
 	exeFile = file("${buildDir}/distributions/windows/onCourse.exe")
