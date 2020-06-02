@@ -56,7 +56,6 @@ apply plugin: 'idea'
 allprojects {
 	apply plugin: 'java-library'
 	apply plugin: 'java'
-	apply plugin: 'appBundler'
 	apply plugin: 'maven-publish'
 
 	// get the version from the command line properties
@@ -166,19 +165,10 @@ allprojects {
 }
 
 configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
-
-	configurations {
-		appBundler
-	}
-
 	repositories {
 		maven {
 			url 'https://repo.ish.com.au/repository/thirdparty'
 		}
-	}
-
-	dependencies {
-		appBundler "com.oracle:appbundler:1.0ea-20181222"
 	}
 
 	project.ext {

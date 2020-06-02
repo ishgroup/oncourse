@@ -1,5 +1,4 @@
 import au.com.ish.Aql
-import au.com.ish.DmgTask
 import au.com.ish.Exe4JTask
 import au.com.ish.NsisTask
 import com.github.psxpaul.task.JavaExecFork
@@ -280,41 +279,6 @@ task run(dependsOn: [classes], type: JavaExec) {
     jvmArgs = ['-Xmx1024m', '-XX:+HeapDumpOnOutOfMemoryError']
 }
 
-appBundler {
-	distributionPath = "${buildDir}/distributions/"
-	appName = "onCourseServer"
-	appFile = file("${distributionPath}/${appName}.app")
-	dmgFile = file("${distributionPath}/${appName}.dmg")
-	appIdentifier = "ish.oncourse"
-	mainClassName = "ish.oncourse.server.AngelServer"
-	iconFile = new File(projectDir, "src/packaging/macosx/onCourseServer.icns")
-	jars = configurations.runtimeClasspath + configurations.archives
-	keychain = project.osxKeychain
-	certIdentity = project.osxKeychainIdentity
-	notarizeAccount = project.notarizeAccount
-	notarizePassword = project.notarizePassword
-
-	docExtensions = "iocdata"
-	docIsPackage = "true"
-	docIconFile =  new File(projectDir, "src/packaging/macosx/onCourseDocument.icns")
-	docTypeRole = "Editor"
-	docTypeName = "onCourse server data file"
-
-	jvmOptions = [
-			"-Dapple.awt.textantialiasing=true",
-			"-DJFileChooser.appBundleIsTraversable=true",
-			"-DJFileChooser.packageIsTraversable=true",
-			"-Dapple.awt.antialiasing=true",
-			"-Dapple.awt.showGrowBox=true",
-			"-Djava.locale.providers=COMPAT,SPI",
-			"-Xmx${project.maxmemoryServer}"
-	]
-}
-
-task installer_osx(dependsOn: [codeSign, appBundle], type: DmgTask) {
-	description "Create the OSX application executable and installer (which is just a dmg file)."
-}
-
 task bundle_win(dependsOn: [jar], type: Exe4JTask) {
 	configFile = file("${projectDir}/src/packaging/windows/server.exe4j.xml")
 	jars = configurations.runtimeClasspath + configurations.runtime.artifacts.files
@@ -465,13 +429,6 @@ publishing {
 				version (project.hasProperty('releaseVersion') ? project.releaseVersion : "SNAPSHOT")
 				classifier "winService"
 				extension "exe"
-			}
-
-			artifact(new DefaultPublishArtifact("onCourseServer", "dmg", "dmg", null, null,
-					file("${buildDir}/distributions/onCourseServer.dmg")).builtBy(createDMG)) {
-				version (project.hasProperty('releaseVersion') ? project.releaseVersion : "SNAPSHOT")
-				classifier "osx"
-				extension "dmg"
 			}
 		}
 	}
