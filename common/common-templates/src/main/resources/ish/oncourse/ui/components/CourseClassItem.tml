@@ -15,20 +15,20 @@
                 <t:if t:test="courseClass.firstSession">
                     <div class="date">
                         <a timezone="10" rel="session" href="/Timeline/sessions?ids=${courseClass.id}" class="timeline">
-                            <abbr itemprop="startDate" class="dtstart" title="" content="${getIsoDateTimeString(firstSessionStartdate)}}">
+                            <abbr itemprop="startDate" data-virtual="virtualSite" data-utc="${getUTCTime(firstSessionStartDate)}" class="dtstart" title="" content="${getIsoDateTimeString(firstSessionStartdate)}">
                                 <t:output format="startDateFormat" value="firstSessionStartDate"/>
                             </abbr>
 
-                            <t:if t:test="showDateEnd"> - <abbr class="dtend" itemprop="endDate" title="" content="${getIsoDateTimeString(courseClass.endDate)}}">
+                            <t:if t:test="showDateEnd"> - <abbr data-virtual="virtualSite" data-utc="${getUTCTime(courseClass.endDate)}" class="dtend" itemprop="endDate" title="" content="${getIsoDateTimeString(courseClass.endDate)}">
                                 <t:output format="endDateFormat" value="courseClass.endDate"/>
                             </abbr>
                             </t:if>
                         </a>
                         <br/>
                         <a timezone="10" href="/Timeline/sessions?ids=${courseClass.id}" class="timeline" rel="session">
-                            <abbr itemprop="startDate" class="dtstart" title="">
+                            <abbr data-virtual="virtualSite" data-utc="${getUTCTime(firstSessionStartDate)}" itemprop="startDate" class="dtstart" title="">
                                 <t:output format="timeFormat" value="firstSessionStartDate"/>
-                            </abbr> - <abbr itemprop="endDate" class="dtend" title="">
+                            </abbr> - <abbr data-virtual="virtualSite" data-utc="${getUTCTime(firstSessionEndDate)}" itemprop="endDate" class="dtend" title="">
                             <t:output format="timeFormatWithTimeZone" value="firstSessionEndDate"/>
                         </abbr>
                             <t:if t:test="hasManySessions"> (first session)</t:if>

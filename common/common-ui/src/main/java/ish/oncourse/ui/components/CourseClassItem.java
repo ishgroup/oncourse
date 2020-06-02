@@ -28,6 +28,9 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import java.math.BigDecimal;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.*;
 
 import static ish.oncourse.utils.SessionUtils.StartEndTime;
@@ -119,6 +122,15 @@ public class CourseClassItem extends ISHCommon {
 	private List<Session> timelineableSessions;
 
 	private CourseContext context;
+
+	public static final ZoneId UTC = ZoneId.of("UTC");
+
+	public static final String DATE_TIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+
+	private static final DateTimeFormatter DATE_TIME_FORMAT = new DateTimeFormatterBuilder()
+			.parseCaseInsensitive()
+			.appendPattern(DATE_TIME_PATTERN)
+			.toFormatter(Locale.ENGLISH);
 
 	@SetupRender
 	public void beforeRender() {
@@ -374,4 +386,13 @@ public class CourseClassItem extends ISHCommon {
 	public String getSitePostalAddress(Site site) {
 		return String.format("%s, %s, %s, %s", site.getCountry().getName(), site.getState(), site.getSuburb(), site.getStreet());
 	}
+
+	public static String getUTCTime(Date date) {
+		return date == null ? null : DATE_TIME_FORMAT.format(date.toInstant().atZone(UTC).toLocalDateTime());
+	}
+
+	public Boolean isVirtualSite() {
+		return courseClass.getRoom() == null || courseClass.getRoom().getSite().getIsVirtual();
+	}
+
 }
