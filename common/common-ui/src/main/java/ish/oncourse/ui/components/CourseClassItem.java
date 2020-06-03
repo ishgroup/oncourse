@@ -387,7 +387,7 @@ public class CourseClassItem extends ISHCommon {
 	}
 
 	public Boolean isVirtualSite() {
-		return courseClass.getRoom() == null || courseClass.getRoom().getSite().getIsVirtual();
+		return courseClass.getRoom() != null && courseClass.getRoom().getSite().getIsVirtual();
 	}
 
 }
