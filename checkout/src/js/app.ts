@@ -5,11 +5,14 @@ import {Level, Logger, LogMessage} from "./services/Logger";
 import {ConfigConstants} from "./config/ConfigConstants";
 import {WindowService} from "./services/WindowService";
 import {HTMLMarkers} from "./common/services/HTMLMarker";
-
 import "../scss/index.scss";
 import {getPreferences} from "./common/actions/Actions";
 
 const appStart = () => {
+  if (Intl) {
+    document.cookie = `clientTimezoneName=${Intl.DateTimeFormat().resolvedOptions().timeZone}`;
+  }
+
   const store = CreateStore();
 
   configLoader(store);
