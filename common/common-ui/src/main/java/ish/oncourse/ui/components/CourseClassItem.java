@@ -125,11 +125,13 @@ public class CourseClassItem extends ISHCommon {
 
 	@SetupRender
 	public void beforeRender() {
-		TimeZone timeZone;
+		TimeZone timeZone = null;
 
 		if (isVirtualSite()) {
 			timeZone = cookiesService.getClientTimezone();
-		} else {
+		}
+
+		if (timeZone == null) {
 			timeZone = courseClassService.getClientTimeZone(courseClass);
 		}
 
