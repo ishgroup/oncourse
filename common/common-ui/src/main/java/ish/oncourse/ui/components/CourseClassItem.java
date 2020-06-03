@@ -123,19 +123,16 @@ public class CourseClassItem extends ISHCommon {
 
 	private CourseContext context;
 
-	public static final ZoneId UTC = ZoneId.of("UTC");
-
-	public static final String DATE_TIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-
-	private static final DateTimeFormatter DATE_TIME_FORMAT = new DateTimeFormatterBuilder()
-			.parseCaseInsensitive()
-			.appendPattern(DATE_TIME_PATTERN)
-			.toFormatter(Locale.ENGLISH);
-
 	@SetupRender
 	public void beforeRender() {
+		TimeZone timeZone;
 
-		TimeZone timeZone = courseClassService.getClientTimeZone(courseClass);
+		if (isVirtualSite()) {
+			timeZone = cookiesService.getClientTimezone();
+		} else {
+			timeZone = courseClassService.getClientTimeZone(courseClass);
+		}
+
 		context = (CourseContext) request.getAttribute(CourseItem.COURSE_CONTEXT);
 
 		endDateFormat = FormatUtils.getDateFormat(FormatUtils.dateFormatString, timeZone);
@@ -385,10 +382,6 @@ public class CourseClassItem extends ISHCommon {
 
 	public String getSitePostalAddress(Site site) {
 		return String.format("%s, %s, %s, %s", site.getCountry().getName(), site.getState(), site.getSuburb(), site.getStreet());
-	}
-
-	public static String getUTCTime(Date date) {
-		return date == null ? null : DATE_TIME_FORMAT.format(date.toInstant().atZone(UTC).toLocalDateTime());
 	}
 
 	public Boolean isVirtualSite() {
