@@ -118,7 +118,7 @@ def checkManifest = {
 	}
 }
 
-task bundle_webstart(dependsOn: [jar, ':common:jar'], type: Copy) {
+task bundle_webstart(dependsOn: [jar], type: Copy) {
 	description "Create the webstart application executable."
 	doFirst {
 		logger.lifecycle("Creating the webstart application executable for $project.name")
