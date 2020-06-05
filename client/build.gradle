@@ -296,14 +296,14 @@ publishing.publications {
 	}
 }
 
-cayenne.defaultDataMap "${projectDir}/../common/src/main/resources/cayenne/AngelMap.map.xml"
+cayenne.defaultDataMap "${projectDir}/../server/src/main/resources/cayenne/AngelMap.map.xml"
 
 cgen {
 	client = true
 	makePairs = true
 	createPropertyNames = true
-	template = "${projectDir}/../common/src/main/resources/cayenne/dotemplates/client-subclass.vm"
-	superTemplate = "${projectDir}/../common/src/main/resources/cayenne/dotemplates/client-superclass.vm"
+	template = "${projectDir}/../server/src/main/resources/cayenne/dotemplates/client-subclass.vm"
+	superTemplate = "${projectDir}/../server/src/main/resources/cayenne/dotemplates/client-superclass.vm"
 	mode = 'entity'
 	// can not generate cayenne superclasses out of version control,
 	// since cgen always generate pairs sub/supes classes (Course.java/_Course.java) or just sub classes (Course.java) - should be under svn

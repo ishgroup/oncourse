@@ -68,7 +68,7 @@ build.dependsOn(webpack, buildLogin)
 
 generateQueryLanguageModel {
     source = zipTree(configurations.queryLanguageModelSource.find { it.name.startsWith("waCommon") })
-            .plus(fileTree("$buildDir/../../common/src/main/java"))
+            .plus(fileTree("$buildDir/../../server/src/main/java"))
 
     destinationDir = file("$buildDir/generated-sources/aql-model")
 }

@@ -51,7 +51,6 @@ sourceSets {
 dependencies {
 
 	implementation project(':server-api')
-	implementation project(':common')
 
 	implementation ("org.apache.cxf:cxf-rt-frontend-jaxws:$cfxVersion") {
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
@@ -453,14 +452,14 @@ task queryGrammar(type: Aql) {
 	target = 'Java'
 }
 
-cayenne.defaultDataMap "${rootDir}/common/src/main/resources/cayenne/AngelMap.map.xml"
+cayenne.defaultDataMap "${projectDir}/src/main/resources/cayenne/AngelMap.map.xml"
 
 task clientCgen(type: cayenne.cgen) {
 	client = true
 	makePairs = true
 	createPropertyNames = true
-	template = "${rootDir}/common/src/main/resources/cayenne/dotemplates/client-subclass-serverside.vm"
-	superTemplate = "${rootDir}/common/src/main/resources/cayenne/dotemplates/client-superclass-serverside.vm"
+	template = "${projectDir}/src/main/resources/cayenne/dotemplates/client-subclass-serverside.vm"
+	superTemplate = "${projectDir}/src/main/resources/cayenne/dotemplates/client-superclass-serverside.vm"
 	mode = 'entity'
 	superPkg = 'ish.oncourse.cayenne.glue'
 	destDir = file ("${buildDir}/generated-resources/main/java")
@@ -476,8 +475,8 @@ task serverCgen(type: cayenne.cgen) {
 	client = false
 	makePairs = true
 	createPropertyNames = true
-	template = "${rootDir}/common/src/main/resources/cayenne/dotemplates/subclass.vm"
-	superTemplate = "${rootDir}/common/src/main/resources/cayenne/dotemplates/superclass.vm"
+	template = "${projectDir}/src/main/resources/cayenne/dotemplates/subclass.vm"
+	superTemplate = "${projectDir}/src/main/resources/cayenne/dotemplates/superclass.vm"
 	mode = 'entity'
 	superPkg = 'ish.oncourse.server.cayenne.glue'
 	destDir = file ("${buildDir}/generated-resources/main/java")
