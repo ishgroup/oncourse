@@ -17,10 +17,9 @@ targetCompatibility = 11
 
 dependencies {
 
-    api (project(':common')) {
-        exclude group: 'org.bouncycastle'
-        exclude module: "hessian"
-        exclude group: "org.slf4j", module: "slf4j-simple"
+    api ("ish.oncourse.willow:waCommon:$waCommonWebservicesClientVersion") {
+        exclude group: 'org.apache.logging.log4j'
+        exclude group: 'org.springframework'
     }
 
     api 'io.swagger:swagger-annotations:1.5.21'
@@ -31,6 +30,7 @@ dependencies {
 
     api 'javax.validation:validation-api:1.1.0.Final'
     api 'org.apache.bval:org.apache.bval.bundle:1.1.2'
+    api 'net.java.dev.textile-j:textile-j:2.2.864'
 
     //latest jackson 2.9.9 conflicts with spring AbstractApplicationContext
     api "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.8.7"
