@@ -12,7 +12,7 @@ public class GetPaymentInStatusTest {
 
     public static final String RESULT_IN_TRASNACTION = "In transaction";
     public static final String RESULT_SUCCESS = "Success";
-    public static final String RESULT_REVERSED = "Reversed";
+    public static final String RESULT_REVERSED = "Success (reversed)";
 
     @Test
     public void test() {

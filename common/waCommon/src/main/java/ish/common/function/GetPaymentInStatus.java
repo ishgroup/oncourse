@@ -5,7 +5,7 @@ import ish.oncourse.cayenne.PaymentInInterface;
 
 public class GetPaymentInStatus {
 
-    public static final String REVERSED_STATUS = "Reversed";
+    public static final String REVERSED_STATUS = "Success (reversed)";
 
     PaymentInInterface payment;
 
