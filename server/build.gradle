@@ -222,7 +222,7 @@ dependencies {
 task createResourceManifests {
 	doLast {
 		def sources = ["resources/oncourse-scripts/export",
-					   "resources/oncourse-scripts/import",
+					   "imports",
 					   "resources/oncourse-scripts/reports",
 					   "scripts",
 					   "messages"
