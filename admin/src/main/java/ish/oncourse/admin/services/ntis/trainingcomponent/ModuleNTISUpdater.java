@@ -55,6 +55,7 @@ public class ModuleNTISUpdater extends AbstractTrainingComponentNTISUpdater {
 
 			Module m = ObjectSelect.query(Module.class).
 					where(Module.NATIONAL_CODE.eq(summary.getCode().getValue())).
+					and(Module.COLLEGE.isNull()).
 					selectOne(context);
 			
 			if (m == null) {

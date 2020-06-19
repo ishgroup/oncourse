@@ -6,6 +6,7 @@ package ish.oncourse.admin.services.ntis.trainingcomponent;
 
 import au.gov.training.services.trainingcomponent.*;
 import ish.common.types.QualificationType;
+import ish.oncourse.model.Module;
 import ish.oncourse.model.Qualification;
 import ish.oncourse.model.TrainingPackage;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -49,6 +50,7 @@ public class QualificationNTISUpdater extends AbstractTrainingComponentNTISUpdat
 
 			Qualification q = ObjectSelect.query(Qualification.class).
 					where(Qualification.NATIONAL_CODE.eq(summary.getCode().getValue())).
+					and(Module.COLLEGE.isNull()).
 					selectFirst(context);
 			
 			if (q == null) {
