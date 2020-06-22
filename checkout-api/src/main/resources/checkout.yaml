@@ -62,6 +62,42 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+  /v2/makePayment:
+    post:
+      x-filter:
+      - CollegeInfo
+      operationId: makePayment
+      summary: Validate model and create windcave session OR save model and complete windcave session (depends on X-Validate header),
+      description: Validate model, save purchase items into db and send payment to DPS
+      tags:
+        - CheckoutV2
+      consumes:
+        - application/json
+      parameters:
+        - name: paymentRequest
+          in: body
+          description: Checkout model plus credit cadr data
+          required: true
+          schema:
+            $ref: '#/definitions/checkout.payment.PaymentRequest'
+        - name: xValidate
+          in: header
+          type: boolean
+          required: true
+          description: validate request, create payment session. Otherwice complete payment
+        - name: xCollegeKey
+          in: header
+          type: string
+          required: true
+      responses:
+        200:
+          description: Payment Response object with sessionId populated
+          schema:
+            $ref: '#/definitions/v2.checkout.payment.PaymentResponse'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
   /v1/makePayment:
     post:
       x-filter:
@@ -1626,6 +1662,20 @@ definitions:
       ccAmount:
         description: Amount allocated for credit card payment
         type: number
+  v2.checkout.payment.PaymentRequest:
+    type: object
+    properties:
+      payerId:
+        type: integer
+        format: int64
+      merchantReference:
+        type: string
+      sessionId:
+        type: string
+        description: String length 16 of hexadecimal digits
+      ccAmount:
+        description: Amount allocated for credit card payment
+        type: number
   checkout.payment.PaymentStatus:
     type: string
     enum:
@@ -1643,6 +1693,19 @@ definitions:
       status:
         $ref: '#/definitions/checkout.payment.PaymentStatus'
       reference:
+        type: string
+  v2.checkout.payment.PaymentResponse:
+    type: object
+    properties:
+      sessionId:
+        type: string
+      merchantReference:
+        type: string
+      status:
+        $ref: '#/definitions/checkout.payment.PaymentStatus'
+      reference:
+        type: string
+      responseText:
         type: string
   checkout.concession.ConcessionType:
     type: object
