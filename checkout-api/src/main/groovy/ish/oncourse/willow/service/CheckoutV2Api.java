@@ -1,7 +1,7 @@
 package ish.oncourse.willow.service;
 
-import ish.oncourse.willow.model.checkout.payment.PaymentRequest;
 import ish.oncourse.willow.model.common.CommonError;
+import ish.oncourse.willow.model.v2.checkout.payment.PaymentRequest;
 import ish.oncourse.willow.model.v2.checkout.payment.PaymentResponse;
 
 import java.io.InputStream;

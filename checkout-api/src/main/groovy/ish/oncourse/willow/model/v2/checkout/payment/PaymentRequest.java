@@ -7,6 +7,7 @@ public class PaymentRequest  {
     private String merchantReference = null;
     private String sessionId = null;
     private Double ccAmount = null;
+    private Boolean storeCard = null;
 
     /**
      * Get payerId
@@ -76,6 +77,23 @@ public class PaymentRequest  {
       return this;
     }
 
+    /**
+     * save CC details to proc
+     * @return storeCard
+     */
+    public Boolean getStoreCard() {
+        return storeCard;
+    }
+
+    public void setStoreCard(Boolean storeCard) {
+       this.storeCard = storeCard;
+    }
+
+    public PaymentRequest storeCard(Boolean storeCard) {
+      this.storeCard = storeCard;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -86,6 +104,7 @@ public class PaymentRequest  {
       sb.append("    merchantReference: ").append(toIndentedString(merchantReference)).append("\n");
       sb.append("    sessionId: ").append(toIndentedString(sessionId)).append("\n");
       sb.append("    ccAmount: ").append(toIndentedString(ccAmount)).append("\n");
+      sb.append("    storeCard: ").append(toIndentedString(storeCard)).append("\n");
       sb.append("}");
       return sb.toString();
     }

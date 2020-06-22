@@ -79,7 +79,7 @@ paths:
           description: Checkout model plus credit cadr data
           required: true
           schema:
-            $ref: '#/definitions/checkout.payment.PaymentRequest'
+            $ref: '#/definitions/v2.checkout.payment.PaymentRequest'
         - name: xValidate
           in: header
           type: boolean
@@ -438,6 +438,7 @@ paths:
       summary: Create new Cart session
       description: |
         Create new session Id that will be used for futher requests to cast endpoints.
+      operationId: cartPost
       tags:
        - Cart
       consumes:
@@ -1676,6 +1677,9 @@ definitions:
       ccAmount:
         description: Amount allocated for credit card payment
         type: number
+      storeCard:
+        type: boolean
+        description: save CC details to proc
   checkout.payment.PaymentStatus:
     type: string
     enum:
