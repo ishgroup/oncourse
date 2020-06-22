@@ -17,6 +17,7 @@ import ish.oncourse.willow.checkout.corporatepass.CorporatePassApiImpl
 import ish.oncourse.willow.filters.ContactCredentialsValidator
 import ish.oncourse.willow.filters.RequestFilter
 import ish.oncourse.willow.filters.SearchFilter
+import ish.oncourse.willow.filters.XValidateFilter
 import ish.oncourse.willow.preference.PreferenceApiImpl
 import ish.oncourse.willow.search.SearchApiImpl
 import ish.oncourse.willow.search.SearchService
@@ -39,6 +40,7 @@ class WillowApiModule extends ConfigModule {
         CXFModule.contributeResources(binder).addBinding().to(PromotionApiServiceImpl)
         CXFModule.contributeResources(binder).addBinding().to(CollegeService)
         CXFModule.contributeResources(binder).addBinding().to(RequestFilter)
+        CXFModule.contributeResources(binder).addBinding().to(XValidateFilter)
         CXFModule.contributeResources(binder).addBinding().to(ContactCredentialsValidator)
         CXFModule.contributeResources(binder).addBinding().to(ContactCredentialsValidator)
         CXFModule.contributeResources(binder).addBinding().to(SearchService).in(Singleton)

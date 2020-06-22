@@ -66,9 +66,10 @@ paths:
     post:
       x-filter:
       - CollegeInfo
+      - XValidate
       operationId: makePayment
-      summary: Validate model and create windcave session OR save model and complete windcave session (depends on X-Validate header),
-      description: Validate model, save purchase items into db and send payment to DPS
+      summary: Validate model and create windcave session OR save model and complete windcave session (depends on xValidate header)
+      description: Validate model and create windcave session OR save model and complete windcave session (depends on xValidate header)
       tags:
         - CheckoutV2
       consumes:
@@ -76,16 +77,16 @@ paths:
       parameters:
         - name: paymentRequest
           in: body
-          description: Checkout model plus credit cadr data
+          description: Payment data
           required: true
           schema:
             $ref: '#/definitions/v2.checkout.payment.PaymentRequest'
-        - name: xValidate
+        - name: xValidateOnly
           in: header
           type: boolean
           required: true
           description: validate request, create payment session. Otherwice complete payment
-        - name: xCollegeKey
+        - name: payerId
           in: header
           type: string
           required: true
@@ -1666,9 +1667,6 @@ definitions:
   v2.checkout.payment.PaymentRequest:
     type: object
     properties:
-      payerId:
-        type: integer
-        format: int64
       merchantReference:
         type: string
       sessionId:

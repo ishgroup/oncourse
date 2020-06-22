@@ -20,6 +20,7 @@ public interface CheckoutV2Api  {
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @CollegeInfo
-    PaymentResponse makePayment(PaymentRequest paymentRequest, @HeaderParam("xValidate") Boolean xValidate, @HeaderParam("xCollegeKey") String xCollegeKey);
+    @XValidate
+    PaymentResponse makePayment(PaymentRequest paymentRequest, @HeaderParam("xValidate") Boolean xValidate, @HeaderParam("payerId") String payerId);
 }
 

@@ -20,6 +20,9 @@ import ish.oncourse.willow.model.checkout.payment.PaymentResponse
 import ish.oncourse.willow.model.checkout.request.ContactNodeRequest
 import ish.oncourse.willow.model.common.CommonError
 import ish.oncourse.willow.service.CheckoutApi
+import ish.oncourse.willow.service.CheckoutV2Api
+import ish.oncourse.willow.model.v2.checkout.payment.PaymentResponse as V2PaymentResponse
+import ish.oncourse.willow.model.v2.checkout.payment.PaymentRequest as V2PaymentRequest
 import ish.oncourse.willow.service.impl.CollegeService
 import org.apache.cayenne.ObjectContext
 import org.slf4j.Logger
@@ -29,7 +32,7 @@ import javax.ws.rs.BadRequestException
 import javax.ws.rs.core.Response
 
 @CompileStatic
-class CheckoutApiImpl implements CheckoutApi {
+class CheckoutApiImpl implements CheckoutApi, CheckoutV2Api {
     
     final static  Logger logger = LoggerFactory.getLogger(CheckoutApiImpl.class)
 
@@ -124,5 +127,13 @@ class CheckoutApiImpl implements CheckoutApi {
             throw new BadRequestException(Response.status(400).entity(checkoutModel).build())
         }
         
+    }
+
+    @Override
+    V2PaymentResponse makePayment(V2PaymentRequest paymentRequest, Boolean xValidate, String payerId) {
+
+
+
+
     }
 }
