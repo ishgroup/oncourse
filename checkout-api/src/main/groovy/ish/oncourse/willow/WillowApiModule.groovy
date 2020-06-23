@@ -32,6 +32,8 @@ class WillowApiModule extends ConfigModule {
     void configure(Binder binder) {
         CayenneModule.extend(binder).addModule(new WillowCayenneModuleBuilder().build())
         CayenneModule.extend(binder).addModule(JCacheModule)
+        CayenneModule.extend(binder).addModule(CheckoutCayenneModule)
+
         JettyModule.extend(binder).addMappedServlet(ISH_HEALTH_CHECK_SERVLET)
         CXFModule.contributeResources(binder).addBinding().to(JAXRSBeanValidationFeature)
         CXFModule.contributeResources(binder).addBinding().to(CourseClassesApiServiceImpl)

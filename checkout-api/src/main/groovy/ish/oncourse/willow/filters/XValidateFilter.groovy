@@ -10,11 +10,15 @@ class XValidateFilter implements ContainerRequestFilter {
 
     public static final String X_VALIDATE_HEADER = 'xValidateOnly'
 
-    static final ThreadLocal<Boolean> ThreadLocalValidateOnly = new ThreadLocal<Boolean>()
+    public static final ThreadLocal<Boolean> ThreadLocalValidateOnly = new ThreadLocal<Boolean>()
 
     @Override
     void filter(ContainerRequestContext requestContext) throws IOException {
-        String value = requestContext.headers.get(X_VALIDATE_HEADER)
-        ThreadLocalValidateOnly.set(Boolean.valueOf(value))
+        List<String> value = requestContext.headers.get(X_VALIDATE_HEADER)
+        if (value && !value.empty) {
+            ThreadLocalValidateOnly.set(Boolean.valueOf(value[0]))
+        } else {
+            ThreadLocalValidateOnly.set(false)
+        }
     }
 }
