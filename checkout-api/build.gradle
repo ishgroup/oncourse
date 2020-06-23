@@ -21,6 +21,7 @@ mainClassName = 'ish.oncourse.willow.WillowApp'
 dependencies {
     compile project(':common:common-api')
     compile project(':common:common-bootique')
+    compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.2'
     swagger project(':common:codegen:jaxrs')
 }
 test {

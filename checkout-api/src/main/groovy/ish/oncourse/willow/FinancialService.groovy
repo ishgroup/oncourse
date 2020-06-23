@@ -41,20 +41,34 @@ class FinancialService {
         return credit.negate()
     }
 
-    List<CreditNode> getAvailableCreditMap(Contact payer) {
+    List<InvoiceNode> getAvailableCreditMap(Contact payer) {
         List <Invoice> credits = creditNoteQuery(payer)
                 .orderBy(Invoice.AMOUNT_OWING.desc())
                 .select(cayenneService.newContext())
-        return credits.collect { new CreditNode(invoice: it, amount: it.amountOwing.negate())}
+        return credits.collect { new InvoiceNode(invoice: it, amount: it.amountOwing.negate())}
     }
 
+    Money getOwing(Contact payer) {
+        return owingQuery(payer).select(cayenneService.newContext()).collect { it.amountOwing }.inject(Money.ZERO) { a, b -> a.add(b) }
+    }
 
-    void contraPay(PaymentIn payment, Invoice credit, Money apply) {
+    List<InvoiceNode> getOwingMap(Contact payer) {
+        return owingQuery(payer)
+                .select(cayenneService.newContext())
+                .collect { new InvoiceNode(invoice: it, amount: it.amountOwing)}
+    }
+
+    void createPaymentLine(PaymentIn payment, Invoice credit, Money apply) {
         PaymentInLine line = payment.objectContext.newObject(PaymentInLine)
         line.college = payment.college
         line.paymentIn = payment
         line.invoice = payment.objectContext.localObject(credit)
-        line.amount = apply.negate()
+        line.amount = apply
+    }
+
+    private static ObjectSelect<Invoice> owingQuery(Contact payer) {
+        return ((ObjectSelect.query(Invoice)
+                .where(Invoice.CONTACT.eq(payer)) & Invoice.AMOUNT_OWING.gt(Money.ZERO)) & Invoice.ANGEL_ID.isNotNull()) & paymentFilter
     }
 
     private static ObjectSelect<Invoice> creditNoteQuery(Contact payer) {
@@ -71,7 +85,7 @@ class FinancialService {
         }
     }
 
-    static class CreditNode {
+    static class InvoiceNode {
         private Invoice invoice
         private Money amount
         Invoice getInvoice() {

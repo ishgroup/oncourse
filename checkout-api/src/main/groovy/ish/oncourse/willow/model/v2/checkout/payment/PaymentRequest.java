@@ -1,28 +1,29 @@
 package ish.oncourse.willow.model.v2.checkout.payment;
 
+import ish.oncourse.willow.model.checkout.CheckoutModelRequest;
 
 public class PaymentRequest  {
   
-    private Long payerId = null;
+    private CheckoutModelRequest checkoutModelRequest = null;
     private String merchantReference = null;
     private String sessionId = null;
     private Double ccAmount = null;
     private Boolean storeCard = null;
 
     /**
-     * Get payerId
-     * @return payerId
+     * Get checkoutModelRequest
+     * @return checkoutModelRequest
      */
-    public Long getPayerId() {
-        return payerId;
+    public CheckoutModelRequest getCheckoutModelRequest() {
+        return checkoutModelRequest;
     }
 
-    public void setPayerId(Long payerId) {
-       this.payerId = payerId;
+    public void setCheckoutModelRequest(CheckoutModelRequest checkoutModelRequest) {
+       this.checkoutModelRequest = checkoutModelRequest;
     }
 
-    public PaymentRequest payerId(Long payerId) {
-      this.payerId = payerId;
+    public PaymentRequest checkoutModelRequest(CheckoutModelRequest checkoutModelRequest) {
+      this.checkoutModelRequest = checkoutModelRequest;
       return this;
     }
 
@@ -100,7 +101,7 @@ public class PaymentRequest  {
       StringBuilder sb = new StringBuilder();
       sb.append("class PaymentRequest {\n");
       
-      sb.append("    payerId: ").append(toIndentedString(payerId)).append("\n");
+      sb.append("    checkoutModelRequest: ").append(toIndentedString(checkoutModelRequest)).append("\n");
       sb.append("    merchantReference: ").append(toIndentedString(merchantReference)).append("\n");
       sb.append("    sessionId: ").append(toIndentedString(sessionId)).append("\n");
       sb.append("    ccAmount: ").append(toIndentedString(ccAmount)).append("\n");

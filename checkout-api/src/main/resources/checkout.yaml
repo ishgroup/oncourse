@@ -1667,6 +1667,8 @@ definitions:
   v2.checkout.payment.PaymentRequest:
     type: object
     properties:
+      checkoutModelRequest:
+        $ref: '#/definitions/checkout.CheckoutModelRequest'
       merchantReference:
         type: string
       sessionId:

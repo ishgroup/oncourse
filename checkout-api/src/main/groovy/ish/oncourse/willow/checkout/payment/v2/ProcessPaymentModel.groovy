@@ -1,4 +1,4 @@
-package ish.oncourse.willow.checkout.payment
+package ish.oncourse.willow.checkout.payment.v2
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
@@ -14,15 +14,17 @@ import ish.oncourse.services.preference.GetPreference
 import ish.oncourse.util.payment.PaymentInAbandon
 import ish.oncourse.util.payment.PaymentInModel
 import ish.oncourse.util.payment.PaymentInSucceed
-import ish.oncourse.willow.model.checkout.payment.PaymentRequest
-import ish.oncourse.willow.model.checkout.payment.PaymentResponse
+import ish.oncourse.willow.checkout.payment.GetPaymentStatus
+import ish.oncourse.willow.checkout.payment.SetConfirmationStatus
+import ish.oncourse.willow.checkout.windcave.PaymentService
 import ish.oncourse.willow.model.checkout.payment.PaymentStatus
 import ish.oncourse.willow.model.common.CommonError
+import ish.oncourse.willow.model.v2.checkout.payment.PaymentRequest
+import ish.oncourse.willow.model.v2.checkout.payment.PaymentResponse
 import org.apache.cayenne.ObjectContext
 
 import static ish.oncourse.services.preference.Preferences.PAYMENT_GATEWAY_TYPE
 
-@Deprecated
 @CompileStatic
 class ProcessPaymentModel {
     
@@ -31,15 +33,22 @@ class ProcessPaymentModel {
     College college
     CreatePaymentModel createPaymentModel
     PaymentRequest paymentRequest
-    
-    
+
+
     CommonError error
     PaymentResponse response
 
-    ProcessPaymentModel(ObjectContext context, ObjectContext nonReplicatedContext, College college, CreatePaymentModel createPaymentModel, PaymentRequest paymentRequest) {
+    Boolean xValidate
+
+    ProcessPaymentModel(ObjectContext context,
+                        College college,
+                        CreatePaymentModel createPaymentModel,
+                        PaymentRequest paymentRequest,
+                        Boolean xValidate,
+                        PaymentService paymentService) {
         this.context = context
-        this.nonReplicatedContext = nonReplicatedContext
         this.college = college
+        this.xValidate = xValidate
         this.createPaymentModel = createPaymentModel
         this.paymentRequest = paymentRequest
     }
@@ -64,61 +73,61 @@ class ProcessPaymentModel {
 
     private ProcessPaymentModel saveItems() {
         context.commitChanges()
+        response =  new PaymentResponse()
 
-        response =  new PaymentResponse().with { r ->
-            r.status = PaymentStatus.SUCCESSFUL
+        if (!xValidate) {
+            response.status = PaymentStatus.SUCCESSFUL
             List<String> ids = createPaymentModel.applications.collect { it.id.toString() }
             ids += createPaymentModel.waitingLists.collect { it.id.toString() }
-            r.reference = ids.join(', ')
-            r
+            response.reference = ids.join(', ')
         }
+
         this
     }
 
     private ProcessPaymentModel saveZeroPayment() {
         createPaymentModel.paymentIn.type = PaymentType.INTERNAL
-        
-        createPaymentModel.paymentIn.creditCardType = null
-        createPaymentModel.paymentIn.creditCardCVV = null
-        createPaymentModel.paymentIn.creditCardNumber = null
-        createPaymentModel.paymentIn.creditCardName = null
-        createPaymentModel.paymentIn.creditCardExpiry = null
 
         PaymentInSucceed.valueOf(createPaymentModel.model).perform()
         SetConfirmationStatus.valueOf(createPaymentModel.model).set()
         context.commitChanges()
-        response =  new PaymentResponse().with { r ->
-            r.reference = createPaymentModel.paymentIn.clientReference
-            r.sessionId =  createPaymentModel.paymentIn.sessionId
-            r.status = PaymentStatus.SUCCESSFUL
-            r
+        response =  new PaymentResponse()
+        if (!xValidate) {
+            response.reference = createPaymentModel.paymentIn.clientReference
+            response.status = PaymentStatus.SUCCESSFUL
         }
         this
     }
 
     private ProcessPaymentModel performGatewayOperation() {
         context.commitChanges()
-        
-        PaymentInModel model = createPaymentModel.model
-        
-        paymentGatewayService.submit(createPaymentModel.model, new ish.oncourse.services.payment.PaymentRequest().with { r ->
-            r.sessionId = paymentRequest.sessionId
-            r.name = paymentRequest.creditCardName
-            r.number = paymentRequest.creditCardNumber
-            r.cvv = paymentRequest.creditCardCvv.trim()
-            r.year = paymentRequest.expiryYear
-            r.month = paymentRequest.expiryMonth
-            r
-        })
-        
-        response = new GetPaymentStatus(context, college, paymentRequest.sessionId).get(model.paymentIn)
-        if (PaymentStatus.FAILED == response.status) {
-            PaymentInAbandon.valueOf(model, false).perform()
-        } else if (PaymentStatus.SUCCESSFUL == response.status) {
-            SetConfirmationStatus.valueOf(model).set()
+
+        if (xValidate) {
+
+        } else {
+
         }
         
-        context.commitChanges()
+//        PaymentInModel model = createPaymentModel.model
+//
+//        paymentGatewayService.submit(createPaymentModel.model, new ish.oncourse.services.payment.PaymentRequest().with { r ->
+//            r.sessionId = paymentRequest.sessionId
+//            r.name = paymentRequest.creditCardName
+//            r.number = paymentRequest.creditCardNumber
+//            r.cvv = paymentRequest.creditCardCvv.trim()
+//            r.year = paymentRequest.expiryYear
+//            r.month = paymentRequest.expiryMonth
+//            r
+//        })
+//
+//        response = new GetPaymentStatus(context, college, paymentRequest.sessionId).get(model.paymentIn)
+//        if (PaymentStatus.FAILED == response.status) {
+//            PaymentInAbandon.valueOf(model, false).perform()
+//        } else if (PaymentStatus.SUCCESSFUL == response.status) {
+//            SetConfirmationStatus.valueOf(model).set()
+//        }
+//
+//        context.commitChanges()
         this
     }
     

@@ -1,53 +1,31 @@
-package ish.oncourse.willow.checkout.payment
+package ish.oncourse.willow.checkout.payment.v2
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import ish.common.GetInvoiceDueDate
-import ish.common.types.ConfirmationStatus
-import ish.common.types.EnrolmentStatus
-import ish.common.types.PaymentSource
-import ish.common.types.PaymentStatus
-import ish.common.types.PaymentType
-import ish.common.types.ProductStatus
+import ish.common.types.*
 import ish.math.Money
 import ish.oncourse.enrol.checkout.model.InvoiceNode
 import ish.oncourse.enrol.checkout.model.PaymentPlanBuilder
 import ish.oncourse.enrol.checkout.model.UpdateInvoiceAmount
-import ish.oncourse.model.Application
-import ish.oncourse.model.College
-import ish.oncourse.model.Contact
-import ish.oncourse.model.Enrolment
-import ish.oncourse.model.Invoice
-import ish.oncourse.model.InvoiceDueDate
-import ish.oncourse.model.InvoiceLine
-import ish.oncourse.model.PaymentIn
-import ish.oncourse.model.Voucher
-import ish.oncourse.model.WaitingList
-import ish.oncourse.model.WebSite
+import ish.oncourse.model.*
 import ish.oncourse.services.preference.GetPreference
 import ish.oncourse.util.payment.CreditCardValidator
 import ish.oncourse.util.payment.PaymentInModel
 import ish.oncourse.util.payment.PaymentInModelFromPaymentInBuilder
 import ish.oncourse.willow.FinancialService
 import ish.oncourse.willow.checkout.functions.GetContact
-import ish.oncourse.willow.checkout.persistent.CreateApplication
-import ish.oncourse.willow.checkout.persistent.CreateArticle
-import ish.oncourse.willow.checkout.persistent.CreateEnrolment
-import ish.oncourse.willow.checkout.persistent.CreateInvoice
-import ish.oncourse.willow.checkout.persistent.CreateMembership
-import ish.oncourse.willow.checkout.persistent.CreateVoucher
-import ish.oncourse.willow.checkout.persistent.CreateWaitingList
+import ish.oncourse.willow.checkout.persistent.*
 import ish.oncourse.willow.functions.voucher.GetVoucher
 import ish.oncourse.willow.functions.voucher.VoucherRedemptionHelper
 import ish.oncourse.willow.model.checkout.CheckoutModel
-import ish.oncourse.willow.model.checkout.payment.PaymentRequest
+import ish.oncourse.willow.model.v2.checkout.payment.PaymentRequest
 import ish.persistence.Preferences
 import ish.util.CreditCardUtil
 import org.apache.cayenne.ObjectContext
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-@Deprecated
 class CreatePaymentModel {
     
     ObjectContext context
@@ -69,31 +47,51 @@ class CreatePaymentModel {
 
     final static Logger logger = LoggerFactory.getLogger(CreatePaymentModel.class)
 
-    CreatePaymentModel(ObjectContext context, College college, WebSite webSite, PaymentRequest paymentRequest, CheckoutModel checkoutModel, FinancialService financialService) {
+    CreatePaymentModel(ObjectContext context, College college, WebSite webSite, PaymentRequest paymentRequest, CheckoutModel checkoutModel, FinancialService financialService, Contact payer) {
         this.context = context
-        this.webSite = this.context.localObject(webSite)
+        if (webSite) {
+            this.webSite = this.context.localObject(webSite)
+        }
         this.college = this.context.localObject(college)
         this.paymentRequest = paymentRequest
         this.checkoutModel = checkoutModel
         this.financialService = financialService
-        if (checkoutModel.payerId) {
-            this.payer = new GetContact(context, college, checkoutModel.payerId).get(false)
-        }
+        this.payer = this.context.localObject(payer)
+
     }
 
     CreatePaymentModel create() {
-        processNodes()
-        
-        if (paymentIn) {
-            updateVoucherPayments()
-            applyCredit()
-            updateSumm()
-            fillCCDetails()
+        if (checkoutModel) {
+            processNodes()
+            if (paymentIn) {
+                updateVoucherPayments()
+                applyCredit()
+                updateSumm()
+                createModel()
+                adjustSortOrder()
+            }
+        } else {
+            processPreviousOwing()
             createModel()
-            adjustSortOrder()
         }
         
         this
+    }
+
+    private void processPreviousOwing() {
+        PaymentIn payment = getPayment()
+        payment.amount = paymentRequest.ccAmount.toMoney()
+        Money moneyRemained = Money.ZERO.add(payment.amount)
+        List<FinancialService.InvoiceNode> owingMap = financialService.getOwingMap(payer)
+
+        for (FinancialService.InvoiceNode owing : owingMap) {
+            if (moneyRemained == Money.ZERO) {
+                return
+            }
+            Money apply  = moneyRemained.isGreaterThan(owing.amount) ? owing.amount : moneyRemained
+            moneyRemained = moneyRemained.subtract(apply)
+            financialService.createPaymentLine(payment, owing.invoice, apply)
+        }
     }
 
     private void processNodes() {
@@ -150,7 +148,7 @@ class CreatePaymentModel {
 
     @CompileStatic(TypeCheckingMode.SKIP)
     private void updateVoucherPayments() {
-        
+
         VoucherRedemptionHelper voucherRedemptionHelper = new VoucherRedemptionHelper(context, college, payer)
 
         List<Voucher> vouchers = checkoutModel.amount.voucherPayments
@@ -262,7 +260,7 @@ class CreatePaymentModel {
         payment.status = PaymentStatus.IN_TRANSACTION
         payment.source = PaymentSource.SOURCE_WEB
         payment.type = PaymentType.CREDIT_CARD
-        payment.sessionId = paymentRequest.sessionId
+        payment.sessionId = paymentRequest.merchantReference
         payment.college = college
         payment.setContact(payer)
         payment.amount = Money.ZERO
@@ -306,13 +304,5 @@ class CreatePaymentModel {
 
     private void createModel() {
         model = PaymentInModelFromPaymentInBuilder.valueOf(paymentIn).build().model
-    }
-    
-    private void fillCCDetails() {
-        paymentIn.creditCardType = CreditCardValidator.determineCreditCardType(paymentRequest.creditCardNumber)
-        paymentIn.creditCardCVV = CreditCardUtil.obfuscateCVVNumber(paymentRequest.creditCardCvv)
-        paymentIn.creditCardNumber = CreditCardUtil.obfuscateCCNumber(paymentRequest.creditCardNumber)
-        paymentIn.creditCardName = paymentRequest.creditCardName
-        paymentIn.creditCardExpiry = paymentRequest.expiryMonth + "/" + paymentRequest.expiryYear
     }
 }

@@ -3,6 +3,7 @@ package ish.oncourse.willow.checkout
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
+import ish.math.Money
 import ish.oncourse.api.cayenne.CayenneService
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
@@ -12,6 +13,7 @@ import ish.oncourse.willow.checkout.functions.*
 import ish.oncourse.willow.checkout.payment.CreatePaymentModel
 import ish.oncourse.willow.checkout.payment.GetPaymentStatus
 import ish.oncourse.willow.checkout.payment.ProcessPaymentModel
+import ish.oncourse.willow.checkout.windcave.PaymentService
 import ish.oncourse.willow.model.checkout.CheckoutModel
 import ish.oncourse.willow.model.checkout.CheckoutModelRequest
 import ish.oncourse.willow.model.checkout.ContactNode
@@ -19,10 +21,15 @@ import ish.oncourse.willow.model.checkout.payment.PaymentRequest
 import ish.oncourse.willow.model.checkout.payment.PaymentResponse
 import ish.oncourse.willow.model.checkout.request.ContactNodeRequest
 import ish.oncourse.willow.model.common.CommonError
+import ish.oncourse.willow.model.common.ValidationError
 import ish.oncourse.willow.service.CheckoutApi
 import ish.oncourse.willow.service.CheckoutV2Api
 import ish.oncourse.willow.model.v2.checkout.payment.PaymentResponse as V2PaymentResponse
 import ish.oncourse.willow.model.v2.checkout.payment.PaymentRequest as V2PaymentRequest
+import ish.oncourse.willow.checkout.functions.v2.ValidatePaymentRequest as V2ValidatePaymentRequest
+import ish.oncourse.willow.checkout.payment.v2.CreatePaymentModel as V2CreatePaymentModel
+import ish.oncourse.willow.checkout.payment.v2.ProcessPaymentModel as V2ProcessPaymentModel
+
 import ish.oncourse.willow.service.impl.CollegeService
 import org.apache.cayenne.ObjectContext
 import org.slf4j.Logger
@@ -40,12 +47,15 @@ class CheckoutApiImpl implements CheckoutApi, CheckoutV2Api {
     private CayenneService cayenneService
     private CollegeService collegeService
     private FinancialService financialService
+    private PaymentService paymentService
+
 
     @Inject
-    CheckoutApiImpl(CayenneService cayenneService, CollegeService collegeService, FinancialService financialService) {
+    CheckoutApiImpl(CayenneService cayenneService, CollegeService collegeService, FinancialService financialService, PaymentService paymentService) {
         this.cayenneService = cayenneService
         this.collegeService = collegeService
         this.financialService = financialService
+        this.paymentService = paymentService
     }
 
     @Override
@@ -132,7 +142,37 @@ class CheckoutApiImpl implements CheckoutApi, CheckoutV2Api {
     @Override
     V2PaymentResponse makePayment(V2PaymentRequest paymentRequest, Boolean xValidate, String payerId) {
 
+        ObjectContext context = cayenneService.newContext()
+        College college = collegeService.college
+        Contact payer = collegeService.payer
+        WebSite webSite = collegeService.webSite
 
+        CheckoutModel checkoutModel = null
+
+        if (paymentRequest.checkoutModelRequest) {
+            checkoutModel = getCheckoutModel(paymentRequest.checkoutModelRequest)
+            V2ValidatePaymentRequest validatePaymentRequest = new V2ValidatePaymentRequest(checkoutModel, paymentRequest.ccAmount.toMoney(), context, financialService.getAvailableCredit(checkoutModel.payerId)).validate()
+            if (validatePaymentRequest.commonError) {
+                throw new BadRequestException(Response.status(400).entity(checkoutModel).build())
+            }
+        } else {
+            Money owing = financialService.getOwing(payer)
+            Money payNow = paymentRequest.ccAmount.toMoney()
+            if (payNow.isGreaterThan(owing)) {
+                new BadRequestException(Response.status(400).entity(new ValidationError(formErrors: ['Payment amount is great then payer owing amount'])).build())
+            }
+        }
+
+        V2CreatePaymentModel createPaymentModel = new V2CreatePaymentModel(context, college, webSite, paymentRequest, checkoutModel, financialService, payer).create()
+
+        V2ProcessPaymentModel processPaymentModel = new V2ProcessPaymentModel(context, college, createPaymentModel, paymentRequest, xValidate, paymentService).process()
+
+        if (processPaymentModel.error == null) {
+            return processPaymentModel.response
+        } else {
+            checkoutModel.error = processPaymentModel.error
+            throw new BadRequestException(Response.status(400).entity(checkoutModel).build())
+        }
 
 
     }

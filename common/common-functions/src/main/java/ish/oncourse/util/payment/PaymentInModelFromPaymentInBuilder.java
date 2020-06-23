@@ -5,6 +5,7 @@ import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.utils.PaymentInUtil;
+import org.apache.cayenne.PersistenceState;
 
 /**
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
@@ -17,8 +18,8 @@ public class PaymentInModelFromPaymentInBuilder {
     public PaymentInModelFromPaymentInBuilder build() {
         model.setPaymentIn(paymentIn);
         for (PaymentInLine line: paymentIn.getPaymentInLines()) {
-            //exclude previous credit invoices
-            if (!line.getAmount().isLessThan(Money.ZERO)) {
+            //exclude previous credit/owing invoices
+            if (line.getInvoice().getPersistenceState() == PersistenceState.NEW) {
                 model.getInvoices().add(line.getInvoice());
                 for (InvoiceLine invoiceLine : line.getInvoice().getInvoiceLines()) {
                     if (invoiceLine.getEnrolment() != null) {
