@@ -90,6 +90,10 @@ paths:
           in: header
           type: string
           required: true
+        - name: origin
+          in: header
+          type: string
+          required: true
       responses:
         200:
           description: Payment Response object with sessionId populated
