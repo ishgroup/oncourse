@@ -7,15 +7,13 @@ import org.gradle.api.internal.artifacts.publish.DefaultPublishArtifact
 apply plugin: 'groovy'
 apply plugin: 'apidoc'
 apply plugin: 'org.apache.cayenne'
+apply plugin: 'org.beryx.jlink'
+apply plugin: 'application'
 
 apply from: "$rootDir/gradle/bootique.gradle"
 apply plugin: 'com.github.psxpaul.execfork'
 
-sourceCompatibility = 11
-targetCompatibility = 11
-
 configurations {
-	javaAgent
 	apidocSource
 	aql
 
@@ -79,7 +77,6 @@ dependencies {
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-servlet_2.5_spec'
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-jms_1.1_spec'
 		exclude group: 'aopalliance'
-		exclude group: 'org.springframework'
 
 		exclude group: 'com.sun.xml.messaging.saaj'
 		exclude group: 'org.jvnet.mimepull'
@@ -100,11 +97,6 @@ dependencies {
 	}
 
 	implementation "org.apache.cayenne:cayenne-lifecycle:$cayenneVersion"
-	implementation ("org.apache.cayenne:cayenne-rop-server:$cayenneVersion") {
-		exclude group: "org.slf4"
-	}
-
-	implementation "org.apache.cayenne:cayenne-protostuff:$cayenneVersion"
 	implementation "org.apache.cayenne:cayenne-commitlog:$cayenneVersion"
 
 	implementation "org.eclipse.jetty:jetty-servlet:$jettyVersion"
@@ -162,10 +154,10 @@ dependencies {
 	implementation 'org.apache.commons:commons-lang3:3.7'
 	implementation 'org.apache.commons:commons-collections4:4.1'
 	implementation 'org.reflections:reflections:0.9.11'
+	implementation "com.google.inject:guice:$googleGuiceVersion"
 	implementation "org.springframework:spring-web:$springframeworkVersion"
 	implementation "org.springframework:spring-context:$springframeworkVersion"
-	implementation "com.google.inject:guice:$googleGuiceVersion"
-	implementation "com.google.inject.extensions:guice-spring:$googleGuiceVersion"
+
 
 	implementation 'net.sf.supercsv:super-csv:2.4.0'
 	implementation 'net.sf.supercsv:super-csv-java8:2.4.0'
@@ -203,6 +195,25 @@ configurations.all {
 		// this is the last MPL version of iText, so we can't go past this
 		forcedModules = ['com.lowagie:itext:2.1.7.js2']
 	}
+}
+
+repositories {
+	maven {
+		url 'https://repo.ish.com.au/repository/thirdparty'
+	}
+}
+
+project.ext {
+	appName = "onCourseServer"
+}
+
+application {
+	mainClass = 'ish.oncourse.server.AngelServer'
+	applicationDefaultJvmArgs = ['-Xmx1024m', '-XX:+HeapDumpOnOutOfMemoryError']
+}
+
+jlink {
+	options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
 }
 
 compileGroovy.groovyOptions.configurationScript = file("${rootDir}/gradle/groovyConfig.groovy")
@@ -285,43 +296,12 @@ task startDaemon(dependsOn: [classes, processResources], type: JavaExecFork) {
 	timeout = 60 * 20
 }
 
-task run(dependsOn: [classes], type: JavaExec) {
-    classpath = sourceSets.main.runtimeClasspath
-    main = 'ish.oncourse.server.AngelServer'
-    args = ['DEBUG=true', 'REPLICATION_DISABLED=true', 'disableReplication=true']
-    jvmArgs = ['-Xmx1024m', '-XX:+HeapDumpOnOutOfMemoryError']
-}
-
 task bundle_win(dependsOn: [jar], type: Exe4JTask) {
 	configFile = file("${projectDir}/src/packaging/windows/server.exe4j.xml")
 	jars = configurations.runtimeClasspath + configurations.runtime.artifacts.files
 	resourceFiles = files("${projectDir}/src/packaging/windows/onCourseServer.ico")
 	exeFile = file("${buildDir}/distributions/windows/onCourseServer.exe")
 	configExpandParams = [maxmemoryServer : project.maxmemoryServer]
-	if (project.hasProperty('osxKeychainPassword')) {
-		certificateFile = file (project.codeSigningTemporaryKeystore)
-		certificateFilePassword = project.codeSigningTemporaryPassword
-	}
-}
-
-task bundle_winService(dependsOn: [jar], type: Exe4JTask) {
-	configFile = file("${projectDir}/src/packaging/windows/service.exe4j.xml")
-	jars = configurations.runtimeClasspath + configurations.runtime.artifacts.files
-	resourceFiles = files("${projectDir}/src/packaging/windows/onCourseServer.ico")
-	exeFile = file("${buildDir}/distributions/windows/onCourseService.exe")
-	configExpandParams = [maxmemoryServer : project.maxmemoryServer]
-	if (project.hasProperty('osxKeychainPassword')) {
-		certificateFile = file (project.codeSigningTemporaryKeystore)
-		certificateFilePassword = project.codeSigningTemporaryPassword
-	}
-}
-
-task bundle_winService64(dependsOn: [jar], type: Exe4JTask) {
-	configFile = file("${projectDir}/src/packaging/windows/service64.exe4j.xml")
-	jars = configurations.runtimeClasspath + configurations.runtime.artifacts.files
-	resourceFiles = files("${projectDir}/src/packaging/windows/onCourseServer.ico")
-	exeFile = file("${buildDir}/distributions/windows/onCourseService64.exe")
-	configExpandParams = [maxmemoryServer64 : project.maxmemoryServer64]
 	if (project.hasProperty('osxKeychainPassword')) {
 		certificateFile = file (project.codeSigningTemporaryKeystore)
 		certificateFilePassword = project.codeSigningTemporaryPassword
@@ -353,30 +333,6 @@ task installer_win(dependsOn: [bundle_win], type: NsisTask) {
 	resourceFolder = file("${projectDir}/src/packaging/windows")
 	nsiFileName = "server-mui.nsi"
 	outputFile = file("${buildDir}/distributions/windows/onCourseServer-installer.exe")
-
-	if (project.hasProperty('osxKeychainPassword')) {
-		certificateFile = file (project.codeSigningTemporaryKeystore)
-		certificateFilePassword= project.codeSigningTemporaryPassword
-	}
-}
-
-task installer_winService(dependsOn: [bundle_winService], type: NsisTask) {
-	exeFile = file("${buildDir}/distributions/windows/onCourseService.exe")
-	resourceFolder = file("${projectDir}/src/packaging/windows")
-	nsiFileName = "service-mui.nsi"
-	outputFile = file("${buildDir}/distributions/windows/onCourseService-installer.exe")
-
-	if (project.hasProperty('osxKeychainPassword')) {
-		certificateFile = file (project.codeSigningTemporaryKeystore)
-		certificateFilePassword= project.codeSigningTemporaryPassword
-	}
-}
-
-task installer_winService64(dependsOn: [bundle_winService64], type: NsisTask) {
-	exeFile = file("${buildDir}/distributions/windows/onCourseService64.exe")
-	resourceFolder = file("${projectDir}/src/packaging/windows")
-	nsiFileName = "service64-mui.nsi"
-	outputFile = file("${buildDir}/distributions/windows/onCourseService64-installer.exe")
 
 	if (project.hasProperty('osxKeychainPassword')) {
 		certificateFile = file (project.codeSigningTemporaryKeystore)
@@ -437,12 +393,6 @@ publishing {
 				classifier "windows"
 				extension "exe"
 			}
-			artifact(new DefaultPublishArtifact("onCourseService64-installer", "exe", "exe", null, null,
-					file("${buildDir}/distributions/windows/onCourseService64-installer.exe")).builtBy(installer_winService64)) {
-				version (project.hasProperty('releaseVersion') ? project.releaseVersion : "SNAPSHOT")
-				classifier "winService"
-				extension "exe"
-			}
 		}
 	}
 }
@@ -466,36 +416,17 @@ task queryGrammar(type: Aql) {
 	target = 'Java'
 }
 
-cayenne.defaultDataMap "${projectDir}/src/main/resources/cayenne/AngelMap.map.xml"
-
-task clientCgen(type: cayenne.cgen) {
-	client = true
+cgen {
+	createPropertyNames
+	map = "${projectDir}/src/main/resources/cayenne/AngelMap.map.xml"
 	makePairs = true
-	createPropertyNames = true
-	template = "${projectDir}/src/main/resources/cayenne/dotemplates/client-subclass-serverside.vm"
-	superTemplate = "${projectDir}/src/main/resources/cayenne/dotemplates/client-superclass-serverside.vm"
-	mode = 'entity'
-	superPkg = 'ish.oncourse.cayenne.glue'
-	destDir = file ("${buildDir}/generated-resources/main/java")
-	force = true
-	doLast {
-		delete fileTree("${buildDir}/generated-resources/main/java/ish/oncourse/cayenne").matching {
-			exclude '**/glue/*'
-		}
-	}
-}
-
-task serverCgen(type: cayenne.cgen) {
-	client = false
-	makePairs = true
-	createPropertyNames = true
 	template = "${projectDir}/src/main/resources/cayenne/dotemplates/subclass.vm"
 	superTemplate = "${projectDir}/src/main/resources/cayenne/dotemplates/superclass.vm"
 	mode = 'entity'
 	superPkg = 'ish.oncourse.server.cayenne.glue'
-	destDir = file ("${buildDir}/generated-resources/main/java")
-	force = true
+	destDir = file("${buildDir}/generated-resources/main/java")
 	doLast {
+		// remove subclass files which are already committed inside the app
 		delete fileTree("${buildDir}/generated-resources/main/java/ish/oncourse/server/cayenne") {
 			exclude '**/glue/*'
 		}
@@ -503,8 +434,9 @@ task serverCgen(type: cayenne.cgen) {
 }
 
 compileJava {
-	dependsOn queryGrammar, clientCgen, serverCgen
+	dependsOn queryGrammar, cgen
 }
+
 processResources {
 	dependsOn ':client-html:build'
 	doLast {
@@ -512,6 +444,7 @@ processResources {
 			from('../client-html/build/assets') {
 				include '**/*.*'
 			}
-			into 'build/resources/main/static'}
+			into 'build/resources/main/static'
+		}
 	}
 }

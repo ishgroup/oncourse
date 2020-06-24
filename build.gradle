@@ -5,20 +5,17 @@ buildscript {
 		waCommonWebservicesClientVersion = '83'
 		log4j2Version = '2.13.0'
 		cayenneVersion = '4.1.RC2'
-		jettyVersion = '9.4.26.v20200117'
+		jettyVersion = '9.4.30.v20200611'
         mariadbVersion = '2.4.3'
 		derbyVersion = '10.14.2.0'
 		googleGuiceVersion = '4.2.2'
 		groovyVersion = '2.5.9'
-		springframeworkVersion = '5.0.6.RELEASE'
 		bouncycastleVersion = '1.59'
 		bootiqueVersion = '1.0'
-		jxbrowserVersion = '6.23.1'
 		cfxVersion = '3.3.5'
 		jacksonVersion = '2.9.9'
 		javaxActivationVersion = '1.2.0'
 
-		openjfxVersion = '11.0.2'
 		osVersion = OperatingSystem.current().isMacOsX() ? 'mac' : OperatingSystem.current().isWindows() ? 'win' : 'linux'
 	}
 
@@ -31,20 +28,18 @@ buildscript {
 		}
 	}
 
-	//use stable cayenne-gradle-plugin version since latest one (4.1.RC1) broken - properties from parent class
-	// are added to subclass
-	//https://issues.apache.org/jira/browse/CAY-2633
 	dependencies {
 		classpath "org.apache.cayenne.plugins:cayenne-gradle-plugin:$cayenneVersion"
 	}
 }
 
 plugins {
-	id 'io.spring.dependency-management' version '1.0.3.RELEASE' apply false
 	id 'com.github.ben-manes.versions' version '0.27.0' // adds the task 'dependencyUpdates -Drevision=release'
 	id 'com.github.node-gradle.node' version '2.2.1' apply false
 	id 'com.github.psxpaul.execfork' version '0.1.13' apply false
 	id 'com.dorongold.task-tree' version '1.4' // adds the task 'taskTree [some task]'
+	id 'application'
+	id 'org.beryx.jlink' version '2.20.0'
 }
 
 taskTree{
@@ -61,8 +56,8 @@ allprojects {
 	// get the version from the command line properties
 	version = project.hasProperty('releaseVersion') && project.releaseVersion ? project.releaseVersion : "99-SNAPSHOT"
 
-	sourceCompatibility = 1.8
-	targetCompatibility = 1.8
+	sourceCompatibility = 11
+	targetCompatibility = 11
 
 	tasks.withType(AbstractCompile) {
 		options.with {
@@ -162,19 +157,6 @@ allprojects {
 			junitXml.enabled = true
 		}
 	}
-}
-
-configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
-	repositories {
-		maven {
-			url 'https://repo.ish.com.au/repository/thirdparty'
-		}
-	}
-
-	project.ext {
-		appName = getProject().name == 'server' ? "onCourseServer" : "onCourse"
-	}
-
 }
 
 task testReport(type: TestReport) {
