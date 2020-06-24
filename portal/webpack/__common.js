@@ -41,11 +41,10 @@ const _common = (dirname, options) => {
         {
           test: /\.tsx?$/,
           loader: 'ts-loader',
-          include: [
-            path.resolve(dirname, 'build/generated-sources'),
-            path.resolve(dirname, "src/js"),
-            path.resolve(dirname, "src/dev"),
-          ],
+          exclude: /node_modules/,
+          options: {
+            transpileOnly: true
+          }
         }
       ]
     },

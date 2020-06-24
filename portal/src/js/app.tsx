@@ -1,10 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import PaymentForm from "./payment-form/PaymentForm";
 
 const start = (target: any) => {
   ReactDOM.render(
-    <div id="test">Test </div>,
-    target
+    <div id="test">
+      <PaymentForm />
+    </div>,
+    target,
   );
 };
 

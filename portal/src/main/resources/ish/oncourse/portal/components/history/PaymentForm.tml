@@ -1,9 +1,5 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
     <div id="payment-form">
-        <div class="form-group">
-            <div id="payment-message">
-            </div>
-        </div>
         <t:if test="isCreditCardPaymentEnabled">
             <div id="react-payment-form" data-payerId="${payerId}" data-balance="${balance.toPlainString()}">
             </div>

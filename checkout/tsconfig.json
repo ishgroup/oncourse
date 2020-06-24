@@ -11,7 +11,7 @@
     "sourceMap": true,
     "experimentalDecorators": true,
     "noImplicitAny": false,
-    "noImplicitReturns": true,
+    "noImplicitReturns": false,
     "strictNullChecks": false,
     "module": "es6",
     "skipLibCheck": true,
