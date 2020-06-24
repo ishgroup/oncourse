@@ -21,9 +21,11 @@ import ish.oncourse.willow.model.checkout.payment.PaymentStatus
 import ish.oncourse.willow.model.common.CommonError
 import ish.oncourse.willow.model.v2.checkout.payment.PaymentRequest
 import ish.oncourse.willow.model.v2.checkout.payment.PaymentResponse
+import ish.persistence.Preferences
 import org.apache.cayenne.ObjectContext
 
 import static ish.oncourse.services.preference.Preferences.PAYMENT_GATEWAY_TYPE
+import static ish.persistence.Preferences.*
 
 @CompileStatic
 class ProcessPaymentModel {
@@ -33,7 +35,7 @@ class ProcessPaymentModel {
     College college
     CreatePaymentModel createPaymentModel
     PaymentRequest paymentRequest
-
+    String origin
 
     CommonError error
     PaymentResponse response
@@ -45,12 +47,14 @@ class ProcessPaymentModel {
                         CreatePaymentModel createPaymentModel,
                         PaymentRequest paymentRequest,
                         Boolean xValidate,
-                        PaymentService paymentService) {
+                        String origin) {
         this.context = context
         this.college = college
         this.xValidate = xValidate
         this.createPaymentModel = createPaymentModel
         this.paymentRequest = paymentRequest
+        this.origin = origin
+        this
     }
     
     @CompileStatic(TypeCheckingMode.SKIP)
@@ -101,6 +105,26 @@ class ProcessPaymentModel {
 
     private ProcessPaymentModel performGatewayOperation() {
         context.commitChanges()
+
+        PaymentGatewayType gatewayType = PaymentGatewayType.valueOf(new GetPreference(college, PAYMENT_GATEWAY_TYPE, context).getValue())
+        String apiKey
+        Boolean skipAuth
+
+        switch (gatewayType) {
+            case PaymentGatewayType.TEST:
+                apiKey = " SXNoR3JvdXBSRVNUX0RldjphOTljYWUxYmRlZGJjNGU5ODQ3OTNmZjNhNjkwMDM5ZTdlZWUyOTgyMmQ0ZDQzZDg2M2JkZDE4NGNlOTk4NmRj"
+                skipAuth = false
+                break
+            case PaymentGatewayType.PAYMENT_EXPRESS:
+                apiKey = new GetPreference(college, PAYMENT_GATEWAY_PASS, context).getValue()
+                skipAuth = new GetPreference(college, PAYMENT_GATEWAY_PURCHASE_WITHOUT_AUTH, context).getBooleanValue()
+                break
+            case PaymentGatewayType.DISABLED:
+            default:
+                throw new IllegalArgumentException()
+        }
+
+
 
         if (xValidate) {
 

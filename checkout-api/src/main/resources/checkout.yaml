@@ -1715,6 +1715,8 @@ definitions:
         type: string
       responseText:
         type: string
+      paymentFormUrl:
+        type: string
   checkout.concession.ConcessionType:
     type: object
     properties:

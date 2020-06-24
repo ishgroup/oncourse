@@ -47,15 +47,13 @@ class CheckoutApiImpl implements CheckoutApi, CheckoutV2Api {
     private CayenneService cayenneService
     private CollegeService collegeService
     private FinancialService financialService
-    private PaymentService paymentService
 
 
     @Inject
-    CheckoutApiImpl(CayenneService cayenneService, CollegeService collegeService, FinancialService financialService, PaymentService paymentService) {
+    CheckoutApiImpl(CayenneService cayenneService, CollegeService collegeService, FinancialService financialService) {
         this.cayenneService = cayenneService
         this.collegeService = collegeService
         this.financialService = financialService
-        this.paymentService = paymentService
     }
 
     @Override
@@ -140,7 +138,7 @@ class CheckoutApiImpl implements CheckoutApi, CheckoutV2Api {
     }
 
     @Override
-    V2PaymentResponse makePayment(V2PaymentRequest paymentRequest, Boolean xValidate, String payerId) {
+    V2PaymentResponse makePayment(V2PaymentRequest paymentRequest, Boolean xValidate, String payerId, String origin) {
 
         ObjectContext context = cayenneService.newContext()
         College college = collegeService.college
@@ -165,7 +163,7 @@ class CheckoutApiImpl implements CheckoutApi, CheckoutV2Api {
 
         V2CreatePaymentModel createPaymentModel = new V2CreatePaymentModel(context, college, webSite, paymentRequest, checkoutModel, financialService, payer).create()
 
-        V2ProcessPaymentModel processPaymentModel = new V2ProcessPaymentModel(context, college, createPaymentModel, paymentRequest, xValidate, paymentService).process()
+        V2ProcessPaymentModel processPaymentModel = new V2ProcessPaymentModel(context, college, createPaymentModel, paymentRequest, xValidate, origin).process()
 
         if (processPaymentModel.error == null) {
             return processPaymentModel.response

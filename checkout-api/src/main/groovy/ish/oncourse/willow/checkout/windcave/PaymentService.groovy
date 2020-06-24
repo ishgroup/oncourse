@@ -3,6 +3,9 @@ package ish.oncourse.willow.checkout.windcave
 import groovy.json.JsonOutput
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
+import groovyx.net.http.ContentType
+import groovyx.net.http.HTTPBuilder
+import ish.math.Country
 import ish.math.Money
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -18,6 +21,8 @@ class PaymentService {
 
     private static final Logger logger = LogManager.getLogger(PaymentService)
 
+    PaymentService(String gatewayPass, Boolean skipAuth, Country country, ) {
+    }
 
     Closure failHandler =  { Object response, Object body, SessionAttributes attributes  ->
         logger.error('Fail to create session {} {}', body, response)
@@ -49,7 +54,7 @@ class PaymentService {
             Map<String, Object> body = [type               : transactionType,
                                         amount             : amount.toPlainString(),
                                         amountSurcharge    : "0.00",
-                                        currency           : preferenceController.country.currencySymbol(),
+                                        currency           : country.currencySymbol(),
                                         merchantReference  : merchantReference,
                                         language           : "en",
                                         methods            : ["card"],
@@ -74,7 +79,7 @@ class PaymentService {
                      requestContentType: ContentType.JSON,
                      body: body
                     ])
-        } catch (HttpResponseException e) {
+        } catch (Exception e) {
             logger.error("Fail to create session")
             logger.catching(e)
         }
@@ -143,7 +148,7 @@ class PaymentService {
                 attributes.complete = body['state'] == 'complete'
                 buildSessionAttributes(attributes, body['transactions'][0] as Map<String, Object> )
             }
-        } catch (HttpResponseException e) {
+        } catch (Exception e) {
             logger.error("Fail to get session status")
             logger.catching(e)
         }
