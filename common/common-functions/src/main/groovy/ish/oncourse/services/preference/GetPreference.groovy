@@ -1,5 +1,6 @@
 package ish.oncourse.services.preference
 
+import ish.math.Country
 import ish.oncourse.model.College
 import ish.oncourse.model.Preference
 import ish.oncourse.model.WebSite
@@ -8,6 +9,8 @@ import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.QueryCacheStrategy
 import org.apache.commons.lang3.StringUtils
+
+import static ish.persistence.Preferences.ACCOUNT_CURRENCY
 
 
 class GetPreference {
@@ -26,6 +29,14 @@ class GetPreference {
         this.key = key
         this.objectContext = objectContext
         this.webSite = webSite
+    }
+
+    Country getCountry() {
+        String result = getValue()
+        if (result == null) {
+            return Country.AUSTRALIA
+        }
+        return Country.forCurrencySymbol(result)
     }
     
     String getValue() {

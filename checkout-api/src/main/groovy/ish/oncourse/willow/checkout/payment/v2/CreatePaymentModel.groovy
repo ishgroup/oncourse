@@ -271,7 +271,7 @@ class CreatePaymentModel {
 
     private Invoice createInvoice() {
         new CreateInvoice(context, college, webSite, payer)
-                .forPaymentModel(getPayment(), paymentRequest.sessionId)
+                .forPaymentModel(getPayment(), paymentRequest.merchantReference)
     }
 
     private void  adjustDueDate() {

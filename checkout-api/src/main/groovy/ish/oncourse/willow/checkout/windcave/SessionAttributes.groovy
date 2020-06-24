@@ -25,6 +25,6 @@ class SessionAttributes {
     String creditCardName
     String creditCardNumber
     CreditCardType creditCardType
-    LocalDate paymentDate
+    Date paymentDate
     String billingId
 }

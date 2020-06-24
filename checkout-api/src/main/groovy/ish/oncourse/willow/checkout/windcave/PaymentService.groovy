@@ -5,23 +5,32 @@ import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
+import ish.common.types.CreditCardType
 import ish.math.Country
 import ish.math.Money
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
+@CompileStatic
 class PaymentService {
 
     private static final String WINDCAVE_BASE = 'https://sec.windcave.com'
     public static final String  AUTH_TYPE = "auth"
     public static final String  PURCHASE_TYPE = "purchase"
-
+    public static final String DEFAULT_ERROR_MESSAGE =  "Something unexpected has happened, please contact ish support or try again later"
 
     private static final Logger logger = LogManager.getLogger(PaymentService)
+    private String gatewayPass
+    private boolean skipAuth
+    private Country country
 
-    PaymentService(String gatewayPass, Boolean skipAuth, Country country, ) {
+    PaymentService(String gatewayPass, Boolean skipAuth, Country country) {
+        this.country = country
+        this.skipAuth = skipAuth
+        this.gatewayPass = gatewayPass
     }
 
     Closure failHandler =  { Object response, Object body, SessionAttributes attributes  ->
@@ -32,7 +41,7 @@ class PaymentService {
             }
         } catch (Exception e) {
             logger.catching(e)
-            attributes.errorMessage =  "Something unexpected has happened, please contact wish support or try again later"
+            attributes.errorMessage = DEFAULT_ERROR_MESSAGE
         }
     }
 
@@ -59,9 +68,9 @@ class PaymentService {
                                         language           : "en",
                                         methods            : ["card"],
                                         callbackUrls       : [
-                                                approved :  origin + '/checkout?paymentStatus=success',
-                                                declined :  origin + '/checkout?paymentStatus=fail',
-                                                cancelled:  origin + '/checkout?paymentStatus=cancel'
+                                                approved :  origin + '?paymentStatus=success',
+                                                declined :  origin + '?paymentStatus=fail',
+                                                cancelled:  origin + '?paymentStatus=cancel'
                                         ]
             ]
             if (storeCard) {
@@ -75,7 +84,7 @@ class PaymentService {
                     [uri: WINDCAVE_BASE,
                      path: '/api/v1/sessions',
                      contentType: ContentType.JSON,
-                     headers: [Authorization: "Basic $preferenceController.paymentGatewayPass"],
+                     headers: [Authorization: "Basic $gatewayPass"],
                      requestContentType: ContentType.JSON,
                      body: body
                     ])
@@ -94,12 +103,12 @@ class PaymentService {
                     [uri               : WINDCAVE_BASE,
                      path              : '/api/v1/transactions',
                      contentType       : ContentType.JSON,
-                     headers           : [Authorization: "Basic $preferenceController.paymentGatewayPass"],
+                     headers           : [Authorization: "Basic $gatewayPass"],
                      requestContentType: ContentType.JSON,
                      body              : [type             : "complete",
                                           amount           : amount.toPlainString(),
                                           amountSurcharge  : "0.00",
-                                          currency         : preferenceController.country.currencySymbol(),
+                                          currency         : country.currencySymbol(),
                                           merchantReference: merchantReference,
                                           transactionId    : transactionId]
                     ]) { response, body ->
@@ -122,7 +131,7 @@ class PaymentService {
                     [uri: WINDCAVE_BASE,
                      path: "/api/v1/sessions/$sessionId",
                      contentType: ContentType.JSON,
-                     headers: [Authorization: "Basic $preferenceController.paymentGatewayPass"],
+                     headers: [Authorization: "Basic $gatewayPass"],
                     ]) { response, body ->
                 /* json response example
                     {
@@ -166,9 +175,9 @@ class PaymentService {
             if (attributes.authorised) {
                 Map<String, String> card = transactionMap['card'] as Map<String, String>
                 if (transactionMap['settlementDate']) {
-                    attributes.paymentDate = LocalDate.parse(transactionMap['settlementDate'] as String)
+                    attributes.paymentDate = Date.parse('yyyy-MM-dd', (transactionMap['settlementDate'] as String))
                 }
-                attributes.creditCardType = values().find { it.name().equalsIgnoreCase(card['type']) }
+                attributes.creditCardType = CreditCardType.values().find { it.name().equalsIgnoreCase(card['type']) }
                 attributes.creditCardExpiry = card['dateExpiryMonth'] + '/' + card['dateExpiryYear']
                 attributes.creditCardName = card['cardHolderName']
                 attributes.creditCardNumber = card['cardNumber']
@@ -178,70 +187,7 @@ class PaymentService {
         }
     }
 
-    @CompileStatic(TypeCheckingMode.SKIP)
-    SessionAttributes makeRefund(Money amount, String merchantReference, String transactionId) {
-        SessionAttributes attributes = new SessionAttributes()
-
-        try {
-            HTTPBuilder builder  = new HTTPBuilder()
-            builder.handler['failure'] = { response, body -> failHandler(response, body, attributes)}
-
-            builder.handler['success'] = { response, body ->
-                buildSessionAttributes(attributes, body as Map<String, Object>)
-            }
-            builder.post(
-                    [uri               : WINDCAVE_BASE,
-                     path              : '/api/v1/transactions',
-                     contentType       : ContentType.JSON,
-                     headers           : [Authorization: "Basic $preferenceController.paymentGatewayPass"],
-                     requestContentType: ContentType.JSON,
-                     body              : [type             : "refund",
-                                          amount           : amount.toPlainString(),
-                                          currency         : preferenceController.country.currencySymbol(),
-                                          merchantReference: merchantReference,
-                                          transactionId    : transactionId]
-                    ])
-        } catch(Exception e) {
-            attributes.errorMessage = "Something unexpected has happened, please contact wish support or try again later"
-            logger.error("Fail to make refund payment")
-            logger.catching(e)
-        }
-        return attributes
-    }
-
-    @CompileStatic(TypeCheckingMode.SKIP)
-    SessionAttributes makeTransaction(Money amount, String merchantReference, String cardId) {
-        SessionAttributes attributes = new SessionAttributes()
-
-        try {
-            HTTPBuilder builder  = new HTTPBuilder()
-            builder.handler['failure'] = { response, body -> failHandler(response, body, attributes)}
-
-            builder.handler['success'] = { response, body ->
-                logger.info("Make transaction success: ${body.toString()}")
-                buildSessionAttributes(attributes, body as Map<String, Object>)
-            }
-            builder.post(
-                    [uri               : WINDCAVE_BASE,
-                     path              : '/api/v1/transactions',
-                     contentType       : ContentType.JSON,
-                     headers           : [Authorization: "Basic $preferenceController.paymentGatewayPass"],
-                     requestContentType: ContentType.JSON,
-                     body              : [type             : transactionType,
-                                          amount           : amount.toPlainString(),
-                                          currency         : preferenceController.country.currencySymbol(),
-                                          merchantReference: merchantReference,
-                                          cardId    : cardId]
-                    ])
-        } catch(Exception e) {
-            attributes.errorMessage = "Something unexpected has happened, please contact ish support or try again later"
-            logger.error("Fail to create transaction")
-            logger.catching(e)
-        }
-        return attributes
-    }
-
     private String getTransactionType() {
-        preferenceController.purchaseWithoutAuth ? PURCHASE_TYPE : AUTH_TYPE
+        skipAuth ? PURCHASE_TYPE : AUTH_TYPE
     }
 }
