@@ -155,8 +155,6 @@ dependencies {
 	implementation 'org.apache.commons:commons-collections4:4.1'
 	implementation 'org.reflections:reflections:0.9.11'
 	implementation "com.google.inject:guice:$googleGuiceVersion"
-	implementation "org.springframework:spring-web:$springframeworkVersion"
-	implementation "org.springframework:spring-context:$springframeworkVersion"
 
 
 	implementation 'net.sf.supercsv:super-csv:2.4.0'
