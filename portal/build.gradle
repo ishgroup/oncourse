@@ -1,6 +1,22 @@
 apply from: "$rootDir/gradle/tapestry.app.gradle"
 apply from: "$rootDir/gradle/cxf-spring.gradle"
 apply from: "$rootDir/gradle/build-static.gradle"
+apply plugin: 'com.moowork.node'
+
+node {
+    version = '12.9.1'
+    yarnVersion = '1.22.4'
+    download = true
+}
+
+yarn_install.args = ['--verbose']
+
+task webpack(type: NodeTask, dependsOn: 'yarn_install') {
+    script = file('node_modules/.bin/webpack')
+    args = ['--progress', '-p', '--env.NODE_ENV', 'production', '--env.BUILD_NUMBER', version ?: '99-SNAPSHOT']
+}
+
+build.dependsOn(webpack)
 
 mainClassName = 'ish.oncourse.portal.PortalApp'
 
