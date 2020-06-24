@@ -90,7 +90,7 @@ paths:
           in: header
           type: string
           required: true
-        - name: origin
+        - name: Referer
           in: header
           type: string
           required: true

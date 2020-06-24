@@ -9,6 +9,7 @@ public class PaymentResponse  {
     private PaymentStatus status = null;
     private String reference = null;
     private String responseText = null;
+    private String paymentFormUrl = null;
 
     /**
      * Get sessionId
@@ -95,6 +96,23 @@ public class PaymentResponse  {
       return this;
     }
 
+    /**
+     * Get paymentFormUrl
+     * @return paymentFormUrl
+     */
+    public String getPaymentFormUrl() {
+        return paymentFormUrl;
+    }
+
+    public void setPaymentFormUrl(String paymentFormUrl) {
+       this.paymentFormUrl = paymentFormUrl;
+    }
+
+    public PaymentResponse paymentFormUrl(String paymentFormUrl) {
+      this.paymentFormUrl = paymentFormUrl;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -106,6 +124,7 @@ public class PaymentResponse  {
       sb.append("    status: ").append(toIndentedString(status)).append("\n");
       sb.append("    reference: ").append(toIndentedString(reference)).append("\n");
       sb.append("    responseText: ").append(toIndentedString(responseText)).append("\n");
+      sb.append("    paymentFormUrl: ").append(toIndentedString(paymentFormUrl)).append("\n");
       sb.append("}");
       return sb.toString();
     }
