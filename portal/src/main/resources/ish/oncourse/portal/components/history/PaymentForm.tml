@@ -5,7 +5,7 @@
             </div>
         </div>
         <t:if test="isCreditCardPaymentEnabled">
-            <div id="react-payment-form">
+            <div id="react-payment-form" data-payerId="${payerId}" data-balance="${balance.toPlainString()}">
             </div>
         </t:if>
     </div>
