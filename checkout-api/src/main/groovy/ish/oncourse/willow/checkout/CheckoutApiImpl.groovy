@@ -1,6 +1,7 @@
 package ish.oncourse.willow.checkout
 
 import com.google.inject.Inject
+import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import ish.math.Money
@@ -138,6 +139,7 @@ class CheckoutApiImpl implements CheckoutApi, CheckoutV2Api {
     }
 
     @Override
+    @CompileDynamic
     V2PaymentResponse makePayment(V2PaymentRequest paymentRequest, Boolean xValidate, String payerId, String origin) {
 
         ObjectContext context = cayenneService.newContext()

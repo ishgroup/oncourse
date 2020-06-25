@@ -1,5 +1,6 @@
 package ish.oncourse.willow.checkout.payment.v2
 
+import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import ish.common.GetInvoiceDueDate
@@ -78,6 +79,7 @@ class CreatePaymentModel {
         this
     }
 
+    @CompileDynamic
     private void processPreviousOwing() {
         PaymentIn payment = getPayment()
         payment.amount = paymentRequest.ccAmount.toMoney()
