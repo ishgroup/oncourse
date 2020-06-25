@@ -3,6 +3,8 @@ import CheckoutService from "../services/CheckoutService";
 import {getPaymentRequest} from "../utils";
 import debounce from "lodash.debounce";
 import {fail} from "assert";
+import {getErrorMessage} from "../services/ApiErrorHandler";
+import {PaymentResponse} from "../model/api";
 
 
 const getPaymentMessage = ({status, message}: any) => {
@@ -24,11 +26,16 @@ const PaymentForm: React.FC<any> = ({}) => {
   const [amountValue, setAmountValue] = useState<any>( null);
   const [payerId, setPayerId] = useState<any>( null);
   const [paymentStatus, setPaymentStatus] = useState<any>( null);
+  const [paymentDetails, setPaymentDetails] = useState<PaymentResponse | null>( null);
 
   const onMessage = (e: any) => {
     const paymentDetails = e.data.payment;
     if (paymentDetails && paymentDetails.status) {
       setPaymentStatus(paymentDetails);
+      if( paymentDetails.status === "success") {
+        console.log(amount, payerId);
+        CheckoutService.makePayment(getPaymentRequest(amount, paymentDetails), false, payerId);
+      }
     }
   };
 
@@ -37,7 +44,7 @@ const PaymentForm: React.FC<any> = ({}) => {
     return () => {
       window.removeEventListener("message", onMessage);
     };
-  },        []);
+  },[amount,payerId,paymentDetails]);
 
   useEffect(() => {
     const root = document.getElementById("react-payment-form");
@@ -73,12 +80,15 @@ const PaymentForm: React.FC<any> = ({}) => {
   useEffect(() => {
     if (payerId && amount && validateAmount(amount)) {
       setIframeUrl(null);
-      CheckoutService.makePayment(getPaymentRequest(amount, payerId), true, payerId)
+      setPaymentStatus(null);
+
+      CheckoutService.makePayment(getPaymentRequest(amount), true, payerId)
         .then(res => {
-          setIframeUrl(res);
+          setIframeUrl(res.paymentFormUrl);
+          setPaymentDetails(res);
         })
-        .catch(() => {
-          setPaymentStatus({status: "fail", message: "Failed to connect payment gateway"});
+        .catch(res => {
+          setPaymentStatus({status: "fail", message: getErrorMessage(res) || "Failed to connect payment gateway"});
         });
     }
   },        [amount]);
@@ -94,24 +104,34 @@ const PaymentForm: React.FC<any> = ({}) => {
   };
 
   return (
-    <div>
+    <div className={amountError ? "has-error" : "valid"}>
 
-      <div className="row">
-        <div className="col-sm-3">
-          <div className="form-group">
-            <div className={amountError ? "has-error" : "valid"}>
+      {!paymentStatus && <div>
+        <div className="amount-container">
+          <div className="row">
+            <div className="col-xs-5 amount-label">
+              <label>
+                Amount:
+                <span>*</span>
+              </label>
+            </div>
+            <div>
               <input
+                required
+                min={1}
+                max={amountInitial}
                 onChange={onAmountChange}
                 value={amountValue}
-                className="form-control"
                 type="number"
                 name="amount"
                 placeholder="Amount"
+                className="amount-input"
+                pattern="^\d*(\.\d{2}$)?"
               />
             </div>
           </div>
         </div>
-      </div>
+      </div>}
 
       {paymentStatus ?
         getPaymentMessage(paymentStatus)

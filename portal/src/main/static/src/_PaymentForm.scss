@@ -1,5 +1,66 @@
 #payment-form {
   .has-error {
     margin-bottom: 0;
+
+    .amount-input {
+      border: 2px solid #e7464c;
+    }
+    .amount-input:focus {
+      border: 2px solid #e7464c;
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
+    }
+
+    iframe {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+  }
+
+  .amount-input {
+    -webkit-appearance: none;
+    border: 1px solid #d5d5d5;
+    border-radius: 2px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    -webkit-transition: border-color ease-in-out .19s, -webkit-box-shadow ease-in-out .19s;
+    -o-transition: border-color ease-in-out .19s, box-shadow ease-in-out .19s;
+    transition: border-color ease-in-out .19s, box-shadow ease-in-out .19s;
+    padding: 3px 5px 3px 3px;
+    font-size: 14px;
+    outline: none;
+    height: 40px;
+    width: 35%;
+  }
+
+  .amount-input:focus {
+    border: 1px solid #66afe9;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
+  }
+
+  .amount-container {
+    border: 1px solid #ebebeb;
+    background-color: #faf9f9;
+    border-bottom: 2px solid #c0c0c0;
+    padding: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #333;
+    font-size: 14px;
+    max-width: 445px;
+    margin: 5px auto;
+  }
+
+  .amount-label {
+    padding-top: 12px;
+  }
+
+  iframe {
+    width: 100%;
+    height: 560px;
+  }
+
+  label {
+    display: inline;
+    margin-bottom: unset;
+    font-weight: unset;
   }
 }

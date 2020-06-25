@@ -19,9 +19,9 @@ export interface CheckoutModelRequest {
 }
 
 export interface PaymentRequest {
-  checkoutModelRequest?: CheckoutModelRequest;
-  merchantReference: string;
-  sessionId: string;
+  checkoutModelRequest?: any;
+  merchantReference: any;
+  sessionId: any;
   ccAmount: number;
   storeCard: boolean;
 }
@@ -31,6 +31,7 @@ export type PaymentStatus = "IN_PROGRESS" | "FAILED" | "SUCCESSFUL" |"SUCCESSFUL
 export interface PaymentResponse {
   sessionId: string;
   merchantReference: string;
+  paymentFormUrl: string;
   status: PaymentStatus;
   reference: string;
   responseText: string;

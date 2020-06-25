@@ -87,6 +87,9 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
 const plugins = (NODE_ENV, BUILD_NUMBER) => {
   const plugins = [
     __common.DefinePlugin(NODE_ENV, BUILD_NUMBER),
+    new webpack.EnvironmentPlugin({
+      RELEASE_VERSION: BUILD_NUMBER
+    }),
     new MiniCssExtractPlugin("[name].css"),
     new webpack.optimize.ModuleConcatenationPlugin(),
   ];

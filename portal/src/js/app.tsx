@@ -2,6 +2,22 @@ import React from "react";
 import ReactDOM from "react-dom";
 import PaymentForm from "./payment-form/PaymentForm";
 
+const query = new URLSearchParams(window.location.search);
+const sessionId = query.get("sessionId");
+const status = query.get("paymentStatus");
+
+if (sessionId && status) {
+  window.parent.postMessage(
+    {
+      payment: {
+        sessionId,
+        status,
+      },
+    },
+    "*",
+  );
+}
+
 const start = (target: any) => {
   ReactDOM.render(
     <div id="test">
@@ -26,22 +42,6 @@ const callback = function (mutationsList: any, observer: any) {
     }
   }
 };
-
-const query = new URLSearchParams(window.location.search);
-const sessionId = query.get("sessionId");
-const status = query.get("paymentStatus");
-
-if (sessionId && status) {
-  window.parent.postMessage(
-    {
-      payment: {
-        sessionId,
-        status,
-      },
-    },
-    "*",
-  );
-}
 
 const observer = new MutationObserver(callback);
 observer.observe(document, config);

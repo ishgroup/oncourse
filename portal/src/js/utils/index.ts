@@ -1,17 +1,9 @@
-import {CheckoutModelRequest, PaymentRequest} from "../model/api";
+import {PaymentRequest} from "../model/api";
 
-export const getPaymentRequest = (ccAmount: number, payerId: string): PaymentRequest => ({
+export const getPaymentRequest = (ccAmount: number, details?: PaymentRequest): PaymentRequest => ({
   ccAmount,
-  merchantReference: "",
-  sessionId: "",
+  merchantReference: details ? details.merchantReference : null,
+  sessionId: null,
   storeCard: false,
-  checkoutModelRequest: {
-    payerId,
-    contactNodes: [],
-    promotionIds: [],
-    redeemedVoucherIds: [],
-    applyCredit: false,
-    payNow: ccAmount,
-    corporatePassId: ""
-  }
-})
+  checkoutModelRequest: null
+});

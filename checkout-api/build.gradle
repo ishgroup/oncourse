@@ -36,7 +36,7 @@ task swagger(type: JavaExec) {
     args  = [ servicesPackage, modelPackage, project.projectDir, "${project.projectDir}/src/main/resources/$swaggerName" ]
 }
 
-task start(dependsOn: [classes, processResources], type: JavaExec) {
+task start(type: JavaExec) {
     main = 'ish.oncourse.willow.WillowApp'
     classpath = sourceSets.main.runtimeClasspath
     args  = []
