@@ -36,3 +36,29 @@ dependencies {
         exclude group: 'org.apache.tapestry'
     }
 }
+
+sourceSets {
+    main {
+        groovy {
+            srcDirs += 'src/main/'
+        }
+        java {
+            srcDirs = []
+        }
+    }
+}
+
+ext {
+    staticBuildPath = "${rootDir}/resource-assemble/static"
+}
+
+task copyStatic(type: Copy) {
+    from "build/resource-assemble/static"
+    into "build/resources/main/static"
+}
+
+task start(dependsOn: copyStatic, type: JavaExec) {
+    main = 'ish.oncourse.portal.PortalApp'
+    classpath = sourceSets.main.runtimeClasspath
+    args  = []
+}
