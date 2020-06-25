@@ -114,7 +114,7 @@ class ProcessPaymentModel {
 
         switch (gatewayType) {
             case PaymentGatewayType.TEST:
-                apiKey = " SXNoR3JvdXBSRVNUX0RldjphOTljYWUxYmRlZGJjNGU5ODQ3OTNmZjNhNjkwMDM5ZTdlZWUyOTgyMmQ0ZDQzZDg2M2JkZDE4NGNlOTk4NmRj"
+                apiKey = "SXNoR3JvdXBSRVNUX0RldjphOTljYWUxYmRlZGJjNGU5ODQ3OTNmZjNhNjkwMDM5ZTdlZWUyOTgyMmQ0ZDQzZDg2M2JkZDE4NGNlOTk4NmRj"
                 skipAuth = false
                 break
             case PaymentGatewayType.PAYMENT_EXPRESS:
