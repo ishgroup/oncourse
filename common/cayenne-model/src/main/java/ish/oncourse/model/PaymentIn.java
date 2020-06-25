@@ -521,6 +521,14 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	 * @return client identificator string.
 	 */
 	public String getClientReference() {
+		if (sessionId != null ) {
+			try {
+				UUID.fromString(sessionId);
+				return sessionId;
+			} catch (IllegalArgumentException ignore){
+				//handle the case where string is not valid UUID
+			}
+		}
 		PaymentSource source = getSource();
 		if (source == null) {
 			source = PaymentSource.SOURCE_WEB;// If no source set we pass Web

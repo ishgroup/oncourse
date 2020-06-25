@@ -3,27 +3,28 @@ package ish.oncourse.willow.checkout.payment.v2
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import ish.common.types.PaymentType
+import ish.math.Country
 import ish.math.Money
 import ish.oncourse.model.College
 import ish.oncourse.model.PaymentGatewayType
-import ish.oncourse.services.paymentexpress.INewPaymentGatewayService
-import ish.oncourse.services.paymentexpress.NewDisabledPaymentGatewayService
-import ish.oncourse.services.paymentexpress.NewPaymentExpressGatewayService
-import ish.oncourse.services.paymentexpress.NewTestPaymentGatewayService
+import ish.oncourse.model.PaymentIn
 import ish.oncourse.services.preference.GetPreference
 import ish.oncourse.util.payment.PaymentInAbandon
 import ish.oncourse.util.payment.PaymentInModel
 import ish.oncourse.util.payment.PaymentInSucceed
-import ish.oncourse.willow.checkout.payment.GetPaymentStatus
 import ish.oncourse.willow.checkout.payment.SetConfirmationStatus
 import ish.oncourse.willow.checkout.windcave.PaymentService
+import ish.oncourse.willow.checkout.windcave.SessionAttributes
 import ish.oncourse.willow.model.checkout.payment.PaymentStatus
 import ish.oncourse.willow.model.common.CommonError
 import ish.oncourse.willow.model.v2.checkout.payment.PaymentRequest
 import ish.oncourse.willow.model.v2.checkout.payment.PaymentResponse
-import ish.persistence.Preferences
 import org.apache.cayenne.ObjectContext
+import org.apache.cayenne.query.ObjectSelect
+import org.apache.commons.lang3.StringUtils
 
+import static ish.common.types.ConfirmationStatus.DO_NOT_SEND
+import static ish.common.types.ConfirmationStatus.NOT_SENT
 import static ish.oncourse.services.preference.Preferences.PAYMENT_GATEWAY_TYPE
 import static ish.persistence.Preferences.*
 
@@ -109,6 +110,7 @@ class ProcessPaymentModel {
         PaymentGatewayType gatewayType = PaymentGatewayType.valueOf(new GetPreference(college, PAYMENT_GATEWAY_TYPE, context).getValue())
         String apiKey
         Boolean skipAuth
+        Money amount = createPaymentModel.paymentIn.amount
 
         switch (gatewayType) {
             case PaymentGatewayType.TEST:
@@ -123,54 +125,106 @@ class ProcessPaymentModel {
             default:
                 throw new IllegalArgumentException()
         }
-
-
+        Country country = new GetPreference(college, ACCOUNT_CURRENCY, context).getCountry()
+        PaymentService paymentService = new PaymentService(apiKey, skipAuth, country)
 
         if (xValidate) {
-
+            String merchantReference = UUID.randomUUID().toString()
+            SessionAttributes attributes = paymentService.createSession(origin, amount, merchantReference, paymentRequest.storeCard)
+            if (attributes.sessionId) {
+                response = new PaymentResponse()
+                response.sessionId = attributes.sessionId
+                response.paymentFormUrl = attributes.ccFormUrl
+                response.merchantReference = merchantReference
+            } else {
+                error = new CommonError(message: (attributes.errorMessage ?: PaymentService.DEFAULT_ERROR_MESSAGE))
+            }
         } else {
+            SessionAttributes sessionAttributes
+            String merchantReference = paymentRequest.merchantReference
 
+            if (!paymentRequest.merchantReference) {
+                error = new CommonError(message: 'Merchant reference is required')
+                return this
+            }
+            if (!paymentRequest.sessionId) {
+                error = new CommonError(message: 'Payment session attribute is required')
+                return this
+            }
+            sessionAttributes = paymentService.checkStatus(paymentRequest.sessionId)
+
+            if (!sessionAttributes.complete) {
+                error = new CommonError(message: 'Credit card authorisation is not complete')
+                return this
+            }
+
+            if (!sessionAttributes.authorised) {
+                error = new CommonError(message: "Credit card declined: $sessionAttributes.statusText")
+                return this
+            }
+
+            if (ObjectSelect.query(PaymentIn).where(PaymentIn.GATEWAY_REFERENCE.eq(sessionAttributes.transactionId)).selectFirst(context) != null) {
+                error = new CommonError(message: "Credit card payment already complete")
+                return this
+            }
+
+            PaymentIn paymentIn = createPaymentModel.paymentIn
+            paymentIn.creditCardExpiry = sessionAttributes.creditCardExpiry
+            paymentIn.creditCardName = sessionAttributes.creditCardName
+            paymentIn.creditCardNumber = sessionAttributes.creditCardNumber
+            paymentIn.creditCardType = sessionAttributes.creditCardType
+            paymentIn.gatewayReference = sessionAttributes.transactionId
+            paymentIn.dateBanked = sessionAttributes.paymentDate
+            paymentIn.billingId = sessionAttributes.billingId
+            paymentIn.sessionId = merchantReference
+            paymentIn.gatewayResponse = sessionAttributes.responceJson
+            paymentIn.statusNotes = sessionAttributes.statusText
+
+            if (skipAuth) {
+                succeedPayment()
+                return this
+            } else {
+                if (PaymentService.AUTH_TYPE != sessionAttributes.type) {
+                    error = new CommonError(message: "Credit card transaction has wrong type")
+                    return this
+                }
+                context.commitChanges()
+                sessionAttributes = paymentService.completeTransaction(sessionAttributes.transactionId, amount, merchantReference)
+
+                if (sessionAttributes.authorised) {
+                    succeedPayment()
+                } else {
+                    paymentIn.gatewayResponse = sessionAttributes.responceJson
+                    paymentIn.statusNotes = sessionAttributes.statusText
+                    PaymentInAbandon.valueOf(createPaymentModel.model, false).perform()
+                    context.commitChanges()
+                    response = new PaymentResponse()
+                    response.status = PaymentStatus.FAILED
+                    response.responseText = sessionAttributes.statusText
+                }
+                return this
+            }
         }
-        
-//        PaymentInModel model = createPaymentModel.model
-//
-//        paymentGatewayService.submit(createPaymentModel.model, new ish.oncourse.services.payment.PaymentRequest().with { r ->
-//            r.sessionId = paymentRequest.sessionId
-//            r.name = paymentRequest.creditCardName
-//            r.number = paymentRequest.creditCardNumber
-//            r.cvv = paymentRequest.creditCardCvv.trim()
-//            r.year = paymentRequest.expiryYear
-//            r.month = paymentRequest.expiryMonth
-//            r
-//        })
-//
-//        response = new GetPaymentStatus(context, college, paymentRequest.sessionId).get(model.paymentIn)
-//        if (PaymentStatus.FAILED == response.status) {
-//            PaymentInAbandon.valueOf(model, false).perform()
-//        } else if (PaymentStatus.SUCCESSFUL == response.status) {
-//            SetConfirmationStatus.valueOf(model).set()
-//        }
-//
-//        context.commitChanges()
+
         this
     }
-    
-    private INewPaymentGatewayService getPaymentGatewayService() {
-        PaymentGatewayType gatewayType = PaymentGatewayType.valueOf(new GetPreference(college, PAYMENT_GATEWAY_TYPE, context).getValue())
 
-        switch (gatewayType) {
-            case PaymentGatewayType.DISABLED:
-                return new NewDisabledPaymentGatewayService()
-                break
-            case PaymentGatewayType.TEST:
-                return new NewTestPaymentGatewayService(nonReplicatedContext)
-                break
-            case PaymentGatewayType.PAYMENT_EXPRESS:
-                return new NewPaymentExpressGatewayService(nonReplicatedContext)
-                break
-            default:
-                return new NewDisabledPaymentGatewayService()
+    private void succeedPayment() {
+        PaymentInModel model = createPaymentModel.model
+        PaymentInSucceed.valueOf(model).perform();
+
+        model.paymentIn.statusNotes += 'Payment successful.'
+        model.paymentIn.paymentInLines.each {  line  ->
+            line.invoice.updateAmountOwing()
         }
+
+        SetConfirmationStatus.valueOf(model).set()
+        context.commitChanges()
+
+        response = new PaymentResponse()
+        response.status  = PaymentStatus.SUCCESSFUL
+        response.reference = model.paymentIn.clientReference
     }
+
     
 }
