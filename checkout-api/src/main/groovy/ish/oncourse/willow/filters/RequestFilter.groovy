@@ -20,7 +20,7 @@ class RequestFilter implements ContainerRequestFilter {
         if (siteKeys && !siteKeys.empty) {
             ThreadLocalSiteKey.set(siteKeys[0])
         } else {
-            List<String> payerIds = requestContext.headers.get(SITE_KEY_HEADER)
+            List<String> payerIds = requestContext.headers.get(PAYER_ID_HEADER)
             if (payerIds && !payerIds.empty) {
                 ThreadLocalPayerId.set(Long.valueOf(payerIds[0]))
             } else {
