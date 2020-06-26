@@ -7,10 +7,18 @@ import {WindowService} from "./services/WindowService";
 import {HTMLMarkers} from "./common/services/HTMLMarker";
 import "../scss/index.scss";
 import {getPreferences} from "./common/actions/Actions";
+import {setCookie} from "./common/utils/Cookie";
 
 const appStart = () => {
   if (Intl) {
-    document.cookie = `clientTimezoneName=${Intl.DateTimeFormat().resolvedOptions().timeZone}`;
+    setCookie(
+      'clientTimezoneName',
+      Intl.DateTimeFormat().resolvedOptions().timeZone,
+      {
+        samesite: "strict",
+        secure: true,
+      },
+    );
   }
 
   const store = CreateStore();
