@@ -209,8 +209,7 @@ public abstract class CommonPreferenceController {
 	public synchronized String getServicesSecurityKey() {
 		String value = getValue(SERVICES_SECURITYKEY, false);
 		if (value == null) {
-			value = SecurityUtil.generateRandomPassword(16);
-			setServicesSecurityKey(value);
+			throw new IllegalStateException("SERVICES_SECURITYKEY preference must be set ");
 		}
 		return value;
 	}
