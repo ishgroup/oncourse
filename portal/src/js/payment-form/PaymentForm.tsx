@@ -26,15 +26,25 @@ const PaymentForm: React.FC<any> = ({}) => {
   const [amountValue, setAmountValue] = useState<any>( null);
   const [payerId, setPayerId] = useState<any>( null);
   const [paymentStatus, setPaymentStatus] = useState<any>( null);
-  const [paymentDetails, setPaymentDetails] = useState<PaymentResponse | null>( null);
+  const [paymentDetails, setPaymentDetails] = useState<PaymentResponse>(null);
+
 
   const onMessage = (e: any) => {
-    const paymentDetails = e.data.payment;
-    if (paymentDetails && paymentDetails.status) {
-      setPaymentStatus(paymentDetails);
-      if( paymentDetails.status === "success") {
-        console.log(amount, payerId);
-        CheckoutService.makePayment(getPaymentRequest(amount, paymentDetails), false, payerId);
+    const paymentData = e.data.payment;
+    if (paymentData && paymentData.status) {
+      setIframeUrl(null);
+      if (paymentData.status === "success") {
+        CheckoutService.makePayment(getPaymentRequest(amount, paymentDetails), false, payerId).then(res => {
+          setPaymentStatus({status: res.status === "FAILED" ? "fail" : "success",
+            message: <span>
+              Payment processed. Payment reference:
+              {" "}
+              <strong>{res.reference}</strong>
+              . History can be updated</span>,
+          });
+        });
+      } else {
+        setPaymentStatus(paymentData);
       }
     }
   };
@@ -44,7 +54,7 @@ const PaymentForm: React.FC<any> = ({}) => {
     return () => {
       window.removeEventListener("message", onMessage);
     };
-  },[amount,payerId,paymentDetails]);
+  },        [amount,payerId,paymentDetails]);
 
   useEffect(() => {
     const root = document.getElementById("react-payment-form");
@@ -62,6 +72,16 @@ const PaymentForm: React.FC<any> = ({}) => {
         setAmountValue(amountParsed);
       }
     }
+
+    return () => {
+      setIframeUrl(null);
+      setAmountError(null);
+      setAmountInitial(null);
+      setAmount(null);
+      setAmountValue(null);
+      setPaymentStatus(null);
+      setPaymentDetails(null);
+    };
   },        []);
 
   const validateAmount = (amount: number) => {
@@ -106,7 +126,7 @@ const PaymentForm: React.FC<any> = ({}) => {
   return (
     <div className={amountError ? "has-error" : "valid"}>
 
-      {!paymentStatus && <div>
+      {!paymentStatus && iframeUrl && <div>
         <div className="amount-container">
           <div className="row">
             <div className="col-xs-5 amount-label">

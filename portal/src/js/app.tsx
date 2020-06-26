@@ -5,8 +5,10 @@ import PaymentForm from "./payment-form/PaymentForm";
 const query = new URLSearchParams(window.location.search);
 const sessionId = query.get("sessionId");
 const status = query.get("paymentStatus");
+let isRedirect = false;
 
 if (sessionId && status) {
+  isRedirect = true;
   window.parent.postMessage(
     {
       payment: {
@@ -44,5 +46,8 @@ const callback = function (mutationsList: any, observer: any) {
 };
 
 const observer = new MutationObserver(callback);
-observer.observe(document, config);
+
+if (!isRedirect) {
+  observer.observe(document, config);
+}
 
