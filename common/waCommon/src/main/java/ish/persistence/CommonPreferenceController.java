@@ -214,15 +214,6 @@ public abstract class CommonPreferenceController {
 		return value;
 	}
 
-	/**
-	 * Set the security key. It should only be set by getServicesSecurityKey()
-	 *
-	 * @param value a random key
-	 */
-	public void setServicesSecurityKey(String value) {
-		setValue(SERVICES_SECURITYKEY, false, value);
-	}
-
 	public boolean getServicesLdapAuthentication() {
 		return Boolean.parseBoolean(getValue(SERVICES_LDAP_AUTHENTICATION, false));
 	}
@@ -1906,8 +1897,6 @@ public abstract class CommonPreferenceController {
 			setServicesLdapAuthorisation((Boolean) value);
 		} else if (SERVICES_CC_ENABLED.equals(key)) {
 			setServicesCCEnabled((Boolean) value);
-		} else if (SERVICES_SECURITYKEY.equals(key)) {
-			setServicesSecurityKey((String) value);
 		} else if (DATA_SVNVERSION.equals(key)) {
 			setDataSVN((Integer) value);
 		} else if (DATA_WED_VERSION.equals(key)) {
