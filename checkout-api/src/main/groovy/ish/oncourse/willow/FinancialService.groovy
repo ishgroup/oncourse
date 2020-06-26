@@ -68,7 +68,10 @@ class FinancialService {
 
     private static ObjectSelect<Invoice> owingQuery(Contact payer) {
         return ((ObjectSelect.query(Invoice)
-                .where(Invoice.CONTACT.eq(payer)) & Invoice.AMOUNT_OWING.gt(Money.ZERO)) & Invoice.ANGEL_ID.isNotNull()) & paymentFilter
+                .where(Invoice.CONTACT.eq(payer))
+                & Invoice.AMOUNT_OWING.gt(Money.ZERO))
+                & Invoice.ANGEL_ID.isNotNull())
+                & Invoice.PAYMENT_IN_LINES.outer().dot(PaymentInLine.PAYMENT_IN).outer().dot(PaymentIn.STATUS).nin([PaymentStatus.NEW, PaymentStatus.IN_TRANSACTION])
     }
 
     private static ObjectSelect<Invoice> creditNoteQuery(Contact payer) {
