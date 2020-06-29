@@ -1,17 +1,17 @@
-import {_toRequestType, FULFILLED} from "../../../../common/actions/ActionUtils";
 import {IAction} from "../../../../actions/IshAction";
 import {PaymentResponse} from "../../../../model";
 import {CreditCardFormValues, CorporatePassFormValues} from "../services/PaymentService";
 import {GABuilder} from "../../../../services/GoogleAnalyticsService";
 import {Phase} from "../../../reducers/State";
-
-export const OpenPayment: string = "checkout/payment/open";
-export const OpenPaymentRequest: string = _toRequestType(OpenPayment);
+import {PaymentRequest} from "../../../../model/v2/checkout/payment/PaymentRequest";
 
 export const SUBMIT_PAYMENT_CREDIT_CARD: string = "checkout/payment/submit/creditCard";
 export const SUBMIT_PAYMENT_CORPORATE_PASS: string = "checkout/payment/submit/corporatePass";
 export const SUBMIT_PAYMENT_FOR_WAITING_COURSES: string = "checkout/payment/submit/waitingCourses";
 export const PROCESS_PAYMENT: string = "checkout/payment/process/payment";
+export const PROCESS_PAYMENT_V2: string = "checkout/v2/payment/process/payment";
+
+export const SET_IFRAME_URL = "checkout/payment/set/iframeUrl";
 
 export const GENERATE_WAITING_COURSES_RESULT_DATA = "checkout/payment/result/waitingCourses/data";
 
@@ -58,6 +58,14 @@ export const processPayment = (values: CreditCardFormValues): IAction<CreditCard
   };
 };
 
+export const processPaymentV2 =
+  (paymentRequest: PaymentRequest, xValidateOnly: boolean, payerId: string, referer: string) => {
+    return {
+      type: PROCESS_PAYMENT_V2,
+      payload: {paymentRequest, xValidateOnly, payerId, referer},
+    };
+  };
+
 
 export const getPaymentStatus = (): IAction<any> => {
   return {
@@ -91,7 +99,7 @@ export const generateWaitingCoursesResultData = data => {
   return {
     type: GENERATE_WAITING_COURSES_RESULT_DATA,
     payload: data,
-  }; 
+  };
 };
 
 export const getCorporatePass = (code: string) => ({
@@ -106,6 +114,12 @@ export const applyCorporatePass = pass => ({
 
 export const resetCorporatePass = () => ({
   type: RESET_CORPORATE_PASS,
+});
+
+
+export const setIframeUrl = (url: string) => ({
+  type: SET_IFRAME_URL,
+  payload: url,
 });
 
 export const changeTab = tab => ({

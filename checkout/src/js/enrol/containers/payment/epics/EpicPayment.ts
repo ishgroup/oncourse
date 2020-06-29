@@ -5,7 +5,7 @@ import {Observable} from "rxjs/Observable";
 import {ActionsObservable, combineEpics, Epic} from "redux-observable";
 import uuid from "uuid";
 
-import {Create, ProcessError, Request, showCommonError} from "../../../../common/epics/EpicUtils";
+import {Create, ProcessError, Request} from "../../../../common/epics/EpicUtils";
 import {
   applyCorporatePass,
   GET_CORPORATE_PASS_REQUEST,
@@ -28,7 +28,7 @@ import {IAction} from "../../../../actions/IshAction";
 import {CreditCardFormValues} from "../services/PaymentService";
 import {GetPaymentStatus} from "./EpicGetPaymentStatus";
 import {Phase} from "../../../reducers/State";
-import {changePhase, getAmount, SHOW_MESSAGES, togglePayNowVisibility} from "../../../actions/Actions";
+import {changePhase, getAmount, togglePayNowVisibility} from "../../../actions/Actions";
 import {FULFILLED} from "../../../../common/actions/ActionUtils";
 
 const request: Request<PaymentResponse, IshState> = {
@@ -70,6 +70,7 @@ const SubmitPaymentCreditCard: Epic<any, any> = (action$: ActionsObservable<any>
     ];
   });
 };
+
 
 /**
  * Init PaymentState and join to waiting course
@@ -128,5 +129,5 @@ export const EpicPayment = combineEpics(
   SubmitPaymentForWaitingCourses,
   ProcessPayment,
   GetPaymentStatus,
-  GetCorporatePass,
+  GetCorporatePass
 );

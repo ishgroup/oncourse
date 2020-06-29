@@ -28,10 +28,10 @@ export function mapError(actionType: string) {
     };
 }
 
-export interface Request<V, S> {
+export interface Request<V, S, P = any> {
   type: string;
   getData: (payload: any, state: S) => Promise<V>;
-  processData: (value: V, state: S, payload?: any) => IAction<any>[] | Observable<any>;
+  processData: (value: V, state: S, payload?: P) => IAction<any>[] | Observable<any>;
   processError?: (data: any) => IAction<any>[] | Observable<any>;
 }
 
