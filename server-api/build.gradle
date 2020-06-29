@@ -26,7 +26,6 @@ dependencies {
     api "org.codehaus.groovy:groovy-all:$groovyVersion"
 
     api "org.apache.cxf:cxf-core:$cfxVersion"
-    api "org.apache.cxf:cxf-tools-common:2.6.16"
     api "org.apache.cxf:cxf-rt-frontend-jaxrs:$cfxVersion"
 
     api 'javax.validation:validation-api:1.1.0.Final'
