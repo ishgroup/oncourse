@@ -37,6 +37,15 @@
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
   }
 
+  .amount-input::-webkit-outer-spin-button,
+  .amount-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .amount-input[type=number] {
+    -moz-appearance: textfield;
+  }
+
   .amount-container {
     border: 1px solid #ebebeb;
     background-color: #faf9f9;
