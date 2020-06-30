@@ -81,16 +81,16 @@ paths:
           required: true
           schema:
             $ref: '#/definitions/v2.checkout.payment.PaymentRequest'
-        - name: xValidateOnly
+        - name: x-validate-only
           in: header
           type: boolean
           required: true
           description: validate request, create payment session. Otherwice complete payment
-        - name: payerId
+        - name: payer-id
           in: header
           type: string
           required: true
-        - name: Referer
+        - name: referer
           in: header
           type: string
           required: true

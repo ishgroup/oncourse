@@ -8,7 +8,7 @@ import javax.ws.rs.container.ContainerRequestFilter
 @XValidate
 class XValidateFilter implements ContainerRequestFilter {
 
-    public static final String X_VALIDATE_HEADER = 'xValidateOnly'
+    public static final String X_VALIDATE_HEADER = 'x-validate-only'
 
     public static final ThreadLocal<Boolean> ThreadLocalValidateOnly = new ThreadLocal<Boolean>()
 
