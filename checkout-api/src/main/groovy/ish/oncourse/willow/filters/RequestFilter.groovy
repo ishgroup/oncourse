@@ -9,7 +9,7 @@ import static ish.oncourse.services.site.GetWebSite.SITE_KEY_HEADER
 @CollegeInfo
 class RequestFilter implements ContainerRequestFilter {
 
-    public static final String PAYER_ID_HEADER = 'payer-id'
+    public static final String PAYER_ID_HEADER = 'payerId'
 
     public static final ThreadLocal<String> ThreadLocalSiteKey = new ThreadLocal<String>()
     public static final ThreadLocal<Long> ThreadLocalPayerId = new ThreadLocal<Long>()
