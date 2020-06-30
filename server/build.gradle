@@ -1,14 +1,11 @@
 import au.com.ish.Aql
-import au.com.ish.Exe4JTask
-import au.com.ish.NsisTask
 import com.github.psxpaul.task.JavaExecFork
-import org.gradle.api.internal.artifacts.publish.DefaultPublishArtifact
 
 apply plugin: 'groovy'
 apply plugin: 'apidoc'
 apply plugin: 'org.apache.cayenne'
-apply plugin: 'org.beryx.jlink'
 apply plugin: 'application'
+apply plugin: 'org.beryx.runtime'
 
 apply from: "$rootDir/gradle/bootique.gradle"
 apply plugin: 'com.github.psxpaul.execfork'
@@ -210,8 +207,16 @@ application {
 	applicationDefaultJvmArgs = ['-Xmx1024m', '-XX:+HeapDumpOnOutOfMemoryError']
 }
 
-jlink {
+runtime {
 	options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
+	imageDir = file("$buildDir/tmp/jlink/onCourseServer")
+	imageZip = file("$buildDir/distributions/onCourseServer.zip")
+	//TODO fix module list
+	modules = [
+			'java.rmi',
+			'java.sql',
+			'java.naming',
+			'java.compiler']
 }
 
 compileGroovy.groovyOptions.configurationScript = file("${rootDir}/gradle/groovyConfig.groovy")
@@ -294,18 +299,6 @@ task startDaemon(dependsOn: [classes, processResources], type: JavaExecFork) {
 	timeout = 60 * 20
 }
 
-task bundle_win(dependsOn: [jar], type: Exe4JTask) {
-	configFile = file("${projectDir}/src/packaging/windows/server.exe4j.xml")
-	jars = configurations.runtimeClasspath + configurations.runtime.artifacts.files
-	resourceFiles = files("${projectDir}/src/packaging/windows/onCourseServer.ico")
-	exeFile = file("${buildDir}/distributions/windows/onCourseServer.exe")
-	configExpandParams = [maxmemoryServer : project.maxmemoryServer]
-	if (project.hasProperty('osxKeychainPassword')) {
-		certificateFile = file (project.codeSigningTemporaryKeystore)
-		certificateFilePassword = project.codeSigningTemporaryPassword
-	}
-}
-
 task installer_unix(dependsOn: [jar], type: Zip) {
 	description "Create the Unix/Linux package (zip)."
 	doFirst {
@@ -324,18 +317,6 @@ task installer_unix(dependsOn: [jar], type: Zip) {
 
 	archiveFileName = 'onCourseServer.zip'
 	destinationDirectory = file("${buildDir}/distributions/unix")
-}
-
-task installer_win(dependsOn: [bundle_win], type: NsisTask) {
-	exeFile = file("${buildDir}/distributions/windows/onCourseServer.exe")
-	resourceFolder = file("${projectDir}/src/packaging/windows")
-	nsiFileName = "server-mui.nsi"
-	outputFile = file("${buildDir}/distributions/windows/onCourseServer-installer.exe")
-
-	if (project.hasProperty('osxKeychainPassword')) {
-		certificateFile = file (project.codeSigningTemporaryKeystore)
-		certificateFilePassword= project.codeSigningTemporaryPassword
-	}
 }
 
 //
@@ -385,8 +366,7 @@ publishing {
 				classifier "unix"
 				extension "zip"
 			}
-			artifact(new DefaultPublishArtifact("onCourseServer-installer", "exe", "exe", null, null,
-					file("${buildDir}/distributions/windows/onCourseServer-installer.exe")).builtBy(installer_win)) {
+			artifact(runtimeZip) {
 				version (project.hasProperty('releaseVersion') ? project.releaseVersion : "SNAPSHOT")
 				classifier "windows"
 				extension "exe"
