@@ -16,7 +16,7 @@ task webpack(type: NodeTask, dependsOn: 'yarn_install') {
     args = ['--progress', '-p', '--env.NODE_ENV', 'production', '--env.BUILD_NUMBER', version ?: '99-SNAPSHOT']
 }
 
-build.dependsOn(webpack)
+processResources.dependsOn(webpack)
 
 mainClassName = 'ish.oncourse.portal.PortalApp'
 
