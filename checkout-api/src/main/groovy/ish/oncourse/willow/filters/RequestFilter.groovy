@@ -19,13 +19,13 @@ class RequestFilter implements ContainerRequestFilter {
         List<String> siteKeys = requestContext.headers.get(SITE_KEY_HEADER)
         if (siteKeys && !siteKeys.empty) {
             ThreadLocalSiteKey.set(siteKeys[0])
-        } else {
-            List<String> payerIds = requestContext.headers.get(PAYER_ID_HEADER)
-            if (payerIds && !payerIds.empty) {
-                ThreadLocalPayerId.set(Long.valueOf(payerIds[0]))
-            } else {
-                throw new NullPointerException("'${SITE_KEY_HEADER}' or '${PAYER_ID_HEADER}' header should present. Application use this for college loading.")
-            }
         }
+
+        List<String> payerIds = requestContext.headers.get(PAYER_ID_HEADER)
+        if (payerIds && !payerIds.empty) {
+            ThreadLocalPayerId.set(Long.valueOf(payerIds[0]))
+        }
+
+
     }
 }
