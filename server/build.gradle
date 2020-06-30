@@ -366,11 +366,11 @@ publishing {
 				classifier "unix"
 				extension "zip"
 			}
-			artifact(runtimeZip) {
-				version (project.hasProperty('releaseVersion') ? project.releaseVersion : "SNAPSHOT")
-				classifier "windows"
-				extension "exe"
-			}
+//			artifact(runtime) {
+//				version (project.hasProperty('releaseVersion') ? project.releaseVersion : "SNAPSHOT")
+//				classifier "windows"
+//				extension "exe"
+//			}
 		}
 	}
 }
