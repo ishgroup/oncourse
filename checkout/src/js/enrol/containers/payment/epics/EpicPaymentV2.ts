@@ -11,12 +11,22 @@ import {Phase} from "../../../reducers/State";
 import {Epic} from "redux-observable";
 import CheckoutServiceV2 from "../../../services/CheckoutServiceV2";
 import {PaymentResponse} from "../../../../model/v2/checkout/payment/PaymentResponse";
-import CheckoutService from "../../../services/CheckoutService";
+import CheckoutService, {BuildCheckoutModelRequest} from "../../../services/CheckoutService";
 import {CheckoutModel} from "../../../../model";
+
 
 const request: Request<PaymentResponse, IshState> = {
   type: PROCESS_PAYMENT_V2,
-  getData: ({paymentRequest,xValidateOnly,payerId,referer}) => CheckoutServiceV2.makePayment(paymentRequest,xValidateOnly,payerId,referer),
+  getData: ({xValidateOnly,payerId,referer}, state: IshState) => {
+    const paymentRequest = {
+      checkoutModelRequest: BuildCheckoutModelRequest.fromState(state),
+      merchantReference: null,
+      sessionId: null,
+      ccAmount: state.checkout.amount.ccPayment,
+      storeCard: false,
+    };
+    return CheckoutServiceV2.makePayment(paymentRequest,xValidateOnly,payerId,referer);
+  },
   processData: (response: PaymentResponse, state: IshState, {xValidateOnly}): IAction<any>[] | Observable<any> => {
     if (xValidateOnly) {
       return [setIframeUrl(response.paymentFormUrl)];

@@ -7,15 +7,15 @@ import uuid from "uuid";
 
 import {Create, ProcessError, Request} from "../../../../common/epics/EpicUtils";
 import {
-  applyCorporatePass,
-  GET_CORPORATE_PASS_REQUEST,
-  SUBMIT_PAYMENT_CREDIT_CARD,
-  SUBMIT_PAYMENT_CORPORATE_PASS,
   PROCESS_PAYMENT,
+  SUBMIT_PAYMENT_CREDIT_CARD,
+  GET_CORPORATE_PASS_REQUEST,
+  SUBMIT_PAYMENT_CORPORATE_PASS,
+  SUBMIT_PAYMENT_FOR_WAITING_COURSES,
   processPayment,
   resetPaymentState,
+  applyCorporatePass,
   updatePaymentStatus,
-  SUBMIT_PAYMENT_FOR_WAITING_COURSES,
   generateWaitingCoursesResultData,
 } from "../actions/Actions";
 
@@ -30,6 +30,7 @@ import {GetPaymentStatus} from "./EpicGetPaymentStatus";
 import {Phase} from "../../../reducers/State";
 import {changePhase, getAmount, togglePayNowVisibility} from "../../../actions/Actions";
 import {FULFILLED} from "../../../../common/actions/ActionUtils";
+import {ProcessPaymentV2} from "./EpicPaymentV2";
 
 const request: Request<PaymentResponse, IshState> = {
   type: PROCESS_PAYMENT,
@@ -129,5 +130,6 @@ export const EpicPayment = combineEpics(
   SubmitPaymentForWaitingCourses,
   ProcessPayment,
   GetPaymentStatus,
-  GetCorporatePass
+  GetCorporatePass,
+  ProcessPaymentV2
 );

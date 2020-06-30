@@ -3,8 +3,9 @@ import React from "react";
 import {Amount, Contact} from "../../../../model";
 import {PayerSelect} from "./PayerSelect";
 import {PayerAdd} from "./PayerAdd";
-import {VisaMasterCardImg, AmexImg, CvvImg} from "./CreditCardImages";
 import {PaymentRequest} from "../../../../model/v2/checkout/payment/PaymentRequest";
+import {AmexImg, VisaMasterCardImg} from "./CreditCardImages";
+import CreditCardHeader from "./CreditCardHeader";
 
 interface Props {
   contacts: Contact[];
@@ -15,9 +16,8 @@ interface Props {
   onInit?: () => any;
   payerId?: string;
   voucherPayerEnabled?: boolean;
-  amexEnabled?: boolean;
   iframeUrl: string;
-  processPaymentV2: (paymentRequest: PaymentRequest, xValidateOnly: boolean, payerId: string, referer: string) => void;
+  processPaymentV2: (xValidateOnly: boolean, payerId: string, referer: string) => void;
 }
 
 
@@ -25,34 +25,41 @@ class CreditCardV2Comp extends React.Component<Props, any> {
 
   componentDidMount() {
     const {
-      amount, payerId
+       payerId, processPaymentV2
     } = this.props;
 
+    processPaymentV2(true, payerId, "");
+  }
 
+  componentDidUpdate(prev) {
+    const {
+      amount, payerId, processPaymentV2
+    } = this.props;
 
+    if (prev.amount !== amount || prev.payerId !== payerId) {
+      processPaymentV2(true, payerId, "");
+    }
   }
 
   render() {
     const {
       contacts, amount, onSetPayer, payerId, onAddPayer,
-      onAddCompany, voucherPayerEnabled, amexEnabled,
-      iframeUrl
+      onAddCompany, voucherPayerEnabled,
+      iframeUrl,
     } = this.props;
 
     return (
       <div id="credit-card" className="single-tab active">
-        <div id="paymentEditor">
-          <div className="enrolmentsSelected">
-            <fieldset>
-              <div className="form-details">
-                <p>
-                  <label>Pay now</label>
-                  <span id="cardtotalstring">
-                    ${Number(amount.ccPayment).toFixed(2)}
-                    <VisaMasterCardImg/>
-                    {amexEnabled && <AmexImg/>}
-                  </span>
-                </p>
+        <CreditCardHeader/>
+        <div className="enrolmentsSelected">
+          <fieldset>
+            <div className="form-details">
+              <p>
+                <label>Pay now</label>
+                <span style={{bottom: "-4px"}}>
+                  ${Number(amount.ccPayment).toFixed(2)}
+                </span>
+              </p>
 
                 <PayerSelect
                   contacts={contacts}
@@ -72,7 +79,6 @@ class CreditCardV2Comp extends React.Component<Props, any> {
             </fieldset>
           </div>
         </div>
-      </div>
     );
   }
 }

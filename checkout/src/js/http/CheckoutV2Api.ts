@@ -7,6 +7,10 @@ export class CheckoutV2Api {
   }
 
   makePayment(paymentRequest: PaymentRequest, xValidateOnly: boolean, payerId: string, referer: string): Promise<PaymentResponse> {
-    return this.http.POST(`/v2/makePayment`, paymentRequest);
+    return this.http.POST(
+      `/v2/makePayment`,
+      paymentRequest,
+      {headers: {xValidateOnly, payerId}},
+    );
   }
 }

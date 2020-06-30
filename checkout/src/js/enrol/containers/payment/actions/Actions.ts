@@ -59,10 +59,10 @@ export const processPayment = (values: CreditCardFormValues): IAction<CreditCard
 };
 
 export const processPaymentV2 =
-  (paymentRequest: PaymentRequest, xValidateOnly: boolean, payerId: string, referer: string) => {
+  (xValidateOnly: boolean, payerId: string, referer: string) => {
     return {
       type: PROCESS_PAYMENT_V2,
-      payload: {paymentRequest, xValidateOnly, payerId, referer},
+      payload: {xValidateOnly, payerId, referer},
     };
   };
 

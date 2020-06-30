@@ -9,6 +9,7 @@ import {PayerAdd} from "./PayerAdd";
 import {FieldName, PaymentService} from "../services/PaymentService";
 import {MaskedTextField} from "../../../../components/form-new/MaskedTextField";
 import {VisaMasterCardImg, AmexImg, CvvImg} from "./CreditCardImages";
+import CreditCardHeader from "./CreditCardHeader";
 
 interface Props {
   contacts: Contact[];
@@ -22,15 +23,6 @@ interface Props {
   amexEnabled?: boolean;
   openCvvHelp: () => void;
 }
-
-const Header = () => {
-  return (<div className="header-content">
-    <div className="header">
-      <h1>Secure credit card payment</h1>
-      <span>This is a secure SSL encrypted payment.</span>
-    </div>
-  </div>);
-};
 
 class CreditCardComp extends React.Component<Props, any> {
 
@@ -55,7 +47,7 @@ class CreditCardComp extends React.Component<Props, any> {
     return (
       <div id="credit-card" className="single-tab active">
         <div id="paymentEditor">
-          <Header/>
+          <CreditCardHeader/>
           <div className="enrolmentsSelected">
             <fieldset>
               <div className="form-details">

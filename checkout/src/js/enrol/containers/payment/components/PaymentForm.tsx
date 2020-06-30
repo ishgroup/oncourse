@@ -36,7 +36,7 @@ interface Props extends FormProps<DataShape, any, any> {
   onSubmit: (data, dispatch, props) => any;
   payerId: string;
   voucherPayerEnabled: boolean;
-  processPaymentV2?: (paymentRequest: PaymentRequest, xValidateOnly: boolean, payerId: string, referer: string) => any;
+  processPaymentV2?: (xValidateOnly: boolean, payerId: string, referer: string) => any;
   onSubmitPass?: (code: string) => any;
   corporatePass?: CorporatePass;
   corporatePassError?: string;
@@ -150,7 +150,6 @@ class PaymentForm extends React.Component<Props, any> {
                 (paymentsApiVersion === "v2" ?
                     <CreditCardV2Comp
                       amount={amount}
-                      amexEnabled={amexEnabled}
                       contacts={contacts}
                       payerId={payerId}
                       onSetPayer={onSetPayer}
@@ -370,8 +369,8 @@ const mapDispatchToProps = dispatch => {
     updatePayNow: (val, validate) => {
       dispatch(updatePayNow(val, validate));
     },
-    processV2Payment: (paymentRequest, xValidateOnly, payerId, referer) => {
-      dispatch(processPaymentV2(paymentRequest, xValidateOnly, payerId, referer))
+    processPaymentV2: (xValidateOnly, payerId, referer) => {
+      dispatch(processPaymentV2(xValidateOnly, payerId, referer))
     }
   };
 };
