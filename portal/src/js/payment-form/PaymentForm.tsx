@@ -28,7 +28,6 @@ const PaymentForm: React.FC<any> = ({}) => {
   const [paymentStatus, setPaymentStatus] = useState<any>( null);
   const [paymentDetails, setPaymentDetails] = useState<PaymentResponse>(null);
 
-
   const onMessage = (e: any) => {
     const paymentData = e.data.payment;
     if (paymentData && paymentData.status) {
@@ -153,17 +152,18 @@ const PaymentForm: React.FC<any> = ({}) => {
         </div>
       </div>}
 
+
       {paymentStatus ?
         getPaymentMessage(paymentStatus)
         : (iframeUrl ?
         <iframe src={iframeUrl}  title="windcave-frame" />
-        : <div id="payment-progress-bar">
+        : (amountInitial && amountInitial > 0) ?  <div id="payment-progress-bar">
             <div className="progress progress-striped active ">
               <div className="progress-bar progress-bar-warning progress-bar-striped " role="progressbar"
                    aria-valuenow={100} aria-valuemin={0} aria-valuemax={100} style={{width: "100%"}}>
               </div>
             </div>
-        </div>)
+        </div> : null)
       }
     </div>);
 };
