@@ -171,9 +171,8 @@ dependencies {
 	implementation 'com.google.oauth-client:google-oauth-client-jetty:1.23.0'
 	implementation 'com.google.apis:google-api-services-classroom:v1-rev135-1.23.0'
 
-	implementation group: 'org.apache.zookeeper', name: 'zookeeper', version:'3.4.12'
-
-	compile group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '8.9'
+	implementation 'com.nimbusds:nimbus-jose-jwt:8.9'
+	implementation 'com.bugsnag:bugsnag:3.+'
 
 	testImplementation "org.apache.cayenne:cayenne-dbsync:$cayenneVersion"
 	testImplementation 'org.mockito:mockito-core:2.18.3'
