@@ -5,7 +5,6 @@ apply plugin: 'groovy'
 apply plugin: 'apidoc'
 apply plugin: 'org.apache.cayenne'
 apply plugin: 'application'
-apply plugin: 'org.beryx.runtime'
 
 apply from: "$rootDir/gradle/bootique.gradle"
 apply plugin: 'com.github.psxpaul.execfork'
@@ -203,20 +202,8 @@ project.ext {
 }
 
 application {
-	mainClass = 'ish.oncourse.server.AngelServer'
+	mainClassName = 'ish.oncourse.server.AngelServer'
 	applicationDefaultJvmArgs = ['-Xmx1024m', '-XX:+HeapDumpOnOutOfMemoryError']
-}
-
-runtime {
-	options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
-	imageDir = file("$buildDir/tmp/jlink/onCourseServer")
-	imageZip = file("$buildDir/distributions/onCourseServer.zip")
-	//TODO fix module list
-	modules = [
-			'java.rmi',
-			'java.sql',
-			'java.naming',
-			'java.compiler']
 }
 
 compileGroovy.groovyOptions.configurationScript = file("${rootDir}/gradle/groovyConfig.groovy")
@@ -366,11 +353,6 @@ publishing {
 				classifier "unix"
 				extension "zip"
 			}
-//			artifact(runtime) {
-//				version (project.hasProperty('releaseVersion') ? project.releaseVersion : "SNAPSHOT")
-//				classifier "windows"
-//				extension "exe"
-//			}
 		}
 	}
 }
