@@ -45,12 +45,14 @@ public class PaymentForm {
 		isCreditCardPaymentEnabled = preferenceController.isCreditCardPaymentEnabled();
 		Contact payer = portalService.getContact();
 		payerId = payer.getId();
-		balance = payer.getInvoices().stream()
-				.map(Invoice::getAmountOwing)
-				.reduce(Money.ZERO, Money::add);
+
 		overdue = payer.getInvoices().stream()
 				.map(Invoice::getOverdue)
 				.reduce(Money.ZERO, Money::add);
+		balance = payer.getInvoices().stream()
+				.map(Invoice::getAmountOwing)
+				.reduce(Money.ZERO, Money::add);
+
 	}
 
 
