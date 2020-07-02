@@ -10,6 +10,8 @@ interface Props {
   };
 }
 
+const validateAgreement = value => value ? undefined : 'You must agree to the policies before proceeding.';
+
 export class Conditions extends React.Component<Props, any> {
 
   render() {
@@ -32,6 +34,7 @@ export class Conditions extends React.Component<Props, any> {
                     type="checkbox"
                     className={classnames({'t-error': props.meta.invalid && props.meta.touched})}
                   />}
+                  validate={validateAgreement}
                 />
                 <div className="conditions-text">
                   {featureEnrolmentDisclosure &&

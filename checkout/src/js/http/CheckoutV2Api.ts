@@ -6,7 +6,7 @@ export class CheckoutV2Api {
   constructor(private http: HttpService) {
   }
 
-  makePayment(paymentRequest: PaymentRequest, xValidateOnly: boolean, payerId: string, referer: string): Promise<PaymentResponse> {
+  makePayment(paymentRequest: PaymentRequest, xValidateOnly: boolean, payerId: string): Promise<PaymentResponse> {
     return this.http.POST(
       `/v2/makePayment`,
       paymentRequest,

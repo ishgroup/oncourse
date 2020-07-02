@@ -7,13 +7,11 @@ export class WillowConfig {
   public checkoutPath?: string;
   public paymentSuccessURL?: string;
   public termsAndConditions?: string;
-  public paymentsApiVersion?: "v1" | "v2";
   public featureEnrolmentDisclosure?: string;
 
   constructor(props) {
     this.checkoutPath = props.checkoutPath || DefaultConfig.CHECKOUT_PATH;
     this.paymentSuccessURL = props.paymentSuccessURL || DefaultConfig.PAYMENT_SUCCESS_URL;
-    this.paymentsApiVersion = props.checkputPaymentsApiVersion || DefaultConfig.PAYMENTS_API_VERSION;
     this.termsAndConditions = props.termsAndConditions || DefaultConfig.TERMS_AND_CONDITIONS;
     this.featureEnrolmentDisclosure = props.featureEnrolmentDisclosure || DefaultConfig.FEATURE_ENROLMENT_DISCLOSURE;
   }

@@ -7,6 +7,8 @@ export class State {
   fetching?: boolean;
   resetOnInit?: boolean = false;
   iframeUrl?: string;
+  merchantReference?: string;
+  sessionId?: string;
   result: any = [];
 }
 

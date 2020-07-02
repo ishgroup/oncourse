@@ -1,19 +1,16 @@
 import * as React from "react";
-import {reduxForm, FormProps, FormErrors, DataShape} from "redux-form";
-import Rodal from "rodal";
+import {reduxForm, FormProps, FormErrors, DataShape, getFormSyncErrors} from "redux-form";
 import classnames from "classnames";
-import CreditCardComp from "./CreditCardComp";
 import CreditCardV2Comp from "./CreditCardV2Comp";
 import CorporatePassComp from "./CorporatePassComp";
 import PayLaterComp from "./PayLaterComp";
-import {CvvHelp} from "./CvvHelp";
 import {Conditions} from "./Conditions";
-import {FieldName, CreditCardFormValues, CorporatePassFormValues} from "../services/PaymentService";
+import {CreditCardFormValues, CorporatePassFormValues} from "../services/PaymentService";
 import {
-  changeTab, getCorporatePass, submitPaymentCreditCard, resetCorporatePass,
-  submitPaymentCorporatePass, updatePaymentStatus, processPayment, processPaymentV2,
+  changeTab, getCorporatePass, resetCorporatePass,
+  submitPaymentCorporatePass, updatePaymentStatus, processPaymentV2,
 } from "../actions/Actions";
-import {connect} from "react-redux";
+import {connect, Dispatch} from "react-redux";
 import {
   changePhase, getAmount, setPayer, showSyncErrors, togglePayNowVisibility, updatePayNow,
 } from "../../../actions/Actions";
@@ -23,8 +20,6 @@ import {IshState} from "../../../../services/IshState";
 import {Tabs} from "../reducers/State";
 import {PaymentStatus, CorporatePass, Contact, Amount} from "../../../../model";
 import {getAllContactNodesFromBackend} from "../../summary/actions/Actions";
-import {WillowConfig} from "../../../../configLoader";
-import {PaymentRequest} from "../../../../model/v2/checkout/payment/PaymentRequest";
 
 /**
  * @Deprecated will be remove, now it is used only as example
@@ -36,7 +31,7 @@ interface Props extends FormProps<DataShape, any, any> {
   onSubmit: (data, dispatch, props) => any;
   payerId: string;
   voucherPayerEnabled: boolean;
-  processPaymentV2?: (xValidateOnly: boolean, payerId: string, referer: string) => any;
+  processPaymentV2?: (xValidateOnly: boolean, payerId: string) => any;
   onSubmitPass?: (code: string) => any;
   corporatePass?: CorporatePass;
   corporatePassError?: string;
@@ -58,19 +53,21 @@ interface Props extends FormProps<DataShape, any, any> {
     refundPolicyUrl?: string,
     featureEnrolmentDisclosure?: string,
   };
-  paymentsApiVersion?: WillowConfig["paymentsApiVersion"];
+  formSyncErrors?: FormErrors<any>;
+  dispatch?: Dispatch<any>;
 }
 
 export const NAME = "PaymentForm";
 
 class PaymentForm extends React.Component<Props, any> {
+  componentDidUpdate(prevProps) {
+    const { formSyncErrors, dispatch } = this.props;
 
-  constructor(props) {
-    super(props);
+    console.log(this.props);
 
-    this.state = {
-      showCvvHelp: false,
-    };
+    if (formSyncErrors) {
+      dispatch(showSyncErrors(formSyncErrors));
+    }
   }
 
   componentDidMount() {
@@ -100,40 +97,21 @@ class PaymentForm extends React.Component<Props, any> {
     onChangeTab(nextTab);
   }
 
-  openCvvHelp() {
-    this.setState({showCvvHelp: true});
-  }
-
-  closeCvvHelp() {
-    this.setState({showCvvHelp: false});
-  }
-
   render() {
     const {
       handleSubmit, contacts, amount, pristine, submitting, onSubmitPass, corporatePass, corporatePassError,
       onSetPayer, payerId, onAddPayer, onAddCompany, voucherPayerEnabled, currentTab, corporatePassAvailable, fetching,
-      onUnmountPassComponent, conditions, creditCardAvailable, payLaterAvailable, updatePayNow, amexEnabled,
-      paymentsApiVersion, iframeUrl, processPaymentV2
+      onUnmountPassComponent, conditions, creditCardAvailable, payLaterAvailable, updatePayNow,
+      iframeUrl, processPaymentV2, formSyncErrors, dispatch
     } = this.props;
 
     const disabled = (pristine || submitting);
 
     return (
-      <form onSubmit={handleSubmit} id="payment-form" className={classnames({submitting})}>
+      <form onSubmit={handleSubmit} id="payment-form" className={classnames({submitting: fetching || submitting})}>
 
         {(Number(amount.ccPayment) !== 0 || (Number(amount.ccPayment) === 0 && corporatePass.id) || payLaterAvailable) &&
           <div>
-            <Rodal
-              visible={this.state.showCvvHelp}
-              onClose={() => this.closeCvvHelp()}
-              height={400}
-              animation="flip"
-            >
-              <div className="rodal-content">
-                <CvvHelp amexEnabled={amexEnabled}/>
-              </div>
-            </Rodal>
-
             <div id="tabable-container">
               <PaymentFormNav
                 paymentTabOnClick={this.paymentTabOnClick}
@@ -146,33 +124,19 @@ class PaymentForm extends React.Component<Props, any> {
               <div className="tab-content">
 
                 {currentTab === Tabs.creditCard && creditCardAvailable &&
-
-                (paymentsApiVersion === "v2" ?
-                    <CreditCardV2Comp
-                      amount={amount}
-                      contacts={contacts}
-                      payerId={payerId}
-                      onSetPayer={onSetPayer}
-                      onAddPayer={onAddPayer}
-                      onAddCompany={onAddCompany}
-                      voucherPayerEnabled={voucherPayerEnabled}
-                      iframeUrl={iframeUrl}
-                      processPaymentV2={processPaymentV2}
-                    />
-                    : <CreditCardComp
-                      amount={amount}
-                      amexEnabled={amexEnabled}
-                      contacts={contacts}
-                      payerId={payerId}
-                      onSetPayer={onSetPayer}
-                      onAddPayer={onAddPayer}
-                      onAddCompany={onAddCompany}
-                      voucherPayerEnabled={voucherPayerEnabled}
-                      openCvvHelp={() => this.openCvvHelp()}
-                      onInit={() => Number(amount.payNow) === 0 ? updatePayNow(amount.subTotal, false) : undefined}
-                    />
-                )
-
+                  <CreditCardV2Comp
+                    amount={amount}
+                    contacts={contacts}
+                    payerId={payerId}
+                    onSetPayer={onSetPayer}
+                    onAddPayer={onAddPayer}
+                    onAddCompany={onAddCompany}
+                    voucherPayerEnabled={voucherPayerEnabled}
+                    iframeUrl={iframeUrl}
+                    processPaymentV2={processPaymentV2}
+                    disabled={formSyncErrors}
+                    dispatch={dispatch}
+                  />
                 }
 
                 {currentTab === Tabs.corporatePass && corporatePassAvailable &&
@@ -204,7 +168,7 @@ class PaymentForm extends React.Component<Props, any> {
 
         <Conditions conditions={conditions}/>
 
-        {!(currentTab === Tabs.creditCard && creditCardAvailable && paymentsApiVersion === "v2")
+        {!(currentTab === Tabs.creditCard && creditCardAvailable)
           && <div className="form-controls enrolmentsSelected">
                 <input
                   disabled={disabled}
@@ -247,34 +211,6 @@ const PaymentFormNav = props => {
   );
 };
 
-const validateCreditCard = (data, props) => {
-  const errors = {};
-
-  if (Number(props.amount.ccPayment) !== 0) {
-    if (!data.creditCardName) {
-      errors[FieldName.creditCardName] = 'Please supply your name as printed on the card (maximum 40 characters)';
-    }
-
-    if (!data.creditCardNumber) {
-      errors[FieldName.creditCardNumber] = 'The credit card number cannot be blank.';
-    }
-
-    if (!data.creditCardCvv) {
-      errors[FieldName.creditCardCvv] = 'The credit card CVV cannot be blank.';
-    }
-
-    if (!data.expiryMonth) {
-      errors[FieldName.expiryMonth] = 'The credit card expiry month cannot be blank.';
-    }
-
-    if (!data.expiryYear) {
-      errors[FieldName.expiryYear] = 'The credit card expiry year cannot be blank.';
-    }
-  }
-
-  return errors;
-};
-
 const validateCorporatePass = (data, props) => {
   const errors = {};
 
@@ -287,16 +223,8 @@ const validateCorporatePass = (data, props) => {
 
 const Form = reduxForm({
   form: NAME,
-  validate: (data: CreditCardFormValues & CorporatePassFormValues, props: Props): FormErrors<FormData> => {
+  validate: (data:CorporatePassFormValues, props: Props): FormErrors<FormData> => {
     const errors = {};
-
-    if (!data.agreementFlag) {
-      errors[FieldName.agreementFlag] = 'You must agree to the policies before proceeding.';
-    }
-
-    if (props.currentTab === Tabs.creditCard) {
-      return {...errors, ...validateCreditCard(data, props)};
-    }
 
     if (props.currentTab === Tabs.corporatePass) {
       return {...errors, ...validateCorporatePass(data, props)};
@@ -305,16 +233,9 @@ const Form = reduxForm({
     return errors;
   },
   onSubmit: (data: CreditCardFormValues & CorporatePassFormValues, dispatch, props): void => {
-    if (Number(props.amount.ccPayment) !== 0 && props.currentTab === Tabs.creditCard) {
-      data.creditCardNumber = data.creditCardNumber.replace(/\s+/g, "");
-      data.creditCardCvv = data.creditCardCvv.replace(/\_/g, "");
-    }
-
     if (props.currentTab === Tabs.corporatePass && Number(props.amount.subTotal) !== 0) {
       dispatch(updatePaymentStatus({status: PaymentStatus.IN_PROGRESS}));
       dispatch(submitPaymentCorporatePass(data));
-    } else {
-      dispatch(submitPaymentCreditCard(data));
     }
   },
   onSubmitFail: (errors, dispatch, submitError, props) => {
@@ -335,17 +256,16 @@ const mapStateToProps = (state: IshState) => {
     corporatePass: state.checkout.payment.corporatePass,
     corporatePassError: corporatePassError && corporatePassError.error,
     currentTab: state.checkout.payment.currentTab,
-    paymentsApiVersion: state.config.paymentsApiVersion,
     iframeUrl: state.checkout.payment.iframeUrl,
     fetching: state.checkout.payment.fetching,
     corporatePassAvailable: state.preferences.hasOwnProperty('corporatePassEnabled') ? state.preferences.corporatePassEnabled : true,
     creditCardAvailable: state.preferences.hasOwnProperty('creditCardEnabled') ? state.preferences.creditCardEnabled : true,
     payLaterAvailable: state.checkout.amount.isEditable && Number(state.checkout.amount.minPayNow) === 0,
-    amexEnabled: state.preferences.amexEnabled,
     conditions: {
       refundPolicyUrl: state.config.termsAndConditions,
       featureEnrolmentDisclosure: state.config.featureEnrolmentDisclosure,
     },
+    formSyncErrors: getFormSyncErrors(NAME)(state),
   };
 };
 
@@ -369,8 +289,8 @@ const mapDispatchToProps = dispatch => {
     updatePayNow: (val, validate) => {
       dispatch(updatePayNow(val, validate));
     },
-    processPaymentV2: (xValidateOnly, payerId, referer) => {
-      dispatch(processPaymentV2(xValidateOnly, payerId, referer))
+    processPaymentV2: (xValidateOnly, payerId) => {
+      dispatch(processPaymentV2(xValidateOnly, payerId))
     }
   };
 };

@@ -9,6 +9,24 @@ import "../scss/index.scss";
 import {getPreferences} from "./common/actions/Actions";
 import {setCookie} from "./common/utils/Cookie";
 
+const query = new URLSearchParams(window.location.search);
+const sessionId = query.get("sessionId");
+const status = query.get("paymentStatus");
+let isRedirect = false;
+
+if (sessionId && status) {
+  isRedirect = true;
+  window.parent.postMessage(
+    {
+      payment: {
+        sessionId,
+        status,
+      },
+    },
+    "*",
+  );
+}
+
 const appStart = () => {
   if (Intl) {
     setCookie(
@@ -30,7 +48,9 @@ const appStart = () => {
   });
 };
 
-appStart();
+if (!isRedirect) {
+  appStart();
+}
 
 // Log application version before start.
 Logger.log(new LogMessage(Level.INFO, `Application version: "${ConfigConstants.APP_VERSION}"`));

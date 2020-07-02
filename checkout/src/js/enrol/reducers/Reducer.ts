@@ -17,8 +17,7 @@ import {normalize} from "normalizr";
 import {FULFILLED} from "../../common/actions/ActionUtils";
 import {CHANGE_TAB} from "../containers/payment/actions/Actions";
 
-
-// Checking if cart has been modified. 
+// Checking if cart has been modified.
 const IsCartModified = (state: boolean = false, action: IAction<boolean>): boolean => {
   switch (action.type) {
 
@@ -225,7 +224,7 @@ const ErrorReducer = (state: ValidationError = null, action: IAction<ValidationE
     case ContactAddActions.ADD_CONTACT_TO_STATE:
     case ContactEditActions.SET_FIELDS_TO_STATE:
     case ContactEditActions.RESET_FIELDS_STATE:
-    case Actions.UPDATE_AMOUNT:
+    // case Actions.UPDATE_AMOUNT:
     case CHANGE_TAB:
       return null;
     default:

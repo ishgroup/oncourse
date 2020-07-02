@@ -329,6 +329,12 @@
   }
 }
 
+.centered {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0;
+}
+
 .enrolmentsSelected {
   .form-controls {
     margin-bottom: 10px;

@@ -3,9 +3,11 @@ import React from "react";
 import {Amount, Contact} from "../../../../model";
 import {PayerSelect} from "./PayerSelect";
 import {PayerAdd} from "./PayerAdd";
-import {PaymentRequest} from "../../../../model/v2/checkout/payment/PaymentRequest";
-import {AmexImg, VisaMasterCardImg} from "./CreditCardImages";
 import CreditCardHeader from "./CreditCardHeader";
+import {changePhase, showSyncErrors} from "../../../actions/Actions";
+import {Phase} from "../../../reducers/State";
+import {resetPaymentState} from "../actions/Actions";
+import {Dispatch} from "react-redux";
 
 interface Props {
   contacts: Contact[];
@@ -16,28 +18,50 @@ interface Props {
   onInit?: () => any;
   payerId?: string;
   voucherPayerEnabled?: boolean;
+  disabled?: boolean;
   iframeUrl: string;
-  processPaymentV2: (xValidateOnly: boolean, payerId: string, referer: string) => void;
+  processPaymentV2: (xValidateOnly: boolean, payerId: string) => void;
+  dispatch: Dispatch<any>;
 }
 
 
 class CreditCardV2Comp extends React.Component<Props, any> {
+  onMessage = e => {
+    const {dispatch, payerId, processPaymentV2} = this.props;
+    const paymentData = e.data.payment;
+
+    if (paymentData && paymentData.status) {
+      if (paymentData.status === "success") {
+        processPaymentV2(false, payerId);
+      } else {
+        dispatch(changePhase(Phase.Payment));
+        dispatch(resetPaymentState());
+        dispatch(showSyncErrors({error: "Payment failed"}));
+      }
+    }
+  }
 
   componentDidMount() {
     const {
-       payerId, processPaymentV2
+       payerId, processPaymentV2,
     } = this.props;
 
-    processPaymentV2(true, payerId, "");
+    processPaymentV2(true, payerId);
+
+    window.addEventListener("message", this.onMessage);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("message", this.onMessage);
   }
 
   componentDidUpdate(prev) {
     const {
-      amount, payerId, processPaymentV2
+      amount, payerId, processPaymentV2,
     } = this.props;
 
     if (prev.amount !== amount || prev.payerId !== payerId) {
-      processPaymentV2(true, payerId, "");
+      processPaymentV2(true, payerId);
     }
   }
 
@@ -45,12 +69,12 @@ class CreditCardV2Comp extends React.Component<Props, any> {
     const {
       contacts, amount, onSetPayer, payerId, onAddPayer,
       onAddCompany, voucherPayerEnabled,
-      iframeUrl,
+      iframeUrl, disabled,
     } = this.props;
 
     return (
       <div id="credit-card" className="single-tab active">
-        <CreditCardHeader/>
+        <CreditCardHeader centered />
         <div className="enrolmentsSelected">
           <fieldset>
             <div className="form-details">
@@ -74,7 +98,11 @@ class CreditCardV2Comp extends React.Component<Props, any> {
                   disabled={voucherPayerEnabled}
                 />
 
-                {iframeUrl && <iframe src={iframeUrl} frameBorder={0} height="575" width="auto"/>}
+                {iframeUrl && <iframe src={iframeUrl} frameBorder={0} height="575" width="100%" style={
+                  disabled ? {
+                    opacity: 0.6,
+                    pointerEvents: "none",
+                  } : null}/>}
               </div>
             </fieldset>
           </div>
