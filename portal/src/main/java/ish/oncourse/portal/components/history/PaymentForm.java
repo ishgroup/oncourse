@@ -37,6 +37,8 @@ public class PaymentForm {
 
 	@Property
 	private Money balance;
+	@Property
+	private Money overdue;
 
 	@SetupRender
 	public void setupRender() {
@@ -45,6 +47,9 @@ public class PaymentForm {
 		payerId = payer.getId();
 		balance = payer.getInvoices().stream()
 				.map(Invoice::getAmountOwing)
+				.reduce(Money.ZERO, Money::add);
+		overdue = payer.getInvoices().stream()
+				.map(Invoice::getOverdue)
 				.reduce(Money.ZERO, Money::add);
 	}
 

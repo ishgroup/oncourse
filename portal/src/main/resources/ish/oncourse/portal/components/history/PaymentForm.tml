@@ -1,7 +1,7 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
     <div id="payment-form">
         <t:if test="isCreditCardPaymentEnabled">
-            <div id="react-payment-form" data-payerId="${payerId}" data-balance="${balance.toPlainString()}">
+            <div id="react-payment-form" data-payerId="${payerId}" data-balance="${balance.toPlainString()}" data-overdue="${overdue.toPlainString()}">
             </div>
         </t:if>
     </div>

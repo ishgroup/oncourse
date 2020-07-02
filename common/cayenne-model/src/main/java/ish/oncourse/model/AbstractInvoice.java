@@ -12,6 +12,7 @@ import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.query.ObjectIdQuery;
 import org.apache.cayenne.query.ObjectSelect;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -114,6 +115,33 @@ public abstract class AbstractInvoice extends _AbstractInvoice implements Queuea
         }
 
         return true;
+    }
+
+    public Money getOverdue() {
+        updateAmountOwing();
+        if (getAmountOwing().isZero()) {
+            return Money.ZERO;
+        }
+        Date currentDate = new Date();
+
+        if (!getInvoiceDueDates().isEmpty()) {
+            List<InvoiceDueDate> dueDates = getInvoiceDueDates();
+
+            InvoiceDueDate.DUE_DATE.asc().orderList(dueDates);
+            Money overdue = Money.ZERO;
+
+            for (InvoiceDueDate dueDate : dueDates) {
+                if (currentDate.after(dueDate.getDueDate())) {
+                    overdue = overdue.add(dueDate.getAmount());
+                }
+            }
+            Money amountPaid = getTotalGst().subtract(getAmountOwing());
+            overdue = overdue.subtract(amountPaid);
+            return overdue.isGreaterThan(Money.ZERO) ? overdue : Money.ZERO;
+        } else {
+            return getDateDue().after(currentDate) ? Money.ZERO : getAmountOwing();
+        }
+
     }
 
     public abstract void addToInvoiceLines(InvoiceLine invoiceLine);
