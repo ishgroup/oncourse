@@ -5,6 +5,7 @@ import debounce from "lodash.debounce";
 import {fail} from "assert";
 import {getErrorMessage} from "../services/ApiErrorHandler";
 import {PaymentResponse} from "../model/api";
+import { format } from "date-fns";
 
 
 const getPaymentMessage = ({status, message}: any) => {
@@ -22,6 +23,7 @@ const PaymentForm: React.FC<any> = ({}) => {
   const [iframeUrl, setIframeUrl] = useState<any>( undefined);
   const [amountError, setAmountError] = useState<any>( null);
   const [amountInitial, setAmountInitial] = useState<any>( null);
+  const [overdue, setOverdue] = useState<any>( null);
   const [amount, setAmount] = useState<any>( null);
   const [amountValue, setAmountValue] = useState<any>( null);
   const [payerId, setPayerId] = useState<any>( null);
@@ -43,7 +45,12 @@ const PaymentForm: React.FC<any> = ({}) => {
           });
         });
       } else {
-        setPaymentStatus(paymentData);
+        CheckoutService.getPaymentStatus(paymentData.sessionId, payerId).then(res => {
+          setPaymentStatus({ status: paymentData.status, message: res.responseText });
+        })
+        .catch(res => {
+          setPaymentStatus({ status: paymentData.status, message: res.message });
+        });
       }
     }
   };
@@ -62,10 +69,12 @@ const PaymentForm: React.FC<any> = ({}) => {
     if (root) {
       const payerId = root.getAttribute("data-payerId");
       const amount = root.getAttribute("data-balance");
+      const overdue = root.getAttribute("data-overdue");
 
-      if (payerId && amount) {
+      if (payerId && amount && overdue) {
         setPayerId(payerId);
-        const amountParsed = parseFloat(amount);
+        const amountParsed = parseFloat(overdue);
+        setOverdue(parseFloat(amount));
         setAmountInitial(amountParsed);
         setAmount(amountParsed);
         setAmountValue(amountParsed);
@@ -84,7 +93,7 @@ const PaymentForm: React.FC<any> = ({}) => {
   },        []);
 
   const validateAmount = (amount: number) => {
-    if (amount > amountInitial || amount <= 0) {
+    if (amount > overdue || amount <= 0) {
       if (!amountError) {
         setAmountError(true);
       }
@@ -114,7 +123,7 @@ const PaymentForm: React.FC<any> = ({}) => {
 
   const debounceAmountChange = useCallback(debounce((amount: any) => {
     setAmount(amount);
-  },                                                600),                                 []);
+  },                                                500),                                 []);
 
   const onAmountChange = (e: any) => {
     validateAmount(e.target.value);
@@ -124,6 +133,8 @@ const PaymentForm: React.FC<any> = ({}) => {
 
   return (
     <div className={amountError ? "has-error" : "valid"}>
+      {Boolean(amountInitial && amountInitial > 0)
+      && <div className="info-label">Overdue: ${amountInitial} on {format(new Date(), "d MMM yyyy")}</div>}
 
       {!paymentStatus && iframeUrl && <div>
         <div className="amount-container">
@@ -138,7 +149,7 @@ const PaymentForm: React.FC<any> = ({}) => {
               <input
                 required
                 min={1}
-                max={amountInitial}
+                max={overdue}
                 onChange={onAmountChange}
                 value={amountValue}
                 type="number"

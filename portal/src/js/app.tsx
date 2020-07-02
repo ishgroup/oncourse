@@ -22,9 +22,7 @@ if (sessionId && status) {
 
 const start = (target: any) => {
   ReactDOM.render(
-    <div id="test">
-      <PaymentForm />
-    </div>,
+    <PaymentForm />,
     target,
   );
 };

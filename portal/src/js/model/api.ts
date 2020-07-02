@@ -46,4 +46,8 @@ export class CheckoutApi {
   makePayment(paymentRequest: PaymentRequest, xValidateOnly: boolean, payerId: string): Promise<PaymentResponse> {
     return this.http.POST(`/v2/makePayment`, paymentRequest, { headers: { xValidateOnly, payerId }, params: { }, responseType: '' });
   }
+
+  getPaymentStatus(sessionId:string, payerId: string): Promise<PaymentResponse> {
+    return this.http.GET(`/v2/getPaymentStatus/${sessionId}`, { headers: { payerId }, params: { }, responseType: '' });
+  }
 }
