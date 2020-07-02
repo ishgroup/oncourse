@@ -154,6 +154,34 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+  /v2/getPaymentStatus/{sessionId}:
+    get:
+      x-filter:
+        - CollegeInfo
+      operationId: getStatus
+      summary: Get actual payment status
+      description: Get actual payment status
+      tags:
+        - CheckoutV2
+      parameters:
+        - name: sessionId
+          in: path
+          description: windcave session id
+          required: true
+          type: string
+        - name: payerId
+          in: header
+          type: string
+          required: true
+      responses:
+        200:
+          description: responce text inside
+          schema:
+            $ref: '#/definitions/v2.checkout.payment.PaymentResponse'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
   /v1/products:
     post:
       x-filter:

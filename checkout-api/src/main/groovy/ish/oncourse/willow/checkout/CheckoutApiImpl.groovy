@@ -25,11 +25,11 @@ import ish.oncourse.willow.model.common.CommonError
 import ish.oncourse.willow.model.common.ValidationError
 import ish.oncourse.willow.service.CheckoutApi
 import ish.oncourse.willow.service.CheckoutV2Api
-import ish.oncourse.willow.model.v2.checkout.payment.PaymentResponse as V2PaymentResponse
 import ish.oncourse.willow.model.v2.checkout.payment.PaymentRequest as V2PaymentRequest
 import ish.oncourse.willow.checkout.functions.v2.ValidatePaymentRequest as V2ValidatePaymentRequest
 import ish.oncourse.willow.checkout.payment.v2.CreatePaymentModel as V2CreatePaymentModel
 import ish.oncourse.willow.checkout.payment.v2.ProcessPaymentModel as V2ProcessPaymentModel
+import ish.oncourse.willow.model.v2.checkout.payment.PaymentResponse as V2PaymentResponse
 
 import ish.oncourse.willow.service.impl.CollegeService
 import org.apache.cayenne.ObjectContext
@@ -172,6 +172,15 @@ class CheckoutApiImpl implements CheckoutApi, CheckoutV2Api {
         } else {
             throw new BadRequestException(Response.status(400).entity(processPaymentModel.error).build())
         }
+    }
 
+    @Override
+    V2PaymentResponse getStatus(String sessionId, String payerId) {
+        ObjectContext context = cayenneService.newContext()
+        College college = collegeService.college
+
+        PaymentService paymentService = new PaymentService(college, context)
+        paymentService.checkStatus(sessionId)
+        new V2PaymentResponse(responseText:paymentService.checkStatus(sessionId).statusText)
     }
 }

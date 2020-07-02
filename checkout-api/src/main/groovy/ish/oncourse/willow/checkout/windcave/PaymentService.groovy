@@ -8,11 +8,20 @@ import groovyx.net.http.HTTPBuilder
 import ish.common.types.CreditCardType
 import ish.math.Country
 import ish.math.Money
+import ish.oncourse.model.College
+import ish.oncourse.model.PaymentGatewayType
+import ish.oncourse.services.preference.GetPreference
+import org.apache.cayenne.ObjectContext
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+
+import static ish.oncourse.services.preference.Preferences.PAYMENT_GATEWAY_TYPE
+import static ish.persistence.Preferences.ACCOUNT_CURRENCY
+import static ish.persistence.Preferences.PAYMENT_GATEWAY_PASS
+import static ish.persistence.Preferences.PAYMENT_GATEWAY_PURCHASE_WITHOUT_AUTH
 
 @CompileStatic
 class PaymentService {
@@ -27,10 +36,29 @@ class PaymentService {
     private boolean skipAuth
     private Country country
 
-    PaymentService(String gatewayPass, Boolean skipAuth, Country country) {
-        this.country = country
-        this.skipAuth = skipAuth
-        this.gatewayPass = gatewayPass
+    PaymentService(College college, ObjectContext context) {
+
+        PaymentGatewayType gatewayType = PaymentGatewayType.valueOf(new GetPreference(college, PAYMENT_GATEWAY_TYPE, context).getValue())
+
+        switch (gatewayType) {
+            case PaymentGatewayType.TEST:
+                this.gatewayPass = "SXNoR3JvdXBSRVNUX0RldjphOTljYWUxYmRlZGJjNGU5ODQ3OTNmZjNhNjkwMDM5ZTdlZWUyOTgyMmQ0ZDQzZDg2M2JkZDE4NGNlOTk4NmRj"
+                this.skipAuth = false
+                break
+            case PaymentGatewayType.PAYMENT_EXPRESS:
+                this.gatewayPass = new GetPreference(college, PAYMENT_GATEWAY_PASS, context).getValue()
+                this.skipAuth = new GetPreference(college, PAYMENT_GATEWAY_PURCHASE_WITHOUT_AUTH, context).getBooleanValue()
+                break
+            case PaymentGatewayType.DISABLED:
+            default:
+                throw new IllegalArgumentException()
+        }
+
+        this.country =  new GetPreference(college, ACCOUNT_CURRENCY, context).getCountry()
+    }
+
+    Boolean isSkipAuth() {
+        return this.skipAuth
     }
 
     Closure failHandler =  { Object response, Object body, SessionAttributes attributes  ->

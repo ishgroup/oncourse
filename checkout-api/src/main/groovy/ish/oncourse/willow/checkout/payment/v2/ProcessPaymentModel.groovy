@@ -106,27 +106,9 @@ class ProcessPaymentModel {
 
     private ProcessPaymentModel performGatewayOperation() {
         context.commitChanges()
-
-        PaymentGatewayType gatewayType = PaymentGatewayType.valueOf(new GetPreference(college, PAYMENT_GATEWAY_TYPE, context).getValue())
-        String apiKey
-        Boolean skipAuth
         Money amount = createPaymentModel.paymentIn.amount
 
-        switch (gatewayType) {
-            case PaymentGatewayType.TEST:
-                apiKey = "SXNoR3JvdXBSRVNUX0RldjphOTljYWUxYmRlZGJjNGU5ODQ3OTNmZjNhNjkwMDM5ZTdlZWUyOTgyMmQ0ZDQzZDg2M2JkZDE4NGNlOTk4NmRj"
-                skipAuth = false
-                break
-            case PaymentGatewayType.PAYMENT_EXPRESS:
-                apiKey = new GetPreference(college, PAYMENT_GATEWAY_PASS, context).getValue()
-                skipAuth = new GetPreference(college, PAYMENT_GATEWAY_PURCHASE_WITHOUT_AUTH, context).getBooleanValue()
-                break
-            case PaymentGatewayType.DISABLED:
-            default:
-                throw new IllegalArgumentException()
-        }
-        Country country = new GetPreference(college, ACCOUNT_CURRENCY, context).getCountry()
-        PaymentService paymentService = new PaymentService(apiKey, skipAuth, country)
+        PaymentService paymentService = new PaymentService(college, context)
 
         if (xValidate) {
             String merchantReference = UUID.randomUUID().toString()
@@ -180,7 +162,7 @@ class ProcessPaymentModel {
             paymentIn.gatewayResponse = sessionAttributes.responceJson
             paymentIn.statusNotes = sessionAttributes.statusText
 
-            if (skipAuth) {
+            if (paymentService.skipAuth) {
                 succeedPayment()
                 return this
             } else {

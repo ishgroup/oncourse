@@ -15,6 +15,12 @@ import javax.ws.rs.core.MediaType;
 @Path("/")
 public interface CheckoutV2Api  {
 
+    @GET
+    @Path("/v2/getPaymentStatus/{sessionId}")
+    @Produces({ "application/json" })
+    @CollegeInfo
+    PaymentResponse getStatus(@PathParam("sessionId") String sessionId, @HeaderParam("payerId") String payerId);
+
     @POST
     @Path("/v2/makePayment")
     @Consumes({ "application/json" })
