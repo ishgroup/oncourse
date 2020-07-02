@@ -71,7 +71,7 @@ class FinancialService {
                 .where(Invoice.CONTACT.eq(payer))
                 .and(Invoice.AMOUNT_OWING.gt(Money.ZERO))
                 .and(Invoice.ANGEL_ID.isNotNull())
-                .and(Invoice.PAYMENT_IN_LINES.outer().dot(PaymentInLine.PAYMENT_IN).outer().dot(PaymentIn.STATUS).nin([PaymentStatus.NEW, PaymentStatus.IN_TRANSACTION]))
+                .and(Invoice.PAYMENT_IN_LINES.outer().isNull().orExp(Invoice.PAYMENT_IN_LINES.outer().dot(PaymentInLine.PAYMENT_IN).outer().dot(PaymentIn.STATUS).nin([PaymentStatus.NEW, PaymentStatus.IN_TRANSACTION])))
     }
 
     private static ObjectSelect<Invoice> creditNoteQuery(Contact payer) {
