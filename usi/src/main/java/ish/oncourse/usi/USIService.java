@@ -183,7 +183,7 @@ public class USIService {
             logger.error("Unable to verify USI code for {} {} in organisation code {}.", verifyUSIType.getFirstName(),
                     verifyUSIType.getFamilyName(), verifyUSIType.getOrgCode());
             logger.catching(e);
-            return USIVerificationResult.valueOf("The USI system could not be contacted. Please contact ish support.");
+            return USIVerificationResult.valueOf("The government USI verification service is not responding. You may need to wait a little while and try again.");
         }
     }
 
