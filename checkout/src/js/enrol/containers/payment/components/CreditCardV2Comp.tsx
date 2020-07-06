@@ -4,9 +4,7 @@ import {Amount, Contact} from "../../../../model";
 import {PayerSelect} from "./PayerSelect";
 import {PayerAdd} from "./PayerAdd";
 import CreditCardHeader from "./CreditCardHeader";
-import {changePhase, showSyncErrors} from "../../../actions/Actions";
-import {Phase} from "../../../reducers/State";
-import {resetPaymentState} from "../actions/Actions";
+import {processPaymentV2FailedStatus, setIframeUrl} from "../actions/Actions";
 import {Dispatch} from "react-redux";
 
 interface Props {
@@ -29,14 +27,12 @@ class CreditCardV2Comp extends React.Component<Props, any> {
   onMessage = e => {
     const {dispatch, payerId, processPaymentV2} = this.props;
     const paymentData = e.data.payment;
-
     if (paymentData && paymentData.status) {
+      dispatch(setIframeUrl(null));
       if (paymentData.status === "success") {
         processPaymentV2(false, payerId);
       } else {
-        dispatch(changePhase(Phase.Payment));
-        dispatch(resetPaymentState());
-        dispatch(showSyncErrors({error: "Payment failed"}));
+        dispatch(processPaymentV2FailedStatus());
       }
     }
   }
@@ -60,7 +56,7 @@ class CreditCardV2Comp extends React.Component<Props, any> {
       amount, payerId, processPaymentV2,
     } = this.props;
 
-    if (prev.amount !== amount || prev.payerId !== payerId) {
+    if (prev.amount.ccPayment !== amount.ccPayment || prev.payerId !== payerId) {
       processPaymentV2(true, payerId);
     }
   }
@@ -72,9 +68,11 @@ class CreditCardV2Comp extends React.Component<Props, any> {
       iframeUrl, disabled,
     } = this.props;
 
+    console.log(iframeUrl);
+
     return (
       <div id="credit-card" className="single-tab active">
-        <CreditCardHeader centered />
+        <CreditCardHeader />
         <div className="enrolmentsSelected">
           <fieldset>
             <div className="form-details">

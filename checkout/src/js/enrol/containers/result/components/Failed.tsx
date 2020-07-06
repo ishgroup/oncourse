@@ -4,6 +4,7 @@ interface Props {
   onCancel: () => void;
   onAnotherCard: () => void;
   successLink?: string;
+  reason: string;
 }
 
 export class Failed extends React.Component<Props, any> {
@@ -14,10 +15,13 @@ export class Failed extends React.Component<Props, any> {
   }
 
   render() {
-    const {onAnotherCard} = this.props;
+    const {onAnotherCard,reason} = this.props;
     return (
       <div>
         <h2>Enrolment <span>»</span> Payment rejected</h2>
+        <p>
+          Reason: {reason}
+        </p>
         <p>Your transaction with ish onCourse could not be completed because your credit card payment could not be
           authorised. Your credit card has not been charged.</p>
         <p>Please check your credit card details or credit balance and try again. In particular, check the CVV and

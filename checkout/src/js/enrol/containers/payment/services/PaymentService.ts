@@ -51,12 +51,6 @@ export class PaymentService {
 
   static creditFormValuesToRequest = (values: CreditCardFormValues, state: IshState): PaymentRequest => {
     const result: PaymentRequest = new PaymentRequest();
-    result.creditCardName = values.creditCardName;
-    result.creditCardNumber = values.creditCardNumber;
-    result.creditCardCvv = values.creditCardCvv;
-    result.expiryMonth = values.expiryMonth;
-    result.expiryYear = values.expiryYear;
-    result.agreementFlag = values.agreementFlag;
     result.checkoutModelRequest = BuildCheckoutModelRequest.fromState(state);
     result.ccAmount = state.checkout.amount.ccPayment;
     result.sessionId = uuid();

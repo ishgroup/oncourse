@@ -1,11 +1,13 @@
 import {HttpService} from "../common/services/HttpService";
-import {PaymentRequest} from "../model/v2/checkout/payment/PaymentRequest";
-import {PaymentResponse} from "../model/v2/checkout/payment/PaymentResponse";
+import {PaymentRequest,PaymentResponse} from "../model";
 
 export class CheckoutV2Api {
   constructor(private http: HttpService) {
   }
 
+  getStatus(sessionId: string, payerId: string): Promise<PaymentResponse> {
+    return this.http.GET(`/v2/getPaymentStatus/${sessionId}`, {headers: {payerId}});
+  }
   makePayment(paymentRequest: PaymentRequest, xValidateOnly: boolean, payerId: string): Promise<PaymentResponse> {
     return this.http.POST(
       `/v2/makePayment`,

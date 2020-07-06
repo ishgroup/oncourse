@@ -1,6 +1,6 @@
 import {Create, ProcessError, Request} from "../../../../common/epics/EpicUtils";
 import {IshState} from "../../../../services/IshState";
-import {PROCESS_PAYMENT_V2, resetPaymentState, setPaymentData} from "../actions/Actions";
+import {PROCESS_PAYMENT_V2, PROCESS_PAYMENT_V2_FAILED_STATUS, resetPaymentState, setPaymentData} from "../actions/Actions";
 import {IAction} from "../../../../actions/IshAction";
 import {Observable} from "rxjs/Observable";
 import {AxiosResponse} from "axios";
@@ -13,8 +13,7 @@ import {PaymentResponse} from "../../../../model/v2/checkout/payment/PaymentResp
 import CheckoutService, {BuildCheckoutModelRequest} from "../../../services/CheckoutService";
 import {CheckoutModel} from "../../../../model";
 
-
-const request: Request<PaymentResponse, IshState> = {
+const processPaymentV2: Request<PaymentResponse, IshState> = {
   type: PROCESS_PAYMENT_V2,
   getData: ({xValidateOnly,payerId}, state: IshState) => {
     const paymentRequest = {
@@ -46,4 +45,33 @@ const request: Request<PaymentResponse, IshState> = {
   },
 };
 
-export const ProcessPaymentV2: Epic<any, any> = Create(request);
+export const ProcessPaymentV2: Epic<any, any> = Create(processPaymentV2);
+
+const processPaymentV2Status: Request<PaymentResponse, IshState> = {
+  type: PROCESS_PAYMENT_V2_FAILED_STATUS,
+  getData: (p, state: IshState) => {
+    return CheckoutServiceV2.getStatus(
+      state.checkout.payment.sessionId,
+      state.checkout.payerId
+    );
+  },
+  processData: (response: PaymentResponse): IAction<any>[] | Observable<any> => {
+    response.status = "FAILED";
+    return CheckoutService.processPaymentResponse(response);
+  },
+  processError: (response: AxiosResponse): IAction<any>[] => {
+    const data: any = response.data;
+    if (data && data.payerId && data.amount && data.contactNodes) {
+      return ProcessCheckoutModel.process(data as CheckoutModel);
+    } else {
+      return [
+        changePhase(Phase.Payment),
+        resetPaymentState(),
+        ...ProcessError(response),
+      ];
+    }
+  },
+};
+
+export const ProcessPaymentV2Status: Epic<any, any> = Create(processPaymentV2Status);
+

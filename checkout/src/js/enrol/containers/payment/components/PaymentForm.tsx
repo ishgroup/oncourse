@@ -18,8 +18,9 @@ import {Phase} from "../../../reducers/State";
 import CheckoutService from "../../../services/CheckoutService";
 import {IshState} from "../../../../services/IshState";
 import {Tabs} from "../reducers/State";
-import {PaymentStatus, CorporatePass, Contact, Amount} from "../../../../model";
+import {PaymentStatus, CorporatePass, Contact, Amount, ValidationError} from "../../../../model";
 import {getAllContactNodesFromBackend} from "../../summary/actions/Actions";
+import {resetFieldsState} from "../../contact-edit/actions/Actions";
 
 /**
  * @Deprecated will be remove, now it is used only as example
@@ -55,18 +56,19 @@ interface Props extends FormProps<DataShape, any, any> {
   };
   formSyncErrors?: FormErrors<any>;
   dispatch?: Dispatch<any>;
+  stateErrors?: ValidationError;
 }
 
 export const NAME = "PaymentForm";
 
 class PaymentForm extends React.Component<Props, any> {
   componentDidUpdate(prevProps) {
-    const { formSyncErrors, dispatch } = this.props;
-
-    console.log(this.props);
+    const {formSyncErrors, dispatch, stateErrors} = this.props;
 
     if (formSyncErrors) {
       dispatch(showSyncErrors(formSyncErrors));
+    } else if (stateErrors) {
+      dispatch(resetFieldsState());
     }
   }
 
@@ -102,7 +104,7 @@ class PaymentForm extends React.Component<Props, any> {
       handleSubmit, contacts, amount, pristine, submitting, onSubmitPass, corporatePass, corporatePassError,
       onSetPayer, payerId, onAddPayer, onAddCompany, voucherPayerEnabled, currentTab, corporatePassAvailable, fetching,
       onUnmountPassComponent, conditions, creditCardAvailable, payLaterAvailable, updatePayNow,
-      iframeUrl, processPaymentV2, formSyncErrors, dispatch
+      iframeUrl, processPaymentV2, formSyncErrors, dispatch,
     } = this.props;
 
     const disabled = (pristine || submitting);
@@ -266,6 +268,7 @@ const mapStateToProps = (state: IshState) => {
       featureEnrolmentDisclosure: state.config.featureEnrolmentDisclosure,
     },
     formSyncErrors: getFormSyncErrors(NAME)(state),
+    stateErrors: state.checkout.error
   };
 };
 
@@ -290,8 +293,8 @@ const mapDispatchToProps = dispatch => {
       dispatch(updatePayNow(val, validate));
     },
     processPaymentV2: (xValidateOnly, payerId) => {
-      dispatch(processPaymentV2(xValidateOnly, payerId))
-    }
+      dispatch(processPaymentV2(xValidateOnly, payerId));
+    },
   };
 };
 

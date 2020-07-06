@@ -21,7 +21,9 @@ const render = () => ReactDOM.render(
         console.log("onCancel")
       }} onAnotherCard={() => {
         console.log("onAnotherCard")
-      }}/>
+      }}
+      reason="Some reason"
+      />
       <Progress />
       <Successful refId={"W1367014"}/>
       <Progress />

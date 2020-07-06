@@ -48,8 +48,8 @@ export {GetCorporatePassRequest} from "./checkout/corporatepass/GetCorporatePass
 export {MakeCorporatePassRequest} from "./checkout/corporatepass/MakeCorporatePassRequest";
 
 // Checkout/payment models
-export {PaymentRequest} from "./checkout/payment/PaymentRequest";
-export {PaymentResponse} from "./checkout/payment/PaymentResponse";
+export {PaymentRequest} from "./v2/checkout/payment/PaymentRequest";
+export {PaymentResponse} from "./v2/checkout/payment/PaymentResponse";
 export {PaymentStatus} from "./checkout/payment/PaymentStatus";
 
 // Checkout/request models

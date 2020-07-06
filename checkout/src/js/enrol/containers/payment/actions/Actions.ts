@@ -2,15 +2,18 @@ import {IAction} from "../../../../actions/IshAction";
 import {CreditCardFormValues, CorporatePassFormValues} from "../services/PaymentService";
 import {GABuilder} from "../../../../services/GoogleAnalyticsService";
 import {Phase} from "../../../reducers/State";
-import {PaymentResponse} from "../../../../model/v2/checkout/payment/PaymentResponse";
+import {PaymentResponse} from "../../../../model";
 
 export const SUBMIT_PAYMENT_CREDIT_CARD: string = "checkout/payment/submit/creditCard";
 export const SUBMIT_PAYMENT_CORPORATE_PASS: string = "checkout/payment/submit/corporatePass";
 export const SUBMIT_PAYMENT_FOR_WAITING_COURSES: string = "checkout/payment/submit/waitingCourses";
 export const PROCESS_PAYMENT: string = "checkout/payment/process/payment";
 export const PROCESS_PAYMENT_V2: string = "checkout/v2/payment/process/payment";
+export const PROCESS_PAYMENT_V2_FAILED_STATUS: string = "checkout/v2/payment/process/paymentStatus";
 
-export const SET_PAYMENT_DATA = "checkout/payment/set/iframeUrl";
+export const SET_PAYMENT_DATA = "checkout/payment/set/paymentData";
+
+export const SET_IFRAME_URL = "checkout/payment/set/iframeUrl";
 
 export const GENERATE_WAITING_COURSES_RESULT_DATA = "checkout/payment/result/waitingCourses/data";
 
@@ -65,6 +68,14 @@ export const processPaymentV2 =
     };
   };
 
+export const processPaymentV2FailedStatus = () => ({
+  type: PROCESS_PAYMENT_V2_FAILED_STATUS,
+});
+
+export const setIframeUrl = (url: string) => ({
+  type: SET_IFRAME_URL,
+  payload: url,
+});
 
 export const getPaymentStatus = (): IAction<any> => {
   return {

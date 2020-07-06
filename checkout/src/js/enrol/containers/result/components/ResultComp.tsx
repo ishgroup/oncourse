@@ -1,7 +1,6 @@
 import * as React from "react";
 
-import {PaymentResponse, PaymentStatus} from "../../../../model";
-
+import {PaymentStatus,PaymentResponse} from "../../../../model";
 import {Successful} from "./Successful";
 import {Failed} from "./Failed";
 import {Undefined} from "./Undefined";
@@ -58,6 +57,7 @@ export class ResultComp extends React.Component<Props, any> {
             onAnotherCard={onAnotherCard}
             onCancel={onCancel}
             successLink={successLink}
+            reason={response.responseText}
           />
           }
           {response.status === PaymentStatus.UNDEFINED && <Undefined/>}

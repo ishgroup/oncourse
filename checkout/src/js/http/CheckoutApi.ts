@@ -1,11 +1,12 @@
 import {HttpService} from "../common/services/HttpService";
-import {CheckoutModel} from "../model/checkout/CheckoutModel";
-import {CheckoutModelRequest} from "../model/checkout/CheckoutModelRequest";
-import {ContactNode} from "../model/checkout/ContactNode";
-import {PaymentRequest} from "../model/checkout/payment/PaymentRequest";
-import {PaymentResponse} from "../model/checkout/payment/PaymentResponse";
-import {ContactNodeRequest} from "../model/checkout/request/ContactNodeRequest";
-import {CommonError} from "../model/common/CommonError";
+import {
+  CheckoutModel,
+  CheckoutModelRequest,
+  ContactNode,
+  PaymentRequest,
+  PaymentResponse,
+  ContactNodeRequest,
+} from "../model";
 
 export class CheckoutApi {
   constructor(private http: HttpService) {

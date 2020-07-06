@@ -30,7 +30,7 @@ import {GetPaymentStatus} from "./EpicGetPaymentStatus";
 import {Phase} from "../../../reducers/State";
 import {changePhase, getAmount, togglePayNowVisibility} from "../../../actions/Actions";
 import {FULFILLED} from "../../../../common/actions/ActionUtils";
-import {ProcessPaymentV2} from "./EpicPaymentV2";
+import {ProcessPaymentV2, ProcessPaymentV2Status} from "./EpicPaymentV2";
 
 const request: Request<PaymentResponse, IshState> = {
   type: PROCESS_PAYMENT,
@@ -131,5 +131,6 @@ export const EpicPayment = combineEpics(
   ProcessPayment,
   GetPaymentStatus,
   GetCorporatePass,
-  ProcessPaymentV2
+  ProcessPaymentV2,
+  ProcessPaymentV2Status
 );
