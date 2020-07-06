@@ -118,7 +118,6 @@ public abstract class AbstractInvoice extends _AbstractInvoice implements Queuea
     }
 
     public Money getOverdue() {
-        updateAmountOwing();
         if (getAmountOwing().isZero()) {
             return Money.ZERO;
         }
