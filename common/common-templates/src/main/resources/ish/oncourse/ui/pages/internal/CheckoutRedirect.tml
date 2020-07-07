@@ -4,16 +4,18 @@
         const query = new URLSearchParams(window.location.search);
         const sessionId = query.get("sessionId");
         const status = query.get("paymentStatus");
-        if (sessionId &amp;&amp; status) {
-            window.parent.postMessage(
-                {
-                    payment: {
-                        sessionId,
-                        status
-                    }
-                },
-                "*"
-            );
+        if (sessionId ) {
+            if (status) {
+                window.parent.postMessage(
+                    {
+                        payment: {
+                            sessionId,
+                            status
+                        }
+                    },
+                    "*"
+                );
+            }
         }
     </script>
 </head>
