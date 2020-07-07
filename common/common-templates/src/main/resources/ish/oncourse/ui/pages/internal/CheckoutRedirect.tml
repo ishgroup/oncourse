@@ -1,11 +1,10 @@
 <html>
 <head>
     <script>
-        //<![CDATA[
         const query = new URLSearchParams(window.location.search);
         const sessionId = query.get("sessionId");
         const status = query.get("paymentStatus");
-        if (sessionId && status) {
+        if (sessionId &amp;&amp; status) {
             window.parent.postMessage(
                 {
                     payment: {
@@ -16,7 +15,6 @@
                 "*"
             );
         }
-        //]]>
     </script>
 </head>
 <body>
