@@ -104,8 +104,10 @@ public enum PageIdentifier
 	KioskRoom(new PrefixMatcher("/room/kiosk/"), "ui/kiosk/KioskPage"),
 
 	Render("/ish.render", "ui/internal/Render"),
-	
-	Cvv("/ui/cvv", "ui/Cvv");
+
+	Cvv("/ui/cvv", "ui/Cvv"),
+
+	CheckoutRedirect(new RegexMatcher(".*?paymentStatus=.*&sessionId=.*"), "ui/internal/CheckoutRedirect");
 
 	private  static final PageIdentifier[] sortedValues;
 	static

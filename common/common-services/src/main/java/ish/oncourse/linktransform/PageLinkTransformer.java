@@ -91,6 +91,10 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	 */
 	private static final int STUDENT_EXPIRE_TIME = 1200;
 
+	private static final String CHECKOUT_STATUS = "paymentStatus";
+	private static final String CHECKOUT_SESSION_ID = "sessionId";
+
+
 	@Inject
 	PageRenderLinkSource pageRenderLinkSource;
 
@@ -142,6 +146,9 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 
 		if (path.startsWith(ISHHealthCheckServlet.ISH_HEALTH_CHECK_PATTERN.toLowerCase())) return null;
 
+		if (isCheckoutRedirect(request)) {
+			return new PageRenderRequestParameters(PageIdentifier.CheckoutRedirect.getPageName(), new EmptyEventContext(), false);
+		}
 
 		String studentUniqCode = request.getParameter(Contact.STUDENT_PROPERTY);
 
@@ -390,6 +397,10 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
         }
         return  rqParams;
     }
+
+    private boolean isCheckoutRedirect(Request request) {
+		return request.getParameter(CHECKOUT_STATUS) != null && request.getParameter(CHECKOUT_SESSION_ID) != null;
+	}
 
 	public Link transformPageRenderLink(Link defaultLink, PageRenderRequestParameters parameters) {
 		logger.info("Rewrite OutBound: path is: {}", defaultLink.getBasePath());
