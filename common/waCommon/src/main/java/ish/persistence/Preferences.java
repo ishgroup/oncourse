@@ -80,9 +80,7 @@ public interface Preferences {
 	String SERVICES_CC_ENABLED = "services.cc";
 	
 	String SERVICES_CC_AMEX_ENABLED = "services.cc.amex";
-	
-	String SERVICES_SECURITYKEY = "services.securitykey";
-	
+
 	String DATA_SVNVERSION = "data.svnversion";
 	
 	String DATA_WED_VERSION = "data.wed.version";

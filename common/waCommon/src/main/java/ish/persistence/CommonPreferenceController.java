@@ -201,19 +201,6 @@ public abstract class CommonPreferenceController {
 		setValue(ONCOURSE_SERVER_DEFAULT_TZ, false, timezoneID);
 	}
 
-	/**
-	 * A randomly generated key which is unique for this data file.
-	 *
-	 * @return 16 character key
-	 */
-	public synchronized String getServicesSecurityKey() {
-		String value = getValue(SERVICES_SECURITYKEY, false);
-		if (value == null) {
-			throw new IllegalStateException("SERVICES_SECURITYKEY preference must be set ");
-		}
-		return value;
-	}
-
 	public boolean getServicesLdapAuthentication() {
 		return Boolean.parseBoolean(getValue(SERVICES_LDAP_AUTHENTICATION, false));
 	}
@@ -1668,8 +1655,6 @@ public abstract class CommonPreferenceController {
 			return getServicesLdapAuthorisation();
 		} else if (SERVICES_CC_ENABLED.equals(key)) {
 			return getServicesCCEnabled();
-		} else if (SERVICES_SECURITYKEY.equals(key)) {
-			return getServicesSecurityKey();
 		} else if (DATA_SVNVERSION.equals(key)) {
 			return getDataSVN();
 		} else if (DATA_WED_VERSION.equals(key)) {
