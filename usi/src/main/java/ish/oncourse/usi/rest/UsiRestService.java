@@ -28,8 +28,9 @@ public class UsiRestService {
                                         @QueryParam("usiCode") String usiCode,
                                         @QueryParam("orgCode") String orgCode,
                                         @QueryParam("collegeABN") String collegeABN,
-                                        @QueryParam("softwareId") String softwareId) throws ParseException {
-        return usiService.verifyUsi(studentFirstName, studentLastName, studentBirthDate, usiCode, orgCode, collegeABN, softwareId);
+                                        @QueryParam("softwareId") String softwareId,
+                                        @QueryParam("collegeKey") String collegeKey) throws ParseException {
+        return usiService.verifyUsi(studentFirstName, studentLastName, studentBirthDate, usiCode, orgCode, collegeABN, softwareId, collegeKey);
     }
 
     @GET

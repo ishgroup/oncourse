@@ -49,13 +49,14 @@ public class USIService {
                                            String usiCode,
                                            String orgCode,
                                            String collegeABN,
-                                           String softwareId) throws ParseException {
+                                           String softwareId,
+                                           String collegeKey) throws ParseException {
 
 
         Date dob = DateUtils.parseDate(studentBirthDate, "yyyy-MM-dd");
-        USIVerificationResult result = sendVerifyRequest(VerifyUSITypeBuilder.valueOf(studentFirstName, studentLastName, dob,usiCode,orgCode, false).build(), collegeABN, softwareId);
+        USIVerificationResult result = sendVerifyRequest(VerifyUSITypeBuilder.valueOf(studentFirstName, studentLastName, dob,usiCode,orgCode, false).build(), collegeABN, softwareId, collegeKey);
         if (needSendSingleNameRequest(studentFirstName, studentLastName, result)) {
-            return sendVerifyRequest(VerifyUSITypeBuilder.valueOf(studentFirstName, studentLastName, dob,usiCode,orgCode, true).build(), collegeABN, softwareId );
+            return sendVerifyRequest(VerifyUSITypeBuilder.valueOf(studentFirstName, studentLastName, dob,usiCode,orgCode, true).build(), collegeABN, softwareId, collegeKey);
         } else {
             return result;
         }
@@ -140,7 +141,7 @@ public class USIService {
     }
 
     private USIVerificationResult sendVerifyRequest(VerifyUSIType verifyUSIType, String collegeABN,
-                                                    String softwareId) {
+                                                    String softwareId, String collegeKey) {
         try {
 
             setActAs(collegeABN, softwareId);
@@ -162,13 +163,13 @@ public class USIService {
 
             return result;
         } catch (SOAPFaultException e) {
+
+            logger.error(String.format("Unable to verify USI code for %s %s in organisation code, college ABN: %s, college key: %s", verifyUSIType.getFirstName(),
+                    verifyUSIType.getFamilyName(), collegeABN, collegeKey), e);
+
             String  error = StringUtils.substringBetween(e.getLocalizedMessage(), "Event Description: [", "].");
             String  advice = StringUtils.substringBetween(e.getLocalizedMessage(), "User Advice: [", "].");
 
-
-            logger.error("Unable to verify USI code for {} {} in organisation code {}.", verifyUSIType.getFirstName(),
-                    verifyUSIType.getFamilyName(), verifyUSIType.getOrgCode());
-            logger.catching(e);
             String message = "Error verifying USI.";
             if (error != null) {
                 message += " " + error + " ";
