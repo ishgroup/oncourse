@@ -140,10 +140,9 @@ const PaymentForm: React.FC<any> = ({}) => {
     debounceAmountChange(e.target.value);
   };
 
-  return (
+  return Boolean(totalBalance && totalBalance > 0) ? (
     <div className={amountError ? "has-error" : "valid"}>
-      {Boolean(totalBalance && totalBalance > 0)
-      && <div className="info-label">Payment due: ${overdue} </div>}
+      <div className="info-label">Payment due: ${overdue} </div>
 
       {!paymentStatus && <div>
         <div className="amount-container">
@@ -181,7 +180,7 @@ const PaymentForm: React.FC<any> = ({}) => {
           </div>
         </div>
       </div>}
-    </div>);
+    </div>) : null;
 };
 
 export default PaymentForm;
