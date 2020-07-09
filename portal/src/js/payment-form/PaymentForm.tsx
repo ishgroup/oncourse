@@ -27,12 +27,14 @@ const PaymentForm: React.FC<any> = ({}) => {
   const [amountValue, setAmountValue] = useState<any>( null);
   const [payerId, setPayerId] = useState<any>( null);
   const [paymentStatus, setPaymentStatus] = useState<any>( null);
+  const [paymentFetching, setPaymentFetching] = useState<any>( null);
   const [paymentDetails, setPaymentDetails] = useState<PaymentResponse>(null);
 
   const onMessage = (e: any) => {
     const paymentData = e.data.payment;
     if (paymentData && paymentData.status) {
       setIframeUrl(null);
+      setPaymentFetching(true);
       if (paymentData.status === "success") {
         CheckoutService.makePayment(getPaymentRequest(amount, paymentDetails), false, payerId).then(res => {
           setPaymentStatus({status: res.status === "FAILED" ? "fail" : "success",
@@ -42,13 +44,16 @@ const PaymentForm: React.FC<any> = ({}) => {
               <strong>{res.reference}</strong>
               . History can be updated</span>,
           });
+          setPaymentFetching(false);
         });
       } else {
         CheckoutService.getPaymentStatus(paymentData.sessionId, payerId).then(res => {
           setPaymentStatus({status: paymentData.status, message: res.responseText});
+          setPaymentFetching(false);
         })
         .catch(res => {
           setPaymentStatus({status: paymentData.status, message: res.message});
+          setPaymentFetching(false);
         });
       }
     }
@@ -74,11 +79,10 @@ const PaymentForm: React.FC<any> = ({}) => {
         setPayerId(payerId);
         const balanceParsed = parseFloat(balance);
         const overdueParsed = parseFloat(overdue);
-        const amountValue = overdueParsed > 0 ? overdueParsed : balanceParsed;
         setOverdue(overdueParsed);
         setTotalBalance(balanceParsed);
-        setAmount(amountValue);
-        setAmountValue(amountValue);
+        setAmount(overdueParsed);
+        setAmountValue(overdueParsed);
       }
     }
 
@@ -111,12 +115,16 @@ const PaymentForm: React.FC<any> = ({}) => {
       setIframeUrl(null);
       setPaymentStatus(null);
 
+      setPaymentFetching(true);
+
       CheckoutService.makePayment(getPaymentRequest(amount), true, payerId)
         .then(res => {
           setIframeUrl(res.paymentFormUrl);
+          setPaymentFetching(false);
           setPaymentDetails(res);
         })
         .catch(res => {
+          setPaymentFetching(false);
           setPaymentStatus({status: "fail", message: getErrorMessage(res) || "Failed to connect payment gateway"});
         });
     }
@@ -124,7 +132,7 @@ const PaymentForm: React.FC<any> = ({}) => {
 
   const debounceAmountChange = useCallback(debounce((amount: any) => {
     setAmount(amount);
-  },                                                500),                                 []);
+  },                                                600),                                 []);
 
   const onAmountChange = (e: any) => {
     validateAmount(e.target.value);
@@ -137,7 +145,7 @@ const PaymentForm: React.FC<any> = ({}) => {
       {Boolean(totalBalance && totalBalance > 0)
       && <div className="info-label">Payment due: ${overdue} </div>}
 
-      {!paymentStatus && iframeUrl && <div>
+      {!paymentStatus && <div>
         <div className="amount-container">
           <div className="row">
             <div className="col-xs-5 amount-label">
@@ -164,19 +172,15 @@ const PaymentForm: React.FC<any> = ({}) => {
         </div>
       </div>}
 
-
-      {paymentStatus ?
-        getPaymentMessage(paymentStatus)
-        : (iframeUrl ?
-        <iframe src={iframeUrl}  title="windcave-frame" />
-        : (totalBalance && totalBalance > 0) ?  <div id="payment-progress-bar">
-            <div className="progress progress-striped active ">
-              <div className="progress-bar progress-bar-warning progress-bar-striped " role="progressbar"
-                   aria-valuenow={100} aria-valuemin={0} aria-valuemax={100} style={{width: "100%"}}>
-              </div>
-            </div>
-        </div> : null)
-      }
+      {paymentStatus && getPaymentMessage(paymentStatus)}
+      {iframeUrl &&  <iframe src={iframeUrl}  title="windcave-frame" />}
+      {paymentFetching && <div id="payment-progress-bar">
+        <div className="progress progress-striped active ">
+          <div className="progress-bar progress-bar-warning progress-bar-striped " role="progressbar"
+               aria-valuenow={100} aria-valuemin={0} aria-valuemax={100} style={{width: "100%"}}>
+          </div>
+        </div>
+      </div>}
     </div>);
 };
 
