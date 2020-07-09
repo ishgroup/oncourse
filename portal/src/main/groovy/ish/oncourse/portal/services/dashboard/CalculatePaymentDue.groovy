@@ -26,26 +26,37 @@ class CalculatePaymentDue {
 			next7Days = next7Days - 1.second
 		}
 	}
+	Money calculate() {
+		return calculate(true)
+	}
 
-    Money calculate() {
+    Money calculate(boolean useCache) {
 		Money owing = Money.ZERO
-		getOwingInvoices().each { invoice ->  owing = owing.add(GetInvoiceOverdue.valueOf(invoice, next7Days).call().overdue) }
+		getOwingInvoices(useCache).each { invoice ->  owing = owing.add(GetInvoiceOverdue.valueOf(invoice, next7Days).call().overdue) }
         return owing
 	}
 
-    List<Invoice> getOwingInvoices() {
+	List<Invoice> getOwingInvoices() {
+		getOwingInvoices(true)
+	}
+
+    List<Invoice> getOwingInvoices(boolean useCache) {
 		if (!contact) {
 			return Collections.EMPTY_LIST
 		} else if (owingInvoices == null) {
-			
-			owingInvoices =  ObjectSelect.query(Invoice).where(Invoice.CONTACT.eq(contact))
+
+			ObjectSelect<Invoice> select = ObjectSelect.query(Invoice).where(Invoice.CONTACT.eq(contact))
 					.and(Invoice.AMOUNT_OWING.gt(Money.ZERO))
 					.and(Invoice.DATE_DUE.lt(next7Days))
 					.prefetch(Invoice.INVOICE_LINES.disjoint())
 					.prefetch(Invoice.PAYMENT_IN_LINES.disjoint())
 					.prefetch(Invoice.INVOICE_DUE_DATES.disjoint())
-                    .cacheStrategy(SHARED_CACHE, DASHBOARD_CACHE)
-					.select(contact.getObjectContext())
+
+			if (useCache) {
+				select = select.cacheStrategy(SHARED_CACHE, DASHBOARD_CACHE)
+			}
+			
+			owingInvoices = select.select(contact.getObjectContext())
 			return owingInvoices
 		}
 		return owingInvoices

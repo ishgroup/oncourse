@@ -4,6 +4,7 @@ import ish.math.Money;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceDueDate;
+import ish.oncourse.portal.services.dashboard.CalculatePaymentDue;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import ish.oncourse.portal.services.IPortalService;
@@ -46,12 +47,13 @@ public class PaymentForm {
 		Contact payer = portalService.getContact();
 		payerId = payer.getId();
 
-		overdue = payer.getInvoices().stream()
-				.map(Invoice::getOverdue)
-				.reduce(Money.ZERO, Money::add);
+		overdue =  new CalculatePaymentDue(payer).calculate(false);
+
 		balance = payer.getInvoices().stream()
 				.map(Invoice::getAmountOwing)
 				.reduce(Money.ZERO, Money::add);
+
+
 
 	}
 
