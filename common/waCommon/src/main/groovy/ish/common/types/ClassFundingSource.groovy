@@ -10,7 +10,7 @@ import ish.oncourse.API;
 /**
  * A set of values for AVETMISS reporting from the version 7 standard.
  * Consult the AVETMISS documentation for more detail about these options.
- * 
+ *
  */
 @API
 public enum ClassFundingSource implements DisplayableExtendedEnumeration<Integer>, AvetmissReportingEnum {
@@ -50,10 +50,34 @@ public enum ClassFundingSource implements DisplayableExtendedEnumeration<Integer
 	/**
 	 * Database value: 4
 	 *
-	 * International full fee paying student
+	 * International full fee paying student.
+	 * Revenue provided by or for an international client to undertake education and training and who temporarily
+	 * resides in Australia and holds a student visa or a temporary residency permit, or who resides in an overseas
+	 * country and whose funding source does not come from any of the other funding categories
 	 */
 	@API
 	INTERNATIONAL_FULL_FEE(4, "International full fee paying student", "30"),
+
+	/**
+	 * Database value: 6
+	 *
+	 * International onshore client.
+	 * Revenue provided by or for an international client to undertake education and training and who temporarily
+	 * resides in Australia and holds a student visa or a temporary residency permit and whose funding source does
+	 * not come from any of the other funding categories
+	 */
+	@API
+	INTERNATIONAL_FULL_FEE(6, "International onshore client", "31"),
+
+	/**
+	 * Database value: 7
+	 *
+	 * International offshore client.
+	 * Revenue provided by or for an international client to undertake education and training and who resides in an
+	 * overseas country and whose funding source does not come from any of the other funding categories
+	 */
+	@API
+	INTERNATIONAL_FULL_FEE(7, "International offshore client", "32"),
 
 	/**
 	 * Database value: 5
