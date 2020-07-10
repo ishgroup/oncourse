@@ -279,7 +279,7 @@ task startDaemon(dependsOn: [classes, processResources], type: JavaExecFork) {
 	classpath = sourceSets.main.runtimeClasspath
 	main = 'ish.oncourse.server.AngelServer'
 	args = ['DEBUG=true', 'REPLICATION_DISABLED=true']
-	jvmArgs = ['-Xmx1024m', '-XX:+HeapDumpOnOutOfMemoryError', "-DdisableReplication=true"]
+	jvmArgs = ['-Xmx1024m', '-XX:+HeapDumpOnOutOfMemoryError', "-DdisableReplication=true", "-DdisableTransactionCheck=true"]
 	workingDir = "$buildDir"
     waitForOutput = 'Server ready for client connections'
 	timeout = 60 * 20
