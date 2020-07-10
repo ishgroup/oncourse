@@ -107,6 +107,7 @@ class PaymentForm extends React.Component<Props, any> {
       iframeUrl, processPaymentV2, formSyncErrors, dispatch,
     } = this.props;
 
+
     const disabled = (pristine || submitting);
 
     return (
@@ -170,7 +171,7 @@ class PaymentForm extends React.Component<Props, any> {
 
         <Conditions conditions={conditions}/>
 
-        {!(currentTab === Tabs.creditCard && creditCardAvailable)
+        {!(currentTab === Tabs.creditCard && creditCardAvailable && amount.ccPayment > 0)
           && <div className="form-controls enrolmentsSelected">
                 <input
                   disabled={disabled}
@@ -238,6 +239,8 @@ const Form = reduxForm({
     if (props.currentTab === Tabs.corporatePass && Number(props.amount.subTotal) !== 0) {
       dispatch(updatePaymentStatus({status: PaymentStatus.IN_PROGRESS}));
       dispatch(submitPaymentCorporatePass(data));
+    } else {
+      dispatch(processPaymentV2(false, props.payerId));
     }
   },
   onSubmitFail: (errors, dispatch, submitError, props) => {
@@ -268,7 +271,7 @@ const mapStateToProps = (state: IshState) => {
       featureEnrolmentDisclosure: state.config.featureEnrolmentDisclosure,
     },
     formSyncErrors: getFormSyncErrors(NAME)(state),
-    stateErrors: state.checkout.error
+    stateErrors: state.checkout.error,
   };
 };
 
