@@ -67,7 +67,7 @@ public enum ClassFundingSource implements DisplayableExtendedEnumeration<Integer
 	 * not come from any of the other funding categories
 	 */
 	@API
-	INTERNATIONAL_FULL_FEE(6, "International onshore client", "31"),
+	INTERNATIONAL_ONSHORE(6, "International onshore client", "31"),
 
 	/**
 	 * Database value: 7
@@ -77,7 +77,7 @@ public enum ClassFundingSource implements DisplayableExtendedEnumeration<Integer
 	 * overseas country and whose funding source does not come from any of the other funding categories
 	 */
 	@API
-	INTERNATIONAL_FULL_FEE(7, "International offshore client", "32"),
+	INTERNATIONAL_OFFSHORE(7, "International offshore client", "32"),
 
 	/**
 	 * Database value: 5
