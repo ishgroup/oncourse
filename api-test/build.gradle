@@ -23,7 +23,7 @@ targetCompatibility = 11
 
 task copyEmptyDb(type: Copy) {
     from("$rootDir/api-test/src/test/resources/") {
-        include 'onCourse.cfg'
+        include 'onCourse.yml'
     }
     into "$rootDir/server/build"
 
@@ -38,8 +38,8 @@ task prepareTestDb(dependsOn: [copyEmptyDb], type: JavaExec) {
 }
 
 test {
-    dependsOn "prepareTestDb"
-    dependsOn ":server:startDaemon"
+//    dependsOn "prepareTestDb"
+//    dependsOn ":server:startDaemon"
     // pull cucumber options into the cucumber jvm
     systemProperty "cucumber.options", System.properties.getProperty("cucumber.options")
     // pull karate options into the jvm
