@@ -33,8 +33,8 @@ import ish.oncourse.willow.model.v2.checkout.payment.PaymentResponse as V2Paymen
 
 import ish.oncourse.willow.service.impl.CollegeService
 import org.apache.cayenne.ObjectContext
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 
 import javax.ws.rs.BadRequestException
 import javax.ws.rs.core.Response
@@ -42,7 +42,7 @@ import javax.ws.rs.core.Response
 @CompileStatic
 class CheckoutApiImpl implements CheckoutApi, CheckoutV2Api {
     
-    final static  Logger logger = LoggerFactory.getLogger(CheckoutApiImpl.class)
+    final static  Logger logger = LogManager.getLogger(CheckoutApiImpl.class)
 
 
     private CayenneService cayenneService
@@ -141,36 +141,41 @@ class CheckoutApiImpl implements CheckoutApi, CheckoutV2Api {
     @Override
     @CompileDynamic
     V2PaymentResponse makePayment(V2PaymentRequest paymentRequest, Boolean xValidate, String payerId, String origin) {
+        try {
+            ObjectContext context = cayenneService.newContext()
+            College college = collegeService.college
+            Contact payer = collegeService.payer
+            WebSite webSite = collegeService.webSite
 
-        ObjectContext context = cayenneService.newContext()
-        College college = collegeService.college
-        Contact payer = collegeService.payer
-        WebSite webSite = collegeService.webSite
+            CheckoutModel checkoutModel = null
 
-        CheckoutModel checkoutModel = null
-
-        if (paymentRequest.checkoutModelRequest) {
-            checkoutModel = getCheckoutModel(paymentRequest.checkoutModelRequest)
-            V2ValidatePaymentRequest validatePaymentRequest = new V2ValidatePaymentRequest(checkoutModel, paymentRequest.ccAmount.toMoney(), context, financialService.getAvailableCredit(checkoutModel.payerId)).validate()
-            if (validatePaymentRequest.commonError) {
-                throw new BadRequestException(Response.status(400).entity(checkoutModel).build())
+            if (paymentRequest.checkoutModelRequest) {
+                checkoutModel = getCheckoutModel(paymentRequest.checkoutModelRequest)
+                V2ValidatePaymentRequest validatePaymentRequest = new V2ValidatePaymentRequest(checkoutModel, paymentRequest.ccAmount.toMoney(), context, financialService.getAvailableCredit(checkoutModel.payerId)).validate()
+                if (validatePaymentRequest.commonError) {
+                    throw new BadRequestException(Response.status(400).entity(checkoutModel).build())
+                }
+            } else {
+                Money owing = financialService.getOwing(payer)
+                Money payNow = paymentRequest.ccAmount.toMoney()
+                if (payNow.isGreaterThan(owing)) {
+                    throw new BadRequestException(Response.status(400).entity(new ValidationError(formErrors: ['Payment amount is great then payer owing amount'])).build())
+                }
             }
-        } else {
-            Money owing = financialService.getOwing(payer)
-            Money payNow = paymentRequest.ccAmount.toMoney()
-            if (payNow.isGreaterThan(owing)) {
-                new BadRequestException(Response.status(400).entity(new ValidationError(formErrors: ['Payment amount is great then payer owing amount'])).build())
+
+            V2CreatePaymentModel createPaymentModel = new V2CreatePaymentModel(context, college, webSite, paymentRequest, checkoutModel, financialService, payer).create()
+
+            V2ProcessPaymentModel processPaymentModel = new V2ProcessPaymentModel(context, college, createPaymentModel, paymentRequest, xValidate, origin).process()
+
+            if (processPaymentModel.error == null) {
+                return processPaymentModel.response
+            } else {
+                throw new BadRequestException(Response.status(400).entity(processPaymentModel.error).build())
             }
-        }
-
-        V2CreatePaymentModel createPaymentModel = new V2CreatePaymentModel(context, college, webSite, paymentRequest, checkoutModel, financialService, payer).create()
-
-        V2ProcessPaymentModel processPaymentModel = new V2ProcessPaymentModel(context, college, createPaymentModel, paymentRequest, xValidate, origin).process()
-
-        if (processPaymentModel.error == null) {
-            return processPaymentModel.response
-        } else {
-            throw new BadRequestException(Response.status(400).entity(processPaymentModel.error).build())
+        } catch(Exception e) {
+            logger.error("Checkout failed, paymentRequest: ${paymentRequest.toString()}, xValidate: $xValidate, payerId: $payerId, origin: $origin", e)
+            logger.catching(e)
+            throw e
         }
     }
 
