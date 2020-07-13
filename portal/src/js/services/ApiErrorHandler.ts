@@ -5,8 +5,13 @@ export const getErrorMessage = (response: AxiosResponse): string => {
     return null;
   }
   switch (response.status) {
-    case 400:
-      return response.data.message;
+    case 400: {
+      let message = response.data.message;
+      if (response.data.formErrors) {
+        message = response.data.formErrors.join(",");
+      }
+      return response.data.message || response.data;
+    }
     default:
       return null;
   }

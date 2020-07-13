@@ -45,6 +45,10 @@ const PaymentForm: React.FC<any> = ({}) => {
               . History can be updated</span>,
           });
           setPaymentFetching(false);
+        })
+        .catch(res => {
+          setPaymentFetching(false);
+          setPaymentStatus({status: "fail", message: getErrorMessage(res) || "Payment was not processed"});
         });
       } else {
         CheckoutService.getPaymentStatus(paymentData.sessionId, payerId).then(res => {
@@ -144,7 +148,7 @@ const PaymentForm: React.FC<any> = ({}) => {
     <div className={amountError ? "has-error" : "valid"}>
       <div className="info-label">Payment due: ${overdue} </div>
 
-      {!paymentStatus && <div>
+      {!paymentStatus && !paymentFetching && <div>
         <div className="amount-container">
           <div className="row">
             <div className="col-xs-5 amount-label">
