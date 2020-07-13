@@ -54,14 +54,7 @@ sourceSets {
     main.resources.srcDirs 'src/js', 'build/generated-sources/swagger-js', 'build/generated-sources/aql-model', 'build/generated-sources/aql-parser'
 }
 
-task buildLogin(type: YarnTask, dependsOn: 'queryGrammar') {
-    inputs.files("webpack.login.config.js", "yarn.lock", "tsconfig.login.bundle.json", "package.json")
-    inputs.dir("src")
-    outputs.dir("$buildDir/login")
-    args = ['build:prod:loginApp']
-}
-
-build.dependsOn(webpack, buildLogin)
+build.dependsOn(webpack)
 
 generateQueryLanguageModel {
     source = zipTree(configurations.queryLanguageModelSource.find { it.name.startsWith("waCommon") })
