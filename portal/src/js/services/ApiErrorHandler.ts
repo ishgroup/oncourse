@@ -10,7 +10,7 @@ export const getErrorMessage = (response: AxiosResponse): string => {
       if (response.data.formErrors) {
         message = response.data.formErrors.join(",");
       }
-      return response.data.message || response.data;
+      return message;
     }
     default:
       return null;
