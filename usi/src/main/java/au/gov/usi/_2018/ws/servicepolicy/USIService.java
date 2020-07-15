@@ -1,6 +1,10 @@
 package au.gov.usi._2018.ws.servicepolicy;
 
+import org.apache.cxf.annotations.Logging;
+import org.apache.cxf.feature.LoggingFeature;
+
 import java.net.URL;
+import javax.jws.HandlerChain;
 import javax.xml.namespace.QName;
 import javax.xml.ws.WebEndpoint;
 import javax.xml.ws.WebServiceClient;
@@ -20,6 +24,8 @@ import javax.xml.ws.Service;
 @WebServiceClient(name = "USIService",
                   wsdlLocation = "/wsdl/USIServiceV3.wsdl",
                   targetNamespace = "http://usi.gov.au/2018/ws/servicepolicy")
+@HandlerChain(file="handlers.xml")
+
 public class USIService extends Service {
 
     public final static URL WSDL_LOCATION;
