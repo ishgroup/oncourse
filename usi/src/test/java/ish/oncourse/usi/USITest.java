@@ -31,7 +31,7 @@ public class USITest {
                 "Stockl",
                 "1988-02-05",
                 "DB5PW8SXU6",
-                "90054" , "53136500313", "5176926411" );
+                "90054" , "5313k6500313", "5176926411", "mamoth" );
         System.out.println(result);
     }
 }
