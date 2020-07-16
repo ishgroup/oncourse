@@ -145,10 +145,7 @@ public class CourseClassItem extends ISHCommon {
 
 		isoDateTimeFormat = FormatUtils.getDateFormat(FormatUtils.DATE_FORMAT_ISO8601);
 
-		if (timeZone.getRawOffset() == TimeZone.getTimeZone(courseClass.getCollege().getTimeZone()).getRawOffset())
-			timeFormatWithTimeZone = new CustomizedDateFormat(FormatUtils.shortTimeFormatString, timeZone);
-		else
-			timeFormatWithTimeZone = new CustomizedDateFormat(FormatUtils.timeFormatWithTimeZoneString, timeZone);
+		timeFormatWithTimeZone = new CustomizedDateFormat(FormatUtils.timeFormatWithTimeZoneString, timeZone);
 
 		timelineableSessions = courseClass.getPersistentTimelineableSessions();
 		timelineableSessions.sort((o1, o2) -> {
