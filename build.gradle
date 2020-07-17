@@ -9,7 +9,7 @@ buildscript {
         mariadbVersion = '2.6.0'
 		derbyVersion = '10.14.2.0'
 		googleGuiceVersion = '4.2.2'
-		groovyVersion = '2.5.9'
+		groovyVersion = '2.5.12'
 		bouncycastleVersion = '1.59'
 		bootiqueVersion = '1.0'
 		cfxVersion = '3.3.5'
