@@ -21,6 +21,9 @@ public class CustomFieldTypeStubBuilder extends AbstractWillowStubBuilder<Custom
 		stub.setMandatory(entity.getIsMandatory());
 		stub.setKey(entity.getKey());
 		stub.setEntityName(entity.getEntityName());
+		if (entity.getDataType() != null) {
+			stub.setDataType(entity.getDataType().getDatabaseValue());
+		}
 		return stub;
 	}
 }

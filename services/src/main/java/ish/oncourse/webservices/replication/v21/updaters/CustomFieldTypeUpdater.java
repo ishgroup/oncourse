@@ -3,6 +3,9 @@
  */
 package ish.oncourse.webservices.replication.v21.updaters;
 
+import ish.common.types.DataType;
+import ish.common.types.DiscountType;
+import ish.common.types.TypesUtil;
 import ish.oncourse.model.CustomFieldType;
 import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
@@ -20,5 +23,8 @@ public class CustomFieldTypeUpdater extends AbstractWillowUpdater<CustomFieldTyp
 		entity.setIsMandatory(stub.isMandatory());
 		entity.setKey(stub.getKey());
 		entity.setEntityName(stub.getEntityName());
+		if (stub.getDataType() != null) {
+			entity.setDataType(TypesUtil.getEnumForDatabaseValue(stub.getDataType(), DataType.class));
+		}
 	}
 }
