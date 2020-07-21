@@ -17,7 +17,7 @@ public class Preference extends _Preference implements Queueable {
 
 	@Override
 	public boolean isAsyncReplicationAllowed() {
-		return getWebSite() == null && !Preferences.SERVICES_SECURITYKEY.equals(getName());
+		return getWebSite() == null;
 	}
 
 	@Override

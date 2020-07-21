@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.apache.cayenne.exp.Property;
 
+import ish.common.types.DataType;
 import ish.oncourse.model.College;
 import ish.oncourse.model.CustomField;
 
@@ -32,6 +33,7 @@ public abstract class _CustomFieldType extends WillowCayenneObject {
     public static final String REQUIRE_FOR_ENROLMENT_PROPERTY = "requireForEnrolment";
     public static final String REQUIRE_FOR_MAILING_LIST_PROPERTY = "requireForMailingList";
     public static final String REQUIRE_FOR_WAITING_LIST_PROPERTY = "requireForWaitingList";
+    public static final String DATA_TYPE_PROPERTY = "dataType";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String CUSTOM_FIELDS_PROPERTY = "customFields";
 
@@ -48,6 +50,7 @@ public abstract class _CustomFieldType extends WillowCayenneObject {
     public static final Property<String> REQUIRE_FOR_ENROLMENT = Property.create("requireForEnrolment", String.class);
     public static final Property<String> REQUIRE_FOR_MAILING_LIST = Property.create("requireForMailingList", String.class);
     public static final Property<String> REQUIRE_FOR_WAITING_LIST = Property.create("requireForWaitingList", String.class);
+    public static final Property<DataType> DATA_TYPE = Property.create("dataType", DataType.class);
     public static final Property<College> COLLEGE = Property.create("college", College.class);
     public static final Property<List<CustomField>> CUSTOM_FIELDS = Property.create("customFields", List.class);
 
@@ -62,6 +65,7 @@ public abstract class _CustomFieldType extends WillowCayenneObject {
     protected String requireForEnrolment;
     protected String requireForMailingList;
     protected String requireForWaitingList;
+    protected DataType dataType;
 
     protected Object college;
     protected Object customFields;
@@ -176,6 +180,16 @@ public abstract class _CustomFieldType extends WillowCayenneObject {
         return this.requireForWaitingList;
     }
 
+    public void setDataType(DataType dataType) {
+        beforePropertyWrite("dataType", this.dataType, dataType);
+        this.dataType = dataType;
+    }
+
+    public DataType getDataType() {
+        beforePropertyRead("dataType");
+        return this.dataType;
+    }
+
     public void setCollege(College college) {
         setToOneTarget("college", college, true);
     }
@@ -228,6 +242,8 @@ public abstract class _CustomFieldType extends WillowCayenneObject {
                 return this.requireForMailingList;
             case "requireForWaitingList":
                 return this.requireForWaitingList;
+            case "dataType":
+                return this.dataType;
             case "college":
                 return this.college;
             case "customFields":
@@ -277,6 +293,9 @@ public abstract class _CustomFieldType extends WillowCayenneObject {
             case "requireForWaitingList":
                 this.requireForWaitingList = (String)val;
                 break;
+            case "dataType":
+                this.dataType = (DataType)val;
+                break;
             case "college":
                 this.college = val;
                 break;
@@ -310,6 +329,7 @@ public abstract class _CustomFieldType extends WillowCayenneObject {
         out.writeObject(this.requireForEnrolment);
         out.writeObject(this.requireForMailingList);
         out.writeObject(this.requireForWaitingList);
+        out.writeObject(this.dataType);
         out.writeObject(this.college);
         out.writeObject(this.customFields);
     }
@@ -328,6 +348,7 @@ public abstract class _CustomFieldType extends WillowCayenneObject {
         this.requireForEnrolment = (String)in.readObject();
         this.requireForMailingList = (String)in.readObject();
         this.requireForWaitingList = (String)in.readObject();
+        this.dataType = (DataType)in.readObject();
         this.college = in.readObject();
         this.customFields = in.readObject();
     }

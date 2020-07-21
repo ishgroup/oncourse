@@ -40,4 +40,14 @@
 		<sql>UPDATE Discount SET limitPreviousEnrolment = 0</sql>
 	</changeSet>
 
+	<changeSet id="4" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists columnName="dataType" tableName="CustomFieldType"/>
+			</not>
+		</preConditions>
+		<addColumn tableName="CustomFieldType">
+			<column name="dataType" type="SMALLINT"/>
+		</addColumn>
+	</changeSet>
 </databaseChangeLog>

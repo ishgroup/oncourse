@@ -427,6 +427,7 @@
 		<db-attribute name="requireForEnrolment" type="VARCHAR" length="20"/>
 		<db-attribute name="requireForMailingList" type="VARCHAR" length="20"/>
 		<db-attribute name="requireForWaitingList" type="VARCHAR" length="20"/>
+		<db-attribute name="dataType" type="SMALLINT"/>
 	</db-entity>
 	<db-entity name="Discount">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
@@ -1871,6 +1872,7 @@
 		<obj-attribute name="requireForEnrolment" type="java.lang.String" db-attribute-path="requireForEnrolment"/>
 		<obj-attribute name="requireForMailingList" type="java.lang.String" db-attribute-path="requireForMailingList"/>
 		<obj-attribute name="requireForWaitingList" type="java.lang.String" db-attribute-path="requireForWaitingList"/>
+		<obj-attribute name="dataType" type="ish.common.types.DataType" db-attribute-path="dataType"/>
 		<post-add method-name="onPostAdd"/>
 	</obj-entity>
 	<obj-entity name="Discount" className="ish.oncourse.model.Discount" dbEntityName="Discount" superClassName="WillowCayenneObject">
