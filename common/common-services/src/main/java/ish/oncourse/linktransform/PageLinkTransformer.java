@@ -29,6 +29,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.Link;
 import org.apache.tapestry5.internal.EmptyEventContext;
+import org.apache.tapestry5.internal.services.RequestImpl;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.TypeCoercer;
 import org.apache.tapestry5.services.PageRenderLinkSource;
@@ -91,8 +92,8 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	 */
 	private static final int STUDENT_EXPIRE_TIME = 1200;
 
-	private static final String CHECKOUT_STATUS = "paymentStatus";
-	private static final String CHECKOUT_SESSION_ID = "sessionId";
+	private static final String CHECKOUT_STATUS = "paymentStatus=";
+	private static final String CHECKOUT_SESSION_ID = "sessionId=";
 
 
 	@Inject
@@ -146,7 +147,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 
 		if (path.startsWith(ISHHealthCheckServlet.ISH_HEALTH_CHECK_PATTERN.toLowerCase())) return null;
 
-		if (isCheckoutRedirect(request)) {
+		if (isCheckoutRedirect()) {
 			return new PageRenderRequestParameters(PageIdentifier.CheckoutRedirect.getPageName(), new EmptyEventContext(), false);
 		}
 
@@ -398,8 +399,10 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
         return  rqParams;
     }
 
-    private boolean isCheckoutRedirect(Request request) {
-		return request.getParameter(CHECKOUT_STATUS) != null && request.getParameter(CHECKOUT_SESSION_ID) != null;
+    private boolean isCheckoutRedirect() {
+		String query = requestGlobals.getHTTPServletRequest().getQueryString();
+		return query != null && query.contains(CHECKOUT_STATUS) && query.contains(CHECKOUT_SESSION_ID);
+
 	}
 
 	public Link transformPageRenderLink(Link defaultLink, PageRenderRequestParameters parameters) {
