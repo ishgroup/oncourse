@@ -1,6 +1,7 @@
 package au.gov.usi._2018.ws.servicepolicy;
 
 import com.sun.xml.ws.handler.SOAPMessageContextImpl;
+import ish.oncourse.usi.RequestThreadLocal;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,27 +24,31 @@ public class LoggingHandler implements SOAPHandler<SOAPMessageContextImpl> {
 
     @Override
     public boolean handleMessage(SOAPMessageContextImpl context) {
-        log(context);
+        if (context.get("javax.xml.ws.handler.message.outbound") != null && (Boolean) context.get("javax.xml.ws.handler.message.outbound")) {
+            RequestThreadLocal.requestEnvelop.set(getEnvelom(context));
+        } else {
+            RequestThreadLocal.responseEnvelop.set(getEnvelom(context));
+        }
         return true;
 
     }
 
     @Override
     public boolean handleFault(SOAPMessageContextImpl context) {
-        log(context);
+        RequestThreadLocal.responseEnvelop.set(getEnvelom(context));
         return true;
     }
 
-    private void log(SOAPMessageContextImpl context) {
+    private String  getEnvelom(SOAPMessageContextImpl context) {
         try {
             SOAPMessage msg = context.getMessage();
 
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             msg.writeTo(out);
-            String strMsg = new String(out.toByteArray());
-            logger.warn(strMsg);
+            return new String(out.toByteArray());
         } catch (Exception e) {
             logger.catching(e);
+            return null;
         }
     }
 

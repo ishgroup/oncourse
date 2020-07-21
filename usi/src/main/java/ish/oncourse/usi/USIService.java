@@ -142,6 +142,10 @@ public class USIService {
 
     private USIVerificationResult sendVerifyRequest(VerifyUSIType verifyUSIType, String collegeABN,
                                                     String softwareId, String collegeKey) {
+
+        Exception exception = null;
+        String userAdvice = null;
+
         try {
 
             setActAs(collegeABN, softwareId);
@@ -164,27 +168,41 @@ public class USIService {
             return result;
         } catch (SOAPFaultException e) {
 
-            logger.error(String.format("Unable to verify USI code for %s %s in organisation code, college ABN: %s, college key: %s", verifyUSIType.getFirstName(),
-                    verifyUSIType.getFamilyName(), collegeABN, collegeKey), e);
+            exception = e;
 
             String  error = StringUtils.substringBetween(e.getLocalizedMessage(), "Event Description: [", "].");
             String  advice = StringUtils.substringBetween(e.getLocalizedMessage(), "User Advice: [", "].");
 
-            String message = "Error verifying USI.";
+            userAdvice = "Error verifying USI.";
             if (error != null) {
-                message += " " + error + " ";
+                userAdvice += " " + error + " ";
             }
             if (advice != null) {
-                message += " " + advice + " ";
+                userAdvice += " " + advice + " ";
             }
-            return USIVerificationResult.valueOf(message);
+            return USIVerificationResult.valueOf(userAdvice);
 
         } catch (Exception e) {
-
-            logger.error("Unable to verify USI code for {} {} in organisation code {}.", verifyUSIType.getFirstName(),
-                    verifyUSIType.getFamilyName(), verifyUSIType.getOrgCode());
-            logger.catching(e);
+            exception = e;
             return USIVerificationResult.valueOf("The government USI verification service is not responding. You may need to wait a little while and try again.");
+        } finally {
+            if (exception != null) {
+                String log = "Unable to verify USI code\n";
+                log += "College key: " + collegeKey + "\n";
+                log += "College ABN: " + collegeABN + "\n";
+                log += "College software Id :" + softwareId + "\n";
+                log += "College AVETMISS Id: " + verifyUSIType.getOrgCode() + "\n";
+                log += "Student first name: " + verifyUSIType.getFirstName() + "\n";
+                log += "Student last name: " + verifyUSIType.getFamilyName() + "\n";
+                log += "Student DOB: " + verifyUSIType.getDateOfBirth() + "\n";
+                log += "Student USI: " + verifyUSIType.getUSI() + "\n";
+                log += "Request IP: " + RequestThreadLocal.ip.get() + "\n";
+                log += "SOAP request:"  + RequestThreadLocal.requestEnvelop.get() + "\n";
+                log += "SOAP response:"  + RequestThreadLocal.responseEnvelop.get() + "\n";
+                log += "Exception:"  + exception + "\n";
+                log += "User advice:"  + userAdvice + "\n";
+                logger.error(log, exception);
+            }
         }
     }
 

@@ -4,12 +4,15 @@ import com.google.inject.Inject;
 import com.sun.xml.wss.XWSSecurityException;
 import ish.common.types.LocateUSIResult;
 import ish.common.types.USIVerificationResult;
+import ish.oncourse.usi.RequestThreadLocal;
 import ish.oncourse.usi.USIService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.xml.stream.XMLStreamException;
 import java.text.ParseException;
 
@@ -18,6 +21,9 @@ public class UsiRestService {
 
     @Inject
     private USIService usiService;
+
+    @Context
+    private HttpServletRequest httpServletRequest;
 
     @GET
     @Path("/verify")
@@ -30,6 +36,7 @@ public class UsiRestService {
                                         @QueryParam("collegeABN") String collegeABN,
                                         @QueryParam("softwareId") String softwareId,
                                         @QueryParam("collegeKey") String collegeKey) throws ParseException {
+        RequestThreadLocal.ip.set(httpServletRequest.getRemoteAddr());
         return usiService.verifyUsi(studentFirstName, studentLastName, studentBirthDate, usiCode, orgCode, collegeABN, softwareId, collegeKey);
     }
 
