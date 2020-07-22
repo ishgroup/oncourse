@@ -156,6 +156,10 @@ public class AuthenticationService implements IAuthenticationService {
 		}
 
 		if (StringUtils.trimToNull(token) == null) {
+			token = request.getParameter(SESSION_TOKEN);
+		}
+
+		if (StringUtils.trimToNull(token) == null) {
 			return null;
 		}
 		
@@ -183,7 +187,11 @@ public class AuthenticationService implements IAuthenticationService {
 		if (StringUtils.trimToNull(token) == null) {
 			token = cookieService.getCookieValue(SESSION_TOKEN);
 		}
-		
+
+		if (StringUtils.trimToNull(token) == null) {
+			token = request.getParameter(SESSION_TOKEN);
+		}
+
 		String[] nodePath = token.split(TOKEN_DELIMITER);
 		
 		Long childId =  sessionManager.getSelectedChildId(nodePath[0], nodePath[1]);

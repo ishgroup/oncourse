@@ -1,3 +1,4 @@
+
 export interface ContactNode {
   contactId: string;
   enrolments: any[];
@@ -44,10 +45,24 @@ export class CheckoutApi {
 
 
   makePayment(paymentRequest: PaymentRequest, xValidateOnly: boolean, payerId: string): Promise<PaymentResponse> {
+
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; PORTAL_SESSION=`);
+    const token = encodeURIComponent(parts.pop().split(';').shift());
+
+    let delimiter: String;
+
+    if (window.location.href.includes('?')) {
+      delimiter = '&'
+    } else {
+      delimiter = '?'
+    }
+
+    let xOrigin: String = `${window.location.href}${delimiter}PORTAL_SESSION=${token}`
     return this.http.POST(
       `/v2/makePayment`,
       paymentRequest,
-      { headers: {xValidateOnly, payerId, xOrigin: window.location.href },
+      { headers: {xValidateOnly, payerId, xOrigin },
         params: { },
         responseType: '' });
   }
