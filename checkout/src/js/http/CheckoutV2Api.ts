@@ -12,7 +12,7 @@ export class CheckoutV2Api {
     return this.http.POST(
       `/v2/makePayment`,
       paymentRequest,
-      {headers: {xValidateOnly, payerId}},
+      {headers: {xValidateOnly, payerId, xOrigin: window.location.href}},
     );
   }
 }
