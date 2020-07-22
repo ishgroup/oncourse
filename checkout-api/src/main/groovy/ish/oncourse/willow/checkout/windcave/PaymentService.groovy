@@ -76,7 +76,8 @@ class PaymentService {
     @CompileStatic(TypeCheckingMode.SKIP)
     SessionAttributes createSession(String origin, Money amount, String merchantReference, Boolean storeCard) {
         SessionAttributes attributes = new SessionAttributes()
-
+        String delimiter = new URL(origin).query ? '&' : '?'
+        origin += delimiter
         try {
 
             HTTPBuilder builder =  new HTTPBuilder()
@@ -96,9 +97,9 @@ class PaymentService {
                                         language           : "en",
                                         methods            : ["card"],
                                         callbackUrls       : [
-                                                approved :  origin + '?paymentStatus=success',
-                                                declined :  origin + '?paymentStatus=fail',
-                                                cancelled:  origin + '?paymentStatus=cancel'
+                                                approved :  origin + 'paymentStatus=success',
+                                                declined :  origin + 'paymentStatus=fail',
+                                                cancelled:  origin + 'paymentStatus=cancel'
                                         ]
             ]
             if (storeCard) {

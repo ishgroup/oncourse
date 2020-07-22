@@ -27,6 +27,6 @@ public interface CheckoutV2Api  {
     @Produces({ "application/json" })
     @CollegeInfo
     @XValidate
-    PaymentResponse makePayment(PaymentRequest paymentRequest, @HeaderParam("xValidateOnly") Boolean xValidateOnly, @HeaderParam("payerId") String payerId, @HeaderParam("Referer") String referer);
+    PaymentResponse makePayment(PaymentRequest paymentRequest, @HeaderParam("xValidateOnly") Boolean xValidateOnly, @HeaderParam("payerId") String payerId, @HeaderParam("xOrigin") String referer);
 }
 
