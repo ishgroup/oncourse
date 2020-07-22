@@ -26,7 +26,7 @@ export interface PaymentRequest {
   storeCard: boolean;
 }
 
-export type PaymentStatus = "IN_PROGRESS" | "FAILED" | "SUCCESSFUL" |"SUCCESSFUL_WAITING_COURSES" | "SUCCESSFUL_BY_PASS"
+export type PaymentStatus = "IN_PROGRESS" | "FAILED" | "SUCCESSFUL" |"SUCCESSFUL_WAITING_COURSES" | "SUCCESSFUL_BY_PASS";
 
 export interface PaymentResponse {
   sessionId: string;
@@ -44,10 +44,15 @@ export class CheckoutApi {
 
 
   makePayment(paymentRequest: PaymentRequest, xValidateOnly: boolean, payerId: string): Promise<PaymentResponse> {
-    return this.http.POST(`/v2/makePayment`, paymentRequest, { headers: { xValidateOnly, payerId }, params: { }, responseType: '' });
+    return this.http.POST(
+      `/v2/makePayment`,
+      paymentRequest,
+      { headers: {xValidateOnly, payerId, xOrigin: window.location.href },
+        params: { },
+        responseType: '' });
   }
 
   getPaymentStatus(sessionId:string, payerId: string): Promise<PaymentResponse> {
-    return this.http.GET(`/v2/getPaymentStatus/${sessionId}`, { headers: { payerId }, params: { }, responseType: '' });
+    return this.http.GET(`/v2/getPaymentStatus/${sessionId}`, {headers: {payerId}, params: { }, responseType: ''});
   }
 }
