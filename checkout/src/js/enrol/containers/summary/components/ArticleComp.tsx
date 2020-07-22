@@ -1,14 +1,8 @@
-import * as React from "react";
+import React from "react";
 import {Contact, Article, Product} from "../../../../model";
 import classnames from "classnames";
 import {ItemWrapper} from "./ItemWrapper";
-import {CSSProperties} from "react";
 
-const styles: CSSProperties = {
-  article: {
-    textAlign: "right",
-  },
-};
 
 export interface Props {
   contact: Contact;
@@ -47,7 +41,7 @@ class ArticleComp extends React.Component<Props, State> {
     return false;
   }
 
-  private handleQuantityBlur() {
+  private handleQuantityBlur = () => {
     const {onQuantityValueChange} = this.props;
     onQuantityValueChange(this.state.quantity || 1);
   }
