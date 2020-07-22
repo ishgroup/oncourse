@@ -28,6 +28,7 @@ public class AccessController implements Dispatcher {
 	private final static String SELECT_COLLEGE_PAGE = "/selectcollege";
 	private final static String CALENDAR_FILE = "/calendar";
 	private final static String UNSUBSCRIBE_PAGE = "/unsubscribe";
+	private final static String REDIRECT = "/redirect";
 
     private final static String[] RESOURCES = {"/css","/js","/img","/fonts",
 			"/certificate/img","/certificate/js","/certificate/css"};
@@ -92,7 +93,8 @@ public class AccessController implements Dispatcher {
 				path.startsWith(PASSWORD_RECOVERY_PAGE) ||
 				path.equals(SELECT_COLLEGE_PAGE) ||
 				path.startsWith(CALENDAR_FILE) ||
-				path.startsWith(UNSUBSCRIBE_PAGE);
+				path.startsWith(UNSUBSCRIBE_PAGE) ||
+				path.startsWith(REDIRECT);
 	}
 
 	private String getPageName(String path) {
