@@ -79,6 +79,8 @@ public class CreateTables {
 		customFields.add(dataMap.getDbEntity("CustomField").getRelationship("relatedApplication"));
 		customFields.add(dataMap.getDbEntity("CustomField").getRelationship("relatedWaitingList"));
 		customFields.add(dataMap.getDbEntity("CustomField").getRelationship("relatedSurvey"));
+		customFields.add(dataMap.getDbEntity("CustomField").getRelationship("relatedCourseClass"));
+
 		for (Relationship rel : customFields) {
 			dataMap.getDbEntity("CustomField").removeRelationship(rel.getName());
 		}
