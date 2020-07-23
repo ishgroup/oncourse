@@ -2,7 +2,6 @@ apply plugin: 'com.moowork.node'
 
 node {
     version = '12.18.3'
-    npmVersion = '6.14.6'
     yarnVersion = '1.22.4'
     download = System.properties['os.name'] != "FreeBSD" // FreeBSD has no binaries this plugin can install
 }

@@ -6,11 +6,11 @@
   "scripts": {
     "dependencies:outdated": "npm outdated",
     "clean": "rm -rf ./build",
-    "build:prod": "npm run clean && webpack -p --progress --env.NODE_ENV production",
+    "build:prod": "webpack -p --progress --env.NODE_ENV production",
     "build:prod:watch": "webpack --watch --progress -p --env.NODE_ENV production",
-    "build:dev": "npm run clean && webpack --progress",
+    "build:dev": "webpack --progress",
     "build:dev:watch": "webpack --debug --watch --env.SOURCE_MAP eval-source-map",
-    "build:mock": "npm run clean && webpack --progress --env.NODE_ENV mock",
+    "build:mock": "webpack --progress --env.NODE_ENV mock",
     "build:mock:watch": "webpack --debug --watch --env.SOURCE_MAP eval-source-map --env.NODE_ENV mock",
     "test": "jest --ci  --testResultsProcessor=jest-junit",
     "start": "webpack-dev-server --history-api-fallback=true --progress --open --config webpack.dev.config.js --env.entry=./src/js/app.tsx --content-base ./src/dev",
@@ -30,7 +30,7 @@
     "jest-junit": "3.1.0",
     "jsdoc": "3.5.5",
     "mocker-data-generator": "2.4.9",
-    "node-sass": "4.7.2",
+    "node-sass": "^4.14.1",
     "null-loader": "0.1.1",
     "react-inspector": "2.2.0",
     "redux-form-website-template": "0.0.80",
@@ -43,7 +43,7 @@
     "tslint-config-airbnb": "5.3.0",
     "typedoc": "0.9.0",
     "typedoc-webpack-plugin": "1.1.4",
-    "typescript": "2.7.2",
+    "typescript": "^3.9.7",
     "webpack": "4.1.1",
     "webpack-dev-server": "3.1.1"
   },
@@ -122,5 +122,8 @@
     "titleTemplate": "{classname}-{title}",
     "ancestorSeparator": " › ",
     "usePathForSuiteName": "true"
+  },
+  "resolutions": {
+    "upath": "1.1.1"
   }
 }

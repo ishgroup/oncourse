@@ -44,6 +44,7 @@ export class DOM {
 export class Browser {
   static isSafari() {
     // Safari 3.0+ "[object HTMLElementConstructor]"
+    // @ts-ignore
     return /constructor/i.test(window['HTMLElement']) ||
       (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] ||
         (typeof window['safari'] !== 'undefined' && window['safari'].pushNotification));
