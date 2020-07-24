@@ -5,7 +5,26 @@ configurations {
 	all*.exclude group: 'org.apache.tapestry', module: 'tapestry-spring'
 }
 
+ext {
+	tapestryVersion = '5.5.0'
+}
+
 dependencies {
+	/**
+	 * tapestry dependencies
+	 */
+	compile "org.apache.tapestry:tapestry-core:$tapestryVersion"
+	compile "org.apache.tapestry:plastic:$tapestryVersion"
+	compile "org.apache.tapestry:tapestry5-annotations:$tapestryVersion"
+	compile "org.apache.tapestry:tapestry-ioc:$tapestryVersion"
+	compile "org.apache.tapestry:tapestry-json:$tapestryVersion"
+	compile "org.apache.tapestry:tapestry-spring:$tapestryVersion"
+	compile "org.apache.tapestry:tapestry-upload:$tapestryVersion"
+
+	testCompile ("org.apache.tapestry:tapestry-test:$tapestryVersion") {
+		exclude group: 'org.seleniumhq.selenium.server', module: 'selenium-server'
+	}
+
 	compile project(':common:common-model')
 	compile (project(':common:common-services'))  {
 		exclude group: 'axis', module: 'axis'
