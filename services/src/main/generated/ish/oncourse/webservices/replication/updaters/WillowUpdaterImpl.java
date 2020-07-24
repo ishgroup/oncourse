@@ -7,7 +7,6 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.webservices.exception.UpdaterNotFoundException;
-import ish.oncourse.webservices.replication.v20.updaters.V20UpdatersMap;
 import ish.oncourse.webservices.replication.v21.updaters.V21UpdatersMap;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.PortHelper;
@@ -27,16 +26,10 @@ public class WillowUpdaterImpl implements IWillowUpdater {
 	 * Willow updaters mappings
 	 */
  
-	private Map<String, IWillowUpdater> v20updaterMap = new HashMap<>();
- 
+
 	private Map<String, IWillowUpdater> v21updaterMap = new HashMap<>();
 
 	public WillowUpdaterImpl(@Inject ITextileConverter textileConverter) {
-
-
-		V20UpdatersMap v20map = new V20UpdatersMap();
-		v20map.initMap(textileConverter);
-		v20updaterMap = v20map.getUpdaterMap();
 
 		V21UpdatersMap v21map = new V21UpdatersMap();
 		v21map.initMap(textileConverter);
@@ -53,11 +46,6 @@ public class WillowUpdaterImpl implements IWillowUpdater {
 		String key = EntityMapping.getWillowEntityIdentifer(stub.getEntityIdentifier());
 		final IWillowUpdater updater;
 		switch (version) {
-
-			case V20:
-				updater = v20updaterMap.get(key);
-				break;
-
 			case V21:
 				updater = v21updaterMap.get(key);
 				break;

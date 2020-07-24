@@ -5,7 +5,6 @@ package ish.oncourse.webservices.services;
 
 import ish.oncourse.util.UIRequestExceptionHandler;
 import ish.oncourse.webservices.exception.PaymentNotFoundException;
-import ish.oncourse.webservices.pages.PaymentNotFound;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ComponentSource;
@@ -37,7 +36,7 @@ public class ServiceRequestExceptionHandler extends UIRequestExceptionHandler {
 		}
 		String exceptionPageName = null;
 		if (cause != null && cause instanceof PaymentNotFoundException) {
-			exceptionPageName = PaymentNotFound.class.getSimpleName();
+			exceptionPageName = "PaymentNotFound";
 			exception = cause;
 		} else {
 			exceptionPageName = UIRequestExceptionHandler.DEFAULT_ERROR_PAGE;

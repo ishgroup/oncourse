@@ -3,7 +3,6 @@ package ish.oncourse.webservices.replication.builders;
 import ish.oncourse.model.Queueable;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.webservices.exception.BuilderNotFoundException;
-import ish.oncourse.webservices.replication.v20.builders.V20BuildersMap;
 import ish.oncourse.webservices.replication.v21.builders.V21BuildersMap;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.SupportedVersions;
@@ -14,16 +13,10 @@ import java.util.Map;
 public class WillowStubBuilderImpl implements IWillowStubBuilder {
 
 
-	private Map<String, IWillowStubBuilder> v20builderMap = new HashMap<>();
-
 	private Map<String, IWillowStubBuilder> v21builderMap = new HashMap<>();
 
 
 	public WillowStubBuilderImpl() {
-
-		V20BuildersMap v20map = new V20BuildersMap();
-		v20map.initMap();
-		v20builderMap = v20map.getBuilderMap();
 
 		V21BuildersMap v21map = new V21BuildersMap();
 		v21map.initMap();
@@ -37,11 +30,6 @@ public class WillowStubBuilderImpl implements IWillowStubBuilder {
 
 		final IWillowStubBuilder builder;
 		switch (version) {
-
-			case V20:
-				builder = v20builderMap.get(key);
-				break;
-
 			case V21:
 				builder = v21builderMap.get(key);
 				break;
@@ -65,11 +53,6 @@ public class WillowStubBuilderImpl implements IWillowStubBuilder {
 
 		final IWillowStubBuilder builder;
 		switch (version) {
-
-			case V20:
-				builder = v20builderMap.get(key);
-				break;
-
 			case V21:
 				builder = v21builderMap.get(key);
 				break;

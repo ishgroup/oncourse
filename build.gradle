@@ -44,7 +44,6 @@ taskTree{
 
 ext {
     replicationVersions = [
-            20,     // introduced in onCourse 9.10
             21      // introduced in onCourse 9.13
 	]
     referenceVersions = [

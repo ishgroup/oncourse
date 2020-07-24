@@ -44,4 +44,9 @@ public class TestPaymentPortTypeImpl implements PaymentPortType {
 	public ParametersMap verifyUSI(@WebParam(partName = "verificationRequest", name = "verificationRequest", targetNamespace = "") ParametersMap parametersMap) throws ReplicationFault {
 		return parametersMap;
 	}
+
+	@Override
+	public ParametersMap verifyCheckout(ParametersMap verificationRequest) throws ReplicationFault {
+		return null;
+	}
 }
