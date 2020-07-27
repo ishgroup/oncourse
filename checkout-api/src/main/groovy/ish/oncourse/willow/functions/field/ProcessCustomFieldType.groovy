@@ -1,5 +1,7 @@
 package ish.oncourse.willow.functions.field
 
+import groovy.json.JsonSlurper
+import groovy.transform.CompileStatic
 import ish.oncourse.common.field.FieldProperty
 import ish.oncourse.model.College
 import ish.oncourse.model.CustomFieldType
@@ -10,6 +12,7 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.lang3.StringUtils
 
+@CompileStatic
 class ProcessCustomFieldType {
 
     private static final String OTHER_CHOICE = '*'
@@ -37,10 +40,40 @@ class ProcessCustomFieldType {
     
     
     ProcessCustomFieldType process() {
-        CustomFieldType type = selectCustomFieldType()
-        String defaultValue = StringUtils.trimToNull(type.getDefaultValue())
+        CustomFieldType customField = selectCustomFieldType()
+        String defaultValue = StringUtils.trimToNull(customField.getDefaultValue())
 
-        if (defaultValue) {
+        if (customField.dataType) {
+            switch (customField.dataType) {
+                case ish.common.types.DataType.TEXT:
+                    this.dataType = DataType.STRING
+                    this.defaultValue = defaultValue
+                    break
+                case ish.common.types.DataType.LIST:
+
+                    List<CustomFieldItem> choices = new JsonSlurper().parseText(defaultValue) as List<CustomFieldItem>
+
+                    if (choices.find {it.value == OTHER_CHOICE}) {
+                        this.dataType = DataType.CHOICE
+                    } else {
+                        this.dataType = DataType.ENUM
+                    }
+
+                    choices.findAll { it.value != OTHER_CHOICE }.each {  items << new Item(value: it.value, key: it.value) }
+
+                    break
+                case ish.common.types.DataType.MAP:
+                    this.dataType = DataType.ENUM
+                    List<CustomFieldItem> choices = new JsonSlurper().parseText(defaultValue) as List<CustomFieldItem>
+                    choices.each {  items << new Item(value: "$it.label ($it.value)", key: it.value) }
+                    break
+                default:
+                    throw new IllegalArgumentException("Unsupported custom field data type: $customField.dataType," +
+                            " college id: $customField.college.id," +
+                            " field key: $customField.key")
+
+            }
+        } else if (defaultValue) {
             String[] choices = defaultValue.split(SPLITTER)*.trim()
             if (choices.length > 1) {
                 if (choices.contains(OTHER_CHOICE)) {
@@ -79,5 +112,10 @@ class ProcessCustomFieldType {
 
     List<Item> getItems() {
         return items
+    }
+
+    private interface CustomFieldItem {
+        getValue()
+        getLabel()
     }
 }
