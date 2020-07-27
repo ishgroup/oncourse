@@ -193,11 +193,27 @@
 
     <script type="text/javascript">
         jQuery(function() {
+
+            var $j = jQuery.noConflict();
+
             var countryNames = ${countryList};
-            
-            jQuery("#country").autocomplete({
+
+            $j("#country").autocomplete({
                 source: countryNames
             });
+
+            $j("#profileForm").submit(function( event ) {
+                event.preventDefault();
+
+                $j("input[name^='customField']").each(function () {
+                    var submitValue = $j(this).attr("submit-value");
+                    if(submitValue) {
+                        $j(this).val(submitValue)
+                    }
+                })
+
+                this.submit();
+            })
         });
     </script>
     </t:container>
