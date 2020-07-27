@@ -1,5 +1,6 @@
 package ish.oncourse.portal.components.profile;
 
+import ish.common.types.DataType;
 import ish.oncourse.components.AvetmissStrings;
 import ish.oncourse.model.*;
 import ish.oncourse.portal.pages.Profile;
@@ -145,7 +146,11 @@ public class ProfileForm {
 	}
 
 	public Integer getDataType() {
-		return getCustomFieldType.get(customFieldKey).getDataType().getDatabaseValue();
+		DataType dataType = getCustomFieldType.get(customFieldKey).getDataType();
+		if (dataType != null) {
+			return dataType.getDatabaseValue();
+		}
+		return null;
 	}
 
 	public String getCurrentCustomFieldValue() {
