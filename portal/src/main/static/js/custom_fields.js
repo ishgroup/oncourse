@@ -12,17 +12,28 @@ $j(document).ready(function () {
             var dataValue = $j(this).data('default');
             var values;
 
-            if([7,8].includes(dataType)) {
+            if (dataType === 7) {
                 values = dataValue.map(function(x) {
                     return x.value.includes("*")
                       ? {value: "Other", label: "Other"}
-                      : {value: x.value, label: dataType === 8 ? x.label + (" (" + x.value + ")" ) : "" }
+                      : {value: x.value}
+                });
+            }
+
+            if (dataType === 8) {
+                values = dataValue.filter(function(x) {
+                    return !x.value.includes("*")
                 });
 
+                values = dataValue.map(function(x) {
+                    return {value: x.value, label: x.label ? x.label + (" (" + x.value + ")" ) : "" }
+                });
+            }
 
-            } else {
+
+            if(![7,8].includes(dataType)) {
                 values = dataValue.split(';');
-                values = values.map(function(x){ return "*" == x ? "Other" : x });
+                values = values.map(function(x){ return "*" === x ? "Other" : x });
             }
 
             if (values.length > 0) {
