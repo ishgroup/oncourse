@@ -158,7 +158,7 @@
 							<div class="form-group">
 								<label for="customField" class="control-label">${currentCustomFieldName}<t:if test="customFieldRequired(customFieldKey)"><em title="${message:required}">*</em></t:if></label>
 								<div class="${validateHandler.validateClass(customFieldKey)}">
-									<t:textfield t:id="customField" value="currentCustomFieldValue" class="form-control ${validateHandler.errorClass(customFieldKey)}" data-default="${defaultValue}"/>
+									<t:textfield t:id="customField" value="currentCustomFieldValue" class="form-control ${validateHandler.errorClass(customFieldKey)}" data-default="${defaultValue}" data-type="${dataType}"/>
 									<span t:type="HintComponent" validationMessage="${validateHandler.error(customFieldKey)}"/>
 								</div>
 							</div>

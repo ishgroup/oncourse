@@ -144,6 +144,10 @@ public class ProfileForm {
 		return getCustomFieldType.get(customFieldKey).getDefaultValue();
 	}
 
+	public Integer getDataType() {
+		return getCustomFieldType.get(customFieldKey).getDataType().getDatabaseValue();
+	}
+
 	public String getCurrentCustomFieldValue() {
 		return customFieldContainer.get(customFieldKey);
 	}
