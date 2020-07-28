@@ -23,6 +23,14 @@ public enum DataType implements DisplayableExtendedEnumeration<Integer> {
     TEXT(0, "Text"),
 
     /**
+     * Renders as a multiline field with three lines by default. No validation. Allows new lines.
+     *
+     * Database value: 9
+     */
+    @API
+    LONG_TEXT(9, "Long text"),
+
+    /**
      * Date (without time or timezone)
      *
      * Database value: 1
@@ -83,11 +91,26 @@ public enum DataType implements DisplayableExtendedEnumeration<Integer> {
     /**
      *  Map of label - code
      *
-     * Database value: 7
+     * Database value: 8
      */
     @API
-    MAP(8, "Map");
+    MAP(8, "Map"),
 
+    /**
+     * String which is validated to be a URL.
+     *
+     * Database value: 10
+     */
+    @API
+    URL(10, "Map"),
+
+    /**
+     * String which is validated to be a URL.
+     *
+     * Database value: 10
+     */
+    @API
+    EMAIL(11, "Map");
 
     private Integer value;
     private String displayValue;
