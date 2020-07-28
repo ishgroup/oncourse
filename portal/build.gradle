@@ -6,10 +6,10 @@ apply plugin: 'com.moowork.node'
 node {
     version = '12.9.1'
     yarnVersion = '1.22.4'
-    download = true
+    download = false
 }
 
-yarn.args = ['--verbose']
+yarn_install.args = ['--verbose']
 
 
 task webpack(type: NodeTask, dependsOn: 'yarn_install') {
