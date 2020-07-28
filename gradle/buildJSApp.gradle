@@ -6,7 +6,7 @@ node {
     download = System.properties['os.name'] != "FreeBSD" // FreeBSD has no binaries this plugin can install
 }
 
-yarn_install.args = ['--verbose -x npmInstall -x npmSetup']
+yarn_install.args = ['--verbose']
 
 task webpack(type: NodeTask, dependsOn: 'yarn_install') {
     script = file('node_modules/.bin/webpack')
