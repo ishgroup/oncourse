@@ -29,6 +29,7 @@ import ish.oncourse.willow.model.field.Field
 import ish.oncourse.willow.model.field.Suburb
 import ish.validation.StudentErrorCode
 import ish.validation.StudentValidator
+import org.apache.cayenne.ExtendedEnumeration
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.QueryCacheStrategy
@@ -233,7 +234,7 @@ class SubmitContactFields {
                     if (f.key.startsWith(FieldProperty.CUSTOM_FIELD_CONTACT.key)) {
                         result = f.value
                     } else if (org.apache.commons.lang.StringUtils.isNumeric(f.value)) {
-                        result = TypesUtil.getEnumForDatabaseValue(f.value, this.class.classLoader.loadClass("ish.common.types.$f.enumType"))
+                        result = TypesUtil.getEnumForDatabaseValue(f.value, this.class.classLoader.loadClass("ish.common.types.$f.enumType") as Class< ?extends ExtendedEnumeration>)
                         if (FieldProperty.IS_STILL_AT_SCHOOL.key == f.key) {
                             result = (result as YesNoOptions).booleanValue
                         }
