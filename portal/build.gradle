@@ -9,7 +9,8 @@ node {
     download = true
 }
 
-yarn_install.args = ['--verbose -x npmInstall -x npmSetup']
+yarn.args = ['--verbose']
+
 
 task webpack(type: NodeTask, dependsOn: 'yarn_install') {
     script = file('node_modules/.bin/webpack')
