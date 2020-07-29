@@ -106,25 +106,25 @@ public class ProfileForm {
 			contact = portalService.getContact();
 		}
 
-		List<CustomFieldType> customFieldTypes = ObjectSelect.query(CustomFieldType.class)
-				.where(CustomFieldType.COLLEGE.eq(contact.getCollege())
-						.andExp(CustomFieldType.ENTITY_NAME.eq(Contact.class.getSimpleName())))
-				.select(contact.getObjectContext());
-		
-		getCustomFieldType = GetCustomFieldTypeByKey.valueOf(customFieldTypes, contact.getCollege().getId());
-
-		for (CustomFieldType fieldType : customFieldTypes) {
-			if (getContactFieldHelper().isCustomFieldTypeVisible(fieldType) && Contact.class.getSimpleName().equals(fieldType.getEntityName())) {
-				customFieldContainer.put(fieldType.getKey(), null);
-			}
-		}
-		//fill values for fields which already predefined for contact
-		for (CustomField field : contact.getCustomFields()) {
-			if (getContactFieldHelper().isCustomFieldVisible(field) &&
-					Contact.class.getSimpleName().equals(field.getCustomFieldType().getEntityName())) {
-				customFieldContainer.put(field.getCustomFieldType().getKey(), field.getValue());
-			}
-		}
+//		List<CustomFieldType> customFieldTypes = ObjectSelect.query(CustomFieldType.class)
+//				.where(CustomFieldType.COLLEGE.eq(contact.getCollege())
+//						.andExp(CustomFieldType.ENTITY_NAME.eq(Contact.class.getSimpleName())))
+//				.select(contact.getObjectContext());
+//
+//		getCustomFieldType = GetCustomFieldTypeByKey.valueOf(customFieldTypes, contact.getCollege().getId());
+//
+//		for (CustomFieldType fieldType : customFieldTypes) {
+//			if (getContactFieldHelper().isCustomFieldTypeVisible(fieldType) && Contact.class.getSimpleName().equals(fieldType.getEntityName())) {
+//				customFieldContainer.put(fieldType.getKey(), null);
+//			}
+//		}
+//		//fill values for fields which already predefined for contact
+//		for (CustomField field : contact.getCustomFields()) {
+//			if (getContactFieldHelper().isCustomFieldVisible(field) &&
+//					Contact.class.getSimpleName().equals(field.getCustomFieldType().getEntityName())) {
+//				customFieldContainer.put(field.getCustomFieldType().getKey(), field.getValue());
+//			}
+//		}
 	}
 
 	@Cached
