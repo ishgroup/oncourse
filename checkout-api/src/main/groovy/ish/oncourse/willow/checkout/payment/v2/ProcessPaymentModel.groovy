@@ -159,8 +159,8 @@ class ProcessPaymentModel {
             paymentIn.dateBanked = sessionAttributes.paymentDate
             paymentIn.billingId = sessionAttributes.billingId
             paymentIn.sessionId = merchantReference
-            paymentIn.gatewayResponse = sessionAttributes.responceJson
-            paymentIn.statusNotes = sessionAttributes.statusText
+            paymentIn.gatewayResponse = sessionAttributes.statusText
+            paymentIn.statusNotes = sessionAttributes.responceJson
 
             if (paymentService.skipAuth) {
                 succeedPayment()
@@ -176,8 +176,8 @@ class ProcessPaymentModel {
                 if (sessionAttributes.authorised) {
                     succeedPayment()
                 } else {
-                    paymentIn.gatewayResponse = sessionAttributes.responceJson
-                    paymentIn.statusNotes = sessionAttributes.statusText
+                    paymentIn.gatewayResponse = sessionAttributes.statusText
+                    paymentIn.statusNotes = sessionAttributes.responceJson
                     PaymentInAbandon.valueOf(createPaymentModel.model, false).perform()
                     context.commitChanges()
                     response = new PaymentResponse()
