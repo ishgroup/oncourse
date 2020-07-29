@@ -115,7 +115,7 @@ class ProcessCustomFieldType {
     }
 
     private interface CustomFieldItem {
-        getValue()
-        getLabel()
+        String getValue()
+        String getLabel()
     }
 }
