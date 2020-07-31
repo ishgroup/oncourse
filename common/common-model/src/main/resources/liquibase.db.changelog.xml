@@ -50,4 +50,9 @@
 			<column name="dataType" type="SMALLINT"/>
 		</addColumn>
 	</changeSet>
+
+	<changeSet id="5" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<sql>ALTER TABLE PaymentIn MODIFY COLUMN statusNotes MEDIUMTEXT</sql>
+	</changeSet>
+
 </databaseChangeLog>
