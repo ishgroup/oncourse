@@ -1,11 +1,11 @@
 package ish.oncourse.portal.certificate
 
+import ish.common.types.OutcomeStatus
 import ish.common.types.QualificationType
 import ish.oncourse.model.Certificate
-import ish.oncourse.model.CertificateOutcome
+import ish.oncourse.model.Outcome
 import ish.oncourse.portal.services.PortalUtils
 import ish.oncourse.services.preference.PreferenceController
-import org.apache.commons.lang3.RandomStringUtils
 
 /**
  * User: akoiro
@@ -50,9 +50,17 @@ class Model {
             )
         }
 
-        def certificateOutcomes = certificate.certificateOutcomes.findAll({ it.outcome?.module && (model.qualification == null ||  it.outcome?.status?.assessable) })
-        model.modules = certificateOutcomes.collect({ CertificateOutcome outcome ->
-                new Module(code: outcome.outcome?.module?.nationalCode, title: outcome.outcome?.module?.title)
+        def outcomes = certificate.certificateOutcomes*.outcome.findAll({ it?.module && it?.status in OutcomeStatus.STATUSES_VALID_FOR_CERTIFICATE })
+        model.modules = outcomes.collect({ Outcome outcome ->
+                String description = null
+                if (OutcomeStatus.STATUS_ASSESSABLE_RPL_GRANTED == outcome.status) {
+                    description = "Recognised prior learning"
+                } else if (OutcomeStatus.STATUS_ASSESSABLE_CREDIT_TRANSFER) {
+                    description = "Credit transfer"
+                }
+                new Module(code: outcome?.module?.nationalCode,
+                        title: outcome?.module?.title,
+                        description: description )
         })
         model.nrt = model.qualification != null || !model.modules.isEmpty()
 
@@ -70,6 +78,7 @@ class Model {
     static class Module {
         String code
         String title
+        String description
     }
 
 }

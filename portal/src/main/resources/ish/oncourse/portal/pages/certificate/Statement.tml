@@ -75,6 +75,9 @@
         </div>
         <div class="col-sm-10">
             ${module.title}
+            <t:if test="module.description">
+                 (${module.description})
+            </t:if>
         </div>
     </div>
 </t:block>
