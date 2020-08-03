@@ -55,7 +55,7 @@ class Model {
                 String description = null
                 if (OutcomeStatus.STATUS_ASSESSABLE_RPL_GRANTED == outcome.status) {
                     description = "Recognised prior learning"
-                } else if (OutcomeStatus.STATUS_ASSESSABLE_CREDIT_TRANSFER) {
+                } else if (OutcomeStatus.STATUS_ASSESSABLE_CREDIT_TRANSFER == outcome.status) {
                     description = "Credit transfer"
                 }
                 new Module(code: outcome?.module?.nationalCode,
