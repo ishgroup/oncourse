@@ -1,5 +1,6 @@
 package ish.oncourse.portal.certificate
 
+import ish.common.types.OutcomeStatus
 import ish.oncourse.model.Certificate
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.services.preference.PreferenceControllerFactory
@@ -38,7 +39,7 @@ class ModelBuilder {
                 .where(Certificate.UNIQUE_CODE.eq(code).andExp(Certificate.ISSUED.isNotNull()))
                 .selectFirst(cayenneService.newContext())
 
-        if (certificate == null) {
+        if (certificate == null || certificate.certificateOutcomes.empty || !certificate.certificateOutcomes*.outcome.any { it.status in OutcomeStatus.STATUSES_VALID_FOR_CERTIFICATE } ) {
             return Result.certificateNotFound
         }
 
