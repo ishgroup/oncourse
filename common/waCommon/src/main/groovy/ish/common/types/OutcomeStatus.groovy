@@ -216,7 +216,9 @@ public enum OutcomeStatus implements DisplayableExtendedEnumeration<Integer> {
 	public static final List<OutcomeStatus> STATUSES_VALID_FOR_CERTIFICATE = Arrays.asList(STATUS_ASSESSABLE_PASS,
             STATUS_ASSESSABLE_RPL_GRANTED,
             STATUS_ASSESSABLE_RCC_GRANTED,
-            STATUS_ASSESSABLE_CREDIT_TRANSFER);
+            STATUS_ASSESSABLE_CREDIT_TRANSFER,
+			STATUS_NON_ASSESSABLE_COMPLETED
+		);
 
 	private String assessableName;
 	private String nonAssessableName;
