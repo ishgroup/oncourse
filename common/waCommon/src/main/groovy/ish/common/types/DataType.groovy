@@ -102,15 +102,26 @@ public enum DataType implements DisplayableExtendedEnumeration<Integer> {
      * Database value: 10
      */
     @API
-    URL(10, "Map"),
+    URL(10, "URL"),
 
     /**
-     * String which is validated to be a URL.
+     * String which is validated to be a email address.
      *
-     * Database value: 10
+     * Database value: 11
      */
     @API
-    EMAIL(11, "Map");
+    EMAIL(11, "Email"),
+
+
+    /**
+     * Message template drop down list.
+     *
+     * Database value: 12
+     */
+    @API
+    MESSAGE_TEMPLATE(12, "Message template");
+
+
 
     private Integer value;
     private String displayValue;
