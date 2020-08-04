@@ -8,23 +8,11 @@ import groovyx.net.http.HTTPBuilder
 import ish.common.types.CreditCardType
 import ish.math.Country
 import ish.math.Money
-import ish.oncourse.model.College
-import ish.oncourse.model.PaymentGatewayType
-import ish.oncourse.services.preference.GetPreference
-import org.apache.cayenne.ObjectContext
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-
-import static ish.oncourse.services.preference.Preferences.PAYMENT_GATEWAY_TYPE
-import static ish.persistence.Preferences.ACCOUNT_CURRENCY
-import static ish.persistence.Preferences.PAYMENT_GATEWAY_PASS
-import static ish.persistence.Preferences.PAYMENT_GATEWAY_PURCHASE_WITHOUT_AUTH
-
 @CompileStatic
-class PaymentService {
+class PaymentService implements IPaymentService {
 
     private static final String WINDCAVE_BASE = 'https://sec.windcave.com'
     public static final String  AUTH_TYPE = "auth"
@@ -32,29 +20,17 @@ class PaymentService {
     public static final String DEFAULT_ERROR_MESSAGE =  "Something unexpected has happened, please contact ish support or try again later"
 
     private static final Logger logger = LogManager.getLogger(PaymentService)
+
     private String gatewayPass
-    private boolean skipAuth
+    private Boolean skipAuth
     private Country country
 
-    PaymentService(College college, ObjectContext context) {
 
-        PaymentGatewayType gatewayType = PaymentGatewayType.valueOf(new GetPreference(college, PAYMENT_GATEWAY_TYPE, context).getValue())
+    PaymentService(String gatewayPass, Boolean skipAuth, Country country) {
 
-        switch (gatewayType) {
-            case PaymentGatewayType.TEST:
-                this.gatewayPass = "SXNoR3JvdXBSRVNUX0RldjphOTljYWUxYmRlZGJjNGU5ODQ3OTNmZjNhNjkwMDM5ZTdlZWUyOTgyMmQ0ZDQzZDg2M2JkZDE4NGNlOTk4NmRj"
-                this.skipAuth = false
-                break
-            case PaymentGatewayType.PAYMENT_EXPRESS:
-                this.gatewayPass = new GetPreference(college, PAYMENT_GATEWAY_PASS, context).getValue()
-                this.skipAuth = new GetPreference(college, PAYMENT_GATEWAY_PURCHASE_WITHOUT_AUTH, context).getBooleanValue()
-                break
-            case PaymentGatewayType.DISABLED:
-            default:
-                throw new IllegalArgumentException()
-        }
-
-        this.country =  new GetPreference(college, ACCOUNT_CURRENCY, context).getCountry()
+        this.gatewayPass = gatewayPass
+        this.skipAuth = skipAuth
+        this.country = country
     }
 
     Boolean isSkipAuth() {

@@ -14,7 +14,9 @@ import ish.oncourse.willow.checkout.functions.*
 import ish.oncourse.willow.checkout.payment.CreatePaymentModel
 import ish.oncourse.willow.checkout.payment.GetPaymentStatus
 import ish.oncourse.willow.checkout.payment.ProcessPaymentModel
+import ish.oncourse.willow.checkout.windcave.IPaymentService
 import ish.oncourse.willow.checkout.windcave.PaymentService
+import ish.oncourse.willow.checkout.windcave.PaymentServiceBuilder
 import ish.oncourse.willow.model.checkout.CheckoutModel
 import ish.oncourse.willow.model.checkout.CheckoutModelRequest
 import ish.oncourse.willow.model.checkout.ContactNode
@@ -184,7 +186,7 @@ class CheckoutApiImpl implements CheckoutApi, CheckoutV2Api {
         ObjectContext context = cayenneService.newContext()
         College college = collegeService.college
 
-        PaymentService paymentService = new PaymentService(college, context)
+        IPaymentService paymentService = new PaymentServiceBuilder().build(college, context)
         paymentService.checkStatus(sessionId)
         new V2PaymentResponse(responseText:paymentService.checkStatus(sessionId).statusText)
     }

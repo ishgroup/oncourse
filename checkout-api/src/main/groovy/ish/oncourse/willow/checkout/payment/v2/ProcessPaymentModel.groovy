@@ -13,7 +13,9 @@ import ish.oncourse.util.payment.PaymentInAbandon
 import ish.oncourse.util.payment.PaymentInModel
 import ish.oncourse.util.payment.PaymentInSucceed
 import ish.oncourse.willow.checkout.payment.SetConfirmationStatus
+import ish.oncourse.willow.checkout.windcave.IPaymentService
 import ish.oncourse.willow.checkout.windcave.PaymentService
+import ish.oncourse.willow.checkout.windcave.PaymentServiceBuilder
 import ish.oncourse.willow.checkout.windcave.SessionAttributes
 import ish.oncourse.willow.model.checkout.payment.PaymentStatus
 import ish.oncourse.willow.model.common.CommonError
@@ -108,7 +110,8 @@ class ProcessPaymentModel {
         context.commitChanges()
         Money amount = createPaymentModel.paymentIn.amount
 
-        PaymentService paymentService = new PaymentService(college, context)
+
+        IPaymentService paymentService = new PaymentServiceBuilder().build(college, context)
 
         if (xValidate) {
             String merchantReference = UUID.randomUUID().toString()

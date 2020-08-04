@@ -4,6 +4,7 @@ import ish.oncourse.api.cayenne.CayenneService
 import ish.oncourse.cayenne.WillowCayenneModuleBuilder
 import ish.oncourse.test.LoadDataSet
 import ish.oncourse.test.TestContext
+import ish.oncourse.willow.CheckoutCayenneModule
 import ish.oncourse.willow.FinancialService
 import ish.oncourse.willow.filters.RequestFilter
 import ish.oncourse.willow.service.impl.CollegeService
@@ -29,6 +30,7 @@ abstract class ApiTest {
         cayenneRuntime = ServerRuntime.builder()
                 .addConfig("cayenne-oncourse.xml")
                 .addModule(new WillowCayenneModuleBuilder().build())
+                .addModule(new CheckoutCayenneModule())
                 .build()
         cayenneService = new CayenneService(cayenneRuntime)
         collegeService = new CollegeService(cayenneService)
