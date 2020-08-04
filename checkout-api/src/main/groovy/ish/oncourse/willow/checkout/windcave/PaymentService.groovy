@@ -160,7 +160,9 @@ class PaymentService implements IPaymentService {
                  */
 
                 attributes.complete = body['state'] == 'complete'
-                buildSessionAttributes(attributes, body['transactions'][0] as Map<String, Object> )
+                if (body['transactions'] && (body['transactions'] as Map<String, Object>).size() > 0 ) {
+                    buildSessionAttributes(attributes, body['transactions'][0] as Map<String, Object> )
+                }
             }
         } catch (Exception e) {
             logger.error("Fail to get session status")

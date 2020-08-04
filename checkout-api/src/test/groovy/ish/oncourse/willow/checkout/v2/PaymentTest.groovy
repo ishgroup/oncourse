@@ -23,7 +23,7 @@ class PaymentTest extends ApiTest {
     }
 
     @Test
-    void testXValidatePayment() {
+    void testCCPayment() {
         ThreadLocalPayerId.set(1005l)
         ThreadLocalValidateOnly.set(true)
 

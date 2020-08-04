@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+
+    <Country id="1" ishVersion="1" name="Tuvalu" isoCodeAlpha2="TV" isoCodeAlpha3="TUV" isoCodeNumeric="798" asccssCode="1609" saccCode="1511"/>
+    <College id="1" name="Sydney Community College"
+             webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880"
+             communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09"
+             timezone="Australia/Sydney"
+             requiresAvetmiss="0" paymentGatewayAccount="ishGroup_Dev"
+             paymentGatewayPass="test1234"/>
+
+    <Preference id="1" collegeId="1" name="license.ccprocessing"
+                value_string="true" />
+    <Preference id="2" collegeId="1" name="payment.gateway.type"
+                value_string="PAYMENT_EXPRESS" />
+    <Preference id="3" collegeId="1" name="payment.gateway.api.key"
+                value_string="SXNoR3JvdXBSRVNUX0RldjphOTljYWUxYmRlZGJjNGU5ODQ3OTNmZjNhNjkwMDM5ZTdlZWUyOTgyMmQ0ZDQzZDg2M2JkZDE4NGNlOTk4NmRj" />
+    <WebSite id="1" collegeId="1" name="Sydney Community College" siteKey="mammoth" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+
+    <FieldConfiguration id="2" collegeId="1"  angelId="-1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Enrolment Configuration1" type="1"/>
+
+    <Field id="101"  collegeId="1"  angelId="100"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker1"
+           description="Favorite car maker"
+           fieldConfigurationId="2"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="1"
+           property="firstName"/>
+
+    <Field id="102"  collegeId="1"  angelId="2"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker2"
+           description="Favorite car maker"
+           fieldConfigurationId="2"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="2"
+           property="lastName"/>
+
+    <Field id="103"  collegeId="1"  angelId="3"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker3"
+           description="Favorite car maker"
+           fieldConfigurationId="2"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="3"
+           property="emailAddress"/>
+
+    <Field id="126"  collegeId="1"  angelId="126"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker26"
+           description="Favorite car maker"
+           fieldConfigurationId="2"
+           mandatory="4"
+           defaultValue="BMW"
+           fieldOrder="26"
+           property="specialNeeds"/>
+
+    <Field id="113"  collegeId="1"  angelId="113"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker13"
+           description="Favorite car maker"
+           fieldConfigurationId="2"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="13"
+           property="abn"/>
+
+    <Student id="1005" collegeId="1" angelId="1005"
+             created="2011-09-12 00:51:00.0" modified="2011-09-12 00:51:00.0"
+             disabilityType="0" englishProficiency="0" highestSchoolLevel="0"
+             indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0"
+             priorEducationCode="0" labourForceType="0" />
+
+
+    <Contact uniqueCode="1wjwestabliehed" id="1005" collegeId="1" studentId="1005"
+             angelId="1005" countryId="1" created="2011-09-12 00:51:00.0" isCompany="0"
+             isMale="1" familyName="Student1" givenName="Student1" emailAddress="Student1@Student1.net"
+             dateOfBirth="2011-09-08" street="Independence av. 13" suburb="Minsk"
+             isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
+             isMarketingViaSMSAllowed="1" />
+
+    <!--   Owing $50 for 1005-->
+    <Invoice type="1" id="1005" angelId="1005" source="O" amountOwing="50" contactId="1005" collegeId="1" dateDue="2011-09-20 11:14:54"
+             description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="50" totalGst="50"
+             created="2011-09-12 00:38:54.0" modified="2011-09-12 00:38:55.0" confirmationStatus="1" allowAutoPay="1"/>
+
+    <InvoiceLine id="1005" angelId="1005" collegeId="1" invoiceId="1005" quantity="1.0" discountEachExTax="0.00" priceEachExTax="50"
+                 taxEach="0.00" title="Test Invoice Line"
+                 created="2011-09-12 00:38:54.0" modified="2011-09-12 00:38:55.0"/>
+
+
+
+
+</dataset>
