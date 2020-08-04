@@ -3,13 +3,18 @@ package ish.oncourse.willow.checkout.v2
 import ish.common.types.CreditCardType
 import ish.math.Money
 import ish.oncourse.model.PaymentIn
+import ish.oncourse.services.paymentexpress.TestPaymentGatewayService
 import ish.oncourse.willow.checkout.CheckoutApiImpl
+import ish.oncourse.willow.checkout.windcave.TestPaymentService
 import ish.oncourse.willow.model.checkout.payment.PaymentStatus
+import ish.oncourse.willow.model.common.CommonError
 import ish.oncourse.willow.model.v2.checkout.payment.PaymentRequest
 import ish.oncourse.willow.model.v2.checkout.payment.PaymentResponse
 import ish.oncourse.willow.service.ApiTest
 import org.apache.cayenne.query.ObjectSelect
 import org.junit.Test
+
+import javax.ws.rs.BadRequestException
 
 import static ish.oncourse.willow.filters.RequestFilter.ThreadLocalPayerId
 import static ish.oncourse.willow.filters.XValidateFilter.ThreadLocalValidateOnly
@@ -117,13 +122,26 @@ class PaymentTest extends ApiTest {
         //do not store cc id
         assertNull(payment.billingId)
 
+    }
 
 
+    @Test
+    void testCardDeclined() {
+        ThreadLocalPayerId.set(1005l)
+        ThreadLocalValidateOnly.set(false)
 
-
-
-
-
+        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService)
+        PaymentRequest request = new PaymentRequest()
+        request.setCcAmount(50.0)
+        request.sessionId = TestPaymentService.INVALID_TEST_ID
+        request.merchantReference = UUID.randomUUID().toString()
+        try {
+            api.makePayment(request, false, '1005', "https://localhost")
+        } catch(BadRequestException e) {
+            assertEquals((e.response.entity as CommonError).getMessage(), "Credit card declined: Transaction Declined")
+            return
+        }
+        assertTrue('Bad request here',false)
     }
 
 }
