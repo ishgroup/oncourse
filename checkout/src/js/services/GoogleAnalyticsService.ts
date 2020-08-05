@@ -28,7 +28,7 @@ export const initGAEvent = (data, state) => {
   trackingId = state.preferences.trackingId;
 
   try {
-    if (window['ga'] && data) {
+    if (data) {
 
       switch (data.ecAction) {
         case 'addProduct':
