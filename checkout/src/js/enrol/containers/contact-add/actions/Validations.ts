@@ -1,3 +1,5 @@
+const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i;
+
 export const validateContact = (values: any): any => {
   const errors: any = {};
 
@@ -9,7 +11,7 @@ export const validateContact = (values: any): any => {
   }
   if (!values.email) {
     errors.email = "The student's email is required.";
-  } else if (!/^[^@\s]+@[^@\s.]+\..+$/i.test(values.email)) {
+  } else if (!EMAIL_REGEX.test(values.email)) {
     errors.email = "The email address does not appear to be valid.";
   }
   return errors;
@@ -23,7 +25,7 @@ export const validateCompany = (values: any): any => {
   }
   if (!values.email) {
     errors.email = "The student's email is required.";
-  } else if (!/^[^@\s]+@[^@\s.]+\..+$/i.test(values.email)) {
+  } else if (!EMAIL_REGEX.test(values.email)) {
     errors.email = "The email address does not appear to be valid.";
   }
   return errors;
