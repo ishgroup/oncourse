@@ -24,7 +24,7 @@ export const validateCompany = (values: any): any => {
     errors.lastName = "The company name is required.";
   }
   if (!values.email) {
-    errors.email = "The student's email is required.";
+    errors.email = "The company email is required.";
   } else if (!EMAIL_REGEX.test(values.email)) {
     errors.email = "The email address does not appear to be valid.";
   }
