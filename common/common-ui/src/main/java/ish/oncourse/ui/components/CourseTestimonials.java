@@ -16,6 +16,9 @@ public class CourseTestimonials {
     @Property
     private Course course;
 
+    @Parameter
+    private Integer count;
+
     @Property
     private List<Survey> surveys;
 
@@ -26,8 +29,11 @@ public class CourseTestimonials {
     private boolean hasItems;
 
     private void beginRender() {
+        if (count == null) {
+            count = 3;
+        }
         List<Survey> allSurveys = GetSurveysByCourse.valueOf(course.getObjectContext(), course).get();
-        surveys = GetRandomSurveys.valueOf(GetWebVisibleSurveys.valueOf(allSurveys).get(), 3).get();
+        surveys = GetRandomSurveys.valueOf(GetWebVisibleSurveys.valueOf(allSurveys).get(), count).get();
         hasItems = surveys.size() > 0;
     }
 }
