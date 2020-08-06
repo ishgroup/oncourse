@@ -1,11 +1,6 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
     <li>
         <label title="${field.description}">${field.name}<t:if test="${field.mandatory}"> *</t:if></label>
-        <t:if test="hasDefaultValue">
-            <input name="customField" data-default="${defaultValue}" autocomplete="off" type="text"  class="ui-autocomplete-input" value="${getValue()}" data-key="${field.property}"/>
-        </t:if>
-        <t:unless test="hasDefaultValue">
-            <input name="customField"  type="text" value="${getValue()}" data-key="${field.property}"/>
-        </t:unless>    
+        <input name="customField"  type="text"  data-default="${defaultValue}" data-type="${dataType}"  value="${getValue()}" data-key="${field.property}"/>
     </li>
 </t:container>

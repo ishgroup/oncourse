@@ -28,13 +28,24 @@ public class SurveyTextLineField {
     @Property
     private String defaultValue;
 
+    @Property
+    private  Integer dataType;
+
+    @Property
+    private  String value;
+
     @SetupRender
     public void beforeRender() {
         customFieldType = RequestToSurvey.getCustomFieldType(field);
         if (customFieldType == null) {
             throw new IllegalArgumentException(String.format("Field key is wrong, id: %d, property: %s", field.getId(), field.getProperty()));
-        } else if (hasDefaultValue = StringUtils.trimToNull(customFieldType.getDefaultValue()) != null) {
+        } else {
+            value = (String) GetSurveyValue.valueOf(survey, field, customFieldType).get();
             defaultValue = customFieldType.getDefaultValue();
+            if (customFieldType.getDataType() != null) {
+                dataType = customFieldType.getDataType().getDatabaseValue();
+            }
+
         }
     }
     
