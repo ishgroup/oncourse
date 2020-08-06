@@ -313,7 +313,7 @@ class SubmitContactFields {
                 break
             case FieldProperty.CUSTOM_FIELD_CONTACT:
                 ProcessCustomFieldType processor = new ProcessCustomFieldType(fieldKey, objectContext, college).process()
-                if (ENUM == processor.dataType && !processor.items.collect { it.value }.contains(value)) {
+                if (ENUM == processor.dataType && !processor.items.collect { it.key }.contains(value)) {
                     stringError = 'Please select a value from the drop-down list'
                 }
                 break
