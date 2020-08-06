@@ -24,7 +24,6 @@ export const initGAEvent = (data, state) => {
 
   // TODO: move to config.js
   trackingName = 'gtmEC';
-
   trackingId = state.preferences.trackingId;
 
   try {
@@ -48,7 +47,7 @@ export const initGAEvent = (data, state) => {
       }
     }
   } catch (e) {
-    console.log('unhandled error in google analytics service ' + e);
+    console.log('unhandled error in google analytics service ' + e, data);
   }
 };
 
@@ -160,8 +159,7 @@ const sendCheckoutStepEvent = (data, cart, summary) => {
           step: step.step,
           option: step.initialOption,
         },
-        products: products.map(product => {
-
+        products: products.filter(product => productsSummary[product.id]).map(product => {
           return {
             name: product.name,
             id: product.id,
@@ -237,7 +235,7 @@ const sendPurchaseCartEvent = (data, cart, amount, summary) => {
           affiliation: data.type,
           revenue: amount.total,              // Total transaction value (incl. tax and shipping)
         },
-        products: products.map(product => ({
+        products: products.filter(product => productsSummary[product.id]).map(product => ({
           name: product.name,
           id: product.id,
           price: productsSummary[product.id].price,
@@ -258,9 +256,13 @@ const getProductsSummary = summary => {
     if (e === "contactNodes") {
       Object.keys(summary.entities[e]).forEach(k => {
         Object.keys(summary.entities[e][k]).forEach(entity => {
-          if (productTypes.includes(entity) && summary.entities[e][k][entity].length) {
+          if (productTypes.includes(entity)
+            && summary.entities[e][k][entity].length) {
             summary.entities[e][k][entity].forEach(id => {
               const product = summary.entities[entity][id];
+              if (!product.selected) {
+                return;
+              }
               const productId = product.productId || product.classId;
 
               if (!productsSummary.hasOwnProperty(productId)) {
@@ -273,8 +275,8 @@ const getProductsSummary = summary => {
                 productsSummary[productId].price = productsSummary[productId].price + product.price.fee;
                 productsSummary[productId].quantity++;
               } else {
-                productsSummary[productId].price = product.total;
-                productsSummary[productId].quantity =  product.quantity;
+                productsSummary[productId].price = product.total || product.price;
+                productsSummary[productId].quantity =  product.quantity || 1;
               }
             });
           }
@@ -411,7 +413,7 @@ export class GABuilder {
     if (response && response.status === 'SUCCESSFUL') {
       return {
         ecAction: 'purchase',
-        id: response.sessionId,
+        id: response.reference,
         status: 'success',
         type: 'credit card',
       };
@@ -420,7 +422,7 @@ export class GABuilder {
     if (response && response.status === 'SUCCESSFUL_BY_PASS') {
       return {
         ecAction: 'purchase',
-        id: response.sessionId,
+        id: response.reference,
         status: 'success',
         type: 'corporate pass',
       };
