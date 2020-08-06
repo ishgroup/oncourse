@@ -51,7 +51,7 @@ class ProcessCustomFieldType {
                     break
                 case ish.common.types.DataType.LIST:
 
-                    List<CustomFieldItem> choices = new JsonSlurper().parseText(defaultValue) as List<CustomFieldItem>
+                    List<CustomFieldItem> choices = new JsonSlurper().parseText(defaultValue).collect { it as CustomFieldItem }
 
                     if (choices.find {it.value == OTHER_CHOICE}) {
                         this.dataType = DataType.CHOICE
@@ -64,8 +64,8 @@ class ProcessCustomFieldType {
                     break
                 case ish.common.types.DataType.MAP:
                     this.dataType = DataType.ENUM
-                    List<CustomFieldItem> choices = new JsonSlurper().parseText(defaultValue) as List<CustomFieldItem>
-                    choices.each {  items << new Item(value: "$it.label ($it.value)", key: it.value) }
+                    List<CustomFieldItem> choices = new JsonSlurper().parseText(defaultValue).collect { it as CustomFieldItem }
+                    choices.each {  items << new Item(value: "$it.label ($it.value)".toString(), key: it.value) }
                     break
                 default:
                     throw new IllegalArgumentException("Unsupported custom field data type: $customField.dataType," +
@@ -114,8 +114,9 @@ class ProcessCustomFieldType {
         return items
     }
 
-    private interface CustomFieldItem {
-        String getValue()
-        String getLabel()
+    private class CustomFieldItem {
+        String value
+        String label
+
     }
 }
