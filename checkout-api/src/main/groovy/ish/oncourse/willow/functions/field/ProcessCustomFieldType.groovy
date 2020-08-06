@@ -59,13 +59,13 @@ class ProcessCustomFieldType {
                         this.dataType = DataType.ENUM
                     }
 
-                    choices.findAll { it.value != OTHER_CHOICE }.each {  items << new Item(value: it.value, key: it.value) }
+                    choices.findAll { it.value != OTHER_CHOICE }.each {  items << new Item(value: it.value, key: it.value.trim()) }
 
                     break
                 case ish.common.types.DataType.MAP:
                     this.dataType = DataType.ENUM
                     List<CustomFieldItem> choices = new JsonSlurper().parseText(defaultValue).collect { it as CustomFieldItem }
-                    choices.each {  items << new Item(value: "$it.label ($it.value)".toString(), key: it.value) }
+                    choices.each {  items << new Item(value: "$it.label ($it.value)".toString(), key: it.value.trim()) }
                     break
                 default:
                     throw new IllegalArgumentException("Unsupported custom field data type: $customField.dataType," +
