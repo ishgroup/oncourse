@@ -43,7 +43,7 @@ class ValidateCustomFields {
             }
             Field correspondingField = correspondingFields[0]
             String value = StringUtils.trimToNull(correspondingField.value)
-            if (value && f.dataType == DataType.ENUM && !f.enumItems.collect { it.value }.contains(value)) {
+            if (value && f.dataType == DataType.ENUM && !f.enumItems.collect { it.key }.contains(value)) {
                 fieldErrors << new FieldError(name: f.key, error: "Please select ${f.name} value for $className from the drop-down list")
             } else if (!value && f.mandatory) {
                 fieldErrors << new FieldError(name: f.key, error: "${f.name} for $className is required")
