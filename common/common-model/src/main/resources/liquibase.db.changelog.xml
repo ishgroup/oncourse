@@ -59,5 +59,9 @@
 		<sql>ALTER TABLE EmailTemplate DROP INDEX college_name</sql>
 	</changeSet>
 
+	<changeSet id="7" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<sql>ALTER TABLE Script DROP INDEX college_name</sql>
+	</changeSet>
+
 
 </databaseChangeLog>
