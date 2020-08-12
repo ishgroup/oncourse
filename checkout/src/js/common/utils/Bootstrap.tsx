@@ -1,23 +1,21 @@
 import * as React from "react";
-import {forEach, isNil} from "lodash";
+import {forEach} from "lodash";
 import * as localforage from "localforage";
-import {findDOMNode, render} from "react-dom";
+import {render} from "react-dom";
 import {Provider} from "react-redux";
 import {Store} from "redux";
 import {whenReady} from "../../services/jq";
-
 import {IshState} from "../../services/IshState";
 import {Level, Logger, LogMessage} from "../../services/Logger";
 import {ATTR_DATA_CID, HTMLMarker, HTMLMarkers} from "../services/HTMLMarker";
 import * as HtmlDataService from "./HtmlUtils";
 import {Actions} from "../../web/actions/Actions";
-
 import {htmlProps2CourseClass} from "../../web/services/CourseClassService";
 import {CourseClass} from "../../model";
 import {ClassesListSchema} from "../../NormalizeSchema";
 import {normalize} from "normalizr";
 import {ConfigConstants} from "../../config/ConfigConstants";
-
+import {bugsnagClient, ErrorBoundary} from "../../constants/Bugsnag";
 
 export class Bootstrap {
   private components: { [key: string]: HTMLMarker } = {};
@@ -49,12 +47,15 @@ export class Bootstrap {
       const realProps = HtmlDataService.parse(container, marker);
 
       render(
-        <Provider store={this.store}>
-          <marker.component {...realProps}/>
-        </Provider>,
+        <ErrorBoundary>
+          <Provider store={this.store}>
+            <marker.component {...realProps}/>
+          </Provider>
+        </ErrorBoundary>,
         container,
       );
     } catch (e) {
+      bugsnagClient.notify(e);
       Logger.log(new LogMessage(Level.ERROR, `Component with cid:${marker.id} cannot be instantiated.`, [e]));
       Logger.log(new LogMessage(Level.INFO, `State`, [this.store.getState()]));
       Logger.log(new LogMessage(Level.INFO, `App version`, [ConfigConstants.APP_VERSION]));
@@ -92,6 +93,7 @@ export class Bootstrap {
         });
       });
     } catch (e) {
+      bugsnagClient.notify(e);
       Logger.log(new LogMessage(Level.ERROR, "Unhandled error", e));
     }
   }

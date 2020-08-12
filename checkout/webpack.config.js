@@ -8,6 +8,7 @@ const TypedocWebpackPlugin = require('typedoc-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
 const ZipPlugin = require('zip-webpack-plugin');
+const { BugsnagBuildReporterPlugin, BugsnagSourceMapUploaderPlugin } = require('webpack-bugsnag-plugins');
 
 
 module.exports = function (options = {}) {
@@ -145,6 +146,21 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
             compress: true,
             forceZip64Format: false,
           },
+        }),
+        new BugsnagBuildReporterPlugin({
+          apiKey: '08b42469660b2c6a50e998866c7a2bee',
+          releaseStage: 'production',
+          appVersion: `${BUILD_NUMBER}`
+        }),
+        new BugsnagSourceMapUploaderPlugin({
+          apiKey: '08b42469660b2c6a50e998866c7a2bee',
+          releaseStage: 'production',
+          appVersion: `${BUILD_NUMBER}`,
+          uploadSource: true,
+          overwrite: true,
+          publicPath: '*/'
+        }, {
+          logLevel: 'debug'
         })
       );
       break;
