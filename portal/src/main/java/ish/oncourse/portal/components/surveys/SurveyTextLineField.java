@@ -49,8 +49,5 @@ public class SurveyTextLineField {
         }
     }
     
-    public String getValue() {
-        return (String) GetSurveyValue.valueOf(survey, field, customFieldType).get();
-    }
 
 }
