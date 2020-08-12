@@ -55,4 +55,9 @@
 		<sql>ALTER TABLE PaymentIn MODIFY COLUMN statusNotes MEDIUMTEXT</sql>
 	</changeSet>
 
+	<changeSet id="6" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<sql>ALTER TABLE EmailTemplate DROP INDEX college_name</sql>
+	</changeSet>
+
+
 </databaseChangeLog>
