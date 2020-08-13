@@ -74,5 +74,10 @@ export class CourseClass {
    * Timezone for the class
    */
   timezone?: string;
+
+  /**
+   * Course Subject tag name
+   */
+  subject?: string;
 }
 

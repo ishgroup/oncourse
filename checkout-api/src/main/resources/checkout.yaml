@@ -843,6 +843,12 @@ definitions:
       postcode:
         type: string
         description: Postcode that corresponds certain location
+  web.product.Type:
+    type: string
+    enum:
+      - ARTICLE
+      - MEMBERSHIP
+      - VOUCHER
   web.Product:
     type: object
     properties:
@@ -864,6 +870,8 @@ definitions:
       canBuy:
         type: boolean
         description: Is on sale and is Web visible
+      type:
+        $ref: '#/definitions/web.product.Type'
   web.Course:
     type: object
     properties:
@@ -959,6 +967,10 @@ definitions:
       timezone:
         type: string
         description: Timezone for the class
+      subject:
+        type: string
+        description: Course Subject tag name
+
   web.CourseClassPrice:
     type: object
     properties:

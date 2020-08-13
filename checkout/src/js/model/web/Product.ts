@@ -1,3 +1,4 @@
+import {Type} from "./../web/product/Type";
 
 export class Product {
 
@@ -30,5 +31,6 @@ export class Product {
    * Is on sale and is Web visible
    */
   canBuy?: boolean;
+  type?: Type;
 }
 
