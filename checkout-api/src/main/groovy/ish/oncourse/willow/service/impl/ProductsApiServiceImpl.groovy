@@ -6,6 +6,7 @@ import ish.oncourse.api.cayenne.CayenneService
 import ish.oncourse.services.preference.IsPaymentGatewayEnabled
 import ish.oncourse.willow.model.web.Product
 import ish.oncourse.willow.model.web.ProductsParams
+import ish.oncourse.willow.model.web.product.Type
 import ish.oncourse.willow.service.ProductsApi
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.ExpressionFactory
@@ -43,6 +44,19 @@ class ProductsApiServiceImpl implements ProductsApi {
                     pr.canBuy = p.isOnSale & p.isWebVisible
                     pr.description = p.description
                     pr.isPaymentGatewayEnabled = new IsPaymentGatewayEnabled(p.college, p.objectContext).get()
+
+                    switch (p.type) {
+                        case 1i:
+                            pr.type = Type.ARTICLE
+                            break
+                        case 2i:
+                            pr.type = Type.MEMBERSHIP
+                            break
+                        case 3i:
+                            pr.type = Type.MEMBERSHIP
+                            break
+                        default: throw new IllegalArgumentException()
+                    }
                     pr
                 }
             }

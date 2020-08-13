@@ -2,11 +2,15 @@ package ish.oncourse.willow.service.impl
 
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
+import ish.common.types.NodeSpecialType
 import ish.math.Money
 import ish.oncourse.api.cayenne.CayenneService
 import ish.oncourse.model.Application
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
+import ish.oncourse.model.Tag
+import ish.oncourse.model.Taggable
+import ish.oncourse.model.TaggableTag
 import ish.oncourse.services.application.FindOfferedApplication
 import ish.oncourse.services.course.GetEnrollableClasses
 import ish.oncourse.services.courseclass.CheckClassAge
@@ -24,6 +28,7 @@ import org.apache.cayenne.query.SelectById
 import java.time.ZoneOffset
 
 import static ish.common.types.CourseEnrolmentType.ENROLMENT_BY_APPLICATION
+import static org.apache.cayenne.query.ObjectSelect.query
 
 @CompileStatic
 class CourseClassesApiServiceImpl implements CourseClassesApi {
@@ -124,6 +129,7 @@ class CourseClassesApiServiceImpl implements CourseClassesApi {
                 it.isPaymentGatewayEnabled = true//new IsPaymentGatewayEnabled(college, c.objectContext).get()
                 it.price =  new BuildClassPrice(c, allowByApplication, overridenFee, promotions, contact).build()
                 it.timezone = c.timeZone
+                it.subject = getSubject(c.course)
                 it
             }
         }
@@ -150,6 +156,13 @@ class CourseClassesApiServiceImpl implements CourseClassesApi {
         }
         result
     }
-    
+
+    private String getSubject(ish.oncourse.model.Course course) {
+        query(Tag)
+                .where(Tag.TAGGABLE_TAGS.outer().dot(TaggableTag.TAGGABLE).outer().dot(Taggable.ENTITY_IDENTIFIER).eq(ish.oncourse.model.Course.simpleName))
+                .and(Tag.TAGGABLE_TAGS.outer().dot(TaggableTag.TAGGABLE).outer().dot(Taggable.ENTITY_WILLOW_ID).eq(course.id))
+                .select(cayenneService.newContext())
+                .find { NodeSpecialType.SUBJECTS == it.root.specialType }?.name
+    }
 }
 

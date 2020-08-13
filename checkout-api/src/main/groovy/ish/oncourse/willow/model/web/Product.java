@@ -1,5 +1,6 @@
 package ish.oncourse.willow.model.web;
 
+import ish.oncourse.willow.model.web.product.Type;
 
 public class Product  {
   
@@ -9,6 +10,7 @@ public class Product  {
     private String description = null;
     private Boolean isPaymentGatewayEnabled = null;
     private Boolean canBuy = null;
+    private Type type = null;
 
     /**
      * Internal Unique identifier of product
@@ -112,6 +114,23 @@ public class Product  {
       return this;
     }
 
+    /**
+     * Get type
+     * @return type
+     */
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+       this.type = type;
+    }
+
+    public Product type(Type type) {
+      this.type = type;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -124,6 +143,7 @@ public class Product  {
       sb.append("    description: ").append(toIndentedString(description)).append("\n");
       sb.append("    isPaymentGatewayEnabled: ").append(toIndentedString(isPaymentGatewayEnabled)).append("\n");
       sb.append("    canBuy: ").append(toIndentedString(canBuy)).append("\n");
+      sb.append("    type: ").append(toIndentedString(type)).append("\n");
       sb.append("}");
       return sb.toString();
     }

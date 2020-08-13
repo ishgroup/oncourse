@@ -34,6 +34,7 @@ public class CourseClass  {
     private CourseClassPrice price = null;
     private Room room = null;
     private String timezone = null;
+    private String subject = null;
 
     /**
      * Internal Unique identifier of class
@@ -290,6 +291,23 @@ public class CourseClass  {
       return this;
     }
 
+    /**
+     * Course Subject tag name
+     * @return subject
+     */
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+       this.subject = subject;
+    }
+
+    public CourseClass subject(String subject) {
+      this.subject = subject;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -311,6 +329,7 @@ public class CourseClass  {
       sb.append("    price: ").append(toIndentedString(price)).append("\n");
       sb.append("    room: ").append(toIndentedString(room)).append("\n");
       sb.append("    timezone: ").append(toIndentedString(timezone)).append("\n");
+      sb.append("    subject: ").append(toIndentedString(subject)).append("\n");
       sb.append("}");
       return sb.toString();
     }
