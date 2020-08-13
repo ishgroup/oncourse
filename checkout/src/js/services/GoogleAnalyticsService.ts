@@ -9,6 +9,7 @@ interface ProductEvent {
   variant?: string;             // Product variant (string).
   price?: number;               // Product price (currency).
   quantity?: number;
+  type?: string;
 }
 
 let trackingId;
@@ -78,7 +79,7 @@ const sendItemToCartEvent = (data: ProductEvent) => {
           name: data.name,
           id: data.id,
           price: data.price,
-          category: data.category,
+          category: data.type ? data.type.toLowerCase() : "",
           quantity: 1,
         }],
       },
@@ -120,7 +121,7 @@ const sendRemoveItemFromCartEvent = (data: ProductEvent) => {
           name: data.name,
           id: data.id,
           price: data.price,
-          category: data.category,
+          category: data.type ? data.type.toLowerCase() : "",
           quantity: 1,
         }],
       },
@@ -164,7 +165,8 @@ const sendCheckoutStepEvent = (data, cart, summary) => {
             name: product.name,
             id: product.id,
             price: productsSummary[product.id].price,
-            category: product.category,
+            variant: product.category,
+            category: product.subject,
             quantity: productsSummary[product.id].quantity,
           };
         }),
@@ -239,7 +241,7 @@ const sendPurchaseCartEvent = (data, cart, amount, summary) => {
           name: product.name,
           id: product.id,
           price: productsSummary[product.id].price,
-          category: product.category,
+          category: product.type ? product.type.toLowerCase() : "",
           quantity: productsSummary[product.id].quantity,
         })),
       },
@@ -353,22 +355,22 @@ const sendAddProductsFromCart = cart => {
  *
  **/
 export class GABuilder {
-  static addProductToCart = (type, item) => {
+  static addProductToCart = item => {
     return {
       ecAction: 'addProduct',
       id: item.id,
       name: item.name,
-      category: type,
+      category: item.type ? item.type.toLowerCase() : "" ,
       quantity: 1,
     };
   }
 
-  static removeProductFromCart = (type, item) => {
+  static removeProductFromCart = item => {
     return {
       ecAction: 'removeProduct',
       id: item.id,
       name: item.name,
-      category: type,
+      category:  item.type ? item.type.toLowerCase() : "" ,
       quantity: 1,
     };
   }

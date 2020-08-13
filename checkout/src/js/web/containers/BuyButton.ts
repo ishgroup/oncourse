@@ -19,8 +19,8 @@ function mapDispatchToProps(dispatch) {
         type: Actions.ADD_PRODUCT_TO_CART,
         payload: product,
         meta: {
-          analytics: GABuilder.addProductToCart('Product', product)
-        }
+          analytics: GABuilder.addProductToCart(product),
+        },
       });
     },
     requestProductById: (id: string) => {

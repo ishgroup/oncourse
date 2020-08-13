@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {CourseClassCart, IshState, ProductCart} from "../../services/IshState";
 import {Actions} from "../actions/Actions";
 import {GABuilder} from "../../services/GoogleAnalyticsService";
-import {Course} from "../../model/web/Course";
+import {Course} from "../../model";
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart as any);
 
@@ -23,7 +23,7 @@ function mapDispatchToProps(dispatch) {
         type: Actions.REMOVE_CLASS_FROM_CART,
         payload: courseClass,
         meta: {
-          analytics: GABuilder.removeCourseClassFromCart('Course Class', courseClass),
+          analytics: GABuilder.removeCourseClassFromCart('class', courseClass),
         },
       });
     },
@@ -32,7 +32,7 @@ function mapDispatchToProps(dispatch) {
         type: Actions.REMOVE_PRODUCT_FROM_CART,
         payload: product,
         meta: {
-          analytics: GABuilder.removeProductFromCart('Product', product),
+          analytics: GABuilder.removeProductFromCart(product),
         },
       });
     },
