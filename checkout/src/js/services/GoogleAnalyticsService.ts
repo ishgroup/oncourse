@@ -10,6 +10,7 @@ interface ProductEvent {
   price?: number;               // Product price (currency).
   quantity?: number;
   type?: string;
+  subject?: string;
 }
 
 let trackingId;
@@ -79,7 +80,8 @@ const sendItemToCartEvent = (data: ProductEvent) => {
           name: data.name,
           id: data.id,
           price: data.price,
-          category: data.type ? data.type.toLowerCase() : "",
+          variant: data.variant ? data.variant.toLowerCase() : "",
+          category: data.category,
           quantity: 1,
         }],
       },
@@ -121,7 +123,8 @@ const sendRemoveItemFromCartEvent = (data: ProductEvent) => {
           name: data.name,
           id: data.id,
           price: data.price,
-          category: data.type ? data.type.toLowerCase() : "",
+          variant: data.variant ? data.variant.toLowerCase() : "",
+          category: data.category,
           quantity: 1,
         }],
       },
@@ -165,8 +168,8 @@ const sendCheckoutStepEvent = (data, cart, summary) => {
             name: product.name,
             id: product.id,
             price: productsSummary[product.id].price,
-            variant: product.category,
-            category: product.subject,
+            variant: product.variant,
+            category: product.category,
             quantity: productsSummary[product.id].quantity,
           };
         }),
@@ -241,7 +244,8 @@ const sendPurchaseCartEvent = (data, cart, amount, summary) => {
           name: product.name,
           id: product.id,
           price: productsSummary[product.id].price,
-          category: product.type ? product.type.toLowerCase() : "",
+          variant: product.type ? product.type.toLowerCase() : "",
+          category: product.subject,
           quantity: productsSummary[product.id].quantity,
         })),
       },
@@ -299,7 +303,8 @@ const getProducts = cart => {
       products.push({
         id: product.id,
         name: product.name,
-        category: 'product',
+        variant: product.type,
+        category: ""
       });
     });
   }
@@ -309,7 +314,8 @@ const getProducts = cart => {
       products.push({
         id: course.id,
         name: course.course.name,
-        category: 'Course Class',
+        category: course.subject,
+        variant: "class"
       });
     });
   }
@@ -326,7 +332,7 @@ const sendAddProductsFromCart = cart => {
       window['ga'](`${trackingName}.ec:addProduct`, {
         id: product.id,
         name: product.name,
-        category: 'product',
+        variant: product.type,
         price: product.price || 0,
         quantity: 1,
       });
@@ -340,7 +346,8 @@ const sendAddProductsFromCart = cart => {
       window['ga'](`${trackingName}.ec:addProduct`, {
         id: course.id,
         name: course.course.name,
-        category: 'Course Class',
+        variant: 'class',
+        category: course.subject,
         price,
         quantity: 1,
       });
@@ -360,7 +367,8 @@ export class GABuilder {
       ecAction: 'addProduct',
       id: item.id,
       name: item.name,
-      category: item.type ? item.type.toLowerCase() : "" ,
+      variant: item.type ? item.type.toLowerCase() : "" ,
+      category: "",
       quantity: 1,
     };
   }
@@ -370,7 +378,8 @@ export class GABuilder {
       ecAction: 'removeProduct',
       id: item.id,
       name: item.name,
-      category:  item.type ? item.type.toLowerCase() : "" ,
+      variant:  item.type ? item.type.toLowerCase() : "" ,
+      category: "",
       quantity: 1,
     };
   }
@@ -380,7 +389,8 @@ export class GABuilder {
       ecAction: 'addProduct',
       id: item.id,
       name: item.course && item.course.name,
-      category: type,
+      variant: "class",
+      category: item.subject,
       price: getCoursePrice(item.price),
       quantity: 1,
     };
@@ -391,7 +401,8 @@ export class GABuilder {
       ecAction: 'removeProduct',
       id: item.id,
       name: item.course && item.course.name,
-      category: type,
+      variant: "class",
+      category: item.subject,
       price: getCoursePrice(item.price),
       quantity: 1,
     };
