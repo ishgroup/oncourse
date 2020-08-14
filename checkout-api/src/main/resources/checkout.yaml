@@ -1480,7 +1480,7 @@ definitions:
       price:
         type: number
       total:
-        type: number  
+        type: number
       value:
         type: number
       classes:
@@ -1850,6 +1850,8 @@ definitions:
         type: string
       reference:
         type: string
+      purchaseOrder:
+        type: string
   checkout.corporatepass.CorporatePass:
     type: object
     properties:
@@ -1859,3 +1861,5 @@ definitions:
         type: string
       message:
         type: string
+      isUsedOnline:
+        type: boolean

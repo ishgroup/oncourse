@@ -28,6 +28,7 @@ export interface CreditCardFormValues {
 
 export interface CorporatePassFormValues {
   reference: string;
+  purchaseOrder?: string;
   agreementFlag: boolean;
 }
 
@@ -61,6 +62,7 @@ export class PaymentService {
     const result: MakeCorporatePassRequest = new MakeCorporatePassRequest();
     result.agreementFlag = values.agreementFlag;
     result.reference = values.reference || null;
+    result.purchaseOrder = values.purchaseOrder;
     result.checkoutModelRequest = BuildCheckoutModelRequest.fromState(state);
     result.corporatePassId = state.checkout.payment.corporatePass.id;
     return result;

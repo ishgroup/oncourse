@@ -50,6 +50,23 @@ class CorporatePassComp extends React.Component<Props, any> {
       </div>
     );
 
+    const purchaseOrderField = () => (
+      <div className="pass-input">
+        <Field
+          component={TextField}
+          maxLength={40}
+          className="input-fixed"
+          autoComplete="off"
+          name="purchaseOrder"
+          label="Purchase Order"
+          type="text"
+          required={true}
+          ref={ref => this.passInput = ref}
+        />
+        <div className="button" id="addCorporatePass" onClick={() => this.handleClick()}>Submit</div>
+      </div>
+    );
+
     const referenceField = () => (
       <div className="pass-input">
         <Field
@@ -79,6 +96,10 @@ class CorporatePassComp extends React.Component<Props, any> {
 
           {corporatePass.id &&
             referenceField()
+          }
+
+          {corporatePass.isUsedOnline &&
+            purchaseOrderField()
           }
 
           {corporatePass.message &&
