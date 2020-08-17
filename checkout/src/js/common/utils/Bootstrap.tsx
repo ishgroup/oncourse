@@ -16,6 +16,7 @@ import {ClassesListSchema} from "../../NormalizeSchema";
 import {normalize} from "normalizr";
 import {ConfigConstants} from "../../config/ConfigConstants";
 import {bugsnagClient, ErrorBoundary} from "../../constants/Bugsnag";
+import {initGAEvent} from "../../services/GoogleAnalyticsService";
 
 export class Bootstrap {
   private components: { [key: string]: HTMLMarker } = {};
@@ -82,9 +83,24 @@ export class Bootstrap {
     }
   }
 
+  // private onLinkClick = (type,code) => {
+  //   initGAEvent({
+  //     ecAction: "linkClick",
+  //     type,
+  //     code
+  //   },
+  //   this.store.getState()
+  //   )
+  // }
+
 
   private bootstrap = (): void => {
     try {
+
+      // const classLinks = document.querySelectorAll('a[href*="class/"]');
+      // const productLinks = document.querySelectorAll('a[href*="class/"]');
+
+
       Object.keys(this.components).forEach(cid => {
         const containers = document.querySelectorAll(`[${ATTR_DATA_CID}='${cid}']`);
         const marker: HTMLMarker = this.components[cid];

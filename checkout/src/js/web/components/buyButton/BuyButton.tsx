@@ -1,12 +1,12 @@
-import * as React from "react";
-import {MouseEvent} from "react";
+import React, {MouseEvent} from "react";
 import classnames from "classnames";
+import handleViewport from 'react-in-viewport';
 import {stopPropagation} from "../../../common/utils/HtmlUtils";
-
 import {ConfirmOrderDialog} from "../addButton/ConfirmOrderDialog";
 import {Product} from "../../../model";
+import {sendProductImpressionEvent} from "../../../services/GoogleAnalyticsService";
 
-export class BuyButton extends React.Component<BuyButtonProps, BuyButtonState> {
+class BuyButtonBase extends React.Component<BuyButtonProps, BuyButtonState> {
   constructor() {
     super();
 
@@ -14,6 +14,7 @@ export class BuyButton extends React.Component<BuyButtonProps, BuyButtonState> {
       showedPopup: false,
       isAlreadyAdded: false,
       pending: false,
+      isViewEventSent: false,
     };
   }
 
@@ -39,6 +40,7 @@ export class BuyButton extends React.Component<BuyButtonProps, BuyButtonState> {
         showedPopup: true,
         isAlreadyAdded: false,
         pending: false,
+        isViewEventSent: false,
       });
     }
   }
@@ -51,8 +53,25 @@ export class BuyButton extends React.Component<BuyButtonProps, BuyButtonState> {
 
   componentDidMount() {
     const {id, requestProductById} = this.props;
-
     requestProductById(id);
+  }
+
+  componentDidUpdate() {
+    const {inViewport, product} = this.props;
+    const {isViewEventSent} = this.state;
+
+    if (inViewport && !isViewEventSent) {
+      this.setState({
+        isViewEventSent: true
+      })
+      sendProductImpressionEvent({
+        id: product.id,
+        name: product.name,
+        category: "",
+        variant: product.type,
+        quantity: 1
+      })
+    }
   }
 
   render() {
@@ -83,10 +102,14 @@ export class BuyButton extends React.Component<BuyButtonProps, BuyButtonState> {
   }
 }
 
+
+export const BuyButton = handleViewport(BuyButtonBase);
+
 export interface BuyButtonProps {
   readonly id: string;
   readonly product: Product;
   readonly isAdded: boolean;
+  readonly inViewport: boolean;
   readonly checkoutPath: string;
   readonly addProduct: (product: Product) => void;
   readonly requestProductById: (id: string) => void;
@@ -96,4 +119,5 @@ interface BuyButtonState {
   readonly showedPopup: boolean;
   readonly isAlreadyAdded: boolean;
   readonly pending: boolean;
+  readonly isViewEventSent: boolean;
 }

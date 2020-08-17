@@ -3,9 +3,11 @@ import classnames from "classnames";
 import {ConfirmOrderDialog} from "./addButton/ConfirmOrderDialog";
 import {CourseClass} from "../../model";
 import {stopPropagation} from "../../common/utils/HtmlUtils";
+import handleViewport from 'react-in-viewport';
+import {sendProductImpressionEvent} from "../../services/GoogleAnalyticsService";
 
 
-export class EnrolButton extends React.Component<Props, State> {
+class EnrolButtonBase extends React.Component<Props, State> {
   constructor() {
     super();
 
@@ -13,6 +15,7 @@ export class EnrolButton extends React.Component<Props, State> {
       showedPopup: false,
       isAlreadyAdded: false,
       pending: false,
+      isViewEventSent: false,
     };
   }
 
@@ -59,6 +62,25 @@ export class EnrolButton extends React.Component<Props, State> {
     loadById(id);
   }
 
+  componentDidUpdate() {
+    const {inViewport, courseClass} = this.props;
+    const {isViewEventSent} = this.state;
+
+    if (inViewport && !isViewEventSent) {
+      this.setState({
+        isViewEventSent: true
+      })
+      sendProductImpressionEvent({
+        id: courseClass.id,
+        name: courseClass.course.name + " " + courseClass.course.code + "-" + courseClass.code,
+        category: "class",
+        variant: courseClass.subject,
+        price: courseClass.price.fee,
+        quantity: 1
+      })
+    }
+  }
+
   render() {
     const {
       id,
@@ -68,7 +90,7 @@ export class EnrolButton extends React.Component<Props, State> {
       isCancelled,
       isFinished,
       isAllowByApplication,
-      availableEnrolmentPlaces,
+      availableEnrolmentPlaces
     } = this.props.courseClass;
 
     const {isAdded, checkoutPath} = this.props;
@@ -138,9 +160,12 @@ export class EnrolButton extends React.Component<Props, State> {
   }
 }
 
+export const EnrolButton = handleViewport(EnrolButtonBase);
+
 export interface Props {
   readonly id: string;
   readonly isAdded: boolean;
+  readonly inViewport: boolean;
   readonly courseClass: CourseClass;
   readonly checkoutPath: string;
   readonly loadById: (id: string) => void;
@@ -151,5 +176,6 @@ interface State {
   showedPopup: boolean;
   isAlreadyAdded: boolean;
   pending: boolean;
+  isViewEventSent: boolean;
 }
 

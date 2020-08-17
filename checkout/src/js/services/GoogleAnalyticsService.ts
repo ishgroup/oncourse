@@ -9,8 +9,6 @@ interface ProductEvent {
   variant?: string;             // Product variant (string).
   price?: number;               // Product price (currency).
   quantity?: number;
-  type?: string;
-  subject?: string;
 }
 
 let trackingId;
@@ -46,6 +44,9 @@ export const initGAEvent = (data, state) => {
 
         case 'purchase':
           return sendPurchaseCartEvent(data, cart, amount, summary);
+
+        case 'linkClick':
+          return sendProductClickEvent(data, cart, amount, summary);
       }
     }
   } catch (e) {
@@ -57,6 +58,45 @@ const sendInitActions = () => {
   // window['ga']('create', trackingId, 'auto');
   // window['ga']('require', 'ec');
 };
+
+const sendProductClickEvent = (data, cart, amount, summary) => {
+
+}
+
+export const sendProductImpressionEvent = (data: ProductEvent) => {
+  window['dataLayer'].push({
+    ecommerce: {
+      currencyCode: 'AUD',
+      impressions: [{
+        name: data.name,
+        id: data.id,
+        price: data.price,
+        variant: data.variant ? data.variant.toLowerCase() : "",
+        category: data.category,
+        quantity: 1,
+      }],
+    },
+  });
+}
+
+const sendProductDetailsImpressionEvent = (data: ProductEvent) => {
+  window['dataLayer'].push({
+    event: 'addToCart',
+    ecommerce: {
+      currencyCode: 'AUD',
+      add: {
+        products: [{
+          name: data.name,
+          id: data.id,
+          price: data.price,
+          variant: data.variant ? data.variant.toLowerCase() : "",
+          category: data.category,
+          quantity: 1,
+        }],
+      },
+    },
+  });
+}
 
 const sendItemToCartEvent = (data: ProductEvent) => {
   // sendInitActions();
@@ -74,7 +114,7 @@ const sendItemToCartEvent = (data: ProductEvent) => {
   window['dataLayer'].push({
     event: 'addToCart',
     ecommerce: {
-      currencyCode: 'USD',
+      currencyCode: 'AUD',
       add: {
         products: [{
           name: data.name,
