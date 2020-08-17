@@ -1850,8 +1850,6 @@ definitions:
         type: string
       reference:
         type: string
-      purchaseOrder:
-        type: string
   checkout.corporatepass.CorporatePass:
     type: object
     properties:
@@ -1861,5 +1859,3 @@ definitions:
         type: string
       message:
         type: string
-      isUsedOnline:
-        type: boolean
