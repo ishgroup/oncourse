@@ -1,5 +1,7 @@
 import {Phase} from '../enrol/reducers/State';
 import {Tabs} from '../enrol/containers/payment/reducers/State';
+import {IshState} from "./IshState";
+import {findPriceInDOM} from "../common/utils/DomUtils";
 
 interface ProductEvent {
   id: string;                   // Product ID (string).
@@ -40,13 +42,13 @@ export const initGAEvent = (data, state) => {
           return sendCheckoutStepEvent(data, cart, summary);
 
         case 'checkoutStepOption':
-          return sendCheckoutStepOptionEvent(data, cart, summary);
+          return sendCheckoutStepOptionEvent(data);
 
         case 'purchase':
           return sendPurchaseCartEvent(data, cart, amount, summary);
 
         case 'linkClick':
-          return sendProductClickEvent(data, cart, amount, summary);
+          return sendProductClickEvent(data, state);
       }
     }
   } catch (e) {
@@ -59,9 +61,70 @@ const sendInitActions = () => {
   // window['ga']('require', 'ec');
 };
 
-const sendProductClickEvent = (data, cart, amount, summary) => {
+const sendProductClickEvent = (data, state: IshState) => {
+  switch (data.type) {
+    case "class": {
+      const classes = state.courses.entities;
 
-}
+      let courseClass;
+
+      Object.keys(classes).forEach(k => {
+        if (data.code.includes(classes[k].course.code) && data.code.includes(classes[k].code)) {
+          courseClass = classes[k];
+        }
+      });
+
+      if (courseClass) {
+        window['dataLayer'].push({
+          event: 'productClick',
+          ecommerce: {
+            click: {
+              products: [{
+                id: courseClass.id,
+                name: courseClass.course.name + " " + courseClass.course.code + "-" + courseClass.code,
+                category: "class",
+                variant: courseClass.subject,
+                price: courseClass.price.fee,
+                quantity: 1,
+              }],
+            },
+          },
+        });
+      }
+      break;
+    }
+    case "product": {
+      const products = state.products.entities;
+
+      let product;
+
+      Object.keys(products).forEach(k => {
+        if (data.code === (products[k].code)) {
+          product = products[k];
+        }
+      });
+
+      if (product) {
+        window['dataLayer'].push({
+          event: 'productClick',
+          ecommerce: {
+            click: {
+              products: [{
+                id: product.id,
+                name: product.name,
+                category: "",
+                variant: product.type,
+                quantity: 1,
+                price: findPriceInDOM(product.id),
+              }],
+            },
+          },
+        });
+      }
+    }
+  }
+
+};
 
 export const sendProductImpressionEvent = (data: ProductEvent) => {
   window['dataLayer'].push({
@@ -77,14 +140,12 @@ export const sendProductImpressionEvent = (data: ProductEvent) => {
       }],
     },
   });
-}
+};
 
-const sendProductDetailsImpressionEvent = (data: ProductEvent) => {
+export const sendProductDetailsImpressionEvent = (data: ProductEvent) => {
   window['dataLayer'].push({
-    event: 'addToCart',
     ecommerce: {
-      currencyCode: 'AUD',
-      add: {
+      detail: {
         products: [{
           name: data.name,
           id: data.id,
@@ -96,7 +157,7 @@ const sendProductDetailsImpressionEvent = (data: ProductEvent) => {
       },
     },
   });
-}
+};
 
 const sendItemToCartEvent = (data: ProductEvent) => {
   // sendInitActions();
@@ -218,7 +279,7 @@ const sendCheckoutStepEvent = (data, cart, summary) => {
   });
 };
 
-const sendCheckoutStepOptionEvent = (data, cart, summary) => {
+const sendCheckoutStepOptionEvent = (data) => {
   const {step} = data;
 
   if (!step || !step.option) return;
@@ -344,7 +405,7 @@ const getProducts = cart => {
         id: product.id,
         name: product.name,
         variant: product.type,
-        category: ""
+        category: "",
       });
     });
   }
@@ -355,7 +416,7 @@ const getProducts = cart => {
         id: course.id,
         name: course.course.name,
         category: course.subject,
-        variant: "class"
+        variant: "class",
       });
     });
   }

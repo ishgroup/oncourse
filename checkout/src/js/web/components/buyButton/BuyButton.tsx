@@ -4,7 +4,8 @@ import handleViewport from 'react-in-viewport';
 import {stopPropagation} from "../../../common/utils/HtmlUtils";
 import {ConfirmOrderDialog} from "../addButton/ConfirmOrderDialog";
 import {Product} from "../../../model";
-import {sendProductImpressionEvent} from "../../../services/GoogleAnalyticsService";
+import {sendProductDetailsImpressionEvent, sendProductImpressionEvent} from "../../../services/GoogleAnalyticsService";
+import {findPriceInDOM} from "../../../common/utils/DomUtils";
 
 class BuyButtonBase extends React.Component<BuyButtonProps, BuyButtonState> {
   constructor() {
@@ -64,13 +65,21 @@ class BuyButtonBase extends React.Component<BuyButtonProps, BuyButtonState> {
       this.setState({
         isViewEventSent: true
       })
-      sendProductImpressionEvent({
+
+      const eventData = {
         id: product.id,
         name: product.name,
         category: "",
         variant: product.type,
-        quantity: 1
-      })
+        quantity: 1,
+        price: findPriceInDOM(product.id)
+      }
+
+      sendProductImpressionEvent(eventData);
+
+      if(document.querySelector('[class="courseDescription"]')) {
+        sendProductDetailsImpressionEvent(eventData)
+      }
     }
   }
 

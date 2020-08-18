@@ -83,23 +83,30 @@ export class Bootstrap {
     }
   }
 
-  // private onLinkClick = (type,code) => {
-  //   initGAEvent({
-  //     ecAction: "linkClick",
-  //     type,
-  //     code
-  //   },
-  //   this.store.getState()
-  //   )
-  // }
+  private onLinkClick = (type,code) => {
+    initGAEvent({
+      ecAction: "linkClick",
+      type,
+      code,
+    },
+    this.store.getState());
+  }
 
 
   private bootstrap = (): void => {
     try {
+      const classLinks = document.querySelectorAll('a[href*="class/"]') as any;
+      const productLinks = document.querySelectorAll('a[href*="product/"]') as any;
 
-      // const classLinks = document.querySelectorAll('a[href*="class/"]');
-      // const productLinks = document.querySelectorAll('a[href*="class/"]');
+      classLinks.forEach(l => {
+        const code = l.getAttribute("href").match(/[^/]+$/)[0];
+        l.onclick = () => this.onLinkClick("class",code);
+      });
 
+      productLinks.forEach(l => {
+        const code = l.getAttribute("href").match(/[^/]+$/)[0];
+        l.onclick = () => this.onLinkClick("product",code);
+      });
 
       Object.keys(this.components).forEach(cid => {
         const containers = document.querySelectorAll(`[${ATTR_DATA_CID}='${cid}']`);

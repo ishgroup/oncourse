@@ -4,7 +4,7 @@ import {ConfirmOrderDialog} from "./addButton/ConfirmOrderDialog";
 import {CourseClass} from "../../model";
 import {stopPropagation} from "../../common/utils/HtmlUtils";
 import handleViewport from 'react-in-viewport';
-import {sendProductImpressionEvent} from "../../services/GoogleAnalyticsService";
+import {sendProductDetailsImpressionEvent, sendProductImpressionEvent} from "../../services/GoogleAnalyticsService";
 
 
 class EnrolButtonBase extends React.Component<Props, State> {
@@ -68,16 +68,21 @@ class EnrolButtonBase extends React.Component<Props, State> {
 
     if (inViewport && !isViewEventSent) {
       this.setState({
-        isViewEventSent: true
-      })
-      sendProductImpressionEvent({
+        isViewEventSent: true,
+      });
+      const eventData = {
         id: courseClass.id,
         name: courseClass.course.name + " " + courseClass.course.code + "-" + courseClass.code,
         category: "class",
         variant: courseClass.subject,
         price: courseClass.price.fee,
         quantity: 1
-      })
+      };
+
+      sendProductImpressionEvent(eventData)
+      if(document.querySelector('[class="courseDescription"]')) {
+        sendProductDetailsImpressionEvent(eventData)
+      }
     }
   }
 

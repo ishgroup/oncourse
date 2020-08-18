@@ -30,3 +30,14 @@ const offset = (el: HTMLElement): {top: number} => {
   const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
   return {top: rect.top + scrollTop};
 };
+
+export const findPriceInDOM = (code): number => {
+  const priceContainer = document.querySelector(`[data-classid="${code}"] [class="fee"]`);
+  let price;
+
+  if(priceContainer) {
+    price = parseFloat(priceContainer.innerHTML.replace(/[^\d.,]/g,""));
+  }
+
+  return price;
+}
