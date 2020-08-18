@@ -7,7 +7,7 @@
     "dependencies:update": "npm prune && npm install",
     "dependencies:outdated": "npm outdated",
     "clean": "rm -rf ./build ./out",
-    "build:prod": "npm run clean && yarn install && webpack -p --progress --env.NODE_ENV production",
+    "build:prod": "npm run clean && yarn install && webpack --progress --env.NODE_ENV production",
     "build:prod:watch": "webpack --watch --progress -p --env.NODE_ENV production",
     "build:dev": "npm run clean && webpack --progress --config webpack.dev.config.js",
     "build:dev:watch": "webpack --debug --watch --env.SOURCE_MAP eval-source-map",
@@ -68,7 +68,8 @@
     "typescript": "2.5.3",
     "webpack": "3.8.1",
     "webpack-bugsnag-plugins": "^1.4.3",
-    "webpack-dev-server": "2.9.3"
+    "webpack-dev-server": "2.9.3",
+    "uglifyjs-webpack-plugin": "1.2.4"
   },
   "dependencies": {
     "@bugsnag/js": "6.5.*",

@@ -9,6 +9,7 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
 const ZipPlugin = require('zip-webpack-plugin');
 const { BugsnagBuildReporterPlugin, BugsnagSourceMapUploaderPlugin } = require('webpack-bugsnag-plugins');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 
 module.exports = function (options = {}) {
@@ -101,6 +102,7 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
 
 const plugins = (NODE_ENV, BUILD_NUMBER) => {
   const plugins = [
+    new UglifyJsPlugin(),
     __common.DefinePlugin(NODE_ENV, BUILD_NUMBER),
     new ExtractTextPlugin("[name].css"),
     new webpack.optimize.ModuleConcatenationPlugin(),
