@@ -66,7 +66,7 @@ class EnrolButtonBase extends React.Component<Props, State> {
     const {inViewport, courseClass} = this.props;
     const {isViewEventSent} = this.state;
 
-    if (inViewport && !isViewEventSent) {
+    if (inViewport && !isViewEventSent && courseClass.course) {
       this.setState({
         isViewEventSent: true,
       });
