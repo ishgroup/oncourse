@@ -2,11 +2,23 @@ import bugsnagReact from "@bugsnag/plugin-react";
 import Bugsnag from '@bugsnag/js';
 import React from "react";
 
-export const bugsnagClient = Bugsnag( {
-  apiKey: "08b42469660b2c6a50e998866c7a2bee",
-  appVersion:  process.env.BUILD_NUMBER,
-  releaseStage: process.env.NODE_ENV,
-});
+// workaround for jest failing tests
+let bugsnagClientBase;
+if (typeof jest === 'undefined') {
+  bugsnagClientBase = Bugsnag( {
+    apiKey: "08b42469660b2c6a50e998866c7a2bee",
+    appVersion:  process.env.BUILD_NUMBER,
+    releaseStage: process.env.NODE_ENV,
+  });
+  bugsnagClientBase.use(bugsnagReact, React);
+} else {
+  bugsnagClientBase = {
+    getPlugin() {
+      return () => {};
+    },
+    notify() {},
+  };
+}
 
-bugsnagClient.use(bugsnagReact, React);
-export const ErrorBoundary = bugsnagClient.getPlugin("react");
+export const bugsnagClient = bugsnagClientBase;
+export const ErrorBoundary = bugsnagClientBase.getPlugin("react");
