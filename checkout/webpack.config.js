@@ -102,9 +102,11 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
 
 const plugins = (NODE_ENV, BUILD_NUMBER) => {
   const plugins = [
-    new UglifyJsPlugin(),
+    new UglifyJsPlugin({
+      sourceMap: true
+    }),
     __common.DefinePlugin(NODE_ENV, BUILD_NUMBER),
-    new ExtractTextPlugin("[name].css"),
+    new ExtractTextPlugin("main.css"),
     new webpack.optimize.ModuleConcatenationPlugin(),
   ];
 
