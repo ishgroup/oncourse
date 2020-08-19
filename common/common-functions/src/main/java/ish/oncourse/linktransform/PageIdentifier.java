@@ -52,10 +52,7 @@ public enum PageIdentifier
 	 * room/200 Show the room detail for the room with angel id of 200
 	 */
 	Room(new PrefixMatcher("/room/"), "ui/RoomDetails"),
-	/**
-	 * tutor/123 Show the tutor detail for the tutor with angel id of 123
-	 */
-	Tutors(new SlashedPrefixMatcher("/tutors/"), "ui/Tutors"),
+
 	/**
 	 * tutor/123 Show the tutor detail for the tutor with angel id of 123
 	 */
