@@ -39,6 +39,11 @@ Logger.log(new LogMessage(Level.INFO, `Application version: "${ConfigConstants.A
 const start = store => {
   WindowService.initCheckoutApi(store);
 
+  // set initial dataLayer
+  if (!window['dataLayer']) {
+    window['dataLayer'] = [];
+  }
+
   // get global preferences
   store.dispatch(getPreferences());
 
