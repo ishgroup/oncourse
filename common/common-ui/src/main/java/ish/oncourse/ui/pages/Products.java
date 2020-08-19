@@ -43,10 +43,6 @@ public class Products extends ISHCommon {
 		return request.isXHR();
 	}
 	
-	private static int getIntParam(String s, int def) {
-		return (s != null && s.matches("\\d+")) ? Integer.parseInt(s) : def;
-	}
-	
 	@SetupRender
 	public void beforeRender() {
 		int start = getIntParam(request.getParameter("start"), START_DEFAULT);

@@ -1,23 +1,35 @@
-<html t:type="ui/internal/pagestructure" bodyId="literal:Tutors" bodyClass="literal:internal-page"
-	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-    <div class="tutor-list">
-        <t:loop source="tutors" value="tutor">
-            <div class="tutor-item" data-app="fade-up">
-                <h2 itemprop="name">${tutor.fullName}</h2>
-                <div class="tutors_details">
-                    <div class="tutor_info">
-                        <div itemprop="description" class="resume-details">
-                            <img src="${getTutorImage(tutor)}"/>
-                            ${tutor.resume}
-                        </div>
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+
+<t:if t:test="${request.isXHR()}">
+    <t:loop source="tutors" value="tutor">
+        <span t:type="ui/TutorItem" tutor="tutor"/>
+    </t:loop>
+    <t:if t:test="hasMore">
+        <div id="showMore">
+            <a id="showMoreCourses" href="${request.path}?${searchParamsStr}">
+                <div class="showMoreAction">Show more tutors</div>
+            </a>
+        </div>
+    </t:if>
+    <p:else>
+        <html t:type="ui/internal/pagestructure" bodyId="literal:Tutors" bodyClass="literal:internal-page"
+              xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+        <div class="block-Tutors">
+            <div class="tutor-list">
+                <t:loop source="tutors" value="tutor">
+                    <span t:type="ui/TutorItem" tutor="tutor"/>
+                </t:loop>
+                <t:if t:test="hasMore">
+                    <div id="showMore">
+                        <a id="showMoreCourses" href="${request.path}?${searchParamsStr}">
+                            <div class="showMoreAction">Show more tutors</div>
+                        </a>
                     </div>
-                    <div class="tutors_classes">
-                        <h4>Classes</h4>
-                        <span t:type="ui/TutorClasses" tutor="tutor"></span>
-                    </div>
-                </div>
+                </t:if>
             </div>
-        </t:loop>
-    </div>
-    <span id="showMoreTutors">SHOW MORE</span>
-</html>
+        </div>
+        </html>
+    </p:else>
+</t:if>
+
+</t:container>

@@ -1,0 +1,33 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+    <div class="tutor-item app-init" data-app="fade-up">
+        <h2 itemprop="name">
+            <a href="/tutor/${tutor.id}">${tutor.contact.fullName}</a>
+        </h2>
+        <div class="tutors_details">
+            <div class="tutor_info">
+                <div itemprop="description" class="resume-details">
+                    <t:if t:test="${profilePictureUrl}">
+                        <img src="${profilePictureUrl}" class="profilePicture"/>
+                        <p:else>
+                            <img src="http://www.gravatar.com/avatar?d=mp&amp;s=250" class="profilePicture"/>
+                        </p:else>
+                    </t:if>
+                    <h4>Resume</h4>
+                    <t:outputraw value="resume"/>
+                </div>
+            </div>
+            <t:if t:test="${courses.empty}" negate="true">
+                <div class="tutors_classes">
+                    <h4>Classes</h4>
+                    <ul>
+                        <t:loop t:source="courses" t:value="course">
+                            <li>
+                                <a href="/course/${course.code}">${course.name}</a>
+                            </li>
+                        </t:loop>
+                    </ul>
+                </div>
+            </t:if>
+        </div>
+    </div>
+</t:container>

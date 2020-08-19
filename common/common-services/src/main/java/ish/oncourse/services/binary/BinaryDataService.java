@@ -15,11 +15,12 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.exp.Property;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SelectQuery;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ApplicationStateManager;
-
+import java.net.URL;
 import java.util.List;
 import java.util.Random;
 
@@ -112,6 +113,30 @@ public class BinaryDataService implements IBinaryDataService {
 				.andExp(ExpressionFactory.matchExp(Document.NAME_PROPERTY, NAME_PROFILE_PICTURE)));
 		List<Document> binaryInfos = sharedContext.performQuery(query);
 		return binaryInfos.size() > 0 ? binaryInfos.get(0) : null;
+	}
+
+
+	public String getProfilePictureUrl(Contact contact) {
+		//check profile pictype at first
+		Document profilePicture = getProfilePicture(contact);
+		if (profilePicture != null) {
+			return getUrl(profilePicture);
+		}
+
+		if (contact.getEmailAddress() == null) {
+			return null; 
+		}
+
+		try {
+			// append d=404 param to say gravatar throws 404 responce in case if therea are no picture associated with corresponded email hash  
+			// catch java.io.FileNotFoundException and return null in this case
+			// that is needed to allow customer customise default avatar through tml file. 
+			String url = "https://s.gravatar.com/avatar/" + DigestUtils.md5Hex(contact.getEmailAddress().trim().toLowerCase().getBytes()) + "?d=404&s=250";
+			new URL(url).getContent();
+			return url;
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	@Override

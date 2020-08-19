@@ -20,6 +20,8 @@ public interface IBinaryDataService {
 	
 	String getUrl(Document binaryInfo);
 
+	String getProfilePictureUrl(Contact contact);
+	
 	/**
 	 * @return attachment which is linked to this <code>entity</code> and has a tag with this  <code>tagPath</code>
 	 */

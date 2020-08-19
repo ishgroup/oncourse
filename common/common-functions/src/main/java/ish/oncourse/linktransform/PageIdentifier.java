@@ -55,6 +55,10 @@ public enum PageIdentifier
 	/**
 	 * tutor/123 Show the tutor detail for the tutor with angel id of 123
 	 */
+	Tutors(new SlashedPrefixMatcher("/tutors/"), "ui/Tutors"),
+	/**
+	 * tutor/123 Show the tutor detail for the tutor with angel id of 123
+	 */
 	Tutor(new PrefixMatcher("/tutor/"), "ui/TutorDetails"),
 	/**
 	 * /sitemap.xml Google specific sitemap file.

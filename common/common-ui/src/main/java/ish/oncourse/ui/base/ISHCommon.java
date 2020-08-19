@@ -69,4 +69,8 @@ public abstract class ISHCommon {
     public <E extends Queueable> List<Document> getEntityImages(E entity) {
         return binaryDataService.getImages(entity);
     }
+
+    public static int getIntParam(String s, int def) {
+        return (s != null && s.matches("\\d+")) ? Integer.parseInt(s) : def;
+    }
 }

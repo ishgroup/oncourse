@@ -362,10 +362,7 @@ public class Courses extends ISHCommon {
 	public boolean isHasAnyItems() {
 		return !courses.isEmpty();
 	}
-
-	private static int getIntParam(String s, int def) {
-		return (s != null && s.matches("\\d+")) ? Integer.parseInt(s) : def;
-	}
+	
 
 	public boolean isHasInvalidSearchTerms() {
 		return paramsInError != null && !paramsInError.isEmpty();
