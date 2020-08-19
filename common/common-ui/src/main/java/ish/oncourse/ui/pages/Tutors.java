@@ -21,6 +21,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static ish.oncourse.model.auto._Course.IS_WEB_VISIBLE;
@@ -53,6 +54,7 @@ public class Tutors extends ISHCommon {
 
         tutors = ObjectSelect.query(Tutor.class)
                 .where(Tutor.COLLEGE.eq(webSiteService.getCurrentCollege()))
+                .and(Tutor.FINISH_DATE.isNull().orExp(Tutor.FINISH_DATE.lt(new Date())))
                 .orderBy(Tutor.CONTACT.dot(Contact.FAMILY_NAME).asc(), Tutor.CONTACT.dot(Contact.GIVEN_NAME).asc())
                 .offset(start)
                 .limit(PAGE_SIZE)
