@@ -2,7 +2,7 @@ import React from 'react';
 import update from 'react-addons-update';
 import {connect, Dispatch} from "react-redux";
 import classnames from 'classnames';
-import {Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText} from 'reactstrap';
+import {Button, Col, FormGroup, Input, Row} from 'reactstrap';
 import {getRedirectSettings, setRedirectSettings} from "./actions";
 import {RedirectItem} from "./components/RedirectItem";
 import {RedirectSettingsState} from "./reducers/State";
@@ -118,6 +118,9 @@ export class Redirect extends React.PureComponent<Props, any> {
           <Button onClick={() => this.onAddNew()} color="primary">
             <span className="icon icon-add_circle"/> Add new
           </Button>
+          <Button onClick={this.onSave} color="primary">
+            Save
+          </Button>
         </FormGroup>
 
         <div className="rules">
@@ -133,10 +136,6 @@ export class Redirect extends React.PureComponent<Props, any> {
               />,
           )}
         </div>
-
-        <Button onClick={() => this.onSave()} color="primary">
-          Save
-        </Button>
       </div>
     );
   }
