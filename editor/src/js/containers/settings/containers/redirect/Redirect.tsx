@@ -53,7 +53,7 @@ export class Redirect extends React.PureComponent<Props, any> {
     }));
   }
 
-  onSave() {
+  onSave = () => {
     const {onSave} = this.props;
     this.setState({
       rules: this.state.rules.map(rule => ({...rule, submitted: true})),
