@@ -14,11 +14,11 @@
 //
 // Checkout configuration options
 //
-checkout_config = {
+var checkout_config = {
 
   // The checkout application can be relocated to any path in your site
   // You must create a CMS page at that location with the correct html
-  checkoutPath: "/enrol/",
+  checkoutPath: "/checkout",
 
   // Can the user create new contacts in the checkout. If false, they can only use
   // an existing contact already in onCourse
@@ -43,22 +43,36 @@ checkout_config = {
 
 }
 
-// Load the javascript for the checkout. This file is called dynamic.js
-window.loadjs("/assets/dynamic.js");
-
-
-
 //
 // CMS editor configuration options
 //
-cms_config = {
-
-  // The editor has its own styling, which you can adjust if you like
-  cssPath: "/s/oncourse/editor/editor.css"
+var cms_config = {
+  "cssPath": "/s/oncourse-releases/editor/stable/editor.css?v=" + ciVersion
 }
+
+/*
+ ******
+ Loader
+ ******
+
+ The application lives inside /s/oncourse-release which isn't visible in
+ your webDAV login. You can however put a file in the same path to have it
+ picked up instead of the default.
+
+ You really really need to know what you are doing if you choose to do this.
+
+ /s/oncourse-releases/checkout/stable <-- the latest stable and tested release
+ /s/oncourse-releases/checkout/beta <-- the current beta release which might be fully tested
+*/
+
+
+// Load the javascript for the checkout
+window.loadjs("/s/oncourse-releases/checkout/stable/dynamic.js?v=" + ciVersion);
+
 
 // The editor javascript should only be loaded when you are trying to login
 // or have already logged into the CMS
+
 if (document.location.hash === "#editor" || document.cookie.indexOf("editor=") != -1) {
-  window.loadjs("/s/oncourse/editor/editor.js");
+  window.loadjs("/s/oncourse-releases/editor/stable/editor.js?v=" + ciVersion);
 }

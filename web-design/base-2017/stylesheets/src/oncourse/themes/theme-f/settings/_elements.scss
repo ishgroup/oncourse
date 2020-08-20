@@ -9,6 +9,8 @@
 
 $btnBackgroundColor: $primaryColor !default;
 $btnBackgroundHoverColor: $secondaryColor !default;
+$btnColor: $white !important !default;
+$btnHoverTextColor: $white !important !default;
 $btnPadding: 9.5px 30px !default;
 $btnHeight: 40px !default;
 $btnFontSize: 16px !default;
@@ -16,6 +18,7 @@ $btnLineHeight: 1.2 !default;
 $btnFontWeight: bold !default;
 $btnBorderRadius: 2px !default;
 $appBtnBorder: 1px solid $theme-color !default;
+$appBtnBorderColorHover: $theme-color !default;
 
 $btnType2BackgroundColor: $secondaryColor !default;
 

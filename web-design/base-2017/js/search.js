@@ -262,43 +262,17 @@ function setSuburbAfterAutoComplete(searchForm) {
 	}
 }
 
-var quickSearchItems = [];
-
 jQuery.fn.quickSearch = function(url, settings) {
-	quickSearchItems[$j(this).attr('name')] = {
-		block: this,
-		url: url,
-		settings: settings
-	};
-
-	var qDefault = {
-		wrap: '#search_box'
-	};
-
 	return this.each(function() {
-		var block = this;
-		var inputName = $j(this).attr('name');
-
-		defaultOptions = function(block, settings) {
-			settings = Object.assign({}, qDefault, settings);
-
-			return {
-				wrap: $j(block).parents(settings.wrap).find('.quicksearch-wrap'),
-				advancedSearchButton: $j(block).parents(settings.wrap).find('div.advanced-search-button'),
-				parents: $j(block).parents(settings.wrap)
-			};
-		}
-
-		var options = defaultOptions(this, settings);
-
 		var minInput = 3;
 		var textInput = $j(this);
+		var divContainer = $j('.quicksearch-wrap');
 		var thisObject = this;
 		var selectedIndex = -1;
 
 		// function triggered after contents is updated
-		updatedFunction = function(options) {
-			show(options);
+		updatedFunction = function() {
+			show();
 
 			// observe checkboxes
 			$j('.suburb-choice').each(function() {
@@ -306,9 +280,9 @@ jQuery.fn.quickSearch = function(url, settings) {
 			});
 		};
 
-		loadFunction = function(url, params, callbackFunction, options) {
+		loadFunction = function(url, params, callbackFunction) {
 			selectedIndex = -1;
-			options.wrap.load(url, params, callbackFunction);
+			divContainer.load(url, params, callbackFunction);
 		};
 
 		// function for updating the list via site selections
@@ -326,71 +300,60 @@ jQuery.fn.quickSearch = function(url, settings) {
 
 				textInput.addClass('throbber');
 				var terms = textInput.val();
-				loadFunction(url, {text: terms, suburb: params}, updatedFunction(options), options);
+				loadFunction(url, {text: terms, suburb: params}, updatedFunction);
 			}
 		};
 
 		// take terms and query the server-side
-		matchesFunction = function getMatches(terms, options) {
+		matchesFunction = function getMatches(terms) {
 			if(!terms || terms.length < minInput) {
-				hide(options);
+				hide();
 				return;
 			}
 
 			textInput.addClass('throbber');
-			loadFunction(url, {text: terms, directSearch:true}, updatedFunction(options), options);
+			loadFunction(url, {text: terms, directSearch:true}, updatedFunction);
 		};
 
-		function show(options) {
+		function show() {
 			textInput.removeClass('throbber');
-			options.advancedSearchButton.fadeTo(0, 0);
+			$j('div.advanced-search-button').fadeTo(0, 0);
 			hideAdvancedSearch();
-			options.wrap.addClass('show-quick-search').show();
+			divContainer.addClass('show-quick-search').show();
 
 			// install watcher to detect clicks on the background
 			$j(document).bind('mousedown.quicksearch', function(click) {
 				// hide quicksearch if click was not inside quicksearch area
 				if($j(click.target).parents('div.quicksearch-wrap').length == 0 && click.target != thisObject) {
-					hide(options);
+					hide();
 				}
 			});
 		}
 
-		function hide(options) {
+		function hide() {
 			selectedIndex = -1;
 			allItems = null;
 			textInput.removeClass('throbber');
-			//options.wrap.removeShadow();
+			//divContainer.removeShadow();
 			$j(document).unbind('mousedown.quicksearch');
-			options.wrap.slideUp(400);
-			options.advancedSearchButton.fadeTo(0, 1);
-			options.wrap.removeClass('show-quick-search');
+			divContainer.slideUp(400);
+			$j('div.advanced-search-button').fadeTo(0, 1);
+			divContainer.removeClass('show-quick-search');
 		}
 
 		textInput.on('keyup', function(key) {
-			options = defaultOptions(block, quickSearchItems[inputName].settings);
-
 			if(key.which == 27) { // escape
-				hide(options);
+				hide();
 				return false;
 			}
 
 			// copy the text of the quick search field into the advanced search field
 			$j("#adv_keyword").val($j(this).attr('value'));
 
-			if([9, 37, 38, 39, 40].indexOf(key.which) === -1)
-				matchesFunction(textInput.val(), options);
-			else {
-				if(!textInput.val() || textInput.val().length < minInput) {
-					hide(options);
-					return;
-				} else {
-					show(options);
-				}
-			}
+			matchesFunction(textInput.val());
 
 			oldIndex = selectedIndex;
-			allItems = options.wrap.children('div').children('ul').children('li').not('.title');
+			allItems = divContainer.children('div').children('ul').children('li').not('.title');
 			selectedItem = null;
 
 			if(allItems.size() > 0) {
@@ -408,6 +371,7 @@ jQuery.fn.quickSearch = function(url, settings) {
 						return false;
 					}
 				}
+
 
 				if(allItems.size() == 1 && (key.which == 40 || key.which == 9 || key.which == 38)) {
 					selectedIndex = 0;

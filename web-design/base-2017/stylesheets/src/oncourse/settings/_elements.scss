@@ -73,6 +73,7 @@ $btnTextTransform: uppercase !default;
 $btnMarginBottom: 0 !default;
 $btnLineHeight: 1.42857143 !default;
 $btnBorder: 1px solid transparent !default;
+$btnBorderColorHover: transparent !default;
 
 // Button type 2 background color
 $btnType2BackgroundColor: $secondaryColor !default;
@@ -93,6 +94,7 @@ $appBtnLineHeight: 1.2 !default;
 $appBtnFontWeight: 300 !default;
 $appBtnBackgroundColor: $primaryColor !default;
 $appBtnBackgroundHoverColor: $secondaryColor !default;
+$appBtnBorderColorHover: transparent !default;
 
 
 $defaultSpriteImage: url("/s/img/sprite.svg") !default;

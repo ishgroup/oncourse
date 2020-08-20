@@ -60,12 +60,13 @@
     line-height: $appBtnLineHeight;
     font-weight: $btnFontWeight;
     background: $btnBackgroundColor;
-    color: $btnColor !important;
+    color: $btnColor;
     &:hover, &:focus, &:active {
       background: $btnBackgroundHoverColor;
       font-weight: $btnFontWeight;
       font-size: $btnFontSize;
-      color: $btnHoverTextColor !important;
+      color: $btnHoverTextColor;
+      border-color: $appBtnBorderColorHover;
     }
   }
 

@@ -371,7 +371,7 @@
 
   // Product's list and details page styles
   &#ProductsListPage, &#ProductDetailsPage {
-    .content .producItem {
+    .content .productItem {
       .courseShortDescription {
         width: 100%;
         float: none;
@@ -1193,6 +1193,10 @@
         list-style: none;
         margin: 0;
         padding: 0;
+      }
+      li p > strong {
+        display: block;
+        text-align: center;
       }
     }
 

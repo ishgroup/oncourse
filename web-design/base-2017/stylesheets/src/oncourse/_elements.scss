@@ -56,10 +56,11 @@
   // Animation effect of button
   @include transition(all 0.5s);
 
-  &:hover {
+  &:hover, &:focus, &:active {
     text-decoration: none;
     background: $btnBackgroundHoverColor;
     color: $btnHoverTextColor;
+    border-color: $btnBorderColorHover;
   }
   &.type1 {
     background: $btnType2BackgroundColor;

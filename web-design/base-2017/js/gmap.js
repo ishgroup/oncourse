@@ -166,11 +166,13 @@ function toggleAllMarkers() {
         }
     });
 }
+
 function createMarkerAttributes(el) {
-        var arrayOfDataset = el.dataset.coordinates.match(/(-\d*\.\d*)|(\d*\.\d*)|".+?"|(\d+)/g);
-        arrayOfDataset = arrayOfDataset.map(function(el) {
-            return el.replace(/"/g, "");
-        });
+    var arrayOfDataset = el.dataset.coordinates.replace(/(")/g, "");
+    arrayOfDataset = arrayOfDataset.split(",");
+    arrayOfDataset = arrayOfDataset.map(function(el) {
+        return el.trim();
+    });
 
     var markerAttributes = {
         lat: +arrayOfDataset[0],

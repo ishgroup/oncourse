@@ -428,8 +428,8 @@ function deleteCookie( name, path, domain ) {
 							type: "GET",
 							url:  "/coursesSitesMap?sites="+$j('#sitesParameter').text(),
 							success: function(msg1) {
-                                $j('#sitesMap > #focus-map').replaceWith($j(msg1).children('#focus-map'));
-                                _processing = false;
+								$j('#sitesMap > #focus-map').replaceWith($j(msg1).children('#focus-map'));
+								_processing = false;
 							}
 						});
 					}
