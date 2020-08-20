@@ -51,6 +51,7 @@ class PaymentService implements IPaymentService {
 
     @CompileStatic(TypeCheckingMode.SKIP)
     SessionAttributes createSession(String origin, Money amount, String merchantReference, Boolean storeCard) {
+        origin = origin.replaceAll('#','')
         SessionAttributes attributes = new SessionAttributes()
         String delimiter = new URL(origin).query ? '&' : '?'
         origin += delimiter
