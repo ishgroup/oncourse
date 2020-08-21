@@ -96,12 +96,13 @@ const _styleModule = (dirname) => {
  * The DefinePlugin allows you to create global constants which can be configured at compile time.
  */
 const _DefinePlugin = (NODE_ENV, BUILD_NUMBER) => {
-    return new webpack.DefinePlugin({
-      'process.env': {
-        'NODE_ENV': JSON.stringify(NODE_ENV)
-      },
-      _APP_VERSION: JSON.stringify(BUILD_NUMBER || "DEV")
-    });
+  return new webpack.DefinePlugin({
+    'process.env': {
+      'NODE_ENV': JSON.stringify(NODE_ENV),
+      'BUILD_NUMBER': JSON.stringify(BUILD_NUMBER || "DEV"),
+    },
+    _APP_VERSION: JSON.stringify(BUILD_NUMBER || "DEV")
+  });
 };
 
 
@@ -109,6 +110,6 @@ module.exports = {
     KEYS: KEYS,
     info: _info,
     common: _common,
-  styleModule: _styleModule,
+    styleModule: _styleModule,
     DefinePlugin: _DefinePlugin
 };
