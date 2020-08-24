@@ -26,9 +26,6 @@ export class ContactAdd extends React.Component<Props, any> {
                  name="firstName"
                  label="First name"
                  type="text"
-                 onChange={e => {
-                   throw new Error("test error")
-                 }}
                  autoFocus
                  required
           />
