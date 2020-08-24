@@ -7,12 +7,11 @@ import ish.oncourse.model.WebNodeType;
 import ish.oncourse.model.WebSiteLayout;
 import ish.oncourse.model.WebTemplate;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.site.WebSiteVersionService;
+import ish.oncourse.services.site.IWebSiteVersionService;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.annotations.Meta;
-import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.util.TextStreamResponse;
@@ -27,7 +26,7 @@ public class RobotsTXT {
     private ICayenneService cayenneService;
 
     @Inject
-    private WebSiteVersionService webSiteVersionService;
+    private IWebSiteVersionService webSiteVersionService;
 
     private static final String ROBOT_FILE_NAME = "robot.txt";
 
