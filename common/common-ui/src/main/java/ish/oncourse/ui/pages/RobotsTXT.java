@@ -28,7 +28,7 @@ public class RobotsTXT {
     @Inject
     private IWebSiteVersionService webSiteVersionService;
 
-    private static final String ROBOT_FILE_NAME = "robot.txt";
+    private static final String ROBOT_FILE_NAME = "robots.txt";
 
     private static final String ROBOTS_CONTENT_TYPE = "text/plain";
 
