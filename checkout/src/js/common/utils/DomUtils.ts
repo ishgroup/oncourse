@@ -36,7 +36,7 @@ export const findPriceInDOM = (code): number => {
   let price;
 
   if(priceContainer) {
-    price = parseFloat(priceContainer.innerHTML.replace(/[^\d.,]/g,""));
+    price = parseFloat(priceContainer.innerHTML.replace(/[^\d.]/g,""));
   }
 
   return price;
