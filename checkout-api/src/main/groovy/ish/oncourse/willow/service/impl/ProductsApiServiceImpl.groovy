@@ -53,7 +53,7 @@ class ProductsApiServiceImpl implements ProductsApi {
                             pr.type = Type.MEMBERSHIP
                             break
                         case 3i:
-                            pr.type = Type.MEMBERSHIP
+                            pr.type = Type.VOUCHER
                             break
                         default: throw new IllegalArgumentException()
                     }
