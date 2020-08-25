@@ -1,6 +1,11 @@
-import {Ionicons} from '@expo/vector-icons';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { Octicons } from '@expo/vector-icons'; import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem,
+} from '@react-navigation/drawer';
 import {createStackNavigator} from '@react-navigation/stack';
+import { View, Text, Button, TouchableHighlight } from 'react-native';
 import * as React from 'react';
 
 import Colors from '../constants/Colors';
@@ -9,65 +14,61 @@ import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import {BottomTabParamList, TabOneParamList, TabTwoParamList} from '../types';
 
-const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
-export default function BottomTabNavigator() {
-  const colorScheme = useColorScheme();
 
+function Feed({ navigation }) {
   return (
-    <BottomTab.Navigator
-      initialRouteName="TabOne"
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
-      <BottomTab.Screen
-        name="TabOne"
-        component={TabOneNavigator}
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
-        }}
-      />
-      <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoNavigator}
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
-        }}
-      />
-    </BottomTab.Navigator>
+    <View style={{ flex: 1, justifyContent: "flex-start", alignItems: 'center' }}>
+      <View style={{ height: "60px", justifyContent: "flex-start", flexDirection: "row", width: "100%", backgroundColor: "#ddd" }}>
+        <View style={{ justifyContent: "center", paddingLeft: "16px" }}>
+          <TouchableHighlight onPress={() => navigation.openDrawer()} underlayColor="#DDDDDD">
+            <View>
+              <Octicons name="three-bars" size={24} color="black" />
+            </View>
+          </TouchableHighlight>
+        </View>
+      </View>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: 'center' }}>
+        <Text>Feed Screen</Text>
+      </View>
+    </View>
   );
 }
 
-// You can explore the built-in icon families and icons on the web at:
-// https://icons.expo.fyi/
-function TabBarIcon(props: { name: string; color: string }) {
-  return <Ionicons size={30} style={{ marginBottom: -3 }} {...props} />;
-}
-
-// Each tab has its own navigation stack, you can read more about this pattern here:
-// https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
-const TabOneStack = createStackNavigator<TabOneParamList>();
-
-function TabOneNavigator() {
+function Notifications({ navigation }) {
   return (
-    <TabOneStack.Navigator>
-      <TabOneStack.Screen
-        name="TabOneScreen"
-        component={TabOneScreen}
-        options={{ headerTitle: 'Tab One Title' }}
-      />
-    </TabOneStack.Navigator>
+  <View style={{ flex: 1, justifyContent: "flex-start", alignItems: 'center' }}>
+    <View style={{ height: "60px", justifyContent: "flex-start", flexDirection: "row", width: "100%", backgroundColor: "#ddd" }}>
+      <View style={{ justifyContent: "center", paddingLeft: "16px" }}>
+        <TouchableHighlight onPress={() => navigation.openDrawer()} underlayColor="#DDDDDD">
+          <View>
+            <Octicons name="three-bars" size={24} color="black" />
+          </View>
+        </TouchableHighlight>
+      </View>
+    </View>
+    <View style={{ flex: 1, justifyContent: "center", alignItems: 'center' }}>
+      <Text>Notifications Screen</Text>
+    </View>
+  </View>
   );
 }
 
-const TabTwoStack = createStackNavigator<TabTwoParamList>();
-
-function TabTwoNavigator() {
+function CustomDrawerContent(props) {
   return (
-    <TabTwoStack.Navigator>
-      <TabTwoStack.Screen
-        name="TabTwoScreen"
-        component={TabTwoScreen}
-        options={{ headerTitle: 'Tab Two Title' }}
-      />
-    </TabTwoStack.Navigator>
+    <DrawerContentScrollView {...props}>
+      <DrawerItemList {...props} />
+    </DrawerContentScrollView>
+  );
+}
+
+const Drawer = createDrawerNavigator();
+
+export default function AppDrawer() {
+  return (
+    <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />}>
+      <Drawer.Screen name="Feed" component={Feed} />
+      <Drawer.Screen name="Notifications" component={Notifications} />
+    </Drawer.Navigator>
   );
 }
