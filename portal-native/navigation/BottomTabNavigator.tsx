@@ -19,8 +19,8 @@ import {BottomTabParamList, TabOneParamList, TabTwoParamList} from '../types';
 function Feed({ navigation }) {
   return (
     <View style={{ flex: 1, justifyContent: "flex-start", alignItems: 'center' }}>
-      <View style={{ height: "60px", justifyContent: "flex-start", flexDirection: "row", width: "100%", backgroundColor: "#ddd" }}>
-        <View style={{ justifyContent: "center", paddingLeft: "16px" }}>
+      <View style={{ height: 60, justifyContent: "flex-start", flexDirection: "row", width: "100%", backgroundColor: "#ddd" }}>
+        <View style={{ justifyContent: "center", paddingLeft: 16 }}>
           <TouchableHighlight onPress={() => navigation.openDrawer()} underlayColor="#DDDDDD">
             <View>
               <Octicons name="three-bars" size={24} color="black" />
@@ -38,8 +38,8 @@ function Feed({ navigation }) {
 function Notifications({ navigation }) {
   return (
   <View style={{ flex: 1, justifyContent: "flex-start", alignItems: 'center' }}>
-    <View style={{ height: "60px", justifyContent: "flex-start", flexDirection: "row", width: "100%", backgroundColor: "#ddd" }}>
-      <View style={{ justifyContent: "center", paddingLeft: "16px" }}>
+    <View style={{ height: 60, justifyContent: "flex-start", flexDirection: "row", width: "100%", backgroundColor: "#ddd" }}>
+      <View style={{ justifyContent: "center", paddingLeft: 16 }}>
         <TouchableHighlight onPress={() => navigation.openDrawer()} underlayColor="#DDDDDD">
           <View>
             <Octicons name="three-bars" size={24} color="black" />
