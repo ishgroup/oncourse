@@ -81,9 +81,8 @@ public class Preferences {
 			}
 		}
 		else {
-			for (Preference pref : college.getPreferences()) {
+			for (Preference pref : getPreferences()) {
 				Preference p = context.localObject(pref);
-				
 				if (p != null) {
 					p.setValueString(preferences.get(p.getName()));
 				}
@@ -94,23 +93,25 @@ public class Preferences {
 	}
 	
 	private Map<String, String> initPreferences() {
-		ObjectContext context = cayenneService.newContext();
 		
 		Map<String, String> prefs = new TreeMap<>();
 		
-		College college = context.localObject(this.college);
-		
-		List<Preference> prefList = ObjectSelect.query(Preference.class).
-				where(Preference.COLLEGE.eq(college)).			
-				select(context);
-		
-		for (Preference pref : prefList) {
+		for (Preference pref : getPreferences()) {
 			if (pref.getName() != null) {
 				prefs.put(pref.getName(), pref.getValueString());
 			}
 		}
 		
 		return prefs;
+	}
+	
+	private List<Preference> getPreferences() {
+		ObjectContext context = cayenneService.newContext();
+		College college = context.localObject(this.college);
+
+		return  ObjectSelect.query(Preference.class).
+				where(Preference.COLLEGE.eq(college)).
+				select(context);
 	}
 	
 	public String getCurrentValue() {
