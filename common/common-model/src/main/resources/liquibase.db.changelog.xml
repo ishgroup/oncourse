@@ -56,11 +56,17 @@
 	</changeSet>
 
 	<changeSet id="6" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<sql>ALTER TABLE EmailTemplate DROP FOREIGN KEY fk_EmailTemplate_College</sql>
 		<sql>ALTER TABLE EmailTemplate DROP INDEX college_name</sql>
+		<sql>ALTER TABLE EmailTemplate ADD FOREIGN KEY (collegeId) REFERENCES College(id)</sql>
+
 	</changeSet>
 
 	<changeSet id="7" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<sql>ALTER TABLE Script DROP FOREIGN KEY fk_Script_College</sql>
 		<sql>ALTER TABLE Script DROP INDEX college_name</sql>
+		<sql>ALTER TABLE Script ADD FOREIGN KEY (collegeId) REFERENCES College(id)</sql>
+
 	</changeSet>
 
 
