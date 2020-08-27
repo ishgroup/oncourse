@@ -38,14 +38,14 @@ class TemplateResourceFactory implements ResourceFactory {
 
     private static final String TEMPLATE_DIR_NAME = 'templates'
     private static final String DEFAULT_TEMPLATES_PACKAGE = 'ish.oncourse.ui'
-    private static final String SYSTEM_TEMP_DIR = '_system'
+    public static final String SYSTEM_TEMP_DIR = '_system'
     
     private ICayenneService cayenneService
     private RequestService requestService
     private SecurityManager securityManager
     
     private Closure<WebTemplate> getTemplate = { String name, WebSiteLayout layout -> WebTemplateFunctions.getTemplateByName(name, layout) }
-    private static Closure<WebTemplate> getNull = { String name, WebSiteLayout layout -> null }
+    public static Closure<WebTemplate> getNull = { String name, WebSiteLayout layout -> null }
 
     private Map<String, String> defaultTemplatesMap
 
@@ -165,13 +165,13 @@ class TemplateResourceFactory implements ResourceFactory {
 
     private class SystemDirectoryResource extends DirectoryResource {
         SystemDirectoryResource(SecurityManager securityManager, Map<String, String> systemTemplatesMap, ICayenneService cayenneService) {
-            super(TemplateResourceFactory.SYSTEM_TEMP_DIR, 
+            super(SYSTEM_TEMP_DIR, 
                     securityManager,
                     null,
                     { String childName ->  
                     } as Closure<Resource>,
                     {  
-                        return systemTemplatesMap.values().collect { new WebTemplateResource(it, null, cayenneService, securityManager, systemTemplatesMap, getNull) }
+                        return systemTemplatesMap.values().collect {  new WebTemplateResource(it, null as WebSiteLayout, cayenneService, securityManager, systemTemplatesMap, getNull as Closure<WebTemplate> ) }
                     } as Closure<ArrayList<Resource>>,
                     { Request request, Request.Method method, Auth auth ->
                         return method in AccessRights.DIR_READ_ONLY
@@ -197,7 +197,7 @@ class TemplateResourceFactory implements ResourceFactory {
         
                         context.commitChanges()
         
-                        return new WebTemplateResource(template.name, localLayout, cayenneService, securityManager, defaultTemplatesMap, getTemplate)
+                        return new WebTemplateResource(template.name, localLayout, cayenneService, securityManager, defaultTemplatesMap as Map<String, String> , getTemplate as Closure<WebTemplate>)
                     } as Closure<Resource>, 
                     { String childName ->
                         return factory.getTemplateResourceByName(childName, layout)
