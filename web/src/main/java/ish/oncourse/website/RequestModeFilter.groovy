@@ -51,21 +51,24 @@ class RequestModeFilter implements Filter {
         Cookie[] cookies = (servletRequest as Request).cookies
 
         //regular site cache mode
-        CacheDisableReason cacheDisableReason = NONE
+        CacheDisableReason cacheDisableReason
         Boolean isCacheEnabled = true
 
         if (cookies.find { it.name == EDITOR_PREFIX }.any()) {
-            // disable caching for editor mode
             isCacheEnabled = false
             cacheDisableReason = EDITOR
-        }
-        else if (cookies.find { it.name == PUBLISHER.toString().toLowerCase() }.any()) {
-            // Run cache clean for site after editor has been published
+            logger.debug("Disable caching for editor mode")
+
+        } else if (cookies.find { it.name == PUBLISHER.toString().toLowerCase() }.any()) {
+            
             isCacheEnabled = false
             cacheDisableReason = PUBLISHER
+            logger.debug("Run cache clean for site after editor has been published")
+        } else {
+            cacheDisableReason = NONE
+            logger.debug("Regular (live) site cache enabled")
         }
 
-        logger.debug("Caching mode is {}", cacheDisableReason)
 
         service.setCacheEnabled(cacheDisableReason, isCacheEnabled)
 
