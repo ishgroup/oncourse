@@ -10,7 +10,7 @@ apply from: "$rootDir/gradle/bootique.gradle"
 apply plugin: 'com.github.psxpaul.execfork'
 
 configurations {
-	apidocSource
+	dsldocSource
 	aql
 
 	// exclude these here since they are pulled in in various ways
@@ -216,7 +216,7 @@ jar {
 }
 
 dependencies {
-	apidocSource "ish.oncourse.willow:waCommon:$waCommonWebservicesClientVersion:sources"
+	dsldocSource "ish.oncourse.willow:waCommon:$waCommonWebservicesClientVersion:sources"
 }
 
 task createResourceManifests {
@@ -313,40 +313,36 @@ task installer_unix(dependsOn: [jar], type: Zip) {
 	destinationDirectory = file("${buildDir}/distributions/unix")
 }
 
-//
-// Documentation
-//
-
+// API swagger ocumentation
 task generateApiDoc (type: SwaggerDoc) {
 	schema = file("${rootDir}/server-api/src/main/resources/server-api.yaml")
 	docOutput = file("${buildDir}/doc")
 }
-
 task packageApiDoc (type: Zip, dependsOn: generateApiDoc) {
 	from file("${buildDir}/doc/docs")
 	archiveClassifier = 'documentation'
 }
 
-apiDocs {
-	source = sourceSets.main.groovy.plus(zipTree(configurations.apidocSource.find { it.name.startsWith("waCommon") }))
-	destinationDir = file("${buildDir}/distributions/apidoc")
+// DSL asciidoc documentation
+dslDocs {
+	source = sourceSets.main.groovy.plus(zipTree(configurations.dsldocSource.find { it.name.startsWith("waCommon") }))
+	destinationDir = file("${buildDir}/distributions/dsldoc")
 }
-
-task apidocsBundle(type: Zip) {
-	from file("${buildDir}/distributions/apidoc")
+task packageDslDoc(type: Zip) {
+	from file("${buildDir}/distributions/dsldoc")
 	archiveClassifier = 'documentation'
 	archiveBaseName = "dsl"
-	tasks.getByName('apiDocs').mustRunAfter(tasks.getByName('classes'))
-	dependsOn tasks.getByName('classes'),tasks.getByName('apiDocs')
+	tasks.getByName('dslDocs').mustRunAfter(tasks.getByName('classes'))
+	dependsOn tasks.getByName('classes'),tasks.getByName('dslDocs')
 }
 
 
 // "gradlew publishToMavenLocal" if you want to publish this to your local .m2 folder
 publishing {
 	publications {
-		apidocs(MavenPublication) {
-			artifact (apidocsBundle) {
-				artifactId "apidocs"
+		dsldocs(MavenPublication) {
+			artifact (packageDslDoc) {
+				artifactId "dsldocs"
 			}
 		}
 		docs(MavenPublication) {
