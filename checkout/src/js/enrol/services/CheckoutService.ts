@@ -146,12 +146,6 @@ export class CheckoutService {
     return this.checkoutApi.getCheckoutModel(request);
   }
 
-
-  public makePayment = (values: CreditCardFormValues, state: IshState): Promise<PaymentResponse> => {
-    const request: PaymentRequest = PaymentService.creditFormValuesToRequest(values, state);
-    return this.checkoutApi.makePayment(request);
-  }
-
   public submitPaymentCorporatePass = (values: CorporatePassFormValues, state): Promise<any> => {
     const request: any = PaymentService.corporatePassValuesToRequest(values, state);
     return this.corporatePassApi.makeCorporatePass(request);

@@ -129,7 +129,7 @@ export const SummaryPropsBy = (state: IshState): any => {
   }
 };
 
-export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
+export const SummaryActionsBy = (dispatch: Dispatch<any>, props): any => {
   return {
     onSelect: (item: PurchaseItem, selected: boolean): void => {
       dispatch(selectItem(Object.assign(item, {selected})));
@@ -161,7 +161,7 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
       const errors = Object.values(forms).filter(f => f.syncErrors);
       if (errors && errors.length) return;
 
-      dispatch(submitPaymentForWaitingCourses({agreementFlag: true}));
+      dispatch(submitPaymentForWaitingCourses());
 
     },
     onAddCode: (code: string): void => {

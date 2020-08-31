@@ -1,85 +1,37 @@
-import * as L from "lodash";
-import {AxiosResponse} from "axios";
-import {MiddlewareAPI} from "redux";
 import {Observable} from "rxjs/Observable";
-import {ActionsObservable, combineEpics, Epic} from "redux-observable";
-import uuid from "uuid";
-
-import {Create, ProcessError, Request} from "../../../../common/epics/EpicUtils";
+import {combineEpics, Epic} from "redux-observable";
+import {Create, Request} from "../../../../common/epics/EpicUtils";
 import {
-  PROCESS_PAYMENT,
-  SUBMIT_PAYMENT_CREDIT_CARD,
   GET_CORPORATE_PASS_REQUEST,
   SUBMIT_PAYMENT_CORPORATE_PASS,
   SUBMIT_PAYMENT_FOR_WAITING_COURSES,
-  processPayment,
-  resetPaymentState,
   applyCorporatePass,
-  updatePaymentStatus,
   generateWaitingCoursesResultData,
 } from "../actions/Actions";
 
-import CheckoutService, {BuildWaitingCoursesResult} from "../../../services/CheckoutService";
+import CheckoutService, {BuildCheckoutModelRequest, BuildWaitingCoursesResult} from "../../../services/CheckoutService";
 
-import {PaymentResponse, CheckoutModel, PaymentStatus, CorporatePass} from "../../../../model";
+import { PaymentStatus, CorporatePass} from "../../../../model";
 import {IshState} from "../../../../services/IshState";
-import {ProcessCheckoutModel} from "../../../epics/EpicProceedToPayment";
 import {IAction} from "../../../../actions/IshAction";
-import {CreditCardFormValues} from "../services/PaymentService";
 import {GetPaymentStatus} from "./EpicGetPaymentStatus";
-import {Phase} from "../../../reducers/State";
-import {changePhase, getAmount, togglePayNowVisibility} from "../../../actions/Actions";
+import {getAmount, togglePayNowVisibility} from "../../../actions/Actions";
 import {FULFILLED} from "../../../../common/actions/ActionUtils";
 import {ProcessPaymentV2, ProcessPaymentV2Status} from "./EpicPaymentV2";
-
-const request: Request<PaymentResponse, IshState> = {
-  type: PROCESS_PAYMENT,
-  getData: (payload: any, state: IshState): Promise<PaymentResponse> => {
-    return CheckoutService.makePayment(payload, state);
-  },
-  processData: (response: PaymentResponse, state: IshState): IAction<any>[] | Observable<any> => {
-    return CheckoutService.processPaymentResponse(response);
-  },
-  processError: (response: AxiosResponse): IAction<any>[] => {
-    const data: any = response.data;
-    if (data && data.payerId && data.amount && data.contactNodes) {
-      return ProcessCheckoutModel.process(data as CheckoutModel);
-    } else {
-      return L.concat([changePhase(Phase.Payment), resetPaymentState()], ProcessError(response));
-    }
-  },
-};
-
-/**
- * Send Payment Request and Process Payment Response
- */
-const ProcessPayment: Epic<any, any> = Create(request);
+import CheckoutServiceV2 from "../../../services/CheckoutServiceV2";
 
 
-/**
- * Init PaymentState and Start Payment Process by Credit Card
- */
-const SubmitPaymentCreditCard: Epic<any, any> = (action$: ActionsObservable<any>, store: MiddlewareAPI<IshState>): Observable<any> => {
-  return action$.ofType(SUBMIT_PAYMENT_CREDIT_CARD).flatMap((action: IAction<CreditCardFormValues>) => {
-    const response: PaymentResponse = new PaymentResponse();
-    response.sessionId = uuid();
-    response.status = PaymentStatus.IN_PROGRESS;
-    return [
-      updatePaymentStatus(response),
-      changePhase(Phase.Result),
-      processPayment(action.payload),
-    ];
-  });
-};
-
-
-/**
- * Init PaymentState and join to waiting course
- */
 const SubmitPaymentForWaitingCoursesRequest: Request<any, IshState> = {
   type: SUBMIT_PAYMENT_FOR_WAITING_COURSES,
   getData: (payload: any, state: IshState): Promise<any> => {
-    return CheckoutService.makePayment(payload, state);
+    const paymentRequest = {
+      checkoutModelRequest: BuildCheckoutModelRequest.fromState(state),
+      merchantReference: state.checkout.payment.merchantReference,
+      sessionId: state.checkout.payment.sessionId,
+      ccAmount: state.checkout.amount.ccPayment,
+      storeCard: false,
+    };
+    return CheckoutServiceV2.makePayment(paymentRequest, false, state.checkout.payerId);
   },
   processData: (response: any, state: IshState): IAction<any>[] | Observable<any> => {
     return CheckoutService.processPaymentResponse(
@@ -99,7 +51,7 @@ const SubmitPaymentCorporatePassRequest: Request<any, IshState> = {
   getData: (payload: any, state: IshState): Promise<any> => {
     return CheckoutService.submitPaymentCorporatePass(payload, state);
   },
-  processData: (response: any, state: IshState): IAction<any>[] | Observable<any> => {
+  processData: (): IAction<any>[] | Observable<any> => {
     return CheckoutService.processPaymentResponse({status: PaymentStatus.SUCCESSFUL_BY_PASS});
   },
 };
@@ -125,10 +77,8 @@ const corporatePassRequest: Request<CorporatePass, IshState> = {
 const GetCorporatePass: Epic<any, any> = Create(corporatePassRequest);
 
 export const EpicPayment = combineEpics(
-  SubmitPaymentCreditCard,
   SubmitPaymentCorporatePass,
   SubmitPaymentForWaitingCourses,
-  ProcessPayment,
   GetPaymentStatus,
   GetCorporatePass,
   ProcessPaymentV2,

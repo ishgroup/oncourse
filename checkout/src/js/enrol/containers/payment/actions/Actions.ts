@@ -39,10 +39,9 @@ export const submitPaymentCreditCard = (values: CreditCardFormValues): IAction<C
   };
 };
 
-export const submitPaymentForWaitingCourses = (values: CreditCardFormValues): IAction<CreditCardFormValues> => {
+export const submitPaymentForWaitingCourses = (): IAction<any> => {
   return {
-    type: SUBMIT_PAYMENT_FOR_WAITING_COURSES,
-    payload: values,
+    type: SUBMIT_PAYMENT_FOR_WAITING_COURSES
   };
 };
 
