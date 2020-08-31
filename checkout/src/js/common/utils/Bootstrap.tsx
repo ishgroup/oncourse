@@ -1,5 +1,4 @@
 import * as React from "react";
-import {forEach} from "lodash";
 import * as localforage from "localforage";
 import {render} from "react-dom";
 import {Provider} from "react-redux";
@@ -109,9 +108,9 @@ export class Bootstrap {
       });
 
       Object.keys(this.components).forEach(cid => {
-        const containers = document.querySelectorAll(`[${ATTR_DATA_CID}='${cid}']`);
+        const containers = document.querySelectorAll(`[${ATTR_DATA_CID}='${cid}']`) as any;
         const marker: HTMLMarker = this.components[cid];
-        forEach(containers, (container: HTMLElement) => {
+        containers.forEach(container => {
           this.renderMarker(container, marker);
         });
       });
