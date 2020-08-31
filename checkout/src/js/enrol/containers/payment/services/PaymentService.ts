@@ -3,9 +3,10 @@ import moment from "moment";
 import uuid from "uuid";
 
 import {createStringEnum} from "../../../../common/utils/EnumUtils";
-import {Item, PaymentRequest, MakeCorporatePassRequest} from "../../../../model";
+import {Item, MakeCorporatePassRequest} from "../../../../model";
 import {IshState} from "../../../../services/IshState";
 import {BuildCheckoutModelRequest} from "../../../services/CheckoutService";
+import {PaymentRequest} from "../../../../model/checkout/payment/PaymentRequest";
 
 export const FieldName = createStringEnum([
   "creditCardName",
@@ -54,6 +55,7 @@ export class PaymentService {
     const result: PaymentRequest = new PaymentRequest();
     result.checkoutModelRequest = BuildCheckoutModelRequest.fromState(state);
     result.ccAmount = state.checkout.amount.ccPayment;
+    result.agreementFlag = values.agreementFlag;
     result.sessionId = uuid();
     return result;
   }
