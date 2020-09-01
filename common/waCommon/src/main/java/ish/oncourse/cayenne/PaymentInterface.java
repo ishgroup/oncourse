@@ -9,6 +9,7 @@ import ish.common.types.CreditCardType;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
+import ish.oncourse.API;
 import ish.print.PrintableObject;
 import ish.util.Maps;
 
@@ -26,6 +27,7 @@ import java.util.Map;
  *
  * @author marcin, ldeck
  */
+@API
 public interface PaymentInterface extends PrintableObject, PersistentObjectI {
 
 	Map<String, PaymentSource> SOURCES = Maps.asLinkedMap(new String[] {
