@@ -327,7 +327,7 @@ task packageApiDoc (type: Zip, dependsOn: generateApiDoc) {
 
 // DSL asciidoc documentation
 dslDocs {
-	source = sourceSets.main.groovy.plus(zipTree(configurations.dsldocSource.find { it.name.startsWith("waCommon") }))
+	source = sourceSets.main.groovy.plus(zipTree(configurations.dsldocSource.find { it.name.startsWith("waCommon") })).plus(project(':server-api').sourceSets.main.groovy)
 	destinationDir = file("${buildDir}/distributions/dsldoc")
 }
 task packageDslDoc(type: Zip) {
