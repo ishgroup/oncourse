@@ -4,5 +4,14 @@ import ish.oncourse.API
 
 @API
 enum ContactType {
-    PLAIN_CONTACT, STUDENT, TUTOR, TUTOR_STUDENT, COMPANY
+    @API
+    PLAIN_CONTACT,
+    @API
+    STUDENT,
+    @API
+    TUTOR,
+    @API
+    TUTOR_STUDENT,
+    @API
+    COMPANY
 }
