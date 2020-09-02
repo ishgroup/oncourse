@@ -108,11 +108,6 @@ dependencies {
 
 	implementation 'com.nulab-inc:zxcvbn:1.2.5'
 
-	implementation "org.apache.derby:derbyclient:$derbyVersion"
-	implementation "org.apache.derby:derbynet:$derbyVersion"
-	//	implementation "org.apache.derby:derbytools:$derbyVersion"
-	//	implementation "org.apache.derby:derbyshared:$derbyVersion"
-
 	implementation ("org.liquibase:liquibase-maven-plugin:3.6.3") {
 		exclude group: "ch.qos.logback"
 	}
@@ -182,6 +177,9 @@ dependencies {
 	testImplementation 'org.kohsuke:wordnet-random-name:1.3'
 	testImplementation "io.bootique:bootique-test:$bootiqueVersion"
 	testImplementation "org.testng:testng:6.13.1"
+	testImplementation "org.apache.derby:derbyclient:$derbyVersion"
+	testImplementation "org.apache.derby:derbynet:$derbyVersion"
+
 }
 configurations.all {
 	resolutionStrategy {
