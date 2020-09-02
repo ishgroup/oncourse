@@ -308,6 +308,9 @@ task installer_unix(dependsOn: [jar], type: Zip) {
 	from (file("src/packaging/unix/")) {
 		into 'onCourseServer'
 	}
+	from (file("build/scripts/")) {
+		into 'onCourseServer/bin/'
+	}
 
 	archiveFileName = 'onCourseServer.zip'
 	destinationDirectory = file("${buildDir}/distributions/unix")
