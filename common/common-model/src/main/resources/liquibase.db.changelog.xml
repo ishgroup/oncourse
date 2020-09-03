@@ -69,5 +69,9 @@
 
 	</changeSet>
 
+	<changeSet id="8" author="rostislav" runOnChange="false" runAlways="false" context="production">
+		<modifyDataType tableName="Course" columnName="code" newDataType="VARCHAR(128)"/>
+	</changeSet>
+
 
 </databaseChangeLog>
