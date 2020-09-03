@@ -355,7 +355,7 @@ publishing {
 		executables(MavenPublication) {
 			artifact(installer_unix) {
 				version (project.hasProperty('releaseVersion') ? project.releaseVersion : "SNAPSHOT")
-				classifier "unix"
+				classifier "executable"
 				extension "zip"
 			}
 		}
