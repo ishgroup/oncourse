@@ -1,8 +1,10 @@
 import React from 'react';
-import {Container, Row, Col, Button, FormGroup} from 'reactstrap';
+import {Button, FormGroup, Label, Input} from 'reactstrap';
 import classnames from 'classnames';
 import {Editor} from "../../../../../common/components/Editor";
 import {BlockState} from "../reducers/State";
+import {CONTENT_MODES, DEFAULT_CONTENT_MODE_ID} from "../../../constants";
+import {addContentMarker} from "../../../utils";
 
 interface Props {
   block: BlockState;
@@ -19,11 +21,18 @@ export class Block extends React.Component<Props, any> {
     this.state = {
       editMode: false,
       draftContent: "",
+      contentMode: DEFAULT_CONTENT_MODE_ID,
     };
   }
 
   componentDidMount() {
+    const {block} = this.props;
+
     document.dispatchEvent(pluginInitEvent);
+
+    this.setState({
+      contentMode: block.contentMode || DEFAULT_CONTENT_MODE_ID,
+    });
   }
 
   onClickArea(e) {
@@ -45,10 +54,14 @@ export class Block extends React.Component<Props, any> {
 
   onSave() {
     const {onSave, block} = this.props;
+    const {draftContent, contentMode} = this.state;
+    const newContent = addContentMarker(draftContent, contentMode);
+
     this.setState({
       editMode: false,
     });
-    onSave(block.id, this.state.draftContent);
+
+    onSave(block.id, newContent);
   }
 
   onCancel() {
@@ -68,9 +81,14 @@ export class Block extends React.Component<Props, any> {
     }
   }
 
+  onContentModeChange(e) {
+    const v = e.target.value;
+    this.setState({contentMode: v});
+  }
+
   render() {
     const {block} = this.props;
-    const {editMode} = this.state;
+    const {editMode, contentMode} = this.state;
 
     return (
       <div>
@@ -81,6 +99,26 @@ export class Block extends React.Component<Props, any> {
                 value={this.state.draftContent}
                 onChange={val => this.onChangeArea(val)}
               />
+            </FormGroup>
+
+            <FormGroup>
+                <div className="row">
+                    <div className="col-md-4 col-lg-3">
+                        <Label htmlFor="contentMode">Content mode</Label>
+                        <Input
+                            type="select"
+                            name="contentMode"
+                            id="contentMode"
+                            placeholder="Content mode"
+                            value={contentMode}
+                            onChange={e => this.onContentModeChange(e)}
+                        >
+                          {CONTENT_MODES.map(mode => (
+                            <option key={mode.id} value={mode.id}>{mode.title}</option>
+                          ))}
+                        </Input>
+                    </div>
+                </div>
             </FormGroup>
 
             <FormGroup>
