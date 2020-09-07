@@ -2,6 +2,7 @@ import {Page} from "../../../../../model";
 
 export interface PageState extends Page {
   renderHtml?: string;
+  contentMode?: string;
 }
 
 export class PagesState {

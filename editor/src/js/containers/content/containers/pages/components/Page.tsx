@@ -1,10 +1,12 @@
 import React from 'react';
-import {Container, Row, Col, Button, FormGroup} from 'reactstrap';
+import {Button, FormGroup, Label, Input} from 'reactstrap';
 import {PageState} from "../reducers/State";
 import {Editor} from "../../../../../common/components/Editor";
 import {DOM} from "../../../../../utils";
 import {getHistoryInstance} from "../../../../../history";
 import PageService from "../../../../../services/PageService";
+import {CONTENT_MODES, DEFAULT_CONTENT_MODE_ID} from "../../../constants";
+import {addContentMarker} from "../../../utils";
 
 interface PageProps {
   page: PageState;
@@ -15,7 +17,6 @@ interface PageProps {
   editMode?: any;
 }
 
-
 export class Page extends React.PureComponent<PageProps, any> {
 
   constructor(props) {
@@ -24,6 +25,7 @@ export class Page extends React.PureComponent<PageProps, any> {
       editMode: false,
       content: '',
       draftContent: '',
+      contentMode: DEFAULT_CONTENT_MODE_ID,
     };
   }
 
@@ -32,10 +34,12 @@ export class Page extends React.PureComponent<PageProps, any> {
     const pageNode = DOM.findPage(page.title);
 
     toggleEditMode(false);
+
     this.setState({
       editMode: false,
       content: page.content,
       draftContent: page.content,
+      contentMode: page.contentMode || DEFAULT_CONTENT_MODE_ID,
     });
 
     if (pageNode) {
@@ -45,7 +49,10 @@ export class Page extends React.PureComponent<PageProps, any> {
 
     const pageUrl = this.getPageDefaultUrl();
 
-    if (!page.urls.map(url => url.link).includes(document.location.pathname) && pageUrl !== document.location.pathname) {
+    if (
+      !page.urls.map(url => url.link).includes(document.location.pathname)
+      && pageUrl !== document.location.pathname
+    ) {
       openPage(pageUrl);
     }
   }
@@ -112,10 +119,12 @@ export class Page extends React.PureComponent<PageProps, any> {
 
   onSave() {
     const {onSave, page, toggleEditMode} = this.props;
+    const {draftContent, contentMode} = this.state;
+    const newContent = addContentMarker(draftContent, contentMode);
 
     toggleEditMode(false);
     this.setState({editMode: false});
-    onSave(page.id, this.state.draftContent);
+    onSave(page.id, newContent);
   }
 
   onCancel() {
@@ -128,7 +137,14 @@ export class Page extends React.PureComponent<PageProps, any> {
     toggleEditMode(false);
   }
 
+  onContentModeChange(e) {
+    const v = e.target.value;
+    this.setState({contentMode: v});
+  }
+
   render() {
+    const {contentMode} = this.state;
+
     return (
       <div>
         {this.state.editMode &&
@@ -138,6 +154,26 @@ export class Page extends React.PureComponent<PageProps, any> {
               value={this.state.draftContent}
               onChange={val => this.onChangeArea(val)}
             />
+          </FormGroup>
+
+          <FormGroup>
+            <div className="row">
+              <div className="col-md-4 col-lg-3">
+                <Label htmlFor="contentMode">Content mode</Label>
+                <Input
+                    type="select"
+                    name="contentMode"
+                    id="contentMode"
+                    placeholder="Content mode"
+                    value={contentMode}
+                    onChange={e => this.onContentModeChange(e)}
+                >
+                  {CONTENT_MODES.map(mode => (
+                      <option key={mode.id} value={mode.id}>{mode.title}</option>
+                  ))}
+                </Input>
+              </div>
+            </div>
           </FormGroup>
 
           <FormGroup>
