@@ -5,6 +5,8 @@ import {Editor} from "../../../../../common/components/Editor";
 import {BlockState} from "../reducers/State";
 import {CONTENT_MODES, DEFAULT_CONTENT_MODE_ID} from "../../../constants";
 import {addContentMarker} from "../../../utils";
+import marked from "marked";
+import reactHtmlParser from 'react-html-parser';
 
 interface Props {
   block: BlockState;
@@ -131,10 +133,9 @@ export class Block extends React.Component<Props, any> {
 
         <div onClick={e => this.onClickArea(e)}>
           {!editMode &&
-            <div
-              className={classnames("editor-area", {'editor-area--empty': !block.content})}
-              dangerouslySetInnerHTML={{__html: block.content}}
-            />
+            <div className={classnames("editor-area", {'editor-area--empty': !block.content})}>
+              {contentMode === "md" ? reactHtmlParser(marked(block.content)) : block.content}
+            </div>
           }
         </div>
 

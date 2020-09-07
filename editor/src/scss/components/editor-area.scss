@@ -5,6 +5,8 @@
   cursor: pointer;
   min-height: 400px;
   transition: all .3s;
+  max-height: 95vh;
+  overflow: auto;
   
   &--empty {
   
