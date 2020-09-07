@@ -10,8 +10,8 @@ apply from: "$rootDir/gradle/bootique.gradle"
 apply plugin: 'com.github.psxpaul.execfork'
 
 configurations {
+	apiTest
 	dsldocSource
-	aql
 
 	// exclude these here since they are pulled in in various ways
 	all*.exclude group: "org.slf4j", module: "slf4j-simple"
@@ -214,6 +214,10 @@ jar {
 }
 
 dependencies {
+	apiTest "org.apache.derby:derbyclient:$derbyVersion"
+	apiTest "org.apache.derby:derbynet:$derbyVersion"}
+
+dependencies {
 	dsldocSource "ish.oncourse.willow:waCommon:$waCommonWebservicesClientVersion:sources"
 }
 
@@ -274,7 +278,7 @@ task copyTestDb(type: Copy) {
     into "$buildDir/"
 }
 task startDaemon(dependsOn: [classes, processResources], type: JavaExecFork) {
-	classpath = sourceSets.main.runtimeClasspath
+	classpath = files(sourceSets.main.runtimeClasspath.plus(configurations.apiTest.findAll { it.name.contains("derby") }))
 	main = 'ish.oncourse.server.AngelServer'
 	args = ['DEBUG=true', 'REPLICATION_DISABLED=true']
 	jvmArgs = ['-Xmx2048m', '-XX:+HeapDumpOnOutOfMemoryError', "-DdisableReplication=true", "-DdisableTransactionCheck=true"]
