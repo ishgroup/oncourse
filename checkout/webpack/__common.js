@@ -39,11 +39,28 @@ const _common = (dirname, options) => {
       rules: [
         {
           test: /\.tsx?$/,
-          loader: 'ts-loader',
+          use: [
+            {
+              loader: 'babel-loader',
+              query: {
+                presets: ['@babel/preset-react', "@babel/preset-env"]
+              }
+            },
+            {
+              loader: 'ts-loader'
+            }
+          ],
           include: [
             path.resolve(dirname, "src/js"),
             path.resolve(dirname, "src/dev"),
           ],
+        },
+        {
+          test: /\.js$/,
+          loader: 'babel-loader',
+          query: {
+            presets: ['@babel/preset-react', "@babel/preset-env"]
+          }
         }
       ]
     },

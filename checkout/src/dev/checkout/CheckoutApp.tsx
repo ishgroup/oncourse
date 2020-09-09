@@ -5,11 +5,10 @@ import Checkout from "../../js/enrol/containers/Checkout";
 import {MockControl} from "./MockControl";
 import {MockConfig} from "../mocks/mocks/MockConfig";
 import {configLoader} from "../../js/configLoader";
-
 import {getPreferences} from "../../js/common/actions/Actions";
-
 import "../../scss/index.scss";
-
+import EnrolButton from "../../js/web/containers/EnrolButton";
+require('intersection-observer');
 
 const config = new MockConfig();
 
@@ -26,6 +25,7 @@ const render = config => ReactDOM.render(
     <div id="oncourse-checkout">
       <Checkout/>
       <MockControl config={config}/>
+      <EnrolButton />
     </div>
   </Provider>,
   document.getElementById("root"),

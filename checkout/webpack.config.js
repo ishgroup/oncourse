@@ -55,8 +55,28 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
       rules: [
         {
           test: /\.tsx?$/,
-          loader: 'ts-loader',
-          exclude: /node_modules/,
+          use: [
+            {
+              loader: 'babel-loader',
+              query: {
+                presets: ['@babel/preset-react', "@babel/preset-env"]
+              }
+            },
+            {
+              loader: 'ts-loader'
+            }
+          ],
+          include: [
+            path.resolve(dirname, "src/js"),
+            path.resolve(dirname, "src/dev"),
+          ],
+        },
+        {
+          test: /\.js$/,
+          loader: 'babel-loader',
+          query: {
+            presets: ['@babel/preset-react', "@babel/preset-env"]
+          }
         }
       ]
     },
