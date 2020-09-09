@@ -9,6 +9,8 @@ import "../scss/index.scss";
 import {getPreferences} from "./common/actions/Actions";
 import {setCookie} from "./common/utils/Cookie";
 
+require('intersection-observer');
+
 const appStart = () => {
   if (Intl) {
     setCookie(
