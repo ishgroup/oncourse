@@ -65,11 +65,7 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
             {
               loader: 'ts-loader'
             }
-          ],
-          include: [
-            path.resolve(dirname, "src/js"),
-            path.resolve(dirname, "src/dev"),
-          ],
+          ]
         },
         {
           test: /\.js$/,
