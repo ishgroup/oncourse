@@ -23,6 +23,7 @@ dependencies {
     compile 'org.apache.solr:solr-solrj:' + solrVersion
     compile 'commons-httpclient:commons-httpclient:3.1'
     compile 'net.java.dev.textile-j:textile-j:2.2.864'
+    compile 'com.atlassian.commonmark:commonmark:0.15.2'
 
     testCompile project(':common:test-functions')
 }
