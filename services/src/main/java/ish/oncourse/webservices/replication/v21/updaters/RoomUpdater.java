@@ -2,16 +2,16 @@ package ish.oncourse.webservices.replication.v21.updaters;
 
 import ish.oncourse.model.Room;
 import ish.oncourse.model.Site;
-import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.services.IReachtextConverter;
 import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v21.stubs.replication.RoomStub;
 
 public class RoomUpdater extends AbstractWillowUpdater<RoomStub, Room> {
 
-	private ITextileConverter textileConverter;
+	private IReachtextConverter textileConverter;
 
-	public RoomUpdater(ITextileConverter textileConverter) {
+	public RoomUpdater(IReachtextConverter textileConverter) {
 		this.textileConverter = textileConverter;
 	}
 
@@ -21,11 +21,11 @@ public class RoomUpdater extends AbstractWillowUpdater<RoomStub, Room> {
 		entity.setModified(stub.getModified());
 		entity.setCapacity(stub.getCapacity());
 		if (stub.getDirectionsTextile() != null) {
-			entity.setDirections(textileConverter.convertCoreTextile(stub.getDirectionsTextile()));
+			entity.setDirections(textileConverter.convertCoreText(stub.getDirectionsTextile()));
 		}
 		entity.setDirectionsTextile(stub.getDirectionsTextile());
 		if (stub.getFacilitiesTextile() != null) {
-			entity.setFacilities(textileConverter.convertCoreTextile(stub.getFacilitiesTextile()));
+			entity.setFacilities(textileConverter.convertCoreText(stub.getFacilitiesTextile()));
 		}
 		entity.setFacilitiesTextile(stub.getFacilitiesTextile());
 		entity.setFacilities(stub.getFacilities());

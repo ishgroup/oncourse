@@ -3,7 +3,7 @@ package ish.oncourse.webservices.replication.v21.updaters;
 import ish.common.types.NodeSpecialType;
 import ish.common.types.TypesUtil;
 import ish.oncourse.model.Tag;
-import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.services.IReachtextConverter;
 import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v21.stubs.replication.TagStub;
@@ -11,16 +11,16 @@ import org.apache.commons.lang.StringUtils;
 
 public class TagUpdater extends AbstractWillowUpdater<TagStub, Tag>{
 	
-	private ITextileConverter textileConverter;
+	private IReachtextConverter textileConverter;
 
-	public TagUpdater(final ITextileConverter textileConverter) {
+	public TagUpdater(final IReachtextConverter textileConverter) {
 		this.textileConverter = textileConverter;
 	}
 
 	@Override
 	protected void updateEntity(final TagStub stub, final Tag entity, final RelationShipCallback callback) {
 		entity.setCreated(stub.getCreated());
-		entity.setDetail(StringUtils.trimToNull(stub.getDetailTextile()) != null ? textileConverter.convertCoreTextile(stub.getDetailTextile()) : 
+		entity.setDetail(StringUtils.trimToNull(stub.getDetailTextile()) != null ? textileConverter.convertCoreText(stub.getDetailTextile()) :
 			StringUtils.EMPTY);
 		entity.setDetailTextile(stub.getDetailTextile());
 		entity.setIsTagGroup(Boolean.TRUE.equals(stub.isTagGroup()));

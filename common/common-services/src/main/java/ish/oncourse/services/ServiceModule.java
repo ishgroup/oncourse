@@ -78,8 +78,6 @@ import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.tag.TagService;
 import ish.oncourse.services.templates.IWebTemplateService;
 import ish.oncourse.services.templates.WebTemplateService;
-import ish.oncourse.services.textile.ITextileConverter;
-import ish.oncourse.services.textile.TextileConverter;
 import ish.oncourse.services.threading.ThreadSource;
 import ish.oncourse.services.threading.ThreadSourceImpl;
 import ish.oncourse.services.tutor.ITutorService;
@@ -142,7 +140,7 @@ public class ServiceModule {
 		binder.bind(IResourceService.class, ResourceService.class);
 		binder.bind(ISearchService.class, SearchService.class);
 		binder.bind(ITagService.class, TagService.class);
-		binder.bind(ITextileConverter.class, TextileConverter.class);
+		binder.bind(IReachtextConverter.class, ReachtextConverter.class);
 		binder.bind(IParsedContentVisitor.class, ParsedContentVisitor.class);
 
 		// Data specific serivces

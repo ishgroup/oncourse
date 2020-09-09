@@ -5,7 +5,7 @@ package ish.oncourse.services.site;
 
 import ish.oncourse.model.Room;
 import ish.oncourse.model.Site;
-import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.services.IReachtextConverter;
 import ish.oncourse.util.ValidationErrors;
 
 import static org.apache.commons.lang3.StringUtils.trimToNull;
@@ -20,7 +20,7 @@ public class SiteDetails {
 	private Site site;
 	private Room room;
 
-	private ITextileConverter textileConverter;
+	private IReachtextConverter textileConverter;
 
 	private String roomName;
 	private String siteName;
@@ -112,21 +112,21 @@ public class SiteDetails {
 		if (site != null) {
 			drivingDirections = trimToNull(site.getDrivingDirections());
 			if (drivingDirections != null) {
-				drivingDirections = textileConverter.convertCustomTextile(drivingDirections, new ValidationErrors());
+				drivingDirections = textileConverter.convertCustomText(drivingDirections, new ValidationErrors());
 			}
 			publicTransportDirections = trimToNull(site.getPublicTransportDirections());
 			if (publicTransportDirections != null) {
-				publicTransportDirections = textileConverter.convertCustomTextile(publicTransportDirections, new ValidationErrors());
+				publicTransportDirections = textileConverter.convertCustomText(publicTransportDirections, new ValidationErrors());
 			}
 			specialInstructions = trimToNull(site.getSpecialInstructions());
 			if (specialInstructions != null) {
-				specialInstructions = textileConverter.convertCustomTextile(specialInstructions, new ValidationErrors());
+				specialInstructions = textileConverter.convertCustomText(specialInstructions, new ValidationErrors());
 			}
 		}
 	}
 
 
-	public static SiteDetails valueOf(Room room, ITextileConverter textileConverter) {
+	public static SiteDetails valueOf(Room room, IReachtextConverter textileConverter) {
 		SiteDetails siteDetails = new SiteDetails();
 		siteDetails.room = room;
 		siteDetails.site = room.getSite();
@@ -135,7 +135,7 @@ public class SiteDetails {
 		return siteDetails;
 	}
 
-	public static SiteDetails valueOf(Site site, ITextileConverter textileConverter) {
+	public static SiteDetails valueOf(Site site, IReachtextConverter textileConverter) {
 		SiteDetails siteDetails = new SiteDetails();
 		siteDetails.room = null;
 		siteDetails.site = site;

@@ -6,7 +6,7 @@ package ish.oncourse.portal.components.courseclass;
 import ish.oncourse.model.Session;
 import ish.oncourse.portal.services.attendance.AttendanceUtils;
 import ish.oncourse.portal.services.attendance.SessionStyle;
-import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.services.IReachtextConverter;
 import ish.oncourse.util.ValidationErrors;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.Block;
@@ -30,7 +30,7 @@ public class SessionDetails {
 	private TimeZone timeZone;
 
 	@Inject
-	private ITextileConverter textileConverter;
+	private IReachtextConverter textileConverter;
 
 	@Inject
 	@Id("empty")
@@ -93,7 +93,7 @@ public class SessionDetails {
 	}
 	
 	public String convertTextile(String note) {
-		String detail = textileConverter.convertCustomTextile(note, new ValidationErrors());
+		String detail = textileConverter.convertCustomText(note, new ValidationErrors());
 		return detail == null ? StringUtils.EMPTY : detail;
 	}
 }

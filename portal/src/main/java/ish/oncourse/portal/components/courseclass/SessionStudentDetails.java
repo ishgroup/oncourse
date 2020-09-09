@@ -3,13 +3,12 @@
  */
 package ish.oncourse.portal.components.courseclass;
 
-import ish.oncourse.model.Room;
 import ish.oncourse.model.Session;
 import ish.oncourse.model.Tutor;
 import ish.oncourse.model.TutorRole;
 import ish.oncourse.portal.services.attendance.AttendanceUtils;
 import ish.oncourse.portal.services.attendance.SessionUtils;
-import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.services.IReachtextConverter;
 import ish.oncourse.util.ValidationErrors;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
@@ -26,7 +25,7 @@ public class SessionStudentDetails {
 	private TimeZone timeZone;
 
 	@Inject
-	private ITextileConverter textileConverter;
+	private IReachtextConverter textileConverter;
 
 	@Property
 	@Parameter
@@ -57,7 +56,7 @@ public class SessionStudentDetails {
 	}
 
 	public String convertTextile(String note) {
-		String detail = textileConverter.convertCustomTextile(note, new ValidationErrors());
+		String detail = textileConverter.convertCustomText(note, new ValidationErrors());
 		return detail == null ? StringUtils.EMPTY : detail;
 	}
 

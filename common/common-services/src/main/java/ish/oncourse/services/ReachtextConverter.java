@@ -1,12 +1,17 @@
-package ish.oncourse.services.textile;
+package ish.oncourse.services;
 
+import ish.oncourse.services.IReachtextConverter;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.course.ICourseService;
+import ish.oncourse.services.markdown.ConvertCoreMarkdown;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.tag.ITagService;
+import ish.oncourse.services.textile.ConvertCoreTextile;
+import ish.oncourse.services.textile.TextileType;
+import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.courseList.CourseListTextileRenderer;
 import ish.oncourse.services.textile.renderer.*;
 import ish.oncourse.util.IPageRenderer;
@@ -17,12 +22,16 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class TextileConverter implements ITextileConverter {
+public class ReachtextConverter implements IReachtextConverter {
 
     private final static Logger logger = LogManager.getLogger();
+
+    private final static String RENDER_RGXP = "(\\{render:\\s*'\\w+'})";
 
     @Inject
     private IBinaryDataService binaryDataService;
@@ -48,13 +57,13 @@ public class TextileConverter implements ITextileConverter {
     @Inject
     private ICayenneService cayenneService;
 
-    public TextileConverter() {
+    public ReachtextConverter() {
     }
 
     /**
      * This constructor is used only for test
      */
-    TextileConverter(IBinaryDataService binaryDataService, IWebContentService webContentService,
+    ReachtextConverter(IBinaryDataService binaryDataService, IWebContentService webContentService,
                      ICourseService courseService, IPageRenderer pageRenderer, IWebNodeService webNodeService,
                      ITagService tagService) {
         this.binaryDataService = binaryDataService;
@@ -65,11 +74,36 @@ public class TextileConverter implements ITextileConverter {
         this.tagService = tagService;
     }
 
-    public String convertCoreTextile(String content) {
-        return ConvertCoreTextile.valueOf(content).convert();
+    public String convertCoreText(String content) {
+
+        String type = "textile";
+        Pattern pattern = Pattern.compile(RENDER_RGXP);
+        Matcher matcher = pattern.matcher(content);
+        if (matcher.find()) {
+            String renderMarker = matcher.group(matcher.groupCount()-1);
+            pattern = Pattern.compile("(md)|(html)|(textile)");
+            matcher = pattern.matcher(renderMarker);
+            if (matcher.find()) {
+                type = matcher.group();
+                content = content.substring(0, content.indexOf("{render: '" + type + "'")).trim();
+            }
+        }
+
+        String result;
+        switch (type) {
+            case ("html"):
+                result = content;
+                break;
+            case ("md"):
+                result = ConvertCoreMarkdown.valueOf(content).convert();
+                break;
+            default:
+                result = ConvertCoreTextile.valueOf(content).convert();
+        }
+        return result;
     }
 
-    public String convertCustomTextile(String content, ValidationErrors errors) {
+    public String convertCustomText(String content, ValidationErrors errors) {
         content = StringUtils.trimToEmpty(content);
 
         Pattern pattern = Pattern.compile(TextileUtil.TEXTILE_REGEXP, Pattern.DOTALL);

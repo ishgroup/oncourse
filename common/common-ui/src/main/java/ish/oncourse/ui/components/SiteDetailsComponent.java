@@ -4,7 +4,7 @@ import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.Room;
 import ish.oncourse.model.Site;
 import ish.oncourse.services.site.SiteDetails;
-import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.services.IReachtextConverter;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -16,7 +16,7 @@ import java.util.List;
 public class SiteDetailsComponent extends ISHCommon {
 
 	@Inject
-	private ITextileConverter textileConverter;
+	private IReachtextConverter textileConverter;
 
 	@Parameter
 	@Property

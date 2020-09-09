@@ -3,7 +3,7 @@ package ish.oncourse.ui.components;
 import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.Session;
 import ish.oncourse.services.cookies.ICookiesService;
-import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.services.IReachtextConverter;
 import ish.oncourse.util.CustomizedDateFormat;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.ValidationErrors;
@@ -24,7 +24,7 @@ public class TimetableEvents extends ISHCommon {
 	private ICookiesService cookiesService;
 
 	@Inject
-	private ITextileConverter textileConverter;
+	private IReachtextConverter textileConverter;
 	
 	@Property
 	@Parameter
@@ -120,7 +120,7 @@ public class TimetableEvents extends ISHCommon {
 	}
 
 	public String getDetail() {
-		String detail = textileConverter.convertCustomTextile(event.getPublicNotes(), new ValidationErrors());
+		String detail = textileConverter.convertCustomText(event.getPublicNotes(), new ValidationErrors());
 		return detail == null ? StringUtils.EMPTY : detail;
 	}
 	

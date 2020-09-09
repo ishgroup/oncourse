@@ -5,7 +5,7 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Document;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.html.IPlainTextExtractor;
-import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.services.IReachtextConverter;
 import ish.oncourse.util.ValidationErrors;
 import ish.persistence.CommonPreferenceController;
 import org.apache.commons.lang3.StringUtils;
@@ -96,7 +96,7 @@ public class PortalUtils {
 
 
     public static String getClassDetailsBy(CourseClass courseClass,
-                                           ITextileConverter textileConverter,
+                                           IReachtextConverter textileConverter,
                                            IPlainTextExtractor extractor)
     {
         return stringToTextileStringBy(getClassDetails(courseClass),CLASS_DETAILS_LENGTH, textileConverter,extractor);
@@ -121,7 +121,7 @@ public class PortalUtils {
 	}
 
     public static String getCourseDetailsBy(Course course,
-                                           ITextileConverter textileConverter,
+                                           IReachtextConverter textileConverter,
                                            IPlainTextExtractor extractor)
     {
         StringBuilder textileDetails = new StringBuilder();
@@ -133,7 +133,7 @@ public class PortalUtils {
     }
 
     public static String getTagDetailsBy(Tag tag,
-                                     ITextileConverter textileConverter,
+                                     IReachtextConverter textileConverter,
                                      IPlainTextExtractor extractor)
     {
         return stringToTextileStringBy(tag.getDetail(), TAG_DETAILS_LENGTH, textileConverter,extractor);
@@ -141,13 +141,13 @@ public class PortalUtils {
     }
 
     public static String stringToTextileStringBy(String textileString, int resultStringLength,
-                                            ITextileConverter textileConverter,
+                                            IReachtextConverter textileConverter,
                                             IPlainTextExtractor extractor)
     {
 
         if (StringUtils.trimToNull(textileString) != null)
         {
-            String details = textileConverter.convertCustomTextile(textileString, new ValidationErrors());
+            String details = textileConverter.convertCustomText(textileString, new ValidationErrors());
             details = extractor.extractFromHtml(details);
             details = resultStringLength == -1 ? details : StringUtils.abbreviate(details, resultStringLength);
             return details;

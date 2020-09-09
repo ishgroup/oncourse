@@ -9,7 +9,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.search.*;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
-import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.services.IReachtextConverter;
 import ish.oncourse.solr.query.SearchParams;
 import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.util.HTMLUtils;
@@ -70,7 +70,7 @@ public class CoursesSkeleton extends ISHCommon {
 	private Map<SearchParam, String> searchParamsErrors;
 
 	@Inject
-	private ITextileConverter textileConverter;
+	private IReachtextConverter textileConverter;
 
 	@Inject
 	private IFacebookMetaProvider facebookMetaProvider;
@@ -266,7 +266,7 @@ public class CoursesSkeleton extends ISHCommon {
 			logger.error("Unexpected case: `browse tag` and `subject tag` both are null.");
 			return "";
 		}
-		return textileConverter.convertCustomTextile(browseTag.getDetail(), new ValidationErrors());
+		return textileConverter.convertCustomText(browseTag.getDetail(), new ValidationErrors());
 	}
 
 	public Tag getBrowseTag() {

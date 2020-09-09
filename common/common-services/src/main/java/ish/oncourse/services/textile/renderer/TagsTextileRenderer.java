@@ -3,7 +3,7 @@ package ish.oncourse.services.textile.renderer;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.CustomTemplateDefinition;
-import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.services.IReachtextConverter;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.attrs.TagsTextileAttributes;
 import ish.oncourse.services.textile.validator.TagsTextileValidator;
@@ -38,9 +38,9 @@ public class TagsTextileRenderer extends AbstractRenderer {
 
 	private ITagService tagService;
 	private IPageRenderer pageRenderer;
-	private ITextileConverter converter;
+	private IReachtextConverter converter;
 
-	public TagsTextileRenderer(final ITagService tagService, final IPageRenderer pageRenderer, final ITextileConverter converter) {
+	public TagsTextileRenderer(final ITagService tagService, final IPageRenderer pageRenderer, final IReachtextConverter converter) {
 		this.tagService = tagService;
 		this.pageRenderer = pageRenderer;
 		this.converter = converter;
@@ -102,7 +102,7 @@ public class TagsTextileRenderer extends AbstractRenderer {
 			Pattern pattern = Pattern.compile(TextileUtil.TEXTILE_REGEXP, Pattern.DOTALL);
 			Matcher matcher = pattern.matcher(tag);
 			if (matcher.find() && !getErrors().hasFailures()) {
-				tag = converter.convertCustomTextile(tag, getErrors());
+				tag = converter.convertCustomText(tag, getErrors());
 			}
 		} else {
 			tag = null;

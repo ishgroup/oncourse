@@ -7,7 +7,7 @@ import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.services.IReachtextConverter;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
@@ -30,7 +30,7 @@ public class WaitingListItem {
     private IWebSiteService webSiteService;
 
     @Inject
-    private ITextileConverter textileConverter;
+    private IReachtextConverter textileConverter;
 
 	@Inject
 	private IPortalService portalService;

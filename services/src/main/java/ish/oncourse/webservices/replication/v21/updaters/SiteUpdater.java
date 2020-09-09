@@ -2,7 +2,7 @@ package ish.oncourse.webservices.replication.v21.updaters;
 
 import ish.oncourse.model.Country;
 import ish.oncourse.model.Site;
-import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.services.IReachtextConverter;
 import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v21.stubs.replication.SiteStub;
@@ -11,9 +11,9 @@ import org.apache.commons.lang3.StringUtils;
 
 public class SiteUpdater extends AbstractWillowUpdater<SiteStub, Site> {
 
-	private ITextileConverter textileConverter;
+	private IReachtextConverter textileConverter;
 
-	public SiteUpdater(ITextileConverter textileConverter) {
+	public SiteUpdater(IReachtextConverter textileConverter) {
 		this.textileConverter = textileConverter;
 	}
 
@@ -51,7 +51,7 @@ public class SiteUpdater extends AbstractWillowUpdater<SiteStub, Site> {
 	public String convertTextileOrNull(String value) {
 		String res = null;
 		if (value != null && !StringUtils.EMPTY.equals(value)) {
-			res = textileConverter.convertCoreTextile(value);
+			res = textileConverter.convertCoreText(value);
 		}
 		return res;
 	}

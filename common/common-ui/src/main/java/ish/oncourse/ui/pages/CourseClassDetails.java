@@ -9,7 +9,7 @@ import ish.oncourse.model.Session;
 import ish.oncourse.services.application.IApplicationService;
 import ish.oncourse.services.contact.IContactService;
 import ish.oncourse.services.html.IFacebookMetaProvider;
-import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.services.IReachtextConverter;
 import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.util.HTMLUtils;
 import ish.oncourse.util.ValidationErrors;
@@ -25,7 +25,7 @@ import java.util.List;
 public class CourseClassDetails extends ISHCommon {
 
 	@Inject
-	private ITextileConverter textileConverter;
+	private IReachtextConverter textileConverter;
 
 	@Inject
 	private IFacebookMetaProvider facebookMetaProvider;
@@ -52,13 +52,13 @@ public class CourseClassDetails extends ISHCommon {
 	}
 
 	public String getCourseDetail() {
-		String detail = textileConverter.convertCustomTextile(courseClass.getCourse().getDetail(),
+		String detail = textileConverter.convertCustomText(courseClass.getCourse().getDetail(),
 				new ValidationErrors());
 		return detail == null ? "" : detail;
 	}
 
 	public String getCourseClassDetail() {
-		String detail = textileConverter.convertCustomTextile(courseClass.getDetail(), new ValidationErrors());
+		String detail = textileConverter.convertCustomText(courseClass.getDetail(), new ValidationErrors());
 		return detail == null ? "" : detail;
 	}
 

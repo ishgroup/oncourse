@@ -9,7 +9,7 @@ import ish.oncourse.portal.services.IPortalService;
 
 import ish.oncourse.portal.services.attendance.SessionUtils;
 
-import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.services.IReachtextConverter;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.ValidationErrors;
 import org.apache.commons.lang3.StringUtils;
@@ -37,14 +37,14 @@ abstract public class AbstractSessionItem {
 	private IPortalService portalService;
 
 	@Inject
-	private ITextileConverter textileConverter;
+	private IReachtextConverter textileConverter;
 
 	public String getVenue() {
 		return SessionUtils.getVenue(session);
 	}
 
 	public String convertTextile(String note) {
-		String detail = textileConverter.convertCustomTextile(note, new ValidationErrors());
+		String detail = textileConverter.convertCustomText(note, new ValidationErrors());
 		return detail == null ? StringUtils.EMPTY : detail;
 	}
 

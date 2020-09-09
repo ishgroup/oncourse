@@ -7,16 +7,16 @@ import ish.math.Money;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Room;
-import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.services.IReachtextConverter;
 import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v21.stubs.replication.CourseClassStub;
 
 public class CourseClassUpdater extends AbstractWillowUpdater<CourseClassStub, CourseClass> {
 
-	private ITextileConverter textileConverter;
+	private IReachtextConverter textileConverter;
 	
-	public CourseClassUpdater(ITextileConverter textileConverter) {
+	public CourseClassUpdater(IReachtextConverter textileConverter) {
 		this.textileConverter = textileConverter;
 	}
 	@Override
@@ -27,7 +27,7 @@ public class CourseClassUpdater extends AbstractWillowUpdater<CourseClassStub, C
 		entity.setCourse(callback.updateRelationShip(stub.getCourseId(), Course.class));
 		entity.setCreated(stub.getCreated());
 		entity.setDeliveryMode(stub.getDeliveryMode());
-		entity.setDetail(stub.getDetailTextile() == null ? null : textileConverter.convertCoreTextile(stub.getDetailTextile()));
+		entity.setDetail(stub.getDetailTextile() == null ? null : textileConverter.convertCoreText(stub.getDetailTextile()));
 		entity.setDetailTextile(stub.getDetailTextile());
 		entity.setEndDate(stub.getEndDate());
 		entity.setFeeExGst(new Money(stub.getFeeExGst()));

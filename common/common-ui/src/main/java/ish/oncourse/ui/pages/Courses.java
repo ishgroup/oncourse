@@ -10,7 +10,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.search.*;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
-import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.services.IReachtextConverter;
 import ish.oncourse.solr.query.SearchParams;
 import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.util.HTMLUtils;
@@ -69,7 +69,7 @@ public class Courses extends ISHCommon {
 	@Inject
 	private ITagService tagService;
 	@Inject
-	private ITextileConverter textileConverter;
+	private IReachtextConverter textileConverter;
 	@Inject
 	private ICookiesService cookiesService;
 	@Inject
@@ -388,7 +388,7 @@ public class Courses extends ISHCommon {
 	}
 
 	public String getBrowseTagDetail() {
-		return textileConverter.convertCustomTextile(getBrowseTag().getDetail(), new ValidationErrors());
+		return textileConverter.convertCustomText(getBrowseTag().getDetail(), new ValidationErrors());
 	}
 
 	public String getMetaDescription() {

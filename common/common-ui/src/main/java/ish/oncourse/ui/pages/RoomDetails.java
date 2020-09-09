@@ -3,7 +3,7 @@ package ish.oncourse.ui.pages;
 import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.Room;
 import ish.oncourse.model.Site;
-import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.services.IReachtextConverter;
 import ish.oncourse.ui.components.Attachments;
 import ish.oncourse.util.ValidationErrors;
 import org.apache.commons.lang.StringUtils;
@@ -15,7 +15,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 public class RoomDetails extends ISHCommon {
 
     @Inject
-    private ITextileConverter textileConverter;
+    private IReachtextConverter textileConverter;
 
 	@Property
 	private Room room;
@@ -30,7 +30,7 @@ public class RoomDetails extends ISHCommon {
 
     public String getDirections() {
         if (room != null && StringUtils.trimToNull(room.getDirections()) != null)
-            return textileConverter.convertCustomTextile(room.getDirections(), new ValidationErrors());
+            return textileConverter.convertCustomText(room.getDirections(), new ValidationErrors());
         else
             return null;
     }

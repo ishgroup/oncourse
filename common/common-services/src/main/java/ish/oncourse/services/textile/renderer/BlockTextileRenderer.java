@@ -2,7 +2,7 @@ package ish.oncourse.services.textile.renderer;
 
 import ish.oncourse.model.WebContent;
 import ish.oncourse.services.content.IWebContentService;
-import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.services.IReachtextConverter;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.attrs.BlockTextileAttributes;
 import ish.oncourse.services.textile.validator.BlockTextileValidator;
@@ -33,9 +33,9 @@ public class BlockTextileRenderer extends AbstractRenderer {
 
 	private IWebContentService webBlockDataService;
 
-	private ITextileConverter converter;
+	private IReachtextConverter converter;
 
-	public BlockTextileRenderer(IWebContentService webBlockDataService, ITextileConverter converter) {
+	public BlockTextileRenderer(IWebContentService webBlockDataService, IReachtextConverter converter) {
 		validator = new BlockTextileValidator(webBlockDataService);
 		this.webBlockDataService = webBlockDataService;
 		this.converter = converter;
@@ -63,7 +63,7 @@ public class BlockTextileRenderer extends AbstractRenderer {
 			Matcher matcher = pattern.matcher(result);
 			if (matcher.find()) {
 				ValidationErrors errors = new ValidationErrors();
-				tag = converter.convertCustomTextile(result, errors);
+				tag = converter.convertCustomText(result, errors);
 			} else {
 				tag = result;
 			}

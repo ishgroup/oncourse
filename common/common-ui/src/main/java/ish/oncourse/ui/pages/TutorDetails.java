@@ -6,7 +6,7 @@ import ish.oncourse.model.Document;
 import ish.oncourse.model.Tutor;
 import ish.oncourse.model.TutorRole;
 import ish.oncourse.services.binary.IBinaryDataService;
-import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.services.IReachtextConverter;
 import ish.oncourse.services.tutor.ITutorService;
 import ish.oncourse.util.ValidationErrors;
 import org.apache.logging.log4j.LogManager;
@@ -26,7 +26,7 @@ public class TutorDetails extends ISHCommon {
 	private ITutorService tutorService;
 
 	@Inject
-	private ITextileConverter textileConverter;
+	private IReachtextConverter textileConverter;
 	
 	@Property
 	private Tutor tutor;
@@ -67,7 +67,7 @@ public class TutorDetails extends ISHCommon {
 	}
 
 	public String getResume() {
-		return textileConverter.convertCustomTextile(tutor.getResume(), new ValidationErrors());
+		return textileConverter.convertCustomText(tutor.getResume(), new ValidationErrors());
 	}
 
 	public Document getProfilePicture()

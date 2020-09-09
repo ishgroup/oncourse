@@ -7,7 +7,7 @@ import ish.oncourse.model.WebNode;
 import ish.oncourse.services.content.cache.IContentCacheService;
 import ish.oncourse.services.content.cache.IContentKeyFactory;
 import ish.oncourse.services.content.cache.WillowContentKey;
-import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.services.IReachtextConverter;
 import ish.oncourse.util.ValidationErrors;
 import org.apache.cayenne.PersistentObject;
 import org.apache.commons.lang3.StringUtils;
@@ -20,7 +20,7 @@ public class FacebookMetaProvider implements IFacebookMetaProvider {
 	private static final int MAX_META_LENGTH = 250;
 
 	@Inject
-	private ITextileConverter textileConverter;
+	private IReachtextConverter textileConverter;
 
 	@Inject
 	private IPlainTextExtractor plainTextExtractor;
@@ -65,7 +65,7 @@ public class FacebookMetaProvider implements IFacebookMetaProvider {
 		}
 
 		try {
-			String detail = textileConverter.convertCustomTextile(details,
+			String detail = textileConverter.convertCustomText(details,
 					new ValidationErrors());
 			if (detail != null) {
 				String plainText = plainTextExtractor.extractFromHtml(detail);

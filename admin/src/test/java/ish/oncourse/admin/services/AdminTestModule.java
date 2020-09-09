@@ -21,8 +21,8 @@ import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.tag.TagService;
-import ish.oncourse.services.textile.ITextileConverter;
-import ish.oncourse.services.textile.TextileConverter;
+import ish.oncourse.services.IReachtextConverter;
+import ish.oncourse.services.ReachtextConverter;
 import ish.oncourse.services.threading.ThreadSource;
 import ish.oncourse.services.threading.ThreadSourceImpl;
 import ish.oncourse.util.IPageRenderer;
@@ -56,7 +56,7 @@ public class AdminTestModule {
 		binder.bind(INTISUpdater.class, NTISUpdaterImpl.class);
 		binder.bind(IRequestCacheService.class, RequestCacheService.class);
 		binder.bind(ThreadSource.class, ThreadSourceImpl.class);
-		binder.bind(ITextileConverter.class, TextileConverter.class);
+		binder.bind(IReachtextConverter.class, ReachtextConverter.class);
 		binder.bind(IPageRenderer.class, PageRenderer.class);
 	}
 }

@@ -8,7 +8,7 @@ import ish.oncourse.services.courseclass.GetIsCourseClassInStock;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.preference.IsPaymentGatewayEnabled;
 import ish.oncourse.services.preference.PreferenceController;
-import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.services.IReachtextConverter;
 import ish.oncourse.services.tutor.GetCourseClassVisibleTutorRoles;
 import ish.oncourse.services.tutor.ITutorService;
 import ish.oncourse.ui.base.ISHCommon;
@@ -28,9 +28,6 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import java.math.BigDecimal;
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 import java.util.*;
 
 import static ish.oncourse.utils.SessionUtils.StartEndTime;
@@ -46,7 +43,7 @@ public class CourseClassItem extends ISHCommon {
 	private Messages messages;
 
 	@Inject
-	private ITextileConverter textileConverter;
+	private IReachtextConverter textileConverter;
 
 	@Inject
 	private ICookiesService cookiesService;
@@ -175,7 +172,7 @@ public class CourseClassItem extends ISHCommon {
 	}
 
 	public String getCourseClassDetail() {
-		String detail = textileConverter.convertCustomTextile(courseClass.getDetail(), new ValidationErrors());
+		String detail = textileConverter.convertCustomText(courseClass.getDetail(), new ValidationErrors());
 		return detail == null ? StringUtils.EMPTY : detail;
 	}
 

@@ -8,11 +8,9 @@ import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.portal.services.attendance.AttendanceTransportUtils;
 import ish.oncourse.portal.services.attendance.SessionResponse;
-import ish.oncourse.portal.services.survey.GetSurveyContainers;
-import ish.oncourse.portal.services.survey.SurveyContainer;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.services.IReachtextConverter;
 import ish.oncourse.util.ValidationErrors;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
@@ -26,7 +24,6 @@ import org.apache.tapestry5.util.TextStreamResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -67,7 +64,7 @@ public class ClassDetailsNew {
 	private String fullDetails;
 
 	@Inject
-	private ITextileConverter textileConverter;
+	private IReachtextConverter textileConverter;
 
 	@Inject
 	private IPlainTextExtractor extractor;
@@ -84,7 +81,7 @@ public class ClassDetailsNew {
 	void setupRender() {
 		if (courseClass != null) {
 			details = PortalUtils.getClassDetailsBy(courseClass, textileConverter, extractor);
-			fullDetails = textileConverter.convertCustomTextile(PortalUtils.getClassDetails(courseClass), new ValidationErrors());
+			fullDetails = textileConverter.convertCustomText(PortalUtils.getClassDetails(courseClass), new ValidationErrors());
 		}
 		if (!isTutor) {
 			enrolment = portalService.getEnrolmentBy(portalService.getContact().getStudent(), courseClass);

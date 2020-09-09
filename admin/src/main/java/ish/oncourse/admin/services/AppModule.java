@@ -10,8 +10,8 @@ import ish.oncourse.admin.services.storage.S3ServiceBuilder;
 import ish.oncourse.services.BinderFunctions;
 import ish.oncourse.services.cache.IRequestCacheService;
 import ish.oncourse.services.cache.RequestCacheService;
-import ish.oncourse.services.textile.ITextileConverter;
-import ish.oncourse.services.textile.TextileConverter;
+import ish.oncourse.services.IReachtextConverter;
+import ish.oncourse.services.ReachtextConverter;
 import ish.oncourse.services.threading.ThreadSource;
 import ish.oncourse.services.threading.ThreadSourceImpl;
 import ish.oncourse.util.IPageRenderer;
@@ -45,7 +45,7 @@ public class AppModule {
 		binder.bind(INTISUpdater.class, NTISUpdaterImpl.class);
 		binder.bind(IRequestCacheService.class, RequestCacheService.class);
 		binder.bind(ThreadSource.class, ThreadSourceImpl.class);
-		binder.bind(ITextileConverter.class, TextileConverter.class);
+		binder.bind(IReachtextConverter.class, ReachtextConverter.class);
 		binder.bind(IPageRenderer.class, PageRenderer.class);
 	}
 

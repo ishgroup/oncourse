@@ -8,7 +8,7 @@ import ish.oncourse.model.VoucherProduct;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.preference.PreferenceController;
-import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.services.IReachtextConverter;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.ValidationErrors;
 import org.apache.commons.lang.StringUtils;
@@ -47,7 +47,7 @@ public class ProductItem extends ISHCommon {
 	private ICookiesService cookiesService;
 	
 	@Inject
-	private ITextileConverter textileConverter;
+	private IReachtextConverter textileConverter;
 	
 	@Inject
 	private IPlainTextExtractor extractor;
@@ -77,7 +77,7 @@ public class ProductItem extends ISHCommon {
 	}
 
 	public String getDetailText() {
-		String detail = textileConverter.convertCustomTextile(textileConverter.convertCoreTextile(product.getDescription()), new ValidationErrors());
+		String detail = textileConverter.convertCustomText(textileConverter.convertCoreText(product.getDescription()), new ValidationErrors());
 		if (detail == null) {
 			return StringUtils.EMPTY;
 		}

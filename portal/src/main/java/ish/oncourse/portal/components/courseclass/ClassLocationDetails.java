@@ -5,7 +5,7 @@ package ish.oncourse.portal.components.courseclass;
 
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.services.site.SiteDetails;
-import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.services.IReachtextConverter;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -17,7 +17,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
  */
 public class ClassLocationDetails {
 	@Inject
-	private ITextileConverter textileConverter;
+	private IReachtextConverter textileConverter;
 
 	@Parameter(required = true)
 	private CourseClass courseClass;

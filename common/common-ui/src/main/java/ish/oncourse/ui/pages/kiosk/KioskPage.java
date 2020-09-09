@@ -5,7 +5,7 @@ import ish.oncourse.model.Room;
 import ish.oncourse.model.Session;
 import ish.oncourse.model.Site;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.services.IReachtextConverter;
 import ish.oncourse.util.ValidationErrors;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.query.ObjectSelect;
@@ -29,7 +29,7 @@ public class KioskPage {
     private Request request;
 
     @Inject
-    private ITextileConverter textileConverter;
+    private IReachtextConverter textileConverter;
 
     @Inject
     private ICayenneService cayenneService;
@@ -71,6 +71,6 @@ public class KioskPage {
     }
 
     public String getSpecialInstructions() {
-         return textileConverter.convertCustomTextile(site.getSpecialInstructions(), new ValidationErrors());
+         return textileConverter.convertCustomText(site.getSpecialInstructions(), new ValidationErrors());
     }
 }

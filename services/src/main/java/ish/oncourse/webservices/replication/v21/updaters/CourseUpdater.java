@@ -5,7 +5,7 @@ import ish.common.types.TypesUtil;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.FieldConfigurationScheme;
 import ish.oncourse.model.Qualification;
-import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.services.IReachtextConverter;
 import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v21.stubs.replication.CourseStub;
@@ -13,9 +13,9 @@ import org.apache.cayenne.Cayenne;
 
 public class CourseUpdater extends AbstractWillowUpdater<CourseStub, Course> {
 
-	private ITextileConverter textileConverter;
+	private IReachtextConverter textileConverter;
 
-	public CourseUpdater(ITextileConverter textileConverter) {
+	public CourseUpdater(IReachtextConverter textileConverter) {
 		this.textileConverter = textileConverter;
 	}
 
@@ -25,7 +25,7 @@ public class CourseUpdater extends AbstractWillowUpdater<CourseStub, Course> {
 		entity.setCode(stub.getCode());
 		entity.setCreated(stub.getCreated());
 		if (stub.getDetailTextile() != null) {
-			entity.setDetail(textileConverter.convertCoreTextile(stub.getDetailTextile()));
+			entity.setDetail(textileConverter.convertCoreText(stub.getDetailTextile()));
 		}
 		entity.setDetailTextile(stub.getDetailTextile());
 		entity.setFieldOfEducation(stub.getFieldOfEducation());

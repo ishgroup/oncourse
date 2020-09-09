@@ -4,7 +4,7 @@ import ish.common.types.EntityMapping;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Queueable;
 import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.services.IReachtextConverter;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.webservices.exception.UpdaterNotFoundException;
 import ish.oncourse.webservices.replication.v21.updaters.V21UpdatersMap;
@@ -29,7 +29,7 @@ public class WillowUpdaterImpl implements IWillowUpdater {
 
 	private Map<String, IWillowUpdater> v21updaterMap = new HashMap<>();
 
-	public WillowUpdaterImpl(@Inject ITextileConverter textileConverter) {
+	public WillowUpdaterImpl(@Inject IReachtextConverter textileConverter) {
 
 		V21UpdatersMap v21map = new V21UpdatersMap();
 		v21map.initMap(textileConverter);

@@ -1,5 +1,7 @@
 package ish.oncourse.services.textile;
 
+import ish.oncourse.services.IReachtextConverter;
+import ish.oncourse.services.ReachtextConverter;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,7 +34,7 @@ public class CoreTextileConverterTest {
 
 	private static final String TEST1 = "_emphasized_ *strongly emphasized*";
 
-	private ITextileConverter textileConverter;
+	private IReachtextConverter textileConverter;
 
 	@Mock
 	private IPlainTextExtractor extractor;
@@ -48,37 +50,37 @@ public class CoreTextileConverterTest {
 		when(extractor.compactHtmlTags(TEST7)).thenReturn(TEST7);
 		when(extractor.compactHtmlTags(TEST8)).thenReturn(TEST8);
 		when(extractor.compactHtmlTags(TEST9)).thenReturn(TEST9);
-		textileConverter = new TextileConverter();
+		textileConverter = new ReachtextConverter();
 	}
 
 	@Test
 	public void testConvertCoreTextile() {
 
 		assertEquals("<em>emphasized</em> <strong>strongly emphasized</strong>",
-				textileConverter.convertCoreTextile(TEST1));
+				textileConverter.convertCoreText(TEST1));
 
 		assertEquals("<ul><li>An item in a bulleted (unordered) list<ul><li>Second Level</li></ul></li></ul>",
-				textileConverter.convertCoreTextile(TEST2));
+				textileConverter.convertCoreText(TEST2));
 
 		assertEquals("<ol><li>An item in an enumerated (ordered) list xxxxxxx"
 				+ "<ol><li>Another level in an enumerated list vvvvvvvv</li>"
-				+ "<li>this is a numbered list</li></ol></li></ol>", textileConverter.convertCoreTextile(TEST3));
+				+ "<li>this is a numbered list</li></ol></li></ol>", textileConverter.convertCoreText(TEST3));
 
 		assertEquals("<table><tr><th>Header </th><th>Header </th><th>Header </th></tr>"
 				+ "<tr><td>Cell 1 </td><td>Cell 2 </td><td>Cell 3 </td></tr></table>",
-				textileConverter.convertCoreTextile(TEST4));
+				textileConverter.convertCoreText(TEST4));
 
-		assertEquals("<code>code</code>", textileConverter.convertCoreTextile(TEST5));
+		assertEquals("<code>code</code>", textileConverter.convertCoreText(TEST5));
 
-		assertEquals("<h1 id=\"id\">An HTML first-level heading</h1>", textileConverter.convertCoreTextile(TEST6));
+		assertEquals("<h1 id=\"id\">An HTML first-level heading</h1>", textileConverter.convertCoreText(TEST6));
 
 		assertEquals("<blockquote><p>This text will be enclosed in an HTML blockquote element.</p></blockquote>",
-				textileConverter.convertCoreTextile(TEST7));
+				textileConverter.convertCoreText(TEST7));
 
-		assertEquals("<a href=\"link_address\">link text</a>", textileConverter.convertCoreTextile(TEST8));
+		assertEquals("<a href=\"link_address\">link text</a>", textileConverter.convertCoreText(TEST8));
 
 		assertEquals("<img alt=\"(alt text)\" title=\"(alt text)\" border=\"0\" src=\"imageurl\"/>",
-				textileConverter.convertCoreTextile(TEST9));
+				textileConverter.convertCoreText(TEST9));
 
 	}
 }

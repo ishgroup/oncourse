@@ -1,20 +1,14 @@
 package ish.oncourse.ui.components;
 
-import ish.common.types.AttachmentInfoVisibility;
 import ish.oncourse.model.Course;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.ui.base.ISHCommon;
-import ish.oncourse.model.Document;
 import ish.oncourse.model.Tutor;
 import ish.oncourse.model.TutorRole;
 import ish.oncourse.services.binary.IBinaryDataService;
-import ish.oncourse.services.textile.ITextileConverter;
-import ish.oncourse.services.tutor.ITutorService;
+import ish.oncourse.services.IReachtextConverter;
 import ish.oncourse.util.ValidationErrors;
-import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -32,7 +26,7 @@ public class TutorItem extends ISHCommon {
     private IBinaryDataService binaryDataService;
 
     @Inject
-    private ITextileConverter textileConverter;
+    private IReachtextConverter textileConverter;
 
     @Parameter
     @Property
@@ -71,7 +65,7 @@ public class TutorItem extends ISHCommon {
     public String getResume() {
         String resume = StringUtils.trimToNull(tutor.getResume());
         if (resume != null) {
-            return textileConverter.convertCustomTextile(resume, new ValidationErrors());
+            return textileConverter.convertCustomText(resume, new ValidationErrors());
         } else {
             return String.format("%s. Tutor of %s", tutor.getFullName(), webSiteService.getCurrentCollege().getName());
         }

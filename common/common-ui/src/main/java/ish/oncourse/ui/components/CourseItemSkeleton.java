@@ -12,7 +12,7 @@ import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.tag.ITagService;
-import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.services.IReachtextConverter;
 import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.ui.utils.CourseContext;
 import ish.oncourse.ui.utils.CourseItemSkeletonModel;
@@ -53,7 +53,7 @@ public class CourseItemSkeleton extends ISHCommon {
 	private IPlainTextExtractor extractor;
 
 	@Inject
-	private ITextileConverter textileConverter;
+	private IReachtextConverter textileConverter;
 	
 	@Inject
 	private PreferenceController preferenceController;
@@ -142,7 +142,7 @@ public class CourseItemSkeleton extends ISHCommon {
 	}
 
 	public String getCourseDetail() {
-		String detail = textileConverter.convertCustomTextile(courseItemModel.getCourse().getDetail(), new ValidationErrors());
+		String detail = textileConverter.convertCustomText(courseItemModel.getCourse().getDetail(), new ValidationErrors());
 		if (detail == null) {
 			return StringUtils.EMPTY;
 		}

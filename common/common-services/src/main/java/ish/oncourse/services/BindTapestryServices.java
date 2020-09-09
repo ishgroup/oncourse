@@ -21,8 +21,6 @@ import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.PropertyService;
 import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.resource.ResourceService;
-import ish.oncourse.services.textile.ITextileConverter;
-import ish.oncourse.services.textile.TextileConverter;
 import ish.oncourse.services.visitor.IParsedContentVisitor;
 import ish.oncourse.services.visitor.ParsedContentVisitor;
 import ish.oncourse.util.ComponentPageResponseRenderer;
@@ -53,7 +51,7 @@ public class BindTapestryServices {
 			binder.bind(IResourceService.class, ResourceService.class);
 		else
 			binder.bind(IResourceService.class, resourceService);
-		binder.bind(ITextileConverter.class, TextileConverter.class);
+		binder.bind(IReachtextConverter.class, ReachtextConverter.class);
 		binder.bind(IParsedContentVisitor.class, ParsedContentVisitor.class);
 		binder.bind(IPlainTextExtractor.class, JerichoPlainTextExtractor.class);
 		binder.bind(IDataLayerFactory.class, DataLayerFactory.class).scope(ScopeConstants.PERTHREAD);

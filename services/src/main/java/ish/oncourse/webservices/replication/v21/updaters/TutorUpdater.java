@@ -2,7 +2,7 @@ package ish.oncourse.webservices.replication.v21.updaters;
 
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Tutor;
-import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.services.IReachtextConverter;
 import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.replication.updaters.UpdaterException;
@@ -10,9 +10,9 @@ import ish.oncourse.webservices.v21.stubs.replication.TutorStub;
 
 public class TutorUpdater extends AbstractWillowUpdater<TutorStub, Tutor> {
 
-	private ITextileConverter textileConverter;
+	private IReachtextConverter textileConverter;
 
-	public TutorUpdater(ITextileConverter textileConverter) {
+	public TutorUpdater(IReachtextConverter textileConverter) {
 		this.textileConverter = textileConverter;
 	}
 
@@ -30,7 +30,7 @@ public class TutorUpdater extends AbstractWillowUpdater<TutorStub, Tutor> {
 		entity.setStartDate(stub.getStartDate());
 		String resumeTextile = stub.getResumeTextile();
 		if (resumeTextile != null) {
-			entity.setResume(textileConverter.convertCoreTextile(resumeTextile));
+			entity.setResume(textileConverter.convertCoreText(resumeTextile));
 		}
 		entity.setResumeTextile(resumeTextile);
 

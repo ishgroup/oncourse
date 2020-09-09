@@ -3,11 +3,10 @@ package ish.oncourse.services.visitor;
 import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebNodeType;
-import ish.oncourse.model.visitor.BaseVisitor;
 import ish.oncourse.services.content.cache.IContentCacheService;
 import ish.oncourse.services.content.cache.IContentKeyFactory;
 import ish.oncourse.services.content.cache.WillowContentKey;
-import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.services.IReachtextConverter;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.util.ValidationException;
@@ -28,7 +27,7 @@ public class ParsedContentVisitor implements IParsedContentVisitor {
 	public static final String WEB_CONTENT_CACHE = "willow.smc.web.content.cache";
 
 	@Inject
-	private ITextileConverter textileConverter;
+	private IReachtextConverter textileConverter;
 
 	@Inject
 	private IContentCacheService<WillowContentKey, String> contentCacheService;
@@ -81,7 +80,7 @@ public class ParsedContentVisitor implements IParsedContentVisitor {
 		Matcher matcher = pattern.matcher(text);
 
 		if (matcher.find()) {
-			text = textileConverter.convertCustomTextile(text, errors);
+			text = textileConverter.convertCustomText(text, errors);
 			if (errors.hasFailures()) {
 				logger.debug("Validation errors on Textile cnversion", new ValidationException(errors));
 			}

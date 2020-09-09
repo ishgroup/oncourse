@@ -6,7 +6,7 @@ import ish.oncourse.services.cache.IRequestCacheService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
-import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.services.IReachtextConverter;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -48,7 +48,7 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 	private IWebSiteVersionService webSiteVersionService;
 
 	@Inject
-	private ITextileConverter textileConverter;
+	private IReachtextConverter textileConverter;
 
     @Inject
     private IRequestCacheService requestCacheService;
@@ -185,7 +185,7 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
         WebContent webContent = ctx.newObject(WebContent.class);
         webContent.setWebSiteVersion(webSiteVersion);
 		webContent.setContentTextile(content);
-        webContent.setContent(textileConverter.convertCoreTextile(content));
+        webContent.setContent(textileConverter.convertCoreText(content));
 
         WebContentVisibility webContentVisibility = ctx.newObject(WebContentVisibility.class);
         webContentVisibility.setWebNode(newPageNode);

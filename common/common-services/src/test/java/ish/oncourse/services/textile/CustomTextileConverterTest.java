@@ -1,6 +1,8 @@
 package ish.oncourse.services.textile;
 
 import ish.oncourse.model.*;
+import ish.oncourse.services.IReachtextConverter;
+import ish.oncourse.services.ReachtextConverter;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.course.ICourseService;
@@ -78,7 +80,7 @@ public class CustomTextileConverterTest {
 	@Mock
 	private Document document;
 
-	private ITextileConverter textileConverter;
+	private IReachtextConverter textileConverter;
 
 
 	private WebContent webContent;
@@ -94,7 +96,7 @@ public class CustomTextileConverterTest {
 		errors = new ValidationErrors();
 
 		when(tagService.getSubjectsTag()).thenReturn(mock(Tag.class));
-		textileConverter = new TextileConverter(binaryDataService, webContentService, courseService, pageRenderer,
+		textileConverter = new ReachtextConverter(binaryDataService, webContentService, courseService, pageRenderer,
 				webNodeService, tagService);
 	}
 
@@ -120,7 +122,7 @@ public class CustomTextileConverterTest {
 		webContent.setContent(TEST_WEB_BLOCK_CONTENT);
 		when(webContentService.getWebContent(WebContent.NAME_PROPERTY, TEST_BLOCK_NAME)).thenReturn(webContent);
 
-		String result = textileConverter.convertCustomTextile(BLOCK_BY_NAME, errors);
+		String result = textileConverter.convertCustomText(BLOCK_BY_NAME, errors);
 		assertEquals(TEST_WEB_BLOCK_CONTENT, result);
 		assertFalse(errors.hasFailures());
 	}
@@ -141,7 +143,7 @@ public class CustomTextileConverterTest {
 
 		when(pageRenderer.renderPage(eq(TextileUtil.TEXTILE_IMAGE_PAGE), anyMap())).thenReturn(successfulResult);
 
-		String result = textileConverter.convertCustomTextile(BLOCK_BY_NAME, errors);
+		String result = textileConverter.convertCustomText(BLOCK_BY_NAME, errors);
 
 		assertEquals(successfulResult, result);
 		assertFalse(errors.hasFailures());
@@ -230,7 +232,7 @@ public class CustomTextileConverterTest {
 
 		when(pageRenderer.renderPage(eq(pageName), anyMap())).thenReturn(successfulResult);
 
-		String result = textileConverter.convertCustomTextile(textile, errors);
+		String result = textileConverter.convertCustomText(textile, errors);
 
 		assertEquals(successfulResult, result);
 		assertFalse(errors.hasFailures());
@@ -244,7 +246,7 @@ public class CustomTextileConverterTest {
 	public void errorsInTextilesConvertTest() {
 		String[] tags = new String[]{"{block test}","{course test}","{courses test}","{image test}","{page test}","{tags test}","{video test}"};
 		for (String tag : tags) {
-			String result = textileConverter.convertCustomTextile(tag, errors);
+			String result = textileConverter.convertCustomText(tag, errors);
 			assertTrue(errors.hasFailures());
 			String error = TextileUtil.getReplacementForSyntaxErrorTag(tag,errors);
 			assertEquals(error, result);
@@ -252,7 +254,7 @@ public class CustomTextileConverterTest {
 		}
 		//TODO uncomment when the validation of {form} is needed, now we just pass all the text
 		/*tag = "{form}{form}{form}{form}{form}";
-		result = textileConverter.convertCustomTextile(tag, errors);
+		result = textileConverter.convertCustomText(tag, errors);
 		expecting = new StringBuffer();
 		// first it looks at pairs of forms
 		expecting.append(TextileUtil.getReplacementForSyntaxErrorTag("{form}{form}"))
@@ -264,7 +266,7 @@ public class CustomTextileConverterTest {
 
 		errors.clear();
 		tag = "{form}{text label:\"label\"}";
-		result = textileConverter.convertCustomTextile(tag, errors);
+		result = textileConverter.convertCustomText(tag, errors);
 		assertEquals(TextileUtil.getReplacementForSyntaxErrorTag(tag), result);
 		assertTrue(errors.hasFailures());*/
 	}
