@@ -9,7 +9,13 @@ import "../scss/index.scss";
 import {getPreferences} from "./common/actions/Actions";
 import {setCookie} from "./common/utils/Cookie";
 
+// Intersection Observer polyfill
 require('intersection-observer');
+
+// NodeList forEach polyfill
+if (window["NodeList"] && !NodeList.prototype["forEach"]) {
+  NodeList.prototype["forEach"] = Array.prototype.forEach;
+}
 
 const appStart = () => {
   if (Intl) {
