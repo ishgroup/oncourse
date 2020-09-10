@@ -10,5 +10,5 @@ repositories {
 }
 
 dependencies {
-    implementation 'io.swagger:swagger-codegen:2.4.15'
+    implementation 'io.swagger:swagger-codegen:2.4.0'
 }
