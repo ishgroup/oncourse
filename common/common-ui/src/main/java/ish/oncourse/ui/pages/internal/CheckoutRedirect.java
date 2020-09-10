@@ -21,10 +21,10 @@ public class CheckoutRedirect {
             "                {\n" +
             "                    payment: {\n" +
             "                        sessionId: sessionIdMatch[1],\n" +
-            "                        status: statusMatch[1],\n" +
-            "                    },\n" +
+            "                        status: statusMatch[1]\n" +
+            "                    }\n" +
             "                },\n" +
-            "                \"*\",\n" +
+            "                \"*\"\n" +
             "            );\n" +
             "        }\n" +
             "    </script>\n" +
