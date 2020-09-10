@@ -6,7 +6,7 @@ import ish.oncourse.services.cache.IRequestCacheService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
-import ish.oncourse.services.IReachtextConverter;
+import ish.oncourse.services.IRichtextConverter;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -48,7 +48,7 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 	private IWebSiteVersionService webSiteVersionService;
 
 	@Inject
-	private IReachtextConverter textileConverter;
+	private IRichtextConverter textileConverter;
 
     @Inject
     private IRequestCacheService requestCacheService;

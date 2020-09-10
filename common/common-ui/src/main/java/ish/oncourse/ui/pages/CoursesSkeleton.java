@@ -9,7 +9,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.search.*;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
-import ish.oncourse.services.IReachtextConverter;
+import ish.oncourse.services.IRichtextConverter;
 import ish.oncourse.solr.query.SearchParams;
 import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.util.HTMLUtils;
@@ -70,7 +70,7 @@ public class CoursesSkeleton extends ISHCommon {
 	private Map<SearchParam, String> searchParamsErrors;
 
 	@Inject
-	private IReachtextConverter textileConverter;
+	private IRichtextConverter textileConverter;
 
 	@Inject
 	private IFacebookMetaProvider facebookMetaProvider;

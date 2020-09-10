@@ -10,7 +10,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.search.*;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
-import ish.oncourse.services.IReachtextConverter;
+import ish.oncourse.services.IRichtextConverter;
 import ish.oncourse.solr.query.SearchParams;
 import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.util.HTMLUtils;
@@ -69,7 +69,7 @@ public class Courses extends ISHCommon {
 	@Inject
 	private ITagService tagService;
 	@Inject
-	private IReachtextConverter textileConverter;
+	private IRichtextConverter textileConverter;
 	@Inject
 	private ICookiesService cookiesService;
 	@Inject

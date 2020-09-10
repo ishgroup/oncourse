@@ -7,16 +7,16 @@ import ish.math.Money;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Room;
-import ish.oncourse.services.IReachtextConverter;
+import ish.oncourse.services.IRichtextConverter;
 import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v21.stubs.replication.CourseClassStub;
 
 public class CourseClassUpdater extends AbstractWillowUpdater<CourseClassStub, CourseClass> {
 
-	private IReachtextConverter textileConverter;
+	private IRichtextConverter textileConverter;
 	
-	public CourseClassUpdater(IReachtextConverter textileConverter) {
+	public CourseClassUpdater(IRichtextConverter textileConverter) {
 		this.textileConverter = textileConverter;
 	}
 	@Override

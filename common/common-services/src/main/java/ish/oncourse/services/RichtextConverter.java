@@ -1,6 +1,6 @@
 package ish.oncourse.services;
 
-import ish.oncourse.services.IReachtextConverter;
+import ish.oncourse.services.IRichtextConverter;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.course.ICourseService;
@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ReachtextConverter implements IReachtextConverter {
+public class RichtextConverter implements IRichtextConverter {
 
     private final static Logger logger = LogManager.getLogger();
 
@@ -57,13 +57,13 @@ public class ReachtextConverter implements IReachtextConverter {
     @Inject
     private ICayenneService cayenneService;
 
-    public ReachtextConverter() {
+    public RichtextConverter() {
     }
 
     /**
      * This constructor is used only for test
      */
-    ReachtextConverter(IBinaryDataService binaryDataService, IWebContentService webContentService,
+    RichtextConverter(IBinaryDataService binaryDataService, IWebContentService webContentService,
                      ICourseService courseService, IPageRenderer pageRenderer, IWebNodeService webNodeService,
                      ITagService tagService) {
         this.binaryDataService = binaryDataService;

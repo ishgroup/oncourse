@@ -51,7 +51,7 @@ public class BindTapestryServices {
 			binder.bind(IResourceService.class, ResourceService.class);
 		else
 			binder.bind(IResourceService.class, resourceService);
-		binder.bind(IReachtextConverter.class, ReachtextConverter.class);
+		binder.bind(IRichtextConverter.class, RichtextConverter.class);
 		binder.bind(IParsedContentVisitor.class, ParsedContentVisitor.class);
 		binder.bind(IPlainTextExtractor.class, JerichoPlainTextExtractor.class);
 		binder.bind(IDataLayerFactory.class, DataLayerFactory.class).scope(ScopeConstants.PERTHREAD);

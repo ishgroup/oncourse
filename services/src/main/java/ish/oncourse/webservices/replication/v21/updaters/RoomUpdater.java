@@ -2,16 +2,16 @@ package ish.oncourse.webservices.replication.v21.updaters;
 
 import ish.oncourse.model.Room;
 import ish.oncourse.model.Site;
-import ish.oncourse.services.IReachtextConverter;
+import ish.oncourse.services.IRichtextConverter;
 import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v21.stubs.replication.RoomStub;
 
 public class RoomUpdater extends AbstractWillowUpdater<RoomStub, Room> {
 
-	private IReachtextConverter textileConverter;
+	private IRichtextConverter textileConverter;
 
-	public RoomUpdater(IReachtextConverter textileConverter) {
+	public RoomUpdater(IRichtextConverter textileConverter) {
 		this.textileConverter = textileConverter;
 	}
 

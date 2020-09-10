@@ -3,7 +3,7 @@ package ish.oncourse.services.textile.renderer;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.CustomTemplateDefinition;
-import ish.oncourse.services.IReachtextConverter;
+import ish.oncourse.services.IRichtextConverter;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.attrs.TagsTextileAttributes;
 import ish.oncourse.services.textile.validator.TagsTextileValidator;
@@ -38,9 +38,9 @@ public class TagsTextileRenderer extends AbstractRenderer {
 
 	private ITagService tagService;
 	private IPageRenderer pageRenderer;
-	private IReachtextConverter converter;
+	private IRichtextConverter converter;
 
-	public TagsTextileRenderer(final ITagService tagService, final IPageRenderer pageRenderer, final IReachtextConverter converter) {
+	public TagsTextileRenderer(final ITagService tagService, final IPageRenderer pageRenderer, final IRichtextConverter converter) {
 		this.tagService = tagService;
 		this.pageRenderer = pageRenderer;
 		this.converter = converter;

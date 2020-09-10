@@ -6,7 +6,7 @@ import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.Tutor;
 import ish.oncourse.model.TutorRole;
 import ish.oncourse.services.binary.IBinaryDataService;
-import ish.oncourse.services.IReachtextConverter;
+import ish.oncourse.services.IRichtextConverter;
 import ish.oncourse.util.ValidationErrors;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
@@ -26,7 +26,7 @@ public class TutorItem extends ISHCommon {
     private IBinaryDataService binaryDataService;
 
     @Inject
-    private IReachtextConverter textileConverter;
+    private IRichtextConverter textileConverter;
 
     @Parameter
     @Property

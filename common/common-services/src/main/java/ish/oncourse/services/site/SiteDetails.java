@@ -5,7 +5,7 @@ package ish.oncourse.services.site;
 
 import ish.oncourse.model.Room;
 import ish.oncourse.model.Site;
-import ish.oncourse.services.IReachtextConverter;
+import ish.oncourse.services.IRichtextConverter;
 import ish.oncourse.util.ValidationErrors;
 
 import static org.apache.commons.lang3.StringUtils.trimToNull;
@@ -20,7 +20,7 @@ public class SiteDetails {
 	private Site site;
 	private Room room;
 
-	private IReachtextConverter textileConverter;
+	private IRichtextConverter textileConverter;
 
 	private String roomName;
 	private String siteName;
@@ -126,7 +126,7 @@ public class SiteDetails {
 	}
 
 
-	public static SiteDetails valueOf(Room room, IReachtextConverter textileConverter) {
+	public static SiteDetails valueOf(Room room, IRichtextConverter textileConverter) {
 		SiteDetails siteDetails = new SiteDetails();
 		siteDetails.room = room;
 		siteDetails.site = room.getSite();
@@ -135,7 +135,7 @@ public class SiteDetails {
 		return siteDetails;
 	}
 
-	public static SiteDetails valueOf(Site site, IReachtextConverter textileConverter) {
+	public static SiteDetails valueOf(Site site, IRichtextConverter textileConverter) {
 		SiteDetails siteDetails = new SiteDetails();
 		siteDetails.room = null;
 		siteDetails.site = site;

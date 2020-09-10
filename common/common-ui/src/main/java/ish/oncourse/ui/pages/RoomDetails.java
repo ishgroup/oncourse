@@ -3,7 +3,7 @@ package ish.oncourse.ui.pages;
 import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.Room;
 import ish.oncourse.model.Site;
-import ish.oncourse.services.IReachtextConverter;
+import ish.oncourse.services.IRichtextConverter;
 import ish.oncourse.ui.components.Attachments;
 import ish.oncourse.util.ValidationErrors;
 import org.apache.commons.lang.StringUtils;
@@ -15,7 +15,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 public class RoomDetails extends ISHCommon {
 
     @Inject
-    private IReachtextConverter textileConverter;
+    private IRichtextConverter textileConverter;
 
 	@Property
 	private Room room;

@@ -5,7 +5,7 @@ import ish.common.types.TypesUtil;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.FieldConfigurationScheme;
 import ish.oncourse.model.Qualification;
-import ish.oncourse.services.IReachtextConverter;
+import ish.oncourse.services.IRichtextConverter;
 import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v21.stubs.replication.CourseStub;
@@ -13,9 +13,9 @@ import org.apache.cayenne.Cayenne;
 
 public class CourseUpdater extends AbstractWillowUpdater<CourseStub, Course> {
 
-	private IReachtextConverter textileConverter;
+	private IRichtextConverter textileConverter;
 
-	public CourseUpdater(IReachtextConverter textileConverter) {
+	public CourseUpdater(IRichtextConverter textileConverter) {
 		this.textileConverter = textileConverter;
 	}
 

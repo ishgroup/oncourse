@@ -9,7 +9,7 @@ import ish.oncourse.model.Session;
 import ish.oncourse.services.application.IApplicationService;
 import ish.oncourse.services.contact.IContactService;
 import ish.oncourse.services.html.IFacebookMetaProvider;
-import ish.oncourse.services.IReachtextConverter;
+import ish.oncourse.services.IRichtextConverter;
 import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.util.HTMLUtils;
 import ish.oncourse.util.ValidationErrors;
@@ -25,7 +25,7 @@ import java.util.List;
 public class CourseClassDetails extends ISHCommon {
 
 	@Inject
-	private IReachtextConverter textileConverter;
+	private IRichtextConverter textileConverter;
 
 	@Inject
 	private IFacebookMetaProvider facebookMetaProvider;

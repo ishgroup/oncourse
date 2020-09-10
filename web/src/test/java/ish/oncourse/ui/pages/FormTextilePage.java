@@ -1,6 +1,6 @@
 package ish.oncourse.ui.pages;
 
-import ish.oncourse.services.IReachtextConverter;
+import ish.oncourse.services.IRichtextConverter;
 import ish.oncourse.util.ValidationErrors;
 import org.apache.commons.io.IOUtils;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -14,7 +14,7 @@ public class FormTextilePage {
 	public static final String TO_EMAIL = "to_email@gmail.com";
 	public static final String FORM_NAME = "testform";
 	@Inject
-	private IReachtextConverter textileConverter;
+	private IRichtextConverter textileConverter;
 
 	public String getTextile() {
 		return textileConverter.convertCustomText("{form name:&#8220;" + FORM_NAME + "&#8221; email:&#8220;"

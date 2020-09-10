@@ -1,6 +1,6 @@
 package ish.oncourse.ui.pages;
 
-import ish.oncourse.services.IReachtextConverter;
+import ish.oncourse.services.IRichtextConverter;
 import ish.oncourse.util.ValidationErrors;
 import org.apache.commons.io.IOUtils;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -11,7 +11,7 @@ import java.io.InputStream;
 public class FormTextilePageWithTwoForms {
 
 	@Inject
-	private IReachtextConverter textileConverter;
+	private IRichtextConverter textileConverter;
 
 	public String getTextile() {
 		InputStream st = FormTextilePage.class.getClassLoader().getResourceAsStream("ish/oncourse/ui/pages/dataset/formTextilePageSydneyWithTwoFormsDataSet.txt");

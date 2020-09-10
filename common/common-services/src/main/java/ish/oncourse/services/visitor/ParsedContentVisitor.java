@@ -6,7 +6,7 @@ import ish.oncourse.model.WebNodeType;
 import ish.oncourse.services.content.cache.IContentCacheService;
 import ish.oncourse.services.content.cache.IContentKeyFactory;
 import ish.oncourse.services.content.cache.WillowContentKey;
-import ish.oncourse.services.IReachtextConverter;
+import ish.oncourse.services.IRichtextConverter;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.util.ValidationException;
@@ -27,7 +27,7 @@ public class ParsedContentVisitor implements IParsedContentVisitor {
 	public static final String WEB_CONTENT_CACHE = "willow.smc.web.content.cache";
 
 	@Inject
-	private IReachtextConverter textileConverter;
+	private IRichtextConverter textileConverter;
 
 	@Inject
 	private IContentCacheService<WillowContentKey, String> contentCacheService;

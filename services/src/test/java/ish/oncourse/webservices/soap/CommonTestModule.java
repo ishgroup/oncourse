@@ -61,8 +61,8 @@ import ish.oncourse.services.system.CollegeService;
 import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.tag.TagService;
-import ish.oncourse.services.IReachtextConverter;
-import ish.oncourse.services.ReachtextConverter;
+import ish.oncourse.services.IRichtextConverter;
+import ish.oncourse.services.RichtextConverter;
 import ish.oncourse.services.tutor.ITutorService;
 import ish.oncourse.services.tutor.TutorService;
 import ish.oncourse.util.ComponentPageResponseRenderer;
@@ -100,7 +100,7 @@ public class CommonTestModule {
 		binder.bind(IResourceService.class, ResourceService.class);
 		binder.bind(ISearchService.class, SearchService.class);
 		binder.bind(ITagService.class, TagService.class);
-		binder.bind(IReachtextConverter.class, ReachtextConverter.class);
+		binder.bind(IRichtextConverter.class, RichtextConverter.class);
 
 		// Data specific serivces
 		binder.bind(IBinaryDataService.class, BinaryDataService.class);

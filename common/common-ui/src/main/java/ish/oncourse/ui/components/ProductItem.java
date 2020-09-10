@@ -8,7 +8,7 @@ import ish.oncourse.model.VoucherProduct;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.preference.PreferenceController;
-import ish.oncourse.services.IReachtextConverter;
+import ish.oncourse.services.IRichtextConverter;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.ValidationErrors;
 import org.apache.commons.lang.StringUtils;
@@ -47,7 +47,7 @@ public class ProductItem extends ISHCommon {
 	private ICookiesService cookiesService;
 	
 	@Inject
-	private IReachtextConverter textileConverter;
+	private IRichtextConverter textileConverter;
 	
 	@Inject
 	private IPlainTextExtractor extractor;

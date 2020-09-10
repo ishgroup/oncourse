@@ -1,7 +1,7 @@
 package ish.oncourse.services.textile;
 
-import ish.oncourse.services.IReachtextConverter;
-import ish.oncourse.services.ReachtextConverter;
+import ish.oncourse.services.IRichtextConverter;
+import ish.oncourse.services.RichtextConverter;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +34,7 @@ public class CoreTextileConverterTest {
 
 	private static final String TEST1 = "_emphasized_ *strongly emphasized*";
 
-	private IReachtextConverter textileConverter;
+	private IRichtextConverter textileConverter;
 
 	@Mock
 	private IPlainTextExtractor extractor;
@@ -50,7 +50,7 @@ public class CoreTextileConverterTest {
 		when(extractor.compactHtmlTags(TEST7)).thenReturn(TEST7);
 		when(extractor.compactHtmlTags(TEST8)).thenReturn(TEST8);
 		when(extractor.compactHtmlTags(TEST9)).thenReturn(TEST9);
-		textileConverter = new ReachtextConverter();
+		textileConverter = new RichtextConverter();
 	}
 
 	@Test

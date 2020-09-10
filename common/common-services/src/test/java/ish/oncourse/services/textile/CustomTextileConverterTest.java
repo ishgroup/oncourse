@@ -1,8 +1,8 @@
 package ish.oncourse.services.textile;
 
 import ish.oncourse.model.*;
-import ish.oncourse.services.IReachtextConverter;
-import ish.oncourse.services.ReachtextConverter;
+import ish.oncourse.services.IRichtextConverter;
+import ish.oncourse.services.RichtextConverter;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.course.ICourseService;
@@ -80,7 +80,7 @@ public class CustomTextileConverterTest {
 	@Mock
 	private Document document;
 
-	private IReachtextConverter textileConverter;
+	private IRichtextConverter textileConverter;
 
 
 	private WebContent webContent;
@@ -96,7 +96,7 @@ public class CustomTextileConverterTest {
 		errors = new ValidationErrors();
 
 		when(tagService.getSubjectsTag()).thenReturn(mock(Tag.class));
-		textileConverter = new ReachtextConverter(binaryDataService, webContentService, courseService, pageRenderer,
+		textileConverter = new RichtextConverter(binaryDataService, webContentService, courseService, pageRenderer,
 				webNodeService, tagService);
 	}
 

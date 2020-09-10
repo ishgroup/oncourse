@@ -5,7 +5,7 @@ import ish.oncourse.model.Room;
 import ish.oncourse.model.Session;
 import ish.oncourse.model.Site;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.IReachtextConverter;
+import ish.oncourse.services.IRichtextConverter;
 import ish.oncourse.util.ValidationErrors;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.query.ObjectSelect;
@@ -29,7 +29,7 @@ public class KioskPage {
     private Request request;
 
     @Inject
-    private IReachtextConverter textileConverter;
+    private IRichtextConverter textileConverter;
 
     @Inject
     private ICayenneService cayenneService;

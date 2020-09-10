@@ -2,7 +2,7 @@ package ish.oncourse.webservices.replication.v21.updaters;
 
 import ish.oncourse.model.Country;
 import ish.oncourse.model.Site;
-import ish.oncourse.services.IReachtextConverter;
+import ish.oncourse.services.IRichtextConverter;
 import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v21.stubs.replication.SiteStub;
@@ -11,9 +11,9 @@ import org.apache.commons.lang3.StringUtils;
 
 public class SiteUpdater extends AbstractWillowUpdater<SiteStub, Site> {
 
-	private IReachtextConverter textileConverter;
+	private IRichtextConverter textileConverter;
 
-	public SiteUpdater(IReachtextConverter textileConverter) {
+	public SiteUpdater(IRichtextConverter textileConverter) {
 		this.textileConverter = textileConverter;
 	}
 

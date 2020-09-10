@@ -3,7 +3,7 @@ package ish.oncourse.ui.components;
 import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.Session;
 import ish.oncourse.services.cookies.ICookiesService;
-import ish.oncourse.services.IReachtextConverter;
+import ish.oncourse.services.IRichtextConverter;
 import ish.oncourse.util.CustomizedDateFormat;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.ValidationErrors;
@@ -24,7 +24,7 @@ public class TimetableEvents extends ISHCommon {
 	private ICookiesService cookiesService;
 
 	@Inject
-	private IReachtextConverter textileConverter;
+	private IRichtextConverter textileConverter;
 	
 	@Property
 	@Parameter

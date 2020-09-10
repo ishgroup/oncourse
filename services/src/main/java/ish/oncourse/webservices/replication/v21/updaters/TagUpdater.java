@@ -3,7 +3,7 @@ package ish.oncourse.webservices.replication.v21.updaters;
 import ish.common.types.NodeSpecialType;
 import ish.common.types.TypesUtil;
 import ish.oncourse.model.Tag;
-import ish.oncourse.services.IReachtextConverter;
+import ish.oncourse.services.IRichtextConverter;
 import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v21.stubs.replication.TagStub;
@@ -11,9 +11,9 @@ import org.apache.commons.lang.StringUtils;
 
 public class TagUpdater extends AbstractWillowUpdater<TagStub, Tag>{
 	
-	private IReachtextConverter textileConverter;
+	private IRichtextConverter textileConverter;
 
-	public TagUpdater(final IReachtextConverter textileConverter) {
+	public TagUpdater(final IRichtextConverter textileConverter) {
 		this.textileConverter = textileConverter;
 	}
 

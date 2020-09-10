@@ -2,7 +2,7 @@ package ish.oncourse.webservices.replication.v21.updaters;
 
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Tutor;
-import ish.oncourse.services.IReachtextConverter;
+import ish.oncourse.services.IRichtextConverter;
 import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.replication.updaters.UpdaterException;
@@ -10,9 +10,9 @@ import ish.oncourse.webservices.v21.stubs.replication.TutorStub;
 
 public class TutorUpdater extends AbstractWillowUpdater<TutorStub, Tutor> {
 
-	private IReachtextConverter textileConverter;
+	private IRichtextConverter textileConverter;
 
-	public TutorUpdater(IReachtextConverter textileConverter) {
+	public TutorUpdater(IRichtextConverter textileConverter) {
 		this.textileConverter = textileConverter;
 	}
 

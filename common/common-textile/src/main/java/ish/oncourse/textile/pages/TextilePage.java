@@ -4,7 +4,7 @@ import ish.oncourse.model.RegionKey;
 import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebContentVisibility;
 import ish.oncourse.model.WebNode;
-import ish.oncourse.services.IReachtextConverter;
+import ish.oncourse.services.IRichtextConverter;
 import ish.oncourse.services.textile.renderer.PageTextileRenderer;
 import ish.oncourse.services.visitor.IParsedContentVisitor;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -17,7 +17,7 @@ import java.util.List;
 public class TextilePage {
 
 	@Inject
-	private IReachtextConverter textileConverter;
+	private IRichtextConverter textileConverter;
 
     @Inject
     private Request request;

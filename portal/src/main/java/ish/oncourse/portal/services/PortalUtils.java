@@ -5,7 +5,7 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Document;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.html.IPlainTextExtractor;
-import ish.oncourse.services.IReachtextConverter;
+import ish.oncourse.services.IRichtextConverter;
 import ish.oncourse.util.ValidationErrors;
 import ish.persistence.CommonPreferenceController;
 import org.apache.commons.lang3.StringUtils;
@@ -96,7 +96,7 @@ public class PortalUtils {
 
 
     public static String getClassDetailsBy(CourseClass courseClass,
-                                           IReachtextConverter textileConverter,
+                                           IRichtextConverter textileConverter,
                                            IPlainTextExtractor extractor)
     {
         return stringToTextileStringBy(getClassDetails(courseClass),CLASS_DETAILS_LENGTH, textileConverter,extractor);
@@ -121,7 +121,7 @@ public class PortalUtils {
 	}
 
     public static String getCourseDetailsBy(Course course,
-                                           IReachtextConverter textileConverter,
+                                           IRichtextConverter textileConverter,
                                            IPlainTextExtractor extractor)
     {
         StringBuilder textileDetails = new StringBuilder();
@@ -133,7 +133,7 @@ public class PortalUtils {
     }
 
     public static String getTagDetailsBy(Tag tag,
-                                     IReachtextConverter textileConverter,
+                                     IRichtextConverter textileConverter,
                                      IPlainTextExtractor extractor)
     {
         return stringToTextileStringBy(tag.getDetail(), TAG_DETAILS_LENGTH, textileConverter,extractor);
@@ -141,7 +141,7 @@ public class PortalUtils {
     }
 
     public static String stringToTextileStringBy(String textileString, int resultStringLength,
-                                            IReachtextConverter textileConverter,
+                                            IRichtextConverter textileConverter,
                                             IPlainTextExtractor extractor)
     {
 

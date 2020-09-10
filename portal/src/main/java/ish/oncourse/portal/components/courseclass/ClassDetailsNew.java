@@ -10,7 +10,7 @@ import ish.oncourse.portal.services.attendance.AttendanceTransportUtils;
 import ish.oncourse.portal.services.attendance.SessionResponse;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.IReachtextConverter;
+import ish.oncourse.services.IRichtextConverter;
 import ish.oncourse.util.ValidationErrors;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
@@ -64,7 +64,7 @@ public class ClassDetailsNew {
 	private String fullDetails;
 
 	@Inject
-	private IReachtextConverter textileConverter;
+	private IRichtextConverter textileConverter;
 
 	@Inject
 	private IPlainTextExtractor extractor;

@@ -1,7 +1,7 @@
 package ish.oncourse.services.markdown
 
-import ish.oncourse.services.IReachtextConverter
-import ish.oncourse.services.ReachtextConverter
+import ish.oncourse.services.IRichtextConverter
+import ish.oncourse.services.RichtextConverter
 import org.junit.Before
 import org.junit.Test
 
@@ -35,11 +35,11 @@ class CoreMarkdownConverterTest {
 
     private static final String FULL_TEST = "## Course description\n__Attention, only for under 18!__\n\nYou need next:\n1. Pen\n2. Paper\n3. Document\n\nPrice is `\$150`\n\nAll extra information you can find [here](https://www.google.com/)\n"
 
-    private IReachtextConverter markdownConverter
+    private IRichtextConverter markdownConverter
 
     @Before
     void init() {
-        this.markdownConverter = new ReachtextConverter()
+        this.markdownConverter = new RichtextConverter()
     }
 
     @Test

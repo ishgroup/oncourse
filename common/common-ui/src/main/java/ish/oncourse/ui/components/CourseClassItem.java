@@ -8,7 +8,7 @@ import ish.oncourse.services.courseclass.GetIsCourseClassInStock;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.preference.IsPaymentGatewayEnabled;
 import ish.oncourse.services.preference.PreferenceController;
-import ish.oncourse.services.IReachtextConverter;
+import ish.oncourse.services.IRichtextConverter;
 import ish.oncourse.services.tutor.GetCourseClassVisibleTutorRoles;
 import ish.oncourse.services.tutor.ITutorService;
 import ish.oncourse.ui.base.ISHCommon;
@@ -43,7 +43,7 @@ public class CourseClassItem extends ISHCommon {
 	private Messages messages;
 
 	@Inject
-	private IReachtextConverter textileConverter;
+	private IRichtextConverter textileConverter;
 
 	@Inject
 	private ICookiesService cookiesService;

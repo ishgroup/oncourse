@@ -2,7 +2,7 @@ package ish.oncourse.webservices.replication.v21.updaters;
 
 import ish.oncourse.model.Module;
 import ish.oncourse.model.*;
-import ish.oncourse.services.IReachtextConverter;
+import ish.oncourse.services.IRichtextConverter;
 import ish.oncourse.webservices.replication.updaters.IWillowUpdater;
 
 import java.util.HashMap;
@@ -13,7 +13,7 @@ public class V21UpdatersMap {
 	
 	private Map<String, IWillowUpdater> updaterMap;
 	
-	public void initMap(final IReachtextConverter textileConverter) {
+	public void initMap(final IRichtextConverter textileConverter) {
 		getUpdaterMap().clear();
 		updaterMap.put(Attendance.class.getSimpleName(), new AttendanceUpdater());
 		updaterMap.put(BinaryInfo.class.getSimpleName(), new BinaryInfoUpdater());

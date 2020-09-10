@@ -140,7 +140,7 @@ public class ServiceModule {
 		binder.bind(IResourceService.class, ResourceService.class);
 		binder.bind(ISearchService.class, SearchService.class);
 		binder.bind(ITagService.class, TagService.class);
-		binder.bind(IReachtextConverter.class, ReachtextConverter.class);
+		binder.bind(IRichtextConverter.class, RichtextConverter.class);
 		binder.bind(IParsedContentVisitor.class, ParsedContentVisitor.class);
 
 		// Data specific serivces

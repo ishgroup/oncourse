@@ -6,7 +6,7 @@ package ish.oncourse.portal.components.courseclass;
 import ish.oncourse.model.Session;
 import ish.oncourse.portal.services.attendance.AttendanceUtils;
 import ish.oncourse.portal.services.attendance.SessionStyle;
-import ish.oncourse.services.IReachtextConverter;
+import ish.oncourse.services.IRichtextConverter;
 import ish.oncourse.util.ValidationErrors;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.Block;
@@ -30,7 +30,7 @@ public class SessionDetails {
 	private TimeZone timeZone;
 
 	@Inject
-	private IReachtextConverter textileConverter;
+	private IRichtextConverter textileConverter;
 
 	@Inject
 	@Id("empty")

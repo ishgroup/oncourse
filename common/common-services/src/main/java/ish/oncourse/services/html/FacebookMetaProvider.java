@@ -7,7 +7,7 @@ import ish.oncourse.model.WebNode;
 import ish.oncourse.services.content.cache.IContentCacheService;
 import ish.oncourse.services.content.cache.IContentKeyFactory;
 import ish.oncourse.services.content.cache.WillowContentKey;
-import ish.oncourse.services.IReachtextConverter;
+import ish.oncourse.services.IRichtextConverter;
 import ish.oncourse.util.ValidationErrors;
 import org.apache.cayenne.PersistentObject;
 import org.apache.commons.lang3.StringUtils;
@@ -20,7 +20,7 @@ public class FacebookMetaProvider implements IFacebookMetaProvider {
 	private static final int MAX_META_LENGTH = 250;
 
 	@Inject
-	private IReachtextConverter textileConverter;
+	private IRichtextConverter textileConverter;
 
 	@Inject
 	private IPlainTextExtractor plainTextExtractor;
