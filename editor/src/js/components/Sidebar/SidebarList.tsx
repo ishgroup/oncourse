@@ -18,8 +18,8 @@ interface Props {
 
 export class SidebarList extends React.Component<Props, any> {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       filter: '',

@@ -87,7 +87,9 @@ export class Website extends React.Component<Props, any> {
   }
 
   render() {
-    const {enableSocialMedia, addThisId, enableForCourse, enableForWebpage, classAge, suburbAutocompleteState} = this.state;
+    const {
+      enableSocialMedia, addThisId, enableForCourse, enableForWebpage, classAge, suburbAutocompleteState,
+    } = this.state;
     const {fetching} = this.props;
 
     return (
@@ -234,4 +236,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Website);
+export default connect(mapStateToProps, mapDispatchToProps)(Website as any);

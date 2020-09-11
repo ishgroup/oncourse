@@ -92,4 +92,4 @@ class LoginForm extends React.Component<any, any> {
 export default reduxForm<any, any>({
   validate,
   form: 'login',
-})(LoginForm);
+})(LoginForm as any);

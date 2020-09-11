@@ -113,4 +113,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Skills);
+export default connect(mapStateToProps, mapDispatchToProps)(Skills as any);

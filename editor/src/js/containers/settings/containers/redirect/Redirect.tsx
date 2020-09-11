@@ -153,4 +153,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Redirect);
+export default connect(mapStateToProps, mapDispatchToProps)(Redirect as any);

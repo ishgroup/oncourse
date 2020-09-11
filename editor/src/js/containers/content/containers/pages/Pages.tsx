@@ -70,4 +70,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Pages);
+export default connect(mapStateToProps, mapDispatchToProps)(Pages as any);

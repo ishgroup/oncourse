@@ -201,4 +201,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Menus);
+export default connect(mapStateToProps, mapDispatchToProps)(Menus as any);

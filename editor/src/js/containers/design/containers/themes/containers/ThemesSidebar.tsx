@@ -81,4 +81,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ThemesSidebar);
+export default connect(mapStateToProps, mapDispatchToProps)(ThemesSidebar as any);

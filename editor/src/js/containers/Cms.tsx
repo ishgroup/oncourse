@@ -136,5 +136,5 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   };
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Cms));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Cms as any));
 

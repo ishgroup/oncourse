@@ -103,4 +103,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(History);
+export default connect(mapStateToProps, mapDispatchToProps)(History as any);

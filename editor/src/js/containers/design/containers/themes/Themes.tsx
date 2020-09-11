@@ -75,4 +75,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
 };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Themes);
+export default connect(mapStateToProps, mapDispatchToProps)(Themes as any);

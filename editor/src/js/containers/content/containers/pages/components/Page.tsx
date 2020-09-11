@@ -1,7 +1,7 @@
 import React from 'react';
 import {Button, FormGroup, Label, Input} from 'reactstrap';
 import {PageState} from "../reducers/State";
-import {Editor} from "../../../../../common/components/Editor";
+import Editor from "../../../../../common/components/Editor";
 import {DOM} from "../../../../../utils";
 import {getHistoryInstance} from "../../../../../history";
 import PageService from "../../../../../services/PageService";
