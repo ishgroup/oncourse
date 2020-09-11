@@ -1,7 +1,7 @@
 import React from 'react';
 import {Button, FormGroup, Label, Input} from 'reactstrap';
 import classnames from 'classnames';
-import {Editor} from "../../../../../common/components/Editor";
+import Editor from "../../../../../common/components/Editor";
 import {BlockState} from "../reducers/State";
 import {CONTENT_MODES, DEFAULT_CONTENT_MODE_ID} from "../../../constants";
 import {addContentMarker} from "../../../utils";

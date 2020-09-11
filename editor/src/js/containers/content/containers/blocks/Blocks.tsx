@@ -51,4 +51,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Blocks);
+export default connect(mapStateToProps, mapDispatchToProps)(Blocks as any);
