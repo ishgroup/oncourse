@@ -14,7 +14,8 @@ import {CourseClass} from "../../model";
 import {ClassesListSchema} from "../../NormalizeSchema";
 import {normalize} from "normalizr";
 import {ConfigConstants} from "../../config/ConfigConstants";
-import {bugsnagClient, ErrorBoundary} from "../../constants/Bugsnag";
+import { ErrorBoundary} from "../../constants/Bugsnag";
+import bugsnagClient from "@bugsnag/js";
 import {initGAEvent} from "../../services/GoogleAnalyticsService";
 
 export class Bootstrap {

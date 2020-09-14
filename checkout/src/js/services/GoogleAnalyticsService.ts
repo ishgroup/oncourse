@@ -2,6 +2,7 @@ import {Phase} from '../enrol/reducers/State';
 import {Tabs} from '../enrol/containers/payment/reducers/State';
 import {IshState} from "./IshState";
 import {findPriceInDOM} from "../common/utils/DomUtils";
+import Bugsnag from "@bugsnag/js";
 
 interface ProductEvent {
   id: string;                   // Product ID (string).
@@ -253,8 +254,31 @@ const sendCheckoutStepEvent = (data, cart, summary) => {
   //   eventLabel: step.initialOption,
   // });
 
-  const products = getProducts(cart);
+  const productsBase = getProducts(cart);
   const productsSummary = getProductsSummary(summary);
+
+  const products = productsBase.filter(product => productsSummary[product.id]).map(product => {
+    return {
+      name: product.name,
+      id: product.id,
+      price: productsSummary[product.id].price,
+      variant: product.variant,
+      category: product.category,
+      quantity: productsSummary[product.id].quantity,
+    };
+  });
+
+  // tslint:disable-next-line:ter-prefer-arrow-callback
+  Bugsnag.notify(new Error('Checkout log'), function (event) {
+    event.errors[0].errorClass = 'Checkout log';
+
+    // Add additional diagnostic information
+    event.addMetadata('Checkout data', {
+      step: step.step,
+      option: step.initialOption,
+      products: products.map(p => p.name).toString(),
+    });
+  });
 
   window['dataLayer'].push({
     event: 'checkout',
@@ -264,22 +288,13 @@ const sendCheckoutStepEvent = (data, cart, summary) => {
           step: step.step,
           option: step.initialOption,
         },
-        products: products.filter(product => productsSummary[product.id]).map(product => {
-          return {
-            name: product.name,
-            id: product.id,
-            price: productsSummary[product.id].price,
-            variant: product.variant,
-            category: product.category,
-            quantity: productsSummary[product.id].quantity,
-          };
-        }),
+        products,
       },
     },
   });
 };
 
-const sendCheckoutStepOptionEvent = (data) => {
+const sendCheckoutStepOptionEvent = data => {
   const {step} = data;
 
   if (!step || !step.option) return;
@@ -298,6 +313,17 @@ const sendCheckoutStepOptionEvent = (data) => {
   //   eventAction: 'set checkout step',
   //   eventLabel: step.option,
   // });
+
+  // tslint:disable-next-line:ter-prefer-arrow-callback
+  Bugsnag.notify(new Error('Checkout log'), function (event) {
+    event.errors[0].errorClass = 'Checkout log';
+
+    // Add additional diagnostic information
+    event.addMetadata('Checkout data', {
+      step: step.step,
+      option: step.initialOption,
+    });
+  });
 
   window['dataLayer'].push({
     event: 'checkoutOption',
@@ -329,8 +355,27 @@ const sendPurchaseCartEvent = (data, cart, amount, summary) => {
   //   eventLabel: data.type,
   // });
 
-  const products = getProducts(cart);
+  const productsBase = getProducts(cart);
   const productsSummary = getProductsSummary(summary);
+
+  const products = productsBase.filter(product => productsSummary[product.id]).map(product => ({
+    name: product.name,
+    id: product.id,
+    price: productsSummary[product.id].price,
+    variant: product.type ? product.type.toLowerCase() : "",
+    category: product.subject,
+    quantity: productsSummary[product.id].quantity,
+  }));
+
+  Bugsnag.notify(new Error('Checkout log'), function (event) {
+    event.errors[0].errorClass = 'Checkout log';
+
+    // Add additional diagnostic information
+    event.addMetadata('Checkout data', {
+      step: "purchase success",
+      products: products.map(p => p.name).toString(),
+    });
+  });
 
   window['dataLayer'].push({
     event: 'purchase',
@@ -341,14 +386,7 @@ const sendPurchaseCartEvent = (data, cart, amount, summary) => {
           affiliation: data.type,
           revenue: amount.total,              // Total transaction value (incl. tax and shipping)
         },
-        products: products.filter(product => productsSummary[product.id]).map(product => ({
-          name: product.name,
-          id: product.id,
-          price: productsSummary[product.id].price,
-          variant: product.type ? product.type.toLowerCase() : "",
-          category: product.subject,
-          quantity: productsSummary[product.id].quantity,
-        })),
+        products,
       },
     },
   });

@@ -76,8 +76,8 @@
     "webpack-dev-server": "2.9.3"
   },
   "dependencies": {
-    "@bugsnag/js": "6.5.*",
-    "@bugsnag/plugin-react": "6.5.*",
+    "@bugsnag/js": "^7.3.4",
+    "@bugsnag/plugin-react": "^7.3.4",
     "axios": "0.16.2",
     "babel-polyfill": "6.23.0",
     "card-validator": "^4.2.0",
