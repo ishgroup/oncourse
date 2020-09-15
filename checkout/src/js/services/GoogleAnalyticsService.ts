@@ -268,17 +268,19 @@ const sendCheckoutStepEvent = (data, cart, summary) => {
     };
   });
 
-  // tslint:disable-next-line:ter-prefer-arrow-callback
-  Bugsnag.notify(new Error('Checkout log'), function (event) {
-    event.errors[0].errorClass = 'Checkout log';
+  if (step.step === 5) {
+    // tslint:disable-next-line:ter-prefer-arrow-callback
+    Bugsnag.notify(new Error('Checkout log'), function (event) {
+      event.errors[0].errorClass = 'Checkout log';
 
-    // Add additional diagnostic information
-    event.addMetadata('Checkout data', {
-      step: step.step,
-      option: step.initialOption,
-      products: products.map(p => p.name).toString(),
+      // Add additional diagnostic information
+      event.addMetadata('Checkout data', {
+        step: step.step,
+        option: step.initialOption,
+        products: products.map(p => p.name).toString(),
+      });
     });
-  });
+  }
 
   window['dataLayer'].push({
     event: 'checkout',
@@ -313,17 +315,6 @@ const sendCheckoutStepOptionEvent = data => {
   //   eventAction: 'set checkout step',
   //   eventLabel: step.option,
   // });
-
-  // tslint:disable-next-line:ter-prefer-arrow-callback
-  Bugsnag.notify(new Error('Checkout log'), function (event) {
-    event.errors[0].errorClass = 'Checkout log';
-
-    // Add additional diagnostic information
-    event.addMetadata('Checkout data', {
-      step: step.step,
-      option: step.initialOption,
-    });
-  });
 
   window['dataLayer'].push({
     event: 'checkoutOption',
