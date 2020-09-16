@@ -1,6 +1,5 @@
 package ish.oncourse.services;
 
-import ish.oncourse.services.IRichtextConverter;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.course.ICourseService;
@@ -22,8 +21,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -63,7 +60,7 @@ public class RichtextConverter implements IRichtextConverter {
     /**
      * This constructor is used only for test
      */
-    RichtextConverter(IBinaryDataService binaryDataService, IWebContentService webContentService,
+    public RichtextConverter(IBinaryDataService binaryDataService, IWebContentService webContentService,
                      ICourseService courseService, IPageRenderer pageRenderer, IWebNodeService webNodeService,
                      ITagService tagService) {
         this.binaryDataService = binaryDataService;
