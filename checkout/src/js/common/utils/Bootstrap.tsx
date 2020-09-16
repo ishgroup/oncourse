@@ -99,12 +99,14 @@ export class Bootstrap {
       const productLinks = document.querySelectorAll('a[href*="product/"]') as any;
 
       classLinks.forEach(l => {
-        const code = l.getAttribute("href").match(/[^/]+$/)[0];
+        const codeMatch = l.getAttribute("href").match(/[^/]+$/);
+        const code = codeMatch ? codeMatch[0] : "";
         l.onclick = () => this.onLinkClick("class",code);
       });
 
       productLinks.forEach(l => {
-        const code = l.getAttribute("href").match(/[^/]+$/)[0];
+        const codeMatch = l.getAttribute("href").match(/[^/]+$/);
+        const code = codeMatch ? codeMatch[0] : "";
         l.onclick = () => this.onLinkClick("product",code);
       });
 
