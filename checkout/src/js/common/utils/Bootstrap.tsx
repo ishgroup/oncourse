@@ -95,8 +95,8 @@ export class Bootstrap {
 
   private bootstrap = (): void => {
     try {
-      const classLinks = document.querySelectorAll('a[href*="class/"]') as any;
-      const productLinks = document.querySelectorAll('a[href*="product/"]') as any;
+      const classLinks = document.querySelectorAll(`a[href*="${window.location.origin}/class/"]`) as any;
+      const productLinks = document.querySelectorAll(`a[href*="${window.location.origin}/product/"]`) as any;
 
       classLinks.forEach(l => {
         const codeMatch = l.getAttribute("href").match(/[^/]+$/);

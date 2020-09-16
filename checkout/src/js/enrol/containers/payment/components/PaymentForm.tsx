@@ -113,6 +113,8 @@ class PaymentForm extends React.Component<Props, any> {
     return (
       <form onSubmit={handleSubmit} id="payment-form" className={classnames({submitting: fetching || submitting})}>
 
+        <Conditions conditions={conditions}/>
+
         {(Number(amount.ccPayment) !== 0 || (Number(amount.ccPayment) === 0 && corporatePass.id) || payLaterAvailable) &&
           <div>
             <div id="tabable-container">
@@ -168,8 +170,6 @@ class PaymentForm extends React.Component<Props, any> {
             </div>
           </div>
         }
-
-        <Conditions conditions={conditions}/>
 
         {!(currentTab === Tabs.creditCard && creditCardAvailable && amount.ccPayment > 0)
           && <div className="form-controls enrolmentsSelected">
