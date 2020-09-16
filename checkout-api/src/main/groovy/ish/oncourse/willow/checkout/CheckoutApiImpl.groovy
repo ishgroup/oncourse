@@ -172,6 +172,7 @@ class CheckoutApiImpl implements CheckoutApi, CheckoutV2Api {
             if (processPaymentModel.error == null) {
                 return processPaymentModel.response
             } else {
+                logger.error(processPaymentModel.error)
                 throw new BadRequestException(Response.status(400).entity(processPaymentModel.error).build())
             }
         } catch(Exception e) {
