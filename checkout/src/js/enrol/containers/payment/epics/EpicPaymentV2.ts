@@ -32,9 +32,8 @@ const processPaymentV2: Request<PaymentResponse, IshState> = {
     return CheckoutService.processPaymentResponse(response);
   },
   processError: (response: AxiosResponse): IAction<any>[] => {
-    const data: any = response.data;
-    if (data && data.payerId && data.amount && data.contactNodes) {
-      return ProcessCheckoutModel.process(data as CheckoutModel);
+    if (response && response.data && response.data.payerId && response.data.amount && response.data.contactNodes) {
+      return ProcessCheckoutModel.process(response.data as CheckoutModel);
     } else {
       return [
         changePhase(Phase.Payment),
