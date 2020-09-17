@@ -9,9 +9,8 @@ import {changePhase} from "../../../actions/Actions";
 import {Phase} from "../../../reducers/State";
 import {Epic} from "redux-observable";
 import CheckoutServiceV2 from "../../../services/CheckoutServiceV2";
-import {PaymentResponse} from "../../../../model/v2/checkout/payment/PaymentResponse";
+import {PaymentResponse, CheckoutModel} from "../../../../model";
 import CheckoutService, {BuildCheckoutModelRequest} from "../../../services/CheckoutService";
-import {CheckoutModel} from "../../../../model";
 
 const processPaymentV2: Request<PaymentResponse, IshState> = {
   type: PROCESS_PAYMENT_V2,

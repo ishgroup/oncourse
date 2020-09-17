@@ -1,11 +1,11 @@
 import * as React from "react";
-import {reduxForm, FormProps, FormErrors, DataShape, getFormSyncErrors} from "redux-form";
+import {reduxForm, FormProps, FormErrors, DataShape, getFormSyncErrors, getFormValues} from "redux-form";
 import classnames from "classnames";
 import CreditCardV2Comp from "./CreditCardV2Comp";
 import CorporatePassComp from "./CorporatePassComp";
 import PayLaterComp from "./PayLaterComp";
 import {Conditions} from "./Conditions";
-import {CreditCardFormValues, CorporatePassFormValues} from "../services/PaymentService";
+import {CreditCardFormValues, CorporatePassFormValues, FieldName} from "../services/PaymentService";
 import {
   changeTab, getCorporatePass, resetCorporatePass,
   submitPaymentCorporatePass, updatePaymentStatus, processPaymentV2,
@@ -57,21 +57,12 @@ interface Props extends FormProps<DataShape, any, any> {
   formSyncErrors?: FormErrors<any>;
   dispatch?: Dispatch<any>;
   stateErrors?: ValidationError;
+  formValues?: any;
 }
 
 export const NAME = "PaymentForm";
 
 class PaymentForm extends React.Component<Props, any> {
-  componentDidUpdate(prevProps) {
-    const {formSyncErrors, dispatch, stateErrors} = this.props;
-
-    if (formSyncErrors) {
-      dispatch(showSyncErrors(formSyncErrors));
-    } else if (stateErrors) {
-      dispatch(resetFieldsState());
-    }
-  }
-
   componentDidMount() {
     const {onChangeTab} = this.props;
     const validCurrentTab = this.getValidTab();
@@ -94,8 +85,6 @@ class PaymentForm extends React.Component<Props, any> {
     const nextTab = Number(e.target.getAttribute('href').replace('#', ''));
 
     if (currentTab === nextTab) return;
-
-    this.props.reset();
     onChangeTab(nextTab);
   }
 
@@ -104,18 +93,20 @@ class PaymentForm extends React.Component<Props, any> {
       handleSubmit, contacts, amount, pristine, submitting, onSubmitPass, corporatePass, corporatePassError,
       onSetPayer, payerId, onAddPayer, onAddCompany, voucherPayerEnabled, currentTab, corporatePassAvailable, fetching,
       onUnmountPassComponent, conditions, creditCardAvailable, payLaterAvailable, updatePayNow,
-      iframeUrl, processPaymentV2, formSyncErrors, dispatch,
+      iframeUrl, processPaymentV2, formSyncErrors, dispatch, formValues
     } = this.props;
 
 
     const disabled = (pristine || submitting);
 
+    const agreementChecked = formValues && formValues[FieldName.agreementFlag];
+
     return (
       <form onSubmit={handleSubmit} id="payment-form" className={classnames({submitting: fetching || submitting})}>
 
-        <Conditions conditions={conditions}/>
+        <Conditions conditions={conditions} agreementChecked={agreementChecked}/>
 
-        {(Number(amount.ccPayment) !== 0 || (Number(amount.ccPayment) === 0 && corporatePass.id) || payLaterAvailable) &&
+        {agreementChecked && (Number(amount.ccPayment) !== 0 || (Number(amount.ccPayment) === 0 && corporatePass.id) || payLaterAvailable) &&
           <div>
             <div id="tabable-container">
               <PaymentFormNav
@@ -171,7 +162,7 @@ class PaymentForm extends React.Component<Props, any> {
           </div>
         }
 
-        {!(currentTab === Tabs.creditCard && creditCardAvailable && amount.ccPayment > 0)
+        {agreementChecked && !(currentTab === Tabs.creditCard && creditCardAvailable && amount.ccPayment > 0)
           && <div className="form-controls enrolmentsSelected">
                 <input
                   disabled={disabled}
@@ -272,6 +263,7 @@ const mapStateToProps = (state: IshState) => {
     },
     formSyncErrors: getFormSyncErrors(NAME)(state),
     stateErrors: state.checkout.error,
+    formValues: getFormValues(NAME)(state)
   };
 };
 

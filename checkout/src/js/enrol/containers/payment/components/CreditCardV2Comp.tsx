@@ -68,8 +68,6 @@ class CreditCardV2Comp extends React.Component<Props, any> {
       iframeUrl, disabled,
     } = this.props;
 
-    console.log(iframeUrl);
-
     return (
       <div id="credit-card" className="single-tab active">
         <CreditCardHeader />
