@@ -14,8 +14,7 @@ const TryAnotherCard: Epic<any, IshState> = (action$: ActionsObservable<any>, st
       changePhase(Phase.Payment),
       resetPaymentState(),
       processPaymentV2(
-        true,
-        store.getState().checkout.payerId,
+        true
       ),
     ];
   });

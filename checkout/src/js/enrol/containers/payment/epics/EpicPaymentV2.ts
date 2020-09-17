@@ -14,15 +14,15 @@ import CheckoutService, {BuildCheckoutModelRequest} from "../../../services/Chec
 
 const processPaymentV2: Request<PaymentResponse, IshState> = {
   type: PROCESS_PAYMENT_V2,
-  getData: ({xValidateOnly,payerId}, state: IshState) => {
+  getData: ({xValidateOnly,sessionId}, state: IshState) => {
     const paymentRequest = {
+      sessionId,
       checkoutModelRequest: BuildCheckoutModelRequest.fromState(state),
       merchantReference: state.checkout.payment.merchantReference,
-      sessionId: state.checkout.payment.sessionId,
       ccAmount: state.checkout.amount.ccPayment,
       storeCard: false,
     };
-    return CheckoutServiceV2.makePayment(paymentRequest,xValidateOnly,payerId);
+    return CheckoutServiceV2.makePayment(paymentRequest,xValidateOnly,state.checkout.payerId);
   },
   processData: (response: PaymentResponse, state: IshState, {xValidateOnly}): IAction<any>[] | Observable<any> => {
     if (xValidateOnly) {

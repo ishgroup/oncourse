@@ -32,7 +32,7 @@ interface Props extends FormProps<DataShape, any, any> {
   onSubmit: (data, dispatch, props) => any;
   payerId: string;
   voucherPayerEnabled: boolean;
-  processPaymentV2?: (xValidateOnly: boolean, payerId: string) => any;
+  processPaymentV2?: (xValidateOnly: boolean, sessionId: string) => any;
   onSubmitPass?: (code: string) => any;
   corporatePass?: CorporatePass;
   corporatePassError?: string;
@@ -240,8 +240,6 @@ const Form = reduxForm({
     if (props.currentTab === Tabs.corporatePass && Number(props.amount.subTotal) !== 0) {
       dispatch(updatePaymentStatus({status: PaymentStatus.IN_PROGRESS}));
       dispatch(submitPaymentCorporatePass(data));
-    } else {
-      dispatch(processPaymentV2(false, props.payerId));
     }
   },
   onSubmitFail: (errors, dispatch, submitError, props) => {
@@ -297,8 +295,8 @@ const mapDispatchToProps = dispatch => {
     updatePayNow: (val, validate) => {
       dispatch(updatePayNow(val, validate));
     },
-    processPaymentV2: (xValidateOnly, payerId) => {
-      dispatch(processPaymentV2(xValidateOnly, payerId));
+    processPaymentV2: (xValidateOnly, sessionId) => {
+      dispatch(processPaymentV2(xValidateOnly, sessionId));
     },
   };
 };

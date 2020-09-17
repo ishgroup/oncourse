@@ -18,19 +18,19 @@ interface Props {
   voucherPayerEnabled?: boolean;
   disabled?: boolean;
   iframeUrl: string;
-  processPaymentV2: (xValidateOnly: boolean, payerId: string) => void;
+  processPaymentV2: (xValidateOnly: boolean, sessionId: string) => void;
   dispatch: Dispatch<any>;
 }
 
 
 class CreditCardV2Comp extends React.Component<Props, any> {
   onMessage = e => {
-    const {dispatch, payerId, processPaymentV2} = this.props;
+    const {dispatch, processPaymentV2} = this.props;
     const paymentData = e.data.payment;
-    if (paymentData && paymentData.status) {
+    if (paymentData && paymentData.status && paymentData.sessionId) {
       dispatch(setIframeUrl(null));
       if (paymentData.status === "success") {
-        processPaymentV2(false, payerId);
+        processPaymentV2(false, paymentData.sessionId);
       } else {
         dispatch(processPaymentV2FailedStatus());
       }
