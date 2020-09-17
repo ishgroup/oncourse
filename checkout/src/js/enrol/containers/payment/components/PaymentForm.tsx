@@ -63,6 +63,16 @@ interface Props extends FormProps<DataShape, any, any> {
 export const NAME = "PaymentForm";
 
 class PaymentForm extends React.Component<Props, any> {
+  componentDidUpdate(prevProps) {
+    const {formSyncErrors, dispatch, stateErrors} = this.props;
+
+    if (formSyncErrors) {
+      dispatch(showSyncErrors(formSyncErrors));
+    } else if (stateErrors) {
+      dispatch(resetFieldsState());
+    }
+  }
+
   componentDidMount() {
     const {onChangeTab} = this.props;
     const validCurrentTab = this.getValidTab();
@@ -85,6 +95,8 @@ class PaymentForm extends React.Component<Props, any> {
     const nextTab = Number(e.target.getAttribute('href').replace('#', ''));
 
     if (currentTab === nextTab) return;
+
+    this.props.reset();
     onChangeTab(nextTab);
   }
 
@@ -93,20 +105,16 @@ class PaymentForm extends React.Component<Props, any> {
       handleSubmit, contacts, amount, pristine, submitting, onSubmitPass, corporatePass, corporatePassError,
       onSetPayer, payerId, onAddPayer, onAddCompany, voucherPayerEnabled, currentTab, corporatePassAvailable, fetching,
       onUnmountPassComponent, conditions, creditCardAvailable, payLaterAvailable, updatePayNow,
-      iframeUrl, processPaymentV2, formSyncErrors, dispatch, formValues
+      iframeUrl, processPaymentV2, formSyncErrors, dispatch,
     } = this.props;
 
 
     const disabled = (pristine || submitting);
 
-    const agreementChecked = formValues && formValues[FieldName.agreementFlag];
-
     return (
       <form onSubmit={handleSubmit} id="payment-form" className={classnames({submitting: fetching || submitting})}>
 
-        <Conditions conditions={conditions} agreementChecked={agreementChecked}/>
-
-        {agreementChecked && (Number(amount.ccPayment) !== 0 || (Number(amount.ccPayment) === 0 && corporatePass.id) || payLaterAvailable) &&
+        {(Number(amount.ccPayment) !== 0 || (Number(amount.ccPayment) === 0 && corporatePass.id) || payLaterAvailable) &&
           <div>
             <div id="tabable-container">
               <PaymentFormNav
@@ -162,7 +170,9 @@ class PaymentForm extends React.Component<Props, any> {
           </div>
         }
 
-        {agreementChecked && !(currentTab === Tabs.creditCard && creditCardAvailable && amount.ccPayment > 0)
+        <Conditions conditions={conditions}/>
+
+        {!(currentTab === Tabs.creditCard && creditCardAvailable && amount.ccPayment > 0)
           && <div className="form-controls enrolmentsSelected">
                 <input
                   disabled={disabled}
