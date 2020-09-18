@@ -17,7 +17,7 @@ targetCompatibility = 11
 
 dependencies {
 
-    implementation project(":types") { {
+    implementation (project(":types"))  {
         exclude group: 'org.apache.logging.log4j'
         exclude group: 'org.springframework'
     }
