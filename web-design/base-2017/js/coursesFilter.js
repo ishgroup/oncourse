@@ -1,5 +1,13 @@
 /**
-* The function inserts "/" in front of the path. It needs for IE.
+* coursesFilter.js
+*
+* License: copyright ish group
+* Purpose:
+*  Contains functionality related to Faceted Search for courses
+*/
+
+/**
+* The function inserts "/" in front of the path. It is required for IE.
 * @param pathname
 * @returns {String} returns the adjusted path
 */
@@ -21,14 +29,29 @@ function isCoursesPath(pathname) {
   return paths.length > 1 && paths[1] == "courses";
 }
 
+/**
+*
+* @param item
+* @return {string} in lowercase decoded tags url
+*/
 function filterItem(item) {
   return escape(decodeURIComponent(item)).toLowerCase();
 }
 
+/**
+* Format courses url
+*
+*/
 CoursesUrlFormat = function () {
 };
 
 CoursesUrlFormat.prototype = {
+  /**
+  *
+  * @param request
+  * @return {string} return formatted request url
+  *
+  */
   format: function (request) {
     var url = "/courses";
     var parameters = [];
@@ -77,6 +100,12 @@ CoursesUrlFormat.prototype = {
     return url;
   },
 
+  /**
+  *
+  * @param url
+  * @return {object}, Generate object from search string and returns
+  * { protocol, host, hostname, port, pathname, search, tags, searchObject, hash, browseTag, locations, day, time, before, km, s, site }
+  */
   parse: function (url) {
     var parser = document.createElement('a'),
       searchObject = {},
@@ -155,7 +184,10 @@ CoursesUrlFormat.prototype = {
   }
 };
 
-
+/**
+* Create courses filter with global options
+*
+*/
 CoursesFilter = function () {
   this.subjectOption = "#s";
   this.subjectOptionButton = "#find";
@@ -174,6 +206,7 @@ CoursesFilter = function () {
 };
 
 CoursesFilter.prototype = {
+  // Init courses filter
   init: function () {
     this.request = this.format.parse(this.currentLocation.href);
 
@@ -181,10 +214,12 @@ CoursesFilter.prototype = {
     this.addControlListeners();
   },
 
+  // Get option control tags data path
   getControlBy: function (path) {
     return $j(this.optionClass + "[data-path='" + path + "']");
   },
 
+  // Handler of courses filter
   addSearchFormListeners: function () {
     var self = this;
 
@@ -206,6 +241,7 @@ CoursesFilter.prototype = {
     });
   },
 
+  // Handler of clear option search
   handleClearOptionClass: function(path) {
     var control = this.getControlBy(path);
     if (control.length > 0) {
@@ -224,6 +260,7 @@ CoursesFilter.prototype = {
     }
   },
 
+  // Handler of change filter and clear search filter
   addControlListeners: function () {
     var self = this;
 
@@ -249,6 +286,7 @@ CoursesFilter.prototype = {
       $j(this).prev().trigger("click");
     });
 
+    // Handler of refine options filter
     $j(document).on('change', this.refineOptionId, function (e) {
       self.request.day = null;
       self.request.time = null;
@@ -272,6 +310,7 @@ CoursesFilter.prototype = {
     });
   },
 
+  // Update filter option values
   updateControlValues: function () {
     var self = this;
 
@@ -301,6 +340,7 @@ CoursesFilter.prototype = {
     this.updateRefineControl();
   },
 
+  // Update refine option values
   updateRefineControl: function () {
     if (this.request.before) {
       $j(this.refineOptionId).val("coming_soon");
@@ -313,6 +353,7 @@ CoursesFilter.prototype = {
     }
   },
 
+  // Remove checked tag
   removeTag: function (tag) {
     var tagText = unescape(decodeURIComponent(tag));
     tagText = tagText.replace('&', '%26');
@@ -325,6 +366,7 @@ CoursesFilter.prototype = {
     this.getControlBy(filterItem(tag)).prop('checked', false);
   },
 
+  // Get control type
   getControlType: function(control) {
     var id = $j(control).attr("id");
     if (id.indexOf("tag_") == 0) {
@@ -336,6 +378,7 @@ CoursesFilter.prototype = {
     }
   },
 
+  // Remove item on control type
   removeCondition: function (control) {
     switch (this.getControlType(control)) {
       case "tag":
@@ -350,6 +393,7 @@ CoursesFilter.prototype = {
     }
   },
 
+  // Add search condition on control type
   addCondition: function (control) {
     switch (this.getControlType(control)) {
       case "tag":
@@ -364,6 +408,7 @@ CoursesFilter.prototype = {
     }
   },
 
+  // Uncheck searched location
   removeLocationCondition: function (control) {
     var path = filterItem($j(control).data('path'));
     var index = this.request.locations.indexOf(path);
@@ -376,11 +421,13 @@ CoursesFilter.prototype = {
     this.request.km = null;
   },
 
+  // Add location condition search
   addLocationCondition: function (control) {
     this.request.locations.push(filterItem($j(control).data('path')));
     this.request.km = null;
   },
 
+  // Remove tags from search request
   removeTagCondition: function(control) {
     var tag = $j(control).data('path').replace(' ', '%20');
 
@@ -395,6 +442,7 @@ CoursesFilter.prototype = {
     }
   },
 
+  // Add tags search to search request
   addTagCondition: function(control) {
     var self = this;
     var tag = decodeURIComponent($j(control).data('path'));
@@ -421,18 +469,23 @@ CoursesFilter.prototype = {
     }
   },
 
+  // Add site condition to search request
   addSiteCondition: function (control) {
     this.request.site = $j(control).data('path');
   },
 
+  // Remove site condition from search request
   removeSiteCondition: function (control) {
     this.request.site = '';
   },
 
+  // Checking parent tag
   isParentTag: function (currentTag, newTag) {
     return currentTag.indexOf(newTag) == 0 || newTag.indexOf(currentTag) == 0;
   },
 
+  // Update search filter and toggle checked class to search item,
+  // load courses based on filter
   changeFilter: function (control) {
     var self = this;
     if ($j(control).prop("checked")) {
@@ -445,12 +498,14 @@ CoursesFilter.prototype = {
     this.loadCourses();
   },
 
+  // Load courses based on formatted request url
   loadCourses: function () {
     var self = this;
     var url = this.format.format(this.request);
     window.location.href = url;
   },
 
+  // Update courses counters
   updateCounters: function () {
     var self = this;
     var url = "/coursecounters";
@@ -525,7 +580,7 @@ CoursesFilter.prototype = {
 
     var coursesFilter = new CoursesFilter();
     coursesFilter.init();
-    $('#courses-filter-refine-option').customSelect({customClass:'courses-filter-refine-custom'});
+    // $('#courses-filter-refine-option').customSelect({customClass:'courses-filter-refine-custom'});
     $('.filters-container ul ul li ul.tag-list').has('li').parent().find('>label').addClass('hasOptionChild');
 
     $('.courses-menu .filters-container .side-box .filter-option').each(function(key, value) {

@@ -1,5 +1,5 @@
-//= require vendor/loadjs-3.5.1.js
-//= require vendor/jquery-3.1.1.js
+//= require vendor/loadjs-4.2.0.js
+//= require vendor/jquery-3.5.1.js
 
 /*
   This is a core javascript file which will be built into your website.
@@ -42,25 +42,15 @@
 
 //= require main.js
 
-//= require vendor/assets.min.js
-
 /*
   Additional vendor libraries which might be useful in your site
 */
 
-//= require deprecated/jquery-migrate-3.0.0.js
-//= require deprecated/jquery.browser.js
-//= require deprecated/jquery-ui-1.9.1.min.js
-//= require deprecated/jquery.customSelect.min.js
+//= require vendor/jquery-migrate-3.3.0.js
+//= require vendor/jquery-ui-1.12.1.min.js
 
-
-/*
-  These files are due to be removed once the CMS application is rebuilt in 2017
-*/
-
-//= require deprecated/jquery.utils.js
-//= require deprecated/jquery.validate.min.js
-//= require deprecated/additional-methods.min.js
+//= require vendor/jquery.validate.min.js
+//= require vendor/additional-methods.min.js
 
 
 /*
@@ -69,9 +59,8 @@
 */
 
 //= require application.js
-//= require gmap.js
 //= require search.js
-//= require shortlist.js
 //= require forms.js
 //= require socialMedia.js
 //= require coursesFilter.js
+//= require gmap.js

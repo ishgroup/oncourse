@@ -1,5 +1,6 @@
 /*
-
+  License: copyright ish group
+  Purpose:
    onCourse javascript configuration
 
 

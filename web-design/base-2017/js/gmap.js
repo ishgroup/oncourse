@@ -1,5 +1,15 @@
+/**
+* gmap.js
+*
+* License: copyright ish group
+* Purpose:
+*  Events handler of google maps
+*/
+
+// Declaration of all required variable
 var locationstTrigger, markers, infowindows, sitesMap, gmapCanvas, map, getDirButton;
 
+// Add event handler after document content loaded
 document.addEventListener("DOMContentLoaded", function(event) {
 
     locationstTrigger = document.querySelector(".toggle_locations");
@@ -19,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
 });
 
-
+// Plotting of markers
 document.addEventListener("click", function(e) {
     var target = e.target;
 
@@ -27,6 +37,7 @@ document.addEventListener("click", function(e) {
         if (target === null) {
             return;
         }
+
         if (target.tagName === "A" && target.hasAttribute("data-coordinates")) {
             window.scrollTo({
                 top: 0,
@@ -64,6 +75,7 @@ document.addEventListener("click", function(e) {
                             details: markerAttributes.id
                         });
                         markers.push(marker);
+
                         var infowindow = new google.maps.InfoWindow({
                             content: markerAttributes.content
                         });
@@ -73,6 +85,7 @@ document.addEventListener("click", function(e) {
                             infowindow.open(map, marker);
                         });
                     }
+
                     var markerArrayID = markers.findIndex(function(el) {
                         return el.details == markerAttributes.id;
                     });
@@ -88,6 +101,7 @@ document.addEventListener("click", function(e) {
     }
 });
 
+// Initialization of google maps and info window handler
 function initMaps() {
     map = new google.maps.Map(gmapCanvas, {
         zoom: 0
@@ -123,6 +137,7 @@ function initMaps() {
     }
 }
 
+// Handling of toggling effect for google map markers and info window.
 function toggleAllMarkers() {
     document.getElementById("sitesMap").classList.toggle("show");
 
@@ -167,6 +182,7 @@ function toggleAllMarkers() {
     });
 }
 
+// Create marker pointer attributes based on co-ordinates content
 function createMarkerAttributes(el) {
     var arrayOfDataset = el.dataset.coordinates.replace(/(")/g, "");
     arrayOfDataset = arrayOfDataset.split(",");
@@ -191,6 +207,8 @@ function createMarkerAttributes(el) {
 
     return markerAttributes;
 }
+
+// Create direction routes of marker attribute and show direction panel
 function makeRoute(origin) {
     document.getElementById("dirtxt").innerText = "";
     if (typeof directionsRenderer !== "undefined") {

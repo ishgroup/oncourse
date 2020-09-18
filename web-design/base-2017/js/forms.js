@@ -1,5 +1,13 @@
+/**
+* forms.js
+*
+* License: copyright ish group
+* Purpose:
+*  Handles textile forms functionality
+*/
 
-function initTextileFormHandle(){
+// Validate and submit textile form on click of submit button
+function initTextileFormHandle() {
 	$j(document).on("click", "button.form-submit-button", function() {
 		var form = $j(this).parent("form")[0];
 		var formId = form.id;
@@ -29,7 +37,6 @@ function initTextileFormHandle(){
 					}
 				}
 			});
-
 		} else {
 			$j('#errorMessage_'+formId).html("Please, fill all the required fields");
 		}

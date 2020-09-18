@@ -1,17 +1,21 @@
 /**
-*  search.js
+* search.js
 *
+*	License: copyright ish group
+* Purpose:
 *  Events and AJAX responses used to interact with the search app.
 *
-*	- Quicksearch
-* 	- Find a suburb by name or postcode
-*	- Advanced search
+*	 - Quicksearch
+*  - Find a suburb by name or postcode
+*	 - Advanced search
 *
 */
 
+// Override search more text: More Options
 if(searchMoreText === undefined)
 	var searchMoreText = "More options";
 
+// Override search fewer text: Fewer Options
 if(searchFewerText === undefined)
 	var searchFewerText = "Fewer options";
 
@@ -60,31 +64,7 @@ jQuery.fn.ClearTypeFadeTo = function(options) {
 	if(options) {
 		$j(this)
 		.show()
-		.each(function() {
-			if(jQuery.browser.msie) {
-				// Save the original background color
-				$j(this).attr('oBgColor', $j(this).css('background-color'));
-				// Set the bgColor so that bold text renders correctly (bug with IE/ClearType/bold text)
-				// !!! Disabled the following as it does not seem to be picking up the element bgColor, causing sites to be unviewable in IE (-cll)
-				//$j(this).css({ 'background-color': (options.bgColor ? options.bgColor : '#fff') })
-			}
-		})
-		.fadeTo(options.speed, options.opacity, function() {
-			if(jQuery.browser.msie) {
-				// ClearType can only be turned back on if this is a full fade in or
-				// fade out. Partial opacity will still have the problem because the
-				// filter style must remain. So, in the latter case, we will leave the
-				// background color and 'filter' style in place.
-				if(options.opacity == 0 || options.opacity == 1) {
-					// Reset the background color if we saved it previously
-					$j(this).css({ 'background-color': $j(this).attr('oBgColor') }).removeAttr('oBgColor');
-					// Remove the 'filter' style to restore ClearType functionality.
-					$j(this).get(0).style.removeAttribute('filter');
-				}
-			}
-
-			if(options.callback != undefined) options.callback();
-		});
+		.fadeTo(options.speed, options.opacity);
 	}
 };
 
@@ -92,7 +72,7 @@ jQuery.fn.ClearTypeFadeIn = function(options) {
 	if(options) {
 		$j(this)
 		.css({ opacity: 0 })
-		.ClearTypeFadeTo({ speed: options.speed, opacity: 1, callback: options.callback });
+		.ClearTypeFadeTo({ speed: options.speed, opacity: 1 });
 	}
 };
 
@@ -100,12 +80,12 @@ jQuery.fn.ClearTypeFadeOut = function(options) {
 	if(options) {
 		$j(this)
 		.css({ opacity: 1 })
-		.ClearTypeFadeTo({ speed: options.speed, opacity: 0, callback: options.callback });
+		.ClearTypeFadeTo({ speed: options.speed, opacity: 0 });
 	}
 };
 
 /* -----*/
-
+// Override advanced search action method
 if(advancedSearchAction === undefined)
 	var advancedSearchAction = function(isVisible) { }
 
@@ -114,6 +94,7 @@ function advancedSearchCheck(isVisible) {
 		advancedSearchAction(isVisible);
 }
 
+// Toggles advanced search
 function toggleAdvancedSearch() {
 	if($j('#advanced_search').is(':visible')) {
 		hideAdvancedSearch();
@@ -122,6 +103,7 @@ function toggleAdvancedSearch() {
 	}
 }
 
+// Show advanced search form
 function showAdvancedSearch() {
 	$j('a.show-advanced-search span').addClass('adv_search_active').html(searchFewerText);
 
@@ -132,7 +114,7 @@ function showAdvancedSearch() {
 	advancedSearchCheck(true);
 
 	// install watcher to detect clicks on the background
-	$j(document).bind('mousedown', function(e) {
+	$j(document).on('mousedown', function(e) {
 		// hide advanced search if click was not inside advanced search area
 		if(!$j(e.target).is('#advanced_search_container *') && !$j(e.target).is('div.ac_results *') && !$j(e.target).is('.ui-autocomplete *')) {
 			hideAdvancedSearch();
@@ -141,8 +123,9 @@ function showAdvancedSearch() {
 	});
 }
 
+// Hide advanced search form
 function hideAdvancedSearch() {
-	$j(document).unbind('mousedown');
+	$j(document).off('mousedown');
 	$j('form#search').ClearTypeFadeTo({ speed: 450, opacity: 1 });
 	$j('div#content').ClearTypeFadeTo({ speed: 450, opacity: 1 });
 	$j('#advanced_search').hide('slow');
@@ -150,10 +133,9 @@ function hideAdvancedSearch() {
 	$j('a.show-advanced-search span').removeClass('adv_search_active').html(searchMoreText);
 
 	advancedSearchCheck(false);
-
 }
 
-
+// Clear form fields
 jQuery.fn.clearForm = function() {
 	return this.each(function() {
 		var type = this.type, tag = this.tagName.toLowerCase();
@@ -170,6 +152,7 @@ jQuery.fn.clearForm = function() {
 	});
 };
 
+// Clear advanced search form fields
 function clearAdvancedSearch() {
 	$j('#search2').clearForm();
 }
@@ -262,6 +245,7 @@ function setSuburbAfterAutoComplete(searchForm) {
 	}
 }
 
+// Describe advanced search form
 jQuery.fn.quickSearch = function(url, settings) {
 	return this.each(function() {
 		var minInput = 3;
@@ -276,7 +260,7 @@ jQuery.fn.quickSearch = function(url, settings) {
 
 			// observe checkboxes
 			$j('.suburb-choice').each(function() {
-				$j(this).bind("click", updateFunction);
+				$j(this).on("click", updateFunction);
 			});
 		};
 
@@ -315,6 +299,7 @@ jQuery.fn.quickSearch = function(url, settings) {
 			loadFunction(url, {text: terms, directSearch:true}, updatedFunction);
 		};
 
+		// Show advanced search
 		function show() {
 			textInput.removeClass('throbber');
 			$j('div.advanced-search-button').fadeTo(0, 0);
@@ -322,7 +307,7 @@ jQuery.fn.quickSearch = function(url, settings) {
 			divContainer.addClass('show-quick-search').show();
 
 			// install watcher to detect clicks on the background
-			$j(document).bind('mousedown.quicksearch', function(click) {
+			$j(document).on('mousedown.quicksearch', function(click) {
 				// hide quicksearch if click was not inside quicksearch area
 				if($j(click.target).parents('div.quicksearch-wrap').length == 0 && click.target != thisObject) {
 					hide();
@@ -330,17 +315,19 @@ jQuery.fn.quickSearch = function(url, settings) {
 			});
 		}
 
+		// Hide advanced search
 		function hide() {
 			selectedIndex = -1;
 			allItems = null;
 			textInput.removeClass('throbber');
 			//divContainer.removeShadow();
-			$j(document).unbind('mousedown.quicksearch');
+			$j(document).off('mousedown.quicksearch');
 			divContainer.slideUp(400);
 			$j('div.advanced-search-button').fadeTo(0, 1);
 			divContainer.removeClass('show-quick-search');
 		}
 
+		// Handles keyup events for text input
 		textInput.on('keyup', function(key) {
 			if(key.which == 27) { // escape
 				hide();
@@ -408,6 +395,7 @@ jQuery.fn.quickSearch = function(url, settings) {
 	});
 };
 
+// Describe hide quick search form
 jQuery.fn.hideQuickSearch = function(url, settings) {
 	return this.each(function() {
 		this.hide();
