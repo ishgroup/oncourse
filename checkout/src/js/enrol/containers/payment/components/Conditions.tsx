@@ -16,13 +16,10 @@ const validateAgreement = value => value ? undefined : 'You must agree to the po
 export class Conditions extends React.Component<Props, any> {
 
   render() {
-    const {refundPolicyUrl, featureEnrolmentDisclosure} = this.props.conditions;
+    const {conditions: {refundPolicyUrl, featureEnrolmentDisclosure}, agreementChecked} = this.props;
 
     return (
       <div className="clearfix payment-conditions">
-        <div>
-          <label>Conditions<em title="This field is required">*</em></label>
-        </div>
         <div className="conditions">
             <span className="valid">
                 <Field
@@ -34,6 +31,7 @@ export class Conditions extends React.Component<Props, any> {
                     value="1"
                     type="checkbox"
                     className={classnames({'t-error': props.meta.invalid && props.meta.touched})}
+                    disabled={agreementChecked}
                   />}
                   validate={validateAgreement}
                 />
@@ -46,19 +44,26 @@ export class Conditions extends React.Component<Props, any> {
                         href={`${featureEnrolmentDisclosure}`}
                         target="_blank"
                       > Student Information </a>
-                    or have had it explained to me, and I agree to accept these  conditions.{' '}
+                      or have had it explained to me, and I agree to accept these  conditions.{' '}
                     </span>
                   }
 
-                  {refundPolicyUrl &&
+                  {refundPolicyUrl && (agreementChecked ?
                     <span>
-                      I understand the <a href={refundPolicyUrl} target="_blank"> enrolment, sale and refund policy</a>.
+                      The <a href={refundPolicyUrl} target="_blank"> enrolment, sale and refund policy</a> has been accepted.
                     </span>
+                    :
+                      <span>
+                      I agree to the <a href={refundPolicyUrl} target="_blank"> enrolment, sale and refund policy</a>.
+                    </span>
+                    )
                   }
 
-                  {!refundPolicyUrl &&
-                  <span>I understand the enrolment, sale and refund policy.</span>
+                  {!refundPolicyUrl && (agreementChecked ?
+                    <span>The enrolment, sale and refund policy has been accepted.</span>
+                    : <span>I agree to the enrolment, sale and refund policy.</span>)
                   }
+                  {!agreementChecked && <em title="This field is required">*</em>}
                 </div>
                 <span className="validate-text"/>
             </span>
