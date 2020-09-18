@@ -43,16 +43,19 @@ sourceSets {
 }
 
 dependencies {
+	implementation (project(":types")) {
+		exclude group: 'org.apache.cayenne', module: 'cayenne-server'
+	}
 
 	implementation project(':server-api')
 
 	implementation ("org.apache.cxf:cxf-rt-frontend-jaxws:$cfxVersion") {
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
 	}
-
-	implementation (project(":types")) {
-		exclude group: 'org.apache.cayenne', module: 'cayenne-server'
-
+	
+	compile ("ish.oncourse.willow:webservices-client:$waCommonWebservicesClientVersion") {
+		exclude group: 'ish.oncourse.willow', module: 'waCommon'
+		
 		exclude group: 'org.apache.cxf'
 
 		exclude group: 'javax.xml.soap'
