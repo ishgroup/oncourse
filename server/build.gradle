@@ -50,7 +50,7 @@ dependencies {
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
 	}
 
-	implementation ("ish.oncourse.willow:webservices-client:$waCommonWebservicesClientVersion") {
+	implementation project(":types") {
 		exclude group: 'org.apache.cayenne', module: 'cayenne-server'
 
 		exclude group: 'org.apache.cxf'
@@ -292,7 +292,7 @@ tasks.withType(CreateStartScripts).each { task ->
 		String text = task.windowsScript.text
 		text = text.replaceFirst(/(set CLASSPATH=%APP_HOME%\\lib\\).*/, "set CLASSPATH=%APP_HOME%\\\\server-${project.version}.jar;%APP_HOME%\\\\lib\\\\*" )
 		task.windowsScript.write text
-		
+
 		text = task.unixScript.text
 		text = text.replaceFirst(/(APP_HOME\/lib\/).*/, "APP_HOME/server-${project.version}.jar;\\\$APP_HOME/lib/*")
 		task.unixScript.write text

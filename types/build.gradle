@@ -1,3 +1,5 @@
+apply plugin: 'groovy'
+
 sourceSets.main.java.srcDirs = []
 sourceSets.main.groovy.srcDir 'src/main/java'
 
@@ -17,6 +19,8 @@ task sourceJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
     from sourceSets.main.allSource
 }
+
+group = 'ish.oncourse'
 
 publishing {
     publications {
