@@ -11,7 +11,6 @@ apply plugin: 'com.github.psxpaul.execfork'
 
 configurations {
 	apiTest
-	dsldocSource
 
 	// exclude these here since they are pulled in in various ways
 	all*.exclude group: "org.slf4j", module: "slf4j-simple"
@@ -219,10 +218,6 @@ dependencies {
 	apiTest "org.apache.derby:derbyclient:$derbyVersion"
 	apiTest "org.apache.derby:derbynet:$derbyVersion"}
 
-dependencies {
-	dsldocSource project(':types')
-}
-
 task createResourceManifests {
 	doLast {
 		def sources = ["resources/oncourse-scripts/export",
@@ -336,7 +331,7 @@ task packageApiDoc (type: Zip, dependsOn: generateApiDoc) {
 
 // DSL asciidoc documentation
 dslDocs {
-	source = sourceSets.main.groovy.plus(zipTree(configurations.dsldocSource.find { it.name.startsWith("types") })).plus(project(':server-api').sourceSets.main.groovy)
+	source = sourceSets.main.groovy.plus(project(':types').sourceSets.main.groovy).plus(project(':server-api').sourceSets.main.groovy)
 	destinationDir = file("${buildDir}/distributions/dsldoc")
 }
 task packageDslDoc(type: Zip) {
