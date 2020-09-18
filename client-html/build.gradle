@@ -13,7 +13,7 @@ configurations {
 }
 
 dependencies {
-    queryLanguageModelSource "ish.oncourse.willow:waCommon:$waCommonWebservicesClientVersion:sources"
+    queryLanguageModelSource project(':types')
 }
 
 yarn.outputs.cacheIf { true }
@@ -57,7 +57,7 @@ sourceSets {
 build.dependsOn(webpack)
 
 generateQueryLanguageModel {
-    source = zipTree(configurations.queryLanguageModelSource.find { it.name.startsWith("waCommon") })
+    source = zipTree(configurations.queryLanguageModelSource.find { it.name.startsWith("types") })
             .plus(fileTree("$buildDir/../../server/src/main/java"))
 
     destinationDir = file("$buildDir/generated-sources/aql-model")

@@ -44,7 +44,6 @@ sourceSets {
 
 dependencies {
 	implementation (project(":types")) {
-		exclude group: 'org.apache.cayenne', module: 'cayenne-server'
 	}
 
 	implementation project(':server-api')
@@ -52,10 +51,10 @@ dependencies {
 	implementation ("org.apache.cxf:cxf-rt-frontend-jaxws:$cfxVersion") {
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
 	}
-	
-	compile ("ish.oncourse.willow:webservices-client:$waCommonWebservicesClientVersion") {
-		exclude group: 'ish.oncourse.willow', module: 'waCommon'
+
+	implementation (project(":webservices")) {
 		
+		exclude group: 'org.apache.cayenne', module: 'cayenne-server'
 		exclude group: 'org.apache.cxf'
 
 		exclude group: 'javax.xml.soap'
@@ -221,7 +220,7 @@ dependencies {
 	apiTest "org.apache.derby:derbynet:$derbyVersion"}
 
 dependencies {
-	dsldocSource "ish.oncourse.willow:waCommon:$waCommonWebservicesClientVersion:sources"
+	dsldocSource project(':types')
 }
 
 task createResourceManifests {
@@ -337,7 +336,7 @@ task packageApiDoc (type: Zip, dependsOn: generateApiDoc) {
 
 // DSL asciidoc documentation
 dslDocs {
-	source = sourceSets.main.groovy.plus(zipTree(configurations.dsldocSource.find { it.name.startsWith("waCommon") })).plus(project(':server-api').sourceSets.main.groovy)
+	source = sourceSets.main.groovy.plus(zipTree(configurations.dsldocSource.find { it.name.startsWith("types") })).plus(project(':server-api').sourceSets.main.groovy)
 	destinationDir = file("${buildDir}/distributions/dsldoc")
 }
 task packageDslDoc(type: Zip) {

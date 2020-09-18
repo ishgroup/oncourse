@@ -1,0 +1,78 @@
+dependencies {
+    compile project(':types')
+    compile ('org.apache.cxf:cxf-bundle:2.6.16') {
+        exclude group:'net.sf.ehcache', module: 'ehcache-core'
+        exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
+    }
+}
+
+jar {
+    manifest {
+        from sharedManifest
+    }
+}
+
+configurations {
+    all*.exclude group: 'org.apache.logging.log4j', module: 'log4j-web'
+    ws
+}
+
+dependencies{
+    ws      "org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:3.2.6",
+            "org.apache.cxf:cxf-tools-wsdlto-databinding-jaxb:3.2.6",
+            "org.apache.cxf:cxf-xjc-plugin:3.2.2",
+            "org.jvnet.jaxb2_commons:jaxb2-basics:1.11.1", // provides Xinheritance
+            "javax.activation:activation:1.1.1",
+            "com.sun.xml.bind:jaxb-core:2.3.0.1",
+            "com.sun.xml.bind:jaxb-impl:2.3.0.1",
+            "javax.xml.bind:jaxb-api:2.3.0",
+            "javax.xml.ws:jaxws-api:2.3.0",
+            "javax.annotation:javax.annotation-api:1.3.2",
+            "org.glassfish:javax.jws:3.1.1"
+}
+
+task wsdl2Java() {
+    doLast {
+        javaexec {
+            classpath configurations.ws
+            main = 'org.apache.cxf.tools.wsdlto.WSDLToJava'
+            args = ['-xjc-Xinheritance',
+                    '-wsdlLocation', '/wsdl/v21_replication.wsdl',
+                    '-b', "${projectDir}/src/main/resources/wsdl/replication21_binding.xml",
+                    '-p', "ish.oncourse.webservices.v21.stubs.replication",
+                    '-d', "${projectDir}/src/main/java",
+                    "${projectDir}/src/main/resources/wsdl/v21_replication.wsdl"
+            ]
+            systemProperties = ['exitOnFinish':'TRUE']
+        }
+    }
+}
+
+task generateSources(type: Copy) {
+    from 'src/templates'
+    into 'build/generated'
+    expand(replicationVersions: replicationVersions, referenceVersions: referenceVersions)
+}
+compileJava.dependsOn generateSources
+
+sourceSets {
+    main {
+        java {
+            srcDir 'build/generated'
+        }
+    }
+}
+
+task sourceJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+publishing {
+    publications {
+        jar(MavenPublication) {
+            from components.java
+            artifact sourceJar
+        }
+    }
+}
