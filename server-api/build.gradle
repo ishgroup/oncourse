@@ -17,7 +17,7 @@ targetCompatibility = 11
 
 dependencies {
 
-    api ("ish.oncourse.willow:waCommon:$waCommonWebservicesClientVersion") {
+    implementation project(":types") { {
         exclude group: 'org.apache.logging.log4j'
         exclude group: 'org.springframework'
     }
