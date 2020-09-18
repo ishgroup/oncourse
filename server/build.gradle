@@ -50,7 +50,7 @@ dependencies {
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
 	}
 
-	implementation project(":types") {
+	implementation (project(":types")) {
 		exclude group: 'org.apache.cayenne', module: 'cayenne-server'
 
 		exclude group: 'org.apache.cxf'
