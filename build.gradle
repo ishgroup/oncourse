@@ -42,6 +42,15 @@ taskTree{
 	impliesSubProjects = true  //do not print task-tree for child projects in a multi-project
 }
 
+ext {
+    replicationVersions = [
+            21      // introduced in onCourse 9.13
+	]
+    referenceVersions = [
+            7      // introduced in onCourse 9.10
+    ]
+}
+
 allprojects {
     apply plugin: 'java'
     apply plugin: 'maven'
