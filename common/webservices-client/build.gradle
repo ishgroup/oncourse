@@ -1,9 +1,9 @@
 dependencies {
-    compile ("ish.oncourse.willow:waCommon:$waCommonWebservicesClientVersion")
-    compile ('org.apache.cxf:cxf-bundle:2.6.16') {
-        exclude group:'net.sf.ehcache', module: 'ehcache-core'
-        exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
-    }
+    compile ("ish.oncourse.willow:waCommon:92")
+
+    compile group: 'org.apache.cxf', name: 'cxf-rt-bindings-soap', version: '3.4.0'
+    compile group: 'org.apache.cxf', name: 'cxf-rt-ws-rm', version: '3.4.0'
+
 }
 
 jar {
