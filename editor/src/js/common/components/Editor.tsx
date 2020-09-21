@@ -1,10 +1,9 @@
 import React, {FunctionComponent} from 'react';
 import AceEditor from 'react-ace';
-
-// import 'brace/ext/language_tools';
-// import 'brace/mode/html';
-// import 'brace/snippets/html';
-// import 'brace/theme/tomorrow';
+import "ace-builds/src-noconflict/mode-html";
+import "ace-builds/src-noconflict/theme-tomorrow";
+import "ace-builds/src-noconflict/ext-language_tools";
+import "ace-builds/src-noconflict/snippets/html";
 
 interface Props {
   value?: string;
