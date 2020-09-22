@@ -30,7 +30,7 @@ dependencies {
         exclude group: 'axis', module: 'axis-wsdl4j'
     }
 
-    compile("ish.oncourse.willow:webservices-client:$waCommonWebservicesClientVersion") {
+    compile("ish.oncourse.willow:webservices-client:$webservicesVersion") {
         //we should exclude cayenne-server from waCommon because the cayenne-server is not compatable to willow code.
         exclude group: 'org.apache.cayenne', module: 'cayenne-server'
         exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
