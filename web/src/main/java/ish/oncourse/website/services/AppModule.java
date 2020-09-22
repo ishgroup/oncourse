@@ -18,11 +18,9 @@ import ish.oncourse.ui.services.UIModule;
 import ish.oncourse.util.PageRenderer;
 import ish.oncourse.website.services.html.CacheMetaProvider;
 import org.apache.tapestry5.internal.InternalConstants;
-import org.apache.tapestry5.ioc.MappedConfiguration;
-import org.apache.tapestry5.ioc.MethodAdviceReceiver;
-import org.apache.tapestry5.ioc.OrderedConfiguration;
-import org.apache.tapestry5.ioc.ServiceBinder;
+import org.apache.tapestry5.ioc.*;
 import org.apache.tapestry5.ioc.annotations.*;
+import org.apache.tapestry5.services.LibraryMapping;
 import org.apache.tapestry5.services.MarkupRendererFilter;
 import org.apache.tapestry5.services.javascript.JavaScriptStack;
 import org.apache.tapestry5.services.javascript.JavaScriptStackSource;
@@ -53,6 +51,10 @@ public class AppModule {
 
 	public static void contributeMarkupRenderer(OrderedConfiguration<MarkupRendererFilter> configuration) {
 		configuration.override("PageNameMeta", null);
+	}
+
+	public void contributeComponentClassResolver(Configuration<LibraryMapping> configuration) {
+		configuration.add(new LibraryMapping("ish", "ish.oncourse"));
 	}
 
 	@Contribute(PageRenderLinkTransformer.class)
