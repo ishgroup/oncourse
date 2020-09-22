@@ -42,8 +42,7 @@ sourceSets {
 }
 
 dependencies {
-	implementation (project(":types")) {
-	}
+	implementation project(":types")
 
 	implementation project(':server-api')
 
@@ -51,7 +50,7 @@ dependencies {
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
 	}
 
-	compile ("ish.oncourse.willow:webservices-client:$waCommonWebservicesClientVersion") {
+	compile ("ish.oncourse.willow:webservices-client:$webservicesVersion") {
 
 		exclude group: 'org.apache.cayenne', module: 'cayenne-server'
 		exclude group: 'org.apache.cxf'

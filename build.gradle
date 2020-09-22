@@ -13,7 +13,6 @@ import org.gradle.internal.os.OperatingSystem
 
 buildscript {
 	ext {
-		waCommonWebservicesClientVersion = '92'
 		log4j2Version = '2.13.3'
 		cayenneVersion = '4.1'
 		jettyVersion = '9.4.30.v20200611'
@@ -26,6 +25,7 @@ buildscript {
 		cfxVersion = '3.3.5'
 		jacksonVersion = '2.9.9'
 		javaxActivationVersion = '1.2.0'
+		webservicesVersion = '93'
 		osVersion = OperatingSystem.current().isMacOsX() ? 'mac' : OperatingSystem.current().isWindows() ? 'win' : 'linux'
 	}
 
