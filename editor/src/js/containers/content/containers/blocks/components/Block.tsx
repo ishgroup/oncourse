@@ -1,12 +1,16 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, FormGroup, Label, Input} from 'reactstrap';
 import classnames from 'classnames';
 import Editor from "../../../../../common/components/Editor";
 import {BlockState} from "../reducers/State";
 import {CONTENT_MODES, DEFAULT_CONTENT_MODE_ID} from "../../../constants";
 import {addContentMarker} from "../../../utils";
+import "react-mde/lib/styles/css/react-mde-all.css";
+import MarkdownEditor from "../../../../../common/components/MarkdownEditor";
+import WysiwygEditor from "../../../../../common/components/WysiwygEditor";
 import marked from "marked";
-import reactHtmlParser from 'react-html-parser';
+import TurndownService from "turndown";
+const ReactMarkdown = require("react-markdown");
 
 interface Props {
   block: BlockState;
@@ -16,130 +20,152 @@ interface Props {
 // custom event to reinitialize site plugins on editing content
 const pluginInitEvent = new Event("plugins:init");
 
-export class Block extends React.Component<Props, any> {
+const turnDownService = new TurndownService();
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      editMode: false,
-      draftContent: "",
-      contentMode: DEFAULT_CONTENT_MODE_ID,
-    };
-  }
+const Block: React.FC<Props> = props => {
 
-  componentDidMount() {
-    const {block} = this.props;
+  const {block, onSave} = props;
+  const [editMode, setEditMode] = useState(false);
+  const [draftContent, setDraftContent] = useState("");
+  const [CKEditorData, setCKEditorData] = useState("");
+  const [contentMode, setContentMode] = useState(DEFAULT_CONTENT_MODE_ID);
 
+  useEffect(() => {
     document.dispatchEvent(pluginInitEvent);
 
-    this.setState({
-      contentMode: block.contentMode || DEFAULT_CONTENT_MODE_ID,
-    });
-  }
+    const contentMode = block.contentMode || DEFAULT_CONTENT_MODE_ID;
 
-  onClickArea(e) {
+    setContentMode(contentMode);
+    setDraftContent(block.content || "");
+    if (contentMode === "md") {
+      setCKEditorData(marked(block.content || ""));
+    }
+  },        []);
+
+  const onClickArea = e => {
     e.preventDefault();
 
-    const {block} = this.props;
+    setEditMode(true);
+    setDraftContent(block.content || "");
+  };
 
-    this.setState({
-      editMode: true,
-      draftContent: block.content || "",
-    });
-  }
+  const onChangeArea = val => {
+    setDraftContent(val);
+  };
 
-  onChangeArea(val) {
-    this.setState({
-      draftContent: val,
-    });
-  }
+  const handleSave = () => {
+    let newContent;
 
-  onSave() {
-    const {onSave, block} = this.props;
-    const {draftContent, contentMode} = this.state;
-    const newContent = addContentMarker(draftContent, contentMode);
+    if (contentMode === "wysiwyg") {
+      const mdText = turnDownService.turndown(CKEditorData);
+      newContent = addContentMarker(mdText, "md");
+    } else {
+      newContent = addContentMarker(draftContent, contentMode);
+    }
 
-    this.setState({
-      editMode: false,
-    });
-
+    setEditMode(false);
     onSave(block.id, newContent);
-  }
+  };
 
-  onCancel() {
-    const {block} = this.props;
+  const handleCancel = () => {
+    setEditMode(false);
+    setDraftContent(block.content || "");
+  };
 
-    this.setState({
-      editMode: false,
-      draftContent: block.content || "",
-    });
-  }
-
-  componentDidUpdate() {
-    const {editMode} = this.state;
-
-    if (!editMode && this.props.block.content) {
+  useEffect(() => {
+    if (!editMode && block.content) {
       document.dispatchEvent(pluginInitEvent);
     }
-  }
+  },        [editMode, block, block && block.content]);
 
-  onContentModeChange(e) {
+  const onCKEditorChange = ( event, editor ) => {
+    const data = editor.getData();
+    setCKEditorData(data);
+  };
+
+  const onContentModeChange = e => {
     const v = e.target.value;
-    this.setState({contentMode: v});
-  }
+    setContentMode(v);
+  };
 
-  render() {
-    const {block} = this.props;
-    const {editMode, contentMode} = this.state;
+  const renderEditor = () => {
+    switch (contentMode) {
+      case "md": {
+        return (
+          <MarkdownEditor
+            value={draftContent}
+            onChange={setDraftContent}
+          />
+        );
+      }
+      case "wysiwyg": {
+        return (
+          <WysiwygEditor
+            value={CKEditorData}
+            onChange={onCKEditorChange}
+          />
+        );
+      }
+      case "textile":
+      case "html":
+      default: {
+        return (
+          <Editor
+            value={draftContent}
+            onChange={val => onChangeArea(val)}
+            mode={contentMode}
+          />
+        );
+      }
+    }
+  };
 
-    return (
-      <div>
-        {editMode &&
-          <div>
-            <FormGroup>
-              <Editor
-                value={this.state.draftContent}
-                onChange={val => this.onChangeArea(val)}
-              />
-            </FormGroup>
+  return (
+    <div>
 
-            <FormGroup>
-                <div className="row">
-                    <div className="col-md-4 col-lg-3">
-                        <Label htmlFor="contentMode">Content mode</Label>
-                        <Input
-                            type="select"
-                            name="contentMode"
-                            id="contentMode"
-                            placeholder="Content mode"
-                            value={contentMode}
-                            onChange={e => this.onContentModeChange(e)}
-                        >
-                          {CONTENT_MODES.map(mode => (
-                            <option key={mode.id} value={mode.id}>{mode.title}</option>
-                          ))}
-                        </Input>
-                    </div>
-                </div>
-            </FormGroup>
-
-            <FormGroup>
-              <Button onClick={() => this.onCancel()} color="link">Cancel</Button>
-              <Button onClick={() => this.onSave()} color="primary">Save</Button>
-            </FormGroup>
+      {editMode && <>
+        <div className={
+          classnames({"editor-wrapper" : true, "ace-wrapper": contentMode === "html" || contentMode === "textile"})
+        }>
+          <div className="content-mode-wrapper">
+            <Input
+                type="select"
+                name="contentMode"
+                id="contentMode"
+                className="content-mode"
+                placeholder="Content mode"
+                value={contentMode}
+                onChange={e => onContentModeChange(e)}
+            >
+              {CONTENT_MODES.map(mode => (
+                <option key={mode.id} value={mode.id}>{mode.title}</option>
+              ))}
+            </Input>
           </div>
+          {renderEditor()}
+        </div>
+        <div className="mt-4">
+            <FormGroup>
+                <Button onClick={() => handleCancel()} color="link">Cancel</Button>
+                <Button onClick={() => handleSave()} color="primary">Save</Button>
+            </FormGroup>
+        </div>
+      </>}
 
-        }
-
-        <div onClick={e => this.onClickArea(e)}>
-          {!editMode &&
-            <div className={classnames("editor-area", {'editor-area--empty': !block.content})}>
-              {contentMode === "md" ? reactHtmlParser(marked(block.content)) : block.content}
-            </div>
+      {!editMode &&
+      <div onClick={e => onClickArea(e)}>
+        <div className={classnames("editor-area", {'editor-area--empty': !block.content})}>
+          {
+            contentMode === "md" || contentMode === "wysiwyg"
+              ? <ReactMarkdown source={block.content} />
+              : block.content
           }
         </div>
-
       </div>
-    );
-  }
-}
+      }
+
+    </div>
+  );
+};
+
+export default Block;

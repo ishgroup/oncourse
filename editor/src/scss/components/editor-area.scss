@@ -16,3 +16,62 @@
     border: 2px solid $primary;
   }
 }
+
+.editor-wrapper {
+  position: relative;
+
+  .mde-preview {
+    max-height: 80vh;
+    overflow: auto;
+
+    .mde-preview-content {
+
+      h1, h2, h3, h4, h5 {
+        border: 0;
+      }
+    }
+  }
+
+  .content-mode-wrapper {
+    position: absolute;
+    right: 10px;
+    top: 8px;
+    z-index: 1000;
+
+    .content-mode {
+      max-width: 85px;
+      padding: 0;
+      border: 0;
+      box-shadow: none;
+      background-color: transparent;
+    }
+  }
+
+  .mde-header {
+    min-height: 45px;
+  }
+
+  .mde-preview {
+
+  }
+
+  .ck-editor {
+
+    .ck-content {
+      max-height: 80vh;
+    }
+
+    .ck-toolbar {
+      padding: 3px;
+    }
+  }
+
+  &.ace-wrapper {
+    border: 1px solid $editor-border-color;
+    padding-top: 44px;
+
+    .ace_editor {
+      border-top: 1px solid $editor-border-color;
+    }
+  }
+}
