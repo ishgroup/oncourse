@@ -229,9 +229,11 @@ const Form = reduxForm({
     if (props.currentTab === Tabs.corporatePass && Number(props.amount.subTotal) !== 0) {
       dispatch(updatePaymentStatus({status: PaymentStatus.IN_PROGRESS}));
       dispatch(submitPaymentCorporatePass(data));
+    } else {
+      dispatch(processPaymentV2(false));
     }
   },
-  onSubmitFail: (errors, dispatch, submitError, props) => {
+  onSubmitFail: (errors, dispatch, submitError) => {
     if (errors && !submitError) {
       dispatch(showSyncErrors(errors));
     }
