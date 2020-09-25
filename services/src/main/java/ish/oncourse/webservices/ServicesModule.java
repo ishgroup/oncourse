@@ -30,6 +30,7 @@ import org.apache.cxf.transport.servlet.CXFServlet;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.tapestry5.internal.spring.SpringModuleDef;
 import org.apache.zookeeper.ZooKeeper;
+import org.eclipse.jetty.servlet.DefaultServlet;
 
 import java.util.*;
 
@@ -118,8 +119,8 @@ public class ServicesModule extends ConfigModule {
 		JettyModule.extend(binder)
 				.addMappedFilter(TAPESTRY_FILTER)
 				.addMappedServlet(CXF_SERVLET)
-				.addMappedServlet(new MappedServlet<>(new ISHHealthCheckServlet(), ISHHealthCheckServlet.urlPatterns, ISHHealthCheckServlet.SERVLET_NAME));
-//				.addMappedServlet(REINDEX_SERVLET);
+				.addMappedServlet(new MappedServlet<>(new ISHHealthCheckServlet(), ISHHealthCheckServlet.urlPatterns, ISHHealthCheckServlet.SERVLET_NAME))
+				.addStaticServlet("static","/s/*");
 	}
 
 

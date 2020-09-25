@@ -4,6 +4,7 @@ jetty:
     - port: 8302
       host: 127.0.0.1
   idleThreadTimeout: 300000
+  staticResourceBase: classpath:static
   compactPath: true
 jdbc:
   willow:
