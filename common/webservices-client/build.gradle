@@ -1,11 +1,11 @@
 dependencies {
-    compile ("ish.oncourse.willow:waCommon:92")
-    
-    compile group: 'javax.xml.ws', name: 'jaxws-api', version: '2.3.1'
-    compile group: 'javax.jws', name: 'javax.jws-api', version: '1.1'
+    implementation ("ish.oncourse.willow:waCommon:92")
 
-    compile group: 'org.apache.cxf', name: 'cxf-rt-bindings-soap', version: '3.4.0'
-    compile group: 'org.apache.cxf', name: 'cxf-rt-ws-rm', version: '3.4.0'
+    implementation group: 'javax.xml.ws', name: 'jaxws-api', version: '2.3.1'
+    implementation group: 'javax.jws', name: 'javax.jws-api', version: '1.1'
+
+    implementation group: 'org.apache.cxf', name: 'cxf-rt-bindings-soap', version: '3.4.0'
+    implementation group: 'org.apache.cxf', name: 'cxf-rt-ws-rm', version: '3.4.0'
 }
 
 jar {
