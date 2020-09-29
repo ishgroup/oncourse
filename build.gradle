@@ -25,7 +25,7 @@ buildscript {
 		cfxVersion = '3.3.5'
 		jacksonVersion = '2.9.9'
 		javaxActivationVersion = '1.2.0'
-		webservicesVersion = '93'
+		webservicesVersion = '94'
 		osVersion = OperatingSystem.current().isMacOsX() ? 'mac' : OperatingSystem.current().isWindows() ? 'win' : 'linux'
 	}
 
