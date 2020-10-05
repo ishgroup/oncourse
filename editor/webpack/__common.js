@@ -1,5 +1,8 @@
 const webpack = require('webpack');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CKEditorWebpackPlugin = require( '@ckeditor/ckeditor5-dev-webpack-plugin' );
+
+const { styles } = require( '@ckeditor/ckeditor5-dev-utils' );
 
 const path = require("path");
 
@@ -49,12 +52,15 @@ const _common = (dirname, options) => {
             path.resolve(dirname, "src/js"),
             path.resolve(dirname, "src/dev"),
           ],
-        }
+        },
       ]
     },
     plugins: [
+      new MiniCssExtractPlugin({filename: "cms.css"}),
+      new CKEditorWebpackPlugin( {
+        language: 'en'
+      }),
       _DefinePlugin('development', options.BUILD_NUMBER),
-      new ExtractTextPlugin("cms.css"),
     ],
     devServer: {
       inline: false
@@ -68,26 +74,45 @@ const _common = (dirname, options) => {
 const _styleModule = (dirname) => {
   return [
     {
-      test: /\.css$/,
-      loaders: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader'}),
-      include: [
-        path.resolve(dirname, 'node_modules')
-      ]
-    },
-    {
-      test: /\.scss$/,
-      loaders: ExtractTextPlugin.extract({fallback: 'style-loader', use: ['css-loader', 'sass-loader']}),
-      include: [
-        path.resolve(dirname, "src/scss"),
-      ]
-    },
-    {
       test: /\.(jpg|jpeg|gif|png)$/,
       loader: 'url-loader?limit=1024&name=images/[name].[ext]'
     },
     {
       test: /\.(otf|eot|ttf|woff|woff2|svg)$/,
       loader: 'file-loader?name=fonts/[name].[ext]&publicPath=./',
+      exclude: [
+        /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
+      ]
+    },
+    {
+      test: /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
+      use: [ 'raw-loader' ]
+    },
+    {
+      test: /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
+      use: [
+        MiniCssExtractPlugin.loader,
+        'css-loader',
+        {
+          loader: 'postcss-loader',
+          options: styles.getPostCssConfig( {
+            themeImporter: {
+              themePath: require.resolve( '@ckeditor/ckeditor5-theme-lark' )
+            },
+            minify: true
+          } )
+        }
+      ]
+    },
+    {
+      test: /\.s?css$/,
+      use: [MiniCssExtractPlugin.loader,'css-loader', 'sass-loader'],
+      exclude: [
+        /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
+      ]
+      // include: [
+      //   path.resolve(dirname, "src/scss")
+      // ]
     },
     {
       enforce: "pre", test: /\.js$/, loader: "source-map-loader"

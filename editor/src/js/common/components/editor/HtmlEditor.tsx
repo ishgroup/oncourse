@@ -13,7 +13,7 @@ interface Props {
   onChange?: (html) => void;
 }
 
-const Editor = props => {
+const HtmlEditor = props => {
 
   const {value, onChange, mode = "html"} = props;
 
@@ -23,7 +23,7 @@ const Editor = props => {
       theme="tomorrow"
       fontSize={14}
       showPrintMargin={true}
-      showGutter={true}
+      showGutter={false}
       highlightActiveLine={true}
       width="100%"
       enableBasicAutocompletion={true}
@@ -41,4 +41,4 @@ const Editor = props => {
   );
 };
 
-export default Editor as FunctionComponent<Props>;
+export default HtmlEditor as FunctionComponent<Props>;

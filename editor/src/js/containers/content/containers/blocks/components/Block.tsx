@@ -1,15 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Button, FormGroup, Label, Input} from 'reactstrap';
+import {Button, FormGroup, Input} from 'reactstrap';
 import classnames from 'classnames';
-import Editor from "../../../../../common/components/Editor";
+import Editor from "../../../../../common/components/editor/HtmlEditor";
 import {BlockState} from "../reducers/State";
 import {CONTENT_MODES, DEFAULT_CONTENT_MODE_ID} from "../../../constants";
 import {addContentMarker} from "../../../utils";
-import "react-mde/lib/styles/css/react-mde-all.css";
-import MarkdownEditor from "../../../../../common/components/MarkdownEditor";
-import WysiwygEditor from "../../../../../common/components/WysiwygEditor";
+import MarkdownEditor from "../../../../../common/components/editor/MarkdownEditor";
 import marked from "marked";
-import TurndownService from "turndown";
 const ReactMarkdown = require("react-markdown");
 
 interface Props {
@@ -20,14 +17,10 @@ interface Props {
 // custom event to reinitialize site plugins on editing content
 const pluginInitEvent = new Event("plugins:init");
 
-const turnDownService = new TurndownService();
-
 const Block: React.FC<Props> = props => {
-
   const {block, onSave} = props;
   const [editMode, setEditMode] = useState(false);
   const [draftContent, setDraftContent] = useState("");
-  const [CKEditorData, setCKEditorData] = useState("");
   const [contentMode, setContentMode] = useState(DEFAULT_CONTENT_MODE_ID);
 
   useEffect(() => {
@@ -38,13 +31,12 @@ const Block: React.FC<Props> = props => {
     setContentMode(contentMode);
     setDraftContent(block.content || "");
     if (contentMode === "md") {
-      setCKEditorData(marked(block.content || ""));
+      setDraftContent(marked(block.content || ""));
     }
   },        []);
 
   const onClickArea = e => {
     e.preventDefault();
-
     setEditMode(true);
     setDraftContent(block.content || "");
   };
@@ -54,17 +46,8 @@ const Block: React.FC<Props> = props => {
   };
 
   const handleSave = () => {
-    let newContent;
-
-    if (contentMode === "wysiwyg") {
-      const mdText = turnDownService.turndown(CKEditorData);
-      newContent = addContentMarker(mdText, "md");
-    } else {
-      newContent = addContentMarker(draftContent, contentMode);
-    }
-
     setEditMode(false);
-    onSave(block.id, newContent);
+    onSave(block.id, addContentMarker(draftContent, contentMode));
   };
 
   const handleCancel = () => {
@@ -76,12 +59,7 @@ const Block: React.FC<Props> = props => {
     if (!editMode && block.content) {
       document.dispatchEvent(pluginInitEvent);
     }
-  },        [editMode, block, block && block.content]);
-
-  const onCKEditorChange = ( event, editor ) => {
-    const data = editor.getData();
-    setCKEditorData(data);
-  };
+  },[editMode, block, block && block.content]);
 
   const onContentModeChange = e => {
     const v = e.target.value;
@@ -98,21 +76,13 @@ const Block: React.FC<Props> = props => {
           />
         );
       }
-      case "wysiwyg": {
-        return (
-          <WysiwygEditor
-            value={CKEditorData}
-            onChange={onCKEditorChange}
-          />
-        );
-      }
       case "textile":
       case "html":
       default: {
         return (
           <Editor
             value={draftContent}
-            onChange={val => onChangeArea(val)}
+            onChange={onChangeArea}
             mode={contentMode}
           />
         );
@@ -122,7 +92,6 @@ const Block: React.FC<Props> = props => {
 
   return (
     <div>
-
       {editMode && <>
         <div className={
           classnames({"editor-wrapper" : true, "ace-wrapper": contentMode === "html" || contentMode === "textile"})
@@ -146,24 +115,23 @@ const Block: React.FC<Props> = props => {
         </div>
         <div className="mt-4">
             <FormGroup>
-                <Button onClick={() => handleCancel()} color="link">Cancel</Button>
-                <Button onClick={() => handleSave()} color="primary">Save</Button>
+                <Button onClick={handleCancel} color="link">Cancel</Button>
+                <Button onClick={handleSave} color="primary">Save</Button>
             </FormGroup>
         </div>
       </>}
 
       {!editMode &&
-      <div onClick={e => onClickArea(e)}>
-        <div className={classnames("editor-area", {'editor-area--empty': !block.content})}>
-          {
-            contentMode === "md" || contentMode === "wysiwyg"
-              ? <ReactMarkdown source={block.content} />
-              : block.content
-          }
+        <div onClick={onClickArea}>
+          <div className={classnames("editor-area", {'editor-area--empty': !block.content})}>
+            {
+              contentMode === "md"
+                ? <div id="markdown-preview"><ReactMarkdown source={block.content} /></div>
+                : block.content
+            }
+          </div>
         </div>
-      </div>
       }
-
     </div>
   );
 };

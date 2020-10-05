@@ -1,5 +1,5 @@
 export const DefaultConfig = {
-  CSS_PATH: 'http://localhost:8081/assets/cms.css',
+  CSS_PATH: 'http://localhost:8080/assets/cms.css',
   COOKIE_NAME: 'editor',
   CONTAINER_ID: "cms-root",
 };

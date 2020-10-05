@@ -3,12 +3,10 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import {Provider} from "react-redux";
 import {MemoryRouter as Router} from 'react-router-dom';
-
 import {CreateStore, RestoreState} from "./CreateStore";
 import {configLoader} from "./configLoader";
 import Cms from "./containers/Cms";
 import {createRootComponent, loadCmsCss} from "./utils";
-
 import {DefaultConfig} from "./constants/Config";
 import "../scss/cms.scss";
 

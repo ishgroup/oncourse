@@ -1,12 +1,15 @@
-import React from 'react';
-import {Button, FormGroup, Label, Input} from 'reactstrap';
+import React, {useCallback, useEffect, useState} from 'react';
+import classnames from 'classnames';
+import {Button, FormGroup, Input} from 'reactstrap';
 import {PageState} from "../reducers/State";
-import Editor from "../../../../../common/components/Editor";
 import {DOM} from "../../../../../utils";
 import {getHistoryInstance} from "../../../../../history";
 import PageService from "../../../../../services/PageService";
 import {CONTENT_MODES, DEFAULT_CONTENT_MODE_ID} from "../../../constants";
 import {addContentMarker} from "../../../utils";
+import MarkdownEditor from "../../../../../common/components/editor/MarkdownEditor";
+import Editor from "../../../../../common/components/editor/HtmlEditor";
+import marked from "marked";
 
 interface PageProps {
   page: PageState;
@@ -17,172 +20,162 @@ interface PageProps {
   editMode?: any;
 }
 
-export class Page extends React.PureComponent<PageProps, any> {
+const pluginInitEvent = new Event("plugins:init");
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      editMode: false,
-      content: '',
-      draftContent: '',
-      contentMode: DEFAULT_CONTENT_MODE_ID,
-    };
-  }
 
-  componentDidMount() {
-    const {page, openPage, toggleEditMode} = this.props;
+export const Page: React.FC<PageProps> = ({
+  page,
+  openPage,
+  toggleEditMode,
+  clearRenderHtml,
+  editMode,
+  onSave
+}) => {
+  const [editModeInner, setEditModeInner] = useState(false);
+  const [draftContent, setDraftContent] = useState('');
+  const [contentMode, setContentMode] = useState(DEFAULT_CONTENT_MODE_ID);
+
+  const onClickArea = (e) => {
+    e.preventDefault();
+    setEditModeInner(false);
+    toggleEditMode(true);
+    getHistoryInstance().push(`/page/${page.id}`);
+  };
+
+  useEffect(() => {
+    document.dispatchEvent(pluginInitEvent);
     const pageNode = DOM.findPage(page.title);
 
     toggleEditMode(false);
-
-    this.setState({
-      editMode: false,
-      content: page.content,
-      draftContent: page.content,
-      contentMode: page.contentMode || DEFAULT_CONTENT_MODE_ID,
-    });
+    setEditModeInner(false);
+    setDraftContent(contentMode === "md" ? page.content : marked(page.content || ""));
+    setContentMode(page.contentMode || DEFAULT_CONTENT_MODE_ID);
 
     if (pageNode) {
-      pageNode.addEventListener('click', this.onClickArea.bind(this));
-      return;
+      pageNode.addEventListener('click', onClickArea);
+    } else {
+      const defaultPageUrl = page.urls.find(url => url.isDefault);
+
+      const pageUrl = defaultPageUrl ? defaultPageUrl.link : PageService.generateBasetUrl(page).link;
+
+      if (
+        !page.urls.map(url => url.link).includes(document.location.pathname)
+        && pageUrl !== document.location.pathname
+      ) {
+        openPage(pageUrl);
+      }
     }
 
-    const pageUrl = this.getPageDefaultUrl();
-
-    if (
-      !page.urls.map(url => url.link).includes(document.location.pathname)
-      && pageUrl !== document.location.pathname
-    ) {
-      openPage(pageUrl);
+    return () => {
+      if (pageNode) {
+        pageNode.removeEventListener('click', onClickArea);
+      }
     }
-  }
+  },[]);
 
-  componentWillReceiveProps(props) {
-    const {clearRenderHtml, page, toggleEditMode, editMode} = this.props;
-
-    if (props.page.id !== this.props.page.id) {
-      toggleEditMode(true);
-
-      this.setState({
-        editMode: true,
-        content: props.page.content,
-        draftContent: props.page.content,
-      });
-    }
-
-    if (editMode === false && props.editMode === true) {
-      this.setState({
-        editMode: true,
-      });
-    }
-
-    if (props.page.renderHtml && props.page.renderHtml !== this.props.page.renderHtml) {
-      this.replacePageHtml(props.page.renderHtml);
-      clearRenderHtml(page.id);
-    }
-  }
-
-  componentWillUnmount() {
-    const {page} = this.props;
-    const pageNode = DOM.findPage(page.title);
-    pageNode && pageNode.removeEventListener('click', this.onClickArea.bind(this));
-  }
-
-  getPageDefaultUrl = (): string => {
-    const {page} = this.props;
-    const defaultPageUrl = page.urls.find(url => url.isDefault);
-
-    return defaultPageUrl ? defaultPageUrl.link : PageService.generateBasetUrl(page).link;
-  }
-
-  replacePageHtml(html) {
-    const {page} = this.props;
+  const replacePageHtml = html => {
     const pageNode = DOM.findPage(page.title);
     if (!pageNode) return;
     pageNode.innerHTML = html;
   }
 
-  onClickArea() {
-    const {page, toggleEditMode} = this.props;
-    this.setState({
-      editMode: true,
-      content: page.content,
-      draftContent: page.content,
-    });
-    toggleEditMode(true);
-    getHistoryInstance().push(`/page/${page.id}`);
+  useEffect(( ) => {
+    setEditModeInner(false);
+    setDraftContent(page.content);
+  },[page.id]);
+
+  useEffect(() => {
+    if (editModeInner === false && editMode === true) {
+      setEditModeInner(true);
+    }
+  }, [editMode]);
+
+  useEffect(() => {
+    if (page.renderHtml) {
+      replacePageHtml(page.renderHtml);
+      clearRenderHtml(page.id);
+    }
+  }, [page.renderHtml]);
+
+  useEffect(() => {
+    if (!editMode && page.content) {
+      document.dispatchEvent(pluginInitEvent);
+    }
+  },[editMode, page && page.content]);
+
+  const onChangeArea = val => {
+    setDraftContent(val);
   }
 
-  onChangeArea(val) {
-    this.setState({draftContent: val});
-  }
-
-  onSave() {
-    const {onSave, page, toggleEditMode} = this.props;
-    const {draftContent, contentMode} = this.state;
-    const newContent = addContentMarker(draftContent, contentMode);
-
+  const handleSave = () => {
     toggleEditMode(false);
-    this.setState({editMode: false});
-    onSave(page.id, newContent);
-  }
+    onSave(page.id, addContentMarker(draftContent, contentMode));
+  };
 
-  onCancel() {
-    const {page, toggleEditMode} = this.props;
-
-    this.setState({
-      editMode: false,
-      draftContent: page.content,
-    });
+  const handleCancel = () => {
+    setEditModeInner(false);
+    setDraftContent(page.content);
     toggleEditMode(false);
   }
 
-  onContentModeChange(e) {
-    const v = e.target.value;
-    this.setState({contentMode: v});
+  const onContentModeChange = e => {
+    setContentMode(e.target.value);
   }
 
-  render() {
-    const {contentMode} = this.state;
+  const renderEditor = () => {
+    switch (contentMode) {
+      case "md": {
+        return (
+          <MarkdownEditor
+            value={draftContent}
+            onChange={setDraftContent}
+          />
+        );
+      }
+      case "textile":
+      case "html":
+      default: {
+        return (
+          <Editor
+            value={draftContent}
+            onChange={onChangeArea}
+            mode={contentMode}
+          />
+        );
+      }
+    }
+  };
 
-    return (
-      <div>
-        {this.state.editMode &&
-        <div>
+  return (
+    <div>
+      {editMode && <>
+        <div className={
+          classnames({"editor-wrapper" : true, "ace-wrapper": contentMode === "html" || contentMode === "textile"})
+        }>
+          <div className="content-mode-wrapper">
+            <Input
+              type="select"
+              name="contentMode"
+              id="contentMode"
+              className="content-mode"
+              placeholder="Content mode"
+              value={contentMode}
+              onChange={e => onContentModeChange(e)}
+            >
+              {CONTENT_MODES.map(mode => (
+                <option key={mode.id} value={mode.id}>{mode.title}</option>
+              ))}
+            </Input>
+          </div>
+          {renderEditor()}
+        </div>
+        <div className="mt-4">
           <FormGroup>
-            <Editor
-              value={this.state.draftContent}
-              onChange={val => this.onChangeArea(val)}
-            />
-          </FormGroup>
-
-          <FormGroup>
-            <div className="row">
-              <div className="col-md-4 col-lg-3">
-                <Label htmlFor="contentMode">Content mode</Label>
-                <Input
-                    type="select"
-                    name="contentMode"
-                    id="contentMode"
-                    placeholder="Content mode"
-                    value={contentMode}
-                    onChange={e => this.onContentModeChange(e)}
-                >
-                  {CONTENT_MODES.map(mode => (
-                      <option key={mode.id} value={mode.id}>{mode.title}</option>
-                  ))}
-                </Input>
-              </div>
-            </div>
-          </FormGroup>
-
-          <FormGroup>
-            <Button onClick={() => this.onCancel()} color="link">Cancel</Button>
-            <Button onClick={() => this.onSave()} color="primary">Save</Button>
+            <Button onClick={handleCancel} color="link">Cancel</Button>
+            <Button onClick={handleSave} color="primary">Save</Button>
           </FormGroup>
         </div>
-        }
-      </div>
-    );
-  }
+      </>}
+    </div>
+  );
 }

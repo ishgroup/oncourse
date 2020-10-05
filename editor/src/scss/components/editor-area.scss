@@ -7,24 +7,126 @@
   transition: all .3s;
   max-height: 95vh;
   overflow: auto;
-  
+
   &--empty {
-  
+
   }
-  
+
   &:hover {
     border: 2px solid $primary;
+  }
+}
+
+#markdown-preview {
+  ol {
+    display: block;
+    list-style-type: decimal;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 40px;
+  }
+
+  ul {
+    display: block;
+    list-style-type: disc;
+    margin-top: 1em;
+    margin-bottom: 1 em;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 40px;
   }
 }
 
 .editor-wrapper {
   position: relative;
 
+  ol {
+    list-style-type: decimal;
+  }
+
+  ul {
+    list-style-type: disc;
+  }
+
+  .ck-list__item .ck-button {
+    height: unset;
+    padding: 5px 10px;
+  }
+
+  .ck-toolbar {
+    height: 45px;
+  }
+
+  .ck-list__item {
+    font-size: 15px;
+  }
+
+  .ck-dropdown {
+    font-size: 15px;
+  }
+
+  .ck.ck-dropdown .ck-button__label {
+    font-family: "Source Sans Pro", sans-serif;
+    overflow: visible;
+    width: 120px;
+  }
+
+  .ck.ck-button.ck-dropdown__button {
+    width: 140px;
+  }
+
+  .mde-header {
+    height: 45px;
+
+    .ck-icon {
+      width: 19px;
+    }
+
+    ul.mde-header-group {
+      padding: 8px;
+    }
+
+    #mdeHeadersDropdown {
+      top: -7px;
+
+      .ck-dropdown__button {
+        outline: none;
+      }
+    }
+  }
+
   .mde-preview {
-    max-height: 80vh;
-    overflow: auto;
+    .ck.ck-button.ck-dropdown__button {
+      margin-right: 12px;
+      width: 140px;
+    }
+
+    .ck.ck-button {
+      width: 31px;
+    }
+
+    .ck-list .ck-button.ck-button_with-text {
+      width: 100%;
+    }
+
+    .ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-focused {
+      border-color: rgb(196, 196, 196);
+      box-shadow: none;
+    }
+
+    .ck-list {
+      padding: 0;
+      margin: 0;
+    }
 
     .mde-preview-content {
+      position: relative;
+      top: 0;
+      margin-top: -46px;
+      left: -1px;
+      width: calc(100% + 2px);
 
       h1, h2, h3, h4, h5 {
         border: 0;
@@ -40,7 +142,7 @@
 
     .content-mode {
       max-width: 85px;
-      padding: 0;
+      padding: 0 0 3px;
       border: 0;
       box-shadow: none;
       background-color: transparent;
@@ -48,17 +150,41 @@
   }
 
   .mde-header {
+    padding-left: 115px;
     min-height: 45px;
+
+    .mde-tabs {
+      position: absolute;
+      height: 45px;
+      z-index: 2;
+      left: 0px;
+    }
+
+    .ck.ck-icon.ck-dropdown__arrow {
+      width: 11px;
+      margin-right: 12px;
+      margin-bottom: 0.5px;
+    }
   }
 
   .mde-preview {
 
+    .mde-preview-content {
+      padding: 0;
+    }
   }
 
   .ck-editor {
 
+    .ck-toolbar__items {
+      margin-left: 122px;
+    }
+
     .ck-content {
+      resize: vertical;
       max-height: 80vh;
+      min-height: 200px;
+      border-bottom: 0;
     }
 
     .ck-toolbar {

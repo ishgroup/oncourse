@@ -40,8 +40,8 @@ export class Pages extends React.Component<Props, any> {
             <Page
               page={activePage}
               onSave={onEditHtml}
-              openPage={url => this.openPage(url)}
-              toggleEditMode={flag => toggleEditMode(flag)}
+              openPage={this.openPage}
+              toggleEditMode={toggleEditMode}
               clearRenderHtml={clearRenderHtml}
               editMode={editMode}
             />
