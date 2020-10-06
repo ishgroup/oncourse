@@ -68,7 +68,8 @@ dependencies {
 
 	implementation "org.eclipse.jetty.alpn:alpn-api:1.1.3.v20160715"
 
-	implementation ("org.liquibase:liquibase-maven-plugin:3.6.3") {
+	implementation ("org.apache.maven:maven-artifact:3.3.9")
+	implementation ("org.liquibase:liquibase-core:4.1.0") {
 		exclude group: "ch.qos.logback"
 	}
 	implementation "org.mariadb.jdbc:mariadb-java-client:$mariadbVersion"
@@ -264,8 +265,8 @@ task installer_unix(dependsOn: [jar, assembleDist], type: Zip) {
 	from (configurations.runtimeClasspath) {
 		into 'onCourseServer/lib'
 	}
-	from (configurations.commercialLibraries) {
-		into 'onCourseServer/lib'
+	from (configurations.commercialLibraries.minus(configurations.runtimeClasspath)) {
+		into 'onCourseServer/plugins'
 	}
 	from (configurations.runtime.artifacts.files) {
 		into 'onCourseServer'
