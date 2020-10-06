@@ -110,9 +110,6 @@ const _styleModule = (dirname) => {
       exclude: [
         /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
       ]
-      // include: [
-      //   path.resolve(dirname, "src/scss")
-      // ]
     },
     {
       enforce: "pre", test: /\.js$/, loader: "source-map-loader"

@@ -3,7 +3,8 @@ const __common = require('./webpack/__common');
 const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CKEditorWebpackPlugin = require( '@ckeditor/ckeditor5-dev-webpack-plugin' );
 const CompressionPlugin = require("compression-webpack-plugin");
 const ZipPlugin = require('zip-webpack-plugin');
 
@@ -84,8 +85,11 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
 
 const plugins = (NODE_ENV, BUILD_NUMBER) => {
   const plugins = [
+    new MiniCssExtractPlugin({filename: "[name].css"}),
+    new CKEditorWebpackPlugin( {
+      language: 'en'
+    }),
     __common.DefinePlugin(NODE_ENV, BUILD_NUMBER),
-    new ExtractTextPlugin("[name].css"),
   ];
 
   switch (NODE_ENV) {

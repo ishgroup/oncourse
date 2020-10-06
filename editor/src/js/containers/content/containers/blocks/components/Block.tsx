@@ -7,7 +7,6 @@ import {CONTENT_MODES, DEFAULT_CONTENT_MODE_ID} from "../../../constants";
 import {addContentMarker} from "../../../utils";
 import MarkdownEditor from "../../../../../common/components/editor/MarkdownEditor";
 import marked from "marked";
-const ReactMarkdown = require("react-markdown");
 
 interface Props {
   block: BlockState;
@@ -124,11 +123,7 @@ const Block: React.FC<Props> = props => {
       {!editMode &&
         <div onClick={onClickArea}>
           <div className={classnames("editor-area", {'editor-area--empty': !block.content})}>
-            {
-              contentMode === "md"
-                ? <div id="markdown-preview"><ReactMarkdown source={block.content} /></div>
-                : block.content
-            }
+            {block.content}
           </div>
         </div>
       }
