@@ -30,10 +30,6 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
   return {
     entry: {
       editor: [
-        'react',
-        'redux',
-        'react-redux',
-        'rxjs',
         appEntry
       ]
     },
@@ -44,11 +40,12 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
     },
     resolve: {
       modules: [
-        "node_modules",
-        path.resolve(__dirname, "src/js"),
+        path.resolve(__dirname, 'node_modules'),
+        path.resolve(__dirname, 'build/generated-sources'),
+        path.resolve(__dirname, 'src/js'),
         path.resolve(__dirname, 'src/scss'),
       ],
-      extensions: [".ts", ".tsx", ".js", ".css", ".scss"]
+      extensions: [".ts", ".tsx", ".js", ".css"]
     },
     mode: mode,
     module: {

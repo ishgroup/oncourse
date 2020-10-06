@@ -98,7 +98,7 @@
     "@ckeditor/ckeditor5-utils" "^23.0.0"
     lodash-es "^4.17.15"
 
-"@ckeditor/ckeditor5-dev-utils@^23.5.1":
+"@ckeditor/ckeditor5-dev-utils@^23.5.1", "@ckeditor/ckeditor5-dev-utils@latest":
   version "23.5.1"
   resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-dev-utils/-/ckeditor5-dev-utils-23.5.1.tgz#d5388bb6c06b3bac6b54f4e3b18809e21cc31475"
   integrity sha512-oe7puLx6NQ6Dr0kW0ZsRnVoCxn/Z0xvrsq+Uw3X2+71yqPFj3IQ8YK3inqBhRmsABC5IoMFQrWTREdMebF6B5w==
@@ -119,7 +119,7 @@
     shelljs "^0.8.1"
     through2 "^3.0.1"
 
-"@ckeditor/ckeditor5-dev-webpack-plugin@^23.5.1":
+"@ckeditor/ckeditor5-dev-webpack-plugin@latest":
   version "23.5.1"
   resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-dev-webpack-plugin/-/ckeditor5-dev-webpack-plugin-23.5.1.tgz#b2b80ee378ae33d518bd08a0be05290d3eaf71ce"
   integrity sha512-73RqbAJkZMMNRFnaZD8jpsOKbf7chWPxU0aivncB5a9jTrwiip1qESJgoZf9CcN3hNGEhkRueOgvJkbQLDNBEA==
@@ -271,7 +271,7 @@
     "@ckeditor/ckeditor5-ui" "^22.0.0"
     "@ckeditor/ckeditor5-utils" "^22.0.0"
 
-"@ckeditor/ckeditor5-markdown-gfm@^23.0.0":
+"@ckeditor/ckeditor5-markdown-gfm@latest":
   version "23.0.0"
   resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-markdown-gfm/-/ckeditor5-markdown-gfm-23.0.0.tgz#1d369d341dd6a49b6fbd10ae104edc4203be1698"
   integrity sha512-k/RtqT9qAG0bkmYJUj8pkf2E4Yd4cFuJ8/vbNYmvL+wvkE+Oohi4Rz3rt47iXHgEjK3pT4luvO/LUhdziWM4jA==
@@ -305,7 +305,7 @@
     "@ckeditor/ckeditor5-ui" "^23.0.0"
     "@ckeditor/ckeditor5-utils" "^23.0.0"
 
-"@ckeditor/ckeditor5-react@^2.1.0":
+"@ckeditor/ckeditor5-react@latest":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-react/-/ckeditor5-react-2.1.0.tgz#f612546a5a328899a436d71b72ffd632600049e8"
   integrity sha512-rlHjRKhwP9tNK0Yj2UJShL14mRfxLPgJ+Pv6zTv/Mvmd4wrwGnJf+5ybOAGK92S02hP1cXH+9km+PRO1b4V+ng==

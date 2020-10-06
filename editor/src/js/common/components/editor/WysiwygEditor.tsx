@@ -1,5 +1,4 @@
 import React, {useEffect, useRef, useState} from "react";
-import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
 import EssentialsPlugin from '@ckeditor/ckeditor5-essentials/src/essentials';
 import AutoformatPlugin from '@ckeditor/ckeditor5-autoformat/src/autoformat';
@@ -10,6 +9,7 @@ import LinkPlugin from '@ckeditor/ckeditor5-link/src/link';
 import ListPlugin from '@ckeditor/ckeditor5-list/src/list';
 import ParagraphPlugin from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import Markdown from '@ckeditor/ckeditor5-markdown-gfm/src/markdown';
+import CKEditor from '@ckeditor/ckeditor5-react';
 
 interface Props {
   value?: string;

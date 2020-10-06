@@ -1,4 +1,4 @@
-import React, {FunctionComponent, useEffect, useState} from "react";
+import React, {FunctionComponent, useState} from "react";
 import ReactMde from "react-mde";
 import {ReactMdeProps} from "react-mde/lib/definitions/components/ReactMde";
 import "react-mde/lib/styles/css/react-mde-all.css";

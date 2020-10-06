@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useEffect, useState} from 'react';
 import classnames from 'classnames';
 import {Button, FormGroup, Input} from 'reactstrap';
 import {PageState} from "../reducers/State";

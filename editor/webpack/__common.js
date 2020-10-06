@@ -1,7 +1,6 @@
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CKEditorWebpackPlugin = require( '@ckeditor/ckeditor5-dev-webpack-plugin' );
-
 const { styles } = require( '@ckeditor/ckeditor5-dev-utils' );
 
 const path = require("path");

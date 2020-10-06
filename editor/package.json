@@ -17,8 +17,8 @@
     "start:mock": "webpack-dev-server --history-api-fallback=true --progress --open --config webpack.dev.config.js --env.entry=./src/dev/app.tsx --content-base ./src/dev"
   },
   "devDependencies": {
-    "@ckeditor/ckeditor5-dev-utils": "^23.5.1",
-    "@ckeditor/ckeditor5-dev-webpack-plugin": "^23.5.1",
+    "@ckeditor/ckeditor5-dev-utils": "latest",
+    "@ckeditor/ckeditor5-dev-webpack-plugin": "latest",
     "@types/jest": "21.1.4",
     "@types/lodash": "4.14.78",
     "@types/react": "^16.9.49",
@@ -65,9 +65,9 @@
     "@ckeditor/ckeditor5-image": "latest",
     "@ckeditor/ckeditor5-link": "latest",
     "@ckeditor/ckeditor5-list": "latest",
-    "@ckeditor/ckeditor5-markdown-gfm": "^23.0.0",
+    "@ckeditor/ckeditor5-markdown-gfm": "latest",
     "@ckeditor/ckeditor5-paragraph": "latest",
-    "@ckeditor/ckeditor5-react": "^2.1.0",
+    "@ckeditor/ckeditor5-react": "latest",
     "@ckeditor/ckeditor5-theme-lark": "latest",
     "@types/react-dom": "^16.9.8",
     "awesome-typescript-loader": "5.0.0-1",

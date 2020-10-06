@@ -5,7 +5,7 @@ import {clearRenderHtml, getPages, savePage, toggleEditMode} from "./actions";
 import {Page as PageModel} from "../../../../model";
 import {Page} from "./components/Page";
 import {State} from "../../../../reducers/state";
-import {getThemes} from "../../../design/containers/themes/actions/index";
+import {getThemes} from "../../../design/containers/themes/actions";
 
 interface Props {
   pages: PageModel[];
