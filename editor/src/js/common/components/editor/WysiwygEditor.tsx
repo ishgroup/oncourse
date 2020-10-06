@@ -14,6 +14,8 @@ import CKEditor from '@ckeditor/ckeditor5-react';
 interface Props {
   value?: string;
   onChange?: (val: any) => void;
+  setParentHeight?: (val: any) => void;
+  defaultHeight?: number;
 }
 
 const config = {
@@ -38,10 +40,14 @@ const config = {
   ],
 };
 
-const WysiwygEditor: React.FC<Props> = ({value, onChange}) => {
+const WysiwygEditor: React.FC<Props> = ({
+  value,
+  onChange,
+  defaultHeight,
+  setParentHeight
+}) => {
   const editorRef = useRef(null);
-
-  const [previewHeight, setPreviewHeight] = useState(200);
+  const [previewHeight, setPreviewHeight] = useState(defaultHeight);
 
   function storeDimensions(element) {
     element.srcElement.textHeight = element.srcElement.clientHeight;
@@ -50,6 +56,7 @@ const WysiwygEditor: React.FC<Props> = ({value, onChange}) => {
   function onResize(element) {
     if (element.srcElement.textHeight > 20 && element.srcElement.textHeight !== element.srcElement.clientHeight) {
       setPreviewHeight(element.srcElement.clientHeight);
+      setParentHeight(element.srcElement.clientHeight);
     }
   }
 

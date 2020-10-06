@@ -18,36 +18,62 @@
 }
 
 #markdown-preview {
-  ol {
-    display: block;
-    list-style-type: decimal;
-    margin-top: 1em;
-    margin-bottom: 1em;
-    margin-left: 0;
-    margin-right: 0;
-    padding-left: 40px;
-  }
 
-  ul {
-    display: block;
-    list-style-type: disc;
-    margin-top: 1em;
-    margin-bottom: 1 em;
-    margin-left: 0;
-    margin-right: 0;
-    padding-left: 40px;
-  }
 }
 
 .editor-wrapper {
   position: relative;
 
-  ol {
-    list-style-type: decimal;
-  }
+  .mde-textarea-wrapper, .mde-preview {
+    ol {
+      display: block;
+      list-style-type: decimal;
+      margin-top: 1em;
+      margin-bottom: 1em;
+      margin-left: 0;
+      margin-right: 0;
+      padding-left: 40px;
+    }
 
-  ul {
-    list-style-type: disc;
+    ul {
+      display: block;
+      list-style-type: disc;
+      margin-top: 1em;
+      margin-bottom: 1 em;
+      margin-left: 0;
+      margin-right: 0;
+      padding-left: 40px;
+    }
+
+    h2 {
+      display: block;
+      font-size: 1.5em;
+      margin-top: 0.83em;
+      margin-bottom: 0.83em;
+      margin-left: 0;
+      margin-right: 0;
+      font-weight: bold;
+    }
+
+    h3 {
+      display: block;
+      font-size: 1.17em;
+      margin-top: 1em;
+      margin-bottom: 1em;
+      margin-left: 0;
+      margin-right: 0;
+      font-weight: bold;
+    }
+
+    h4 {
+      display: block;
+      font-size: 1em;
+      margin-top: 1.33em;
+      margin-bottom: 1.33em;
+      margin-left: 0;
+      margin-right: 0;
+      font-weight: bold;
+    }
   }
 
   .ck-list__item .ck-button {
