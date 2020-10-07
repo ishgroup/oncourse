@@ -1,13 +1,12 @@
 package ish.oncourse.services.markdown
 
+import ish.oncourse.services.converter.CoreConverter
 import org.apache.commons.lang3.StringUtils
 import org.commonmark.node.Node
 import org.commonmark.parser.Parser
 import org.commonmark.renderer.html.HtmlRenderer
 
-class ConvertCoreMarkdown {
-
-    private String content
+class ConvertCoreMarkdown extends CoreConverter {
 
     private ConvertCoreMarkdown(){}
 

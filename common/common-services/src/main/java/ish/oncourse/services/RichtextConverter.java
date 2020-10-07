@@ -2,8 +2,8 @@ package ish.oncourse.services;
 
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.content.IWebContentService;
+import ish.oncourse.services.converter.CoreConverter;
 import ish.oncourse.services.course.ICourseService;
-import ish.oncourse.services.markdown.ConvertCoreMarkdown;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.search.ISearchService;
@@ -27,8 +27,6 @@ import java.util.regex.Pattern;
 public class RichtextConverter implements IRichtextConverter {
 
     private final static Logger logger = LogManager.getLogger();
-
-    private final static String RENDER_RGXP = "(\\{render:\\s*'\\w+'})";
 
     @Inject
     private IBinaryDataService binaryDataService;
@@ -72,36 +70,7 @@ public class RichtextConverter implements IRichtextConverter {
     }
 
     public String convertCoreText(String content) {
-        
-        if (content == null) {
-            return null;
-        }
-        
-        String type = "textile";
-        Pattern pattern = Pattern.compile(RENDER_RGXP);
-        Matcher matcher = pattern.matcher(content);
-        if (matcher.find()) {
-            String renderMarker = matcher.group(matcher.groupCount()-1);
-            pattern = Pattern.compile("(md)|(html)|(textile)");
-            matcher = pattern.matcher(renderMarker);
-            if (matcher.find()) {
-                type = matcher.group();
-                content = content.substring(0, content.indexOf("{render: '" + type + "'")).trim();
-            }
-        }
-
-        String result;
-        switch (type) {
-            case ("html"):
-                result = content;
-                break;
-            case ("md"):
-                result = ConvertCoreMarkdown.valueOf(content).convert();
-                break;
-            default:
-                result = ConvertCoreTextile.valueOf(content).convert();
-        }
-        return result;
+        return CoreConverter.convert(content);
     }
 
     public String convertCustomText(String content, ValidationErrors errors) {

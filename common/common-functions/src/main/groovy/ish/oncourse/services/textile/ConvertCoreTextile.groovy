@@ -1,13 +1,12 @@
 package ish.oncourse.services.textile
 
+import ish.oncourse.services.converter.CoreConverter
 import net.java.textilej.parser.MarkupParser
 import net.java.textilej.parser.builder.HtmlDocumentBuilder
 import net.java.textilej.parser.markup.textile.TextileDialect
 import org.apache.commons.lang.StringEscapeUtils
 
-class ConvertCoreTextile {
-
-    private String content
+class ConvertCoreTextile extends CoreConverter {
     
     
     private ConvertCoreTextile(){}
