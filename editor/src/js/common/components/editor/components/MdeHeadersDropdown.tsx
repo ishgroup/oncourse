@@ -15,11 +15,16 @@ const MdeHeadersDropdown: React.FC<any>  = () => {
     });
 
     const state1 = optsRef.textApi.setSelectionRange(newSelectionRange);
-    const state2 = optsRef.textApi.replaceSelection(`${prefix} ${state1.selectedText.replace(/#+/,"")}`);
+    const replacement = prefix
+      ? `${prefix} ${state1.selectedText.replace(/#+(\s+)?/,"")}`
+      : state1.selectedText.replace(/#+(\s+)?/,"");
+    const state2 = optsRef.textApi.replaceSelection(replacement);
+
     optsRef.textApi.setSelectionRange({
-      start: state2.selection.end - state1.selectedText.length,
+      start: state2.selection.end - replacement.length,
       end: state2.selection.end,
     });
+
     setIsComponentVisible(false);
   }
 

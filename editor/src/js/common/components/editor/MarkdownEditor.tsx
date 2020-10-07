@@ -6,6 +6,8 @@ import WysiwygEditor from "./WysiwygEditor";
 import {HeaderCommand} from "./components/MdeHeadersDropdown";
 import iconGetter from "./components/iconGetter";
 import {UnorderedListCommand} from "./components/ListCommand";
+import {ItalicCommandCustom} from "./components/ItalicCommand";
+import {BoldCommandCustom} from "./components/BoldCommand";
 
 interface Props {
   value?: string;
@@ -41,12 +43,14 @@ const MarkdownEditor = props => {
     <ReactMde
       value={value}
       commands={{
-        "custom-header": HeaderCommand,
+        "header-custom": HeaderCommand,
         "bullet-list-custom": UnorderedListCommand,
+        "italic-custom": ItalicCommandCustom,
+        "bold-custom": BoldCommandCustom
       }}
       getIcon={iconGetter}
       toolbarCommands={[
-        ["custom-header","bold","italic","link","bullet-list-custom","ordered-list"]]
+        ["header-custom","bold-custom","italic-custom","link","bullet-list-custom","ordered-list"]]
       }
       onChange={onChange}
       selectedTab={selectedTab}
