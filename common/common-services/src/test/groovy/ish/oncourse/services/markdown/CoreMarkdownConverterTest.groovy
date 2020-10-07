@@ -77,7 +77,7 @@ class CoreMarkdownConverterTest {
         assertEquals("<p>There are salaries of employees?</p>\n<pre><code>Tom 1000\nSam 1100\nRobin 600\n</code></pre>",
                 markdownConverter.convertCoreText(TEST_CODE_BLOCK + MD_MARKER))
 
-        assertEquals("<h2>Course description</h2>\n<p><strong>Attention, only for under 18!</strong></p>\n<p>You need next:</p>\n<ol>\n<li>Pen</li>\n<li>Paper</li>\n<li>Document</li>\n</ol>\n<p>Price is <code>\\\$150</code></p>\n<p>All extra information you can find <a href=\"https://www.google.com/\">here</a></p>",
+        assertEquals("<h2>Course description</h2>\n<p><strong>Attention, only for under 18!</strong></p>\n<p>You need next:</p>\n<ol>\n<li>Pen</li>\n<li>Paper</li>\n<li>Document</li>\n</ol>\n<p>Price is <code>\$150</code></p>\n<p>All extra information you can find <a href=\"https://www.google.com/\">here</a></p>",
                 markdownConverter.convertCoreText(FULL_TEST + MD_MARKER))
     }
 
