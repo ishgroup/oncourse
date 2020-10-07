@@ -9,7 +9,7 @@ import static org.junit.Assert.assertEquals
 
 class CoreMarkdownConverterTest {
 
-    private static final String MD_MARKER = " {render: 'md'}"
+    private static final String MD_MARKER = ' {render:"md"}'
 
     private static final String TEST_ITALICS = "_italic text first variant_; *italic text second variant*"
 

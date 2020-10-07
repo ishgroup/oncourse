@@ -9,7 +9,7 @@ import java.util.regex.Pattern
 
 abstract class CoreConverter {
 
-    private final static String RENDER_RGXP = "(\\{render:\\s*'\\w+'})"
+    private final static String RENDER_RGXP = "(\\{render:\"\\w+\"})"
     protected String content
 
     CoreConverter() {
@@ -29,7 +29,7 @@ abstract class CoreConverter {
             matcher = pattern.matcher(renderMarker)
             if (matcher.find())
                 type = matcher.group()
-            content = content.substring(0, content.indexOf("{render: '" + type + "'")).trim()
+            content = content.substring(0, content.indexOf("{render:\"" + type + "\"")).trim()
         }
 
         String result
