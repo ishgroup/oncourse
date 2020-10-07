@@ -1,6 +1,5 @@
 package ish.oncourse.willow.editor.webdav
 
-import com.google.inject.Inject
 import io.milton.common.ContentTypeUtils
 import io.milton.http.Auth
 import io.milton.http.Range
@@ -17,13 +16,12 @@ import io.milton.resource.MoveableResource
 import io.milton.resource.PropFindableResource
 import io.milton.resource.ReplaceableResource
 import ish.oncourse.model.WebContent
+import ish.oncourse.services.converter.CoreConverter
 import ish.oncourse.services.persistence.ICayenneService
-import ish.oncourse.services.textile.ConvertCoreTextile
 import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.website.WebContentFunctions
 import org.apache.cayenne.ObjectContext
 import org.apache.commons.io.IOUtils
-import org.eclipse.jetty.server.Request
 
 import java.nio.charset.Charset
 
@@ -113,7 +111,7 @@ class WebContentResource  extends AbstractResource implements CopyableResource, 
             IOUtils.copy(into, writer, Charset.defaultCharset())
 
             block.contentTextile = writer.toString()
-            block.content = ConvertCoreTextile.valueOf(block.contentTextile).convert()
+            block.content = CoreConverter.convert(block.contentTextile)
 
             context.commitChanges()
         } catch (Exception e) {

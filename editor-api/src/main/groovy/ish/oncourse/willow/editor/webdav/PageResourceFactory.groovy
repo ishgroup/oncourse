@@ -6,17 +6,15 @@ import io.milton.http.Request
 import io.milton.http.ResourceFactory
 import io.milton.http.SecurityManager
 import io.milton.http.exceptions.BadRequestException
-import io.milton.http.exceptions.ConflictException
 import io.milton.http.exceptions.NotAuthorizedException
 import io.milton.resource.Resource
 import ish.oncourse.model.WebContent
 import ish.oncourse.model.WebNode
 import ish.oncourse.model.WebNodeType
 import ish.oncourse.model.WebSiteVersion
+import ish.oncourse.services.converter.CoreConverter
 import ish.oncourse.services.persistence.ICayenneService
-import ish.oncourse.services.textile.ConvertCoreTextile
 import ish.oncourse.willow.editor.services.RequestService
-import ish.oncourse.willow.editor.website.WebContentFunctions
 import ish.oncourse.willow.editor.website.WebNodeFunctions
 import ish.oncourse.willow.editor.website.WebSiteVersionFunctions
 import org.apache.cayenne.ObjectContext
@@ -104,7 +102,7 @@ class PageResourceFactory implements ResourceFactory {
 
         WebContent block = page.webContentVisibility[0].webContent
         block.contentTextile = content
-        block.content = ConvertCoreTextile.valueOf(content).convert()
+        block.content = CoreConverter.convert(content)
         context.commitChanges()
         return new WebNodeResource(page, cayenneService, securityManager, requestService)
     }

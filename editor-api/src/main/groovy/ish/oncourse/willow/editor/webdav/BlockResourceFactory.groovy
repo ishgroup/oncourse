@@ -6,24 +6,20 @@ import io.milton.http.Request
 import io.milton.http.ResourceFactory
 import io.milton.http.SecurityManager
 import io.milton.http.exceptions.BadRequestException
-import io.milton.http.exceptions.ConflictException
 import io.milton.http.exceptions.NotAuthorizedException
 import io.milton.resource.Resource
 import ish.oncourse.model.RegionKey
 import ish.oncourse.model.WebContent
 import ish.oncourse.model.WebContentVisibility
+import ish.oncourse.services.converter.CoreConverter
 import ish.oncourse.services.persistence.ICayenneService
-import ish.oncourse.services.textile.ConvertCoreTextile
 import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.website.WebContentFunctions
 import ish.oncourse.willow.editor.website.WebSiteVersionFunctions
 import org.apache.cayenne.ObjectContext
 import org.apache.commons.io.IOUtils
-import org.apache.commons.lang3.ArrayUtils
 
 import java.nio.charset.Charset
-
-import static java.lang.Enum.valueOf
 
 class BlockResourceFactory implements ResourceFactory {
     
@@ -104,7 +100,7 @@ class BlockResourceFactory implements ResourceFactory {
 
         block.name = name
         block.contentTextile = content
-        block.content = ConvertCoreTextile.valueOf(content).convert()
+        block.content = CoreConverter.convert(content)
 
         context.commitChanges()
 
@@ -117,7 +113,7 @@ class BlockResourceFactory implements ResourceFactory {
         WebContent block = ctx.newObject(WebContent)
         block.name = name
         block.contentTextile = content
-        block.content = ConvertCoreTextile.valueOf(content).convert()
+        block.content = CoreConverter.convert(content)
 
         WebContentVisibility visibility = ctx.newObject(WebContentVisibility)
         visibility.regionKey = RegionKey.unassigned

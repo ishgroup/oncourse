@@ -5,7 +5,7 @@ import ish.oncourse.model.WebContent
 import ish.oncourse.model.WebNode
 import ish.oncourse.model.WebNodeType
 import ish.oncourse.model.WebUrlAlias
-import ish.oncourse.services.textile.ConvertCoreTextile
+import ish.oncourse.services.converter.CoreConverter
 import ish.oncourse.utils.ResourceNameValidator
 import ish.oncourse.willow.editor.v1.model.Page
 import ish.oncourse.willow.editor.v1.model.PageLink
@@ -59,7 +59,7 @@ class UpdatePage extends AbstractUpdate<Page> {
         node.name = resourceToSave.title
         node.webNodeType = theme
         defaultBlock.contentTextile = resourceToSave.content
-        defaultBlock.content = ConvertCoreTextile.valueOf(resourceToSave.content).convert()
+        defaultBlock.content = CoreConverter.convert(resourceToSave.content)
         node.published = resourceToSave.visible
         updateAliases(node)
         return this

@@ -17,8 +17,8 @@ import io.milton.resource.PropFindableResource
 import io.milton.resource.ReplaceableResource
 import ish.oncourse.model.WebContent
 import ish.oncourse.model.WebNode
+import ish.oncourse.services.converter.CoreConverter
 import ish.oncourse.services.persistence.ICayenneService
-import ish.oncourse.services.textile.ConvertCoreTextile
 import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.website.WebNodeFunctions
 import org.apache.cayenne.ObjectContext
@@ -121,7 +121,7 @@ class WebNodeResource  extends AbstractResource implements CopyableResource, Del
 
             String contentTextile = writer.toString()
             block.contentTextile = contentTextile
-            block.content = ConvertCoreTextile.valueOf(contentTextile).convert()
+            block.content = CoreConverter.convert(contentTextile)
 
             context.commitChanges()
         } catch (Exception e) {

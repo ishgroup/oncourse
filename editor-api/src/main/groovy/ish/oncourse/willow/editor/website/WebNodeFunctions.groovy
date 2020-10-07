@@ -1,7 +1,7 @@
 package ish.oncourse.willow.editor.website
 
 import ish.oncourse.model.*
-import ish.oncourse.services.textile.ConvertCoreTextile
+import ish.oncourse.services.converter.CoreConverter
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.exp.ExpressionFactory
@@ -62,7 +62,7 @@ class WebNodeFunctions {
         WebContent webContent = ctx.newObject(WebContent)
         webContent.webSiteVersion = webSiteVersion
         webContent.contentTextile = content
-        webContent.content = ConvertCoreTextile.valueOf(content).convert()
+        webContent.content = CoreConverter.convert(content)
 
         WebContentVisibility webContentVisibility = ctx.newObject(WebContentVisibility)
         webContentVisibility.webNode = newPageNode

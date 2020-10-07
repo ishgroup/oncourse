@@ -1,7 +1,7 @@
 package ish.oncourse.willow.editor.rest
 
 import ish.oncourse.model.WebContent
-import ish.oncourse.services.textile.ConvertCoreTextile
+import ish.oncourse.services.converter.CoreConverter
 import ish.oncourse.willow.editor.v1.model.Block
 import ish.oncourse.willow.editor.website.ResourceNameUtil
 import ish.oncourse.willow.editor.website.WebContentFunctions
@@ -41,7 +41,7 @@ class UpdateBlock extends AbstractUpdate<Block> {
 
         block.name = resourceToSave.title
         block.contentTextile =  resourceToSave.content
-        block.content = ConvertCoreTextile.valueOf(resourceToSave.content).convert()
+        block.content = CoreConverter.convert(resourceToSave.content)
         
         return this
     }
