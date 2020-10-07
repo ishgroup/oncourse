@@ -21,7 +21,7 @@ export const removeContentMarker = text => {
 };
 
 export const addContentMarker = (text, contentModeId) => (
-`${text} 
-{render: ${contentModeId === "wysiwyg" ? "md" : contentModeId}}
-`
+  `${text} 
+  {render:"${contentModeId === "wysiwyg" ? "md" : contentModeId}"}
+   `
 );
