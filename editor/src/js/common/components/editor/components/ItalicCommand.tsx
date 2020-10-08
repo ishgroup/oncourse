@@ -10,9 +10,9 @@ export const ItalicCommandCustom = {
     });
     const state1 = textApi.setSelectionRange(newSelectionRange);
     textApi.replaceSelection(
-      state1.selectedText.match(/\*/g)
-        ?  state1.selectedText.replace(/\*/g,"")
-        : `*${state1.selectedText}*`);
+      state1.selectedText.match(/_/g)
+        ?  state1.selectedText.replace(/_/g,"")
+        : `_${state1.selectedText}_`);
   },
   handleKeyCommand: e => (e.ctrlKey || e.metaKey) && e.key == "b",
 };
