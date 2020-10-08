@@ -28,3 +28,5 @@ repositories {
 dependencies {
     antlr "org.antlr:antlr4:$antlrVersion"
 }
+
+sourceCompatibility = JavaVersion.VERSION_11

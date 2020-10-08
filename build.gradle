@@ -62,17 +62,6 @@ subprojects {
 	apply plugin: 'java'
 	apply plugin: 'maven-publish'
 
-	// get the version from the command line properties
-	version = project.hasProperty('releaseVersion') && project.releaseVersion ? project.releaseVersion : "99-SNAPSHOT"
-
-	sourceCompatibility = JavaVersion.VERSION_11
-
-	tasks.withType(AbstractCompile) {
-		options.with {
-			incremental = true
-		}
-	}
-
 	repositories {
 		maven {
 			url 'https://repo.ish.com.au/content/groups/public'
@@ -81,7 +70,10 @@ subprojects {
 			url 'https://repo.ish.com.au/content/groups/ish'
 		}
 	}
-
+	sourceCompatibility = 11
+	// get the version from the command line properties
+	version = project.hasProperty('releaseVersion') && project.releaseVersion ? project.releaseVersion : "99-SNAPSHOT"
+	
 	if (it.name != 'api-test') {
 		dependencies {
 			implementation "org.apache.logging.log4j:log4j-api:$log4j2Version"

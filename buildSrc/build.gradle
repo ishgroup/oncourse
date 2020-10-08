@@ -20,3 +20,5 @@ subprojects {
         runtimeOnly project(path)
     }
 }
+
+sourceCompatibility = JavaVersion.VERSION_11
