@@ -1,8 +1,8 @@
-import {Page} from "../../../../../model";
+import {ContentMode, Page} from "../../../../../model";
 
 export interface PageState extends Page {
   renderHtml?: string;
-  contentMode?: string;
+  contentMode?: ContentMode;
 }
 
 export class PagesState {

@@ -1,8 +1,8 @@
 import React from 'react';
 import {connect, Dispatch} from "react-redux";
 import classnames from 'classnames';
-import {clearRenderHtml, getPages, savePage, toggleEditMode} from "./actions";
-import {Page as PageModel} from "../../../../model";
+import {clearRenderHtml, getPages, savePage, setPageContentMode, toggleEditMode} from "./actions";
+import {ContentMode, Page as PageModel} from "../../../../model";
 import {Page} from "./components/Page";
 import {State} from "../../../../reducers/state";
 import {getThemes} from "../../../design/containers/themes/actions";
@@ -14,6 +14,7 @@ interface Props {
   onEditHtml: (html) => any;
   toggleEditMode: (flag: boolean) => any;
   clearRenderHtml: (pageId: number) => any;
+  setContentMode?: (id: number, contentMode: ContentMode) => any;
   history: any;
   editMode: any;
   fetching: boolean;
@@ -30,7 +31,7 @@ export class Pages extends React.Component<Props, any> {
   }
 
   render() {
-    const {match, pages, onEditHtml, toggleEditMode, clearRenderHtml, editMode, fetching} = this.props;
+    const {match, pages, onEditHtml, toggleEditMode, clearRenderHtml, editMode, fetching, setContentMode} = this.props;
     const activePage = match.params.id && pages.find(page => page.id == match.params.id);
 
     return (
@@ -44,6 +45,7 @@ export class Pages extends React.Component<Props, any> {
               toggleEditMode={toggleEditMode}
               clearRenderHtml={clearRenderHtml}
               editMode={editMode}
+              setContentMode={setContentMode}
             />
           </div>
         }
@@ -67,6 +69,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
     onEditHtml: (id, content) => dispatch(savePage(id, {content}, true)),
     toggleEditMode: flag => dispatch(toggleEditMode(flag)),
     clearRenderHtml: id => dispatch(clearRenderHtml(id)),
+    setContentMode: (id: number, contentMode: ContentMode) => dispatch(setPageContentMode(id,contentMode))
   };
 };
 

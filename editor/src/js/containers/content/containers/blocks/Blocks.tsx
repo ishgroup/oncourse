@@ -1,10 +1,12 @@
 import React, {useEffect} from 'react';
 import {connect, Dispatch} from "react-redux";
 import classnames from "classnames";
-import {getBlocks, saveBlock} from "./actions";
+import {getBlocks, saveBlock, setBlockContentMode} from "./actions";
 import {State} from "../../../../reducers/state";
 import {BlockState} from "./reducers/State";
 import Block from "./components/Block";
+import {ContentMode} from "../../../../model";
+import {setPageContentMode} from "../pages/actions";
 
 interface Props {
   blocks: BlockState[];
@@ -12,12 +14,10 @@ interface Props {
   match?: any;
   fetching: boolean;
   onEditHtml: (id, html) => any;
+  setContentMode?: (id: number, contentMode: ContentMode) => any;
 }
 
-const Blocks: React.FC<Props> = props => {
-
-  const {match, blocks, onEditHtml, fetching, onInit} = props;
-
+const Blocks: React.FC<Props> = ({match, blocks, onEditHtml, fetching, onInit, setContentMode}) => {
   useEffect(() => {
     onInit();
   },        []);
@@ -31,6 +31,7 @@ const Blocks: React.FC<Props> = props => {
           <Block
             block={activeBlock}
             onSave={onEditHtml}
+            setContentMode={setContentMode}
           />
         </div>
       }
@@ -47,6 +48,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
     onInit: () => dispatch(getBlocks()),
     onEditHtml: (id, content) => dispatch(saveBlock(id, {content}, true)),
+    setContentMode: (id: number, contentMode: ContentMode) => dispatch(setBlockContentMode(id,contentMode))
   };
 };
 

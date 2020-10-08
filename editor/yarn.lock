@@ -9,21 +9,6 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@ckeditor/ckeditor-cloud-services-core@^22.0.0":
-  version "22.0.0"
-  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor-cloud-services-core/-/ckeditor-cloud-services-core-22.0.0.tgz#686fa0ed072422a0a9477247432a23e345e5f3e6"
-  integrity sha512-gaiLDn/9+GY5jmtlRydlXMO4zqR/QSxV3NzhV0vTr9UTtQjR8v+2ua4QPdZp0KeJShn3C/8+MSdQd+Mlde2Onw==
-  dependencies:
-    "@ckeditor/ckeditor5-utils" "^22.0.0"
-
-"@ckeditor/ckeditor5-adapter-ckfinder@latest":
-  version "22.0.0"
-  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-adapter-ckfinder/-/ckeditor5-adapter-ckfinder-22.0.0.tgz#06bfd694cec85b2804123f17a693ba5667f4bd46"
-  integrity sha512-KY4YrhRvMvwQa+jdhbtXoQk0mZYbjv8LjDhHnrPUU0eflgnbKmvtWhvlXOg+sJKebDN3wT2UZF1PwKJr2hG4Cg==
-  dependencies:
-    "@ckeditor/ckeditor5-core" "^22.0.0"
-    "@ckeditor/ckeditor5-upload" "^22.0.0"
-
 "@ckeditor/ckeditor5-autoformat@latest":
   version "23.0.0"
   resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-autoformat/-/ckeditor5-autoformat-23.0.0.tgz#7da84f9001547cf247e697f415d5afa920bc00d3"
@@ -67,14 +52,6 @@
     "@ckeditor/ckeditor5-core" "^23.0.0"
     "@ckeditor/ckeditor5-engine" "^23.0.0"
     "@ckeditor/ckeditor5-utils" "^23.0.0"
-
-"@ckeditor/ckeditor5-cloud-services@^22.0.0":
-  version "22.0.0"
-  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-cloud-services/-/ckeditor5-cloud-services-22.0.0.tgz#63066fadb2968879000657d054d71772d5e62ef9"
-  integrity sha512-XE7Ao7gabcsNAcOAKytIBA5TL7K7h4buTkJuHNSnGvZBaJ/YjCC93OK8x6PcN+JD8vlbehFOsy1jqGU0/h4QJQ==
-  dependencies:
-    "@ckeditor/ckeditor-cloud-services-core" "^22.0.0"
-    "@ckeditor/ckeditor5-core" "^22.0.0"
 
 "@ckeditor/ckeditor5-code-block@^23.0.0":
   version "23.0.0"
@@ -135,17 +112,6 @@
     chalk "^4.0.0"
     rimraf "^3.0.2"
     webpack-sources "^1.4.3"
-
-"@ckeditor/ckeditor5-easy-image@latest":
-  version "22.0.0"
-  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-easy-image/-/ckeditor5-easy-image-22.0.0.tgz#e3a888713b1a5dbe6d405479fcbde3665ef3f5de"
-  integrity sha512-YhFvy4JFtrsOMHxQt7u4x6eUoMRc0m8+85UmVFA3whA7WBpQmxvOFT7P3xiaGeGwyfotxMH+7lrsz/r/2snaQw==
-  dependencies:
-    "@ckeditor/ckeditor-cloud-services-core" "^22.0.0"
-    "@ckeditor/ckeditor5-cloud-services" "^22.0.0"
-    "@ckeditor/ckeditor5-core" "^22.0.0"
-    "@ckeditor/ckeditor5-image" "^22.0.0"
-    "@ckeditor/ckeditor5-upload" "^22.0.0"
 
 "@ckeditor/ckeditor5-editor-classic@^23.0.0":
   version "23.0.0"

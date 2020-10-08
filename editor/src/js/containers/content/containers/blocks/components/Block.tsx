@@ -7,29 +7,26 @@ import {CONTENT_MODES, DEFAULT_CONTENT_MODE_ID} from "../../../constants";
 import {addContentMarker} from "../../../utils";
 import MarkdownEditor from "../../../../../common/components/editor/MarkdownEditor";
 import marked from "marked";
+import {ContentMode} from "../../../../../model";
 
 interface Props {
   block: BlockState;
   onSave: (blockId, html) => void;
+  setContentMode?: (id: number, contentMode: ContentMode) => any;
 }
 
 // custom event to reinitialize site plugins on editing content
 const pluginInitEvent = new Event("plugins:init");
 
-const Block: React.FC<Props> = props => {
-  const {block, onSave} = props;
+const Block: React.FC<Props> = ({block, onSave, setContentMode}) => {
   const [editMode, setEditMode] = useState(false);
   const [draftContent, setDraftContent] = useState("");
-  const [contentMode, setContentMode] = useState(DEFAULT_CONTENT_MODE_ID);
 
   useEffect(() => {
     document.dispatchEvent(pluginInitEvent);
 
-    const contentMode = block.contentMode || DEFAULT_CONTENT_MODE_ID;
-
-    setContentMode(contentMode);
     setDraftContent(block.content || "");
-    if (contentMode === "md") {
+    if (block.contentMode === "md") {
       setDraftContent(marked(block.content || ""));
     }
   },        []);
@@ -46,7 +43,7 @@ const Block: React.FC<Props> = props => {
 
   const handleSave = () => {
     setEditMode(false);
-    onSave(block.id, addContentMarker(draftContent, contentMode));
+    onSave(block.id, addContentMarker(draftContent, block.contentMode));
   };
 
   const handleCancel = () => {
@@ -61,12 +58,11 @@ const Block: React.FC<Props> = props => {
   },[editMode, block, block && block.content]);
 
   const onContentModeChange = e => {
-    const v = e.target.value;
-    setContentMode(v);
+    setContentMode(block.id,e.target.value);
   };
 
   const renderEditor = () => {
-    switch (contentMode) {
+    switch (block.contentMode) {
       case "md": {
         return (
           <MarkdownEditor
@@ -82,7 +78,7 @@ const Block: React.FC<Props> = props => {
           <Editor
             value={draftContent}
             onChange={onChangeArea}
-            mode={contentMode}
+            mode={block.contentMode}
           />
         );
       }
@@ -93,7 +89,7 @@ const Block: React.FC<Props> = props => {
     <div>
       {editMode && <>
         <div className={
-          classnames({"editor-wrapper" : true, "ace-wrapper": contentMode === "html" || contentMode === "textile"})
+          classnames({"editor-wrapper" : true, "ace-wrapper": block.contentMode === "html" || block.contentMode === "textile"})
         }>
           <div className="content-mode-wrapper">
             <Input
@@ -102,7 +98,7 @@ const Block: React.FC<Props> = props => {
                 id="contentMode"
                 className="content-mode"
                 placeholder="Content mode"
-                value={contentMode}
+                value={block.contentMode || DEFAULT_CONTENT_MODE_ID}
                 onChange={e => onContentModeChange(e)}
             >
               {CONTENT_MODES.map(mode => (

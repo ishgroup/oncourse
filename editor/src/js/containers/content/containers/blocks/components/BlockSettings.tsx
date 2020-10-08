@@ -2,6 +2,7 @@ import React from 'react';
 import {Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText} from 'reactstrap';
 import {IconBack} from "../../../../../common/components/IconBack";
 import {BlockState} from "../reducers/State";
+import {addContentMarker} from "../../../utils";
 
 interface Props {
   block: BlockState;
@@ -33,15 +34,16 @@ export class BlockSettings extends React.Component<Props, any> {
     });
   }
 
-  onSave() {
-    const {onEdit} = this.props;
+  onSave = () => {
+    const {onEdit, block} = this.props;
 
     onEdit({
       title: this.state.title,
+      content: addContentMarker(block.content, block.contentMode)
     });
   }
 
-  onClickDelete(e) {
+  onClickDelete = (e) => {
     e.preventDefault();
     const {onDelete, block, showModal} = this.props;
 
@@ -57,7 +59,6 @@ export class BlockSettings extends React.Component<Props, any> {
 
     return (
       <div>
-
         <ul>
           <li>
             <a href="javascript:void(0)" onClick={e => this.clickBack(e)}>
@@ -85,7 +86,7 @@ export class BlockSettings extends React.Component<Props, any> {
                 <Button
                   color="danger"
                   className="outline"
-                  onClick={e => this.onClickDelete(e)}
+                  onClick={this.onClickDelete}
                 >
                   <span className="icon icon-delete"/>
                   Remove
@@ -93,7 +94,7 @@ export class BlockSettings extends React.Component<Props, any> {
 
                 <Button
                   color="primary"
-                  onClick={e => this.onSave()}
+                  onClick={this.onSave}
                 >
                   Save
                 </Button>

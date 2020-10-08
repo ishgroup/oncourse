@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import classnames from 'classnames';
 import {Button, FormGroup, Input} from 'reactstrap';
 import {PageState} from "../reducers/State";
@@ -10,6 +10,7 @@ import {addContentMarker} from "../../../utils";
 import MarkdownEditor from "../../../../../common/components/editor/MarkdownEditor";
 import Editor from "../../../../../common/components/editor/HtmlEditor";
 import marked from "marked";
+import {ContentMode} from "../../../../../model";
 
 interface PageProps {
   page: PageState;
@@ -17,6 +18,7 @@ interface PageProps {
   openPage: (url) => void;
   toggleEditMode: (flag: boolean) => any;
   clearRenderHtml?: (id: number) => void;
+  setContentMode?: (id: number, contentMode: ContentMode) => any;
   editMode?: any;
 }
 
@@ -29,13 +31,13 @@ export const Page: React.FC<PageProps> = ({
   toggleEditMode,
   clearRenderHtml,
   editMode,
-  onSave
+  onSave,
+  setContentMode
 }) => {
   const [editModeInner, setEditModeInner] = useState(false);
   const [draftContent, setDraftContent] = useState('');
-  const [contentMode, setContentMode] = useState(DEFAULT_CONTENT_MODE_ID);
 
-  const onClickArea = (e) => {
+  const onClickArea = e => {
     e.preventDefault();
     setEditModeInner(false);
     toggleEditMode(true);
@@ -48,8 +50,7 @@ export const Page: React.FC<PageProps> = ({
 
     toggleEditMode(false);
     setEditModeInner(false);
-    setDraftContent(contentMode === "md" ? page.content : marked(page.content || ""));
-    setContentMode(page.contentMode || DEFAULT_CONTENT_MODE_ID);
+    setDraftContent(page.contentMode === "md" ? page.content : marked(page.content || ""));
 
     if (pageNode) {
       pageNode.addEventListener('click', onClickArea);
@@ -70,60 +71,60 @@ export const Page: React.FC<PageProps> = ({
       if (pageNode) {
         pageNode.removeEventListener('click', onClickArea);
       }
-    }
-  },[]);
+    };
+  },        []);
 
   const replacePageHtml = html => {
     const pageNode = DOM.findPage(page.title);
     if (!pageNode) return;
     pageNode.innerHTML = html;
-  }
+  };
 
   useEffect(( ) => {
     setEditModeInner(false);
     setDraftContent(page.content);
-  },[page.id]);
+  },        [page.id]);
 
   useEffect(() => {
     if (editModeInner === false && editMode === true) {
       setEditModeInner(true);
     }
-  }, [editMode]);
+  },        [editMode]);
 
   useEffect(() => {
     if (page.renderHtml) {
       replacePageHtml(page.renderHtml);
       clearRenderHtml(page.id);
     }
-  }, [page.renderHtml]);
+  },        [page.renderHtml]);
 
   useEffect(() => {
     if (!editMode && page.content) {
       document.dispatchEvent(pluginInitEvent);
     }
-  },[editMode, page && page.content]);
+  },        [editMode, page && page.content]);
 
   const onChangeArea = val => {
     setDraftContent(val);
-  }
+  };
 
   const handleSave = () => {
     toggleEditMode(false);
-    onSave(page.id, addContentMarker(draftContent, contentMode));
+    onSave(page.id, addContentMarker(draftContent, page.contentMode));
   };
 
   const handleCancel = () => {
     setEditModeInner(false);
     setDraftContent(page.content);
     toggleEditMode(false);
-  }
+  };
 
   const onContentModeChange = e => {
-    setContentMode(e.target.value);
-  }
+    setContentMode(page.id, e.target.value);
+  };
 
   const renderEditor = () => {
-    switch (contentMode) {
+    switch (page.contentMode) {
       case "md": {
         return (
           <MarkdownEditor
@@ -139,7 +140,7 @@ export const Page: React.FC<PageProps> = ({
           <Editor
             value={draftContent}
             onChange={onChangeArea}
-            mode={contentMode}
+            mode={page.contentMode}
           />
         );
       }
@@ -150,7 +151,7 @@ export const Page: React.FC<PageProps> = ({
     <div>
       {editMode && <>
         <div className={
-          classnames({"editor-wrapper" : true, "ace-wrapper": contentMode === "html" || contentMode === "textile"})
+          classnames({"editor-wrapper" : true, "ace-wrapper": page.contentMode === "html" || page.contentMode === "textile"})
         }>
           <div className="content-mode-wrapper">
             <Input
@@ -159,8 +160,8 @@ export const Page: React.FC<PageProps> = ({
               id="contentMode"
               className="content-mode"
               placeholder="Content mode"
-              value={contentMode}
-              onChange={e => onContentModeChange(e)}
+              value={page.contentMode || DEFAULT_CONTENT_MODE_ID}
+              onChange={onContentModeChange}
             >
               {CONTENT_MODES.map(mode => (
                 <option key={mode.id} value={mode.id}>{mode.title}</option>
@@ -178,4 +179,4 @@ export const Page: React.FC<PageProps> = ({
       </>}
     </div>
   );
-}
+};

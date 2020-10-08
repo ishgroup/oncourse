@@ -1,8 +1,8 @@
-import {Block} from "../../../../../model";
+import {Block, ContentMode} from "../../../../../model";
 
 export interface BlockState extends Block {
   id: number;
-  contentMode?: string;
+  contentMode?: ContentMode;
 }
 
 export class BlocksState {

@@ -1,4 +1,5 @@
 import {_toRequestType, FULFILLED, REJECTED} from "../../../../../common/actions/ActionUtils";
+import {ContentMode} from "../../../../../model";
 
 export const GET_PAGES_REQUEST = _toRequestType("page/get/pages");
 export const GET_PAGES_FULFILLED = FULFILLED(GET_PAGES_REQUEST);
@@ -22,6 +23,12 @@ export const GET_PAGE_RENDER_REJECTED = REJECTED(GET_PAGE_RENDER_REQUEST);
 export const TOGGLE_EDIT_MODE = "page/toggle/edit/mode";
 export const CLEAR_RENDER_HTML = "page/clear/render/html";
 export const SET_CURRENT_PAGE = "page/set/current";
+export const SET_PAGE_CONTENT_MODE = "page/set/contentMode";
+
+export const setPageContentMode = (id: number, contentMode: ContentMode) => ({
+  type: SET_PAGE_CONTENT_MODE,
+  payload: {id, contentMode},
+});
 
 export const getPages = () => ({
   type: GET_PAGES_REQUEST,

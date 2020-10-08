@@ -3,8 +3,9 @@ import {PagesState} from "./State";
 import {
   ADD_PAGE_FULFILLED, CLEAR_RENDER_HTML,
   DELETE_PAGE_FULFILLED, GET_PAGE_RENDER_FULFILLED,
-  GET_PAGES_FULFILLED, SAVE_PAGE_FULFILLED, SET_CURRENT_PAGE, TOGGLE_EDIT_MODE,
+  GET_PAGES_FULFILLED, SAVE_PAGE_FULFILLED, SET_CURRENT_PAGE, SET_PAGE_CONTENT_MODE, TOGGLE_EDIT_MODE,
 } from "../actions";
+import {SET_BLOCK_CONTENT_MODE} from "../../blocks/actions";
 
 export const pageReducer = (state: PagesState = new PagesState(), action: IAction<any>): PagesState => {
   switch (action.type) {
@@ -74,6 +75,16 @@ export const pageReducer = (state: PagesState = new PagesState(), action: IActio
       return {
         ...state,
         editMode: flag,
+      };
+    }
+
+    case SET_PAGE_CONTENT_MODE: {
+      const {id, contentMode} = action.payload;
+
+      return {
+        ...state,
+        items: state.items.map(p =>
+          p.id === id ? {...p, contentMode} : p),
       };
     }
 

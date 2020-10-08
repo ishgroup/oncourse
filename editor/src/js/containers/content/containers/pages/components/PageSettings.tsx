@@ -1,20 +1,21 @@
 import React from 'react';
-import {Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText} from 'reactstrap';
+import {Button, Form, FormGroup, Label, Input} from 'reactstrap';
 import classnames from 'classnames';
 import {Checkbox} from "../../../../../common/components/Checkbox";
 import {IconBack} from "../../../../../common/components/IconBack";
-import {Page, Theme} from "../../../../../model";
 import PageService from "../../../../../services/PageService";
+import {addContentMarker} from "../../../utils";
+import {PageState} from "../reducers/State";
 
 interface Props {
-  page: Page;
-  pages: Page[];
-  themes: Theme[];
+  page: PageState;
+  pages: PageState[];
   onBack: () => void;
   onEdit?: (settings) => void;
   onDelete?: (id) => void;
   showModal?: (props) => any;
   showError?: (title) => any;
+  themes?: any;
 }
 
 export class PageSettings extends React.PureComponent<Props, any> {
@@ -51,8 +52,8 @@ export class PageSettings extends React.PureComponent<Props, any> {
     onBack();
   }
 
-  onSave() {
-    const {onEdit} = this.props;
+  onSave = () => {
+    const {onEdit, page} = this.props;
 
     onEdit({
       title: this.state.title,
@@ -60,6 +61,7 @@ export class PageSettings extends React.PureComponent<Props, any> {
       visible: this.state.visible,
       themeId: this.state.themeId,
       suppressOnSitemap: this.state.suppressOnSitemap,
+      content: addContentMarker(page.content, page.contentMode)
     });
   }
 
@@ -82,7 +84,7 @@ export class PageSettings extends React.PureComponent<Props, any> {
     this.setState({urls});
   }
 
-  onClickDelete(e) {
+  onClickDelete = (e) => {
     e.preventDefault();
     const {onDelete, page, showModal} = this.props;
 
@@ -241,7 +243,7 @@ export class PageSettings extends React.PureComponent<Props, any> {
                 <Button
                   color="danger"
                   className="outline"
-                  onClick={e => this.onClickDelete(e)}
+                  onClick={this.onClickDelete}
                 >
                   <span className="icon icon-delete"/>
                   Remove
@@ -249,7 +251,7 @@ export class PageSettings extends React.PureComponent<Props, any> {
 
                 <Button
                   color="primary"
-                  onClick={e => this.onSave()}
+                  onClick={this.onSave}
                 >
                   Save
                 </Button>

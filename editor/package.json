@@ -55,10 +55,8 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
-    "@ckeditor/ckeditor5-adapter-ckfinder": "latest",
     "@ckeditor/ckeditor5-autoformat": "latest",
     "@ckeditor/ckeditor5-basic-styles": "latest",
-    "@ckeditor/ckeditor5-easy-image": "latest",
     "@ckeditor/ckeditor5-editor-classic": "latest",
     "@ckeditor/ckeditor5-essentials": "latest",
     "@ckeditor/ckeditor5-heading": "latest",

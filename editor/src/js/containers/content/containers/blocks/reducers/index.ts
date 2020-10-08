@@ -3,7 +3,7 @@ import {BlocksState} from "./State";
 import {
   ADD_BLOCK_FULFILLED,
   DELETE_BLOCK_FULFILLED,
-  GET_BLOCKS_FULFILLED, SAVE_BLOCK_FULFILLED,
+  GET_BLOCKS_FULFILLED, SAVE_BLOCK_FULFILLED, SET_BLOCK_CONTENT_MODE,
 } from "../actions";
 
 export const blockReducer = (state: BlocksState = new BlocksState(), action: IAction<any>): BlocksState => {
@@ -32,6 +32,16 @@ export const blockReducer = (state: BlocksState = new BlocksState(), action: IAc
       return {
         ...state,
         items: state.items.concat(block),
+      };
+    }
+
+    case SET_BLOCK_CONTENT_MODE: {
+      const {id, contentMode} = action.payload;
+
+      return {
+        ...state,
+        items: state.items.map(b =>
+        b.id === id ? {...b, contentMode} : b),
       };
     }
 

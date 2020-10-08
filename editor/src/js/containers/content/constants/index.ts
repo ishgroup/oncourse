@@ -1,4 +1,9 @@
-export const CONTENT_MODES = [
+import {ContentMode} from "../../../model";
+
+export const CONTENT_MODES: {
+  id: ContentMode,
+  title: string
+}[] = [
   {id: "textile", title: "legacy"},
   {id: "html", title: "html"},
   {id: "md", title: "markdown"}
