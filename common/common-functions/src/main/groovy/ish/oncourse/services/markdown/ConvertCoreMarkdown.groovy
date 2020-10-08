@@ -33,6 +33,6 @@ class ConvertCoreMarkdown extends CoreConverter {
                 result = cutted.substring(0, cutted.lastIndexOf("</p>"));
             }
         }
-        return result.replaceAll("(&amp;nbsp;)", " ")
+        return result.replaceAll("(&amp;nbsp;)", " ").replaceAll("(&quot;)", "\"")
     }
 }
