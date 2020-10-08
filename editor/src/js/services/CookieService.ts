@@ -23,12 +23,11 @@ export class CookieService {
    * @param path Path of cookie, "/" - if not defined
    */
   static set(name: string, value: string, path: string = "/"): void {
-    const cookie = `${name}=${value}; path=${path}`;
-    document.cookie = cookie;
+    document.cookie = `${name}=${value}; path=${path}`;
   }
 
   static delete(name: string) {
-    document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
+    document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/`;
   }
 
   private static getCookieObject(cookie: string) {
