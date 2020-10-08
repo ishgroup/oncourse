@@ -24,7 +24,9 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CustomTextileConverterTest {
+public class CustomConverterTest {
+
+	private static final String MD_MARKER = " {render:\"md\"}";
 
 	private static final String VIDEO = "{video id:\"youtubeId\" type:\"youtube\"}";
 
@@ -80,7 +82,7 @@ public class CustomTextileConverterTest {
 	@Mock
 	private Document document;
 
-	private IRichtextConverter textileConverter;
+	private IRichtextConverter richtextConverter;
 
 
 	private WebContent webContent;
@@ -96,7 +98,7 @@ public class CustomTextileConverterTest {
 		errors = new ValidationErrors();
 
 		when(tagService.getSubjectsTag()).thenReturn(mock(Tag.class));
-		textileConverter = new RichtextConverter(binaryDataService, webContentService, courseService, pageRenderer,
+		richtextConverter = new RichtextConverter(binaryDataService, webContentService, courseService, pageRenderer,
 				webNodeService, tagService);
 	}
 
@@ -122,7 +124,22 @@ public class CustomTextileConverterTest {
 		webContent.setContent(TEST_WEB_BLOCK_CONTENT);
 		when(webContentService.getWebContent(WebContent.NAME_PROPERTY, TEST_BLOCK_NAME)).thenReturn(webContent);
 
-		String result = textileConverter.convertCustomText(BLOCK_BY_NAME, errors);
+		String result = richtextConverter.convertCustomText(BLOCK_BY_NAME, errors);
+		assertEquals(TEST_WEB_BLOCK_CONTENT, result);
+		assertFalse(errors.hasFailures());
+	}
+
+	/**
+	 * Emulates the situation when {block name:"blockName"} is converted by Markdown, the
+	 * webContent with name "blockName" exists. Should pass without errors.
+	 */
+	@Test
+	public void smokeBlockConvertMarkdownTest() {
+		webContent = new WebContent();
+		webContent.setContent(TEST_WEB_BLOCK_CONTENT);
+		when(webContentService.getWebContent(WebContent.NAME_PROPERTY, TEST_BLOCK_NAME)).thenReturn(webContent);
+
+		String result = richtextConverter.convertCustomText(richtextConverter.convertCoreText(BLOCK_BY_NAME + MD_MARKER), errors);
 		assertEquals(TEST_WEB_BLOCK_CONTENT, result);
 		assertFalse(errors.hasFailures());
 	}
@@ -143,7 +160,7 @@ public class CustomTextileConverterTest {
 
 		when(pageRenderer.renderPage(eq(TextileUtil.TEXTILE_IMAGE_PAGE), anyMap())).thenReturn(successfulResult);
 
-		String result = textileConverter.convertCustomText(BLOCK_BY_NAME, errors);
+		String result = richtextConverter.convertCustomText(BLOCK_BY_NAME, errors);
 
 		assertEquals(successfulResult, result);
 		assertFalse(errors.hasFailures());
@@ -232,7 +249,7 @@ public class CustomTextileConverterTest {
 
 		when(pageRenderer.renderPage(eq(pageName), anyMap())).thenReturn(successfulResult);
 
-		String result = textileConverter.convertCustomText(textile, errors);
+		String result = richtextConverter.convertCustomText(textile, errors);
 
 		assertEquals(successfulResult, result);
 		assertFalse(errors.hasFailures());
@@ -246,7 +263,7 @@ public class CustomTextileConverterTest {
 	public void errorsInTextilesConvertTest() {
 		String[] tags = new String[]{"{block test}","{course test}","{courses test}","{image test}","{page test}","{tags test}","{video test}"};
 		for (String tag : tags) {
-			String result = textileConverter.convertCustomText(tag, errors);
+			String result = richtextConverter.convertCustomText(tag, errors);
 			assertTrue(errors.hasFailures());
 			String error = TextileUtil.getReplacementForSyntaxErrorTag(tag,errors);
 			assertEquals(error, result);
@@ -254,7 +271,7 @@ public class CustomTextileConverterTest {
 		}
 		//TODO uncomment when the validation of {form} is needed, now we just pass all the text
 		/*tag = "{form}{form}{form}{form}{form}";
-		result = textileConverter.convertCustomText(tag, errors);
+		result = richtextConverter.convertCustomText(tag, errors);
 		expecting = new StringBuffer();
 		// first it looks at pairs of forms
 		expecting.append(TextileUtil.getReplacementForSyntaxErrorTag("{form}{form}"))
@@ -266,7 +283,7 @@ public class CustomTextileConverterTest {
 
 		errors.clear();
 		tag = "{form}{text label:\"label\"}";
-		result = textileConverter.convertCustomText(tag, errors);
+		result = richtextConverter.convertCustomText(tag, errors);
 		assertEquals(TextileUtil.getReplacementForSyntaxErrorTag(tag), result);
 		assertTrue(errors.hasFailures());*/
 	}
