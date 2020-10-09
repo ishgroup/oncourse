@@ -16,12 +16,10 @@ export const getContentModeId = text => {
 
 export const removeContentMarker = text => {
   if (!text) return text;
-  const markerIndex = text.lastIndexOf("{render:");
-  return markerIndex === -1 ? text : text.slice(0, markerIndex);
+  return text.replace(/\s*{render:.*/,"");
 };
 
 export const addContentMarker = (text, contentModeId) => (
-  `${text} 
-  {render:"${contentModeId === "wysiwyg" ? "md" : contentModeId}"}
-   `
+  `${text}
+  {render:"${contentModeId === "wysiwyg" ? "md" : contentModeId}"}`
 );
