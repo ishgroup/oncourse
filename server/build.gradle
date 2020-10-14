@@ -370,7 +370,7 @@ compileJava {
 	dependsOn queryGrammar, cgen
 }
 
-task run(dependsOn: [classes], type: JavaExec) {
+task runServer(dependsOn: [classes], type: JavaExec) {
 	classpath = sourceSets.main.runtimeClasspath
 	main = 'ish.oncourse.server.AngelServer'
 	args = ['DEBUG=true', 'REPLICATION_DISABLED=true', 'disableReplication=true']
