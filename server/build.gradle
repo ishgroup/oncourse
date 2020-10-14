@@ -43,7 +43,7 @@ sourceSets {
 }
 
 dependencies {
-	implementation project(":types")
+	api project(":types")
 	implementation project(':server-api')
 
 	commercialLibraries project(":private:replication")
@@ -90,7 +90,7 @@ dependencies {
 
 	implementation "org.codehaus.groovy:groovy-all:$groovyVersion"
 	implementation "org.codehaus.groovy:groovy-dateutil:$groovyVersion"
-	implementation 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.2'
+	api 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.2'
 	implementation 'oauth.signpost:signpost-commonshttp4:1.2.1.2'
 
 	implementation 'com.nulab-inc:zxcvbn:1.2.5'
