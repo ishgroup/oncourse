@@ -12,24 +12,13 @@
 apply plugin: 'groovy'
 apply plugin: 'org.apache.cayenne'
 
-sourceSets {
-    main {
-        // generate some manifest files for lists of resources to find at runtime
-        output.dir("$buildDir/generated-resources/main", builtBy: 'createResourceManifests')
-        groovy {
-            srcDirs += 'src/main/java'
-            srcDirs += 'src/main/groovy'
-            srcDirs += "${buildDir}/generated-resources/main/java"
-        }
-        java {
-            srcDirs = []
-        }
-    }
-}
+sourceSets.main.java.srcDirs = []
+sourceSets.main.groovy.srcDir 'src/main/java'
+sourceSets.main.groovy.srcDirs += "${buildDir}/generated-resources/main/java"
 
 dependencies {
     // Pull in server so we can reference the full data model for our replication stubs
-    implementation(project(":server")) { transitive = false }
+    implementation(project(":server"))
 
 }
 
