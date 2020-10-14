@@ -9,8 +9,47 @@
  * See the GNU Affero General Public License for more details.
  */
 
+apply plugin: 'groovy'
+apply plugin: 'org.apache.cayenne'
+
+sourceSets {
+    main {
+        // generate some manifest files for lists of resources to find at runtime
+        output.dir("$buildDir/generated-resources/main", builtBy: 'createResourceManifests')
+        groovy {
+            srcDirs += 'src/main/java'
+            srcDirs += 'src/main/groovy'
+            srcDirs += "${buildDir}/generated-resources/main/java"
+        }
+        java {
+            srcDirs = []
+        }
+    }
+}
+
 dependencies {
     // Pull in server so we can reference the full data model for our replication stubs
     implementation(project(":server")) { transitive = false }
 
+}
+
+
+cgen {
+    map = "${projectDir}/src/main/resources/cayenne/ReplicationMap.map.xml"
+    makePairs = true
+    template = "${projectDir}/src/main/resources/cayenne/dotemplates/subclass.vm"
+    superTemplate = "${projectDir}/src/main/resources/cayenne/dotemplates/superclass.vm"
+    mode = 'entity'
+    superPkg = 'ish.oncourse.server.cayenne.glue'
+    destDir = file("${buildDir}/generated-resources/main/java")
+    doLast {
+        // remove subclass files which are already committed inside the app
+        delete fileTree("${buildDir}/generated-resources/main/java/ish/oncourse/server/cayenne") {
+            exclude '**/glue/*'
+        }
+    }
+}
+
+compileJava {
+    dependsOn cgen
 }
