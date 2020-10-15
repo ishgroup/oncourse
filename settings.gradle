@@ -10,6 +10,5 @@ pluginManagement {
 }
 
 rootProject.name = 'onCourse commercial'
-include ':plugins:xero'
+include ':xero,:replication'
 
-enableFeaturePreview('GROOVY_COMPILATION_AVOIDANCE')
