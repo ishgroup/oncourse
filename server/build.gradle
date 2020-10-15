@@ -11,7 +11,6 @@ apply plugin: 'com.github.psxpaul.execfork'
 
 configurations {
 	apiTest
-	commercialLibraries
 
 	// exclude these here since they are pulled in in various ways
 	all*.exclude group: "org.slf4j", module: "slf4j-simple"
@@ -45,9 +44,7 @@ sourceSets {
 dependencies {
 	api project(":types")
 	implementation project(':server-api')
-
-	commercialLibraries project(":private:replication")
-
+	
 	implementation ("org.apache.cxf:cxf-rt-frontend-jaxws:$cfxVersion") {
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
 	}
@@ -271,9 +268,7 @@ task installer_unix(dependsOn: [jar, assembleDist], type: Zip) {
 	from (configurations.runtimeClasspath) {
 		into 'onCourseServer/lib'
 	}
-//	from (configurations.commercialLibraries.minus(configurations.runtimeClasspath)) {
-//		into 'onCourseServer/lib'
-//	}
+
 	from (configurations.runtime.artifacts.files) {
 		into 'onCourseServer'
 	}
