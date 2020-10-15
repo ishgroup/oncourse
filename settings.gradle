@@ -10,5 +10,5 @@ pluginManagement {
 }
 
 rootProject.name = 'onCourse commercial'
-include ':xero,:replication'
+include ':plugins:xero,:plugins:replication'
 

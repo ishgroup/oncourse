@@ -1,0 +1,41 @@
+apply plugin: 'idea'
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'groovy'
+
+    apply plugin: 'java-library'
+    apply plugin: 'maven-publish'
+    
+    repositories {
+        maven {
+            url 'https://repo.ish.com.au/content/groups/public'
+        }
+        maven {
+            url 'https://repo.ish.com.au/content/groups/ish'
+        }
+    }
+    sourceCompatibility = 11
+    
+    dependencies {
+        implementation "ish.oncourse.angel:server:99-SNAPSHOT"
+    }
+
+    group = 'ish.oncourse.commercial.plugin'
+    version = project.hasProperty('releaseVersion') && project.releaseVersion ? project.releaseVersion : "99-SNAPSHOT"
+
+    publishing {
+        repositories {
+            maven {
+                name = "ish"
+                def repo = version.endsWith('SNAPSHOT') ? 'ish-snapshots' : 'ish-releases'
+                url = "https://repo.ish.com.au/content/repositories/${repo}"
+                credentials {
+                    username nexusUsername
+                    password nexusPassword
+                }
+            }
+        }
+    }
+    
+}

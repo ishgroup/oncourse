@@ -2,18 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="464eb329-4356-4dd0-ae52-6b59f92ddf6a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea" afterDir="true" />
-      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradle" afterDir="true" />
-      <change afterPath="$PROJECT_DIR$/gradle/wrapper" afterDir="true" />
-      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$" beforeDir="true" afterPath="$PROJECT_DIR$" afterDir="true" />
+      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/replication/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/xero/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/xero/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -80,11 +76,33 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1602750430301</updated>
-      <workItem from="1602750432165" duration="1555000" />
+      <workItem from="1602750432165" duration="4480000" />
     </task>
+    <task id="LOCAL-00001" summary="put gradle/idea settings under version control">
+      <created>1602752538032</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1602752538032</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="put gradle/idea settings under version control" />
+    <option name="LAST_COMMIT_MESSAGE" value="put gradle/idea settings under version control" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="399" y="139" key="CommitChangelistDialog2" timestamp="1602752504961">
+      <screen x="65" y="23" width="1615" height="1027" />
+    </state>
+    <state x="399" y="139" key="CommitChangelistDialog2/65.23.1615.1027@65.23.1615.1027" timestamp="1602752504961" />
+    <state x="683" y="389" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1602755985256">
+      <screen x="65" y="23" width="1615" height="1027" />
+    </state>
+    <state x="683" y="389" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/65.23.1615.1027@65.23.1615.1027" timestamp="1602755985256" />
   </component>
 </project>
