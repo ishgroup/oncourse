@@ -26,5 +26,10 @@
       <option name="name" value="maven" />
       <option name="url" value="https://repo.ish.com.au/content/repositories/ish-snapshots" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven" />
+      <option name="name" value="maven" />
+      <option name="url" value="https://repo.ish.com.au/repository/ish-snapshots/" />
+    </remote-repository>
   </component>
 </project>

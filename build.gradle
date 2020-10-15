@@ -27,13 +27,42 @@ subprojects {
     sourceCompatibility = 11
     repositories {
         maven {
-            url 'https://repo.ish.com.au/content/repositories/ish-snapshots'
+            url 'https://repo.ish.com.au/repository/ish-snapshots/'
         }
         
     }
-    
+    configurations {
+        zipped
+    }
     dependencies {
-        implementation "ish.oncourse.angel:server:99-SNAPSHOT"
+        zipped "ish.oncourse.angel:server:99-SNAPSHOT:executable@zip"
+        implementation files({ tasks.installDependencies.extractedJars })
+
+    }
+    
+    task installDependencies(type: Sync) {
+        def extractDir = "${buildDir}/libs"
+
+        ext.extractedJars = fileTree(extractDir) {
+            include "**/*.jar"
+            builtBy "installDependencies"
+        }
+
+        dependsOn configurations.zipped
+        from {
+            configurations.zipped.collect { zipTree(it) }
+        }
+        into extractDir
+    }
+
+// just for checking that it worked
+    task printClasspath {
+        dependsOn configurations.compile
+        doLast {
+            configurations.compile.each {
+                println it
+            }
+        }
     }
 
     group = 'ish.oncourse.commercial.plugin'
@@ -54,3 +83,5 @@ subprojects {
     }
     
 }
+
+
