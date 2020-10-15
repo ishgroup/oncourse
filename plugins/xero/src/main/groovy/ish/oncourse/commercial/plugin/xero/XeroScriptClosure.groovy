@@ -1,12 +1,6 @@
 /*
- * Copyright ish group pty ltd 2020.
- *
- * This program is free software: you can redistribute it and/or modify it under the terms of the
- * GNU Affero General Public License version 3 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License for more details.
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
  */
 
 package ish.oncourse.commercial.plugin.xero
@@ -46,7 +40,7 @@ import java.time.LocalDate
 
 @API
 @ScriptClosure(key = "xero", integration = XeroIntegration)
-class XeroScriptClosure implements ScriptClosureTrait<XeroIntegration> { 
+class XeroScriptClosure implements ScriptClosureTrait<XeroIntegration> {
 	String action
 	LocalDate startOn
 	Boolean postJournals = true
@@ -82,7 +76,7 @@ class XeroScriptClosure implements ScriptClosureTrait<XeroIntegration> {
 			case 'payroll':
 				integration.payslip = integration.objectContext.localObject(payslip)
 				integration.contact = integration.payslip.contact
-				
+
 				integration.bounceAddress = bounceAddress
 				if (!integration.contact.dateOfBirth) {
 					integration.interruptExport(XeroIntegration.MESSAGE_DOB_REQUIRED)

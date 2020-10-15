@@ -1,5 +1,10 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 def run(args) {
-		
+
 	def qualClasses = ObjectSelect.query(CourseClass)
 					.where(CourseClass.hasTag("Subjects/International/Qualification courses"))
 
@@ -26,5 +31,5 @@ def run(args) {
 	export {
 	    template "sgscc.onCourse.cricosAgentCommissionContraExport.csv"
 	    records //TODO - run export on collection of paymentIns including contra payments
-	}	
+	}
 }

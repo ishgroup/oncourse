@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+  ~ No copying or use of this code is allowed without permission in writing from ish.
+  -->
+
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ClassRoll" pageWidth="700" pageHeight="842" columnWidth="622" leftMargin="39" rightMargin="39" topMargin="28" bottomMargin="50">
 	<property name="name" value="CCC-Class roll "/>
 	<property name="entity" value="CourseClass"/>

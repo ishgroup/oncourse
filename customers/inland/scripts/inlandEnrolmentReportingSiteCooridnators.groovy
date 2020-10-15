@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 import groovy.time.TimeCategory
 import ish.common.types.PaymentSource
 
@@ -9,7 +14,7 @@ def run(args) {
 	def lowerDate = upperDate - 1
 
 
-	def centreNames = ["Barraba", "Bingara", "Gunnedah", "Inverell", "Moree", "Narrabri", "Warialda"] 
+	def centreNames = ["Barraba", "Bingara", "Gunnedah", "Inverell", "Moree", "Narrabri", "Warialda"]
 
 	def queryEnrolments = ObjectSelect.query(Enrolment)
     .where(Enrolment.CREATED_ON.between(lowerDate, upperDate))
@@ -19,7 +24,7 @@ def run(args) {
     // group enrolments by 'site' which is actually a tag
     Map enrolmentsGrouped = new HashMap<String, List<Enrolment>>()
 
-    queryEnrolments.each { e -> 
+    queryEnrolments.each { e ->
         Tag centre = e.courseClass.room?.site?.tags.find { it.parentTag.name.equalsIgnoreCase("centres") }
 
         String groupKey = ""
@@ -31,7 +36,7 @@ def run(args) {
             }
         } else {
             groupKey = "Other"
-        }       
+        }
         if(!enrolmentsGrouped[groupKey]) {
             enrolmentsGrouped[groupKey] = []
         }
@@ -57,7 +62,7 @@ def run(args) {
 				toEmail = "moree@communitycollegeni.nsw.edu.au"
 				break
 			case "Narrabri":
-				toEmail = "narrabri@communitycollegeni.nsw.edu.au"	
+				toEmail = "narrabri@communitycollegeni.nsw.edu.au"
 				break
 			case "Warialda":
 				toEmail = "warialda@communitycollegeni.nsw.edu.au "
@@ -66,7 +71,7 @@ def run(args) {
 				toEmail = "beinfo@communitycollegeni.nsw.edu.au"
 				break
     	}
-    	
+
     	String emailBody = "The following online enrolments were accepted for your site for the 24 hours up until midnight " + upperDate.format("dd MMMM YYYY") + ":\n"
     	enrolments.each { e ->
     		emailBody += e.student.contact.firstName + " " + e.student.contact.lastName + " " + e.courseClass.uniqueCode + " [ " + e.courseClass.startDateTime.format("dd MMM YYYY") + " ] " + e.courseClass.course.name +"\n"

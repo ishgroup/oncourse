@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 /*(
 enrolmentFile=Please select enrolment CSV file...
 )*/
@@ -18,10 +23,10 @@ def readerEnrolment = new CsvParser(new InputStreamReader(new ByteArrayInputStre
 rowNumber = 0
 
 try {
-    readerEnrolment.eachLine { enrolmentLine -> 
-        
+    readerEnrolment.eachLine { enrolmentLine ->
+
         rowNumber++
-        
+
         Contact contact = ObjectSelect.query(Contact)
                         .where(Contact.LAST_NAME.eq(enrolmentLine.Surname_deprecated))
                         .and(Contact.FIRST_NAME.eq(enrolmentLine.FirstName_deprecated))
@@ -29,15 +34,15 @@ try {
 
 
         if(contact) {
-                
+
             context.newObject(ContactCustomField).with { customField ->
                 CustomFieldType cft = ObjectSelect.query(CustomFieldType).where(CustomFieldType.KEY.eq('category')).selectOne(context)
                 customField.customFieldType = cft
                 customField.relatedObject = contact
-                customField.value = enrolmentLine.Category 
+                customField.value = enrolmentLine.Category
             }
-        }      
-    }    
+        }
+    }
 } catch (Exception e) {
     throw new ScriptException(CreateUserFriendlyMessage.valueOf(e, rowNumber).getMessage())
 }

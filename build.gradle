@@ -1,10 +1,9 @@
-apply plugin: 'idea'
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
 
 buildscript {
-    ext {
-        cayenneVersion = '4.1'
-    }
-
     repositories {
         maven {
             url 'https://repo.ish.com.au/content/groups/public'
@@ -12,9 +11,15 @@ buildscript {
     }
 
     dependencies {
-        classpath "org.apache.cayenne.plugins:cayenne-gradle-plugin:$cayenneVersion"
+        classpath "org.apache.cayenne.plugins:cayenne-gradle-plugin:4.1"
     }
 }
+
+plugins {
+    id 'com.github.ben-manes.versions' version '0.33.0' // adds the task 'dependencyUpdates -Drevision=release'
+    id 'com.dorongold.task-tree' version '1.5' // adds the task 'taskTree [some task]'
+}
+apply plugin: 'idea'
 
 subprojects {
     apply plugin: 'java'
@@ -22,7 +27,6 @@ subprojects {
 
     apply plugin: 'java-library'
     apply plugin: 'maven-publish'
-    
 
     sourceCompatibility = 11
     repositories {
@@ -35,7 +39,7 @@ subprojects {
         maven {
             url 'https://repo.ish.com.au/repository/ish'
         }
-        
+
     }
     configurations {
         zipped
@@ -43,9 +47,9 @@ subprojects {
     dependencies {
         zipped "ish.oncourse.angel:server:99-SNAPSHOT:executable@zip"
         implementation files({ tasks.installDependencies.extractedJars })
-
+        implementation "org.codehaus.groovy:groovy-all:2.5.13"
     }
-    
+
     task installDependencies(type: Sync) {
         def extractDir = "${buildDir}/libs"
 
@@ -87,7 +91,5 @@ subprojects {
             }
         }
     }
-    
+
 }
-
-

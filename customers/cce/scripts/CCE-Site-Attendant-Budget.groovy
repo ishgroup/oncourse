@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 import groovy.time.TimeCategory
 
 def run(args) {
@@ -120,10 +125,10 @@ def run(args) {
 					costPerHour = rate/sessionsPerHour
 					cost.perUnitAmountExTax =  cost.perUnitAmountExTax.add(costPerHour)
 					debugLine += "class: ${cost.courseClass.uniqueCode}, hour: ${hour}, cost.description: ${cost.description}, "
-					debugLine += "group: ${group} " 
+					debugLine += "group: ${group} "
 					debugLine += ", sessionsPerHour: ${sessionsPerHour}, cost.perUnitAmountExTax: ${cost.perUnitAmountExTax} \n"
 				}
-			
+
 			}
 			debugLine += "--------------\n"
 

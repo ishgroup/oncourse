@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 def run(args) {
     def invoices = ObjectSelect.query(Invoice).where(Invoice.AMOUNT_OWING.ne(Money.ZERO)).select(args.context)
     if (invoices.size() > 0) {

@@ -1,5 +1,10 @@
 ${render("Header", [title: "Enrolment Confirmation"])}
 <% if (enrolment.courseClass.course.hasTag("Smart & Skilled")) { %>
+<!--
+  ~ Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+  ~ No copying or use of this code is allowed without permission in writing from ish.
+  -->
+
 <table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
     <tbody>
     <tr>
@@ -98,20 +103,20 @@ ${render("Header", [title: "Enrolment Confirmation"])}
                 </p>
                 <% if (enrolment.courseClass.course.code.equals("Human_Resources_BSB41015")) { %>
                 <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
-                    A timetable will be handed out at the first session of the course. 
+                    A timetable will be handed out at the first session of the course.
                 </p>
                 <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
                     Students will be required to access the student learning resources and complete all required course assessments online through the Northern Beaches Community College's Learning Management System (LMS).  Shortly you will receive a separate welcome email explaining how to access the electronic resources through the NBCC student LMS portal.  Please ensure you follow and complete the required steps prior to attending your first class.  As all your resources will be available to you online, please ensure you bring along to each class a laptop with access to the NBCC LMS portal.  If you are unsure, your Trainer will be able to offer support at the first session.
                 </p>
-                
-                
+
+
 
                 <% } else  { %>
                 <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
                     A timetable will be handed out at the first session of the course together with relevant course resources.
                 </p>
                 <% } %>
-                
+
                 <% if (enrolment.courseClass?.room?.site?.suburb?.toLowerCase()?.contains("narrabeen")) { %>
 
                 <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
@@ -211,20 +216,20 @@ ${render("Header", [title: "Enrolment Confirmation"])}
                     </p>
 
                     <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
-                   <% if (enrolment.courseClass.course.modules.size() > 0) { %> 
+                   <% if (enrolment.courseClass.course.modules.size() > 0) { %>
 
                     <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
-                        You are required to supply your Unique Student Identifier (USI) in order to be issued a Statement of Attainment or Qualification on the successful completion of your course. If you do not have a USI you can apply for one via the link above.  
-                    </p>                    
+                        You are required to supply your Unique Student Identifier (USI) in order to be issued a Statement of Attainment or Qualification on the successful completion of your course. If you do not have a USI you can apply for one via the link above.
+                    </p>
                     <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
-                        You have enrolled in a Nationally Recognised Training course. We are required to collect some additional information rom you as part of the enrolment process.  
+                        You have enrolled in a Nationally Recognised Training course. We are required to collect some additional information rom you as part of the enrolment process.
                     </p>
 
                     <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
                         Please visit <a style="color: #0084b4;color: #0084b4 !important;background-color: #ffffff;text-decoration: none;border: 0;word-wrap: break-word;" href="${Preferences.getPortalCensusUrl(enrolment.student)}" target="_blank">${Preferences.getPortalCensusUrl(enrolment.student)}</a> to complete these questions.
                     </p>
                     <% } %>
-                
+
                     <% if (enrolment.courseClass.course.code.equals("Responsible_Service_Alcohol_RSA")) { %>
                     <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
                         Students will be required to access the student learning resources and complete all required course assessments online through the Northern Beaches Community College's Learning Management System (LMS).Shortly you will receive a separate welcome email explaining how to access the electronic resources through the NBCC student LMS portal.      Please ensure you follow and complete the required steps prior to attending your first class. As all your resources will be available to you online please ensure you bring along to each class a laptop with access to the NBCC LMS portal. If you are unsure your Trainer will be able to offer support at the first session.<br>

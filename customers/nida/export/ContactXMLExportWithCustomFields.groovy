@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 xml.mkp.xmlDeclaration(version: "1.0", encoding: "utf-8")
 
 def invoices = records.collectMany { Contact c -> c.invoices }

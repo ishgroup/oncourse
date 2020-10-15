@@ -1,5 +1,5 @@
-/**
- * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 package ish.oncourse.server.replication.builders
@@ -22,13 +22,13 @@ class OutcomeStubBuilder extends AbstractAngelStubBuilder<Outcome, OutcomeStub> 
 		if (outcome.getDeliveryMode() != null) {
 			stub.setDeliveryMode(outcome.getDeliveryMode().getDatabaseValue())
 		}
-		
+
 		if (outcome.getEnrolment() != null) {
 			stub.setEnrolmentId(outcome.getEnrolment().getId())
 		} else if (outcome.getPriorLearning() != null) {
 			stub.setPriorLearningId(outcome.getPriorLearning().getId())
 		}
-		
+
 		if (outcome.getOutcomeFundingSource() != null) {
 			stub.setFundingSource(outcome.getOutcomeFundingSource().getDatabaseValue())
 		}

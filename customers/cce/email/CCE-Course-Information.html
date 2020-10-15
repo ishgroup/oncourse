@@ -1,3 +1,8 @@
+<!--
+  ~ Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+  ~ No copying or use of this code is allowed without permission in writing from ish.
+  -->
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
@@ -94,9 +99,9 @@ h2.alternate strong {
   margin: 18px 0px 18px 0px;
 }
 h3 {
-  color:#333333; 
-  font-size:16px; 
-  font-weight:bold; 
+  color:#333333;
+  font-size:16px;
+  font-weight:bold;
   line-height:16px;
   margin: 18px 0px 18px 0px;
 }
@@ -194,7 +199,7 @@ h3 {
   color: #7d7d7d;
 }
 .red {
-  color:#ce1126;  
+  color:#ce1126;
 }
 .amber {
   color:#d2691e;
@@ -203,17 +208,17 @@ h3 {
   color:#7fc241;
 }
 .btn {
-  color:#ffffff; 
-  font-size:16px; 
-  font-weight:bold; 
-  line-height:17px; 
+  color:#ffffff;
+  font-size:16px;
+  font-weight:bold;
+  line-height:17px;
 }
 .btn a:link, .btn a:visited {
-  color:#ffffff; 
+  color:#ffffff;
   text-decoration:none;
 }
 .btn a:hover, .btn a:visited:hover {
-  color:#ffffff; 
+  color:#ffffff;
   text-decoration:none;
 }
 .footer h2 {
@@ -244,7 +249,7 @@ h3 {
         <tbody>
           <tr>
             <td valign="top">
-            
+
             <!-- Header -->
             <table width="660" border="0" cellspacing="0" cellpadding="0" class="header">
                 <tbody>
@@ -305,8 +310,8 @@ h3 {
                 </tbody>
               </table>
               <!--End Header-->
-                
-                	 
+
+
 	        	 <!-- Mail title -->
 	              <table width="660" border="0" cellspacing="0" cellpadding="0" class="title">
 	                <tbody>
@@ -380,7 +385,7 @@ h3 {
                         </tr>
                       </tbody>
                     </table>
-					
+
           <!-- End Refer a Friend -->
 
 					<table width="200" border="0" cellspacing="0" cellpadding="0" class="course-links">
@@ -465,7 +470,7 @@ h3 {
                                </tr>
                              </tbody>
                            </table>
-    
+
                          </td>
                        </tr>
                        <tr>
@@ -497,7 +502,7 @@ h3 {
                             <!-- Left Cell -->
                             COURSE
                           </td>
-                          
+
                           <td bgcolor="#e2e2e2"></td>
                           <td></td>
                           <td class="data-table-desc" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; font-weight:normal; line-height:18px;">
@@ -538,7 +543,7 @@ h3 {
                             <!-- Left Cell -->
                             DATE
                           </td>
-                          
+
                           <td bgcolor="#e2e2e2"></td>
                           <td></td>
                           <td class="data-table-desc" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; font-weight:normal; line-height:18px;">
@@ -579,7 +584,7 @@ h3 {
                             <!-- Left Cell -->
                             TUTORS
                           </td>
-                          
+
                           <td bgcolor="#e2e2e2"></td>
                           <td></td>
                           <td class="data-table-desc" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; font-weight:normal; line-height:18px;">
@@ -623,7 +628,7 @@ h3 {
                             <!-- Left Cell -->
                             LOCATION
                           </td>
-                          
+
                           <td bgcolor="#e2e2e2"></td>
                           <td></td>
                           <td class="data-table-desc" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; font-weight:normal; line-height:18px;">
@@ -631,7 +636,7 @@ h3 {
                             <% if (enrolment.courseClass.room == null) { %>
                               <font style="background-color:#ce1126; color:white; padding:3px;">To be confirmed</font>
                             <% } else { %>
-                              <a href="https://cce.sydney.edu.au/room/${enrolment.courseClass.room.id}" target="_blank"> ${enrolment.courseClass.room.name} - ${enrolment.courseClass.room.site.name} </a> 
+                              <a href="https://cce.sydney.edu.au/room/${enrolment.courseClass.room.id}" target="_blank"> ${enrolment.courseClass.room.name} - ${enrolment.courseClass.room.site.name} </a>
                             <% } %>
                           </td>
                           <td width="20"></td>
@@ -652,7 +657,7 @@ h3 {
                           <td></td>
                           <td></td>
                         </tr>
-              
+
               <!-- Spacer -->
                         <tr bgcolor="#f3f3f3">
                           <td height="25"></td>
@@ -811,9 +816,9 @@ h3 {
                                   <tr>
                                     <td height="8"></td>
                                   </tr>
-                                  <tr>    
+                                  <tr>
                                 <!-- MAIN LOOP SESSION -->
-                                  
+
                                     <td valign="top"><h2>${s.startDatetime.format("d MMM YYYY h:mm a")} - ${s.endDatetime.format("h:mm a")}</h2>
                                     <p><em>
                                       <% if (s.room == null) { %>
@@ -822,12 +827,12 @@ h3 {
                                         <a href="https://cce.sydney.edu.au/room/${enrolment.courseClass.room.id}" target="_blank"> ${s.room.name} - ${s.room.site.name} </a> |
                                       <% } %>
                                       <% if (s.tutors == null) { %>
-                                        <font style="background-color:#ce1126;color:white;padding:3px;">Tutor to be confirmed</font> 
+                                        <font style="background-color:#ce1126;color:white;padding:3px;">Tutor to be confirmed</font>
                                       <% } else { %>
-                                        ${s.tutors.first().contact.firstName} ${s.tutors.first().contact.lastName} 
+                                        ${s.tutors.first().contact.firstName} ${s.tutors.first().contact.lastName}
                                       <% } %>
                                     </em></p>
-                                  
+
                                 <!-- END LOOP -->
                                 <!-- FOOTER SESSIONS -->
                                     </td>
@@ -843,7 +848,7 @@ h3 {
                             </tr>
                           </tbody>
                         </table>
-            
+
                       </td>
                     </tr>
                     <tr>
@@ -949,7 +954,7 @@ h3 {
                       </tr>
                     </tbody>
                   </table>
-                    
+
                   </td>
                 </tr>
                 <tr>
@@ -976,7 +981,7 @@ h3 {
               </tbody>
             </table>
             <!-- End Footer -->
-            
+
             </td>
           </tr>
         </tbody>

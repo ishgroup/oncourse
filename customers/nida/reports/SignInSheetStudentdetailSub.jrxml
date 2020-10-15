@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+  ~ No copying or use of this code is allowed without permission in writing from ish.
+  -->
+
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ClassRollSingleSessionStudentdetailSub" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="ca5315bc-9600-4938-b1a8-4f24760e6dea">
 	<property name="name" value="Sign In Sheet Student Detail Sub"/>
 	<property name="entity" value="Enrolment"/>

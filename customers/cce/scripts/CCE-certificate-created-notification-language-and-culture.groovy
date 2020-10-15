@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 def run(args) {
     def endDate = Calendar.getInstance().getTime()
     endDate.set(hourOfDay: 0, minute: 0, second: 0)
@@ -12,7 +17,7 @@ def run(args) {
     }
 
     def nonVetClasses = allClasses.findAll { cc ->
-        cc.course.courseModules.isEmpty() 
+        cc.course.courseModules.isEmpty()
 
     }
 

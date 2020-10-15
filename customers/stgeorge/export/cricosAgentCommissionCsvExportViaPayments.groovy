@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 Map agentGroup = new HashMap<String, List<PaymentIn>>()
 
 records.each { pi ->
@@ -16,7 +21,7 @@ agentGroup.each { group, paymentsIn ->
     printAgent = false
 
     paymentsIn.each { pi ->
-        
+
         BigDecimal agentCommission = 0.0g // force this to be a BigDecimal
         def agents = pi.paymentIn.payer?.fromContacts?.findAll() { fc ->
             fc.relationType.fromContactName.trim().equalsIgnoreCase("Agent") && fc.relationType.toContactName.trim().equalsIgnoreCase("International Student")
@@ -48,7 +53,7 @@ agentGroup.each { group, paymentsIn ->
                     "agent_commission"        : pi.amount.multiply(agentCommission).toPlainString(),
                     "agent_commission_total"  : ""
             ]
-        agentTotal += pi.amount.multiply(agentCommission)    
+        agentTotal += pi.amount.multiply(agentCommission)
         printAgent = true
         }
     }

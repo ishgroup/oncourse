@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 import ish.oncourse.server.cayenne.AccountTransaction
 import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.Ordering
@@ -25,7 +30,7 @@ def run(args) throws IOException, TransformerException, ClassNotFoundException, 
     def endDate = Calendar.getInstance().getTime()
     endDate.set(hourOfDay: 0, minute: 0, second: 0)
     def startDate = endDate - 1
-    
+
     def fileName = dateFormatFile.format(startDate)
 
     process(context, startDate, endDate)
@@ -102,7 +107,7 @@ def process(context, startDate, endDate) {
         } else {
             write( amount )
         }
-       
+
         // Narration: For Invoice Line source concatenate "'onCourse Invoice'; invoice.invoiceNumber; invoiceline.description; 'processed on'; accounttransaction.transactiondate"   e.g. "onCourse Invoice 42 Jenny Smith (WDWK-0017 Woodwork) processed on 18/03/2014 10.04pm"
         // For Payment source concatenate "'onCourse payment {type}'; payer contact.firstname; payer contact.lastname; payment.type; 'processed on'; payment.createdon" e.g. "onCourse payment in Jenny Smith Credit Card processed on 18/03/2014 10.05pm'  <- this needs to work for both payment in and payment out types-->
         def transactionDate = record.getTransactionDate().format('dd/MM/yyyy hh.mmaa').replace('PM','p.m.').replace('AM','a.m.')
@@ -166,6 +171,6 @@ def sendEmail(fileName, data, email_address) throws MessagingException {
     } else {
         email.addPart("text/html", "There is nothing for export.")
     }
-    
+
     email.send()
 }

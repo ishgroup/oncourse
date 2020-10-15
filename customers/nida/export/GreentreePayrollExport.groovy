@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 records.collectMany { Payslip p -> p.paylines }.each { PayLine pl ->
     csv << [
             "Line Type"             : "GL",
@@ -18,7 +23,7 @@ records.collectMany { Payslip p -> p.paylines }.each { PayLine pl ->
 def getGLAccount(payLine) {
     def code = payLine.classCost?.courseClass?.course?.code
     def payrollRef = payLine.payslip.contact.tutor.payrollRef
-    
+
     code?.startsWith("O") && payrollRef?.matches("^[a-zA-Z].*") ?
             "01.90.6000.000" :
             code?.startsWith("O") && payrollRef?.matches("^[0-9].*") ?

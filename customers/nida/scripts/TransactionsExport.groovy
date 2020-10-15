@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 import com.sun.mail.smtp.SMTPMessage
 import ish.export.ExportParameter
 import ish.oncourse.server.AngelServer
@@ -77,7 +82,7 @@ def sendEmail(fileName, data, email_address) throws MessagingException {
 
 	def email = getSmtpMessage(fileName, email_address)
 
-	
+
 	def messageBodyPart = new MimeBodyPart()
 	messageBodyPart.setContent(StringUtils.EMPTY, "text/html")
 

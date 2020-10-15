@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.entity.ContentType
 import org.apache.http.entity.StringEntity
@@ -17,7 +22,7 @@ def run(args) {
                 "bearer paTBz61kMlD0mPWrsaHR3921EuYbHlBvqU0GDZQ.5nahBvB1GbdZpbh2WnOzXY4SaovFBY6leML0jYh4WjB4lWjo9OU3FXjpCHITHSCUj4s=")
 
         sendFlowRequest.addHeader("Content-Type", "application/json")
-        
+
         def body = new StringEntity(
                 "{\n" +
                         "    \"collector\": {\n" +

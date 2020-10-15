@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 import ish.oncourse.server.imports.CsvParser
 
 def reader = new CsvParser(new InputStreamReader(new ByteArrayInputStream(contactFile)))

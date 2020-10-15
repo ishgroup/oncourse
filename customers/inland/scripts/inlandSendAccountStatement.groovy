@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 def run(args) {
 
     def context = args.context
@@ -14,9 +19,9 @@ def run(args) {
     def contacts = invoices*.contact.unique()
 
     contacts.findAll { contact -> contact.totalOwing > 0 }.each { c ->
-        
+
         def contactInvoice = c.invoices.findAll { invoice -> invoice.overdue > Money.ZERO  }
-        
+
         if(c.email) {
             email {
                 from preference.email.from

@@ -1,5 +1,10 @@
 ${render("Header", [title: "Course reminder"])}
 
+<!--
+  ~ Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+  ~ No copying or use of this code is allowed without permission in writing from ish.
+  -->
+
 <!-- Title -->
               <table width="660" border="0" cellspacing="0" cellpadding="0" class="title">
                 <tbody>
@@ -80,7 +85,7 @@ ${render("CCE-Body-End")}
             <!-- Left Cell -->
             COURSE
           </td>
-          
+
           <td bgcolor="#e2e2e2"></td>
           <td></td>
           <td class="data-table-desc" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; font-weight:normal; line-height:18px;">
@@ -121,7 +126,7 @@ ${render("CCE-Body-End")}
             <!-- Left Cell -->
             DATE
           </td>
-          
+
           <td bgcolor="#e2e2e2"></td>
           <td></td>
           <td class="data-table-desc" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; font-weight:normal; line-height:18px;">
@@ -162,7 +167,7 @@ ${render("CCE-Body-End")}
             <!-- Left Cell -->
             TUTORS
           </td>
-          
+
           <td bgcolor="#e2e2e2"></td>
           <td></td>
           <td class="data-table-desc" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; font-weight:normal; line-height:18px;">
@@ -208,7 +213,7 @@ ${render("CCE-Body-End")}
             <!-- Left Cell -->
             LOCATION
           </td>
-          
+
           <td bgcolor="#e2e2e2"></td>
           <td></td>
           <td class="data-table-desc" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; font-weight:normal; line-height:18px;">
@@ -216,7 +221,7 @@ ${render("CCE-Body-End")}
             <% if (enrolment.courseClass.room == null) { %>
               <font style="background-color:#ce1126; color:white; padding:3px;">To be confirmed</font>
             <% } else { %>
-              <a href="https://cce.sydney.edu.au/room/${enrolment.courseClass.room.id}" target="_blank"> ${enrolment.courseClass.room.name} - ${enrolment.courseClass.room.site.name} </a> 
+              <a href="https://cce.sydney.edu.au/room/${enrolment.courseClass.room.id}" target="_blank"> ${enrolment.courseClass.room.name} - ${enrolment.courseClass.room.site.name} </a>
             <% } %>
           </td>
           <td width="20"></td>
@@ -396,9 +401,9 @@ ${render("CCE-Body-End")}
                   <tr>
                     <td height="8"></td>
                   </tr>
-                  <tr>    
+                  <tr>
                 <!-- MAIN LOOP SESSION -->
-                  
+
                     <td valign="top"><h2>${s.startDatetime.format("d MMM YYYY h:mm a")} - ${s.endDatetime.format("h:mm a")}</h2>
                     <p><em>
                       <% if (s.room == null) { %>
@@ -407,12 +412,12 @@ ${render("CCE-Body-End")}
                         <a href="https://cce.sydney.edu.au/room/${enrolment.courseClass.room.id}" target="_blank"> ${s.room.name} - ${s.room.site.name} </a> |
                       <% } %>
                       <% if (s.tutors == null || s.tutors.isEmpty()) { %>
-                        <font style="background-color:#ce1126;color:white;padding:3px;">Tutor to be confirmed</font> 
+                        <font style="background-color:#ce1126;color:white;padding:3px;">Tutor to be confirmed</font>
                       <% } else { %>
-                        ${s?.tutors?.first().contact.firstName} ${s?.tutors?.first().contact.lastName} 
+                        ${s?.tutors?.first().contact.firstName} ${s?.tutors?.first().contact.lastName}
                       <% } %>
                     </em></p>
-                  
+
                 <!-- END LOOP -->
                 <!-- FOOTER SESSIONS -->
                     </td>

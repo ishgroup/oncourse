@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 records.each { c ->
 	c.outcomes.each { o ->
 		 csv << [
@@ -14,12 +19,12 @@ records.each { c ->
 			"Qualification date completed" : c?.lastOutcome?.endDate?.format("ddMMYYYY"),
 			"Units of competencies code": o.code,
 			"Units of competency title"	: o.name,
-			"Unit of competency outcome": o.status?.displayName, 	
+			"Unit of competency outcome": o.status?.displayName,
 			"Outcome identifier — national" : o?.specificProgramIdentifier,
 			"VET In Schools"			: o.enrolment.vetInSchools,
 			"Funding source"			: o.enrolment?.relatedFundingSource?.name ?: "Fee for service",
 			"Administering state/territory" : "NSW",
-			"issuance date"				: c?.printedOn?.format("dd MM YYYY"), 
+			"issuance date"				: c?.printedOn?.format("dd MM YYYY"),
  		]
 	}
 }

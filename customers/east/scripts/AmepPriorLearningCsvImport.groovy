@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 /*(
 proirLearningFile=Please select proirLearning CSV file...
 )*/
@@ -27,10 +32,10 @@ reader.eachLine { line ->
 
             Outcome outcome = context.newObject(Outcome).with { o ->
                 o.priorLearning = priorLearning
-                
+
                 o.startDate = line.'outcome.startDate' ? LocalDate.parse(line.'outcome.startDate', DateTimeFormatter.ofPattern("d/MM/yyyy")) : null
                 o.endDate = line.'outcome.endDate' ? LocalDate.parse(line.'outcome.endDate', DateTimeFormatter.ofPattern("d/MM/yyyy")) : null
-                
+
                 Integer statusValue = line.'outcome.status'?.toInteger()
                 o.status = OutcomeStatus.values().find { value -> value.databaseValue == statusValue } ?: OutcomeStatus.STATUS_NOT_SET
                 Integer fundingSourceValue = line.'outcome.fundingSource'?.toInteger()
@@ -51,6 +56,6 @@ reader.eachLine { line ->
             }
         }
     }
-    
+
     context.commitChanges()
 }

@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 /*(
 contactFile=Please select contact CSV file...
 )*/
@@ -22,7 +27,7 @@ reader.eachLine { line ->
             .and(Contact.LAST_NAME.eq(line.'contact.lastName'))
             .and(Contact.FIRST_NAME.eq(line.'contact.firstName'))
             .selectFirst(context)
-    
+
     if (!contact) {
         contact = context.newObject(Contact).with { c ->
             c.lastName = line.'contact.lastName'
@@ -31,7 +36,7 @@ reader.eachLine { line ->
             c.allowEmail = false
             c.allowPost = false
             c.allowSms = false
-            
+
             context.newObject(ContactCustomField).with { customField ->
                 CustomFieldType cft = ObjectSelect.query(CustomFieldType)
                         .where(CustomFieldType.KEY.eq('amep'))
@@ -44,7 +49,7 @@ reader.eachLine { line ->
             c
         }
     }
-    
+
     contact.isMale = line.'contact.isMale'?.toBoolean()
     contact.birthDate = line.'contact.birthDate' ? LocalDate.parse(line.'contact.birthDate', DateTimeFormatter.ofPattern("d/MM/yyyy")) : null
     contact.street = line.'contact.address'
@@ -54,7 +59,7 @@ reader.eachLine { line ->
     contact.homePhone = line.'contact.homePhone'
     contact.mobilePhone = line.'contact.mobilePhone'
     contact.email = line.'contact.email'
-    
+
     if (!contact.isStudent) {
         contact.isStudent = true
         context.newObject(Student).with { student ->

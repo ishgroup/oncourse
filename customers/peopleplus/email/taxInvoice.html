@@ -1,4 +1,9 @@
 ${render("Header", [title: "Tax Invoice"])}
+<!--
+  ~ Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+  ~ No copying or use of this code is allowed without permission in writing from ish.
+  -->
+
 <table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
   <tbody>
     <tr>
@@ -16,7 +21,7 @@ ${render("Header", [title: "Tax Invoice"])}
     </tr>
   </tbody>
 </table>
-<p> Please note this enrolment will be issued with an offical tax invoice after confirmation of attendance. 
+<p> Please note this enrolment will be issued with an offical tax invoice after confirmation of attendance.
 </p>>
 <table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
   <tbody>
@@ -90,13 +95,13 @@ ${render("Header", [title: "Tax Invoice"])}
             <tr class="ish_invoice_footer_total_desc">
               <td colspan="3" class="ish_invoice_footer_row right" style="border:0; border-collapse: collapse; background-color: #fff; border: 0;padding-top: 17px;padding-right: 20px;padding-bottom: 17px; padding-left: 20px; color: #000000  !important; font-weight: normal !important; vertical-align: top;" valign="top" align="right">
                 Less amount paid
-                <br />                            
+                <br />
                 Total owing
               </td>
               <td class="ish_invoice_footer_row right" style="border:0; border-collapse: collapse; background-color: #fff; border: 0;padding-top: 17px;padding-right: 20px;padding-bottom: 17px; padding-left: 20px; color: #000000  !important; font-weight: normal !important; vertical-align: top;" valign="top" align="right"></td>
               <td class="ish_invoice_row right" style="border:0; border-collapse: collapse; background-color: #fff; border: 0;padding-top: 17px;padding-right: 20px;padding-bottom: 17px; padding-left: 20px; color: #000000  !important; font-weight: normal !important; border-left: 1px solid #e9e9e9 !important; vertical-align: top;" valign="top" align="right">
                 ${invoice.totalIncTax.subtract(invoice.amountOwing)}
-                <br />                            
+                <br />
                 ${invoice.amountOwing}
               </td>
             </tr>

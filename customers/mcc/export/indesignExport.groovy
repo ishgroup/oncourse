@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 // We need to create a new builder here with an IndentPrinter that doesn't indent or add new lines
 // This is because inDesign is sensitive to where those new lines are added
 import groovy.xml.MarkupBuilder
@@ -54,7 +59,7 @@ def addChild(parent, xml, courseClasses) {
                                 }
                                 mkp.yield("\t")
                                 Site(cc.room?.site?.name)
- 
+
                             }
                             mkp.yield("\n")
                         }

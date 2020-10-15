@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 import org.apache.commons.io.IOUtils
 import org.apache.commons.lang3.time.DateUtils
 import org.apache.commons.lang3.StringUtils
@@ -34,13 +39,13 @@ def run(args) {
 	 * get start date as previois monday and 00:00:00
 	 */
 	def startDate =  DateUtils.addDays(endDate, -7)
-	
+
 	def q = SelectQuery.query(Invoice)
 	q.andQualifier(Invoice.DATE_DUE.gte(startDate))
 	q.andQualifier(Invoice.DATE_DUE.lt(endDate))
 	q.addOrdering(Invoice.DATE_DUE.asc())
 	q.addOrdering(Invoice.INVOICE_NUMBER.asc())
-	
+
 	def invoices = args.context.select(q)
 
     CellProcessor[] processors = [
@@ -87,18 +92,18 @@ def run(args) {
 			"Description",
 			"Title",
 			"Tax",
-			"Purchase order", 
+			"Purchase order",
 			"Discount",
 			"Account Code",
 			"Account name"
 	]
-	
+
 	def writer = new StringWriter()
 
     def csvWriter = new CsvMapWriter(writer, CsvPreference.STANDARD_PREFERENCE)
-	
+
 	csvWriter.writeHeader(headers)
-	
+
 	invoices.each { invoice ->
 		invoice.invoiceLines.each { invoiceLine ->
 			csvWriter.write([
@@ -127,9 +132,9 @@ def run(args) {
 			], headers, processors)
 		}
 	}
-	
+
 	csvWriter.close()
-	
+
 	sendEmail(endDate.format("yyyy-MM-dd'.csv'"), writer.toString(), "janice.jenkins@westernpower.com.au")
 }
 
@@ -155,6 +160,6 @@ def sendEmail(fileName, data, email_address) throws MessagingException {
     } else {
         email.addPart("text/html", "There is nothing for export.")
     }
-    
+
     email.send()
 }

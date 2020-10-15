@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 package ish.oncourse.server.replication.updaters
 
 import ish.oncourse.server.cayenne.Article
@@ -12,7 +17,7 @@ class ArticleUpdater extends AbstractProductItemUpdater<ArticleStub, Article> {
 	@Override
 	protected void updateEntity(ArticleStub stub, Article entity, RelationShipCallback callback) {
 		super.updateEntity(stub, entity, callback)
-		
+
 		entity.setProduct(callback.updateRelationShip(stub.getProductId(), ArticleProduct.class))
 		entity.setContact(callback.updateRelationShip(stub.getContactId(), Contact.class))
 	}

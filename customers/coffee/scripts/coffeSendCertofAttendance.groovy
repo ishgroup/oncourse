@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 def run(args) {
 
   def toDate = new Date().clearTime()
@@ -6,7 +11,7 @@ def run(args) {
   def yesterdayEnrolments = ObjectSelect.query(Enrolment)
       .where(Enrolment.COURSE_CLASS.dot(CourseClass.IS_CANCELLED).isFalse() )
       .and(Enrolment.COURSE_CLASS.dot(CourseClass.END_DATE_TIME).between( toDate - 1, toDate ) )
-      .and(Enrolment.COURSE_CLASS.dot(CourseClass.COURSE).dot(Course.IS_VET).isFalse() 
+      .and(Enrolment.COURSE_CLASS.dot(CourseClass.COURSE).dot(Course.IS_VET).isFalse()
           .orExp(Enrolment.COURSE_CLASS.dot(CourseClass.COURSE).dot(Course.CODE).eq("AB") )
       )
       .select(args.context)

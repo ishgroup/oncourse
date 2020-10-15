@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 /*(
 enrolmentFile=Please select enrolment CSV file...
 contactFile=Please select contact CSV file...
@@ -21,8 +26,8 @@ def readerEnrolment = new CsvParser(new InputStreamReader(new ByteArrayInputStre
 rowNumber = 0
 
 try {
-    readerContact.eachLine { contactLine -> 
-        
+    readerContact.eachLine { contactLine ->
+
         rowNumber++
         def contact = context.newObject(Contact)
         contact.firstName = contactLine.FirstName ?: ""
@@ -39,23 +44,23 @@ try {
 
         def student = context.newObject(Student)
         student.contact = contact
-        contact.student = student           
+        contact.student = student
         // student.indigenousStatus = AvetmissStudentIndigenousStatus.values().find { value -> value.databaseValue == Integer.valueOf(contactLine.IndigenousStatus) } ?: student.indigenousStatus
         // student.priorEducationCode = AvetmissStudentPriorEducation.values().find { value -> value.databaseValue == Integer.valueOf(contactLine.PriorEducationalAchievement) } ?: student.priorEducationCode
         // Language languageSpokenAtHome = ObjectSelect.query(Language.class).where(Language.NAME.likeIgnoreCase(contactLine.Language)).selectFirst(context)
         // student.setLanguage(languageSpokenAtHome)
         // Country countryOfBirth = ObjectSelect.query(Country.class).where(Country.NAME.eq(contactLine.CountryOfBirth)).selectFirst(context)
-        // student.setCountryOfBirth(countryOfBirth)       
+        // student.setCountryOfBirth(countryOfBirth)
 
         readerEnrolment.eachLine { enrolmentLine ->
             if(contactLine.ID == enrolmentLine.ClientID) {
-                
+
                 if(enrolmentLine.Category) {
                     context.newObject(ContactCustomField).with { customField ->
                     CustomFieldType cft = ObjectSelect.query(CustomFieldType).where(CustomFieldType.KEY.eq('category')).selectOne(context)
                     customField.customFieldType = cft
                     customField.relatedObject = contact
-                    customField.value = enrolmentLine.Category 
+                    customField.value = enrolmentLine.Category
                     }
                 }
 
@@ -65,7 +70,7 @@ try {
                     contactNoteRelation.note = note
                     contactNoteRelation.notableEntity = contact
                     note.note = enrolmentLine.note
-                }           
+                }
             }
         }
     }
@@ -81,7 +86,7 @@ def processDate(date) {
 
     if(Integer.valueOf(dateArray[2]) >= 2018) {
         dateArray[2] = '1900'
-    } 
+    }
     newDate = dateArray.join('/')
     return newDate
 }

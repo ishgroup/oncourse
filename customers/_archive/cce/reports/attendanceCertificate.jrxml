@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+  ~ No copying or use of this code is allowed without permission in writing from ish.
+  -->
+
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="attendanceCertificate" pageWidth="573" pageHeight="842" columnWidth="515" leftMargin="29" rightMargin="29" topMargin="21" bottomMargin="50" whenResourceMissingType="Empty">
 	<property name="name" value="AttendanceCertificate(CCE)"/>
 	<property name="entity" value="Enrolment"/>

@@ -1,5 +1,6 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
  */
 package ish.oncourse.server.replication.updaters
 
@@ -27,6 +28,6 @@ class DocumentVersionUpdater extends AbstractAngelUpdater<DocumentVersionStub, D
 		entity.setDocument(callback.updateRelationShip(stub.getDocumentId(), Document.class))
 		entity.setDescription(stub.getDescription())
 		entity.setCreatedByUser(callback.updateRelationShip(stub.getCreatedByUserId(), SystemUser.class))
-		
+
 	}
 }

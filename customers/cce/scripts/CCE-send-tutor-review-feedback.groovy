@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 def run(args) {
 	def today = new Date()
 	today.set(hourOfDay: 0, minute: 0, second:0 )
@@ -9,12 +14,12 @@ def run(args) {
 
 
 	classes.each { cc ->
-		
+
 		def surveys =  []
 		cc.successAndQueuedEnrolments.each { e ->
-			surveys.addAll(e.surveys) 
-		} 
-		
+			surveys.addAll(e.surveys)
+		}
+
 
 		if (surveys.size() > 0) {
 			cc.tutorRoles.each { tr ->
@@ -27,4 +32,4 @@ def run(args) {
 			}
 		}
 	}
-}		
+}

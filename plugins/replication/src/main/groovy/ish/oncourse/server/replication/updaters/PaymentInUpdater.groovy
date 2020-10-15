@@ -1,5 +1,5 @@
-/**
- * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 package ish.oncourse.server.replication.updaters
@@ -48,11 +48,11 @@ class PaymentInUpdater extends AbstractAngelUpdater<PaymentInStub, PaymentIn> {
 				default:
 					throw new IllegalArgumentException("Unsupported type for web PaymentIn willowID:" + entity.getWillowId())
 			}
-			
+
 		} else if (entity.getPaymentMethod() == null) {
 			throw new IllegalArgumentException("PaymentMethod is not represented for PaymentIn willowID:" + entity.getWillowId())
 		}
-		
+
 		entity.setStatus(TypesUtil.getEnumForDatabaseValue(stub.getStatus(), PaymentStatus.class))
 		entity.setSource(TypesUtil.getEnumForDatabaseValue(stub.getSource(), PaymentSource.class))
 		entity.setGatewayReference(stub.getGatewayReference())
@@ -70,7 +70,7 @@ class PaymentInUpdater extends AbstractAngelUpdater<PaymentInStub, PaymentIn> {
 			entity.setConfirmationStatus(TypesUtil.getEnumForDatabaseValue(stub.getConfirmationStatus(), ConfirmationStatus.class))
 		}
 		entity.setBillingId(stub.getBillingId())
-		
+
 		if (entity.getPaymentDate() == null) {
 			entity.setPaymentDate(stub.getCreated().toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
 		}

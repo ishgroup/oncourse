@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 use (groovy.time.TimeCategory) {
 	def now = LocalDate.now()
 	def reportStart = now - 365
@@ -25,10 +30,10 @@ use (groovy.time.TimeCategory) {
 
 		csv << [
 				"Code"                        						: m.nationalCode,
-				"Title of unit of competency"             : m.title,			
+				"Title of unit of competency"             : m.title,
 				"Number of Current Enrolments"            : recentEnrolmentCount,
 				"Number statements of attainment issued in last 12 months"   : recentCertificateCount,
-				"Principal Funding Source"                : recentEnrolments*.fundingSource*.displayName?.flatten()?.countBy{it}?.max{ it.value }?.key ?: "No data in last 12 months",			
+				"Principal Funding Source"                : recentEnrolments*.fundingSource*.displayName?.flatten()?.countBy{it}?.max{ it.value }?.key ?: "No data in last 12 months",
 				"Delivery Venues"					                : recentClasses*.room*.site.flatten().findAll{it}.collect{ it.suburb + "-" + it.state }.unique().join("; ") ?: "No data in last 12 months",
 				"Principal Delivery Mode"                 : recentClasses*.deliveryMode?.countBy{it}?.max{ it.value }?.key?.displayName ?: "No data in last 12 months",
 				"Partnership / Subcontract Arrangements"  : "",

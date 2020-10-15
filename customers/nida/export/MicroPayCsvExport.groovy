@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 def exportMap = [
         '01.24.2802.000/NZ1CB0P01' : 'CP PUBLIC COURSE',
         '01.24.2801.000/NV1CB0P01' : 'CP PUBLIC COURSE',
@@ -69,7 +74,7 @@ def getCostAccount(payLine) {
     def code = payLine.classCost?.courseClass?.course?.code
     def payrollRef = payLine.payslip.contact.tutor.payrollRef
     def state = payLine.classCost?.courseClass?.room?.site?.state
-    
+
     code?.startsWith("O") && payrollRef?.matches("^[a-zA-Z0-9].*") ?
             "C-083-CASAL - ${state}" :
             code?.startsWith("C") && payrollRef?.matches("^[a-zA-Z0-9].*") ?

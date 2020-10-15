@@ -1,6 +1,11 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 //test
 def run(args) {
-  def dayAfterTomorrowStart = new Date() 
+  def dayAfterTomorrowStart = new Date()
   dayAfterTomorrowStart.set(hourOfDay: 0, minute: 0, second: 0)
 
   def dayAfterTomorrowEnd = new Date() + 4
@@ -15,7 +20,7 @@ def run(args) {
   def classesStartingTomorrow = context.select(SelectQuery.query(CourseClass, exp))
 
   classesStartingTomorrow.each() { a ->
-      
+
   def cc = a.sessions.courseClass
 
     smtp {
@@ -24,7 +29,7 @@ def run(args) {
       content "Hi" + ",\n\n" + "Please note " + cc.course.name.unique() + " is about to begin." + cc.startDateTime + "\n\n"\
         + "You are currently expecting " + cc.enrolmentsCount.unique() + " students. This number may change if there are further enrolments" + ".\n\n" \
         + "Regards,\n\n"\
-        + "The WEA Hunter team."  
+        + "The WEA Hunter team."
     }
   }
 }

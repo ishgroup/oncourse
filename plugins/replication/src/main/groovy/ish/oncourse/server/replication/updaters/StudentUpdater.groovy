@@ -1,5 +1,5 @@
-/**
- * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 package ish.oncourse.server.replication.updaters
@@ -27,14 +27,14 @@ class StudentUpdater extends AbstractAngelUpdater<StudentStub, Student> {
 		def contactId = stub.getContactId()
 
 		def contact = callback.updateRelationShip(contactId, Contact.class)
-		
+
 		if (contact == null) {
 			final def message = String.format("Failed to process Student: willowId=%d, related Contact: willowId=%d does not exist on angel", stub.getWillowId(), stub.getContactId())
 			throw new IllegalArgumentException(message)
 		} else {
 			entity.setContact(contact)
 		}
-		
+
 		Country country = null
 		def countryId = stub.getCountryOfBirthId()
 		if (countryId != null) {
@@ -70,6 +70,6 @@ class StudentUpdater extends AbstractAngelUpdater<StudentStub, Student> {
 		if (stub.getUsiStatus() != null) {
 			entity.setUsiStatus(TypesUtil.getEnumForDatabaseValue(stub.getUsiStatus(), UsiStatus.class))
 		}
-		
+
 	}
 }

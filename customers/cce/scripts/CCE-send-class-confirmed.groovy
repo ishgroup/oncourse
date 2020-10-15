@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 def run(args) {
     List<CourseClass> classes = ObjectSelect.query(CourseClass)
             .select(args.context)
@@ -21,7 +26,7 @@ def run(args) {
                     .where(Message.CREATOR_KEY.eq(MessageUtils.generateCreatorKey("send-class-confirmed", courseClass)))
                     .orderBy(Message.ID.desc())
                     .selectFirst(args.context)
-            
+
             if (lastStudentMessage){
 
                 String prefix = "class not viable natalia.borisova@sydney.edu.au"
@@ -30,7 +35,7 @@ def run(args) {
                         .where(Message.CREATOR_KEY.eq(messageUniqueKey))
                         .orderBy(Message.ID.desc())
                         .selectFirst(args.context)
-                
+
                 if (!lastAdminMessage || lastAdminMessage.getCreatedOn() < lastStudentMessage.getCreatedOn()) {
                     email {
                         from "info@sydney.edu.au"

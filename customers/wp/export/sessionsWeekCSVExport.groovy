@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 records.sort{ it.session.startDatetime }.each { Attendance a ->
 	csv << [
 			"Date" : a.session.startDatetime?.format("d/M/Y", a.session.timeZone),

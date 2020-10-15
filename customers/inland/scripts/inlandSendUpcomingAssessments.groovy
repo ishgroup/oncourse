@@ -1,9 +1,14 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 def run(args) {
-	
-	recipients = [ "admin@communitycollegeni.nsw.edu.au", 
-					"eo@communitycollegeni.nsw.edu.au", 
-					"barraba@communitycollegeni.nsw.edu.au", 
-					"brooke@communitycollegeni.nsw.edu.au", 
+
+	recipients = [ "admin@communitycollegeni.nsw.edu.au",
+					"eo@communitycollegeni.nsw.edu.au",
+					"barraba@communitycollegeni.nsw.edu.au",
+					"brooke@communitycollegeni.nsw.edu.au",
 					"penny@communitycollegeni.nsw.edu.au" ]
 
 	def today = new Date()

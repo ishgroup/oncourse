@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 import ish.math.Money
 import ish.common.types.AccountTransactionType
 import ish.common.types.PaymentType
@@ -37,7 +42,7 @@ class Globals {
 }
 
 class OutputLine {
- 
+
     AccountTransaction transaction
     Account account
     String analysis
@@ -139,7 +144,7 @@ def run(args) {
     if (!dir.exists()) {
         dir.mkdir()
     }
-    
+
     def accountingDate = Globals.today.format('ddMMyyyy')
 
     def fileName = "finance-export/${Globals.JOURNAL_SOURCE}_${accountingDate}_001_${Globals.BUSINESS_UNIT}_${Globals.CURRENCY_CODE}"
@@ -191,7 +196,7 @@ def run(args) {
         } else {
             outputLines.put(line.groupByHash, line)
         }
-        
+
     }
 
     // Collect a list of GST transactions so we can link them to income/liability transactions as appropriate
@@ -252,7 +257,7 @@ def run(args) {
     outputLines = outputLines.findAll { entry ->
         (entry.value.taxAmount && entry.value.taxAmount != 0.0)  || entry.value.amount != 0.0
     }
-     
+
     writer = new File(fileName).newWriter()
     writer.write(writeHeader(outputLines))
 
@@ -272,8 +277,8 @@ def run(args) {
         subject "CCE onCourse Export"
         content debugString
         attachment "CE1_001_UNSYD_AUD", "text/plain",  new File(fileName).text
-    }   
-    
+    }
+
     if (debug) {
         email {
             to "support@ish.com.au"

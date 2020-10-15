@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 def run(args) {
     def dayAfterTomorrowStart = new Date() + 1
     dayAfterTomorrowStart.set(hourOfDay: 0, minute: 0, second: 0)
@@ -17,7 +22,7 @@ def run(args) {
         cc.successAndQueuedEnrolments.size() >= cc.minimumPlaces
     }*.tutorRoles.flatten().each() { role ->
         email {
-            from preference.email.from 
+            from preference.email.from
             to "dhurley@sgscc.edu.au"
             template "Tutor notice of class commencement"
             bindings courseClass: role.courseClass, tutor: role.tutor

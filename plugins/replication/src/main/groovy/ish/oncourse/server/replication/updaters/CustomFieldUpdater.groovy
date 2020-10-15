@@ -1,5 +1,6 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
  */
 package ish.oncourse.server.replication.updaters
 
@@ -16,7 +17,7 @@ class CustomFieldUpdater extends AbstractAngelUpdater<CustomFieldStub, CustomFie
 	protected void updateEntity(CustomFieldStub stub, CustomField entity, RelationShipCallback callback) {
 		entity.setCreatedOn(stub.getCreated())
 		entity.setModifiedOn(stub.getModified())
-		
+
 		entity.setCustomFieldType(callback.updateRelationShip(stub.getCustomFieldTypeId(), CustomFieldType.class))
 
 		entity.setValue(stub.getValue())

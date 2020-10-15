@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 def run(args) {
     Enrolment currentEnrolment = args.value
     String[] PROVIDED_CODES = ['rw2.5m1', 'rw2.5m', 'rw2.5t', 'rw2.5w', 'w5day', 'rw5pm']

@@ -1,5 +1,10 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 def run(args) {
-    
+
     /**
     * Get classes ended yesterday to send feedback form
     */
@@ -16,20 +21,20 @@ def run(args) {
 
     classes.each { cc ->
         def course = cc.course
-        
+
         /**
         * Creates the class list
         */
 
         if (cc.tutorRoles.size() > 0 ) {
             List<CourseClass> cclist = cc?.tutorRoles?.first()?.tutor.courseClasses
-            
+
             // removes classes of the same course the student just completed
             cclist.removeAll { it.course.name.equals(cc.course.name) || (it.startDateTime < endDate) }
             cclist.removeAll { !(it.isShownOnWeb || it.isActive) }
             cclist.sort{ it.startDateTime }
 
-            
+
             if(cclist.size() >= 3){
                 cclist = cclist.subList(0, 3)
             }
@@ -41,7 +46,7 @@ def run(args) {
             def tagPaths = []
 
             def tags =  getSubjects(cc.course.tags)
-            
+
             tags.removeAll{ tag -> !(tag.isWebVisible) }
             tags.each { tag ->
                 def tagpath = tag.pathName.split("-")
@@ -49,21 +54,21 @@ def run(args) {
                 tagPaths << tagString
             }
 
-            cc.successAndQueuedEnrolments.each() { e -> 
+            cc.successAndQueuedEnrolments.each() { e ->
                 email {
                     template "WEA Syd Course Completion 2.0"
                     from "info@weasydney.nsw.edu.au"
                     to e.student.contact
                     bindings enrolment:e, tagPaths: tagPaths, cclist: cclist
                 }
-            } 
+            }
         }
     }
-} 
+}
 
 def getSubjects(List<Tag> tags) {
     tags.findAll { t ->
         t.root.name.equals("Subjects")
     }
     return tags
-}  
+}

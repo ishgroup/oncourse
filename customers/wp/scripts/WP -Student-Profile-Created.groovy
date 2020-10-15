@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 def run(args) {
 
     def contact = args.entity
@@ -21,5 +26,5 @@ def run(args) {
 	    		text "A PTS student profile has just been created for you. Your info may be used as per PTS T&Cs. Phone PTS if this student profile has been created in error 94117888".take(160)
 	    	}
 	    }
-    }    
+    }
 }

@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 import groovy.transform.ToString
 
 import javax.activation.DataHandler
@@ -43,9 +48,9 @@ class iCal {
             b.append("BEGIN:VEVENT\r\n")
             b.append("UID:" + session.id + "\r\n")
             b.append("SUMMARY:"+ session.courseClass.course.name + "\r\n")
-            
+
             if (session.room?.name != null) {
-                b.append("LOCATION:"+ session.room?.name + "\r\n")  
+                b.append("LOCATION:"+ session.room?.name + "\r\n")
             }
             b.append("DESCRIPTION:" + session.courseClass.notes + "\r\n" )
             b.append("DTSTART;VALUE=DATE:" + session.startDatetime.format("YYYYMMdd") + "T" + session.startDatetime.format("HHmmss") + "\r\n" )
@@ -69,7 +74,7 @@ def run(args) {
     courseClass.sessions.each { s ->
         calendar.addSession(s)
     }
-    
+
     String filePrefix = 'icalExport-' + courseClass.course.name
     File exportResult = File.createTempFile(filePrefix, ".ics")
 
@@ -77,7 +82,7 @@ def run(args) {
         String toEmailAddress = preference.email.admin
         //String toEmailAddress = "jackson@ish.com.au"
 
-        
+
         FileWriter fileWriter = new FileWriter(exportResult)
         fileWriter << calendar.toString()
         fileWriter.flush()
@@ -106,7 +111,7 @@ void sendEmail(File exportResult, String toEmailAddress, String courseName) {
     fileBodyPart.setHeader("Content-Transfer-Encoding", "base64")
 
     String message = "Attached iCalendar events exported for ${courseName}"
-    
+
     def messageBodyPart = new MimeBodyPart()
     messageBodyPart.setContent(message,"text/html")
     email.addPart(messageBodyPart)

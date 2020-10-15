@@ -1,5 +1,6 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
  */
 package ish.oncourse.server.replication.builders
 
@@ -11,17 +12,17 @@ class DocumentStubBuilder extends AbstractAngelStubBuilder<Document, DocumentStu
 	@Override
 	protected DocumentStub createFullStub(Document entity) {
 		def stub = new DocumentStub()
-		
+
 		stub.setCreated(entity.getCreatedOn())
 		stub.setModified(entity.getModifiedOn())
-		
+
 		stub.setName(entity.getName())
 		stub.setWebVisible(entity.getWebVisibility().getDatabaseValue())
 		stub.setFileUUID(entity.getFileUUID())
 		stub.setDescription(entity.getDescription())
 		stub.setRemoved(entity.getIsRemoved())
 		stub.setShared(entity.getIsShared())
-		
+
 		return stub
 	}
 }

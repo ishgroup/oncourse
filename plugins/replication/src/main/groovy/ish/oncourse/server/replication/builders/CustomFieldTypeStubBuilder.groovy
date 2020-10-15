@@ -1,5 +1,6 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
  */
 package ish.oncourse.server.replication.builders
 
@@ -11,10 +12,10 @@ class CustomFieldTypeStubBuilder extends AbstractAngelStubBuilder<CustomFieldTyp
 	@Override
 	protected CustomFieldTypeStub createFullStub(CustomFieldType entity) {
 		def stub = new CustomFieldTypeStub()
-		
+
 		stub.setCreated(entity.getCreatedOn())
 		stub.setModified(entity.getModifiedOn())
-		
+
 		stub.setName(entity.getName())
 		stub.setDefaultValue(entity.getDefaultValue())
 		stub.setMandatory(entity.getIsMandatory())

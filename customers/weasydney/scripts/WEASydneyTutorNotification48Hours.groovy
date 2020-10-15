@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 def run(args) {
   def targetDateStart = new Date() + 1
   targetDateStart.set(hourOfDay: 0, minute: 0, second: 0)
@@ -24,7 +29,7 @@ def run(args) {
             template "WEA Sydney Tutor Notification 48 hours"
             bindings role: role, courseClass: c, alertStudents: alertStudents
         }
-      } 
+      }
     }
   args.context.commitChanges()
   }

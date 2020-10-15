@@ -1,7 +1,12 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 /**
 	Collects all classes that have the 'Not Confirmed' status anc checks if they meet two conditions to run
 		1.Meets minimum enrolments (set in onCourse application)
-		2.Makes over the total gross profit floor (set below)	
+		2.Makes over the total gross profit floor (set below)
 
 	Confirmed classes recieve 'Course Information' email three days before class start
 */

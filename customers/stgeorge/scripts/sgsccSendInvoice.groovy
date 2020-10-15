@@ -1,11 +1,16 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 def run(args) {
-	
+
 	def invoice = args.entity
 
 	def enrolmentType
 
 	if ( invoice.confirmationStatus == ConfirmationStatus.NOT_SENT && (!Money.ZERO.equals(invoice.getTotalIncTax())) ) {
-		
+
 		enrolmentType = invoice.contact.tags.find { tag ->
 			tag?.name?.equalsIgnoreCase("Smart and Skilled") || tag?.parentTag?.name?.equalsIgnoreCase("International")
 		}
@@ -22,7 +27,7 @@ def run(args) {
 		if (invoice.corporatePassUsed) {
 			m.to(invoice.contact, invoice.corporatePassUsed.getEmail())
 		} else {
-			m.to(invoice.contact)	
+			m.to(invoice.contact)
 		}
 		m.send()
 		invoice.setConfirmationStatus(ConfirmationStatus.SENT)

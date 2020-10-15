@@ -1,9 +1,14 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 import org.apache.commons.lang3.time.DateUtils
 def run(args) {
 
   EMAIL_ADDRESS = "jacqui.davey@westernpower.com.au"
   RELATION_TYPE_ID = 280
-    
+
   def fromDate = Calendar.instance
   fromDate.set(hourOfDay: 0, minute: 0, second: 0)
   while (fromDate.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
@@ -24,7 +29,7 @@ def run(args) {
   def reportingGroups = [:]
 
   // group the students into a map with the key being the contact responsible for a group of students
-  contacts.each { c -> 
+  contacts.each { c ->
     relatedContacts = c?.getFromContacts().findAll{ it.relationType.id == RELATION_TYPE_ID }*.getFromContact().flatten()
 
     if (relatedContacts.size() == 1) {

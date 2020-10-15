@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 def run(args) {
   def waitingLists = args.context.select(SelectQuery.query(WaitingList))
 
@@ -8,7 +13,7 @@ def run(args) {
     def courseClasses = waitingList.course.courseClasses.findAll() { cc ->
       cc.isActive && cc.isShownOnWeb && cc.successAndQueuedEnrolments.size() < cc.maximumPlaces && (cc.isDistantLearningCourse || today < cc.startDateTime)
     }
-    
+
     if (courseClasses.size() > 0) {
       counter = counter + 1
       email {

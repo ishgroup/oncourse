@@ -1,11 +1,16 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 def run(args) {
-	
+
 	def paySlips = ObjectSelect.query(Payslip).where(Payslip.STATUS.eq(PayslipStatus.APPROVED))
 			.and(Payslip.CONTACT.dot(Contact.TUTOR).dot(Tutor.PAYROLL_REF).isNotNull())
 			.and(Payslip.CONTACT.dot(Contact.TUTOR).dot(Tutor.PAYROLL_REF).nlike('invoice'))
 			.and(Payslip.CONTACT.dot(Contact.TUTOR).dot(Tutor.PAYROLL_REF).nlike('payroll'))
 			.select(args.context)
-	
+
 	if (paySlips.size() > 0) {
 
 		def pay_export = export {

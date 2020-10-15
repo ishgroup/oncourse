@@ -17,6 +17,11 @@ def enrolments = ObjectSelect.query(Enrolment)
 		.and(Enrolment.OUTCOMES.dot(Outcome.MODIFIED_ON).between(lastWeekStart, yesterdayEnd))
 		.select(context);
 
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 // no outcomes have empty or bad status
 enrolments = enrolments.findAll { e ->  e.outcomes.findAll { o -> o.status in badOutcomes }.empty }
 

@@ -1,10 +1,15 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 records.each { Enrolment e ->
 	csv << [
 			"courseCode"                        : e.courseClass.course.code,
 			"classCode"                         : e.courseClass.code,
 			"courseName"                        : e.courseClass.course.name,
 			"classStartDateTime"                : e.courseClass.startDateTime?.format("yyyy-MM-dd hh:mm"),
-			"classEndDateTime"                  : e.courseClass.endDateTime?.format("yyyy-MM-dd hh:mm"), 
+			"classEndDateTime"                  : e.courseClass.endDateTime?.format("yyyy-MM-dd hh:mm"),
 			"enrolmentStatus"                   : e.status.displayName,
 			"studentLastName"                   : e.student.contact.lastName,
 			"studentFirstName"                  : e.student.contact.firstName,

@@ -1,5 +1,5 @@
-/**
- * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 package ish.oncourse.server.replication.updaters
@@ -33,7 +33,7 @@ class PaymentOutUpdater extends AbstractAngelUpdater<PaymentOutStub, PaymentOut>
 		def payee = callback.updateRelationShip(stub.getContactId(), Contact.class)
 		entity.setPayee(payee)
 		entity.setPaymentInGatewayReference(stub.getPaymentInTxnReference())
-		
+
 		if (entity.getId() == null) {
 			switch (TypesUtil.getEnumForDatabaseValue(stub.getType(), PaymentType.class)) {
 				case CREDIT_CARD:
@@ -54,7 +54,7 @@ class PaymentOutUpdater extends AbstractAngelUpdater<PaymentOutStub, PaymentOut>
 		} else if (entity.getPaymentMethod() == null) {
 			throw new IllegalArgumentException("PaymentMethod is not represented for PaymentOut willowID:" + entity.getWillowId())
 		}
-		
+
 		if (stub.getStatus() != null) {
 			entity.setStatus(TypesUtil.getEnumForDatabaseValue(stub.getStatus(), PaymentStatus.class))
 		}

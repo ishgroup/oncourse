@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 def run(args) {
 
 	def endDate =  new Date()
@@ -15,7 +20,7 @@ def run(args) {
 
 
 
-    allClasses.each { cc -> 
+    allClasses.each { cc ->
         cc.successAndQueuedEnrolments.each { e ->
     		email {
     			to e.student.contact

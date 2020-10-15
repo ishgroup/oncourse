@@ -1,5 +1,10 @@
 ${render("Header", [title: "CCE Certificate available"])}
 
+              <!--
+  ~ Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+  ~ No copying or use of this code is allowed without permission in writing from ish.
+  -->
+
               <!-- Title -->
               <table width="660" border="0" cellspacing="0" cellpadding="0" class="title">
                 <tbody>
@@ -22,7 +27,7 @@ ${render("Header", [title: "CCE Certificate available"])}
 ${render("CCE-Body-Start")}
 <h1> Dear ${enrolment.student.contact.fullName},</h1>
 <p><strong> Thank you for choosing to complete ${enrolment.courseClass.course.name} with CCE. </strong></p>
-<p> Download your <a style="color: #e64626;color: #e64626 !important;background-color: #ffffff;text-decoration: none;border: 0;word-wrap: break-word;" href="${enrolment.student.getPortalLink(document, 14)}" target="_blank">Statement of Attendance and Completion</a> and remember to save it in a safe place. You can then print it off or add it to your LinkedIn profile. </p> 
+<p> Download your <a style="color: #e64626;color: #e64626 !important;background-color: #ffffff;text-decoration: none;border: 0;word-wrap: break-word;" href="${enrolment.student.getPortalLink(document, 14)}" target="_blank">Statement of Attendance and Completion</a> and remember to save it in a safe place. You can then print it off or add it to your LinkedIn profile. </p>
 <p>If you visit this link more than 14 days after the receipt of this email, you will need to follow the login prompts to access your certificate.</p>
 <p> <strong> Add your certificate to your LinkedIn profile - you've earned it! </strong></p>
 <div><a href="https://www.linkedin.com/profile/add?startTask=Centre%20for%20Continuing%20Education" rel="nofollow" target="_blank"><img src="https://cce.sydney.edu.au/s/email/social-linkedin-button.png"></a></div>

@@ -1,5 +1,6 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
  */
 package ish.oncourse.server.replication.updaters
 
@@ -14,10 +15,10 @@ import ish.oncourse.server.cayenne.Student
 import ish.oncourse.webservices.v21.stubs.replication.ApplicationStub
 
 class ApplicationUpdater extends AbstractAngelUpdater<ApplicationStub, Application> {
-	
+
 	@Override
 	protected void updateEntity(ApplicationStub stub, Application entity, RelationShipCallback callback) {
-		
+
 		entity.setStudent(callback.updateRelationShip(stub.getStudentId(), Student.class))
 		entity.setCourse(callback.updateRelationShip(stub.getCourseId(), Course.class))
 		entity.setSource(TypesUtil.getEnumForDatabaseValue(stub.getSource(), PaymentSource.class))

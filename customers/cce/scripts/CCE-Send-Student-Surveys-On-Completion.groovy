@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 /**
 
 OW-2255 // OS-42098
@@ -16,7 +21,7 @@ def run(args) {
             .and(CourseClass.END_DATE_TIME.between(endDate, endDate+1))
             .select(args.context)
 
-    allClasses.each { cc -> 
+    allClasses.each { cc ->
         cc.successAndQueuedEnrolments.each { e ->
             email {
                 to e.student.contact

@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 package ish.oncourse.server.replication.updaters
 
 import ish.oncourse.server.cayenne.Field
@@ -20,7 +25,7 @@ class FieldUpdater extends AbstractAngelUpdater<FieldStub, Field> {
 
         def fcClass = FieldConfigurationUtil.getClassByType(stub.getConfigurationType())
         entity.setFieldConfiguration(callback.updateRelationShip(stub.getFieldConfigurationId(), fcClass))
-        
+
         entity.setFieldHeading(callback.updateRelationShip(stub.getFieldHeadingId(), FieldHeading.class))
         entity.setProperty(stub.getProperty())
         entity.setDefaultValue(stub.getDefaultValue())

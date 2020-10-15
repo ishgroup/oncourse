@@ -1,5 +1,5 @@
-/**
- * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 package ish.oncourse.server.replication.builders
@@ -22,7 +22,7 @@ abstract class AbstractProductItemStubBuilder<E extends ProductItem, S extends P
 		stub.setStatus(entity.getStatus().getDatabaseValue())
 		stub.setWillowId(entity.getWillowId())
 		stub.setConfirmationStatus(entity.getConfirmationStatus().getDatabaseValue())
-		
+
 		return stub
 	}
 

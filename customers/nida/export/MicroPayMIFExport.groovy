@@ -58,6 +58,11 @@ def exportMap = [
 csv.delimiter = '\\'
 def now = new Date()
 
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 // output nothing to skip the header generation
 csv.writeHeader = false
 
@@ -85,12 +90,12 @@ records.collectMany { it.paylines }.groupBy { it.payslip?.contact?.tutor?.payrol
         "RDO flag"       : null,
         "recommence date": null
     ]
-    
+
     lines.each { pl ->
-      
+
     if (pl.classCost?.repetitionType == ClassCostRepetitionType.PER_STUDENT_CONTACT_HOUR ||
      pl.classCost?.repetitionType == ClassCostRepetitionType.PER_TIMETABLED_HOUR) {
-      
+
       csv << [
         ""      : null,
         "id"    : "TN",
@@ -142,9 +147,9 @@ def getCostAccount(payLine) {
 
   def state = payLine.classCost?.courseClass?.room?.site?.state
   if(!state) {
-   return "INVALID" 
+   return "INVALID"
   }
-  
+
   if (state.length() == 2) {
     state = state + "U"
   }

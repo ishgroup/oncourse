@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 // Return the first session taught by a tutor
 Session getFirstSession(tutor, courseClass) {
   return courseClass.sessions.findAll { s-> s.tutors.contains(tutor) }.sort { s -> s.startDatetime }.first()
@@ -41,7 +46,7 @@ def run(args) {
               + "Note: Phone messages left out of hours or on personal message banks may not be received until 9am the following day or later. If you are unable to come to work, please ensure the message has been received via the general office numbers above.\n\n" \
               + "Thank you, we hope you enjoy and are rewarded by teaching for NIDA Open.\n\n" \
               + "Regards,\n\n"\
-              + "The NIDA Open team."            
+              + "The NIDA Open team."
           }
         }
       }

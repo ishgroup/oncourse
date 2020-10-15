@@ -1,9 +1,14 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 import groovy.time.TimeCategory
 
 def run(args) {
-    
+
     def courseClass = args.entity
-	
+
 	def last5Mins
 	use( TimeCategory ) {
 		last5Mins = new Date() - 5.minutes
@@ -19,7 +24,7 @@ def run(args) {
 
 
 	def cancelledEnrolments = Enrolment.STATUS.in(EnrolmentStatus.CANCELLED, EnrolmentStatus.REFUNDED).andExp(Enrolment.MODIFIED_ON.gte(last5Mins)).filterObjects(courseClass.getEnrolments())
-	
+
 	/**
 	*	If a class is cancelled without having a cancelled childtag applied, attached the 'Cancelled' tag
     *   hasTag(path, isSearchWithChildren) - Check to see whether this object has this tag or it's child tag.
@@ -33,22 +38,22 @@ def run(args) {
 	}
 
 	def t = courseClass.tags.find { Tag tag -> tag.name.startsWith('Cancelled:') }
-	
+
 	/**
 	*	Class cancelled email to students enrolled in class
 	*	Credit note sent to student by 'send invoice' script <- must be enabled
 	*/
 	cancelledEnrolments.each { e ->
-		
+
 		email {
-            template "CCE Class Cancelled Student" 
+            template "CCE Class Cancelled Student"
             to e.student.contact
             cc "jackson@ish.com.au"
             bindings enrolment : e, tag : t
         }
     }
 
-    /**	
+    /**
     *	Email to tutor of class
     */
     courseClass?.tutorRoles.each { tr ->

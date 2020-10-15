@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 def grandTotalUnit = 0
 def grandTotalValue = Money.ZERO
 
@@ -13,7 +18,7 @@ records.collectMany { Payslip p -> p.paylines }
         a1 = a?.classCost?.courseClass?.incomeAccount?.accountCode
         b1 = b?.classCost?.courseClass?.incomeAccount?.accountCode
 
-        (a1 ? a1.substring(Math.max(0, a1.length() - 3)) : "") <=> (b1 ? b1.substring(Math.max(0, b1.length() - 3)) : "") ?: a.dateFor <=> b.dateFor 
+        (a1 ? a1.substring(Math.max(0, a1.length() - 3)) : "") <=> (b1 ? b1.substring(Math.max(0, b1.length() - 3)) : "") ?: a.dateFor <=> b.dateFor
     }.each { PayLine pl ->
 
         def code = pl?.classCost?.courseClass?.incomeAccount?.accountCode

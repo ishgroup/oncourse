@@ -1,4 +1,9 @@
 ${render("Header", [title: "Reminder: Class starting soon"])}
+<!--
+  ~ Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+  ~ No copying or use of this code is allowed without permission in writing from ish.
+  -->
+
 <table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
     <tbody>
         <tr>
@@ -20,14 +25,14 @@ ${render("Header", [title: "Reminder: Class starting soon"])}
                         Dear ${enrolment.student.contact.fullName}, <br /><br />
                         Just a reminder that your class for ${enrolment.courseClass.course.name} starts at ${enrolment.courseClass.startDateTime.format("h:mm a EEEE d MMMM yyyy zzzz", enrolment.courseClass.getTimeZone())}. <br />
                     </p>
-                    <% if (["3 - William Angliss Institute"].contains(enrolment.courseClass?.room?.site?.name)) { %> 
+                    <% if (["3 - William Angliss Institute"].contains(enrolment.courseClass?.room?.site?.name)) { %>
                     <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
                         The venue for this class is: <strong>${enrolment.courseClass.displayableLocation}.</strong><br/><br/>
                         Please arrive for your class 15 minutes before the start time.<br/><br/>
                         This is a security building, so if you arrive earlier or after the class has started, you may find the front doors locked. If this is the case, please be assured a staff member will check every few minutes to admit new arrivals.<br/><br/>
                         If you need to leave during the class time, please tell your tutor, who will make arrangements for your return.<br/>
                     </p>
-                    <% } else { %> 
+                    <% } else { %>
                     <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
                         The venue for this class is: <strong>${enrolment.courseClass.displayableLocation}.</strong><br/><br/>
                         Please check your room number upon arrival.<br/><br/>

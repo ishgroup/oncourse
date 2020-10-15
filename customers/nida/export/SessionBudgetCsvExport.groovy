@@ -1,11 +1,16 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 records.each { cc ->
 
     Integer sum = cc.sessions.sum { session -> DurationFormatter.parseDurationInMinutes(session.startDatetime, session.endDatetime) }
-    
+
     cc.sessions.sort { s -> s.startDatetime }.each { s ->
-        
+
         Integer minutes = DurationFormatter.parseDurationInMinutes(s.startDatetime, s.endDatetime)
-        
+
         csv << [
                 "Class name"            : s.courseClass.course.name,
                 "Code"                  : s.courseClass.uniqueCode,
@@ -29,6 +34,6 @@ records.each { cc ->
                 "Profit maximum"        : s.courseClass.maximumTotalProfit?.toPlainString(),
                 "Profit budget"         : s.courseClass.budgetedTotalProfit?.toPlainString(),
                 "Profit actual"         : s.courseClass.actualTotalProfit?.toPlainString()
-        ]   
+        ]
     }
 }

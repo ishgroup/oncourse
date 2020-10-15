@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 def run(args) {
 	def dayAfterTomorrowStart = new Date() + 2
 	dayAfterTomorrowStart.set(hourOfDay: 0, minute: 0, second: 0)
@@ -25,9 +30,9 @@ def run(args) {
 				}
 
 				if (role?.tutor?.contact?.mobilePhone != null) {
-					sms { 
-					to role.tutor.contact 
-					text "${courseClass.course.code} class starts ${courseClass.startDateTime.format("h:mm a d MMMM", courseClass.getTimeZone())} at ${courseClass.displayableLocation}" 
+					sms {
+					to role.tutor.contact
+					text "${courseClass.course.code} class starts ${courseClass.startDateTime.format("h:mm a d MMMM", courseClass.getTimeZone())} at ${courseClass.displayableLocation}"
 					}
 				}
 

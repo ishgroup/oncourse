@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 def run(args) {
   def targetDateStart = new Date() + 14
   targetDateStart.set(hourOfDay: 0, minute: 0, second: 0)
@@ -11,12 +16,12 @@ def run(args) {
 
   def classes = args.context.select(SelectQuery.query(CourseClass, exp))
 
-  
+
 
 
   classes.each() { c ->
 
-    
+
     // get a list of students with a non empty specialNeeds field
     def alertStudents = c.successAndQueuedEnrolments.student*.findAll { s -> s.specialNeeds != null  && s.specialNeeds != "" }.flatten()
 
@@ -47,7 +52,7 @@ def run(args) {
             template "WEA Sydney Tutor Notification"
             bindings role: role, courseClass: c, alertStudents: alertStudents
       }
-    } 
+    }
   }
 
   args.context.commitChanges()

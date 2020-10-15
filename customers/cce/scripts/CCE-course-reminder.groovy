@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 def run (args) {
 	def today = new Date()
 	today.set(hourOfDay: 0, minute: 0, second: 0)
@@ -7,7 +12,7 @@ def run (args) {
 	    .and(CourseClass.START_DATE_TIME.between(today + 3, today + 4))
 	    .select(args.context)
 
-    classes.findAll { cc -> cc.hasTag("Programs/Confirmed") }   
+    classes.findAll { cc -> cc.hasTag("Programs/Confirmed") }
 
     classes.each { cc ->
     	cc.successAndQueuedEnrolments.each { e ->
@@ -17,7 +22,7 @@ def run (args) {
     			to e.student.contact
     		}
     	}
-        
+
         cc?.tutorRoles.each { tr ->
             email {
                 template "CCE Course Reminder Tutor"
