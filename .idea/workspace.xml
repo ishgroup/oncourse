@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="464eb329-4356-4dd0-ae52-6b59f92ddf6a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/xero" beforeDir="true" afterPath="$PROJECT_DIR$/plugins/xero" afterDir="true" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,7 +73,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1602750430301</updated>
-      <workItem from="1602750432165" duration="7890000" />
+      <workItem from="1602750432165" duration="8678000" />
     </task>
     <task id="LOCAL-00001" summary="put gradle/idea settings under version control">
       <created>1602752538032</created>
@@ -103,7 +103,14 @@
       <option name="project" value="LOCAL" />
       <updated>1602758545028</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="download latest server snapshot, unpack, and move all /libs/on classpath">
+      <created>1602760113031</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1602760113031</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -114,20 +121,21 @@
     <MESSAGE value="define common gradle configs: dependencies/publications" />
     <MESSAGE value="fix module's settings" />
     <MESSAGE value="add cayenne plugin dependency. Add correct maven repositories" />
-    <option name="LAST_COMMIT_MESSAGE" value="add cayenne plugin dependency. Add correct maven repositories" />
+    <MESSAGE value="download latest server snapshot, unpack, and move all /libs/on classpath" />
+    <option name="LAST_COMMIT_MESSAGE" value="download latest server snapshot, unpack, and move all /libs/on classpath" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="399" y="139" key="CommitChangelistDialog2" timestamp="1602760105162">
+    <state x="399" y="139" key="CommitChangelistDialog2" timestamp="1602761070968">
       <screen x="65" y="23" width="1615" height="1027" />
     </state>
-    <state x="399" y="139" key="CommitChangelistDialog2/65.23.1615.1027@65.23.1615.1027" timestamp="1602760105162" />
+    <state x="399" y="139" key="CommitChangelistDialog2/65.23.1615.1027@65.23.1615.1027" timestamp="1602761070968" />
     <state x="360" y="118" key="SettingsEditor" timestamp="1602756593011">
       <screen x="65" y="23" width="1615" height="1027" />
     </state>
     <state x="360" y="118" key="SettingsEditor/65.23.1615.1027@65.23.1615.1027" timestamp="1602756593011" />
-    <state x="683" y="389" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1602755985256">
+    <state x="683" y="389" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1602761094110">
       <screen x="65" y="23" width="1615" height="1027" />
     </state>
-    <state x="683" y="389" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/65.23.1615.1027@65.23.1615.1027" timestamp="1602755985256" />
+    <state x="683" y="389" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/65.23.1615.1027@65.23.1615.1027" timestamp="1602761094110" />
   </component>
 </project>

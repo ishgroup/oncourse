@@ -27,7 +27,13 @@ subprojects {
     sourceCompatibility = 11
     repositories {
         maven {
-            url 'https://repo.ish.com.au/repository/ish-snapshots/'
+            url 'https://repo.ish.com.au/repository/ish-snapshots'
+        }
+        maven {
+            url 'https://repo.ish.com.au/repository/public'
+        }
+        maven {
+            url 'https://repo.ish.com.au/repository/ish'
         }
         
     }
