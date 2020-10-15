@@ -1,0 +1,15 @@
+pluginManagement {
+    repositories {
+        maven {
+            url 'https://repo.ish.com.au/content/groups/public'
+        }
+        maven {
+            url 'https://repo.ish.com.au/content/groups/ish'
+        }
+    }
+}
+
+rootProject.name = 'onCourse commercial'
+include ':plugins:xero'
+
+enableFeaturePreview('GROOVY_COMPILATION_AVOIDANCE')
