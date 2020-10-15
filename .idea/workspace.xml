@@ -2,15 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="464eb329-4356-4dd0-ae52-6b59f92ddf6a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/xero/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/xero/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,6 +41,9 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
     <property name="show.unlinked.gradle.project.popup" value="true" />
   </component>
   <component name="SvnConfiguration" cleanupOnStartRun="true">
@@ -76,7 +75,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1602750430301</updated>
-      <workItem from="1602750432165" duration="4480000" />
+      <workItem from="1602750432165" duration="6455000" />
     </task>
     <task id="LOCAL-00001" summary="put gradle/idea settings under version control">
       <created>1602752538032</created>
@@ -85,7 +84,21 @@
       <option name="project" value="LOCAL" />
       <updated>1602752538032</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="define common gradle configs: dependencies/publications">
+      <created>1602756138028</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1602756138028</updated>
+    </task>
+    <task id="LOCAL-00003" summary="fix module's settings">
+      <created>1602756655028</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1602756655028</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -93,13 +106,19 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="put gradle/idea settings under version control" />
-    <option name="LAST_COMMIT_MESSAGE" value="put gradle/idea settings under version control" />
+    <MESSAGE value="define common gradle configs: dependencies/publications" />
+    <MESSAGE value="fix module's settings" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix module's settings" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="399" y="139" key="CommitChangelistDialog2" timestamp="1602752504961">
+    <state x="399" y="139" key="CommitChangelistDialog2" timestamp="1602756644817">
       <screen x="65" y="23" width="1615" height="1027" />
     </state>
-    <state x="399" y="139" key="CommitChangelistDialog2/65.23.1615.1027@65.23.1615.1027" timestamp="1602752504961" />
+    <state x="399" y="139" key="CommitChangelistDialog2/65.23.1615.1027@65.23.1615.1027" timestamp="1602756644817" />
+    <state x="360" y="118" key="SettingsEditor" timestamp="1602756593011">
+      <screen x="65" y="23" width="1615" height="1027" />
+    </state>
+    <state x="360" y="118" key="SettingsEditor/65.23.1615.1027@65.23.1615.1027" timestamp="1602756593011" />
     <state x="683" y="389" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1602755985256">
       <screen x="65" y="23" width="1615" height="1027" />
     </state>

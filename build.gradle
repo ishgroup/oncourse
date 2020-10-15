@@ -1,5 +1,21 @@
 apply plugin: 'idea'
 
+buildscript {
+    ext {
+        cayenneVersion = '4.1'
+    }
+
+    repositories {
+        maven {
+            url 'https://repo.ish.com.au/content/groups/public'
+        }
+    }
+
+    dependencies {
+        classpath "org.apache.cayenne.plugins:cayenne-gradle-plugin:$cayenneVersion"
+    }
+}
+
 subprojects {
     apply plugin: 'java'
     apply plugin: 'groovy'
@@ -7,15 +23,14 @@ subprojects {
     apply plugin: 'java-library'
     apply plugin: 'maven-publish'
     
+
+    sourceCompatibility = 11
     repositories {
         maven {
-            url 'https://repo.ish.com.au/content/groups/public'
+            url 'https://repo.ish.com.au/content/repositories/ish-snapshots'
         }
-        maven {
-            url 'https://repo.ish.com.au/content/groups/ish'
-        }
+        
     }
-    sourceCompatibility = 11
     
     dependencies {
         implementation "ish.oncourse.angel:server:99-SNAPSHOT"

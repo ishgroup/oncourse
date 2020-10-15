@@ -11,9 +11,8 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/plugins" />
-            <option value="$PROJECT_DIR$/plugins/xero," />
-            <option value="$PROJECT_DIR$/plugins/xero,/plugins" />
-            <option value="$PROJECT_DIR$/plugins/xero,/plugins/replication" />
+            <option value="$PROJECT_DIR$/plugins/replication" />
+            <option value="$PROJECT_DIR$/plugins/xero" />
           </set>
         </option>
         <option name="useAutoImport" value="true" />
