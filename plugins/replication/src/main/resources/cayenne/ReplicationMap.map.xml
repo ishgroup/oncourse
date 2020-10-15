@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+  ~ No copying or use of this code is allowed without permission in writing from ish.
+  -->
+
+<data-map xmlns="http://cayenne.apache.org/schema/10/modelMap"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://cayenne.apache.org/schema/10/modelMap https://cayenne.apache.org/schema/10/modelMap.xsd"
+          project-version="10">
+    <property name="defaultPackage" value="ish.oncourse.server.cayenne"/>
+    <db-entity name="QueuedRecord">
+        <db-attribute name="action" type="VARCHAR" length="25"/>
+        <db-attribute name="createdOn" type="TIMESTAMP"/>
+        <db-attribute name="errorMessage" type="VARCHAR" length="1024"/>
+        <db-attribute name="foreignRecordId" type="BIGINT" isMandatory="true"/>
+        <db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+        <db-attribute name="lastAttemptOn" type="DATE"/>
+        <db-attribute name="modifiedOn" type="TIMESTAMP"/>
+        <db-attribute name="numberOfAttempts" type="INTEGER" isMandatory="true"/>
+        <db-attribute name="tableName" type="VARCHAR" isMandatory="true" length="40"/>
+        <db-attribute name="transactionId" type="BIGINT" length="100"/>
+        <db-attribute name="willowId" type="BIGINT"/>
+    </db-entity>
+    <db-entity name="QueuedTransaction">
+        <db-attribute name="createdOn" type="TIMESTAMP"/>
+        <db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+        <db-attribute name="modifiedOn" type="TIMESTAMP"/>
+        <db-attribute name="transactionKey" type="VARCHAR" isMandatory="true" length="100"/>
+    </db-entity>
+    <obj-entity name="QueuedRecord" className="ish.oncourse.server.cayenne.QueuedRecord" clientClassName="ish.oncourse.cayenne.QueuedRecord" dbEntityName="QueuedRecord" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
+        <obj-attribute name="action" type="ish.oncourse.cayenne.QueuedRecordAction" db-attribute-path="action"/>
+        <obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
+        <obj-attribute name="errorMessage" type="java.lang.String" db-attribute-path="errorMessage"/>
+        <obj-attribute name="foreignRecordId" type="java.lang.Long" db-attribute-path="foreignRecordId"/>
+        <obj-attribute name="lastAttemptOn" type="java.util.Date" db-attribute-path="lastAttemptOn"/>
+        <obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
+        <obj-attribute name="numberOfAttempts" type="java.lang.Integer" db-attribute-path="numberOfAttempts"/>
+        <obj-attribute name="tableName" type="java.lang.String" db-attribute-path="tableName"/>
+        <obj-attribute name="transactionId" type="java.lang.Long" db-attribute-path="transactionId"/>
+        <obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
+        <pre-remove method-name="onPreRemove"/>
+    </obj-entity>
+    <obj-entity name="QueuedTransaction" className="ish.oncourse.server.cayenne.QueuedTransaction" clientClassName="ish.oncourse.cayenne.QueuedTransaction" dbEntityName="QueuedTransaction" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
+        <obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
+        <obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
+        <obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
+        <obj-attribute name="transactionKey" type="java.lang.String" db-attribute-path="transactionKey"/>
+    </obj-entity>
+    <db-relationship name="queuedTransaction" source="QueuedRecord" target="QueuedTransaction">
+        <db-attribute-pair source="transactionId" target="id"/>
+    </db-relationship>
+    <db-relationship name="queuedRecords" source="QueuedTransaction" target="QueuedRecord" toMany="true">
+        <db-attribute-pair source="id" target="transactionId"/>
+    </db-relationship>
+    <obj-relationship name="queuedTransaction" source="QueuedRecord" target="QueuedTransaction" deleteRule="Nullify" db-relationship-path="queuedTransaction"/>
+    <obj-relationship name="queuedRecords" source="QueuedTransaction" target="QueuedRecord" deleteRule="Cascade" db-relationship-path="queuedRecords"/>
+</data-map>

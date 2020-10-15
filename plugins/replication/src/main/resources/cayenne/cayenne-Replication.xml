@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<domain xmlns="http://cayenne.apache.org/schema/10/domain"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://cayenne.apache.org/schema/10/domain https://cayenne.apache.org/schema/10/domain.xsd"
+        project-version="10">
+    <property name="cayenne.DataDomain.queryCacheFactory" value="org.apache.cayenne.cache.OSQueryCacheFactory"/>
+    <property name="cayenne.DataRowStore.EventBridge.factory" value="org.apache.cayenne.event.JavaGroupsBridgeFactory"/>
+    <property name="cayenne.DataRowStore.snapshot.size" value="25000"/>
+    <property name="cayenne.JavaGroupsBridge.mcast.address" value="228.0.0.4"/>
+    <map name="ReplicationMap"/>
+    <node name="ReplicationNode"
+          schema-update-strategy="org.apache.cayenne.access.dbsync.SkipSchemaUpdateStrategy">
+        <map-ref name="ReplicationMap"/>
+        <data-source>
+            <driver value="org.apache.derby.jdbc.EmbeddedDriver"/>
+            <url value="jdbc:derby:memory:testdb;create=true"/>
+            <connectionPool min="1" max="1"/>
+            <login/>
+        </data-source>
+    </node>
+</domain>

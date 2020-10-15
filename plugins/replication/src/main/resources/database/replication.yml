@@ -1,0 +1,100 @@
+databaseChangeLog:
+  - changeSet:
+      id: replication
+      author: ari
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            tableName: QueuedRecord
+      changes:
+
+        - createTable:
+            tableName: QueuedTransaction
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: createdOn
+                  type: TIMESTAMP
+              - column:
+                  name: modifiedOn
+                  type: TIMESTAMP
+              - column:
+                  name: transactionKey
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: QueuedRecord
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: createdOn
+                  type: DATETIME
+              - column:
+                  name: modifiedOn
+                  type: DATETIME
+              - column:
+                  name: foreignRecordId
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: lastAttemptOn
+                  type: date
+              - column:
+                  name: numberOfAttempts
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: tableName
+                  type: VARCHAR(40)
+              - column:
+                  name: action
+                  type: VARCHAR(32)
+              - column:
+                  name: errorMessage
+                  type: VARCHAR(1024)
+              - column:
+                  name: willowId
+                  type: BIGINT
+              - column:
+                  name: transactionId
+                  type: BIGINT
+                  constraints:
+                    foreignKeyName: QueuedTransaction
+                    references: QueuedTransaction(id)
+
+        - createIndex:
+            columns:
+              - column:
+                  defaultValueComputed: 'NULL'
+                  name: transactionId
+            indexName: queuedrecord_ibfk_1
+            tableName: QueuedRecord
+
+        - addForeignKeyConstraint:
+            baseColumnNames: transactionId
+            baseTableName: QueuedRecord
+            constraintName: queuedrecord_ibfk_1
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: QueuedTransaction
+            validate: true
