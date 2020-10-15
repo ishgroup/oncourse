@@ -1,0 +1,28 @@
+${render("Header")}
+
+Dear ${membership.contact.firstName},
+
+Thanks for joining the Sydney Community College membership program – it’s great to have you on board!
+
+<% if (membership.product.sku == "GOLD") { %>
+This program will give you unlimited access to any of our classes for one whole year until ${membership.expiryDate}
+
+Please follow this link for Terms & Conditions | https://www.sydneycommunitycollege.edu.au/policies/membership
+
+Enrol now in any eligible class and you’ll see the 100% discount apply automatically | https://www.sydneycommunitycollege.edu.au/courses/unlimited.learning/gold.membership
+
+<% } else { %>
+
+This program will give you unlimited access to a wide selection of classes for one whole year until ${membership.expiryDate}
+
+Please follow this link for Terms & Conditions | https://www.sydneycommunitycollege.edu.au/policies/membership
+
+Enrol now in any eligible class and you’ll see the 100% discount apply automatically. | https://www.sydneycommunitycollege.edu.au/courses/unlimited.learning/silver.membership 
+
+<% } %>
+
+We hope you enjoy your membership learning experience with Sydney Community College.
+
+See you in class!
+
+${render("Footer")}

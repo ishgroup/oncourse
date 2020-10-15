@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CertificateAttainmentReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="517" leftMargin="39" rightMargin="39" topMargin="28" bottomMargin="39" whenResourceMissingType="Empty" uuid="6fb605b7-2bf2-46d1-8131-f4ad03f6f727">
+	<property name="name" value="WRCC Certificate-Attainment"/>
+	<property name="entity" value="Certificate"/>
+	<property name="isSubreport" value="false"/>
+	<property name="isVisible" value="true"/>
+	<property name="versionNumber" value="23"/>
+	<property name="keyCode" value="wrcc.onCourse.certificate.attainment"/>
+	<property name="ish.oncourse.title" value="Certificate"/>
+	<property name="ish.oncourse.filePrefix" value="certificate"/>
+	<property name="ish.oncourse.description" value="Western Riverina customised Certificate Attainment report."/>
+	<property name="ish.oncourse.pdfFileName" value="Certificate.pdf"/>
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="380"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<import value="org.apache.commons.lang.time.DateUtils"/>
+	<import value="org.apache.commons.lang3.StringUtils"/>
+	<style name="Report_Name" isDefault="true" fontName="Open Sans Condensed Light" fontSize="18" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+	<style name="Column_Header" fontName="Open Sans Condensed Light" fontSize="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+	<style name="Column_Field" fontName="Open Sans Condensed Light" fontSize="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+	<style name="Footer" fontName="Open Sans Condensed Light" fontSize="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+	<parameter name="ReportName" class="java.lang.String"/>
+	<field name="certificate" class="ish.oncourse.server.cayenne.Certificate"/>
+	<field name="student.contact.firstName" class="java.lang.String"/>
+	<field name="student.contact.middleName" class="java.lang.String"/>
+	<field name="student.contact.lastName" class="java.lang.String"/>
+	<field name="qualification.title" class="java.lang.String"/>
+	<field name="pref.avetmiss.address.postcode" class="java.lang.String"/>
+	<field name="datasource.successfulOutcomes" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<field name="subreport.wrcc.onCourse.certificate.attainment.subreport" class="net.sf.jasperreports.engine.JasperReport"/>
+	<field name="createdOn" class="java.util.Date"/>
+	<field name="printedOn" class="java.util.Date"/>
+	<field name="certificateNumber" class="java.lang.Long"/>
+	<field name="image.logo-nrt" class="java.io.InputStream"/>
+	<field name="image.logo-VETAB" class="java.io.InputStream"/>
+	<field name="qualification.nationalCode" class="java.lang.String"/>
+	<field name="qualification.level" class="java.lang.String"/>
+	<field name="publicNotes" class="java.lang.String"/>
+	<field name="pref.avetmiss.certificate.signatory.name" class="java.lang.String"/>
+	<field name="pref.avetmiss.collegename" class="java.lang.Object"/>
+	<field name="pref.avetmiss.identifier" class="java.lang.Object"/>
+	<field name="completeQualification" class="java.lang.Boolean"/>
+	<filterExpression><![CDATA[!($F{completeQualification})]]></filterExpression>
+	<pageHeader>
+		<band height="291" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-9" style="Column_Header" x="-10" y="241" width="515" height="30" uuid="271aa27c-3aa2-4c3a-89c8-427d37d03185"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="20" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{student.contact.firstName} + (StringUtils.isBlank($F{student.contact.middleName}) ? "" : (" " + $F{student.contact.middleName})) + " " + $F{student.contact.lastName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-1" style="Column_Header" x="-8" y="193" width="129" height="15" uuid="7c6d56dc-a216-4bea-9f12-ea8ba5641339"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Open Sans Condensed Light" size="10" isBold="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[THIS IS TO CERTIFY THAT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-1" style="Column_Header" x="461" y="193" width="69" height="15" uuid="0e43f612-947e-4fa8-bd45-8cc07ff890b7"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Open Sans Condensed Light" size="10" isBold="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[RTO NO 1252]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-1" style="Column_Header" x="-8" y="276" width="129" height="15" uuid="ff49e3cd-a1c0-4b2a-9de8-26424bc67134"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Open Sans Condensed Light" size="10" isBold="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[HAS ATTAINED]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="143" splitType="Stretch">
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-2" stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" mode="Transparent" x="-10" y="0" width="515" height="143" isRemoveLineWhenBlank="true" uuid="25521124-94f8-44ca-8c00-feed9fbca499"/>
+				<dataSourceExpression><![CDATA[$F{datasource.successfulOutcomes}]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$F{subreport.wrcc.onCourse.certificate.attainment.subreport}]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="341" splitType="Stretch">
+			<textField evaluationTime="Report" isBlankWhenNull="true">
+				<reportElement key="textField" style="Footer" positionType="FixRelativeToBottom" isPrintRepeatedValues="false" x="80" y="40" width="212" height="18" uuid="527dff48-bf7e-4296-9adf-8a16b19f770e"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{certificate}.lastOutcome?.endDate.format("dd MMMM yyyy")]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement key="textField" style="Footer" positionType="FixRelativeToBottom" isPrintRepeatedValues="false" x="273" y="128" width="73" height="19" uuid="a090b9d4-a078-4ec6-b3d6-74228f0246b9"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{createdOn}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-17" style="Column_Header" x="454" y="128" width="76" height="19" uuid="d50960d8-a719-4e23-817a-34b3c1b3900a"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{certificateNumber}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-1" style="Column_Header" x="-8" y="2" width="300" height="15" uuid="f9ecd1db-777c-4b31-814d-d1dadeccad7f"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Open Sans Condensed Light" size="10" isBold="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[UNIT/S WERE DELIVERED AND ASSESSED IN ENGLISH]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-1" style="Column_Header" x="-8" y="40" width="88" height="18" uuid="3f975c0a-6c6b-46f4-bb8f-3a645fdb0a0a"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Open Sans Condensed Light" size="10" isBold="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[DATE ACHIEVED:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-1" style="Column_Header" x="201" y="128" width="73" height="19" uuid="2aa626ae-4619-40bb-9633-d89309c5d5df"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Open Sans Condensed Light" size="10" isBold="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[DATE ISSUED:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-1" style="Column_Header" x="358" y="128" width="97" height="19" uuid="e0eacabe-1c0a-4071-9ef2-c804efbc0623"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Open Sans Condensed Light" size="10" isBold="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[STATEMENT ID NO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-1" style="Column_Header" x="-8" y="133" width="78" height="24" uuid="190fb2bb-323e-45fc-bac7-3a8d3a1fc73e"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Open Sans Condensed Light" size="10" isBold="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[DAVID MARTIN CEO WRCC]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-1" style="Column_Header" x="404" y="150" width="126" height="12" uuid="c12364ac-799a-4c39-b34c-d8ff3022a882"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Open Sans Condensed Light" size="7" isBold="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[(Invalid without Common Seal)]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="153" y="70" width="216" height="44" uuid="93a5ebed-9979-4107-935b-d0ec4c764cff"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{publicNotes}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-1" style="Column_Header" x="76" y="172" width="153" height="52" uuid="0ddf8097-4860-4791-b261-9925bfce8277"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Open Sans Condensed Light" size="8" isBold="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[If you require the competencies, learning outcomes or performance requirements for this course, contact Western Riverina Community College.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-1" style="Column_Header" x="76" y="224" width="153" height="12" uuid="ee1c522c-3e42-4045-a68f-c00124501c73"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Open Sans Condensed Light" size="8" isBold="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Issued without alteration or erasure.]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

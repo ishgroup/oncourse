@@ -1,0 +1,11 @@
+${render("Header")}    
+Help us to serve you better. Tell us what you think.
+
+Hello ${enrolment.student.contact.firstName}
+
+We are fully committed to finding new ways to improve our performance. In keeping with this commitment, we'd love to receive feedback on your experience with ${enrolment.courseClass.course.name} in which you were recently enrolled.
+
+Complete our survey. It only takes a minute.
+Please complete our short survey which should take less than 1 minute of your time. Click here to complete the survey now. 
+${enrolment.student.getPortalLink(enrolment, 5)}
+${render("Footer")}

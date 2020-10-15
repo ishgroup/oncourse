@@ -1,0 +1,94 @@
+${render("Header", [title: "Enrolment Confirmation"])}
+<table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+    <tbody>
+        <tr>
+            <td class="ish_content_container center" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 10px;padding-right: 17px;padding-bottom: 10px;padding-left: 17px;" align="left">
+                <div class="ish_text_container">
+                    <h2 style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 18px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;font-weight: normal;font-style: normal;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 125%;margin-top: 0;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;">Enrolment Confirmation: ${enrolment.courseClass.course.name} (${enrolment.courseClass.course.code}-${enrolment.courseClass.code})
+                    </h2>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+    <tbody>
+        <tr>
+            <td class="ish_content_container left" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 0;padding-right: 17px;padding-bottom: 10px;padding-left: 17px; vertical-align: top;" align="left" valign="top">
+                <div class="ish_text_container">
+                    <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                        Dear ${enrolment.student.contact.fullName}, <br />
+                        Thank you for enrolling at <a style="color: #0084b4;color: #0084b4 !important;background-color: #ffffff;text-decoration: none;border: 0;word-wrap: break-word;" href="${Preferences.get("web.url")}" target="_blank">${Preferences.get("college.name")}</a>
+                    </p>
+                    <% if (enrolment.courseClass.course.modules.size() > 0) { %>
+                    <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                        You have enrolled in a Nationally Recognised Training course. We are required to collect some additional information from you as part of the enrolment process.
+                    </p>
+                    <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                        Please visit <a style="color: #0084b4;color: #0084b4 !important;background-color: #ffffff;text-decoration: none;border: 0;word-wrap: break-word;" href="${Preferences.getPortalCensusUrl(enrolment.student)}" target="_blank">${Preferences.getPortalCensusUrl(enrolment.student)}</a> to complete these questions.
+                    </p>
+                     <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                        You are required to supply your Unique Student Identifier (USI) in order to be issued a Statement of Attainment or Qualification on the successful completion of your course.
+                    </p>
+                    <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                        If you do not have a USI you can apply for one via the link above.
+                    </p>
+                    <% } %>
+                    <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                        Important Information about the Class Location: For classes held at WEA Sydney, check the room display board on the ground floor when you arrive in case the room has changed. For courses held outside of WEA, please check our website for any changes the day before your class starts.
+                    </p>
+                    <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                        Please visit <a style="color: #0084b4;color: #0084b4 !important;background-color: #ffffff;text-decoration: none;border: 0;word-wrap: break-word;" href="${Preferences.get("web.url")}/class/${enrolment.courseClass.course.code}-${enrolment.courseClass.code}" target="_blank">${Preferences.get("web.url")}/class/${enrolment.courseClass.course.code}-${enrolment.courseClass.code}</a> to view the class description for other important information about this class such as materials needed. <span style="color: #000000; color: #000000 !important; ">Enrolment reference: ${enrolment.invoiceLine.invoice.invoiceNumber}</span>
+                    </p>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+    <tbody>
+        <tr>
+            <td class="ish_content_container center" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 10px;padding-right: 17px;padding-bottom: 15px;padding-left: 17px;" align="left">
+                <h3 style="color:#464646 !important; background-color:#ffffff; display:block; font-family:Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif; font-size:12px; font-style:normal; font-weight:bold; line-height:125%; letter-spacing:normal; margin:0 0 10px; text-align:left; text-transform: uppercase;">Session Details</h3>
+                <table border="0" width="100%" style="border:0; border-top: 1px solid #e9e9e9; border-bottom: 1px solid #e9e9e9">
+                    <thead>
+                        <tr>
+                            <th class="ish_enrol_conf_header left" style="border:0; border-collapse: collapse;background-color: #e9e9e9;border: 0;padding-top: 12px;padding-right: 20px;padding-bottom: 12px;padding-left: 20px; color: #464646 !important; font-weight: normal !important; line-height:13px; font-size:13px;" align="left" width="61%">When</th>
+                            <th class="ish_enrol_conf_header left" style="border:0; border-collapse: collapse;background-color: #e9e9e9;border: 0;padding-top: 12px;padding-right: 20px;padding-bottom: 12px;padding-left: 20px; color: #464646 !important; font-weight: normal !important; line-height:13px; font-size:13px;" align="left" width="61%">Where</th>
+                        </tr>
+                    </thead>
+                    <tbody class="ish_enrol_conf_content">
+                        <% enrolment.courseClass.sessions.sort{it.startDatetime}.each() { session -> %>
+                        <tr>
+                            <td class="ish_enrol_conf_row left" style="border:0; border-collapse: collapse; background-color: #fff; border: 0;padding-top: 17px;padding-right: 20px;padding-bottom: 17px; padding-left: 20px; color: #000000  !important; font-weight: normal !important; font-size:13px !important; vertical-align: top; width: 63% !important; line-height:13px; font-size:13px;" valign="top" align="left" width="63%">${session.startDatetime.format("EEEE d MMMM yyyy h.mm a", session.getTimeZone())} - ${session.endDatetime.format("h.mm a", session.getTimeZone())}</td>
+                            <td class="ish_enrol_conf_row left" style="border:0; border-collapse: collapse; background-color: #fff; border: 0;padding-top: 17px;padding-right: 20px;padding-bottom: 17px; padding-left: 20px; color: #000000  !important; font-weight: normal !important;  font-size:13px !important; vertical-align: top; width: 63% !important; line-height:13px; font-size:13px;" valign="top" align="left" width="63%">${session.room ? session.room.site.name:""}</td>
+                        </tr>
+                        <% if (session.publicNotes) { %>
+                        <tr class="with-notes" style="border-top: 0 !important;">
+                            <td colspan="2" class="ish_enrol_conf_row left" style="border-collapse: collapse; background-color: #fff; border: 0;  padding-top: 0;padding-right: 20px;padding-bottom: 12px; padding-left: 20px; color: #464646  !important; font-weight: normal !important; vertical-align: top; width: 100%;" valign="top" align="left" width="100%">
+                                <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 16px !important; margin-top: 0;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left; position: relative; top: -5px;">
+                                    <span class="ish_enrol_conf_notes_label" style="color: #000000 !important;">Notes:</span>
+                                    ${session.publicNotes}
+                                </p>
+                            </td>
+                        </tr>
+                        <% } %>
+                        <% } %>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+    <tbody>
+        <tr style="font-size:1px; mso-line-height-alt:0; mso-margin-top-alt:1px;">
+            <td width="100%" valign="middle" class="ish_divider_container" style="height:1px;background-color: #ffffff;border: 0;padding-top: 15px;padding-right: 17px;padding-bottom: 0;padding-left: 17px;" align="left">
+                <div align="center">
+                    <div style="width:564px; height:1px;text-decoration: none; display: block; background-color: #e3e3e3;"></div>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+${render("Footer")}

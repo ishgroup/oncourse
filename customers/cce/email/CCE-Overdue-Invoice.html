@@ -1,0 +1,26 @@
+${render("Header")}
+
+              <!-- Title -->
+              <table width="660" border="0" cellspacing="0" cellpadding="0" class="title">
+                <tbody>
+                  <tr>
+                    <td width="30" height="36"></td>
+                    <td width="630"></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td class="title" style="color:#333333; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:20px; line-height:24px;"><strong style="color:#e64626;">Overdue Invoice</strong> ${invoice.invoiceNumber}</td>
+                  </tr>
+                  <tr>
+                    <td width="30" height="40"></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <!-- End Title -->
+${render("CCE-Body-Start")}
+<h1> Hi ${invoice.contact.fullName}, </h1>
+<p>This is a reminder that your invoice number <strong>${invoice.invoiceNumber}</strong> has a remaining balance of <strong>${invoice.amountOwing}</strong> outstanding. We would appreciate your prompt attention to payment of this invoice.</p>
+<p>Payment instructions are <a href="https://cce.sydney.edu.au/payment">available here</a> for a variety of payment methods.</p>
+${render("CCE-Body-End")}
+${render("Footer")}

@@ -1,0 +1,15 @@
+${render("Header")}
+
+Dear ${enrolment.student.contact.fullName},
+
+You are enrolled in ${enrolment.courseClass.course.code}-${enrolment.courseClass.code} ${enrolment.courseClass.course.name}. This is a Nationally Recognised Training course.
+
+To be issued your Statement of Attainment (Certificate) immediately after the course you MUST complete the Enrolment Questions Online and provide your USI (Unique Student Identifier).
+Without a USI you can not be issued your Statement of Attainment and you will be charged a \$11 administration service fee to complete your enrolment manually on the day of your class.
+Go here to complete Enrolment Questions and USI: ${enrolment.student.getPortalLink('USI')} 
+
+What is a USI? https://www.usi.gov.au/video/student-video-unique-student-identifier-usi
+USI HELP: To create or retrieve your USI use this link: https://www.usi.gov.au/help-centre/students
+Do NOT contact Coffee School in relation to creating your USI. Coffee School is unable to assist you with creating or retrieving your USI
+
+${render("Footer")}

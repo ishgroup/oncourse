@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CertificateAttendanceReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" whenResourceMissingType="Empty" uuid="a92a8dc6-d16e-4d90-ab88-f84d9b1bb7e5">
+	<property name="name" value="CCCC Certificate-Attendance"/>
+	<property name="entity" value="Enrolment"/>
+	<property name="isSubreport" value="false"/>
+	<property name="isVisible" value="true"/>
+	<property name="versionNumber" value="13"/>
+	<property name="keyCode" value="cccc.oncourse.nonVetCertificate"/>
+	<property name="ish.oncourse.title" value="AttendanceCertificate"/>
+	<property name="ish.oncourse.filePrefix" value="AttendanceCertificate"/>
+	<property name="ish.oncourse.description" value="Report is generated at the conclusion of any non VET short courses to verify that the student attended all of the required number of classes.This report prints in Portrait format."/>
+	<property name="ish.oncourse.pdfFileName" value="AttendanceCertificate.pdf"/>
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.3310000000000008"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<import value="org.apache.commons.lang3.StringUtils"/>
+	<style name="Report_Name" isDefault="true" fontName="Arial" fontSize="18" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+	<style name="Column_Header" isDefault="true" fontName="Arial" fontSize="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+	<style name="Column_Field" isDefault="true" fontName="Arial" fontSize="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+	<style name="Footer" isDefault="true" fontName="Arial" fontSize="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+	<parameter name="ReportName" class="java.lang.String"/>
+	<field name="enrolment" class="ish.oncourse.server.cayenne.Enrolment"/>
+	<field name="createdOn" class="java.util.Date"/>
+	<field name="student.contact.firstName" class="java.lang.String"/>
+	<field name="student.contact.middleName" class="java.lang.String"/>
+	<field name="student.contact.lastName" class="java.lang.String"/>
+	<field name="pref.avetmiss.collegename" class="java.lang.String"/>
+	<field name="pref.avetmiss.address.line1" class="java.lang.String"/>
+	<field name="pref.avetmiss.address.suburb" class="java.lang.String"/>
+	<field name="pref.avetmiss.address.state" class="java.lang.String"/>
+	<field name="pref.avetmiss.address.postcode" class="java.lang.String"/>
+	<field name="pref.avetmiss.identifier" class="java.lang.String"/>
+	<field name="courseClass.course.name" class="java.lang.String"/>
+	<field name="courseClass.classroomHours" class="java.math.BigDecimal"/>
+	<field name="pref.avetmiss.certificate.signatory.name" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Prevent"/>
+	</title>
+	<pageHeader>
+		<band height="136" splitType="Prevent"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="400" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="2c8f9061-806b-4fbd-ab81-1dfcb8b3a021" key="staticText-1" style="Footer" x="0" y="91" width="515" height="22"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[This is to confirm that]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement uuid="4e960ea9-c81b-4947-aabb-4c3566e70c03" key="textField-1" style="Column_Header" x="0" y="124" width="515" height="46"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="20" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{student.contact.firstName} + (StringUtils.isBlank($F{student.contact.middleName}) ? "" : (" " + $F{student.contact.middleName})) + " " + $F{student.contact.lastName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="b4defd8c-75f3-4fc9-9a13-49710f08816e" key="staticText-2" style="Footer" x="0" y="192" width="515" height="22"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[has participated in]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement uuid="30929568-0ebd-42f0-be67-9988b98c8d81" key="textField-2" style="Column_Header" x="0" y="243" width="515" height="46"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="18" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{courseClass.course.name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="49b40f65-fa00-4dfb-9b1c-eaf0bca61fa9" key="staticText-6" style="Column_Header" x="0" y="33" width="515" height="36"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="20" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Statement of Attendance]]></text>
+			</staticText>
+			<textField pattern="###0.00" isBlankWhenNull="false">
+				<reportElement uuid="a6bcd5c0-95fe-4402-bfd3-650c87c54b38" key="textField-3" style="Footer" x="0" y="336" width="515" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Course duration: "+$F{courseClass.classroomHours}+" hours"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="a0cf84b5-4728-4e56-99c2-65feb7aa8aa0" key="staticText-1" style="Footer" x="123" y="314" width="146" height="21"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[which concluded on ]]></text>
+			</staticText>
+			<textField pattern="dd MMMMM yyyy" isBlankWhenNull="false">
+				<reportElement uuid="1b9cc5dc-6375-491b-ac32-d838e24ebd7b" key="textField-3" style="Footer" x="274" y="314" width="173" height="21"/>
+				<textElement textAlignment="Left">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{enrolment}.courseClass?.endDateTime?.format("d MMM yyyy h:mma", $F{enrolment}.courseClass.timeZone)]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="150" splitType="Stretch">
+			<textField>
+				<reportElement uuid="954d976b-7b1a-4610-a219-5df7249cae3c" style="Footer" x="12" y="11" width="201" height="19"/>
+				<textElement>
+					<font size="14" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pref.avetmiss.certificate.signatory.name} == null ? "Principal":$F{pref.avetmiss.certificate.signatory.name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="095f5d69-fee3-4493-b9c1-ea0531bd5cd4" key="staticText-2" style="Footer" x="12" y="30" width="201" height="18"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Executive Director]]></text>
+			</staticText>
+			<textField evaluationTime="Report" pattern="dd MMMMM yyyy" isBlankWhenNull="false">
+				<reportElement uuid="83531677-3b6b-4e68-9470-0e94ac6a72da" key="textField" style="Footer" positionType="FixRelativeToBottom" isPrintRepeatedValues="false" x="398" y="11" width="121" height="19"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="14" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="23e81350-a089-4dc9-8441-793e0f08f7f1" style="Footer" x="308" y="11" width="90" height="19"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Date of Issue:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="190766a4-0e93-4d3e-8886-8ae0b1019302" key="staticText-1" style="Footer" x="12" y="73" width="515" height="16"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Statement of Attendance is not a formal qualification]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,17 @@
+${render("Header")}
+
+Dear ${payslip.contact.getName(true)},
+
+The following pay run, totaling \$${payslip.paylines.collect { it -> it.value * it.quantity as Float}.sum()?.round(2)}, has been submitted to the University HR Department for processing. No action is required by you.
+
+<% payslip.paylines.sort { a,b -> a.session?.startDatetime <=> b.session?.startDatetime }.each { line -> %>
+Class code: ${line.classCost?.courseClass?.course?.code == null ? "" : line.classCost.courseClass.course.code+"-"+line.classCost.courseClass.code}
+Course name: ${line.classCost?.courseClass?.course?.name ?: ""}
+Desctiption: ${line.description ?: ""}
+Date: ${line.session?.startDatetime == null ? (line.classCost?.courseClass?.startDateTime?.format('dd MMMM yyyy h:mma')?.toLowerCase() ?: "") : (line.session.startDatetime.format('dd MMMM yyyy h:mma').toLowerCase()+"-"+line.session.endDatetime.format('h:mma').toLowerCase())}
+Rate: ${line.value}
+Total: ${line.value * line.quantity}
+
+<% } %>
+
+${render("Footer")}

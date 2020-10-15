@@ -1,0 +1,17 @@
+${render("Header", [title: "Voucher is about to Expire"])}
+
+Dear ${voucher.invoiceLine?.invoice?.contact?.firstName},
+
+We wish to remind you that your WEA Sydney Gift Voucher will expire on ${voucher.expiryDate.format("dd MMMM YYYY")}. 
+
+<% if (voucher.voucherProduct.value != null ) { %>
+    You have \$${voucher.redemptionValue.toPlainString()} remaining.
+<% } else if (voucher.voucherProduct.maxCoursesRedemption != null && (voucher.voucherProduct.maxCoursesRedemption - voucher.redeemedCourseCount > 0)) { %>
+    You have ${voucher.voucherProduct.maxCoursesRedemption - voucher.redeemedCourseCount} enrolments remaining.
+<% } %>
+
+For details of our upcoming courses, please visit our website https://www.weasydney.com.au/ 
+
+WEA Sydney
+
+${render("Footer")}

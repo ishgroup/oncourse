@@ -1,0 +1,14 @@
+${render("Header")}
+
+Dear ${application.student.contact.firstName}, 
+
+Your application for ${application.course.name} has been received. 
+
+We require some additional information from you to complete this process. Your application is for a Nationally Recognised Training course. Some students are eligible for Government subsidy. To determine your eligibility you will need to complete an eligibility checklist. 
+
+To do so, please contact the College on 1800 000 212 or come in and see us @ 96 Murray Street, Wagga Wagga. 
+
+You will also need your Unique Student Identifier (USI). If you don’t have a USI, we can assist you to obtain one.
+
+
+${render("Footer")}

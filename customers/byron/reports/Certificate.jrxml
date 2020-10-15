@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
+<!-- 2017-02-22T12:45:45 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CertificateQualificationReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" whenResourceMissingType="Empty" uuid="2fd4d775-3611-4fe6-8c74-bc35c0f9f2a3">
+	<property name="name" value="Byron Certificate"/>
+	<property name="entity" value="Certificate"/>
+	<property name="isSubreport" value="false"/>
+	<property name="isVisible" value="true"/>
+	<property name="versionNumber" value="2"/>
+	<property name="keyCode" value="byron.onCourse.certificate"/>
+	<property name="ish.oncourse.title" value="Qualification"/>
+	<property name="ish.oncourse.filePrefix" value="qualification"/>
+	<property name="ish.oncourse.description" value="onCourse includes AQF recommended templates for full Qualification Certificates, Statements of Attainment and transcripts. Certificates can only be generated from units that are recorded as part of onCourse enrolments.This report prints in Portrait format."/>
+	<property name="ish.oncourse.pdfFileName" value="Qualification.pdf"/>
+	<import value="ish.common.types.QualificationType"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="org.apache.commons.lang3.StringUtils"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<import value="org.apache.commons.lang3.time.DateUtils"/>
+	<style name="default" isDefault="true" forecolor="#000000" vTextAlign="Bottom" markup="none" fontName="Open Sans" fontSize="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="OpenSans" pdfEncoding="Cp1252" isPdfEmbedded="true">
+		<paragraph spacingAfter="8"/>
+	</style>
+	<style name="header 1" style="default" forecolor="#4F0018" vTextAlign="Middle" fontName="Open Sans Light" fontSize="18" pdfFontName="Open Sans Light"/>
+	<style name="header 2" style="header 1" fontSize="12"/>
+	<style name="header 3" style="default" vTextAlign="Middle" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+	<style name="header 3 (right)" style="header 3" hTextAlign="Right"/>
+	<style name="Label" style="default" forecolor="#6A7E99"/>
+	<style name="Label right" style="Label" hTextAlign="Right"/>
+	<style name="data field" style="default"/>
+	<style name="data field (money)" style="data field" hTextAlign="Right" pattern="$#,###,##0.00;$(-#,###,##0.00)"/>
+	<style name="data field (numeric)" style="data field" hTextAlign="Right"/>
+	<style name="data field (datetime)" style="data field" pattern="d MMM yyyy h:mma"/>
+	<style name="data field (day)" style="data field" pattern="E d MMM h:mma"/>
+	<style name="data field (date)" style="data field" pattern="d MMM yyyy"/>
+	<style name="Footer" style="default" forecolor="#373737" fontSize="8"/>
+	<style name="Footer strong" style="Footer" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+	<style name="subHead box" style="default" backcolor="#E6E7F0"/>
+	<style name="small-text" style="default" forecolor="#373737" hTextAlign="Center" fontSize="10"/>
+	<parameter name="ReportName" class="java.lang.String"/>
+	<field name="certificate" class="java.lang.Object"/>
+	<variable name="day" class="java.lang.Integer">
+		<variableExpression><![CDATA[$F{certificate}.issuedOn.date]]></variableExpression>
+	</variable>
+	<variable name="superscript" class="java.lang.String">
+		<variableExpression><![CDATA["<sup>" + ((11..13).contains($V{day}) ? "th" : $V{day} % 10 == 1 ? "st" : $V{day} % 10 == 2 ? "nd" : $V{day} % 10 == 3 ? "rd" : "th") + "</sup>"]]></variableExpression>
+	</variable>
+	<variable name="dateIssued" class="java.lang.String">
+		<variableExpression><![CDATA[$F{certificate}.issuedOn.format("d") + $V{superscript} + $F{certificate}.issuedOn.format(" MMMM YYYY")]]></variableExpression>
+	</variable>
+	<filterExpression><![CDATA[$F{certificate}.completeQualification && ![QualificationType.SKILLSET_TYPE, QualificationType.SKILLSET_LOCAL_TYPE].contains($F{certificate}.qualification.type)]]></filterExpression>
+	<group name="PrintOneRecordOnPage" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{certificate}.id]]></groupExpression>
+	</group>
+	<pageHeader>
+		<band height="150" splitType="Stretch">
+			<textField>
+				<reportElement style="small-text" x="0" y="0" width="540" height="15" uuid="f854bfeb-9ca3-408c-96a1-52ee9a7317cd"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Student Number: " + $F{certificate}.student.studentNumber]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="350" splitType="Stretch">
+			<staticText>
+				<reportElement style="small-text" x="0" y="0" width="540" height="30" uuid="7dad86b9-a370-42d7-872d-1b9f1df603e6"/>
+				<textElement markup="html">
+					<font isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Byron Region Community College Inc<br>National Provider Number: 90013]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="small-text" x="0" y="50" width="540" height="20" uuid="15b88ef7-2e27-4935-b4da-55495b324fcf"/>
+				<text><![CDATA[This is to certify that]]></text>
+			</staticText>
+			<textField>
+				<reportElement style="header 3" x="0" y="80" width="540" height="100" uuid="e878e722-ae7f-4e33-ab64-b97a81d5b542"/>
+				<textElement textAlignment="Center">
+					<font size="36" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[[$F{certificate}.student.contact.firstName, $F{certificate}.student.contact.middleName, $F{certificate}.student.contact.lastName].findAll().join(" ")]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="small-text" x="-1" y="180" width="540" height="20" uuid="b4de08bb-9d13-4416-a099-01cb96e456ab"/>
+				<text><![CDATA[has fullfilled the requirements for]]></text>
+			</staticText>
+			<textField>
+				<reportElement style="header 3" x="0" y="210" width="540" height="72" uuid="5f4c32b0-3576-474f-b825-d87bffc9889a"/>
+				<textElement textAlignment="Center">
+					<font size="24" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[[$F{certificate}.qualification.nationalCode, $F{certificate}.qualification.level, $F{certificate}.qualification.title].join(" ")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="small-text" x="-1" y="300" width="540" height="30" uuid="4c43b479-2c4b-4401-9daf-99de7786a447"/>
+				<textElement markup="styled">
+					<font size="12" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Date of issue: " + $V{dateIssued}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

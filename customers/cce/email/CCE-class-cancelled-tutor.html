@@ -1,0 +1,223 @@
+${render("Header", [title: "Class Cancelled"])}
+
+<!-- Title -->
+              <table width="660" border="0" cellspacing="0" cellpadding="0" class="title">
+                <tbody>
+                  <tr>
+                    <td width="30" height="36"></td>
+                    <td width="630"></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td class="title" style="color:#333333; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:20px; line-height:24px;"><strong style="color:#e64626;">Class Cancelled</strong> ${courseClass.course.name} </td>
+                  </tr>
+                  <tr>
+                    <td width="30" height="40"></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+<!-- End Title -->
+
+${render("CCE-Body-Start")}
+
+<h1>Hi ${contact.fullName}, </h1>
+<p>We regret to advise that the following class has been cancelled due to ${tag.contents}. We apologise for any inconvenience caused. </p>
+<p>Kind regards,</p>
+<p>Centre for Continuing Education</p>
+
+${render("CCE-Body-End")}
+
+<!-- START COURSE INFORMATION TABLE -->
+              <!-- Data Table -->
+              <!-- TableTitle -->
+              <table width="660" border="0" cellpadding="0" class="data-table" cellspacing="0" bgcolor="#ffffff">
+
+              <!-- Table type H -->
+              <!-- Rows -->
+              <!-- ROW 1 - COURSE -->
+                        <tr>
+                          <td width="20" height="10" bgcolor="#e2e2e2"></td>
+                          <td width="83" bgcolor="#e2e2e2"></td>
+                          <td width="20" bgcolor="#e2e2e2"></td>
+                          <td width="20"></td>
+                          <td width="497"></td>
+                          <td width="20"></td>
+                        </tr>
+                        <tr valign="top">
+                          <td bgcolor="#e2e2e2"></td>
+                          <td class="data-table-header" style="color:#252a2e; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:13px; font-weight:bold; line-height:18px;" bgcolor="#e2e2e2">
+                            <!-- Left Cell -->
+                            COURSE
+                          </td>
+                          
+                          <td bgcolor="#e2e2e2"></td>
+                          <td></td>
+                          <td class="data-table-desc" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; font-weight:normal; line-height:18px;">
+                            <!-- Right Cell -->
+                            ${courseClass.course.name}
+                          </td>
+                          <td width="20"></td>
+                        </tr>
+                        <tr>
+                          <td height="10" bgcolor="#e2e2e2"></td>
+                          <td bgcolor="#e2e2e2"></td>
+                          <td bgcolor="#e2e2e2"></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr bgcolor="#f3f3f3">
+                          <td height="1"></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+
+                <!-- ROW 2 - DATE -->
+                        <tr>
+                          <td width="20" height="10" bgcolor="#e2e2e2"></td>
+                          <td width="83" bgcolor="#e2e2e2"></td>
+                          <td width="20" bgcolor="#e2e2e2"></td>
+                          <td width="20"></td>
+                          <td width="497"></td>
+                          <td width="20"></td>
+                        </tr>
+                        <tr valign="top">
+                          <td bgcolor="#e2e2e2"></td>
+                          <td class="data-table-header" style="color:#252a2e; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:13px; font-weight:bold; line-height:18px;" bgcolor="#e2e2e2">
+                            <!-- Left Cell -->
+                            DATE
+                          </td>
+                          
+                          <td bgcolor="#e2e2e2"></td>
+                          <td></td>
+                          <td class="data-table-desc" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; font-weight:normal; line-height:18px;">
+                            <!-- Right Cell -->
+                            ${courseClass.startDateTime.format("d MMM YYYY h:mm a")} - ${courseClass.endDateTime.format("d MMM YYYY h:mm a")} (${courseClass.sessionsCount} sessions)
+                          </td>
+                          <td width="20"></td>
+                        </tr>
+                        <tr>
+                          <td height="10" bgcolor="#e2e2e2"></td>
+                          <td bgcolor="#e2e2e2"></td>
+                          <td bgcolor="#e2e2e2"></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr bgcolor="#f3f3f3">
+                          <td height="1"></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+
+              <!-- ROW 3 - TUTORS -->
+                        <tr>
+                          <td width="20" height="10" bgcolor="#e2e2e2"></td>
+                          <td width="83" bgcolor="#e2e2e2"></td>
+                          <td width="20" bgcolor="#e2e2e2"></td>
+                          <td width="20"></td>
+                          <td width="497"></td>
+                          <td width="20"></td>
+                        </tr>
+                        <tr valign="top">
+                          <td bgcolor="#e2e2e2"></td>
+                          <td class="data-table-header" style="color:#252a2e; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:13px; font-weight:bold; line-height:18px;" bgcolor="#e2e2e2">
+                            <!-- Left Cell -->
+                            TUTORS
+                          </td>
+                          
+                          <td bgcolor="#e2e2e2"></td>
+                          <td></td>
+                          <td class="data-table-desc" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; font-weight:normal; line-height:18px;">
+                            <!-- Right Cell -->
+                            <% courseClass.firstSession.tutors.unique().each { t -> %>
+                              ${t.contact.firstName} ${t.contact.lastName}
+                            <% } %>
+                          </td>
+                          <td width="20"></td>
+                        </tr>
+                        <tr>
+                          <td height="10" bgcolor="#e2e2e2"></td>
+                          <td bgcolor="#e2e2e2"></td>
+                          <td bgcolor="#e2e2e2"></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr bgcolor="#f3f3f3">
+                          <td height="1"></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+
+
+                <!-- ROW 4 - LOCATION -->
+                        <tr>
+                          <td width="20" height="10" bgcolor="#e2e2e2"></td>
+                          <td width="83" bgcolor="#e2e2e2"></td>
+                          <td width="20" bgcolor="#e2e2e2"></td>
+                          <td width="20"></td>
+                          <td width="497"></td>
+                          <td width="20"></td>
+                        </tr>
+                        <tr valign="top">
+                          <td bgcolor="#e2e2e2"></td>
+                          <td class="data-table-header" style="color:#252a2e; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:13px; font-weight:bold; line-height:18px;" bgcolor="#e2e2e2">
+                            <!-- Left Cell -->
+                            LOCATION
+                          </td>
+                          
+                          <td bgcolor="#e2e2e2"></td>
+                          <td></td>
+                          <td class="data-table-desc" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; font-weight:normal; line-height:18px;">
+                            <!-- Right Cell -->
+                            <% if (courseClass.room == null) { %>
+                              <font style="background-color:#ce1126; color:white; padding:3px;">To be confirmed</font>
+                            <% } else { %>
+                              <a href="https://cce.sydney.edu.au/room/${courseClass.room.id}" target="_blank"> ${courseClass.room.name} - ${courseClass.room.site.name} </a> 
+                            <% } %>
+                          </td>
+                          <td width="20"></td>
+                        </tr>
+                        <tr>
+                          <td height="10" bgcolor="#e2e2e2"></td>
+                          <td bgcolor="#e2e2e2"></td>
+                          <td bgcolor="#e2e2e2"></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr bgcolor="#f3f3f3">
+                          <td height="1"></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+              
+              <!-- Spacer -->
+                        <tr bgcolor="#f3f3f3">
+                          <td height="25"></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                      </tbody>
+                    </table>
+              <!-- END COURSE INFORMATION TABLE -->
+
+
+${render("Footer")}

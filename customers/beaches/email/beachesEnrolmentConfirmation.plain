@@ -1,0 +1,103 @@
+${render("Header")} 
+<% if (enrolment.courseClass.course.hasTag("Smart & Skilled")) { %>
+${java.time.LocalDate.now().format("dd MMM yyyy")}
+
+SENT BY EMAIL
+
+Dear ${enrolment.student.contact.firstName}
+
+Course Name: ${enrolment.courseClass.course.name} (${enrolment.courseClass.course.code}-${enrolment.courseClass.code})
+Smart & Skilled Commitment ID: ${enrolment.vetPurchasingContractID?:""}
+
+Please accept this letter as confirmation of your place in the above course, subsidised by the NSW Government through its Smart & Skilled Training Program. The course will be held as follows:
+
+Training Venue: ${enrolment.courseClass.displayableLocation}
+Start Date: ${enrolment.courseClass.startDateTime.format("h:mm a EEEE d MMMM yyyy")}
+End Date: ${enrolment.courseClass.endDateTime.format("h:mm a EEEE d MMMM yyyy")}
+Trainer Name: ${enrolment.courseClass.tutorNames}
+Course Cost: ${enrolment.originalInvoiceLine.finalPriceToPayIncTax}
+
+Please visit ${Preferences.get("web.url")}/class/${enrolment.courseClass.course.code}-${enrolment.courseClass.code} to confirm the class details, directions and course requirements including work placement and mandatory certification applications  (if applicable).
+
+
+
+<% if (enrolment.courseClass.course.code.equals("Human_Resources_BSB41015")) { %>
+A timetable will be handed out at the first session of the course. 
+
+Students will be required to access the student learning resources and complete all required course assessments online through the Northern Beaches Community College's Learning Management System (LMS).  Shortly you will receive a separate welcome email explaining how to access the electronic resources through the NBCC student LMS portal.  Please ensure you follow and complete the required steps prior to attending your first class.  As all your resources will be available to you online, please ensure you bring along to each class a laptop with access to the NBCC LMS portal.  If you are unsure, your Trainer will be able to offer support at the first session.
+<% } else  { %>
+
+A timetable will be handed out at the first session of the course together with relevant course resources.  
+
+<% } %>  
+
+<% if (enrolment.courseClass?.room?.site?.suburb?.toLowerCase()?.contains("narrabeen")) { %>
+As only limited parking is available to the College in the northern end of the main car park, we ask that students park in Lake Park car park on the opposite side of Pittwater Road. As Pittwater Sports Centre management monitors the use of the car park, we request your cooperation in this matter.              
+<% } %>
+<% if (enrolment.courseClass?.room?.site?.suburb?.toLowerCase()?.contains("brookvale")) { %>
+No on site parking is available at our Brookvale Training Centre. Unrestricted street parking is available further along William Street and in surrounding residential streets.
+<% } %>      
+Student facilities at the College include a kitchen with fridge and microwave. Student access to computers is available at our Narrabeen training centre if you do not have access to your own, for the purposes of research and completion of course work. Please contact the College first to check availability.
+
+You will need to allow regular self study time in addition to the face to face class hours - the amount of time will vary according to subject being studied. Assessments will be conducted as part of the course. Some are to be taken home and completed in your own time, while others will be conducted in class or during work placement (if applicable). If you are unable to attend any training sessions, please email your trainer to explain your absence. Attendance is vital and students must attend at least 75% of the course to meet attendance requirements.
+
+As advised on enrolment, the Student Handbook and Smart & Skilled Student Information documents can be located in the Smart & Skilled section of the College website at www.nbcc.nsw.edu.au. These documents should be read, as they contain information about, the assessment process, recognition of prior learning, fees, consumer protection, deferral or discontinuance of training, access to support and contact details for various support services, your rights under the Smart & Skilled guidelines and College policies and procedures.
+     
+I do hope you will enjoy a positive learning experience at the College and I encourage you to talk to your trainer or to me if you have any concerns or feedback you would like to share, as you complete the course. <br />
+       
+Yours sincerely
+       
+Fran Butterworth      
+Executive Director
+      
+<% } else { %>
+Dear ${enrolment.student.contact.fullName},
+
+Thank you for enrolling at ${Preferences.get("college.name")}.
+
+Class: ${enrolment.courseClass.course.code}-${enrolment.courseClass.code} ${enrolment.courseClass.course.name}
+<% if (enrolment.courseClass.startDateTime == null) { %>
+Start: On enrolment
+Expected duration: ${enrolment.courseClass.expectedHours ?: "not specified"}
+<% } else { %>
+Start: ${enrolment.courseClass.startDateTime.format("h:mm a EEEE d MMMM yyyy")}
+End: ${enrolment.courseClass.endDateTime.format("h:mm a EEEE d MMMM yyyy")}
+<% } %>
+Location: ${enrolment.courseClass.displayableLocation}
+
+Please visit ${Preferences.get("web.url")}/class/${enrolment.courseClass.course.code}-${enrolment.courseClass.code} to confirm the class details, directions and course requirements.
+<% if (enrolment.courseClass.course.code.equals("Responsible_Service_Alcohol_RSA")) { %>
+	Students will be required to access the student learning resources and complete all required course assessments online through the Northern Beaches Community College’s Learning Management System (LMS).  
+	Shortly you will receive a separate welcome email explaining how to access the electronic resources through the NBCC student LMS portal.
+	Please ensure you follow and complete the required steps prior to attending your first class.  As all your resources will be available to you online please ensure you bring along to each class a laptop with access to the NBCC LMS portal.  If you are unsure your Trainer will be able to offer support at the first session.
+<% } %>
+
+<% if( enrolment.courseClass.course.code.equals("Responsible_Service_Alcohol_RSA")  || enrolment.courseClass.course.code.equals("Provide_Responsible_Gambling_RCG")) { %>
+Students must ensure they have accurately provided the college with: 
+    &emsp;  - Full name and date of birth (that matches exactly as it appears on the proof of identity (POI) documents the student intends to present to Service NSW to obtain their Competency Card e.g. drivers licence).   Please ensure the POI is an English language version of characters.
+    &emsp;  - Current email address
+    &emsp;  - Current contact number
+    &emsp;  - Current address
+    Failure to do so will result in an error to process the Interim Certificate and this will delay the processing of the Competency Card issued through Service NSW.
+
+    On successful completion of the course students will be emailed an Interim Certificate and posted a Statement of Attainment from NBCC within one week.  The college strongly recommends once the student has received the Interim Certificate they attend their nearest Service NSW centre to obtain their photo Competency Card (please note: not all centres can process a Competency Card, click here to find your nearest centre).  Students will need to provide their Interim Certificate, proof of identity and have their photo taken.
+    https://www.service.nsw.gov.au/service-centre/liquor-gaming-nsw-competency-card
+
+
+<% } %>
+
+
+
+<% if (enrolment.courseClass.course.modules.size() > 0) { %>
+You have enrolled in a Nationally Recognised Training course. We are required to collect some additional information from you as part of the enrolment process. 
+
+Please visit ${Preferences.getPortalCensusUrl(enrolment.student)} to complete these questions.
+
+You are required to supply your Unique Student Identifier (USI) in order to be issued a Statement of Attainment or Qualification on the successful completion of your course.
+
+If you do not have a USI you can apply for one via the link above.
+<% } %>
+
+Enrolment reference: ${enrolment.invoiceLine.invoice.invoiceNumber}
+<% } %>
+${render("Footer")}

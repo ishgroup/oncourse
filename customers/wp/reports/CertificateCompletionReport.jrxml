@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2016-12-02T14:10:55 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CertificateAttendanceReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" whenResourceMissingType="Empty" uuid="352c0221-676d-487a-8667-3a7fda5d5a58">
+	<property name="name" value="PTS Certificate Completion"/>
+	<property name="entity" value="Enrolment"/>
+	<property name="isSubreport" value="false"/>
+	<property name="isVisible" value="true"/>
+	<property name="versionNumber" value="15"/>
+	<property name="keyCode" value="wp.oncourse.CertificateCompletion"/>
+	<property name="ish.oncourse.title" value="CompletionCertificate"/>
+	<property name="ish.oncourse.filePrefix" value="CompletionCertificate"/>
+	<property name="ish.oncourse.description" value="Report is generated at the conclusion of a short course to verify that the has completed the on the job and off the job components.This report prints in Portrait format."/>
+	<property name="ish.oncourse.pdfFileName" value="CompletionCertificate.pdf"/>
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<import value="org.apache.commons.lang3.StringUtils"/>
+	<style name="Report_Name" isDefault="true" fontName="Arial" fontSize="18" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+	<style name="Column_Header" fontName="Arial" fontSize="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+	<style name="Column_Field" fontName="Arial" fontSize="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+	<style name="Footer" fontName="Arial" fontSize="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+	<parameter name="ReportName" class="java.lang.String"/>
+	<field name="enrolment" class="ish.oncourse.server.cayenne.Enrolment"/>
+	<field name="createdOn" class="java.util.Date"/>
+	<field name="student.contact.firstName" class="java.lang.String"/>
+	<field name="student.contact.middleName" class="java.lang.String"/>
+	<field name="student.contact.lastName" class="java.lang.String"/>
+	<field name="pref.avetmiss.collegename" class="java.lang.String"/>
+	<field name="pref.avetmiss.address.line1" class="java.lang.String"/>
+	<field name="pref.avetmiss.address.suburb" class="java.lang.String"/>
+	<field name="pref.avetmiss.address.state" class="java.lang.String"/>
+	<field name="pref.avetmiss.address.postcode" class="java.lang.String"/>
+	<field name="pref.avetmiss.identifier" class="java.lang.String"/>
+	<field name="courseClass.course.name" class="java.lang.String"/>
+	<field name="pref.avetmiss.certificate.signatory.name" class="java.lang.String"/>
+	<field name="image.kevin_signature" class="java.io.InputStream"/>
+	<field name="datasource.courseClass.course.taggingRelations" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<field name="subreport.wp.onCourse.taggingRelationsSubreport" class="net.sf.jasperreports.engine.JasperReport"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Prevent"/>
+	</title>
+	<pageHeader>
+		<band height="85" splitType="Prevent"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="400" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-1" style="Footer" x="0" y="198" width="515" height="16" uuid="afbbdafa-5122-40d3-bfdd-3206092290d1"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[This is to certify that]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-1" style="Column_Header" x="0" y="214" width="515" height="46" uuid="5a4f4503-6cad-4c48-950b-e79d90c48bb6"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="18" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{student.contact.firstName} + (StringUtils.isBlank($F{student.contact.middleName}) ? "" : (" " + $F{student.contact.middleName})) + " " + $F{student.contact.lastName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-2" style="Footer" x="0" y="276" width="515" height="16" uuid="d03bf121-431f-4e30-923d-f898161b1996"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[has completed all off the job and on the job components for]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-2" style="Column_Header" x="0" y="296" width="515" height="46" uuid="6607d0b6-a4c0-4cef-82b2-90c3744d4852"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="18" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{courseClass.course.name}]]></textFieldExpression>
+			</textField>
+			<elementGroup>
+				<subreport isUsingCache="true">
+					<reportElement key="subreport" stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="0" y="345" width="515" height="40" uuid="bc219f57-5a3e-4f97-b04e-c0f5a0ff0549"/>
+					<dataSourceExpression><![CDATA[$F{datasource.courseClass.course.taggingRelations}]]></dataSourceExpression>
+					<subreportExpression><![CDATA[$F{subreport.wp.onCourse.taggingRelationsSubreport}]]></subreportExpression>
+				</subreport>
+			</elementGroup>
+			<staticText>
+				<reportElement key="staticText-6" style="Column_Header" x="0" y="153" width="515" height="26" uuid="4943e6b4-0064-485d-b328-9a6b7a7ca96c"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="18" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Certificate of Completion]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="250" splitType="Stretch">
+			<line>
+				<reportElement key="line-1" style="Footer" positionType="FixRelativeToBottom" mode="Transparent" x="270" y="122" width="204" height="1" uuid="8ba4578b-5a5f-4447-aabb-3ee256a4f890"/>
+			</line>
+			<textField evaluationTime="Report" pattern="dd/MM/yyyy" isBlankWhenNull="false">
+				<reportElement key="textField" style="Footer" positionType="FixRelativeToBottom" isPrintRepeatedValues="false" x="270" y="142" width="90" height="13" uuid="7a8f423f-4d19-48ed-b317-c0cf3a1bcb5c"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{enrolment}.outcomes*.endDate.flatten().max().format("dd MMM yyyy")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="270" y="122" width="201" height="19" uuid="ef421974-d75d-4ecc-b2d3-25cb600b47ed"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pref.avetmiss.certificate.signatory.name} == null ? "Principal":$F{pref.avetmiss.certificate.signatory.name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

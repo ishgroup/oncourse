@@ -1,0 +1,7 @@
+${render("Header")}
+
+Dear ${contact.getName(true)},
+
+We are pleased to confirm that the following class will proceed as scheduled. If there are prescribed textbooks you need to obtain for your course, you may proceed with purchasing these now.
+
+${render("Footer")}

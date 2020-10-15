@@ -1,0 +1,29 @@
+Centre for Continuing Education - The University of Sydney
+
+
+Hello ${enrolment.student.contact.firstName}
+
+We regret to advise that the following class has been cancelled${enrolment.courseClass.tags.find { t.name.startsWith('Cancelled') }?.replace('Cancelled:',' due to ')?.toLowerCase()?:''}. We apologise for any inconvenience caused.
+
+A credit note has been created in the name of the payer for the amount originally paid. This credit will automatically be applied in reduction of any future phone enrolment processed with us. Should you wish to re-enrol into another course or have the original transaction refunded, this can also be arranged.
+
+Please contact us on (02) 8999 9608 should you know of another course you would like to transfer into or of you are interested in hearing about other opportunities, otherwise the credit note will remain available for use in the payer's name for any future enrolment.
+
+
+Please add support@cce.sydney.edu.au to your address book or approved sender list.
+
+
+Phone:
+(02) 8999 9608
+
+ABN:
+15 211 513 464
+
+CRICOS Number:
+00026A
+
+Our Location:
+The University of Sydney
+160 Missenden Road
+Newtown NSW 2042
+Australia

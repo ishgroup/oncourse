@@ -1,0 +1,18 @@
+name: WEA Sydney voucher creation for whole class of enrolments
+body: WEASydneyVoucherCreationForWholeClassEnrolments.groovy
+keyCode: weasydney.script.voucherCreationForClass
+enabled: true
+triggerType: ON_DEMAND
+entityClass: CourseClass
+description: The script will create vouchers for each student of class and send then email to student
+options:
+  - name: template_keycode
+    dataType: TEXT
+    value: wea.sydney.voucherCreationForClassNotification
+variables:
+  - name: sku
+    label: Voucher SKU
+    dataType: TEXT
+  - name: amount
+    label: Voucher dollar value
+    dataType: MONEY

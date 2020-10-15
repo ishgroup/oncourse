@@ -1,0 +1,441 @@
+${render("Header", [title: "Course reminder"])}
+
+<!-- Title -->
+              <table width="660" border="0" cellspacing="0" cellpadding="0" class="title">
+                <tbody>
+                  <tr>
+                    <td width="30" height="36"></td>
+                    <td width="630"></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td class="title" style="color:#333333; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:20px; line-height:24px;">
+                    	<strong style="color:#e64626;">Course reminder.</strong> ${enrolment.courseClass.course.name} </td>
+                  </tr>
+                  <tr>
+                    <td width="30" height="40"></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+<!-- End Title -->
+
+${render("CCE-Body-Start")}
+
+<h1> Hello ${enrolment.student.contact.fullName}, </h1>
+<p> This is a courtesy email to remind you that <strong>${enrolment.courseClass.course.name}</strong> with Centre for Continuing Education is due to commence soon. We trust that you will enjoy your course. </p>
+<p> A brief summary of your course is provided below. <p>
+<% if(enrolment.courseClass.course.isShownOnWeb) { %>
+<p> More information may be published on <a href="https://cce.sydney.edu.au/course/${enrolment.courseClass.course.code}" target="_blank"> our website</a>, including recommended reading or specific course pre-requisites. </p>
+<% } %>
+${render("CCE-Body-End")}
+
+<!-- INFO HEADING w/ BACK TO TOP -->
+<!-- Heading -->
+	<table width="660" border="0" cellspacing="0" cellpadding="0">
+	     <tbody>
+	       <tr>
+	         <td height="14"></td>
+	       </tr>
+	       <tr>
+	         <td height="47">
+	           <table width="660" border="0" cellspacing="0" cellpadding="0">
+	             <tbody>
+	               <tr valign="top">
+	                 <td width="30" height="47"></td>
+	                 <td width="530" style="color:#e64626; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:30px; line-height:34px; margin:0;">Course Information</td>
+	                 <td width="76"><a href="#top"><img src="https://cce.sydney.edu.au/s/email/back-to-top.png" width="76" height="34" alt="Back to top" style="display:block; width:76px; height:34px;"/></a></td>
+	               </tr>
+	             </tbody>
+	           </table>
+
+	         </td>
+	       </tr>
+	       <tr>
+	         <td height="19"></td>
+	       </tr>
+	     </tbody>
+	</table>
+<!-- End Heading -->
+
+<!-- START COURSE INFORMATION TABLE -->
+<!-- Data Table -->
+<!-- TableTitle -->
+<table width="660" border="0" cellpadding="0" class="data-table" cellspacing="0" bgcolor="#ffffff">
+
+<!-- Table type H -->
+<!-- Rows -->
+<!-- ROW 1 - COURSE -->
+        <tr>
+          <td width="20" height="10" bgcolor="#e2e2e2"></td>
+          <td width="83" bgcolor="#e2e2e2"></td>
+          <td width="20" bgcolor="#e2e2e2"></td>
+          <td width="20"></td>
+          <td width="497"></td>
+          <td width="20"></td>
+        </tr>
+        <tr valign="top">
+          <td bgcolor="#e2e2e2"></td>
+          <td class="data-table-header" style="color:#252a2e; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:13px; font-weight:bold; line-height:18px;" bgcolor="#e2e2e2">
+            <!-- Left Cell -->
+            COURSE
+          </td>
+          
+          <td bgcolor="#e2e2e2"></td>
+          <td></td>
+          <td class="data-table-desc" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; font-weight:normal; line-height:18px;">
+            <!-- Right Cell -->
+            ${enrolment.courseClass.course.name}
+          </td>
+          <td width="20"></td>
+        </tr>
+        <tr>
+          <td height="10" bgcolor="#e2e2e2"></td>
+          <td bgcolor="#e2e2e2"></td>
+          <td bgcolor="#e2e2e2"></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr bgcolor="#f3f3f3">
+          <td height="1"></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+
+<!-- ROW 2 - DATE -->
+        <tr>
+          <td width="20" height="10" bgcolor="#e2e2e2"></td>
+          <td width="83" bgcolor="#e2e2e2"></td>
+          <td width="20" bgcolor="#e2e2e2"></td>
+          <td width="20"></td>
+          <td width="497"></td>
+          <td width="20"></td>
+        </tr>
+        <tr valign="top">
+          <td bgcolor="#e2e2e2"></td>
+          <td class="data-table-header" style="color:#252a2e; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:13px; font-weight:bold; line-height:18px;" bgcolor="#e2e2e2">
+            <!-- Left Cell -->
+            DATE
+          </td>
+          
+          <td bgcolor="#e2e2e2"></td>
+          <td></td>
+          <td class="data-table-desc" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; font-weight:normal; line-height:18px;">
+            <!-- Right Cell -->
+            ${enrolment.courseClass.startDateTime.format("d MMM YYYY h:mm a")} - ${enrolment.courseClass.endDateTime.format("d MMM YYYY h:mm a")} (${enrolment.courseClass.sessionsCount} sessions)
+          </td>
+          <td width="20"></td>
+        </tr>
+        <tr>
+          <td height="10" bgcolor="#e2e2e2"></td>
+          <td bgcolor="#e2e2e2"></td>
+          <td bgcolor="#e2e2e2"></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr bgcolor="#f3f3f3">
+          <td height="1"></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+
+<!-- ROW 3 - TUTORS -->
+        <tr>
+          <td width="20" height="10" bgcolor="#e2e2e2"></td>
+          <td width="83" bgcolor="#e2e2e2"></td>
+          <td width="20" bgcolor="#e2e2e2"></td>
+          <td width="20"></td>
+          <td width="497"></td>
+          <td width="20"></td>
+        </tr>
+        <tr valign="top">
+          <td bgcolor="#e2e2e2"></td>
+          <td class="data-table-header" style="color:#252a2e; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:13px; font-weight:bold; line-height:18px;" bgcolor="#e2e2e2">
+            <!-- Left Cell -->
+            TUTORS
+          </td>
+          
+          <td bgcolor="#e2e2e2"></td>
+          <td></td>
+          <td class="data-table-desc" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; font-weight:normal; line-height:18px;">
+            <!-- Right Cell -->
+            <% if (enrolment.courseClass?.firstSession.tutors == null) { %>
+              <font style="background-color:#ce1126; color:white; padding:3px;">To be confirmed</font>
+            <% } else { enrolment.courseClass.firstSession.tutors.unique().each { t -> %>
+              ${t.contact.firstName} ${t.contact.lastName}
+            <% } } %>
+          </td>
+          <td width="20"></td>
+        </tr>
+        <tr>
+          <td height="10" bgcolor="#e2e2e2"></td>
+          <td bgcolor="#e2e2e2"></td>
+          <td bgcolor="#e2e2e2"></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr bgcolor="#f3f3f3">
+          <td height="1"></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+
+
+<!-- ROW 4 - LOCATION -->
+        <tr>
+          <td width="20" height="10" bgcolor="#e2e2e2"></td>
+          <td width="83" bgcolor="#e2e2e2"></td>
+          <td width="20" bgcolor="#e2e2e2"></td>
+          <td width="20"></td>
+          <td width="497"></td>
+          <td width="20"></td>
+        </tr>
+        <tr valign="top">
+          <td bgcolor="#e2e2e2"></td>
+          <td class="data-table-header" style="color:#252a2e; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:13px; font-weight:bold; line-height:18px;" bgcolor="#e2e2e2">
+            <!-- Left Cell -->
+            LOCATION
+          </td>
+          
+          <td bgcolor="#e2e2e2"></td>
+          <td></td>
+          <td class="data-table-desc" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; font-weight:normal; line-height:18px;">
+            <!-- Right Cell -->
+            <% if (enrolment.courseClass.room == null) { %>
+              <font style="background-color:#ce1126; color:white; padding:3px;">To be confirmed</font>
+            <% } else { %>
+              <a href="https://cce.sydney.edu.au/room/${enrolment.courseClass.room.id}" target="_blank"> ${enrolment.courseClass.room.name} - ${enrolment.courseClass.room.site.name} </a> 
+            <% } %>
+          </td>
+          <td width="20"></td>
+        </tr>
+        <tr>
+          <td height="10" bgcolor="#e2e2e2"></td>
+          <td bgcolor="#e2e2e2"></td>
+          <td bgcolor="#e2e2e2"></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr bgcolor="#f3f3f3">
+          <td height="1"></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+
+<!-- Spacer -->
+        <tr bgcolor="#f3f3f3">
+          <td height="25"></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+<!-- END COURSE INFORMATION TABLE -->
+
+<!--  START MAIL NOTE -->
+<!-- Note -->
+<table width="660" border="0" cellspacing="0" cellpadding="0">
+  <tbody>
+    <tr>
+      <td height="10"></td>
+    </tr>
+    <tr>
+      <td>
+        <table width="660" border="0" cellspacing="0" cellpadding="0">
+          <tbody>
+            <tr>
+              <td width="30"></td>
+              <td style="color:#000000; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; font-weight:normal; line-height:18px;" valign="top">
+                <!-- Enrolment Conditions -->
+                <h3>Enrolment Conditions</h3><p>Enrolment into this course indicates acceptance of our <a href="https://cce.sydney.edu.au/legal">terms and conditions</a>. In particular, please note our <a href="https://cce.sydney.edu.au/legal#Cancellationofenrolmentororderbyyou">cancellation and refund policies</a>. You are not able to cancel this enrolment without penalty or obtain a refund if the problem is outside our control or for reasons including change of mind. Our terms provide you with a 24-hour cooling-off period as a safeguard designed to give you the opportunity to change your mind. Please see our <a href="https://cce.sydney.edu.au/legal">terms</a> for full details.</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td height="10"></td>
+    </tr>
+    <tr>
+      <td height="1" bgcolor="#e7e7e7"></td>
+    </tr>
+  </tbody>
+</table>
+<!-- End Note -->
+
+<!-- Note -->
+<table width="660" border="0" cellspacing="0" cellpadding="0">
+  <tbody>
+    <tr>
+      <td height="10"></td>
+    </tr>
+    <tr>
+      <td>
+        <table width="660" border="0" cellspacing="0" cellpadding="0">
+          <tbody>
+            <tr>
+              <td width="30"></td>
+              <td style="color:#000000; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; font-weight:normal; line-height:18px;" valign="top">
+                <!-- Code of Conduct -->
+                <h3>Code of Conduct</h3><p>In accepting our terms, you have also agreed to comply at all times with our our by-laws, rules, policies and procedures, and that you are responsible for informing yourself of the requirements applicable to you under such by-laws, rules, policies and procedures <a href="http://sydney.edu.au/legal/regulations/index.shtml">available here</a>. In particular, we wish to point out the university's <a href="http://sydney.edu.au/legal/regulations/conduct.shtml">Code of Conduct</a> which sets out the University's expectation of students in relation to academic matters and personal behaviour.</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td height="10"></td>
+    </tr>
+    <tr>
+      <td height="1" bgcolor="#e7e7e7"></td>
+    </tr>
+  </tbody>
+</table>
+<!-- End Note -->
+
+<!-- Note -->
+<table width="660" border="0" cellspacing="0" cellpadding="0">
+  <tbody>
+    <tr>
+      <td height="10"></td>
+    </tr>
+    <tr>
+      <td>
+        <table width="660" border="0" cellspacing="0" cellpadding="0">
+          <tbody>
+            <tr>
+              <td width="30"></td>
+              <td style="color:#000000; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; font-weight:normal; line-height:18px;" valign="top">
+                <!-- Safety and Wellbeing -->
+                <h3>Safety and Wellbeing</h3><p>We're committed to keeping our students, staff and visitors safe. Please read about <a href="http://sydney.edu.au/campus-life/safety-security.html">emergencies and personal safety</a> for information on your safety and wellbeing while on our campuses.</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td height="10"></td>
+    </tr>
+    <tr>
+      <td height="1" bgcolor="#e7e7e7"></td>
+    </tr>
+  </tbody>
+</table>
+<!-- End Note -->
+
+<!-- Note -->
+<table width="660" border="0" cellspacing="0" cellpadding="0">
+  <tbody>
+    <tr>
+      <td height="10"></td>
+    </tr>
+    <tr>
+      <td>
+        <table width="660" border="0" cellspacing="0" cellpadding="0">
+          <tbody>
+            <tr>
+              <td width="30"></td>
+              <td style="color:#000000; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; font-weight:normal; line-height:18px;" valign="top">
+                <!-- Additional Information -->
+                <h3>Additional Information</h3><p>We recommend that you bring paper and a pen with you to take notes. As a matter of courtesy to tutors and other students, we request that you please refrain from using mobile devices for phone calls or emails during your course.</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td height="10"></td>
+    </tr>
+    <tr>
+      <td height="1" bgcolor="#e7e7e7"></td>
+    </tr>
+  </tbody>
+</table>
+<!-- End Note -->
+<!-- END MAIL NOTE -->
+
+
+<!-- SESSIONS -->
+<!-- HEADER SESSIONS -->
+<% enrolment.courseClass.sessions.sort{it.startDatetime}.each { s -> %>
+<table width="660" border="0" cellspacing="0" cellpadding="0">
+<tbody>
+  <tr>
+    <td>
+      <table width="660" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff" class="course-block">
+        <tbody>
+          <tr valign="top">
+            <td width="5" bgcolor="#e64626"></td>
+            <td width="25"></td>
+            <td width="600">
+              <table width="600" border="0" cellspacing="0" cellpadding="0">
+                <tbody>
+                  <tr>
+                    <td height="8"></td>
+                  </tr>
+                  <tr>    
+                <!-- MAIN LOOP SESSION -->
+                  
+                    <td valign="top"><h2>${s.startDatetime.format("d MMM YYYY h:mm a")} - ${s.endDatetime.format("h:mm a")}</h2>
+                    <p><em>
+                      <% if (s.room == null) { %>
+                        <font style="background-color:#ce1126;color:white;padding:3px;">Venue to be confirmed</font> |
+                      <% } else { %>
+                        <a href="https://cce.sydney.edu.au/room/${enrolment.courseClass.room.id}" target="_blank"> ${s.room.name} - ${s.room.site.name} </a> |
+                      <% } %>
+                      <% if (s.tutors == null || s.tutors.isEmpty()) { %>
+                        <font style="background-color:#ce1126;color:white;padding:3px;">Tutor to be confirmed</font> 
+                      <% } else { %>
+                        ${s?.tutors?.first().contact.firstName} ${s?.tutors?.first().contact.lastName} 
+                      <% } %>
+                    </em></p>
+                  
+                <!-- END LOOP -->
+                <!-- FOOTER SESSIONS -->
+                    </td>
+                    </tr>
+                    <tr>
+                      <td height="12"></td>
+                    </tr>
+                  </tbody>
+                </table>
+
+              </td>
+              <td width="30"></td>
+            </tr>
+          </tbody>
+        </table>
+
+      </td>
+    </tr>
+    <tr>
+      <td height="25"></td>
+    </tr>
+  </tbody>
+</table>
+<% } %>
+
+${render("Footer")}

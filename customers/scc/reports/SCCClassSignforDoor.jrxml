@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-06-21T11:17:56 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ClassSignReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" uuid="26add528-06ac-41ed-8a65-32d2a79f7522">
+	<property name="name" value="SCC Class Sign for Door "/>
+	<property name="entity" value="CourseClass"/>
+	<property name="isSubreport" value="false"/>
+	<property name="isVisible" value="true"/>
+	<property name="versionNumber" value="7"/>
+	<property name="keyCode" value="scc.onCourse.SCCClassSignforReport"/>
+	<property name="ish.oncourse.description" value="Report that can be printed off and used as a sign or label on door of Training Room.This report prints in Portrait format."/>
+	<property name="ish.oncourse.reports.isObjectOnSeparatePage" value="true"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="ish.util.Textile"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="default" isDefault="true" forecolor="#000000" vTextAlign="Bottom" markup="none" fontName="Open Sans" fontSize="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="OpenSans" pdfEncoding="Cp1252" isPdfEmbedded="true">
+		<paragraph spacingAfter="8"/>
+	</style>
+	<style name="header 1" style="default" forecolor="#4F0018" vTextAlign="Middle" fontName="Open Sans Light" fontSize="18" pdfFontName="Open Sans Light"/>
+	<style name="header 2" style="header 1" fontSize="12"/>
+	<style name="header 3" style="default" vTextAlign="Middle" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+	<style name="header 3 (right)" style="header 3" hTextAlign="Right"/>
+	<style name="Label" style="default" forecolor="#6A7E99"/>
+	<style name="Label right" style="Label" hTextAlign="Right"/>
+	<style name="data field" style="default"/>
+	<style name="data field (money)" style="data field" hTextAlign="Right" pattern="$#,###,##0.00;$(-#,###,##0.00)"/>
+	<style name="data field (numeric)" style="data field" hTextAlign="Right"/>
+	<style name="data field (datetime)" style="data field" pattern="d MMM yyyy h:mma"/>
+	<style name="data field (day)" style="data field" pattern="E d MMM h:mma"/>
+	<style name="data field (date)" style="data field" pattern="d MMM yyyy"/>
+	<parameter name="ReportName" class="java.lang.String"/>
+	<field name="code" class="java.lang.String"/>
+	<field name="course.code" class="java.lang.String"/>
+	<field name="course.name" class="java.lang.String"/>
+	<field name="image.poweredby" class="java.io.InputStream"/>
+	<field name="room.name" class="java.lang.String"/>
+	<field name="room.site.name" class="java.lang.String"/>
+	<field name="room.directions" class="java.lang.String"/>
+	<field name="sessionsCount" class="java.lang.Integer"/>
+	<field name="startDateTime" class="java.util.Date"/>
+	<field name="endDateTime" class="java.util.Date"/>
+	<field name="sessions" class="java.util.List"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="150" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Prevent"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="350" splitType="Prevent">
+			<textField isBlankWhenNull="true">
+				<reportElement style="header 3" stretchType="RelativeToBandHeight" x="10" y="0" width="520" height="230" uuid="cdb10832-0103-4040-982b-3b0498bf2b4f">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Open Sans Bold" size="60" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{course.name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="header 1" positionType="Float" x="0" y="250" width="539" height="25" uuid="12b8e6da-26d4-4e8b-9242-c4a29afc9e96"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{sessionsCount} == 0 ? "No sessions have been set in the timetable." : ($F{sessionsCount} == 1 ? "One session" : $F{sessionsCount} + " sessions")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="header 1" positionType="Float" x="0" y="275" width="539" height="25" uuid="12b8e6da-26d4-4e8b-9242-c4a29afc9e96"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{sessionsCount} == 0 ? null : "From " + $F{startDateTime}.format("E d MMM yyyy h:mm a")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="header 1" positionType="Float" x="0" y="300" width="539" height="25" uuid="12b8e6da-26d4-4e8b-9242-c4a29afc9e96"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{sessionsCount} == 0 ? null : "To " + $F{endDateTime}.format("E d MMM yyyy h:mm a")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="header 1" positionType="Float" x="0" y="325" width="539" height="25" uuid="12b8e6da-26d4-4e8b-9242-c4a29afc9e96"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{sessionsCount} == 0 ? null : $F{room.name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

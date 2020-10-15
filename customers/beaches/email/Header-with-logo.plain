@@ -1,0 +1,1 @@
+${Preferences.get("college.name")}

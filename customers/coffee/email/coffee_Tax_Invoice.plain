@@ -1,0 +1,44 @@
+${render("Header")}
+
+o-------------------o
+<% if (invoice.getTotalIncTax().toBigDecimal() < 0) { %>
+     Credit Note
+<% } else { %>
+     Tax Invoice
+<% } %>
+o-------------------o
+
+Invoice created on: ${invoice.createdOn.format("d/M/yy")}
+Invoice due on: ${invoice.dateDue.format("d/M/yy")}
+Invoice number: ${invoice.invoiceNumber}
+<% if (invoice.customerReference) { %>
+Your reference: ${invoice.customerReference}
+<% } %>
+Invoice to: ${invoice.contact.fullName} 
+
+Items
+-----
+<% invoice.invoiceLines.each { %>
+${it.title}    ${it.priceTotalExTax} (ex Tax)
+<% if (it.description) { %>${it.description}<% } %>
+<% if (it.enrolment?.courseClass && it.enrolment?.courseClass.startDateTime ) { cc = it.enrolment.courseClass %>
+Location: ${cc.room.site.name}
+Start: ${cc.startDateTime.format("h:mm a EE d MMMM", cc.getTimeZone())}
+End: ${cc.endDateTime.format("h:mm a EE d MMMM", cc.getTimeZone())}
+<% } } %>
+
+o-------------------o
+Total (inc Tax) ${invoice.totalIncTax}
+Total Tax ${invoice.totalTax}
+Total Paid ${invoice.totalIncTax.subtract(invoice.amountOwing)}
+Total Owing ${invoice.amountOwing}
+
+invoice.invoiceLines*.productItems.flatten().findAll{ pi ->  pi.product.type == 3}.each{pi ->  println("Voucher Code:  " + pi.code)}
+
+Payments Bank: Westpac
+Account Name: Ton Ton Song PTY LTD
+SBS: 032 005
+Account No: 962 010
+o-------------------o
+
+${render("Footer")}

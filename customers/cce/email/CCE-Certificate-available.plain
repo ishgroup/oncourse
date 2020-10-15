@@ -1,0 +1,25 @@
+${render("Header")}
+
+Dear ${enrolment.student.contact.fullName},
+
+Thank you for choosing to complete ${enrolment.courseClass.course.name} with CCE.
+
+Download your Statement of Attendance and Completion
+
+If you visit this link more than 14 days after the receipt of this email, you will need to follow the login prompts to access your certificate. and remember to save it in a safe place. You can then print it off or add it to your LinkedIn profile.
+${enrolment.student.getPortalLink(document, 14)}
+
+If you visit this link more than 14 days after the receipt of this email, you will need to follow the login prompts to access your certificate.
+
+Add your certificate to your LinkedIn profile - you've earned it!
+https://www.linkedin.com/profile/add?startTask=Centre%20for%20Continuing%20Education
+
+1. Course name: ${enrolment.courseClass.course.name}
+2. Training organisation: Centre for Continuing Education
+3. License number: Leave blank
+4. Enter the course start date: ${enrolment.outcomes*.startDate.flatten().max().format("dd MMM yyyy")} and end date: ${enrolment.outcomes*.endDate.flatten().max().format("dd MMM yyyy")}
+5. You do not need to enter a URL for your certificate.
+
+Kind regards, Centre for Continuing Education
+
+${render("Footer")}

@@ -1,0 +1,31 @@
+${render("Header")}
+
+Dear ${enrolment.student.contact.firstName},
+
+Thank you for enrolling in ${enrolment.courseClass.course.name} <% if (enrolment.courseClass.tutorRoles.size() > 0) { %> with ${enrolment.courseClass.tutorRoles.first().tutor.contact.fullName} <% } %> on ${enrolment.courseClass.startDateTime.format("h:mm a EEEE d MMM yyyy", enrolment.courseClass.getTimeZone())}.
+
+To continue your learning, please visit our website to find a class suitable at 
+<% if (tagPaths.size() < 1 ) { %>
+	https://www.weasydney.com.au/
+<% } else { 
+tagPaths.each { tag ->
+%>  
+	https://www.weasydney.com.au/courses/${tag} 
+<% } } %>
+
+<% if (cclist != null && cclist.size() > 0 && !enrolment.courseClass.course.hasTag("Subjects/Languages", true)) { %>
+You may also be interested in the following classes being delivered by the same tutor:
+<% cclist.each { cc ->  %>
+${cc.course.name} - <% if (cc.startDateTime != null) { %> - ${cc.startDateTime.format("h:mm a EEEE d MMM yyyy", cc.getTimeZone())} <% } %>
+https://www.weasydney.com.au/course/${cc.course.code}
+<% } }%>
+
+We would also appreciate your feedback for this course. Please visit our website and fill in our Course Feedback Form at ${enrolment.student.getPortalLink(enrolment)}
+
+Your feedback helps us to improve on our services to you and other students at ${Preferences.get("college.name")}.
+
+Thank you for your feedback and we hope to see you again soon!
+
+${Preferences.get("college.name")}
+
+${render("Footer")}

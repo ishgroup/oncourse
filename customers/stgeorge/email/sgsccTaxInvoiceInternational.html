@@ -1,0 +1,168 @@
+${render("Header", [title: "Tax Invoice"])}
+<table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+  <tbody>
+    <tr>
+      <td class="ish_content_container center" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 10px;padding-right: 17px;padding-bottom: 10px;padding-left: 17px;" align="left">
+        <div class="ish_text_container">
+          <h2 style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 18px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;font-weight: normal;font-style: normal;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 125%;margin-top: 0;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;">
+          <% if (invoice.getTotalIncTax().toBigDecimal() < 0) { %>
+          Credit Note
+          <% } else { %>
+          Tax Invoice
+          <% } %>
+          </h2>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+  <tbody>
+    <tr>
+      <td class="ish_content_container left" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 0;padding-right: 17px;padding-bottom: 10px;padding-left: 17px; vertical-align: top;" align="left" valign="top">
+        <div class="ish_text_container">
+          <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #000000;color: #000000 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+            <strong>${invoice.contact.fullName}</strong><br />
+            ${ContactService.getAddress(invoice.contact)}
+          </p>
+        </div>
+      </td>
+      <td class="ish_content_container right" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 0;padding-right: 0;padding-bottom: 10px;padding-left: 17px; vertial-align: top;" align="left" valign="top">
+        <div class="ish_text_container">
+          <p class="align-right" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #7f7f7f;color: #7f7f7f !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: right;">
+            Number<br />
+            Created on<br />
+            Due on<br />
+            <% if (invoice.customerReference) { %>
+            Your reference
+            <% } %>
+          </p>
+        </div>
+      </td>
+      <td class="ish_content_container left" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 0;padding-right: 17px;padding-bottom: 10px;padding-left: 17px; vertical-align: top;" align="left" valign="top">
+        <div class="ish_text_container">
+          <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #000000;color: #000000 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+            ${invoice.invoiceNumber}<br />
+            ${invoice.invoiceDate.format("EEEE d MMMM yyyy")}<br />
+            ${invoice.dateDue.format("EEEE d MMMM yyyy")}<br />
+            <% if (invoice.customerReference) { %>
+            ${invoice.customerReference}
+            <% } %>
+          </p>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+  <tbody>
+    <tr>
+      <td class="ish_content_container center" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 10px;padding-right: 17px;padding-bottom: 15px;padding-left: 17px;" align="left">
+        <table border="0" width="100%" style="border:0; border-top: 1px solid #e9e9e9; border-bottom: 1px solid #e9e9e9">
+          <thead>
+            <tr>
+              <th class="ish_invoice_header left" style="border:0; border-collapse: collapse;background-color: #e9e9e9;border: 0;padding-top: 12px;padding-right: 20px;padding-bottom: 12px;padding-left: 20px; color: #464646 !important; font-weight: normal !important; line-height:13px; font-size:13px;" align="left" width="50%">Items</th>
+              <th class="ish_invoice_header right" style="border:0; border-collapse: collapse;background-color: #e9e9e9;border: 0;padding-top: 12px;padding-right: 20px;padding-bottom: 12px;padding-left: 20px; white-space: nowrap; color: #464646 !important; font-weight: normal !important; line-height:13px; font-size:13px;" align="right">Price each</th>
+              <th class="ish_invoice_header right" style="border:0; border-collapse: collapse;background-color: #e9e9e9;border: 0;padding-top: 12px;padding-right: 20px;padding-bottom: 12px;padding-left: 20px; white-space: nowrap; color: #464646 !important; font-weight: normal !important; line-height:13px; font-size:13px;" align="right">Discount</th>
+              <th class="ish_invoice_header right" style="border:0; border-collapse: collapse;background-color: #e9e9e9;border: 0;padding-top: 12px;padding-right: 20px;padding-bottom: 12px;padding-left: 20px; white-space: nowrap; color: #464646 !important; font-weight: normal !important; line-height:13px; font-size:13px;" align="right">Tax</th>
+              <th class="ish_invoice_header right" style="border:0; border-left: 1px solid #f8f8f8 !important; border-collapse: collapse;background-color: #e9e9e9;border: 0;padding-top: 12px;padding-right: 20px;padding-bottom: 12px;padding-left: 20px; white-space: nowrap; color: #464646 !important; font-weight: normal !important;line-height:13px; font-size:13px;" align="right">Total</th>
+            </tr>
+          </thead>
+          <tbody class="ish_invoice_content">
+            <% invoice.invoiceLines.each { invoiceLine -> %>
+              <tr>
+                <td class="ish_invoice_row left" style="border:0; border-collapse: collapse; background-color: #fff; border: 0;padding-top: 17px;padding-right: 20px;padding-bottom: 17px; padding-left: 20px; color: #000000  !important; font-weight: normal !important; vertical-align: top; width: 50%; line-height:13px; font-size:13px;" valign="top" align="left" width="50%">${invoiceLine.title}</td>
+                <td class="ish_invoice_row right" style="border:0; border-collapse: collapse; background-color: #fff; border: 0;padding-top: 17px;padding-right: 20px;padding-bottom: 17px; padding-left: 20px; color: #000000  !important; font-weight: normal !important; vertical-align: top; line-height:13px; font-size:13px;" valign="top" align="right">${invoiceLine.priceEachExTax}</td>
+                <td class="ish_invoice_row right" style="border:0; border-collapse: collapse; background-color: #fff; border: 0;padding-top: 17px;padding-right: 20px;padding-bottom: 17px; padding-left: 20px; color: #000000  !important; font-weight: normal !important; vertical-align: top; line-height:13px; font-size:13px;" valign="top" align="right">${invoiceLine.discountEachExTax}</td>
+                <td class="ish_invoice_row right" style="border:0; border-collapse: collapse; background-color: #fff; border: 0;padding-top: 17px;padding-right: 20px;padding-bottom: 17px; padding-left: 20px; color: #000000  !important; font-weight: normal !important; vertical-align: top; line-height:13px; font-size:13px;" valign="top" align="right">${invoiceLine.taxEach}</td>
+                <td  class="ish_invoice_row right" style="border:0; border-collapse: collapse; background-color: #fff; border: 0;padding-top: 17px;padding-right: 20px;padding-bottom: 17px; padding-left: 20px; color: #000000  !important; font-weight: normal !important; border-left: 1px solid #e9e9e9 !important; vertical-align: top; line-height:13px; font-size:13px;" valign="top" align="right">${invoiceLine.discountedPriceTotalIncTax}</td>
+              </tr>
+            <% } %>
+          </tbody>
+          <tfoot border="0" class="ish_invoice_footer" style="border: 0;">
+            <tr class="ish_invoice_footer_total" style="border-bottom: 1px dashed #e9e9e9;">
+              <td class="ish_invoice_footer_row left" style="border:0; border-collapse: collapse; background-color: #fff; border: 0;padding-top: 17px;padding-right: 20px;padding-bottom: 17px; padding-left: 20px; color: #000000  !important; font-weight: normal !important; vertical-align: top; width: 50%; line-height:13px; font-size:13px;" valign="top" align="left" width="50%">Total</td>
+              <td colspan="3" class="ish_invoice_footer_row right" style="border:0; border-collapse: collapse; background-color: #fff; border: 0;padding-top: 17px;padding-right: 20px;padding-bottom: 17px; padding-left: 20px; color: #000000  !important; font-weight: normal !important; vertical-align: top; line-height:13px; font-size:13px;" valign="top" align="right">${invoice.totalTax}</td>
+              <td class="ish_invoice_footer_row right" style="border:0; border-collapse: collapse; background-color: #fff; border: 0;padding-top: 17px;padding-right: 20px;padding-bottom: 17px; padding-left: 20px; color: #000000  !important; font-weight: normal !important; border-left: 1px solid #e9e9e9 !important; vertical-align: top; line-height:13px; font-size:13px;" valign="top" align="right">${invoice.totalIncTax}</td>
+            </tr>
+            <tr class="ish_invoice_footer_total_desc">
+              <td colspan="3" class="ish_invoice_footer_row right" style="border:0; border-collapse: collapse; background-color: #fff; border: 0;padding-top: 17px;padding-right: 20px;padding-bottom: 17px; padding-left: 20px; color: #000000  !important; font-weight: normal !important; vertical-align: top; line-height:13px; font-size:13px;" valign="top" align="right">
+                Less amount paid
+                <br />                            
+                Total ${invoice.amountOwing >= 0 ? "owing" : "credit"}
+              </td>
+              <td class="ish_invoice_footer_row right" style="border:0; border-collapse: collapse; background-color: #fff; border: 0;padding-top: 17px;padding-right: 20px;padding-bottom: 17px; padding-left: 20px; color: #000000  !important; font-weight: normal !important; vertical-align: top;" valign="top" align="right"></td>
+              <td class="ish_invoice_row right" style="border:0; border-collapse: collapse; background-color: #fff; border: 0;padding-top: 17px;padding-right: 20px;padding-bottom: 17px; padding-left: 20px; color: #000000  !important; font-weight: normal !important; border-left: 1px solid #e9e9e9 !important; vertical-align: top; line-height:13px; font-size:13px;" valign="top" align="right">
+                ${invoice.totalIncTax.subtract(invoice.amountOwing)}
+                <br />                            
+                ${invoice.amountOwing}
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<% if (invoice.unpaidInvoiceDueDates.size() > 0) { %>
+<table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="right">
+  <tbody>
+  <tr>
+    <td width="300" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 0;padding-right: 0;padding-bottom: 10px;padding-left: 17px; vertial-align: top;"></td>
+    <td class="ish_content_container" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 0;padding-right: 0;padding-bottom: 10px;padding-left: 17px; vertial-align: top;" align="right" valign="top">
+      <div class="ish_text_container">
+        <p class="align-right" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #7f7f7f;color: #7f7f7f !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: right; line-height:13px; font-size:13px;">
+          <b>Payment due date</b><br />
+          <% invoice.unpaidInvoiceDueDates.sort{ it.dueDate }.each { invoiceDueDate -> %>
+          ${invoiceDueDate.dueDate.format("d MMMM yyyy")}<br />
+          <% } %>
+        </p>
+      </div>
+    </td>
+    <td class="ish_content_container" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 0;padding-right: 17px;padding-bottom: 10px;padding-left: 17px; vertical-align: top;" align="right" valign="top">
+      <div class="ish_text_container">
+        <p class="align-right" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #7f7f7f;color: #7f7f7f !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: right; line-height:13px; font-size:13px;">
+          <b>Amount payable</b><br />
+          <% invoice.unpaidInvoiceDueDates.sort{ it.dueDate }.each { invoiceDueDate -> %>
+          ${invoiceDueDate.unpaidAmount}<br />
+          <% } %>
+        </p>
+      </div>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<% } %>
+<table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+  <tbody>
+    <tr>
+      <td class="ish_content_container center" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 0;padding-right: 0;padding-bottom: 10px;padding-left: 17px; vertial-align: top;" align="left" valign="top">
+        <div class="ish_text_container">
+          <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #7f7f7f;color: #7f7f7f !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+            Bank Name<br />
+            Bank Address<br />
+            SWIFT Code<br />
+            BSB<br />
+            Account No.<br />
+            Account Name<br />
+            Address
+          </p>
+        </div>
+      </td>
+      <td class="ish_content_container left" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 0;padding-right: 17px;padding-bottom: 10px;padding-left: 17px; vertical-align: top;" align="left" valign="top">
+        <div class="ish_text_container">
+          <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #000000;color: #000000 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+            Commonwealth Bank of Australia<br />
+            185 Forest Road, Hurstville, NSW, 2220, Australia<br />
+            CTBAAU2S<br />
+            062 184<br />
+            1128 3051<br />
+            SGSCC International<br />
+            PO Box 404, Jannali, NSW, 2226, Australia
+          </p>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+${render("Footer")}

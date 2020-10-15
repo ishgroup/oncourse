@@ -1,0 +1,15 @@
+${render("Header", [title: "Urgent! USI Required"])}
+
+Dear ${certificate.student.contact.fullName}
+
+Your Certificate can not be issued as you have not yet provided, or successfully verified your USI.
+${certificate.student.getPortalLink('USI')}
+Please click here to update your record, and apply for a USI if you do not already have one.
+
+If you do not have a USI, you can apply for one here: https://www.usi.gov.au/students/create-your-usi 
+Coffee School cannot help you with this process. If you need assistance obtaining your USI, please call the USI Office at 1300 857 536.
+
+
+Your Certificate will be issued automatically with 48 hours of you completing this information.
+
+${render("Footer")}

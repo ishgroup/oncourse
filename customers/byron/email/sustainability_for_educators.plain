@@ -1,0 +1,11 @@
+${render("Header")}
+
+Hi ${article.contact.fullName}
+
+Thank you for purchasing the eVersion of the Sustainability For Educators book though our website.  Please click this link to access your eVersion of 'Sustainability For Educators' https://ish-oncourse-byron.s3.amazonaws.com/3ee57acc-4719-4684-a882-7d31cdb8cdea
+
+Regards,
+
+Byron Admin Team
+
+${render("Footer")}

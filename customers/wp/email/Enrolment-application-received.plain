@@ -1,0 +1,9 @@
+${render("Header")}
+
+Dear ${application.student.contact.firstName}, 
+
+Your application for ${application.course.name} has been received. 
+
+Please follow the instructions on the course descriptor to submit your prerequisite evidence.
+
+${render("Footer")}

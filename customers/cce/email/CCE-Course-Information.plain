@@ -1,0 +1,30 @@
+Course Information. ${enrolment.courseClass.course.name}
+Hello ${enrolment.student.contact.fullName},
+Thank you for enrolling in ${enrolment.courseClass.course.name} with Centre for Continuing Education. We trust that you will enjoy your course.
+A brief summary of your course is provided below.
+<% if(enrolment.courseClass.course.isShownOnWeb) { %>
+More information may be published on our website including recommended reading or specific course pre-requisites.
+<% } %>
+
+COURSE  ${enrolment.courseClass.course.name}
+DATE ${enrolment.courseClass.startDateTime.format("d MMM YYYY h:mm a")} - ${enrolment.courseClass.endDateTime.format("d MMM YYYY h:mm a")} (${enrolment.courseClass.sessionsCount} sessions)
+TUTORS <% enrolment.courseClass.firstSession.tutors.unique().each { t -> %> ${t.contact.firstName} ${t.contact.lastName} <% } %>
+LOCATION <% if (enrolment.courseClass.room == null) { %> To be confirmed  <% } else { %> ${enrolment.courseClass.room.name} - ${enrolment.courseClass.room.site.name} <% } %>
+
+Enrolment Conditions
+Enrolment into this course indicates acceptance of our terms and conditions. In particular, please note our cancellation and refund policies</a>. You are not able to cancel this enrolment without penalty or obtain a refund if the problem is outside our control or for reasons including change of mind. Our terms provide you with a 24-hour cooling-off period as a safeguard designed to give you the opportunity to change your mind. Please see our termsfor full details.
+
+Code of Conduct
+In accepting our terms, you have also agreed to comply at all times with our our by-laws, rules, policies and procedures, and that you are responsible for informing yourself of the requirements applicable to you under such by-laws, rules, policies and procedures available here. In particular, we wish to point out the university's Code of Conduct which sets out the University's expectation of students in relation to academic matters and personal behaviour.
+
+Safety and Wellbeing
+We're committed to keeping our students, staff and visitors safe. Please read about emergencies and personal safety for information on your safety and wellbeing while on our campuses.
+
+Additional Information
+We recommend that you bring paper and a pen with you to take notes. As a matter of courtesy to tutors and other students, we request that you please refrain from using mobile devices for phone calls or emails during your course.
+
+<% enrolment.courseClass.sessions.sort{it.startDatetime}.each { s -> %>
+${s.startDatetime.format("d MMM YYYY h:mm a")} - ${s.endDatetime.format("h:mm a")}
+<% if (s.room == null) { %>Venue to be confirmed <% } else { %> ${s.room.name} - ${s.room.site.name} | <% } %>
+<% if (s.tutors == null) { %>Tutor to be confirmed <% } else { %> ${s.tutors.first().contact.firstName} ${s.tutors.first().contact.lastName}  <% } %>
+<% } %>

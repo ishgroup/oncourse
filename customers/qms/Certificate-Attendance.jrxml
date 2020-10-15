@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2017-08-10T18:39:49 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CertificateAttendanceReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" whenResourceMissingType="Empty" uuid="410c1ff3-4a09-4d6a-8550-8fb96d5ac0d0">
+	<property name="name" value="Certificate-Attendance"/>
+	<property name="entity" value="Enrolment"/>
+	<property name="isSubreport" value="false"/>
+	<property name="isVisible" value="true"/>
+	<property name="versionNumber" value="53"/>
+	<property name="keyCode" value="ish.oncourse.nonVetCertificate"/>
+	<property name="ish.oncourse.title" value="AttendanceCertificate"/>
+	<property name="ish.oncourse.filePrefix" value="AttendanceCertificate"/>
+	<property name="ish.oncourse.description" value="Report is generated at the conclusion of any non VET short courses to verify that the student attended all of the required number of classes.This report prints in Portrait format."/>
+	<property name="ish.oncourse.pdfFileName" value="AttendanceCertificate.pdf"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="default" isDefault="true" forecolor="#000000" vTextAlign="Bottom" markup="none" fontName="Open Sans" fontSize="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="OpenSans" pdfEncoding="Cp1252" isPdfEmbedded="true">
+		<paragraph spacingAfter="8"/>
+	</style>
+	<style name="header 1" style="default" forecolor="#4F0018" vTextAlign="Middle" fontName="Open Sans Light" fontSize="18" pdfFontName="Open Sans Light"/>
+	<style name="header 2" style="header 1" fontSize="12"/>
+	<style name="header 3" style="default" vTextAlign="Middle" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+	<style name="header 3 (right)" style="header 3" hTextAlign="Right"/>
+	<style name="Label" style="default" forecolor="#6A7E99"/>
+	<style name="Label right" style="Label" hTextAlign="Right"/>
+	<style name="data field" style="default"/>
+	<style name="data field (money)" style="data field" hTextAlign="Right" pattern="$#,###,##0.00;$(-#,###,##0.00)"/>
+	<style name="data field (numeric)" style="data field" hTextAlign="Right"/>
+	<style name="data field (datetime)" style="data field" pattern="d MMM yyyy h:mma"/>
+	<style name="data field (day)" style="data field" pattern="E d MMM h:mma"/>
+	<style name="data field (date)" style="data field" pattern="d MMM yyyy"/>
+	<style name="Footer" style="default" forecolor="#737373" fontSize="8"/>
+	<style name="Footer strong" style="Footer" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+	<style name="subHead box" style="default" backcolor="#E6E7F0"/>
+	<style name="crosstab" mode="Opaque" backcolor="#F7F2E9">
+		<box>
+			<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#A3A3A3"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{ROW_COUNT}.intValue() % 2 == 1 ? Boolean.TRUE : Boolean.FALSE]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FFFFFF"/>
+		</conditionalStyle>
+	</style>
+	<style name="alternateRow" mode="Opaque" forecolor="rgba(255, 255, 255, 0.0)" backcolor="#F7F2E9">
+		<box>
+			<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{PAGE_COUNT}.intValue() % 2 == 1 ? Boolean.TRUE : Boolean.FALSE]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FFFFFF"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="ReportName" class="java.lang.String"/>
+	<field name="enrolment" class="ish.oncourse.server.cayenne.Enrolment"/>
+	<field name="pref.avetmiss.collegename" class="java.lang.String"/>
+	<field name="pref.avetmiss.address.line1" class="java.lang.String"/>
+	<field name="pref.avetmiss.address.suburb" class="java.lang.String"/>
+	<field name="pref.avetmiss.address.state" class="java.lang.String"/>
+	<field name="pref.avetmiss.address.postcode" class="java.lang.String"/>
+	<field name="pref.avetmiss.identifier" class="java.lang.String"/>
+	<field name="courseClass.course.name" class="java.lang.String"/>
+	<field name="courseClass.classroomHours" class="java.math.BigDecimal"/>
+	<field name="pref.avetmiss.certificate.signatory.name" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Prevent"/>
+	</title>
+	<pageHeader>
+		<band splitType="Prevent"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="772" splitType="Stretch">
+			<image scaleImage="FillFrame">
+				<reportElement key="" isPrintRepeatedValues="false" x="0" y="-14" width="248" height="786" isPrintInFirstWholeBand="true" uuid="95c51791-36c3-4456-922a-53f716261b97">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<imageExpression><![CDATA["https://ish-oncourse-qms.s3.amazonaws.com/e79395b5-af08-4860-9116-9be03d125657"]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-1" style="header 1" x="27" y="158" width="540" height="52" uuid="665fcbc9-1bc1-4c6b-af09-97b610a87bf3"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{enrolment}.student.contact.fullName]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="252" y="550" width="125" height="37" uuid="51a174bf-03da-4ce0-bd3b-8503bc2f03c1"/>
+				<imageExpression><![CDATA["https://ish-oncourse-qms.s3.amazonaws.com/0362c055-ed0c-41b5-993b-c3d5c1d9e040"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="409" y="680" width="130" height="50" uuid="f8b39976-8289-4c6a-bce0-7fac8adb6f9c"/>
+				<imageExpression><![CDATA["https://ish-oncourse-qms.s3.amazonaws.com/c76df83c-fe0a-4429-8f22-ee222c468294"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement key="textField-3" x="40" y="410" width="527" height="20" uuid="6cce5cf8-947c-4126-b7c1-f6978a34b1be">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Dates: " + $F{enrolment}.outcomes*.startDate.flatten().max().format("dd MMM yyyy") + " - " + $F{enrolment}.outcomes*.endDate.flatten().max().format("dd MMM yyyy")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement key="textField-3" x="40" y="434" width="527" height="20" uuid="58f590eb-cf2e-4c88-a8b4-040d11cf9fd9">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Duration: "+$F{courseClass.classroomHours}+" hours"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement key="staticText-2" x="40" y="470" width="527" height="30" uuid="c463f12a-546d-4c5d-a1ed-8f997bb80aea"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Tutor: Nicki Carroll"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-2" x="60" y="600" width="507" height="40" uuid="4fa279b9-c5a1-48a7-bafd-b0e334d78139"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Gerry Bonner, CPEng, BEng, FIE Aust, Chairman - QMSCS Pty Ltd
+Approval: QMSCS Pty Ltd Trading as QMS Certification Services
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-2" x="40" y="210" width="527" height="80" uuid="686d7647-9b47-48a1-a296-93804e832e8b"/>
+				<textElement textAlignment="Center">
+					<font size="16"/>
+				</textElement>
+				<text><![CDATA[Has successfully completed 
+the following training conducted by 
+QMS Certification Services Pty Ltd
+]]></text>
+			</staticText>
+			<image>
+				<reportElement x="180" y="280" width="269" height="123" uuid="38c149d9-be03-4fc4-8351-bf5846c01484"/>
+				<imageExpression><![CDATA["https://ish-oncourse-qms.s3.amazonaws.com/31ac97c7-8c9d-4290-8bbb-a460629ec5cf"]]></imageExpression>
+			</image>
+			<textField isStretchWithOverflow="true">
+				<reportElement key="textField-2" stretchType="RelativeToTallestObject" x="70" y="300" width="497" height="80" uuid="4efecf6d-434e-4376-bac7-3fc8d1633e5a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="18"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{courseClass.course.name}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="211" y="577" width="179" height="1" uuid="41b1ed09-ded3-4830-a3d2-ae8c320ff727"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

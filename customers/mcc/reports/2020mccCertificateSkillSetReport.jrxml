@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.1.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CertificateAttainmentReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="28" bottomMargin="1" isFloatColumnFooter="true" whenResourceMissingType="Empty" uuid="6fb605b7-2bf2-46d1-8131-f4ad03f6f727">
+	<property name="name" value="2019 MCC Certificate-SkillSet"/>
+	<property name="entity" value="Certificate"/>
+	<property name="isSubreport" value="true"/>
+	<property name="isVisible" value="true"/>
+	<property name="keyCode" value="2019.mcc.onCourse.certificate.skillset"/>
+	<property name="ish.oncourse.title" value="Certificate"/>
+	<property name="ish.oncourse.filePrefix" value="certificate"/>
+	<property name="ish.oncourse.description" value="onCourse includes AQF recommended templates for full Qualification Certificates, Statements of Attainment and transcripts. Certificates can only be generated from units that are recorded as part of onCourse enrolments."/>
+	<property name="ish.oncourse.pdfFileName" value="Certificate.pdf"/>
+	<import value="ish.common.types.QualificationType"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<import value="org.apache.commons.lang3.time.DateUtils"/>
+	<style name="default" isDefault="true" forecolor="#000000" vTextAlign="Bottom" markup="none" fontName="HelveticaLTStd-Bold" fontSize="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="HelveticaLTStd-Bold" pdfEncoding="Cp1252" isPdfEmbedded="true">
+		<paragraph spacingAfter="8"/>
+	</style>
+	<style name="header 1" style="default" forecolor="#4F0018" vTextAlign="Middle" fontName="Open Sans Light" fontSize="18" pdfFontName="Open Sans Light"/>
+	<style name="header 2" style="header 1" fontSize="12"/>
+	<style name="header 3" style="default" vTextAlign="Middle" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+	<style name="header 3 (right)" style="header 3" hTextAlign="Right"/>
+	<style name="HBold" fontName="HelveticaLTStd-Bold" pdfFontName="HelveticaLTStd-Bold"/>
+	<style name="HRoman" fontName="HelveticaLTStd-Roman" pdfFontName="HelveticaLTStd-Roman"/>
+	<style name="Label" style="default" forecolor="#6A7E99"/>
+	<style name="Label right" style="Label" hTextAlign="Right"/>
+	<style name="data field" style="default"/>
+	<style name="data field (money)" style="data field" hTextAlign="Right" pattern="$#,###,##0.00;$(-#,###,##0.00)"/>
+	<style name="data field (numeric)" style="data field" hTextAlign="Right"/>
+	<style name="data field (datetime)" style="data field" pattern="d MMM yyyy h:mma"/>
+	<style name="data field (day)" style="data field" pattern="E d MMM h:mma"/>
+	<style name="data field (date)" style="data field" pattern="d MMM yyyy"/>
+	<style name="Footer" style="default" forecolor="#737373" fontSize="8"/>
+	<style name="Footer strong" style="Footer" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+	<style name="subHead box" style="default" backcolor="#E6E7F0"/>
+	<style name="crosstab" mode="Opaque" backcolor="#F7F2E9">
+		<box>
+			<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#A3A3A3"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{ROW_COUNT}.intValue() % 2 == 1 ? Boolean.TRUE : Boolean.FALSE]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FFFFFF"/>
+		</conditionalStyle>
+	</style>
+	<style name="alternateRow" mode="Opaque" forecolor="rgba(255, 255, 255, 0.0)" backcolor="#F7F2E9">
+		<box>
+			<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{PAGE_COUNT}.intValue() % 2 == 1 ? Boolean.TRUE : Boolean.FALSE]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FFFFFF"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="ReportName" class="java.lang.String"/>
+	<field name="global.print_qr_code" class="java.lang.Boolean"/>
+	<field name="certificate" class="ish.oncourse.server.cayenne.Certificate"/>
+	<field name="datasource.successfulOutcomes" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<field name="subreport.2019.mcc.onCourse.certificate.attainment.subreport" class="net.sf.jasperreports.engine.JasperReport"/>
+	<field name="image.logo-nrt" class="java.io.InputStream"/>
+	<field name="image.logo-VETAB" class="java.io.InputStream"/>
+	<field name="pref.avetmiss.address.postcode" class="java.lang.String"/>
+	<field name="pref.avetmiss.certificate.signatory.name" class="java.lang.String"/>
+	<field name="pref.avetmiss.collegename" class="java.lang.Object"/>
+	<field name="pref.avetmiss.identifier" class="java.lang.Object"/>
+	<variable name="firstAid" class="java.lang.Boolean">
+		<variableExpression><![CDATA[$F{certificate}*.successfulOutcomes*.code.flatten().contains("HLTAID001") ? true : 
+$F{certificate}*.successfulOutcomes*.code.flatten().contains("HLTAID002") ? true :
+$F{certificate}*.successfulOutcomes*.code.flatten().contains("HLTAID003") ? true :
+$F{certificate}*.successfulOutcomes*.code.flatten().contains("HLTAID004") ? true : false]]></variableExpression>
+		<initialValueExpression><![CDATA[false]]></initialValueExpression>
+	</variable>
+	<filterExpression><![CDATA[$F{certificate}.isQualification && [QualificationType.SKILLSET_TYPE, QualificationType.SKILLSET_LOCAL_TYPE].contains($F{certificate}.qualification.type)]]></filterExpression>
+	<pageHeader>
+		<band height="271" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-9" style="HBold" x="-3" y="178" width="561" height="30" forecolor="#F15A29" uuid="f6403fec-6767-4f63-8727-471bd549c960"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="HelveticaLTStd-Bold" size="18" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(($F{certificate}.student.contact.firstName == $F{certificate}.student.contact.lastName) ? $F{certificate}.student.contact.lastName : $F{certificate}.student.contact.fullName)]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="2" y="261" width="550" height="1" uuid="1e9469cd-89f1-4f1c-bad6-1cba233af1c2"/>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-9" x="-3" y="229" width="561" height="30" forecolor="#F15A29" uuid="8a873cd3-eac4-4b31-a9c2-6f66dc0ac6ae">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="HelveticaLTStd-Bold" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[[$F{certificate}.qualification.nationalCode, $F{certificate}.qualification.level, $F{certificate}.qualification.title].join(" ")]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-9" x="-3" y="229" width="561" height="30" forecolor="#F15A29" uuid="25484b27-bf65-4e58-9164-f2e33e575c18">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="HelveticaLTStd-Bold" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[[$F{certificate}.qualification.nationalCode, $F{certificate}.qualification.level, $F{certificate}.qualification.title].join(" ")]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-2" stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" mode="Transparent" x="1" y="0" width="509" height="30" isRemoveLineWhenBlank="true" uuid="255c13d9-944d-442f-9ecb-3dc928e54033"/>
+				<dataSourceExpression><![CDATA[$F{datasource.successfulOutcomes}]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$F{subreport.2019.mcc.onCourse.certificate.attainment.subreport}]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="136">
+			<textField>
+				<reportElement style="HBold" positionType="Float" x="0" y="9" width="148" height="20" forecolor="#231A4E" uuid="8dfc9b14-38a4-41f3-8453-0b17d893de9a">
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == $V{PAGE_COUNT}]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Top">
+					<font fontName="HelveticaLTStd-Bold" size="11" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Total Units of Competency:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="HBold" positionType="Float" x="465" y="9" width="70" height="20" forecolor="#231A4E" uuid="42cf8786-58bc-4cfa-a1c7-87c0ffa6ebd8">
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == $V{PAGE_COUNT}]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Top">
+					<font fontName="HelveticaLTStd-Bold" size="11" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["End of List"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="HRoman" positionType="Float" x="0" y="63" width="296" height="18" forecolor="#F15F2A" uuid="c63bfd26-749a-41c6-89ba-f5994528d88b"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="HelveticaLTStd-Roman" size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["This document is issued without alteration"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="Float" x="-2" y="33" width="550" height="1" uuid="00273c7d-13f1-4008-a2d4-ca0d12c311dc"/>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement style="HBold" positionType="Float" x="0" y="44" width="168" height="18" forecolor="#231A4E" uuid="348afe24-2ea2-4266-939f-1b54d89627d4"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="HelveticaLTStd-Bold" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Theresa Collignon, CEO"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="HBold" positionType="Float" x="148" y="9" width="148" height="20" forecolor="#231A4E" uuid="af8d853c-d0d3-4a52-aa78-76f41ce3969c">
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == $V{PAGE_COUNT}]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Top">
+					<font fontName="HelveticaLTStd-Bold" size="11" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{certificate}.successfulOutcomes.size()]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-9" style="HBold" positionType="FixRelativeToBottom" x="50" y="106" width="460" height="30" forecolor="#F15A29" uuid="c92a430d-de54-45a1-b72b-c0c2348609b1">
+					<printWhenExpression><![CDATA[$V{firstAid} == true]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="HelveticaLTStd-Bold" size="11" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["WorkCover NSW requires first aid to be refreshed every three (3) years \nVarious industries require CPR to be refreshed every 12 months"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="HBold" positionType="Float" x="428" y="9" width="120" height="20" forecolor="#231A4E" uuid="6fe7cd6d-949a-474f-9898-8b47483785f4">
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} != $V{PAGE_COUNT}]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Top">
+					<font fontName="HelveticaLTStd-Bold" size="11" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Continued Overleaf"]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="106" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-1" style="HRoman" x="118" y="53" width="82" height="11" forecolor="#F15A29" uuid="26425d0c-22c5-497e-b429-06221211bb63"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="HelveticaLTStd-Roman" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{certificate}.issuedOn.format("dd/MM/YYYY")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-1" style="HRoman" x="138" y="43" width="62" height="9" forecolor="#F15A29" uuid="2b1c125f-f667-4f72-944b-39fab86ccd1d"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="HelveticaLTStd-Roman" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{certificate}.student.studentNumber]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-1" style="HRoman" x="138" y="34" width="62" height="9" forecolor="#F15A29" uuid="1f43c4d6-565b-4d38-8373-973834c04abc"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="HelveticaLTStd-Roman" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{certificate}.certificateNumber]]></textFieldExpression>
+			</textField>
+			<image hyperlinkType="Reference">
+				<reportElement x="10" y="24" width="46" height="46" uuid="f507d505-1f1d-4f77-97f2-587230fe5bfe">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{global.print_qr_code}]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA[$F{certificate}.getQRCodeImage()]]></imageExpression>
+				<hyperlinkReferenceExpression><![CDATA["http://www.skills.courses/" + $F{certificate}.qrUniqueCode.toString()]]></hyperlinkReferenceExpression>
+			</image>
+			<textField>
+				<reportElement style="HBold" x="15" y="81" width="70" height="10" uuid="e56a01be-b8b3-47e5-a943-6c1784211bf8">
+					<printWhenExpression><![CDATA[$F{global.print_qr_code}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="HelveticaLTStd-Bold" size="6" isBold="true" pdfFontName="Open Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{certificate}.qrUniqueCode]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="HBold" x="15" y="65" width="70" height="10" uuid="e8f3d98b-7db7-47ca-b099-73273db6a4b9">
+					<printWhenExpression><![CDATA[$F{global.print_qr_code}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="HelveticaLTStd-Bold" size="6" isBold="true" pdfFontName="Open Sans"/>
+				</textElement>
+				<text><![CDATA[www.skills.courses]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="HRoman" x="15" y="73" width="70" height="10" uuid="3e00f4a5-1b60-4ddf-b35a-6189ee6d930e">
+					<printWhenExpression><![CDATA[$F{global.print_qr_code}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="HelveticaLTStd-Roman" size="6" isBold="false" pdfFontName="Open Sans"/>
+				</textElement>
+				<text><![CDATA[Certificate verification]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

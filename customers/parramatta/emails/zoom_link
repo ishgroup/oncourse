@@ -1,0 +1,17 @@
+${render("Header")}
+
+Hello ${enrolment.student.contact.fullName},
+
+Thank you for enrolling in ${enrolment.courseClass.course.name}, starting ${enrolment.courseClass.startDateTime.format("h:mm a EEEE d MMMM yyyy zzzz", enrolment.courseClass.getTimeZone())}.
+
+This class is held live, online using the Zoom platform. 
+
+We ask you to be ready to log into the class at least 10 minutes before it starts, this will allow you time to get set up and comfortable. Please don't be late for your class.
+
+Please click this link to log into the class https://zoom.us/j/${enrolment.courseClass.customField("ZoomSession")}
+
+We look forward to seeing you soon. If you have any questions, please call us during business hours on (02) 9687 2072. 
+
+Parramatta College
+
+${render("Footer")}

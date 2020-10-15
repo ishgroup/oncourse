@@ -1,0 +1,265 @@
+${render("Header", [title: "Enrolment Confirmation"])}
+<% if (enrolment.courseClass.course.hasTag("Smart & Skilled")) { %>
+<table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+    <tbody>
+    <tr>
+        <td class="ish_content_container left" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 0;padding-right: 17px;padding-bottom: 10px;padding-left: 17px; vertical-align: top;" align="left" valign="top">
+            <div class="ish_text_container">
+                <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                    ${java.time.LocalDate.now().format("dd MMMM yyyy")}
+                </p>
+                <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                    SENT BY EMAIL
+                </p>
+                <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                    Dear ${enrolment.student.contact.firstName}
+                </p>
+                <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                    <b>Course Name: </b> ${enrolment.courseClass.course.name} (${enrolment.courseClass.course.code}-${enrolment.courseClass.code}) <br />
+                    <b>Smart & Skilled Commitment ID: </b> ${enrolment.vetPurchasingContractID?:""}
+                </p>
+                <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                    Please accept this letter as confirmation of your place in the above course, subsidised by the NSW Government through its Smart & Skilled Training Program. The course will be held as follows:
+                </p>
+                <table border="1" width="100%" style="border:1;">
+                    <tbody class="ish_enrol_conf_content">
+                    <tr>
+                        <td class="ish_enrol_conf_row left" style="border:1; border-collapse: collapse; background-color: #fff; border: 1;padding-top: 17px;padding-right: 20px;padding-bottom: 17px; padding-left: 20px; color: #000000  !important; font-weight: normal !important; font-size:13px !important; vertical-align: top; width: 30% !important;" valign="top" align="left" width="30%">
+                            <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 100%;margin-top: .2em;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                                Training Venue:
+                            </p>
+                        </td>
+                        <td class="ish_enrol_conf_row left" style="border:1; border-collapse: collapse; background-color: #fff; border: 1;padding-top: 17px;padding-right: 20px;padding-bottom: 17px; padding-left: 20px; color: #000000  !important; font-weight: normal !important;  font-size:13px !important; vertical-align: top; width: 70% !important;" valign="top" align="left" width="70%">
+                            <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 100%;margin-top: .2em;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                                ${enrolment.courseClass.displayableLocation}
+                            </p>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tbody class="ish_enrol_conf_content">
+                    <tr>
+                        <td class="ish_enrol_conf_row left" style="border:1; border-collapse: collapse; background-color: #fff; border: 1;padding-top: 17px;padding-right: 20px;padding-bottom: 17px; padding-left: 20px; color: #000000  !important; font-weight: normal !important; font-size:13px !important; vertical-align: top; width: 30% !important;" valign="top" align="left" width="30%">
+                            <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 100%;margin-top: .2em;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                                Start Date:
+                            </p>
+                        </td>
+                        <td class="ish_enrol_conf_row left" style="border:1; border-collapse: collapse; background-color: #fff; border: 1;padding-top: 17px;padding-right: 20px;padding-bottom: 17px; padding-left: 20px; color: #000000  !important; font-weight: normal !important;  font-size:13px !important; vertical-align: top; width: 70% !important;" valign="top" align="left" width="70%">
+                            <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 100%;margin-top: .2em;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                                ${enrolment.courseClass.startDateTime.format("h:mm a EEEE d MMMM yyyy")}
+                            </p>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tbody class="ish_enrol_conf_content">
+                    <tr>
+                        <td class="ish_enrol_conf_row left" style="border:1; border-collapse: collapse; background-color: #fff; border: 1;padding-top: 17px;padding-right: 20px;padding-bottom: 17px; padding-left: 20px; color: #000000  !important; font-weight: normal !important; font-size:13px !important; vertical-align: top; width: 30% !important;" valign="top" align="left" width="30%">
+                            <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 100%;margin-top: .2em;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                                End Date:
+                            </p>
+                        </td>
+                        <td class="ish_enrol_conf_row left" style="border:1; border-collapse: collapse; background-color: #fff; border: 1;padding-top: 17px;padding-right: 20px;padding-bottom: 17px; padding-left: 20px; color: #000000  !important; font-weight: normal !important;  font-size:13px !important; vertical-align: top; width: 70% !important;" valign="top" align="left" width="70%">
+                            <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 100%;margin-top: .2em;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                                ${enrolment.courseClass.endDateTime.format("h:mm a EEEE d MMMM yyyy")}
+                            </p>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tbody class="ish_enrol_conf_content">
+                    <tr>
+                        <td class="ish_enrol_conf_row left" style="border:1; border-collapse: collapse; background-color: #fff; border: 1;padding-top: 17px;padding-right: 20px;padding-bottom: 17px; padding-left: 20px; color: #000000  !important; font-weight: normal !important; font-size:13px !important; vertical-align: top; width: 30% !important;" valign="top" align="left" width="30%">
+                            <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 100%;margin-top: .2em;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                                Trainer Name:
+                            </p>
+                        </td>
+                        <td class="ish_enrol_conf_row left" style="border:1; border-collapse: collapse; background-color: #fff; border: 1;padding-top: 17px;padding-right: 20px;padding-bottom: 17px; padding-left: 20px; color: #000000  !important; font-weight: normal !important;  font-size:13px !important; vertical-align: top; width: 70% !important;" valign="top" align="left" width="70%">
+                            <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 100%;margin-top: .2em;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                                ${enrolment.courseClass.tutorNames}
+                            </p>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tbody class="ish_enrol_conf_content">
+                    <tr>
+                        <td class="ish_enrol_conf_row left" style="border:1; border-collapse: collapse; background-color: #fff; border: 1;padding-top: 17px;padding-right: 20px;padding-bottom: 17px; padding-left: 20px; color: #000000  !important; font-weight: normal !important; font-size:13px !important; vertical-align: top; width: 30% !important;" valign="top" align="left" width="30%">
+                            <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 100%;margin-top: .2em;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                                Course Cost:
+                            </p>
+                        </td>
+                        <td class="ish_enrol_conf_row left" style="border:1; border-collapse: collapse; background-color: #fff; border: 1;padding-top: 17px;padding-right: 20px;padding-bottom: 17px; padding-left: 20px; color: #000000  !important; font-weight: normal !important;  font-size:13px !important; vertical-align: top; width: 70% !important;" valign="top" align="left" width="70%">
+                            <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 100%;margin-top: .2em;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                                ${enrolment.originalInvoiceLine.finalPriceToPayIncTax}
+                            </p>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                    Please visit <a style="color: #0084b4;color: #0084b4 !important;background-color: #ffffff;text-decoration: none;border: 0;word-wrap: break-word;" href="${Preferences.get("web.url")}/class/${enrolment.courseClass.course.code}-${enrolment.courseClass.code}" target="_blank">${Preferences.get("web.url")}/class/${enrolment.courseClass.course.code}-${enrolment.courseClass.code}</a> to confirm the class details, directions and course requirements including work placement and mandatory certification applications (if applicable).
+                </p>
+                <% if (enrolment.courseClass.course.code.equals("Human_Resources_BSB41015")) { %>
+                <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                    A timetable will be handed out at the first session of the course. 
+                </p>
+                <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                    Students will be required to access the student learning resources and complete all required course assessments online through the Northern Beaches Community College's Learning Management System (LMS).  Shortly you will receive a separate welcome email explaining how to access the electronic resources through the NBCC student LMS portal.  Please ensure you follow and complete the required steps prior to attending your first class.  As all your resources will be available to you online, please ensure you bring along to each class a laptop with access to the NBCC LMS portal.  If you are unsure, your Trainer will be able to offer support at the first session.
+                </p>
+                
+                
+
+                <% } else  { %>
+                <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                    A timetable will be handed out at the first session of the course together with relevant course resources.
+                </p>
+                <% } %>
+                
+                <% if (enrolment.courseClass?.room?.site?.suburb?.toLowerCase()?.contains("narrabeen")) { %>
+
+                <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                    As only limited parking is available to the College in the northern end of the main car park, we ask that students park in Lake Park car park on the opposite side of Pittwater Road. As Pittwater Sports Centre management monitors the use of the car park, we request your cooperation in this matter.
+                </p>
+                <% } %>
+                <% if (enrolment.courseClass?.room?.site?.suburb?.toLowerCase()?.contains("brookvale")) { %>
+                <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                    No on site parking is available at our Brookvale Training Centre. Unrestricted street parking is available further along William Street and in surrounding residential streets.
+                </p>
+                <% } %>
+                <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                    Student facilities at the College include a kitchen with fridge and microwave. Student access to computers is available at our Narrabeen training centre if you do not have access to your own, for the purposes of research and completion of course work. Please contact the College first to check availability.
+                </p>
+                <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                    You will need to allow regular self study time in addition to the face to face class hours - the amount of time will vary according to subject being studied. Assessments will be conducted as part of the course. Some are to be taken home and completed in your own time, while others will be conducted in class or during work placement (if applicable). If you are unable to attend any training sessions, please email your trainer to explain your absence. Attendance is vital and students must attend at least 75% of the course to meet attendance requirements.
+                </p>
+                <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                    As advised on enrolment, the Student Handbook and Smart & Skilled Student Information documents can be located in the Smart & Skilled section of the College website at <a style="color: #0084b4;color: #0084b4 !important;background-color: #ffffff;text-decoration: none;border: 0;word-wrap: break-word;" href="www.nbcc.nsw.edu.au" target="_blank">www.nbcc.nsw.edu.au</a>. These documents should be read, as they contain information about, the assessment process, recognition of prior learning, fees, consumer protection, deferral or discontinuance of training, access to support and contact details for various support services, your rights under the Smart & Skilled guidelines and College policies and procedures.
+                </p>
+                <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                    I do hope you will enjoy a positive learning experience at the College and I encourage you to talk to your trainer or to me if you have any concerns or feedback you would like to share, as you complete the course. <br />
+                </p>
+                <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                    Yours sincerely
+                </p>
+                <img src="https://ish-oncourse-beaches.s3.amazonaws.com/86ba6963-b29d-4bff-bc75-a5e868744bc1" alt="" width="150"/>
+                <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                    Fran Butterworth <br />
+                    Executive Director
+                </p>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<% } else { %>
+<table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+    <tbody>
+        <tr>
+            <td class="ish_content_container left" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 0;padding-right: 17px;padding-bottom: 10px;padding-left: 17px; vertical-align: top;" align="left" valign="top">
+                <div class="ish_text_container">
+                    <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 14px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                        Dear ${enrolment.student.contact.fullName}, <br> <br>
+                        Thank you for enrolling at <a style="color: #0084b4;color: #0084b4 !important;background-color: #ffffff;text-decoration: none;border: 0;word-wrap: break-word;" href="${Preferences.get("web.url")}" target="_blank"> ${Preferences.get("college.name")}</a>.<br> <br>
+                        <b>Class: ${enrolment.courseClass.course.name} (${enrolment.courseClass.course.code}-${enrolment.courseClass.code})</b><br>
+                    </p>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+    <tbody>
+        <tr>
+            <td class="ish_content_container center" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 10px;padding-right: 17px;padding-bottom: 15px;padding-left: 17px;" align="left">
+                <h3 style="color:#464646 !important; background-color:#ffffff; display:block; font-family:Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif; font-size:12px; font-style:normal; font-weight:bold; line-height:125%; letter-spacing:normal; margin:0 0 10px; text-align:left; text-transform: uppercase;">session details</h3>
+                <table border="0" width="100%" style="border:0; border-top: 1px solid #e9e9e9; border-bottom: 1px solid #e9e9e9">
+                    <thead>
+                        <tr>
+                            <th class="ish_enrol_conf_header left" style="border:0; border-collapse: collapse;background-color: #e9e9e9;border: 0;padding-top: 12px;padding-right: 20px;padding-bottom: 12px;padding-left: 20px; color: #464646 !important; font-weight: normal !important;" align="left" width="61%">When</th>
+                            <th class="ish_enrol_conf_header left" style="border:0; border-collapse: collapse;background-color: #e9e9e9;border: 0;padding-top: 12px;padding-right: 20px;padding-bottom: 12px;padding-left: 20px; color: #464646 !important; font-weight: normal !important;" align="left" width="61%">Where</th>
+                        </tr>
+                    </thead>
+                    <tbody class="ish_enrol_conf_content">
+                        <% enrolment.courseClass.sessions.sort{it.startDatetime}.each() { session -> %>
+                        <tr>
+                            <td class="ish_enrol_conf_row left" style="border:0; border-collapse: collapse; background-color: #fff; border: 0;padding-top: 17px;padding-right: 20px;padding-bottom: 17px; padding-left: 20px; color: #000000  !important; font-weight: normal !important; font-size:13px !important; vertical-align: top; width: 63% !important;" valign="top" align="left" width="63%">${session.startDatetime.format("EEEE d MMMM yyyy h.mm a")} - ${session.endDatetime.format("h.mm a")}</td>
+                            <td class="ish_enrol_conf_row left" style="border:0; border-collapse: collapse; background-color: #fff; border: 0;padding-top: 17px;padding-right: 20px;padding-bottom: 17px; padding-left: 20px; color: #000000  !important; font-weight: normal !important;  font-size:13px !important; vertical-align: top; width: 63% !important;" valign="top" align="left" width="63%">${session.room ? session.room.name:""} <br> ${enrolment.courseClass.displayableLocation} </td>
+                        </tr>
+                        <% if (session.publicNotes) { %>
+                        <tr class="with-notes" style="border-top: 0 !important;">
+                            <td colspan="2" class="ish_enrol_conf_row left" style="border-collapse: collapse; background-color: #fff; border: 0;  padding-top: 0;padding-right: 20px;padding-bottom: 12px; padding-left: 20px; color: #464646  !important; font-weight: normal !important; vertical-align: top; width: 100%;" valign="top" align="left" width="100%">
+                                <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 16px !important; margin-top: 0;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left; position: relative; top: -5px;">
+                                    <span class="ish_enrol_conf_notes_label" style="color: #000000 !important;">Notes:</span>
+                                    ${session.publicNotes}
+                                </p>
+                            </td>
+                        </tr>
+                        <% } %>
+                        <% } %>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+    <tbody>
+        <tr>
+            <td class="ish_content_container left" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 0;padding-right: 17px;padding-bottom: 10px;padding-left: 17px; vertical-align: top;" align="left" valign="top">
+                <div class="ish_text_container">
+                    <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                        Please visit <a style="color: #0084b4;color: #0084b4 !important;background-color: #ffffff;text-decoration: none;border: 0;word-wrap: break-word;" href="${Preferences.get("web.url")}/class/${enrolment.courseClass.course.code}-${enrolment.courseClass.code}" target="_blank">${Preferences.get("web.url")}/class/${enrolment.courseClass.course.code}-${enrolment.courseClass.code}</a> to confirm the class details, directions and course requirements. <span style="color: #000000; color: #000000 !important; ">Enrolment reference: ${enrolment.invoiceLine.invoice.invoiceNumber}</span>
+                    </p>
+
+                    <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                   <% if (enrolment.courseClass.course.modules.size() > 0) { %> 
+
+                    <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                        You are required to supply your Unique Student Identifier (USI) in order to be issued a Statement of Attainment or Qualification on the successful completion of your course. If you do not have a USI you can apply for one via the link above.  
+                    </p>                    
+                    <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                        You have enrolled in a Nationally Recognised Training course. We are required to collect some additional information rom you as part of the enrolment process.  
+                    </p>
+
+                    <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                        Please visit <a style="color: #0084b4;color: #0084b4 !important;background-color: #ffffff;text-decoration: none;border: 0;word-wrap: break-word;" href="${Preferences.getPortalCensusUrl(enrolment.student)}" target="_blank">${Preferences.getPortalCensusUrl(enrolment.student)}</a> to complete these questions.
+                    </p>
+                    <% } %>
+                
+                    <% if (enrolment.courseClass.course.code.equals("Responsible_Service_Alcohol_RSA")) { %>
+                    <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                        Students will be required to access the student learning resources and complete all required course assessments online through the Northern Beaches Community College's Learning Management System (LMS).Shortly you will receive a separate welcome email explaining how to access the electronic resources through the NBCC student LMS portal.      Please ensure you follow and complete the required steps prior to attending your first class. As all your resources will be available to you online please ensure you bring along to each class a laptop with access to the NBCC LMS portal. If you are unsure your Trainer will be able to offer support at the first session.<br>
+                    </p>
+                    <% } %>
+
+                    <% if( enrolment.courseClass.course.code.equals("Responsible_Service_Alcohol_RSA")  || enrolment.courseClass.course.code.equals("Provide_Responsible_Gambling_RCG")) { %>
+                    <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                        Students <b> must</b> ensure they have accurately provided the college with: <br>
+                        &emsp;  - Full name and date of birth <b> (that matches exactly as it appears on the proof of identity (POI) documents the student intends to present to Service NSW to obtain their Competency Card e.g. drivers licence). Please ensure the POI is an English language version of characters.</b><br>
+                        &emsp;  - Current email address<br>
+                        &emsp;  - Current contact number<br>
+                        &emsp;  - Current address<br> <br>
+                        Failure to do so will result in an error to process the Interim Certificate and this will delay the processing of the Competency Card issued through Service NSW. On successful completion of the course students will be emailed an Interim Certificate and posted a Statement of Attainment from NBCC within one week. The college strongly recommends once the student has received the Interim Certificate they attend their nearest Service NSW centre to obtain their photo Competency Card (please note: not all centres can process a Competency Card, <a style="color: #0084b4;color: #0084b4 !important;background-color: #ffffff;text-decoration: none;border: 0;word-wrap: break-word;" href="https://www.service.nsw.gov.au/service-centre/liquor-gaming-nsw-competency-card" target="_blank"> click here </a> to find your nearest centre).  Students will need to provide their Interim Certificate, proof of identity and have their photo taken.
+                    </p>
+                    <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                        Competency Cards typically take four weeks to arrive after attending a Service NSW centre. Delay can mean expiry of the Interim Certificate's 90-day work period with the result a student cannot work in relevant roles. The cost for processing the Competency Card is included in the enrolment fee.
+                    </p>
+
+                    <% } %>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<% } %>
+<table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+    <tbody>
+        <tr style="font-size:1px; mso-line-height-alt:0; mso-margin-top-alt:1px;">
+            <td width="100%" valign="middle" class="ish_divider_container" style="height:1px;background-color: #ffffff;border: 0;padding-top: 15px;padding-right: 17px;padding-bottom: 0;padding-left: 17px;" align="left">
+                <div align="center">
+                    <div style="width:564px; height:1px;text-decoration: none; display: block; background-color: #e3e3e3;"></div>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+${render("Footer")}

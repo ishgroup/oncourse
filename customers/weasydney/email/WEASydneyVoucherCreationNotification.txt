@@ -1,0 +1,7 @@
+A voucher has been created for you to the value of ${voucher.redemptionValue} redeemable against any class or workshop at ${Preferences.get("college.name")}.
+Find a course to use it with at our website: ${Preferences.get("web.url")}
+
+To redeem this voucher, enter this voucher code ${voucher.code} during enrolment at the Checkout page on our website,
+or letting us know over the phone or in person.
+
+This voucher expires on ${voucher.expiryDate.format("d MMMM yyyy")}.

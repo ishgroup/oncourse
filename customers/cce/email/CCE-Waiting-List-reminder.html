@@ -1,0 +1,31 @@
+${render("Header", [title: "CCE Classes are avaliable to enrol"])}
+
+              <!-- Title -->
+              <table width="660" border="0" cellspacing="0" cellpadding="0" class="title">
+                <tbody>
+                  <tr>
+                    <td width="30" height="36"></td>
+                    <td width="630"></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td class="title" style="color:#333333; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:20px; line-height:24px;"><strong style="color:#e64626;"> Classes are avaliable to enrol. </strong> ${waitingList.course.name} </td>
+                  </tr>
+                  <tr>
+                    <td width="30" height="40"></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <!-- End Title -->
+
+${render("CCE-Body-Start")}
+<h1> Dear ${waitingList.student.contact.fullName},</h1> <br>
+<p> You have previously joined a waiting list to be notified when <strong>${waitingList.course.name}</strong> becomes available for enrolment. </p>
+<p> A new class that may be of interest is <a href="https://cce.sydney.edu.au/course/${waitingList.course.code}" target="_blank">listed here</a>. </p>
+<h2> How do I remove myself from the Waiting List? </h2>
+<p> If you enrol in <strong>${waitingList.course.name}</strong>, we will automatically remove you from the waiting list. If you wish to remove yourself from the waiting list now, you can manage your waiting lists within <a href="${waitingList.student.contact.getPortalLink('subscriptions')}" target="_blank">My Account</a> or simply reply to this email and ask to be removed. </p>
+<p>Kind regards,</p>
+<p>Centre for Continuing Education</p>
+${render("CCE-Body-End")}
+${render("Footer")}

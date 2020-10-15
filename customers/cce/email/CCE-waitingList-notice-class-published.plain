@@ -1,0 +1,13 @@
+${render("Header")}
+
+Dear ${contact.getName(true)},
+
+You have previously joined a waiting list to be notified when <strong>${course.name}</strong> becomes available for enrolment.
+<% classes.each { courseClass -> %>
+		A new class that may be of interest is listed here: ${Preferences.get("web.url")}/class/${course.code}-${courseClass.code}
+<% } %>
+
+How do I remove myself from the Waiting List?
+		If you enrol in ${course.name}, we will automatically remove you from the waiting list. If you wish to remove yourself from the waiting list now, you can manage your waiting lists in Your Account or simply reply to this email and ask to be removed.
+
+${render("Footer")}

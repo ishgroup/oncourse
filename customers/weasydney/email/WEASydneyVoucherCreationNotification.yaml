@@ -1,0 +1,14 @@
+name: WEA Sydney Voucher creation notification
+type: email
+entityClass: Voucher
+keyCode: weasydney.email.voucherCreationForClassNotification
+txtTemplate: WEASydneyVoucherCreationNotification.txt
+htmlTemplate: WEASydneyVoucherCreationNotification.html
+subject: WEA Sydney Voucher is created
+options:
+  - name: header_keycode
+    dataType: TEXT
+    value: ish.email.header
+  - name: footer_keycode
+    dataType: TEXT
+    value: ish.email.footer

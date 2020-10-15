@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FinancialReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="517" leftMargin="39" rightMargin="39" topMargin="28" bottomMargin="51" whenResourceMissingType="Empty">
+	<property name="ish.oncourse.additionalProperty" value="promotionalRange"/>
+	<property name="ish.oncourse.additionalProperty.datasource" value="datasource.statementLines"/>
+	<property name="ish.oncourse.additionalProperty.displayLabel1" value="from"/>
+	<property name="ish.oncourse.additionalProperty.displayLabel2" value="to"/>
+	<property name="ish.oncourse.additionalProperty.visualElement" value="DateRange"/>
+	<property name="ish.oncourse.additionalProperty.defaultValue1" value="financialYearStart"/>
+	<property name="ish.oncourse.additionalProperty.defaultValue2" value="tomorrow"/>
+	<property name="ish.oncourse.additionalProperty.property1" value="createdOn"/>
+	<property name="ish.oncourse.additionalProperty.property2" value="createdOn"/>
+	<property name="name" value="Financial Summary"/>
+	<property name="entity" value="PaymentIn"/>
+	<property name="isSubreport" value="false"/>
+	<property name="isVisible" value="true"/>
+	<property name="versionNumber" value="14"/>
+	<property name="keyCode" value="ish.onCourse.tasmania.financialReport"/>
+	<property name="ish.oncourse.title" value="Financial Report"/>
+	<property name="ish.oncourse.filePrefix" value="Financial Report"/>
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="Report_Title" isDefault="true" fontName="Arial" fontSize="18" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+	<style name="Column_Header" isDefault="true" fontName="Arial" fontSize="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+	<style name="Column_Field" isDefault="true" fontName="Arial" fontSize="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+	<style name="Footer" isDefault="true" fontName="Arial" fontSize="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+	<parameter name="ReportName" class="java.lang.String"/>
+	<field name="title" class="java.lang.String"/>
+	<field name="image.logo" class="java.io.InputStream"/>
+	<field name="global.print_pre_printed" class="java.lang.Boolean"/>
+	<field name="datasource.title" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<field name="pref.college.name" class="java.lang.String"/>
+	<field name="pref.avetmiss.address.line1" class="java.lang.String"/>
+	<field name="pref.avetmiss.address.suburb" class="java.lang.String"/>
+	<field name="pref.avetmiss.address.postcode" class="java.lang.String"/>
+	<field name="pref.avetmiss.address.state" class="java.lang.String"/>
+	<field name="pref.college.paymentInfo" class="java.lang.String"/>
+	<field name="image.poweredby" class="java.io.InputStream"/>
+	<field name="typeOfPayment" class="java.lang.String"/>
+	<field name="site" class="java.lang.String"/>
+	<field name="accountCode" class="java.lang.String"/>
+	<field name="GST_free_amount" class="java.math.BigDecimal"/>
+	<field name="GST_amount" class="java.math.BigDecimal"/>
+	<field name="GST_component_amount" class="java.math.BigDecimal"/>
+	<variable name="GST_free_sum" class="java.math.BigDecimal" resetType="Group" resetGroup="account" calculation="Sum">
+		<variableExpression><![CDATA[$F{GST_free_amount}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal("0")]]></initialValueExpression>
+	</variable>
+	<variable name="GST_inc_sum" class="java.math.BigDecimal" resetType="Group" resetGroup="account" calculation="Sum">
+		<variableExpression><![CDATA[$F{GST_amount}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal("0")]]></initialValueExpression>
+	</variable>
+	<variable name="GST_component_sum" class="java.math.BigDecimal" resetType="Group" resetGroup="account" calculation="Sum">
+		<variableExpression><![CDATA[$F{GST_component_amount}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal("0")]]></initialValueExpression>
+	</variable>
+	<variable name="GST_inc_site_sum" class="java.math.BigDecimal" resetType="Group" resetGroup="adminSite" calculation="Sum">
+		<variableExpression><![CDATA[$F{GST_amount}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal("0")]]></initialValueExpression>
+	</variable>
+	<variable name="GST_free_site_sum" class="java.math.BigDecimal" resetType="Group" resetGroup="adminSite" calculation="Sum">
+		<variableExpression><![CDATA[$F{GST_free_amount}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal("0")]]></initialValueExpression>
+	</variable>
+	<variable name="GST_component_site_sum" class="java.math.BigDecimal" resetType="Group" resetGroup="adminSite" calculation="Sum">
+		<variableExpression><![CDATA[$F{GST_component_amount}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal("0")]]></initialValueExpression>
+	</variable>
+	<variable name="payment_total" class="java.math.BigDecimal" resetType="Group" resetGroup="typeOfPayment" calculation="Sum">
+		<variableExpression><![CDATA[$F{GST_free_amount}.add($F{GST_amount}).add($F{GST_component_amount})]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal("0")]]></initialValueExpression>
+	</variable>
+	<group name="adminSite">
+		<groupExpression><![CDATA[$F{site}]]></groupExpression>
+		<groupHeader>
+			<band splitType="Stretch"/>
+		</groupHeader>
+		<groupFooter>
+			<band splitType="Stretch"/>
+		</groupFooter>
+	</group>
+	<group name="typeOfPayment">
+		<groupExpression><![CDATA[$F{typeOfPayment}]]></groupExpression>
+		<groupHeader>
+			<band height="25" splitType="Stretch">
+				<staticText>
+					<reportElement key="staticText-1" style="Column_Header" x="0" y="12" width="137" height="13"/>
+					<textElement verticalAlignment="Bottom"/>
+					<text><![CDATA[Account]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-2" style="Column_Header" x="137" y="12" width="55" height="13"/>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[GST]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-3" style="Column_Header" x="192" y="12" width="100" height="13"/>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<text><![CDATA[Amount]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-8" style="Column_Header" x="292" y="12" width="224" height="13"/>
+					<textElement textAlignment="Left" verticalAlignment="Bottom">
+						<font pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[Narration]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band splitType="Stretch"/>
+		</groupFooter>
+	</group>
+	<group name="account">
+		<groupExpression><![CDATA[$F{accountCode}]]></groupExpression>
+		<groupHeader>
+			<band splitType="Stretch"/>
+		</groupHeader>
+		<groupFooter>
+			<band height="24" splitType="Stretch">
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement key="textField" style="Column_Field" x="292" y="0" width="224" height="12"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{typeOfPayment} +" "+ $F{site}+" "+(new java.util.GregorianCalendar().get(java.util.GregorianCalendar.YEAR))+" Class Program"]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="account" pattern="¤ #,##0.00" isBlankWhenNull="false">
+					<reportElement key="textField" style="Column_Field" x="192" y="12" width="100" height="12"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{GST_inc_sum}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="account" pattern="¤ #,##0.00" isBlankWhenNull="false">
+					<reportElement key="textField" style="Column_Field" x="192" y="0" width="100" height="12"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{GST_free_sum}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField" style="Column_Field" x="0" y="0" width="137" height="12"/>
+					<textElement/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{accountCode}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-16" style="Column_Field" x="0" y="12" width="137" height="12"/>
+					<textElement/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{accountCode}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-6" style="Column_Field" x="137" y="0" width="55" height="12"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[C]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-7" style="Column_Field" x="137" y="12" width="55" height="12"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[N]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement key="textField-17" style="Column_Field" x="292" y="12" width="224" height="12"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{typeOfPayment} +" "+ $F{site}+" "+(new java.util.GregorianCalendar().get(java.util.GregorianCalendar.YEAR))+" Class Program"]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="20" splitType="Stretch">
+			<textField evaluationTime="Report" pattern="dd/MM/yyyy h.mm a" isBlankWhenNull="false">
+				<reportElement key="textField-15" style="Footer" positionType="FixRelativeToBottom" x="0" y="0" width="137" height="10"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<image scaleImage="RetainShape" hAlign="Right" isUsingCache="true">
+				<reportElement key="image-1" style="Footer" positionType="Float" stretchType="RelativeToTallestObject" x="416" y="0" width="100" height="8"/>
+				<imageExpression class="java.io.InputStream"><![CDATA[$F{image.poweredby}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Prevent"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Prevent"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-5" style="Footer" stretchType="RelativeToTallestObject" x="0" y="0" width="517" height="30"/>
+				<textElement/>
+				<text><![CDATA[Note that this report will not be correct if any of the payments in this date range paid more than one invoice or were a partial payment for an invoice.]]></text>
+			</staticText>
+		</band>
+	</lastPageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

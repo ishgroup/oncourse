@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ClassListNoticeboard" language="groovy" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" uuid="214f3094-9f94-4451-864e-336586356316">
+	<property name="name" value="NIDA Class List - Noticeboard"/>
+	<property name="entity" value="CourseClass"/>
+	<property name="isSubreport" value="false"/>
+	<property name="isVisible" value="true"/>
+	<property name="versionNumber" value="7"/>
+	<property name="keyCode" value="nida.onCourse.ClassListNoticeboard"/>
+	<property name="ish.oncourse.description" value="List of students attending each class to display on the noticeboard.This report prints in Portrait format."/>
+	<property name="ish.oncourse.reports.isObjectOnSeparatePage" value="true"/>
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="Report_Name" isDefault="true" fontName="Arial" fontSize="18" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+	<style name="Column_Header" isDefault="true" fontName="Arial" fontSize="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+	<style name="Column_Field" isDefault="true" fontName="Arial" fontSize="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+	<style name="Footer" isDefault="true" fontName="Arial" fontSize="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+	<parameter name="ReportName" class="java.lang.String"/>
+	<field name="tax.description" class="java.lang.String"/>
+	<field name="courseClass" class="ish.oncourse.server.cayenne.CourseClass"/>
+	<field name="code" class="java.lang.String"/>
+	<field name="course.code" class="java.lang.String"/>
+	<field name="course.name" class="java.lang.String"/>
+	<field name="isShownOnWeb" class="java.lang.Boolean"/>
+	<field name="minimumPlaces" class="java.lang.Number"/>
+	<field name="maximumPlaces" class="java.lang.Number"/>
+	<field name="datasource.attendance" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<field name="subreport.nida.onCourse.classListNoticeboardStudentSub" class="net.sf.jasperreports.engine.JasperReport"/>
+	<field name="room.site.name" class="java.lang.String"/>
+	<field name="room.name" class="java.lang.String"/>
+	<field name="datasource.tutorRoles" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<field name="image.poweredby" class="java.io.InputStream"/>
+	<field name="subreport.ish.onCourse.classRollTutors" class="net.sf.jasperreports.engine.JasperReport"/>
+	<field name="datasource.sessions" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<field name="sessionsCount" class="java.lang.Integer"/>
+	<field name="datasource.successAndQueuedEnrolments" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<variable name="subRep" class="java.lang.String"/>
+	<variable name="tutorNumber" class="java.math.BigDecimal"/>
+	<group name="details">
+		<groupExpression><![CDATA[null]]></groupExpression>
+		<groupHeader>
+			<band height="145" splitType="Stretch">
+				<subreport isUsingCache="true">
+					<reportElement uuid="2a0f46c9-3ce3-4d0b-821c-51bb7b465de6" key="subreport-4" style="Footer" x="49" y="13" width="422" height="15"/>
+					<dataSourceExpression><![CDATA[$F{datasource.successAndQueuedEnrolments}]]></dataSourceExpression>
+					<subreportExpression><![CDATA[$F{subreport.nida.onCourse.classListNoticeboardStudentSub}]]></subreportExpression>
+				</subreport>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band splitType="Stretch"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="115" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="102" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="92119fe1-a485-46e4-be6c-23fd508ab564" key="staticText-17" style="Column_Header" x="16" y="28" width="59" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="10" />
+				</textElement>
+				<text><![CDATA[Location:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="5ee7d933-5fe9-432c-bdbe-0c05b84e5e40" key="textField-16" style="Column_Field" x="85" y="28" width="386" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{room.site.name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="60be0673-5619-4087-8757-bc4e4af28b18" key="staticText-15" style="Column_Header" x="16" y="82" width="44" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="10" />
+				</textElement>
+				<text><![CDATA[Tutor:]]></text>
+			</staticText>
+			<subreport isUsingCache="true">
+				<reportElement uuid="7503578a-9d35-4c07-8b92-f1af1f91ff27" key="subreport-3" style="Footer" x="85" y="82" width="406" height="15"/>
+				<dataSourceExpression><![CDATA[$F{datasource.tutorRoles}]]></dataSourceExpression>
+				<returnValue subreportVariable="tutorNumber" toVariable="tutorNumber"/>
+				<subreportExpression><![CDATA[$F{subreport.ish.onCourse.classRollTutors}]]></subreportExpression>
+			</subreport>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement uuid="81833320-2bd1-492c-be13-028416d8532e" key="textField" x="16" y="0" width="523" height="28"/>
+				<textElement>
+					<font size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{course.code}+"-"+$F{code}+" "+$F{course.name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="ab020e9e-8c1e-4298-b932-87be4be7a16f" key="textField" x="85" y="47" width="100" height="16"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sessionsCount}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="e462911f-5a32-4f57-92a2-a86cdd673a4f" key="staticText-21" style="Footer" x="16" y="47" width="59" height="16"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Sessions: count:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c0ec9d11-5e96-454c-a55c-01b15a58202d" key="staticText-22" style="Footer" x="16" y="66" width="74" height="13"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Starting date:]]></text>
+			</staticText>
+			<textField pattern="EEEEEE dd MMMMM yyyy h:mm a" isBlankWhenNull="false">
+				<reportElement uuid="3ac44961-deac-4977-91b3-f60aa31f8713" key="textField" x="85" y="66" width="288" height="13"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{courseClass}.startDateTime?.format("d MMM yyyy h:mma", $F{courseClass}?.timeZone)]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="27" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement uuid="44c2486d-d421-4d0b-bbb3-dc64fa7811c9" key="textField-6" style="Footer" x="0" y="12" width="35" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA["Page " + String.valueOf($V{PAGE_NUMBER}) + " of"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" evaluationTime="Report" isBlankWhenNull="false">
+				<reportElement uuid="99989028-86a5-47d8-9520-ad4171728619" key="textField-7" style="Footer" x="36" y="12" width="24" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + String.valueOf($V{PAGE_NUMBER})]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" pattern="dd/MM/yyyy h.mm a" isBlankWhenNull="false">
+				<reportElement uuid="c500dcdd-ae2e-4b4f-8c06-48d20ade5ae6" key="textField-15" style="Footer" positionType="FixRelativeToBottom" x="0" y="0" width="160" height="12"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<image scaleImage="RetainShape" hAlign="Right" isUsingCache="true">
+				<reportElement uuid="2863530e-11e5-4c1e-8296-ae64db1a9926" key="image-1" style="Footer" x="472" y="20" width="67" height="7"/>
+				<imageExpression><![CDATA[$F{image.poweredby}]]></imageExpression>
+			</image>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

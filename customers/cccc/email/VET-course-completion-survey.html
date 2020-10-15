@@ -1,0 +1,30 @@
+${render("Header", [title: "VET Course completion survey"])}
+<table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+    <tbody>
+    <tr>
+        <td class="ish_content_container left" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 0;padding-right: 17px;padding-bottom: 10px;padding-left: 17px; vertical-align: top;" align="left" valign="top">
+            <div class="ish_text_container">
+                <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                Dear ${enrolment.student.contact.firstName}, <br/><br/>
+                Thank you for your participation in ${enrolment.courseClass.course.name}
+                </p>
+                <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                As a soon-to-be graduate, we would like to invite you to partake in a short survey and tell us about your recent experiences here at the College! Your feedback will be vital in the improvement of future programs and course delivery.
+                </p>
+                <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                The survey is very brief and should only take approximately 5 minutes to complete. Simply click the link below to go to the survey or copy and paste the link directly into your Internet browser:<br/> <a style="color: #0084b4;color: #0084b4 !important;background-color: #ffffff;text-decoration: none;border: 0;word-wrap: break-word;" href=${Preferences.get("web.url")} target="_blank"> https://www.surveymonkey.com/r/TKQ2SND</a><br/>
+                </p>
+                <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                Please note that this survey is completely voluntary and no personal information is stored against the responses provided. Should you have any questions, please feel free to contact the College by calling 02 4348 4300 or email info@cccc.nsw.edu.au <br/><br/>
+
+                Thank you for taking the time to help create a better College experience for all future students! We greatly appreciate your feedback and hope you will consider the College for all your future education and training needs.<br/><br/>
+
+                Kind Regards,<br/>
+                Your Central Coast Community College Team
+                </p>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+${render("Footer")}

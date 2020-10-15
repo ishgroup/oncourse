@@ -1,0 +1,12 @@
+Dear {contact.firstName},
+ 
+The University of Sydney’s Centre for Continuing Education (CCE) in conjunction with the Non-Award Courses Sub-Committee, is undertaking a review of our full suite of courses with the aim of further enhancing the quality of both the learning and student experience. The results of the review will help inform future strategic course development and delivery activities, as well as ensuring our Program offerings reflect current best practice educational standards. To this end we would appreciate your assistance with the following matter.
+ 
+Please ask your students to complete the in-class course evaluation survey during the upcoming ${courseClassTutor.courseClass.course.name} course.
+ 
+Please follow the link to preview the in-class course evaluation survey form {form link} 
+ 
+All students enrolled in ${courseClassTutor.courseClass.course.name} will receive an e-mail with the survey. Students need to log in into their e-mail via mobile, tablet or laptop, complete the survey and press the submit button. If students don’t have internet access on their device they can use the university wifi.
+
+Students will be asked to complete this survey at the following times;
+(to be confirmed)

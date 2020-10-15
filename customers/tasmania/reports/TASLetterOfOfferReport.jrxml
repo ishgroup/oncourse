@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2018-06-21T11:19:54 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="EnrolmentConfirmation" language="groovy" pageWidth="595" pageHeight="842" columnWidth="567" leftMargin="28" rightMargin="0" topMargin="28" bottomMargin="28" uuid="75ec6864-6f4a-415a-a0d3-ffe8ab8e1c48">
+	<property name="name" value="TAS Course Class Letter of Offer"/>
+	<property name="entity" value="CourseClassTutor"/>
+	<property name="isSubreport" value="false"/>
+	<property name="isVisible" value="true"/>
+	<property name="versionNumber" value="1"/>
+	<property name="keyCode" value="tas.courseClassTutorLetterOfOffer"/>
+	<property name="ish.oncourse.title" value="TAS Course Class Tutor Letter of Offer"/>
+	<property name="ish.oncourse.reports.isObjectOnSeparatePage" value="true"/>
+	<property name="ish.oncourse.description" value="To provide students with details of their class once they have enrolled.This report prints in Portrait format."/>
+	<property name="ish.oncourse.pdfFileName" value="EnrolmentContract.pdf"/>
+	<property name="ish.oncourse.reports.following" value="tas.courseClassTutorLetterOfOfferDetails"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="ish.util.Textile"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="default" isDefault="true" forecolor="#000000" vTextAlign="Bottom" markup="none" fontName="Open Sans" fontSize="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="OpenSans" pdfEncoding="Cp1252" isPdfEmbedded="true">
+		<paragraph spacingAfter="8"/>
+	</style>
+	<style name="header 1" style="default" forecolor="#4F0018" vTextAlign="Middle" fontName="Open Sans Light" fontSize="18" pdfFontName="Open Sans Light"/>
+	<style name="header 2" style="header 1" fontSize="12"/>
+	<style name="header 3" style="default" vTextAlign="Middle" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+	<style name="header 3 (right)" style="header 3" hTextAlign="Right"/>
+	<style name="Label" style="default" forecolor="#6A7E99"/>
+	<style name="Label right" style="Label" hTextAlign="Right"/>
+	<style name="data field" style="default"/>
+	<style name="data field (money)" style="data field" hTextAlign="Right" pattern="$#,###,##0.00;$(-#,###,##0.00)"/>
+	<style name="data field (numeric)" style="data field" hTextAlign="Right"/>
+	<style name="data field (datetime)" style="data field" pattern="d MMM yyyy h:mma"/>
+	<style name="data field (day)" style="data field" pattern="E d MMM h:mma"/>
+	<style name="data field (date)" style="data field" pattern="d MMM yyyy"/>
+	<style name="Footer" style="default" forecolor="#737373" fontSize="8"/>
+	<style name="Footer strong" style="Footer" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+	<style name="subHead box" style="default" backcolor="#E6E7F0"/>
+	<style name="crosstab" mode="Opaque" backcolor="#F7F2E9">
+		<box>
+			<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#A3A3A3"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{ROW_COUNT}.intValue() % 2 == 1 ? Boolean.TRUE : Boolean.FALSE]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FFFFFF"/>
+		</conditionalStyle>
+	</style>
+	<style name="alternateRow" mode="Opaque" forecolor="rgba(255, 255, 255, 0.0)" backcolor="#F7F2E9">
+		<box>
+			<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{PAGE_COUNT}.intValue() % 2 == 1 ? Boolean.TRUE : Boolean.FALSE]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FFFFFF"/>
+		</conditionalStyle>
+	</style>
+	<subDataset name="SubDataset1" uuid="1f2824e8-31a0-4deb-93cb-c6e6396d9f63"/>
+	<parameter name="ReportName" class="java.lang.String"/>
+	<field name="courseClassTutor" class="ish.oncourse.server.cayenne.CourseClassTutor"/>
+	<field name="courseClass.course.name" class="java.lang.String"/>
+	<field name="subreport.ish.onCourse.enrolmentConfirmationSessions" class="net.sf.jasperreports.engine.JasperReport"/>
+	<field name="student.contact.firstName" class="java.lang.String"/>
+	<field name="student.contact.lastName" class="java.lang.String"/>
+	<field name="datasource.courseClass.sessions|sortOn=startDatetime" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<field name="student.contact.postcode" class="java.lang.String"/>
+	<field name="student.contact.state" class="java.lang.String"/>
+	<field name="student.contact.street" class="java.lang.String"/>
+	<field name="student.contact.suburb" class="java.lang.String"/>
+	<field name="courseClass.course.webDescription" class="java.lang.String"/>
+	<field name="courseClass.uniqueCode" class="java.lang.String"/>
+	<field name="courseClass.webDescription" class="java.lang.String"/>
+	<field name="datasource.courseClass.tutorRoles" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<field name="subreport.ish.onCourse.enrolmentConfirmationTutors" class="net.sf.jasperreports.engine.JasperReport"/>
+	<field name="image.poweredby" class="java.io.InputStream"/>
+	<group name="courseDetail">
+		<groupExpression><![CDATA[null]]></groupExpression>
+		<groupFooter>
+			<band splitType="Stretch"/>
+		</groupFooter>
+	</group>
+	<group name="classDetail">
+		<groupExpression><![CDATA[]]></groupExpression>
+		<groupFooter>
+			<band splitType="Stretch"/>
+		</groupFooter>
+	</group>
+	<group name="tutorDetails">
+		<groupExpression><![CDATA[]]></groupExpression>
+		<groupFooter>
+			<band height="423" splitType="Stretch">
+				<textField>
+					<reportElement x="-1" y="26" width="540" height="30" uuid="5b00898a-8a56-453f-b3f0-68d48f9905a1"/>
+					<textElement>
+						<font size="13" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Letter of Offer"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="80" width="539" height="50" uuid="f062ea4a-70b6-4553-8a41-3965f7d44320"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["Please check the attached Schedule for class dates, hours and pay rates to confirm the agreement for your engagement as a part-time tutor. Could you please sign and return this agreement within fourteen (14) days and/or notify this office immediately if details are not accurate, or if you are no longer available to tutor this class. (Your class may not be advertised and payment not arranged until we have received the signed agreement)."]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-34" style="data field" positionType="Float" x="0" y="280" width="280" height="13" uuid="763d0036-6151-49e6-8935-128c29dc5027"/>
+					<textFieldExpression><![CDATA["Signed:    ............................................................"]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-34" style="data field" positionType="Float" x="0" y="310" width="360" height="10" uuid="8362a60f-9865-4726-b2c3-e75d78f5200d">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement verticalAlignment="Top">
+						<font size="6"/>
+					</textElement>
+					<textFieldExpression><![CDATA["*<http://www.tic.tas.gov.au/__data/assets/pdf_file/0005/114197/Adult_Education_-_T12917.pdf>"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="150" width="539" height="13" uuid="464d1a74-d738-4500-a194-507227bb8b3d">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Top"/>
+					<textFieldExpression><![CDATA["This employment agreement is subject to:"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="163" width="539" height="26" uuid="6f1888ec-39b9-45a9-b998-851299835757">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Top"/>
+					<textFieldExpression><![CDATA["1. terms and conditions for casual employment in the relevant Tasmanian State Services Act, Regulations and Awards, and the Adult Education Agreement*"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="189" width="539" height="13" uuid="86e96e8f-f98f-44ce-8285-868a95ad0af1">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Top"/>
+					<textFieldExpression><![CDATA["2. sufficient enrolments"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="202" width="539" height="26" uuid="71c776f9-f1fd-4ffc-b464-72cfb544b833">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Top"/>
+					<textFieldExpression><![CDATA["3. the employee, if a recipient of a Workforce Renewal Incentive Program payment, now being eligible for this employment"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="230" width="539" height="26" uuid="2e93f8ed-a863-45da-add9-2fce3510cba5">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Top"/>
+					<textFieldExpression><![CDATA["4. compliance with Department of Education's Occupational Health & Safety policy and guidelines."]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-34" style="data field" positionType="Float" x="280" y="280" width="130" height="13" uuid="f5bd75f7-e61d-4785-be4e-61f92e97ec5f"/>
+					<textFieldExpression><![CDATA["Operations Coordinator    "]]></textFieldExpression>
+				</textField>
+				<textField pattern="dd/MM/YYYY">
+					<reportElement x="410" y="280" width="129" height="13" uuid="7a587d2d-b484-4d58-ae1e-27bc93395448"/>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-34" style="data field" positionType="Float" x="0" y="320" width="539" height="40" uuid="fdddabcf-3c51-49e1-866d-6f11941101d6">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement verticalAlignment="Top">
+						<font size="6"/>
+					</textElement>
+					<textFieldExpression><![CDATA["State Service employment conditions prohibit tutors from initiating media coverage relating to Adult Education and any particular course being offered. Any media inquiry must be directed in the first instance to the Manager, Hobart LINC. \nState Service employees must be aware of and comply with the provisions of the Personal Information Protection Act 2004 and personal information relating to program participants must only be used during the term of the program and for LINC Tasmania Community Learning purposes. \n <https://www.education.tas.gov.au/about-us/legislation/personal-information/>"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="380" width="539" height="13" uuid="3c3f3765-1d13-419d-a6ce-dbcf8e69507b">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font isBold="true" isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["I accept this offer of employment: "]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-34" style="data field" positionType="Float" x="-1" y="400" width="280" height="13" uuid="1a1c3c84-f4a0-4b71-bf79-51c3a2104c33"/>
+					<textFieldExpression><![CDATA["Signed:    ............................................................"]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-34" style="data field" positionType="Float" x="280" y="400" width="259" height="13" uuid="e3efc37b-22a1-4f2e-8448-e831ee6f5f5d"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA["Date:    ........................."]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="195" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-24" style="data field" positionType="Float" x="6" y="90" width="156" height="13" uuid="97b1805f-0962-4f31-9392-f612ec0bc4e6"/>
+				<textFieldExpression><![CDATA[$F{courseClassTutor}.tutor.contact.fullName]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-32" style="data field" positionType="Float" x="6" y="104" width="156" height="46" uuid="f615f62f-a031-415c-9663-cc33071b048a"/>
+				<textElement verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$F{courseClassTutor}.tutor.contact.address]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-24" style="data field" positionType="Float" x="373" y="40" width="156" height="13" uuid="b70df63d-5229-428d-87ee-22a1469ef54d"/>
+				<textFieldExpression><![CDATA["91 Murray St"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-32" style="data field" positionType="Float" x="373" y="53" width="156" height="13" uuid="5eebf9f3-6e82-4b80-83c4-c0aa7c5ad8f6"/>
+				<textFieldExpression><![CDATA["HOBART TAS 7000"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-34" style="data field" positionType="Float" x="373" y="66" width="156" height="13" uuid="ad0a5d18-aaac-4010-b558-ad6f6fdbb2ca"/>
+				<textFieldExpression><![CDATA["Ph: 03 6165 5600"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-34" style="data field" positionType="Float" x="373" y="79" width="180" height="13" uuid="28971970-4768-4788-bedb-e3b695385d6d"/>
+				<textFieldExpression><![CDATA["AdultEducation@education.tas.gov.au"]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/YYYY">
+				<reportElement x="373" y="130" width="100" height="20" uuid="5b85bac3-34a8-499c-87fd-5807f4207f6a"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/YYYY">
+				<reportElement x="373" y="150" width="180" height="20" uuid="8ef07f71-3e26-459c-a6e9-864e08811016"/>
+				<textFieldExpression><![CDATA["Employment Agreement"]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/YYYY">
+				<reportElement x="373" y="170" width="180" height="20" uuid="90b320c3-e175-49ca-91de-817bdb9b7b61"/>
+				<textFieldExpression><![CDATA["Casual Employment - Adult Education"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="15" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,14 @@
+${render("Header")} 
+
+Dear ${enrolment.student.contact.fullName},
+
+Congratulations on your successful completion of ${enrolment.courseClass.course.name} (${enrolment.courseClass.course.code}-${enrolment.courseClass.code})
+
+Your Certificate is in the Resources Tab.
+
+at ${enrolment.student.getPortalLink(enrolment)}
+
+We would appreciate you taking a minute to provide some feedback about this class. Please copy this link to being https://www.surveymonkey.com/r/WC6J6L9
+If there are any issues with accessing your Certificate, please don't hesitate to contact us.
+
+${render("Footer")}

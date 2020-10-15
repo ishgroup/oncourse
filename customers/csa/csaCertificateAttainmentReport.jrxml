@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.1.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CertificateAttainmentReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="517" leftMargin="39" rightMargin="39" topMargin="28" bottomMargin="0" whenResourceMissingType="Empty" uuid="6fb605b7-2bf2-46d1-8131-f4ad03f6f727">
+	<property name="name" value="csa Certificate-Attainment"/>
+	<property name="entity" value="Certificate"/>
+	<property name="isSubreport" value="true"/>
+	<property name="isVisible" value="true"/>
+	<property name="versionNumber" value="1"/>
+	<property name="keyCode" value="csa.onCourse.certificate.attainment"/>
+	<property name="ish.oncourse.title" value="Certificate"/>
+	<property name="ish.oncourse.filePrefix" value="certificate"/>
+	<property name="ish.oncourse.description" value="onCourse includes AQF recommended templates for full Qualification Certificates, Statements of Attainment and transcripts. Certificates can only be generated from units that are recorded as part of onCourse enrolments."/>
+	<property name="ish.oncourse.pdfFileName" value="Certificate.pdf"/>
+	<import value="ish.common.types.QualificationType"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<import value="org.apache.commons.lang3.time.DateUtils"/>
+	<style name="default" isDefault="true" forecolor="#000000" vTextAlign="Bottom" markup="none" fontName="Arial Black" fontSize="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="OpenSans" pdfEncoding="Cp1252" isPdfEmbedded="true">
+		<paragraph spacingAfter="8"/>
+	</style>
+	<style name="header 1" style="default" forecolor="#4F0018" vTextAlign="Middle" fontName="Arial Black" fontSize="18"/>
+	<style name="header 2" style="header 1" fontSize="12"/>
+	<style name="header 3" style="default" vTextAlign="Middle" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+	<style name="header 3 (right)" style="header 3" hTextAlign="Right"/>
+	<style name="Label" style="default" forecolor="#6A7E99" fontName="Arial Black"/>
+	<style name="Label right" style="Label" hTextAlign="Right"/>
+	<style name="data field" style="default" fontName="Arial Black"/>
+	<style name="data field (money)" style="data field" hTextAlign="Right" pattern="$#,###,##0.00;$(-#,###,##0.00)"/>
+	<style name="data field (numeric)" style="data field" hTextAlign="Right"/>
+	<style name="data field (datetime)" style="data field" pattern="d MMM yyyy h:mma"/>
+	<style name="data field (day)" style="data field" pattern="E d MMM h:mma"/>
+	<style name="data field (date)" style="data field" pattern="d MMM yyyy"/>
+	<style name="Footer" style="default" forecolor="#737373" fontSize="8"/>
+	<style name="Footer strong" style="Footer" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+	<style name="subHead box" style="default" backcolor="#E6E7F0"/>
+	<style name="crosstab" mode="Opaque" backcolor="#F7F2E9">
+		<box>
+			<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#A3A3A3"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{ROW_COUNT}.intValue() % 2 == 1 ? Boolean.TRUE : Boolean.FALSE]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FFFFFF"/>
+		</conditionalStyle>
+	</style>
+	<style name="alternateRow" mode="Opaque" forecolor="rgba(255, 255, 255, 0.0)" backcolor="#F7F2E9">
+		<box>
+			<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{PAGE_COUNT}.intValue() % 2 == 1 ? Boolean.TRUE : Boolean.FALSE]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FFFFFF"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="ReportName" class="java.lang.String"/>
+	<field name="global.print_qr_code" class="java.lang.Boolean"/>
+	<field name="certificate" class="ish.oncourse.server.cayenne.Certificate"/>
+	<field name="datasource.successfulOutcomes" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<field name="subreport.csa.onCourse.certificate.attainment.subreport" class="net.sf.jasperreports.engine.JasperReport"/>
+	<field name="image.logo-nrt" class="java.io.InputStream"/>
+	<field name="image.logo-VETAB" class="java.io.InputStream"/>
+	<field name="pref.avetmiss.address.postcode" class="java.lang.String"/>
+	<field name="pref.avetmiss.certificate.signatory.name" class="java.lang.String"/>
+	<field name="pref.avetmiss.collegename" class="java.lang.Object"/>
+	<field name="pref.avetmiss.identifier" class="java.lang.Object"/>
+	<filterExpression><![CDATA[!$F{certificate}.isQualification]]></filterExpression>
+	<pageHeader>
+		<band height="350" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-6" style="Label" x="0" y="10" width="517" height="36" forecolor="#000080" uuid="5c18cf0b-431e-4a42-b80e-403b1f8fed6b"/>
+				<textElement textAlignment="Center">
+					<font fontName="Open Sans" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Construction Safety Assurance Pty Ltd]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-6" style="Label" x="20" y="139" width="480" height="30" forecolor="#000080" uuid="70daa157-00ae-40e7-ba07-d8e84ae671d3"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Open Sans" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[A Statement of Attainment is issued by a Registered Training Organisation when an individual has completed one or more accredited units]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-6" style="Label" x="0" y="210" width="517" height="24" forecolor="#000080" uuid="e30d3b41-b8d3-4328-b2ef-f68d9707230d"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Open Sans" size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[This is a statement that]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="staticText-6" style="Label" x="0" y="240" width="517" height="50" forecolor="#FF3300" uuid="f6403fec-6767-4f63-8727-471bd549c960"/>
+				<textElement textAlignment="Center">
+					<font fontName="Open Sans" size="33" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{certificate}.student.contact.fullName]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-6" style="Label" x="71" y="46" width="300" height="24" forecolor="#000080" uuid="db9b3747-3755-4864-97ac-74fc86151647"/>
+				<textElement textAlignment="Center">
+					<font fontName="Open Sans" size="14" isBold="true" pdfFontName="Arial Black"/>
+				</textElement>
+				<text><![CDATA[Registered Training Organisation Number:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-6" style="Label" x="371" y="46" width="58" height="24" forecolor="#FF3300" uuid="96125776-fa56-48c9-8d9b-9b0df1fed87d"/>
+				<textElement textAlignment="Left">
+					<font fontName="Open Sans" size="14" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[22429]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-6" style="Label" x="1" y="83" width="517" height="50" forecolor="#000080" uuid="9901676c-e9fd-4cef-ad18-12a559fbf71a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Open Sans" size="26" isBold="true"/>
+				</textElement>
+				<text><![CDATA[STATEMENT OF ATTAINMENT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-6" style="Label" x="1" y="300" width="517" height="24" forecolor="#000080" uuid="eae6f2ce-7fbd-4f1e-8f1f-81e1ee232ba0"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Open Sans" size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[has attained]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="29">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<subreport isUsingCache="true" runToBottom="true">
+				<reportElement key="subreport-2" stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" mode="Transparent" x="0" y="0" width="517" height="29" isRemoveLineWhenBlank="true" uuid="255c13d9-944d-442f-9ecb-3dc928e54033"/>
+				<dataSourceExpression><![CDATA[$F{datasource.successfulOutcomes}]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$F{subreport.csa.onCourse.certificate.attainment.subreport}]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="332" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<image hyperlinkType="Reference">
+				<reportElement x="222" y="225" width="70" height="70" uuid="08f3bdc4-b8ac-41c2-b7f2-9d0b24769003">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{global.print_qr_code}]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA[$F{certificate}.getQRCodeImage()]]></imageExpression>
+				<hyperlinkReferenceExpression><![CDATA["http://www.skills.courses/" + $F{certificate}.qrUniqueCode.toString()]]></hyperlinkReferenceExpression>
+			</image>
+			<staticText>
+				<reportElement x="222" y="191" width="58" height="22" uuid="6c03b11a-2a60-4b75-b2f7-95aac2ceb74e">
+					<printWhenExpression><![CDATA[$F{global.print_qr_code}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Open Sans" size="8" isBold="true" pdfFontName="Open Sans"/>
+				</textElement>
+				<text><![CDATA[Certificate verification]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="222" y="213" width="58" height="10" uuid="3be9e0a1-3f74-4bef-b95d-a4502cc3b2d8">
+					<printWhenExpression><![CDATA[$F{global.print_qr_code}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Open Sans" size="7" pdfFontName="Open Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{certificate}.qrUniqueCode]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="280" y="200" width="15" height="90" forecolor="#1E1061" uuid="4506888e-654d-47a3-ba7e-fcc9d6a03b1f">
+					<printWhenExpression><![CDATA[$F{global.print_qr_code}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="Right">
+					<font fontName="Open Sans" size="8" isBold="true" pdfFontName="Open Sans"/>
+				</textElement>
+				<text><![CDATA[www.skills.courses]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-6" style="Label" x="20" y="1" width="80" height="24" forecolor="#000080" uuid="c50b61ad-96f9-433d-9893-065c8be95ae4"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Open Sans" size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date issued:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="staticText-6" style="Label" x="100" y="2" width="100" height="19" forecolor="#FF3300" uuid="35559d9e-7c0d-4890-ae0f-b41781cbc344"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Open Sans" size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{certificate}.issuedOn.format("dd/MM/YYYY")]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-6" style="Label" x="229" y="4" width="191" height="24" forecolor="#000080" uuid="09de3c81-6c5d-4f6f-80d1-e468d483abbe"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Open Sans" size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Statement of Attainment no:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="staticText-6" style="Label" x="420" y="4" width="77" height="19" forecolor="#FF3300" uuid="fd49b530-e805-47fc-b73d-eb437a31ff2c"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Open Sans" size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{certificate}.certificateNumber]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

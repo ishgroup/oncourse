@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.1.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CertificateAttainmentReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="517" leftMargin="39" rightMargin="39" topMargin="0" bottomMargin="50" whenResourceMissingType="Empty" uuid="6fb605b7-2bf2-46d1-8131-f4ad03f6f727">
+	<property name="name" value="2019 wp Statement-Attainment"/>
+	<property name="entity" value="Certificate"/>
+	<property name="isSubreport" value="true"/>
+	<property name="isVisible" value="true"/>
+	<property name="versionNumber" value="8"/>
+	<property name="keyCode" value="2019.wp.onCourse.certificate.attainment"/>
+	<property name="ish.oncourse.title" value="Certificate"/>
+	<property name="ish.oncourse.filePrefix" value="certificate"/>
+	<property name="ish.oncourse.description" value="onCourse includes AQF recommended templates for full Qualification Certificates, Statements of Attainment and transcripts. Certificates can only be generated from units that are recorded as part of onCourse enrolments."/>
+	<property name="ish.oncourse.pdfFileName" value="Certificate.pdf"/>
+	<import value="ish.common.types.QualificationType"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<import value="org.apache.commons.lang3.time.DateUtils"/>
+	<style name="default" isDefault="true" forecolor="#000000" vTextAlign="Bottom" markup="none" fontName="Open Sans" fontSize="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="OpenSans" pdfEncoding="Cp1252" isPdfEmbedded="true">
+		<paragraph spacingAfter="8"/>
+	</style>
+	<style name="PSansBold" fontName="PublicaSans-Bold" pdfFontName="PublicaSans-Bold"/>
+	<style name="name" forecolor="#00AD9F" fontName="PublicaSans-Medium" fontSize="28" pdfFontName="PublicaSans-Medium"/>
+	<style name="heading" forecolor="#E57200" fontName="PublicaSans-Bold" fontSize="20" pdfFontName="PublicaSans-Bold"/>
+	<style name="subheading" forecolor="#63666A" fontName="PublicaSans-Medium" fontSize="15" pdfFontName="PublicaSans-Medium"/>
+	<style name="subheading-helvetica" forecolor="#63666A" hTextAlign="Center" fontName="Arial" fontSize="12" pdfFontName="Helvetica"/>
+	<style name="text" forecolor="#63666A" fontName="PublicaSans-Light" fontSize="12" pdfFontName="PublicaSans-Light"/>
+	<style name="subtext" forecolor="#63666A" fontName="PublicaSans-Light" fontSize="8" pdfFontName="PublicaSans-Light"/>
+	<style name="header 1" style="default" forecolor="#4F0018" vTextAlign="Middle" fontName="Open Sans Light" fontSize="18" pdfFontName="Open Sans Light"/>
+	<style name="header 2" style="header 1" fontSize="12"/>
+	<style name="header 3" style="default" vTextAlign="Middle" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+	<style name="header 3 (right)" style="header 3" hTextAlign="Right"/>
+	<style name="Label" style="default" forecolor="#6A7E99"/>
+	<style name="Label right" style="Label" hTextAlign="Right"/>
+	<style name="data field" style="default"/>
+	<style name="data field (money)" style="data field" hTextAlign="Right" pattern="¤#,###,##0.00;¤(-#,###,##0.00)"/>
+	<style name="data field (numeric)" style="data field" hTextAlign="Right"/>
+	<style name="data field (datetime)" style="data field" pattern="d MMM yyyy h:mma"/>
+	<style name="data field (day)" style="data field" pattern="E d MMM h:mma"/>
+	<style name="data field (date)" style="data field" pattern="d MMM yyyy"/>
+	<style name="Footer" style="default" forecolor="#737373" fontSize="8"/>
+	<style name="Footer strong" style="Footer" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+	<style name="subHead box" style="default" backcolor="#E6E7F0"/>
+	<style name="crosstab" mode="Opaque" backcolor="#F7F2E9">
+		<box>
+			<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#A3A3A3"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{ROW_COUNT}.intValue() % 2 == 1 ? Boolean.TRUE : Boolean.FALSE]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FFFFFF"/>
+		</conditionalStyle>
+	</style>
+	<style name="alternateRow" mode="Opaque" forecolor="rgba(255, 255, 255, 0.0)" backcolor="#F7F2E9">
+		<box>
+			<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{PAGE_COUNT}.intValue() % 2 == 1 ? Boolean.TRUE : Boolean.FALSE]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FFFFFF"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="ReportName" class="java.lang.String"/>
+	<field name="global.print_qr_code" class="java.lang.Boolean"/>
+	<field name="certificate" class="ish.oncourse.server.cayenne.Certificate"/>
+	<field name="datasource.successfulOutcomes" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<field name="subreport.2019.wp.onCourse.certificate.attainment.subreport" class="net.sf.jasperreports.engine.JasperReport"/>
+	<field name="image.logo-nrt" class="java.io.InputStream"/>
+	<field name="image.logo-VETAB" class="java.io.InputStream"/>
+	<field name="pref.avetmiss.address.postcode" class="java.lang.String"/>
+	<field name="pref.avetmiss.certificate.signatory.name" class="java.lang.String"/>
+	<field name="pref.avetmiss.collegename" class="java.lang.Object"/>
+	<field name="pref.avetmiss.identifier" class="java.lang.Object"/>
+	<filterExpression><![CDATA[!$F{certificate}.isQualification]]></filterExpression>
+	<title>
+		<band height="141"/>
+	</title>
+	<pageHeader>
+		<band height="174" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement key="staticText-5" style="subheading" x="0" y="0" width="517" height="22" uuid="5c18cf0b-431e-4a42-b80e-403b1f8fed6b">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Statement of Attainment]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-6" style="text" x="0" y="24" width="517" height="30" uuid="70daa157-00ae-40e7-ba07-d8e84ae671d3">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[A Statement of Attainment is issued by a Registered Training Organisation when an individual has completed one or more accredited units]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-6" style="subheading" x="0" y="84" width="517" height="24" uuid="e30d3b41-b8d3-4328-b2ef-f68d9707230d">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[This is a statement that]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-9" style="name" x="0" y="108" width="517" height="44" uuid="f6403fec-6767-4f63-8727-471bd549c960">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[(($F{certificate}.student.contact.firstName == $F{certificate}.student.contact.lastName) ? $F{certificate}.student.contact.lastName : $F{certificate}.student.contact.fullName)]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-8" style="subheading" x="0" y="154" width="517" height="20" uuid="8664d378-2438-4920-9989-7f78d0c377e7">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[has attained]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="170" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-2" stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" mode="Transparent" x="0" y="0" width="517" height="170" isRemoveLineWhenBlank="true" uuid="255c13d9-944d-442f-9ecb-3dc928e54033">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<dataSourceExpression><![CDATA[$F{datasource.successfulOutcomes}]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$F{subreport.2019.wp.onCourse.certificate.attainment.subreport}]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="295" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField isBlankWhenNull="true">
+				<reportElement style="subheading-helvetica" positionType="Float" x="0" y="0" width="517" height="20" uuid="630e5fc4-e8dc-4cbf-ab6a-68aef34ba1c5">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{certificate}.qualification.nationalCode ? "These competencies form part of the" : ""]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-11" style="subheading" positionType="Float" x="0" y="20" width="517" height="43" uuid="0ebbea2a-643f-4c2d-8687-51ad41d2875f">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<printWhenExpression><![CDATA[![QualificationType.SKILLSET_TYPE, QualificationType.SKILLSET_LOCAL_TYPE].contains($F{certificate}.qualification.type)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{certificate}.qualification.nationalCode ? [$F{certificate}.qualification.nationalCode, $F{certificate}.qualification.level, $F{certificate}.qualification.title].findAll().join(" ") : ""]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-11" style="subheading" positionType="Float" x="0" y="64" width="517" height="23" uuid="a80c631f-ee6e-4e91-af42-135a4dd7b88f">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{certificate}.publicNotes ?: ""]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line-1" style="Footer" positionType="FixRelativeToBottom" x="315" y="150" width="202" height="1" uuid="7a5cb6a8-3d0f-4dda-a0ad-bfd4d48dbdd1">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement style="text" x="316" y="150" width="201" height="25" uuid="dc971a11-b58a-4ba9-862b-d36d1b1e5d37">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Manager"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="subtext" x="316" y="180" width="66" height="13" uuid="36e10df4-bb56-49a1-96ac-800b24b78088">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<printWhenExpression><![CDATA[$F{certificate}.issuedOn != null]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Issued]]></text>
+			</staticText>
+			<textField evaluationTime="Report" pattern="d MMM yyyy" isBlankWhenNull="false">
+				<reportElement key="textField" style="subtext" positionType="FixRelativeToBottom" isPrintRepeatedValues="false" x="386" y="180" width="131" height="13" uuid="18544285-0c72-40ac-b117-b72cf52c3588">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<printWhenExpression><![CDATA[$F{certificate}.issuedOn != null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{certificate}.issuedOn.format("dd MMM yyyy")]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-11" style="subtext" x="316" y="193" width="66" height="13" uuid="df2264ae-6449-402a-81e6-2ab151172b4c">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Certificate]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-17" style="subtext" x="386" y="193" width="131" height="13" uuid="8bb21bac-a0c7-45d2-8feb-becc7a5480ca">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{certificate}.certificateNumber]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-11" style="subtext" x="316" y="206" width="66" height="13" uuid="99782161-43ca-4083-93eb-6b21dc3ba81d">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Printed]]></text>
+			</staticText>
+			<textField pattern="d MMM yyyy" isBlankWhenNull="false">
+				<reportElement key="textField-17" style="subtext" x="386" y="206" width="131" height="13" uuid="2be33f79-974f-4bd2-82ce-cc2863333c24">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{certificate}.printedOn.format("dd MMM yyyy")]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

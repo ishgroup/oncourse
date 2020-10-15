@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Room Booking" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="786" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" uuid="bebcee18-0bcb-4123-a446-55832a9a6e59">
+	<property name="name" value="Room Booking"/>
+	<property name="entity" value="Session"/>
+	<property name="isSubreport" value="false"/>
+	<property name="isVisible" value="true"/>
+	<property name="versionNumber" value="5"/>
+	<property name="keyCode" value="ish.onCourse.roomBooking"/>
+	<property name="ish.oncourse.description" value="Booking report"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="default" isDefault="true" forecolor="#000000" vTextAlign="Bottom" markup="none" fontName="Open Sans" fontSize="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="OpenSans" pdfEncoding="Cp1252" isPdfEmbedded="true">
+		<paragraph spacingAfter="8"/>
+	</style>
+	<style name="header 1" style="default" forecolor="#4F0018" vTextAlign="Middle" fontName="Open Sans Light" fontSize="18" pdfFontName="Open Sans Light"/>
+	<style name="header 2" style="header 1" fontSize="12"/>
+	<style name="header 3" style="default" vTextAlign="Middle" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+	<style name="header 3 (right)" style="header 3" hTextAlign="Right"/>
+	<style name="Label" style="default" forecolor="#6A7E99"/>
+	<style name="Label right" style="Label" hTextAlign="Right"/>
+	<style name="data field" style="default"/>
+	<style name="data field (money)" style="data field" hTextAlign="Right" pattern="$#,###,##0.00;$(-#,###,##0.00)"/>
+	<style name="data field (numeric)" style="data field" hTextAlign="Right"/>
+	<style name="data field (datetime)" style="data field" pattern="d MMM yyyy h:mma"/>
+	<style name="data field (day)" style="data field" pattern="E d MMM h:mma"/>
+	<style name="data field (date)" style="data field" pattern="d MMM yyyy"/>
+	<style name="Footer" style="default" forecolor="#737373" fontSize="8"/>
+	<style name="Footer strong" style="Footer" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+	<style name="subHead box" style="default" backcolor="#E6E7F0"/>
+	<style name="crosstab" mode="Opaque" backcolor="#F7F2E9">
+		<box>
+			<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#A3A3A3"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{ROW_COUNT}.intValue() % 2 == 1 ? Boolean.TRUE : Boolean.FALSE]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FFFFFF"/>
+		</conditionalStyle>
+	</style>
+	<style name="alternateRow" mode="Opaque" forecolor="rgba(255, 255, 255, 0.0)" backcolor="#B4D2EB">
+		<box>
+			<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{PAGE_COUNT}.intValue() % 2 == 1 ? Boolean.TRUE : Boolean.FALSE]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FFFFFF"/>
+		</conditionalStyle>
+	</style>
+	<style name="custom header" style="header 3" forecolor="#FFFFFF" hTextAlign="Center" fontSize="14" isBold="true"/>
+	<style name="custom field" style="data field" hTextAlign="Center" vTextAlign="Middle" fontSize="9"/>
+	<field name="session" class="ish.oncourse.server.cayenne.Session"/>
+	<field name="datasource.tutorRoles" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<field name="subreport.WEASydney.onCourse.class.tutorsSubreport" class="net.sf.jasperreports.engine.JasperReport"/>
+	<field name="image.poweredby" class="java.io.InputStream"/>
+	<field name="room.site.name" class="java.lang.String"/>
+	<field name="startDatetime" class="java.util.Date"/>
+	<sortField name="room.site.name"/>
+	<sortField name="sortByDateVariable" type="Variable"/>
+	<sortField name="startDatetime"/>
+	<variable name="hourVar" class="java.lang.Integer">
+		<variableExpression><![CDATA[$F{session}.startDatetime?.format("k", $F{session}.timeZone).toInteger() < 17 ? 1 : 2]]></variableExpression>
+	</variable>
+	<variable name="sortByDateVariable" class="java.lang.String">
+		<variableExpression><![CDATA[($F{session}.startDatetime?.format("yyyyMMdd", $F{session}.timeZone) + $V{hourVar})]]></variableExpression>
+	</variable>
+	<filterExpression><![CDATA[!$F{session}.courseClass.isCancelled]]></filterExpression>
+	<group name="site" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{session}.room.site.name]]></groupExpression>
+		<groupHeader>
+			<band height="35">
+				<textField evaluationTime="Group" evaluationGroup="site">
+					<reportElement style="header 3" positionType="Float" x="5" y="10" width="740" height="25" uuid="48c775ac-3592-4209-a85e-2221bfe12ac3"/>
+					<textElement textAlignment="Center">
+						<font size="18" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{session}.room.site.name]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="halfDay" keepTogether="true">
+		<groupExpression><![CDATA[$V{sortByDateVariable}]]></groupExpression>
+		<groupHeader>
+			<band height="70">
+				<rectangle>
+					<reportElement x="0" y="45" width="786" height="25" backcolor="#3F8CC7" uuid="3de55220-8069-4fa1-8215-efa9c2f9cf72"/>
+					<graphicElement>
+						<pen lineWidth="0.0"/>
+					</graphicElement>
+				</rectangle>
+				<textField evaluationTime="Group" evaluationGroup="halfDay">
+					<reportElement style="header 3" positionType="Float" x="0" y="10" width="786" height="25" uuid="2953278e-5358-423b-b16c-af04a6ae499e"/>
+					<textElement textAlignment="Center">
+						<font size="18" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{session}.startDatetime?.format("EEEE dd MMMM yyyy - ", $F{session}.timeZone) + ($V{hourVar} == 1 ? "Daytime Classes" : "Evening Classes")]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement style="custom header" x="0" y="45" width="65" height="25" uuid="1ce46921-6505-40fa-a46b-bf0a6f93add8"/>
+					<text><![CDATA[Starts]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="custom header" x="65" y="45" width="65" height="25" uuid="48af81aa-9500-45b7-a8ec-d23a72f12bf5"/>
+					<text><![CDATA[Ends]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="custom header" x="130" y="45" width="260" height="25" uuid="7c3eca4c-259b-4461-8b55-1119bc83cd2a"/>
+					<text><![CDATA[Course Name]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="custom header" x="395" y="45" width="250" height="25" uuid="2b1d8270-2c16-4e63-aa2b-2e3fad3469fb"/>
+					<text><![CDATA[Room]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="custom header" x="650" y="45" width="131" height="25" uuid="4240e61c-6768-40cd-a3b8-c4af6c7e259a"/>
+					<text><![CDATA[Tutor]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="15"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="141" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="1" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<rectangle>
+				<reportElement style="alternateRow" stretchType="RelativeToBandHeight" x="0" y="0" width="786" height="20" uuid="13207532-7496-4d7a-9b38-613c6df47197">
+					<property name="com.jaspersoft.studio.unit.x" value="mm"/>
+				</reportElement>
+			</rectangle>
+			<textField isBlankWhenNull="true">
+				<reportElement style="custom field" x="0" y="1" width="65" height="18" uuid="4ee4dd9a-c25b-4073-96d3-49ec060e920d"/>
+				<textFieldExpression><![CDATA[$F{session}.startDatetime?.format("h.mm a", $F{session}.timeZone)]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="custom field" x="65" y="1" width="65" height="18" uuid="b6a826e7-27c4-4af2-b3f6-34f7ad53ab92"/>
+				<textFieldExpression><![CDATA[$F{session}.endDatetime?.format("h.mm a", $F{session}.timeZone)]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="custom field" x="130" y="1" width="260" height="18" uuid="6dc69753-a8ed-41c8-a4b1-48143d6dd643"/>
+				<textFieldExpression><![CDATA[$F{session}.courseClass.course.name]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="custom field" x="395" y="1" width="250" height="18" uuid="dc86a1e6-e2b4-44ad-8cb5-b63a4e0e88cd"/>
+				<textFieldExpression><![CDATA[$F{session}.room.name ?: "Not set"]]></textFieldExpression>
+			</textField>
+			<subreport isUsingCache="true">
+				<reportElement style="custom field" stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="650" y="1" width="131" height="18" uuid="873c6bee-16db-48ad-ac98-faadbb6f585c">
+					<printWhenExpression><![CDATA[new Boolean($F{datasource.tutorRoles}!=null)]]></printWhenExpression>
+				</reportElement>
+				<dataSourceExpression><![CDATA[$F{datasource.tutorRoles}]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$F{subreport.WEASydney.onCourse.class.tutorsSubreport}]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<textField evaluationTime="Page" isBlankWhenNull="false">
+				<reportElement key="pageNumberFooter" style="Footer strong" x="0" y="0" width="300" height="15" uuid="1106d334-b156-4af7-a64d-a75ba7206e2c"/>
+				<textFieldExpression><![CDATA["Page " + String.valueOf($V{PAGE_NUMBER})]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" isBlankWhenNull="false">
+				<reportElement key="totalPageCountFooter" style="Footer" x="0" y="11" width="300" height="13" uuid="d3e402c5-a433-4f08-90db-5c66216e08f3"/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT} + " record" + ($V{REPORT_COUNT}>1 ? "s" : "") + " on " + $V{PAGE_NUMBER} + " page" + ($V{PAGE_NUMBER}>1 ? "s" : "") + " (printed " + new Date().format("E d MMM yyyy h:mma") + ")"]]></textFieldExpression>
+			</textField>
+			<image scaleImage="RetainShape" hAlign="Right" isUsingCache="true" onErrorType="Blank">
+				<reportElement key="oncourseLogo" style="Footer" x="700" y="17" width="67" height="7" uuid="2863530e-11e5-4c1e-8296-ae64db1a9926"/>
+				<imageExpression><![CDATA[$F{image.poweredby}]]></imageExpression>
+			</image>
+		</band>
+	</pageFooter>
+</jasperReport>

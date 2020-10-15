@@ -1,0 +1,30 @@
+${render("Header", [title: "Review your student feedback"])}
+
+<!-- Title -->
+              <table width="660" border="0" cellspacing="0" cellpadding="0" class="title">
+                <tbody>
+                  <tr>
+                    <td width="30" height="36"></td>
+                    <td width="630"></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td class="title" style="color:#333333; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:20px; line-height:24px;"><strong style="color:#e64626;">Review your student feedback</strong> ${courseClass.course.name} </td>
+                  </tr>
+                  <tr>
+                    <td width="30" height="40"></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+<!-- End Title -->
+
+${render("CCE-Body-Start")}
+
+<h1>Hi ${contact.fullName}, </h1>
+<p>Please log in to the <a href="${contact.getPortalLink(courseClass)}" style="color:#e64626">tutor portal</a> to view student feedback for your class, <strong>${courseClass.course.name}</strong>.</p>
+<p>Kind regards,</p>
+<p>Centre for Continuing Education</p>
+
+${render("CCE-Body-End")}
+${render("Footer")}

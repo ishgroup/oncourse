@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CertificateQualificationReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" whenResourceMissingType="Empty" uuid="2fd4d775-3611-4fe6-8c74-bc35c0f9f2a3">
+	<property name="name" value="Certificate Competition"/>
+	<property name="entity" value="Certificate"/>
+	<property name="isSubreport" value="false"/>
+	<property name="isVisible" value="true"/>
+	<property name="versionNumber" value="3"/>
+	<property name="keyCode" value="ycil.onCourse.certificate"/>
+	<property name="ish.oncourse.title" value="Qualification"/>
+	<property name="ish.oncourse.filePrefix" value="qualification"/>
+	<property name="ish.oncourse.description" value="onCourse includes AQF recommended templates for full Qualification Certificates, Statements of Attainment and transcripts. Certificates can only be generated from units that are recorded as part of onCourse enrolments.This report prints in Portrait format."/>
+	<property name="ish.oncourse.pdfFileName" value="Qualification.pdf"/>
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.4641000000000015"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="551"/>
+	<property name="ish.oncourse.reports.following" value="ycil.onCourse.certificate.transcript"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="org.apache.commons.lang3.time.DateUtils"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<import value="org.apache.commons.lang3.StringUtils"/>
+	<style name="Report_Name" isDefault="true" fontName="Arial" fontSize="18" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+	<style name="Column_Header" isDefault="true" fontName="Arial" fontSize="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+	<style name="Column_Field" isDefault="true" fontName="Arial" fontSize="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+	<style name="Footer" isDefault="true" fontName="Arial" fontSize="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+	<parameter name="ReportName" class="java.lang.String"/>
+	<field name="student.contact.firstName" class="java.lang.String"/>
+	<field name="student.contact.middleName" class="java.lang.String"/>
+	<field name="student.contact.lastName" class="java.lang.String"/>
+	<field name="qualification.level" class="java.lang.String"/>
+	<field name="qualification.title" class="java.lang.String"/>
+	<field name="qualification.nationalCode" class="java.lang.String"/>
+	<field name="createdOn" class="java.util.Date"/>
+	<field name="certificateNumber" class="java.lang.Long"/>
+	<field name="pref.avetmiss.certificate.signatory.name" class="java.lang.String"/>
+	<field name="completeQualification" class="java.lang.Boolean"/>
+	<filterExpression><![CDATA[$F{completeQualification}]]></filterExpression>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="100" splitType="Prevent"/>
+	</title>
+	<pageHeader>
+		<band height="390" splitType="Prevent">
+			<staticText>
+				<reportElement uuid="c2e13ec8-31a5-4345-be28-49f3eb08186c" key="staticText-1" style="Footer" x="12" y="190" width="517" height="16"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[This is to certify that]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement uuid="93084cc8-327f-47e9-b160-a0ae05f38e2d" key="textField-1" style="Column_Header" x="12" y="230" width="517" height="46"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="18" pdfFontName="Helvetica-Bold" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{student.contact.firstName} + (StringUtils.isBlank($F{student.contact.middleName}) ? "" : (" " + $F{student.contact.middleName})) + " " + $F{student.contact.lastName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="8fd03523-8a97-465c-808d-9d90a6c9e3da" key="staticText-2" style="Footer" x="12" y="280" width="517" height="16"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[has fullfilled the requirements for the]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement uuid="20c2c790-dfbc-4b9a-bdeb-9fc594cccc99" key="textField-2" style="Column_Header" x="12" y="320" width="517" height="46"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="18" pdfFontName="Helvetica-Bold" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qualification.level}+" "+$F{qualification.title}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement uuid="20c2c790-dfbc-4b9a-bdeb-9fc594cccc99" key="textField-3" style="Column_Header" x="12" y="366" width="517" height="23"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qualification.nationalCode}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="290" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="56683fef-d9ad-45fd-97a8-88e4967d5935" style="Footer" x="225" y="0" width="50" height="13"/>
+				<textElement>
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Date Issued:]]></text>
+			</staticText>
+			<textField evaluationTime="Report" pattern="dd/MM/yyyy" isBlankWhenNull="false">
+				<reportElement uuid="5148e7a0-f4b1-46f0-a212-112623b2867a" key="textField" style="Footer" positionType="FixRelativeToBottom" isPrintRepeatedValues="false" x="275" y="0" width="70" height="13"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{createdOn}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="600c1b57-ffc8-4b05-a4df-45f735dfa42e" key="staticText-4" style="Column_Header" x="225" y="15" width="65" height="13"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Certificate ID No:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement uuid="9ed174b5-5aef-4181-813d-a5c6ed95b68b" key="textField-7" style="Column_Header" x="290" y="15" width="70" height="13"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font size="8" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{certificateNumber}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="7e707b10-1736-4b81-b983-6df3fe3779b4" key="line-1" style="Footer" positionType="FixRelativeToBottom" mode="Transparent" x="180" y="130" width="180" height="1"/>
+			</line>
+			<textField>
+				<reportElement uuid="7e38853f-7a14-4748-bbee-b18777c68683" style="Footer" x="200" y="132" width="140" height="36"/>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pref.avetmiss.certificate.signatory.name} == null ? "Principal":$F{pref.avetmiss.certificate.signatory.name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

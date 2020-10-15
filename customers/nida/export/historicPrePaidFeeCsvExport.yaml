@@ -1,0 +1,11 @@
+keyCode: nida.historicPrePaidFeeCsvExport.csv
+entityClass: Invoice
+name: Historic projected pre-paid fee Csv Export
+versionNumber: 1
+minVersion: 9.15
+exportTemplate: historicPrePaidFeeCsvExport.groovy
+outputType: csv
+variables:
+  - name: asOnDate
+    label: as on date
+    dataType: DATE

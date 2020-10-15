@@ -1,0 +1,22 @@
+${render("Header", [title: "Class Cancelled"])}
+
+${render("CCE-Body-Start")}
+
+Hi ${enrolment.student.contact.fullName}, 
+
+We regret to advise that the following class has been cancelled due to ${tag.contents}. We apologise for any inconvenience caused. 
+
+A credit note has been created in the name of the payer for the amount originally paid. This credit will automatically be applied in reduction of any future phone enrolment processed with us. Should you wish to re-enrol into another course or have the original transaction refunded, this can also be arranged.
+
+Please contact us on ${Preferences.get("avetmiss.phone")} should you know of another course you would like to transfer into or of you are interested in hearing about other opportunities, otherwise the credit note will remain available for use in the payer's name for any future enrolment.
+
+COURSE  ${enrolment.courseClass.course.name}
+DATE ${enrolment.courseClass.startDateTime.format("d MMM YYYY h:mm a")} - ${enrolment.courseClass.endDateTime.format("d MMM YYYY h:mm a")} (${enrolment.courseClass.sessionsCount} sessions)
+TUTORS <% enrolment.courseClass.firstSession.tutors.unique().each { t -> %> ${t.contact.firstName} ${t.contact.lastName} <% } %>
+LOCATION <% if (enrolment.courseClass.room == null) { %> To be confirmed  <% } else { %> ${enrolment.courseClass.room.name} - ${enrolment.courseClass.room.site.name} <% } %>
+
+Kind regards,
+Centre for Continuing Education
+
+
+${render("Footer")}

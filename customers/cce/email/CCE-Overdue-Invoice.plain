@@ -1,0 +1,9 @@
+${render("Header")}
+Overdue Invoice - ${invoice.invoiceNumber}
+
+Hi ${invoice.contact.fullName},
+
+This is a reminder that your invoice number ${invoice.invoiceNumber} has a remaining balance of ${invoice.amountOwing} outstanding. We would appreciate your prompt attention to payment of this invoice.
+Payment instructions are available here for a variety of payment methods: https://cce.sydney.edu.au/payment
+
+${render("Footer")}

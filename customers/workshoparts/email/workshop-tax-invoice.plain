@@ -1,0 +1,38 @@
+${render("Header")}
+
+o-------------------o
+<% if (invoice.getTotalIncTax().toBigDecimal() < 0) { %>
+     Credit Note
+<% } else { %>
+     Receipt
+<% } %>
+o-------------------o
+
+Created on: ${invoice.createdOn.format("d/M/yy")}
+Payment due on: ${invoice.dateDue.format("d/M/yy")}
+Reference number: ${invoice.invoiceNumber}
+<% if (invoice.customerReference) { %>
+Your reference: ${invoice.customerReference}
+<% } %>
+Payment from: ${invoice.contact.fullName} 
+
+
+Items
+-----
+<% invoice.invoiceLines.each { %>
+${it.title}    ${it.priceTotalExTax}
+${it.description}
+
+<% } %>
+
+o-------------------o
+Total  ${invoice.totalIncTax}
+Total Paid ${invoice.totalIncTax.subtract(invoice.amountOwing)}
+Total Owing ${invoice.amountOwing}
+o-------------------o
+
+If you require a tax invoice, please contact the teacher.
+
+Refunds: Please choose carefully as fees are non-refundable. Refunds on course fees will only be given if the course is cancelled or a place is not available in the course. Full payment must be made prior to the commencement of the course. The Workshop Arts Centre cannot accept responsibility for changes to student's personal circumstances that prevent attendance. No deductions or refunds are available to students who miss classes.
+
+${render("Footer")}

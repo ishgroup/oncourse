@@ -1,0 +1,31 @@
+${render("Header")}
+
+Dear ${enrolment.student.contact.fullName},
+
+Thank you for enrolling at ${Preferences.get("college.name")}.
+
+Class: ${enrolment.courseClass.course.code}-${enrolment.courseClass.code} ${enrolment.courseClass.course.name}
+<% if (enrolment.courseClass.startDateTime == null) { %>
+Start: On enrolment
+Expected duration: ${enrolment.courseClass.expectedHours ?: "not specified"}
+<% } else { %>
+Start: ${enrolment.courseClass.startDateTime.format("h:mm a EEEE d MMMM yyyy zzzz", enrolment.courseClass.getTimeZone())}
+End: ${enrolment.courseClass.endDateTime.format("h:mm a EEEE d MMMM yyyy zzzz", enrolment.courseClass.getTimeZone())}
+<% } %>
+Location:${enrolment.courseClass.displayableLocation}
+
+Please visit ${Preferences.get("web.url")}/class/${enrolment.courseClass.course.code}-${enrolment.courseClass.code} to confirm the class details, directions and course requirements.
+
+<% if (enrolment.courseClass.course.isVET == true) { %>
+You have enrolled in a Nationally Recognised Training course. We are required to collect some additional information from you as part of the enrolment process.
+
+Please visit ${Preferences.getPortalCensusUrl(enrolment.student)} to complete these questions.
+
+You are required to supply your Unique Student Identifier (USI) in order to be issued a Statement of Attainment or Qualification on the successful completion of your course.
+
+If you do not have a USI you can apply for one via the link above.
+<% } %>
+
+Enrolment reference: ${enrolment.invoiceLine.invoice.invoiceNumber}
+
+${render("Footer")}

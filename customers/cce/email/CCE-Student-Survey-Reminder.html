@@ -1,0 +1,26 @@
+${render("Header")}    
+              <!-- Title -->
+              <table width="660" border="0" cellspacing="0" cellpadding="0" class="title">
+                <tbody>
+                  <tr>
+                    <td width="30" height="36"></td>
+                    <td width="630"></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td class="title" style="color:#333333; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:20px; line-height:24px;"><strong style="color:#e64626;">Help us to serve you better.</strong> Tell us what you think.</td>
+                  </tr>
+                  <tr>
+                    <td width="30" height="40"></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <!-- End Title -->         
+${render("CCE-Body-Start")}
+<h1> Hello ${enrolment.student.contact.firstName} </h1>
+<p> We are fully committed to finding new ways to improve our performance. In keeping with this commitment, we'd love to receive feedback on your experience with <strong>${enrolment.courseClass.course.name}</strong> in which you were recently enrolled.</p>
+<h2> <strong>Complete our survey.</strong> It only takes a minute.</h2>
+<p> Please complete our short survey which should take less than 1 minute of your time. <a href="${enrolment.student.getPortalLink(enrolment, 5)}" target="_blank">Click here</a> to complete the survey now.</p>
+${render("CCE-Body-End")}
+${render("Footer")}

@@ -1,0 +1,13 @@
+${render("Header")}
+
+Dear ${invoice.contact.fullName},
+
+Your invoice ${invoice.invoiceNumber} from ${preference.college.name} is ${((new Date() - invoice.dateDue) == -14) ? 'due' : ((new Date() - invoice.dateDue) == 0) ? 'due today' : ('now ' + java.time.temporal.ChronoUnit.DAYS.between(invoice.dateDue, java.time.LocalDate.now()) + ' days overdue')}. The total amount remaining on the invoice is ${invoice.amountOwing} of which ${invoice.invoiceDueDates.size() > 0 ? (((new Date() - invoice.dateDue) == -14) ? invoice.invoiceDueDates.findAll { it.dueDate.compareTo(invoice.dateDue) <= 0 }*.amount.inject { a, b -> a.add(b)}.subtract(invoice.amountPaid) : invoice.overdue) : invoice.amountOwing} is payable now.
+
+If you wish to pay by credit card or view the invoice visit ${invoice.contact.getPortalLink('history', 30)}
+
+If you need to speak about this payment or use another payment method, please contact us on the number below.
+
+If you have paid the amount owing in the past 48 hours please disregard this email
+
+${render("Footer")}

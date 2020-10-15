@@ -1,0 +1,25 @@
+${render("Header", [title: "Class Published"])}
+<table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+    <tbody>
+    <tr bgcolor="#ffffff">
+        <td height="25"/>
+    </tr>
+    <tr>
+        <td class="ish_content_container left" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 0;padding-right: 17px;padding-bottom: 10px;padding-left: 17px; vertical-align: top;" align="left" valign="top">
+            <div class="ish_text_container">
+                <h1>Dear ${contact.getName(true)}</h1>
+                <p>You have previously joined a waiting list to be notified when <strong>${course.name}</strong> becomes available for enrolment.</p>
+                <% classes.each { courseClass -> %>
+                <% if (courseClass.isShownOnWeb) { %>
+                <p>A new class that may be of interest is <a href="${Preferences.get('web.url')}/class/${course.code}-${courseClass.code}" target="_blank">listed here</a>.</p>
+                <% } %>
+                <% } %>
+                <h2>How do I remove myself from the Waiting List?</h2>
+                <p>If you enrol in <strong>${course.name}</strong>, we will automatically remove you from the waiting list. If you wish to remove yourself from the waiting list now, you can manage your waiting lists within <a href="${Preferences.get('web.url')}/login">My Account</a> or simply reply to this email and ask to be removed.</p>
+
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+${render("Footer")}

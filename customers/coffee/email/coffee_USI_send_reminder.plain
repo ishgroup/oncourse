@@ -1,0 +1,32 @@
+${render("Header")} 
+
+Dear ${enrolment.student.contact.fullName},
+
+<% if (enrolment.courseClass.course.isVET) { %> 
+
+You have NOT YET completed your ONLINE ENROLMENT QUESTIONS.
+You will NOT receive your certificate unless you do this NOW BEFORE your course
+
+Steps 1 & 2: are mandatory and must be completed.
+Make sure that you type your ENTIRE NAME exactly as it is written on your Passport including any MIDDLE NAMES when completing the Online Enrolment Questions
+
+Step 3: Providing your USI is mandatory. To be issued any formal certification on the completion of ${enrolment.courseClass.course.name}, you must provide ${Preferences.get("college.name")} with your Unique Student Identifier (USI).
+
+You can apply for, and provide us with your USI as well as complete your Enrolment Questions online
+${enrolment.student.getPortalLink('USI')}
+
+If you do not have a USI, you can apply for one here: https://www.usi.gov.au/students/create-your-usi 
+Coffee School cannot help you with this process. If you need assistance obtaining your USI, please call the USI Office at 1300 857 536.
+<% } %>
+
+Please arrive 15 minute before your course commencement time
+
+You MUST Bring a Photo Identification such as a Drivers License or Passport. You also MUST bring a PEN.
+
+<% if (["barckts"].contains(enrolment.courseClass.course.code)) { %> 
+For Coffee Course -   Please wear covered shoes. No thongs or sandals
+<% } %>
+
+<% if (["RSANSW", "RCGNSW"].contains(enrolment.courseClass.course.code)) { %>
+You must be on time or you will not be permitted entry.
+<% } %>

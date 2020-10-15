@@ -1,0 +1,721 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ClassRollDetailnewInvoice" pageWidth="764" pageHeight="514" orientation="Landscape" columnWidth="764" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="name" value="MCC-isVET subreport"/>
+	<property name="entity" value="Enrolment"/>
+	<property name="isSubreport" value="true"/>
+	<property name="isVisible" value="false"/>
+	<property name="versionNumber" value="2"/>
+	<property name="keyCode" value="Mcc.onCourse.roll.isVET.sub"/>
+	<property name="ish.oncourse.title" value="Enrolments"/>
+	<property name="ish.oncourse.filePrefix" value="CourseClass_enrolements"/>
+	<property name="ish.oncourse.pdfFileName" value=""/>
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="Report_Title" isDefault="true" fontName="Arial" fontSize="14" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+	<style name="Column_Header" isDefault="true" fontName="Arial" fontSize="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+	<style name="Column_Field" isDefault="true" fontName="Arial" fontSize="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+	<style name="Footer" isDefault="true" fontName="Arial" fontSize="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+	<field name="studentName" class="java.lang.String"/>
+	<field name="sessionDesc" class="java.lang.String"/>
+	<field name="isPresent" class="java.lang.Boolean"/>
+	<field name="sessionDate_humanReadable" class="java.lang.String"/>
+	<field name="studentNo" class="java.lang.Long"/>
+	<field name="invoiceNo" class="java.lang.String"/>
+	<field name="Contact No:" class="java.lang.String"/>
+	<field name="mobile" class="java.lang.String"/>
+	<field name="blankRows" class="java.lang.String"/>
+	<field name="sex" class="java.lang.String"/>
+	<field name="image.present" class="java.io.InputStream"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="149" splitType="Stretch">
+			<crosstab>
+				<reportElement key="crosstab-1" style="Footer" positionType="Float" x="0" y="0" width="752" height="32"/>
+				<crosstabDataset isDataPreSorted="true">
+					<dataset resetType="None"/>
+				</crosstabDataset>
+				<crosstabHeaderCell>
+					<cellContents mode="Transparent">
+						<box>
+							<pen lineWidth="1.0"/>
+							<topPen lineWidth="1.0"/>
+							<leftPen lineWidth="1.0"/>
+							<bottomPen lineWidth="1.0"/>
+							<rightPen lineWidth="1.0"/>
+						</box>
+						<staticText>
+							<reportElement key="staticText-1" style="Footer" x="0" y="70" width="166" height="14"/>
+							<textElement>
+								<font size="10"/>
+							</textElement>
+							<text><![CDATA[Students]]></text>
+						</staticText>
+						<staticText>
+							<reportElement key="staticText-1" style="Footer" x="166" y="71" width="35" height="14"/>
+							<textElement>
+								<font size="10"/>
+							</textElement>
+							<text><![CDATA[Gender]]></text>
+						</staticText>
+						<staticText>
+							<reportElement key="staticText-1" style="Footer" x="202" y="70" width="57" height="14"/>
+							<textElement>
+								<font size="10"/>
+							</textElement>
+							<text><![CDATA[Contacts]]></text>
+						</staticText>
+						<staticText>
+							<reportElement key="staticText-6" style="Footer" x="262" y="69" width="56" height="15"/>
+							<textElement>
+								<font size="10"/>
+							</textElement>
+							<text><![CDATA[ID sighted]]></text>
+						</staticText>
+					</cellContents>
+				</crosstabHeaderCell>
+				<rowGroup name="studentName" width="167">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[$F{studentName}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Transparent">
+							<box>
+								<pen lineWidth="1.0"/>
+								<topPen lineWidth="1.0"/>
+								<leftPen lineWidth="1.0"/>
+								<bottomPen lineWidth="1.0"/>
+								<rightPen lineWidth="1.0"/>
+							</box>
+							<textField isBlankWhenNull="false">
+								<reportElement key="textField-1" style="Footer" x="2" y="1" width="158" height="17"/>
+								<textElement/>
+								<textFieldExpression class="java.lang.String"><![CDATA[$V{studentName}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="sex" width="36">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[$F{sex}=="Male"?"M":$F{sex}=="Female"?"F":""]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Transparent">
+							<box>
+								<pen lineWidth="1.0"/>
+								<topPen lineWidth="1.0"/>
+								<leftPen lineWidth="1.0"/>
+								<bottomPen lineWidth="1.0"/>
+								<rightPen lineWidth="1.0"/>
+							</box>
+							<textField isBlankWhenNull="false">
+								<reportElement key="textField-1" style="Footer" x="2" y="1" width="33" height="15"/>
+								<textElement/>
+								<textFieldExpression class="java.lang.String"><![CDATA[$V{sex}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="contactNo" width="58">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[$F{mobile}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Transparent">
+							<box>
+								<pen lineWidth="1.0"/>
+								<topPen lineWidth="1.0"/>
+								<leftPen lineWidth="1.0"/>
+								<bottomPen lineWidth="1.0"/>
+								<rightPen lineWidth="1.0"/>
+							</box>
+							<textField isBlankWhenNull="false">
+								<reportElement key="textField-1" style="Footer" x="3" y="2" width="53" height="17"/>
+								<textElement/>
+								<textFieldExpression class="java.lang.String"><![CDATA[$V{contactNo}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="invoiceNo" width="60">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[$F{invoiceNo}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Transparent">
+							<box>
+								<pen lineWidth="1.0"/>
+								<topPen lineWidth="1.0"/>
+								<leftPen lineWidth="1.0"/>
+								<bottomPen lineWidth="1.0"/>
+								<rightPen lineWidth="1.0"/>
+							</box>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="sessionDate" height="86">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[$F{sessionDate_humanReadable}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents mode="Transparent">
+							<box>
+								<pen lineWidth="1.0"/>
+								<topPen lineWidth="1.0"/>
+								<leftPen lineWidth="1.0"/>
+								<bottomPen lineWidth="1.0"/>
+								<rightPen lineWidth="1.0"/>
+							</box>
+							<textField isBlankWhenNull="false">
+								<reportElement key="textField-1" style="Footer" x="4" y="2" width="21" height="81"/>
+								<textElement verticalAlignment="Middle" rotation="Left"/>
+								<textFieldExpression class="java.lang.String"><![CDATA[$V{sessionDate}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents/>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="isPresent" class="java.lang.Boolean">
+					<measureExpression><![CDATA[$F{isPresent}]]></measureExpression>
+				</measure>
+				<crosstabCell width="28" height="33">
+					<cellContents mode="Transparent">
+						<box>
+							<pen lineWidth="1.0"/>
+							<topPen lineWidth="1.0"/>
+							<leftPen lineWidth="1.0"/>
+							<bottomPen lineWidth="1.0"/>
+							<rightPen lineWidth="1.0"/>
+						</box>
+						<textField isBlankWhenNull="false">
+							<reportElement key="textField-1" style="Footer" x="1" y="0" width="26" height="18"/>
+							<textElement/>
+							<textFieldExpression class="java.lang.String"><![CDATA[$V{isPresent} == null ? "" : $V{isPresent}.booleanValue() ? "Y" : "N"]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="28" height="0" rowTotalGroup="studentName">
+					<cellContents mode="Transparent">
+						<box>
+							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<bottomPen lineWidth="0.0" lineColor="#000000"/>
+							<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="0" height="33" columnTotalGroup="sessionDate">
+					<cellContents mode="Transparent">
+						<box>
+							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<bottomPen lineWidth="0.0" lineColor="#000000"/>
+							<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" rowTotalGroup="studentName" columnTotalGroup="sessionDate">
+					<cellContents mode="Transparent">
+						<box>
+							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<bottomPen lineWidth="0.0" lineColor="#000000"/>
+							<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="28" height="0" rowTotalGroup="contactNo">
+					<cellContents mode="Transparent">
+						<box>
+							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<bottomPen lineWidth="0.0" lineColor="#000000"/>
+							<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" rowTotalGroup="contactNo" columnTotalGroup="sessionDate">
+					<cellContents mode="Transparent">
+						<box>
+							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<bottomPen lineWidth="0.0" lineColor="#000000"/>
+							<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="28" height="0" rowTotalGroup="invoiceNo">
+					<cellContents mode="Transparent">
+						<box>
+							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<bottomPen lineWidth="0.0" lineColor="#000000"/>
+							<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" rowTotalGroup="invoiceNo" columnTotalGroup="sessionDate">
+					<cellContents mode="Transparent">
+						<box>
+							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<bottomPen lineWidth="0.0" lineColor="#000000"/>
+							<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="28" height="0" rowTotalGroup="sex">
+					<cellContents mode="Transparent"/>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" rowTotalGroup="sex" columnTotalGroup="sessionDate">
+					<cellContents mode="Transparent"/>
+				</crosstabCell>
+				<whenNoDataCell>
+					<cellContents mode="Transparent">
+						<box>
+							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<bottomPen lineWidth="0.0" lineColor="#000000"/>
+							<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+					</cellContents>
+				</whenNoDataCell>
+			</crosstab>
+			<crosstab>
+				<reportElement key="crosstab-2" style="Footer" positionType="Float" x="0" y="32" width="760" height="30"/>
+				<crosstabHeaderCell>
+					<cellContents mode="Transparent">
+						<line>
+							<reportElement key="line-1" style="Footer" x="0" y="59" width="321" height="1"/>
+						</line>
+						<line>
+							<reportElement key="line-1" style="Footer" x="0" y="29" width="321" height="1"/>
+						</line>
+						<line>
+							<reportElement key="line-1" style="Footer" x="0" y="88" width="321" height="1"/>
+						</line>
+						<line>
+							<reportElement key="line-1" style="Footer" x="0" y="117" width="321" height="1"/>
+						</line>
+						<staticText>
+							<reportElement key="staticText-1" style="Footer" x="2" y="124" width="138" height="22"/>
+							<textElement/>
+							<text><![CDATA[Tutor Signature]]></text>
+						</staticText>
+						<staticText>
+							<reportElement key="staticText-1" style="Footer" x="2" y="92" width="154" height="22"/>
+							<textElement/>
+							<text><![CDATA[Number Attended]]></text>
+						</staticText>
+						<line>
+							<reportElement key="line-1" style="Footer" x="0" y="151" width="321" height="1"/>
+						</line>
+						<line>
+							<reportElement key="line-1" style="Footer" x="202" y="1" width="1" height="150"/>
+						</line>
+						<line>
+							<reportElement key="line-1" style="Footer" x="0" y="193" width="321" height="1"/>
+						</line>
+						<line>
+							<reportElement key="line-1" style="Footer" x="167" y="0" width="1" height="152"/>
+						</line>
+						<staticText>
+							<reportElement key="staticText-6" style="Footer" x="1" y="135" width="0" height="0"/>
+							<textElement/>
+							<text><![CDATA[Static Text]]></text>
+						</staticText>
+						<staticText>
+							<reportElement key="staticText-6" style="Footer" x="2" y="154" width="272" height="32"/>
+							<textElement verticalAlignment="Middle">
+								<font size="8"/>
+							</textElement>
+							<text><![CDATA[Comments:]]></text>
+						</staticText>
+						<line>
+							<reportElement key="line-1" style="Footer" x="-1" y="0" width="1" height="192"/>
+						</line>
+						<line>
+							<reportElement key="line-1" style="Footer" x="261" y="0" width="1" height="151"/>
+						</line>
+					</cellContents>
+				</crosstabHeaderCell>
+				<rowGroup name="studentName" width="166" totalPosition="End">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[$F{studentName}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents/>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="invoiceNo" width="58" totalPosition="End">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[$F{invoiceNo}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents/>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="sex" width="97">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents/>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="sessionDate" height="1">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[$F{sessionDate_humanReadable}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents mode="Transparent">
+							<textField isBlankWhenNull="true">
+								<reportElement key="textField-1" style="Footer" x="4" y="-1" width="18" height="2">
+									<printWhenExpression><![CDATA[$V{sessionDate}!=null?null:null]]></printWhenExpression>
+								</reportElement>
+								<textElement rotation="Left">
+									<font isBold="true" pdfFontName="Helvetica-Bold"/>
+								</textElement>
+								<textFieldExpression class="java.lang.String"><![CDATA[$V{sessionDate}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents/>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<columnGroup name="new" height="28">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents mode="Transparent">
+							<box>
+								<pen lineWidth="1.0"/>
+								<topPen lineWidth="1.0"/>
+								<leftPen lineWidth="1.0"/>
+								<bottomPen lineWidth="1.0"/>
+								<rightPen lineWidth="1.0"/>
+							</box>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents/>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<columnGroup name="new1" height="30">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents mode="Transparent">
+							<box>
+								<pen lineWidth="1.0"/>
+								<topPen lineWidth="1.0"/>
+								<leftPen lineWidth="1.0"/>
+								<bottomPen lineWidth="1.0"/>
+								<rightPen lineWidth="1.0"/>
+							</box>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents/>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<columnGroup name="new2" height="29">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents mode="Transparent">
+							<box>
+								<pen lineWidth="1.0"/>
+								<topPen lineWidth="1.0"/>
+								<leftPen lineWidth="1.0"/>
+								<bottomPen lineWidth="1.0"/>
+								<rightPen lineWidth="1.0"/>
+							</box>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents/>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<columnGroup name="new4" height="30">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents mode="Transparent">
+							<box>
+								<pen lineWidth="1.0"/>
+								<topPen lineWidth="1.0"/>
+								<leftPen lineWidth="1.0"/>
+								<bottomPen lineWidth="1.0"/>
+								<rightPen lineWidth="1.0"/>
+							</box>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents/>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<columnGroup name="new5" height="33">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents mode="Transparent">
+							<box>
+								<pen lineWidth="1.0"/>
+								<topPen lineWidth="1.0"/>
+								<leftPen lineWidth="1.0"/>
+								<bottomPen lineWidth="1.0"/>
+								<rightPen lineWidth="1.0"/>
+							</box>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents/>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<columnGroup name="new6" height="43">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents mode="Transparent">
+							<box>
+								<pen lineWidth="1.0"/>
+								<topPen lineWidth="1.0"/>
+								<leftPen lineWidth="1.0"/>
+								<bottomPen lineWidth="1.0"/>
+								<rightPen lineWidth="1.0"/>
+							</box>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents/>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<columnGroup name="new7" height="0">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents/>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents/>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="isPresent_Count" class="java.lang.Boolean" calculation="Count">
+					<measureExpression><![CDATA[$F{isPresent}]]></measureExpression>
+				</measure>
+				<crosstabCell width="28" height="0">
+					<cellContents mode="Transparent">
+						<box>
+							<pen lineWidth="0.75"/>
+							<topPen lineWidth="0.75"/>
+							<leftPen lineWidth="0.75"/>
+							<bottomPen lineWidth="0.75"/>
+							<rightPen lineWidth="0.75"/>
+						</box>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="28" height="0" rowTotalGroup="invoiceNo">
+					<cellContents mode="Transparent"/>
+				</crosstabCell>
+				<crosstabCell width="28" height="0" rowTotalGroup="studentName">
+					<cellContents mode="Transparent"/>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" columnTotalGroup="sessionDate">
+					<cellContents mode="Transparent"/>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" rowTotalGroup="invoiceNo" columnTotalGroup="sessionDate">
+					<cellContents mode="Transparent"/>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" rowTotalGroup="studentName" columnTotalGroup="sessionDate">
+					<cellContents mode="Transparent"/>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" columnTotalGroup="new">
+					<cellContents mode="Transparent"/>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" rowTotalGroup="invoiceNo" columnTotalGroup="new">
+					<cellContents mode="Transparent"/>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" rowTotalGroup="studentName" columnTotalGroup="new">
+					<cellContents mode="Transparent"/>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" columnTotalGroup="new1">
+					<cellContents mode="Transparent"/>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" rowTotalGroup="invoiceNo" columnTotalGroup="new1">
+					<cellContents mode="Transparent"/>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" rowTotalGroup="studentName" columnTotalGroup="new1">
+					<cellContents mode="Transparent"/>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" columnTotalGroup="new2">
+					<cellContents mode="Transparent"/>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" rowTotalGroup="invoiceNo" columnTotalGroup="new2">
+					<cellContents mode="Transparent"/>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" rowTotalGroup="studentName" columnTotalGroup="new2">
+					<cellContents mode="Transparent"/>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" columnTotalGroup="new4">
+					<cellContents mode="Transparent"/>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" rowTotalGroup="invoiceNo" columnTotalGroup="new4">
+					<cellContents mode="Transparent"/>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" rowTotalGroup="studentName" columnTotalGroup="new4">
+					<cellContents mode="Transparent"/>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" columnTotalGroup="new5">
+					<cellContents mode="Transparent"/>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" rowTotalGroup="invoiceNo" columnTotalGroup="new5">
+					<cellContents mode="Transparent"/>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" rowTotalGroup="studentName" columnTotalGroup="new5">
+					<cellContents mode="Transparent"/>
+				</crosstabCell>
+				<crosstabCell width="28" height="0" rowTotalGroup="sex">
+					<cellContents mode="Transparent"/>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" rowTotalGroup="sex" columnTotalGroup="new5">
+					<cellContents mode="Transparent"/>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" rowTotalGroup="sex" columnTotalGroup="new4">
+					<cellContents mode="Transparent"/>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" rowTotalGroup="sex" columnTotalGroup="new2">
+					<cellContents mode="Transparent"/>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" rowTotalGroup="sex" columnTotalGroup="new1">
+					<cellContents mode="Transparent"/>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" rowTotalGroup="sex" columnTotalGroup="new">
+					<cellContents mode="Transparent"/>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" rowTotalGroup="sex" columnTotalGroup="sessionDate">
+					<cellContents mode="Transparent"/>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" columnTotalGroup="new6">
+					<cellContents mode="Transparent"/>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" rowTotalGroup="sex" columnTotalGroup="new6">
+					<cellContents mode="Transparent"/>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" rowTotalGroup="invoiceNo" columnTotalGroup="new6">
+					<cellContents mode="Transparent"/>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" rowTotalGroup="studentName" columnTotalGroup="new6">
+					<cellContents mode="Transparent"/>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" columnTotalGroup="new7">
+					<cellContents mode="Transparent"/>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" rowTotalGroup="sex" columnTotalGroup="new7">
+					<cellContents mode="Transparent"/>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" rowTotalGroup="invoiceNo" columnTotalGroup="new7">
+					<cellContents mode="Transparent"/>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" rowTotalGroup="studentName" columnTotalGroup="new7">
+					<cellContents mode="Transparent"/>
+				</crosstabCell>
+				<whenNoDataCell>
+					<cellContents mode="Transparent"/>
+				</whenNoDataCell>
+			</crosstab>
+			<image>
+				<reportElement key="image-1" style="Footer" positionType="Float" x="6" y="72" width="29" height="23"/>
+				<imageExpression class="java.io.InputStream"><![CDATA[$F{image.present}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement key="staticText-1" style="Footer" positionType="Float" x="29" y="72" width="125" height="30"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[= Present]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-2" style="Footer" positionType="Float" x="25" y="95" width="129" height="26"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[  = Absent]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-3" style="Footer" positionType="Float" x="6" y="100" width="29" height="21"/>
+				<textElement>
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[a]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-4" style="Footer" positionType="Float" x="6" y="122" width="29" height="19"/>
+				<textElement>
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[L]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-5" style="Footer" positionType="Float" x="25" y="118" width="129" height="23"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[  = Late]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

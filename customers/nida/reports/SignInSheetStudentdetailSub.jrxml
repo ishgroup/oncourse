@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ClassRollSingleSessionStudentdetailSub" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="ca5315bc-9600-4938-b1a8-4f24760e6dea">
+	<property name="name" value="Sign In Sheet Student Detail Sub"/>
+	<property name="entity" value="Enrolment"/>
+	<property name="isSubreport" value="true"/>
+	<property name="isVisible" value="false"/>
+	<property name="versionNumber" value="8"/>
+	<property name="keyCode" value="nida.onCourse.signInSheetStudentSub"/>
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="77"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<field name="student.contact.name" class="java.lang.String"/>
+	<field name="invoiceLine.invoice.invoiceNumber" class="java.lang.Long"/>
+	<field name="student.studentNumber" class="java.lang.Long"/>
+	<sortField name="student.contact.name" order="Ascending"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="40" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="8b91bd03-818e-4196-aa4e-3c55012bc861" key="staticText-1" mode="Opaque" x="2" y="3" width="174" height="36" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Student Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="13198777-a04f-41ee-91a0-b754696789ce" key="staticText-2" mode="Opaque" x="177" y="3" width="137" height="36" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Parent or Guardian Emergency Contact Number]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="73b77a9d-8920-496a-aacf-167b61502d22" key="staticText-4" mode="Opaque" x="521" y="3" width="244" height="35" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Notes]]></text>
+			</staticText>
+			<line direction="BottomUp">
+				<reportElement uuid="cbbbd5fb-9cfd-4e07-aa38-9af733ce702c" key="line-7" x="2" y="38" width="763" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="be8a6fcd-b58a-431d-b295-455c89bb53b8" key="line-8" x="176" y="2" width="1" height="38"/>
+			</line>
+			<line>
+				<reportElement uuid="fd15905e-5c93-4882-8938-9b29ec679163" key="line-9" x="520" y="2" width="1" height="38" forecolor="#000000"/>
+			</line>
+			<line>
+				<reportElement uuid="5dfe5083-871d-44d2-a120-b5c4f88b63e7" key="line-11" x="413" y="2" width="1" height="38"/>
+			</line>
+			<line>
+				<reportElement uuid="8c706177-5396-4af6-80c0-7f14df91df71" key="line-14" x="765" y="2" width="1" height="38"/>
+			</line>
+			<line>
+				<reportElement uuid="7fbde4ec-1e20-48e1-8eec-f08a0c3639c8" key="line-19" x="2" y="2" width="763" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="995aa26a-dd74-4d55-a4e9-27a5ceb16a6c" key="line-20" x="2" y="2" width="1" height="38"/>
+			</line>
+			<staticText>
+				<reportElement uuid="9df652a7-3804-4cd0-9e2d-f1870e82306f" key="staticText-1" mode="Opaque" x="314" y="3" width="99" height="35" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Sign In]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8aae4fe6-2380-4b79-b9b9-16907023a370" key="staticText-1" mode="Opaque" x="414" y="3" width="106" height="35" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Sign Out]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="3d82ace2-419a-46f6-a364-928b4fe8b46a" key="line-8" x="314" y="2" width="1" height="38"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="24" splitType="Stretch">
+			<line>
+				<reportElement uuid="52b1785f-7e28-4c9f-bd49-88c3a1bb948f" key="line-10" x="413" y="-2" width="1" height="24"/>
+			</line>
+			<line>
+				<reportElement uuid="82507c26-b409-47ab-a8be-578ee22f3ef4" key="line-10" x="520" y="-2" width="1" height="24"/>
+			</line>
+			<line>
+				<reportElement uuid="a4e7d2ba-2c95-4eba-8266-6c60a96fe24b" key="line-12" x="314" y="-2" width="1" height="24"/>
+			</line>
+			<line>
+				<reportElement uuid="d64a6eb8-b0fd-409c-80fe-000597d2fe61" key="line-4" x="176" y="-2" width="1" height="24"/>
+			</line>
+			<line>
+				<reportElement uuid="53dd6964-d55c-40a2-b14d-b7c44035da4f" key="line-13" x="765" y="-2" width="1" height="24"/>
+			</line>
+			<textField isBlankWhenNull="false">
+				<reportElement uuid="f75149d3-50a3-41e2-95b0-235e1c995deb" key="textField" x="2" y="0" width="175" height="18"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" "+$V{REPORT_COUNT}+"."+"  "+$F{student.contact.name}]]></textFieldExpression>
+			</textField>
+			<elementGroup/>
+			<line>
+				<reportElement uuid="4a8c62d3-1627-4951-83e1-626e128b593a" key="line-17" x="2" y="-1" width="1" height="24"/>
+			</line>
+			<line>
+				<reportElement uuid="6195f5a1-fd64-4810-8fc8-16f48f6b868a" key="line-18" x="2" y="22" width="764" height="1"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

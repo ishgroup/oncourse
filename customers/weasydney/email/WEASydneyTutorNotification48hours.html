@@ -1,0 +1,52 @@
+${render("Header", [title: "Your class is about to start"])}
+<table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+    <tbody>
+    <tr>
+        <td class="ish_content_container center" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 10px;padding-right: 17px;padding-bottom: 10px;padding-left: 17px;" align="left">
+            <div class="ish_text_container">
+                <h2 style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 18px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;font-weight: normal;font-style: normal;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 125%;margin-top: 0;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;">Reminder: Your class starts soon!
+                </h2>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+    <tbody>
+    <tr>
+        <td class="ish_content_container left" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 0;padding-right: 17px;padding-bottom: 10px;padding-left: 17px; vertical-align: top;" align="left" valign="top">
+            <div class="ish_text_container">
+                <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align:left;">
+                    Dear ${role.tutor.contact.fullName},
+                    <br><br>
+                    Just a reminder that your class for ${courseClass.course.code}-${courseClass.code} ${courseClass.course.name} starts on ${courseClass.startDateTime.format("dd MMMM YYYY")}
+                    <br><br>
+                    You are currently expecting ${courseClass.successAndQueuedEnrolments.size()} students. Please be advised that if your class is 20 or more enrolments, you will get a class roll printed for you. If it is below, please make sure you mark the roll through the tutor portal.
+                    <br><br>
+                    <b>Please remember to bring a reusable cup for use with our tea and coffee facilities on Levels 2 and 3. From 1st January 2020, we will also stop providing water cups and ask that you bring in a water bottle instead.</b>
+                    <br><br>
+                    <% if (courseClass.startDateTime?.hours >= 17) { %>
+                    If your class is starting from 5:30pm onwards, you will need to input a code into the keypad to be let in as the doors will not open without one. The code for this is 2020.
+                    <% } %>
+                    <br><br>
+
+
+                    <% if (alertStudents) { %>
+                    ${alertStudents.size()} student/s have identified a medical condition or special need. <br>
+                    <% alertStudents.each { s -> %>
+                        ${s.fullName} : ${s.specialNeeds} <br>
+                    <% } %>
+                    <br>Please contact us if there is a specific request highlighted by the above students. If anyone has nominated that they do not have any needs, please reply to this email so we can remove these entries.
+                    <% } %>
+
+                    <br><br>                    
+                    Please ensure you have notified Johannes (johannes.meierhofer@weasydney.nsw.edu.au) for any room equipment you need for your class.
+                    <br><br>
+                    <i>WEA Sydney</i>
+                </p>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+${render("Footer")}

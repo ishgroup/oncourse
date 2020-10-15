@@ -1,0 +1,18 @@
+${render("Header",  [title: "10% off your next language course at Sydney Community College!"])}
+10% off your next language course at Sydney Community College!
+
+Dear ${enrolment.student.contact.fullName},
+We trust you have enjoyed your class ${enrolment.courseClass.course.name}.
+
+If you would like to continue your language studies, please visit https://www.sydneycommunitycollege.edu.au/courses/languages to enrol in the next level, or discover a new language.
+
+As a returning language student, we would like to offer you a 10% early bird discount on all language classes.
+
+To be eligible for the discount, enrol online more than 14 days before the class is scheduled to start and enter "TEACHMEMORE" during the checkout process.
+
+For this discount to apply, ensure you use the same first name, last name and email address as your previous language enrolment.
+
+Kind regards
+Sydney Community College
+
+${render("Footer")}

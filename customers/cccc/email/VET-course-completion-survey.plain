@@ -1,0 +1,19 @@
+${render("Header")}
+
+Dear ${enrolment.student.contact.firstName},
+
+Thank you for your participation in ${enrolment.courseClass.course.name}
+
+As a soon-to-be graduate, we would like to invite you to partake in a short survey and tell us about your recent experiences here at the College! Your feedback will be vital in the improvement of future programs and course delivery.
+
+The survey is very brief and should only take approximately 5 minutes to complete. Simply click the link below to go to the survey or copy and paste the link directly into your Internet browser:
+https://www.surveymonkey.com/r/TKQ2SND
+
+Please note that this survey is completely voluntary and no personal information is stored against the responses provided. Should you have any questions, please feel free to contact the College by calling 02 4348 4300 or email info@cccc.nsw.edu.au <br/><br/>
+
+Thank you for taking the time to help create a better College experience for all future students! We greatly appreciate your feedback and hope you will consider the College for all your future education and training needs.<br/><br/>
+
+Kind Regards,<br/>
+Your Central Coast Community College Team
+
+${render("Footer")}

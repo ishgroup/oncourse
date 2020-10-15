@@ -1,0 +1,45 @@
+${render("Header")}
+
+o-------------------o
+<% if (invoice.getTotalIncTax().toBigDecimal() < 0) { %>
+     Credit Note
+<% } else { %>
+     Tax Invoice
+<% } %>
+o-------------------o
+
+Invoice created on: ${invoice.createdOn.format("d/M/yy")}
+Invoice due on: ${invoice.dateDue.format("d/M/yy")}
+Invoice number: ${invoice.invoiceNumber}
+<% if (invoice.customerReference) { %>
+Your reference: ${invoice.customerReference}
+<% } %>
+Invoice to: ${invoice.contact.fullName}
+
+
+Items
+-----
+<% invoice.invoiceLines.each { %>
+${it.title}    ${it.priceTotalExTax} (ex Tax)
+<% if (it.description) { %>${it.description}<% } %>
+
+<% } %>
+
+o-------------------o
+Total (inc Tax) ${invoice.totalIncTax}
+Total Tax ${invoice.totalTax}
+Total Paid ${invoice.totalIncTax.subtract(invoice.amountOwing)}
+Total ${invoice.amountOwing >= 0 ? "Owing" : "Credit"} ${invoice.amountOwing}
+o-------------------o
+
+<% if (invoice.invoiceDueDates.size() > 0) { %>
+Payment due date
+-----------------
+<% invoice.invoiceDueDates.sort{ it.dueDate }.each { %>${it.dueDate.format("d MMMM yyyy")} - ${it.amount}
+<% } %>
+<% } %>
+
+<% if(invoice.contact.customField('uniInternalTransferAccount')) { %>
+You are able to pay this invoice by contacting CCE and authorising a Sydney University Journal transfer from your account. Please contact operations@cce.sydney.edu.au with your details.
+<% } %>
+${render("Footer")}

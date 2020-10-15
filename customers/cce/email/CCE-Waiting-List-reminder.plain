@@ -1,0 +1,16 @@
+${render("Header")}  
+Classes are avaliable to enrol. ${waitingList.course.name} 
+
+
+Dear ${waitingList.student.contact.fullName},
+You have previously joined a waiting list to be notified when ${waitingList.course.name} becomes available for enrolment.
+A new class that may be of interest is listed here. 
+https://cce.sydney.edu.au/course/${waitingList.course.code}
+
+How do I remove myself from the Waiting List?
+If you enrol in ${waitingList.course.name}, we will automatically remove you from the waiting list. If you wish to remove yourself from the waiting list now, you can manage your waiting lists within My Account (${waitingList.student.contact.getPortalLink('subscriptions')}) or simply reply to this email and ask to be removed.
+
+
+Kind regards,
+Centre for Continuing Education
+${render("Footer")}  

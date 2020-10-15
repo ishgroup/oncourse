@@ -1,0 +1,47 @@
+${render("Header")} 
+
+Dear ${enrolment.student.contact.fullName},
+
+Thank you for enrolling at ${Preferences.get("college.name")}.
+
+Class: ${enrolment.courseClass.course.code}-${enrolment.courseClass.code} ${enrolment.courseClass.course.name}
+<% if (enrolment.courseClass.startDateTime == null) { %>
+Start: On enrolment
+Expected duration: ${enrolment.courseClass.expectedHours ?: "not specified"}
+<% } else { %>
+Start: ${enrolment.courseClass.startDateTime.format("h:mm a EEEE d MMMM yyyy zzzz", enrolment.courseClass.getTimeZone())}
+End: ${enrolment.courseClass.endDateTime.format("h:mm a EEEE d MMMM yyyy zzzz", enrolment.courseClass.getTimeZone())}
+<% } %>
+Location:${enrolment.courseClass.displayableLocation}
+
+<% if (enrolment.courseClass.course.isVET == true) { %> 
+You have enrolled in a Nationally Recognised Training course. We are required to collect some additional information from you as part of the enrolment process. 
+
+If you have <u>not</u> provided your Unique Student Identifier (USI) upon enrolment, on your enrolment form, online, or by contacting the office, then you must provide your USI in order to be issued with a Statement of Attainment or Qualification on the successful completion of your course.
+<% } %>
+
+<% if (enrolment.courseClass.course.hasTag("Subjects/First aid", true)) { %>
+
+Attention First Aid Course Students: Students enrolled in First Aid courses who do not have current First Aid Certification are required to complete a First Aid Work book before attending the course. 
+First Aid Certification is deemed to be current if issued within the previous three years of the course date you have enrolled.  
+To facilitate access to the Workbook, please contact Western Riverina Community College Inc. 0269645334.
+
+<% } %>
+
+<% if (enrolment.courseClass.course.hasTag("Subjects/Work Health Safety (WHS)", true)) { %>
+WHS courses require participants to provide proof of Identification. Therefore as a course participant, you will need to provide documents as proof of your identity (ID). Proof of ID requirements alters depending on the WHS course. ID Requirements for each course are as follows below;
+
+1. Elevated Work Platform - Requires documents totalling 100 points of Identification. <br>
+2. NSW Construction Induction (White Card)- Requires documents totalling 100 points of Identification. <br>
+3. Forklift Courses - Requires documents totalling 100 points of Identification. <br>
+4. 5 Day Health and Safety Representative Course and Refresher Health and Safety Representative Course - Requires documents totalling 100 points of Identification.  <br>
+5. Confined Spaces Course and Confined Space refresher course - One form of photo ID. <br>
+6. Working at Heights Course - One form of photo ID.  <br>
+
+Should you have concerns about the above information, please call WRCC on 0269645334.<br>
+
+<% } %>
+
+Enrolment reference: ${enrolment.invoiceLine.invoice.invoiceNumber}
+
+${render("Footer")}

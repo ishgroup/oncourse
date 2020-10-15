@@ -1,0 +1,58 @@
+${render("Header", [title: "Enrolment Confirmation"])}
+
+Dear ${enrolment.student.contact.firstName},
+Thank you for enrolling at ${Preferences.get("college.name")}
+
+<% if (enrolment.courseClass.course.isVET) { %>
+
+    You have enrolled in a Nationally Recognised Training course. We are required to collect some additional information from you as part of the enrolment process.
+
+    Please visit ${Preferences.getPortalCensusUrl(enrolment.student)}to complete these questions.
+
+
+    You are required to supply your Unique Student Identifier (USI) in order to be issued a Statement of Attainment or Qualification on the successful completion of your course.
+
+
+    If you do not have a USI you can apply for one via the link above.
+
+<% } %>
+
+IMPORTANT: Please visit ${Preferences.get("web.url")}/class/${enrolment.courseClass.course.code}-${enrolment.courseClass.code} to view the class details, class requirements including any text books required and for directions to the particular college site.
+
+<% if (enrolment.courseClass.course.customField("Survey Link")) { %>
+IMPORTANT: You have enrolled in a class that requires you to complete a pre-course survey. Please click here to complete your survey. ${enrolment.courseClass.course.customField('Survey Link')}
+
+<% } %>
+
+<% if (enrolment.student.contact.memberships.find { ['GOLD', 'SILVER', 'CORPORATE'].contains(it.product.sku) } ) { %>
+
+As a member, please be mindful of your commitment to attend each session of the course.  If you can’t attend, please let us know as soon as possible and your place will be made available for someone else. We appreciate at least 48 hours notice – especially for cooking classes, as we do not want to see food wasted.
+
+All students of the College are required to adhere to all policies and procedures governing the College’s operations. ${Preferences.get("web.url")}/Policies
+
+<% } else { %>
+
+If you wish to withdraw from your enrolment, please see the following link for Terms and Conditions ${Preferences.get("web.url")}/Policies. All students of the College are required to adhere to all policies and procedures governing the College’s operations. ${Preferences.get("web.url")}/Policies
+
+<% } %>
+
+<% if ( documents.size() >= 1 ) { %>
+
+    You have enrolled in a course that has notes associated. It is important that you download your notes prior to your class. The notes are in PDF format.
+    You may choose to print your notes and bring the hard copy with you or save your notes to your own electronic device.
+
+
+    Please follow this link to access your notes. ${enrolment.student.contact.getPortalLink(enrolment.courseClass)}
+    
+
+<% } %>
+
+<% enrolment.courseClass.sessions.sort{it.startDatetime}.each() { session -> %>
+    <% if (session.publicNotes) { %>
+        Notes:
+        ${session.publicNotes}
+
+    <% } %>
+<% } %>
+
+${render("Footer")}

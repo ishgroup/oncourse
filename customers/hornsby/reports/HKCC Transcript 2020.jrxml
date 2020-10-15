@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.1.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CertificateTranscriptReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="517" leftMargin="39" rightMargin="39" topMargin="43" bottomMargin="50" whenResourceMissingType="Error" uuid="8ecab58b-5ac0-4c5a-b22a-cee0bcae0b65">
+	<property name="name" value="2020 HKCC Certificate-Transcript"/>
+	<property name="entity" value="Certificate"/>
+	<property name="isSubreport" value="true"/>
+	<property name="isVisible" value="false"/>
+	<property name="keyCode" value="hkcc.onCourse.certificate.transcript"/>
+	<property name="ish.oncourse.title" value="Academic Transcript"/>
+	<property name="ish.oncourse.filePrefix" value="certificate"/>
+	<property name="ish.oncourse.description" value=" To provide students with the information retained in onCourse regarding each of their enrolments and current status of their outcomes."/>
+	<property name="ish.oncourse.pdfFileName" value="Certificate.pdf"/>
+	<import value="ish.common.types.QualificationType"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<import value="org.apache.commons.lang3.time.DateUtils"/>
+	<style name="default" isDefault="true" forecolor="#000000" vTextAlign="Bottom" markup="none" fontName="Open Sans" fontSize="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="OpenSans" pdfEncoding="Cp1252" isPdfEmbedded="true">
+		<paragraph spacingAfter="8"/>
+	</style>
+	<style name="header 1" style="default" forecolor="#4F0018" vTextAlign="Middle" fontName="Open Sans Light" fontSize="18" pdfFontName="Open Sans Light"/>
+	<style name="header 2" style="header 1" fontSize="12"/>
+	<style name="header 3" style="default" vTextAlign="Middle" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+	<style name="header 3 (right)" style="header 3" hTextAlign="Right"/>
+	<style name="Label" style="default" forecolor="#6A7E99"/>
+	<style name="Label right" style="Label" hTextAlign="Right"/>
+	<style name="data field" style="default"/>
+	<style name="data field (money)" style="data field" hTextAlign="Right" pattern="¤#,###,##0.00;¤(-#,###,##0.00)"/>
+	<style name="data field (numeric)" style="data field" hTextAlign="Right"/>
+	<style name="data field (datetime)" style="data field" pattern="d MMM yyyy h:mma"/>
+	<style name="data field (day)" style="data field" pattern="E d MMM h:mma"/>
+	<style name="data field (date)" style="data field" pattern="d MMM yyyy"/>
+	<style name="Footer" style="default" forecolor="#737373" fontSize="8"/>
+	<style name="Footer strong" style="Footer" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+	<style name="subHead box" style="default" backcolor="#E6E7F0"/>
+	<style name="crosstab" mode="Opaque" backcolor="#F7F2E9">
+		<box>
+			<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#A3A3A3"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{ROW_COUNT}.intValue() % 2 == 1 ? Boolean.TRUE : Boolean.FALSE]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FFFFFF"/>
+		</conditionalStyle>
+	</style>
+	<style name="alternateRow" mode="Opaque" forecolor="rgba(255, 255, 255, 0.0)" backcolor="#F7F2E9">
+		<box>
+			<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{PAGE_COUNT}.intValue() % 2 == 1 ? Boolean.TRUE : Boolean.FALSE]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FFFFFF"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="ReportName" class="java.lang.String"/>
+	<field name="certificate" class="ish.oncourse.server.cayenne.Certificate"/>
+	<field name="awardedOn" class="java.util.Date"/>
+	<field name="issuedOn" class="java.util.Date"/>
+	<field name="printedOn" class="java.util.Date"/>
+	<field name="qualification.title" class="java.lang.String"/>
+	<field name="pref.avetmiss.collegename" class="java.lang.String"/>
+	<field name="pref.avetmiss.address.line1" class="java.lang.String"/>
+	<field name="pref.avetmiss.address.suburb" class="java.lang.String"/>
+	<field name="pref.avetmiss.address.state" class="java.lang.String"/>
+	<field name="pref.avetmiss.address.postcode" class="java.lang.String"/>
+	<field name="pref.avetmiss.identifier" class="java.lang.String"/>
+	<field name="datasource.outcomes" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<field name="subreport.hkcc.onCourse.certificate.transcript.subreport" class="net.sf.jasperreports.engine.JasperReport"/>
+	<field name="student.studentNumber" class="java.lang.Long"/>
+	<filterExpression><![CDATA[$F{certificate}.isQualification && ![QualificationType.SKILLSET_TYPE, QualificationType.SKILLSET_LOCAL_TYPE].contains($F{certificate}.qualification.type)]]></filterExpression>
+	<pageHeader>
+		<band height="180" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-7" style="header 1" x="0" y="103" width="517" height="26" uuid="48d7faa9-3794-4613-9263-0e48f0c2afc3"/>
+				<textFieldExpression><![CDATA["Academic Transcript for " + (($F{certificate}.student.contact.firstName == $F{certificate}.student.contact.lastName) ? $F{certificate}.student.contact.lastName : $F{certificate}.student.contact.fullName)]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-7" style="header 2" x="0" y="129" width="517" height="20" uuid="6ee44421-681b-4c2c-92a7-1259557dd808">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA["Student number "+$F{student.studentNumber}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Label" x="0" y="150" width="66" height="13" uuid="a63ff761-45be-4f3d-993d-7991e3d82468"/>
+				<text><![CDATA[Awarded]]></text>
+			</staticText>
+			<textField evaluationTime="Report" pattern="d MMM yyyy" isBlankWhenNull="false">
+				<reportElement key="textField" style="data field (date)" positionType="FixRelativeToBottom" isPrintRepeatedValues="false" x="66" y="150" width="71" height="13" uuid="40509b29-4569-4155-9400-9e586025da53"/>
+				<textFieldExpression><![CDATA[$F{awardedOn}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" pattern="d MMM yyyy" isBlankWhenNull="false">
+				<reportElement key="textField" style="data field (date)" positionType="FixRelativeToBottom" isPrintRepeatedValues="false" x="230" y="150" width="71" height="13" uuid="97f364b5-2ad6-474d-bc5a-76570ceb01f1"/>
+				<textFieldExpression><![CDATA[$F{issuedOn}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Label" x="164" y="150" width="66" height="13" uuid="f61e6061-375c-4297-a2c4-e79cd6a63c97"/>
+				<text><![CDATA[Issued]]></text>
+			</staticText>
+			<textField evaluationTime="Report" pattern="d MMM yyyy" isBlankWhenNull="false">
+				<reportElement key="textField" style="data field (date)" positionType="FixRelativeToBottom" isPrintRepeatedValues="false" x="66" y="163" width="71" height="13" uuid="73baab83-b5d0-4524-b2b4-7c2c627642fb"/>
+				<textFieldExpression><![CDATA[$F{printedOn}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Label" x="0" y="163" width="66" height="13" uuid="69457b69-72c4-45ba-97bd-c24f8322ad68"/>
+				<text><![CDATA[Printed]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-2" stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" mode="Transparent" x="0" y="0" width="517" height="16" isRemoveLineWhenBlank="true" uuid="59a3faf5-a597-4aca-a97c-23e8cf98ab55"/>
+				<dataSourceExpression><![CDATA[$F{datasource.outcomes}]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$F{subreport.hkcc.onCourse.certificate.transcript.subreport}]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>

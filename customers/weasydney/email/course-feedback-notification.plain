@@ -1,0 +1,18 @@
+${render("Header")}
+
+WEA Sydney Needs Your Feedback!
+
+Dear ${enrolment.student.contact.firstName},
+
+Thank you for enrolling in the ${enrolment.courseClass.course.name} course on ${enrolment.courseClass.startDateTime.format("h:mm a EEEE d MMMM yyyy zzzz", enrolment.courseClass.getTimeZone())}. We would appreciate your feedback.
+
+Please click on the following link and fill in our evaluation form:
+https://www.weasydney.com.au/feedback
+
+All answers are anonymously recorded and will be used to improve on our services to you and other students at WEA Sydney.
+
+Thank you for your feedback and we hope to see you again soon!
+
+WEA Sydney
+
+${render("Footer")}

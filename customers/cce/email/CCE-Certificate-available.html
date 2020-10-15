@@ -1,0 +1,38 @@
+${render("Header", [title: "CCE Certificate available"])}
+
+              <!-- Title -->
+              <table width="660" border="0" cellspacing="0" cellpadding="0" class="title">
+                <tbody>
+                  <tr>
+                    <td width="30" height="36"></td>
+                    <td width="630"></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td class="title" style="color:#333333; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:20px; line-height:24px;"><strong style="color:#e64626;"> Your Course Certificate. </strong> Update your LinkedIn profile. </td>
+                  </tr>
+                  <tr>
+                    <td width="30" height="40"></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <!-- End Title -->
+
+${render("CCE-Body-Start")}
+<h1> Dear ${enrolment.student.contact.fullName},</h1>
+<p><strong> Thank you for choosing to complete ${enrolment.courseClass.course.name} with CCE. </strong></p>
+<p> Download your <a style="color: #e64626;color: #e64626 !important;background-color: #ffffff;text-decoration: none;border: 0;word-wrap: break-word;" href="${enrolment.student.getPortalLink(document, 14)}" target="_blank">Statement of Attendance and Completion</a> and remember to save it in a safe place. You can then print it off or add it to your LinkedIn profile. </p> 
+<p>If you visit this link more than 14 days after the receipt of this email, you will need to follow the login prompts to access your certificate.</p>
+<p> <strong> Add your certificate to your LinkedIn profile - you've earned it! </strong></p>
+<div><a href="https://www.linkedin.com/profile/add?startTask=Centre%20for%20Continuing%20Education" rel="nofollow" target="_blank"><img src="https://cce.sydney.edu.au/s/email/social-linkedin-button.png"></a></div>
+<ol>
+  <li>Course name: ${enrolment.courseClass.course.name}</li>
+  <li>Training organisation: Centre for Continuing Education</li>
+  <li>License number: Leave blank</li>
+  <li>Enter the course start date: ${enrolment.outcomes*.startDate.flatten().max().format("dd MMM yyyy")} and end date: ${enrolment.outcomes*.endDate.flatten().max().format("dd MMM yyyy")}</li>
+  <li>You do not need to enter a URL for your certificate.</li>
+</ol>
+<p>Kind regards, Centre for Continuing Education, the University of Sydney</p>
+${render("CCE-Body-End")}
+${render("Footer")}

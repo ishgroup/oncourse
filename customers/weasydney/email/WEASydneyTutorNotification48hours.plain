@@ -1,0 +1,21 @@
+Dear ${role.tutor.contact.fullName},
+
+Just a reminder that your class for ${courseClass.course.code} - ${courseClass.code} ${courseClass.course.name} starts on ${courseClass.startDateTime.format("dd MMMM YYYY")}
+
+You are currently expecting ${courseClass.successAndQueuedEnrolments.size()} students. Please be advised that if your class is 20 or more enrolments, you will get a class roll printed for you. If it is below, please make sure you mark the roll through the tutor portal.
+
+Please remember to bring a reusable cup for use with our tea and coffee facilities on Levels 2 and 3. From 1st January 2020, we will also stop providing water cups and ask that you bring in a water bottle instead.
+
+<% if (courseClass.startDateTime?.hours >= 17) { %>
+If your class is starting from 5:30pm onwards, you will need to input a code into the keypad to be let in as the doors will not open without one. The code for this is 2020.
+<% } %>
+
+<% if (alertStudents) { %>
+${alertStudents.size()} student/s have identified a medical condition or special need.
+<% alertStudents.each { s -> %>
+    ${s.fullName} : ${s.specialNeeds}
+<% } %>
+Please contact us if there is a specific request highlighted by the above students. If anyone has nominated that they do not have any needs, please reply to this email so we can remove these entries.
+<% } %>
+
+Please ensure you have notified Johannes (johannes.meierhofer@weasydney.nsw.edu.au) for any room equipment you need for your class.

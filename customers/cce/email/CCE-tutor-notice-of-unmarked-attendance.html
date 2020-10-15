@@ -1,0 +1,36 @@
+${render("Header", [title: "Unmarked attendance"])}
+              
+              <!-- Title -->
+              <table width="660" border="0" cellspacing="0" cellpadding="0" class="title">
+                <tbody>
+                  <tr>
+                    <td width="30" height="36"></td>
+                    <td width="630"></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td class="title" style="color:#333333; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:20px; line-height:24px;"><strong style="color:#e64626;">Unmarked Attendance.</strong> ${s.courseClass.uniqueCode}</td>
+                  </tr>
+                  <tr>
+                    <td width="30" height="40"></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <!-- End Title -->
+
+${render("CCE-Body-Start")}
+
+<h1>Dear ${tutor.firstName},</h1>
+
+<p>Please log in to your <a href="${tutor.getPortalLink(s.courseClass, 7)}">tutor portal</a>  and mark ${s.courseClass.course.name} attendance record in the next 24 hours.</p>
+
+<p>Your students cannot be issued with certificates unless attendance is marked.</p>
+
+<p>Please advise us as soon as possible if you require any assistance via info@cce.sydney.edu.au.</p>
+
+<p>Kind Regards,</p>
+<p>Centre For Continuing Education</p>
+
+${render("CCE-Body-End")}
+${render("Footer")}

@@ -1,0 +1,15 @@
+Dear ${role.tutor.contact.fullName},
+
+Just a reminder that your class for ${courseClass.course.code}-${courseClass.code} ${courseClass.course.name} starts on ${courseClass.startDateTime.format("dd MMMM YYYY")}
+
+You are currently expecting ${courseClass.successAndQueuedEnrolments.size()} students. This number may change if there are further enrolments.
+
+<% if (alertStudents) { %>
+${alertStudents.size()} student/s have identified a medical condition or special need.
+<% alertStudents.each { s -> %>
+    ${s.fullName} : ${s.specialNeeds}
+<% } %> 
+Contact the Education Manager if for any reason you will have difficulty with these requests.
+<% } %>
+
+Please send all printing and photocopying requests to printing@weasydney.nsw.edu.au

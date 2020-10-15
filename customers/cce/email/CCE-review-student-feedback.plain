@@ -1,0 +1,10 @@
+${render("Header", [title: "Review your student feedback"])}
+
+
+Hi ${contact.fullName}, 
+Please log in to the  tutor portal to view student feedback for your class, >${courseClass.course.name}
+${contact.getPortalLink(courseClass)}
+Kind regards
+Centre for Continuing Education
+
+${render("Footer")}

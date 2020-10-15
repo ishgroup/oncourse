@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CertificateTranscriptSubReport" language="groovy" pageWidth="539" pageHeight="842" columnWidth="539" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="43f1b98f-40e1-4daf-9630-b053ee1470e3">
+    <property name="name" value="2017 CCCC Certificate Transcript Subreport"/>
+    <property name="entity" value="Outcome"/>
+    <property name="isSubreport" value="true"/>
+    <property name="isVisible" value="false"/>
+    <property name="versionNumber" value="2"/>
+    <property name="keyCode" value="cccc.onCourse.certificate.transcript.subreport.2017"/>
+    <property name="ish.oncourse.title" value="Outcomes"/>
+    <property name="ish.oncourse.filePrefix" value="Outcomes"/>
+    <property name="ish.oncourse.pdfFileName" value="Outcomes.pdf"/>
+    <property name="ireport.scriptlethandling" value="0"/>
+    <property name="ireport.encoding" value="UTF-8"/>
+    <property name="ireport.zoom" value="1.0"/>
+    <property name="ireport.x" value="0"/>
+    <property name="ireport.y" value="0"/>
+    <import value="net.sf.jasperreports.engine.*"/>
+    <import value="java.util.*"/>
+    <import value="net.sf.jasperreports.engine.data.*"/>
+    <style name="default" isDefault="true" forecolor="#000000" vTextAlign="Bottom" markup="none" fontName="Open Sans" fontSize="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="OpenSans" pdfEncoding="Cp1252" isPdfEmbedded="true">
+        <paragraph spacingAfter="8"/>
+    </style>
+    <style name="header 1" style="default" forecolor="#4F0018" vTextAlign="Middle" fontName="Open Sans Light" fontSize="18" pdfFontName="Open Sans Light"/>
+    <style name="header 2" style="header 1" fontSize="12"/>
+    <style name="header 3" style="default" vTextAlign="Middle" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+    <style name="header 3 (right)" style="header 3" hTextAlign="Right"/>
+    <style name="Label" style="default" forecolor="#6A7E99"/>
+    <style name="Label right" style="Label" hTextAlign="Right"/>
+    <style name="data field" style="default"/>
+    <style name="data field (money)" style="data field" hTextAlign="Right" pattern="$#,###,##0.00;$(-#,###,##0.00)"/>
+    <style name="data field (numeric)" style="data field" hTextAlign="Right"/>
+    <style name="data field (datetime)" style="data field" pattern="d MMM yyyy h:mma"/>
+    <style name="data field (day)" style="data field" pattern="E d MMM h:mma"/>
+    <style name="data field (date)" style="data field" pattern="d MMM yyyy"/>
+    <style name="Footer" style="default" forecolor="#737373" fontSize="8"/>
+    <style name="Footer strong" style="Footer" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+    <style name="subHead box" style="default" backcolor="#E6E7F0"/>
+    <field name="outcome" class="ish.oncourse.server.cayenne.Outcome"/>
+    <background>
+        <band splitType="Stretch"/>
+    </background>
+    <title>
+        <band splitType="Stretch"/>
+    </title>
+    <pageHeader>
+        <band splitType="Stretch"/>
+    </pageHeader>
+    <columnHeader>
+        <band height="50" splitType="Stretch">
+            <staticText>
+                <reportElement style="default" x="35" y="20" width="307" height="15"/>
+                <textElement>
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Units of Competency Attained]]></text>
+            </staticText>
+            <staticText>
+                <reportElement style="default" x="346" y="20" width="147" height="15"/>
+                <textElement textAlignment="Left">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Results]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+    <detail>
+        <band height="16" splitType="Stretch">
+            <textField isBlankWhenNull="true">
+                <reportElement style="default" positionType="Float" stretchType="RelativeToTallestObject" x="35" y="0" width="77" height="15" isPrintWhenDetailOverflows="true"/>
+                <textElement verticalAlignment="Top"/>
+                <textFieldExpression><![CDATA[$F{outcome}.code]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+                <reportElement style="default" positionType="Float" stretchType="RelativeToTallestObject" x="115" y="0" width="223" height="15" isPrintWhenDetailOverflows="true"/>
+                <textElement verticalAlignment="Top"/>
+                <textFieldExpression><![CDATA[$F{outcome}.name]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true" isBlankWhenNull="true">
+                <reportElement style="default" positionType="Float" stretchType="RelativeToTallestObject" x="346" y="0" width="147" height="15" isPrintWhenDetailOverflows="true"/>
+                <textElement textAlignment="Left" verticalAlignment="Top"/>
+                <textFieldExpression><![CDATA[$F{outcome}.status?.displayName]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+    <columnFooter>
+        <band splitType="Stretch"/>
+    </columnFooter>
+    <pageFooter>
+        <band splitType="Stretch"/>
+    </pageFooter>
+    <summary>
+        <band splitType="Stretch"/>
+    </summary>
+</jasperReport>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CertificateTranscriptReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="517" leftMargin="39" rightMargin="39" topMargin="43" bottomMargin="50" whenResourceMissingType="Error" uuid="8ecab58b-5ac0-4c5a-b22a-cee0bcae0b65">
+	<property name="name" value="Certificate-Transcript"/>
+	<property name="entity" value="Certificate"/>
+	<property name="isSubreport" value="true"/>
+	<property name="isVisible" value="false"/>
+	<property name="versionNumber" value="2"/>
+	<property name="keyCode" value="ycil.onCourse.certificate.transcript"/>
+	<property name="ish.oncourse.title" value="Academic Transcript"/>
+	<property name="ish.oncourse.filePrefix" value="certificate"/>
+	<property name="ish.oncourse.description" value=" To provide students with the information retained in onCourse regarding each of their enrolments and current status of their outcomes."/>
+	<property name="ish.oncourse.pdfFileName" value="Certificate.pdf"/>
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<import value="org.apache.commons.lang3.time.DateUtils"/>
+	<import value="org.apache.commons.lang3.StringUtils"/>
+	<style name="Report_Name" isDefault="true" fontName="Arial" fontSize="18" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+	<style name="Column_Header" isDefault="true" fontName="Arial" fontSize="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+	<style name="Column_Field" isDefault="true" fontName="Arial" fontSize="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+	<style name="Footer" isDefault="true" fontName="Arial" fontSize="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+	<parameter name="ReportName" class="java.lang.String"/>
+	<field name="student.contact.firstName" class="java.lang.String"/>
+	<field name="student.contact.middleName" class="java.lang.String"/>
+	<field name="student.contact.lastName" class="java.lang.String"/>
+	<field name="qualification.title" class="java.lang.String"/>
+	<field name="qualification.nationalCode" class="java.lang.String"/>
+	<field name="qualification.level" class="java.lang.String"/>
+	<field name="datasource.outcomes" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<field name="subreport.ycil.onCourse.certificate.transcript.subreport" class="net.sf.jasperreports.engine.JasperReport"/>
+	<pageHeader>
+		<band height="400" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="c25a5b91-edd4-45e9-b49f-ae387fb99045" style="Column_Header" x="0" y="205" width="517" height="20" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="16"/>
+				</textElement>
+				<text><![CDATA[Academic Transcript]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement uuid="93084cc8-327f-47e9-b160-a0ae05f38e2d" key="textField-1" style="Column_Header" x="0" y="235" width="517" height="46" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="18" pdfFontName="Helvetica-Bold" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{student.contact.firstName} + (StringUtils.isBlank($F{student.contact.middleName}) ? "" : (" " + $F{student.contact.middleName})) + " " + $F{student.contact.lastName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="8fd03523-8a97-465c-808d-9d90a6c9e3da" key="staticText-2" style="Footer" x="0" y="285" width="517" height="16"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[has successfully complete the]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement uuid="20c2c790-dfbc-4b9a-bdeb-9fc594cccc99" key="textField-2" style="Column_Header" x="0" y="310" width="517" height="46"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="18" pdfFontName="Helvetica-Bold" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qualification.level}+" "+$F{qualification.title}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement uuid="20c2c790-dfbc-4b9a-bdeb-9fc594cccc99" key="textField-3" style="Column_Header" x="0" y="360" width="517" height="23"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qualification.nationalCode}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="7e707b10-1736-4b81-b983-6df3fe3779b4" key="line-1" style="Column_Header" positionType="FixRelativeToBottom" mode="Transparent" x="40" y="390" width="430" height="1"/>
+			</line>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<subreport isUsingCache="true">
+				<reportElement uuid="59a3faf5-a597-4aca-a97c-23e8cf98ab55" key="subreport-2" stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" mode="Transparent" x="0" y="0" width="517" height="16" isRemoveLineWhenBlank="true"/>
+				<dataSourceExpression><![CDATA[$F{datasource.outcomes}]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$F{subreport.ycil.onCourse.certificate.transcript.subreport}]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>

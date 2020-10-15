@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2017-01-20T15:16:59 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="StudentInformationOffsite" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="786" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" uuid="8bd4fd49-3a1d-40fe-8e6a-85bf93b8c8af">
+	<property name="name" value="NIDA Student Information"/>
+	<property name="entity" value="Enrolment"/>
+	<property name="isSubreport" value="false"/>
+	<property name="isVisible" value="true"/>
+	<property name="versionNumber" value="15"/>
+	<property name="keyCode" value="nida.onCourse.studentInformation"/>
+	<property name="ish.oncourse.description" value="Student special needs information including contact phone numbers. This report prints in Landscape format."/>
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ish.oncourse.reports.isObjectOnSeparatePage" value="false"/>
+	<property name="ireport.zoom" value="2.357947691000002"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="Report_Name" isDefault="true" fontName="Arial" fontSize="18" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+	<style name="Column_Header" isDefault="true" fontName="Arial" fontSize="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+	<style name="Column_Field" isDefault="true" fontName="Arial" fontSize="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+	<style name="Footer" fontName="Arial" fontSize="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+	<parameter name="ReportName" class="java.lang.String"/>
+	<field name="enrolment" class="ish.oncourse.server.cayenne.Enrolment"/>
+	<field name="courseClass.uniqueCode" class="java.lang.String"/>
+	<field name="courseClass.course.name" class="java.lang.String"/>
+	<field name="image.poweredby" class="java.io.InputStream"/>
+	<field name="courseClass.room.name" class="java.lang.String"/>
+	<field name="courseClass.room.site.name" class="java.lang.String"/>
+	<field name="courseClass.tutorNames" class="java.util.List"/>
+	<field name="student.contact.name" class="java.lang.String"/>
+	<field name="student.specialNeeds" class="java.lang.String"/>
+	<field name="student.contact.isMale" class="java.lang.Boolean"/>
+	<field name="student.contact.email" class="java.lang.String"/>
+	<field name="student.contact.phones" class="java.lang.String"/>
+	<field name="student.contact.age" class="java.lang.String"/>
+	<field name="subreport.nida.onCourse.classRollTutors" class="net.sf.jasperreports.engine.JasperReport"/>
+	<field name="datasource.courseClass.tutorRoles" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<sortField name="courseClass.uniqueCode"/>
+	<sortField name="student.contact.name"/>
+	<variable name="subRep" class="java.lang.String"/>
+	<variable name="tutorNumber" class="java.math.BigDecimal"/>
+	<variable name="totalMales" class="java.lang.Integer" resetType="Group" resetGroup="cclass" incrementType="Group" incrementGroup="student" calculation="Sum">
+		<variableExpression><![CDATA[Boolean.TRUE.equals($F{student.contact.isMale}) ? 1 : 0]]></variableExpression>
+	</variable>
+	<variable name="totalFemales" class="java.lang.Integer" resetType="Group" resetGroup="cclass" incrementType="Group" incrementGroup="student" calculation="Sum">
+		<variableExpression><![CDATA[Boolean.FALSE.equals($F{student.contact.isMale}) ? 1 : 0]]></variableExpression>
+	</variable>
+	<variable name="studentsWithoutSex" class="java.lang.Integer" resetType="Group" resetGroup="cclass" incrementType="Group" incrementGroup="student" calculation="Sum">
+		<variableExpression><![CDATA[$F{student.contact.isMale} != null ? 0 : 1]]></variableExpression>
+	</variable>
+	<group name="cclass" isStartNewPage="true" footerPosition="StackAtBottom">
+		<groupExpression><![CDATA[$F{courseClass.uniqueCode}]]></groupExpression>
+		<groupHeader>
+			<band height="150">
+				<line>
+					<reportElement key="line-2" x="0" y="148" width="786" height="1" uuid="9648c039-514d-4810-bf57-0551a2bc4993"/>
+					<graphicElement fill="Solid">
+						<pen lineWidth="0.25" lineStyle="Solid"/>
+					</graphicElement>
+				</line>
+				<staticText>
+					<reportElement key="staticText-1" style="Column_Header" x="0" y="133" width="165" height="15" uuid="baaab4e8-0f9b-472b-904e-9e37f1bddbd1"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[Name]]></text>
+				</staticText>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-2" style="Report_Name" x="0" y="0" width="786" height="26" uuid="7568690c-5f6b-4999-a17c-f9cb98fd4684"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{courseClass.course.name}+" ("+$F{courseClass.uniqueCode}+")"]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-1" style="Column_Header" x="0" y="29" width="91" height="15" uuid="e8cd238a-5b73-4eea-9e4b-1907b20cc7eb"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[Location]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-16" style="Column_Field" x="100" y="29" width="686" height="15" uuid="0c083f79-78b0-48b8-a337-7611fcd8cbe8"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textFieldExpression><![CDATA[$F{courseClass.room.site.name}]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEEE dd MMMMM yyyy h:mm a" isBlankWhenNull="true">
+					<reportElement key="textField-17" style="Column_Field" x="100" y="49" width="238" height="15" uuid="8f7b54d2-f919-4cb9-9daa-8907a7a7abeb"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textFieldExpression><![CDATA[$F{enrolment}.courseClass?.startDateTime?.format("d MMM yyyy h:mma", $F{enrolment}.courseClass?.timeZone)]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-2" style="Column_Header" x="0" y="49" width="91" height="15" uuid="1bedaba2-f29d-4522-bceb-85b9cfd1df19"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[Start date]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-2" style="Column_Header" x="264" y="133" width="50" height="15" uuid="3c32e879-9f36-426f-8461-3bff830fbe2d"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[Sex]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-3" style="Column_Header" x="314" y="133" width="215" height="15" uuid="60441550-8869-4f39-b2a6-9febb45e3e1d"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[Special need or disability]]></text>
+				</staticText>
+				<textField pattern="EEEEEE dd MMMMM yyyy h:mm a" isBlankWhenNull="true">
+					<reportElement key="textField-17" style="Column_Field" x="430" y="49" width="330" height="15" uuid="6e478802-3386-4c2c-843b-d6fac668d357"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textFieldExpression><![CDATA[$F{enrolment}.courseClass?.endDateTime?.format("d MMM yyyy h:mma", $F{enrolment}.courseClass?.timeZone)]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-2" style="Column_Header" x="339" y="49" width="91" height="15" uuid="7a779b66-916c-41b9-b53e-e649b980e30b"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[End date]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-2" style="Column_Header" x="175" y="133" width="89" height="15" uuid="88fd51fa-77cd-4c79-861d-ce7eda0bd415"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[Age]]></text>
+				</staticText>
+				<subreport isUsingCache="true">
+					<reportElement key="subreport" style="Footer" x="100" y="72" width="659" height="30" uuid="88d132ff-5bcb-4a74-8232-c3db100e5556"/>
+					<dataSourceExpression><![CDATA[$F{datasource.courseClass.tutorRoles}]]></dataSourceExpression>
+					<returnValue subreportVariable="tutorNumber" toVariable="tutorNumber"/>
+					<subreportExpression><![CDATA[$F{subreport.nida.onCourse.classRollTutors}]]></subreportExpression>
+				</subreport>
+				<staticText>
+					<reportElement key="staticText-2" style="Column_Header" x="0" y="70" width="91" height="15" uuid="be588c6b-5f3c-443f-8e7a-953e254c10fd"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[Tutor]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="74">
+				<staticText>
+					<reportElement key="staticText-17" style="Column_Header" positionType="FixRelativeToBottom" x="10" y="40" width="124" height="15" uuid="6c2c107e-1ec4-457e-897e-0348a9e10076"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font isBold="false" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[Total number of students:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-2" positionType="FixRelativeToBottom" x="145" y="25" width="51" height="15" uuid="a4d975bc-455a-4b23-9ea9-8de863ff4f6a"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font size="10" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{totalFemales}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-17" style="Column_Header" positionType="FixRelativeToBottom" x="10" y="25" width="124" height="15" uuid="cd1c0c47-f5ec-4dba-8864-6290691e4d8d"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font isBold="false" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[Total number of females:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-2" positionType="FixRelativeToBottom" x="145" y="40" width="51" height="15" uuid="33decbb8-9fce-4b13-9d4a-b24f35bad0d5"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font size="10" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{studentsWithoutSex}+$V{totalFemales}+$V{totalMales}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-2" positionType="FixRelativeToBottom" x="145" y="10" width="51" height="15" uuid="08d7be2e-215a-42f3-8328-7fde79a76d10"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font size="10" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{totalMales}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-17" style="Column_Header" positionType="FixRelativeToBottom" x="10" y="10" width="124" height="15" uuid="afd92cbf-75fa-43c5-9172-689850202f37"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font isBold="false" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[Total number of males:]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="student">
+		<groupExpression><![CDATA[$F{student.contact.name}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="115" splitType="Stretch"/>
+	</title>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-2" style="Column_Field" x="0" y="0" width="165" height="15" uuid="eba9cb14-015d-4050-b6bd-64d2aa36aaab"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{student.contact.name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-10" style="Column_Field" x="314" y="0" width="322" height="15" uuid="842c778f-e223-4c6e-812a-becc58eeb795"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[(($F{student.specialNeeds} != null)? ($F{student.specialNeeds}):"")
+                     + (($F{enrolment}.student?.disabilityType?.displayName != null && !"none".equals($F{enrolment}.student?.disabilityType?.displayName) && !"not stated".equals($F{enrolment}.student?.disabilityType?.displayName))?
+                    ((($F{student.specialNeeds} != null && $F{student.specialNeeds}.length() > 0)?", ":"") + $F{enrolment}.student?.disabilityType?.displayName):"")]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-9" style="Column_Field" x="264" y="0" width="50" height="15" uuid="ea75924f-b121-4ac0-ba66-7acb9695386b"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[Boolean.TRUE.equals($F{student.contact.isMale})?"Male":Boolean.FALSE.equals($F{student.contact.isMale})?"Female":"Not set"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-2" style="Column_Field" x="175" y="0" width="89" height="15" uuid="90b393c7-8640-4336-922b-23cf0294bc0d">
+					<printWhenExpression><![CDATA[$F{enrolment}.student.contact.birthDate != null]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[(java.time.temporal.ChronoUnit.MONTHS.between($F{enrolment}.student.contact.birthDate, java.time.LocalDate.now())/12f).round(1)]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="27" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField-6" style="Footer" x="0" y="12" width="35" height="15" uuid="44c2486d-d421-4d0b-bbb3-dc64fa7811c9"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA["Page " + String.valueOf($V{PAGE_NUMBER}) + " of"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" evaluationTime="Report" isBlankWhenNull="false">
+				<reportElement key="textField-7" style="Footer" x="36" y="12" width="24" height="15" uuid="99989028-86a5-47d8-9520-ad4171728619"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[" " + String.valueOf($V{PAGE_NUMBER})]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" pattern="dd/MM/yyyy h.mm a" isBlankWhenNull="false">
+				<reportElement key="textField-15" style="Footer" positionType="FixRelativeToBottom" x="0" y="0" width="160" height="12" uuid="c500dcdd-ae2e-4b4f-8c06-48d20ade5ae6"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<image scaleImage="RetainShape" hAlign="Right" isUsingCache="true">
+				<reportElement key="image-1" style="Footer" x="719" y="20" width="67" height="7" uuid="2863530e-11e5-4c1e-8296-ae64db1a9926"/>
+				<imageExpression><![CDATA[$F{image.poweredby}]]></imageExpression>
+			</image>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,749 @@
+${render("Header", [title: "Tax Invoice"])}
+
+<!-- Invoice Details -->
+<table width="660" border="0" cellspacing="0" cellpadding="0" class="title">
+    <tbody>
+    <tr>
+        <td width="30" height="36"></td>
+        <td width="300"></td>
+        <td width="300"></td>
+        <td width="30" height="36"></td>
+    </tr>
+    <tr valign="top">
+        <td></td>
+        <td class="bill-to">
+            <table width="300" border="0" cellspacing="0" cellpadding="0">
+                <tbody>
+                <tr>
+                    <td valign="top" height="34" style="color:#333333; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:18px; line-height:24px;"><strong style="color:#e64626; font-size:20px;">
+                        <% if (invoice.totalIncTax.toBigDecimal() >= 0) { %>
+                        Tax Invoice
+                        <% } else { %>
+                        Credit Note
+                        <% } %>
+                        for</strong></td>
+                </tr>
+                <tr>
+                    <td valign="top" style="color:#333333; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:18px; line-height:22px;">${invoice.contact.fullName}<br>
+                        ${ContactService.getAddress(invoice.contact)}</td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="invoice-number" align="right">
+            <table width="300" border="0" cellspacing="0" cellpadding="0">
+                <tbody>
+                <tr>
+                    <td valign="top" align="right" style="color:#e64626; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; line-height:18px;"><strong>
+                        <% if (invoice.totalIncTax.toBigDecimal() >= 0) { %>
+                        Invoice
+                        <% } else { %>
+                        Credit Note
+                        <% } %>
+                        Number</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" height="60" style="color:#333333; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:30px; line-height:36px;">${invoice.invoiceNumber}</td>
+                </tr>
+                <tr>
+                    <td valign="top" align="right" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; line-height:22px;">Issued ${invoice.createdOn.format("EEEE d MMMM yyyy")}<br>
+                        Due ${invoice.dateDue.format("EEEE d MMMM yyyy")}<br>
+                        <% if (invoice.customerReference) { %>
+                        ${invoice.customerReference}
+                        <% } %>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td width="30" height="40"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>
+<!-- End Invoice Details -->
+
+<!-- Invoice Title -->
+<table width="660" border="0" cellspacing="0" cellpadding="0">
+    <tbody>
+    <tr>
+        <td height="47">
+            <table width="660" border="0" cellspacing="0" cellpadding="0">
+                <tbody>
+                <tr valign="top">
+                    <td width="30" height="47"></td>
+                    <td width="630" style="color:#e64626; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:30px; line-height:34px; margin:0;">
+                        <% if (invoice.totalIncTax.toBigDecimal() >= 0) { %>
+                        Tax Invoice
+                        <% } else { %>
+                        Credit Note
+                        <% } %>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </td>
+    </tr>
+    <tr>
+        <td height="10"></td>
+    </tr>
+    </tbody>
+</table>
+<!-- End Invoice Title -->
+
+<!-- Invoice Table -->
+<table width="660" border="0" cellpadding="0" class="data-table" cellspacing="0" bgcolor="#ffffff">
+    <tbody>
+    <!-- Header -->
+    <tr bgcolor="#e2e2e2">
+        <td width="20" height="10"></td>
+        <td width="224"></td>
+        <td width="20"></td>
+        <td width="1" bgcolor="#f3f3f3"></td>
+        <td width="39"></td>
+        <td width="14"></td>
+        <td width="1" bgcolor="#f3f3f3"></td>
+        <td width="66"></td>
+        <td width="14"></td>
+        <td width="1" bgcolor="#f3f3f3"></td>
+        <td width="82"></td>
+        <td width="14"></td>
+        <td width="1" bgcolor="#f3f3f3"></td>
+        <td width="61"></td>
+        <td width="14"></td>
+        <td width="1" bgcolor="#f3f3f3"></td>
+        <td width="67"></td>
+        <td width="20"></td>
+    </tr>
+    <tr valign="top" bgcolor="#e2e2e2">
+        <td></td>
+        <td class="data-table-header" style="color:#252a2e; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:13px; font-weight:bold; line-height:18px;">INCOME</td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td align="right" class="data-table-header" style="color:#252a2e; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:13px; font-weight:bold; line-height:18px;">QTY</td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td align="right" class="data-table-header" style="color:#252a2e; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:13px; font-weight:bold; line-height:18px;">EACH</td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td align="right" class="data-table-header" style="color:#252a2e; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:13px; font-weight:bold; line-height:18px;">DISCOUNT</td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td align="right" class="data-table-header" style="color:#252a2e; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:13px; font-weight:bold; line-height:18px;">TAX</td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td align="right" class="data-table-header" style="color:#252a2e; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:13px; font-weight:bold; line-height:18px;">TOTAL</td>
+        <td></td>
+    </tr>
+    <tr bgcolor="#e2e2e2">
+        <td height="10"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <!-- End Header -->
+
+    <% invoice.invoiceLines.each { invoiceLine -> %>
+    <!-- Row -->
+    <tr bgcolor="#ffffff">
+        <td height="10"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr valign="top" bgcolor="#ffffff">
+        <td></td>
+        <td class="data-table-desc" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; line-height:22px;">${invoiceLine.title} <br> ${invoiceLine.description}</td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td align="right" class="data-table-header" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; line-height:22px;">${invoiceLine.quantity}</td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td align="right" class="data-table-header" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; line-height:22px;">${invoiceLine.priceEachExTax}</td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td align="right" class="data-table-header" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; line-height:22px;">${invoiceLine.discountEachExTax}</td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td align="right" class="data-table-header" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; line-height:22px;"><span class="data-table-header" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; line-height:22px;"></span>${invoiceLine.taxEach}</td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td align="right" class="data-table-header" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; line-height:22px;">${invoiceLine.discountedPriceTotalIncTax}</td>
+        <td></td>
+    </tr>
+    <tr bgcolor="#ffffff">
+        <td height="10"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr bgcolor="#f3f3f3">
+        <td height="1"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <!-- End Row -->
+    <% } %>
+
+
+    <!-- Row -->
+    <tr bgcolor="#ffffff">
+        <td height="10"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr valign="top" bgcolor="#ffffff">
+        <td></td>
+        <td class="data-table-desc" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; line-height:22px;">TOTAL</td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td align="right" class="data-table-header" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; line-height:22px;"></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td align="right" class="data-table-header" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; line-height:22px;"></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td align="right" class="data-table-header" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; line-height:22px;"></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td align="right" class="data-table-header" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; line-height:22px;"><span class="data-table-header" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; line-height:22px;"></span>${invoice.totalTax}</td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td align="right" class="data-table-header" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; line-height:22px;">${invoice.totalIncTax}</td>
+        <td></td>
+    </tr>
+    <tr bgcolor="#ffffff">
+        <td height="10"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr bgcolor="#f3f3f3">
+        <td height="1"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <!-- End Row -->
+
+
+    <!-- Row -->
+    <tr bgcolor="#ffffff">
+        <td height="10"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr valign="top" bgcolor="#ffffff">
+        <td></td>
+        <td class="data-table-desc" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; line-height:22px;">LESS AMOUNT PAID</td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td align="right" class="data-table-header" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; line-height:22px;"></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td align="right" class="data-table-header" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; line-height:22px;"></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td align="right" class="data-table-header" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; line-height:22px;"></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td align="right" class="data-table-header" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; line-height:22px;"></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td align="right" class="data-table-header" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; line-height:22px;">${invoice.totalIncTax.subtract(invoice.amountOwing)}</td>
+        <td></td>
+    </tr>
+    <tr bgcolor="#ffffff">
+        <td height="10"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr bgcolor="#f3f3f3">
+        <td height="1"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <!-- End Row -->
+    <!-- Row -->
+    <tr bgcolor="#ffffff">
+        <td height="10"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr valign="top" bgcolor="#ffffff">
+        <td></td>
+        <td class="data-table-desc" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; line-height:22px;">TOTAL OWING</td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td align="right" class="data-table-header" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; line-height:22px;"></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td align="right" class="data-table-header" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; line-height:22px;"></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td align="right" class="data-table-header" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; line-height:22px;"></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td align="right" class="data-table-header" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; line-height:22px;"></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td align="right" class="data-table-header" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; line-height:22px;">${invoice.amountOwing}</td>
+        <td></td>
+    </tr>
+    <tr bgcolor="#ffffff">
+        <td height="10"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr bgcolor="#f3f3f3">
+        <td height="1"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <!-- End Row -->
+
+
+    <!-- Spacer -->
+    <tr bgcolor="#f3f3f3">
+        <td height="25"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <!-- End Spacer -->
+    </tbody>
+</table>
+<!-- End Invoice Table -->
+
+
+<% if (invoice.invoiceDueDates.size() > 0) { %>
+<!-- Payment Plan Title -->
+<table width="660" border="0" cellspacing="0" cellpadding="0">
+    <tbody>
+    <tr>
+        <td height="47">
+            <table width="660" border="0" cellspacing="0" cellpadding="0">
+                <tbody>
+                <tr valign="top">
+                    <td width="30" height="47"></td>
+                    <td width="630" style="color:#e64626; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:30px; line-height:34px; margin:0;">
+                        Payment Plan
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </td>
+    </tr>
+    <tr>
+        <td height="10"></td>
+    </tr>
+    </tbody>
+</table>
+<!-- End Payment Plan Title -->
+
+<!-- Payment Plan Table -->
+<table width="660" border="0" cellpadding="0" class="data-table" cellspacing="0" bgcolor="#ffffff">
+    <tbody>
+    <!-- Header -->
+    <tr bgcolor="#e2e2e2">
+        <td width="20" height="10"></td>
+        <td width="300"></td>
+        <td width="20"></td>
+        <td width="1" bgcolor="#f3f3f3"></td>
+        <td width="305"></td>
+        <td width="14"></td>
+    </tr>
+    <tr valign="top" bgcolor="#e2e2e2">
+        <td></td>
+        <td class="data-table-header" style="color:#252a2e; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:13px; font-weight:bold; line-height:18px;">PAYMENT DUE DATE</td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td align="right" class="data-table-header" style="color:#252a2e; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:13px; font-weight:bold; line-height:18px;">AMOUNT PAYABLE</td>
+        <td></td>
+    </tr>
+    <tr bgcolor="#e2e2e2">
+        <td height="10"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <!-- End Header -->
+
+    <% invoice.invoiceLines.each { invoiceLine -> %>
+    <!-- Row -->
+    <tr bgcolor="#ffffff">
+        <td height="10"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr valign="top" bgcolor="#ffffff">
+        <td></td>
+        <td class="data-table-desc" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; line-height:22px;">
+            <% invoice.invoiceDueDates.sort{ it.dueDate }.each { invoiceDueDate -> %>
+            ${invoiceDueDate.dueDate.format("d MMMM yyyy")}<br />
+            <% } %>
+        </td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td align="right" class="data-table-header" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; line-height:22px;">
+            <% invoice.invoiceDueDates.sort{ it.dueDate }.each { invoiceDueDate -> %>
+            ${invoiceDueDate.amount}<br />
+            <% } %>
+        </td>
+        <td></td>
+    </tr>
+    <tr bgcolor="#ffffff">
+        <td height="10"></td>
+        <td></td>
+        <td></td>
+        <td bgcolor="#f3f3f3"></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr bgcolor="#f3f3f3">
+        <td height="1"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <!-- End Row -->
+    <% } %>
+
+
+    <!-- Spacer -->
+    <tr bgcolor="#f3f3f3">
+        <td height="25"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <!-- End Spacer -->
+    </tbody>
+</table>
+<!-- End Payment Plan Table -->
+<% } %>
+
+<!-- Heading -->
+<% if (invoice.totalIncTax.toBigDecimal() >= 0) { %>
+<table width="660" border="0" cellspacing="0" cellpadding="0">
+    <tbody>
+    <tr>
+        <td width="30" height="17"></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td class="title" style="color:#333333; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:20px; line-height:24px;" align="center">Terms & Conditions </td>
+    </tr>
+    <tr>
+        <td width="30" height="42"></td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>
+<% } else { %>
+
+<% } %>
+<!-- End Heading -->
+
+<!-- Note -->
+<% if (invoice.totalIncTax.toBigDecimal() >= 0) { %>
+<table width="660" border="0" cellspacing="0" cellpadding="0">
+    <tbody>
+    <tr>
+        <td height="1" bgcolor="#e7e7e7"></td>
+    </tr>
+    <tr>
+        <td height="10"></td>
+    </tr>
+    <tr>
+        <td>
+            <table width="660" border="0" cellspacing="0" cellpadding="0">
+                <tbody>
+                <tr>
+                    <td width="30"></td>
+
+
+
+
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <table style="border: 0; border-top: 1px solid #e9e9e9; border-bottom: 1px solid #e9e9e9;" border="0" width="100%">
+                <thead>
+                <tr>
+                    <td class="ish_enrol_conf_row left" style="border: 0; border-collapse: collapse; background-color: #fff; color: #000000  !important; font-weight: normal !important; font-size: 13px !important; vertical-align: top; width: 63% !important; padding: 17px 20px 17px 20px;" align="left" valign="top" width="63%">Our full terms and conditions and your agreement with us are available at <a href="https://cce.sydney.edu.au/legal">https://cce.sydney.edu.au/legal</a>. Some of the important terms are set out below but you should always consult the full terms and conditions.</td>
+                </tr>
+                <tr><th class="ish_enrol_conf_header left" style="border: 0; border-collapse: collapse; background-color: #e9e9e9; color: #464646 !important; font-weight: normal !important; padding: 12px 20px 12px 20px;" align="left" width="61%"><strong>Cancellation by us</strong></th></tr>
+                </thead>
+                <tbody class="ish_enrol_conf_content">
+                <tr>
+                    <td class="ish_enrol_conf_row left" style="border: 0; border-collapse: collapse; background-color: #fff; color: #000000  !important; font-weight: normal !important; font-size: 13px !important; vertical-align: top; width: 63% !important; padding: 17px 20px 17px 20px;" align="left" valign="top" width="63%">At any time after we have accepted your enrolment application or order for products or services, we may cancel your enrolment, your order or the relevant course, for any reason. If we cancel, we will endeavour to notify you as soon as practicable. You agree that our liability to you as a result of our cancellation by us is capped at the amount paid by you to us in respect of the cancelled course, product or service.</td>
+                </tr>
+                <tr><th class="ish_enrol_conf_header left" style="border: 0; border-collapse: collapse; background-color: #e9e9e9; color: #464646 !important; font-weight: normal !important; padding: 12px 20px 12px 20px;" align="left" width="61%"><strong>Cancellation of enrolment or order by you</strong></th></tr>
+                <tr>
+                    <td class="ish_enrol_conf_row left" style="border: 0; border-collapse: collapse; background-color: #fff; color: #000000  !important; font-weight: normal !important; font-size: 13px !important; vertical-align: top; width: 63% !important; padding: 17px 20px 17px 20px;" align="left" valign="top" width="63%">A minimum of 5 full business days prior to the commencement of your course is required to cancel or reschedule your booked course to receive a credit note. We will withhold an administrative charge of not less than AUD 50.00 from the amount of the credit value. If you cancel for any reason with less than 5 business days prior to the commencement of your course, there will be no refund or credit note. If you cancel your enrolment or order within 24 hours of your purchase, we will refund the fees in full.</td>
+                </tr>
+                <tr><th class="ish_enrol_conf_header left" style="border: 0; border-collapse: collapse; background-color: #e9e9e9; color: #464646 !important; font-weight: normal !important; padding: 12px 20px 12px 20px;" align="left" width="61%"><strong>Failure to attend a course</strong></th></tr>
+                <tr>
+                    <td class="ish_enrol_conf_row left" style="border: 0; border-collapse: collapse; background-color: #fff; color: #000000  !important; font-weight: normal !important; font-size: 13px !important; vertical-align: top; width: 63% !important; padding: 17px 20px 17px 20px;" align="left" valign="top" width="63%">If you fail to attend your scheduled class, the course fee is not refundable nor will a credit note be provided. If you fail to attend your scheduled class due to illness and provide a medical certificate within 24 hours, we can reschedule it and you will incur a rescheduling fee of 50% of the full fee for that course. Student code of conduct please refer to <a href="http://sydney.edu.au/policies/showdoc.aspx">http://sydney.edu.au/policies/showdoc.aspx</a></td>
+                </tr>
+                <% if(invoice.contact.customField('uniInternalTransferAccount')) { %>
+                <tr><th class="ish_enrol_conf_header left" style="border: 0; border-collapse: collapse; background-color: #e9e9e9; color: #464646 !important; font-weight: normal !important; padding: 12px 20px 12px 20px;" align="left" width="61%"><strong>Internal Transfer</strong></th></tr>
+                <tr>
+                    <td class="ish_enrol_conf_row left" style="border: 0; border-collapse: collapse; background-color: #fff; color: #000000  !important; font-weight: normal !important; font-size: 13px !important; vertical-align: top; width: 63% !important; padding: 17px 20px 17px 20px;" align="left" valign="top" width="63%"> You are able to pay this invoice by contacting CCE and authorising a Sydney University Journal transfer from your account. Please contact operations@cce.sydney.edu.au with your details. </td>
+                </tr>
+                <% } %>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td height="10"></td>
+    </tr>
+    <tr>
+        <td height="1" bgcolor="#e7e7e7"></td>
+    </tr>
+    </tbody>
+</table>
+<% } else { %>
+
+<% } %>
+<!-- End Note -->
+
+${render("Footer")}

@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CertificateQualificationReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" whenResourceMissingType="Empty" uuid="2fd4d775-3611-4fe6-8c74-bc35c0f9f2a3">
+    <property name="name" value="2017 CCCC Certificate Qualification"/>
+    <property name="entity" value="Certificate"/>
+    <property name="isSubreport" value="false"/>
+    <property name="isVisible" value="true"/>
+    <property name="versionNumber" value="4"/>
+    <property name="keyCode" value="cccc.onCourse.certificate.qualification.2017"/>
+    <property name="ish.oncourse.title" value="Qualification"/>
+    <property name="ish.oncourse.filePrefix" value="qualification"/>
+    <property name="ish.oncourse.description" value="onCourse includes AQF recommended templates for full Qualification Certificates, Statements of Attainment and transcripts. Certificates can only be generated from units that are recorded as part of onCourse enrolments.This report prints in Portrait format."/>
+    <property name="ish.oncourse.pdfFileName" value="Qualification.pdf"/>
+    <property name="ireport.scriptlethandling" value="0"/>
+    <property name="ireport.encoding" value="UTF-8"/>
+    <property name="ireport.zoom" value="1.4641000000000015"/>
+    <property name="ireport.x" value="134"/>
+    <property name="ireport.y" value="752"/>
+    <property name="ish.oncourse.reports.following" value="cccc.onCourse.certificate.attainment.2017;cccc.onCourse.certificate.transcript.2017"/>
+    <import value="net.sf.jasperreports.engine.*"/>
+    <import value="java.util.*"/>
+    <import value="org.apache.commons.lang.time.DateUtils"/>
+    <import value="net.sf.jasperreports.engine.data.*"/>
+    <import value="org.apache.commons.lang3.StringUtils"/>
+    <style name="default" isDefault="true" forecolor="#000000" vTextAlign="Bottom" markup="none" fontName="Open Sans" fontSize="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="OpenSans" pdfEncoding="Cp1252" isPdfEmbedded="true">
+        <paragraph spacingAfter="8"/>
+    </style>
+    <style name="header 1" style="default" forecolor="#4F0018" vTextAlign="Middle" fontName="Open Sans Light" fontSize="18" pdfFontName="Open Sans Light"/>
+    <style name="header 2" style="header 1" fontSize="12"/>
+    <style name="header 3" style="default" vTextAlign="Middle" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+    <style name="header 3 (right)" style="header 3" hTextAlign="Right"/>
+    <style name="Label" style="default" forecolor="#6A7E99"/>
+    <style name="Label right" style="Label" hTextAlign="Right"/>
+    <style name="data field" style="default"/>
+    <style name="data field (money)" style="data field" hTextAlign="Right" pattern="$#,###,##0.00;$(-#,###,##0.00)"/>
+    <style name="data field (numeric)" style="data field" hTextAlign="Right"/>
+    <style name="data field (datetime)" style="data field" pattern="d MMM yyyy h:mma"/>
+    <style name="data field (day)" style="data field" pattern="E d MMM h:mma"/>
+    <style name="data field (date)" style="data field" pattern="d MMM yyyy"/>
+    <style name="Footer" style="default" forecolor="#737373" fontSize="8"/>
+    <style name="Footer strong" style="Footer" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+    <style name="subHead box" style="default" backcolor="#E6E7F0"/>
+    <parameter name="ReportName" class="java.lang.String"/>
+    <field name="certificate" class="ish.oncourse.server.cayenne.Certificate"/>
+    <field name="pref.avetmiss.certificate.signatory.name" class="java.lang.String"/>
+    <field name="image.logo-nrt" class="java.io.InputStream"/>
+    <field name="image.signatureToPrint" class="java.io.InputStream"/>
+    <filterExpression><![CDATA[$F{certificate}.completeQualification]]></filterExpression>
+    <background>
+        <band splitType="Stretch"/>
+    </background>
+    <title>
+        <band splitType="Stretch"/>
+    </title>
+    <pageHeader>
+        <band height="422" splitType="Prevent">
+            <staticText>
+                <reportElement style="header 3" x="0" y="172" width="539" height="30"/>
+                <textElement textAlignment="Center">
+                    <font size="18"/>
+                </textElement>
+                <text><![CDATA[This is to certify that]]></text>
+            </staticText>
+            <textField isBlankWhenNull="false">
+                <reportElement style="header 3" x="0" y="222" width="539" height="60"/>
+                <textElement textAlignment="Center">
+                    <font size="30" isBold="true" isItalic="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{certificate}.student.contact.getName(true)]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement style="header 3" x="0" y="297" width="539" height="30"/>
+                <textElement textAlignment="Center">
+                    <font size="18"/>
+                </textElement>
+                <text><![CDATA[has fulfilled the requirements for]]></text>
+            </staticText>
+            <textField isBlankWhenNull="false">
+                <reportElement style="header 3" x="0" y="337" width="539" height="85"/>
+                <textElement textAlignment="Center">
+                    <font size="24" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{certificate}.qualification.nationalCode + " " + $F{certificate}.qualification.level + " " + $F{certificate}.qualification.title ]]></textFieldExpression>
+            </textField>
+        </band>
+    </pageHeader>
+    <columnHeader>
+        <band splitType="Stretch"/>
+    </columnHeader>
+    <detail>
+        <band splitType="Stretch"/>
+    </detail>
+    <columnFooter>
+        <band splitType="Stretch"/>
+    </columnFooter>
+    <pageFooter>
+        <band height="290" splitType="Stretch">
+            <image isUsingCache="true">
+                <reportElement x="45" y="50" width="185" height="45"/>
+                <imageExpression><![CDATA[$F{image.signatureToPrint}]]></imageExpression>
+            </image>
+            <line>
+                <reportElement x="30" y="95" width="185" height="1"/>
+                <graphicElement>
+                    <pen lineWidth="0.5"/>
+                </graphicElement>
+            </line>
+            <textField>
+                <reportElement style="default" x="30" y="92" width="185" height="20"/>
+                <textElement textAlignment="Center">
+                    <font size="12"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{pref.avetmiss.certificate.signatory.name}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement style="default" x="30" y="110" width="185" height="20"/>
+                <textElement textAlignment="Center">
+                    <font size="12" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Chief Executive Officer]]></text>
+            </staticText>
+            <staticText>
+                <reportElement style="default" x="30" y="125" width="185" height="20"/>
+                <textElement textAlignment="Center">
+                    <font size="10"/>
+                </textElement>
+                <text><![CDATA[RTO: 90304]]></text>
+            </staticText>
+            <image isUsingCache="true">
+                <reportElement x="360" y="10" width="120" height="77"/>
+                <imageExpression><![CDATA[$F{image.logo-nrt}]]></imageExpression>
+            </image>
+            <staticText>
+                <reportElement style="default" x="315" y="95" width="110" height="15"/>
+                <textElement textAlignment="Left">
+                    <font size="10"/>
+                </textElement>
+                <text><![CDATA[Student number:]]></text>
+            </staticText>
+            <textField isBlankWhenNull="true">
+                <reportElement style="default" x="415" y="95" width="50" height="15"/>
+                <textElement textAlignment="Left">
+                    <font size="10"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{certificate}.student.studentNumber]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement style="default" x="315" y="110" width="110" height="15"/>
+                <textElement textAlignment="Left">
+                    <font size="10"/>
+                </textElement>
+                <text><![CDATA[Certificate number:]]></text>
+            </staticText>
+            <textField isBlankWhenNull="true">
+                <reportElement style="default" x="415" y="110" width="50" height="15"/>
+                <textElement textAlignment="Left">
+                    <font size="10"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{certificate}.certificateNumber]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement style="default" x="315" y="125" width="110" height="15"/>
+                <textElement textAlignment="Left">
+                    <font size="10"/>
+                </textElement>
+                <text><![CDATA[Date of issue:]]></text>
+            </staticText>
+            <textField isBlankWhenNull="true" pattern="dd MMM yyyy">
+                <reportElement style="default" x="415" y="125" width="100" height="15"/>
+                <textElement textAlignment="Left">
+                    <font size="10"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{certificate}.awardedOn]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement style="default" x="0" y="180" width="539" height="15">
+                <printWhenExpression><![CDATA[$F{certificate}.certificateOutcomes[0]?.outcome.enrolment.courseClass.course.isTraineeship]]></printWhenExpression>
+                </reportElement>
+                <textElement textAlignment="Center">
+                    <font isItalic="true"/>
+                </textElement>
+                <text><![CDATA[Achieved through Australian Apprenticeship arrangements]]></text>
+            </staticText>
+            <staticText>
+                <reportElement style="default" x="0" y="205" width="539" height="15"/>
+                <textElement textAlignment="Center">
+                    <font isItalic="true"/>
+                </textElement>
+                <text><![CDATA[The qualification is recognised within the Australian Qualifications Framework]]></text>
+            </staticText>
+            <image hyperlinkType="Reference">
+                <reportElement x="480" y="210" width="70" height="70">
+                    <property name="local_mesure_unitwidth" value="pixel"/>
+                    <property name="com.jaspersoft.studio.unit.width" value="px"/>
+                    <property name="local_mesure_unitheight" value="pixel"/>
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                </reportElement>
+                <imageExpression><![CDATA[$F{certificate}.getQRCodeImage()]]></imageExpression>
+                <hyperlinkReferenceExpression><![CDATA["http://www.skills.courses/" + $F{certificate}.qrUniqueCode.toString()]]></hyperlinkReferenceExpression>
+            </image>
+            <staticText>
+                <reportElement x="480" y="189" width="58" height="22"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle">
+                    <font fontName="Open Sans" size="8" isBold="true" pdfFontName="Open Sans"/>
+                </textElement>
+                <text><![CDATA[Certificate verification]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="480" y="210" width="58" height="10"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle">
+                    <font fontName="Open Sans" size="7" pdfFontName="Open Sans"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{certificate}.qrUniqueCode]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="537" y="185" width="15" height="90" forecolor="#1E1061"/>
+                <textElement textAlignment="Center" verticalAlignment="Top" rotation="Right">
+                    <font fontName="Open Sans" size="8" isBold="true" pdfFontName="Open Sans"/>
+                </textElement>
+                <text><![CDATA[www.skills.courses]]></text>
+            </staticText>
+        </band>
+    </pageFooter>
+    <summary>
+        <band splitType="Stretch"/>
+    </summary>
+</jasperReport>

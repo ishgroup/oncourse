@@ -1,0 +1,14 @@
+${render("Header")}
+
+Dear ${tutor.firstName},
+
+Please log in to your tutor portal, ${tutor.getPortalLink(s.courseClass, 7)}, and mark ${s.courseClass.course.name} attendance record in the next 24 hours.
+
+Your students cannot be issued with certificates unless attendance is marked.
+
+Please advise us as soon as possible if you require any assistance via info@cce.sydney.edu.au.
+
+Kind Regards,
+Centre For Continuing Education
+
+${render("Footer")}

@@ -1,0 +1,17 @@
+${render("Header")}
+
+Dear ${enrolment.student.contact.firstName}, 
+
+Just a reminder that your class for ${enrolment.courseClass.course.name} starts on ${enrolment.courseClass.startDateTime.format("h:mm a EEEE d MMMM yyyy zzzz", enrolment.courseClass.getTimeZone())} at ${enrolment.courseClass.displayableLocation}. 
+
+For classes held at WEA Sydney, please check the display board on the ground floor when you arrive to confirm your classroom. For courses not held at WEA Sydney, please go to your class listing on our website at ${Preferences.get("web.url")}/class/${enrolment.courseClass.course.code}-${enrolment.courseClass.code} for the latest information on where to meet.
+
+Please remember to bring a reusable cup for use with our tea and coffee facilities on Levels 2 and 3. From 1st January 2020, we will also stop providing water cups and ask that you bring in a water bottle instead.
+
+<% if (enrolment.courseClass.startDateTime?.hours >= 17) { %>
+If your class is starting from 5:30pm onwards, you will need to input a code into the keypad to be let in as the doors will not open without one. The code for this is 2020.
+<% } %>
+
+You do not need to reply this notice unless you have further queries regarding this class.
+
+${render("Footer")}

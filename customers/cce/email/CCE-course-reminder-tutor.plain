@@ -1,0 +1,18 @@
+Course reminder. ${courseClass.course.name}
+
+Hello ${contact.fullName},
+This is a courtesy email to remind you that ${courseClass.course.name} with Centre for Continuing Education is due to commence soon. We trust that you will enjoy your course. 
+A brief summary of your course is provided below.
+
+COURSE  ${courseClass.course.name}
+DATE ${courseClass.startDateTime.format("d MMM YYYY h:mm a")} - ${courseClass.endDateTime.format("d MMM YYYY h:mm a")} (${courseClass.sessionsCount} sessions)
+TUTORS <% if (courseClass?.firstSession.tutors == null) { %> To Be Confirmed <% } else { courseClass.firstSession.tutors.unique().each { t -> %> ${t.contact.firstName} ${t.contact.lastName} <% } } %>
+LOCATION <% if (courseClass.room == null) { %> To be confirmed  <% } else { %> ${courseClass.room.name} - ${courseClass.room.site.name} <% } %>
+
+
+
+<% courseClass.sessions.sort{it.startDatetime}.each { s -> %>
+${s.startDatetime.format("d MMM YYYY h:mm a")} - ${s.endDatetime.format("h:mm a")}
+<% if (s.room == null) { %>Venue to be confirmed <% } else { %> ${s.room.name} - ${s.room.site.name} | <% } %>
+<% if (s.tutors == null || s.tutors.isEmpty()) { %>Tutor to be confirmed <% } else { %> ${s?.tutors?.first().contact.firstName} ${s?.tutors?.first().contact.lastName}  <% } %>
+<% } %>

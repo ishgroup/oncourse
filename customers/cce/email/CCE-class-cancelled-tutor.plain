@@ -1,0 +1,18 @@
+${render("Header", [title: "Class Cancelled"])}
+
+${render("CCE-Body-Start")}
+
+Hi ${contact.fullName}, 
+
+We regret to advise that the following class has been cancelled due to ${tag.contents}. We apologise for any inconvenience caused. 
+
+COURSE  ${courseClass.course.name}
+DATE ${courseClass.startDateTime.format("d MMM YYYY h:mm a")} - ${courseClass.endDateTime.format("d MMM YYYY h:mm a")} (${courseClass.sessionsCount} sessions)
+TUTORS <% courseClass.firstSession.tutors.unique().each { t -> %> ${t.contact.firstName} ${t.contact.lastName} <% } %>
+LOCATION <% if (courseClass.room == null) { %> To be confirmed  <% } else { %> ${courseClass.room.name} - ${courseClass.room.site.name} <% } %>
+
+Kind regards,
+Centre for Continuing Education
+
+
+${render("Footer")}

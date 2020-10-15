@@ -1,0 +1,23 @@
+${render("Header")}
+
+Dear ${enrolment.student.contact.fullName},
+
+Congratulations on your successful completion of ${enrolment.courseClass.course.name} (${enrolment.courseClass.course.code}-${enrolment.courseClass.code})
+
+We would appreciate you taking a minute to provide some feedback about this class.
+
+at https://www.surveymonkey.com/r/6TYV8NS
+
+After completing the short survey, you can download a copy of your Certificate from the 'Resources' folder in your student portal. The 'Resources' folder is located under the class title.
+
+Access your student portal here - ${enrolment.student.getPortalLink(enrolment, 30)}
+
+This download link will be valid for 30 days from the receipt of this email.
+
+
+If there are any issues with accessing your certificate, please don't hesitate to contact us.
+
+
+You can continue your musical journey with Open Academy next term. See what courses we have available on our website. https://openacademy.sydney.edu.au/
+
+${render("Footer")}

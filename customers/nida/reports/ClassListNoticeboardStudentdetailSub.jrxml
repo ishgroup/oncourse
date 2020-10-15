@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ClassList NoticeboardStudentdetailSub" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="ca5315bc-9600-4938-b1a8-4f24760e6dea">
+	<property name="name" value="Sign In Sheet Student Detail Sub"/>
+	<property name="entity" value="Enrolment"/>
+	<property name="isSubreport" value="true"/>
+	<property name="isVisible" value="false"/>
+	<property name="versionNumber" value="4"/>
+	<property name="keyCode" value="nida.onCourse.classListNoticeboardStudentSub"/>
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="4.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<field name="student.contact.name" class="java.lang.String"/>
+	<field name="invoiceLine.invoice.invoiceNumber" class="java.lang.Long"/>
+	<field name="student.studentNumber" class="java.lang.Long"/>
+	<sortField name="student.contact.name" order="Ascending"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="40" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="8b91bd03-818e-4196-aa4e-3c55012bc861" key="staticText-1" mode="Opaque" x="2" y="3" width="298" height="36" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Student Name]]></text>
+			</staticText>
+			<line direction="BottomUp">
+				<reportElement uuid="cbbbd5fb-9cfd-4e07-aa38-9af733ce702c" key="line-7" x="2" y="38" width="298" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="be8a6fcd-b58a-431d-b295-455c89bb53b8" key="line-8" x="300" y="2" width="1" height="38"/>
+			</line>
+			<line>
+				<reportElement uuid="7fbde4ec-1e20-48e1-8eec-f08a0c3639c8" key="line-19" x="2" y="2" width="298" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="995aa26a-dd74-4d55-a4e9-27a5ceb16a6c" key="line-20" x="2" y="2" width="1" height="38"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="24" splitType="Stretch">
+			<line>
+				<reportElement uuid="d64a6eb8-b0fd-409c-80fe-000597d2fe61" key="line-4" x="300" y="-2" width="1" height="24"/>
+			</line>
+			<textField isBlankWhenNull="false">
+				<reportElement uuid="f75149d3-50a3-41e2-95b0-235e1c995deb" key="textField" x="3" y="0" width="295" height="22"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" "+$V{REPORT_COUNT}+"."+"  "+$F{student.contact.name}]]></textFieldExpression>
+			</textField>
+			<elementGroup/>
+			<line>
+				<reportElement uuid="4a8c62d3-1627-4951-83e1-626e128b593a" key="line-17" x="2" y="-1" width="1" height="24"/>
+			</line>
+			<line>
+				<reportElement uuid="6195f5a1-fd64-4810-8fc8-16f48f6b868a" key="line-18" x="2" y="22" width="299" height="1"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

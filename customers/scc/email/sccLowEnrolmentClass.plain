@@ -1,0 +1,15 @@
+${render("Header")}
+
+Dear ${tutor.contact.firstName},
+
+Your class ${cc.course.code}-${cc.code} ${cc.course.name} currently has ${cc.validEnrolmentCount} enrolments.   We are taking action to promote  your class further. Please keep in touch with progress through your tutor portal login.
+
+Unless otherwise contacted, your course will proceed.  Should you have difficulty logging into your tutor portal, please contact your Programme Coordinator or one of the Programming Team on 8752 7555.
+
+What can you do? If you have a Facebook page or a Linkedin page or any other social media channel, please promote your up-coming class as actively as possible.
+
+Kind regards
+
+The Programming Team
+
+${render("Footer")}

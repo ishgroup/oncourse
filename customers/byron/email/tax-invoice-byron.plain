@@ -1,0 +1,41 @@
+${render("Header")}
+
+o-------------------o
+<% if (invoice.getTotalIncTax().toBigDecimal() < 0) { %>
+     Credit Note
+<% } else { %>
+     Tax Invoice
+<% } %>
+o-------------------o
+
+Invoice created on: ${invoice.createdOn.format("d/M/yy")}
+Invoice due on: ${invoice.dateDue.format("d/M/yy")}
+Invoice number: ${invoice.invoiceNumber}
+<% if (invoice.customerReference) { %>
+Your reference: ${invoice.customerReference}
+<% } %>
+Invoice to: ${invoice.contact.fullName} 
+
+
+Items
+-----
+<% invoice.invoiceLines.each { %>
+${it.title}    ${it.priceTotalExTax} (ex Tax)
+${it.description}
+
+<% } %>
+
+o-------------------o
+Total (inc Tax) ${invoice.totalIncTax}
+Total Tax ${invoice.totalTax}
+Total Paid ${invoice.totalIncTax.subtract(invoice.amountOwing)}
+Total Owing ${invoice.amountOwing}
+o-------------------o
+
+Payment by EFT
+BSB: 062 578
+Account No: 10126557
+Account Name: Byron Region Community College
+Reference: (please use Tax Invoice number)
+
+${render("Footer")}

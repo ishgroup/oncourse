@@ -1,0 +1,25 @@
+${render("Header", [title: "Certificate available"])}
+<table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+    <tbody>
+    <tr>
+        <td class="ish_content_container left" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 0;padding-right: 17px;padding-bottom: 10px;padding-left: 17px; vertical-align: top;" align="left" valign="top">
+            <div class="ish_text_container">
+                <p class="align-left" style="font-family: Arial, &#39;Helvetica Neue&#39;, Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                    Dear ${enrolment.student.contact.fullName}, <br />
+                    Congratulations on your successful completion of ${enrolment.courseClass.course.name} (${enrolment.courseClass.uniqueCode}). <br />
+                    We would appreciate you taking a minute to provide some feedback about this class <br />
+                    at <a style="color: #0084b4;color: #0084b4 !important;background-color: #ffffff;text-decoration: none;border: 0;word-wrap: break-word;" href="https://www.surveymonkey.com/r/6TYV8NS" target="_blank">https://www.surveymonkey.com/r/6TYV8NS</a> <br /> <br />
+                    After completing the short survey, you can download a copy of your Certificate from the 'Resources' folder in your student portal. The 'Resources' folder is located under the class title.<br />
+                    Access your student portal here - <a style="color: #0084b4;color: #0084b4 !important;background-color: #ffffff;text-decoration: none;border: 0;word-wrap: break-word;" href="${enrolment.student.getPortalLink(enrolment, 30)}" target="_blank">${enrolment.student.getPortalLink(enrolment, 30)}</a> <br />
+                    <i>This download link wil be valid for 30 days from the receipt of this email</i><br />
+                    <br /><br />
+                    If there are any issues with accessing your Certificate, please don't hesitate to contact us.<br /><br /><br />
+                    You can continue your musical journey with Open Academy next term. See what courses we have available on our website. <br />
+                    <a style="color: #0084b4;color: #0084b4 !important;background-color: #ffffff;text-decoration: none;border: 0;word-wrap: break-word;" href="https://openacademy.sydney.edu.au/" target="_blank">https://openacademy.sydney.edu.au/</a>
+                </p>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+${render("Footer")}

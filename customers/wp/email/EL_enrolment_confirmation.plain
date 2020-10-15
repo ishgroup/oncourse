@@ -1,0 +1,13 @@
+${render("Header")} 
+Enrolment reference: ${enrolment.invoiceLine.invoice.invoiceNumber}
+Dear ${enrolment.student.contact.firstName},
+Thank you for enrolling at ${Preferences.get("college.name")}.
+Class: ${enrolment.courseClass.course.code}-${enrolment.courseClass.code} ${enrolment.courseClass.course.name}
+
+You will soon receive an email with instructions on how to access the course. This email will contain a link to the training and your log in details.
+If you do not receive this email within 24 hours please contact PTS Support Services on 9411 7888 or via email support.services@pts-training.com.au
+In the meantime, if you’d like to view the details of the course, visit: https://www.pts-training.com.au/class/${enrolment.courseClass.course.code}-${enrolment.courseClass.code}
+
+
+
+${render("Footer")}
