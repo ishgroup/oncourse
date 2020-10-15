@@ -9,12 +9,12 @@
  * See the GNU Affero General Public License for more details.
  */
 
-package ish.oncourse.server.integration.xero
+package ish.oncourse.commercial.plugin.xero
 
 import ish.math.Money
 import ish.oncourse.API
 import ish.oncourse.server.cayenne.Payslip
-import static ish.oncourse.server.integration.xero.XeroIntegration.*
+import static XeroIntegration.*
 import ish.oncourse.server.scripting.ScriptClosure
 import ish.oncourse.server.scripting.ScriptClosureTrait
 
@@ -85,32 +85,32 @@ class XeroScriptClosure implements ScriptClosureTrait<XeroIntegration> {
 				
 				integration.bounceAddress = bounceAddress
 				if (!integration.contact.dateOfBirth) {
-					integration.interruptExport(MESSAGE_DOB_REQUIRED)
+					integration.interruptExport(XeroIntegration.MESSAGE_DOB_REQUIRED)
 				}
 
 				if (!(integration.contact.street && integration.contact.suburb && integration.contact.state && integration.contact.postcode)) {
-					integration.interruptExport(MESSAGE_ADDRESS_REQUIRED)
+					integration.interruptExport(XeroIntegration.MESSAGE_ADDRESS_REQUIRED)
 				}
 
 				Employee employee = integration.getEmployee()
 
 				if (!employee) {
 					integration.createEmployee()
-					integration.interruptExport(MESSAGE_CONFIGURE_XERO_EMPLOYEE)
+					integration.interruptExport(XeroIntegration.MESSAGE_CONFIGURE_XERO_EMPLOYEE)
 				}
 
 				if (!employee.earningId) {
-					integration.interruptExport(MESSAGE_CONFIGURE_EARNING)
+					integration.interruptExport(XeroIntegration.MESSAGE_CONFIGURE_EARNING)
 				}
 				if (!employee.calendarId) {
-					integration.interruptExport(MESSAGE_CONFIGURE_CALENDAR)
+					integration.interruptExport(XeroIntegration.MESSAGE_CONFIGURE_CALENDAR)
 				}
 
 				String payrunId = integration.getPayRunId(employee.calendarId)
 
 				String payslipId = integration.getPaysplipId(payrunId, employee.id)
 				if (!payslipId) {
-					integration.interruptExport(MESSAGE_PAYSLIP_MISSING)
+					integration.interruptExport(XeroIntegration.MESSAGE_PAYSLIP_MISSING)
 				}
 
 				Money total = payslip.paylines.collect { payline -> payline.value.multiply(payline.quantity) }.inject { a, b -> a.add(b)}

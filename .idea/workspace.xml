@@ -2,9 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="464eb329-4356-4dd0-ae52-6b59f92ddf6a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/plugins/xero/src/main/groovy/ish/oncourse/commercial" afterDir="true" />
+      <change afterPath="$PROJECT_DIR$/plugins/xero/src/main/groovy/ish/oncourse/commercial/plugin" afterDir="true" />
+      <change afterPath="$PROJECT_DIR$/plugins/xero/src/main/groovy/ish/oncourse/commercial/plugin/xero" afterDir="true" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/xero" beforeDir="true" afterPath="$PROJECT_DIR$/plugins/xero" afterDir="true" />
+      <change beforePath="$PROJECT_DIR$/plugins/xero/src/main/groovy/ish/oncourse/server" beforeDir="true" />
+      <change beforePath="$PROJECT_DIR$/plugins/xero/src/main/groovy/ish/oncourse/server/integration" beforeDir="true" />
+      <change beforePath="$PROJECT_DIR$/plugins/xero/src/main/groovy/ish/oncourse/server/integration/xero" beforeDir="true" />
+      <change beforePath="$PROJECT_DIR$/plugins/xero/src/main/groovy/ish/oncourse/server/integration/xero/XeroIntegration.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/xero/src/main/groovy/ish/oncourse/commercial/plugin/xero/XeroIntegration.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/xero/src/main/groovy/ish/oncourse/server/integration/xero/XeroScriptClosure.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/xero/src/main/groovy/ish/oncourse/commercial/plugin/xero/XeroScriptClosure.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/xero/src/main/java" beforeDir="true" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,6 +39,7 @@
   <component name="ProjectViewState">
     <option name="flattenModules" value="true" />
     <option name="flattenPackages" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
@@ -73,7 +81,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1602750430301</updated>
-      <workItem from="1602750432165" duration="8678000" />
+      <workItem from="1602750432165" duration="10345000" />
     </task>
     <task id="LOCAL-00001" summary="put gradle/idea settings under version control">
       <created>1602752538032</created>
@@ -110,7 +118,14 @@
       <option name="project" value="LOCAL" />
       <updated>1602760113031</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Add maven repo for groovy plugin">
+      <created>1602761124030</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1602761124030</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -122,20 +137,22 @@
     <MESSAGE value="fix module's settings" />
     <MESSAGE value="add cayenne plugin dependency. Add correct maven repositories" />
     <MESSAGE value="download latest server snapshot, unpack, and move all /libs/on classpath" />
-    <option name="LAST_COMMIT_MESSAGE" value="download latest server snapshot, unpack, and move all /libs/on classpath" />
+    <MESSAGE value="Add maven repo for groovy plugin" />
+    <MESSAGE value="Moxe plugin classes to proper package" />
+    <option name="LAST_COMMIT_MESSAGE" value="Moxe plugin classes to proper package" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="399" y="139" key="CommitChangelistDialog2" timestamp="1602761070968">
+    <state x="399" y="139" key="CommitChangelistDialog2" timestamp="1602762894979">
       <screen x="65" y="23" width="1615" height="1027" />
     </state>
-    <state x="399" y="139" key="CommitChangelistDialog2/65.23.1615.1027@65.23.1615.1027" timestamp="1602761070968" />
+    <state x="399" y="139" key="CommitChangelistDialog2/65.23.1615.1027@65.23.1615.1027" timestamp="1602762894979" />
     <state x="360" y="118" key="SettingsEditor" timestamp="1602756593011">
       <screen x="65" y="23" width="1615" height="1027" />
     </state>
     <state x="360" y="118" key="SettingsEditor/65.23.1615.1027@65.23.1615.1027" timestamp="1602756593011" />
-    <state x="683" y="389" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1602761094110">
+    <state x="683" y="389" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1602763506541">
       <screen x="65" y="23" width="1615" height="1027" />
     </state>
-    <state x="683" y="389" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/65.23.1615.1027@65.23.1615.1027" timestamp="1602761094110" />
+    <state x="683" y="389" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/65.23.1615.1027@65.23.1615.1027" timestamp="1602763506541" />
   </component>
 </project>

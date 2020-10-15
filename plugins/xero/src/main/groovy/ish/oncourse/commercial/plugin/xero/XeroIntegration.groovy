@@ -1,4 +1,4 @@
-package ish.oncourse.server.integration.xero
+package ish.oncourse.commercial.plugin.xero
 
 import groovy.json.JsonSlurper
 import groovy.transform.CompileDynamic
