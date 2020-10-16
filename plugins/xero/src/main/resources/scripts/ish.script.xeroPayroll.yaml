@@ -1,0 +1,7 @@
+name: Xero payroll
+keyCode: ish.script.xeroPayroll
+body: ish.script.xeroPayroll.groovy
+enabled: false
+triggerType: ONCOURSE_EVENT
+onCourseEventType: PAYSLIP_APPROVED
+description: Run when payrun records are set to approved, create the employee in xero if necessary, create the pay records in xero, mark the onCourse payrun as exported/paid.

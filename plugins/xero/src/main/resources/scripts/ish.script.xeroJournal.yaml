@@ -1,0 +1,14 @@
+name: Xero manual journal
+keyCode: ish.script.xeroJournal
+body: ish.script.xeroJournal.groovy
+enabled: false
+triggerType: CRON
+schedule: 0 0 3 * * ?
+description: Create Xero manual journal for transactions, keeping in sync all onCourse transactions since 'startOnDate' option. Use POSTED status if postJournalsInXerois true, otherwise DRAFT
+options:
+  - name: startOnDate
+    dataType: DATE
+    value: "2020-01-01"
+  - name: postJournalsInXero
+    dataType: BOOLEAN
+    value: "true"
