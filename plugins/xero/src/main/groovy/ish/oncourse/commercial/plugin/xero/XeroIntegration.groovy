@@ -121,7 +121,7 @@ Review all the other employee settings and ensure they are correct.
 	}
 
 	XeroIntegration(Map args) {
-		loadConfig()
+		loadConfig(args)
 		loadCustomField()
 		refreshXeroAccessToken()
 	}
