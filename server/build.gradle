@@ -181,7 +181,6 @@ task createResourceManifests {
 		def sources = ["resources/oncourse-scripts/export",
 					   "imports",
 					   "resources/oncourse-scripts/reports",
-					   "scripts",
 					   "messages"
 		]
 		sources.each { s ->
