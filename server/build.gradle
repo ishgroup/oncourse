@@ -44,12 +44,12 @@ sourceSets {
 dependencies {
 	implementation project(":types")
 	implementation project(':server-api')
-	
+
 	implementation ("org.apache.cxf:cxf-rt-frontend-jaxws:$cfxVersion") {
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
 	}
 
-	implementation "ish.oncourse.willow:webservices-client:$webservicesVersion" 
+	implementation "ish.oncourse.willow:webservices-client:$webservicesVersion"
 
 	implementation "org.apache.cayenne:cayenne-lifecycle:$cayenneVersion"
 	implementation "org.apache.cayenne:cayenne-commitlog:$cayenneVersion"
@@ -73,13 +73,12 @@ dependencies {
 
 	implementation 'commons-lang:commons-lang:2.6' // this exists only to support some old reports. To be removed when all reports upgraded.
 	implementation ('net.sf.jasperreports:jasperreports:6.1.1') {
-		exclude group: 'org.apache.poi', module: 'poi-ooxml'
-
+		exclude group:'org.apache.poi', module: 'poi-ooxml'
 		exclude group:'org.codehaus.castor'
 		exclude group:'com.fasterxml.jackson.core'
 		exclude group:'org.apache.lucene'
 		exclude group:'org.olap4j'
-		exclude group: 'bouncycastle'
+		exclude group:'bouncycastle'
 	}
 
 	implementation "org.bouncycastle:bcprov-jdk15on:$bouncycastleVersion"
@@ -104,14 +103,13 @@ dependencies {
 	implementation 'org.reflections:reflections:0.9.12'
 	implementation "com.google.inject:guice:$googleGuiceVersion"
 
-
 	implementation 'net.sf.supercsv:super-csv:2.4.0'
 	implementation 'net.sf.supercsv:super-csv-java8:2.4.0'
 
 	// Needed for log4j to json or gelf formats
 	implementation "com.fasterxml.jackson.core:jackson-core:$jacksonVersion"
 
-	implementation 'org.yaml:snakeyaml:+'
+	implementation 'org.yaml:snakeyaml:1.27'
 	implementation "org.antlr:antlr4-runtime:4.7.1"
 
 	// WSDL SOAP helpers for our integrations
@@ -124,7 +122,7 @@ dependencies {
 	implementation 'com.google.apis:google-api-services-classroom:v1-rev135-1.23.0'
 
 	implementation 'com.nimbusds:nimbus-jose-jwt:8.9'
-	implementation 'com.bugsnag:bugsnag:3.+'
+	implementation 'com.bugsnag:bugsnag:3.6.1'
 
 	testImplementation "org.apache.cayenne:cayenne-dbsync:$cayenneVersion"
 	testImplementation 'org.mockito:mockito-core:2.18.3'
@@ -318,6 +316,9 @@ publishing {
 			artifact(packageApiDoc) {
 				artifactId "docs"
 			}
+		}
+		jar(MavenPublication) {
+			from components.java
 		}
 		executables(MavenPublication) {
 			artifact(installer_unix) {
