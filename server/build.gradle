@@ -53,8 +53,8 @@ sourceSets {
 }
 
 dependencies {
-	implementation project(":types")
-	implementation project(':server-api')
+	api project(":types")
+	api project(':server-api')
 
 	implementation ("org.apache.cxf:cxf-rt-frontend-jaxws:$cfxVersion") {
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
@@ -62,8 +62,8 @@ dependencies {
 
 	implementation "ish.oncourse.willow:webservices-client:$webservicesVersion"
 
-	implementation "org.apache.cayenne:cayenne-lifecycle:$cayenneVersion"
-	implementation "org.apache.cayenne:cayenne-commitlog:$cayenneVersion"
+	api "org.apache.cayenne:cayenne-lifecycle:$cayenneVersion"
+	api "org.apache.cayenne:cayenne-commitlog:$cayenneVersion"
 
 	implementation "org.eclipse.jetty:jetty-servlet:$jettyVersion"
 
