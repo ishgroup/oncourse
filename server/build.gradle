@@ -330,10 +330,10 @@ publishing {
 		}
 		jar(MavenPublication) {
 			from components.java
+			artifactId 'server-jar'
 		}
 		executables(MavenPublication) {
 			artifact(installer_unix) {
-				version (project.hasProperty('releaseVersion') ? project.releaseVersion : "SNAPSHOT")
 				classifier "executable"
 				extension "zip"
 			}
