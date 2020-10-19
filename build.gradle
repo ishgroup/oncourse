@@ -41,42 +41,12 @@ subprojects {
         }
 
     }
-    configurations {
-        zipped
-    }
     dependencies {
-        zipped "ish.oncourse.angel:server:99-SNAPSHOT:executable@zip"
-        implementation files({ tasks.installDependencies.extractedJars })
-        implementation "org.codehaus.groovy:groovy-all:2.5.13"
-    }
-
-    task installDependencies(type: Sync) {
-        def extractDir = "${buildDir}/libs"
-
-        ext.extractedJars = fileTree(extractDir) {
-            include "**/*.jar"
-            builtBy "installDependencies"
-        }
-
-        dependsOn configurations.zipped
-        from {
-            configurations.zipped.collect { zipTree(it) }
-        }
-        into extractDir
-    }
-
-// just for checking that it worked
-    task printClasspath {
-        dependsOn configurations.compile
-        doLast {
-            configurations.compile.each {
-                println it
-            }
-        }
+        implementation "ish.oncourse.angel:server-jar:99-SNAPSHOT"
     }
 
     group = 'ish.oncourse.commercial.plugin'
-    version = project.hasProperty('releaseVersion') && project.releaseVersion ? project.releaseVersion : "99-SNAPSHOT"
+    version = project.hasProperty('releaseVersion') && project.releaseVersion ? project.releaseVersion : "SNAPSHOT"
 
     publishing {
         repositories {
@@ -90,6 +60,13 @@ subprojects {
                 }
             }
         }
+
+        publications {
+            maven(MavenPublication) {
+                from components.java
+            }
+        }
     }
+
 
 }

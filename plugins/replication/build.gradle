@@ -28,11 +28,3 @@ cgen {
 compileJava {
     dependsOn cgen
 }
-
-publishing {
-    publications {
-        replication(MavenPublication) {
-            from components.java
-        }
-    }
-}
