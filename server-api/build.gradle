@@ -84,3 +84,11 @@ compileGroovy {
 clean.doFirst {
     delete("${project.projectDir}/build/generated-sources")
 }
+
+publishing {
+    publications {
+        jar(MavenPublication) {
+            from components.java
+        }
+    }
+}
