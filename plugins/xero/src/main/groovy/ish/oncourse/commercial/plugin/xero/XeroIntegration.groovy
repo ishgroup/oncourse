@@ -122,21 +122,22 @@ Review all the other employee settings and ensure they are correct.
 
 	XeroIntegration(Map args) {
 		loadConfig(args)
+		objectContext = cayenneService.newContext
 		loadCustomField()
 		refreshXeroAccessToken()
 	}
 
 	private loadCustomField() {
-		employeeField = ObjectSelect.query(CustomFieldType).where(CustomFieldType.KEY.eq(EMPLOYEE_FIELD_KEY)).selectOne(context)
+		employeeField = ObjectSelect.query(CustomFieldType).where(CustomFieldType.KEY.eq(EMPLOYEE_FIELD_KEY)).selectOne(objectContext)
 		if (!employeeField) {
-			employeeField = context.newObject(CustomFieldType)
+			employeeField = objectContext.newObject(CustomFieldType)
 			employeeField.dataType = DataType.TEXT
 			employeeField.entityIdentifier = Contact.simpleName
 			employeeField.key = EMPLOYEE_FIELD_KEY
 			employeeField.name = EMPLOYEE_FIELD_NAME
 			employeeField.isMandatory = false
 			employeeField.sortOrder = 1000l
-			context.commitChanges()
+			objectContext.commitChanges()
 		}
 	}
 
@@ -151,10 +152,10 @@ Review all the other employee settings and ensure they are correct.
 			response.success = { resp, body ->
 				Map<String, String> jsonResponce = new JsonSlurper().parseText(body.keySet()[0])
 				accessToken = jsonResponce['access_token']
-				this.configuration = this.context.localObject(this.configuration)
+				this.configuration = this.objectContext.localObject(this.configuration)
 				this.configuration.setProperty(XERO_ACCESS_TOKEN, accessToken)
 				this.configuration.setProperty(XERO_REFRESH_TOKEN, jsonResponce['refresh_token'])
-				context.commitChanges()
+				objectContext.commitChanges()
 
 			}
 
@@ -223,7 +224,7 @@ Review all the other employee settings and ensure they are correct.
 			List<AccountTransaction> transactions = ObjectSelect.query(AccountTransaction)
 					.where(AccountTransaction.TRANSACTION_DATE.gte(from))
 					.and(AccountTransaction.TRANSACTION_DATE.lte(to))
-					.select(context)
+					.select(objectContext)
 
 			if (!transactions.empty) {
 				Map<String, Money> groups = transactions.inject([:] as Map<String, Money> ) { result, transaction ->
@@ -470,7 +471,7 @@ Review all the other employee settings and ensure they are correct.
 
 			response.success = { resp, result ->
 				payslip.status = PayslipStatus.FINALISED
-				context.commitChanges()
+				objectContext.commitChanges()
 			}
 			response.failure = { resp, body ->
 				interruptExport("Xero app post Earning Lines error: $body")
@@ -482,7 +483,7 @@ Review all the other employee settings and ensure they are correct.
 		String errorInfo = "Interrapt xero payroll export, payslipId: $payslip.id, reason: $message"
 		logger.error(errorInfo)
 		payslip.setStatus(PayslipStatus.COMPLETED)
-		context.commitChanges()
+		objectContext.commitChanges()
 
 		emailService.email {
 			subject(String.format(EMAIL_SUBJECT, contact.fullName))
@@ -494,11 +495,11 @@ Review all the other employee settings and ensure they are correct.
 	}
 
 	private void saveEmployeeId(String employeeId) {
-		ContactCustomField customField = contact.customFields.find{it.customFieldType.key == EMPLOYEE_FIELD_KEY} ?: context.newObject(ContactCustomField)
+		ContactCustomField customField = contact.customFields.find{it.customFieldType.key == EMPLOYEE_FIELD_KEY} ?: objectContext.newObject(ContactCustomField)
 		customField.relatedObject = contact
 		customField.customFieldType = employeeField
 		customField.value = employeeId
-		context.commitChanges()
+		objectContext.commitChanges()
 	}
 
 	private String getEmployeeXmlContent() {
