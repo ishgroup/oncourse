@@ -46,7 +46,7 @@ subprojects {
     }
 
     group = 'ish.oncourse.commercial.plugin'
-    version = project.hasProperty('releaseVersion') && project.releaseVersion ? project.releaseVersion : "SNAPSHOT"
+    version = project.hasProperty('releaseVersion') && project.releaseVersion ? project.releaseVersion : "99-SNAPSHOT"
 
     publishing {
         repositories {
