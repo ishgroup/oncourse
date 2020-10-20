@@ -56,11 +56,11 @@ dependencies {
 	api project(":types")
 	api project(':server-api')
 
-	implementation ("org.apache.cxf:cxf-rt-frontend-jaxws:$cfxVersion") {
+	api ("org.apache.cxf:cxf-rt-frontend-jaxws:$cfxVersion") {
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
 	}
 
-	implementation "ish.oncourse.willow:webservices-client:$webservicesVersion"
+	api "ish.oncourse.willow:webservices-client:$webservicesVersion"
 
 	api "org.apache.cayenne:cayenne-lifecycle:$cayenneVersion"
 	api "org.apache.cayenne:cayenne-commitlog:$cayenneVersion"
@@ -107,7 +107,7 @@ dependencies {
 	api 'com.google.code.findbugs:jsr305:1.3.9'
 
 	implementation 'net.java.dev.jets3t:jets3t:0.9.4'
-	implementation 'org.quartz-scheduler:quartz:2.2.2'
+	api 'org.quartz-scheduler:quartz:2.2.2'
 	implementation 'org.apache.pdfbox:pdfbox:2.0.17'
 	implementation 'org.scribe:scribe:1.3.7'
 	implementation 'commons-io:commons-io:2.6'

@@ -95,7 +95,7 @@ subprojects {
 		testImplementation 'junit:junit:4.13'
 		testImplementation 'org.dbunit:dbunit:2.6.0'
 
-		implementation 'com.google.code.findbugs:jsr305:3.0.2'
+		api 'com.google.code.findbugs:jsr305:3.0.2'
 
 		// The following is needed until we upgrade waCommon which is forcing Cayenne back to 4.0M3.2
 		configurations.all {
