@@ -14,7 +14,7 @@ import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.ISHDataContext
 import ish.oncourse.server.cayenne.ContactDuplicate
 import ish.oncourse.server.cayenne.Queueable
-import ish.oncourse.server.cayenne.QueuedRecord
+import ish.oncourse.commercial.cayenne.QueuedRecord
 import ish.oncourse.server.cayenne.QueuedTransaction
 import ish.oncourse.server.modules.ISoapPortLocator
 import ish.oncourse.server.replication.builders.IAngelStubBuilder

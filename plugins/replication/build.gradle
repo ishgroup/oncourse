@@ -9,6 +9,15 @@ sourceSets.main.java.srcDirs = []
 sourceSets.main.groovy.srcDir 'src/main/java'
 sourceSets.main.groovy.srcDirs += "${buildDir}/generated-resources/main/java"
 
+dependencies {
+    api ("org.apache.cxf:cxf-rt-frontend-jaxws:3.3.5") {
+        exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
+    }
+
+    api "ish.oncourse.willow:webservices-client:94"
+    api 'org.quartz-scheduler:quartz:2.2.2'
+}
+
 cgen {
     map = "${projectDir}/src/main/resources/cayenne/ReplicationMap.map.xml"
     makePairs = true

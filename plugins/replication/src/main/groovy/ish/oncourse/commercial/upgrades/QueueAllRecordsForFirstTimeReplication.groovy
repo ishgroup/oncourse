@@ -56,7 +56,7 @@ import ish.oncourse.server.cayenne.Preference
 import ish.oncourse.server.cayenne.PriorLearning
 import ish.oncourse.server.cayenne.Product
 import ish.oncourse.server.cayenne.Queueable
-import ish.oncourse.server.cayenne.QueuedRecord
+import ish.oncourse.commercial.cayenne.QueuedRecord
 import ish.oncourse.server.cayenne.QueuedTransaction
 import ish.oncourse.server.cayenne.Room
 import ish.oncourse.server.cayenne.Script

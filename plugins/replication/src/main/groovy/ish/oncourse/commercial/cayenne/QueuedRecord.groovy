@@ -6,6 +6,20 @@
 package ish.oncourse.commercial.cayenne
 
 import ish.oncourse.commercial.cayenne.glue._QueuedRecord
+import ish.oncourse.server.cayenne.Certificate
+import ish.oncourse.server.cayenne.CertificateOutcome
+import ish.oncourse.server.cayenne.Course
+import ish.oncourse.server.cayenne.CourseClass
+import ish.oncourse.server.cayenne.Enrolment
+import ish.oncourse.server.cayenne.Message
+import ish.oncourse.server.cayenne.MessagePerson
+import ish.oncourse.server.cayenne.Outcome
+import ish.oncourse.server.cayenne.Queueable
+import ish.oncourse.server.cayenne.Room
+import ish.oncourse.server.cayenne.Session
+import ish.oncourse.server.cayenne.Site
+import ish.oncourse.server.cayenne.Student
+import ish.oncourse.server.cayenne.Tutor
 import org.apache.cayenne.Cayenne
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.exp.ExpressionFactory

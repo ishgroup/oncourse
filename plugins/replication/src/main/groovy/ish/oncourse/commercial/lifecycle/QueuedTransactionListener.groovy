@@ -6,7 +6,7 @@
 package ish.oncourse.commercial.lifecycle
 
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.cayenne.QueuedRecord
+import ish.oncourse.commercial.cayenne.QueuedRecord
 import ish.oncourse.server.cayenne.QueuedTransaction
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.annotation.PostUpdate

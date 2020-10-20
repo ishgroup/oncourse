@@ -11,7 +11,7 @@ import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.ISHDataContext
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.Queueable
-import ish.oncourse.server.cayenne.QueuedRecord
+import ish.oncourse.commercial.cayenne.QueuedRecord
 import ish.oncourse.server.cayenne.QueuedTransaction
 import org.apache.cayenne.Cayenne
 import org.apache.cayenne.DataChannelSyncFilter

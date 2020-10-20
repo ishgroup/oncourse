@@ -5,7 +5,7 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.Queueable
-import ish.oncourse.server.cayenne.QueuedRecord
+import ish.oncourse.commercial.cayenne.QueuedRecord
 import ish.oncourse.webservices.util.GenericReplicationStub
 
 /**

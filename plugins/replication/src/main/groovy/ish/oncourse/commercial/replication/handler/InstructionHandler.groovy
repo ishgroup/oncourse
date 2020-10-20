@@ -21,8 +21,8 @@ import ish.oncourse.server.cayenne.Membership
 import ish.oncourse.server.cayenne.MembershipProduct
 import ish.oncourse.server.cayenne.PaymentIn
 import ish.oncourse.server.cayenne.PaymentInLine
-import ish.oncourse.server.cayenne.QueuedRecord
-import ish.oncourse.server.cayenne.QueuedTransaction
+import ish.oncourse.commercial.cayenne.QueuedRecord
+import ish.oncourse.commercial.cayenne.QueuedTransaction
 import ish.oncourse.server.cayenne.Voucher
 import ish.oncourse.server.cayenne.VoucherPaymentIn
 import ish.oncourse.server.modules.ISoapPortLocator
