@@ -1,4 +1,18 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-	<img src="${imagePath}" align="${imageAlign}" alt="${imageAlt}" title="${imageTitle}" width="${imageWidth}" height="${imageHeight}"
-		 class="${imageClass}" />
+	<t:if test="imageLink.empty">
+		<img src="${imagePath}" align="${imageAlign}" alt="${imageAlt}" title="${imageTitle}" width="${imageWidth}" height="${imageHeight}"
+			 class="${imageClass}" />
+			<t:if test="imageCaption">
+				<br /> ${imageCaption}
+			</t:if>
+		<p:else>
+			<a href="${imageLink}">
+				<img src="${imagePath}" align="${imageAlign}" alt="${imageAlt}" title="${imageTitle}" width="${imageWidth}" height="${imageHeight}"
+					 class="${imageClass}" />
+					<t:if test="imageCaption">
+						<br /> ${imageCaption}
+					</t:if>
+			</a>
+		</p:else>
+	</t:if>
 </t:container>
