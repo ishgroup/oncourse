@@ -15,7 +15,7 @@ cgen {
     template = "${projectDir}/src/main/resources/cayenne/dotemplates/subclass.vm"
     superTemplate = "${projectDir}/src/main/resources/cayenne/dotemplates/superclass.vm"
     mode = 'entity'
-    superPkg = 'ish.oncourse.server.cayenne.glue'
+    superPkg = 'ish.oncourse.commercial.cayenne.glue'
     destDir = file("${buildDir}/generated-resources/main/java")
     doLast {
         // remove subclass files which are already committed inside the app
