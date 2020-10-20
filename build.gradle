@@ -72,8 +72,8 @@ subprojects {
 	}
 	sourceCompatibility = 11
 	// get the version from the command line properties
-//	version = project.hasProperty('releaseVersion') && project.releaseVersion ? project.releaseVersion : "99-SNAPSHOT"
-	version =  "99-SNAPSHOT"
+	version = project.hasProperty('releaseVersion') && project.releaseVersion ? project.releaseVersion : "99-SNAPSHOT"
+//	version =  "99-SNAPSHOT"
 
 	if (it.name != 'api-test') {
 		dependencies {
