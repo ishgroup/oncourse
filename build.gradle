@@ -42,7 +42,7 @@ subprojects {
 
     }
     dependencies {
-        implementation "ish.oncourse.angel:server-jar:SNAPSHOT"
+        implementation "ish.oncourse.angel:server-jar:99-SNAPSHOT"
     }
 
     group = 'ish.oncourse.commercial.plugin'
