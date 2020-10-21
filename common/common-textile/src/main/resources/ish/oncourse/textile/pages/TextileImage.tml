@@ -1,4 +1,4 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	<t:if test="imageLink.empty">
 		<img src="${imagePath}" align="${imageAlign}" alt="${imageAlt}" title="${imageTitle}" width="${imageWidth}" height="${imageHeight}"
 			 class="${imageClass}" />
