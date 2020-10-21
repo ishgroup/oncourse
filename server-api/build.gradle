@@ -67,7 +67,7 @@ tasks.withType(GroovyCompile).configureEach {
 compileGroovy.groovyOptions.configurationScript = file("${rootDir}/gradle/groovyConfig.groovy")
 
 
-task swagger (type: Swagger) {
+task swagger (type: Swagger, dependsOn: [clean]) {
     schema = file("${project.projectDir}/src/main/resources/server-api.yaml")
     sourceFolder = file("${project.projectDir}/src/main/groovy")
     schemaVersion = 1
