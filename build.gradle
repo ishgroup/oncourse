@@ -41,8 +41,13 @@ subprojects {
         }
 
     }
+    
+    configurations.all {
+        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+    }
+    
     dependencies {
-        implementation "ish.oncourse.angel:server-jar:99-SNAPSHOT"
+        implementation group: "ish.oncourse.angel", name: "server-jar", version: "99-SNAPSHOT", changing: true
     }
 
     group = 'ish.oncourse.commercial.plugin'
@@ -67,6 +72,4 @@ subprojects {
             }
         }
     }
-
-
 }
