@@ -1,16 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import classnames from 'classnames';
-import {Button, FormGroup, Input} from 'reactstrap';
+import {Button, FormGroup, Input, Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
 import {PageState} from "../reducers/State";
 import {DOM} from "../../../../../utils";
 import {getHistoryInstance} from "../../../../../history";
 import PageService from "../../../../../services/PageService";
-import {CONTENT_MODES, DEFAULT_CONTENT_MODE_ID} from "../../../constants";
 import {addContentMarker} from "../../../utils";
 import MarkdownEditor from "../../../../../common/components/editor/MarkdownEditor";
 import Editor from "../../../../../common/components/editor/HtmlEditor";
 import marked from "marked";
 import {ContentMode} from "../../../../../model";
+import {ContentModeSwitch} from "../../../../../common/components/ContentModeSwitch";
 
 interface PageProps {
   page: PageState;
@@ -23,7 +23,6 @@ interface PageProps {
 }
 
 const pluginInitEvent = new Event("plugins:init");
-
 
 export const Page: React.FC<PageProps> = ({
   page,
@@ -119,10 +118,6 @@ export const Page: React.FC<PageProps> = ({
     toggleEditMode(false);
   };
 
-  const onContentModeChange = e => {
-    setContentMode(page.id, e.target.value);
-  };
-
   const renderEditor = () => {
     switch (page.contentMode) {
       case "md": {
@@ -151,23 +146,16 @@ export const Page: React.FC<PageProps> = ({
     <div>
       {editMode && <>
         <div className={
-          classnames({"editor-wrapper" : true, "ace-wrapper": page.contentMode === "html" || page.contentMode === "textile"})
+          classnames({
+            "editor-wrapper" : true,
+            "ace-wrapper": page.contentMode === "html" || page.contentMode === "textile",
+          })
         }>
-          <div className="content-mode-wrapper">
-            <Input
-              type="select"
-              name="contentMode"
-              id="contentMode"
-              className="content-mode"
-              placeholder="Content mode"
-              value={page.contentMode || DEFAULT_CONTENT_MODE_ID}
-              onChange={onContentModeChange}
-            >
-              {CONTENT_MODES.map(mode => (
-                <option key={mode.id} value={mode.id}>{mode.title}</option>
-              ))}
-            </Input>
-          </div>
+          <ContentModeSwitch
+              contentModeId={page.contentMode}
+              moduleId={page.id}
+              setContentMode={setContentMode}
+          />
           {renderEditor()}
         </div>
         <div className="mt-4">

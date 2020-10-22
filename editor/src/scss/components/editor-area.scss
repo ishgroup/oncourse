@@ -163,8 +163,19 @@
   .content-mode-wrapper {
     position: absolute;
     right: 10px;
-    top: 8px;
+    top: 14px;
     z-index: 1000;
+
+    .content-toggle {
+      padding: 2px;
+      width: auto;
+      min-width: unset;
+      background-color: black;
+      font-size: 9px;
+      border-radius: 0;
+      line-height: 1;
+      border: 0;
+    }
 
     .content-mode {
       max-width: 85px;
@@ -183,7 +194,7 @@
       position: absolute;
       height: 45px;
       z-index: 2;
-      left: 0px;
+      left: 0;
     }
 
     .ck.ck-icon.ck-dropdown__arrow {

@@ -3,11 +3,11 @@ import {Button, FormGroup, Input} from 'reactstrap';
 import classnames from 'classnames';
 import Editor from "../../../../../common/components/editor/HtmlEditor";
 import {BlockState} from "../reducers/State";
-import {CONTENT_MODES, DEFAULT_CONTENT_MODE_ID} from "../../../constants";
 import {addContentMarker} from "../../../utils";
 import MarkdownEditor from "../../../../../common/components/editor/MarkdownEditor";
 import marked from "marked";
 import {ContentMode} from "../../../../../model";
+import {ContentModeSwitch} from "../../../../../common/components/ContentModeSwitch";
 
 interface Props {
   block: BlockState;
@@ -55,7 +55,7 @@ const Block: React.FC<Props> = ({block, onSave, setContentMode}) => {
     if (!editMode && block.content) {
       document.dispatchEvent(pluginInitEvent);
     }
-  },[editMode, block, block && block.content]);
+  },        [editMode, block, block && block.content]);
 
   const onContentModeChange = e => {
     setContentMode(block.id,e.target.value);
@@ -89,23 +89,17 @@ const Block: React.FC<Props> = ({block, onSave, setContentMode}) => {
     <div>
       {editMode && <>
         <div className={
-          classnames({"editor-wrapper" : true, "ace-wrapper": block.contentMode === "html" || block.contentMode === "textile"})
+          classnames(
+            {
+              "editor-wrapper" : true,
+              "ace-wrapper": block.contentMode === "html" || block.contentMode === "textile"},
+          )
         }>
-          <div className="content-mode-wrapper">
-            <Input
-                type="select"
-                name="contentMode"
-                id="contentMode"
-                className="content-mode"
-                placeholder="Content mode"
-                value={block.contentMode || DEFAULT_CONTENT_MODE_ID}
-                onChange={e => onContentModeChange(e)}
-            >
-              {CONTENT_MODES.map(mode => (
-                <option key={mode.id} value={mode.id}>{mode.title}</option>
-              ))}
-            </Input>
-          </div>
+          <ContentModeSwitch
+              contentModeId={block.contentMode}
+              moduleId={block.id}
+              setContentMode={setContentMode}
+          />
           {renderEditor()}
         </div>
         <div className="mt-4">
