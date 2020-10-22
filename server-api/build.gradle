@@ -74,6 +74,8 @@ task swagger (type: Swagger, dependsOn: [clean]) {
     javaOutput = file("${project.projectDir}/build/generated-sources")
     traitOutput = file("${project.projectDir}/src/main/groovy/ish/oncourse/server/api/traits/")
     jsOutput = file("${rootDir}/client-html/build/generated-sources/swagger-js")
+    inputs.dir("src")
+
 }
 
 compileGroovy {

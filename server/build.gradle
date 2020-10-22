@@ -379,8 +379,15 @@ cgen {
 	}
 }
 
+task copyWebApp(type: Copy, dependsOn: ':client-html:build') {
+	from('../client-html/build/assets') {
+		include '**/*.*'
+	}
+	into 'build/resources/main/static'
+}
+
 compileJava {
-	dependsOn queryGrammar, cgen
+	dependsOn queryGrammar, cgen, copyWebApp
 }
 
 task runServer(dependsOn: [classes], type: JavaExec) {
@@ -390,14 +397,3 @@ task runServer(dependsOn: [classes], type: JavaExec) {
 	jvmArgs = ['-Xmx1024m', '-XX:+HeapDumpOnOutOfMemoryError']
 }
 
-processResources {
-	dependsOn ':client-html:build'
-	doLast {
-		copy {
-			from('../client-html/build/assets') {
-				include '**/*.*'
-			}
-			into 'build/resources/main/static'
-		}
-	}
-}
