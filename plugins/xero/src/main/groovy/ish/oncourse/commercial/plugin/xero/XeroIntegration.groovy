@@ -489,7 +489,7 @@ Review all the other employee settings and ensure they are correct.
 			subject(String.format(EMAIL_SUBJECT, contact.fullName))
 			content(String.format(EMAIL_CONTENT_TEMPLATE, contact.fullName, payslip.createdOn.format(DATE_FORMAT), message))
 			from (preferenceController.emailFromAddress)
-			to (bounceAddress, preferenceController.emailAdminAddress)
+			to (bounceAddress)
 		}
 		throw new RuntimeException(errorInfo)
 	}
