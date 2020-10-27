@@ -8,6 +8,7 @@ import ish.oncourse.server.cayenne.Certificate
 import ish.oncourse.server.cayenne.Student
 import ish.oncourse.server.reference.ReferenceUtil
 import ish.oncourse.webservices.v21.stubs.replication.CertificateStub
+import ish.util.LocalDateUtils
 
 class CertificateUpdater extends AbstractAngelUpdater<CertificateStub, Certificate> {
 	@Override
@@ -16,20 +17,20 @@ class CertificateUpdater extends AbstractAngelUpdater<CertificateStub, Certifica
 		entity.setUniqueCode(stub.getUniqueCode())
 		entity.setCreatedOn(stub.getCreated())
 		entity.setModifiedOn(stub.getModified())
-		entity.setPrintedOn(stub.getPrintedWhen())
+		entity.setPrintedOn(LocalDateUtils.dateToValue(stub.getPrintedWhen()))
 		entity.setPrivateNotes(stub.getPrivateNotes())
 		entity.setPublicNotes(stub.getPrivateNotes())
 		entity.setIsQualification(stub.isQualification())
 		if (stub.getQualificationId() != null) {
 			entity.setQualification(ReferenceUtil.findQualificationByWillowId(entity.getObjectContext(), stub.getQualificationId()))
 		}
-		entity.setRevokedOn(stub.getRevokedWhen())
+		entity.setRevokedOn(LocalDateUtils.dateToValue(stub.getRevokedWhen()))
 		entity.setStudentFirstName(stub.getStudentFirstName())
 		entity.setStudentLastName(stub.getStudentLastName())
 		if (stub.getStudentId() != null) {
 			entity.setStudent(callback.updateRelationShip(stub.getStudentId(), Student.class))
 		}
-		entity.setIssuedOn(stub.getIssued())
-		entity.setAwardedOn(stub.getAwarded())
+		entity.setIssuedOn(LocalDateUtils.dateToValue(stub.getIssued()))
+		entity.setAwardedOn(LocalDateUtils.dateToValue(stub.getAwarded()))
 	}
 }

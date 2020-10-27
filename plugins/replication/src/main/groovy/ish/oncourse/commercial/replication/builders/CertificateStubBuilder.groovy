@@ -6,6 +6,7 @@ package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.Certificate
 import ish.oncourse.webservices.v21.stubs.replication.CertificateStub
+import ish.util.LocalDateUtils
 
 /**
  */
@@ -20,19 +21,19 @@ class CertificateStubBuilder extends AbstractAngelStubBuilder<Certificate, Certi
 		stub.setCertificateNumber(entity.getCertificateNumber())
 		stub.setCreated(entity.getCreatedOn())
 		stub.setModified(entity.getModifiedOn())
-		stub.setPrintedWhen(entity.getPrintedOn())
+		stub.setPrintedWhen(LocalDateUtils.valueToDate(entity.getPrintedOn()))
 		stub.setPrivateNotes(entity.getPrivateNotes())
 		stub.setPublicNotes(entity.getPublicNotes())
 		stub.setQualification(entity.getIsQualification())
 		if (entity.getQualification() != null) {
 			stub.setQualificationId(entity.getQualification().getWillowId())
 		}
-		stub.setRevokedWhen(entity.getRevokedOn())
+		stub.setRevokedWhen(LocalDateUtils.valueToDate(entity.getRevokedOn()))
 		stub.setStudentId(entity.getStudent().getId())
 		stub.setStudentFirstName(entity.getStudentFirstName())
 		stub.setStudentLastName(entity.getStudentLastName())
-		stub.setIssued(entity.getIssuedOn())
-		stub.setAwarded(entity.getAwardedOn())
+		stub.setIssued(LocalDateUtils.valueToDate(entity.getIssuedOn()))
+		stub.setAwarded(LocalDateUtils.valueToDate(entity.getAwardedOn()))
 		stub.setUniqueCode(entity.getUniqueCode())
 		return stub
 	}
