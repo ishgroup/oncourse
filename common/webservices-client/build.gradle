@@ -1,5 +1,5 @@
 dependencies {
-    implementation ("ish.oncourse.angel:types:$typesVersion")
+    implementation ("ish.oncourse:types:$typesVersion")
 
     implementation group: 'javax.xml.ws', name: 'jaxws-api', version: '2.3.1'
     implementation group: 'javax.jws', name: 'javax.jws-api', version: '1.1'

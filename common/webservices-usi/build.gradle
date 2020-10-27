@@ -4,7 +4,7 @@ dependencies {
     compile (project(':common:common-services')) {
         exclude group: 'axis'
     }
-    compile ("ish.oncourse.angel:types:$typesVersion") {
+    compile ("ish.oncourse:types:$typesVersion") {
         exclude group: 'org.apache.cayenne', module: 'cayenne-server'
     }
 
