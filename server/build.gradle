@@ -31,8 +31,6 @@ configurations {
 // compile everything with the groovy plugin which can handle mixed groovy and Java files
 sourceSets {
 	main {
-		// generate some manifest files for lists of resources to find at runtime
-		output.dir("$buildDir/generated-resources/main", builtBy: 'createResourceManifests')
 		groovy {
 			srcDirs += 'src/main/java'
 			srcDirs += 'src/main/groovy'
@@ -186,28 +184,6 @@ dependencies {
 	apiTest "org.apache.derby:derbyclient:$derbyVersion"
 	apiTest "org.apache.derby:derbynet:$derbyVersion"
 }
-
-task createResourceManifests {
-	doLast {
-		def sources = ["resources/oncourse-scripts/export",
-					   "imports",
-					   "resources/oncourse-scripts/reports",
-					   "messages"
-		]
-		sources.each { s ->
-			def exportManifest = new File("$buildDir/generated-resources/main/$s", "manifest")
-			exportManifest.getParentFile().mkdirs()
-			exportManifest.write("")
-
-			FileTree tree = fileTree(dir: "src/main/resources/$s", includes: ['**/*.jrxml', '**/*.properties', '**/*.yaml', '**/*.yml'])
-			tree.visit {element ->
-				if (!element.isDirectory()) exportManifest.append("$s/$element.relativePath\n")
-			}
-		}
-	}
-}
-
-test.dependsOn(createResourceManifests)
 
 test {
 	// the database tests interfere with each other if run in parallel
