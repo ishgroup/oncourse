@@ -19,11 +19,11 @@ configurations {
 }
 
 dependencies {
-	compile "org.apache.cayenne:cayenne-server:$cayenneVersion"
-    compile 'org.apache.commons:commons-lang3:3.3.2'
-    compile 'commons-codec:commons-codec:1.10'
-    compile 'javax.mail:mail:1.4.7'
-	compile 'org.springframework:spring-context:4.2.4.RELEASE'
+    api "org.apache.cayenne:cayenne-server:$cayenneVersion"
+    api 'org.apache.commons:commons-lang3:3.7'
+    api 'commons-codec:commons-codec:1.14'
+    api 'javax.mail:mail:1.4.7'
+	api 'org.springframework:spring-context:4.2.4.RELEASE'
 }
 
 task sourceJar(type: Jar, dependsOn: classes) {
@@ -32,7 +32,7 @@ task sourceJar(type: Jar, dependsOn: classes) {
 }
 
 group = 'ish.oncourse'
-sourceCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = 11
 
 publishing {
     publications {

@@ -24,14 +24,10 @@ sourceSets.test.groovy.srcDir 'src/test/java'
 apply from: "$rootDir/gradle/bootique.gradle"
 
 sourceCompatibility = 11
-targetCompatibility = 11
 
 dependencies {
 
-    implementation (project(":types"))  {
-        exclude group: 'org.apache.logging.log4j'
-        exclude group: 'org.springframework'
-    }
+    api project(":types")
 
     api 'io.swagger:swagger-annotations:1.5.21'
     api "org.codehaus.groovy:groovy-all:$groovyVersion"
@@ -56,11 +52,6 @@ sourceSets {
     }
 }
 
-test {
-//    forkEvery = 1 //run every test in separate jvm
-//    initTestDBConfig(project, test)
-}
-
 tasks.withType(GroovyCompile).configureEach {
     options.incremental = true
 }
@@ -75,7 +66,6 @@ task swagger (type: Swagger, dependsOn: [clean]) {
     traitOutput = file("${project.projectDir}/src/main/groovy/ish/oncourse/server/api/traits/")
     jsOutput = file("${rootDir}/client-html/build/generated-sources/swagger-js")
     inputs.dir("src")
-
 }
 
 compileGroovy {
