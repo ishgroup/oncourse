@@ -69,7 +69,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
     onEditHtml: (id, content) => dispatch(savePage(id, {content}, true)),
     toggleEditMode: flag => dispatch(toggleEditMode(flag)),
     clearRenderHtml: id => dispatch(clearRenderHtml(id)),
-    setContentMode: (id: number, contentMode: ContentMode) => dispatch(setPageContentMode(id,contentMode))
+    setContentMode: (id: number, contentMode: ContentMode) => dispatch(setPageContentMode(id,contentMode)),
   };
 };
 

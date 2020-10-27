@@ -5,6 +5,7 @@ import {
   DELETE_BLOCK_FULFILLED,
   GET_BLOCKS_FULFILLED, SAVE_BLOCK_FULFILLED, SET_BLOCK_CONTENT_MODE,
 } from "../actions";
+import {CONTENT_MODES} from "../../../constants";
 
 export const blockReducer = (state: BlocksState = new BlocksState(), action: IAction<any>): BlocksState => {
   switch (action.type) {
@@ -27,7 +28,7 @@ export const blockReducer = (state: BlocksState = new BlocksState(), action: IAc
     }
 
     case ADD_BLOCK_FULFILLED: {
-      const block = action.payload;
+      const block = {...action.payload, contentMode: CONTENT_MODES[0].id};
 
       return {
         ...state,

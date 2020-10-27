@@ -31,7 +31,7 @@ export const Page: React.FC<PageProps> = ({
   clearRenderHtml,
   editMode,
   onSave,
-  setContentMode
+  setContentMode,
 }) => {
   const [editModeInner, setEditModeInner] = useState(false);
   const [draftContent, setDraftContent] = useState('');

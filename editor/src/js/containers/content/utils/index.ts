@@ -1,10 +1,12 @@
-import {DEFAULT_CONTENT_MODE_ID} from "../constants";
+import {CONTENT_MODES, DEFAULT_CONTENT_MODE_ID} from "../constants";
 import {ContentMode} from "../../../model";
 
 export const getContentModeId = text => {
-  if (!text) return DEFAULT_CONTENT_MODE_ID;
+  if (!text) return CONTENT_MODES[0].id;
   const markerIndex = text.lastIndexOf("{render:");
-  if (markerIndex === -1) return DEFAULT_CONTENT_MODE_ID;
+  if (markerIndex === -1) {
+    return text.trim().toLowerCase() === "sample content" ? CONTENT_MODES[0].id : DEFAULT_CONTENT_MODE_ID;
+  }
 
   const markerText = text.slice(markerIndex);
 

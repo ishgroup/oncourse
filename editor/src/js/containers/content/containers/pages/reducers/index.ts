@@ -5,7 +5,7 @@ import {
   DELETE_PAGE_FULFILLED, GET_PAGE_RENDER_FULFILLED,
   GET_PAGES_FULFILLED, SAVE_PAGE_FULFILLED, SET_CURRENT_PAGE, SET_PAGE_CONTENT_MODE, TOGGLE_EDIT_MODE,
 } from "../actions";
-import {SET_BLOCK_CONTENT_MODE} from "../../blocks/actions";
+import {CONTENT_MODES} from "../../../constants";
 
 export const pageReducer = (state: PagesState = new PagesState(), action: IAction<any>): PagesState => {
   switch (action.type) {
@@ -28,8 +28,7 @@ export const pageReducer = (state: PagesState = new PagesState(), action: IActio
     }
 
     case ADD_PAGE_FULFILLED: {
-      const page = action.payload;
-
+      const page = {...action.payload, contentMode: CONTENT_MODES[0].id};
       return {
         ...state,
         items: state.items.concat(page),
