@@ -73,21 +73,23 @@ subprojects {
 	sourceCompatibility = 11
 	// get the version from the command line properties
 	version = project.hasProperty('releaseVersion') && project.releaseVersion ? project.releaseVersion : "99-SNAPSHOT"
-//	version =  "99-SNAPSHOT"
-
-	if (it.name != 'api-test') {
-		dependencies {
-			api "org.apache.logging.log4j:log4j-api:$log4j2Version"
-			api "org.apache.logging.log4j:log4j-core:$log4j2Version"
-			api "org.apache.logging.log4j:log4j-1.2-api:$log4j2Version"
-			api "org.apache.logging.log4j:log4j-slf4j-impl:$log4j2Version"
-			api "org.apache.logging.log4j:log4j-jcl:$log4j2Version"
-		}
-	}
 
 	dependencies {
-		implementation "org.codehaus.groovy:groovy-all:$groovyVersion"
-		implementation "org.codehaus.groovy:groovy-dateutil:$groovyVersion"
+		api "org.apache.logging.log4j:log4j-api:$log4j2Version"
+		api "org.apache.logging.log4j:log4j-core:$log4j2Version"
+		api "org.apache.logging.log4j:log4j-1.2-api:$log4j2Version"
+		api "org.apache.logging.log4j:log4j-slf4j-impl:$log4j2Version"
+		api "org.apache.logging.log4j:log4j-jcl:$log4j2Version"
+
+		api "org.codehaus.groovy:groovy:$groovyVersion"
+		api "org.codehaus.groovy:groovy-datetime:$groovyVersion"
+		api "org.codehaus.groovy:groovy-json:$groovyVersion"
+		api "org.codehaus.groovy:groovy-jsr223:$groovyVersion"
+		api "org.codehaus.groovy:groovy-macro:$groovyVersion"
+		api "org.codehaus.groovy:groovy-xml:$groovyVersion"
+		api "org.codehaus.groovy:groovy-templates:$groovyVersion"
+		api "org.codehaus.groovy:groovy-xml:$groovyVersion"
+		api "org.codehaus.groovy:groovy-dateutil:$groovyVersion"
 
 		implementation 'javax.xml.bind:jaxb-api:2.3.0'
 		implementation 'javax.xml.ws:jaxws-api:2.3.0'
@@ -95,16 +97,7 @@ subprojects {
 
 		testImplementation 'junit:junit:4.13'
 		testImplementation 'org.dbunit:dbunit:2.6.0'
-
-		implementation 'com.google.code.findbugs:jsr305:3.0.2'
-
-		// The following is needed until we upgrade waCommon which is forcing Cayenne back to 4.0M3.2
-		configurations.all {
-			resolutionStrategy {
-				force "org.apache.cayenne:cayenne-server:$cayenneVersion"
-			}
-		}
-    }
+	}
 
 	group = 'ish.oncourse.angel'
 

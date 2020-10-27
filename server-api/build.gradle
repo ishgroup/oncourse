@@ -30,7 +30,6 @@ dependencies {
     api project(":types")
 
     api 'io.swagger:swagger-annotations:1.5.21'
-    api "org.codehaus.groovy:groovy-all:$groovyVersion"
 
     api "org.apache.cxf:cxf-core:$cfxVersion"
     api "org.apache.cxf:cxf-rt-frontend-jaxrs:$cfxVersion"
