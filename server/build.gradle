@@ -17,7 +17,6 @@ apply plugin: 'apidoc'
 apply plugin: 'org.apache.cayenne'
 apply plugin: 'application'
 
-apply from: "$rootDir/gradle/bootique.gradle"
 apply plugin: 'com.github.psxpaul.execfork'
 
 configurations {
@@ -53,6 +52,10 @@ sourceSets {
 dependencies {
 	api project(":types")
 	api project(':server-api')
+
+	implementation "io.bootique.jetty:bootique-jetty:$bootiqueVersion"
+	implementation "io.bootique.cayenne:bootique-cayenne:$bootiqueVersion"
+	implementation "io.bootique.jdbc:bootique-jdbc-tomcat:$bootiqueVersion"
 
 	api ("org.apache.cxf:cxf-rt-frontend-jaxws:$cfxVersion") {
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'

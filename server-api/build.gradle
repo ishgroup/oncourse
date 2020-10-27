@@ -21,8 +21,6 @@ sourceSets.main.groovy.srcDir 'src/main/java'
 sourceSets.test.java.srcDirs = []
 sourceSets.test.groovy.srcDir 'src/test/java'
 
-apply from: "$rootDir/gradle/bootique.gradle"
-
 sourceCompatibility = 11
 
 dependencies {
@@ -41,6 +39,8 @@ dependencies {
     //latest jackson 2.9.9 conflicts with spring AbstractApplicationContext
     api "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.8.7"
     api "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.7"
+
+    api "io.bootique.jetty:bootique-jetty:$bootiqueVersion"
 }
 
 sourceSets {
