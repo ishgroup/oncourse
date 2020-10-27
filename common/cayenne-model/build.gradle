@@ -2,7 +2,7 @@
 apply plugin: 'org.apache.cayenne'
 
 dependencies {
-    compile ("ish.oncourse.willow:waCommon:$waCommonWebservicesClientVersion") {
+    compile ("ish.oncourse.angel:types:$typesVersion") {
         //we should exclude cayenne-server from waCommon because the cayenne-server is not compatable to willow code.
         exclude group: 'org.apache.cayenne', module: 'cayenne-server'
     }
