@@ -1,6 +1,7 @@
 package ish.oncourse.webservices.utils;
 
 import ish.common.types.AvetmissStudentSchoolLevel;
+import ish.common.types.Gender;
 import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.webservices.services.AppModule;
@@ -59,7 +60,7 @@ public class CityEastContactImport extends AbstractUtil {
         columns.add(Contact.STUDENT_PROPERTY + "." + Student.SPECIAL_NEEDS_PROPERTY);
         columns.add(Contact.GIVEN_NAME_PROPERTY);
         columns.add(Contact.FAMILY_NAME_PROPERTY);
-        columns.add(Contact.IS_MALE_PROPERTY);
+        columns.add(Contact.GENDER_PROPERTY);
         columns.add(Contact.STREET_PROPERTY);
         columns.add(Contact.SUBURB_PROPERTY);
         columns.add(Contact.STATE_PROPERTY);
@@ -209,13 +210,13 @@ public class CityEastContactImport extends AbstractUtil {
                             break;
                         }
                         break;
-                    case Contact.IS_MALE_PROPERTY:
+                    case Contact.GENDER_PROPERTY:
                         switch (value.toLowerCase()) {
                             case "m":
-                                contact.setIsMale(true);
+                                contact.setGender(Gender.MALE);
                                 break;
                             case "f":
-                                contact.setIsMale(false);
+                                contact.setGender(Gender.FEMALE);
                                 break;
                         }
                         break;

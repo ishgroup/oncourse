@@ -28,6 +28,10 @@
 
 	<bean id="v21_paymentPortType" class="ish.oncourse.webservices.soap.v21.TestPaymentPortTypeImpl" />
 
+	<bean id="v22_replicationPortType" class="ish.oncourse.webservices.soap.v22.TestReplicationPortTypeImpl" />
+
+	<bean id="v22_paymentPortType" class="ish.oncourse.webservices.soap.v22.TestPaymentPortTypeImpl" />
+
 	<cxf:bus>
 		<cxf:features>
 			<ref bean="gzipFeature" />
@@ -50,8 +54,24 @@
 		</jaxws:inInterceptors>
 	</jaxws:endpoint>
 
+	<jaxws:endpoint id="v22_replication" implementor="#v22_replicationPortType"
+					address="/v22/replication">
+		<jaxws:inInterceptors>
+			<ref bean="communicationKeyInterceptor" />
+			<ref bean="collegeRequestInterceptor" />
+		</jaxws:inInterceptors>
+	</jaxws:endpoint>
+
 	<jaxws:endpoint id="v21_payment" implementor="#v21_paymentPortType"
 					address="/v21/payment">
+		<jaxws:inInterceptors>
+			<ref bean="securityCodeInterceptor" />
+			<ref bean="collegeRequestInterceptor" />
+		</jaxws:inInterceptors>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="v22_payment" implementor="#v22_paymentPortType"
+					address="/v22/payment">
 		<jaxws:inInterceptors>
 			<ref bean="securityCodeInterceptor" />
 			<ref bean="collegeRequestInterceptor" />
