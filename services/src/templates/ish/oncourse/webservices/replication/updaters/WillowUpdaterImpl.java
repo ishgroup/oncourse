@@ -4,7 +4,7 @@ import ish.common.types.EntityMapping;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Queueable;
 import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.services.textile.IRichtextConverter;
+import ish.oncourse.services.IRichtextConverter;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.webservices.exception.UpdaterNotFoundException;<% replicationVersions.each { v -> %>
 import ish.oncourse.webservices.replication.v${v}.updaters.V${v}UpdatersMap;<% } %>
