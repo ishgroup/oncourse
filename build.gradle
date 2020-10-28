@@ -96,6 +96,11 @@ subprojects {
 
 		testImplementation 'junit:junit:4.13'
 		testImplementation 'org.dbunit:dbunit:2.6.0'
+
+		testImplementation "org.codehaus.groovy:groovy-test:$groovyVersion"
+		testImplementation "org.codehaus.groovy:groovy-test-junit5:$groovyVersion"
+		testImplementation "org.codehaus.groovy:groovy-testng:$groovyVersion"
+		testImplementation "org.codehaus.groovy:groovy-sql:$groovyVersion"
 	}
 
 	group = 'ish.oncourse.angel'
