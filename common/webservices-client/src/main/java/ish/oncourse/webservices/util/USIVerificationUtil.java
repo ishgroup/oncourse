@@ -53,7 +53,9 @@ public class USIVerificationUtil {
 		Map<String, String> usiParams = parseParametersMap(parametersMap);
 		
 		if (StringUtils.isNotBlank(usiParams.get(ERROR_MESSAGE))) {
-			return USIVerificationResult.valueOf(usiParams.get(ERROR_MESSAGE));
+			USIVerificationResult result = new USIVerificationResult();
+			result.setErrorMessage(usiParams.get(ERROR_MESSAGE));
+			return result;
 		}
 
 		USIVerificationResult result = new USIVerificationResult();

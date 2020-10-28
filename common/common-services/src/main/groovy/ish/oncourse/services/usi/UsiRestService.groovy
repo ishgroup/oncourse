@@ -52,7 +52,9 @@ class UsiRestService implements IUsiRestService {
                 { response, body ->
                     String error = body["errorMessage"] as String
                     if (error) {
-                        result =  USIVerificationResult.valueOf(error)
+                        USIVerificationResult usiResult = new USIVerificationResult()
+                        usiResult.setErrorMessage(error)
+                        result =  usiResult
                     } else {
                         result.usiStatus = USIVerificationStatus.values().find {it.name() == body["usiStatus"] }
                         result.firstNameStatus = USIFieldStatus.values().find {it.name() == body["firstNameStatus"] }
@@ -64,7 +66,9 @@ class UsiRestService implements IUsiRestService {
         } catch (Exception e) {
             logger.error("can not verify usi: $request, $abn, $ssid")
             logger.catching(e)
-            return  USIVerificationResult.valueOf("Can not verify USI. Please, connect support team")
+            USIVerificationResult usiResult = new USIVerificationResult()
+            usiResult.setErrorMessage("Can not verify USI. Please, connect support team")
+            return usiResult
         }
         return result
 

@@ -180,11 +180,15 @@ public class USIService {
             if (advice != null) {
                 userAdvice += " " + advice + " ";
             }
-            return USIVerificationResult.valueOf(userAdvice);
+            USIVerificationResult usiResult = new USIVerificationResult();
+            usiResult.setErrorMessage(userAdvice);
+            return usiResult;
 
         } catch (Exception e) {
             exception = e;
-            return USIVerificationResult.valueOf("The government USI verification service is not responding. You may need to wait a little while and try again.");
+            USIVerificationResult usiResult = new USIVerificationResult();
+            usiResult.setErrorMessage("The government USI verification service is not responding. You may need to wait a little while and try again.");
+            return usiResult;
         } finally {
             if (exception != null) {
                 String log = "Unable to verify USI code\n";
