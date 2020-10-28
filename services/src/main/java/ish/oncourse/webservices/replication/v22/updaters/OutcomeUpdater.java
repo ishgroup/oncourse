@@ -3,6 +3,7 @@ package ish.oncourse.webservices.replication.v22.updaters;
 import ish.common.types.ClassFundingSource;
 import ish.common.types.OutcomeStatus;
 import ish.common.types.TypesUtil;
+import ish.oncourse.model.Module;
 import ish.oncourse.model.*;
 import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
