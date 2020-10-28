@@ -18,7 +18,7 @@ import ish.oncourse.webservices.util.GenericBinaryDataStub;
  * <pre>
  * &lt;complexType name="binaryDataStub"&gt;
  *   &lt;complexContent&gt;
- *     &lt;extension base="{http://repl.v21.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *     &lt;extension base="{http://repl.v22.soap.webservices.oncourse.ish/}replicationStub"&gt;
  *       &lt;sequence&gt;
  *         &lt;element name="content" type="{http://www.w3.org/2001/XMLSchema}base64Binary"/&gt;
  *         &lt;element name="binaryInfoId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;

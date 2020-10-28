@@ -21,7 +21,7 @@ import ish.oncourse.webservices.util.GenericTransactionGroup;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
  *         &lt;element name="transactionKeys" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded"/&gt;
- *         &lt;element ref="{http://repl.v21.soap.webservices.oncourse.ish/}replicationStub" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *         &lt;element ref="{http://repl.v22.soap.webservices.oncourse.ish/}replicationStub" maxOccurs="unbounded" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -41,7 +41,7 @@ public class TransactionGroup
 
     @XmlElement(required = true)
     protected List<String> transactionKeys;
-    @XmlElement(namespace = "http://repl.v21.soap.webservices.oncourse.ish/")
+    @XmlElement(namespace = "http://repl.v22.soap.webservices.oncourse.ish/")
     protected List<ReplicationStub> replicationStub;
 
     /**

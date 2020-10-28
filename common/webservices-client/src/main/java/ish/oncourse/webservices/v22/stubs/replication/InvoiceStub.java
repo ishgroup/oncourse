@@ -20,7 +20,7 @@ import ish.oncourse.webservices.util.GenericInvoiceStub;
  * <pre>
  * &lt;complexType name="invoiceStub"&gt;
  *   &lt;complexContent&gt;
- *     &lt;extension base="{http://repl.v21.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *     &lt;extension base="{http://repl.v22.soap.webservices.oncourse.ish/}replicationStub"&gt;
  *       &lt;sequence&gt;
  *         &lt;element name="amountOwing" type="{http://www.w3.org/2001/XMLSchema}decimal"/&gt;
  *         &lt;element name="billToAddress" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;

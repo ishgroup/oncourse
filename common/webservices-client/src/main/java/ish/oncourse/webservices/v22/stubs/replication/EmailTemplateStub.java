@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="emailTemplateStub"&gt;
  *   &lt;complexContent&gt;
- *     &lt;extension base="{http://repl.v21.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *     &lt;extension base="{http://repl.v22.soap.webservices.oncourse.ish/}replicationStub"&gt;
  *       &lt;sequence&gt;
  *         &lt;element name="bodyHtml" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
  *         &lt;element name="bodyPlain" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;

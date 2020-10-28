@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * <pre>
  * &lt;complexType name="systemUserStub"&gt;
  *   &lt;complexContent&gt;
- *     &lt;extension base="{http://repl.v21.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *     &lt;extension base="{http://repl.v22.soap.webservices.oncourse.ish/}replicationStub"&gt;
  *       &lt;sequence&gt;
  *         &lt;element name="editCMS" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
  *         &lt;element name="editTara" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;

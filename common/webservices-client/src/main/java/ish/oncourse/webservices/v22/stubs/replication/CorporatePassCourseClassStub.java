@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * <pre>
  * &lt;complexType name="corporatePassCourseClassStub"&gt;
  *   &lt;complexContent&gt;
- *     &lt;extension base="{http://repl.v21.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *     &lt;extension base="{http://repl.v22.soap.webservices.oncourse.ish/}replicationStub"&gt;
  *       &lt;sequence&gt;
  *         &lt;element name="corporatePassId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
  *         &lt;element name="courseClassId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;

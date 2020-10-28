@@ -22,7 +22,7 @@ import ish.oncourse.webservices.util.GenericUnreplicatedEntitiesStub;
  *       &lt;sequence&gt;
  *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
  *         &lt;element name="message" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
- *         &lt;element name="parameters" type="{http://repl.v21.soap.webservices.oncourse.ish/}ParametersMap" minOccurs="0"/&gt;
+ *         &lt;element name="parameters" type="{http://repl.v22.soap.webservices.oncourse.ish/}ParametersMap" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;

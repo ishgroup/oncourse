@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * <pre>
  * &lt;complexType name="contactStub"&gt;
  *   &lt;complexContent&gt;
- *     &lt;extension base="{http://repl.v21.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *     &lt;extension base="{http://repl.v22.soap.webservices.oncourse.ish/}replicationStub"&gt;
  *       &lt;sequence&gt;
  *         &lt;element name="businessPhoneNumber" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
  *         &lt;element name="cookieHash" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;

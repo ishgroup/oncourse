@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="hollowStub"&gt;
  *   &lt;complexContent&gt;
- *     &lt;extension base="{http://repl.v21.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *     &lt;extension base="{http://repl.v22.soap.webservices.oncourse.ish/}replicationStub"&gt;
  *       &lt;sequence&gt;
  *       &lt;/sequence&gt;
  *     &lt;/extension&gt;

@@ -15,7 +15,7 @@ import ish.oncourse.webservices.util.GenericDeletedStub;
  * <pre>
  * &lt;complexType name="deletedStub"&gt;
  *   &lt;complexContent&gt;
- *     &lt;extension base="{http://repl.v21.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *     &lt;extension base="{http://repl.v22.soap.webservices.oncourse.ish/}replicationStub"&gt;
  *       &lt;sequence&gt;
  *       &lt;/sequence&gt;
  *     &lt;/extension&gt;

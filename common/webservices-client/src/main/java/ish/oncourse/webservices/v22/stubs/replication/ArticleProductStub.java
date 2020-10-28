@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="articleProductStub"&gt;
  *   &lt;complexContent&gt;
- *     &lt;extension base="{http://repl.v21.soap.webservices.oncourse.ish/}productStub"&gt;
+ *     &lt;extension base="{http://repl.v22.soap.webservices.oncourse.ish/}productStub"&gt;
  *       &lt;sequence&gt;
  *         &lt;element name="weight" type="{http://www.w3.org/2001/XMLSchema}double"/&gt;
  *       &lt;/sequence&gt;

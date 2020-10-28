@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions name="ReplicationService" targetNamespace="http://repl.v21.soap.webservices.oncourse.ish/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-                  xmlns:tns="http://repl.v21.soap.webservices.oncourse.ish/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+<wsdl:definitions name="ReplicationService" targetNamespace="http://repl.v22.soap.webservices.oncourse.ish/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:tns="http://repl.v22.soap.webservices.oncourse.ish/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
     <wsdl:types>
-        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://repl.v21.soap.webservices.oncourse.ish/"
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://repl.v22.soap.webservices.oncourse.ish/"
                    xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
                    xmlns:inheritance="http://jaxb2-commons.dev.java.net/basic/inheritance"
                    jaxb:extensionBindingPrefixes="inheritance"
                    elementFormDefault="unqualified"
-                   targetNamespace="http://repl.v21.soap.webservices.oncourse.ish/" version="1.0">
+                   targetNamespace="http://repl.v22.soap.webservices.oncourse.ish/" version="1.0">
             <xs:element name="replicationStub" type="tns:replicationStub"/>
             <xs:element name="aclAccessKey" type="tns:aclAccessKeyStub"/>
             <xs:element name="aclRole" type="tns:aclRoleStub"/>
@@ -2181,11 +2181,11 @@
     <wsdl:service name="ReplicationService">
 
         <wsdl:port name="ReplicationPort" binding="tns:ReplicationServiceSoapBinding">
-            <soap:address location="https://secure-payment.oncourse.net.au/services/v21/replication" />
+            <soap:address location="https://secure-payment.oncourse.net.au/services/v22/replication" />
         </wsdl:port>
 
         <wsdl:port name="PaymentPortType" binding="tns:PaymentServiceSoapBinding">
-            <soap:address location="https://secure-payment.oncourse.net.au/services/v21/payment" />
+            <soap:address location="https://secure-payment.oncourse.net.au/services/v22/payment" />
         </wsdl:port>
 
     </wsdl:service>

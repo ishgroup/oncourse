@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * <pre>
  * &lt;complexType name="voucherProductStub"&gt;
  *   &lt;complexContent&gt;
- *     &lt;extension base="{http://repl.v21.soap.webservices.oncourse.ish/}productStub"&gt;
+ *     &lt;extension base="{http://repl.v22.soap.webservices.oncourse.ish/}productStub"&gt;
  *       &lt;sequence&gt;
  *         &lt;element name="expiryDays" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
  *         &lt;element name="expiryType" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;

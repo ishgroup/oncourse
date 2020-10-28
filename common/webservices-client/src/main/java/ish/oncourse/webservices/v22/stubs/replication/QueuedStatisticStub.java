@@ -19,7 +19,7 @@ import ish.oncourse.webservices.util.GenericQueuedStatisticStub;
  * <pre>
  * &lt;complexType name="queuedStatisticStub"&gt;
  *   &lt;complexContent&gt;
- *     &lt;extension base="{http://repl.v21.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *     &lt;extension base="{http://repl.v22.soap.webservices.oncourse.ish/}replicationStub"&gt;
  *       &lt;sequence&gt;
  *         &lt;element name="stackedTransactionsCount" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
  *         &lt;element name="stackedCount" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;

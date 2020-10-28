@@ -19,7 +19,7 @@ import ish.oncourse.webservices.util.GenericEnrolmentStub;
  * <pre>
  * &lt;complexType name="enrolmentStub"&gt;
  *   &lt;complexContent&gt;
- *     &lt;extension base="{http://repl.v21.soap.webservices.oncourse.ish/}replicationStub"&gt;
+ *     &lt;extension base="{http://repl.v22.soap.webservices.oncourse.ish/}replicationStub"&gt;
  *       &lt;sequence&gt;
  *         &lt;element name="reasonForStudy" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
  *         &lt;element name="source" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;

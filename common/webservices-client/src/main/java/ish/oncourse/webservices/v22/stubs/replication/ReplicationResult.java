@@ -20,7 +20,7 @@ import ish.oncourse.webservices.util.GenericReplicationResult;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="replicatedRecord" type="{http://repl.v21.soap.webservices.oncourse.ish/}replicatedRecord" maxOccurs="unbounded"/&gt;
+ *         &lt;element name="replicatedRecord" type="{http://repl.v22.soap.webservices.oncourse.ish/}replicatedRecord" maxOccurs="unbounded"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
