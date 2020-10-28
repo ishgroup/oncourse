@@ -206,7 +206,7 @@
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="invoiceTerms" type="INTEGER"/>
 		<db-attribute name="isCompany" type="BIT"/>
-		<db-attribute name="isMale" type="BIT"/>
+		<db-attribute name="isMale" type="TINYINT"/>
 		<db-attribute name="isMarketingViaEmailAllowed" type="BIT"/>
 		<db-attribute name="isMarketingViaPostAllowed" type="BIT"/>
 		<db-attribute name="isMarketingViaSMSAllowed" type="BIT"/>
@@ -965,7 +965,7 @@
 		<db-attribute name="angelId" type="BIGINT"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
-		<db-attribute name="description" type="VARCHAR" length="8000"/>
+		<db-attribute name="description" type="CLOB" length="8000"/>
 		<db-attribute name="expiryDays" type="INTEGER"/>
 		<db-attribute name="expiryType" type="INTEGER"/>
 		<db-attribute name="feeGST" type="DECIMAL" length="10" scale="2"/>
@@ -975,7 +975,7 @@
 		<db-attribute name="maxCoursesRedemption" type="INTEGER"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" length="500"/>
-		<db-attribute name="notes" type="VARCHAR" length="8000"/>
+		<db-attribute name="notes" type="CLOB" length="8000"/>
 		<db-attribute name="priceExTax" type="DECIMAL" length="10" scale="2"/>
 		<db-attribute name="sku" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="taxAdjustment" type="DECIMAL" length="10" scale="2"/>
@@ -1686,7 +1686,7 @@
 		<obj-attribute name="honorific" type="java.lang.String" db-attribute-path="honorific"/>
 		<obj-attribute name="invoiceTerms" type="java.lang.Integer" db-attribute-path="invoiceTerms"/>
 		<obj-attribute name="isCompany" type="java.lang.Boolean" db-attribute-path="isCompany"/>
-		<obj-attribute name="isMale" type="java.lang.Boolean" db-attribute-path="isMale"/>
+		<obj-attribute name="gender" type="ish.common.types.Gender" db-attribute-path="isMale"/>
 		<obj-attribute name="isMarketingViaEmailAllowed" type="java.lang.Boolean" db-attribute-path="isMarketingViaEmailAllowed"/>
 		<obj-attribute name="isMarketingViaPostAllowed" type="java.lang.Boolean" db-attribute-path="isMarketingViaPostAllowed"/>
 		<obj-attribute name="isMarketingViaSMSAllowed" type="java.lang.Boolean" db-attribute-path="isMarketingViaSMSAllowed"/>
