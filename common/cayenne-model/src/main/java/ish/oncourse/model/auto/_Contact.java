@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.apache.cayenne.exp.Property;
 
+import ish.common.types.Gender;
 import ish.oncourse.model.AssessmentSubmission;
 import ish.oncourse.model.College;
 import ish.oncourse.model.ContactCustomField;
@@ -50,7 +51,7 @@ public abstract class _Contact extends ExpandableCayenneDataObject {
     public static final String HONORIFIC_PROPERTY = "honorific";
     public static final String INVOICE_TERMS_PROPERTY = "invoiceTerms";
     public static final String IS_COMPANY_PROPERTY = "isCompany";
-    public static final String IS_MALE_PROPERTY = "isMale";
+    public static final String GENDER_PROPERTY = "gender";
     public static final String IS_MARKETING_VIA_EMAIL_ALLOWED_PROPERTY = "isMarketingViaEmailAllowed";
     public static final String IS_MARKETING_VIA_POST_ALLOWED_PROPERTY = "isMarketingViaPostAllowed";
     public static final String IS_MARKETING_VIA_SMSALLOWED_PROPERTY = "isMarketingViaSMSAllowed";
@@ -103,7 +104,7 @@ public abstract class _Contact extends ExpandableCayenneDataObject {
     public static final Property<String> HONORIFIC = Property.create("honorific", String.class);
     public static final Property<Integer> INVOICE_TERMS = Property.create("invoiceTerms", Integer.class);
     public static final Property<Boolean> IS_COMPANY = Property.create("isCompany", Boolean.class);
-    public static final Property<Boolean> IS_MALE = Property.create("isMale", Boolean.class);
+    public static final Property<Gender> GENDER = Property.create("gender", Gender.class);
     public static final Property<Boolean> IS_MARKETING_VIA_EMAIL_ALLOWED = Property.create("isMarketingViaEmailAllowed", Boolean.class);
     public static final Property<Boolean> IS_MARKETING_VIA_POST_ALLOWED = Property.create("isMarketingViaPostAllowed", Boolean.class);
     public static final Property<Boolean> IS_MARKETING_VIA_SMSALLOWED = Property.create("isMarketingViaSMSAllowed", Boolean.class);
@@ -154,7 +155,7 @@ public abstract class _Contact extends ExpandableCayenneDataObject {
     protected String honorific;
     protected Integer invoiceTerms;
     protected Boolean isCompany;
-    protected Boolean isMale;
+    protected Gender gender;
     protected Boolean isMarketingViaEmailAllowed;
     protected Boolean isMarketingViaPostAllowed;
     protected Boolean isMarketingViaSMSAllowed;
@@ -332,14 +333,14 @@ public abstract class _Contact extends ExpandableCayenneDataObject {
         return this.isCompany;
     }
 
-    public void setIsMale(Boolean isMale) {
-        beforePropertyWrite("isMale", this.isMale, isMale);
-        this.isMale = isMale;
+    public void setGender(Gender gender) {
+        beforePropertyWrite("gender", this.gender, gender);
+        this.gender = gender;
     }
 
-    public Boolean getIsMale() {
-        beforePropertyRead("isMale");
-        return this.isMale;
+    public Gender getGender() {
+        beforePropertyRead("gender");
+        return this.gender;
     }
 
     public void setIsMarketingViaEmailAllowed(Boolean isMarketingViaEmailAllowed) {
@@ -752,8 +753,8 @@ public abstract class _Contact extends ExpandableCayenneDataObject {
                 return this.invoiceTerms;
             case "isCompany":
                 return this.isCompany;
-            case "isMale":
-                return this.isMale;
+            case "gender":
+                return this.gender;
             case "isMarketingViaEmailAllowed":
                 return this.isMarketingViaEmailAllowed;
             case "isMarketingViaPostAllowed":
@@ -878,8 +879,8 @@ public abstract class _Contact extends ExpandableCayenneDataObject {
             case "isCompany":
                 this.isCompany = (Boolean)val;
                 break;
-            case "isMale":
-                this.isMale = (Boolean)val;
+            case "gender":
+                this.gender = (Gender)val;
                 break;
             case "isMarketingViaEmailAllowed":
                 this.isMarketingViaEmailAllowed = (Boolean)val;
@@ -1016,7 +1017,7 @@ public abstract class _Contact extends ExpandableCayenneDataObject {
         out.writeObject(this.honorific);
         out.writeObject(this.invoiceTerms);
         out.writeObject(this.isCompany);
-        out.writeObject(this.isMale);
+        out.writeObject(this.gender);
         out.writeObject(this.isMarketingViaEmailAllowed);
         out.writeObject(this.isMarketingViaPostAllowed);
         out.writeObject(this.isMarketingViaSMSAllowed);
@@ -1071,7 +1072,7 @@ public abstract class _Contact extends ExpandableCayenneDataObject {
         this.honorific = (String)in.readObject();
         this.invoiceTerms = (Integer)in.readObject();
         this.isCompany = (Boolean)in.readObject();
-        this.isMale = (Boolean)in.readObject();
+        this.gender = (Gender)in.readObject();
         this.isMarketingViaEmailAllowed = (Boolean)in.readObject();
         this.isMarketingViaPostAllowed = (Boolean)in.readObject();
         this.isMarketingViaSMSAllowed = (Boolean)in.readObject();

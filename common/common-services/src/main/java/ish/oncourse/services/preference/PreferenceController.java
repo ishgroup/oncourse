@@ -337,7 +337,7 @@ public class PreferenceController extends CommonPreferenceController {
 		dateOfBirth("birth", Contact.DATE_OF_BIRTH.getName(), Date.class, false, true),
 		specialNeeds("specialneeds", Contact.STUDENT.getName() + "." + Student.SPECIAL_NEEDS.getName(), String.class, false, true),
 		abn("abn", Contact.ABN.getName(), String.class, true, false),
-		isMale("isMale", Contact.IS_MALE.getName(), Boolean.class, false, true),
+		isMale("isMale", Contact.GENDER.getName(), Boolean.class, false, true),
 		townCityOfBirth("townCityOfBirth", Student.TOWN_OF_BIRTH.getName(), String.class, false, true);
 
 		private final String preferenceName;

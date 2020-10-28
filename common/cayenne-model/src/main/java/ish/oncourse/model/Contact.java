@@ -1,9 +1,6 @@
 package ish.oncourse.model;
 
-import ish.common.types.AvetmissStudentEnglishProficiency;
-import ish.common.types.AvetmissStudentIndigenousStatus;
-import ish.common.types.AvetmissStudentPriorEducation;
-import ish.common.types.AvetmissStudentSchoolLevel;
+import ish.common.types.*;
 import ish.oncourse.common.field.ContextType;
 import ish.oncourse.common.field.FieldProperty;
 import ish.oncourse.common.field.Property;
@@ -378,16 +375,28 @@ public class Contact extends _Contact implements Queueable {
 		return super.getAbn();
 	}
 
-	@Property(value = FieldProperty.IS_MALE, type = PropertyGetSetFactory.SET, params = {Boolean.class})
+	@Property(value = FieldProperty.IS_MALE, type = PropertyGetSetFactory.SET, params = {Gender.class})
 	@Override
-	public void setIsMale(Boolean isMale) {
-		super.setIsMale(isMale);
+	public void setGender(Gender isMale) {
+		super.setGender(isMale);
 	}
 
 	@Property(value = FieldProperty.IS_MALE, type = PropertyGetSetFactory.GET, params = {})
 	@Override
+	public Gender getGender() {
+		return super.getGender();
+	}
+
+	@Deprecated
 	public Boolean getIsMale() {
-		return super.getIsMale();
+		switch (super.getGender()) {
+			case MALE:
+				return true;
+			case FEMALE:
+				return false;
+			default:
+				return null;
+		}
 	}
 
 	@Property(value = FieldProperty.IS_MARKETING_VIA_EMAIL_ALLOWED_PROPERTY, type = PropertyGetSetFactory.SET, params = {Boolean.class})
