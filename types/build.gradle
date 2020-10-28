@@ -32,7 +32,7 @@ task sourceJar(type: Jar, dependsOn: classes) {
 }
 
 group = 'ish.oncourse'
-sourceCompatibility = 11
+sourceCompatibility = 8
 
 publishing {
     publications {
