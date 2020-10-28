@@ -1,5 +1,6 @@
 package ish.oncourse.portal.usi;
 
+import ish.common.types.Gender;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Student;
 import ish.oncourse.portal.usi.handler.CountryOfBirthHandler;
@@ -50,8 +51,8 @@ public class ContactInfoHandler extends AbstractStepHandler {
 				addValue(Value.valueOf(TOWN_OF_BIRTH.getName(), student.getTownOfBirth(), true, false));
 			}
 
-			if (contact.getIsMale() == null) {
-				addValue(Value.valueOf(IS_MALE.getName(), contact.getIsMale(), true));
+			if (contact.getGender() == null) {
+				addValue(Value.valueOf(GENDER.getName(), contact.getGender(), true));
 			}
 
 			if (isBlank(contact.getState())) {
@@ -128,8 +129,8 @@ public class ContactInfoHandler extends AbstractStepHandler {
 			handleContactValue(student, TOWN_OF_BIRTH.getName());
 		}
 
-		if (contact.getIsMale() == null) {
-			handleGenderValue(contact, IS_MALE.getName());
+		if (contact.getGender() == null) {
+			handleGenderValue(contact, GENDER.getName());
 		}
 
 		if (isBlank(contact.getState())) {
@@ -180,9 +181,11 @@ public class ContactInfoHandler extends AbstractStepHandler {
 			result.setHasErrors(true);
 		} else {
 			if (inputValue.getValue().equals("male")) {
-				contact.setIsMale(Boolean.TRUE);
+				contact.setGender(Gender.MALE);
 			} else if (inputValue.getValue().equals("female")) {
-				contact.setIsMale(Boolean.FALSE);
+				contact.setGender(Gender.FEMALE);
+			} else {
+				contact.setGender(Gender.OTHER_GENDER);
 			}
 			result.addValue(Value.valueOf(key, contact.getIsMale()));
 		}
