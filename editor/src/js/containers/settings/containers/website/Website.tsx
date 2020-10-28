@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect, Dispatch} from "react-redux";
-import {Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText} from 'reactstrap';
+import {Row, Col, Button, Form, FormGroup, Label, Input, FormText} from 'reactstrap';
 import classnames from "classnames";
 import {getWebsiteSettings, setWebsiteSettings} from "./actions";
 import {Checkbox} from "../../../../common/components/Checkbox";
@@ -96,6 +96,7 @@ export class Website extends React.Component<Props, any> {
       <div className={classnames({fetching})}>
         <Form>
           <FormGroup>
+            <h4>ADD THIS</h4>
             <Checkbox
               label="Enable social media links."
               name="enableSocialMedia"
@@ -104,7 +105,7 @@ export class Website extends React.Component<Props, any> {
             />
           </FormGroup>
 
-          <FormGroup>
+          <FormGroup className="mb-6">
             <Label htmlFor="addThisId">AddThis profile id</Label>
             <Row>
               <Col sm={3}>
@@ -120,8 +121,9 @@ export class Website extends React.Component<Props, any> {
             </Row>
           </FormGroup>
 
-          <h6>Enable for these pages</h6>
-          <FormGroup>
+          <FormGroup className="pt-2">
+            <h4>VISIBILITY RULES</h4>
+            <h6>Enable for these pages</h6>
             <Checkbox
               label="Course"
               name="enableForCourse"
