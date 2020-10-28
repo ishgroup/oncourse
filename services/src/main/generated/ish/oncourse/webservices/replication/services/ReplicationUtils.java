@@ -53,17 +53,17 @@ public class ReplicationUtils {
 		final SupportedVersions version = PortHelper.getVersionByReplicationStub(stub);
 		switch (version) {
 
-		case V20:
-			ish.oncourse.webservices.v20.stubs.replication.ReplicatedRecord replV20Record = new ish.oncourse.webservices.v20.stubs.replication.ReplicatedRecord();
-			StubUtils.setSuccessStatus(replV20Record);
-			replV20Record.setStub(toV20Hollow(stub, setWillowId));
-			return replV20Record;
-
 		case V21:
 			ish.oncourse.webservices.v21.stubs.replication.ReplicatedRecord replV21Record = new ish.oncourse.webservices.v21.stubs.replication.ReplicatedRecord();
 			StubUtils.setSuccessStatus(replV21Record);
 			replV21Record.setStub(toV21Hollow(stub, setWillowId));
 			return replV21Record;
+
+		case V22:
+			ish.oncourse.webservices.v22.stubs.replication.ReplicatedRecord replV22Record = new ish.oncourse.webservices.v22.stubs.replication.ReplicatedRecord();
+			StubUtils.setSuccessStatus(replV22Record);
+			replV22Record.setStub(toV22Hollow(stub, setWillowId));
+			return replV22Record;
 
 		default:
 			return null;
@@ -82,14 +82,14 @@ public class ReplicationUtils {
 	}
 
  
-	public static ish.oncourse.webservices.v20.stubs.replication.HollowStub toV20Hollow(final GenericReplicationStub stub, final boolean setWillowId) {
-		ish.oncourse.webservices.v20.stubs.replication.HollowStub hollowStub = new ish.oncourse.webservices.v20.stubs.replication.HollowStub();
+	public static ish.oncourse.webservices.v21.stubs.replication.HollowStub toV21Hollow(final GenericReplicationStub stub, final boolean setWillowId) {
+		ish.oncourse.webservices.v21.stubs.replication.HollowStub hollowStub = new ish.oncourse.webservices.v21.stubs.replication.HollowStub();
 		fillHollowStub(stub, hollowStub, setWillowId);
 		return hollowStub;
 	}
  
-	public static ish.oncourse.webservices.v21.stubs.replication.HollowStub toV21Hollow(final GenericReplicationStub stub, final boolean setWillowId) {
-		ish.oncourse.webservices.v21.stubs.replication.HollowStub hollowStub = new ish.oncourse.webservices.v21.stubs.replication.HollowStub();
+	public static ish.oncourse.webservices.v22.stubs.replication.HollowStub toV22Hollow(final GenericReplicationStub stub, final boolean setWillowId) {
+		ish.oncourse.webservices.v22.stubs.replication.HollowStub hollowStub = new ish.oncourse.webservices.v22.stubs.replication.HollowStub();
 		fillHollowStub(stub, hollowStub, setWillowId);
 		return hollowStub;
 	}

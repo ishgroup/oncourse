@@ -1,12 +1,13 @@
-package ish.oncourse.webservices.replication.v21.updaters;
+package ish.oncourse.webservices.replication.v22.updaters;
 
 import ish.common.types.Gender;
+import ish.common.types.TypesUtil;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Country;
 import ish.oncourse.model.Tax;
 import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
-import ish.oncourse.webservices.v21.stubs.replication.ContactStub;
+import ish.oncourse.webservices.v22.stubs.replication.ContactStub;
 import org.apache.cayenne.Cayenne;
 
 public class ContactUpdater extends AbstractWillowUpdater<ContactStub, Contact> {
@@ -27,7 +28,9 @@ public class ContactUpdater extends AbstractWillowUpdater<ContactStub, Contact> 
 		entity.setHomePhoneNumber(stub.getHomePhoneNumber());
 		entity.setMobilePhoneNumber(stub.getMobilePhoneNumber());
 		entity.setIsCompany(stub.isCompany());
-		entity.setGender(stub.isMale() != null ? stub.isMale() ?  Gender.MALE : Gender.FEMALE : null);
+		if (stub.getGender() != null) {
+			entity.setGender(TypesUtil.getEnumForDatabaseValue(stub.getGender(), Gender.class));
+		}
 		entity.setSuburb(stub.getSuburb());
 		entity.setState(stub.getState());
 		entity.setStreet(stub.getStreet());

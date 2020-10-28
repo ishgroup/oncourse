@@ -1,9 +1,8 @@
-package ish.oncourse.webservices.replication.v21.builders;
+package ish.oncourse.webservices.replication.v22.builders;
 
-import ish.common.types.Gender;
 import ish.oncourse.model.Contact;
 import ish.oncourse.webservices.replication.builders.AbstractWillowStubBuilder;
-import ish.oncourse.webservices.v21.stubs.replication.ContactStub;
+import ish.oncourse.webservices.v22.stubs.replication.ContactStub;
 import org.apache.commons.lang3.time.DateUtils;
 
 public class ContactStubBuilder extends
@@ -25,7 +24,7 @@ public class ContactStubBuilder extends
 		stub.setGivenName(entity.getGivenName());
 		stub.setHomePhoneNumber(entity.getHomePhoneNumber());
 		stub.setCompany(entity.getIsCompany());
-		stub.setMale(entity.getIsMale());
+		stub.setGender(entity.getGender().getDatabaseValue());
 		stub.setMarketingViaEmailAllowed(entity.getIsMarketingViaEmailAllowed());
 		stub.setMarketingViaPostAllowed(entity.getIsMarketingViaPostAllowed());
 		stub.setMarketingViaSMSAllowed(entity.getIsMarketingViaSMSAllowed());
