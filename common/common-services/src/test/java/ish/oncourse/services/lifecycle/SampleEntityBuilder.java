@@ -168,7 +168,7 @@ public class SampleEntityBuilder {
 		c.setGivenName("Vladimir");
 		c.setHomePhoneNumber("777-771");
 		c.setIsCompany(true);
-		c.setIsMale(true);
+		c.setGender(Gender.MALE);
 		c.setIsMarketingViaEmailAllowed(true);
 		c.setIsMarketingViaPostAllowed(true);
 		c.setIsMarketingViaSMSAllowed(true);

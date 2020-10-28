@@ -68,7 +68,7 @@ public class WaitLocateHandler extends AbstractStepHandler {
         if (s != null && !s.getUsiStatus().equals(UsiStatus.VERIFIED)) {
             if (c.getGivenName() != null &&
                     c.getFamilyName() != null &&
-                    c.getIsMale() != null &&
+                    c.getGender() != null &&
                     c.getDateOfBirth() != null &&
                     s.getTownOfBirth() != null) {
                 return true;

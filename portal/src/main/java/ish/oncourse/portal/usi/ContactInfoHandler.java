@@ -174,7 +174,7 @@ public class ContactInfoHandler extends AbstractStepHandler {
 
 
 	private void handleGenderValue(Contact contact, String key) {
-		Value inputValue = inputValues.get("isMale");
+		Value inputValue = inputValues.get("gender");
 
 		if (inputValue == null) {
 			result.addValue(Value.valueOf(key, null, getUsiController().getMessages().format("message-fieldRequired")));
@@ -187,7 +187,7 @@ public class ContactInfoHandler extends AbstractStepHandler {
 			} else {
 				contact.setGender(Gender.OTHER_GENDER);
 			}
-			result.addValue(Value.valueOf(key, contact.getIsMale()));
+			result.addValue(Value.valueOf(key, contact.getGender()));
 		}
 	}
 

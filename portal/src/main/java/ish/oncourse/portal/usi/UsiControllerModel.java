@@ -67,7 +67,7 @@ public class UsiControllerModel implements Serializable {
                 (contact.getDateOfBirth() != null) &&
 			    (contact.getStudent().getCountryOfBirth() != null) &&
                 isNotBlank(contact.getStudent().getTownOfBirth()) &&
-                (contact.getIsMale() != null) &&
+                (contact.getGender() != null) &&
                 isNotBlank(contact.getState()) &&
                 (contact.getCountry() != null) &&
                 isNotBlank(contact.getMobilePhoneNumber()) &&

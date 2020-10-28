@@ -1,6 +1,7 @@
 package ish.oncourse.portal.components;
 
 import com.ocpsoft.pretty.time.PrettyTime;
+import ish.common.types.Gender;
 import ish.oncourse.model.*;
 import ish.oncourse.portal.services.IPortalService;
 import org.apache.commons.lang.StringEscapeUtils;
@@ -63,7 +64,7 @@ public class ClassInformation {
 		enrolmentsCount = enrolments.size();
 		Date latestEnrol = null;
 		for (Enrolment e : enrolments) {
-			if (Boolean.TRUE.equals(e.getStudent().getContact().getIsMale())) {
+			if (Gender.MALE.equals(e.getStudent().getContact().getGender())) {
 				maleEnrolmentsCount++;
 			} else {
 				femaleEnrolmentsCount++;
