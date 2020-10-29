@@ -1,11 +1,14 @@
 
 package ish.oncourse.webservices.v7.stubs.reference;
 
-import ish.oncourse.webservices.util.GenericReferenceResult;
-
-import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElements;
+import javax.xml.bind.annotation.XmlType;
+import ish.oncourse.webservices.util.GenericReferenceResult;
 
 
 /**
@@ -14,22 +17,22 @@ import java.util.List;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="referenceResult">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;choice maxOccurs="unbounded" minOccurs="0">
- *           &lt;element ref="{http://ref.v7.soap.webservices.oncourse.ish/}country"/>
- *           &lt;element ref="{http://ref.v7.soap.webservices.oncourse.ish/}language"/>
- *           &lt;element ref="{http://ref.v7.soap.webservices.oncourse.ish/}module"/>
- *           &lt;element ref="{http://ref.v7.soap.webservices.oncourse.ish/}trainingPackage"/>
- *           &lt;element ref="{http://ref.v7.soap.webservices.oncourse.ish/}qualification"/>
- *           &lt;element ref="{http://ref.v7.soap.webservices.oncourse.ish/}postcode"/>
- *         &lt;/choice>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &lt;complexType name="referenceResult"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;choice maxOccurs="unbounded" minOccurs="0"&gt;
+ *           &lt;element ref="{http://ref.v7.soap.webservices.oncourse.ish/}country"/&gt;
+ *           &lt;element ref="{http://ref.v7.soap.webservices.oncourse.ish/}language"/&gt;
+ *           &lt;element ref="{http://ref.v7.soap.webservices.oncourse.ish/}module"/&gt;
+ *           &lt;element ref="{http://ref.v7.soap.webservices.oncourse.ish/}trainingPackage"/&gt;
+ *           &lt;element ref="{http://ref.v7.soap.webservices.oncourse.ish/}qualification"/&gt;
+ *           &lt;element ref="{http://ref.v7.soap.webservices.oncourse.ish/}postcode"/&gt;
+ *         &lt;/choice&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
  * </pre>
  * 
  * 
@@ -43,12 +46,12 @@ public class ReferenceResult
 {
 
     @XmlElements({
-        @XmlElement(name = "language", namespace = "http://ref.v7.soap.webservices.oncourse.ish/", type = LanguageStub.class),
         @XmlElement(name = "country", namespace = "http://ref.v7.soap.webservices.oncourse.ish/", type = CountryStub.class),
-        @XmlElement(name = "qualification", namespace = "http://ref.v7.soap.webservices.oncourse.ish/", type = QualificationStub.class),
-        @XmlElement(name = "postcode", namespace = "http://ref.v7.soap.webservices.oncourse.ish/", type = PostcodeStub.class),
+        @XmlElement(name = "language", namespace = "http://ref.v7.soap.webservices.oncourse.ish/", type = LanguageStub.class),
         @XmlElement(name = "module", namespace = "http://ref.v7.soap.webservices.oncourse.ish/", type = ModuleStub.class),
-        @XmlElement(name = "trainingPackage", namespace = "http://ref.v7.soap.webservices.oncourse.ish/", type = TrainingPackageStub.class)
+        @XmlElement(name = "trainingPackage", namespace = "http://ref.v7.soap.webservices.oncourse.ish/", type = TrainingPackageStub.class),
+        @XmlElement(name = "qualification", namespace = "http://ref.v7.soap.webservices.oncourse.ish/", type = QualificationStub.class),
+        @XmlElement(name = "postcode", namespace = "http://ref.v7.soap.webservices.oncourse.ish/", type = PostcodeStub.class)
     })
     protected List<ReferenceStub> countryOrLanguageOrModule;
 
@@ -70,12 +73,12 @@ public class ReferenceResult
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link LanguageStub }
      * {@link CountryStub }
-     * {@link QualificationStub }
-     * {@link PostcodeStub }
+     * {@link LanguageStub }
      * {@link ModuleStub }
      * {@link TrainingPackageStub }
+     * {@link QualificationStub }
+     * {@link PostcodeStub }
      * 
      * 
      */

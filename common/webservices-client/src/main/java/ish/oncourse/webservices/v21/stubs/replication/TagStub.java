@@ -29,6 +29,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="weighting" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
  *         &lt;element name="parentId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
  *         &lt;element name="specialType" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="colour" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/extension&gt;
  *   &lt;/complexContent&gt;
@@ -332,11 +333,11 @@ public class TagStub
 
     /**
      * Gets the value of the colour property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link String }
-     *
+     *     
      */
     public String getColour() {
         return colour;
@@ -344,13 +345,14 @@ public class TagStub
 
     /**
      * Sets the value of the colour property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link String }
-     *
+     *     
      */
     public void setColour(String value) {
         this.colour = value;
     }
+
 }

@@ -1,30 +1,22 @@
 
 package ish.oncourse.webservices.v7.stubs.reference;
 
-import javax.xml.bind.DatatypeConverter;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
-import java.util.Calendar;
-import java.util.Date;
 
 public class Adapter1
-    extends XmlAdapter<String, Date>
+    extends XmlAdapter<String, Boolean>
 {
 
 
-    public Date unmarshal(String value) {
-        if (value == null) {
-            return null;
-        }
-        return DatatypeConverter.parseDateTime(value).getTime(); 
+    public Boolean unmarshal(String value) {
+        return ((boolean)javax.xml.bind.DatatypeConverter.parseBoolean(value));
     }
 
-    public String marshal(Date value) {
+    public String marshal(Boolean value) {
         if (value == null) {
             return null;
         }
-        Calendar c = Calendar.getInstance();
-        c.setTime(value);
-        return DatatypeConverter.printDateTime(c);    
+        return (javax.xml.bind.DatatypeConverter.printBoolean((boolean)(boolean)value));
     }
 
 }

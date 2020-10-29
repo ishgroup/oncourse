@@ -11,7 +11,7 @@ import javax.xml.namespace.QName;
 /**
  * This object contains factory methods for each 
  * Java content interface and Java element interface 
- * generated in the ish.oncourse.webservices.v21.stubs.replication package.
+ * generated in the ish.oncourse.webservices.v21.stubs.replication package. 
  * <p>An ObjectFactory allows you to programatically 
  * construct new instances of the Java representation 
  * for XML content. The Java representation of XML 
@@ -138,6 +138,8 @@ public class ObjectFactory {
     private final static QName _InstructionResponse_QNAME = new QName("http://repl.v21.soap.webservices.oncourse.ish/", "instructionResponse");
     private final static QName _UsiRequest_QNAME = new QName("http://repl.v21.soap.webservices.oncourse.ish/", "usiRequest");
     private final static QName _UsiResponse_QNAME = new QName("http://repl.v21.soap.webservices.oncourse.ish/", "usiResponse");
+    private final static QName _CheckoutRequest_QNAME = new QName("http://repl.v21.soap.webservices.oncourse.ish/", "checkoutRequest");
+    private final static QName _CheckoutResponse_QNAME = new QName("http://repl.v21.soap.webservices.oncourse.ish/", "checkoutResponse");
     private final static QName _AuthSecurityCode_QNAME = new QName("http://repl.v21.soap.webservices.oncourse.ish/", "authSecurityCode");
     private final static QName _AuthLastCommunicationKey_QNAME = new QName("http://repl.v21.soap.webservices.oncourse.ish/", "authLastCommunicationKey");
     private final static QName _AuthNewCommunicationKey_QNAME = new QName("http://repl.v21.soap.webservices.oncourse.ish/", "authNewCommunicationKey");
@@ -1999,6 +2001,24 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://repl.v21.soap.webservices.oncourse.ish/", name = "usiResponse")
     public JAXBElement<ParametersMap> createUsiResponse(ParametersMap value) {
         return new JAXBElement<ParametersMap>(_UsiResponse_QNAME, ParametersMap.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ParametersMap }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://repl.v21.soap.webservices.oncourse.ish/", name = "checkoutRequest")
+    public JAXBElement<ParametersMap> createCheckoutRequest(ParametersMap value) {
+        return new JAXBElement<ParametersMap>(_CheckoutRequest_QNAME, ParametersMap.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ParametersMap }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://repl.v21.soap.webservices.oncourse.ish/", name = "checkoutResponse")
+    public JAXBElement<ParametersMap> createCheckoutResponse(ParametersMap value) {
+        return new JAXBElement<ParametersMap>(_CheckoutResponse_QNAME, ParametersMap.class, null, value);
     }
 
     /**

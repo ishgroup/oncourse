@@ -43,6 +43,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="minValue" type="{http://www.w3.org/2001/XMLSchema}decimal"/&gt;
  *         &lt;element name="validFromOffset" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
  *         &lt;element name="validToOffset" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="limitPreviousEnrolment" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/extension&gt;
  *   &lt;/complexContent&gt;
@@ -690,7 +691,7 @@ public class DiscountStub
      *     {@link String }
      *
      */
-    public Boolean getLimitPreviousEnrolment() {
+    public Boolean isLimitPreviousEnrolment() {
         return limitPreviousEnrolment;
     }
 

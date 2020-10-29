@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jaxws:bindings xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" wsdlLocation="v20_replication.wsdl"
+<jaxws:bindings xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" wsdlLocation="v21_replication.wsdl"
                 xmlns:jaxws="http://java.sun.com/xml/ns/jaxws" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema">
-    <jaxws:package name="ish.oncourse.webservices.soap.v20"/>
+    <jaxws:package name="ish.oncourse.webservices.soap.v21"/>
     <jaxws:bindings node="wsdl:definitions/wsdl:types/xsd:schema">
         <jaxb:schemaBindings>
-            <jaxb:package name="ish.oncourse.webservices.v20.stubs.replication"/>
+            <jaxb:package name="ish.oncourse.webservices.v21.stubs.replication"/>
         </jaxb:schemaBindings>
         <jaxb:globalBindings>
             <jaxb:javaType name="java.lang.Boolean" xmlType="xs:boolean"/>
