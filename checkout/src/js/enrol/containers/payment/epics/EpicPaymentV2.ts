@@ -16,9 +16,9 @@ const processPaymentV2: Request<PaymentResponse, IshState> = {
   type: PROCESS_PAYMENT_V2,
   getData: ({xValidateOnly,sessionId}, state: IshState) => {
     const paymentRequest = {
-      sessionId,
+      sessionId: xValidateOnly ? null : sessionId,
       checkoutModelRequest: BuildCheckoutModelRequest.fromState(state),
-      merchantReference: state.checkout.payment.merchantReference,
+      merchantReference: xValidateOnly ? null : state.checkout.payment.merchantReference,
       ccAmount: state.checkout.amount.ccPayment,
       storeCard: false,
     };
