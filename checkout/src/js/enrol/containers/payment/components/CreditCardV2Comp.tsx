@@ -24,6 +24,8 @@ interface Props {
 
 
 class CreditCardV2Comp extends React.Component<Props, any> {
+  iframeRef = (React as any).createRef();
+
   onMessage = e => {
     const {dispatch, processPaymentV2} = this.props;
     const paymentData = e.data.payment;
@@ -53,11 +55,15 @@ class CreditCardV2Comp extends React.Component<Props, any> {
 
   componentDidUpdate(prev) {
     const {
-      amount, payerId, processPaymentV2,
+      amount, payerId, processPaymentV2, iframeUrl
     } = this.props;
 
     if (prev.amount.ccPayment !== amount.ccPayment || prev.payerId !== payerId) {
       processPaymentV2(true, payerId);
+    }
+
+    if(this.iframeRef.current && prev.iframeUrl !== iframeUrl) {
+      this.iframeRef.current.contentWindow.location.replace(iframeUrl);
     }
   }
 
@@ -94,7 +100,7 @@ class CreditCardV2Comp extends React.Component<Props, any> {
                   disabled={voucherPayerEnabled}
                 />
 
-                {iframeUrl && <iframe src={iframeUrl} frameBorder={0} height="575" width="100%" style={
+                {iframeUrl && <iframe ref={this.iframeRef} frameBorder={0} height="575" width="100%" style={
                   disabled ? {
                     opacity: 0.6,
                     pointerEvents: "none",
