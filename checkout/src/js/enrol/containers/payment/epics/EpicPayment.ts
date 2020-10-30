@@ -1,25 +1,28 @@
 import {Observable} from "rxjs/Observable";
 import {combineEpics, Epic} from "redux-observable";
-import {Create, Request} from "../../../../common/epics/EpicUtils";
+import {Create, ProcessError, Request} from "../../../../common/epics/EpicUtils";
 import {
   GET_CORPORATE_PASS_REQUEST,
   SUBMIT_PAYMENT_CORPORATE_PASS,
   SUBMIT_PAYMENT_FOR_WAITING_COURSES,
+  PROCESS_PAYMENT_V2_FAILED_STATUS,
+  PROCESS_PAYMENT_V2,
+  setPaymentData,
+  resetPaymentState,
   applyCorporatePass,
   generateWaitingCoursesResultData,
 } from "../actions/Actions";
-
 import CheckoutService, {BuildCheckoutModelRequest, BuildWaitingCoursesResult} from "../../../services/CheckoutService";
-
-import { PaymentStatus, CorporatePass} from "../../../../model";
+import {PaymentStatus, CorporatePass, PaymentResponse, CheckoutModel} from "../../../../model";
 import {IshState} from "../../../../services/IshState";
 import {IAction} from "../../../../actions/IshAction";
 import {GetPaymentStatus} from "./EpicGetPaymentStatus";
-import {getAmount, togglePayNowVisibility} from "../../../actions/Actions";
+import {changePhase, getAmount, togglePayNowVisibility} from "../../../actions/Actions";
 import {FULFILLED} from "../../../../common/actions/ActionUtils";
-import {ProcessPaymentV2, ProcessPaymentV2Status} from "./EpicPaymentV2";
 import CheckoutServiceV2 from "../../../services/CheckoutServiceV2";
-
+import {AxiosResponse} from "axios";
+import {ProcessCheckoutModel} from "../../../epics/EpicProceedToPayment";
+import {Phase} from "../../../reducers/State";
 
 const SubmitPaymentForWaitingCoursesRequest: Request<any, IshState> = {
   type: SUBMIT_PAYMENT_FOR_WAITING_COURSES,
@@ -36,7 +39,7 @@ const SubmitPaymentForWaitingCoursesRequest: Request<any, IshState> = {
   processData: (response: any, state: IshState): IAction<any>[] | Observable<any> => {
     return CheckoutService.processPaymentResponse(
       {status: PaymentStatus.SUCCESSFUL_WAITING_COURSES},
-      [generateWaitingCoursesResultData(BuildWaitingCoursesResult.fromState(state))]
+      [generateWaitingCoursesResultData(BuildWaitingCoursesResult.fromState(state))],
     );
   },
 };
@@ -76,11 +79,72 @@ const corporatePassRequest: Request<CorporatePass, IshState> = {
 
 const GetCorporatePass: Epic<any, any> = Create(corporatePassRequest);
 
+const processPaymentV2: Request<PaymentResponse, IshState> = {
+  type: PROCESS_PAYMENT_V2,
+  getData: ({xValidateOnly,sessionId}, state: IshState) => {
+    const paymentRequest = {
+      sessionId: xValidateOnly ? null : sessionId,
+      checkoutModelRequest: BuildCheckoutModelRequest.fromState(state),
+      merchantReference: xValidateOnly ? null : state.checkout.payment.merchantReference,
+      ccAmount: state.checkout.amount.ccPayment,
+      storeCard: false,
+    };
+    return CheckoutServiceV2.makePayment(paymentRequest,xValidateOnly,state.checkout.payerId);
+  },
+  processData: (response: PaymentResponse, state: IshState, {xValidateOnly}): IAction<any>[] | Observable<any> => {
+    if (xValidateOnly) {
+      return [setPaymentData(response)];
+    }
+    return CheckoutService.processPaymentResponse(response);
+  },
+  processError: (response: AxiosResponse): IAction<any>[] => {
+    if (response && response.data && response.data.payerId && response.data.amount && response.data.contactNodes) {
+      return ProcessCheckoutModel.process(response.data as CheckoutModel);
+    } else {
+      return [
+        changePhase(Phase.Payment),
+        resetPaymentState(),
+        ...ProcessError(response),
+      ];
+    }
+  },
+};
+
+const ProcessPaymentV2: Epic<any, any> = Create(processPaymentV2);
+
+const processPaymentV2Status: Request<PaymentResponse, IshState> = {
+  type: PROCESS_PAYMENT_V2_FAILED_STATUS,
+  getData: (p, state: IshState) => {
+    return CheckoutServiceV2.getStatus(
+      state.checkout.payment.sessionId,
+      state.checkout.payerId,
+    );
+  },
+  processData: (response: PaymentResponse): IAction<any>[] | Observable<any> => {
+    response.status = "FAILED";
+    return CheckoutService.processPaymentResponse(response);
+  },
+  processError: (response: AxiosResponse): IAction<any>[] => {
+    const data: any = response.data;
+    if (data && data.payerId && data.amount && data.contactNodes) {
+      return ProcessCheckoutModel.process(data as CheckoutModel);
+    } else {
+      return [
+        changePhase(Phase.Payment),
+        resetPaymentState(),
+        ...ProcessError(response),
+      ];
+    }
+  },
+};
+
+const ProcessPaymentV2Status: Epic<any, any> = Create(processPaymentV2Status);
+
 export const EpicPayment = combineEpics(
   SubmitPaymentCorporatePass,
   SubmitPaymentForWaitingCourses,
   GetPaymentStatus,
   GetCorporatePass,
   ProcessPaymentV2,
-  ProcessPaymentV2Status
+  ProcessPaymentV2Status,
 );

@@ -160,11 +160,9 @@ export class CheckoutService {
     );
   }
 
-
   public getPaymentStatus = (state: PaymentState): Promise<PaymentResponse> => {
     return this.checkoutApi.getPaymentStatus(state.value.sessionId);
   }
-
 
   public createParentChildrenRelation = (parentId, childIds): Promise<any> => (
     this.contactApi.createParentChildrenRelation({parentId, childrenIds: childIds})

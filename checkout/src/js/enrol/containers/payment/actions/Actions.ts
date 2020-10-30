@@ -1,13 +1,11 @@
 import {IAction} from "../../../../actions/IshAction";
-import {CreditCardFormValues, CorporatePassFormValues} from "../services/PaymentService";
+import {CorporatePassFormValues} from "../services/PaymentService";
 import {GABuilder} from "../../../../services/GoogleAnalyticsService";
 import {Phase} from "../../../reducers/State";
 import {PaymentResponse} from "../../../../model";
 
-export const SUBMIT_PAYMENT_CREDIT_CARD: string = "checkout/payment/submit/creditCard";
 export const SUBMIT_PAYMENT_CORPORATE_PASS: string = "checkout/payment/submit/corporatePass";
 export const SUBMIT_PAYMENT_FOR_WAITING_COURSES: string = "checkout/payment/submit/waitingCourses";
-export const PROCESS_PAYMENT: string = "checkout/payment/process/payment";
 export const PROCESS_PAYMENT_V2: string = "checkout/v2/payment/process/payment";
 export const PROCESS_PAYMENT_V2_FAILED_STATUS: string = "checkout/v2/payment/process/paymentStatus";
 
@@ -32,13 +30,6 @@ export const CHANGE_TAB = "checkout/payment/change/tab";
 
 export const PROCESSING_MANDATORY_FIELDS = "checkout/payment/processing/mandatoryFields";
 
-export const submitPaymentCreditCard = (values: CreditCardFormValues): IAction<CreditCardFormValues> => {
-  return {
-    type: SUBMIT_PAYMENT_CREDIT_CARD,
-    payload: values,
-  };
-};
-
 export const submitPaymentForWaitingCourses = (): IAction<any> => {
   return {
     type: SUBMIT_PAYMENT_FOR_WAITING_COURSES
@@ -48,13 +39,6 @@ export const submitPaymentForWaitingCourses = (): IAction<any> => {
 export const submitPaymentCorporatePass = (values: CorporatePassFormValues): IAction<CorporatePassFormValues> => {
   return {
     type: SUBMIT_PAYMENT_CORPORATE_PASS,
-    payload: values,
-  };
-};
-
-export const processPayment = (values: CreditCardFormValues): IAction<CreditCardFormValues> => {
-  return {
-    type: PROCESS_PAYMENT,
     payload: values,
   };
 };

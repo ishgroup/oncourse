@@ -15,7 +15,7 @@ import {
 
 import {SummaryComp} from "./components/SummaryComp";
 import {proceedToPayment, selectItem, updateEnrolmentFields, updateItem} from "./actions/Actions";
-import {processPayment, submitPaymentForWaitingCourses} from "../payment/actions/Actions";
+import {submitPaymentForWaitingCourses} from "../payment/actions/Actions";
 import {
   changePhase, addCode, getCheckoutModelFromBackend, toggleRedeemVoucher, updatePayNow, updateContactAddProcess,
   epicRemoveContact,

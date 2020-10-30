@@ -21,7 +21,4 @@ export class CheckoutApi {
   getPaymentStatus(sessionId: string): Promise<PaymentResponse> {
     return this.http.GET(`/v1/getPaymentStatus/${sessionId}`);
   }
-  makePayment(paymentRequest: PaymentRequest): Promise<PaymentResponse> {
-    return this.http.POST(`/v1/makePayment`, paymentRequest);
-  }
 }

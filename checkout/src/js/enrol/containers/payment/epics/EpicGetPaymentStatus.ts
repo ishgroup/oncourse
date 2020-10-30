@@ -6,14 +6,14 @@ import {Reply, Request} from "../../../../common/epics/EpicUtils";
 import {Observable} from "rxjs/Observable";
 import {Epic} from "redux-observable";
 import {PaymentResponse} from "../../../../model";
-
+import CheckoutServiceV2 from "../../../services/CheckoutServiceV2";
 
 const request: Request<PaymentResponse, IshState> = {
   type: GET_PAYMENT_STATUS,
   getData: (payload: any, state: IshState): Promise<PaymentResponse> => {
-    return CheckoutService.getPaymentStatus(state.checkout.payment);
+    return CheckoutServiceV2.getStatus(state.checkout.payment.sessionId,state.checkout.payerId);
   },
-  processData: (response: PaymentResponse, state: IshState): IAction<any>[] | Observable<any> => {
+  processData: (response: PaymentResponse): IAction<any>[] | Observable<any> => {
     return CheckoutService.processPaymentResponse(response);
   },
 };
