@@ -321,13 +321,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
 
     @Override
     public GenericParametersMap verifyUSI(GenericParametersMap parametersMap) throws InternalReplicationFault {
-        USIVerificationRequest request = USIVerificationUtil.parseVerificationRequest(parametersMap);
-
-        USIVerificationResult result = usiVerificationService.verifyUsi(request);
-
-        SupportedVersions version = PortHelper.getVersionByParametersMap(parametersMap);
-
-        return USIVerificationUtil.createVerificationResultParametersMap(result, version);
+        throw new UnsupportedOperationException();
     }
 
     @Override

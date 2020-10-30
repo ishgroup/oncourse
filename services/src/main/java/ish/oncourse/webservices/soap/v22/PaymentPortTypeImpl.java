@@ -22,26 +22,6 @@ public class PaymentPortTypeImpl implements PaymentPortType {
 	@Autowired
 	private InternalPaymentService paymentPort;
 
-	@WebMethod(action = "getPaymentStatus")
-	@Override
-	public TransactionGroup getPaymentStatus(String sessionId) throws ReplicationFault {
-		try {
-			return PortHelper.getV22TransactionGroup(paymentPort.getPaymentStatus(sessionId, SupportedVersions.V22));
-		} catch (InternalReplicationFault e) {
-			throw ReplicationPortTypeImpl.createReplicationFaultForException(e);
-		}
-	}
-
-	@WebMethod(operationName = "processRefund")
-	@Override
-	public TransactionGroup processRefund(TransactionGroup paymentOut) throws ReplicationFault {
-		try {
-			return PortHelper.getV22TransactionGroup(paymentPort.processRefund(paymentOut));
-		} catch (InternalReplicationFault e) {
-			throw ReplicationPortTypeImpl.createReplicationFaultForException(e);
-		}
-	}
-
 	@WebMethod(operationName = "getVouchers")
 	@Override
 	public TransactionGroup getVouchers(TransactionGroup transactionGroup) throws ReplicationFault {
@@ -52,31 +32,11 @@ public class PaymentPortTypeImpl implements PaymentPortType {
 		}
 	}
 
-	@WebMethod(operationName = "verifyUSI")
-	@Override
-	public ParametersMap verifyUSI(ParametersMap parametersMap) throws ReplicationFault {
-		try {
-			return (ParametersMap) paymentPort.verifyUSI(parametersMap);
-		} catch (Exception e) {
-			throw ReplicationPortTypeImpl.createReplicationFaultForException(e);
-		}
-	}
-
 	@Override
 	public ParametersMap verifyCheckout(ParametersMap verificationRequest) throws ReplicationFault {
 		try {
 			return (ParametersMap) paymentPort.verifyCheckout(verificationRequest, SupportedVersions.V22);
 		} catch (Exception e) {
-			throw ReplicationPortTypeImpl.createReplicationFaultForException(e);
-		}
-	}
-
-	@WebMethod(operationName = "processPayment")
-	@Override
-	public TransactionGroup processPayment(TransactionGroup transactionGroup, ParametersMap parametersMap) throws ReplicationFault {
-		try {
-			return PortHelper.getV22TransactionGroup(paymentPort.processPayment(transactionGroup, parametersMap));
-		} catch (InternalReplicationFault e) {
 			throw ReplicationPortTypeImpl.createReplicationFaultForException(e);
 		}
 	}
