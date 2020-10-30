@@ -88,7 +88,7 @@
 							<xs:element minOccurs="0" name="disciplineCode" type="xs:string" />
 							<xs:element minOccurs="0" name="fieldOfEducation"
 										type="xs:string" />
-							<xs:element minOccurs="0" name="type" type="xs:long" />
+							<xs:element minOccurs="0" name="type" type="xs:int" />
 							<xs:element minOccurs="0" name="ishVersion" type="xs:long" />
 							<xs:element minOccurs="0" name="modified" type="xs:dateTime" />
 							<xs:element minOccurs="0" name="nationalCode" type="xs:string" />
