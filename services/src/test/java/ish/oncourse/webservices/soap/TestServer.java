@@ -1,7 +1,5 @@
 package ish.oncourse.webservices.soap;
 
-import ish.oncourse.test.TestInitialContextFactory;
-import ish.oncourse.util.ContextUtil;
 import org.apache.cxf.transport.servlet.CXFServlet;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,8 +8,6 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-
-import static ish.oncourse.webservices.usi.USITest.USI_TEST_MODE;
 
 public class TestServer {
 	public static final String DEFAULT_WEB_XML_FILE_PATH = "/web.xml";
@@ -39,7 +35,6 @@ public class TestServer {
 	}
 
 	public TestServer(int port, String contextPath, String webPath, String host, String resourseBase, String webXmlFilePath) {
-		System.setProperty(USI_TEST_MODE, "true");
 		this.port = port;
 		this.contextPath = contextPath;
 		this.webPath = webPath;

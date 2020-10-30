@@ -1,11 +1,7 @@
 package ish.oncourse.webservices.soap.v22;
 
-import ish.oncourse.webservices.soap.v22.ReplicationFault;
-import ish.oncourse.webservices.soap.v22.ReplicationPortType;
-import ish.oncourse.webservices.util.GenericParametersMap;
-import ish.oncourse.webservices.util.PortHelper;
+
 import ish.oncourse.webservices.util.Sent2WillowInterceptor;
-import ish.oncourse.webservices.util.SupportedVersions;
 import ish.oncourse.webservices.v22.stubs.replication.*;
 import ish.oncourse.webservices.v7.stubs.reference.ReferenceResult;
 import ish.oncourse.webservices.v7.stubs.reference.ReferenceStub;
@@ -94,41 +90,10 @@ public class WebServicesTransportTest extends AbstractTransportTest {
 	}
 
 	@Test
-	public void test_processRefund() throws Throwable {
-		TransactionGroup transactionGroup = createTransactionGroupWithAllStubs();
-		TransactionGroup transactionGroupResult = getPaymentPortType().processRefund(transactionGroup);
-		assertTransactionGroup(transactionGroupResult);
-	}
-
-	@Test
-	public void test_getPaymentStatus() throws JAXBException, ReplicationFault, InterruptedException {
-		TransactionGroup transactionGroupResult = getPaymentPortType().getPaymentStatus("PaymentStatus");
-		assertTransactionGroup(transactionGroupResult);
-	}
-
-	@Test
-	public void test_processPayment() throws Throwable {
-		TransactionGroup transactionGroup = createTransactionGroupWithAllStubs();
-		GenericParametersMap  parametersMap = PortHelper.createParametersMap(SupportedVersions.V22);
-		TransactionGroup transactionGroupResult = getPaymentPortType().processPayment(transactionGroup, (ParametersMap) parametersMap);
-		assertTransactionGroup(transactionGroupResult);
-	}
-
-	@Test
 	public void test_getVouchers() throws Throwable {
 		TransactionGroup transactionGroup = createTransactionGroupWithAllStubs();
 		TransactionGroup transactionGroupResult = getPaymentPortType().getVouchers(transactionGroup);
 		assertTransactionGroup(transactionGroupResult);
 	}
-
-    @Test
-    public void test() {
-        try {
-            getPaymentPortType().getPaymentStatus("PaymentStatus");
-            assertTrue(sent2WillowInterceptor.isSent());
-        } catch (ReplicationFault replicationFault) {
-            throw new RuntimeException(replicationFault);
-        }
-    }
-
+	
 }
