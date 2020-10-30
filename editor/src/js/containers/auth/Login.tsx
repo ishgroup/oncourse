@@ -1,8 +1,7 @@
 import React from 'react';
 import {connect, Dispatch} from "react-redux";
 import {withRouter} from 'react-router-dom';
-
-import {Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText} from 'reactstrap';
+import {Container, Row, Col} from 'reactstrap';
 import classnames from "classnames";
 import {submitLoginForm} from "./actions";
 import {DefaultConfig} from "../../constants/Config";

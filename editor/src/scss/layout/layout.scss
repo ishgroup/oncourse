@@ -29,4 +29,13 @@
       padding: 15px 25px;
     }
   }
+
+  .browser-warning {
+    padding: 10px;
+    background: $danger-hover;
+    color: white;
+    line-height: 17px;
+    font-weight: 300;
+    text-align: center;
+  }
 }

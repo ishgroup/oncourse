@@ -18,6 +18,8 @@ import {ModalState} from "../common/containers/modal/reducers/State";
 import {State} from "../reducers/state";
 import {getPageByUrl} from "./content/containers/pages/actions";
 import {Version, VersionStatus} from "../model";
+import {BrowserWarning} from "../common/components/BrowserWarning";
+import {Browser} from "../utils";
 
 interface Props {
   auth: AuthState;
@@ -73,10 +75,13 @@ export class Cms extends React.Component<Props, any> {
     const viewMode: boolean = checkViewMode(this.props.history, pageEditMode);
     const slimSidebar: boolean = checkSlimSidebar(this.props.history);
     const globalPadding = viewMode && slimSidebar ? '70px' : '16.666667%';
+    const hasBrowserWarning = isAuthenticated && Browser.unsupported();
+    const warningPadding = hasBrowserWarning ? '37px' : '0px';
 
     const styles = `
       .site-wrapper {
         padding-left:${globalPadding};
+        padding-top: ${warningPadding};
       }
       #content div[class^='block-'] {
         border: 1px solid transparent;
@@ -94,6 +99,7 @@ export class Cms extends React.Component<Props, any> {
       <div className="cms">
         <div className={classnames("cms__container", {"cms__container--view-mode": viewMode})}>
           {globalSiteStyle}
+          {hasBrowserWarning && <BrowserWarning />}
           <Notifications notifications={notifications} />
           <Modal {...modal} onHide={hideModal}/>
           <Layout
