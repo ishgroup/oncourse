@@ -104,13 +104,6 @@
             <xs:element name="getInstructionsResponse" type="tns:getInstructionsResponse" />
             <xs:element name="getUnreplicatedEntities" type="tns:getUnreplicatedEntities" />
             <xs:element name="getUnreplicatedEntitiesResponse" type="tns:getUnreplicatedEntitiesResponse" />
-            <xs:element name="paymentStatusRequest" type="xs:string"/>
-            <xs:element name="paymentStatusResponse" type="tns:transactionGroup"/>
-            <xs:element name="refundRequest" type="tns:transactionGroup"/>
-            <xs:element name="refundResponse" type="tns:transactionGroup"/>
-            <xs:element name="paymentRequest" type="tns:transactionGroup"/>
-            <xs:element name="paymentModel" type="tns:ParametersMap"/>
-            <xs:element name="paymentResponse" type="tns:transactionGroup"/>
             <xs:element name="voucherRequest" type="tns:transactionGroup"/>
             <xs:element name="voucherResponse" type="tns:transactionGroup"/>
             <xs:element name="sendRecordsRequest" type="tns:replicationRecords"/>
@@ -120,8 +113,6 @@
             <xs:element name="resultsResponse" type="xs:int"/>
             <xs:element name="instructionRequest"  type="xs:string"/>
             <xs:element name="instructionResponse"  type="tns:transactionGroup"/>
-            <xs:element name="usiRequest" type="tns:ParametersMap"/>
-            <xs:element name="usiResponse" type="tns:ParametersMap"/>
             <xs:element name="checkoutRequest" type="tns:ParametersMap"/>
             <xs:element name="checkoutResponse" type="tns:ParametersMap"/>
             <xs:element name="authSecurityCode" type="xs:string"/>
@@ -1212,17 +1203,6 @@
                 </xs:complexContent>
             </xs:complexType>
 
-            <!--xs:complexType name="sessionTutorStub">
-                <xs:complexContent>
-                    <xs:extension base="tns:replicationStub">
-                        <xs:sequence>
-                            <xs:element name="sessionId" type="xs:long" />
-                            <xs:element name="tutorId" type="xs:long" />
-                        </xs:sequence>
-                    </xs:extension>
-                </xs:complexContent>
-            </xs:complexType-->
-
             <xs:complexType name="tutorAttendanceStub">
                 <xs:complexContent>
                     <xs:extension base="tns:replicationStub">
@@ -1236,8 +1216,7 @@
                     </xs:extension>
                 </xs:complexContent>
             </xs:complexType>
-
-
+            
             <xs:complexType name="studentStub">
                 <xs:complexContent>
                     <xs:extension base="tns:replicationStub">
@@ -1536,8 +1515,7 @@
                     </xs:extension>
                 </xs:complexContent>
             </xs:complexType>
-
-
+            
             <xs:complexType name="assessmentStub">
                 <xs:complexContent>
                     <xs:extension base="tns:replicationStub">
@@ -1810,31 +1788,6 @@
         <wsdl:part name="numberUpdated" element="tns:resultsResponse" />
     </wsdl:message>
 
-    <wsdl:message name="processPaymentRequest">
-        <wsdl:part name="transaction" element="tns:paymentRequest" />
-        <wsdl:part name="paymentModel" element="tns:paymentModel" />
-    </wsdl:message>
-
-    <wsdl:message name="processPaymentResponse">
-        <wsdl:part name="transactionGroup" element="tns:paymentResponse" />
-    </wsdl:message>
-
-    <wsdl:message name="processRefundRequest">
-        <wsdl:part name="paymentOut" element="tns:refundRequest" />
-    </wsdl:message>
-
-    <wsdl:message name="processRefundResponse">
-        <wsdl:part name="transactionGroup" element="tns:refundResponse" />
-    </wsdl:message>
-
-    <wsdl:message name="getPaymentStatusRequest">
-        <wsdl:part name="sessionId" element="tns:paymentStatusRequest" />
-    </wsdl:message>
-
-    <wsdl:message name="getPaymentStatusResponse">
-        <wsdl:part name="transactionGroup" element="tns:paymentStatusResponse" />
-    </wsdl:message>
-
     <wsdl:message name="getVouchersRequest">
         <wsdl:part name="transactionRequest" element="tns:voucherRequest"/>
     </wsdl:message>
@@ -1888,14 +1841,6 @@
         <wsdl:part name="instructionResponse" element="tns:instructionResponse"/>
     </wsdl:message>
 
-    <wsdl:message name="verifyUSIRequest">
-        <wsdl:part name="verificationRequest" element="tns:usiRequest"/>
-    </wsdl:message>
-
-    <wsdl:message name="verifyUSIResponse">
-        <wsdl:part name="verificationResponse" element="tns:usiResponse"/>
-    </wsdl:message>
-
     <wsdl:message name="verifyCheckoutRequest">
         <wsdl:part name="verificationRequest" element="tns:checkoutRequest"/>
     </wsdl:message>
@@ -1903,9 +1848,7 @@
     <wsdl:message name="verifyCheckoutResponse">
         <wsdl:part name="verifyCheckoutResponse" element="tns:checkoutResponse"/>
     </wsdl:message>
-
-
-    verifyCheckoutRequest
+    
     <wsdl:portType name="ReplicationPortType">
 
         <wsdl:operation name="getRecords">
@@ -1962,36 +1905,12 @@
 
     <wsdl:portType name="PaymentPortType">
 
-        <wsdl:operation name="processPayment">
-            <wsdl:input name="processPaymentRequest" message="tns:processPaymentRequest" />
-            <wsdl:output name="processPaymentResponse" message="tns:processPaymentResponse" />
-            <wsdl:fault name="fault" message="tns:replicationFault" />
-        </wsdl:operation>
-
-        <wsdl:operation name="processRefund">
-            <wsdl:input name="processRefundRequest" message="tns:processRefundRequest" />
-            <wsdl:output name="processRefundResponse" message="tns:processRefundResponse" />
-            <wsdl:fault name="fault" message="tns:replicationFault" />
-        </wsdl:operation>
-
-        <wsdl:operation name="getPaymentStatus">
-            <wsdl:input name="getPaymentStatusRequest" message="tns:getPaymentStatusRequest" />
-            <wsdl:output name="getPaymentStatusResponse" message="tns:getPaymentStatusResponse" />
-            <wsdl:fault name="fault" message="tns:replicationFault" />
-        </wsdl:operation>
-
         <wsdl:operation name="getVouchers">
             <wsdl:input name="getVouchersRequest" message="tns:getVouchersRequest"/>
             <wsdl:output name="getVouchersResponse" message="tns:getVouchersResponse"/>
             <wsdl:fault name="fault" message="tns:replicationFault"/>
         </wsdl:operation>
-
-        <wsdl:operation name="verifyUSI">
-            <wsdl:input message="tns:verifyUSIRequest" name="verifyUSIRequest"/>
-            <wsdl:output message="tns:verifyUSIResponse" name="verifyUSIResponse"/>
-            <wsdl:fault name="fault" message="tns:replicationFault"/>
-        </wsdl:operation>
-
+        
         <wsdl:operation name="verifyCheckout">
             <wsdl:input message="tns:verifyCheckoutRequest" name="verifyCheckoutRequest"/>
             <wsdl:output message="tns:verifyCheckoutResponse" name="verifyCheckoutResponse"/>
@@ -2099,64 +2018,12 @@
         <soap:binding style="document"
                       transport="http://schemas.xmlsoap.org/soap/http" />
 
-        <wsdl:operation name="processPayment">
-            <soap:operation soapAction="processPayment" style="document" />
-            <wsdl:input name="processPaymentRequest">
-                <soap:body use="literal" />
-            </wsdl:input>
-            <wsdl:output name="processPaymentResponse">
-                <soap:body use="literal" />
-            </wsdl:output>
-            <wsdl:fault name="fault">
-                <soap:fault use="literal" name="fault" />
-            </wsdl:fault>
-        </wsdl:operation>
-
-        <wsdl:operation name="processRefund">
-            <soap:operation soapAction="processRefund" style="document" />
-            <wsdl:input name="processRefundRequest">
-                <soap:body use="literal" />
-            </wsdl:input>
-            <wsdl:output name="processRefundResponse">
-                <soap:body use="literal" />
-            </wsdl:output>
-            <wsdl:fault name="fault">
-                <soap:fault use="literal" name="fault" />
-            </wsdl:fault>
-        </wsdl:operation>
-
-        <wsdl:operation name="getPaymentStatus">
-            <soap:operation soapAction="getPaymentStatus" style="document" />
-            <wsdl:input name="getPaymentStatusRequest">
-                <soap:body use="literal" />
-            </wsdl:input>
-            <wsdl:output name="getPaymentStatusResponse">
-                <soap:body use="literal" />
-            </wsdl:output>
-            <wsdl:fault name="fault">
-                <soap:fault use="literal" name="fault" />
-            </wsdl:fault>
-        </wsdl:operation>
-
         <wsdl:operation name="getVouchers">
             <soap:operation soapAction="getVouchers" style="document"/>
             <wsdl:input name="getVouchersRequest">
                 <soap:body use="literal"/>
             </wsdl:input>
             <wsdl:output name="getVouchersResponse">
-                <soap:body use="literal"/>
-            </wsdl:output>
-            <wsdl:fault name="fault">
-                <soap:fault use="literal" name="fault" />
-            </wsdl:fault>
-        </wsdl:operation>
-
-        <wsdl:operation name="verifyUSI">
-            <soap:operation soapAction="verifyUSI" style="document"/>
-            <wsdl:input name="verifyUSIRequest">
-                <soap:body use="literal"/>
-            </wsdl:input>
-            <wsdl:output name="verifyUSIResponse">
                 <soap:body use="literal"/>
             </wsdl:output>
             <wsdl:fault name="fault">
