@@ -13,7 +13,7 @@ import ish.oncourse.entity.services.SetPaymentMethod
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.PaymentMethod
 import ish.oncourse.server.cayenne.PaymentOut
-import ish.oncourse.webservices.v21.stubs.replication.PaymentOutStub
+import ish.oncourse.webservices.v22.stubs.replication.PaymentOutStub
 import ish.util.LocalDateUtils
 import ish.util.PaymentMethodUtil
 

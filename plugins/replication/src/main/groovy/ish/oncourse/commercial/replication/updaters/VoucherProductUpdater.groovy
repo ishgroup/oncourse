@@ -8,7 +8,7 @@ import ish.common.types.ExpiryType
 import ish.common.types.TypesUtil
 import ish.math.Money
 import ish.oncourse.server.cayenne.VoucherProduct
-import ish.oncourse.webservices.v21.stubs.replication.VoucherProductStub
+import ish.oncourse.webservices.v22.stubs.replication.VoucherProductStub
 
 class VoucherProductUpdater extends AbstractAngelUpdater<VoucherProductStub, VoucherProduct> {
 

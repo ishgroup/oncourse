@@ -6,7 +6,7 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.FieldConfigurationScheme
-import ish.oncourse.webservices.v21.stubs.replication.FieldConfigurationSchemeStub
+import ish.oncourse.webservices.v22.stubs.replication.FieldConfigurationSchemeStub
 
 /**
  * Created by Artem on 16/11/2016.

@@ -5,11 +5,8 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.webservices.v21.stubs.replication.ContactStub
+import ish.oncourse.webservices.v22.stubs.replication.ContactStub
 import ish.util.LocalDateUtils
-
-import java.util.Date
-
 /**
  */
 class ContactStubBuilder extends AbstractAngelStubBuilder<Contact, ContactStub> {
@@ -26,7 +23,7 @@ class ContactStubBuilder extends AbstractAngelStubBuilder<Contact, ContactStub> 
 		stub.setGivenName(c.getFirstName())
 		stub.setFamilyName(c.getLastName())
 		stub.setModified(c.getModifiedOn())
-		stub.setMale(c.getIsMale())
+		stub.setGender(c.getGender().getDatabaseValue())
 		stub.setMarketingViaEmailAllowed(c.getAllowEmail())
 		stub.setMarketingViaPostAllowed(c.getAllowPost())
 		stub.setMarketingViaSMSAllowed(c.getAllowSms())

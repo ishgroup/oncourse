@@ -8,11 +8,11 @@ package ish.oncourse.commercial.replication.handler
 import com.google.inject.Inject
 import ish.oncourse.server.modules.ISoapPortLocator
 import ish.oncourse.webservices.ITransactionGroupProcessor
-import ish.oncourse.webservices.soap.v21.ReplicationFault
+import ish.oncourse.webservices.soap.v22.ReplicationFault
 import ish.oncourse.webservices.util.GenericReplicatedRecord
 import ish.oncourse.webservices.util.GenericReplicationRecords
 import ish.oncourse.webservices.util.GenericTransactionGroup
-import ish.oncourse.webservices.v21.stubs.replication.ReplicationResult
+import ish.oncourse.webservices.v22.stubs.replication.ReplicationResult
 
 class InboundReplicationHandler implements ReplicationHandler {
     /**

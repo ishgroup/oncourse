@@ -5,7 +5,7 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.ContactRelation
-import ish.oncourse.webservices.v21.stubs.replication.ContactRelationStub
+import ish.oncourse.webservices.v22.stubs.replication.ContactRelationStub
 
 /**
  */

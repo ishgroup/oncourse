@@ -9,7 +9,7 @@ import ish.oncourse.server.cayenne.AssessmentClass
 import ish.oncourse.server.cayenne.AssessmentSubmission
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.webservices.v21.stubs.replication.AssessmentSubmissionStub
+import ish.oncourse.webservices.v22.stubs.replication.AssessmentSubmissionStub
 
 /**
  * Created by Artem on 24/10/2016.

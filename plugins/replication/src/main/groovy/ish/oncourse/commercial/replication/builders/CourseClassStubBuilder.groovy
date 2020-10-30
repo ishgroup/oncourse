@@ -5,7 +5,7 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.webservices.v21.stubs.replication.CourseClassStub
+import ish.oncourse.webservices.v22.stubs.replication.CourseClassStub
 import ish.util.LocalDateUtils
 
 import java.util.Date

@@ -5,7 +5,7 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.SessionModule
-import ish.oncourse.webservices.v21.stubs.replication.SessionModuleStub
+import ish.oncourse.webservices.v22.stubs.replication.SessionModuleStub
 
 /**
  */

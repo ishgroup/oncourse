@@ -8,7 +8,7 @@ package ish.oncourse.commercial.replication.updaters
 import ish.oncourse.server.cayenne.CorporatePass
 import ish.oncourse.server.cayenne.CorporatePassProduct
 import ish.oncourse.server.cayenne.Product
-import ish.oncourse.webservices.v21.stubs.replication.CorporatePassProductStub
+import ish.oncourse.webservices.v22.stubs.replication.CorporatePassProductStub
 
 class CorporatePassProductUpdater extends AbstractAngelUpdater<CorporatePassProductStub, CorporatePassProduct> {
 	@Override

@@ -11,9 +11,9 @@ import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.Voucher
 import ish.oncourse.server.modules.ISoapPortLocator
 import ish.oncourse.server.replication.builders.IAngelStubBuilder
-import ish.oncourse.webservices.soap.v21.ReplicationFault
-import ish.oncourse.webservices.v21.stubs.replication.TransactionGroup
-import ish.oncourse.webservices.v21.stubs.replication.VoucherStub
+import ish.oncourse.webservices.soap.v22.ReplicationFault
+import ish.oncourse.webservices.v22.stubs.replication.TransactionGroup
+import ish.oncourse.webservices.v22.stubs.replication.VoucherStub
 import ish.voucher.VoucherData
 import ish.voucher.VoucherValidationRequest
 import ish.voucher.VoucherValidationResult

@@ -5,7 +5,7 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.PaymentIn
-import ish.oncourse.webservices.v21.stubs.replication.PaymentInStub
+import ish.oncourse.webservices.v22.stubs.replication.PaymentInStub
 import ish.util.LocalDateUtils
 
 /**

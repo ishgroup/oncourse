@@ -7,7 +7,7 @@ package ish.oncourse.commercial.replication.updaters
 import ish.oncourse.server.cayenne.PriorLearning
 import ish.oncourse.server.cayenne.Student
 import ish.oncourse.server.reference.ReferenceUtil
-import ish.oncourse.webservices.v21.stubs.replication.PriorLearningStub
+import ish.oncourse.webservices.v22.stubs.replication.PriorLearningStub
 
 class PriorLearningUpdater extends AbstractAngelUpdater<PriorLearningStub, PriorLearning> {
 

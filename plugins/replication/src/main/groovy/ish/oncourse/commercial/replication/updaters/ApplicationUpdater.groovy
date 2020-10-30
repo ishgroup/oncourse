@@ -12,7 +12,7 @@ import ish.math.Money
 import ish.oncourse.server.cayenne.Application
 import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.Student
-import ish.oncourse.webservices.v21.stubs.replication.ApplicationStub
+import ish.oncourse.webservices.v22.stubs.replication.ApplicationStub
 
 class ApplicationUpdater extends AbstractAngelUpdater<ApplicationStub, Application> {
 

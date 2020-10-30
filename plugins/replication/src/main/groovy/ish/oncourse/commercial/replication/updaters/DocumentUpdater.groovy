@@ -7,7 +7,7 @@ package ish.oncourse.commercial.replication.updaters
 import ish.common.types.AttachmentInfoVisibility
 import ish.common.types.TypesUtil
 import ish.oncourse.server.cayenne.Document
-import ish.oncourse.webservices.v21.stubs.replication.DocumentStub
+import ish.oncourse.webservices.v22.stubs.replication.DocumentStub
 
 class DocumentUpdater extends AbstractAngelUpdater<DocumentStub, Document> {
 

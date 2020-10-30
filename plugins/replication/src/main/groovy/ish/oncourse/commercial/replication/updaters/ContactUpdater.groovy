@@ -5,6 +5,7 @@
 package ish.oncourse.commercial.replication.updaters
 
 import ish.common.types.Gender
+import ish.common.types.TypesUtil
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.Country
 import ish.oncourse.server.cayenne.Queueable
@@ -12,7 +13,7 @@ import ish.oncourse.server.cayenne.Student
 import ish.oncourse.server.cayenne.Tax
 import ish.oncourse.server.cayenne.Tutor
 import ish.oncourse.server.reference.ReferenceUtil
-import ish.oncourse.webservices.v21.stubs.replication.ContactStub
+import ish.oncourse.webservices.v22.stubs.replication.ContactStub
 import ish.util.LocalDateUtils
 
 /**
@@ -42,16 +43,7 @@ class ContactUpdater extends AbstractAngelUpdater<ContactStub, Contact> {
 		entity.setFirstName(stub.getGivenName())
 		entity.setHomePhone(stub.getHomePhoneNumber())
 		entity.setIsCompany(stub.isCompany())
-		//TODO Update swagger model with enum
-		if (stub.isMale() != null) {
-			if (stub.isMale() == false) {
-				entity.setGender(Gender.FEMALE)
-			} else if (stub.isMale() == true) {
-				entity.setGender(Gender.MALE)
-			} else {
-				entity.setGender(null)
-			}
-		}
+		entity.setGender(TypesUtil.getEnumForDatabaseValue(stub.getGender(), Gender.class))
 		entity.setUniqueCode(stub.getUniqueCode())
 		entity.setSuburb(stub.getSuburb())
 		entity.setStreet(stub.getStreet())

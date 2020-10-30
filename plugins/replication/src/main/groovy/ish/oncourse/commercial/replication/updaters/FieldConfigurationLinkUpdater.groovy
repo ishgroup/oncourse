@@ -8,7 +8,7 @@ package ish.oncourse.commercial.replication.updaters
 import ish.oncourse.server.cayenne.FieldConfiguration
 import ish.oncourse.server.cayenne.FieldConfigurationLink
 import ish.oncourse.server.cayenne.FieldConfigurationScheme
-import ish.oncourse.webservices.v21.stubs.replication.FieldConfigurationLinkStub
+import ish.oncourse.webservices.v22.stubs.replication.FieldConfigurationLinkStub
 import ish.util.FieldConfigurationUtil
 
 class FieldConfigurationLinkUpdater extends AbstractAngelUpdater<FieldConfigurationLinkStub, FieldConfigurationLink> {

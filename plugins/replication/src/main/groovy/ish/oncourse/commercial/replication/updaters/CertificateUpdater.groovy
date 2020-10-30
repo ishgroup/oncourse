@@ -7,7 +7,7 @@ package ish.oncourse.commercial.replication.updaters
 import ish.oncourse.server.cayenne.Certificate
 import ish.oncourse.server.cayenne.Student
 import ish.oncourse.server.reference.ReferenceUtil
-import ish.oncourse.webservices.v21.stubs.replication.CertificateStub
+import ish.oncourse.webservices.v22.stubs.replication.CertificateStub
 import ish.util.LocalDateUtils
 
 class CertificateUpdater extends AbstractAngelUpdater<CertificateStub, Certificate> {

@@ -5,7 +5,7 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.Outcome
-import ish.oncourse.webservices.v21.stubs.replication.OutcomeStub
+import ish.oncourse.webservices.v22.stubs.replication.OutcomeStub
 import ish.util.LocalDateUtils
 
 /**

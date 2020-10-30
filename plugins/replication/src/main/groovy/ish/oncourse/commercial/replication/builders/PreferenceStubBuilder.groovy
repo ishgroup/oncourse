@@ -5,7 +5,7 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.Preference
-import ish.oncourse.webservices.v21.stubs.replication.PreferenceStub
+import ish.oncourse.webservices.v22.stubs.replication.PreferenceStub
 
 /**
  */

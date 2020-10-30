@@ -5,7 +5,7 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.MessageTemplate
-import ish.oncourse.webservices.v21.stubs.replication.MessageTemplateStub
+import ish.oncourse.webservices.v22.stubs.replication.MessageTemplateStub
 
 /**
  */

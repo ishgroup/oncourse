@@ -10,7 +10,7 @@ import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.EntityRelation
 import ish.oncourse.server.cayenne.Product
 import ish.oncourse.server.cayenne.Queueable
-import ish.oncourse.webservices.v21.stubs.replication.EntityRelationStub
+import ish.oncourse.webservices.v22.stubs.replication.EntityRelationStub
 
 import java.util.EnumMap
 import java.util.Map

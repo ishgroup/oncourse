@@ -8,7 +8,7 @@ package ish.oncourse.commercial.replication.updaters
 import ish.common.types.AttachmentSpecialType
 import ish.common.types.TypesUtil
 import ish.oncourse.server.cayenne.*
-import ish.oncourse.webservices.v21.stubs.replication.BinaryInfoRelationStub
+import ish.oncourse.webservices.v22.stubs.replication.BinaryInfoRelationStub
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 

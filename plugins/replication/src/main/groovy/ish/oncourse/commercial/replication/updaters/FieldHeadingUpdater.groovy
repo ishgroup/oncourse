@@ -7,7 +7,7 @@ package ish.oncourse.commercial.replication.updaters
 
 import ish.oncourse.server.cayenne.FieldConfiguration
 import ish.oncourse.server.cayenne.FieldHeading
-import ish.oncourse.webservices.v21.stubs.replication.FieldHeadingStub
+import ish.oncourse.webservices.v22.stubs.replication.FieldHeadingStub
 import ish.util.FieldConfigurationUtil
 
 /**

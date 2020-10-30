@@ -6,7 +6,7 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.AssessmentClass
-import ish.oncourse.webservices.v21.stubs.replication.AssessmentClassStub
+import ish.oncourse.webservices.v22.stubs.replication.AssessmentClassStub
 
 /**
  * Created by Artem on 22/10/2016.

@@ -6,7 +6,7 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.ArticleProduct
-import ish.oncourse.webservices.v21.stubs.replication.ArticleProductStub
+import ish.oncourse.webservices.v22.stubs.replication.ArticleProductStub
 
 /**
  */

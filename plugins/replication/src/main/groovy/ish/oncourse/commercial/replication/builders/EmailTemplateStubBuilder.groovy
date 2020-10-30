@@ -5,7 +5,7 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.EmailTemplate
-import ish.oncourse.webservices.v21.stubs.replication.EmailTemplateStub
+import ish.oncourse.webservices.v22.stubs.replication.EmailTemplateStub
 
 class EmailTemplateStubBuilder extends AbstractAngelStubBuilder<EmailTemplate, EmailTemplateStub> {
 	@Override

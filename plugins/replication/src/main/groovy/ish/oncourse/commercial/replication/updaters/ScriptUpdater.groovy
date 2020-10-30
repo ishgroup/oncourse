@@ -9,7 +9,7 @@ import ish.common.types.SystemEventType
 import ish.common.types.TriggerType
 import ish.common.types.TypesUtil
 import ish.oncourse.server.cayenne.Script
-import ish.oncourse.webservices.v21.stubs.replication.ScriptStub
+import ish.oncourse.webservices.v22.stubs.replication.ScriptStub
 
 class ScriptUpdater extends AbstractAngelUpdater<ScriptStub, Script> {
 	@Override

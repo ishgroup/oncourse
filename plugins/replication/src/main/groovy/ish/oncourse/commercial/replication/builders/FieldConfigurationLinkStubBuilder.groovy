@@ -6,7 +6,7 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.FieldConfigurationLink
-import ish.oncourse.webservices.v21.stubs.replication.FieldConfigurationLinkStub
+import ish.oncourse.webservices.v22.stubs.replication.FieldConfigurationLinkStub
 
 class FieldConfigurationLinkStubBuilder extends AbstractAngelStubBuilder<FieldConfigurationLink, FieldConfigurationLinkStub> {
 

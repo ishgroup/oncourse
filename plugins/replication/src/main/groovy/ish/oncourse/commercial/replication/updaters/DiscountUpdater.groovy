@@ -5,7 +5,7 @@
 package ish.oncourse.commercial.replication.updaters
 
 import ish.oncourse.server.cayenne.Discount
-import ish.oncourse.webservices.v21.stubs.replication.DiscountStub
+import ish.oncourse.webservices.v22.stubs.replication.DiscountStub
 
 /**
  */

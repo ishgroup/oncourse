@@ -6,7 +6,7 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.Qualification
-import ish.oncourse.webservices.v21.stubs.replication.QualificationStub
+import ish.oncourse.webservices.v22.stubs.replication.QualificationStub
 import ish.util.LocalDateUtils
 
 class QualificationStubBuilder extends AbstractAngelStubBuilder<Qualification, QualificationStub> {

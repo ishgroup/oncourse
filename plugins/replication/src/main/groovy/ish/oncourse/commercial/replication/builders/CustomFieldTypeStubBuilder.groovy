@@ -5,7 +5,7 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.CustomFieldType
-import ish.oncourse.webservices.v21.stubs.replication.CustomFieldTypeStub
+import ish.oncourse.webservices.v22.stubs.replication.CustomFieldTypeStub
 
 class CustomFieldTypeStubBuilder extends AbstractAngelStubBuilder<CustomFieldType, CustomFieldTypeStub> {
 

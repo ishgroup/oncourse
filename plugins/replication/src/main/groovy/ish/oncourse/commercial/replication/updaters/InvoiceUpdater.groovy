@@ -13,7 +13,7 @@ import ish.oncourse.server.cayenne.AbstractInvoice
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.CorporatePass
 import ish.oncourse.server.cayenne.PaymentIn
-import ish.oncourse.webservices.v21.stubs.replication.InvoiceStub
+import ish.oncourse.webservices.v22.stubs.replication.InvoiceStub
 import ish.util.LocalDateUtils
 
 import java.time.ZoneId

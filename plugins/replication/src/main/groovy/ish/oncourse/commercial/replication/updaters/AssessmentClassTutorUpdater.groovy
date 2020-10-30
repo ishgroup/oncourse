@@ -8,7 +8,7 @@ package ish.oncourse.commercial.replication.updaters
 import ish.oncourse.server.cayenne.AssessmentClass
 import ish.oncourse.server.cayenne.AssessmentClassTutor
 import ish.oncourse.server.cayenne.Tutor
-import ish.oncourse.webservices.v21.stubs.replication.AssessmentClassTutorStub
+import ish.oncourse.webservices.v22.stubs.replication.AssessmentClassTutorStub
 
 /**
  * Created by Artem on 24/10/2016.

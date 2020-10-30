@@ -7,7 +7,7 @@ package ish.oncourse.commercial.replication.updaters
 import ish.math.Money
 import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.CourseClassPaymentPlanLine
-import ish.oncourse.webservices.v21.stubs.replication.CourseClassPaymentPlanLineStub
+import ish.oncourse.webservices.v22.stubs.replication.CourseClassPaymentPlanLineStub
 
 class CourseClassPaymentPlanLineUpdater extends AbstractAngelUpdater<CourseClassPaymentPlanLineStub, CourseClassPaymentPlanLine> {
 	@Override

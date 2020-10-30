@@ -6,7 +6,7 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.Module
-import ish.oncourse.webservices.v21.stubs.replication.ModuleStub
+import ish.oncourse.webservices.v22.stubs.replication.ModuleStub
 
 class ModuleStubBuilder extends AbstractAngelStubBuilder<Module, ModuleStub> {
 

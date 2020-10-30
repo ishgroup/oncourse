@@ -5,7 +5,7 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.Site
-import ish.oncourse.webservices.v21.stubs.replication.SiteStub
+import ish.oncourse.webservices.v22.stubs.replication.SiteStub
 
 /**
  */

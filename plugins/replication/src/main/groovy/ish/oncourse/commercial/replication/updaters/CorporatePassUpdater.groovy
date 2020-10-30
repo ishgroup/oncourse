@@ -6,7 +6,7 @@ package ish.oncourse.commercial.replication.updaters
 
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.CorporatePass
-import ish.oncourse.webservices.v21.stubs.replication.CorporatePassStub
+import ish.oncourse.webservices.v22.stubs.replication.CorporatePassStub
 
 /**
  */

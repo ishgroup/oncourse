@@ -8,7 +8,7 @@ package ish.oncourse.commercial.replication.builders
 import ish.common.types.FieldConfigurationType
 import ish.oncourse.server.cayenne.FieldConfiguration
 import ish.oncourse.server.cayenne.SurveyFieldConfiguration
-import ish.oncourse.webservices.v21.stubs.replication.FieldConfigurationStub
+import ish.oncourse.webservices.v22.stubs.replication.FieldConfigurationStub
 
 /**
  * Created by Artem on 16/11/2016.

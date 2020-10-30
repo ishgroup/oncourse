@@ -6,7 +6,7 @@ package ish.oncourse.commercial.replication.updaters
 
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.cayenne.*
-import ish.oncourse.webservices.v21.stubs.replication.TagRelationStub
+import ish.oncourse.webservices.v22.stubs.replication.TagRelationStub
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.exp.ExpressionFactory

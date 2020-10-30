@@ -9,7 +9,7 @@ import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.Invoice
 import ish.oncourse.server.cayenne.InvoiceLine
-import ish.oncourse.webservices.v21.stubs.replication.InvoiceLineStub
+import ish.oncourse.webservices.v22.stubs.replication.InvoiceLineStub
 
 /**
  */

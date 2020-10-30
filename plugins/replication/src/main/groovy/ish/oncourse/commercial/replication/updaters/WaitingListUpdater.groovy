@@ -7,7 +7,7 @@ package ish.oncourse.commercial.replication.updaters
 import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.Student
 import ish.oncourse.server.cayenne.WaitingList
-import ish.oncourse.webservices.v21.stubs.replication.WaitingListStub
+import ish.oncourse.webservices.v22.stubs.replication.WaitingListStub
 
 /**
  */

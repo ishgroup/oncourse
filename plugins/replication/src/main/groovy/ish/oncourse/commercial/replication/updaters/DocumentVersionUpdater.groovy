@@ -7,7 +7,7 @@ package ish.oncourse.commercial.replication.updaters
 import ish.oncourse.server.cayenne.Document
 import ish.oncourse.server.cayenne.DocumentVersion
 import ish.oncourse.server.cayenne.SystemUser
-import ish.oncourse.webservices.v21.stubs.replication.DocumentVersionStub
+import ish.oncourse.webservices.v22.stubs.replication.DocumentVersionStub
 
 class DocumentVersionUpdater extends AbstractAngelUpdater<DocumentVersionStub, DocumentVersion> {
 

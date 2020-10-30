@@ -6,7 +6,7 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.Field
-import ish.oncourse.webservices.v21.stubs.replication.FieldStub
+import ish.oncourse.webservices.v22.stubs.replication.FieldStub
 
 /**
  * Created by Artem on 16/11/2016.

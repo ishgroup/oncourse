@@ -11,7 +11,7 @@ import ish.common.types.TypesUtil
 import ish.oncourse.server.cayenne.FieldConfiguration
 import ish.oncourse.server.cayenne.SurveyFieldConfiguration
 import ish.oncourse.server.cayenne.SystemUser
-import ish.oncourse.webservices.v21.stubs.replication.FieldConfigurationStub
+import ish.oncourse.webservices.v22.stubs.replication.FieldConfigurationStub
 
 /**
  * Created by Artem on 17/11/2016.

@@ -7,7 +7,7 @@ package ish.oncourse.commercial.replication.builders
 import ish.oncourse.server.cayenne.Queueable
 import ish.oncourse.commercial.cayenne.QueuedRecord
 import ish.oncourse.webservices.util.GenericReplicationStub
-import ish.oncourse.webservices.v21.stubs.replication.DeletedStub
+import ish.oncourse.webservices.v22.stubs.replication.DeletedStub
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
