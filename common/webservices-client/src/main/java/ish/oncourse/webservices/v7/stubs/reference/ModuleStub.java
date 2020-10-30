@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="created" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/&gt;
  *         &lt;element name="disciplineCode" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="fieldOfEducation" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="type" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/&gt;
+ *         &lt;element name="type" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/&gt;
  *         &lt;element name="ishVersion" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/&gt;
  *         &lt;element name="modified" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/&gt;
  *         &lt;element name="nationalCode" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
@@ -60,9 +60,9 @@ public class ModuleStub
     protected String disciplineCode;
     protected String fieldOfEducation;
     @XmlElement(type = String.class)
-    @XmlJavaTypeAdapter(Adapter3 .class)
-    @XmlSchemaType(name = "long")
-    protected Long type;
+    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlSchemaType(name = "int")
+    protected Integer type;
     @XmlElement(type = String.class)
     @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "long")
@@ -158,7 +158,7 @@ public class ModuleStub
      *     {@link String }
      *     
      */
-    public Long getType() {
+    public Integer getType() {
         return type;
     }
 
@@ -170,7 +170,7 @@ public class ModuleStub
      *     {@link String }
      *     
      */
-    public void setType(Long value) {
+    public void setType(Integer value) {
         this.type = value;
     }
 
