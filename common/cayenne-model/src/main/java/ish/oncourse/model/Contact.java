@@ -375,18 +375,30 @@ public class Contact extends _Contact implements Queueable {
 		return super.getAbn();
 	}
 
-	@Property(value = FieldProperty.IS_MALE, type = PropertyGetSetFactory.SET, params = {Gender.class})
 	@Override
 	public void setGender(Gender isMale) {
 		super.setGender(isMale);
 	}
 
-	@Property(value = FieldProperty.IS_MALE, type = PropertyGetSetFactory.GET, params = {})
 	@Override
 	public Gender getGender() {
 		return super.getGender();
 	}
+	
+	@Property(value = FieldProperty.IS_MALE, type = PropertyGetSetFactory.SET, params = {Boolean.class})
+	@Deprecated
+	public void setIsMale(Boolean isMale) {
+		if (isMale == null) {
+			setGender(null);
+		} else if (isMale) {
+			setGender(Gender.MALE);
+		} else {
+			setGender(Gender.FEMALE);
+		}
 
+	}
+
+	@Property(value = FieldProperty.IS_MALE, type = PropertyGetSetFactory.GET, params = {})
 	@Deprecated
 	public Boolean getIsMale() {
 		switch (super.getGender()) {
@@ -396,9 +408,10 @@ public class Contact extends _Contact implements Queueable {
 				return false;
 			default:
 				return null;
-		}
+		}	
 	}
-
+	
+	
 	@Property(value = FieldProperty.IS_MARKETING_VIA_EMAIL_ALLOWED_PROPERTY, type = PropertyGetSetFactory.SET, params = {Boolean.class})
 	@Override
 	public void setIsMarketingViaEmailAllowed(Boolean isMarketingViaEmailAllowed) {
