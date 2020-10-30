@@ -2,8 +2,8 @@ apply plugin: 'com.github.node-gradle.node'
 apply plugin: 'queryLanguageModel'
 
 node {
-    version = '12.18.3'
-    yarnVersion = '1.22.4'
+    version = '12.19.0'
+    yarnVersion = '1.22.10'
     download = System.properties['os.name'] != "FreeBSD" // FreeBSD has no binaries this plugin can install
     workDir = file("${project.buildDir}/nodejs")
 }
@@ -15,7 +15,7 @@ task webpack(type: YarnTask, dependsOn: 'queryGrammar') {
     inputs.dir("src")
     outputs.dir("$buildDir/assets")
     inputs.property('version', version)
-    
+
     args = ['build:prod', '--env.BUILD_NUMBER', version ?: 'SNAPSHOT']
 }
 
