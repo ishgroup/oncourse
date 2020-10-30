@@ -401,6 +401,10 @@ public class Contact extends _Contact implements Queueable {
 	@Property(value = FieldProperty.IS_MALE, type = PropertyGetSetFactory.GET, params = {})
 	@Deprecated
 	public Boolean getIsMale() {
+		Gender gender = super.getGender();
+		if (gender == null) {
+			return null;
+		}
 		switch (super.getGender()) {
 			case MALE:
 				return true;
