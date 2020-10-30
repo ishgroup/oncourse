@@ -86,7 +86,7 @@ public class WaitLocateHandler extends AbstractStepHandler {
         rq.setOrgCode(getUsiController().getPreferenceController().getAvetmissID());
         rq.setUserReference(billingCode);
         rq.setFamilyName(c.getFamilyName());
-        rq.setGender(c.getGender() == Gender.MALE ? USIGender.MALE : c.getGender() == Gender.FEMALE ? USIGender.FEMALE : USIGender.UNSPECIFIED);
+        rq.setGender(c.getIsMale() ? USIGender.MALE : USIGender.FEMALE);
         rq.setDateOfBirth(c.getDateOfBirth());
         rq.setFirstName(c.getGivenName());
         rq.setTownCityOfBirth(c.getStudent().getTownOfBirth());

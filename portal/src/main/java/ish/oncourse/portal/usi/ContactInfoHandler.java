@@ -51,8 +51,8 @@ public class ContactInfoHandler extends AbstractStepHandler {
 				addValue(Value.valueOf(TOWN_OF_BIRTH.getName(), student.getTownOfBirth(), true, false));
 			}
 
-			if (contact.getGender() == null) {
-				addValue(Value.valueOf(GENDER.getName(), contact.getGender(), true));
+			if (contact.getIsMale() == null) {
+				addValue(Value.valueOf("isMale", contact.getIsMale(), true));
 			}
 
 			if (isBlank(contact.getState())) {
@@ -129,8 +129,8 @@ public class ContactInfoHandler extends AbstractStepHandler {
 			handleContactValue(student, TOWN_OF_BIRTH.getName());
 		}
 
-		if (contact.getGender() == null) {
-			handleGenderValue(contact, GENDER.getName());
+		if (contact.getIsMale() == null) {
+			handleGenderValue(contact, "isMale");
 		}
 
 		if (isBlank(contact.getState())) {
@@ -174,20 +174,18 @@ public class ContactInfoHandler extends AbstractStepHandler {
 
 
 	private void handleGenderValue(Contact contact, String key) {
-		Value inputValue = inputValues.get("gender");
+		Value inputValue = inputValues.get("isMale");
 
 		if (inputValue == null) {
 			result.addValue(Value.valueOf(key, null, getUsiController().getMessages().format("message-fieldRequired")));
 			result.setHasErrors(true);
 		} else {
 			if (inputValue.getValue().equals("male")) {
-				contact.setGender(Gender.MALE);
+				contact.setIsMale(Boolean.TRUE);
 			} else if (inputValue.getValue().equals("female")) {
-				contact.setGender(Gender.FEMALE);
-			} else {
-				contact.setGender(Gender.OTHER_GENDER);
+				contact.setIsMale(Boolean.FALSE);
 			}
-			result.addValue(Value.valueOf(key, contact.getGender()));
+			result.addValue(Value.valueOf(key, contact.getIsMale()));
 		}
 	}
 
