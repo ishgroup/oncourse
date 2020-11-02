@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-package ish.oncourse.commercial.lifecycle
+package ish.oncourse.commercial.replication.lifecycle
 
 import ish.oncourse.server.cayenne.QueuedTransaction
 import org.apache.cayenne.ObjectContext

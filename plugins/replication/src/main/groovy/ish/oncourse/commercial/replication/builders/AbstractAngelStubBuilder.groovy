@@ -4,15 +4,19 @@
  */
 package ish.oncourse.commercial.replication.builders
 
+import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.Queueable
-import ish.oncourse.commercial.cayenne.QueuedRecord
+import ish.oncourse.commercial.replication.cayenne.QueuedRecord
 import ish.oncourse.webservices.util.GenericReplicationStub
 import ish.oncourse.webservices.v22.stubs.replication.DeletedStub
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+import static ish.oncourse.commercial.replication.cayenne.QueuedRecordAction.*
+
 /**
  */
+@CompileStatic
 abstract class AbstractAngelStubBuilder<T extends Queueable, V extends GenericReplicationStub> implements IAngelStubBuilder {
 	protected static final Logger logger = LogManager.getLogger()
 

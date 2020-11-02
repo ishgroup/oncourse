@@ -8,7 +8,7 @@
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://cayenne.apache.org/schema/10/modelMap https://cayenne.apache.org/schema/10/modelMap.xsd"
           project-version="10">
-    <property name="defaultPackage" value="ish.oncourse.commercial.cayenne"/>
+    <property name="defaultPackage" value="ish.oncourse.commercial.replication.cayenne"/>
     <db-entity name="QueuedRecord">
         <db-attribute name="action" type="VARCHAR" length="25"/>
         <db-attribute name="createdOn" type="TIMESTAMP"/>
@@ -28,8 +28,8 @@
         <db-attribute name="modifiedOn" type="TIMESTAMP"/>
         <db-attribute name="transactionKey" type="VARCHAR" isMandatory="true" length="100"/>
     </db-entity>
-    <obj-entity name="QueuedRecord" className="ish.oncourse.commercial.cayenne.QueuedRecord" dbEntityName="QueuedRecord" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
-        <obj-attribute name="action" type="ish.oncourse.commercial.cayenne.QueuedRecordAction" db-attribute-path="action"/>
+    <obj-entity name="QueuedRecord" className="ish.oncourse.commercial.replication.cayenne.QueuedRecord" dbEntityName="QueuedRecord" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
+        <obj-attribute name="action" type="ish.oncourse.commercial.replication.cayenne.QueuedRecordAction" db-attribute-path="action"/>
         <obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
         <obj-attribute name="errorMessage" type="java.lang.String" db-attribute-path="errorMessage"/>
         <obj-attribute name="foreignRecordId" type="java.lang.Long" db-attribute-path="foreignRecordId"/>
@@ -41,7 +41,7 @@
         <obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
         <pre-remove method-name="onPreRemove"/>
     </obj-entity>
-    <obj-entity name="QueuedTransaction" className="ish.oncourse.commercial.cayenne.QueuedTransaction" dbEntityName="QueuedTransaction" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
+    <obj-entity name="QueuedTransaction" className="ish.oncourse.commercial.replication.cayenne.QueuedTransaction" dbEntityName="QueuedTransaction" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
         <obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
         <obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
         <obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>

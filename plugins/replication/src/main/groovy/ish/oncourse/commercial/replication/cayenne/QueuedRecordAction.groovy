@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-package ish.oncourse.commercial.cayenne
+package ish.oncourse.commercial.replication.cayenne
 
 enum QueuedRecordAction {
     /**

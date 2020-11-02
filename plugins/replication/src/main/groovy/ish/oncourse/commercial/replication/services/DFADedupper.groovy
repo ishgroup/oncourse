@@ -5,7 +5,7 @@
 
 package ish.oncourse.commercial.replication.services
 
-import ish.oncourse.commercial.cayenne.QueuedRecord
+import ish.oncourse.commercial.replication.cayenne.QueuedRecord
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 

@@ -7,14 +7,14 @@ package ish.oncourse.commercial.replication.handler
 
 import com.google.inject.Inject
 import ish.common.types.ContactDuplicateStatus
-import ish.oncourse.commercial.cayenne.QueueKey
-import ish.oncourse.commercial.cayenne.QueuedRecordAction
-import static ish.oncourse.commercial.cayenne.QueuedRecordAction.CREATE
+import ish.oncourse.commercial.replication.cayenne.QueueKey
+import ish.oncourse.commercial.replication.cayenne.QueuedRecordAction
+import static ish.oncourse.commercial.replication.cayenne.QueuedRecordAction.CREATE
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.ISHDataContext
 import ish.oncourse.server.cayenne.ContactDuplicate
 import ish.oncourse.server.cayenne.Queueable
-import ish.oncourse.commercial.cayenne.QueuedRecord
+import ish.oncourse.commercial.replication.cayenne.QueuedRecord
 import ish.oncourse.server.cayenne.QueuedTransaction
 import ish.oncourse.server.modules.ISoapPortLocator
 import ish.oncourse.server.replication.builders.IAngelStubBuilder

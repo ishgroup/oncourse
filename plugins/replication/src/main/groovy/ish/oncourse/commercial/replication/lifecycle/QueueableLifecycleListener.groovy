@@ -3,15 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-package ish.oncourse.commercial.lifecycle
+package ish.oncourse.commercial.replication.lifecycle
 
 import ish.oncourse.cayenne.QueueableEntity
-import ish.oncourse.commercial.cayenne.QueuedRecordAction
+import ish.oncourse.commercial.replication.cayenne.QueuedRecordAction
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.ISHDataContext
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.Queueable
-import ish.oncourse.commercial.cayenne.QueuedRecord
+import ish.oncourse.commercial.replication.cayenne.QueuedRecord
 import ish.oncourse.server.cayenne.QueuedTransaction
 import org.apache.cayenne.Cayenne
 import org.apache.cayenne.DataChannelSyncFilter

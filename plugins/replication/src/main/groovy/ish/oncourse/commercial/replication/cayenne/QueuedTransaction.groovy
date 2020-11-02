@@ -3,13 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-package ish.oncourse.commercial.cayenne
+package ish.oncourse.commercial.replication.cayenne
 
-import ish.oncourse.commercial.cayenne.glue._QueuedTransaction
+import ish.oncourse.commercial.replication.cayenne.glue._QueuedTransaction
 
 import javax.annotation.Nonnull
-import java.util.Date
-import java.util.List
 
 /**
  * A persistent class mapped as "QueuedTransaction" Cayenne entity.

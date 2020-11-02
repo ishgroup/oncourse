@@ -3,9 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-package ish.oncourse.commercial.cayenne
+package ish.oncourse.commercial.replication.cayenne
 
-import ish.oncourse.commercial.cayenne.glue._QueuedRecord
+import ish.oncourse.commercial.replication.cayenne.glue._QueuedRecord
 import ish.oncourse.server.cayenne.Certificate
 import ish.oncourse.server.cayenne.CertificateOutcome
 import ish.oncourse.server.cayenne.Course
