@@ -16,6 +16,12 @@ import CheckoutService from "../services/CheckoutService";
 import {FieldSet} from "../../model/field/FieldSet";
 import {IshState} from "../../services/IshState";
 
+export const isOldIE = () => {
+  const ua = window.navigator.userAgent;
+  const  msie = ua.indexOf('MSIE ');
+  return msie !== -1;
+};
+
 
 interface Props {
   phase: Phase;
@@ -39,10 +45,26 @@ export class Checkout extends React.Component<Props, any> {
   }
 
   render() {
-    const {phase, page, isNewContact, fetching, childName, fieldset, minAge, isFirstContact, isEmptyProducts} = this.props;
+    const {
+      phase, page, isNewContact, fetching, childName, fieldset, minAge, isFirstContact, isEmptyProducts,
+    } = this.props;
 
     return (
       <div>
+        {isOldIE() && <div
+            style={{
+              backgroundColor: "#E57373",
+              color: "white",
+              padding: "5px",
+              borderRadius: "3px",
+              lineHeight: "17px",
+              marginBottom: "20px",
+            }}
+          >
+          {/* tslint:disable-next-line:max-line-length */}
+            Your current browser is not supported. Please ensure you are using an up to date version of Chrome, Firefox or Edge.
+          </div>
+        }
         <Progress/>
         <Messages/>
 
