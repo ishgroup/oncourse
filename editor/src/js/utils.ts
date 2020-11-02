@@ -71,7 +71,7 @@ export class Browser {
   }
 
   static unsupported() {
-    return this.isIE();
+    return this.isIE() || this.isSafari();
   }
 
 }

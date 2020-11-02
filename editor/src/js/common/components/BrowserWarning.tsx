@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Browser} from "../../utils";
 
 // tslint:disable-next-line:max-line-length
-const BROWSER_WARNING_TEXT = "You are using an unsupported browser. Please download and use Firefox, Chrome or Edge to continue using the onCourse editor.";
+const BROWSER_WARNING_TEXT = "Your current browser is not supported. Please ensure you are using an up to date version of Chrome, Firefox or Edge.";
 
 export const BrowserWarning = () => {
   return (
