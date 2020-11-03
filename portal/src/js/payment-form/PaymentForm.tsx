@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import CheckoutService from "../services/CheckoutService";
 import {getPaymentRequest} from "../utils";
 import debounce from "lodash.debounce";
@@ -19,6 +19,8 @@ const getPaymentMessage = ({status, message}: any) => {
 };
 
 const PaymentForm: React.FC<any> = ({}) => {
+  const iframeRef = useRef<any>(null);
+
   const [iframeUrl, setIframeUrl] = useState<any>( undefined);
   const [amountError, setAmountError] = useState<any>( null);
   const [totalBalance, setTotalBalance] = useState<any>( null);
@@ -36,7 +38,9 @@ const PaymentForm: React.FC<any> = ({}) => {
       setIframeUrl(null);
       setPaymentFetching(true);
       if (paymentData.status === "success") {
-        CheckoutService.makePayment(getPaymentRequest(amount, paymentDetails), false, payerId).then(res => {
+        CheckoutService.makePayment(getPaymentRequest(amount,
+          {merchantReference: paymentDetails.merchantReference, sessionId: paymentData.sessionId},
+        ),false, payerId).then(res => {
           setPaymentStatus({status: res.status === "FAILED" ? "fail" : "success",
             message: <span>
               Payment processed. Payment reference:
@@ -134,6 +138,12 @@ const PaymentForm: React.FC<any> = ({}) => {
     }
   },        [amount]);
 
+  useEffect(() => {
+    if (iframeRef.current) {
+      iframeRef.current.contentWindow.location.replace(iframeUrl);
+    }
+  },        [iframeUrl]);
+
   const debounceAmountChange = useCallback(debounce((amount: any) => {
     setAmount(amount);
   },                                                600),                                 []);
@@ -176,7 +186,7 @@ const PaymentForm: React.FC<any> = ({}) => {
       </div>}
 
       {paymentStatus && getPaymentMessage(paymentStatus)}
-      {iframeUrl &&  <iframe src={iframeUrl}  title="windcave-frame" />}
+      {iframeUrl &&  <iframe ref={iframeRef} title="windcave-frame" />}
       {paymentFetching && <div id="payment-progress-bar">
         <div className="progress progress-striped active ">
           <div className="progress-bar progress-bar-warning progress-bar-striped " role="progressbar"

@@ -16,7 +16,8 @@
     "source-map-loader": "^1.0.0",
     "style-loader": "^1.2.1",
     "ts-loader": "^7.0.5",
-    "webpack-cli": "^3.3.12"
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
     "axios": "^0.19.2",
@@ -27,7 +28,7 @@
     "webpack": "^4.43.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "webpack-dev-server --progress --open --config webpack.config.js",
     "build": "react-scripts build"
   },
   "eslintConfig": {

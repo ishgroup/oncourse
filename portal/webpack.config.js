@@ -65,21 +65,8 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
     devtool: SOURCE_MAP,
     plugins: plugins(NODE_ENV, BUILD_NUMBER),
     devServer: {
-      inline: false,
       port: 1707,
-      stats: {
-        chunkModules: false,
-        colors: true
-      },
-      historyApiFallback: true,
-      contentBase: './build/dist',
-      proxy: [{
-        context: '/a',
-        target: API_ROOT,
-        pathRewrite: {
-          '^/a/': ''
-        }
-      }]
+      contentBase: path.resolve(__dirname, 'build/resource-assemble/static/js'),
     }
   };
 };
