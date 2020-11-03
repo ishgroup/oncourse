@@ -17,10 +17,7 @@ dependencies {
 }
 
 cgen {
-    doFirst {
-        // remove subclass files which are already committed inside the app
-        delete fileTree("${buildDir}/generated-resources")
-    }
+
     map = "${projectDir}/src/main/resources/cayenne/ReplicationMap.map.xml"
     makePairs = true
     template = "${projectDir}/src/main/resources/cayenne/dotemplates/subclass.vm"
