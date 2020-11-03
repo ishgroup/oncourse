@@ -9,7 +9,7 @@ import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.Country
 import ish.oncourse.server.cayenne.Language
 import ish.oncourse.server.cayenne.Student
-import ish.oncourse.server.reference.ReferenceUtil
+import ish.oncourse.commercial.replication.reference.ReferenceUtil
 import ish.oncourse.webservices.v22.stubs.replication.StudentStub
 
 /**

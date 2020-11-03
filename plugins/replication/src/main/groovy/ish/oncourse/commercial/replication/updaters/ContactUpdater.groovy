@@ -12,7 +12,7 @@ import ish.oncourse.server.cayenne.Queueable
 import ish.oncourse.server.cayenne.Student
 import ish.oncourse.server.cayenne.Tax
 import ish.oncourse.server.cayenne.Tutor
-import ish.oncourse.server.reference.ReferenceUtil
+import ish.oncourse.commercial.replication.reference.ReferenceUtil
 import ish.oncourse.webservices.v22.stubs.replication.ContactStub
 import ish.util.LocalDateUtils
 

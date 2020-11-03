@@ -11,7 +11,9 @@ sourceSets.main.groovy.srcDirs += "${buildDir}/generated-resources/main/java"
 
 
 dependencies {
-    api("ish.oncourse.willow:webservices-client:103") 
+    api("ish.oncourse.willow:webservices-client:103")
+    implementation 'javax.xml.bind:jaxb-api:2.3.0'
+    implementation 'javax.xml.ws:jaxws-api:2.3.0'
 }
 
 cgen {

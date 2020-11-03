@@ -9,7 +9,7 @@ import ish.common.types.TypesUtil
 import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.FieldConfigurationScheme
 import ish.oncourse.server.cayenne.Qualification
-import ish.oncourse.server.reference.ReferenceUtil
+import ish.oncourse.commercial.replication.reference.ReferenceUtil
 import ish.oncourse.webservices.v22.stubs.replication.CourseStub
 
 /**
