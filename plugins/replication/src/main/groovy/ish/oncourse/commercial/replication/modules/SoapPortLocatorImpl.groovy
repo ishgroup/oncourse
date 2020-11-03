@@ -102,10 +102,10 @@ class SoapPortLocatorImpl implements ISoapPortLocator {
     public ReplicationPortType replicationPort() {
 
         if (this.replicationPortType == null) {
-            var replicationService = new ReplicationService(ReplicationPortType.class.getClassLoader().getResource(REPLICATION_WSDL_PATH));
+            ReplicationService replicationService = new ReplicationService(ReplicationPortType.class.getClassLoader().getResource(REPLICATION_WSDL_PATH));
             this.replicationPortType = replicationService.getReplicationPort();
 
-            var provider = (BindingProvider) this.replicationPortType;
+            BindingProvider provider = (BindingProvider) this.replicationPortType;
             provider.getRequestContext().put(BindingProvider.SESSION_MAINTAIN_PROPERTY, true);
         }
 
@@ -134,7 +134,7 @@ class SoapPortLocatorImpl implements ISoapPortLocator {
 
     private List<Header> getReplicationPortHeaders() {
         try {
-            var headers = geteDefaultPortHeaders();
+            List<Header> headers = geteDefaultPortHeaders();
             headers.add(new Header(new QName(COMMUNICATION_KEY_PARAMETER), this.pref.getCommunicationKey(), new JAXBDataBinding(String.class)));
             return headers;
         } catch (JAXBException e) {
