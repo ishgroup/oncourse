@@ -26,7 +26,7 @@ cgen {
     destDir = file("${buildDir}/generated-resources/main/java")
     doLast {
         // remove subclass files which are already committed inside the app
-        delete fileTree("${buildDir}/generated-resources/main/java/ish/oncourse/server/cayenne") {
+        delete fileTree("${buildDir}/generated-resources/main/java/ish/oncourse/commercial/replication/cayenne") {
             exclude '**/glue/*'
         }
     }
