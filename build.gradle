@@ -30,7 +30,6 @@ subprojects {
 
     sourceCompatibility = 11
     repositories {
-        mavenCentral()
         maven {
             url 'https://repo.ish.com.au/repository/ish-snapshots'
         }
@@ -56,7 +55,6 @@ subprojects {
 
     publishing {
         repositories {
-            mavenCentral()
             maven {
                 name = "ish"
                 def repo = version.endsWith('SNAPSHOT') ? 'ish-snapshots' : 'ish-releases'
