@@ -375,17 +375,18 @@ public class Contact extends _Contact implements Queueable {
 		return super.getAbn();
 	}
 
+	@Property(value = FieldProperty.IS_MALE, type = PropertyGetSetFactory.SET, params = {Boolean.class})
 	@Override
 	public void setGender(Gender isMale) {
 		super.setGender(isMale);
 	}
 
+	@Property(value = FieldProperty.IS_MALE, type = PropertyGetSetFactory.GET, params = {})
 	@Override
 	public Gender getGender() {
 		return super.getGender();
 	}
 	
-	@Property(value = FieldProperty.IS_MALE, type = PropertyGetSetFactory.SET, params = {Boolean.class})
 	@Deprecated
 	public void setIsMale(Boolean isMale) {
 		if (isMale == null) {
@@ -398,7 +399,6 @@ public class Contact extends _Contact implements Queueable {
 
 	}
 
-	@Property(value = FieldProperty.IS_MALE, type = PropertyGetSetFactory.GET, params = {})
 	@Deprecated
 	public Boolean getIsMale() {
 		Gender gender = super.getGender();

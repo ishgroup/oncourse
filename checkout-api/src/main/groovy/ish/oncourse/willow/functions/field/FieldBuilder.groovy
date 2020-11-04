@@ -43,6 +43,7 @@ class FieldBuilder<T> {
                 case MOBILE_PHONE_NUMBER:
                     f.dataType = DataType.PHONE
                     break
+                case IS_MALE:
                 case CITIZENSHIP:
                 case ENGLISH_PROFICIENCY:
                 case INDIGENOUS_STATUS:
