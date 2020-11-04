@@ -10,7 +10,6 @@
  */
 package ish.oncourse.commercial.replication.reference.updater;
 
-import ish.oncourse.server.reference.updater.IReferenceUpdater;
 import ish.oncourse.webservices.util.GenericReferenceStub;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;

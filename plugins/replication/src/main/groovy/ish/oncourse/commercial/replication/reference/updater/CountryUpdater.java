@@ -11,8 +11,6 @@
 package ish.oncourse.commercial.replication.reference.updater;
 
 import ish.oncourse.server.cayenne.Country;
-import ish.oncourse.server.reference.updater.BaseReferenceUpdater;
-import ish.oncourse.server.reference.updater.IReferenceUpdater;
 import ish.oncourse.webservices.v7.stubs.reference.CountryStub;
 import org.apache.cayenne.ObjectContext;
 

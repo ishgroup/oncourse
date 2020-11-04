@@ -14,8 +14,6 @@ import ish.common.types.ModuleType;
 import ish.common.types.TypesUtil;
 import ish.oncourse.server.cayenne.Module;
 import ish.oncourse.server.cayenne.TrainingPackage;
-import ish.oncourse.server.reference.updater.BaseReferenceUpdater;
-import ish.oncourse.server.reference.updater.IReferenceUpdater;
 import ish.oncourse.webservices.v7.stubs.reference.ModuleStub;
 import org.apache.cayenne.ObjectContext;
 

@@ -10,14 +10,7 @@
  */
 package ish.oncourse.commercial.replication.reference.updater;
 
-import ish.oncourse.server.reference.updater.CountryUpdater;
-import ish.oncourse.server.reference.updater.IReferenceUpdater;
-import ish.oncourse.server.reference.updater.IReferenceUpdaterFactory;
-import ish.oncourse.server.reference.updater.LanguageUpdater;
-import ish.oncourse.server.reference.updater.ModuleUpdater;
-import ish.oncourse.server.reference.updater.PostcodeUpdater;
-import ish.oncourse.server.reference.updater.QualificationUpdater;
-import ish.oncourse.server.reference.updater.TrainingPackageUpdater;
+
 import ish.oncourse.webservices.util.GenericReferenceStub;
 import ish.oncourse.webservices.v7.stubs.reference.*;
 import org.apache.cayenne.ObjectContext;

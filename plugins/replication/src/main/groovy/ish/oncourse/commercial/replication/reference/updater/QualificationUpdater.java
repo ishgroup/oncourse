@@ -14,8 +14,6 @@ import ish.common.types.QualificationType;
 import ish.common.types.TypesUtil;
 import ish.oncourse.server.cayenne.Qualification;
 import ish.oncourse.server.cayenne.TrainingPackage;
-import ish.oncourse.server.reference.updater.BaseReferenceUpdater;
-import ish.oncourse.server.reference.updater.IReferenceUpdater;
 import ish.oncourse.webservices.v7.stubs.reference.QualificationStub;
 import ish.util.LocalDateUtils;
 import org.apache.cayenne.ObjectContext;

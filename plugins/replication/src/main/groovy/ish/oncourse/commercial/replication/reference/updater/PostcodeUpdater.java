@@ -13,7 +13,6 @@ package ish.oncourse.commercial.replication.reference.updater;
 import ish.common.types.PostcodeType;
 import ish.common.types.TypesUtil;
 import ish.oncourse.server.cayenne.Postcode;
-import ish.oncourse.server.reference.updater.BaseReferenceUpdater;
 import ish.oncourse.webservices.v7.stubs.reference.PostcodeStub;
 import org.apache.cayenne.ObjectContext;
 

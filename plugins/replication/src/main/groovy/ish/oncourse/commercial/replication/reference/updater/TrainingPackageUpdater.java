@@ -11,8 +11,6 @@
 package ish.oncourse.commercial.replication.reference.updater;
 
 import ish.oncourse.server.cayenne.TrainingPackage;
-import ish.oncourse.server.reference.updater.BaseReferenceUpdater;
-import ish.oncourse.server.reference.updater.IReferenceUpdater;
 import ish.oncourse.webservices.v7.stubs.reference.TrainingPackageStub;
 import org.apache.cayenne.ObjectContext;
 
