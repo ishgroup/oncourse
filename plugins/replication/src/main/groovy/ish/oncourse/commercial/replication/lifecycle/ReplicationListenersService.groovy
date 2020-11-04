@@ -15,6 +15,7 @@ class ReplicationListenersService {
     ReplicationListenersService(ICayenneService cayenneService, PreferenceController pref) {
         cayenneService.addListener(new InvoiceLifecycleListener(cayenneService))
         cayenneService.addListener(new QueuedTransactionListener(cayenneService))
+        cayenneService.addListener(new CourseClassLifecycleListener (cayenneService))
         cayenneService.addSyncFilter(new QueueableLifecycleListener(cayenneService, pref))
     }
 }
