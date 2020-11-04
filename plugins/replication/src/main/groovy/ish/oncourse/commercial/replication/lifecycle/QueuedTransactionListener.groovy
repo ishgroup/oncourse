@@ -21,7 +21,6 @@ class QueuedTransactionListener {
      * @param cayenneService
      */
     QueuedTransactionListener(ICayenneService cayenneService) {
-        super()
         this.cayenneService = cayenneService
     }
 

@@ -5,14 +5,15 @@
 
 package ish.oncourse.commercial.replication.lifecycle
 
+import groovy.transform.CompileStatic
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.commercial.replication.cayenne.QueuedRecordAction
+import ish.oncourse.commercial.replication.cayenne.QueuedTransaction
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.ISHDataContext
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.Queueable
 import ish.oncourse.commercial.replication.cayenne.QueuedRecord
-import ish.oncourse.server.cayenne.QueuedTransaction
 import org.apache.cayenne.Cayenne
 import org.apache.cayenne.DataChannelSyncFilter
 import org.apache.cayenne.DataChannelSyncFilterChain
@@ -29,6 +30,9 @@ import org.apache.cayenne.query.ObjectIdQuery
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+import static org.apache.cayenne.map.LifecycleEvent.*
+
+@CompileStatic
 class QueueableLifecycleListener implements DataChannelSyncFilter {
 
     /**
@@ -74,7 +78,7 @@ class QueueableLifecycleListener implements DataChannelSyncFilter {
     GraphDiff onSync(ObjectContext originatingContext, GraphDiff changes, int syncType, DataChannelSyncFilterChain filterChain) {
 
         try {
-            def stack = STACK_STORAGE.get()
+            Deque<StackFrame> stack = STACK_STORAGE.get()
             if (stack == null) {
                 stack = new LinkedList<>()
                 STACK_STORAGE.set(stack)
@@ -127,7 +131,7 @@ class QueueableLifecycleListener implements DataChannelSyncFilter {
             }
 
             if (isAsyncReplicationAllowed(cdo)) {
-                addRecordToReplicationQueue(cdo, LifecycleEvent.POST_PERSIST)
+                addRecordToReplicationQueue(cdo, POST_PERSIST)
             }
         }
     }
@@ -171,13 +175,13 @@ class QueueableLifecycleListener implements DataChannelSyncFilter {
 
         if (result.getAction() != null) {
 
-            def currentContext = STACK_STORAGE.get().peek().getObjectContext()
-            def transactionKey = recordContext.getTransactionKey()
-            def t = STACK_STORAGE.get().peek().getTransactionMapping().get(transactionKey)
+            ObjectContext currentContext = STACK_STORAGE.get().peek().getObjectContext()
+            String transactionKey = recordContext.getTransactionKey()
+            QueuedTransaction t = STACK_STORAGE.get().peek().getTransactionMapping().get(transactionKey)
 
             if (t == null) {
-                t = currentContext.newObject(QueuedTransaction.class)
-                def today = new Date()
+                t = currentContext.newObject(QueuedTransaction)
+                Date today = new Date()
                 t.setCreatedOn(today)
                 t.setModifiedOn(today)
                 t.setTransactionKey(transactionKey)
@@ -215,7 +219,7 @@ class QueueableLifecycleListener implements DataChannelSyncFilter {
             def context = (ISHDataContext) this.objectIdContextMap.remove(cdo.getObjectId())
             if (context != null) {
                 cdo.setObjectContext(context)
-                addRecordToReplicationQueue(cdo, LifecycleEvent.POST_REMOVE)
+                addRecordToReplicationQueue(cdo, POST_REMOVE)
             }
         }
     }
@@ -258,7 +262,7 @@ class QueueableLifecycleListener implements DataChannelSyncFilter {
             }
 
             if (isAsyncReplicationAllowed(cdo)) {
-                addRecordToReplicationQueue(cdo, LifecycleEvent.POST_UPDATE)
+                addRecordToReplicationQueue(cdo, POST_UPDATE)
             }
         }
     }

@@ -5,7 +5,7 @@
 
 package ish.oncourse.commercial.replication.lifecycle
 
-import ish.oncourse.server.cayenne.QueuedTransaction
+import ish.oncourse.commercial.replication.cayenne.QueuedTransaction
 import org.apache.cayenne.ObjectContext
 
 class StackFrame {
