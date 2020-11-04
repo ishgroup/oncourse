@@ -7,13 +7,26 @@ const genderHeading: any = {
     {
       value: null,
       defaultValue: null,
-      dataType: DataType.BOOLEAN,
+      dataType: DataType.ENUM,
       id: "10",
       key: "isMale",
       description: "Gender",
-      enumItems: [],
+      enumItems: [
+        {
+          key: "0",
+          value: "Female",
+        },
+        {
+          key: "1",
+          value: "Male",
+        },
+        {
+          key: "2",
+          value: "Other",
+        },
+      ],
       mandatory: true,
-      enumType: null,
+      enumType: 'Gender',
       name: "Gender",
     },
   ],

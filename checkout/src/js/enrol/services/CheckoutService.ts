@@ -333,7 +333,7 @@ export class BuildSubmitFieldsRequest {
       f.itemValue = null;
 
       if (f.value == null && f.dataType === DataType.BOOLEAN) {
-        f.value = f.key === 'isMale' ? null : 'false';
+        f.value = 'false';
       }
 
       if (value && value.suburb && f.dataType === DataType.SUBURB) {

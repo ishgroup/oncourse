@@ -47,10 +47,6 @@ class AllComponentsFrom extends React.Component<any, any> {
           <ComboboxField name="suburb" label="Suburb" required={true} items={options}/>
         </fieldset>
         <fieldset>
-          <Field component={RadioGroupField} name="Gender" label="Gender" required={true}
-                 items={[{key: "1", value: "Male"}, {key: "2", value: "Female"}]}/>
-        </fieldset>
-        <fieldset>
           <Field component={TextAreaField} name="needs" label="Special Needs" required={true}/>
         </fieldset>
         <button type="submit" className="btn btn-default" disabled={pristine || submitting}>Submit</button>

@@ -42,18 +42,10 @@ class FieldFactory extends React.Component<any, any> {
         />;
 
       case DataType.BOOLEAN:
-        if (field.key === "isMale") {
-          return <Form.Field
-            {...props}
-            component={RadioGroupField}
-            items={[{key: "true", value: "Male"}, {key: "false", value: "Female"}]}
+        return <Form.Field
+          {...props}
+          component={CheckboxField}
           />;
-        } else {
-          return <Form.Field
-            {...props}
-            component={CheckboxField}
-          />;
-        }
       case DataType.DATE:
         return <Form.Field {...props} component={DateField} validate={validateDate}/>;
 

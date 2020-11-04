@@ -102,7 +102,21 @@ export class MockDB {
       mockField("Mobile phone number", "mobilePhoneNumber", DataType.PHONE, true),
       mockField("Date of Birth", "dateOfBirth", DataType.DATE, false, "22/12/1980"),
       mockField("ABN", "abn", DataType.STRING),
-      mockField("Gender", "isMale", DataType.BOOLEAN),
+      mockEnumField("Gender", "isMale", "Gender",
+    [{
+            key: "0",
+            value: "Female",
+            },
+            {
+              key: "1",
+              value: "Male",
+            },
+            {
+              key: "2",
+              value: "Other",
+            },
+          ],
+      ),
       mockField("E-mail", "isMarketingViaEmailAllowed", DataType.BOOLEAN, false, true),
       mockField("Post", "isMarketingViaPostAllowed", DataType.BOOLEAN),
       mockField("SMS", "isMarketingViaSMSAllowed", DataType.BOOLEAN),

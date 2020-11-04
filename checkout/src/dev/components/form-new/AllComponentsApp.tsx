@@ -66,11 +66,6 @@ class AllComponentsFrom extends React.Component<any, any> {
           <SelectField name="suburb2" label="Suburb" required={true} meta={{}} input={{}}/>
         </fieldset>
         <fieldset>
-          <RadioGroup name="Gender" label="Gender" required={true} items={[{key: "1", value: "Male"}, {key: "2", value: "Female"}]} meta={{error: "Error message", touched: true}}/>
-          <RadioGroup name="Gender1" label="Gender" required={true} items={[{key: "1", value: "Male"}, {key: "2", value: "Female"}]} meta={{warning: "Warning message", touched: true}}/>
-          <RadioGroup name="Gender2" label="Gender" required={true} items={[{key: "1", value: "Male"}, {key: "2", value: "Female"}]} meta={{}}/>
-        </fieldset>
-        <fieldset>
           <TextArea name="needs" label="Special Needs" required={true} meta={{error: "Error message", touched: true}}/>
           <TextArea name="needs1" label="Special Needs" required={true} meta={{warning: "Warning message", touched: true}}/>
           <TextArea name="needs2" label="Special Needs" required={true} meta={{}}/>

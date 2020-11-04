@@ -53,10 +53,6 @@ class AllComponentsFrom extends React.Component<any, any> {
           />
         </fieldset>
         <fieldset>
-          <Field component={RadioGroup} name="Gender" label="Gender" required={true}
-                 items={[{key: "1", value: "Male"}, {key: "2", value: "Female"}]}/>
-        </fieldset>
-        <fieldset>
           <Field component={TextArea} name="needs" label="Special Needs" required={true}/>
         </fieldset>
         <button type="submit" className="btn btn-default" disabled={pristine || submitting}>Submit</button>
