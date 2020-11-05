@@ -23,7 +23,7 @@ class ContactStubBuilder extends AbstractAngelStubBuilder<Contact, ContactStub> 
 		stub.setGivenName(c.getFirstName())
 		stub.setFamilyName(c.getLastName())
 		stub.setModified(c.getModifiedOn())
-		stub.setGender(c.getGender().getDatabaseValue())
+		stub.setGender(c.getGender() != null ? c.getGender().getDatabaseValue() : null)
 		stub.setMarketingViaEmailAllowed(c.getAllowEmail())
 		stub.setMarketingViaPostAllowed(c.getAllowPost())
 		stub.setMarketingViaSMSAllowed(c.getAllowSms())
