@@ -24,7 +24,9 @@ public class ContactStubBuilder extends
 		stub.setGivenName(entity.getGivenName());
 		stub.setHomePhoneNumber(entity.getHomePhoneNumber());
 		stub.setCompany(entity.getIsCompany());
-		stub.setGender(entity.getGender().getDatabaseValue());
+		if (entity.getGender()!= null) {
+			stub.setGender(entity.getGender().getDatabaseValue());
+		}
 		stub.setMarketingViaEmailAllowed(entity.getIsMarketingViaEmailAllowed());
 		stub.setMarketingViaPostAllowed(entity.getIsMarketingViaPostAllowed());
 		stub.setMarketingViaSMSAllowed(entity.getIsMarketingViaSMSAllowed());
