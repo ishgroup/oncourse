@@ -7,7 +7,10 @@ sourceSets {
         groovy {
             srcDirs 'src/main/java'
             srcDirs 'src/main/groovy'
-            srcDirs 'src/main/generated'
+            srcDirs "${buildDir}/generated-resources/main/java"
+        }
+        java {
+            srcDirs = []
         }
     }
 }
@@ -20,12 +23,15 @@ dependencies {
     testCompile project(':common:test-tapestry')
 }
 
-task generateSources(type: Copy) {
+task generateSOAPstubs(type: Copy) {
     from 'src/templates'
-    into 'src/main/generated'
+    into "${buildDir}/generated-resources/main/java"
     expand(replicationVersions: replicationVersions, referenceVersions: referenceVersions)
 }
 
+compileJava {
+    dependsOn generateSOAPstubs
+}
 
 test {
     forkEvery = 1 //run every test in separate jvm
