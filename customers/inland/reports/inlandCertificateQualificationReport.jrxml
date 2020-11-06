@@ -70,8 +70,8 @@
 	<parameter name="ReportName" class="java.lang.String"/>
 	<field name="global.print_qr_code" class="java.lang.Boolean"/>
 	<field name="certificate" class="java.lang.Object"/>
-	<field name="awardedOn" class="java.util.Date"/>
-	<field name="issuedOn" class="java.util.Date"/>
+	<field name="awardedOn" class="java.time.LocalDate"/>
+	<field name="issuedOn" class="java.time.LocalDate"/>
 	<field name="certificateNumber" class="java.lang.Long"/>
 	<field name="pref.avetmiss.collegename" class="java.lang.String"/>
 	<field name="pref.avetmiss.address.line1" class="java.lang.String"/>

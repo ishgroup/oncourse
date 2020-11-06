@@ -35,14 +35,14 @@
 	<parameter name="ReportName" class="java.lang.String"/>
 	<field name="createdOn" class="java.util.Date"/>
 	<field name="certificate" class="java.lang.Object"/>
-	<field name="awardedOn" class="java.util.Date"/>
-	<field name="issuedOn" class="java.util.Date"/>
+	<field name="awardedOn" class="java.time.LocalDate"/>
+	<field name="issuedOn" class="java.time.LocalDate"/>
 	<field name="certificateNumber" class="java.lang.Long"/>
 	<field name="student.contact.firstName" class="java.lang.String"/>
 	<field name="student.contact.middleName" class="java.lang.String"/>
 	<field name="student.contact.lastName" class="java.lang.String"/>
 	<field name="qualification.title" class="java.lang.String"/>
-	<field name="printedOn" class="java.util.Date"/>
+	<field name="printedOn" class="java.time.LocalDate"/>
 	<field name="image.logo-nrt" class="java.io.InputStream"/>
 	<field name="image.logo-VETAB" class="java.io.InputStream"/>
 	<field name="qualification.nationalCode" class="java.lang.String"/>

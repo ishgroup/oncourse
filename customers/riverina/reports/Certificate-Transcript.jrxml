@@ -26,6 +26,7 @@
 	<import value="net.sf.jasperreports.engine.data.*"/>
 	<import value="org.apache.commons.lang.time.DateUtils"/>
 	<import value="org.apache.commons.lang3.StringUtils"/>
+	<import value="ish.util.LocalDateUtils"/>
 	<style name="Report_Name" isDefault="true" fontName="Arial" fontSize="18" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 	<style name="Column_Header" isDefault="true" fontName="Arial" fontSize="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 	<style name="Column_Field" fontName="Arial" fontSize="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
@@ -44,7 +45,7 @@
 	<field name="pref.avetmiss.identifier" class="java.lang.String"/>
 	<field name="datasource.outcomes" class="net.sf.jasperreports.engine.JRDataSource"/>
 	<field name="subreport.wrcc.onCourse.certificate.transcript.subreport" class="net.sf.jasperreports.engine.JasperReport"/>
-	<field name="printedOn" class="java.util.Date"/>
+	<field name="printedOn" class="java.time.LocalDate"/>
 	<field name="student.studentNumber" class="java.lang.Long"/>
 	<pageHeader>
 		<band height="237" splitType="Stretch">
@@ -76,7 +77,7 @@
 			</textField>
 			<textField evaluationTime="Report" pattern="dd/MM/yyyy" isBlankWhenNull="false">
 				<reportElement key="textField" style="Footer" positionType="FixRelativeToBottom" isPrintRepeatedValues="false" x="66" y="221" width="71" height="13" uuid="5f9b7aca-6909-476e-a3d8-ea1759eb82b4">
-					<printWhenExpression><![CDATA[$F{createdOn} == null || $F{printedOn} == null || !DateUtils.isSameDay($F{createdOn}, $F{printedOn})]]></printWhenExpression>
+					<printWhenExpression><![CDATA[$F{createdOn} == null || $F{printedOn} == null || !DateUtils.isSameDay($F{createdOn}, LocalDateUtils.valueToDate($F{printedOn}))]]></printWhenExpression>
 				</reportElement>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -95,7 +96,7 @@
 			</staticText>
 			<staticText>
 				<reportElement style="Footer" x="0" y="221" width="66" height="13" uuid="22de5f70-ce6c-46b5-bcd3-ac9cab5e5ec5">
-					<printWhenExpression><![CDATA[$F{createdOn} == null || $F{printedOn} == null || !DateUtils.isSameDay($F{createdOn}, $F{printedOn})]]></printWhenExpression>
+					<printWhenExpression><![CDATA[$F{createdOn} == null || $F{printedOn} == null || !DateUtils.isSameDay($F{createdOn}, LocalDateUtils.valueToDate($F{printedOn}))]]></printWhenExpression>
 				</reportElement>
 				<text><![CDATA[Printed]]></text>
 			</staticText>

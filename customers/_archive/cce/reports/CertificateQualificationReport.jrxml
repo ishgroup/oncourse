@@ -26,6 +26,7 @@
 	<import value="org.apache.commons.lang.time.DateUtils"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
 	<import value="org.apache.commons.lang3.StringUtils"/>
+	<import value="ish.util.LocalDateUtils"/>
 	<style name="Report_Name" isDefault="true" fontName="Arial" fontSize="18" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 	<style name="Column_Header" isDefault="true" fontName="Arial" fontSize="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 	<style name="Column_Field" isDefault="true" fontName="Arial" fontSize="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
@@ -42,7 +43,7 @@
 	<field name="pref.avetmiss.address.state" class="java.lang.String"/>
 	<field name="pref.avetmiss.address.postcode" class="java.lang.String"/>
 	<field name="pref.avetmiss.identifier" class="java.lang.String"/>
-	<field name="printedOn" class="java.util.Date"/>
+	<field name="printedOn" class="java.time.LocalDate"/>
 	<field name="certificateNumber" class="java.lang.Long"/>
 	<field name="image.logo-nrt" class="java.io.InputStream"/>
 	<field name="image.logo-VETAB" class="java.io.InputStream"/>
@@ -168,14 +169,14 @@
 			</staticText>
 			<staticText>
 				<reportElement uuid="7e8d78a1-b4ad-4b19-8bd6-29bb16389cce" style="Footer" x="273" y="55" width="66" height="13">
-					<printWhenExpression><![CDATA[$F{createdOn} == null || $F{printedOn} == null || !DateUtils.isSameDay($F{createdOn}, $F{printedOn})]]></printWhenExpression>
+					<printWhenExpression><![CDATA[$F{createdOn} == null || $F{printedOn} == null || !DateUtils.isSameDay($F{createdOn}, LocalDateUtils.valueToDate($F{printedOn}))]]></printWhenExpression>
 				</reportElement>
 				<textElement/>
 				<text><![CDATA[Printed]]></text>
 			</staticText>
 			<textField evaluationTime="Report" pattern="dd/MM/yyyy" isBlankWhenNull="false">
 				<reportElement uuid="33820351-cfbf-46bd-a6b5-80c6bf90c24a" key="textField" style="Footer" positionType="FixRelativeToBottom" isPrintRepeatedValues="false" x="339" y="55" width="71" height="13">
-					<printWhenExpression><![CDATA[$F{createdOn} == null || $F{printedOn} == null || !DateUtils.isSameDay($F{createdOn}, $F{printedOn})]]></printWhenExpression>
+					<printWhenExpression><![CDATA[$F{createdOn} == null || $F{printedOn} == null || !DateUtils.isSameDay($F{createdOn}, LocalDateUtils.valueToDate($F{printedOn}))]]></printWhenExpression>
 				</reportElement>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>

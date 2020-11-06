@@ -38,7 +38,7 @@
 	<field name="pref.avetmiss.address.postcode" class="java.lang.String"/>
 	<field name="datasource.successfulOutcomes" class="net.sf.jasperreports.engine.JRDataSource"/>
 	<field name="subreport.ish.onCourse.metroscreen.certificate.attainment.subreport" class="net.sf.jasperreports.engine.JasperReport"/>
-	<field name="printedOn" class="java.util.Date"/>
+	<field name="printedOn" class="java.time.LocalDate"/>
 	<field name="certificateNumber" class="java.lang.Long"/>
 	<field name="image.logo-nrt" class="java.io.InputStream"/>
 	<field name="image.logo-VETAB" class="java.io.InputStream"/>

@@ -40,7 +40,7 @@
 	<field name="datasource.successfulOutcomes" class="net.sf.jasperreports.engine.JRDataSource"/>
 	<field name="subreport.cccc.onCourse.certificate.attainment.subreport" class="net.sf.jasperreports.engine.JasperReport"/>
 	<field name="createdOn" class="java.util.Date"/>
-	<field name="printedOn" class="java.util.Date"/>
+	<field name="printedOn" class="java.time.LocalDate"/>
 	<field name="certificateNumber" class="java.lang.Long"/>
 	<field name="qualification.nationalCode" class="java.lang.String"/>
 	<field name="qualification.level" class="java.lang.String"/>

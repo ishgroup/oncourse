@@ -44,7 +44,7 @@
 	<field name="courseClass.classroomHours" class="java.math.BigDecimal"/>
 	<field name="image.logo-nrt" class="java.io.InputStream"/>
 	<field name="image.logo-VETAB" class="java.io.InputStream"/>
-	<field name="printedOn" class="java.util.Date"/>
+	<field name="printedOn" class="java.time.LocalDate"/>
 	<field name="certificateNumber" class="java.lang.Long"/>
 	<background>
 		<band splitType="Stretch"/>
