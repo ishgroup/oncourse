@@ -50,7 +50,7 @@ def run(args) {
 			context.newObject(Certificate).with { certificate ->
 				certificate.setStudent(e.student)
 				certificate.setQualification(e.courseClass.course.qualification)
-				certificate.setAwardedOn(new Date())
+				certificate.setAwardedOn(java.time.LocalDate.now())
 				unlinkedOutcomes.each { o ->
 					certificate.addToOutcomes(o)
 				}

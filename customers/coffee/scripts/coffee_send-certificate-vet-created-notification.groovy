@@ -4,7 +4,7 @@
  */
 
 def run(args) {
-    def currentDate = new Date()
+    def currentDate = java.time.LocalDate.now()
     def allCertificates = ObjectSelect.query(Certificate)
             .where(Certificate.PRINTED_ON.isNull())
             .select(args.context)
