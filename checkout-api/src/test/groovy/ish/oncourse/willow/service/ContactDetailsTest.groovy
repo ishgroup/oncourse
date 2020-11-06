@@ -209,8 +209,9 @@ class ContactDetailsTest extends  ApiTest{
             it.fields << new Field().with { f ->
                 f.key = 'isMale'
                 f.name = 'isMale'
-                f.dataType = DataType.BOOLEAN
-                f.value = 'isMale'
+                f.dataType = DataType.ENUM
+                f.enumType = 'Gender'
+                f.value = '0'
                 f.mandatory = true
                 f
             }
@@ -445,8 +446,9 @@ class ContactDetailsTest extends  ApiTest{
             it.fields << new Field().with { f ->
                 f.key = 'isMale'
                 f.name = 'isMale'
-                f.dataType = DataType.BOOLEAN
-                f.value = 'true'
+                f.dataType = DataType.ENUM
+                f.enumType = 'Gender'
+                f.value = '1'
                 f.mandatory = true
                 f
             }

@@ -118,12 +118,21 @@ class ContactFields {
             name: Favorite car maker14
             description: Favorite car maker
             mandatory: true
-            dataType: BOOLEAN
-            enumType: null
+            dataType: ENUM
+            enumType: Gender
             value: null
             itemValue: null
             defaultValue: BMW
-            enumItems: []
+            enumItems: [class Item {
+                key: 0
+                value: Female
+            }, class Item {
+                key: 1
+                value: Male
+            }, class Item {
+                key: 2
+                value: Other
+            }]
             ordering: 14
         }, class Field {
             id: 15

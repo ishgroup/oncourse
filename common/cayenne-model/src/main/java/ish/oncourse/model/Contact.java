@@ -375,7 +375,7 @@ public class Contact extends _Contact implements Queueable {
 		return super.getAbn();
 	}
 
-	@Property(value = FieldProperty.IS_MALE, type = PropertyGetSetFactory.SET, params = {Boolean.class})
+	@Property(value = FieldProperty.IS_MALE, type = PropertyGetSetFactory.SET, params = {Gender.class})
 	@Override
 	public void setGender(Gender isMale) {
 		super.setGender(isMale);
