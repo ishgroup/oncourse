@@ -154,7 +154,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{certificate}.issuedOn]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{certificate}.issuedOn.format("d MMM yyyy" )]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement style="Label" x="275" y="200" width="40" height="13" forecolor="#000000" uuid="da56da93-c2fd-4165-aec1-6d9525f097f9">

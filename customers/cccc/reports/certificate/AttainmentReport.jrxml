@@ -181,7 +181,7 @@
                 <textElement textAlignment="Left">
                     <font size="10"/>
                 </textElement>
-                <textFieldExpression><![CDATA[$F{certificate}.awardedOn]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{certificate}.awardedOn.format("dd MMM yyyy")]]></textFieldExpression>
             </textField>
             <staticText>
                 <reportElement style="default" x="75" y="225" width="389" height="40"/>

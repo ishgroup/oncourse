@@ -190,7 +190,7 @@ ABN: 5313 6500 313 RTO Provider No: 90054]]></text>
 				<textElement>
 					<font size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{certificate}.printedOn]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{certificate}.printedOn.format("d MMM yyyy" )]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report" pattern="d MMM yyyy" isBlankWhenNull="false">
 				<reportElement key="textField" positionType="FixRelativeToBottom" isPrintRepeatedValues="false" x="338" y="60" width="71" height="13" uuid="8a2b9f1b-c675-434f-a975-24653d504e55">
@@ -199,7 +199,7 @@ ABN: 5313 6500 313 RTO Provider No: 90054]]></text>
 				<textElement>
 					<font size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{certificate}.issuedOn]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{certificate}.issuedOn.format("d MMM yyyy" )]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="272" y="47" width="66" height="13" forecolor="#938D4D" uuid="67b2ec32-487c-4ebf-b6bc-af585afa8ba8"/>
@@ -220,7 +220,7 @@ ABN: 5313 6500 313 RTO Provider No: 90054]]></text>
 				<textElement>
 					<font size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{certificate}.awardedOn]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{certificate}.awardedOn.format("dd MMM yyyy")]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="272" y="60" width="66" height="13" forecolor="#938D4D" uuid="cf334f50-fa4f-4088-8ab4-8b840865a2a8">

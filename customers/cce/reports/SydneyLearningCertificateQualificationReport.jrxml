@@ -186,7 +186,7 @@
 			</staticText>
 			<textField evaluationTime="Report" isBlankWhenNull="false">
 				<reportElement key="textField" style="data field (date)" positionType="FixRelativeToBottom" isPrintRepeatedValues="false" x="370" y="93" width="80" height="13" uuid="f318d9f2-aecc-4755-96e8-e3d6570dfe65"/>
-				<textFieldExpression><![CDATA[$F{certificate}.awardedOn]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{certificate}.awardedOn.format("dd MMM yyyy")]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement style="Label" x="290" y="106" width="79" height="13" uuid="df550d15-15ac-4600-af03-46790c1695f5">
@@ -198,7 +198,7 @@
 				<reportElement key="textField" style="data field (date)" positionType="FixRelativeToBottom" isPrintRepeatedValues="false" x="370" y="106" width="80" height="13" uuid="72803568-9731-41bb-9ae4-da19f0adac9a">
 					<printWhenExpression><![CDATA[$F{certificate}.issuedOn != null]]></printWhenExpression>
 				</reportElement>
-				<textFieldExpression><![CDATA[$F{certificate}.printedOn]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{certificate}.printedOn.format("d MMM yyyy" )]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement key="staticText-11" style="Label" x="290" y="119" width="79" height="13" uuid="67c697be-a23f-483d-86fe-e62f897ad8cd"/>

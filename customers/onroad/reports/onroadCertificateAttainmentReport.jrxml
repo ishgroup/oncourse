@@ -159,7 +159,7 @@
 			</staticText>
 			<textField evaluationTime="Report" pattern="d MMM yyyy" isBlankWhenNull="false">
 				<reportElement key="textField" style="data field (date)" positionType="FixRelativeToBottom" isPrintRepeatedValues="false" x="359" y="184" width="71" height="13" uuid="0b764f68-5c5b-4460-aad5-197c244d48da"/>
-				<textFieldExpression><![CDATA[$F{certificate}.awardedOn]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{certificate}.awardedOn.format("dd MMM yyyy")]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement key="staticText-11" style="Label" x="293" y="198" width="66" height="13" uuid="ead876be-b401-47cc-b24a-21577df4458f"/>

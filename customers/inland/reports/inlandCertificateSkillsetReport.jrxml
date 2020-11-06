@@ -174,7 +174,7 @@
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 				</reportElement>
-				<textFieldExpression><![CDATA[$F{certificate}.awardedOn]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{certificate}.awardedOn.format("dd MMM yyyy")]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement style="Label" x="300" y="122" width="66" height="13" uuid="6fbf8f69-bd33-4228-b8ef-b5ddaab856c7">
@@ -190,7 +190,7 @@
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<printWhenExpression><![CDATA[$F{certificate}.issuedOn != null]]></printWhenExpression>
 				</reportElement>
-				<textFieldExpression><![CDATA[$F{certificate}.issuedOn]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{certificate}.issuedOn.format("d MMM yyyy" )]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement key="staticText-11" style="Label" x="300" y="135" width="66" height="13" uuid="f9da6972-c6d0-4792-b930-1c31d56fa408">
@@ -218,7 +218,7 @@
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 				</reportElement>
-				<textFieldExpression><![CDATA[$F{certificate}.printedOn]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{certificate}.printedOn.format("d MMM yyyy" )]]></textFieldExpression>
 			</textField>
 			<image hyperlinkType="Reference">
 				<reportElement x="10" y="170" width="70" height="70" uuid="2694e1d8-45e2-4a85-bf5b-5f819de0f481">

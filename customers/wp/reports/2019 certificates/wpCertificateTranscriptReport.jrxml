@@ -97,11 +97,11 @@
 			</staticText>
 			<textField evaluationTime="Report" pattern="d MMM yyyy" isBlankWhenNull="false">
 				<reportElement key="textField" style="data field (date)" positionType="FixRelativeToBottom" isPrintRepeatedValues="false" x="66" y="150" width="71" height="13" uuid="40509b29-4569-4155-9400-9e586025da53"/>
-				<textFieldExpression><![CDATA[$F{awardedOn}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{awardedOn}.format("dd MMM yyyy")]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report" pattern="d MMM yyyy" isBlankWhenNull="false">
 				<reportElement key="textField" style="data field (date)" positionType="FixRelativeToBottom" isPrintRepeatedValues="false" x="230" y="150" width="71" height="13" uuid="97f364b5-2ad6-474d-bc5a-76570ceb01f1"/>
-				<textFieldExpression><![CDATA[$F{issuedOn}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{issuedOn}.format("d MMM yyyy" )]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement style="Label" x="164" y="150" width="66" height="13" uuid="f61e6061-375c-4297-a2c4-e79cd6a63c97"/>
@@ -109,7 +109,7 @@
 			</staticText>
 			<textField evaluationTime="Report" pattern="d MMM yyyy" isBlankWhenNull="false">
 				<reportElement key="textField" style="data field (date)" positionType="FixRelativeToBottom" isPrintRepeatedValues="false" x="66" y="163" width="71" height="13" uuid="73baab83-b5d0-4524-b2b4-7c2c627642fb"/>
-				<textFieldExpression><![CDATA[$F{printedOn}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{printedOn}.format("d MMM yyyy" )]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement style="Label" x="0" y="163" width="66" height="13" uuid="69457b69-72c4-45ba-97bd-c24f8322ad68"/>

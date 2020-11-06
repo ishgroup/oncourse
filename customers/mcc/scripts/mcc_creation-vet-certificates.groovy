@@ -38,7 +38,7 @@ enrolments.each { e ->
 		context.newObject(Certificate).with { certificate ->
 			certificate.setStudent(e.student)
 			certificate.setQualification(e.courseClass.course.qualification)
-			certificate.setAwardedOn(new Date())
+			certificate.setAwardedOn(java.time.LocalDate.now())
 			goodOutcomes.each { o ->
 				certificate.addToOutcomes(o)
 			}

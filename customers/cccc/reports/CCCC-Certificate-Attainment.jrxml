@@ -178,7 +178,7 @@
 				<textElement>
 					<font size="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{certificate}.issuedOn]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{certificate}.issuedOn.format("d MMM yyyy" )]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement style="Footer" x="290" y="58" width="224" height="25" forecolor="#000000" uuid="0a598274-c215-4aa7-9da1-4edc32bb8162"/>

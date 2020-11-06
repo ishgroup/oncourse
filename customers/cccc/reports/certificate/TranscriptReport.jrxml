@@ -149,7 +149,7 @@
                 <textElement textAlignment="Left">
                     <font size="10"/>
                 </textElement>
-                <textFieldExpression><![CDATA[$F{certificate}.awardedOn]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{certificate}.awardedOn.format("dd MMM yyyy")]]></textFieldExpression>
             </textField>
             <image hyperlinkType="Reference">
                 <reportElement x="480" y="140" width="70" height="70">
