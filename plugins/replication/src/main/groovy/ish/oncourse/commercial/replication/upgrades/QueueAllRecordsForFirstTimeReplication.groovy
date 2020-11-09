@@ -270,7 +270,7 @@ class QueueAllRecordsForFirstTimeReplication {
 
         for (Queueable record : records) {
 
-            if (record.isAsyncReplicationAllowed() && !record.inQueue()) {
+            if (record.isAsyncReplicationAllowed() && !inQueue(record)) {
                 addRecordToReplicationQueue(record, context, t)
                 count++
             }
@@ -287,6 +287,14 @@ class QueueAllRecordsForFirstTimeReplication {
         }
     }
 
+    private static boolean inQueue(Queueable record ) {
+        return ObjectSelect.query(QueuedRecord)
+                .where(QueuedRecord.TABLE_NAME.eq(record.objectId.entityName))
+                .and(QueuedRecord.FOREIGN_RECORD_ID.eq(record.id))
+                .and(QueuedRecord.NUMBER_OF_ATTEMPTS.lt(3))
+                .selectFirst(record.objectContext) != null
+    }
+    
     QueuedTransaction createTransaction(ISHDataContext ishContext) {
         def transactionKey = TRANSACTION_KEY_PREFIX + ishContext.generateTransactionKey()
         QueuedTransaction t = ishContext.newObject(QueuedTransaction.class)
