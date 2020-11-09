@@ -5,13 +5,22 @@
 
 apply plugin: 'org.apache.cayenne'
 
+
 sourceSets.main.java.srcDirs = []
 sourceSets.main.groovy.srcDir 'src/main/java'
 sourceSets.main.groovy.srcDirs += "${buildDir}/generated-resources/main/java"
+ext {
+    webservicesVersion = '103'
+}
 
+configurations {
+    bundle
+}
 
 dependencies {
-    api("ish.oncourse.willow:webservices-client:103")
+    implementation("ish.oncourse.willow:webservices-client:$webservicesVersion") {
+        exclude  group: 'ish.oncourse', module: 'types'
+    }
     implementation 'javax.xml.bind:jaxb-api:2.3.0'
     implementation 'javax.xml.ws:jaxws-api:2.3.0'
 }
@@ -35,4 +44,25 @@ cgen {
 
 compileJava {
     dependsOn cgen
+}
+
+//create a single Jar with all dependencies
+task fatJar(type: Jar) {
+    from {
+        configurations.runtimeClasspath.findAll {
+            it.name.matches("^(jaxb-api|jaxws-api|webservices-client).*\$")
+        }.collect {
+            it.isDirectory() ? it : zipTree(it) 
+        } 
+    }
+    with jar
+}
+
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifact fatJar
+        }
+    }
 }
