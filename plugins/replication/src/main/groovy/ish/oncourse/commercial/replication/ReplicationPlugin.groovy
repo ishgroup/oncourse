@@ -9,8 +9,11 @@ import com.google.inject.Binder
 import com.google.inject.Injector
 import com.google.inject.Scopes
 import com.google.inject.name.Names
+import ish.common.types.SystemEventType
 import ish.oncourse.commercial.replication.builders.AngelStubBuilderImpl
 import ish.oncourse.commercial.replication.builders.IAngelStubBuilder
+import ish.oncourse.commercial.replication.event.CheckoutEventListener
+import ish.oncourse.commercial.replication.event.WillowValidator
 import ish.oncourse.commercial.replication.handler.*
 import ish.oncourse.commercial.replication.lifecycle.ReplicationListenersService
 import ish.oncourse.commercial.replication.modules.ISoapPortLocator
@@ -27,6 +30,8 @@ import ish.oncourse.commercial.replication.updaters.IAngelUpdater
 import ish.oncourse.commercial.replication.upgrades.QueueAllRecordsForFirstTimeReplication
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
+import ish.oncourse.server.integration.EventService
+import ish.oncourse.server.integration.OnConfigure
 import ish.oncourse.server.integration.OnStart
 import ish.oncourse.server.integration.Plugin
 import ish.oncourse.server.license.LicenseService
@@ -58,11 +63,12 @@ class ReplicationPlugin {
     private Injector injector
     
     
-    //@OnConfigure
+    @OnConfigure
     static void configure(Binder binder) {
 
         binder.bind(ISoapPortLocator).to(SoapPortLocatorImpl).asEagerSingleton()
         binder.bind(ReplicationJob)
+        binder.bind(WillowValidator)
         binder.bind(ReplicationHandler).annotatedWith(Names.named("Outbound")).to(OutboundReplicationHandler)
         binder.bind(ReplicationHandler).annotatedWith(Names.named("Inbound")).to(InboundReplicationHandler)
         binder.bind(ReplicationHandler).annotatedWith(Names.named("Instruction")).to(InstructionHandler)
@@ -86,11 +92,17 @@ class ReplicationPlugin {
         LicenseService licenseService = injector.getInstance(LicenseService)
         ISchedulerService schedulerService = injector.getInstance(ISchedulerService)
         PreferenceController prefController = injector.getInstance(PreferenceController)
-        
+
+        WillowValidator willowValidator = injector.getInstance(WillowValidator)
+
+        CheckoutEventListener checkoutEventListener = new CheckoutEventListener(licenseService, prefController, willowValidator)
+        injector.getInstance(EventService).registerListener(checkoutEventListener, SystemEventType.VALIDATE_CHECKOUT) 
+
         // reference update job schedule every 40 sec when in debug and
         // every 4 hours when in production mode
 
         if (!licenseService.isReplicationDisabled()) {
+            
             int referenceJobScheduleInterval = licenseService.isReplication_debug() ?
                     DEBUG_REFERENCE_JOB_INTERVAL : PRODUCTION_REFERENCE_JOB_INTERVAL
             schedulerService.schedulePeriodicJob(ReferenceJob.class, REFERENCE_HANDLER_JOB_ID,

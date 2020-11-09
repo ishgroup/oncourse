@@ -4,29 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="464eb329-4356-4dd0-ae52-6b59f92ddf6a" name="Default Changelist" comment="">
+    <list default="true" id="464eb329-4356-4dd0-ae52-6b59f92ddf6a" name="Default Changelist" comment="882969">
+      <change afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/event" afterDir="true" />
+      <change afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/event/CheckoutEventListener.groovy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/event/WillowValidator.groovy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/cayenne" beforeDir="true" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/cayenne" afterDir="true" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/cayenne/QueueKey.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/cayenne/QueueKey.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/cayenne/QueuedRecord.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/cayenne/QueuedRecord.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/cayenne/QueuedRecordAction.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/cayenne/QueuedRecordAction.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/cayenne/QueuedTransaction.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/cayenne/QueuedTransaction.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/lifecycle" beforeDir="true" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/lifecycle" afterDir="true" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/lifecycle/QueueableLifecycleListener.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/lifecycle/QueueableLifecycleListener.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/lifecycle/QueuedTransactionListener.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/lifecycle/QueuedTransactionListener.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/lifecycle/StackFrame.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/lifecycle/StackFrame.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/builders/AbstractAngelStubBuilder.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/builders/AbstractAngelStubBuilder.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/builders/AngelStubBuilderImpl.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/builders/AngelStubBuilderImpl.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/builders/IAngelStubBuilder.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/builders/IAngelStubBuilder.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/handler/InstructionHandler.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/handler/InstructionHandler.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/handler/OutboundReplicationHandler.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/handler/OutboundReplicationHandler.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/services/AngelQueueService.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/services/AngelQueueService.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/services/DFADedupper.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/services/DFADedupper.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/services/DedupperFactory.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/services/DedupperFactory.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/upgrades" beforeDir="true" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/upgrades" afterDir="true" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/upgrades/QueueAllRecordsForFirstTimeReplication.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/upgrades/QueueAllRecordsForFirstTimeReplication.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/resources/cayenne/ReplicationMap.map.xml" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/resources/cayenne/ReplicationMap.map.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/ReplicationPlugin.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/ReplicationPlugin.groovy" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,9 +82,18 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.29532403" />
+    <property name="project.structure.side.proportion" value="0.2835294" />
     <property name="settings.editor.selected.configurable" value="copyright" />
     <property name="show.unlinked.gradle.project.popup" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="ish.oncourse.commercial.replication.modules" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/reference/updater" />
+      <recent name="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/reference" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
   <component name="SvnConfiguration" cleanupOnStartRun="true">
@@ -138,7 +130,15 @@
       <workItem from="1604324396575" duration="382000" />
       <workItem from="1604325338469" duration="593000" />
       <workItem from="1604327586463" duration="31000" />
-      <workItem from="1604327622464" duration="304000" />
+      <workItem from="1604327622464" duration="483000" />
+      <workItem from="1604328280346" duration="6631000" />
+      <workItem from="1604432766123" duration="689000" />
+      <workItem from="1604434022717" duration="1928000" />
+      <workItem from="1604492065515" duration="8255000" />
+      <workItem from="1604642895628" duration="2933000" />
+      <workItem from="1604670407654" duration="324000" />
+      <workItem from="1604906564397" duration="973000" />
+      <workItem from="1604913182489" duration="3565000" />
     </task>
     <task id="LOCAL-00001" summary="put gradle/idea settings under version control">
       <created>1602752538032</created>
@@ -182,7 +182,105 @@
       <option name="project" value="LOCAL" />
       <updated>1602761124030</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="OD-15213 Move plugin code to correct package, add webservices-client dependency (will be removed from server then)">
+      <created>1604328083027</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1604328083027</updated>
+    </task>
+    <task id="LOCAL-00008" summary="OD-15213 Implement initialization of replication plugin. Move reference job to plugin">
+      <created>1604433098034</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1604433098034</updated>
+    </task>
+    <task id="LOCAL-00009" summary="fix compillation">
+      <created>1604433526030</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1604433526030</updated>
+    </task>
+    <task id="LOCAL-00010" summary="remove wrong repository">
+      <created>1604434607033</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1604434607033</updated>
+    </task>
+    <task id="LOCAL-00011" summary="fix cayenne package">
+      <created>1604435597031</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1604435597031</updated>
+    </task>
+    <task id="LOCAL-00012" summary="clean up wrong cayenne classes">
+      <created>1604435785030</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1604435785030</updated>
+    </task>
+    <task id="LOCAL-00013" summary="remove one time executed code">
+      <created>1604435940032</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1604435940032</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Move soap locator to plugin">
+      <created>1604496912029</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1604496912029</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Fix reference updaters">
+      <created>1604496952028</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1604496952028</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Setup all cayenne lifecycle listeners for replication process">
+      <created>1604497760029</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1604497760029</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Move course class removal validation to replication plugin (need it case if replication enabled)">
+      <created>1604500600031</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1604500600031</updated>
+    </task>
+    <task id="LOCAL-00018" summary="OD-15310 Fix custom reports to use correct localDate types">
+      <created>1604645455029</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1604645455029</updated>
+    </task>
+    <task id="LOCAL-00019" summary="OD-15310 Fix custom scripts">
+      <created>1604645763032</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1604645763032</updated>
+    </task>
+    <task id="LOCAL-00020" summary="OD-15310 Fix local date formatting for all reports">
+      <created>1604670620028</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1604670620028</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -197,34 +295,68 @@
     <MESSAGE value="Add maven repo for groovy plugin" />
     <MESSAGE value="Moxe plugin classes to proper package" />
     <MESSAGE value="OD-15213 Move plugin code to correct package, add webservices-client dependency (will be removed from server then)" />
-    <option name="LAST_COMMIT_MESSAGE" value="OD-15213 Move plugin code to correct package, add webservices-client dependency (will be removed from server then)" />
+    <MESSAGE value="OD-15213 Implement initialization of replication plugin. Move reference job to plugin" />
+    <MESSAGE value="fix compillation" />
+    <MESSAGE value="remove wrong repository" />
+    <MESSAGE value="fix cayenne package" />
+    <MESSAGE value="clean up wrong cayenne classes" />
+    <MESSAGE value="remove one time executed code" />
+    <MESSAGE value="Move soap locator to plugin" />
+    <MESSAGE value="Fix reference updaters" />
+    <MESSAGE value="Setup all cayenne lifecycle listeners for replication process" />
+    <MESSAGE value="Move course class removal validation to replication plugin (need it case if replication enabled)" />
+    <MESSAGE value="OD-15310 Fix custom reports to use correct localDate types" />
+    <MESSAGE value="OD-15310 Fix custom scripts" />
+    <MESSAGE value="OD-15310 Fix local date formatting for all reports" />
+    <option name="LAST_COMMIT_MESSAGE" value="OD-15310 Fix local date formatting for all reports" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="685" y="253" key="#com.intellij.ide.util.MemberChooser" timestamp="1604915458710">
+      <screen x="68" y="23" width="1612" height="1027" />
+    </state>
+    <state x="685" y="253" key="#com.intellij.ide.util.MemberChooser/68.23.1612.1027@68.23.1612.1027" timestamp="1604915458710" />
     <state x="2035" y="762" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1602799146937">
       <screen x="0" y="23" width="3360" height="1867" />
     </state>
     <state x="2035" y="762" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/-1440.538.1440.900/0.23.3360.1867@0.23.3360.1867" timestamp="1602799146937" />
-    <state x="68" y="139" key="CommitChangelistDialog2" timestamp="1604328050768">
+    <state x="68" y="139" key="CommitChangelistDialog2" timestamp="1604919484478">
       <screen x="68" y="23" width="1612" height="1027" />
     </state>
-    <state x="399" y="139" key="CommitChangelistDialog2/65.23.1615.1027@65.23.1615.1027" timestamp="1602763593767" />
-    <state x="68" y="139" key="CommitChangelistDialog2/68.23.1612.1027@68.23.1612.1027" timestamp="1604328050768" />
+    <state x="399" y="139" key="CommitChangelistDialog2/65.23.1615.1027@65.23.1615.1027" timestamp="1604670596261" />
+    <state x="68" y="139" key="CommitChangelistDialog2/68.23.1612.1027@68.23.1612.1027" timestamp="1604919484478" />
     <state x="229" y="115" key="DiffContextDialog" timestamp="1604327865585">
       <screen x="68" y="23" width="1612" height="1027" />
     </state>
     <state x="229" y="115" key="DiffContextDialog/68.23.1612.1027@68.23.1612.1027" timestamp="1604327865585" />
-    <state x="622" y="254" key="RollbackChangesDialog" timestamp="1604325089434">
+    <state x="622" y="254" key="RollbackChangesDialog" timestamp="1604328293230">
       <screen x="68" y="23" width="1612" height="1027" />
     </state>
-    <state x="622" y="254" key="RollbackChangesDialog/68.23.1612.1027@68.23.1612.1027" timestamp="1604325089434" />
-    <state x="787" y="482" width="1861" height="1208" key="SettingsEditor" timestamp="1602799221787">
-      <screen x="0" y="23" width="3360" height="1867" />
+    <state x="622" y="254" key="RollbackChangesDialog/68.23.1612.1027@68.23.1612.1027" timestamp="1604328293230" />
+    <state x="337" y="275" width="1002" height="665" key="SettingsEditor" timestamp="1604435864424">
+      <screen x="68" y="23" width="1612" height="1027" />
     </state>
     <state x="787" y="482" width="1861" height="1208" key="SettingsEditor/-1440.538.1440.900/0.23.3360.1867@0.23.3360.1867" timestamp="1602799221787" />
     <state x="360" y="118" key="SettingsEditor/65.23.1615.1027@65.23.1615.1027" timestamp="1602756593011" />
-    <state x="683" y="389" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1602763506541">
+    <state x="337" y="275" width="1002" height="665" key="SettingsEditor/68.23.1612.1027@68.23.1612.1027" timestamp="1604435864424" />
+    <state x="549" y="369" key="com.intellij.ide.util.TipDialog" timestamp="1604910251237">
+      <screen x="68" y="23" width="1612" height="1027" />
+    </state>
+    <state x="549" y="369" key="com.intellij.ide.util.TipDialog/68.23.1612.1027@68.23.1612.1027" timestamp="1604910251237" />
+    <state x="683" y="389" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1604642898300">
       <screen x="65" y="23" width="1615" height="1027" />
     </state>
-    <state x="683" y="389" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/65.23.1615.1027@65.23.1615.1027" timestamp="1602763506541" />
+    <state x="683" y="389" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/65.23.1615.1027@65.23.1615.1027" timestamp="1604642898300" />
+    <state x="521" y="293" width="855" height="550" key="find.popup" timestamp="1604670561063">
+      <screen x="65" y="23" width="1615" height="1027" />
+    </state>
+    <state x="521" y="293" width="855" height="550" key="find.popup/65.23.1615.1027@65.23.1615.1027" timestamp="1604670561063" />
+    <state x="523" y="293" width="853" height="486" key="find.popup/68.23.1612.1027@68.23.1612.1027" timestamp="1604408718299" />
+    <state x="540" y="250" width="670" height="676" key="search.everywhere.popup" timestamp="1604918422239">
+      <screen x="68" y="23" width="1612" height="1027" />
+    </state>
+    <state x="536" y="250" width="674" height="676" key="search.everywhere.popup/62.23.1618.1027@62.23.1618.1027" timestamp="1604661701986" />
+    <state x="538" y="250" width="672" height="676" key="search.everywhere.popup/65.23.1615.1027@65.23.1615.1027" timestamp="1604645151797" />
+    <state x="540" y="250" width="670" height="676" key="search.everywhere.popup/68.23.1612.1027@68.23.1612.1027" timestamp="1604918422239" />
+    <state x="542" y="250" width="670" height="676" key="search.everywhere.popup/71.23.1609.1027@71.23.1609.1027" timestamp="1604411205487" />
   </component>
 </project>
