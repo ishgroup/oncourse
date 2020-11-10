@@ -21,8 +21,6 @@ dependencies {
     implementation("ish.oncourse.willow:webservices-client:$webservicesVersion") {
         exclude  group: 'ish.oncourse', module: 'types'
     }
-    implementation 'javax.xml.bind:jaxb-api:2.3.0'
-    implementation 'javax.xml.ws:jaxws-api:2.3.0'
 }
 
 cgen {
@@ -50,7 +48,7 @@ compileJava {
 task fatJar(type: Jar) {
     from {
         configurations.runtimeClasspath.findAll {
-            it.name.matches("^(jaxb-api|jaxws-api|webservices-client).*\$")
+            it.name.matches("^(webservices-client).*\$")
         }.collect {
             it.isDirectory() ? it : zipTree(it) 
         } 
