@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+  ~ No copying or use of this code is allowed without permission in writing from ish.
+  -->
+
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CertificateTranscriptReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="517" leftMargin="39" rightMargin="39" topMargin="43" bottomMargin="50" whenResourceMissingType="Error" uuid="8ecab58b-5ac0-4c5a-b22a-cee0bcae0b65">
+    <property name="name" value="Byron Certificate-Transcript"/>
+    <property name="entity" value="Certificate"/>
+    <property name="isSubreport" value="true"/>
+    <property name="isVisible" value="true"/>
+    <property name="versionNumber" value="1"/>
+    <property name="keyCode" value="byron.onCourse.certificate.transcript"/>
+    <property name="ish.oncourse.title" value="Academic Transcript"/>
+    <property name="ish.oncourse.filePrefix" value="certificate"/>
+    <property name="ish.oncourse.description" value=" To provide students with the information retained in onCourse regarding each of their enrolments and current status of their outcomes."/>
+    <property name="ish.oncourse.pdfFileName" value="Certificate.pdf"/>
+    <import value="net.sf.jasperreports.engine.*"/>
+    <import value="java.util.*"/>
+    <import value="net.sf.jasperreports.engine.data.*"/>
+    <import value="org.apache.commons.lang3.time.DateUtils"/>
+    <style name="default" isDefault="true" forecolor="#000000" vTextAlign="Bottom" markup="none" fontName="Open Sans" fontSize="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="OpenSans" pdfEncoding="Cp1252" isPdfEmbedded="true">
+        <paragraph spacingAfter="8"/>
+    </style>
+    <style name="header 1" style="default" forecolor="#4F0018" vTextAlign="Middle" fontName="Open Sans Light" fontSize="18" pdfFontName="Open Sans Light"/>
+    <style name="header 2" style="header 1" fontSize="12"/>
+    <style name="header 3" style="default" vTextAlign="Middle" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+    <style name="header 3 (right)" style="header 3" hTextAlign="Right"/>
+    <style name="Label" style="default" forecolor="#6A7E99"/>
+    <style name="Label right" style="Label" hTextAlign="Right"/>
+    <style name="data field" style="default"/>
+    <style name="data field (money)" style="data field" hTextAlign="Right" pattern="$#,###,##0.00;$(-#,###,##0.00)"/>
+    <style name="data field (numeric)" style="data field" hTextAlign="Right"/>
+    <style name="data field (datetime)" style="data field" pattern="d MMM yyyy h:mma"/>
+    <style name="data field (day)" style="data field" pattern="E d MMM h:mma"/>
+    <style name="data field (date)" style="data field" pattern="d MMM yyyy"/>
+    <style name="Footer" style="default" forecolor="#737373" fontSize="8"/>
+    <style name="Footer strong" style="Footer" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+    <style name="subHead box" style="default" backcolor="#E6E7F0"/>
+    <style name="small-text" style="default" forecolor="#373737" fontSize="10" hTextAlign="Center"/>
+    <parameter name="ReportName" class="java.lang.String"/>
+    <field name="certificate" class="java.lang.Object"/>
+    <field name="datasource.outcomes" class="net.sf.jasperreports.engine.JRDataSource"/>
+    <field name="subreport.byron.onCourse.certificate.transcript.subreport" class="net.sf.jasperreports.engine.JasperReport"/>
+    <group name="PrintOneRecordOnPage" isStartNewPage="true">
+        <groupExpression><![CDATA[$F{certificate}.id]]></groupExpression>
+    </group>
+    <pageHeader>
+        <band height="300" splitType="Stretch">
+            <staticText>
+                <reportElement style="small-text" x="0" y="40" width="540" height="30"/>
+                <textElement textAlignment="Left" markup="html"/>
+                <text><![CDATA[<b>Byron Region Community College Inc</b><br>National Provider Number: 90013]]></text>
+            </staticText>
+            <staticText>
+                <reportElement style="small-text" x="0" y="85" width="540" height="20"/>
+                <textElement textAlignment="Left">
+                    <font size="14" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Academic Transcript]]></text>
+            </staticText>
+            <textField>
+                <reportElement style="small-text" x="0" y="100" width="540" height="18"/>
+                <textElement textAlignment="Left" markup="styled"/>
+                <textFieldExpression><![CDATA["Date: " + $F{certificate}.issuedOn.format("d") + "<sup>" +
+                ((11..13).contains($F{certificate}.issuedOn.date) ? "th" :
+                $F{certificate}.issuedOn.date % 10 == 1 ? "st" :
+                $F{certificate}.issuedOn.date % 10 == 2 ? "nd" :
+                $F{certificate}.issuedOn.date % 10 == 3 ? "rd" : "th") +
+                "</sup>" + $F{certificate}.issuedOn.format(" MMMM YYYY")]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement style="small-text" x="0" y="130" width="540" height="20"/>
+                <textElement textAlignment="Left"/>
+                <textFieldExpression><![CDATA["Student Name: " + [$F{certificate}.student.contact.firstName, $F{certificate}.student.contact.middleName, $F{certificate}.student.contact.lastName].findAll().join(" ")]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement style="small-text" x="0" y="150" width="540" height="16"/>
+                <textElement textAlignment="Left"/>
+                <textFieldExpression><![CDATA["Student Number: " + $F{certificate}.student.studentNumber]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement style="small-text" x="0" y="180" width="540" height="30"/>
+                <textElement textAlignment="Left">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[This is to certify that having completed the requirements in accordance with the AQF you are eligible to receive the following:]]></text>
+            </staticText>
+            <textField>
+                <reportElement style="small-text" x="0" y="220" width="540" height="30"/>
+                <textElement textAlignment="Center">
+                    <font size="14"/>
+                </textElement>
+                <textFieldExpression><![CDATA[[$F{certificate}.qualification.nationalCode, $F{certificate}.qualification.level, $F{certificate}.qualification.title].join(" ")]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement style="small-text" x="0" y="250" width="540" height="30"/>
+                <textElement textAlignment="Center" markup="html"/>
+                <text><![CDATA[This qualification was delivered over eight months<br>(C=COMPETENT)]]></text>
+            </staticText>
+        </band>
+    </pageHeader>
+    <detail>
+        <band height="50" splitType="Stretch">
+            <subreport isUsingCache="true">
+                <reportElement key="subreport-2" stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" mode="Transparent" x="0" y="0" width="517" height="15" isRemoveLineWhenBlank="true" uuid="59a3faf5-a597-4aca-a97c-23e8cf98ab55"/>
+                <dataSourceExpression><![CDATA[$F{datasource.outcomes}]]></dataSourceExpression>
+                <subreportExpression><![CDATA[$F{subreport.byron.onCourse.certificate.transcript.subreport}]]></subreportExpression>
+            </subreport>
+            <staticText>
+                <reportElement style="small-text" x="0" y="30" width="540" height="20" positionType="FixRelativeToBottom"/>
+                <textElement textAlignment="Center">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[End of Transcript]]></text>
+            </staticText>
+        </band>
+    </detail>
+    <pageFooter>
+        <band height="120" splitType="Stretch"/>
+    </pageFooter>
+</jasperReport>
