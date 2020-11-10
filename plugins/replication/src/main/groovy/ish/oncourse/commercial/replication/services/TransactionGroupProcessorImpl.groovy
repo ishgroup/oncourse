@@ -6,14 +6,12 @@
 package ish.oncourse.commercial.replication.services
 
 import com.google.inject.Inject
+import groovy.transform.CompileStatic
 import ish.common.types.EntityMapping
+import ish.oncourse.commercial.replication.updaters.IAngelUpdater
+import ish.oncourse.commercial.replication.updaters.RelationShipCallback
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.Queueable
-import static ish.oncourse.server.replication.services.ReplicationUtils.getEntityClass
-import static ish.oncourse.server.replication.services.ReplicationUtils.toCollection
-import static ish.oncourse.server.replication.services.ReplicationUtils.toReplicatedRecord
-import ish.oncourse.server.replication.updaters.IAngelUpdater
-import ish.oncourse.server.replication.updaters.RelationShipCallback
 import ish.oncourse.webservices.ITransactionGroupProcessor
 import ish.oncourse.webservices.util.GenericDeletedStub
 import ish.oncourse.webservices.util.GenericReplicatedRecord
@@ -30,6 +28,9 @@ import org.apache.commons.lang3.StringUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+import static ish.oncourse.commercial.replication.services.ReplicationUtils.toReplicatedRecord
+
+@CompileStatic
 class TransactionGroupProcessorImpl implements ITransactionGroupProcessor {
 
     static final String WILLOW_ID_COLUMN = "willowId"
@@ -200,7 +201,7 @@ class TransactionGroupProcessorImpl implements ITransactionGroupProcessor {
                     return null
                 }
 
-                angelUpdater.updateEntityFromStub(currentStub, object, new ish.oncourse.server.replication.services.TransactionGroupProcessorImpl.RelationShipCallbackImpl())
+                angelUpdater.updateEntityFromStub(currentStub, object, new TransactionGroupProcessorImpl.RelationShipCallbackImpl())
                 return object
             }
 
@@ -227,7 +228,7 @@ class TransactionGroupProcessorImpl implements ITransactionGroupProcessor {
 
                 def property = (ArcProperty) descriptor.getProperty(relationship.getName())
 
-                def relatedObjects = toCollection(property.readProperty(objectToDelete))
+                def relatedObjects = ReplicationUtils.toCollection(property.readProperty(objectToDelete))
 
                 for (def r : relatedObjects) {
                     def entityIdentifier = r.getObjectId().getEntityName()
@@ -249,9 +250,9 @@ class TransactionGroupProcessorImpl implements ITransactionGroupProcessor {
      * @return queueable object
      */
     private Queueable createObject(GenericReplicationStub currentStub) {
-        def objectToUpdate = atomicContext.newObject(getEntityClass(atomicContext,
+        def objectToUpdate = atomicContext.newObject(ReplicationUtils.getEntityClass(atomicContext,
                 EntityMapping.getAngelEntityIdentifer(currentStub.getEntityIdentifier())))
-        angelUpdater.updateEntityFromStub(currentStub, objectToUpdate, new ish.oncourse.server.replication.services.TransactionGroupProcessorImpl.RelationShipCallbackImpl())
+        angelUpdater.updateEntityFromStub(currentStub, objectToUpdate, new  RelationShipCallbackImpl())
         return objectToUpdate
     }
 
@@ -263,7 +264,7 @@ class TransactionGroupProcessorImpl implements ITransactionGroupProcessor {
      * @return list of matched queueble entities
      */
     private Queueable objectsByWillowId(Long entityId, String entityIdentifier) {
-        return ObjectSelect.query(getEntityClass(atomicContext, entityIdentifier))
+        return ObjectSelect.query(ReplicationUtils.getEntityClass(atomicContext, entityIdentifier))
                 .where(ExpressionFactory.matchExp(WILLOW_ID_COLUMN, entityId))
                 .selectOne(atomicContext)
 
@@ -277,7 +278,7 @@ class TransactionGroupProcessorImpl implements ITransactionGroupProcessor {
      * @return list of matched queueble entities
      */
     private Queueable objectsByAngelId(Long entityId, String entityIdentifier) {
-        return ObjectSelect.query(getEntityClass(atomicContext, entityIdentifier))
+        return ObjectSelect.query(ReplicationUtils.getEntityClass(atomicContext, entityIdentifier))
                 .where(ExpressionFactory.matchExp("id", entityId))
                 .selectOne(atomicContext)
     }

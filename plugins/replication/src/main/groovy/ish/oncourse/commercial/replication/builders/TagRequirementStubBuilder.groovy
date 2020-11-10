@@ -4,12 +4,16 @@
  */
 package ish.oncourse.commercial.replication.builders
 
+import groovy.transform.CompileStatic
+import ish.oncourse.commercial.replication.updaters.AbstractAngelUpdater
 import ish.oncourse.server.cayenne.TagRequirement
-import ish.oncourse.server.replication.updaters.AbstractAngelUpdater
 import ish.oncourse.webservices.v22.stubs.replication.TagRequirementStub
+
+import static ish.oncourse.cayenne.TaggableClasses.*
 
 /**
  */
+@CompileStatic
 class TagRequirementStubBuilder extends AbstractAngelStubBuilder<TagRequirement, TagRequirementStub> {
 
 	/**

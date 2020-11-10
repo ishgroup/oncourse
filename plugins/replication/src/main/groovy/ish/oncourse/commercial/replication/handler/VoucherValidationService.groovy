@@ -6,11 +6,12 @@
 package ish.oncourse.commercial.replication.handler
 
 import com.google.inject.Inject
+import groovy.transform.CompileStatic
 import ish.math.Money
+import ish.oncourse.commercial.replication.builders.IAngelStubBuilder
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.Voucher
 import ish.oncourse.server.modules.ISoapPortLocator
-import ish.oncourse.server.replication.builders.IAngelStubBuilder
 import ish.oncourse.webservices.soap.v22.ReplicationFault
 import ish.oncourse.webservices.v22.stubs.replication.TransactionGroup
 import ish.oncourse.webservices.v22.stubs.replication.VoucherStub
@@ -22,6 +23,7 @@ import org.apache.cayenne.query.SelectQuery
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+@CompileStatic
 class VoucherValidationService  implements IVoucherValidationService {
 
     private static final Logger logger = LogManager.getLogger()

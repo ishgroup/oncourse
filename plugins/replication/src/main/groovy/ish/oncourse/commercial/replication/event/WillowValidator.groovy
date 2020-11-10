@@ -7,14 +7,13 @@ package ish.oncourse.commercial.replication.event
 
 import com.google.inject.Inject
 import ish.math.Money
+import ish.oncourse.commercial.replication.builders.IAngelStubBuilder
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.v1.model.CheckoutModelDTO
 import ish.oncourse.server.api.v1.model.CheckoutValidationErrorDTO
 import ish.oncourse.server.api.v1.model.SaleTypeDTO
 import ish.oncourse.server.cayenne.Voucher
 import ish.oncourse.server.modules.ISoapPortLocator
-import ish.oncourse.server.replication.Replication
-import ish.oncourse.server.replication.builders.IAngelStubBuilder
 import ish.oncourse.webservices.util.GenericParameterEntry
 import ish.oncourse.webservices.util.GenericParametersMap
 import ish.oncourse.webservices.util.PortHelper

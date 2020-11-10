@@ -7,8 +7,11 @@ package ish.oncourse.commercial.replication.handler
 
 import com.google.inject.Inject
 import ish.common.types.ContactDuplicateStatus
+import ish.oncourse.commercial.replication.builders.IAngelStubBuilder
 import ish.oncourse.commercial.replication.cayenne.QueueKey
 import ish.oncourse.commercial.replication.cayenne.QueuedRecordAction
+import ish.oncourse.commercial.replication.services.IAngelQueueService
+
 import static ish.oncourse.commercial.replication.cayenne.QueuedRecordAction.CREATE
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.ISHDataContext
@@ -17,9 +20,6 @@ import ish.oncourse.server.cayenne.Queueable
 import ish.oncourse.commercial.replication.cayenne.QueuedRecord
 import ish.oncourse.server.cayenne.QueuedTransaction
 import ish.oncourse.server.modules.ISoapPortLocator
-import ish.oncourse.server.replication.builders.IAngelStubBuilder
-import ish.oncourse.server.replication.services.DedupperFactory
-import ish.oncourse.server.replication.services.IAngelQueueService
 import ish.oncourse.webservices.soap.v22.ReplicationFault
 import ish.oncourse.webservices.util.GenericReplicationRecords
 import ish.oncourse.webservices.util.GenericReplicationResult

@@ -12,7 +12,6 @@ import groovy.transform.CompileStatic
 import ish.oncourse.server.AngelModule
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.license.LicenseService
-import ish.oncourse.server.replication.Replication
 import ish.oncourse.webservices.soap.v22.PaymentPortType
 import ish.oncourse.webservices.soap.v22.ReplicationPortType
 import ish.oncourse.webservices.soap.v22.ReplicationService
