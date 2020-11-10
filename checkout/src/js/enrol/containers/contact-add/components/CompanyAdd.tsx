@@ -1,6 +1,7 @@
 import * as React from "react";
 import {Field} from "redux-form";
 import {TextField} from "../../../../components/form/TextField";
+import {replaceWithNl} from "../../../../common/utils/HtmlUtils";
 
 export interface Props {
   header?: string;
@@ -12,7 +13,7 @@ export class CompanyAdd extends React.Component<Props, any> {
     return (
       <div id="addstudent-block">
         <div className="message">
-          <p>{header}</p>
+          <p style={{whiteSpace: "pre-line"}}>{replaceWithNl(header)}</p>
         </div>
         <fieldset>
           <br/>

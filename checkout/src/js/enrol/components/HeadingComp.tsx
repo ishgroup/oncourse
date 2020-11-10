@@ -1,6 +1,7 @@
 import * as React from "react";
 import {FieldHeading} from "../../model";
 import FieldFactory from "../../components/form/FieldFactory";
+import {replaceWithNl} from "../../common/utils/HtmlUtils";
 
 
 interface Prop {
@@ -18,10 +19,18 @@ export class HeadingComp extends React.Component<Prop, any> {
     return (
       <fieldset>
         {heading.name &&
-          <legend>{heading.name}</legend>
+          <legend
+            style={{whiteSpace: "pre-line"}}
+          >
+            {replaceWithNl(heading.name)}
+          </legend>
         }
         {heading.description &&
-          <div className="message" dangerouslySetInnerHTML={{__html: heading.description}}/>
+          <div
+            className="message"
+            dangerouslySetInnerHTML={{__html: replaceWithNl(heading.description)}}
+            style={{whiteSpace: "pre-line"}}
+          />
         }
         {heading.fields.map((field, i) => <FieldFactory
           key={i}

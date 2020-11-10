@@ -10,6 +10,7 @@ import SelectField from "../form-new/SelectField";
 import SearchService from "../../enrol/services/SearchService";
 import {connect} from "react-redux";
 import {validateDate} from "../../common/utils/FormControlsValidation";
+import {replaceWithNl} from "../../common/utils/HtmlUtils";
 
 class FieldFactory extends React.Component<any, any> {
 
@@ -114,10 +115,10 @@ export const toFormFieldProps = (field: Field): any => {
   return {
     key: field.id,
     name: toFormKey(field.key),
-    label: field.name,
+    label: replaceWithNl(field.name),
     type: "text",
     required: field.mandatory,
-    placeholder: field.description,
+    placeholder: replaceWithNl(field.description),
   };
 };
 

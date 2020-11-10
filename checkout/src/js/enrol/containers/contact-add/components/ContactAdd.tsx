@@ -2,6 +2,7 @@ import * as React from "react";
 import {Field} from "redux-form";
 import {TextField} from "../../../../components/form/TextField";
 import {scrollToTop} from "../../../../common/utils/DomUtils";
+import {replaceWithNl} from "../../../../common/utils/HtmlUtils";
 
 export interface Props {
   header?: string;
@@ -17,7 +18,7 @@ export class ContactAdd extends React.Component<Props, any> {
     return (
       <div id="addstudent-block">
         <div className="message">
-          <p>{header}</p>
+          <p style={{whiteSpace: "pre-line"}}>{replaceWithNl(header)}</p>
         </div>
         <fieldset>
           <br/>

@@ -46,3 +46,5 @@ export function plural(count, values) {
     return values[1];
   }
 }
+
+export const replaceWithNl = (text: string) => text && text.replace(/\r\n|\r|\↵/g,"\\n");

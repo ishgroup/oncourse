@@ -5,13 +5,14 @@ import {FieldLabel} from "./FieldLabel";
 import {HintText} from "./HintText";
 import classnames from "classnames";
 import {MouseHover, WrappedMouseHoverProps} from "./MouseHover";
+import {replaceWithNl} from "../../common/utils/HtmlUtils";
 
 export class CheckboxField extends React.Component<any, any> {
-    render() {
-        return (
-            <MouseHover component={checkboxFieldComponent} componentProps={this.props}/>
-        );
-    }
+  render() {
+    return (
+      <MouseHover component={checkboxFieldComponent} componentProps={this.props}/>
+    );
+  }
 }
 
 export const checkboxFieldComponent = (props: CheckboxFieldProps) => {
@@ -27,7 +28,10 @@ export const checkboxFieldComponent = (props: CheckboxFieldProps) => {
           className={classnames({["with-hint"]: Boolean(hint)})}
         >
             <HintText {...props}/>
-            {placeholder && <span className={"label-placeholder"}>{placeholder}</span>}
+            {placeholder && <span
+              className={"label-placeholder"}
+              style={{whiteSpace: "pre-line"}}
+            >{replaceWithNl(placeholder)}</span>}
         </FieldLabel>
       }
 
