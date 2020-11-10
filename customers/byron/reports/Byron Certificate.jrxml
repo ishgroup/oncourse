@@ -40,7 +40,7 @@
     <parameter name="ReportName" class="java.lang.String"/>
     <field name="certificate" class="java.lang.Object"/>
     <variable name="day" class="java.lang.Integer">
-        <variableExpression><![CDATA[$F{certificate}.issuedOn.date]]></variableExpression>
+        <variableExpression><![CDATA[$F{certificate}.issuedOn.dayOfMonth]]></variableExpression>
     </variable>
     <variable name="superscript" class="java.lang.String">
         <variableExpression><![CDATA["<sup>" + ((11..13).contains($V{day}) ? "th" : $V{day} % 10 == 1 ? "st" : $V{day} % 10 == 2 ? "nd" : $V{day} % 10 == 3 ? "rd" : "th") + "</sup>"]]></variableExpression>
