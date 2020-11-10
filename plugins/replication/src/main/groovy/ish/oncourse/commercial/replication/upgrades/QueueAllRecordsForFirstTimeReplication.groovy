@@ -7,6 +7,7 @@ package ish.oncourse.commercial.replication.upgrades
 
 import ish.common.types.ProductType
 import ish.oncourse.commercial.replication.cayenne.QueuedRecordAction
+import ish.oncourse.commercial.replication.cayenne.QueuedTransaction
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.ISHDataContext
 import ish.oncourse.server.cayenne.Application
@@ -57,7 +58,6 @@ import ish.oncourse.server.cayenne.PriorLearning
 import ish.oncourse.server.cayenne.Product
 import ish.oncourse.server.cayenne.Queueable
 import ish.oncourse.commercial.replication.cayenne.QueuedRecord
-import ish.oncourse.server.cayenne.QueuedTransaction
 import ish.oncourse.server.cayenne.Room
 import ish.oncourse.server.cayenne.Script
 import ish.oncourse.server.cayenne.Session

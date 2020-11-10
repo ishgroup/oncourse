@@ -18,9 +18,7 @@ configurations {
 }
 
 dependencies {
-    implementation("ish.oncourse.willow:webservices-client:$webservicesVersion") {
-        exclude  group: 'ish.oncourse', module: 'types'
-    }
+    implementation("ish.oncourse.willow:webservices-client:$webservicesVersion") 
 }
 
 cgen {
