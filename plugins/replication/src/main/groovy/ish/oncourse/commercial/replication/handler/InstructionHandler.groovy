@@ -9,6 +9,7 @@ import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import ish.common.types.PaymentStatus
 import ish.oncourse.commercial.replication.cayenne.QueuedRecordAction
+import ish.oncourse.commercial.replication.modules.ISoapPortLocator
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.ISHDataContext
 import ish.oncourse.server.cayenne.Article
