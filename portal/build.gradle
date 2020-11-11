@@ -1,7 +1,8 @@
 apply from: "$rootDir/gradle/tapestry.app.gradle"
 apply from: "$rootDir/gradle/cxf-spring.gradle"
-apply from: "$rootDir/gradle/build-static.gradle"
-apply plugin: 'com.moowork.node'
+//apply from: "$rootDir/gradle/build-static.gradle"
+//apply plugin: 'com.moowork.node'
+apply plugin: 'com.github.node-gradle.node'
 
 node {
     version = '12.9.1'
