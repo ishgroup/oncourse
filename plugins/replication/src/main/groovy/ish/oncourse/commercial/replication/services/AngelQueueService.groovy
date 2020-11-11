@@ -6,9 +6,9 @@
 package ish.oncourse.commercial.replication.services
 
 import com.google.inject.Inject
+import ish.oncourse.commercial.replication.cayenne.QueuedTransaction
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.commercial.replication.cayenne.QueuedRecord
-import ish.oncourse.server.cayenne.QueuedTransaction
 import org.apache.cayenne.DataRow
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.ExpressionFactory
