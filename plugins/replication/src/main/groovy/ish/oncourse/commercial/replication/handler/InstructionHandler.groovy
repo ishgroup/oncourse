@@ -25,7 +25,6 @@ import ish.oncourse.commercial.replication.cayenne.QueuedRecord
 import ish.oncourse.commercial.replication.cayenne.QueuedTransaction
 import ish.oncourse.server.cayenne.Voucher
 import ish.oncourse.server.cayenne.VoucherPaymentIn
-import ish.oncourse.server.modules.ISoapPortLocator
 import ish.oncourse.webservices.util.GenericInstructionStub
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.ExpressionFactory

@@ -11,11 +11,12 @@
 package ish.oncourse.commercial.replication.reference;
 
 import com.google.inject.Inject;
+import ish.oncourse.commercial.replication.modules.ISoapPortLocator;
+import ish.oncourse.commercial.replication.reference.updater.IReferenceUpdater;
+import ish.oncourse.commercial.replication.reference.updater.IReferenceUpdaterFactory;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.PreferenceController;
-import ish.oncourse.server.modules.ISoapPortLocator;
-import ish.oncourse.server.reference.updater.IReferenceUpdater;
-import ish.oncourse.server.reference.updater.IReferenceUpdaterFactory;
+import ish.oncourse.webservices.soap.v7.ReferencePortType;
 import ish.oncourse.webservices.util.GenericReferenceStub;
 import org.apache.cayenne.ObjectContext;
 import org.apache.logging.log4j.LogManager;
@@ -24,6 +25,8 @@ import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+
+import java.util.List;
 
 /**
  */
@@ -62,9 +65,9 @@ public class ReferenceJob implements Job {
 	public void execute(JobExecutionContext jobCtx) throws JobExecutionException {
 		logger.debug("reference job process started");
 		try {
-			var port = this.soapPortLocator.referencePort();
+			ReferencePortType port = this.soapPortLocator.referencePort();
 
-			Long willowMaxVersion = port.getMaximumVersion();
+			long willowMaxVersion = port.getMaximumVersion();
 
 			// updating reference data
 
@@ -73,13 +76,13 @@ public class ReferenceJob implements Job {
 			for (var version = angelMaxVersion + 1; version <= willowMaxVersion; version++) {
 				ObjectContext ctx = this.cayenneService.getNewNonReplicatingContext();
 
-				var referenceUpdater = (IReferenceUpdater<GenericReferenceStub>) this.referenceUpdaterFactory
+				IReferenceUpdater<GenericReferenceStub> referenceUpdater = (IReferenceUpdater<GenericReferenceStub>) this.referenceUpdaterFactory
 						.newReferenceUpdater(ctx);
-				var records = port.getRecords(version).getGenericCountryOrLanguageOrModule();
+				List<GenericReferenceStub> records = port.getRecords(version).getGenericCountryOrLanguageOrModule();
 
 				logger.info("Received {} records for version:{}", records.size(), version);
 
-				for (var record : records) {
+				for (GenericReferenceStub record : records) {
 					referenceUpdater.updateRecord(record);
 				}
 

@@ -5,11 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="464eb329-4356-4dd0-ae52-6b59f92ddf6a" name="Default Changelist" comment="882969">
-      <change afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/event" afterDir="true" />
-      <change afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/event/CheckoutEventListener.groovy" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/event/WillowValidator.groovy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/replication/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/ReplicationPlugin.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/ReplicationPlugin.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/event/WillowValidator.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/event/WillowValidator.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/handler/IVoucherValidationService.groovy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/handler/InboundReplicationHandler.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/handler/InboundReplicationHandler.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/handler/InstructionHandler.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/handler/InstructionHandler.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/handler/OutboundReplicationHandler.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/handler/OutboundReplicationHandler.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/handler/VoucherValidationService.groovy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/reference/ReferenceJob.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/reference/ReferenceJob.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/services/ReplicationJob.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/services/ReplicationJob.groovy" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,6 +72,16 @@
       </state>
     </system>
   </component>
+  <component name="GroovyConsoleState">
+    <option name="list">
+      <list>
+        <Entry>
+          <option name="moduleName" value="onCourse_commercial" />
+          <option name="url" value="file://$APPLICATION_CONFIG_DIR$/consoles/groovy/groovy_console_42.groovy" />
+        </Entry>
+      </list>
+    </option>
+  </component>
   <component name="JupyterTrust" id="fc7f12ea-0133-409d-9925-fb3e2d76f7dd" />
   <component name="ProjectId" id="1iuHCiUw59PKWFOXRKyRfQyCwLV" />
   <component name="ProjectViewState">
@@ -94,6 +110,92 @@
       <recent name="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/reference/updater" />
       <recent name="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/reference" />
     </key>
+  </component>
+  <component name="RunManager" selected="Gradle.trunk [fatJar]">
+    <configuration name="trunk [compileJava]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="compileJava" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="trunk [deps]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="deps" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="trunk [fatJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="fatJar" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="trunk [te]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="te" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle.trunk [fatJar]" />
+        <item itemvalue="Gradle.trunk [te]" />
+        <item itemvalue="Gradle.trunk [deps]" />
+        <item itemvalue="Gradle.trunk [compileJava]" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
   <component name="SvnConfiguration" cleanupOnStartRun="true">
@@ -280,19 +382,83 @@
       <option name="project" value="LOCAL" />
       <updated>1604670620028</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="separate config for replication publishing: assemble fat jar that include webservices-client and ws implementation libs">
+      <created>1604929759030</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1604929759030</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Move utility method to replication plugin">
+      <created>1604934991029</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1604934991029</updated>
+    </task>
+    <task id="LOCAL-00023" summary="move byron custom scripts under version control">
+      <created>1604994913033</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1604994913033</updated>
+    </task>
+    <task id="LOCAL-00024" summary="FIx date format for custom resources">
+      <created>1604998307031</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1604998307031</updated>
+    </task>
+    <task id="LOCAL-00025" summary="move back ws libs to server">
+      <created>1605014541031</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1605014541031</updated>
+    </task>
+    <task id="LOCAL-00026" summary="fix coompillation">
+      <created>1605017602028</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1605017602028</updated>
+    </task>
+    <task id="LOCAL-00027" summary="include sources to plugin jar">
+      <created>1605020235031</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1605020235031</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Fix wrong imports">
+      <created>1605021004027</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1605021004027</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Fix imports">
+      <created>1605023102030</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1605023102030</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Move replication version to plugin">
+      <created>1605077750027</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1605077750027</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="put gradle/idea settings under version control" />
-    <MESSAGE value="define common gradle configs: dependencies/publications" />
-    <MESSAGE value="fix module's settings" />
-    <MESSAGE value="add cayenne plugin dependency. Add correct maven repositories" />
-    <MESSAGE value="download latest server snapshot, unpack, and move all /libs/on classpath" />
-    <MESSAGE value="Add maven repo for groovy plugin" />
     <MESSAGE value="Moxe plugin classes to proper package" />
     <MESSAGE value="OD-15213 Move plugin code to correct package, add webservices-client dependency (will be removed from server then)" />
     <MESSAGE value="OD-15213 Implement initialization of replication plugin. Move reference job to plugin" />
@@ -308,36 +474,92 @@
     <MESSAGE value="OD-15310 Fix custom reports to use correct localDate types" />
     <MESSAGE value="OD-15310 Fix custom scripts" />
     <MESSAGE value="OD-15310 Fix local date formatting for all reports" />
-    <option name="LAST_COMMIT_MESSAGE" value="OD-15310 Fix local date formatting for all reports" />
+    <MESSAGE value="separate config for replication publishing: assemble fat jar that include webservices-client and ws implementation libs" />
+    <MESSAGE value="Move utility method to replication plugin" />
+    <MESSAGE value="move byron custom scripts under version control" />
+    <MESSAGE value="FIx date format for custom resources" />
+    <MESSAGE value="move back ws libs to server" />
+    <MESSAGE value="fix coompillation" />
+    <MESSAGE value="include sources to plugin jar" />
+    <MESSAGE value="Fix wrong imports" />
+    <MESSAGE value="Fix imports" />
+    <MESSAGE value="Move replication version to plugin" />
+    <option name="LAST_COMMIT_MESSAGE" value="Move replication version to plugin" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="463" y="201" key="#Project_Structure" timestamp="1605103163323">
+      <screen x="68" y="23" width="1612" height="1027" />
+    </state>
+    <state x="463" y="201" key="#Project_Structure/68.23.1612.1027@68.23.1612.1027" timestamp="1605103163323" />
     <state x="685" y="253" key="#com.intellij.ide.util.MemberChooser" timestamp="1604915458710">
       <screen x="68" y="23" width="1612" height="1027" />
     </state>
     <state x="685" y="253" key="#com.intellij.ide.util.MemberChooser/68.23.1612.1027@68.23.1612.1027" timestamp="1604915458710" />
+    <state x="728" y="410" key="#xdebugger.evaluate" timestamp="1604929197024">
+      <screen x="65" y="23" width="1615" height="1027" />
+    </state>
+    <state x="728" y="410" key="#xdebugger.evaluate/65.23.1615.1027@65.23.1615.1027" timestamp="1604929197024" />
     <state x="2035" y="762" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1602799146937">
       <screen x="0" y="23" width="3360" height="1867" />
     </state>
     <state x="2035" y="762" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/-1440.538.1440.900/0.23.3360.1867@0.23.3360.1867" timestamp="1602799146937" />
-    <state x="68" y="139" key="CommitChangelistDialog2" timestamp="1604919484478">
-      <screen x="68" y="23" width="1612" height="1027" />
+    <state x="399" y="139" key="CommitChangelistDialog2" timestamp="1605077739470">
+      <screen x="65" y="23" width="1615" height="1027" />
     </state>
-    <state x="399" y="139" key="CommitChangelistDialog2/65.23.1615.1027@65.23.1615.1027" timestamp="1604670596261" />
-    <state x="68" y="139" key="CommitChangelistDialog2/68.23.1612.1027@68.23.1612.1027" timestamp="1604919484478" />
-    <state x="229" y="115" key="DiffContextDialog" timestamp="1604327865585">
-      <screen x="68" y="23" width="1612" height="1027" />
+    <state x="399" y="139" key="CommitChangelistDialog2/65.23.1615.1027@65.23.1615.1027" timestamp="1605077739470" />
+    <state x="68" y="139" key="CommitChangelistDialog2/68.23.1612.1027@68.23.1612.1027" timestamp="1605023091615" />
+    <state x="226" y="115" width="1292" height="821" key="DiffContextDialog" timestamp="1604924518521">
+      <screen x="65" y="23" width="1615" height="1027" />
     </state>
+    <state x="226" y="115" width="1292" height="821" key="DiffContextDialog/65.23.1615.1027@65.23.1615.1027" timestamp="1604924518521" />
     <state x="229" y="115" key="DiffContextDialog/68.23.1612.1027@68.23.1612.1027" timestamp="1604327865585" />
-    <state x="622" y="254" key="RollbackChangesDialog" timestamp="1604328293230">
+    <state width="1567" height="280" key="GridCell.Tab.0.bottom" timestamp="1605021556349">
       <screen x="68" y="23" width="1612" height="1027" />
     </state>
+    <state width="1567" height="280" key="GridCell.Tab.0.bottom/65.23.1615.1027@65.23.1615.1027" timestamp="1604997686247" />
+    <state width="1567" height="280" key="GridCell.Tab.0.bottom/68.23.1612.1027@68.23.1612.1027" timestamp="1605021556349" />
+    <state width="1567" height="280" key="GridCell.Tab.0.center" timestamp="1605021556348">
+      <screen x="68" y="23" width="1612" height="1027" />
+    </state>
+    <state width="1567" height="280" key="GridCell.Tab.0.center/65.23.1615.1027@65.23.1615.1027" timestamp="1604997686246" />
+    <state width="1567" height="280" key="GridCell.Tab.0.center/68.23.1612.1027@68.23.1612.1027" timestamp="1605021556348" />
+    <state width="1567" height="280" key="GridCell.Tab.0.left" timestamp="1605021556348">
+      <screen x="68" y="23" width="1612" height="1027" />
+    </state>
+    <state width="1567" height="280" key="GridCell.Tab.0.left/65.23.1615.1027@65.23.1615.1027" timestamp="1604997686245" />
+    <state width="1567" height="280" key="GridCell.Tab.0.left/68.23.1612.1027@68.23.1612.1027" timestamp="1605021556348" />
+    <state width="1567" height="280" key="GridCell.Tab.0.right" timestamp="1605021556349">
+      <screen x="68" y="23" width="1612" height="1027" />
+    </state>
+    <state width="1567" height="280" key="GridCell.Tab.0.right/65.23.1615.1027@65.23.1615.1027" timestamp="1604997686246" />
+    <state width="1567" height="280" key="GridCell.Tab.0.right/68.23.1612.1027@68.23.1612.1027" timestamp="1605021556349" />
+    <state width="1567" height="345" key="GridCell.Tab.1.bottom" timestamp="1604929385532">
+      <screen x="65" y="23" width="1615" height="1027" />
+    </state>
+    <state width="1567" height="345" key="GridCell.Tab.1.bottom/65.23.1615.1027@65.23.1615.1027" timestamp="1604929385532" />
+    <state width="1567" height="345" key="GridCell.Tab.1.center" timestamp="1604929385531">
+      <screen x="65" y="23" width="1615" height="1027" />
+    </state>
+    <state width="1567" height="345" key="GridCell.Tab.1.center/65.23.1615.1027@65.23.1615.1027" timestamp="1604929385531" />
+    <state width="1567" height="345" key="GridCell.Tab.1.left" timestamp="1604929385531">
+      <screen x="65" y="23" width="1615" height="1027" />
+    </state>
+    <state width="1567" height="345" key="GridCell.Tab.1.left/65.23.1615.1027@65.23.1615.1027" timestamp="1604929385531" />
+    <state width="1567" height="345" key="GridCell.Tab.1.right" timestamp="1604929385532">
+      <screen x="65" y="23" width="1615" height="1027" />
+    </state>
+    <state width="1567" height="345" key="GridCell.Tab.1.right/65.23.1615.1027@65.23.1615.1027" timestamp="1604929385532" />
+    <state x="620" y="254" key="RollbackChangesDialog" timestamp="1604934620926">
+      <screen x="65" y="23" width="1615" height="1027" />
+    </state>
+    <state x="620" y="254" key="RollbackChangesDialog/65.23.1615.1027@65.23.1615.1027" timestamp="1604934620926" />
     <state x="622" y="254" key="RollbackChangesDialog/68.23.1612.1027@68.23.1612.1027" timestamp="1604328293230" />
-    <state x="337" y="275" width="1002" height="665" key="SettingsEditor" timestamp="1604435864424">
+    <state x="337" y="275" width="1002" height="665" key="SettingsEditor" timestamp="1605019565846">
       <screen x="68" y="23" width="1612" height="1027" />
     </state>
     <state x="787" y="482" width="1861" height="1208" key="SettingsEditor/-1440.538.1440.900/0.23.3360.1867@0.23.3360.1867" timestamp="1602799221787" />
-    <state x="360" y="118" key="SettingsEditor/65.23.1615.1027@65.23.1615.1027" timestamp="1602756593011" />
-    <state x="337" y="275" width="1002" height="665" key="SettingsEditor/68.23.1612.1027@68.23.1612.1027" timestamp="1604435864424" />
+    <state x="360" y="118" key="SettingsEditor/65.23.1615.1027@65.23.1615.1027" timestamp="1604924517954" />
+    <state x="337" y="275" width="1002" height="665" key="SettingsEditor/68.23.1612.1027@68.23.1612.1027" timestamp="1605019565846" />
     <state x="549" y="369" key="com.intellij.ide.util.TipDialog" timestamp="1604910251237">
       <screen x="68" y="23" width="1612" height="1027" />
     </state>
@@ -346,17 +568,21 @@
       <screen x="65" y="23" width="1615" height="1027" />
     </state>
     <state x="683" y="389" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/65.23.1615.1027@65.23.1615.1027" timestamp="1604642898300" />
-    <state x="521" y="293" width="855" height="550" key="find.popup" timestamp="1604670561063">
-      <screen x="65" y="23" width="1615" height="1027" />
+    <state x="523" y="293" width="853" height="486" key="find.popup" timestamp="1605102765342">
+      <screen x="68" y="23" width="1612" height="1027" />
     </state>
-    <state x="521" y="293" width="855" height="550" key="find.popup/65.23.1615.1027@65.23.1615.1027" timestamp="1604670561063" />
-    <state x="523" y="293" width="853" height="486" key="find.popup/68.23.1612.1027@68.23.1612.1027" timestamp="1604408718299" />
-    <state x="540" y="250" width="670" height="676" key="search.everywhere.popup" timestamp="1604918422239">
+    <state x="521" y="293" width="883" height="550" key="find.popup/65.23.1615.1027@65.23.1615.1027" timestamp="1604934716857" />
+    <state x="523" y="293" width="853" height="486" key="find.popup/68.23.1612.1027@68.23.1612.1027" timestamp="1605102765342" />
+    <state x="633" y="160" key="refactoring.ChangeSignatureDialog" timestamp="1605102492405">
+      <screen x="68" y="23" width="1612" height="1027" />
+    </state>
+    <state x="633" y="160" key="refactoring.ChangeSignatureDialog/68.23.1612.1027@68.23.1612.1027" timestamp="1605102492405" />
+    <state x="540" y="250" width="670" height="676" key="search.everywhere.popup" timestamp="1605103206931">
       <screen x="68" y="23" width="1612" height="1027" />
     </state>
     <state x="536" y="250" width="674" height="676" key="search.everywhere.popup/62.23.1618.1027@62.23.1618.1027" timestamp="1604661701986" />
-    <state x="538" y="250" width="672" height="676" key="search.everywhere.popup/65.23.1615.1027@65.23.1615.1027" timestamp="1604645151797" />
-    <state x="540" y="250" width="670" height="676" key="search.everywhere.popup/68.23.1612.1027@68.23.1612.1027" timestamp="1604918422239" />
+    <state x="538" y="250" width="672" height="676" key="search.everywhere.popup/65.23.1615.1027@65.23.1615.1027" timestamp="1605081616023" />
+    <state x="540" y="250" width="670" height="676" key="search.everywhere.popup/68.23.1612.1027@68.23.1612.1027" timestamp="1605103206931" />
     <state x="542" y="250" width="670" height="676" key="search.everywhere.popup/71.23.1609.1027@71.23.1609.1027" timestamp="1604411205487" />
   </component>
 </project>

@@ -7,9 +7,9 @@ package ish.oncourse.commercial.replication.services
 import com.google.inject.Inject
 import com.google.inject.name.Named
 import ish.oncourse.commercial.replication.handler.ReplicationHandler
+import ish.oncourse.commercial.replication.modules.ISoapPortLocator
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.license.LicenseService
-import ish.oncourse.server.modules.ISoapPortLocator
 import ish.oncourse.server.services.ISchedulerService
 import ish.oncourse.webservices.soap.v22.AuthFailure
 import ish.oncourse.webservices.soap.v22.ReplicationPortType

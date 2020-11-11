@@ -10,12 +10,12 @@ import groovy.transform.CompileStatic
 import ish.math.Money
 import ish.oncourse.commercial.replication.Replication
 import ish.oncourse.commercial.replication.builders.IAngelStubBuilder
+import ish.oncourse.commercial.replication.modules.ISoapPortLocator
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.v1.model.CheckoutModelDTO
 import ish.oncourse.server.api.v1.model.CheckoutValidationErrorDTO
 import ish.oncourse.server.api.v1.model.SaleTypeDTO
 import ish.oncourse.server.cayenne.Voucher
-import ish.oncourse.server.modules.ISoapPortLocator
 import ish.oncourse.webservices.util.GenericParameterEntry
 import ish.oncourse.webservices.util.GenericParametersMap
 import ish.oncourse.webservices.util.PortHelper
@@ -138,7 +138,7 @@ class WillowValidator {
             VoucherData voucherData = voucherDataList.find { it.id == voucher.id }
             if (voucherData) {
                 if (voucher.moneyVoucher) {
-                    if (!voucher.redemptionValue.equals(voucherData.redemptionValue)) {
+                    if (voucher.redemptionValue != voucherData.redemptionValue) {
                         errors << new CheckoutValidationErrorDTO(nodeId: voucher.id, propertyName: "redeemedVouchers", error: "Voucher is inconsistent with willow.")
                     }
                 } else {

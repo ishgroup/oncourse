@@ -6,7 +6,7 @@
 package ish.oncourse.commercial.replication.handler
 
 import com.google.inject.Inject
-import ish.oncourse.server.modules.ISoapPortLocator
+import ish.oncourse.commercial.replication.modules.ISoapPortLocator
 import ish.oncourse.webservices.ITransactionGroupProcessor
 import ish.oncourse.webservices.soap.v22.ReplicationFault
 import ish.oncourse.webservices.util.GenericReplicatedRecord

@@ -72,7 +72,6 @@ class ReplicationPlugin {
         binder.bind(ReplicationHandler).annotatedWith(Names.named("Outbound")).to(OutboundReplicationHandler)
         binder.bind(ReplicationHandler).annotatedWith(Names.named("Inbound")).to(InboundReplicationHandler)
         binder.bind(ReplicationHandler).annotatedWith(Names.named("Instruction")).to(InstructionHandler)
-        binder.bind(IVoucherValidationService).to(VoucherValidationService)
 
         binder.bind(IAngelStubBuilder).to(AngelStubBuilderImpl)
         binder.bind(IAngelUpdater).to(AngelUpdaterImpl)
