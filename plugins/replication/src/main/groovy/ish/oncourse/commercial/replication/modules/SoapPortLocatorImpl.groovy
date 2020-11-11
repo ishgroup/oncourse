@@ -9,6 +9,7 @@ import com.google.inject.Inject
 import com.google.inject.Singleton
 import com.google.inject.name.Named
 import groovy.transform.CompileStatic
+import ish.oncourse.commercial.replication.Replication
 import ish.oncourse.server.AngelModule
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.license.LicenseService

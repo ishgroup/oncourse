@@ -6,7 +6,9 @@
 package ish.oncourse.commercial.replication.event
 
 import com.google.inject.Inject
+import groovy.transform.CompileStatic
 import ish.math.Money
+import ish.oncourse.commercial.replication.Replication
 import ish.oncourse.commercial.replication.builders.IAngelStubBuilder
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.v1.model.CheckoutModelDTO
@@ -26,7 +28,7 @@ import org.apache.cayenne.query.SelectQuery
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
-
+@CompileStatic
 class WillowValidator {
 
     @Inject
