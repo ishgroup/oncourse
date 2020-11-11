@@ -50,11 +50,12 @@ class ReplicationPlugin {
     private static final Logger logger = LogManager.getLogger();
 
     
-    int DEBUG_REFERENCE_JOB_INTERVAL = 40
-    int PRODUCTION_REFERENCE_JOB_INTERVAL = 4 * 60 * 60
-    int DEBUG_PRIMARY_REPLICATION_INTERVAL = 30
-    int PRODUCTION_PRIMARY_REPLICATION_INTERVAL = 60
-    int DISABLED_PRIMARY_REPLICATION_INTERVAL = 60 * 60 * 24
+    static int DEBUG_REFERENCE_JOB_INTERVAL = 40
+    static int PRODUCTION_REFERENCE_JOB_INTERVAL = 4 * 60 * 60
+    static int DEBUG_PRIMARY_REPLICATION_INTERVAL = 30
+    static int PRODUCTION_PRIMARY_REPLICATION_INTERVAL = 60
+    static int DISABLED_PRIMARY_REPLICATION_INTERVAL = 60 * 60 * 24
+    static long REPLICATION_INTERVAL = 5 * 60 * 1000; //5 minutes
 
     String REFERENCE_HANDLER_JOB_ID = "referenceHandlerJob"
     String REPLICATION_JOBS_GROUP_ID = "replicationJobs"

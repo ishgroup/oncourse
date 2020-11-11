@@ -6,11 +6,12 @@ package ish.oncourse.commercial.replication.services
 
 import com.google.inject.Inject
 import com.google.inject.name.Named
+import groovy.transform.CompileStatic
+import ish.oncourse.commercial.replication.ReplicationPlugin
 import ish.oncourse.commercial.replication.handler.ReplicationHandler
 import ish.oncourse.commercial.replication.modules.ISoapPortLocator
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.license.LicenseService
-import ish.oncourse.server.services.ISchedulerService
 import ish.oncourse.webservices.soap.v22.AuthFailure
 import ish.oncourse.webservices.soap.v22.ReplicationPortType
 import org.apache.cxf.binding.soap.SoapFault
@@ -23,6 +24,7 @@ import java.net.ConnectException
 /**
  */
 @DisallowConcurrentExecution
+@CompileStatic
 class ReplicationJob implements Job {
 
     private static final Logger logger = LogManager.getLogger()
@@ -147,7 +149,7 @@ class ReplicationJob implements Job {
         if (pref.getReplicationEnabled())
         {
             def diff = Math.abs(System.currentTimeMillis() - getLastReplicationTime(context))
-            needReplicate = (diff >= ISchedulerService.REPLICATION_INTERVAL || queueService.getNumberOfTransactions() > 0)
+            needReplicate = (diff >= ReplicationPlugin.REPLICATION_INTERVAL || queueService.getNumberOfTransactions() > 0)
         }
 
         if (needReplicate)
