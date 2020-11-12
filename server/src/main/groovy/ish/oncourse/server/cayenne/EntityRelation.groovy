@@ -17,7 +17,6 @@ import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._EntityRelation
 
 import javax.annotation.Nonnull
-import java.util.Date
 
 /**
  * Entity relation describes generic link between two records in onCourse.
