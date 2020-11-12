@@ -1,5 +1,4 @@
-//apply plugin: 'com.moowork.node'
-apply plugin: 'com.github.node-gradle.node'
+apply plugin: 'com.moowork.node'
 
 node {
     version = '12.18.3'
