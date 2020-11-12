@@ -1,9 +1,0 @@
-.mde-textarea-wrapper {
-  position: relative; }
-  .mde-textarea-wrapper textarea.mde-text {
-    width: 100%;
-    border: 0;
-    padding: 10px;
-    vertical-align: top;
-    resize: vertical;
-    overflow-y: auto; }
