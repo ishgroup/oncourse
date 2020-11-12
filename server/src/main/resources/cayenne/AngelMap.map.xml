@@ -4770,6 +4770,7 @@
 		<info:property xmlns:info="http://cayenne.apache.org/schema/10/info" name="comment" value="createdBy"/>
 	</obj-relationship>
 	<obj-relationship name="membeshipDiscountRelations" source="ContactRelationType" target="DiscountMembershipRelationType" deleteRule="Deny" db-relationship-path="membeshipDiscountRelations"/>
+	<obj-relationship name="relationType" source="EntityRelation" target="EntityRelationType" deleteRule="Nullify" db-relationship-path="relationType"/>
 	<obj-relationship name="entityRelations" source="EntityRelationType" target="EntityRelation" deleteRule="Deny" db-relationship-path="entityRelations"/>
 	<obj-relationship name="discountEntityRelations" source="EntityRelationType" target="Discount" deleteRule="Deny" db-relationship-path="discountEntityRelations"/>
 	<obj-relationship name="taggedContact" source="ContactTagRelation" target="Contact" deleteRule="Nullify" db-relationship-path="taggedContact"/>
