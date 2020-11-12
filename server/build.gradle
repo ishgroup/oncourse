@@ -60,14 +60,13 @@ dependencies {
 	api ("org.apache.cxf:cxf-rt-frontend-jaxws:$cfxVersion") {
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
 	}
-
-	implementation 'javax.xml.bind:jaxb-api:2.3.0'
-	implementation 'javax.xml.ws:jaxws-api:2.3.0'
-	implementation 'javax.jws:javax.jws-api:1.1'
+	api 'javax.xml.bind:jaxb-api:2.3.0'
+	api 'javax.xml.ws:jaxws-api:2.3.0'
 
 	api "org.apache.cayenne:cayenne-lifecycle:$cayenneVersion"
 	api "org.apache.cayenne:cayenne-commitlog:$cayenneVersion"
-
+	
+	implementation 'javax.jws:javax.jws-api:1.1'
 	implementation "org.eclipse.jetty:jetty-servlet:$jettyVersion"
 
 	implementation "org.eclipse.jetty:jetty-servlets:$jettyVersion"
