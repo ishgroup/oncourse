@@ -15,7 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static ish.common.types.EntityRelationType.COURSE;
+import static ish.common.types.EntityRelationIdentifier.COURSE;
 import static ish.oncourse.model.auto._EntityRelation.*;
 import static java.lang.Boolean.TRUE;
 import static org.apache.cayenne.query.QueryCacheStrategy.LOCAL_CACHE;

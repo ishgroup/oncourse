@@ -1833,7 +1833,7 @@
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 	</obj-entity>
 	<obj-entity name="CourseCourseRelation" superEntityName="EntityRelation" className="ish.oncourse.model.CourseCourseRelation">
-		<qualifier><![CDATA[(fromEntityIdentifier = enum:ish.common.types.EntityRelationType.COURSE) and (toEntityIdentifier = enum:ish.common.types.EntityRelationType.COURSE)]]></qualifier>
+		<qualifier><![CDATA[(fromEntityIdentifier = enum:ish.common.types.EntityRelationIdentifier.COURSE) and (toEntityIdentifier = enum:ish.common.types.EntityRelationIdentifier.COURSE)]]></qualifier>
 	</obj-entity>
 	<obj-entity name="CourseCustomField" superEntityName="CustomField" className="ish.oncourse.model.CourseCustomField">
 		<qualifier><![CDATA[entityName = "Course"]]></qualifier>
@@ -2008,10 +2008,10 @@
 	<obj-entity name="EntityRelation" className="ish.oncourse.model.EntityRelation" dbEntityName="EntityRelation" superClassName="WillowCayenneObject">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="fromEntityIdentifier" type="ish.common.types.EntityRelationType" db-attribute-path="fromEntityIdentifier"/>
+		<obj-attribute name="fromEntityIdentifier" type="ish.common.types.EntityRelationIdentifier" db-attribute-path="fromEntityIdentifier"/>
 		<obj-attribute name="fromEntityWillowId" type="java.lang.Long" db-attribute-path="fromRecordId"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
-		<obj-attribute name="toEntityIdentifier" type="ish.common.types.EntityRelationType" db-attribute-path="toEntityIdentifier"/>
+		<obj-attribute name="toEntityIdentifier" type="ish.common.types.EntityRelationIdentifier" db-attribute-path="toEntityIdentifier"/>
 		<obj-attribute name="toEntityWillowId" type="java.lang.Long" db-attribute-path="toRecordId"/>
 	</obj-entity>
 	<obj-entity name="Field" className="ish.oncourse.model.Field" dbEntityName="Field" superClassName="WillowCayenneObject">
