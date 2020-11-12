@@ -240,6 +240,8 @@ paths:
     $ref: './path/preference/concession/type/api.yaml'
   /preference/contact/relation/type:
     $ref: './path/preference/contact/relation/type/api.yaml'
+  /preference/entity/relation/type:
+    $ref: './path/preference/entity/relation/type/api.yaml'
   /preference/enum:
     $ref: './path/preference/enum/api.yaml'
   /preference/field/type:
