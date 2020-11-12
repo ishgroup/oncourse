@@ -21,7 +21,7 @@ import ish.oncourse.API;
  *
  */
 @API
-public enum EntityRelationType implements DisplayableExtendedEnumeration<Integer> {
+public enum EntityRelationIdentifier implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
 	 * Database value: 1
@@ -42,7 +42,7 @@ public enum EntityRelationType implements DisplayableExtendedEnumeration<Integer
 	private String displayName;
 	private int value;
 
-	private EntityRelationType(int value, String displayName) {
+	private EntityRelationIdentifier(int value, String displayName) {
 		this.value = value;
 		this.displayName = displayName;
 	}
