@@ -1,0 +1,124 @@
+get:
+  description: Returns report record
+  operationId: getById
+  tags:
+    - PdfTemplate
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of pdf template record to fetch
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/automation/Report.yaml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: REPORT
+    errorMessage: Sorry, you have no permissions to get report. Please contact your administrator
+
+post:
+  operationId: create
+  tags:
+    - PdfTemplate
+  parameters:
+    - name: report
+      in: body
+      description: report for create
+      required: true
+      schema:
+        $ref: './def/entity/automation/Report.yaml'
+  responses:
+    '200':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: REPORT
+    errorMessage: Sorry, you have no permissions to create report. Please contact your administrator
+
+put:
+  operationId: update
+  tags:
+    - PdfTemplate
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of report record to update
+    - name: report
+      in: body
+      schema:
+        $ref: './def/entity/automation/Report.yaml'
+      required: true
+      description: report for update
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: REPORT
+    errorMessage: Sorry, you have no permissions to edit report template. Please contact your administrator
+
+delete:
+  operationId: remove
+  tags:
+    - PdfTemplate
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of report record to fetch
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: delete
+    keyCode: REPORT
+    errorMessage: Sorry, you have no permissions to delete report. Please contact your administrator
+
+patch:
+  operationId: updateInternal
+  tags:
+    - PdfTemplate
+  description: update built-it reports, enable/disable or change report options, do not handle othe options
+  parameters:
+    - name: report
+      in: body
+      description: report for patch
+      required: true
+      schema:
+        $ref: './def/entity/automation/Report.yaml'
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: REPORT
+    errorMessage: Sorry, you have no permissions to update report. Please contact your administrator

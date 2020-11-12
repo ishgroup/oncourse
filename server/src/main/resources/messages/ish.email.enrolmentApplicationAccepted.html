@@ -1,0 +1,51 @@
+${render(headerKeycode)}
+<table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+    <tbody>
+    <tr>
+        <td class="ish_content_container center" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 10px;padding-right: 17px;padding-bottom: 10px;padding-left: 17px;" align="left">
+            <div class="ish_text_container">
+                <h2 style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size: 18px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;font-weight: normal;font-style: normal;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 125%;margin-top: 0;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;">
+                    Approval to enrol in ${application.course.name}
+                </h2>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+    <tbody>
+    <tr>
+        <td class="ish_content_container left" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 0;padding-right: 17px;padding-bottom: 10px;padding-left: 17px; vertical-align: top;" valign="top" align="left">
+            <div class="ish_text_container" style="word-break: break-word;">
+                <p class="align-left" style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top; border: 0;text-align: left;">
+                    Dear ${application.student.contact.firstName}, <br />
+                    Your application for enrolment in <a style="color: #0084b4;color: #0084b4 !important;background-color: #ffffff;text-decoration: none;border: 0;" href="${Preferences.get("web.url")}/course/${application.course.code}" target="_blank">${application.course.name}</a> has been successful.
+                </p>
+                <% if (application.feeOverride) { %>
+                <p class="align-left" style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top; border: 0;text-align: left;">
+                    Your eligibility has been assessed and the fee applicable to your enrolment is ${application.feeOverride}.
+                </p>
+                <% } %>
+                <% if (application.reason) { %>
+                <p class="align-left" style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: .2em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top; border: 0;text-align: left;">
+                    Reason:
+                </p>
+                <pre style="white-space: pre-wrap !important; white-space: -moz-pre-wrap !important; white-space: -pre-wrap !important; white-space: -o-pre-wrap !important; word-wrap: normal !important; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top; border: 0;text-align: left;">${application.reason}</pre>
+                <% } %>
+                <p class="align-left" style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top; border: 0;text-align: left;">
+                    To accept this position, please go to <a style="color: #0084b4;color: #0084b4 !important;background-color: #ffffff;text-decoration: none;border: 0;" href="${Preferences.get("web.url")}/course/${application.course.code}?student=${application.student.contact.uniqueCode}" target="_blank">${Preferences.get("web.url")}/course/${application.course.code}?student=${application.student.contact.uniqueCode}</a> and complete the online enrolment process.
+                </p>
+                <% if (application.enrolBy) { %>
+                <p class="align-left" style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top; border: 0;text-align: left;">
+                    To accept this position, your enrolment must be completed before midnight on ${application.enrolBy.format("EEEE d MMMM yyyy")}
+                </p>
+                <% } %>
+                <p class="align-left" style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top; border: 0;text-align: left;">
+                    If you wish to withdraw your application, we would appreciate you notifying us by phone or email.
+                </p>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+${render(footerKeycode)}

@@ -1,0 +1,64 @@
+get:
+  description: Returns courseClass tutor items
+  operationId: get
+  tags:
+    - Attendance
+  parameters:
+    - name: courseClassId
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of class
+  responses:
+    '200':
+      description: Success response
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/courseClass/StudentAttendance.yaml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: CLASS
+    errorMessage: Sorry, you have no permissions to get student attendance. Please contact your administrator
+    license:
+      code: license.attendance
+      errorMessage: You have not license for attendances
+
+post:
+  description: Submit courseClass tutor items
+  operationId: update
+  tags:
+    - Attendance
+  parameters:
+    - name: courseClassId
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of class
+    - name: studentAttendance
+      in: body
+      description: updated student attendance items
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/courseClass/StudentAttendance.yaml'
+  responses:
+    '200':
+      description: Success response
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: CLASS
+    errorMessage: Sorry, you have no permissions to edit student attendance. Please contact your administrator
+    license:
+      code: license.attendance
+      errorMessage: You have not license for attendances

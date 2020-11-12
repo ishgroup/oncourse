@@ -1,0 +1,34 @@
+get:
+  operationId: getColumnSettings
+  description: Get column view settings
+  tags:
+  - Preference
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        $ref: './def/entity/ColumnWidth.yaml'
+    default:
+      description: Unexpected error
+
+post:
+  operationId: updateColumnSettings
+  description: Update column view settings
+  tags:
+  - Preference
+  parameters:
+  - name: settings
+    in: body
+    description: Preference settings for update
+    required: true
+    schema:
+      $ref: './def/entity/ColumnWidth.yaml'
+  responses:
+    '200':
+      description: Success response.
+    '400':
+      description: Bad request error.
+      schema:
+        $ref: './def/entity/ValidationError.yaml'
+    default:
+      description: Unexpected error

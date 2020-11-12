@@ -1,0 +1,92 @@
+get:
+  operationId: get
+  description: get a PriorLearning
+  tags:
+    - PriorLearning
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/PriorLearning.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: CONTACT
+    errorMessage: Sorry, you have no permissions to get contacts prior learning. Please contact your administrator.
+
+post:
+  operationId: create
+  description: Create new Prior learning
+  tags:
+    - PriorLearning
+  parameters:
+    - name: priorLearning
+      in: body
+      description: Prior learning defenition which will be added
+      required: true
+      schema:
+        $ref: './def/entity/PriorLearning.yaml'
+  responses:
+    '200':
+      description: Prior learning successfully created
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: CONTACT
+    errorMessage: Sorry, you have no permissions to create contacts prior learning. Please contact your administrator
+
+put:
+  operationId: update
+  description: Update an existing prior learning
+  tags:
+    - PriorLearning
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+    - name: priorLearning
+      in: body
+      description: Prior learning defenition which will be added
+      required: true
+      schema:
+        $ref: './def/entity/PriorLearning.yaml'
+  responses:
+    '200':
+      description: Prior learning item successfully updated
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: CONTACT
+    errorMessage: Sorry, you have no permissions to update contacts prior learning. Please contact your administrator.
+
+delete:
+  operationId: remove
+  description: Update an existing prior learning
+  tags:
+    - PriorLearning
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+  responses:
+    '200':
+      description: Success response.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: CONTACT
+    errorMessage: Sorry, you have no permissions to delete contacts prior learning. Please contact your administrator

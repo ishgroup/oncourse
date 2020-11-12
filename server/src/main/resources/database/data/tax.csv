@@ -1,0 +1,4 @@
+"createdOn","description","id","isGSTTaxType","modifiedOn","payableToSupplierAccountId","receivableFromStudentAccountId","taxCode","taxrate","willowId","createdById"
+"2012-06-20T10:22:44","Australian GST","1","1","2012-06-20T10:22:44","3","6","GST","0.1000","NULL","NULL"
+"2012-06-20T10:22:44","GST exempt","2","0","2012-06-20T10:22:44","3","6","N","0.0000","NULL","NULL"
+"2012-06-20T10:22:44","non taxable supply","3","0","2012-06-20T10:22:44","3","6","*","0.0000","NULL","NULL"

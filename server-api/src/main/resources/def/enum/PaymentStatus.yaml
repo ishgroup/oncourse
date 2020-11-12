@@ -1,0 +1,10 @@
+type: string
+enum:
+  - Not processed
+  - Queued
+  - In transaction
+  - Success
+  - Failed
+  - Card declined
+  - Rejected - no places available
+  - Credit card details required

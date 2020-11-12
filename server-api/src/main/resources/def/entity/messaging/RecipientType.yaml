@@ -1,0 +1,9 @@
+type: object
+description: array size of contacts to send, suppressed to messaging, without destination
+properties:
+  sendSize:
+    type: number
+  suppressToSendSize:
+    type: number
+  withoutDestinationSize:
+    type: number

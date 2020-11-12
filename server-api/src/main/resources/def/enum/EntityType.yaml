@@ -1,0 +1,10 @@
+type: string
+description: Avalible Custom field entity Type
+enum:
+  - Enrolment
+  - Application
+  - Contact
+  - Course
+  - CourseClass
+  - WaitingList
+  - Survey

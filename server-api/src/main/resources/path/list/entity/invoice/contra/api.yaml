@@ -1,0 +1,31 @@
+post:
+  operationId: contraInvoice
+  description: Update an existing invoice
+  tags:
+    - Invoice
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+    - name: invoicesToPay
+      in: body
+      required: true
+      schema:
+        type: array
+        items:
+          type: integer
+          format: int64
+  responses:
+    '200':
+      description: Operation successful
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: INVOICE_CREDIT
+    errorMessage: Sorry, you have no permissions to update credit note. Please contact your administrator
+
+
+

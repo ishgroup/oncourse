@@ -1,0 +1,21 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: true
+  isoCodeAlpha3:
+    type: string
+    description: International Organization for Standardization three letter country code
+    example: AUS
+  isoCodeNumeric:
+    type: integer
+    description: International Organization for Standardization three number country code
+    example: 036
+  name:
+    type: string
+    example: Australia
+  saccCode:
+    type: integer
+    description: Standard Australian Classification of Countries code
+    example: 1101

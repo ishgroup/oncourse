@@ -1,0 +1,4 @@
+Transaction date,Account code,Account description,Account type,Amount,Source,Invoice number,Payment type,Contact name,id,createdOn
+1-2-2013,01.24.2801.000/NV1CB0P01,Test debtors account,asset,10.00,Invoice,1,,firstName3 lastName,1,1-1-2013 00:00:00
+1-2-2013,01.24.2801.000/NV1CB0P01,Test debtors account,asset,20.00,Payment in,,Credit card,firstName1 lastName,2,1-1-2013 00:00:00
+1-2-2013,01.24.2801.000/NV1CB0P01,Test debtors account,asset,-20.00,Invoice,1,,firstName3 lastName,3,1-1-2013 00:00:00

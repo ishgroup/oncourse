@@ -1,0 +1,13 @@
+put:
+  operationId: logout
+  description: log out action
+  tags:
+    - Authentication
+  responses:
+    '200':
+      schema:
+        type: string
+      default:
+        description: Unexpected error
+  x-permission:
+    keyCode: UNDEFINED

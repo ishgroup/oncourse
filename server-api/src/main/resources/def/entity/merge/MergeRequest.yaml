@@ -1,0 +1,18 @@
+type: object
+properties:
+  contactA:
+    type: integer
+    format: int64
+    description: contact A id for merge
+    example: 27861
+  contactB:
+    type: integer
+    format: int64
+    description: contact B id for merge
+    example: 27862
+  data:
+    type: object
+    additionalProperties:
+      type: string
+    description: map with property keys and choosed values, use symbols 'A' (contact A field choosed) or 'B' (contact B) for value
+    example: 'Contact.firstName:A'

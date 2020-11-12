@@ -1,0 +1,37 @@
+type: object
+properties:
+  flavour:
+    $ref: '../enum/AvetmissExportFlavour.yaml'
+    required: true
+    example: NCVER (Standard AVETMISS)
+  fee:
+    type: array
+    items:
+      $ref: '../enum/AvetmissExportFee.yaml'
+    example: [ Fee for service VET (non-funded), Non VET ]
+  outcomesStart:
+    type: string
+    format: date
+    example: 2019-01-01
+  outcomesEnd:
+    type: string
+    format: date
+    example: 2019-12-31
+  includeLinkedOutcomes:
+    type: boolean
+    example: True
+  fundingContracts:
+    type: array
+    items:
+      type: integer
+      format: int64
+  classIds:
+    type: array
+    items:
+      type: integer
+      format: int64
+  enrolmentIds:
+    type: array
+    items:
+      type: integer
+      format: int64

@@ -1,0 +1,62 @@
+${render(headerKeycode)}
+<table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+    <tbody>
+    <tr>
+        <td align="left" class="ish_content_container" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 10px;padding-right: 17px;padding-bottom: 10px;padding-left: 17px; text-align: left;">
+            <div class="ish_text_container">
+                <h2 style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size: 18px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;font-weight: normal;font-style: normal;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 125%;margin-top: 0;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;">
+                    Receipt of Payment
+                </h2>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+    <tbody>
+    <tr>
+        <td style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 0;padding-right: 17px;padding-bottom: 10px;padding-left: 17px; vertial-align: top; width: 320px;" width="320" valign="top" align="left">
+            <table width="370" align="left" cellpadding="0" cellspacing="0" border="0" class="head-detail-left" style="mso-table-lspace:0pt;mso-table-rspace:0pt; width: 100%; max-width: 370px;">
+                <tbody>
+                <tr>
+                    <td width="120" class="ish_content_container" valign="top" align="left" style="padding: 6px 4px 6px 0px; width: 120px;">
+                        <div class="ish_text_container">
+                            <p class="align-right" style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size: 13px;color: #7f7f7f;color: #7f7f7f !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                                Payment type<br>
+                                Amount<br>
+                                Received on<br>
+                                Paid by
+                            </p>
+                        </div>
+                    </td>
+                    <td width="300" class="ish_content_container left" valign="top" align="left" style="padding: 6px 4px; width: 300px;">
+                        <div class="ish_text_container">
+                            <p class="align-left" style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size: 13px;color: #000000;color: #000000 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                                ${paymentIn.type}<br />
+                                ${paymentIn.amount}<br />
+                                ${paymentIn.createdOn.format("EEEE d MMMM yyyy")}<br />
+                                ${paymentIn.contact.fullName}
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+    <tbody>
+    <tr>
+        <td class="ish_content_container" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 0;padding-right: 17px;padding-bottom: 10px;padding-left: 17px; vertical-align: top;" valign="top" align="left">
+            <div class="ish_text_container">
+                <p style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size: 15px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                    Thank you for your payment.
+                </p>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+${render(footerKeycode)}

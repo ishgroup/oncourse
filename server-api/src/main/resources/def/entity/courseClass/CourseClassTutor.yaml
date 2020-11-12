@@ -1,0 +1,33 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: true
+  classId:
+    type: integer
+    format: int64
+    required: true
+  contactId:
+    type: integer
+    format: int64
+    required: true
+  roleId:
+    type: integer
+    format: int64
+    required: true
+  tutorName:
+    type: string
+  roleName:
+    type: string
+  confirmedOn:
+    type: string
+    format: date
+  isInPublicity:
+    type: boolean
+
+
+
+
+
+

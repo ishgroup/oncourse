@@ -1,0 +1,46 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: true
+    description: Unique Payment Type identifier
+  name:
+    required: true
+    type: string
+    description: Payment type name
+  systemType:
+    type: boolean
+    description: Is payment type internal
+  active:
+    required: true
+    type: boolean
+    description: Is payment type active
+  reconcilable:
+    required: true
+    type: boolean
+    description: Is payment type reconcilable
+  bankedAuto:
+    required: true
+    type: boolean
+    description: Is payment type banked automatically
+  accountId:
+    type: integer
+    format: int64
+    description: Account identifier
+  undepositAccountId:
+    required: true
+    type: integer
+    format: int64
+    description: Undeposited funds account identifier
+  type:
+    required: true
+    $ref: '../enum/PayType.yaml'
+  created:
+    type: string
+    format: date-time
+    description: date and time when record was created
+  modified:
+    type: string
+    format: date-time
+    description: date and time when record was modified

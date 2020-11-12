@@ -1,0 +1,94 @@
+get:
+  operationId: get
+  description: get a Module
+  tags:
+    - Module
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+  responses:
+    '200':
+      description: Success response
+      schema:
+        type: object
+        items:
+          $ref: './def/entity/Module.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: NTIS_DATA
+    errorMessage: Sorry, you have no permissions to get module. Please contact your administrator
+
+post:
+  operationId: create
+  description: create a new Module
+  tags:
+    - Module
+  parameters:
+    - name: module
+      in: body
+      description: Module defenition which will be added
+      required: true
+      schema:
+        $ref: './def/entity/Module.yaml'
+  responses:
+    '200':
+      description: Module item successfully updated
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: NTIS_DATA
+    errorMessage: Sorry, you have no permissions to create module. Please contact your administrator
+
+put:
+  operationId: update
+  description: Update an existing module
+  tags:
+    - Module
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+    - name: module
+      in: body
+      description: Module defenition which will be added
+      required: true
+      schema:
+        $ref: './def/entity/Module.yaml'
+  responses:
+    '200':
+      description: Module item successfully updated
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: NTIS_DATA
+    errorMessage: Sorry, you have no permissions to update module. Please contact your administrator
+
+delete:
+  operationId: remove
+  description: Remove an existing module
+  tags:
+    - Module
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+  responses:
+    '200':
+      description: Success response.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: delete
+    keyCode: NTIS_DATA
+    errorMessage: Sorry, you have no permissions to delete module. Please contact your administrator

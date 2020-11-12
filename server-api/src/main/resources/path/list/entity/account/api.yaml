@@ -1,0 +1,100 @@
+get:
+  description: Returns account record
+  operationId: get
+  tags:
+    - Account
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of account record to fetch
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/Account.yaml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: ACCOUNT
+    errorMessage: Sorry, you have no permissions to get account. Please contact your administrator
+
+post:
+  operationId: create
+  tags:
+    - Account
+  parameters:
+    - name: account
+      in: body
+      description: account for create
+      required: true
+      schema:
+        $ref: './def/entity/Account.yaml'
+  responses:
+    '200':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: ACCOUNT
+    errorMessage: Sorry, you have no permissions to create account. Please contact your administrator
+
+put:
+  operationId: update
+  tags:
+    - Account
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of account record to fetch
+    - name: account
+      in: body
+      schema:
+        $ref: './def/entity/Account.yaml'
+      required: true
+      description: account for update
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: ACCOUNT
+    errorMessage: Sorry, you have no permissions to edit account. Please contact your administrator
+
+delete:
+  operationId: remove
+  tags:
+    - Account
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of account record to fetch
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: delete
+    keyCode: ACCOUNT
+    errorMessage: Sorry, you have no permissions to delete account. Please contact your administrator

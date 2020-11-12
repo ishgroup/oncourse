@@ -1,0 +1,9 @@
+type: string
+description: List of repeat types
+enum:
+  - none
+  - hour
+  - day
+  - week
+  - month
+  - year

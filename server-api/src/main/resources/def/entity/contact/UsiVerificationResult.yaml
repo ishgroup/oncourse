@@ -1,0 +1,8 @@
+type: object
+properties:
+  errorMessage:
+    type: string
+  verifyStatus:
+    $ref: './UsiVerificationStatus.yaml'
+
+

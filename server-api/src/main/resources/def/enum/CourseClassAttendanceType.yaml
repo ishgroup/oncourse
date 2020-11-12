@@ -1,0 +1,7 @@
+type: string
+description: List of course attendance types
+enum:
+  - OUA and non-higher degree research student use only
+  - Full-time attendance
+  - Part-time attendance
+  - No information

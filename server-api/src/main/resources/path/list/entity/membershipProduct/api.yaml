@@ -1,0 +1,77 @@
+get:
+  description: Returns membership product record
+  operationId: get
+  tags:
+    - MembershipProduct
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of membership product record to fetch
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/membershipProduct/MembershipProduct.yaml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: MEMBERSHIP
+    errorMessage: Sorry, you have no permissions to get membership product. Please contact your administrator
+
+post:
+  operationId: create
+  tags:
+    - MembershipProduct
+  parameters:
+    - name: membershipProduct
+      in: body
+      description: membership product for create
+      required: true
+      schema:
+        $ref: './def/entity/membershipProduct/MembershipProduct.yaml'
+  responses:
+    '200':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: MEMBERSHIP
+    errorMessage: Sorry, you have no permissions to create membership product. Please contact your administrator
+
+put:
+  operationId: update
+  tags:
+    - MembershipProduct
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of membership product record to fetch
+    - name: membershipProduct
+      in: body
+      schema:
+        $ref: './def/entity/membershipProduct/MembershipProduct.yaml'
+      required: true
+      description: membership product for update
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: MEMBERSHIP
+    errorMessage: Sorry, you have no permissions to edit membership product. Please contact your administrator

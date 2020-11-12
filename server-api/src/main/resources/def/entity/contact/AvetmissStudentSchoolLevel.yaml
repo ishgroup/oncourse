@@ -1,0 +1,10 @@
+type: string
+description: A set of values for describing student's school level.
+enum:
+  - Not stated
+  - Did not go to school
+  - Year 8 or below
+  - Year 9
+  - Year 10
+  - Year 11
+  - Year 12

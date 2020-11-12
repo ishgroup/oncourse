@@ -1,0 +1,36 @@
+type: object
+properties:
+  classIds:
+    type: array
+    items:
+      type: integer
+      format: int64
+      required: true
+  courseId:
+    type: integer
+    format: int64
+    required: false
+  daysTo:
+    type: integer
+  copyTutors:
+    type: boolean
+  copyTrainingPlans:
+    type: boolean
+  applyDiscounts:
+    type: boolean
+  copyCosts:
+    type: boolean
+  classCost:
+    $ref: 'ClassCost.yaml'
+  copySitesAndRooms:
+    type: boolean
+  copyPayableTimeForSessions:
+    type: boolean
+  copyVetData:
+    type: boolean
+  copyNotes:
+    type: boolean
+  copyAssessments:
+    type: boolean
+  copyOnlyMandatoryTags:
+    type: boolean

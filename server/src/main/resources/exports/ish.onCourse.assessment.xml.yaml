@@ -1,0 +1,5 @@
+keyCode: ish.onCourse.assessment.xml
+entityClass: Assessment
+body: ish.onCourse.assessment.xml.groovy
+name: Assessment XML export
+outputType: xml

@@ -1,0 +1,83 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: true
+  name:
+    type: string
+  discountType:
+    $ref: '../../enum/DiscountType.yaml'
+  rounding:
+    $ref: '../../enum/MoneyRounding.yaml'
+  discountValue:
+    type: number
+  discountPercent:
+    type: number
+  discountMin:
+    type: number
+  discountMax:
+    type: number
+  cosAccount:
+    type: integer
+    format: int64
+  predictedStudentsPercentage:
+    type: number
+  availableOnWeb:
+    type: boolean
+  code:
+    type: string
+  validFrom:
+    type: string
+    format: date
+  validFromOffset:
+    type: integer
+  validTo:
+    type: string
+    format: date
+  validToOffset:
+    type: integer
+  hideOnWeb:
+    type: boolean
+  description:
+    type: string
+  studentEnrolledWithinDays:
+    type: integer
+  studentAgeUnder:
+    type: boolean
+  studentAge:
+    type: integer
+  studentPostcode:
+    type: string
+  discountConcessionTypes:
+    type: array
+    items:
+      $ref: '../ConcessionType.yaml'
+  discountMemberships:
+    type: array
+    items:
+      $ref: './DiscountMembership.yaml'
+  discountCourseClasses:
+    type: array
+    items:
+      $ref: '../Sale.yaml'
+  addByDefault:
+    type: boolean
+  minEnrolments:
+    type: integer
+  minValue:
+    type: number
+  corporatePassDiscounts:
+    type: array
+    items:
+      $ref: './DiscountCorporatePass.yaml'
+  createdOn:
+    type: string
+    format: date-time
+  modifiedOn:
+    type: string
+    format: date-time
+  limitPreviousEnrolment:
+    type: boolean
+    description: Apply discount if user already has success enrolments on the same course
+    required: true

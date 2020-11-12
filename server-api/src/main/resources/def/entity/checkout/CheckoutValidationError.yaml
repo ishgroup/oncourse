@@ -1,0 +1,22 @@
+type: object
+properties:
+  nodeId:
+    type: integer
+    format: int64
+    required: false
+    example: 200
+    description: Unique contact id
+  itemId:
+    type: integer
+    format: int64
+    required: false
+    example: 200
+    description: Unique product id
+  itemType:
+    $ref: '../../enum/SaleType.yaml'
+  propertyName:
+    type: string
+    require: false
+  error:
+    type: string
+    require: true

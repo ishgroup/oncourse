@@ -1,0 +1,11 @@
+type: object
+properties:
+  tagIds:
+    type: array
+    items:
+      type: integer
+      format: int64
+  entity:
+    type: string
+  path:
+    type: string

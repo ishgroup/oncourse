@@ -1,0 +1,5 @@
+Thank you for purchasing ${voucher.voucherProduct.name} from ${Preferences.get("college.name")}.
+
+To redeem this voucher, enter this voucher code ${voucher.code} during enrolment. The voucher is available for immediate redemption at ${Preferences.get("web.url")}
+
+This voucher will expire on ${voucher.expiryDate}.

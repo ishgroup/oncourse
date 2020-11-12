@@ -1,0 +1,58 @@
+get:
+  operationId: get
+  description: retrieves print pdf report results
+  tags:
+    - pdf
+  parameters:
+    - name: entityName
+      description: Parameter which used for AUTHORIZATION and PERMISSIONS calculating, entityName is reperesentation of KeyCode
+      in: query
+      type: string
+      required: true
+    - name: processId
+      in: path
+      type: string
+      required: true
+      description: Unique identifier of the process
+  produces:
+    - application/pdf
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: string
+        format: byte
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: print
+    keyCode: LAZY/entityName
+    errorMessage: Sorry, you have no permissions to get print result. Please contact your administrator
+
+post:
+  operationId: execute
+  description: execute a pdf print report, collects data and prints a pdf
+  tags:
+    - pdf
+  parameters:
+    - name: entityName
+      description: Parameter which used for AUTHORIZATION and PERMISSIONS calculating, entityName is reperesentation of KeyCode
+      in: query
+      type: string
+      required: true
+    - name: print request
+      in: body
+      description: Print settings
+      required: true
+      schema:
+        $ref: './def/entity/share/PrintRequest.yaml'
+  responses:
+    '200':
+      schema:
+        type: string
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: print
+    keyCode: LAZY/entityName
+    errorMessage: Sorry, you have no permissions to do prints. Please contact your administrator

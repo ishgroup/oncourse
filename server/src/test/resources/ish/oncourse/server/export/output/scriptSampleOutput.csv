@@ -1,0 +1,1242 @@
+name,script,modifiedOn,createdOn,enabled,trigger type,cron schedule,review date,entity event type,description,system event type
+send_invoice,"def run(args) {
+   def invoice = args.entity
+    if (invoice.confirmationStatus == ConfirmationStatus.NOT_SENT) {
+     def m = Email.create(""Tax Invoice"")
+     m.bind(invoice: invoice)
+     m.to(invoice.contact)
+      m.send()
+      invoice.setConfirmationStatus(ConfirmationStatus.SENT)
+     args.context.commitChanges()
+   }
+ }",,,true,ENTITY_EVENT,,Invoice,CREATE,,
+send_enrolment,"def run(args) {
+   def enrolment = args.entity
+    if (enrolment.status == EnrolmentStatus.SUCCESS && enrolment.confirmationStatus == ConfirmationStatus.NOT_SENT) {
+     def m = Email.create(""Enrolment Confirmation"")
+     m.bind(enrolment: enrolment)
+     m.to(enrolment.student.contact)
+      m.send()
+      enrolment.setConfirmationStatus(ConfirmationStatus.SENT)
+     args.context.commitChanges()
+   }
+ }",,,true,ENTITY_EVENT,,Enrolment,CREATE_OR_UPDATE,,
+mailchimp unsubscribe,"def run(args) {
+	def tagRelation = args.entity
+
+	if (getIntegration(tagRelation.tag.name) && NodeSpecialType.MAILING_LISTS.equals(tagRelation.tag?.parentTag?.specialType) && tagRelation.taggedContact.email) {
+		mailchimp {
+			name tagRelation.tag.name
+			action ""unsubscribe""
+			email tagRelation.taggedContact.email
+		}
+	}
+}
+",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,ENTITY_EVENT,,ContactTagRelation,REMOVE,Unsubscribe contact from a mailchimp list,
+SurveyGizmo send invite on enrolment,"import ish.integrations.*
+
+def run(args) {
+	def enrolment = args.value
+
+	ObjectSelect.query(Integration).where(Integration.TYPE.eq(IntegrationType.SURVEYGIZMO))
+			.select(args.context).findAll { integration ->
+		integration.getProperty(IntegrationsConfiguration.SURVEYGIZMO_SEND_ON_ENROLMENT_SUCCESS)?.value?.toBoolean()
+	}.each { integration ->
+		def tag = integration.getProperty(IntegrationsConfiguration.SURVEYGIZMO_COURSE_TAG)?.value?.trim()
+		if (tag == null	|| enrolment.courseClass.course.hasTag(tag)) {
+			surveyGizmo {
+				name integration.name
+				template ""survey invitation""
+				reply preference.email.from
+				contact enrolment.student.contact
+			}
+		}
+	}
+}
+",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,ONCOURSE_EVENT,,,,Send SurveyGizmo invite upon enrolment,ENROLMENT_SUCCESSFUL
+send product purchased email,"def run(args) {
+    def article = args.entity
+
+    if (PaymentSource.SOURCE_WEB.equals(article.invoiceLine.invoice.source)) {
+        email {
+            to preference.email.admin
+            from preference.email.admin
+            subject ""${article.product.name} purchased""
+            content ""Hi \n\n${article.contact.fullName} has just purchased ${article.product.name} on the web \n\nThis is an automated notification from onCourse""
+        }
+    }
+}",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,true,ENTITY_EVENT,,Article,CREATE,email notification when someone purchases a product though the onCourse website,
+send application decision,"def run(args) {
+  def application = args.entity
+
+  if (application.confirmationStatus == ConfirmationStatus.NOT_SENT) {
+    def m = null
+
+    if (application.status == ApplicationStatus.OFFERED) {
+      m = Email.create(""Enrolment application accepted"")
+    } else if (application.status == ApplicationStatus.REJECTED) {
+      m = Email.create(""Enrolment application rejected"")
+    }
+
+    if (m) {
+      m.bind(application: application)
+      m.to(application.student.contact)
+
+      m.send()
+
+      application.setConfirmationStatus(ConfirmationStatus.SENT)
+      args.context.commitChanges()
+    }
+  }
+}",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,ENTITY_EVENT,,Application,CREATE_OR_UPDATE,Send an email to the student about whether their application has been offered or rejected,
+SurveyMonkey send invite on enrolment completion,"import ish.integrations.*
+
+def run(args) {
+	def yesterdayStart = new Date() - 1
+	yesterdayStart.set(hourOfDay: 0, minute: 0, second: 0, millisecond: 0)
+
+	def yesterdayEnd = new Date()
+	yesterdayEnd.set(hourOfDay: 0, minute: 0, second: 0, millisecond: 0)
+
+	def enrolmentsJustEnded = ObjectSelect.query(Enrolment)
+			.where(Enrolment.COURSE_CLASS.dot(CourseClass.END_DATE_TIME).between(yesterdayStart, yesterdayEnd)).select(args.context)
+
+	ObjectSelect.query(Integration).where(Integration.TYPE.eq(IntegrationType.SURVEYMONKEY))
+			.select(args.context).findAll { integration ->
+		integration.getProperty(IntegrationsConfiguration.SURVEYMONKEY_SEND_ON_ENROLMENT_COMPLETION)?.value?.toBoolean()
+	}.each { integration ->
+		def tag = integration.getProperty(IntegrationsConfiguration.SURVEYMONKEY_COURSE_TAG)?.value?.trim()
+
+		enrolmentsJustEnded.each { enrolment ->
+			if (tag == null	|| enrolment.courseClass.course.hasTag(tag)) {
+				surveyMonkey {
+					name integration.name
+					contact enrolment.student.contact
+					template ""survey invitation""
+					reply preference.email.from
+				}
+			}
+		}
+	}
+}",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,CRON,0 0 9 * * ?,,,Send SurveyMonkey survey invite upon enrolment completion,
+send class confirmed,"def run(args) {
+    List<CourseClass> classes = ObjectSelect.query(CourseClass)
+            .select(args.context)
+
+    //to change profit condition of class confirm, just set 'expectedProfit' with value you want. $500 is the default
+    def expectedProfit = 500
+
+    for (CourseClass courseClass : classes) {
+        //conditions to send 'Class Confirmed' messages to students
+        if (courseClass.getSuccessAndQueuedEnrolments().size() >= courseClass.getMinimumPlaces() && courseClass.actualTotalProfit >= expectedProfit) {
+            courseClass.getSuccessAndQueuedEnrolments().each { e ->
+                email {
+                    template ""Class Confirmed""
+                    key ""send-class-confirmed"", courseClass
+                    keyCollision ""drop""
+                    to e.student.contact
+                    bindings courseClass: courseClass, contact: e.student.contact
+                }
+            }
+        }
+        //send notification to admin
+        else {
+            Message lastStudentMessage = ObjectSelect.query(Message.class)
+                .where(Message.CREATOR_KEY.eq(MessageUtils.generateCreatorKey(""send-class-confirmed"", courseClass)))
+                .orderBy(Message.ID.desc())
+                .selectFirst(args.context)
+
+            if (lastStudentMessage){
+
+                //Attention! Set your own 'prefix'
+                String prefix = ""class no viable "" + preference.email.from
+                String messageUniqueKey = MessageUtils.generateCreatorKey(prefix, courseClass)
+                Message lastAdminMessage = ObjectSelect.query(Message.class)
+                    .where(Message.CREATOR_KEY.eq(messageUniqueKey))
+                    .orderBy(Message.ID.desc())
+                    .selectFirst(args.context)
+
+                if (!lastAdminMessage || lastAdminMessage.getCreatedOn() < lastStudentMessage.getCreatedOn()) {
+                    email {
+
+                        from preference.email.from
+                        to preference.email.admin
+                        subject ""Confirmed class now below class minimum""
+                        key messageUniqueKey
+                        content ""Due to enrolment cancellations or other class changes ${courseClass.code} ${courseClass.course.name}, is no longer viable. It has already been confirmed as running via emails to the students. Please investigate. ""
+                    }
+                }
+            }
+        }
+    }
+}",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,CRON,0 0 20 1/1 * ? *,,,Send an email to students when course class is confirmed,
+send payment receipt,"def run(args) {
+  def paymentIn = args.entity
+
+  if (paymentIn.status == PaymentStatus.SUCCESS && paymentIn.confirmationStatus == ConfirmationStatus.NOT_SENT && !Money.ZERO.equals(paymentIn.amount)) {
+    email {
+      template ""Payment Receipt""
+      bindings paymentIn: paymentIn
+      to paymentIn.payer
+    }
+
+    paymentIn.setConfirmationStatus(ConfirmationStatus.SENT)
+    args.context.commitChanges()
+  }
+}",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,true,ENTITY_EVENT,,PaymentIn,CREATE_OR_UPDATE,Send a payment receipt email to the payer,
+Synchronise availability (enrolment),"def run(args) {
+	def Enrolment enrolment = args.value
+
+	if (enrolment.courseClass.sessionsCount == 1 && enrolment.courseClass.startDateTime != null &&
+			enrolment.courseClass.endDateTime != null && !enrolment.courseClass.tutorRoles.isEmpty()) {
+
+		def classes = ObjectSelect.query(CourseClass)
+				.where(CourseClass.START_DATE_TIME.isNotNull()).and(CourseClass.START_DATE_TIME.lt(enrolment.courseClass.endDateTime))
+				.and(CourseClass.END_DATE_TIME.isNotNull()).and(CourseClass.END_DATE_TIME.gt(enrolment.courseClass.startDateTime))
+				.and(CourseClass.ROOM.eq(enrolment.courseClass.room))
+				.and(CourseClass.SESSIONS_COUNT.eq(1))
+				.and(CourseClass.ID.ne(enrolment.courseClass.id)).select(args.context)
+				.findAll { cc -> cc.tutorRoles.collect { tr -> tr.tutor }
+				.contains(enrolment.courseClass.tutorRoles.collect { tr -> tr.tutor }.get(0)) }
+
+		classes.each { cc -> cc.maximumPlaces = cc.maximumPlaces - 1 }
+
+		args.context.commitChanges()
+	}
+}
+",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,ONCOURSE_EVENT,,,,"This script finds all single session classes taught by the same tutor in the same room with overlapping times and keeps the places available in sync. For each enrolment in Class A, the maximum available places in Class B is reduced by one. This is useful if one class is a subset of another (eg. a refresher First Aid class where students need only come to the second half of the regular First Aid class). If you enable this script, you'll also want to enable 'Synchronise availability (cancellation)'",ENROLMENT_SUCCESSFUL
+send class cancellation,"import groovy.time.TimeCategory
+
+
+def run(args) {
+    def courseClass = args.entity
+
+	def last5Mins
+	use( TimeCategory ) {
+		last5Mins = new Date() - 5.minutes
+	}
+
+	def cancelledEnrolments = Enrolment.STATUS.in(EnrolmentStatus.CANCELLED, EnrolmentStatus.REFUNDED).andExp(Enrolment.MODIFIED_ON.gte(last5Mins)).filterObjects(courseClass.getEnrolments())
+
+	cancelledEnrolments.each { e ->
+		email {
+            template ""Class Cancellation""
+            to e.student.contact
+            bindings enrolment : e
+        }
+    }
+}",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,ONCOURSE_EVENT,,,,Send an email to the student with information about class cancellation,CLASS_CANCELLED
+mailchimp subscribe,"def run(args) {
+	def tagRelation = args.entity
+
+	if (getIntegration(tagRelation.tag.name) && NodeSpecialType.MAILING_LISTS.equals(tagRelation.tag?.parentTag?.specialType) && tagRelation.taggedContact.email) {
+		mailchimp {
+			name tagRelation.tag.name
+			action ""subscribe""
+			email tagRelation.taggedContact.email
+			firstName tagRelation.taggedContact.firstName
+			lastName tagRelation.taggedContact.lastName
+		}
+	}
+}
+",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,ENTITY_EVENT,,ContactTagRelation,CREATE,Subscribe contact to a mailchimp list,
+send certificate vet created notification,"def run(args) {
+    def currentDate = new Date()
+    def allCertificates = ObjectSelect.query(Certificate)
+            .where(Certificate.STUDENT.dot(Student.USI_STATUS).eq(UsiStatus.VERIFIED))
+            .and(Certificate.PRINTED_ON.isNull())
+            .select(args.context)
+
+    allCertificates.each { c ->
+        def eLsit = c.student.enrolments.findAll { e ->
+             e.outcomes.contains(c.certificateOutcomes[0].outcome) &&
+                    EnrolmentStatus.STATUSES_LEGIT.contains(e.status) &&
+                    e.documents.find { d -> d.name == ""${e.courseClass.uniqueCode}_${c.student.contact.lastName}_${c.student.contact.firstName}_Certificate.pdf"" } == null
+        }
+
+        if (eLsit.size() > 0) {
+
+			def bg = c.isQualification ? (QualificationType.SKILLSET_TYPE == c.qualification.type ? 'vet_skillset_background.pdf' :'vet_qualification_background.pdf') :  'vet_soa_background.pdf'
+
+			def printData = report {
+                keycode ""ish.onCourse.certificate""
+                records Arrays.asList(c)
+				background bg
+            }
+
+            eLsit.each { e ->
+                document {
+                    action ""create""
+                    content printData
+                    name ""${e.courseClass.uniqueCode}_${c.student.contact.lastName}_${c.student.contact.firstName}_Certificate.pdf""
+                    mimeType ""application/pdf""
+                    permission AttachmentInfoVisibility.STUDENTS
+                    attach e
+                }
+
+                email {
+                    template ""Certificate available""
+                    bindings enrolment: e
+                    to e.student.contact
+                }
+
+                c.setPrintedOn(currentDate)
+                if (c.issuedOn == null) {
+                    c.setIssuedOn(currentDate);
+                }
+                args.context.commitChanges()
+
+            }
+        }
+    }
+}",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,CRON,0 0 5 ? * *,,,"Print and upload to the portal VET certifcates where the student meets the requirements for certification, including having supplied their USI. Send an email to notify the student that their certificate is available in the portal.",
+send enrolment,"def run(args) {
+  def enrolment = args.entity
+
+  if (enrolment.status == EnrolmentStatus.SUCCESS && enrolment.confirmationStatus == ConfirmationStatus.NOT_SENT) {
+
+    email {
+      template ""Enrolment Confirmation""
+      bindings enrolment: enrolment
+      to enrolment.student.contact
+    }
+
+    enrolment.setConfirmationStatus(ConfirmationStatus.SENT)
+    args.context.commitChanges()
+  }
+}",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,true,ENTITY_EVENT,,Enrolment,CREATE_OR_UPDATE,Send the enrolment confirmation email to the student,
+Xero manual journal,"import ish.integrations.*
+
+def run(args) {
+	def start = new Date() - 1
+	start.set(hourOfDay: 0, minute: 0, second: 0, millisecond: 0)
+
+	def end = new Date()
+	end.set(hourOfDay: 0, minute: 0, second: 0, millisecond: 0)
+
+	def accountTransactions = ObjectSelect.query(AccountTransaction).where(AccountTransaction.CREATED_ON.between(start, end)).select(args.context)
+
+	ObjectSelect.query(Integration).where(Integration.TYPE.eq(IntegrationType.XERO)).select(args.context)
+			.each { integration ->
+		xero {
+			name integration.name
+			narration ""onCourse transaction summary for period ${start.format(""h a d MMM yyyy"")} to ${end.format(""h a d MMM yyyy"")}""
+			transactions accountTransactions
+		}
+	}
+}",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,CRON,0 0 3 * * ?,,,Create Xero manual journal for transactions created on previous day,
+Course Completion Survey,"def run(args) {
+
+    // Ended yesterday
+    def endDate = Calendar.getInstance().getTime()
+    endDate.set(hourOfDay: 0, minute: 0, second: 0)
+
+    def classes = ObjectSelect.query(CourseClass)
+            .where(CourseClass.IS_CANCELLED.eq(false))
+            .and(CourseClass.END_DATE_TIME.between(endDate - 1, endDate))
+            .select(args.context)
+
+    classes.each { c ->
+        if (!c.hasTag(""no survey"")) {
+            c.successAndQueuedEnrolments.each { e ->
+                email {
+                    template ""Course completion survey""
+                    bindings enrolment: e
+                    to e.student.contact
+                }
+            }
+        }
+    }
+}",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,CRON,0 0 8 1/1 * ? *,,,Send the completion survey to all students who completed a course recently.,
+ecoach enrol,"import groovyx.net.http.ContentType
+import groovyx.net.http.Method
+import groovyx.net.http.RESTClient
+
+BASE_URL = """"
+apiKey = """"
+userId = """"
+
+def run (args) {
+
+
+	def enrolment = args.entity
+
+	// make or get students
+	def member = postMember(enrolment)
+
+	//get course id for group add
+	def courses =  getCourses()
+
+	def course = courses .find { c -> c.title == enrolment.courseClass.course.name }
+
+	// get groups (classes) in course
+	def courseClasses = getGroups(course[""id""])
+	def courseClass = courseClasses.find { cc -> cc.name == enrolment.courseClass.uniqueCode }
+
+	if (!courseClass) {
+	    //create groupClass if one does not exist
+	    courseClass = postGroup(enrolment, course[""id""])
+	}
+
+	////add student to group
+	enrolMemberToGroup(member[""id""], courseClass[""id""])
+}
+
+def getCourses() {
+    def client = new RESTClient(BASE_URL)
+    client.headers[""Authorization""] = ""ECOACH-V1-SHA256 UserId=${userId}, UserToken=${apiKey}""
+    client.headers[""Content-Type""] = ""application/json""
+    client.headers[""Accept""] = ""application/json""
+
+    client.request(Method.GET, ContentType.JSON) {
+        uri.path = ""/api/v1/courses""
+        response.success = { resp, result ->
+            return result
+        }
+    }
+}
+
+def getGroups(courseId) {
+
+    def client = new RESTClient(BASE_URL)
+    client.headers[""Authorization""] = ""ECOACH-V1-SHA256 UserId=${userId}, UserToken=${apiKey}""
+    client.headers[""Content-Type""] = ""application/json""
+    client.headers[""Accept""] = ""application/json""
+
+
+    client.request(Method.GET, ContentType.JSON) {
+        uri.path = ""/api/v1/courses/${courseId}/groups""
+
+        response.success = { resp, result ->
+            return result
+        }
+    }
+}
+
+def postMember(enrolment) {
+    def client = new RESTClient(BASE_URL)
+    client.headers[""Authorization""] = ""ECOACH-V1-SHA256 UserId=${userId}, UserToken=${apiKey}""
+    client.headers[""Content-Type""] = ""application/json""
+    client.headers[""Accept""] = ""application/json""
+
+    client.request(Method.POST, ContentType.JSON) {
+        uri.path = ""/api/v1/members""
+        uri.query = [
+                username: enrolment.student.contact.email,
+                firstname: enrolment.student.contact.firstName,
+                lastname: enrolment.student.contact.lastName,
+                email: enrolment.student.contact.email
+        ]
+
+        response.success = { resp, result ->
+            return result
+        }
+    }
+}
+
+def postGroup(enrolment, courseId) {
+
+    def client = new RESTClient(BASE_URL)
+    client.headers[""Authorization""] = ""ECOACH-V1-SHA256 UserId=${userId}, UserToken=${apiKey}""
+    client.headers[""Content-Type""] = ""application/json""
+    client.headers[""Accept""] = ""application/json""
+
+    client.request(Method.POST, ContentType.JSON) {
+        uri.path = ""/api/v1/courses/${courseId}/groups""
+        body = [
+            name: enrolment.courseClass.uniqueCode
+        ]
+
+        response.success = { resp, result ->
+            return result
+        }
+    }
+}
+
+def enrolMemberToGroup(memberId, groupId) {
+
+    def client = new RESTClient(BASE_URL)
+    client.headers[""Authorization""] = ""ECOACH-V1-SHA256 UserId=${userId}, UserToken=${apiKey}""
+    client.headers[""Content-Type""] = ""application/json""
+    client.headers[""Accept""] = ""application/json""
+
+    def id = [memberId] as int[]
+
+    client.request(Method.POST, ContentType.JSON) {
+        uri.path = ""/api/v1/groups/${groupId}/students""
+        body = [
+            ids: id
+        ]
+
+        response.success = { resp, result ->
+            return result
+        }
+    }
+}",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,ONCOURSE_EVENT,,,,Enrol user to eCoach course upon onCourse enrolment. eCoach course must have the same title as onCourse course name,ENROLMENT_SUCCESSFUL
+send usi reminder,"def run(args) {
+    def usiRequiredDate = Date.parse(""dd/MM/yyyy"", ""01/01/2015"")
+    def monthBefore = new Date().minus(30)
+
+    def context = args.context
+
+    def enrolmentsWithoutUsi = ObjectSelect.query(Enrolment)
+            .where(Enrolment.CREATED_ON.gt(monthBefore))
+            .and(Enrolment.STATUS.eq(EnrolmentStatus.SUCCESS))
+            .and(Enrolment.COURSE_CLASS.dot(CourseClass.COURSE).dot(Course.COURSE_MODULES).ne(null))
+            .and(Enrolment.STUDENT.dot(Student.USI).eq(null))
+            .and(Enrolment.COURSE_CLASS.dot(CourseClass.END_DATE_TIME).eq(null).orExp(Enrolment.COURSE_CLASS.dot(CourseClass.END_DATE_TIME).gt(usiRequiredDate)))
+            .select(context)
+
+    enrolmentsWithoutUsi.each() { enrolment ->
+        email {
+            template ""USI reminder email""
+            bindings enrolment: enrolment
+            to enrolment.student.contact
+        }
+    }
+
+    email {
+        from preference.email.admin
+        subject 'USI reminder email notification'
+        to preference.email.admin
+        content ""A USI reminder was sent to ${enrolmentsWithoutUsi.size()} students enrolled in VET classes who have not supplied their USI.""
+    }
+}
+
+",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,CRON,0 0 9 ? * MON,,,"Send an email to the student remindering them to supply their USI number, and send a notice to the default onCourse admin of how many students were contacted each time this message is sent",
+send voucher,"def run(args) {
+  def voucher = args.entity
+
+  if (voucher.status == ProductStatus.ACTIVE && voucher.confirmationStatus == ConfirmationStatus.NOT_SENT) {
+    email {
+      template ""Voucher Email""
+      bindings voucher: voucher
+      to (voucher.redeemableBy ? voucher.redeemableBy : voucher.invoiceLine.invoice.contact)
+    }
+
+    voucher.setConfirmationStatus(ConfirmationStatus.SENT)
+    args.context.commitChanges()
+  }
+}",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,true,ENTITY_EVENT,,Voucher,CREATE_OR_UPDATE,Send an email to the student with information about a voucher they have purchased,
+notify tutor of unmarked attendance,"def run(args) {
+    def endOfDate = Calendar.getInstance().getTime()
+    endOfDate.set(hourOfDay: 0, minute: 0, second: 0)
+    def startOfDate = endOfDate - 7
+
+    List<Session> sessions = ObjectSelect.query(Session)
+            .where(Session.START_DATETIME.between(startOfDate, endOfDate))
+            .and(Session.COURSE_CLASS.dot(CourseClass.IS_CANCELLED).eq(false))
+            .and(Session.COURSE_CLASS.dot(CourseClass.IS_ACTIVE).eq(true))
+            .select(args.context)
+
+    List<Session> sessionsWithUnmarkedAttendance = sessions.findAll { s ->
+        s.attendance.findAll { a ->
+            AttendanceType.UNMARKED.equals(a.attendanceType)
+        }.size() > 0
+    }
+
+    sessionsWithUnmarkedAttendance.each { s ->
+        s.tutorRoles.each { role ->
+
+            email {
+                template ""Tutor notice of unmarked attendance""
+                to role.tutor.contact
+                bindings s:s, tutor: role.tutor.contact, AttendanceType: AttendanceType
+            }
+        }
+    }
+
+
+}",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,CRON,0 0 3 ? * *,,,"This script runs at 3am each day and checks for every session run on the previous 7 days. If any student attendance is unmarked, sends to the tutors email notification to mark their class roll.",
+send enrolment notice for tutors,"def run(args) {
+    def enrolment = args.value
+    if (enrolment.courseClass.hasTag(""Notify Manager"")) {
+        def tutorRoles = enrolment.courseClass.tutorRoles.findAll() { tutorRole ->
+            tutorRole.definedTutorRole.name == ""Course Manager""
+        }
+        tutorRoles.each() { tutorRole ->
+            email {
+                template ""Enrolment notification""
+                bindings enrolment: enrolment
+                to tutorRole.tutor.contact
+            }
+        }
+    }
+}",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,ONCOURSE_EVENT,,,,"Send an enrolment notification email to tutors attached to classes with the role 'Course Manager', where the class is tagged with 'Notify Manager'",ENROLMENT_SUCCESSFUL
+SurveyMonkey send invite on enrolment,"import ish.integrations.*
+
+def run(args) {
+	def enrolment = args.value
+
+	ObjectSelect.query(Integration).where(Integration.TYPE.eq(IntegrationType.SURVEYMONKEY))
+			.select(args.context).findAll { integration ->
+		integration.getProperty(IntegrationsConfiguration.SURVEYMONKEY_SEND_ON_ENROLMENT_SUCCESS)?.value?.toBoolean()
+	}.each { integration ->
+		def tag = integration.getProperty(IntegrationsConfiguration.SURVEYMONKEY_COURSE_TAG)?.value?.trim()
+		if (tag == null	|| enrolment.courseClass.course.hasTag(tag)) {
+			surveyMonkey {
+				name integration.name
+				contact enrolment.student.contact
+				template ""survey invitation""
+				reply preference.email.from
+			}
+		}
+	}
+}",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,ONCOURSE_EVENT,,,,Send SurveyMonkey survey invite upon enrolment,ENROLMENT_SUCCESSFUL
+send account statement,"def run(args) {
+
+    def contactList = ObjectSelect.query(Contact)
+            .where(Contact.EMAIL.isNotNull())
+            .select(args.context)
+
+    contactList.findAll { contact -> contact.totalOwing > 0 }.each { c ->
+        email {
+            from preference.email.from
+            to c.email
+            subject ""Account statement""
+            content ""Dear ${c.fullName}, \n\n Your statement from ${preference.college.name} is attached. The total outstanding on the account is ${c?.totalOwing}. \n\n"" \
+	 					 + ""If you wish to pay by credit card or view the invoice visit ${c.getPortalLink('history', 30)} \n\n"" \
+						 + ""If you need to speak about this statement or use another payment method, please contact us on ${Preferences.get(""avetmiss.phone"")}. \n\n"" \
+                         + ""Regards,\n"" \
+						 + ""${preference.college.name}""
+            attachment ""Statement_Report.pdf"", ""application/pdf"", report {
+                keycode ""ish.onCourse.statementReport.all""
+                records Arrays.asList(c)
+                background ""statement_record_background.pdf""
+            }
+        }
+    }
+}",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,CRON,0 0 3 1 * ? *,,,Send a statement report to all contacts with outstanding balances on the first on the month,
+automatic creation of VET Certificates,"def run(args) {
+
+	def yesterdayStart = new Date() - 1
+	yesterdayStart.set(hourOfDay: 0, minute: 0, second: 0)
+
+	def yesterdayEnd = new Date()
+	yesterdayEnd.set(hourOfDay: 0, minute: 0, second: 0)
+
+	def context = args.context
+
+	def enrolments = ObjectSelect.query(Enrolment)
+			.where(Enrolment.COURSE_CLASS.dot(CourseClass.COURSE).dot(Course.IS_VET).eq(true))
+			.and(Enrolment.OUTCOMES.dot(Outcome.MODIFIED_ON).between(yesterdayStart, yesterdayEnd))
+			.select(context);
+
+	enrolments = enrolments.findAll { e ->  e.outcomes.findAll { o -> OutcomeStatus.STATUS_NOT_SET.equals(o.status) }.empty }
+
+	enrolments.each { e ->
+
+		def unlinkedOutcomes = e.outcomes.findAll { o -> o.certificateOutcomes.empty }
+		int successfulOutcomesCount = unlinkedOutcomes.findAll { o -> OutcomeStatus.STATUSES_VALID_FOR_CERTIFICATE.contains(o.status) }.size()
+
+		if (successfulOutcomesCount > 0) {
+			boolean fullQualification = e.courseClass.course.isSufficientForQualification
+			boolean validToCertificate = successfulOutcomesCount == e.outcomes.size()
+
+			context.newObject(Certificate).with { certificate ->
+				certificate.setStudent(e.student)
+				certificate.setQualification(e.courseClass.course.qualification)
+				certificate.setAwardedOn(new Date())
+				unlinkedOutcomes.each { o ->
+					certificate.addToOutcomes(o)
+				}
+
+				if (fullQualification && validToCertificate) {
+					certificate.setIsQualification(true)
+				} else {
+					certificate.setIsQualification(false)
+				}
+			}
+			context.commitChanges()
+		}
+	}
+}",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,CRON,0 0 4 * * ?,,,"For each enrolment, at 4am every day check for outcomes which have been modified in the previous 24 hrs. If any outcomes attached to the enrolment are not yet marked, skip this enrolment. For students with at least one successful outcome, create the certificate record (statement of attainment or qualification, based on the isFullQual flag at the course level). If the outcome is already joined to a certificate, do not create a new certificate containing that outcome",
+VET Course completion survey,"def run(args) {
+
+    // We want to search on a period of one day, two weeks ago
+    def periodStart = new Date() - 14
+    periodStart.set(hourOfDay: 0, minute: 0, second: 0)
+    def periodEnd = periodStart + 1
+
+    def classes = ObjectSelect.query(CourseClass)
+            .where(CourseClass.IS_CANCELLED.eq(false))
+            .and(CourseClass.COURSE.dot(Course.IS_VET).eq(true))
+            .and(CourseClass.END_DATE_TIME.between(periodStart, periodEnd))
+            .select(args.context)
+
+    classes.each { c ->
+        if (c.course.modules.size() != 0) {
+            c.successAndQueuedEnrolments.each { e ->
+                email {
+                    template ""VET Course completion survey""
+                    bindings enrolment: e
+                    to e.student.contact
+                }
+            }
+        }
+    }
+}",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,CRON,0 0 3 * * ?,,,Send the VET completion survey to all students who completed a VET course recently.,
+moodle enrol,"import ish.integrations.*
+
+def run(args) {
+	def e = args.value
+
+	ObjectSelect.query(Integration).where(Integration.TYPE.eq(IntegrationType.MOODLE)).select(args.context)
+			.each { integration ->
+		def tag = integration.getProperty(IntegrationsConfiguration.MOODLE_COURSE_TAG)?.value?.trim()
+		if (tag != null && e.courseClass.course.hasTag(tag)) {
+			moodle {
+				name integration.name
+				enrolment e
+			}
+		}
+	}
+}
+",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,ONCOURSE_EVENT,,,,Enrol user to Moodle course upon onCourse enrolment,ENROLMENT_SUCCESSFUL
+send tutor class commencement notice,"def run(args) {
+    def dayAfterTomorrowStart = new Date() + 2
+    dayAfterTomorrowStart.set(hourOfDay: 0, minute: 0, second: 0)
+
+    def dayAfterTomorrowEnd = new Date() + 3
+    dayAfterTomorrowEnd.set(hourOfDay: 0, minute: 0, second: 0)
+
+    def context = args.context
+
+    def classesStartingTomorrow = ObjectSelect.query(CourseClass)
+            .where(CourseClass.IS_CANCELLED.eq(false))
+            .and(CourseClass.START_DATE_TIME.ne(null))
+            .and(CourseClass.START_DATE_TIME.between(dayAfterTomorrowStart, dayAfterTomorrowEnd))
+            .select(context)
+
+    classesStartingTomorrow.findAll { cc ->
+        cc.successAndQueuedEnrolments.size() >= cc.minimumPlaces
+    }*.tutorRoles.flatten().each() { role ->
+        email {
+            template ""Tutor notice of class commencement""
+            bindings courseClass: role.courseClass, tutor: role.tutor
+            to role.tutor.contact
+        }
+    }
+}",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,CRON,0 0 9 * * ?,,,"Send an email to the tutor with information about when their class is starting, two days before it starts",
+mailchimp subscribe on enrolment,"def run(args) {
+	def e = args.value
+
+	if (e.student.contact.email && e.student.contact.allowEmail) {
+		mailchimp {
+			name ""Enrolment""
+			action ""subscribe""
+			email e.student.contact.email
+			firstName e.student.contact.firstName
+			lastName e.student.contact.lastName
+		}
+	}
+}
+",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,ONCOURSE_EVENT,,,,Subscribe user to Mailchimp upon enrolment,ENROLMENT_SUCCESSFUL
+Membership Renewal,"def run(args) {
+    def oneWeek = new Date() + 1
+    oneWeek.set(hourOfDay: 0, minute: 0, second: 0)
+
+    def oneWeekOneDay = new Date() + 8
+    oneWeekOneDay.set(hourOfDay: 0, minute: 0, second: 0)
+
+    ObjectSelect.query(Membership)
+            .where(Membership.EXPIRY_DATE.between(oneWeek, oneWeekOneDay))
+            .select(args.context)
+            .each { membership ->
+        email {
+            template ""Membership Notification Renewal""
+            bindings membership: membership
+            to membership.contact
+        }
+    }
+}",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,CRON,0 0 3 ? * MON,,,This script identifies members whose membership will expire in the next 7 days and send an email with notification.,
+send refund advice,"def run(args) {
+  def paymentOut = args.entity
+
+  if (paymentOut.status == PaymentStatus.SUCCESS && paymentOut.confirmationStatus == ConfirmationStatus.NOT_SENT) {
+    email {
+      template ""Refund advice""
+      bindings paymentOut: paymentOut
+      to paymentOut.payee
+    }
+
+    paymentOut.setConfirmationStatus(ConfirmationStatus.SENT)
+    args.context.commitChanges()
+  }
+}",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,ENTITY_EVENT,,PaymentOut,CREATE_OR_UPDATE,Send an email to the payer about a refund that has been processed,
+Synchronise availability (cancellation),"def run(args) {
+	def Enrolment enrolment = args.value
+
+	if (enrolment.courseClass.sessionsCount == 1 && enrolment.courseClass.startDateTime != null &&
+			enrolment.courseClass.endDateTime != null && !enrolment.courseClass.tutorRoles.isEmpty()) {
+
+		def classes = ObjectSelect.query(CourseClass)
+				.where(CourseClass.START_DATE_TIME.isNotNull()).and(CourseClass.START_DATE_TIME.lt(enrolment.courseClass.endDateTime))
+				.and(CourseClass.END_DATE_TIME.isNotNull()).and(CourseClass.END_DATE_TIME.gt(enrolment.courseClass.startDateTime))
+				.and(CourseClass.ROOM.eq(enrolment.courseClass.room))
+				.and(CourseClass.SESSIONS_COUNT.eq(1))
+				.and(CourseClass.ID.ne(enrolment.courseClass.id)).select(args.context)
+				.findAll { cc -> cc.tutorRoles.collect { tr -> tr.tutor }
+				.contains(enrolment.courseClass.tutorRoles.collect { tr -> tr.tutor }.get(0)) }
+
+		classes.each { cc -> cc.maximumPlaces = cc.maximumPlaces + 1 }
+
+		args.context.commitChanges()
+	}
+}
+",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,ONCOURSE_EVENT,,,,"This script finds all single session classes taught by the same tutor in the same room with overlapping times and keeps the places available in sync. For each enrolment in Class A, the maximum available places in Class B is reduced by one. This is useful if one class is a subset of another (eg. a refresher First Aid class where students need only come to the second half of the regular First Aid class). If you enable this script, you'll also want to enable 'Synchronise availability (enrolment)'",ENROLMENT_CANCELLED
+notification of unmarked attendance,"def run(args) {
+
+    def context = args.context
+
+    def endOfDate = Calendar.getInstance().getTime()
+    endOfDate.set(hourOfDay: 0, minute: 0, second: 0)
+    def startOfDate = endOfDate -1
+
+    def sessions = ObjectSelect.query(Session)
+            .where(Session.START_DATETIME.between(startOfDate, endOfDate))
+            .and(Session.COURSE_CLASS.dot(CourseClass.IS_CANCELLED).eq(false))
+            .and(Session.COURSE_CLASS.dot(CourseClass.IS_ACTIVE).eq(true))
+            .select(context)
+
+    //uncomment this section to only run for courses tagged with 'checkAttendance'
+//    sessions = sessions.findAll { s ->
+//        s.courseClass.course.hasTag('checkAttendance')
+//    }
+
+
+    def sessionsWithUnmarkedAttendance = sessions.findAll { s ->
+        s.attendance.findAll { a ->
+            AttendanceType.UNMARKED.equals(a.attendanceType)
+        }.size() > 0
+    }
+
+    if (!sessionsWithUnmarkedAttendance.empty) {
+        def bodyContent = [
+                'Dear Admin,',
+                '',
+                ""The following sessions ran on ${startOfDate.format(""d/M/yy"")} and had unmarked attendance:""
+        ]
+
+
+        sessionsWithUnmarkedAttendance.each { s ->
+            def tutors = s.tutors*.contact*.fullName.flatten()
+            def tutorString = tutors.size() > 0 ? ""Tutor${tutors.size() > 1 ? 's' : ''}: ${tutors.join("", "")}"" : ''
+
+            bodyContent << ''
+            bodyContent << ""${s.courseClass.course.name} (${s.courseClass.uniqueCode}) ${tutorString}""
+            bodyContent << ""Enrolled: ${s.courseClass.successAndQueuedEnrolments.size()}""
+            bodyContent << ""Unmarked attendance: ${s.attendance.findAll{ a -> AttendanceType.UNMARKED.equals(a.attendanceType)}.size()}""
+            bodyContent << ""Absent: ${s.attendance.findAll{ a -> [AttendanceType.DID_NOT_ATTEND_WITH_REASON, AttendanceType.DID_NOT_ATTEND_WITHOUT_REASON].contains(a.attendanceType)}.size()}""
+            bodyContent << ""Attended: ${s.attendance.findAll{ a -> [AttendanceType.ATTENDED, AttendanceType.PARTIAL].contains(a.attendanceType)}.size()}""
+
+        }
+
+        email {
+            from preference.email.from
+            subject 'Notification of unmarked attendance'
+            to preference.email.admin
+            content bodyContent.join(System.getProperty('line.separator'))
+        }
+    }
+}
+
+",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,CRON,0 0 3 ? * *,,,"This script runs at 3am each day and checks for every session run on the previous day, if any student attendance is unmarked. A summary of the session details containing unmarked attendance is sent to the default admin email address.",
+send waiting list reminder,"def run(args) {
+    def context = args.context
+
+    def waitingLists = ObjectSelect.query(WaitingList)
+            .select(context)
+
+    waitingLists.each() { waitingList ->
+        def courseClasses = waitingList.course.courseClasses.findAll() { courseClass ->
+            courseClass.isActive && courseClass.isShownOnWeb && courseClass.successAndQueuedEnrolments.size() < courseClass.maximumPlaces && (courseClass.isDistantLearningCourse || new Date() < courseClass.startDateTime)
+        }
+
+        if (courseClasses.size() > 0) {
+            email {
+                template ""Waiting List reminder""
+                bindings waitingList : waitingList, courseClasses : courseClasses
+                to waitingList.student.contact
+            }
+        }
+    }
+    return null
+}",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,CRON,0 0 9 ? * MON,,,Send an email to the student if they are on the waiting list with information about upcoming classes scheduled,
+cloudassess course enrolment create,"def run(args) {
+    def e = args.entity
+
+    cloudassess {
+        name ""cloud assess""
+        action ""enrol""
+        enrolment e
+    }
+}",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,ONCOURSE_EVENT,,,,Create course enrolment in Cloud Assess,ENROLMENT_SUCCESSFUL
+MYOB manual journal,"import ish.integrations.*
+
+def run(args) {
+	def start = new Date() - 1
+	start.set(hourOfDay: 0, minute: 0, second: 0, millisecond: 0)
+
+	def end = new Date()
+	end.set(hourOfDay: 0, minute: 0, second: 0, millisecond: 0)
+
+	def accountTransactions = ObjectSelect.query(AccountTransaction).where(AccountTransaction.CREATED_ON.between(start, end)).select(args.context)
+
+	ObjectSelect.query(Integration).where(Integration.TYPE.eq(IntegrationType.MYOB)).select(args.context)
+			.each { integration ->
+		myob {
+			name integration.name
+			transactions accountTransactions
+		}
+	}
+}",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,CRON,0 0 3 * * ?,,,Create MYOB manual journal for transactions created on previous day,
+send student class commencement notice 7 days,"def run(args) {
+  def nextWeekStart = new Date() + 7
+  nextWeekStart.set(hourOfDay: 0, minute: 0, second: 0)
+
+  def nextWeekEnd = new Date() + 8
+  nextWeekEnd.set(hourOfDay: 0, minute: 0, second: 0)
+
+  def context = args.context
+
+  def exp = CourseClass.IS_CANCELLED.eq(false)
+        .andExp(CourseClass.START_DATE_TIME.ne(null))
+        .andExp(CourseClass.START_DATE_TIME.between(nextWeekStart, nextWeekEnd))
+
+  def classesStartingTomorrow = context.select(SelectQuery.query(CourseClass, exp))
+
+  classesStartingTomorrow.each() { courseClass ->
+    courseClass.successAndQueuedEnrolments.each() { enrolment ->
+      def m = Email.create(""Student notice of class commencement"")
+      m.bind(enrolment: enrolment)
+
+      m.to(enrolment.student.contact)
+
+      m.send()
+
+      context.commitChanges()
+    }
+  }
+}",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,CRON,0 15 9 1/1 * ? *,,,"Send an email to the student with information about when their class is starting, 7 days before it starts",
+send student class commencement notice,"def run(args) {
+    def tomorrowStart = new Date() + 1
+    tomorrowStart.set(hourOfDay: 0, minute: 0, second: 0)
+
+    def tomorrowEnd = new Date() + 2
+    tomorrowEnd.set(hourOfDay: 0, minute: 0, second: 0)
+
+    def context = args.context
+
+    def classesStartingTomorrow = ObjectSelect.query(CourseClass)
+            .where(CourseClass.IS_CANCELLED.eq(false))
+            .and(CourseClass.START_DATE_TIME.ne(null))
+            .and(CourseClass.START_DATE_TIME.between(tomorrowStart, tomorrowEnd))
+            .select(context)
+
+    classesStartingTomorrow.findAll { cc ->
+        cc.successAndQueuedEnrolments.size() >= cc.minimumPlaces
+    }*.successAndQueuedEnrolments.flatten().each() { enrolment ->
+        email {
+            template ""Student notice of class commencement""
+            bindings enrolment: enrolment
+            to enrolment.student.contact
+        }
+    }
+}",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,CRON,0 0 9 * * ?,,,"Send an email to the student with information about when their class is starting, the day before it starts",
+SurveyGizmo send invite on enrolment completion,"import ish.integrations.*
+
+def run(args) {
+	def yesterdayStart = new Date() - 1
+	yesterdayStart.set(hourOfDay: 0, minute: 0, second: 0, millisecond: 0)
+
+	def yesterdayEnd = new Date()
+	yesterdayEnd.set(hourOfDay: 0, minute: 0, second: 0, millisecond: 0)
+
+	def enrolmentsJustEnded = ObjectSelect.query(Enrolment)
+			.where(Enrolment.COURSE_CLASS.dot(CourseClass.END_DATE_TIME).between(yesterdayStart, yesterdayEnd)).select(args.context)
+
+	ObjectSelect.query(Integration).where(Integration.TYPE.eq(IntegrationType.SURVEYGIZMO))
+			.select(args.context).findAll { integration ->
+		integration.getProperty(IntegrationsConfiguration.SURVEYGIZMO_SEND_ON_ENROLMENT_COMPLETION)?.value?.toBoolean()
+	}.each { integration ->
+		def tag = integration.getProperty(IntegrationsConfiguration.SURVEYGIZMO_COURSE_TAG)?.value?.trim()
+
+		enrolmentsJustEnded.each { enrolment ->
+			if (tag == null	|| enrolment.courseClass.course.hasTag(tag)) {
+				surveyGizmo {
+					name integration.name
+					template ""survey invitation""
+					reply preference.email.from
+					contact enrolment.student.contact
+				}
+			}
+		}
+	}
+}
+",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,CRON,0 0 9 * * ?,,,Send SurveyGizmo invite upon enrolment completion,
+cancelled class notice for tutor,"def run(args) {
+    def courseClass = args.entity
+
+    courseClass.tutorRoles*.tutor.unique().each { tutor ->
+        email {
+            template ""Tutor notice of class cancellation""
+            to tutor.contact
+            bindings tutor : tutor, courseClass : courseClass
+        }
+
+    }
+}",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,ONCOURSE_EVENT,,,,Send an email to the tutor with information about class cancellation,CLASS_CANCELLED
+alert students of related class,"def run (args) {
+
+	CourseClass marketingClass = args.entity
+
+	if (!marketingClass || marketingClass.isDistantLearningCourse) {
+		return
+	}
+
+
+	if (marketingClass?.firstSession?.tutors?.empty) {
+		return
+	}
+
+
+	Tutor ccTutor = marketingClass.firstSession.tutors[0]
+	List<Enrolment> enrolmentList =  new ArrayList<>()
+
+	def today = Calendar.getInstance().getTime()
+	today.set(hourOfDay: 0, minute: 0, second: 0)
+
+	def eighteenMonths = today.minus(548) // 18 months ago
+
+	/**
+	 * Iterate over a list of classes the tutor has taught over the last 18 months
+	 */
+	List<Student> students = ccTutor.courseClasses.findAll { cc ->  cc.course.id != marketingClass.course.id &&
+			cc.firstSession?.startDatetime?.after(eighteenMonths) &&
+			cc.firstSession?.startDatetime?.before(today) &&
+			cc.successAndQueuedEnrolments.size() > 0
+	}*.enrolments.flatten().findAll { e -> EnrolmentStatus.SUCCESS == e.status }*.student.flatten().unique()
+
+
+	/**
+	 * Exclude students that are already enrolled to marketingClass or any class with the same courseId
+	 */
+	students.removeAll { s ->
+		s.enrolments.any { e -> EnrolmentStatus.SUCCESS == e.status && e.courseClass.course.id == marketingClass.course.id }
+	}
+
+	/**
+	 * Once you have a non-duped student list, notify all students in the list
+	 */
+	students*.contact.flatten().each { student ->
+
+		email {
+			template ""alert students of related class""
+			bindings student: student, tutor: ccTutor.contact, courseClass: marketingClass
+			to student
+			key ""alert students of related classes"", marketingClass
+			keyCollision ""drop""
+		}
+	}
+
+	email {
+		to preference.email.admin
+		subject 'marketing: students updated about upcoming class'
+		content ""${students.size()} prior students who attended ${ccTutor.getContact().getName(true)}\'s were notified about the upcoming class ${marketingClass?.firstSession?.startDatetime?.format(""dd/MM/yyyy"")} ${marketingClass.course.name}.""
+	}
+}",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,ENTITY_EVENT,,CourseClass,CREATE_OR_UPDATE,email notification to promote the class to a short list of students who attended a previously class of the same tutor in the past.,
+send weekly finance summary report,"import java.time.LocalDate
+
+def run(args) {
+    def context = args.context
+    def accounts = ObjectSelect.query(Account)
+            .orderBy(Account.ACCOUNT_CODE.ascs())
+            .select(context)
+
+    //If you want to change date period use one of the sections below:
+
+    //set period in number of days (e.g. for the last 7 days)
+    LocalDate endDate = LocalDate.now().minusDays(1)
+    LocalDate startDate = endDate.minusDays(6)
+
+
+
+//    set period in calendar months (e.g. for the last month)
+//    LocalDate endDate = LocalDate.now().minusMonths(1)
+//    endDate = endDate.withDayOfMonth(endDate.lengthOfMonth())
+//    LocalDate startDate = endDate.withDayOfMonth(1)
+
+    email {
+        from preference.email.from
+        to preference.email.admin
+        subject ""onCourse transaction summary ${startDate.format(""dd/MM/yy"")} to ${endDate.format(""dd/MM/yy"")}""
+        content ""'Trial Balance' report for the previous 7 days.""
+        attachment ""Trial_Balance.pdf"", ""application/pdf"", report {
+                                                                    keycode ""ish.onCourse.trialBalance""
+                                                                    records accounts
+                                                                    param 'localdateRange_from' : startDate, 'localdateRange_to' : endDate
+                                                                }
+    }
+}",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,CRON,0 0 3 ? * MON,,,Send an email with weekly finance summary based on 'Trial Balance' report.,
+send payment plan reminder,"import java.time.LocalDate
+import java.time.Period
+
+def run(args) {
+
+    def context = args.context
+
+    def today = LocalDate.now()
+    def plusWeek = today.plusDays(7)
+
+    def invoices = ObjectSelect.query(Invoice)
+            .where(Invoice.AMOUNT_OWING.gt(Money.ZERO))
+            .and(Invoice.DATE_DUE.lte(plusWeek))
+            .select(context)
+
+    invoices.findAll { i ->
+        plusWeek.isEqual(i.dateDue) || // 7 days before the payment due date
+                today.isEqual(i.dateDue.plusDays(1)) || // day after the payment is due to avoid a $0 payable instance
+                ((Period.between(today, i.dateDue).days % 7 == 0) && i.overdue.isGreaterThan(Money.ZERO)) // every 7 days of overdue
+    }.each { i ->
+        email {
+            template ""Payment reminder""
+            bindings invoice: i
+            to i.contact
+        }
+    }
+}",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,CRON,0 2 3 ? * *,,,Send an email reminder with payment due date to the payer.,
+send application received notification,"def run(args) {
+    def application = args.entity
+
+    email {
+        template ""Enrolment application received""
+        bindings application: application
+        to application.student.contact
+    }
+
+    email {
+        to preference.email.admin
+        subject ""Application for enrolment received""
+        content ""Hi \n\n${application.student.contact.fullName} has just applied for ${application.course.name}. \n\nThis is an automated notification from onCourse to advise follow up may be required""
+    }
+}",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,ENTITY_EVENT,,Application,CREATE,Send an email to the student when their application has been received,
+send birthday voucher,"import ish.util.ProductUtil
+import ish.util.SecurityUtil
+import org.apache.cayenne.query.SQLTemplate
+
+def run(args) {
+
+	def today = new Date()
+	today.set(hourOfDay: 0, minute: 0, second: 0)
+
+	def birthdayProdSku = ""birthday""
+
+	def query = new SQLTemplate (Contact.class, ""SELECT * FROM Contact WHERE DAYOFYEAR(BIRTHDATE) BETWEEN DAYOFYEAR(NOW())+1 AND DAYOFYEAR(NOW())+7"" )
+	def contacts = args.context.performQuery(query)
+
+
+	def VoucherProduct product = ObjectSelect.query(VoucherProduct)
+					.where(VoucherProduct.SKU.eq(birthdayProdSku))
+					.selectOne(args.context)
+
+	contacts.each { c ->
+
+		//must create an invoice/invoiceline for voucher validation
+		def Invoice invoice = args.context.newObject(Invoice)
+		invoice.contact = c
+		invoice.amountOwing = Money.ZERO
+		invoice.source = PaymentSource.SOURCE_ONCOURSE
+		invoice.confirmationStatus = ConfirmationStatus.DO_NOT_SEND
+
+		def InvoiceLine invoiceLine = args.context.newObject(InvoiceLine)
+		invoiceLine.invoice = invoice
+		invoiceLine.account = product.liabilityAccount
+		invoiceLine.tax = product.tax
+		invoiceLine.title = product.name
+		invoiceLine.priceEachExTax = Money.ZERO
+		invoiceLine.taxEach = Money.ZERO
+		invoiceLine.discountEachExTax = Money.ZERO
+		invoiceLine.quantity = 1
+		invoiceLine.description = ""${c.getName(true)} (${product.sku} ${product.name})""
+
+		// Creates the voucher from the product
+		def Voucher voucher = args.context.newObject(Voucher)
+		voucher.product = product
+		voucher.redeemableBy = c
+		voucher.code = SecurityUtil.generateVoucherCode()
+		voucher.source = PaymentSource.SOURCE_ONCOURSE
+		voucher.status = ProductStatus.ACTIVE
+		voucher.invoiceLine = invoiceLine
+		voucher.redemptionValue = product.value
+		voucher.valueOnPurchase = product.value
+		voucher.redeemedCourseCount = 0
+		voucher.expiryDate = ProductUtil.calculateExpiryDate(ProductUtil.getToday(), product.expiryType, product.expiryDays)
+		voucher.confirmationStatus = ConfirmationStatus.DO_NOT_SEND
+
+		email {
+			to c
+			template ""Birthday voucher email""
+			bindings contact: c, voucher: voucher
+		}
+	}
+	args.context.commitChanges()
+}",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,CRON,0 0 4 ? * SUN *,,,"This script sends a student a birthday voucher on the week of their birthday. Before activating this script, you will need to create a new VoucherType with the sku 'birthday'. Vouchers of this type will be created and sent to students on the week of their birthday. This VoucherType must also be ticked as 'Is on sale' to be able to be redeemed by students. ",
+send invoice,"def run(args) {
+	def invoice = args.entity
+
+	if (invoice.confirmationStatus == ConfirmationStatus.NOT_SENT) {
+		if (!Money.ZERO.equals(invoice.totalIncTax)) {
+			email {
+				template ""Tax Invoice""
+				bindings invoice: invoice
+				to invoice.contact >> (invoice.corporatePassUsed ? invoice.corporatePassUsed.email : invoice.contact.email)
+			}
+		}
+
+		invoice.setConfirmationStatus(ConfirmationStatus.SENT)
+		args.context.commitChanges()
+	}
+}",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,true,ENTITY_EVENT,,Invoice,CREATE_OR_UPDATE,Send an email to the payer with their invoice,
+send certificate created notification,"def run(args) {
+    def endDate = Calendar.getInstance().getTime()
+    endDate.set(hourOfDay: 0, minute: 0, second: 0)
+
+    def allClasses = ObjectSelect.query(CourseClass)
+            .where(CourseClass.END_DATE_TIME.between(endDate - 1, endDate))
+            .and(CourseClass.IS_CANCELLED.eq(false))
+            .select(args.context)
+
+    def nonVetClasses = allClasses.findAll { cc -> cc.course.courseModules.isEmpty() }
+
+    //change 'notVETClasses' below to 'allClasses' to create attendance certificates for all classes, including those with Units of Competency attached
+    nonVetClasses.each { cc ->
+
+        //Uncomment the line below to create attendance certificates for enrolments with attendance over 80%
+        //def enrolmentsOver80 = cc.successAndQueuedEnrolments.findAll { e -> e.attendancePercent >= 80 }
+
+		//change 'cc.successAndQueuedEnrolments' to 'enrolmentsOver80' if you uncommented line before
+        cc.successAndQueuedEnrolments.each { e ->
+            def printData = report {
+                keycode ""ish.oncourse.nonVetCertificate""
+                records Arrays.asList(e)
+                background ""certificate_attendance_backgound.pdf""
+            }
+
+            document {
+                action ""create""
+                content printData
+                name ""${cc.uniqueCode}_${e.student.contact.lastName}_${e.student.contact.firstName}_Certificate_Attendance.pdf""
+                mimeType ""application/pdf""
+                permission AttachmentInfoVisibility.STUDENTS
+                attach e
+            }
+
+            email {
+                template ""Certificate available""
+                bindings enrolment: e
+                to e.student.contact
+            }
+        }
+    }
+}",2019-02-13T16:53:17Z,2019-02-13T16:53:17Z,false,CRON,0 0 6 ? * *,,,"Create a certificate of attendance for non-VET training with your custom certificate_attendance_backgound.pdf, upload the certificate to the portal and send an email to the student containing the link. There are options in the script to check attendance requirements before creating certificates, which are commented out by default.",

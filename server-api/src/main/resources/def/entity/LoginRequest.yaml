@@ -1,0 +1,37 @@
+type: object
+properties:
+  login:
+    type: string
+    required: true
+    description: User login or email used for authorization
+    example: 'ish'
+  password:
+    type: string
+    required: true
+    description: User password
+    example: '1234'
+  newPassword:
+    type: string
+    required: false
+    description: New password. Send in case when user password was forced to be changed by admin
+    example: '123456'
+  skipTfa:
+    type: boolean
+    required: false
+    description: Flag to skip TFA on login
+    example: 'false'
+  kickOut:
+    type: boolean
+    required: false
+    description: Flag to invalidate other's user active session and login
+    example: 'true'
+  token:
+    type: integer
+    required: false
+    description: 6 digit token (validationCode). Send when authenticating with TFA
+    example: '123456'
+  secretCode:
+    type: string
+    required: false
+    description: GA secret code. Send when enabling TFA first time
+    example: 'IJLGJ4NXPE2B4YA7'

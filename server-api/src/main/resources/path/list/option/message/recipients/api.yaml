@@ -1,0 +1,35 @@
+post:
+  operationId: getRecipients
+  description: getting recipients ids to send, suppressed to messaging count, without destination depends on type
+  tags:
+    - Message
+  parameters:
+    - name: entity
+      in: query
+      required: true
+      type: string
+      description: The onCourse entity name that you wish to get
+      example: Course
+    - name: messageType
+      in: query
+      required: true
+      type: string
+      description: The message type that you wish to get
+      example: Email
+    - name: search
+      in: body
+      description: search query for entity
+      required: true
+      schema:
+        $ref: './def/list/SearchQuery.yaml'
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        $ref: './def/entity/messaging/Recipients.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: LAZY/entity
+    errorMessage: Sorry, you have no permissions to view this entity. Please contact your administrator

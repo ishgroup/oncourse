@@ -1,0 +1,2 @@
+permissions:
+  apiPackage: ish.oncourse.server.security.api.test

@@ -1,0 +1,15 @@
+type: object
+properties:
+  invoiceLineId:
+    type: integer
+    format: int64
+  accountId:
+    type: integer
+    format: int64
+  taxId:
+    type: integer
+    format: int64
+  cancellationFee:
+    type: number
+  sendInvoice:
+    type: boolean

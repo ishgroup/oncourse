@@ -1,0 +1,5 @@
+Dear ${membership.contact?.firstName},
+
+Just a quick reminder that your ${membership.product.name} membership is due to expire in the next 7 days.
+
+To renew your membership, please visit ${preference.web.url}/product/${membership.product.sku}

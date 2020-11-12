@@ -1,0 +1,47 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    description: Unique identifier for user
+  name:
+    type: string
+    required: true
+    example: Languages
+  status:
+    $ref: '../enum/TagStatus.yaml'
+    required: true
+  system:
+    type: boolean
+    required: true
+  urlPath:
+    type: string
+    example: /Subjects/Languages
+  content:
+    type: string
+  color:
+    type: string
+  weight:
+    type: integer
+  taggedRecordsCount:
+    type: integer
+    required: true
+  childrenCount:
+    type: integer
+    required: true
+  created:
+    type: string
+    format: date-time
+    description: date and time when record was created
+  modified:
+    type: string
+    format: date-time
+    description: date and time when record was modified
+  requirements:
+    type: array
+    items:
+      $ref: './TagRequirement.yaml'
+  childTags:
+    type: array
+    items:
+      $ref: './Tag.yaml'

@@ -1,0 +1,6 @@
+type: string
+enum:
+  - UNIT OF COMPETENCY
+  - MODULE
+  - UNIT OF STUDY
+  - OTHER

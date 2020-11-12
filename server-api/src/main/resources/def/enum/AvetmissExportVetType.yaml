@@ -1,0 +1,5 @@
+type: string
+description: List of types to export
+enum:
+  - class
+  - enrolment

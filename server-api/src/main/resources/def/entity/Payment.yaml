@@ -1,0 +1,33 @@
+type: object
+description: View's model entity to represent ish.oncourse.cayenne.PaymentInterface on client side
+properties:
+  id:
+    type: string
+  paymentId:
+    type: integer
+    format: int64
+  reconciled:
+    type: boolean
+  source:
+    type: string
+  paymentTypeName:
+    type: string
+  paymentMethodName:
+    type: string
+  contactId:
+    type: integer
+    format: int64
+  contactName:
+    type: string
+  amount:
+    type: number
+  created:
+    type: string
+    format: date
+  status:
+    type: string
+  paymentDate:
+    type: string
+    format: date
+  reconcilable:
+    type: boolean

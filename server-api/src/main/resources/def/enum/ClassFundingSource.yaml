@@ -1,0 +1,11 @@
+type: string
+description: Types of course class funding sources
+enum:
+  - Commonwealth and state - general recurrent
+  - Commonwealth - specific
+  - State - specific
+  - Domestic full fee paying student
+  - International full fee paying student
+  - International onshore client
+  - International offshore client
+  - Revenue from other RTO

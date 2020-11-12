@@ -1,0 +1,20 @@
+get:
+  description: Get avalible field for requested form type
+  operationId: getFieldTypes
+  tags:
+  - DataCollection
+  parameters:
+  - name: formType
+    in: query
+    description: Datacollection form type
+    required: true
+    type: string
+  responses:
+    '200':
+      description: Success response
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/FieldType.yaml'
+    default:
+      description: Unexpected error

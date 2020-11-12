@@ -1,0 +1,5 @@
+keyCode: ish.onCourse.paymentIn.csv
+entityClass: PaymentIn
+body: ish.onCourse.paymentIn.csv.groovy
+name: PaymentIn CSV export
+outputType: csv

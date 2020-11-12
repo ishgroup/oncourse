@@ -1,0 +1,3 @@
+moduleName = localDate-module
+moduleVersion = 1.0
+extensionClasses = ish.oncourse.server.extended.LocalDateMethods,ish.oncourse.server.extended.DateMethods

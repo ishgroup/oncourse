@@ -1,0 +1,223 @@
+@parallel=false
+Feature: Main feature for all GET requests with path 'list/entity/invoice'
+
+    Background: Authorize first
+        * callonce read('../../../signIn.feature')
+        * url 'https://127.0.0.1:8182/a/v1'
+        * def ishPath = 'list/entity/invoice'
+        * def ishPathLogin = 'login'
+        * def ishPathList = 'list'
+        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+
+
+
+    Scenario: (+) Get list of all invoices by admin
+
+        Given path ishPathList
+        And param entity = 'Invoice'
+        When method GET
+        Then status 200
+        And match $.rows[*].id contains ["1","2","101","3","4","5","6"]
+
+
+
+    Scenario: (+) Get invoice by admin
+
+        Given path ishPath + '/1'
+        When method GET
+        Then status 200
+        And match $ ==
+        """
+        {
+        "id":1,
+        "contactId":2,
+        "contactName":"stud1",
+        "customerReference":null,
+        "invoiceNumber":1,
+        "billToAddress":"address str. Adelaide SA 5000",
+        "shippingAddress":null,
+        "invoiceDate":"2018-11-29",
+        "dateDue":"2018-11-29",
+        "overdue":0.00,
+        "invoiceLines":
+            [
+            {"id":1,"title":"stud1 enrolled in course1-2","quantity":1.00,"unit":null,"incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","cosAccountId":null,"cosAccountName":null,"priceEachExTax":545.45,"discountEachExTax":0.00,"taxEach":54.55,"finalPriceToPayIncTax":null,"taxId":1,"taxName":"Australian GST","description":"Course1 starting on 01-12-2018 12:56 AM AEDT","courseClassId":null,"courseName":null,"courseCode":null,"classCode":null,"enrolmentId":null,"enrolledStudent":null,"courseId":null,"enrolment":null,"voucher":null,"article":null,"membership":null,"contactId":null},
+            {"id":2,"title":"stud1 enrolled in course1-3","quantity":1.00,"unit":null,"incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","cosAccountId":null,"cosAccountName":null,"priceEachExTax":636.36,"discountEachExTax":0.00,"taxEach":63.64,"finalPriceToPayIncTax":null,"taxId":1,"taxName":"Australian GST","description":"Course1 starting on 01-11-2030 12:58 AM AEDT","courseClassId":null,"courseName":null,"courseCode":null,"classCode":null,"enrolmentId":null,"enrolledStudent":null,"courseId":null,"enrolment":null,"voucher":null,"article":null,"membership":null,"contactId":null},
+            {"id":3,"title":"stud1 enrolled in course1-1","quantity":1.00,"unit":null,"incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","cosAccountId":null,"cosAccountName":null,"priceEachExTax":454.55,"discountEachExTax":0.00,"taxEach":45.45,"finalPriceToPayIncTax":null,"taxId":1,"taxName":"Australian GST","description":"Course1 starting on 01-05-2017 12:54 AM AEST","courseClassId":null,"courseName":null,"courseCode":null,"classCode":null,"enrolmentId":null,"enrolledStudent":null,"courseId":null,"enrolment":null,"voucher":null,"article":null,"membership":null,"contactId":null}
+            ],
+        "total":1800.00,
+        "amountOwing":0.00,
+        "publicNotes":null,
+        "paymentPlans":[{"id":1,"date":"2018-11-29","type":"Invoice office","successful":true,"amount":1800.00,"entityName":"Invoice"},{"id":1,"date":"2018-11-29","type":"payment in (Cash)","successful":true,"amount":1800.00,"entityName":"PaymentIn"}],
+        "source":"office",
+        "createdByUser":"admin",
+        "sendEmail":false,
+        "createdOn":"#ignore",
+        "modifiedOn":"#ignore"
+        }
+        """
+
+
+
+    Scenario: (+) Get invoice with source == web
+
+        Given path ishPath + '/19'
+        When method GET
+        Then status 200
+        And match $ ==
+        """
+        {
+        "id":19,
+        "contactId":15,
+        "contactName":"stud9",
+        "customerReference":null,
+        "invoiceNumber":20,
+        "billToAddress":"PO Box 13 Forestville null2087",
+        "shippingAddress":null,
+        "invoiceDate":"2008-03-25",
+        "dateDue":"2008-03-25",
+        "overdue":-149.00,
+        "invoiceLines":[{"id":120,"title":"Enrolment: Robert Fenton","quantity":1.00,"unit":null,"incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","cosAccountId":null,"cosAccountName":null,"priceEachExTax":-135.45,"discountEachExTax":0.00,"taxEach":-13.55,"finalPriceToPayIncTax":null,"taxId":1,"taxName":"Australian GST","description":"Refund for enrolment : Course: Complete Keyboard Player for Beginners (ARMU5-1)","courseClassId":null,"courseName":null,"courseCode":null,"classCode":null,"enrolmentId":null,"enrolledStudent":null,"courseId":null,"enrolment":null,"voucher":null,"article":null,"membership":null,"contactId":null}],
+        "total":-149.00,
+        "amountOwing":-149.0,
+        "publicNotes":null,
+        "paymentPlans":[{"id":19,"date":"2008-03-25","type":"Credit note web","successful":true,"amount":-149.00,"entityName":"Invoice"}],
+        "source":"web",
+        "createdByUser":null,
+        "sendEmail":false,
+        "createdOn":"#ignore",
+        "modifiedOn":"#ignore"
+        }
+        """
+
+
+
+    Scenario: (-) Get not existing invoice
+
+        Given path ishPath + "/9999"
+        When method GET
+        Then status 400
+        And match $.errorMessage == "Record with id = '9999' doesn't exist."
+
+
+
+    Scenario: (-) Get existing invoice without id in path
+
+        Given path ishPath
+        When method GET
+        Then status 405
+
+
+
+    Scenario: (+) Get invoice by notadmin with access rights
+
+#       <--->  Login as notadmin
+        Given path '/logout'
+        And request {}
+        When method PUT
+        * def loginBody = {login: 'UserWithRightsView', password: 'password', kickOut: 'true', skipTfa: 'true'}
+
+        Given path '/login'
+        And request loginBody
+        When method PUT
+        Then status 200
+#       <--->
+
+        Given path ishPath + '/2'
+        When method GET
+        Then status 200
+        And match $ ==
+        """
+        {
+        "id":2,
+        "contactId":3,
+        "contactName":"stud2",
+        "customerReference":null,
+        "invoiceNumber":2,
+        "billToAddress":"address str. Adelaide SA 5000",
+        "shippingAddress":null,
+        "invoiceDate":"2018-11-29",
+        "dateDue":"2018-11-29",
+        "overdue":0.00,
+        "invoiceLines":
+            [
+            {"id":4,"title":"stud2 enrolled in course1-3","quantity":1.00,"unit":null,"incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","cosAccountId":null,"cosAccountName":null,"priceEachExTax":636.36,"discountEachExTax":0.00,"taxEach":63.64,finalPriceToPayIncTax:null,"taxId":1,"taxName":"Australian GST","description":"Course1 starting on 01-11-2030 12:58 AM AEDT","courseClassId":null,"courseName":null,"courseCode":null,"classCode":null,"enrolmentId":null,"enrolledStudent":null,"courseId":null,"enrolment":null,"voucher":null,"article":null,"membership":null,"contactId":null},
+            {"id":5,"title":"stud2 enrolled in course1-2","quantity":1.00,"unit":null,"incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","cosAccountId":null,"cosAccountName":null,"priceEachExTax":545.45,"discountEachExTax":0.00,"taxEach":54.55,finalPriceToPayIncTax:null,"taxId":1,"taxName":"Australian GST","description":"Course1 starting on 01-12-2018 12:56 AM AEDT","courseClassId":null,"courseName":null,"courseCode":null,"classCode":null,"enrolmentId":null,"enrolledStudent":null,"courseId":null,"enrolment":null,"voucher":null,"article":null,"membership":null,"contactId":null},
+            {"id":6,"title":"stud2 enrolled in course1-1","quantity":1.00,"unit":null,"incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","cosAccountId":null,"cosAccountName":null,"priceEachExTax":454.55,"discountEachExTax":0.00,"taxEach":45.45,finalPriceToPayIncTax:null,"taxId":1,"taxName":"Australian GST","description":"Course1 starting on 01-05-2017 12:54 AM AEST","courseClassId":null,"courseName":null,"courseCode":null,"classCode":null,"enrolmentId":null,"enrolledStudent":null,"courseId":null,"enrolment":null,"voucher":null,"article":null,"membership":null,"contactId":null}
+            ],
+        "total":1800.00,
+        "amountOwing":0.00,
+        "publicNotes":null,
+        "paymentPlans":[{"id":2,"date":"2018-11-29","type":"Invoice office","successful":true,"amount":1800.00,"entityName":"Invoice"},{"id":2,"date":"2018-11-29","type":"payment in (Cash)","successful":true,"amount":1800.00,"entityName":"PaymentIn"}],
+        "source":"office",
+        "createdByUser":"admin",
+        "sendEmail":false,
+        "createdOn":"#ignore",
+        "modifiedOn":"#ignore"
+        }
+        """
+
+
+
+    Scenario: (+) Get list of all invoices by notadmin with access rights
+
+#       <--->  Login as notadmin
+        Given path '/logout'
+        And request {}
+        When method PUT
+        * def loginBody = {login: 'UserWithRightsView', password: 'password', kickOut: 'true', skipTfa: 'true'}
+
+        Given path '/login'
+        And request loginBody
+        When method PUT
+        Then status 200
+#       <--->
+
+        Given path ishPathList
+        And param entity = 'Invoice'
+        When method GET
+        Then status 200
+        And match $.rows[*].id contains ["1","2","101","3","4","5","6"]
+
+
+
+    Scenario: (-) Get list of all invoices by notadmin without access rights
+
+#       <--->  Login as notadmin
+        Given path '/logout'
+        And request {}
+        When method PUT
+        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
+
+        Given path '/login'
+        And request loginBody
+        When method PUT
+        Then status 200
+#       <--->
+
+        Given path ishPathList
+        And param entity = 'Invoice'
+        When method GET
+        Then status 403
+        And match $.errorMessage == "Sorry, you have no permissions to view this entity. Please contact your administrator"
+
+
+
+    Scenario: (-) Get invoice by notadmin without access rights
+
+#       <--->  Login as notadmin
+        Given path '/logout'
+        And request {}
+        When method PUT
+        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
+
+        Given path '/login'
+        And request loginBody
+        When method PUT
+        Then status 200
+#       <--->
+
+        Given path ishPath + "/1"
+        When method GET
+        Then status 403
+        And match $.errorMessage == "Sorry, you have no permissions to get invoice. Please contact your administrator"

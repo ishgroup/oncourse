@@ -1,0 +1,8 @@
+createdOn,expiryDate,code,invoiceToOnRedemption,invoice,purchasedBy,productName,redeemableBy,valueOnPurchase,redemptionValueRemaining,source,status,redemptionsby,redeemedFor
+2012-05-14,2113-07-01,qwerty,,1,name3 name,test membership product,,,$100.00,web,Active,[],[]
+2012-05-14,2113-07-01,qwerty_2,,2,name3 name,test membership product part 2,,,$110.00,office,Active,[],[]
+2012-05-14,2113-07-01,qwertyb,,1,name3 name,test membership product,,,$50.00,web,Active,[],[]
+2012-05-14,2113-07-01,qwerty_3,,2,name3 name,test membership product part 2,,,$50.00,office,Active,[],[]
+2012-05-14,2113-07-01,qwerty_5,,2,name3 name,test membership product part 2,,,$50.00,office,Active,[],[]
+2012-05-14,2113-07-01,qwerty_6,,2,name3 name,test membership product part 2,,,$120.00,office,Active,[],[]
+2012-05-14,2113-07-01,qwertya,,1,name3 name,test voucher product,,,$50.00,web,Active,[],[]

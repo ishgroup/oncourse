@@ -1,0 +1,8 @@
+type: object
+properties:
+  status:
+    $ref: '../enum/ProcessStatus.yaml'
+    required: true
+  message:
+    type: string
+    required: false

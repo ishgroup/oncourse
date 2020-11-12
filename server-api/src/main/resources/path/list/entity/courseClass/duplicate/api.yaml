@@ -1,0 +1,27 @@
+post:
+  operationId: duplicateClass
+  tags:
+    - CourseClass
+  parameters:
+    - name: CourseClassDuplicate
+      in: body
+      schema:
+        $ref: './def/entity/courseClass/CourseClassDuplicate.yaml'
+      required: true
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: array
+        items:
+          type: integer
+          format: int64
+          required: true
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: SPECIAL_DUPLICATE
+    errorMessage: Sorry, you have no permissions to duplicate class. Please contact your administrator

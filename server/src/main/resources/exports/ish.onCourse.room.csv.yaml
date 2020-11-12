@@ -1,0 +1,5 @@
+keyCode: ish.onCourse.room.csv
+entityClass: Room
+body: ish.onCourse.room.csv.groovy
+name: Room CSV export
+outputType: csv

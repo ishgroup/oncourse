@@ -1,0 +1,72 @@
+put:
+  operationId: prepare
+  description: prepared data to process
+  tags:
+    - Payroll
+  parameters:
+    - name: entity
+      in: query
+      required: true
+      type: string
+      description: The onCourse entity name that you wish to get. Use for lazy permission checking
+      example: Course
+    - name: payrollRequest
+      in: body
+      required: true
+      schema:
+        $ref: './def/entity/payroll/PayrollRequest.yaml'
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        $ref: './def/entity/payroll/WagesToProcess.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: LAZY/entity
+    errorMessage: Sorry, you have no permissions to generate payroll. Please contact your administrator
+    license:
+      code: license.payroll
+      errorMessage: You do not have the licence for payrolls
+
+post:
+  operationId: execute
+  description: execute payroll
+  tags:
+    - Payroll
+  parameters:
+    - name: entity
+      in: query
+      required: true
+      type: string
+      description: The onCourse entity name that you wish to get. Use for lazy permission checking
+      example: Course
+    - name: bulkConfirmTutorWages
+      in: query
+      type: boolean
+      required: true
+      descruption: Special flag that include additional KeyCode checking
+      example: true
+    - name: payrollRequest
+      in: body
+      required: true
+      schema:
+        $ref: './def/entity/payroll/PayrollRequest.yaml'
+  responses:
+    '200':
+      schema:
+        type: string
+      description: Success response.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: LAZY/entity
+    errorMessage: Sorry, you have no permissions to generate payroll. Please contact your administrator
+    license:
+      code: license.payroll
+      errorMessage: You do not have the licence for payroll
+    chain:
+      - param: bulkConfirmTutorWages
+        keyCode: BULK_CONFIRM_TUTOR_WAGES

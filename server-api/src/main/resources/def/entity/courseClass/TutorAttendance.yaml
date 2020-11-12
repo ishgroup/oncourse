@@ -1,0 +1,21 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+  sessionId:
+    type: integer
+    format: int64
+  courseClassTutorId:
+    type: integer
+    format: int64
+  contactName:
+    type: string
+  attendanceType:
+    $ref: './TutorAttendanceType.yaml'
+  note:
+    type: string
+  durationMinutes:
+    type: integer
+  hasPayslip:
+    type: boolean

@@ -1,0 +1,5 @@
+type: string
+description: tag types
+enum:
+  - Private
+  - Show on website

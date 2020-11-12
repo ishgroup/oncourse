@@ -1,0 +1,53 @@
+get:
+  operationId: get
+  description: Get all payment types
+  tags:
+  - Payment
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/PaymentMethod.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    keyCode: UNDEFINED
+
+post:
+  operationId: update
+  description: Update  payment types
+  tags:
+  - Payment
+  parameters:
+  - name: paymentTypes
+    in: body
+    description: Payment types for update
+    required: true
+    schema:
+      type: array
+      items:
+        $ref: './def/entity/PaymentMethod.yaml'
+  responses:
+    '204':
+      description: Success response.
+    default:
+      description: Unexpected error
+
+delete:
+  operationId: remove
+  description: Remove a payment type
+  tags:
+  - Payment
+  parameters:
+  - name: id
+    in: path
+    description: Identifier of payment type whitch will be deleted.
+    required: true
+    type: string
+  responses:
+    '204':
+      description: Payment type successfully deleted
+    default:
+      description: Unexpected error

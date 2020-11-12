@@ -1,0 +1,19 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: false
+    example: 200
+    description: null for not persisded records
+  productId:
+    type: integer
+    format: int64
+    required: true
+    example: 200
+    description: Unique membership product identifier in onCourse
+  validTo:
+    type: string
+    format: date
+    required: false
+    description: optional for not forever memberships

@@ -1,0 +1,124 @@
+get:
+  description: Returns import script record
+  operationId: get
+  tags:
+    - Import
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of import script record to fetch
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/automation/ImportModel.yaml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: SPECIAL_IMPORT
+    errorMessage: Sorry, you have no permissions to get import script. Please contact your administrator
+
+post:
+  operationId: create
+  tags:
+    - Import
+  parameters:
+    - name: importDTO
+      in: body
+      description: import script for create
+      required: true
+      schema:
+        $ref: './def/entity/automation/ImportModel.yaml'
+  responses:
+    '200':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: SPECIAL_IMPORT
+    errorMessage: Sorry, you have no permissions to create import script. Please contact your administrator
+
+put:
+  operationId: update
+  tags:
+    - Import
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of import script record to fetch
+    - name: importDTO
+      in: body
+      schema:
+        $ref: './def/entity/automation/ImportModel.yaml'
+      required: true
+      description: import script for update
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: SPECIAL_IMPORT
+    errorMessage: Sorry, you have no permissions to edit import script. Please contact your administrator
+
+delete:
+  operationId: remove
+  tags:
+    - Import
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of import script record to fetch
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: delete
+    keyCode: SPECIAL_IMPORT
+    errorMessage: Sorry, you have no permissions to delete import script. Please contact your administrator
+
+patch:
+  operationId: updateInternal
+  tags:
+    - Import
+  description: update built-it imports, enable/disable or change import options, do not handle othe options
+  parameters:
+    - name: importDTO
+      in: body
+      description: import script for patch
+      required: true
+      schema:
+        $ref: './def/entity/automation/ImportModel.yaml'
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: SPECIAL_IMPORT
+    errorMessage: Sorry, you have no permissions to update import script. Please contact your administrator

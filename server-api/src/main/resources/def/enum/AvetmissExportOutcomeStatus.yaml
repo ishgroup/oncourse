@@ -1,0 +1,33 @@
+type: string
+enum:
+- start in future
+- commenced but absent
+- in progress
+- pending status
+- USI verified
+- USI not verified
+- non-VET
+- certificate/SOA issued
+- Competency achieved/pass (20)
+- Competency not achieved/fail (30)
+- credit transfer (60)
+- RPL granted (51)
+- withdrawn (40)
+- RPL not granted (52)
+- RCC (53)
+- RCC not granted (54)
+- Incomplete due to RTO closure (41)
+- Superseded Qualification (QLD:65)
+- Did not start (NSW:66)
+- Continuing enrolment (70)
+- Satisfactorily completed (81)
+- Withdrawn or not satisfactorily completed (82)
+- Result not available (90)
+- Participating but not finished with evidence(WA:5)
+- Participating but not finished with no evidence(WA:55)
+- RCC granted (WA:15)
+- RCC not granted (WA:16)
+- Provisionally competent off the job (WA:8)
+- Discontinued - no formal withdrawal (WA:11)
+- Not yet started (WA:105)
+- Superseded subject (61)

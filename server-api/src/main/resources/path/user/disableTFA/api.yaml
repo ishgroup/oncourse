@@ -1,0 +1,17 @@
+put:
+  operationId: disableTFA
+  description: disable Two-factor authentication
+  tags:
+  - User
+  parameters:
+  - name: id
+    in: path
+    description: Identifier of user
+    required: true
+    type: integer
+    format: int64
+  responses:
+    '204':
+      description: Success response.
+    default:
+      description: Unexpected error

@@ -1,0 +1,15 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+  name:
+    type: string
+  description:
+    type: string
+  active:
+    type: boolean
+  payRates:
+    type: array
+    items:
+      $ref: './TutorRolePayRate.yaml'

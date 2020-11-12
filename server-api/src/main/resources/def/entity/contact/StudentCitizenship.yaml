@@ -1,0 +1,14 @@
+type: string
+description: A set of values for describing student's citizenship.
+enum:
+  - Australian citizen
+  - New Zealand citizen
+  - Students/Applicants with permanent visa
+  - Student/Applicant has a temporary entry permit
+  - Not one of the above categories
+  - Students/Applicants with permanent humanitarian visa
+  - No information
+
+
+
+

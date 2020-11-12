@@ -1,0 +1,57 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    description: Unique identifier for user
+  active:
+    type: boolean
+    required: true
+  login:
+    type: string
+    required: true
+    description: login name used to log in to onCourse
+  firstName:
+    type: string
+    required: true
+  lastName:
+    type: string
+    required: true
+  administrationCentre:
+    type: integer
+    format: int64
+    description: Unique identifier for site
+  email:
+    type: string
+  lastLoggedIn:
+    type: string
+    format: date-time
+  admin:
+    type: boolean
+    required: true
+    description: true if the user is an administrator
+  role:
+    type: integer
+    format: int64
+    description: Unique identifier for acl role
+  accessEditor:
+    type: boolean
+    required: true
+  tfaEnabled:
+    type: boolean
+    description: true if two-factor authentication is enabled for this user
+  password:
+    type: string
+  passwordLastChanged:
+    type: string
+    format: date
+  passwordUpdateRequired:
+    type: boolean
+  created:
+    type: string
+    format: date-time
+    description: date and time when record was created
+  modified:
+    type: string
+    format: date-time
+    description: date and time when record was modified

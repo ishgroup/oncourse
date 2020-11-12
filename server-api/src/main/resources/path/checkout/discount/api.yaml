@@ -1,0 +1,45 @@
+get:
+  operationId: getContactDiscounts
+  description: Get discounts for contact selected on checkout
+  tags:
+    - Checkout
+  parameters:
+    - name: contactId
+      in: query
+      type: integer
+      format: int64
+      required: true
+    - name: classId
+      in: query
+      type: integer
+      format: int64
+      required: true
+    - name: promoIds
+      in: query
+      type: string
+      description: comma separated promo discount ids
+    - name: membershipIds
+      in: query
+      type: string
+      description: comma separated purchasing membership type ids for student in this checkout
+    - name: enrolmentsCount
+      in: query
+      type: integer
+      format: int32
+      description: Count of enrolments in current checkout
+    - name: purchaseTotal
+      in: query
+      type: number
+      description: Total amount (without discount) of all purchaces in current checkout
+  responses:
+    '200':
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/courseClass/CourseClassDiscount.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: ENROLMENT
+    errorMessage: Sorry, you have no permissions to make checkout. Please contact your administrator

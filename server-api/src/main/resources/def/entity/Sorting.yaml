@@ -1,0 +1,13 @@
+type: object
+properties:
+  attribute:
+    type: string
+    description: Any sortable entity attribute
+    example: firstName
+  ascending:
+    description: is sorting direction ascending
+    type: boolean
+  complexAttribute:
+    type: array
+    items:
+      type: string

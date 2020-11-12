@@ -1,0 +1,45 @@
+get:
+  operationId: get
+  description: Get funding uploads
+  tags:
+    - FundingUpload
+  parameters:
+    - name: search
+      in: query
+      type: string
+      required: false
+      description: AQL search filter
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/FundingUpload.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: SPECIAL_AVETMISS_EXPORT
+    errorMessage: Sorry, you have no permissions for avetmiss. Please contact your administrator
+
+put:
+  operationId: update
+  description: Update funding uploads
+  tags:
+    - FundingUpload
+  parameters:
+    - name: upload
+      in: body
+      schema:
+        $ref: './def/entity/FundingUpload.yaml'
+      required: true
+  responses:
+    '204':
+      description: Success response.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: SPECIAL_AVETMISS_EXPORT
+    errorMessage: Sorry, you have no permissions for avetmiss. Please contact your administrator

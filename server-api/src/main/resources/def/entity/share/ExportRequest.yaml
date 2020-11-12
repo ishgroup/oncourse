@@ -1,0 +1,32 @@
+type: object
+properties:
+  entityName:
+    type: string
+    required: true
+    example: Contact
+  template:
+    type: integer
+    format: int64
+    required: true
+    example: ish.contactExport.csv
+  search:
+    type: string
+  filter:
+    type: string
+  tagGroups:
+    type: array
+    items:
+      $ref: '../../list/TagGroup.yaml'
+  sorting:
+    type: array
+    items:
+      $ref: '../Sorting.yaml'
+    required: true
+  variables:
+    type: object
+    additionalProperties:
+      type: string
+    description: export variables values
+  exportToClipboard:
+    type: boolean
+    description: affect on CSV only, use tab separators instead of comma character

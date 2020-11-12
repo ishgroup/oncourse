@@ -1,0 +1,28 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
+import { Epic } from "redux-observable";
+
+import * as EpicUtils from "../../../../../common/epics/EpicUtils";
+import UserService from "../services/UsersService";
+import { GET_USERS_REQUEST, GET_USERS_REQUEST_FULFILLED } from "../../../actions";
+import { User } from "@api/model";
+
+const request: EpicUtils.Request<any, any, any> = {
+  type: GET_USERS_REQUEST,
+  getData: () => UserService.getUsers(),
+  processData: (users: User[]) => {
+    users.sort((a, b) => (a.login[0].toLowerCase() > b.login[0].toLowerCase() ? 1 : -1));
+
+    return [
+      {
+        type: GET_USERS_REQUEST_FULFILLED,
+        payload: { users }
+      }
+    ];
+  }
+};
+
+export const EpicGetUsers: Epic<any, any> = EpicUtils.Create(request);

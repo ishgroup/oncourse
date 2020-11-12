@@ -1,0 +1,91 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+  createdOn:
+    type: string
+    format: date-time
+  modifiedOn:
+    type: string
+    format: date-time
+  name:
+    type: string
+  code:
+    type: string
+  tags:
+    type: array
+    items:
+      $ref: '../Tag.yaml'
+  enrolmentType:
+    $ref: './CourseEnrolmentType.yaml'
+  allowWaitingLists:
+    type: boolean
+  dataCollectionRuleId:
+    type: integer
+    format: int64
+  dataCollectionRuleName:
+    type: string
+  status:
+    $ref: './CourseStatus.yaml'
+  brochureDescription:
+    type: string
+  currentClassesCount:
+    type: integer
+  futureClasseCount:
+    type: integer
+  selfPacedclassesCount:
+    type: integer
+  unscheduledClasseCount:
+    type: integer
+  passedClasseCount:
+    type: integer
+  cancelledClassesCount:
+    type: integer
+  studentWaitingListCount:
+    type: integer
+  hasEnrolments:
+    type: boolean
+  webDescription:
+    type: string
+  documents:
+    type: array
+    items:
+      $ref: '../Document.yaml'
+  relatedlSalables:
+    type: array
+    items:
+      $ref: '../Sale.yaml'
+  qualificationId:
+    type: integer
+    format: int64
+  qualNationalCode:
+    type: string
+  qualTitle:
+    type: string
+  qualLevel:
+    type: string
+  isSufficientForQualification:
+    type: boolean
+  isVET:
+    type: boolean
+  fieldOfEducation:
+    type: string
+  reportableHours:
+    type: number
+  modules:
+    type: array
+    items:
+      $ref: '../Module.yaml'
+  customFields:
+    type: object
+    additionalProperties:
+      type: string
+  rules:
+    type: array
+    items:
+      $ref: '../Holiday.yaml'
+  isTraineeship:
+    type: boolean
+  currentlyOffered:
+    type: boolean

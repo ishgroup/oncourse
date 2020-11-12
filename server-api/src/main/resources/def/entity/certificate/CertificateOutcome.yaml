@@ -1,0 +1,14 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+  issueDate:
+    type: string
+    format: date
+  code:
+    type: string
+  name:
+    type: string
+  status:
+    type: string

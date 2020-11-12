@@ -1,0 +1,70 @@
+type: object
+description: script object
+properties:
+  id:
+    description: unique identifier
+    type: integer
+    format: int64
+  keyCode:
+    type: string
+    required: false
+    description: script unique identifier, all built-in script codes start with 'ish.oncourse'
+    example: ish.onCourse.script
+  entity:
+    type: string
+    description: Script entity class
+    example: Invoice
+    required: false
+  name:
+    description: Script name
+    type: string
+    required: true
+    example: send enrolment
+  description:
+    type: string
+    description: Script description
+    required: false
+    example: send students a confirmation on enrolment
+  enabled:
+    type: boolean
+    description: Script status
+    required: true
+    example: true
+  trigger:
+    $ref: './ScriptTrigger.yaml'
+    description: Script trigger
+    required: true
+  content:
+    type: string
+    description: Script content
+    required: true
+  outputType:
+    $ref: '../automation/OutputType.yaml'
+    require: false
+    description: output file type which create by script
+    example: xml
+  lastRun:
+    type: array
+    items:
+      type: string
+      description: ISO date string
+  createdOn:
+    type: string
+    format: date-time
+    description: date and time when record was created
+  modifiedOn:
+    type: string
+    format: date-time
+    description: date and time when record was modified
+  variables:
+    type: array
+    items:
+      $ref: '../automation/Binding.yaml'
+    required: false
+    description: Script variables list
+  options:
+    type: array
+    items:
+      $ref: '../automation/Binding.yaml'
+    required: false
+    description: Script options list

@@ -1,0 +1,7 @@
+{
+  "extends": "./tsconfig.dev.json",
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "importHelpers": true
+  }
+}

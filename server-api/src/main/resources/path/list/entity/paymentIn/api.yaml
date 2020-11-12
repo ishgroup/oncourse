@@ -1,0 +1,57 @@
+get:
+  operationId: get
+  description: get a PaymentIn
+  tags:
+    - PaymentIn
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/PaymentIn.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: PAYMENT_IN
+    errorMessage: Sorry, you have no permissions to get payment in. Please contact your administrator
+
+put:
+  operationId: update
+  description: Update existing paymentIn record
+  tags:
+    - PaymentIn
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of paymenyIn record to fetch
+    - name: bankingParam
+      in: body
+      schema:
+        type: object
+        properties:
+          dateBanked:
+            type: string
+            format: date
+          administrationCenterId:
+            type: integer
+            format: int64
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: PAYMENT_IN
+    errorMessage: Sorry, you have no permissions to edit paymentIn. Please contact your administrator

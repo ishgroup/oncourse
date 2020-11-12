@@ -1,0 +1,8 @@
+type: object
+properties:
+  value:
+    type: string
+    example: 411
+  label:
+    type: string
+    example: ADVANCED_DIPLOMA

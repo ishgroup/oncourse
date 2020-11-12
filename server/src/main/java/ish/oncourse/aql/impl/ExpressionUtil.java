@@ -1,0 +1,30 @@
+/*
+ * Copyright ish group pty ltd 2020.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ */
+
+package ish.oncourse.aql.impl;
+
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.parser.SimpleNode;
+
+public class ExpressionUtil {
+
+    public static void addChild(SimpleNode parent, Expression exp, int idx) {
+        if(!(exp instanceof SimpleNode)) {
+            return;
+        }
+        var child = (SimpleNode) exp;
+        parent.jjtAddChild(child, idx);
+        if(!(parent instanceof LazyExpressionNode)) {
+            child.jjtSetParent(parent);
+        }
+    }
+
+}

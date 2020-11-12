@@ -1,0 +1,9 @@
+type: string
+description: Permission key codes
+enum:
+  - VET_COURSE
+  - ENROLMENT_CREATE
+  - SPECIAL_EMAIL_50
+  - SPECIAL_EMAIL_MASS
+  - PAYMENT_IN_CREATE
+  - ADMIN

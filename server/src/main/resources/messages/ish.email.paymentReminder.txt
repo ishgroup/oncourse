@@ -1,0 +1,7 @@
+Dear ${invoice.contact.fullName},
+
+Your invoice ${invoice.invoiceNumber} from ${preference.college.name} is ${((java.time.Period.between(invoice.dateDue, java.time.LocalDate.now()).days) == -7) ? 'due' : invoice.dateDue.isEqual(java.time.LocalDate.now()) ? 'due today' : ('now ' + java.time.Period.between(invoice.dateDue, java.time.LocalDate.now()).days + ' days overdue')}. The total amount remaining on the invoice is ${invoice.amountOwing} of which ${invoice.invoiceDueDates.size() > 0 ? ((java.time.Period.between(invoice.dateDue, java.time.LocalDate.now()).days == -7) ? invoice.invoiceDueDates.findAll { it.dueDate.compareTo(invoice.dateDue) <= 0 }*.amount.inject { a, b -> a.add(b)}.subtract(invoice.amountPaid) : invoice.overdue) : invoice.amountOwing} is payable now.
+
+If you wish to pay by credit card or view the invoice visit ${invoice.contact.getPortalLink('history', 30)}
+
+If you need to speak about this payment or use another payment method, please contact us on the number below.

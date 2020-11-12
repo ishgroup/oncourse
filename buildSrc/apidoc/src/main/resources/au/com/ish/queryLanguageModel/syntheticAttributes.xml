@@ -1,0 +1,85 @@
+<!--
+  ~ Copyright ish group pty ltd 2020.
+  ~
+  ~ This program is free software: you can redistribute it and/or modify it under the terms of the
+  ~ GNU Affero General Public License version 3 as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  ~ See the GNU Affero General Public License for more details.
+  -->
+
+<!--
+List of attributes that are not part of Cayenne model, but can be used in AQL queries.
+This data must be in sync with attribute list in AQL parser
+in ish.oncourse.aql.model.EntityFactory in server module.
+-->
+<attributes>
+    <entity name="AccountTransaction">
+        <attribute name="banking" ref="Banking"/>
+        <attribute name="invoice" ref="Invoice"/>
+        <attribute name="paymentIn" ref="PaymentIn"/>
+        <attribute name="paymentOut" ref="PaymentOut"/>
+        <attribute name="contact" ref="Contact"/>
+    </entity>
+
+    <entity name="PaymentOut">
+        <attribute name="accountTransactions" ref="AccountTransaction"/>
+    </entity>
+    <entity name="Invoice">
+        <attribute name="accountTransactions" ref="AccountTransaction"/>
+        <attribute name="courseClasses" ref="CourseClass"/>
+        <attribute name="banking" ref="Banking"/>
+    </entity>
+    <entity name="PaymentIn">
+        <attribute name="accountTransactions" ref="AccountTransaction"/>
+    </entity>
+    <entity name="Module">
+        <attribute name="courses" ref="Course"/>
+    </entity>
+    <entity name="Session">
+        <attribute name="tutor" ref="Tutor"/>
+    </entity>
+    <entity name="Product">
+        <attribute name="type" ref="ish.common.types.ProductType"/>
+    </entity>
+    <entity name="ProductItem">
+        <attribute name="redeemedInvoice" ref="Invoice"/>
+        <attribute name="redeemedPaymentIn" ref="PaymentIn"/>
+        <attribute name="redeemableBy" ref="Contact"/>
+        <attribute name="purchasedBy" ref="Contact"/>
+        <attribute name="redeemedEnrolment" ref="Enrolment"/>
+        <attribute name="type" ref="ish.common.types.ProductType"/>
+    </entity>
+    <entity name="CourseClass">
+        <attribute name="enrolmentCount" ref="Number"/>
+        <attribute name="isMaxEnrolments" ref="Boolean"/>
+        <attribute name="isMinEnrolments" ref="Boolean"/>
+    </entity>
+    <entity name="Course">
+        <attribute name="allRelatedCourses" ref="Course"/>
+    </entity>
+    <entity name="Contact">
+        <attribute name="accountTransactions" ref="AccountTransaction"/>
+        <attribute name="tutorCourseClass" ref="CourseClass"/>
+        <attribute name="studentCourseClass" ref="CourseClass"/>
+        <attribute name="studentEnrolments" ref="Enrolment"/>
+        <attribute name="allRelatedContacts" ref="Contact"/>
+        <attribute name="fromRelatedContacts" ref="Contact"/>
+        <attribute name="toRelatedContacts" ref="Contact"/>
+        <attribute name="fromRelationType" ref="ContactRelationType"/>
+        <attribute name="toRelationType" ref="ContactRelationType"/>
+        <attribute name="allRelatedContactsToCourse" ref="Course"/>
+        <attribute name="allRelatedContactsToAssessment" ref="Assessment"/>
+    </entity>
+    <entity name="Student">
+        <attribute name="outcomes" ref="Outcome"/>
+    </entity>
+    <entity name="Outcome">
+        <attribute name="vet" ref="Boolean"/>
+        <attribute name="contact" ref="Contact"/>
+    </entity>
+    <entity name="FundingSource">
+        <attribute name="name" ref="String"/>
+    </entity>
+</attributes>

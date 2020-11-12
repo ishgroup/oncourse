@@ -1,0 +1,21 @@
+type: object
+properties:
+  ids:
+    type: array
+    required: false
+    description: empty array for not persisted record. Number of articles creates if quantity > 1
+    items:
+      type: integer
+      format: int64
+  productId:
+    type: integer
+    format: int64
+    required: true
+    example: 200
+    description: Unique articke product identifier in onCourse
+  quantity:
+    type: number
+    required: true
+    example: 2
+    description: product purchase quantity
+

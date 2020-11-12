@@ -1,0 +1,23 @@
+get:
+  operationId: get
+  description: Get a list of all pdf print reports
+  tags:
+    - pdfTemplate
+  parameters:
+    - name: entityName
+      in: query
+      type: string
+      required: true
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/automation/Report.yaml'
+    default:
+      description: Unexpected error.
+  x-permission:
+    mask: print
+    keyCode: LAZY/entityName
+    errorMessage: Sorry, you have no permissions to get prints. Please contact your administrator

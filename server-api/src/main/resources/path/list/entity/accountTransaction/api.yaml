@@ -1,0 +1,47 @@
+get:
+  description: Returns a transaction record
+  operationId: get
+  tags:
+    - Transaction
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of transaction record to fetch
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/Transaction.yaml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: TRANSACTION
+    errorMessage: Sorry, you have no permissions to get Transaction. Please contact your administrator
+
+post:
+  operationId: create
+  description: create a new Transaction
+  tags:
+    - Transaction
+  parameters:
+    - name: Transaction
+      in: body
+      description: Transaction defenition which will be added
+      required: true
+      schema:
+        $ref: './def/entity/Transaction.yaml'
+  responses:
+    '200':
+      description: Transaction item successfully updated
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: TRANSACTION
+    errorMessage: Sorry, you have no permissions to create Transaction. Please contact your administrator

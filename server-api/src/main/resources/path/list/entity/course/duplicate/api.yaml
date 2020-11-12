@@ -1,0 +1,24 @@
+post:
+  operationId: duplicateCourse
+  tags:
+    - Course
+  parameters:
+    - name: courseIds
+      in: body
+      schema:
+        type: array
+        items:
+          type: integer
+          format: int64
+      required: true
+  responses:
+    '200':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: COURSE
+    errorMessage: Sorry, you have no permissions to duplicate course. Please contact your administrator

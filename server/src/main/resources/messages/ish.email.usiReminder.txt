@@ -1,0 +1,6 @@
+Dear ${enrolment.student.contact.fullName},
+
+To be issued any formal certification on the completion of ${enrolment.courseClass.course.name}, you must provide ${Preferences.get("college.name")} with your Unique Student Identifier (USI).
+You can apply for, and provide us with your USI by going to ${Preferences.getPortalCensusUrl(enrolment.student)} and following the instructions.
+
+Please contact us if you can not complete this process and you would like assistance obtaining a USI.

@@ -1,0 +1,126 @@
+get:
+  operationId: get
+  description: Returns a site record
+  tags:
+  - Site
+  parameters:
+  - name: id
+    in: path
+    type: integer
+    format: int64
+    required: true
+    description: Unique identifier of site record to fetch
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/Site.yml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: SITE
+    errorMessage: Sorry, you have no permissions to get site. Please contact your administrator
+
+post:
+  operationId: create
+  description: Creates a site record
+  tags:
+  - Site
+  parameters:
+  - name: site
+    in: body
+    description: site for create
+    required: true
+    schema:
+      $ref: './def/entity/Site.yml'
+  responses:
+    '200':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: SITE
+    errorMessage: Sorry, you have no permissions to create site. Please contact your administrator
+
+put:
+  operationId: update
+  description: Updates an existing site record
+  tags:
+  - Site
+  parameters:
+  - name: id
+    in: path
+    type: integer
+    format: int64
+    required: true
+    description: Unique identifier of Site record to fetch
+  - name: site
+    in: body
+    schema:
+      $ref: './def/entity/Site.yml'
+    required: true
+    description: site for update
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: SITE
+    errorMessage: Sorry, you have no permissions to edit site. Please contact your administrator
+
+delete:
+  operationId: remove
+  description: deletes a existing site record
+  tags:
+  - Site
+  parameters:
+  - name: id
+    in: path
+    type: integer
+    format: int64
+    required: true
+    description: Unique identifier of site record to fetch
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: delete
+    keyCode: SITE
+    errorMessage: Sorry, you have no permissions to delete site. Please contact your administrator
+
+patch:
+  operationId: bulkChange
+  tags:
+    - Site
+  parameters:
+    - name: diff
+      in: body
+      schema:
+        $ref: './def/entity/Diff.yaml'
+      required: true
+      description: sites for update
+  responses:
+    '200':
+      description: Success response
+    '400':
+      description: Bad request error
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: SITE
+    errorMessage: Sorry, you have no permissions to edit site. Please contact your administrator.

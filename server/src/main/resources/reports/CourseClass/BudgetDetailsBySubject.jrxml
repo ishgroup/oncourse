@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BudgetDetailsBySubject" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="786" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" uuid="64503a85-da37-4aea-8258-bf96a7b59851">
+	<property name="name" value="Budgets Details by Subject"/>
+	<property name="entity" value="CourseClass"/>
+	<property name="isSubreport" value="false"/>
+	<property name="isVisible" value="true"/>
+
+	<property name="keyCode" value="ish.onCourse.budgetListReport"/>
+	<property name="ish.oncourse.description" value="To obtain a summary of the budgeted vs actual expenses for each class, grouped by subject tag. This report prints in Landscape format."/>
+	<property name="ish.oncourse.reports.isObjectOnSeparatePage" value="false"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="ish.math.Money"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="default" isDefault="true" forecolor="#000000" vTextAlign="Bottom" markup="none" fontName="Open Sans" fontSize="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="OpenSans" pdfEncoding="Cp1252" isPdfEmbedded="true">
+		<paragraph spacingAfter="8"/>
+	</style>
+	<style name="header 1" style="default" forecolor="#4F0018" fontName="Open Sans Light" fontSize="18" pdfFontName="Open Sans Light"/>
+	<style name="header 2" style="header 1" fontSize="12"/>
+	<style name="header 3" style="default" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+	<style name="header 3 (right)" style="header 3" hTextAlign="Right"/>
+	<style name="Label" style="default" forecolor="#6A7E99"/>
+	<style name="Label right" style="Label" hTextAlign="Right"/>
+	<style name="data field" style="default"/>
+	<style name="data field (money)" style="data field" hTextAlign="Right" pattern="¤#,###,##0.00;¤(-#,###,##0.00)"/>
+	<style name="data field (numeric)" style="data field" hTextAlign="Right"/>
+	<style name="data field (datetime)" style="data field" pattern="d MMM yyyy h:mma"/>
+	<style name="data field (day)" style="data field" pattern="E d MMM h:mma"/>
+	<style name="data field (date)" style="data field" pattern="d MMM yyyy"/>
+	<style name="Footer" style="default" forecolor="#737373" fontSize="8"/>
+	<style name="Footer strong" style="Footer" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+	<style name="subHead box" style="default" backcolor="#E6E7F0"/>
+	<style name="crosstab" mode="Opaque" backcolor="#F7F2E9">
+		<box>
+			<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#A3A3A3"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{ROW_COUNT}.intValue() % 2 == 1 ? Boolean.TRUE : Boolean.FALSE]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FFFFFF"/>
+		</conditionalStyle>
+	</style>
+	<style name="alternateRow" mode="Opaque" forecolor="rgba(255, 255, 255, 0.0)" backcolor="#F7F2E9">
+		<box>
+			<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{PAGE_COUNT}.intValue() % 2 == 1 ? Boolean.TRUE : Boolean.FALSE]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FFFFFF"/>
+		</conditionalStyle>
+	</style>
+	<field name="courseClass" class="java.lang.Object"/>
+	<field name="category" class="java.lang.String"/>
+	<field name="course.name" class="java.lang.String"/>
+	<field name="course.code" class="java.lang.String"/>
+	<field name="code" class="java.lang.String"/>
+	<field name="enrolmentsCount" class="java.lang.Integer"/>
+	<field name="budgetedPlaces" class="java.lang.Integer"/>
+	<field name="image.poweredby" class="java.io.InputStream"/>
+	<field name="subcategory" class="java.lang.String"/>
+	<field name="firstSubjectTag" class="java.lang.String"/>
+	<sortField name="firstSubjectTag"/>
+	<variable name="incomeActual" class="java.lang.Object" calculation="Sum">
+		<variableExpression><![CDATA[((Money)$F{courseClass}.actualTotalIncome)]]></variableExpression>
+	</variable>
+	<variable name="incomeBudgeted" class="java.lang.Object" calculation="Sum">
+		<variableExpression><![CDATA[((Money)$F{courseClass}.budgetedTotalIncome)]]></variableExpression>
+	</variable>
+	<variable name="expenseActual" class="java.lang.Object" calculation="Sum">
+		<variableExpression><![CDATA[((Money)$F{courseClass}.actualTotalCost)]]></variableExpression>
+	</variable>
+	<variable name="expenseBudgeted" class="java.lang.Object" calculation="Sum">
+		<variableExpression><![CDATA[((Money)$F{courseClass}.budgetedTotalCost)]]></variableExpression>
+	</variable>
+	<variable name="subECA" class="java.lang.Integer" resetType="Group" resetGroup="subcategory" calculation="Sum">
+		<variableExpression><![CDATA[$F{enrolmentsCount}]]></variableExpression>
+	</variable>
+	<variable name="catECA" class="java.lang.Integer" resetType="Group" resetGroup="category" calculation="Sum">
+		<variableExpression><![CDATA[$F{enrolmentsCount}]]></variableExpression>
+	</variable>
+	<variable name="totalECA" class="java.lang.Integer" resetType="Group" resetGroup="total" calculation="Sum">
+		<variableExpression><![CDATA[$F{enrolmentsCount}]]></variableExpression>
+	</variable>
+	<variable name="subECB" class="java.lang.Integer" resetType="Group" resetGroup="subcategory" calculation="Sum">
+		<variableExpression><![CDATA[$F{budgetedPlaces}]]></variableExpression>
+	</variable>
+	<variable name="catECB" class="java.lang.Integer" resetType="Group" resetGroup="category" calculation="Sum">
+		<variableExpression><![CDATA[$F{budgetedPlaces}]]></variableExpression>
+	</variable>
+	<variable name="totalECB" class="java.lang.Integer" resetType="Group" resetGroup="total" calculation="Sum">
+		<variableExpression><![CDATA[$F{budgetedPlaces}]]></variableExpression>
+	</variable>
+	<variable name="subIA" class="java.lang.Float" resetType="Group" resetGroup="subcategory" calculation="Sum">
+		<variableExpression><![CDATA[new Float(((Money)$V{incomeActual}).floatValue())]]></variableExpression>
+	</variable>
+	<variable name="subIB" class="java.lang.Float" resetType="Group" resetGroup="subcategory" calculation="Sum">
+		<variableExpression><![CDATA[new Float(((Money)$V{incomeBudgeted}).floatValue())]]></variableExpression>
+	</variable>
+	<variable name="catIA" class="java.lang.Float" resetType="Group" resetGroup="category" calculation="Sum">
+		<variableExpression><![CDATA[new Float(((Money)$V{incomeActual}).floatValue())]]></variableExpression>
+	</variable>
+	<variable name="totalIA" class="java.lang.Float" resetType="Group" resetGroup="total" calculation="Sum">
+		<variableExpression><![CDATA[new Float(((Money)$V{incomeActual}).floatValue())]]></variableExpression>
+	</variable>
+	<variable name="catIB" class="java.lang.Float" resetType="Group" resetGroup="category" calculation="Sum">
+		<variableExpression><![CDATA[new Float(((Money)$V{incomeBudgeted}).floatValue())]]></variableExpression>
+	</variable>
+	<variable name="totalIB" class="java.lang.Float" resetType="Group" resetGroup="total" calculation="Sum">
+		<variableExpression><![CDATA[new Float(((Money)$V{incomeBudgeted}).floatValue())]]></variableExpression>
+	</variable>
+	<variable name="subEA" class="java.lang.Float" resetType="Group" resetGroup="subcategory" calculation="Sum">
+		<variableExpression><![CDATA[new Float(((Money)$V{expenseActual}).floatValue())]]></variableExpression>
+	</variable>
+	<variable name="catEA" class="java.lang.Float" resetType="Group" resetGroup="category" calculation="Sum">
+		<variableExpression><![CDATA[new Float(((Money)$V{expenseActual}).floatValue())]]></variableExpression>
+	</variable>
+	<variable name="totalEA" class="java.lang.Float" resetType="Group" resetGroup="total" calculation="Sum">
+		<variableExpression><![CDATA[new Float(((Money)$V{expenseActual}).floatValue())]]></variableExpression>
+	</variable>
+	<variable name="subEB" class="java.lang.Float" resetType="Group" resetGroup="subcategory" calculation="Sum">
+		<variableExpression><![CDATA[new Float(((Money)$V{expenseBudgeted}).floatValue())]]></variableExpression>
+	</variable>
+	<variable name="catEB" class="java.lang.Float" resetType="Group" resetGroup="category" calculation="Sum">
+		<variableExpression><![CDATA[new Float(((Money)$V{expenseBudgeted}).floatValue())]]></variableExpression>
+	</variable>
+	<variable name="totalEB" class="java.lang.Float" resetType="Group" resetGroup="total" calculation="Sum">
+		<variableExpression><![CDATA[new Float(((Money)$V{expenseBudgeted}).floatValue())]]></variableExpression>
+	</variable>
+	<variable name="subPA" class="java.lang.Float" resetType="Group" resetGroup="subcategory" calculation="Sum">
+		<variableExpression><![CDATA[new Float(((Money)$F{courseClass}.actualTotalProfit).floatValue())]]></variableExpression>
+	</variable>
+	<variable name="catPA" class="java.lang.Float" resetType="Group" resetGroup="category" calculation="Sum">
+		<variableExpression><![CDATA[new Float(((Money)$F{courseClass}.actualTotalProfit).floatValue())]]></variableExpression>
+	</variable>
+	<variable name="totalPA" class="java.lang.Float" resetType="Group" resetGroup="total" calculation="Sum">
+		<variableExpression><![CDATA[new Float(((Money)$F{courseClass}.actualTotalProfit).floatValue())]]></variableExpression>
+	</variable>
+	<variable name="subPB" class="java.lang.Float" resetType="Group" resetGroup="subcategory" calculation="Sum">
+		<variableExpression><![CDATA[new Float(((Money)$F{courseClass}.budgetedTotalProfit).floatValue())]]></variableExpression>
+	</variable>
+	<variable name="catPB" class="java.lang.Float" resetType="Group" resetGroup="category" calculation="Sum">
+		<variableExpression><![CDATA[new Float(((Money)$F{courseClass}.budgetedTotalProfit).floatValue())]]></variableExpression>
+	</variable>
+	<variable name="totalPB" class="java.lang.Float" resetType="Group" resetGroup="total" calculation="Sum">
+		<variableExpression><![CDATA[new Float(((Money)$F{courseClass}.budgetedTotalProfit).floatValue())]]></variableExpression>
+	</variable>
+	<group name="total">
+		<groupExpression><![CDATA[]]></groupExpression>
+		<groupHeader>
+			<band splitType="Stretch"/>
+		</groupHeader>
+		<groupFooter>
+			<band height="27" splitType="Stretch">
+				<staticText>
+					<reportElement key="staticText-10" style="header 3" x="1" y="7" width="325" height="16" uuid="31a42531-a548-4d1d-b6b2-ecfd85622584"/>
+					<text><![CDATA[Total]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="total" isBlankWhenNull="false">
+					<reportElement key="textField-19" style="header 3 (right)" x="363" y="6" width="63" height="16" uuid="523fc9c4-31b1-406b-81ea-f3aa0fc3199e"/>
+					<textFieldExpression><![CDATA[(($V{totalECA}==null)?"0":$V{totalECA}.toString())+"/"+
+((($V{totalECB}==null)||$V{totalECB}.equals(""))?"0":$V{totalECB}.toString())]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="total" isBlankWhenNull="false">
+					<reportElement key="textField-22" style="header 3 (right)" x="428" y="6" width="94" height="16" uuid="f6e8b2ef-7331-4ec2-9c51-bd017ff0ec25"/>
+					<textFieldExpression><![CDATA[(new Money($V{totalIA}.toString())).toString()+"/"+
+(new Money($V{totalIB}.toString())).toString()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="total" isBlankWhenNull="false">
+					<reportElement key="textField-25" style="header 3 (right)" x="527" y="6" width="109" height="16" uuid="4f2f29d3-c808-44ca-bd18-4288d0c0ab4a"/>
+					<textFieldExpression><![CDATA[(new Money($V{totalEA}.toString()).negate()).toString()+"/"+
+(new Money($V{totalEB}.toString()).negate()).toString()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="total" isBlankWhenNull="false">
+					<reportElement key="textField-28" style="header 3 (right)" x="642" y="6" width="101" height="16" uuid="6656c3fc-3d77-418e-8410-046aaa23c585"/>
+					<textFieldExpression><![CDATA[(new Money($V{totalPA}.toString())).toString()+"/"+
+(new Money($V{totalPB}.toString())).toString()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="total" isBlankWhenNull="false">
+					<reportElement key="textField-31" style="header 3 (right)" x="745" y="6" width="36" height="16" uuid="a7525c32-fd95-4d6d-9e3b-a5b8cb03b5b0"/>
+					<textFieldExpression><![CDATA[((($V{totalPB}==null)||($V{totalPB}.floatValue()==0))?"n.a.":String.valueOf(  ((float)Math.round(100*( (new Money(String.valueOf($V{totalPA})).floatValue()) - (new Money(String.valueOf($V{totalPB})).floatValue()) ) /  (new Money(String.valueOf($V{totalPB})).floatValue()) * 100  ))/100))]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="category">
+		<groupExpression><![CDATA[$F{category}]]></groupExpression>
+		<groupHeader>
+			<band height="24" splitType="Stretch">
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-13" style="header 2" x="2" y="3" width="325" height="17" uuid="047c2207-d6ae-48fd-858b-11e46c110335"/>
+					<textFieldExpression><![CDATA[((($F{category}==null)||($F{category}.equals("")))?"No category specified":$F{category})]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="category" isBlankWhenNull="false">
+					<reportElement key="textField-17" style="data field (numeric)" x="361" y="4" width="62" height="16" uuid="a6534add-93d0-488f-be1c-15687d831570"/>
+					<textFieldExpression><![CDATA[(($V{catECA}==null)?"0":$V{catECA}.toString())+"/"+
+((($V{catECB}==null)||$V{catECB}.equals(""))?"0":$V{catECB}.toString())]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="category" isBlankWhenNull="false">
+					<reportElement key="textField-20" style="data field (money)" x="428" y="4" width="94" height="16" uuid="ae81d70c-efe6-4bb1-8abc-161bccf439ad"/>
+					<textFieldExpression><![CDATA[(new Money($V{catIA}.toString())).toString()+"/"+
+(new Money($V{catIB}.toString())).toString()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="category" isBlankWhenNull="false">
+					<reportElement key="textField-23" style="data field (money)" x="527" y="4" width="111" height="16" uuid="c478c3ec-da9d-4e12-9675-6e65481225ee"/>
+					<textFieldExpression><![CDATA[(new Money($V{catEA}.toString()).negate()).toString()+"/"+
+(new Money($V{catEB}.toString()).negate()).toString()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="category" isBlankWhenNull="false">
+					<reportElement key="textField-26" style="data field (money)" x="642" y="4" width="101" height="16" uuid="4e81080e-0986-48c6-bf87-e6c4ccc801c2"/>
+					<textFieldExpression><![CDATA[(new Money($V{catPA}.toString())).toString()+"/"+
+(new Money($V{catPB}.toString())).toString()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="category" isBlankWhenNull="false">
+					<reportElement key="textField-29" style="data field" x="745" y="4" width="36" height="16" uuid="0cb1bf0d-a8bd-4cb0-a9c2-cdf4afad7570"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[((($V{catPB}==null)||($V{catPB}.floatValue()==0))?"n.a.":String.valueOf(  ((float)Math.round(100*( (new Money(String.valueOf($V{catPA})).floatValue()) - (new Money(String.valueOf($V{catPB})).floatValue()) ) /  (new Money(String.valueOf($V{catPB})).floatValue()) * 100  ))/100))]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="3" splitType="Stretch"/>
+		</groupFooter>
+	</group>
+	<group name="subcategory">
+		<groupExpression><![CDATA[$F{subcategory}]]></groupExpression>
+		<groupHeader>
+			<band height="23" splitType="Stretch">
+				<printWhenExpression><![CDATA[new Boolean(($F{subcategory}!=null)&&(!$F{subcategory}.equals("")))]]></printWhenExpression>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-16" style="header 3" x="2" y="3" width="325" height="14" uuid="3e08c3f0-5e20-4bf2-90f8-39ae6f9960ce"/>
+					<textFieldExpression><![CDATA[$F{subcategory}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="subcategory" isBlankWhenNull="false">
+					<reportElement key="textField-18" style="data field (numeric)" x="361" y="3" width="62" height="14" uuid="24da29a3-1a60-44a1-9c71-02c787ba4c83"/>
+					<textFieldExpression><![CDATA[(($V{subECA}==null)?"0":$V{subECA}.toString())+"/"+
+((($V{subECB}==null)||$V{subECB}.equals(""))?"0":$V{subECB}.toString())]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="subcategory" isBlankWhenNull="false">
+					<reportElement key="textField-21" style="data field (money)" x="428" y="3" width="93" height="14" uuid="5af0f75c-4fec-4111-9bf8-348d55d13381"/>
+					<textFieldExpression><![CDATA[(new Money($V{subIA}.toString())).toString()+"/"+
+(new Money($V{subIB}.toString())).toString()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="subcategory" isBlankWhenNull="false">
+					<reportElement key="textField-24" style="data field (money)" x="527" y="3" width="111" height="14" uuid="198e3fd8-f892-40ac-8c77-2fc1ad06912f"/>
+					<textFieldExpression><![CDATA[(new Money($V{subEA}.toString()).negate()).toString()+"/"+
+(new Money($V{subEB}.toString()).negate()).toString()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="subcategory" isBlankWhenNull="false">
+					<reportElement key="textField-27" style="data field (money)" x="642" y="3" width="101" height="14" uuid="934f20a4-0fda-4baf-a591-08450a20e98e"/>
+					<textFieldExpression><![CDATA[(new Money($V{subPA}.toString())).toString()+"/"+
+(new Money($V{subPB}.toString())).toString()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="subcategory" isBlankWhenNull="false">
+					<reportElement key="textField-30" style="data field" x="745" y="3" width="36" height="14" uuid="7a06a176-e864-42c7-b623-3d7458f41b5e"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[((($V{subPB}==null)||($V{subPB}.floatValue()==0))?"n.a.":String.valueOf(  ((float)Math.round(100*( (new Money(String.valueOf($V{subPA})).floatValue()) - (new Money(String.valueOf($V{subPB})).floatValue()) ) /  (new Money(String.valueOf($V{subPB})).floatValue()) * 100  ))/100))]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="3" splitType="Stretch"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="115" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="31" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-4" style="header 1" x="1" y="0" width="258" height="26" uuid="0f9790df-2314-44a0-b27e-da20d02638f7"/>
+				<textFieldExpression><![CDATA["Actual/Budget"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="32" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="12" width="786" height="20" backcolor="#E6E7F0" uuid="ac8ca72d-0a3e-4c46-b9cd-6f72ebbdc109">
+					<property name="com.jaspersoft.studio.unit.height" value="mm"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement key="staticText-1" style="header 3" x="191" y="15" width="79" height="15" uuid="12b73dab-b85e-41c0-8311-27ed8d2ede65"/>
+				<text><![CDATA[Code]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-2" style="header 3" x="270" y="15" width="91" height="15" uuid="c6e282c5-2751-4c8c-a94b-352756049a1e"/>
+				<text><![CDATA[Starts]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-3" style="header 3 (right)" x="361" y="15" width="62" height="15" uuid="5bdbdfc7-2527-4fde-ac68-01a9ef06474d"/>
+				<text><![CDATA[Enrolments]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-4" style="header 3 (right)" x="428" y="15" width="95" height="15" uuid="2cf75871-5fa1-457b-b715-c41502c3cb46"/>
+				<text><![CDATA[Income]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-5" style="header 3 (right)" x="527" y="15" width="109" height="15" uuid="d36db934-741c-45d0-b59e-3569b45153bc"/>
+				<text><![CDATA[Expense]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-6" style="header 3 (right)" x="745" y="15" width="33" height="15" uuid="8ea26eb6-327a-495d-86e0-fbc82c1445c9"/>
+				<text><![CDATA[%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-7" style="header 3" x="2" y="15" width="187" height="15" uuid="f24d1c42-93d8-4974-bf68-8a3ce2bc5244"/>
+				<text><![CDATA[Course]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-9" style="header 3 (right)" x="645" y="15" width="99" height="15" uuid="4aaf9d4e-a1e6-4c71-abb2-520d7badadc6"/>
+				<text><![CDATA[Profit]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<rectangle>
+				<reportElement style="alternateRow" stretchType="RelativeToBandHeight" x="1" y="0" width="785" height="20" uuid="10dfe763-ae6f-409e-85c6-41028e06f422">
+					<property name="com.jaspersoft.studio.unit.x" value="mm"/>
+				</reportElement>
+			</rectangle>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-6" style="data field" x="191" y="1" width="79" height="14" uuid="6c4fa811-554e-463e-bac0-769e48f12cc1"/>
+				<textFieldExpression><![CDATA[$F{course.code} + "-" + $F{code}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-7" style="data field" x="270" y="1" width="91" height="14" uuid="f76e646f-eb5f-4ff5-b757-df48567631a9"/>
+				<textFieldExpression><![CDATA[$F{courseClass}.startDateTime?.format("d MMM yyyy h:mma", $F{courseClass}.timeZone)]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-8" style="data field (numeric)" x="360" y="1" width="63" height="14" uuid="747738fc-fe44-482d-b28e-f031c8e0c79d"/>
+				<textFieldExpression><![CDATA[(($F{enrolmentsCount}==null)?"0":$F{enrolmentsCount}.toString())+"/"+
+((($F{budgetedPlaces}==null)||$F{budgetedPlaces}.equals(""))?"0":$F{budgetedPlaces}.toString())]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-9" style="data field (money)" x="428" y="1" width="93" height="14" uuid="950cac4d-c6b9-4c6b-b4dd-d2ee59886cad"/>
+				<textFieldExpression><![CDATA[((Money)$V{incomeActual}).toString()+"/"+((Money)$V{incomeBudgeted}).toString()]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-10" style="data field (money)" x="527" y="1" width="111" height="14" uuid="96be7d92-2025-457c-a83c-ba5943804b1b"/>
+				<textFieldExpression><![CDATA[((Money)$V{expenseActual}).negate().toString()+"/"+((Money)$V{expenseBudgeted}).negate().toString()]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-11" style="data field" x="745" y="1" width="36" height="14" uuid="56755fc7-a087-49fe-9f04-3083da4d55ad"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[String.valueOf((((Money)$F{courseClass}.budgetedTotalProfit)!=null && ((Money)$F{courseClass}.budgetedTotalProfit).floatValue() != 0)?
+					Double.toString(((float)Math.round(100*((((Money)$F{courseClass}.actualTotalProfit).floatValue() -
+			 		((Money)$F{courseClass}.budgetedTotalProfit).floatValue())/(((Money)$F{courseClass}.budgetedTotalProfit).floatValue())*100)))/100)
+					: "n.a.")]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-12" style="data field" x="3" y="1" width="186" height="14" uuid="f6714de9-25bb-4ccd-87e6-8727babf65c4"/>
+				<textFieldExpression><![CDATA[$F{course.name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-15" style="data field (money)" x="642" y="1" width="101" height="14" uuid="96ef9f75-fab7-4c72-99d2-77d87e182c28"/>
+				<textFieldExpression><![CDATA[((Money)$F{courseClass}.actualTotalProfit).toString()+"/"+((Money)$F{courseClass}.budgetedTotalProfit).toString()]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<textField evaluationTime="Page" isBlankWhenNull="false">
+				<reportElement key="pageNumberFooter" style="Footer strong" x="0" y="0" width="300" height="15" uuid="1106d334-b156-4af7-a64d-a75ba7206e2c"/>
+				<textFieldExpression><![CDATA["Page " + String.valueOf($V{PAGE_NUMBER})]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" isBlankWhenNull="false">
+				<reportElement key="totalPageCountFooter" style="Footer" x="0" y="11" width="300" height="13" uuid="d3e402c5-a433-4f08-90db-5c66216e08f3"/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT} + " record" + ($V{REPORT_COUNT}>1 ? "s" : "") + " on " + $V{PAGE_NUMBER} + " page" + ($V{PAGE_NUMBER}>1 ? "s" : "") + " (printed " + new Date().format("E d MMM yyyy h:mma") + ")"]]></textFieldExpression>
+			</textField>
+			<image scaleImage="RetainShape" hAlign="Right" isUsingCache="true" onErrorType="Blank">
+				<reportElement key="oncourseLogo" style="Footer" x="472" y="17" width="67" height="7" uuid="2863530e-11e5-4c1e-8296-ae64db1a9926"/>
+				<imageExpression><![CDATA[$F{image.poweredby}]]></imageExpression>
+			</image>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

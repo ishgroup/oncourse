@@ -1,0 +1,63 @@
+type: object
+description: some email template parameters encapsulated in one object to use when sending email based on template
+properties:
+  id:
+    description: Unique identifier
+    type: integer
+    required: true
+    format: int64
+  type:
+    $ref: '../../enum/MessageType.yaml'
+    required: true
+    description: Message template type
+    example: Sms
+  keyCode:
+    type: string
+    required: false
+    description: email unique identifier, all built-in template codes start with 'ish.oncourse'
+    example: ish.onCourse.header
+  name:
+    description: Message template name
+    type: string
+    required: true
+    example: Tax Invoice
+  entity:
+    type: string
+    description: Message template entity
+    example: Invoice
+    required: false
+  subject:
+    type: string
+  plainBody:
+    type: string
+  body:
+    type: string
+    description: htmlBody
+  enabled:
+    type: boolean
+    description: Message template status
+    required: false
+    example: true
+  variables:
+    type: array
+    items:
+      $ref: './Binding.yaml'
+    required: false
+    description: Message variables list
+  options:
+    type: array
+    items:
+      $ref: './Binding.yaml'
+    required: false
+    description: Message options list
+  createdOn:
+    type: string
+    format: date-time
+  modifiedOn:
+    type: string
+    format: date-time
+  description:
+    type: string
+    require: false
+    description: Message template description
+    example: description

@@ -1,0 +1,10 @@
+type: string
+description: Repetition types for course class session
+enum:
+  - Hour
+  - Day
+  - Week
+  - Month
+  - Year
+  - Custom
+  - None

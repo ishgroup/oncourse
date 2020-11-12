@@ -1,0 +1,6 @@
+type: string
+enum:
+  - Waiting review
+  - Public testimonial
+  - Not testimonial
+  - Hidden by student

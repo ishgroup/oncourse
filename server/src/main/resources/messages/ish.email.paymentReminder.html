@@ -1,0 +1,22 @@
+${render(headerKeycode)}
+<table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+    <tbody>
+    <tr>
+        <td class="ish_content_container left" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 0;padding-right: 17px;padding-bottom: 10px;padding-left: 17px; vertical-align: top;" align="left" valign="top">
+            <div class="ish_text_container">
+                <p class="align-left" style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                    Dear ${invoice.contact.fullName}, <br />
+                    <br>
+                    Your invoice ${invoice.invoiceNumber} from ${preference.college.name} is ${(java.time.Period.between(invoice.dateDue, java.time.LocalDate.now()).days == -7) ? 'due' : invoice.dateDue.isEqual(java.time.LocalDate.now()) ? 'due today' : ('now ' + java.time.Period.between(invoice.dateDue, java.time.LocalDate.now()).days + ' days overdue')}. The total amount remaining on the invoice is ${invoice.amountOwing} of which ${invoice.invoiceDueDates.size() > 0 ? ((java.time.Period.between(invoice.dateDue, java.time.LocalDate.now()).days == -7) ? invoice.invoiceDueDates.findAll { it.dueDate.compareTo(invoice.dateDue) <= 0 }*.amount.inject { a, b -> a.add(b)}.subtract(invoice.amountPaid) : invoice.overdue) : invoice.amountOwing} is payable now. <br />
+                    <br>
+                    If you wish to pay by credit card or view the invoice visit <a style="color: #0084b4;color: #0084b4 !important;background-color: #ffffff;text-decoration: none;border: 0;word-wrap: break-word;" href="${invoice.contact.getPortalLink('history', 30)}" target="_blank">SkillsOnCourse payment gateway</a> <br />
+                    <br>
+                    If you need to speak about this payment or use another payment method, please contact us on the number below.  <br />
+                    <br>
+                </p>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+${render(footerKeycode)}

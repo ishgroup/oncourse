@@ -1,0 +1,41 @@
+# todo
+type: object
+properties:
+  creditPoints:
+    type: number
+    exmaple: 6
+  expiryDays:
+    type: integer
+  fieldOfEducation:
+    type: string
+  id:
+    type: integer
+    format: int64
+    example: 123686
+    required: true
+  isCustom:
+    type: boolean
+    example: true
+  type:
+    $ref: '../enum/ModuleType.yaml'
+    example: UNIT_OF_COMPETENCY
+  isOffered:
+    type: boolean
+    required: true
+    example: false
+  nationalCode:
+    type: string
+    example: BSB40281
+  nominalHours:
+    type: number
+    exampe: 8.5
+  specialization:
+    type: string
+  title:
+    type: string
+  createdOn:
+    type: string
+    format: date-time
+  modifiedOn:
+    type: string
+    format: date-time

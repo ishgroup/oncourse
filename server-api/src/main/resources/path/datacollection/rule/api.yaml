@@ -1,0 +1,76 @@
+get:
+  description: Return data collection rules
+  operationId: getRules
+  tags:
+  - DataCollection
+  responses:
+    '200':
+      description: Success response
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/DataCollectionRule.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: COURSE
+    errorMessage: Sorry, you have no permissions to view  data collection rules. Please contact your administrator
+
+post:
+  description: Create data collection rule
+  operationId: createRule
+  tags:
+  - DataCollection
+  parameters:
+  - name: form
+    in: body
+    description: Rule defenition which will be added
+    required: true
+    schema:
+      $ref: './def/entity/DataCollectionRule.yaml'
+  responses:
+    '204':
+      description: Rule item successfully added
+    default:
+      description: Unexpected error
+
+put:
+  description: Update data collection rule
+  operationId: updateRule
+  tags:
+  - DataCollection
+  parameters:
+  - name: id
+    in: path
+    description: Unique identifier
+    required: true
+    type: string
+  - name: rule
+    in: body
+    description: Rule defenition which will be added
+    required: true
+    schema:
+      $ref: './def/entity/DataCollectionRule.yaml'
+  responses:
+    '204':
+      description: Rule item successfully updated
+    default:
+      description: Unexpected error
+
+delete:
+  operationId: removeRule
+  description: Remove data collection rule
+  tags:
+  - DataCollection
+  parameters:
+  - name: id
+    in: path
+    description: Identifier of Data Collection rule which which will be deleted.
+    required: true
+    type: string
+  responses:
+    '204':
+      description: Rule item successfully deleted
+    default:
+      description: Unexpected error

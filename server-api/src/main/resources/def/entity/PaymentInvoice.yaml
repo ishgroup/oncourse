@@ -1,0 +1,15 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+  dateDue:
+    type: string
+    format: date
+  invoiceNumber:
+    type: integer
+    format: int64
+  amountOwing:
+    type: number
+  amount:
+    type: number

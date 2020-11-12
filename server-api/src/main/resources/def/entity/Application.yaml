@@ -1,0 +1,51 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: true
+  contactId:
+    type: integer
+    format: int64
+  studentName:
+    type: string
+  courseId:
+    type: integer
+    format: int64
+  courseName:
+    type: string
+  applicationDate:
+    type: string
+    format: date
+  status:
+    $ref: '../enum/ApplicationStatus.yaml'
+  source:
+    $ref: '../enum/Source.yaml'
+  feeOverride:
+    type: number
+    required: true
+  enrolBy:
+    type: string
+    format: date
+  createdBy:
+    type: string
+  reason:
+    type: string
+  documents:
+    type: array
+    items:
+      $ref: './Document.yaml'
+  tags:
+    type: array
+    items:
+      $ref: './Tag.yaml'
+  customFields:
+    type: object
+    additionalProperties:
+      type: string
+  createdOn:
+    type: string
+    format: date-time
+  modifiedOn:
+    type: string
+    format: date-time

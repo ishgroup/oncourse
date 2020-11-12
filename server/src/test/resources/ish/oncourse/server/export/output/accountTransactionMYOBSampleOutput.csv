@@ -1,0 +1,4 @@
+Date,Memo,Account Number,Debit Amount,Credit Amount
+1/2/2013,"invoice #1, firstName3 lastName",01.24.2801.000/NV1CB0P01,10.00,0.00
+1/2/2013,"payment in, Credit card, firstName1 lastName",01.24.2801.000/NV1CB0P01,20.00,0.00
+1/2/2013,"invoice #1, firstName3 lastName",01.24.2801.000/NV1CB0P01,0.00,-20.00

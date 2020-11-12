@@ -1,0 +1,71 @@
+get:
+  operationId: get
+  description: get a Invoice
+  tags:
+    - Invoice
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/invoice/Invoice.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: INVOICE
+    errorMessage: Sorry, you have no permissions to get invoice. Please contact your administrator
+
+post:
+  operationId: create
+  description: create a new Invoice
+  tags:
+    - Invoice
+  parameters:
+    - name: invoice
+      in: body
+      description: Invoice defenition which will be added
+      required: true
+      schema:
+        $ref: './def/entity/invoice/Invoice.yaml'
+  responses:
+    '200':
+      description: Invoice item successfully updated
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: INVOICE
+    errorMessage: Sorry, you have no permissions to create invoice. Please contact your administrator
+
+put:
+  operationId: update
+  description: Update an existing invoice
+  tags:
+    - Invoice
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+    - name: invoice
+      in: body
+      description: Invoice defenition which will be added
+      required: true
+      schema:
+        $ref: './def/entity/invoice/Invoice.yaml'
+  responses:
+    '200':
+      description: Invoice item successfully updated
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: INVOICE
+    errorMessage: Sorry, you have no permissions to update invoice. Please contact your administrator

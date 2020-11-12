@@ -1,0 +1,23 @@
+type: string
+enum:
+  - No credit/RPL was offered for VET
+  - Vocational Graduate Certificate
+  - Vocational Graduate Diploma
+  - Advanced Diploma
+  - Statement of Attainment at Advanced Diploma level
+  - Bridging and Enabling Course at Advanced Diploma
+  - Diploma
+  - Statement of Attainment at Diploma level
+  - Bridging and Enabling Course at Diploma
+  - Certificate IV
+  - Statement of Attainment at Certificate IV level
+  - Bridging and Enabling Course at Certificate IV level
+  - Certificate III
+  - Statement of Attainment at Certificate III level
+  - Bridging and Enabling Course at Certificate III level
+  - Certificate II
+  - Statement of Attainment at Certificate II level
+  - Bridging and Enabling Course at Certificate II level
+  - Certificate I
+  - Statement of Attainment at Certificate I level
+  - Other qualification

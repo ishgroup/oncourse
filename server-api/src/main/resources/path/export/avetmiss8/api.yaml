@@ -1,0 +1,52 @@
+# TODO
+get:
+  operationId: getExport
+  description: Retreives Avetmiss8 export files
+  tags:
+    - AvetmissExport
+  parameters:
+    - name: processId
+      in: path
+      type: string
+      required: true
+      description: Unique identifier of the process
+  produces:
+    - application/zip
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: file
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: SPECIAL_AVETMISS_EXPORT
+    errorMessage: Sorry, you have no permissions to get avetmiss export. Please contact your administrator
+
+put:
+  operationId: exportAvetmiss8
+  description: >
+    Updates settings used to produce an Avetmiss8 export.
+    Avetmiss8 exports output will be produced from these settings set by this method.
+  tags:
+    - AvetmissExport
+  parameters:
+    - name: request parameters
+      in: body
+      description: Avetmiss Export parameters
+      required: true
+      schema:
+        $ref: './def/entity/AvetmissExportRequest.yaml'
+  responses:
+    '200':
+      description: Avetmiss export settings response
+      schema:
+        type: string
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: SPECIAL_AVETMISS_EXPORT
+    errorMessage: Sorry, you have no permissions to edit avetmiss export. Please contact your administrator
+

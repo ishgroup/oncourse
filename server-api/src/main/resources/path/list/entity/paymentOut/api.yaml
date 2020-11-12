@@ -1,0 +1,70 @@
+get:
+  operationId: get
+  description: get a PaymentOuts
+  tags:
+    - PaymentOut
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/PaymentOut.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: PAYMENT_OUT
+    errorMessage: Sorry, you have no permissions to get payment out. Please contact your administrator
+
+put:
+  operationId: update
+  description: Update existing paymentOut record
+  tags:
+    - PaymentOut
+  parameters:
+    - name: payment
+      in: body
+      description: PaymentOut to update
+      required: true
+      schema:
+        $ref: './def/entity/PaymentOut.yaml'
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: PAYMENT_OUT
+    errorMessage: Sorry, you have no permissions to edit paymentIn. Please contact your administrator
+
+post:
+  operationId: create
+  description: create paymentOut record
+  tags:
+    - PaymentOut
+  parameters:
+    - name: payment
+      in: body
+      description: PaymentOut to update
+      required: true
+      schema:
+        $ref: './def/entity/PaymentOut.yaml'
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: PAYMENT_OUT
+    errorMessage: Sorry, you have no permissions to create paymentIn. Please contact your administrator

@@ -1,0 +1,10 @@
+type: object
+properties:
+  scheduleType:
+    $ref: '../../enum/ScheduleType.yaml'
+    description: cron type
+    required: true
+  custom:
+    type: string
+    description: custom cron value
+    required: false

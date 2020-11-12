@@ -1,0 +1,8 @@
+type: string
+description: list of crons
+enum:
+  - Daily morning (about 6am)
+  - Daily evening (about 8pm)
+  - Weekly (Monday about 7am)
+  - Hourly
+  - Custom

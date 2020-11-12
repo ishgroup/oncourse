@@ -1,0 +1,2 @@
+Student Name,Invoice Number,Total,Owing,Last Payment In Date,Last Payment In Amount,Payment Due Date,Days Overdue,Overdue Amount,Percent Overdue of Owing
+Test Student,1,0.00,100.00,No payments,No payments,2013-03-01,0,0.00,0%

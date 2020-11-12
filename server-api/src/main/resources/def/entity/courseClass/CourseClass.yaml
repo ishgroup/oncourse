@@ -1,0 +1,158 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: true
+  code:
+    type: string
+  courseId:
+    type: integer
+    format: int64
+  courseCode:
+    type: string
+  courseName:
+    type: string
+  endDateTime:
+    type: string
+    format: date-time
+  startDateTime:
+    type: string
+    format: date-time
+  attendanceType:
+    $ref: '../../enum/CourseClassAttendanceType.yaml'
+  deliveryMode:
+    $ref: '../../enum/DeliveryMode.yaml'
+  fundingSource:
+    $ref: '../../enum/ClassFundingSource.yaml'
+  budgetedPlaces:
+    type: integer
+  censusDate:
+    type: string
+    format: date
+  createdOn:
+    type: string
+    format: date-time
+  modifiedOn:
+    type: string
+    format: date-time
+  deposit:
+    type: number
+  detBookingId:
+    type: string
+  expectedHours:
+    type: number
+  feeExcludeGST:
+    type: number
+  feeHelpClass:
+    type: boolean
+  finalDetExport:
+    type: string
+  fullTimeLoad:
+    type: string
+  initialDetExport:
+    type: string
+  isActive:
+    type: boolean
+  isCancelled:
+    type: boolean
+  isDistantLearningCourse:
+    type: boolean
+  isShownOnWeb:
+    type: boolean
+  maxStudentAge:
+    type: integer
+  maximumDays:
+    type: integer
+  maximumPlaces:
+    type: integer
+  message:
+    type: string
+  midwayDetExport:
+    type: string
+  minStudentAge:
+    type: integer
+  minimumPlaces:
+    type: integer
+  reportingPeriod:
+    type: integer
+  sessionsCount:
+    type: integer
+  # vet fields
+  suppressAvetmissExport:
+    type: boolean
+  vetCourseSiteID:
+    type: integer
+  vetFundingSourceStateID:
+    type: string
+  vetPurchasingContractID:
+    type: string
+  vetPurchasingContractScheduleID:
+    type: string
+  webDescription:
+    type: string
+  relatedFundingSourceId:
+    type: integer
+    format: int64
+  # class hours fields
+  qualificationHours:
+    type: number
+  nominalHours:
+    type: number
+  classroomHours:
+    type: number
+  studentContactHours:
+    type: number
+  reportableHours:
+    type: number
+  #
+  roomId:
+    type: integer
+    format: int64
+  virtualSiteId:
+    type: integer
+    format: int64
+  taxId:
+    type: integer
+    format: int64
+  summaryFee:
+    type: number
+  summaryDiscounts:
+    type: number
+  enrolmentsToProfitLeftCount:
+    type: integer
+  allEnrolmentsCount:
+    type: integer
+  allOutcomesCount:
+    type: integer
+  inProgressOutcomesCount:
+    type: integer
+  passOutcomesCount:
+    type: integer
+  failedOutcomesCount:
+    type: integer
+  withdrawnOutcomesCount:
+    type: integer
+  otherOutcomesCount:
+    type: integer
+  successAndQueuedEnrolmentsCount:
+    type: integer
+  canceledEnrolmentsCount:
+    type: integer
+  failedEnrolmentsCount:
+    type: integer
+  tags:
+    type: array
+    items:
+      $ref: '../Tag.yaml'
+  documents:
+    type: array
+    items:
+      $ref: '../Document.yaml'
+  isTraineeship:
+    type: boolean
+  customFields:
+    type: object
+    additionalProperties:
+      type: string
+

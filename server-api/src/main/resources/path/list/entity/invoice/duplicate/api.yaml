@@ -1,0 +1,25 @@
+get:
+  operationId: duplicateInvoice
+  description: Duplicates an existing invoice
+  tags:
+    - Invoice
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/invoice/Invoice.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: INVOICE
+    errorMessage: Sorry, you have no permissions to duplicate invoice. Please contact your administrator
+
+
+

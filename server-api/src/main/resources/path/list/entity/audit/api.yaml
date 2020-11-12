@@ -1,0 +1,23 @@
+get:
+  description: Returns an audit item
+  operationId: get
+  tags:
+  - Audit
+  parameters:
+  - name: id
+    in: path
+    description: Unique identifier of audit record to fetch
+    type: integer
+    format: int64
+    required: true
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/Audit.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: AUDIT_LOGGING
+    errorMessage: Sorry, you have no permissions to get audits. Please contact your administrator

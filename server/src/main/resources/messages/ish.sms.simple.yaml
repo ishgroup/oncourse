@@ -1,0 +1,10 @@
+name: Simple SMS
+entityClass: Contact
+type: sms
+keyCode: ish.sms.simple
+txtTemplate: ish.sms.simple.txt
+description: Send unformatted SMS
+variables:
+  - name: message
+    label: Message
+    dataType: TEXT

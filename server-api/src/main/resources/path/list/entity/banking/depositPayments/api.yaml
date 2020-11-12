@@ -1,0 +1,29 @@
+get:
+  operationId: getDepositPayments
+  description: get payments for deposit banking
+  tags:
+    - Banking
+  parameters:
+    - name: accountId
+      in: path
+      required: true
+      type: integer
+      format: int64
+    - name: adminCenterId
+      in: path
+      required: true
+      type: integer
+      format: int64
+  responses:
+    '200':
+      description: Success response
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/Payment.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: BANKING
+    errorMessage: Sorry, you have no permission to create banking. Please contact your administrator

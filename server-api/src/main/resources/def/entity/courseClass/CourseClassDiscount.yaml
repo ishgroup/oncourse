@@ -1,0 +1,8 @@
+type: object
+properties:
+  discount:
+    $ref: '../discount/Discount.yaml'
+  forecast:
+    type: number
+  discountOverride:
+    type: number

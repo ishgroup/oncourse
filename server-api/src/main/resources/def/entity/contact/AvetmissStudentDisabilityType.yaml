@@ -1,0 +1,14 @@
+type: string
+description: List of disabilities.
+enum:
+  - Not stated
+  - None
+  - Hearing/Deaf
+  - Physical
+  - Intellectual
+  - Learning
+  - Mental illness
+  - Acquired brain impairment
+  - Vision
+  - Medical condition
+  - Other

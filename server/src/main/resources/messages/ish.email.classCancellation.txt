@@ -1,0 +1,7 @@
+Dear ${enrolment.student.contact.fullName},
+
+We are sorry to notify you that the class you were enrolled in, ${enrolment.courseClass.course.code}-${enrolment.courseClass.code} ${enrolment.courseClass.course.name} <% if (enrolment.courseClass.startDateTime != null) { %>that was due to start on ${enrolment.courseClass.startDateTime.format("h:mm a EEEE d MMMM yyyy zzzz", enrolment.courseClass.getTimeZone())}<% } %> will not be running as scheduled
+If you wish to transfer to another class from this course, the times, dates and locations of other classes currently available are at ${Preferences.get("web.url")}/course/${enrolment.courseClass.course.code}
+You can request a transfer to any other class currently available, a credit note, or a refund.
+
+Please contact us at your convenience and advise how you wish to proceed.

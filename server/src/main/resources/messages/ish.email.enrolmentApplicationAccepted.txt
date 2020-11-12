@@ -1,0 +1,14 @@
+Dear ${application.student.contact.firstName},
+Your application for enrolment in ${application.course.name} has been successful.
+<% if (application.feeOverride) { %>
+Your eligibility has been assessed and the fee applicable to your enrolment is ${application.feeOverride}.
+<% } %>
+<% if (application.reason) { %>
+Reason:
+${application.reason}
+<% } %>
+To accept this position, please go to ${Preferences.get("web.url")}/course/${application.course.code}?student=${application.student.contact.uniqueCode} and complete the online enrolment process.
+<% if (application.enrolBy) { %>
+To accept this position, your enrolment must be completed before midnight on ${application.enrolBy.format("d/M/yy")}
+<% } %>
+If you wish to withdraw your application, we would appreciate you notifying us by phone or email.

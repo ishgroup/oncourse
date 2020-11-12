@@ -1,0 +1,14 @@
+get:
+  summary: get Dashboard statistic data
+  operationId: getStatistic
+  tags:
+  - Dashboard
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        $ref: './def/entity/dashboard/StatisticData.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    keyCode: UNDEFINED

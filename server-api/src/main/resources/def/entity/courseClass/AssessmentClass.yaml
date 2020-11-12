@@ -1,0 +1,34 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+  assessmentId:
+    type: integer
+    format: int64
+  courseClassId:
+    type: integer
+    format: int64
+  assessmentCode:
+    type: string
+  assessmentName:
+    type: string
+  contactIds:
+    type: array
+    required: false
+    items:
+      type: integer
+      format: int64
+    description: Course class tutor's ids
+    example: 200,302
+  moduleIds:
+    type: array
+    items:
+      type: integer
+      format: int64
+  releaseDate:
+    type: string
+    format: date-time
+  dueDate:
+    type: string
+    format: date-time

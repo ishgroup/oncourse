@@ -1,0 +1,7 @@
+type: string
+description: Reconciled status
+enum:
+  - 'Yes'
+  - 'No'
+  - Partially
+  - N/A

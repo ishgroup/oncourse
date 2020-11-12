@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='utf-8'?>
+<data>
+  <contact id='1'>
+    <modifiedOn>2012-05-10T00:00:00Z</modifiedOn>
+    <createdOn>2012-05-10T00:00:00Z</createdOn>
+    <allowEmail>true</allowEmail>
+    <allowPost>false</allowPost>
+    <allowSms>true</allowSms>
+    <deliveryStatusEmail>0</deliveryStatusEmail>
+    <deliveryStatusPost>0</deliveryStatusPost>
+    <deliveryStatusSms>0</deliveryStatusSms>
+    <email>test@test.test</email>
+    <fax />
+    <firstName>Test</firstName>
+    <homePhone>331110000</homePhone>
+    <company>false</company>
+    <male>true</male>
+    <lastName>Student</lastName>
+    <message />
+    <mobilePhone>331110000</mobilePhone>
+    <notes>first note1
+second note1</notes>
+    <postcode>1001</postcode>
+    <state>NSW</state>
+    <street>Main</street>
+    <suburb>Sydney</suburb>
+    <tfn />
+    <uniqueCode>ST1UNIQUE</uniqueCode>
+    <workPhone>331110000</workPhone>
+    <title />
+    <student>
+      <disabilityType>Hearing/Deaf</disabilityType>
+      <englishProficiency>Very Well</englishProficiency>
+      <highestSchoolLevel>Did not go to school</highestSchoolLevel>
+      <indigenousStatus>Aboriginal</indigenousStatus>
+      <isOverseasClient>false</isOverseasClient>
+      <isStillAtSchool>false</isStillAtSchool>
+      <labourForceStatus>Full-time employee</labourForceStatus>
+      <priorEducationCode>Bachelor degree or higher degree level</priorEducationCode>
+      <studentNumber>1</studentNumber>
+      <yearSchoolCompleted>2009</yearSchoolCompleted>
+    </student>
+    <tutor />
+  </contact>
+  <contact id='2'>
+    <modifiedOn>2012-05-20T00:00:00Z</modifiedOn>
+    <createdOn>2012-05-20T00:00:00Z</createdOn>
+    <allowEmail>true</allowEmail>
+    <allowPost>false</allowPost>
+    <allowSms>false</allowSms>
+    <deliveryStatusEmail>0</deliveryStatusEmail>
+    <deliveryStatusPost>0</deliveryStatusPost>
+    <deliveryStatusSms>0</deliveryStatusSms>
+    <email>tutor@tutor.tutor</email>
+    <fax />
+    <firstName>Test</firstName>
+    <homePhone>331110001</homePhone>
+    <company>false</company>
+    <male>true</male>
+    <lastName>Tutor</lastName>
+    <message />
+    <mobilePhone>331110001</mobilePhone>
+    <notes>first note2
+second note2</notes>
+    <postcode>1002</postcode>
+    <state>NSW</state>
+    <street>1st</street>
+    <suburb>Sydney</suburb>
+    <tfn />
+    <uniqueCode>TUT1UNIQUE</uniqueCode>
+    <workPhone>331110001</workPhone>
+    <title />
+    <student />
+    <tutor>
+      <dateStarted>2012-01-01</dateStarted>
+      <dateFinished>2013-01-01</dateFinished>
+      <resume>some text</resume>
+      <payrollRef />
+    </tutor>
+  </contact>
+</data>

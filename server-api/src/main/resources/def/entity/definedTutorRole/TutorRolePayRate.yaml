@@ -1,0 +1,16 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+  type:
+    $ref: '../../enum/RepetitionType.yaml'
+  validFrom:
+    type: string
+    format: date
+  rate:
+    type: number
+  oncostRate:
+    type: number
+  notes:
+    type: string

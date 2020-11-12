@@ -1,0 +1,10 @@
+type: object
+properties:
+  hasAccess:
+    required: true
+    type: boolean
+    description: Result of access checking
+  cause:
+    required: true
+    type: string
+    description: Special field which contains additional info about permission checking

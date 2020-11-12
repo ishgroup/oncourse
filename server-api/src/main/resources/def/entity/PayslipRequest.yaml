@@ -1,0 +1,9 @@
+type: object
+properties:
+  ids:
+    type: array
+    items:
+      type: integer
+      format: int64
+  status:
+    $ref: '../enum/PayslipStatus.yaml'

@@ -1,0 +1,37 @@
+jetty:
+  context: /
+  connectors:
+    - port: 8182
+      type: https2
+  staticResourceBase: classpath:static
+  compactPath: true
+
+jdbc:
+  angel:
+    type: uri
+    driverClassName: org.mariadb.jdbc.Driver
+    testWhileIdle: true
+    validationQuery: SELECT 1
+    validationInterval: 30000
+    timeBetweenEvictionRunsMillis: 3000
+    maxActive: 100
+    maxIdle: 5
+    minIdle: 2
+    removeAbandonedTimeout: 1000
+    removeAbandoned: true
+    logAbandoned: true
+    jmxEnabled: true
+
+cayenne:
+  datasource: angel
+  configs:
+    - cayenne/cayenne-Angel.xml
+cxf:
+  welcomeText: 'Angel REST API'
+  urlPattern: '/a/*'
+
+permissions:
+  apiPackage: ish.oncourse.server.api.v1.service
+
+bugsnag:
+  api: 62d23ac49ee5f1667a9b4cef633b5852

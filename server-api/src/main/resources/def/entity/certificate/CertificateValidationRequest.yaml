@@ -1,0 +1,15 @@
+type: object
+properties:
+  search:
+    type: string
+  filter:
+    type: string
+  tagGroups:
+    type: array
+    items:
+      $ref: '../../list/TagGroup.yaml'
+  sorting:
+    type: array
+    items:
+      $ref: '../Sorting.yaml'
+    required: true

@@ -1,0 +1,8 @@
+type: string
+description: Delivery schedule types, avalible for Survey forms only.
+enum:
+  - On enrol
+  - On start
+  - Midway
+  - At completion
+  - On demand

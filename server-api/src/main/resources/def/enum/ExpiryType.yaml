@@ -1,0 +1,6 @@
+type: string
+enum:
+  - Days
+  - 1st January
+  - 1st July
+  - Never (Lifetime)

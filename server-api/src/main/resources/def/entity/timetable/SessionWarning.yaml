@@ -1,0 +1,23 @@
+type: object
+description: timetable session object
+properties:
+  sessionId:
+    type: integer
+    format: int64
+    required: false
+    description: unique identifier of session record
+  temporaryId:
+    type: string
+    required: false
+    description: temporary unique identifier of record ddi not persisted yet
+  type:
+    $ref: './ClashType.yaml'
+  referenceId:
+    type: integer
+    format: int64
+    required: true
+    description: unique identifier of record in onCourse
+  label:
+    type: string
+  message:
+    type: string

@@ -1,0 +1,13 @@
+#
+# Refactor this definition. It's related to /preference/enum
+#
+type: string
+description: List of integration types
+enum:
+  - DeliveryMode
+  - ClassFundingSource
+  - ExportJurisdiction
+  - TrainingOrg_Types
+  - AddressStates
+  - MaintenanceTimes
+  - TwoFactorAuthStatus

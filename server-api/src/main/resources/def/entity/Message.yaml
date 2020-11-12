@@ -1,0 +1,28 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: true
+  subject:
+    type: string
+  message:
+    type: string
+  htmlMessage:
+    type: string
+  sms:
+    type: string
+  postDescription:
+    type: string
+  creatorKey:
+    type: string
+  createdOn:
+    type: string
+    format: date-time
+  modifiedOn:
+    type: string
+    format: date-time
+  sentToContactFullname:
+    type: string
+    required: true
+    example: Doe John

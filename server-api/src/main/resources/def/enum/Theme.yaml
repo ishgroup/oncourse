@@ -1,0 +1,5 @@
+type: string
+description: List of color themes
+enum:
+  - Dark Theme
+  - Light Theme

@@ -1,0 +1,42 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: true
+  name:
+    type: string
+  code:
+    type: string
+  description:
+    type: string
+  feeExTax:
+    type: number
+  totalFee:
+    type: number
+  taxId:
+    type: integer
+    format: int64
+  expiryType:
+    $ref: '../../enum/ExpiryType.yaml'
+  expiryDays:
+    type: integer
+  incomeAccountId:
+    type: integer
+    format: int64
+  status:
+    $ref: '../../enum/ProductStatus.yaml'
+  corporatePasses:
+    type: array
+    items:
+      $ref: './MembershipCorporatePass.yaml'
+  membershipDiscounts:
+    type: array
+    items:
+      $ref: './MembershipDiscount.yaml'
+  createdOn:
+    type: string
+    format: date-time
+  modifiedOn:
+    type: string
+    format: date-time

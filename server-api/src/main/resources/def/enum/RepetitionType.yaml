@@ -1,0 +1,10 @@
+type: string
+description: Status of the process
+enum:
+  - Fixed
+  - Per session
+  - Per enrolment
+  - Per unit
+  - Discount
+  - Per timetabled hour
+  - Per student contact hour

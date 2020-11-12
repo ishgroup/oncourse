@@ -1,0 +1,14 @@
+type: string
+enum:
+  - Not stated
+  - To get a job
+  - To develop my existing business
+  - To start my own business
+  - To try for a different career
+  - To get a better job or promotion
+  - To get skills for community/voluntary work
+  - It was a requirement of my job
+  - I wanted extra skills for my job
+  - To get into another course of study
+  - Other reasons
+  - For personal interest or self-development

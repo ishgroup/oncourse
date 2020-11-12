@@ -1,0 +1,27 @@
+type: object
+properties:
+  moduleId:
+    type: integer
+    format: int64
+  moduleName:
+    type: string
+  moduleTitle:
+    type: string   
+  sessionIds:
+    type: array
+    items:
+      type: integer
+      format: int64
+  temporarySessionIds:
+    type: array
+    items:
+      type: string
+  assessmentIds:
+    type: array
+    items:
+      type: integer
+      format: int64
+  temporaryAssessmentIds:
+    type: array
+    items:
+      type: string

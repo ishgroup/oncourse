@@ -1,0 +1,82 @@
+get:
+  operationId: get
+  description: Get all funding contracts
+  tags:
+    - FundingContract
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/FundingSource.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    keyCode: UNDEFINED
+
+post:
+  operationId: update
+  description: Update funding contracts
+  tags:
+    - FundingContract
+  parameters:
+    - name: fundingContracts
+      in: body
+      description: Funding contracts for update
+      required: true
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/FundingSource.yaml'
+  responses:
+    '204':
+      description: Success response.
+    default:
+      description: Unexpected error
+  x-permission:
+    license:
+      code: license.fundingContract
+      errorMessage: You have not license for funding contracts
+
+patch:
+  operationId: patch
+  description: Patch funding contracts
+  tags:
+    - FundingContract
+  parameters:
+    - name: fundingContracts
+      in: body
+      description: Funding contracts for update
+      required: true
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/FundingSource.yaml'
+  responses:
+    '204':
+      description: Success response.
+    default:
+      description: Unexpected error
+
+delete:
+  operationId: remove
+  description: Remove funding contract
+  tags:
+    - FundingContract
+  parameters:
+    - name: id
+      in: path
+      description: Identifier of funding vontract whitch will be deleted.
+      required: true
+      type: integer
+      format: int64
+  responses:
+    '204':
+      description: Funding contract successfully deleted
+    default:
+      description: Unexpected error
+  x-permission:
+    license:
+      code: license.fundingContract
+      errorMessage: You have not license for funding contracts

@@ -1,0 +1,56 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+  payeeId:
+    type: integer
+    format: int64
+  payeeName:
+    type: string
+  type:
+    $ref: '../enum/PaymentType.yaml'
+    required: true
+  chequeSummary:
+    type: object
+    additionalProperties:
+      type: string
+  paymentMethodId:
+    type: integer
+    format: int64
+  refundableId:
+    type: integer
+    format: int64
+  status:
+    $ref: '../enum/PaymentStatus.yaml'
+    required: true
+  accountOut:
+    type: integer
+    format: int64
+  amount:
+    type: number
+  datePayed:
+    type: string
+    format: date
+  dateBanked:
+    type: string
+    format: date
+  invoices:
+    type: array
+    items:
+      $ref: './PaymentInvoice.yaml'
+  privateNotes:
+    type: string
+  createdOn:
+    type: string
+    format: date-time
+  modifiedOn:
+    type: string
+    format: date-time
+  createdBy:
+    type: string
+  administrationCenterId:
+    type: integer
+    format: int64
+  administrationCenterName:
+    type: string

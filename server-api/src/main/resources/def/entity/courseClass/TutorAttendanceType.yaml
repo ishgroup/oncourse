@@ -1,0 +1,5 @@
+type: string
+enum:
+  - Confirmed for payroll
+  - Rejected for payroll
+  - Not confirmed for payroll

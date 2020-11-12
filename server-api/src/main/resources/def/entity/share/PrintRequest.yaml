@@ -1,0 +1,30 @@
+type: object
+properties:
+  search:
+    type: string
+  filter:
+    type: string
+  tagGroups:
+    type: array
+    items:
+      $ref: '../../list/TagGroup.yaml'
+  sorting:
+    type: array
+    items:
+      $ref: '../Sorting.yaml'
+    required: true
+  report:
+    type: integer
+    format: int64
+  overlay:
+    type: integer
+    format: int64
+  variables:
+    type: object
+    additionalProperties:
+      type: string
+    description: report variables values
+  createPreview:
+    description: generate and save preview for report
+    required: false
+    type: boolean

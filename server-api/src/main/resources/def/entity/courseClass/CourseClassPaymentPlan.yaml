@@ -1,0 +1,12 @@
+type: object
+properties:
+  dayOffset:
+    require: false
+    description: days after class start, null means pay on enrolment
+    example: 2
+    type: integer
+  amount:
+    require: true
+    description: payment due amount
+    example: 20.00
+    type: number

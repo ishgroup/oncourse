@@ -1,0 +1,26 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: true
+    description: Unique audit identifier
+  message:
+    type: string
+    description: Message
+    example: Script "send enrolment" failed groovyx.net.http.HttpResponseException Bad Request
+  action:
+    type: string
+    description: Action
+    example: Script failed
+  systemUser:
+    type: string
+    description: First name and Last name of system user
+    example: John Smith
+  entityId:
+    type: string
+  entityIdentifier:
+    type: string
+  created:
+    type: string
+    format: date-time

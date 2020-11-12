@@ -1,0 +1,10 @@
+Dear ${student.contact.getName(true)},
+
+New assessments have been released today.
+
+<% assessments.each { ac -> %>
+CLASS: ${ac.courseClass.uniqueCode} ${ac.courseClass.course.name} DUE: ${ac.releaseDate.format("dd/MM/YYYY")}
+${ac.assessment.name}  <% if(ac.assessment.description) { %> - ${ac.assessment.description} <% } %>
+
+<% } %>
+To view your assessments online, please visit the Student Portal ${student.contact.portalLoginURL}

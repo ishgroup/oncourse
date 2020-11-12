@@ -1,0 +1,11 @@
+type: string
+enum:
+  - Not stated
+  - Full time
+  - Part time
+  - Self employed
+  - Employer
+  - Unpaid family worker
+  - Unemployed seeking full time
+  - Unemployed seeking part time
+  - Unemployed non seeking

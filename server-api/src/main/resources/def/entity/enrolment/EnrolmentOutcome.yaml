@@ -1,0 +1,19 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+  moduleCode:
+    type: string
+  moduleName:
+    type: string
+  status:
+    $ref: '../../enum/OutcomeStatus.yaml'
+  startDate:
+    type: string
+    format: date
+  endDate:
+    type: string
+    format: date
+  deliveryMode:
+    $ref: '../../enum/DeliveryMode.yaml'

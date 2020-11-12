@@ -1,0 +1,15 @@
+type: object
+description: View's model entity to represent payments for ProductItem
+properties:
+  id:
+    type: string
+  createdOn:
+    type: string
+    format: date-time
+  source:
+    type: string
+  invoiceNo:
+    type: integer
+    format: int64
+  amount:
+    type: number

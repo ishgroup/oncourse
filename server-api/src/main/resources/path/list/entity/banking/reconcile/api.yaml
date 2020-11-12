@@ -1,0 +1,23 @@
+post:
+  operationId: reconcile
+  description: reconcile banking deposits
+  tags:
+    - Banking
+  parameters:
+    - name: ids
+      in: body
+      required: true
+      schema:
+        type: array
+        items:
+          type: integer
+          format: int64
+  responses:
+    '200':
+      description: Banking deposits reconciled
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: BANKING
+    errorMessage: Sorry, you have no permission to reconcile banking deposits. Please contact your administrator

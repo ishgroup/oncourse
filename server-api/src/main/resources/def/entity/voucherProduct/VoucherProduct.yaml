@@ -1,0 +1,42 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: true
+  name:
+    type: string
+  code:
+    type: string
+  feeExTax:
+    type: number
+  liabilityAccountId:
+    type: integer
+    format: int64
+  expiryDays:
+    type: integer
+  value:
+    type: number
+  maxCoursesRedemption:
+    type: integer
+  courses:
+    type: array
+    items:
+      $ref: './VoucherProductCourse.yaml'
+  description:
+    type: string
+  status:
+    $ref: '../../enum/ProductStatus.yaml'
+  corporatePasses:
+    type: array
+    items:
+      $ref: './VoucherCorporatePass.yaml'
+  soldVouchersCount:
+    type: integer
+    format: int64
+  createdOn:
+    type: string
+    format: date-time
+  modifiedOn:
+    type: string
+    format: date-time

@@ -1,0 +1,5 @@
+keyCode: ish.onCourse.invoice.xml
+entityClass: Invoice
+body: ish.onCourse.invoice.xml.groovy
+name: Invoice XML export
+outputType: xml

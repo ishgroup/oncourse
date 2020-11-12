@@ -1,0 +1,5 @@
+keyCode: ish.onCourse.corporatePass.xml
+entityClass: CorporatePass
+body: ish.onCourse.corporatePass.xml.groovy
+name: CorporatePass XML export
+outputType: xml

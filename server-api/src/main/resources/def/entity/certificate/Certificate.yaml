@@ -1,0 +1,60 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+  studentContactId:
+    type: integer
+    format: int64
+  studentName:
+    type: string
+  studentSuburb:
+    type: string
+  studentDateOfBirth:
+    type: string
+    format: date
+  qualificationId:
+    type: integer
+    format: int64
+  nationalCode:
+    type: string
+  title:
+    type: string
+  level:
+    type: string
+  isQualification:
+    type: boolean
+  outcomes:
+    type: array
+    items:
+      $ref: './CertificateOutcome.yaml'
+  privateNotes:
+    type: string
+  publicNotes:
+    type: string
+  awardedOn:
+    type: string
+    format: date
+  expiryDate:
+    type: string
+    format: date
+  issuedOn:
+    type: string
+    format: date
+  number:
+    type: integer
+    format: int64
+  printedOn:
+    type: string
+    format: date
+  revokedOn:
+    type: string
+    format: date
+  code:
+    type: string
+  createdOn:
+    type: string
+    format: date-time
+  modifiedOn:
+    type: string
+    format: date-time

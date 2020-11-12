@@ -1,0 +1,123 @@
+get:
+  description: Returns assessment record
+  operationId: get
+  tags:
+    - Assessment
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of assessment record to fetch
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/Assessment.yaml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: ASSESSMENT
+    errorMessage: Sorry, you have no permissions to get assessment. Please contact your administrator
+
+post:
+  operationId: create
+  tags:
+    - Assessment
+  parameters:
+    - name: assessment
+      in: body
+      description: assessment for create
+      required: true
+      schema:
+        $ref: './def/entity/Assessment.yaml'
+  responses:
+    '200':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: ASSESSMENT
+    errorMessage: Sorry, you have no permissions to create assessment. Please contact your administrator
+
+put:
+  operationId: update
+  tags:
+    - Assessment
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of assessment record to fetch
+    - name: assessment
+      in: body
+      schema:
+        $ref: './def/entity/Assessment.yaml'
+      required: true
+      description: assessment for update
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: ASSESSMENT
+    errorMessage: Sorry, you have no permissions to edit assessment. Please contact your administrator
+
+delete:
+  operationId: remove
+  tags:
+    - Assessment
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of assessment record to fetch
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: delete
+    keyCode: ASSESSMENT
+    errorMessage: Sorry, you have no permissions to delete assessment. Please contact your administrator
+
+patch:
+  operationId: bulkChange
+  tags:
+    - Assessment
+  parameters:
+    - name: diff
+      in: body
+      schema:
+        $ref: './def/entity/Diff.yaml'
+      required: true
+      description: Assessments for update
+  responses:
+    '200':
+      description: Success response
+    '400':
+      description: Bad request error
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: ASSESSMENT
+    errorMessage: Sorry, you have no permissions to edit assessment. Please contact your administrator.

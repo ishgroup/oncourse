@@ -1,0 +1,5 @@
+keyCode: ish.onCourse.enrolment.csv
+entityClass: Enrolment
+body: ish.onCourse.enrolment.csv.groovy
+name: Enrolment CSV export
+outputType: csv

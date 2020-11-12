@@ -1,0 +1,13 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: true
+  absCode:
+    type: string
+  isActive:
+    type: boolean
+    required: true
+  name:
+    type: string

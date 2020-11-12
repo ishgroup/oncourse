@@ -1,0 +1,19 @@
+type: object
+properties:
+  ids:
+    type: array
+    items:
+      type: integer
+      format: int64
+  search:
+    type: string
+  filter:
+    type: string
+  tagGroups:
+    type: array
+    items:
+      $ref: '../list/TagGroup.yaml'
+  diff:
+    type: object
+    additionalProperties:
+      type: string

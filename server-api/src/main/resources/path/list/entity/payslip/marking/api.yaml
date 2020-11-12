@@ -1,0 +1,20 @@
+post:
+  operationId: execute
+  description: marking tutor pay
+  tags:
+    - Payslip
+  parameters:
+    - name: request
+      in: body
+      schema:
+        $ref: './def/entity/PayslipRequest.yaml'
+      required: true
+  responses:
+    '200':
+      description: Tutor pay successfully created
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: PAYSLIP
+    errorMessage: Sorry, you have no permissions to get tutor pay. Please contact your administrator

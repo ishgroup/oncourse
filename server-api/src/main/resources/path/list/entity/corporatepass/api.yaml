@@ -1,0 +1,103 @@
+get:
+  operationId: get
+  description: Return corporate pass record
+  tags:
+    - CorporatePass
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of corporate pass record to fetch
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/CorporatePass.yaml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: CORPORATE_PASS
+    errorMessage: Sorry, you have no permissions to get corporate pass. Please contact your administrator
+
+post:
+  operationId: create
+  description: Create corporate pass record
+  tags:
+    - CorporatePass
+  parameters:
+    - name: corporatePass
+      in: body
+      description: corporate pass for create
+      required: true
+      schema:
+        $ref: './def/entity/CorporatePass.yaml'
+  responses:
+    '200':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: CORPORATE_PASS
+    errorMessage: Sorry, you have no permissions to create corporate pass. Please contact your administrator
+
+put:
+  operationId: update
+  description: Update existing corporate pass record
+  tags:
+    - CorporatePass
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of corporate pass record to fetch
+    - name: corporatePass
+      in: body
+      schema:
+        $ref: './def/entity/CorporatePass.yaml'
+      required: true
+      description: corporate pass for update
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: CORPORATE_PASS
+    errorMessage: Sorry, you have no permissions to edit corporate pass. Please contact your administrator
+
+delete:
+  operationId: remove
+  description: delete existing corporate pass record
+  tags:
+    - CorporatePass
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of corporate pass record to fetch
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: delete
+    keyCode: CORPORATE_PASS
+    errorMessage: Sorry, you have no permissions to delete corporate pass. Please contact your administrator

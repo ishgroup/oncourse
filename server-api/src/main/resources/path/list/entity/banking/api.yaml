@@ -1,0 +1,100 @@
+get:
+  description: Returns Banking record
+  operationId: get
+  tags:
+    - Banking
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of banking record to fetch
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/Banking.yaml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: BANKING
+    errorMessage: Sorry, you have no permissions to get banking. Please contact your administrator
+
+post:
+  operationId: create
+  tags:
+    - Banking
+  parameters:
+    - name: banking
+      in: body
+      description: banking for create
+      required: true
+      schema:
+        $ref: './def/entity/Banking.yaml'
+  responses:
+    '200':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: BANKING
+    errorMessage: Sorry, you have no permissions to create banking. Please contact your administrator
+
+put:
+  operationId: update
+  tags:
+    - Banking
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of banking record to update
+    - name: banking
+      in: body
+      schema:
+        $ref: './def/entity/Banking.yaml'
+      required: true
+      description: banking for update
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: BANKING
+    errorMessage: Sorry, you have no permissions to edit banking. Please contact your administrator
+
+delete:
+  operationId: remove
+  tags:
+    - Banking
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of banking record to delete
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: delete
+    keyCode: BANKING
+    errorMessage: Sorry, you have no permissions to delete banking. Please contact your administrator

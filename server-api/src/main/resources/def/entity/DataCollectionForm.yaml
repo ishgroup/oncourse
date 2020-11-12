@@ -1,0 +1,31 @@
+type: object
+properties:
+  id:
+    type: string
+    description: Unique Data Collection Form identifier
+  name:
+    type: string
+    required: true
+    description: Data Collection Form name
+  type:
+    $ref: '../enum/DataCollectionType.yaml'
+    description: Data collection types
+    required: true
+  fields:
+    type: array
+    items:
+      $ref: './Field.yaml'
+  headings:
+    type: array
+    items:
+      $ref: './Heading.yaml'
+  deliverySchedule:
+    $ref: '../enum/DeliveryScheduleType.yaml'
+  created:
+    type: string
+    format: date-time
+    description: date and time when data collection form was created
+  modified:
+    type: string
+    format: date-time
+    description: date and time when data collection form was modified

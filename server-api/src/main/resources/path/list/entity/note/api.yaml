@@ -1,0 +1,107 @@
+get:
+  operationId: get
+  description: get notes array
+  tags:
+    - Note
+  parameters:
+    - name: entityName
+      in: query
+      type: string
+      required: true
+    - name: entityId
+      in: query
+      type: integer
+      format: int64
+      required: true
+  responses:
+    '200':
+      description: Success response
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/Note.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: LAZY/entityName
+    errorMessage: Sorry, you have no permissions to get notes. Please contact your administrator
+
+post:
+  operationId: create
+  description: create a new Note
+  tags:
+    - Note
+  parameters:
+    - name: entityName
+      in: query
+      type: string
+      required: true
+    - name: entityId
+      in: query
+      type: integer
+      format: int64
+      required: true
+    - name: note
+      in: body
+      description: Note defenition which will be added
+      required: true
+      schema:
+        $ref: './def/entity/Note.yaml'
+  responses:
+    '200':
+      description: Module item successfully added
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: LAZY/entityName
+    errorMessage: Sorry, you have no permissions to create note. Please contact your administrator
+
+put:
+  operationId: update
+  description: Update an existing module
+  tags:
+    - Note
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+    - name: note
+      in: body
+      description: Note defenition which will be updated
+      required: true
+      schema:
+        $ref: './def/entity/Note.yaml'
+  responses:
+    '200':
+      description: Note item successfully updated
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: all
+    keyCode: SPECIAL_EDIT_NOTES
+    errorMessage: Sorry, you have no permissions to update note. Please contact your administrator
+
+delete:
+  operationId: remove
+  description: Remove an existing note
+  tags:
+    - Note
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+  responses:
+    '200':
+      description: Success response.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: all
+    keyCode: SPECIAL_EDIT_NOTES
+    errorMessage: Sorry, you have no permissions to delete note. Please contact your administrator

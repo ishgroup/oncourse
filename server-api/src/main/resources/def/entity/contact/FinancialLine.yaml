@@ -1,0 +1,25 @@
+type: object
+properties:
+  relatedEntityId:
+    type: integer
+    format: int64
+  type:
+    $ref: './FinancialType.yaml'
+  description:
+    type: string
+  date:
+    type: string
+    format: date
+  createdOn:
+    type: string
+    format: date-time
+  referenceNumber:
+    type: string
+  status:
+    $ref: '../../enum/PaymentStatus.yaml'
+  owing:
+    type: number
+  amount:
+    type: number
+  balance:
+    type: number

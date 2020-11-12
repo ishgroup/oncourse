@@ -1,0 +1,75 @@
+databaseChangeLog:
+  - changeSet:
+      id: 45-1
+      author: artyom
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: Integration
+      changes:
+        - renameTable:
+            newTableName:  IntegrationConfiguration
+            oldTableName:  Integration
+  - changeSet:
+      id:  45-2
+      author:  artyom
+      preConditions:
+        - onFail: MARK_RAN
+        - foreignKeyConstraintExists:
+            foreignKeyName: fk_IntegrationProperty_Integration
+      changes:
+        -  dropForeignKeyConstraint:
+             baseTableName:  IntegrationProperty
+             constraintName:  fk_IntegrationProperty_Integration
+  - changeSet:
+      id:  45-3
+      author:  artyom
+      preConditions:
+        - onFail: MARK_RAN
+        - indexExists:
+            indexName: fk_IntegrationProperty_Integration
+      changes:
+        -  dropIndex:
+             tableName:  IntegrationProperty
+             indexName:  fk_IntegrationProperty_Integration
+  - changeSet:
+      id: 45-4
+      author: artyom
+      preConditions:
+        - onFail: MARK_RAN
+        - columnExists:
+            tableName: IntegrationProperty
+            columnName: integrationId
+      changes:
+        - renameColumn:
+            columnDataType: BIGINT
+            newColumnName: integrationConfigurationId
+            oldColumnName: integrationId
+            tableName: IntegrationProperty
+  - changeSet:
+      id:  45-5
+      author:  artyom
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+          - foreignKeyConstraintExists:
+              foreignKeyName: fk_IntegrationProperty_IntegrationConfiguration
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames:  integrationConfigurationId
+            baseTableName:  IntegrationProperty
+            constraintName:  fk_IntegrationProperty_IntegrationConfiguration
+            referencedColumnNames:  id
+            referencedTableName:  IntegrationConfiguration
+  - changeSet:
+      id: 45-6
+      author: artyom
+      preConditions:
+        - onFail: MARK_RAN
+        - columnExists:
+            tableName: FieldConfiguration
+            columnName: integrationId
+      changes:
+        - dropColumn:
+            tableName: FieldConfiguration
+            columnName: integrationId

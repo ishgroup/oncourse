@@ -1,0 +1,70 @@
+get:
+  operationId: get
+  description: Get list with all added integrations
+  tags:
+  - Integration
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/Integration.yaml'
+    default:
+      description: Unexpected error
+post:
+  operationId: create
+  description: Create a new integrations
+  tags:
+  - Integration
+  parameters:
+  - name: integration
+    in: body
+    description: integration item which will be added
+    required: true
+    schema:
+      $ref: './def/entity/Integration.yaml'
+  responses:
+    '204':
+      description: Integration item successfully added
+    default:
+      description: Unexpected error
+put:
+  operationId: update
+  description: Update integrations items
+  tags:
+  - Integration
+  parameters:
+  - name: id
+    in: path
+    description: Unique identifier
+    required: true
+    type: string
+  - name: integration
+    in: body
+    description: integration item which will be added
+    required: true
+    schema:
+      $ref: './def/entity/Integration.yaml'
+  responses:
+    '204':
+      description: Integration item successfully updated
+    default:
+      description: Unexpected error
+delete:
+
+  operationId: remove
+  description: Remove integration item
+  tags:
+  - Integration
+  parameters:
+  - name: id
+    in: path
+    description: Identifier of integration which will be deleted.
+    required: true
+    type: string
+  responses:
+    '204':
+      description: Integration item successfully deleted
+    default:
+      description: Unexpected error

@@ -1,0 +1,18 @@
+type: string
+description: List of integration types
+enum:
+  - moodle
+  - mailchimp
+  - surveymonkey
+  - surveygizmo
+  - xero
+  - myob
+  - cloudassess
+  - canvas
+  - micropower
+  - usi
+  - tsci
+  - googleclassroom
+  - coassemble
+  - talentlms
+  - learndash

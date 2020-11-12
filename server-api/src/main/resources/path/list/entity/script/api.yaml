@@ -1,0 +1,140 @@
+get:
+  operationId: get
+  description: get a script
+  tags:
+  - Script
+  parameters:
+  - name: id
+    in: path
+    type: integer
+    format: int64
+    required: true
+    description: Unique identifier of script record to fetch
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/script/Script.yaml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: SCRIPT_TEMPLATE
+    errorMessage: Sorry, you have no permissions to view scripts. Please contact your administrator
+
+
+post:
+  operationId: create
+  description: Create a new script
+  tags:
+  - Script
+  parameters:
+  - name: script
+    in: body
+    description: script for create
+    required: true
+    schema:
+      $ref: './def/entity/script/Script.yaml'
+  responses:
+    '200':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: SCRIPT_TEMPLATE
+    errorMessage: Sorry, you have no permissions to create new script. Please contact your administrator
+    license:
+      code: license.scripting
+      errorMessage: You haven't license to create scripts
+
+put:
+  operationId: update
+  description: Update an existing script
+  tags:
+  - Script
+  parameters:
+  - name: id
+    in: path
+    type: integer
+    format: int64
+    required: true
+    description: Unique identifier of script record to fetch
+  - name: script
+    in: body
+    schema:
+      $ref: './def/entity/script/Script.yaml'
+    required: true
+    description: script for update
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: SCRIPT_TEMPLATE
+    errorMessage: Sorry, you have no permissions to update script. Please contact your administrator
+
+delete:
+  operationId: delete
+  description: Remove an existing script
+  tags:
+  - Script
+  parameters:
+  - name: id
+    in: path
+    type: integer
+    format: int64
+    required: true
+    description: Unique identifier of script record to fetch
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: delete
+    keyCode: SCRIPT_TEMPLATE
+    errorMessage: Sorry, you have no permissions to delete script. Please contact your administrator
+    license:
+      code: license.scripting
+      errorMessage: You have not license to delete scripts.
+
+patch:
+  operationId: patch
+  description: Special path for cases when user hasn't license
+  tags:
+  - Script
+  parameters:
+  - name: id
+    in: path
+    type: integer
+    format: int64
+    required: true
+    description: Unique identifier of script record to fetch
+  - name: script
+    in: body
+    schema:
+      $ref: './def/entity/script/Script.yaml'
+    required: true
+    description: script for update
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: SCRIPT_TEMPLATE
+    errorMessage: Sorry, you have no permissions to update script. Please contact your administrator

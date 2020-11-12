@@ -1,0 +1,26 @@
+post:
+  operationId: createForEnrolments
+  description: create certificates by enrolment ids
+  tags:
+    - Certificate
+  parameters:
+    - name: createRequest
+      in: body
+      schema:
+        $ref: './def/entity/certificate/CertificateCreateForEnrolmentsRequest.yaml'
+      required: true
+      description: Request object with enrolments data
+  responses:
+    '200':
+      schema:
+        type: array
+        items:
+          type: integer
+          format: int64
+          required: true
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: SPECIAL_CERTIFICATE
+    errorMessage: Sorry, you have no permissions to create certificates. Please contact your administrator

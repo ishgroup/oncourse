@@ -1,0 +1,105 @@
+get:
+  description: Returns class budget items
+  operationId: get
+  tags:
+    - ClassCost
+  parameters:
+    - name: classId
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of class record to fetch budget items
+  responses:
+    '200':
+      description: Success response
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/courseClass/ClassCost.yaml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: BUDGET
+    errorMessage: Sorry, you have no permissions to get class budget. Please contact your administrator
+
+put:
+  description: Update class budget item
+  operationId: update
+  tags:
+    - ClassCost
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of ClassCost record for update
+    - name: classCost
+      in: body
+      schema:
+        $ref: './def/entity/courseClass/ClassCost.yaml'
+      required: true
+      description: ClassCost for update
+  responses:
+    '200':
+      description: Success response
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: BUDGET
+    errorMessage: Sorry, you have no permissions to edit class budget. Please contact your administrator
+
+post:
+  description: Create class badget item
+  operationId: create
+  tags:
+    - ClassCost
+  parameters:
+    - name: classCost
+      in: body
+      schema:
+        $ref: './def/entity/courseClass/ClassCost.yaml'
+      required: true
+      description: ClassCost to create
+  responses:
+    '200':
+      description: Success response
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: BUDGET
+    errorMessage: Sorry, you have no permissions to create class badget item. Please contact your administrator
+
+delete:
+  description: Delete class budget item
+  operationId: delete
+  tags:
+    - ClassCost
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of course tutor to delete
+  responses:
+    '200':
+      description: Success response
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: delete
+    keyCode: BUDGET
+    errorMessage: Sorry, you have no permissions to delete class badget item. Please contact your administrator

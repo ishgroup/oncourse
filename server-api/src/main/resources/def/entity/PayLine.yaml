@@ -1,0 +1,29 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: true
+  dateFor:
+    type: string
+    format: date
+    required: true
+  description:
+    type: string
+  className:
+    type: string
+  type:
+    $ref: '../enum/PayRateType.yaml'
+    required: true
+  budgetedQuantity:
+    type: number
+    required: true
+  budgetedValue:
+    type: number
+    required: true
+  quantity:
+    type: number
+    required: true
+  value:
+    type: number
+    required: true

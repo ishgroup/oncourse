@@ -1,0 +1,95 @@
+get:
+  operationId: get
+  description: list of all root tags
+  tags:
+  - Tag
+  parameters:
+  - name: entityName
+    in: query
+    required: false
+    type: string
+    description: entity type identifier, null param returns all tags
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/Tag.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: TAG
+    errorMessage: Sorry, you have no permissions to get tags. Please contact your administrator
+
+post:
+  description: Create tag group
+  operationId: create
+  tags:
+  - Tag
+  parameters:
+  - name: tag
+    in: body
+    required: true
+    schema:
+      $ref: './def/entity/Tag.yaml'
+  responses:
+    '204':
+      description: Rule item successfully added
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: TAG
+    errorMessage: Sorry, you have no permissions to create tags. Please contact your administrator
+
+put:
+  description: Update tag group
+  operationId: update
+  tags:
+  - Tag
+  parameters:
+  - name: id
+    in: path
+    description: Unique identifier
+    required: true
+    type: integer
+    format: int64
+  - name: tag
+    in: body
+    required: true
+    schema:
+      $ref: './def/entity/Tag.yaml'
+  responses:
+    '204':
+      description: Tag group successfully updated
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: TAG
+    errorMessage: Sorry, you have no permissions to update tags. Please contact your administrator
+
+delete:
+  summary: remove
+  operationId: remove
+  description: remove tag group
+  tags:
+  - Tag
+  parameters:
+  - name: id
+    in: path
+    description: Identifier of root tag which will be deleted.
+    required: true
+    type: integer
+    format: int64
+  responses:
+    '204':
+      description: Tag item successfully deleted
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: delete
+    keyCode: TAG
+    errorMessage: Sorry, you have no permissions to delete tags. Please contact your administrator

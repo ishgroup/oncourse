@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PayslipReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" uuid="6c4daebc-c836-4065-b1b7-c5ca26073025">
+	<property name="name" value="Payslip Report"/>
+	<property name="entity" value="PayLine"/>
+	<property name="isSubreport" value="false"/>
+	<property name="isVisible" value="true"/>
+
+	<property name="keyCode" value="ish.onCourse.payslipReport"/>
+	<property name="ish.oncourse.title" value="Payslip Report"/>
+	<property name="ish.oncourse.filePrefix" value="PayslipReport"/>
+	<property name="ish.oncourse.description" value="To create a print out of the list of payslips.This report prints in Portrait format."/>
+	<property name="ish.oncourse.pdfFileName" value="PayslipReport.pdf"/>
+	<property name="ish.oncourse.reports.isObjectOnSeparatePage" value="false"/>
+	<import value="java.util.*"/>
+	<import value="ish.math.Money"/>
+	<style name="default" isDefault="true" forecolor="#000000" vTextAlign="Bottom" markup="none" fontName="Open Sans" fontSize="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="OpenSans" pdfEncoding="Cp1252" isPdfEmbedded="true">
+		<paragraph spacingAfter="8"/>
+	</style>
+	<style name="header 1" style="default" forecolor="#4F0018" vTextAlign="Middle" fontName="Open Sans Light" fontSize="18" pdfFontName="Open Sans Light"/>
+	<style name="header 2" style="header 1" fontSize="12"/>
+	<style name="header 3" style="default" vTextAlign="Middle" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+	<style name="header 3 (right)" style="header 3" hTextAlign="Right"/>
+	<style name="Label" style="default" forecolor="#6A7E99"/>
+	<style name="Label right" style="Label" hTextAlign="Right"/>
+	<style name="data field" style="default"/>
+	<style name="data field (money)" style="data field" hTextAlign="Right" pattern="¤#,###,##0.00;¤(-#,###,##0.00)"/>
+	<style name="data field (numeric)" style="data field" hTextAlign="Right"/>
+	<style name="data field (datetime)" style="data field" pattern="d MMM yyyy h:mma"/>
+	<style name="data field (day)" style="data field" pattern="E d MMM h:mma"/>
+	<style name="data field (date)" style="data field" pattern="d MMM yyyy"/>
+	<style name="Footer" style="default" forecolor="#737373" fontSize="8"/>
+	<style name="Footer strong" style="Footer" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+	<style name="subHead box" style="default" backcolor="#E6E7F0"/>
+	<style name="crosstab" mode="Opaque" backcolor="#F7F2E9">
+		<box>
+			<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#A3A3A3"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{ROW_COUNT}.intValue() % 2 == 1 ? Boolean.TRUE : Boolean.FALSE]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FFFFFF"/>
+		</conditionalStyle>
+	</style>
+	<style name="alternateRow" mode="Opaque" forecolor="rgba(255, 255, 255, 0.0)" backcolor="#F7F2E9">
+		<box>
+			<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{PAGE_COUNT}.intValue() % 2 == 1 ? Boolean.TRUE : Boolean.FALSE]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FFFFFF"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="ReportName" class="java.lang.String"/>
+	<field name="payLine" class="java.lang.Object"/>
+	<field name="payslip.contact.lastName" class="java.lang.String"/>
+	<field name="payslip.contact.firstName" class="java.lang.String"/>
+	<field name="classCost.courseClass.startDateTime" class="java.util.Date"/>
+	<field name="dateFor" class="java.util.Date"/>
+	<field name="image.poweredby" class="java.io.InputStream"/>
+	<sortField name="payslip.contact.lastName" order="Ascending"/>
+	<sortField name="payslip.contact.firstName" order="Ascending"/>
+	<sortField name="classCost.courseClass.startDateTime" order="Ascending"/>
+	<sortField name="dateFor" order="Ascending"/>
+	<variable name="total" class="java.math.BigDecimal" resetType="Group" resetGroup="payslip" calculation="Sum">
+		<variableExpression><![CDATA[$F{payLine}.value.multiply($F{payLine}.quantity)]]></variableExpression>
+	</variable>
+	<variable name="totalSum" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{payLine}.value.multiply($F{payLine}.quantity)]]></variableExpression>
+	</variable>
+	<group name="payslip">
+		<groupExpression><![CDATA[$F{payLine}.payslip.contact.id]]></groupExpression>
+		<groupHeader>
+			<band height="38" splitType="Stretch">
+				<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				<textField pattern="d MMM yyyy">
+					<reportElement key="textField-1" style="header 2" x="0" y="15" width="90" height="20" uuid="2c7968f8-d878-4db8-aa26-862b26b0f7fa"/>
+					<textFieldExpression><![CDATA[$F{payLine}.payslip.createdOn]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement key="textField-1" style="header 2" x="90" y="15" width="407" height="20" uuid="895453de-50aa-4f33-bf41-86f3a7973163"/>
+					<textFieldExpression><![CDATA[[$F{payLine}.payslip.contact.getName(true), $F{payLine}.payslip.contact.tutor.payrollRef].findAll().join(" - ")]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="20" splitType="Stretch">
+				<textField pattern="¤#,###,##0.00;¤(-#,###,##0.00)">
+					<reportElement key="textField-1" style="header 3 (right)" x="360" y="0" width="120" height="20" uuid="220d5197-877d-4f2d-b924-e6abeb267a70">
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					</reportElement>
+					<textFieldExpression><![CDATA[$V{total}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="CourseClass">
+		<groupExpression><![CDATA[$F{payLine}.classCost?.courseClass?.uniqueCode]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<rectangle>
+					<reportElement x="0" y="0" width="490" height="20" backcolor="#E6E7F0" uuid="b9c5f75a-79b8-4b13-9254-5bc69151399c">
+						<property name="com.jaspersoft.studio.unit.height" value="mm"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="0.0"/>
+					</graphicElement>
+				</rectangle>
+				<textField>
+					<reportElement style="data field" x="3" y="0" width="405" height="20" uuid="a7c81c99-a148-4d38-91b5-52de0d7ab2d7"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[($F{payLine}.classCost == null) ? "Custom paylines" : $F{payLine}.classCost.courseClass.course.code + "-" + $F{payLine}.classCost.courseClass.code + " " +$F{payLine}.classCost.courseClass.course.name + " (" + $F{payLine}.classCost.courseClass.incomeAccount.accountCode + ")"]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="141" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-2" style="header 1" x="0" y="115" width="537" height="26" uuid="a6c45ca3-18c7-45d3-b775-849bdbd5d921"/>
+				<textFieldExpression><![CDATA[$P{ReportName}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<rectangle>
+				<reportElement style="alternateRow" stretchType="RelativeToBandHeight" x="0" y="0" width="490" height="20" uuid="1790043e-2255-485a-b601-80712bc34b5b">
+					<property name="com.jaspersoft.studio.unit.x" value="mm"/>
+				</reportElement>
+			</rectangle>
+			<elementGroup/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="data field (money)" x="143" y="0" width="50" height="20" uuid="b2310c1b-e405-41be-9823-ce48ab043853"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{payLine}.value]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="203" y="0" width="210" height="20" uuid="c7a6fb96-3560-4d36-905c-3349721a8d63"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{payLine}.description]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#0.##" isBlankWhenNull="true">
+				<reportElement style="data field (numeric)" x="83" y="0" width="20" height="20" uuid="f1c5db91-b3b8-4b7d-89ad-7bc9c6d49d05"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{payLine}.quantity]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="data field (money)" x="433" y="0" width="50" height="20" uuid="19350f0b-126a-46ac-ac0a-549972fc283b"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{payLine}.value.multiply($F{payLine}.quantity)]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="data field (date)" x="5" y="0" width="78" height="20" uuid="b7c0f0c3-e8a3-4f25-bb13-00a8c3901f92"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{payLine}.dateFor]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#0.##" isBlankWhenNull="true">
+				<reportElement x="104" y="0" width="25" height="20" uuid="0de7340e-9276-43c9-9f5f-c17a08aeb17a"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{payLine}.classCost != null ? " hrs" : " units"]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<textField evaluationTime="Page" isBlankWhenNull="false">
+				<reportElement key="pageNumberFooter" style="Footer strong" x="0" y="0" width="300" height="15" uuid="1106d334-b156-4af7-a64d-a75ba7206e2c"/>
+				<textFieldExpression><![CDATA["Page " + String.valueOf($V{PAGE_NUMBER})]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" isBlankWhenNull="false">
+				<reportElement key="totalPageCountFooter" style="Footer" x="0" y="11" width="300" height="13" uuid="d3e402c5-a433-4f08-90db-5c66216e08f3"/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT} + " record" + ($V{REPORT_COUNT}>1 ? "s" : "") + " on " + $V{PAGE_NUMBER} + " page" + ($V{PAGE_NUMBER}>1 ? "s" : "") + " (printed " + new Date().format("E d MMM yyyy h:mma") + ")"]]></textFieldExpression>
+			</textField>
+			<image scaleImage="RetainShape" hAlign="Right" isUsingCache="true" onErrorType="Blank">
+				<reportElement key="oncourseLogo" style="Footer" x="472" y="17" width="67" height="7" uuid="2863530e-11e5-4c1e-8296-ae64db1a9926"/>
+				<imageExpression><![CDATA[$F{image.poweredby}]]></imageExpression>
+			</image>
+		</band>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="25">
+			<staticText>
+				<reportElement style="header 2" x="263" y="0" width="97" height="25"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<textField evaluationTime="Report" isBlankWhenNull="true">
+				<reportElement style="header 2" x="456" y="0" width="78" height="25"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new Money($V{totalSum})]]></textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
+</jasperReport>

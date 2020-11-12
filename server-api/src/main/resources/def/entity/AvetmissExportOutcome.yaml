@@ -1,0 +1,17 @@
+type: object
+properties:
+  ids:
+    type: array
+    items:
+      type: integer
+      format: int64
+  type:
+    $ref: '../enum/AvetmissExportType.yaml'
+    example: outcome
+  status:
+    $ref: '../enum/AvetmissExportOutcomeStatus.yaml'
+    example: Competency achieved/pass (20)
+  category:
+    $ref: '../enum/AvetmissExportOutcomeCategory.yaml'
+    example: All outcomes final
+

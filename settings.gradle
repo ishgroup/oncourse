@@ -1,0 +1,19 @@
+pluginManagement {
+    repositories {
+        maven {
+            url 'https://repo.ish.com.au/content/groups/public'
+        }
+        maven {
+            url 'https://repo.ish.com.au/content/groups/ish'
+        }
+    }
+}
+
+rootProject.name = 'onCourse'
+include ':server',
+        ':server-api',
+        ':client-html',
+        ':api-test',
+        ':types'
+
+enableFeaturePreview('GROOVY_COMPILATION_AVOIDANCE')

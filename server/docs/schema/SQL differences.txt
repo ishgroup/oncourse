@@ -1,0 +1,93 @@
+This is a collection of examples difference of syntax for the various databases. Please add and correct where required.
+See also http://troels.arvin.dk/db/rdbms/ for more information if you can't find it here.
+
+DATA TYPE			Derby				MS SQL				MySQL				Oracle
+
+Primary Key			BIGINT				BIGINT				BIGINT				NUMBER(20,0)
+Integer				INTEGER				INTEGER				INTEGER				INTEGER
+Small integer			SMALLINT			SMALLINT			SMALLINT			SMALLINT
+Date/Time			TIMESTAMP			DATETIME			DATETIME			TIMESTAMP
+Large text			VARCHAR (32000)			TEXT				TEXT (32000)			CLOB
+Small text:			VARCHAR (50)			VARCHAR (50)			VARCHAR (50)			VARCHAR2 (50)
+Large binary:			BLOB				VARBINARY(MAX)			BLOB				BLOB
+
+-----
+BLOBS
+-----
+DERBY: CLOB or BLOB = 2GB
+MySQL BLOB :
+      BLOB = L + 2 bytes (max size is 2^16 - 1 or 65,535 bytes, 65KB)
+      MEDIUMBLOB = L + 3 bytes (max size is 2^24 - 1 or 16,777,215 bytes, 16MB)
+      LONGBLOB = L + 4 bytes (max size is 2^32 - 1 or 4,294,967,295 bytes, 4GB) 
+ORACLE: BLOB = 4GB (this from 8i notes, http://www.cs.umbc.edu/portal/help/oracle8/server.815/a67790/ch4.htm)
+MS SQL: VARBINARY(MAX) = 2GB
+
+--------
+FOREIGN KEY
+
+Derby:	ALTER TABLE Room ADD CONSTRAINT fk_Room_Site FOREIGN KEY (siteId) REFERENCES Site (id)
+MS SQL:	ALTER TABLE Room ADD CONSTRAINT fk_Room_Site FOREIGN KEY (siteId) REFERENCES Site (id) 						... and you have to add your own index
+MySQL:	ALTER TABLE Room ADD CONSTRAINT fk_Room_Site FOREIGN KEY (siteId) REFERENCES Site (id)
+Oracle:	ALTER TABLE Room ADD CONSTRAINT fk_Room_Site FOREIGN KEY (siteId) REFERENCES Site (id) ... and you have to add your own index
+
+PRIMARY KEY GENERATION
+
+Derby:	INSERT INTO AUTO_PK_SUPPORT (TABLE_NAME, NEXT_ID) VALUES ('Account', 200)
+MS SQL:	INSERT INTO AUTO_PK_SUPPORT (TABLE_NAME, NEXT_ID) VALUES ('Account', 200)
+MySQL:	INSERT INTO AUTO_PK_SUPPORT (TABLE_NAME, NEXT_ID) VALUES ('Account', 200)
+Oracle:	CREATE SEQUENCE pk_account START WITH 200 INCREMENT BY 20
+
+INDEXES
+
+Derby: 	CREATE INDEX Account_isEnabled on Account(isEnabled)
+MS SQL:	CREATE INDEX Account_isEnabled on Account(isEnabled)
+MySQL:	CREATE INDEX Account_isEnabled on Account(isEnabled)
+Oracle:	CREATE INDEX Account_isEnabled on Account(isEnabled) ... but identifier must be <= 30 characters
+
+ALTER TABLE - add column that allows null
+
+Derby: 	ALTER TABLE Outcome ADD COLUMN isDeleted SMALLINT
+MS SQL:	ALTER TABLE Outcome ADD isDeleted SMALLINT NULL
+MySQL:	ALTER TABLE Outcome ADD COLUMN isDeleted SMALLINT
+Oracle:	ALTER TABLE Outcome ADD isDeleted SMALLINT NULL
+
+ALTER TABLE - drop column
+Derby: ALTER TABLE tbl_name DROP COLUMN col_name
+MS SQL:	ALTER TABLE tbl_name DROP COLUMN col_name ... before you can drop a column you have to drop the foreign key and the index on this column first
+MySQL:	ALTER TABLE tbl_name DROP col_name ... before you can drop a column you have to drop the foreign key and the index on this column first (in that order!)
+Oracle: ALTER TABLE tbl_name DROP COLUMN col_name
+
+ALTER TABLE - make column not null
+
+MS SQL:	ALTER TABLE tbl_name ALTER COLUMN col_name datatype NOT NULL
+MySQL:	ALTER TABLE tbl_name MODIFY COLUMN col_name datatype NOT NULL
+Oracle: ALTER TABLE tbl_name MODIFY col_name datatype NOT NULL
+
+ALTER TABLE - drop index
+
+MS SQL:	DROP INDEX index_name ON tbl_name
+MySQL:	DROP INDEX index_name ON tbl_name
+Oracle:	DROP INDEX index_name
+
+ALTER TABLE - add Primary key
+
+(http://www.aspfree.com/c/a/Database-Code/Constraints-In-Microsoft-SQL-SERVER-2000/2/)
+http://forums.devshed.com/firebird-sql-development-61/how-to-alter-primary-key-column-253819.html
+MS SQL: ALTER TABLE tbl_name ADD CONSTRAINT pk_colname PRIMARY KEY (colname) 
+
+ALTER TABLE - drop foreign key
+MySQL: ALTER TABLE tbl_name DROP FOREIGN KEY fk_name
+
+Dropping primary keys
+
+MySQL if you intend to drop a primary key and it has AUTO_INCREMENT attribute, this needs be removed first
+for example this is done in 77.sql on the tempid column, other use you get the:
+"Incorrect table definition; there can be only one auto column and it must be defined as a key" message in MySQL
+ALTER TABLE CourseClassTutor CHANGE tempid tempid BIGINT ; this removes the AUTO_INCREMENT attribute
+ALTER TABLE CourseClassTutor DROP PRIMARY KEY
+
+CASTS
+
+MS SQL:	tfnNew = CAST(tfn AS CHAR(100))
+MySQL:	tfnNew = CAST(tfn AS CHAR(100))
+Oracle:	tfnNew = CAST(tfn AS CHAR(100))

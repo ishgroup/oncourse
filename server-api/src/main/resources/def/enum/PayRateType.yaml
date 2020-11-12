@@ -1,0 +1,8 @@
+type: string
+enum:
+  - Fixed
+  - Per session
+  - Per enrolment
+  - Per unit
+  - Per timetabled hour
+  - Per student contact hour

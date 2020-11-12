@@ -1,0 +1,39 @@
+type: object
+properties:
+  id:
+    type: string
+    description: Unique Data Collection Rule identifier
+  name:
+    type: string
+    required: true
+    description: Data Collection Rule name
+  enrolmentFormName:
+    type: string
+    required: true
+    description: Unique record identifier
+  applicationFormName:
+    type: string
+    required: true
+    description: Unique record identifier
+  waitingListFormName:
+    type: string
+    required: true
+    description: Unique record identifier
+  payerFormName:
+    type: string
+    description: Unique record identifier
+  parentFormName:
+    type: string
+    description: Unique record identifier
+  surveyForms:
+    type: array
+    items:
+      type: string
+  created:
+    type: string
+    format: date-time
+    description: date and time when record was created
+  modified:
+    type: string
+    format: date-time
+    description: date and time when record was modified

@@ -1,0 +1,5 @@
+keyCode: ish.onCourse.banking.csv
+entityClass: Banking
+body: ish.onCourse.banking.csv.groovy
+name: Banking CSV export
+outputType: csv

@@ -1,0 +1,5 @@
+keyCode: ish.onCourse.application.xml
+entityClass: Application
+body: ish.onCourse.application.xml.groovy
+name: Application XML export
+outputType: xml

@@ -1,0 +1,4 @@
+Invoice Number,Invoice Date,Invoice line Title,Invoice line Description,Invoice To Last Name,Invoice To First Name,Invoice line Account Code,Invoice line Account name,Invoice line amount,Invoice line Tax,Tax Type,Invoice line discount,Invoice Owing,Invoice prepaid fees remaining,Invoice line Quantity,Invoice description,Invoice Due Date,Invoice Created by,Invoice Source,Invoice modified on,Invoice created on
+1,2013-02-01,test invoiceline1,,Student,Test,11500,Test debtors account,110.00,10.00,GST,0.00,100.00,0.00,1.00,Description 1...,2013-03-01,admin admin,office,10/5/2012 12:00,10/5/2012 12:00
+1,2013-02-01,test invoiceline2,,Student,Test,11500,Test debtors account,110.00,10.00,GST,0.00,100.00,33.00,1.00,Description 1...,2013-03-01,admin admin,office,10/5/2012 12:00,10/5/2012 12:00
+2,2013-02-01,test invoiceline3,,Tutor,Test,11500,Test debtors account,110.00,10.00,GST,0.00,210.00,0.00,1.00,Description 2...,2013-03-01,admin admin,web,10/5/2012 12:00,10/5/2012 12:00

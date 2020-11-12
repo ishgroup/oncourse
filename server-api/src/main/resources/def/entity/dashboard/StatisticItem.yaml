@@ -1,0 +1,11 @@
+type: object
+properties:
+  title:
+    type: string
+    required: true
+  info:
+    type: string
+    required: true
+  link:
+    type: string
+    required: true

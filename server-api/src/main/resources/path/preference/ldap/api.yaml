@@ -1,0 +1,41 @@
+get:
+  description: Check ldap connection
+  operationId: checkConnection
+  tags:
+  - Preference
+  parameters:
+  - name: host
+    in: query
+    description: Ldap host
+    required: true
+    type: string
+    example: ldap.college.com.au
+  - name: port
+    in: query
+    description: Ldap post
+    required: true
+    type: string
+    example: 389
+  - name: isSsl
+    in: query
+    description: Ldap is Ssl
+    required: true
+    type: string
+  - name: baseDn
+    in: query
+    description: Ldap base DN
+    required: true
+    type: string
+    example: dc=ldap,dc=com,dc=au
+  - name: user
+    in: query
+    description: Ldap user
+    required: true
+    type: string
+  responses:
+    '200':
+      schema:
+        type: boolean
+      description: Response result.
+    default:
+      description: Unexpected error

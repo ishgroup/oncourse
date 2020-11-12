@@ -1,0 +1,18 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+  contactFromId:
+    type: integer
+    format: int64
+  contactFromName:
+    type: string
+  contactToId:
+    type: integer
+    format: int64
+  contactToName:
+    type: string
+  relationId:
+    type: integer
+    format: int64

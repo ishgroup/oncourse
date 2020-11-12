@@ -1,0 +1,8 @@
+type: string
+description: qualification type
+enum:
+  - Qualification
+  - Accredited course
+  - Skill set
+  - Local skill set
+  - Higher education

@@ -1,0 +1,7 @@
+Dear ${tutor.contact.firstName},
+
+Please be advised that your class
+
+${courseClass.course.name} on ${courseClass.startDateTime.format("h:mm a EEEE d MMMM yyyy zzzz", courseClass.getTimeZone())}
+
+has been cancelled.

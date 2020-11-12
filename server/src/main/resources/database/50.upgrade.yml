@@ -1,0 +1,62 @@
+databaseChangeLog:
+  - changeSet:
+      id: 50-1
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - columnExists:
+            tableName: Certificate
+            columnName: issuedOn
+      changes:
+        - modifyDataType:
+            tableName:  Certificate
+            columnName:  issuedOn
+            newDataType: DATE
+  - changeSet:
+      id: 50-2
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - columnExists:
+            tableName: Certificate
+            columnName: awardedOn
+      changes:
+        - modifyDataType:
+            tableName:  Certificate
+            columnName:  awardedOn
+            newDataType: DATE
+  - changeSet:
+      id: 50-3
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - columnExists:
+            tableName: Certificate
+            columnName: printedOn
+      changes:
+        - modifyDataType:
+            tableName:  Certificate
+            columnName:  printedOn
+            newDataType: DATE
+  - changeSet:
+      id: 50-4
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - columnExists:
+            tableName: Certificate
+            columnName: revokedOn
+      changes:
+        - modifyDataType:
+            tableName:  Certificate
+            columnName:  revokedOn
+            newDataType: DATE
+  - changeSet:
+      id: 50-5
+      author: rostislav
+      changes:
+        - customChange: {
+          "class": "ish.oncourse.server.upgrades.liquibase.change.AddToQueueRecords",
+          "entityName": "Contact",
+          "selectQuery": "select id, willowId from Contact where isMale = 2"
+        }

@@ -1,0 +1,51 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: true
+  productId:
+    type: integer
+    format: int64
+    required: true
+  productType:
+    $ref: '../../enum/ProductType.yaml'
+    required: true
+  productName:
+    type: string
+  purchasedById:
+    type: integer
+    format: int64
+  purchasedByName:
+    type: string
+  purchasedOn:
+    type: string
+    format: date
+  expiresOn:
+    type: string
+    format: date
+  purchasePrice:
+    type: number
+  status:
+    $ref: '../../enum/ProductItemStatus.yaml'
+  payments:
+    type: array
+    items:
+      $ref: '../ProductItemPayment.yaml'
+  validFrom:
+    description: membership property
+    type: string
+    format: date
+  valueRemaining:
+    description: voucher property
+    type: string
+  voucherCode:
+    description: voucher property
+    type: string
+  redeemableById:
+    description: voucher property
+    type: integer
+    format: int64
+  redeemableByName:
+    description: voucher property
+    type: string

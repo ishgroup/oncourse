@@ -1,0 +1,15 @@
+type: object
+properties:
+  entity:
+    type: string
+    example: Enrolment
+  label:
+    type: string
+    example: courseName
+  entityId:
+    type: integer
+    format: int64
+  relatedContacts:
+    type: array
+    items:
+      $ref: '../entity/dashboard/SearchItem.yaml'

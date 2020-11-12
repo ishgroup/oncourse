@@ -1,0 +1,26 @@
+type: string
+description: List of user preferences
+enum:
+- html.dashboard.category.width
+- dashboard.news.last_read
+- dashboard.scripts.favorite.id
+- html.global.theme
+- google.analytics.cid
+- google.analytics.ci
+- google.analytics.cn
+- google.analytics.uid
+- timezone.default
+- systemUser.defaultAdministrationCentre.name
+- license.scripting
+- license.accesscontrol
+- account.default.studentEnrolments.id
+- account.default.voucherLiability.id
+- account.invoice.terms
+- replication.enabled
+- avetmiss.identifier
+- email.from
+- courseclass_default_deliveryMode
+- courseclass_default_fundingSource
+- courseclass_default_maximumPlaces
+- courseclass_default_minimumPlaces
+- listview.main.content.width

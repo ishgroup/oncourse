@@ -1,0 +1,7 @@
+type: string
+description: Status of the process
+enum:
+  - Not found
+  - In progress
+  - Finished
+  - Failed

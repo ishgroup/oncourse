@@ -1,0 +1,10 @@
+type: object
+properties:
+  type:
+    $ref: './FieldType.yaml'
+  label:
+    type: string
+  helpText:
+    type: string
+  mandatory:
+    type: boolean

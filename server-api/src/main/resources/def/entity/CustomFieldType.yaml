@@ -1,0 +1,36 @@
+type: object
+properties:
+  id:
+    type: string
+    description: Unique custom field type identifier
+  name:
+    type: string
+    description: Custom field type name
+    example: Agent Commission
+  dataType:
+    $ref: './automation/DataType.yaml'
+  defaultValue:
+    type: string
+    description: Default value for custom field type
+    example: 20
+  fieldKey:
+    type: string
+    description: Default value for custom field type
+    example: commission
+  mandatory:
+    type: boolean
+    description: Is custom field mandatory
+  sortOrder:
+    type: integer
+    format: int64
+    description: sort order in list
+  entityType:
+    $ref: '../enum/EntityType.yaml'
+  created:
+    type: string
+    format: date-time
+    description: date and time when record was created
+  modified:
+    type: string
+    format: date-time
+    description: date and time when record was modified

@@ -1,0 +1,58 @@
+get:
+  operationId: getPlain
+  description: Get list of data rows in accordance with specified columns. Does not return extra meta data.
+  tags:
+  - Entity
+  parameters:
+  - name: entity
+    in: query
+    required: true
+    type: string
+    example: Audit
+    description: onCourse entity name
+  - name: search
+    in: query
+    required: false
+    type: string
+    description: search filter
+    example: |
+      search="action in ('create', 'update') & entityIdentifier = 'Enrolment' & entityId in (1, 2)"
+  - name: pageSize
+    in: query
+    required: false
+    type: number
+    example: 50
+    description: returned list size
+  - name: offset
+    in: query
+    required: false
+    type: number
+    example: 100
+    description: selected list offset
+  - name: columns
+    in: query
+    required: false
+    type: string
+    example: firstName,lastName,email
+    description: selected list offset
+  - name: sortings
+    in: query
+    type: string
+    example: contact.fullname,contact.lastname
+    description: sortings which will be used on server's side
+  - name: ascending
+    in: query
+    type: boolean
+    example: true
+    description: sort order for plain api request
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        $ref: './def/list/DataResponse.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: LAZY/entity
+    errorMessage: Sorry, you have no permissions to view this entity. Please contact your administrator

@@ -1,0 +1,13 @@
+type: object
+properties:
+  path:
+    required: true
+    type: string
+    description: Path to resource
+  method:
+    required: true
+    type: string
+    description: Method name
+  keyCode:
+    description: Special action code
+    $ref: '../enum/KeyCode.yaml'

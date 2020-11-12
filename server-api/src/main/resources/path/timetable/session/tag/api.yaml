@@ -1,0 +1,27 @@
+get:
+  operationId: getSessionsTags
+  description: Get session tags by session id
+  tags:
+    - Timetable
+  parameters:
+    - name: sessionIds
+      in: query
+      description: requested session id
+      required: true
+      type: string
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: array
+        items:
+          type: object
+          additionalProperties:
+            type: string
+        description: array of session tag objects with tag names as keys and tag colors as values
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: SESSION
+    errorMessage: Sorry, you have no permissions to look at timetable events. Please contact your administrator

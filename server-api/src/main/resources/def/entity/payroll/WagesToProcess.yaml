@@ -1,0 +1,13 @@
+type: object
+properties:
+  totalWagesCount:
+    type: integer
+    required: true
+  unprocessedWagesCount:
+    type: integer
+    required: true
+  unconfirmedWagesCount:
+    type: integer
+    required: true
+  unconfirmedClassesIds:
+    type: string

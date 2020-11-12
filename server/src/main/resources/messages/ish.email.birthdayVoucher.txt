@@ -1,0 +1,4 @@
+Dear ${contact.fullName}
+Happy Birthday from ${Preferences.get("college.name")}!
+Celebrate by learning something new this month.
+To redeem this voucher, enter the voucher code ${voucher.code} during enrolment. The voucher is available for immediate redemption at ${Preferences.get("web.url")}

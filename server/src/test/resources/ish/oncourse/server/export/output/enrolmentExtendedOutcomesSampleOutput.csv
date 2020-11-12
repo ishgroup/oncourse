@@ -1,0 +1,3 @@
+studentNumber,USI,firstName,lastName,classCode,CourseName,Subject,QualNationalCode,QualName,VETFlag,UnitNationalCode,UnitTitle,OutcomeStartDate,OutcomeEndDate,OutcomeStatus,DeliveryMode,NationalFundingSource,StateFundingSource,CommitmentId,ConcessionType,SupressAVETMISSExport,OutcomeMarkedOnlineBy,OnlineMarkingDate,fundingSource
+3,testUsi3,name3,name,ATT1-123,Test 1,,,,false,TESTCODE1,Test module 1,,,Competency achieved/pass (20),Online,,,,,,Office,,Fee for service (non-funded)
+4,testUsi4,name4,name,ATT1-123,Test 1,,,,false,TESTCODE2,Test module 2,1/1/2013,1/2/2013,Competency not achieved/fail (30),Not Set,,,,,,Office,,Fee for service (non-funded)

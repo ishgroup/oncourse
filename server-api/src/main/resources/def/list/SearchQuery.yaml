@@ -1,0 +1,21 @@
+type: object
+properties:
+  search:
+    type: string
+    description: a seach query to filter results. Entities that match this query are returned
+    example: |
+          search="action in ('create', 'update') & entityIdentifier = 'Enrolment' & entityId in (1, 2)"
+  filter:
+    type: string
+  pageSize:
+    type: number
+    example: 50
+    description: returned list size
+  offset:
+    type: number
+    example: 100
+    description: selected list offset
+  tagGroups:
+    type: array
+    items:
+      $ref: './TagGroup.yaml'

@@ -1,0 +1,77 @@
+get:
+  description: Returns article record
+  operationId: get
+  tags:
+    - ArticleProduct
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of article record to fetch
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/article/ArticleProduct.yaml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: PRODUCT
+    errorMessage: Sorry, you have no permissions to get article. Please contact your administrator
+
+post:
+  operationId: create
+  tags:
+    - ArticleProduct
+  parameters:
+    - name: article
+      in: body
+      description: article for create
+      required: true
+      schema:
+        $ref: './def/entity/article/ArticleProduct.yaml'
+  responses:
+    '200':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: PRODUCT
+    errorMessage: Sorry, you have no permissions to create article. Please contact your administrator
+
+put:
+  operationId: update
+  tags:
+    - ArticleProduct
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of article record to fetch
+    - name: article
+      in: body
+      schema:
+        $ref: './def/entity/article/ArticleProduct.yaml'
+      required: true
+      description: article for update
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: PRODUCT
+    errorMessage: Sorry, you have no permissions to edit article. Please contact your administrator

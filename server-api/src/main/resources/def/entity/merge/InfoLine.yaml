@@ -1,0 +1,14 @@
+type: object
+properties:
+  label:
+    type: string
+    description: displayable name of attribute
+    example: Created
+  a:
+    type: string
+    description: attribute value for first contact
+    example: 12 Mar 2019
+  b:
+    type: string
+    description: attribute value for second contact
+    example: 15 Jul 2019

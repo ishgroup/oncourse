@@ -1,0 +1,62 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: true
+    description: UUID of export template in onCourse
+    example: 200
+  name:
+    type: string
+    required: true
+    description: export display name
+    example: Enrolment CSV export
+  keyCode:
+    type: string
+    required: true
+    description: export unique identifier, all built-in template codes start with 'ish.oncourse'
+    example: ish.onCourse.export.Enrolment.csv
+  entity:
+    type: string
+    required: true
+    description: export entity
+    example: Enrolment
+  body:
+    type: string
+    required: true
+    description: export body
+    example: |
+      records.each { Enrolment e -> csv << ["id" : e.id]}
+  enabled:
+    type: boolean
+    description: Export status
+    required: true
+    example: true
+  variables:
+    type: array
+    items:
+      $ref: './Binding.yaml'
+    required: false
+    description: export variables list
+  options:
+    type: array
+    items:
+      $ref: './Binding.yaml'
+    required: false
+    description: export options list
+  outputType:
+    $ref: './OutputType.yaml'
+    require: true
+    description: export output file type
+    example: xml
+  createdOn:
+    type: string
+    format: date-time
+  modifiedOn:
+    type: string
+    format: date-time
+  description:
+    type: string
+    require: true
+    description: export description
+    example: description

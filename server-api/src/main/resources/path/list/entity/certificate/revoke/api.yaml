@@ -1,0 +1,21 @@
+post:
+  operationId: revoke
+  description: revoke certificate
+  tags:
+    - Certificate
+  parameters:
+    - name: revokeRequest
+      in: body
+      schema:
+        $ref: './def/entity/certificate/CertificateRevokeRequest.yaml'
+      required: true
+      description: Special request to the server to revoke certificates, contains ids of certificates and the reason of revoking
+  responses:
+    '200':
+      description: certificate revoked
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: CERTIFICATE
+    errorMessage: Sorry, you have no permissions to revoke certificate. Please contact your administrator

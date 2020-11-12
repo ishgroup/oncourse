@@ -1,0 +1,76 @@
+get:
+  operationId: get
+  description: get a sale
+  tags:
+    - ProductItem
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/productItem/ProductItem.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: SALE
+    errorMessage: Sorry, you have no permissions to get sale. Please contact your administrator
+
+put:
+  operationId: update
+  description: update a sale
+  tags:
+    - ProductItem
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of productItem record to update
+    - name: productItem
+      in: body
+      schema:
+        $ref: './def/entity/productItem/ProductItem.yaml'
+      required: true
+      description: Sale for update
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: SALE
+    errorMessage: Sorry, you have no permissions to edit sale. Please contact your administrator
+
+post:
+  operationId: cancel
+  description: cancel sale
+  tags:
+  - ProductItem
+  parameters:
+  - name: productItemCancel
+    in: body
+    schema:
+      $ref: './def/entity/productItem/ProductItemCancel.yaml'
+    required: true
+    description: Sale for update
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: SALE
+    errorMessage: Sorry, you have no permissions to edit sale. Please contact your administrator

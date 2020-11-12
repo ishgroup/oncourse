@@ -1,0 +1,16 @@
+type: string
+description: A set of values for describing client's occupation.
+enum:
+  - Not Stated
+  - Manager (1)
+  - Professionals (2)
+  - Technicians and Trades Workers (3)
+  - Community and personal Service Workers (4)
+  - Clerical and Administrative Workers (5)
+  - Sales Workers (6)
+  - Machinery Operators and Drivers (7)
+  - Labourers (8)
+
+
+
+

@@ -1,0 +1,96 @@
+get:
+  operationId: get
+  description: get a  qualification
+  tags:
+    - Qualification
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+  responses:
+    '200':
+      description: Success response
+      schema:
+        type: object
+        items:
+          $ref: './def/entity/Qualification.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: NTIS_DATA
+    errorMessage: Sorry, you have no permissions to get qualification. Please contact your administrator
+
+post:
+  operationId: create
+  description: Create a new qualification
+  tags:
+    - Qualification
+  parameters:
+    - name: qualification
+      in: body
+      description: Qualification defenition which will be added
+      required: true
+      schema:
+        $ref: './def/entity/Qualification.yaml'
+  responses:
+    '200':
+      description: Qualification item successfully updated
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: NTIS_DATA
+    errorMessage: Sorry, you have no permissions to create qualification. Please contact your administrator
+
+
+put:
+  operationId: update
+  description: Update an existing qualificaion
+  tags:
+    - Qualification
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+    - name: qualification
+      in: body
+      description: Qualification defenition which will be added
+      required: true
+      schema:
+        $ref: './def/entity/Qualification.yaml'
+  responses:
+    '200':
+      description: Qualification item successfully updated
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: NTIS_DATA
+    errorMessage: Sorry, you have no permissions to update qualification. Please contact your administrator
+
+delete:
+  operationId: remove
+  description: Remove an existing qualification
+  tags:
+    - Qualification
+  parameters:
+    - name: id
+      in: path
+      description: Identifier of qualification which will be deleted.
+      type: integer
+      format: int64
+      required: true
+  responses:
+    '200':
+      description: Success response.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: delete
+    keyCode: NTIS_DATA
+    errorMessage: Sorry, you have no permissions to delete qualification. Please contact your administrator

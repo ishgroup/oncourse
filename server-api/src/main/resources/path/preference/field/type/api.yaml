@@ -1,0 +1,51 @@
+get:
+  operationId: get
+  description: Get custom field types
+  tags:
+  - CustomField
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/CustomFieldType.yaml'
+    default:
+      description: Unexpected error
+
+post:
+  operationId: update
+  description: Update custom field types
+  tags:
+  - CustomField
+  parameters:
+  - name: customFieldType
+    in: body
+    description: Custom field  types for update
+    required: true
+    schema:
+      type: array
+      items:
+        $ref: './def/entity/CustomFieldType.yaml'
+  responses:
+    '204':
+      description: Success response.
+    default:
+      description: Unexpected error
+
+delete:
+  operationId: remove
+  description: Remove custom field type
+  tags:
+  - CustomField
+  parameters:
+  - name: id
+    in: path
+    description: Identifier of custom field whitch will be deleted.
+    required: true
+    type: string
+  responses:
+    '204':
+      description: Custom field type successfully deleted
+    default:
+      description: Unexpected error

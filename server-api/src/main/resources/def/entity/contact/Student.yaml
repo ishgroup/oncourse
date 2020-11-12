@@ -1,0 +1,77 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: true
+  countryOfBirth:
+    $ref: '../Country.yaml'
+  disabilityType:
+    $ref: './AvetmissStudentDisabilityType.yaml'
+  labourForceStatus:
+    $ref: './AvetmissStudentLabourStatus.yaml'
+  englishProficiency:
+    $ref: './AvetmissStudentEnglishProficiency.yaml'
+  highestSchoolLevel:
+    $ref: './AvetmissStudentSchoolLevel.yaml'
+  indigenousStatus:
+    $ref: './AvetmissStudentIndigenousStatus.yaml'
+  isOverseasClient:
+    type: boolean
+    required: true
+  isStillAtSchool:
+    type: boolean
+  language:
+    $ref: '../Language.yaml'
+  priorEducationCode:
+    $ref: './AvetmissStudentPriorEducation.yaml'
+  specialNeeds:
+    type: string
+  yearSchoolCompleted:
+    type: integer
+  studentNumber:
+    type: integer
+    format: int64
+    required: true
+  countryOfResidency:
+    $ref: '../Country.yaml'
+  visaNumber:
+    type: string
+  visaType:
+    type: string
+  visaExpiryDate:
+    type: string
+    format: date
+  passportNumber:
+    type: string
+  medicalInsurance:
+    type: string
+  uniqueLearnerIdentifier:
+    type: string
+  usi:
+    type: string
+  usiStatus:
+    $ref: './UsiStatus.yaml'
+  chessn:
+    type: string
+  feeHelpEligible:
+    type: boolean
+    required: true
+  citizenship:
+    $ref: './StudentCitizenship.yaml'
+  townOfBirth:
+    type: string
+  specialNeedsAssistance:
+    type: boolean
+  clientIndustryEmployment:
+    $ref: './ClientIndustryEmploymentType.yaml'
+  clientOccupationIdentifier:
+    $ref: './ClientOccupationIdentifierType.yaml'
+  waitingLists:
+    type: array
+    items:
+      type: string
+  concessions:
+    type: array
+    items:
+      $ref: '../StudentConcession.yaml'

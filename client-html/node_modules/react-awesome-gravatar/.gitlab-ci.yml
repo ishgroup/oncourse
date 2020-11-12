@@ -1,0 +1,19 @@
+image: node:latest
+
+# This folder is cached between builds
+# http://docs.gitlab.com/ce/ci/yaml/README.html#cache
+cache:
+  paths:
+  - node_modules/
+
+lint:
+  script:
+   - npm install
+   - npm run lint
+
+test:
+  script:
+   - npm install
+   - npm run test
+
+# Eventually make it deploy on tags

@@ -1,0 +1,14 @@
+type: string
+enum:
+  - Cash
+  - Cheque
+  - Credit card
+  - EFT
+  - B-Pay
+  - Zero
+  - Other
+  - Contra
+  - Voucher
+  - PayPal
+  - Reverse
+  - EFTPOS

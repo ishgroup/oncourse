@@ -1,0 +1,32 @@
+type: object
+properties:
+  contactId:
+    type: integer
+    format: int64
+    required: true
+  enrolments:
+    type: array
+    required: true
+    items:
+      $ref: './CheckoutEnrolment.yaml'
+  memberships:
+    type: array
+    required: true
+    items:
+      $ref: './CheckoutMembership.yaml'
+  vouchers:
+    type: array
+    required: true
+    items:
+      $ref: './CheckoutVoucher.yaml'
+  products:
+    type: array
+    required: true
+    items:
+      $ref: './CheckoutArticle.yaml'
+  sendConfirmation:
+    type: boolean
+    required: true
+    description: send confirmation email
+
+

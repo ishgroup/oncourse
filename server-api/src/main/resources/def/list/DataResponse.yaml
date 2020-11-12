@@ -1,0 +1,49 @@
+type: object
+properties:
+  entity:
+    type: string
+    description: onCourse entity name
+    example: Audit
+  search:
+    type: string
+    description: search filter
+    example: |
+      search="action in ('create', 'update')"
+  pageSize:
+    type: integer
+    format: int64
+    description: amount of fetched records
+    example: 50
+  offset:
+    type: integer
+    format: int64
+    description: fetch offset
+    example: 300
+  sort:
+    description: array of sortings
+    type: array
+    items:
+      $ref: '../entity/Sorting.yaml'
+  columns:
+    description: table columns model
+    type: array
+    items:
+      $ref: '../entity/Column.yaml'
+  rows:
+    description: array of data rows
+    type: array
+    items:
+      $ref: '../entity/DataRow.yaml'
+  filteredCount:
+    description: count of filtered recods
+    type: integer
+    format: int64
+    example: 50
+  layout:
+    description: type of table layout
+    required: true
+    $ref: '../enum/LayoutType.yaml'
+  filterColumnWidth:
+    description: width of filter column in view in px
+    type: integer
+    example: 110

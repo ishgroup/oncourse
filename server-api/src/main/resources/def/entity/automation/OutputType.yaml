@@ -1,0 +1,8 @@
+type: string
+enum:
+  - csv
+  - json
+  - xml
+  - ics
+  - txt
+  - pdf

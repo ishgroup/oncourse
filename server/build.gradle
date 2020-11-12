@@ -52,7 +52,7 @@ sourceSets {
 dependencies {
 	api project(":types")
 	api project(':server-api')
-
+	
 	implementation "io.bootique.jetty:bootique-jetty:$bootiqueVersion"
 	implementation "io.bootique.cayenne:bootique-cayenne:$bootiqueVersion"
 	implementation "io.bootique.jdbc:bootique-jdbc-tomcat:$bootiqueVersion"
@@ -61,9 +61,9 @@ dependencies {
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
 	}
 
-	api ("ish.oncourse.willow:webservices-client:$webservicesVersion") {
-		exclude group:"org.codehaus.groovy", module:"groovy-all"
-	}
+	implementation 'javax.xml.bind:jaxb-api:2.3.0'
+	implementation 'javax.xml.ws:jaxws-api:2.3.0'
+	implementation 'javax.jws:javax.jws-api:1.1'
 
 	api "org.apache.cayenne:cayenne-lifecycle:$cayenneVersion"
 	api "org.apache.cayenne:cayenne-commitlog:$cayenneVersion"

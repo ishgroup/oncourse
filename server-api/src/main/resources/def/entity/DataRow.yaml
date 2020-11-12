@@ -1,0 +1,9 @@
+type: object
+properties:
+  id:
+    type: string
+    description: unique record identifier
+  values:
+    type: array
+    items:
+      type: string

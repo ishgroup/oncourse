@@ -1,0 +1,126 @@
+get:
+  operationId: get
+  description: Returns a waitingList record
+  tags:
+    - WaitingList
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of waitingList record to fetch
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/WaitingList.yaml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: WAITING_LIST
+    errorMessage: Sorry, you have no permissions to get waitingList. Please contact your administrator
+
+post:
+  operationId: create
+  description: Creates a waitingList record
+  tags:
+    - WaitingList
+  parameters:
+    - name: waitingList
+      in: body
+      description: waitingList to create
+      required: true
+      schema:
+        $ref: './def/entity/WaitingList.yaml'
+  responses:
+    '200':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: WAITING_LIST
+    errorMessage: Sorry, you have no permissions to create waitingList. Please contact your administrator
+
+put:
+  operationId: update
+  description: Updates an existing waitingList record
+  tags:
+    - WaitingList
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of waitingList record to fetch
+    - name: waitingList
+      in: body
+      schema:
+        $ref: './def/entity/WaitingList.yaml'
+      required: true
+      description: waitingList for update
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: WAITING_LIST
+    errorMessage: Sorry, you have no permissions to edit waitingList. Please contact your administrator
+
+delete:
+  operationId: remove
+  description: deletes a existing waitingList record
+  tags:
+    - WaitingList
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of waitingList record to fetch
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: delete
+    keyCode: WAITING_LIST
+    errorMessage: Sorry, you have no permissions to delete waitingList. Please contact your administrator
+
+patch:
+  operationId: bulkChange
+  tags:
+    - WaitingList
+  parameters:
+    - name: diff
+      in: body
+      schema:
+        $ref: './def/entity/Diff.yaml'
+      required: true
+      description: waitingLists for update
+  responses:
+    '200':
+      description: Success response
+    '400':
+      description: Bad request error
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: WAITING_LIST
+    errorMessage: Sorry, you have no permissions to edit waitingList. Please contact your administrator.

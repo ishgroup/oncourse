@@ -1,0 +1,5 @@
+keyCode: ish.onCourse.script.csv
+entityClass: Script
+body: ish.onCourse.script.csv.groovy
+name: Script CSV export
+outputType: csv

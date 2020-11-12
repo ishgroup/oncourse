@@ -1,0 +1,9 @@
+type: string
+description: List of account types
+enum:
+  - asset
+  - liability
+  - equity
+  - income
+  - COS
+  - expense

@@ -1,0 +1,18 @@
+put:
+  operationId: resetPassword
+  description: reset user Password
+  tags:
+  - User
+  parameters:
+  - name: id
+    in: path
+    description: Identifier of user
+    required: true
+    type: integer
+    format: int64
+  responses:
+    '200':
+      schema:
+        type: string
+      default:
+        description: Unexpected error

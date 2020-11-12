@@ -1,0 +1,5 @@
+Dear ${tutor.contact.getName(true)},
+
+Assessment ${assessment.assessment.name} for class ${assessment.courseClass.uniqueCode} ${assessment.courseClass.course.name} has been released to students today.
+
+This assessment is due ${assessment.dueDate.format("dd/MM/YYYY")}.

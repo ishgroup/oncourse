@@ -1,0 +1,6 @@
+type: string
+description: List of confirmation statuses.
+enum:
+  - Not sent
+  - Sent
+  - Do not send

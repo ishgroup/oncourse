@@ -1,0 +1,17 @@
+type: object
+properties:
+  type:
+    $ref: '../../enum/TriggerType.yaml'
+    description: trigger type and name
+    required: true
+    example: On edit
+  entityName:
+    type: string
+    description: entity name
+    required: false
+    example: Course
+  cron:
+    $ref: './Schedule.yaml'
+    description: cron
+    required: true
+    example: 0 0 12 1/1 * ? *

@@ -1,0 +1,6 @@
+Dear ${enrolment.student.contact.fullName},
+Congratulations on your successful completion of ${enrolment.courseClass.course.name} (${enrolment.courseClass.course.code}-${enrolment.courseClass.code})
+We would appreciate you taking a minute to provide some feedback about this class.
+at ${enrolment.student.getPortalLink(enrolment)}
+After completing the short survey, you can download a copy of your Certificate from the resources tab of the class record.
+If there are any issues with accessing your Certificate, please don't hesitate to contact us.

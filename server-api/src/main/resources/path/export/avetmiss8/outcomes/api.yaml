@@ -1,0 +1,44 @@
+get:
+  operationId: getExportOutcomes
+  tags:
+    - AvetmissExport
+  parameters:
+    - name: processId
+      in: path
+      type: string
+      required: true
+      description: Unique identifier of the process
+  responses:
+    '200':
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/AvetmissExportOutcome.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: SPECIAL_AVETMISS_EXPORT
+    errorMessage: Sorry, you have no permissions to get avetmiss export. Please contact your administrator
+
+put:
+  operationId: findExportOutcomes
+  tags:
+    - AvetmissExport
+  parameters:
+    - name: settings
+      in: body
+      description: AvetmissExport Settings
+      required: true
+      schema:
+        $ref: './def/entity/AvetmissExportSettings.yaml'
+  responses:
+    '200':
+      schema:
+        type: string
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: SPECIAL_AVETMISS_EXPORT
+    errorMessage: Sorry, you have no permissions to edit avetmiss export. Please contact your administrator

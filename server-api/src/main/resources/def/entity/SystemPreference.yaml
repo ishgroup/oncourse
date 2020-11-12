@@ -1,0 +1,17 @@
+type: object
+properties:
+  uniqueKey:
+    type: string
+    description: Unique ID of preference
+    example: ldap.user.search.filter
+  valueString:
+    type: string
+    description: Unigue Key of preference
+  created:
+    type: string
+    format: date-time
+    description: date and time when record was created
+  modified:
+    type: string
+    format: date-time
+    description: date and time when record was modified

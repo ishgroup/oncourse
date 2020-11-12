@@ -1,0 +1,21 @@
+post:
+  operationId: checkPermissions
+  description: This method allows you to check is a given user has access method at a given resource path
+  tags:
+    - Access
+  parameters:
+    - name: PermissionRequest
+      in: body
+      description: Permission request entity
+      required: true
+      schema:
+        $ref: './def/entity/PermissionRequest.yml'
+  responses:
+    '200':
+      description: Permissions was successfully checked
+      schema:
+        $ref: './def/entity/PermissionResponse.yml'
+    default:
+      description: Unexpected error
+  x-permission:
+    keyCode: UNDEFINED

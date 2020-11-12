@@ -1,0 +1,19 @@
+put:
+  operationId: checkPassword
+  description: Get Authenticationd
+  tags:
+  - User
+  parameters:
+  - name: password
+    in: path
+    type: string
+    required: true
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        $ref: './def/entity/PasswordComplexity.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    keyCode: UNDEFINED

@@ -1,0 +1,11 @@
+type: object
+properties:
+  id:
+    type: string
+    description: Unique record identifier
+  propertyName:
+    type: string
+    description: Property name
+  errorMessage:
+    type: string
+    description: Error message

@@ -1,0 +1,13 @@
+type: object
+properties:
+  untilDate:
+    type: string
+    format: date
+    required: true
+  entityName:
+    type: string
+  recordIds:
+    type: array
+    items:
+      type: integer
+      format: int64

@@ -1,0 +1,53 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
+import React, { useCallback } from "react";
+import ConfirmBase from "./ConfirmBase";
+import { State } from "../../../../reducers/state";
+import { Dispatch } from "redux";
+import { closeConfirm } from "../../../actions";
+import { connect } from "react-redux";
+import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
+import { ConfirmState } from "../../../../model/common/Confirm";
+
+interface Props {
+  stateProps: ConfirmState;
+  closeConfirm?: AnyArgFunction;
+}
+
+const ConfirmProvider = React.memo<Props>(({ stateProps, closeConfirm }) => {
+  const { onCancel, onConfirm, ...rest } = stateProps;
+
+  const onCancelHandler = useCallback(() => {
+    if (onCancel) {
+      onCancel();
+    }
+    closeConfirm();
+  }, [onCancel]);
+
+  const onConfirmHandler = useCallback(
+    typeof onConfirm === "function"
+      ? () => {
+          onConfirm();
+          closeConfirm();
+        }
+      : null,
+    [onConfirm]
+  );
+
+  return <ConfirmBase {...rest} onCancel={onCancelHandler} onConfirm={onConfirmHandler} />;
+});
+
+const mapStateToProps = (state: State) => ({
+  stateProps: state.confirm
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<any>) => {
+  return {
+    closeConfirm: () => dispatch(closeConfirm())
+  };
+};
+
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(ConfirmProvider);

@@ -1,0 +1,24 @@
+post:
+  operationId: validateForPrint
+  tags:
+    - Certificate
+  parameters:
+    - name: validationRequest
+      in: body
+      schema:
+        $ref: './def/entity/certificate/CertificateValidationRequest.yaml'
+      required: true
+      description: Request for validation with filters and sorting
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: string
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: print
+    keyCode: CERTIFICATE
+    errorMessage: Sorry, you have no permissions to print certificate. Please contact your administrator

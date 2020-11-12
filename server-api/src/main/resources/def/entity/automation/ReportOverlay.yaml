@@ -1,0 +1,15 @@
+type: object
+description: Report PDF backgrounds
+properties:
+  id:
+    type: integer
+    format: int64
+  name:
+    type: string
+    required: true
+    description: the name of the pdf background
+    example: 2019_Certificate_background.pdf
+  preview:
+    type: string
+    format: byte
+    description: image byte array

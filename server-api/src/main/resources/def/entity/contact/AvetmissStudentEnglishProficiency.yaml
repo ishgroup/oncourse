@@ -1,0 +1,8 @@
+type: string
+description: A set of values for AVETMISS reporting describing how well student speaks English
+enum:
+  - Not stated
+  - Very Well
+  - Well
+  - Not Well
+  - Not at all

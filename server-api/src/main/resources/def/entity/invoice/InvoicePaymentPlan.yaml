@@ -1,0 +1,16 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+  date:
+    type: string
+    format: date
+  type:
+    type: string
+  successful:
+    type: boolean
+  amount:
+    type: number
+  entityName:
+    type: string

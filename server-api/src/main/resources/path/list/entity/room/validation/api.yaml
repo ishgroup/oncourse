@@ -1,0 +1,22 @@
+delete:
+  operationId: remove
+  tags:
+    - RoomValidation
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of room record to fetch
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: delete
+    keyCode: ROOM
+    errorMessage: Sorry, you have no permissions to delete room. Please contact your administrator

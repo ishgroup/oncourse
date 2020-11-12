@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<Account id="500" accountCode="ASSET5" description="Test asset account" isEnabled="1" type="1"/>
+	<Account id="600" accountCode="INC6" description="Test income account" isEnabled="1" type="4" taxId="3"/>
+	<Account id="700" accountCode="accEnrl" description="Test asset account" isEnabled="1" type="1"/>
+	<Account id="800" accountCode="accDebt" description="Test income account" isEnabled="1" type="4" taxId="3"/>
+	<Account id="900" accountCode="accFees" description="Test fees account" isEnabled="1" type="2"/>
+	<Account id="1000" accountCode="accLiab" description="Test liability account" isEnabled="1" type="2"/>
+	<Account id="1100" accountCode="accDisc" description="Test discount account" isEnabled="1" type="5"/>
+
+	<PaymentMethod id="1200" name="Custom" accountId="500" active="1" bankedAutomatically="0" reconcilable="1" type="6"/>
+
+	<Tax id="3" isGSTTaxType="1" payableToSupplierAccountId="700" receivableFromStudentAccountId="800" taxCode="GST" taxrate="0.1"/>
+
+	<FieldConfiguration id="10" type="1" name="fkname1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+	<FieldConfiguration id="20" type="2" name="fkname2" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+	<FieldConfiguration id="30" type="3" name="fkname3" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+
+	<FieldConfigurationScheme id="100" name="fkname" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+
+	<FieldConfigurationLink id="100" configurationId="10" schemeId="100" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+	<FieldConfigurationLink id="200" configurationId="20" schemeId="100" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+	<FieldConfigurationLink id="300" configurationId="30" schemeId="100" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+
+	<Course id="3" code="BNN-453" willowId="1"
+		isShownOnWeb="1" isSufficientForQualification="1" isVET="1"
+		webDescription="Course Basic New Test" name="Course Basic New Test"
+		allowWaitingLists="1" currentlyOffered="1" enrolmentType="1" fieldConfigurationSchemaId="100"/>
+	<Course id="4" code="CNN-876" willowId="1"
+		isShownOnWeb="1" isSufficientForQualification="1" isVET="1"
+		webDescription="Basic Art Work" name="Basic Art Work"
+		allowWaitingLists="1" currentlyOffered="1" enrolmentType="1" fieldConfigurationSchemaId="100"/>
+	<Course id="5" code="def123" willowId="1"
+		isShownOnWeb="1" isSufficientForQualification="1" isVET="1"
+		webDescription="Course description goes here." name="Basic computer skills"
+		allowWaitingLists="1" currentlyOffered="1" enrolmentType="1" fieldConfigurationSchemaId="100"/>
+
+	<Site id="10" isAdministrationCentre="1" isShownOnWeb="1" name="Test Site" localTimezone="Australia/Sydney" isVirtual="0"/>
+	<Room id="1" name="Test Room" seatedCapacity="35" siteId="10" />
+
+	<CourseClass id="10" budgetedPlaces="3" incomeAccountId="500"
+		code="200701RW" courseId="5" deliveryMode="1" webDescription="Test Course Class"
+		feeExGst="20.00" roomId="1" maximumPlaces="3" minimumPlaces="1"
+		isActive="1" isCancelled="0" isClassFeeApplicationOnly="1"
+		isDistantLearningCourse="1" isShownOnWeb="1" suppressAvetmissExport="0" taxAdjustment="0" taxId="3"
+        sessionCount="3" fundingSource="3" attendanceType="0" feeHelpClass="0"/>
+
+	<Tutor id="1" willowId="1" createdOn="2010-02-03 09:18:09"
+		dateFinished="2010-02-03 09:18:09" modifiedOn="2010-02-03 09:18:09"
+		resume="Test resume" dateStarted="2010-02-03 09:18:09" wwChildrenStatus="0"/>
+
+	<DefinedTutorRole id="1" name="test tutor role" description="test desc" currentPayRateId="100" active="1"/>
+
+	<CourseClassTutor id="1" willowId="1"
+		confirmedOn="2010-02-03 09:18:09" courseClassId="10"
+		createdOn="2010-02-03 09:18:09" inPublicity="1" modifiedOn="2010-02-03 09:18:09"
+		tutorId="1" definedTutorRoleId="1"/>
+	<Preference id="100" name="license.sms" willowId="1" createdOn="2010-02-03 09:18:09" value="License sms enabled" modifiedOn="2010-02-03 09:18:09"
+	valueString="true"/>
+
+</dataset>

@@ -1,0 +1,56 @@
+type: string
+description: List of dashboard categories
+enum:
+  - Automation
+  - Courses
+  - Classes
+  - Sites
+  - Rooms
+  - Qualifications
+  - Units Of Competency
+  - Certificates
+  - Traineeship Courses
+  - Traineeships
+  - Contacts
+  - Students
+  - Companies
+  - Tutors
+  - Waiting lists
+  - Enrolments
+  - Invoices
+  - Payments In
+  - Payments Out
+  - Accounts
+  - Transactions
+  - Tutor pay
+  - Deposit banking
+  - Tags
+  - Products
+  - Discounts
+  - Memberships
+  - Voucher Types
+  - Documents
+  - Corporate Pass
+  - Student Feedback
+  - Sales
+  - Export AVETMISS 8...
+  - Preferences
+  - Applications
+  - Banking Deposits
+  - Messages
+  - Finalise period
+  - Assessment tasks
+  - Outcomes
+  - Audit Logging
+  - Funding Contract
+  - Security
+  - Change my password
+  - Documentation
+  - Community support
+  - Release notes
+  - Send support request...
+  - onCourse news
+  - Timetable
+  - Prior learnings
+  - Checkout (Quick Enrol)
+  - Batch payment in

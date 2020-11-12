@@ -1,0 +1,9 @@
+type: string
+enum:
+- Not yet started
+- Commenced
+- Delivered
+- Final Status
+- All outcomes final
+- Issued
+- Counting

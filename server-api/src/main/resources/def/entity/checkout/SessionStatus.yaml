@@ -1,0 +1,14 @@
+type: object
+properties:
+  complete:
+    type: boolean
+    require: true
+    description: The transaction has finished being processed.
+  authorised:
+    type: boolean
+    require: true
+    description: The transaction was successfully authorised.
+  responseText:
+    type: string
+    require: true
+    description: Human readable response, for example the error reason.

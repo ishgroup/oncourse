@@ -1,0 +1,3 @@
+micropower {
+    name nameOfIntegration
+}

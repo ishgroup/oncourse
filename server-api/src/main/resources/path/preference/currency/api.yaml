@@ -1,0 +1,14 @@
+get:
+  operationId: getCurrency
+  description: Get available currencies
+  tags:
+  - Preference
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        $ref: './def/entity/Currency.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    keyCode: UNDEFINED

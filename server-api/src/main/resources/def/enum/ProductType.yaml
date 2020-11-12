@@ -1,0 +1,6 @@
+type: string
+description: Status of the process
+enum:
+  - Product
+  - Membership
+  - Voucher

@@ -1,0 +1,24 @@
+get:
+  operationId: getForClasses
+  description: Get sessions by classes ids
+  tags:
+  - Timetable
+  parameters:
+  - name: ids
+    in: query
+    description: requested classes ids
+    required: true
+    type: string
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/timetable/Session.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: SESSION
+    errorMessage: Sorry, you have no permissions to look at timetable events. Please contact your administrator

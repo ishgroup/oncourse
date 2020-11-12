@@ -1,0 +1,17 @@
+get:
+  operationId: getLockedDate
+  description: Get account transaction locked date preference
+  tags:
+    - Preference
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: string
+        format: date
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: BANKING
+    errorMessage: Sorry, you have no permissions to edit banking. Please contact your administrator

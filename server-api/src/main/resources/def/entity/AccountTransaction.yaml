@@ -1,0 +1,17 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: true
+  transactionDate:
+    type: string
+    format: date
+  account:
+    $ref: './Account.yaml'
+    required: true
+  amount:
+    type: number
+    required: true
+  source:
+    type: string

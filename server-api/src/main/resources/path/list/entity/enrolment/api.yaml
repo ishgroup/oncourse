@@ -1,0 +1,72 @@
+get:
+  operationId: get
+  description: get a Enrolment
+  tags:
+    - Enrolment
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/enrolment/Enrolment.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: ENROLMENT
+    errorMessage: Sorry, you have no permissions to get enrolment. Please contact your administrator
+
+put:
+  operationId: update
+  description: Update an existing enrolment
+  tags:
+    - Enrolment
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+    - name: enrolment
+      in: body
+      description: Enrolment defenition which will be added
+      required: true
+      schema:
+        $ref: './def/entity/enrolment/Enrolment.yaml'
+  responses:
+    '200':
+      description: Enrolment item successfully updated
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: ENROLMENT
+    errorMessage: Sorry, you have no permissions to update enrolment. Please contact your administrator
+
+patch:
+  operationId: bulkChange
+  tags:
+    - Enrolment
+  parameters:
+    - name: diff
+      in: body
+      schema:
+        $ref: './def/entity/Diff.yaml'
+      required: true
+      description: enrolments for update
+  responses:
+    '200':
+      description: Success response
+    '400':
+      description: Bad request error
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: ENROLMENT
+    errorMessage: Sorry, you have no permissions to edit enrolment. Please contact your administrator.

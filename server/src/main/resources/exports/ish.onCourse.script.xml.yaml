@@ -1,0 +1,5 @@
+keyCode: ish.onCourse.script.xml
+entityClass: Script
+body: ish.onCourse.script.xml.groovy
+name: Script XML export
+outputType: xml

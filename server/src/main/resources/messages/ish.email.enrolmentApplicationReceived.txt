@@ -1,0 +1,9 @@
+Dear ${application.student.contact.firstName},
+Your application for ${application.course.name} has been received. We require some additional information from you to complete this process.
+<% if (application.course.isVET) { %>
+Your application is for a Nationally Recognised Training course. We are required to collect some additional information from you as part of the application process.
+Please visit ${Preferences.getPortalCensusUrl(application.student)}.
+Your application can not be assessed until all of these questions are answered.
+<% } else { %>
+Please visit ${Preferences.get("web.url")} and complete the questionnaire.
+<% } %>

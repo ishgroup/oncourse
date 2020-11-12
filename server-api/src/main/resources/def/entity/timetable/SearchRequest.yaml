@@ -1,0 +1,25 @@
+type: object
+description: searhe request object
+properties:
+  canceled:
+    description: Search sessions for canceled classes
+    required: false
+    type: boolean
+  search:
+    description: AQL search expression
+    required: false
+    type: string
+    example: |
+      courseClass.course.code = 'Adobe' AND room.site.name LIKE 'campus'
+  from:
+    description: Date/time in UTC ISO-8601 format. Looking for sessions starting from certain point of time. Start of this day by default
+    required: false
+    type: string
+    format: date-time
+    example: 2019-06-03'T'00:00:00.000'Z'
+  to:
+    description: Date/time in UTC ISO-8601 format. Looking for sessions starting up till certain point of time.
+    required: true
+    type: string
+    format: date-time
+    example: 2019-06-04'T'00:00:00.000'Z'

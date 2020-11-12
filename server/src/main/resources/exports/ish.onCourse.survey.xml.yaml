@@ -1,0 +1,5 @@
+keyCode: ish.onCourse.survey.xml
+entityClass: Survey
+body: ish.onCourse.survey.xml.groovy
+name: StudentFeedback XML export
+outputType: xml

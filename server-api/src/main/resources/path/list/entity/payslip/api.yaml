@@ -1,0 +1,117 @@
+get:
+  operationId: get
+  description: get tutor pay
+  tags:
+    - Payslip
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+  responses:
+    '200':
+      description: Success response
+      schema:
+        type: object
+        items:
+          $ref: './def/entity/Payslip.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: PAYSLIP
+    errorMessage: Sorry, you have no permissions to get tutor pay. Please contact your administrator
+
+post:
+  operationId: create
+  description: create new tutor pay
+  tags:
+    - Payslip
+  parameters:
+    - name: payslip
+      in: body
+      description: Invoice defenition which will be added
+      required: true
+      schema:
+        $ref: './def/entity/Payslip.yaml'
+  responses:
+    '200':
+      description: Tutor pay successfully created
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: PAYSLIP
+    errorMessage: Sorry, you have no permissions to create tutor pay. Please contact your administrator
+
+put:
+  operationId: update
+  description: Update tutor pay
+  tags:
+    - Payslip
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+    - name: payslip
+      in: body
+      description: Tutor pay defenition which will be added
+      required: true
+      schema:
+        $ref: './def/entity/Payslip.yaml'
+  responses:
+    '200':
+      description: Tutor pay successfully updated
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: PAYSLIP
+    errorMessage: Sorry, you have no permissions to update tutor pay. Please contact your administrator
+
+delete:
+  operationId: remove
+  description: Remove tutor pay
+  tags:
+    - Payslip
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+  responses:
+    '200':
+      description: Success response.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: delete
+    keyCode: PAYSLIP
+    errorMessage: Sorry, you have no permissions to delete tutor pay. Please contact your administrator
+
+patch:
+  operationId: bulkChange
+  tags:
+    - Payslip
+  parameters:
+    - name: diff
+      in: body
+      schema:
+        $ref: './def/entity/Diff.yaml'
+      required: true
+      description: tutor pays for update
+  responses:
+    '200':
+      description: Success response
+    '400':
+      description: Bad request error
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: PAYSLIP
+    errorMessage: Sorry, you have no permissions to edit tutor pay. Please contact your administrator.

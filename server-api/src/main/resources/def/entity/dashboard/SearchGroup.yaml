@@ -1,0 +1,11 @@
+type: object
+description: Dashboard search matched Entity items group
+properties:
+  entity:
+    description: item Entity name
+    required: true
+    type: string
+  items:
+    type: array
+    items:
+      $ref: './SearchItem.yaml'

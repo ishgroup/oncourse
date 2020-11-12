@@ -1,0 +1,6 @@
+type: string
+enum:
+  - No Rounding
+  - Nearest 10 cents
+  - Nearest 50 cents
+  - Nearest dollar

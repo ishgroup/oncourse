@@ -1,0 +1,69 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
+import React, { useMemo } from "react";
+import createStyles from "@material-ui/core/styles/createStyles";
+import withStyles from "@material-ui/core/styles/withStyles";
+import { useSelector } from "react-redux";
+import TabsList, { TabsListItem } from "../../../../common/components/layout/TabsList";
+import CourseClassesTab from "./CourseClassesTab";
+import CourseGeneralTab from "./CourseGeneralTab";
+import CourseMarketingTab from "./CourseMarketingTab";
+import CourseVetTab from "./CourseVetTab";
+import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
+import AvailabilityFormComponent from "../../../../common/components/form/availabilityComponent/AvailabilityFormComponent";
+import { State } from "../../../../reducers/state";
+
+const items: TabsListItem[] = [
+  {
+    label: "General",
+    component: props => <CourseGeneralTab {...props} />
+  },
+  {
+    label: "Classes",
+    component: props => <CourseClassesTab {...props} />
+  },
+  {
+    label: "Marketing",
+    component: props => <CourseMarketingTab {...props} />
+  },
+  {
+    label: "Notes",
+    component: ({ classes, ...rest }) => <OwnApiNotes {...rest} />
+  },
+  {
+    label: "Vet",
+    component: props => <CourseVetTab {...props} />
+  },
+  {
+    label: "Availability Rules",
+    component: props => <AvailabilityFormComponent {...props} className="saveButtonTableOffset" />
+  }
+];
+
+const styles = theme =>
+  createStyles({
+    icon: {
+      alignItems: "right"
+    },
+    dataRowClass: {
+      gridTemplateColumns: "3fr 2fr"
+    },
+    moduleRowClass: {
+      gridTemplateColumns: "1fr 0.5fr"
+    }
+  });
+
+const CourseEditView = props => {
+  const hasVetPermissions = useSelector<State, any>(state => state.access["VET_COURSE"]);
+
+  const usedItems = useMemo(() => (hasVetPermissions ? items : items.filter(i => i.label !== "Vet")), [
+    hasVetPermissions
+  ]);
+
+  return <TabsList items={props.values ? usedItems : []} itemProps={props} />;
+};
+
+export default withStyles(styles)(CourseEditView);

@@ -1,0 +1,5 @@
+type: string
+description: Avalible views for Entity Api
+enum:
+  - Two column
+  - Three column

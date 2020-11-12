@@ -1,0 +1,9 @@
+type: string
+enum:
+  - No credit/RPL was offered
+  - Credit/RPL was offered for prior higher education study only
+  - Credit/RPL was offered for prior VET study only
+  - Credit/RPL was offered for a combination of prior higher education and VET study
+  - Credit/RPL was offered for study undertaken at an education provider outside Australia
+  - Credit/RPL was offered for work experience undertaken inside or outside Australia
+  - Other

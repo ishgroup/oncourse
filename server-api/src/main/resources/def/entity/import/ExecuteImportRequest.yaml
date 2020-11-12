@@ -1,0 +1,11 @@
+type: object
+properties:
+  importScriptId:
+    type: integer
+    format: int64
+    required: true
+  variables:
+    type: object
+    additionalProperties:
+      type: string
+    required: false

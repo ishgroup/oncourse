@@ -1,0 +1,7 @@
+type: string
+enum:
+  - Unmarked
+  - Attended
+  - Absent with reason
+  - Absent without reason
+  - Partial

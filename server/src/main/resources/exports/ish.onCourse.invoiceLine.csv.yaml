@@ -1,0 +1,5 @@
+keyCode: ish.onCourse.invoiceLine.csv
+entityClass: Invoice
+body: ish.onCourse.invoiceLine.csv.groovy
+name: InvoiceLine CSV export
+outputType: csv

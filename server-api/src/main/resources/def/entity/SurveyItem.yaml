@@ -1,0 +1,47 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+  studentContactId:
+    type: integer
+    format: int64
+  studentName:
+    type: string
+  netPromoterScore:
+    type: integer
+  venueScore:
+    type: integer
+  courseScore:
+    type: integer
+  tutorScore:
+    type: integer
+  visibility:
+    $ref: '../enum/SurveyVisibility.yaml'
+  testimonial:
+    type: string
+  comment:
+    type: string
+  customFields:
+    type: object
+    additionalProperties:
+      type: string
+  siteId:
+    type: integer
+    format: int64
+  siteName:
+    type: string
+  roomId:
+    type: integer
+    format: int64
+  roomName:
+    type: string
+  classId:
+    type: integer
+    format: int64
+  className:
+    type: string
+  tutors:
+    type: object
+    additionalProperties:
+      type: string

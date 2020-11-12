@@ -1,0 +1,44 @@
+get:
+  operationId: get
+  description: Get certain user preferences by their unique keys
+  tags:
+  - UserPreference
+  parameters:
+  - name: keys
+    in: query
+    required: true
+    type: string
+    description: preference unique keys
+    example: |
+      keys=ldap.user.search.filter,ldap.user.name
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: object
+        additionalProperties:
+          type: string
+    default:
+      description: Unexpected error
+  x-permission:
+    keyCode: UNDEFINED
+
+put:
+  operationId: set
+  description: Set  user preference value
+  tags:
+  - UserPreference
+  parameters:
+  - name: preference
+    in: body
+    description: preference unique key
+    required: true
+    schema:
+      $ref: './def/entity/preference/UserPreference.yaml'
+  responses:
+    '200':
+      description: Success response.
+    default:
+      description: Unexpected error
+  x-permission:
+    keyCode: UNDEFINED

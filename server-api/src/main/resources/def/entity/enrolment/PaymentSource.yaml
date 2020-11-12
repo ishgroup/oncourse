@@ -1,0 +1,5 @@
+type: string
+description: List of payment's sources.
+enum:
+  - office
+  - web

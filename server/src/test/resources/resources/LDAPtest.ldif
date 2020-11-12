@@ -1,0 +1,66 @@
+version: 1
+
+dn: ou=angelTest,dc=ish,dc=com,dc=au
+objectClass: organizationalUnit
+objectClass: top
+ou: angelTest
+
+dn: ou=People,ou=angelTest,dc=ish,dc=com,dc=au
+objectClass: organizationalUnit
+objectClass: top
+ou: People
+
+dn: uidNumber=99999,ou=People,ou=angelTest,dc=ish,dc=com,dc=au
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+objectClass: ishuser
+objectClass: inetOrgPerson
+objectClass: apple-preset-user
+cn: test
+givenName: Tom
+sn: Jones
+uidNumber: 99999
+userPassword:: e1NIQX1xVXFQNWN5eG02WWNUQWh6MDVIcGg1Z3Z1OU09
+uid: test
+
+dn: ou=Groups,ou=angelTest,dc=ish,dc=com,dc=au
+objectClass: organizationalUnit
+objectClass: top
+ou: Groups
+
+dn: uidNumber=123,ou=People,ou=angelTest,dc=ish,dc=com,dc=au
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+objectClass: ishuser
+objectClass: inetOrgPerson
+objectClass: apple-preset-user
+cn: tom
+givenName: Tom
+sn: Jones
+uidNumber: 123
+userPassword:: e1NIQX1xVXFQNWN5eG02WWNUQWh6MDVIcGg1Z3Z1OU09
+uid: angelTest
+
+dn: ou=testGroup,ou=Groups,ou=angelTest,dc=ish,dc=com,dc=au
+objectClass: groupOfNames
+objectClass: top
+cn: testGroup
+member: uidNumber=99999,ou=People,ou=angelTest,dc=ish,dc=com,dc=au
+ou: testGroup
+
+dn: ou=emptyTestGroup,ou=Groups,ou=angelTest,dc=ish,dc=com,dc=au
+objectClass: groupOfNames
+objectClass: top
+cn: emptyTestGroup
+member: dc=none
+ou: emptyTestGroup
+
+dn: cn=posixTestGroup,ou=Groups,ou=angelTest,dc=ish,dc=com,dc=au
+objectClass: posixGroup
+objectClass: top
+cn: posixTestGroup
+gidNumber: 0
+memberUid: test
+

@@ -1,0 +1,21 @@
+post:
+  operationId: cancelClass
+  tags:
+    - CourseClass
+  parameters:
+    - name: CancelCourseClass
+      in: body
+      schema:
+        $ref: './def/entity/courseClass/CancelCourseClass.yaml'
+      required: true
+  responses:
+    '200':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: SPECIAL_CLASS_CANCEL
+    errorMessage: Sorry, you have no permissions to cancel class. Please contact your administrator

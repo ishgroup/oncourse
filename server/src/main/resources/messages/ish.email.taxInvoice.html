@@ -1,0 +1,222 @@
+${render(headerKeycode)}
+<table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+    <tbody>
+    <tr>
+        <td align="left" class="ish_content_container center" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 10px;padding-right: 17px;padding-bottom: 10px;padding-left: 34px;" align="left">
+            <div class="ish_text_container">
+                <h2 style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size: 18px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;font-weight: normal;font-style: normal;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 125%;margin-top: 0;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;">
+                    <% if (invoice.getTotalIncTax().toBigDecimal() < 0) { %>
+                    Credit Note
+                    <% } else { %>
+                    Tax Invoice
+                    <% } %>
+                </h2>
+            </div>
+        </td>
+        <td align="right" class="ish_content_container center" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 10px;padding-right: 34px;padding-bottom: 10px;padding-left: 17px;">
+            <div class="ish_text_container">
+                <h2 style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size: 18px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;font-weight: normal;font-style: normal;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 125%;margin-top: 0;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;">
+                    ${invoice.invoiceNumber}
+                </h2>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+    <tbody>
+    <tr>
+        <td class="ish_content_container" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 0;padding-right: 17px;padding-bottom: 10px;padding-left: 34px; vertical-align: top;" valign="top" align="left">
+            <table width="260" align="left" cellpadding="0" cellspacing="0" border="0" class="head-detail-left" style="mso-table-lspace:0pt;mso-table-rspace:0pt;">
+                <tbody>
+                <tr>
+                    <td>
+                        <div class="ish_text_container">
+                            <p style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size: 13px;color: #000000;color: #000000 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;">
+                                <strong>${invoice.contact.fullName}</strong><br />
+                                ${ContactService.getAddress(invoice.contact)}
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <table width="270" align="right" cellpadding="0" cellspacing="0" border="0" class="head-detail-right" style="mso-table-lspace:0pt;mso-table-rspace:0pt;">
+                <tbody>
+                <tr>
+                    <td>
+                        <table width="270" align="right" cellpadding="0" cellspacing="0" border="0" class="head-detail-right" style="mso-table-lspace:0pt;mso-table-rspace:0pt;">
+                            <tbody>
+                            <tr>
+                                <td width="47px" align="left" style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size: 13px;color: #000000;color: #000000 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;">
+                                    <span style="color: #7f7f7f; color: #7f7f7f !important;">Due on</span>
+                                </td>
+                                <td align="left" style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size: 13px;color: #000000;color: #000000 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;">
+                                    <span style="padding-left: 17px;">${invoice.dateDue.format("EEEE d MMMM yyyy")}</span>
+                                </td>
+                            </tr>
+                            <% if (invoice.customerReference) { %>
+                            <tr>
+                                <td width="47px" align="left" style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size: 13px;color: #000000;color: #000000 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;">
+                                    <span style="color: #7f7f7f; color: #7f7f7f !important;">Your ref</span>
+                                </td>
+                                <td align="left" style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size: 13px;color: #000000;color: #000000 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;">
+                                    <span style="padding-left: 17px;">${invoice.customerReference}</span>
+                                </td>
+                            </tr>
+                            <% } %>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+    <tbody>
+    <tr>
+        <td class="ish_content_container center" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 35px;padding-right: 17px;padding-bottom: 0;padding-left: 17px;" align="left">
+            <table border="0" width="100%" style="border:0">
+                <tbody class="ish_invoice_content">
+                <% invoice.invoiceLines.sort{it.createdOn}eachWithIndex { invoiceLine, i -> %>
+
+                    <% if (i % 2 == 0) { %>
+                    <tr style="background-color: rgba(0,0,0,.05)" bgcolor="rgba(0,0,0,.05)">
+                        <td colspan="2" style="padding-top: 17px;padding-right: 17px;padding-bottom: 17px; padding-left: 17px; color: #000000  !important; font-weight: normal !important; vertical-align: top; line-height:13px; font-size:13px;">
+                            <table width="100%" align="left" cellpadding="0" cellspacing="0" border="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;">
+                                <tbody>
+                                <tr>
+                                    <td width="70%" class="ish_invoice_row left" style="border-collapse: collapse; color: #000000  !important;" width="50%" valign="top" align="left">${invoiceLine.title}</td>
+                                    <td width="30%" class="ish_invoice_row right" style="border-collapse: collapse; color: #000000  !important;" valign="top" align="right">${invoiceLine.discountedPriceTotalIncTax}</td>
+                                </tr>
+                                <tr>
+                                    <td width="70%" class="ish_invoice_row left" style="border-collapse: collapse;" valign="top" align="left">Includes ${invoiceLine.taxEach} tax.</td>
+                                    <td width="30%" class="ish_invoice_row right" style="border-collapse: collapse; color: #000000  !important;" valign="top" align="right"></td>
+                                </tr>
+                                <% if (invoiceLine.discountEachExTax) { %>
+                                <tr>
+                                    <td width="70%" class="ish_invoice_row left" style="border-collapse: collapse;" valign="top" align="left">${invoiceLine.discountEachExTax} ${invoiceLine.invoiceLineDiscounts[0].discount.name} applied</td>
+                                    <td width="30%" class="ish_invoice_row right" style="border-collapse: collapse; color: #000000  !important;" valign="top" align="right"></td>
+                                </tr>
+                                <% } %>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <% } else { %>
+                    <tr>
+                        <td colspan="2" style="padding-top: 17px;padding-right: 17px;padding-bottom: 17px; padding-left: 17px; color: #000000  !important; font-weight: normal !important; vertical-align: top; line-height:13px; font-size:13px;">
+                            <table width="100%" align="left" cellpadding="0" cellspacing="0" border="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;">
+                                <tbody>
+                                <tr>
+                                    <td width="70%" class="ish_invoice_row left" style="border-collapse: collapse; color: #000000  !important;" width="50%" valign="top" align="left">${invoiceLine.title}</td>
+                                    <td width="30%" class="ish_invoice_row right" style="border-collapse: collapse; color: #000000  !important;" valign="top" align="right">${invoiceLine.discountedPriceTotalIncTax}</td>
+                                </tr>
+                                <tr>
+                                    <td width="70%" class="ish_invoice_row left" style="border-collapse: collapse;" valign="top" align="left">Includes ${invoiceLine.taxEach} tax.</td>
+                                    <td width="30%" class="ish_invoice_row right" style="border-collapse: collapse; color: #000000  !important;" valign="top" align="right"></td>
+                                </tr>
+                                <% if (invoiceLine.discountEachExTax) { %>
+                                <tr>
+                                    <td width="70%" class="ish_invoice_row left" style="border-collapse: collapse;" valign="top" align="left">${invoiceLine.discountEachExTax}</td>
+                                    <td width="30%" class="ish_invoice_row right" style="border-collapse: collapse; color: #000000  !important;" valign="top" align="right"></td>
+                                </tr>
+                                <% } %>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <% } %>
+                <% } %>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+    <tfoot border="0" class="ish_invoice_footer" style="border: 0;">
+    <tr class="ish_invoice_footer_total">
+        <td class="ish_content_container" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 0px;padding-right: 17px;padding-bottom: 0px;padding-left: 17px;" align="left">
+            <table style="border:0; border-top: 1px solid #e9e9e9;" width="100%" border="0">
+                <tfoot border="0" class="ish_invoice_footer" style="border: 0;">
+                <tr style="border-bottom: 1px dashed #e9e9e9;">
+                    <td width="85%" align="right" class="ish_invoice_footer_row" style="border-collapse: collapse; background-color: #fff; padding-top: 17px;padding-right: 17px;padding-bottom: 17px; padding-left: 17px; color: #000000  !important; font-weight: normal !important; vertical-align: top; line-height:13px; font-size:14px;" valign="top">Total</td>
+                    <td width="15%" align="right" class="ish_invoice_footer_row" style="border-collapse: collapse; background-color: #fff; padding-top: 17px;padding-right: 17px;padding-bottom: 17px; padding-left: 17px; color: #000000  !important; font-weight: normal !important; border-left: 1px solid #e9e9e9 !important; vertical-align: top; line-height:13px; font-size:14px;" valign="top">${invoice.totalIncTax}</td>
+                </tr>
+                </tfoot>
+            </table>
+        </td>
+    </tr>
+    <tr class="ish_invoice_footer_total_desc">
+        <td class="ish_content_container center" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 0px;padding-right: 17px;padding-bottom: 0px;padding-left: 17px;" align="left">
+            <table style="border:0; border-bottom: 1px solid #e9e9e9; margin-top: 0px;" width="100%" border="0">
+                <tfoot border="0" class="ish_invoice_footer" style="border: 0;">
+                <tr>
+                    <td width="85%" align="right" class="ish_invoice_footer_row" style="border:0; border-collapse: collapse; background-color: #fff; border: 0;padding-top: 17px;padding-right: 17px;padding-bottom: 5px; padding-left: 17px; color: #000000  !important; font-weight: normal !important; vertical-align: top; line-height:13px; font-size:14px;" valign="top">
+                        Less amount paid
+                    </td>
+                    <td width="15%" align="right" class="ish_invoice_row" style="border:0; border-collapse: collapse; background-color: #fff; border: 0;padding-top: 17px;padding-right: 17px;padding-bottom: 5px; padding-left: 17px; color: #000000  !important; font-weight: normal !important; border-left: 1px solid #e9e9e9 !important; vertical-align: top; line-height:13px; font-size:14px;" valign="top">
+                        ${invoice.totalIncTax.subtract(invoice.amountOwing)}
+                    </td>
+                </tr>
+                <tr>
+                    <td width="85%" align="right" class="ish_invoice_footer_row" style="border:0; border-collapse: collapse; background-color: #fff; border: 0;padding-top: 5px;padding-right: 17px;padding-bottom: 17px; padding-left: 17px; color: #000000  !important; font-weight: normal !important; vertical-align: top; line-height:13px; font-size:14px;" valign="top">
+                        ${invoice.amountOwing >= 0 ? "Owing" : "Credit"}
+                    </td>
+                    <td width="15%" align="right" class="ish_invoice_row" style="border:0; border-collapse: collapse; background-color: #fff; border: 0;padding-top: 5px;padding-right: 17px;padding-bottom: 17px; padding-left: 17px; color: #000000  !important; font-weight: normal !important; border-left: 1px solid #e9e9e9 !important; vertical-align: top; line-height:13px; font-size:14px;" valign="top">
+                        ${invoice.amountOwing}
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </td>
+    </tr>
+    <% if (invoice.unpaidInvoiceDueDates.size() > 0) { %>
+    <tr class="ish_invoice_footer_payment_due">
+        <td class="ish_content_container center" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 0px;padding-right: 17px;padding-bottom: 0px;padding-left: 17px;" align="left">
+            <table style="border:0; border-bottom: 1px solid #e9e9e9; margin-top: 0px;" width="100%" border="0">
+                <tfoot border="0" class="ish_invoice_footer" style="border: 0;">
+                <tr>
+                    <td width="85%" align="right" class="ish_invoice_footer_row" style="border:0; border-collapse: collapse; background-color: #fff; border: 0;padding-top: 8px;padding-right: 17px;padding-bottom: 5px; padding-left: 17px; color: #000000  !important; font-weight: normal !important; vertical-align: top; line-height:13px; font-size:14px;" valign="top">
+                        Payment due date
+                    </td>
+                    <td width="15%" align="right" class="ish_invoice_row" style="border:0; border-collapse: collapse; background-color: #fff; border: 0;padding-top: 8px;padding-right: 17px;padding-bottom: 5px; padding-left: 17px; color: #000000  !important; font-weight: normal !important; border-left: 1px solid #e9e9e9 !important; vertical-align: top; line-height:13px; font-size:14px;" valign="top">
+                        Amount payable
+                    </td>
+                </tr>
+                <% invoice.unpaidInvoiceDueDates.sort{ it.dueDate }.each { invoiceDueDate -> %>
+                <tr>
+                    <td width="85%" align="right" class="ish_invoice_footer_row" style="border:0; border-collapse: collapse; background-color: #fff; border: 0;padding-top: 5px;padding-right: 17px;padding-bottom: 5px; padding-left: 17px; color: #000000  !important; font-weight: normal !important; vertical-align: top; line-height:13px; font-size:14px;" valign="top">
+                        ${invoiceDueDate.dueDate.format("d MMMM yyyy")}
+                    </td>
+                    <td width="15%" align="right" class="ish_invoice_row" style="border:0; border-collapse: collapse; background-color: #fff; border: 0;padding-top: 5px;padding-right: 17px;padding-bottom: 5px; padding-left: 17px; color: #000000  !important; font-weight: normal !important; border-left: 1px solid #e9e9e9 !important; vertical-align: top; line-height:13px; font-size:14px;" valign="top">
+                        ${invoiceDueDate.unpaidAmount}
+                    </td>
+                </tr>
+                <% } %>
+
+                </tfoot>
+            </table>
+        </td>
+    </tr>
+    <% } %>
+    </tfoot>
+</table>
+<% if (invoice.amountOwing > 0) { %>
+<table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+    <tbody>
+    <tr>
+        <td class="ish_content_container" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 0;padding-right: 0;padding-bottom: 10px;padding-left: 17px; vertial-align: top;" align="left" valign="top">
+            <div class="ish_text_container">
+                <p class="align-left" style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size: 13px;color: #7f7f7f;color: #7f7f7f !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                    ${Preferences.get("college.paymentInfo")}
+                </p>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<% } %>
+${render(footerKeycode)}

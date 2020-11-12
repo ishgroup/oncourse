@@ -1,0 +1,6 @@
+type: string
+description: Payment method defenition
+enum:
+  - Other
+  - Cheque
+  - Credit card

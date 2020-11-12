@@ -1,0 +1,43 @@
+get:
+  operationId: getInfo
+  description: Finalise period information
+  tags:
+    - FinalisePeriod
+  parameters:
+    - name: lockDate
+      in: query
+      required: false
+      type: string
+      description: target lock date
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        $ref: './def/entity/summaryextracts/finaliseperiod/FinalisePeriodInfo.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: SUMMARY_EXTRACTS
+    errorMessage: Sorry, you have no permissions for Finalise period
+
+post:
+  description: Update transaction Lock Date
+  operationId: updateLockDate
+  tags:
+    - FinalisePeriod
+  parameters:
+    - name: lockDate
+      in: path
+      type: string
+      required: true
+      description: target lock date
+  responses:
+    '204':
+      description: lock Date successfully updated
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: SUMMARY_EXTRACTS
+    errorMessage: Sorry, you have no permissions for Finalise period

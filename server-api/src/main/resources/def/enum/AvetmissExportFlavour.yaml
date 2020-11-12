@@ -1,0 +1,13 @@
+type: string
+enum:
+ - NCVER (Standard AVETMISS)
+ - CSO (Community Colleges)
+ - STSOnline (NSW)
+ - DETConnect (Queensland)
+ - STELA (South Australia)
+ - Skills Tasmania
+ - Skills Victoria
+ - STARS (WA)
+ - WA RAPT
+ - Northern Territories VET Provider Portal
+ - AVETARS (ACT)

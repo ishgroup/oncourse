@@ -1,0 +1,3 @@
+title,gender,lastName,firstName,middleName,birthDate,countryOfBirth,mobilePhone,email,street,suburb,state,postcode,usi,usiStatus
+,M,Student,Test,,01/01/1991,,331110000,test@test.test,Main,Sydney,NSW,1001,,Not verified
+,M,Tutor,Test,,01/01/1990,,331110001,tutor@tutor.tutor,1st,Sydney,NSW,1002,,

@@ -1,0 +1,64 @@
+get:
+  description: Returns courseClass record
+  operationId: get
+  tags:
+    - Session
+  parameters:
+    - name: classId
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of class
+  responses:
+    '200':
+      description: Success response
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/timetable/Session.yaml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: SESSION
+    errorMessage: Sorry, you have no permissions to view timetable events. Please contact your administrator
+
+post:
+  description: Bulk update of session record
+  operationId: update
+  tags:
+    - Session
+  parameters:
+    - name: classId
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of class
+    - name: sessions
+      in: body
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/timetable/Session.yaml'
+      required: true
+      description: Unique identifier of class
+  responses:
+    '200':
+      description: Clash validation response
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/timetable/SessionWarning.yaml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: SESSION
+    errorMessage: Sorry, you have no permissions to edit timetable events. Please contact your administrator
+

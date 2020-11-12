@@ -1,0 +1,5 @@
+type: string
+description: List of outcomes types
+enum:
+- outcome
+- enrolment

@@ -1,0 +1,9 @@
+type: string
+description: List of access statuses
+enum:
+  - Hide
+  - View
+  - Print
+  - Edit
+  - Create
+  - Delete

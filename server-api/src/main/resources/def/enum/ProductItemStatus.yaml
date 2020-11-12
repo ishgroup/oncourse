@@ -1,0 +1,10 @@
+type: string
+description: Status of the ProductItem
+enum:
+  - Active
+  - Cancelled
+  - Credited
+  - Redeemed
+  - New
+  - Expired
+  - Delivered

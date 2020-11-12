@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<Account id="500" accountCode="ASSET5" description="Test asset account" isEnabled="1" type="1"/>
+	<Account id="600" accountCode="INC6" description="Test income account" isEnabled="1" type="4" taxId="3"/>
+	<Account id="700" accountCode="EXP7" description="Test expense account" isEnabled="1" type="6"/>
+	<Account id="800" accountCode="INC8" description="Test income account" isEnabled="1" type="4" taxId="3"/>
+
+	<FieldConfiguration id="1" type="1" name="fkname1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+	<FieldConfiguration id="2" type="2" name="fkname2" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+	<FieldConfiguration id="3" type="3" name="fkname3" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+
+	<FieldConfigurationScheme id="1" name="fkname" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+
+	<FieldConfigurationLink id="1" configurationId="1" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+	<FieldConfigurationLink id="2" configurationId="2" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+	<FieldConfigurationLink id="3" configurationId="3" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+	
+	<Course id="1"  code="def123" willowId="1" name="Basic computer skills" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="1" isVET="1" enrolmentType="1" fieldConfigurationSchemaId="1"/>
+	<Course id="2"  code="def123" willowId="1" name="Basic computer skills2" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="1" isVET="1" enrolmentType="1" fieldConfigurationSchemaId="1"/>
+	
+	<Site id="1" isAdministrationCentre="1" isShownOnWeb="1" name="test site" localTimezone="Australia/Sydney" isVirtual="0"/>
+	
+	<Room id="1" name="Test room" seatedCapacity="25" siteId="1"/>
+	
+	<Tax id="3" isGSTTaxType="1" payableToSupplierAccountId="700" receivableFromStudentAccountId="800" taxCode="GST" taxrate="0.1"/>
+	
+	<CourseClass id="1" code="200701RW" taxAdjustment="0.1" taxId="3" sessionCount="3" minimumPlaces="5"
+                 maximumPlaces="10" isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1"
+                 isCancelled="1" isActive="1" incomeAccountId="500" deliveryMode="1" courseId="1"
+                 feeExGst="20.00" suppressAvetmissExport="0" roomId="1" budgetedPlaces="10"
+                 fundingSource="3" attendanceType="0" feeHelpClass="0"/>
+	
+	<Contact id="1" isCompany="0" isStudent="0" isTutor="1" uniqueCode="123AB" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1"/>
+	<Contact id="2" isCompany="0" isStudent="0" isTutor="1" uniqueCode="456AB" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1"/>
+	
+	<Tutor id="1" contactId="1" givenName_legal="Test Name" familyName_legal="test" dateStarted="2010-01-03 09:18:09"  dateFinished="2010-01-03 09:18:09" payrollRef="test" resume="test" wwChildrenStatus="0"/>
+	<Tutor id="2" contactId="2" givenName_legal="Test Name2" familyName_legal="test2" dateStarted="2010-01-03 09:18:09"  dateFinished="2010-01-03 09:18:09" payrollRef="test" resume="test" wwChildrenStatus="0"/>
+	
+	<CourseSession id="100" roomId="1" startDatetime="2010-01-03 09:18:09" endDatetime="2010-02-03 09:18:09" courseClass_Id="1" payAdjustment="1"/>
+	
+	<CourseSession id="200" courseClass_Id="1" payAdjustment="4" />
+	
+	<DefinedTutorRole id="100" name="definedTutorRoleName" active="1"/>
+	
+	<CourseClassTutor id="100" tutorId="1" courseClassId="1" inPublicity="1" definedTutorRoleId="100"/>
+	
+</dataset>

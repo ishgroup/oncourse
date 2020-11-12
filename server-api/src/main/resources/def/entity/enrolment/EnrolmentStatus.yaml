@@ -1,0 +1,13 @@
+type: string
+description: List of enrolment's statuses.
+enum:
+  - ''
+  - Not processed
+  - Awaiting confirmation
+  - In transaction
+  - Active
+  - Failed
+  - Card declined
+  - Failed - no places
+  - Cancelled
+  - Credited

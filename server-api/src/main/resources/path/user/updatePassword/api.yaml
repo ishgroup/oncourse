@@ -1,0 +1,18 @@
+put:
+  operationId: updatePassword
+  description: updates user password
+  tags:
+  - User
+  parameters:
+  - name: password
+    in: path
+    type: string
+    description: new password
+    required: true
+  responses:
+    '204':
+      description: Success response.
+    default:
+      description: Unexpected error
+  x-permission:
+    keyCode: UNDEFINED

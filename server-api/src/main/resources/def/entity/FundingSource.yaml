@@ -1,0 +1,23 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: true
+  active:
+    type: boolean
+    required: true
+  name:
+    type: string
+    required: true
+  flavour:
+    $ref: '../enum/AvetmissExportFlavour.yaml'
+    required: true
+  created:
+    type: string
+    format: date-time
+    description: date and time when record was created
+  modified:
+    type: string
+    format: date-time
+    description: date and time when record was modified

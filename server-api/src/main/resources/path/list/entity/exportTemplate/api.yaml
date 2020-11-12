@@ -1,0 +1,124 @@
+get:
+  description: Returns export template record
+  operationId: get
+  tags:
+    - ExportTemplate
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of export template record to fetch
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/automation/ExportTemplate.yaml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: EXPORT_TEMPLATE
+    errorMessage: Sorry, you have no permissions to get export template. Please contact your administrator
+
+post:
+  operationId: create
+  tags:
+    - ExportTemplate
+  parameters:
+    - name: exportTemplate
+      in: body
+      description: export template for create
+      required: true
+      schema:
+        $ref: './def/entity/automation/ExportTemplate.yaml'
+  responses:
+    '200':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: EXPORT_TEMPLATE
+    errorMessage: Sorry, you have no permissions to create export template. Please contact your administrator
+
+put:
+  operationId: update
+  tags:
+    - ExportTemplate
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of export template record to fetch
+    - name: exportTemplate
+      in: body
+      schema:
+        $ref: './def/entity/automation/ExportTemplate.yaml'
+      required: true
+      description: export template for update
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: EXPORT_TEMPLATE
+    errorMessage: Sorry, you have no permissions to edit export template. Please contact your administrator
+
+delete:
+  operationId: remove
+  tags:
+    - ExportTemplate
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of export template record to fetch
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: delete
+    keyCode: EXPORT_TEMPLATE
+    errorMessage: Sorry, you have no permissions to delete export template. Please contact your administrator
+
+patch:
+  operationId: updateInternal
+  tags:
+    - ExportTemplate
+  description: update built-it exports, enable/disable or change export options, do not handle othe options
+  parameters:
+    - name: exportTemplate
+      in: body
+      description: export template for patch
+      required: true
+      schema:
+        $ref: './def/entity/automation/ExportTemplate.yaml'
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: EXPORT_TEMPLATE
+    errorMessage: Sorry, you have no permissions to update export template. Please contact your administrator

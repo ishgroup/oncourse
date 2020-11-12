@@ -1,0 +1,69 @@
+type: object
+properties:
+  payerId:
+    type: integer
+    format: int64
+    required: true
+  paymentMethodId:
+    type: integer
+    format: int64
+    required: true
+  payNow:
+    type: number
+    required: true
+    description: payment amount
+    example: 20.00
+  paymentDate:
+    type: string
+    format: date
+    required: false
+    description: custom payment date
+  merchantReference:
+    type: string
+    description: server side generated reference on x-validate step. Required for complte request.
+  contactNodes:
+    type: array
+    required: true
+    items:
+      $ref: './ContactNode.yaml'
+  sendInvoice:
+    type: boolean
+    required: true
+    description: send invoice receipt
+  previousInvoices:
+    description: payment amount
+    type: object
+    additionalProperties:
+      type: number
+  redeemedVouchers:
+    description: redeemed vouchers ids and applied amount
+    type: object
+    additionalProperties:
+      type: number
+  allowAutoPay:
+    type: boolean
+    required: false
+    description: allow to use the card in next payments automatically
+  payWithSavedCard:
+    type: boolean
+    required: false
+    description: pay with saved credit card
+  payForThisInvoice:
+    type: number
+    required: true
+    example: 20.00
+    description: amount allocated to current invoice
+  invoiceDueDate:
+    type: string
+    format: date
+    required: false
+    description: should be set for not payment plan invoices
+  invoicePublicNotes:
+    type: string
+    required: false
+    description: invoice public notes
+  invoiceCustomerReference:
+    type: string
+    required: false
+    description: invoice customer reference
+

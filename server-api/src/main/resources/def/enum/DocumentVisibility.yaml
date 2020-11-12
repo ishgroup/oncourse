@@ -1,0 +1,8 @@
+type: string
+description: Delivery schedule types, avalible for Survey forms only.
+enum:
+  - Private
+  - Public
+  - Tutors and enrolled students
+  - Tutors only
+  - Link

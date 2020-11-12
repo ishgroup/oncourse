@@ -1,0 +1,55 @@
+get:
+  operationId: get
+  description: Get contact relation types
+  tags:
+  - Contact
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/ContactRelationType.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: CONTACT
+    errorMessage: Sorry, you have no permissions to view contact relation types. Please contact your administrator
+
+post:
+  operationId: update
+  description: Update contact relation types
+  tags:
+  - Contact
+  parameters:
+  - name: contactRelationTypes
+    in: body
+    description: Contact relation types for update
+    required: true
+    schema:
+      type: array
+      items:
+        $ref: './def/entity/ContactRelationType.yaml'
+  responses:
+    '204':
+      description: Success response.
+    default:
+      description: Unexpected error
+
+delete:
+  operationId: remove
+  description: Remove contact relation type
+  tags:
+  - Contact
+  parameters:
+  - name: id
+    in: path
+    description: Identifier of concession type whitch will be deleted.
+    required: true
+    type: string
+  responses:
+    '204':
+      description: Contact relation type successfully deleted
+    default:
+      description: Unexpected error

@@ -1,0 +1,69 @@
+get:
+  description: Return data collection form
+  operationId: getForms
+  tags:
+  - DataCollection
+  responses:
+    '200':
+      description: Success response
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/DataCollectionForm.yaml'
+    default:
+      description: Unexpected error
+post:
+  description: Create data collection form
+  operationId: createForm
+  tags:
+  - DataCollection
+  parameters:
+  - name: form
+    in: body
+    description: form defenition which will be added
+    required: true
+    schema:
+      $ref: './def/entity/DataCollectionForm.yaml'
+  responses:
+    '204':
+      description: form item successfully added
+    default:
+      description: Unexpected error
+put:
+  description: Update data collection form
+  operationId: updateForm
+  tags:
+  - DataCollection
+  parameters:
+  - name: id
+    in: path
+    description: Unique identifier
+    required: true
+    type: string
+  - name: form
+    in: body
+    description: form defenition which will be added
+    required: true
+    schema:
+      $ref: './def/entity/DataCollectionForm.yaml'
+  responses:
+    '204':
+      description: form item successfully updated/added
+    default:
+      description: Unexpected error
+delete:
+  operationId: removeForm
+  description: Remove data collection form
+  tags:
+  - DataCollection
+  parameters:
+  - name: id
+    in: path
+    description: Identifier of Data Collection form which which will be deleted.
+    required: true
+    type: string
+  responses:
+    '204':
+      description: Form item successfully deleted
+    default:
+      description: Unexpected error

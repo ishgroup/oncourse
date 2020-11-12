@@ -22,7 +22,6 @@ buildscript {
 		cfxVersion = '3.3.5'
 		jacksonVersion = '2.9.9'
 		javaxActivationVersion = '1.2.0'
-		webservicesVersion = '100'
 	}
 
 	repositories {
@@ -85,9 +84,7 @@ subprojects {
 		api "org.codehaus.groovy:groovy-templates:$groovyVersion"
 		api "org.codehaus.groovy:groovy-xml:$groovyVersion"
 		api "org.codehaus.groovy:groovy-dateutil:$groovyVersion"
-
-		implementation 'javax.xml.bind:jaxb-api:2.3.0'
-		implementation 'javax.xml.ws:jaxws-api:2.3.0'
+		
 		implementation 'javax.annotation:javax.annotation-api:1.3.2'
 
 		testImplementation 'junit:junit:4.13'

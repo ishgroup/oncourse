@@ -1,0 +1,4 @@
+io.bootique.jetty.connector.ConnectorFactory
+io.bootique.jetty.connector.HttpConnectorFactory
+ish.oncourse.server.modules.AngelHttpsConnectorFactory
+ish.oncourse.server.db.URIDataSourceFactory

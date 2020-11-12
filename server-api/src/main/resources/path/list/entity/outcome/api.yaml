@@ -1,0 +1,122 @@
+get:
+  description: Returns a outcome record
+  operationId: get
+  tags:
+    - Outcome
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of outcome record to fetch
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/Outcome.yaml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: OUTCOMES
+    errorMessage: Sorry, you have no permissions to get outcome. Please contact your administrator
+
+put:
+  operationId: update
+  tags:
+    - Outcome
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of outcome record to fetch
+    - name: outcome
+      in: body
+      schema:
+        $ref: './def/entity/Outcome.yaml'
+      required: true
+      description: outcome for update
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: OUTCOMES
+    errorMessage: Sorry, you have no permissions to edit outcome. Please contact your administrator
+
+delete:
+  operationId: remove
+  tags:
+    - Outcome
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of outcome record to fetch
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: delete
+    keyCode: OUTCOMES
+    errorMessage: Sorry, you have no permissions to delete outcome. Please contact your administrator
+
+post:
+  operationId: create
+  description: create new outcome
+  tags:
+    - Outcome
+  parameters:
+    - name: outcome
+      in: body
+      description: Outcome definition which will be added
+      required: true
+      schema:
+        $ref: './def/entity/Outcome.yaml'
+  responses:
+    '200':
+      description: Outcome successfully created
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: OUTCOMES
+    errorMessage: Sorry, you have no permissions to create outcome. Please contact your administrator
+
+patch:
+  operationId: bulkChange
+  tags:
+    - Outcome
+  parameters:
+    - name: diff
+      in: body
+      schema:
+        $ref: './def/entity/Diff.yaml'
+      required: true
+      description: outcomes for update
+  responses:
+    '200':
+      description: Success response
+    '400':
+      description: Bad request error
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: OUTCOMES
+    errorMessage: Sorry, you have no permissions to edit outcome. Please contact your administrator.

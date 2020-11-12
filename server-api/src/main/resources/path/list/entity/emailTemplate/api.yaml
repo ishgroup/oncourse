@@ -1,0 +1,124 @@
+get:
+  description: Returns email template record
+  operationId: get
+  tags:
+    - EmailTemplate
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of email template record to fetch
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/automation/EmailTemplate.yaml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: EMAIL_TEMPLATE
+    errorMessage: Sorry, you have no permissions to get email template. Please contact your administrator
+
+post:
+  operationId: create
+  tags:
+    - EmailTemplate
+  parameters:
+    - name: emailTemplate
+      in: body
+      description: email template for create
+      required: true
+      schema:
+        $ref: './def/entity/automation/EmailTemplate.yaml'
+  responses:
+    '200':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: EMAIL_TEMPLATE
+    errorMessage: Sorry, you have no permissions to create email template. Please contact your administrator
+
+put:
+  operationId: update
+  tags:
+    - EmailTemplate
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of email template record to fetch
+    - name: emailTemplate
+      in: body
+      schema:
+        $ref: './def/entity/automation/EmailTemplate.yaml'
+      required: true
+      description: email template for update
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: EMAIL_TEMPLATE
+    errorMessage: Sorry, you have no permissions to edit email template. Please contact your administrator
+
+delete:
+  operationId: remove
+  tags:
+    - EmailTemplate
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of email template record to fetch
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: delete
+    keyCode: EMAIL_TEMPLATE
+    errorMessage: Sorry, you have no permissions to delete email template. Please contact your administrator
+
+patch:
+  operationId: updateInternal
+  tags:
+    - EmailTemplate
+  description: update built-it emails, enable/disable or change email options, do not handle other options
+  parameters:
+    - name: emailTemplate
+      in: body
+      description: export template for patch
+      required: true
+      schema:
+        $ref: './def/entity/automation/EmailTemplate.yaml'
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: EMAIL_TEMPLATE
+    errorMessage: Sorry, you have no permissions to update export template. Please contact your administrator

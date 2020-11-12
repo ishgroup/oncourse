@@ -1,0 +1,18 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: true
+  fromAccount:
+    type: integer
+    format: int64
+  toAccount:
+    type: integer
+    format: int64
+  amount:
+    type: number
+    required: true
+  transactionDate:
+    type: string
+    format: date

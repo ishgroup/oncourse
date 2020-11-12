@@ -1,0 +1,5 @@
+keyCode: ish.onCourse.ssBulkUpload.csv
+entityClass: Application
+body: ish.onCourse.ssBulkUpload.csv.groovy
+name: Smart & Skilled Bulk Upload
+outputType: csv

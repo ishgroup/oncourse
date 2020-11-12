@@ -1,0 +1,22 @@
+put:
+  operationId: updateTableModel
+  description: Update table model for this entity
+  tags:
+  - Entity
+  parameters:
+  - name: entity
+    in: query
+    required: true
+    type: string
+    example: Audit
+    description: onCourse entity name
+  - name: tableModel
+    in: body
+    required: true
+    description: Table model
+    schema:
+      $ref: './def/entity/TableModel.yaml'
+  x-permission:
+    mask: view
+    keyCode: LAZY/entity
+    errorMessage: Sorry, you have no permissions to edit this entity. Please contact your administrator

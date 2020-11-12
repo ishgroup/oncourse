@@ -1,0 +1,20 @@
+post:
+  operationId: reverse
+  description: reverse payment
+  tags:
+    - PaymentIn
+  parameters:
+    - name: id
+      in: path
+      required: true
+      type: integer
+      format: int64
+  responses:
+    '200':
+      description: Payment reversed
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: PAYMENT_IN
+    errorMessage: Sorry, you have no permission to reverse payment. Please contact your administrator

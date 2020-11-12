@@ -1,0 +1,78 @@
+get:
+  operationId: get
+  description: Return saved filters
+  tags:
+  - Filter
+  parameters:
+  - name: entity
+    in: query
+    description: Entity name
+    required: true
+    type: string
+  responses:
+    '200':
+      description: Success response
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/Filter.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: LAZY/entity
+    errorMessage: Sorry, you have no permissions to view custom filters for this entity. Please contact your administrator
+
+post:
+  operationId: save
+  description: Save custom filter for entity
+  tags:
+    - Filter
+  parameters:
+  - name: entity
+    in: query
+    description: Entity name that will use in permission checking
+    required: true
+    type: string
+  - name: filter
+    in: body
+    description: Module defenition which will be added
+    required: true
+    schema:
+      $ref: './def/entity/Filter.yaml'
+  responses:
+    '200':
+      description: Filter item successfully updated
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: LAZY/entity
+    errorMessage: Sorry, you have no permissions to create custom filters for this entity. Please contact your administrator
+
+delete:
+  operationId: delete
+  description: Remove custom filter
+  tags:
+  - Filter
+  parameters:
+  - name: entity
+    in: query
+    description: Entity name that will use in permission checking
+    required: true
+    type: string
+  - name: id
+    in: path
+    description: Identifier of filter which will be deleted.
+    type: integer
+    format: int64
+    required: true
+  responses:
+    '200':
+      description: Success response.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: LAZY/entity
+    errorMessage: Sorry, you have no permissions to delete custom filters for this entity. Please contact your administrator

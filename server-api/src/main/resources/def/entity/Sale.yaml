@@ -1,0 +1,17 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: true
+  name:
+    type: string
+  code:
+    type: string
+  active:
+    type: boolean
+  type:
+    $ref: '../enum/SaleType.yaml'
+  expiryDate:
+    type: string
+    format: date

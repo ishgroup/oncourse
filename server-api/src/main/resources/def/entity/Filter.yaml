@@ -1,0 +1,19 @@
+type: object
+description: List of account types
+properties:
+  name:
+    type: string
+    description: filter name
+  id:
+    type: integer
+    format: int64
+    required: true
+  entity:
+    type: string
+    required: true
+  expression:
+    type: string
+    required: true
+  showForCurrentOnly:
+    type: boolean
+    required: true

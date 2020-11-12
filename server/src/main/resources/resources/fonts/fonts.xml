@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright ish group pty ltd 2020.
+  ~
+  ~ This program is free software: you can redistribute it and/or modify it under the terms of the
+  ~ GNU Affero General Public License version 3 as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+  ~ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  ~ See the GNU Affero General Public License for more details.
+  -->
+
+<fontFamilies>
+
+    <fontFamily name="Open Sans">
+        <normal>resources/fonts/opensans/OpenSans-Regular.ttf</normal>
+        <bold>resources/fonts/opensans/OpenSans-Bold.ttf</bold>
+        <italic>resources/fonts/opensans/OpenSans-Italic.ttf</italic>
+        <boldItalic>resources/fonts/opensans/OpenSans-BoldItalic.ttf</boldItalic>
+        <pdfEncoding>Identity-H</pdfEncoding>
+        <pdfEmbedded>true</pdfEmbedded>
+        <exportFonts>
+            <export key="net.sf.jasperreports.html">'Open Sans', Arial, Helvetica, sans-serif</export>
+            <export key="net.sf.jasperreports.xhtml">'Open Sans', Arial, Helvetica, sans-serif</export>
+        </exportFonts>
+    </fontFamily>
+
+    <fontFamily name="Open Sans Bold">
+        <normal>resources/fonts/opensans/OpenSans-Bold.ttf</normal>
+        <bold>resources/fonts/opensans/OpenSans-ExtraBold.ttf</bold>
+        <italic>resources/fonts/opensans/OpenSans-BoldItalic.ttf</italic>
+        <boldItalic>resources/fonts/opensans/OpenSans-ExtraBoldItalic.ttf</boldItalic>
+        <pdfEncoding>Identity-H</pdfEncoding>
+        <pdfEmbedded>true</pdfEmbedded>
+        <exportFonts>
+            <export key="net.sf.jasperreports.html">'Open Sans Bold', Arial, Helvetica, sans-serif</export>
+            <export key="net.sf.jasperreports.xhtml">'Open Sans Bold', Arial, Helvetica, sans-serif</export>
+        </exportFonts>
+    </fontFamily>
+
+    <fontFamily name="Open Sans Light">
+        <normal>resources/fonts/opensans/OpenSans-Light.ttf</normal>
+        <bold>resources/fonts/opensans/OpenSans-Semibold.ttf</bold>
+        <italic>resources/fonts/opensans/OpenSans-LightItalic.ttf</italic>
+        <boldItalic>resources/fonts/opensans/OpenSans-SemiboldItalic.ttf</boldItalic>
+        <pdfEncoding>Identity-H</pdfEncoding>
+        <pdfEmbedded>true</pdfEmbedded>
+        <exportFonts>
+            <export key="net.sf.jasperreports.html">'Open Sans Light', Arial, Helvetica, sans-serif</export>
+            <export key="net.sf.jasperreports.xhtml">'Open Sans Light', Arial, Helvetica, sans-serif</export>
+        </exportFonts>
+    </fontFamily>
+
+    <fontFamily name="Open Sans Condensed Light">
+        <normal>resources/fonts/opensans/OpenSans-CondLight.ttf</normal>
+        <bold>resources/fonts/opensans/OpenSans-CondBold.ttf</bold>
+        <italic>resources/fonts/opensans/OpenSans-CondLightItalic.ttf</italic>
+        <pdfEncoding>Identity-H</pdfEncoding>
+        <pdfEmbedded>true</pdfEmbedded>
+        <exportFonts>
+            <export key="net.sf.jasperreports.html">'Open Sans Condensed Light', Arial, Helvetica, sans-serif</export>
+            <export key="net.sf.jasperreports.xhtml">'Open Sans Condensed Light', Arial, Helvetica, sans-serif</export>
+        </exportFonts>
+    </fontFamily>
+
+</fontFamilies>

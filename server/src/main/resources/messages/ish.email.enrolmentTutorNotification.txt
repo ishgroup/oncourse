@@ -1,0 +1,23 @@
+This is an automatic notification that a new enrolment has been received by ${Preferences.get("college.name")} for ${enrolment.courseClass.course.name} ${enrolment.courseClass.course.code}-${enrolment.courseClass.code}
+
+Start date: <% if (enrolment.courseClass.isDistantLearningCourse) { %>${enrolment.createdOn.format("EEEE d MMMM yyyy", enrolment.courseClass.getTimeZone())}<% } else { %>${enrolment.courseClass.startDateTime.format("h:mm a EEEE d MMMM yyyy", enrolment.courseClass.getTimeZone())}<% } %>
+
+Class venue: ${(enrolment.courseClass?.room?.site?.name?:'') + (enrolment.courseClass?.room?.name ? ', ' + enrolment.courseClass.room.name :'')}
+
+Student: ${enrolment.student.contact.getName(true)}
+
+Student address: ${enrolment.student.contact.street?:''} ${enrolment.student.contact.suburb?:''} ${enrolment.student.contact.postcode?:''}
+<% if (enrolment.student.contact.mobilePhone) { %>
+Student mobile: ${enrolment.student.contact.mobilePhone}
+<% } %><% if (enrolment.student.contact.homePhone) { %>
+Student home: ${enrolment.student.contact.homePhone}
+<% } %><% if (enrolment.student.contact.workPhone) { %>
+Student work: ${enrolment.student.contact.workPhone}
+<% } %><% if (enrolment.student.contact.email) { %>
+Student email: ${enrolment.student.contact.email}
+<% } %><% if (enrolment.student.usi) { %>
+USI: ${enrolment.student.usi}
+<% } %><% if (enrolment.student.specialNeeds) { %>
+Special needs: ${enrolment.student.specialNeeds}
+<% } %>
+Fee Paid: ${enrolment.invoiceLine.discountedPriceTotalIncTax} GST ${enrolment.invoiceLine.taxEach.isZero() ? 'free' : 'inc'}

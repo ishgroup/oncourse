@@ -1,0 +1,16 @@
+get:
+  operationId: getCountries
+  description: Get available countries
+  tags:
+  - Preference
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/Country.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    keyCode: UNDEFINED

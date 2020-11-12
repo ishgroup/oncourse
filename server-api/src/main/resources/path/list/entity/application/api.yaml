@@ -1,0 +1,123 @@
+get:
+  description: Returns application record
+  operationId: get
+  tags:
+    - Application
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of application record to fetch
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/Application.yaml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: APPLICATION
+    errorMessage: Sorry, you have no permissions to get application. Please contact your administrator
+
+post:
+  operationId: create
+  tags:
+    - Application
+  parameters:
+    - name: application
+      in: body
+      description: application for create
+      required: true
+      schema:
+        $ref: './def/entity/Application.yaml'
+  responses:
+    '200':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: APPLICATION
+    errorMessage: Sorry, you have no permissions to create application. Please contact your administrator
+
+put:
+  operationId: update
+  tags:
+    - Application
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of application record to fetch
+    - name: application
+      in: body
+      schema:
+        $ref: './def/entity/Application.yaml'
+      required: true
+      description: application for update
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: APPLICATION
+    errorMessage: Sorry, you have no permissions to edit application. Please contact your administrator
+
+delete:
+  operationId: remove
+  tags:
+    - Application
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of application record to fetch
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: delete
+    keyCode: APPLICATION
+    errorMessage: Sorry, you have no permissions to delete application. Please contact your administrator
+
+patch:
+  operationId: bulkChange
+  tags:
+    - Application
+  parameters:
+    - name: diff
+      in: body
+      schema:
+        $ref: './def/entity/Diff.yaml'
+      required: true
+      description: applications for update
+  responses:
+    '200':
+      description: Success response
+    '400':
+      description: Bad request error
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: APPLICATION
+    errorMessage: Sorry, you have no permissions to edit application. Please contact your administrator.

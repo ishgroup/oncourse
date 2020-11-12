@@ -1,0 +1,24 @@
+get:
+  operationId: search
+  description: search for Invoices
+  tags:
+    - Invoice
+  parameters:
+    - name: search
+      in: query
+      type: string
+      required: true
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/invoice/Invoice.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: INVOICE
+    errorMessage: Sorry, you have no permissions to get invoice. Please contact your administrator
+

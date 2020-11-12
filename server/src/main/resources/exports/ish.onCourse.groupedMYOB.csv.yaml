@@ -1,0 +1,5 @@
+keyCode: ish.onCourse.groupedMYOB.csv
+entityClass: AccountTransaction
+body: ish.onCourse.groupedMYOB.csv.groovy
+name: grouped MYOB export
+outputType: csv

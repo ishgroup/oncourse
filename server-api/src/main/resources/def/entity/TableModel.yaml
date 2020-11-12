@@ -1,0 +1,18 @@
+type: object
+properties:
+  sortings:
+    type: array
+    items:
+      $ref: './Sorting.yaml'
+  columns:
+    type: array
+    items:
+      $ref: './Column.yaml'
+  layout:
+    description: type of table layout
+    required: true
+    $ref: '../enum/LayoutType.yaml'
+  filterColumnWidth:
+    description: width of filter column in view in px
+    type: integer
+    example: 110

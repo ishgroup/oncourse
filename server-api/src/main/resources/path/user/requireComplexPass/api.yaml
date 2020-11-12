@@ -1,0 +1,14 @@
+get:
+  operationId: requireComplexPass
+  description: check if complex password required
+  tags:
+  - User
+  responses:
+    '200':
+      description: Success response
+      schema:
+        type: boolean
+    default:
+      description: Unexpected error
+  x-permission:
+    keyCode: UNDEFINED

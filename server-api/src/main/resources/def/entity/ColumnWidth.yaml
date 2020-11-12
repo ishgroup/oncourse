@@ -1,0 +1,14 @@
+type: object
+properties:
+  preferenceLeftColumnWidth:
+    type: number
+    description: pixel width for left column in Preferences list
+  tagLeftColumnWidth:
+    type: number
+    description: pixel width for left column in Tag list
+  securityLeftColumnWidth:
+    type: number
+    description: pixel width for left column in Security list
+  automationLeftColumnWidth:
+    type: number
+    description: pixel width for left column in Automation list

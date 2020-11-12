@@ -1,0 +1,5 @@
+keyCode: ish.onCourse.debtorPaymentSummary.csv
+entityClass: Invoice
+body: ish.onCourse.debtorPaymentSummary.csv.groovy
+name: Debtor Payment Summary
+outputType: csv

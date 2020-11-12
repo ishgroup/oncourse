@@ -1,0 +1,18 @@
+type: string
+description: >
+  List of possible user status responses.
+  Can has one of the following values: Invalid credentials, Too many users, Token required,
+  Invalid or expired token, Concurrent sessions found, Weak password, Password outdated,
+  Forced password update, TFA optional, TFA required, Login successful
+enum:
+  - Invalid credentials
+  - Too many users
+  - Token required
+  - Invalid or expired token
+  - Concurrent sessions found
+  - Weak password
+  - Password outdated
+  - Forced password update
+  - TFA optional
+  - TFA required
+  - Login successful

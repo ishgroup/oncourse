@@ -1,0 +1,8 @@
+"description","name","currentPayRateId","active"
+"Tutor","Tutor","NULL","1"
+"Lecturer","Lecturer","NULL","1"
+"Supervisor","Supervisor","NULL","1"
+"Coordinator","Coordinator","NULL","1"
+"Demonstrator","Demonstrator","NULL","1"
+"Helper","Helper","NULL","1"
+"Technician","Technician","NULL","1"

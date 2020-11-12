@@ -1,0 +1,5 @@
+type: string
+enum:
+  - Course disabled
+  - Enabled
+  - Enabled and visible online

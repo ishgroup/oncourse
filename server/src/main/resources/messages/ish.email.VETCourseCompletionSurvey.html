@@ -1,0 +1,28 @@
+${render(header_keycode)}
+
+<tr>
+    <td align="center" valign="top" width="100%" class="bg-color content-padding">
+        <center>
+            <table cellpadding="0" cellspacing="0" width="600" class="w320">
+                <tr>
+                    <td class="mini-block-container">
+                        <table cellpadding="0" cellspacing="0" width="100%" class="table-border-separate">
+                            <tr>
+                                <td class="mini-block pull-left" valign="top">
+                                    Dear ${to.firstName}, <br /><br />
+                                    Thank you for your participation in ${record.courseClass.course.name}. <br />
+                                    As a soon-to-be graduate of ${Preferences.get("college.name")}, we would like to invite you to partake in a short survey and tell us about your recent experience. <br />
+                                    Your feedback will be vital in the improvement of future programs and course delivery. <br />
+                                    Click the link below to go to the survey:<br/>
+                                    <a style="color: #0084b4;color: #0084b4 !important;background-color: #ffffff;text-decoration: none;border: 0;word-wrap: break-word;" href=${Preferences.get("web.url")} target="_blank">${Preferences.get("web.url")}</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </center>
+    </td>
+</tr>
+
+${render(footer_keycode)}

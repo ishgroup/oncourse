@@ -1,0 +1,27 @@
+get:
+  description: Returns courseClass documents
+  operationId: getDocuments
+  tags:
+    - CourseClass
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of class record to fetch
+  responses:
+    '200':
+      description: Success response
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/Document.yaml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: ATTACHMENT_INFO
+    errorMessage: Sorry, you have no permissions to get course. Please contact your administrator

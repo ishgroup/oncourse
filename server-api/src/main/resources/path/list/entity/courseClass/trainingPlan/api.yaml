@@ -1,0 +1,58 @@
+get:
+  description: Returns courseClass training plans
+  operationId: getTrainingPlan
+  tags:
+    - CourseClass
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of class
+  responses:
+    '200':
+      description: Success response
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/courseClass/TrainingPlan.yaml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: CLASS
+    errorMessage: Sorry, you have no permissions to get course. Please contact your administrator
+
+post:
+  description: Updates courseClass training plans
+  operationId: updateTrainingPlan
+  tags:
+    - CourseClass
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of class
+    - name: trainingPlans
+      in: body
+      description: updated student training plans
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/courseClass/TrainingPlan.yaml'
+  responses:
+    '200':
+      description: Success response
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: CLASS
+    errorMessage: Sorry, you have no permissions to edit training plans. Please contact your administrator

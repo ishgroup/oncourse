@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='utf-8'?>
+<data>
+  <voucherProduct id='1'>
+    <modifiedOn>2012-05-15T16:29:23Z</modifiedOn>
+    <createdOn>2012-05-10T17:59:42Z</createdOn>
+    <sku>234</sku>
+    <name>test membership product</name>
+    <priceExTax>10.00</priceExTax>
+    <value />
+    <maxCoursesRedemption>3</maxCoursesRedemption>
+    <expiryDays>365</expiryDays>
+  </voucherProduct>
+  <voucherProduct id='2'>
+    <modifiedOn>2012-05-15T16:29:23Z</modifiedOn>
+    <createdOn>2012-05-10T17:59:42Z</createdOn>
+    <sku>1234</sku>
+    <name>test membership product qwerty</name>
+    <priceExTax>10.00</priceExTax>
+    <value />
+    <maxCoursesRedemption />
+    <expiryDays>365</expiryDays>
+  </voucherProduct>
+  <voucherProduct id='3'>
+    <modifiedOn>2012-05-15T16:29:23Z</modifiedOn>
+    <createdOn>2012-05-10T17:59:42Z</createdOn>
+    <sku>456</sku>
+    <name>test membership product part 2</name>
+    <priceExTax>11.00</priceExTax>
+    <value />
+    <maxCoursesRedemption />
+    <expiryDays>365</expiryDays>
+  </voucherProduct>
+  <voucherProduct id='4'>
+    <modifiedOn>2012-05-15T16:29:23Z</modifiedOn>
+    <createdOn>2012-05-10T17:59:42Z</createdOn>
+    <sku>123</sku>
+    <name>my test membership product tae</name>
+    <priceExTax>10.00</priceExTax>
+    <value />
+    <maxCoursesRedemption />
+    <expiryDays>365</expiryDays>
+  </voucherProduct>
+  <voucherProduct id='5'>
+    <modifiedOn>2012-05-15T16:29:23Z</modifiedOn>
+    <createdOn>2012-05-10T17:59:42Z</createdOn>
+    <sku>aaaa</sku>
+    <name>test voucher product</name>
+    <priceExTax>10.00</priceExTax>
+    <value />
+    <maxCoursesRedemption>1</maxCoursesRedemption>
+    <expiryDays>365</expiryDays>
+  </voucherProduct>
+</data>

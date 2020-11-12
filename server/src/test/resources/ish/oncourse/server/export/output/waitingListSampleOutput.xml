@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='utf-8'?>
+<data>
+  <waitingList id='100'>
+    <modifiedOn>2012-05-10T00:00:00Z</modifiedOn>
+    <createdOn>2012-05-10T00:00:00Z</createdOn>
+    <studentCount>1</studentCount>
+    <notes>Notes 1...</notes>
+    <course id='100' />
+    <contact id='100' />
+  </waitingList>
+  <waitingList id='200'>
+    <modifiedOn>2012-05-10T00:00:00Z</modifiedOn>
+    <createdOn>2012-05-10T00:00:00Z</createdOn>
+    <studentCount>2</studentCount>
+    <notes>Notes 2...</notes>
+    <course id='200' />
+    <contact id='100' />
+  </waitingList>
+  <waitingList id='300'>
+    <modifiedOn>2012-05-10T00:00:00Z</modifiedOn>
+    <createdOn>2012-05-10T00:00:00Z</createdOn>
+    <studentCount>1</studentCount>
+    <notes>Notes 3...</notes>
+    <course id='100' />
+    <contact id='200' />
+  </waitingList>
+  <course id='100'>
+    <modifiedOn>2013-01-01T00:00:00Z</modifiedOn>
+    <createdOn>2013-01-01T00:00:00Z</createdOn>
+    <allowWaitingLists>false</allowWaitingLists>
+    <code>TEST</code>
+    <currentlyOffered>true</currentlyOffered>
+    <isWebVisible>true</isWebVisible>
+    <isSufficientForQualification>true</isSufficientForQualification>
+    <isVET>true</isVET>
+    <name>Test Course</name>
+    <printedBrochureDescription>Printed Brochure text</printedBrochureDescription>
+    <reportableHours>2.00</reportableHours>
+    <webDescription>some text</webDescription>
+  </course>
+  <course id='200'>
+    <modifiedOn>2013-02-01T00:00:00Z</modifiedOn>
+    <createdOn>2013-02-01T00:00:00Z</createdOn>
+    <allowWaitingLists>true</allowWaitingLists>
+    <code>TST1</code>
+    <currentlyOffered>true</currentlyOffered>
+    <isWebVisible>false</isWebVisible>
+    <isSufficientForQualification>false</isSufficientForQualification>
+    <isVET>false</isVET>
+    <name>Test Course 2</name>
+    <printedBrochureDescription>Description</printedBrochureDescription>
+    <reportableHours>3.40</reportableHours>
+    <webDescription>description</webDescription>
+  </course>
+  <contact id='100'>
+    <modifiedOn>2012-05-10T00:00:00Z</modifiedOn>
+    <createdOn>2012-05-10T00:00:00Z</createdOn>
+    <allowEmail>true</allowEmail>
+    <allowPost>false</allowPost>
+    <allowSms>true</allowSms>
+    <deliveryStatusEmail>0</deliveryStatusEmail>
+    <deliveryStatusPost>0</deliveryStatusPost>
+    <deliveryStatusSms>0</deliveryStatusSms>
+    <email>test@test.test</email>
+    <fax />
+    <firstName>Test</firstName>
+    <homePhone>331110000</homePhone>
+    <company>false</company>
+    <male>true</male>
+    <lastName>Student</lastName>
+    <message />
+    <mobilePhone>331110000</mobilePhone>
+    <notes />
+    <postcode>1001</postcode>
+    <state>NSW</state>
+    <street>Main</street>
+    <suburb>Sydney</suburb>
+    <tfn />
+    <uniqueCode>ST1UNIQUE</uniqueCode>
+    <workPhone>331110000</workPhone>
+    <title />
+    <student>
+      <disabilityType>Hearing/Deaf</disabilityType>
+      <englishProficiency>Very Well</englishProficiency>
+      <highestSchoolLevel>Did not go to school</highestSchoolLevel>
+      <indigenousStatus>Aboriginal</indigenousStatus>
+      <isOverseasClient>false</isOverseasClient>
+      <isStillAtSchool>false</isStillAtSchool>
+      <labourForceStatus>Full-time employee</labourForceStatus>
+      <priorEducationCode>Bachelor degree or higher degree level</priorEducationCode>
+      <studentNumber>1</studentNumber>
+      <yearSchoolCompleted>2009</yearSchoolCompleted>
+    </student>
+    <tutor>
+      <dateStarted />
+      <dateFinished />
+      <resume />
+      <dateFinished />
+    </tutor>
+  </contact>
+  <contact id='200'>
+    <modifiedOn>2012-05-10T00:00:00Z</modifiedOn>
+    <createdOn>2012-05-10T00:00:00Z</createdOn>
+    <allowEmail>true</allowEmail>
+    <allowPost>false</allowPost>
+    <allowSms>true</allowSms>
+    <deliveryStatusEmail>0</deliveryStatusEmail>
+    <deliveryStatusPost>0</deliveryStatusPost>
+    <deliveryStatusSms>0</deliveryStatusSms>
+    <email>test@test.test</email>
+    <fax />
+    <firstName>Test2</firstName>
+    <homePhone>331110000</homePhone>
+    <company>false</company>
+    <male>true</male>
+    <lastName>Student2</lastName>
+    <message />
+    <mobilePhone>331110000</mobilePhone>
+    <notes />
+    <postcode>1001</postcode>
+    <state>NSW</state>
+    <street>Main</street>
+    <suburb>Sydney</suburb>
+    <tfn />
+    <uniqueCode>ST2UNIQUE</uniqueCode>
+    <workPhone>331110000</workPhone>
+    <title />
+    <student>
+      <disabilityType>Hearing/Deaf</disabilityType>
+      <englishProficiency>Very Well</englishProficiency>
+      <highestSchoolLevel>Did not go to school</highestSchoolLevel>
+      <indigenousStatus>Aboriginal</indigenousStatus>
+      <isOverseasClient>false</isOverseasClient>
+      <isStillAtSchool>false</isStillAtSchool>
+      <labourForceStatus>Full-time employee</labourForceStatus>
+      <priorEducationCode>Bachelor degree or higher degree level</priorEducationCode>
+      <studentNumber>2</studentNumber>
+      <yearSchoolCompleted>2009</yearSchoolCompleted>
+    </student>
+    <tutor>
+      <dateStarted />
+      <dateFinished />
+      <resume />
+      <dateFinished />
+    </tutor>
+  </contact>
+</data>

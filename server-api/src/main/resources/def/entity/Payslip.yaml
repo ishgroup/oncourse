@@ -1,0 +1,33 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: true
+  publicNotes:
+    type: string
+  privateNotes:
+    type: string
+  status:
+    $ref: '../enum/PayslipStatus.yaml'
+    required: true
+  tutorId:
+    type: integer
+    format: int64
+    required: true
+  tutorFullName:
+    type: string
+  tags:
+    type: array
+    items:
+      $ref: './Tag.yaml'
+  paylines:
+    type: array
+    items:
+      $ref: './PayLine.yaml'
+  createdOn:
+    type: string
+    format: date-time
+  modifiedOn:
+    type: string
+    format: date-time

@@ -1,0 +1,64 @@
+get:
+  operationId: getMergeData
+  description: Get differences between both contacts
+  tags:
+    - ContactMerge
+  parameters:
+  - name: contactA
+    in: query
+    required: true
+    type: integer
+    format: int64
+    example: 12250
+    description: identifier to first ccntact to merge
+  - name: contactB
+    in: query
+    required: true
+    type: integer
+    format: int64
+    example: 14081
+    description: identifier to first ccntact to merge
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        $ref: './def/entity/merge/MergeData.yaml'
+    '400':
+      description: Bad request error.
+      schema:
+        $ref: './def/entity/ValidationError.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: SPECIAL_DE_DUPE
+    errorMessage: Sorry, you have no permissions to merge contact. Please contact your administrator
+
+post:
+  operationId: merge
+  description: Merge contacts
+  tags:
+    - ContactMerge
+  parameters:
+    - name: mergeRequest
+      in: body
+      description: Merge data container with selected values
+      required: true
+      schema:
+        $ref: './def/entity/merge/MergeRequest.yaml'
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: integer
+        format: int64
+    '400':
+      description: Bad request error.
+      schema:
+        $ref: './def/entity/ValidationError.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: SPECIAL_DE_DUPE
+    errorMessage: Sorry, you have no permissions to merge contact. Please contact your administrator

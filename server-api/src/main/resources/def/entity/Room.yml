@@ -1,0 +1,50 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: true
+  name:
+    type: string
+    required: true
+    example: Lecture Theatre
+  seatedCapacity:
+    type: integer
+    required: true
+    example: 100
+  siteId:
+    type: integer
+    format: int64
+    example: 461
+    required: true
+  siteTimeZone:
+    type: string
+    required: false
+    example: Australia/Perth
+  kioskUrl:
+    type: string
+    required: true
+    description: The kiosk url generates a HTML page showing showing the current days classes in this room
+    example: https://ishoncourse.oncourse.cc/room/kiosk/362
+  directions:
+    type: string
+  facilities:
+    type: string
+  tags:
+    type: array
+    items:
+      $ref: './Tag.yaml'
+  documents:
+    type: array
+    items:
+      $ref: './Document.yaml'
+  rules:
+    type: array
+    items:
+      $ref: './Holiday.yaml'
+  createdOn:
+    type: string
+    format: date-time
+  modifiedOn:
+    type: string
+    format: date-time

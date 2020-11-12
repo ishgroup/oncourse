@@ -1,0 +1,5 @@
+keyCode: ish.onCourse.site.csv
+entityClass: Site
+body: ish.onCourse.site.csv.groovy
+name: Site CSV export
+outputType: csv

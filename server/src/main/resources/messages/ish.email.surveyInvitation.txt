@@ -1,0 +1,6 @@
+Please complete a short survey: ${surveyLink}
+To unsubscribe please click: ${unsubscribeLink}
+
+<% if (type == "SurveyMonkey") { %>
+[FooterLink]
+<% } %>

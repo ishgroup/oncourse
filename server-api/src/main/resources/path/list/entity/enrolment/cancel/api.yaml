@@ -1,0 +1,21 @@
+post:
+  operationId: cancel
+  tags:
+    - Enrolment
+  parameters:
+    - name: CancelCourseClass
+      in: body
+      schema:
+        $ref: './def/entity/enrolment/CancelEnrolment.yaml'
+      required: true
+  responses:
+    '200':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: SPECIAL_CANCEL_TRANSFER_ENROLMENTS
+    errorMessage: Sorry, you have no permissions to cancel enrolment. Please contact your administrator

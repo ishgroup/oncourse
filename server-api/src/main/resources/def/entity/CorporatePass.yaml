@@ -1,0 +1,33 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: true
+  contactId:
+    type: integer
+    format: int64
+    required: true
+  contactFullName:
+    type: string
+  password:
+    type: string
+  expiryDate:
+    type: string
+    format: date
+  invoiceEmail:
+    type: string
+  linkedDiscounts:
+    type: array
+    items:
+      $ref: './discount/Discount.yaml'
+  linkedSalables:
+    type: array
+    items:
+      $ref: './Sale.yaml'
+  createdOn:
+    type: string
+    format: date-time
+  modifiedOn:
+    type: string
+    format: date-time

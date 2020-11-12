@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="StudentTranscriptReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" uuid="7a7f0cdd-c2b8-4cee-895f-76cc95fec327">
+	<property name="name" value="Academic Transcript"/>
+	<property name="entity" value="Enrolment"/>
+	<property name="isSubreport" value="false"/>
+	<property name="isVisible" value="true"/>
+
+	<property name="keyCode" value="ish.onCourse.academicTranscriptReport"/>
+	<property name="ish.oncourse.title" value="Academic Transcript"/>
+	<property name="ish.oncourse.filePrefix" value="academicTranscript"/>
+	<property name="ish.oncourse.description" value="To provide students with the information retained in onCourse regarding their enrolment and current status of their outcomes.This report prints in Portrait format."/>
+	<property name="ish.oncourse.pdfFileName" value="AcademicTranscript.pdf"/>
+	<property name="ish.oncourse.reports.isObjectOnSeparatePage" value="true"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="default" isDefault="true" forecolor="#000000" vTextAlign="Bottom" markup="none" fontName="Open Sans" fontSize="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="OpenSans" pdfEncoding="Cp1252" isPdfEmbedded="true">
+		<paragraph spacingAfter="8"/>
+	</style>
+	<style name="header 1" style="default" forecolor="#4F0018" vTextAlign="Middle" fontName="Open Sans Light" fontSize="18" pdfFontName="Open Sans Light"/>
+	<style name="header 2" style="header 1" fontSize="12"/>
+	<style name="header 3" style="default" vTextAlign="Middle" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+	<style name="header 3 (right)" style="header 3" hTextAlign="Right"/>
+	<style name="Label" style="default" forecolor="#6A7E99"/>
+	<style name="Label right" style="Label" hTextAlign="Right"/>
+	<style name="data field" style="default"/>
+	<style name="data field (money)" style="data field" hTextAlign="Right" pattern="¤#,###,##0.00;¤(-#,###,##0.00)"/>
+	<style name="data field (numeric)" style="data field" hTextAlign="Right"/>
+	<style name="data field (datetime)" style="data field" pattern="d MMM yyyy h:mma"/>
+	<style name="data field (day)" style="data field" pattern="E d MMM h:mma"/>
+	<style name="data field (date)" style="data field" pattern="d MMM yyyy"/>
+	<style name="Footer" style="default" forecolor="#737373" fontSize="8"/>
+	<style name="Footer strong" style="Footer" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+	<style name="subHead box" style="default" backcolor="#E6E7F0"/>
+	<style name="crosstab" mode="Opaque" backcolor="#F7F2E9">
+		<box>
+			<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#A3A3A3"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{ROW_COUNT}.intValue() % 2 == 1 ? Boolean.TRUE : Boolean.FALSE]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FFFFFF"/>
+		</conditionalStyle>
+	</style>
+	<style name="alternateRow" mode="Opaque" forecolor="rgba(255, 255, 255, 0.0)" backcolor="#F7F2E9">
+		<box>
+			<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{PAGE_COUNT}.intValue() % 2 == 1 ? Boolean.TRUE : Boolean.FALSE]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FFFFFF"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="ReportName" class="java.lang.String"/>
+	<field name="student.contact.firstName" class="java.lang.String">
+		<fieldDescription><![CDATA[Student first name]]></fieldDescription>
+	</field>
+	<field name="student.contact.lastName" class="java.lang.String">
+		<fieldDescription><![CDATA[Student last name]]></fieldDescription>
+	</field>
+	<field name="enrolment" class="ish.oncourse.server.cayenne.Enrolment"/>
+	<field name="student.countryOfBirth.name" class="java.lang.String"/>
+	<field name="student.contact.email" class="java.lang.String"/>
+	<field name="student.contact.fax" class="java.lang.String"/>
+	<field name="student.contact.homePhone" class="java.lang.String"/>
+	<field name="student.contact.isMale" class="java.lang.Boolean"/>
+	<field name="student.isOverseasClient" class="java.lang.Boolean"/>
+	<field name="student.isStillAtSchool" class="java.lang.Boolean"/>
+	<field name="student.language.name" class="java.lang.String"/>
+	<field name="student.contact.mobilePhone" class="java.lang.String"/>
+	<field name="student.studentNumber" class="java.lang.Long"/>
+	<field name="student.contact.workPhone" class="java.lang.String"/>
+	<field name="student.yearSchoolCompleted" class="java.lang.Integer"/>
+	<field name="student.contact.street" class="java.lang.String"/>
+	<field name="student.contact.suburb" class="java.lang.String"/>
+	<field name="student.contact.postcode" class="java.lang.String"/>
+	<field name="student.contact.birthDate" class="java.util.Date"/>
+	<field name="student.contact.state" class="java.lang.String"/>
+	<field name="student.specialNeeds" class="java.lang.String"/>
+	<field name="student.contact.notes" class="java.lang.String"/>
+	<field name="subreport.ish.onCourse.studentOutcomesSubReport" class="net.sf.jasperreports.engine.JasperReport"/>
+	<field name="datasource.outcomes" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<field name="image.poweredby" class="java.io.InputStream"/>
+	<field name="courseClass" class="java.lang.Object"/>
+	<field name="courseClass.course.name" class="java.lang.String"/>
+	<field name="courseClass.code" class="java.lang.String"/>
+	<field name="courseClass.course.code" class="java.lang.String"/>
+	<group name="student.contact.details">
+		<groupExpression><![CDATA[null]]></groupExpression>
+		<groupHeader>
+			<band height="123" splitType="Stretch">
+				<staticText>
+					<reportElement key="staticText-1" style="Label" x="0" y="15" width="85" height="15" uuid="ce1e0693-fd34-455d-a048-150a93dd6177"/>
+					<text><![CDATA[Date of Birth]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-2" style="Label" x="0" y="30" width="85" height="15" uuid="caff27a0-fa44-4f66-9567-853ad61412ab"/>
+					<text><![CDATA[Address]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-2" style="data field" x="95" y="15" width="204" height="15" uuid="841bb142-ccd2-450c-8b03-3368f5c24afc"/>
+					<textFieldExpression><![CDATA[$F{enrolment}.student.contact.birthDate?.format("d MMM yyyy")]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-3" style="data field" x="95" y="30" width="204" height="15" uuid="31bdc444-5fd1-402f-a964-4f0eceb38e61"/>
+					<textFieldExpression><![CDATA[( $F{student.contact.street} == null ? "No street address" : $F{student.contact.street} )]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-5" style="data field" x="95" y="45" width="204" height="15" uuid="60cc9bcc-0ae0-4e4f-8b4b-9cb58b7e766c"/>
+					<textFieldExpression><![CDATA[(($F{student.contact.suburb}==null ? "" : $F{student.contact.suburb}+" "))+
+(($F{student.contact.state}==null ? "" : $F{student.contact.state}+" "))+
+(($F{student.contact.postcode}==null ? "" : $F{student.contact.postcode}))]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-3" style="Label" x="312" y="0" width="80" height="15" uuid="2023d90b-554c-43c7-9d82-08881747526b"/>
+					<text><![CDATA[Gender]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-6" style="data field" x="403" y="0" width="131" height="15" uuid="176ff515-7868-48d7-b3a4-bf23fc07d69c"/>
+					<textFieldExpression><![CDATA[$F{student.contact.isMale} == null ? "Not set" : $F{student.contact.isMale}.booleanValue() ? "Male" : "Female"]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-7" style="data field" x="403" y="15" width="131" height="15" uuid="8fa5c339-52f9-42e3-bf50-224ecff80626"/>
+					<textFieldExpression><![CDATA[$F{student.contact.homePhone} == null ? "Not set" : $F{student.contact.homePhone}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-4" style="Label" x="312" y="15" width="80" height="15" uuid="675aebd8-6567-4360-a680-b215088b820d"/>
+					<text><![CDATA[Home phone]]></text>
+				</staticText>
+				<textField pattern="###0" isBlankWhenNull="true">
+					<reportElement key="textField-8" style="data field" x="95" y="0" width="204" height="15" uuid="fa1fdd26-4b49-4a1d-9c4a-5c9f6d9c7a4b"/>
+					<textFieldExpression><![CDATA[$F{student.studentNumber}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-5" style="Label" x="0" y="0" width="85" height="15" uuid="7a41d2d4-2edb-4f9c-90f8-7bdd728fdd15"/>
+					<text><![CDATA[Student number]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-6" style="Label" x="312" y="30" width="80" height="15" uuid="77c13177-f3df-4259-abff-d5ee9943ed43"/>
+					<text><![CDATA[Work phone]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-9" style="data field" x="403" y="30" width="131" height="15" uuid="2427ad98-a668-4fba-b190-8348782aad5c"/>
+					<textFieldExpression><![CDATA[$F{student.contact.workPhone} == null ? "Not set" : $F{student.contact.workPhone}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-7" style="Label" x="312" y="45" width="80" height="15" uuid="042da08f-4100-4336-9f27-6cf5b8f49116"/>
+					<text><![CDATA[Mobile phone]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-10" style="data field" x="403" y="45" width="131" height="15" uuid="2774ef80-4b42-45db-8e68-495a155d27d9"/>
+					<textFieldExpression><![CDATA[$F{student.contact.mobilePhone} == null ? "Not set" : $F{student.contact.mobilePhone}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-8" style="Label" x="312" y="60" width="80" height="15" uuid="fb466caa-a560-4a65-b708-8a694ac455fc"/>
+					<text><![CDATA[Fax]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-11" style="data field" x="403" y="60" width="131" height="15" uuid="6774e14d-9e89-48b7-ab0f-46ac1d195170"/>
+					<textFieldExpression><![CDATA[$F{student.contact.fax} == null ? "Not set" : $F{student.contact.fax}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-9" style="Label" x="0" y="60" width="85" height="15" uuid="6b92205e-fe05-4a83-92b2-492b6010fe16"/>
+					<text><![CDATA[Email]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-12" style="data field" x="95" y="60" width="204" height="15" uuid="6b7cd568-6ba0-4c32-894d-9268646f97f9"/>
+					<textFieldExpression><![CDATA[( $F{student.contact.email}==null ? "Not set" : $F{student.contact.email} )]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-1" style="Label" x="0" y="80" width="85" height="15" uuid="aa4734a6-905b-4c14-bd2e-66da0270dbff"/>
+					<text><![CDATA[Course]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-3" style="Label" x="0" y="96" width="85" height="15" uuid="cb57e62e-401b-44bb-8041-2348ad28dd2d"/>
+					<text><![CDATA[Enrolment date]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-1" style="data field" x="95" y="82" width="439" height="14" uuid="cd2d2f61-1a61-49ed-866e-d4122022f7c5"/>
+					<textFieldExpression><![CDATA[$F{courseClass.course.code} +"-"+$F{courseClass.code} + " " + $F{courseClass.course.name}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-3" style="data field (datetime)" x="95" y="97" width="166" height="14" uuid="261a0fb3-ec12-4856-9d84-261d9f5b48d1"/>
+					<textFieldExpression><![CDATA[$F{enrolment}.createdOn]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band splitType="Stretch"/>
+		</groupFooter>
+	</group>
+	<group name="outcomes">
+		<groupExpression><![CDATA[]]></groupExpression>
+		<groupHeader>
+			<band height="16" splitType="Stretch">
+				<subreport isUsingCache="true">
+					<reportElement key="subreport-3" stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="0" y="0" width="539" height="15" uuid="f46f636f-91d3-48a4-b76b-d9eeaf2227a0"/>
+					<dataSourceExpression><![CDATA[$F{datasource.outcomes}]]></dataSourceExpression>
+					<subreportExpression><![CDATA[$F{subreport.ish.onCourse.studentOutcomesSubReport}]]></subreportExpression>
+				</subreport>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band splitType="Stretch"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="115" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="32" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-1" style="header 1" x="0" y="1" width="534" height="26" uuid="004018a2-62de-437a-9dda-146584ee5173"/>
+				<textFieldExpression><![CDATA[$F{enrolment}.student.contact.getName(true) + " Academic Transcript"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<textField evaluationTime="Page" isBlankWhenNull="false">
+				<reportElement key="pageNumberFooter" style="Footer strong" x="0" y="0" width="300" height="15" uuid="1106d334-b156-4af7-a64d-a75ba7206e2c"/>
+				<textFieldExpression><![CDATA["Page " + String.valueOf($V{PAGE_NUMBER})]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" isBlankWhenNull="false">
+				<reportElement key="totalPageCountFooter" style="Footer" x="0" y="11" width="300" height="13" uuid="d3e402c5-a433-4f08-90db-5c66216e08f3"/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT} + " record" + ($V{REPORT_COUNT}>1 ? "s" : "") + " on " + $V{PAGE_NUMBER} + " page" + ($V{PAGE_NUMBER}>1 ? "s" : "") + " (printed " + new Date().format("E d MMM yyyy h:mma") + ")"]]></textFieldExpression>
+			</textField>
+			<image scaleImage="RetainShape" hAlign="Right" isUsingCache="true" onErrorType="Blank">
+				<reportElement key="oncourseLogo" style="Footer" x="472" y="17" width="67" height="7" uuid="2863530e-11e5-4c1e-8296-ae64db1a9926"/>
+				<imageExpression><![CDATA[$F{image.poweredby}]]></imageExpression>
+			</image>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

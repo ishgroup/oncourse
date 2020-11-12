@@ -1,0 +1,32 @@
+type: object
+properties:
+  name:
+    type: string
+    require: true
+    description: variable name in script/export body
+    example: exportDate
+  label:
+    type: string
+    require: true
+    description: Display label on user dialog on share menu
+    example: CSV Export Date
+  type:
+    $ref: './DataType.yaml'
+    require: true
+    description: data type for variable
+    example: Date
+  value:
+    type: string
+    require: true
+    description: value for binding, used on setting up for Options only
+    example: 2019-01-01
+  system:
+    type: boolean
+    description: internal automation bindings
+    required: true
+    example: true
+  valueDefault:
+    type: string
+    description: defaul value for system binding
+    required: false
+    example: 2019-01-01

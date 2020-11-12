@@ -1,0 +1,7 @@
+Dear ${record.student.contact.firstName},
+
+Thank you for your participation in ${record.courseClass.course.name}.
+As a soon-to-be graduate of ${Preferences.get("college.name")}, we would like to invite you to partake in a short survey and tell us about your recent experience.
+Your feedback will be vital in the improvement of future programs and course delivery.
+The survey can be accessed at:
+${Preferences.get("web.url")}

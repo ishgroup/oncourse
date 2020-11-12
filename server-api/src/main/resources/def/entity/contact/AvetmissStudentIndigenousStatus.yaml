@@ -1,0 +1,8 @@
+type: string
+description: List of student's indigenous statuses.
+enum:
+  - Not stated
+  - Aboriginal
+  - Torres Strait Islander
+  - Aboriginal and Torres Strait Islander
+  - Neither

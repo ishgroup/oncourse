@@ -1,0 +1,13 @@
+type: string
+enum:
+ - Fee for service VET (non-funded)
+ - Queensland
+ - New South Wales
+ - Victoria
+ - Tasmania
+ - Australian Capital Territory
+ - Western Australia
+ - South Australia
+ - Northern Territory
+ - No Australian state defined
+ - Non VET

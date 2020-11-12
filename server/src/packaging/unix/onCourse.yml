@@ -1,0 +1,11 @@
+http:
+  port: 443
+  ip: 127.0.0.1
+  path: /
+
+db:
+  uri: 'jdbc:mariadb://127.0.0.1/angel_db?user=onCourse&password=password'
+
+license:
+  max_concurrent_users: 99
+  admin_password_reset: false

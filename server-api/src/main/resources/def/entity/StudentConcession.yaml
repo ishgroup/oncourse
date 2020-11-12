@@ -1,0 +1,24 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    description: student concession identifier
+  number:
+    type: string
+    description: concession number
+  type:
+    $ref: './ConcessionType.yaml'
+    description: type of student concession
+  expiresOn:
+    type: string
+    format: date
+    description: date and time when concession expires
+  created:
+    type: string
+    format: date-time
+    description: date and time when record was created
+  modified:
+    type: string
+    format: date-time
+    description: date and time when record was modified

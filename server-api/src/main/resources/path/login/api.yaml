@@ -1,0 +1,79 @@
+put:
+  summary: Get Authentication
+  operationId: login
+  description: 'API endpoint which is used for user authorization, TFA authentication or changing user password.
+                   Endpoint request should contain LoginRequest json-object body with parameters, representing current login process options.
+
+
+                   Endpoint response should contain LoginResponse json-object with LoginRequest processing results
+                   and, in case of success login, set-cookie header that will set browser "JSESSIONID" cookie.
+
+
+                   "JSESSIONID" cookie will be used in all further onCourse API requests. Requests without valid "JSESSIONID" cookie
+                   will be declined, and current page will be redirected back to login.
+
+
+                   Basic login workflow:
+
+                   1) Client sends requiest to /a/v1/login endpoint with LoginRequest body of type:
+
+                   {
+                     kickOut: false,
+                     login: "ish",
+                     password: "password",
+                     token: ""
+                   }
+
+                   2) Server checks LoginRequest and responses with 401 LoginResponse of type:
+
+                   {
+                     errorMessage: "",
+                     loginStatus: "TFA optional",
+                     passwordComlexity: false,
+                     totpUrl: "otpauth://totp/onCourse:ish?secret=IJITFEUSHWMETNQZ&issuer=onCourse"
+                   }
+
+                   3) Client sends another LoginRequest to /a/v1/login of type:
+
+                   {
+                     kickOut: false,
+                     login: "ish",
+                     password: "password",
+                     secretCode: "IJITFEUSHWMETNQZ",
+                     skipTfa: true,
+                     token: ""
+                   }
+
+                   4) Server responds with 200 response containing set-cookie header with valid "JSESSIONID" and LoginResponse of type:
+
+                   {
+                     errorMessage: null,
+                     loginStatus: "Login successful",
+                     passwordComlexity: false,
+                     totpUrl: null
+                   }'
+  tags:
+  - Authentication
+  parameters:
+  - name: details
+    in: body
+    required: true
+    schema:
+      $ref: './def/entity/LoginRequest.yaml'
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        $ref: './def/entity/LoginResponse.yaml'
+    '400':
+      description: Bad request error.
+      schema:
+        $ref: './def/entity/LoginResponse.yaml'
+    '401':
+      description: Unauthorized error.
+      schema:
+        $ref: './def/entity/LoginResponse.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    keyCode: UNDEFINED

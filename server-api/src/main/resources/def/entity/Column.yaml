@@ -1,0 +1,32 @@
+type: object
+properties:
+  title:
+    type: string
+    description: column display name
+    example: First name
+  attribute:
+    type: string
+    description: corresponded entity attribute
+    example: firstName
+  type:
+    description: Type of column records
+    $ref: '../enum/ColumnType.yaml'
+  sortable:
+    type: boolean
+    description: is sorting alloved by this column
+  visible:
+    type: boolean
+    description: is show column on entity table
+  system:
+    type: boolean
+    description: always in data response even if not visible
+  width:
+    type: integer
+    description: width column in table in px
+    example: 130
+  sortFields:
+    type: array
+    items:
+      type: string
+    description: fields which will be used for sorting
+    example: [contact.lastname, contact.firstname]

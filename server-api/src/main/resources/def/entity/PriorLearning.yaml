@@ -1,0 +1,43 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: true
+  createdOn:
+    type: string
+    format: date-time
+  modifiedOn:
+    type: string
+    format: date-time
+  title:
+    type: string
+  externalReference:
+    type: string
+  qualificationId:
+    type: integer
+    format: int64
+    required: true
+  qualificationNationalCode:
+    type: string
+  qualificationLevel:
+    type: string
+  qualificationName:
+    type: string
+  outcomes:
+    type: array
+    items:
+      $ref: './Outcome.yaml'
+  documents:
+    type: array
+    items:
+      $ref: './Document.yaml'
+  notes:
+    type: string
+  contactId:
+    type: integer
+    format: int64
+  contactName:
+    type: string
+  outcomeIdTrainingOrg:
+    type: string

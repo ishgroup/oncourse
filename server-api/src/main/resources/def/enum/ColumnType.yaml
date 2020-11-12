@@ -1,0 +1,8 @@
+type: string
+description: Type of column records
+enum:
+  - Date
+  - Datetime
+  - Boolean
+  - Money
+  - Percent

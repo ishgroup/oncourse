@@ -1,0 +1,26 @@
+type: string
+description: A set of values for describing client employment type.
+enum:
+  - Not Stated
+  - Agriculture, Forestry and Fishing (A)
+  - Mining (B)
+  - Manufacturing (C)
+  - Electricity, Gas, Water and Waste Services (D)
+  - Construction (E)
+  - Wholesale Trade (F)
+  - Retail Trade (G)
+  - Accommodation and Food Services (H)
+  - Transport, Postal and Warehousing (I)
+  - Information Media and Telecommunications (J)
+  - Financial and Insurance Services (K)
+  - Rental, Hiring and Real Estate Services (L)
+  - Professional, Scientific and Technical Services - Administrative and Support Services (M)
+  - Public Administration and Safety (N)
+  - Education and Training (O)
+  - Health Care and Social Assistance (P)
+  - Arts and Recreation Services (Q)
+  - Other Services (R)
+
+
+
+

@@ -1,0 +1,11 @@
+type: object
+properties:
+  enrolmentIds:
+    type: array
+    items:
+      type: integer
+      format: int64
+      required: true
+  createStatementOfAtteiment:
+    type: boolean
+    required: true

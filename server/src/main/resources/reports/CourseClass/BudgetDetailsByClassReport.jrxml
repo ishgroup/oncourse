@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BudgetDetailsByClass" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="786" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" uuid="f905ca80-66c7-4ae8-abe4-0cf462349dac">
+	<property name="name" value="Budget Details by Class"/>
+	<property name="entity" value="CourseClass"/>
+	<property name="isSubreport" value="false"/>
+	<property name="isVisible" value="true"/>
+
+	<property name="keyCode" value="ish.onCourse.budgetDetailsReport"/>
+	<property name="ish.oncourse.description" value="To obtain a detailed print out of the budgeted and actual income and expense lines, one page per class. This layout includes a summary of the actual and budgeted income and expenses, followed by line by line details of each expense item. This report prints in Landscape format."/>
+	<property name="ish.oncourse.reports.isObjectOnSeparatePage" value="true"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="default" isDefault="true" forecolor="#000000" vTextAlign="Bottom" markup="none" fontName="Open Sans" fontSize="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="OpenSans" pdfEncoding="Cp1252" isPdfEmbedded="true">
+		<paragraph spacingAfter="8"/>
+	</style>
+	<style name="header 1" style="default" forecolor="#4F0018" vTextAlign="Middle" fontName="Open Sans Light" fontSize="18" pdfFontName="Open Sans Light"/>
+	<style name="header 2" style="header 1" fontSize="12"/>
+	<style name="header 3" style="default" vTextAlign="Middle" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+	<style name="header 3 (right)" style="header 3" hTextAlign="Right"/>
+	<style name="Label" style="default" forecolor="#6A7E99"/>
+	<style name="Label right" style="Label" hTextAlign="Right"/>
+	<style name="data field" style="default"/>
+	<style name="data field (money)" style="data field" hTextAlign="Right" pattern="¤#,###,##0.00;¤(-#,###,##0.00)"/>
+	<style name="data field (numeric)" style="data field" hTextAlign="Right"/>
+	<style name="data field (datetime)" style="data field" pattern="d MMM yyyy h:mma"/>
+	<style name="data field (day)" style="data field" pattern="E d MMM h:mma"/>
+	<style name="data field (date)" style="data field" pattern="d MMM yyyy"/>
+	<style name="Footer" style="default" forecolor="#737373" fontSize="8"/>
+	<style name="Footer strong" style="Footer" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+	<style name="subHead box" style="default" backcolor="#E6E7F0"/>
+	<style name="crosstab" mode="Opaque" backcolor="#F7F2E9">
+		<box>
+			<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#A3A3A3"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{ROW_COUNT}.intValue() % 2 == 1 ? Boolean.TRUE : Boolean.FALSE]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FFFFFF"/>
+		</conditionalStyle>
+	</style>
+	<style name="alternateRow" mode="Opaque" forecolor="rgba(255, 255, 255, 0.0)" backcolor="#F7F2E9">
+		<box>
+			<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{PAGE_COUNT}.intValue() % 2 == 1 ? Boolean.TRUE : Boolean.FALSE]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FFFFFF"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="ReportName" class="java.lang.String"/>
+	<field name="datasource.costs" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<field name="subreport.ish.onCourse.costSubReport" class="net.sf.jasperreports.engine.JasperReport"/>
+	<field name="datasource.invoiceLines" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<field name="subreport.ish.onCourse.invoiceSubReport" class="net.sf.jasperreports.engine.JasperReport"/>
+	<field name="courseClass" class="ish.oncourse.server.cayenne.CourseClass"/>
+	<field name="image.poweredby" class="java.io.InputStream"/>
+	<field name="course.code" class="java.lang.String"/>
+	<field name="course.name" class="java.lang.String"/>
+	<field name="code" class="java.lang.String"/>
+	<field name="enrolmentsCount" class="java.lang.Integer"/>
+	<field name="tax.description" class="java.lang.String"/>
+	<field name="budgetedPlaces" class="java.lang.Integer"/>
+	<group name="details">
+		<groupExpression><![CDATA[null]]></groupExpression>
+		<groupHeader>
+			<band height="170" splitType="Stretch">
+				<staticText>
+					<reportElement key="staticText-2" style="Label" x="0" y="10" width="90" height="13" uuid="6cbfc3f7-5c22-4e9e-8ee7-8924bc9aaf61"/>
+					<text><![CDATA[Fee (inc)]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-2" style="data field" x="100" y="10" width="260" height="13" uuid="85b84ee6-f882-4763-b0ae-c0e2774d4a6c"/>
+					<textFieldExpression><![CDATA[$F{courseClass}.feeIncGst]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-3" style="Label" x="0" y="24" width="90" height="13" uuid="348f965b-e8fd-41f6-902d-239c49a189b5"/>
+					<text><![CDATA[Tax]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-3" style="data field" x="100" y="24" width="260" height="13" uuid="43a05df4-5163-4c6e-bb34-d714fcd18254"/>
+					<textFieldExpression><![CDATA[$F{tax.description}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-4" style="header 3" x="104" y="49" width="100" height="13" uuid="cd46a515-1068-4d51-8426-85f93a07c59d"/>
+					<textElement textAlignment="Right"/>
+					<text><![CDATA[Actual]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-5" style="header 3" x="213" y="49" width="100" height="13" uuid="ad023ad8-b288-47e2-b227-b4716048a8c5"/>
+					<textElement textAlignment="Right"/>
+					<text><![CDATA[Budgeted]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-6" style="Label" x="0" y="63" width="90" height="13" uuid="b8022044-3170-4a20-ad51-295b27c1a8a1"/>
+					<text><![CDATA[Enrolments]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-6-1" style="data field" x="104" y="63" width="100" height="13" uuid="13cf21e6-b54f-40ae-9606-2484823712cf"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$F{enrolmentsCount}.toString()]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-6-2" style="data field" x="213" y="62" width="100" height="12" uuid="a4161114-02fd-4766-be84-82a313bfc9d9"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[($F{budgetedPlaces}==null)?"":($F{budgetedPlaces}.toString())]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-7" style="Label" x="0" y="77" width="90" height="13" uuid="c27a907b-1f0e-4526-9501-a5a2d13e6631"/>
+					<text><![CDATA[Costs]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-7-1" style="data field" x="104" y="77" width="100" height="13" uuid="3c84c829-28dd-4732-a6f3-34972c3794ea"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$F{courseClass}.actualTotalCost]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-7-2" style="data field" x="214" y="77" width="100" height="13" uuid="414afb07-6ba1-43c3-b53b-259413456791"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$F{courseClass}.budgetedTotalCost]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-8" style="Label" x="0" y="91" width="90" height="13" uuid="ff8baa46-f5ed-41cf-97eb-4b2407c2e0ea"/>
+					<text><![CDATA[Fee income]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-8-1" style="data field" x="104" y="91" width="100" height="13" uuid="c5495750-f6c8-460d-9777-ff3a1913caf1"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$F{courseClass}.actualFeeIncome]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-8-2" style="data field" x="214" y="91" width="100" height="13" uuid="5931e28b-801a-4e11-b6cc-2169d7290678"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$F{courseClass}.budgetedFeeIncome]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-9" style="Label" x="0" y="105" width="90" height="13" uuid="79c989e1-781a-4a8c-9655-5ccc02f3681e"/>
+					<text><![CDATA[Other income]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-9-1" style="data field" x="104" y="105" width="100" height="13" uuid="f12a262e-7c16-478f-88a5-bcacc921ef5e"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$F{courseClass}.actualOtherIncome]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-9-2" style="data field" x="214" y="105" width="100" height="13" uuid="d97cebab-ec8b-4db4-a1a6-bcc04883effb"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$F{courseClass}.budgetedOtherIncome]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-11" style="Label" x="0" y="119" width="90" height="13" uuid="bd97d412-1b05-4ee8-b84f-4ee4446f7746"/>
+					<text><![CDATA[Custom invoices]]></text>
+				</staticText>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-11-1" style="data field" x="104" y="119" width="100" height="13" uuid="43f92c34-7ede-488c-98a5-24d06c930128"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$F{courseClass}.actualCustomInvoices]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-11-2" style="data field" x="214" y="119" width="100" height="13" uuid="3e5c65e3-3789-40b2-89ce-7b0c3e82966e"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$F{courseClass}.budgetedCustomInvoices]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-11" style="Label" x="0" y="133" width="90" height="13" uuid="23615a88-52cc-444e-8c00-dc596f0d912e"/>
+					<text><![CDATA[Discounts]]></text>
+				</staticText>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-11-1" style="data field" x="104" y="133" width="100" height="13" uuid="0821eb86-23f0-408b-b0de-4b84c082bfc4"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$F{courseClass}.actualDiscounts]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-11-2" style="data field" x="214" y="133" width="100" height="13" uuid="0138a390-524a-44c1-a264-23fa6aab067c"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$F{courseClass}.budgetedDiscounts]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-12" style="Label" x="0" y="147" width="90" height="13" uuid="25f5be89-3aa2-4c2a-ba4d-3e597534d31e"/>
+					<text><![CDATA[Profit]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-12-1" style="data field" x="104" y="147" width="100" height="13" uuid="ba8f3208-c783-44a8-976b-410b8e5cc682"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$F{courseClass}.actualTotalProfit]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-12-2" style="data field" x="214" y="147" width="100" height="13" uuid="892a0ba6-9eab-4f77-8b03-6aa73e5538d3"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$F{courseClass}.budgetedTotalProfit]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band splitType="Stretch"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="115" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="54" splitType="Stretch">
+			<staticText>
+				<reportElement style="header 1" x="0" y="0" width="190" height="28" uuid="d888d8cc-e279-4a6f-a823-784c1856656e"/>
+				<text><![CDATA[Class budget]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-2" style="header 1" x="0" y="28" width="764" height="26" uuid="78253eb2-e78c-40ae-94d9-1a133384f2e1"/>
+				<textFieldExpression><![CDATA[$F{course.code} + "-" + $F{code} + " " + $F{course.name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<elementGroup>
+				<subreport isUsingCache="true">
+					<reportElement key="subreport" stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="0" y="0" width="764" height="15" uuid="769586bf-390f-4769-b3b3-6dcecb4069c9"/>
+					<dataSourceExpression><![CDATA[$F{datasource.costs}]]></dataSourceExpression>
+					<subreportExpression><![CDATA[$F{subreport.ish.onCourse.costSubReport}]]></subreportExpression>
+				</subreport>
+			</elementGroup>
+		</band>
+		<band height="4" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<elementGroup/>
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-1" stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="0" y="0" width="764" height="4" uuid="d8630178-954b-4c36-bebc-149e867fe48f"/>
+				<dataSourceExpression><![CDATA[$F{datasource.invoiceLines}]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$F{subreport.ish.onCourse.invoiceSubReport}]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<textField evaluationTime="Page" isBlankWhenNull="false">
+				<reportElement key="pageNumberFooter" style="Footer strong" x="0" y="0" width="300" height="15" uuid="1106d334-b156-4af7-a64d-a75ba7206e2c"/>
+				<textFieldExpression><![CDATA["Page " + String.valueOf($V{PAGE_NUMBER})]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" isBlankWhenNull="false">
+				<reportElement key="totalPageCountFooter" style="Footer" x="0" y="11" width="300" height="13" uuid="d3e402c5-a433-4f08-90db-5c66216e08f3"/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT} + " record" + ($V{REPORT_COUNT}>1 ? "s" : "") + " on " + $V{PAGE_NUMBER} + " page" + ($V{PAGE_NUMBER}>1 ? "s" : "") + " (printed " + new Date().format("E d MMM yyyy h:mma") + ")"]]></textFieldExpression>
+			</textField>
+			<image scaleImage="RetainShape" hAlign="Right" isUsingCache="true" onErrorType="Blank">
+				<reportElement key="oncourseLogo" style="Footer" x="472" y="17" width="67" height="7" uuid="2863530e-11e5-4c1e-8296-ae64db1a9926"/>
+				<imageExpression><![CDATA[$F{image.poweredby}]]></imageExpression>
+			</image>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

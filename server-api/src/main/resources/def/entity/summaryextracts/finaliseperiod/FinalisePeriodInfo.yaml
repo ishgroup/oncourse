@@ -1,0 +1,36 @@
+type: object
+properties:
+  lastDate:
+    type: string
+    format: date
+  targetDate:
+    type: string
+    format: date
+  unreconciledPaymentsCount:
+    type: integer
+  unreconciledPaymentsBankingIds:
+    type: array
+    items:
+      type: integer
+      format: int64
+  unbankedPaymentInCount:
+    type: integer
+  unbankedPaymentInIds:
+    type: array
+    items:
+      type: integer
+      format: int64
+  unbankedPaymentOutCount:
+    type: integer
+  unbankedPaymentOutIds:
+    type: array
+    items:
+      type: integer
+      format: int64
+  depositBankingCount:
+    type: integer
+  depositBankingIds:
+    type: array
+    items:
+      type: integer
+      format: int64

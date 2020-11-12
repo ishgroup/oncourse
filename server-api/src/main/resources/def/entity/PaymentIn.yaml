@@ -1,0 +1,55 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+  payerId:
+    type: integer
+    format: int64
+  payerName:
+    type: string
+  paymentInType:
+    type: string
+  status:
+    type: string
+  amount:
+    type: number
+  accountInName:
+    type: string
+  source:
+    type: string
+  ccTransaction:
+    type: string
+  emailConfirmation:
+    type: boolean
+  datePayed:
+    type: string
+    format: date
+  dateBanked:
+    type: string
+    format: date
+  ccSummary:
+    type: array
+    items:
+      type: string
+  chequeSummary:
+    type: object
+    additionalProperties:
+      type: string
+  createdBy:
+    type: string
+  invoices:
+    type: array
+    items:
+      $ref: './PaymentInvoice.yaml'
+  createdOn:
+    type: string
+    format: date-time
+  modifiedOn:
+    type: string
+    format: date-time
+  administrationCenterId:
+    type: integer
+    format: int64
+  administrationCenterName:
+    type: string

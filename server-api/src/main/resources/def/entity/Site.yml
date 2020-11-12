@@ -1,0 +1,79 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: true
+  isAdministrationCentre:
+    type: boolean
+    required: true
+    description: True if this is an Administration Centre
+    example: true
+  isVirtual:
+    type: boolean
+    description: Sites can be virtual for online learning. True if this this a virtual site
+    example: true
+  isShownOnWeb:
+    type: boolean
+    required: true
+    description: True if the details of this site is shown on website
+    example: true
+  kioskUrl:
+    type: string
+    required: true
+    description: The kiosk url generates a HTML page showing showing the current days classes in this site
+    example: https://ishoncourse.oncourse.cc/site/kiosk/340
+  name:
+    type: string
+    example: Sydney Site
+  street:
+    type: string
+    example: 1 Wilson Street
+  suburb:
+    type: string
+    example: Newtown
+  state:
+    type: string
+    example: New South Wales
+  postcode:
+    type: string
+    example: 2042
+  country:
+    $ref: './Country.yaml'
+  timezone:
+    type: string
+    example: GMT+11
+  longitude:
+    type: number
+    example: 151.181214
+  latitude:
+    type: number
+    example: -33.896321
+  drivingDirections:
+    type: string
+  publicTransportDirections:
+    type: string
+  specialInstructions:
+    type: string
+  tags:
+    type: array
+    items:
+      $ref: './Tag.yaml'
+  rooms:
+    type: array
+    items:
+      $ref: './Room.yml'
+  documents:
+    type: array
+    items:
+      $ref: './Document.yaml'
+  rules:
+    type: array
+    items:
+      $ref: './Holiday.yaml'
+  createdOn:
+    type: string
+    format: date-time
+  modifiedOn:
+    type: string
+    format: date-time

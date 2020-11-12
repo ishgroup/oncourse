@@ -1,0 +1,8 @@
+type: string
+description: Set of USI statuses.
+enum:
+  - Valid
+  - Invalid
+  - Service unavailable
+  - Disabled
+  - Invalid format

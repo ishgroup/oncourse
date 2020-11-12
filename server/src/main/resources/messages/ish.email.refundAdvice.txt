@@ -1,0 +1,10 @@
+o-------------------o
+     Refund Advice
+o-------------------o
+
+Refund type: ${paymentOut.type}
+Amount: ${paymentOut.amount}
+Processed on: ${paymentOut.createdOn.format("d/M/yy")}
+Refunded to: ${paymentOut.contact.fullName}
+
+Please contact us if this refund is not received within 7 days.

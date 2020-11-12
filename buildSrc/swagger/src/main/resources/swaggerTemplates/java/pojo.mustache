@@ -1,0 +1,114 @@
+import groovy.transform.AutoClone
+import com.fasterxml.jackson.annotation.JsonFormat
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer
+
+import ish.oncourse.server.api.traits._DTOTrait
+import ish.oncourse.server.api.traits.{{classname}}Trait
+
+/**
+* A class representing the Data Transfer Object which is sent between the server and REST client.
+*
+* This class is automatically generated, however you can add code to the Trait in order to decorate this class
+* with additional functionality.
+*/
+@AutoClone
+public class {{classname}} {{#parent}}extends {{{parent}}}{{/parent}} implements _DTOTrait, {{classname}}Trait {
+  {{#vars}}{{#isEnum}}{{^isContainer}}
+
+{{>enumClass}}{{/isContainer}}{{/isEnum}}{{#items.isEnum}}{{#items}}
+
+{{^isContainer}}{{>enumClass}}{{/isContainer}}{{/items}}{{/items.isEnum}}
+{{#isDateTime}}
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = ish.util.LocalDateUtils.DATE_TIME_PATTERN)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+{{/isDateTime}}
+{{#isDate}}
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = ish.util.LocalDateUtils.DATE_PATTERN)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+{{/isDate}}
+    private {{{datatypeWithEnum}}} {{name}} = {{{defaultValue}}}{{/vars}}
+    
+    {{classname}}() {
+    }
+    
+    {{classname}}({{#vars}}{{{datatypeWithEnum}}} {{name}}{{#hasMore}}, {{/hasMore}}{{/vars}}) {
+    {{#vars}}
+        this.{{name}} = {{name}}
+    {{/vars}}
+    }
+
+  {{#vars}}
+    /**
+    {{#description}}
+     * {{{description}}}
+    {{/description}}
+    {{^description}}
+     * Get {{name}}
+    {{/description}}
+    {{#minimum}}
+     * minimum: {{minimum}}
+    {{/minimum}}
+    {{#maximum}}
+     * maximum: {{maximum}}
+    {{/maximum}}
+     * @return {{name}}
+     */
+    {{#vendorExtensions.extraAnnotation}}
+    {{{vendorExtensions.extraAnnotation}}}
+    {{/vendorExtensions.extraAnnotation}}
+    {{{datatypeWithEnum}}} {{#isBoolean}}is{{/isBoolean}}{{getter}}() {
+        return {{name}}
+    }
+
+    {{^isReadOnly}}
+    void {{setter}}({{{datatypeWithEnum}}} {{name}}) {
+       this.{{name}} = {{name}}
+    }
+
+    {{classname}} {{name}}({{{datatypeWithEnum}}} {{name}}) {
+      this.{{name}} = {{name}}
+      return this
+    }
+    {{#isListContainer}}
+
+    {{classname}} add{{nameInCamelCase}}Item({{{items.datatypeWithEnum}}} {{name}}Item) {
+      this.{{name}}.add({{name}}Item)
+      return this
+    }
+    {{/isListContainer}}
+    {{#isMapContainer}}
+
+    {{classname}} put{{nameInCamelCase}}Item(String key, {{{items.datatypeWithEnum}}} {{name}}Item) {
+      this.{{name}}.put(key, {{name}}Item)
+      return this
+    }
+    {{/isMapContainer}}
+    {{/isReadOnly}}
+
+    {{/vars}}
+
+    @Override
+    String toString() {
+      StringBuilder sb = new StringBuilder()
+      sb.append("class {{classname}} {\n")
+      {{#parent}}sb.append("    ").append(toIndentedString(super.toString())).append("\n"){{/parent}}
+      {{#vars}}sb.append("    {{name}}: ").append(toIndentedString({{name}})).append("\n")
+      {{/vars}}sb.append("}")
+      return sb.toString()
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces
+     * (except the first line).
+     */
+    private static String toIndentedString(java.lang.Object o) {
+      return o?.toString()?.replace("\n", "\n    ")
+    }
+}

@@ -1,0 +1,18 @@
+type: object
+properties:
+  key:
+    type: string
+    description: key for access to field in Contact, Student, Tutor entities or contact custom fields, should be used as a key for POST map parameter
+    example: Contact.firstName, Student.townOfBirth, customField.driversLicenceNumber
+  label:
+    type: string
+    description: displayable name of attribute
+    example: First Name
+  a:
+    type: string
+    description: attribute value for first contact
+    example: Peter
+  b:
+    type: string
+    description: attribute value for second contact
+    example: peter

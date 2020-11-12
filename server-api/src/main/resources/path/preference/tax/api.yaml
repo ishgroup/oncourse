@@ -1,0 +1,53 @@
+get:
+  operationId: get
+  description: Get all taxes
+  tags:
+  - Tax
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/Tax.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    keyCode: UNDEFINED
+
+post:
+  operationId: update
+  description: Update a tax record
+  tags:
+  - Tax
+  parameters:
+  - name: taxes
+    in: body
+    description: Taxes for update
+    required: true
+    schema:
+      type: array
+      items:
+        $ref: './def/entity/Tax.yaml'
+  responses:
+    '204':
+      description: Success response.
+    default:
+      description: Unexpected error
+
+delete:
+  operationId: remove
+  description: Remove tax
+  tags:
+  - Tax
+  parameters:
+  - name: id
+    in: path
+    description: Identifier of tax whitch will be deleted.
+    required: true
+    type: string
+  responses:
+    '204':
+      description: Tax successfully deleted
+    default:
+      description: Unexpected error

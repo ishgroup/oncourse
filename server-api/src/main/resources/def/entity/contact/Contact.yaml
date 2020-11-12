@@ -1,0 +1,207 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: true
+    example: 200
+    description: Unique contact identifier in onCourse
+  student:
+    $ref: './Student.yaml'
+    description: Student who owns contact
+  tutor:
+    $ref: './Tutor.yaml'
+    description: Tutor who owns contact
+  abn:
+    type: string
+    required: true
+    description: Australian business number, for company only
+    example: 12345678901
+  birthDate:
+    type: string
+    format: date
+    required: false
+    description: Contact birth date
+    example: 1991-07-20
+  country:
+    $ref: '../Country.yaml'
+    required: false
+    description:  Contact country in onCourse
+  fax:
+    type: string
+    required: false
+    description: Fax number
+    example: 0431048488
+  isCompany:
+    type: boolean
+    required: true
+    description: If contact is company
+    example: true
+  gender:
+    $ref: './ContactGender.yaml'
+    required: true
+    description: contact gender
+  message:
+    type: string
+    required: false
+    description: Allert for staff
+    example: Student has hearing disability
+  homePhone:
+    type: string
+    required: false
+    description: Home phone number
+    example: 0431048488
+  mobilePhone:
+    type: string
+    required: false
+    description: Mobile phone number
+    example: 0431048488
+  workPhone:
+    type: string
+    required: false
+    description: Work phone number
+    example: 0431048488
+  postcode:
+    type: string
+    required: false
+    description: Contact postcode
+    example: 2011
+  state:
+    type: string
+    required: false
+    description: Contact state
+    example: NSW
+  street:
+    type: string
+    required: false
+    description: Contact street address
+    example: 72-86 William St
+  suburb:
+    type: string
+    required: false
+    description: Contact suburb address
+    example: Woolloomooloo
+  tfn:
+    type: string
+    required: false
+    description: Contact tax file number
+    example: 172665394
+  deliveryStatusEmail:
+    type: integer
+    required: true
+    description: number of failed consecutive attempts to deliver email message to this contact, when this value reaches 6 onCourse considers messages to this contact undeliverable
+    example: 0
+  deliveryStatusSms:
+    type: integer
+    required: false
+    description: number of failed consecutive attempts to deliver SMS message to this contact, when this value reaches 6 onCourse considers messages to this contact undeliverable
+    example: 0
+  deliveryStatusPost:
+    type: integer
+    required: false
+    description: number of failed consecutive attempts to deliver postal message to this contact, when this value reaches 6 onCourse considers messages to this contact undeliverable
+    example: 0
+  allowPost:
+    type: boolean
+    required: true
+    description: whether the contact opted into postal (mail) marketing
+    example: true
+  allowSms:
+    type: boolean
+    required: true
+    description: whether the contact opted into SMS marketing
+    example: true
+  allowEmail:
+    type: boolean
+    required: true
+    description: whether the contact opted into email marketing
+    example: true
+  uniqueCode:
+    type: string
+    required: false
+    description: alphanumeric 16 character unique code associated with this contact
+    example: A4plew345a49rlnf
+  honorific:
+    type: string
+    required: flase
+    description: the honorific is the bit before the name
+    example: Dr
+  title:
+    type: string
+    required: false
+    description: contact's title
+    example: Vice President of Marketing
+  email:
+    type: string
+    required: false
+    description: contact's email
+    example: contact@gmail.com
+  firstName:
+    type: string
+    required: true
+    description: contact's given name
+    example: John
+  lastName:
+    type: string
+    required: true
+    description: contact's family name
+    example: Smith
+  middleName:
+    type: string
+    required: false
+    description: contact's middle name
+    example: Fitzgerald
+  invoiceTerms:
+    type: integer
+    required: false
+    description:  Use value to set the due date for contacts invoices
+    example: 10
+  taxId:
+    type: integer
+    format: int64
+    required: false
+    description:  Unique tax identifier in onCourse
+    example: 204
+  customFields:
+    type: object
+    additionalProperties:
+      type: string
+  documents:
+    type: array
+    items:
+      $ref: '../Document.yaml'
+  tags:
+    type: array
+    items:
+      $ref: '../Tag.yaml'
+  memberships:
+    type: array
+    items:
+      $ref: '../Sale.yaml'
+  profilePicture:
+    $ref: '../Document.yaml'
+  relations:
+    type: array
+    items:
+      $ref: './ContactRelation.yaml'
+  financialData:
+    type: array
+    items:
+      $ref: './FinancialLine.yaml'
+  createdOn:
+    type: string
+    format: date-time
+  modifiedOn:
+    type: string
+    format: date-time
+  messages:
+    type: array
+    items:
+      $ref: '../MessagePerson.yaml'
+  rules:
+    type: array
+    items:
+      $ref: '../Holiday.yaml'
+  removeCChistory:
+    type: boolean
+

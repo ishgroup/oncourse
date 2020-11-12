@@ -1,0 +1,6 @@
+Dear ${application.student.contact.firstName},
+We regret to inform you that your application for enrolment in ${application.course.name} has not been successful.
+<% if (application.reason) { %>
+Reason:
+${application.reason}
+<% } %>

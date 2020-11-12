@@ -1,0 +1,54 @@
+get:
+  description: Returns a student feedback record
+  operationId: get
+  tags:
+    - Survey
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of student feedback record to fetch
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/SurveyItem.yaml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: SURVEYS
+    errorMessage: Sorry, you have no permissions to get student feedback. Please contact your administrator
+
+put:
+  operationId: update
+  tags:
+    - Survey
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of student feedback record to fetch
+    - name: surveyItem
+      in: body
+      schema:
+        $ref: './def/entity/SurveyItem.yaml'
+      required: true
+      description: student feedback for update
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: SURVEYS
+    errorMessage: Sorry, you have no permissions to edit student feedback. Please contact your administrator

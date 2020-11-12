@@ -1,0 +1,18 @@
+get:
+  operationId: messageQueued
+  description: get all messages in message queue
+  tags:
+  - Preference
+  parameters:
+  - name: type
+    in: query
+    description: Type of the message
+    required: true
+    type: string
+  responses:
+    '200':
+      schema:
+        type: integer
+      description: Queued messages count.
+    default:
+      description: Unexpected error

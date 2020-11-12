@@ -1,0 +1,12 @@
+type: string
+enum:
+  - non State Government subsidised
+  - Restricted Access Arrangement
+  - Victorian State Government subsidised
+  - New South Wales State Government subsidised
+  - Queensland State Government subsidised
+  - South Australian State Government subsidised
+  - Western Australian State Government subsidised
+  - Tasmania State Government subsidised
+  - Northern Territory Government subsidised
+  - Australian Capital Territory Government subsidised

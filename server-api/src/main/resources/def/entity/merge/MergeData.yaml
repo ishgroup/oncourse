@@ -1,0 +1,12 @@
+type: object
+properties:
+  mergeLines:
+    type: array
+    description: set of attributes with differences between contacts
+    items:
+      $ref: "./MergeLine.yaml"
+  infoLines:
+    type: array
+    description: set of information attributes for both contacts
+    items:
+      $ref: './InfoLine.yaml'

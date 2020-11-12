@@ -1,0 +1,23 @@
+get:
+  operationId: templates
+  description: retrieves export template
+  tags:
+    - ExportTemplate
+  parameters:
+    - name: entityName
+      in: query
+      type: string
+      required: true
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/automation/ExportTemplate.yaml'
+    default:
+      description: Unexpected error.
+  x-permission:
+    mask: print
+    keyCode: LAZY/entityName
+    errorMessage: Sorry, you have no permissions to get export. Please contact your administrator

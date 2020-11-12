@@ -1,0 +1,77 @@
+get:
+  description: Returns voucher product record
+  operationId: get
+  tags:
+    - VoucherProduct
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of voucher product record to fetch
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/voucherProduct/VoucherProduct.yaml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: VOUCHER
+    errorMessage: Sorry, you have no permissions to get voucher product. Please contact your administrator
+
+post:
+  operationId: create
+  tags:
+    - VoucherProduct
+  parameters:
+    - name: voucherProduct
+      in: body
+      description: voucher product for create
+      required: true
+      schema:
+        $ref: './def/entity/voucherProduct/VoucherProduct.yaml'
+  responses:
+    '200':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: VOUCHER
+    errorMessage: Sorry, you have no permissions to create voucher product. Please contact your administrator
+
+put:
+  operationId: update
+  tags:
+    - VoucherProduct
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of voucher product record to fetch
+    - name: voucherProduct
+      in: body
+      schema:
+        $ref: './def/entity/voucherProduct/VoucherProduct.yaml'
+      required: true
+      description: voucher product for update
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: VOUCHER
+    errorMessage: Sorry, you have no permissions to edit voucher product. Please contact your administrator

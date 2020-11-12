@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<data>
+  <site id='201'>
+    <modifiedOn>2018-11-29T00:42:49+11:00</modifiedOn>
+    <createdOn>2018-11-29T00:42:49+11:00</createdOn>
+    <drivingDirections />
+    <isAdministrationCentre>false</isAdministrationCentre>
+    <latitude>-34.91638480</latitude>
+    <longitude>138.60569150</longitude>
+    <name>site1</name>
+    <postcode>5000</postcode>
+    <publicTransportDirections />
+    <state>SA</state>
+    <street>Frome Rd</street>
+    <suburb>Adelaide</suburb>
+    <room id='1'>
+      <modifiedOn>2018-11-29T00:57:11+11:00</modifiedOn>
+      <createdOn>2018-11-29T00:42:49+11:00</createdOn>
+      <directions />
+      <facilities />
+      <name>room1</name>
+      <notes />
+      <seatedCapacity>25</seatedCapacity>
+    </room>
+    <room id='2'>
+      <modifiedOn>2018-11-29T00:59:01+11:00</modifiedOn>
+      <createdOn>2018-11-29T00:42:49+11:00</createdOn>
+      <directions />
+      <facilities />
+      <name>room2</name>
+      <notes />
+      <seatedCapacity>50</seatedCapacity>
+    </room>
+  </site>
+</data>

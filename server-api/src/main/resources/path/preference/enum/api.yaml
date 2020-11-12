@@ -1,0 +1,22 @@
+get:
+  operationId: getEnum
+  description: Get all choices for requested enum
+  tags:
+  - Preference
+  parameters:
+  - name: name
+    in: path
+    description: Enumeration name
+    required: true
+    type: string
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/EnumItem.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    keyCode: UNDEFINED

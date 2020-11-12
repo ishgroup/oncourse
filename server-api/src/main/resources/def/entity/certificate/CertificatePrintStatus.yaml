@@ -1,0 +1,5 @@
+type: string
+enum:
+  - OK
+  - No USI
+  - USI not verified

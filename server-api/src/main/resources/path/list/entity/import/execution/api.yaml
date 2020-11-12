@@ -1,0 +1,30 @@
+post:
+  operationId: execute
+  tags:
+    - Import
+  parameters:
+  - name: request
+    in: formData
+    type: string
+    required: true
+  - name: files
+    in: formData
+    type: array
+    items:
+      type: File
+    required: true
+  consumes:
+    - multipart/form-data
+  responses:
+    '200':
+      schema:
+        type: string
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: SPECIAL_IMPORT
+    errorMessage: Sorry, you have no permissions to make import. Please contact your administrator

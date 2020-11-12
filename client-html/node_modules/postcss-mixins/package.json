@@ -1,0 +1,22 @@
+{
+  "name": "postcss-mixins",
+  "version": "6.2.3",
+  "description": "PostCSS plugin for mixins",
+  "keywords": [
+    "postcss",
+    "css",
+    "postcss-plugin",
+    "mixins",
+    "sass"
+  ],
+  "author": "Andrey Sitnik <andrey@sitnik.ru>",
+  "license": "MIT",
+  "repository": "postcss/postcss-mixins",
+  "dependencies": {
+    "globby": "^8.0.1",
+    "postcss": "^7.0.21",
+    "postcss-js": "^2.0.3",
+    "postcss-simple-vars": "^5.0.2",
+    "sugarss": "^2.0.0"
+  }
+}

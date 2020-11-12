@@ -1,0 +1,149 @@
+get:
+  operationId: get
+  description: Return a document
+  tags:
+  - Document
+  parameters:
+  - name: id
+    in: path
+    type: integer
+    format: int64
+    required: true
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/Document.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: ATTACHMENT_INFO
+    errorMessage: Sorry, you have no permissions to get documents. Please contact your administrator
+
+post:
+  operationId: create
+  description: Create a new document
+  tags:
+  - Document
+  parameters:
+  - name: name
+    in: query
+    type: string
+    required: true
+  - name: description
+    in: query
+    type: string
+    required: true
+  - name: shared
+    in: query
+    type: boolean
+    required: true
+  - name: access
+    in: query
+    type: string
+    required: true
+  - name: tags
+    in: query
+    type: string
+    required: false
+  - name: fileName
+    in: query
+    type: string
+    required: true
+  - name: content
+    in: body
+    schema:
+      type: File
+    required: true
+  consumes:
+  - application/x-www-form-urlencoded
+  - application/octet-stream
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/Document.yaml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: ATTACHMENT_INFO
+    errorMessage: Sorry, you have no permissions to create Document. Please contact your administrator
+
+put:
+  operationId: update
+  tags:
+    - Document
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of document record to fetch
+    - name: document
+      in: body
+      schema:
+        $ref: './def/entity/Document.yaml'
+      required: true
+      description: document for update
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: ATTACHMENT_INFO
+    errorMessage: Sorry, you have no permissions to edit document. Please contact your administrator
+
+delete:
+  operationId: remove
+  tags:
+    - Document
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of document record to fetch
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: delete
+    keyCode: ATTACHMENT_INFO
+    errorMessage: Sorry, you have no permissions to delete document. Please contact your administrator
+
+patch:
+  operationId: bulkChange
+  tags:
+    - Document
+  parameters:
+    - name: diff
+      in: body
+      schema:
+        $ref: './def/entity/Diff.yaml'
+      required: true
+      description: documents for update
+  responses:
+    '200':
+      description: Success response
+    '400':
+      description: Bad request error
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: ATTACHMENT_INFO
+    errorMessage: Sorry, you have no permissions to edit document. Please contact your administrator.

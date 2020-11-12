@@ -1,0 +1,24 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: true
+  created:
+    type: string
+    format: date-time
+    required: true
+  status:
+    $ref: '../enum/FundingStatus.yaml'
+    required: true
+  systemUser:
+    type: string
+    required: true
+  outcomesCount:
+    type: integer
+    required: true
+  settings:
+    $ref: './AvetmissExportSettings.yaml'
+  lastSettings:
+    type: boolean
+    required: true

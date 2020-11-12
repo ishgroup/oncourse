@@ -1,0 +1,31 @@
+#public static final Property<Date> CREATED_ON = Property.create("createdOn", Date.class);
+#public static final Property<Money> DISCOUNT_DOLLAR = Property.create("discountDollar", Money.class);
+#public static final Property<Long> ID = Property.create("id", Long.class);
+#public static final Property<Date> MODIFIED_ON = Property.create("modifiedOn", Date.class);
+#public static final Property<BigDecimal> PREDICTED_STUDENTS_PERCENTAGE = Property.create("predictedStudentsPercentage", BigDecimal.class);
+#public static final Property<Long> WILLOW_ID = Property.create("willowId", Long.class);
+#public static final Property<ClassCost> CLASS_COST = Property.create("classCost", ClassCost.class);
+#public static final Property<CourseClass> COURSE_CLASS = Property.create("courseClass", CourseClass.class);
+#public static final Property<Discount> DISCOUNT = Property.create("discount", Discount.class);
+type: object
+properties:
+  tutorId:
+    type: integer
+    format: int64
+    required: true
+  roleId:
+    type: integer
+    format: int64
+    required: true
+  tutorName:
+    type: string
+  confirmedOn:
+    type: string
+    format: date
+  isInPublicity:
+    type: boolean
+
+
+
+
+

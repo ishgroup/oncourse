@@ -1,0 +1,11 @@
+type: object
+description: Preference object
+properties:
+  key:
+    $ref: '../../enum/PreferenceEnum.yaml'
+    description: Unique preference key
+    required: true
+  value:
+    description: preference value
+    type: string
+    required: true

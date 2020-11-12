@@ -1,0 +1,207 @@
+AVETMISS test cases
+===================
+
+Test parameters
+---------------
+
+* start: 1 January 2013
+* end: 31 December 2013
+
+One outcome is set to end in 2012 to check that it does NOT appear in the output.
+
+Test groups
+-----------
+
+1. defaultOutput
+ - plain
+ - export only VET: no
+
+2. vetOutput
+ - plain
+ - export only VET: yes
+ - default outcome: STATUS_NO_RESULT_QLD
+
+3. Vic
+- Vic flavour
+- export only vet: no
+- default outcome: not set
+
+4. NSW
+- NSW flavour
+- export only vet: no
+- default outcome: not set
+
+5. QLD
+- QLD flavour
+- export only vet: no
+- default outcome: not set
+
+6. TAS
+- Tas flavour
+- export only vet: no
+- default outcome: not set
+
+7. SA
+- SA flavour
+- export only vet: no
+- default outcome: not set
+
+8. WA
+- WA flavour
+- export only vet: no
+- default outcome: not set
+
+Test data
+=========
+
+
+NAT00010 College
+----------------
+
+Vic: Expect to see 'onCourse' at end of file
+QLD, NSW, SA, TAS, WA: Expect to end at field email
+
+
+NAT00020 Sites
+--------------
+
+1. Class with no site, should export Admin site (WPE-1, CCTrainIII-1)
+2. Class with virtual site, should export Admin site (WDC-1)
+
+All states: expect field length to be 4 char longer for statistical local area
+
+NAT0030 Courses
+---------------
+
+1. VET course, one unit no qual - WordProcessing Essentials
+2. VET course, 4 units and qual - Web design cluster
+3. VET course, 10 units full qualification - Certificate III in Aged Care Work
+4. VET flagged course, no units - So you want to be a florist
+5. General course, no units - Yoga for mums and dads
+6. Traineeship, 5 units, full qual - Childcare Traineeship
+7. VET course, 4 units full qual - TAE Certificate only course
+8. VET course, 3 modules linked to qual - Accredited Course (mod have nominal hrs)
+
+
+Standard: Expect to see full quals only - ChildCare & Aged Care plus certificate issued course TAE, issued Qual BSB30101
+QLD: Expect to see an additional course records here - Web design cluster & Cert III CSWE
+
+NAT0060 Units/Modules
+---------------------
+
+1. 3 modules have nominal hours attached, others are blank
+2. Accredited course (AC-2) with data in all NSW fields <-- this data exports in the NAT00120
+
+NAT0080 Students
+----------------
+
+1. Mohamoda Aalax - overseas student
+2. Roger Clay, under six 1/1/2013
+3. Salvador Dali - indigenous student born in Nepal <-- no enrolments
+4. Sherif Davis - speaks English only at home, very well, under 16 years old
+5. Kevin Donald - under 16, working full time 1/1/2000, not at school
+6. Sophie Donald - under 16, working part time, still at school 1/1/2000, has a Diploma
+7. Steve Handt- disability type other
+8. Evander Holyfield - prior ed Advanced Diploma, achieved 2000
+9. Angie Jones, still at school Yes (born 9/3/83)
+10. Mark Jones, still at school not stated (born 3/8/75). Lives overseas.
+11. Simon Kelly, no suburb proved
+12. Penny Lane VSN/QLD no 123456789
+13. Leo Sim, highest school level completed yr 11 2013
+14. Sara Molin, highest school level completed yr 12 1940, born in 25/3/80
+15. Anne Zumer <-- only certificate issued, no enrolments
+
+VIC & QLD: Expect to see student number (123456789) end of field in student Anne Zumer & Penny Lane
+
+NAT00085
+________
+
+TAS: Expect to see all clients with a title of Mr or Ms (except where gender is null)
+
+
+NAT00090
+--------
+Expect to see
+ Student no: 3 Steve Handt- disability type other
+
+
+NAT00100
+--------
+Expect to see
+Student no: 4 Evander Holyfield - prior ed Advanced Diploma, achieved 2000
+
+Expect not to see Sophie Donald's diploma as she is under 16
+
+NAT00120
+--------
+outcomes
+5	Traineeship, 5 units full qual, start 25/3/2013 to 25/2/14 - all Traineeship fields completed in enrolment 
+10	Enrolment in self paced and no site classes - two enrolments word & web
+30	Enrolment in class starts before 2013, finishes in 2013 - Cert III Aged Care, full qual - 3 	students enrolled
+20	Enrolment in class that starts in 2012, finishes in 2012 - Cert III Aged Care, full qual - 2 students enrolled
+4	VET flagged florist course - 4 enrolled
+4	General yoga course - 4 enrolled
+12	Accredited course, standard
+6	Accredited course, NSW funded
+
+91 total
+
+Expected 91-20 = 71 (excluding start and finish 2012 outcomes)
+
+All: Outcomes end past collection date = 70 <-- Leo Sim (22) 9099NSW/C end data 19/4/2014, DB outcome 30
+
+QLD: Expect all outcomes to be linked to a parent qualification
+QLD: All blank outcomes export as 90 <--- Roger Clay (14) 4x ICA outcomes, no status set in DB)
+QLD: No result = 00 <-- Roger Clay (14) CHCCHILD401A Result not available
+
+SA: All blank outcomes export as @@ <--- Roger Clay (14) 4x ICA outcomes, no status set in DB)
+SA: Did not start = @@ <-- Leo Sim (22) 9099NSW/B DNS
+
+NSW: Blank outcomes for in progress units <-- Leo Sim (22) 9099NSW/C end data 19/4/2014, DB outcome 30
+NSW: Did not start = 66 <-- Leo Sim (22) 9099NSW/B DNS 
+
+
+Below the line fields:
+
+All: State funding source 3 char - CSWE outcomes = LSG
+NSW: Tuition field = 0000
+NSW: Fee exemption N
+VIC: Range of values from list for fee exemption <-- Leo Sim (22) - CSWE outcomes = M 
+
+NSW: PC ID, PCS ID, hours attended, Booking ID, Course Site ID, TP Dev Y/N  <-- Sara Molin (17) - CSWE outcomes
+PC ID: 54321, PCS ID: 987, hours attended: 90990NSW/C = 10 Booking Id: 12345, Course site ID: 6789, TP Developed: YES
+Leo Sim (22) - CSWE outcomes
+As above, no hours attended, no response (null) for TP developed
+
+
+QLD & VIC: Hours attended only populates for units where the student withdrew during training 
+Sara Molin (17) - 90990NSW/C = 10
+
+QLD: Full time learning Y/N
+Leo Sim (22) - CSWE Module, NO
+
+
+TAS, SA, WA: PC ID, PCS ID, hours attended, specific program identifier <- this is the field that conflicts in the NSW report
+LEO Sim (22) - 90990NSW/A ABC
+
+
+VIC: Course commenced date =  class start date
+Eligibility exemption Y/N
+VET fee HELP Y/N
+ANZSIC - only if state funding source = "LSG", "PSG", "SSG"
+
+LEO Sim (22), CSWE Module Eligibility Exemption = Y, VET FEE HELP = Y, ANZSIC = required
+
+
+
+ 
+
+NAT00130 Certificates
+---------------------
+3 Qualifications created for CHC30102 (have outcomes in NAT00120)
+1 Qualification created for TAE40110 (no related outcomes in NAT00120)
+
+NSW: Completed course should export records for 2 x CSWE qualifications - Leo Sim (22) and Sarah Molin (17) 
+(neither has passed all units successfully - no additional qualifications have been created)
+
+

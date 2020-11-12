@@ -1,0 +1,277 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
+import React, { useCallback, useMemo } from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { change } from "redux-form";
+import Grid from "@material-ui/core/Grid";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Tooltip from "@material-ui/core/Tooltip";
+import { Module, Qualification } from "@api/model";
+import FormField from "../../../../common/components/form/form-fields/FormField";
+import { State } from "../../../../reducers/state";
+import { clearPlainQualificationItems, getPlainQualifications, setPlainQualificationSearch } from "../../qualifications/actions";
+import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
+import Uneditable from "../../../../common/components/form/Uneditable";
+import QualificationListItemRenderer from "../../qualifications/components/QualificationListItemRenderer";
+import { normalizeNumberToZero } from "../../../../common/utils/numbers/numbersNormalizing";
+import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
+import { EditViewProps } from "../../../../model/common/ListView";
+import { QualificationState } from "../../qualifications/reducers";
+import {
+  AnyArgFunction,
+  BooleanArgFunction,
+  NumberArgFunction,
+  StringArgFunction
+} from "../../../../model/common/CommonFunctions";
+import { clearModuleItems, getModules, setModuleSearch } from "../../modules/actions";
+import { ModulesState } from "../../modules/reducers/state";
+import { openQualificationLink } from "../../qualifications/utils";
+import { CourseExtended } from "../../../../model/entities/Course";
+import { validateSingleMandatoryField } from "../../../../common/utils/validation";
+
+const getQualificationLabel = (qal: Qualification) => `${qal.title}, ${qal.nationalCode}`;
+
+interface CourseVetTab extends EditViewProps<CourseExtended> {
+  classes?: any;
+  qualifications?: QualificationState["items"];
+  qualificationsLoading?: boolean;
+  qualificationsRowsCount?: QualificationState["rowsCount"];
+  setQualificationsSearch?: StringArgFunction;
+  getPlainQualifications?: NumberArgFunction;
+  setModuleSearch?: StringArgFunction;
+  getModules?: AnyArgFunction;
+  modulesPending?: boolean;
+  moduleItems?: ModulesState["items"];
+  clearModuleSearch?: BooleanArgFunction;
+  clearPlainQualificationItems?: any;
+}
+
+const transformModule = (module: Module): NestedListItem => ({
+  id: module.id.toString(),
+  entityId: module.id,
+  primaryText: module.title,
+  secondaryText: module.nationalCode,
+  link: `/module/${module.id}`,
+  active: true
+});
+
+const tooltipText = "Changing this default value will not update enrolments or outcomes already created.";
+
+const CourseVetTab = React.memo<CourseVetTab>(props => {
+  const {
+    twoColumn,
+    values,
+    dispatch,
+    form,
+    qualifications,
+    qualificationsLoading,
+    qualificationsRowsCount,
+    setQualificationsSearch,
+    getPlainQualifications,
+    getModules,
+    setModuleSearch,
+    classes,
+    submitSucceeded,
+    moduleItems,
+    modulesPending,
+    clearModuleSearch,
+    clearPlainQualificationItems
+  } = props;
+
+  const onQualificationCodeChange = useCallback(
+    (q: Qualification) => {
+      if (!q && !values.isTraineeship) {
+        dispatch(change(form, "isSufficientForQualification", false));
+      }
+
+      dispatch(change(form, "qualNationalCode", q ? q.nationalCode : null));
+      dispatch(change(form, "qualTitle", q ? q.title : null));
+      dispatch(change(form, "qualLevel", q ? q.qualLevel : null));
+      dispatch(change(form, "fieldOfEducation", q ? q.fieldOfEducation : null));
+      dispatch(change(form, "isVET", Boolean(q)));
+    },
+    [form, values.isTraineeship]
+  );
+
+  const updateReportableHours = useCallback(
+    modules => {
+      dispatch(
+        change(
+          form,
+          "reportableHours",
+          modules.reduce((p, c) => p + (c.nominalHours ? Number(c.nominalHours) : 0), 0)
+        )
+      );
+    },
+    [form]
+  );
+
+  const onAddModules = useCallback(
+    (modulesToAdd: NestedListItem[]) => {
+      const newModules = values.modules.concat(modulesToAdd.map(v1 => moduleItems.find(v2 => v2.id === v1.entityId)));
+      dispatch(change(form, "modules", newModules));
+      updateReportableHours(newModules);
+    },
+    [form, values.modules, moduleItems]
+  );
+
+  const onDeleteModules = useCallback(
+    module => {
+      const updated = values.modules.filter(m => m.id !== module.entityId);
+      dispatch(change(form, "modules", updated));
+      updateReportableHours(updated);
+    },
+    [values.modules]
+  );
+
+  const searchModule = useCallback(search => {
+    setModuleSearch(search);
+    getModules();
+  }, []);
+
+  const moduleItemsTransformed = useMemo(() => {
+    if (!values.modules) {
+      return [];
+    }
+
+    const result = values.modules.map(transformModule);
+
+    result.sort((a, b) => (a.secondaryText > b.secondaryText ? 1 : -1));
+
+    return result;
+  }, [values.modules]);
+  const moduleSearchItemsTransformed = useMemo(() => {
+    const result = moduleItems.map(transformModule);
+
+    result.sort((a, b) => (a.secondaryText > b.secondaryText ? 1 : -1));
+
+    return result;
+  }, [moduleItems]);
+
+  return (
+    <Grid container className="pl-3 pr-3">
+      <Grid item xs={12}>
+        <div className="heading mt-2 mb-2">Vet</div>
+      </Grid>
+
+      <Grid item xs={twoColumn ? 6 : 12}>
+        <FormField
+          type="remoteDataSearchSelect"
+          name="qualificationId"
+          label="Qualification"
+          selectValueMark="id"
+          defaultDisplayValue={values.qualTitle}
+          labelAdornment={<LinkAdornment link={values.qualificationId} linkHandler={openQualificationLink} />}
+          items={qualifications || []}
+          onSearchChange={setQualificationsSearch}
+          onLoadMoreRows={getPlainQualifications}
+          onClearRows={clearPlainQualificationItems}
+          loading={qualificationsLoading}
+          remoteRowCount={qualificationsRowsCount}
+          onInnerValueChange={onQualificationCodeChange}
+          itemRenderer={QualificationListItemRenderer}
+          selectLabelCondition={getQualificationLabel}
+          validate={values.isTraineeship && validateSingleMandatoryField}
+          rowHeight={55}
+          allowEmpty
+        />
+      </Grid>
+
+      <Grid item xs={twoColumn ? 6 : 12}>
+        <Uneditable value={values.qualNationalCode} label="National code" />
+      </Grid>
+
+      <Grid item xs={twoColumn ? 6 : 12}>
+        <Uneditable value={values.qualLevel} label="Level" />
+      </Grid>
+
+      <Grid item xs={twoColumn ? 6 : 12} className="mb-2">
+        <FormControlLabel
+          className="checkbox"
+          control={<FormField type="checkbox" name="isSufficientForQualification" />}
+          label="Satisfies complete qualification or skill set"
+          disabled={!values.qualificationId || values.isTraineeship}
+        />
+      </Grid>
+
+      <Grid item xs={twoColumn ? 6 : 12} className="mb-2">
+        <FormControlLabel
+          className="checkbox"
+          control={<FormField type="checkbox" name="isVET" />}
+          label="VET course"
+          disabled={Boolean(values.qualificationId) || values.isTraineeship}
+        />
+      </Grid>
+
+      <Grid item xs={twoColumn ? 6 : 12}>
+        <FormField
+          type="text"
+          name="fieldOfEducation"
+          label="Field of education"
+          disabled={values.qualificationId || values.isTraineeship}
+          fullWidth
+        />
+      </Grid>
+
+      <Grid item xs={twoColumn ? 6 : 12}>
+        <FormField
+          type="number"
+          normalize={normalizeNumberToZero}
+          name="reportableHours"
+          label={(
+            <Tooltip title={tooltipText} placement="top">
+              <div>Default reportable hours</div>
+            </Tooltip>
+          )}
+        />
+      </Grid>
+
+      <Grid item xs={twoColumn ? 8 : 12}>
+        <NestedList
+          formId={values.id}
+          title="Modules / Units of competency"
+          titleCaption={
+            values.hasEnrolments
+              ? "There are enrolments in this course. Modifying the modules is not allowed."
+              : undefined
+          }
+          values={moduleItemsTransformed}
+          searchValues={moduleSearchItemsTransformed}
+          pending={modulesPending}
+          onAdd={onAddModules}
+          onDelete={onDeleteModules}
+          onSearch={searchModule}
+          clearSearchResult={clearModuleSearch}
+          resetSearch={submitSucceeded}
+          dataRowClass={classes.moduleRowClass}
+          aqlEntity="Module"
+          aqlEntityTags={["Module"]}
+          disabled={values.hasEnrolments}
+        />
+      </Grid>
+    </Grid>
+  );
+});
+
+const mapStateToProps = (state: State) => ({
+  qualifications: state.qualification.items,
+  qualificationsLoading: state.qualification.loading,
+  qualificationsRowsCount: state.qualification.rowsCount,
+  modulesPending: state.modules.loading,
+  moduleItems: state.modules.items
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+    getPlainQualifications: (offset?: number) => dispatch(getPlainQualifications(offset, "", true)),
+    clearPlainQualificationItems: () => dispatch(clearPlainQualificationItems()),
+    setQualificationsSearch: (search: string) => dispatch(setPlainQualificationSearch(search)),
+    getModules: (offset?: number) => dispatch(getModules(offset, "nationalCode,title,nominalHours", true)),
+    setModuleSearch: (search: string) => dispatch(setModuleSearch(search)),
+    clearModuleSearch: (loading: boolean) => dispatch(clearModuleItems(loading))
+  });
+
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(CourseVetTab);

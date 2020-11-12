@@ -1,0 +1,10 @@
+Account code,createdOn,Account description,id,isEnabled,modifiedOn,Account type,Tax
+01.24.2801.000/NV1CB0P01,1-1-2013 00:00:00,Test debtors account,1,true,1-1-2013 00:00:00,asset,
+41000,1-1-2013 00:00:00,Test income account,2,true,1-1-2013 00:00:00,income,GST
+11600,1-1-2013 00:00:00,Test tax asset account,3,true,1-1-2013 00:00:00,asset,
+21600,1-1-2013 00:00:00,Test tax liability account,4,true,1-1-2013 00:00:00,liability,
+21010,1-1-2013 00:00:00,Test prepaid fees account,5,true,1-1-2013 00:00:00,liability,
+50050,1-1-2013 00:00:00,Test discount account,6,true,1-1-2013 00:00:00,COS,
+accBank,1-1-2013 00:00:00,Test bank account,7,true,1-1-2013 00:00:00,asset,
+vLability,1-1-2013 00:00:00,Test voucher liability acc,8,true,1-1-2013 00:00:00,liability,
+vUnderpay,1-1-2013 00:00:00,Test voucher underpay acc,9,true,1-1-2013 00:00:00,expense,

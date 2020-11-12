@@ -1,0 +1,9 @@
+type: object
+properties:
+  ids:
+    type: array
+    items:
+      type: integer
+      format: int64
+  type:
+    $ref: '../enum/AvetmissExportVetType.yaml'

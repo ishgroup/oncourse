@@ -1,0 +1,28 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    description: Unique account identifier
+  accountCode:
+    type: string
+    description: Unique code of account
+  description:
+    type: string
+    description: Description of account
+  isEnabled:
+    type: boolean
+    description: Is account enabled or disabled
+  type:
+    $ref: '../enum/AccountType.yaml'
+  tax:
+    $ref: './Tax.yaml'
+  isDefaultAccount:
+    type: boolean
+    description: Flag which means that this account is default. If true, we can't disable this account (set isEnabled to false)
+  createdOn:
+    type: string
+    format: date-time
+  modifiedOn:
+    type: string
+    format: date-time

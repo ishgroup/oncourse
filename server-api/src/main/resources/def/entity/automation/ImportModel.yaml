@@ -1,0 +1,55 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: true
+    description: UUID of import script in onCourse
+    example: 200
+  name:
+    type: string
+    required: true
+    description: import display name
+    example: onCourse AVETMISS outcome import
+  keyCode:
+    type: string
+    required: true
+    description: import unique identifier, all built-in script codes start with 'ish.oncourse'
+    example: ish.onCourse.import.avetmiss.outcome
+  entity:
+    type: string
+    required: true
+    description: import entity
+    example: Enrolment
+  body:
+    type: string
+    required: true
+    description: import script
+  enabled:
+    type: boolean
+    description: Import status
+    required: true
+    example: true
+  variables:
+    type: array
+    items:
+      $ref: './Binding.yaml'
+    required: false
+    description: import variables list
+  options:
+    type: array
+    items:
+      $ref: './Binding.yaml'
+    required: false
+    description: import options list
+  createdOn:
+    type: string
+    format: date-time
+  modifiedOn:
+    type: string
+    format: date-time
+  description:
+    type: string
+    require: true
+    description: import description
+    example: description

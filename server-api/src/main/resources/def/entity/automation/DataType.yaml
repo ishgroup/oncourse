@@ -1,0 +1,15 @@
+type: string
+enum:
+  - Text
+  - Long text
+  - List
+  - Map
+  - Date
+  - Date time
+  - Checkbox
+  - Record
+  - File
+  - Money
+  - Message template
+  - URL
+  - Email

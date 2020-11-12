@@ -1,0 +1,50 @@
+package {{package}}.impl;
+
+import {{package}}.*;
+{{#imports}}import {{import}};
+{{/imports}}
+
+import com.nhl.link.rest.DataResponse;
+
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
+
+import com.nhl.link.rest.constraints.ConstraintEx;
+import com.nhl.link.rest.LinkRest;
+
+@Path("{{^useAnnotatedBasePath}}/{{/useAnnotatedBasePath}}{{#useAnnotatedBasePath}}{{contextPath}}{{/useAnnotatedBasePath}}")
+public class {{classname}}ServiceImpl implements {{classname}} {
+
+    @Context
+    private Configuration config;
+
+{{#operations}}
+{{#operation}}
+    @{{httpMethod}}
+    {{#subresourceOperation}}@Path("/{{version}}{{path}}"){{/subresourceOperation}}
+    {{#hasConsumes}}
+    @Consumes({ {{#consumes}}"{{{mediaType}}}"{{#hasMore}}, {{/hasMore}}{{/consumes}} })
+    {{/hasConsumes}}
+    {{#hasProduces}}
+    @Produces({ {{#produces}}"{{{mediaType}}}"{{#hasMore}}, {{/hasMore}}{{/produces}} })
+    {{/hasProduces}}
+    public {{>returnTypes}} {{nickname}}({{#allParams}}{{>pathParams}}{{>headerParamsImpl}}{{>bodyParams}}{{>formParamsImpl}}{{/allParams}}@Context UriInfo uriInfo) {
+        {{#isRestfulShow}}{{#allParams}}{{#isPathParam}}uriInfo.getQueryParameters().add("{{paramName}}", {{paramName}});{{/isPathParam}}{{/allParams}}
+        return LinkRest.select({{superClassName}}.class, config)
+            .constraint(ConstraintEx.excludeAll({{superClassName}}.class)
+                {{#headerParams}}
+                .attribute("{{paramName}}")
+                {{/headerParams}}
+                {{#allParams}}{{#isQueryParam}}
+                .queryParam("{{paramName}}"){{/isQueryParam}}{{/allParams}})
+            .uri(uriInfo).get();{{/isRestfulShow}}
+        {{#isRestfulCreate}}LinkRest.createOrUpdate({{superClassName}}.class, config)
+            .writeConstraint(ConstraintEx.excludeAll({{superClassName}}.class))
+            .mapper("{{uniqueMapper}}")
+            .sync({{#bodyParams}}{{#bodyParams}}{{paramName}}{{/bodyParams}}{{/bodyParams}});{{/isRestfulCreate}}       
+    }
+    
+{{/operation}}
+}
+{{/operations}}
+

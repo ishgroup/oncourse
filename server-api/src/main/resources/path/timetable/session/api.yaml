@@ -1,0 +1,50 @@
+post:
+  operationId: find
+  description: Looking for sessions (dummy) in accordance with search parameters  
+  tags:
+  - Timetable
+  parameters:
+  - name: request
+    in: body
+    description: search request object
+    required: true
+    schema:
+      $ref: './def/entity/timetable/SearchRequest.yaml'
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/timetable/Session.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: SESSION
+    errorMessage: Sorry, you have no permissions to look at timetable events. Please contact your administrator
+    
+get:
+  operationId: get
+  description: Get sessions by ids
+  tags:
+  - Timetable
+  parameters:
+  - name: ids
+    in: query
+    description: requested sessions ids
+    required: true
+    type: string
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/timetable/Session.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: SESSION
+    errorMessage: Sorry, you have no permissions to look at timetable events. Please contact your administrator

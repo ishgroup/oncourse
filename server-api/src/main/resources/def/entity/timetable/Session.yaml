@@ -1,0 +1,117 @@
+type: object
+description: timetable session object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: true
+    description: unique identifier of record in onCourse
+  temporaryId:
+    type: string
+    required: false
+    description: temporary unique identifier of record created on client
+  name:
+    type: string
+    required: true
+    description: Course name
+    example: Adobe protohop course for beginers
+  code:
+    type: string
+    required: true
+    description: Class code
+    example: adobe-1
+  room:
+    type: string
+    required: false
+    description: Room name
+    example: 201
+  site:
+    type: string
+    required: false
+    description: Site name
+    example: Burwood campus
+  tutors:
+    type: array
+    items:
+      type: string
+    description: Tutor's names
+    required: false
+    example: John Smith, Devid Smith
+  classId:
+    type: integer
+    format: int64
+    required: true
+    description: unique identifier of course class record in onCourse
+  courseId:
+    type: integer
+    format: int64
+    required: true
+    description: need for clash validation only (validate new class sessions by course unavailable rule criteria)
+  contactIds:
+    type: array
+    items:
+      type: integer
+      format: int64
+    description: Tutor's contact id, need for clash validation only (validate new class sessions tutor criteria)
+  roomId:
+    type: integer
+    format: int64
+    required: false
+    description: Room id
+    example: 201
+  siteId:
+    type: integer
+    format: int64
+    required: false
+    description: Site id
+    example: 201
+  siteTimezone:
+    type: string
+    required: false
+    description: Site timezone
+    example: Australia/Brisbane
+  courseClassTutorIds:
+    type: array
+    required: false
+    items:
+      type: integer
+      format: int64
+    description: Course c lass tutor's ids
+    example: 200,302
+  temporaryTutorIds:
+    type: array
+    required: false
+    items:
+      type: string
+    description: Not saved course class tutor's ids
+    example: k6g5o090,n6r5u246
+  start:
+    type: string
+    format: date-time
+    description: Session start date/time in UTC ISO-8601 format
+    required: true
+    example: 2019-06-03'T'00:00:00.000'Z'
+  end:
+    type: string
+    format: date-time
+    description: Session end date/time in UTC ISO-8601 format
+    required: true
+    example: 2019-06-03'T'00:00:00.000'Z'
+  publicNotes:
+    type: string
+    required: false
+    description: session public notes
+    example: public notes
+  privateNotes:
+    type: string
+    required: false
+    description: session private notes
+    example: private notes
+  payAdjustment:
+    type: integer
+    required: false
+    description: payable duration in minytes
+    example: 300
+  hasPaylines:
+    type: boolean
+    required: false

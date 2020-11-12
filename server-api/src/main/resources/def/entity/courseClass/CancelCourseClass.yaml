@@ -1,0 +1,12 @@
+type: object
+properties:
+  classIds:
+    type: array
+    items:
+      type: integer
+      format: int64
+      required: true
+  refundManualInvoices:
+    type: boolean
+  sendEmail:
+    type: boolean

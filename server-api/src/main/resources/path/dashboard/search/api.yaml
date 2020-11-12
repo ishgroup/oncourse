@@ -1,0 +1,22 @@
+get:
+  summary: get Dashboard search data
+  operationId: getSearchResults
+  tags:
+  - Dashboard
+  parameters:
+  - name: search
+    in: query
+    description: search string
+    required: false
+    type: string
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/dashboard/SearchGroup.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    keyCode: UNDEFINED

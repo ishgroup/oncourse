@@ -1,0 +1,8 @@
+type: string
+description: List of values describing working with children status.
+enum:
+  - Not checked
+  - Application in progress
+  - Cleared
+  - Barred
+  - Interim barred

@@ -1,0 +1,2 @@
+courseCode,courseName,studentLastName,studentFirstName,studentMobilePhone,studentEnrolmentDate,classEndDateTime,studentEmail
+TESTCOURSE,testCourse,studentTest,test,12345678,26-08-2015,19-11-2015,test@gmail.com

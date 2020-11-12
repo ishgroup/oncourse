@@ -1,0 +1,6 @@
+systemUser,created,entityName,entityId,action,message
+onCourse Administrator,20/01/2015,Invoice,2,UPDATE,testMessage1
+onCourse Administrator,20/02/2016,PaymentIn,33,CREATE,testMessage2
+onCourse Administrator,20/03/2014,Contact,22,UPDATE,testMessage3
+onCourse Administrator,20/04/2012,Script,27,CREATE,testMessage4
+onCourse Administrator,20/06/2012,Invoice,26,DELETE,testMessage5

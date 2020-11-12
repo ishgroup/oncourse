@@ -1,0 +1,4 @@
+id,Transaction date,Account code,Account description,Account type,Amount,Source,Invoice number,Invoice description,Invoice account,Contact name
+1,1-2-2013,"""01.24.2801.000/NV1CB0P01""",Test debtors account,asset,10.00,Invoice,1,Student withdrew from class 5/2,"""41000""",firstName3 lastName
+2,1-2-2013,"""01.24.2801.000/NV1CB0P01""",Test debtors account,asset,20.00,Payment in,,,"""null""",firstName1 lastName
+3,1-2-2013,"""01.24.2801.000/NV1CB0P01""",Test debtors account,asset,-20.00,Invoice,1,Course: French Level 2 (LGFR3-1),"""41000""",firstName3 lastName

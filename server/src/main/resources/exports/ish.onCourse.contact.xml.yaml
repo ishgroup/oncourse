@@ -1,0 +1,5 @@
+keyCode: ish.onCourse.contact.xml
+entityClass: Contact
+body: ish.onCourse.contact.xml.groovy
+name: Contact XML export
+outputType: xml

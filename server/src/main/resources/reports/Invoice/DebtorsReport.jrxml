@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DebtorsReport" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="786" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" isFloatColumnFooter="true" whenResourceMissingType="Empty" uuid="5b234673-6087-4534-8c28-b957d2b477b5">
+	<property name="name" value="Debtors and Creditors Report"/>
+	<property name="entity" value="Invoice"/>
+	<property name="isSubreport" value="false"/>
+	<property name="isVisible" value="true"/>
+
+	<property name="keyCode" value="ish.onCourse.debtorsReport "/>
+	<property name="ish.oncourse.title" value="Debtors and Creditors list"/>
+	<property name="ish.oncourse.filePrefix" value="debtors"/>
+	<property name="ish.oncourse.description" value="To obtain an aged debtors and creditors report for all unbalanced invoices.This report prints in Landscape format."/>
+	<property name="ish.oncourse.pdfFileName" value="DebtorsCreditors list.pdf"/>
+	<property name="sortOn" value="contact.lastName"/>
+	<property name="ish.oncourse.reports.isObjectOnSeparatePage" value="false"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="ish.math.Money"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<import value="java.time.temporal.ChronoUnit"/>
+	<import value="java.time.LocalDate"/>
+	<style name="default" isDefault="true" forecolor="#000000" vTextAlign="Bottom" markup="none" fontName="Open Sans" fontSize="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="OpenSans" pdfEncoding="Cp1252" isPdfEmbedded="true">
+		<paragraph spacingAfter="8"/>
+	</style>
+	<style name="header 1" style="default" forecolor="#4F0018" vTextAlign="Middle" fontName="Open Sans Light" fontSize="18" pdfFontName="Open Sans Light"/>
+	<style name="header 2" style="header 1" fontSize="12"/>
+	<style name="header 3" style="default" vTextAlign="Middle" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+	<style name="header 3 (right)" style="header 3" hTextAlign="Right"/>
+	<style name="Label" style="default" forecolor="#6A7E99"/>
+	<style name="Label right" style="Label" hTextAlign="Right"/>
+	<style name="data field" style="default"/>
+	<style name="data field (money)" style="data field" hTextAlign="Right" pattern="¤#,###,##0.00;¤(-#,###,##0.00)"/>
+	<style name="data field (numeric)" style="data field" hTextAlign="Right"/>
+	<style name="data field (datetime)" style="data field" pattern="d MMM yyyy h:mma"/>
+	<style name="data field (day)" style="data field" pattern="E d MMM h:mma"/>
+	<style name="data field (date)" style="data field" pattern="d MMM yyyy"/>
+	<style name="Footer" style="default" forecolor="#737373" fontSize="8"/>
+	<style name="Footer strong" style="Footer" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+	<style name="subHead box" style="default" backcolor="#E6E7F0"/>
+	<style name="crosstab" mode="Opaque" backcolor="#F7F2E9">
+		<box>
+			<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#A3A3A3"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{ROW_COUNT}.intValue() % 2 == 1 ? Boolean.TRUE : Boolean.FALSE]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FFFFFF"/>
+		</conditionalStyle>
+	</style>
+	<style name="alternateRow" mode="Opaque" forecolor="rgba(255, 255, 255, 0.0)" backcolor="#F7F2E9">
+		<box>
+			<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{PAGE_COUNT}.intValue() % 2 == 1 ? Boolean.TRUE : Boolean.FALSE]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FFFFFF"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="ReportName" class="java.lang.String"/>
+	<field name="invoice" class="ish.oncourse.server.cayenne.Invoice"/>
+	<field name="contact.lastName" class="java.lang.String"/>
+	<field name="global.reportTitle" class="java.lang.String"/>
+	<field name="amountOwing" class="java.lang.Object"/>
+	<field name="contact.phones" class="java.lang.String">
+		<fieldDescription><![CDATA[Phone numbers for this contact.]]></fieldDescription>
+	</field>
+	<field name="id" class="java.lang.Long"/>
+	<field name="contact.id" class="java.lang.Long"/>
+	<field name="contact.student.studentNumber" class="java.lang.Long"/>
+	<field name="image.poweredby" class="java.io.InputStream"/>
+	<variable name="oldest" class="java.time.LocalDate" resetType="Group" resetGroup="invoice" calculation="Lowest">
+		<variableExpression><![CDATA[((((Money)$F{amountOwing}).toBigDecimal()).compareTo(new BigDecimal("0")) != 0) ? $F{invoice}.dateDue :null]]></variableExpression>
+	</variable>
+	<variable name="sum30days" class="java.math.BigDecimal" resetType="Group" resetGroup="invoice" calculation="Sum">
+		<variableExpression><![CDATA[((ChronoUnit.DAYS.between($F{invoice}.dateDue, LocalDate.now()) > 30) && (ChronoUnit.DAYS.between($F{invoice}.dateDue, LocalDate.now()) <= 60))?
+		((Money)$F{amountOwing}).toBigDecimal():new BigDecimal("0")]]></variableExpression>
+	</variable>
+	<variable name="sum60days" class="java.math.BigDecimal" resetType="Group" resetGroup="invoice" calculation="Sum">
+		<variableExpression><![CDATA[((ChronoUnit.DAYS.between($F{invoice}.dateDue, LocalDate.now()) > 60) && (ChronoUnit.DAYS.between($F{invoice}.dateDue, LocalDate.now()) <= 90))?
+		((Money)$F{amountOwing}).toBigDecimal():new BigDecimal("0")]]></variableExpression>
+	</variable>
+	<variable name="sum90days" class="java.math.BigDecimal" resetType="Group" resetGroup="invoice" calculation="Sum">
+		<variableExpression><![CDATA[(ChronoUnit.DAYS.between($F{invoice}.dateDue, LocalDate.now()) > 90)?
+		((ish.math.Money)$F{amountOwing}).toBigDecimal():new BigDecimal("0")]]></variableExpression>
+	</variable>
+	<variable name="sumUnder30" class="java.math.BigDecimal" resetType="Group" resetGroup="invoice" calculation="Sum">
+		<variableExpression><![CDATA[((ChronoUnit.DAYS.between($F{invoice}.dateDue, LocalDate.now()) <= 30))?
+		((Money)$F{amountOwing}).toBigDecimal():new BigDecimal("0")]]></variableExpression>
+	</variable>
+	<variable name="totalOwing" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[((ish.math.Money)$F{amountOwing}).toBigDecimal()]]></variableExpression>
+	</variable>
+	<variable name="totalSumUnder30" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[((ChronoUnit.DAYS.between($F{invoice}.dateDue, LocalDate.now()) <= 30))?
+		((Money)$F{amountOwing}).toBigDecimal():new BigDecimal("0")]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="totalSum30days" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[((ChronoUnit.DAYS.between($F{invoice}.dateDue, LocalDate.now()) > 30) && (ChronoUnit.DAYS.between($F{invoice}.dateDue, LocalDate.now()) <= 60))?
+		((Money)$F{amountOwing}).toBigDecimal():new BigDecimal("0")]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="totalSum60days" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[((ChronoUnit.DAYS.between($F{invoice}.dateDue, LocalDate.now()) > 60) && (ChronoUnit.DAYS.between($F{invoice}.dateDue, LocalDate.now()) <= 90))?
+		((Money)$F{amountOwing}).toBigDecimal():new BigDecimal("0")]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="totalSum90days" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[(ChronoUnit.DAYS.between($F{invoice}.dateDue, LocalDate.now()) > 90)?
+		((Money)$F{amountOwing}).toBigDecimal():new BigDecimal("0")]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<group name="total">
+		<groupExpression><![CDATA[null]]></groupExpression>
+		<groupHeader>
+			<band splitType="Stretch"/>
+		</groupHeader>
+		<groupFooter>
+			<band height="52" splitType="Stretch">
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-20" style="header 3 (right)" x="693" y="5" width="68" height="15" uuid="3b317fa6-b995-4f48-84b2-c5fde72008ee"/>
+					<textFieldExpression><![CDATA[new ish.math.Money($V{totalSum90days})]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-21" style="header 3 (right)" x="622" y="5" width="68" height="15" uuid="81690018-59b3-47f9-a504-f34fa5f10e46"/>
+					<textFieldExpression><![CDATA[new ish.math.Money($V{totalSum60days})]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-22" style="header 3 (right)" x="550" y="5" width="68" height="15" uuid="b591c3ea-c930-4ddc-9970-b4ed640be226"/>
+					<textFieldExpression><![CDATA[new ish.math.Money($V{totalSum30days})]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-23" style="header 3 (right)" x="477" y="5" width="68" height="15" uuid="756738f0-3107-4550-b018-8a6e01fd8fd8"/>
+					<textFieldExpression><![CDATA[new ish.math.Money($V{totalSumUnder30})]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-15" style="header 3 (right)" x="421" y="5" width="53" height="15" uuid="3aa13a23-8fd4-4ca8-9d7a-3b1d06fbee99"/>
+					<text><![CDATA[Total]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-16" style="header 2" x="390" y="24" width="84" height="22" uuid="ed081eca-a503-4471-84ad-678800fb9a87"/>
+					<textElement textAlignment="Right"/>
+					<text><![CDATA[Grand total]]></text>
+				</staticText>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-24" style="header 2" x="492" y="24" width="269" height="22" uuid="3fa02691-5375-488a-ab25-c2c7d812beab"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[new ish.math.Money(
+					$V{totalSum90days}.add($V{totalSum60days}).add($V{totalSum30days}).add($V{totalSumUnder30}))]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="invoice">
+		<groupExpression><![CDATA[$F{contact.id}]]></groupExpression>
+		<groupHeader>
+			<band splitType="Stretch"/>
+		</groupHeader>
+		<groupFooter>
+			<band height="20" splitType="Stretch">
+				<printWhenExpression><![CDATA[new Boolean($V{totalOwing} != null && $V{totalOwing}.compareTo(new BigDecimal("0"))!=0)]]></printWhenExpression>
+				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="invoice" isBlankWhenNull="true">
+					<reportElement key="textField-3" style="data field" x="5" y="1" width="185" height="15" uuid="f8297c47-2a93-4b08-b73c-c6d56bbe4422"/>
+					<textFieldExpression><![CDATA[$F{invoice}.contact.fullName]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="invoice" isBlankWhenNull="true">
+					<reportElement key="textField-5" style="data field (date)" x="421" y="1" width="53" height="15" uuid="bf9600a7-5eeb-4309-b495-12628891b856"/>
+					<textFieldExpression><![CDATA[($V{totalOwing}.compareTo(new BigDecimal("0")) == 0)?null:$V{oldest}.format("d MMM yyyy")]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="invoice" isBlankWhenNull="true">
+					<reportElement key="textField-6" style="data field (numeric)" x="477" y="1" width="68" height="15" uuid="7a657af3-6bbb-4f25-ada7-15f9140cfc9d">
+						<printWhenExpression><![CDATA[new Boolean($V{sumUnder30}.compareTo( new BigDecimal("0"))!=0)]]></printWhenExpression>
+					</reportElement>
+					<textFieldExpression><![CDATA[new ish.math.Money($V{sumUnder30})]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="invoice" isBlankWhenNull="true">
+					<reportElement key="textField-7" style="data field (numeric)" x="550" y="1" width="68" height="15" uuid="8d5f9991-806e-40ba-b299-6f18e274188c">
+						<printWhenExpression><![CDATA[new Boolean($V{sum30days}.compareTo( new BigDecimal("0"))!=0)]]></printWhenExpression>
+					</reportElement>
+					<textFieldExpression><![CDATA[new ish.math.Money($V{sum30days})]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="invoice" isBlankWhenNull="true">
+					<reportElement key="textField-16" style="data field (numeric)" x="622" y="1" width="68" height="15" uuid="f75a3e1d-3bda-4dd9-8220-118b4440ecf8">
+						<printWhenExpression><![CDATA[new Boolean($V{sum60days}.compareTo( new BigDecimal("0"))!=0)]]></printWhenExpression>
+					</reportElement>
+					<textFieldExpression><![CDATA[new ish.math.Money($V{sum60days})]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="invoice" isBlankWhenNull="true">
+					<reportElement key="textField-17" style="data field (numeric)" x="693" y="1" width="68" height="15" uuid="faf1ca3f-5d14-4011-b170-ba1a0833e262">
+						<printWhenExpression><![CDATA[new Boolean($V{sum90days}.compareTo( new BigDecimal("0"))!=0)]]></printWhenExpression>
+					</reportElement>
+					<textFieldExpression><![CDATA[new ish.math.Money($V{sum90days})]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="invoice" isBlankWhenNull="true">
+					<reportElement key="textField-18" style="data field" x="190" y="1" width="226" height="15" uuid="ea42177a-4e23-4476-a590-504aaadab771"/>
+					<textFieldExpression><![CDATA[$F{contact.phones}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="141" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField isBlankWhenNull="true" bookmarkLevel="1">
+				<reportElement key="textField" style="header 1" x="0" y="115" width="762" height="26" uuid="307721d0-1659-4efa-82bc-c61243e7e888"/>
+				<textFieldExpression><![CDATA[(($F{global.reportTitle}==null)?($P{ReportName}):($F{global.reportTitle}))]]></textFieldExpression>
+				<anchorNameExpression><![CDATA["Title"]]></anchorNameExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="34" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="14" width="786" height="20" backcolor="#E6E7F0" uuid="8a191798-f56f-40b2-ad9c-433f07228091">
+					<property name="com.jaspersoft.studio.unit.height" value="mm"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement key="staticText-7" style="header 3" x="5" y="17" width="185" height="15" uuid="a5ae48b8-4c87-4710-a286-39c9708241c6"/>
+				<text><![CDATA[Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-9" style="header 3 (right)" x="421" y="17" width="53" height="15" uuid="cf043341-5e28-41ce-a1b5-bae0113bba66"/>
+				<text><![CDATA[Oldest]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-10" style="header 3 (right)" x="477" y="17" width="68" height="15" uuid="8d185136-ba05-4462-b30e-56d93aabf601"/>
+				<text><![CDATA[<30 days]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-11" style="header 3 (right)" x="622" y="17" width="68" height="15" uuid="55f0ee3c-60da-4e56-a064-9851c7eebbbd"/>
+				<text><![CDATA[61-90 days]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-12" style="header 3 (right)" x="550" y="17" width="68" height="15" uuid="b4245735-e684-4aa7-8ccf-fd31fbab9be0"/>
+				<text><![CDATA[31-60 days]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-13" style="header 3" x="190" y="17" width="226" height="15" uuid="ccd93270-e76f-4af6-a7c3-4d57abe733b8"/>
+				<text><![CDATA[Phones]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-14" style="header 3 (right)" x="693" y="17" width="68" height="15" uuid="cdb2d526-299f-4601-8683-857558648d79"/>
+				<text><![CDATA[>91 days]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<textField evaluationTime="Page" isBlankWhenNull="false">
+				<reportElement key="pageNumberFooter" style="Footer strong" x="0" y="0" width="300" height="15" uuid="1106d334-b156-4af7-a64d-a75ba7206e2c"/>
+				<textFieldExpression><![CDATA["Page " + String.valueOf($V{PAGE_NUMBER})]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" isBlankWhenNull="false">
+				<reportElement key="totalPageCountFooter" style="Footer" x="0" y="11" width="300" height="13" uuid="d3e402c5-a433-4f08-90db-5c66216e08f3"/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT} + " record" + ($V{REPORT_COUNT}>1 ? "s" : "") + " on " + $V{PAGE_NUMBER} + " page" + ($V{PAGE_NUMBER}>1 ? "s" : "") + " (printed " + new Date().format("E d MMM yyyy h:mma") + ")"]]></textFieldExpression>
+			</textField>
+			<image scaleImage="RetainShape" hAlign="Right" isUsingCache="true" onErrorType="Blank">
+				<reportElement key="oncourseLogo" style="Footer" x="472" y="17" width="67" height="7" uuid="2863530e-11e5-4c1e-8296-ae64db1a9926"/>
+				<imageExpression><![CDATA[$F{image.poweredby}]]></imageExpression>
+			</image>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

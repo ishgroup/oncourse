@@ -1,0 +1,12 @@
+type: object
+properties:
+  scriptId:
+    type: integer
+    format: int64
+    required: true
+  variables:
+    type: object
+    additionalProperties:
+      type: string
+  searchQuery:
+    $ref: '../../list/SearchQuery.yaml'

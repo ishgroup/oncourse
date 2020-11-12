@@ -1,0 +1,45 @@
+get:
+  summary: Get all Preferences
+  operationId: get
+  tags:
+  - Preference
+  parameters:
+  - name: search
+    in: query
+    required: false
+    type: string
+    example: |
+      search=ldap.user.search.filter,ldap.user.name
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/SystemPreference.yaml'
+    default:
+      description: Unexpected error
+      
+post:
+  summary: Update preferences
+  operationId: update
+  tags:
+  - Preference
+  parameters:
+  - name: preferences
+    in: body
+    description: Preferences for update
+    required: true
+    schema:
+      type: array
+      items:
+        $ref: './def/entity/SystemPreference.yaml'
+  responses:
+    '200':
+      description: Success response.
+    '400':
+      description: Bad request error.
+      schema:
+        $ref: './def/entity/ValidationError.yaml'
+    default:
+      description: Unexpected error

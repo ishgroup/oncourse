@@ -1,0 +1,16 @@
+type: object
+properties:
+  name:
+    type: string
+    description: Full name of currency
+    required: true
+  shortCurrencySymbol:
+    type: string
+    description: Short currency symbol representation which will display for user
+    example: $
+    required: true
+  currencySymbol:
+    type: string
+    description: Currency represented by chars
+    example: AUD
+    required: true

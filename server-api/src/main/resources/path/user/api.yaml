@@ -1,0 +1,32 @@
+get:
+  operationId: get
+  description: Get list with all user
+  tags:
+  - User
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/User.yaml'
+    default:
+      description: Unexpected error
+
+post:
+  summary: Update user
+  operationId: update
+  tags:
+  - User
+  parameters:
+  - name: user
+    in: body
+    description: user roles for update
+    required: true
+    schema:
+      $ref: './def/entity/User.yaml'
+  responses:
+    '204':
+      description: Success response.
+    default:
+      description: Unexpected error

@@ -1,0 +1,41 @@
+post:
+  operationId: verifyUsi
+  description: Checking student availability in training.gov.au service
+  tags:
+    - Contact
+  parameters:
+    - name: usiRequest
+      in: body
+      schema:
+        type: object
+        properties:
+          firstName:
+            type: string
+            required: true
+            description: First name of registered in usi service student
+          lastName:
+            type: string
+            required: true
+            description: Last name of registered in usi service student
+          birthDate:
+            type: string
+            format: date
+            required: true
+            description: Birth date of registered in usi service student
+          usiCode:
+            type: string
+            required: true
+            description: Student usi number to verify
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/contact/UsiVerificationResult.yaml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: CONTACT
+    errorMessage: Sorry, you have no permissions to get contact. Please contact your administrator

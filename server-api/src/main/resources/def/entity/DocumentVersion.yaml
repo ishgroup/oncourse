@@ -1,0 +1,25 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: true
+  added:
+    type: string
+    format: date-time
+  createdBy:
+    type: string
+  fileName:
+    type: string
+    example: class_schedule.png
+  mimeType:
+    type: string
+    example: image/png
+  size:
+    type: string
+    example: 150 kbs
+  url:
+    type: string
+  thumbnail:
+    type: string
+    format: byte

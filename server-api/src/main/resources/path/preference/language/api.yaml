@@ -1,0 +1,16 @@
+get:
+  operationId: getLanguages
+  description: Get available languages
+  tags:
+    - Preference
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/Language.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    keyCode: UNDEFINED

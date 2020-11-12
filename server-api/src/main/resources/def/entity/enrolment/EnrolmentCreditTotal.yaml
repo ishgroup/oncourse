@@ -1,0 +1,5 @@
+type: string
+enum:
+  - Unit of study is NOT an RPL unit of study
+  - Unit of study consists wholly of RPL
+  - Unit of study has a component of RPL

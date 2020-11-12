@@ -1,0 +1,55 @@
+get:
+  operationId: get
+  description: Get all concession types
+  tags:
+  - Concession
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/ConcessionType.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: CONTACT
+    errorMessage: Sorry, you have no permissions to view concession types. Please contact your administrator
+
+post:
+  summary: Update concession types
+  operationId: update
+  tags:
+  - Concession
+  parameters:
+  - name: concessionTypes
+    in: body
+    description: Concession types for update
+    required: true
+    schema:
+      type: array
+      items:
+        $ref: './def/entity/ConcessionType.yaml'
+  responses:
+    '204':
+      description: Success response.
+    default:
+      description: Unexpected error
+
+delete:
+  operationId: remove
+  description: Remove concession type record
+  tags:
+  - Concession
+  parameters:
+  - name: id
+    in: path
+    description: Identifier of concession type whitch will be deleted.
+    required: true
+    type: string
+  responses:
+    '200':
+      description: Concession type successfully deleted
+    default:
+      description: Unexpected error

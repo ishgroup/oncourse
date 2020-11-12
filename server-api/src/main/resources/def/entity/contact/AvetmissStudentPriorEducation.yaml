@@ -1,0 +1,13 @@
+type: string
+description: List of student's education levels.
+enum:
+  - Not stated
+  - Bachelor degree or higher degree level
+  - Advanced diploma or associate degree level
+  - Diploma level
+  - Certificate IV
+  - Certificate III
+  - Certificate II
+  - Certificate I
+  - Miscellaneous education
+  - None

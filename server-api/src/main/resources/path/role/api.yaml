@@ -1,0 +1,60 @@
+get:
+  operationId: get
+  description: Get list with all access user roles
+  tags:
+  - UserRole
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/UserRole.yaml'
+    default:
+      description: Unexpected error
+
+post:
+  summary: Update user role
+  operationId: update
+  tags:
+  - UserRole
+  parameters:
+  - name: userRole
+    in: body
+    description: user roles for update
+    required: true
+    schema:
+      $ref: './def/entity/UserRole.yaml'
+  responses:
+    '204':
+      description: Success response.
+    default:
+      description: Unexpected error
+  x-permission:
+    keyCode: ADMIN
+    license:
+      code: license.accesscontrol
+      errorMessage: You have not license to update user roles.
+
+delete:
+  operationId: remove
+  description: Remove user role
+  tags:
+  - UserRole
+  parameters:
+  - name: id
+    in: path
+    description: Identifier of user role which will be deleted.
+    required: true
+    type: integer
+    format: int64
+  responses:
+    '204':
+      description: Success response.
+    default:
+      description: Unexpected error
+  x-permission:
+    keyCode: ADMIN
+    license:
+      code: license.accesscontrol
+      errorMessage: You have not license to delete user roles.

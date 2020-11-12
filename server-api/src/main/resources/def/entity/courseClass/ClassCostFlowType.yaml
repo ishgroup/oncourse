@@ -1,0 +1,7 @@
+type: string
+enum:
+  - Expense
+  - Income
+  - Wages
+  - Discount
+  - Custom invoice

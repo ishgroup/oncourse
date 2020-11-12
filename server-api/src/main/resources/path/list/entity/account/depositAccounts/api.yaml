@@ -1,0 +1,18 @@
+get:
+  operationId: getDepositAccounts
+  description: get accounts for deposit banking
+  tags:
+    - Account
+  responses:
+    '200':
+      description: Success response
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/Account.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: ACCOUNT
+    errorMessage: Sorry, you have no permission to create banking. Please contact your administrator

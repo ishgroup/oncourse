@@ -1,0 +1,13 @@
+type: object
+description: arrays size of recipient types
+properties:
+  students:
+    $ref: './RecipientType.yaml'
+  activeStudents:
+    $ref: './RecipientType.yaml'
+  withdrawnStudents:
+    $ref: './RecipientType.yaml'
+  tutors:
+    $ref: './RecipientType.yaml'
+  other:
+    $ref: './RecipientType.yaml'

@@ -1,0 +1,69 @@
+type: object
+description: report object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: true
+  name:
+    type: string
+    required: true
+    example: Certificate-Attendance
+  entity:
+    type: string
+    required: true
+    descriptio: report entity
+    example: Enrolment
+  enabled:
+    type: boolean
+    description: Report status
+    required: true
+    example: true
+  keyCode:
+    type: string
+    required: true
+    descriptio: report unique identifier, all built-in report codes starts with 'ish.onCourse'
+    example: ish.onCourse.debtorsReport
+  description:
+    type: string
+    required: true
+    example: Report is generated at the conclusion of any non VET short courses to verify that the student attended all of the required number of classes.This report prints in Portrait format.
+  body:
+    type: string
+    required: true
+    descriptio: report body
+  subreport:
+    type: boolean
+    description: is subreport
+    required: true
+    example: true
+  backgroundId:
+    type: integer
+    format: int64
+  sortOn:
+    type: string
+    required: false
+    example: contact.lastName
+    description: sorting attribyte
+  preview:
+    type: string
+    format: byte
+    description: image byte array
+  variables:
+    type: array
+    items:
+      $ref: './Binding.yaml'
+    required: false
+    descriptio: report variables list
+  options:
+    type: array
+    items:
+      $ref: './Binding.yaml'
+    required: false
+    descriptio: report options list
+  createdOn:
+    type: string
+    format: date-time
+  modifiedOn:
+    type: string
+    format: date-time

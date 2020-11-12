@@ -1,0 +1,318 @@
+swagger: '2.0'
+info:
+  title: onCourse REST Api
+  description: An API for interacting with the backend of the onCourse server
+  contact:
+    name: ish group pty ltd
+    url: http://ish.com.au
+    email: support@ish.com.au
+  license:
+    name: Proprietary
+  version: v1
+
+host: sttrinians.cloud.ish.com.au
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+
+securityDefinitions:
+  loginAuth:
+    type: basic
+    description: HTTP Basic Authentication
+
+basePath: /a/
+
+tags:
+  - name: Preference
+    description: |
+      This resourse allow you to retrive and update preferences of the application.
+
+#put paths in alphabet order
+paths:
+  /access:
+    $ref: './path/access/api.yml'
+  /checkout:
+    $ref: './path/checkout/api.yaml'
+  /checkout/status:
+    $ref: './path/checkout/status/api.yaml'
+  /checkout/discount:
+    $ref: './path/checkout/discount/api.yaml'
+  /control:
+    $ref: './path/control/api.yaml'
+  /dashboard/statistic:
+    $ref: './path/dashboard/statistic/api.yaml'
+  /dashboard/search:
+    $ref: './path/dashboard/search/api.yaml'
+  /datacollection/field/type:
+    $ref: './path/datacollection/field/type/api.yaml'
+  /datacollection/form:
+    $ref: './path/datacollection/form/api.yaml'
+  /datacollection/rule:
+    $ref: './path/datacollection/rule/api.yaml'
+  /export/avetmiss8:
+      $ref: './path/export/avetmiss8/api.yaml'
+  /export/avetmiss8/outcomes:
+    $ref: './path/export/avetmiss8/outcomes/api.yaml'
+  /export/avetmiss8/uploads:
+    $ref: './path/export/avetmiss8/uploads/api.yaml'
+  /filter:
+    $ref: './path/filter/api.yaml'
+  /holiday:
+    $ref: './path/holiday/api.yaml'
+  /integration:
+    $ref: './path/integration/api.yaml'
+  /integration/auth/myob:
+    $ref: './path/integration/auth/myob/api.yaml'
+  /list:
+    $ref: './path/list/api.yaml'
+  /list/column:
+    $ref: './path/list/column/api.yaml'
+  /list/entity/account:
+    $ref: './path/list/entity/account/api.yaml'
+  /list/entity/account/depositAccounts:
+    $ref: './path/list/entity/account/depositAccounts/api.yaml'
+  /list/entity/accountTransaction:
+    $ref: './path/list/entity/accountTransaction/api.yaml'
+  /list/entity/application:
+    $ref: './path/list/entity/application/api.yaml'
+  /list/entity/articleProduct:
+    $ref: './path/list/entity/articleProduct/api.yaml'
+  /list/entity/assessment:
+    $ref: './path/list/entity/assessment/api.yaml'
+  /list/entity/audit:
+    $ref: './path/list/entity/audit/api.yaml'
+  /list/entity/banking:
+    $ref: './path/list/entity/banking/api.yaml'
+  /list/entity/banking/reconcile:
+    $ref: './path/list/entity/banking/reconcile/api.yaml'
+  /list/entity/banking/depositPayments:
+    $ref: './path/list/entity/banking/depositPayments/api.yaml'
+  /list/entity/certificate:
+    $ref: './path/list/entity/certificate/api.yaml'
+  /list/entity/certificate/revoke:
+    $ref: './path/list/entity/certificate/revoke/api.yaml'
+  /list/entity/certificate/validation:
+    $ref: './path/list/entity/certificate/validation/api.yaml'
+  /list/entity/certificate/enrolment:
+    $ref: './path/list/entity/certificate/enrolment/api.yaml'
+  /list/entity/corporatepass:
+    $ref: './path/list/entity/corporatepass/api.yaml'
+  /list/entity/course:
+    $ref: './path/list/entity/course/api.yaml'
+  /list/entity/course/duplicate:
+    $ref: './path/list/entity/course/duplicate/api.yaml'
+#  /list/entity/course/bulk:
+#    $ref: './path/list/entity/course/bulk/api.yaml'
+  /list/entity/courseClass:
+    $ref: './path/list/entity/courseClass/api.yaml'
+  /list/entity/courseClass/budget:
+    $ref: './path/list/entity/courseClass/budget/api.yaml'
+  /list/entity/courseClass/duplicate:
+    $ref: './path/list/entity/courseClass/duplicate/api.yaml'
+  /list/entity/courseClass/cancel:
+    $ref: './path/list/entity/courseClass/cancel/api.yaml'
+  /list/entity/courseClass/tutor:
+    $ref: './path/list/entity/courseClass/tutor/api.yaml'
+  /list/entity/courseClass/trainingPlan:
+    $ref: './path/list/entity/courseClass/trainingPlan/api.yaml'
+  /list/entity/courseClass/attendance/student:
+    $ref: './path/list/entity/courseClass/attendance/student/api.yaml'
+  /list/entity/courseClass/attendance/tutor:
+    $ref: './path/list/entity/courseClass/attendance/tutor/api.yaml'
+  /list/entity/courseClass/assessment:
+    $ref: './path/list/entity/courseClass/assessment/api.yaml'
+  /list/entity/courseClass/timetable:
+    $ref: './path/list/entity/courseClass/timetable/api.yaml'
+  /list/entity/definedTutorRole:
+    $ref: './path/list/entity/definedTutorRole/api.yaml'
+  /list/entity/discount:
+    $ref: './path/list/entity/discount/api.yaml'
+  /list/entity/document:
+    $ref: './path/list/entity/document/api.yaml'
+  /list/entity/document/search:
+    $ref: './path/list/entity/document/search/api.yaml'
+  /list/entity/document/export:
+    $ref: './path/list/entity/document/export/api.yaml'
+  /list/entity/document/version:
+    $ref: './path/list/entity/document/version/api.yaml'
+  /list/entity/emailTemplate:
+    $ref: './path/list/entity/emailTemplate/api.yaml'
+  /list/entity/emailTemplate/template:
+    $ref: './path/list/entity/emailTemplate/template/api.yaml'
+  /list/entity/enrolment:
+    $ref: './path/list/entity/enrolment/api.yaml'
+  /list/entity/enrolment/cancel:
+    $ref: './path/list/entity/enrolment/cancel/api.yaml'
+  /list/entity/priorLearning:
+    $ref: './path/list/entity/priorLearning/api.yaml'
+  /list/entity/exportTemplate:
+    $ref: './path/list/entity/exportTemplate/api.yaml'
+  /list/entity/exportTemplate/export:
+    $ref: './path/list/entity/exportTemplate/export/api.yaml'
+  /list/entity/import:
+    $ref: './path/list/entity/import/api.yaml'
+  /list/entity/import/execution:
+    $ref: './path/list/entity/import/execution/api.yaml'
+  /list/entity/invoice:
+    $ref: './path/list/entity/invoice/api.yaml'
+  /list/entity/invoice/contra:
+    $ref: './path/list/entity/invoice/contra/api.yaml'
+  /list/entity/invoice/search:
+    $ref: './path/list/entity/invoice/search/api.yaml'
+  /list/entity/message:
+    $ref: './path/list/entity/message/api.yaml'
+  /list/entity/membershipProduct:
+    $ref: './path/list/entity/membershipProduct/api.yaml'
+  /list/entity/note:
+    $ref: './path/list/entity/note/api.yaml'
+  /list/entity/module:
+    $ref: './path/list/entity/module/api.yaml'
+  /list/entity/outcome:
+    $ref: './path/list/entity/outcome/api.yaml'
+  /list/entity/paymentIn/reverse:
+    $ref: './path/list/entity/paymentIn/reverse/api.yaml'
+  /list/entity/paymentIn:
+    $ref: './path/list/entity/paymentIn/api.yaml'
+  /list/entity/paymentOut:
+    $ref: './path/list/entity/paymentOut/api.yaml'
+  /list/entity/payslip:
+    $ref: './path/list/entity/payslip/api.yaml'
+  /list/entity/payslip/marking:
+    $ref: './path/list/entity/payslip/marking/api.yaml'
+  /list/entity/sales:
+    $ref: './path/list/entity/productItem/api.yaml'
+  /list/entity/qualification:
+    $ref: './path/list/entity/qualification/api.yaml'
+  /list/entity/report:
+    $ref: './path/list/entity/report/api.yaml'
+  /list/entity/reportOverlay:
+    $ref: './path/list/entity/reportOverlay/api.yaml'
+  /list/entity/room:
+    $ref: './path/list/entity/room/api.yaml'
+  /list/entity/room/validation:
+    $ref: './path/list/entity/room/validation/api.yaml'
+  /list/entity/script:
+    $ref: './path/list/entity/script/api.yaml'
+  /list/entity/script/execute:
+    $ref: './path/list/entity/script/execute/api.yaml'
+  /list/entity/script/execute/pdf:
+    $ref: './path/list/entity/script/execute/pdf/api.yaml'
+  /list/entity/site:
+    $ref: './path/list/entity/site/api.yaml'
+  /list/entity/survey:
+    $ref: './path/list/entity/survey/api.yaml'
+  /list/entity/voucherProduct:
+    $ref: './path/list/entity/voucherProduct/api.yaml'
+  /list/entity/waitingList:
+    $ref: './path/list/entity/waitingList/api.yaml'
+  /list/entity/contact:
+    $ref: './path/list/entity/contact/api.yaml'
+  /list/entity/contact/merge:
+    $ref: './path/list/entity/contact/merge/api.yaml'
+  /list/entity/contact/usi:
+    $ref: './path/list/entity/contact/usi/api.yaml'
+  /list/export:
+    $ref: './path/list/export/api.yaml'
+  /list/export/template:
+    $ref: './path/list/export/template/api.yaml'
+  /list/export/pdf:
+    $ref: './path/list/export/pdf/api.yaml'
+  /list/export/pdf/template:
+    $ref: './path/list/export/pdf/template/api.yaml'
+  /list/option/message:
+    $ref: './path/list/option/message/api.yaml'
+  /list/option/message/recipients:
+    $ref: './path/list/option/message/recipients/api.yaml'
+  /list/option/payroll:
+    $ref: './path/list/option/payroll/api.yaml'
+  /list/plain:
+    $ref: './path/list/plain/api.yaml'
+  /login:
+    $ref: './path/login/api.yaml'
+  /logout:
+    $ref: './path/logout/api.yaml'
+  /preference:
+    $ref: './path/preference/api.yaml'
+  /preference/concession/type:
+    $ref: './path/preference/concession/type/api.yaml'
+  /preference/contact/relation/type:
+    $ref: './path/preference/contact/relation/type/api.yaml'
+  /preference/enum:
+    $ref: './path/preference/enum/api.yaml'
+  /preference/field/type:
+    $ref: './path/preference/field/type/api.yaml'
+  /preference/fundingcontract:
+    $ref: './path/preference/fundingcontract/api.yaml'
+  /preference/ldap:
+    $ref: './path/preference/ldap/api.yaml'
+  /preference/messagequeued:
+    $ref: './path/preference/messagequeued/api.yaml'
+  /preference/payment/type:
+    $ref: './path/preference/payment/type/api.yaml'
+  /preference/tax:
+    $ref: './path/preference/tax/api.yaml'
+  /preference/timezone:
+    $ref: './path/preference/timezone/api.yaml'
+  /preference/column:
+    $ref: './path/preference/column/api.yaml'
+  /preference/country:
+    $ref: './path/preference/country/api.yaml'
+  /preference/currency:
+    $ref: './path/preference/currency/api.yaml'
+  /preference/language:
+    $ref: './path/preference/language/api.yaml'
+  /preference/lockedDate:
+    $ref: './path/preference/lockedDate/api.yaml'
+  /role:
+    $ref: './path/role/api.yaml'
+  /tag:
+    $ref: './path/tag/api.yaml'
+  /timetable/calendar:
+    $ref: './path/timetable/calendar/api.yaml'
+  /timetable/session:
+    $ref: './path/timetable/session/api.yaml'
+  /timetable/courseClass:
+    $ref: './path/timetable/courseClass/api.yaml'
+  /timetable/session/tag:
+    $ref: './path/timetable/session/tag/api.yaml'
+  /user:
+    $ref: './path/user/api.yaml'
+  /user/preference:
+    $ref: './path/user/preference/api.yaml'
+  /user/preference/category:
+    $ref: './path/user/preference/category/api.yaml'
+  /user/checkPassword:
+    $ref: './path/user/checkPassword/api.yaml'
+  /user/requireComplexPass:
+    $ref: './path/user/requireComplexPass/api.yaml'
+  /user/disableTFA:
+    $ref: './path/user/disableTFA/api.yaml'
+  /user/resetPassword:
+    $ref: './path/user/resetPassword/api.yaml'
+  /user/updatePassword:
+    $ref: './path/user/updatePassword/api.yaml'
+  /summaryextracts/finaliseperiod:
+    $ref: './path/summaryextracts/finaliseperiod/api.yaml'
+
+definitions:
+
+  #
+  # Refactor this definition. It's related to /preference/enum
+  #
+  EnumName:
+    $ref: './def/enum/EnumName.yaml'
+
+  Theme:
+    $ref: './def/enum/Theme.yaml'
+
+  AccessStatus:
+    $ref: './def/enum/AccessStatus.yaml'
+
+  ForbiddenTagNames:
+    $ref: './def/enum/ForbiddenTagNames.yaml'
+
+  ExecuteImportRequest:
+    $ref: './def/entity/import/ExecuteImportRequest.yaml'

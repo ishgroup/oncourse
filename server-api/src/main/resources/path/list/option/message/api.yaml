@@ -1,0 +1,34 @@
+post:
+  operationId: sendMessage
+  description: send the message based on template applied fot selected entities and return a response on success/failure
+  tags:
+    - Message
+  parameters:
+    - name: messageType
+      in: query
+      type: string
+      require: true
+    - name: recipientsCount
+      in: query
+      type: number
+      required: true
+    - name: request
+      in: body
+      schema:
+        $ref: './def/entity/messaging/SendMessageRequest.yaml'
+      required: true
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: string
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: UNDEFINED
+    errorMessage: Sorry, you have no permissions to send message. Please contact your administrator
+    custom:
+      - ish.oncourse.server.security.api.permission.custom.MessageMassCheckPermission

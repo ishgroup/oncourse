@@ -1,0 +1,42 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: false
+    example: 200
+    description: null for not persisded records
+  classId:
+    type: integer
+    format: int64
+    required: true
+    example: 200
+    description: Unique class identifier in onCourse
+  appliedDiscountId:
+    type: integer
+    format: int64
+    required: false
+    example: 200
+    description: Unique discount identifier in onCourse
+  totalOverride:
+    type: number
+    required: false
+    example: 200
+    description: custom enrolment price
+  appliedVoucherId:
+    type: integer
+    format: int64
+    required: false
+    example: 200
+    description: Unique voucher identifier in onCourse
+  relatedFundingSourceId:
+    type: integer
+    format: int64
+    required: false
+  fundingInvoice:
+    required: false
+    $ref: '../invoice/Invoice.yaml'
+  studyReason:
+    $ref: '../enrolment/EnrolmentStudyReason.yaml'
+
+

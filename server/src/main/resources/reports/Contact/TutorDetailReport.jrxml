@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TutorDetailReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" whenResourceMissingType="Empty" uuid="d96282fc-a4e1-41da-bc4a-b68af23d98b4">
+	<property name="name" value="Tutor Details"/>
+	<property name="entity" value="Contact"/>
+	<property name="isSubreport" value="false"/>
+	<property name="isVisible" value="true"/>
+
+	<property name="keyCode" value="ish.onCourse.tutorDetailsReport"/>
+	<property name="ish.oncourse.title" value="Tutor Details"/>
+	<property name="ish.oncourse.filePrefix" value="tutorDetails"/>
+	<property name="ish.oncourse.description" value="The contact details and scheduled sessions for a Tutor.This report prints in Portrait format."/>
+	<property name="ish.oncourse.pdfFileName" value="tutor_prop.pdf"/>
+	<property name="ish.oncourse.reports.isObjectOnSeparatePage" value="true"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="default" isDefault="true" forecolor="#000000" vTextAlign="Bottom" markup="none" fontName="Open Sans" fontSize="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="OpenSans" pdfEncoding="Cp1252" isPdfEmbedded="true">
+		<paragraph spacingAfter="8"/>
+	</style>
+	<style name="header 1" style="default" forecolor="#4F0018" vTextAlign="Middle" fontName="Open Sans Light" fontSize="18" pdfFontName="Open Sans Light"/>
+	<style name="header 2" style="header 1" fontSize="12"/>
+	<style name="header 3" style="default" vTextAlign="Middle" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+	<style name="header 3 (right)" style="header 3" hTextAlign="Right"/>
+	<style name="Label" style="default" forecolor="#6A7E99"/>
+	<style name="Label right" style="Label" hTextAlign="Right"/>
+	<style name="data field" style="default"/>
+	<style name="data field (money)" style="data field" hTextAlign="Right" pattern="¤#,###,##0.00;¤(-#,###,##0.00)"/>
+	<style name="data field (numeric)" style="data field" hTextAlign="Right"/>
+	<style name="data field (datetime)" style="data field" pattern="d MMM yyyy h:mma"/>
+	<style name="data field (day)" style="data field" pattern="E d MMM h:mma"/>
+	<style name="data field (date)" style="data field" pattern="d MMM yyyy"/>
+	<style name="Footer" style="default" forecolor="#737373" fontSize="8"/>
+	<style name="Footer strong" style="Footer" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+	<style name="subHead box" style="default" backcolor="#E6E7F0"/>
+	<style name="crosstab" mode="Opaque" backcolor="#F7F2E9">
+		<box>
+			<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#A3A3A3"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{ROW_COUNT}.intValue() % 2 == 1 ? Boolean.TRUE : Boolean.FALSE]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FFFFFF"/>
+		</conditionalStyle>
+	</style>
+	<style name="alternateRow" mode="Opaque" forecolor="rgba(255, 255, 255, 0.0)" backcolor="#F7F2E9">
+		<box>
+			<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{PAGE_COUNT}.intValue() % 2 == 1 ? Boolean.TRUE : Boolean.FALSE]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FFFFFF"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="ReportName" class="java.lang.String"/>
+	<field name="contact" class="ish.oncourse.server.cayenne.Contact"/>
+	<field name="street" class="java.lang.String"/>
+	<field name="suburb" class="java.lang.String"/>
+	<field name="postcode" class="java.lang.String"/>
+	<field name="birthDate" class="java.util.Date"/>
+	<field name="state" class="java.lang.String"/>
+	<field name="datasource.tutor.sessions" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<field name="subreport.ish.onCourse.tutorSessionSubReport" class="net.sf.jasperreports.engine.JasperReport"/>
+	<field name="tfn" class="java.lang.String"/>
+	<field name="tutor.dateStarted" class="java.util.Date"/>
+	<field name="tutor.dateFinished" class="java.util.Date"/>
+	<field name="email" class="java.lang.String"/>
+	<field name="isMale" class="java.lang.Boolean"/>
+	<field name="homePhone" class="java.lang.String"/>
+	<field name="workPhone" class="java.lang.String"/>
+	<field name="mobilePhone" class="java.lang.String"/>
+	<field name="fax" class="java.lang.String"/>
+	<field name="notes" class="java.lang.String"/>
+	<field name="tutor" class="java.lang.Object"/>
+	<field name="tutor.resume" class="java.lang.String"/>
+	<field name="image.poweredby" class="java.io.InputStream"/>
+	<group name="details">
+		<groupExpression><![CDATA[null]]></groupExpression>
+		<groupHeader>
+			<band height="127" splitType="Stretch">
+				<printWhenExpression><![CDATA[new Boolean($F{tutor}!=null)]]></printWhenExpression>
+				<staticText>
+					<reportElement key="staticText-1" style="Label" x="0" y="77" width="70" height="15" uuid="0aa8f475-10bd-4516-826d-6aaf7e74127f"/>
+					<text><![CDATA[Date of Birth]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-2" style="Label" x="0" y="30" width="70" height="15" uuid="cbf04d57-a399-44f0-a6fc-e579f308c06d"/>
+					<text><![CDATA[Address]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-2" style="data field" x="87" y="77" width="119" height="15" uuid="6b5cfb77-b747-40e9-92a1-b2ab877ea93a"/>
+					<textFieldExpression><![CDATA[$F{contact}.birthDate?.format("d MMM yyyy")]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-3" style="data field" x="87" y="30" width="204" height="15" uuid="d539e700-e3f2-445b-8904-f3458674b1da"/>
+					<textFieldExpression><![CDATA[( $F{street} == null ? "No street address" : $F{street} )]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-5" style="data field" x="87" y="47" width="204" height="15" uuid="8a5c6317-bdad-4ae4-a907-b44c718304ee"/>
+					<textFieldExpression><![CDATA[(($F{suburb}==null ? "" : $F{suburb}+" "))+
+(($F{state}==null ? "" : $F{state}+" "))+
+(($F{postcode}==null ? "" : $F{postcode}))]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-6" style="data field" x="416" y="30" width="119" height="15" uuid="ba108c05-1f6e-4360-9744-313eccdf4fcf"/>
+					<textFieldExpression><![CDATA[$F{homePhone} == null ? "Not set" : $F{homePhone}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-3" style="Label" x="329" y="30" width="80" height="15" uuid="da875b2d-c782-49c1-9866-fce9c07f9acb"/>
+					<text><![CDATA[Home phone]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-4" style="Label" x="329" y="45" width="80" height="15" uuid="916a54fb-c28d-47a4-b0e5-9a15f25c9d52"/>
+					<text><![CDATA[Work phone]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-7" style="data field" x="416" y="45" width="119" height="15" uuid="487050ad-7f5e-4141-bb87-46a97127e1b2"/>
+					<textFieldExpression><![CDATA[$F{workPhone} == null ? "Not set" : $F{workPhone}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-5" style="Label" x="329" y="60" width="80" height="15" uuid="330cc39a-19d0-40c4-874e-09d214a7c190"/>
+					<text><![CDATA[Mobile phone]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-8" style="data field" x="416" y="60" width="119" height="15" uuid="4e51da24-c76c-407b-9364-7ba1fabae4ef"/>
+					<textFieldExpression><![CDATA[$F{mobilePhone} == null ? "Not set" : $F{mobilePhone}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-6" style="Label" x="329" y="75" width="80" height="15" uuid="41a3eb95-8cc3-4093-93fb-806ccb7a299d"/>
+					<text><![CDATA[Fax]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-9" style="data field" x="416" y="75" width="119" height="15" uuid="4d239444-2fb5-493c-8f7e-4b5e62e4bc77"/>
+					<textFieldExpression><![CDATA[$F{fax} == null ? "Not set" : $F{fax}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement key="textField-10" style="Label" x="0" y="0" width="119" height="15" uuid="a01f68b5-aefa-41c9-8294-abfaa997792d"/>
+					<textFieldExpression><![CDATA[$F{contact}.fullName == null ? " TFN :" : $F{contact}.fullName + " ABN :"]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-11" style="data field" x="119" y="0" width="80" height="15" uuid="1e7b9086-2e46-4ab7-bdb2-5c39dc31f83b"/>
+					<textFieldExpression><![CDATA[$F{tfn}==null ? "Not set" : $F{tfn}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-7" style="Label" x="0" y="92" width="70" height="15" uuid="0d7fdef8-cbdb-4cd0-ac6d-17597ae9e027"/>
+					<text><![CDATA[Gender]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-12" style="data field" x="87" y="92" width="119" height="15" uuid="e4485c58-81a2-4573-8922-72eff5bd629d"/>
+					<textFieldExpression><![CDATA[$F{isMale}==null ? "Not set":($F{isMale}.booleanValue() ? "Male" : "Female")]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-8" style="Label" x="0" y="62" width="70" height="15" uuid="7772607f-8729-4b1b-8002-def06523f56b"/>
+					<text><![CDATA[Email]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-13" style="data field" x="87" y="62" width="204" height="15" uuid="df93e9bb-711a-45a5-84a3-a3f8c33623d9"/>
+					<textFieldExpression><![CDATA[$F{email} == null ? "Not set" : $F{email}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-9" style="Label" x="0" y="107" width="70" height="15" uuid="6828c7e4-ea0f-4235-a284-eba7213c72da"/>
+					<text><![CDATA[Started]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-14" style="data field (date)" x="87" y="107" width="119" height="15" uuid="8ab4a121-c821-4632-8820-6e90184d6401"/>
+					<textFieldExpression><![CDATA[$F{tutor.dateStarted}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-10" style="Label" x="329" y="107" width="70" height="15" uuid="650440d2-a26c-48cd-b5ba-1a6de770d112"/>
+					<text><![CDATA[Finished]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-15" style="data field (date)" x="416" y="107" width="119" height="15" uuid="af3ba4c7-ae58-46c7-9f0c-fa3051bac708"/>
+					<textFieldExpression><![CDATA[$F{tutor.dateFinished}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band splitType="Stretch"/>
+		</groupFooter>
+	</group>
+	<group name="notes">
+		<groupExpression><![CDATA[null]]></groupExpression>
+		<groupHeader>
+			<band height="15" splitType="Stretch">
+				<printWhenExpression><![CDATA[new Boolean($F{tutor}!=null && $F{notes} != null)]]></printWhenExpression>
+				<staticText>
+					<reportElement key="staticText-11" style="Label" x="0" y="0" width="70" height="15" uuid="f7dfcc0c-87d4-43c5-a385-a3c12b1ab2d0"/>
+					<text><![CDATA[Notes]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-16" style="data field" x="87" y="0" width="448" height="15" uuid="8f9c473c-a6d8-4811-a5ed-3ef2394c590c"/>
+					<textFieldExpression><![CDATA[$F{notes}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band splitType="Stretch"/>
+		</groupFooter>
+	</group>
+	<group name="resume">
+		<groupExpression><![CDATA[null]]></groupExpression>
+		<groupHeader>
+			<band height="20" splitType="Stretch">
+				<printWhenExpression><![CDATA[new Boolean($F{tutor}!=null && $F{tutor.resume} != null)]]></printWhenExpression>
+				<staticText>
+					<reportElement key="staticText-12" style="Label" x="0" y="0" width="70" height="15" uuid="9c7cb534-d5ce-49c8-8806-347ab698c673"/>
+					<text><![CDATA[Resume]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement key="textField-17" style="data field" x="87" y="1" width="448" height="15" uuid="51404f78-d73a-41e0-91d4-d8cb119f19b5"/>
+					<textFieldExpression><![CDATA[$F{tutor.resume}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band splitType="Stretch"/>
+		</groupFooter>
+	</group>
+	<group name="sessions">
+		<groupExpression><![CDATA[null]]></groupExpression>
+		<groupHeader>
+			<band height="20" splitType="Stretch">
+				<printWhenExpression><![CDATA[new Boolean($F{tutor}!=null)]]></printWhenExpression>
+				<elementGroup>
+					<subreport isUsingCache="true">
+						<reportElement key="subreport-2" stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="0" y="2" width="539" height="15" uuid="a2df3cb9-b31b-472d-922a-04530040ea31"/>
+						<dataSourceExpression><![CDATA[$F{datasource.tutor.sessions}]]></dataSourceExpression>
+						<subreportExpression><![CDATA[$F{subreport.ish.onCourse.tutorSessionSubReport}]]></subreportExpression>
+					</subreport>
+				</elementGroup>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band splitType="Stretch"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="115" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="30" splitType="Stretch">
+			<printWhenExpression><![CDATA[new Boolean($F{tutor}!=null)]]></printWhenExpression>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-1" style="header 1" x="0" y="4" width="368" height="26" uuid="c12b4850-93fc-4afb-bd3b-3f85ae082981"/>
+				<textFieldExpression><![CDATA[$F{contact}.name]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<textField evaluationTime="Page" isBlankWhenNull="false">
+				<reportElement key="pageNumberFooter" style="Footer strong" x="0" y="0" width="300" height="15" uuid="1106d334-b156-4af7-a64d-a75ba7206e2c"/>
+				<textFieldExpression><![CDATA["Page " + String.valueOf($V{PAGE_NUMBER})]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" isBlankWhenNull="false">
+				<reportElement key="totalPageCountFooter" style="Footer" x="0" y="11" width="300" height="13" uuid="d3e402c5-a433-4f08-90db-5c66216e08f3"/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT} + " record" + ($V{REPORT_COUNT}>1 ? "s" : "") + " on " + $V{PAGE_NUMBER} + " page" + ($V{PAGE_NUMBER}>1 ? "s" : "") + " (printed " + new Date().format("E d MMM yyyy h:mma") + ")"]]></textFieldExpression>
+			</textField>
+			<image scaleImage="RetainShape" hAlign="Right" isUsingCache="true" onErrorType="Blank">
+				<reportElement key="oncourseLogo" style="Footer" x="472" y="17" width="67" height="7" uuid="2863530e-11e5-4c1e-8296-ae64db1a9926"/>
+				<imageExpression><![CDATA[$F{image.poweredby}]]></imageExpression>
+			</image>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

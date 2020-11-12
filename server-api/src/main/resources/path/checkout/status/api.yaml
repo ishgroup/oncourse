@@ -1,0 +1,20 @@
+get:
+  operationId: status
+  description: Process checkout
+  tags:
+    - Checkout
+  parameters:
+    - name: sessionId
+      in: path
+      type: string
+      required: true
+  responses:
+    '200':
+      schema:
+        $ref: './def/entity/checkout/SessionStatus.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: ENROLMENT
+    errorMessage: You do not have permission to use the checkout functionality. Please contact your administrator

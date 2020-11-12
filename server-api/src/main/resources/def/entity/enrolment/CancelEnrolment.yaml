@@ -1,0 +1,13 @@
+type: object
+properties:
+  enrolmentIds:
+    type: integer
+    format: int64
+  deleteNotSetOutcomes:
+    type: boolean
+  transfer:
+    type: boolean
+  invoiceLineParam:
+    type: array
+    items:
+      $ref: './RefundInvoice.yaml'

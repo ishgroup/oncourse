@@ -1,0 +1,20 @@
+Dear ${waitingList.student.contact.fullName},
+
+You are receiving this message because you are on the ${Preferences.get("college.name")} waiting list.
+
+The following information is for upcoming classes:
+<%  courseClasses.each() { courseClass -> %>
+--------------------------------------------------
+
+Class: ${courseClass.course.code}-${courseClass.code} ${courseClass.course.name}<% if (courseClass.startDateTime == null) { %>
+Start: On enrolment
+Expected duration: ${courseClass.expectedHours ? courseClass.expectedHours + " hours": "not specified"} <% } else { %>
+Start: ${courseClass.startDateTime.format("h:mm a EEEE d MMMM yyyy zzzz", courseClass.getTimeZone())}
+End: ${courseClass.endDateTime.format("h:mm a EEEE d MMMM yyyy zzzz", courseClass.getTimeZone())}<% } %>
+Location: ${courseClass.displayableLocation}
+Please visit ${Preferences.get("web.url")}/class/${courseClass.course.code}-${courseClass.code} to enrol in this course.
+
+--------------------------------------------------
+<% } %>
+
+To remove yourself from the waiting list and unsubscribe to these notices, please visit ${waitingList.student.getPortalLink("subscriptions")}

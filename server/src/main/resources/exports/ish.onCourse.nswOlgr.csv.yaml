@@ -1,0 +1,5 @@
+keyCode: ish.onCourse.nswOlgr.csv
+entityClass: Contact
+body: ish.onCourse.nswOlgr.csv.groovy
+name: NSW OLGR CSV export
+outputType: csv

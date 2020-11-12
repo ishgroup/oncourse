@@ -1,0 +1,41 @@
+type: object
+description: Dashboard statistics object
+properties:
+  enrolmentsChartLine:
+    description: Enrolments chart line data
+    required: true
+    type: array
+    items:
+      type: integer
+  revenueChartLine:
+    description: Revenue chart line data
+    required: true
+    type: array
+    items:
+      type: number
+  studentsCount:
+    description: Total students enrolmemnts
+    required: true
+    type: integer
+  moneyCount:
+    description: Total students enrolmemnts cost
+    required: true
+    type: number
+  latestEnrolments:
+    type: array
+    items:
+      $ref: './StatisticItem.yaml'
+  latestWaitingLists:
+    type: array
+    items:
+      $ref: './StatisticItem.yaml'
+  openedClasses:
+    type: integer
+  inDevelopmentClasses:
+    type: integer
+  cancelledClasses:
+    type: integer
+  completedClasses:
+    type: integer
+  commencedClasses:
+    type: integer

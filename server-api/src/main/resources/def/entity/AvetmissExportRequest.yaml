@@ -1,0 +1,12 @@
+type: object
+properties:
+  ids:
+    type: array
+    items:
+      type: integer
+      format: int64
+  defaultStatus:
+    type: boolean
+    example: True
+  settings:
+    $ref: './AvetmissExportSettings.yaml'

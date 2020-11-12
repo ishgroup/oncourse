@@ -1,0 +1,46 @@
+type: object
+properties:
+  entity:
+    type: string
+    required: true
+  templateId:
+    type: integer
+    format: int64
+  variables:
+    type: object
+    additionalProperties:
+      type: string
+  fromAddress:
+    type: string
+  sendToStudents:
+    type: boolean
+    required: false
+  sendToSuppressStudents:
+    type: boolean
+    required: false
+  sendToActiveStudents:
+    type: boolean
+    required: false
+  sendToSuppressActiveStudents:
+    type: boolean
+    required: false
+  sendToWithdrawnStudents:
+    type: boolean
+    required: false
+  sendToSuppressWithdrawnStudents:
+    type: boolean
+    required: false
+  sendToTutors:
+    type: boolean
+    required: false
+  sendToSuppressTutors:
+    type: boolean
+    required: false
+  sendToOtherContacts:
+    type: boolean
+    required: false
+  sendToSuppressOtherContacts:
+    type: boolean
+    required: false
+  searchQuery:
+    $ref: '../../list/SearchQuery.yaml'

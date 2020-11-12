@@ -1,0 +1,86 @@
+get:
+  description: Returns tutor role record
+  operationId: get
+  tags:
+    - TutorRole
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of tutor role record to fetch
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/definedTutorRole/DefinedTutorRole.yaml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    keyCode: UNDEFINED
+
+post:
+  operationId: create
+  tags:
+    - TutorRole
+  parameters:
+    - name: tutorRole
+      in: body
+      description: tutor role for create
+      required: true
+      schema:
+        $ref: './def/entity/definedTutorRole/DefinedTutorRole.yaml'
+  responses:
+    '200':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+
+put:
+  operationId: update
+  tags:
+    - TutorRole
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of tutor role record to fetch
+    - name: tutorRole
+      in: body
+      schema:
+        $ref: './def/entity/definedTutorRole/DefinedTutorRole.yaml'
+      required: true
+      description: tutor role for update
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+
+delete:
+  operationId: remove
+  tags:
+    - TutorRole
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of tutor role record to fetch
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error

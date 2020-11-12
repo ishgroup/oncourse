@@ -1,0 +1,18 @@
+type: string
+description: List of repeat types
+enum:
+  - On demand
+  - Schedule
+  - On create
+  - On edit
+  - On create and edit
+  - On delete
+  - Enrolment successful
+  - Enrolment cancelled
+  - Class cancelled
+  - Class published on web
+  - Payslip approved
+
+
+
+

@@ -1,0 +1,44 @@
+type: object
+properties:
+  id:
+    type: string
+    description: Unique holiday identifier
+  description:
+    type: string
+    description: Holiday description
+  startDate:
+    type: string
+    format: date
+    description: ISO date string with start date of holidays
+  endDate:
+    type: string
+    format: date
+    description: ISO date string with end of holidays
+  startDateTime:
+    type: string
+    format: date-time
+    description: ISO date string with start date of holidays
+  endDateTime:
+    type: string
+    format: date-time
+    description: ISO datetime string with end of holidays
+  repeat:
+    $ref: '../enum/RepeatEnum.yaml'
+  repeatEnd:
+    $ref: '../enum/RepeatEndEnum.yaml'
+  repeatEndAfter:
+    type: number
+    required: true
+    description: count of repetitions
+  repeatOn:
+    type: string
+    format: date
+    description: ISO date string with date when repetitions ends
+  created:
+    type: string
+    format: date-time
+    description: date and time when record was created
+  modified:
+    type: string
+    format: date-time
+    description: date and time when record was modified

@@ -1,0 +1,32 @@
+type: object
+properties:
+  id:
+    type: string
+    description: Unique integration identifier
+  type:
+    type: number
+    required: true
+    description: integration type
+    example: 12
+  name:
+    type: string
+    description: Integration name
+    required: true
+    example: LMS integration
+  verificationCode:
+    type: string
+    description: verification code
+    required: false
+    example: eyJz93a...k4laUWw
+  props:
+    type: array
+    items:
+      $ref: './IntegrationProp.yaml'
+  created:
+    type: string
+    format: date-time
+    description: date and time when record was created
+  modified:
+    type: string
+    format: date-time
+    description: date and time when record was modified

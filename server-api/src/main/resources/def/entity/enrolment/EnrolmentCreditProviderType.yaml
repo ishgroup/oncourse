@@ -1,0 +1,9 @@
+type: string
+enum:
+  - No credit/RPL was offered for VET
+  - University
+  - Other Higher Education Provider
+  - TAFE
+  - Secondary Schools/Colleges
+  - Other Registered Training Organisations
+  - Not elsewhere categorised

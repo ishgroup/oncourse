@@ -1,0 +1,29 @@
+type: object
+properties:
+  id:
+    type: string
+    description: Unique contact Relation type identifier
+  relationName:
+    type: string
+    required: true
+    description: Relationship name
+    example: Parent
+  reverseRelationName:
+    type: string
+    required: true
+    description: Revers relationship name
+    example: Child
+  portalAccess:
+    type: boolean
+    description: Allow to access all information in skillOnCourse portal
+  systemType:
+    type: boolean
+    description: Is internal Contact Relation Type
+  created:
+    type: string
+    format: date-time
+    description: date and time when record was created
+  modified:
+    type: string
+    format: date-time
+    description: date and time when record was modified

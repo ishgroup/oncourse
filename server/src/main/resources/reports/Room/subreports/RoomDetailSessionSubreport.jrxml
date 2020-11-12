@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SessionSubReport" language="groovy" pageWidth="840" pageHeight="514" orientation="Landscape" columnWidth="840" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="12f1ea80-25ce-4ac8-b0a3-4b001fd1557d">
+	<property name="name" value="Session Subreport"/>
+	<property name="entity" value="Session"/>
+	<property name="isSubreport" value="true"/>
+	<property name="isVisible" value="false"/>
+
+	<property name="keyCode" value="ish.onCourse.roomDetailSessionSubReport"/>
+	<property name="ish.oncourse.title" value="Sessions"/>
+	<property name="ish.oncourse.filePrefix" value="Sessions"/>
+	<property name="ish.oncourse.pdfFileName" value="Sessions.pdf"/>
+	<property name="sortOn" value="startDatetime"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="default" isDefault="true" forecolor="#000000" vTextAlign="Bottom" markup="none" fontName="Open Sans" fontSize="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="OpenSans" pdfEncoding="Cp1252" isPdfEmbedded="true">
+		<paragraph spacingAfter="8"/>
+	</style>
+	<style name="header 1" style="default" forecolor="#4F0018" vTextAlign="Middle" fontName="Open Sans Light" fontSize="18" pdfFontName="Open Sans Light"/>
+	<style name="header 2" style="header 1" fontSize="12"/>
+	<style name="header 3" style="default" vTextAlign="Middle" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+	<style name="header 3 (right)" style="header 3" hTextAlign="Right"/>
+	<style name="Label" style="default" forecolor="#6A7E99"/>
+	<style name="Label right" style="Label" hTextAlign="Right"/>
+	<style name="data field" style="default"/>
+	<style name="data field (money)" style="data field" hTextAlign="Right" pattern="¤#,###,##0.00;¤(-#,###,##0.00)"/>
+	<style name="data field (numeric)" style="data field" hTextAlign="Right"/>
+	<style name="data field (datetime)" style="data field" pattern="d MMM yyyy h:mma"/>
+	<style name="data field (day)" style="data field" pattern="E d MMM h:mma"/>
+	<style name="data field (date)" style="data field" pattern="d MMM yyyy"/>
+	<style name="Footer" style="default" forecolor="#737373" fontSize="8"/>
+	<style name="Footer strong" style="Footer" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+	<style name="subHead box" style="default" backcolor="#E6E7F0"/>
+	<style name="crosstab" mode="Opaque" backcolor="#F7F2E9">
+		<box>
+			<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#A3A3A3"/>
+			<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#A3A3A3"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{ROW_COUNT}.intValue() % 2 == 1 ? Boolean.TRUE : Boolean.FALSE]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FFFFFF"/>
+		</conditionalStyle>
+	</style>
+	<style name="alternateRow" mode="Opaque" forecolor="rgba(255, 255, 255, 0.0)" backcolor="#F7F2E9">
+		<box>
+			<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{PAGE_COUNT}.intValue() % 2 == 1 ? Boolean.TRUE : Boolean.FALSE]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FFFFFF"/>
+		</conditionalStyle>
+	</style>
+	<field name="session" class="ish.oncourse.server.cayenne.Session"/>
+	<field name="startDatetime" class="java.util.Date"/>
+	<field name="room.name" class="java.lang.String"/>
+	<field name="room.site.name" class="java.lang.String"/>
+	<field name="courseClass.isCancelled" class="java.lang.Boolean"/>
+	<field name="courseClass.code" class="java.lang.String"/>
+	<field name="courseClass.course.code" class="java.lang.String"/>
+	<field name="courseClass.enrolmentsCount" class="java.lang.Integer"/>
+	<field name="courseClass.course.name" class="java.lang.String"/>
+	<field name="subreport.ish.onCourse.class.tutorsSubreport" class="net.sf.jasperreports.engine.JasperReport"/>
+	<field name="datasource.tutorRoles" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<field name="global.dateRange_from" class="java.util.Date"/>
+	<field name="global.dateRange_to" class="java.util.Date"/>
+	<sortField name="startDatetime"/>
+	<variable name="tutorNumber" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="44" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<rectangle>
+				<reportElement x="0" y="23" width="810" height="21" backcolor="#E6E7F0" uuid="8b9d90d3-f458-4da0-a59d-bc61a6600da0">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement key="staticText-2" style="header 3" x="538" y="23" width="135" height="20" uuid="9c455827-6399-41f6-bbb0-caf75a748ece"/>
+				<text><![CDATA[Start Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-3" style="header 3" x="673" y="23" width="133" height="20" uuid="4b174922-bba8-41e1-851a-79e10275e551"/>
+				<text><![CDATA[End Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-5" style="header 2" x="0" y="1" width="280" height="20" uuid="8f6ff436-9331-4075-9a14-d292d035c8fa"/>
+				<text><![CDATA[Session Details ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-8" style="header 3" x="2" y="23" width="110" height="20" uuid="f8f47f93-ff4a-4c44-a694-d7f06f074cc3"/>
+				<text><![CDATA[Course-ClassCode]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-9" style="header 3" x="112" y="23" width="120" height="20" uuid="74f33949-2267-48f9-a8ec-07e9e73c9f68"/>
+				<text><![CDATA[Course Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-10" style="header 3 (right)" x="232" y="23" width="70" height="20" uuid="999a6720-8466-411c-8816-54392a8b6636"/>
+				<text><![CDATA[Enrolments]]></text>
+			</staticText>
+			<frame>
+				<reportElement key="frame-1" style="Footer" x="10" y="40" width="720" height="0" uuid="4206b5b4-ed44-4a55-a5fe-2b0ad4fd926d"/>
+			</frame>
+			<staticText>
+				<reportElement key="staticText-12" style="header 3" x="318" y="23" width="220" height="20" uuid="3663b2a1-1c4b-4f72-b3f2-485415a9a742"/>
+				<text><![CDATA[Tutor Name]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="23" splitType="Stretch">
+			<printWhenExpression><![CDATA[new Boolean(
+				((java.util.Date)$F{startDatetime}).after(new java.util.Date()) &&
+				($F{courseClass.isCancelled}.booleanValue() != true)
+				)]]></printWhenExpression>
+			<rectangle>
+				<reportElement style="alternateRow" stretchType="RelativeToBandHeight" x="0" y="0" width="810" height="23" uuid="5052aa1a-ac05-425e-9872-8126c2762045">
+					<property name="com.jaspersoft.studio.unit.x" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+			</rectangle>
+			<elementGroup>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement key="textField" style="data field" positionType="Float" x="112" y="0" width="120" height="20" isRemoveLineWhenBlank="true" uuid="3cf5b785-316a-4749-bb16-f15131659f22"/>
+					<textFieldExpression><![CDATA[$F{courseClass.course.name}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement key="textField" style="data field" positionType="Float" x="2" y="0" width="110" height="20" isRemoveLineWhenBlank="true" uuid="4da2d480-554d-4ab1-b772-bf1c0a65188f"/>
+					<textFieldExpression><![CDATA[$F{courseClass.course.code}+"-"+$F{courseClass.code}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement key="textField" style="data field (day)" positionType="Float" x="538" y="0" width="135" height="20" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="d9ce7a31-75f0-4769-9fa6-4735e6ae5e52"/>
+					<textFieldExpression><![CDATA[$F{session}.startDatetime?.format("d MMM yyyy h:mma", $F{session}.timeZone)]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement key="textField" style="data field (day)" positionType="Float" x="673" y="0" width="133" height="20" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="4d2ce8e6-9a91-4300-b3db-180e93c1bf2a"/>
+					<textFieldExpression><![CDATA[$F{session}.endDatetime?.format("d MMM yyyy h:mma", $F{session}.timeZone)]]></textFieldExpression>
+				</textField>
+			</elementGroup>
+			<textField>
+				<reportElement style="data field (numeric)" x="232" y="0" width="70" height="20" uuid="a83633f8-aa58-4888-a9a7-0c5af93e971a"/>
+				<textFieldExpression><![CDATA[$F{courseClass.enrolmentsCount}]]></textFieldExpression>
+			</textField>
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-1" style="Footer" mode="Transparent" x="318" y="6" width="220" height="15" isRemoveLineWhenBlank="true" uuid="cf8bc7c9-f68e-47b5-8cb2-ba815f37a712">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<printWhenExpression><![CDATA[new Boolean($F{datasource.tutorRoles}!=null)]]></printWhenExpression>
+				</reportElement>
+				<dataSourceExpression><![CDATA[$F{datasource.tutorRoles}]]></dataSourceExpression>
+				<returnValue subreportVariable="tutorNumber" toVariable="tutorNumber"/>
+				<subreportExpression><![CDATA[$F{subreport.ish.onCourse.class.tutorsSubreport}]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

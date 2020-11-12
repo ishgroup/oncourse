@@ -1,0 +1,100 @@
+get:
+  description: Returns certificate record
+  operationId: get
+  tags:
+    - Certificate
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of certificate record to fetch
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/certificate/Certificate.yaml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: CERTIFICATE
+    errorMessage: Sorry, you have no permissions to get certificate. Please contact your administrator
+
+post:
+  operationId: create
+  tags:
+    - Certificate
+  parameters:
+    - name: certificate
+      in: body
+      description: certificate for create
+      required: true
+      schema:
+        $ref: './def/entity/certificate/Certificate.yaml'
+  responses:
+    '200':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: CERTIFICATE
+    errorMessage: Sorry, you have no permissions to create certificate. Please contact your administrator
+
+put:
+  operationId: update
+  tags:
+    - Certificate
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of certificate record to fetch
+    - name: certificate
+      in: body
+      schema:
+        $ref: './def/entity/certificate/Certificate.yaml'
+      required: true
+      description: certificate for update
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: CERTIFICATE
+    errorMessage: Sorry, you have no permissions to edit certificate. Please contact your administrator
+
+delete:
+  operationId: remove
+  tags:
+    - Certificate
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of certificate record to fetch
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: delete
+    keyCode: CERTIFICATE
+    errorMessage: Sorry, you have no permissions to delete certificate. Please contact your administrator

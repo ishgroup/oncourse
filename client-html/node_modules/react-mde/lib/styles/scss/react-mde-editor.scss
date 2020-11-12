@@ -1,0 +1,14 @@
+@import "variables.scss";
+
+.mde-textarea-wrapper {
+  position: relative;
+
+  textarea.mde-text {
+    width: 100%;
+    border: 0;
+    padding: $mde-editor-padding;
+    vertical-align: top;
+    resize: vertical;
+    overflow-y: auto;
+  }
+}

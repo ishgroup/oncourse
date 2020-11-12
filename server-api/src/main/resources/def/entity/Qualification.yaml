@@ -1,0 +1,49 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: true
+  type:
+    $ref: '../enum/QualificationType.yaml'
+    required: true
+  nationalCode:
+    type: string
+    required: true
+    example: CHC30113
+  qualLevel:
+    type: string
+    example: Diploma of
+    required: true
+  title:
+    type: string
+    required: true
+    example: Performing Arts
+  isOffered:
+    type: boolean
+    required: true
+  fieldOfEducation:
+    type: string
+    description: the NCVER 'Subject field of education' identifer code
+    example: 0315
+  anzsco:
+    type: string
+    example: 312112
+  newApprenticeship:
+    type: string
+  isCustom:
+    type: boolean
+    example: True
+  nominalHours:
+    type: number
+  reviewDate:
+    type: string
+    format: date
+  specialization:
+    type: string
+  createdOn:
+    type: string
+    format: date-time
+  modifiedOn:
+    type: string
+    format: date-time

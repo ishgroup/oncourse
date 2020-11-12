@@ -1,0 +1,34 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: false
+    example: 200
+    description: null for not persisded records
+  code:
+    type: string
+    required: false
+    description: null for not persisded records
+    example: Hrw32ji3
+  productId:
+    type: integer
+    format: int64
+    required: true
+    example: 200
+    description: Unique voucher product identifier in onCourse
+  validTo:
+    type: string
+    format: date
+    required: true
+    description: valid to date
+  value:
+    type: number
+    required: false
+    example: 22.99
+    description: applicable for wouchers without defined price
+  restrictToPayer:
+    type: boolean
+    required: true
+    description: resrtict using the voucher to payer only
+

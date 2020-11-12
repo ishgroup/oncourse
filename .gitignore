@@ -1,0 +1,6 @@
+.svn
+.gradle
+.idea
+.settings
+**/node-modules/
+**/build/

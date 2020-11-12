@@ -1,0 +1,14 @@
+type: object
+properties:
+  discountId:
+    type: integer
+    format: int64
+  discountName:
+    type: string
+  applyToMemberOnly:
+    type: boolean
+  contactRelationTypes:
+    type: array
+    items:
+      type: integer
+      format: int64

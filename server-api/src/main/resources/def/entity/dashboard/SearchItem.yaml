@@ -1,0 +1,12 @@
+type: object
+description: Dashboard search matched Entity item
+properties:
+  id:
+    description: item id
+    type: integer
+    format: int64
+    required: true
+  name:
+    description: matched Entity item name
+    required: false
+    type: string

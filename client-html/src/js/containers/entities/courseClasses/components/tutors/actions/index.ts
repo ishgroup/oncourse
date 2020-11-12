@@ -1,0 +1,42 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
+import { _toRequestType } from "../../../../../../common/actions/ActionUtils";
+import { CourseClassTutor } from "@api/model";
+import { StringKeyAndValueObject } from "../../../../../../model/common/CommomObjects";
+
+export const GET_COURSE_CLASS_TUTORS = _toRequestType("get/courseClass/tutors");
+
+export const PUT_COURSE_CLASS_TUTOR = _toRequestType("put/courseClass/tutors");
+
+export const POST_COURSE_CLASS_TUTOR = _toRequestType("post/courseClass/tutors");
+
+export const DELETE_COURSE_CLASS_TUTOR = _toRequestType("delete/courseClass/tutors");
+
+export const SET_COURSE_CLASS_TUTOR_NAMES_WARNINGS = "set/courseClass/tutor/name/warnings";
+
+export const getCourseClassTutors = () => ({
+  type: GET_COURSE_CLASS_TUTORS
+});
+
+export const putCourseClassTutor = (tutor: CourseClassTutor) => ({
+  type: PUT_COURSE_CLASS_TUTOR,
+  payload: { tutor }
+});
+
+export const postCourseClassTutor = (tutor: CourseClassTutor) => ({
+  type: POST_COURSE_CLASS_TUTOR,
+  payload: { tutor }
+});
+
+export const deleteCourseClassTutor = (id: number) => ({
+  type: DELETE_COURSE_CLASS_TUTOR,
+  payload: id
+});
+
+export const setCourseClassTutorNamesWarnings = (tutorNamesWarnings: StringKeyAndValueObject) => ({
+  type: SET_COURSE_CLASS_TUTOR_NAMES_WARNINGS,
+  payload: { tutorNamesWarnings }
+});

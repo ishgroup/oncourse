@@ -1,0 +1,87 @@
+{
+  "name": "autosuggest-highlight",
+  "version": "3.1.1",
+  "description": "Utilities for highlighting text in autosuggest and autocomplete components",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/moroshko/autosuggest-highlight.git"
+  },
+  "author": "Misha Moroshko <michael.moroshko@gmail.com>",
+  "scripts": {
+    "lint": "eslint src webpack.config.js",
+    "prettier": "prettier --single-quote --write \".*.js\" \"*.js\" \"src/**/*.js\"",
+    "test": "nyc mocha \"src/*.test.js\"",
+    "dist": "rimraf match parse && mkdir match parse && cp src/match.js match/index.js && cp src/parse.js parse/index.js",
+    "umd": "rimraf umd && webpack",
+    "prebuild": "npm run lint && npm test",
+    "build": "npm run dist && npm run umd",
+    "postversion": "git push && git push --tags",
+    "prepublish": "npm run build",
+    "precommit": "lint-staged"
+  },
+  "dependencies": {
+    "diacritic": "0.0.2"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "eslint": "^4.9.0",
+    "husky": "^0.14.3",
+    "lint-staged": "^4.3.0",
+    "mocha": "^4.0.1",
+    "nyc": "^11.2.1",
+    "prettier": "1.7.4",
+    "rimraf": "^2.6.2",
+    "webpack": "^3.8.1"
+  },
+  "files": [
+    "match",
+    "parse",
+    "umd"
+  ],
+  "lint-staged": {
+    ".*.js": [
+      "npm run prettier",
+      "git add"
+    ],
+    "*.js": [
+      "npm run prettier",
+      "git add"
+    ],
+    "src/**/*.js": [
+      "npm run prettier",
+      "git add"
+    ]
+  },
+  "keywords": [
+    "autosuggest",
+    "autocomplete",
+    "auto suggest",
+    "auto complete",
+    "highlight autosuggest",
+    "highlight autocomplete",
+    "highlight auto suggest",
+    "highlight auto complete",
+    "autosuggest highlight",
+    "autocomplete highlight",
+    "auto suggest highlight",
+    "auto complete highlight"
+  ],
+  "nyc": {
+    "lines": 100,
+    "statements": 100,
+    "functions": 100,
+    "branches": 100,
+    "include": [
+      "src/*.js"
+    ],
+    "exclude": [
+      "src/*.test.js"
+    ],
+    "reporter": [
+      "lcov",
+      "text-summary"
+    ],
+    "check-coverage": true
+  },
+  "license": "MIT"
+}

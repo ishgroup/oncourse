@@ -1,0 +1,423 @@
+----------------------------------------------------------------------------------------------
+Payment and Enrolment Testing
+----------------------------------------------------------------------------------------------
+
+onCourse <version>
+Willow/web services: <version>
+
+Date: <datestamp>
+
+----------------------------------------------------------------------------------------------
+
+Test name: Successful Web Enrolment for New Student via CC payment
+
+Setup:
+*  Class with non-zero fee with free spaces
+Steps:
+
+* Find a class on a live1 with non-zero fee, click "Enrol now" or equivalent, and "Proceed to Checkout"
+* Add student details - Fill in all fields
+* Add successful credit card from DPS/Payment Express (see top of this file) and press "Make Payment"
+  4111111111111111 for Visa,
+  5431111111111111 for MasterCard
+  371111111111114 for Amex 
+  These can be used with any current expiry (in the future)
+* Note payment reference number down.
+
+Expected behaviour:
+
+ web (user): Enrolment Successful page []
+ contact receives email notification from web []
+
+ willow (dev): Contact, Student, Enrolment, PaymentIn, PaymentInLine, Invoice, InvoiceLine relationships linked together
+
+ IE: SELECT e.status, i.status, pi.status  FROM Enrolment AS e
+JOIN CourseClass AS cc ON e.courseclassid = cc.id
+JOIN Contact AS con ON e.studentid = con.studentid
+JOIN InvoiceLine AS il ON e.id = il.enrolmentid
+JOIN Invoice AS i ON il.invoiceid = i.id
+JOIN PaymentInLine AS pil ON i.id = pil.invoiceid
+JOIN PaymentIn AS pi ON pil.paymentinid = pi.id 
+WHERE pi.id = <reference number>
+ returns 1 row
+
+ Enrolment status = "Success" []
+ Invoice status = "Success" []
+ PaymentIn status = 3 []
+ 
+ replication (dev) : Contact, Enrolment, Payment leave QueuedRecord in willow []
+ angel (user) Contact, Student, Enrolment, Invoice statuses are "Success", Invoice amount owing = 0 ,PaymentIn = Class fee []
+ angel (dev): Contact, Student, Enrolment and Payment records are created and linked together, status "Success" []
+ 
+
+Actual behaviour/notes:
+
+----------------------------------------------------------------------------------------------
+
+Test Declined Payment (Unsuccessful) Web Enrolment for New Student via CC payment
+
+Setup:
+
+* Class with non-zero fee with free spaces
+
+Steps:
+
+* Find a class on a live1 with non-zero fee, click "Enrol now" or equivalent, and "Proceed to Checkout"
+* Add student details - Fill in all fields
+* Add unsuccessful credit card from DPS/Payment Express - see top of this file and press "Make Payment"
+  4999999999999202
+
+Expected behaviour:
+
+ web (user): Enrolment/Payment declined/not successful page []
+     	     Page displays a link to reenter payment details and link loads correctly []
+ 
+ willow (dev): Contact, Student, Enrolment, PaymentIn, PaymentInLine, Invoice, InvoiceLine relationships linked together
+               Enrolment status = "Failed" []
+	       Invoice status = "Failed" []
+	       PaymentIn status = 4 []
+	       
+ replication (dev): Contact, Student, Enrolment, PaymentIn, PaymentInLine, Invoice, InvoiceLine go into Angel []
+ angel (user): Contact, Student, Ennrolment are present, has two Invoices (invoice and inverse invoice) to balance to 0 []
+ angel (dev): Contact, Student, Enrolment, PaymentIn, PaymentInLine, Invoice, InvoiceLine relationships linked together
+
+Actual behaviour/notes:
+
+----------------------------------------------------------------------------------------------
+
+Test Successful Angel Enrolment for New Student via CC
+
+Setup:
+*  Class with non-zero fee with free spaces
+
+Steps: 
+
+* Enrol a member into a class with fee
+* Use Quick Enrol and choose Credit Card type and hit "Save"
+* Loads a page with URL in the format: https://secure-payment.oncourse.net.au/services?ref=789f798sf9sdfs9fysf
+
+
+Expected behaviour:
+ angel (user): The browser shows a form to allow the entry of CC details.  []
+  The onCourse client shows a progress/twirly/information that the user should be at the browser page to complete to the process []
+ angel (user): Contact and Student are created correctly.
+  Created Enrolment has status Active, PaymentIn has status Success. Invoice has an amount owing that is matched up []
+ The amount on the Invoice is equal to PaymentIn amount []
+ angel (dev): Contact, Student, Enrolment, Invoice and Payments are linked together correctly with status "Success" []
+ replication (dev): Contact, Student, Payment leave QueuedRecord []
+ willow (dev): Contact, Student, Enrolment and Payment records are created and linked together, status are "Success" []
+
+Actual behaviour/notes:
+
+----------------------------------------------------------------------------------------------
+Test Unsuccessful Angel Enrolment for New Student via CC
+
+
+Setup:
+*  Class with non-zero fee with free spaces
+Steps:
+
+* Enrol a member into a class with non-zero fee 
+* Use Quick Enrol with a credit card testing number that will be successful 
+* Loads a page with URL in the format: https://secure-payment.oncourse.net.au/services?ref=789f798sf9sdfs9fysf
+* 
+
+Expected behaviour:
+
+ angel (user): Contact and Student are created correctly. Can click on Contact tabs and navigate to links to financial and enrolment status - Unsuccessful[]
+ The amount on the Invoice owing matches class feet []
+ angel (dev):  Contact, Student, Enrolment, Invoice and Payments are linked together correctly []
+ replication (dev) : Contact, Student, Enrolment, Invoice and Payments are linked together correctly with status []
+ 
+Actual behaviour/notes:
+
+----------------------------------------------------------------------------------------------
+Test Successful Web Enrolment for Existing Student via CC
+
+Setup:
+* Class with non-zero fee with free spaces
+Steps:
+
+* Using an firstname, lastname and email address that exists in the web database, enrol into
+a class with a non-zero fee
+* use a testing credit card credentials that will be successful 
+
+Expected behaviour:
+ web (user): Successful Enrolment page []
+ willow (dev): Successful status Enrolment, PaymentIn, PaymentInLine, Invoice, InvoiceLine []
+ replication (dev):
+ angel (dev): Enrolment, PaymentIn, Invoices, Amount owing are correct []
+
+Actual behaviour/notes:
+----------------------------------------------------------------------------------------------
+
+Test name: Unsuccessful Web Enrolment for Existing Student via CC
+
+Setup:
+ * Class with non-zero fee with free spaces
+Steps:
+ * Using an firstname, lastname and email address that exists in the web database, enrol into
+ a class with a non-zero fee
+ * use a testing credit card credentials that are not valid 
+Expected behaviour: 
+ web (user): Enrolment/Payment declined/not successful page []
+     	     Page displays a link to reenter payment details and link loads correctly []
+ willow (dev): Enrolment status = "Failed" []
+               PaymentIn status = 4 []
+	       Invoice status = "Failed" []
+ 
+Actual behaviour/notes:
+
+----------------------------------------------------------------------------------------------
+
+Test name: Successful Angel Enrolment for Existing Student via CC
+
+Setup:
+*  Class with non-zero fee with free spaces
+Steps:
+* Enrol an existing Contact into class
+* Use Quick Enrol and choose Credit Card type and hit "Save"
+* Loads a page with URL in the format: https://secure-payment.oncourse.net.au/services?ref=789f798sf9sdfs9fysf
+* Fill in credit card details on this page
+Expected behaviour:
+ angel (user): When browser is opened client shows waiting progress
+ angel (user): Created Enrolment has status Active, PaymentIn has status Success. Invoice has an amount owing that is matched up []
+ The amount on the Invoice is equal to PaymentIn amount []
+ angel (dev): Contact, Student, Enrolment, Invoice and Payments are linked together correctly with status "Success" []
+ replication (dev): Contact, Student, Payment, Invoice, InvoiceLine leave QueuedRecord []
+ willow (dev): Contact, Student, Enrolment and Payment records are created and linked together, status are "Success" []
+
+Actual behaviour/notes:
+----------------------------------------------------------------------------------------------
+
+Test name: Unsuccessful Angel Enrolment for Existing Student via CC
+
+Setup:
+*  Class with non-zero fee with free spaces
+Steps:
+* Enrol an existing Contact into class
+* Use Quick Enrol choose Credit Card type and hit "Save"
+*  Loads a page with URL in the format: https://secure-payment.oncourse.net.au/services?ref=789f798sf9sdfs9fysf
+* Use CC details which will give a declined result
+* Should be given an option to keep "the enrolment and invoice outstanding but not take money" or "fail everything" 
+** not exact text
+
+Expected behaviour:
+
+Actual behaviour/notes:
+
+--------------------------------------------------------------------------------------------
+Test a credit card payment with reentering card details in Angel
+
+Steps:
+1. At client start Quick Enrol
+2. Select payment type as credit card and click Save
+3. In launched browser enter invalid card details and click Save
+4. Select option "Try again" and enter valid card details
+Expected: After proceed in browser client becomes operable and created enrolment has status Active, payment in and invoice Success.
+
+--------------------------------------------------------------------------------------------
+Test name: Successful Web Enrolment for Two New Students via CC payment
+
+Setup:
+*  Class with non-zero fee with free spaces
+Steps:
+
+* Find a class on a live1 with non-zero fee, click "Enrol now" or equivalent, and "Proceed to Checkout"
+  IE. http://ishoncourse.live1.oncourse.net.au/addToCookies?key=shortlist&addItemId=2018526
+* Add student details - All fields possible to fill in
+* Add successful credit card from DPS/Payment Express - see top of this file and press "Make Payment"
+* Note payment reference number down.
+
+We recommend using the test card 4111111111111111 for Visa, 5431111111111111 for MasterCard, 371111111111114 for Amex and 36000000000008 for Diners. These can be used with any current expiry (in the future)
+
+Expected behaviour:
+
+ web (user): Enrolment Successful page []
+ contacts receives email notification from web []
+ willow (dev): Contact, Student, Enrolment and Payment relationships linked together, all status are "Success" []
+ replication (dev) : Contact, Enrolment, Payment leave QueuedRecord in willow []
+ angel (user) Contact, Student, Enrolment, Invoice statuses are "Success", Invoice amount owing = 0 ,PaymentIn = Class fee []
+ angel (dev): Contact, Student, Enrolment and Payment records are created and linked together, status "Success" []
+ 
+
+Actual behaviour/notes:
+
+----------------------------------------------------------------------------------------------
+Test a credit card payment with reentering card details in Angel
+1. At client start Quick Enrol
+2. Select payment type as credit card and click Save
+3. In launched browser enter invalid card details and click Save
+4. Select option "Try again" and enter valid card details
+Expected: After proceed in browser client becomes operable and created enrolment has status Active, payment in and invoice Success.
+----------------------------------------------------------------------------------------------
+
+Test refund of CC payment via Angel
+
+Setup: 
+* Student with an active enrolment, who paid via CC
+* knowledge of Contact who was the payer of enrolment
+
+Steps:
+* Go to Enrolment listing, click on Enrolment to highlight
+* Click the cogwheel and choose "cancel 1 enrolment"
+* Tick "Create a credit note to refund student for the amount charged", click "Proceed"
+* Go to "Payment Out", create new one by clicking on "+" button
+* Fill "Payment to" with Contact payer details
+* Change type to Credit Card
+* Choose the CC to refund
+
+Expected behaviour:
+
+----------------------------------------------------------------------------------------------
+
+Test refund of non CC payment via Angel
+
+Setup: 
+* Student with an active enrolment, who paid via CC
+* knowledge of Contact who was the payer of enrolment
+
+Steps:
+* Go to Enrolment listing, click on Enrolment to highlight
+* Click the cogwheel and choose "cancel 1 enrolment"
+* Tick "Create a credit note to refund student for the amount charged", click "Proceed"
+* Go to "Payment Out", create new one by clicking on "+" button
+* Fill "Payment to" with Contact payer details
+* Change type to "Cash" or "EFT or "Cheque"
+* Put in amount paid to match invoice and hit "Save"
+
+Expected Behaviour:
+angel(user):
+  Student Enrolment has status "Credited" []
+  Payer Contact record has credit note with Amount Owing = 0 []
+  Payer payments correctly dsplays Payment out as "Success"
+
+Actual behaviour/notes:
+
+----------------------------------------------------------------------------------------------
+
+Test that after cancelling a credit card enrolment becomes failed in Angel
+1. At client start Quick Enrol
+2. Select payment type as credit card and click Save
+3. In launched browser press Cancel
+Expected: Client becomes operable, Enrolment, payment in and invoice created with status failed
+
+----------------------------------------------------------------------------------------------
+
+Test successful Web enrolment with Discount Amount
+
+Precondition:
+* Class non-zero fee, and an applicable discount
+* Student eligible for discount when enrolling in class
+Steps:
+* Locate class 
+* Enrol eligible student
+
+Expected: 
+ Looks the same as previous "Successful Web Enrolment" but the price displayed and that the student is charged both reflects the discount that 
+they are eligible for
+
+----------------------------------------------------------------------------------------------
+Test that after timeout a credit card enrolment becomes failed in Angel
+
+1. At client start Quick Enrol
+2. Select payment type as credit card and click Save
+3. Close launched browser and wait 20 minutes (session expire period)
+Expected: Client becomes operable, Enrolment created with status failed
+Test that after timeout user cannot continue enrolment 
+1. At client start Quick Enrol
+2. Select payment type as credit card and click Save
+3. Do not close launched browser and wait 20 minutes
+4. After 20 minutes enter valid card details in browser and click Save
+Expected: System shows message that session was expired. Client becomes operable. Enrolment, payment in, invoice created with status failed
+
+----------------------------------------------------------------------------------------------
+Test that browser payment id link becomes invalid after success payment in Angel
+
+1. At client start Quick Enrol
+2. Select payment type as credit card and click Save
+3. Copy payment id link from browser and proceed with valid credit card details
+4. Open copied link in browser
+Expected: After successfully payment link becomes invalid
+
+----------------------------------------------------------------------------------------------
+Test that browser payment id link becomes invalid after cancelled payment in Angel
+1. At client start Quick Enrol
+2. Select payment type as credit card and click Save
+3. Copy payment id link from browser and press Cancel on entering credit card details
+4. Open copied link in browser
+Expected: After cancelled payment link becomes invalid
+
+----------------------------------------------------------------------------------------------
+Test non-credit card enrolment with disconnect (no Internet) when free places available in Angel
+1. At client start Quick Enrol
+2. Select payment type as non-credit card
+3. Disconnect from web
+4. Click Save in client
+Expected: System shows message that connection was lost, request added to queue. When connection restored enrolment created with status active.
+----------------------------------------------------------------------------------------------
+
+Test non-credit card enrolment with disconnect when no free places available in Angel
+Precondition: Class with only one free place
+1. At website make enrolment in class
+2. At client start Quick Enrol
+3. Select payment type as non-credit card
+4. Disconnect from web
+5. Click Save in client
+Expected: System shows message that connection was lost, request added to queue. When connection restored enrolment created with status fail (FAILED_NO_PLACES)
+
+----------------------------------------------------------------------------------------------
+Test credit card enrolment with disconnect from web in Angel where Angel client is DC/ed
+
+1. At client start Quick Enrol
+2. Select payment type as credit card
+3. Disconnect from web
+4. Click Save in client
+5. Pull out network cable from workstation
+
+Expected: 
+
+Notes: 
+
+----------------------------------------------------------------------------------------------
+Test that system reserve enrolment place and resolve it after timeout in Angel
+
+Precondition: Class with only one free place
+1. At client start Quick Enrol
+2. Select payment type as credit card and click Save
+3. Close launched browser and client
+4. Open client and make enrol to this class again
+Expected: System shows message that there is no free places. Only after 20 minutes user will be available make enrol to this class again. POSSIBLY SHOULD BE CLARIFIED, IT IS NOT GOOD THAT USER WAITS FOR TIMEOUT IF PAGE WAS CLOSED BY MISTAKE.
+----------------------------------------------------------------------------------------------
+
+Test that willow properly handles remaining places - 1 free place
+
+Precondition: Class with only one free place with non-zero fee
+1. At website make successful enrolment in class
+2. At client make enrolment in class
+Expected: Enrolment created with status fail (FAILED_NO_PLACES), payment in created with status (FAILED_NO_PLACES), invoice with status FAILED.
+
+----------------------------------------------------------------------------------------------
+
+Test that system does not create payment in record if class cost is 0, but still makes remaining places check
+
+Precondition: Class with only one free place, class cost should 0
+1. At website make enrolment in class
+2. At client make enrolment in class
+Expected: Enrolment created with status fail (FAILED_NO_PLACES), payment in and invoice are not created.
+
+----------------------------------------------------------------------------------------------
+Test non-credit card payment in Angel
+
+Precondition: Class with free places
+1. At client make non-credit card enrolment in class
+Expected: Enrolment with status Active, payment in and invoice with status Success.
+
+----------------------------------------------------------------------------------------------
+
+Test failure modes (more cases to go here)
+
+----------------------------------------------------------------------------------------------
+
+
+

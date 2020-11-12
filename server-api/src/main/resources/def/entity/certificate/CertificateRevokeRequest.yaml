@@ -1,0 +1,11 @@
+type: object
+properties:
+  ids:
+    type: array
+    items:
+      type: integer
+      format: int64
+      required: true
+  revokeReason:
+    type: string
+    required: true

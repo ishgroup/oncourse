@@ -1,0 +1,14 @@
+type: object
+properties:
+  productId:
+    type: integer
+    format: int64
+  productName:
+    type: string
+  productSku:
+    type: string
+  contactRelations:
+    type: array
+    items:
+      type: integer
+      format: int64

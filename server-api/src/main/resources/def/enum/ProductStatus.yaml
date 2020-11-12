@@ -1,0 +1,6 @@
+type: string
+description: Status of the process
+enum:
+  - Disabled
+  - Can be purchased in office
+  - Can be purchased in office & online

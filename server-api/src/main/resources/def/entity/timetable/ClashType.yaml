@@ -1,0 +1,8 @@
+type: string
+description: List of access statuses
+enum:
+  - Tutor
+  - Room
+  - Site
+  - Session
+  - UnavailableRule

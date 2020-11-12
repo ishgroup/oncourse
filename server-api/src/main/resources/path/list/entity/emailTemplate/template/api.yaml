@@ -1,0 +1,19 @@
+get:
+  operationId: getTemplatesWithKeyCode
+  description: Get a list of enabled email templates with keyCode
+  tags:
+    - EmailTemplate
+  parameters:
+    - name: entityName
+      in: query
+      type: string
+      required: true
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/automation/EmailTemplate.yaml'
+    default:
+      description: Unexpected error.

@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "rootDirs": [
+      "src/js",
+      "src/images",
+      "src/fonts",
+      "src/dev",
+      "src/tests",
+      "build/generated-sources/aql-parser",
+      "build/generated-sources/aql-model",
+      "build/generated-sources/swagger-js"
+    ]
+  },
+  "exclude": [
+    "./node_modules*",
+    "./build/resources*"
+  ]
+}

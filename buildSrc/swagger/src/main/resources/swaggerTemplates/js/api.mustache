@@ -1,0 +1,36 @@
+{{>licenseInfo}}
+
+export const createStringEnum = <T extends string>(o: Array<T>): {[K in T]: K} => {
+  return o.reduce((res, key) => {
+    res[key] = key;
+    return res;
+  }, Object.create(null));
+};
+
+{{#models}}
+  {{#model}}{{#isEnum}}{{>modelEnum}}{{/isEnum}}{{^isEnum}}{{>modelGeneric}}{{/isEnum}}{{/model}}
+{{/models}}
+
+
+{{#apiInfo}}
+
+{{#apis}}
+
+export class {{classname}} {
+  constructor(private http: any) {
+  }
+
+  {{#operations}}
+
+  {{#operation}}
+  {{operationId}}({{#allParams}}{{paramName}}: {{{dataType}}}{{^-last}}, {{/-last}}{{/allParams}}): Promise<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}any{{/returnType}}> {
+      return this.http.{{httpMethod}}(`/{{version}}{{path}}{{#pathParams}}/{{=<% %>=}}${<%baseName%>}<%={{ }}=%>{{/pathParams}}`{{#bodyParams}}, {{paramName}}{{/bodyParams}}{{^bodyParams}}{{^isGetOrDeleteMethod}}, {}{{/isGetOrDeleteMethod}}{{/bodyParams}}, { headers: { {{#headerParams}}{{paramName}}, {{/headerParams}} }, params: { {{#queryParams}}{{paramName}}, {{/queryParams}}}, responseType: {{#produces}}'{{{mediaType}}}'{{/produces}} });
+  }
+  {{/operation}}
+
+  {{/operations}}
+}
+
+{{/apis}}
+
+{{/apiInfo}}

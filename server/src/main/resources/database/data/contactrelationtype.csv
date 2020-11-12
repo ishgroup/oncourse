@@ -1,0 +1,6 @@
+"id","createdOn","modifiedOn","fromContactName","toContactName","willowId","delegatedAccessToContact","createdById"
+"-1","2012-06-20T10:23:49","2012-06-20T10:23:49","Parent or Guardian","Child","NULL","0","NULL"
+"1","2012-06-20T10:23:49","2012-06-20T10:23:49","Employer","Staff","NULL","0","NULL"
+"2","2012-06-20T10:23:49","2012-06-20T10:23:49","Sibling","Sibling","NULL","0","NULL"
+"3","2012-06-20T10:23:49","2012-06-20T10:23:49","Spouse","Spouse","NULL","0","NULL"
+"4","2012-06-20T10:27:51","2012-06-20T10:27:51","Friend","Friend","NULL","0","NULL"

@@ -1,0 +1,5 @@
+keyCode: ish.onCourse.enrolment.xml
+entityClass: Enrolment
+body: ish.onCourse.enrolment.xml.groovy
+name: Enrolment XML export
+outputType: xml
