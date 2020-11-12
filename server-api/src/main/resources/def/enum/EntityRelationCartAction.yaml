@@ -1,0 +1,7 @@
+type: string
+description: Cart action for related courses in checkout
+enum:
+  - No action
+  - Suggestion
+  - Add allow removal
+  - Add no removal
