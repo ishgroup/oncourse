@@ -1,0 +1,7 @@
+"id","createdOn","modifiedOn","name","fromName","toName","description","isShowOnWeb","shoppingCart","considerHistory"
+"-1","2020-11-12T10:22:44","2020-11-12T10:22:44","Similar courses","similar","similar","Other courses you might be interested in","1","0","1"
+"1","2020-11-12T10:22:44","2020-11-12T10:22:44","Level progression","previous","next","Courses at other levels of difficulty","1","1","1"
+"2","2020-11-12T10:22:44","2020-11-12T10:22:44","Bundles","bundle","component","Courses are bundled into a discounted packagen","1","3","0"
+"3","2020-11-12T10:22:44","2020-11-12T10:22:44","Application fee","course application","product fee","A product fee which must be added to checkout","1","3","0"
+"4","2020-11-12T10:22:44","2020-11-12T10:22:44","Rolling intake","rolling intake course","rolling intake subject","Flexible course delivery","1","3","1"
+"5","2020-11-12T10:22:44","2020-11-12T10:22:44","Course materials","course","course material","Suggested course materials","1","2","0"
