@@ -2,5 +2,5 @@
 .gradle
 .idea
 .settings
-client-html/node-modules/
+**/node_modules/
 **/build/
