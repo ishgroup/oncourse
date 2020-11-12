@@ -4,7 +4,7 @@
  */
 package ish.oncourse.commercial.replication.updaters
 
-import ish.common.types.EntityRelationType
+import ish.common.types.EntityRelationIdentifier
 import ish.common.types.TypesUtil
 import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.EntityRelation
@@ -12,17 +12,14 @@ import ish.oncourse.server.cayenne.Product
 import ish.oncourse.server.cayenne.Queueable
 import ish.oncourse.webservices.v22.stubs.replication.EntityRelationStub
 
-import java.util.EnumMap
-import java.util.Map
-
 /**
  */
 class EntityRelationUpdater extends AbstractAngelUpdater<EntityRelationStub, EntityRelation> {
 
-	private static final Map<EntityRelationType, Class<? extends Queueable>> ENTITY_CLASS_MAPPING = new EnumMap<>(EntityRelationType.class)
+	private static final Map<EntityRelationIdentifier, Class<? extends Queueable>> ENTITY_CLASS_MAPPING = new EnumMap<>(EntityRelationIdentifier.class)
 	static {
-		ENTITY_CLASS_MAPPING.put(EntityRelationType.COURSE, Course.class)
-		ENTITY_CLASS_MAPPING.put(EntityRelationType.PRODUCT, Product.class)
+		ENTITY_CLASS_MAPPING.put(EntityRelationIdentifier.COURSE, Course.class)
+		ENTITY_CLASS_MAPPING.put(EntityRelationIdentifier.PRODUCT, Product.class)
 	}
 
 	/**
@@ -34,11 +31,11 @@ class EntityRelationUpdater extends AbstractAngelUpdater<EntityRelationStub, Ent
 		entity.setCreatedOn(stub.getCreated())
 		entity.setModifiedOn(stub.getModified())
 
-		def fromType = TypesUtil.getEnumForDatabaseValue(stub.getFromEntityIdentifier(), EntityRelationType.class)
+		EntityRelationIdentifier fromType = TypesUtil.getEnumForDatabaseValue(stub.getFromEntityIdentifier(), EntityRelationIdentifier.class)
 		entity.setFromEntityIdentifier(fromType)
 		entity.setFromEntityAngelId(callback.updateRelationShip(stub.getFromEntityWillowId(), ENTITY_CLASS_MAPPING.get(fromType)).getId())
 
-		def toType = TypesUtil.getEnumForDatabaseValue(stub.getToEntityIdentifier(), EntityRelationType.class)
+		EntityRelationIdentifier toType = TypesUtil.getEnumForDatabaseValue(stub.getToEntityIdentifier(), EntityRelationIdentifier.class)
 		entity.setToEntityIdentifier(toType)
 		entity.setToEntityAngelId(callback.updateRelationShip(stub.getToEntityWillowId(), ENTITY_CLASS_MAPPING.get(toType)).getId())
 	}
