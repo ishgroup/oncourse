@@ -15,6 +15,7 @@ import ish.common.types.EntityRelationIdentifier
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._EntityRelation
+import org.apache.cayenne.query.SelectById
 
 import javax.annotation.Nonnull
 
@@ -85,6 +86,14 @@ class EntityRelation extends _EntityRelation implements Queueable {
 	@Override
 	EntityRelationIdentifier getToEntityIdentifier() {
 		return super.getToEntityIdentifier()
+	}
+
+
+	@Override
+	void prePersist() {
+		if (getRelationType() == null) {
+			setRelationType(SelectById.query(EntityRelationType, -1l).selectOne(context))
+		}
 	}
 
 
