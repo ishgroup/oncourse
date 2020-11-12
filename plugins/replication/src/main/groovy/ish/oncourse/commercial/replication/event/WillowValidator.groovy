@@ -22,7 +22,6 @@ import ish.oncourse.webservices.util.PortHelper
 import ish.oncourse.webservices.v22.stubs.replication.ParametersMap
 import ish.oncourse.webservices.v22.stubs.replication.TransactionGroup
 import ish.oncourse.webservices.v22.stubs.replication.VoucherStub
-import ish.voucher.VoucherData
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectQuery
 import org.apache.logging.log4j.LogManager
