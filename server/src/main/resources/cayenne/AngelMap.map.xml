@@ -2205,11 +2205,11 @@
 	<obj-entity name="EntityRelation" className="ish.oncourse.server.cayenne.EntityRelation" clientClassName="ish.oncourse.cayenne.EntityRelation" dbEntityName="EntityRelation" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="fromEntityAngelId" type="java.lang.Long" db-attribute-path="fromRecordId"/>
-		<obj-attribute name="fromEntityIdentifier" type="ish.common.types.EntityRelationType" db-attribute-path="fromEntityIdentifier"/>
+		<obj-attribute name="fromEntityIdentifier" type="ish.common.types.EntityRelationIdentifier" db-attribute-path="fromEntityIdentifier"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="toEntityAngelId" type="java.lang.Long" db-attribute-path="toRecordId"/>
-		<obj-attribute name="toEntityIdentifier" type="ish.common.types.EntityRelationType" db-attribute-path="toEntityIdentifier"/>
+		<obj-attribute name="toEntityIdentifier" type="ish.common.types.EntityRelationIdentifier" db-attribute-path="toEntityIdentifier"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 	</obj-entity>
 	<obj-entity name="EntityRelationType" className="ish.oncourse.server.cayenne.EntityRelationType" dbEntityName="EntityRelationType" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
