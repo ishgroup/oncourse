@@ -2590,7 +2590,7 @@ databaseChangeLog:
                   name: modifiedOn
                   type: datetime
               - column:
-                  defaultValueComputed: 'NULL'
+                  defaultValueComputed: '-1'
                   name: typeId
                   type: BIGINT
             tableName: EntityRelation
@@ -6073,7 +6073,7 @@ databaseChangeLog:
               - column:
                   constraints:
                     nullable: false
-                  name: isShowOnWeb
+                  name: isShownOnWeb
                   type: SMALLINT
               - column:
                   constraints:
