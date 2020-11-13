@@ -1,8 +1,17 @@
 import React from "react";
+import createStyles from "@material-ui/core/styles/createStyles";
+import withStyles from "@material-ui/core/styles/withStyles";
 import { Grid } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
+import { AppTheme } from "../../../../../../model/common/Theme";
 import DocumentHeader from "./DocumentHeader";
 import DocumentTags from "./DocumentTags";
+
+const styles = (theme: AppTheme) => createStyles({
+  container: {
+    paddingLeft: `${theme.spacing(10.5)}px !important`
+  }
+});
 
 class DocumentItem extends React.PureComponent<any, any> {
   openFullDocumentView = () => {
@@ -12,11 +21,11 @@ class DocumentItem extends React.PureComponent<any, any> {
 
   render() {
     const {
- item, unlink, index, entity 
-} = this.props;
+      classes, item, unlink, index, entity
+    } = this.props;
     return (
       <Paper onClick={this.openFullDocumentView} classes={{ root: "cursor-pointer" }}>
-        <Grid container className="p-1 relative">
+        <Grid container className={`p-1 relative ${classes.container}`}>
           <DocumentHeader item={item} unlink={unlink} index={index} entity={entity} />
           <DocumentTags tags={item.tags} />
         </Grid>
@@ -25,4 +34,4 @@ class DocumentItem extends React.PureComponent<any, any> {
   }
 }
 
-export default DocumentItem;
+export default withStyles(styles)(DocumentItem);
