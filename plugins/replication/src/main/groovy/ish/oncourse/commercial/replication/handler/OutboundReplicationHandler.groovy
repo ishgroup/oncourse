@@ -6,12 +6,14 @@
 package ish.oncourse.commercial.replication.handler
 
 import com.google.inject.Inject
+import groovy.transform.CompileStatic
 import ish.common.types.ContactDuplicateStatus
 import ish.oncourse.commercial.replication.builders.IAngelStubBuilder
 import ish.oncourse.commercial.replication.cayenne.QueueKey
 import ish.oncourse.commercial.replication.cayenne.QueuedRecordAction
 import ish.oncourse.commercial.replication.cayenne.QueuedTransaction
 import ish.oncourse.commercial.replication.modules.ISoapPortLocator
+import ish.oncourse.commercial.replication.services.DedupperFactory
 import ish.oncourse.commercial.replication.services.IAngelQueueService
 
 import static ish.oncourse.commercial.replication.cayenne.QueuedRecordAction.CREATE
@@ -36,7 +38,7 @@ import org.apache.cayenne.query.SelectById
 import org.apache.cayenne.query.SelectQuery
 import org.apache.cayenne.query.SortOrder
 
-
+@CompileStatic
 class OutboundReplicationHandler implements ReplicationHandler {
     private static final int TRANSACTION_BATCH_SIZE = 20
 
