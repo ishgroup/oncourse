@@ -12,7 +12,7 @@ const DocumentTags: React.FC<any> = ({ tags, bold }) => (
         </Typography>
       ))
     ) : (
-      <Typography variant="body1" className="placeholderContent">
+      <Typography variant="body2" className="placeholderContent">
         No Tags
       </Typography>
     )}

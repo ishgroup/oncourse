@@ -15,6 +15,10 @@ const styles = theme =>
       color: "rgba(0,0,0,.2)",
       transition: "color 200ms ease-in-out"
     },
+    previewNormal: {
+      width: "60px",
+      height: "calc(100% - 16px)"
+    },
     previewHoverIcon: {
       "&:hover": {
         color: theme.palette.primary.main
@@ -32,7 +36,9 @@ const styles = theme =>
   });
 
 const DocumentIconsChooser = props => {
-  const { type, thumbnail, classes, hovered = true } = props;
+  const {
+    type, thumbnail, classes, hovered = true, isHeader
+  } = props;
   const currentIcon = iconSwitcher(type);
   return thumbnail ? (
     <div
@@ -40,7 +46,8 @@ const DocumentIconsChooser = props => {
         backgroundImage: `url(data:image;base64,${thumbnail})`
       }}
       className={clsx(classes.preview, {
-        [classes.previewHoverImage]: hovered
+        [classes.previewHoverImage]: hovered,
+        [classes.previewNormal]: isHeader
       })}
     />
   ) : (
