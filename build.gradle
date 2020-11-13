@@ -27,6 +27,8 @@ subprojects {
 
     apply plugin: 'java-library'
     apply plugin: 'maven-publish'
+    
+    compileGroovy.groovyOptions.configurationScript = file("${rootDir}/groovyConfig.groovy")
 
     sourceCompatibility = 11
     repositories {

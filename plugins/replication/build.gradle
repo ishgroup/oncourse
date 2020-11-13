@@ -19,8 +19,6 @@ configurations {
 
 dependencies {
     implementation("ish.oncourse.willow:webservices-client:$webservicesVersion")
-    api 'javax.xml.bind:jaxb-api:2.3.0'
-    api 'javax.xml.ws:jaxws-api:2.3.0'
 }
 
 cgen {

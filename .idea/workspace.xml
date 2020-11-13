@@ -5,17 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="464eb329-4356-4dd0-ae52-6b59f92ddf6a" name="Default Changelist" comment="882969">
+      <change afterPath="$PROJECT_DIR$/groovyConfig.groovy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/plugins/replication/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/ReplicationPlugin.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/ReplicationPlugin.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/event/WillowValidator.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/event/WillowValidator.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/handler/IVoucherValidationService.groovy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/handler/InboundReplicationHandler.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/handler/InboundReplicationHandler.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/handler/InstructionHandler.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/handler/InstructionHandler.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/handler/OutboundReplicationHandler.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/handler/OutboundReplicationHandler.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/handler/VoucherValidationService.groovy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/reference/ReferenceJob.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/reference/ReferenceJob.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/services/ReplicationJob.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/services/ReplicationJob.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/builders/ArticleStubBuilder.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/builders/ArticleStubBuilder.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/builders/AssessmentClassModuleStubBuilbedr.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/builders/AssessmentClassModuleStubBuilbedr.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/builders/MembershipStubBuilder.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/builders/MembershipStubBuilder.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/builders/TagRelationStubBuilder.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/builders/TagRelationStubBuilder.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/builders/VoucherStubBuilder.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/builders/VoucherStubBuilder.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/services/DFADedupper.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/services/DFADedupper.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/services/DedupperFactory.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/services/DedupperFactory.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/updaters/FieldConfigurationLinkUpdater.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/updaters/FieldConfigurationLinkUpdater.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/updaters/FieldHeadingUpdater.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/updaters/FieldHeadingUpdater.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/updaters/FieldUpdater.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/updaters/FieldUpdater.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/updaters/PaymentOutUpdater.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/updaters/PaymentOutUpdater.groovy" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,6 +111,7 @@
       <recent name="ish.oncourse.commercial.replication.modules" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/reference/updater" />
       <recent name="$PROJECT_DIR$/plugins/replication/src/main/groovy/ish/oncourse/commercial/replication/reference" />
     </key>
@@ -241,6 +246,7 @@
       <workItem from="1604670407654" duration="324000" />
       <workItem from="1604906564397" duration="973000" />
       <workItem from="1604913182489" duration="3565000" />
+      <workItem from="1605179203746" duration="9840000" />
     </task>
     <task id="LOCAL-00001" summary="put gradle/idea settings under version control">
       <created>1602752538032</created>
@@ -452,24 +458,96 @@
       <option name="project" value="LOCAL" />
       <updated>1605077750027</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="Remove useless voucher service. Fix imports">
+      <created>1605103273029</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1605103273029</updated>
+    </task>
+    <task id="LOCAL-00032" summary="fix compillation">
+      <created>1605104074027</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1605104074027</updated>
+    </task>
+    <task id="LOCAL-00033" summary="FIx wrong packages">
+      <created>1605104549027</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1605104549027</updated>
+    </task>
+    <task id="LOCAL-00034" summary="remove wrong config">
+      <created>1605107223040</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1605107223040</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Fix constant reference">
+      <created>1605109536031</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1605109536031</updated>
+    </task>
+    <task id="LOCAL-00036" summary="temp workaround since server jar build doesn't work now">
+      <created>1605179569027</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1605179569027</updated>
+    </task>
+    <task id="LOCAL-00037" summary="add missed class">
+      <created>1605180504030</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1605180504030</updated>
+    </task>
+    <task id="LOCAL-00038" summary="Fix enumeration name">
+      <created>1605187502031</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1605187502031</updated>
+    </task>
+    <task id="LOCAL-00039" summary="OD-15213 Fix missed import">
+      <created>1605261995030</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1605261995030</updated>
+    </task>
+    <task id="LOCAL-00040" summary="Fix plugin compillation">
+      <created>1605264113029</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1605264113029</updated>
+    </task>
+    <task id="LOCAL-00041" summary="Fix compillation">
+      <created>1605264197028</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1605264197028</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+    <option name="exactExcludedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/../../git/angel/client-html/src/js/common/services/DefaultHttpClient.js.map" />
+        <option value="$PROJECT_DIR$/../../git/angel/client-html/src/js/common/services/DefaultHttpClient.js" />
+      </list>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Moxe plugin classes to proper package" />
-    <MESSAGE value="OD-15213 Move plugin code to correct package, add webservices-client dependency (will be removed from server then)" />
-    <MESSAGE value="OD-15213 Implement initialization of replication plugin. Move reference job to plugin" />
-    <MESSAGE value="fix compillation" />
-    <MESSAGE value="remove wrong repository" />
-    <MESSAGE value="fix cayenne package" />
-    <MESSAGE value="clean up wrong cayenne classes" />
-    <MESSAGE value="remove one time executed code" />
-    <MESSAGE value="Move soap locator to plugin" />
-    <MESSAGE value="Fix reference updaters" />
-    <MESSAGE value="Setup all cayenne lifecycle listeners for replication process" />
     <MESSAGE value="Move course class removal validation to replication plugin (need it case if replication enabled)" />
     <MESSAGE value="OD-15310 Fix custom reports to use correct localDate types" />
     <MESSAGE value="OD-15310 Fix custom scripts" />
@@ -484,13 +562,24 @@
     <MESSAGE value="Fix wrong imports" />
     <MESSAGE value="Fix imports" />
     <MESSAGE value="Move replication version to plugin" />
-    <option name="LAST_COMMIT_MESSAGE" value="Move replication version to plugin" />
+    <MESSAGE value="Remove useless voucher service. Fix imports" />
+    <MESSAGE value="fix compillation" />
+    <MESSAGE value="FIx wrong packages" />
+    <MESSAGE value="remove wrong config" />
+    <MESSAGE value="Fix constant reference" />
+    <MESSAGE value="temp workaround since server jar build doesn't work now" />
+    <MESSAGE value="add missed class" />
+    <MESSAGE value="Fix enumeration name" />
+    <MESSAGE value="OD-15213 Fix missed import" />
+    <MESSAGE value="Fix plugin compillation" />
+    <MESSAGE value="Fix compillation" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix compillation" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="463" y="201" key="#Project_Structure" timestamp="1605103163323">
+    <state x="463" y="201" key="#Project_Structure" timestamp="1605105240922">
       <screen x="68" y="23" width="1612" height="1027" />
     </state>
-    <state x="463" y="201" key="#Project_Structure/68.23.1612.1027@68.23.1612.1027" timestamp="1605103163323" />
+    <state x="463" y="201" key="#Project_Structure/68.23.1612.1027@68.23.1612.1027" timestamp="1605105240922" />
     <state x="685" y="253" key="#com.intellij.ide.util.MemberChooser" timestamp="1604915458710">
       <screen x="68" y="23" width="1612" height="1027" />
     </state>
@@ -503,63 +592,67 @@
       <screen x="0" y="23" width="3360" height="1867" />
     </state>
     <state x="2035" y="762" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/-1440.538.1440.900/0.23.3360.1867@0.23.3360.1867" timestamp="1602799146937" />
-    <state x="399" y="139" key="CommitChangelistDialog2" timestamp="1605077739470">
-      <screen x="65" y="23" width="1615" height="1027" />
+    <state x="68" y="139" key="CommitChangelistDialog2" timestamp="1605264186325">
+      <screen x="68" y="23" width="1612" height="1027" />
     </state>
-    <state x="399" y="139" key="CommitChangelistDialog2/65.23.1615.1027@65.23.1615.1027" timestamp="1605077739470" />
-    <state x="68" y="139" key="CommitChangelistDialog2/68.23.1612.1027@68.23.1612.1027" timestamp="1605023091615" />
+    <state x="399" y="139" key="CommitChangelistDialog2/65.23.1615.1027@65.23.1615.1027" timestamp="1605187491072" />
+    <state x="68" y="139" key="CommitChangelistDialog2/68.23.1612.1027@68.23.1612.1027" timestamp="1605264186325" />
     <state x="226" y="115" width="1292" height="821" key="DiffContextDialog" timestamp="1604924518521">
       <screen x="65" y="23" width="1615" height="1027" />
     </state>
     <state x="226" y="115" width="1292" height="821" key="DiffContextDialog/65.23.1615.1027@65.23.1615.1027" timestamp="1604924518521" />
     <state x="229" y="115" key="DiffContextDialog/68.23.1612.1027@68.23.1612.1027" timestamp="1604327865585" />
-    <state width="1567" height="280" key="GridCell.Tab.0.bottom" timestamp="1605021556349">
+    <state width="1567" height="345" key="GridCell.Tab.0.bottom" timestamp="1605166948427">
       <screen x="68" y="23" width="1612" height="1027" />
     </state>
     <state width="1567" height="280" key="GridCell.Tab.0.bottom/65.23.1615.1027@65.23.1615.1027" timestamp="1604997686247" />
-    <state width="1567" height="280" key="GridCell.Tab.0.bottom/68.23.1612.1027@68.23.1612.1027" timestamp="1605021556349" />
-    <state width="1567" height="280" key="GridCell.Tab.0.center" timestamp="1605021556348">
+    <state width="1567" height="345" key="GridCell.Tab.0.bottom/68.23.1612.1027@68.23.1612.1027" timestamp="1605166948427" />
+    <state width="1567" height="345" key="GridCell.Tab.0.center" timestamp="1605166948426">
       <screen x="68" y="23" width="1612" height="1027" />
     </state>
     <state width="1567" height="280" key="GridCell.Tab.0.center/65.23.1615.1027@65.23.1615.1027" timestamp="1604997686246" />
-    <state width="1567" height="280" key="GridCell.Tab.0.center/68.23.1612.1027@68.23.1612.1027" timestamp="1605021556348" />
-    <state width="1567" height="280" key="GridCell.Tab.0.left" timestamp="1605021556348">
+    <state width="1567" height="345" key="GridCell.Tab.0.center/68.23.1612.1027@68.23.1612.1027" timestamp="1605166948426" />
+    <state width="1567" height="345" key="GridCell.Tab.0.left" timestamp="1605166948425">
       <screen x="68" y="23" width="1612" height="1027" />
     </state>
     <state width="1567" height="280" key="GridCell.Tab.0.left/65.23.1615.1027@65.23.1615.1027" timestamp="1604997686245" />
-    <state width="1567" height="280" key="GridCell.Tab.0.left/68.23.1612.1027@68.23.1612.1027" timestamp="1605021556348" />
-    <state width="1567" height="280" key="GridCell.Tab.0.right" timestamp="1605021556349">
+    <state width="1567" height="345" key="GridCell.Tab.0.left/68.23.1612.1027@68.23.1612.1027" timestamp="1605166948425" />
+    <state width="1567" height="345" key="GridCell.Tab.0.right" timestamp="1605166948427">
       <screen x="68" y="23" width="1612" height="1027" />
     </state>
     <state width="1567" height="280" key="GridCell.Tab.0.right/65.23.1615.1027@65.23.1615.1027" timestamp="1604997686246" />
-    <state width="1567" height="280" key="GridCell.Tab.0.right/68.23.1612.1027@68.23.1612.1027" timestamp="1605021556349" />
-    <state width="1567" height="345" key="GridCell.Tab.1.bottom" timestamp="1604929385532">
-      <screen x="65" y="23" width="1615" height="1027" />
+    <state width="1567" height="345" key="GridCell.Tab.0.right/68.23.1612.1027@68.23.1612.1027" timestamp="1605166948427" />
+    <state width="1567" height="345" key="GridCell.Tab.1.bottom" timestamp="1605166948428">
+      <screen x="68" y="23" width="1612" height="1027" />
     </state>
     <state width="1567" height="345" key="GridCell.Tab.1.bottom/65.23.1615.1027@65.23.1615.1027" timestamp="1604929385532" />
-    <state width="1567" height="345" key="GridCell.Tab.1.center" timestamp="1604929385531">
-      <screen x="65" y="23" width="1615" height="1027" />
+    <state width="1567" height="345" key="GridCell.Tab.1.bottom/68.23.1612.1027@68.23.1612.1027" timestamp="1605166948428" />
+    <state width="1567" height="345" key="GridCell.Tab.1.center" timestamp="1605166948428">
+      <screen x="68" y="23" width="1612" height="1027" />
     </state>
     <state width="1567" height="345" key="GridCell.Tab.1.center/65.23.1615.1027@65.23.1615.1027" timestamp="1604929385531" />
-    <state width="1567" height="345" key="GridCell.Tab.1.left" timestamp="1604929385531">
-      <screen x="65" y="23" width="1615" height="1027" />
+    <state width="1567" height="345" key="GridCell.Tab.1.center/68.23.1612.1027@68.23.1612.1027" timestamp="1605166948428" />
+    <state width="1567" height="345" key="GridCell.Tab.1.left" timestamp="1605166948427">
+      <screen x="68" y="23" width="1612" height="1027" />
     </state>
     <state width="1567" height="345" key="GridCell.Tab.1.left/65.23.1615.1027@65.23.1615.1027" timestamp="1604929385531" />
-    <state width="1567" height="345" key="GridCell.Tab.1.right" timestamp="1604929385532">
-      <screen x="65" y="23" width="1615" height="1027" />
+    <state width="1567" height="345" key="GridCell.Tab.1.left/68.23.1612.1027@68.23.1612.1027" timestamp="1605166948427" />
+    <state width="1567" height="345" key="GridCell.Tab.1.right" timestamp="1605166948428">
+      <screen x="68" y="23" width="1612" height="1027" />
     </state>
     <state width="1567" height="345" key="GridCell.Tab.1.right/65.23.1615.1027@65.23.1615.1027" timestamp="1604929385532" />
+    <state width="1567" height="345" key="GridCell.Tab.1.right/68.23.1612.1027@68.23.1612.1027" timestamp="1605166948428" />
     <state x="620" y="254" key="RollbackChangesDialog" timestamp="1604934620926">
       <screen x="65" y="23" width="1615" height="1027" />
     </state>
     <state x="620" y="254" key="RollbackChangesDialog/65.23.1615.1027@65.23.1615.1027" timestamp="1604934620926" />
     <state x="622" y="254" key="RollbackChangesDialog/68.23.1612.1027@68.23.1612.1027" timestamp="1604328293230" />
-    <state x="337" y="275" width="1002" height="665" key="SettingsEditor" timestamp="1605019565846">
-      <screen x="68" y="23" width="1612" height="1027" />
+    <state x="360" y="118" width="1002" height="665" key="SettingsEditor" timestamp="1605187225589">
+      <screen x="65" y="23" width="1615" height="1027" />
     </state>
     <state x="787" y="482" width="1861" height="1208" key="SettingsEditor/-1440.538.1440.900/0.23.3360.1867@0.23.3360.1867" timestamp="1602799221787" />
-    <state x="360" y="118" key="SettingsEditor/65.23.1615.1027@65.23.1615.1027" timestamp="1604924517954" />
-    <state x="337" y="275" width="1002" height="665" key="SettingsEditor/68.23.1612.1027@68.23.1612.1027" timestamp="1605019565846" />
+    <state x="360" y="118" key="SettingsEditor/65.23.1615.1027@65.23.1615.1027" timestamp="1605187225589" />
+    <state x="242" y="148" width="1002" height="665" key="SettingsEditor/68.23.1612.1027@68.23.1612.1027" timestamp="1605103666795" />
     <state x="549" y="369" key="com.intellij.ide.util.TipDialog" timestamp="1604910251237">
       <screen x="68" y="23" width="1612" height="1027" />
     </state>
@@ -568,21 +661,25 @@
       <screen x="65" y="23" width="1615" height="1027" />
     </state>
     <state x="683" y="389" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/65.23.1615.1027@65.23.1615.1027" timestamp="1604642898300" />
-    <state x="523" y="293" width="853" height="486" key="find.popup" timestamp="1605102765342">
+    <state x="171" y="123" width="1409" height="827" key="dock-window-1" timestamp="1605186620738">
       <screen x="68" y="23" width="1612" height="1027" />
     </state>
-    <state x="521" y="293" width="883" height="550" key="find.popup/65.23.1615.1027@65.23.1615.1027" timestamp="1604934716857" />
-    <state x="523" y="293" width="853" height="486" key="find.popup/68.23.1612.1027@68.23.1612.1027" timestamp="1605102765342" />
+    <state x="171" y="123" width="1409" height="827" key="dock-window-1/68.23.1612.1027@68.23.1612.1027" timestamp="1605186620738" />
+    <state x="523" y="293" width="853" height="550" key="find.popup" timestamp="1605260369843">
+      <screen x="68" y="23" width="1612" height="1027" />
+    </state>
+    <state x="521" y="293" width="883" height="550" key="find.popup/65.23.1615.1027@65.23.1615.1027" timestamp="1605187362291" />
+    <state x="523" y="293" width="853" height="550" key="find.popup/68.23.1612.1027@68.23.1612.1027" timestamp="1605260369843" />
     <state x="633" y="160" key="refactoring.ChangeSignatureDialog" timestamp="1605102492405">
       <screen x="68" y="23" width="1612" height="1027" />
     </state>
     <state x="633" y="160" key="refactoring.ChangeSignatureDialog/68.23.1612.1027@68.23.1612.1027" timestamp="1605102492405" />
-    <state x="540" y="250" width="670" height="676" key="search.everywhere.popup" timestamp="1605103206931">
+    <state x="540" y="250" width="670" height="676" key="search.everywhere.popup" timestamp="1605264131425">
       <screen x="68" y="23" width="1612" height="1027" />
     </state>
     <state x="536" y="250" width="674" height="676" key="search.everywhere.popup/62.23.1618.1027@62.23.1618.1027" timestamp="1604661701986" />
-    <state x="538" y="250" width="672" height="676" key="search.everywhere.popup/65.23.1615.1027@65.23.1615.1027" timestamp="1605081616023" />
-    <state x="540" y="250" width="670" height="676" key="search.everywhere.popup/68.23.1612.1027@68.23.1612.1027" timestamp="1605103206931" />
+    <state x="538" y="250" width="672" height="676" key="search.everywhere.popup/65.23.1615.1027@65.23.1615.1027" timestamp="1605187352861" />
+    <state x="540" y="250" width="670" height="676" key="search.everywhere.popup/68.23.1612.1027@68.23.1612.1027" timestamp="1605264131425" />
     <state x="542" y="250" width="670" height="676" key="search.everywhere.popup/71.23.1609.1027@71.23.1609.1027" timestamp="1604411205487" />
   </component>
 </project>

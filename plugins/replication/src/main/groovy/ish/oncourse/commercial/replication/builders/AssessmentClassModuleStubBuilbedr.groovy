@@ -15,11 +15,11 @@ class AssessmentClassModuleStubBuilbedr extends AbstractAngelStubBuilder<Assessm
 
     @Override
     protected AssessmentClassModuleStub createFullStub(AssessmentClassModule entity) {
-        def stub = new AssessmentClassModuleStub()
+        AssessmentClassModuleStub stub = new AssessmentClassModuleStub()
         stub.setCreated(entity.getCreatedOn())
         stub.setModified(entity.getModifiedOn())
-        stub.setAssessmentClassId(entity.getAssessmentClass().getId())
-        stub.setModuleId(entity.getModule().getWillowId())
+        stub.setAssessmentClassId((entity.getAssessmentClass() as ish.oncourse.server.cayenne.AssessmentClass).getId())
+        stub.setModuleId((entity.getModule() as ish.oncourse.server.cayenne.Module).getWillowId() )
         return stub
     }
 }

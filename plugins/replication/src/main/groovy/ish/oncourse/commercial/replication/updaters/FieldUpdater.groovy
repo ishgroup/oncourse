@@ -23,7 +23,7 @@ class FieldUpdater extends AbstractAngelUpdater<FieldStub, Field> {
         entity.setName(stub.getName())
         entity.setDescription(stub.getDescription())
 
-        def fcClass = FieldConfigurationUtil.getClassByType(stub.getConfigurationType())
+        Class<? extends FieldConfiguration> fcClass = FieldConfigurationUtil.getClassByType(stub.getConfigurationType())
         entity.setFieldConfiguration(callback.updateRelationShip(stub.getFieldConfigurationId(), fcClass))
 
         entity.setFieldHeading(callback.updateRelationShip(stub.getFieldHeadingId(), FieldHeading.class))

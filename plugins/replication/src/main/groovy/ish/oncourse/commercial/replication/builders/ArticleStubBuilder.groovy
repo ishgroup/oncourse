@@ -14,7 +14,7 @@ class ArticleStubBuilder extends AbstractProductItemStubBuilder<Article, Article
 
 	@Override
 	protected ArticleStub createFullStub(Article entity) {
-		def stub =  super.createFullStub(entity)
+		ArticleStub stub =  super.createFullStub(entity)
 		stub.setContactId(entity.getContact().getId())
 		return stub
 	}

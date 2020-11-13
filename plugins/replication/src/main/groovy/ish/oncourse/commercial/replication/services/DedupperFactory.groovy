@@ -58,11 +58,10 @@ final class DedupperFactory {
             }
         }
         List<DFADedupper> sortedDeduppers = new ArrayList<>(dedupMap.entrySet().size())
-        for (def entry : dedupMap.entrySet()) {
+        for (Map.Entry<QueueKey, DFADedupper> entry : dedupMap.entrySet()) {
             sortedDeduppers.add(entry.getValue())
         }
-        Collections.sort(sortedDeduppers)
-        return sortedDeduppers
+        return sortedDeduppers.sort() as List<DFADedupper>
     }
 
     private DFADedupper getDedupperBy(String tableName) {

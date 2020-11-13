@@ -19,6 +19,8 @@ import ish.util.PaymentMethodUtil
 
 import java.time.ZoneId
 
+import static ish.common.types.PaymentType.*
+
 /**
  */
 class PaymentOutUpdater extends AbstractAngelUpdater<PaymentOutStub, PaymentOut> {

@@ -19,7 +19,7 @@ class FieldConfigurationLinkUpdater extends AbstractAngelUpdater<FieldConfigurat
         entity.setModifiedOn(stub.getModified())
         entity.setFieldConfigurationScheme(callback.updateRelationShip(stub.getSchemeId(), FieldConfigurationScheme.class))
 
-        def fcClass = FieldConfigurationUtil.getClassByType(stub.getConfigurationType())
-        entity.setFieldConfiguration(callback.updateRelationShip(stub.getConfigurationId(), fcClass))
+         Class<? extends FieldConfiguration> fcClass = FieldConfigurationUtil.getClassByType(stub.getConfigurationType())
+         entity.setFieldConfiguration(callback.updateRelationShip(stub.getConfigurationId(), fcClass))
     }
 }

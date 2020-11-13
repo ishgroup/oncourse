@@ -46,10 +46,10 @@ class DFADedupper implements Comparable<DFADedupper> {
     void nextState(QueuedRecord record) throws DedupperException {
         this.transactionKeys.add(record.getQueuedTransaction().getTransactionKey())
 
-        def currentRecord = this.recordSet.isEmpty() ? null : this.recordSet.getLast()
+        QueuedRecord currentRecord = this.recordSet.isEmpty() ? null : this.recordSet.getLast()
 
         if (currentRecord != null) {
-            if (!currentRecord.getTableName().equals(record.getTableName()) || !currentRecord.getForeignRecordId().equals(record.getForeignRecordId())) {
+            if (currentRecord.getTableName() != record.getTableName() || currentRecord.getForeignRecordId() != record.getForeignRecordId()) {
                 throw new DedupperException(String.format("Expecting entity:%s, with id:%s, but got entity:%s with id:%s", currentRecord.getTableName(),
                         currentRecord.getForeignRecordId(), record.getTableName(), record.getForeignRecordId()))
             }

@@ -16,7 +16,7 @@ class VoucherStubBuilder extends AbstractProductItemStubBuilder<Voucher, Voucher
 	 */
 	@Override
 	protected VoucherStub createFullStub(final Voucher entity) {
-		final def stub = super.createFullStub(entity)
+		final VoucherStub stub = super.createFullStub(entity)
 
 		stub.setCode(entity.getCode())
 		stub.setRedeemedCoursesCount(entity.getRedeemedCourseCount())

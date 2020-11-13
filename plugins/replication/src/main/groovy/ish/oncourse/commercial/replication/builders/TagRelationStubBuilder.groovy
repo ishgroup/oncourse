@@ -6,8 +6,11 @@ package ish.oncourse.commercial.replication.builders
 
 import ish.common.types.TypesUtil
 import ish.oncourse.cayenne.TaggableClasses
+import ish.oncourse.commercial.replication.updaters.AbstractAngelUpdater
 import ish.oncourse.server.cayenne.TagRelation
 import ish.oncourse.webservices.v22.stubs.replication.TagRelationStub
+
+import static ish.oncourse.cayenne.TaggableClasses.*
 
 /**
  */
@@ -23,7 +26,7 @@ class TagRelationStubBuilder extends AbstractAngelStubBuilder<TagRelation, TagRe
 		stub.setModified(entity.getModifiedOn())
 		stub.setTagId(entity.getTag().getId())
 		stub.setEntityAngelId(entity.getEntityAngelId())
-		def taggableClasses = TypesUtil.getEnumForDatabaseValue(entity.getEntityIdentifier(), TaggableClasses.class)
+		TaggableClasses taggableClasses = TypesUtil.getEnumForDatabaseValue(entity.getEntityIdentifier(), TaggableClasses.class)
 		switch (taggableClasses) {
 			case DOCUMENT:
 				stub.setEntityName(AbstractAngelUpdater.DOCUMENT_ENTITY_NAME)
@@ -64,7 +67,6 @@ class TagRelationStubBuilder extends AbstractAngelStubBuilder<TagRelation, TagRe
 			case ASSESSMENT:
 				stub.setEntityName(AbstractAngelUpdater.ASSESSMENT_ENTITY_NAME)
 				break
-			case PAYSLIP:
 			default:
 				throw new IllegalStateException(taggableClasses.name() + "is not illegal for this operation")
 		}

@@ -16,7 +16,7 @@ class MembershipStubBuilder extends AbstractProductItemStubBuilder<Membership, M
 	 */
 	@Override
 	protected MembershipStub createFullStub(final Membership entity) {
-		final def stub = super.createFullStub(entity)
+		final MembershipStub stub = super.createFullStub(entity)
 
 		stub.setExpiryDate(entity.getExpiryDate())
 		stub.setContactId(entity.getContact().getId())
