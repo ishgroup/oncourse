@@ -60,7 +60,12 @@ const styles = (theme: AppTheme) =>
       color: theme.palette.grey[500]
     },
     infoName: {
-      fontSize: "14px"
+      fontSize: "14px",
+      display: "-webkit-box",
+      WebkitBoxOrient: "vertical",
+      WebkitLineClamp: 2,
+      overflow: "hidden",
+      maxHeight: "3em"
     },
     avatar: {
       width: "30px",
@@ -73,6 +78,13 @@ const styles = (theme: AppTheme) =>
       position: "absolute",
       bottom: theme.spacing(0.5),
       right: theme.spacing(0.5)
+    },
+    documentChooserButton: {
+      position: "absolute",
+      left: 8,
+      top: 0,
+      height: "100%",
+      width: 76
     }
   });
 
@@ -84,9 +96,10 @@ const DocumentInfo = props => {
         {props.name}
       </Typography>
       <Typography className={classes.miniGrayText}>
+        {props.size}
+        {" "}
         {formatRelativeDate(new Date(props.date), new Date(), III_DD_MMM_YYYY_HH_MM_SPECIAL)}
       </Typography>
-      <Typography className={classes.miniGrayText}>{props.size}</Typography>
     </div>
   );
 };
@@ -140,10 +153,15 @@ class DocumentHeader extends React.PureComponent<Props, any> {
       <Grid container justify="space-between" className="mb-1">
         <div className="d-flex overflow-hidden">
           <Tooltip title="Open Document URL" disableHoverListener={!validUrl}>
-            <ButtonBase disabled={!validUrl} onClick={(e: any) => this.openDocumentURL(e, validUrl)}>
+            <ButtonBase
+              disabled={!validUrl}
+              onClick={(e: any) => this.openDocumentURL(e, validUrl)}
+              className={classes.documentChooserButton}
+            >
               <DocumentIconsChooser
                 type={getDocumentVersion(item).mimeType}
                 thumbnail={item.thumbnail || (item.versions && item.versions[0] && item.versions[0].thumbnail)}
+                isHeader
               />
             </ButtonBase>
           </Tooltip>
