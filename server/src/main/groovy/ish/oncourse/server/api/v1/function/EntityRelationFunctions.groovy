@@ -1,5 +1,7 @@
 package ish.oncourse.server.api.v1.function
 
+import ish.common.types.EntityRelationCartAction
+import ish.common.types.TypesUtil
 import ish.oncourse.server.api.v1.model.EntityRelationCartActionDTO
 import ish.oncourse.server.api.v1.model.EntityRelationTypeDTO
 import ish.oncourse.server.api.validation.EntityValidator
@@ -14,16 +16,16 @@ class EntityRelationFunctions {
     static EntityRelationTypeDTO toRestEntityRelationType(EntityRelationType dbEntity) {
         new EntityRelationTypeDTO().with { dtoModel ->
             dtoModel.id = dbEntity.id
-            dtoModel.createdOn = LocalDateUtils.dateToTimeValue(dbEntity.createdOn)
-            dtoModel.modifiedOn = LocalDateUtils.dateToTimeValue(dbEntity.modifiedOn)
+            dtoModel.created = LocalDateUtils.dateToTimeValue(dbEntity.createdOn)
+            dtoModel.modified = LocalDateUtils.dateToTimeValue(dbEntity.modifiedOn)
             dtoModel.name = dbEntity.name
             dtoModel.fromName = dbEntity.fromName
             dtoModel.toName = dbEntity.toName
             dtoModel.description = dbEntity.description
             dtoModel.isShownOnWeb = dbEntity.isShownOnWeb
-            dtoModel.considerHistory = dbEntity.isShownOnWeb
-            dtoModel.shoppingCart = EntityRelationCartActionDTO.fromValue(dbEntity.shoppingCart.displayName)
-            dtoModel.discountId = dbEntity.entityRelationTypeDiscount.id
+            dtoModel.considerHistory = dbEntity.considerHistory
+            dtoModel.shoppingCart = EntityRelationCartActionDTO.fromValue(dbEntity.shoppingCart?.displayName)
+            dtoModel.discountId = dbEntity.entityRelationTypeDiscount?.id
             dtoModel
         }
     }
@@ -35,8 +37,11 @@ class EntityRelationFunctions {
         dbEntity.description = dtoModel.description
         dbEntity.isShownOnWeb = dtoModel.isShownOnWeb
         dbEntity.considerHistory = dtoModel.considerHistory
-        if (dtoModel.discountId != null) {
+        if (dtoModel.discountId) {
             dbEntity.entityRelationTypeDiscount = SelectById.query(Discount, dtoModel.discountId).selectOne(dbEntity.context)
+        }
+        if (dtoModel.shoppingCart) {
+            dbEntity.shoppingCart = TypesUtil.getEnumForDisplayName(dtoModel.shoppingCart.toString(), EntityRelationCartAction)
         }
     }
 

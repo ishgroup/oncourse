@@ -3,11 +3,11 @@ properties:
   id:
     type: integer
     format: int64
-  createdOn:
+  created:
     type: string
     format: date-time
     description: date and time when record was created
-  modifiedOn:
+  modified:
     type: string
     format: date-time
     description: date and time when record was modified
