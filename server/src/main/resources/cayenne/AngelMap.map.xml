@@ -665,10 +665,10 @@
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="fromName" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="toName" type="VARCHAR" isMandatory="true" length="100"/>
-		<db-attribute name="description" type="TEXT" isMandatory="true" length="10000"/>
+		<db-attribute name="description" type="TEXT" length="10000"/>
 		<db-attribute name="isShownOnWeb" type="SMALLINT"/>
 		<db-attribute name="discountId" type="BIGINT"/>
-		<db-attribute name="shoppingCart" type="SMALLINT"/>
+		<db-attribute name="shoppingCart"  isMandatory="true" type="SMALLINT"/>
 		<db-attribute name="considerHistory" type="SMALLINT"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
@@ -3450,7 +3450,7 @@
 	<db-relationship name="entityRelations" source="EntityRelationType" target="EntityRelation" toMany="true">
 		<db-attribute-pair source="id" target="typeId"/>
 	</db-relationship>
-	<db-relationship name="discountEntityRelations" source="EntityRelationType" target="Discount" toMany="true">
+	<db-relationship name="entityRelationTypeDiscount" source="EntityRelationType" target="Discount">
 		<db-attribute-pair source="discountId" target="id"/>
 	</db-relationship>
 	<db-relationship name="createdBy" source="ContactRelationType" target="SystemUser">
@@ -4772,7 +4772,7 @@
 	<obj-relationship name="membeshipDiscountRelations" source="ContactRelationType" target="DiscountMembershipRelationType" deleteRule="Deny" db-relationship-path="membeshipDiscountRelations"/>
 	<obj-relationship name="relationType" source="EntityRelation" target="EntityRelationType" deleteRule="Nullify" db-relationship-path="relationType"/>
 	<obj-relationship name="entityRelations" source="EntityRelationType" target="EntityRelation" deleteRule="Deny" db-relationship-path="entityRelations"/>
-	<obj-relationship name="discountEntityRelations" source="EntityRelationType" target="Discount" deleteRule="Deny" db-relationship-path="discountEntityRelations"/>
+	<obj-relationship name="entityRelationTypeDiscount" source="EntityRelationType" target="Discount" deleteRule="Deny" db-relationship-path="entityRelationTypeDiscount"/>
 	<obj-relationship name="taggedContact" source="ContactTagRelation" target="Contact" deleteRule="Nullify" db-relationship-path="taggedContact"/>
 	<obj-relationship name="contact" source="ContactUnavailableRuleRelation" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="contact" source="CorporatePass" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
