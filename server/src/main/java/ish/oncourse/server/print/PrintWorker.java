@@ -17,7 +17,6 @@ import ish.oncourse.server.PreferenceController;
 import ish.oncourse.server.cayenne.Document;
 import ish.oncourse.server.cayenne.Report;
 import ish.oncourse.server.cayenne.ReportOverlay;
-import ish.oncourse.server.print.transformations.ClientServerTransformationCategory;
 import ish.oncourse.server.report.PdfUtil;
 import ish.persistence.CommonPreferenceController;
 import ish.persistence.Preferences;
@@ -290,13 +289,12 @@ public class PrintWorker implements Runnable {
 	protected List<PersistentObjectI> transformRecords(List<Long> recordIds, PrintTransformation transform, String sortOn) throws Exception {
 		try {
 			logger.info("transforming records, at start: {}, transform: {}", recordIds.size(), transform);
-			List<PersistentObjectI> printList;
+			List<PersistentObjectI>  printList;
 
 			if (transform != null) {
-				printList = ClientServerTransformationCategory.applyTransformation(transform,
-								cayenneService.getNewContext(),
-								recordIds,
-								printRequest.getAdditionalParameters());
+
+				printList = transform.applyTransformation(cayenneService.getNewContext(), recordIds, printRequest.getAdditionalParameters());
+	
 			} else {
 				Map<String, List<Long>> tempMap = new HashMap<>();
 				tempMap.put(printRequest.getEntity(), recordIds);

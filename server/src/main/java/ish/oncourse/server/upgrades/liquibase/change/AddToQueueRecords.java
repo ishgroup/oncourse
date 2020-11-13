@@ -11,20 +11,10 @@
 
 package ish.oncourse.server.upgrades.liquibase.change;
 
-import ish.oncourse.server.cayenne.Contact;
-import ish.oncourse.server.cayenne.ContactCustomField;
-import ish.oncourse.server.cayenne.CustomField;
-import ish.oncourse.server.cayenne.CustomFieldType;
 import ish.util.SecurityUtil;
 import liquibase.database.Database;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.CustomChangeException;
-import org.apache.cayenne.query.ObjectSelect;
-import org.apache.cayenne.query.SQLSelect;
-
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;

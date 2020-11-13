@@ -77,7 +77,6 @@ class ReportPrintingTest extends CayenneIshTestCase {
         aMap.put("Outcome", Arrays.asList("CourseClass"))
         aMap.put("Enrolment", Arrays.asList("CourseClass", "Enrolment"))
         aMap.put("Session", Arrays.asList("CourseClass", "Session"))
-        aMap.put("ContactDataRowDelegator", Arrays.asList("Contact"))
         AVAILABLE_TRANSFORMATIONS = Collections.unmodifiableMap(aMap)
     }
 
