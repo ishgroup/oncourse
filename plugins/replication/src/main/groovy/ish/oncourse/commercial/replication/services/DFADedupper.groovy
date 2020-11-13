@@ -9,6 +9,9 @@ import ish.oncourse.commercial.replication.cayenne.QueuedRecord
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+import static ish.oncourse.commercial.replication.cayenne.QueuedRecordAction.*
+import static ish.oncourse.commercial.replication.services.DFADedupper.InternalState.*
+
 class DFADedupper implements Comparable<DFADedupper> {
 
     /**
@@ -36,7 +39,7 @@ class DFADedupper implements Comparable<DFADedupper> {
     /**
      * Current state
      */
-    private InternalState currentState = InternalState.DFA_START
+    private InternalState currentState = DFA_START
 
     private LinkedList<QueuedRecord> recordSet = new LinkedList<>()
 

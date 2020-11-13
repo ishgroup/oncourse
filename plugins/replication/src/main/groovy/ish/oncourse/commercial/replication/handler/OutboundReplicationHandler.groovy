@@ -16,6 +16,8 @@ import ish.oncourse.commercial.replication.modules.ISoapPortLocator
 import ish.oncourse.commercial.replication.services.DedupperFactory
 import ish.oncourse.commercial.replication.services.IAngelQueueService
 
+import java.util.function.Predicate
+
 import static ish.oncourse.commercial.replication.cayenne.QueuedRecordAction.CREATE
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.ISHDataContext
@@ -142,7 +144,13 @@ class OutboundReplicationHandler implements ReplicationHandler {
             contactDuplicate.each {cd ->
                 def mergeTransaction = cd.getQueuedTransaction()
                 def mergeBatch = mergeTransaction.getQueuedRecords()
-                currentBatch.removeIf({ qr -> qr.getQueuedTransaction().equals(mergeTransaction) })
+                Predicate<QueuedRecord> filter = new Predicate<QueuedRecord>() {
+                    @Override
+                    boolean test(QueuedRecord queuedRecord) {
+                        queuedRecord.getQueuedTransaction() == mergeTransaction
+                    }
+                }
+                currentBatch.removeIf(filter)
 
                 GenericTransactionGroup group = new TransactionGroup()
                 group.getTransactionKeys().add(mergeTransaction.getTransactionKey())
@@ -201,7 +209,7 @@ class OutboundReplicationHandler implements ReplicationHandler {
                 }
             }
             // clean remove group if it's empty
-            for (def g : new ArrayList<>(replicationRequest.getGenericGroups())) {
+            for (GenericTransactionGroup g : new ArrayList<GenericTransactionGroup>(replicationRequest.getGenericGroups())) {
                 if (g.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty()) {
                     replicationRequest.getGroups().remove(g)
                 }
