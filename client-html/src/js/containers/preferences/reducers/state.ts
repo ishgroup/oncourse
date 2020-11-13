@@ -9,13 +9,15 @@ import {
   CustomFieldType,
   ColumnWidth,
   FundingSource,
-  DefinedTutorRole
+  DefinedTutorRole,
+  EntityRelationType
 } from "@api/model";
 
 export interface PreferencesState {
   contact: any;
   customFields: CustomFieldType[];
   contactRelationTypes: ContactRelationType[];
+  entityRelationTypes: EntityRelationType[];
   concessionTypes: ConcessionType[];
   taxTypes: Tax[];
   fundingContracts: FundingSource[];

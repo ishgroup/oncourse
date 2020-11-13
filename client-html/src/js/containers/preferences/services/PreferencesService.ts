@@ -8,12 +8,14 @@ import {
   TaxApi,
   ConcessionApi,
   ContactApi,
+  EntityRelationTypeApi,
   CustomFieldApi,
   Country,
   ColumnWidth,
   PaymentMethod,
   TutorRoleApi,
-  AccountApi, UserPreferenceApi
+  AccountApi, 
+  UserPreferenceApi
 } from "@api/model";
 import { AccountStudentEnrolments, Categories } from "../../../model/preferences";
 import { SearchService } from "../../../common/services/SearchService";
@@ -28,6 +30,7 @@ import * as ModelFinancial from "../../../model/preferences/Financial";
 import * as ModelSecurity from "../../../model/preferences/security";
 import {
   ContactRelationType,
+  EntityRelationType,
   ConcessionType,
   DataCollectionForm,
   DataCollectionRule,
@@ -49,6 +52,7 @@ class PreferencesService {
   readonly TaxApi = new TaxApi(new DefaultHttpService());
   readonly ConcessionApi = new ConcessionApi(new DefaultHttpService());
   readonly ContactApi = new ContactApi(new DefaultHttpService());
+  readonly EntityRelationTypeApi = new EntityRelationTypeApi(new DefaultHttpService());
   readonly CustomFieldApi = new CustomFieldApi(new DefaultHttpService());
   readonly tutorRoleApi = new TutorRoleApi(new DefaultHttpService());
   readonly accountApi = new AccountApi(new DefaultHttpService());
@@ -92,6 +96,18 @@ class PreferencesService {
 
   public getContactRelationTypes(): Promise<ContactRelationType[]> {
     return this.ContactApi.get();
+  }
+
+  public updateEntityRelationTypes(entityRelationTypes: EntityRelationType[]): Promise<EntityRelationType[]> {
+    return this.EntityRelationTypeApi.update(entityRelationTypes);
+  }
+
+  public deleteEntityRelationType(id: string): Promise<EntityRelationType[]> {
+    return this.EntityRelationTypeApi.remove(id);
+  }
+
+  public getEntityRelationTypes(): Promise<EntityRelationType[]> {
+    return this.EntityRelationTypeApi.get();
   }
 
   public updateConcessionTypes(concessionTypes: ConcessionType[]): Promise<ConcessionType[]> {

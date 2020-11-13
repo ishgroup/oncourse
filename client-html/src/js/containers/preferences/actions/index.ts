@@ -7,6 +7,7 @@ import {
   Tax,
   ConcessionType,
   ContactRelationType,
+  EntityRelationType,
   CustomFieldType,
   EnumName,
   ColumnWidth,
@@ -110,6 +111,15 @@ export const DELETE_CONTACT_RELATION_TYPE_FULFILLED = FULFILLED(DELETE_CONTACT_R
 export const UPDATE_CONTACT_RELATION_TYPES_REQUEST = _toRequestType("post/contact/relation/type");
 export const UPDATE_CONTACT_RELATION_TYPES_FULFILLED = FULFILLED(UPDATE_CONTACT_RELATION_TYPES_REQUEST);
 
+export const GET_ENTITY_RELATION_TYPES_REQUEST = _toRequestType("get/entity/relation/type");
+export const GET_ENTITY_RELATION_TYPES_FULFILLED = FULFILLED(GET_ENTITY_RELATION_TYPES_REQUEST);
+
+export const DELETE_ENTITY_RELATION_TYPE_REQUEST = _toRequestType("delete/entity/relation/type");
+export const DELETE_ENTITY_RELATION_TYPE_FULFILLED = FULFILLED(DELETE_ENTITY_RELATION_TYPE_REQUEST);
+
+export const UPDATE_ENTITY_RELATION_TYPES_REQUEST = _toRequestType("post/entity/relation/type");
+export const UPDATE_ENTITY_RELATION_TYPES_FULFILLED = FULFILLED(UPDATE_ENTITY_RELATION_TYPES_REQUEST);
+
 export const GET_CUSTOM_FIELDS_REQUEST = _toRequestType("get/preference/field/type");
 export const GET_CUSTOM_FIELDS_FULFILLED = FULFILLED(GET_CUSTOM_FIELDS_REQUEST);
 
@@ -191,6 +201,21 @@ export const deleteContactRelationType = (id: string) => ({
 
 export const getContactRelationTypes = () => ({
   type: GET_CONTACT_RELATION_TYPES_REQUEST
+});
+
+
+export const updateEntityRelationTypes = (contactRelationTypes: EntityRelationType[]) => ({
+  type: UPDATE_ENTITY_RELATION_TYPES_REQUEST,
+  payload: { contactRelationTypes }
+});
+
+export const deleteEntityRelationType = (id: string) => ({
+  type: DELETE_ENTITY_RELATION_TYPE_REQUEST,
+  payload: { id }
+});
+
+export const getEntityRelationTypes = () => ({
+  type: GET_ENTITY_RELATION_TYPES_REQUEST
 });
 
 export const updateConcessionTypes = (concessionTypes: ConcessionType[]) => ({
