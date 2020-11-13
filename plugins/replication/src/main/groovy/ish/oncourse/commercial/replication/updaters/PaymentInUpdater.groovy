@@ -4,6 +4,7 @@
  */
 package ish.oncourse.commercial.replication.updaters
 
+import groovy.transform.CompileStatic
 import ish.common.types.*
 import ish.math.Money
 import ish.oncourse.entity.services.SetPaymentMethod
@@ -17,8 +18,11 @@ import ish.util.SetBankingMethod
 
 import java.time.ZoneId
 
+import static ish.common.types.PaymentType.*
+
 /**
  */
+@CompileStatic
 class PaymentInUpdater extends AbstractAngelUpdater<PaymentInStub, PaymentIn> {
 
 	/**
