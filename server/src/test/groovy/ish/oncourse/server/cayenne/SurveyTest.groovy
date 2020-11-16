@@ -8,7 +8,6 @@ import ish.CayenneIshTestCase
 import ish.common.types.EnrolmentStatus
 import ish.common.types.PaymentSource
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.replication.handler.OutboundReplicationHandlerTest
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
 import org.apache.commons.lang3.time.DateUtils
@@ -30,7 +29,7 @@ class SurveyTest extends CayenneIshTestCase {
         wipeTables()
         this.cayenneService = injector.getInstance(ICayenneService.class)
 
-        InputStream st = OutboundReplicationHandlerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/cayenne/SurveyTest.xml")
+        InputStream st = SurveyTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/cayenne/SurveyTest.xml")
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
 
         ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)

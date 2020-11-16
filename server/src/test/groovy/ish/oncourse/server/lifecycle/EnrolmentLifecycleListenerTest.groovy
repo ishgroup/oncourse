@@ -16,7 +16,6 @@ import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.Student
 import ish.oncourse.server.cayenne.WaitingList
-import ish.oncourse.server.replication.handler.OutboundReplicationHandlerTest
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.PersistenceState
 import org.apache.cayenne.exp.Expression
@@ -34,7 +33,6 @@ import static org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
-import java.time.LocalDate
 
 /**
  */
@@ -47,7 +45,7 @@ class EnrolmentLifecycleListenerTest extends CayenneIshTestCase {
 		wipeTables()
         this.cayenneService = injector.getInstance(ICayenneService.class)
 
-        InputStream st = OutboundReplicationHandlerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/lifecycle/enrolmentLifecycleTest.xml")
+        InputStream st = EnrolmentLifecycleListenerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/lifecycle/enrolmentLifecycleTest.xml")
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
 
         ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)

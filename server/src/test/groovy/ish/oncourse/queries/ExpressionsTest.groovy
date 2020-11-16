@@ -4,6 +4,7 @@
  */
 package ish.oncourse.queries
 
+import groovy.transform.CompileStatic
 import ish.CayenneIshTestCase
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.ICayenneService
@@ -11,7 +12,6 @@ import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.Tag
 import ish.oncourse.server.cayenne.TagRelation
-import ish.oncourse.server.replication.handler.OutboundReplicationHandlerTest
 import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.exp.ExpressionFactory
@@ -84,13 +84,14 @@ import org.junit.Test
  * </li> </ul>
  * 
  */
+@CompileStatic
 class ExpressionsTest extends CayenneIshTestCase {
 
 	@Before
     void setupTest() throws Exception {
 		wipeTables()
 
-        InputStream st = OutboundReplicationHandlerTest.class.getClassLoader().getResourceAsStream("ish/queries/expressions-test.xml")
+        InputStream st = ExpressionsTest.class.getClassLoader().getResourceAsStream("ish/queries/expressions-test.xml")
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
         ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
         rDataSet.addReplacementObject("[null]", null)
