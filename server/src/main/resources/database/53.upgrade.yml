@@ -48,7 +48,7 @@ databaseChangeLog:
               - column:
                   constraints:
                     nullable: false
-                  name: isShowOnWeb
+                  name: isShownOnWeb
                   type: SMALLINT
               - column:
                   constraints:
@@ -125,8 +125,8 @@ databaseChangeLog:
                   name: description
                   type: STRING
               - column:
-                  header: isShowOnWeb
-                  name: isShowOnWeb
+                  header: isShownOnWeb
+                  name: isShownOnWeb
                   type: NUMERIC
               - column:
                   header: shoppingCart

@@ -2,7 +2,7 @@ get:
   operationId: get
   description: Get relation types
   tags:
-    - EnttityRelationType
+    - EntityRelationType
   responses:
     '200':
       description: Success response.
@@ -19,7 +19,7 @@ post:
   operationId: update
   description: Update contact relation types
   tags:
-    - EnttityRelationType
+    - EntityRelationType
   parameters:
     - name: relationTypes
       in: body
@@ -41,7 +41,7 @@ delete:
   operationId: remove
   description: Remove relation type
   tags:
-    - EnttityRelationType
+    - EntityRelationType
   parameters:
     - name: id
       in: path
